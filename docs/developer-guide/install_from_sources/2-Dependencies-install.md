@@ -60,7 +60,7 @@ The install procedure can be done:
 
     ```
     sudo yum install 
-    sudo yum install environment-modules jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel boost-program-options doxygen graphviz redhat-lsb-core
+    sudo yum install environment-modules jsoncpp-devel gtest-devel boost-openmpi-devel boost-program-options doxygen graphviz redhat-lsb-core
     sudo yum install libuuid-devel
     ```
 

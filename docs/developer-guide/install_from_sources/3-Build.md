@@ -1,11 +1,10 @@
 # Build
 
 ## Environnement settings
-On Centos, enable `devtoolset-9` and `rh-git227` and load `mpi` module:
+On Centos, enable `devtoolset-9` and `rh-git227`:
 ```
 scl enable devtoolset-9 bash
 source /opt/rh/rh-git227/enable
-module load mpi
 ```
 ## Update git submodule
 ```

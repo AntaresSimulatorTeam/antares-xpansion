@@ -27,13 +27,12 @@ CPack can be used to create the installer after the build phase :
     
     ```
     sudo yum install epel-release
-    sudo yum install openmpi jsoncpp boost-openmpi
+    sudo yum install jsoncpp boost-openmpi
     ```
     
     Before launching Antares-Xpansion with `mpi` for parallel launch (method `mpibenders`), you must load the `mpi` module :
     ```
     scl enable devtoolset-7 bash
-    module load mpi
     ```
     
     !!! Note
