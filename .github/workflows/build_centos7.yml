@@ -116,13 +116,13 @@ jobs:
       - name: Build mpich2
         uses: ./.github/workflows/build-mpich2
         with:
-          prefix: "${{github.workspace}}/rte-antares-deps-Release"
+          prefix: "${{github.workspace}}/../rte-antares-deps-Release"
       
       - name: Build Boost
         uses: ./.github/workflows/build-boost
         with: 
-          prefix: "../rte-antares-deps-Release/"
-          mpicc:  "../rte-antares-deps-Release/bin/mpicc"    
+          prefix: "${{github.workspace}}/../rte-antares-deps-Release/"
+          mpicc:  "${{github.workspace}}/../rte-antares-deps-Release/bin/mpicc"    
 
       - name: Install dependencies
         run: |

@@ -83,8 +83,8 @@ jobs:
       - name: Build Boost
         uses: ./.github/workflows/build-boost
         with: 
-          prefix: "../rte-antares-deps-Release/"
-          mpicc: "../rte-antares-deps-Release/bin/mpicc"
+          prefix: "${{github.workspace}}/../rte-antares-deps-Release/"
+          mpicc: "${{github.workspace}}/../rte-antares-deps-Release/bin/mpicc"
 
       - name: Build tbb
         uses: ./.github/workflows/build-tbb    
