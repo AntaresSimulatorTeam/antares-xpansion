@@ -84,7 +84,7 @@ jobs:
       - name: Build Boost
         uses: ./.github/workflows/build-boost
         with: 
-          prefix: "../rte-antares-deps-Release/"
+          prefix: "../rte-antares-deps-Debug/"
 
       - name: Read antares-solver version
         id: antares-version
@@ -121,11 +121,6 @@ jobs:
       - name: Init submodule
         run: |
           git submodule update --init --recursive .
-
-      - name: Build Boost
-        uses: ./.github/workflows/build-boost
-        with: 
-          prefix: "../rte-antares-deps-Debug/"
       
       - name: Configure
         run: |

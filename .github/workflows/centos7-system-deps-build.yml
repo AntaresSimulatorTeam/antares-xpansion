@@ -72,6 +72,8 @@ jobs:
     
       - name: Build mpich2
         uses: ./.github/workflows/build-mpich2
+        with:
+          prefix: "../rte-antares-deps-Release"
 
       - name: Install dependencies
         run: |
@@ -82,6 +84,7 @@ jobs:
         uses: ./.github/workflows/build-boost
         with: 
           prefix: "../rte-antares-deps-Release/"
+          mpicc: "../rte-antares-deps-Release/bin/mpicc"
 
       - name: Build tbb
         uses: ./.github/workflows/build-tbb    

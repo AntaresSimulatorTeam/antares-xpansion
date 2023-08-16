@@ -136,10 +136,16 @@ jobs:
           os-full-name: CentOS-7.9.2009
           #variant: -ortools-xpress
         
+      - name: Build mpich2
+        uses: ./.github/workflows/build-mpich2
+        with:
+          prefix: "../rte-antares-deps-Release"
+      
       - name: Build Boost
         uses: ./.github/workflows/build-boost
         with: 
           prefix: "../rte-antares-deps-Release/"
+          mpicc:  "../rte-antares-deps-Release/bin/mpicc"
                
       - name: Install dependencies
         run: |

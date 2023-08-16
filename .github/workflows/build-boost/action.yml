@@ -4,6 +4,8 @@ inputs:
   prefix:
     description: 'extra qualifiers'
     required: true
+  mpicc:
+    required: false
 runs:
   using: "composite"
   steps: 
@@ -14,5 +16,12 @@ runs:
       tar xvf boost-1.81.0.tar.gz
       cd boost-1.81.0
       ./bootstrap.sh --prefix=${{inputs.prefix}}/ --with-libraries=serialization,program_options,mpi
-      echo "using mpi ;" >> project-config.jam
+      echo "using mpi : ${{inputs.mpicc}} ;" >> project-config.jam
+      if [[ ${{inputs.mpicc}} !='' ]]
+      then
+      echo "using mpi : ${{inputs.mpicc}} ;" >> project-config.jam
+      else then
+      echo "using mpi;" >> project-config.jam
+      fi
       ./b2 install
+  
