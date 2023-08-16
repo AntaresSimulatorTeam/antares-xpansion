@@ -123,7 +123,7 @@ jobs:
           git submodule update --init --recursive .
 
       - name: Build Boost
-        uses: ./.github/workflows/compile-boost
+        uses: ./.github/workflows/build-boost
         with: 
           prefix: "../rte-antares-deps-Debug/"
       
