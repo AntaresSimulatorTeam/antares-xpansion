@@ -65,10 +65,6 @@ jobs:
           sudo cmake .
           sudo cmake --build .
           
-      - name: Build Boost
-        uses: ./.github/workflows/build-boost
-        with: 
-         prefix: "../rte-antares-deps-Release/"
 
       - name: Read antares-solver version
         id: antares-version
