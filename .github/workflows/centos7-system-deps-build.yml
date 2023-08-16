@@ -62,8 +62,6 @@ jobs:
           yum install -y rh-git227-git 
           yum install -y libuuid-devel
       
-      - name: Build mpich2
-        uses: ./.github/workflows/build-mpich2
 
       - name: Clone
         run: |
@@ -72,6 +70,8 @@ jobs:
           git submodule update --init
 
     
+      - name: Build mpich2
+        uses: ./.github/workflows/build-mpich2
 
       - name: Install dependencies
         run: |
