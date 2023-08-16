@@ -16,7 +16,6 @@ runs:
       tar xvf boost-1.81.0.tar.gz
       cd boost-1.81.0
       ./bootstrap.sh --prefix=${{inputs.prefix}}/ --with-libraries=serialization,program_options,mpi
-      echo "using mpi : ${{inputs.mpicc}} ;" >> project-config.jam
       if [ -n ${{inputs.mpicc}} ] ; then  echo "using mpi : ${{inputs.mpicc}} ;" >> project-config.jam ; else echo echo "using mpi;" >> project-config.jam; fi
       ./b2 install
   
