@@ -116,16 +116,17 @@ jobs:
           os-full-name: Ubuntu-20.04
           buildtype: Debug
       
-      - name: Build Boost
-        uses: ./.github/workflows/compile-boost
-        with: 
-          prefix: "../rte-antares-deps-Release/"
          
 
       - name: Init submodule
         run: |
           git submodule update --init --recursive .
 
+      - name: Build Boost
+        uses: ./.github/workflows/compile-boost
+        with: 
+          prefix: "../rte-antares-deps-Debug/"
+      
       - name: Configure
         run: |
           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Debug -DCODE_COVERAGE=ON -DBUILD_TESTING=ON -DBUILD_antares_solver=OFF -DCMAKE_BUILD_TYPE=Debug  -DCMAKE_INSTALL_PREFIX=_install
