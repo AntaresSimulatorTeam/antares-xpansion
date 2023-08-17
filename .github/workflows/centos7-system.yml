@@ -149,7 +149,10 @@ jobs:
           cd boost-1.81.0
           ./bootstrap.sh --prefix=${{github.workspace}}/rte-antares-deps-Release --with-libraries=serialization,program_options,mpi
           echo "using mpi : ${{github.workspace}}/rte-antares-deps-Release/bin/mpicc ;" >> project-config.jam
-          ./b2 install      
+          ./b2 install     
+          ls  ${{github.workspace}}/rte-antares-deps-Release/lib
+          ls  ${{github.workspace}}/rte-antares-deps-Release/lib/cmake
+          
       # - name: Build Boost
       #   uses: ./.github/workflows/build-boost
       #   with: 
@@ -185,6 +188,9 @@ jobs:
           else
           export XPRESS_VALUE="OFF"
           fi
+          
+          ls  rte-antares-deps-Release/lib
+          ls  rte-antares-deps-Release/lib/cmake
           source /opt/rh/devtoolset-9/enable
           cmake3 -B _build -S . \
                  -DDEPS_INSTALL_DIR=rte-antares-deps-Release \

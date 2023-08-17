@@ -6,7 +6,7 @@ on:
     branches:
       - main
       - develop
-  pull_request:
+  #pull_request:
   release:
     types: [ created ]
 
