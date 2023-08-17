@@ -583,7 +583,7 @@ class ConfigLoader:
         return self.exe_path(self._config.BENDERS)
 
     def mpi_exe(self):
-        return self._config.MPIEXEC
+        return self.exe_path(Path(self._config.MPIEXEC).name)
 
     def benders_by_batch_exe(self):
         return self.exe_path(self._config.BENDERS_BY_BATCH)

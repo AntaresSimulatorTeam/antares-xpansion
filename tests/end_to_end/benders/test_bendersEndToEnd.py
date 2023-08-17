@@ -9,11 +9,20 @@ import numpy as np
 from zipfile import ZipFile, ZIP_DEFLATED
 
 
+def get_install_dir():
+    with open(Path(os.path.abspath(__file__)).parent / 'mpiexec.yaml') as file:
+        content = yaml.full_load(file)
+        if content is not None:
+            return content.get('installDir', "cmake-build-release")
+        else:
+            raise RuntimeError("Please check file mpiexec.yaml, content is empty")
+
 def get_mpiexec():
     with open(Path(os.path.abspath(__file__)).parent / 'mpiexec.yaml') as file:
         content = yaml.full_load(file)
         if content is not None:
-            return content.get('mpiexec', "")
+            temp_path = Path(content.get('mpiexec', ""))
+            return Path(get_install_dir())/temp_path.name
         else:
             raise RuntimeError("Please check file mpiexec.yaml, content is empty")
 # File RESULT_FILE_PATH
