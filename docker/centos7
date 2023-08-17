@@ -15,7 +15,7 @@ RUN yum install -y git redhat-lsb-core gcc gcc-c++ make wget centos-release-scl 
     yum install -y rh-git227-git
 
 # Install xpansion requirements
-RUN yum install -y jsoncpp-devel gtest-devel boost-openmpi-devel doxygen graphviz boost-program-options environment-modules rpm-build zlib-devel
+RUN yum install -y jsoncpp-devel gtest-devel doxygen graphviz environment-modules rpm-build zlib-devel
     
 # Add python and pip installation for antares-xpansion
 RUN yum install -y python3-pip &&\
@@ -37,9 +37,3 @@ RUN wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/down
 RUN tar -xvf antares-${ANTARES_SOLVER_VERSION}-CentOS-7.9.2009-ortools-xpress.tar.gz -C rte-antares-deps-Release --strip-components=1
 RUN rm -rf antares-${ANTARES_SOLVER_VERSION}-CentOS-7.9.2009-ortools-xpress.tar.gz
 
-RUN wget https://github.com/boostorg/boost/releases/download/boost-1.81.0/boost-1.81.0.tar.gz \
-      tar xvf boost-1.81.0.tar.gz \
-      cd boost-1.81.0 \
-      ./bootstrap.sh  --with-libraries=serialization,program_options,mpi \
-      echo "using mpi ;" >> project-config.jam \
-      ./b2 install
