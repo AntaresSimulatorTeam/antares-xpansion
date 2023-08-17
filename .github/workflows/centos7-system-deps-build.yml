@@ -73,7 +73,7 @@ jobs:
       - name: Build mpich2
         uses: ./.github/workflows/build-mpich2
         with:
-          prefix: "${{github.workspace}}/rte-antares-deps-Release"
+          prefix: "./rte-antares-deps-Release"
 
       - name: Install dependencies
         run: |
@@ -86,8 +86,8 @@ jobs:
           wget https://github.com/boostorg/boost/releases/download/boost-1.81.0/boost-1.81.0.tar.gz
           tar xvf boost-1.81.0.tar.gz
           cd boost-1.81.0
-          ./bootstrap.sh --prefix=${{github.workspace}}/rte-antares-deps-Release --with-libraries=serialization,program_options,mpi
-          echo "using mpi : ${{github.workspace}}/rte-antares-deps-Release/bin/mpicc ;" >> project-config.jam
+          ./bootstrap.sh --prefix=./rte-antares-deps-Release --with-libraries=serialization,program_options,mpi
+          echo "using mpi : ./rte-antares-deps-Release/bin/mpicc ;" >> project-config.jam
           ./b2 install   
       
       # - name: Build Boost
