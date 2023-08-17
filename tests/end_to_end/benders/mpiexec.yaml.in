@@ -1,1 +1,1 @@
-mpiexec                         : C:/Program Files/Microsoft MPI/Bin/mpiexec.exe
+mpiexec                         : @MPIEXEC_EXECUTABLE@
