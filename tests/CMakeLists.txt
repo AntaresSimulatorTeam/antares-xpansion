@@ -6,6 +6,7 @@ else ()
 endif ()
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders/mpiexec.yaml.in  ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders/mpiexec.yaml)
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders/mpiexec.yaml.in  ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/restart/mpiexec.yaml)
 
 #configure file to define xpansion installDir
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/build_config.yaml.in ${CMAKE_CURRENT_SOURCE_DIR}/build_config.yaml)
