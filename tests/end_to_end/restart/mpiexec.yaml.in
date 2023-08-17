@@ -1,0 +1,2 @@
+installDir : ${XPANSION_INSTALL_DIR}
+mpiexec                         : @MPIEXEC_EXECUTABLE@

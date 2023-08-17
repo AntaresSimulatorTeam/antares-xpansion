@@ -8,6 +8,24 @@ from zipfile import ZIP_DEFLATED, ZipFile
 import yaml
 import numpy as np
 
+
+
+def get_install_dir():
+    with open(Path(os.path.abspath(__file__)).parent / 'mpiexec.yaml') as file:
+        content = yaml.full_load(file)
+        if content is not None:
+            return content.get('installDir', "cmake-build-release")
+        else:
+            raise RuntimeError("Please check file mpiexec.yaml, content is empty")
+
+def get_mpiexec():
+    with open(Path(os.path.abspath(__file__)).parent / 'mpiexec.yaml') as file:
+        content = yaml.full_load(file)
+        if content is not None:
+            temp_path = Path(content.get('mpiexec', ""))
+            return Path(get_install_dir())/temp_path.name
+        else:
+            raise RuntimeError("Please check file mpiexec.yaml, content is empty")
 # File RESULT_FILE_PATH
 # Json file containing
 #   . One entry by instance to test
@@ -164,7 +182,11 @@ def get_mpi_command():
         MPI_LAUNCHER = "mpiexec"
         MPI_N = "-n"
     elif sys.platform.startswith("linux"):
-        MPI_LAUNCHER = "mpirun"
+        ret= get_mpiexec()
+        if ret !="":
+            MPI_LAUNCHER= ret
+        else:
+            MPI_LAUNCHER = "mpirun"
         MPI_N = "-np"
 
     return [MPI_LAUNCHER, MPI_N, nproc]
