@@ -73,7 +73,7 @@ jobs:
       - name: Build mpich2
         uses: ./.github/workflows/build-mpich2
         with:
-          prefix: "./rte-antares-deps-Release"
+          prefix: "${GITHUB_WORKSPACE}/rte-antares-deps-Release"
 
       - name: Install dependencies
         run: |
