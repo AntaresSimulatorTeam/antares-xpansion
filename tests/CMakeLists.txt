@@ -5,6 +5,8 @@ else ()
     set(XPANSION_INSTALL_DIR "${CMAKE_BINARY_DIR}")
 endif ()
 
+configure_file(${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders/mpiexec.yaml  ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders/mpiexec.yaml.in)
+
 #configure file to define xpansion installDir
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/build_config.yaml.in ${CMAKE_CURRENT_SOURCE_DIR}/build_config.yaml)
 #check if pytest and numpy are installed

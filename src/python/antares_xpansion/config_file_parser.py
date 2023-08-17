@@ -18,6 +18,7 @@ class ConfigFileParser:
         self.FULL_RUN_DEFAULT = "full_run"
         self.ANTARES_ARCHIVE_UPDATER_DEFAULT = "antares_archive_updater"
         self.SENSITIVITY_DEFAULT = "sensitivity"
+        self.MPIEXEC_DEFAULT = ""
         self.AVAILABLE_SOLVERS_DEFAULT = []
 
     def get_config_parameters(self) -> ConfigParameters:
@@ -44,6 +45,8 @@ class ConfigFileParser:
                     'ANTARES_ARCHIVE_UPDATER', self.ANTARES_ARCHIVE_UPDATER_DEFAULT),
                 SENSITIVITY_EXE=content.get(
                     'SENSITIVITY', self.SENSITIVITY_DEFAULT),
+                MPIEXEC=content.get(
+                    'mpiexec', self.MPIEXEC_DEFAULT),
                 AVAILABLE_SOLVERS=content.get(
                     'AVAILABLE_SOLVER', self.AVAILABLE_SOLVERS_DEFAULT)
             )
