@@ -142,14 +142,14 @@ jobs:
           prefix: "${{github.workspace}}/rte-antares-deps-Release"
       
       - name: Build Boost
-      run: |
-        source /opt/rh/devtoolset-9/enable
-        wget https://github.com/boostorg/boost/releases/download/boost-1.81.0/boost-1.81.0.tar.gz
-        tar xvf boost-1.81.0.tar.gz
-        cd boost-1.81.0
-        ./bootstrap.sh --prefix=${{github.workspace}}/rte-antares-deps-Release --with-libraries=serialization,program_options,mpi
-        echo "using mpi : ${{github.workspace}}/rte-antares-deps-Release/bin/mpicc ;" >> project-config.jam
-        ./b2 install      
+        run: |
+          source /opt/rh/devtoolset-9/enable
+          wget https://github.com/boostorg/boost/releases/download/boost-1.81.0/boost-1.81.0.tar.gz
+          tar xvf boost-1.81.0.tar.gz
+          cd boost-1.81.0
+          ./bootstrap.sh --prefix=${{github.workspace}}/rte-antares-deps-Release --with-libraries=serialization,program_options,mpi
+          echo "using mpi : ${{github.workspace}}/rte-antares-deps-Release/bin/mpicc ;" >> project-config.jam
+          ./b2 install      
       # - name: Build Boost
       #   uses: ./.github/workflows/build-boost
       #   with: 
