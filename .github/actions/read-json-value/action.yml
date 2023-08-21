@@ -18,15 +18,12 @@ runs:
     - id: read-file
       shell: bash
       run: |
-        content=`cat ${{inputs.path}}`
-        # the following lines are only required for multi line json
-        content="${content//'%'/'%25'}"
-        content="${content//$'\n'/'%0A'}"
-        content="${content//$'\r'/'%0D'}"
-        # end of optional handling for multi line json
-        echo "::set-output name=content::$content"
+        echo "content<<EOF" >> "$GITHUB_OUTPUT"
+        cat ${{inputs.path}} >> "$GITHUB_OUTPUT"
+        echo "EOF" >> "$GITHUB_OUTPUT"
 
     - id: export-value
       shell: bash
       run: |
-        echo "::set-output name=result::${{fromJson(steps.read-file.outputs.content)[inputs.key]}}"
+        val=${{fromJson(steps.read-file.outputs.content)[inputs.key]}}
+        echo "result=$val" >> "$GITHUB_OUTPUT"
