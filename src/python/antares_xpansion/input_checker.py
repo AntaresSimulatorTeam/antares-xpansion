@@ -216,12 +216,14 @@ class MaxUnitsAndMaxInvestmentAreNullSimultaneously(Exception):
 
 def _check_candidate_attributes(ini_file):
     # check attributes types and values
+    err_msg = ""
     for each_section in ini_file.sections():
         for (option, value) in ini_file.items(each_section):
             if not _check_candidate_option_type(option, value):
-                logger.error(
-                    f"value {value} for option {option} has the wrong type!, it has to be {candidate_options_type[option]}")
-                raise CandidateFileWrongTypeValue
+                err_msg += f"value {value} for option {option} has the wrong type, it has to be {candidate_options_type[option]}\n"
+    
+    logger.error(err_msg)                
+    raise CandidateFileWrongTypeValue
 
 
 def _check_name_is_unique(ini_file):
