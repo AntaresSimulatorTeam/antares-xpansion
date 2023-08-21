@@ -164,12 +164,12 @@ CandidateData CandidatesINIReader::readCandidateSection(
     if (!checkArea(candidateData.linkor)) {
       err_msg << LOGLOCATION << "Unrecognized area " << candidateData.linkor
               << " in section " << sectionName << " in "
-              << candidateFile.string() + ".";
+              << candidateFile.string() << "\n";
     }
     if (!checkArea(candidateData.linkex)) {
       err_msg << LOGLOCATION << "Unrecognized area " << candidateData.linkex
               << " in section " << sectionName << " in "
-              << candidateFile.string() << ".";
+              << candidateFile.string() << "\n";
     }
   }
 
@@ -177,7 +177,12 @@ CandidateData CandidatesINIReader::readCandidateSection(
   auto it = _intercoIndexMap.find(candidateData.link_name);
   if (it == _intercoIndexMap.end()) {
     err_msg << LOGLOCATION << "cannot link candidate " << candidateData.name
-            << " to interco id";
+            << " to interco id"
+            << "\n";
+  }
+
+  if (err_msg.tellp() != 0) {
+    return {};
   }
   candidateData.link_id = it->second;
   candidateData.direct_link_profile =
