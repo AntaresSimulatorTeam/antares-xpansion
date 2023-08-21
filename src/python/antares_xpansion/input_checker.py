@@ -222,8 +222,9 @@ def _check_candidate_attributes(ini_file):
             if not _check_candidate_option_type(option, value):
                 err_msg += f"value {value} for option {option} has the wrong type, it has to be {candidate_options_type[option]}\n"
     
-    logger.error(err_msg)                
-    raise CandidateFileWrongTypeValue
+    if(err_msg!=""):
+        logger.error(err_msg)                
+        raise CandidateFileWrongTypeValue
 
 
 def _check_name_is_unique(ini_file):
