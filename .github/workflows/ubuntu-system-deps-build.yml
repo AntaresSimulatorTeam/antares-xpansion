@@ -6,7 +6,7 @@ on:
       - main
       - develop
       - release/*
-       #- ci/*
+      - ci/*
 jobs:
 
   build:
@@ -47,7 +47,7 @@ jobs:
       - name: Build Boost
         uses: ./.github/workflows/build-boost
         with: 
-          prefix: "../rte-antares-deps-Release/"
+          prefix: "${GITHUB_WORKSPACE}/rte-antares-deps-Release/"
         
 
       - name: Read antares-xpansion version

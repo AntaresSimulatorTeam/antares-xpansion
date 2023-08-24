@@ -90,7 +90,7 @@ jobs:
       - name: Install mandatory system libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install libjsoncpp-dev libgtest-dev libtbb-dev
+          sudo apt-get install libjsoncpp-dev libmpich-dev libgtest-dev libtbb-dev
           cd /usr/src/googletest/
           sudo cmake .
           sudo cmake --build . --target install
@@ -100,22 +100,10 @@ jobs:
         with:
           prefix: "${GITHUB_WORKSPACE}/rte-antares-deps-Release"
         
-      
       - name: Build Boost
-        run: |
-          wget https://github.com/boostorg/boost/releases/download/boost-1.81.0/boost-1.81.0.tar.gz
-          tar xvf boost-1.81.0.tar.gz
-          cd boost-1.81.0
-          ./bootstrap.sh --prefix=${GITHUB_WORKSPACE}/rte-antares-deps-Release --with-libraries=serialization,program_options,mpi
-          echo "using mpi : ${GITHUB_WORKSPACE}/rte-antares-deps-Release/bin/mpicc ;" >> project-config.jam
-          ./b2 install     
-          ls  ${GITHUB_WORKSPACE}/rte-antares-deps-Release/lib
-          ls  ${GITHUB_WORKSPACE}/rte-antares-deps-Release/lib/cmake
-      
-      # - name: Build Boost
-      #   uses: ./.github/workflows/build-boost
-      #   with: 
-      #    prefix: "../rte-antares-deps-Release/"
+        uses: ./.github/workflows/build-boost
+        with: 
+         prefix: "${GITHUB_WORKSPACE}/rte-antares-deps-Release/"
 
       - name: Read antares-solver version
         id: antares-version
