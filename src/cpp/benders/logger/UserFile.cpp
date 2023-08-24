@@ -140,7 +140,7 @@ void UserFile::LogAtSwitchToInteger() {
         << std::endl;
   _file.flush();
 }
-void UserFile::number_of_sub_problem_resolved(int number) {
+void UserFile::cumulative_number_of_sub_problem_resolved(int number) {
   _file << PrefixMessage(LogUtils::LOGLEVEL::INFO, CONTEXT) << indent_1
         << "cumulative number of call to solver (only for subproblems) : "
         << number << std::endl;

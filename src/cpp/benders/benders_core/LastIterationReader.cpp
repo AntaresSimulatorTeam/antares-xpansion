@@ -56,7 +56,10 @@ LogData LastIterationReader::GetIterationData(
       last_iteration_file_content_[iteration_name]["master_duration"]
           .asDouble(),
       last_iteration_file_content_[iteration_name]["subproblem_duration"]
-          .asDouble()
+          .asDouble(),
+      last_iteration_file_content_[iteration_name]
+                                  ["cumulative_number_of_subproblem_resolved"]
+                                      .asInt()
 
   };
 }

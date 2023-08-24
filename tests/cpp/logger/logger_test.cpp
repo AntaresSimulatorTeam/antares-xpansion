@@ -441,6 +441,17 @@ TEST_F(UserLoggerTest, EndLog) {
   ASSERT_EQ(logWithoutPrefix, expected.str());
 }
 
+TEST_F(UserLoggerTest, CumulativeNumberOfSubProblemResolved) {
+  auto number(9150);
+  _logger.cumulative_number_of_sub_problem_resolved(number);
+  auto logWithoutPrefix = RemovePrefixFromMessage(_stream);
+  std::stringstream expected;
+  expected << " " << indent_1
+           << "cumulative number of subproblem resolutions: " << number
+           << std::endl;
+  ASSERT_EQ(logWithoutPrefix, expected.str());
+}
+
 TEST_F(UserLoggerTest, DifferentCallsAddToTheSameStream) {
   LogData logData1;
   logData1.it = 1;
@@ -608,7 +619,8 @@ class SimpleLoggerMock : public ILogger {
   void LogAtInitialRelaxation() { _initialRelaxationCall = true; }
 
   void LogAtSwitchToInteger() { _switchToIntegerCall = true; }
-  void number_of_sub_problem_resolved(int number) {  //
+  void cumulative_number_of_sub_problem_resolved(int number) {
+    _cumulativeNumberOfSubProblemResolved = true;
   }
 
   bool _initCall;
@@ -617,6 +629,7 @@ class SimpleLoggerMock : public ILogger {
   bool _endingCall;
   bool _switchToIntegerCall;
   bool _initialRelaxationCall;
+  bool _cumulativeNumberOfSubProblemResolved;
   StoppingCriterion _stopping_criterion;
 
   std::string _displaymessage;
@@ -665,6 +678,13 @@ TEST_F(MasterLoggerTest, EndLog) {
   _master.log_at_ending(logData);
   ASSERT_TRUE(_logger->_endingCall);
   ASSERT_TRUE(_logger2->_endingCall);
+}
+
+TEST_F(MasterLoggerTest, CumulativeNumberOfSubProblemResolved) {
+  LogData logData;
+  _master.cumulative_number_of_sub_problem_resolved(39);
+  ASSERT_TRUE(_logger->_cumulativeNumberOfSubProblemResolved);
+  ASSERT_TRUE(_logger2->_cumulativeNumberOfSubProblemResolved);
 }
 
 TEST_F(MasterLoggerTest, DisplayMessage) {

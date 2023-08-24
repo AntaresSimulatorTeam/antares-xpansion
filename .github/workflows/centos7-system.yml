@@ -158,7 +158,7 @@ jobs:
           repository: rte-france/xpress-mp
           path: ${{ env.XPRESSDIR }}
           github-server-url: https://github.com
-          ref: 8.13
+          ref: 8.13a
         if: matrix.xprs == 'XPRESS-ON'
 
       - name: Configure
@@ -201,7 +201,6 @@ jobs:
           WITH_XPRS=""
           fi
           VERSION=${{needs.versions.outputs.antares-xpansion-version}}${WITH_XPRS}
-          echo "::set-output name=version::$VERSION"
           echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
 
       - name: .tar.gz creation

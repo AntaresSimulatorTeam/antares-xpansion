@@ -36,12 +36,12 @@ logger = step_logger(__name__, "input checks")
 
 
 def _check_profile_file_consistency(filename_path):
-    with open(filename_path, 'r') as profile_file:
+    with open(filename_path, "r") as profile_file:
         first_profile = []
         for idx, line in enumerate(profile_file):
             try:
                 line_vals = line.strip().split()
-                if (len(line_vals) != 0):
+                if len(line_vals) != 0:
                     first_profile.append(float(line_vals[0]))
             except ValueError:
                 logger.error('Line %d in file %s is not valid: allowed float values in formats "X" or "X\tY".'
@@ -61,11 +61,11 @@ def _check_profile_file_consistency(filename_path):
 
 def _check_profile_file(filename_path):
     """
-        verifies if a given profile file is valid and indicates if it is a null profile or not
+    verifies if a given profile file is valid and indicates if it is a null profile or not
 
-        :param filename_path: path to the profile file to check
+    :param filename_path: path to the profile file to check
 
-        :return: returns False if the profile is null
+    :return: returns False if the profile is null
     """
     # check file existence
     if not os.path.isfile(filename_path):
@@ -84,31 +84,39 @@ class UnrecognizedCandidateOptionType(Exception):
     pass
 
 
-candidate_options_type = {'name': 'string',
-                          'link': 'string',
-                          'annual-cost-per-mw': 'non-negative',
-                          'unit-size': 'non-negative',
-                          'max-units': 'non-negative',
-                          'max-investment': 'non-negative',
-                          'direct-link-profile': 'string',
-                          'indirect-link-profile': 'string',
-                          'already-installed-capacity': 'non-negative',
-                          'already-installed-direct-link-profile': 'string',
-                          'already-installed-indirect-link-profile': 'string'}
+candidate_options_type = {
+    "name": "string",
+    "link": "string",
+    "annual-cost-per-mw": "non-negative",
+    "unit-size": "non-negative",
+    "max-units": "non-negative",
+    "max-investment": "non-negative",
+    "direct-link-profile": "string",
+    "indirect-link-profile": "string",
+    "already-installed-capacity": "non-negative",
+    "already-installed-direct-link-profile": "string",
+    "already-installed-indirect-link-profile": "string",
+}
 
 
 def _check_candidate_option_type(option, value):
     """
-        verifies if a given option value has the correct type corresponding allowed for this option
+    verifies if a given option value has the correct type corresponding allowed for this option
 
-        :param option: the treated option
-        :param value: the value assigned to the option
+    :param option: the treated option
+    :param value: the value assigned to the option
 
-        :return: True if the value has an appropriate type, False or exist otherwise
+    :return: True if the value has an appropriate type, False or exist otherwise
     """
 
-    obsolete_options = ["c", 'enable',
-                        'candidate-type', 'investment-type', 'relaxed', 'has-link-profile']
+    obsolete_options = [
+        "c",
+        "enable",
+        "candidate-type",
+        "investment-type",
+        "relaxed",
+        "has-link-profile",
+    ]
 
     if obsolete_options.count(option):
         logger.warning(
@@ -122,9 +130,9 @@ def _check_candidate_option_type(option, value):
                 "Authorized options are: %s"+'\n'.join(
                     candidate_options_type.keys()))
             raise UnrecognizedCandidateOptionType
-        if option_type == 'string':
+        if option_type == "string":
             return True
-        elif option_type == 'non-negative':
+        elif option_type == "non-negative":
             try:
                 return float(value) >= 0
             except ValueError:
@@ -141,7 +149,7 @@ class IllegalCharsInCandidateName(Exception):
 
 def _check_candidate_name(name, section):
     """
-        checks that the candidate's name is not empty and does not contain a space
+    checks that the candidate's name is not empty and does not contain a space
     """
     _verify_name_is_not_empty(name, section)
     _verify_name_has_no_invalid_character(name, section)
@@ -173,7 +181,7 @@ class CandidateLinkWithoutSeparator(Exception):
 
 def _check_candidate_link(link, section):
     """
-        checks that the candidate's link is not empty
+    checks that the candidate's link is not empty
     """
     if (not link) or (link.lower() == "na"):
         logger.error(
@@ -205,6 +213,7 @@ class MaxUnitsAndMaxInvestmentAreNullSimultaneously(Exception):
 # check candidate attributes types and values
 #############################################
 
+
 def _check_candidate_attributes(ini_file):
     # check attributes types and values
     for each_section in ini_file.sections():
@@ -233,10 +242,8 @@ def _check_candidate_name_and_link(ini_file):
     # check that name is not empty and does not have space
     # check that link is not empty
     for each_section in ini_file.sections():
-        _check_candidate_name(
-            ini_file[each_section]['name'].strip(), each_section)
-        _check_candidate_link(
-            ini_file[each_section]['link'].strip(), each_section)
+        _check_candidate_name(ini_file[each_section]["name"].strip(), each_section)
+        _check_candidate_link(ini_file[each_section]["link"].strip(), each_section)
 
     _check_name_is_unique(ini_file)
 
@@ -244,12 +251,21 @@ def _check_candidate_name_and_link(ini_file):
 def _check_candidate_exclusive_attributes(ini_file):
     # check exclusion between max-investment and (max-units, unit-size) attributes
     for each_section in ini_file.sections():
-        max_invest = ini_file.getfloat(
-            each_section, 'max-investment') if ini_file.has_option(each_section, 'max-investment') else 0
-        unit_size = ini_file.getfloat(
-            each_section, 'unit-size') if ini_file.has_option(each_section, 'unit-size') else 0
-        max_units = ini_file.getfloat(
-            each_section, 'max-units') if ini_file.has_option(each_section, 'max-units') else 0
+        max_invest = (
+            ini_file.getfloat(each_section, "max-investment")
+            if ini_file.has_option(each_section, "max-investment")
+            else 0
+        )
+        unit_size = (
+            ini_file.getfloat(each_section, "unit-size")
+            if ini_file.has_option(each_section, "unit-size")
+            else 0
+        )
+        max_units = (
+            ini_file.getfloat(each_section, "max-units")
+            if ini_file.has_option(each_section, "max-units")
+            else 0
+        )
         if max_invest != 0:
             if max_units != 0 or unit_size != 0:
                 logger.error(
@@ -262,11 +278,9 @@ def _check_candidate_exclusive_attributes(ini_file):
 
 
 def _copy_in_backup(ini_file, candidates_ini_filepath):
-    backup_path = candidates_ini_filepath.parent / \
-        f"{candidates_ini_filepath.name}.bak"
-    shutil.copyfile(candidates_ini_filepath,
-                    backup_path)
-    with open(candidates_ini_filepath, 'w') as out_file:
+    backup_path = candidates_ini_filepath.parent / f"{candidates_ini_filepath.name}.bak"
+    shutil.copyfile(candidates_ini_filepath, backup_path)
+    with open(candidates_ini_filepath, "w") as out_file:
         ini_file.write(out_file)
     logger.error("%s file was overwritten! backup file %s created"
                  % (candidates_ini_filepath, backup_path))
@@ -275,16 +289,18 @@ def _copy_in_backup(ini_file, candidates_ini_filepath):
 def _check_attribute_profile_values(ini_file, capacity_dir_path):
     # check attributes profile is 0, 1 or an existent filename
     config_changed = False
-    profile_attributes = ['direct-link-profile',
-                          'indirect-link-profile', 'already-installed-direct-link-profile',
-                          'already-installed-indirect-link-profile']
+    profile_attributes = [
+        "direct-link-profile",
+        "indirect-link-profile",
+        "already-installed-direct-link-profile",
+        "already-installed-indirect-link-profile",
+    ]
     for each_section in ini_file.sections():
         for attribute in profile_attributes:
             if ini_file.has_option(each_section, attribute):
                 value = ini_file[each_section][attribute].strip()
                 # check file existence
-                filename_path = os.path.normpath(
-                    os.path.join(capacity_dir_path, value))
+                filename_path = os.path.normpath(os.path.join(capacity_dir_path, value))
                 if not os.path.isfile(filename_path):
                     logger.error('Illegal value : option can be 0, 1 or an existent filename.\
                             %s is not an existent file' % filename_path)
@@ -300,7 +316,8 @@ def _check_attributes_profile(ini_file, candidates_ini_filepath, capacity_dir_pa
 
 def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
     profile_link_checker = ProfileLinkChecker(
-        candidates_ini_filepath, capacity_dir_path)
+        candidates_ini_filepath, capacity_dir_path
+    )
     if profile_link_checker.update():
         profile_link_checker.write()
 
@@ -309,8 +326,7 @@ def check_candidates_file(candidates_ini_filepath, capacity_dir_path):
     _check_candidate_attributes(ini_file)
     _check_candidate_name_and_link(ini_file)
     _check_candidate_exclusive_attributes(ini_file)
-    _check_attributes_profile(
-        ini_file, candidates_ini_filepath, capacity_dir_path)
+    _check_attributes_profile(ini_file, candidates_ini_filepath, capacity_dir_path)
 
 
 ##########################################
@@ -350,13 +366,13 @@ options_types_and_legal_values = {
 
 def _check_setting_option_type(option, value):
     """
-        checks that a given option value has the correct type
+    checks that a given option value has the correct type
 
-        :param option: name of the option to verify from settings file
-        :param value: value of the option to verify
+    :param option: name of the option to verify from settings file
+    :param value: value of the option to verify
 
-        :return: True if the option has the correct type,
-                 False or exits if the value has the wrong type
+    :return: True if the option has the correct type,
+             False or exits if the value has the wrong type
     """
 
     if options_types_and_legal_values.get(option) is None:
@@ -423,12 +439,12 @@ class BatchSizeValueError(Exception):
 
 def check_options(options):
     """
-        checks that a settings file related to an XpansionDriver has the correct format
-        Exits if the candidates files has the wrong format.
+    checks that a settings file related to an XpansionDriver has the correct format
+    Exits if the candidates files has the wrong format.
 
-        :param options: the options obtained from the settings.ini file
+    :param options: the options obtained from the settings.ini file
 
-        :return:
+    :return:
     """
 
     option_items = options.items()
@@ -490,12 +506,12 @@ def _check_separation(value) -> bool:
 
 def _check_setting_option_value(option, value):
     """
-        checks that an option has a legal value
+    checks that an option has a legal value
 
-        :param option: name of the option to verify from settings file
-        :param value: value of the option to verify
+    :param option: name of the option to verify from settings file
+    :param value: value of the option to verify
 
-        :return: True if the option has the correct type, exits if the value has the wrong type
+    :return: True if the option has the correct type, exits if the value has the wrong type
     """
 
     if not _check_setting_option_type(option, value):
@@ -507,10 +523,16 @@ def _check_setting_option_value(option, value):
 
     skip_verif = ["yearly-weights", "additional-constraints", "solver"]
 
-    if ((legal_values is not None) and (value in legal_values)) or (option in skip_verif):
+    if ((legal_values is not None) and (value in legal_values)) or (
+        option in skip_verif
+    ):
         return True
 
-    if (option == "optimality_gap") or (option == "relative_gap") or (option == "relaxed_optimality_gap"):
+    if (
+        (option == "optimality_gap")
+        or (option == "relative_gap")
+        or (option == "relaxed_optimality_gap")
+    ):
         if float(value) >= 0:
             return True
         else:
@@ -520,13 +542,13 @@ def _check_setting_option_value(option, value):
             )
             raise GapValueError
 
-    elif option == 'max_iteration':
+    elif option == "max_iteration":
         return _check_max_iteration(value)
 
-    elif option == 'timelimit':
+    elif option == "timelimit":
         return _check_timelimit(value)
 
-    elif option == 'log_level':
+    elif option == "log_level":
         return _check_log_level(value)
 
     elif option == "separation_parameter":

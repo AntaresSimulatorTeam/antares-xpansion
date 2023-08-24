@@ -19,6 +19,10 @@ class ProfilesOfDifferentDimensions(Exception):
     pass
 
 
+class ProfilesValueError(Exception):
+    pass
+
+
 class CandidatesReader:
     def __init__(self, file_path: Path = None):
         self.logger = step_logger(__name__, __class__.__name__)
@@ -198,33 +202,22 @@ class CandidatesReader:
         return area1, area2
 
     @staticmethod
-    def _read_or_create_link_profile_array(
-        direct_link_file: str, indirect_link_file: str
-    ):
-        link_profile_array = np.ones((8760, 2))
-        if direct_link_file:
-            direct_link_profile_array = np.loadtxt(direct_link_file)
-            indirect_link_profile_array = np.loadtxt(indirect_link_file)
-            link_profile_array = np.c_[
-                direct_link_profile_array, indirect_link_profile_array
-            ]
-        return link_profile_array
-
-    @staticmethod
-    def _read_or_create_link_profile_array_one_file(file: str):
-        link_profile_array = np.ones((8760, 2))
-        if file:
-            link_profile_array = np.loadtxt(file)
-            if link_profile_array.ndim == 1:
-                link_profile_array = np.c_[
-                    link_profile_array, link_profile_array]
-        return link_profile_array
+    def check_nan_in_profile_link_array(link_profile_array, file: str):
+        nan_indices = np.argwhere(np.isnan(link_profile_array))
+        if len(nan_indices) > 0:
+            msg = f"Value(s) Error detected in file {file} at (row, column):\n"
+            for index in nan_indices:
+                msg = msg + f"({index[0]+1}, {index[1]+1})\n"
+            raise ProfilesValueError(msg)
 
     @staticmethod
     def _read_or_create_link_profile_array_simple(file: str):
         link_profile_array = np.ones(8760)
         if file:
-            link_profile_array = np.loadtxt(file)
+            link_profile_array = np.genfromtxt(file)
+            CandidatesReader.check_nan_in_profile_link_array(
+                link_profile_array, file)
+
         return link_profile_array
 
     def get_candidate_link_profile_array(self, study_path: Path, candidate: str):

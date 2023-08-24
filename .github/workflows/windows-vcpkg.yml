@@ -73,7 +73,7 @@ jobs:
         with:
           repository: rte-france/xpress-mp-temp
           path: ${{ env.XPRESSDIR }}
-          ref: 8.13
+          ref: 8.13a
           token: ${{ secrets.AS_TOKEN }}
 
       - name: Get release
@@ -194,7 +194,6 @@ jobs:
           XPRS=${{ env.XPRESS_VALUE }}
           [ $XPRS == "ON" ] && WITH_XPRS="-xpress" || WITH_XPRS=""
           VERSION=${{steps.antares-xpansion-version.outputs.result}}${WITH_XPRS}
-          echo "::set-output name=version::$VERSION"
           echo "VERSION_WITH_XPRESS=$VERSION"
           echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
 

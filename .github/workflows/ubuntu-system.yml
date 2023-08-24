@@ -68,7 +68,7 @@ jobs:
         with:
           repository: rte-france/xpress-mp
           path: ${{ env.XPRESSDIR }}
-          ref: 8.13
+          ref: 8.13a
           token: ${{ secrets.AS_TOKEN }} #reniew token periodically
 
       - name: ccache
@@ -169,7 +169,6 @@ jobs:
             WITH_XPRS=""
           fi
           VERSION=${{steps.antares-xpansion-version.outputs.result}}${WITH_XPRS}
-          echo "::set-output name=version::$VERSION"
           echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
 
       - id: create-single-file
