@@ -47,7 +47,7 @@ jobs:
       - name: Build Boost
         uses: ./.github/workflows/build-boost
         with: 
-          prefix: "${GITHUB_WORKSPACE}/rte-antares-deps-Release/"
+          prefix: "${GITHUB_WORKSPACE}/../rte-antares-deps-Release/"
         
 
       - name: Read antares-xpansion version
