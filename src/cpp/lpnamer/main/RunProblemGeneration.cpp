@@ -56,6 +56,45 @@ void ExtractUtilsFiles(
   utils_files_extractor.ExtractFiles();
 }
 
+std::vector<ActiveLink> getLinks(
+    const std::filesystem::path& xpansion_output_dir,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger) {
+  ActiveLinksBuilder linkBuilder =
+      get_link_builders(xpansion_output_dir, logger);
+  std::vector<ActiveLink> links = linkBuilder.getLinks();
+  return links;
+}
+
+/**
+ * TODO Move earlier in the process
+ * @param master_formulation
+ * @param logger
+ */
+void validateMasterFormulation(
+    const std::string& master_formulation,
+    const ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger) {
+  if ((master_formulation != "relaxed") && (master_formulation != "integer")) {
+    (*logger)(LogUtils::LOGLEVEL::FATAL)
+        << LOGLOCATION
+        << "Invalid formulation argument : argument must be "
+           "\"integer\" or \"relaxed\""
+        << std::endl;
+    exit(1);
+  }
+}
+
+std::vector<std::shared_ptr<Problem>> getXpansionProblems(
+    const std::filesystem::path& log_file_path, const std::string& solver_name,
+    const std::vector<ProblemData>& mpsList, std::filesystem::path& lpDir_,
+    std::shared_ptr<ArchiveReader>& reader) {
+  std::vector<std::string> problem_names;
+  std::transform(mpsList.begin(), mpsList.end(),
+                 std::back_inserter(problem_names),
+                 [](ProblemData const& data) { return data._problem_mps; });
+  auto adapter = std::make_shared<ZipProblemsProviderAdapter>(lpDir_, reader,
+                                                              problem_names);
+  return adapter->provideProblems(solver_name, log_file_path);
+}
 void RunProblemGeneration(
     const std::filesystem::path& xpansion_output_dir,
     const std::string& master_formulation,
@@ -66,6 +105,8 @@ void RunProblemGeneration(
     const std::filesystem::path& weights_file) {
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Launching Problem Generation" << std::endl;
+  validateMasterFormulation(master_formulation, logger);
+  std::string solver_name = "CBC";  // TODO Use solver selected by user
 
   Timer problem_generation_timer;
   if (!weights_file.empty()) {
@@ -75,17 +116,7 @@ void RunProblemGeneration(
 
   ExtractUtilsFiles(antares_archive_path, xpansion_output_dir, logger);
 
-  ActiveLinksBuilder linkBuilder =
-      get_link_builders(xpansion_output_dir, logger);
-
-  if ((master_formulation != "relaxed") && (master_formulation != "integer")) {
-    (*logger)(LogUtils::LOGLEVEL::FATAL)
-        << LOGLOCATION
-        << "Invalid formulation argument : argument must be "
-           "\"integer\" or \"relaxed\""
-        << std::endl;
-    std::exit(1);
-  }
+  std::vector<ActiveLink> links = getLinks(xpansion_output_dir, logger);
 
   AdditionalConstraints additionalConstraints(logger);
   if (!additionalConstraintFilename_l.empty()) {
@@ -93,33 +124,23 @@ void RunProblemGeneration(
         AdditionalConstraints(additionalConstraintFilename_l, logger);
   }
 
-  Couplings couplings;
-  std::string solver_name = "CBC";
-  std::vector<ActiveLink> links = linkBuilder.getLinks();
-
-  auto const mps_file_name = xpansion_output_dir / common_lpnamer::MPS_TXT;
-
   auto lpDir_ = xpansion_output_dir / "lp";
-  LinkProblemsGenerator linkProblemsGenerator(lpDir_, links, solver_name,
-                                              logger, log_file_path);
   auto files_mapper = FilesMapper(antares_archive_path);
   auto mpsList = files_mapper.MpsAndVariablesFilesVect();
 
   bool use_zip_implementation = true;
   bool use_file_implementation = false;
+  Couplings couplings;
+  LinkProblemsGenerator linkProblemsGenerator(lpDir_, links, solver_name,
+                                              logger, log_file_path);
   if (use_zip_implementation) {
     std::shared_ptr<ArchiveReader> reader =
         InstantiateZipReader(antares_archive_path);
 
     /* Main stuff */
-    std::vector<std::string> problem_names;
-    std::transform(mpsList.begin(), mpsList.end(),
-                   std::back_inserter(problem_names),
-                   [](ProblemData const& data) { return data._problem_mps; });
-    auto adapter = std::make_shared<ZipProblemsProviderAdapter>(lpDir_, reader,
-                                                                problem_names);
     std::vector<std::shared_ptr<Problem>> xpansion_problems =
-        adapter->provideProblems(solver_name, log_file_path);
+        getXpansionProblems(log_file_path, solver_name, mpsList, lpDir_,
+                            reader);
 
     std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
         problems_and_data;
@@ -128,6 +149,7 @@ void RunProblemGeneration(
       problems_and_data.emplace_back(xpansion_problems.at(i), mpsList.at(i));
     }
     auto mps_file_writer = std::make_shared<MPSFileWriter>(lpDir_);
+
     std::for_each(std::execution::par, problems_and_data.begin(),
                   problems_and_data.end(), [&](const auto& problem_and_data) {
                     const auto& [problem, data] = problem_and_data;
