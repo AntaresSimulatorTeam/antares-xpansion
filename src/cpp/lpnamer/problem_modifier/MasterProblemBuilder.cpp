@@ -34,15 +34,14 @@ std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(
   if (_master_formulation == "integer") {
     addNvarOnEachIntegerCandidate(candidatesInteger, master_l);
 
-    addPmaxConstraint(candidatesInteger, master_l);
+    addPmaxConstraint(candidatesInteger, *master_l);
   }
 
   return master_l;
 }
 
 void MasterProblemBuilder::addPmaxConstraint(
-    const std::vector<Candidate>& candidatesInteger,
-    SolverAbstract::Ptr& master_l) {
+    const std::vector<Candidate>& candidatesInteger, SolverAbstract& master_l) {
   auto n_integer = (int)candidatesInteger.size();
   if (n_integer > 0) {
     std::vector<double> dmatval;
@@ -110,7 +109,7 @@ void MasterProblemBuilder::addNvarOnEachIntegerCandidate(
       colNames.push_back(NB_UNITS_VAR_PREFIX + candidate.get_name());
     }
 
-    solver_addcols(master_l, zeros, mstart, {}, {}, zeros, max_unit,
+    solver_addcols(*master_l, zeros, mstart, {}, {}, zeros, max_unit,
                    integer_type, colNames);
   }
 }
@@ -136,7 +135,7 @@ void MasterProblemBuilder::addVariablesPmaxOnEachCandidate(
       _indexOfPmaxVar[candidate.get_name()] = i;
     }
 
-    solver_addcols(master_l, obj_candidate, mstart, {}, {}, lb_candidate,
+    solver_addcols(*master_l, obj_candidate, mstart, {}, {}, lb_candidate,
                    ub_candidate, coltypes_candidate, candidate_names);
   }
 }

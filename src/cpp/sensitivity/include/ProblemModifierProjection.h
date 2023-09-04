@@ -14,6 +14,7 @@ private:
     int _candidate_id;
     std::string _candidate_name;
 
-    std::vector<double> get_cost_vector(const std::shared_ptr<const SolverAbstract> &solver_model,
+    std::vector<double> get_cost_vector(
+        const SolverAbstract &solver_model,
         unsigned int nb_candidates) const override;
 };

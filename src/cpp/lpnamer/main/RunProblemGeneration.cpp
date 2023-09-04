@@ -136,8 +136,9 @@ void RunProblemGeneration(
                         std::make_shared<ProblemVariablesZipAdapter>(
                             reader, data, links, logger);
                     linkProblemsGenerator.treat(
-                        data._problem_mps, couplings, problem,
-                        problem_variables_from_zip_adapter, mps_file_writer);
+                        data._problem_mps, couplings, problem.get(),
+                        problem_variables_from_zip_adapter.get(),
+                        mps_file_writer.get());
                   });
 
     reader->Close();
@@ -146,7 +147,7 @@ void RunProblemGeneration(
     /* Main stuff */
     auto mps_file_writer = std::make_shared<MPSFileWriter>(lpDir_);
     linkProblemsGenerator.treatloop(xpansion_output_dir, couplings, mpsList,
-                                    mps_file_writer);
+                                    mps_file_writer.get());
 
   } else {
     std::filesystem::path path =
@@ -181,8 +182,9 @@ void RunProblemGeneration(
                         std::make_shared<ProblemVariablesZipAdapter>(
                             reader, data, links, logger);
                     linkProblemsGenerator.treat(
-                        data._problem_mps, couplings, problem,
-                        problem_variables_from_zip_adapter, mps_file_writer);
+                        data._problem_mps, couplings, problem.get(),
+                        problem_variables_from_zip_adapter.get(),
+                        mps_file_writer.get());
                   });
   }
 

@@ -28,7 +28,7 @@ class MasterProblemBuilder {
   void addVariablesPmaxOnEachCandidate(const std::vector<Candidate>& candidates,
                                        SolverAbstract::Ptr& master_l);
   void addPmaxConstraint(const std::vector<Candidate>& candidatesInteger,
-                         SolverAbstract::Ptr& master_l);
+                         SolverAbstract& master_l);
   int getPmaxVarColumnNumberFor(const Candidate& candidate);
 
   std::unordered_map<std::string, int> _indexOfPmaxVar;

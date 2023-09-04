@@ -8,5 +8,5 @@
 class IProblemWriter {
  public:
   virtual ~IProblemWriter() = default;
-  virtual void Write_problem(std::shared_ptr<Problem>& in_prblm) = 0;
+  virtual void Write_problem(Problem *in_prblm) = 0;
 };

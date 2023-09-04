@@ -52,18 +52,18 @@ class StandardLp {
     initialise_dbl_vectors();
   }
 
-  explicit StandardLp(SolverAbstract::Ptr solver_p) {
+  explicit StandardLp(SolverAbstract &solver_p) {
     init();
 
-    int ncols = solver_p->get_ncols();
-    int nrows = solver_p->get_nrows();
-    int nelems = solver_p->get_nelems();
+    int ncols = solver_p.get_ncols();
+    int nrows = solver_p.get_nrows();
+    int nelems = solver_p.get_nelems();
 
     std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] = ncols;
     std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS] = nrows;
     std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NELES] = nelems;
 
-    _colNames = solver_p->get_col_names(0, ncols - 1);
+    _colNames = solver_p.get_col_names(0, ncols - 1);
 
     std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].clear();
     std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].resize(
@@ -189,7 +189,7 @@ class StandardLp {
     std::vector<int> mstart(
         std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS], 0);
     solver_addcols(
-        containingSolver_p,
+        *containingSolver_p,
         std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ], mstart,
         IntVector(0, 0), DblVector(0, 0.0),
         std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB],
@@ -198,7 +198,7 @@ class StandardLp {
         newNames);
 
     solver_addrows(
-        containingSolver_p,
+        *containingSolver_p,
         std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE],
         std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS], {},
         std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART],
