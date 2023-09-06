@@ -1,9 +1,8 @@
 name: Centos7 release
 
 on:
-  push:
-#    tags:
-#      - "v*"
+  release:
+    types: [ created ]
 
 env:
   GITHUB_TOKEN: ${{ github.token }}
@@ -213,13 +212,14 @@ jobs:
 
       #######################
 
-      - uses: "marvinpinto/action-automatic-releases@latest"
-        with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          automatic_release_tag: "latest"
-          prerelease: ${{ endsWith(steps.antares-xpansion-version.outputs.result, '-rc*') && true || false  }}
-          title: "Awesome auto release"
-          files: |
-            _build/${{env.TGZ_NAME}}
+      - name: Get release
+        if: github.event_name == 'release' && github.event.action == 'created'
+        id: get_release
+        uses: bruceadams/get-release@v1.2.3
+
+      - name: Upload Release Asset
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh release upload ${{ steps.get_release.outputs.tag_name }} _build/${{env.TGZ_NAME}}
 
       ########################
