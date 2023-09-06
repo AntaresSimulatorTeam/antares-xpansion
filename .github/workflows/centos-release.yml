@@ -239,7 +239,8 @@ jobs:
 
       - name: Upload Release Asset
         env:
+          GH_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload ${{ steps.get_release.outputs.tag_name }} ${{needs.build.outputs.zip_name}}
+        run: gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} ${{needs.build.outputs.zip_name}}
 
       ########################
