@@ -172,31 +172,6 @@ jobs:
           #Cpack command line doesn't seem to care about -P or -R options
           echo "TGZ_NAME=$FILE_NAME.tar.gz" >> $GITHUB_ENV
 
-      - name: Installer .deb creation
-        run: |
-          cd _build
-          export FILE_NAME="antaresXpansion-${{env.VERSION_WITH_XPRESS}}-${{ matrix.os }}"
-          cpack -G DEB -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
-          echo "DEB_NAME=$FILE_NAME.deb" >> $GITHUB_ENV
-
-      - name: Upload .tar.gz
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{env.TGZ_NAME}}
-          path: _build/${{env.TGZ_NAME}}
-
-      - name: Upload .deb
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{env.DEB_NAME}}
-          path: _build/${{env.DEB_NAME}}
-
-      - name: Upload single file
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ steps.create-single-file.outputs.archive-name }}
-          path: ${{ steps.create-single-file.outputs.archive-path }}
-
       #      - name: Running unit tests
       #        run: |
       #          cd _build
