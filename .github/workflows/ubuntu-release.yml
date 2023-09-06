@@ -216,7 +216,7 @@ jobs:
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          repo_token: "${{ env.GITHUB_TOKEN }}"
           prerelease: true
           title: "Awesome auto release"
           files: |
