@@ -229,7 +229,7 @@ jobs:
       - name: Get release
         if: github.event_name == 'release' && github.event.action == 'created'
         id: get_release
-        uses: bruceadams/get-release
+        uses: bruceadams/get-release@main
 
       - name: Download Artifact
         uses: actions/download-artifact@v3
