@@ -1,14 +1,9 @@
-name: Ubuntu CI
+name: Ubuntu Release
 
 on:
   push:
-    branches:
-      - main
-      - develop
-      - ci/*
-  workflow_dispatch:
-  release:
-    types: [ created ]
+    tags:
+      - "v*"
 
 env:
   GITHUB_TOKEN: ${{ github.token }}
@@ -211,40 +206,20 @@ jobs:
           name: ${{ steps.create-single-file.outputs.archive-name }}
           path: ${{ steps.create-single-file.outputs.archive-path }}
 
-      - name: Running unit tests
-        run: |
-          cd _build
-          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
+      #      - name: Running unit tests
+      #        run: |
+      #          cd _build
+      #          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
-      - name: Get release
-        if: github.event_name == 'release' && github.event.action == 'created'
-        id: get_release
-        uses: bruceadams/get-release@v1.2.3
+      #######################
 
-      - name: Publish .tar.gz
-        if: github.event_name == 'release' && github.event.action == 'created'
-        uses: actions/upload-release-asset@v1.0.2
+
+      - uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: _build/${{env.TGZ_NAME}}
-          asset_name: ${{env.TGZ_NAME}}
-          asset_content_type: application/octet-stream
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          prerelease: true
+          title: "Awesome auto release"
+          files: |
+            _build/${{env.TGZ_NAME}}
 
-      - name: Publish .deb
-        if: github.event_name == 'release' && github.event.action == 'created'
-        uses: actions/upload-release-asset@v1.0.2
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: _build/${{env.DEB_NAME}}
-          asset_name: ${{env.DEB_NAME}}
-          asset_content_type: application/octet-stream
-
-      - name: Publish single file
-        if: github.event_name == 'release' && github.event.action == 'created'
-        uses: actions/upload-release-asset@v1.0.2
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ${{ steps.create-single-file.outputs.archive-path }}
-          asset_name: ${{ steps.create-single-file.outputs.archive-name }}
-          asset_content_type: application/octet-stream
-
+      ########################
