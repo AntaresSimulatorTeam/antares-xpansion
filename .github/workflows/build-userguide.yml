@@ -25,7 +25,7 @@ jobs:
       - name: Get release
         if: github.event_name == 'release' && github.event.action == 'created'
         id: get_release
-        uses: bruceadams/get-release@main
+        uses: bruceadams/get-release
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version

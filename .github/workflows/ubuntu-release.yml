@@ -181,7 +181,7 @@ jobs:
       - name: Get release
         if: github.event_name == 'release' && github.event.action == 'created'
         id: get_release
-        uses: bruceadams/get-release@v1.2.3
+        uses: bruceadams/get-release
 
       - name: Upload Release Asset
         env:
