@@ -1,6 +1,12 @@
 name: Ubuntu Release
 
 on:
+  push:
+    branches:
+      - main
+      - develop
+      - ci/*
+  workflow_dispatch:
   release:
     types: [ created ]
 
@@ -184,6 +190,7 @@ jobs:
         uses: bruceadams/get-release@main
 
       - name: Upload Release Asset
+        if: github.event_name == 'release' && github.event.action == 'created'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: gh release upload ${{ steps.get_release.outputs.tag_name }} _build/${{env.TGZ_NAME}}
