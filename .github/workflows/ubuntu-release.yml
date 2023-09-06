@@ -46,7 +46,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-20.04 ]
-        xprs: [ XPRESS-ON, XPRESS-OFF ]
+        xprs: [ XPRESS-OFF ]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
@@ -56,15 +56,6 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: true
-
-      - name: Checkout xpressmp linux
-        if: matrix.xprs == 'XPRESS-ON'
-        uses: actions/checkout@v3
-        with:
-          repository: rte-france/xpress-mp
-          path: ${{ env.XPRESSDIR }}
-          ref: 8.13a
-          token: ${{ secrets.AS_TOKEN }} #reniew token periodically
 
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.3
@@ -216,7 +207,7 @@ jobs:
 
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
-          repo_token: "${{ env.GITHUB_TOKEN }}"
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
           prerelease: true
           title: "Awesome auto release"
           files: |
