@@ -207,7 +207,7 @@ jobs:
       - uses: "marvinpinto/action-automatic-releases@latest"
         with:
           repo_token: "${{ secrets.GITHUB_TOKEN }}"
-          prerelease: ${{ endsWith(${{steps.antares-xpansion-version.outputs.result}}, '-rc*') && true || false  }}
+          prerelease: ${{ endsWith({{steps.antares-xpansion-version.outputs.result}}, '-rc*') && true || false  }}
           title: "Awesome auto release"
           files: |
             _build/${{env.TGZ_NAME}}
