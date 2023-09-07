@@ -105,11 +105,11 @@ jobs:
           key: |
             ${{ hashFiles( 'vcpkg_manifest/vcpkg.json' ) }}-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}-${{ matrix.triplet }}-invalidate
 
-      - name: Install dependencies
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r requirements-tests.txt
-          pip install -r requirements-ui.txt
+      #      - name: Install dependencies
+      #        run: |
+      #          python -m pip install --upgrade pip
+      #          pip install -r requirements-tests.txt
+      #          pip install -r requirements-ui.txt
 
       - name: Pre-requisites
         shell: cmd
@@ -139,22 +139,22 @@ jobs:
           path: 'antares-version.json'
           key: 'antares_deps_version'
 
-      - name: Install deps with VCPKG
-        run: |
-          cd vcpkg
-          ./bootstrap-vcpkg.sh
-          vcpkg install jsoncpp gtest boost-mpi boost-program-options tbb zlib --triplet ${{matrix.triplet}}
-          rm -rf buildtrees
-          rm -rf packages
-          rm -rf downloads
-        shell: bash
+      #      - name: Install deps with VCPKG
+      #        run: |
+      #          cd vcpkg
+      #          ./bootstrap-vcpkg.sh
+      #          vcpkg install jsoncpp gtest boost-mpi boost-program-options tbb zlib --triplet ${{matrix.triplet}}
+      #          rm -rf buildtrees
+      #          rm -rf packages
+      #          rm -rf downloads
+      #        shell: bash
 
-      - name: Download pre-compiled librairies
-        uses: ./.github/workflows/download-extract-precompiled-libraries-zip
-        with:
-          antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
-          antares-version: ${{steps.antares-version.outputs.result}}
-          os: ${{matrix.os}}
+      #      - name: Download pre-compiled librairies
+      #        uses: ./.github/workflows/download-extract-precompiled-libraries-zip
+      #        with:
+      #          antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
+      #          antares-version: ${{steps.antares-version.outputs.result}}
+      #          os: ${{matrix.os}}
 
       - name: Download userguide
         uses: actions/download-artifact@v3
@@ -169,11 +169,11 @@ jobs:
           [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF"
           echo "XPRESS_VALUE=$XPRESS_VALUE" >> $GITHUB_ENV
 
-      - name: Configure
-        #Inverted ternary : @({'condition is false'},{'condition is true'})[$condition] => ({true}, {false})[!$condition]
-        run: |
-          $pwd=Get-Location
-          cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" -DXPRESS=${{ env.XPRESS_VALUE }} -DXPRESS_ROOT="${{ env.XPRESSDIR }}"
+      #      - name: Configure
+      #        #Inverted ternary : @({'condition is false'},{'condition is true'})[$condition] => ({true}, {false})[!$condition]
+      #        run: |
+      #          $pwd=Get-Location
+      #          cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" -DXPRESS=${{ env.XPRESS_VALUE }} -DXPRESS_ROOT="${{ env.XPRESSDIR }}"
 
       #      - name: Build
       #        run: |
@@ -218,11 +218,13 @@ jobs:
       #          path: ${{ steps.create-single-file.outputs.archive-path }}
 
       - id: zip_name
+        shell: bash
         run: |
           echo "zip_name=${{env.ZIP_NAME}}" >> $GITHUB_OUTPUT
           echo $GITHUB_OUTPUT
 
-      - run: |
+      - shell: bash
+        run: |
           echo ${{steps.zip_name.outputs.zip_name}}
 
   upload_asset_to_release:
