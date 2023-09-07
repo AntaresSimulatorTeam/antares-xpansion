@@ -220,8 +220,7 @@ jobs:
       - id: zip_name
         shell: bash
         run: |
-          echo "zip_name=${{env.ZIP_NAME}}" >> $GITHUB_OUTPUT
-          echo $GITHUB_OUTPUT
+          echo "zip_name=${{env.ZIP_NAME}}" >> "$GITHUB_OUTPUT"
 
       - shell: bash
         run: |
