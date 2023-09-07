@@ -55,7 +55,7 @@ jobs:
       matrix:
         os: [ windows-latest ]
         triplet: [ x64-windows ]
-        xprs: [ XPRESS-OFF ]
+        xprs: [ XPRESS-ON, XPRESS-OFF ]
     env:
       XPRESSDIR: ${{ github.workspace }}\xpress
       XPRESS: ${{ github.workspace }}\xpress\bin
@@ -182,6 +182,14 @@ jobs:
       - name: Build
         run: |
           cmake --build _build --config Release -j2 --target install
+
+      - name: Running unit tests
+        shell: cmd
+        run: |
+          set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
+          set PATH=%PATH%;${{ env.XPRESS }}
+          cd _build
+          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
       - name: Create installer .zip
         shell: bash
