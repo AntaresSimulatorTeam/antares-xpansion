@@ -226,7 +226,6 @@ jobs:
         run: |
           echo "zip_name=${{env.TGZ_NAME}}" >> "$GITHUB_OUTPUT"
           echo $GITHUB_OUTPUT
-          echo ${{GITHUB_OUTPUT}}
           echo ${{outputs}}
           echo ${{outputs.zip_name}}
 
