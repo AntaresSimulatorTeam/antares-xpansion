@@ -198,12 +198,12 @@ jobs:
           VERSION=${{steps.antares-xpansion-version.outputs.result}}${WITH_XPRS}
           echo "VERSION_WITH_XPRESS=$VERSION"
           echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
-
-      - name: Create single file .zip
-        id: create-single-file
-        uses: ./.github/workflows/single-file-creation-zip
-        with:
-          antares-xpansion-version: ${{env.VERSION_WITH_XPRESS}}
+      #
+      #      - name: Create single file .zip
+      #        id: create-single-file
+      #        uses: ./.github/workflows/single-file-creation-zip
+      #        with:
+      #          antares-xpansion-version: ${{env.VERSION_WITH_XPRESS}}
 
       - name: Upload installer
         uses: actions/upload-artifact@v3
@@ -211,11 +211,11 @@ jobs:
           name: ${{env.ZIP_NAME}}
           path: _build/${{env.ZIP_NAME}}
 
-      - name: Upload single file
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ steps.create-single-file.outputs.archive-name }}
-          path: ${{ steps.create-single-file.outputs.archive-path }}
+      #      - name: Upload single file
+      #        uses: actions/upload-artifact@v3
+      #        with:
+      #          name: ${{ steps.create-single-file.outputs.archive-name }}
+      #          path: ${{ steps.create-single-file.outputs.archive-path }}
 
       - id: zip_name
         run: |
