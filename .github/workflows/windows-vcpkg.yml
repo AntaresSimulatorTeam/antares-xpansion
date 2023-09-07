@@ -219,8 +219,11 @@ jobs:
 
       - id: zip_name
         run: |
-          echo "ZIP_NAME=${{env.ZIP_NAME}}" >> $GITHUB_ENV
+          echo "zip_name=${{env.ZIP_NAME}}" >> $GITHUB_ENV
           echo $GITHUB_OUTPUT
+
+      - run: |
+          echo ${{steps.zip_name.outputs.zip_name}}
 
   upload_asset_to_release:
     if: github.event_name == 'release' && github.event.action == 'created'
@@ -240,6 +243,7 @@ jobs:
 
       - name: Upload Release Asset
         env:
+          ZIP_NAME: ${{needs.build.outputs.zip_name}}
           GH_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
