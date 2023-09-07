@@ -184,13 +184,13 @@ jobs:
                  -DXPRESS_ROOT=${XPRESSDIR} \
                  -DALLOW_RUN_AS_ROOT=ON
 
-      - name: Build
-        shell: bash
-        run: |
-          source /opt/rh/devtoolset-9/enable
-          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-          export PATH=/usr/lib64/openmpi/bin:$PATH
-          cmake3 --build _build --config Release -j2 --target install
+      #      - name: Build
+      #        shell: bash
+      #        run: |
+      #          source /opt/rh/devtoolset-9/enable
+      #          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
+      #          export PATH=/usr/lib64/openmpi/bin:$PATH
+      #          cmake3 --build _build --config Release -j2 --target install
 
       - name: set name variables
         id: single_file_name
@@ -225,6 +225,10 @@ jobs:
       - id: zip_name
         run: |
           echo "zip_name=${{env.TGZ_NAME}}" >> "$GITHUB_OUTPUT"
+          echo $GITHUB_OUTPUT
+          echo ${{GITHUB_OUTPUT}}
+          echo ${{outputs}}
+          echo ${{outputs.zip_name}}
 
       #######################
 
