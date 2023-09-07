@@ -248,11 +248,6 @@ jobs:
           GH_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo $ZIP_NAME
-          echo ${{needs.build.outputs.zip_name}}
-          echo ${{needs.build.outputs}}
-          echo ${{needs.build}}
-          echo ${{needs}}
           gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} $ZIP_NAME
 
       ########################
