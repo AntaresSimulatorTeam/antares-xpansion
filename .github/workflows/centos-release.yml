@@ -208,7 +208,8 @@ jobs:
         run: |
           cd _build
           export FILE_NAME="antaresXpansion-${{env.VERSION_WITH_XPRESS}}-CentOS-7.9.2009"
-          cpack3 -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
+               touch $FILE_NAME
+          #          cpack3 -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
           echo "TGZ_NAME=$FILE_NAME.tar.gz" >> $GITHUB_ENV
 
       - id: create-single-file
