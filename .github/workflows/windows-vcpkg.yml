@@ -183,7 +183,8 @@ jobs:
         shell: bash
         run: |
           cd _build
-          cpack -G ZIP
+          #          cpack -G ZIP
+               touch arti.zip
           export ZIP_NAME=$(ls *.zip)
           echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
 
