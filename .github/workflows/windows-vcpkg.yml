@@ -220,7 +220,6 @@ jobs:
         run: |
           echo "zip_name=${{env.ZIP_NAME}}" >> "$GITHUB_OUTPUT"
           echo $GITHUB_OUTPUT
-          echo ${{outputs.zip_name}}
 
   upload_asset_to_release:
     if: github.event_name == 'release' && github.event.action == 'created'
@@ -242,6 +241,11 @@ jobs:
         env:
           GH_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} ${{needs.build.outputs.zip_name}}
+        run: |
+          echo ${{needs.build.outputs.zip_name}}
+          ${{needs.build.outputs}}
+          ${{needs.build}}
+          ${{needs}}
+          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} ${{needs.build.outputs.zip_name}}
 
       ########################
