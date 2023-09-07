@@ -191,6 +191,19 @@ jobs:
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
+      #Uploads are not necessary for release but useful in other cases
+      - name: Upload .tar.gz
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{env.TGZ_NAME}}
+          path: _build/${{env.TGZ_NAME}}
+
+      - name: Upload single file
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.create-single-file.outputs.archive-name }}
+          path: ${{ steps.create-single-file.outputs.archive-path }}
+
       #######################
 
       - name: Get release
