@@ -184,13 +184,13 @@ jobs:
                  -DXPRESS_ROOT=${XPRESSDIR} \
                  -DALLOW_RUN_AS_ROOT=ON
 
-      #      - name: Build
-      #        shell: bash
-      #        run: |
-      #          source /opt/rh/devtoolset-9/enable
-      #          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-      #          export PATH=/usr/lib64/openmpi/bin:$PATH
-      #          cmake3 --build _build --config Release -j2 --target install
+      - name: Build
+        shell: bash
+        run: |
+          source /opt/rh/devtoolset-9/enable
+          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
+          export PATH=/usr/lib64/openmpi/bin:$PATH
+          cmake3 --build _build --config Release -j2 --target install
 
       - name: set name variables
         id: single_file_name
@@ -208,15 +208,14 @@ jobs:
         run: |
           cd _build
           export FILE_NAME="antaresXpansion-${{env.VERSION_WITH_XPRESS}}-CentOS-7.9.2009"
-          touch $FILE_NAME
-          #          cpack3 -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
+          cpack3 -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
           echo "TGZ_NAME=$FILE_NAME.tar.gz" >> $GITHUB_ENV
 
-      #      - id: create-single-file
-      #        name: Single file .tar.gz creation
-      #        uses: ./.github/workflows/single-file-creation-tgz
-      #        with:
-      #          antares-xpansion-version: ${{env.VERSION_WITH_XPRESS}}
+      - id: create-single-file
+        name: Single file .tar.gz creation
+        uses: ./.github/workflows/single-file-creation-tgz
+        with:
+          antares-xpansion-version: ${{env.VERSION_WITH_XPRESS}}
 
       - name: Upload .tar.gz
         uses: actions/upload-artifact@v3
@@ -250,10 +249,6 @@ jobs:
           GH_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          echo ${{needs.build.outputs.zip_name}}
-          ${{needs.build.outputs}}
-          ${{needs.build}}
-          ${{needs}}
           gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} ${{needs.build.outputs.zip_name}}
 
       ########################
