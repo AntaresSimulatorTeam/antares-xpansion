@@ -7,8 +7,12 @@ on:
       - develop
       - ci/*
   workflow_dispatch:
+  workflow_run:
+    workflows: [ "Publish Release" ]
+    types:
+      - completed
   release:
-    types: [ published ]
+    types: [ created ]
 
 env:
   GITHUB_TOKEN: ${{ github.token }}
