@@ -182,9 +182,8 @@ jobs:
       - name: Create installer .zip
         shell: bash
         run: |
-          #cd _build
-          #          cpack -G ZIP
-               touch arti.zip
+          cd _build
+          cpack -G ZIP
           export ZIP_NAME=$(ls *.zip)
           echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
 
