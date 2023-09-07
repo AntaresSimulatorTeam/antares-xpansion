@@ -182,7 +182,7 @@ jobs:
       - name: Create installer .zip
         shell: bash
         run: |
-          cd _build
+          #cd _build
           #          cpack -G ZIP
                touch arti.zip
           export ZIP_NAME=$(ls *.zip)
@@ -205,11 +205,11 @@ jobs:
       #        with:
       #          antares-xpansion-version: ${{env.VERSION_WITH_XPRESS}}
 
-      - name: Upload installer
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{env.ZIP_NAME}}
-          path: _build/${{env.ZIP_NAME}}
+      #      - name: Upload installer
+      #        uses: actions/upload-artifact@v3
+      #        with:
+      #          name: ${{env.ZIP_NAME}}
+      #          path: _build/${{env.ZIP_NAME}}
 
       #      - name: Upload single file
       #        uses: actions/upload-artifact@v3
