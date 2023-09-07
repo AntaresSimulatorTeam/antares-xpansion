@@ -220,7 +220,6 @@ jobs:
         run: |
           echo "zip_name=${{env.ZIP_NAME}}" >> "$GITHUB_OUTPUT"
           echo $GITHUB_OUTPUT
-          echo ${{outputs}}
           echo ${{outputs.zip_name}}
 
   upload_asset_to_release:
