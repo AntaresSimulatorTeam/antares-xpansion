@@ -81,7 +81,7 @@ jobs:
         if: github.event_name == 'release' && github.event.action == 'created'
         id: get_release
         uses:
-          bruceadams/get-release@v1.2.3
+          bruceadams/get-release@main
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -175,9 +175,9 @@ jobs:
           $pwd=Get-Location
           cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" -DXPRESS=${{ env.XPRESS_VALUE }} -DXPRESS_ROOT="${{ env.XPRESSDIR }}"
 
-      - name: Build
-        run: |
-          cmake --build _build --config Release -j2 --target install
+      #      - name: Build
+      #        run: |
+      #          cmake --build _build --config Release -j2 --target install
 
       - name: Create installer .zip
         shell: bash
@@ -219,6 +219,10 @@ jobs:
       - id: zip_name
         run: |
           echo "zip_name=${{env.ZIP_NAME}}" >> "$GITHUB_OUTPUT"
+          echo $GITHUB_OUTPUT
+          echo ${{GITHUB_OUTPUT}}
+          echo ${{outputs}}
+          echo ${{outputs.zip_name}}
 
   upload_asset_to_release:
     if: github.event_name == 'release' && github.event.action == 'created'
