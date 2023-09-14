@@ -85,6 +85,7 @@ void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
                   problem, _links, logger_);
         }
 
-                  treat(mps._problem_mps, couplings, problem, variables_provider.get(), writer);
-                });
+        treat(mps._problem_mps, couplings, problem.get(),
+              variables_provider.get(), writer);
+      });
 }

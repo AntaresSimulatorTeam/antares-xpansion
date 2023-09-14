@@ -34,9 +34,9 @@ class LinkProblemsGenerator {
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
       std::filesystem::path log_file_path,
       bool rename_problems)
-      : lpDir_(lpDir),
-        _links(links),
+      : _links(links),
         _solver_name(std::move(solver_name)),
+        lpDir_(lpDir),
         logger_(std::move(logger)),
         log_file_path_(std::move(log_file_path)),
         rename_problems_(rename_problems) {}
