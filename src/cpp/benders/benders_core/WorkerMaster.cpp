@@ -105,7 +105,7 @@ void WorkerMaster::add_cut(Point const &s, Point const &x_cut,
   DefineRhsWithMasterVariable(s, x_cut, rhs, rowrhs);
   define_matval_mclind(s, matval, mclind);
 
-  solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+  solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
 void WorkerMaster::DefineRhsWithMasterVariable(
@@ -154,7 +154,7 @@ void WorkerMaster::add_dynamic_cut(Point const &s, double const &sx0,
 
   define_rhs_from_sx0(sx0, rhs, rowrhs);
   define_matval_mclind(s, matval, mclind);
-  solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+  solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
 void WorkerMaster::define_rhs_from_sx0(const double &sx0, const double &rhs,
@@ -184,7 +184,7 @@ void WorkerMaster::add_cut_by_iter(int const i, Point const &s,
   define_rhs_from_sx0(sx0, rhs, rowrhs);
   define_matval_mclind_for_index(i, s, matval, mclind);
 
-  solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+  solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
 void WorkerMaster::define_matval_mclind_for_index(
@@ -224,7 +224,7 @@ void WorkerMaster::addSubproblemCut(int i, Point const &s, Point const &x_cut,
   DefineRhsWithMasterVariable(s, x_cut, rhs, rowrhs);
   define_matval_mclind_for_index(i, s, matval, mclind);
 
-  solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+  solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
 void WorkerMaster::_set_upper_bounds() const {
@@ -265,7 +265,7 @@ void WorkerMaster::_set_alpha_var() {
           _solver->get_ncols(); /* Set the number of columns in _id_alpha */
 
       solver_addcols(
-          _solver, DblVector(1, obj), IntVector(1, 0), IntVector(0, 0),
+          *_solver, DblVector(1, obj), IntVector(1, 0), IntVector(0, 0),
           DblVector(0, 0.0), DblVector(1, lb), DblVector(1, ub),
           CharVector(1, 'C'),
           StrVector(1,
@@ -277,7 +277,7 @@ void WorkerMaster::_set_alpha_var() {
         buffer << "alpha_" << i;
         id_single_subpb_costs_under_approx_[i] = _solver->get_ncols();
         solver_addcols(
-            _solver, DblVector(1, 0.0), IntVector(1, 0), IntVector(0, 0),
+            *_solver, DblVector(1, 0.0), IntVector(1, 0), IntVector(0, 0),
             DblVector(0, 0.0), DblVector(1, lb), DblVector(1, ub),
             CharVector(1, 'C'),
             StrVector(
@@ -298,7 +298,7 @@ void WorkerMaster::_set_alpha_var() {
         matval[i + 1] = -1;
       }
 
-      solver_addrows(_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+      solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
     }
   } else {
     LOG(INFO)
