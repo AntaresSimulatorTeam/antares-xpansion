@@ -43,12 +43,12 @@ jobs:
           cd /usr/src/googletest/
           sudo cmake .
           sudo cmake --build . --target install
-        
+
       - name: Compile Boost
         uses: ./.github/workflows/compile-boost
-        with: 
+        with:
           prefix: "../rte-antares-deps-Release/"
-        
+
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
