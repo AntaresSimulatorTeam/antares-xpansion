@@ -20,8 +20,6 @@ class SensitivityProblemModifier {
   const std::shared_ptr<const SolverAbstract> last_master;
 
   virtual std::vector<double> get_cost_vector(
-      const std::shared_ptr<const SolverAbstract> &solver_model,
-      unsigned int nb_candidates) const = 0;
-  void add_near_optimal_cost_constraint(
-      const SolverAbstract::Ptr &solver_model) const;
+      const SolverAbstract &solver_model, unsigned int nb_candidates) const = 0;
+  void add_near_optimal_cost_constraint(SolverAbstract &solver_model) const;
 };

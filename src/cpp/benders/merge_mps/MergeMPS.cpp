@@ -44,7 +44,7 @@ void MergeMPS::launch() {
       for (int i(0); i < mps_ncols; ++i) {
         sequence[i] = i;
       }
-      solver_get_obj_func_coeffs(solver_l, o, 0, mps_ncols - 1);
+      solver_get_obj_func_coeffs(*solver_l, o, 0, mps_ncols - 1);
       double const weigth = slave_weight(nslaves, kvp.first);
       for (auto &c : o) {
         c *= weigth;
@@ -53,7 +53,7 @@ void MergeMPS::launch() {
     } else {
       solver_l->read_prob_mps(problem_name);
     }
-    StandardLp lpData(solver_l);
+    StandardLp lpData(*solver_l);
     std::string varPrefix_l = "prob" + std::to_string(cntProblems_l) + "_";
 
     lpData.append_in(mergedSolver_l, varPrefix_l);
@@ -125,7 +125,7 @@ void MergeMPS::launch() {
 
   DblVector rhs(nrows, 0);
   CharVector sense(nrows, 'E');
-  solver_addrows(mergedSolver_l, sense, rhs, {}, mstart, cindex, values);
+  solver_addrows(*mergedSolver_l, sense, rhs, {}, mstart, cindex, values);
 
   LOG(INFO) << "Problems merged." << std::endl;
   LOG(INFO) << "Writting mps file" << std::endl;

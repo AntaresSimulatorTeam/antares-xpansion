@@ -1,4 +1,4 @@
-name: Ubuntu CI
+name: Ubuntu Release
 
 on:
   push:
@@ -186,24 +186,17 @@ jobs:
           #Cpack command line doesn't seem to care about -P or -R options
           echo "TGZ_NAME=$FILE_NAME.tar.gz" >> $GITHUB_ENV
 
-      - name: Installer .deb creation
+      - name: Running unit tests
         run: |
           cd _build
-          export FILE_NAME="antaresXpansion-${{env.VERSION_WITH_XPRESS}}-${{ matrix.os }}"
-          cpack -G DEB -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
-          echo "DEB_NAME=$FILE_NAME.deb" >> $GITHUB_ENV
+          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
+      #Uploads are not necessary for release but useful in other cases
       - name: Upload .tar.gz
         uses: actions/upload-artifact@v3
         with:
           name: ${{env.TGZ_NAME}}
           path: _build/${{env.TGZ_NAME}}
-
-      - name: Upload .deb
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{env.DEB_NAME}}
-          path: _build/${{env.DEB_NAME}}
 
       - name: Upload single file
         uses: actions/upload-artifact@v3
@@ -211,40 +204,19 @@ jobs:
           name: ${{ steps.create-single-file.outputs.archive-name }}
           path: ${{ steps.create-single-file.outputs.archive-path }}
 
-      - name: Running unit tests
-        run: |
-          cd _build
-          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
+      #######################
 
       - name: Get release
         if: github.event_name == 'release' && github.event.action == 'created'
         id: get_release
-        uses: bruceadams/get-release@v1.2.3
+        uses: bruceadams/get-release@main
 
-      - name: Publish .tar.gz
+      - name: Upload Release Asset
         if: github.event_name == 'release' && github.event.action == 'created'
-        uses: actions/upload-release-asset@v1.0.2
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: _build/${{env.TGZ_NAME}}
-          asset_name: ${{env.TGZ_NAME}}
-          asset_content_type: application/octet-stream
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload ${{ steps.get_release.outputs.tag_name }} _build/${{env.TGZ_NAME}}
+          gh release upload ${{ steps.get_release.outputs.tag_name }} _build/${{env.TGZ_NAME}}
 
-      - name: Publish .deb
-        if: github.event_name == 'release' && github.event.action == 'created'
-        uses: actions/upload-release-asset@v1.0.2
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: _build/${{env.DEB_NAME}}
-          asset_name: ${{env.DEB_NAME}}
-          asset_content_type: application/octet-stream
-
-      - name: Publish single file
-        if: github.event_name == 'release' && github.event.action == 'created'
-        uses: actions/upload-release-asset@v1.0.2
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ${{ steps.create-single-file.outputs.archive-path }}
-          asset_name: ${{ steps.create-single-file.outputs.archive-name }}
-          asset_content_type: application/octet-stream
-
+      ########################

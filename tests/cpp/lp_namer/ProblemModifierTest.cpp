@@ -51,8 +51,8 @@ class ProblemModifierTest : public ::testing::Test {
       std::vector<char> coltypes(1, 'C');
       std::vector<int> mstart(1, 0);
       std::vector<std::string> candidates_colnames(1, P_LINK);
-      solver_addcols(math_problem, objectives, mstart, {}, {}, lb, ub, coltypes,
-                     candidates_colnames);
+      solver_addcols(*math_problem, objectives, mstart, {}, {}, lb, ub,
+                     coltypes, candidates_colnames);
     }
 
     // Add direct cost variable column
@@ -63,8 +63,8 @@ class ProblemModifierTest : public ::testing::Test {
       std::vector<char> coltypes(1, 'C');
       std::vector<int> mstart(1, 0);
       std::vector<std::string> candidates_colnames(1, P_PLUS);
-      solver_addcols(math_problem, objectives, mstart, {}, {}, lb, ub, coltypes,
-                     candidates_colnames);
+      solver_addcols(*math_problem, objectives, mstart, {}, {}, lb, ub,
+                     coltypes, candidates_colnames);
     }
 
     // Add indirect cost variable column
@@ -75,8 +75,8 @@ class ProblemModifierTest : public ::testing::Test {
       std::vector<char> coltypes(1, 'C');
       std::vector<int> mstart(1, 0);
       std::vector<std::string> candidates_colnames(1, P_MINUS);
-      solver_addcols(math_problem, objectives, mstart, {}, {}, lb, ub, coltypes,
-                     candidates_colnames);
+      solver_addcols(*math_problem, objectives, mstart, {}, {}, lb, ub,
+                     coltypes, candidates_colnames);
     }
   }
 
@@ -263,9 +263,8 @@ TEST_F(ProblemModifierTest,
   const std::vector<ActiveLink> active_links = {link};
 
   auto problem_modifier = ProblemModifier(logger);
-  math_problem = problem_modifier.changeProblem(
-      std::move(math_problem), active_links, p_var_columns,
-      p_direct_cost_columns, p_indirect_cost_columns);
+  problem_modifier.changeProblem(math_problem.get(), active_links,
+                                 p_var_columns, p_direct_cost_columns, p_indirect_cost_columns);
 
   verify_columns_are(3);
 
@@ -310,9 +309,9 @@ TEST_F(ProblemModifierTest, One_link_two_candidates) {
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   auto problem_modifier = ProblemModifier(logger);
-  math_problem = problem_modifier.changeProblem(
-      std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
-      p_indirect_cost_columns);
+  problem_modifier.changeProblem(math_problem.get(), links, p_var_columns,
+                                 p_direct_cost_columns,
+                                 p_indirect_cost_columns);
 
   verify_columns_are(5);
 
@@ -370,9 +369,9 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_no_profile) {
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   auto problem_modifier = ProblemModifier(logger);
-  math_problem = problem_modifier.changeProblem(
-      std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
-      p_indirect_cost_columns);
+  problem_modifier.changeProblem(math_problem.get(), links, p_var_columns,
+                                 p_direct_cost_columns,
+                                 p_indirect_cost_columns);
   verify_columns_are(5);
 
   const int P_LINK_id = 0;
@@ -455,9 +454,9 @@ TEST_F(ProblemModifierTest, One_link_two_candidates_two_timestep_profile) {
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   auto problem_modifier = ProblemModifier(logger);
-  math_problem = problem_modifier.changeProblem(
-      std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
-      p_indirect_cost_columns);
+  problem_modifier.changeProblem(math_problem.get(), links, p_var_columns,
+                                 p_direct_cost_columns,
+                                 p_indirect_cost_columns);
 
   const int P_LINK_id = 0;
   const int P_PLUS_id = 1;
@@ -571,9 +570,9 @@ TEST_F(ProblemModifierTest,
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   auto problem_modifier = ProblemModifier(logger);
-  math_problem = problem_modifier.changeProblem(
-      std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
-      p_indirect_cost_columns);
+  problem_modifier.changeProblem(math_problem.get(), links, p_var_columns,
+                                 p_direct_cost_columns,
+                                 p_indirect_cost_columns);
 
   const int P_LINK_id = 0;
   const int P_PLUS_id = 1;
@@ -656,9 +655,9 @@ TEST_F(ProblemModifierTest, candidateWithNotNullProfileExists) {
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   auto problem_modifier = ProblemModifier(logger);
-  math_problem = problem_modifier.changeProblem(
-      std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
-      p_indirect_cost_columns);
+  problem_modifier.changeProblem(math_problem.get(), links, p_var_columns,
+                                 p_direct_cost_columns,
+                                 p_indirect_cost_columns);
 
   const int cand1_id = 3;
 
@@ -698,9 +697,9 @@ TEST_F(ProblemModifierTest, candidateWithNullProfileIsRemoved) {
   const std::vector<ActiveLink>& links = linkBuilder.getLinks();
 
   auto problem_modifier = ProblemModifier(logger);
-  math_problem = problem_modifier.changeProblem(
-      std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
-      p_indirect_cost_columns);
+  problem_modifier.changeProblem(math_problem.get(), links, p_var_columns,
+                                 p_direct_cost_columns,
+                                 p_indirect_cost_columns);
 
   const int cand1_id = -1;
 
@@ -789,9 +788,9 @@ TEST_F(
     ProblemModifierTestMultiChronicle,
     One_link_two_candidates_two_timestep_profile_multiple_chronicle_chooseNothing) {
   auto problem_modifier = ProblemModifier(logger);
-  math_problem = problem_modifier.changeProblem(
-      std::move(math_problem), links, p_var_columns, p_direct_cost_columns,
-      p_indirect_cost_columns);
+  problem_modifier.changeProblem(math_problem.get(), links, p_var_columns,
+                                 p_direct_cost_columns,
+                                 p_indirect_cost_columns);
 
   const int P_LINK_id = 0;
   const int P_PLUS_id = 1;
@@ -862,9 +861,9 @@ TEST_F(
     One_link_two_candidates_two_timestep_profile_multiple_chronicle_chooseChronicle2forYear2) {
   auto problem_modifier = ProblemModifier(logger);
   math_problem->mc_year = 2;
-  math_problem = problem_modifier.changeProblem(
-      math_problem, links, p_var_columns, p_direct_cost_columns,
-      p_indirect_cost_columns);
+  problem_modifier.changeProblem(math_problem.get(), links, p_var_columns,
+                                 p_direct_cost_columns,
+                                 p_indirect_cost_columns);
 
   const int P_LINK_id = 0;
   const int P_PLUS_id = 1;
@@ -933,9 +932,9 @@ TEST_F(
 TEST_F(ProblemModifierTestMultiChronicle, candidateWithNotNullProfileExists) {
   auto problem_modifier = ProblemModifier(logger);
   math_problem->mc_year = 2;
-  math_problem = problem_modifier.changeProblem(
-      math_problem, links, p_var_columns, p_direct_cost_columns,
-      p_indirect_cost_columns);
+  problem_modifier.changeProblem(math_problem.get(), links, p_var_columns,
+                                 p_direct_cost_columns,
+                                 p_indirect_cost_columns);
 
   const int cand1_id = 3;
 
@@ -1011,9 +1010,9 @@ TEST_F(ProblemModifierTestWithProfile,
       DirectAccessScenarioToChronicleProvider(ts_info_root_, logger), logger};
   links = linkBuilder.getLinks();
 
-  math_problem = problem_modifier.changeProblem(
-      math_problem, links, p_var_columns, p_direct_cost_columns,
-      p_indirect_cost_columns);
+  problem_modifier.changeProblem(math_problem.get(), links, p_var_columns,
+                                 p_direct_cost_columns,
+                                 p_indirect_cost_columns);
 
   ASSERT_THROW(problem_modifier.get_candidate_col_id(cand1.name),
                std::runtime_error);
@@ -1041,9 +1040,9 @@ TEST_F(ProblemModifierTestWithProfile,
       DirectAccessScenarioToChronicleProvider(ts_info_root_, logger), logger};
   links = linkBuilder.getLinks();
 
-  math_problem = problem_modifier.changeProblem(
-      math_problem, links, p_var_columns, p_direct_cost_columns,
-      p_indirect_cost_columns);
+  problem_modifier.changeProblem(math_problem.get(), links, p_var_columns,
+                                 p_direct_cost_columns,
+                                 p_indirect_cost_columns);
 
   ASSERT_TRUE(problem_modifier.has_candidate_col_id(cand1.name));
 }
@@ -1070,9 +1069,9 @@ TEST_F(ProblemModifierTestWithProfile,
       DirectAccessScenarioToChronicleProvider(ts_info_root_, logger), logger};
   links = linkBuilder.getLinks();
 
-  math_problem = problem_modifier.changeProblem(
-      math_problem, links, p_var_columns, p_direct_cost_columns,
-      p_indirect_cost_columns);
+  problem_modifier.changeProblem(math_problem.get(), links, p_var_columns,
+                                 p_direct_cost_columns,
+                                 p_indirect_cost_columns);
 
   ASSERT_THROW(problem_modifier.get_candidate_col_id(cand1.name),
                std::runtime_error);

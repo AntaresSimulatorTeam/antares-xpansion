@@ -68,21 +68,21 @@ jobs:
           git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${{ steps.branch-name.outputs.current_branch }} .
           git submodule update --init
 
-    
+
 
       - name: Install dependencies
         run: |
           pip3 install -r requirements-tests.txt
           pip3 install -r requirements-ui.txt
-          
+
       - name: Compile Boost
         uses: ./.github/workflows/compile-boost
-        with: 
+        with:
           prefix: "../rte-antares-deps-Release/"
 
       - name: Compile tbb
-        uses: ./.github/workflows/compile-tbb    
-              
+        uses: ./.github/workflows/compile-tbb
+
       - name: Configure
         run: |
           source /opt/rh/devtoolset-9/enable

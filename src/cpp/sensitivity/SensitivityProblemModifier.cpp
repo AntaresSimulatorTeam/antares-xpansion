@@ -27,17 +27,17 @@ SolverAbstract::Ptr SensitivityProblemModifier::changeProblem(
     unsigned int nb_candidates) const {
   SolverFactory factory;
   SolverAbstract::Ptr sensitivity_model = factory.copy_solver(last_master);
-  std::vector<double> obj = get_cost_vector(last_master, nb_candidates);
+  std::vector<double> obj = get_cost_vector(*last_master, nb_candidates);
 
-  add_near_optimal_cost_constraint(sensitivity_model);
+  add_near_optimal_cost_constraint(*(sensitivity_model.get()));
   change_objective(sensitivity_model, obj);
 
   return sensitivity_model;
 }
 
 void SensitivityProblemModifier::add_near_optimal_cost_constraint(
-    const SolverAbstract::Ptr &solver_model) const {
-  int ncols = solver_model->get_ncols();
+    SolverAbstract &solver_model) const {
+  int ncols = solver_model.get_ncols();
   std::vector<int> colind(ncols);
   std::vector<double> dmatval(ncols);
   std::vector<char> rowtype{'L'};

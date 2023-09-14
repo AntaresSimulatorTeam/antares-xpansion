@@ -28,29 +28,26 @@
 
 void LinkProblemsGenerator::treat(
     const std::string &problem_name, Couplings &couplings,
-    std::shared_ptr<IProblemProviderPort> problem_provider,
-    std::shared_ptr<IProblemVariablesProviderPort> variable_provider,
-    std::shared_ptr<IProblemWriter> writer) const {
-  std::shared_ptr<Problem> in_prblm =
+    IProblemProviderPort *problem_provider,
+    IProblemVariablesProviderPort *variable_provider,
+    IProblemWriter *writer) const {
+  auto in_prblm =
       problem_provider->provide_problem(_solver_name, log_file_path_);
 
-  treat(problem_name, couplings, in_prblm, std::move(variable_provider),
-        writer);
+  treat(problem_name, couplings, in_prblm.get(), variable_provider, writer);
 }
 
 void LinkProblemsGenerator::treat(
-    const std::string &problem_name, Couplings &couplings,
-    std::shared_ptr<Problem> problem,
-    std::shared_ptr<IProblemVariablesProviderPort> variable_provider,
-    std::shared_ptr<IProblemWriter> writer) const {
+    const std::string &problem_name, Couplings &couplings, Problem *problem,
+    IProblemVariablesProviderPort *variable_provider,
+    IProblemWriter *writer) const {
   ProblemVariables problem_variables = variable_provider->Provide();
 
   if (rename_problems_) {
     solver_rename_vars(problem, problem_variables.variable_names);
   }
   auto problem_modifier = ProblemModifier(logger_);
-  auto in_prblm = problem_modifier.changeProblem(
-      problem, _links, problem_variables.ntc_columns,
+  problem_modifier.changeProblem(problem, _links, problem_variables.ntc_columns,
       problem_variables.direct_cost_columns,
       problem_variables.indirect_cost_columns);
 
@@ -64,30 +61,30 @@ void LinkProblemsGenerator::treat(
       }
     }
   }
-  auto const lp_mps_name = lpDir_ / in_prblm->_name;
-  writer->Write_problem(in_prblm);
+  auto const lp_mps_name = lpDir_ / problem->_name;
+  writer->Write_problem(problem);
 }
 
 void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
                                       Couplings &couplings,
                                       const std::vector<ProblemData> &mps_list,
-                                      std::shared_ptr<IProblemWriter> writer) {
+                                      IProblemWriter* writer) {
   std::for_each(
       std::execution::par, mps_list.begin(), mps_list.end(),
       [&](const auto &mps) {
-        auto adapter = std::make_shared<MPSFileProblemProviderAdapter>(
+        auto adapter = std::make_unique<MPSFileProblemProviderAdapter>(
             root, mps._problem_mps);
         auto problem = adapter->provide_problem(_solver_name, log_file_path_);
-        std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
+        std::unique_ptr<IProblemVariablesProviderPort> variables_provider;
         if (rename_problems_) {
-          variables_provider = std::make_shared<ProblemVariablesFileAdapter>(
+          variables_provider = std::make_unique<ProblemVariablesFileAdapter>(
               mps, _links, logger_, root);
         } else {
           variables_provider =
-              std::make_shared<ProblemVariablesFromProblemAdapter>(
+              std::make_unique<ProblemVariablesFromProblemAdapter>(
                   problem, _links, logger_);
         }
 
-        treat(mps._problem_mps, couplings, problem, variables_provider, writer);
-      });
+                  treat(mps._problem_mps, couplings, problem, variables_provider.get(), writer);
+                });
 }
