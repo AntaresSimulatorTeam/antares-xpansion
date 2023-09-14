@@ -52,7 +52,6 @@ bool IsAntaresMpsFile(const std::filesystem::path &file_name) {
 
 int32_t AntaresArchiveUpdater::MinizipErase(void *reader, void *writer) {
   mz_zip_file *file_info = NULL;
-  const char *filename_in_zip = NULL;
 
   int32_t err = MZ_OK;
   uint8_t zip_cd = 0;
