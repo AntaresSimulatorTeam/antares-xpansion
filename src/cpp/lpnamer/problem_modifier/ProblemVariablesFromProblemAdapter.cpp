@@ -37,7 +37,7 @@ void ReadLinkZones(const std::string& input, std::string& origin,
 
 int ReadTimeStep(const std::string& input) {
   // input format should be x<timeStep>
-  return std::atoi(StringBetweenChevrons(input).c_str());
+  return std::stoi(StringBetweenChevrons(input));
 }
 
 void updateMapColumn(const std::vector<ActiveLink>& links,
@@ -53,7 +53,7 @@ void updateMapColumn(const std::vector<ActiveLink>& links,
                    });
 
   if (it != links.end()) {
-    mapColumn[it->get_idLink()].push_back({id, time_step});
+    mapColumn[it->get_idLink()].emplace_back(id, time_step);
   }
 }
 

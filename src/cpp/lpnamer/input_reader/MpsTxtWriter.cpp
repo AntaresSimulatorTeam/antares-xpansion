@@ -68,8 +68,7 @@ YearAndWeek FilesMapper::YearAndWeekFromFileName(
     const std::filesystem::path& file_name) const {
   auto split_file_name =
       StringManip::split(StringManip::trim(file_name.string()), '-');
-  return {std::atoi(split_file_name[1].c_str()),
-          std::atoi(split_file_name[2].c_str())};
+  return {std::stoi(split_file_name[1]), std::stoi(split_file_name[2])};
 }
 
 std::vector<ProblemData> FilesMapper::MpsAndVariablesFilesVect() {

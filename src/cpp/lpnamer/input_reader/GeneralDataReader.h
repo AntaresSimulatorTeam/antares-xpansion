@@ -31,11 +31,9 @@ class IniReaderUtils {
     return str;
   }
 
-  static std::pair<std::string, int> GetKeyValFromLine(
-      const std::string& line) {
+  static std::pair<std::string, int> GetKeyValFromLine(std::string_view line) {
     auto key = StringManip::trim(StringManip::split(line, '=')[0]);
-    auto val = std::atoi(
-        StringManip::trim(StringManip::split(line, '=')[1]).c_str());
+    auto val = std::stoi(StringManip::trim(StringManip::split(line, '=')[1]));
     return {key, val};
   }
 };

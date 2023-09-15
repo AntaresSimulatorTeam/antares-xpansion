@@ -30,14 +30,19 @@ inline std::string trim(std::string_view original) {
   return std::string(left, right);
 }
 
-inline std::vector<std::string> split(const std::string& original,
+inline std::vector<std::string> split(std::string_view original,
                                       char delimiter = ' ') {
+  // TODO C++20 https://en.cppreference.com/w/cpp/ranges/split_view
   std::vector<std::string> strings;
-  std::istringstream f(original);
-  std::string s;
-  while (std::getline(f, s, delimiter)) {
-    strings.push_back(s);
+  auto* left = original.begin();
+  for (auto* it = left; it != original.end(); ++it) {
+    if (*it == delimiter) {
+      strings.emplace_back(&*left, it - left);
+      left = it + 1;
+    }
   }
+  if (left != original.end())
+    strings.emplace_back(&*left, original.end() - left);
   return strings;
 }
 inline std::vector<std::string> split(const std::string& original,
