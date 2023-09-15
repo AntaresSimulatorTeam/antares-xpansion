@@ -1,6 +1,6 @@
 Antares-Xpansion changelog
 =================
-v1.1 (TBA)
+v1.1.0 (09/2023)
 --------------------
 
 ### Features
