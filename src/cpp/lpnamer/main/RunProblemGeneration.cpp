@@ -28,13 +28,11 @@
 #include "ZipProblemsProviderAdapter.h"
 #include "config.h"
 
-const std::string MPS_TXT{"mps.txt"};
-
 struct Version {
-  Version(const std::string& version) {
+  explicit Version(std::string_view version) {
     auto split_version = StringManip::split(StringManip::trim(version), '.');
-    major = std::atoi(split_version[0].c_str());
-    minor = std::atoi(split_version[1].c_str());
+    major = std::stoi(split_version[0]);
+    minor = std::stoi(split_version[1]);
   }
 
   bool operator<(const Version& another) const {

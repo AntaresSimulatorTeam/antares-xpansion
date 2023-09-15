@@ -1,5 +1,4 @@
-#ifndef _ARCHIVEWRITER_H
-#define _ARCHIVEWRITER_H
+#pragma once
 
 #include <vector>
 
@@ -11,7 +10,7 @@ class ArchiveWriter : public ArchiveIO {
   void* pmz_zip_writer_instance_ = nullptr;
   void* pzip_handle_ = nullptr;
   void Create() override;
-  mz_zip_file fileInfo_ = {0};
+  mz_zip_file fileInfo_ = {};
 
   int32_t CloseInternal();
   void DeleteInternal();
@@ -30,6 +29,6 @@ class ArchiveWriter : public ArchiveIO {
   int32_t AddFileInArchive(const std::filesystem::path& FileToAdd);
   int32_t AddPathInArchive(const std::filesystem::path& path_to_add,
                            const std::filesystem::path& root_path);
-  void* InternalPointer() const { return pmz_zip_writer_instance_; }
+  void* InternalPointer() const override { return pmz_zip_writer_instance_; }
 };
 #endif  // _ARCHIVEWRITER_H

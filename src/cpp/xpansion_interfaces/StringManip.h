@@ -23,10 +23,10 @@ class IsNot {
 
 using IsNotSpace = IsNot<std::ctype_base::space>;
 
-inline std::string trim(std::string const& original) {
-  auto right =
+inline std::string trim(std::string_view original) {
+  auto* right =
       std::find_if(original.rbegin(), original.rend(), IsNotSpace()).base();
-  auto left = std::find_if(original.begin(), right, IsNotSpace());
+  auto* left = std::find_if(original.begin(), right, IsNotSpace());
   return std::string(left, right);
 }
 
@@ -63,7 +63,7 @@ class StringUtils {
                    [](char const& c) { return std::tolower(c); });
     return result;
   }
-  static inline bool contains(std::string const& v1, std::string const& v2) {
+  static bool contains(std::string const& v1, std::string const& v2) {
     return v1.find(v2) != std::string::npos;
   }
 };

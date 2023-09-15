@@ -26,7 +26,6 @@ int main(int argc, char** argv) {
           xpansion_output_dir / "lp" / "ProblemGenerationLog.txt";
       auto logger = ProblemGenerationLog::BuildLogger(
           log_file_path, std::cout, "Full Run - Problem Generation");
-      auto& loggerRef = (*logger);
 
       auto master_formulation = options_parser.MasterFormulation();
       auto additionalConstraintFilename_l =
