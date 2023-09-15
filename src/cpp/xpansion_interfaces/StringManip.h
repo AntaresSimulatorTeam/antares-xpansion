@@ -45,8 +45,8 @@ inline std::vector<std::string> split(std::string_view original,
     strings.emplace_back(&*left, original.end() - left);
   return strings;
 }
-inline std::vector<std::string> split(const std::string& original,
-                                      const std::string& delimiter) {
+inline std::vector<std::string> split(std::string_view original,
+                                      std::string_view delimiter) {
   size_t pos = 0;
   auto copy_original = trim(original);
   std::vector<std::string> result;
@@ -62,7 +62,7 @@ inline std::vector<std::string> split(const std::string& original,
 
 class StringUtils {
  public:
-  static std::string ToLowercase(const std::string& s) {
+  static std::string ToLowercase(std::string_view s) {
     std::string result;
     std::transform(s.cbegin(), s.cend(), std::back_inserter(result),
                    [](char const& c) { return std::tolower(c); });
