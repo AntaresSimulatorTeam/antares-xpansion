@@ -6,10 +6,6 @@
     "gtest",
     "boost-mpi",
     "boost-program-options",
-    "tbb",
     "zlib"
-  ],
-  "overrides": [
-    { "name": "tbb", "version": "2020_U3" }
   ]
 }

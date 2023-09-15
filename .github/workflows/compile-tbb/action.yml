@@ -1,5 +1,9 @@
 name: "Download and compile tbb"
 description: "tbb is required for execution policy (parallelization c++)."
+inputs:
+  cmake:
+    description: 'cmake version'
+    required: true
 runs:
   using: "composite"
   steps: 
@@ -8,5 +12,5 @@ runs:
     run: |  
       git clone https://github.com/wjakob/tbb.git 
       cd tbb/build 
-      cmake3 .. 
-      cmake3 --build . --target install -j8
+      ${{ inputs.cmake }} .. 
+      ${{ inputs.cmake }} --build . --target install -j8
