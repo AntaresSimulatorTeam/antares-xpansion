@@ -31,4 +31,3 @@ class ArchiveWriter : public ArchiveIO {
                            const std::filesystem::path& root_path);
   void* InternalPointer() const override { return pmz_zip_writer_instance_; }
 };
-#endif  // _ARCHIVEWRITER_H
