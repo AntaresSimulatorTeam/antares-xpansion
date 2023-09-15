@@ -103,7 +103,7 @@ jobs:
           # The key includes: hash of the vcpkg.json file, the hash of the vcpkg Git commit id, and the used vcpkg's triplet. The vcpkg's commit id would suffice, but computing an hash out it does not harm.
           # Note: given a key, the cache content is immutable. If a cache entry has been created improperly, in order the recreate the right content the key must be changed as well, and it must be brand new (i.e. not existing already).
           key: |
-            ${{ hashFiles( 'vcpkg_manifest/vcpkg.json' ) }}-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}-${{ matrix.triplet }}-invalidate
+            ${{ hashFiles( 'vcpkg.json' ) }}-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}-${{ matrix.triplet }}-invalidate
 
       - name: Install dependencies
         run: |
@@ -143,12 +143,17 @@ jobs:
         run: |
           cd vcpkg
           ./bootstrap-vcpkg.sh
-          vcpkg install jsoncpp gtest boost-mpi boost-program-options tbb zlib --triplet ${{matrix.triplet}}
+          vcpkg install --triplet ${{matrix.triplet}}
           rm -rf buildtrees
           rm -rf packages
           rm -rf downloads
         shell: bash
 
+      - name: Compile tbb
+        uses: ./.github/workflows/compile-tbb   
+        with:
+          cmake: 'cmake' 
+      
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-zip
         with:
