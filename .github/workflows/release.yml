@@ -11,18 +11,7 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - run: |
-          echo ${{ github.ref }}
-      - if: ${{ contains(github.ref, '-rc')  }}
-        run: |
-          echo "ok"
-      - if: ${{ contains(github.ref, '-rc') && true || false  }}
-        run: |
-          echo "ok"
-      - if: ${{ ! contains(github.ref, '-rc')  }}
-        run: |
-          echo "no"
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          prerelease: ${{ contains(github.ref, '-rc')  }}
+          prerelease: ${{ contains(github.ref, '-rc') }}
