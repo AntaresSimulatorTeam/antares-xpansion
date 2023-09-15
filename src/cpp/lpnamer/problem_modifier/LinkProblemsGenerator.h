@@ -5,6 +5,7 @@
 #include <filesystem>
 #include <memory>
 #include <mutex>
+#include <utility>
 
 #include "ArchiveReader.h"
 #include "ArchiveWriter.h"
@@ -29,26 +30,25 @@ class LinkProblemsGenerator {
  public:
   LinkProblemsGenerator(
       std::filesystem::path& lpDir, const std::vector<ActiveLink>& links,
-      const std::string& solver_name,
+      std::string solver_name,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
-      const std::filesystem::path& log_file_path)
-      : lpDir_(lpDir),
-        _links(links),
-        _solver_name(solver_name),
-        logger_(logger),
-        log_file_path_(log_file_path) {}
+      std::filesystem::path log_file_path)
+      : _links(links),
+        _solver_name(std::move(solver_name)),
+        lpDir_(lpDir),
+        logger_(std::move(logger)),
+        log_file_path_(std::move(log_file_path)) {}
 
   void treatloop(const std::filesystem::path& root, Couplings& couplings,
                  const std::vector<ProblemData>& mps_list,
-                 std::shared_ptr<IProblemWriter> writer);
+                 IProblemWriter* writer);
   void treat(const std::string& problem_name, Couplings& couplings,
-             std::shared_ptr<Problem> problem,
-             std::shared_ptr<IProblemVariablesProviderPort> variable_provider,
-             std::shared_ptr<IProblemWriter> writer) const;
+             Problem* problem, IProblemVariablesProviderPort* variable_provider,
+             IProblemWriter* writer) const;
   void treat(const std::string& problem_name, Couplings& couplings,
-             std::shared_ptr<IProblemProviderPort> problem_provider,
-             std::shared_ptr<IProblemVariablesProviderPort> variable_provider,
-             std::shared_ptr<IProblemWriter> writer) const;
+             IProblemProviderPort* problem_provider,
+             IProblemVariablesProviderPort* variable_provider,
+             IProblemWriter* writer) const;
 
  private:
   const std::vector<ActiveLink>& _links;

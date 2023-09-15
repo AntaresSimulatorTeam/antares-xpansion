@@ -9,22 +9,22 @@
 
 #include "ArchiveReader.h"
 #include "ZipProblemProviderAdapter.h"
+
 std::vector<std::shared_ptr<Problem>>
 ZipProblemsProviderAdapter::provideProblems(
     const std::string& solver_name,
     const std::filesystem::path& log_file_path) const {
-  std::vector<std::shared_ptr<Problem>> problems;
+  std::vector<std::shared_ptr<Problem>> problems(problem_names_.size());
   // Order is important. Problems need to be in the same order as names
-  std::for_each(std::execution::seq /*keep it seq to avoid problems not being in
-                                       the same order as names*/
-                ,
-                problem_names_.begin(), problem_names_.end(), [&](auto name) {
-                  ZipProblemProviderAdapter problem_provider(lp_dir_, name,
-                                                             archive_reader_);
-                  problems.push_back(problem_provider.provide_problem(
-                      solver_name, log_file_path));
-                });
-
+  std::transform(std::execution::par,
+                 /*std::transform preserves order of element*/
+                 problem_names_.begin(), problem_names_.end(), problems.begin(),
+                 [&](auto name) {
+                   ZipProblemProviderAdapter problem_provider(lp_dir_, name,
+                                                              archive_reader_);
+                   return problem_provider.provide_problem(solver_name,
+                                                           log_file_path);
+                 });
   return problems;
 }
 ZipProblemsProviderAdapter::ZipProblemsProviderAdapter(

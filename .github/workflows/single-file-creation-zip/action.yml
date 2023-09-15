@@ -35,6 +35,5 @@ runs:
       rm *.spec
       ARCHIVE_NAME=antaresXpansion-${{ inputs.antares-xpansion-version }}-${{ inputs.os-name }}-single-file.zip
       zip -r $ARCHIVE_NAME ./*
-      echo "::set-output name=archive-path::_install/$ARCHIVE_NAME"
-      echo "::set-output name=archive-name::$ARCHIVE_NAME"
-      
+      echo "archive-path=_install/$ARCHIVE_NAME" >> "$GITHUB_OUTPUT"
+      echo "archive-name=$ARCHIVE_NAME" >> "$GITHUB_OUTPUT"

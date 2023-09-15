@@ -26,8 +26,7 @@ class InvalidSolverStatusException
  * @param first_p  : First row in the range.
  * @param last_p  : Last row in the range.
  */
-void solver_getrows(SolverAbstract::Ptr const solver_p,
-                    std::vector<int> &mstart_p, std::vector<int> &mclind_p,
+void solver_getrows(const SolverAbstract &solver_p, std::vector<int> &mstart_p, std::vector<int> &mclind_p,
                     std::vector<double> &dmatval_p, int first_p, int last_p);
 
 /**
@@ -39,9 +38,8 @@ void solver_getrows(SolverAbstract::Ptr const solver_p,
  * @param first_p  : first column to consider.
  * @param last_p  : last column to consider.
  */
-void solver_get_obj_func_coeffs(
-    const std::shared_ptr<const SolverAbstract> solver_p,
-    std::vector<double> &obj_p, int first_p, int last_p);
+void solver_get_obj_func_coeffs(const SolverAbstract &solver_p,
+                                std::vector<double> &obj_p, int first_p, int last_p);
 
 /**
  * @brief Adds variables to an existent solver
@@ -63,9 +61,8 @@ void solver_get_obj_func_coeffs(
  * @param colNames_p : optional parameter. array containing the names of the new
  * columns to add.
  */
-void solver_addcols(
-    SolverAbstract::Ptr solver_p, std::vector<double> const &objx_p,
-    std::vector<int> const &mstart_p, std::vector<int> const &mrwind_p,
+void solver_addcols(SolverAbstract &solver_p, std::vector<double> const &objx_p,
+                    std::vector<int> const &mstart_p, std::vector<int> const &mrwind_p,
     std::vector<double> const &dmatval_p, std::vector<double> const &bdl_p,
     std::vector<double> const &bdu_p, std::vector<char> const &colTypes_p,
     std::vector<std::string> const &colNames_p);
@@ -94,8 +91,7 @@ void solver_addcols(
  *
  * @note ignores non-binding rows
  */
-void solver_addrows(SolverAbstract::Ptr solver_p,
-                    std::vector<char> const &qrtype_p,
+void solver_addrows(SolverAbstract &solver_p, std::vector<char> const &qrtype_p,
                     std::vector<double> const &rhs_p,
                     std::vector<double> const &range_p,
                     std::vector<int> const &mstart_p,
@@ -143,7 +139,7 @@ void solver_getlpreducedcost(SolverAbstract::Ptr const solver_p,
  * @param first_p : First row in the range.
  * @param last_p : Last row in the range
  */
-void solver_getrowtype(SolverAbstract::Ptr const solver_p,
+void solver_getrowtype(const SolverAbstract &solver_p,
                        std::vector<char> &qrtype_p, int first_p, int last_p);
 
 /**
@@ -158,8 +154,7 @@ void solver_getrowtype(SolverAbstract::Ptr const solver_p,
  * @note if the constraint is a range, returns the ub.
  * @note if the constraint is unbound, still returns the ub i.e. solver's +inf.
  */
-void solver_getrhs(SolverAbstract::Ptr const solver_p,
-                   std::vector<double> &rhs_p, int first_p, int last_p);
+void solver_getrhs(const SolverAbstract &solver_p, std::vector<double> &rhs_p, int first_p, int last_p);
 
 /**
  * @brief Returns the right hand side range values for the rows in a given
@@ -190,7 +185,7 @@ void solver_getrhsrange(SolverAbstract::Ptr const solver_p,
  *
  * @note return 'I' if the variable is binary or integer and it was fixed
  */
-void solver_getcolinfo(SolverAbstract::Ptr const solver_p,
+void solver_getcolinfo(const SolverAbstract &solver_p,
                        std::vector<char> &coltype_p, std::vector<double> &bdl_p,
                        std::vector<double> &bdu_p, int first_p, int last_p);
 
@@ -264,5 +259,5 @@ void solver_chgbounds(SolverAbstract::Ptr solver_p,
  * verifications are done (eg. infinity values correspondance)
  * @note duplicate/empty names will be named automatically by ortools
  */
-void solver_rename_vars(SolverAbstract::Ptr outSolver_p,
+void solver_rename_vars(SolverAbstract *outSolver_p,
                         const std::vector<std::string> &names_p);

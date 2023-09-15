@@ -23,7 +23,7 @@ SubproblemWorker::SubproblemWorker(
   for (int i = 0; i < mps_ncols; ++i) {
     sequence[i] = i;
   }
-  solver_get_obj_func_coeffs(_solver, obj_func_coeffs, 0, mps_ncols - 1);
+  solver_get_obj_func_coeffs(*_solver, obj_func_coeffs, 0, mps_ncols - 1);
   for (auto &c : obj_func_coeffs) {
     c *= slave_weight;
   }

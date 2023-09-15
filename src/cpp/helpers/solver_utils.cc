@@ -1,25 +1,23 @@
 #include "solver_utils.h"
 
-void solver_getrows(SolverAbstract::Ptr const solver_p,
-                    std::vector<int> &mstart_p,
+void solver_getrows(const SolverAbstract &solver_p, std::vector<int> &mstart_p,
                     std::vector<int> &mclind_p,
                     std::vector<double> &dmatval_p,
                     int first_p, int last_p)
 {
 
     int nelems_returned = 0;
-    solver_p->get_rows(mstart_p.data(), mclind_p.data(), dmatval_p.data(),
-                       solver_p->get_nelems(), &nelems_returned, first_p, last_p);
+  solver_p.get_rows(mstart_p.data(), mclind_p.data(), dmatval_p.data(),
+                    solver_p.get_nelems(), &nelems_returned, first_p, last_p);
 }
 
-void solver_get_obj_func_coeffs(const std::shared_ptr<const SolverAbstract> solver_p, std::vector<double> &obj_p,
-                                int first_p, int last_p)
+void solver_get_obj_func_coeffs(const SolverAbstract &solver_p,
+                                std::vector<double> &obj_p, int first_p, int last_p)
 {
-    solver_p->get_obj(obj_p.data(), first_p, last_p);
+  solver_p.get_obj(obj_p.data(), first_p, last_p);
 }
 
-void solver_addcols(SolverAbstract::Ptr solver_p,
-                    std::vector<double> const &objx_p,
+void solver_addcols(SolverAbstract &solver_p, std::vector<double> const &objx_p,
                     std::vector<int> const &mstart_p,
                     std::vector<int> const &mrwind_p,
                     std::vector<double> const &dmatval_p,
@@ -32,11 +30,11 @@ void solver_addcols(SolverAbstract::Ptr solver_p,
     assert(mrwind_p.size() == dmatval_p.size());
 
     int newCols = colTypes_p.size();
-    int ncolInit = solver_p->get_ncols();
+    int ncolInit = solver_p.get_ncols();
     int newnnz = dmatval_p.size();
 
-    solver_p->add_cols(newCols, newnnz, objx_p.data(), mstart_p.data(),
-                       mrwind_p.data(), dmatval_p.data(), bdl_p.data(), bdu_p.data());
+    solver_p.add_cols(newCols, newnnz, objx_p.data(), mstart_p.data(),
+                      mrwind_p.data(), dmatval_p.data(), bdl_p.data(), bdu_p.data());
 
     std::vector<int> newIndex(newCols);
     for (int i = 0; i < newCols; i++)
@@ -44,20 +42,19 @@ void solver_addcols(SolverAbstract::Ptr solver_p,
         newIndex[i] = ncolInit + i;
     }
 
-    solver_p->chg_col_type(newIndex, colTypes_p);
+    solver_p.chg_col_type(newIndex, colTypes_p);
 
     if (colNames_p.size() > 0)
     {
-        int ncolFinal = solver_p->get_ncols();
+        int ncolFinal = solver_p.get_ncols();
         for (int i = ncolInit; i < ncolFinal; i++)
         {
-            solver_p->chg_col_name(i, colNames_p[i - ncolInit]);
+          solver_p.chg_col_name(i, colNames_p[i - ncolInit]);
         }
     }
 }
 
-void solver_addrows(SolverAbstract::Ptr solver_p,
-                    std::vector<char> const &qrtype_p,
+void solver_addrows(SolverAbstract &solver_p, std::vector<char> const &qrtype_p,
                     std::vector<double> const &rhs_p,
                     std::vector<double> const &range_p,
                     std::vector<int> const &mstart_p,
@@ -70,8 +67,7 @@ void solver_addrows(SolverAbstract::Ptr solver_p,
 
     int nrows = rhs_p.size();
 
-    solver_p->add_rows(nrows, dmatval_p.size(), qrtype_p.data(),
-                       rhs_p.data(), range_p.data(), mstart_p.data(), mclind_p.data(), dmatval_p.data());
+    solver_p.add_rows(nrows, dmatval_p.size(), qrtype_p.data(), rhs_p.data(), range_p.data(), mstart_p.data(), mclind_p.data(), dmatval_p.data());
 }
 
 void solver_getlpsolution(SolverAbstract::Ptr const solver_p, std::vector<double> &x_p)
@@ -89,21 +85,21 @@ void solver_getlpreducedcost(SolverAbstract::Ptr const solver_p, std::vector<dou
     solver_p->get_lp_sol(NULL, NULL, dj_p.data());
 }
 
-void solver_getrowtype(SolverAbstract::Ptr const solver_p, std::vector<char> &qrtype_p,
-                       int first_p, int last_p)
+void solver_getrowtype(const SolverAbstract &solver_p,
+                       std::vector<char> &qrtype_p, int first_p, int last_p)
 {
     if (last_p >= first_p)
     {
-        solver_p->get_row_type(qrtype_p.data(), first_p, last_p);
+        solver_p.get_row_type(qrtype_p.data(), first_p, last_p);
     }
 }
 
-void solver_getrhs(SolverAbstract::Ptr const solver_p, std::vector<double> &rhs_p,
+void solver_getrhs(const SolverAbstract &solver_p, std::vector<double> &rhs_p,
                    int first_p, int last_p)
 {
     if (last_p >= first_p)
     {
-        solver_p->get_rhs(rhs_p.data(), first_p, last_p);
+        solver_p.get_rhs(rhs_p.data(), first_p, last_p);
     }
 }
 
@@ -116,14 +112,14 @@ void solver_getrhsrange(SolverAbstract::Ptr const solver_p, std::vector<double> 
     }
 }
 
-void solver_getcolinfo(SolverAbstract::Ptr const solver_p,
+void solver_getcolinfo(const SolverAbstract &solver_p,
                        std::vector<char> &coltype_p,
                        std::vector<double> &bdl_p, std::vector<double> &bdu_p,
                        int first_p, int last_p)
 {
-    solver_p->get_lb(bdl_p.data(), first_p, last_p);
-    solver_p->get_ub(bdu_p.data(), first_p, last_p);
-    solver_p->get_col_type(coltype_p.data(), first_p, last_p);
+    solver_p.get_lb(bdl_p.data(), first_p, last_p);
+    solver_p.get_ub(bdu_p.data(), first_p, last_p);
+    solver_p.get_col_type(coltype_p.data(), first_p, last_p);
 }
 
 void solver_deactivaterows(SolverAbstract::Ptr solver_p, std::vector<int> const &mindex)
@@ -152,8 +148,8 @@ void solver_chgbounds(SolverAbstract::Ptr solver_p,
     solver_p->chg_bounds(mindex_p, qbtype_p, bnd_p);
 }
 
-void solver_rename_vars(SolverAbstract::Ptr outSolver_p, const std::vector<std::string> &names_p)
-{
+void solver_rename_vars(SolverAbstract *outSolver_p,
+                        const std::vector<std::string> &names_p) {
 
     for (int i = 0; i < outSolver_p->get_ncols(); i++)
     {

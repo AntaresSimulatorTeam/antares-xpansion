@@ -75,18 +75,16 @@ bool ProblemModifier::has_candidate_col_id(const std::string &cand_name) const {
   return _candidate_col_id.find(cand_name) != _candidate_col_id.end();
 }
 
-std::shared_ptr<Problem> ProblemModifier::changeProblem(
-    std::shared_ptr<Problem> problem,
-    const std::vector<ActiveLink> &active_links,
+void ProblemModifier::changeProblem(
+    Problem *problem, const std::vector<ActiveLink> &active_links,
     const std::map<linkId, ColumnsToChange> &p_ntc_columns,
     const std::map<linkId, ColumnsToChange> &p_direct_cost_columns,
     const std::map<linkId, ColumnsToChange> &p_indirect_cost_columns) {
-  _math_problem = std::move(problem);
+  _math_problem = problem;
   _n_cols_at_start = _math_problem->get_ncols();
 
   changeProblem(active_links, p_ntc_columns, p_direct_cost_columns,
                 p_indirect_cost_columns);
-  return std::move(_math_problem);
 }
 
 void ProblemModifier::changeProblem(
@@ -137,7 +135,7 @@ void ProblemModifier::add_new_ntc_constraints(
     }
   }
 
-  solver_addrows(_math_problem, rowtype, rhs, {}, rstart, colind, dmatval);
+  solver_addrows(*_math_problem, rowtype, rhs, {}, rstart, colind, dmatval);
 }
 
 void ProblemModifier::add_new_direct_cost_constraints(
@@ -161,7 +159,7 @@ void ProblemModifier::add_new_direct_cost_constraints(
     }
   }
 
-  solver_addrows(_math_problem, rowtype, rhs, {}, rstart, colind, dmatval);
+  solver_addrows(*_math_problem, rowtype, rhs, {}, rstart, colind, dmatval);
 }
 
 void ProblemModifier::add_new_indirect_cost_constraints(
@@ -185,7 +183,7 @@ void ProblemModifier::add_new_indirect_cost_constraints(
     }
   }
 
-  solver_addrows(_math_problem, rowtype, rhs, {}, rstart, colind, dmatval);
+  solver_addrows(*_math_problem, rowtype, rhs, {}, rstart, colind, dmatval);
 }
 
 void ProblemModifier::add_direct_profile_column_constraint(
@@ -308,7 +306,7 @@ void ProblemModifier::add_new_columns(
       int new_index = (int)_candidate_col_id.size() + (int)_n_cols_at_start;
       _candidate_col_id[candidate.get_name()] = new_index;
     }
-    solver_addcols(_math_problem, objectives, mstart, {}, {}, lb, ub, coltypes,
+    solver_addcols(*_math_problem, objectives, mstart, {}, {}, lb, ub, coltypes,
                    candidates_colnames);
   }
 }

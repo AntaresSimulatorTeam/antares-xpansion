@@ -14,9 +14,8 @@ ProblemModifierProjection::ProblemModifierProjection(
       _candidate_name(std::move(candidate_name)) {}
 
 std::vector<double> ProblemModifierProjection::get_cost_vector(
-    const std::shared_ptr<const SolverAbstract> &solver_model,
-    unsigned int nb_candidates) const {
-  std::vector<double> obj(solver_model->get_ncols(), 0);
+    const SolverAbstract &solver_model, unsigned int nb_candidates) const {
+  std::vector<double> obj(solver_model.get_ncols(), 0);
 
   // The objective is to find the min/max investment of candidate _candidate_id
   obj[_candidate_id] = 1;

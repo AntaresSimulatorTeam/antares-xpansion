@@ -100,7 +100,7 @@ jobs:
           repository: rte-france/xpress-mp
           path: ${{ env.XPRESSDIR }}
           github-server-url: https://github.com
-          ref: 8.13
+          ref: 8.13a
         if: matrix.xprs == 'XPRESS-ON'
 
       - name: Download pre-compiled librairies
@@ -111,11 +111,11 @@ jobs:
           os: centos7
           os-full-name: CentOS-7.9.2009
           #variant: -ortools-xpress
-        
+
       - name: Compile Boost
         uses: ./.github/workflows/compile-boost
-        with: 
-          prefix: "../rte-antares-deps-Release/"    
+        with:
+          prefix: "../rte-antares-deps-Release/"
 
       - name: Install dependencies
         run: |

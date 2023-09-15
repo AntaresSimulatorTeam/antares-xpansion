@@ -34,6 +34,7 @@ void BendersBase::init_data() {
   _data.best_it = 0;
   _data.stopping_criterion = StoppingCriterion::empty;
   _data.is_in_initial_relaxation = false;
+  _data.number_of_subproblem_resolved = 0;
 }
 
 void BendersBase::OpenCsvFile() {
@@ -465,6 +466,9 @@ LogData BendersBase::FinalLogData() const {
 
   result.subproblem_cost = best_iteration_data.subproblem_cost;
   result.invest_cost = best_iteration_data.invest_cost;
+  result.cumulative_number_of_subproblem_resolved =
+      _data.number_of_subproblem_resolved +
+      cumulative_number_of_subproblem_resolved_before_resume;
 
   return result;
 }
@@ -520,6 +524,9 @@ Output::Iteration BendersBase::iteration(
   iteration.overall_cost =
       masterDataPtr_l->_invest_cost + masterDataPtr_l->_operational_cost;
   iteration.candidates = candidates_data(masterDataPtr_l);
+  iteration.cumulative_number_of_subproblem_resolved =
+      _data.number_of_subproblem_resolved +
+      cumulative_number_of_subproblem_resolved_before_resume;
   return iteration;
 }
 
@@ -643,7 +650,9 @@ LogData BendersBase::bendersDataToLogData(
           _options.MAX_ITERATIONS,
           data.elapsed_time,
           data.timer_master,
-          data.subproblems_walltime};
+          data.subproblems_walltime,
+          data.number_of_subproblem_resolved +
+              cumulative_number_of_subproblem_resolved_before_resume};
 }
 void BendersBase::set_log_file(const std::filesystem::path &log_name) {
   _log_name = log_name;
@@ -801,6 +810,8 @@ void BendersBase::ChecksResumeMode() {
     benders_timer = Timer(last_iter.benders_elapsed_time);
     _data.stop = ShouldBendersStop();
     iterations_before_resume = last_iter.it;
+    cumulative_number_of_subproblem_resolved_before_resume =
+        last_iter.cumulative_number_of_subproblem_resolved;
   }
 }
 
