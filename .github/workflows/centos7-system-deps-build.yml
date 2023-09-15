@@ -81,8 +81,10 @@ jobs:
           prefix: "../rte-antares-deps-Release/"
 
       - name: Compile tbb
-        uses: ./.github/workflows/compile-tbb    
-              
+        uses: ./.github/workflows/compile-tbb   
+        with:
+          cmake: 'cmake3'     
+
       - name: Configure
         run: |
           source /opt/rh/devtoolset-9/enable
