@@ -24,9 +24,9 @@ class IsNot {
 using IsNotSpace = IsNot<std::ctype_base::space>;
 
 inline std::string trim(std::string_view original) {
-  auto* right =
+  auto right =
       std::find_if(original.rbegin(), original.rend(), IsNotSpace()).base();
-  auto* left = std::find_if(original.begin(), right, IsNotSpace());
+  auto left = std::find_if(original.begin(), right, IsNotSpace());
   return std::string(left, right);
 }
 
@@ -34,8 +34,8 @@ inline std::vector<std::string> split(std::string_view original,
                                       char delimiter = ' ') {
   // TODO C++20 https://en.cppreference.com/w/cpp/ranges/split_view
   std::vector<std::string> strings;
-  auto* left = original.begin();
-  for (auto* it = left; it != original.end(); ++it) {
+  auto left = original.begin();
+  for (auto it = left; it != original.end(); ++it) {
     if (*it == delimiter) {
       strings.emplace_back(&*left, it - left);
       left = it + 1;
