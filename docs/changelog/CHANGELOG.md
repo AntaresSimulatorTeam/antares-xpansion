@@ -3,6 +3,13 @@ Antares-Xpansion changelog
 v1.1.0 (09/2023)
 --------------------
 
+### Fix
+
+- Update performance graph in the documentation
+
+v1.1.0 (09/2023)
+--------------------
+
 ### Features
 
 - Implementation of the Benders by batch algorithm : performance improvements over the classical Benders algorithm
