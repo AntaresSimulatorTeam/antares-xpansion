@@ -67,6 +67,7 @@ plugins:
   - mkdocs-jupyter:
       execute: False
       show_input: False
+      theme: dark
   - bibtex:
       bib_file: 'docs/user-guide/benders.bib'
 
