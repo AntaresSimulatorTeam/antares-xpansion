@@ -62,13 +62,14 @@ jobs:
           yum install -y rh-git227-git 
           yum install -y libuuid-devel
 
-      - name: Clone
+      - name: update bashrc
         run: |
-          git config --global --add safe.directory ${GITHUB_WORKSPACE}
-          git clone $GITHUB_SERVER_URL/$GITHUB_REPOSITORY.git -b ${{ steps.branch-name.outputs.current_branch }} .
-          git submodule update --init
+          echo "source scl_source enable rh-git227" >>  ~/.bashrc
+          echo "source scl_source enable devtoolset-9" >>  ~/.bashrc
 
-
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
 
       - name: Install dependencies
         run: |
@@ -87,9 +88,6 @@ jobs:
 
       - name: Configure
         run: |
-          source /opt/rh/devtoolset-9/enable
-          #git 2.x must be enabled for Coin compilation with CMake ExternalProject_Add
-          source /opt/rh/rh-git227/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake3 -B _build -S . \
@@ -98,8 +96,6 @@ jobs:
 
       - name: Build
         run: |
-          source /opt/rh/devtoolset-9/enable
-          source /opt/rh/rh-git227/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake3 --build _build --config Release -j2 --target install
