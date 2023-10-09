@@ -7,7 +7,7 @@
 #include <utility>
 
 #include "LinkProblemsGenerator.h"
-#include "helpers/StringUtils.h"
+#include "StringManip.h"
 #include "solver_utils.h"
 void ZipProblemProviderAdapter::reader_extract_file(
     const std::string& problem_name, ArchiveReader& reader,

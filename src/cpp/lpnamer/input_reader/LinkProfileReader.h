@@ -2,6 +2,7 @@
 #define ANTARESXPANSION_LINKPROFILEREADER_H
 
 #include <filesystem>
+#include <map>
 
 #include "Candidate.h"
 #include "LinkProfile.h"

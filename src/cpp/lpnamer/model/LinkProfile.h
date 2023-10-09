@@ -7,7 +7,7 @@ constexpr int NUMBER_OF_HOUR_PER_YEAR = 8760;
 
 #include "LogUtils.h"
 #include "ProblemGenerationLogger.h"
-#include "common_lpnamer.h"
+#include "StringManip.h"
 
 /*!
  *  \struct LinkProfile

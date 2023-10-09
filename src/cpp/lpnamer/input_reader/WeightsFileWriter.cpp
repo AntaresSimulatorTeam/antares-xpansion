@@ -4,7 +4,7 @@
 #include <numeric>
 
 #include "ArchiveReader.h"
-#include "common_lpnamer.h"
+#include "StringManip.h"
 
 YearlyWeightsWriter::YearlyWeightsWriter(
     const std::filesystem::path& xpansion_output_dir,
@@ -47,8 +47,8 @@ void YearlyWeightsWriter::FillMpsWeightsMap() {
 
 int YearlyWeightsWriter::GetYearFromMpsName(
     const std::string& file_name) const {
-  auto split_name = common_lpnamer::split(common_lpnamer::trim(file_name), '-');
-  return std::atoi(split_name[1].c_str());
+  auto split_name = StringManip::split(StringManip::trim(file_name), '-');
+  return std::stoi(split_name[1]);
 }
 
 void YearlyWeightsWriter::DumpMpsWeightsToFile() const {

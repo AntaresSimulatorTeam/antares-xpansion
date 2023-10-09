@@ -390,14 +390,14 @@ class SolverAbstract {
    *
    * @param name : name of row to get the index
    */
-  virtual int get_row_index(std::string const &name) const = 0;
+  virtual int get_row_index(std::string const &name) = 0;
 
   /**
    * @brief Returns the index of column named "name"
    *
    * @param name : name of column to get the index
    */
-  virtual int get_col_index(std::string const &name) const = 0;
+  virtual int get_col_index(std::string const &name) = 0;
 
   /**
    * @brief Returns the names of row from index first to last
@@ -410,6 +410,12 @@ class SolverAbstract {
   virtual std::vector<std::string> get_row_names(int first, int last) = 0;
 
   /**
+   * @brief Returns the names of rows
+   * @return names : vector of names
+   */
+  virtual std::vector<std::string> get_row_names() = 0;
+
+  /**
    * @brief Returns the names of columns from index first to last
    * cannot be declared as const because of some solver methods
    *
@@ -418,6 +424,12 @@ class SolverAbstract {
    * @return names : vector of names
    */
   virtual std::vector<std::string> get_col_names(int first, int last) = 0;
+
+  /**
+   * @brief Returns the names of columns
+   * @return names : vector of names
+   */
+  virtual std::vector<std::string> get_col_names() = 0;
 
   /*************************************************************************************************
   ------------------------------    Methods to modify problem

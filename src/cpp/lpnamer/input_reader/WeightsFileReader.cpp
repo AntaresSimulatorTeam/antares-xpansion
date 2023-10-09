@@ -4,7 +4,7 @@
 #include <sstream>
 
 #include "LogUtils.h"
-#include "common_lpnamer.h"
+#include "StringManip.h"
 
 bool WeightsFileReader::CheckWeightsFile() {
   std::ifstream file_reader;
@@ -58,7 +58,7 @@ double WeightsFileReader::GetWeightFromLine(const std::string &line,
                                             int idx) const {
   double weight;
   try {
-    weight = std::stod(common_lpnamer::trim(line));
+    weight = std::stod(StringManip::trim(line));
   } catch (...) {
     std::ostringstream msg;
     auto log_location = LOGLOCATION;

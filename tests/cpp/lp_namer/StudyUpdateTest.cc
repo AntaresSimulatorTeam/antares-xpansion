@@ -9,7 +9,6 @@
 #include "ProblemGenerationLogger.h"
 #include "StudyUpdateLinkParameterStrategy.h"
 #include "StudyUpdater.h"
-#include "common_lpnamer.h"
 #include "gtest/gtest.h"
 
 class StudyUpdateTest : public ::testing::Test {

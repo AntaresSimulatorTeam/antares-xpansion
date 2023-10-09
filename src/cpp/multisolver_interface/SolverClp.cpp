@@ -207,28 +207,28 @@ void SolverClp::get_ub(double *ub, int first, int last) const {
   }
 }
 
-int SolverClp::get_row_index(std::string const &name) const {
-  int id = 0;
-  int nrows = get_nrows();
-  while (id < nrows) {
-    if (_clp.getRowName(id) == name) {
-      return id;
-    }
-    id++;
+int SolverClp::get_row_index(std::string const &name) {
+  const auto &col_names = get_row_names();
+  const auto index = std::distance(
+      col_names.begin(), std::find(col_names.cbegin(), col_names.cend(), name));
+
+  if (index >= col_names.end() - col_names.begin()) {
+    return -1;
+  } else {
+    return index;
   }
-  return -1;
 }
 
-int SolverClp::get_col_index(std::string const &name) const {
-  int id = 0;
-  int ncols = get_ncols();
-  while (id < ncols) {
-    if (_clp.getColumnName(id) == name) {
-      return id;
-    }
-    id++;
+int SolverClp::get_col_index(std::string const &name) {
+  const auto &col_names = get_col_names();
+  const auto index = std::distance(
+      col_names.begin(), std::find(col_names.cbegin(), col_names.cend(), name));
+
+  if (index >= col_names.end() - col_names.begin()) {
+    return -1;
+  } else {
+    return index;
   }
-  return -1;
 }
 
 std::vector<std::string> SolverClp::get_row_names(int first, int last) {
@@ -241,6 +241,8 @@ std::vector<std::string> SolverClp::get_row_names(int first, int last) {
   return names;
 }
 
+std::vector<std::string> SolverClp::get_row_names() { return *_clp.rowNames(); }
+
 std::vector<std::string> SolverClp::get_col_names(int first, int last) {
   std::vector<std::string> names;
   names.reserve(1 + last - first);
@@ -249,6 +251,10 @@ std::vector<std::string> SolverClp::get_col_names(int first, int last) {
     names.push_back(_clp.getColumnName(i));
   }
   return names;
+}
+
+std::vector<std::string> SolverClp::get_col_names() {
+  return *_clp.columnNames();
 }
 
 /*************************************************************************************************

@@ -16,8 +16,8 @@
 #include "MpsTxtWriter.h"
 #include "ProblemGenerationLogger.h"
 #include "ProblemModifier.h"
+#include "StringManip.h"
 #include "VariableFileReader.h"
-#include "common_lpnamer.h"
 
 const std::string CANDIDATES_INI{"candidates.ini"};
 const std::string STRUCTURE_FILE{"structure.txt"};
@@ -32,12 +32,14 @@ class LinkProblemsGenerator {
       std::filesystem::path& lpDir, const std::vector<ActiveLink>& links,
       std::string solver_name,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
-      std::filesystem::path log_file_path)
+      std::filesystem::path log_file_path,
+      bool rename_problems)
       : _links(links),
         _solver_name(std::move(solver_name)),
         lpDir_(lpDir),
         logger_(std::move(logger)),
-        log_file_path_(std::move(log_file_path)) {}
+        log_file_path_(std::move(log_file_path)),
+        rename_problems_(rename_problems) {}
 
   void treatloop(const std::filesystem::path& root, Couplings& couplings,
                  const std::vector<ProblemData>& mps_list,
@@ -57,4 +59,5 @@ class LinkProblemsGenerator {
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
   mutable std::mutex coupling_mutex_;
   std::filesystem::path log_file_path_;
+  bool rename_problems_ = false;
 };

@@ -13,6 +13,10 @@
 
 #include "LogUtils.h"
 
+void updateMapColumn(const std::vector<ActiveLink>& links, int link_id,
+                     colId id, int time_step,
+                     std::map<linkId, ColumnsToChange>& mapColumn);
+
 struct VariableFileReadNameConfiguration {
   std::string ntc_variable_name;
   std::string cost_origin_variable_name;

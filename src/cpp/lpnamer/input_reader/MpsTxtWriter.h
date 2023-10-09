@@ -7,7 +7,7 @@
 #include <utility>
 #include <vector>
 
-#include "common_lpnamer.h"
+#include "StringManip.h"
 
 // a pair to hold double key (year and week)
 using YearAndWeek = std::pair<int, int>;

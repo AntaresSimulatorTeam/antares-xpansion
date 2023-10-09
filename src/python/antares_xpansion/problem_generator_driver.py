@@ -126,6 +126,7 @@ class ProblemGeneratorDriver:
         if self.additional_constraints != "":
             ret.extend(["-e",
                         self.additional_constraints])
+
         return ret
 
     def _get_lp_namer_command(self):

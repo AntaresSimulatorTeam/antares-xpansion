@@ -85,17 +85,23 @@ class Problem : public SolverAbstract {
   void get_ub(double *ub, int fisrt, int last) const override {
     solver_abstract_->get_ub(ub, fisrt, last);
   }
-  [[nodiscard]] int get_row_index(const std::string &name) const override {
+  [[nodiscard]] int get_row_index(const std::string &name) override {
     return solver_abstract_->get_row_index(name);
   }
-  [[nodiscard]] int get_col_index(const std::string &name) const override {
+  [[nodiscard]] int get_col_index(const std::string &name) override {
     return solver_abstract_->get_col_index(name);
   }
   std::vector<std::string> get_row_names(int first, int last) override {
     return solver_abstract_->get_row_names(first, last);
   }
+  std::vector<std::string> get_row_names() override {
+    return solver_abstract_->get_row_names();
+  }
   std::vector<std::string> get_col_names(int first, int last) override {
     return solver_abstract_->get_col_names(first, last);
+  }
+  std::vector<std::string> get_col_names() override {
+    return solver_abstract_->get_col_names();
   }
   void del_rows(int first, int last) override {
     solver_abstract_->del_rows(first, last);

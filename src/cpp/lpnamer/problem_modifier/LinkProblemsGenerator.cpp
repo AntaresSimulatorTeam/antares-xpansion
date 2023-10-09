@@ -10,11 +10,10 @@
 #include "MPSFileProblemProviderAdapter.h"
 #include "MpsTxtWriter.h"
 #include "ProblemVariablesFileAdapter.h"
+#include "ProblemVariablesFromProblemAdapter.h"
 #include "ProblemVariablesZipAdapter.h"
 #include "VariableFileReader.h"
 #include "ZipProblemProviderAdapter.h"
-#include "common_lpnamer.h"
-#include "helpers/StringUtils.h"
 #include "solver_utils.h"
 
 /**
@@ -44,8 +43,9 @@ void LinkProblemsGenerator::treat(
     IProblemWriter *writer) const {
   ProblemVariables problem_variables = variable_provider->Provide();
 
-  solver_rename_vars(problem, problem_variables.variable_names);
-
+  if (rename_problems_) {
+    solver_rename_vars(problem, problem_variables.variable_names);
+  }
   auto problem_modifier = ProblemModifier(logger_);
   problem_modifier.changeProblem(problem, _links, problem_variables.ntc_columns,
       problem_variables.direct_cost_columns,
@@ -68,17 +68,24 @@ void LinkProblemsGenerator::treat(
 void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
                                       Couplings &couplings,
                                       const std::vector<ProblemData> &mps_list,
-                                      IProblemWriter *writer) {
-  std::for_each(std::execution::par, mps_list.begin(), mps_list.end(),
-                [&](const auto &mps) {
-                  auto adapter =
-                      std::make_unique<MPSFileProblemProviderAdapter>(
-                          root, mps._problem_mps);
-                  auto variables_file_adapter =
-                      std::make_unique<ProblemVariablesFileAdapter>(
-                          mps, _links, logger_, root);
+                                      IProblemWriter* writer) {
+  std::for_each(
+      std::execution::par, mps_list.begin(), mps_list.end(),
+      [&](const auto &mps) {
+        auto adapter = std::make_unique<MPSFileProblemProviderAdapter>(
+            root, mps._problem_mps);
+        auto problem = adapter->provide_problem(_solver_name, log_file_path_);
+        std::unique_ptr<IProblemVariablesProviderPort> variables_provider;
+        if (rename_problems_) {
+          variables_provider = std::make_unique<ProblemVariablesFileAdapter>(
+              mps, _links, logger_, root);
+        } else {
+          variables_provider =
+              std::make_unique<ProblemVariablesFromProblemAdapter>(
+                  problem, _links, logger_);
+        }
 
-                  treat(mps._problem_mps, couplings, adapter.get(),
-                        variables_file_adapter.get(), writer);
-                });
+        treat(mps._problem_mps, couplings, problem.get(),
+              variables_provider.get(), writer);
+      });
 }

@@ -6,7 +6,7 @@
 
 #include "INIReader.h"
 #include "LogUtils.h"
-#include "helpers/StringUtils.h"
+#include "StringManip.h"
 
 CandidatesINIReader::CandidatesINIReader(
     const std::filesystem::path &antaresIntercoFile,
@@ -85,7 +85,7 @@ std::vector<std::string> CandidatesINIReader::ReadLineByLineArea(
   std::string line;
   while (std::getline(stream, line)) {
     if (!line.empty() && line.front() != '#') {
-      result.push_back(StringUtils::ToLowercase(line));
+      result.push_back(StringManip::StringUtils::ToLowercase(line));
     }
   }
   return result;
@@ -146,10 +146,10 @@ CandidateData CandidatesINIReader::readCandidateSection(
     const std::filesystem::path &candidateFile, const INIReader &reader,
     const std::string &sectionName) const {
   CandidateData candidateData;
-  candidateData.name =
-      StringUtils::ToLowercase(getStrVal(reader, sectionName, "name"));
-  candidateData.link_name =
-      StringUtils::ToLowercase(getStrVal(reader, sectionName, "link"));
+  candidateData.name = StringManip::StringUtils::ToLowercase(
+      getStrVal(reader, sectionName, "name"));
+  candidateData.link_name = StringManip::StringUtils::ToLowercase(
+      getStrVal(reader, sectionName, "link"));
   size_t i = candidateData.link_name.find(" - ");
   if (i != std::string::npos) {
     candidateData.linkor = candidateData.link_name.substr(0, i);

@@ -107,10 +107,12 @@ class SolverClp : public SolverAbstract {
   virtual void get_lb(double *lb, int fisrt, int last) const override;
   virtual void get_ub(double *ub, int fisrt, int last) const override;
 
-  virtual int get_row_index(std::string const &name) const override;
-  virtual int get_col_index(std::string const &name) const override;
+  virtual int get_row_index(std::string const &name) override;
+  virtual int get_col_index(std::string const &name) override;
   virtual std::vector<std::string> get_row_names(int first, int last) override;
+  virtual std::vector<std::string> get_row_names() override;
   virtual std::vector<std::string> get_col_names(int first, int last) override;
+  virtual std::vector<std::string> get_col_names() override;
 
   /*************************************************************************************************
   ------------------------------    Methods to modify problem

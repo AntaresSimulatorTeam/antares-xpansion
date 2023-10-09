@@ -13,6 +13,7 @@ class ProblemGenerationExeOptions : public OptionsParser {
   std::filesystem::path archive_path_;
   std::filesystem::path weights_file_ = "";
   std::vector<int> active_years_;
+  bool unnamed_problems_;
 
  public:
   ProblemGenerationExeOptions();
@@ -28,5 +29,6 @@ class ProblemGenerationExeOptions : public OptionsParser {
   std::filesystem::path ArchivePath() const { return archive_path_; }
   std::filesystem::path WeightsFile() const { return weights_file_; }
   std::vector<int> ActiveYears() const { return active_years_; }
+  bool UnnamedProblems() const { return unnamed_problems_; }
 };
 #endif  // ANTARES_XPANSION_SRC_CPP_LPNAMER_MAIN_INCLUDE_PROBLEMGENERATIONEXEOPTIONS_H

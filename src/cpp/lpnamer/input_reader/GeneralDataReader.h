@@ -11,7 +11,7 @@
 
 #include "INIReader.h"
 #include "ProblemGenerationLogger.h"
-#include "common_lpnamer.h"
+#include "StringManip.h"
 
 class IniFileNotFound : public std::runtime_error {
  public:
@@ -21,21 +21,19 @@ class IniFileNotFound : public std::runtime_error {
 class IniReaderUtils {
  public:
   static bool LineIsNotASectionHeader(const std::string& line) {
-    return line.find('=') != std::string::npos;
+    return StringManip::split(StringManip::trim(line), '=').size() == 2;
   }
 
   static std::string ReadSectionHeader(const std::string& line) {
-    auto str = common_lpnamer::trim(line);
+    auto str = StringManip::trim(line);
     str.erase(std::remove(str.begin(), str.end(), '['), str.end());
     str.erase(std::remove(str.begin(), str.end(), ']'), str.end());
     return str;
   }
 
-  static std::pair<std::string, int> GetKeyValFromLine(
-      const std::string& line) {
-    auto key = common_lpnamer::trim(common_lpnamer::split(line, '=')[0]);
-    auto val = std::atoi(
-        common_lpnamer::trim(common_lpnamer::split(line, '=')[1]).c_str());
+  static std::pair<std::string, int> GetKeyValFromLine(std::string_view line) {
+    auto key = StringManip::trim(StringManip::split(line, '=')[0]);
+    auto val = std::stoi(StringManip::trim(StringManip::split(line, '=')[1]));
     return {key, val};
   }
 };
