@@ -75,7 +75,6 @@ jobs:
       - id: branch-name
         uses: tj-actions/branch-names@v6
 
-      -
       - run: |
           whoami
           cat ~/.bashrc
