@@ -1,0 +1,104 @@
+name: Centos7 Build
+
+on:
+  merge_group:
+  push:
+    branches:
+      - main
+      - develop
+  pull_request:
+  release:
+    types: [ created ]
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+
+jobs:
+  docker_publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+      - name: Get changed files
+        id: changed-files
+        uses: tj-actions/changed-files@v32
+        with:
+          files: |
+            docker/centos7-system-deps
+
+      - name: Docker file push
+        id: docker_push
+        if: steps.changed-files.outputs.any_changed == 'true'
+        uses: elgohr/Publish-Docker-Github-Action@master
+        with:
+          name: antaresrte/rte-antares
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          workdir: docker
+          dockerfile: centos7-system-deps
+          cache: false
+          tags: centos7-system-deps
+
+  versions:
+    runs-on: ubuntu-latest
+    outputs:
+      antares-version: ${{steps.antares-version.outputs.result}}
+      antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
+      antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
+    steps:
+      - uses: actions/checkout@v3
+      - name: Read antares-solver version
+        id: antares-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_version'
+
+      - name: Read antares-xpansion version
+        id: antares-xpansion-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_xpansion_version'
+
+      - name: Read antares-deps version
+        id: antares-deps-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_deps_version'
+
+  build:
+    runs-on: ubuntu-latest
+    needs: [ docker_publish, versions ]
+    container: 'antaresrte/rte-antares:centos7-system-deps'
+    strategy:
+      matrix:
+        xprs: [ XPRESS-ON, XPRESS-OFF ]
+    env:
+      XPRESSDIR: ${{ github.workspace }}/xpress
+      XPRESS: ${{ github.workspace }}/xpress/bin
+      XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
+      XPRESSDIR_CONTAINER: ${GITHUB_WORKSPACE}/xpress
+      XPRESS_CONTAINER: ${GITHUB_WORKSPACE}/xpress/bin
+      XPRS_LIB_Path_CONTAINER: ${GITHUB_WORKSPACE}/xpress/lib
+
+    steps:
+      - name: Get release
+        if: github.event_name == 'release' && github.event.action == 'created'
+        id: get_release
+        uses: bruceadams/get-release@v1.2.3
+      - uses: actions/checkout@v3
+        with:
+          submodules: true
+
+      - name: Checkout xpressmp linux
+        uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.AS_TOKEN }}
+          repository: rte-france/xpress-mp
+          path: ${{ env.XPRESSDIR }}
+          github-server-url: https://github.com
+          ref: 8.13a
+        if: matrix.xprs == 'XPRESS-ON'
