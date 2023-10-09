@@ -37,7 +37,7 @@ jobs:
       - name: Docker file push
         id: docker_push
         if: steps.changed-files.outputs.any_changed == 'true'
-        uses: elgohr/Publish-Docker-Github-Action@master
+        uses: elgohr/Publish-Docker-Github-Action@main
         with:
           name: antaresrte/rte-antares
           username: ${{ secrets.DOCKER_USERNAME }}
