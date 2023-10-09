@@ -76,6 +76,8 @@ jobs:
         uses: tj-actions/branch-names@v6
 
       - run: |
+          whoami
+          cat ~/.bashrc
           git --version
 
       - uses: actions/checkout@v3.6.0
