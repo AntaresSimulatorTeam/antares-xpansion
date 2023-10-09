@@ -59,6 +59,8 @@ struct Version {
   int major;
   int minor;
 };
+static const std::string LP_DIRNAME = "lp";
+
 std::shared_ptr<ArchiveReader> InstantiateZipReader(
     const std::filesystem::path& antares_archive_path);
 void ProcessWeights(
@@ -128,6 +130,27 @@ std::vector<std::shared_ptr<Problem>> getXpansionProblems(
                                                               problem_names);
   return adapter->provideProblems(solver_name, solver_log_manager);
 }
+bool CreateDirectories(
+    const std::filesystem::path& xpansion_output_path,
+    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
+  if (!std::filesystem::exists(xpansion_output_path)) {
+    (*logger)(LogUtils::LOGLEVEL::ERR)
+        << "Output directory " << xpansion_output_path << " does not exist"
+        << std::endl;
+    return false;
+  }
+  auto xpansion_output_dir =
+      xpansion_output_path.parent_path() /
+      (xpansion_output_path.stem().string() + "-Xpansion");
+  if (std::filesystem::exists(xpansion_output_dir)) {
+    std::filesystem::remove_all(xpansion_output_dir);
+  }
+  std::filesystem::create_directories(xpansion_output_dir);
+  std::filesystem::create_directories(xpansion_output_dir / LP_DIRNAME);
+
+  return true;
+}
+
 void RunProblemGeneration(
     const std::filesystem::path& xpansion_output_dir,
     const std::string& master_formulation,
@@ -138,6 +161,11 @@ void RunProblemGeneration(
     const std::filesystem::path& weights_file, bool unnamed_problems) {
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Launching Problem Generation" << std::endl;
+  if (!CreateDirectories(
+          xpansion_output_dir,
+          ProblemGenerationLog::ProblemGenerationLoggerSharedPointer())) {
+    return;
+  }
   validateMasterFormulation(master_formulation, logger);
   std::string solver_name = "CBC";  // TODO Use solver selected by user
 

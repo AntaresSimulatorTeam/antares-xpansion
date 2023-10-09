@@ -76,19 +76,11 @@ class ProblemGeneratorDriver:
         self._lp_step()
 
     def set_output_path(self, output_path):
-
-        if output_path.exists():
-            self._output_path = output_path
-            self.xpansion_output_dir = output_path.parent / \
-                (output_path.stem+"-Xpansion")
-            if self.xpansion_output_dir.exists():
-                shutil.rmtree(self.xpansion_output_dir)
-            os.makedirs(self.xpansion_output_dir)
-            self._lp_path = os.path.normpath(
-                os.path.join(self.xpansion_output_dir, 'lp'))
-        else:
-            raise ProblemGeneratorDriver.OutputPathError(
-                f"{output_path} not found")
+        self._output_path = output_path
+        self.xpansion_output_dir = output_path.parent / \
+                                   (output_path.stem + "-Xpansion")
+        self._lp_path = os.path.normpath(
+            os.path.join(self.xpansion_output_dir, 'lp'))
 
     def get_output_path(self):
         return self._output_path
