@@ -1,7 +1,5 @@
 name: Centos7 CI (build dependencies)
-defaults:
-  run:
-    shell: bash -ileo pipefail {0}
+
 on:
   push:
     branches:
