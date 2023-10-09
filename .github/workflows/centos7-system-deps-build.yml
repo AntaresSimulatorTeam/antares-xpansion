@@ -1,7 +1,7 @@
 name: Centos7 CI (build dependencies)
 defaults:
   run:
-    shell: bash -ieo pipefail {0}
+    shell: bash -ileo pipefail {0}
 on:
   push:
     branches:
@@ -75,6 +75,7 @@ jobs:
       - id: branch-name
         uses: tj-actions/branch-names@v6
 
+      -
       - run: |
           whoami
           cat ~/.bashrc
