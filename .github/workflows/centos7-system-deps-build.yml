@@ -16,7 +16,7 @@ jobs:
       antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
       antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3.6
       - name: Read antares-solver version
         id: antares-version
         uses: ./.github/actions/read-json-value
@@ -70,7 +70,7 @@ jobs:
       - run: |
           git --version
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3.6
         with:
           submodules: true
 
