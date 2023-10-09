@@ -6,6 +6,7 @@ on:
       - main
       - develop
       - ci/*
+      - fix/Issue-688
   workflow_dispatch:
   release:
     types: [ created ]
