@@ -10,17 +10,11 @@ RUN \
   yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils &&\
   yum install -y jsoncpp-devel gtest-devel openmpi-devel doxygen graphviz boost-program-options &&\
   yum install -y cmake3 devtoolset-9 environment-modules rpm-build zlib-devel &&\
-  yum install -y rh-git227-git &&\
   yum install -y libuuid-devel
 
 RUN \
-  echo "source scl_source enable rh-git227" >>  ~/.bashrc &&\
-  echo "source scl_source enable devtoolset-9" >>  ~/.bashrc
-
-# Add python and pip installation for antares-xpansion
-RUN yum install -y python3-pip &&\
-    python3 -m pip install --upgrade pip &&\
-    pip3 install pyinstaller pyyaml pytest numpy touch pytest-cov mkdocs mkdocs-material
+    yum -y install https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm &&\
+    yum install -y git
 
 #create user
 RUN useradd user
