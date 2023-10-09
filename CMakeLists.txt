@@ -349,20 +349,6 @@ install(DIRECTORY ${ANTARES_SOLVER_DIR}/../lib/
 
 install(PROGRAMS ${ANTARES_SOLVER_PATH}
   TYPE BIN)
-  
-find_package(antares-study-updater)
-if (antares-study-updater_FOUND)
-
-        if (${CMAKE_BUILD_TYPE} STREQUAL  "Release")
-	    get_target_property( ANTARES_STUDY_UPDATER_PATH antares-${ANTARES_VERSION}-study-updater IMPORTED_LOCATION_RELEASE )
-	else()	
-	    get_target_property( ANTARES_STUDY_UPDATER_PATH antares-${ANTARES_VERSION}-study-updater IMPORTED_LOCATION_DEBUG )
-	endif()
-
-	install(PROGRAMS ${ANTARES_STUDY_UPDATER_PATH}
-  		TYPE BIN)
-      
-endif()
 
 include (InstallRequiredSystemLibraries)
 
