@@ -2,6 +2,7 @@
 
 #include <multisolver_interface/SolverAbstract.h>
 
+#include <cstdio>
 #include <filesystem>
 #include <memory>
 #include <mutex>
@@ -37,6 +38,12 @@ class LinkProblemsGenerator {
         _solver_name(solver_name),
         logger_(logger),
         log_file_path_(log_file_path) {}
+  ~LinkProblemsGenerator() {
+    if (log_file_ptr_ != NULL) {
+      fclose(log_file_ptr_);
+      log_file_ptr_ = NULL;
+    }
+  }
 
   void treatloop(const std::filesystem::path& root, Couplings& couplings,
                  const std::vector<ProblemData>& mps_list,
@@ -44,11 +51,11 @@ class LinkProblemsGenerator {
   void treat(const std::string& problem_name, Couplings& couplings,
              std::shared_ptr<Problem> problem,
              std::shared_ptr<IProblemVariablesProviderPort> variable_provider,
-             std::shared_ptr<IProblemWriter> writer) const;
+             std::shared_ptr<IProblemWriter> writer);
   void treat(const std::string& problem_name, Couplings& couplings,
              std::shared_ptr<IProblemProviderPort> problem_provider,
              std::shared_ptr<IProblemVariablesProviderPort> variable_provider,
-             std::shared_ptr<IProblemWriter> writer) const;
+             std::shared_ptr<IProblemWriter> writer);
 
  private:
   const std::vector<ActiveLink>& _links;
@@ -57,4 +64,5 @@ class LinkProblemsGenerator {
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
   mutable std::mutex coupling_mutex_;
   std::filesystem::path log_file_path_;
+  FILE* log_file_ptr_ = NULL;
 };

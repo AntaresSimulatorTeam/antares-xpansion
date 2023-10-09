@@ -39,7 +39,7 @@ class SolverCbc : public SolverAbstract {
    * @brief Default constructor of a CBC solver
    */
   SolverCbc();
-  explicit SolverCbc(const std::filesystem::path &log_file);
+  // explicit SolverCbc(const std::filesystem::path &log_file);
 
   /**
    * @brief Copy constructor of solver, copy the problem toCopy in memory and
@@ -57,6 +57,7 @@ class SolverCbc : public SolverAbstract {
   virtual int get_number_of_instances() override;
 
   virtual std::string get_solver_name() const override { return name_; }
+  void set_fp(FILE *fp) override;
 
  private:
   void defineCbcModelFromInnerSolver();

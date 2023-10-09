@@ -40,7 +40,7 @@ class SolverClp : public SolverAbstract {
    * @brief Default constructor of a CLP solver
    */
   SolverClp();
-  explicit SolverClp(const std::filesystem::path &log_file);
+  // explicit SolverClp(const std::filesystem::path &log_file);
 
   /**
    * @brief Copy constructor of CLP, copy the problem toCopy in memory and name
@@ -59,6 +59,7 @@ class SolverClp : public SolverAbstract {
   virtual int get_number_of_instances() override;
 
   virtual std::string get_solver_name() const override { return name_; }
+  void set_fp(FILE *fp) override;
 
   /*************************************************************************************************
   ---------------------------------    Output and stream management

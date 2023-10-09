@@ -9,6 +9,7 @@
 #include <unordered_map>
 
 #include "LogUtils.h"
+#include "common_lpnamer.h"
 
 MasterProblemBuilder::MasterProblemBuilder(
     const std::string& master_formulation)
@@ -21,8 +22,10 @@ std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(
   _indexOfPmaxVar.clear();
 
   SolverFactory factory;
-  auto master_l = factory.create_solver(solverName, log_file_path);
+  auto master_l = factory.create_solver(solverName);
 
+  log_file_ptr_ = common_lpnamer::OpenLogPtr(log_file_path);
+  master_l->set_fp(log_file_ptr_);
   addVariablesPmaxOnEachCandidate(candidates, master_l);
 
   std::vector<Candidate> candidatesInteger;

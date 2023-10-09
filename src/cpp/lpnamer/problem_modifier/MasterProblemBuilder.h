@@ -20,6 +20,12 @@ class MasterProblemBuilder {
   std::shared_ptr<SolverAbstract> build(
       const std::string& solverName, const std::vector<Candidate>& candidates,
       const std::filesystem::path& log_file_path);
+  virtual ~MasterProblemBuilder() {
+    if (log_file_ptr_ != NULL) {
+      fclose(log_file_ptr_);
+      log_file_ptr_ = NULL;
+    }
+  }
 
  private:
   void addNvarOnEachIntegerCandidate(
@@ -34,6 +40,7 @@ class MasterProblemBuilder {
   std::unordered_map<std::string, int> _indexOfPmaxVar;
   std::unordered_map<std::string, int> _indexOfNvar;
   std::string _master_formulation;
+  FILE* log_file_ptr_ = NULL;
 };
 
 #endif  // ANTARESXPANSION_MASTERPROBLEMBUILDER_H

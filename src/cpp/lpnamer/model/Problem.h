@@ -185,6 +185,7 @@ class Problem : public SolverAbstract {
   void read_basis(const std::filesystem::path &filename) override {
     solver_abstract_->read_basis(filename);
   }
+  void set_fp(FILE *fp) override { solver_abstract_->set_fp(fp); }
 };
 
 #endif  // ANTARESXPANSION_SRC_CPP_LPNAMER_MODEL_PROBLEM_H_

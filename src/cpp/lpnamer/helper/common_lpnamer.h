@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include <cstdio>
 #include <cstdlib>
 #include <fstream>
 #include <iomanip>
@@ -44,5 +45,20 @@ inline std::vector<std::string> split(const std::string& original,
     strings.push_back(s);
   }
   return strings;
+}
+
+inline FILE* OpenLogPtr(const std::filesystem::path& log_file) {
+  FILE* log_file_ptr = NULL;
+#ifdef __linux__
+  if ((log_file_ptr = fopen(log_file.string().c_str(), "a+")) == nullptr)
+#elif _WIN32
+  if ((log_file_ptr = _fsopen(log_file.string().c_str(), "a+", _SH_DENYNO)) ==
+      nullptr)
+#endif
+  {
+    std::cerr << "Invalid log file name passed as parameter: " << log_file
+              << std::endl;
+  }
+  return log_file_ptr;
 }
 }  // namespace common_lpnamer

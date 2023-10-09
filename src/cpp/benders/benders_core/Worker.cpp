@@ -41,11 +41,9 @@ void Worker::init(VariableMap const &variable_map,
   _path_to_mps = path_to_mps;
   SolverFactory factory;
   if (_is_master) {
-    _solver =
-        factory.create_solver(solver_name, SOLVER_TYPE::INTEGER, log_name);
+    _solver = factory.create_solver(solver_name, SOLVER_TYPE::INTEGER);
   } else {
-    _solver =
-        factory.create_solver(solver_name, SOLVER_TYPE::CONTINUOUS, log_name);
+    _solver = factory.create_solver(solver_name, SOLVER_TYPE::CONTINUOUS);
   }
 
   _solver->init();

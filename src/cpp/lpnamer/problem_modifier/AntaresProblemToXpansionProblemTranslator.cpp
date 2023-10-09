@@ -11,11 +11,10 @@
 std::shared_ptr<Problem>
 AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
     const LpsFromAntares& lps, unsigned int year, unsigned int week,
-    const std::string& solver_name,
-    const std::filesystem::path& log_file_path) {
+    const std::string& solver_name, FILE* log_file_ptr) {
   SolverFactory factory;
-  auto problem = std::make_shared<Problem>(
-      factory.create_solver(solver_name, log_file_path));
+  auto problem = std::make_shared<Problem>(factory.create_solver(solver_name));
+  problem->set_fp(log_file_ptr);
   problem->init();
   const auto& constant = lps._constant;
   const auto& hebdo = lps._hebdo.at({year, week});

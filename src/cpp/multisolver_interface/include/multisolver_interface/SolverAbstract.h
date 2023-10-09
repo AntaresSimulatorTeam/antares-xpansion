@@ -186,7 +186,7 @@ class SolverAbstract {
    * @param stream  : reference to a std::ostream object
    */
   void add_stream(std::ostream &stream) { get_stream().push_back(&stream); };
-  void set_fp(FILE *fp) { _fp = fp; }
+  void virtual set_fp(FILE *fp) { _fp = fp; }
   /**
   * @brief Check if a status code is different to 0, throw
   InvalidStatusException if it occurs

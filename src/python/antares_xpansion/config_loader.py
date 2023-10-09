@@ -505,6 +505,9 @@ class ConfigLoader:
 
         self._set_xpansion_simulation_name()
 
+    class InvalidXpansionDirectory(Exception):
+        pass
+
     def _set_xpansion_simulation_name(self):
         if self.step() in ["resume", "sensitivity"] : 
             self._xpansion_simulation_name = self._last_study
@@ -512,6 +515,12 @@ class ConfigLoader:
                 self._xpansion_simulation_name = self._last_study.parent / self._last_study.stem
                 with zipfile.ZipFile(self._last_study, 'r') as output_zip:
                     output_zip.extractall(self._xpansion_simulation_name)
+        if self.step() =="benders":
+            #check that is a plain folder named ***-Xpansion
+            if not self._last_study.stem.endswith("-Xpansion"):
+                raise ConfigLoader.InvalidXpansionDirectory(f"{self._last_study} is not a valid Xpansion directory")
+            self._xpansion_simulation_name = self._last_study
+
         else:
             self._xpansion_simulation_name = self._last_study.parent / \
                 (self._last_study.stem+"-Xpansion")

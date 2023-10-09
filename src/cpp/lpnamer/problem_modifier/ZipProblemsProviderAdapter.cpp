@@ -9,13 +9,17 @@
 
 #include "ArchiveReader.h"
 #include "ZipProblemProviderAdapter.h"
+#include "common_lpnamer.h"
 
 std::vector<std::shared_ptr<Problem>>
 ZipProblemsProviderAdapter::provideProblems(
     const std::string& solver_name,
-    const std::filesystem::path& log_file_path) const {
+    const std::filesystem::path& log_file_path) {
   std::vector<std::shared_ptr<Problem>> problems(problem_names_.size());
+  // open the ProblemGeneration log file with fopen required for Coin solvers
   // Order is important. Problems need to be in the same order as names
+  log_file_ptr = common_lpnamer::OpenLogPtr(log_file_path);
+
   std::transform(std::execution::par,
                  /*std::transform preserves order of element*/
                  problem_names_.begin(), problem_names_.end(), problems.begin(),
@@ -23,7 +27,7 @@ ZipProblemsProviderAdapter::provideProblems(
                    ZipProblemProviderAdapter problem_provider(lp_dir_, name,
                                                               archive_reader_);
                    return problem_provider.provide_problem(solver_name,
-                                                           log_file_path);
+                                                           log_file_ptr);
                  });
   return problems;
 }

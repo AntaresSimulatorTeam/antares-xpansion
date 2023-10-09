@@ -6,6 +6,7 @@
 
 #include "IProblemProviderPort.h"
 #include "LinkProblemsGenerator.h"
+
 class ZipProblemProviderAdapter : public IProblemProviderPort {
  public:
   explicit ZipProblemProviderAdapter(std::filesystem::path lp_dir,
@@ -17,7 +18,6 @@ class ZipProblemProviderAdapter : public IProblemProviderPort {
   const std::filesystem::path lp_dir_;
   const std::string problem_name_;
   [[nodiscard]] std::shared_ptr<Problem> provide_problem(
-      const std::string& solver_name,
-      const std::filesystem::path& log_file_path) const override;
+      const std::string& solver_name, FILE* log_file_ptr) const override;
   std::shared_ptr<ArchiveReader> archive_reader_;
 };
