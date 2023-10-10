@@ -43,6 +43,11 @@ jobs:
           ref: 8.13
           token: ${{ secrets.AS_TOKEN }} #reniew token periodically
 
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2.3
+        with:
+          key: ${{ matrix.os }}-${{ matrix.xprs }}
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
