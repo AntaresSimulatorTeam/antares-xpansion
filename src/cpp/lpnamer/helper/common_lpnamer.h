@@ -50,6 +50,9 @@ inline std::vector<std::string> split(const std::string& original,
 
 inline FILE* OpenLogPtr(const std::filesystem::path& log_file) {
   FILE* log_file_ptr = NULL;
+  if (log_file.empty()) {
+    return log_file_ptr;
+  }
 #ifdef __linux__
   if ((log_file_ptr = fopen(log_file.string().c_str(), "a+")) == nullptr)
 #elif _WIN32

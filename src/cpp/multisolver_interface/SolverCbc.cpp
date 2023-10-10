@@ -73,9 +73,11 @@ SolverCbc::~SolverCbc() {
 }
 
 void SolverCbc::set_fp(FILE *fp) {
-  setvbuf(fp, nullptr, _IONBF, 0);
-  _clp_inner_solver.messageHandler()->setFilePointer(fp);
-  _cbc.messageHandler()->setFilePointer(fp);
+  if (fp) {
+    setvbuf(fp, nullptr, _IONBF, 0);
+    _clp_inner_solver.messageHandler()->setFilePointer(fp);
+    _cbc.messageHandler()->setFilePointer(fp);
+  }
 }
 
 int SolverCbc::get_number_of_instances() { return _NumberOfProblems; }

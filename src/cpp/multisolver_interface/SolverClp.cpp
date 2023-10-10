@@ -70,8 +70,10 @@ SolverClp::~SolverClp() {
 }
 
 void SolverClp::set_fp(FILE *fp) {
-  setvbuf(_fp, nullptr, _IONBF, 0);
-  _clp.messageHandler()->setFilePointer(_fp);
+  if (fp) {
+    setvbuf(_fp, nullptr, _IONBF, 0);
+    _clp.messageHandler()->setFilePointer(_fp);
+  }
 }
 
 int SolverClp::get_number_of_instances() { return _NumberOfProblems; }
