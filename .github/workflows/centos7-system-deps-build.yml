@@ -84,7 +84,6 @@ jobs:
         run: |
           pip3 install wheel #Does not work in requirements
           pip3 install -r requirements-tests.txt
-          pip3 install -r requirements-ui.txt
 
       - name: Compile Boost
         uses: ./.github/workflows/compile-boost
@@ -102,7 +101,7 @@ jobs:
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake3 -B _build -S . \
           -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
-          -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DALLOW_RUN_AS_ROOT=ON
+          -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=OFF -DALLOW_RUN_AS_ROOT=ON
 
       - name: Build
         run: |
