@@ -74,13 +74,6 @@ jobs:
         uses: tj-actions/branch-names@v6
 
       - run: |
-          echo "source scl_source enable rh-git227" >>  ~/.bashrc
-          echo "source scl_source enable devtoolset-9" >>  ~/.bashrc
-          git --version
-          source scl_source enable rh-git227
-          git --version
-
-      - run: |
           git --version
 
       - uses: actions/checkout@v3.6.0
