@@ -1,13 +1,13 @@
-
-from typing import List
+import os
 import subprocess
 import sys
-from antares_xpansion.benders_driver import BendersDriver
-from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver
-from antares_xpansion.logger import step_logger
-from antares_xpansion.study_output_cleaner import StudyOutputCleaner
-import os
 from pathlib import Path
+from typing import List
+
+from antares_xpansion.benders_driver import BendersDriver
+from antares_xpansion.logger import step_logger
+from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver
+from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 
 
 class FullRunDriver:
@@ -66,6 +66,7 @@ class FullRunDriver:
 
         os.chdir(lp_path)
         self.logger.info(f"Current directory is now: {os.getcwd()}")
+        self.logger.info(f"Running {self.full_command()}")
         ret = subprocess.run(
             self.full_command(), shell=False, stdout=sys.stdout, stderr=sys.stderr,
             encoding='utf-8')

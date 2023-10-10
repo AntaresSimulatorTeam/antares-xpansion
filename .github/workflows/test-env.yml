@@ -15,23 +15,9 @@ jobs:
     container: 'centos:7'
 
     steps:
-      - uses: ./.github/actions/test
-
-      - id: branch-name
-        uses: tj-actions/branch-names@v6
-
-      - name: Install libraries
-        run: |
-          yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
-          yum install -y rh-git227-git 
-
-      - name: update bashrc
-        run: |
-          echo "source scl_source enable rh-git227" >>  ~/.bashrc
-          echo "source scl_source enable devtoolset-9" >>  ~/.bashrc
-
-      - uses: ./.github/actions/test
-
       - uses: actions/checkout@v3
-        with:
-          submodules: true
+      - run: |
+          echo `uname -a`
+
+      - uses: ./.github/actions/test
+

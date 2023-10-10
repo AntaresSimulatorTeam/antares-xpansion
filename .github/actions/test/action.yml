@@ -4,5 +4,5 @@ runs:
   using: "composite"
   steps:
     - run: |
-        uname -a
-        git --version
+        echo `uname -a`
+        echo `git --version`

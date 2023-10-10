@@ -7,9 +7,9 @@ import subprocess
 from datetime import datetime
 from pathlib import Path
 
+from antares_xpansion.__version__ import __antares_simulator_version__
 from antares_xpansion.logger import step_logger
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
-from antares_xpansion.__version__ import __antares_simulator_version__
 from packaging import version
 
 
@@ -64,6 +64,8 @@ class AntaresDriver:
         self.logger.info("Launching antares")
 
         start_time = datetime.now()
+        self.logger.info(
+            f'Command line : {self._get_antares_cmd()}')
         returned_l = subprocess.run(self._get_antares_cmd(), shell=False,
                                     stdout=subprocess.DEVNULL,
                                     stderr=subprocess.DEVNULL)
