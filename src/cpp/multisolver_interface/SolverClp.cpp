@@ -11,7 +11,7 @@ int SolverClp::_NumberOfProblems = 0;
 SolverClp::SolverClp(std::shared_ptr<SolverLogManager> log_manager)
     : SolverClp() {
   _fp = log_manager->log_file_ptr;
-  if (!log_manager) {
+  if (!log_manager || !_fp) {
     std::cout << "Empty log file name, fallback to default behaviour"
               << std::endl;
   } else {
