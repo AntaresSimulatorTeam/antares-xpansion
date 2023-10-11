@@ -29,12 +29,13 @@ SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy)
   // Try to cast the solver in fictif to a SolverCbc
   if (const auto c = dynamic_cast<const SolverCbc *>(toCopy.get())) {
     _clp_inner_solver = OsiClpSolverInterface(c->_clp_inner_solver);
+
+    defineCbcModelFromInnerSolver();
     _fp = toCopy->_fp;
     if (_fp) {
       _clp_inner_solver.messageHandler()->setFilePointer(_fp);
       _cbc.messageHandler()->setFilePointer(_fp);
     }
-    defineCbcModelFromInnerSolver();
   } else {
     _NumberOfProblems -= 1;
     throw InvalidSolverForCopyException(toCopy->get_solver_name(), name_,
