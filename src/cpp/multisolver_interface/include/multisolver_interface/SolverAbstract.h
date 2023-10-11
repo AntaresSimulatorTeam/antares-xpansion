@@ -18,9 +18,11 @@ class SolverLogManager {
   explicit SolverLogManager(const std::filesystem::path &log_file)
       : log_file_path(log_file) {
 #ifdef __linux__
-    if ((log_file_ptr = fopen(log_file_path.string().c_str(), "a+")) == nullptr)
+    if (!log_file_path.empty() ||
+        (log_file_ptr = fopen(log_file_path.string().c_str(), "a+")) == nullptr)
 #elif _WIN32
-    if ((log_file_ptr = _fsopen(log_file_path.string().c_str(), "a+",
+    if (!log_file_path.empty() ||
+        (log_file_ptr = _fsopen(log_file_path.string().c_str(), "a+",
                                 _SH_DENYNO)) == nullptr)
 #endif
     {
