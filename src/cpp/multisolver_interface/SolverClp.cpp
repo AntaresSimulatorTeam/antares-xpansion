@@ -15,7 +15,6 @@ SolverClp::SolverClp(std::shared_ptr<SolverLogManager> log_manager)
     std::cout << "Empty log file name, fallback to default behaviour"
               << std::endl;
   } else {
-    setvbuf(log_manager->log_file_ptr, NULL, _IONBF, 0);
     _clp.messageHandler()->setFilePointer(log_manager->log_file_ptr);
   }
 }
@@ -31,7 +30,6 @@ SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy)
     _clp = ClpSimplex(c->_clp);
     _fp = toCopy->_fp;
     if (_fp) {
-      setvbuf(_fp, nullptr, _IONBF, 0);
       _clp.messageHandler()->setFilePointer(_fp);
     }
   } else {

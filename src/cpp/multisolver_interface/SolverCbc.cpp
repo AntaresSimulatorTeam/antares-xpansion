@@ -15,7 +15,6 @@ SolverCbc::SolverCbc(std::shared_ptr<SolverLogManager> log_manager)
     std::cout << "Empty log file name, fallback to default behaviour"
               << std::endl;
   } else {
-    setvbuf(_fp, nullptr, _IONBF, 0);
     _clp_inner_solver.messageHandler()->setFilePointer(_fp);
     _cbc.messageHandler()->setFilePointer(_fp);
   }
@@ -32,7 +31,6 @@ SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy)
     _clp_inner_solver = OsiClpSolverInterface(c->_clp_inner_solver);
     _fp = toCopy->_fp;
     if (_fp) {
-      setvbuf(_fp, nullptr, _IONBF, 0);
       _clp_inner_solver.messageHandler()->setFilePointer(_fp);
       _cbc.messageHandler()->setFilePointer(_fp);
     }

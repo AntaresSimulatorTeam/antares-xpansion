@@ -28,6 +28,8 @@ class SolverLogManager {
     {
       std::cerr << "Invalid log file name passed as parameter: "
                 << std::quoted(log_file.string()) << std::endl;
+    } else {
+      setvbuf(log_file_ptr, nullptr, _IONBF, 0);
     }
   }
   ~SolverLogManager() {
