@@ -39,7 +39,7 @@ class SolverCbc : public SolverAbstract {
    * @brief Default constructor of a CBC solver
    */
   SolverCbc();
-  explicit SolverCbc(std::shared_ptr<SolverLogManager> log_manager);
+  explicit SolverCbc(std::shared_ptr<SolverLogManager> &log_manager);
 
   /**
    * @brief Copy constructor of solver, copy the problem toCopy in memory and

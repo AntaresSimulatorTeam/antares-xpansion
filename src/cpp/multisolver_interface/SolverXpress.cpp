@@ -14,9 +14,10 @@ int SolverXpress::_NumberOfProblems = 0;
 std::mutex SolverXpress::license_guard;
 const std::map<int, std::string> TYPETONAME = {{1, "rows"}, {2, "columns"}};
 
-SolverXpress::SolverXpress(std::shared_ptr<SolverLogManager> log_manager)
+SolverXpress::SolverXpress(std::shared_ptr<SolverLogManager> &log_manager)
     : SolverXpress() {
-  _log_file = log_manager->log_file_path;
+  solverLogManager_ = std::move(log_manager);
+  _log_file = solverLogManager_->log_file_path;
   if (_log_file != "") {
     _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
     add_stream(_log_stream);

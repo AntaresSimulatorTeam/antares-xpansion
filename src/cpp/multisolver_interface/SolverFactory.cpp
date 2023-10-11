@@ -26,7 +26,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(
 }
 SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name, const SOLVER_TYPE solver_type,
-    std::shared_ptr<SolverLogManager> log_manager) const {
+    std::shared_ptr<SolverLogManager> &log_manager) const {
 #ifdef COIN_OR
   if (solver_name == COIN_STR && solver_type == SOLVER_TYPE::CONTINUOUS) {
     return std::make_shared<SolverClp>(log_manager);
@@ -43,7 +43,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(
 }
 SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name,
-    std::shared_ptr<SolverLogManager> log_manager) const {
+    std::shared_ptr<SolverLogManager> &log_manager) const {
   if (solver_name == "") {
     throw InvalidSolverNameException(solver_name, LOGLOCATION);
   }
