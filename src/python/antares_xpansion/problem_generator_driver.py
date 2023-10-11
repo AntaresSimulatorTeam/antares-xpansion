@@ -70,8 +70,6 @@ class ProblemGeneratorDriver:
         self.logger.info("Problem Generation")
         self.output_path = output_path
 
-        self.create_lp_dir()
-
         self.is_relaxed = is_relaxed
         self._lp_step()
 
