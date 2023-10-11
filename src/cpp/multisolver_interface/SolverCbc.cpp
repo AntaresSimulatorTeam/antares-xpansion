@@ -8,20 +8,16 @@
 *************************************************************************************************/
 int SolverCbc::_NumberOfProblems = 0;
 
-SolverCbc::SolverCbc(const std::filesystem::path &log_file) : SolverCbc() {
-  _log_file = log_file;
-  if (_log_file.empty()) {
+SolverCbc::SolverCbc(std::shared_ptr<SolverLogManager> log_manager)
+    : SolverCbc() {
+  _fp = log_manager->log_file_ptr;
+  if (!_fp) {
     std::cout << "Empty log file name, fallback to default behaviour"
               << std::endl;
   } else {
-    if ((_fp = fopen(_log_file.string().c_str(), "a+")) == nullptr) {
-      std::cerr << "Invalid log file name passed as parameter: " << _log_file
-                << std::endl;
-    } else {
-      setvbuf(_fp, nullptr, _IONBF, 0);
-      _clp_inner_solver.messageHandler()->setFilePointer(_fp);
-      _cbc.messageHandler()->setFilePointer(_fp);
-    }
+    setvbuf(_fp, nullptr, _IONBF, 0);
+    _clp_inner_solver.messageHandler()->setFilePointer(_fp);
+    _cbc.messageHandler()->setFilePointer(_fp);
   }
 }
 SolverCbc::SolverCbc() {
@@ -34,9 +30,8 @@ SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy)
   // Try to cast the solver in fictif to a SolverCbc
   if (const auto c = dynamic_cast<const SolverCbc *>(toCopy.get())) {
     _clp_inner_solver = OsiClpSolverInterface(c->_clp_inner_solver);
-    _log_file = toCopy->_log_file;
-    _fp = fopen(_log_file.string().c_str(), "a+");
-    if (_fp != nullptr) {
+    _fp = toCopy->_fp;
+    if (_fp) {
       setvbuf(_fp, nullptr, _IONBF, 0);
       _clp_inner_solver.messageHandler()->setFilePointer(_fp);
       _cbc.messageHandler()->setFilePointer(_fp);
@@ -51,10 +46,6 @@ SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy)
 
 SolverCbc::~SolverCbc() {
   _NumberOfProblems -= 1;
-  if (_fp != nullptr) {
-    fclose(_fp);
-    _fp = nullptr;
-  }
   free();
 }
 

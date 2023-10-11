@@ -40,12 +40,13 @@ void Worker::init(VariableMap const &variable_map,
                   const std::filesystem::path &log_name) {
   _path_to_mps = path_to_mps;
   SolverFactory factory;
+  auto solver_log_manager = std::make_shared<SolverLogManager>(log_name);
   if (_is_master) {
-    _solver =
-        factory.create_solver(solver_name, SOLVER_TYPE::INTEGER, log_name);
+    _solver = factory.create_solver(solver_name, SOLVER_TYPE::INTEGER,
+                                    solver_log_manager);
   } else {
-    _solver =
-        factory.create_solver(solver_name, SOLVER_TYPE::CONTINUOUS, log_name);
+    _solver = factory.create_solver(solver_name, SOLVER_TYPE::CONTINUOUS,
+                                    solver_log_manager);
   }
 
   _solver->init();

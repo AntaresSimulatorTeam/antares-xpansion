@@ -33,7 +33,7 @@ class SolverXpress : public SolverAbstract {
    * @brief Default constructor of a XPRESS solver
    */
   SolverXpress();
-  SolverXpress(const std::filesystem::path &log_file);
+  SolverXpress(std::shared_ptr<SolverLogManager> log_manager);
 
   /**
    * @brief Copy constructor of XPRESS, copy the problem toCopy in memory and

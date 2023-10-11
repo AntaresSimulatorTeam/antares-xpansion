@@ -14,8 +14,9 @@ AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
     const std::string& solver_name,
     const std::filesystem::path& log_file_path) {
   SolverFactory factory;
+  auto solver_log_manager = std::make_shared<SolverLogManager>(log_file_path);
   auto problem = std::make_shared<Problem>(
-      factory.create_solver(solver_name, log_file_path));
+      factory.create_solver(solver_name, solver_log_manager));
   problem->init();
   const auto& constant = lps._constant;
   const auto& hebdo = lps._hebdo.at({year, week});

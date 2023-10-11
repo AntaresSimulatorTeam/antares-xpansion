@@ -21,7 +21,8 @@ std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(
   _indexOfPmaxVar.clear();
 
   SolverFactory factory;
-  auto master_l = factory.create_solver(solverName, log_file_path);
+  auto solver_log_manager = std::make_shared<SolverLogManager>(log_file_path);
+  auto master_l = factory.create_solver(solverName, solver_log_manager);
 
   addVariablesPmaxOnEachCandidate(candidates, master_l);
 

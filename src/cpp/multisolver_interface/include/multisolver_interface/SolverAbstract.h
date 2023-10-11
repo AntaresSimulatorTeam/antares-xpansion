@@ -2,6 +2,7 @@
 
 #include <cstdio>
 #include <filesystem>
+#include <iomanip>
 #include <iostream>
 #include <list>
 #include <memory>
@@ -11,6 +12,32 @@
 #include <vector>
 
 #include "LogUtils.h"
+
+class SolverLogManager {
+ public:
+  explicit SolverLogManager(const std::filesystem::path &log_file)
+      : log_file_path(log_file) {
+#ifdef __linux__
+    if ((log_file_ptr = fopen(log_file_path.string().c_str(), "a+")) == nullptr)
+#elif _WIN32
+    if ((log_file_ptr = _fsopen(log_file_path.string().c_str(), "a+",
+                                _SH_DENYNO)) == nullptr)
+#endif
+    {
+      std::cerr << "Invalid log file name passed as parameter: "
+                << std::quoted(log_file.string()) << std::endl;
+    }
+  }
+  ~SolverLogManager() {
+    if (log_file_ptr) {
+      fclose(log_file_ptr);
+      log_file_ptr = nullptr;
+    }
+  }
+
+  FILE *log_file_ptr = nullptr;
+  std::filesystem::path log_file_path = "";
+};
 
 class InvalidStatusException
     : public LogUtils::XpansionError<std::runtime_error> {

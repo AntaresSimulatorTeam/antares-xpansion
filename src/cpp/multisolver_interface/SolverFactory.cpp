@@ -21,40 +21,42 @@ SolverFactory::SolverFactory() {
 
 SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name, const SOLVER_TYPE solver_type) const {
-  return create_solver(solver_name, solver_type, "");
+  auto log_manager = std::make_shared<SolverLogManager>("");
+  return create_solver(solver_name, solver_type, log_manager);
 }
 SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name, const SOLVER_TYPE solver_type,
-    const std::filesystem::path &log_name) const {
+    std::shared_ptr<SolverLogManager> log_manager) const {
 #ifdef COIN_OR
   if (solver_name == COIN_STR && solver_type == SOLVER_TYPE::CONTINUOUS) {
-    return std::make_shared<SolverClp>(log_name);
+    return std::make_shared<SolverClp>(log_manager);
   } else if (solver_name == COIN_STR && solver_type == SOLVER_TYPE::INTEGER) {
-    return std::make_shared<SolverCbc>(log_name);
+    return std::make_shared<SolverCbc>(log_manager);
   }
 #endif
-  return create_solver(solver_name, log_name);
+  return create_solver(solver_name, log_manager);
 }
 SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name) const {
-  return create_solver(solver_name, "");
+  auto log_manager = std::make_shared<SolverLogManager>("");
+  return create_solver(solver_name, log_manager);
 }
 SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name,
-    const std::filesystem::path &log_name) const {
+    std::shared_ptr<SolverLogManager> log_manager) const {
   if (solver_name == "") {
     throw InvalidSolverNameException(solver_name, LOGLOCATION);
   }
 #ifdef XPRESS
   else if (solver_name == XPRESS_STR) {
-    return std::make_shared<SolverXpress>(log_name);
+    return std::make_shared<SolverXpress>(log_manager);
   }
 #endif
 #ifdef COIN_OR
   else if (solver_name == CLP_STR) {
-    return std::make_shared<SolverClp>(log_name);
+    return std::make_shared<SolverClp>(log_manager);
   } else if (solver_name == CBC_STR) {
-    return std::make_shared<SolverCbc>(log_name);
+    return std::make_shared<SolverCbc>(log_manager);
   }
 #endif
   else {

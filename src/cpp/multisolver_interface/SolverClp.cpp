@@ -8,36 +8,29 @@
 *************************************************************************************************/
 int SolverClp::_NumberOfProblems = 0;
 
-SolverClp::SolverClp(const std::filesystem::path &log_file) : SolverClp() {
-  _log_file = log_file;
-  if (_log_file.empty()) {
+SolverClp::SolverClp(std::shared_ptr<SolverLogManager> log_manager)
+    : SolverClp() {
+  _fp = log_manager->log_file_ptr;
+  if (!log_manager) {
     std::cout << "Empty log file name, fallback to default behaviour"
               << std::endl;
   } else {
-    if ((_fp = fopen(_log_file.string().c_str(), "a+")) == NULL) {
-      std::cerr << "Invalid log file name passed as parameter: " << _log_file
-                << std::endl;
-    } else {
-      setvbuf(_fp, NULL, _IONBF, 0);
-      _clp.messageHandler()->setFilePointer(_fp);
-    }
+    setvbuf(log_manager->log_file_ptr, NULL, _IONBF, 0);
+    _clp.messageHandler()->setFilePointer(log_manager->log_file_ptr);
   }
 }
 SolverClp::SolverClp() {
   _NumberOfProblems += 1;
-  _fp = nullptr;
   set_output_log_level(0);
 }
 
 SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy)
     : SolverClp() {
-  _fp = nullptr;
   // Try to cast the solver in fictif to a SolverClp
   if (const auto c = dynamic_cast<const SolverClp *>(toCopy.get())) {
     _clp = ClpSimplex(c->_clp);
-    _log_file = toCopy->_log_file;
-    _fp = fopen(_log_file.string().c_str(), "a+");
-    if (_fp != nullptr) {
+    _fp = toCopy->_fp;
+    if (_fp) {
       setvbuf(_fp, nullptr, _IONBF, 0);
       _clp.messageHandler()->setFilePointer(_fp);
     }
@@ -50,10 +43,6 @@ SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy)
 
 SolverClp::~SolverClp() {
   _NumberOfProblems -= 1;
-  if (_fp != nullptr) {
-    fclose(_fp);
-    _fp = nullptr;
-  }
   free();
 }
 

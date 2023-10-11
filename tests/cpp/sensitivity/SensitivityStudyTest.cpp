@@ -38,7 +38,9 @@ class SensitivityStudyTest : public ::testing::Test {
 
   void init_solver(std::string solver_name, std::string last_master_mps_path) {
     SolverFactory factory;
-    math_problem = factory.create_solver(solver_name, std::tmpnam(nullptr));
+    auto solver_log_manager =
+        std::make_shared<SolverLogManager>(std::tmpnam(nullptr));
+    math_problem = factory.create_solver(solver_name, solver_log_manager);
     math_problem->init();
     math_problem->read_prob_mps(last_master_mps_path);
   }
