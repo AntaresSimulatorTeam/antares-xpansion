@@ -67,7 +67,6 @@ class ProblemGeneratorDriver:
             problem generation step : getnames + lp_namer
         """
         self.clear_old_log()
-        self.logger.info("Problem Generation")
         self.output_path = output_path
 
         self.is_relaxed = is_relaxed
