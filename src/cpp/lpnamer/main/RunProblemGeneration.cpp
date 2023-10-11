@@ -159,7 +159,8 @@ void RunProblemGeneration(
       << "Launching Problem Generation" << std::endl;
   if (!CreateDirectories(
           xpansion_output_dir, logger.get())) {
-    return;
+    throw LogUtils::XpansionError<std::runtime_error>(
+        "Error creating LP directory", LOGLOCATION);
   }
   validateMasterFormulation(master_formulation, logger);
   std::string solver_name = "CBC";  // TODO Use solver selected by user

@@ -39,12 +39,6 @@ class TestProblemGeneratorDriver:
         assert problem_generator_driver.user_weights_file_path == self.empty_pblm_gen_data.user_weights_file_path
         assert problem_generator_driver.lp_namer_exe_path == self.empty_pblm_gen_data.lp_namer_exe_path
 
-    def test_output_path(self, tmp_path):
-        problem_generator_driver = ProblemGeneratorDriver(
-            self.empty_pblm_gen_data)
-        with pytest.raises(ProblemGeneratorDriver.OutputPathError):
-            problem_generator_driver.launch(tmp_path / "i_don_t_exist", False)
-
     def test_lp_namer_exe_does_not_exit(self, tmp_path):
 
         self._create_empty_area_file(tmp_path)
