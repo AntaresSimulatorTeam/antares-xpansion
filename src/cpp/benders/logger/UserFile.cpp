@@ -24,7 +24,11 @@ UserFile::UserFile(const std::filesystem::path &filename) {
   }
 }
 
-UserFile::~UserFile() { _file.close(); }
+UserFile::~UserFile() {
+  if (_file.is_open()) {
+    _file.close();
+  }
+}
 
 void UserFile::display_message(const std::string &str) {
   _file << PrefixMessage(LogUtils::LOGLEVEL::INFO, CONTEXT) << str << std::endl;
