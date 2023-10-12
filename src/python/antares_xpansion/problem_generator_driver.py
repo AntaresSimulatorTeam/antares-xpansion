@@ -3,7 +3,6 @@
 """
 
 import os
-import shutil
 import subprocess
 import sys
 from dataclasses import dataclass
@@ -66,25 +65,29 @@ class ProblemGeneratorDriver:
         """
             problem generation step : getnames + lp_namer
         """
-        self.clear_old_log()
+        self.logger.info("Problem Generation")
         self.output_path = output_path
+
+        self.create_lp_dir()
 
         self.is_relaxed = is_relaxed
         self._lp_step()
 
     def set_output_path(self, output_path):
-        self._output_path = output_path
-        self.xpansion_output_dir = output_path.parent / \
-                                   (output_path.stem + "-Xpansion")
-        self._lp_path = os.path.normpath(
-            os.path.join(self.xpansion_output_dir, 'lp'))
+
+        if output_path.exists():
+            self._output_path = output_path
+            self.xpansion_output_dir = output_path.parent / \
+                                       (output_path.stem + "-Xpansion")
+            os.makedirs(self.xpansion_output_dir)
+            self._lp_path = os.path.normpath(
+                os.path.join(self.xpansion_output_dir, 'lp'))
+        else:
+            raise ProblemGeneratorDriver.OutputPathError(
+                f"{output_path} not found")
 
     def get_output_path(self):
         return self._output_path
-
-    def clear_old_log(self):
-        if (os.path.isfile(str(self.lp_namer_exe_path) + '.log')):
-            os.remove(str(self.lp_namer_exe_path) + '.log')
 
     def _lp_step(self):
         """
@@ -101,8 +104,6 @@ class ProblemGeneratorDriver:
                 "ERROR: exited lpnamer with status %d" % returned_l.returncode)
 
     def create_lp_dir(self):
-        if os.path.isdir(self._lp_path):
-            shutil.rmtree(self._lp_path)
         os.makedirs(self._lp_path)
 
     def lp_namer_options(self):
