@@ -43,11 +43,6 @@ jobs:
           ref: 8.13
           token: ${{ secrets.AS_TOKEN }} #reniew token periodically
 
-      - name: ccache
-        uses: hendrikmuhs/ccache-action@v1.2.3
-        with:
-          key: ${{ matrix.os }}-${{ matrix.xprs }}
-
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -63,10 +58,10 @@ jobs:
       - name: Install mandatory system libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev libboost-program-options-dev libtbb-dev
+          sudo apt-get install -y cmake ccache libjsoncpp-dev libgtest-dev libboost-mpi-dev libboost-program-options-dev libtbb-dev
           cd /usr/src/googletest/
-          sudo cmake .
-          sudo cmake --build .
+          cmake .
+          cmake --build .
 
       - name: Read antares-solver version
         id: antares-version
