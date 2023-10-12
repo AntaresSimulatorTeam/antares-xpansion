@@ -28,7 +28,7 @@ jobs:
 
     steps:
       - run: |
-          apt update
+          apt-get update
 
       - uses: actions/checkout@v3
         with:
