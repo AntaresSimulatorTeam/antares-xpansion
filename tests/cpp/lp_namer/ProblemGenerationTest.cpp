@@ -46,19 +46,3 @@ TEST(InitializationTest, FoldersAreEmpty) {
 
   EXPECT_FALSE(std::filesystem::exists(simulationDirectory / "garbage.txt"));
 }
-
-TEST(InitializationTest, ErrorIfSimulationPathDoesNotExists) {
-  auto workingDirectory =
-      std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
-  auto simulationDirectory = workingDirectory / "output" / "simulation";
-  auto logger = emptyLogger();
-
-  EXPECT_THROW(
-      RunProblemGeneration(simulationDirectory, "integer", "", "", logger,
-                           simulationDirectory / "logs.txt", "", false),
-      LogUtils::XpansionError<std::runtime_error>);
-  auto lp = (simulationDirectory.parent_path() /
-             (simulationDirectory.filename().string() + "-Xpansion")) /
-            "lp";
-  EXPECT_FALSE(std::filesystem::exists(lp));
-}

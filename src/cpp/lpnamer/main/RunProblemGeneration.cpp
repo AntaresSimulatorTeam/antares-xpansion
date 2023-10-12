@@ -126,22 +126,15 @@ std::vector<std::shared_ptr<Problem>> getXpansionProblems(
                                                               problem_names);
   return adapter->provideProblems(solver_name, solver_log_manager);
 }
-bool CreateDirectories(
-    const std::filesystem::path& xpansion_output_path,
+void CreateDirectories(const std::filesystem::path& xpansion_output_path,
                        ProblemGenerationLog::ProblemGenerationLogger* logger) {
   if (!std::filesystem::exists(xpansion_output_path)) {
-    (*logger)(LogUtils::LOGLEVEL::ERR)
-        << "Output directory " << xpansion_output_path << " does not exist"
-        << std::endl;
-    return false;
+    std::filesystem::create_directories(xpansion_output_path);
   }
-  auto xpansion_output_dir =
-      xpansion_output_path.parent_path() /
-      (xpansion_output_path.stem().string() + "-Xpansion");
-  std::filesystem::create_directories(xpansion_output_dir);
-  std::filesystem::create_directories(xpansion_output_dir / LP_DIRNAME);
-
-  return true;
+  auto lp_path = xpansion_output_path / LP_DIRNAME;
+  if (!std::filesystem::exists(lp_path)) {
+    std::filesystem::create_directories(lp_path);
+  }
 }
 
 void RunProblemGeneration(
@@ -154,11 +147,7 @@ void RunProblemGeneration(
     const std::filesystem::path& weights_file, bool unnamed_problems) {
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Launching Problem Generation" << std::endl;
-  if (!CreateDirectories(
-          xpansion_output_dir, logger.get())) {
-    throw LogUtils::XpansionError<std::runtime_error>(
-        "Error creating LP directory", LOGLOCATION);
-  }
+  CreateDirectories(xpansion_output_dir, logger.get());
   validateMasterFormulation(master_formulation, logger);
   std::string solver_name = "CBC";  // TODO Use solver selected by user
 
