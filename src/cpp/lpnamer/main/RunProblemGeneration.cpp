@@ -138,9 +138,6 @@ bool CreateDirectories(
   auto xpansion_output_dir =
       xpansion_output_path.parent_path() /
       (xpansion_output_path.stem().string() + "-Xpansion");
-  if (std::filesystem::exists(xpansion_output_dir)) {
-    std::filesystem::remove_all(xpansion_output_dir);
-  }
   std::filesystem::create_directories(xpansion_output_dir);
   std::filesystem::create_directories(xpansion_output_dir / LP_DIRNAME);
 
