@@ -58,7 +58,7 @@ jobs:
       - name: Install mandatory system libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install -y cmake ccache libjsoncpp-dev libgtest-dev libboost-mpi-dev libboost-program-options-dev libtbb-dev
+          sudo apt-get install -y ccache libjsoncpp-dev libgtest-dev libboost-mpi-dev libboost-program-options-dev libtbb-dev
           cd /usr/src/googletest/
           cmake .
           cmake --build .
