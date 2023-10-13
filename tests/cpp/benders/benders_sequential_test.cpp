@@ -78,10 +78,11 @@ class BendersSequentialDouble : public BendersSequential {
   void InitializeProblems() override {
     MatchProblemToId();
 
+    auto solver_log_manager = std::make_shared<SolverLogManager>(log_name());
     reset_master(new WorkerMaster(master_variable_map, get_master_path(),
                                   get_solver_name(), get_log_level(),
-                                  _data.nsubproblem, log_name(), IsResumeMode(),
-                                  _logger));
+                                  _data.nsubproblem, solver_log_manager,
+                                  IsResumeMode(), _logger));
     for (const auto &problem : coupling_map) {
       const auto subProblemFilePath = GetSubproblemPath(problem.first);
       AddSubproblem(problem);
