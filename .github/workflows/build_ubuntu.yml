@@ -27,9 +27,6 @@ jobs:
       XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
 
     steps:
-      - run: |
-          sudo apt-get update
-
       - uses: actions/checkout@v3
         with:
           submodules: true
@@ -58,7 +55,7 @@ jobs:
       - name: Install mandatory system libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install -y ccache libjsoncpp-dev libgtest-dev libboost-mpi-dev libboost-program-options-dev libtbb-dev
+          sudo apt-get install -y libjsoncpp-dev libgtest-dev libboost-mpi-dev libboost-program-options-dev libtbb-dev
           cd /usr/src/googletest/
           cmake .
           cmake --build .
