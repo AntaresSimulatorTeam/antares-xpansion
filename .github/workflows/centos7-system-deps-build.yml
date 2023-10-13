@@ -73,9 +73,6 @@ jobs:
       - id: branch-name
         uses: tj-actions/branch-names@v6
 
-      - run: |
-          git --version
-
       - uses: actions/checkout@v3.6.0
         with:
           submodules: true
