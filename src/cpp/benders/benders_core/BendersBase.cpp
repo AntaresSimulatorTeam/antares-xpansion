@@ -18,7 +18,8 @@ BendersBase::BendersBase(BendersBaseOptions options, Logger logger,
       _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) /
                      (_options.CSV_NAME + ".csv")),
       _logger(std::move(logger)),
-      _writer(std::move(writer)) {}
+      _writer(std::move(writer)),
+      solver_log_manager_(std::make_shared<SolverLogManager>(log_name())) {}
 
 /*!
  *  \brief Initialize set of data used in the loop
@@ -715,7 +716,7 @@ void BendersBase::AddSubproblem(
   subproblem_map[kvp.first] = std::make_shared<SubproblemWorker>(
       kvp.second, GetSubproblemPath(kvp.first),
       SubproblemWeight(_data.nsubproblem, kvp.first), _options.SOLVER_NAME,
-      _options.LOG_LEVEL, log_name(), _logger);
+      _options.LOG_LEVEL, solver_log_manager_, _logger);
 }
 
 void BendersBase::free_subproblems() {

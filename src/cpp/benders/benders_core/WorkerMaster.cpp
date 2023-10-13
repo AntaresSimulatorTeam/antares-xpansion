@@ -19,18 +19,17 @@ WorkerMaster::WorkerMaster(Logger logger) : Worker(logger) {
  *  \param log_level : solver log level
  *  \param subproblems_count : number of subproblems
  */
-WorkerMaster::WorkerMaster(VariableMap const &variable_map,
-                           const std::filesystem::path &path_to_mps,
-                           const std::string &solver_name, const int log_level,
-                           int subproblems_count,
-                           const std::filesystem::path &log_name,
-                           const bool mps_has_alpha, Logger logger)
+WorkerMaster::WorkerMaster(
+    VariableMap const &variable_map, const std::filesystem::path &path_to_mps,
+    const std::string &solver_name, const int log_level, int subproblems_count,
+    std::shared_ptr<SolverLogManager> &solver_log_manager,
+    const bool mps_has_alpha, Logger logger)
     : Worker(logger),
       subproblems_count(subproblems_count),
       _mps_has_alpha(mps_has_alpha) {
   _is_master = true;
 
-  init(variable_map, path_to_mps, solver_name, log_level, log_name);
+  init(variable_map, path_to_mps, solver_name, log_level, solver_log_manager);
   if (!_mps_has_alpha) {
     _set_upper_bounds();
   }

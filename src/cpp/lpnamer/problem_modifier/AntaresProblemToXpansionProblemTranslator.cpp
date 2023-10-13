@@ -12,9 +12,8 @@ std::shared_ptr<Problem>
 AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
     const LpsFromAntares& lps, unsigned int year, unsigned int week,
     const std::string& solver_name,
-    const std::filesystem::path& log_file_path) {
+    std::shared_ptr<SolverLogManager>& solver_log_manager) {
   SolverFactory factory;
-  auto solver_log_manager = std::make_shared<SolverLogManager>(log_file_path);
   auto problem = std::make_shared<Problem>(
       factory.create_solver(solver_name, solver_log_manager));
   problem->init();

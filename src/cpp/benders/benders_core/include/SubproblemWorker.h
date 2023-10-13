@@ -18,7 +18,8 @@ class SubproblemWorker : public Worker {
   SubproblemWorker(VariableMap const &variable_map,
                    const std::filesystem::path &path_to_mps,
                    double const &slave_weight, const std::string &solver_name,
-                   const int log_level, const std::filesystem::path &log_name,
+                   const int log_level,
+                   std::shared_ptr<SolverLogManager> &solver_log_manager,
                    Logger logger);
   virtual ~SubproblemWorker() = default;
 

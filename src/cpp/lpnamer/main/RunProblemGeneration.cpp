@@ -117,16 +117,16 @@ void validateMasterFormulation(
 }
 
 std::vector<std::shared_ptr<Problem>> getXpansionProblems(
-    const std::filesystem::path& log_file_path, const std::string& solver_name,
-    const std::vector<ProblemData>& mpsList, std::filesystem::path& lpDir_,
-    std::shared_ptr<ArchiveReader>& reader) {
+    std::shared_ptr<SolverLogManager>& solver_log_manager,
+    const std::string& solver_name, const std::vector<ProblemData>& mpsList,
+    std::filesystem::path& lpDir_, std::shared_ptr<ArchiveReader>& reader) {
   std::vector<std::string> problem_names;
   std::transform(mpsList.begin(), mpsList.end(),
                  std::back_inserter(problem_names),
                  [](ProblemData const& data) { return data._problem_mps; });
   auto adapter = std::make_shared<ZipProblemsProviderAdapter>(lpDir_, reader,
                                                               problem_names);
-  return adapter->provideProblems(solver_name, log_file_path);
+  return adapter->provideProblems(solver_name, solver_log_manager);
 }
 void RunProblemGeneration(
     const std::filesystem::path& xpansion_output_dir,
@@ -171,16 +171,18 @@ void RunProblemGeneration(
 
   bool use_zip_implementation = true;
   bool use_file_implementation = false;
+
+  auto solver_log_manager = std::make_shared<SolverLogManager>(log_file_path);
   Couplings couplings;
-  LinkProblemsGenerator linkProblemsGenerator(lpDir_, links, solver_name,
-                                              logger, log_file_path, rename_problems);
+  LinkProblemsGenerator linkProblemsGenerator(
+      lpDir_, links, solver_name, logger, solver_log_manager, rename_problems);
   if (use_zip_implementation) {
     std::shared_ptr<ArchiveReader> reader =
         InstantiateZipReader(antares_archive_path);
 
     /* Main stuff */
     std::vector<std::shared_ptr<Problem>> xpansion_problems =
-        getXpansionProblems(log_file_path, solver_name, mpsList, lpDir_,
+        getXpansionProblems(solver_log_manager, solver_name, mpsList, lpDir_,
                             reader);
 
     std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
@@ -228,7 +230,7 @@ void RunProblemGeneration(
 
     XpansionProblemsFromAntaresProvider adapter(lps);
     auto xpansion_problems =
-        adapter.provideProblems(solver_name, log_file_path);
+        adapter.provideProblems(solver_name, solver_log_manager);
     std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
         problems_and_data;
     for (int i = 0; i < xpansion_problems.size(); ++i) {
@@ -259,7 +261,7 @@ void RunProblemGeneration(
 
   MasterGeneration master_generation(
       xpansion_output_dir, links, additionalConstraints, couplings,
-      master_formulation, solver_name, logger, log_file_path);
+      master_formulation, solver_name, logger, solver_log_manager);
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Problem Generation ran in: "
       << format_time_str(problem_generation_timer.elapsed()) << std::endl;

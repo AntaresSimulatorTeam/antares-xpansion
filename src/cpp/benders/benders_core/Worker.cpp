@@ -37,10 +37,10 @@ void Worker::get_value(double &lb) const {
 void Worker::init(VariableMap const &variable_map,
                   const std::filesystem::path &path_to_mps,
                   std::string const &solver_name, int log_level,
-                  const std::filesystem::path &log_name) {
+                  std::shared_ptr<SolverLogManager> &solver_log_manager) {
   _path_to_mps = path_to_mps;
   SolverFactory factory;
-  auto solver_log_manager = std::make_shared<SolverLogManager>(log_name);
+
   if (_is_master) {
     _solver = factory.create_solver(solver_name, SOLVER_TYPE::INTEGER,
                                     solver_log_manager);
