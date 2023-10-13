@@ -32,7 +32,7 @@ TEST(MasterProblemBuilderTest, test_one_candidate_not_integer) {
     candidates.insert(candidates.end(), candidateFromLink.begin(),
                       candidateFromLink.end());
   }
-  auto solver_log_manager = std::make_shared<SolverLogManager>("");
+  auto solver_log_manager = SolverLogManager("");
   auto master_problem = MasterProblemBuilder(master_formulation)
                             .build(solver_name, candidates, solver_log_manager);
   ASSERT_EQ(master_problem->get_ncols(), 1);
@@ -87,7 +87,7 @@ TEST(MasterProblemBuilderTest, test_one_candidate_integer_problem_integer) {
                       candidateFromLink.end());
   }
 
-  auto solver_log_manager = std::make_shared<SolverLogManager>("");
+  auto solver_log_manager = SolverLogManager("");
   auto master_problem = MasterProblemBuilder(master_formulation)
                             .build(solver_name, candidates, solver_log_manager);
   ASSERT_EQ(master_problem->get_ncols(), 2);
@@ -150,7 +150,7 @@ TEST(MasterProblemBuilderTest, test_one_candidate_integer_problem_relaxed) {
                       candidateFromLink.end());
   }
 
-  auto solver_log_manager = std::make_shared<SolverLogManager>("");
+  auto solver_log_manager = SolverLogManager("");
   auto master_problem = MasterProblemBuilder(master_formulation)
                             .build(solver_name, candidates, solver_log_manager);
   ASSERT_EQ(master_problem->get_ncols(), 1);

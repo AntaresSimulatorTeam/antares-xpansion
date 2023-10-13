@@ -159,7 +159,7 @@ class BendersBase {
  private:
   BendersBaseOptions _options;
   unsigned int _totalNbProblems = 0;
-  std::filesystem::path _log_name;
+  std::filesystem::path _log_name = "";
   BendersRelevantIterationsData relevantIterationData_ = {
       std::make_shared<WorkerMasterData>(), nullptr};
   WorkerMasterPtr _master;

@@ -55,8 +55,7 @@ protected:
         std::string solver_name = "CBC";
         SolverFactory factory;
 
-        auto solver_log_manager =
-            std::make_shared<SolverLogManager>(std::tmpnam(nullptr));
+        auto solver_log_manager = SolverLogManager(std::tmpnam(nullptr));
         SolverAbstract::Ptr solver_model =
             factory.create_solver(solver_name, solver_log_manager);
         solver_model->init();
