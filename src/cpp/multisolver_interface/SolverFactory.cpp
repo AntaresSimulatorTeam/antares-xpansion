@@ -21,12 +21,12 @@ SolverFactory::SolverFactory() {
 
 SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name, const SOLVER_TYPE solver_type) const {
-  auto log_manager = std::make_shared<SolverLogManager>("");
+  auto log_manager = SolverLogManager("");
   return create_solver(solver_name, solver_type, log_manager);
 }
 SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name, const SOLVER_TYPE solver_type,
-    std::shared_ptr<SolverLogManager> &log_manager) const {
+    SolverLogManager &log_manager) const {
 #ifdef COIN_OR
   if (solver_name == COIN_STR && solver_type == SOLVER_TYPE::CONTINUOUS) {
     return std::make_shared<SolverClp>(log_manager);
@@ -38,12 +38,11 @@ SolverAbstract::Ptr SolverFactory::create_solver(
 }
 SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name) const {
-  auto log_manager = std::make_shared<SolverLogManager>("");
+  auto log_manager = SolverLogManager("");
   return create_solver(solver_name, log_manager);
 }
 SolverAbstract::Ptr SolverFactory::create_solver(
-    const std::string &solver_name,
-    std::shared_ptr<SolverLogManager> &log_manager) const {
+    const std::string &solver_name, SolverLogManager &log_manager) const {
   if (solver_name == "") {
     throw InvalidSolverNameException(solver_name, LOGLOCATION);
   }

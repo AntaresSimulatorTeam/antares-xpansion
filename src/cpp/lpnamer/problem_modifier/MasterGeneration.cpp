@@ -12,7 +12,7 @@ MasterGeneration::MasterGeneration(
     const AdditionalConstraints &additionalConstraints_p, Couplings &couplings,
     std::string const &master_formulation, std::string const &solver_name,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
-    std::shared_ptr<SolverLogManager> &solver_log_manager)
+    SolverLogManager&solver_log_manager)
     : logger_(logger) {
   add_candidates(links);
   write_master_mps(rootPath, master_formulation, solver_name,
@@ -36,7 +36,7 @@ void MasterGeneration::write_master_mps(
     const std::filesystem::path &rootPath,
     std::string const &master_formulation, std::string const &solver_name,
     const AdditionalConstraints &additionalConstraints_p,
-    std::shared_ptr<SolverLogManager> &solver_log_manager) const {
+    SolverLogManager&solver_log_manager) const {
   SolverAbstract::Ptr master_l =
       MasterProblemBuilder(master_formulation)
           .build(solver_name, candidates, solver_log_manager);

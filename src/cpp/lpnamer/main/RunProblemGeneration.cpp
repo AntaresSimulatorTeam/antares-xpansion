@@ -117,9 +117,9 @@ void validateMasterFormulation(
 }
 
 std::vector<std::shared_ptr<Problem>> getXpansionProblems(
-    std::shared_ptr<SolverLogManager>& solver_log_manager,
-    const std::string& solver_name, const std::vector<ProblemData>& mpsList,
-    std::filesystem::path& lpDir_, std::shared_ptr<ArchiveReader>& reader) {
+    SolverLogManager& solver_log_manager, const std::string& solver_name,
+    const std::vector<ProblemData>& mpsList, std::filesystem::path& lpDir_,
+    std::shared_ptr<ArchiveReader>& reader) {
   std::vector<std::string> problem_names;
   std::transform(mpsList.begin(), mpsList.end(),
                  std::back_inserter(problem_names),
@@ -172,7 +172,7 @@ void RunProblemGeneration(
   bool use_zip_implementation = true;
   bool use_file_implementation = false;
 
-  auto solver_log_manager = std::make_shared<SolverLogManager>(log_file_path);
+  auto solver_log_manager = SolverLogManager(log_file_path);
   Couplings couplings;
   LinkProblemsGenerator linkProblemsGenerator(
       lpDir_, links, solver_name, logger, solver_log_manager, rename_problems);

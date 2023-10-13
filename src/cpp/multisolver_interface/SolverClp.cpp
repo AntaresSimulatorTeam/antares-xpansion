@@ -8,15 +8,13 @@
 *************************************************************************************************/
 int SolverClp::_NumberOfProblems = 0;
 
-SolverClp::SolverClp(std::shared_ptr<SolverLogManager> &log_manager)
-    : SolverClp() {
-  solverLogManager_ = std::move(log_manager);
-  _fp = solverLogManager_->log_file_ptr;
-  if (!solverLogManager_ || !_fp) {
+SolverClp::SolverClp(SolverLogManager &log_manager) : SolverClp() {
+  _fp = log_manager.log_file_ptr;
+  if (!_fp) {
     std::cout << "Empty log file name, fallback to default behaviour"
               << std::endl;
   } else {
-    _clp.messageHandler()->setFilePointer(solverLogManager_->log_file_ptr);
+    _clp.messageHandler()->setFilePointer(_fp);
   }
 }
 SolverClp::SolverClp() {
@@ -29,10 +27,9 @@ SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy)
   // Try to cast the solver in fictif to a SolverClp
   if (const auto c = dynamic_cast<const SolverClp *>(toCopy.get())) {
     _clp = ClpSimplex(c->_clp);
-    solverLogManager_ = std::move(c->solverLogManager_);
-    _fp = solverLogManager_->log_file_ptr;
+    _fp = c->_fp;
     if (_fp) {
-      _clp.messageHandler()->setFilePointer(_fp);
+      _clp.messageHandler()->setFilePointer(c->_fp);
     }
   } else {
     _NumberOfProblems -= 1;

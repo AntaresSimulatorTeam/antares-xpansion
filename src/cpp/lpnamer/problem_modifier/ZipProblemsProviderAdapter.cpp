@@ -13,7 +13,7 @@
 std::vector<std::shared_ptr<Problem>>
 ZipProblemsProviderAdapter::provideProblems(
     const std::string& solver_name,
-    std::shared_ptr<SolverLogManager>& solver_log_manager) const {
+    SolverLogManager& solver_log_manager) const {
   std::vector<std::shared_ptr<Problem>> problems(problem_names_.size());
   // Order is important. Problems need to be in the same order as names
   std::transform(std::execution::par,

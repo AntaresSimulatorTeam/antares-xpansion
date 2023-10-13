@@ -17,7 +17,7 @@ void ZipProblemProviderAdapter::reader_extract_file(
 
 std::shared_ptr<Problem> ZipProblemProviderAdapter::provide_problem(
     const std::string& solver_name,
-    std::shared_ptr<SolverLogManager>& solver_log_manager) const {
+    SolverLogManager& solver_log_manager) const {
   reader_extract_file(problem_name_, *archive_reader_, lp_dir_);
   SolverFactory factory;
   auto const lp_mps_name = ZipProblemProviderAdapter::lp_dir_ /

@@ -15,6 +15,7 @@
 
 class SolverLogManager {
  public:
+  explicit SolverLogManager() = default;
   explicit SolverLogManager(const std::filesystem::path &log_file)
       : log_file_path(log_file) {
 #ifdef __linux__
@@ -210,7 +211,6 @@ class SolverAbstract {
    */
   std::list<std::ostream *> &get_stream() { return _streams; };
   FILE *_fp = nullptr;
-  std::shared_ptr<SolverLogManager> solverLogManager_;
   std::filesystem::path _log_file = "";
   /**
    * @brief add a stream to the list of streams used by the solver instance

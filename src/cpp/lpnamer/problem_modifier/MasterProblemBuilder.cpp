@@ -16,7 +16,7 @@ MasterProblemBuilder::MasterProblemBuilder(
 
 std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(
     const std::string& solverName, const std::vector<Candidate>& candidates,
-    std::shared_ptr<SolverLogManager>& solver_log_manager) {
+    SolverLogManager& solver_log_manager) {
   _indexOfNvar.clear();
   _indexOfPmaxVar.clear();
 

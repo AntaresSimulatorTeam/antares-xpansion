@@ -16,7 +16,7 @@ class WorkerMaster : public Worker {
                const std::filesystem::path &path_to_mps,
                const std::string &solver_name, const int log_level,
                int subproblems_count,
-               std::shared_ptr<SolverLogManager> &solver_log_manager,
+               SolverLogManager&solver_log_manager,
                bool mps_has_alpha, Logger logger);
   virtual ~WorkerMaster() = default;
 

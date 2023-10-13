@@ -13,7 +13,7 @@
 SubproblemWorker::SubproblemWorker(
     VariableMap const &variable_map, const std::filesystem::path &path_to_mps,
     double const &slave_weight, const std::string &solver_name,
-    const int log_level, std::shared_ptr<SolverLogManager> &solver_log_manager,
+    const int log_level, SolverLogManager&solver_log_manager,
     Logger logger)
     : Worker(logger) {
   init(variable_map, path_to_mps, solver_name, log_level, solver_log_manager);

@@ -8,10 +8,8 @@
 *************************************************************************************************/
 int SolverCbc::_NumberOfProblems = 0;
 
-SolverCbc::SolverCbc(std::shared_ptr<SolverLogManager> &log_manager)
-    : SolverCbc() {
-  solverLogManager_ = std::move(log_manager);
-  _fp = solverLogManager_->log_file_ptr;
+SolverCbc::SolverCbc(SolverLogManager &log_manager) : SolverCbc() {
+  _fp = log_manager.log_file_ptr;
   if (!_fp) {
     std::cout << "Empty log file name, fallback to default behaviour"
               << std::endl;
@@ -31,9 +29,8 @@ SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy)
   if (const auto c = dynamic_cast<const SolverCbc *>(toCopy.get())) {
     _clp_inner_solver = OsiClpSolverInterface(c->_clp_inner_solver);
 
-    solverLogManager_ = std::move(c->solverLogManager_);
     defineCbcModelFromInnerSolver();
-    _fp = solverLogManager_->log_file_ptr;
+    _fp = c->_fp;
     if (_fp) {
       _clp_inner_solver.messageHandler()->setFilePointer(_fp);
       _cbc.messageHandler()->setFilePointer(_fp);

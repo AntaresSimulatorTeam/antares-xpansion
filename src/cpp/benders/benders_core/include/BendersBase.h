@@ -136,7 +136,7 @@ class BendersBase {
     return cumulative_number_of_subproblem_resolved_before_resume;
   }
 
-  std::shared_ptr<SolverLogManager> solver_log_manager_;
+  SolverLogManager solver_log_manager_;
 
  private:
   void print_master_and_cut(std::ostream &file, int ite,

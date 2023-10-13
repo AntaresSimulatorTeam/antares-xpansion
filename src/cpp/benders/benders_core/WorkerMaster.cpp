@@ -22,7 +22,7 @@ WorkerMaster::WorkerMaster(Logger logger) : Worker(logger) {
 WorkerMaster::WorkerMaster(
     VariableMap const &variable_map, const std::filesystem::path &path_to_mps,
     const std::string &solver_name, const int log_level, int subproblems_count,
-    std::shared_ptr<SolverLogManager> &solver_log_manager,
+    SolverLogManager&solver_log_manager,
     const bool mps_has_alpha, Logger logger)
     : Worker(logger),
       subproblems_count(subproblems_count),
