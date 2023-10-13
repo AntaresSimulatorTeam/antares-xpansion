@@ -34,10 +34,11 @@ class SolverLogManager {
     }
   }
   ~SolverLogManager() {
-    if (log_file_ptr) {
-      fclose(log_file_ptr);
-      log_file_ptr = nullptr;
-    }
+   //TODO
+  // if (log_file_ptr) {
+  //    fclose(log_file_ptr);
+  //    log_file_ptr = nullptr;
+ //   }
   }
 
   FILE *log_file_ptr = nullptr;
