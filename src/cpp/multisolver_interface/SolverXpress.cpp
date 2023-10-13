@@ -17,7 +17,7 @@ const std::map<int, std::string> TYPETONAME = {{1, "rows"}, {2, "columns"}};
 SolverXpress::SolverXpress(SolverLogManager &log_manager) : SolverXpress() {
   if (log_manager.log_file_path != "") {
     _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
-    _log_file = log_manager->log_file_path;
+    _log_file = log_manager.log_file_path;
     add_stream(_log_stream);
   }
 }
