@@ -27,7 +27,7 @@ class SolverLogManager {
                                 _SH_DENYNO)) == nullptr)
 #endif
     {
-      std::cerr << "Invalid log file name passed as parameter: "
+      std::cout << "Invalid log file name passed as parameter: "
                 << std::quoted(log_file.string()) << std::endl;
     } else {
       setvbuf(log_file_ptr, nullptr, _IONBF, 0);
