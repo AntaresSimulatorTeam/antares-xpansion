@@ -1,2 +1,2 @@
 __version__ = "${CMAKE_PROJECT_VERSION}" 
-__antares_simulator_version__ = "${ANTARES_VERSION_TAG}" 
+__antares_simulator_version__ = "${ANTARES_VERSION}" 
