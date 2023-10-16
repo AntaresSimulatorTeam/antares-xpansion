@@ -195,17 +195,6 @@ jobs:
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake3 --build _build --config Release -j2 --target install
 
-      - name: Issue688_test
-        timeout-minutes: 120
-        shell: bash
-        run: |
-          source /etc/profile.d/modules.sh
-          module load mpi
-          export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
-          export XPRESS=${{ env.XPRESS_CONTAINER }}
-          cd _build
-          ctest3 -C Release --output-on-failure -R "Issue688_test"
-
       - name: Running unit tests
         timeout-minutes: 120
         shell: bash

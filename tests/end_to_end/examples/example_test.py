@@ -12,7 +12,6 @@ import subprocess
 import pytest
 from src.python.antares_xpansion.candidates_reader import CandidatesReader
 
-Issue688_Test = Path("../../../examples/SmallTestSixCandidatesWithPlaylist")
 ALL_STUDIES_PATH = Path("../../../data_test/examples")
 RELATIVE_TOLERANCE = 1e-4
 RELATIVE_TOLERANCE_LIGHT = 1e-2
@@ -267,21 +266,6 @@ def assert_ntc_update_pre_820(
         rtol=RELATIVE_TOLERANCE_LIGHT,
     )
 
-@pytest.mark.Issue688_test
-def test_six_candidates_with_playlists_10_monte_carlo_years(
-    install_dir,
-    allow_run_as_root,
-    tmp_path
-):
-    study_path = Issue688_Test
-    tmp_study = tmp_path / study_path.name
-    shutil.copytree(study_path, tmp_study)
-    shutil.copyfile(tmp_study/"settings"/"10MC-generaldata.ini", tmp_study/"settings"/"generaldata.ini")
-#    launch_xpansion(install_dir, tmp_study,
-#                    BendersMethod.BENDERS, allow_run_as_root, 1)
-    # verify_solution(tmp_study, expected_values, expected_investment_solution)
-    # verify_study_update(
-    #     tmp_study, expected_investment_solution, antares_version)
 
 ## TESTS ##
 parameters_names = (

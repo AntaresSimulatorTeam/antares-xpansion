@@ -100,13 +100,6 @@ jobs:
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake3 --build _build --config Release -j2 --target install
 
-      - name: Issue688_test
-        run: |
-          source /etc/profile.d/modules.sh
-          module load mpi
-          cd _build
-          ctest3 -C Release --output-on-failure -R "Issue688_test"
-
       - name: Running unit tests
         run: |
           source /etc/profile.d/modules.sh

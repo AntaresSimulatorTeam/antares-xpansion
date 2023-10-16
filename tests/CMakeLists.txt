@@ -16,14 +16,6 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
         if(${XPRESS})
 	        set(xpress_avalaible "True")
         endif() 
-
-    add_test(
-        NAME Issue688_test
-        COMMAND Python3::Interpreter -m pytest -m Issue688_test --allow_run_as_root=${ALLOW_RUN_AS_ROOT} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-    )
-    set_property(TEST Issue688_test PROPERTY LABELS Issue688_test)
-
     # Python unit test
     add_test(
             NAME unit_launcher

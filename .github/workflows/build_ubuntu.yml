@@ -119,11 +119,6 @@ jobs:
         run: |
           cmake --build _build --config Release -j8
 
-      - name: Issue688_test
-        run: |
-          cd _build
-          ctest -C Release --output-on-failure -R "Issue688_test"
-
       - name: Test
         run: |
           cd _build
