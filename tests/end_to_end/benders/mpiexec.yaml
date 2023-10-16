@@ -1,0 +1,2 @@
+installDir : E:/RTE/antares-xpansion/_build/Debug
+mpiexec                         : C:/Program Files/Microsoft MPI/Bin/mpiexec.exe

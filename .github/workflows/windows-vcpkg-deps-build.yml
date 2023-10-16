@@ -96,6 +96,13 @@ jobs:
         run: |
           cmake --build _build --config Release -j2 --target install
 
+      - name: Issue688_test
+        shell: cmd
+        run: |
+          set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin\
+          cd _build
+          ctest -C Release --output-on-failure -R "Issue688_test"
+
       - name: Running unit tests
         shell: cmd
         run: |
