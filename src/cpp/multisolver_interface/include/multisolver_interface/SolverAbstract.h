@@ -33,14 +33,14 @@ class SolverLogManager {
       setvbuf(log_file_ptr, nullptr, _IONBF, 0);
     }
   }
-
-  ~SolverLogManager() {
+//TODO
+/*  ~SolverLogManager() {
     if (log_file_ptr) {
       fclose(log_file_ptr);
       log_file_ptr = nullptr;
     }
   }
-
+*/
   FILE *log_file_ptr = nullptr;
   std::filesystem::path log_file_path = "";
 };
