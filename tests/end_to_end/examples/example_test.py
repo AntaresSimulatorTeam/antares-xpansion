@@ -271,9 +271,9 @@ def assert_ntc_update_pre_820(
 def test_six_candidates_with_playlists_10_monte_carlo_years(
     install_dir,
     allow_run_as_root,
-    study_path,
     tmp_path
 ):
+    study_path = Issue688_Test
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
     shutil.copytree(tmp_study/"settings"/"10MC-generaldata.ini", tmp_study/"settings"/"generaldata.ini")
