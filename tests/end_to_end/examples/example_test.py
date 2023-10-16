@@ -268,10 +268,10 @@ def assert_ntc_update_pre_820(
     )
 
 @pytest.mark.Issue688_test
-def test_SixCandidatesWithPlaylists_10MonteCarloYears(
+def test_six_candidates_with_playlists_10_monte_carlo_years(
     install_dir,
     allow_run_as_root,
-    study_path
+    study_path,
     tmp_path
 ):
     tmp_study = tmp_path / study_path.name
