@@ -16,8 +16,24 @@
 class SolverLogManager {
  public:
   explicit SolverLogManager() = default;
+  explicit SolverLogManager(const SolverLogManager &other)
+      : SolverLogManager(other.log_file_path) {}
+
   explicit SolverLogManager(const std::filesystem::path &log_file)
       : log_file_path(log_file) {
+    init();
+  }
+
+  SolverLogManager &operator=(const SolverLogManager &other) {
+    if (this == &other) {
+      return *this;
+    }
+    log_file_path = other.log_file_path;
+    init();
+    return *this;
+  }
+
+  void init() {
 #ifdef __linux__
     if (log_file_path.empty() ||
         (log_file_ptr = fopen(log_file_path.string().c_str(), "a+")) == nullptr)
@@ -28,19 +44,18 @@ class SolverLogManager {
 #endif
     {
       std::cout << "Invalid log file name passed as parameter: "
-                << std::quoted(log_file.string()) << std::endl;
+                << std::quoted(log_file_path.string()) << std::endl;
     } else {
       setvbuf(log_file_ptr, nullptr, _IONBF, 0);
     }
   }
-//TODO
-/*  ~SolverLogManager() {
+  ~SolverLogManager() {
     if (log_file_ptr) {
       fclose(log_file_ptr);
       log_file_ptr = nullptr;
     }
   }
-*/
+
   FILE *log_file_ptr = nullptr;
   std::filesystem::path log_file_path = "";
 };
