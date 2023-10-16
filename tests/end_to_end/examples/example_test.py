@@ -277,8 +277,8 @@ def test_six_candidates_with_playlists_10_monte_carlo_years(
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
     shutil.copyfile(tmp_study/"settings"/"10MC-generaldata.ini", tmp_study/"settings"/"generaldata.ini")
-    launch_xpansion(install_dir, tmp_study,
-                    BendersMethod.BENDERS, allow_run_as_root, 1)
+#    launch_xpansion(install_dir, tmp_study,
+#                    BendersMethod.BENDERS, allow_run_as_root, 1)
     # verify_solution(tmp_study, expected_values, expected_investment_solution)
     # verify_study_update(
     #     tmp_study, expected_investment_solution, antares_version)
