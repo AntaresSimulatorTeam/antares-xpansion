@@ -127,12 +127,12 @@ jobs:
           antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
           os-full-name: Ubuntu-20.04
-        
+
       - name: Compile Boost
         uses: ./.github/workflows/compile-boost
-        with: 
+        with:
           prefix: "../rte-antares-deps-Release/"
-        
+
       - name: Download userguide
         uses: actions/download-artifact@v3
         with:
