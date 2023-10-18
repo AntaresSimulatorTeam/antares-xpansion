@@ -18,11 +18,11 @@ list(APPEND Solver_sources
 )
 
 # XPRESS
-IF( XPRESS )
+#IF( XPRESS )
 	list(APPEND Solver_sources
 		${CMAKE_CURRENT_LIST_DIR}/SolverXpress.cpp
 	)
-ENDIF( XPRESS )
+#ENDIF( XPRESS )
 
 #Clp - CBc
 IF(COIN_OR)
@@ -52,12 +52,12 @@ target_include_directories (solvers
 
 
 # XPRESS
-if(XPRESS)
-	target_link_libraries (solvers
-		PUBLIC
-			XPRESS::XPRESS
-	)
-endif()
+#if(XPRESS)
+	# target_link_libraries (solvers
+	# 	PUBLIC
+	# 		XPRESS::XPRESS
+	# )
+#endif()
 
 #CLP-CBC
 if(COIN_OR)

@@ -1,6 +1,7 @@
-#ifdef XPRESS
+// #ifdef XPRESS
 #include "SolverXpress.h"
-#endif
+#include "environment.h"
+// #endif
 #ifdef COIN_OR
 #include "SolverCbc.h"
 #include "SolverClp.h"
@@ -10,9 +11,10 @@
 
 SolverFactory::SolverFactory() {
   _available_solvers.clear();
-#ifdef XPRESS
-  _available_solvers.push_back(XPRESS_STR);
-#endif
+  if (isXpress_available_ =
+          operations_research_Xpansion::XpressIsCorrectlyInstalled()) {
+    _available_solvers.push_back(XPRESS_STR);
+  }
 #ifdef COIN_OR
   _available_solvers.push_back(CLP_STR);
   _available_solvers.push_back(CBC_STR);
@@ -45,11 +47,9 @@ SolverAbstract::Ptr SolverFactory::create_solver(
   if (solver_name == "") {
     throw InvalidSolverNameException(solver_name, LOGLOCATION);
   }
-#ifdef XPRESS
-  else if (solver_name == XPRESS_STR) {
+  if (isXpress_available_ && solver_name == XPRESS_STR) {
     return std::make_shared<SolverXpress>(log_name);
   }
-#endif
 #ifdef COIN_OR
   else if (solver_name == CLP_STR) {
     return std::make_shared<SolverClp>(log_name);
@@ -69,11 +69,9 @@ SolverAbstract::Ptr SolverFactory::copy_solver(
   if (solver_name == "") {
     throw InvalidSolverNameException(solver_name, LOGLOCATION);
   }
-#ifdef XPRESS
-  else if (solver_name == XPRESS_STR) {
+  if (isXpress_available_ && solver_name == XPRESS_STR) {
     return std::make_shared<SolverXpress>(to_copy);
   }
-#endif
 #ifdef COIN_OR
   else if (solver_name == CLP_STR) {
     return std::make_shared<SolverClp>(to_copy);

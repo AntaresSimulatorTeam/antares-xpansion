@@ -6,6 +6,8 @@
 
 #include "StringManip.h"
 
+using namespace operations_research_Xpansion;
+
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor
 --------------------------------

@@ -243,11 +243,11 @@ if(XPRESS)
 	message("XPRESS is ${XPRESS}")
 
 	#Default xpress install dir
-	if (NOT XPRESS_ROOT)
+	if (NOT XPRESSDIR)
 		if (MSVC)
-			set(XPRESS_ROOT "C:/xpressmp")
+			set(XPRESSDIR "C:/xpressmp")
 		elseif(UNIX)
-			set(XPRESS_ROOT "/opt/xpressmp")
+			set(XPRESSDIR "/opt/xpressmp")
 		endif()
 	endif()
 
