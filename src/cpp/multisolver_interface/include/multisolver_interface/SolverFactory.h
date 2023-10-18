@@ -62,5 +62,6 @@ class SolverFactory {
    * @brief Returns a reference to the list of available solvers
    */
   const std::vector<std::string> &get_solvers_list() const;
-  bool isXpress_available = false;
+
+    bool isXpress_available_ = false;
 };
