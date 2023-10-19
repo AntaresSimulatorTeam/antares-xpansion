@@ -13,7 +13,7 @@
 std::vector<std::shared_ptr<Problem>>
 ZipProblemsProviderAdapter::provideProblems(
     const std::string& solver_name,
-    const std::filesystem::path& log_file_path) const {
+    SolverLogManager& solver_log_manager) const {
   std::vector<std::shared_ptr<Problem>> problems(problem_names_.size());
   // Order is important. Problems need to be in the same order as names
   std::transform(std::execution::par,
@@ -23,7 +23,7 @@ ZipProblemsProviderAdapter::provideProblems(
                    ZipProblemProviderAdapter problem_provider(lp_dir_, name,
                                                               archive_reader_);
                    return problem_provider.provide_problem(solver_name,
-                                                           log_file_path);
+                                                           solver_log_manager);
                  });
   return problems;
 }

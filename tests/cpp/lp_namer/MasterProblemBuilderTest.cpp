@@ -32,9 +32,9 @@ TEST(MasterProblemBuilderTest, test_one_candidate_not_integer) {
     candidates.insert(candidates.end(), candidateFromLink.begin(),
                       candidateFromLink.end());
   }
-
+  auto solver_log_manager = SolverLogManager("");
   auto master_problem = MasterProblemBuilder(master_formulation)
-                            .build(solver_name, candidates, "");
+                            .build(solver_name, candidates, solver_log_manager);
   ASSERT_EQ(master_problem->get_ncols(), 1);
   ASSERT_EQ(
       master_problem->get_col_names(0, master_problem->get_ncols() - 1)[0],
@@ -87,8 +87,9 @@ TEST(MasterProblemBuilderTest, test_one_candidate_integer_problem_integer) {
                       candidateFromLink.end());
   }
 
+  auto solver_log_manager = SolverLogManager("");
   auto master_problem = MasterProblemBuilder(master_formulation)
-                            .build(solver_name, candidates, "");
+                            .build(solver_name, candidates, solver_log_manager);
   ASSERT_EQ(master_problem->get_ncols(), 2);
 
   std::vector<char> colTypeArray(master_problem->get_ncols());
@@ -149,8 +150,9 @@ TEST(MasterProblemBuilderTest, test_one_candidate_integer_problem_relaxed) {
                       candidateFromLink.end());
   }
 
+  auto solver_log_manager = SolverLogManager("");
   auto master_problem = MasterProblemBuilder(master_formulation)
-                            .build(solver_name, candidates, "");
+                            .build(solver_name, candidates, solver_log_manager);
   ASSERT_EQ(master_problem->get_ncols(), 1);
   ASSERT_EQ(
       master_problem->get_col_names(0, master_problem->get_ncols() - 1)[0],

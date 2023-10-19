@@ -13,7 +13,7 @@ class ZipProblemsProviderAdapter : public IXpansionProblemsProvider {
                              std::vector<std::string> problem_names);
   [[nodiscard]] std::vector<std::shared_ptr<Problem>> provideProblems(
       const std::string& solver_name,
-      const std::filesystem::path& log_file_path) const override;
+      SolverLogManager& solver_log_manager) const override;
   std::shared_ptr<ArchiveReader> archive_reader_;
   std::filesystem::path lp_dir_;
   std::vector<std::string> problem_names_;

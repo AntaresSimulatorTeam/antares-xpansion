@@ -12,11 +12,11 @@ MasterGeneration::MasterGeneration(
     const AdditionalConstraints &additionalConstraints_p, Couplings &couplings,
     std::string const &master_formulation, std::string const &solver_name,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
-    const std::filesystem::path &log_file_path)
+    SolverLogManager&solver_log_manager)
     : logger_(logger) {
   add_candidates(links);
   write_master_mps(rootPath, master_formulation, solver_name,
-                   additionalConstraints_p, log_file_path);
+                   additionalConstraints_p, solver_log_manager);
   write_structure_file(rootPath, couplings);
 }
 
@@ -36,10 +36,10 @@ void MasterGeneration::write_master_mps(
     const std::filesystem::path &rootPath,
     std::string const &master_formulation, std::string const &solver_name,
     const AdditionalConstraints &additionalConstraints_p,
-    const std::filesystem::path &log_file_path) const {
+    SolverLogManager&solver_log_manager) const {
   SolverAbstract::Ptr master_l =
       MasterProblemBuilder(master_formulation)
-          .build(solver_name, candidates, log_file_path);
+          .build(solver_name, candidates, solver_log_manager);
   treatAdditionalConstraints(master_l, additionalConstraints_p, logger_);
 
   std::string const &lp_name = "master";

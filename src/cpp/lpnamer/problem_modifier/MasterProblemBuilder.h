@@ -19,7 +19,7 @@ class MasterProblemBuilder {
   explicit MasterProblemBuilder(const std::string& master_formulation);
   std::shared_ptr<SolverAbstract> build(
       const std::string& solverName, const std::vector<Candidate>& candidates,
-      const std::filesystem::path& log_file_path);
+      SolverLogManager& solver_log_manager);
 
  private:
   void addNvarOnEachIntegerCandidate(

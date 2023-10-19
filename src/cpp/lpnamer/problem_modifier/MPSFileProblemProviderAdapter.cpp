@@ -9,11 +9,11 @@
 #include "multisolver_interface/SolverFactory.h"
 std::shared_ptr<Problem> MPSFileProblemProviderAdapter::provide_problem(
     const std::string& solver_name,
-    const std::filesystem::path& log_file_path) const {
+    SolverLogManager& solver_log_manager) const {
   SolverFactory factory;
   auto const lp_mps_name = lp_dir_ / problem_name_;
   auto in_prblm = std::make_shared<Problem>(
-      factory.create_solver(solver_name, log_file_path));
+      factory.create_solver(solver_name, solver_log_manager));
 
   in_prblm->read_prob_mps(lp_mps_name);
   return in_prblm;

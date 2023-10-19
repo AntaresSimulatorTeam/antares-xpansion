@@ -2,6 +2,7 @@
 
 #include <cstdio>
 #include <filesystem>
+#include <iomanip>
 #include <iostream>
 #include <list>
 #include <memory>
@@ -11,6 +12,53 @@
 #include <vector>
 
 #include "LogUtils.h"
+
+class SolverLogManager {
+ public:
+  explicit SolverLogManager() = default;
+  explicit SolverLogManager(const SolverLogManager &other)
+      : SolverLogManager(other.log_file_path) {}
+
+  explicit SolverLogManager(const std::filesystem::path &log_file)
+      : log_file_path(log_file) {
+    init();
+  }
+
+  SolverLogManager &operator=(const SolverLogManager &other) {
+    if (this == &other) {
+      return *this;
+    }
+    log_file_path = other.log_file_path;
+    init();
+    return *this;
+  }
+
+  void init() {
+#ifdef __linux__
+    if (log_file_path.empty() ||
+        (log_file_ptr = fopen(log_file_path.string().c_str(), "a+")) == nullptr)
+#elif _WIN32
+    if (log_file_path.empty() ||
+        (log_file_ptr = _fsopen(log_file_path.string().c_str(), "a+",
+                                _SH_DENYNO)) == nullptr)
+#endif
+    {
+      std::cout << "Invalid log file name passed as parameter: "
+                << std::quoted(log_file_path.string()) << std::endl;
+    } else {
+      setvbuf(log_file_ptr, nullptr, _IONBF, 0);
+    }
+  }
+  ~SolverLogManager() {
+    if (log_file_ptr) {
+      fclose(log_file_ptr);
+      log_file_ptr = nullptr;
+    }
+  }
+
+  FILE *log_file_ptr = nullptr;
+  std::filesystem::path log_file_path = "";
+};
 
 class InvalidStatusException
     : public LogUtils::XpansionError<std::runtime_error> {

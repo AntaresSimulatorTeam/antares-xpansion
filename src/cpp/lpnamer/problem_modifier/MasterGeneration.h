@@ -25,15 +25,15 @@ class MasterGeneration {
       Couplings &couplings, std::string const &master_formulation,
       std::string const &solver_name,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
-      const std::filesystem::path &log_file_path);
+      SolverLogManager&solver_log_manager);
 
  private: /*methods*/
   void add_candidates(const std::vector<ActiveLink> &links);
-  void write_master_mps(const std::filesystem::path &rootPath,
-                        std::string const &master_formulation,
-                        std::string const &solver_name,
-                        const AdditionalConstraints &additionalConstraints_p,
-                        const std::filesystem::path &log_file_path) const;
+  void write_master_mps(
+      const std::filesystem::path &rootPath,
+      std::string const &master_formulation, std::string const &solver_name,
+      const AdditionalConstraints &additionalConstraints_p,
+      SolverLogManager&solver_log_manager) const;
   void write_structure_file(const std::filesystem::path &rootPath,
                             const Couplings &couplings) const;
 

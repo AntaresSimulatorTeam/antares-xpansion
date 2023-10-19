@@ -11,7 +11,7 @@ class MPSFileProblemProviderAdapter : public IProblemProviderPort {
                                 const std::string& problem_name);
   [[nodiscard]] std::shared_ptr<Problem> provide_problem(
       const std::string& solver_name,
-      const std::filesystem::path& log_file_path) const override;
+      SolverLogManager& solver_log_manager) const override;
   const std::filesystem::path lp_dir_;
   const std::string& problem_name_;
 };

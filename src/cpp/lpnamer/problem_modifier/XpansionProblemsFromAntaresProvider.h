@@ -13,6 +13,6 @@ class XpansionProblemsFromAntaresProvider : public IXpansionProblemsProvider {
   explicit XpansionProblemsFromAntaresProvider(LpsFromAntares antares);
   [[nodiscard]] std::vector<std::shared_ptr<Problem>> provideProblems(
       const std::string& solver_name,
-      const std::filesystem::path& log_file_path) const override;
+      SolverLogManager& solver_log_manager) const override;
   LpsFromAntares antares_hebdo_problems;
 };
