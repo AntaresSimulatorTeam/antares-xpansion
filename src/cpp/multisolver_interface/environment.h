@@ -12,6 +12,8 @@
 // limitations under the License.
 #pragma once
 #include <functional>
+
+#include "dynamic_library.h"
 extern "C" {
 typedef struct xo_prob_struct* XPRSprob;
 }
@@ -393,7 +395,27 @@ bool LoadXpressDynamicLibrary(std::string &xpresspath);
 #define XPRS_MIP_UNBOUNDED 7
 #define XPRS_OBJ_MINIMIZE 1
 #define XPRS_OBJ_MAXIMIZE -1
+
+#define XPRS_ELEMS                                                   1006
+#define XPRS_MIPENTS                                                 1032
+#define XPRS_NAMELENGTH                                              1028
+#define XPRS_OUTPUTLOG_FULL_OUTPUT                                   1
+#define XPRS_ERRORCODE                                               1023
+#define XPRS_OUTPUTLOG_NO_OUTPUT                                     0
+
 extern std::function<int(XPRSprob* p_prob)> XPRScreateprob;
+extern std::function<int(XPRSprob dest, XPRSprob src, const char* name)> XPRScopyprob;
+extern std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSwritebasis;
+extern std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSreadprob;
+extern std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSreadbasis;
+extern std::function<int(XPRSprob prob, int start[], int colind[], double colcoef[], int maxcoefs, int* p_ncoefs, int first, int last)> XPRSgetrows;
+extern std::function<int(XPRSprob prob, int type, const char* name, int* p_index)> XPRSgetindex;
+extern std::function<int(XPRSprob prob, int type, char names[], int first, int last)> XPRSgetnames;
+extern std::function<int(XPRSprob prob, int type, const char names[], int first, int last)> XPRSaddnames;
+extern std::function<int(XPRSprob prob, const char* flags)> XPRSlpoptimize;
+extern std::function<int(XPRSprob prob, const char* flags)> XPRSmipoptimize;
+
+
 extern std::function<int(XPRSprob prob)> XPRSdestroyprob;
 extern std::function<int(const char* path)> XPRSinit;
 extern std::function<int(void)> XPRSfree;

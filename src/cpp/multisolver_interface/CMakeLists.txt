@@ -21,6 +21,8 @@ list(APPEND Solver_sources
 #IF( XPRESS )
 	list(APPEND Solver_sources
 		${CMAKE_CURRENT_LIST_DIR}/SolverXpress.cpp
+		${CMAKE_CURRENT_LIST_DIR}/environment.h
+		${CMAKE_CURRENT_LIST_DIR}/environment.cc
 	)
 #ENDIF( XPRESS )
 
@@ -68,5 +70,6 @@ if(COIN_OR)
 			Coin::CoinUtils
 			Coin::Osi
 			Coin::Cbc
+		   ${CMAKE_DL_LIBS}
 	)
 endif()
