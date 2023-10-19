@@ -193,7 +193,7 @@ void RunProblemGeneration(
     }
     auto mps_file_writer = std::make_shared<MPSFileWriter>(lpDir_);
     std::for_each(
-        std::execution::par, problems_and_data.begin(), problems_and_data.end(),
+        problems_and_data.begin(), problems_and_data.end(),
         [&](const auto& problem_and_data) {
           const auto& [problem, data] = problem_and_data;
           std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
@@ -205,8 +205,9 @@ void RunProblemGeneration(
                 std::make_shared<ProblemVariablesFromProblemAdapter>(
                     problem, links, logger);
           }
-          linkProblemsGenerator.treat(data._problem_mps, couplings, problem.get(),
-                                      variables_provider.get(), mps_file_writer.get());
+          linkProblemsGenerator.treat(data._problem_mps, couplings,
+                                      problem.get(), variables_provider.get(),
+                                      mps_file_writer.get());
         });
 
     reader->Close();
@@ -254,8 +255,9 @@ void RunProblemGeneration(
                 std::make_shared<ProblemVariablesFromProblemAdapter>(
                     problem, links, logger);
           }
-          linkProblemsGenerator.treat(data._problem_mps, couplings, problem.get(),
-                                      variables_provider.get(), mps_file_writer.get());
+          linkProblemsGenerator.treat(data._problem_mps, couplings,
+                                      problem.get(), variables_provider.get(),
+                                      mps_file_writer.get());
         });
   }
 
