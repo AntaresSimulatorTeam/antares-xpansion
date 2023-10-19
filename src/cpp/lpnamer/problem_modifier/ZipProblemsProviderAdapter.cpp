@@ -16,15 +16,15 @@ ZipProblemsProviderAdapter::provideProblems(
     SolverLogManager& solver_log_manager) const {
   std::vector<std::shared_ptr<Problem>> problems(problem_names_.size());
   // Order is important. Problems need to be in the same order as names
-  std::transform(
-      /*std::transform preserves order of element*/
-      problem_names_.begin(), problem_names_.end(), problems.begin(),
-      [&](auto name) {
-        ZipProblemProviderAdapter problem_provider(lp_dir_, name,
-                                                   archive_reader_);
-        return problem_provider.provide_problem(solver_name,
-                                                solver_log_manager);
-      });
+  std::transform(std::execution::par,
+                 /*std::transform preserves order of element*/
+                 problem_names_.begin(), problem_names_.end(), problems.begin(),
+                 [&](auto name) {
+                   ZipProblemProviderAdapter problem_provider(lp_dir_, name,
+                                                              archive_reader_);
+                   return problem_provider.provide_problem(solver_name,
+                                                           solver_log_manager);
+                 });
   return problems;
 }
 ZipProblemsProviderAdapter::ZipProblemsProviderAdapter(

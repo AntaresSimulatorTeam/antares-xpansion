@@ -193,7 +193,7 @@ void RunProblemGeneration(
     }
     auto mps_file_writer = std::make_shared<MPSFileWriter>(lpDir_);
     std::for_each(
-        problems_and_data.begin(), problems_and_data.end(),
+        std::execution::par, problems_and_data.begin(), problems_and_data.end(),
         [&](const auto& problem_and_data) {
           const auto& [problem, data] = problem_and_data;
           std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
