@@ -12,16 +12,15 @@
 TEST(InitializationTest, FoldersAreCreated) {
   auto workingDirectory =
       std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
-  auto simulationDirectory = workingDirectory / "output" / "simulation";
+  auto simulationDirectory =
+      workingDirectory / "output" / "simulation-Xpansion";
   auto logger = emptyLogger();
   std::filesystem::create_directories(simulationDirectory);
   EXPECT_THROW(
       RunProblemGeneration(simulationDirectory, "integer", "", "", logger,
                            simulationDirectory / "logs.txt", "", false),
       ArchiveIOGeneralException);
-  auto lp = (simulationDirectory.parent_path() /
-       (simulationDirectory.filename().string() + "-Xpansion")) /
-      "lp";
+  auto lp = (simulationDirectory) / "lp";
   EXPECT_TRUE(std::filesystem::exists(lp));
 }
 

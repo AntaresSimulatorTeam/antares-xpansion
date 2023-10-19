@@ -126,12 +126,12 @@ std::vector<std::shared_ptr<Problem>> getXpansionProblems(
                                                               problem_names);
   return adapter->provideProblems(solver_name, solver_log_manager);
 }
-void CreateDirectories(const std::filesystem::path& xpansion_output_path,
+void CreateDirectories(const std::filesystem::path& output_path,
                        ProblemGenerationLog::ProblemGenerationLogger* logger) {
-  if (!std::filesystem::exists(xpansion_output_path)) {
-    std::filesystem::create_directories(xpansion_output_path);
+  if (!std::filesystem::exists(output_path)) {
+    std::filesystem::create_directories(output_path);
   }
-  auto lp_path = xpansion_output_path / LP_DIRNAME;
+  auto lp_path = output_path / LP_DIRNAME;
   if (!std::filesystem::exists(lp_path)) {
     std::filesystem::create_directories(lp_path);
   }
