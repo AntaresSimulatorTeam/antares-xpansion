@@ -504,6 +504,9 @@ class ConfigLoader:
         self._last_study = self.last_modified_study(self.antares_output())
 
         self._set_xpansion_simulation_name()
+    class NotAnXpansionOutputDir(Exception):
+        pass
+        
 
     def _set_xpansion_simulation_name(self):
         if self.step() in ["resume", "sensitivity"] : 
@@ -512,6 +515,11 @@ class ConfigLoader:
                 self._xpansion_simulation_name = self._last_study.parent / self._last_study.stem
                 with zipfile.ZipFile(self._last_study, 'r') as output_zip:
                     output_zip.extractall(self._xpansion_simulation_name)
+        elif self.step() == "benders":
+            if(not self._last_study.name.endswith("-Xpansion")):
+                raise ConfigLoader.NotAnXpansionOutputDir(f"Error! {self._last_study} is not an Xpansion output directory")
+            self._xpansion_simulation_name = self._last_study
+            
         else:
             self._xpansion_simulation_name = self._last_study.parent / \
                 (self._last_study.stem+"-Xpansion")

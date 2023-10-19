@@ -154,10 +154,10 @@ jobs:
         shell: bash
 
       - name: Compile tbb
-        uses: ./.github/workflows/compile-tbb   
+        uses: ./.github/workflows/compile-tbb
         with:
-          cmake: 'cmake' 
-      
+          cmake: 'cmake'
+
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-zip
         with:

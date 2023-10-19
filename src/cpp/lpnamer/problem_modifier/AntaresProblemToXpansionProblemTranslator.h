@@ -11,7 +11,6 @@ class AntaresProblemToXpansionProblemTranslator {
  public:
   [[nodiscard]] static std::shared_ptr<Problem> translateToXpansionProblem(
       const LpsFromAntares& lps, unsigned int year, unsigned int week,
-      const std::string& solver_name,
-      const std::filesystem::path& log_file_path);
+      const std::string& solver_name, SolverLogManager& solver_log_manager);
   static std::vector<char> convertSignToLEG(char* data);
 };

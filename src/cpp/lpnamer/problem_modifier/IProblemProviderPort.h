@@ -11,5 +11,5 @@ class IProblemProviderPort {
   virtual ~IProblemProviderPort() = default;
   [[nodiscard]] virtual std::shared_ptr<Problem> provide_problem(
       const std::string& solver_name,
-      const std::filesystem::path& log_file_path) const = 0;
+      SolverLogManager& solver_log_manager) const = 0;
 };

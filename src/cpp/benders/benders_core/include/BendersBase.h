@@ -136,6 +136,8 @@ class BendersBase {
     return cumulative_number_of_subproblem_resolved_before_resume;
   }
 
+  SolverLogManager solver_log_manager_;
+
  private:
   void print_master_and_cut(std::ostream &file, int ite,
                             WorkerMasterDataPtr &trace, Point const &xopt);
@@ -157,7 +159,7 @@ class BendersBase {
  private:
   BendersBaseOptions _options;
   unsigned int _totalNbProblems = 0;
-  std::filesystem::path _log_name;
+  std::filesystem::path _log_name = "";
   BendersRelevantIterationsData relevantIterationData_ = {
       std::make_shared<WorkerMasterData>(), nullptr};
   WorkerMasterPtr _master;

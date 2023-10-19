@@ -60,10 +60,7 @@ jobs:
       - name: Install mandatory system libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev libboost-program-options-dev libtbb-dev
-          cd /usr/src/googletest/
-          sudo cmake .
-          sudo cmake --build .
+          sudo apt-get install -y ccache cmake libgtest-dev libjsoncpp-dev libtbb-dev libopenmpi-dev
 
       - name: Read antares-solver version
         id: antares-version

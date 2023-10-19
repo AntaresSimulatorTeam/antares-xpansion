@@ -239,8 +239,8 @@ class TestGeneralDataProcessor:
 class TestAntaresDriver:
     def setup_method(self):
         #TODO update antares version which comes with named problems
-        self.nammed_problems = version.parse(__antares_simulator_version__) >= version.parse("8.6")
-
+        #self.nammed_problems = version.parse(__antares_simulator_version__) >= version.parse("8.6")
+        self.nammed_problems=True
     def test_antares_cmd(self, tmp_path):
         study_dir = tmp_path
         exe_path = "/Path/to/bin1"

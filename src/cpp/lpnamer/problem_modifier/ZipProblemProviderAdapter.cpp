@@ -17,13 +17,13 @@ void ZipProblemProviderAdapter::reader_extract_file(
 
 std::shared_ptr<Problem> ZipProblemProviderAdapter::provide_problem(
     const std::string& solver_name,
-    const std::filesystem::path& log_file_path) const {
+    SolverLogManager& solver_log_manager) const {
   reader_extract_file(problem_name_, *archive_reader_, lp_dir_);
   SolverFactory factory;
   auto const lp_mps_name = ZipProblemProviderAdapter::lp_dir_ /
                            ZipProblemProviderAdapter::problem_name_;
   auto in_prblm = std::make_shared<Problem>(
-      factory.create_solver(solver_name, log_file_path));
+      factory.create_solver(solver_name, solver_log_manager));
 
   in_prblm->read_prob_mps(lp_mps_name);
   return in_prblm;
