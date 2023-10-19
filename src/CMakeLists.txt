@@ -6,9 +6,7 @@ if (COIN_OR)
     SET(AVAILABLE_SOLVER_YML_LIST "${AVAILABLE_SOLVER_YML_LIST}- Cbc\n")
     SET(AVAILABLE_SOLVER_YML_LIST "${AVAILABLE_SOLVER_YML_LIST}- Coin\n")
 endif()
-if (XPRESS)
     SET(AVAILABLE_SOLVER_YML_LIST "${AVAILABLE_SOLVER_YML_LIST}- Xpress\n")
-endif()
 
 
 #configure file to define antares-solver executable
