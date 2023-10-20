@@ -283,11 +283,11 @@ std::vector<std::string> XpressDynamicLibraryPotentialPaths() {
   if (xpress_home_from_env != nullptr) {
     std::filesystem::path prefix(xpress_home_from_env);
 #if defined(_MSC_VER)  // Windows
-    potential_paths.push_back(prefix / "\\bin\\xprs.dll");
+    potential_paths.push_back((prefix / "\\bin\\xprs.dll").string());
 #elif defined(__APPLE__)  // OS X
-    potential_paths.push_back(prefix / "/lib/libxprs.dylib");
+    potential_paths.push_back((prefix / "/lib/libxprs.dylib").string());
 #elif defined(__GNUC__)   // Linux
-    potential_paths.push_back(prefix / "/lib/libxprs.so");
+    potential_paths.push_back((prefix / "/lib/libxprs.so").string());
 #else
     std::cerr << "OS Not recognized by xpress/environment.cc."
               << " You won't be able to use Xpress.";
