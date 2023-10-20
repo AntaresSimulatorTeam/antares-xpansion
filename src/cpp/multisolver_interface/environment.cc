@@ -32,6 +32,7 @@ std::string StringJoin(const std::vector<std::string>& vec) {
   return ret;
 }
 // This is the 'define' section.
+std::function<int(const char* path)> XPRSinit = nullptr;
 std::function<int(XPRSprob dest, XPRSprob src, const char* name)> XPRScopyprob =
     nullptr;
 std::function<int(XPRSprob prob, const char* filename, const char* flags)>
@@ -52,11 +53,34 @@ std::function<int(XPRSprob prob, int type, const char names[], int first,
     XPRSaddnames = nullptr;
 std::function<int(XPRSprob prob, const char* flags)> XPRSlpoptimize = nullptr;
 std::function<int(XPRSprob prob, const char* flags)> XPRSmipoptimize = nullptr;
-
-std::function<int(XPRSprob* p_prob)> XPRScreateprob = nullptr;
-std::function<int(XPRSprob prob)> XPRSdestroyprob = nullptr;
-std::function<int(const char* path)> XPRSinit = nullptr;
 std::function<int(void)> XPRSfree = nullptr;
+std::function<int(XPRSprob* p_prob)> XPRScreateprob = nullptr;
+std::function<int(XPRSprob prob, const char* probname, int ncols, int nrows,
+                  const char rowtype[], const double rhs[], const double rng[],
+                  const double objcoef[], const int start[], const int collen[],
+                  const int rowind[], const double rowcoef[], const double lb[],
+                  const double ub[])>
+    XPRSloadlp = nullptr;
+std::function<int(XPRSprob prob)> XPRSdestroyprob = nullptr;
+
+std::function<int(XPRSprob prob, const char* filename, const char* flags)>
+    XPRSwriteprob = nullptr;
+std::function<int(XPRSprob prob, int control, int* p_value)> XPRSgetintcontrol =
+    nullptr;
+std::function<int(XPRSprob prob, double objcoef[], int first, int last)>
+    XPRSgetobj = nullptr;
+std::function<int(XPRSprob prob, char rowtype[], int first, int last)>
+    XPRSgetrowtype = nullptr;
+std::function<int(XPRSprob prob, double rhs[], int first, int last)>
+    XPRSgetrhs = nullptr;
+std::function<int(XPRSprob prob, double rng[], int first, int last)>
+    XPRSgetrhsrange = nullptr;
+std::function<int(XPRSprob prob, char coltype[], int first, int last)>
+    XPRSgetcoltype = nullptr;
+std::function<int(XPRSprob prob, double lb[], int first, int last)> XPRSgetlb =
+    nullptr;
+/*----*/
+
 std::function<int(char* buffer, int maxbytes)> XPRSgetlicerrmsg = nullptr;
 std::function<int(int* p_i, char* p_c)> XPRSlicense = nullptr;
 std::function<int(char* banner)> XPRSgetbanner = nullptr;
@@ -70,8 +94,6 @@ std::function<int(XPRSprob prob, int control, double value)> XPRSsetdblcontrol =
     nullptr;
 std::function<int(XPRSprob prob, int control, const char* value)>
     XPRSsetstrcontrol = nullptr;
-std::function<int(XPRSprob prob, int control, int* p_value)> XPRSgetintcontrol =
-    nullptr;
 std::function<int(XPRSprob prob, int control, XPRSint64* p_value)>
     XPRSgetintcontrol64 = nullptr;
 std::function<int(XPRSprob prob, int control, double* p_value)>
@@ -85,24 +107,10 @@ std::function<int(XPRSprob prob, int attrib, double* p_value)>
     XPRSgetdblattrib = nullptr;
 std::function<int(XPRSprob prob, const char* probname, int ncols, int nrows,
                   const char rowtype[], const double rhs[], const double rng[],
-                  const double objcoef[], const int start[], const int collen[],
-                  const int rowind[], const double rowcoef[], const double lb[],
-                  const double ub[])>
-    XPRSloadlp = nullptr;
-std::function<int(XPRSprob prob, const char* probname, int ncols, int nrows,
-                  const char rowtype[], const double rhs[], const double rng[],
                   const double objcoef[], const XPRSint64 start[],
                   const int collen[], const int rowind[],
                   const double rowcoef[], const double lb[], const double ub[])>
     XPRSloadlp64 = nullptr;
-std::function<int(XPRSprob prob, double objcoef[], int first, int last)>
-    XPRSgetobj = nullptr;
-std::function<int(XPRSprob prob, double rhs[], int first, int last)>
-    XPRSgetrhs = nullptr;
-std::function<int(XPRSprob prob, double rng[], int first, int last)>
-    XPRSgetrhsrange = nullptr;
-std::function<int(XPRSprob prob, double lb[], int first, int last)> XPRSgetlb =
-    nullptr;
 std::function<int(XPRSprob prob, double ub[], int first, int last)> XPRSgetub =
     nullptr;
 std::function<int(XPRSprob prob, int row, int col, double* p_coef)>
@@ -129,12 +137,6 @@ std::function<int(XPRSprob prob, int objsense)> XPRSchgobjsense = nullptr;
 std::function<int(XPRSprob prob, char* errmsg)> XPRSgetlasterror = nullptr;
 std::function<int(XPRSprob prob, int rowstat[], int colstat[])> XPRSgetbasis =
     nullptr;
-std::function<int(XPRSprob prob, const char* filename, const char* flags)>
-    XPRSwriteprob = nullptr;
-std::function<int(XPRSprob prob, char rowtype[], int first, int last)>
-    XPRSgetrowtype = nullptr;
-std::function<int(XPRSprob prob, char coltype[], int first, int last)>
-    XPRSgetcoltype = nullptr;
 std::function<int(XPRSprob prob, int nbounds, const int colind[],
                   const char bndtype[], const double bndval[])>
     XPRSchgbounds = nullptr;
@@ -166,14 +168,13 @@ std::function<int(
                              int msglen, int msgtype),
     void* p)>
     XPRSsetcbmessage = nullptr;
-std::function<int(XPRSprob prob, const char* flags)> XPRSminim = nullptr;
-std::function<int(XPRSprob prob, const char* flags)> XPRSmaxim = nullptr;
 
 bool LoadXpressFunctions(DynamicLibrary* xpress_dynamic_library) {
   // This was generated with the parse_header_xpress.py script.
   // See the comment at the top of the script.
 
   // This is the 'assign' section.
+  xpress_dynamic_library->GetFunction(&XPRSinit, "XPRSinit");
   xpress_dynamic_library->GetFunction(&XPRScopyprob, "XPRScopyprob");
   xpress_dynamic_library->GetFunction(&XPRSwritebasis, "XPRSwritebasis");
   xpress_dynamic_library->GetFunction(&XPRSreadprob, "XPRSreadprob");
@@ -184,11 +185,21 @@ bool LoadXpressFunctions(DynamicLibrary* xpress_dynamic_library) {
   xpress_dynamic_library->GetFunction(&XPRSaddnames, "XPRSaddnames");
   xpress_dynamic_library->GetFunction(&XPRSlpoptimize, "XPRSlpoptimize");
   xpress_dynamic_library->GetFunction(&XPRSmipoptimize, "XPRSmipoptimize");
-
+  xpress_dynamic_library->GetFunction(&XPRSfree, "XPRSfree");
+  xpress_dynamic_library->GetFunction(&XPRSloadlp, "XPRSloadlp");
   xpress_dynamic_library->GetFunction(&XPRScreateprob, "XPRScreateprob");
   xpress_dynamic_library->GetFunction(&XPRSdestroyprob, "XPRSdestroyprob");
-  xpress_dynamic_library->GetFunction(&XPRSinit, "XPRSinit");
-  xpress_dynamic_library->GetFunction(&XPRSfree, "XPRSfree");
+  xpress_dynamic_library->GetFunction(&XPRSwriteprob, "XPRSwriteprob");
+  xpress_dynamic_library->GetFunction(&XPRSgetintcontrol, "XPRSgetintcontrol");
+  xpress_dynamic_library->GetFunction(&XPRSgetintattrib, "XPRSgetintattrib");
+  xpress_dynamic_library->GetFunction(&XPRSgetobj, "XPRSgetobj");
+  xpress_dynamic_library->GetFunction(&XPRSgetrowtype, "XPRSgetrowtype");
+  xpress_dynamic_library->GetFunction(&XPRSgetrhsrange, "XPRSgetrhsrange");
+  xpress_dynamic_library->GetFunction(&XPRSgetrhs, "XPRSgetrhs");
+  xpress_dynamic_library->GetFunction(&XPRSgetcoltype, "XPRSgetcoltype");
+  xpress_dynamic_library->GetFunction(&XPRSgetlb, "XPRSgetlb");
+
+  /**/
   xpress_dynamic_library->GetFunction(&XPRSgetlicerrmsg, "XPRSgetlicerrmsg");
   xpress_dynamic_library->GetFunction(&XPRSlicense, "XPRSlicense");
   xpress_dynamic_library->GetFunction(&XPRSgetbanner, "XPRSgetbanner");
@@ -200,20 +211,13 @@ bool LoadXpressFunctions(DynamicLibrary* xpress_dynamic_library) {
                                       "XPRSsetintcontrol64");
   xpress_dynamic_library->GetFunction(&XPRSsetdblcontrol, "XPRSsetdblcontrol");
   xpress_dynamic_library->GetFunction(&XPRSsetstrcontrol, "XPRSsetstrcontrol");
-  xpress_dynamic_library->GetFunction(&XPRSgetintcontrol, "XPRSgetintcontrol");
   xpress_dynamic_library->GetFunction(&XPRSgetintcontrol64,
                                       "XPRSgetintcontrol64");
   xpress_dynamic_library->GetFunction(&XPRSgetdblcontrol, "XPRSgetdblcontrol");
   xpress_dynamic_library->GetFunction(&XPRSgetstringcontrol,
                                       "XPRSgetstringcontrol");
-  xpress_dynamic_library->GetFunction(&XPRSgetintattrib, "XPRSgetintattrib");
   xpress_dynamic_library->GetFunction(&XPRSgetdblattrib, "XPRSgetdblattrib");
-  xpress_dynamic_library->GetFunction(&XPRSloadlp, "XPRSloadlp");
   xpress_dynamic_library->GetFunction(&XPRSloadlp64, "XPRSloadlp64");
-  xpress_dynamic_library->GetFunction(&XPRSgetobj, "XPRSgetobj");
-  xpress_dynamic_library->GetFunction(&XPRSgetrhs, "XPRSgetrhs");
-  xpress_dynamic_library->GetFunction(&XPRSgetrhsrange, "XPRSgetrhsrange");
-  xpress_dynamic_library->GetFunction(&XPRSgetlb, "XPRSgetlb");
   xpress_dynamic_library->GetFunction(&XPRSgetub, "XPRSgetub");
   xpress_dynamic_library->GetFunction(&XPRSgetcoef, "XPRSgetcoef");
   xpress_dynamic_library->GetFunction(&XPRSaddrows, "XPRSaddrows");
@@ -226,9 +230,6 @@ bool LoadXpressFunctions(DynamicLibrary* xpress_dynamic_library) {
   xpress_dynamic_library->GetFunction(&XPRSchgobjsense, "XPRSchgobjsense");
   xpress_dynamic_library->GetFunction(&XPRSgetlasterror, "XPRSgetlasterror");
   xpress_dynamic_library->GetFunction(&XPRSgetbasis, "XPRSgetbasis");
-  xpress_dynamic_library->GetFunction(&XPRSwriteprob, "XPRSwriteprob");
-  xpress_dynamic_library->GetFunction(&XPRSgetrowtype, "XPRSgetrowtype");
-  xpress_dynamic_library->GetFunction(&XPRSgetcoltype, "XPRSgetcoltype");
   xpress_dynamic_library->GetFunction(&XPRSchgbounds, "XPRSchgbounds");
   xpress_dynamic_library->GetFunction(&XPRSgetlpsol, "XPRSgetlpsol");
   xpress_dynamic_library->GetFunction(&XPRSgetmipsol, "XPRSgetmipsol");
@@ -239,8 +240,6 @@ bool LoadXpressFunctions(DynamicLibrary* xpress_dynamic_library) {
   xpress_dynamic_library->GetFunction(&XPRSchgrhsrange, "XPRSchgrhsrange");
   xpress_dynamic_library->GetFunction(&XPRSchgrowtype, "XPRSchgrowtype");
   xpress_dynamic_library->GetFunction(&XPRSsetcbmessage, "XPRSsetcbmessage");
-  xpress_dynamic_library->GetFunction(&XPRSminim, "XPRSminim");
-  xpress_dynamic_library->GetFunction(&XPRSmaxim, "XPRSmaxim");
 
   auto notFound = xpress_dynamic_library->FunctionsNotFound();
   if (!notFound.empty()) {

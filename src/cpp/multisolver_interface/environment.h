@@ -403,6 +403,7 @@ bool LoadXpressDynamicLibrary(std::string &xpresspath);
 #define XPRS_ERRORCODE                                               1023
 #define XPRS_OUTPUTLOG_NO_OUTPUT                                     0
 
+extern std::function<int(const char* path)> XPRSinit;
 extern std::function<int(XPRSprob* p_prob)> XPRScreateprob;
 extern std::function<int(XPRSprob dest, XPRSprob src, const char* name)> XPRScopyprob;
 extern std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSwritebasis;
@@ -414,11 +415,21 @@ extern std::function<int(XPRSprob prob, int type, char names[], int first, int l
 extern std::function<int(XPRSprob prob, int type, const char names[], int first, int last)> XPRSaddnames;
 extern std::function<int(XPRSprob prob, const char* flags)> XPRSlpoptimize;
 extern std::function<int(XPRSprob prob, const char* flags)> XPRSmipoptimize;
-
-
-extern std::function<int(XPRSprob prob)> XPRSdestroyprob;
-extern std::function<int(const char* path)> XPRSinit;
 extern std::function<int(void)> XPRSfree;
+extern std::function<int(XPRSprob prob, const char* probname, int ncols, int nrows, const char rowtype[], const double rhs[], const double rng[], const double objcoef[], const int start[], const int collen[], const int rowind[], const double rowcoef[], const double lb[], const double ub[])> XPRSloadlp;
+extern std::function<int(XPRSprob prob)> XPRSdestroyprob;
+extern std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSwriteprob;
+extern std::function<int(XPRSprob prob, int control, int* p_value)> XPRSgetintcontrol;
+extern std::function<int(XPRSprob prob, int attrib, int* p_value)> XPRSgetintattrib;
+extern std::function<int(XPRSprob prob, double objcoef[], int first, int last)> XPRSgetobj;
+extern std::function<int(XPRSprob prob, char rowtype[], int first, int last)> XPRSgetrowtype;
+extern std::function<int(XPRSprob prob, double rhs[], int first, int last)> XPRSgetrhs;
+extern std::function<int(XPRSprob prob, double rng[], int first, int last)> XPRSgetrhsrange;
+extern std::function<int(XPRSprob prob, char coltype[], int first, int last)> XPRSgetcoltype;
+extern std::function<int(XPRSprob prob, double lb[], int first, int last)> XPRSgetlb;
+
+
+/***/
 extern std::function<int(char* buffer, int maxbytes)> XPRSgetlicerrmsg;
 extern std::function<int(int* p_i, char* p_c)> XPRSlicense;
 extern std::function<int(char* banner)> XPRSgetbanner;
@@ -428,18 +439,11 @@ extern std::function<int(XPRSprob prob, int control, int value)> XPRSsetintcontr
 extern std::function<int(XPRSprob prob, int control, XPRSint64 value)> XPRSsetintcontrol64;
 extern std::function<int(XPRSprob prob, int control, double value)> XPRSsetdblcontrol;
 extern std::function<int(XPRSprob prob, int control, const char* value)> XPRSsetstrcontrol;
-extern std::function<int(XPRSprob prob, int control, int* p_value)> XPRSgetintcontrol;
 extern std::function<int(XPRSprob prob, int control, XPRSint64* p_value)> XPRSgetintcontrol64;
 extern std::function<int(XPRSprob prob, int control, double* p_value)> XPRSgetdblcontrol;
 extern std::function<int(XPRSprob prob, int control, char* value, int maxbytes, int* p_nbytes)> XPRSgetstringcontrol;
-extern std::function<int(XPRSprob prob, int attrib, int* p_value)> XPRSgetintattrib;
 extern std::function<int(XPRSprob prob, int attrib, double* p_value)> XPRSgetdblattrib;
-extern std::function<int(XPRSprob prob, const char* probname, int ncols, int nrows, const char rowtype[], const double rhs[], const double rng[], const double objcoef[], const int start[], const int collen[], const int rowind[], const double rowcoef[], const double lb[], const double ub[])> XPRSloadlp;
 extern std::function<int(XPRSprob prob, const char* probname, int ncols, int nrows, const char rowtype[], const double rhs[], const double rng[], const double objcoef[], const XPRSint64 start[], const int collen[], const int rowind[], const double rowcoef[], const double lb[], const double ub[])> XPRSloadlp64;
-extern std::function<int(XPRSprob prob, double objcoef[], int first, int last)> XPRSgetobj;
-extern std::function<int(XPRSprob prob, double rhs[], int first, int last)> XPRSgetrhs;
-extern std::function<int(XPRSprob prob, double rng[], int first, int last)> XPRSgetrhsrange;
-extern std::function<int(XPRSprob prob, double lb[], int first, int last)> XPRSgetlb;
 extern std::function<int(XPRSprob prob, double ub[], int first, int last)> XPRSgetub;
 extern std::function<int(XPRSprob prob, int row, int col, double* p_coef)> XPRSgetcoef;
 extern std::function<int(XPRSprob prob, int nrows, int ncoefs, const char rowtype[], const double rhs[], const double rng[], const int start[], const int colind[], const double rowcoef[])> XPRSaddrows;
@@ -452,9 +456,6 @@ extern std::function<int(XPRSprob prob)> XPRSpostsolve;
 extern std::function<int(XPRSprob prob, int objsense)> XPRSchgobjsense;
 extern std::function<int(XPRSprob prob, char* errmsg)> XPRSgetlasterror;
 extern std::function<int(XPRSprob prob, int rowstat[], int colstat[])> XPRSgetbasis;
-extern std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSwriteprob;
-extern std::function<int(XPRSprob prob, char rowtype[], int first, int last)> XPRSgetrowtype;
-extern std::function<int(XPRSprob prob, char coltype[], int first, int last)> XPRSgetcoltype;
 extern std::function<int(XPRSprob prob, int nbounds, const int colind[], const char bndtype[], const double bndval[])> XPRSchgbounds;
 extern std::function<int(XPRSprob prob, double x[], double slack[], double duals[], double djs[])> XPRSgetlpsol;
 extern std::function<int(XPRSprob prob, double x[], double slack[])> XPRSgetmipsol;
@@ -465,8 +466,6 @@ extern std::function<int(XPRSprob prob, int nrows, const int rowind[], const dou
 extern std::function<int(XPRSprob prob, int nrows, const int rowind[], const double rng[])> XPRSchgrhsrange;
 extern std::function<int(XPRSprob prob, int nrows, const int rowind[], const char rowtype[])> XPRSchgrowtype;
 extern std::function<int(XPRSprob prob, void (XPRS_CC *f_message)(XPRSprob cbprob, void* cbdata, const char* msg, int msglen, int msgtype), void* p)> XPRSsetcbmessage;
-extern std::function<int(XPRSprob prob, const char* flags)> XPRSminim;
-extern std::function<int(XPRSprob prob, const char* flags)> XPRSmaxim;
 
 }  // namespace operations_research_Xpansion
 
