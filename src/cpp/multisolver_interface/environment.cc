@@ -341,7 +341,7 @@ bool LoadXpressDynamicLibrary(std::string& xpresspath) {
     } else {
       std::string msg("Could not find the Xpress shared library. Looked in: [" +
                       StringJoin(canonical_paths) +
-                      "]. Please check environment variable XPRESSDIR");
+                      "]. Please check environment variable XPRESSDIR\n");
       std::cout << msg << std::endl;
       ret = false;
     }
