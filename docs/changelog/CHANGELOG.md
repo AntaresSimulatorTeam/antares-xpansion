@@ -1,6 +1,19 @@
 Antares-Xpansion changelog
 =================
-v1.1 (TBA)
+
+v1.2 (10/2023)
+--------------------------------------------------------
+
+### Features
+
+- Support "named mps" from Antares simulator
+- Use Antares Simulator 8.8.0-rc2
+
+### Bug fixes
+
+- Fix issue on windows with concurrent access to log files
+
+v1.1 (09/2023)
 --------------------
 
 ### Features
