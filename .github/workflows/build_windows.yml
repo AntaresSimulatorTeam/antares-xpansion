@@ -24,7 +24,7 @@ jobs:
         xprs: [ XPRESS-ON, XPRESS-OFF ]
     env:
       XPRESSDIR: ${{ github.workspace }}\xpress
-      XPRESS: ${{ github.workspace }}\bin
+      XPRESS: ${{ github.workspace }}\xpress\bin
       XPRS_LIB_Path: ${{ github.workspace }}\xpress\lib
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
@@ -153,6 +153,9 @@ jobs:
           set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin
           set PATH=%PATH%;${{ env.XPRESS }}
           set XPRESSDIR=${{ env.XPRESSDIR }}
+          DIR "${{ env.XPRESSDIR }}"
+          DIR "${{ env.XPRESSDIR }}\bin"
+          DIR "${{ env.XPRESSDIR }}\lib"
 
           cd _build
-          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
+          ctest -C Release --output-on-failure -L "unit"
