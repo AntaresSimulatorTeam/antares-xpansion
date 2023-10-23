@@ -24,7 +24,7 @@ jobs:
         xprs: [ XPRESS-ON, XPRESS-OFF ]
     env:
       XPRESSDIR: ${{ github.workspace }}\xpress
-      XPRESS: ${{ github.workspace }}\xpress\bin
+      XPRESS: ${{ github.workspace }}\bin
       XPRS_LIB_Path: ${{ github.workspace }}\xpress\lib
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
@@ -49,9 +49,9 @@ jobs:
         run: |
           ls "${{ env.XPRESSDIR }}"
           echo "************************"
-          ls "${{ env.XPRESSDIR }}\xpress\bin"
+          ls "${{ env.XPRESSDIR }}\bin"
           echo "************************"
-          ls "${{ env.XPRESSDIR }}\xpress\lib"
+          ls "${{ env.XPRESSDIR }}\lib"
           echo "************************"
 
       - name: Get release
