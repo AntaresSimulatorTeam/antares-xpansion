@@ -318,7 +318,7 @@ std::vector<std::string> XpressDynamicLibraryPotentialPaths() {
               << " You won't be able to use Xpress.";
 #endif
   } else {
-    std::cout << "Warning: "
+    std::cerr << "Warning: "
               << "Environment variable " << XPRESSDIR << " undefined.\n";
   }
 
