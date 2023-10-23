@@ -47,11 +47,11 @@ jobs:
         if: matrix.xprs == 'XPRESS-ON'
         shell: bash
         run: |
-          ls ${{ env.XPRESSDIR }}
+          ls "${{ env.XPRESSDIR }}"
           echo "************************"
-          ls ${{ env.XPRESSDIR }}\xpress\bin
+          ls "${{ env.XPRESSDIR }}\xpress\bin"
           echo "************************"
-          ls ${{ env.XPRESSDIR }}\xpress\lib
+          ls "${{ env.XPRESSDIR }}\xpress\lib"
           echo "************************"
 
       - name: Get release
