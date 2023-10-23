@@ -47,6 +47,7 @@ jobs:
         if: matrix.xprs == 'XPRESS-ON'
         shell: bash
         run: |
+          cat "${{ env.XPRESSDIR }}\bin\xpauth.xpr"
           ls "${{ env.XPRESSDIR }}"
           echo "************************"
           ls "${{ env.XPRESSDIR }}\bin"
