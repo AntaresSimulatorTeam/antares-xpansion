@@ -279,8 +279,26 @@ std::vector<std::string> XpressDynamicLibraryPotentialPaths() {
   std::vector<std::string> potential_paths;
 
   // Look for libraries pointed by XPRESSDIR first.
-  const char* xpress_home_from_env = getenv("XPRESSDIR");
-  if (xpress_home_from_env != nullptr) {
+  const char* XPRESSDIR = "XPRESSDIR";
+  std::string xpress_home_from_env = "";
+#ifdef _MSC_VER
+  size_t requiredSize;
+
+  getenv_s(&requiredSize, NULL, 0, XPRESSDIR);
+  if (requiredSize == 0) {
+    std::cout << "XPRESS doesn't exist!\n";
+  }
+
+  xpress_home_from_env.resize(requiredSize);
+
+  // Get the value of the LIB environment variable.
+  getenv_s(&requiredSize, xpress_home_from_env.data(), requiredSize, XPRESSDIR);
+
+#else
+  xpress_home_from_env = getenv("XPRESSDIR");
+#endif
+
+  if (xpress_home_from_env != "") {
     std::filesystem::path prefix(xpress_home_from_env);
 #if defined(_MSC_VER)  // Windows
     potential_paths.push_back((prefix / "\\bin\\xprs.dll").string());
@@ -306,7 +324,7 @@ std::vector<std::string> XpressDynamicLibraryPotentialPaths() {
 #elif defined(__GNUC__)   // Linux
   potential_paths.push_back("/opt/xpressmp/lib/libxprs.so");
 #else
-  std::cerr << "OS Not recognized by xpress/environment.cc."
+  std::cerr << "OS Not recognized by environment.cc."
             << " You won't be able to use Xpress.";
 #endif
   return potential_paths;
