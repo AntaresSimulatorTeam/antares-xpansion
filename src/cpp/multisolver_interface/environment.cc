@@ -283,7 +283,8 @@ std::string GetXpressVarFromEnvironmentVariables(const char* XPRESS_var) {
 
   getenv_s(&requiredSize, NULL, 0, XPRESS_var);
   if (requiredSize == 0) {
-    std::cout << XPRESS_var << " doesn't exist!\n";
+    std::cerr << "[Windows getenv_s function]: " << XPRESS_var
+              << " doesn't exist!\n";
   }
 
   xpress_home_from_env.resize(requiredSize);
