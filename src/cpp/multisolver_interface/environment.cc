@@ -275,28 +275,35 @@ void printXpressBanner(bool error) {
   }
 }
 
-std::vector<std::string> XpressDynamicLibraryPotentialPaths() {
-  std::vector<std::string> potential_paths;
-
+std::string GetXpressVarFromEnvironmentVariables(const char* XPRESS_var) {
   // Look for libraries pointed by XPRESSDIR first.
-  const char* XPRESSDIR = "XPRESSDIR";
   std::string xpress_home_from_env = "";
 #ifdef _MSC_VER
   size_t requiredSize;
 
-  getenv_s(&requiredSize, NULL, 0, XPRESSDIR);
+  getenv_s(&requiredSize, NULL, 0, XPRESS_var);
   if (requiredSize == 0) {
-    std::cout << "XPRESS doesn't exist!\n";
+    std::cout << XPRESS_var << " doesn't exist!\n";
   }
 
   xpress_home_from_env.resize(requiredSize);
 
   // Get the value of the LIB environment variable.
-  getenv_s(&requiredSize, xpress_home_from_env.data(), requiredSize, XPRESSDIR);
+  getenv_s(&requiredSize, xpress_home_from_env.data(), requiredSize,
+           XPRESS_var);
 
 #else
-  xpress_home_from_env = getenv("XPRESSDIR");
+  xpress_home_from_env = getenv(XPRESS_var);
 #endif
+  return xpress_home_from_env;
+}
+
+std::vector<std::string> XpressDynamicLibraryPotentialPaths() {
+  std::vector<std::string> potential_paths;
+
+  const char* XPRESSDIR = "XPRESSDIR";
+  std::string xpress_home_from_env =
+      GetXpressVarFromEnvironmentVariables(XPRESSDIR);
 
   if (xpress_home_from_env != "") {
     std::filesystem::path prefix(xpress_home_from_env);
@@ -312,7 +319,7 @@ std::vector<std::string> XpressDynamicLibraryPotentialPaths() {
 #endif
   } else {
     std::cout << "Warning: "
-              << "Environment variable XPRESSDIR undefined.\n";
+              << "Environment variable " << XPRESSDIR << " undefined.\n";
   }
 
   // Search for canonical places.
@@ -378,8 +385,8 @@ bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
     return false;
   }
 
-  const char* xpress_from_env = getenv("XPRESS");
-  if (xpress_from_env == nullptr) {
+  std::string xpress_from_env = GetXpressVarFromEnvironmentVariables("XPRESS");
+  if (xpress_from_env == "") {
     if (verbose) {
       std::cout
           << "Warning: "
