@@ -43,6 +43,17 @@ jobs:
           ref: 8.13a
           token: ${{ secrets.AS_TOKEN }}
 
+      - name: list xpress dir
+        if: matrix.xprs == 'XPRESS-ON'
+        shell: bash
+        run: |
+          ls ${{ env.XPRESSDIR }}
+          echo "************************"
+          ls ${{ env.XPRESSDIR }}\xpress\bin
+          echo "************************"
+          ls ${{ env.XPRESSDIR }}\xpress\lib
+          echo "************************"
+
       - name: Get release
         if: github.event_name == 'release' && github.event.action == 'created'
         id: get_release
