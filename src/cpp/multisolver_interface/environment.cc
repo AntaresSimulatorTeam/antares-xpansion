@@ -308,7 +308,7 @@ std::vector<std::string> XpressDynamicLibraryPotentialPaths() {
   if (xpress_home_from_env != "") {
     std::filesystem::path prefix(xpress_home_from_env);
 #if defined(_MSC_VER)  // Windows
-    potential_paths.push_back((prefix / "\\bin\\xprs.dll").string());
+    potential_paths.push_back((prefix / "bin" / "xprs.dll").string());
 #elif defined(__APPLE__)  // OS X
     potential_paths.push_back((prefix / "/lib/libxprs.dylib").string());
 #elif defined(__GNUC__)   // Linux
