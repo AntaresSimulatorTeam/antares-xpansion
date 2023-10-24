@@ -43,18 +43,6 @@ jobs:
           ref: 8.13a
           token: ${{ secrets.AS_TOKEN }}
 
-      - name: list xpress dir
-        if: matrix.xprs == 'XPRESS-ON'
-        shell: bash
-        run: |
-          cat "${{ env.XPRESSDIR }}\bin\xpauth.xpr"
-          ls "${{ env.XPRESSDIR }}"
-          echo "************************"
-          ls "${{ env.XPRESSDIR }}\bin"
-          echo "************************"
-          ls "${{ env.XPRESSDIR }}\lib"
-          echo "************************"
-
       - name: Get release
         if: github.event_name == 'release' && github.event.action == 'created'
         id: get_release
@@ -154,9 +142,5 @@ jobs:
           set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin
           set PATH=%PATH%;${{ env.XPRESS }}
           set XPRESSDIR=${{ env.XPRESSDIR }}
-          DIR "${{ env.XPRESSDIR }}"
-          DIR "${{ env.XPRESSDIR }}\bin"
-          DIR "${{ env.XPRESSDIR }}\lib"
-
           cd _build
-          ctest -C Release --output-on-failure -L "unit"
+          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
