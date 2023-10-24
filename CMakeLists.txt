@@ -237,31 +237,6 @@ endif()
 
 find_package(jsoncpp CONFIG REQUIRED)
 
-# Third-party solver
-## Xpress
-if(XPRESS)
-	message("XPRESS is ${XPRESS}")
-
-	#Default xpress install dir
-	if (NOT XPRESSDIR)
-		if (MSVC)
-			set(XPRESSDIR "C:/xpressmp")
-		elseif(UNIX)
-			set(XPRESSDIR "/opt/xpressmp")
-		endif()
-	endif()
-
-	find_package(XPRESS REQUIRED)
-
-	# Add solver variables for usage in C++ source code
-	# There are already some variables defined by SOLVER, -DUSE_XPRESS, -DUSE_CBC
-	# But they are exclusive, only one can be set to True
-	# We need to keep COIN-OR at least COIN-OR to True while it is required in lpnamer
-	# and we want to allow compilation with several solvers so that the user can switch 
-	# the solver without any compilation phase.
-	# @TODO : I think those parameters should be merged in a future version
-	add_definitions( -DXPRESS=true )
-endif(XPRESS)
 
 
 ## Coin-OR (Clp and CBC solvers)

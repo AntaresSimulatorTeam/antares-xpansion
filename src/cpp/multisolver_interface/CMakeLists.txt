@@ -16,17 +16,15 @@
 list(APPEND Solver_sources
 	${CMAKE_CURRENT_LIST_DIR}/SolverFactory.cpp
 )
+
 list(APPEND XPRESS_LOAD
 	${CMAKE_CURRENT_LIST_DIR}/environment.cc
-	${CMAKE_CURRENT_LIST_DIR}/environment.h
 )
 
 # XPRESS
 #IF( XPRESS )
 	list(APPEND Solver_sources
 		${CMAKE_CURRENT_LIST_DIR}/SolverXpress.cpp
-		${CMAKE_CURRENT_LIST_DIR}/environment.h
-		${CMAKE_CURRENT_LIST_DIR}/environment.cc
 	)
 #ENDIF( XPRESS )
 

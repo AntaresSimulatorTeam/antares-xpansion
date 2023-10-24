@@ -1,6 +1,6 @@
 
 #include "SolverXpress.h"
-#include "environment.h"
+#include "multisolver_interface/environment.h"
 
 #ifdef COIN_OR
 #include "SolverCbc.h"
