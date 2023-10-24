@@ -1,7 +1,7 @@
-// #ifdef XPRESS
+
 #include "SolverXpress.h"
 #include "environment.h"
-// #endif
+
 #ifdef COIN_OR
 #include "SolverCbc.h"
 #include "SolverClp.h"
@@ -26,11 +26,10 @@ SolverAbstract::Ptr SolverFactory::create_solver(
   if (solver_name == "") {
     throw InvalidSolverNameException(solver_name, LOGLOCATION);
   }
-#ifdef XPRESS
-  else if (solver_name == XPRESS_STR) {
+
+  else if (isXpress_available_ && solver_name == XPRESS_STR) {
     return std::make_shared<SolverXpress>();
   }
-#endif
 #ifdef COIN_OR
   if (solver_name == COIN_STR && solver_type == SOLVER_TYPE::CONTINUOUS) {
     return std::make_shared<SolverClp>();
@@ -60,12 +59,9 @@ SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name) const {
   if (solver_name == "") {
     throw InvalidSolverNameException(solver_name, LOGLOCATION);
-  }
-#ifdef XPRESS
-  else if (solver_name == XPRESS_STR) {
+  } else if (isXpress_available_ && solver_name == XPRESS_STR) {
     return std::make_shared<SolverXpress>();
   }
-#endif
 #ifdef COIN_OR
   else if (solver_name == CLP_STR) {
     return std::make_shared<SolverClp>();

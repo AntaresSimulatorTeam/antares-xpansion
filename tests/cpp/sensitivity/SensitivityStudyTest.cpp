@@ -1,5 +1,6 @@
 #include "SensitivityFileLogger.h"
 #include "SensitivityStudy.h"
+#include "environment.h"
 #include "gtest/gtest.h"
 #include "multisolver_interface/SolverFactory.h"
 
@@ -106,9 +107,10 @@ class SensitivityStudyTest : public ::testing::Test {
       std::string mps_path,
       std::map<std::string, std::vector<SinglePbData>> expec_output_data_map) {
     std::vector<std::string> solvers_name = {coin_name};
-#ifdef XPRESS
-    solvers_name.push_back(xpress_name);
-#endif
+    if (operations_research_Xpansion::XpressIsCorrectlyInstalled()) {
+      solvers_name.push_back(xpress_name);
+    }
+
     for (auto solver_name : solvers_name) {
       init_solver(solver_name, mps_path);
       input_data.last_master = math_problem;

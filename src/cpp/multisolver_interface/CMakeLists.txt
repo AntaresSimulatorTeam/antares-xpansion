@@ -16,6 +16,10 @@
 list(APPEND Solver_sources
 	${CMAKE_CURRENT_LIST_DIR}/SolverFactory.cpp
 )
+list(APPEND XPRESS_LOAD
+	${CMAKE_CURRENT_LIST_DIR}/environment.cc
+	${CMAKE_CURRENT_LIST_DIR}/environment.h
+)
 
 # XPRESS
 #IF( XPRESS )
@@ -41,6 +45,7 @@ ENDIF(COIN_OR)
 # ---------------------------------------------------------------------------
 add_library (solvers STATIC
 	${Solver_sources}
+	${XPRESS_LOAD}
 )
 get_target_property(xpansion_interfaces_path xpansion_interfaces INTERFACE_INCLUDE_DIRECTORIES)
 target_include_directories (solvers
