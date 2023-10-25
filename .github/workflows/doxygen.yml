@@ -24,7 +24,7 @@ jobs:
              git clone https://github.com/jothepro/doxygen-awesome-css.git
              cd doxygen-awesome-css
              git checkout v2.2.1
-             git apply docs/antares-xpansion-link.patch
+             git apply ../docs/antares-xpansion-link.patch
              
       - name: Doxygen
         uses: mattnotmitt/doxygen-action@1.9.5
