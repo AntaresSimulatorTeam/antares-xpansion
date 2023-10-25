@@ -24,7 +24,7 @@
 */
 var NAVTREE =
 [
-  [ "Antares Simulator", "index.html", [
+  [ "Antares Xpansion", "index.html", [
     [ "BendersEndToEnd tests description", "md_tests_end_to_end_benders_README.html", [
       [ "Context", "md_tests_end_to_end_benders_README.html#autotoc_md1", null ],
       [ "Description", "md_tests_end_to_end_benders_README.html#autotoc_md2", [
