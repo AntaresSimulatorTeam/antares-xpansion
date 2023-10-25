@@ -1,0 +1,27 @@
+var namespaceantares__xpansion_1_1input__checker =
+[
+    [ "BatchSizeValueError", "classantares__xpansion_1_1input__checker_1_1BatchSizeValueError.html", null ],
+    [ "CandidateFileWrongTypeValue", "classantares__xpansion_1_1input__checker_1_1CandidateFileWrongTypeValue.html", null ],
+    [ "CandidateLinkWithoutSeparator", "classantares__xpansion_1_1input__checker_1_1CandidateLinkWithoutSeparator.html", null ],
+    [ "CandidateNameDuplicatedError", "classantares__xpansion_1_1input__checker_1_1CandidateNameDuplicatedError.html", null ],
+    [ "EmptyCandidateLink", "classantares__xpansion_1_1input__checker_1_1EmptyCandidateLink.html", null ],
+    [ "EmptyCandidateName", "classantares__xpansion_1_1input__checker_1_1EmptyCandidateName.html", null ],
+    [ "GapValueError", "classantares__xpansion_1_1input__checker_1_1GapValueError.html", null ],
+    [ "IllegalCharsInCandidateName", "classantares__xpansion_1_1input__checker_1_1IllegalCharsInCandidateName.html", null ],
+    [ "LogLevelValueError", "classantares__xpansion_1_1input__checker_1_1LogLevelValueError.html", null ],
+    [ "MaxIterValueError", "classantares__xpansion_1_1input__checker_1_1MaxIterValueError.html", null ],
+    [ "MaxUnitsAndMaxInvestmentAreNullSimultaneously", "classantares__xpansion_1_1input__checker_1_1MaxUnitsAndMaxInvestmentAreNullSimultaneously.html", null ],
+    [ "MaxUnitsAndMaxInvestmentNonNullSimultaneously", "classantares__xpansion_1_1input__checker_1_1MaxUnitsAndMaxInvestmentNonNullSimultaneously.html", null ],
+    [ "NotHandledOption", "classantares__xpansion_1_1input__checker_1_1NotHandledOption.html", null ],
+    [ "NotHandledValue", "classantares__xpansion_1_1input__checker_1_1NotHandledValue.html", null ],
+    [ "OptionTypeError", "classantares__xpansion_1_1input__checker_1_1OptionTypeError.html", null ],
+    [ "ProfileFileNegativeValue", "classantares__xpansion_1_1input__checker_1_1ProfileFileNegativeValue.html", null ],
+    [ "ProfileFileNotExists", "classantares__xpansion_1_1input__checker_1_1ProfileFileNotExists.html", null ],
+    [ "ProfileFileValueError", "classantares__xpansion_1_1input__checker_1_1ProfileFileValueError.html", null ],
+    [ "ProfileFileWrongNumberOfcolumns", "classantares__xpansion_1_1input__checker_1_1ProfileFileWrongNumberOfcolumns.html", null ],
+    [ "ProfileFileWrongNumberOfLines", "classantares__xpansion_1_1input__checker_1_1ProfileFileWrongNumberOfLines.html", null ],
+    [ "SeparationParameterValueError", "classantares__xpansion_1_1input__checker_1_1SeparationParameterValueError.html", null ],
+    [ "TimelimitValueError", "classantares__xpansion_1_1input__checker_1_1TimelimitValueError.html", null ],
+    [ "UnrecognizedCandidateOptionType", "classantares__xpansion_1_1input__checker_1_1UnrecognizedCandidateOptionType.html", null ],
+    [ "check_options", "namespaceantares__xpansion_1_1input__checker.html#a9f77df0f96b2745fa8708d7107425844", null ]
+];
