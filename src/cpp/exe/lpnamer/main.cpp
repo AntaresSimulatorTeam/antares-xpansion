@@ -5,6 +5,18 @@
 #include "ProblemGenerationLogger.h"
 #include "RunProblemGeneration.h"
 
+static const std::string LP_DIRNAME = "lp";
+
+void CreateDirectories(const std::filesystem::path& output_path) {
+  if (!std::filesystem::exists(output_path)) {
+    std::filesystem::create_directories(output_path);
+  }
+  auto lp_path = output_path / LP_DIRNAME;
+  if (!std::filesystem::exists(lp_path)) {
+    std::filesystem::create_directories(lp_path);
+  }
+}
+
 int main(int argc, char** argv) {
   try {
     auto options_parser = ProblemGenerationExeOptions();
@@ -16,9 +28,9 @@ int main(int argc, char** argv) {
     const auto log_file_path =
         xpansion_output_dir / "lp" / "ProblemGenerationLog.txt";
 
+    CreateDirectories(xpansion_output_dir);
     auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout,
                                                     "Problem Generation");
-    auto& loggerRef = (*logger);
 
     auto master_formulation = options_parser.MasterFormulation();
     auto additionalConstraintFilename_l =

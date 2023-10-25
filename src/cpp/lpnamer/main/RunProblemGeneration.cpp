@@ -55,7 +55,6 @@ struct Version {
   int major;
   int minor;
 };
-static const std::string LP_DIRNAME = "lp";
 
 std::shared_ptr<ArchiveReader> InstantiateZipReader(
     const std::filesystem::path& antares_archive_path);
@@ -126,16 +125,6 @@ std::vector<std::shared_ptr<Problem>> getXpansionProblems(
                                                               problem_names);
   return adapter->provideProblems(solver_name, solver_log_manager);
 }
-void CreateDirectories(const std::filesystem::path& output_path,
-                       ProblemGenerationLog::ProblemGenerationLogger* logger) {
-  if (!std::filesystem::exists(output_path)) {
-    std::filesystem::create_directories(output_path);
-  }
-  auto lp_path = output_path / LP_DIRNAME;
-  if (!std::filesystem::exists(lp_path)) {
-    std::filesystem::create_directories(lp_path);
-  }
-}
 
 void RunProblemGeneration(
     const std::filesystem::path& xpansion_output_dir,
@@ -147,7 +136,6 @@ void RunProblemGeneration(
     const std::filesystem::path& weights_file, bool unnamed_problems) {
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Launching Problem Generation" << std::endl;
-  CreateDirectories(xpansion_output_dir, logger.get());
   validateMasterFormulation(master_formulation, logger);
   std::string solver_name = "CBC";  // TODO Use solver selected by user
 
