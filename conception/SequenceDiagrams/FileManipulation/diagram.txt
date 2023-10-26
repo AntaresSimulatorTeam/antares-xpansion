@@ -1,0 +1,127 @@
+title Xpansion folder and file management (full run)
+
+participantgroup #lightblue **Python**
+participant Launch.py
+participant XpansionDriver
+participant AntaresDriver
+participant StudyOutputCleaner
+participant config_loader
+participant problem_generator_driver
+participant full_run_driver
+end
+
+Launch.py->XpansionDriver:launch()
+XpansionDriver->XpansionDriver:launch_antares_step()
+activate XpansionDriver
+XpansionDriver->XpansionDriver:_backup_general_data_ini
+XpansionDriver->XpansionDriver:_update_general_data_ini
+XpansionDriver->XpansionDriver:end launch_antares_step
+deactivate XpansionDriver
+XpansionDriver->AntaresDriver:Launch()
+activate AntaresDriver
+AntaresDriver->AntaresDriver:_clear_old_log()
+note over AntaresDriver: remove antares-X.Y-solver.log
+AntaresDriver->AntaresDriver:_set_simulation_name
+note over AntaresDriver: Get last modified directory\nWARNING Wrong whith zipped results
+create StudyOutputCleaner
+AntaresDriver->StudyOutputCleaner:clean_antares_step
+StudyOutputCleaner->StudyOutputCleaner:Remove Criterion files
+deactivate AntaresDriver
+AntaresDriver->XpansionDriver: return status
+alt Antares ok (return false)
+XpansionDriver->XpansionDriver: _revert_general_data_ini
+else case Antares NOK (return true)
+XpansionDriver->XpansionDriver:_backup_general_data_ini_on_error
+XpansionDriver->XpansionDriver:_revert_general_data_ini
+else case Antares Axception:
+XpansionDriver->XpansionDriver:_backup_general_data_ini_on_error
+XpansionDriver->XpansionDriver:_revert_general_data_ini
+end
+XpansionDriver->problem_generator_driver:set_output_path
+XpansionDriver->problem_generator_driver:create_lp_dir
+note over problem_generator_driver: output/simulation-Xpansion/lp
+problem_generator_driver->problem_generator_driver:os.makedirs(self._lp_path)
+XpansionDriver->config_loader:benders_pre_actions
+config_loader->config_loader:save_launcher_options
+note over config_loader:Save command line options in output/simulation-Xpansion/lp/launcher_options.json
+alt Not Resume
+config_loader->config_loader:create_expansion_dir
+note over config_loader:rm+create output/simulation-Xpansion/expansion
+end
+config_loader->config_loader:_set_options_for_benders_solver
+note over config_loader: write options in output/simulation-Xpansion/lp/options.json
+XpansionDriver->full_run_driver:launch
+create full_run
+full_run_driver->full_run:run
+activate full_run
+note over full_run: log_file_path = output/simulation-Xpansion/lp/ProblemGenerationLog.txt
+participantgroup #lightgreen **ProblemGeneration**
+participant ProblemGeneration
+participant LpFilesExtractor
+participant ZipProblemProviderAdapter
+participant FilesMapper
+end
+
+create ProblemGeneration
+create LpFilesExtractor
+create ZipProblemProviderAdapter
+create FilesMapper
+full_run->ProblemGeneration:RunProblemGeneration
+activate ProblemGeneration
+ProblemGeneration->ProblemGeneration:ExtractUtilsFiles
+
+ProblemGeneration->LpFilesExtractor:ExtractFiles
+ProblemGeneration->FilesMapper:FillMap
+note over FilesMapper: read mps file list from zip \n Fill Map<Pair<Year, Week>, Tuple<MPSPAth, VariablePAth, ConstraintPath>> 
+destroyafter FilesMapper
+
+alt use zip implementation = true {const}
+loop mps files
+ProblemGeneration->ZipProblemProviderAdapter:ProvideProblems
+note over ZipProblemProviderAdapter:Extract problem file from zip\n create "problem"/solver
+end
+loop Problems
+ProblemGeneration->ProblemGeneration:treat
+note over ProblemGeneration: write mps
+end
+end
+ProblemGeneration->ProblemGeneration:MasterGeneration()
+deactivateafter ProblemGeneration
+destroy LpFilesExtractor
+destroy ZipProblemProviderAdapter
+destroyafter ProblemGeneration
+
+
+participantgroup #lightpink **Benders**
+participant BendersFactory
+participant Benders
+end 
+full_run->BendersFactory:RunBenders
+BendersFactory->BendersFactory:Read options file
+BendersFactory->BendersFactory:Set log destination
+note over BendersFactory: bendersLog-rank<N>.txt
+BendersFactory->BendersFactory:FileAndStdoutLoggerFactory
+note over BendersFactory:log filename: reportbenders.txt\ndestination: "." with previous chdir to lp dir
+BendersFactory->BendersFactory:set writer
+note over BendersFactory: write in simulation-Xpansion/expansion/out.json
+BendersFactory->Benders:launch
+
+
+full_run->full_run:updateStudy
+
+
+deactivateafter full_run
+destroyafter full_run
+alt not keep_mps
+full_run_driver->StudyOutputCleaner:clean_benders_step
+note over StudyOutputCleaner:rm simulation-Xpansion/lp/*.mps\nrm simulation-Xpansion/lp/*.lp\nrm simulation-Xpansion/lp/*.zip
+end
+XpansionDriver->XpansionDriver:clean_step
+activate XpansionDriver
+create antares_archive_updater_exe
+XpansionDriver->antares_archive_updater_exe:Run
+note over antares_archive_updater_exe: add sumulation-Xpansion in simulation.zip\nrm simulation-Xpansion
+antares_archive_updater_exe->antares_archive_updater_exe:CleanAntaresArchive
+destroyafter antares_archive_updater_exe
+note over XpansionDriver:rm output/simulation-Xpansion
+deactivateafter XpansionDriver

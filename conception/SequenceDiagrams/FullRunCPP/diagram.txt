@@ -1,0 +1,94 @@
+title CPP Full run
+participant Main
+participantgroup #lightblue LPNamer
+participant ProblemGeneration
+participant WeightsFileReader
+participant YearlyWeightsWriter
+participant LpFilesExtractor
+participant LinkProblemsGenerator
+participant ZipProblemsProviderAdapter
+participant MPSFileWriter
+participant IProblemVariablesProviderPort
+participant ProblemModifier
+end
+Main->ProblemGeneration:RunProblemGeneration()
+ProblemGeneration->ProblemGeneration:ValidateMasterFormulation
+group ProcessWeight
+ProblemGeneration->WeightsFileReader:ReadWeights()
+WeightsFileReader->ProblemGeneration::weights_vector
+ProblemGeneration->YearlyWeightsWriter:WriteActiveYears()
+end
+destroyafter WeightsFileReader
+destroy YearlyWeightsWriter
+group ExtractUtilsFiles
+ProblemGeneration->LpFilesExtractor:ExtractArea
+ProblemGeneration->LpFilesExtractor:ExtractInterco
+ProblemGeneration->LpFilesExtractor:ExtractTSNumbers
+end 
+destroyafter LpFilesExtractor
+ProblemGeneration->ProblemGeneration:GetLinks()
+ProblemGeneration->ProblemGeneration:ReadConstraintsFile()
+
+
+group getXpansionProblems
+create ZipProblemsProviderAdapter
+ProblemGeneration->ZipProblemsProviderAdapter:provideProblems()
+ZipProblemsProviderAdapter->ProblemGeneration:List of Problem
+end
+destroy ZipProblemsProviderAdapter
+
+create LinkProblemsGenerator
+create MPSFileWriter
+loop Par
+create IProblemVariablesProviderPort
+ProblemGeneration->LinkProblemsGenerator:treat()
+LinkProblemsGenerator->IProblemVariablesProviderPort:Provide()
+IProblemVariablesProviderPort->LinkProblemsGenerator:ProblemVariables
+create ProblemModifier
+LinkProblemsGenerator->ProblemModifier:ChangeProblem()
+loop link
+loop candidates
+LinkProblemsGenerator->ProblemGeneration:Couplings[candidate_name, problem_name]
+end
+end
+LinkProblemsGenerator->MPSFileWriter:WriteProblem()
+destroyafter ProblemModifier
+end
+destroy IProblemVariablesProviderPort
+
+
+destroy MPSFileWriter
+destroy ZipProblemsProviderAdapter
+destroy LinkProblemsGenerator
+
+ProblemGeneration->ProblemGeneration:master_generation()
+destroyafter ProblemGeneration
+/////
+participantgroup #pink Benders
+create BendersFactrory
+Main->BendersFactrory:RunBenders
+create Benders
+BendersFactrory->Benders:Launch()
+group build_input_map()
+Benders->Benders:get_master_variable_map()
+Benders->Benders:GetCouplingMap()
+end
+group InitializeProblem
+Benders->Benders:MatchProblemToId
+Benders->Benders:BuildMasterProblem()
+loop coupling_map
+Benders->Benders:AddSubproblem()
+Benders->Benders:AddSubproblem()
+end
+end 
+group Run
+loop CriterionNotReach
+Benders->Benders:solve_master
+Benders->Benders:solve_subproblems_and_build_cuts
+Benders->Benders:update_best_solution
+end
+end 
+Benders->Benders:post_run_actions
+end
+destroyafter Benders
+destroyafter BendersFactrory

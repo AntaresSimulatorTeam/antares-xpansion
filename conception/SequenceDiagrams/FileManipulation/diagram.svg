@@ -1,0 +1,1176 @@
+<svg version="1.1" xmlns="http://www.w3.org/2000/svg" width="4136"
+     height="4660">
+    <desc>
+        title%20Xpansion%20folder%20and%20file%20management%20(full%20run)%0A%0Aparticipantgroup%20%23lightblue%20**Python**%0Aparticipant%20Launch.py%0Aparticipant%20XpansionDriver%0Aparticipant%20AntaresDriver%0Aparticipant%20StudyOutputCleaner%0Aparticipant%20config_loader%0Aparticipant%20problem_generator_driver%0Aparticipant%20full_run_driver%0Aend%0A%0ALaunch.py-%3EXpansionDriver%3Alaunch()%0AXpansionDriver-%3EXpansionDriver%3Alaunch_antares_step()%0Aactivate%20XpansionDriver%0AXpansionDriver-%3EXpansionDriver%3A_backup_general_data_ini%0AXpansionDriver-%3EXpansionDriver%3A_update_general_data_ini%0AXpansionDriver-%3EXpansionDriver%3Aend%20launch_antares_step%0Adeactivate%20XpansionDriver%0AXpansionDriver-%3EAntaresDriver%3ALaunch()%0Aactivate%20AntaresDriver%0AAntaresDriver-%3EAntaresDriver%3A_clear_old_log()%0Anote%20over%20AntaresDriver%3A%20remove%20antares-X.Y-solver.log%0AAntaresDriver-%3EAntaresDriver%3A_set_simulation_name%0Anote%20over%20AntaresDriver%3A%20Get%20last%20modified%20directory%5CnWARNING%20Wrong%20whith%20zipped%20results%0Acreate%20StudyOutputCleaner%0AAntaresDriver-%3EStudyOutputCleaner%3Aclean_antares_step%0AStudyOutputCleaner-%3EStudyOutputCleaner%3ARemove%20Criterion%20files%0Adeactivate%20AntaresDriver%0AAntaresDriver-%3EXpansionDriver%3A%20return%20status%0Aalt%20Antares%20ok%20(return%20false)%0AXpansionDriver-%3EXpansionDriver%3A%20_revert_general_data_ini%0Aelse%20case%20Antares%20NOK%20(return%20true)%0AXpansionDriver-%3EXpansionDriver%3A_backup_general_data_ini_on_error%0AXpansionDriver-%3EXpansionDriver%3A_revert_general_data_ini%0Aelse%20case%20Antares%20Axception%3A%0AXpansionDriver-%3EXpansionDriver%3A_backup_general_data_ini_on_error%0AXpansionDriver-%3EXpansionDriver%3A_revert_general_data_ini%0Aend%0AXpansionDriver-%3Eproblem_generator_driver%3Aset_output_path%0AXpansionDriver-%3Eproblem_generator_driver%3Acreate_lp_dir%0Anote%20over%20problem_generator_driver%3A%20output%2Fsimulation-Xpansion%2Flp%0Aproblem_generator_driver-%3Eproblem_generator_driver%3Aos.makedirs(self._lp_path)%0AXpansionDriver-%3Econfig_loader%3Abenders_pre_actions%0Aconfig_loader-%3Econfig_loader%3Asave_launcher_options%0Anote%20over%20config_loader%3ASave%20command%20line%20options%20in%20output%2Fsimulation-Xpansion%2Flp%2Flauncher_options.json%0Aalt%20Not%20Resume%0Aconfig_loader-%3Econfig_loader%3Acreate_expansion_dir%0Anote%20over%20config_loader%3Arm%2Bcreate%20output%2Fsimulation-Xpansion%2Fexpansion%0Aend%0Aconfig_loader-%3Econfig_loader%3A_set_options_for_benders_solver%0Anote%20over%20config_loader%3A%20write%20options%20in%20output%2Fsimulation-Xpansion%2Flp%2Foptions.json%0AXpansionDriver-%3Efull_run_driver%3Alaunch%0Acreate%20full_run%0Afull_run_driver-%3Efull_run%3Arun%0Aactivate%20full_run%0Anote%20over%20full_run%3A%20log_file_path%20%3D%20output%2Fsimulation-Xpansion%2Flp%2FProblemGenerationLog.txt%0Aparticipantgroup%20%23lightgreen%20**ProblemGeneration**%0Aparticipant%20ProblemGeneration%0Aparticipant%20LpFilesExtractor%0Aparticipant%20ZipProblemProviderAdapter%0Aparticipant%20FilesMapper%0Aend%0A%0Acreate%20ProblemGeneration%0Acreate%20LpFilesExtractor%0Acreate%20ZipProblemProviderAdapter%0Acreate%20FilesMapper%0Afull_run-%3EProblemGeneration%3ARunProblemGeneration%0Aactivate%20ProblemGeneration%0AProblemGeneration-%3EProblemGeneration%3AExtractUtilsFiles%0A%0AProblemGeneration-%3ELpFilesExtractor%3AExtractFiles%0AProblemGeneration-%3EFilesMapper%3AFillMap%0Anote%20over%20FilesMapper%3A%20read%20mps%20file%20list%20from%20zip%20%5Cn%20Fill%20Map%3CPair%3CYear%2C%20Week%3E%2C%20Tuple%3CMPSPAth%2C%20VariablePAth%2C%20ConstraintPath%3E%3E%20%0Adestroyafter%20FilesMapper%0A%0Aalt%20use%20zip%20implementation%20%3D%20true%20%7Bconst%7D%0Aloop%20mps%20files%0AProblemGeneration-%3EZipProblemProviderAdapter%3AProvideProblems%0Anote%20over%20ZipProblemProviderAdapter%3AExtract%20problem%20file%20from%20zip%5Cn%20create%20%22problem%22%2Fsolver%0Aend%0Aloop%20Problems%0AProblemGeneration-%3EProblemGeneration%3Atreat%0Anote%20over%20ProblemGeneration%3A%20write%20mps%0Aend%0Aend%0AProblemGeneration-%3EProblemGeneration%3AMasterGeneration()%0Adeactivateafter%20ProblemGeneration%0Adestroy%20LpFilesExtractor%0Adestroy%20ZipProblemProviderAdapter%0Adestroyafter%20ProblemGeneration%0A%0A%0Aparticipantgroup%20%23lightpink%20**Benders**%0Aparticipant%20BendersFactory%0Aparticipant%20Benders%0Aend%20%0Afull_run-%3EBendersFactory%3ARunBenders%0ABendersFactory-%3EBendersFactory%3ARead%20options%20file%0ABendersFactory-%3EBendersFactory%3ASet%20log%20destination%0Anote%20over%20BendersFactory%3A%20bendersLog-rank%3CN%3E.txt%0ABendersFactory-%3EBendersFactory%3AFileAndStdoutLoggerFactory%0Anote%20over%20BendersFactory%3Alog%20filename%3A%20reportbenders.txt%5Cndestination%3A%20%22.%22%20with%20previous%20chdir%20to%20lp%20dir%0ABendersFactory-%3EBendersFactory%3Aset%20writer%0Anote%20over%20BendersFactory%3A%20write%20in%20simulation-Xpansion%2Fexpansion%2Fout.json%0ABendersFactory-%3EBenders%3Alaunch%0A%0A%0Afull_run-%3Efull_run%3AupdateStudy%0A%0A%0Adeactivateafter%20full_run%0Adestroyafter%20full_run%0Aalt%20not%20keep_mps%0Afull_run_driver-%3EStudyOutputCleaner%3Aclean_benders_step%0Anote%20over%20StudyOutputCleaner%3Arm%20simulation-Xpansion%2Flp%2F*.mps%5Cnrm%20simulation-Xpansion%2Flp%2F*.lp%5Cnrm%20simulation-Xpansion%2Flp%2F*.zip%0Aend%0AXpansionDriver-%3EXpansionDriver%3Aclean_step%0Aactivate%20XpansionDriver%0Acreate%20antares_archive_updater_exe%0AXpansionDriver-%3Eantares_archive_updater_exe%3ARun%0Anote%20over%20antares_archive_updater_exe%3A%20add%20sumulation-Xpansion%20in%20simulation.zip%5Cnrm%20simulation-Xpansion%0Aantares_archive_updater_exe-%3Eantares_archive_updater_exe%3ACleanAntaresArchive%0Adestroyafter%20antares_archive_updater_exe%0Anote%20over%20XpansionDriver%3Arm%20output%2Fsimulation-Xpansion%0Adeactivateafter%20XpansionDriver%0A
+    </desc>
+    <defs/>
+    <g>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g>
+            <rect fill="white" stroke="none" x="0" y="0" width="4136" height="4660"/>
+        </g>
+        <g>
+            <text fill="black" stroke="none" font-family="sans-serif" font-size="16.5pt" font-style="normal" font-weight="normal" text-decoration="normal" x="1809.415675894461" y="22.6179738" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">Xpansion folder and file management (full run)</text>
+        </g>
+        <g>
+            <g>
+                <path fill="lightblue" stroke="black" paint-order="fill stroke markers"
+                      d=" M 7.539324599999993 46.517632782 L 1695.3487641214804 46.517632782 L 1695.3487641214804 4652.6679971520025 L 7.539324599999993 4652.6679971520025 L 7.539324599999993 46.517632782"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="bold" text-decoration="normal" x="822.1640436740947" y="67.627741662" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">Python</text>
+            </g>
+            <g>
+                <path fill="lightgreen" stroke="black" paint-order="fill stroke markers"
+                      d=" M 2285.060961159605 46.517632782 L 3150.332534076101 46.517632782 L 3150.332534076101 4652.6679971520025 L 2285.060961159605 4652.6679971520025 L 2285.060961159605 46.517632782"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="bold" text-decoration="normal" x="2637.2367485333807" y="67.627741662" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">ProblemGeneration</text>
+            </g>
+            <g>
+                <path fill="lightpink" stroke="black" paint-order="fill stroke markers"
+                      d=" M 3399.5823009447067 46.517632782 L 3767.9058063621246 46.517632782 L 3767.9058063621246 4652.6679971520025 L 3399.5823009447067 4652.6679971520025 L 3399.5823009447067 46.517632782"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="bold" text-decoration="normal" x="3549.744053653416" y="67.627741662" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">Benders</text>
+            </g>
+        </g>
+        <g>
+            <path fill="none" stroke="black" paint-order="fill stroke markers"
+                  d=" M 69.31898465011523 123.19256396400002 L 69.31898465011523 4652.6679971520025"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray="11.598960923076923,5.0262164"/>
+            <path fill="none" stroke="black" paint-order="fill stroke markers"
+                  d=" M 218.85440715882618 123.19256396400002 L 218.85440715882618 4652.6679971520025"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray="11.598960923076923,5.0262164"/>
+            <path fill="none" stroke="black" paint-order="fill stroke markers"
+                  d=" M 533.6558957588261 123.19256396400002 L 533.6558957588261 4652.6679971520025"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray="11.598960923076923,5.0262164"/>
+            <path fill="none" stroke="black" paint-order="fill stroke markers"
+                  d=" M 731.3194062863652 781.6771745280001 L 731.3194062863652 4652.6679971520025"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray="11.598960923076923,5.0262164"/>
+            <path fill="none" stroke="black" paint-order="fill stroke markers"
+                  d=" M 1065.8288251179276 123.19256396400002 L 1065.8288251179276 4652.6679971520025"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray="11.598960923076923,5.0262164"/>
+            <path fill="none" stroke="black" paint-order="fill stroke markers"
+                  d=" M 1400.33824394949 123.19256396400002 L 1400.33824394949 4652.6679971520025"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray="11.598960923076923,5.0262164"/>
+            <path fill="none" stroke="black" paint-order="fill stroke markers"
+                  d=" M 1618.9291046817166 123.19256396400002 L 1618.9291046817166 4652.6679971520025"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray="11.598960923076923,5.0262164"/>
+            <path fill="none" stroke="black" paint-order="fill stroke markers"
+                  d=" M 1990.2048626405426 2156.397622092001 L 1990.2048626405426 3982.120467228002"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray="11.598960923076923,5.0262164"/>
+            <path fill="none" stroke="black" paint-order="fill stroke markers"
+                  d=" M 2379.860621667484 2321.810403816001 L 2379.860621667484 3351.832930668002"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray="11.598960923076923,5.0262164"/>
+            <path fill="none" stroke="black" paint-order="fill stroke markers"
+                  d=" M 2558.390800896195 2387.704100820001 L 2558.390800896195 3315.644172588002"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray="11.598960923076923,5.0262164"/>
+            <path fill="none" stroke="black" paint-order="fill stroke markers"
+                  d=" M 2765.7767811526755 2453.5977978240007 L 2765.7767811526755 3315.644172588002"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray="11.598960923076923,5.0262164"/>
+            <path fill="none" stroke="black" paint-order="fill stroke markers"
+                  d=" M 3082.679541048691 2519.4914948280007 L 3082.679541048691 2816.540884068001"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray="11.598960923076923,5.0262164"/>
+            <path fill="none" stroke="black" paint-order="fill stroke markers"
+                  d=" M 3480.461959468943 123.19256396400002 L 3480.461959468943 4652.6679971520025"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray="11.598960923076923,5.0262164"/>
+            <path fill="none" stroke="black" paint-order="fill stroke markers"
+                  d=" M 3713.8128147080056 123.19256396400002 L 3713.8128147080056 4652.6679971520025"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray="11.598960923076923,5.0262164"/>
+            <path fill="none" stroke="black" paint-order="fill stroke markers"
+                  d=" M 3952.088580296226 4316.414119992003 L 3952.088580296226 4529.023073712003"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray="11.598960923076923,5.0262164"/>
+        </g>
+        <g>
+            <path fill="none" stroke="none"/>
+            <g>
+                <path fill="white" stroke="black" paint-order="fill stroke markers"
+                      d=" M 15.078649199999994 82.48021112400001 L 123.55932010023045 82.48021112400001 L 123.55932010023045 123.19256396400002 L 15.078649199999994 123.19256396400002 L 15.078649199999994 82.48021112400001 Z"
+                      stroke-miterlimit="10" stroke-width="2.4125838720000004" stroke-dasharray=""/>
+            </g>
+            <g>
+                <g/>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="31.43898358199999" y="108.11391476400003"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">Launch.py</text>
+            </g>
+            <path fill="none" stroke="none"/>
+            <g>
+                <path fill="white" stroke="black" paint-order="fill stroke markers"
+                      d=" M 146.11407170871092 82.48021112400001 L 291.5947426089414 82.48021112400001 L 291.5947426089414 123.19256396400002 L 146.11407170871092 123.19256396400002 L 146.11407170871092 82.48021112400001 Z"
+                      stroke-miterlimit="10" stroke-width="2.4125838720000004" stroke-dasharray=""/>
+            </g>
+            <g>
+                <g/>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="162.47440609071094" y="108.11391476400003"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">XpansionDriver</text>
+            </g>
+            <path fill="none" stroke="none"/>
+            <g>
+                <path fill="white" stroke="black" paint-order="fill stroke markers"
+                      d=" M 466.5088945067089 82.48021112400001 L 600.8028970109433 82.48021112400001 L 600.8028970109433 123.19256396400002 L 466.5088945067089 123.19256396400002 L 466.5088945067089 82.48021112400001 Z"
+                      stroke-miterlimit="10" stroke-width="2.4125838720000004" stroke-dasharray=""/>
+            </g>
+            <g>
+                <g/>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="482.8692288887089" y="108.11391476400003"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">AntaresDriver</text>
+            </g>
+            <path fill="none" stroke="none"/>
+            <g>
+                <path fill="white" stroke="black" paint-order="fill stroke markers"
+                      d=" M 1000.1618234080468 82.48021112400001 L 1131.4958268278085 82.48021112400001 L 1131.4958268278085 123.19256396400002 L 1000.1618234080468 123.19256396400002 L 1000.1618234080468 82.48021112400001 Z"
+                      stroke-miterlimit="10" stroke-width="2.4125838720000004" stroke-dasharray=""/>
+            </g>
+            <g>
+                <g/>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="1016.5221577900468" y="108.11391476400003"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">config_loader</text>
+            </g>
+            <path fill="none" stroke="none"/>
+            <g>
+                <path fill="white" stroke="black" paint-order="fill stroke markers"
+                      d=" M 1288.5179104830174 82.48021112400001 L 1512.1585774159628 82.48021112400001 L 1512.1585774159628 123.19256396400002 L 1288.5179104830174 123.19256396400002 L 1288.5179104830174 82.48021112400001 Z"
+                      stroke-miterlimit="10" stroke-width="2.4125838720000004" stroke-dasharray=""/>
+            </g>
+            <g>
+                <g/>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="1304.8782448650175" y="108.11391476400003"
+                      text-anchor="start" dominant-baseline="alphabetic"
+                      xml:space="preserve">problem_generator_driver</text>
+            </g>
+            <path fill="none" stroke="none"/>
+            <g>
+                <path fill="white" stroke="black" paint-order="fill stroke markers"
+                      d=" M 1550.048769841953 82.48021112400001 L 1687.8094395214803 82.48021112400001 L 1687.8094395214803 123.19256396400002 L 1550.048769841953 123.19256396400002 L 1550.048769841953 82.48021112400001 Z"
+                      stroke-miterlimit="10" stroke-width="2.4125838720000004" stroke-dasharray=""/>
+            </g>
+            <g>
+                <g/>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="1566.409104223953" y="108.11391476400003"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">full_run_driver</text>
+            </g>
+            <path fill="none" stroke="none"/>
+            <g>
+                <path fill="white" stroke="black" paint-order="fill stroke markers"
+                      d=" M 3407.1216255447066 82.48021112400001 L 3553.8022933931793 82.48021112400001 L 3553.8022933931793 123.19256396400002 L 3407.1216255447066 123.19256396400002 L 3407.1216255447066 82.48021112400001 Z"
+                      stroke-miterlimit="10" stroke-width="2.4125838720000004" stroke-dasharray=""/>
+            </g>
+            <g>
+                <g/>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="3423.4819599267066" y="108.11391476400003"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">BendersFactory</text>
+            </g>
+            <path fill="none" stroke="none"/>
+            <g>
+                <path fill="white" stroke="black" paint-order="fill stroke markers"
+                      d=" M 3667.2591476538864 82.48021112400001 L 3760.3664817621247 82.48021112400001 L 3760.3664817621247 123.19256396400002 L 3667.2591476538864 123.19256396400002 L 3667.2591476538864 82.48021112400001 Z"
+                      stroke-miterlimit="10" stroke-width="2.4125838720000004" stroke-dasharray=""/>
+            </g>
+            <g>
+                <g/>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="3683.6194820358864" y="108.11391476400003"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">Benders</text>
+            </g>
+        </g>
+        <g>
+            <path fill="white" stroke="black" paint-order="fill stroke markers"
+                  d=" M 211.3150825588262 234.77456804400003 L 226.39373175882616 234.77456804400003 L 226.39373175882616 420.24195320399997 L 211.3150825588262 420.24195320399997 L 211.3150825588262 234.77456804400003"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            <path fill="white" stroke="black" paint-order="fill stroke markers"
+                  d=" M 526.1165711588261 462.462170964 L 541.1952203588261 462.462170964 L 541.1952203588261 885.7198540080001 L 526.1165711588261 885.7198540080001 L 526.1165711588261 462.462170964"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            <path fill="white" stroke="black" paint-order="fill stroke markers"
+                  d=" M 1982.6655380405425 2198.617839852001 L 1997.7441872405427 2198.617839852001 L 1997.7441872405427 3956.486763588002 L 1982.6655380405425 3956.486763588002 L 1982.6655380405425 2198.617839852001"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            <path fill="white" stroke="black" paint-order="fill stroke markers"
+                  d=" M 2372.321297067484 2561.711712588001 L 2387.3999462674838 2561.711712588001 L 2387.3999462674838 3326.199227028002 L 2372.321297067484 3326.199227028002 L 2372.321297067484 2561.711712588001"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            <path fill="white" stroke="black" paint-order="fill stroke markers"
+                  d=" M 211.3150825588262 4250.520422988003 L 226.39373175882616 4250.520422988003 L 226.39373175882616 4610.447779392003 L 211.3150825588262 4610.447779392003 L 211.3150825588262 4250.520422988003"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="113.8600285002959" y="166.92064664400002" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">launch()</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 69.31898465011523 172.95210632400003 L 206.4396526508262 172.95210632400003"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(218.85440715882618,172.95210632400003) translate(-218.85440715882618,-172.95210632400003)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 206.28886615882618 166.66933582400003 L 218.85440715882618 172.95210632400003 L 206.28886615882618 179.23487682400003 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="246.49859735882615" y="209.140864404" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">launch_antares_step()</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 218.85440715882618 215.17232408400002 L 286.70832855882617 215.17232408400002 L 286.70832855882617 234.77456804400003 L 238.80848626682615 234.77456804400003"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(226.39373175882616,234.77456804400003) translate(-226.39373175882616,-234.77456804400003)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 238.95927275882616 228.49179754400004 L 226.39373175882616 234.77456804400003 L 238.95927275882616 241.05733854400003 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="246.49859735882615" y="270.963326124" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">_backup_general_data_ini</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 226.39373175882616 276.994785804 L 286.70832855882617 276.994785804 L 286.70832855882617 296.597029764 L 238.80848626682615 296.597029764"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(226.39373175882616,296.597029764) translate(-226.39373175882616,-296.597029764)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 238.95927275882616 290.314259264 L 226.39373175882616 296.597029764 L 238.95927275882616 302.87980026400004 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="246.49859735882615" y="332.78578784399997" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">_update_general_data_ini</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 226.39373175882616 338.817247524 L 286.70832855882617 338.817247524 L 286.70832855882617 358.419491484 L 238.80848626682615 358.419491484"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(226.39373175882616,358.419491484) translate(-226.39373175882616,-358.419491484)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 238.95927275882616 352.13672098399996 L 226.39373175882616 358.419491484 L 238.95927275882616 364.702261984 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="246.49859735882615" y="394.60824956399995" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">end launch_antares_step</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 226.39373175882616 400.63970924399996 L 286.70832855882617 400.63970924399996 L 286.70832855882617 420.24195320399997 L 238.80848626682615 420.24195320399997"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(226.39373175882616,420.24195320399997) translate(-226.39373175882616,-420.24195320399997)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 238.95927275882616 413.95918270399994 L 226.39373175882616 420.24195320399997 L 238.95927275882616 426.524723704 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="340.2121546556523" y="456.43071128400004" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">Launch()</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 218.85440715882618 462.462170964 L 513.7018166508261 462.462170964" stroke-miterlimit="10"
+                      stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(526.1165711588261,462.462170964) translate(-526.1165711588261,-462.462170964)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 513.551030158826 456.17940046399997 L 526.1165711588261 462.462170964 L 513.551030158826 468.744941464 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="561.3000859588261" y="498.650929044" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">_clear_old_log()</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 541.1952203588261 504.682388724 L 601.5098171588261 504.682388724 L 601.5098171588261 524.284632684 L 553.6099748668261 524.284632684"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(541.1952203588261,524.284632684) translate(-541.1952203588261,-524.284632684)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 553.7607613588261 518.0018621840001 L 541.1952203588261 524.284632684 L 553.7607613588261 530.567403184 Z"/>
+                </g>
+            </g>
+            <path fill="white" stroke="black" paint-order="fill stroke markers"
+                  d=" M 403.7124510023612 546.9026064840001 L 650.028556235291 546.9026064840001 L 663.599340515291 560.4733907640001 L 663.599340515291 581.5834996440001 L 403.7124510023612 581.5834996440001 L 403.7124510023612 546.9026064840001 M 650.028556235291 546.9026064840001 L 650.028556235291 560.4733907640001 L 663.599340515291 560.4733907640001"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="424.82255988236125" y="568.0127153640001" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">remove antares-X.Y-solver.log</text>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="561.3000859588261" y="617.772257724" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">_set_simulation_name</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 541.1952203588261 623.803717404 L 601.5098171588261 623.803717404 L 601.5098171588261 643.4059613640001 L 553.6099748668261 643.4059613640001"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(541.1952203588261,643.4059613640001) translate(-541.1952203588261,-643.4059613640001)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 553.7607613588261 637.1231908640001 L 541.1952203588261 643.4059613640001 L 553.7607613588261 649.688731864 Z"/>
+                </g>
+            </g>
+            <path fill="white" stroke="black" paint-order="fill stroke markers"
+                  d=" M 374.7057905409355 666.0239351640001 L 679.0352166967167 666.0239351640001 L 692.6060009767167 679.5947194440001 L 692.6060009767167 715.7834775240001 L 374.7057905409355 715.7834775240001 L 374.7057905409355 666.0239351640001 M 679.0352166967167 666.0239351640001 L 679.0352166967167 679.5947194440001 L 692.6060009767167 679.5947194440001"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="395.81589942093547" y="687.134044044" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">Get last modified directory</text>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="395.81589942093547" y="702.212693244"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">WARNING Wrong whith zipped results</text>
+            </g>
+            <path fill="none" stroke="none"/>
+            <g>
+                <path fill="white" stroke="black" paint-order="fill stroke markers"
+                      d=" M 639.9857366382519 740.9648216880001 L 822.6530759344785 740.9648216880001 L 822.6530759344785 781.6771745280001 L 639.9857366382519 781.6771745280001 L 639.9857366382519 740.9648216880001 Z"
+                      stroke-miterlimit="10" stroke-width="2.4125838720000004" stroke-dasharray=""/>
+            </g>
+            <g>
+                <g/>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="656.3460710202519" y="766.598525328"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">StudyOutputCleaner</text>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="565.6439786668338" y="817.8659326080001" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">clean_antares_step</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 541.1952203588261 823.8973922880001 L 718.9046517783652 823.8973922880001"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(731.3194062863652,823.8973922880001) translate(-731.3194062863652,-823.8973922880001)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 718.7538652863651 817.6146217880001 L 731.3194062863652 823.8973922880001 L 718.7538652863651 830.1801627880001 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="751.4242718863652" y="860.0861503680001" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">Remove Criterion files</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 731.3194062863652 866.1176100480001 L 791.6340030863652 866.1176100480001 L 791.6340030863652 885.7198540080001 L 743.7341607943652 885.7198540080001"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(731.3194062863652,885.7198540080001) translate(-731.3194062863652,-885.7198540080001)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 743.8849472863652 879.4370835080001 L 731.3194062863652 885.7198540080001 L 743.8849472863652 892.002624508 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="328.9751526795293" y="921.908612088" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">return status</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 533.6558957588261 927.940071768 L 231.26916166682616 927.940071768" stroke-miterlimit="10"
+                      stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(218.85440715882618,927.940071768) translate(-218.85440715882618,-927.940071768)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 231.41994815882617 921.6573012680001 L 218.85440715882618 927.940071768 L 231.41994815882617 934.222842268 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="238.95927275882616" y="1004.8411826880001" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">_revert_general_data_ini</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 218.85440715882618 1010.8726423680001 L 279.1690039588262 1010.8726423680001 L 279.1690039588262 1030.4748863280001 L 231.26916166682616 1030.4748863280001"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(218.85440715882618,1030.4748863280001) translate(-218.85440715882618,-1030.4748863280001)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 231.41994815882617 1024.1921158280002 L 218.85440715882618 1030.4748863280001 L 231.41994815882617 1036.757656828 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="238.95927275882616" y="1107.3759972480002" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">_backup_general_data_ini_on_error</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 218.85440715882618 1113.4074569280003 L 279.1690039588262 1113.4074569280003 L 279.1690039588262 1133.0097008880002 L 231.26916166682616 1133.0097008880002"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(218.85440715882618,1133.0097008880002) translate(-218.85440715882618,-1133.0097008880002)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 231.41994815882617 1126.7269303880003 L 218.85440715882618 1133.0097008880002 L 231.41994815882617 1139.2924713880002 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="238.95927275882616" y="1169.1984589680003" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">_revert_general_data_ini</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 218.85440715882618 1175.2299186480004 L 279.1690039588262 1175.2299186480004 L 279.1690039588262 1194.8321626080003 L 231.26916166682616 1194.8321626080003"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(218.85440715882618,1194.8321626080003) translate(-218.85440715882618,-1194.8321626080003)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 231.41994815882617 1188.5493921080003 L 218.85440715882618 1194.8321626080003 L 231.41994815882617 1201.1149331080003 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="238.95927275882616" y="1271.7332735280004" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">_backup_general_data_ini_on_error</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 218.85440715882618 1277.7647332080005 L 279.1690039588262 1277.7647332080005 L 279.1690039588262 1297.3669771680004 L 231.26916166682616 1297.3669771680004"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(218.85440715882618,1297.3669771680004) translate(-218.85440715882618,-1297.3669771680004)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 231.41994815882617 1291.0842066680004 L 218.85440715882618 1297.3669771680004 L 231.41994815882617 1303.6497476680004 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="238.95927275882616" y="1333.5557352480005" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">_revert_general_data_ini</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 218.85440715882618 1339.5871949280006 L 279.1690039588262 1339.5871949280006 L 279.1690039588262 1359.1894388880005 L 231.26916166682616 1359.1894388880005"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(218.85440715882618,1359.1894388880005) translate(-218.85440715882618,-1359.1894388880005)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 231.41994815882617 1352.9066683880005 L 218.85440715882618 1359.1894388880005 L 231.41994815882617 1365.4722093880005 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="750.2096602099198" y="1417.9961707680006" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">set_output_path</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 218.85440715882618 1424.0276304480005 L 1387.9234894414901 1424.0276304480005"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(1400.33824394949,1424.0276304480005) translate(-1400.33824394949,-1424.0276304480005)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 1387.7727029494902 1417.7448599480006 L 1400.33824394949 1424.0276304480005 L 1387.7727029494902 1430.3104009480005 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="762.5829931872147" y="1460.2163885280006" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">create_lp_dir</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 218.85440715882618 1466.2478482080005 L 1387.9234894414901 1466.2478482080005"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(1400.33824394949,1466.2478482080005) translate(-1400.33824394949,-1466.2478482080005)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 1387.7727029494902 1459.9650777080005 L 1400.33824394949 1466.2478482080005 L 1387.7727029494902 1472.5306187080005 Z"/>
+                </g>
+            </g>
+            <path fill="white" stroke="black" paint-order="fill stroke markers"
+                  d=" M 1269.0814675890215 1488.8658220080004 L 1518.0242360299592 1488.8658220080004 L 1531.5950203099592 1502.4366062880003 L 1531.5950203099592 1523.5467151680004 L 1269.0814675890215 1523.5467151680004 L 1269.0814675890215 1488.8658220080004 M 1518.0242360299592 1488.8658220080004 L 1518.0242360299592 1502.4366062880003 L 1531.5950203099592 1502.4366062880003"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="1290.1915764690214" y="1509.9759308880004" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">output/simulation-Xpansion/lp</text>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="1420.4431095494901" y="1559.7354732480005" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">os.makedirs(self._lp_path)</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 1400.33824394949 1565.7669329280006 L 1460.6528407494902 1565.7669329280006 L 1460.6528407494902 1585.3691768880005 L 1412.75299845749 1585.3691768880005"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(1400.33824394949,1585.3691768880005) translate(-1400.33824394949,-1585.3691768880005)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 1412.90378494949 1579.0864063880006 L 1400.33824394949 1585.3691768880005 L 1412.90378494949 1591.6519473880005 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="566.7816185797831" y="1621.5579349680006" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">benders_pre_actions</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 218.85440715882618 1627.5893946480005 L 1053.4140706099276 1627.5893946480005"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(1065.8288251179276,1627.5893946480005) translate(-1065.8288251179276,-1627.5893946480005)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 1053.2632841179277 1621.3066241480005 L 1065.8288251179276 1627.5893946480005 L 1053.2632841179277 1633.8721651480005 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="1085.9336907179277" y="1663.7781527280006" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">save_launcher_options</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 1065.8288251179276 1669.8096124080007 L 1126.1434219179278 1669.8096124080007 L 1126.1434219179278 1689.4118563680006 L 1078.2435796259276 1689.4118563680006"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(1065.8288251179276,1689.4118563680006) translate(-1065.8288251179276,-1689.4118563680006)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 1078.3943661179276 1683.1290858680006 L 1065.8288251179276 1689.4118563680006 L 1078.3943661179276 1695.6946268680006 Z"/>
+                </g>
+            </g>
+            <path fill="white" stroke="black" paint-order="fill stroke markers"
+                  d=" M 738.8587308863652 1712.0298301680004 L 1379.22813506949 1712.0298301680004 L 1392.79891934949 1725.6006144480004 L 1392.79891934949 1746.7107233280005 L 738.8587308863652 1746.7107233280005 L 738.8587308863652 1712.0298301680004 M 1379.22813506949 1712.0298301680004 L 1379.22813506949 1725.6006144480004 L 1392.79891934949 1725.6006144480004"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="759.9688397663651" y="1733.1399390480005" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">Save command line options in output/simulation-Xpansion/lp/launcher_options.json</text>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="1085.9336907179277" y="1823.6118342480006" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">create_expansion_dir</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 1065.8288251179276 1829.6432939280007 L 1126.1434219179278 1829.6432939280007 L 1126.1434219179278 1849.2455378880006 L 1078.2435796259276 1849.2455378880006"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(1065.8288251179276,1849.2455378880006) translate(-1065.8288251179276,-1849.2455378880006)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 1078.3943661179276 1842.9627673880007 L 1065.8288251179276 1849.2455378880006 L 1078.3943661179276 1855.5283083880006 Z"/>
+                </g>
+            </g>
+            <path fill="white" stroke="black" paint-order="fill stroke markers"
+                  d=" M 861.9587217310917 1871.8635116880005 L 1256.1281442247634 1871.8635116880005 L 1269.6989285047634 1885.4342959680005 L 1269.6989285047634 1906.5444048480006 L 861.9587217310917 1906.5444048480006 L 861.9587217310917 1871.8635116880005 M 1256.1281442247634 1871.8635116880005 L 1256.1281442247634 1885.4342959680005 L 1269.6989285047634 1885.4342959680005"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="883.0688306110917" y="1892.9736205680006" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">rm+create output/simulation-Xpansion/expansion</text>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="1085.9336907179277" y="1965.3511367280007" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">_set_options_for_benders_solver</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 1065.8288251179276 1971.3825964080008 L 1126.1434219179278 1971.3825964080008 L 1126.1434219179278 1990.9848403680007 L 1078.2435796259276 1990.9848403680007"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(1065.8288251179276,1990.9848403680007) translate(-1065.8288251179276,-1990.9848403680007)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 1078.3943661179276 1984.7020698680008 L 1065.8288251179276 1990.9848403680007 L 1078.3943661179276 1997.2676108680007 Z"/>
+                </g>
+            </g>
+            <path fill="white" stroke="black" paint-order="fill stroke markers"
+                  d=" M 828.6320463160527 2013.6028141680006 L 1289.4548196398025 2013.6028141680006 L 1303.0256039198025 2027.1735984480006 L 1303.0256039198025 2048.2837073280007 L 828.6320463160527 2048.2837073280007 L 828.6320463160527 2013.6028141680006 M 1289.4548196398025 2013.6028141680006 L 1289.4548196398025 2027.1735984480006 L 1303.0256039198025 2027.1735984480006"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="849.7421551960526" y="2034.7129230480007" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">write options in output/simulation-Xpansion/lp/options.json</text>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="894.3850897367997" y="2084.472465408001" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">launch</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 218.85440715882618 2090.503925088001 L 1606.5143501737166 2090.503925088001"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(1618.9291046817166,2090.503925088001) translate(-1618.9291046817166,-2090.503925088001)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 1606.3635636817166 2084.221154588001 L 1618.9291046817166 2090.503925088001 L 1606.3635636817166 2096.786695588001 Z"/>
+                </g>
+            </g>
+            <path fill="none" stroke="none"/>
+            <g>
+                <path fill="white" stroke="black" paint-order="fill stroke markers"
+                      d=" M 1946.564527571897 2115.685269252001 L 2033.8451977091881 2115.685269252001 L 2033.8451977091881 2156.3976220920013 L 1946.564527571897 2156.3976220920013 L 1946.564527571897 2115.685269252001 Z"
+                      stroke-miterlimit="10" stroke-width="2.4125838720000004" stroke-dasharray=""/>
+            </g>
+            <g>
+                <g/>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="1962.924861953897" y="2141.318972892001"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">full_run</text>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="1788.490654986923" y="2192.586380172001" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">run</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 1618.9291046817166 2198.617839852001 L 1970.2507835325425 2198.617839852001"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(1982.6655380405425,2198.617839852001) translate(-1982.6655380405425,-2198.617839852001)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 1970.0999970405426 2192.335069352001 L 1982.6655380405425 2198.617839852001 L 1970.0999970405426 2204.900610352001 Z"/>
+                </g>
+            </g>
+            <path fill="white" stroke="black" paint-order="fill stroke markers"
+                  d=" M 1702.8880887214802 2221.235813652001 L 2263.950852279605 2221.235813652001 L 2277.521636559605 2234.8065979320013 L 2277.521636559605 2255.916706812001 L 1702.8880887214802 2255.916706812001 L 1702.8880887214802 2221.235813652001 M 2263.950852279605 2221.235813652001 L 2263.950852279605 2234.8065979320013 L 2277.521636559605 2234.8065979320013"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="1723.9981976014801" y="2242.345922532001" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">log_file_path = output/simulation-Xpansion/lp/ProblemGenerationLog.txt</text>
+            </g>
+            <path fill="none" stroke="none"/>
+            <g>
+                <path fill="white" stroke="black" paint-order="fill stroke markers"
+                      d=" M 2292.600285759605 2281.098050976001 L 2467.120957575363 2281.098050976001 L 2467.120957575363 2321.8104038160013 L 2292.600285759605 2321.8104038160013 L 2292.600285759605 2281.098050976001 Z"
+                      stroke-miterlimit="10" stroke-width="2.4125838720000004" stroke-dasharray=""/>
+            </g>
+            <g>
+                <g/>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="2308.960620141605" y="2306.731754616001"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">ProblemGeneration</text>
+            </g>
+            <path fill="none" stroke="none"/>
+            <g>
+                <path fill="white" stroke="black" paint-order="fill stroke markers"
+                      d=" M 2483.4304680400737 2346.991747980001 L 2633.351133752316 2346.991747980001 L 2633.351133752316 2387.7041008200013 L 2483.4304680400737 2387.7041008200013 L 2483.4304680400737 2346.991747980001 Z"
+                      stroke-miterlimit="10" stroke-width="2.4125838720000004" stroke-dasharray=""/>
+            </g>
+            <g>
+                <g/>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="2499.7908024220737" y="2372.625451620001"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">LpFilesExtractor</text>
+            </g>
+            <path fill="none" stroke="none"/>
+            <g>
+                <path fill="white" stroke="black" paint-order="fill stroke markers"
+                      d=" M 2648.429782952316 2412.885444984001 L 2883.123779353035 2412.885444984001 L 2883.123779353035 2453.597797824001 L 2648.429782952316 2453.597797824001 L 2648.429782952316 2412.885444984001 Z"
+                      stroke-miterlimit="10" stroke-width="2.4125838720000004" stroke-dasharray=""/>
+            </g>
+            <g>
+                <g/>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="2664.790117334316" y="2438.519148624001"
+                      text-anchor="start" dominant-baseline="alphabetic"
+                      xml:space="preserve">ZipProblemProviderAdapter</text>
+            </g>
+            <path fill="none" stroke="none"/>
+            <g>
+                <path fill="white" stroke="black" paint-order="fill stroke markers"
+                      d=" M 3022.565872621281 2478.779141988001 L 3142.7932094761013 2478.779141988001 L 3142.7932094761013 2519.491494828001 L 3022.565872621281 2519.491494828001 L 3022.565872621281 2478.779141988001 Z"
+                      stroke-miterlimit="10" stroke-width="2.4125838720000004" stroke-dasharray=""/>
+            </g>
+            <g>
+                <g/>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="3038.926207003281" y="2504.412845628001"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">FilesMapper</text>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="2100.0727430695406" y="2555.680252908001" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">RunProblemGeneration</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 1997.7441872405427 2561.711712588001 L 2359.906542559484 2561.711712588001"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(2372.321297067484,2561.711712588001) translate(-2372.321297067484,-2561.711712588001)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 2359.755756067484 2555.428942088001 L 2372.321297067484 2561.711712588001 L 2359.755756067484 2567.994483088001 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="2407.5048118674836" y="2597.900470668001" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">ExtractUtilsFiles</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 2387.3999462674838 2603.9319303480006 L 2447.7145430674836 2603.9319303480006 L 2447.7145430674836 2623.5341743080007 L 2399.8147007754837 2623.5341743080007"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(2387.3999462674838,2623.5341743080007) translate(-2387.3999462674838,-2623.5341743080007)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 2399.9654872674837 2617.2514038080008 L 2387.3999462674838 2623.5341743080007 L 2399.9654872674837 2629.8169448080007 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="2430.535372971488" y="2659.722932388001" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">ExtractFiles</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 2387.3999462674838 2665.754392068001 L 2545.976046388195 2665.754392068001"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(2558.390800896195,2665.754392068001) translate(-2558.390800896195,-2665.754392068001)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 2545.825259896195 2659.471621568001 L 2558.390800896195 2665.754392068001 L 2545.825259896195 2672.037162568001 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="2709.759742971442" y="2701.943150148001" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">FillMap</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 2387.3999462674838 2707.974609828001 L 3070.264786540691 2707.974609828001"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(3082.679541048691,2707.974609828001) translate(-3082.679541048691,-2707.974609828001)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 3070.114000048691 2701.691839328001 L 3082.679541048691 2707.974609828001 L 3070.114000048691 2714.257380328001 Z"/>
+                </g>
+            </g>
+            <path fill="white" stroke="black" paint-order="fill stroke markers"
+                  d=" M 2773.3161057526754 2730.592583628001 L 3378.472192064706 2730.592583628001 L 3392.0429763447064 2744.1633679080014 L 3392.0429763447064 2780.3521259880013 L 2773.3161057526754 2780.3521259880013 L 2773.3161057526754 2730.592583628001 M 3378.472192064706 2730.592583628001 L 3378.472192064706 2744.1633679080014 L 3392.0429763447064 2744.1633679080014"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="2794.4262146326755" y="2751.7026925080017" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">read mps file list from zip </text>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="2794.4262146326755" y="2766.781341708002"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve"> Fill Map&lt;Pair&lt;Year, Week&gt;, Tuple&lt;MPSPAth, VariablePAth, ConstraintPath&gt;&gt; </text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 3069.108756768691 2802.970099788001 L 3096.2503253286914 2830.1116683480013 M 3096.2503253286914 2802.970099788001 L 3069.108756768691 2830.1116683480013"
+                      stroke-miterlimit="10" stroke-width="2.4125838720000004" stroke-dasharray=""/>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="2515.601696077023" y="2947.725132108002" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">ProvideProblems</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 2387.3999462674838 2953.756591788002 L 2753.3620266446756 2953.756591788002"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(2765.7767811526755,2953.756591788002) translate(-2765.7767811526755,-2953.756591788002)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 2753.2112401526756 2947.473821288002 L 2765.7767811526755 2953.756591788002 L 2753.2112401526756 2960.039362288002 Z"/>
+                </g>
+            </g>
+            <path fill="white" stroke="black" paint-order="fill stroke markers"
+                  d=" M 2639.940002961152 2976.374565588002 L 2878.042775064199 2976.374565588002 L 2891.613559344199 2989.9453498680023 L 2891.613559344199 3026.134107948002 L 2639.940002961152 3026.134107948002 L 2639.940002961152 2976.374565588002 M 2878.042775064199 2976.374565588002 L 2878.042775064199 2989.9453498680023 L 2891.613559344199 2989.9453498680023"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="2661.050111841152" y="2997.4846744680026" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">Extract problem file from zip</text>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="2661.050111841152" y="3012.563323668003"
+                      text-anchor="start" dominant-baseline="alphabetic"
+                      xml:space="preserve"> create "problem"/solver</text>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="2407.5048118674836" y="3125.6531926680027" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">treat</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 2387.3999462674838 3131.684652348002 L 2447.7145430674836 3131.684652348002 L 2447.7145430674836 3151.2868963080023 L 2399.8147007754837 3151.2868963080023"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(2387.3999462674838,3151.2868963080023) translate(-2387.3999462674838,-3151.2868963080023)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 2399.9654872674837 3145.0041258080023 L 2387.3999462674838 3151.2868963080023 L 2399.9654872674837 3157.5696668080022 Z"/>
+                </g>
+            </g>
+            <path fill="white" stroke="black" paint-order="fill stroke markers"
+                  d=" M 2322.357179352425 3173.9048701080023 L 2423.7932797025423 3173.9048701080023 L 2437.3640639825426 3187.4756543880026 L 2437.3640639825426 3208.585763268002 L 2322.357179352425 3208.585763268002 L 2322.357179352425 3173.9048701080023 M 2423.7932797025423 3173.9048701080023 L 2423.7932797025423 3187.4756543880026 L 2437.3640639825426 3187.4756543880026"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="2343.4672882324253" y="3195.0149789880024" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">write mps</text>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="2407.5048118674836" y="3290.0104689480027" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">MasterGeneration()</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 2387.3999462674838 3296.041928628002 L 2447.7145430674836 3296.041928628002 L 2447.7145430674836 3315.644172588002 L 2399.8147007754837 3315.644172588002"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(2387.3999462674838,3315.644172588002) translate(-2387.3999462674838,-3315.644172588002)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 2399.9654872674837 3309.3614020880023 L 2387.3999462674838 3315.644172588002 L 2399.9654872674837 3321.926943088002 Z"/>
+                </g>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 2544.8200166161946 3302.073388308002 L 2571.961585176195 3329.2149568680024 M 2571.961585176195 3302.073388308002 L 2544.8200166161946 3329.2149568680024"
+                      stroke-miterlimit="10" stroke-width="2.4125838720000004" stroke-dasharray=""/>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 2752.2059968726753 3302.073388308002 L 2779.3475654326758 3329.2149568680024 M 2779.3475654326758 3302.073388308002 L 2752.2059968726753 3329.2149568680024"
+                      stroke-miterlimit="10" stroke-width="2.4125838720000004" stroke-dasharray=""/>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 2366.2898373874837 3338.262146388002 L 2393.431405947484 3365.4037149480023 M 2393.431405947484 3338.262146388002 L 2366.2898373874837 3365.4037149480023"
+                      stroke-miterlimit="10" stroke-width="2.4125838720000004" stroke-dasharray=""/>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="2694.8497393093326" y="3401.5924730280026" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">RunBenders</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 1997.7441872405427 3407.6239327080025 L 3468.047204960943 3407.6239327080025"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(3480.461959468943,3407.6239327080025) translate(-3480.461959468943,-3407.6239327080025)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 3467.896418468943 3401.3411622080025 L 3480.461959468943 3407.6239327080025 L 3467.896418468943 3413.9067032080025 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="3500.5668250689428" y="3443.812690788003" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">Read options file</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 3480.461959468943 3449.844150468002 L 3540.776556268943 3449.844150468002 L 3540.776556268943 3469.4463944280023 L 3492.876713976943 3469.4463944280023"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(3480.461959468943,3469.4463944280023) translate(-3480.461959468943,-3469.4463944280023)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 3493.027500468943 3463.1636239280024 L 3480.461959468943 3469.4463944280023 L 3493.027500468943 3475.7291649280023 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="3500.5668250689428" y="3505.6351525080026" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">Set log destination</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 3480.461959468943 3511.666612188002 L 3540.776556268943 3511.666612188002 L 3540.776556268943 3531.268856148002 L 3492.876713976943 3531.268856148002"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(3480.461959468943,3531.268856148002) translate(-3480.461959468943,-3531.268856148002)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 3493.027500468943 3524.9860856480022 L 3480.461959468943 3531.268856148002 L 3493.027500468943 3537.551626648002 Z"/>
+                </g>
+            </g>
+            <path fill="white" stroke="black" paint-order="fill stroke markers"
+                  d=" M 3367.1918469268335 3553.8868299480023 L 3580.161287731052 3553.8868299480023 L 3593.7320720110524 3567.4576142280025 L 3593.7320720110524 3588.567723108002 L 3367.1918469268335 3588.567723108002 L 3367.1918469268335 3553.8868299480023 M 3580.161287731052 3553.8868299480023 L 3580.161287731052 3567.4576142280025 L 3593.7320720110524 3567.4576142280025"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="3388.3019558068336" y="3574.9969388280024" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">bendersLog-rank&lt;N&gt;.txt</text>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="3500.5668250689428" y="3624.7564811880025" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">FileAndStdoutLoggerFactory</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 3480.461959468943 3630.787940868002 L 3540.776556268943 3630.787940868002 L 3540.776556268943 3650.390184828002 L 3492.876713976943 3650.390184828002"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(3480.461959468943,3650.390184828002) translate(-3480.461959468943,-3650.390184828002)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 3493.027500468943 3644.107414328002 L 3480.461959468943 3650.390184828002 L 3493.027500468943 3656.672955328002 Z"/>
+                </g>
+            </g>
+            <path fill="white" stroke="black" paint-order="fill stroke markers"
+                  d=" M 3301.3185101348413 3673.008158628002 L 3646.034624523044 3673.008158628002 L 3659.605408803044 3686.5789429080023 L 3659.605408803044 3722.767700988002 L 3301.3185101348413 3722.767700988002 L 3301.3185101348413 3673.008158628002 M 3646.034624523044 3673.008158628002 L 3646.034624523044 3686.5789429080023 L 3659.605408803044 3686.5789429080023"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="3322.4286190148414" y="3694.1182675080026" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">log filename: reportbenders.txt</text>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="3322.4286190148414" y="3709.196916708003"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">destination: "." with previous chdir to lp dir</text>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="3500.5668250689428" y="3758.9564590680025" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">set writer</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 3480.461959468943 3764.987918748002 L 3540.776556268943 3764.987918748002 L 3540.776556268943 3784.590162708002 L 3492.876713976943 3784.590162708002"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(3480.461959468943,3784.590162708002) translate(-3480.461959468943,-3784.590162708002)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 3493.027500468943 3778.307392208002 L 3480.461959468943 3784.590162708002 L 3493.027500468943 3790.872933208002 Z"/>
+                </g>
+            </g>
+            <path fill="white" stroke="black" paint-order="fill stroke markers"
+                  d=" M 3283.438520510818 3807.208136508002 L 3663.9146141470674 3807.208136508002 L 3677.4853984270676 3820.7789207880023 L 3677.4853984270676 3841.889029668002 L 3283.438520510818 3841.889029668002 L 3283.438520510818 3807.208136508002 M 3663.9146141470674 3807.208136508002 L 3663.9146141470674 3820.7789207880023 L 3677.4853984270676 3820.7789207880023"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="3304.548629390818" y="3828.318245388002" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">write in simulation-Xpansion/expansion/out.json</text>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="3572.630720905003" y="3878.0777877480023" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">launch</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 3480.461959468943 3884.109247428002 L 3701.3980602000056 3884.109247428002"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(3713.8128147080056,3884.109247428002) translate(-3713.8128147080056,-3884.109247428002)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 3701.2472737080057 3877.826476928002 L 3713.8128147080056 3884.109247428002 L 3701.2472737080057 3890.392017928002 Z"/>
+                </g>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="2017.8490528405428" y="3920.2980055080025" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">updateStudy</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 1997.7441872405427 3926.329465188002 L 2058.058784040543 3926.329465188002 L 2058.058784040543 3945.931709148002 L 2010.1589417485427 3945.931709148002"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(1997.7441872405427,3945.931709148002) translate(-1997.7441872405427,-3945.931709148002)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 2010.3097282405427 3939.648938648002 L 1997.7441872405427 3945.931709148002 L 2010.3097282405427 3952.214479648002 Z"/>
+                </g>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 1976.6340783605426 3968.5496829480016 L 2003.7756469205426 3995.691251508002 M 2003.7756469205426 3968.5496829480016 L 1976.6340783605426 3995.691251508002"
+                      stroke-miterlimit="10" stroke-width="2.4125838720000004" stroke-dasharray=""/>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="1102.3909257110918" y="4072.5923624280026" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">clean_benders_step</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 1618.9291046817166 4078.6238221080025 L 743.7341607943652 4078.6238221080025"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(731.3194062863652,4078.6238221080025) translate(-731.3194062863652,-4078.6238221080025)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 743.8849472863652 4072.3410516080025 L 731.3194062863652 4078.6238221080025 L 743.8849472863652 4084.9065926080025 Z"/>
+                </g>
+            </g>
+            <path fill="white" stroke="black" paint-order="fill stroke markers"
+                  d=" M 590.2559664127128 4101.241795908002 L 858.8120618800176 4101.241795908002 L 872.3828461600176 4114.812580188002 L 872.3828461600176 4166.079987468002 L 590.2559664127128 4166.079987468002 L 590.2559664127128 4101.241795908002 M 858.8120618800176 4101.241795908002 L 858.8120618800176 4114.812580188002 L 872.3828461600176 4114.812580188002"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="611.3660752927128" y="4122.351904788002" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">rm simulation-Xpansion/lp/*.mps</text>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="611.3660752927128" y="4137.4305539880015"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">rm simulation-Xpansion/lp/*.lp</text>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="611.3660752927128" y="4152.509203188001"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">rm simulation-Xpansion/lp/*.zip</text>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="246.49859735882615" y="4224.886719348002" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">clean_step</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 218.85440715882618 4230.918179028003 L 286.70832855882617 4230.918179028003 L 286.70832855882617 4250.520422988003 L 238.80848626682615 4250.520422988003"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(226.39373175882616,4250.520422988003) translate(-226.39373175882616,-4250.520422988003)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 238.95927275882616 4244.237652488003 L 226.39373175882616 4250.520422988003 L 238.95927275882616 4256.803193488003 Z"/>
+                </g>
+            </g>
+            <path fill="none" stroke="none"/>
+            <g>
+                <path fill="white" stroke="black" paint-order="fill stroke markers"
+                      d=" M 3828.254910648113 4275.7017671520025 L 4075.9222499443395 4275.7017671520025 L 4075.9222499443395 4316.414119992002 L 3828.254910648113 4316.414119992002 L 3828.254910648113 4275.7017671520025 Z"
+                      stroke-miterlimit="10" stroke-width="2.4125838720000004" stroke-dasharray=""/>
+            </g>
+            <g>
+                <g/>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="3844.615245030113" y="4301.3354707920025"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">antares_archive_updater_exe</text>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="2075.1811556079097" y="4352.602878072003" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">Run</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 226.39373175882616 4358.634337752003 L 3939.673825788226 4358.634337752003"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(3952.088580296226,4358.634337752003) translate(-3952.088580296226,-4358.634337752003)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 3939.523039296226 4352.351567252003 L 3952.088580296226 4358.634337752003 L 3939.523039296226 4364.917108252003 Z"/>
+                </g>
+            </g>
+            <path fill="white" stroke="black" paint-order="fill stroke markers"
+                  d=" M 3775.4451309621245 4381.252311552003 L 4115.161245350328 4381.252311552003 L 4128.732029630328 4394.823095832004 L 4128.732029630328 4431.011853912003 L 3775.4451309621245 4431.011853912003 L 3775.4451309621245 4381.252311552003 M 4115.161245350328 4381.252311552003 L 4115.161245350328 4394.823095832004 L 4128.732029630328 4394.823095832004"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="3796.5552398421246" y="4402.362420432002" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">add sumulation-Xpansion in simulation.zip</text>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal"
+                      font-weight="normal" text-decoration="normal" x="3796.5552398421246" y="4417.441069632002"
+                      text-anchor="start" dominant-baseline="alphabetic"
+                      xml:space="preserve">rm simulation-Xpansion</text>
+            </g>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="3972.193445896226" y="4467.200611992002" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">CleanAntaresArchive</text>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 3952.088580296226 4473.232071672003 L 4012.403177096226 4473.232071672003 L 4012.403177096226 4492.834315632003 L 3964.503334804226 4492.834315632003"
+                      stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+                <g transform="translate(3952.088580296226,4492.834315632003) translate(-3952.088580296226,-4492.834315632003)">
+                    <path fill="black" stroke="none" paint-order="stroke fill markers"
+                          d=" M 3964.654121296226 4486.551545132003 L 3952.088580296226 4492.834315632003 L 3964.654121296226 4499.117086132003 Z"/>
+                </g>
+            </g>
+            <g>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 3938.517796016226 4515.4522894320025 L 3965.6593645762264 4542.593857992003 M 3965.6593645762264 4515.4522894320025 L 3938.517796016226 4542.593857992003"
+                      stroke-miterlimit="10" stroke-width="2.4125838720000004" stroke-dasharray=""/>
+            </g>
+            <path fill="white" stroke="black" paint-order="fill stroke markers"
+                  d=" M 84.39763385011521 4565.211831792003 L 339.74039618753716 4565.211831792003 L 353.31118046753716 4578.782616072003 L 353.31118046753716 4599.892724952003 L 84.39763385011521 4599.892724952003 L 84.39763385011521 4565.211831792003 M 339.74039618753716 4565.211831792003 L 339.74039618753716 4578.782616072003 L 353.31118046753716 4578.782616072003"
+                  stroke-miterlimit="10" stroke-width="1.2565541" stroke-dasharray=""/>
+            <g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="11pt" font-style="normal" font-weight="normal" text-decoration="normal" x="105.50774273011524" y="4586.321940672002" text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">rm output/simulation-Xpansion</text>
+            </g>
+            <g>
+                <g/>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 166.07913495882616 950.558045568 L 503.49859735882615 950.558045568 L 503.49859735882615 1381.8074126880006 L 166.07913495882616 1381.8074126880006 L 166.07913495882616 950.558045568 Z"
+                      stroke-miterlimit="10" stroke-width="2.154092742857143" stroke-dasharray=""/>
+                <path fill="white" stroke="black" paint-order="fill stroke markers"
+                      d=" M 166.07913495882616 950.558045568 L 166.07913495882616 968.652424608 L 213.79643282476854 968.652424608 L 222.84362234476853 959.605235088 L 222.84362234476853 950.558045568 L 166.07913495882616 950.558045568"
+                      stroke-miterlimit="10" stroke-width="2.154092742857143" stroke-dasharray=""/>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="8.8pt" font-style="normal"
+                      font-weight="bold" text-decoration="normal" x="181.15778415882616" y="962.620964928"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">alt</text>
+                <g>
+                    <rect fill="white" stroke="none" x="235.66047416476854" y="951.7643375040001"
+                          width="179.6435898771875" height="15.681795168000004"/>
+                </g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="8.8pt" font-style="normal"
+                      font-weight="bold" text-decoration="normal" x="237.92227154476853" y="962.620964928"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">[Antares ok (return false)]</text>
+                <g>
+                    <path fill="none" stroke="black" paint-order="fill stroke markers"
+                          d=" M 166.07913495882616 1053.0928601280002 L 503.49859735882615 1053.0928601280002"
+                          stroke-miterlimit="10" stroke-width="2.154092742857143"
+                          stroke-dasharray="3.7696623000000002"/>
+                </g>
+                <g/>
+                <g>
+                    <rect fill="white" stroke="none" x="235.66047416476854" y="1054.2991520640003"
+                          width="222.29692544847657" height="15.681795168000004"/>
+                </g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="8.8pt" font-style="normal"
+                      font-weight="bold" text-decoration="normal" x="237.92227154476853" y="1065.1557794880002"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">[case Antares NOK (return true)]</text>
+                <g>
+                    <path fill="none" stroke="black" paint-order="fill stroke markers"
+                          d=" M 166.07913495882616 1217.4501364080004 L 503.49859735882615 1217.4501364080004"
+                          stroke-miterlimit="10" stroke-width="2.154092742857143"
+                          stroke-dasharray="3.7696623000000002"/>
+                </g>
+                <g/>
+                <g>
+                    <rect fill="white" stroke="none" x="235.66047416476854" y="1218.6564283440005"
+                          width="175.67026224046876" height="15.681795168000004"/>
+                </g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="8.8pt" font-style="normal"
+                      font-weight="bold" text-decoration="normal" x="237.92227154476853" y="1229.5130557680004"
+                      text-anchor="start" dominant-baseline="alphabetic"
+                      xml:space="preserve">[case Antares Axception:]</text>
+            </g>
+            <g/>
+            <g/>
+            <g>
+                <g/>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 854.4193971310917 1769.3286971280006 L 1277.2382531047635 1769.3286971280006 L 1277.2382531047635 1929.1623786480006 L 854.4193971310917 1929.1623786480006 L 854.4193971310917 1769.3286971280006 Z"
+                      stroke-miterlimit="10" stroke-width="2.154092742857143" stroke-dasharray=""/>
+                <path fill="white" stroke="black" paint-order="fill stroke markers"
+                      d=" M 854.4193971310917 1769.3286971280006 L 854.4193971310917 1787.4230761680005 L 902.136694997034 1787.4230761680005 L 911.183884517034 1778.3758866480007 L 911.183884517034 1769.3286971280006 L 854.4193971310917 1769.3286971280006"
+                      stroke-miterlimit="10" stroke-width="2.154092742857143" stroke-dasharray=""/>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="8.8pt" font-style="normal"
+                      font-weight="bold" text-decoration="normal" x="869.4980463310917" y="1781.3916164880006"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">alt</text>
+                <g>
+                    <rect fill="white" stroke="none" x="924.000736337034" y="1770.5349890640007"
+                          width="95.36359109789062" height="15.681795168000004"/>
+                </g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="8.8pt" font-style="normal"
+                      font-weight="bold" text-decoration="normal" x="926.262533717034" y="1781.3916164880006"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">[Not Resume]</text>
+            </g>
+            <g>
+                <g/>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 2299.739205552425 2852.7296421480014 L 2914.231533144199 2852.7296421480014 L 2914.231533144199 3253.8217108680024 L 2299.739205552425 3253.8217108680024 L 2299.739205552425 2852.7296421480014 Z"
+                      stroke-miterlimit="10" stroke-width="2.154092742857143" stroke-dasharray=""/>
+                <path fill="white" stroke="black" paint-order="fill stroke markers"
+                      d=" M 2299.739205552425 2852.7296421480014 L 2299.739205552425 2870.8240211880016 L 2347.4565034183674 2870.8240211880016 L 2356.5036929383673 2861.7768316680013 L 2356.5036929383673 2852.7296421480014 L 2299.739205552425 2852.7296421480014"
+                      stroke-miterlimit="10" stroke-width="2.154092742857143" stroke-dasharray=""/>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="8.8pt" font-style="normal"
+                      font-weight="bold" text-decoration="normal" x="2314.8178547524253" y="2864.7925615080017"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">alt</text>
+                <g>
+                    <rect fill="white" stroke="none" x="2369.3205447583673" y="2853.9359340840015"
+                          width="273.2435959807031" height="15.681795168000004"/>
+                </g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="8.8pt" font-style="normal"
+                      font-weight="bold" text-decoration="normal" x="2371.5823421383675" y="2864.7925615080017"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">[use zip implementation = true {const}]</text>
+            </g>
+            <g>
+                <g/>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 2327.085349467484 2893.4419949880016 L 2899.152883944199 2893.4419949880016 L 2899.152883944199 3048.752081748002 L 2327.085349467484 3048.752081748002 L 2327.085349467484 2893.4419949880016 Z"
+                      stroke-miterlimit="10" stroke-width="2.154092742857143" stroke-dasharray=""/>
+                <path fill="white" stroke="black" paint-order="fill stroke markers"
+                      d=" M 2327.085349467484 2893.4419949880016 L 2327.085349467484 2911.536374028002 L 2385.802647333426 2911.536374028002 L 2394.849836853426 2902.4891845080015 L 2394.849836853426 2893.4419949880016 L 2327.085349467484 2893.4419949880016"
+                      stroke-miterlimit="10" stroke-width="2.154092742857143" stroke-dasharray=""/>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="8.8pt" font-style="normal"
+                      font-weight="bold" text-decoration="normal" x="2342.163998667484" y="2905.504914348002"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">loop</text>
+                <g>
+                    <rect fill="white" stroke="none" x="2407.666688673426" y="2894.6482869240017"
+                          width="74.60359659105468" height="15.681795168000004"/>
+                </g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="8.8pt" font-style="normal"
+                      font-weight="bold" text-decoration="normal" x="2409.9284860534262" y="2905.504914348002"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">[mps files]</text>
+            </g>
+            <g>
+                <g/>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 2314.8178547524253 3071.3700555480023 L 2455.253867667484 3071.3700555480023 L 2455.253867667484 3231.2037370680023 L 2314.8178547524253 3231.2037370680023 L 2314.8178547524253 3071.3700555480023 Z"
+                      stroke-miterlimit="10" stroke-width="2.154092742857143" stroke-dasharray=""/>
+                <path fill="white" stroke="black" paint-order="fill stroke markers"
+                      d=" M 2314.8178547524253 3071.3700555480023 L 2314.8178547524253 3089.4644345880024 L 2373.5351526183676 3089.4644345880024 L 2382.5823421383675 3080.417245068002 L 2382.5823421383675 3071.3700555480023 L 2314.8178547524253 3071.3700555480023"
+                      stroke-miterlimit="10" stroke-width="2.154092742857143" stroke-dasharray=""/>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="8.8pt" font-style="normal"
+                      font-weight="bold" text-decoration="normal" x="2329.8965039524255" y="3083.4329749080025"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">loop</text>
+                <g>
+                    <rect fill="white" stroke="none" x="2395.3991939583675" y="3072.5763474840023"
+                          width="77.29692544847656" height="15.681795168000004"/>
+                </g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="8.8pt" font-style="normal"
+                      font-weight="bold" text-decoration="normal" x="2397.6609913383677" y="3083.4329749080025"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">[Problems]</text>
+            </g>
+            <g>
+                <g/>
+                <path fill="none" stroke="black" paint-order="fill stroke markers"
+                      d=" M 582.7166418127129 4018.309225308002 L 1671.7043768817166 4018.309225308002 L 1671.7043768817166 4188.6979612680025 L 582.7166418127129 4188.6979612680025 L 582.7166418127129 4018.309225308002 Z"
+                      stroke-miterlimit="10" stroke-width="2.154092742857143" stroke-dasharray=""/>
+                <path fill="white" stroke="black" paint-order="fill stroke markers"
+                      d=" M 582.7166418127129 4018.309225308002 L 582.7166418127129 4036.4036043480023 L 630.4339396786552 4036.4036043480023 L 639.4811291986551 4027.356414828002 L 639.4811291986551 4018.309225308002 L 582.7166418127129 4018.309225308002"
+                      stroke-miterlimit="10" stroke-width="2.154092742857143" stroke-dasharray=""/>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="8.8pt" font-style="normal"
+                      font-weight="bold" text-decoration="normal" x="597.7952910127128" y="4030.3721446680024"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">alt</text>
+                <g>
+                    <rect fill="white" stroke="none" x="652.2979810186552" y="4019.5155172440022"
+                          width="106.65692605882812" height="15.681795168000004"/>
+                </g>
+                <text fill="black" stroke="none" font-family="sans-serif" font-size="8.8pt" font-style="normal"
+                      font-weight="bold" text-decoration="normal" x="654.5597783986551" y="4030.3721446680024"
+                      text-anchor="start" dominant-baseline="alphabetic" xml:space="preserve">[not keep_mps]</text>
+            </g>
+        </g>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+        <g/>
+    </g>
+</svg>
