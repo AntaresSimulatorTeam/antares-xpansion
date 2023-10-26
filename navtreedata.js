@@ -52,6 +52,20 @@ var NAVTREE =
       [ "Test markers", "md_tests_end_to_end_restart_README.html#autotoc_md21", null ]
     ] ],
     [ "README", "md_tests_python_data_ntc_column_constraint_README.html", null ],
+    [ "Antares-Xpansion", "md_README.html", [
+      [ "Introduction", "md_README.html#autotoc_md23", [
+        [ "Antares study", "md_README.html#autotoc_md24", null ],
+        [ "Antares-Xpansion simulation", "md_README.html#autotoc_md25", null ],
+        [ "Links", "md_README.html#autotoc_md26", null ],
+        [ "Installation", "md_README.html#autotoc_md27", null ],
+        [ "Getting started", "md_README.html#autotoc_md28", [
+          [ "Command-line usage", "md_README.html#autotoc_md29", null ],
+          [ "Graphical user interface", "md_README.html#autotoc_md30", null ]
+        ] ],
+        [ "Technologies", "md_README.html#autotoc_md31", null ],
+        [ "Source Code Content", "md_README.html#autotoc_md32", null ]
+      ] ]
+    ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -83,7 +97,7 @@ var NAVTREEINDEX =
 "classSolverAbstract.html#a1032197acda5a92014067eaa8e7fbb21",
 "classStudyUpdater.html#a1994cf8f167d62d5516ca2967cd4312e",
 "classantares__xpansion_1_1problem__generator__driver_1_1ProblemGeneratorDriver_1_1LPNamerExecutionError.html",
-"structBaseOptions.html"
+"structAdditionalConstraints.html#ab36807d147de7e46f29574156262ab9a"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
