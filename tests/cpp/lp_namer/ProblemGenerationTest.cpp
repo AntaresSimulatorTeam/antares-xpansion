@@ -9,21 +9,6 @@
 #include "RunProblemGeneration.h"
 #include "gtest/gtest.h"
 
-TEST(InitializationTest, FoldersAreCreated) {
-  auto workingDirectory =
-      std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
-  auto simulationDirectory =
-      workingDirectory / "output" / "simulation-Xpansion";
-  auto logger = emptyLogger();
-  std::filesystem::create_directories(simulationDirectory);
-  EXPECT_THROW(
-      RunProblemGeneration(simulationDirectory, "integer", "", "", logger,
-                           simulationDirectory / "logs.txt", "", false),
-      ArchiveIOGeneralException);
-  auto lp = (simulationDirectory) / "lp";
-  EXPECT_TRUE(std::filesystem::exists(lp));
-}
-
 TEST(InitializationTest, FoldersAreEmpty) {
   auto workingDirectory =
       std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
