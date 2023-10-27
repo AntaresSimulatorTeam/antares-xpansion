@@ -1,11 +1,10 @@
 #include <boost/program_options.hpp>
 #include <exception>
 #include <iostream>
-#include <string>
 
 #include "FullRunOptionsParser.h"
+#include "ProblemGeneration.h"
 #include "ProblemGenerationLogger.h"
-#include "RunProblemGeneration.h"
 #include "StudyUpdateRunner.h"
 #include "common_mpi.h"
 namespace po = boost::program_options;
@@ -15,26 +14,11 @@ int main(int argc, char** argv) {
   mpi::communicator world;
   auto options_parser = FullRunOptionsParser();
   std::filesystem::path xpansion_output_dir;
-  std::filesystem::path archive_path;
   options_parser.Parse(argc, argv);
   if (world.rank() == 0) {
     try {
-      xpansion_output_dir = options_parser.XpansionOutputDir();
-      archive_path = options_parser.ArchivePath();
-
-      const auto log_file_path =
-          xpansion_output_dir / "lp" / "ProblemGenerationLog.txt";
-      auto logger = ProblemGenerationLog::BuildLogger(
-          log_file_path, std::cout, "Full Run - Problem Generation");
-
-      auto master_formulation = options_parser.MasterFormulation();
-      auto additionalConstraintFilename_l =
-          options_parser.AdditionalConstraintsFilename();
-      auto weights_file = options_parser.WeightsFile();
-      const auto unnamed_problems = options_parser.UnnamedProblems();
-      RunProblemGeneration(xpansion_output_dir, master_formulation,
-                           additionalConstraintFilename_l, archive_path, logger,
-                           log_file_path, weights_file, unnamed_problems);
+      ProblemGeneration pbg(options_parser);
+      xpansion_output_dir = pbg.updateProblems();
 
     } catch (std::exception& e) {
       std::cerr << "error: " << e.what() << std::endl;

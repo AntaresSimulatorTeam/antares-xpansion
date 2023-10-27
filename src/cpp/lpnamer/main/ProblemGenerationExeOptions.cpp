@@ -21,3 +21,7 @@ ProblemGenerationExeOptions::ProblemGenerationExeOptions()
                            po::bool_switch(&unnamed_problems_),
                            "use this option if unnamed problems are provided");
 }
+void ProblemGenerationExeOptions::Parse(unsigned int argc,
+                                        const char *const *argv) {
+  OptionsParser::Parse(argc, argv);
+}
