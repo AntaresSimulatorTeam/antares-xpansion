@@ -1,5 +1,8 @@
+//
+// Created by marechaljas on 27/10/23.
+//
 
-#include "RunProblemGeneration.h"
+#include "include/ProblemGeneration.h"
 
 #include <execution>
 #include <iostream>
@@ -15,6 +18,7 @@
 #include "MasterGeneration.h"
 #include "MasterProblemBuilder.h"
 #include "MpsTxtWriter.h"
+#include "ProblemGenerationLogger.h"
 #include "ProblemVariablesFromProblemAdapter.h"
 #include "ProblemVariablesZipAdapter.h"
 #include "StringManip.h"
@@ -23,6 +27,41 @@
 #include "WeightsFileWriter.h"
 #include "ZipProblemsProviderAdapter.h"
 #include "config.h"
+
+static const std::string LP_DIRNAME = "lp";
+
+void CreateDirectories(const std::filesystem::path& output_path) {
+  if (!std::filesystem::exists(output_path)) {
+    std::filesystem::create_directories(output_path);
+  }
+  auto lp_path = output_path / LP_DIRNAME;
+  if (!std::filesystem::exists(lp_path)) {
+    std::filesystem::create_directories(lp_path);
+  }
+}
+
+ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options)
+    : options_(options) {}
+std::filesystem::path ProblemGeneration::updateProblems() {
+  auto xpansion_output_dir = options_.XpansionOutputDir();
+  auto archive_path = options_.ArchivePath();
+  const auto log_file_path =
+      xpansion_output_dir / "lp" / "ProblemGenerationLog.txt";
+
+  CreateDirectories(xpansion_output_dir);
+  auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout,
+                                                  "Problem Generation");
+
+  auto master_formulation = options_.MasterFormulation();
+  auto additionalConstraintFilename_l =
+      options_.AdditionalConstraintsFilename();
+  auto weights_file = options_.WeightsFile();
+  auto unnamed_problems = options_.UnnamedProblems();
+  RunProblemGeneration(xpansion_output_dir, master_formulation,
+                       additionalConstraintFilename_l, archive_path, logger,
+                       log_file_path, weights_file, unnamed_problems);
+  return xpansion_output_dir;
+}
 
 struct Version {
   explicit Version(std::string_view version) {
@@ -58,7 +97,7 @@ struct Version {
 
 std::shared_ptr<ArchiveReader> InstantiateZipReader(
     const std::filesystem::path& antares_archive_path);
-void ProcessWeights(
+void ProblemGeneration::ProcessWeights(
     const std::filesystem::path& xpansion_output_dir,
     const std::filesystem::path& antares_archive_path,
     const std::filesystem::path& weights_file,
@@ -77,7 +116,7 @@ void ProcessWeights(
   yearly_weight_writer.CreateWeightFile();
 }
 
-void ExtractUtilsFiles(
+void ProblemGeneration::ExtractUtilsFiles(
     const std::filesystem::path& antares_archive_path,
     const std::filesystem::path& xpansion_output_dir,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
@@ -126,7 +165,7 @@ std::vector<std::shared_ptr<Problem>> getXpansionProblems(
   return adapter->provideProblems(solver_name, solver_log_manager);
 }
 
-void RunProblemGeneration(
+void ProblemGeneration::RunProblemGeneration(
     const std::filesystem::path& xpansion_output_dir,
     const std::string& master_formulation,
     const std::string& additionalConstraintFilename_l,
@@ -171,13 +210,12 @@ void RunProblemGeneration(
   Couplings couplings;
   LinkProblemsGenerator linkProblemsGenerator(
       lpDir_, links, solver_name, logger, solver_log_manager, rename_problems);
-    std::shared_ptr<ArchiveReader> reader =
-        InstantiateZipReader(antares_archive_path);
+  std::shared_ptr<ArchiveReader> reader =
+      InstantiateZipReader(antares_archive_path);
 
-    /* Main stuff */
-    std::vector<std::shared_ptr<Problem>> xpansion_problems =
-        getXpansionProblems(solver_log_manager, solver_name, mpsList, lpDir_,
-                            reader);
+  /* Main stuff */
+  std::vector<std::shared_ptr<Problem>> xpansion_problems = getXpansionProblems(
+      solver_log_manager, solver_name, mpsList, lpDir_, reader);
 
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
       problems_and_data;

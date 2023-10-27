@@ -11,8 +11,10 @@
 # ---------------------------------------------------------------------------
 
 add_library (problem_generation_main STATIC
-	${CMAKE_CURRENT_SOURCE_DIR}/RunProblemGeneration.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/ProblemGenerationExeOptions.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ProblemGeneration.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/ProblemGeneration.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/ProblemGenerationOptions.h
 )
 
 target_link_libraries (problem_generation_main 
@@ -26,11 +28,11 @@ target_link_libraries (problem_generation_main
 
 get_target_property(helpers_include helpers INTERFACE_INCLUDE_DIRECTORIES)
 
-	target_include_directories (problem_generation_main
-		PUBLIC
-		${CMAKE_CURRENT_SOURCE_DIR}/include
-		${helpers_include}
-	)
+target_include_directories(problem_generation_main
+        PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+        ${helpers_include}
+)
 
 
 add_library (${PROJECT_NAME}::problem_generation_main ALIAS problem_generation_main)

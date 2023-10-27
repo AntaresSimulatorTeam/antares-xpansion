@@ -4,8 +4,10 @@
 #include <vector>
 
 #include "OptionsParser.h"
+#include "ProblemGenerationOptions.h"
 
-class ProblemGenerationExeOptions : public OptionsParser {
+class ProblemGenerationExeOptions : public OptionsParser,
+                                    public ProblemGenerationOptions {
  private:
   std::filesystem::path xpansion_output_dir_;
   std::string master_formulation_;
@@ -30,5 +32,7 @@ class ProblemGenerationExeOptions : public OptionsParser {
   std::filesystem::path WeightsFile() const { return weights_file_; }
   std::vector<int> ActiveYears() const { return active_years_; }
   bool UnnamedProblems() const { return unnamed_problems_; }
+
+  void Parse(unsigned int argc, const char *const *argv) override;
 };
 #endif  // ANTARES_XPANSION_SRC_CPP_LPNAMER_MAIN_INCLUDE_PROBLEMGENERATIONEXEOPTIONS_H

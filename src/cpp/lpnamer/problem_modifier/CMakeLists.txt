@@ -52,7 +52,7 @@ add_library(lp_namer_problem_modifier STATIC
 		${CMAKE_CURRENT_SOURCE_DIR}/ZipProblemsProviderAdapter.h
 		${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesFromProblemAdapter.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesFromProblemAdapter.h
-		)
+)
 
 target_include_directories (lp_namer_problem_modifier
 	PUBLIC

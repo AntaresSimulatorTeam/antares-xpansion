@@ -8,7 +8,7 @@
 class FullRunOptionsParser : public ProblemGenerationExeOptions {
  public:
   FullRunOptionsParser();
-  virtual ~FullRunOptionsParser() = default;
+  ~FullRunOptionsParser() override = default;
   void Parse(unsigned int argc, const char* const* argv) override;
   class FullRunOptionInvalidMethod : public std::runtime_error {
    public:
@@ -18,11 +18,13 @@ class FullRunOptionsParser : public ProblemGenerationExeOptions {
               " is not supported! Please choose one of: " +
               FullRunOptionsParser::ListAvailalbleMethods()) {}
   };
-  BENDERSMETHOD Method() const { return method_; };
-  std::filesystem::path BendersOptionsFile() const {
+  [[nodiscard]] BENDERSMETHOD Method() const { return method_; };
+  [[nodiscard]] std::filesystem::path BendersOptionsFile() const {
     return benders_options_file_;
   }
-  std::filesystem::path SolutionFile() const { return solutionFile_; }
+  [[nodiscard]] std::filesystem::path SolutionFile() const {
+    return solutionFile_;
+  }
   static inline std::string ListAvailalbleMethods() {
     return "benders,\n benders_by_batch,\n mergeMPS\n";
   }
