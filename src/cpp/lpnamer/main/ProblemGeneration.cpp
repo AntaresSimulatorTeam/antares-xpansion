@@ -1,6 +1,3 @@
-//
-// Created by marechaljas on 27/10/23.
-//
 
 #include "include/ProblemGeneration.h"
 
@@ -199,7 +196,8 @@ void ProblemGeneration::RunProblemGeneration(
                                    : InstantiateZipReader(antares_archive_path);
 
   /* Main stuff */
-  std::vector<std::shared_ptr<Problem>> xpansion_problems = getXpansionProblems(solver_log_manager, solver_name, mpsList, lpDir_,
+  std::vector<std::shared_ptr<Problem>> xpansion_problems =
+      getXpansionProblems(solver_log_manager, solver_name, mpsList, lpDir_,
                           reader, !antares_archive_path.empty());
 
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
