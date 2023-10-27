@@ -37,8 +37,8 @@ class LinkProblemsGenerator {
         _solver_name(std::move(solver_name)),
         lpDir_(lpDir),
         logger_(std::move(logger)),
-        solver_log_manager_(solver_log_manager),
-        rename_problems_(rename_problems) {}
+        rename_problems_(rename_problems),
+        solver_log_manager_(solver_log_manager) {}
 
   void treatloop(const std::filesystem::path& root, Couplings& couplings,
                  const std::vector<ProblemData>& mps_list,
