@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Doxygen Awesome" />
 <meta name="twitter:description" content="Custom CSS theme for doxygen html-documentation with lots of customization parameters." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: BendersEndToEnd tests description</title>
+<title>Antares Xpansion: Installer creation</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -98,7 +98,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('md_tests_end_to_end_benders_README.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('md_docs_developer_guide_install_from_sources_6_Installer_creation.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -124,60 +124,57 @@ $(document).ready(function(){initNavTree('md_tests_end_to_end_benders_README.htm
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">BendersEndToEnd tests description </div></div>
+  <div class="headertitle"><div class="title">Installer creation </div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md1"></a>
-Context</h1>
-<p >This is a test for the inner optimization part of AntaresXpansion. Those tests focus on two C++ executables :</p>
-<ol type="1">
-<li>benders</li>
-<li>merge_mps</li>
-</ol>
-<p ><b>Input</b> : Files created by <em>lpnamer</em> executable of the project, or any group of files following the desired structure :</p>
-<ul>
-<li>A MPS file for the master problem (default name : master.mps)</li>
-<li>A group of MPS files for the subproblems</li>
-<li>a file <em>structure.txt</em> containing the column index of each coupling variable in each problem</li>
-</ul>
-<p ><b>Output</b> : At least a file <em>out.json</em>, containing a section "solution", where the data to be tested is written.</p>
-<h1><a class="anchor" id="autotoc_md2"></a>
-Description</h1>
-<p >The file <em>resultTest.json</em> contains every information to run the test. Each section is a test containing at least :</p><ol type="1">
-<li>"path" : A path to the instance data, where the program will be launched</li>
-<li>"option_file" : A name of the option file to use</li>
-</ol>
-<h2><a class="anchor" id="autotoc_md3"></a>
-mini_network_default</h2>
-<p >Tests the resolution of a mini network design instance with default options.</p>
-<h2><a class="anchor" id="autotoc_md4"></a>
-mini_network_slave_weight</h2>
-<p >Tests the resolution of a mini network design instance with a file giving weights for subproblems.</p>
-<h2><a class="anchor" id="autotoc_md5"></a>
-mini_instance_LP_default</h2>
-<p >Tests the resolution of a mini LP problem with default options.</p>
-<h2><a class="anchor" id="autotoc_md6"></a>
-mini_instance_MIP_default</h2>
-<p >Tests the resolution of a mini MIP problem with default options. Optimal solution differs from its LP relaxation.</p>
-<h2><a class="anchor" id="autotoc_md7"></a>
-mini_instance_UNBOUNDED</h2>
-<p >Tests the resolution of an unbounded instance.</p>
-<h2><a class="anchor" id="autotoc_md8"></a>
-mini_instance_INFEASIBLE</h2>
-<p >Tests the resolution of an infeasible instance.</p>
-<h1><a class="anchor" id="autotoc_md9"></a>
-Launching the test</h1>
-<p >Python module <em>pytest</em> should be installed. The test can be run with the following command, from the bendersEndToEnd folder : python3 -m pytest &ndash;intallDir=*path_to_executables_folder*</p>
-<h1><a class="anchor" id="autotoc_md10"></a>
-Test markers</h1>
-<p >All the tests present in this test have the common marker <b>optim</b>. There are also markers to launch only tests on specific optimization executables :</p>
-<ul>
-<li>benderssequential : tests are launched with sequential benders (nproc = 1)</li>
-<li>bendersmpi : tests are launched with mpi parallelization (nproc = 2)</li>
-<li>mergemps : launching only tests with merge_mps executable</li>
-</ul>
-<p >To run some specific tests, markers can be used as follows : python3 -m pytest &ndash;intallDir=*path_to_executables_folder* -m <em>wanted_marker</em> </p>
-</div></div><!-- contents -->
+<div class="textblock"><p >CPack can be used to create the installer after the build phase :</p>
+<p >=== "Windows" ``` cd _build cpack -G ZIP ``` === "Centos" </p><pre class="fragment">### RHEL .rpm (Experimental)
+```
+cd _build
+cpack3 -G RPM .
+```
+!!! Note
+    `rpm-build` must be installed for RPM creation:  `sudo yum install rpm-build`
+
+### Linux .tar.gz
+```
+cd _build
+cpack3 -G TGZ
+```
+
+### Required system libraries
+There are still some system libraries that must be installed if you want to use Antares-Xpansion:
+
+```
+sudo yum install epel-release
+sudo yum install openmpi jsoncpp boost-openmpi
+```
+
+Before launching Antares-Xpansion with `mpi` for parallel launch (method `mpibenders`), you must load the `mpi` module :
+```
+scl enable devtoolset-7 bash
+module load mpi
+```
+
+!!! Note
+    `mpirun` can't be used as root on Centos7. Be sure to launch Antares-Xpansion without root user.
+</pre><p> === "Ubuntu" </p><pre class="fragment">### Ubuntu .deb (Experimental)
+```
+cd _build
+cpack -G DEB .
+```
+### Linux .tar.gz
+```
+cd _build
+cpack -G TGZ
+```
+
+### Required system libraries
+There are still some system libraries that must be installed if you want to use Antares-Xpansion:
+```
+sudo apt-get install libcurl4 libjsoncpp1 libboost-mpi-dev libboost-program-options-dev
+```
+</pre> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -262,6 +262,7 @@ var hierarchy =
       [ "XpansionProblemsFromAntaresProvider", "classXpansionProblemsFromAntaresProvider.html", null ],
       [ "ZipProblemsProviderAdapter", "classZipProblemsProviderAdapter.html", null ]
     ] ],
+    [ "performance.JsonFileProcessor", "classperformance_1_1JsonFileProcessor.html", null ],
     [ "JsonXpansionReader", "classJsonXpansionReader.html", null ],
     [ "LastIterationPrinter", "classLastIterationPrinter.html", null ],
     [ "LastIterationReader", "classLastIterationReader.html", null ],
@@ -359,6 +360,7 @@ var hierarchy =
         [ "WriterMockStatus", "classWriterMockStatus.html", null ]
       ] ]
     ] ],
+    [ "performance.PerfPlotsGenerator", "classperformance_1_1PerfPlotsGenerator.html", null ],
     [ "Catch::pluralise", "structCatch_1_1pluralise.html", null ],
     [ "Predicate", "structPredicate.html", null ],
     [ "Output::ProblemData", "structOutput_1_1ProblemData.html", null ],
