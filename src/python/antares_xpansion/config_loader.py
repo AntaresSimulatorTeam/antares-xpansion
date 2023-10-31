@@ -501,7 +501,7 @@ class ConfigLoader:
         """
         return last simulation name
         """
-        self._last_study = self.last_modified_study(self.antares_output())
+        self._last_study = self.last_modified_study(Path(self.antares_output()))
 
         self._set_xpansion_simulation_name()
     class NotAnXpansionOutputDir(Exception):
@@ -535,14 +535,14 @@ class ConfigLoader:
             if(os.path.exists(self._xpansion_simulation_name)):
                 shutil.rmtree(self._xpansion_simulation_name)
 
-    def is_antares_study_output(self, study):
+    def is_antares_study_output(self, study: Path):
         _, ext = os.path.splitext(study)
-        return ext == ".zip" or os.path.isdir(study)
+        return ext == ".zip" or os.path.isdir(study) and '-Xpansion' not in study.name
 
-    def last_modified_study(self, root_dir)-> Path: 
+    def last_modified_study(self, root_dir:Path)-> Path: 
         list_dir = os.listdir(root_dir)
         list_of_studies = filter(
-            lambda x: self.is_antares_study_output(os.path.join(root_dir, x)), list_dir
+            lambda x: self.is_antares_study_output(root_dir / x), list_dir
         )
         # Sort list of files based on last modification time in ascending order
         sort_studies = sorted(

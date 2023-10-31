@@ -131,20 +131,26 @@ std::vector<CandidateData> CandidatesINIReader::readCandidateData(
   std::vector<CandidateData> result;
 
   INIReader reader(candidateFile.string());
-  std::stringstream ss;
+  std::ostringstream err_msg;
+  const auto starting_pos = err_msg.tellp();
   std::set<std::string> sections = reader.Sections();
   for (auto const &sectionName : sections) {
     CandidateData candidateData =
-        readCandidateSection(candidateFile, reader, sectionName);
+        readCandidateSection(candidateFile, reader, sectionName, err_msg);
     result.push_back(candidateData);
   }
-
+  err_msg.flush();
+  err_msg.seekp(0, std::ios_base::end);
+  if (err_msg.tellp() != starting_pos) {
+    (*logger_)(LogUtils::LOGLEVEL::FATAL) << err_msg.str();
+    std::exit(1);
+  }
   return result;
 }
 
 CandidateData CandidatesINIReader::readCandidateSection(
     const std::filesystem::path &candidateFile, const INIReader &reader,
-    const std::string &sectionName) const {
+    const std::string &sectionName, std::ostringstream &err_msg) const {
   CandidateData candidateData;
   candidateData.name = StringManip::StringUtils::ToLowercase(
       getStrVal(reader, sectionName, "name"));
@@ -156,28 +162,27 @@ CandidateData CandidatesINIReader::readCandidateSection(
     candidateData.linkex =
         candidateData.link_name.substr(i + 3, candidateData.link_name.size());
     if (!checkArea(candidateData.linkor)) {
-      (*logger_)(LogUtils::LOGLEVEL::FATAL)
-          << LOGLOCATION << "Unrecognized area " << candidateData.linkor
-          << " in section " << sectionName << " in "
-          << candidateFile.string() + ".";
-      std::exit(1);
+      err_msg << LOGLOCATION << "Unrecognized area " << candidateData.linkor
+              << " in section " << sectionName << " in "
+              << candidateFile.string() << "\n";
     }
     if (!checkArea(candidateData.linkex)) {
-      (*logger_)(LogUtils::LOGLEVEL::FATAL)
-          << LOGLOCATION << "Unrecognized area " << candidateData.linkex
-          << " in section " << sectionName << " in " << candidateFile.string()
-          << ".";
-      std::exit(1);
+      err_msg << LOGLOCATION << "Unrecognized area " << candidateData.linkex
+              << " in section " << sectionName << " in "
+              << candidateFile.string() << "\n";
     }
   }
 
   // Check if interco is available
   auto it = _intercoIndexMap.find(candidateData.link_name);
   if (it == _intercoIndexMap.end()) {
-    (*logger_)(LogUtils::LOGLEVEL::FATAL)
-        << LOGLOCATION << "cannot link candidate " << candidateData.name
-        << " to interco id";
-    std::exit(1);
+    err_msg << LOGLOCATION << "cannot link candidate " << candidateData.name
+            << " to interco id"
+            << "\n";
+  }
+
+  if (err_msg.tellp() != 0) {
+    return {};
   }
   candidateData.link_id = it->second;
   candidateData.direct_link_profile =
