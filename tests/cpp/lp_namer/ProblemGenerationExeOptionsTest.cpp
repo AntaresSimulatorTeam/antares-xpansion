@@ -29,11 +29,6 @@ class ProblemGenerationSpyAndMock : public ProblemGeneration {
     log_file_path_ = log_file_path;
     weights_file_ = weights_file;
     unnamed_problems_ = unnamed_problems;
-
-    //    ProblemGeneration::RunProblemGeneration(
-    //        xpansion_output_dir, master_formulation,
-    //        additionalConstraintFilename_l, archive_path, logger,
-    //        log_file_path, weights_file, unnamed_problems);
   }
   std::filesystem::path xpansion_output_dir_;
   std::string master_formulation_;
@@ -95,6 +90,29 @@ TEST_F(ProblemGenerationExeOptionsTest,
   std::vector<const char*> ppargv = {argv0, argv1, argv2.c_str(), argv3,
                                      argv4.c_str()};
   problem_generation_options_parser_.Parse(5, ppargv.data());
+
+  ProblemGenerationSpyAndMock pbg(problem_generation_options_parser_);
+  pbg.updateProblems();
+
+  EXPECT_EQ(pbg.archive_path_, archive);
+  EXPECT_EQ(pbg.xpansion_output_dir_, output_path);
+  EXPECT_TRUE(std::filesystem::exists(output_path));
+  EXPECT_TRUE(std::filesystem::exists(output_path / "lp"));
+}
+
+TEST_F(ProblemGenerationExeOptionsTest,
+       OutputAndArchiveParameters_deduceOuputFromArchive) {
+  auto test_root =
+      std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
+  auto archive = test_root / "study.zip";
+  auto output_path = test_root / "study-Xpansion";
+
+  const char argv0[] = "lp.exe ";
+  const char argv1[] = "--archive";
+  auto argv2 = archive;
+
+  std::vector<const char*> ppargv = {argv0, argv1, argv2.c_str()};
+  problem_generation_options_parser_.Parse(3, ppargv.data());
 
   ProblemGenerationSpyAndMock pbg(problem_generation_options_parser_);
   pbg.updateProblems();
