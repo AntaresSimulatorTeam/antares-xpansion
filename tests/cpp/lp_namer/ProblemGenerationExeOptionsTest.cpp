@@ -122,3 +122,26 @@ TEST_F(ProblemGenerationExeOptionsTest,
   EXPECT_TRUE(std::filesystem::exists(output_path));
   EXPECT_TRUE(std::filesystem::exists(output_path / "lp"));
 }
+
+TEST_F(ProblemGenerationExeOptionsTest,
+       OutputAndArchiveParameters_deduceArchiveFromOutputDir) {
+  auto test_root =
+      std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
+  auto archive = test_root / "study.zip";
+  auto output_path = test_root / "study-Xpansion";
+
+  const char argv0[] = "lp.exe ";
+  const char argv1[] = "--output";
+  auto argv2 = output_path.string();
+
+  std::vector<const char*> ppargv = {argv0, argv1, argv2.c_str()};
+  problem_generation_options_parser_.Parse(3, ppargv.data());
+
+  ProblemGenerationSpyAndMock pbg(problem_generation_options_parser_);
+  pbg.updateProblems();
+
+  EXPECT_EQ(pbg.archive_path_, archive);
+  EXPECT_EQ(pbg.xpansion_output_dir_, output_path);
+  EXPECT_TRUE(std::filesystem::exists(output_path));
+  EXPECT_TRUE(std::filesystem::exists(output_path / "lp"));
+}

@@ -48,6 +48,13 @@ std::filesystem::path ProblemGeneration::updateProblems() {
 
   xpansion_output_dir =
       deduceXpansionDirIfEmpty(xpansion_output_dir, archive_path);
+  if (archive_path.empty() && !xpansion_output_dir.empty()) {
+    archive_path = xpansion_output_dir;
+    auto dir_name = archive_path.stem().string();
+    dir_name = dir_name.substr(0, dir_name.find("-Xpansion"));
+    archive_path =
+        archive_path.replace_filename(dir_name).replace_extension(".zip");
+  }
 
   const auto log_file_path =
       xpansion_output_dir / "lp" / "ProblemGenerationLog.txt";
@@ -69,7 +76,7 @@ std::filesystem::path ProblemGeneration::updateProblems() {
 std::filesystem::path ProblemGeneration::deduceXpansionDirIfEmpty(
     std::filesystem::path xpansion_output_dir,
     const std::filesystem::path& archive_path) {
-  if (xpansion_output_dir.string().empty() && !archive_path.string().empty()) {
+  if (xpansion_output_dir.empty() && !archive_path.empty()) {
     auto deduced_dir = archive_path;
     deduced_dir = deduced_dir.replace_filename(
         deduced_dir.stem().replace_extension("").string() + "-Xpansion");

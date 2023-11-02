@@ -32,16 +32,6 @@ class FullRunOptionsParserTestParameterizedMethod
   FullRunOptionsParser full_run_options_options_parser_;
 };
 
-TEST_F(FullRunOptionsParserTest, ThatArchiveFileIsRequired) {
-  const char argv0[] = "full_run.exe";
-  std::vector<const char*> ppargv = {argv0};
-  try {
-    full_run_options_options_parser_.Parse(1, ppargv.data());
-  } catch (const std::exception& e) {
-    EXPECT_EQ(e.what(),
-              std::string("the option '--archive' is required but missing"));
-  }
-}
 TEST_F(FullRunOptionsParserTest, ThatBendersOptionFileIsRequired) {
   const char argv0[] = "full_run.exe";
   const char argv1[] = "--archive";
