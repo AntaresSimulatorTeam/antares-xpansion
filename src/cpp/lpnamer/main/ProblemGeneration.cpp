@@ -46,12 +46,8 @@ std::filesystem::path ProblemGeneration::updateProblems() {
   auto xpansion_output_dir = options_.XpansionOutputDir();
   auto archive_path = options_.ArchivePath();
 
-  if (xpansion_output_dir.string().empty() && !archive_path.string().empty()) {
-    xpansion_output_dir = archive_path;
-    xpansion_output_dir = xpansion_output_dir.replace_filename(
-        xpansion_output_dir.stem().replace_extension("").string() +
-        "-Xpansion");
-  }
+  xpansion_output_dir =
+      deduceXpansionDirIfEmpty(xpansion_output_dir, archive_path);
 
   const auto log_file_path =
       xpansion_output_dir / "lp" / "ProblemGenerationLog.txt";
@@ -68,6 +64,17 @@ std::filesystem::path ProblemGeneration::updateProblems() {
   RunProblemGeneration(xpansion_output_dir, master_formulation,
                        additionalConstraintFilename_l, archive_path, logger,
                        log_file_path, weights_file, unnamed_problems);
+  return xpansion_output_dir;
+}
+std::filesystem::path ProblemGeneration::deduceXpansionDirIfEmpty(
+    std::filesystem::path xpansion_output_dir,
+    const std::filesystem::path& archive_path) {
+  if (xpansion_output_dir.string().empty() && !archive_path.string().empty()) {
+    auto deduced_dir = archive_path;
+    deduced_dir = deduced_dir.replace_filename(
+        deduced_dir.stem().replace_extension("").string() + "-Xpansion");
+    return deduced_dir;
+  }
   return xpansion_output_dir;
 }
 
