@@ -36,4 +36,7 @@ class ProblemGeneration {
       const std::filesystem::path& antares_archive_path,
       const std::filesystem::path& xpansion_output_dir,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+  static std::filesystem::path deduceXpansionDirIfEmpty(
+      std::filesystem::path xpansion_output_dir,
+      const std::filesystem::path& archive_path);
 };
