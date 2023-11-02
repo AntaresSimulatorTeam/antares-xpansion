@@ -4,8 +4,7 @@ namespace po = boost::program_options;
 ProblemGenerationExeOptions::ProblemGenerationExeOptions()
     : OptionsParser("Problem Generation exe") {
   AddOptions()("help,h", "produce help message")(
-      "output,o",
-      po::value<std::filesystem::path>(&xpansion_output_dir_)->required(),
+      "output,o", po::value<std::filesystem::path>(&xpansion_output_dir_),
       "antares-xpansion study output")(
       "archive,a", po::value<std::filesystem::path>(&archive_path_)->required(),
       "antares-xpansion study zip")(

@@ -45,6 +45,14 @@ ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options)
 std::filesystem::path ProblemGeneration::updateProblems() {
   auto xpansion_output_dir = options_.XpansionOutputDir();
   auto archive_path = options_.ArchivePath();
+
+  if (xpansion_output_dir.string().empty() && !archive_path.string().empty()) {
+    xpansion_output_dir = archive_path;
+    xpansion_output_dir = xpansion_output_dir.replace_filename(
+        xpansion_output_dir.stem().replace_extension("").string() +
+        "-Xpansion");
+  }
+
   const auto log_file_path =
       xpansion_output_dir / "lp" / "ProblemGenerationLog.txt";
 
