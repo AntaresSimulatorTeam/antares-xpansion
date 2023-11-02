@@ -6,7 +6,7 @@ ProblemGenerationExeOptions::ProblemGenerationExeOptions()
   AddOptions()("help,h", "produce help message")(
       "output,o", po::value<std::filesystem::path>(&xpansion_output_dir_),
       "antares-xpansion study output")(
-      "archive,a", po::value<std::filesystem::path>(&archive_path_)->required(),
+      "archive,a", po::value<std::filesystem::path>(&archive_path_),
       "antares-xpansion study zip")(
       "formulation,f",
       po::value<std::string>(&master_formulation_)->default_value("relaxed"),
