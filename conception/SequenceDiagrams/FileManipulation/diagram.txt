@@ -68,6 +68,8 @@ create ZipProblemProviderAdapter
 create FilesMapper
 full_run->ProblemGeneration:RunProblemGeneration
 activate ProblemGeneration
+ProblemGeneration->ProblemGeneration:CreateDirectories
+note over ProblemGeneration: Create -Xpansion and -Xpansion/lp directories
 ProblemGeneration->ProblemGeneration:ExtractUtilsFiles
 
 ProblemGeneration->LpFilesExtractor:ExtractFiles

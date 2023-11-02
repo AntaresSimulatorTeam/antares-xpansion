@@ -36,7 +36,8 @@ add_executable (lp_namer_tests
         WeightsFileReaderTest.cpp
         LpFilesExtractorTest.cpp
         MpsTxtWriterTest
-        )
+        ProblemGenerationTest.cpp
+)
 
 target_link_libraries (lp_namer_tests PRIVATE
         GTest::Main

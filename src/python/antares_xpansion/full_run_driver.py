@@ -1,13 +1,13 @@
-
-from typing import List
+import os
 import subprocess
 import sys
-from antares_xpansion.benders_driver import BendersDriver
-from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver
-from antares_xpansion.logger import step_logger
-from antares_xpansion.study_output_cleaner import StudyOutputCleaner
-import os
 from pathlib import Path
+from typing import List
+
+from antares_xpansion.benders_driver import BendersDriver
+from antares_xpansion.logger import step_logger
+from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver
+from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 
 
 class FullRunDriver:

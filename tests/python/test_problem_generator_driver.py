@@ -1,16 +1,10 @@
-from typing import Text
-import pytest
-import os
-from pathlib import Path
-from datetime import date, datetime
-from unittest.mock import ANY, mock_open, patch
 import shutil
+from datetime import date, datetime
+from pathlib import Path
+from unittest.mock import patch
 
-from file_creation import _create_weight_file
+import pytest
 from antares_xpansion.problem_generator_driver import ProblemGeneratorData, ProblemGeneratorDriver
-from antares_xpansion.antares_driver import AntaresDriver
-from antares_xpansion.xpansion_study_reader import XpansionStudyReader
-from antares_xpansion.general_data_reader import GeneralDataIniReader
 
 SUBPROCESS_RUN = "antares_xpansion.problem_generator_driver.subprocess.run"
 zipfile_ZipFile = "antares_xpansion.problem_generator_driver.zipfile.ZipFile"

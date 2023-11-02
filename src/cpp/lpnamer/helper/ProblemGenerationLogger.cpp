@@ -7,10 +7,11 @@ ProblemGenerationFileLogger::ProblemGenerationFileLogger(
     const std::filesystem::path& logFilePath)
     : logFilePath_(logFilePath) {
   SetType(LogUtils::LOGGERTYPE::FILE);
-  logFile_.open(logFilePath_, std::ofstream::out | std::ofstream::app);
+  auto logPath = std::filesystem::absolute(logFilePath_);
+  logFile_.open(logPath, std::ofstream::out | std::ofstream::app);
   if (logFile_.fail()) {
     std::cerr << "ProblemGenerationFileLogger: Invalid file ("
-              << logFilePath_.string() << ") passed as parameter" << std::endl;
+              << logPath.string() << ") passed as parameter" << std::endl;
   }
 }
 void ProblemGenerationFileLogger::DisplayMessage(const std::string& message) {
