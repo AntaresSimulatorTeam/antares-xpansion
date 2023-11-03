@@ -34,5 +34,12 @@ class ProblemGenerationExeOptions : public OptionsParser,
   bool UnnamedProblems() const { return unnamed_problems_; }
 
   void Parse(unsigned int argc, const char *const *argv) override;
+
+  [[nodiscard]] std::filesystem::path deduceXpansionDirIfEmpty(
+      std::filesystem::path xpansion_output_dir,
+      const std::filesystem::path& archive_path) const override;
+  [[nodiscard]] std::filesystem::path deduceArchivePathIfEmpty(
+      const std::filesystem::path& xpansion_output_dir,
+      const std::filesystem::path& archive_path) const override;
 };
 #endif  // ANTARES_XPANSION_SRC_CPP_LPNAMER_MAIN_INCLUDE_PROBLEMGENERATIONEXEOPTIONS_H

@@ -17,4 +17,19 @@ class ProblemGenerationOptions {
   [[nodiscard]] virtual std::filesystem::path WeightsFile() const = 0;
   [[nodiscard]] virtual std::vector<int> ActiveYears() const = 0;
   [[nodiscard]] virtual bool UnnamedProblems() const = 0;
+  [[nodiscard]] virtual std::filesystem::path deduceXpansionDirIfEmpty(
+      std::filesystem::path xpansion_output_dir,
+      const std::filesystem::path& archive_path) const = 0;
+  [[nodiscard]] virtual std::filesystem::path deduceArchivePathIfEmpty(
+      const std::filesystem::path& xpansion_output_dir,
+      const std::filesystem::path& archive_path) const = 0;
+
+  class MismatchedParameters
+      : public LogUtils::XpansionError<std::runtime_error> {
+    using LogUtils::XpansionError<std::runtime_error>::XpansionError;
+
+   public:
+    explicit MismatchedParameters(const std::string& err_message,
+                                  const std::string& log_location);
+  };
 };
