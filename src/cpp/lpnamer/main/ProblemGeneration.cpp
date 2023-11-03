@@ -246,3 +246,6 @@ std::shared_ptr<ArchiveReader> InstantiateZipReader(
   reader->Open();
   return reader;
 }
+ProblemGeneration::MismatchedParameters::MismatchedParameters(
+    const std::string& err_message, const std::string& log_location)
+    : XpansionError(err_message, log_location) {}
