@@ -145,3 +145,45 @@ TEST_F(ProblemGenerationExeOptionsTest,
   EXPECT_TRUE(std::filesystem::exists(output_path));
   EXPECT_TRUE(std::filesystem::exists(output_path / "lp"));
 }
+
+bool Constains(std::ifstream& file, const std::string& string) {
+  std::string line;
+
+  while (std::getline(file, line)) {
+    if (line.find(string) != std::string::npos) {
+      return true;
+    }
+  }
+  return false;
+}
+
+TEST_F(
+    ProblemGenerationExeOptionsTest,
+    OutputAndArchiveParameters_cantDeduceArchiveFromOutputDirWithoutRegularSuffixe) {
+  auto test_root =
+      std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
+  auto archive = test_root / "study.zip";
+  auto output_path = test_root / "study-out";
+
+  const char argv0[] = "lp.exe ";
+  const char argv1[] = "--output";
+  auto argv2 = output_path.string();
+
+  std::vector<const char*> ppargv = {argv0, argv1, argv2.c_str()};
+  problem_generation_options_parser_.Parse(3, ppargv.data());
+
+  ProblemGenerationSpyAndMock pbg(problem_generation_options_parser_);
+
+  EXPECT_THROW(pbg.updateProblems(), ProblemGeneration::MismatchedParameters);
+
+  EXPECT_TRUE(pbg.archive_path_.empty());  // Can't deduce
+  EXPECT_TRUE(pbg.xpansion_output_dir_
+                  .empty());  // Exception occurres before RunProblemGeneration
+  // We expect to have created directories to log properly
+  EXPECT_TRUE(std::filesystem::exists(output_path));
+  EXPECT_TRUE(std::filesystem::exists(output_path / "lp"));
+
+  std::ifstream logfile(output_path / "lp" / "ProblemGenerationLog.txt");
+  EXPECT_TRUE(Constains(
+      logfile, "Archive path is missing and output path does not contains"));
+}
