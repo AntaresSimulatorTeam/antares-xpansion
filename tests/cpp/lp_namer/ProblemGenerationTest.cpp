@@ -26,6 +26,16 @@ class InMemoryOption : public ProblemGenerationOptions {
   }
   std::vector<int> ActiveYears() const override { return std::vector<int>(); }
   bool UnnamedProblems() const override { return false; }
+  std::filesystem::path deduceXpansionDirIfEmpty(
+      std::filesystem::path xpansion_output_dir,
+      const std::filesystem::path& archive_path) const override {
+    return std::filesystem::path();
+  }
+  std::filesystem::path deduceArchivePathIfEmpty(
+      const std::filesystem::path& xpansion_output_dir,
+      const std::filesystem::path& archive_path) const override {
+    return std::filesystem::path();
+  }
 };
 
 TEST(InitializationTest, FoldersAreEmpty) {

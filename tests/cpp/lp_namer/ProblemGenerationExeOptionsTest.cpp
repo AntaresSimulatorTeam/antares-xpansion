@@ -174,7 +174,8 @@ TEST_F(
 
   ProblemGenerationSpyAndMock pbg(problem_generation_options_parser_);
 
-  EXPECT_THROW(pbg.updateProblems(), ProblemGeneration::MismatchedParameters);
+  EXPECT_THROW(pbg.updateProblems(),
+               ProblemGenerationOptions::MismatchedParameters);
 
   EXPECT_TRUE(pbg.archive_path_.empty());  // Can't deduce
   EXPECT_TRUE(pbg.xpansion_output_dir_
