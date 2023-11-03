@@ -23,6 +23,11 @@ ProblemGenerationExeOptions::ProblemGenerationExeOptions()
 void ProblemGenerationExeOptions::Parse(unsigned int argc,
                                         const char *const *argv) {
   OptionsParser::Parse(argc, argv);
+  if (XpansionOutputDir().empty() && ArchivePath().empty()) {
+    auto log_location = LOGLOCATION;
+    auto msg = "Both output directory and archive path are empty";
+    throw ProblemGenerationOptions::MissingParameters(msg, log_location);
+  }
 }
 
 std::filesystem::path ProblemGenerationExeOptions::deduceArchivePathIfEmpty(
@@ -58,7 +63,3 @@ std::filesystem::path ProblemGenerationExeOptions::deduceXpansionDirIfEmpty(
   }
   return xpansion_output_dir;
 }
-
-ProblemGenerationExeOptions::MismatchedParameters::MismatchedParameters(
-    const std::string& err_message, const std::string& log_location)
-    : XpansionError(err_message, log_location) {}
