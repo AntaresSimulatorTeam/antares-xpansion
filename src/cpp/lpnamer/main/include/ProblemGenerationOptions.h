@@ -30,6 +30,16 @@ class ProblemGenerationOptions {
 
    public:
     explicit MismatchedParameters(const std::string& err_message,
-                                  const std::string& log_location);
+                                  const std::string& log_location)
+        : XpansionError(err_message, log_location) {}
+  };
+
+  class MissingParameters : public LogUtils::XpansionError<std::runtime_error> {
+    using LogUtils::XpansionError<std::runtime_error>::XpansionError;
+
+   public:
+    explicit MissingParameters(const std::string& err_message,
+                               const std::string& log_location)
+        : XpansionError(err_message, log_location) {}
   };
 };

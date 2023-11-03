@@ -39,17 +39,6 @@ class ProblemGenerationSpyAndMock : public ProblemGeneration {
   bool unnamed_problems_;
 };
 
-TEST_F(ProblemGenerationExeOptionsTest, WithoutArchiveOption) {
-  char argv = 'c';
-  char* pargv = &argv;
-  char** ppargv = &pargv;
-  try {
-    problem_generation_options_parser_.Parse(1, ppargv);
-  } catch (const std::exception& e) {
-    EXPECT_EQ(e.what(),
-              std::string("the option '--archive' is required but missing"));
-  }
-}
 TEST_F(ProblemGenerationExeOptionsTest, WithoutOutputOption) {
   const char argv0[] = "lp_namer.exe";
   const char argv1[] = "--archive";
@@ -187,4 +176,17 @@ TEST_F(
   std::ifstream logfile(output_path / "lp" / "ProblemGenerationLog.txt");
   EXPECT_TRUE(Constains(
       logfile, "Archive path is missing and output path does not contains"));
+}
+
+TEST_F(ProblemGenerationExeOptionsTest,
+       OutputAndArchiveParameters_ErrorIfBothArchiveAndOutputAreMissing) {
+  auto test_root =
+      std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
+
+  const char argv0[] = "lp.exe ";
+
+  std::vector<const char*> ppargv = {argv0};
+
+  EXPECT_THROW(problem_generation_options_parser_.Parse(1, ppargv.data()),
+               ProblemGenerationOptions::MissingParameters);
 }
