@@ -26,6 +26,15 @@ class ProblemGeneration {
       const std::filesystem::path& log_file_path,
       const std::filesystem::path& weights_file, bool unnamed_problems);
 
+  class MismatchedParameters
+      : public LogUtils::XpansionError<std::runtime_error> {
+    using LogUtils::XpansionError<std::runtime_error>::XpansionError;
+
+   public:
+    explicit MismatchedParameters(const std::string& err_message,
+                                  const std::string& log_location);
+  };
+
  private:
   void ProcessWeights(
       const std::filesystem::path& xpansion_output_dir,
@@ -38,5 +47,8 @@ class ProblemGeneration {
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
   static std::filesystem::path deduceXpansionDirIfEmpty(
       std::filesystem::path xpansion_output_dir,
+      const std::filesystem::path& archive_path);
+  static std::filesystem::path deduceArchivePathIfEmpty(
+      const std::filesystem::path& xpansion_output_dir,
       const std::filesystem::path& archive_path);
 };

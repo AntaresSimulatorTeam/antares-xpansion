@@ -43,23 +43,16 @@ void CreateDirectories(const std::filesystem::path& output_path) {
 ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options)
     : options_(options) {}
 std::filesystem::path ProblemGeneration::updateProblems() {
-  auto xpansion_output_dir = options_.XpansionOutputDir();
-  auto archive_path = options_.ArchivePath();
+  const auto xpansion_output_dir = options_.XpansionOutputDir();
+  const auto archive_path = options_.ArchivePath();
 
-  xpansion_output_dir =
+  auto deduced_xpansion_output_dir =
       deduceXpansionDirIfEmpty(xpansion_output_dir, archive_path);
-  if (archive_path.empty() && !xpansion_output_dir.empty()) {
-    archive_path = xpansion_output_dir;
-    auto dir_name = archive_path.stem().string();
-    dir_name = dir_name.substr(0, dir_name.find("-Xpansion"));
-    archive_path =
-        archive_path.replace_filename(dir_name).replace_extension(".zip");
-  }
 
   const auto log_file_path =
       xpansion_output_dir / "lp" / "ProblemGenerationLog.txt";
 
-  CreateDirectories(xpansion_output_dir);
+  CreateDirectories(deduced_xpansion_output_dir);
   auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout,
                                                   "Problem Generation");
 
@@ -68,10 +61,40 @@ std::filesystem::path ProblemGeneration::updateProblems() {
       options_.AdditionalConstraintsFilename();
   auto weights_file = options_.WeightsFile();
   auto unnamed_problems = options_.UnnamedProblems();
-  RunProblemGeneration(xpansion_output_dir, master_formulation,
-                       additionalConstraintFilename_l, archive_path, logger,
-                       log_file_path, weights_file, unnamed_problems);
-  return xpansion_output_dir;
+  std::filesystem::path deduced_archive_path;
+  try {
+    deduced_archive_path =
+        deduceArchivePathIfEmpty(deduced_xpansion_output_dir, archive_path);
+  } catch (const MismatchedParameters& m) {
+    (*logger)(LogUtils::LOGLEVEL::ERR) << m.what();
+    throw;
+  }
+
+  RunProblemGeneration(deduced_xpansion_output_dir, master_formulation,
+                       additionalConstraintFilename_l, deduced_archive_path,
+                       logger, log_file_path, weights_file, unnamed_problems);
+  return deduced_xpansion_output_dir;
+}
+std::filesystem::path ProblemGeneration::deduceArchivePathIfEmpty(
+    const std::filesystem::path& xpansion_output_dir,
+    const std::filesystem::path& archive_path) {
+  if (archive_path.empty() && !xpansion_output_dir.empty()) {
+    if (xpansion_output_dir.string().find("-Xpansion") == std::string::npos) {
+      auto log_location = LOGLOCATION;
+      auto msg =
+          "Archive path is missing and output path does not contains"
+          " \"-Xpansion\" suffixe. Can't deduce archive file name.";
+      throw MismatchedParameters(msg, log_location);
+    }
+    auto deduced_archive_path = xpansion_output_dir;
+    auto dir_name = deduced_archive_path.stem().string();
+    dir_name = dir_name.substr(0, dir_name.find("-Xpansion"));
+    deduced_archive_path =
+        deduced_archive_path.replace_filename(dir_name).replace_extension(
+            ".zip");
+    return deduced_archive_path;
+  }
+  return archive_path;
 }
 std::filesystem::path ProblemGeneration::deduceXpansionDirIfEmpty(
     std::filesystem::path xpansion_output_dir,
@@ -280,3 +303,6 @@ std::shared_ptr<ArchiveReader> InstantiateZipReader(
   reader->Open();
   return reader;
 }
+ProblemGeneration::MismatchedParameters::MismatchedParameters(
+    const std::string& err_message, const std::string& log_location)
+    : XpansionError(err_message, log_location) {}
