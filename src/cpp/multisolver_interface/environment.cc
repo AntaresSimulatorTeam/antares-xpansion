@@ -1,4 +1,4 @@
-// This this file is an adaptation for Antares-Xpansion needs
+// This this file is an adaptation of OR-Tools for Antares-Xpansion needs
 //  see orginal at https://github.com/rte-france/or-tools
 // Copyright 2010-2021 Google LLC
 // Licensed under the Apache License, Version 2.0 (the "License");
