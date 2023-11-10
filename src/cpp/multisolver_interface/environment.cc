@@ -20,7 +20,7 @@
 #include <mutex>
 #include <string>
 
-namespace operations_research_Xpansion {
+namespace LoadXpress {
 
 #define STRINGIFY2(X) #X
 #define STRINGIFY(X) STRINGIFY2(X)
@@ -495,4 +495,4 @@ bool XpressIsCorrectlyInstalled() {
   return correctlyInstalled;
 }
 
-}  // namespace operations_research_Xpansion
+}  // namespace LoadXpress

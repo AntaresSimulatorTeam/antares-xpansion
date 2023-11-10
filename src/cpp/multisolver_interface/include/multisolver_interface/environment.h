@@ -21,7 +21,7 @@ extern "C" {
 typedef struct xo_prob_struct* XPRSprob;
 }
 
-namespace operations_research_Xpansion {
+namespace LoadXpress {
 
 void printXpressBanner(bool error);
 
@@ -470,5 +470,5 @@ extern std::function<int(char* version)> XPRSgetversion;
 // extern std::function<int(XPRSprob prob, int nrows, const int rowind[], const double rng[])> XPRSchgrhsrange;
 // extern std::function<int(XPRSprob prob, int nrows, const int rowind[], const char rowtype[])> XPRSchgrowtype;
 
-}  // namespace operations_research_Xpansion
+}  // namespace LoadXpress
 

@@ -6,7 +6,7 @@
 
 #include "StringManip.h"
 
-using namespace operations_research_Xpansion;
+using namespace LoadXpress;
 
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor

@@ -11,8 +11,7 @@
 
 SolverFactory::SolverFactory() {
   _available_solvers.clear();
-  if ((isXpress_available_ =
-           operations_research_Xpansion::XpressIsCorrectlyInstalled())) {
+  if ((isXpress_available_ = LoadXpress::XpressIsCorrectlyInstalled())) {
     _available_solvers.push_back(XPRESS_STR);
   }
 #ifdef COIN_OR
