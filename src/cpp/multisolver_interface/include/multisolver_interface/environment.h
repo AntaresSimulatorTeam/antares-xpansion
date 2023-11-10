@@ -453,22 +453,6 @@ extern std::function<int(char* buffer, int maxbytes)> XPRSgetlicerrmsg;
 extern std::function<int(int* p_i, char* p_c)> XPRSlicense;
 extern std::function<int(char* version)> XPRSgetversion;
 
-/***/
-// extern std::function<int(XPRSprob prob, int control)> XPRSsetdefaultcontrol;
-// extern std::function<int(XPRSprob prob, int control, XPRSint64 value)> XPRSsetintcontrol64;
-// extern std::function<int(XPRSprob prob, int control, const char* value)> XPRSsetstrcontrol;
-// extern std::function<int(XPRSprob prob, int control, XPRSint64* p_value)> XPRSgetintcontrol64;
-// extern std::function<int(XPRSprob prob, int control, double* p_value)> XPRSgetdblcontrol;
-// extern std::function<int(XPRSprob prob, int control, char* value, int maxbytes, int* p_nbytes)> XPRSgetstringcontrol;
-// extern std::function<int(XPRSprob prob, const char* probname, int ncols, int nrows, const char rowtype[], const double rhs[], const double rng[], const double objcoef[], const XPRSint64 start[], const int collen[], const int rowind[], const double rowcoef[], const double lb[], const double ub[])> XPRSloadlp64;
-// extern std::function<int(XPRSprob prob, int row, int col, double* p_coef)> XPRSgetcoef;
-// extern std::function<int(XPRSprob prob, int ncols, const int colind[])> XPRSdelcols;
-// extern std::function<int(XPRSprob prob, const int rowstat[], const int colstat[])> XPRSloadbasis;
-// extern std::function<int(XPRSprob prob)> XPRSpostsolve;
-// extern std::function<int(XPRSprob prob, char* errmsg)> XPRSgetlasterror;
-// extern std::function<int(XPRSprob prob, int ncoefs, const int rowind[], const int colind[], const double rowcoef[])> XPRSchgmcoef;
-// extern std::function<int(XPRSprob prob, int nrows, const int rowind[], const double rng[])> XPRSchgrhsrange;
-// extern std::function<int(XPRSprob prob, int nrows, const int rowind[], const char rowtype[])> XPRSchgrowtype;
 
 }  // namespace LoadXpress
 

@@ -136,45 +136,6 @@ std::function<int(int* p_i, char* p_c)> XPRSlicense = nullptr;
 std::function<int(char* version)> XPRSgetversion = nullptr;
 std::function<int(XPRSprob prob, int attrib, int* p_value)> XPRSgetintattrib =
     nullptr;
-/*----*/
-
-// std::function<int(XPRSprob prob, int control)> XPRSsetdefaultcontrol =
-// nullptr; std::function<int(XPRSprob prob, int control, XPRSint64 value)>
-//     XPRSsetintcontrol64 = nullptr;
-// std::function<int(XPRSprob prob, int control, const char* value)>
-//     XPRSsetstrcontrol = nullptr;
-// std::function<int(XPRSprob prob, int control, XPRSint64* p_value)>
-//     XPRSgetintcontrol64 = nullptr;
-// std::function<int(XPRSprob prob, int control, double* p_value)>
-//     XPRSgetdblcontrol = nullptr;
-// std::function<int(XPRSprob prob, int control, char* value, int maxbytes,
-//                   int* p_nbytes)>
-//     XPRSgetstringcontrol = nullptr;
-// std::function<int(XPRSprob prob, const char* probname, int ncols, int nrows,
-//                   const char rowtype[], const double rhs[], const double
-//                   rng[], const double objcoef[], const XPRSint64 start[],
-//                   const int collen[], const int rowind[],
-//                   const double rowcoef[], const double lb[], const double
-//                   ub[])>
-//     XPRSloadlp64 = nullptr;
-// std::function<int(XPRSprob prob, int row, int col, double* p_coef)>
-//     XPRSgetcoef = nullptr;
-// std::function<int(XPRSprob prob, int ncols, const int colind[])> XPRSdelcols
-// =
-//     nullptr;
-// std::function<int(XPRSprob prob, const int rowstat[], const int colstat[])>
-//     XPRSloadbasis = nullptr;
-// std::function<int(XPRSprob prob)> XPRSpostsolve = nullptr;
-// std::function<int(XPRSprob prob, char* errmsg)> XPRSgetlasterror = nullptr;
-// std::function<int(XPRSprob prob, int ncoefs, const int rowind[],
-//                   const int colind[], const double rowcoef[])>
-//     XPRSchgmcoef = nullptr;
-// std::function<int(XPRSprob prob, int nrows, const int rowind[],
-//                   const double rng[])>
-//     XPRSchgrhsrange = nullptr;
-// std::function<int(XPRSprob prob, int nrows, const int rowind[],
-//                   const char rowtype[])>
-//     XPRSchgrowtype = nullptr;
 
 bool LoadXpressFunctions(DynamicLibrary* xpress_dynamic_library) {
   // This was generated with the parse_header_xpress.py script.
@@ -226,29 +187,6 @@ bool LoadXpressFunctions(DynamicLibrary* xpress_dynamic_library) {
   xpress_dynamic_library->GetFunction(&XPRSgetlicerrmsg, "XPRSgetlicerrmsg");
   xpress_dynamic_library->GetFunction(&XPRSlicense, "XPRSlicense");
   xpress_dynamic_library->GetFunction(&XPRSgetversion, "XPRSgetversion");
-
-  /**/
-  // xpress_dynamic_library->GetFunction(&XPRSsetdefaultcontrol,
-  //                                     "XPRSsetdefaultcontrol");
-  // xpress_dynamic_library->GetFunction(&XPRSsetintcontrol64,
-  //                                     "XPRSsetintcontrol64");
-  // xpress_dynamic_library->GetFunction(&XPRSsetstrcontrol,
-  // "XPRSsetstrcontrol");
-  // xpress_dynamic_library->GetFunction(&XPRSgetintcontrol64,
-  //                                     "XPRSgetintcontrol64");
-  // xpress_dynamic_library->GetFunction(&XPRSgetdblcontrol,
-  // "XPRSgetdblcontrol");
-  // xpress_dynamic_library->GetFunction(&XPRSgetstringcontrol,
-  //                                     "XPRSgetstringcontrol");
-  // xpress_dynamic_library->GetFunction(&XPRSloadlp64, "XPRSloadlp64");
-  // xpress_dynamic_library->GetFunction(&XPRSgetcoef, "XPRSgetcoef");
-  // xpress_dynamic_library->GetFunction(&XPRSdelcols, "XPRSdelcols");
-  // xpress_dynamic_library->GetFunction(&XPRSloadbasis, "XPRSloadbasis");
-  // xpress_dynamic_library->GetFunction(&XPRSpostsolve, "XPRSpostsolve");
-  // xpress_dynamic_library->GetFunction(&XPRSgetlasterror, "XPRSgetlasterror");
-  // xpress_dynamic_library->GetFunction(&XPRSchgmcoef, "XPRSchgmcoef");
-  // xpress_dynamic_library->GetFunction(&XPRSchgrhsrange, "XPRSchgrhsrange");
-  // xpress_dynamic_library->GetFunction(&XPRSchgrowtype, "XPRSchgrowtype");
 
   auto notFound = xpress_dynamic_library->FunctionsNotFound();
   if (!notFound.empty()) {

@@ -22,11 +22,9 @@ list(APPEND XPRESS_LOAD
 )
 
 # XPRESS
-#IF( XPRESS )
 	list(APPEND Solver_sources
 		${CMAKE_CURRENT_LIST_DIR}/SolverXpress.cpp
 	)
-#ENDIF( XPRESS )
 
 #Clp - CBc
 IF(COIN_OR)
