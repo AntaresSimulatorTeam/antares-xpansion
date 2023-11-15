@@ -29,4 +29,4 @@ Follow this [link][Doxygen_Code_Documentation] for Doxygen code documentation.
 [windows_vcpkg_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions?query=workflow%3A"Windows%20CI%20(VCPKG)"
 [centos_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/workflows/Centos7%20CI%20(system%20libs)/badge.svg
 [centos_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions?query=workflow%3A"Centos7%20CI%20(system%20libs)"
-[Doxygen_Code_Documentation]: https://antaressimulatorteam.github.io/antares-xpansion/annotated.html"
+[Doxygen_Code_Documentation]: https://antaressimulatorteam.github.io/antares-xpansion/annotated.html
