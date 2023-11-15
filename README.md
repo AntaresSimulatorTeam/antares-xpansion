@@ -11,6 +11,9 @@ The [Antares-Xpansion][xpansion-github] package, works along with RTE's adequacy
 
 Please see the [Antares-Xpansion Documentation][readthedocs] for an introductory tutorial,
 and a full user guide.
+
+For developers: [here][xpansion-doxygen] you can find doxygen code documentation.
+
 Check out the [Antares-Simulator documentation][readthedocs-antares] for more insights on Antares. 
 
 Antares-Xpansion optimizes the investments on new capacities and transmission lines for an Antares study. Typical uses of Antares-Xpansion are for example:
@@ -133,6 +136,7 @@ For build instructions, please visit the [developer guide][developer-guide].
 [antares_xpansion_release_url]: https://github.com/AntaresSimulatorTeam/antares-xpansion/releases
 
 [xpansion-github]: https://github.com/AntaresSimulatorTeam/antares-xpansion
+[xpansion-doxygen]: https://antaressimulatorteam.github.io/antares-xpansion
 [antares-github]: https://github.com/AntaresSimulatorTeam/Antares_Simulator
 [readthedocs]: https://antares-xpansion.readthedocs.io/
 [readthedocs-antares]: https://antares-doc.readthedocs.io/
