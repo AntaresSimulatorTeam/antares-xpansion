@@ -234,7 +234,11 @@ std::string GetXpressVarFromEnvironmentVariables(const char* XPRESS_var) {
            XPRESS_var);
 
 #else
-  xpress_home_from_env = getenv(XPRESS_var);
+  char* path = nullptr;
+  path = getenv(XPRESS_var);
+  if (path) {
+    xpress_home_from_env = path;
+  }
 #endif
   return xpress_home_from_env;
 }
