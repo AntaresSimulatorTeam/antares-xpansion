@@ -8,17 +8,23 @@
 #endif
 #include "LogUtils.h"
 #include "multisolver_interface/SolverFactory.h"
+std::vector<std::string> tmp;
 
-SolverFactory::SolverFactory() {
-  _available_solvers.clear();
-  if ((isXpress_available_ = LoadXpress::XpressIsCorrectlyInstalled())) {
-    _available_solvers.push_back(XPRESS_STR);
-  }
+std::vector<std::string> SolverLoader::GetAvailableSolvers() {
+  if (tmp.empty()) {
+    if (LoadXpress::XpressIsCorrectlyInstalled()) {
+      tmp.push_back(XPRESS_STR);
+    }
 #ifdef COIN_OR
-  _available_solvers.push_back(CLP_STR);
-  _available_solvers.push_back(CBC_STR);
+    tmp.push_back(CLP_STR);
+    tmp.push_back(CBC_STR);
 #endif
+  }
+  return tmp;
 }
+
+SolverFactory::SolverFactory()
+    : _available_solvers(SolverLoader::GetAvailableSolvers()) {}
 
 SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name, const SOLVER_TYPE solver_type) const {

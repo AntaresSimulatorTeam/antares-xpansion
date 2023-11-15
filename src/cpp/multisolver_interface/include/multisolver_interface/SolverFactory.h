@@ -9,6 +9,15 @@ const std::string UNKNOWN_STR("UNKNOWN"), COIN_STR("COIN"), CBC_STR("CBC"),
     CLP_STR("CLP"), XPRESS_STR("XPRESS");
 
 /*!
+ * \class class SolverLoader
+ * \brief Class to check if supported solvers are available
+ */
+class SolverLoader {
+ public:
+  static std::vector<std::string> GetAvailableSolvers();
+};
+
+/*!
  * \class class SolverFactory
  * \brief Class to manage the creation of solvers from the different
  * implementations
@@ -31,9 +40,8 @@ class SolverFactory {
    * @param solver_name : Name of the solver to use
    */
   SolverAbstract::Ptr create_solver(const std::string &solver_name) const;
-  SolverAbstract::Ptr create_solver(
-      const std::string &solver_name,
-      SolverLogManager&log_manager) const;
+  SolverAbstract::Ptr create_solver(const std::string &solver_name,
+                                    SolverLogManager &log_manager) const;
 
   /**
    * @brief Creates and returns to an object solver from the wanted
@@ -44,9 +52,9 @@ class SolverFactory {
    */
   SolverAbstract::Ptr create_solver(const std::string &solver_name,
                                     const SOLVER_TYPE solver_type) const;
-  SolverAbstract::Ptr create_solver(
-      const std::string &solver_name, const SOLVER_TYPE solver_type,
-      SolverLogManager&log_manager) const;
+  SolverAbstract::Ptr create_solver(const std::string &solver_name,
+                                    const SOLVER_TYPE solver_type,
+                                    SolverLogManager &log_manager) const;
 
   /**
    * @brief Copy constructor : Creates and returns to an object solver from the
@@ -63,5 +71,5 @@ class SolverFactory {
    */
   const std::vector<std::string> &get_solvers_list() const;
 
-    bool isXpress_available_ = false;
+  bool isXpress_available_ = false;
 };
