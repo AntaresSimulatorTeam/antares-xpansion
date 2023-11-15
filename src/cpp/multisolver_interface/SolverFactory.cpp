@@ -24,7 +24,10 @@ std::vector<std::string> SolverLoader::GetAvailableSolvers() {
 }
 
 SolverFactory::SolverFactory()
-    : _available_solvers(SolverLoader::GetAvailableSolvers()) {}
+    : _available_solvers(SolverLoader::GetAvailableSolvers()) {
+  isXpress_available_ =
+      std::find(tmp.cbegin(), tmp.cend(), XPRESS_STR) != tmp.cend();
+}
 
 SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name, const SOLVER_TYPE solver_type) const {
