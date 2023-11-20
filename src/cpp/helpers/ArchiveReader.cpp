@@ -15,7 +15,7 @@ ArchiveReader::ArchiveReader(const std::filesystem::path& archivePath)
 ArchiveReader::ArchiveReader() : ArchiveIO() { Create(); }
 void ArchiveReader::Create() {
   std::unique_lock lock(mutex_);
-  mz_zip_reader_create(&pmz_zip_reader_instance_);
+  pmz_zip_reader_instance_ = mz_zip_reader_create();
 }
 
 int32_t ArchiveReader::Open() {

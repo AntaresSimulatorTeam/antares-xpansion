@@ -18,7 +18,7 @@ ArchiveWriter::ArchiveWriter() : ArchiveIO() {
 
 void ArchiveWriter::Create() {
   std::unique_lock lock(mutex_);
-  mz_zip_writer_create(&pmz_zip_writer_instance_);
+  pmz_zip_writer_instance_ = mz_zip_writer_create();
 }
 void ArchiveWriter::InitFileInfo() {
   fileInfo_.compression_method = MZ_COMPRESS_METHOD_DEFLATE;
