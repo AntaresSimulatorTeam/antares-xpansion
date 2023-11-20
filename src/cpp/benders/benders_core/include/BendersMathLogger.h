@@ -3,6 +3,7 @@
 #include <fstream>
 #include <iostream>
 #include <list>
+#include <memory>
 const std::string MATHLOGGERCONTEXT = "Benders";
 
 struct MathLoggerData {
