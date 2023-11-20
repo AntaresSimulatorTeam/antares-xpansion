@@ -36,18 +36,18 @@ class FileAndStdoutLoggerFactory {
 class MathLoggerFactory {
  private:
   MathLoggerDriver math_Logger_driver;
-  MathLoggerFile math_logger_file_;
-  MathLoggerOstream math_Logger_ostream_;
+  std::shared_ptr<MathLoggerFile> math_logger_file_;
+  std::shared_ptr<MathLoggerOstream> math_Logger_ostream_;
 
  public:
   explicit MathLoggerFactory(
       bool console_log, const std::filesystem::path &math_logs_file_path = "") {
     if (math_logs_file_path != "") {
-      math_logger_file_ = MathLoggerFile(math_logs_file_path);
-      math_Logger_driver.add_logger(&math_logger_file_);
+      math_logger_file_ = std::make_shared<MathLoggerFile>(math_logs_file_path);
+      math_Logger_driver.add_logger(math_logger_file_);
     }
     if (console_log) {
-      math_Logger_driver.add_logger(&math_Logger_ostream_);
+      math_Logger_driver.add_logger(math_Logger_ostream_);
     }
   }
   explicit MathLoggerFactory() = default;

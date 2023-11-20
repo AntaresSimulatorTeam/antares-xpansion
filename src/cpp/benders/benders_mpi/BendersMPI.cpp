@@ -95,6 +95,7 @@ void BendersMpi::solve_master_and_create_trace() {
 
   ComputeXCut();
   _logger->log_iteration_candidates(bendersDataToLogData(_data));
+  mathLoggerDriver_->Print(MathLoggerDataFromCurrentIterationData(_data));
 }
 
 /*!
@@ -225,6 +226,7 @@ void BendersMpi::free() {
  */
 void BendersMpi::Run() {
   PreRunInitialization();
+  mathLoggerDriver_->write_header();
   while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
