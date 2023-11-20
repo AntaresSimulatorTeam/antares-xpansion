@@ -2,23 +2,29 @@
 
 #include <iomanip>
 #include <iostream>
+#include <sstream>
 
 #include "LoggerUtils.h"
+std::string Indent(int size) {
+  std::stringstream ss;
+  ss << std::setw(size);
+  return ss.str();
+}
 
 void MathLogger::write_header() {
-  log_destination << std::setw(10) << "ITE";
-  log_destination << std::setw(20) << "LB";
-  log_destination << std::setw(20) << "LEV";
-  log_destination << std::setw(20) << "UB";
-  log_destination << std::setw(20) << "BESTUB";
-  log_destination << std::setw(15) << "GAP";
+  log_destination << Indent(10) << "ITE";
+  log_destination << Indent(20) << "LB";
+  log_destination << Indent(20) << "LEV";
+  log_destination << Indent(20) << "UB";
+  log_destination << Indent(20) << "BESTUB";
+  log_destination << Indent(15) << "GAP";
 
-  log_destination << std::setw(15) << "MINSIMPLEX";
-  log_destination << std::setw(15) << "MAXSIMPLEX";
+  log_destination << Indent(15) << "MINSIMPLEX";
+  log_destination << Indent(15) << "MAXSIMPLEX";
 
-  log_destination << std::setw(15) << "DELETEDCUT";
-  log_destination << std::setw(15) << "TIMEMASTER";
-  log_destination << std::setw(15) << "TIMESLAVES";
+  log_destination << Indent(15) << "DELETEDCUT";
+  log_destination << Indent(15) << "TIMEMASTER";
+  log_destination << Indent(15) << "TIMESLAVES";
 
   log_destination << std::endl;
 }

@@ -31,11 +31,11 @@ class LogDestination {
     return function(*stream_);
   }
 
-  // for std::endl
-  std::ostream& operator<<(const std::_Smanip<std::streamsize>& smanip) {
-    // write obj to stream
-    return (*stream_) << smanip;
-  }
+  //   // for std::endl
+  //   std::ostream& operator<<(const std::_Smanip<std::streamsize>& smanip) {
+  //     // write obj to stream
+  //     return (*stream_) << smanip;
+  //   }
 
   template <class T>
   std::ostream& operator<<(const T& obj);
@@ -46,7 +46,7 @@ class LogDestination {
 template <class T>
 std::ostream& LogDestination::operator<<(const T& obj) {
   // write obj to stream
-  return (*stream_) << T;
+  return (*stream_) << obj;
 }
 struct MathLogger {
   explicit MathLogger(std::ostream* stream) : log_destination(stream) {}
