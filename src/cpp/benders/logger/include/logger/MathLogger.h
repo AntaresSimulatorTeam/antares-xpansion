@@ -6,6 +6,7 @@
 #include <iomanip>
 #include <iostream>
 #include <list>
+const std::string MATHLOGGERCONTEXT = "Benders";
 
 struct MathLoggerData {
   int iteration;
@@ -20,7 +21,6 @@ struct MathLoggerData {
   double time_master;
   double time_subproblems;
   // double alpha;
-  const std::string CONTEXT = "Benders";
 };
 
 class LogDestination {
@@ -53,8 +53,7 @@ std::ostream& LogDestination::operator<<(const T& obj) {
 struct MathLogger {
   explicit MathLogger(std::ostream* stream) : log_destination(stream) {}
   void write_header();
-
-  MathLoggerData data;
+  void Print(const MathLoggerData& data);
   LogDestination log_destination;
 };
 
