@@ -17,7 +17,7 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
                const BENDERSMETHOD& method) {
   // Read options, needed to have options.OUTPUTROOT
   Logger logger;
-  const MathLoggerDriver* math_log_driver = nullptr;
+  std::shared_ptr<MathLoggerDriver> math_log_driver;
 
   try {
     /* code */
@@ -45,7 +45,7 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
       auto math_log_factory = MathLoggerFactory(false, math_logs_file);
 
       logger = logger_factory.get_logger();
-      math_log_driver = &math_log_factory.get_logger();
+      math_log_driver = math_log_factory.get_logger();
       writer = build_json_writer(options.JSON_FILE, options.RESUME);
       if (Benders::StartUp startup;
           startup.StudyAlreadyAchievedCriterion(options, writer, logger))
@@ -54,16 +54,16 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
       logger = build_void_logger();
       writer = build_void_writer();
       auto math_log_factory = MathLoggerFactory();
-      math_log_driver = &math_log_factory.get_logger();
+      math_log_driver = math_log_factory.get_logger();
     }
 
     pBendersBase benders;
     if (method == BENDERSMETHOD::BENDERS) {
       benders = std::make_shared<BendersMpi>(benders_options, logger, writer,
-                                             env, world);
+                                             env, world, math_log_driver);
     } else if (method == BENDERSMETHOD::BENDERSBYBATCH) {
-      benders = std::make_shared<BendersByBatch>(benders_options, logger,
-                                                 writer, env, world);
+      benders = std::make_shared<BendersByBatch>(
+          benders_options, logger, writer, env, world, math_log_driver);
     } else {
       auto err_msg = "Error only benders or benders-by-batch allowed!";
       logger->display_message(err_msg);

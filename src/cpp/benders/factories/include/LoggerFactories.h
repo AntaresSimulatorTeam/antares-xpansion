@@ -51,8 +51,8 @@ class MathLoggerFactory {
     }
   }
   explicit MathLoggerFactory() = default;
-  inline const MathLoggerDriver &get_logger() const {
-    return math_Logger_driver;
+  std::shared_ptr<MathLoggerDriver> get_logger() {
+    return std::make_shared<MathLoggerDriver>(math_Logger_driver);
   }
 };
 #endif  // ANTARESXPANSION_LOGGERFACTORIES_H

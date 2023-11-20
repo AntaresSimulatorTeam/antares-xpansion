@@ -17,9 +17,11 @@
  *  \param options : set of options fixed by the user
  */
 
-BendersSequential::BendersSequential(BendersBaseOptions const &options,
-                                     Logger logger, Writer writer)
-    : BendersBase(options, std::move(logger), std::move(writer)) {}
+BendersSequential::BendersSequential(
+    BendersBaseOptions const &options, Logger logger, Writer writer,
+    std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
+    : BendersBase(options, std::move(logger), std::move(writer),
+                  mathLoggerDriver) {}
 
 void BendersSequential::InitializeProblems() {
   MatchProblemToId();

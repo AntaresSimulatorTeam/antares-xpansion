@@ -8,10 +8,11 @@
 #include "BatchCollection.h"
 #include "RandomBatchShuffler.h"
 #include "glog/logging.h"
-BendersByBatch::BendersByBatch(BendersBaseOptions const &options, Logger logger,
-                               Writer writer, mpi::environment &env,
-                               mpi::communicator &world)
-    : BendersMpi(options, logger, writer, env, world) {}
+BendersByBatch::BendersByBatch(
+    BendersBaseOptions const &options, Logger logger, Writer writer,
+    mpi::environment &env, mpi::communicator &world,
+    std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
+    : BendersMpi(options, logger, writer, env, world, mathLoggerDriver) {}
 
 void BendersByBatch::InitializeProblems() {
   MatchProblemToId();

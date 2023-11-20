@@ -42,9 +42,10 @@ class BendersSequentialDouble : public BendersSequential {
   bool _setDataPreRelaxationCall = false;
   bool _setDataPostRelaxationCall = false;
 
-  explicit BendersSequentialDouble(BendersBaseOptions const &options,
-                                   Logger &logger, Writer writer)
-      : BendersSequential(options, logger, writer){};
+  explicit BendersSequentialDouble(
+      BendersBaseOptions const &options, Logger &logger, Writer writer,
+      std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
+      : BendersSequential(options, logger, writer, mathLoggerDriver){};
 
   void init_data() override {
     BendersBase::init_data();
@@ -131,6 +132,7 @@ class BendersSequentialDouble : public BendersSequential {
 class BendersSequentialTest : public ::testing::Test {
  public:
   Logger logger;
+  std::shared_ptr<MathLoggerDriver> mathLoggerDriver;
   Writer writer;
   const std::filesystem::path data_test_dir = "data_test";
   const std::filesystem::path mps_dir = data_test_dir / "mps";
@@ -196,7 +198,7 @@ class BendersSequentialTest : public ::testing::Test {
       double sep_param) {
     BendersBaseOptions options = init_benders_options(
         master_formulation, max_iter, relaxed_gap, sep_param);
-    return BendersSequentialDouble(options, logger, writer);
+    return BendersSequentialDouble(options, logger, writer, mathLoggerDriver);
   }
 
   std::vector<char> get_nb_units_col_types(

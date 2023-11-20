@@ -13,12 +13,14 @@
 #include "solver_utils.h"
 
 BendersBase::BendersBase(BendersBaseOptions options, Logger logger,
-                         Writer writer)
+                         Writer writer,
+                         std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
     : _options(std::move(options)),
       _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) /
                      (_options.CSV_NAME + ".csv")),
       _logger(std::move(logger)),
-      _writer(std::move(writer)) {}
+      _writer(std::move(writer)),
+      mathLoggerDriver_(mathLoggerDriver) {}
 
 /*!
  *  \brief Initialize set of data used in the loop
