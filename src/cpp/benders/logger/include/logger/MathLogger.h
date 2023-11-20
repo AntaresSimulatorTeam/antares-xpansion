@@ -4,6 +4,8 @@
 #include <filesystem>
 #include <fstream>
 #include <iomanip>
+#include <iostream>
+#include <list>
 
 struct MathLoggerData {
   int iteration;
@@ -62,4 +64,19 @@ class MathLoggerFile : public MathLogger {
 
  private:
   std::ofstream file_stream_;
+};
+
+class MathLoggerOstream : public MathLogger {
+ public:
+  explicit MathLoggerOstream() : MathLogger(&std::cout) {}
+};
+
+class MathLoggerDriver {
+ public:
+  MathLoggerDriver() = default;
+  void write_header();
+  void MathLoggerDriver::add_logger(MathLogger* logger);
+
+ private:
+  std::list<MathLogger*> math_loggers_;
 };

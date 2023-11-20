@@ -1,7 +1,6 @@
 #include "logger/MathLogger.h"
 
 #include <iomanip>
-#include <iostream>
 #include <sstream>
 
 #include "LoggerUtils.h"
@@ -35,5 +34,17 @@ MathLoggerFile::MathLoggerFile(const std::filesystem::path &filename)
   if (file_stream_.fail()) {
     std::cerr << PrefixMessage(LogUtils::LOGLEVEL::ERR, data.CONTEXT)
               << "Invalid file name passed as parameter" << std::endl;
+  }
+}
+
+void MathLoggerDriver::write_header() {
+  for (auto logger : math_loggers_) {
+    logger->write_header();
+  }
+}
+
+void MathLoggerDriver::add_logger(MathLogger* logger) {
+  if (logger) {
+    math_loggers_.push_back(logger);
   }
 }
