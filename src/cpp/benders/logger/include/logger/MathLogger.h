@@ -3,6 +3,7 @@
 
 #include <filesystem>
 #include <fstream>
+#include <iomanip>
 
 struct MathLoggerData {
   int iteration;
@@ -16,23 +17,37 @@ struct MathLoggerData {
   int deletedcut;
   double time_master;
   double time_subproblems;
-  double alpha;
+  // double alpha;
   const std::string CONTEXT = "Benders";
 };
 
 class LogDestination {
  public:
   explicit LogDestination(std::ostream* stream) : stream_(stream) {}
-  template <class T>
-  std::ostream& operator<<(const T& obj) {
+
+  // for std::endl
+  std::ostream& operator<<(std::ostream& (*function)(std::ostream&)) {
     // write obj to stream
-    return (*stream_) << T;
+    return function(*stream_);
   }
+
+  // for std::endl
+  std::ostream& operator<<(const std::_Smanip<std::streamsize>& smanip) {
+    // write obj to stream
+    return (*stream_) << smanip;
+  }
+
+  template <class T>
+  std::ostream& operator<<(const T& obj);
 
  private:
   std::ostream* stream_;
 };
-
+template <class T>
+std::ostream& LogDestination::operator<<(const T& obj) {
+  // write obj to stream
+  return (*stream_) << T;
+}
 struct MathLogger {
   explicit MathLogger(std::ostream* stream) : log_destination(stream) {}
   void write_header();
