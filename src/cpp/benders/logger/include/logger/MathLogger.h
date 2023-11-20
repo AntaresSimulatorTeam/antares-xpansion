@@ -52,6 +52,7 @@ std::ostream& LogDestination::operator<<(const T& obj) {
 }
 struct MathLogger {
   explicit MathLogger(std::ostream* stream) : log_destination(stream) {}
+  explicit MathLogger() : log_destination(&std::cout) {}
   void write_header();
   void Print(const MathLoggerData& data);
   LogDestination log_destination;
@@ -60,6 +61,7 @@ struct MathLogger {
 class MathLoggerFile : public MathLogger {
  public:
   explicit MathLoggerFile(const std::filesystem::path& log_file);
+  using MathLogger::MathLogger;
 
  private:
   std::ofstream file_stream_;

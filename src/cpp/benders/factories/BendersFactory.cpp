@@ -17,6 +17,7 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
                const BENDERSMETHOD& method) {
   // Read options, needed to have options.OUTPUTROOT
   Logger logger;
+  const MathLoggerDriver* math_log_driver = nullptr;
 
   try {
     /* code */
@@ -34,12 +35,17 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
     auto log_reports_name =
         std::filesystem::path(options.OUTPUTROOT) / "reportbenders.txt";
 
+    auto math_logs_file =
+        std::filesystem::path(options.OUTPUTROOT) / "math_log.txt";
+
     Writer writer;
 
     if (world.rank() == 0) {
       auto logger_factory = FileAndStdoutLoggerFactory(log_reports_name);
+      auto math_log_factory = MathLoggerFactory(false, math_logs_file);
 
       logger = logger_factory.get_logger();
+      math_log_driver = &math_log_factory.get_logger();
       writer = build_json_writer(options.JSON_FILE, options.RESUME);
       if (Benders::StartUp startup;
           startup.StudyAlreadyAchievedCriterion(options, writer, logger))
@@ -47,6 +53,8 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
     } else {
       logger = build_void_logger();
       writer = build_void_writer();
+      auto math_log_factory = MathLoggerFactory();
+      math_log_driver = &math_log_factory.get_logger();
     }
 
     pBendersBase benders;

@@ -7,6 +7,7 @@
 #include "ILogger.h"
 #include "SimulationOptions.h"
 #include "logger/Master.h"
+#include "logger/MathLogger.h"
 #include "logger/UserFile.h"
 Logger build_void_logger();
 
@@ -29,7 +30,29 @@ class FileAndStdoutLoggerFactory {
     masterLogger->addLogger(loggerUser);
     logger = masterLogger;
   }
-
   inline Logger get_logger() const { return logger; }
+};
+
+class MathLoggerFactory {
+ private:
+  MathLoggerDriver math_Logger_driver;
+  MathLoggerFile math_logger_file_;
+  MathLoggerOstream math_Logger_ostream_;
+
+ public:
+  explicit MathLoggerFactory(
+      bool console_log, const std::filesystem::path &math_logs_file_path = "") {
+    if (math_logs_file_path != "") {
+      math_logger_file_ = MathLoggerFile(math_logs_file_path);
+      math_Logger_driver.add_logger(&math_logger_file_);
+    }
+    if (console_log) {
+      math_Logger_driver.add_logger(&math_Logger_ostream_);
+    }
+  }
+  explicit MathLoggerFactory() = default;
+  inline const MathLoggerDriver &get_logger() const {
+    return math_Logger_driver;
+  }
 };
 #endif  // ANTARESXPANSION_LOGGERFACTORIES_H
