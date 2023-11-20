@@ -60,7 +60,7 @@ class MathLoggerDriver {
  public:
   MathLoggerDriver() = default;
   void write_header();
-  void MathLoggerDriver::add_logger(std::shared_ptr<MathLogger> logger);
+  void add_logger(std::shared_ptr<MathLogger> logger);
   void Print(const MathLoggerData& data);
 
  private:
