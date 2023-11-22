@@ -775,6 +775,19 @@ void BendersBase::SetSubproblemCost(const double &subproblem_cost) {
   _data.subproblem_cost = subproblem_cost;
 }
 
+/*!
+*	\brief Update maximum and minimum of simplex iterations
+*
+*	\param subproblem_iterations : number of iterations done with the subproblem
+*
+*/
+void BendersBase::BoundSimplexIterations(int subproblem_iterations){
+  
+  _data.max_simplexiter = (_data.max_simplexiter < subproblem_iterations) ? subproblem_iterations : _data.max_simplexiter; 
+  _data.min_simplexiter = (_data.min_simplexiter > subproblem_iterations) ? subproblem_iterations : _data.min_simplexiter; 
+
+}
+
 bool BendersBase::IsResumeMode() const { return _options.RESUME; }
 
 void BendersBase::UpdateMaxNumberIterationResumeMode(

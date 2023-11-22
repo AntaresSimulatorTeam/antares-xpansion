@@ -11,49 +11,50 @@ void MathLogger::write_header() {
   log_destination << Indent(20) << "LB";
   log_destination << Indent(20) << "UB";
   log_destination << Indent(20) << "BESTUB";
-  log_destination << Indent(15) << "GAP";
+  log_destination << Indent(15) << "ABSOLUTE GAP";
+  log_destination << Indent(15) << "RELATIVE GAP";
 
   log_destination << Indent(15) << "MINSIMPLEX";
   log_destination << Indent(15) << "MAXSIMPLEX";
 
-  log_destination << Indent(15) << "DELETEDCUT";
+  // log_destination << Indent(15) << "DELETEDCUT";
   log_destination << Indent(15) << "TIMEMASTER";
   log_destination << Indent(15) << "TIMESLAVES";
 
   log_destination << std::endl;
 }
 
-void MathLogger::Print(const MathLoggerData& data) {
-  log_destination << Indent(10) << data.iteration;
-  if (data.lower_bound == -1e20)
+void MathLogger::Print(const CurrentIterationData& data) {
+  log_destination << Indent(10) << data.it;
+  if (data.lb == -1e20)
     log_destination << Indent(20) << "-INF";
   else
     log_destination << Indent(20) << std::scientific << std::setprecision(10)
-                    << data.lower_bound;
-  if (data.upper_bound == +1e20)
+                    << data.lb;
+  if (data.ub == +1e20)
     log_destination << Indent(20) << "+INF";
   else
     log_destination << Indent(20) << std::scientific << std::setprecision(10)
-                    << data.upper_bound;
-  if (data.best_upper_bound == +1e20)
+                    << data.ub;
+  if (data.best_ub == +1e20)
     log_destination << Indent(20) << "+INF";
   else
     log_destination << Indent(20) << std::scientific << std::setprecision(10)
-                    << data.best_upper_bound;
+                    << data.best_ub;
   log_destination << Indent(15) << std::scientific << std::setprecision(2)
-                  << data.best_upper_bound - data.lower_bound;
+                  << data.best_ub - data.lb;
 
   log_destination << Indent(15) << std::scientific << std::setprecision(2)
-                  << (data.best_upper_bound - data.lower_bound) /
-                         data.best_upper_bound;
+                  << (data.best_ub - data.lb) /
+                         data.best_ub;
 
   log_destination << Indent(15) << data.min_simplexiter;
   log_destination << Indent(15) << data.max_simplexiter;
 
-  log_destination << Indent(15) << data.deletedcut;
-  log_destination << Indent(15) << std::setprecision(2) << data.time_master;
+  // log_destination << Indent(15) << data.deletedcut;
+  log_destination << Indent(15) << std::setprecision(2) << data.timer_master;
   log_destination << Indent(15) << std::setprecision(2)
-                  << data.time_subproblems;
+                  << data.subproblems_walltime;
 
   log_destination << std::endl;
 }

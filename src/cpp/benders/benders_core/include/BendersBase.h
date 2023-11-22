@@ -139,6 +139,8 @@ class BendersBase {
     return cumulative_number_of_subproblem_resolved_before_resume;
   }
 
+  void BoundSimplexIterations(int subproblem_iteration);
+
   SolverLogManager solver_log_manager_;
 
  private:

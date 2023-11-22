@@ -1,6 +1,5 @@
 #pragma once
 
-#include "BendersMathLogger.h"
 #include "ILogger.h"
 #include "SubproblemCut.h"
 #include "Worker.h"
@@ -33,9 +32,9 @@ struct CurrentIterationData {
   StoppingCriterion stopping_criterion;
   bool is_in_initial_relaxation;
   int number_of_subproblem_resolved;
+  int min_simplexiter;
+  int max_simplexiter;
 };
-MathLoggerData MathLoggerDataFromCurrentIterationData(
-    const CurrentIterationData& data);
 /*!
  * \class WorkerMasterData
  * \brief Class use to store trace information during the algorithm run

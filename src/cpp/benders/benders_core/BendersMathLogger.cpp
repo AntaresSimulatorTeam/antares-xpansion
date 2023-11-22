@@ -6,7 +6,7 @@ void MathLoggerDriver::add_logger(std::shared_ptr<MathLogger> logger) {
   }
 }
 
-void MathLoggerDriver::Print(const MathLoggerData& data) {
+void MathLoggerDriver::Print(const CurrentIterationData& data) {
   for (auto logger : math_loggers_) {
     logger->Print(data);
   }

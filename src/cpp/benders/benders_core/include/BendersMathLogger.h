@@ -4,22 +4,9 @@
 #include <iostream>
 #include <list>
 #include <memory>
+#include "BendersStructsDatas.h"
 const std::string MATHLOGGERCONTEXT = "Benders";
 
-struct MathLoggerData {
-  int iteration;
-  double lower_bound;
-  double upper_bound;
-  double best_upper_bound;
-  double optimality_gap;
-  double relative_gap;
-  int max_simplexiter;
-  int min_simplexiter;
-  int deletedcut;
-  double time_master;
-  double time_subproblems;
-  // double alpha;
-};
 
 class LogDestination {
  public:
@@ -52,7 +39,7 @@ struct MathLogger {
   explicit MathLogger(std::ostream* stream) : log_destination(stream) {}
   explicit MathLogger() : log_destination(&std::cout) {}
   void write_header();
-  void Print(const MathLoggerData& data);
+  void Print(const CurrentIterationData& data);
   LogDestination log_destination;
 };
 
@@ -61,7 +48,7 @@ class MathLoggerDriver {
   MathLoggerDriver() = default;
   void write_header();
   void add_logger(std::shared_ptr<MathLogger> logger);
-  void Print(const MathLoggerData& data);
+  void Print(const CurrentIterationData& data);
 
  private:
   std::list<std::shared_ptr<MathLogger>> math_loggers_;

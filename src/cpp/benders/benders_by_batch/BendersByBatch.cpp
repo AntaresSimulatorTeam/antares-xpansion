@@ -230,6 +230,7 @@ void BendersByBatch::BuildCut(
   for (const auto &subproblem_map : gathered_subproblem_map) {
     for (auto &&[_, subproblem_data] : subproblem_map) {
       SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
+      BoundSimplexIterations(subproblem_data.simplex_iter);
     }
   }
   for (const auto &subproblem_map : gathered_subproblem_map) {

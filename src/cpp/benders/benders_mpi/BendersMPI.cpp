@@ -95,7 +95,6 @@ void BendersMpi::solve_master_and_create_trace() {
 
   ComputeXCut();
   _logger->log_iteration_candidates(bendersDataToLogData(_data));
-  mathLoggerDriver_->Print(MathLoggerDataFromCurrentIterationData(_data));
 }
 
 /*!
@@ -155,6 +154,7 @@ void BendersMpi::master_build_cuts(
   for (const auto &subproblem_data_map : gathered_subproblem_map) {
     for (auto &&[_, subproblem_data] : subproblem_data_map) {
       SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
+      BoundSimplexIterations(subproblem_data.simplex_iter);
     }
   }
 
@@ -244,7 +244,10 @@ void BendersMpi::Run() {
       step_4_update_best_solution(_world.rank(), timer_master);
     }
     _data.stop |= _exceptionRaised;
-
+    if(Rank()==rank_0){
+      
+     mathLoggerDriver_->Print(_data);
+    }
     broadcast(_world, _data.is_in_initial_relaxation, rank_0);
     broadcast(_world, _data.stop, rank_0);
     if (_world.rank() == rank_0) {
