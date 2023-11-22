@@ -264,7 +264,8 @@ void BendersByBatch::GetSubproblemCut(
           subproblem_data.var_name_and_subgradient);  // dual pi_s
       auto subpb_cost_under_approx = GetAlpha_i()[ProblemToId(name)];
       *batch_subproblems_costs_contribution_in_gap_per_proc +=
-          subproblem_data.subproblem_cost - subpb_cost_under_approx;
+          std::max(subproblem_data.subproblem_cost - subpb_cost_under_approx,
+                   static_cast<double>(0));
       double cut_value_at_x_cut = subproblem_data.subproblem_cost;
       for (const auto &[candidate_name, x_cut_candidate_value] : _data.x_cut) {
         auto subgradient_at_name =
