@@ -1,6 +1,7 @@
 #include "BendersMathLogger.h"
 
-void MathLoggerDriver::add_logger(std::shared_ptr<MathLogger> logger) {
+void MathLoggerDriver::add_logger(
+    std::shared_ptr<MathLoggerImplementation> logger) {
   if (logger) {
     math_loggers_.push_back(logger);
   }

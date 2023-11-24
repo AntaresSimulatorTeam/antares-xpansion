@@ -138,6 +138,7 @@ void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
     Reduce(GetSubproblemsCpuTime(), cumulative_subproblems_timer_per_iter,
            std::plus<double>(), rank_0);
     SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter);
+    // only rank_0 receive non-emtpy gathered_subproblem_map
     master_build_cuts(gathered_subproblem_map);
   }
 }
@@ -154,6 +155,7 @@ void BendersMpi::master_build_cuts(
   for (const auto &subproblem_data_map : gathered_subproblem_map) {
     for (auto &&[_, subproblem_data] : subproblem_data_map) {
       SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
+      // compute delta_cut >= options.CUT_MASTER_TOL;
       BoundSimplexIterations(subproblem_data.simplex_iter);
     }
   }
@@ -245,10 +247,11 @@ void BendersMpi::Run() {
       step_4_update_best_solution(_world.rank(), timer_master);
     }
     _data.stop |= _exceptionRaised;
-    if(Rank() == rank_0){
-      
-     mathLoggerDriver_->Print(_data);
+
+    if (Rank() == rank_0) {
+      mathLoggerDriver_->Print(_data);
     }
+
     broadcast(_world, _data.is_in_initial_relaxation, rank_0);
     broadcast(_world, _data.stop, rank_0);
     if (_world.rank() == rank_0) {
@@ -281,6 +284,7 @@ void BendersMpi::PreRunInitialization() {
       OpenCsvFile();
     }
   }
+  mathLoggerDriver_->write_header();
 }
 void BendersMpi::launch() {
   build_input_map();

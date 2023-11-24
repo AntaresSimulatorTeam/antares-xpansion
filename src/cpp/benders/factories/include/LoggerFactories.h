@@ -4,6 +4,7 @@
 
 #include <filesystem>
 
+#include "BendersFactory.h"
 #include "ILogger.h"
 #include "SimulationOptions.h"
 #include "logger/Master.h"
@@ -36,23 +37,25 @@ class FileAndStdoutLoggerFactory {
 class MathLoggerFactory {
  private:
   MathLoggerDriver math_Logger_driver;
-  std::shared_ptr<MathLoggerFile> math_logger_file_;
-  std::shared_ptr<MathLoggerOstream> math_Logger_ostream_;
 
  public:
   explicit MathLoggerFactory(
-      bool console_log, const std::filesystem::path &math_logs_file_path = "") {
+      const BENDERSMETHOD &method, bool console_log,
+      const std::filesystem::path &math_logs_file_path = "") {
     if (math_logs_file_path != "") {
-      math_logger_file_ = std::make_shared<MathLoggerFile>(math_logs_file_path);
-      math_Logger_driver.add_logger(math_logger_file_);
-    }
-    if (console_log) {
-      math_Logger_driver.add_logger(math_Logger_ostream_);
-    }
+      auto math_logger_file =
+          std::make_shared<MathLoggerFile>(method, math_logs_file_path);
+      math_Logger_driver.add_logger(math_logger_file);
+
+      if (console_log) {
+        auto math_Logger_ostream = std::make_shared<MathLoggerOstream>(method);
+
+        math_Logger_driver.add_logger(math_Logger_ostream);
+      }
   }
   explicit MathLoggerFactory() = default;
   std::shared_ptr<MathLoggerDriver> get_logger() {
     return std::make_shared<MathLoggerDriver>(math_Logger_driver);
   }
-};
+  };
 #endif  // ANTARESXPANSION_LOGGERFACTORIES_H

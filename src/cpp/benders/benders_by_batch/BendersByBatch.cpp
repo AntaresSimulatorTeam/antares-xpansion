@@ -125,6 +125,7 @@ void BendersByBatch::MasterLoop() {
     _logger->LogSubproblemsSolvingCumulativeCpuTime(
         GetSubproblemsCumulativeCpuTime());
     _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
+    mathLoggerDriver_->Print(_data);
     _logger->display_message(
         "\\________________________________________________________________"
         "________");
@@ -136,6 +137,7 @@ void BendersByBatch::SeparationLoop() {
   batch_counter_ = 0;
   while (misprice_ && batch_counter_ < number_of_batch_) {
     _data.it++;
+    ResetSimplexIterationsBounds();
 
     _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
     ComputeXCut();
@@ -143,6 +145,7 @@ void BendersByBatch::SeparationLoop() {
     BroadcastXCut();
     UpdateRemainingEpsilon();
     SolveBatches();
+
     if (Rank() == rank_0) {
       UpdateTrace();
       SaveCurrentBendersData();

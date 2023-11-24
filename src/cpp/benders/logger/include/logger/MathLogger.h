@@ -3,16 +3,18 @@
 #include <filesystem>
 
 #include "BendersMathLogger.h"
-class MathLoggerFile : public MathLogger {
+#include "LoggerUtils.h"
+
+class MathLoggerFile : public MathLoggerImplementation {
  public:
-  explicit MathLoggerFile(const std::filesystem::path& log_file);
-  using MathLogger::MathLogger;
+  explicit MathLoggerFile(const BENDERSMETHOD& method,
+                          const std::filesystem::path& log_file);
 
  private:
   std::ofstream file_stream_;
 };
-
-class MathLoggerOstream : public MathLogger {
+class MathLoggerOstream : public MathLoggerImplementation {
  public:
-  explicit MathLoggerOstream() : MathLogger(&std::cout) {}
+  explicit MathLoggerOstream(const BENDERSMETHOD& method)
+      : MathLoggerImplementation(method, &std::cout) {}
 };
