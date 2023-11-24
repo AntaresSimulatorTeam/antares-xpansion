@@ -19,6 +19,7 @@ void MathLoggerBase::setHeadersList() {
 }
 
 void MathLogger::write_header() {
+  setHeadersList();
   for (const auto& header : headers) {
     log_destination << header;
   }
