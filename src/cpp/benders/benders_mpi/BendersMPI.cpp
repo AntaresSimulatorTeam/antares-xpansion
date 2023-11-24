@@ -230,6 +230,7 @@ void BendersMpi::Run() {
   while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
+    ResetSimplexIterationsBounds();
 
     /*Solve Master problem, get optimal value and cost and send it to process*/
     step_1_solve_master();
@@ -244,7 +245,7 @@ void BendersMpi::Run() {
       step_4_update_best_solution(_world.rank(), timer_master);
     }
     _data.stop |= _exceptionRaised;
-    if(Rank()==rank_0){
+    if(Rank() == rank_0){
       
      mathLoggerDriver_->Print(_data);
     }

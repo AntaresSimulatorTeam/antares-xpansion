@@ -140,6 +140,7 @@ class BendersBase {
   }
 
   void BoundSimplexIterations(int subproblem_iteration);
+  void ResetSimplexIterationsBounds();
 
   SolverLogManager solver_log_manager_;
 

@@ -17,7 +17,6 @@ void MathLogger::write_header() {
   log_destination << Indent(15) << "MINSIMPLEX";
   log_destination << Indent(15) << "MAXSIMPLEX";
 
-  // log_destination << Indent(15) << "DELETEDCUT";
   log_destination << Indent(15) << "TIMEMASTER";
   log_destination << Indent(15) << "TIMESLAVES";
 

@@ -788,6 +788,11 @@ void BendersBase::BoundSimplexIterations(int subproblem_iterations){
 
 }
 
+void BendersBase::ResetSimplexIterationsBounds()
+{
+	_data.max_simplexiter = 0;
+	_data.min_simplexiter = std::numeric_limits<int>::max();
+}
 bool BendersBase::IsResumeMode() const { return _options.RESUME; }
 
 void BendersBase::UpdateMaxNumberIterationResumeMode(
