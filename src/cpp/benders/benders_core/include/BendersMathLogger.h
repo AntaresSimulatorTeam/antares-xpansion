@@ -54,12 +54,12 @@ std::ostream& LogDestination::operator<<(const T& obj) {
 }
 
 struct MathLogger {
-  explicit MathLogger(std::ostream* stream) : log_destination(stream) {}
-  explicit MathLogger() : log_destination(&std::cout) {}
+  explicit MathLogger(std::ostream* stream) : log_destination_(stream) {}
+  explicit MathLogger() : log_destination_(&std::cout) {}
   void write_header();
   virtual void Print(const CurrentIterationData& data) = 0;
   virtual std::list<std::string> Headers() const { return headers_; }
-  LogDestination log_destination;
+  virtual LogDestination& TheLogDestination() { return log_destination_; }
   virtual void setHeadersList() = 0;
 
  protected:
@@ -67,6 +67,7 @@ struct MathLogger {
 
  private:
   std::list<std::string> headers_;
+  LogDestination log_destination_;
 };
 
 struct MathLoggerBase : public MathLogger {
@@ -109,6 +110,9 @@ class MathLoggerImplementation : public MathLogger {
   void setHeadersList() override { implementation_->setHeadersList(); }
   std::list<std::string> Headers() const override {
     return implementation_->Headers();
+  }
+  virtual LogDestination& TheLogDestination() {
+    return implementation_->TheLogDestination();
   }
 
  private:
