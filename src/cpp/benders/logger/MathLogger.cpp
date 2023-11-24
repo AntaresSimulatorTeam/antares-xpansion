@@ -4,23 +4,19 @@
 #include <sstream>
 
 void MathLoggerBase::setHeadersList() {
-  headers.clear();
-  headers = {ITE,
-             LB,
-             UB,
-             BESTUB,
-             ABSOLUTE_GAP,
-             RELATIVE_GAP,
-             MINSIMPLEX,
-             MAXSIMPLEX,
-             TIMEMASTER,
-             SUB_PROBLEMS_TIME_CPU,
-             SUB_PROBLEMS_TIME_WALL};
+  MathLogger::setHeadersList({ITE, LB, UB, BESTUB, ABSOLUTE_GAP, RELATIVE_GAP,
+                              MINSIMPLEX, MAXSIMPLEX, TIMEMASTER,
+                              SUB_PROBLEMS_TIME_CPU, SUB_PROBLEMS_TIME_WALL});
+}
+
+void MathLogger::setHeadersList(const std::list<std::string>& headers) {
+  headers_.clear();
+  headers_ = headers;
 }
 
 void MathLogger::write_header() {
   setHeadersList();
-  for (const auto& header : headers) {
+  for (const auto& header : Headers()) {
     log_destination << header;
   }
   log_destination << std::endl;
@@ -62,15 +58,9 @@ void MathLoggerBase::Print(const CurrentIterationData& data) {
 }
 
 void MathLoggerBendersByBatch::setHeadersList() {
-  headers.clear();
-  headers = {ITE,
-             LB,
-             MINSIMPLEX,
-             MAXSIMPLEX,
-             TIMEMASTER,
-             SUB_PROBLEMS_TIME_CPU,
-             SUB_PROBLEMS_TIME_WALL,
-             TIME_NOT_DOING_MASTER_OR_SUB_PROBLEMS_WALL};
+  MathLogger::setHeadersList({ITE, LB, MINSIMPLEX, MAXSIMPLEX, TIMEMASTER,
+                              SUB_PROBLEMS_TIME_CPU, SUB_PROBLEMS_TIME_WALL,
+                              TIME_NOT_DOING_MASTER_OR_SUB_PROBLEMS_WALL});
 }
 
 void MathLoggerBendersByBatch::Print(const CurrentIterationData& data) {

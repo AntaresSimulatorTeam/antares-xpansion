@@ -58,21 +58,28 @@ struct MathLogger {
   explicit MathLogger() : log_destination(&std::cout) {}
   void write_header();
   virtual void Print(const CurrentIterationData& data) = 0;
+  virtual std::list<std::string> Headers() const { return headers_; }
+  LogDestination log_destination;
   virtual void setHeadersList() = 0;
 
-  LogDestination log_destination;
-  std::list<std::string> headers;
+ protected:
+  void setHeadersList(const std::list<std::string>& headers);
+
+ private:
+  std::list<std::string> headers_;
 };
 
 struct MathLoggerBase : public MathLogger {
   using MathLogger::MathLogger;
   void Print(const CurrentIterationData& data) override;
+
   void setHeadersList() override;
 };
 
 struct MathLoggerBendersByBatch : public MathLogger {
   using MathLogger::MathLogger;
   void Print(const CurrentIterationData& data) override;
+
   void setHeadersList() override;
 };
 
@@ -97,7 +104,12 @@ class MathLoggerImplementation : public MathLogger {
   }
 
   void Print(const CurrentIterationData& data) { implementation_->Print(data); }
+
+ protected:
   void setHeadersList() override { implementation_->setHeadersList(); }
+  std::list<std::string> Headers() const override {
+    return implementation_->Headers();
+  }
 
  private:
   std::shared_ptr<MathLogger> implementation_;
