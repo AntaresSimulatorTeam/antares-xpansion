@@ -46,6 +46,7 @@ class MathLoggerFactory {
       auto math_logger_file =
           std::make_shared<MathLoggerFile>(method, math_logs_file_path);
       math_Logger_driver.add_logger(math_logger_file);
+    }
 
       if (console_log) {
         auto math_Logger_ostream = std::make_shared<MathLoggerOstream>(method);
