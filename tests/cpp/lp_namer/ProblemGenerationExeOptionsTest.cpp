@@ -98,9 +98,9 @@ TEST_F(ProblemGenerationExeOptionsTest,
 
   const char argv0[] = "lp.exe ";
   const char argv1[] = "--archive";
-  auto argv2 = archive;
+  const auto& argv2 = archive;
 
-  std::vector<const char*> ppargv = {argv0, argv1, argv2.c_str()};
+  std::vector<const char*> ppargv{argv0, argv1, argv2.c_str()};
   problem_generation_options_parser_.Parse(3, ppargv.data());
 
   ProblemGenerationSpyAndMock pbg(problem_generation_options_parser_);
