@@ -1,16 +1,12 @@
 Antares-Xpansion changelog
 =================
-v1.1.2 (12/2023)
---------------------
-
-- Fix gap contribution bug #722
-
-v1.1.1 (09/2023)
+v1.1.1 (12/2023)
 --------------------
 
 ### Fix
 
 - Update performance graph in the documentation
+- Fix gap contribution bug #722
 
 v1.1.0 (09/2023)
 --------------------
