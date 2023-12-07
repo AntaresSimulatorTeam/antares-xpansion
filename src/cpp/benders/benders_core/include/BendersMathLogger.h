@@ -44,7 +44,7 @@ class LogDestination {
 template <class T>
 std::ostream& LogDestination::operator<<(const T& obj) {
   // write obj to stream
-  return (*stream_) << obj;
+  return (*stream_) << std::left << obj;
 }
 
 struct MathLoggerBehaviour {
