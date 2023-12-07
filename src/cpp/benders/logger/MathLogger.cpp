@@ -21,39 +21,34 @@ void MathLogger::setHeadersList(const std::list<std::string>& headers) {
 }
 
 void MathLoggerBase::Print(const CurrentIterationData& data) {
-  LogsDestination() << std::setw(10) << data.it;
+  LogsDestination() << data.it;
   if (data.lb == -1e20)
-    LogsDestination() << std::setw(20) << "-INF";
+    LogsDestination() << "-INF";
   else
-    LogsDestination() << std::setw(20) << std::scientific
-                      << std::setprecision(10) << data.lb;
+    LogsDestination() << std::scientific << std::setprecision(10) << data.lb;
   if (data.ub == +1e20)
-    LogsDestination() << std::setw(20) << "+INF";
+    LogsDestination() << "+INF";
   else
-    LogsDestination() << std::setw(20) << std::scientific
-                      << std::setprecision(10) << data.ub;
+    LogsDestination() << std::scientific << std::setprecision(10) << data.ub;
   if (data.best_ub == +1e20)
-    LogsDestination() << std::setw(20) << "+INF";
+    LogsDestination() << "+INF";
   else
-    LogsDestination() << std::setw(20) << std::scientific
-                      << std::setprecision(10) << data.best_ub;
-  LogsDestination() << std::setw(15) << std::scientific << std::setprecision(2)
+    LogsDestination() << std::scientific << std::setprecision(10)
+                      << data.best_ub;
+  LogsDestination() << std::scientific << std::setprecision(2)
                     << data.best_ub - data.lb;
 
-  LogsDestination() << std::setw(15) << std::scientific << std::setprecision(2)
+  LogsDestination() << std::scientific << std::setprecision(2)
                     << (data.best_ub - data.lb) / data.best_ub;
 
-  LogsDestination() << std::setw(15) << data.min_simplexiter;
-  LogsDestination() << std::setw(15) << data.max_simplexiter;
+  LogsDestination() << data.min_simplexiter;
+  LogsDestination() << data.max_simplexiter;
 
-  // LogsDestination() << std::setw(15) << data.deletedcut;
-  LogsDestination() << std::setw(15) << std::setprecision(2)
-                    << data.timer_master;
-  LogsDestination() << std::setw(15) << std::setprecision(2)
-                    << data.subproblems_cputime;
-  LogsDestination() << std::setw(15) << std::setprecision(2)
-                    << data.subproblems_walltime;
-  LogsDestination() << std::setw(15) << std::setprecision(2)
+  // LogsDestination()  << data.deletedcut;
+  LogsDestination() << std::setprecision(2) << data.timer_master;
+  LogsDestination() << std::setprecision(2) << data.subproblems_cputime;
+  LogsDestination() << std::setprecision(2) << data.subproblems_walltime;
+  LogsDestination() << std::setprecision(2)
                     << getDurationNotDoingMasterOrSubproblems(
                            data.elapsed_time, data.timer_master,
                            data.subproblems_walltime);
@@ -68,24 +63,21 @@ void MathLoggerBendersByBatch::setHeadersList() {
 }
 
 void MathLoggerBendersByBatch::Print(const CurrentIterationData& data) {
-  LogsDestination() << std::setw(10) << data.it;
+  LogsDestination() << data.it;
   if (data.lb == -1e20)
-    LogsDestination() << std::setw(20) << "-INF";
+    LogsDestination() << "-INF";
   else
-    LogsDestination() << std::setw(20) << std::scientific
-                      << std::setprecision(10) << data.lb;
+    LogsDestination() << std::scientific << std::setprecision(10) << data.lb;
 
-  LogsDestination() << std::setw(15) << data.min_simplexiter;
-  LogsDestination() << std::setw(15) << data.max_simplexiter;
+  LogsDestination() << data.min_simplexiter;
+  LogsDestination() << data.max_simplexiter;
 
-  // LogsDestination() << std::setw(15) << data.deletedcut;
-  LogsDestination() << std::setw(15) << std::setprecision(2)
-                    << data.timer_master;
-  LogsDestination() << std::setw(15) << std::setprecision(2)
+  // LogsDestination()  << data.deletedcut;
+  LogsDestination() << std::setprecision(2) << data.timer_master;
+  LogsDestination() << std::setprecision(2)
                     << data.subproblems_cumulative_cputime;
-  LogsDestination() << std::setw(15) << std::setprecision(2)
-                    << data.subproblems_walltime;
-  LogsDestination() << std::setw(15) << std::setprecision(2)
+  LogsDestination() << std::setprecision(2) << data.subproblems_walltime;
+  LogsDestination() << std::setprecision(2)
                     << getDurationNotDoingMasterOrSubproblems(
                            data.elapsed_time, data.timer_master,
                            data.subproblems_walltime);

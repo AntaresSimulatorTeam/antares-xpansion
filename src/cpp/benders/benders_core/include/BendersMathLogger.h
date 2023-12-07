@@ -10,21 +10,19 @@
 const std::string MATHLOGGERCONTEXT = "Benders";
 
 inline std::string Indent(int size) { return std::string(size, ' '); }
-const std::string ITERATION = Indent(10) + "ITERATION";
-const std::string LB = Indent(20) + "LB";
-const std::string UB = Indent(20) + "UB";
-const std::string BESTUB = Indent(20) + "BESTUB";
-const std::string ABSOLUTE_GAP = Indent(15) + "ABSOLUTE GAP";
-const std::string RELATIVE_GAP = Indent(15) + "RELATIVE GAP";
-const std::string MINSIMPLEX = Indent(15) + "MINSIMPLEX";
-const std::string MAXSIMPLEX = Indent(15) + "MAXSIMPLEX";
-const std::string TIMEMASTER = Indent(15) + "TIMEMASTER";
-const std::string SUB_PROBLEMS_TIME_CPU =
-    Indent(15) + "SUB-PROBLEMS TIME (CPU)";
-const std::string SUB_PROBLEMS_TIME_WALL =
-    Indent(15) + "SUB-PROBLEMS TIME (WALL)";
+const std::string ITERATION = "ITERATION";
+const std::string LB = "LB";
+const std::string UB = "UB";
+const std::string BESTUB = "BESTUB";
+const std::string ABSOLUTE_GAP = "ABSOLUTE GAP";
+const std::string RELATIVE_GAP = "RELATIVE GAP";
+const std::string MINSIMPLEX = "MINSIMPLEX";
+const std::string MAXSIMPLEX = "MAXSIMPLEX";
+const std::string TIMEMASTER = "TIMEMASTER";
+const std::string SUB_PROBLEMS_TIME_CPU = "SUB-PROBLEMS TIME (CPU)";
+const std::string SUB_PROBLEMS_TIME_WALL = "SUB-PROBLEMS TIME (WALL)";
 const std::string TIME_NOT_DOING_MASTER_OR_SUB_PROBLEMS_WALL =
-    Indent(15) + "TIME NOT DOING MASTER OR SUB-PROBLEMS (WALL)";
+    "TIME NOT DOING MASTER OR SUB-PROBLEMS (WALL)";
 class LogDestination {
  public:
   explicit LogDestination(std::ostream* stream) : stream_(stream) {}
@@ -44,7 +42,7 @@ class LogDestination {
 template <class T>
 std::ostream& LogDestination::operator<<(const T& obj) {
   // write obj to stream
-  return (*stream_) << std::left << obj;
+  return (*stream_) << std::left << std::setw(50) << obj;
 }
 
 struct MathLoggerBehaviour {
