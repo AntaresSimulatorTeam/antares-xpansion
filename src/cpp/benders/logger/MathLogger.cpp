@@ -4,8 +4,8 @@
 #include <sstream>
 
 void MathLoggerBase::setHeadersList() {
-  MathLogger::setHeadersList({ITE, LB, UB, BESTUB, ABSOLUTE_GAP, RELATIVE_GAP,
-                              MINSIMPLEX, MAXSIMPLEX, TIMEMASTER,
+  MathLogger::setHeadersList({ITERATION, LB, UB, BESTUB, ABSOLUTE_GAP,
+                              RELATIVE_GAP, MINSIMPLEX, MAXSIMPLEX, TIMEMASTER,
                               SUB_PROBLEMS_TIME_CPU, SUB_PROBLEMS_TIME_WALL});
 }
 
@@ -51,7 +51,7 @@ void MathLoggerBase::Print(const CurrentIterationData& data) {
 }
 
 void MathLoggerBendersByBatch::setHeadersList() {
-  MathLogger::setHeadersList({ITE, LB, MINSIMPLEX, MAXSIMPLEX, TIMEMASTER,
+  MathLogger::setHeadersList({ITERATION, LB, MINSIMPLEX, MAXSIMPLEX, TIMEMASTER,
                               SUB_PROBLEMS_TIME_CPU, SUB_PROBLEMS_TIME_WALL,
                               TIME_NOT_DOING_MASTER_OR_SUB_PROBLEMS_WALL});
 }

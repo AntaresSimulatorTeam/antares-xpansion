@@ -10,7 +10,7 @@
 const std::string MATHLOGGERCONTEXT = "Benders";
 
 inline std::string Indent(int size) { return std::string(size, ' '); }
-const std::string ITE = Indent(10) + "ITE";
+const std::string ITERATION = Indent(10) + "ITERATION";
 const std::string LB = Indent(20) + "LB";
 const std::string UB = Indent(20) + "UB";
 const std::string BESTUB = Indent(20) + "BESTUB";
