@@ -35,12 +35,6 @@ class LogDestination {
     return function(*stream_);
   }
 
-  //   // for std::endl
-  //   std::ostream& operator<<(const std::_Smanip<std::streamsize>& smanip) {
-  //     // write obj to stream
-  //     return (*stream_) << smanip;
-  //   }
-
   template <class T>
   std::ostream& operator<<(const T& obj);
 
@@ -53,13 +47,26 @@ std::ostream& LogDestination::operator<<(const T& obj) {
   return (*stream_) << obj;
 }
 
-struct MathLogger {
+struct MathLoggerBehaviour {
+  void write_header() {
+    setHeadersList();
+    for (const auto& header : Headers()) {
+      LogsDestination() << header;
+    }
+    LogsDestination() << std::endl;
+  }
+  virtual void Print(const CurrentIterationData& data) = 0;
+  virtual std::list<std::string> Headers() const = 0;
+  virtual LogDestination& LogsDestination() = 0;
+  virtual void setHeadersList() = 0;
+};
+
+struct MathLogger : public MathLoggerBehaviour {
   explicit MathLogger(std::ostream* stream) : log_destination_(stream) {}
   explicit MathLogger() : log_destination_(&std::cout) {}
-  void write_header();
   virtual void Print(const CurrentIterationData& data) = 0;
-  virtual std::list<std::string> Headers() const { return headers_; }
-  virtual LogDestination& TheLogDestination() { return log_destination_; }
+  std::list<std::string> Headers() const override { return headers_; }
+  virtual LogDestination& LogsDestination() { return log_destination_; }
   virtual void setHeadersList() = 0;
 
  protected:
@@ -84,7 +91,7 @@ struct MathLoggerBendersByBatch : public MathLogger {
   void setHeadersList() override;
 };
 
-class MathLoggerImplementation : public MathLogger {
+class MathLoggerImplementation : public MathLoggerBehaviour {
  public:
   explicit MathLoggerImplementation(const BENDERSMETHOD& method,
                                     std::ostream* stream) {
@@ -111,8 +118,8 @@ class MathLoggerImplementation : public MathLogger {
   std::list<std::string> Headers() const override {
     return implementation_->Headers();
   }
-  virtual LogDestination& TheLogDestination() {
-    return implementation_->TheLogDestination();
+  virtual LogDestination& LogsDestination() {
+    return implementation_->LogsDestination();
   }
 
  private:

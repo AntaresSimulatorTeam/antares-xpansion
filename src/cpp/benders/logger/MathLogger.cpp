@@ -14,48 +14,40 @@ void MathLogger::setHeadersList(const std::list<std::string>& headers) {
   headers_ = headers;
 }
 
-void MathLogger::write_header() {
-  setHeadersList();
-  for (const auto& header : Headers()) {
-    TheLogDestination() << header;
-  }
-  TheLogDestination() << std::endl;
-}
 void MathLoggerBase::Print(const CurrentIterationData& data) {
-  TheLogDestination() << Indent(10) << data.it;
+  LogsDestination() << Indent(10) << data.it;
   if (data.lb == -1e20)
-    TheLogDestination() << Indent(20) << "-INF";
+    LogsDestination() << Indent(20) << "-INF";
   else
-    TheLogDestination() << Indent(20) << std::scientific
-                        << std::setprecision(10) << data.lb;
+    LogsDestination() << Indent(20) << std::scientific << std::setprecision(10)
+                      << data.lb;
   if (data.ub == +1e20)
-    TheLogDestination() << Indent(20) << "+INF";
+    LogsDestination() << Indent(20) << "+INF";
   else
-    TheLogDestination() << Indent(20) << std::scientific
-                        << std::setprecision(10) << data.ub;
+    LogsDestination() << Indent(20) << std::scientific << std::setprecision(10)
+                      << data.ub;
   if (data.best_ub == +1e20)
-    TheLogDestination() << Indent(20) << "+INF";
+    LogsDestination() << Indent(20) << "+INF";
   else
-    TheLogDestination() << Indent(20) << std::scientific
-                        << std::setprecision(10) << data.best_ub;
-  TheLogDestination() << Indent(15) << std::scientific << std::setprecision(2)
-                      << data.best_ub - data.lb;
+    LogsDestination() << Indent(20) << std::scientific << std::setprecision(10)
+                      << data.best_ub;
+  LogsDestination() << Indent(15) << std::scientific << std::setprecision(2)
+                    << data.best_ub - data.lb;
 
-  TheLogDestination() << Indent(15) << std::scientific << std::setprecision(2)
-                      << (data.best_ub - data.lb) / data.best_ub;
+  LogsDestination() << Indent(15) << std::scientific << std::setprecision(2)
+                    << (data.best_ub - data.lb) / data.best_ub;
 
-  TheLogDestination() << Indent(15) << data.min_simplexiter;
-  TheLogDestination() << Indent(15) << data.max_simplexiter;
+  LogsDestination() << Indent(15) << data.min_simplexiter;
+  LogsDestination() << Indent(15) << data.max_simplexiter;
 
-  // TheLogDestination() << Indent(15) << data.deletedcut;
-  TheLogDestination() << Indent(15) << std::setprecision(2)
-                      << data.timer_master;
-  TheLogDestination() << Indent(15) << std::setprecision(2)
-                      << data.subproblems_cputime;
-  TheLogDestination() << Indent(15) << std::setprecision(2)
-                      << data.subproblems_walltime;
+  // LogsDestination() << Indent(15) << data.deletedcut;
+  LogsDestination() << Indent(15) << std::setprecision(2) << data.timer_master;
+  LogsDestination() << Indent(15) << std::setprecision(2)
+                    << data.subproblems_cputime;
+  LogsDestination() << Indent(15) << std::setprecision(2)
+                    << data.subproblems_walltime;
 
-  TheLogDestination() << std::endl;
+  LogsDestination() << std::endl;
 }
 
 void MathLoggerBendersByBatch::setHeadersList() {
@@ -65,25 +57,24 @@ void MathLoggerBendersByBatch::setHeadersList() {
 }
 
 void MathLoggerBendersByBatch::Print(const CurrentIterationData& data) {
-  TheLogDestination() << Indent(10) << data.it;
+  LogsDestination() << Indent(10) << data.it;
   if (data.lb == -1e20)
-    TheLogDestination() << Indent(20) << "-INF";
+    LogsDestination() << Indent(20) << "-INF";
   else
-    TheLogDestination() << Indent(20) << std::scientific
-                        << std::setprecision(10) << data.lb;
+    LogsDestination() << Indent(20) << std::scientific << std::setprecision(10)
+                      << data.lb;
 
-  TheLogDestination() << Indent(15) << data.min_simplexiter;
-  TheLogDestination() << Indent(15) << data.max_simplexiter;
+  LogsDestination() << Indent(15) << data.min_simplexiter;
+  LogsDestination() << Indent(15) << data.max_simplexiter;
 
-  // TheLogDestination() << Indent(15) << data.deletedcut;
-  TheLogDestination() << Indent(15) << std::setprecision(2)
-                      << data.timer_master;
-  TheLogDestination() << Indent(15) << std::setprecision(2)
-                      << data.subproblems_cumulative_cputime;
-  TheLogDestination() << Indent(15) << std::setprecision(2)
-                      << data.subproblems_walltime;
+  // LogsDestination() << Indent(15) << data.deletedcut;
+  LogsDestination() << Indent(15) << std::setprecision(2) << data.timer_master;
+  LogsDestination() << Indent(15) << std::setprecision(2)
+                    << data.subproblems_cumulative_cputime;
+  LogsDestination() << Indent(15) << std::setprecision(2)
+                    << data.subproblems_walltime;
 
-  TheLogDestination() << std::endl;
+  LogsDestination() << std::endl;
 }
 
 MathLoggerFile::MathLoggerFile(const BENDERSMETHOD& method,

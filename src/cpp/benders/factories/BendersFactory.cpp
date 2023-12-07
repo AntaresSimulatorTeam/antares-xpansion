@@ -36,7 +36,7 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
         std::filesystem::path(options.OUTPUTROOT) / "reportbenders.txt";
 
     auto math_logs_file =
-        std::filesystem::path(options.OUTPUTROOT) / "math_log.txt";
+        std::filesystem::path(options.OUTPUTROOT) / "benders_solver.log";
 
     Writer writer;
 
