@@ -113,7 +113,6 @@ void BendersByBatch::MasterLoop() {
               random_batch_permutation_.size(), rank_0);
     SeparationLoop();
     if (Rank() == rank_0) {
-      _data.elapsed_time = GetBendersTime();
       _data.stop = ShouldBendersStop();
     }
     BroadCast(_data.stop, rank_0);
@@ -125,10 +124,11 @@ void BendersByBatch::MasterLoop() {
     _logger->LogSubproblemsSolvingCumulativeCpuTime(
         GetSubproblemsCumulativeCpuTime());
     _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
-    mathLoggerDriver_->Print(_data);
     _logger->display_message(
         "\\________________________________________________________________"
         "________");
+    _data.elapsed_time = GetBendersTime();
+    mathLoggerDriver_->Print(_data);
   }
 }
 void BendersByBatch::SeparationLoop() {

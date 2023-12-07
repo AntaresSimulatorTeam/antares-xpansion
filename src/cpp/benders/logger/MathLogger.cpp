@@ -9,10 +9,10 @@ double getDurationNotDoingMasterOrSubproblems(double benders, double master,
 }
 
 void MathLoggerBase::setHeadersList() {
-  MathLogger::setHeadersList({ITERATION, LB, UB, BESTUB, ABSOLUTE_GAP,
-                              RELATIVE_GAP, MINSIMPLEX, MAXSIMPLEX, TIMEMASTER,
-                              SUB_PROBLEMS_TIME_CPU, SUB_PROBLEMS_TIME_WALL,
-                              TIME_NOT_DOING_MASTER_OR_SUB_PROBLEMS_WALL});
+  MathLogger::setHeadersList(
+      {ITERATION, LB, UB, BESTUB, ABSOLUTE_GAP, RELATIVE_GAP, MINSIMPLEX,
+       MAXSIMPLEX, BENDERS_TIME, TIMEMASTER, SUB_PROBLEMS_TIME_CPU,
+       SUB_PROBLEMS_TIME_WALL, TIME_NOT_DOING_MASTER_OR_SUB_PROBLEMS_WALL});
 }
 
 void MathLogger::setHeadersList(const std::list<std::string>& headers) {
@@ -45,6 +45,7 @@ void MathLoggerBase::Print(const CurrentIterationData& data) {
   LogsDestination() << data.max_simplexiter;
 
   // LogsDestination()  << data.deletedcut;
+  LogsDestination() << std::setprecision(2) << data.elapsed_time;
   LogsDestination() << std::setprecision(2) << data.timer_master;
   LogsDestination() << std::setprecision(2) << data.subproblems_cputime;
   LogsDestination() << std::setprecision(2) << data.subproblems_walltime;
@@ -57,8 +58,9 @@ void MathLoggerBase::Print(const CurrentIterationData& data) {
 }
 
 void MathLoggerBendersByBatch::setHeadersList() {
-  MathLogger::setHeadersList({ITERATION, LB, MINSIMPLEX, MAXSIMPLEX, TIMEMASTER,
-                              SUB_PROBLEMS_TIME_CPU, SUB_PROBLEMS_TIME_WALL,
+  MathLogger::setHeadersList({ITERATION, LB, MINSIMPLEX, MAXSIMPLEX,
+                              BENDERS_TIME, TIMEMASTER, SUB_PROBLEMS_TIME_CPU,
+                              SUB_PROBLEMS_TIME_WALL,
                               TIME_NOT_DOING_MASTER_OR_SUB_PROBLEMS_WALL});
 }
 
@@ -73,6 +75,7 @@ void MathLoggerBendersByBatch::Print(const CurrentIterationData& data) {
   LogsDestination() << data.max_simplexiter;
 
   // LogsDestination()  << data.deletedcut;
+  LogsDestination() << std::setprecision(2) << data.elapsed_time;
   LogsDestination() << std::setprecision(2) << data.timer_master;
   LogsDestination() << std::setprecision(2)
                     << data.subproblems_cumulative_cputime;

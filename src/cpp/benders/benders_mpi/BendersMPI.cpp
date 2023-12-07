@@ -193,8 +193,7 @@ void BendersMpi::write_exception_message(const std::exception &ex) const {
   _logger->display_message(error);
 }
 
-void BendersMpi::step_4_update_best_solution(int rank,
-                                             const Timer &timer_master) {
+void BendersMpi::step_4_update_best_solution(int rank) {
   if (rank == rank_0) {
     compute_ub();
     update_best_ub();
@@ -202,8 +201,6 @@ void BendersMpi::step_4_update_best_solution(int rank,
 
     UpdateTrace();
 
-    _data.elapsed_time = GetBendersTime();
-    set_timer_master(timer_master.elapsed());
     _data.stop = ShouldBendersStop();
   }
 }
@@ -229,7 +226,6 @@ void BendersMpi::free() {
 void BendersMpi::Run() {
   PreRunInitialization();
   while (!_data.stop) {
-    Timer timer_master;
     ++_data.it;
     ResetSimplexIterationsBounds();
 
@@ -243,17 +239,16 @@ void BendersMpi::Run() {
     }
 
     if (!_exceptionRaised) {
-      step_4_update_best_solution(_world.rank(), timer_master);
+      step_4_update_best_solution(_world.rank());
     }
     _data.stop |= _exceptionRaised;
 
-    if (Rank() == rank_0) {
-      mathLoggerDriver_->Print(_data);
-    }
-
     broadcast(_world, _data.is_in_initial_relaxation, rank_0);
     broadcast(_world, _data.stop, rank_0);
-    if (_world.rank() == rank_0) {
+
+    _data.elapsed_time = GetBendersTime();
+    mathLoggerDriver_->Print(_data);
+    if (Rank() == rank_0) {
       SaveCurrentBendersData();
     }
   }
