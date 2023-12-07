@@ -135,7 +135,7 @@ class BendersBase {
   BendersBaseOptions Options() const { return _options; }
   virtual void UpdateStoppingCriterion();
   virtual bool ShouldRelaxationStop() const;
-  int GetNumOfSubProblemsResolvedBeforeResume() {
+  int GetNumOfSubProblemsSolvedBeforeResume() {
     return cumulative_number_of_subproblem_resolved_before_resume;
   }
 

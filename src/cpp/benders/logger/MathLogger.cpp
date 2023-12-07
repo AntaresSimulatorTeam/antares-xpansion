@@ -59,6 +59,7 @@ void MathLoggerBase::Print(const CurrentIterationData& data) {
 
 void MathLoggerBendersByBatch::setHeadersList() {
   MathLogger::setHeadersList({ITERATION, LB, MINSIMPLEX, MAXSIMPLEX,
+                              CUMULATIVE_NUMBER_OF_SUBPROBLEM_SOLVED,
                               BENDERS_TIME, TIMEMASTER, SUB_PROBLEMS_TIME_CPU,
                               SUB_PROBLEMS_TIME_WALL,
                               TIME_NOT_DOING_MASTER_OR_SUB_PROBLEMS_WALL});
@@ -75,6 +76,7 @@ void MathLoggerBendersByBatch::Print(const CurrentIterationData& data) {
   LogsDestination() << data.max_simplexiter;
 
   // LogsDestination()  << data.deletedcut;
+  LogsDestination() << data.number_of_subproblem_solved;
   LogsDestination() << std::setprecision(2) << data.elapsed_time;
   LogsDestination() << std::setprecision(2) << data.timer_master;
   LogsDestination() << std::setprecision(2)

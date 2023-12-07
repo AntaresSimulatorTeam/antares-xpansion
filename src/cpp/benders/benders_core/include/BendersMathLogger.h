@@ -18,6 +18,8 @@ const std::string ABSOLUTE_GAP = "ABSOLUTE GAP";
 const std::string RELATIVE_GAP = "RELATIVE GAP";
 const std::string MINSIMPLEX = "MINSIMPLEX";
 const std::string MAXSIMPLEX = "MAXSIMPLEX";
+const std::string CUMULATIVE_NUMBER_OF_SUBPROBLEM_SOLVED =
+    "CUMULATIVE NUMBER OF SUBPROBLEMS SOLVED";
 const std::string BENDERS_TIME = "BENDERS TIME";
 const std::string TIMEMASTER = "TIMEMASTER";
 const std::string SUB_PROBLEMS_TIME_CPU = "SUB-PROBLEMS TIME (CPU)";

@@ -31,7 +31,7 @@ struct CurrentIterationData {
   double elapsed_time;
   StoppingCriterion stopping_criterion;
   bool is_in_initial_relaxation;
-  int number_of_subproblem_resolved;
+  int number_of_subproblem_solved;
   int min_simplexiter;
   int max_simplexiter;
 };

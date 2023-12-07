@@ -443,7 +443,7 @@ TEST_F(UserLoggerTest, EndLog) {
 
 TEST_F(UserLoggerTest, CumulativeNumberOfSubProblemResolved) {
   auto number(9150);
-  _logger.cumulative_number_of_sub_problem_resolved(number);
+  _logger.cumulative_number_of_sub_problem_solved(number);
   auto logWithoutPrefix = RemovePrefixFromMessage(_stream);
   std::stringstream expected;
   expected << " " << indent_1
@@ -619,7 +619,7 @@ class SimpleLoggerMock : public ILogger {
   void LogAtInitialRelaxation() { _initialRelaxationCall = true; }
 
   void LogAtSwitchToInteger() { _switchToIntegerCall = true; }
-  void cumulative_number_of_sub_problem_resolved(int number) {
+  void cumulative_number_of_sub_problem_solved(int number) {
     _cumulativeNumberOfSubProblemResolved = true;
   }
 
@@ -682,7 +682,7 @@ TEST_F(MasterLoggerTest, EndLog) {
 
 TEST_F(MasterLoggerTest, CumulativeNumberOfSubProblemResolved) {
   LogData logData;
-  _master.cumulative_number_of_sub_problem_resolved(39);
+  _master.cumulative_number_of_sub_problem_solved(39);
   ASSERT_TRUE(_logger->_cumulativeNumberOfSubProblemResolved);
   ASSERT_TRUE(_logger2->_cumulativeNumberOfSubProblemResolved);
 }
