@@ -228,7 +228,6 @@ void BendersMpi::free() {
  */
 void BendersMpi::Run() {
   PreRunInitialization();
-  mathLoggerDriver_->write_header();
   while (!_data.stop) {
     Timer timer_master;
     ++_data.it;
