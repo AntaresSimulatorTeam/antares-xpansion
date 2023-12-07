@@ -3,10 +3,16 @@
 #include <iomanip>
 #include <sstream>
 
+double getDurationNotDoingMasterOrSubproblems(double benders, double master,
+                                              double subproblems) {
+  return benders - master - subproblems;
+}
+
 void MathLoggerBase::setHeadersList() {
   MathLogger::setHeadersList({ITERATION, LB, UB, BESTUB, ABSOLUTE_GAP,
                               RELATIVE_GAP, MINSIMPLEX, MAXSIMPLEX, TIMEMASTER,
-                              SUB_PROBLEMS_TIME_CPU, SUB_PROBLEMS_TIME_WALL});
+                              SUB_PROBLEMS_TIME_CPU, SUB_PROBLEMS_TIME_WALL,
+                              TIME_NOT_DOING_MASTER_OR_SUB_PROBLEMS_WALL});
 }
 
 void MathLogger::setHeadersList(const std::list<std::string>& headers) {
@@ -46,6 +52,10 @@ void MathLoggerBase::Print(const CurrentIterationData& data) {
                     << data.subproblems_cputime;
   LogsDestination() << Indent(15) << std::setprecision(2)
                     << data.subproblems_walltime;
+  LogsDestination() << Indent(15) << std::setprecision(2)
+                    << getDurationNotDoingMasterOrSubproblems(
+                           data.elapsed_time, data.timer_master,
+                           data.subproblems_walltime);
 
   LogsDestination() << std::endl;
 }
@@ -73,6 +83,10 @@ void MathLoggerBendersByBatch::Print(const CurrentIterationData& data) {
                     << data.subproblems_cumulative_cputime;
   LogsDestination() << Indent(15) << std::setprecision(2)
                     << data.subproblems_walltime;
+  LogsDestination() << Indent(15) << std::setprecision(2)
+                    << getDurationNotDoingMasterOrSubproblems(
+                           data.elapsed_time, data.timer_master,
+                           data.subproblems_walltime);
 
   LogsDestination() << std::endl;
 }
