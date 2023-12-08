@@ -9,7 +9,7 @@ class MathLoggerFile : public MathLoggerImplementation {
  public:
   explicit MathLoggerFile(const BENDERSMETHOD& method,
                           const std::filesystem::path& log_file,
-                          std::streamsize width = 40);
+                          std::streamsize width = 45);
 
  private:
   std::ofstream file_stream_;

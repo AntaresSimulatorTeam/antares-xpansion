@@ -4,41 +4,43 @@
 // #include <Windows.h>
 // #endif
 
-HeadersManager::HeadersManager(HEADERSTYPE type) {
+HeadersManager::HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method) {
   if (type == HEADERSTYPE::SHORT) {
-    ITERATION = "ITE";
-    LB = "LB";
-    UB = "UB";
-    BESTUB = "BESTUB";
-    ABSOLUTE_GAP = "AGAP";
-    RELATIVE_GAP = "RGAP";
-    MINSIMPLEX = "miSpx";
-    MAXSIMPLEX = "MaSpx";
-    NUMBER_OF_SUBPROBLEM_SOLVED = "NBSUBSOLVD";
-    CUMULATIVE_NUMBER_OF_SUBPROBLEM_SOLVED = "CNBSBSOLVD";
-    BENDERS_TIME = "BENDTime";
-    TIMEMASTER = "MASTTime";
-    SUB_PROBLEMS_TIME_CPU = "SUBCPUTIME";
-    SUB_PROBLEMS_TIME_WALL = "SUBWATIME";
-    TIME_NOT_DOING_MASTER_OR_SUB_PROBLEMS_WALL = "TNotMAoSUB";
+    headers_list.push_back("ITE");
+    headers_list.push_back("LB");
+    if (method == BENDERSMETHOD::BENDERS) {
+      headers_list.push_back("UB");
+      headers_list.push_back("BESTUB");
+      headers_list.push_back("AGAP");
+      headers_list.push_back("RGAP");
+    }
+    headers_list.push_back("MinSpx");
+    headers_list.push_back("MaxSpx");
+    if (method == BENDERSMETHOD::BENDERSBYBATCH) {
+      headers_list.push_back("NbSubPbSolv");
+    }
+    headers_list.push_back("IteTime");
+    headers_list.push_back("MasterTime");
+    // headers_list.push_back("SubPbCpuTime");
+    headers_list.push_back("SPWallTime");
   } else {
-    ITERATION = "ITERATION";
-    LB = "LB";
-    UB = "UB";
-    BESTUB = "BESTUB";
-    ABSOLUTE_GAP = "ABSOLUTE GAP";
-    RELATIVE_GAP = "RELATIVE GAP";
-    MINSIMPLEX = "MINSIMPLEX";
-    MAXSIMPLEX = "MAXSIMPLEX";
-    NUMBER_OF_SUBPROBLEM_SOLVED = "NUMBER OF SUBPROBLEMS SOLVED";
-    CUMULATIVE_NUMBER_OF_SUBPROBLEM_SOLVED =
-        "CUMULATIVE NUMBER OF SUBPROBLEMS SOLVED";
-    BENDERS_TIME = "BENDERS TIME";
-    TIMEMASTER = "MASTER TIME";
-    SUB_PROBLEMS_TIME_CPU = "SUB-PROBLEMS TIME (CPU)";
-    SUB_PROBLEMS_TIME_WALL = "SUB-PROBLEMS TIME (WALL)";
-    TIME_NOT_DOING_MASTER_OR_SUB_PROBLEMS_WALL =
-        "TIME NOT DOING MASTER OR SUB-PROBLEMS (WALL)";
+    headers_list.push_back("ITERATION");
+    headers_list.push_back("LB");
+    if (method == BENDERSMETHOD::BENDERS) {
+      headers_list.push_back("UB");
+      headers_list.push_back("BESTUB");
+      headers_list.push_back("ABSOLUTE GAP");
+      headers_list.push_back("RELATIVE GAP");
+    }
+    headers_list.push_back("MINSIMPLEX");
+    headers_list.push_back("MAXSIMPLEX");
+    headers_list.push_back("NUMBER OF SUBPROBLEMS SOLVED");
+    headers_list.push_back("CUMULATIVE NUMBER OF SUBPROBLEMS SOLVED ");
+    headers_list.push_back("ITERATION TIME");
+    headers_list.push_back("MASTER TIME");
+    headers_list.push_back("SUB-PROBLEMS TIME (CPU)");
+    headers_list.push_back("SUB-PROBLEMS TIME (WALL)");
+    headers_list.push_back("TIME NOT DOING MASTER OR SUB-PROBLEMS (WALL)");
   }
 }
 

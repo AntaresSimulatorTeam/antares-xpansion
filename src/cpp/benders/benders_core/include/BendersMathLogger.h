@@ -10,30 +10,35 @@
 const std::string MATHLOGGERCONTEXT = "Benders";
 
 inline std::string Indent(int size) { return std::string(size, ' '); }
+struct Header {
+  std::string label;
+  int pos;
+};
 
 enum class HEADERSTYPE { SHORT, LONG };
 struct HeadersManager {
-  explicit HeadersManager(HEADERSTYPE type);
+  explicit HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method);
+  std::vector<std::string> headers_list;
 
-  std::string ITERATION;
-  std::string LB = "LB";
-  std::string UB = "UB";
-  std::string BESTUB = "BESTUB";
-  std::string ABSOLUTE_GAP = "ABSOLUTE GAP";
-  std::string RELATIVE_GAP = "RELATIVE GAP";
-  std::string MINSIMPLEX = "MINSIMPLEX";
-  std::string MAXSIMPLEX = "MAXSIMPLEX";
-  std::string NUMBER_OF_SUBPROBLEM_SOLVED = "NUMBER OF SUBPROBLEMS SOLVED";
-  std::string CUMULATIVE_NUMBER_OF_SUBPROBLEM_SOLVED =
-      "CUMULATIVE NUMBER OF SUBPROBLEMS SOLVED";
-  std::string BENDERS_TIME = "BENDERS TIME";
-  std::string TIMEMASTER = "MASTER TIME";
-  std::string SUB_PROBLEMS_TIME_CPU = "SUB-PROBLEMS TIME (CPU)";
-  std::string SUB_PROBLEMS_TIME_WALL = "SUB-PROBLEMS TIME (WALL)";
-  std::string TIME_NOT_DOING_MASTER_OR_SUB_PROBLEMS_WALL =
-      "TIME NOT DOING MASTER OR SUB-PROBLEMS (WALL)";
+  // Header ITERATION;
+  // Header LB;
+  // Header UB;
+  // Header BESTUB;
+  // Header ABSOLUTE_GAP;
+  // Header RELATIVE_GAP;
+  // Header MINSIMPLEX;
+  // Header MAXSIMPLEX;
+  // Header NUMBER_OF_SUBPROBLEM_SOLVED;
+  // Header CUMULATIVE_NUMBER_OF_SUBPROBLEM_SOLVED;
+  // Header ITE_TIME;
+  // Header TIMEMASTER;
+  // Header SUB_PROBLEMS_TIME_CPU;
+  // Header SUB_PROBLEMS_TIME_WALL;
+  // Header TIME_NOT_DOING_MASTER_OR_SUB_PROBLEMS_WALL;
   // const std::string BATCH_SIZE = "BATCH SIZE";
   // const std::string SEPARATION_PARAMETER = "SEPARATION PARAMETER";
+  //  private:
+  //   void SetHeader(Header& header, const std::string& label);
 };
 class LogDestination {
  public:
@@ -67,7 +72,7 @@ struct MathLoggerBehaviour {
     LogsDestination() << std::endl;
   }
   virtual void Print(const CurrentIterationData& data) = 0;
-  virtual std::list<std::string> Headers() const = 0;
+  virtual std::vector<std::string> Headers() const = 0;
   virtual LogDestination& LogsDestination() = 0;
   virtual void setHeadersList() = 0;
 };
@@ -81,16 +86,16 @@ struct MathLogger : public MathLoggerBehaviour {
                       HEADERSTYPE type = HEADERSTYPE::LONG)
       : log_destination_(&std::cout, width), type_(type) {}
   virtual void Print(const CurrentIterationData& data) = 0;
-  std::list<std::string> Headers() const override { return headers_; }
+  std::vector<std::string> Headers() const override { return headers_; }
   virtual LogDestination& LogsDestination() { return log_destination_; }
   virtual void setHeadersList() = 0;
   HEADERSTYPE HeadersType() const { return type_; }
 
  protected:
-  void setHeadersList(const std::list<std::string>& headers);
+  void setHeadersList(const std::vector<std::string>& headers);
 
  private:
-  std::list<std::string> headers_;
+  std::vector<std::string> headers_;
   LogDestination log_destination_;
   HEADERSTYPE type_;
 };
@@ -137,7 +142,7 @@ class MathLoggerImplementation : public MathLoggerBehaviour {
 
  protected:
   void setHeadersList() override { implementation_->setHeadersList(); }
-  std::list<std::string> Headers() const override {
+  std::vector<std::string> Headers() const override {
     return implementation_->Headers();
   }
   virtual LogDestination& LogsDestination() {
@@ -157,5 +162,5 @@ class MathLoggerDriver {
   void Print(const CurrentIterationData& data);
 
  private:
-  std::list<std::shared_ptr<MathLoggerImplementation>> math_loggers_;
+  std::vector<std::shared_ptr<MathLoggerImplementation>> math_loggers_;
 };

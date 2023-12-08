@@ -813,7 +813,7 @@ LogData BendersBase::GetBestIterationData() const {
 }
 
 void BendersBase::ChecksResumeMode() {
-  benders_timer = Timer();
+  ITE_TIMEr = Timer();
   if (IsResumeMode()) {
     auto reader = LastIterationReader(LastIterationFile());
     LogData last_iter;
@@ -829,7 +829,7 @@ void BendersBase::ChecksResumeMode() {
         LastIterationPrinter(_logger, best_iteration_data, last_iter);
     restart_data_printer.Print();
     UpdateMaxNumberIterationResumeMode(last_iter.it);
-    benders_timer = Timer(last_iter.benders_elapsed_time);
+    ITE_TIMEr = Timer(last_iter.benders_elapsed_time);
     _data.stop = ShouldBendersStop();
     iterations_before_resume = last_iter.it;
     cumulative_number_of_subproblem_resolved_before_resume =
@@ -856,7 +856,7 @@ void BendersBase::EndWritingInOutputFile() const {
   _writer->write_duration(_data.elapsed_time);
   SaveSolutionInOutputFile();
 }
-double BendersBase::GetBendersTime() const { return benders_timer.elapsed(); }
+double BendersBase::GetBendersTime() const { return ITE_TIMEr.elapsed(); }
 void BendersBase::write_basis() const {
   const auto filename(std::filesystem::path(_options.OUTPUTROOT) /
                       (_options.LAST_MASTER_BASIS));

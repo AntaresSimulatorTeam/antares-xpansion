@@ -177,7 +177,7 @@ class BendersBase {
   LogData best_iteration_data;
   int iterations_before_resume = 0;
   int cumulative_number_of_subproblem_resolved_before_resume = 0;
-  Timer benders_timer;
+  Timer ITE_TIMEr;
 
  public:
   Logger _logger;
