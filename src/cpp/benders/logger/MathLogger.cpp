@@ -9,12 +9,15 @@ double getDurationNotDoingMasterOrSubproblems(double benders, double master,
 }
 
 void MathLoggerBase::setHeadersList() {
+  HeadersManager headers(HeadersType());
   MathLogger::setHeadersList(
-      {ITERATION, LB, UB, BESTUB, ABSOLUTE_GAP, RELATIVE_GAP, MINSIMPLEX,
-       MAXSIMPLEX, NUMBER_OF_SUBPROBLEM_SOLVED,
-       CUMULATIVE_NUMBER_OF_SUBPROBLEM_SOLVED, BENDERS_TIME, TIMEMASTER,
-       SUB_PROBLEMS_TIME_CPU, SUB_PROBLEMS_TIME_WALL,
-       TIME_NOT_DOING_MASTER_OR_SUB_PROBLEMS_WALL});
+      {headers.ITERATION, headers.LB, headers.UB, headers.BESTUB,
+       headers.ABSOLUTE_GAP, headers.RELATIVE_GAP, headers.MINSIMPLEX,
+       headers.MAXSIMPLEX, headers.NUMBER_OF_SUBPROBLEM_SOLVED,
+       headers.CUMULATIVE_NUMBER_OF_SUBPROBLEM_SOLVED, headers.BENDERS_TIME,
+       headers.TIMEMASTER, headers.SUB_PROBLEMS_TIME_CPU,
+       headers.SUB_PROBLEMS_TIME_WALL,
+       headers.TIME_NOT_DOING_MASTER_OR_SUB_PROBLEMS_WALL});
 }
 
 void MathLogger::setHeadersList(const std::list<std::string>& headers) {
@@ -62,11 +65,14 @@ void MathLoggerBase::Print(const CurrentIterationData& data) {
 }
 
 void MathLoggerBendersByBatch::setHeadersList() {
+  HeadersManager headers(HeadersType());
   MathLogger::setHeadersList(
-      {ITERATION, LB, MINSIMPLEX, MAXSIMPLEX, NUMBER_OF_SUBPROBLEM_SOLVED,
-       CUMULATIVE_NUMBER_OF_SUBPROBLEM_SOLVED, BENDERS_TIME, TIMEMASTER,
-       SUB_PROBLEMS_TIME_CPU, SUB_PROBLEMS_TIME_WALL,
-       TIME_NOT_DOING_MASTER_OR_SUB_PROBLEMS_WALL});
+      {headers.ITERATION, headers.LB, headers.MINSIMPLEX, headers.MAXSIMPLEX,
+       headers.NUMBER_OF_SUBPROBLEM_SOLVED,
+       headers.CUMULATIVE_NUMBER_OF_SUBPROBLEM_SOLVED, headers.BENDERS_TIME,
+       headers.TIMEMASTER, headers.SUB_PROBLEMS_TIME_CPU,
+       headers.SUB_PROBLEMS_TIME_WALL,
+       headers.TIME_NOT_DOING_MASTER_OR_SUB_PROBLEMS_WALL});
 }
 
 void MathLoggerBendersByBatch::Print(const CurrentIterationData& data) {
@@ -96,8 +102,10 @@ void MathLoggerBendersByBatch::Print(const CurrentIterationData& data) {
 }
 
 MathLoggerFile::MathLoggerFile(const BENDERSMETHOD& method,
-                               const std::filesystem::path& filename)
-    : MathLoggerImplementation(method, &file_stream_) {
+                               const std::filesystem::path& filename,
+                               std::streamsize width)
+    : MathLoggerImplementation(method, &file_stream_, width,
+                               HEADERSTYPE::LONG) {
   // TODO restart case?????????????
   file_stream_.open(filename, std::ofstream::out);
   if (file_stream_.fail()) {

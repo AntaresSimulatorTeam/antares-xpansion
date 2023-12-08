@@ -10,26 +10,34 @@
 const std::string MATHLOGGERCONTEXT = "Benders";
 
 inline std::string Indent(int size) { return std::string(size, ' '); }
-const std::string ITERATION = "ITERATION";
-const std::string LB = "LB";
-const std::string UB = "UB";
-const std::string BESTUB = "BESTUB";
-const std::string ABSOLUTE_GAP = "ABSOLUTE GAP";
-const std::string RELATIVE_GAP = "RELATIVE GAP";
-const std::string MINSIMPLEX = "MINSIMPLEX";
-const std::string MAXSIMPLEX = "MAXSIMPLEX";
-const std::string NUMBER_OF_SUBPROBLEM_SOLVED = "NUMBER OF SUBPROBLEMS SOLVED";
-const std::string CUMULATIVE_NUMBER_OF_SUBPROBLEM_SOLVED =
-    "CUMULATIVE NUMBER OF SUBPROBLEMS SOLVED";
-const std::string BENDERS_TIME = "BENDERS TIME";
-const std::string TIMEMASTER = "MASTER TIME";
-const std::string SUB_PROBLEMS_TIME_CPU = "SUB-PROBLEMS TIME (CPU)";
-const std::string SUB_PROBLEMS_TIME_WALL = "SUB-PROBLEMS TIME (WALL)";
-const std::string TIME_NOT_DOING_MASTER_OR_SUB_PROBLEMS_WALL =
-    "TIME NOT DOING MASTER OR SUB-PROBLEMS (WALL)";
+
+enum class HEADERSTYPE { SHORT, LONG };
+struct HeadersManager {
+  explicit HeadersManager(HEADERSTYPE type);
+
+  std::string ITERATION;
+  std::string LB = "LB";
+  std::string UB = "UB";
+  std::string BESTUB = "BESTUB";
+  std::string ABSOLUTE_GAP = "ABSOLUTE GAP";
+  std::string RELATIVE_GAP = "RELATIVE GAP";
+  std::string MINSIMPLEX = "MINSIMPLEX";
+  std::string MAXSIMPLEX = "MAXSIMPLEX";
+  std::string NUMBER_OF_SUBPROBLEM_SOLVED = "NUMBER OF SUBPROBLEMS SOLVED";
+  std::string CUMULATIVE_NUMBER_OF_SUBPROBLEM_SOLVED =
+      "CUMULATIVE NUMBER OF SUBPROBLEMS SOLVED";
+  std::string BENDERS_TIME = "BENDERS TIME";
+  std::string TIMEMASTER = "MASTER TIME";
+  std::string SUB_PROBLEMS_TIME_CPU = "SUB-PROBLEMS TIME (CPU)";
+  std::string SUB_PROBLEMS_TIME_WALL = "SUB-PROBLEMS TIME (WALL)";
+  std::string TIME_NOT_DOING_MASTER_OR_SUB_PROBLEMS_WALL =
+      "TIME NOT DOING MASTER OR SUB-PROBLEMS (WALL)";
+  // const std::string BATCH_SIZE = "BATCH SIZE";
+  // const std::string SEPARATION_PARAMETER = "SEPARATION PARAMETER";
+};
 class LogDestination {
  public:
-  explicit LogDestination(std::ostream* stream) : stream_(stream) {}
+  explicit LogDestination(std::ostream* stream, std::streamsize width = 40);
 
   // for std::endl
   std::ostream& operator<<(std::ostream& (*function)(std::ostream&)) {
@@ -42,11 +50,12 @@ class LogDestination {
 
  private:
   std::ostream* stream_;
+  std::streamsize width_ = 40;
 };
 template <class T>
 std::ostream& LogDestination::operator<<(const T& obj) {
   // write obj to stream
-  return (*stream_) << std::left << std::setw(50) << obj;
+  return (*stream_) << std::left << std::setw(width_) << obj;
 }
 
 struct MathLoggerBehaviour {
@@ -64,12 +73,18 @@ struct MathLoggerBehaviour {
 };
 
 struct MathLogger : public MathLoggerBehaviour {
-  explicit MathLogger(std::ostream* stream) : log_destination_(stream) {}
-  explicit MathLogger() : log_destination_(&std::cout) {}
+  explicit MathLogger(std::ostream* stream, std::streamsize width = 40,
+                      HEADERSTYPE type = HEADERSTYPE::LONG)
+      : log_destination_(stream, width), type_(type) {}
+
+  explicit MathLogger(std::streamsize width = 40,
+                      HEADERSTYPE type = HEADERSTYPE::LONG)
+      : log_destination_(&std::cout, width), type_(type) {}
   virtual void Print(const CurrentIterationData& data) = 0;
   std::list<std::string> Headers() const override { return headers_; }
   virtual LogDestination& LogsDestination() { return log_destination_; }
   virtual void setHeadersList() = 0;
+  HEADERSTYPE HeadersType() const { return type_; }
 
  protected:
   void setHeadersList(const std::list<std::string>& headers);
@@ -77,6 +92,7 @@ struct MathLogger : public MathLoggerBehaviour {
  private:
   std::list<std::string> headers_;
   LogDestination log_destination_;
+  HEADERSTYPE type_;
 };
 
 struct MathLoggerBase : public MathLogger {
@@ -89,26 +105,30 @@ struct MathLoggerBase : public MathLogger {
 struct MathLoggerBendersByBatch : public MathLogger {
   using MathLogger::MathLogger;
   void Print(const CurrentIterationData& data) override;
-
   void setHeadersList() override;
 };
 
 class MathLoggerImplementation : public MathLoggerBehaviour {
  public:
   explicit MathLoggerImplementation(const BENDERSMETHOD& method,
-                                    std::ostream* stream) {
+                                    std::ostream* stream,
+                                    std::streamsize width = 40,
+                                    HEADERSTYPE type = HEADERSTYPE::LONG) {
     if (method == BENDERSMETHOD::BENDERS) {
-      implementation_ = std::make_shared<MathLoggerBase>(stream);
+      implementation_ = std::make_shared<MathLoggerBase>(stream, width, type);
     } else if (method == BENDERSMETHOD::BENDERSBYBATCH) {
-      implementation_ = std::make_shared<MathLoggerBendersByBatch>(stream);
+      implementation_ =
+          std::make_shared<MathLoggerBendersByBatch>(stream, width, type);
     }
     // else
   }
-  explicit MathLoggerImplementation(const BENDERSMETHOD& method) {
+  explicit MathLoggerImplementation(const BENDERSMETHOD& method,
+                                    std::streamsize width = 40,
+                                    HEADERSTYPE type = HEADERSTYPE::LONG) {
     if (method == BENDERSMETHOD::BENDERS) {
-      implementation_ = std::make_shared<MathLoggerBase>();
+      implementation_ = std::make_shared<MathLoggerBase>(width, type);
     } else if (method == BENDERSMETHOD::BENDERSBYBATCH) {
-      implementation_ = std::make_shared<MathLoggerBendersByBatch>();
+      implementation_ = std::make_shared<MathLoggerBendersByBatch>(width, type);
     }
     // else }
   }
