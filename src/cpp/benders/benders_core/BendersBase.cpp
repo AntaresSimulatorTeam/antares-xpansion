@@ -36,7 +36,7 @@ void BendersBase::init_data() {
   _data.best_it = 0;
   _data.stopping_criterion = StoppingCriterion::empty;
   _data.is_in_initial_relaxation = false;
-  _data.number_of_subproblem_solved = 0;
+  _data.cumulative_number_of_subproblem_solved = 0;
 }
 
 void BendersBase::OpenCsvFile() {
@@ -469,7 +469,7 @@ LogData BendersBase::FinalLogData() const {
   result.subproblem_cost = best_iteration_data.subproblem_cost;
   result.invest_cost = best_iteration_data.invest_cost;
   result.cumulative_number_of_subproblem_resolved =
-      _data.number_of_subproblem_solved +
+      _data.cumulative_number_of_subproblem_solved +
       cumulative_number_of_subproblem_resolved_before_resume;
 
   return result;
@@ -527,7 +527,7 @@ Output::Iteration BendersBase::iteration(
       masterDataPtr_l->_invest_cost + masterDataPtr_l->_operational_cost;
   iteration.candidates = candidates_data(masterDataPtr_l);
   iteration.cumulative_number_of_subproblem_resolved =
-      _data.number_of_subproblem_solved +
+      _data.cumulative_number_of_subproblem_solved +
       cumulative_number_of_subproblem_resolved_before_resume;
   return iteration;
 }
@@ -653,7 +653,7 @@ LogData BendersBase::bendersDataToLogData(
           data.elapsed_time,
           data.timer_master,
           data.subproblems_walltime,
-          data.number_of_subproblem_solved +
+          data.cumulative_number_of_subproblem_solved +
               cumulative_number_of_subproblem_resolved_before_resume};
 }
 void BendersBase::set_log_file(const std::filesystem::path &log_file) {
