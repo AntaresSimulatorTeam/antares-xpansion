@@ -21,14 +21,18 @@ class FileAndStdoutLoggerFactory {
 
  public:
   explicit FileAndStdoutLoggerFactory(
-      const std::filesystem::path &report_file_path_string) {
+      const std::filesystem::path &report_file_path_string,
+      bool expert_log_at_console) {
     auto masterLogger = std::make_shared<xpansion::logger::Master>();
     auto user_file =
         std::make_shared<xpansion::logger::UserFile>(report_file_path_string);
-
-    auto loggerUser = std::make_shared<xpansion::logger::User>(std::cout);
     masterLogger->addLogger(user_file);
-    masterLogger->addLogger(loggerUser);
+
+    if (!expert_log_at_console) {
+      auto loggerUser = std::make_shared<xpansion::logger::User>(std::cout);
+      masterLogger->addLogger(loggerUser);
+    }
+
     logger = masterLogger;
   }
   inline Logger get_logger() const { return logger; }

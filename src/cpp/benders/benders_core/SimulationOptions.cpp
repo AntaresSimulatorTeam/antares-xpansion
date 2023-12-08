@@ -167,6 +167,7 @@ BendersBaseOptions SimulationOptions::get_benders_options() const {
   result.LAST_MASTER_MPS = LAST_MASTER_MPS;
   result.LAST_MASTER_BASIS = LAST_MASTER_BASIS;
   result.BATCH_SIZE = BATCH_SIZE;
+  result.EXPERT_LOG_AT_CONSOLE = EXPERT_LOG_AT_CONSOLE;
 
   return result;
 }

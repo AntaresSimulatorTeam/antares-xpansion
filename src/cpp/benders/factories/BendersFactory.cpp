@@ -41,8 +41,10 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
     Writer writer;
 
     if (world.rank() == 0) {
-      auto logger_factory = FileAndStdoutLoggerFactory(log_reports_name);
-      auto math_log_factory = MathLoggerFactory(method, false, math_logs_file);
+      auto logger_factory = FileAndStdoutLoggerFactory(
+          log_reports_name, benders_options.EXPERT_LOG_AT_CONSOLE);
+      auto math_log_factory = MathLoggerFactory(
+          method, benders_options.EXPERT_LOG_AT_CONSOLE, math_logs_file);
 
       logger = logger_factory.get_logger();
       math_log_driver = math_log_factory.get_logger();
