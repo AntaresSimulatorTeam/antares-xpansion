@@ -195,13 +195,13 @@ cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release
 <h1><a class="anchor" id="autotoc_md71"></a>
 Build</h1>
 <p >=== "Windows" </p><pre class="fragment">```
-cmake --build _build --config Release -j8
+cmake --build _build --config Release -j8 --target install
 ```
 </pre><p> === "Centos" </p><pre class="fragment">```
-cmake3 --build _build --config Release -j8
+cmake3 --build _build --config Release -j8 --target install
 ```
 </pre><p> === "Ubuntu" </p><pre class="fragment">```
-cmake --build _build --config Release -j8
+cmake --build _build --config Release -j8 --target install
 ```
 </pre><p> !!! Note Compilation can be done on several processor with the <code>-j</code> option. </p>
 </div></div><!-- contents -->
