@@ -10,7 +10,6 @@
 #include "common.h"
 const std::string MATHLOGGERCONTEXT = "Benders";
 
-inline std::string Indent(int size) { return std::string(size, ' '); }
 struct Header {
   std::string label;
   int pos;
@@ -20,26 +19,6 @@ enum class HEADERSTYPE { SHORT, LONG };
 struct HeadersManager {
   explicit HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method);
   std::vector<std::string> headers_list;
-
-  // Header ITERATION;
-  // Header LB;
-  // Header UB;
-  // Header BESTUB;
-  // Header ABSOLUTE_GAP;
-  // Header RELATIVE_GAP;
-  // Header MINSIMPLEX;
-  // Header MAXSIMPLEX;
-  // Header NUMBER_OF_SUBPROBLEM_SOLVED;
-  // Header CUMULATIVE_NUMBER_OF_SUBPROBLEM_SOLVED;
-  // Header ITE_TIME;
-  // Header TIMEMASTER;
-  // Header SUB_PROBLEMS_TIME_CPU;
-  // Header SUB_PROBLEMS_TIME_WALL;
-  // Header TIME_NOT_DOING_MASTER_OR_SUB_PROBLEMS_WALL;
-  // const std::string BATCH_SIZE = "BATCH SIZE";
-  // const std::string SEPARATION_PARAMETER = "SEPARATION PARAMETER";
-  //  private:
-  //   void SetHeader(Header& header, const std::string& label);
 };
 class LogDestination {
  public:
