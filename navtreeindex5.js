@@ -1,5 +1,9 @@
 var NAVTREEINDEX5 =
 {
+"md_docs_changelog_CHANGELOG.html#autotoc_md51":[1,13],
+"md_docs_changelog_CHANGELOG.html#autotoc_md52":[1,14],
+"md_docs_changelog_format_changes.html":[2],
+"md_docs_changelog_format_changes.html#autotoc_md54":[2,0],
 "md_docs_developer_guide_install_from_sources_0_INSTALL.html":[3],
 "md_docs_developer_guide_install_from_sources_0_INSTALL.html#autotoc_md56":[3,0],
 "md_docs_developer_guide_install_from_sources_1_Development_requirements.html":[4],
@@ -245,9 +249,5 @@ var NAVTREEINDEX5 =
 "structCatch_1_1SourceLineInfo.html":[24,0,3,56],
 "structCatch_1_1StreamEndStop.html":[24,0,3,57],
 "structCatch_1_1StringMaker.html":[24,0,3,58],
-"structCatch_1_1StringMaker_3_01Catch_1_1Detail_1_1Approx_01_4.html":[24,0,3,60],
-"structCatch_1_1StringMaker_3_01R_00_01typename_01std_1_1enable__if_3_01is__range_3_01R_01_4_1_1ve8233c20b54b69b4771fbd413409d181.html":[24,0,3,71],
-"structCatch_1_1StringMaker_3_01R_01C_1_1_5_01_4.html":[24,0,3,70],
-"structCatch_1_1StringMaker_3_01T_01_5_01_4.html":[24,0,3,77],
-"structCatch_1_1StringMaker_3_01T_0fSZ_0e_4.html":[24,0,3,78]
+"structCatch_1_1StringMaker_3_01Catch_1_1Detail_1_1Approx_01_4.html":[24,0,3,60]
 };

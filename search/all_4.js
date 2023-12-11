@@ -10,5 +10,6 @@ var searchData=
   ['directaccessscenariotochronicleprovider_7',['DirectAccessScenarioToChronicleProvider',['../classDirectAccessScenarioToChronicleProvider.html',1,'']]],
   ['directhurdlescost_5f_8',['directHurdlesCost_',['../structLinkdataRecord_1_1FileColumns.html#ac1c6534362074e573d6a052f0432a111',1,'LinkdataRecord::FileColumns']]],
   ['documention_20generation_20guidelines_9',['Documention generation guidelines',['../md_docs_how_to.html',1,'']]],
-  ['dump_10',['dump',['../classOutput_1_1VoidWriter.html#aa91f6182476c0a67dad018f58e0a6a70',1,'Output::VoidWriter::dump()'],['../classOutput_1_1OutputWriter.html#abe45b40cf82f15fa815d4c56d062efca',1,'Output::OutputWriter::dump()'],['../classWriterNOOPStub.html#a1f2e13c67176b49374cda6142c4e3b24',1,'WriterNOOPStub::dump()'],['../classOutput_1_1JsonWriter.html#a6ad7bb14475e566bc2584dcc4911095d',1,'Output::JsonWriter::dump()']]]
+  ['dump_10',['dump',['../classOutput_1_1JsonWriter.html#a6ad7bb14475e566bc2584dcc4911095d',1,'Output::JsonWriter::dump()'],['../classOutput_1_1VoidWriter.html#aa91f6182476c0a67dad018f58e0a6a70',1,'Output::VoidWriter::dump()'],['../classOutput_1_1OutputWriter.html#abe45b40cf82f15fa815d4c56d062efca',1,'Output::OutputWriter::dump()'],['../classWriterNOOPStub.html#a1f2e13c67176b49374cda6142c4e3b24',1,'WriterNOOPStub::dump()']]],
+  ['dynamiclibrary_11',['DynamicLibrary',['../classDynamicLibrary.html',1,'']]]
 ];
