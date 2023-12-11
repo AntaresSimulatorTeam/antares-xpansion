@@ -160,6 +160,7 @@ class XpansionConfig:
             "log_level": "0",
             "separation_parameter": "0.5",
             "batch_size": "0",
+            "expert_logs": False,
         }
 
     def _set_default_options(self):
@@ -180,6 +181,7 @@ class XpansionConfig:
             OptimisationKeys.bound_alpha_key(): self.bound_alpha_default_value(),
             OptimisationKeys.separation_key(): self.separation_default_value(),
             OptimisationKeys.batch_size_key(): self.batch_size_default_value(),
+            OptimisationKeys.expert_logs_key(): self.expert_logs_default_value(),
         }
 
     def bound_alpha_default_value(self):
@@ -232,6 +234,9 @@ class XpansionConfig:
 
     def batch_size_default_value(self):
         return "0"
+
+    def expert_logs_default_value(self):
+        return False
 
     def _get_config_values(self):
 

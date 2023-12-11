@@ -74,4 +74,4 @@ BENDERS_OPTIONS_MACRO(LAST_MASTER_BASIS, std::string, "master_last_basis",
 BENDERS_OPTIONS_MACRO(BATCH_SIZE, size_t, 0, asUInt())
 
 // which logs must be printed in the console
-BENDERS_OPTIONS_MACRO(EXPERT_LOG_AT_CONSOLE, bool, true, asBool())
+BENDERS_OPTIONS_MACRO(EXPERT_LOGS, bool, true, asBool())

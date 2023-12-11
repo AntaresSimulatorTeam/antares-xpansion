@@ -159,7 +159,7 @@ struct BendersBaseOptions : public BaseOptions {
   std::string LAST_MASTER_BASIS;
 
   size_t BATCH_SIZE;
-  bool EXPERT_LOG_AT_CONSOLE = true;
+  bool EXPERT_LOGS = true;
 };
 
 void usage(int argc);

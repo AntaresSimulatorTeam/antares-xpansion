@@ -74,3 +74,9 @@ void MathLoggerDriver::write_header() {
     logger->write_header();
   }
 }
+
+void MathLoggerDriver::display_message(const std::string& str) {
+  for (auto logger : math_loggers_) {
+    logger->display_message(str);
+  }
+}
