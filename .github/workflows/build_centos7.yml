@@ -93,15 +93,15 @@ jobs:
         with:
           submodules: true
 
-      - name: Checkout xpressmp linux
-        uses: actions/checkout@v3
-        with:
-          token: ${{ secrets.AS_TOKEN }}
-          repository: rte-france/xpress-mp
-          path: ${{ env.XPRESSDIR }}
-          github-server-url: https://github.com
-          ref: 8.13a
-        if: matrix.xprs == 'XPRESS-ON'
+      # - name: Checkout xpressmp linux
+      #   uses: actions/checkout@v3
+      #   with:
+      #     token: ${{ secrets.AS_TOKEN }}
+      #     repository: rte-france/xpress-mp
+      #     path: ${{ env.XPRESSDIR }}
+      #     github-server-url: https://github.com
+      #     ref: 8.13a
+      #   if: matrix.xprs == 'XPRESS-ON'
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
