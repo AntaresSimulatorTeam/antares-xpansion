@@ -54,13 +54,6 @@ target_include_directories (solvers
 )
 
 
-# XPRESS
-#if(XPRESS)
-	# target_link_libraries (solvers
-	# 	PUBLIC
-	# 		XPRESS::XPRESS
-	# )
-#endif()
 
 #CLP-CBC
 if(COIN_OR)
