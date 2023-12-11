@@ -141,5 +141,6 @@ jobs:
         run: |
           set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin
           set PATH=%PATH%;${{ env.XPRESS }}
+          set XPRESSDIR=${{ env.XPRESSDIR }}
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
