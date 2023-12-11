@@ -59,17 +59,17 @@ Additionnal options for Xpress use:
 === "Windows"
 
     ```
-    cmake --build _build --config Release -j8
+    cmake --build _build --config Release -j8 --target install
     ```
 === "Centos"
 
     ```
-    cmake3 --build _build --config Release -j8
+    cmake3 --build _build --config Release -j8 --target install
     ```
 === "Ubuntu"
 
     ```
-    cmake --build _build --config Release -j8
+    cmake --build _build --config Release -j8 --target install
     ```
 !!! Note
     Compilation can be done on several processor with the `-j` option.
