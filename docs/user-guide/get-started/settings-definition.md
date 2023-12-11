@@ -21,6 +21,7 @@ The following section lists the configurable parameters. If the user does not sp
 |[`separation_parameter`](#separation_parameter) | `0.5` | Step size for the in-out separation |
 |[`relaxed_optimality_gap`](#relaxed_optimality_gap) | `1e-5` | Threshold to switch from relaxed to integer master |
 |[`batch_size`](#batch_size) | `0` | Number of subproblems per batch |
+|[`expert_logs`](#expert_logs) | `false` | display pure optimization data (/!\ the corresponding option(`EXPERT_LOGS`) for benders is `true` by default ) |
 
 The format is a standard `.ini` and should follow this template:
 ```ini
