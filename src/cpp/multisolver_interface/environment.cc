@@ -323,7 +323,6 @@ bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
   std::string xpresspath;
   bool status = LoadXpressDynamicLibrary(xpresspath);
   if (!status) {
-    std::cout << "Warning: " << status << "\n";
     return false;
   }
 
