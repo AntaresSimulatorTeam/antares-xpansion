@@ -121,10 +121,10 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts() {
   check_if_some_proc_had_a_failure(success);
   gather_subproblems_cut_package_and_build_cuts(subproblem_data_map, walltime);
   if (Rank() == rank_0) {
-    _data.number_of_subproblem_resolved += _data.nsubproblem;
-    _logger->cumulative_number_of_sub_problem_resolved(
-        _data.number_of_subproblem_resolved +
-        GetNumOfSubProblemsResolvedBeforeResume());
+    _data.cumulative_number_of_subproblem_solved += _data.nsubproblem;
+    _logger->cumulative_number_of_sub_problem_solved(
+        _data.cumulative_number_of_subproblem_solved +
+        GetNumOfSubProblemsSolvedBeforeResume());
   }
 }
 
@@ -193,8 +193,7 @@ void BendersMpi::write_exception_message(const std::exception &ex) const {
   _logger->display_message(error);
 }
 
-void BendersMpi::step_4_update_best_solution(int rank,
-                                             const Timer &timer_master) {
+void BendersMpi::step_4_update_best_solution(int rank) {
   if (rank == rank_0) {
     compute_ub();
     update_best_ub();
@@ -202,8 +201,6 @@ void BendersMpi::step_4_update_best_solution(int rank,
 
     UpdateTrace();
 
-    _data.elapsed_time = GetBendersTime();
-    set_timer_master(timer_master.elapsed());
     _data.stop = ShouldBendersStop();
   }
 }
@@ -228,9 +225,8 @@ void BendersMpi::free() {
  */
 void BendersMpi::Run() {
   PreRunInitialization();
-  mathLoggerDriver_->write_header();
+  _data.number_of_subproblem_solved = _data.nsubproblem;
   while (!_data.stop) {
-    Timer timer_master;
     ++_data.it;
     ResetSimplexIterationsBounds();
 
@@ -244,17 +240,16 @@ void BendersMpi::Run() {
     }
 
     if (!_exceptionRaised) {
-      step_4_update_best_solution(_world.rank(), timer_master);
+      step_4_update_best_solution(_world.rank());
     }
     _data.stop |= _exceptionRaised;
 
-    if (Rank() == rank_0) {
-      mathLoggerDriver_->Print(_data);
-    }
-
     broadcast(_world, _data.is_in_initial_relaxation, rank_0);
     broadcast(_world, _data.stop, rank_0);
-    if (_world.rank() == rank_0) {
+
+    _data.elapsed_time = GetBendersTime();
+    mathLoggerDriver_->Print(_data);
+    if (Rank() == rank_0) {
       SaveCurrentBendersData();
     }
   }
@@ -286,6 +281,7 @@ void BendersMpi::PreRunInitialization() {
   }
   mathLoggerDriver_->write_header();
 }
+
 void BendersMpi::launch() {
   build_input_map();
   _world.barrier();

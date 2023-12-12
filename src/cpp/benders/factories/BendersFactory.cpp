@@ -16,6 +16,7 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
                mpi::environment& env, mpi::communicator& world,
                const BENDERSMETHOD& method) {
   // Read options, needed to have options.OUTPUTROOT
+  BendersLoggerBase benders_loggers;
   Logger logger;
   std::shared_ptr<MathLoggerDriver> math_log_driver;
 
@@ -36,13 +37,15 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
         std::filesystem::path(options.OUTPUTROOT) / "reportbenders.txt";
 
     auto math_logs_file =
-        std::filesystem::path(options.OUTPUTROOT) / "math_log.txt";
+        std::filesystem::path(options.OUTPUTROOT) / "benders_solver.log";
 
     Writer writer;
 
     if (world.rank() == 0) {
-      auto logger_factory = FileAndStdoutLoggerFactory(log_reports_name);
-      auto math_log_factory = MathLoggerFactory(method, false, math_logs_file);
+      auto logger_factory = FileAndStdoutLoggerFactory(
+          log_reports_name, benders_options.EXPERT_LOGS);
+      auto math_log_factory = MathLoggerFactory(
+          method, benders_options.EXPERT_LOGS, math_logs_file);
 
       logger = logger_factory.get_logger();
       math_log_driver = math_log_factory.get_logger();
@@ -56,7 +59,8 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
       auto math_log_factory = MathLoggerFactory();
       math_log_driver = math_log_factory.get_logger();
     }
-
+    benders_loggers.AddLogger(logger);
+    benders_loggers.AddLogger(math_log_driver);
     pBendersBase benders;
     if (method == BENDERSMETHOD::BENDERS) {
       benders = std::make_shared<BendersMpi>(benders_options, logger, writer,
@@ -66,13 +70,13 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
           benders_options, logger, writer, env, world, math_log_driver);
     } else {
       auto err_msg = "Error only benders or benders-by-batch allowed!";
-      logger->display_message(err_msg);
+      benders_loggers.display_message(err_msg);
       std::exit(1);
     }
     std::ostringstream oss_l = start_message(options, benders->BendersName());
     oss_l << std::endl;
-    logger->display_message(oss_l.str());
-    
+    benders_loggers.display_message(oss_l.str());
+
     benders->set_log_file(log_reports_name);
 
     writer->write_log_level(options.LOG_LEVEL);
@@ -81,18 +85,18 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
     benders->launch();
     std::stringstream str;
     str << "Optimization results available in : " << options.JSON_FILE;
-    logger->display_message(str.str());
+    benders_loggers.display_message(str.str());
     logger->log_total_duration(benders->execution_time());
   } catch (std::exception& e) {
     std::ostringstream msg;
     msg << "error: " << e.what() << std::endl;
-    logger->display_message(msg.str());
+    benders_loggers.display_message(msg.str());
     mpi::environment::abort(1);
     return 1;
   } catch (...) {
     std::ostringstream msg;
     msg << "Exception of unknown type!" << std::endl;
-    logger->display_message(msg.str());
+    benders_loggers.display_message(msg.str());
     mpi::environment::abort(1);
     return 1;
   }

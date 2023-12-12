@@ -3,92 +3,98 @@
 #include <iomanip>
 #include <sstream>
 
-void MathLoggerBase::setHeadersList() {
-  MathLogger::setHeadersList({ITE, LB, UB, BESTUB, ABSOLUTE_GAP, RELATIVE_GAP,
-                              MINSIMPLEX, MAXSIMPLEX, TIMEMASTER,
-                              SUB_PROBLEMS_TIME_CPU, SUB_PROBLEMS_TIME_WALL});
+double getDurationNotDoingMasterOrSubproblems(double interation, double master,
+                                              double subproblems) {
+  return interation - master - subproblems;
 }
 
-void MathLogger::setHeadersList(const std::list<std::string>& headers) {
+void MathLoggerBase::setHeadersList() {
+  auto type = HeadersType();
+  HeadersManager headers_manager(type, BENDERSMETHOD::BENDERS);
+  MathLogger::setHeadersList(headers_manager.headers_list);
+}
+
+void MathLogger::setHeadersList(const std::vector<std::string>& headers) {
   headers_.clear();
   headers_ = headers;
 }
 
-void MathLogger::write_header() {
-  setHeadersList();
-  for (const auto& header : Headers()) {
-    TheLogDestination() << header;
-  }
-  TheLogDestination() << std::endl;
-}
 void MathLoggerBase::Print(const CurrentIterationData& data) {
-  TheLogDestination() << Indent(10) << data.it;
-  if (data.lb == -1e20)
-    TheLogDestination() << Indent(20) << "-INF";
-  else
-    TheLogDestination() << Indent(20) << std::scientific
-                        << std::setprecision(10) << data.lb;
-  if (data.ub == +1e20)
-    TheLogDestination() << Indent(20) << "+INF";
-  else
-    TheLogDestination() << Indent(20) << std::scientific
-                        << std::setprecision(10) << data.ub;
-  if (data.best_ub == +1e20)
-    TheLogDestination() << Indent(20) << "+INF";
-  else
-    TheLogDestination() << Indent(20) << std::scientific
-                        << std::setprecision(10) << data.best_ub;
-  TheLogDestination() << Indent(15) << std::scientific << std::setprecision(2)
-                      << data.best_ub - data.lb;
+  auto type = HeadersType();
 
-  TheLogDestination() << Indent(15) << std::scientific << std::setprecision(2)
-                      << (data.best_ub - data.lb) / data.best_ub;
+  LogsDestination() << data.it;
+  LogsDestination() << std::scientific << std::setprecision(10) << data.lb;
+  LogsDestination() << std::scientific << std::setprecision(10) << data.ub;
+  LogsDestination() << std::scientific << std::setprecision(10) << data.best_ub;
+  LogsDestination() << std::scientific << std::setprecision(2)
+                    << data.best_ub - data.lb;
+  LogsDestination() << std::scientific << std::setprecision(2)
+                    << (data.best_ub - data.lb) / data.best_ub;
+  LogsDestination() << data.min_simplexiter;
+  LogsDestination() << data.max_simplexiter;
+  if (type == HEADERSTYPE::LONG) {
+    LogsDestination() << data.number_of_subproblem_solved;
+    LogsDestination() << data.cumulative_number_of_subproblem_solved;
+  }
 
-  TheLogDestination() << Indent(15) << data.min_simplexiter;
-  TheLogDestination() << Indent(15) << data.max_simplexiter;
-
-  // TheLogDestination() << Indent(15) << data.deletedcut;
-  TheLogDestination() << Indent(15) << std::setprecision(2)
-                      << data.timer_master;
-  TheLogDestination() << Indent(15) << std::setprecision(2)
-                      << data.subproblems_cputime;
-  TheLogDestination() << Indent(15) << std::setprecision(2)
-                      << data.subproblems_walltime;
-
-  TheLogDestination() << std::endl;
+  // LogsDestination()  << data.deletedcut;
+  LogsDestination() << std::setprecision(2) << data.elapsed_time;
+  LogsDestination() << std::setprecision(2) << data.timer_master;
+  if (type == HEADERSTYPE::LONG) {
+    LogsDestination() << std::setprecision(2)
+                      << data.subproblems_cumulative_cputime;
+  }
+  LogsDestination() << std::setprecision(2) << data.subproblems_walltime;
+  if (type == HEADERSTYPE::LONG) {
+    LogsDestination() << std::setprecision(2)
+                      << getDurationNotDoingMasterOrSubproblems(
+                             data.elapsed_time, data.timer_master,
+                             data.subproblems_walltime);
+  }
+  LogsDestination() << std::endl;
 }
 
 void MathLoggerBendersByBatch::setHeadersList() {
-  MathLogger::setHeadersList({ITE, LB, MINSIMPLEX, MAXSIMPLEX, TIMEMASTER,
-                              SUB_PROBLEMS_TIME_CPU, SUB_PROBLEMS_TIME_WALL,
-                              TIME_NOT_DOING_MASTER_OR_SUB_PROBLEMS_WALL});
+  auto type = HeadersType();
+  HeadersManager headers_manager(type, BENDERSMETHOD::BENDERSBYBATCH);
+
+  MathLogger::setHeadersList(headers_manager.headers_list);
 }
 
 void MathLoggerBendersByBatch::Print(const CurrentIterationData& data) {
-  TheLogDestination() << Indent(10) << data.it;
-  if (data.lb == -1e20)
-    TheLogDestination() << Indent(20) << "-INF";
-  else
-    TheLogDestination() << Indent(20) << std::scientific
-                        << std::setprecision(10) << data.lb;
+  auto type = HeadersType();
 
-  TheLogDestination() << Indent(15) << data.min_simplexiter;
-  TheLogDestination() << Indent(15) << data.max_simplexiter;
+  LogsDestination() << data.it;
+  LogsDestination() << std::scientific << std::setprecision(10) << data.lb;
+  LogsDestination() << data.min_simplexiter;
+  LogsDestination() << data.max_simplexiter;
+  LogsDestination() << data.number_of_subproblem_solved;
 
-  // TheLogDestination() << Indent(15) << data.deletedcut;
-  TheLogDestination() << Indent(15) << std::setprecision(2)
-                      << data.timer_master;
-  TheLogDestination() << Indent(15) << std::setprecision(2)
+  if (type == HEADERSTYPE::LONG) {
+    LogsDestination() << data.cumulative_number_of_subproblem_solved;
+  }
+  LogsDestination() << std::setprecision(2) << data.elapsed_time;
+  LogsDestination() << std::setprecision(2) << data.timer_master;
+  if (type == HEADERSTYPE::LONG) {
+    LogsDestination() << std::setprecision(2)
                       << data.subproblems_cumulative_cputime;
-  TheLogDestination() << Indent(15) << std::setprecision(2)
-                      << data.subproblems_walltime;
+  }
+  LogsDestination() << std::setprecision(2) << data.subproblems_walltime;
+  if (type == HEADERSTYPE::LONG) {
+    LogsDestination() << std::setprecision(2)
+                      << getDurationNotDoingMasterOrSubproblems(
+                             data.elapsed_time, data.timer_master,
+                             data.subproblems_walltime);
+  }
 
-  TheLogDestination() << std::endl;
+  LogsDestination() << std::endl;
 }
 
 MathLoggerFile::MathLoggerFile(const BENDERSMETHOD& method,
-                               const std::filesystem::path& filename)
-    : MathLoggerImplementation(method, &file_stream_) {
+                               const std::filesystem::path& filename,
+                               std::streamsize width)
+    : MathLoggerImplementation(method, &file_stream_, width,
+                               HEADERSTYPE::LONG) {
   // TODO restart case?????????????
   file_stream_.open(filename, std::ofstream::out);
   if (file_stream_.fail()) {
