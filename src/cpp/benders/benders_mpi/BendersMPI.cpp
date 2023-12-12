@@ -247,9 +247,9 @@ void BendersMpi::Run() {
     broadcast(_world, _data.is_in_initial_relaxation, rank_0);
     broadcast(_world, _data.stop, rank_0);
 
-    _data.elapsed_time = GetBendersTime();
-    mathLoggerDriver_->Print(_data);
     if (Rank() == rank_0) {
+      _data.elapsed_time = GetBendersTime();
+      mathLoggerDriver_->Print(_data);
       SaveCurrentBendersData();
     }
   }
