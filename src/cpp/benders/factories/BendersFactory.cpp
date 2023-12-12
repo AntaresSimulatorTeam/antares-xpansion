@@ -56,8 +56,7 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
     } else {
       logger = build_void_logger();
       writer = build_void_writer();
-      auto math_log_factory = MathLoggerFactory();
-      math_log_driver = math_log_factory.get_logger();
+      math_log_driver = MathLoggerFactory::get_void_logger();
     }
     benders_loggers.AddLogger(logger);
     benders_loggers.AddLogger(math_log_driver);

@@ -62,5 +62,8 @@ class MathLoggerFactory {
   std::shared_ptr<MathLoggerDriver> get_logger() {
     return std::make_shared<MathLoggerDriver>(math_logger_driver);
   }
+  static std::shared_ptr<MathLoggerDriver> get_void_logger() {
+    return std::make_shared<MathLoggerDriver>();
+  }
   };
 #endif  // ANTARESXPANSION_LOGGERFACTORIES_H
