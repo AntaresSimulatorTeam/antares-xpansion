@@ -207,7 +207,7 @@ void printXpressBanner(bool error) {
   XPRSgetbanner(banner);
 
   if (error) {
-    std::cerr << "Xpress banner :\n" << banner << "\n";
+    std::cout << "Xpress banner :\n" << banner << "\n";
   } else {
     std::cout << "Xpress banner :\n" << banner << "\n";
   }
@@ -221,7 +221,7 @@ std::string GetXpressVarFromEnvironmentVariables(const char* XPRESS_var) {
 
   getenv_s(&requiredSize, NULL, 0, XPRESS_var);
   if (requiredSize == 0) {
-    std::cerr << "[Windows getenv_s function]: " << XPRESS_var
+    std::cout << "[Windows getenv_s function]: " << XPRESS_var
               << " doesn't exist!\n";
   } else {
     xpress_home_from_env.resize(requiredSize);
@@ -256,11 +256,11 @@ std::vector<std::string> XpressDynamicLibraryPotentialPaths() {
 #elif defined(__GNUC__)   // Linux
     potential_paths.push_back((prefix / "/lib/libxprs.so").string());
 #else
-    std::cerr << "OS Not recognized by xpress/environment.cc."
+    std::cout << "OS Not recognized by xpress/environment.cc."
               << " You won't be able to use Xpress.";
 #endif
   } else {
-    std::cerr << "Warning: "
+    std::cout << "Warning: "
               << "Environment variable " << XPRESSDIR << " undefined.\n";
   }
 
@@ -273,7 +273,7 @@ std::vector<std::string> XpressDynamicLibraryPotentialPaths() {
 #elif defined(__GNUC__)   // Linux
   potential_paths.push_back("/opt/xpressmp/lib/libxprs.so");
 #else
-  std::cerr << "OS Not recognized by environment.cc."
+  std::cout << "OS Not recognized by environment.cc."
             << " You won't be able to use Xpress.";
 #endif
   return potential_paths;
@@ -363,11 +363,11 @@ bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
       }
       return true;
     } else {
-      std::cerr << "XpressInterface: Xpress found at " << xpresspath << "\n";
+      std::cout << "XpressInterface: Xpress found at " << xpresspath << "\n";
       char errmsg[256];
       XPRSgetlicerrmsg(errmsg, 256);
 
-      std::cerr << "Xpress License error : " << errmsg
+      std::cout << "Xpress License error : " << errmsg
                 << " (XPRSinit returned code " << code << "). Please check"
                 << " environment variable XPRESS.\n";
 
@@ -405,7 +405,7 @@ bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
       // get the license error message
       XPRSgetlicerrmsg(errmsg, 256);
 
-      std::cerr << "Xpress Error Message: " << errmsg << "\n";
+      std::cout << "Xpress Error Message: " << errmsg << "\n";
       return false;
     }
 
@@ -414,7 +414,7 @@ bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
     if (!code) {
       return true;
     } else {
-      std::cerr << "XPRSinit returned code : " << code << "\n";
+      std::cout << "XPRSinit returned code : " << code << "\n";
       return false;
     }
   }
