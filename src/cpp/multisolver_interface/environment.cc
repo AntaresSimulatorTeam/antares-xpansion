@@ -223,14 +223,13 @@ std::string GetXpressVarFromEnvironmentVariables(const char* XPRESS_var) {
   if (requiredSize == 0) {
     std::cerr << "[Windows getenv_s function]: " << XPRESS_var
               << " doesn't exist!\n";
+  } else {
+    xpress_home_from_env.resize(requiredSize);
+
+    // Get the value of the LIB environment variable.
+    getenv_s(&requiredSize, xpress_home_from_env.data(), requiredSize,
+             XPRESS_var);
   }
-
-  xpress_home_from_env.resize(requiredSize);
-
-  // Get the value of the LIB environment variable.
-  getenv_s(&requiredSize, xpress_home_from_env.data(), requiredSize,
-           XPRESS_var);
-
 #else
   char* path = nullptr;
   path = getenv(XPRESS_var);

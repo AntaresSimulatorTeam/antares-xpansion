@@ -7,6 +7,7 @@ on:
       - develop
       - release/*
       - ci/*
+      - fix/windows-fullbuild
 jobs:
 
   windows:
