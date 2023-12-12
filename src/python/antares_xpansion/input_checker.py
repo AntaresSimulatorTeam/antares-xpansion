@@ -347,7 +347,8 @@ class NotHandledValue(Exception):
 # return ->tuple[is_a_bool: bool, result: bool]
 
 
-def str_to_bool(my_str: str) -> tuple[bool, bool]:
+# -> tuple[bool, bool]: not working with python <3.9
+def str_to_bool(my_str: str):
     if my_str in ["true", "True", "TRUE", "1"]:
         return (True, True)
     elif my_str in ["false", "False", "False", "0"]:
