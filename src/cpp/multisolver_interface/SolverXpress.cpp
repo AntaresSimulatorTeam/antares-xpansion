@@ -6,6 +6,8 @@
 
 #include "StringManip.h"
 
+using namespace LoadXpress;
+
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor
 --------------------------------
@@ -25,6 +27,7 @@ SolverXpress::SolverXpress() {
   std::lock_guard<std::mutex> guard(license_guard);
   int status = 0;
   if (_NumberOfProblems == 0) {
+    initXpressEnv();
     status = XPRSinit(NULL);
     zero_status_check(status, "initialize XPRESS environment", LOGLOCATION);
   }
