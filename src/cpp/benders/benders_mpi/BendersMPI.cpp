@@ -200,7 +200,7 @@ void BendersMpi::step_4_update_best_solution(int rank) {
     _logger->log_at_iteration_end(bendersDataToLogData(_data));
 
     UpdateTrace();
-
+    _data.elapsed_time = GetBendersTime();
     _data.stop = ShouldBendersStop();
   }
 }
@@ -248,7 +248,6 @@ void BendersMpi::Run() {
     broadcast(_world, _data.stop, rank_0);
 
     if (Rank() == rank_0) {
-      _data.elapsed_time = GetBendersTime();
       mathLoggerDriver_->Print(_data);
       SaveCurrentBendersData();
     }
