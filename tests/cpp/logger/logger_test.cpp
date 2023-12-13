@@ -3,6 +3,7 @@
 #include <ostream>
 #include <sstream>
 
+#include "BendersMathLogger.h"
 #include "ILogger.h"
 #include "LogPrefixManip.h"
 #include "gtest/gtest.h"
@@ -732,4 +733,17 @@ TEST_F(MasterLoggerTest, LogSwitchToInteger) {
   _master.LogAtSwitchToInteger();
   ASSERT_TRUE(_logger->_switchToIntegerCall);
   ASSERT_TRUE(_logger2->_switchToIntegerCall);
+}
+
+TEST(LogDestinationTest, WithNullStreamHandler) {
+  const std::string expected_msg =
+      "the stream ptr  (std::ostream*) is null, &std::cout will be "
+      "used!\n";
+
+  std::stringstream redirectedErrorStream;
+  std::streambuf* initialBufferCerr =
+      std::cerr.rdbuf(redirectedErrorStream.rdbuf());
+  LogDestination log_dest(nullptr);
+  std::cerr.rdbuf(initialBufferCerr);
+  ASSERT_EQ(expected_msg, redirectedErrorStream.str());
 }

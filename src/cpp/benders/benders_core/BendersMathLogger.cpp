@@ -31,9 +31,7 @@ HeadersManager::HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method) {
 LogDestination::LogDestination(std::ostream* stream, std::streamsize width)
     : stream_(stream), width_(width) {
   if (!stream) {
-    std::cerr << LOGLOCATION
-              << LogUtils::LogLevelToStr(LogUtils::LOGLEVEL::WARNING)
-              << "the stream ptr  (std::ostream*) is null, &std::cout will be "
+    std::cerr << "the stream ptr  (std::ostream*) is null, &std::cout will be "
                  "used!\n";
     stream_ = &std::cout;
   }
