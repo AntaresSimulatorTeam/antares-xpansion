@@ -503,7 +503,6 @@ var hierarchy =
       [ "StudyUpdateLinkCapacitiesStrategy", "classStudyUpdateLinkCapacitiesStrategy.html", null ],
       [ "StudyUpdateLinkParameterStrategy", "classStudyUpdateLinkParameterStrategy.html", null ]
     ] ],
-    [ "SubproblemCutDataHandler", "classSubproblemCutDataHandler.html", null ],
     [ "SubProblemData", "structSubProblemData.html", null ],
     [ "T", null, [
       [ "LogUtils::XpansionError< T >", "classLogUtils_1_1XpansionError.html", null ]

@@ -109,8 +109,7 @@ var searchData=
   ['studyupdateroutputpatherror_106',['StudyUpdaterOutputPathError',['../classantares__xpansion_1_1study__updater__driver_1_1StudyUpdaterDriver_1_1StudyUpdaterOutputPathError.html',1,'antares_xpansion::study_updater_driver::StudyUpdaterDriver']]],
   ['studyupdatestrategy_107',['StudyUpdateStrategy',['../classStudyUpdateStrategy.html',1,'']]],
   ['studyupdatetest_108',['StudyUpdateTest',['../classStudyUpdateTest.html',1,'']]],
-  ['subproblemcutdatahandler_109',['SubproblemCutDataHandler',['../classSubproblemCutDataHandler.html',1,'SubproblemCutDataHandler'],['../classSubproblemCutDataHandler.html#a789f3b689de39d350d949de1eb5e9eb1',1,'SubproblemCutDataHandler::SubproblemCutDataHandler()']]],
-  ['subproblemdata_110',['SubProblemData',['../structSubProblemData.html',1,'']]],
-  ['subproblemweight_111',['SubproblemWeight',['../classBendersBase.html#af1ed0d083a39816fcecdd2bf1b100f8f',1,'BendersBase']]],
-  ['subproblemworker_112',['SubproblemWorker',['../classSubproblemWorker.html#acd7e74c1c3a9c38536894df876c8204b',1,'SubproblemWorker::SubproblemWorker()'],['../classSubproblemWorker.html',1,'SubproblemWorker']]]
+  ['subproblemdata_109',['SubProblemData',['../structSubProblemData.html',1,'']]],
+  ['subproblemweight_110',['SubproblemWeight',['../classBendersBase.html#af1ed0d083a39816fcecdd2bf1b100f8f',1,'BendersBase']]],
+  ['subproblemworker_111',['SubproblemWorker',['../classSubproblemWorker.html#acd7e74c1c3a9c38536894df876c8204b',1,'SubproblemWorker::SubproblemWorker()'],['../classSubproblemWorker.html',1,'SubproblemWorker']]]
 ];

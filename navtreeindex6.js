@@ -1,22 +1,5 @@
 var NAVTREEINDEX6 =
 {
-"structCatch_1_1StringMaker_3_01R_00_01typename_01std_1_1enable__if_3_01is__range_3_01R_01_4_1_1ve8233c20b54b69b4771fbd413409d181.html":[24,0,3,71],
-"structCatch_1_1StringMaker_3_01R_01C_1_1_5_01_4.html":[24,0,3,70],
-"structCatch_1_1StringMaker_3_01T_01_5_01_4.html":[24,0,3,77],
-"structCatch_1_1StringMaker_3_01T_0fSZ_0e_4.html":[24,0,3,78],
-"structCatch_1_1StringMaker_3_01bool_01_4.html":[24,0,3,59],
-"structCatch_1_1StringMaker_3_01char_01_4.html":[24,0,3,62],
-"structCatch_1_1StringMaker_3_01char_01_5_01_4.html":[24,0,3,61],
-"structCatch_1_1StringMaker_3_01char_01const_01_5_01_4.html":[24,0,3,63],
-"structCatch_1_1StringMaker_3_01char_0fSZ_0e_4.html":[24,0,3,64],
-"structCatch_1_1StringMaker_3_01double_01_4.html":[24,0,3,65],
-"structCatch_1_1StringMaker_3_01float_01_4.html":[24,0,3,66],
-"structCatch_1_1StringMaker_3_01int_01_4.html":[24,0,3,67],
-"structCatch_1_1StringMaker_3_01long_01_4.html":[24,0,3,68],
-"structCatch_1_1StringMaker_3_01long_01long_01_4.html":[24,0,3,69],
-"structCatch_1_1StringMaker_3_01signed_01char_01_4.html":[24,0,3,72],
-"structCatch_1_1StringMaker_3_01signed_01char_0fSZ_0e_4.html":[24,0,3,73],
-"structCatch_1_1StringMaker_3_01std_1_1nullptr__t_01_4.html":[24,0,3,74],
 "structCatch_1_1StringMaker_3_01std_1_1string_01_4.html":[24,0,3,75],
 "structCatch_1_1StringMaker_3_01std_1_1wstring_01_4.html":[24,0,3,76],
 "structCatch_1_1StringMaker_3_01unsigned_01char_01_4.html":[24,0,3,79],
@@ -75,9 +58,9 @@ var NAVTREEINDEX6 =
 "structSensitivityInputData.html":[24,0,151],
 "structSinglePbData.html":[24,0,168],
 "structSolverData.html":[24,0,172],
-"structSubProblemData.html":[24,0,185],
-"structVariableFileLine.html":[24,0,190],
-"structVariableFileReadNameConfiguration.html":[24,0,193],
-"structVariableNameComposition.html":[24,0,194],
-"structVersion.html":[24,0,195]
+"structSubProblemData.html":[24,0,184],
+"structVariableFileLine.html":[24,0,189],
+"structVariableFileReadNameConfiguration.html":[24,0,192],
+"structVariableNameComposition.html":[24,0,193],
+"structVersion.html":[24,0,194]
 };

@@ -93,7 +93,6 @@ var searchData=
   ['studyupdateroutputpatherror_90',['StudyUpdaterOutputPathError',['../classantares__xpansion_1_1study__updater__driver_1_1StudyUpdaterDriver_1_1StudyUpdaterOutputPathError.html',1,'antares_xpansion::study_updater_driver::StudyUpdaterDriver']]],
   ['studyupdatestrategy_91',['StudyUpdateStrategy',['../classStudyUpdateStrategy.html',1,'']]],
   ['studyupdatetest_92',['StudyUpdateTest',['../classStudyUpdateTest.html',1,'']]],
-  ['subproblemcutdatahandler_93',['SubproblemCutDataHandler',['../classSubproblemCutDataHandler.html',1,'']]],
-  ['subproblemdata_94',['SubProblemData',['../structSubProblemData.html',1,'']]],
-  ['subproblemworker_95',['SubproblemWorker',['../classSubproblemWorker.html',1,'']]]
+  ['subproblemdata_93',['SubProblemData',['../structSubProblemData.html',1,'']]],
+  ['subproblemworker_94',['SubproblemWorker',['../classSubproblemWorker.html',1,'']]]
 ];

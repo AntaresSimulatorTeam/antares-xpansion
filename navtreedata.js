@@ -313,9 +313,9 @@ var NAVTREEINDEX =
 "classFullRunOptionsParser_1_1FullRunOptionInvalidMethod.html",
 "classSolverAbstract.html#a0ce6cfc070d43e277646557d62c8bf26",
 "classStudyUpdateTest.html",
-"classantares__xpansion_1_1problem__generator__driver_1_1ProblemGeneratorDriver_1_1LPNamerExeError.html",
-"md_docs_changelog_CHANGELOG.html#autotoc_md51",
-"structCatch_1_1StringMaker_3_01R_00_01typename_01std_1_1enable__if_3_01is__range_3_01R_01_4_1_1ve8233c20b54b69b4771fbd413409d181.html"
+"classantares__xpansion_1_1resume__study_1_1ResumeStudy_1_1OptionsFileNotFound.html",
+"md_docs_developer_guide_install_from_sources_3_Build.html#autotoc_md68",
+"structCatch_1_1StringMaker_3_01std_1_1string_01_4.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

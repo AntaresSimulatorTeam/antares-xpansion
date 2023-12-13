@@ -565,7 +565,6 @@ var annotated_dup =
     [ "StudyUpdaterExeOptions", "classStudyUpdaterExeOptions.html", null ],
     [ "StudyUpdateStrategy", "classStudyUpdateStrategy.html", "classStudyUpdateStrategy" ],
     [ "StudyUpdateTest", "classStudyUpdateTest.html", null ],
-    [ "SubproblemCutDataHandler", "classSubproblemCutDataHandler.html", "classSubproblemCutDataHandler" ],
     [ "SubProblemData", "structSubProblemData.html", null ],
     [ "SubproblemWorker", "classSubproblemWorker.html", "classSubproblemWorker" ],
     [ "Timer", "classTimer.html", null ],
