@@ -128,7 +128,7 @@ void BendersByBatch::MasterLoop() {
     _logger->display_message(
         "\\________________________________________________________________"
         "________");
-    mathLoggerDriver_->Print(_data);
+    // mathLoggerDriver_->Print(_data);
   }
 }
 void BendersByBatch::SeparationLoop() {
