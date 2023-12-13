@@ -1,8 +1,6 @@
 #include "BendersMathLogger.h"
 
-// #ifdef _WIN32
-// #include <Windows.h>
-// #endif
+#include "LogUtils.h"
 
 HeadersManager::HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method) {
   headers_list.push_back("ITE");
@@ -32,15 +30,13 @@ HeadersManager::HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method) {
 
 LogDestination::LogDestination(std::ostream* stream, std::streamsize width)
     : stream_(stream), width_(width) {
-  // _COORD coordinates;
-  // coordinates.X = 1000;
-  // coordinates.Y = 1000;
-
-  // if (0 == SetConsoleScreenBufferSize(GetStdHandle(STD_OUTPUT_HANDLE),
-  //                                     coordinates)) {
-  //   std::cout << "could not resize the console screen\n";
-  //   // return -1;
-  // }
+  if (!stream) {
+    std::cerr << LOGLOCATION
+              << LogUtils::LogLevelToStr(LogUtils::LOGLEVEL::WARNING)
+              << "the stream ptr  (std::ostream*) is null, &std::cout will be "
+                 "used!\n";
+    stream_ = &std::cout;
+  }
 }
 void MathLoggerDriver::add_logger(
     std::shared_ptr<MathLoggerImplementation> logger) {
