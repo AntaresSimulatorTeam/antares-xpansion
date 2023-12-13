@@ -10,11 +10,6 @@
 #include "common.h"
 const std::string MATHLOGGERCONTEXT = "Benders";
 
-struct Header {
-  std::string label;
-  int pos;
-};
-
 enum class HEADERSTYPE { SHORT, LONG };
 struct HeadersManager {
   explicit HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method);
@@ -24,9 +19,7 @@ class LogDestination {
  public:
   explicit LogDestination(std::ostream* stream, std::streamsize width = 40);
 
-  // for std::endl
   std::ostream& operator<<(std::ostream& (*function)(std::ostream&)) {
-    // write obj to stream
     return function(*stream_);
   }
 
@@ -39,7 +32,6 @@ class LogDestination {
 };
 template <class T>
 std::ostream& LogDestination::operator<<(const T& obj) {
-  // write obj to stream
   return (*stream_) << std::left << std::setw(width_) << obj;
 }
 
