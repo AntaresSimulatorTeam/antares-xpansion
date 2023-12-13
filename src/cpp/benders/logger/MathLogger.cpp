@@ -3,8 +3,8 @@
 #include <iomanip>
 #include <sstream>
 
-double getDurationNotDoingMasterOrSubproblems(double interation, double master,
-                                              double subproblems) {
+double getDurationNotSolving(double interation, double master,
+                             double subproblems) {
   return interation - master - subproblems;
 }
 
@@ -40,16 +40,14 @@ void MathLoggerBase::Print(const CurrentIterationData& data) {
   // LogsDestination()  << data.deletedcut;
   LogsDestination() << std::setprecision(2) << data.elapsed_time;
   LogsDestination() << std::setprecision(2) << data.timer_master;
-  if (type == HEADERSTYPE::LONG) {
-    LogsDestination() << std::setprecision(2)
-                      << data.subproblems_cumulative_cputime;
-  }
   LogsDestination() << std::setprecision(2) << data.subproblems_walltime;
   if (type == HEADERSTYPE::LONG) {
     LogsDestination() << std::setprecision(2)
-                      << getDurationNotDoingMasterOrSubproblems(
-                             data.elapsed_time, data.timer_master,
-                             data.subproblems_walltime);
+                      << data.subproblems_cumulative_cputime;
+    LogsDestination() << std::setprecision(2)
+                      << getDurationNotSolving(data.elapsed_time,
+                                               data.timer_master,
+                                               data.subproblems_walltime);
   }
   LogsDestination() << std::endl;
 }
@@ -75,16 +73,14 @@ void MathLoggerBendersByBatch::Print(const CurrentIterationData& data) {
   }
   LogsDestination() << std::setprecision(2) << data.elapsed_time;
   LogsDestination() << std::setprecision(2) << data.timer_master;
-  if (type == HEADERSTYPE::LONG) {
-    LogsDestination() << std::setprecision(2)
-                      << data.subproblems_cumulative_cputime;
-  }
   LogsDestination() << std::setprecision(2) << data.subproblems_walltime;
   if (type == HEADERSTYPE::LONG) {
     LogsDestination() << std::setprecision(2)
-                      << getDurationNotDoingMasterOrSubproblems(
-                             data.elapsed_time, data.timer_master,
-                             data.subproblems_walltime);
+                      << data.subproblems_cumulative_cputime;
+    LogsDestination() << std::setprecision(2)
+                      << getDurationNotSolving(data.elapsed_time,
+                                               data.timer_master,
+                                               data.subproblems_walltime);
   }
 
   LogsDestination() << std::endl;

@@ -5,42 +5,28 @@
 // #endif
 
 HeadersManager::HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method) {
-  if (type == HEADERSTYPE::SHORT) {
-    headers_list.push_back("ITE");
-    headers_list.push_back("LB");
-    if (method == BENDERSMETHOD::BENDERS) {
-      headers_list.push_back("UB");
-      headers_list.push_back("BESTUB");
-      headers_list.push_back("AGAP");
-      headers_list.push_back("RGAP");
-    }
-    headers_list.push_back("MinSpx");
-    headers_list.push_back("MaxSpx");
-    if (method == BENDERSMETHOD::BENDERSBYBATCH) {
-      headers_list.push_back("NbSubPbSolv");
-    }
-    headers_list.push_back("IteTime");
-    headers_list.push_back("MasterTime");
-    // headers_list.push_back("SubPbCpuTime");
-    headers_list.push_back("SPWallTime");
-  } else {
-    headers_list.push_back("ITERATION");
-    headers_list.push_back("LB");
-    if (method == BENDERSMETHOD::BENDERS) {
-      headers_list.push_back("UB");
-      headers_list.push_back("BESTUB");
-      headers_list.push_back("ABSOLUTE GAP");
-      headers_list.push_back("RELATIVE GAP");
-    }
-    headers_list.push_back("MINSIMPLEX");
-    headers_list.push_back("MAXSIMPLEX");
-    headers_list.push_back("NUMBER OF SUBPROBLEMS SOLVED");
-    headers_list.push_back("CUMULATIVE NUMBER OF SUBPROBLEMS SOLVED ");
-    headers_list.push_back("ITERATION TIME");
-    headers_list.push_back("MASTER TIME");
-    headers_list.push_back("SUB-PROBLEMS TIME (CPU)");
-    headers_list.push_back("SUB-PROBLEMS TIME (WALL)");
-    headers_list.push_back("TIME NOT DOING MASTER OR SUB-PROBLEMS (WALL)");
+  headers_list.push_back("ITE");
+  headers_list.push_back("LB");
+  if (method == BENDERSMETHOD::BENDERS) {
+    headers_list.push_back("UB");
+    headers_list.push_back("BESTUB");
+    headers_list.push_back("AGAP");
+    headers_list.push_back("RGAP");
+  }
+  headers_list.push_back("MinSpx");
+  headers_list.push_back("MaxSpx");
+  if (method == BENDERSMETHOD::BENDERSBYBATCH) {
+    headers_list.push_back("NbSubPbSolv");
+  }
+  if (type == HEADERSTYPE::LONG) {
+    headers_list.push_back("CumulNbSubPbSolv");
+  }
+  headers_list.push_back("IteTime");
+  headers_list.push_back("MasterTime");
+  headers_list.push_back("SPWallTime");
+  if (type == HEADERSTYPE::LONG) {
+    headers_list.push_back("SPCpuTime");
+    headers_list.push_back("NotSolvingWallTime");
   }
 }
 
