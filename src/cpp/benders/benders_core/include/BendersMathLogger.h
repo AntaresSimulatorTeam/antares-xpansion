@@ -17,7 +17,9 @@ struct HeadersManager {
 };
 class LogDestination {
  public:
-  explicit LogDestination(std::ostream* stream, std::streamsize width = 40);
+  explicit LogDestination(std::streamsize width = 40);
+  explicit LogDestination(const std::filesystem::path& file_path,
+                          std::streamsize width = 40);
 
   std::ostream& operator<<(std::ostream& (*function)(std::ostream&)) {
     return function(*stream_);
@@ -27,6 +29,7 @@ class LogDestination {
   std::ostream& operator<<(const T& obj);
 
  private:
+  std::ofstream file_stream_;
   std::ostream* stream_;
   std::streamsize width_ = 40;
 };
@@ -55,13 +58,14 @@ struct MathLoggerBehaviour : public ILoggerBenders {
 };
 
 struct MathLogger : public MathLoggerBehaviour {
-  explicit MathLogger(std::ostream* stream, std::streamsize width = 40,
+  explicit MathLogger(const std::filesystem::path& file_path,
+                      std::streamsize width = 40,
                       HEADERSTYPE type = HEADERSTYPE::LONG)
-      : log_destination_(stream, width), type_(type) {}
+      : log_destination_(file_path, width), type_(type) {}
 
   explicit MathLogger(std::streamsize width = 40,
                       HEADERSTYPE type = HEADERSTYPE::LONG)
-      : log_destination_(&std::cout, width), type_(type) {}
+      : log_destination_(width), type_(type) {}
 
   virtual void Print(const CurrentIterationData& data) = 0;
   std::vector<std::string> Headers() const override { return headers_; }
@@ -94,14 +98,15 @@ struct MathLoggerBendersByBatch : public MathLogger {
 class MathLoggerImplementation : public MathLoggerBehaviour {
  public:
   explicit MathLoggerImplementation(const BENDERSMETHOD& method,
-                                    std::ostream* stream,
+                                    const std::filesystem::path& file_path,
                                     std::streamsize width = 40,
                                     HEADERSTYPE type = HEADERSTYPE::LONG) {
     if (method == BENDERSMETHOD::BENDERS) {
-      implementation_ = std::make_shared<MathLoggerBase>(stream, width, type);
+      implementation_ =
+          std::make_shared<MathLoggerBase>(file_path, width, type);
     } else if (method == BENDERSMETHOD::BENDERSBYBATCH) {
       implementation_ =
-          std::make_shared<MathLoggerBendersByBatch>(stream, width, type);
+          std::make_shared<MathLoggerBendersByBatch>(file_path, width, type);
     }
     // else
   }

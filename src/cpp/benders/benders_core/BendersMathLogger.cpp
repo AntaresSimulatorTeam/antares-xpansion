@@ -1,6 +1,7 @@
 #include "BendersMathLogger.h"
 
 #include "LogUtils.h"
+#include "LoggerUtils.h"
 
 HeadersManager::HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method) {
   headers_list.push_back("ITE");
@@ -28,12 +29,21 @@ HeadersManager::HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method) {
   }
 }
 
-LogDestination::LogDestination(std::ostream* stream, std::streamsize width)
-    : stream_(stream), width_(width) {
-  if (!stream) {
-    std::cerr << "the stream ptr  (std::ostream*) is null, &std::cout will be "
-                 "used!\n";
-    stream_ = &std::cout;
+LogDestination::LogDestination(std::streamsize width)
+    : stream_(&std::cout), width_(width) {}
+
+LogDestination::LogDestination(const std::filesystem::path& file_path,
+                               std::streamsize width)
+    : width_(width) {
+  file_stream_.open(file_path, std::ofstream::out | std::ofstream::app);
+  if (file_stream_.is_open()) {
+    stream_ = &file_stream_;
+  } else {
+    std::ostringstream err_msg;
+    err_msg << PrefixMessage(LogUtils::LOGLEVEL::WARNING, MATHLOGGERCONTEXT)
+            << "Could not open the file: "
+            << std::quoted(file_path.string().c_str()) << "\n";
+    std::cerr << err_msg.str();
   }
 }
 void MathLoggerDriver::add_logger(

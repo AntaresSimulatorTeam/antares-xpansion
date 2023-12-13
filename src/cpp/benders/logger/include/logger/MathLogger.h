@@ -18,6 +18,5 @@ class MathLoggerOstream : public MathLoggerImplementation {
  public:
   explicit MathLoggerOstream(const BENDERSMETHOD& method,
                              std::streamsize width = 20)
-      : MathLoggerImplementation(method, &std::cout, width,
-                                 HEADERSTYPE::SHORT) {}
+      : MathLoggerImplementation(method, width, HEADERSTYPE::SHORT) {}
 };

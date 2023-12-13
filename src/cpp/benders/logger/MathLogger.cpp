@@ -89,12 +89,4 @@ void MathLoggerBendersByBatch::Print(const CurrentIterationData& data) {
 MathLoggerFile::MathLoggerFile(const BENDERSMETHOD& method,
                                const std::filesystem::path& filename,
                                std::streamsize width)
-    : MathLoggerImplementation(method, &file_stream_, width,
-                               HEADERSTYPE::LONG) {
-  // TODO restart case?????????????
-  file_stream_.open(filename, std::ofstream::out);
-  if (file_stream_.fail()) {
-    std::cerr << PrefixMessage(LogUtils::LOGLEVEL::ERR, MATHLOGGERCONTEXT)
-              << "Invalid file name passed as parameter" << std::endl;
-  }
-}
+    : MathLoggerImplementation(method, filename, width, HEADERSTYPE::LONG) {}

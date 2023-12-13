@@ -735,32 +735,50 @@ TEST_F(MasterLoggerTest, LogSwitchToInteger) {
   ASSERT_TRUE(_logger2->_switchToIntegerCall);
 }
 
-TEST(LogDestinationTest, WithNullStreamHandler) {
-  const std::string expected_msg =
-      "the stream ptr  (std::ostream*) is null, &std::cout will be "
-      "used!\n";
+TEST(LogDestinationTest, WithInvalidEmptyFilePath) {
+  const std::filesystem::path invalid_file_path("");
+  std::ostringstream expected_msg;
+  expected_msg << " Could not open the file: "
+               << std::quoted(invalid_file_path.string().c_str()) << "\n";
 
   std::stringstream redirectedErrorStream;
   std::streambuf* initialBufferCerr =
       std::cerr.rdbuf(redirectedErrorStream.rdbuf());
 
-  LogDestination log_dest(nullptr);
+  LogDestination log_dest(invalid_file_path);
 
   std::cerr.rdbuf(initialBufferCerr);
-
-  ASSERT_EQ(expected_msg, redirectedErrorStream.str());
+  auto err_str = RemovePrefixFromMessage(redirectedErrorStream);
+  ASSERT_EQ(expected_msg.str(), err_str);
 }
 
-TEST(LogDestinationTest, WithNullStreamHandlerOutputinStdout) {
-  const std::string expected_msg = "Hello!";
+// TEST(LogDestinationTest, WithNullStreamHandlerOutputinStdout) {
+//   const std::string expected_msg = "Hello!";
 
-  std::stringstream redirectedStdout;
-  std::streambuf* initialBufferCout = std::cout.rdbuf(redirectedStdout.rdbuf());
+//   std::stringstream redirectedStdout;
+//   std::streambuf* initialBufferCout =
+//   std::cout.rdbuf(redirectedStdout.rdbuf());
 
-  LogDestination log_dest(nullptr, 0);
-  log_dest << expected_msg;
+//   LogDestination log_dest(nullptr, 0);
+//   log_dest << expected_msg;
 
-  std::cout.rdbuf(initialBufferCout);
+//   std::cout.rdbuf(initialBufferCout);
 
-  ASSERT_EQ(expected_msg, redirectedStdout.str());
-}
+//   ASSERT_EQ(expected_msg, redirectedStdout.str());
+// }
+
+// TEST(LogDestinationTest, WithInvalidFileStream) {
+//   std::ofstream invalid_ofstream("");
+//   const std::string expected_msg = "Hello!";
+
+//   std::stringstream redirectedStdout;
+//   std::streambuf* initialBufferCout =
+//   std::cout.rdbuf(redirectedStdout.rdbuf());
+
+//   LogDestination log_dest(&invalid_ofstream, 0);
+//   log_dest << expected_msg;
+
+//   std::cout.rdbuf(initialBufferCout);
+
+//   ASSERT_EQ(expected_msg, redirectedStdout.str());
+// }
