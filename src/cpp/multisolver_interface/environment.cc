@@ -294,7 +294,7 @@ bool LoadXpressDynamicLibrary(std::string& xpresspath) {
     for (const std::string& path : canonical_paths) {
       if (xpress_library.TryToLoad(path)) {
         std::cout << "Info: "
-                  << "Found the Xpress library in " << path << ".";
+                  << "Found the Xpress library in " << path << ".\n";
         xpress_lib_path.clear();
         std::filesystem::path p(path);
         p.remove_filename();
