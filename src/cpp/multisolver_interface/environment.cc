@@ -284,9 +284,9 @@ bool LoadXpressDynamicLibrary(std::string& xpresspath) {
   static std::once_flag xpress_loading_done;
   static bool ret;
   static DynamicLibrary xpress_library;
-  static std::mutex mutex;
+  // static std::mutex mutex;
 
-  mutex.lock();
+  // mutex.lock();
 
   std::call_once(xpress_loading_done, []() {
     const std::vector<std::string> canonical_paths =
@@ -337,7 +337,7 @@ bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
       return false;
     }
   } else {
-    xpresspath = xpress_from_env;
+    xpresspath = (std::filesystem::path(xpress_from_env) / "lib").string();
   }
 
   int code;
