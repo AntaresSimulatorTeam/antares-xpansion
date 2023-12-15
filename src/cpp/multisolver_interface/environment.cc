@@ -252,9 +252,9 @@ std::vector<std::string> XpressDynamicLibraryPotentialPaths() {
 #if defined(_MSC_VER)  // Windows
     potential_paths.push_back((prefix / "bin" / "xprs.dll").string());
 #elif defined(__APPLE__)  // OS X
-    potential_paths.push_back((prefix / "/lib/libxprs.dylib").string());
+    potential_paths.push_back((prefix / "lib" / "libxprs.dylib").string());
 #elif defined(__GNUC__)   // Linux
-    potential_paths.push_back((prefix / "/lib/libxprs.so").string());
+    potential_paths.push_back((prefix / "lib" / "libxprs.so").string());
 #else
     std::cerr << "OS Not recognized by xpress/environment.cc."
               << " You won't be able to use Xpress.";
@@ -284,9 +284,9 @@ bool LoadXpressDynamicLibrary(std::string& xpresspath) {
   static std::once_flag xpress_loading_done;
   static bool ret;
   static DynamicLibrary xpress_library;
-  // static std::mutex mutex;
+  static std::mutex mutex;
 
-  // mutex.lock();
+  mutex.lock();
 
   std::call_once(xpress_loading_done, []() {
     const std::vector<std::string> canonical_paths =
@@ -327,7 +327,8 @@ bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
     return false;
   }
 
-  std::string xpress_from_env = GetXpressVarFromEnvironmentVariables("XPRESS");
+  std::string xpress_from_env =
+      GetXpressVarFromEnvironmentVariables("XPRESSDIR");
   if (xpress_from_env == "") {
     if (verbose) {
       std::cout << "Warning: Environment variable XPRESS undefined.\n";
