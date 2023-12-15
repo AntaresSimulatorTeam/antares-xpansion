@@ -326,18 +326,18 @@ bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
     return false;
   }
 
-  // std::string xpress_from_env =
-  //     GetXpressVarFromEnvironmentVariables("XPRESSDIR");
-  // if (xpress_from_env == "") {
-  //   if (verbose) {
-  //     std::cout << "Warning: Environment variable XPRESS undefined.\n";
-  //   }
-  //   if (xpresspath.empty()) {
-  //     return false;
-  //   }
-  // } else {
-  //   xpresspath = (std::filesystem::path(xpress_from_env) / "lib").string();
-  // }
+  std::string xpress_from_env =
+      GetXpressVarFromEnvironmentVariables("XPRESSDIR");
+  if (xpress_from_env == "") {
+    if (verbose) {
+      std::cout << "Warning: Environment variable XPRESS undefined.\n";
+    }
+    if (xpresspath.empty()) {
+      return false;
+    }
+  } else {
+    xpresspath = (std::filesystem::path(xpress_from_env) / "bin").string();
+  }
 
   int code;
 
