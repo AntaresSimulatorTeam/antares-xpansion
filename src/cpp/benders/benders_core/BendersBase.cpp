@@ -654,10 +654,9 @@ LogData BendersBase::bendersDataToLogData(
           data.number_of_subproblem_resolved +
               cumulative_number_of_subproblem_resolved_before_resume};
 }
-void BendersBase::set_log_file(const std::filesystem::path &log_file) {
-  _log_name = log_file;
-
-  solver_log_manager_ = SolverLogManager(log_name());
+void BendersBase::set_solver_log_file(const std::filesystem::path &log_file) {
+  solver_log_file_ = log_file;
+  solver_log_manager_ = SolverLogManager(solver_log_file_);
 }
 
 /*!
