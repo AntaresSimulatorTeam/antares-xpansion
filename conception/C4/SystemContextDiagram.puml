@@ -6,8 +6,16 @@ Container(Xpansion, "Xpansion", "C++", "Perform investment simulations for Antar
 System(systemAlias, "Antares", "Quantify the adequacy, or the economic performance of interconnected energy systems")
 
 Person(Alice, "Alice", "Chargée d'étude")
-Rel(Alice, Xpansion, "Run study")
+Rel(Alice, Xpansion, "Configure study for")
 
 Person(Bob, "Bob", "Thésard")
 Rel(Bob, Xpansion, "Try new things")
+
+Container(Simulator, "Antares simulator", "C++", "Quantify the adequacy, or the economic performance of interconnected energy systems")
+Container(Web, "Antares Web", "React/Python", "Manage studies")
+
+Rel(Xpansion, Simulator, "Perform iteration of")
+Rel(Web, Xpansion, "Run")
+Rel(Alice, Web, "Use to run and configure studies")
+
 @enduml
