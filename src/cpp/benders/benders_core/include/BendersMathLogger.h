@@ -15,6 +15,7 @@ struct HeadersManager {
   explicit HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method);
   std::vector<std::string> headers_list;
 };
+
 class LogDestination {
  public:
   explicit LogDestination(std::streamsize width = 40);

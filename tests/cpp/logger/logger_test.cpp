@@ -752,20 +752,22 @@ TEST(LogDestinationTest, WithInvalidEmptyFilePath) {
   ASSERT_EQ(expected_msg.str(), err_str);
 }
 
-// TEST(LogDestinationTest, WithNullStreamHandlerOutputinStdout) {
-//   const std::string expected_msg = "Hello!";
+TEST(LogDestinationTest, StdoutWithAValidMessage) {
+  const std::string msg = "Hello!";
+  std::streamsize indentation = 25;
+  const std::string expected_msg =
+      msg + std::string((size_t)indentation - msg.size(), ' ');
 
-//   std::stringstream redirectedStdout;
-//   std::streambuf* initialBufferCout =
-//   std::cout.rdbuf(redirectedStdout.rdbuf());
+  std::stringstream redirectedStdout;
+  std::streambuf* initialBufferCout = std::cout.rdbuf(redirectedStdout.rdbuf());
 
-//   LogDestination log_dest(nullptr, 0);
-//   log_dest << expected_msg;
+  LogDestination log_dest(indentation);
+  log_dest << msg;
 
-//   std::cout.rdbuf(initialBufferCout);
+  std::cout.rdbuf(initialBufferCout);
 
-//   ASSERT_EQ(expected_msg, redirectedStdout.str());
-// }
+  ASSERT_EQ(expected_msg, redirectedStdout.str());
+}
 
 // TEST(LogDestinationTest, WithInvalidFileStream) {
 //   std::ofstream invalid_ofstream("");
