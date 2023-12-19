@@ -76,7 +76,11 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
     oss_l << std::endl;
     benders_loggers.display_message(oss_l.str());
 
-    benders->set_log_file(log_reports_name);
+    auto solver_log = std::filesystem::path(options.OUTPUTROOT) /
+                      (std::string("solver_log_proc_") +
+                       std::to_string(world.rank()) + ".txt");
+
+    benders->set_solver_log_file(solver_log);
 
     writer->write_log_level(options.LOG_LEVEL);
     writer->write_master_name(options.MASTER_NAME);
