@@ -1,0 +1,13 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!include <C4/C4_Container>
+
+Container(Xpansion, "Xpansion", "C++", "Perform investment simulations for Antares studies")
+System(systemAlias, "Antares", "Quantify the adequacy, or the economic performance of interconnected energy systems")
+
+Person(Alice, "Alice", "Chargée d'étude")
+Rel(Alice, Xpansion, "Run study")
+
+Person(Bob, "Bob", "Thésard")
+Rel(Bob, Xpansion, "Try new things")
+@enduml
