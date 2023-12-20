@@ -39,7 +39,7 @@ LogDestination::LogDestination(std::streamsize width)
 LogDestination::LogDestination(const std::filesystem::path& file_path,
                                std::streamsize width)
     : width_(width) {
-  file_stream_.open(file_path, std::ofstream::out | std::ofstream::app);
+  file_stream_.open(file_path, std::ofstream::out | std::ofstream::trunc);
   if (file_stream_.is_open()) {
     stream_ = &file_stream_;
     (*stream_) << std::unitbuf;
