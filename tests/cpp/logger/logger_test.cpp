@@ -6,6 +6,7 @@
 #include "BendersMathLogger.h"
 #include "ILogger.h"
 #include "LogPrefixManip.h"
+#include "RandomDirGenerator.h"
 #include "gtest/gtest.h"
 #include "logger/Master.h"
 #include "logger/User.h"
@@ -767,6 +768,29 @@ TEST(LogDestinationTest, StdoutWithAValidMessage) {
   std::cout.rdbuf(initialBufferCout);
 
   ASSERT_EQ(expected_msg, redirectedStdout.str());
+}
+
+std::string FileContent(const std::filesystem::path& file) {
+  std::ifstream file_stream(file);
+
+  std::string content((std::istreambuf_iterator<char>(file_stream)),
+                      (std::istreambuf_iterator<char>()));
+  return content;
+}
+
+TEST(LogDestinationTest, MessageWithAValidFile) {
+  const std::string msg = "Hello!";
+  std::streamsize indentation = 40;
+  const std::string expected_msg =
+      msg + std::string((size_t)indentation - msg.size(), ' ');
+
+  auto log_file =
+      CreateRandomSubDir(std::filesystem::temp_directory_path()) / "log.txt";
+  LogDestination log_dest(log_file);
+  log_dest << msg;
+  ASSERT_TRUE(std::filesystem::exists(log_file));
+
+  ASSERT_EQ(expected_msg, FileContent(log_file));
 }
 
 // TEST(LogDestinationTest, WithInvalidFileStream) {
