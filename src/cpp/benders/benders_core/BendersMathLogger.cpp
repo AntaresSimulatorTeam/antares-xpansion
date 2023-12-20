@@ -32,7 +32,9 @@ HeadersManager::HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method) {
 }
 
 LogDestination::LogDestination(std::streamsize width)
-    : stream_(&std::cout), width_(width) {}
+    : stream_(&std::cout), width_(width) {
+  (*stream_) << std::unitbuf;
+}
 
 LogDestination::LogDestination(const std::filesystem::path& file_path,
                                std::streamsize width)
@@ -40,6 +42,7 @@ LogDestination::LogDestination(const std::filesystem::path& file_path,
   file_stream_.open(file_path, std::ofstream::out | std::ofstream::app);
   if (file_stream_.is_open()) {
     stream_ = &file_stream_;
+    (*stream_) << std::unitbuf;
   } else {
     std::ostringstream err_msg;
     err_msg << PrefixMessage(LogUtils::LOGLEVEL::WARNING, MATHLOGGERCONTEXT)
