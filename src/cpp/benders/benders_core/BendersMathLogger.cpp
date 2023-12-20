@@ -14,9 +14,11 @@ HeadersManager::HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method) {
   }
   headers_list.push_back("MinSpx");
   headers_list.push_back("MaxSpx");
-  if (method == BENDERSMETHOD::BENDERSBYBATCH) {
+
+  if (type == HEADERSTYPE::LONG || method == BENDERSMETHOD::BENDERSBYBATCH) {
     headers_list.push_back("NbSubPbSolv");
   }
+
   if (type == HEADERSTYPE::LONG) {
     headers_list.push_back("CumulNbSubPbSolv");
   }
