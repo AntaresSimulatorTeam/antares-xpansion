@@ -793,18 +793,21 @@ TEST(LogDestinationTest, MessageWithAValidFile) {
   ASSERT_EQ(expected_msg, FileContent(log_file));
 }
 
-// TEST(LogDestinationTest, WithInvalidFileStream) {
-//   std::ofstream invalid_ofstream("");
-//   const std::string expected_msg = "Hello!";
+TEST(MathLoggerBendersByBatchTest, HeadersListStdOut) {
+  HEADERSTYPE headers_type = HEADERSTYPE::SHORT;
+  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERSBYBATCH);
+  std::streamsize width = 25;
 
-//   std::stringstream redirectedStdout;
-//   std::streambuf* initialBufferCout =
-//   std::cout.rdbuf(redirectedStdout.rdbuf());
+  std::ostringstream expected_msg;
+  for (const auto& header : headers_manager.headers_list) {
+    expected_msg << std::setw(width) << std::left << header;
+  }
+  expected_msg << std::endl;
+  std::stringstream redirectedStdout;
+  std::streambuf* initialBufferCout = std::cout.rdbuf(redirectedStdout.rdbuf());
+  MathLoggerBendersByBatch benders_batch_logger(width);
+  benders_batch_logger.write_header();
+  std::cout.rdbuf(initialBufferCout);
 
-//   LogDestination log_dest(&invalid_ofstream, 0);
-//   log_dest << expected_msg;
-
-//   std::cout.rdbuf(initialBufferCout);
-
-//   ASSERT_EQ(expected_msg, redirectedStdout.str());
-// }
+  ASSERT_EQ(expected_msg.str(), redirectedStdout.str());
+}
