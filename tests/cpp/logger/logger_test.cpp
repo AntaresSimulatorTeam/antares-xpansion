@@ -825,6 +825,34 @@ TEST(MathLoggerHeadersManagerTest, ShortBenders) {
   ASSERT_EQ(expected_headers, headers_manager.headers_list);
 }
 
+TEST(MathLoggerHeadersManagerTest, LongBendersByBatch) {
+  HEADERSTYPE headers_type = HEADERSTYPE::LONG;
+  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERSBYBATCH);
+
+  std::vector<std::string> expected_headers = {"ITE",
+                                               "LB",
+                                               "MinSpx",
+                                               "MaxSpx",
+                                               "NbSubPbSolv",
+                                               "CumulNbSubPbSolv",
+                                               "IteTime",
+                                               "MasterTime",
+                                               "SPWallTime",
+                                               "SPCpuTime",
+                                               "NotSolvingWallTime"};
+  ASSERT_EQ(expected_headers, headers_manager.headers_list);
+}
+
+TEST(MathLoggerHeadersManagerTest, ShortBendersByBatch) {
+  HEADERSTYPE headers_type = HEADERSTYPE::SHORT;
+  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERSBYBATCH);
+
+  std::vector<std::string> expected_headers = {
+      "ITE",         "LB",      "MinSpx",     "MaxSpx",
+      "NbSubPbSolv", "IteTime", "MasterTime", "SPWallTime"};
+  ASSERT_EQ(expected_headers, headers_manager.headers_list);
+}
+
 TEST(MathLoggerBendersByBatchTest, HeadersListStdOutShort) {
   HEADERSTYPE headers_type = HEADERSTYPE::SHORT;
   HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERSBYBATCH);
