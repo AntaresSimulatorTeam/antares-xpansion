@@ -6,6 +6,8 @@
 
 #include "StringManip.h"
 
+using namespace LoadXpress;
+
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor
 --------------------------------
@@ -16,8 +18,8 @@ const std::map<int, std::string> TYPETONAME = {{1, "rows"}, {2, "columns"}};
 
 SolverXpress::SolverXpress(SolverLogManager &log_manager) : SolverXpress() {
   if (log_manager.log_file_path != "") {
-    _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
     _log_file = log_manager.log_file_path;
+    _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
     add_stream(_log_stream);
   }
 }
@@ -25,6 +27,7 @@ SolverXpress::SolverXpress() {
   std::lock_guard<std::mutex> guard(license_guard);
   int status = 0;
   if (_NumberOfProblems == 0) {
+    initXpressEnv();
     status = XPRSinit(NULL);
     zero_status_check(status, "initialize XPRESS environment", LOGLOCATION);
   }

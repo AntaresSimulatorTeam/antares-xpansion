@@ -31,8 +31,10 @@ class BendersBase {
   virtual ~BendersBase() = default;
   BendersBase(BendersBaseOptions options, Logger logger, Writer writer);
   virtual void launch() = 0;
-  void set_log_file(const std::filesystem::path &log_name);
-  [[nodiscard]] std::filesystem::path log_name() const { return _log_name; }
+  void set_solver_log_file(const std::filesystem::path &log_file);
+  [[nodiscard]] std::filesystem::path solver_log_file() const {
+    return solver_log_file_;
+  }
   double execution_time() const;
   virtual std::string BendersName() const = 0;
 
@@ -159,7 +161,7 @@ class BendersBase {
  private:
   BendersBaseOptions _options;
   unsigned int _totalNbProblems = 0;
-  std::filesystem::path _log_name = "";
+  std::filesystem::path solver_log_file_ = "";
   BendersRelevantIterationsData relevantIterationData_ = {
       std::make_shared<WorkerMasterData>(), nullptr};
   WorkerMasterPtr _master;

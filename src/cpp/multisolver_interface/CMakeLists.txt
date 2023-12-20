@@ -17,12 +17,14 @@ list(APPEND Solver_sources
 	${CMAKE_CURRENT_LIST_DIR}/SolverFactory.cpp
 )
 
+list(APPEND XPRESS_LOAD
+	${CMAKE_CURRENT_LIST_DIR}/environment.cc
+)
+
 # XPRESS
-IF( XPRESS )
 	list(APPEND Solver_sources
 		${CMAKE_CURRENT_LIST_DIR}/SolverXpress.cpp
 	)
-ENDIF( XPRESS )
 
 #Clp - CBc
 IF(COIN_OR)
@@ -39,6 +41,7 @@ ENDIF(COIN_OR)
 # ---------------------------------------------------------------------------
 add_library (solvers STATIC
 	${Solver_sources}
+	${XPRESS_LOAD}
 )
 get_target_property(xpansion_interfaces_path xpansion_interfaces INTERFACE_INCLUDE_DIRECTORIES)
 target_include_directories (solvers
@@ -51,13 +54,6 @@ target_include_directories (solvers
 )
 
 
-# XPRESS
-if(XPRESS)
-	target_link_libraries (solvers
-		PUBLIC
-			XPRESS::XPRESS
-	)
-endif()
 
 #CLP-CBC
 if(COIN_OR)
@@ -68,5 +64,6 @@ if(COIN_OR)
 			Coin::CoinUtils
 			Coin::Osi
 			Coin::Cbc
+		   ${CMAKE_DL_LIBS}
 	)
 endif()

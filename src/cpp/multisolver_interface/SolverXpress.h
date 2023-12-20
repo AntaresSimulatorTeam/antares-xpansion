@@ -4,7 +4,7 @@
 #include <mutex>
 
 #include "multisolver_interface/SolverAbstract.h"
-#include "xprs.h"
+#include "multisolver_interface/environment.h"
 
 /*!
  * \class class SolverXpress

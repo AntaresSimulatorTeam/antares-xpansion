@@ -212,7 +212,8 @@ void WorkerMaster::define_matval_mclind_for_index(
 // TODO : Refactor this with add_cut and define_matval_mclind(_for_index)
 void WorkerMaster::addSubproblemCut(int i, Point const &s, Point const &x_cut,
                                     double const &rhs) const {
-  // cut is -rhs >= overall_subpb_cost_under_approx  + s^(x-x_cut)
+  // cut is -theta_i + s.x <= -subproblem_cost + s.x_cut (in the solver)
+  // i.e. theta_i >= subproblem_cost + s.(x - x_cut) (human form)
   int ncoeffs(1 + (int)s.size());
   std::vector<char> rowtype(1, 'L');
   std::vector<double> rowrhs(1, 0);
