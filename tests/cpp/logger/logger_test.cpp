@@ -793,6 +793,38 @@ TEST(LogDestinationTest, MessageWithAValidFile) {
   ASSERT_EQ(expected_msg, FileContent(log_file));
 }
 
+TEST(MathLoggerHeadersManagerTest, LongBenders) {
+  HEADERSTYPE headers_type = HEADERSTYPE::LONG;
+  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERS);
+
+  std::vector<std::string> expected_headers = {"ITE",
+                                               "LB",
+                                               "UB",
+                                               "BESTUB",
+                                               "AGAP",
+                                               "RGAP",
+                                               "MinSpx",
+                                               "MaxSpx",
+                                               "NbSubPbSolv",
+                                               "CumulNbSubPbSolv",
+                                               "IteTime",
+                                               "MasterTime",
+                                               "SPWallTime",
+                                               "SPCpuTime",
+                                               "NotSolvingWallTime"};
+  ASSERT_EQ(expected_headers, headers_manager.headers_list);
+}
+
+TEST(MathLoggerHeadersManagerTest, ShortBenders) {
+  HEADERSTYPE headers_type = HEADERSTYPE::SHORT;
+  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERS);
+
+  std::vector<std::string> expected_headers = {
+      "ITE",    "LB",     "UB",      "BESTUB",     "AGAP",      "RGAP",
+      "MinSpx", "MaxSpx", "IteTime", "MasterTime", "SPWallTime"};
+  ASSERT_EQ(expected_headers, headers_manager.headers_list);
+}
+
 TEST(MathLoggerBendersByBatchTest, HeadersListStdOutShort) {
   HEADERSTYPE headers_type = HEADERSTYPE::SHORT;
   HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERSBYBATCH);
@@ -811,6 +843,7 @@ TEST(MathLoggerBendersByBatchTest, HeadersListStdOutShort) {
 
   ASSERT_EQ(expected_msg.str(), redirectedStdout.str());
 }
+
 TEST(MathLoggerBendersByBatchTest, HeadersListFileLong) {
   HEADERSTYPE headers_type = HEADERSTYPE::LONG;
   HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERSBYBATCH);
