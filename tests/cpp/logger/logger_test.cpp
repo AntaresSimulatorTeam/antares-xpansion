@@ -978,10 +978,11 @@ TEST(MathLoggerBendersByBatchTest, DataInStdOutShort) {
                << data.subproblems_walltime;
 
   expected_msg << std::endl;
-  auto log_file =
-      CreateRandomSubDir(std::filesystem::temp_directory_path()) / "log.txt";
-  MathLoggerBendersByBatch benders_batch_logger(log_file, width, headers_type);
+  std::stringstream redirectedStdout;
+  std::streambuf* initialBufferCout = std::cout.rdbuf(redirectedStdout.rdbuf());
+  MathLoggerBendersByBatch benders_batch_logger(width);
   benders_batch_logger.Print(data);
+  std::cout.rdbuf(initialBufferCout);
 
-  ASSERT_EQ(expected_msg.str(), FileContent(log_file));
+  ASSERT_EQ(expected_msg.str(), redirectedStdout.str());
 }
