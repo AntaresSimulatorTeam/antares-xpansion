@@ -48,7 +48,7 @@ std::filesystem::path CreateRandomSubDir(
   auto template_dir = parentDir / template_array;
   char* template_dir_array = template_dir.string().data();
   if (auto ret = mkdtemp(template_dir_array); ret != nullptr) {
-    retrun ret;
+    return ret;
   }
 #elif _WIN32
   if (auto ret = _mktemp_s(template_array); ret == 0) {
