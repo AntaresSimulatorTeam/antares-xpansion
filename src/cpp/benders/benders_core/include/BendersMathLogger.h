@@ -65,7 +65,7 @@ struct MathLogger : public MathLoggerBehaviour {
       : log_destination_(file_path, width), type_(type) {}
 
   explicit MathLogger(std::streamsize width = 40,
-                      HEADERSTYPE type = HEADERSTYPE::LONG)
+                      HEADERSTYPE type = HEADERSTYPE::SHORT)
       : log_destination_(width), type_(type) {}
 
   virtual void Print(const CurrentIterationData& data) = 0;

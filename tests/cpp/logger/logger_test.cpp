@@ -793,7 +793,7 @@ TEST(LogDestinationTest, MessageWithAValidFile) {
   ASSERT_EQ(expected_msg, FileContent(log_file));
 }
 
-TEST(MathLoggerBendersByBatchTest, HeadersListStdOut) {
+TEST(MathLoggerBendersByBatchTest, HeadersListStdOutShort) {
   HEADERSTYPE headers_type = HEADERSTYPE::SHORT;
   HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERSBYBATCH);
   std::streamsize width = 25;
@@ -810,4 +810,21 @@ TEST(MathLoggerBendersByBatchTest, HeadersListStdOut) {
   std::cout.rdbuf(initialBufferCout);
 
   ASSERT_EQ(expected_msg.str(), redirectedStdout.str());
+}
+TEST(MathLoggerBendersByBatchTest, HeadersListFileLong) {
+  HEADERSTYPE headers_type = HEADERSTYPE::LONG;
+  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERSBYBATCH);
+  std::streamsize width = 25;
+
+  std::ostringstream expected_msg;
+  for (const auto& header : headers_manager.headers_list) {
+    expected_msg << std::setw(width) << std::left << header;
+  }
+  expected_msg << std::endl;
+  auto log_file =
+      CreateRandomSubDir(std::filesystem::temp_directory_path()) / "log.txt";
+  MathLoggerBendersByBatch benders_batch_logger(log_file, width, headers_type);
+  benders_batch_logger.write_header();
+
+  ASSERT_EQ(expected_msg.str(), FileContent(log_file));
 }
