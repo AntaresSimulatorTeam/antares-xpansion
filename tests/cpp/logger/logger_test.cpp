@@ -986,3 +986,117 @@ TEST(MathLoggerBendersByBatchTest, DataInStdOutShort) {
 
   ASSERT_EQ(expected_msg.str(), redirectedStdout.str());
 }
+
+TEST(MathLoggerBendersBaseTest, DataInFileLong) {
+  HEADERSTYPE headers_type = HEADERSTYPE::LONG;
+  std::streamsize width = 25;
+
+  CurrentIterationData data;
+  data.it = 35;
+  data.lb = 256999;
+  data.ub = 222256999;
+  data.best_ub = 22552256999;
+  data.min_simplexiter = 3;
+  data.max_simplexiter = 30;
+  data.number_of_subproblem_solved = 657;
+  data.cumulative_number_of_subproblem_solved = 1387;
+  data.elapsed_time = 1000;
+  data.timer_master = 10;
+  data.subproblems_walltime = 16;
+  data.subproblems_cumulative_cputime = 160;
+  auto time_not_solving =
+      data.elapsed_time - data.timer_master - data.subproblems_walltime;
+
+  std::ostringstream expected_msg;
+  expected_msg << std::left << std::setw(width) << data.it;
+  expected_msg << std::left << std::setw(width) << std::scientific
+               << std::setprecision(10) << data.lb;
+  expected_msg << std::left << std::setw(width) << std::scientific
+               << std::setprecision(10) << data.ub;
+  expected_msg << std::left << std::setw(width) << std::scientific
+               << std::setprecision(10) << data.best_ub;
+  expected_msg << std::left << std::setw(width) << std::scientific
+               << std::setprecision(2) << data.best_ub - data.lb;
+  expected_msg << std::left << std::setw(width) << std::scientific
+               << std::setprecision(2)
+               << (data.best_ub - data.lb) / data.best_ub;
+  expected_msg << std::left << std::setw(width) << data.min_simplexiter;
+  expected_msg << std::left << std::setw(width) << data.max_simplexiter;
+  expected_msg << std::left << std::setw(width)
+               << data.number_of_subproblem_solved;
+
+  expected_msg << std::left << std::setw(width)
+               << data.cumulative_number_of_subproblem_solved;
+  expected_msg << std::left << std::setw(width) << std::setprecision(2)
+               << data.elapsed_time;
+  expected_msg << std::left << std::setw(width) << std::setprecision(2)
+               << data.timer_master;
+  expected_msg << std::left << std::setw(width) << std::setprecision(2)
+               << data.subproblems_walltime;
+
+  expected_msg << std::left << std::setw(width) << std::setprecision(2)
+               << data.subproblems_cumulative_cputime;
+  expected_msg << std::left << std::setw(width) << std::setprecision(2)
+               << time_not_solving;
+  expected_msg << std::endl;
+  auto log_file =
+      CreateRandomSubDir(std::filesystem::temp_directory_path()) / "log.txt";
+  MathLoggerBase benders_batch_logger(log_file, width, headers_type);
+  benders_batch_logger.Print(data);
+
+  ASSERT_EQ(expected_msg.str(), FileContent(log_file));
+}
+
+TEST(MathLoggerBendersBaseTest, DataInStdOutShort) {
+  HEADERSTYPE headers_type = HEADERSTYPE::SHORT;
+  std::streamsize width = 25;
+
+  CurrentIterationData data;
+  data.it = 35;
+  data.lb = 256999;
+  data.ub = 2222569996;
+  data.best_ub = 22225556999;
+  data.min_simplexiter = 3;
+  data.max_simplexiter = 30;
+  data.number_of_subproblem_solved = 657;
+  data.cumulative_number_of_subproblem_solved = 1387;
+  data.elapsed_time = 1000;
+  data.timer_master = 10;
+  data.subproblems_walltime = 16;
+  data.subproblems_cumulative_cputime = 160;
+  auto time_not_solving =
+      data.elapsed_time - data.timer_master - data.subproblems_walltime;
+
+  std::ostringstream expected_msg;
+  expected_msg << std::left << std::setw(width) << data.it;
+  expected_msg << std::left << std::setw(width) << std::scientific
+               << std::setprecision(10) << data.lb;
+  expected_msg << std::left << std::setw(width) << std::scientific
+               << std::setprecision(10) << data.ub;
+  expected_msg << std::left << std::setw(width) << std::scientific
+               << std::setprecision(10) << data.best_ub;
+  expected_msg << std::left << std::setw(width) << std::scientific
+               << std::setprecision(2) << data.best_ub - data.lb;
+  expected_msg << std::left << std::setw(width) << std::scientific
+               << std::setprecision(2)
+               << (data.best_ub - data.lb) / data.best_ub;
+
+  expected_msg << std::left << std::setw(width) << data.min_simplexiter;
+  expected_msg << std::left << std::setw(width) << data.max_simplexiter;
+
+  expected_msg << std::left << std::setw(width) << std::setprecision(2)
+               << data.elapsed_time;
+  expected_msg << std::left << std::setw(width) << std::setprecision(2)
+               << data.timer_master;
+  expected_msg << std::left << std::setw(width) << std::setprecision(2)
+               << data.subproblems_walltime;
+
+  expected_msg << std::endl;
+  std::stringstream redirectedStdout;
+  std::streambuf* initialBufferCout = std::cout.rdbuf(redirectedStdout.rdbuf());
+  MathLoggerBase benders_batch_logger(width);
+  benders_batch_logger.Print(data);
+  std::cout.rdbuf(initialBufferCout);
+
+  ASSERT_EQ(expected_msg.str(), redirectedStdout.str());
+}
