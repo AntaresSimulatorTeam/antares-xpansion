@@ -344,7 +344,7 @@ class ConfigLoader:
         if (isinstance(expert_logs, bool)):
             return expert_logs
         else:
-            return str_to_bool(self._config.settings_default["expert_logs"])[1]
+            return str_to_bool(expert_logs)[1]
 
     def additional_constraints(self):
         """
