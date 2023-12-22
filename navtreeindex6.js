@@ -1,5 +1,7 @@
 var NAVTREEINDEX6 =
 {
+"structCatch_1_1StringMaker_3_01signed_01char_0fSZ_0e_4.html":[24,0,3,73],
+"structCatch_1_1StringMaker_3_01std_1_1nullptr__t_01_4.html":[24,0,3,74],
 "structCatch_1_1StringMaker_3_01std_1_1string_01_4.html":[24,0,3,75],
 "structCatch_1_1StringMaker_3_01std_1_1wstring_01_4.html":[24,0,3,76],
 "structCatch_1_1StringMaker_3_01unsigned_01char_01_4.html":[24,0,3,79],
