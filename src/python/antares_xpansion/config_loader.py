@@ -14,7 +14,7 @@ import zipfile
 from antares_xpansion.chronicles_checker import ChronicleChecker
 from antares_xpansion.logger import step_logger
 from antares_xpansion.general_data_reader import GeneralDataIniReader
-from antares_xpansion.input_checker import check_candidates_file, check_options, str_to_bool
+from antares_xpansion.input_checker import check_candidates_file, check_options
 from antares_xpansion.launcher_options_default_value import LauncherOptionsDefaultValues
 from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
 from antares_xpansion.optimisation_keys import OptimisationKeys
@@ -333,18 +333,6 @@ class ConfigLoader:
 
         return int(batch_size_str)
 
-    def get_expert_logs(self):
-        """
-        return the expert_log option from settings file
-        """
-        expert_logs = self.options.get(
-            "expert_logs",
-            self._config.settings_default["expert_logs"],
-        )
-        if (isinstance(expert_logs, bool)):
-            return expert_logs
-        else:
-            return str_to_bool(expert_logs)[1]
 
     def additional_constraints(self):
         """
@@ -498,8 +486,6 @@ class ConfigLoader:
         options_values["LAST_MASTER_BASIS"] = self._config.LAST_MASTER_BASIS
         options_values[OptimisationKeys.batch_size_key()
                        ] = self.get_batch_size()
-        options_values[OptimisationKeys.expert_logs_key()
-                       ] = self.get_expert_logs()
         # generate options file for the solver
         with open(self.options_file_path(), "w") as options_file:
             json.dump(options_values, options_file, indent=4)

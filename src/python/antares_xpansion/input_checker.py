@@ -377,7 +377,6 @@ options_types_and_legal_values = {
     "log_level": (type_int, ["0", "1", "2", "3"]),
     "separation_parameter": (type_float, None),
     "batch_size": (type_int, None),
-    "expert_logs": (type_bool, None),
 }
 
 
@@ -587,10 +586,6 @@ def _check_setting_option_value(option, value):
 
     elif option == "batch_size":
         return _check_batch_size(value)
-
-    elif option == "expert_logs":
-        return str_to_bool(value)[0]
-
 
     logger.error(
         'check_candidate_option_value: Illegal value %s for option %s' % (value, option))

@@ -42,10 +42,11 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
     Writer writer;
 
     if (world.rank() == 0) {
-      auto logger_factory = FileAndStdoutLoggerFactory(
-          log_reports_name, benders_options.EXPERT_LOGS);
-      auto math_log_factory = MathLoggerFactory(
-          method, benders_options.EXPERT_LOGS, math_logs_file);
+      auto benders_log_console = benders_options.LOG_LEVEL > 0;
+      auto logger_factory =
+          FileAndStdoutLoggerFactory(log_reports_name, benders_log_console);
+      auto math_log_factory =
+          MathLoggerFactory(method, benders_log_console, math_logs_file);
 
       logger = logger_factory.get_logger();
       math_log_driver = math_log_factory.get_logger();
@@ -58,6 +59,7 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
       writer = build_void_writer();
       math_log_driver = MathLoggerFactory::get_void_logger();
     }
+
     benders_loggers.AddLogger(logger);
     benders_loggers.AddLogger(math_log_driver);
     pBendersBase benders;
@@ -76,12 +78,13 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
     oss_l << std::endl;
     benders_loggers.display_message(oss_l.str());
 
-    auto solver_log = std::filesystem::path(options.OUTPUTROOT) /
-                      (std::string("solver_log_proc_") +
-                       std::to_string(world.rank()) + ".txt");
+    if (benders_options.LOG_LEVEL > 1) {
+      auto solver_log = std::filesystem::path(options.OUTPUTROOT) /
+                        (std::string("solver_log_proc_") +
+                         std::to_string(world.rank()) + ".txt");
 
-    benders->set_solver_log_file(solver_log);
-
+      benders->set_solver_log_file(solver_log);
+    }
     writer->write_log_level(options.LOG_LEVEL);
     writer->write_master_name(options.MASTER_NAME);
     writer->write_solver_name(options.SOLVER_NAME);

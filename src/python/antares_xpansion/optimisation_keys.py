@@ -94,7 +94,3 @@ class OptimisationKeys:
     @staticmethod
     def batch_size_key():
         return "BATCH_SIZE"
-
-    @staticmethod
-    def expert_logs_key():
-        return "EXPERT_LOGS"
