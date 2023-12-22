@@ -89,10 +89,16 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
     writer->write_master_name(options.MASTER_NAME);
     writer->write_solver_name(options.SOLVER_NAME);
     benders->launch();
+
     std::stringstream str;
-    str << "Optimization results available in : " << options.JSON_FILE;
+    str << "Optimization results available in : " << options.JSON_FILE
+        << std::endl;
     benders_loggers.display_message(str.str());
-    logger->log_total_duration(benders->execution_time());
+
+    str.str("");
+    str << "Benders ran in " << benders->execution_time() << " s" << std::endl;
+    benders_loggers.display_message(str.str());
+
   } catch (std::exception& e) {
     std::ostringstream msg;
     msg << "error: " << e.what() << std::endl;
