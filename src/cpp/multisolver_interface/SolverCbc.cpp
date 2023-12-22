@@ -10,10 +10,7 @@ int SolverCbc::_NumberOfProblems = 0;
 
 SolverCbc::SolverCbc(SolverLogManager &log_manager) : SolverCbc() {
   _fp = log_manager.log_file_ptr;
-  if (!_fp) {
-    std::cout << "Empty log file name, fallback to default behaviour"
-              << std::endl;
-  } else {
+  if (_fp) {
     _clp_inner_solver.messageHandler()->setFilePointer(_fp);
     _cbc.messageHandler()->setFilePointer(_fp);
   }
@@ -622,7 +619,7 @@ void SolverCbc::set_output_log_level(int loglevel) {
 
   for (const auto message_handler :
        {_clp_inner_solver.messageHandler(), _cbc.messageHandler()}) {
-    if (loglevel > 0) {
+    if (loglevel > 1) {
       message_handler->setLogLevel(0, 1);  // Coin messages
       message_handler->setLogLevel(1, 1);  // Clp messages
       message_handler->setLogLevel(2, 1);  // Presolve messages
