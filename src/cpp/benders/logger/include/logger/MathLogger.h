@@ -11,6 +11,8 @@ class MathLoggerFile : public MathLoggerImplementation {
                           const std::filesystem::path& log_file,
                           std::streamsize width = 45);
 
+  void display_message(const std::string& msg) override;
+
  private:
   std::ofstream file_stream_;
 };

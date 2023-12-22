@@ -90,3 +90,7 @@ MathLoggerFile::MathLoggerFile(const BENDERSMETHOD& method,
                                const std::filesystem::path& filename,
                                std::streamsize width)
     : MathLoggerImplementation(method, filename, width, HEADERSTYPE::LONG) {}
+
+void MathLoggerFile::display_message(const std::string& msg) {
+  // keep empty
+}
