@@ -487,7 +487,7 @@ void SolverClp::get_mip_sol(double *primals) {
 ---------------------------
 *************************************************************************************************/
 void SolverClp::set_output_log_level(int loglevel) {
-  if (loglevel > 1) {
+  if (loglevel > 1 && _fp) {
     _clp.messageHandler()->setLogLevel(1);
   } else {
     _clp.messageHandler()->setLogLevel(0);

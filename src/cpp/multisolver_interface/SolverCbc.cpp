@@ -619,7 +619,7 @@ void SolverCbc::set_output_log_level(int loglevel) {
 
   for (const auto message_handler :
        {_clp_inner_solver.messageHandler(), _cbc.messageHandler()}) {
-    if (loglevel > 1) {
+    if (loglevel > 1 && _fp) {
       message_handler->setLogLevel(0, 1);  // Coin messages
       message_handler->setLogLevel(1, 1);  // Clp messages
       message_handler->setLogLevel(2, 1);  // Presolve messages
