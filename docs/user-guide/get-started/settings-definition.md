@@ -16,12 +16,19 @@ The following section lists the configurable parameters. If the user does not sp
 |[`master`](#master) | `integer` | Resolution mode of the master problem |
 |[`yearly-weights`](#yearly-weights) | `None` | Path of the Monte-Carlo weights file |
 |[`solver`](#solver) | `Cbc` | Name of the solver |
-|[`log_level`](#log_level) | `0` | Solver's log level |
+|[`log_level`](#log_level) | `0` | logs severity see tab below |
 |[`additional-constraints`](#additional-constraints) | `None` | Path of the additional constraints file |
 |[`separation_parameter`](#separation_parameter) | `0.5` | Step size for the in-out separation |
 |[`relaxed_optimality_gap`](#relaxed_optimality_gap) | `1e-5` | Threshold to switch from relaxed to integer master |
 |[`batch_size`](#batch_size) | `0` | Number of subproblems per batch |
-|[`expert_logs`](#expert_logs) | `false` | display pure optimization data (/!\ the corresponding option(`EXPERT_LOGS`) for benders is `true` by default ) |
+
+log display according to log_level
+ ****        | **Operational**  | **Benders** | **Solver** 
+-------------|------------------|-------------|------------
+ **File**    | always           | always      | 2          
+ **Console** | 0                |  > 0        | never      
+
+
 
 The format is a standard `.ini` and should follow this template:
 ```ini
