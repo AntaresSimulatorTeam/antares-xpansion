@@ -47,7 +47,6 @@ class XpansionDriver:
 
         self.benders_driver = BendersDriver(
             self.config_loader.benders_exe(),
-            self.config_loader.benders_by_batch_exe(),
             self.config_loader.merge_mps_exe(),
             self.config_loader.options_file_name()
         )
@@ -178,7 +177,6 @@ class XpansionDriver:
             self.config_loader.launcher_options_file_path(),
             self.config_loader.options_file_name(),
             self.config_loader.benders_exe(),
-            self.config_loader.benders_by_batch_exe(),
             self.config_loader.merge_mps_exe())
 
         resume_study = ResumeStudy(resume_study_data)

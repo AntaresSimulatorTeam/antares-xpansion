@@ -38,7 +38,7 @@ class InputParser:
                                  dest=LauncherOptionsKeys.method_key(),
                                  type=str,
                                  choices=["benders",
-                                          "mergeMPS", "benders_by_batch"],
+                                          "mergeMPS"],
                                  help="Choose the optimization method",
                                  default=LauncherOptionsDefaultValues.DEFAULT_VALUE())
         self.parser.add_argument("-n", "--np",
