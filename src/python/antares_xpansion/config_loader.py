@@ -598,8 +598,6 @@ class ConfigLoader:
     def benders_exe(self):
         return self.exe_path(self._config.BENDERS)
 
-    def benders_by_batch_exe(self):
-        return self.exe_path(self._config.BENDERS_BY_BATCH)
 
     def merge_mps_exe(self):
         return self.exe_path(self._config.MERGE_MPS)
