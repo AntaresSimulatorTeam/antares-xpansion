@@ -660,31 +660,21 @@ void BendersBase::set_solver_log_file(const std::filesystem::path &log_file) {
 }
 
 /*!
- *  \brief Build the input from the structure file
+ *  \brief set the input
  *
- *	Function to build the map linking each problem name to its variables and
- *their id
- *
- *  \param root : root of the structure file
- *
- *  \param summary_name : name of the structure file
- *
- *  \param coupling_map : empty map to increment
- *
- *  \note The id in the coupling_map is that of the variable in the solver
- *responsible for the creation of the structure file.
+ *  \param coupling_map : CouplingMap
  */
-void BendersBase::build_input_map() {
-  auto input = build_input(get_structure_path());
-  _totalNbProblems = input.size();
+void BendersBase::set_input_map(const CouplingMap &coupling_map) {
+  coupling_map_ = coupling_map;
+  _totalNbProblems = coupling_map_.size();
   _writer->write_nbweeks(_totalNbProblems);
   _data.nsubproblem = _totalNbProblems - 1;
-  master_variable_map = get_master_variable_map(input);
-  coupling_map = GetCouplingMap(input);
+  master_variable_map_ = get_master_variable_map(coupling_map_);
+  coupling_map_.erase(get_master_name());
 }
 
 std::map<std::string, int> BendersBase::get_master_variable_map(
-    std::map<std::string, std::map<std::string, int>> input_map) const {
+    const std::map<std::string, std::map<std::string, int>> &input_map) const {
   auto const it_master(input_map.find(get_master_name()));
   if (it_master == input_map.end()) {
     _logger->display_message(LOGLOCATION + "UNABLE TO FIND " +
@@ -692,17 +682,6 @@ std::map<std::string, int> BendersBase::get_master_variable_map(
     std::exit(1);
   }
   return it_master->second;
-}
-
-CouplingMap BendersBase::GetCouplingMap(CouplingMap input) const {
-  CouplingMap couplingMap;
-  auto master_name = get_master_name();
-  std::copy_if(input.begin(), input.end(),
-               std::inserter(couplingMap, couplingMap.end()),
-               [master_name](const CouplingMap::value_type &kvp) {
-                 return kvp.first != master_name;
-               });
-  return couplingMap;
 }
 
 void BendersBase::reset_master(WorkerMaster *worker_master) {
@@ -724,7 +703,7 @@ void BendersBase::free_subproblems() {
 }
 void BendersBase::MatchProblemToId() {
   int count = 0;
-  for (const auto &problem : coupling_map) {
+  for (const auto &problem : coupling_map_) {
     _problem_to_id[problem.first] = count;
     count++;
   }

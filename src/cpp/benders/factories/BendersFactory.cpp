@@ -49,6 +49,8 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
       writer = build_void_writer();
     }
 
+    const auto couplig_map = build_input(benders_options.STRUCTURE_FILE);
+    world.barrier();
     pBendersBase benders;
     if (method == BENDERSMETHOD::BENDERS) {
       benders = std::make_shared<BendersMpi>(benders_options, logger, writer,
@@ -61,6 +63,7 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
       logger->display_message(err_msg);
       std::exit(1);
     }
+    benders->set_input_map(couplig_map);
     std::ostringstream oss_l = start_message(options, benders->BendersName());
     oss_l << std::endl;
     logger->display_message(oss_l.str());
