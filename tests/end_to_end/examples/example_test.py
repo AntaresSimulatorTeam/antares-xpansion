@@ -39,7 +39,7 @@ def remove_outputs(study_path):
                 shutil.rmtree(f)
 
 
-def launch_xpansion(install_dir, study_path, method: BendersMethod, allow_run_as_root=False, nproc: int = 4):
+def launch_xpansion(install_dir, study_path, allow_run_as_root=False, nproc: int = 4):
     # Clean study output
     remove_outputs(study_path)
 
@@ -52,8 +52,6 @@ def launch_xpansion(install_dir, study_path, method: BendersMethod, allow_run_as
         install_dir_full,
         "--dataDir",
         str(study_path),
-        "--method",
-        method.value,
         "--step",
         "full",
         "-n",
