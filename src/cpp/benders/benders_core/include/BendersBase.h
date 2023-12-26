@@ -37,7 +37,7 @@ class BendersBase {
   }
   double execution_time() const;
   virtual std::string BendersName() const = 0;
-  void BendersBase::set_input_map(const CouplingMap &coupling_map);
+  void set_input_map(const CouplingMap &coupling_map);
 
  protected:
   CurrentIterationData _data;
