@@ -10,11 +10,10 @@ class FullRunOptionsParser : public ProblemGenerationExeOptions {
   FullRunOptionsParser();
   virtual ~FullRunOptionsParser() = default;
   void Parse(unsigned int argc, const char* const* argv) override;
-  class FullRunOptionInvalidMethod : public std::runtime_error {
-   public:
-    std::filesystem::path BendersOptionsFile() const {
-      return benders_options_file_;
-    }
+
+  std::filesystem::path BendersOptionsFile() const {
+    return benders_options_file_;
+  }
   std::filesystem::path SolutionFile() const { return solutionFile_; }
 
  private:
