@@ -38,7 +38,7 @@ class TestFullRunDriver:
         problem_generation.set_output_path(output_path)
         problem_generation.create_lp_dir()
         benders_driver = BendersDriver(
-            "benders.exe", "", "", self.benders_driver_options_file)
+            "benders.exe", "", self.benders_driver_options_file)
         full_run_driver = FullRunDriver(self.full_run_exe,
                                         problem_generation, benders_driver)
         full_run_driver.prepare_drivers(output_path, is_relaxed, benders_method, json_file_path,
@@ -72,7 +72,7 @@ class TestFullRunDriver:
         problem_generation.create_lp_dir()
 
         benders_driver = BendersDriver(
-            "benders.exe", "", "", self.benders_driver_options_file)
+            "benders.exe", "",  self.benders_driver_options_file)
         full_run_driver = FullRunDriver(self.full_run_exe,
                                         problem_generation, benders_driver)
         full_run_driver.prepare_drivers(output_path, is_relaxed, benders_method, json_file_path,
