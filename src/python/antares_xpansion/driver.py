@@ -75,7 +75,6 @@ class XpansionDriver:
             self.config_loader.benders_pre_actions()
             self.full_run_driver.launch(self.config_loader.simulation_output_path(),
                                         self.config_loader.is_relaxed(),
-                                        self.config_loader.method(),
                                         self.config_loader.json_file_path(),
                                         self.config_loader.keep_mps(),
                                         self.config_loader.n_mpi(),
