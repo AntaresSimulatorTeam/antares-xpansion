@@ -52,7 +52,7 @@ TEST_F(FullRunOptionsParserTest, ThatSolutionOptionIsRequired) {
   std::vector<const char*> ppargv = {argv0, argv1, argv2, argv3,
                                      argv4, argv5, argv6};
   try {
-    full_run_options_options_parser_.Parse(9, ppargv.data());
+    full_run_options_options_parser_.Parse(7, ppargv.data());
   } catch (const std::exception& e) {
     EXPECT_EQ(e.what(),
               std::string("the option '--solution' is required but missing"));
@@ -71,7 +71,7 @@ TEST_F(FullRunOptionsParserTest, OptionsParsing) {
   const char argv8[] = "/path/to/solution.json";
   std::vector<const char*> ppargv = {argv0, argv1, argv2, argv3, argv4,
                                      argv5, argv6, argv7, argv8};
-  full_run_options_options_parser_.Parse(11, ppargv.data());
+  full_run_options_options_parser_.Parse(9, ppargv.data());
   ASSERT_EQ(full_run_options_options_parser_.ArchivePath(),
             std::filesystem::path(argv2));
   ASSERT_EQ(full_run_options_options_parser_.BendersOptionsFile(),
