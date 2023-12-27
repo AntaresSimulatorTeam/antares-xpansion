@@ -78,7 +78,7 @@ class TestResumeStudy:
 
         with pytest.raises(ResumeStudy.KeyWordNotFound):
             resume_study = ResumeStudy(ResumeStudyData(
-                output_path, launcher_options_file.name, benders_options_file_name, "", ""s))
+                output_path, launcher_options_file.name, benders_options_file_name, "", ""))
             resume_study.launch()
 
     def test_fail_if_last_master_file_not_found(self, tmp_path):

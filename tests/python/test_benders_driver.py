@@ -191,7 +191,7 @@ class TestBendersDriver:
         with patch(MOCK_SYS, autospec=True) as sys_:
             sys_.platform = "exotic_platform"
             with pytest.raises(BendersDriver.BendersUnsupportedPlatform):
-                BendersDriver("", "",  "", self.OPTIONS_JSON)
+                BendersDriver("",  "", self.OPTIONS_JSON)
 
     def test_clean_benders_step_if_not_keep_mps(self, tmp_path):
         my_benders_mpi = "something"
