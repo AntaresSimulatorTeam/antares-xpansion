@@ -41,7 +41,7 @@ class TestFullRunDriver:
             "benders.exe", "", self.benders_driver_options_file)
         full_run_driver = FullRunDriver(self.full_run_exe,
                                         problem_generation, benders_driver)
-        full_run_driver.prepare_drivers(output_path, is_relaxed, benders_method, json_file_path,
+        full_run_driver.prepare_drivers(output_path, is_relaxed, json_file_path,
                                         benders_keep_mps=benders_keep_mps, benders_oversubscribe=benders_oversubscribe, benders_allow_run_as_root=benders_allow_run_as_root)
         xpansion_output_dir = output_path.parent / \
             (output_path.stem+"-Xpansion")
@@ -75,7 +75,7 @@ class TestFullRunDriver:
             "benders.exe", "",  self.benders_driver_options_file)
         full_run_driver = FullRunDriver(self.full_run_exe,
                                         problem_generation, benders_driver)
-        full_run_driver.prepare_drivers(output_path, is_relaxed, benders_method, json_file_path,
+        full_run_driver.prepare_drivers(output_path, is_relaxed, json_file_path,
                                         benders_keep_mps, benders_n_mpi, benders_oversubscribe, benders_allow_run_as_root)
         xpansion_output_dir = output_path.parent / \
             (output_path.stem+"-Xpansion")
