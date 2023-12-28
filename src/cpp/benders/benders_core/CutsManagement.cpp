@@ -1,7 +1,7 @@
 #include "CutsManagement.h"
 
-CutManagerRunTime::Save(const BendersCuts& benders_cuts) {
+void CutsManagerRunTime::Save(const BendersCuts& benders_cuts) {
   benders_cuts_ = benders_cuts;
 }
 
-BendersCuts CutManagerRunTime::Load() { return benders_cuts_; }
+BendersCuts CutsManagerRunTime::Load() { return benders_cuts_; }

@@ -8,7 +8,7 @@ class ICutsManager {
   virtual BendersCuts Load() = 0;
 };
 
-class CutManagerRunTime : public ICutsManager {
+class CutsManagerRunTime : public ICutsManager {
  public:
   void Save(const BendersCuts& benders_cuts) override;
   BendersCuts Load() override;
