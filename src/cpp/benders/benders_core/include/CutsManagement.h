@@ -16,5 +16,3 @@ class CutManagerRunTime : public ICutsManager {
  private:
   BendersCuts benders_cuts_;
 };
-
-class
