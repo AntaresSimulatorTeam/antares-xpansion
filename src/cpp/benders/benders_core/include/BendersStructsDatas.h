@@ -5,6 +5,8 @@
 #include "common.h"
 #include "ILogger.h"
 
+/*! \struct struct that hold current benders iteration
+ */
 struct CurrentIterationData {
   double subproblems_walltime;
   double subproblems_cputime;
@@ -33,6 +35,16 @@ struct CurrentIterationData {
   bool is_in_initial_relaxation;
   int number_of_subproblem_resolved;
 };
+
+/*! \struct to store benders cuts data
+ */
+struct BendersCuts {
+  Point x_cut;
+  SubProblemDataMap subsProblemDataMap;
+};
+
+using BendersCutsPerIteration = std::vector<BendersCuts>;
+
 /*!
  * \class WorkerMasterData
  * \brief Class use to store trace information during the algorithm run

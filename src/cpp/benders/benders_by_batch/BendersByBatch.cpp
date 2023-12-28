@@ -226,8 +226,14 @@ void BendersByBatch::BuildCut(
   misprice_ = global_misprice;
   Gather(subproblem_data_map, gathered_subproblem_map, rank_0);
   SetSubproblemsWalltime(subproblems_timer_per_proc.elapsed());
+
+  if (Rank() == rank_0) {
+    cutsPerIteration_.push_back({_data.x_cut, {}});
+  }
   for (const auto &subproblem_map : gathered_subproblem_map) {
-    for (auto &&[_, subproblem_data] : subproblem_map) {
+    for (auto &&[sub_problem_name, subproblem_data] : subproblem_map) {
+      cutsPerIteration_.back().subsProblemDataMap[sub_problem_name] =
+          subproblem_data;
       SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
     }
   }

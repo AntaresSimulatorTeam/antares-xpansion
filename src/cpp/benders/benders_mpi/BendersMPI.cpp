@@ -150,8 +150,14 @@ SubProblemDataMap BendersMpi::get_subproblem_cut_package() {
 void BendersMpi::master_build_cuts(
     std::vector<SubProblemDataMap> gathered_subproblem_map) {
   SetSubproblemCost(0);
+
+  if (Rank() == rank_0) {
+    cutsPerIteration_.push_back({_data.x_cut, {}});
+  }
   for (const auto &subproblem_data_map : gathered_subproblem_map) {
-    for (auto &&[_, subproblem_data] : subproblem_data_map) {
+    for (auto &&[sub_problem_name, subproblem_data] : subproblem_data_map) {
+      cutsPerIteration_.back().subsProblemDataMap[sub_problem_name] =
+          subproblem_data;
       SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
     }
   }
@@ -159,9 +165,11 @@ void BendersMpi::master_build_cuts(
   _logger->display_message("\tSolving subproblems...");
 
   _data.ub = 0;
+
   for (const auto &subproblem_data_map : gathered_subproblem_map) {
     BuildCutFull(subproblem_data_map);
   }
+
   _logger->LogSubproblemsSolvingCumulativeCpuTime(
       GetSubproblemsCumulativeCpuTime());
   _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());

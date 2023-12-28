@@ -42,6 +42,7 @@ class BendersBase {
   CurrentIterationData _data;
   VariableMap master_variable_map;
   CouplingMap coupling_map;
+  BendersCutsPerIteration cutsPerIteration_;
 
  protected:
   virtual void free() = 0;
