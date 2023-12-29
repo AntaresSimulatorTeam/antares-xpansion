@@ -3,6 +3,7 @@
 
 #include <filesystem>
 
+#include "CutsManagement.h"
 #include "LogUtils.h"
 #include "LoggerFactories.h"
 #include "StartUp.h"
@@ -15,12 +16,9 @@
 int RunBenders(char** argv, const std::filesystem::path& options_file,
                mpi::environment& env, mpi::communicator& world,
                const BENDERSMETHOD& method) {
-  // Read options, needed to have options.OUTPUTROOT
   Logger logger;
 
   try {
-    /* code */
-
     SimulationOptions options(options_file);
 
     BendersBaseOptions benders_options(options.get_benders_options());
@@ -100,13 +98,13 @@ BendersMainFactory::BendersMainFactory(int argc, char** argv,
                                        mpi::environment& env,
                                        mpi::communicator& world)
     : argv_(argv), method_(method), penv_(&env), pworld_(&world) {
-  // First check usage (options are given)
   if (world.rank() == 0) {
     usage(argc);
   }
 
   options_file_ = std::filesystem::path(argv_[1]);
 }
+
 BendersMainFactory::BendersMainFactory(
     int argc, char** argv, const BENDERSMETHOD& method,
     const std::filesystem::path& options_file, mpi::environment& env,
@@ -116,11 +114,11 @@ BendersMainFactory::BendersMainFactory(
       options_file_(options_file),
       penv_(&env),
       pworld_(&world) {
-  // First check usage (options are given)
   if (world.rank() == 0) {
     usage(argc);
   }
 }
+
 int BendersMainFactory::Run() const {
   return RunBenders(argv_, options_file_, *penv_, *pworld_, method_);
 }

@@ -4,15 +4,15 @@
 class ICutsManager {
  public:
   ICutsManager() = default;
-  void virtual Save(const BendersCuts& benders_cuts) = 0;
-  virtual BendersCuts Load() = 0;
+  void virtual Save(const BendersCutsPerIteration& benders_cuts) = 0;
+  virtual BendersCutsPerIteration Load() = 0;
 };
 
 class CutsManagerRunTime : public ICutsManager {
  public:
-  void Save(const BendersCuts& benders_cuts) override;
-  BendersCuts Load() override;
+  void Save(const BendersCutsPerIteration& benders_cuts) override;
+  BendersCutsPerIteration Load() override;
 
  private:
-  BendersCuts benders_cuts_;
+  BendersCutsPerIteration benders_cuts_;
 };

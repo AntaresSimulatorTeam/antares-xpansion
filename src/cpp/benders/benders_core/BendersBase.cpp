@@ -841,3 +841,7 @@ void BendersBase::write_basis() const {
                       (_options.LAST_MASTER_BASIS));
   _master->write_basis(filename);
 }
+
+BendersCutsPerIteration BendersBase::CutsPerIteration() const {
+  return cutsPerIteration_;
+}
