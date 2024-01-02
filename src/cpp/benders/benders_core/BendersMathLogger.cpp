@@ -4,13 +4,13 @@
 #include "LoggerUtils.h"
 
 HeadersManager::HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method) {
-  headers_list.push_back("ITE");
-  headers_list.push_back("LB");
+  headers_list.push_back("Ite");
+  headers_list.push_back("Lb");
   if (method == BENDERSMETHOD::BENDERS) {
-    headers_list.push_back("UB");
-    headers_list.push_back("BESTUB");
-    headers_list.push_back("AGAP");
-    headers_list.push_back("RGAP");
+    headers_list.push_back("Ub");
+    headers_list.push_back("BestUb");
+    headers_list.push_back("AGap");
+    headers_list.push_back("RGap");
   }
   headers_list.push_back("MinSpx");
   headers_list.push_back("MaxSpx");
