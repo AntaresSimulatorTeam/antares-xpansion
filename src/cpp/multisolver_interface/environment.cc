@@ -202,15 +202,11 @@ bool LoadXpressFunctions(DynamicLibrary* xpress_dynamic_library) {
   return true;
 }
 
-void printXpressBanner(bool error) {
+void printXpressBanner() {
   char banner[XPRS_MAXBANNERLENGTH];
   XPRSgetbanner(banner);
 
-  if (error) {
-    std::cout << "Xpress banner :\n" << banner << "\n";
-  } else {
-    std::cout << "Xpress banner :\n" << banner << "\n";
-  }
+  std::cout << "Xpress banner :\n" << banner << "\n";
 }
 
 std::string GetXpressVarFromEnvironmentVariables(const char* XPRESS_var) {
@@ -353,7 +349,7 @@ bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
     if (!code) {
       // XPRSbanner informs about Xpress version, options and error messages
       if (verbose) {
-        printXpressBanner(false);
+        printXpressBanner();
         char version[16];
         XPRSgetversion(version);
         std::cout << "Warning: "
