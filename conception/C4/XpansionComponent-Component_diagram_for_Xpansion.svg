@@ -1,0 +1,433 @@
+<?xml version="1.0" encoding="us-ascii" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" contentStyleType="text/css"
+     height="789px" preserveAspectRatio="none" style="width:923px;height:789px;background:#FFFFFF;" version="1.1"
+     viewBox="0 0 923 789" width="923px" zoomAndPan="magnify">
+    <defs/>
+    <g>
+        <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing"
+              textLength="268" x="320.5" y="22.9951">Component diagram for Xpansion
+        </text><!--cluster xpansion-->
+        <g id="cluster_xpansion">
+            <rect fill="none" height="393.5" rx="2.5" ry="2.5"
+                  style="stroke:#444444;stroke-width:1.0;stroke-dasharray:7.0,7.0;" width="672" x="7" y="198.2969"/>
+            <text fill="#444444" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing"
+                  textLength="82" x="302" y="215.1484">Xpansion
+            </text>
+            <text fill="#444444" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing"
+                  textLength="77" x="304.5" y="230.0605">[Container]
+            </text>
+        </g><!--entity pbgen-->
+        <g id="elem_pbgen">
+            <rect fill="#85BBF0" height="101.4844" rx="2.5" ry="2.5" style="stroke:#78A8D8;stroke-width:0.5;"
+                  width="201" x="31.5" y="466.7969"/>
+            <text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing"
+                  textLength="75" x="41.5" y="491.6484">Problem
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing"
+                  textLength="6" x="116.5" y="491.6484">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing"
+                  textLength="100" x="122.5" y="491.6484">Generation
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+                  textLength="38" x="113" y="506.5605">[C++]
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="130"
+                  y="522.3857">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="51" x="42"
+                  y="538.6826">Update
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="93"
+                  y="538.6826">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="54" x="97"
+                  y="538.6826">antares
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="151"
+                  y="538.6826">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="67" x="155"
+                  y="538.6826">simulator
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="47" x="51"
+                  y="554.9795">results
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="98"
+                  y="554.9795">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="29" x="102"
+                  y="554.9795">with
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="131"
+                  y="554.9795">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="78" x="135"
+                  y="554.9795">candidates
+            </text>
+        </g><!--entity benders-->
+        <g id="elem_benders">
+            <rect fill="#85BBF0" height="85.1875" rx="2.5" ry="2.5" style="stroke:#78A8D8;stroke-width:0.5;" width="150"
+                  x="268" y="474.7969"/>
+            <text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing"
+                  textLength="74" x="306" y="499.6484">Benders
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+                  textLength="38" x="324" y="514.5605">[C++]
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="341"
+                  y="530.3857">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="39" x="278"
+                  y="546.6826">Solve
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="317"
+                  y="546.6826">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="23" x="321"
+                  y="546.6826">the
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="344"
+                  y="546.6826">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="60" x="348"
+                  y="546.6826">problem
+            </text>
+        </g><!--entity driver-->
+        <g id="elem_driver">
+            <rect fill="#85BBF0" height="117.7813" rx="2.5" ry="2.5" style="stroke:#78A8D8;stroke-width:0.5;"
+                  width="220" x="337" y="257.2969"/>
+            <text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing"
+                  textLength="65" x="355.5" y="282.1484">Drivers
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing"
+                  textLength="6" x="420.5" y="282.1484">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing"
+                  textLength="112" x="426.5" y="282.1484">(executable)
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+                  textLength="53" x="420.5" y="297.0605">[python]
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="445"
+                  y="312.8857">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57" x="361"
+                  y="329.1826">Perform
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="418"
+                  y="329.1826">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="49" x="422"
+                  y="329.1826">checks
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="471"
+                  y="329.1826">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="18" x="475"
+                  y="329.1826">on
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="493"
+                  y="329.1826">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="36" x="497"
+                  y="329.1826">input
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="32" x="347"
+                  y="345.4795">data
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="379"
+                  y="345.4795">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="27" x="383"
+                  y="345.4795">and
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="410"
+                  y="345.4795">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="50" x="414"
+                  y="345.4795">control
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="464"
+                  y="345.4795">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="79" x="468"
+                  y="345.4795">application
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="29"
+                  x="432.5" y="361.7764">flow
+            </text>
+        </g><!--entity fullrun-->
+        <g id="elem_fullrun">
+            <rect fill="#85BBF0" height="101.4844" rx="2.5" ry="2.5" style="stroke:#78A8D8;stroke-width:0.5;"
+                  width="194" x="453" y="466.7969"/>
+            <text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing"
+                  textLength="32" x="516" y="491.6484">Full
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing"
+                  textLength="6" x="548" y="491.6484">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing"
+                  textLength="30" x="554" y="491.6484">run
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+                  textLength="37" x="531.5" y="506.5605">[c++]
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="548"
+                  y="522.3857">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="81" x="478"
+                  y="538.6826">Encompass
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="559"
+                  y="538.6826">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="59" x="563"
+                  y="538.6826">Problem
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="80" x="463"
+                  y="554.9795">Generation
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="543"
+                  y="554.9795">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="27" x="547"
+                  y="554.9795">and
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="574"
+                  y="554.9795">&#160;
+            </text>
+            <text fill="#000000" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="59" x="578"
+                  y="554.9795">Benders
+            </text>
+        </g><!--entity web-->
+        <g id="elem_web">
+            <rect fill="#438DD5" height="85.1875" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="137"
+                  x="378.5" y="44.2969"/>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing"
+                  textLength="71" x="388.5" y="69.1484">Antares
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing"
+                  textLength="6" x="459.5" y="69.1484">&#160;
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing"
+                  textLength="40" x="465.5" y="69.1484">Web
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+                  textLength="90" x="402" y="84.0605">[React/Python]
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="445"
+                  y="99.8857">&#160;
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57"
+                  x="391.5" y="116.1826">Manage
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="448.5"
+                  y="116.1826">&#160;
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="50"
+                  x="452.5" y="116.1826">studies
+            </text>
+        </g><!--entity simulator-->
+        <g id="elem_simulator">
+            <rect fill="#438DD5" height="134.0781" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;"
+                  width="214" x="703" y="450.2969"/>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing"
+                  textLength="71" x="728.5" y="475.1484">Antares
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing"
+                  textLength="6" x="799.5" y="475.1484">&#160;
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing"
+                  textLength="86" x="805.5" y="475.1484">simulator
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+                  textLength="38" x="791" y="490.0605">[C++]
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="808"
+                  y="505.8857">&#160;
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="60" x="718"
+                  y="522.1826">Quantify
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="778"
+                  y="522.1826">&#160;
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="23" x="782"
+                  y="522.1826">the
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="805"
+                  y="522.1826">&#160;
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="74" x="809"
+                  y="522.1826">adequacy,
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="883"
+                  y="522.1826">&#160;
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="15" x="887"
+                  y="522.1826">or
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="23" x="713"
+                  y="538.4795">the
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="736"
+                  y="538.4795">&#160;
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="70" x="740"
+                  y="538.4795">economic
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="810"
+                  y="538.4795">&#160;
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="93" x="814"
+                  y="538.4795">performance
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="14" x="720"
+                  y="554.7764">of
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="734"
+                  y="554.7764">&#160;
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="108" x="738"
+                  y="554.7764">interconnected
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="846"
+                  y="554.7764">&#160;
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="50" x="850"
+                  y="554.7764">energy
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="57"
+                  x="781.5" y="571.0732">systems
+            </text>
+        </g><!--entity scripts-->
+        <g id="elem_scripts">
+            <rect fill="#438DD5" height="52.5938" rx="2.5" ry="2.5" style="stroke:#3C7FC0;stroke-width:0.5;" width="91"
+                  x="625.5" y="60.2969"/>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing"
+                  textLength="53" x="635.5" y="85.1484">Script
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing"
+                  textLength="6" x="688.5" y="85.1484">&#160;
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="16" font-weight="bold" lengthAdjust="spacing"
+                  textLength="12" x="694.5" y="85.1484">R
+            </text>
+            <text fill="#FFFFFF" font-family="sans-serif" font-size="12" font-style="italic" lengthAdjust="spacing"
+                  textLength="18" x="662" y="100.0605">[R]
+            </text>
+        </g><!--link driver to benders-->
+        <g id="link_driver_benders">
+            <path d="M416.64,375.3869 C400.03,407.1669 383.5463,438.7172 368.5063,467.4872 " fill="none"
+                  id="driver-to-benders" style="stroke:#666666;stroke-width:1.0;"/>
+            <polygon fill="#666666" points="364.8,474.5769,371.1649,468.877,365.8476,466.0973,364.8,474.5769"
+                     style="stroke:#666666;stroke-width:1.0;"/>
+            <text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing"
+                  textLength="35" x="399" y="417.4355">Start
+            </text>
+        </g><!--link driver to pbgen-->
+        <g id="link_driver_pbgen">
+            <path d="M355.04,375.3869 C309.19,404.3569 261.0835,434.7544 217.2335,462.4544 " fill="none"
+                  id="driver-to-pbgen" style="stroke:#666666;stroke-width:1.0;"/>
+            <polygon fill="#666666" points="210.47,466.7269,218.8357,464.9907,215.6313,459.918,210.47,466.7269"
+                     style="stroke:#666666;stroke-width:1.0;"/>
+            <text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing"
+                  textLength="35" x="299" y="417.4355">Start
+            </text>
+        </g><!--link driver to fullrun-->
+        <g id="link_driver_fullrun">
+            <path d="M477.07,375.3869 C492.03,404.2969 506.251,431.783 520.581,459.453 " fill="none"
+                  id="driver-to-fullrun" style="stroke:#666666;stroke-width:1.0;"/>
+            <polygon fill="#666666" points="524.26,466.5569,523.2449,458.0734,517.917,460.8326,524.26,466.5569"
+                     style="stroke:#666666;stroke-width:1.0;"/>
+            <text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing"
+                  textLength="35" x="499" y="417.4355">Start
+            </text>
+        </g><!--link driver to simulator-->
+        <g id="link_driver_simulator">
+            <path d="M552.97,375.3869 C600.16,401.2569 648.6252,427.8307 695.9352,453.7707 " fill="none"
+                  id="driver-to-simulator" style="stroke:#666666;stroke-width:1.0;"/>
+            <polygon fill="#666666" points="702.95,457.6169,697.3776,451.1402,694.4929,456.4012,702.95,457.6169"
+                     style="stroke:#666666;stroke-width:1.0;"/>
+            <text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing"
+                  textLength="27" x="629" y="417.4355">Run
+            </text>
+        </g><!--link web to driver-->
+        <g id="link_web_driver">
+            <path d="M447,129.5269 C447,165.3169 447,209.2569 447,249.1269 " fill="none" id="web-to-driver"
+                  style="stroke:#666666;stroke-width:1.0;"/>
+            <polygon fill="#666666" points="447,257.1269,450,249.1269,444,249.1269,447,257.1269"
+                     style="stroke:#666666;stroke-width:1.0;"/>
+            <text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing"
+                  textLength="35" x="448" y="171.4355">Start
+            </text>
+        </g><!--link scripts to xpansion-->
+        <g id="link_scripts_xpansion">
+            <path d="M671,113.4469 C671,128.0894 671,147.7494 671,169.0706 C671,174.4009 671,179.8351 671,185.3206 C671,188.0634 671,190.819 671,193.5809 C671,194.9618 671,188.3444 671,189.7276 "
+                  fill="none" id="scripts-to-xpansion" style="stroke:#666666;stroke-width:1.0;"/>
+            <polygon fill="#666666" points="671,197.7276,674,189.7276,668,189.7276,671,197.7276"
+                     style="stroke:#666666;stroke-width:1.0;"/>
+            <text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing"
+                  textLength="63" x="672" y="171.4355">Generate
+            </text>
+            <text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing"
+                  textLength="4" x="735" y="171.4355">&#160;
+            </text>
+            <text fill="#666666" font-family="sans-serif" font-size="12" font-weight="bold" lengthAdjust="spacing"
+                  textLength="39" x="739" y="171.4355">study
+            </text>
+        </g>
+        <text fill="#000000" font-family="sans-serif" font-size="14" font-weight="bold" lengthAdjust="spacing"
+              textLength="59" x="740" y="628.792">Legend
+        </text>
+        <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="4" x="799"
+              y="628.792">&#160;
+        </text>
+        <rect fill="#08427B" height="16.2969" style="stroke:none;stroke-width:1.0;" width="152" x="740" y="632.0938"/>
+        <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="49" x="744"
+              y="645.0889">person
+        </text>
+        <rect fill="#1168BD" height="16.2969" style="stroke:none;stroke-width:1.0;" width="152" x="740" y="648.3906"/>
+        <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="50" x="744"
+              y="661.3857">system
+        </text>
+        <rect fill="#438DD5" height="16.2969" style="stroke:none;stroke-width:1.0;" width="152" x="740" y="664.6875"/>
+        <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="68" x="744"
+              y="677.6826">container
+        </text>
+        <rect fill="#85BBF0" height="16.2969" style="stroke:none;stroke-width:1.0;" width="152" x="740" y="680.9844"/>
+        <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="81" x="744"
+              y="693.9795">component
+        </text>
+        <rect fill="#686868" height="16.2969" style="stroke:none;stroke-width:1.0;" width="152" x="740" y="697.2813"/>
+        <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="112" x="744"
+              y="710.2764">external person
+        </text>
+        <rect fill="#999999" height="16.2969" style="stroke:none;stroke-width:1.0;" width="152" x="740" y="713.5781"/>
+        <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="113" x="744"
+              y="726.5732">external system
+        </text>
+        <rect fill="#B3B3B3" height="16.2969" style="stroke:none;stroke-width:1.0;" width="152" x="740" y="729.875"/>
+        <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="131" x="744"
+              y="742.8701">external container
+        </text>
+        <rect fill="#CCCCCC" height="16.2969" style="stroke:none;stroke-width:1.0;" width="152" x="740" y="746.1719"/>
+        <text fill="#FFFFFF" font-family="sans-serif" font-size="14" lengthAdjust="spacing" textLength="144" x="744"
+              y="759.167">external component
+        </text>
+        <line style="stroke:#FFFFFF;stroke-width:1.0;" x1="740" x2="892" y1="615.7969" y2="615.7969"/>
+        <line style="stroke:#FFFFFF;stroke-width:1.0;" x1="740" x2="892" y1="632.0938" y2="632.0938"/>
+        <line style="stroke:#FFFFFF;stroke-width:1.0;" x1="740" x2="892" y1="648.3906" y2="648.3906"/>
+        <line style="stroke:#FFFFFF;stroke-width:1.0;" x1="740" x2="892" y1="664.6875" y2="664.6875"/>
+        <line style="stroke:#FFFFFF;stroke-width:1.0;" x1="740" x2="892" y1="680.9844" y2="680.9844"/>
+        <line style="stroke:#FFFFFF;stroke-width:1.0;" x1="740" x2="892" y1="697.2813" y2="697.2813"/>
+        <line style="stroke:#FFFFFF;stroke-width:1.0;" x1="740" x2="892" y1="713.5781" y2="713.5781"/>
+        <line style="stroke:#FFFFFF;stroke-width:1.0;" x1="740" x2="892" y1="729.875" y2="729.875"/>
+        <line style="stroke:#FFFFFF;stroke-width:1.0;" x1="740" x2="892" y1="746.1719" y2="746.1719"/>
+        <line style="stroke:#FFFFFF;stroke-width:1.0;" x1="740" x2="892" y1="762.4688" y2="762.4688"/>
+        <line style="stroke:#FFFFFF;stroke-width:1.0;" x1="740" x2="740" y1="615.7969" y2="762.4688"/>
+        <line style="stroke:#FFFFFF;stroke-width:1.0;" x1="892" x2="892" y1="615.7969"
+              y2="762.4688"/><!--SRC=[TLF1RXCn4BtlLmovaAY5N7f22AbDGq4g499MXLFajMSJ2wzjx77JLSM_CzvDDaiZzh8pzlFCUy_ZrriY7zzDfzu8IwasRwMhfn5_9xGItoWjDa7KnIjjfKaAuVtiOZgxMCzSxPr5In-AulRovxVxk_N3vxjFwzlvpVphzNXIa2Q3qCDWNmWg5-275pPgPujYvYm9RJ6CTrYUm-YIqu0H7h0SSRf48McwQ6ZhRCw_22is296IqXX7ay7vgEja1BamgDAlvREpixFy-vvOfguQe2s2KAnJoEOSc5LUGEcigxK4Zu6Pre8z05U1jeI1zonAGWN87JSDn2OIrYzuoA0zHUwqQYDOja8OSmIjhrooIeHc_BHtWY47KqOJU2w0lzwxiIytc26Bu4g3DTpa_e9qPyfUsBrNWbZII-t0MJ8KOQTf2r9OfJCmi_wtIubMOSZChxfeK7pbp2Es3lcEmybf5VGZPlElso3269zG9XACdkGIlh_5HUSjo2tANn6SPNjzuX4H99Y_0ZQQWZCWl3TQjaAXCcvtqhHAneIKhVd84N2OwykEyzpo97iH8vpwrhOvoEIhoMMNQ7eLHozMR2Vj6myHXplvt_wHsW7nfoY6WE70BfdufDrjdq7lvU5etka7Qp0pUq7TYsWO-1S0]-->
+    </g>
+</svg>
