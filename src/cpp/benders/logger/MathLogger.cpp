@@ -56,7 +56,7 @@ void PrintData(LogDestination& log_destination,
   log_destination << std::endl;
 }
 void MathLoggerBase::Print(const CurrentIterationData& data) {
-  PrintData(LogsDecorator(), data, HeadersType(), BENDERSMETHOD::BENDERS);
+  PrintData(LogsDestination(), data, HeadersType(), BENDERSMETHOD::BENDERS);
 }
 
 void MathLoggerBendersByBatch::setHeadersList() {
@@ -67,7 +67,7 @@ void MathLoggerBendersByBatch::setHeadersList() {
 }
 
 void MathLoggerBendersByBatch::Print(const CurrentIterationData& data) {
-  PrintData(LogsDecorator(), data, HeadersType(),
+  PrintData(LogsDestination(), data, HeadersType(),
             BENDERSMETHOD::BENDERSBYBATCH);
 }
 
