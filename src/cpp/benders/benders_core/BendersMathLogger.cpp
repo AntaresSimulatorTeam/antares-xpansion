@@ -9,8 +9,8 @@ HeadersManager::HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method) {
   if (method == BENDERSMETHOD::BENDERS) {
     headers_list.push_back("Ub");
     headers_list.push_back("BestUb");
-    headers_list.push_back("AGap");
-    headers_list.push_back("RGap");
+    headers_list.push_back("AbsGap");
+    headers_list.push_back("RelGap");
   }
   headers_list.push_back("MinSpx");
   headers_list.push_back("MaxSpx");

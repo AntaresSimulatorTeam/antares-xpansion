@@ -801,8 +801,8 @@ TEST(MathLoggerHeadersManagerTest, LongBenders) {
                                                "Lb",
                                                "Ub",
                                                "BestUb",
-                                               "AGap",
-                                               "RGap",
+                                               "AbsGap",
+                                               "RelGap",
                                                "MinSpx",
                                                "MaxSpx",
                                                "NbSubPbSolv",
@@ -820,7 +820,7 @@ TEST(MathLoggerHeadersManagerTest, ShortBenders) {
   HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERS);
 
   std::vector<std::string> expected_headers = {
-      "Ite",    "Lb",     "Ub",      "BestUb",     "AGap",      "RGap",
+      "Ite",    "Lb",     "Ub",      "BestUb",     "AbsGap",    "RelGap",
       "MinSpx", "MaxSpx", "IteTime", "MasterTime", "SPWallTime"};
   ASSERT_EQ(expected_headers, headers_manager.headers_list);
 }
