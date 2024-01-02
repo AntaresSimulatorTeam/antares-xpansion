@@ -2,20 +2,29 @@
 'https://plantuml.com/sequence-diagram
 !include <C4/C4_Container>
 
-Container(Xpansion, "Xpansion", "C++", "Perform investment simulations for Antares studies")
-System(systemAlias, "Antares", "Quantify the adequacy, or the economic performance of interconnected energy systems")
+LAYOUT_WITH_LEGEND()
+title System Context Diagram for Antares
 
 Person(Alice, "Alice", "Chargée d'étude")
-Rel(Alice, Xpansion, "Configure study for")
-
+Person(Toph, "Toph", "Chargée d'étude")
 Person(Bob, "Bob", "Thésard")
-Rel(Bob, Xpansion, "Try new things")
 
-Container(Simulator, "Antares simulator", "C++", "Quantify the adequacy, or the economic performance of interconnected energy systems")
-Container(Web, "Antares Web", "React/Python", "Manage studies")
+System(antares, "Platform Antares", "Quantify the adequacy, or the economic performance of interconnected energy systems")
 
-Rel(Xpansion, Simulator, "Perform iteration of")
-Rel(Web, Xpansion, "Run")
-Rel(Alice, Web, "Use to run and configure studies")
+Rel(Alice, antares, "Configure and run studies")
+Rel(Bob, antares, "Try new things")
 
+System_Ext(calin, "Calin", "Host Antares")
+Rel(antares, calin, "Run on")
+
+System_Ext(vms, "Windows Virtual Machines", "Host studies")
+Rel(Toph, vms, "Use VM to manipulate studies")
+Rel(vms, calin, "Run studies on")
+Rel(vms, antares, "Host studies")
+
+System_Ext(out, "Downstream systems (e.g. Imagrid)")
+Rel(out, antares, "Exploit results")
+
+System_Ext(in, "Upstream systems (e.g. User scripts)")
+Rel(in, antares, "Generate data for")
 @enduml
