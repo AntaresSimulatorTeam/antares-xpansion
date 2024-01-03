@@ -61,6 +61,7 @@ jobs:
         run: |
           sudo apt-get update --fix-missing
           sudo apt-get install -y ccache cmake libgtest-dev libjsoncpp-dev libtbb-dev libopenmpi-dev
+          sudo apt-get install -y g++10 gcc10
 
       - name: Read antares-solver version
         id: antares-version

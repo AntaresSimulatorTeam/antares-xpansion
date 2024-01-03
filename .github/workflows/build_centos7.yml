@@ -4,7 +4,6 @@ on:
   merge_group:
   push:
     branches:
-      - main
       - develop
   pull_request:
   release:
@@ -131,7 +130,7 @@ jobs:
       - name: Configure
         run: |
           [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
-          source /opt/rh/devtoolset-9/enable
+          source /opt/rh/devtoolset-10/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake3 -B _build -S . \
@@ -145,7 +144,7 @@ jobs:
                  -DALLOW_RUN_AS_ROOT=ON
       - name: Build
         run: |
-          source /opt/rh/devtoolset-9/enable
+          source /opt/rh/devtoolset-10/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake3 --build _build --config Release -j8 --target install
