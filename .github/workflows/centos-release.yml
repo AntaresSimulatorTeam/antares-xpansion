@@ -180,7 +180,7 @@ jobs:
           else
           export XPRESS_VALUE="OFF"
           fi
-          source /opt/rh/devtoolset-9/enable
+          source /opt/rh/devtoolset-10/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake3 -B _build -S . \
@@ -197,7 +197,7 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          source /opt/rh/devtoolset-9/enable
+          source /opt/rh/devtoolset-10/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake3 --build _build --config Release -j2 --target install
