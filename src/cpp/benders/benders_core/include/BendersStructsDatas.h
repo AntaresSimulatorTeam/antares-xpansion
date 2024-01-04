@@ -28,7 +28,7 @@ struct CurrentIterationData {
   Point max_invest;
   int nsubproblem;
   int master_status;
-  double time_benders;
+  double benders_time;
   StoppingCriterion stopping_criterion;
   bool is_in_initial_relaxation;
   int number_of_subproblem_solved;

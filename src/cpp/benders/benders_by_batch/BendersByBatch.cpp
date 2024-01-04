@@ -113,7 +113,7 @@ void BendersByBatch::MasterLoop() {
               random_batch_permutation_.size(), rank_0);
     SeparationLoop();
     if (Rank() == rank_0) {
-      _data.time_benders = GetBendersTime();
+      _data.benders_time = GetBendersTime();
       _data.stop = ShouldBendersStop();
     }
     BroadCast(_data.stop, rank_0);
@@ -310,7 +310,7 @@ double BendersByBatch::Gap() const {
  *
  */
 void BendersByBatch::UpdateStoppingCriterion() {
-  if (_data.time_benders > Options().TIME_LIMIT) {
+  if (_data.benders_time > Options().TIME_LIMIT) {
     _data.stopping_criterion = StoppingCriterion::timelimit;
   } else if ((Options().MAX_ITERATIONS != -1) &&
              (_data.it >= Options().MAX_ITERATIONS))
