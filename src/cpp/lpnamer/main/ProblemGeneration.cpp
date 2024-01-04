@@ -61,18 +61,9 @@ std::filesystem::path ProblemGeneration::updateProblems() {
       options_.AdditionalConstraintsFilename();
   auto weights_file = options_.WeightsFile();
   auto unnamed_problems = options_.UnnamedProblems();
-  std::filesystem::path deduced_archive_path;
-  try {
-    deduced_archive_path = options_.deduceArchivePathIfEmpty(
-        deduced_xpansion_output_dir, archive_path);
-  } catch (const ProblemGenerationOptions::MismatchedParameters& m) {
-    (*logger)(LogUtils::LOGLEVEL::ERR) << m.what();
-    throw;
-  }
 
   RunProblemGeneration(deduced_xpansion_output_dir, master_formulation,
-                       additionalConstraintFilename_l, deduced_archive_path,
-                       logger, log_file_path, weights_file, unnamed_problems);
+                       additionalConstraintFilename_l, archive_path, logger, log_file_path, weights_file, unnamed_problems);
   return deduced_xpansion_output_dir;
 }
 

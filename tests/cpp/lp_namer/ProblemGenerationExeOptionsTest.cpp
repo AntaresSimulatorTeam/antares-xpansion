@@ -44,28 +44,23 @@ TEST_F(ProblemGenerationExeOptionsTest, WithoutOutputOption) {
   const char argv1[] = "--archive";
   const char argv2[] = "something";
   std::vector<const char*> ppargv = {argv0, argv1, argv2};
-  try {
-    problem_generation_options_parser_.Parse(3, ppargv.data());
-  } catch (const std::exception& e) {
-    EXPECT_EQ(e.what(),
-              std::string("the option '--output' is required but missing"));
-  }
+  EXPECT_NO_THROW(problem_generation_options_parser_.Parse(3, ppargv.data()));
 }
 
+// OK
 TEST_F(ProblemGenerationExeOptionsTest, MasterFormulationDefaultValue) {
   const char argv0[] = "lp.exe ";
-  const char argv1[] = "--archive";
-  const char argv2[] = "something";
   const char argv3[] = "--output";
   const char argv4[] = "something";
-  std::vector<const char*> ppargv = {argv0, argv1, argv2, argv3, argv4};
-  problem_generation_options_parser_.Parse(5, ppargv.data());
+  std::vector<const char*> ppargv = {argv0, argv3, argv4};
+  problem_generation_options_parser_.Parse(3, ppargv.data());
   ASSERT_EQ(problem_generation_options_parser_.MasterFormulation(),
             std::string("relaxed"));
 }
 
+// OK
 TEST_F(ProblemGenerationExeOptionsTest,
-       OutputAndArchiveParameters_useProperValues) {
+       OutputAndArchiveParameters_mutually_exclusives) {
   auto test_root =
       std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
   auto archive = std::string(tmpnam(nullptr)) + "study.zip";
@@ -78,7 +73,9 @@ TEST_F(ProblemGenerationExeOptionsTest,
   auto argv4 = output_path.string();
   std::vector<const char*> ppargv = {argv0, argv1, argv2.c_str(), argv3,
                                      argv4.c_str()};
-  problem_generation_options_parser_.Parse(5, ppargv.data());
+
+  EXPECT_THROW(problem_generation_options_parser_.Parse(5, ppargv.data()),
+               ProblemGenerationOptions::ConflictingParameters);
 
   ProblemGenerationSpyAndMock pbg(problem_generation_options_parser_);
   pbg.updateProblems();
@@ -89,6 +86,7 @@ TEST_F(ProblemGenerationExeOptionsTest,
   EXPECT_TRUE(std::filesystem::exists(output_path / "lp"));
 }
 
+// OK
 TEST_F(ProblemGenerationExeOptionsTest,
        OutputAndArchiveParameters_deduceOuputFromArchive) {
   auto test_root =
@@ -112,8 +110,7 @@ TEST_F(ProblemGenerationExeOptionsTest,
   EXPECT_TRUE(std::filesystem::exists(output_path / "lp"));
 }
 
-TEST_F(ProblemGenerationExeOptionsTest,
-       OutputAndArchiveParameters_deduceArchiveFromOutputDir) {
+TEST_F(ProblemGenerationExeOptionsTest, use_only_output_option) {
   auto test_root =
       std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
   auto archive = test_root / "study.zip";
@@ -129,55 +126,13 @@ TEST_F(ProblemGenerationExeOptionsTest,
   ProblemGenerationSpyAndMock pbg(problem_generation_options_parser_);
   pbg.updateProblems();
 
-  EXPECT_EQ(pbg.archive_path_, archive);
+  EXPECT_TRUE(pbg.archive_path_.empty());
   EXPECT_EQ(pbg.xpansion_output_dir_, output_path);
   EXPECT_TRUE(std::filesystem::exists(output_path));
   EXPECT_TRUE(std::filesystem::exists(output_path / "lp"));
 }
 
-bool Constains(std::ifstream& file, const std::string& string) {
-  std::string line;
-
-  while (std::getline(file, line)) {
-    if (line.find(string) != std::string::npos) {
-      return true;
-    }
-  }
-  return false;
-}
-
-TEST_F(
-    ProblemGenerationExeOptionsTest,
-    OutputAndArchiveParameters_cantDeduceArchiveFromOutputDirWithoutRegularSuffixe) {
-  auto test_root =
-      std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
-  auto archive = test_root / "study.zip";
-  auto output_path = test_root / "study-out";
-
-  const char argv0[] = "lp.exe ";
-  const char argv1[] = "--output";
-  auto argv2 = output_path.string();
-
-  std::vector<const char*> ppargv = {argv0, argv1, argv2.c_str()};
-  problem_generation_options_parser_.Parse(3, ppargv.data());
-
-  ProblemGenerationSpyAndMock pbg(problem_generation_options_parser_);
-
-  EXPECT_THROW(pbg.updateProblems(),
-               ProblemGenerationOptions::MismatchedParameters);
-
-  EXPECT_TRUE(pbg.archive_path_.empty());  // Can't deduce
-  EXPECT_TRUE(pbg.xpansion_output_dir_
-                  .empty());  // Exception occurres before RunProblemGeneration
-  // We expect to have created directories to log properly
-  EXPECT_TRUE(std::filesystem::exists(output_path));
-  EXPECT_TRUE(std::filesystem::exists(output_path / "lp"));
-
-  std::ifstream logfile(output_path / "lp" / "ProblemGenerationLog.txt");
-  EXPECT_TRUE(Constains(
-      logfile, "Archive path is missing and output path does not contains"));
-}
-
+// OK
 TEST_F(ProblemGenerationExeOptionsTest,
        OutputAndArchiveParameters_ErrorIfBothArchiveAndOutputAreMissing) {
   auto test_root =

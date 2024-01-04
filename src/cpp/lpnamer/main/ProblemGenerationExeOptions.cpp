@@ -23,9 +23,14 @@ ProblemGenerationExeOptions::ProblemGenerationExeOptions()
 void ProblemGenerationExeOptions::Parse(unsigned int argc,
                                         const char *const *argv) {
   OptionsParser::Parse(argc, argv);
+  auto log_location = LOGLOCATION;
+  using namespace std::string_literals;
+  if (!XpansionOutputDir().empty() && !ArchivePath().empty()) {
+    auto msg = "Giving both archive and output options is not permitted"s;
+    throw ProblemGenerationOptions::ConflictingParameters(msg, log_location);
+  }
   if (XpansionOutputDir().empty() && ArchivePath().empty()) {
-    auto log_location = LOGLOCATION;
-    auto msg = "Both output directory and archive path are empty";
+    auto msg = "Both output directory and archive path are empty"s;
     throw ProblemGenerationOptions::MissingParameters(msg, log_location);
   }
 }

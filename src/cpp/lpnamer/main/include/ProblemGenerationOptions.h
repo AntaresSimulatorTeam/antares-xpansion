@@ -24,6 +24,16 @@ class ProblemGenerationOptions {
       const std::filesystem::path& xpansion_output_dir,
       const std::filesystem::path& archive_path) const = 0;
 
+  class ConflictingParameters
+      : public LogUtils::XpansionError<std::runtime_error> {
+    using LogUtils::XpansionError<std::runtime_error>::XpansionError;
+
+   public:
+    explicit ConflictingParameters(const std::string& err_message,
+                                   const std::string& log_location)
+        : XpansionError(err_message, log_location) {}
+  };
+
   class MismatchedParameters
       : public LogUtils::XpansionError<std::runtime_error> {
     using LogUtils::XpansionError<std::runtime_error>::XpansionError;
