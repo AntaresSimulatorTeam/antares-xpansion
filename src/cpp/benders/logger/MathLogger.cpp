@@ -3,9 +3,9 @@
 #include <iomanip>
 #include <sstream>
 
-double getDurationNotSolving(double interation, double master,
+double getDurationNotSolving(double iteration, double master,
                              double subproblems) {
-  return interation - master - subproblems;
+  return iteration - master - subproblems;
 }
 
 void MathLoggerBase::setHeadersList() {
@@ -41,7 +41,7 @@ void PrintData(LogDestination& log_destination,
     log_destination << data.cumulative_number_of_subproblem_solved;
   }
 
-  log_destination << std::setprecision(2) << data.elapsed_time;
+  log_destination << std::setprecision(2) << data.time_benders;
   log_destination << std::setprecision(2) << data.timer_master;
   log_destination << std::setprecision(2) << data.subproblems_walltime;
 
@@ -49,7 +49,7 @@ void PrintData(LogDestination& log_destination,
     log_destination << std::setprecision(2)
                     << data.subproblems_cumulative_cputime;
     log_destination << std::setprecision(2)
-                    << getDurationNotSolving(data.elapsed_time,
+                    << getDurationNotSolving(data.time_benders,
                                              data.timer_master,
                                              data.subproblems_walltime);
   }

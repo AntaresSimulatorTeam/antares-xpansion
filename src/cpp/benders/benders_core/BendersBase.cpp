@@ -179,7 +179,7 @@ bool BendersBase::ShouldRelaxationStop() const {
  *
  */
 void BendersBase::UpdateStoppingCriterion() {
-  if (_data.elapsed_time > _options.TIME_LIMIT)
+  if (_data.time_benders > _options.TIME_LIMIT)
     _data.stopping_criterion = StoppingCriterion::timelimit;
   else if ((_options.MAX_ITERATIONS != -1) &&
            (_data.it >= _options.MAX_ITERATIONS))
@@ -650,7 +650,7 @@ LogData BendersBase::bendersDataToLogData(
           optimal_gap,
           optimal_gap / data.best_ub,
           _options.MAX_ITERATIONS,
-          data.elapsed_time,
+          data.time_benders,
           data.timer_master,
           data.subproblems_walltime,
           data.cumulative_number_of_subproblem_solved +
@@ -806,7 +806,7 @@ void BendersBase::UpdateMaxNumberIterationResumeMode(
   }
 }
 
-double BendersBase::execution_time() const { return _data.elapsed_time; }
+double BendersBase::execution_time() const { return _data.time_benders; }
 LogData BendersBase::GetBestIterationData() const {
   return best_iteration_data;
 }
@@ -852,7 +852,7 @@ void BendersBase::ClearCurrentIterationCutTrace() const {
 }
 void BendersBase::EndWritingInOutputFile() const {
   _writer->updateEndTime();
-  _writer->write_duration(_data.elapsed_time);
+  _writer->write_duration(_data.time_benders);
   SaveSolutionInOutputFile();
 }
 double BendersBase::GetBendersTime() const { return benders_timer.elapsed(); }

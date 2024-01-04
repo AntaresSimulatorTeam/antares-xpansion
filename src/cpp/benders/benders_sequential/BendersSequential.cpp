@@ -117,7 +117,7 @@ void BendersSequential::Run() {
     UpdateTrace();
 
     set_timer_master(timer_master.elapsed());
-    _data.elapsed_time = GetBendersTime();
+    _data.time_benders = GetBendersTime();
     _data.stop = ShouldBendersStop();
     SaveCurrentBendersData();
   }
