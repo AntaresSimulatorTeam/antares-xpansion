@@ -167,6 +167,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>deletedcut</b></td></t
 <tr class="memitem:a932501d11223e3a8750a03b75594e63c"><td class="memItemLeft" align="right" valign="top"><a id="a932501d11223e3a8750a03b75594e63c" name="a932501d11223e3a8750a03b75594e63c"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>it</b></td></tr>
 <tr class="separator:a932501d11223e3a8750a03b75594e63c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a631e7b6f9e17a0883943faef5f5919"><td class="memItemLeft" align="right" valign="top"><a id="a3a631e7b6f9e17a0883943faef5f5919" name="a3a631e7b6f9e17a0883943faef5f5919"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>iteration_time</b></td></tr>
+<tr class="separator:a3a631e7b6f9e17a0883943faef5f5919"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a726019b6297ff487b3688739e90a5d1d"><td class="memItemLeft" align="right" valign="top"><a id="a726019b6297ff487b3688739e90a5d1d" name="a726019b6297ff487b3688739e90a5d1d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>stop</b></td></tr>
 <tr class="separator:a726019b6297ff487b3688739e90a5d1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -206,18 +209,27 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>nsubproblem</b></td></
 <tr class="memitem:a947105978e876f3010b92bb00bd6b022"><td class="memItemLeft" align="right" valign="top"><a id="a947105978e876f3010b92bb00bd6b022" name="a947105978e876f3010b92bb00bd6b022"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>master_status</b></td></tr>
 <tr class="separator:a947105978e876f3010b92bb00bd6b022"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b091fc351ce7b4a098a2bc430bbea4d"><td class="memItemLeft" align="right" valign="top"><a id="a2b091fc351ce7b4a098a2bc430bbea4d" name="a2b091fc351ce7b4a098a2bc430bbea4d"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>elapsed_time</b></td></tr>
-<tr class="separator:a2b091fc351ce7b4a098a2bc430bbea4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fd05a1a281030ae8fb0b85c49517215"><td class="memItemLeft" align="right" valign="top"><a id="a2fd05a1a281030ae8fb0b85c49517215" name="a2fd05a1a281030ae8fb0b85c49517215"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>benders_time</b></td></tr>
+<tr class="separator:a2fd05a1a281030ae8fb0b85c49517215"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab6de16f2fb5afe6def944ebb894f5a32"><td class="memItemLeft" align="right" valign="top"><a id="ab6de16f2fb5afe6def944ebb894f5a32" name="ab6de16f2fb5afe6def944ebb894f5a32"></a>
 StoppingCriterion&#160;</td><td class="memItemRight" valign="bottom"><b>stopping_criterion</b></td></tr>
 <tr class="separator:ab6de16f2fb5afe6def944ebb894f5a32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a95be77126ce0c99adb074384f1f42d9c"><td class="memItemLeft" align="right" valign="top"><a id="a95be77126ce0c99adb074384f1f42d9c" name="a95be77126ce0c99adb074384f1f42d9c"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_in_initial_relaxation</b></td></tr>
 <tr class="separator:a95be77126ce0c99adb074384f1f42d9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5796c8af6aee4d8ea952c6015bd5856"><td class="memItemLeft" align="right" valign="top"><a id="aa5796c8af6aee4d8ea952c6015bd5856" name="aa5796c8af6aee4d8ea952c6015bd5856"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>number_of_subproblem_resolved</b></td></tr>
-<tr class="separator:aa5796c8af6aee4d8ea952c6015bd5856"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0298cf6c3de8e3720409f48b12494c77"><td class="memItemLeft" align="right" valign="top"><a id="a0298cf6c3de8e3720409f48b12494c77" name="a0298cf6c3de8e3720409f48b12494c77"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>number_of_subproblem_solved</b></td></tr>
+<tr class="separator:a0298cf6c3de8e3720409f48b12494c77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aba5b33859dd6cda6c0dad5d0c953020d"><td class="memItemLeft" align="right" valign="top"><a id="aba5b33859dd6cda6c0dad5d0c953020d" name="aba5b33859dd6cda6c0dad5d0c953020d"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>cumulative_number_of_subproblem_solved</b></td></tr>
+<tr class="separator:aba5b33859dd6cda6c0dad5d0c953020d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85f4945e5abbf67fb6cccf478f0c9a68"><td class="memItemLeft" align="right" valign="top"><a id="a85f4945e5abbf67fb6cccf478f0c9a68" name="a85f4945e5abbf67fb6cccf478f0c9a68"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>min_simplexiter</b></td></tr>
+<tr class="separator:a85f4945e5abbf67fb6cccf478f0c9a68"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd010a5476d822f86513f9899b9bd74d"><td class="memItemLeft" align="right" valign="top"><a id="abd010a5476d822f86513f9899b9bd74d" name="abd010a5476d822f86513f9899b9bd74d"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>max_simplexiter</b></td></tr>
+<tr class="separator:abd010a5476d822f86513f9899b9bd74d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/cpp/benders/benders_core/include/<a class="el" href="BendersStructsDatas_8h_source.html">BendersStructsDatas.h</a></li>

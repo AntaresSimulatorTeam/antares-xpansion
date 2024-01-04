@@ -155,9 +155,9 @@ Inheritance diagram for BendersBase:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a12341d69095d064a242b9a34b0aeaf16"><td class="memItemLeft" align="right" valign="top"><a id="a12341d69095d064a242b9a34b0aeaf16" name="a12341d69095d064a242b9a34b0aeaf16"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BendersBase</b> (<a class="el" href="structBendersBaseOptions.html">BendersBaseOptions</a> options, Logger logger, Writer writer)</td></tr>
-<tr class="separator:a12341d69095d064a242b9a34b0aeaf16"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaec1fb3bda04bde60009f366f6a0c7d6"><td class="memItemLeft" align="right" valign="top"><a id="aaec1fb3bda04bde60009f366f6a0c7d6" name="aaec1fb3bda04bde60009f366f6a0c7d6"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>BendersBase</b> (<a class="el" href="structBendersBaseOptions.html">BendersBaseOptions</a> options, Logger logger, Writer writer, std::shared_ptr&lt; <a class="el" href="classMathLoggerDriver.html">MathLoggerDriver</a> &gt; mathLoggerDriver)</td></tr>
+<tr class="separator:aaec1fb3bda04bde60009f366f6a0c7d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa41936ea3aa14acf3f3d4883ed418063"><td class="memItemLeft" align="right" valign="top"><a id="aa41936ea3aa14acf3f3d4883ed418063" name="aa41936ea3aa14acf3f3d4883ed418063"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>launch</b> ()=0</td></tr>
 <tr class="separator:aa41936ea3aa14acf3f3d4883ed418063"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -419,9 +419,15 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>ProblemToId</b> (const
 <tr class="memitem:a805ed56ad6729dd00f5d16dc705af264"><td class="memItemLeft" align="right" valign="top">virtual bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersBase.html#a805ed56ad6729dd00f5d16dc705af264">ShouldRelaxationStop</a> () const</td></tr>
 <tr class="memdesc:a805ed56ad6729dd00f5d16dc705af264"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if initial relaxation should stop.  <a href="classBendersBase.html#a805ed56ad6729dd00f5d16dc705af264">More...</a><br /></td></tr>
 <tr class="separator:a805ed56ad6729dd00f5d16dc705af264"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab46652debccc76668f782a23163120e8"><td class="memItemLeft" align="right" valign="top"><a id="ab46652debccc76668f782a23163120e8" name="ab46652debccc76668f782a23163120e8"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>GetNumOfSubProblemsResolvedBeforeResume</b> ()</td></tr>
-<tr class="separator:ab46652debccc76668f782a23163120e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab748dcc4e085feb94c44728796c4b713"><td class="memItemLeft" align="right" valign="top"><a id="ab748dcc4e085feb94c44728796c4b713" name="ab748dcc4e085feb94c44728796c4b713"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>GetNumOfSubProblemsSolvedBeforeResume</b> ()</td></tr>
+<tr class="separator:ab748dcc4e085feb94c44728796c4b713"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0fa4c04cc9815d16d43cd4a73d89f895"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersBase.html#a0fa4c04cc9815d16d43cd4a73d89f895">BoundSimplexIterations</a> (int subproblem_iteration)</td></tr>
+<tr class="memdesc:a0fa4c04cc9815d16d43cd4a73d89f895"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update maximum and minimum of simplex iterations.  <a href="classBendersBase.html#a0fa4c04cc9815d16d43cd4a73d89f895">More...</a><br /></td></tr>
+<tr class="separator:a0fa4c04cc9815d16d43cd4a73d89f895"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a945b1fcfaf6a0412ae7751e0ae96b33c"><td class="memItemLeft" align="right" valign="top"><a id="a945b1fcfaf6a0412ae7751e0ae96b33c" name="a945b1fcfaf6a0412ae7751e0ae96b33c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetSimplexIterationsBounds</b> ()</td></tr>
+<tr class="separator:a945b1fcfaf6a0412ae7751e0ae96b33c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -434,11 +440,48 @@ VariableMap&#160;</td><td class="memItemRight" valign="bottom"><b>master_variabl
 <tr class="memitem:a27414a63a1a593f11629486cc7d3d12a"><td class="memItemLeft" align="right" valign="top"><a id="a27414a63a1a593f11629486cc7d3d12a" name="a27414a63a1a593f11629486cc7d3d12a"></a>
 CouplingMap&#160;</td><td class="memItemRight" valign="bottom"><b>coupling_map</b></td></tr>
 <tr class="separator:a27414a63a1a593f11629486cc7d3d12a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9964b0cd6ec71a03d88b1eb918b2055e"><td class="memItemLeft" align="right" valign="top"><a id="a9964b0cd6ec71a03d88b1eb918b2055e" name="a9964b0cd6ec71a03d88b1eb918b2055e"></a>
+std::shared_ptr&lt; <a class="el" href="classMathLoggerDriver.html">MathLoggerDriver</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>mathLoggerDriver_</b></td></tr>
+<tr class="separator:a9964b0cd6ec71a03d88b1eb918b2055e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a897cc03471332c177b24423cfc292e66"><td class="memItemLeft" align="right" valign="top"><a id="a897cc03471332c177b24423cfc292e66" name="a897cc03471332c177b24423cfc292e66"></a>
 <a class="el" href="classSolverLogManager.html">SolverLogManager</a>&#160;</td><td class="memItemRight" valign="bottom"><b>solver_log_manager_</b></td></tr>
 <tr class="separator:a897cc03471332c177b24423cfc292e66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a0fa4c04cc9815d16d43cd4a73d89f895" name="a0fa4c04cc9815d16d43cd4a73d89f895"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0fa4c04cc9815d16d43cd4a73d89f895">&#9670;&#160;</a></span>BoundSimplexIterations()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BendersBase::BoundSimplexIterations </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>subproblem_iterations</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Update maximum and minimum of simplex iterations. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">subproblem_iterations</td><td>: number of iterations done with the subproblem </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="aba555debca49b7f0d10d2c908145edd2" name="aba555debca49b7f0d10d2c908145edd2"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aba555debca49b7f0d10d2c908145edd2">&#9670;&#160;</a></span>build_input_map()</h2>
 

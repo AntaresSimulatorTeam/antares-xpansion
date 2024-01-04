@@ -158,7 +158,7 @@ Overview of the &lt;tt&gt;settings.ini&lt;/tt&gt; file</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">`solver`   </td><td class="markdownTableBodyNone"><code>Cbc</code>   </td><td class="markdownTableBodyNone">Name of the solver    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone">`log_level`   </td><td class="markdownTableBodyNone"><code>0</code>   </td><td class="markdownTableBodyNone">Solver's log level    </td></tr>
+<td class="markdownTableBodyNone">`log_level`   </td><td class="markdownTableBodyNone"><code>0</code>   </td><td class="markdownTableBodyNone">Logs severity    </td></tr>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone">`additional-constraints`   </td><td class="markdownTableBodyNone"><code>None</code>   </td><td class="markdownTableBodyNone">Path of the additional constraints file    </td></tr>
 <tr class="markdownTableRowOdd">
@@ -251,12 +251,22 @@ Details of the parameters</h1>
 <p >To use another solver, you have to build the package with the chosen solver, please contact us. It’s not possible to put it on github for the moment.</p>
 <h2><a class="anchor" id="autotoc_md179"></a>
 &lt;tt&gt;log_level&lt;/tt&gt;</h2>
-<p >Positive integer, specifying the <code>solver</code>'s log severity. Default value: <code>0</code>.</p>
-<p >For now two log levels are available:</p>
+<p >Possible values :<code>{0, 1, 2}</code>, specifying the <code>solver</code>'s log severity. Default value: <code>0</code>.</p>
+<p >Logs can be printed both in the console and in a file. There are 3 types of logs:</p>
 <ul>
-<li>If <code>log_level = 0</code>: basic solver logs are printed.</li>
-<li>If <code>log_level &gt; 0</code>: full logs are printed simultaneously in standard output and in <code>benders.log</code> file located in the <code>lp</code> folder.</li>
+<li><b>Operational</b>: Displays progress information for the investment on candidates and costs,</li>
+<li><b>Benders</b>: Displays information on the progress of the Benders algorithm,</li>
+<li><b>Solver</b>: Logs of the solver called for the resolution of each master or subproblem.</li>
 </ul>
+<p >The table below details the behavior depending on the <code>log_level</code>.</p>
+<table class="markdownTable">
+<tr class="markdownTableHead">
+<th class="markdownTableHeadNone"></th><th class="markdownTableHeadNone"><b>Operational</b>   </th><th class="markdownTableHeadNone"><b>Benders</b>   </th><th class="markdownTableHeadNone"><b>Solver</b>    </th></tr>
+<tr class="markdownTableRowOdd">
+<td class="markdownTableBodyNone"><b>File</b>   </td><td class="markdownTableBodyNone">Always <code>(reportbenders.txt)</code>   </td><td class="markdownTableBodyNone">Always <code>(benders_solver.log)</code>   </td><td class="markdownTableBodyNone">2 <code>(solver_log_proc_&lt;proc_num&gt;.txt)</code>    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><b>Console</b>   </td><td class="markdownTableBodyNone">0   </td><td class="markdownTableBodyNone">&gt;= 1   </td><td class="markdownTableBodyNone">Never   </td></tr>
+</table>
 <h2><a class="anchor" id="autotoc_md180"></a>
 &lt;tt&gt;additional-constraints&lt;/tt&gt;</h2>
 <p >String, specifying the name of a file. Default: <code>None</code>.</p>

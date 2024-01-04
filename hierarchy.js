@@ -97,6 +97,7 @@ var hierarchy =
       [ "antares_xpansion.input_checker.CandidateNameDuplicatedError", "classantares__xpansion_1_1input__checker_1_1CandidateNameDuplicatedError.html", null ],
       [ "antares_xpansion.input_checker.EmptyCandidateLink", "classantares__xpansion_1_1input__checker_1_1EmptyCandidateLink.html", null ],
       [ "antares_xpansion.input_checker.EmptyCandidateName", "classantares__xpansion_1_1input__checker_1_1EmptyCandidateName.html", null ],
+      [ "antares_xpansion.input_checker.ExpertLogsValueError", "classantares__xpansion_1_1input__checker_1_1ExpertLogsValueError.html", null ],
       [ "antares_xpansion.input_checker.GapValueError", "classantares__xpansion_1_1input__checker_1_1GapValueError.html", null ],
       [ "antares_xpansion.input_checker.IllegalCharsInCandidateName", "classantares__xpansion_1_1input__checker_1_1IllegalCharsInCandidateName.html", null ],
       [ "antares_xpansion.input_checker.LogLevelValueError", "classantares__xpansion_1_1input__checker_1_1LogLevelValueError.html", null ],
@@ -197,6 +198,7 @@ var hierarchy =
     ] ],
     [ "Catch::Generators::GeneratorWrapper< T >", "classCatch_1_1Generators_1_1GeneratorWrapper.html", null ],
     [ "Catch::Generators::GeneratorWrapper< U >", "classCatch_1_1Generators_1_1GeneratorWrapper.html", null ],
+    [ "HeadersManager", "structHeadersManager.html", null ],
     [ "HebdoDataFromAntares", "classHebdoDataFromAntares.html", null ],
     [ "Catch::IContext", "structCatch_1_1IContext.html", [
       [ "Catch::IMutableContext", "structCatch_1_1IMutableContext.html", null ]
@@ -204,12 +206,26 @@ var hierarchy =
     [ "Catch::IExceptionTranslator", "structCatch_1_1IExceptionTranslator.html", null ],
     [ "Catch::IExceptionTranslatorRegistry", "structCatch_1_1IExceptionTranslatorRegistry.html", null ],
     [ "Catch::IGeneratorTracker", "structCatch_1_1IGeneratorTracker.html", null ],
-    [ "ILogger", "classILogger.html", [
-      [ "LoggerNOOPStub", "classLoggerNOOPStub.html", null ],
-      [ "SimpleLoggerMock", "classSimpleLoggerMock.html", null ],
-      [ "xpansion::logger::Master", "classxpansion_1_1logger_1_1Master.html", null ],
-      [ "xpansion::logger::User", "classxpansion_1_1logger_1_1User.html", null ],
-      [ "xpansion::logger::UserFile", "classxpansion_1_1logger_1_1UserFile.html", null ]
+    [ "ILoggerBenders", "structILoggerBenders.html", [
+      [ "BendersLoggerBase", "structBendersLoggerBase.html", null ],
+      [ "ILogger", "classILogger.html", [
+        [ "LoggerNOOPStub", "classLoggerNOOPStub.html", null ],
+        [ "SimpleLoggerMock", "classSimpleLoggerMock.html", null ],
+        [ "xpansion::logger::Master", "classxpansion_1_1logger_1_1Master.html", null ],
+        [ "xpansion::logger::User", "classxpansion_1_1logger_1_1User.html", null ],
+        [ "xpansion::logger::UserFile", "classxpansion_1_1logger_1_1UserFile.html", null ]
+      ] ],
+      [ "MathLoggerBehaviour", "structMathLoggerBehaviour.html", [
+        [ "MathLogger", "structMathLogger.html", [
+          [ "MathLoggerBase", "structMathLoggerBase.html", null ],
+          [ "MathLoggerBendersByBatch", "structMathLoggerBendersByBatch.html", null ]
+        ] ],
+        [ "MathLoggerImplementation", "classMathLoggerImplementation.html", [
+          [ "MathLoggerFile", "classMathLoggerFile.html", null ],
+          [ "MathLoggerOstream", "classMathLoggerOstream.html", null ]
+        ] ]
+      ] ],
+      [ "MathLoggerDriver", "classMathLoggerDriver.html", null ]
     ] ],
     [ "Catch::IMutableEnumValuesRegistry", "structCatch_1_1IMutableEnumValuesRegistry.html", null ],
     [ "Catch::IMutableRegistryHub", "structCatch_1_1IMutableRegistryHub.html", null ],
@@ -278,6 +294,7 @@ var hierarchy =
     [ "LinkProfile", "classLinkProfile.html", null ],
     [ "LinkProfileReader", "classLinkProfileReader.html", null ],
     [ "LogData", "structLogData.html", null ],
+    [ "LogDestination", "classLogDestination.html", null ],
     [ "antares_xpansion.log_utils.LogUtils", "classantares__xpansion_1_1log__utils_1_1LogUtils.html", null ],
     [ "LpFilesExtractor", "classLpFilesExtractor.html", null ],
     [ "LpsFromAntares", "classLpsFromAntares.html", null ],
@@ -332,6 +349,7 @@ var hierarchy =
       [ "Catch::Matchers::Impl::MatcherBase< std::vector< T > >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherBase.html", null ],
       [ "Catch::Matchers::Impl::MatcherBase< T >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherBase.html", null ]
     ] ],
+    [ "MathLoggerFactory", "classMathLoggerFactory.html", null ],
     [ "MergeMPS", "classMergeMPS.html", null ],
     [ "Catch::MessageInfo", "structCatch_1_1MessageInfo.html", null ],
     [ "Catch::MessageStream", "structCatch_1_1MessageStream.html", [

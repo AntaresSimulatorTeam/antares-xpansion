@@ -1,6 +1,7 @@
 var dir_729c7454ac508d5ff85a80bc7bc4bc9a =
 [
     [ "BendersBase.h", "BendersBase_8h_source.html", null ],
+    [ "BendersMathLogger.h", "BendersMathLogger_8h_source.html", null ],
     [ "BendersStructsDatas.h", "BendersStructsDatas_8h_source.html", null ],
     [ "common.h", "common_8h_source.html", null ],
     [ "LastIterationPrinter.h", "LastIterationPrinter_8h_source.html", null ],

@@ -143,7 +143,8 @@ Inheritance diagram for LoggerNOOPStub:</div>
  <div class="center">
   <img src="classLoggerNOOPStub.png" usemap="#LoggerNOOPStub_map" alt=""/>
   <map id="LoggerNOOPStub_map" name="LoggerNOOPStub_map">
-<area href="classILogger.html" alt="ILogger" shape="rect" coords="0,0,114,24"/>
+<area href="classILogger.html" alt="ILogger" shape="rect" coords="0,56,114,80"/>
+<area href="structILoggerBenders.html" alt="ILoggerBenders" shape="rect" coords="0,0,114,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -185,10 +186,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a26a33d789627bfa106f69c0ee9d95466"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4f02417ae92d95e71728790798caff2c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLoggerNOOPStub.html#a4f02417ae92d95e71728790798caff2c">LogAtSwitchToInteger</a> () override</td></tr>
 <tr class="separator:a4f02417ae92d95e71728790798caff2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59bad1b444be03b7a5d0328ad5c2ea1e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLoggerNOOPStub.html#a59bad1b444be03b7a5d0328ad5c2ea1e">cumulative_number_of_sub_problem_resolved</a> (int number) override</td></tr>
-<tr class="separator:a59bad1b444be03b7a5d0328ad5c2ea1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1326996d4147821e1dad10103a0dc2e8"><td class="memItemLeft" align="right" valign="top"><a id="a1326996d4147821e1dad10103a0dc2e8" name="a1326996d4147821e1dad10103a0dc2e8"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>display_message</b> (const std::string &amp;str)=0</td></tr>
+<tr class="memitem:aa155f15ef24bd99fd7056b1f1b7dbfd4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classLoggerNOOPStub.html#aa155f15ef24bd99fd7056b1f1b7dbfd4">cumulative_number_of_sub_problem_solved</a> (int number) override</td></tr>
+<tr class="separator:aa155f15ef24bd99fd7056b1f1b7dbfd4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1326996d4147821e1dad10103a0dc2e8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classILogger.html#a1326996d4147821e1dad10103a0dc2e8">display_message</a> (const std::string &amp;str)=0</td></tr>
 <tr class="separator:a1326996d4147821e1dad10103a0dc2e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c19dbf351694b2d7008bb7f41e6b1e7"><td class="memItemLeft" align="right" valign="top"><a id="a0c19dbf351694b2d7008bb7f41e6b1e7" name="a0c19dbf351694b2d7008bb7f41e6b1e7"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>display_message</b> (const std::string &amp;str, LogUtils::LOGLEVEL level)=0</td></tr>
@@ -241,9 +241,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>LogAtInitialR
 <tr class="memitem:a23c5d0cec250742b7cf33f55e2c7ea99"><td class="memItemLeft" align="right" valign="top"><a id="a23c5d0cec250742b7cf33f55e2c7ea99" name="a23c5d0cec250742b7cf33f55e2c7ea99"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>LogAtSwitchToInteger</b> ()=0</td></tr>
 <tr class="separator:a23c5d0cec250742b7cf33f55e2c7ea99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1ab2594962cf4fd962cb58aa8f6df51"><td class="memItemLeft" align="right" valign="top"><a id="ad1ab2594962cf4fd962cb58aa8f6df51" name="ad1ab2594962cf4fd962cb58aa8f6df51"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>cumulative_number_of_sub_problem_resolved</b> (int number)=0</td></tr>
-<tr class="separator:ad1ab2594962cf4fd962cb58aa8f6df51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaafc923870f4dbb59ed8483fa0116d7"><td class="memItemLeft" align="right" valign="top"><a id="afaafc923870f4dbb59ed8483fa0116d7" name="afaafc923870f4dbb59ed8483fa0116d7"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>cumulative_number_of_sub_problem_solved</b> (int number)=0</td></tr>
+<tr class="separator:afaafc923870f4dbb59ed8483fa0116d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5adb0476c7fea717360c6fb42535c7c"><td class="memItemLeft" align="right" valign="top"><a id="aa5adb0476c7fea717360c6fb42535c7c" name="aa5adb0476c7fea717360c6fb42535c7c"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>display_message</b> (const std::string &amp;str)=0</td></tr>
+<tr class="separator:aa5adb0476c7fea717360c6fb42535c7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -253,8 +256,8 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>CONTEXT<
 <tr class="separator:a2607de07ee85d443d1229a9a9c3bd699 inherit pub_attribs_classILogger"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a59bad1b444be03b7a5d0328ad5c2ea1e" name="a59bad1b444be03b7a5d0328ad5c2ea1e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59bad1b444be03b7a5d0328ad5c2ea1e">&#9670;&#160;</a></span>cumulative_number_of_sub_problem_resolved()</h2>
+<a id="aa155f15ef24bd99fd7056b1f1b7dbfd4" name="aa155f15ef24bd99fd7056b1f1b7dbfd4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa155f15ef24bd99fd7056b1f1b7dbfd4">&#9670;&#160;</a></span>cumulative_number_of_sub_problem_solved()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -263,7 +266,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>CONTEXT<
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void LoggerNOOPStub::cumulative_number_of_sub_problem_resolved </td>
+          <td class="memname">void LoggerNOOPStub::cumulative_number_of_sub_problem_solved </td>
           <td>(</td>
           <td class="paramtype">int&#160;</td>
           <td class="paramname"><em>number</em></td><td>)</td>

@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['hebdodatafromantares_0',['HebdoDataFromAntares',['../classHebdoDataFromAntares.html',1,'']]]
+  ['headersmanager_0',['HeadersManager',['../structHeadersManager.html',1,'']]],
+  ['hebdodatafromantares_1',['HebdoDataFromAntares',['../classHebdoDataFromAntares.html',1,'']]]
 ];

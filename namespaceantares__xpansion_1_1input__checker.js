@@ -6,6 +6,7 @@ var namespaceantares__xpansion_1_1input__checker =
     [ "CandidateNameDuplicatedError", "classantares__xpansion_1_1input__checker_1_1CandidateNameDuplicatedError.html", null ],
     [ "EmptyCandidateLink", "classantares__xpansion_1_1input__checker_1_1EmptyCandidateLink.html", null ],
     [ "EmptyCandidateName", "classantares__xpansion_1_1input__checker_1_1EmptyCandidateName.html", null ],
+    [ "ExpertLogsValueError", "classantares__xpansion_1_1input__checker_1_1ExpertLogsValueError.html", null ],
     [ "GapValueError", "classantares__xpansion_1_1input__checker_1_1GapValueError.html", null ],
     [ "IllegalCharsInCandidateName", "classantares__xpansion_1_1input__checker_1_1IllegalCharsInCandidateName.html", null ],
     [ "LogLevelValueError", "classantares__xpansion_1_1input__checker_1_1LogLevelValueError.html", null ],

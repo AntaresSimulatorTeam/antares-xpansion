@@ -144,18 +144,18 @@ Inheritance diagram for ILogger:</div>
  <div class="center">
   <img src="classILogger.png" usemap="#ILogger_map" alt=""/>
   <map id="ILogger_map" name="ILogger_map">
-<area href="classLoggerNOOPStub.html" alt="LoggerNOOPStub" shape="rect" coords="0,56,157,80"/>
-<area href="classSimpleLoggerMock.html" alt="SimpleLoggerMock" shape="rect" coords="167,56,324,80"/>
-<area href="classxpansion_1_1logger_1_1Master.html" alt="xpansion::logger::Master" shape="rect" coords="334,56,491,80"/>
-<area href="classxpansion_1_1logger_1_1User.html" alt="xpansion::logger::User" shape="rect" coords="501,56,658,80"/>
-<area href="classxpansion_1_1logger_1_1UserFile.html" alt="xpansion::logger::UserFile" shape="rect" coords="668,56,825,80"/>
+<area href="structILoggerBenders.html" alt="ILoggerBenders" shape="rect" coords="334,0,491,24"/>
+<area href="classLoggerNOOPStub.html" alt="LoggerNOOPStub" shape="rect" coords="0,112,157,136"/>
+<area href="classSimpleLoggerMock.html" alt="SimpleLoggerMock" shape="rect" coords="167,112,324,136"/>
+<area href="classxpansion_1_1logger_1_1Master.html" alt="xpansion::logger::Master" shape="rect" coords="334,112,491,136"/>
+<area href="classxpansion_1_1logger_1_1User.html" alt="xpansion::logger::User" shape="rect" coords="501,112,658,136"/>
+<area href="classxpansion_1_1logger_1_1UserFile.html" alt="xpansion::logger::UserFile" shape="rect" coords="668,112,825,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a1326996d4147821e1dad10103a0dc2e8"><td class="memItemLeft" align="right" valign="top"><a id="a1326996d4147821e1dad10103a0dc2e8" name="a1326996d4147821e1dad10103a0dc2e8"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>display_message</b> (const std::string &amp;str)=0</td></tr>
+<tr class="memitem:a1326996d4147821e1dad10103a0dc2e8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classILogger.html#a1326996d4147821e1dad10103a0dc2e8">display_message</a> (const std::string &amp;str)=0</td></tr>
 <tr class="separator:a1326996d4147821e1dad10103a0dc2e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c19dbf351694b2d7008bb7f41e6b1e7"><td class="memItemLeft" align="right" valign="top"><a id="a0c19dbf351694b2d7008bb7f41e6b1e7" name="a0c19dbf351694b2d7008bb7f41e6b1e7"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>display_message</b> (const std::string &amp;str, LogUtils::LOGLEVEL level)=0</td></tr>
@@ -208,9 +208,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>LogAtInitialR
 <tr class="memitem:a23c5d0cec250742b7cf33f55e2c7ea99"><td class="memItemLeft" align="right" valign="top"><a id="a23c5d0cec250742b7cf33f55e2c7ea99" name="a23c5d0cec250742b7cf33f55e2c7ea99"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>LogAtSwitchToInteger</b> ()=0</td></tr>
 <tr class="separator:a23c5d0cec250742b7cf33f55e2c7ea99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1ab2594962cf4fd962cb58aa8f6df51"><td class="memItemLeft" align="right" valign="top"><a id="ad1ab2594962cf4fd962cb58aa8f6df51" name="ad1ab2594962cf4fd962cb58aa8f6df51"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>cumulative_number_of_sub_problem_resolved</b> (int number)=0</td></tr>
-<tr class="separator:ad1ab2594962cf4fd962cb58aa8f6df51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afaafc923870f4dbb59ed8483fa0116d7"><td class="memItemLeft" align="right" valign="top"><a id="afaafc923870f4dbb59ed8483fa0116d7" name="afaafc923870f4dbb59ed8483fa0116d7"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>cumulative_number_of_sub_problem_solved</b> (int number)=0</td></tr>
+<tr class="separator:afaafc923870f4dbb59ed8483fa0116d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5adb0476c7fea717360c6fb42535c7c"><td class="memItemLeft" align="right" valign="top"><a id="aa5adb0476c7fea717360c6fb42535c7c" name="aa5adb0476c7fea717360c6fb42535c7c"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>display_message</b> (const std::string &amp;str)=0</td></tr>
+<tr class="separator:aa5adb0476c7fea717360c6fb42535c7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -218,6 +221,35 @@ Public Attributes</h2></td></tr>
 const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>CONTEXT</b> = &quot;Benders&quot;</td></tr>
 <tr class="separator:a2607de07ee85d443d1229a9a9c3bd699"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a1326996d4147821e1dad10103a0dc2e8" name="a1326996d4147821e1dad10103a0dc2e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1326996d4147821e1dad10103a0dc2e8">&#9670;&#160;</a></span>display_message()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ILogger::display_message </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="structILoggerBenders.html">ILoggerBenders</a>.</p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>src/cpp/xpansion_interfaces/<a class="el" href="ILogger_8h_source.html">ILogger.h</a></li>
 </ul>

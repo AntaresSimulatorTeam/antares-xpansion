@@ -1,5 +1,6 @@
 var classBendersBase =
 [
+    [ "BoundSimplexIterations", "classBendersBase.html#a0fa4c04cc9815d16d43cd4a73d89f895", null ],
     [ "build_input_map", "classBendersBase.html#aba555debca49b7f0d10d2c908145edd2", null ],
     [ "BuildCutFull", "classBendersBase.html#affc499db6586868162f6bd7efa8898ea", null ],
     [ "get_master_path", "classBendersBase.html#a6f53da7e8fd87c0e244368b0dedb4e1e", null ],
