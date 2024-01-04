@@ -807,11 +807,11 @@ TEST(MathLoggerHeadersManagerTest, LongBenders) {
                                                "MaxSpx",
                                                "NbSubPbSolv",
                                                "CumulNbSubPbSolv",
-                                               "IteTime",
-                                               "MasterTime",
-                                               "SPWallTime",
-                                               "SPCpuTime",
-                                               "NotSolvingWallTime"};
+                                               "IteTime (s)",
+                                               "MasterTime (s)",
+                                               "SPWallTime (s)",
+                                               "SPCpuTime (s)",
+                                               "NotSolvingWallTime (s)"};
   ASSERT_EQ(expected_headers, headers_manager.headers_list);
 }
 
@@ -821,7 +821,7 @@ TEST(MathLoggerHeadersManagerTest, ShortBenders) {
 
   std::vector<std::string> expected_headers = {
       "Ite",    "Lb",     "Ub",      "BestUb",     "AbsGap",    "RelGap",
-      "MinSpx", "MaxSpx", "IteTime", "MasterTime", "SPWallTime"};
+      "MinSpx", "MaxSpx", "IteTime (s)", "MasterTime (s)", "SPWallTime (s)"};
   ASSERT_EQ(expected_headers, headers_manager.headers_list);
 }
 
@@ -835,11 +835,11 @@ TEST(MathLoggerHeadersManagerTest, LongBendersByBatch) {
                                                "MaxSpx",
                                                "NbSubPbSolv",
                                                "CumulNbSubPbSolv",
-                                               "IteTime",
-                                               "MasterTime",
-                                               "SPWallTime",
-                                               "SPCpuTime",
-                                               "NotSolvingWallTime"};
+                                               "IteTime (s)",
+                                               "MasterTime (s)",
+                                               "SPWallTime (s)",
+                                               "SPCpuTime (s)",
+                                               "NotSolvingWallTime (s)"};
   ASSERT_EQ(expected_headers, headers_manager.headers_list);
 }
 
@@ -849,7 +849,7 @@ TEST(MathLoggerHeadersManagerTest, ShortBendersByBatch) {
 
   std::vector<std::string> expected_headers = {
       "Ite",         "Lb",      "MinSpx",     "MaxSpx",
-      "NbSubPbSolv", "IteTime", "MasterTime", "SPWallTime"};
+      "NbSubPbSolv", "IteTime (s)", "MasterTime (s)", "SPWallTime (s)"};
   ASSERT_EQ(expected_headers, headers_manager.headers_list);
 }
 

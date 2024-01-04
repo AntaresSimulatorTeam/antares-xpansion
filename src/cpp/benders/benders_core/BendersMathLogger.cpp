@@ -22,12 +22,12 @@ HeadersManager::HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method) {
   if (type == HEADERSTYPE::LONG) {
     headers_list.push_back("CumulNbSubPbSolv");
   }
-  headers_list.push_back("IteTime");
-  headers_list.push_back("MasterTime");
-  headers_list.push_back("SPWallTime");
+  headers_list.push_back("IteTime (s)");
+  headers_list.push_back("MasterTime (s)");
+  headers_list.push_back("SPWallTime (s)");
   if (type == HEADERSTYPE::LONG) {
-    headers_list.push_back("SPCpuTime");
-    headers_list.push_back("NotSolvingWallTime");
+    headers_list.push_back("SPCpuTime (s)");
+    headers_list.push_back("NotSolvingWallTime (s)");
   }
 }
 
