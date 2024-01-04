@@ -903,12 +903,12 @@ TEST(MathLoggerBendersByBatchTest, DataInFileLong) {
   data.max_simplexiter = 30;
   data.number_of_subproblem_solved = 657;
   data.cumulative_number_of_subproblem_solved = 1387;
-  data.elapsed_time = 1000;
+  data.benders_time = 1000;
   data.timer_master = 10;
   data.subproblems_walltime = 16;
   data.subproblems_cumulative_cputime = 160;
   auto time_not_solving =
-      data.elapsed_time - data.timer_master - data.subproblems_walltime;
+      data.benders_time - data.timer_master - data.subproblems_walltime;
 
   std::ostringstream expected_msg;
   expected_msg << std::left << std::setw(width) << data.it;
@@ -922,7 +922,7 @@ TEST(MathLoggerBendersByBatchTest, DataInFileLong) {
   expected_msg << std::left << std::setw(width)
                << data.cumulative_number_of_subproblem_solved;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
-               << data.elapsed_time;
+               << data.benders_time;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
                << data.timer_master;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
@@ -954,12 +954,12 @@ TEST(MathLoggerBendersByBatchTest, DataInStdOutShort) {
   data.max_simplexiter = 30;
   data.number_of_subproblem_solved = 657;
   data.cumulative_number_of_subproblem_solved = 1387;
-  data.elapsed_time = 1000;
+  data.benders_time = 1000;
   data.timer_master = 10;
   data.subproblems_walltime = 16;
   data.subproblems_cumulative_cputime = 160;
   auto time_not_solving =
-      data.elapsed_time - data.timer_master - data.subproblems_walltime;
+      data.benders_time - data.timer_master - data.subproblems_walltime;
 
   std::ostringstream expected_msg;
   expected_msg << std::left << std::setw(width) << data.it;
@@ -971,7 +971,7 @@ TEST(MathLoggerBendersByBatchTest, DataInStdOutShort) {
                << data.number_of_subproblem_solved;
 
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
-               << data.elapsed_time;
+               << data.benders_time;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
                << data.timer_master;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
@@ -1000,12 +1000,12 @@ TEST(MathLoggerBendersBaseTest, DataInFileLong) {
   data.max_simplexiter = 30;
   data.number_of_subproblem_solved = 657;
   data.cumulative_number_of_subproblem_solved = 1387;
-  data.elapsed_time = 1000;
+  data.benders_time = 1000;
   data.timer_master = 10;
   data.subproblems_walltime = 16;
   data.subproblems_cumulative_cputime = 160;
   auto time_not_solving =
-      data.elapsed_time - data.timer_master - data.subproblems_walltime;
+      data.benders_time - data.timer_master - data.subproblems_walltime;
 
   std::ostringstream expected_msg;
   expected_msg << std::left << std::setw(width) << data.it;
@@ -1028,7 +1028,7 @@ TEST(MathLoggerBendersBaseTest, DataInFileLong) {
   expected_msg << std::left << std::setw(width)
                << data.cumulative_number_of_subproblem_solved;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
-               << data.elapsed_time;
+               << data.benders_time;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
                << data.timer_master;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
@@ -1060,12 +1060,12 @@ TEST(MathLoggerBendersBaseTest, DataInStdOutShort) {
   data.max_simplexiter = 30;
   data.number_of_subproblem_solved = 657;
   data.cumulative_number_of_subproblem_solved = 1387;
-  data.elapsed_time = 1000;
+  data.benders_time = 1000;
   data.timer_master = 10;
   data.subproblems_walltime = 16;
   data.subproblems_cumulative_cputime = 160;
   auto time_not_solving =
-      data.elapsed_time - data.timer_master - data.subproblems_walltime;
+      data.benders_time - data.timer_master - data.subproblems_walltime;
 
   std::ostringstream expected_msg;
   expected_msg << std::left << std::setw(width) << data.it;
@@ -1085,7 +1085,7 @@ TEST(MathLoggerBendersBaseTest, DataInStdOutShort) {
   expected_msg << std::left << std::setw(width) << data.max_simplexiter;
 
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
-               << data.elapsed_time;
+               << data.benders_time;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
                << data.timer_master;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
