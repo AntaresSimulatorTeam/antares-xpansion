@@ -41,7 +41,7 @@ void PrintData(LogDestination& log_destination,
     log_destination << data.cumulative_number_of_subproblem_solved;
   }
 
-  log_destination << std::setprecision(2) << data.benders_time;
+  log_destination << std::setprecision(2) << data.iteration_time;
   log_destination << std::setprecision(2) << data.timer_master;
   log_destination << std::setprecision(2) << data.subproblems_walltime;
 
