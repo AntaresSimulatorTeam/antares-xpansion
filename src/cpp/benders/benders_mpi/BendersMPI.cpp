@@ -200,7 +200,9 @@ void BendersMpi::step_4_update_best_solution(int rank) {
     _logger->log_at_iteration_end(bendersDataToLogData(_data));
 
     UpdateTrace();
+    _data.iteration_time = -_data.benders_time;
     _data.benders_time = GetBendersTime();
+    _data.iteration_time += _data.benders_time;
     _data.stop = ShouldBendersStop();
   }
 }

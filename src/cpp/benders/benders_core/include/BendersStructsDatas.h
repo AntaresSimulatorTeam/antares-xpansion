@@ -15,6 +15,7 @@ struct CurrentIterationData {
   double best_ub;
   int deletedcut;
   int it;
+  double iteration_time;
   bool stop;
   double overall_subpb_cost_under_approx;
   std::vector<double> single_subpb_costs_under_approx;

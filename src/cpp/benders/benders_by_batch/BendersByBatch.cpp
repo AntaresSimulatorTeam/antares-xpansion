@@ -113,7 +113,9 @@ void BendersByBatch::MasterLoop() {
               random_batch_permutation_.size(), rank_0);
     SeparationLoop();
     if (Rank() == rank_0) {
+      _data.iteration_time = -_data.benders_time;
       _data.benders_time = GetBendersTime();
+      _data.iteration_time += _data.benders_time;
       _data.stop = ShouldBendersStop();
     }
     BroadCast(_data.stop, rank_0);

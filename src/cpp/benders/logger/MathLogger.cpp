@@ -49,7 +49,7 @@ void PrintData(LogDestination& log_destination,
     log_destination << std::setprecision(2)
                     << data.subproblems_cumulative_cputime;
     log_destination << std::setprecision(2)
-                    << getDurationNotSolving(data.benders_time,
+                    << getDurationNotSolving(data.iteration_time,
                                              data.timer_master,
                                              data.subproblems_walltime);
   }
