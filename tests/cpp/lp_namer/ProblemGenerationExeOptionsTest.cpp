@@ -1,3 +1,6 @@
+#include <concepts>
+#include <string_view>
+
 #include "ProblemGeneration.h"
 #include "ProblemGenerationExeOptions.h"
 #include "gtest/gtest.h"
@@ -5,13 +8,25 @@
 namespace po = boost::program_options;
 
 class ProblemGenerationExeOptionsTest : public ::testing::Test {
- protected:
+ public:
   ProblemGenerationExeOptions problem_generation_options_parser_;
+
+  auto parseOptions(std::convertible_to<std::string_view> auto&&... s) {
+    const char argv0[] = "lp_namer.exe";
+    std::vector<const char*> ppargv;
+    ppargv.push_back(argv0);
+    for (auto v : std::initializer_list<std::string_view>{s...}) {
+      ppargv.push_back(v.data());
+    }
+    return problem_generation_options_parser_.Parse(ppargv.size(),
+                                                    ppargv.data());
+  }
 };
 
 class ProblemGenerationSpyAndMock : public ProblemGeneration {
  public:
-  ProblemGenerationSpyAndMock(ProblemGenerationExeOptions& options)
+  virtual ~ProblemGenerationSpyAndMock() = default;
+  explicit ProblemGenerationSpyAndMock(ProblemGenerationExeOptions& options)
       : ProblemGeneration(options) {}
   void RunProblemGeneration(
       const std::filesystem::path& xpansion_output_dir,
@@ -36,24 +51,16 @@ class ProblemGenerationSpyAndMock : public ProblemGeneration {
   std::filesystem::path archive_path_;
   std::filesystem::path log_file_path_;
   std::filesystem::path weights_file_;
-  bool unnamed_problems_;
+  bool unnamed_problems_ = false;
 };
 
 TEST_F(ProblemGenerationExeOptionsTest, WithoutOutputOption) {
-  const char argv0[] = "lp_namer.exe";
-  const char argv1[] = "--archive";
-  const char argv2[] = "something";
-  std::vector<const char*> ppargv = {argv0, argv1, argv2};
-  EXPECT_NO_THROW(problem_generation_options_parser_.Parse(3, ppargv.data()));
+  EXPECT_NO_THROW(parseOptions("--archive", "something"););
 }
 
 // OK
 TEST_F(ProblemGenerationExeOptionsTest, MasterFormulationDefaultValue) {
-  const char argv0[] = "lp.exe ";
-  const char argv3[] = "--output";
-  const char argv4[] = "something";
-  std::vector<const char*> ppargv = {argv0, argv3, argv4};
-  problem_generation_options_parser_.Parse(3, ppargv.data());
+  parseOptions("--output", "something");
   ASSERT_EQ(problem_generation_options_parser_.MasterFormulation(),
             std::string("relaxed"));
 }
@@ -66,16 +73,9 @@ TEST_F(ProblemGenerationExeOptionsTest,
   auto archive = std::string(tmpnam(nullptr)) + "study.zip";
   auto output_path = test_root / "study-Xpansion";
 
-  const char argv0[] = "lp.exe ";
-  const char argv1[] = "--archive";
-  auto argv2 = archive;
-  const char argv3[] = "--output";
-  auto argv4 = output_path.string();
-  std::vector<const char*> ppargv = {argv0, argv1, argv2.c_str(), argv3,
-                                     argv4.c_str()};
-
-  EXPECT_THROW(problem_generation_options_parser_.Parse(5, ppargv.data()),
-               ProblemGenerationOptions::ConflictingParameters);
+  EXPECT_THROW(
+      parseOptions("--archive", archive, "--output", output_path.string()),
+      ProblemGenerationOptions::ConflictingParameters);
 
   ProblemGenerationSpyAndMock pbg(problem_generation_options_parser_);
   pbg.updateProblems();
@@ -94,12 +94,7 @@ TEST_F(ProblemGenerationExeOptionsTest,
   auto archive = test_root / "study.zip";
   auto output_path = test_root / "study-Xpansion";
 
-  const char argv0[] = "lp.exe ";
-  const char argv1[] = "--archive";
-  const auto& argv2 = archive;
-
-  std::vector<const char*> ppargv{argv0, argv1, argv2.c_str()};
-  problem_generation_options_parser_.Parse(3, ppargv.data());
+  parseOptions("--archive", archive.string());
 
   ProblemGenerationSpyAndMock pbg(problem_generation_options_parser_);
   pbg.updateProblems();
@@ -116,12 +111,7 @@ TEST_F(ProblemGenerationExeOptionsTest, use_only_output_option) {
   auto archive = test_root / "study.zip";
   auto output_path = test_root / "study-Xpansion";
 
-  const char argv0[] = "lp.exe ";
-  const char argv1[] = "--output";
-  auto argv2 = output_path.string();
-
-  std::vector<const char*> ppargv = {argv0, argv1, argv2.c_str()};
-  problem_generation_options_parser_.Parse(3, ppargv.data());
+  parseOptions("--output", output_path.string());
 
   ProblemGenerationSpyAndMock pbg(problem_generation_options_parser_);
   pbg.updateProblems();
@@ -138,10 +128,5 @@ TEST_F(ProblemGenerationExeOptionsTest,
   auto test_root =
       std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
 
-  const char argv0[] = "lp.exe ";
-
-  std::vector<const char*> ppargv = {argv0};
-
-  EXPECT_THROW(problem_generation_options_parser_.Parse(1, ppargv.data()),
-               ProblemGenerationOptions::MissingParameters);
+  EXPECT_THROW(parseOptions(), ProblemGenerationOptions::MissingParameters);
 }
