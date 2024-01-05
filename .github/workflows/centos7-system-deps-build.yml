@@ -83,7 +83,12 @@ jobs:
       - name: Compile tbb
         uses: ./.github/workflows/compile-tbb   
         with:
-          cmake: 'cmake3'     
+          cmake: 'cmake3'   
+          
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1.13
+        with:
+          cmake-version: '3.22.x'  
 
       - name: Configure
         run: |
