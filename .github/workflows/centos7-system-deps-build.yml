@@ -58,7 +58,7 @@ jobs:
         run: |
           yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
           yum install -y jsoncpp-devel gtest-devel openmpi-devel doxygen graphviz boost-program-options
-          yum install -y cmake3 devtoolset-9 environment-modules rpm-build zlib-devel
+          yum install -y  devtoolset-9 environment-modules rpm-build zlib-devel
           yum install -y rh-git227-git 
           yum install -y libuuid-devel
 
@@ -79,7 +79,7 @@ jobs:
         uses: jwlawson/actions-setup-cmake@v1.13
         with:
           cmake-version: '3.22.x'  
-          
+
       - name: Compile Boost
         uses: ./.github/workflows/compile-boost
         with: 
