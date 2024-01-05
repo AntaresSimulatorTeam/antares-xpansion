@@ -75,6 +75,11 @@ jobs:
           pip3 install -r requirements-tests.txt
           pip3 install -r requirements-ui.txt
           
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1.13
+        with:
+          cmake-version: '3.22.x'  
+          
       - name: Compile Boost
         uses: ./.github/workflows/compile-boost
         with: 
@@ -85,10 +90,6 @@ jobs:
         with:
           cmake: 'cmake3'   
           
-      - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v1.13
-        with:
-          cmake-version: '3.22.x'  
 
       - name: Configure
         run: |
