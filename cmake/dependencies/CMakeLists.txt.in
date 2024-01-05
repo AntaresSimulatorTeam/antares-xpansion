@@ -17,7 +17,9 @@ ExternalProject_Add(${PROJECT_NAME}_project
   GIT_TAG "@GIT_DEP_TAG@"
   LOG_DOWNLOAD FALSE
   GIT_SUBMODULES src/antares-deps
-
+  
+  UPDATE_DISCONNECTED TRUE
+  
   # UPDATE_COMMAND ""
   LOG_UPDATE FALSE
 
