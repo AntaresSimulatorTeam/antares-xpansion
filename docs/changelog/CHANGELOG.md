@@ -1,9 +1,16 @@
 Antares-Xpansion changelog
 =================
+v1.1.2 (01/2024)
+--------------------
+
+### Bug fix
+
+- Fix doc compilation
+
 v1.1.1 (12/2023)
 --------------------
 
-### Fix
+### Bug fix
 
 - Update performance graph in the documentation
 - Fix gap contribution bug #722
@@ -31,7 +38,7 @@ v1.0.3 (02/2023)
 
 - Use Antares-Simulator 8.5.0
 
-### Bug
+### Bug fix
 
 - Fix sensitivity not working with AntaresWeb
 
