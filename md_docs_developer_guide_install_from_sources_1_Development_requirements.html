@@ -152,14 +152,14 @@ $(document).ready(function(){initNavTree('md_docs_developer_guide_install_from_s
     sudo yum config-manager --set-enabled PowerTools
     ```
 
-You can then use a more recent version of GCC by enabling `devtoolset-9`:
+You can then use a more recent version of GCC by enabling `devtoolset-10`:
 ```
-sudo yum install devtoolset-9
+sudo yum install devtoolset-10
 ```
 
 Before compiling Antares-Xpansion, we must launch a new shell with `scl` tool :
 ```
-scl enable devtoolset-9 bash
+scl enable devtoolset-10 bash
 ```
 </pre><p> === "Ubuntu" </p><pre class="fragment">```
 sudo apt install build-essential
