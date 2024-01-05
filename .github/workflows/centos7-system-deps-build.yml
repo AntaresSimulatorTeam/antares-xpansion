@@ -82,6 +82,11 @@ jobs:
           pip3 install wheel #Does not work in requirements
           pip3 install -r requirements-tests.txt
 
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1.13
+        with:
+          cmake-version: '3.22.x'
+
       - name: Compile Boost
         uses: ./.github/workflows/compile-boost
         with:
@@ -90,12 +95,8 @@ jobs:
       - name: Compile tbb
         uses: ./.github/workflows/compile-tbb   
         with:
-          cmake: 'cmake3'     
+          cmake: 'cmake'     
 
-      - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v1.13
-        with:
-          cmake-version: '3.22.x'
 
       - name: Configure
         run: |
@@ -118,17 +119,17 @@ jobs:
           source /etc/profile.d/modules.sh
           module load mpi
           cd _build
-          ctest3 -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
+          ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
 
       - name: .tar.gz creation
         run: |
           cd _build
-          cpack3 -G TGZ
+          cpack -G TGZ
 
       - name: Installer .rpm creation
         run: |
           cd _build
-          cpack3 -G RPM
+          cpack -G RPM
 
       - id: create-single-file
         name: Single file .tar.gz creation
