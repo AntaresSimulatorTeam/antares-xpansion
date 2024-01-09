@@ -65,7 +65,6 @@ TEST_F(ProblemGenerationExeOptionsTest, MasterFormulationDefaultValue) {
             std::string("relaxed"));
 }
 
-// OK
 TEST_F(ProblemGenerationExeOptionsTest,
        OutputAndArchiveParameters_mutually_exclusives) {
   auto test_root =
@@ -86,7 +85,6 @@ TEST_F(ProblemGenerationExeOptionsTest,
   EXPECT_TRUE(std::filesystem::exists(output_path / "lp"));
 }
 
-// OK
 TEST_F(ProblemGenerationExeOptionsTest,
        OutputAndArchiveParameters_deduceOuputFromArchive) {
   auto test_root =
@@ -99,6 +97,7 @@ TEST_F(ProblemGenerationExeOptionsTest,
   ProblemGenerationSpyAndMock pbg(problem_generation_options_parser_);
   pbg.updateProblems();
 
+  EXPECT_TRUE(problem_generation_options_parser_.XpansionOutputDir().empty());
   EXPECT_EQ(pbg.archive_path_, archive);
   EXPECT_EQ(pbg.xpansion_output_dir_, output_path);
   EXPECT_TRUE(std::filesystem::exists(output_path));
@@ -116,13 +115,13 @@ TEST_F(ProblemGenerationExeOptionsTest, use_only_output_option) {
   ProblemGenerationSpyAndMock pbg(problem_generation_options_parser_);
   pbg.updateProblems();
 
+  EXPECT_TRUE(problem_generation_options_parser_.ArchivePath().empty());
   EXPECT_TRUE(pbg.archive_path_.empty());
   EXPECT_EQ(pbg.xpansion_output_dir_, output_path);
   EXPECT_TRUE(std::filesystem::exists(output_path));
   EXPECT_TRUE(std::filesystem::exists(output_path / "lp"));
 }
 
-// OK
 TEST_F(ProblemGenerationExeOptionsTest,
        OutputAndArchiveParameters_ErrorIfBothArchiveAndOutputAreMissing) {
   auto test_root =

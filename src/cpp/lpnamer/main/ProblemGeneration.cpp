@@ -9,6 +9,7 @@
 
 #include "ActiveLinks.h"
 #include "AdditionalConstraints.h"
+#include "FileProblemsProviderAdapter.h"
 #include "GeneralDataReader.h"
 #include "LauncherHelpers.h"
 #include "LinkProblemsGenerator.h"
@@ -19,6 +20,7 @@
 #include "MasterProblemBuilder.h"
 #include "MpsTxtWriter.h"
 #include "ProblemGenerationLogger.h"
+#include "ProblemVariablesFileAdapter.h"
 #include "ProblemVariablesFromProblemAdapter.h"
 #include "ProblemVariablesZipAdapter.h"
 #include "StringManip.h"
@@ -159,14 +161,20 @@ void validateMasterFormulation(
 std::vector<std::shared_ptr<Problem>> getXpansionProblems(
     SolverLogManager& solver_log_manager, const std::string& solver_name,
     const std::vector<ProblemData>& mpsList, std::filesystem::path& lpDir_,
-    std::shared_ptr<ArchiveReader>& reader) {
+    std::shared_ptr<ArchiveReader>& reader, bool with_archive = true) {
   std::vector<std::string> problem_names;
   std::transform(mpsList.begin(), mpsList.end(),
                  std::back_inserter(problem_names),
                  [](ProblemData const& data) { return data._problem_mps; });
-  auto adapter = std::make_shared<ZipProblemsProviderAdapter>(lpDir_, reader,
-                                                              problem_names);
-  return adapter->provideProblems(solver_name, solver_log_manager);
+  if (with_archive) {
+    auto adapter = std::make_shared<ZipProblemsProviderAdapter>(lpDir_, reader,
+                                                                problem_names);
+    return adapter->provideProblems(solver_name, solver_log_manager);
+  } else {
+    auto adapter =
+        std::make_shared<FileProblemsProviderAdapter>(lpDir_, problem_names);
+    return adapter->provideProblems(solver_name, solver_log_manager);
+  }
 }
 
 void ProblemGeneration::RunProblemGeneration(
@@ -188,7 +196,8 @@ void ProblemGeneration::RunProblemGeneration(
                    logger);
   }
 
-  ExtractUtilsFiles(antares_archive_path, xpansion_output_dir, logger);
+  if (!antares_archive_path.empty())
+    ExtractUtilsFiles(antares_archive_path, xpansion_output_dir, logger);
 
   std::vector<ActiveLink> links = getLinks(xpansion_output_dir, logger);
 
@@ -207,7 +216,7 @@ void ProblemGeneration::RunProblemGeneration(
       antares_version < first_version_without_variables_files;
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "rename problems: " << std::boolalpha << rename_problems << std::endl;
-  auto files_mapper = FilesMapper(antares_archive_path);
+  auto files_mapper = FilesMapper(antares_archive_path, xpansion_output_dir);
   auto mpsList = files_mapper.MpsAndVariablesFilesVect();
 
   auto solver_log_manager = SolverLogManager(log_file_path);
@@ -215,11 +224,12 @@ void ProblemGeneration::RunProblemGeneration(
   LinkProblemsGenerator linkProblemsGenerator(
       lpDir_, links, solver_name, logger, solver_log_manager, rename_problems);
   std::shared_ptr<ArchiveReader> reader =
-      InstantiateZipReader(antares_archive_path);
+      antares_archive_path.empty() ? std::make_shared<ArchiveReader>()
+                                   : InstantiateZipReader(antares_archive_path);
 
   /* Main stuff */
-  std::vector<std::shared_ptr<Problem>> xpansion_problems = getXpansionProblems(
-      solver_log_manager, solver_name, mpsList, lpDir_, reader);
+  std::vector<std::shared_ptr<Problem>> xpansion_problems = getXpansionProblems(solver_log_manager, solver_name, mpsList, lpDir_,
+                          reader, !antares_archive_path.empty());
 
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
       problems_and_data;
@@ -233,13 +243,18 @@ void ProblemGeneration::RunProblemGeneration(
       [&](const auto& problem_and_data) {
         const auto& [problem, data] = problem_and_data;
         std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
-        if (rename_problems) {
-          variables_provider = std::make_shared<ProblemVariablesZipAdapter>(
-              reader, data, links, logger);
+        if (antares_archive_path.empty()) {
+          variables_provider = std::make_shared<ProblemVariablesFileAdapter>(
+              data, links, logger, lpDir_);
         } else {
-          variables_provider =
-              std::make_shared<ProblemVariablesFromProblemAdapter>(
-                  problem, links, logger);
+          if (rename_problems) {
+            variables_provider = std::make_shared<ProblemVariablesZipAdapter>(
+                reader, data, links, logger);
+          } else {
+            variables_provider =
+                std::make_shared<ProblemVariablesFromProblemAdapter>(
+                    problem, links, logger);
+          }
         }
         linkProblemsGenerator.treat(data._problem_mps, couplings, problem.get(),
                                     variables_provider.get(),
