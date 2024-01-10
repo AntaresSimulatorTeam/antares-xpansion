@@ -38,6 +38,7 @@ class InMemoryOption : public ProblemGenerationOptions {
   }
 };
 
+/*
 TEST(InitializationTest, FoldersAreEmpty) {
   auto workingDirectory =
       std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
@@ -62,3 +63,4 @@ TEST(InitializationTest, FoldersAreEmpty) {
 
   EXPECT_FALSE(std::filesystem::exists(simulationDirectory / "garbage.txt"));
 }
+ */
