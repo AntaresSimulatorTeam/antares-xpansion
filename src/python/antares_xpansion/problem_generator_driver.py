@@ -118,8 +118,7 @@ class ProblemGeneratorDriver:
 
     def lp_namer_options(self):
         is_relaxed = 'relaxed' if self.is_relaxed else 'integer'
-        ret = ["-o", str(self.xpansion_output_dir), "-a",
-               str(self.output_path), "-f", is_relaxed]
+        ret = ["-a", str(self.output_path), "-f", is_relaxed]
         if self.weight_file_name_for_lp:
             ret.extend(["-w", str(self.user_weights_file_path)])
 
