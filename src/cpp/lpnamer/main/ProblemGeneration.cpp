@@ -52,7 +52,7 @@ std::filesystem::path ProblemGeneration::updateProblems() {
       options_.deduceXpansionDirIfEmpty(xpansion_output_dir, archive_path);
 
   const auto log_file_path =
-      xpansion_output_dir / "lp" / "ProblemGenerationLog.txt";
+      deduced_xpansion_output_dir / "lp" / "ProblemGenerationLog.txt";
 
   CreateDirectories(deduced_xpansion_output_dir);
   auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout,
