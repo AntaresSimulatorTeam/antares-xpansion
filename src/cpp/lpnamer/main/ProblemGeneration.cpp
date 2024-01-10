@@ -25,6 +25,7 @@
 #include "ProblemVariablesZipAdapter.h"
 #include "StringManip.h"
 #include "Timer.h"
+#include "Version.h"
 #include "WeightsFileReader.h"
 #include "WeightsFileWriter.h"
 #include "ZipProblemsProviderAdapter.h"
@@ -68,38 +69,6 @@ std::filesystem::path ProblemGeneration::updateProblems() {
                        additionalConstraintFilename_l, archive_path, logger, log_file_path, weights_file, unnamed_problems);
   return deduced_xpansion_output_dir;
 }
-
-struct Version {
-  explicit Version(std::string_view version) {
-    auto split_version = StringManip::split(StringManip::trim(version), '.');
-    major = std::stoi(split_version[0]);
-    minor = std::stoi(split_version[1]);
-  }
-
-  bool operator<(const Version& another) const {
-    if (this->major == another.major) {
-      return this->minor < another.minor;
-    } else {
-      return this->major < another.major;
-    }
-  }
-
-  bool operator>(const Version& another) const { return !operator<(another); }
-
-  bool operator==(const Version& another) const {
-    return (this->major == another.major && this->minor == another.minor);
-  }
-  bool operator<=(const Version& another) const {
-    return (operator<(another) || operator==(another));
-  }
-  bool operator>=(const Version& another) const {
-    return (operator>(another) || operator==(another));
-  }
-
- private:
-  int major;
-  int minor;
-};
 
 std::shared_ptr<ArchiveReader> InstantiateZipReader(
     const std::filesystem::path& antares_archive_path);

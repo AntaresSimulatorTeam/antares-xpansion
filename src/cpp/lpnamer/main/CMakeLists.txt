@@ -15,6 +15,8 @@ add_library (problem_generation_main STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/ProblemGeneration.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/ProblemGeneration.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/ProblemGenerationOptions.h
+		${CMAKE_CURRENT_SOURCE_DIR}/Version.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/Version.h
 )
 
 target_link_libraries (problem_generation_main 
