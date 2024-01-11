@@ -270,7 +270,7 @@ jobs:
           GH_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} $ZIP_NAME
-          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} $SINGLEFILE_NAME
+          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} ${{env.ZIP_NAME}}
+          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} ${{env.SINGLEFILE_NAME}}
 
       ########################
