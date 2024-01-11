@@ -31,6 +31,11 @@ jobs:
       - name: Install sonar-scanner and build-wrapper
         uses: SonarSource/sonarcloud-github-c-cpp@v2
 
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: sonarcloud-${{ env.SONAR_SCANNER_VERSION }}
+
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
@@ -48,6 +53,7 @@ jobs:
         run: |
           sudo apt-get update --fix-missing
           sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev libboost-program-options-dev libtbb-dev
+          sudo apt-get install g++-10 gcc-10
           cd /usr/src/googletest/
           sudo cmake .
           sudo cmake --build . --target install
@@ -95,7 +101,17 @@ jobs:
 
       - name: Configure
         run: |
-          cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Debug -DCODE_COVERAGE=ON -DBUILD_TESTING=ON -DBUILD_antares_solver=OFF -DCMAKE_BUILD_TYPE=Debug  -DCMAKE_INSTALL_PREFIX=_install
+          cmake -B _build -S . \
+          -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+          -DCMAKE_C_COMPILER=/usr/bin/gcc-10 \
+          -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+          -DCMAKE_CXX_COMPILER=/usr/bin/g++-10 \
+          -DDEPS_INSTALL_DIR=rte-antares-deps-Debug\
+          -DCODE_COVERAGE=ON\
+          -DBUILD_TESTING=ON\
+          -DBUILD_antares_solver=OFF\
+          -DCMAKE_BUILD_TYPE=Debug\
+          -DCMAKE_INSTALL_PREFIX=_install
 
       - name: Build
         run: build-wrapper-linux-x86-64 --out-dir $GITHUB_WORKSPACE/_build/output cmake --build _build --config Debug -j2
