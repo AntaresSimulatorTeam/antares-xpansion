@@ -106,6 +106,7 @@ jobs:
       - name: Install dependencies
         run: |
           source /opt/rh/gcc-toolset-9/enable
+          pip3 install wheel
           pip3 install -r requirements-tests.txt
 
       - name: Configure
