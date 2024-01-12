@@ -58,7 +58,7 @@ def setup_and_teardown_lp_directory(request):
     lp_dir = test_dir.parent / (test_dir.stem + "-Xpansion") / "lp"
     if Path(lp_dir).is_dir():
         shutil.rmtree(lp_dir)
-    Path(lp_dir).mkdir(exist_ok=True)
+    Path(lp_dir).mkdir(parents=True, exist_ok=True)
 
     list_files = list(Path(test_dir).glob("*.mps"))
     list_files.extend(list(Path(test_dir).glob("variables*.txt")))
