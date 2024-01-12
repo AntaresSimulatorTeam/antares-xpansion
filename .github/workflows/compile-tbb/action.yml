@@ -13,7 +13,7 @@ runs:
   - id: install-tbb
     shell: bash
     run: |
-      {{inputs.load-toolset}} == 'true' || source /opt/rh/gcc-toolset-10/enable
+      ${{inputs.load-toolset == 'true'}} || source /opt/rh/gcc-toolset-10/enable
       git clone https://github.com/wjakob/tbb.git 
       cd tbb/build 
       ${{ inputs.cmake }} .. 
