@@ -1,6 +1,8 @@
 
 #include "include/ProblemGeneration.h"
 
+#include <antares/application/application.h>
+
 #include <execution>
 #include <iostream>
 
@@ -184,6 +186,28 @@ void ProblemGeneration::RunProblemGeneration(
       antares_version < first_version_without_variables_files;
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "rename problems: " << std::boolalpha << rename_problems << std::endl;
+
+  Antares::Solver::Application application;
+  application.outputWriter_.PrintMe();
+  using namespace std::literals::string_literals;
+  char* argv[] = {"antares-8.8-solver", "./examples/SmallTestFiveCandidates/",
+                  "--force-parallel", "4"};
+  auto argc = 4;
+  auto arg1 = "antares-8.8-solver"s;
+  auto arg2 = "./examples/SmallTestFiveCandidates/"s;
+  auto arg3 = "--force-parallel"s;
+  auto arg4 = "4"s;
+  argv[0] = arg1.data();
+  argv[1] = arg2.data();
+  argv[2] = arg3.data();
+  argv[3] = arg4.data();
+
+  application.prepare(argc, argv);
+  LpsFromAntares lps;
+  application.pStudy->_lps = &lps;
+  application.execute();
+  application.outputWriter_.PrintMe();
+
   auto files_mapper = FilesMapper(antares_archive_path, xpansion_output_dir);
   auto mpsList = files_mapper.MpsAndVariablesFilesVect();
 

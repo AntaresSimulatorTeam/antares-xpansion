@@ -5,7 +5,6 @@
 #pragma once
 
 #include "../model/Problem.h"
-#include "LpsFromAntares.h"
 
 class IXpansionProblemsProvider {
  public:

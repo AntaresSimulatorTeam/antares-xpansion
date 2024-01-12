@@ -10,6 +10,7 @@
 # Problem Generation  runner lib
 # ---------------------------------------------------------------------------
 
+find_package(Antares REQUIRED)
 add_library (problem_generation_main STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/ProblemGenerationExeOptions.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ProblemGeneration.cpp
@@ -26,7 +27,9 @@ target_link_libraries (problem_generation_main
 		${PROJECT_NAME}::lp_namer_input_reader
 		${PROJECT_NAME}::lp_namer_problem_modifier
 		Boost::boost Boost::program_options
-		helpers)
+		helpers
+		Antares::application
+)
 
 get_target_property(helpers_include helpers INTERFACE_INCLUDE_DIRECTORIES)
 

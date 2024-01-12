@@ -7,6 +7,7 @@
 # ===========================================================================
 
 find_package(TBB REQUIRED CONFIG)
+find_package(Antares REQUIRED)
 if (TBB_VERSION_MAJOR VERSION_LESS "2018")
 	message(FATAL_ERROR "Require tbb 2018 or higher.")
 endif()
@@ -42,7 +43,6 @@ add_library(lp_namer_problem_modifier STATIC
 		${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesFileAdapter.h
 		${CMAKE_CURRENT_SOURCE_DIR}/MPSFileProblemProviderAdapter.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/MPSFileProblemProviderAdapter.h
-		${CMAKE_CURRENT_SOURCE_DIR}/LpsFromAntares.h
 		${CMAKE_CURRENT_SOURCE_DIR}/XpansionProblemsFromAntaresProvider.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/XpansionProblemsFromAntaresProvider.h
 		${CMAKE_CURRENT_SOURCE_DIR}/AntaresProblemToXpansionProblemTranslator.cpp
@@ -71,6 +71,7 @@ target_link_libraries (lp_namer_problem_modifier
 		helpers
 		solvers
 		TBB::tbb
+		Antares::antares-solver-simulation
 )
 
 add_library (${PROJECT_NAME}::lp_namer_problem_modifier ALIAS lp_namer_problem_modifier)
