@@ -4,14 +4,16 @@ inputs:
   cmake:
     description: 'cmake version'
     default: cmake
-
+  load-toolset:
+    description: 'load devtoolset 10'
+    default: 'true'
 runs:
   using: "composite"
   steps: 
   - id: install-tbb
     shell: bash
     run: |
-      source /opt/rh/gcc-toolset-10/enable
+      {{inputs.load-toolset}} == 'true' || source /opt/rh/gcc-toolset-10/enable
       git clone https://github.com/wjakob/tbb.git 
       cd tbb/build 
       ${{ inputs.cmake }} .. 
