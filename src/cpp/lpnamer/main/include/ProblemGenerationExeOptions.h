@@ -15,23 +15,34 @@ class ProblemGenerationExeOptions : public OptionsParser,
   std::filesystem::path archive_path_;
   std::filesystem::path weights_file_ = "";
   std::vector<int> active_years_;
-  bool unnamed_problems_;
+  bool unnamed_problems_ = false;
+  std::filesystem::path study_path_;
 
  public:
   ProblemGenerationExeOptions();
 
-  virtual ~ProblemGenerationExeOptions() = default;
-  std::filesystem::path XpansionOutputDir() const {
+  ~ProblemGenerationExeOptions() override = default;
+  [[nodiscard]] std::filesystem::path XpansionOutputDir() const override {
     return xpansion_output_dir_;
   }
-  std::string MasterFormulation() const { return master_formulation_; }
-  std::string AdditionalConstraintsFilename() const {
+  [[nodiscard]] std::string MasterFormulation() const override {
+    return master_formulation_;
+  }
+  [[nodiscard]] std::string AdditionalConstraintsFilename() const override {
     return additional_constraintFilename_l_;
   }
-  std::filesystem::path ArchivePath() const { return archive_path_; }
-  std::filesystem::path WeightsFile() const { return weights_file_; }
-  std::vector<int> ActiveYears() const { return active_years_; }
-  bool UnnamedProblems() const { return unnamed_problems_; }
+  [[nodiscard]] std::filesystem::path ArchivePath() const override {
+    return archive_path_;
+  }
+  [[nodiscard]] std::filesystem::path WeightsFile() const override {
+    return weights_file_;
+  }
+  [[nodiscard]] std::vector<int> ActiveYears() const override {
+    return active_years_;
+  }
+  [[nodiscard]] bool UnnamedProblems() const override {
+    return unnamed_problems_;
+  }
 
   void Parse(unsigned int argc, const char *const *argv) override;
 

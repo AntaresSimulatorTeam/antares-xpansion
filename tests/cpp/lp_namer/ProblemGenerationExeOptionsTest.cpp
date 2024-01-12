@@ -129,3 +129,37 @@ TEST_F(ProblemGenerationExeOptionsTest,
 
   EXPECT_THROW(parseOptions(), ProblemGenerationOptions::MissingParameters);
 }
+
+TEST_F(ProblemGenerationExeOptionsTest, study) {
+  auto test_root =
+      std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
+
+  parseOptions("--study", test_root.string());
+
+  ProblemGenerationSpyAndMock pbg(problem_generation_options_parser_);
+  pbg.updateProblems();
+
+  EXPECT_TRUE(problem_generation_options_parser_.ArchivePath().empty());
+  EXPECT_TRUE(pbg.archive_path_.empty());
+  EXPECT_TRUE(pbg.xpansion_output_dir_.empty());
+}
+
+//
+TEST_F(ProblemGenerationExeOptionsTest, _s_options_exclusive) {
+  auto test_root =
+      std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
+  auto archive = std::string(tmpnam(nullptr)) + "study.zip";
+  auto output_path = test_root / "study-Xpansion";
+
+  EXPECT_THROW(
+      parseOptions("--archive", archive, "--output", output_path.string()),
+      ProblemGenerationOptions::ConflictingParameters);
+
+  ProblemGenerationSpyAndMock pbg(problem_generation_options_parser_);
+  pbg.updateProblems();
+
+  EXPECT_EQ(pbg.archive_path_, archive);
+  EXPECT_EQ(pbg.xpansion_output_dir_, output_path);
+  EXPECT_TRUE(std::filesystem::exists(output_path));
+  EXPECT_TRUE(std::filesystem::exists(output_path / "lp"));
+}
