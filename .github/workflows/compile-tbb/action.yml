@@ -4,9 +4,7 @@ inputs:
   cmake:
     description: 'cmake version'
     default: cmake
-  load-toolset:
-    description: 'load devtoolset 10'
-    default: 'true'
+
 runs:
   using: "composite"
   steps: 
