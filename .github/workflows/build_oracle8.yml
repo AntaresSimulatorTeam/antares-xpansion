@@ -49,7 +49,9 @@ jobs:
     strategy:
       matrix:
         xprs: [ XPRESS-ON, XPRESS-OFF ]
-        xpress_versions: [ 8.13a, 9.0a ]
+        include:
+          - xprs: XPRESS-ON
+            xpress_versions: [ 8.13a, 9.0a ]
     needs: [ versions ]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
