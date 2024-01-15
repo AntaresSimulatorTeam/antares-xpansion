@@ -23,7 +23,9 @@ jobs:
         xprs: [ XPRESS-ON, XPRESS-OFF ]
         include:
           - xprs: XPRESS-ON
-            xpress_versions: [ 8.13a, 9.0a ]
+            xpress_versions: 8.13a
+          - xprs: XPRESS-ON
+            xpress_versions: 9.0a
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
