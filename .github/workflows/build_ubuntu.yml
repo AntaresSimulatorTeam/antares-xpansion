@@ -21,6 +21,7 @@ jobs:
       matrix:
         os: [ ubuntu-20.04 ]
         xprs: [ XPRESS-ON, XPRESS-OFF ]
+        xpress_versions: [ 8.13a, 9.2.2 ]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
@@ -37,7 +38,7 @@ jobs:
         with:
           repository: rte-france/xpress-mp
           path: ${{ env.XPRESSDIR }}
-          ref: 8.13
+          ref: matrix.xpress_versions
           token: ${{ secrets.AS_TOKEN }} #reniew token periodically
 
       - name: ccache

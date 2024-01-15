@@ -22,6 +22,7 @@ jobs:
         os: [ windows-latest ]
         triplet: [ x64-windows ]
         xprs: [ XPRESS-ON, XPRESS-OFF ]
+        xpress_versions: [ 8.13a, 9.2.2 ]
     env:
       XPRESSDIR: ${{ github.workspace }}\xpress
       XPRESS: ${{ github.workspace }}\xpress\bin
@@ -40,7 +41,7 @@ jobs:
         with:
           repository: rte-france/xpress-mp-temp
           path: ${{ env.XPRESSDIR }}
-          ref: 8.13a
+          ref: matrix.xpress_versions
           token: ${{ secrets.AS_TOKEN }}
 
       - name: Get release

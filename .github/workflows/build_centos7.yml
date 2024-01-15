@@ -75,6 +75,7 @@ jobs:
     strategy:
       matrix:
         xprs: [ XPRESS-ON, XPRESS-OFF ]
+        xpress_versions: [ 8.13a, 9.2.2 ]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
@@ -99,7 +100,7 @@ jobs:
           repository: rte-france/xpress-mp
           path: ${{ env.XPRESSDIR }}
           github-server-url: https://github.com
-          ref: 8.13a
+          ref: matrix.xpress_versions
         if: matrix.xprs == 'XPRESS-ON'
 
       - name: Download pre-compiled librairies

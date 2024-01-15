@@ -49,6 +49,7 @@ jobs:
     strategy:
       matrix:
         xprs: [ XPRESS-ON, XPRESS-OFF ]
+        xpress_versions: [ 8.13a, 9.2.2 ]
     needs: [ versions ]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
@@ -76,7 +77,7 @@ jobs:
           repository: rte-france/xpress-mp
           path: ${{ env.XPRESSDIR }}
           github-server-url: https://github.com
-          ref: 8.13
+          ref: matrix.xpress_versions
         if: matrix.xprs == 'XPRESS-ON'
 
       - name: Set up Python
