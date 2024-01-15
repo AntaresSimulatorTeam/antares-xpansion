@@ -52,5 +52,6 @@ class ProblemGenerationExeOptions : public OptionsParser,
   [[nodiscard]] std::filesystem::path deduceArchivePathIfEmpty(
       const std::filesystem::path& xpansion_output_dir,
       const std::filesystem::path& archive_path) const override;
+  std::filesystem::path StudyPath() const;
 };
 #endif  // ANTARES_XPANSION_SRC_CPP_LPNAMER_MAIN_INCLUDE_PROBLEMGENERATIONEXEOPTIONS_H

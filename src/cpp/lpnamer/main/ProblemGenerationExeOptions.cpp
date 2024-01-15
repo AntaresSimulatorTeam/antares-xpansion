@@ -27,12 +27,18 @@ void ProblemGenerationExeOptions::Parse(unsigned int argc,
                                         const char* const* argv) {
   OptionsParser::Parse(argc, argv);
   auto log_location = LOGLOCATION;
-  if (!XpansionOutputDir().empty() && !ArchivePath().empty()) {
-    auto msg = "Giving both archive and output options is not permitted"s;
+  if (std::vector<std::string> args = {XpansionOutputDir(), ArchivePath(),
+                                       StudyPath()};
+      std::ranges::count_if(args, std::ranges::empty) < (args.size() - 1)) {
+    auto msg = "Only one of [archive, output, study] parameters is accepted"s;
     throw ProblemGenerationOptions::ConflictingParameters(msg, log_location);
   }
-  if (XpansionOutputDir().empty() && ArchivePath().empty()) {
-    auto msg = "Both output directory and archive path are empty"s;
+  if (std::vector<std::string> mandatory = {XpansionOutputDir(), ArchivePath(),
+                                            StudyPath()};
+      std::ranges::all_of(
+          mandatory, [](std::string_view string) { return string.empty(); })) {
+    auto msg =
+        "Need to give at least on of [OutputDir, Archive, Study] options"s;
     throw ProblemGenerationOptions::MissingParameters(msg, log_location);
   }
 }
@@ -69,4 +75,7 @@ std::filesystem::path ProblemGenerationExeOptions::deduceXpansionDirIfEmpty(
     return deduced_dir;
   }
   return xpansion_output_dir;
+}
+std::filesystem::path ProblemGenerationExeOptions::StudyPath() const {
+  return study_path_;
 }

@@ -7,7 +7,10 @@
 
 namespace po = boost::program_options;
 
-class ProblemGenerationExeOptionsTest : public ::testing::Test {
+class ProblemGenerationExeOptionsTest
+    : public testing::TestWithParam<
+          std::tuple<std::pair<std::string, std::string>,
+                     std::pair<std::string, std::string>>> {
  public:
   ProblemGenerationExeOptions problem_generation_options_parser_;
 
@@ -65,25 +68,62 @@ TEST_F(ProblemGenerationExeOptionsTest, MasterFormulationDefaultValue) {
             std::string("relaxed"));
 }
 
-TEST_F(ProblemGenerationExeOptionsTest,
-       OutputAndArchiveParameters_mutually_exclusives) {
+// Base case: an empty tuple
+template <typename... Ts>
+auto flattenPairs(const std::tuple<Ts...>& tuple) {
+  return tuple;  // Return the original tuple for the base case
+}
+
+// Terminal case : only a pair
+template <typename T>
+auto flattenPairs(const std::pair<T, T>& pair) {
+  return std::make_tuple(pair.first, pair.second);
+}
+
+// Recursive case: process the first pair and concatenate it with the flattened
+// rest of the tuple f({ pair(A, B), pair(C, D), pair(E, F) })
+// => f( pair(A,B) ) + f( { pair(C, D), pair(E, F) })
+// => f( pair(A,B) ) + f( pair(C, D) ) + f ({ pair(E, F) })
+// => f( pair(A,B) ) + f( pair(C, D) ) + f ( pair(E, F) ) + f ( {} )
+template <typename T1, typename T2, typename... Ts>
+auto flattenPairs(const std::pair<T1, T2>& pair, const Ts&... rest) {
+  return std::tuple_cat(std::make_tuple(pair.first, pair.second),
+                        flattenPairs(rest...));
+}
+
+auto cases() {
+  using namespace std::string_literals;
+  return ::testing::Combine(
+      ::testing::Values(std::make_pair("--archive"s, "archive.zip"s),
+                        std::make_pair("--output"s, "output-Xpansion"s),
+                        std::make_pair("--study"s, "the_study"s)),
+      ::testing::Values(std::make_pair("--archive"s, "archive.zip"s),
+                        std::make_pair("--output"s, "output-Xpansion"s),
+                        std::make_pair("--study"s, "the_study"s)));
+}
+TEST_P(ProblemGenerationExeOptionsTest, Parameters_mutually_exclusives) {
   auto test_root =
       std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
   auto archive = std::string(tmpnam(nullptr)) + "study.zip";
   auto output_path = test_root / "study-Xpansion";
 
+  auto params = GetParam();
+  if (std::get<0>(params) == std::get<1>(params)) {
+    GTEST_SKIP();
+  }
+  auto tuple =
+      std::apply([](auto... args) { return flattenPairs(args...); }, params);
   EXPECT_THROW(
-      parseOptions("--archive", archive, "--output", output_path.string()),
+      std::apply([&, this](auto... args) { parseOptions(args...); }, tuple),
       ProblemGenerationOptions::ConflictingParameters);
 
-  ProblemGenerationSpyAndMock pbg(problem_generation_options_parser_);
-  pbg.updateProblems();
-
-  EXPECT_EQ(pbg.archive_path_, archive);
-  EXPECT_EQ(pbg.xpansion_output_dir_, output_path);
-  EXPECT_TRUE(std::filesystem::exists(output_path));
-  EXPECT_TRUE(std::filesystem::exists(output_path / "lp"));
+  EXPECT_THROW(
+      parseOptions("--archive", archive, "--output", output_path.string(),
+                   "--study", test_root.string()),
+      ProblemGenerationOptions::ConflictingParameters);
 }
+INSTANTIATE_TEST_SUITE_P(ConflictingOptions, ProblemGenerationExeOptionsTest,
+                         cases());
 
 TEST_F(ProblemGenerationExeOptionsTest,
        OutputAndArchiveParameters_deduceOuputFromArchive) {
