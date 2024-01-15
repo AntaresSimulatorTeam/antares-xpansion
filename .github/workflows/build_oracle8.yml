@@ -77,7 +77,7 @@ jobs:
           repository: rte-france/xpress-mp
           path: ${{ env.XPRESSDIR }}
           github-server-url: https://github.com
-          ref: matrix.xpress_versions
+          ref: ${{matrix.xpress_versions}}
         if: matrix.xprs == 'XPRESS-ON'
 
       - name: Set up Python

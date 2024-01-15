@@ -41,7 +41,7 @@ jobs:
         with:
           repository: rte-france/xpress-mp-temp
           path: ${{ env.XPRESSDIR }}
-          ref: matrix.xpress_versions
+          ref: ${{matrix.xpress_versions}}
           token: ${{ secrets.AS_TOKEN }}
 
       - name: Get release
