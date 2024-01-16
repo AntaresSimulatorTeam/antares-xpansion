@@ -152,7 +152,7 @@ jobs:
         shell: bash
         run: |
           pushd vcpkg
-          /bootstrap-vcpkg.sh
+          //bootstrap-vcpkg.sh
           ./vcpkg integrate install
           ./vcpkg install jsoncpp
 
