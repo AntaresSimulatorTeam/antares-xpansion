@@ -127,10 +127,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip3 install -y --upgrade pip
-          pip3 install -y wheel #Does not work in requirements
-          pip3 install -y -r requirements-tests.txt
-          pip3 install -y -r requirements-ui.txt
+          pip3 install --upgrade pip
+          pip3 install wheel #Does not work in requirements
+          pip3 install -r requirements-tests.txt
+          pip3 install -r requirements-ui.txt
 
       - name: Download userguide
         uses: actions/download-artifact@v3
