@@ -151,7 +151,6 @@ jobs:
       - name: Install json cpp
         shell: bash
         run: |
-          git clone https://github.com/Microsoft/vcpkg.git
           pushd vcpkg
           /bootstrap-vcpkg.sh
           ./vcpkg integrate install
