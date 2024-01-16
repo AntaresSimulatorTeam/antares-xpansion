@@ -79,7 +79,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: [ userguide, versions ]
-    container: 'antaresrte/rte-antares:centos7-system-deps'
+    container: 'oraclelinux:8'
     strategy:
       matrix:
         xprs: [ { value: XPRESS-ON, ref: 9.2.5 },
@@ -156,7 +156,7 @@ jobs:
           else
           export XPRESS_VALUE="OFF"
           fi
-          source /opt/rh/devtoolset-10/enable
+          source /opt/rh/gcc-toolset-10/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake3 -B _build -S . \
@@ -173,7 +173,7 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          source /opt/rh/devtoolset-10/enable
+          source /opt/rh/gcc-toolset-10/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake3 --build _build --config Release -j2 --target install
@@ -204,7 +204,7 @@ jobs:
       - name: .tar.gz creation
         run: |
           cd _build
-          export FILE_NAME="antaresXpansion-${{env.VERSION_WITH_XPRESS}}-CentOS-7.9.2009"
+          export FILE_NAME="antaresXpansion-${{env.VERSION_WITH_XPRESS}}-OracleServer-8.10"
           cpack3 -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
           echo "TGZ_NAME=$FILE_NAME.tar.gz" >> $GITHUB_ENV
 
