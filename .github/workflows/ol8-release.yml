@@ -148,6 +148,15 @@ jobs:
           ref: matrix.xprs.ref
         if: matrix.xprs.value == 'XPRESS-ON'
 
+      - name: Install json cpp
+        shell: bash
+        run: |
+          git clone https://github.com/Microsoft/vcpkg.git
+          pushd vcpkg
+          /bootstrap-vcpkg.sh
+          ./vcpkg integrate install
+          ./vcpkg install jsoncpp
+
       - name: Configure
         shell: bash
         run: |
