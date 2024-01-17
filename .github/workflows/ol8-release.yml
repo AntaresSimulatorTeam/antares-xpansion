@@ -102,6 +102,8 @@ jobs:
         run: |
           dnf install -y epel-release git cmake wget rpm-build redhat-lsb-core openmpi-devel
           dnf install -y unzip libuuid-devel boost-test boost-devel gcc-toolset-10-toolchain zlib-devel python3-devel
+          source /opt/rh/gcc-toolset-10/enable
+          dnf install -y jsoncpp-devel
 
       - name: Checkout
         uses: actions/checkout@v3
