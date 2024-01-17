@@ -147,7 +147,7 @@ jobs:
           repository: rte-france/xpress-mp
           path: ${{ env.XPRESSDIR }}
           github-server-url: https://github.com
-          ref: matrix.xprs.ref
+          ref: ${{matrix.xprs.ref}}
         if: matrix.xprs.value == 'XPRESS-ON'
 
       - name: Configure
