@@ -6,7 +6,6 @@ on:
       - main
       - develop
       - ci/*
-      - feature/xpress_9
   workflow_dispatch:
   workflow_run:
     workflows: [ "Publish Release" ]
@@ -206,7 +205,7 @@ jobs:
       - name: .tar.gz creation
         run: |
           cd _build
-          export FILE_NAME="antaresXpansion-${{env.VERSION_WITH_XPRESS}}-OracleServer-8.10"
+          export FILE_NAME="antaresXpansion-${{env.VERSION_WITH_XPRESS}}-OracleServer-8.9"
           cpack3 -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
           echo "TGZ_NAME=$FILE_NAME.tar.gz" >> $GITHUB_ENV
 
