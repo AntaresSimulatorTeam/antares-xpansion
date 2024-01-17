@@ -48,7 +48,9 @@ jobs:
     container: 'oraclelinux:8'
     strategy:
       matrix:
-        xprs: [ XPRESS-ON, XPRESS-OFF ]
+        xprs: [ { value: XPRESS-ON, ref: 8.13a },
+                { value: XPRESS-ON, ref: 9.2.5 },
+                { value: XPRESS-OFF } ]
     needs: [ versions ]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
@@ -76,8 +78,8 @@ jobs:
           repository: rte-france/xpress-mp
           path: ${{ env.XPRESSDIR }}
           github-server-url: https://github.com
-          ref: 8.13
-        if: matrix.xprs == 'XPRESS-ON'
+          ref: ${{matrix.xprs.ref}}
+        if: matrix.xprs.value == 'XPRESS-ON'
 
       - name: Set up Python
         run: |
@@ -111,7 +113,7 @@ jobs:
 
       - name: Configure
         run: |
-          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
+          [[ ${{ matrix.xprs.value }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
           source /opt/rh/gcc-toolset-10/enable
           dnf install jsoncpp-devel
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH

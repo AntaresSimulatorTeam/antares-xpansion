@@ -20,7 +20,9 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-20.04 ]
-        xprs: [ XPRESS-ON, XPRESS-OFF ]
+        xprs: [ { value: XPRESS-ON, ref: 8.13a },
+                { value: XPRESS-ON, ref: 9.2.5 },
+                { value: XPRESS-OFF } ]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
@@ -32,18 +34,18 @@ jobs:
           submodules: true
 
       - name: Checkout xpressmp linux
-        if: matrix.xprs == 'XPRESS-ON'
+        if: matrix.xprs.value == 'XPRESS-ON'
         uses: actions/checkout@v3
         with:
           repository: rte-france/xpress-mp
           path: ${{ env.XPRESSDIR }}
-          ref: 8.13
+          ref: ${{ matrix.xprs.ref}}
           token: ${{ secrets.AS_TOKEN }} #reniew token periodically
 
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.3
         with:
-          key: ${{ matrix.os }}-${{ matrix.xprs }}
+          key: ${{ matrix.os }}-${{ matrix.xprs.value }}
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -102,7 +104,7 @@ jobs:
         shell: bash
         #XPRESS_VALUE = ${{ matrix.xprs }} == "XPRESS-ON" ? "ON" : "OFF"
         run: |
-          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
+          [[ ${{ matrix.xprs.value }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
           cmake -B _build -S . \
                 -DCMAKE_C_COMPILER_LAUNCHER=ccache \
                 -DCMAKE_C_COMPILER=/usr/bin/gcc-10 \

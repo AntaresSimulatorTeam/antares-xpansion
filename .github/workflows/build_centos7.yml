@@ -74,7 +74,9 @@ jobs:
     container: 'antaresrte/rte-antares:centos7-system-deps'
     strategy:
       matrix:
-        xprs: [ XPRESS-ON, XPRESS-OFF ]
+        xprs: [ { value: XPRESS-ON, ref: 8.13a },
+                { value: XPRESS-ON, ref: 9.2.5 },
+                { value: XPRESS-OFF } ]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
@@ -99,8 +101,8 @@ jobs:
           repository: rte-france/xpress-mp
           path: ${{ env.XPRESSDIR }}
           github-server-url: https://github.com
-          ref: 8.13a
-        if: matrix.xprs == 'XPRESS-ON'
+          ref: ${{matrix.xprs.ref}}
+        if: matrix.xprs.value == 'XPRESS-ON'
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
@@ -129,7 +131,7 @@ jobs:
           pip3 install -r requirements-ui.txt
       - name: Configure
         run: |
-          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
+          [[ ${{ matrix.xprs.value }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
           source /opt/rh/devtoolset-10/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
