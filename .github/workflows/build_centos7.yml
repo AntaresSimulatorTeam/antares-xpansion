@@ -94,6 +94,7 @@ jobs:
         with:
           submodules: true
 
+      - uses: ./.github/workflows/compile-gtest
       - name: Checkout xpressmp linux
         uses: actions/checkout@v3
         with:
