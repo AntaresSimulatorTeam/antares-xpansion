@@ -147,5 +147,5 @@ auto GetData() {
       {"benders_by_batch", BENDERSMETHOD::BENDERSBYBATCH},
       {"mergeMPS", BENDERSMETHOD::MERGEMPS}});
 }
-INSTANTIATE_TEST_CASE_P(Method, FullRunOptionsParserTestParameterizedMethod,
-                        GetData());
+INSTANTIATE_TEST_SUITE_P(Method, FullRunOptionsParserTestParameterizedMethod,
+                         GetData());
