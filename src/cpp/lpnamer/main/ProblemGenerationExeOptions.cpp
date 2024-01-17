@@ -9,8 +9,7 @@ ProblemGenerationExeOptions::ProblemGenerationExeOptions()
       "antares-xpansion study output")(
       "archive,a", po::value<std::filesystem::path>(&archive_path_),
       "antares-xpansion study zip")(
-      "study,s", po::value<std::filesystem::path>(&study_path_),
-      "antares study")(
+      "study", po::value<std::filesystem::path>(&study_path_), "antares study")(
       "formulation,f",
       po::value<std::string>(&master_formulation_)->default_value("relaxed"),
       "master formulation (relaxed or integer)")(

@@ -44,6 +44,7 @@ void CreateDirectories(const std::filesystem::path& output_path) {
 
 ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options)
     : options_(options) {}
+
 std::filesystem::path ProblemGeneration::updateProblems() {
   const auto xpansion_output_dir = options_.XpansionOutputDir();
   const auto archive_path = options_.ArchivePath();

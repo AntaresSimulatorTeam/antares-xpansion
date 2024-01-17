@@ -17,6 +17,7 @@ class ProblemGeneration {
   std::filesystem::path updateProblems();
   ProblemGenerationOptions& options_;
 
+ private:
   virtual void RunProblemGeneration(
       const std::filesystem::path& xpansion_output_dir,
       const std::string& master_formulation,
@@ -26,7 +27,6 @@ class ProblemGeneration {
       const std::filesystem::path& log_file_path,
       const std::filesystem::path& weights_file, bool unnamed_problems);
 
- private:
   void ProcessWeights(
       const std::filesystem::path& xpansion_output_dir,
       const std::filesystem::path& antares_archive_path,
