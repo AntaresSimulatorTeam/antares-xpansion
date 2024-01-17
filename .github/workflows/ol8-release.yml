@@ -150,13 +150,6 @@ jobs:
           ref: matrix.xprs.ref
         if: matrix.xprs.value == 'XPRESS-ON'
 
-      - name: Install json cpp
-        shell: bash
-        run: |
-          pushd vcpkg
-          ./bootstrap-vcpkg.sh
-          ./vcpkg install
-
       - name: Configure
         shell: bash
         run: |
