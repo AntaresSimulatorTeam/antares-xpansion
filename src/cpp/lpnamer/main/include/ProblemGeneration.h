@@ -4,12 +4,18 @@
 
 #pragma once
 
+#include <antares/solver/simulation/LpsFromAntares.h>
+
 #include <filesystem>
 #include <string>
 
+#include "../../input_reader/MpsTxtWriter.h"
+#include "../../model/Problem.h"
+#include "ArchiveReader.h"
 #include "ProblemGenerationExeOptions.h"
 #include "ProblemGenerationLogger.h"
 #include "ProblemGenerationOptions.h"
+#include "multisolver_interface/SolverAbstract.h"
 
 class ProblemGeneration {
  public:
@@ -37,4 +43,10 @@ class ProblemGeneration {
       const std::filesystem::path& antares_archive_path,
       const std::filesystem::path& xpansion_output_dir,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+  std::vector<std::shared_ptr<Problem>> getXpansionProblems(
+      SolverLogManager& solver_log_manager, const std::string& solver_name,
+      const std::vector<ProblemData>& mpsList, std::filesystem::path& lpDir_,
+      std::shared_ptr<ArchiveReader>& reader, bool with_archive,
+      const LpsFromAntares& lps);
+  LpsFromAntares lps_;
 };

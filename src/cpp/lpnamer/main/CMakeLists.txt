@@ -29,6 +29,8 @@ target_link_libraries (problem_generation_main
 		Boost::boost Boost::program_options
 		helpers
 		Antares::application
+		PUBLIC
+		Antares::antares-solver-simulation
 )
 
 get_target_property(helpers_include helpers INTERFACE_INCLUDE_DIRECTORIES)

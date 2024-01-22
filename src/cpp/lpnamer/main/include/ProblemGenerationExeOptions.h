@@ -13,7 +13,7 @@ class ProblemGenerationExeOptions : public OptionsParser,
   std::string master_formulation_;
   std::string additional_constraintFilename_l_;
   std::filesystem::path archive_path_;
-  std::filesystem::path weights_file_ = "";
+  std::filesystem::path weights_file_;
   std::vector<int> active_years_;
   bool unnamed_problems_ = false;
   std::filesystem::path study_path_;
@@ -52,6 +52,6 @@ class ProblemGenerationExeOptions : public OptionsParser,
   [[nodiscard]] std::filesystem::path deduceArchivePathIfEmpty(
       const std::filesystem::path& xpansion_output_dir,
       const std::filesystem::path& archive_path) const override;
-  std::filesystem::path StudyPath() const;
+  [[nodiscard]] std::filesystem::path StudyPath() const override;
 };
 #endif  // ANTARES_XPANSION_SRC_CPP_LPNAMER_MAIN_INCLUDE_PROBLEMGENERATIONEXEOPTIONS_H
