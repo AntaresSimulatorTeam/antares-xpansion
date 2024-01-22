@@ -29,6 +29,9 @@ AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
       convertSignToLEG(hebdo->Sens.data()).data(), hebdo->SecondMembre.data(),
       {}, constant->Mdeb.data(), constant->IndicesColonnes.data(),
       constant->CoefficientsDeLaMatriceDesContraintes.data());
+  for (int i = 0; i < constant->variables.size(); ++i) {
+    problem->chg_col_name(i, constant->variables[i]);
+  }
   auto rows = problem->get_nrows();
   auto cols = problem->get_ncols();
   auto elem = problem->get_nelems();
