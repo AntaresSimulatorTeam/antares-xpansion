@@ -3,6 +3,7 @@ import os
 import shutil
 import subprocess
 import zipfile
+from enum import Enum
 from pathlib import Path
 
 import pytest
@@ -30,27 +31,39 @@ TEST_LP_RELAXED_01 = DATA_TEST_RELAXED / \
 TEST_LP_RELAXED_02 = DATA_TEST_RELAXED / "SmallTestSixCandidatesWithAlreadyInstalledCapacity-relaxed" / "output" \
     / "economy"
 test_data = [
-    (TEST_LP_INTEGER_01, "integer", True),
-    (TEST_LP_INTEGER_01, "integer", False),
-    (TEST_LP_INTEGER_02, "integer", True),
-    (TEST_LP_INTEGER_02, "integer", False),
-    (TEST_LP_RELAXED_01, "relaxed", True),
-    (TEST_LP_RELAXED_01, "relaxed", False),
-    (TEST_LP_RELAXED_02, "relaxed", True),
-    (TEST_LP_RELAXED_02, "relaxed", False),
+    (TEST_LP_INTEGER_01, "integer"),
+    (TEST_LP_INTEGER_01, "integer"),
+    (TEST_LP_INTEGER_02, "integer"),
+    (TEST_LP_INTEGER_02, "integer"),
+    (TEST_LP_RELAXED_01, "relaxed"),
+    (TEST_LP_RELAXED_01, "relaxed"),
+    (TEST_LP_RELAXED_02, "relaxed"),
+    (TEST_LP_RELAXED_02, "relaxed"),
 ]
+
+
+class OptionType(Enum):
+    ARCHIVE = 1
+    OUTPUT = 2
+    STUDY = 3
+
+
+options_mode = [OptionType.ARCHIVE, OptionType.OUTPUT, OptionType.STUDY]
 
 test_data_multiple_candidates = [
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB, "integer", True),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB, "integer", False),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES, "integer", True),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES, "integer", False),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_HURDLES, "integer", True),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_HURDLES, "integer", False),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_NULL_PROFILE, "integer", True),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_NULL_PROFILE, "integer", False),
+    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB, "integer"),
+    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB, "integer"),
+    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES, "integer"),
+    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES, "integer"),
+    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_HURDLES, "integer"),
+    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_HURDLES, "integer"),
+    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_NULL_PROFILE, "integer"),
+    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_NULL_PROFILE, "integer"),
 ]
 
+test_data_study_option = [
+    (DATA_TEST / "examples" / "xpansion-test-01-weights", "integer")
+]
 
 @pytest.fixture
 def setup_and_teardown_lp_directory(request):
@@ -71,22 +84,29 @@ def setup_and_teardown_lp_directory(request):
     yield
 
 
-@pytest.mark.parametrize("test_dir,master_mode, use_archive", test_data)
-def test_lp_directory_files(install_dir, test_dir, master_mode, use_archive, setup_and_teardown_lp_directory):
+@pytest.mark.parametrize("test_dir,master_mode", test_data)
+@pytest.mark.parametrize("option_mode", options_mode)
+def test_lp_directory_files(install_dir, test_dir, master_mode, option_mode, setup_and_teardown_lp_directory):
     # given
-    if use_archive:
+    if option_mode == OptionType.ARCHIVE:
         launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_dir)
-    else:
+    elif option_mode == OptionType.OUTPUT:
         launch_and_compare_lp_with_reference_output(install_dir, master_mode, test_dir)
 
 
-@pytest.mark.parametrize("test_dir,master_mode, use_archive", test_data_multiple_candidates)
-def test_lp_multiple_candidates(install_dir, test_dir, master_mode, use_archive, setup_and_teardown_lp_directory):
-    if use_archive:
+@pytest.mark.parametrize("test_dir,master_mode", test_data_multiple_candidates)
+@pytest.mark.parametrize("option_mode", options_mode)
+def test_lp_multiple_candidates(install_dir, test_dir, master_mode, option_mode, setup_and_teardown_lp_directory):
+    if option_mode == OptionType.ARCHIVE:
         launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_dir)
-    else:
+    elif option_mode == OptionType.OUTPUT:
         launch_and_compare_lp_with_reference_output(install_dir, master_mode, test_dir)
 
+
+@pytest.mark.parametrize("study_dir,master_mode", test_data_study_option)
+@pytest.mark.parametrize("option_mode", [OptionType.STUDY])
+def test_lp_with_study_option(install_dir, study_dir, master_mode, option_mode, ):
+    launch_and_compare_lp_with_reference_study(install_dir, master_mode, study_dir)
 
 def launch_and_compare_lp_with_reference_output(install_dir, master_mode, test_dir):
     old_path = os.getcwd()
@@ -114,8 +134,33 @@ def launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_
     os.chdir(test_dir.parent)
     launch_command = [str(lp_namer_exe), "-a", str(zip_path),
                       "-e", "contraintes.txt", "-f", master_mode, "--unnamed-problems"]
+    print(launch_command)
     # when
     returned_l = subprocess.run(launch_command, shell=False)
+    # then
+    then(lp_dir, old_path, reference_lp_dir, returned_l)
+
+
+def get_lp_dir(study_dir):
+    directory = os.path.abspath(study_dir / "output")
+    directories = [d for d in os.listdir(directory) if os.path.isdir(os.path.join(directory, d))]
+
+    # Sort the directories based on creation date
+    directories.sort(key=lambda x: os.path.getctime(os.path.join(directory, x)))
+    return directories[-1]
+
+
+def launch_and_compare_lp_with_reference_study(install_dir, master_mode, study_dir):
+    old_path = os.getcwd()
+    reference_lp_dir = study_dir / "output" / "simulation-reference" / "lp"
+    lp_namer_exe = Path(install_dir) / "lp_namer"
+    os.chdir(study_dir)
+    launch_command = [str(lp_namer_exe), "--study", str(study_dir),
+                      "-e", "contraintes.txt", "-f", master_mode, "--unnamed-problems"]
+    print(launch_command)
+    # when
+    returned_l = subprocess.run(launch_command, shell=False)
+    lp_dir = get_lp_dir(study_dir)
     # then
     then(lp_dir, old_path, reference_lp_dir, returned_l)
 
