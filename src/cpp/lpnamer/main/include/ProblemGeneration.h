@@ -10,6 +10,7 @@
 #include <string>
 
 #include "../../input_reader/MpsTxtWriter.h"
+#include "../../model/Mode.h"
 #include "../../model/Problem.h"
 #include "ArchiveReader.h"
 #include "ProblemGenerationExeOptions.h"
@@ -49,4 +50,5 @@ class ProblemGeneration {
       std::shared_ptr<ArchiveReader>& reader, bool with_archive,
       const LpsFromAntares& lps);
   LpsFromAntares lps_;
+  Mode mode_ = Mode::UNKOWN;
 };

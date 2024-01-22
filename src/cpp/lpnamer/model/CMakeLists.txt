@@ -17,7 +17,8 @@ add_library (lp_namer_model STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/ProblemNameParser.h ${CMAKE_CURRENT_SOURCE_DIR}/ProblemNameParser.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/ChronicleMapReader.h ${CMAKE_CURRENT_SOURCE_DIR}/ChronicleMapReader.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/ChronicleMapProvider.h ${CMAKE_CURRENT_SOURCE_DIR}/ChronicleMapProvider.cpp
-		)
+		Mode.h
+)
 
 target_include_directories (lp_namer_model
 	PUBLIC
