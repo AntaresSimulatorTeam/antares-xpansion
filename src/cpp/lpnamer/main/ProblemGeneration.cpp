@@ -228,8 +228,13 @@ void ProblemGeneration::RunProblemGeneration(
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
       problems_and_data;
   for (int i = 0; i < xpansion_problems.size(); ++i) {
-    xpansion_problems.at(i)->_name = mpsList.at(i)._problem_mps;
-    problems_and_data.emplace_back(xpansion_problems.at(i), mpsList.at(i));
+    if (options_.StudyPath().empty()) {
+      xpansion_problems.at(i)->_name = mpsList.at(i)._problem_mps;
+      problems_and_data.emplace_back(xpansion_problems.at(i), mpsList.at(i));
+    } else {
+      ProblemData data{xpansion_problems.at(i)->_name, {}};
+      problems_and_data.emplace_back(xpansion_problems.at(i), data);
+    }
   }
   auto mps_file_writer = std::make_shared<MPSFileWriter>(lpDir_);
   std::for_each(

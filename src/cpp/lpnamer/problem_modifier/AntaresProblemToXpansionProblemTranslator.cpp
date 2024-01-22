@@ -19,6 +19,8 @@ AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
   const auto& constant = lps._constant;
   const auto& hebdo = lps._hebdo.at({year, week});
 
+  problem->_name = hebdo->name;
+
   std::vector<int> tmp(constant->NombreDeVariables, 0);
   std::vector<char> coltypes(constant->NombreDeVariables, 'C');
 
