@@ -260,9 +260,10 @@ void ProblemGeneration::RunProblemGeneration(
                                     mps_file_writer.get());
       });
 
-  reader->Close();
-  reader->Delete();
-
+  if (mode_ == Mode::ARCHIVE) {
+    reader->Close();
+    reader->Delete();
+  }
   MasterGeneration master_generation(
       xpansion_output_dir, links, additionalConstraints, couplings,
       master_formulation, solver_name, logger, solver_log_manager);

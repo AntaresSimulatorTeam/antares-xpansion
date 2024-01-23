@@ -1,15 +1,15 @@
-from enum import Enum
-import os
-from pathlib import Path
-import sys
-import shutil
 import json
+import os
+import shutil
+import subprocess
+import sys
 import zipfile
+from enum import Enum
+from pathlib import Path
 
 import numpy as np
-import subprocess
-
 import pytest
+
 from src.python.antares_xpansion.candidates_reader import CandidatesReader
 
 ALL_STUDIES_PATH = Path("../../../data_test/examples")
@@ -60,6 +60,40 @@ def launch_xpansion(install_dir, study_path, allow_run_as_root=False, nproc: int
     ]
     if allow_run_as_root == "True":
         command.append("--allow-run-as-root")
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=None)
+    output = process.communicate()
+    if process.returncode != 0:
+        print(output)
+
+    # Check return value
+    assert process.returncode == 0
+
+
+def launch_xpansion_memory(install_dir, study_path, method: BendersMethod, allow_run_as_root=False, nproc: int = 4):
+    # Clean study output
+    remove_outputs(study_path)
+
+    install_dir_full = str(Path(install_dir).resolve())
+
+    command = [
+        sys.executable,
+        "../../../src/python/launch.py",
+        "--installDir",
+        install_dir_full,
+        "--dataDir",
+        str(study_path),
+        "--method",
+        method.value,
+        "--step",
+        "full",
+        "-n",
+        str(nproc),
+        "--oversubscribe",
+        "--memory"
+    ]
+    if allow_run_as_root == "True":
+        command.append("--allow-run-ans-root")
+    print(command)
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=None)
     output = process.communicate()
     if process.returncode != 0:
@@ -680,6 +714,29 @@ def test_full_study_short_sequential(
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study,
                     allow_run_as_root, nproc=1)
+    verify_solution(tmp_study, expected_values, expected_investment_solution)
+    verify_study_update(
+        tmp_study, expected_investment_solution, antares_version)
+
+
+@pytest.mark.parametrize(
+    parameters_names,
+    short_parameters_values,
+)
+@pytest.mark.short_memory
+def test_full_study_short_memory(
+        install_dir,
+        allow_run_as_root,
+        study_path,
+        expected_values,
+        expected_investment_solution,
+        tmp_path,
+        antares_version,
+):
+    tmp_study = tmp_path / study_path.name
+    shutil.copytree(study_path, tmp_study)
+    launch_xpansion_memory(install_dir, tmp_study, BendersMethod.BENDERS,
+                           allow_run_as_root, nproc=1)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)

@@ -39,3 +39,7 @@ class LauncherOptionsKeys:
     @staticmethod
     def step_key():
         return "step"
+
+    @staticmethod
+    def memory_key():
+        return "memory"
