@@ -182,3 +182,6 @@ ExternalLoopOptions SimulationOptions::GetExternalLoopOptions() const {
   return {EXT_LOOP_CRITERION_VALUE, EXT_LOOP_CRITERION_TOLERANCE,
           EXT_LOOP_CRITERION_COUNT_THRESHOLD};
 }
+SimulationOptions::InvalidOptionFileException::InvalidOptionFileException(
+    const std::string &arg)
+    : runtime_error(arg) {}
