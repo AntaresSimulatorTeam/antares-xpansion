@@ -1,24 +1,32 @@
 #ifndef SRC_CPP_LPNAMER_INPUTREADER_LP_FILES_EXTRACTOR_H
 #define SRC_CPP_LPNAMER_INPUTREADER_LP_FILES_EXTRACTOR_H
 #include <filesystem>
+#include <utility>
 
 #include "LogUtils.h"
+#include "Mode.h"
 #include "ProblemGenerationLogger.h"
 
 class LpFilesExtractor {
  private:
-  std::filesystem::path antares_archive_path_;
-  std::filesystem::path xpansion_output_dir_;
+  const std::filesystem::path antares_archive_path_;
+  const std::filesystem::path xpansion_output_dir_;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  const Mode mode_;
+  const std::filesystem::path& simulation_dir_;
 
  public:
   explicit LpFilesExtractor(
-      const std::filesystem::path& antares_archive_path,
-      const std::filesystem::path& xpansion_output_dir,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
-      : antares_archive_path_(antares_archive_path),
-        xpansion_output_dir_(xpansion_output_dir),
-        logger_(logger) {}
+      std::filesystem::path antares_archive_path,
+      std::filesystem::path xpansion_output_dir,
+      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
+      Mode mode = Mode::UNKOWN,
+      const std::filesystem::path& simulation_dir = {})
+      : antares_archive_path_(std::move(antares_archive_path)),
+        xpansion_output_dir_(std::move(xpansion_output_dir)),
+        logger_(std::move(logger)),
+        mode_(mode),
+        simulation_dir_(simulation_dir) {}
   void ExtractFiles() const;
 
   class ErrorWithAreaFile : public LogUtils::XpansionError<std::runtime_error> {

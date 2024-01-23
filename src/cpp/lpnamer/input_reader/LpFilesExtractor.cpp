@@ -8,7 +8,8 @@ void LpFilesExtractor::ExtractFiles() const {
   std::vector<std::filesystem::path> vect_area_files;
   std::vector<std::filesystem::path> vect_interco_files;
 
-  if (!antares_archive_path_.empty()) {
+  // TODO: test unknown
+  if (mode_ == Mode::ARCHIVE) {
     auto archive_reader = ArchiveReader(antares_archive_path_);
     archive_reader.Open();
     vect_area_files =
@@ -21,7 +22,7 @@ void LpFilesExtractor::ExtractFiles() const {
     archive_reader.Close();
     archive_reader.Delete();
   } else {
-    for (auto &p : std::filesystem::directory_iterator(xpansion_output_dir_)) {
+    for (auto &p : std::filesystem::directory_iterator(simulation_dir_)) {
       if (p.path().extension() == ".txt") {
         if (p.path().filename().string().starts_with("area")) {
           vect_area_files.push_back(p.path());

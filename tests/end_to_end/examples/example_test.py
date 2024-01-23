@@ -102,7 +102,6 @@ def launch_xpansion_memory(install_dir, study_path, method: BendersMethod, allow
     # Check return value
     assert process.returncode == 0
 
-
 def assert_convergence(solution, options_data, method: BendersMethod):
     assert (solution["relative_gap"] <= options_data["RELATIVE_GAP"]) or (
         solution["overall_cost"] * solution["relative_gap"]
