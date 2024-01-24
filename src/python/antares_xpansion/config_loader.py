@@ -356,7 +356,7 @@ class ConfigLoader:
         return self._simulation_lp_path()
 
     def _simulation_lp_path(self):
-        return self.xpansion_simulation_output() / "lp"
+        return Path(self.xpansion_simulation_output()) / "lp"
 
     def xpansion_simulation_output(self) -> Path:
         if self._xpansion_simulation_name == "last":
@@ -525,7 +525,12 @@ class ConfigLoader:
             if(not self._last_study.name.endswith("-Xpansion")):
                 raise ConfigLoader.NotAnXpansionOutputDir(f"Error! {self._last_study} is not an Xpansion output directory")
             self._xpansion_simulation_name = self._last_study
-            
+        elif self.step() == "full" and self.memory():
+            if str(self._last_study.stem).endswith("-Xpansion"):
+                pass  # full and memory problem generation execute antares then create a -Xpansion dir
+            else:
+                self._xpansion_simulation_name = self._last_study.parent / \
+                                                 (self._last_study.stem + "-Xpansion")
         else:
             self._xpansion_simulation_name = self._last_study.parent / \
                 (self._last_study.stem+"-Xpansion")
@@ -543,7 +548,7 @@ class ConfigLoader:
 
     def is_antares_study_output(self, study: Path):
         _, ext = os.path.splitext(study)
-        if self.memory():  # memory mode we work with files essentially
+        if self.memory() and '-Xpansion' not in study.name:  # memory mode we work with files essentially
             return os.path.isdir(study)
         else:
             return ext == ".zip" or (os.path.isdir(study) and '-Xpansion' in study.name)

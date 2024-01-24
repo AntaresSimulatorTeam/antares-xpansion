@@ -22,6 +22,14 @@ class BendersMethod(Enum):
     BENDERS_BY_BATCH = "benders_by_batch"
 
 
+def get_json_filepath(output_dir, folder, filename):
+    op = []
+    for path in Path(output_dir).iterdir():
+        for jsonpath in Path(path / folder).rglob(filename):
+            op.append(jsonpath)
+    assert len(op) == 1
+    return op[0]
+
 def get_json_file_data(output_dir, folder, filename):
     data = None
     for path in Path(output_dir).iterdir():
@@ -110,8 +118,14 @@ def assert_convergence(solution, options_data, method: BendersMethod):
 
 def verify_solution(study_path, expected_values, expected_investment_solution, method: BendersMethod = BendersMethod.BENDERS):
     output_path = study_path / "output"
-    json_data = get_json_file_data(output_path, "expansion", "out.json")
-    options_data = get_json_file_data(output_path, "lp", "options.json")
+    json_path = get_json_filepath(output_path, "expansion", "out.json")
+    options_path = get_json_filepath(output_path, "lp", "options.json")
+
+    with open(str(json_path), "r") as json_file:
+        json_data = json.load(json_file)
+
+    with open(str(options_path), "r") as options_file:
+        options_data = json.load(options_file)
 
     solution = json_data["solution"]
     investment_solution = solution["values"]

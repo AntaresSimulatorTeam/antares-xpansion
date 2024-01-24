@@ -48,6 +48,13 @@ class ProblemGenerationSpyAndMock : public ProblemGeneration {
     weights_file_ = weights_file;
     unnamed_problems_ = unnamed_problems;
   }
+
+ private:
+  std::filesystem::path performeAntaresSimulation() override {
+    return options_.StudyPath() / "simulation";
+  }
+
+ public:
   std::filesystem::path xpansion_output_dir_;
   std::string master_formulation_;
   std::string additionalConstraintFilename_l_;
@@ -144,22 +151,21 @@ TEST_F(ProblemGenerationExeOptionsTest,
   EXPECT_TRUE(std::filesystem::exists(output_path / "lp"));
 }
 
-TEST_F(ProblemGenerationExeOptionsTest, use_only_output_option) {
+TEST_F(ProblemGenerationExeOptionsTest,
+       ValuesAndXpansionDirExistsWhenUsingOutputOption) {
   auto test_root =
       std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
-  auto archive = test_root / "study.zip";
-  auto output_path = test_root / "study-Xpansion";
+  auto simulation_path = test_root / "study";
 
-  parseOptions("--output", output_path.string());
+  parseOptions("--output", simulation_path.string());
 
   ProblemGenerationSpyAndMock pbg(problem_generation_options_parser_);
   pbg.updateProblems();
 
   EXPECT_TRUE(problem_generation_options_parser_.ArchivePath().empty());
   EXPECT_TRUE(pbg.archive_path_.empty());
-  EXPECT_EQ(pbg.xpansion_output_dir_, output_path);
-  EXPECT_TRUE(std::filesystem::exists(output_path));
-  EXPECT_TRUE(std::filesystem::exists(output_path / "lp"));
+  EXPECT_EQ(pbg.xpansion_output_dir_, simulation_path.string() + "-Xpansion");
+  EXPECT_TRUE(std::filesystem::exists(pbg.xpansion_output_dir_ / "lp"));
 }
 
 TEST_F(ProblemGenerationExeOptionsTest,
@@ -181,25 +187,5 @@ TEST_F(ProblemGenerationExeOptionsTest, study) {
 
   EXPECT_TRUE(problem_generation_options_parser_.ArchivePath().empty());
   EXPECT_TRUE(pbg.archive_path_.empty());
-  EXPECT_TRUE(pbg.xpansion_output_dir_.empty());
-}
-
-//
-TEST_F(ProblemGenerationExeOptionsTest, _s_options_exclusive) {
-  auto test_root =
-      std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
-  auto archive = std::string(tmpnam(nullptr)) + "study.zip";
-  auto output_path = test_root / "study-Xpansion";
-
-  EXPECT_THROW(
-      parseOptions("--archive", archive, "--output", output_path.string()),
-      ProblemGenerationOptions::ConflictingParameters);
-
-  ProblemGenerationSpyAndMock pbg(problem_generation_options_parser_);
-  pbg.updateProblems();
-
-  EXPECT_EQ(pbg.archive_path_, archive);
-  EXPECT_EQ(pbg.xpansion_output_dir_, output_path);
-  EXPECT_TRUE(std::filesystem::exists(output_path));
-  EXPECT_TRUE(std::filesystem::exists(output_path / "lp"));
+  EXPECT_TRUE(std::filesystem::exists(pbg.xpansion_output_dir_));
 }
