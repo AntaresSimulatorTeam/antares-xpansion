@@ -48,9 +48,9 @@ TEST_F(LpFilesExtractorTest, IfMoreThanOneAreaFileFoundInAntaresArchive) {
   }
 }
 TEST_F(LpFilesExtractorTest, IfNoIntercoFileIsInAntaresArchive) {
-  auto lp_files_extractor = LpFilesExtractor(
-      ONE_AREA_0_INTERCO, std::filesystem::temp_directory_path(), logger_,
-      Mode::ARCHIVE);
+  auto out_dir = std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
+  std::filesystem::create_directory(out_dir);
+  auto lp_files_extractor = LpFilesExtractor(ONE_AREA_0_INTERCO, out_dir, logger_, Mode::ARCHIVE);
 
   std::ostringstream expectedErrorString;
   expectedErrorString << "No interco*.txt file found" << std::endl;
@@ -62,9 +62,10 @@ TEST_F(LpFilesExtractorTest, IfNoIntercoFileIsInAntaresArchive) {
   }
 }
 TEST_F(LpFilesExtractorTest, IfMoreThanOneIntercoFileFoundInAntaresArchive) {
-  auto lp_files_extractor = LpFilesExtractor(
-      THREE_INTERCOS_FILES_ARCHIVE, std::filesystem::temp_directory_path(),
-      logger_, Mode::ARCHIVE);
+  auto out_dir = std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
+  std::filesystem::create_directory(out_dir);
+  auto lp_files_extractor = LpFilesExtractor(THREE_INTERCOS_FILES_ARCHIVE,
+                                             out_dir, logger_, Mode::ARCHIVE);
 
   std::ostringstream expectedErrorString;
   expectedErrorString << "More than one interco*.txt file found" << std::endl;
