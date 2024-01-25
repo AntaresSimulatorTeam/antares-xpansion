@@ -34,6 +34,9 @@ AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
   for (int i = 0; i < constant->variables.size(); ++i) {
     problem->chg_col_name(i, constant->variables[i]);
   }
+  for (int i = 0; i < constant->constraints.size(); ++i) {
+    problem->chg_row_name(i, constant->constraints[i]);
+  }
   auto rows = problem->get_nrows();
   auto cols = problem->get_ncols();
   auto elem = problem->get_nelems();
