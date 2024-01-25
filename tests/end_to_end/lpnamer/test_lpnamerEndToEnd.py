@@ -77,6 +77,8 @@ def setup_and_teardown_lp_directory(request):
     list_files.extend(list(Path(test_dir).glob("variables*.txt")))
     list_files.extend(list(Path(test_dir).glob("area*.txt")))
     list_files.extend(list(Path(test_dir).glob("interco*.txt")))
+    if Path(test_dir.parent / MPS_ZIP).exists():
+        os.remove(test_dir.parent / MPS_ZIP)
     with zipfile.ZipFile(test_dir.parent / MPS_ZIP, "w") as write_mps_zip:
         for file in list_files:
             write_mps_zip.write(
