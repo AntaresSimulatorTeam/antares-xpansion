@@ -527,7 +527,8 @@ class ConfigLoader:
             self._xpansion_simulation_name = self._last_study
         elif self.step() == "full" and self.memory():
             if str(self._last_study.stem).endswith("-Xpansion"):
-                pass  # full and memory problem generation execute antares then create a -Xpansion dir
+                self._xpansion_simulation_name = self._last_study
+                # full and memory problem generation execute antares then create a -Xpansion dir
             else:
                 self._xpansion_simulation_name = self._last_study.parent / \
                                                  (self._last_study.stem + "-Xpansion")
