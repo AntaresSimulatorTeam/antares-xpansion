@@ -139,6 +139,7 @@ jobs:
           os-full-name: CentOS-7.9.2009
           #variant: -ortools-xpress
 
+      - uses: ./.github/workflows/compile-gtest
       - name: Compile Boost
         uses: ./.github/workflows/compile-boost
         with:

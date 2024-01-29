@@ -82,6 +82,7 @@ jobs:
           pip3 install wheel #Does not work in requirements
           pip3 install -r requirements-tests.txt
 
+      - uses: ./.github/workflows/compile-gtest
       - name: Compile Boost
         uses: ./.github/workflows/compile-boost
         with:
