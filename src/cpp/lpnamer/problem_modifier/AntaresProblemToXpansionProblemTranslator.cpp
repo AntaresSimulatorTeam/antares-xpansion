@@ -30,10 +30,10 @@ AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
       convertSignToLEG(hebdo->Sens.data()).data(), hebdo->SecondMembre.data(),
       {}, constant->Mdeb.data(), constant->IndicesColonnes.data(),
       constant->CoefficientsDeLaMatriceDesContraintes.data());
-  for (int i = 0; i < constant->variables.size(); ++i) {
+  for (int i = 0; i < constant->NombreDeVariables; ++i) {
     problem->chg_col_name(i, constant->variables[i]);
   }
-  for (int i = 0; i < constant->constraints.size(); ++i) {
+  for (int i = 0; i < constant->NombreDeContraintes; ++i) {
     problem->chg_row_name(i, constant->constraints[i]);
   }
   auto rows = problem->get_nrows();
