@@ -1,8 +1,7 @@
 
-#include "BendersFactory.h"
-
 #include <filesystem>
 
+#include "BendersFactory.h"
 #include "LogUtils.h"
 #include "LoggerFactories.h"
 #include "StartUp.h"
@@ -23,7 +22,9 @@ BENDERSMETHOD DeduceBenderMethod(size_t coupling_map_size, size_t batch_size) {
 int RunBenders(char** argv, const std::filesystem::path& options_file,
                mpi::environment& env, mpi::communicator& world) {
   // Read options, needed to have options.OUTPUTROOT
+  BendersLoggerBase benders_loggers;
   Logger logger;
+  std::shared_ptr<MathLoggerDriver> math_log_driver;
 
   try {
     /* code */
@@ -41,15 +42,23 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
     auto log_reports_name =
         std::filesystem::path(options.OUTPUTROOT) / "reportbenders.txt";
 
+    auto math_logs_file =
+        std::filesystem::path(options.OUTPUTROOT) / "benders_solver.log";
+
     Writer writer;
     const auto coupling_map = build_input(benders_options.STRUCTURE_FILE);
     const auto method =
         DeduceBenderMethod(coupling_map.size(), options.BATCH_SIZE);
 
     if (world.rank() == 0) {
-      auto logger_factory = FileAndStdoutLoggerFactory(log_reports_name);
+      auto benders_log_console = benders_options.LOG_LEVEL > 0;
+      auto logger_factory =
+          FileAndStdoutLoggerFactory(log_reports_name, benders_log_console);
+      auto math_log_factory =
+          MathLoggerFactory(method, benders_log_console, math_logs_file);
 
       logger = logger_factory.get_logger();
+      math_log_driver = math_log_factory.get_logger();
       writer = build_json_writer(options.JSON_FILE, options.RESUME);
       if (Benders::StartUp startup;
           startup.StudyAlreadyAchievedCriterion(options, writer, logger))
@@ -57,50 +66,59 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
     } else {
       logger = build_void_logger();
       writer = build_void_writer();
+      math_log_driver = MathLoggerFactory::get_void_logger();
     }
 
-    world.barrier();
+    benders_loggers.AddLogger(logger);
+    benders_loggers.AddLogger(math_log_driver);
     pBendersBase benders;
     switch (method) {
       case BENDERSMETHOD::BENDERS:
         benders = std::make_shared<BendersMpi>(benders_options, logger, writer,
-                                               env, world);
+                                               env, world, math_log_driver);
         break;
       case BENDERSMETHOD::BENDERSBYBATCH:
-        benders = std::make_shared<BendersByBatch>(benders_options, logger,
-                                                   writer, env, world);
+        benders = std::make_shared<BendersByBatch>(
+            benders_options, logger, writer, env, world, math_log_driver);
         break;
     }
 
     benders->set_input_map(coupling_map);
     std::ostringstream oss_l = start_message(options, benders->BendersName());
     oss_l << std::endl;
-    logger->display_message(oss_l.str());
+    benders_loggers.display_message(oss_l.str());
 
-    auto solver_log = std::filesystem::path(options.OUTPUTROOT) /
-                      (std::string("solver_log_proc_") +
-                       std::to_string(world.rank()) + ".txt");
+    if (benders_options.LOG_LEVEL > 1) {
+      auto solver_log = std::filesystem::path(options.OUTPUTROOT) /
+                        (std::string("solver_log_proc_") +
+                         std::to_string(world.rank()) + ".txt");
 
-    benders->set_solver_log_file(solver_log);
-
+      benders->set_solver_log_file(solver_log);
+    }
     writer->write_log_level(options.LOG_LEVEL);
     writer->write_master_name(options.MASTER_NAME);
     writer->write_solver_name(options.SOLVER_NAME);
     benders->launch();
+
     std::stringstream str;
-    str << "Optimization results available in : " << options.JSON_FILE;
-    logger->display_message(str.str());
-    logger->log_total_duration(benders->execution_time());
+    str << "Optimization results available in : " << options.JSON_FILE
+        << std::endl;
+    benders_loggers.display_message(str.str());
+
+    str.str("");
+    str << "Benders ran in " << benders->execution_time() << " s" << std::endl;
+    benders_loggers.display_message(str.str());
+
   } catch (std::exception& e) {
     std::ostringstream msg;
     msg << "error: " << e.what() << std::endl;
-    logger->display_message(msg.str());
+    benders_loggers.display_message(msg.str());
     mpi::environment::abort(1);
     return 1;
   } catch (...) {
     std::ostringstream msg;
     msg << "Exception of unknown type!" << std::endl;
-    logger->display_message(msg.str());
+    benders_loggers.display_message(msg.str());
     mpi::environment::abort(1);
     return 1;
   }

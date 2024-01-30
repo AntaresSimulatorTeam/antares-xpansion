@@ -13,12 +13,14 @@
 #include "solver_utils.h"
 
 BendersBase::BendersBase(BendersBaseOptions options, Logger logger,
-                         Writer writer)
+                         Writer writer,
+                         std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
     : _options(std::move(options)),
       _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) /
                      (_options.CSV_NAME + ".csv")),
       _logger(std::move(logger)),
-      _writer(std::move(writer)) {}
+      _writer(std::move(writer)),
+      mathLoggerDriver_(mathLoggerDriver) {}
 
 /*!
  *  \brief Initialize set of data used in the loop
@@ -34,7 +36,7 @@ void BendersBase::init_data() {
   _data.best_it = 0;
   _data.stopping_criterion = StoppingCriterion::empty;
   _data.is_in_initial_relaxation = false;
-  _data.number_of_subproblem_resolved = 0;
+  _data.cumulative_number_of_subproblem_solved = 0;
 }
 
 void BendersBase::OpenCsvFile() {
@@ -177,7 +179,7 @@ bool BendersBase::ShouldRelaxationStop() const {
  *
  */
 void BendersBase::UpdateStoppingCriterion() {
-  if (_data.elapsed_time > _options.TIME_LIMIT)
+  if (_data.benders_time > _options.TIME_LIMIT)
     _data.stopping_criterion = StoppingCriterion::timelimit;
   else if ((_options.MAX_ITERATIONS != -1) &&
            (_data.it >= _options.MAX_ITERATIONS))
@@ -467,7 +469,7 @@ LogData BendersBase::FinalLogData() const {
   result.subproblem_cost = best_iteration_data.subproblem_cost;
   result.invest_cost = best_iteration_data.invest_cost;
   result.cumulative_number_of_subproblem_resolved =
-      _data.number_of_subproblem_resolved +
+      _data.cumulative_number_of_subproblem_solved +
       cumulative_number_of_subproblem_resolved_before_resume;
 
   return result;
@@ -525,7 +527,7 @@ Output::Iteration BendersBase::iteration(
       masterDataPtr_l->_invest_cost + masterDataPtr_l->_operational_cost;
   iteration.candidates = candidates_data(masterDataPtr_l);
   iteration.cumulative_number_of_subproblem_resolved =
-      _data.number_of_subproblem_resolved +
+      _data.cumulative_number_of_subproblem_solved +
       cumulative_number_of_subproblem_resolved_before_resume;
   return iteration;
 }
@@ -648,10 +650,10 @@ LogData BendersBase::bendersDataToLogData(
           optimal_gap,
           optimal_gap / data.best_ub,
           _options.MAX_ITERATIONS,
-          data.elapsed_time,
+          data.benders_time,
           data.timer_master,
           data.subproblems_walltime,
-          data.number_of_subproblem_resolved +
+          data.cumulative_number_of_subproblem_solved +
               cumulative_number_of_subproblem_resolved_before_resume};
 }
 void BendersBase::set_solver_log_file(const std::filesystem::path &log_file) {
@@ -751,6 +753,24 @@ void BendersBase::SetSubproblemCost(const double &subproblem_cost) {
   _data.subproblem_cost = subproblem_cost;
 }
 
+/*!
+*	\brief Update maximum and minimum of simplex iterations
+*
+*	\param subproblem_iterations : number of iterations done with the subproblem
+*
+*/
+void BendersBase::BoundSimplexIterations(int subproblem_iterations){
+  
+  _data.max_simplexiter = (_data.max_simplexiter < subproblem_iterations) ? subproblem_iterations : _data.max_simplexiter; 
+  _data.min_simplexiter = (_data.min_simplexiter > subproblem_iterations) ? subproblem_iterations : _data.min_simplexiter; 
+
+}
+
+void BendersBase::ResetSimplexIterationsBounds()
+{
+	_data.max_simplexiter = 0;
+	_data.min_simplexiter = std::numeric_limits<int>::max();
+}
 bool BendersBase::IsResumeMode() const { return _options.RESUME; }
 
 void BendersBase::UpdateMaxNumberIterationResumeMode(
@@ -765,7 +785,7 @@ void BendersBase::UpdateMaxNumberIterationResumeMode(
   }
 }
 
-double BendersBase::execution_time() const { return _data.elapsed_time; }
+double BendersBase::execution_time() const { return _data.benders_time; }
 LogData BendersBase::GetBestIterationData() const {
   return best_iteration_data;
 }
@@ -811,7 +831,7 @@ void BendersBase::ClearCurrentIterationCutTrace() const {
 }
 void BendersBase::EndWritingInOutputFile() const {
   _writer->updateEndTime();
-  _writer->write_duration(_data.elapsed_time);
+  _writer->write_duration(_data.benders_time);
   SaveSolutionInOutputFile();
 }
 double BendersBase::GetBendersTime() const { return benders_timer.elapsed(); }
