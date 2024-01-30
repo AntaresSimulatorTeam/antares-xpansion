@@ -12,6 +12,14 @@
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 
+BENDERSMETHOD DeduceBenderMethod(size_t coupling_map_size, size_t batch_size) {
+  auto method = (batch_size == 0 || batch_size == coupling_map_size - 1)
+                    ? BENDERSMETHOD::BENDERS
+                    : BENDERSMETHOD::BENDERSBYBATCH;
+
+  return method;
+}
+
 int RunBenders(char** argv, const std::filesystem::path& options_file,
                mpi::environment& env, mpi::communicator& world) {
   // Read options, needed to have options.OUTPUTROOT
@@ -34,11 +42,10 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
         std::filesystem::path(options.OUTPUTROOT) / "reportbenders.txt";
 
     Writer writer;
-    const auto couplig_map = build_input(benders_options.STRUCTURE_FILE);
-    const auto method = (options.BATCH_SIZE == 0 ||
-                         options.BATCH_SIZE == couplig_map.size() - 1)
-                            ? BENDERSMETHOD::BENDERS
-                            : BENDERSMETHOD::BENDERSBYBATCH;
+    const auto coupling_map = build_input(benders_options.STRUCTURE_FILE);
+    const auto method =
+        DeduceBenderMethod(coupling_map.size(), options.BATCH_SIZE);
+
     if (world.rank() == 0) {
       auto logger_factory = FileAndStdoutLoggerFactory(log_reports_name);
 
@@ -54,14 +61,18 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
 
     world.barrier();
     pBendersBase benders;
-    if (method == BENDERSMETHOD::BENDERS) {
-      benders = std::make_shared<BendersMpi>(benders_options, logger, writer,
-                                             env, world);
-    } else {
-      benders = std::make_shared<BendersByBatch>(benders_options, logger,
-                                                 writer, env, world);
+    switch (method) {
+      case BENDERSMETHOD::BENDERS:
+        benders = std::make_shared<BendersMpi>(benders_options, logger, writer,
+                                               env, world);
+        break;
+      case BENDERSMETHOD::BENDERSBYBATCH:
+        benders = std::make_shared<BendersByBatch>(benders_options, logger,
+                                                   writer, env, world);
+        break;
     }
-    benders->set_input_map(couplig_map);
+
+    benders->set_input_map(coupling_map);
     std::ostringstream oss_l = start_message(options, benders->BendersName());
     oss_l << std::endl;
     logger->display_message(oss_l.str());
