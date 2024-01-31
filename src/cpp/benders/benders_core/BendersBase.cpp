@@ -369,6 +369,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
               worker->solve(subproblem_data.lpstatus, _options.OUTPUTROOT,
                             _options.LAST_MASTER_MPS + MPS_SUFFIX, _writer);
               worker->get_value(subproblem_data.subproblem_cost);
+              worker->get_sol(subproblem_data.var_name_and_solution);
               worker->get_subgradient(subproblem_data.var_name_and_subgradient);
               worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
               subproblem_data.subproblem_timer = subproblem_timer.elapsed();

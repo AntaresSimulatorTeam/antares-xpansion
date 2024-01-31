@@ -22,6 +22,7 @@ class SubproblemWorker : public Worker {
                    SolverLogManager&solver_log_manager,
                    Logger logger);
   virtual ~SubproblemWorker() = default;
+  void get_sol(Point &sol) const;
 
  public:
   void fix_to(Point const &x0) const;

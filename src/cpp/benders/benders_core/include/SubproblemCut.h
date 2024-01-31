@@ -8,6 +8,7 @@
 struct SubProblemData {
   double subproblem_cost;
   Point var_name_and_subgradient;
+  Point var_name_and_solution;
   double single_subpb_costs_under_approx;
   double subproblem_timer;
   int simplex_iter;
@@ -17,6 +18,7 @@ struct SubProblemData {
   void serialize(Archive &ar, const unsigned int version) {
     ar &subproblem_cost;
     ar & var_name_and_subgradient;
+    ar & var_name_and_solution;
     ar & single_subpb_costs_under_approx;
     ar & subproblem_timer;
     ar &simplex_iter;
