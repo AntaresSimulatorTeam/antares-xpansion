@@ -4,6 +4,8 @@
 
 #include "AntaresProblemToXpansionProblemTranslator.h"
 
+#include <cmath>
+
 #include "LogUtils.h"
 #include "multisolver_interface/SolverFactory.h"
 #include "solver_utils.h"
@@ -23,8 +25,21 @@ AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
   std::vector<int> tmp(constant->NombreDeVariables, 0);
   std::vector<char> coltypes(constant->NombreDeVariables, 'C');
 
+  auto round10 = []<typename T>(T& collection) {
+    std::ranges::transform(collection, collection.begin(), [](double v) {
+      return round(v * pow(10, 10)) * pow(10, -10);
+    });
+  };
+
+  round10(hebdo->CoutLineaire);
+  round10(hebdo->Xmin);
+  round10(hebdo->Xmax);
+  round10(hebdo->SecondMembre);
+  round10(constant->CoefficientsDeLaMatriceDesContraintes);
+
   problem->add_cols(constant->NombreDeVariables, 0, hebdo->CoutLineaire.data(),
                     tmp.data(), {}, {}, hebdo->Xmin.data(), hebdo->Xmax.data());
+
   problem->add_rows(
       constant->NombreDeContraintes, constant->NombreDeCoefficients,
       convertSignToLEG(hebdo->Sens.data()).data(), hebdo->SecondMembre.data(),
