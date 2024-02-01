@@ -10,6 +10,7 @@ OuterLoop::OuterLoop(std::shared_ptr<IOuterLoopCriterion> criterion,
 void OuterLoop::Run() {
   master_updater_->AddConstraints();
   master_updater_->AddCutsInMaster();
+  benders_->launch();
 
   bool criterion_is_ok = false;
 

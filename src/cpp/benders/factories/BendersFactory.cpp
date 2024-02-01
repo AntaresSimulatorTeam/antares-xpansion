@@ -9,6 +9,7 @@
 #include "ILogger.h"
 #include "LogUtils.h"
 #include "LoggerFactories.h"
+#include "OuterLoop.h"
 #include "OutputWriter.h"
 #include "StartUp.h"
 #include "Timer.h"
@@ -17,10 +18,12 @@
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 
-int PrepareForExecution(BendersLoggerBase& benders_loggers,
-                        pBendersBase& benders, const SimulationOptions& options,
-                        const char* argv0, mpi::environment& env,
-                        mpi::communicator& world, const BENDERSMETHOD& method) {
+pBendersBase PrepareForExecution(BendersLoggerBase& benders_loggers,
+                                 const SimulationOptions& options,
+                                 const char* argv0, mpi::environment& env,
+                                 mpi::communicator& world,
+                                 const BENDERSMETHOD& method) {
+  pBendersBase benders;
   Logger logger;
   std::shared_ptr<MathLoggerDriver> math_log_driver;
 
@@ -52,7 +55,7 @@ int PrepareForExecution(BendersLoggerBase& benders_loggers,
     writer = build_json_writer(options.JSON_FILE, options.RESUME);
     if (Benders::StartUp startup;
         startup.StudyAlreadyAchievedCriterion(options, writer, logger))
-      return 0;
+      return nullptr;
   } else {
     logger = build_void_logger();
     writer = build_void_writer();
@@ -86,7 +89,7 @@ int PrepareForExecution(BendersLoggerBase& benders_loggers,
   writer->write_log_level(options.LOG_LEVEL);
   writer->write_master_name(options.MASTER_NAME);
   writer->write_solver_name(options.SOLVER_NAME);
-  return 0;
+  return benders;
 }
 
 int RunBenders(char** argv, const std::filesystem::path& options_file,
@@ -96,21 +99,62 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
   BendersLoggerBase benders_loggers;
 
   try {
-    pBendersBase benders;
+    SimulationOptions options(options_file);
+    auto benders = PrepareForExecution(benders_loggers, options, argv[0], env,
+                                       world, method);
+    if (benders) {
+      benders->launch();
+
+      std::stringstream str;
+      str << "Optimization results available in : " << options.JSON_FILE
+          << std::endl;
+      benders_loggers.display_message(str.str());
+
+      str.str("");
+      str << "Benders ran in " << benders->execution_time() << " s"
+          << std::endl;
+      benders_loggers.display_message(str.str());
+    }
+
+  } catch (std::exception& e) {
+    std::ostringstream msg;
+    msg << "error: " << e.what() << std::endl;
+    benders_loggers.display_message(msg.str());
+    mpi::environment::abort(1);
+    return 1;
+  } catch (...) {
+    std::ostringstream msg;
+    msg << "Exception of unknown type!" << std::endl;
+    benders_loggers.display_message(msg.str());
+    mpi::environment::abort(1);
+    return 1;
+  }
+  return 0;
+}
+int RunOuterLoop(char** argv, const std::filesystem::path& options_file,
+                 mpi::environment& env, mpi::communicator& world,
+                 const BENDERSMETHOD& method) {
+  // Read options, needed to have options.OUTPUTROOT
+  BendersLoggerBase benders_loggers;
+
+  try {
+    std::shared_ptr<IOuterLoopCriterion> criterion;
+    std::shared_ptr<IMasterUpdate> master_updater;
 
     SimulationOptions options(options_file);
-    PrepareForExecution(benders_loggers, benders, options, argv[0], env, world,
-                        method);
-    benders->launch();
+    auto benders = PrepareForExecution(benders_loggers, options, argv[0], env,
+                                       world, method);
 
-    std::stringstream str;
-    str << "Optimization results available in : " << options.JSON_FILE
-        << std::endl;
-    benders_loggers.display_message(str.str());
+    // benders->launch();
 
-    str.str("");
-    str << "Benders ran in " << benders->execution_time() << " s" << std::endl;
-    benders_loggers.display_message(str.str());
+    // std::stringstream str;
+    // str << "Optimization results available in : " << options.JSON_FILE
+    //     << std::endl;
+    // benders_loggers.display_message(str.str());
+
+    // str.str("");
+    // str << "Benders ran in " << benders->execution_time() << " s" <<
+    // std::endl; benders_loggers.display_message(str.str());
 
   } catch (std::exception& e) {
     std::ostringstream msg;
