@@ -37,7 +37,9 @@ class BendersBase {
   }
   double execution_time() const;
   virtual std::string BendersName() const = 0;
+  // ref of value?
   BendersCutsPerIteration CutsPerIteration() const;
+  void Clean();
 
  protected:
   CurrentIterationData _data;
