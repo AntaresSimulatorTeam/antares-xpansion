@@ -8,5 +8,13 @@ OuterLoop::OuterLoop(std::shared_ptr<IOuterLoopCriterion> criterion,
       benders_(std::move(benders)) {}
 
 void OuterLoop::Run() {
-  //   master_updater_->Update();
+  master_updater_->AddConstraints();
+  master_updater_->AddCutsInMaster();
+
+  bool criterion_is_ok = false;
+
+  while (!criterion_is_ok) {
+    benders_->launch();
+    criterion_->Check();
+  }
 }

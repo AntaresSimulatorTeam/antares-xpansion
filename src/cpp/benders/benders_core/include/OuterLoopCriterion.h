@@ -10,6 +10,12 @@ class IOuterLoopCriterion {
 
 class OuterloopCriterionLOL : public IOuterLoopCriterion {
  public:
-  explicit OuterloopCriterionLOL(double threshold, double epsilon){};
+  explicit OuterloopCriterionLOL(const BendersCuts& bendersCuts,
+                                 double threshold, double epsilon);
   bool Check() override { return true; };
+
+ private:
+  const BendersCuts& benders_cuts_;
+  double threshold_ = 1e6;
+  double epsilon_ = 1e-4;
 };
