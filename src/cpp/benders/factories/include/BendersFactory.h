@@ -1,10 +1,6 @@
 #ifndef ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
 #define ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
-#include "BendersByBatch.h"
 #include "BendersMPI.h"
-#include "BendersSequential.h"
-#include "ILogger.h"
-#include "OutputWriter.h"
 #include "common.h"
 
 class BendersMainFactory {

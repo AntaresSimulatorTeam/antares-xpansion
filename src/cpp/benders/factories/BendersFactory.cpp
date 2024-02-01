@@ -3,9 +3,13 @@
 
 #include <filesystem>
 
+#include "BendersByBatch.h"
+#include "BendersSequential.h"
 #include "CutsManagement.h"
+#include "ILogger.h"
 #include "LogUtils.h"
 #include "LoggerFactories.h"
+#include "OutputWriter.h"
 #include "StartUp.h"
 #include "Timer.h"
 #include "Worker.h"
@@ -82,6 +86,7 @@ int PrepareForExecution(BendersLoggerBase& benders_loggers,
   writer->write_log_level(options.LOG_LEVEL);
   writer->write_master_name(options.MASTER_NAME);
   writer->write_solver_name(options.SOLVER_NAME);
+  return 0;
 }
 
 int RunBenders(char** argv, const std::filesystem::path& options_file,
