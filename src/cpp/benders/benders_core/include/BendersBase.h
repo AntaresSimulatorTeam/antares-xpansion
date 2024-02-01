@@ -3,6 +3,7 @@
 #include <execution>
 #include <filesystem>
 
+#include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
 #include "ILogger.h"
 #include "OutputWriter.h"
@@ -29,7 +30,8 @@ auto selectPolicy(lambda f, bool shouldParallelize) {
 class BendersBase {
  public:
   virtual ~BendersBase() = default;
-  BendersBase(BendersBaseOptions options, Logger logger, Writer writer);
+  BendersBase(BendersBaseOptions options, Logger logger, Writer writer,
+              std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
   virtual void launch() = 0;
   void set_solver_log_file(const std::filesystem::path &log_file);
   [[nodiscard]] std::filesystem::path solver_log_file() const {
@@ -46,6 +48,7 @@ class BendersBase {
   VariableMap master_variable_map;
   CouplingMap coupling_map;
   BendersCutsPerIteration cutsPerIteration_;
+  std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
 
  protected:
   virtual void free() = 0;
@@ -138,9 +141,12 @@ class BendersBase {
   BendersBaseOptions Options() const { return _options; }
   virtual void UpdateStoppingCriterion();
   virtual bool ShouldRelaxationStop() const;
-  int GetNumOfSubProblemsResolvedBeforeResume() {
+  int GetNumOfSubProblemsSolvedBeforeResume() {
     return cumulative_number_of_subproblem_resolved_before_resume;
   }
+
+  void BoundSimplexIterations(int subproblem_iteration);
+  void ResetSimplexIterationsBounds();
 
   SolverLogManager solver_log_manager_;
 

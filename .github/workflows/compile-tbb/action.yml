@@ -3,13 +3,17 @@ description: "tbb is required for execution policy (parallelization c++)."
 inputs:
   cmake:
     description: 'cmake version'
-    required: true
+    default: cmake
+  load-toolset:
+    description: 'load devtoolset 10'
+    default: 'true'
 runs:
   using: "composite"
   steps: 
   - id: install-tbb
     shell: bash
-    run: |  
+    run: |
+      source /opt/rh/gcc-toolset-10/enable || true
       git clone https://github.com/wjakob/tbb.git 
       cd tbb/build 
       ${{ inputs.cmake }} .. 

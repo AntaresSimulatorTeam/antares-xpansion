@@ -16,7 +16,7 @@ The following section lists the configurable parameters. If the user does not sp
 |[`master`](#master) | `integer` | Resolution mode of the master problem |
 |[`yearly-weights`](#yearly-weights) | `None` | Path of the Monte-Carlo weights file |
 |[`solver`](#solver) | `Cbc` | Name of the solver |
-|[`log_level`](#log_level) | `0` | Solver's log level |
+|[`log_level`](#log_level) | `0` | Logs severity |
 |[`additional-constraints`](#additional-constraints) | `None` | Path of the additional constraints file |
 |[`separation_parameter`](#separation_parameter) | `0.5` | Step size for the in-out separation |
 |[`relaxed_optimality_gap`](#relaxed_optimality_gap) | `1e-5` | Threshold to switch from relaxed to integer master |
@@ -205,13 +205,21 @@ To use another solver, you have to build the package with the chosen solver, ple
 
 ### `log_level`
 
-Positive integer, specifying the `solver`'s log severity. Default value: `0`.
+Possible values :`{0, 1, 2}`, specifying the `solver`'s log severity. Default value: `0`.
 
-For now two log levels are available:
+Logs can be printed both in the console and in a file. There are 3 types of logs:
 
- - If `log_level = 0`: basic solver logs are printed.
+- **Operational**: Displays progress information for the investment on candidates and costs,
+- **Benders**: Displays information on the progress of the Benders algorithm,
+- **Solver**: Logs of the solver called for the resolution of each master or subproblem.
 
- - If `log_level > 0`: full logs are printed simultaneously in standard output and in `benders.log` file located in the `lp` folder.
+The table below details the behavior depending on the `log_level`.
+
+|             | **Operational**  | **Benders** | **Solver** 
+|-------------|------------------------------|-------------|------------
+| **File**    | Always `(reportbenders.txt)` | Always `(benders_solver.log)` | 2 `(solver_log_proc_<proc_num>.txt)`
+| **Console** | 0                |  >= 1        | Never 
+
 
 ### `additional-constraints`
 

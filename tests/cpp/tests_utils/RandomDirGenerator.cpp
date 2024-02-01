@@ -1,4 +1,10 @@
 #include "RandomDirGenerator.h"
+
+#include <cstdlib>
+#ifdef _WIN32
+#include <io.h>
+#endif
+
 std::string timeToStr(const std::time_t& time_p) {
   struct tm local_time;
 #if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)
@@ -29,9 +35,29 @@ std::filesystem::path GetRandomSubDirPath(
   return parentDir /
          (timeToStr(std::time(nullptr)) + "-" + GenerateRandomString(6));
 }
-std::filesystem::path CreateRandomSubDir(
+std::filesystem::path CreateRandomSubDir_(
     const std::filesystem::path& parentDir) {
   const auto subDirPath = GetRandomSubDirPath(parentDir);
   std::filesystem::create_directory(subDirPath);
   return subDirPath;
+}
+std::filesystem::path CreateRandomSubDir(
+    const std::filesystem::path& parentDir) {
+  char template_array[] = "XXXXXX";
+#ifdef __linux__
+  auto template_dir = parentDir / template_array;
+  char* template_dir_array = template_dir.string().data();
+  if (auto ret = mkdtemp(template_dir_array); ret != nullptr) {
+    return ret;
+  }
+#elif _WIN32
+  if (auto ret = _mktemp_s(template_array); ret == 0) {
+    auto created_dir = parentDir / template_array;
+    std::filesystem::create_directory(created_dir);
+    return created_dir;
+  }
+#endif
+  else {
+    return CreateRandomSubDir_(parentDir);
+  }
 }

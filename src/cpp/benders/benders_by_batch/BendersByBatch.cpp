@@ -8,10 +8,11 @@
 #include "BatchCollection.h"
 #include "RandomBatchShuffler.h"
 #include "glog/logging.h"
-BendersByBatch::BendersByBatch(BendersBaseOptions const &options, Logger logger,
-                               Writer writer, mpi::environment &env,
-                               mpi::communicator &world)
-    : BendersMpi(options, logger, writer, env, world) {}
+BendersByBatch::BendersByBatch(
+    BendersBaseOptions const &options, Logger logger, Writer writer,
+    mpi::environment &env, mpi::communicator &world,
+    std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
+    : BendersMpi(options, logger, writer, env, world, mathLoggerDriver) {}
 
 void BendersByBatch::InitializeProblems() {
   MatchProblemToId();
@@ -75,8 +76,8 @@ void BendersByBatch::MasterLoop() {
   random_batch_permutation_.resize(number_of_batch_);
   batch_counter_ = 0;
   current_batch_id_ = 0;
-
-  _data.number_of_subproblem_resolved = 0;
+  _data.number_of_subproblem_solved = 0;
+  _data.cumulative_number_of_subproblem_solved = 0;
   cumulative_subproblems_timer_per_iter_ = 0;
   first_unsolved_batch_ = 0;
   while (!_data.stop) {
@@ -112,21 +113,24 @@ void BendersByBatch::MasterLoop() {
               random_batch_permutation_.size(), rank_0);
     SeparationLoop();
     if (Rank() == rank_0) {
-      _data.elapsed_time = GetBendersTime();
+      _data.iteration_time = -_data.benders_time;
+      _data.benders_time = GetBendersTime();
+      _data.iteration_time += _data.benders_time;
       _data.stop = ShouldBendersStop();
     }
     BroadCast(_data.stop, rank_0);
     BroadCast(batch_counter_, rank_0);
     SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter_);
-    _logger->cumulative_number_of_sub_problem_resolved(
-        _data.number_of_subproblem_resolved +
-        GetNumOfSubProblemsResolvedBeforeResume());
+    _logger->cumulative_number_of_sub_problem_solved(
+        _data.cumulative_number_of_subproblem_solved +
+        GetNumOfSubProblemsSolvedBeforeResume());
     _logger->LogSubproblemsSolvingCumulativeCpuTime(
         GetSubproblemsCumulativeCpuTime());
     _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
     _logger->display_message(
         "\\________________________________________________________________"
         "________");
+    mathLoggerDriver_->Print(_data);
   }
 }
 void BendersByBatch::SeparationLoop() {
@@ -135,13 +139,16 @@ void BendersByBatch::SeparationLoop() {
   batch_counter_ = 0;
   while (misprice_ && batch_counter_ < number_of_batch_) {
     _data.it++;
+    ResetSimplexIterationsBounds();
 
     _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
     ComputeXCut();
     _logger->log_iteration_candidates(bendersDataToLogData(_data));
     BroadcastXCut();
     UpdateRemainingEpsilon();
+    _data.number_of_subproblem_solved = 0;
     SolveBatches();
+
     if (Rank() == rank_0) {
       UpdateTrace();
       SaveCurrentBendersData();
@@ -195,7 +202,8 @@ void BendersByBatch::SolveBatches() {
     Reduce(GetSubproblemsCpuTime(), cumulative_subproblems_timer_per_iter_,
            std::plus<double>(), rank_0);
     if (Rank() == rank_0) {
-      _data.number_of_subproblem_resolved += batch_sub_problems.size();
+      _data.number_of_subproblem_solved += batch_sub_problems.size();
+      _data.cumulative_number_of_subproblem_solved += batch_sub_problems.size();
       remaining_epsilon_ -= batch_subproblems_costs_contribution_in_gap;
     }
 
@@ -235,6 +243,7 @@ void BendersByBatch::BuildCut(
       cutsPerIteration_.back().subsProblemDataMap[sub_problem_name] =
           subproblem_data;
       SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
+      BoundSimplexIterations(subproblem_data.simplex_iter);
     }
   }
   for (const auto &subproblem_map : gathered_subproblem_map) {
@@ -308,7 +317,7 @@ double BendersByBatch::Gap() const {
  *
  */
 void BendersByBatch::UpdateStoppingCriterion() {
-  if (_data.elapsed_time > Options().TIME_LIMIT) {
+  if (_data.benders_time > Options().TIME_LIMIT) {
     _data.stopping_criterion = StoppingCriterion::timelimit;
   } else if ((Options().MAX_ITERATIONS != -1) &&
              (_data.it >= Options().MAX_ITERATIONS))

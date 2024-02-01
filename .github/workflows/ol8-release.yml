@@ -1,4 +1,4 @@
-name: Centos7 release
+name: Oracle-linux8 release
 
 on:
   push:
@@ -18,35 +18,6 @@ env:
   GITHUB_TOKEN: ${{ github.token }}
 
 jobs:
-
-  docker_publish:
-    runs-on: ubuntu-latest
-    steps:
-
-      - uses: actions/checkout@master
-        with:
-          fetch-depth: 0
-
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v32
-        with:
-          files: |
-            docker/centos7-system-deps
-
-      - name: Docker file push
-        id: docker_push
-        if: steps.changed-files.outputs.any_changed == 'true'
-        uses: elgohr/Publish-Docker-Github-Action@main
-        with:
-          name: antaresrte/rte-antares
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
-          workdir: docker
-          dockerfile: centos7-system-deps
-          cache: false
-          tags: centos7-system-deps
-
   userguide:
     runs-on: ubuntu-latest
     outputs:
@@ -106,11 +77,12 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    needs: [ docker_publish, userguide, versions ]
-    container: 'antaresrte/rte-antares:centos7-system-deps'
+    needs: [ userguide, versions ]
+    container: 'oraclelinux:8'
     strategy:
       matrix:
-        xprs: [ XPRESS-ON, XPRESS-OFF ]
+        xprs: [ { value: XPRESS-ON, ref: 9.2.5 },
+                { value: XPRESS-OFF } ]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
@@ -125,6 +97,13 @@ jobs:
       - id: branch-name
         uses: tj-actions/branch-names@v6
 
+      - name: Install System
+        run: |
+          dnf install -y epel-release git cmake wget rpm-build redhat-lsb-core openmpi-devel
+          dnf install -y unzip libuuid-devel boost-test boost-devel gcc-toolset-10-toolchain zlib-devel python3-devel
+          source /opt/rh/gcc-toolset-10/enable
+          dnf install -y jsoncpp-devel
+
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -135,11 +114,10 @@ jobs:
         with:
           antares-deps-version: ${{needs.versions.outputs.antares-deps-version}}
           antares-version: ${{needs.versions.outputs.antares-version}}
-          os: centos7
-          os-full-name: CentOS-7.9.2009
+          os: oracle8
+          os-full-name: OracleServer-8.9
           #variant: -ortools-xpress
 
-      - uses: ./.github/workflows/compile-gtest
       - name: Compile Boost
         uses: ./.github/workflows/compile-boost
         with:
@@ -147,8 +125,6 @@ jobs:
 
       - name: Compile tbb
         uses: ./.github/workflows/compile-tbb
-        with:
-          cmake: 'cmake3'
 
       - name: Install dependencies
         run: |
@@ -170,18 +146,18 @@ jobs:
           repository: rte-france/xpress-mp
           path: ${{ env.XPRESSDIR }}
           github-server-url: https://github.com
-          ref: 8.13a
-        if: matrix.xprs == 'XPRESS-ON'
+          ref: ${{matrix.xprs.ref}}
+        if: matrix.xprs.value == 'XPRESS-ON'
 
       - name: Configure
         shell: bash
         run: |
-          if [ ${{ matrix.xprs }} == "XPRESS-ON" ]; then
+          if [ ${{ matrix.xprs.value }} == "XPRESS-ON" ]; then
           export XPRESS_VALUE="ON"
           else
           export XPRESS_VALUE="OFF"
           fi
-          source /opt/rh/devtoolset-10/enable
+          source /opt/rh/gcc-toolset-10/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake3 -B _build -S . \
@@ -198,7 +174,7 @@ jobs:
       - name: Build
         shell: bash
         run: |
-          source /opt/rh/devtoolset-10/enable
+          source /opt/rh/gcc-toolset-10/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake3 --build _build --config Release -j2 --target install
@@ -218,7 +194,7 @@ jobs:
         id: single_file_name
         shell: bash
         run: |
-          if [ ${{ matrix.xprs }} == "XPRESS-ON" ]; then
+          if [ ${{ matrix.xprs.value }} == "XPRESS-ON" ]; then
           WITH_XPRS="-xpress"
           else
           WITH_XPRS=""
@@ -229,7 +205,7 @@ jobs:
       - name: .tar.gz creation
         run: |
           cd _build
-          export FILE_NAME="antaresXpansion-${{env.VERSION_WITH_XPRESS}}-CentOS-7.9.2009"
+          export FILE_NAME="antaresXpansion-${{env.VERSION_WITH_XPRESS}}-OracleServer-8.9"
           cpack3 -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
           echo "TGZ_NAME=$FILE_NAME.tar.gz" >> $GITHUB_ENV
 
