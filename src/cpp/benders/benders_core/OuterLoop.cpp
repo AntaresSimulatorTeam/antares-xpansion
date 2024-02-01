@@ -15,6 +15,8 @@ void OuterLoop::Run() {
 
   while (!criterion_is_ok) {
     benders_->launch();
-    criterion_->Check();
+    if (!criterion_->Check()) {
+      master_updater_->Update();
+    }
   }
 }
