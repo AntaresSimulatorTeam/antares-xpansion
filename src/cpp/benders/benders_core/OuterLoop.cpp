@@ -1,4 +1,4 @@
-#include "OuterLoopCriterion.h"
+#include "OuterLoop.h"
 
 OuterLoop::OuterLoop(std::shared_ptr<IOuterLoopCriterion> criterion,
                      std::shared_ptr<IMasterUpdate> master_updater,
@@ -8,5 +8,5 @@ OuterLoop::OuterLoop(std::shared_ptr<IOuterLoopCriterion> criterion,
       benders_(std::move(benders)) {}
 
 void OuterLoop::Run() {
-  // master_updater_->
+  //   master_updater_->Update();
 }
