@@ -18,7 +18,7 @@ class OuterloopCriterionLOL : public IOuterLoopCriterion {
   bool ProcessSum(const BendersCuts& benders_cuts);
   const std::string positive_unsupplied_vars_prefix_ =
       "^PositiveUnsuppliedEnergy::";
-  const std::regex rgx_(positive_unsupplied_vars_prefix_);
+  const std::regex rgx_ = std::regex(positive_unsupplied_vars_prefix_);
   const int UNSUPPLIED_ENERGY_MAX = 1;
   double threshold_ = 1e6;
   double epsilon_ = 1e-4;
