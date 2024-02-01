@@ -41,6 +41,7 @@ class BendersBase {
   virtual std::string BendersName() const = 0;
   // ref of value?
   BendersCutsPerIteration CutsPerIteration() const;
+  BendersCuts CutsCurrentIteration() const;
   void Clean();
 
  protected:
@@ -48,6 +49,7 @@ class BendersBase {
   VariableMap master_variable_map;
   CouplingMap coupling_map;
   BendersCutsPerIteration cutsPerIteration_;
+  BendersCuts cuts_;
   std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
 
  protected:

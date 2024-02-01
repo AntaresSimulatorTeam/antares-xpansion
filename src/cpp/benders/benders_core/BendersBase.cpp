@@ -866,5 +866,6 @@ void BendersBase::write_basis() const {
 BendersCutsPerIteration BendersBase::CutsPerIteration() const {
   return cutsPerIteration_;
 }
+BendersCuts BendersBase::CutsCurrentIteration() const { return cuts_; }
 
 void BendersBase::Clean() { cutsPerIteration_.clear(); }
