@@ -124,13 +124,13 @@ jobs:
           -DCMAKE_INSTALL_PREFIX=_install
 
       - name: Build
-        run: build-wrapper-linux-x86-64 --out-dir $GITHUB_WORKSPACE/_build/output cmake --build _build --config Debug -j2
+        run: build-wrapper-linux-x86-64 --out-dir $GITHUB_WORKSPACE/_build/output cmake --build _build --config Release -j2
 
       - name: Test and generate coverage
         continue-on-error: true
         run: |
           cd $GITHUB_WORKSPACE/_build
-          ctest -C Debug --output-on-failure -L "unit"
+          ctest -C Release --output-on-failure -L "unit"
 
       - name: Compile coverage reports
         run: |
