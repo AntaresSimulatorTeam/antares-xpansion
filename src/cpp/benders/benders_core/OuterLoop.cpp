@@ -12,14 +12,13 @@ void OuterLoop::Run() {
   master_updater_->AddCutsInMaster();
   benders_->launch();
 
-  bool criterion_is_ok = false;
+  // by default LESSER?
+  auto criterion = CRITERION::LESSER;
 
-  while (!criterion_is_ok) {
+  while (criterion != CRITERION::EQUAL) {
+    criterion =
+        criterion_->IsCriterionSatisfied(benders_->CutsCurrentIteration());
+    master_updater_->Update(criterion, benders_);
     benders_->launch();
-    if (const auto criterion =
-            criterion_->IsCriterionSatisfied(benders_->CutsCurrentIteration());
-        criterion != CRITERION::EQUAL) {
-      master_updater_->Update(criterion, benders_);
-    }
   }
 }
