@@ -89,7 +89,8 @@ void BendersBase::PrintCurrentIterationCsv() {
  *
  *  \param subproblem_index : problem id
  */
-void print_cut_csv(std::ostream &stream, const SubProblemData &subproblem_data,
+void print_cut_csv(std::ostream &stream,
+                   const PlainData::SubProblemData &subproblem_data,
                    std::string const &subproblem_name, int subproblem_index,
                    double alpha_i) {
   stream << "Subproblem"
@@ -366,12 +367,12 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
                 const std::pair<std::string, SubproblemWorkerPtr> &kvp) {
               const auto &[name, worker] = kvp;
               Timer subproblem_timer;
-              SubProblemData subproblem_data;
+              PlainData::SubProblemData subproblem_data;
               worker->fix_to(_data.x_cut);
               worker->solve(subproblem_data.lpstatus, _options.OUTPUTROOT,
                             _options.LAST_MASTER_MPS + MPS_SUFFIX, _writer);
               worker->get_value(subproblem_data.subproblem_cost);
-              worker->get_sol(subproblem_data.var_name_and_solution);
+              worker->get_sol(subproblem_data.variables);
               worker->get_subgradient(subproblem_data.var_name_and_subgradient);
               worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
               subproblem_data.subproblem_timer = subproblem_timer.elapsed();

@@ -270,7 +270,7 @@ void BendersByBatch::GetSubproblemCut(
     if (std::find(batch_sub_problems.cbegin(), batch_sub_problems.cend(),
                   name) != batch_sub_problems.cend()) {
       Timer subproblem_timer;
-      SubProblemData subproblem_data;
+      PlainData::SubProblemData subproblem_data;
       worker->fix_to(_data.x_cut);
       worker->solve(subproblem_data.lpstatus, Options().OUTPUTROOT,
                     Options().LAST_MASTER_MPS + MPS_SUFFIX, _writer);
