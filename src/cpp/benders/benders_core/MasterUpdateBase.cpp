@@ -27,6 +27,8 @@ void MasterUpdateBase::Update(const CRITERION& criterion,
       //   break;
   }
   lambda_ = tau_ * lambda_max_ + (1 - tau_) * lambda_min_;
+  AddConstraints();
+  AddCutsInMaster();
 }
 void MasterUpdateBase::AddConstraints() {}
 void MasterUpdateBase::AddCutsInMaster() {}
