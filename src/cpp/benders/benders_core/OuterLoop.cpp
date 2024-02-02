@@ -16,8 +16,10 @@ void OuterLoop::Run() {
 
   while (!criterion_is_ok) {
     benders_->launch();
-    if (!criterion_->IsCriterionSatisfied(benders_->CutsCurrentIteration())) {
-      master_updater_->Update();
+    if (const auto criterion =
+            criterion_->IsCriterionSatisfied(benders_->CutsCurrentIteration());
+        criterion != CRITERION::EQUAL) {
+      master_updater_->Update(criterion, benders_);
     }
   }
 }

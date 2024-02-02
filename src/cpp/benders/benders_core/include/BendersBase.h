@@ -43,6 +43,7 @@ class BendersBase {
   BendersCutsPerIteration CutsPerIteration() const;
   BendersCuts CutsCurrentIteration() const;
   void Clean();
+  LogData GetBestIterationData() const;
 
  protected:
   CurrentIterationData _data;
@@ -112,7 +113,6 @@ class BendersBase {
     return std::filesystem::path(_options.LAST_ITERATION_JSON_FILE);
   }
   void UpdateMaxNumberIterationResumeMode(const unsigned nb_iteration_done);
-  LogData GetBestIterationData() const;
   void SaveCurrentIterationInOutputFile() const;
   void SaveSolutionInOutputFile() const;
   void PrintCurrentIterationCsv();

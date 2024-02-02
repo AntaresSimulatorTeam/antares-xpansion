@@ -4,15 +4,19 @@
 OuterloopCriterionLOL::OuterloopCriterionLOL(double threshold, double epsilon)
     : threshold_(threshold), epsilon_(epsilon) {}
 
-bool OuterloopCriterionLOL::IsCriterionSatisfied(
+CRITERION OuterloopCriterionLOL::IsCriterionSatisfied(
     const BendersCuts& benders_cuts) {
   double sum_loss = ProcessSum(benders_cuts);
-
-  return (threshold_ - epsilon_ <= sum_loss) &&
-         (sum_loss <= threshold_ + epsilon_);
+  // CRITERION ret = (sum_loss <= threshold_ + epsilon_)   ? CRITERION::LESSER
+  //                 : (threshold_ - epsilon_ <= sum_loss) ? CRITERION::GREATER
+  //                                                       : CRITERION::EQUAL;
+  CRITERION ret = (sum_loss <= threshold_ - epsilon_)   ? CRITERION::LESSER
+                  : (sum_loss >= threshold_ + epsilon_) ? CRITERION::GREATER
+                                                        : CRITERION::EQUAL;
+  return ret;
 }
 
-bool OuterloopCriterionLOL::ProcessSum(const BendersCuts& benders_cuts) {
+double OuterloopCriterionLOL::ProcessSum(const BendersCuts& benders_cuts) {
   double sum_loss = 0;
   for (const auto& [sub_problem_name, sub_problem_data] :
        benders_cuts.subsProblemDataMap) {

@@ -139,10 +139,14 @@ int RunExternalLoop_(char** argv, const std::filesystem::path& options_file,
   try {
     double threshold = 5684;
     double epsilon = 1e-2;
+    double lambda_min = 15;
+    double lambda = 16;
+    double lambda_max = 17;
+    double tau = 0.5;
     std::shared_ptr<IOuterLoopCriterion> criterion =
         std::make_shared<OuterloopCriterionLOL>(threshold, epsilon);
     std::shared_ptr<IMasterUpdate> master_updater =
-        std::make_shared<MasterUpdateBase>();
+        std::make_shared<MasterUpdateBase>(lambda, lambda_min, lambda_max, tau);
 
     SimulationOptions options(options_file);
     auto benders = PrepareForExecution(benders_loggers, options, argv[0], env,
