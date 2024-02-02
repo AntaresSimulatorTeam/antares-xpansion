@@ -9,7 +9,7 @@ bool OuterloopCriterionLOL::IsCriterionSatisfied(
   double sum_loss = ProcessSum(benders_cuts);
 
   return (threshold_ - epsilon_ <= sum_loss) &&
-         (sum_loss >= threshold_ + epsilon_);
+         (sum_loss <= threshold_ + epsilon_);
 }
 
 bool OuterloopCriterionLOL::ProcessSum(const BendersCuts& benders_cuts) {

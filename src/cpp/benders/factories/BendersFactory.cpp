@@ -5,7 +5,6 @@
 
 #include "BendersByBatch.h"
 #include "BendersSequential.h"
-#include "CutsManagement.h"
 #include "ILogger.h"
 #include "LogUtils.h"
 #include "LoggerFactories.h"
@@ -131,19 +130,25 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
   }
   return 0;
 }
-int RunOuterLoop(char** argv, const std::filesystem::path& options_file,
-                 mpi::environment& env, mpi::communicator& world,
-                 const BENDERSMETHOD& method) {
+int RunExternalLoop_(char** argv, const std::filesystem::path& options_file,
+                     mpi::environment& env, mpi::communicator& world,
+                     const BENDERSMETHOD& method) {
   // Read options, needed to have options.OUTPUTROOT
   BendersLoggerBase benders_loggers;
 
   try {
-    std::shared_ptr<IOuterLoopCriterion> criterion;
-    std::shared_ptr<IMasterUpdate> master_updater;
+    double threshold = 5684;
+    double epsilon = 1e-2;
+    std::shared_ptr<IOuterLoopCriterion> criterion =
+        std::make_shared<OuterloopCriterionLOL>(threshold, epsilon);
+    std::shared_ptr<IMasterUpdate> master_updater =
+        std::make_shared<MasterUpdateBase>();
 
     SimulationOptions options(options_file);
     auto benders = PrepareForExecution(benders_loggers, options, argv[0], env,
                                        world, method);
+    OuterLoop ext_loop(criterion, master_updater, benders);
+    ext_loop.Run();
 
     // benders->launch();
 
@@ -200,4 +205,8 @@ BendersMainFactory::BendersMainFactory(
 
 int BendersMainFactory::Run() const {
   return RunBenders(argv_, options_file_, *penv_, *pworld_, method_);
+}
+
+int BendersMainFactory::RunExternalLoop() const {
+  return RunExternalLoop_(argv_, options_file_, *penv_, *pworld_, method_);
 }

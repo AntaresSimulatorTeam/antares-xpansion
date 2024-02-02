@@ -22,5 +22,6 @@ class BendersMainFactory {
                               boost::mpi::environment& env,
                               boost::mpi::communicator& world);
   int Run() const;
+  int RunExternalLoop() const;
 };
 #endif  // ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H

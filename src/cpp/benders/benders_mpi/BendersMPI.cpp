@@ -155,11 +155,13 @@ void BendersMpi::master_build_cuts(
 
   if (Rank() == rank_0) {
     cutsPerIteration_.push_back({_data.x_cut, {}});
+    cuts_.x_cut = _data.x_cut;
   }
   for (const auto &subproblem_data_map : gathered_subproblem_map) {
     for (auto &&[sub_problem_name, subproblem_data] : subproblem_data_map) {
       cutsPerIteration_.back().subsProblemDataMap[sub_problem_name] =
           subproblem_data;
+      cuts_.subsProblemDataMap[sub_problem_name] = subproblem_data;
       SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
       // compute delta_cut >= options.CUT_MASTER_TOL;
       BoundSimplexIterations(subproblem_data.simplex_iter);
