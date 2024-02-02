@@ -120,7 +120,7 @@ jobs:
           -DCODE_COVERAGE=ON \
           -DBUILD_TESTING=ON \
           -DBUILD_antares_solver=OFF \
-          -DCMAKE_BUILD_TYPE=Debug \
+          -DCMAKE_BUILD_TYPE=Release \
           -DCMAKE_INSTALL_PREFIX=_install
 
       - name: Build
