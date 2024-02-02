@@ -177,22 +177,29 @@ $(document).ready(function(){initNavTree('CandidatesINIReader_8h_source.html',''
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  std::vector&lt;CandidateData&gt; readCandidateData(</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>      <span class="keyword">const</span> std::filesystem::path&amp; candidateFile) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="keywordtype">bool</span> checkArea(std::string <span class="keyword">const</span>&amp; areaName_p) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <a class="code hl_struct" href="structCandidateData.html">CandidateData</a> readCandidateSection(<span class="keyword">const</span> std::filesystem::path&amp; candidateFile,</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                                     <span class="keyword">const</span> <a class="code hl_class" href="classINIReader.html">INIReader</a>&amp; reader,</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                                     <span class="keyword">const</span> std::string&amp; sectionName,</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>                                     std::ostringstream&amp; err_msg) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  std::map&lt;std::string, int&gt; _intercoIndexMap;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  std::vector&lt;IntercoFileData&gt; _intercoFileData;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  std::vector&lt;std::string&gt; _areaNames;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>};</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="preprocessor">#endif  </span><span class="comment">// ANTARESXPANSION_CANDIDATESINIREADER_H</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno"><a class="line" href="classCandidatesINIReader_1_1InvalidIntercoFile.html">   44</a></span>  <span class="keyword">class </span><a class="code hl_class" href="classCandidatesINIReader_1_1InvalidIntercoFile.html">InvalidIntercoFile</a></div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>      : <span class="keyword">public</span> <a class="code hl_class" href="classLogUtils_1_1XpansionError.html">LogUtils::XpansionError</a>&lt;std::runtime_error&gt; {</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keyword">using </span><a class="code hl_class" href="classLogUtils_1_1XpansionError.html">LogUtils::XpansionError</a>&lt;std::runtime_error&gt;::XpansionError;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  };</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordtype">bool</span> checkArea(std::string <span class="keyword">const</span>&amp; areaName_p) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  <a class="code hl_struct" href="structCandidateData.html">CandidateData</a> readCandidateSection(<span class="keyword">const</span> std::filesystem::path&amp; candidateFile,</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>                                     <span class="keyword">const</span> <a class="code hl_class" href="classINIReader.html">INIReader</a>&amp; reader,</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>                                     <span class="keyword">const</span> std::string&amp; sectionName,</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                                     std::ostringstream&amp; err_msg) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  std::map&lt;std::string, int&gt; _intercoIndexMap;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  std::vector&lt;IntercoFileData&gt; _intercoFileData;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  std::vector&lt;std::string&gt; _areaNames;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>};</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span><span class="preprocessor">#endif  </span><span class="comment">// ANTARESXPANSION_CANDIDATESINIREADER_H</span></div>
+<div class="ttc" id="aclassCandidatesINIReader_1_1InvalidIntercoFile_html"><div class="ttname"><a href="classCandidatesINIReader_1_1InvalidIntercoFile.html">CandidatesINIReader::InvalidIntercoFile</a></div><div class="ttdef"><b>Definition:</b> CandidatesINIReader.h:45</div></div>
 <div class="ttc" id="aclassCandidatesINIReader_html"><div class="ttname"><a href="classCandidatesINIReader.html">CandidatesINIReader</a></div><div class="ttdef"><b>Definition:</b> CandidatesINIReader.h:21</div></div>
 <div class="ttc" id="aclassINIReader_html"><div class="ttname"><a href="classINIReader.html">INIReader</a></div><div class="ttdef"><b>Definition:</b> INIReader.h:292</div></div>
+<div class="ttc" id="aclassLogUtils_1_1XpansionError_html"><div class="ttname"><a href="classLogUtils_1_1XpansionError.html">LogUtils::XpansionError</a></div><div class="ttdef"><b>Definition:</b> LogUtils.h:12</div></div>
 <div class="ttc" id="astructCandidateData_html"><div class="ttname"><a href="structCandidateData.html">CandidateData</a></div><div class="ttdef"><b>Definition:</b> Candidate.h:8</div></div>
 <div class="ttc" id="astructIntercoFileData_html"><div class="ttname"><a href="structIntercoFileData.html">IntercoFileData</a></div><div class="ttdef"><b>Definition:</b> CandidatesINIReader.h:15</div></div>
 </div><!-- fragment --></div><!-- contents -->

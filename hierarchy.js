@@ -242,6 +242,7 @@ var hierarchy =
       ] ]
     ] ],
     [ "IProblemProviderPort", "classIProblemProviderPort.html", [
+      [ "FileProblemProviderAdapter", "classFileProblemProviderAdapter.html", null ],
       [ "MPSFileProblemProviderAdapter", "classMPSFileProblemProviderAdapter.html", null ],
       [ "ZipProblemProviderAdapter", "classZipProblemProviderAdapter.html", null ]
     ] ],
@@ -276,6 +277,7 @@ var hierarchy =
     ] ],
     [ "IWriterLogger", "classIWriterLogger.html", null ],
     [ "IXpansionProblemsProvider", "classIXpansionProblemsProvider.html", [
+      [ "FileProblemsProviderAdapter", "classFileProblemsProviderAdapter.html", null ],
       [ "XpansionProblemsFromAntaresProvider", "classXpansionProblemsFromAntaresProvider.html", null ],
       [ "ZipProblemsProviderAdapter", "classZipProblemsProviderAdapter.html", null ]
     ] ],
@@ -384,11 +386,17 @@ var hierarchy =
     [ "Predicate", "structPredicate.html", null ],
     [ "Output::ProblemData", "structOutput_1_1ProblemData.html", null ],
     [ "ProblemData", "structProblemData.html", null ],
+    [ "ProblemGeneration", "classProblemGeneration.html", [
+      [ "ProblemGenerationSpyAndMock", "classProblemGenerationSpyAndMock.html", null ]
+    ] ],
     [ "ProblemGenerationLog::ProblemGenerationILogger", "classProblemGenerationLog_1_1ProblemGenerationILogger.html", [
       [ "ProblemGenerationLog::ProblemGenerationFileLogger", "classProblemGenerationLog_1_1ProblemGenerationFileLogger.html", null ],
       [ "ProblemGenerationLog::ProblemGenerationOstreamLogger", "classProblemGenerationLog_1_1ProblemGenerationOstreamLogger.html", null ]
     ] ],
     [ "ProblemGenerationLog::ProblemGenerationLogger", "classProblemGenerationLog_1_1ProblemGenerationLogger.html", null ],
+    [ "ProblemGenerationOptions", "classProblemGenerationOptions.html", [
+      [ "ProblemGenerationExeOptions", "classProblemGenerationExeOptions.html", null ]
+    ] ],
     [ "antares_xpansion.problem_generator_driver.ProblemGeneratorData", "classantares__xpansion_1_1problem__generator__driver_1_1ProblemGeneratorData.html", null ],
     [ "antares_xpansion.problem_generator_driver.ProblemGeneratorDriver", "classantares__xpansion_1_1problem__generator__driver_1_1ProblemGeneratorDriver.html", null ],
     [ "ProblemHebdoId", "structProblemHebdoId.html", null ],
@@ -411,6 +419,7 @@ var hierarchy =
         [ "ActiveLinksBuilder::MultipleAlreadyInstalledProfileDetectedForLink", "classActiveLinksBuilder_1_1MultipleAlreadyInstalledProfileDetectedForLink.html", null ],
         [ "ActiveLinksBuilder::MultipleLinkIddetectedForLink", "classActiveLinksBuilder_1_1MultipleLinkIddetectedForLink.html", null ],
         [ "ActiveLinksBuilder::ThereIsNoLinkProfileAssociatedWithThisProfile", "classActiveLinksBuilder_1_1ThereIsNoLinkProfileAssociatedWithThisProfile.html", null ],
+        [ "CandidatesINIReader::InvalidIntercoFile", "classCandidatesINIReader_1_1InvalidIntercoFile.html", null ],
         [ "InvalidBoundTypeException", "classInvalidBoundTypeException.html", null ],
         [ "InvalidColSizeException", "classInvalidColSizeException.html", null ],
         [ "InvalidColTypeException", "classInvalidColTypeException.html", null ],
@@ -424,6 +433,9 @@ var hierarchy =
         [ "LpFilesExtractor::ErrorWithIntercosFile", "classLpFilesExtractor_1_1ErrorWithIntercosFile.html", null ],
         [ "OptionsParser::InvalidNumberOfArgumentsPassedToParser", "classOptionsParser_1_1InvalidNumberOfArgumentsPassedToParser.html", null ],
         [ "OptionsParser::NullArgumentsValues", "classOptionsParser_1_1NullArgumentsValues.html", null ],
+        [ "ProblemGenerationOptions::ConflictingParameters", "classProblemGenerationOptions_1_1ConflictingParameters.html", null ],
+        [ "ProblemGenerationOptions::MismatchedParameters", "classProblemGenerationOptions_1_1MismatchedParameters.html", null ],
+        [ "ProblemGenerationOptions::MissingParameters", "classProblemGenerationOptions_1_1MissingParameters.html", null ],
         [ "ProblemModifier::CandidateWasNotAddedInProblem", "classProblemModifier_1_1CandidateWasNotAddedInProblem.html", null ],
         [ "StudyUpdateStrategy::NoInvestmentComputedForTheCandidate", "classStudyUpdateStrategy_1_1NoInvestmentComputedForTheCandidate.html", null ],
         [ "VariableFileReader::VariablesNotFound", "classVariableFileReader_1_1VariablesNotFound.html", null ],
@@ -540,7 +552,6 @@ var hierarchy =
       [ "ChronicleProviderTest", "classChronicleProviderTest.html", null ],
       [ "ChronicleTest", "classChronicleTest.html", null ],
       [ "FileLoggerTest", "classFileLoggerTest.html", null ],
-      [ "FullRunOptionsParserTest", "classFullRunOptionsParserTest.html", null ],
       [ "JsonWriterTest", "classJsonWriterTest.html", null ],
       [ "JsonXpansionReaderTest", "classJsonXpansionReaderTest.html", null ],
       [ "LastIterationReaderTest", "classLastIterationReaderTest.html", null ],
@@ -600,7 +611,10 @@ var hierarchy =
     [ "tests.python.test_study_output_cleaner.TestStudyOutputCleaner", "classtests_1_1python_1_1test__study__output__cleaner_1_1TestStudyOutputCleaner.html", null ],
     [ "tests.python.test_study_updater.TestStudyUpdater", "classtests_1_1python_1_1test__study__updater_1_1TestStudyUpdater.html", null ],
     [ "testing::TestWithParam", null, [
-      [ "FullRunOptionsParserTestParameterizedMethod", "classFullRunOptionsParserTestParameterizedMethod.html", null ],
+      [ "FullRunOptionsParserTest", "classFullRunOptionsParserTest.html", [
+        [ "FullRunOptionsParserTestFullPath", "classFullRunOptionsParserTestFullPath.html", null ]
+      ] ],
+      [ "FullRunOptionsParserTestParameterizedMethod_output", "classFullRunOptionsParserTestParameterizedMethod__output.html", null ],
       [ "ProblemConstructionTest", "classProblemConstructionTest.html", null ]
     ] ],
     [ "Catch::Timer", "classCatch_1_1Timer.html", null ],

@@ -2,6 +2,8 @@ var dir_e6f25a82ee20e4e8e60623c7da1f363f =
 [
     [ "AdditionalConstraints.h", "AdditionalConstraints_8h_source.html", null ],
     [ "AntaresProblemToXpansionProblemTranslator.h", "AntaresProblemToXpansionProblemTranslator_8h_source.html", null ],
+    [ "FileProblemProviderAdapter.h", "FileProblemProviderAdapter_8h_source.html", null ],
+    [ "FileProblemsProviderAdapter.h", "FileProblemsProviderAdapter_8h_source.html", null ],
     [ "IProblemProviderPort.h", "IProblemProviderPort_8h_source.html", null ],
     [ "IProblemVariablesProviderPort.h", "IProblemVariablesProviderPort_8h_source.html", null ],
     [ "IProblemWriter.h", "IProblemWriter_8h_source.html", null ],
