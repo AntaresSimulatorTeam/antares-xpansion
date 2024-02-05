@@ -26,7 +26,8 @@ double OuterloopCriterionLOL::ProcessSum(const BendersCuts& benders_cuts) {
       auto solution = sub_problem_data.variables.values[i];
       if (std::regex_search(var_name, rgx_) &&
           solution > UNSUPPLIED_ENERGY_MAX) {
-        sum_loss += solution;
+        // 1h of unsupplied energy
+        sum_loss += 1;
       }
     }
   }
