@@ -7,12 +7,13 @@ OuterloopCriterionLOL::OuterloopCriterionLOL(double threshold, double epsilon)
 CRITERION OuterloopCriterionLOL::IsCriterionSatisfied(
     const BendersCuts& benders_cuts) {
   double sum_loss = ProcessSum(benders_cuts);
-  // CRITERION ret = (sum_loss <= threshold_ + epsilon_)   ? CRITERION::LESSER
-  //                 : (threshold_ - epsilon_ <= sum_loss) ? CRITERION::GREATER
+  CRITERION ret = (sum_loss >= threshold_ - epsilon_)
+                      ? (sum_loss <= threshold_ + epsilon_) ? CRITERION::EQUAL
+                                                            : CRITERION::GREATER
+                      : CRITERION::LESSER;
+  // CRITERION ret = (sum_loss <= threshold_ - epsilon_)   ? CRITERION::LESSER
+  //                 : (sum_loss >= threshold_ + epsilon_) ? CRITERION::GREATER
   //                                                       : CRITERION::EQUAL;
-  CRITERION ret = (sum_loss <= threshold_ - epsilon_)   ? CRITERION::LESSER
-                  : (sum_loss >= threshold_ + epsilon_) ? CRITERION::GREATER
-                                                        : CRITERION::EQUAL;
   return ret;
 }
 
