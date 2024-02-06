@@ -3,9 +3,9 @@
 
 #include <vector>
 using colId = unsigned int;
-class ColumnToChange {
- public:
-  ColumnToChange(colId id, unsigned time_step) : id(id), time_step(time_step){};
+struct ColumnToChange {
+  ColumnToChange(colId id, unsigned int time_step)
+      : id(id), time_step(time_step){};
   bool operator==(const ColumnToChange& other) const;
 
   colId id;
