@@ -2,9 +2,11 @@
 
 OuterLoop::OuterLoop(std::shared_ptr<IOuterLoopCriterion> criterion,
                      std::shared_ptr<IMasterUpdate> master_updater,
+                     std::shared_ptr<ICutsManager> cuts_manager,
                      pBendersBase benders)
     : criterion_(std::move(criterion)),
       master_updater_(std::move(master_updater)),
+      cuts_manager_(std::move(cuts_manager)),
       benders_(std::move(benders)) {}
 
 void OuterLoop::Run() {
@@ -18,7 +20,7 @@ void OuterLoop::Run() {
   do {
     master_updater_->Update(criterion, benders_);
     benders_->launch();
-    criterion =
-        criterion_->IsCriterionSatisfied(benders_->CutsCurrentIteration());
+    cuts_manager_->Save(benders_->CutsCurrentIteration());
+    criterion = criterion_->IsCriterionSatisfied(cuts_manager_->Load());
   } while (criterion != CRITERION::EQUAL);
 }
