@@ -164,7 +164,7 @@ TEST_F(ProblemGenerationExeOptionsTest,
 
   EXPECT_TRUE(problem_generation_options_parser_.ArchivePath().empty());
   EXPECT_TRUE(pbg.archive_path_.empty());
-  EXPECT_EQ(pbg.xpansion_output_dir_, simulation_path.string() + "-Xpansion");
+  EXPECT_EQ(pbg.xpansion_output_dir_, simulation_path.string());
   EXPECT_TRUE(std::filesystem::exists(pbg.xpansion_output_dir_ / "lp"));
 }
 

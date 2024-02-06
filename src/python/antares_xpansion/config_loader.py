@@ -526,12 +526,7 @@ class ConfigLoader:
                 raise ConfigLoader.NotAnXpansionOutputDir(f"Error! {self._last_study} is not an Xpansion output directory")
             self._xpansion_simulation_name = self._last_study
         elif self.step() == "full" and self.memory():
-            if str(self._last_study.stem).endswith("-Xpansion"):
-                self._xpansion_simulation_name = self._last_study
-                # full and memory problem generation execute antares then create a -Xpansion dir
-            else:
-                self._xpansion_simulation_name = self._last_study.parent / \
-                                                 (self._last_study.stem + "-Xpansion")
+            self._xpansion_simulation_name = self._last_study
         else:
             self._xpansion_simulation_name = self._last_study.parent / \
                 (self._last_study.stem+"-Xpansion")
