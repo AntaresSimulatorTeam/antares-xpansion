@@ -3,12 +3,13 @@
 
 #include <vector>
 using colId = unsigned int;
-struct ColumnToChange {
-  ColumnToChange(colId id, int time_step) : id(id), time_step(time_step){};
+class ColumnToChange {
+ public:
+  ColumnToChange(colId id, unsigned time_step) : id(id), time_step(time_step){};
   bool operator==(const ColumnToChange& other) const;
 
   colId id;
-  int time_step;
+  unsigned int time_step;
 };
 
 using ColumnsToChange = std::vector<ColumnToChange>;
