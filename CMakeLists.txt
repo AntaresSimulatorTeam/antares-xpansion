@@ -98,7 +98,6 @@ message ("CMAKE_SOURCE_DIR : ${CMAKE_SOURCE_DIR}")
 message ("CMAKE_C_COMPILER_VERSION : ${CMAKE_C_COMPILER_VERSION}")
 message ("CMAKE_CXX_COMPILER_VERSION : ${CMAKE_CXX_COMPILER_VERSION}")
 
-set(CODE_COVERAGE FALSE CACHE BOOL "Enable code coverage")
 if (CODE_COVERAGE)
 	# if code-coverage is ON, force tests build
 	set(BUILD_TESTING ON)

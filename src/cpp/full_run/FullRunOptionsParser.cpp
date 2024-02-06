@@ -13,5 +13,5 @@ FullRunOptionsParser::FullRunOptionsParser() : ProblemGenerationExeOptions() {
       "path to json solution file");
 }
 void FullRunOptionsParser::Parse(unsigned int argc, const char* const* argv) {
-  OptionsParser::Parse(argc, argv);
+  ProblemGenerationExeOptions::Parse(argc, argv);
 }

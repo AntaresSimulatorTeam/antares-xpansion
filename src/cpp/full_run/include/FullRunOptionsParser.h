@@ -8,7 +8,7 @@
 class FullRunOptionsParser : public ProblemGenerationExeOptions {
  public:
   FullRunOptionsParser();
-  virtual ~FullRunOptionsParser() = default;
+  ~FullRunOptionsParser() override = default;
   void Parse(unsigned int argc, const char* const* argv) override;
 
   std::filesystem::path BendersOptionsFile() const {
