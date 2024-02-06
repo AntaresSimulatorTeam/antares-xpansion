@@ -46,10 +46,10 @@ AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
       {}, constant->Mdeb.data(), constant->IndicesColonnes.data(),
       constant->CoefficientsDeLaMatriceDesContraintes.data());
   for (int i = 0; i < constant->NombreDeVariables; ++i) {
-    problem->chg_col_name(i, constant->variables[i]);
+    problem->chg_col_name(i, hebdo->variables[i]);
   }
   for (int i = 0; i < constant->NombreDeContraintes; ++i) {
-    problem->chg_row_name(i, constant->constraints[i]);
+    problem->chg_row_name(i, hebdo->constraints[i]);
   }
   auto rows = problem->get_nrows();
   auto cols = problem->get_ncols();
