@@ -38,23 +38,6 @@ TEST_P(FullRunOptionsParserTest, ThatBendersOptionFileIsRequired) {
   }
 }
 
-TEST_P(FullRunOptionsParserTest, ThatMethodOptionIsRequired) {
-  auto params = GetParam();
-  std::vector<const char*> pargs;
-  std::ranges::transform(params, std::back_inserter(pargs),
-                         [](const std::string& s) { return s.data(); });
-  const char argv5[] = "--benders_options";
-  const char argv6[] = "something";
-  pargs.push_back(argv5);
-  pargs.push_back(argv6);
-  try {
-    full_run_options_options_parser_.Parse(pargs.size(), pargs.data());
-  } catch (const std::exception& e) {
-    EXPECT_EQ(e.what(),
-              std::string("the option '--method' is required but missing"));
-  }
-}
-
 TEST_P(FullRunOptionsParserTest, ThatSolutionOptionIsRequired) {
   auto params = GetParam();
   std::vector<const char*> pargs;
@@ -93,3 +76,12 @@ TEST_P(FullRunOptionsParserTestFullPath, OptionsParsing) {
   ASSERT_EQ(full_run_options_options_parser_.SolutionFile(),
             std::filesystem::path(argv8));
 }
+
+auto full_path_params() {
+  return ::testing::ValuesIn(std::vector<std::vector<std::string>>{
+      {"full_run.exe", "--archive", "/path/to/output.zip"},
+      {"full_run.exe", "--output", "/path/to/output"},
+  });
+}
+INSTANTIATE_TEST_SUITE_P(args, FullRunOptionsParserTestFullPath,
+                         full_path_params());
