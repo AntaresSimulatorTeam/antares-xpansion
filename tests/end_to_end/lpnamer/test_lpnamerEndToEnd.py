@@ -68,10 +68,15 @@ test_data_study_option = [
 @pytest.fixture
 def setup_and_teardown_lp_directory(request):
     test_dir = request.getfixturevalue('test_dir')
-    lp_dir = test_dir.parent / test_dir.stem / "lp"
-    if Path(lp_dir).is_dir():
-        shutil.rmtree(lp_dir)
-    Path(lp_dir).mkdir(parents=True, exist_ok=True)
+    output_dir = test_dir.parent / test_dir.stem / "lp";
+    if Path(output_dir).is_dir():
+        shutil.rmtree(output_dir)
+    Path(output_dir).mkdir(parents=True, exist_ok=True)
+
+    archive_output_dir = test_dir.parent / (test_dir.stem + "-Xpansion") / "lp"
+    if Path(archive_output_dir).is_dir():
+        shutil.rmtree(archive_output_dir.parent)
+    Path(archive_output_dir).mkdir(parents=True, exist_ok=True)
 
     list_files = list(Path(test_dir).glob("*.mps"))
     list_files.extend(list(Path(test_dir).glob("variables*.txt")))
@@ -135,7 +140,7 @@ def launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_
     zip_path = (test_dir.parent / MPS_ZIP).resolve()
     os.chdir(test_dir.parent)
     launch_command = [str(lp_namer_exe), "-a", str(zip_path),
-                      "-e", "contraintes.txt", "-f", master_mode, "--unnamed-problems"]
+                      "-e", "contraintes.txt", "-f", master_mode]
     print(launch_command)
     # when
     returned_l = subprocess.run(launch_command, shell=False)

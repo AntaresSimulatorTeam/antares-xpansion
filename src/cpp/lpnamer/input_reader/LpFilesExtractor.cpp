@@ -51,7 +51,20 @@ void LpFilesExtractor::ExtractFiles() const {
         << log_location << msg.str();
     throw ErrorWithAreaFile(msg.str(), log_location);
   }
-  std::filesystem::copy(vect_area_files[0], xpansion_output_dir_ / "area.txt");
+
+  if (mode_ == Mode::ARCHIVE) {
+    std::filesystem::rename(vect_area_files[0],
+                            xpansion_output_dir_ / "area.txt");
+  } else {
+    try {
+      std::filesystem::copy(vect_area_files[0],
+                            xpansion_output_dir_ / "area.txt");
+    } catch (const std::filesystem::filesystem_error& e) {
+      auto log_location = LOGLOCATION;
+      (*logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << e.what();
+      throw e;
+    }
+  }
 
   if (auto num_intercos_file = vect_interco_files.size();
       num_intercos_file == 0) {
@@ -69,6 +82,17 @@ void LpFilesExtractor::ExtractFiles() const {
         << log_location << msg.str();
     throw ErrorWithIntercosFile(msg.str(), log_location);
   }
-  std::filesystem::copy(vect_interco_files[0],
-                        xpansion_output_dir_ / "interco.txt");
+  if (mode_ == Mode::ARCHIVE) {
+    std::filesystem::rename(vect_interco_files[0],
+                            xpansion_output_dir_ / "interco.txt");
+  } else {
+    try {
+      std::filesystem::copy(vect_interco_files[0],
+                            xpansion_output_dir_ / "interco.txt");
+    } catch (const std::filesystem::filesystem_error& e) {
+      auto log_location = LOGLOCATION;
+      (*logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << e.what();
+      throw e;
+    }
+  }
 }
