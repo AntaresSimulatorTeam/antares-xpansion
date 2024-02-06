@@ -9,8 +9,8 @@ MasterUpdateBase::MasterUpdateBase(double lambda, double lambda_min,
   }
 }
 
-void MasterUpdateBase::Update(const CRITERION& criterion,
-                              pBendersBase benders) {
+void MasterUpdateBase::Update(const CRITERION& criterion, pBendersBase benders,
+                              const BendersCuts& benders_cuts) {
   switch (criterion) {
     case CRITERION::LESSER:
       // TODO best it or current data?
@@ -27,6 +27,7 @@ void MasterUpdateBase::Update(const CRITERION& criterion,
       //   break;
   }
   lambda_ = tau_ * lambda_max_ + (1 - tau_) * lambda_min_;
+  // benders->mas
   AddConstraints();
   AddCutsInMaster();
 }

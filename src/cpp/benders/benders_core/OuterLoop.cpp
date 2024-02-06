@@ -13,14 +13,15 @@ void OuterLoop::Run() {
   master_updater_->AddConstraints();
   master_updater_->AddCutsInMaster();
   benders_->launch();
-
+  cuts_manager_->Save(benders_->CutsCurrentIteration());
   // by default LESSER?
   CRITERION criterion = CRITERION::LESSER;
 
   do {
-    master_updater_->Update(criterion, benders_);
+    auto cuts = cuts_manager_->Load();
+    master_updater_->Update(criterion, benders_, cuts);
     benders_->launch();
+    criterion = criterion_->IsCriterionSatisfied(cuts);
     cuts_manager_->Save(benders_->CutsCurrentIteration());
-    criterion = criterion_->IsCriterionSatisfied(cuts_manager_->Load());
   } while (criterion != CRITERION::EQUAL);
 }
