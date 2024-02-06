@@ -35,7 +35,8 @@ TEST_P(ProblemConstructionTest, ExtractSeveralFileNameCase) {
   auto const& input = GetParam();
   EXPECT_EQ(MCYear(input.problem_name), input.expected_mc_year);
 }
-INSTANTIATE_TEST_CASE_P(BulkTest, ProblemConstructionTest, testing::ValuesIn(cases));
+INSTANTIATE_TEST_SUITE_P(BulkTest, ProblemConstructionTest,
+                         testing::ValuesIn(cases));
 
 TEST_F(ProblemConstructionTest, ExtractMCYearFromPath) {
   std::filesystem::path path = std::filesystem::path("path") / "To" / "inner-dir" / "problem-2-1-20220214-124051.mps";

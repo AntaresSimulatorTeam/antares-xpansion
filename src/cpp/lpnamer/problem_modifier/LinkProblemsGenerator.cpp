@@ -60,6 +60,7 @@ void LinkProblemsGenerator::treat(
     }
   }
   auto const lp_mps_name = lpDir_ / problem->_name;
+  problem->_name = lp_mps_name.string();
   writer->Write_problem(problem);
 }
 

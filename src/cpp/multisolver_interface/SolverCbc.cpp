@@ -10,10 +10,7 @@ int SolverCbc::_NumberOfProblems = 0;
 
 SolverCbc::SolverCbc(SolverLogManager &log_manager) : SolverCbc() {
   _fp = log_manager.log_file_ptr;
-  if (!_fp) {
-    std::cout << "Empty log file name, fallback to default behaviour"
-              << std::endl;
-  } else {
+  if (_fp) {
     _clp_inner_solver.messageHandler()->setFilePointer(_fp);
     _cbc.messageHandler()->setFilePointer(_fp);
   }
@@ -123,12 +120,16 @@ void SolverCbc::write_prob_mps(const std::filesystem::path &filename) {
     }
   }
 
-  writer.setMpsData(
-      *(_clp_inner_solver.getMatrixByCol()), _clp_inner_solver.getInfinity(),
-      _clp_inner_solver.getColLower(), _clp_inner_solver.getColUpper(),
-      _clp_inner_solver.getObjCoefficients(),
-      hasInteger ? integrality : nullptr, _clp_inner_solver.getRowLower(),
-      _clp_inner_solver.getRowUpper(), colNames, rowNames);
+  {
+    auto mcol = _clp_inner_solver.getMatrixByCol();
+    auto col = *(_clp_inner_solver.getMatrixByCol());
+    auto infinity = _clp_inner_solver.getInfinity();
+    writer.setMpsData(
+        col, infinity, _clp_inner_solver.getColLower(),
+        _clp_inner_solver.getColUpper(), _clp_inner_solver.getObjCoefficients(),
+        hasInteger ? integrality : nullptr, _clp_inner_solver.getRowLower(),
+        _clp_inner_solver.getRowUpper(), colNames, rowNames);
+  }
 
   std::string probName = "";
   _clp_inner_solver.getStrParam(OsiProbName, probName);
@@ -622,7 +623,7 @@ void SolverCbc::set_output_log_level(int loglevel) {
 
   for (const auto message_handler :
        {_clp_inner_solver.messageHandler(), _cbc.messageHandler()}) {
-    if (loglevel > 0) {
+    if (loglevel > 1 && _fp) {
       message_handler->setLogLevel(0, 1);  // Coin messages
       message_handler->setLogLevel(1, 1);  // Clp messages
       message_handler->setLogLevel(2, 1);  // Presolve messages

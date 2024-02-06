@@ -28,8 +28,10 @@ struct ProblemData {
 
 class FilesMapper {
  public:
-  explicit FilesMapper(const std::filesystem::path& antares_archive_path)
-      : antares_archive_path_(antares_archive_path) {}
+  explicit FilesMapper(std::filesystem::path antares_archive_path,
+                       std::filesystem::path simulation_dir = {})
+      : antares_archive_path_(std::move(antares_archive_path)),
+        simulation_dir_(std::move(simulation_dir)) {}
   YearWeekAndFilesDict FilesMap() {
     FillMap();
     return year_week_and_files_dict_;
@@ -39,6 +41,7 @@ class FilesMapper {
  private:
   YearWeekAndFilesDict year_week_and_files_dict_;
   std::filesystem::path antares_archive_path_;
+  std::filesystem::path simulation_dir_;
   void FillMap();
   void FillMapWithMpsFiles(const std::vector<std::filesystem::path>& mps_files);
   void FillMapWithVariablesFiles(
@@ -47,5 +50,7 @@ class FilesMapper {
       const std::vector<std::filesystem::path>& variables_files);
   YearAndWeek YearAndWeekFromFileName(
       const std::filesystem::path& file_name) const;
+  void FillMapFiles();
+  void FillMapZip();
 };
 #endif  // SRC_CPP_LPNAMER_INPUTREADER_MPSTXTWRITER_H

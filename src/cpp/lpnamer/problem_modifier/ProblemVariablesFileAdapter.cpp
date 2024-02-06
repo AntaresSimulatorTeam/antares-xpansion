@@ -31,7 +31,7 @@ void ProblemVariablesFileAdapter::extract_variables(
 
 ProblemVariables ProblemVariablesFileAdapter::Provide() {
   ProblemVariables result;
-  extract_variables(lpdir_ / problem_data_._variables_txt,
+  extract_variables(lpdir_.parent_path() / problem_data_._variables_txt,
                     result.variable_names, result.ntc_columns,
                     result.direct_cost_columns, result.indirect_cost_columns);
   return result;

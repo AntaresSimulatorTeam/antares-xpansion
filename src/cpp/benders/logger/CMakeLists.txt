@@ -5,7 +5,8 @@ add_library (logger_lib
         User.cpp
         UserFile.cpp
         CandidateLog.cpp
-        IterationResultLog.cpp )
+        IterationResultLog.cpp 
+        MathLogger.cpp )
 
 target_link_libraries (logger_lib
         PUBLIC
