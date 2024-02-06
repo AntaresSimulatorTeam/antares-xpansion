@@ -3,7 +3,7 @@
 !include <C4/C4_Container>
 
 LAYOUT_WITH_LEGEND()
-title System Context Diagram for Antares (simple))
+title Container Diagram for Antares (simple)
 
 Person(Alice, "Alice", "Chargée d'étude")
 Person(Toph, "Toph", "Chargée d'étude")
