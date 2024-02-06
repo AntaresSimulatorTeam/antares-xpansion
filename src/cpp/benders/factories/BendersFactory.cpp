@@ -11,7 +11,7 @@
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 
-BENDERSMETHOD DeduceBenderMethod(size_t coupling_map_size, size_t batch_size) {
+BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size) {
   auto method = (batch_size == 0 || batch_size == coupling_map_size - 1)
                     ? BENDERSMETHOD::BENDERS
                     : BENDERSMETHOD::BENDERSBYBATCH;
@@ -48,7 +48,7 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
     Writer writer;
     const auto coupling_map = build_input(benders_options.STRUCTURE_FILE);
     const auto method =
-        DeduceBenderMethod(coupling_map.size(), options.BATCH_SIZE);
+        DeduceBendersMethod(coupling_map.size(), options.BATCH_SIZE);
 
     if (world.rank() == 0) {
       auto benders_log_console = benders_options.LOG_LEVEL > 0;
