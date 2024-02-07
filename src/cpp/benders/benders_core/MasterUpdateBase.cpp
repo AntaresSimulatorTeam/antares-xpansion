@@ -36,19 +36,30 @@ void MasterUpdateBase::Update(const CRITERION &criterion) {
   // AddCutsInMaster();
 }
 void MasterUpdateBase::UpdateConstraints() {
-  if (auto row_index = benders_->MasterContainsRow(ADDITIONAL_ROW_NAME);
+  if (auto row_index = benders_->MasterRowIndex(ADDITIONAL_ROW_NAME);
       row_index > -1) {
-    benders_->ChangeRhs(row_index, lambda_);
+    benders_->MasterChangeRhs(row_index, lambda_);
 
   } else {
+    auto master_variables = benders_->MasterVariables();
+    auto invest_cost = benders_->BestIterationInvestCost();
     // ajouter la cont:
-    // auto newnz = benders->;
-    // int newrows = 1;
-    // std::vector<char> rtype(newrows);
-    // std::vector<double> rhs(newrows, additionalConstraint_p.getRHS());
-    // std::vector<int> mindex(newnz);
-    // std::vector<double> matval(newnz);
-    // std::vector<int> matstart(newrows + 1);
+    auto newnz = master_variables.size();
+    int newrows = 1;
+    std::vector<char> rtype(newrows, 'L');
+    std::vector<double> rhs(newrows, lambda_);
+    std::vector<int> mclind(newnz);
+    size_t mclindCnt_l(0);
+    std::vector<double> matval(newnz);
+    for (auto const &[name, cost] : invest_cost) {
+      mclind[mclindCnt_l] = master_variables.at(name);
+      matval[mclindCnt_l] = invest_cost.at(name);
+      ++mclindCnt_l;
+    }
+    std::vector<int> matstart(newrows + 1);
+    matstart[0] = 0;
+    matstart[1] = newnz;
+    benders_->MasterAddRows(rtype, rhs, {}, matstart, mclind, matval);
   }
 }
 

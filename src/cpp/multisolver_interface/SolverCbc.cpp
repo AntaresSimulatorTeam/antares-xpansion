@@ -302,6 +302,7 @@ void SolverCbc::get_ub(double *ub, int first, int last) const {
   }
 }
 
+// TODO update see SolverCbc::get_col_index
 int SolverCbc::get_row_index(std::string const &name) {
   int id = 0;
   int nrows = get_nrows();
