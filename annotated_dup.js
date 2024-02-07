@@ -452,7 +452,7 @@ var annotated_dup =
     [ "FileProblemProviderAdapter", "classFileProblemProviderAdapter.html", null ],
     [ "FileProblemsProviderAdapter", "classFileProblemsProviderAdapter.html", null ],
     [ "FilesMapper", "classFilesMapper.html", null ],
-    [ "FullRunOptionsParser", "classFullRunOptionsParser.html", "classFullRunOptionsParser" ],
+    [ "FullRunOptionsParser", "classFullRunOptionsParser.html", null ],
     [ "FullRunOptionsParserTest", "classFullRunOptionsParserTest.html", null ],
     [ "FullRunOptionsParserTestFullPath", "classFullRunOptionsParserTestFullPath.html", null ],
     [ "FullRunOptionsParserTestParameterizedMethod_output", "classFullRunOptionsParserTestParameterizedMethod__output.html", null ],

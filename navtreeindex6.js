@@ -1,7 +1,5 @@
 var NAVTREEINDEX6 =
 {
-"structCatch_1_1RegistrarForTagAliases.html":[24,0,3,45],
-"structCatch_1_1ResultDisposition.html":[24,0,3,46],
 "structCatch_1_1ResultWas.html":[24,0,3,47],
 "structCatch_1_1RunTests.html":[24,0,3,49],
 "structCatch_1_1SectionEndInfo.html":[24,0,3,52],

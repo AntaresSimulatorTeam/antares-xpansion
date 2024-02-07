@@ -1,7 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"classSensitivityInputReaderTest.html":[24,0,172],
-"classSensitivityLogMock.html":[24,0,175],
 "classSensitivityLogger.html":[24,0,173],
 "classSensitivityLoggerMock.html":[24,0,174],
 "classSensitivityMasterLogger.html":[24,0,176],
@@ -249,5 +247,7 @@ var NAVTREEINDEX2 =
 "classSolverXpress.html#ac59e14478024918c3a7d2388194765b3":[24,0,195,21],
 "classSolverXpress.html#ac72568f5c35f2801559201a308cac212":[24,0,195,38],
 "classSolverXpress.html#ad151aa9391c8db730812474decc12d69":[24,0,195,34],
-"classSolverXpress.html#ad3ed2ede989a667dc68f52bfbde9f415":[24,0,195,4]
+"classSolverXpress.html#ad3ed2ede989a667dc68f52bfbde9f415":[24,0,195,4],
+"classSolverXpress.html#ad57923f00fd66a3c0ca985b076bd4c72":[24,0,195,45],
+"classSolverXpress.html#ad640fc6e5e2bfa1d8fc88b444fe21b7e":[24,0,195,8]
 };

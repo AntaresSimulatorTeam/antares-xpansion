@@ -1,6 +1,5 @@
 var classBendersSequentialDouble =
 [
-    [ "build_input_map", "classBendersSequentialDouble.html#a0154400d49b55bfa969a2e33afd64034", null ],
     [ "BuildCut", "classBendersSequentialDouble.html#a51acd36960e970d6b70621db819e5b42", null ],
     [ "free", "classBendersSequentialDouble.html#a0218c119f2551224ded759b7e9c65548", null ],
     [ "get_master_value", "classBendersSequentialDouble.html#a731f23e8a9e2700f022f60ac04d6cbea", null ],

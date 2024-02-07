@@ -449,7 +449,6 @@ var hierarchy =
       ] ],
       [ "ArchiveIOGeneralException", "classArchiveIOGeneralException.html", null ],
       [ "ArchiveIOSpecificException", "classArchiveIOSpecificException.html", null ],
-      [ "FullRunOptionsParser::FullRunOptionInvalidMethod", "classFullRunOptionsParser_1_1FullRunOptionInvalidMethod.html", null ],
       [ "GenericSolverException", "classGenericSolverException.html", null ],
       [ "IniFileNotFound", "classIniFileNotFound.html", null ],
       [ "NotImplementedFeatureSolverException", "classNotImplementedFeatureSolverException.html", null ]

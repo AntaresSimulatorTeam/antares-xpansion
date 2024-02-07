@@ -20,7 +20,7 @@ var searchData=
   ['bendersoptionsfileerror_17',['BendersOptionsFileError',['../classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersOptionsFileError.html',1,'antares_xpansion::benders_driver::BendersDriver']]],
   ['bendersoutputpatherror_18',['BendersOutputPathError',['../classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersOutputPathError.html',1,'antares_xpansion::benders_driver::BendersDriver']]],
   ['bendersrelevantiterationsdata_19',['BendersRelevantIterationsData',['../structBendersRelevantIterationsData.html',1,'']]],
-  ['benderssequential_20',['BendersSequential',['../classBendersSequential.html#a7171ad8e67c5b70829190b3f82866092',1,'BendersSequential::BendersSequential()'],['../classBendersSequential.html',1,'BendersSequential']]],
+  ['benderssequential_20',['BendersSequential',['../classBendersSequential.html',1,'BendersSequential'],['../classBendersSequential.html#a7171ad8e67c5b70829190b3f82866092',1,'BendersSequential::BendersSequential()']]],
   ['benderssequentialdouble_21',['BendersSequentialDouble',['../classBendersSequentialDouble.html',1,'']]],
   ['benderssequentialtest_22',['BendersSequentialTest',['../classBendersSequentialTest.html',1,'']]],
   ['benderssolvererror_23',['BendersSolverError',['../classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersSolverError.html',1,'antares_xpansion::benders_driver::BendersDriver']]],
@@ -28,7 +28,6 @@ var searchData=
   ['binaryexpr_25',['BinaryExpr',['../classCatch_1_1BinaryExpr.html',1,'Catch']]],
   ['boundsimplexiterations_26',['BoundSimplexIterations',['../classBendersBase.html#a0fa4c04cc9815d16d43cd4a73d89f895',1,'BendersBase']]],
   ['build_27',['Build',['../md_docs_developer_guide_install_from_sources_3_Build.html',1,'']]],
-  ['build_5finput_5fmap_28',['build_input_map',['../classBendersBase.html#aba555debca49b7f0d10d2c908145edd2',1,'BendersBase::build_input_map()'],['../classBendersSequentialDouble.html#a0154400d49b55bfa969a2e33afd64034',1,'BendersSequentialDouble::build_input_map()']]],
-  ['buildcut_29',['BuildCut',['../classBendersByBatch.html#ab9975a5a3dbc3bd26f6bd0fd0833d340',1,'BendersByBatch::BuildCut()'],['../classBendersSequential.html#a2d1b29260a6ab2204f7ef276204951d7',1,'BendersSequential::BuildCut()'],['../classBendersSequentialDouble.html#a51acd36960e970d6b70621db819e5b42',1,'BendersSequentialDouble::BuildCut()']]],
-  ['buildcutfull_30',['BuildCutFull',['../classBendersBase.html#affc499db6586868162f6bd7efa8898ea',1,'BendersBase']]]
+  ['buildcut_28',['BuildCut',['../classBendersByBatch.html#ab9975a5a3dbc3bd26f6bd0fd0833d340',1,'BendersByBatch::BuildCut()'],['../classBendersSequential.html#a2d1b29260a6ab2204f7ef276204951d7',1,'BendersSequential::BuildCut()'],['../classBendersSequentialDouble.html#a51acd36960e970d6b70621db819e5b42',1,'BendersSequentialDouble::BuildCut()']]],
+  ['buildcutfull_29',['BuildCutFull',['../classBendersBase.html#affc499db6586868162f6bd7efa8898ea',1,'BendersBase']]]
 ];

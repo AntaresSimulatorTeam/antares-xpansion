@@ -1,7 +1,5 @@
 var NAVTREEINDEX5 =
 {
-"md_docs_changelog_CHANGELOG.html#autotoc_md43":[1,10,2],
-"md_docs_changelog_CHANGELOG.html#autotoc_md44":[1,11],
 "md_docs_changelog_CHANGELOG.html#autotoc_md45":[1,11,0],
 "md_docs_changelog_CHANGELOG.html#autotoc_md46":[1,11,1],
 "md_docs_changelog_CHANGELOG.html#autotoc_md47":[1,12],
@@ -249,5 +247,7 @@ var NAVTREEINDEX5 =
 "structCatch_1_1MessageBuilder.html":[24,0,3,37],
 "structCatch_1_1MessageInfo.html":[24,0,3,38],
 "structCatch_1_1MessageStream.html":[24,0,3,39],
-"structCatch_1_1NameAndTags.html":[24,0,3,40]
+"structCatch_1_1NameAndTags.html":[24,0,3,40],
+"structCatch_1_1RegistrarForTagAliases.html":[24,0,3,45],
+"structCatch_1_1ResultDisposition.html":[24,0,3,46]
 };
