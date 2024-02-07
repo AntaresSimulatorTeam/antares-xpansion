@@ -16,7 +16,6 @@ class ConfigParameters:
     ANTARES: str
     MERGE_MPS: str
     BENDERS: str
-    BENDERS_BY_BATCH: str
     LP_NAMER: str
     STUDY_UPDATER: str
     SENSITIVITY_EXE: str
@@ -56,7 +55,6 @@ class XpansionConfig:
         self.ANTARES: str = ""
         self.MERGE_MPS: str = ""
         self.BENDERS: str = ""
-        self.BENDERS_BY_BATCH: str = ""
         self.LP_NAMER: str = ""
         self.STUDY_UPDATER: str = ""
         self.SENSITIVITY_EXE: str = ""
@@ -239,7 +237,6 @@ class XpansionConfig:
         self.ANTARES = self.config_parameters.ANTARES
         self.MERGE_MPS = self.config_parameters.MERGE_MPS
         self.BENDERS = self.config_parameters.BENDERS
-        self.BENDERS_BY_BATCH = self.config_parameters.BENDERS_BY_BATCH
         self.LP_NAMER = self.config_parameters.LP_NAMER
         self.STUDY_UPDATER = self.config_parameters.STUDY_UPDATER
         self.FULL_RUN = self.config_parameters.FULL_RUN

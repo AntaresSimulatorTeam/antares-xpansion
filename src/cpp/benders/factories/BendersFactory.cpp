@@ -1,8 +1,7 @@
 
-#include "BendersFactory.h"
-
 #include <filesystem>
 
+#include "BendersFactory.h"
 #include "LogUtils.h"
 #include "LoggerFactories.h"
 #include "StartUp.h"
@@ -12,9 +11,16 @@
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 
+BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size) {
+  auto method = (batch_size == 0 || batch_size == coupling_map_size - 1)
+                    ? BENDERSMETHOD::BENDERS
+                    : BENDERSMETHOD::BENDERSBYBATCH;
+
+  return method;
+}
+
 int RunBenders(char** argv, const std::filesystem::path& options_file,
-               mpi::environment& env, mpi::communicator& world,
-               const BENDERSMETHOD& method) {
+               mpi::environment& env, mpi::communicator& world) {
   // Read options, needed to have options.OUTPUTROOT
   BendersLoggerBase benders_loggers;
   Logger logger;
@@ -40,6 +46,9 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
         std::filesystem::path(options.OUTPUTROOT) / "benders_solver.log";
 
     Writer writer;
+    const auto coupling_map = build_input(benders_options.STRUCTURE_FILE);
+    const auto method =
+        DeduceBendersMethod(coupling_map.size(), options.BATCH_SIZE);
 
     if (world.rank() == 0) {
       auto benders_log_console = benders_options.LOG_LEVEL > 0;
@@ -63,17 +72,18 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
     benders_loggers.AddLogger(logger);
     benders_loggers.AddLogger(math_log_driver);
     pBendersBase benders;
-    if (method == BENDERSMETHOD::BENDERS) {
-      benders = std::make_shared<BendersMpi>(benders_options, logger, writer,
-                                             env, world, math_log_driver);
-    } else if (method == BENDERSMETHOD::BENDERSBYBATCH) {
-      benders = std::make_shared<BendersByBatch>(
-          benders_options, logger, writer, env, world, math_log_driver);
-    } else {
-      auto err_msg = "Error only benders or benders-by-batch allowed!";
-      benders_loggers.display_message(err_msg);
-      std::exit(1);
+    switch (method) {
+      case BENDERSMETHOD::BENDERS:
+        benders = std::make_shared<BendersMpi>(benders_options, logger, writer,
+                                               env, world, math_log_driver);
+        break;
+      case BENDERSMETHOD::BENDERSBYBATCH:
+        benders = std::make_shared<BendersByBatch>(
+            benders_options, logger, writer, env, world, math_log_driver);
+        break;
     }
+
+    benders->set_input_map(coupling_map);
     std::ostringstream oss_l = start_message(options, benders->BendersName());
     oss_l << std::endl;
     benders_loggers.display_message(oss_l.str());
@@ -116,10 +126,10 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
 }
 
 BendersMainFactory::BendersMainFactory(int argc, char** argv,
-                                       const BENDERSMETHOD& method,
+
                                        mpi::environment& env,
                                        mpi::communicator& world)
-    : argv_(argv), method_(method), penv_(&env), pworld_(&world) {
+    : argv_(argv), penv_(&env), pworld_(&world) {
   // First check usage (options are given)
   if (world.rank() == 0) {
     usage(argc);
@@ -128,19 +138,14 @@ BendersMainFactory::BendersMainFactory(int argc, char** argv,
   options_file_ = std::filesystem::path(argv_[1]);
 }
 BendersMainFactory::BendersMainFactory(
-    int argc, char** argv, const BENDERSMETHOD& method,
-    const std::filesystem::path& options_file, mpi::environment& env,
-    mpi::communicator& world)
-    : argv_(argv),
-      method_(method),
-      options_file_(options_file),
-      penv_(&env),
-      pworld_(&world) {
+    int argc, char** argv, const std::filesystem::path& options_file,
+    mpi::environment& env, mpi::communicator& world)
+    : argv_(argv), options_file_(options_file), penv_(&env), pworld_(&world) {
   // First check usage (options are given)
   if (world.rank() == 0) {
     usage(argc);
   }
 }
 int BendersMainFactory::Run() const {
-  return RunBenders(argv_, options_file_, *penv_, *pworld_, method_);
+  return RunBenders(argv_, options_file_, *penv_, *pworld_);
 }

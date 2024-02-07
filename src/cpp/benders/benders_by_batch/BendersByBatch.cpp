@@ -18,9 +18,9 @@ void BendersByBatch::InitializeProblems() {
   MatchProblemToId();
 
   BuildMasterProblem();
-  const auto &coupling_map_size = coupling_map.size();
+  const auto &coupling_map_size = coupling_map_.size();
   std::vector<std::string> problem_names;
-  for (const auto &[problem_name, _] : coupling_map) {
+  for (const auto &[problem_name, _] : coupling_map_) {
     problem_names.emplace_back(problem_name);
   }
   auto batch_size =
@@ -40,7 +40,7 @@ void BendersByBatch::InitializeProblems() {
           Rank()) {  // Assign  [problemNumber % WorldSize] to processID
 
         const auto subProblemFilePath = GetSubproblemPath(problem_name);
-        AddSubproblem({problem_name, coupling_map[problem_name]});
+        AddSubproblem({problem_name, coupling_map_[problem_name]});
         AddSubproblemName(problem_name);
       }
       problem_count++;
