@@ -56,9 +56,14 @@ test_data_study_option = [
 ]
 
 @pytest.fixture
-def setup_and_teardown_lp_directory(request):
-    test_dir = request.getfixturevalue('test_dir')
-    output_dir = test_dir.parent / test_dir.stem / "lp";
+def setup_lp_directory(request):
+    tmp_path = request.getfixturevalue('tmp_path')
+    source_dir = request.getfixturevalue('test_dir')
+    study_path = source_dir.parent.parent
+    shutil.copytree(study_path, tmp_path / study_path.stem)
+    index = source_dir.parts.index(study_path.stem)
+    test_dir = tmp_path.joinpath(*source_dir.parts[index:])
+    output_dir = test_dir.parent / test_dir.stem / "lp"
     if Path(output_dir).is_dir():
         shutil.rmtree(output_dir)
     Path(output_dir).mkdir(parents=True, exist_ok=True)
@@ -78,18 +83,18 @@ def setup_and_teardown_lp_directory(request):
         for file in list_files:
             write_mps_zip.write(
                 file, file.name, compress_type=zipfile.ZIP_DEFLATED)
-    yield
+    yield test_dir
 
 
 @pytest.mark.parametrize("test_dir", test_data)
 @pytest.mark.parametrize("master_mode", ["integer", "relaxed"])
 @pytest.mark.parametrize("option_mode", options_mode)
-def test_lp_directory_files(install_dir, test_dir, master_mode, option_mode, setup_and_teardown_lp_directory):
+def test_lp_directory_files(install_dir, test_dir, master_mode, option_mode, setup_lp_directory, tmp_path):
     # given
     if option_mode == OptionType.ARCHIVE:
-        launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_dir)
+        launch_and_compare_lp_with_reference_archive(install_dir, master_mode, setup_lp_directory)
     elif option_mode == OptionType.OUTPUT:
-        launch_and_compare_lp_with_reference_output(install_dir, master_mode, test_dir)
+        launch_and_compare_lp_with_reference_output(install_dir, master_mode, setup_lp_directory)
 
 
 @pytest.mark.parametrize("test_dir", test_data_multiple_candidates)
