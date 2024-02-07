@@ -7,12 +7,12 @@
 
 #include <algorithm>
 #include <unordered_map>
+#include <utility>
 
 #include "LogUtils.h"
 
-MasterProblemBuilder::MasterProblemBuilder(
-    const std::string& master_formulation)
-    : _master_formulation(master_formulation) {}
+MasterProblemBuilder::MasterProblemBuilder(std::string master_formulation)
+    : _master_formulation(std::move(master_formulation)) {}
 
 std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(
     const std::string& solverName, const std::vector<Candidate>& candidates,
