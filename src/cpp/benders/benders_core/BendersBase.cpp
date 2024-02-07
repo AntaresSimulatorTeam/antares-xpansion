@@ -849,3 +849,11 @@ BendersCutsPerIteration BendersBase::CutsPerIteration() const {
 BendersCuts BendersBase::CutsCurrentIteration() const { return cuts_; }
 
 void BendersBase::Clean() { cutsPerIteration_.clear(); }
+
+int BendersBase::MasterContainsRow(const std::string &row_name) const {
+  return _master->ContainsRow(row_name);
+}
+
+void BendersBase::ChangeRhs(int id_row, double val) const {
+  _master->ChangeRhs(id_row, val);
+}

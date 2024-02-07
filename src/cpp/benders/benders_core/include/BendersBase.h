@@ -45,6 +45,8 @@ class BendersBase {
   void Clean();
   LogData GetBestIterationData() const;
   void set_input_map(const CouplingMap &coupling_map);
+  int MasterContainsRow(const std::string &row_name) const;
+  void ChangeRhs(int id_row, double val) const;
 
  protected:
   CurrentIterationData _data;

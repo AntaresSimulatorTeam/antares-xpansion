@@ -44,6 +44,8 @@ class Worker {
   void solve(int &lp_status, const std::string &outputroot,
              const std::string &output_master_mps_file_name,
              Writer writer) const;
+  int ContainsRow(const std::string &row_name) const;
+  void ChangeRhs(int id_row, double val) const;
 
  public:
   SolverAbstract::Ptr _solver =

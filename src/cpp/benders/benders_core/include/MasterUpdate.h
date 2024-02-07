@@ -18,9 +18,10 @@ class MasterUpdateBase : public IMasterUpdate {
   void Update(const CRITERION &criterion) override;
 
  private:
-  void UpdateConstraints(pBendersBase benders);
+  void UpdateConstraints();
   // void AddCutsInMaster() override;
-
+  // rename
+  const std::string ADDITIONAL_ROW_NAME = "NEW_ROW";
   pBendersBase benders_;
   double lambda_ = 0;
   double lambda_min_ = 0;
