@@ -10,18 +10,21 @@ OuterLoop::OuterLoop(std::shared_ptr<IOuterLoopCriterion> criterion,
       benders_(std::move(benders)) {}
 
 void OuterLoop::Run() {
-  master_updater_->AddConstraints();
-  master_updater_->AddCutsInMaster();
-  benders_->launch();
-  cuts_manager_->Save(benders_->CutsCurrentIteration());
+  // addconstraint
+  //  master_updater_->Update();
+  // master_updater_->AddCutsInMaster();
+  // benders_->launch();
+  // cuts_manager_->Save(benders_->CutsCurrentIteration());
   // by default LESSER?
-  CRITERION criterion = CRITERION::LESSER;
+  CRITERION criterion = CRITERION::GREATER;
 
-  do {
-    auto cuts = cuts_manager_->Load();
-    master_updater_->Update(criterion, benders_, cuts);
+  // auto cuts = cuts_manager_->Load();
+  // auto criterion = criterion_->IsCriterionSatisfied(cuts);
+  while (criterion != CRITERION::EQUAL) {
     benders_->launch();
-    criterion = criterion_->IsCriterionSatisfied(cuts);
     cuts_manager_->Save(benders_->CutsCurrentIteration());
-  } while (criterion != CRITERION::EQUAL);
+    auto cuts = cuts_manager_->Load();
+    criterion = criterion_->IsCriterionSatisfied(cuts);
+    master_updater_->Update(criterion);
+  }
 }

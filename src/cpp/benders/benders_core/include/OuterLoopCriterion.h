@@ -4,6 +4,7 @@
 
 #include "BendersBase.h"
 
+// renomer satisfait, trop_faibleetc..
 enum class CRITERION { LESSER, EQUAL, GREATER };
 class IOuterLoopCriterion {
  public:
@@ -13,7 +14,7 @@ class IOuterLoopCriterion {
 class OuterloopCriterionLOL : public IOuterLoopCriterion {
  public:
   explicit OuterloopCriterionLOL(double threshold, double epsilon);
-  CRITERION IsCriterionSatisfied(const BendersCuts& benders_cuts) override;
+  CRITERION IsCriterionSatisfied(const BendersCuts& milp_solution) override;
 
  private:
   double ProcessSum(const BendersCuts& benders_cuts);

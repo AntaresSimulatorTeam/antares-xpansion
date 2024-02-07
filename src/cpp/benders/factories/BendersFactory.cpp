@@ -137,6 +137,9 @@ int RunExternalLoop_(char** argv, const std::filesystem::path& options_file,
   BendersLoggerBase benders_loggers;
 
   try {
+    SimulationOptions options(options_file);
+    auto benders = PrepareForExecution(benders_loggers, options, argv[0], env,
+                                       world, method);
     double threshold = 5684;
     double epsilon = 1e-2;
     double lambda_min = 15;
@@ -146,13 +149,11 @@ int RunExternalLoop_(char** argv, const std::filesystem::path& options_file,
     std::shared_ptr<IOuterLoopCriterion> criterion =
         std::make_shared<OuterloopCriterionLOL>(threshold, epsilon);
     std::shared_ptr<IMasterUpdate> master_updater =
-        std::make_shared<MasterUpdateBase>(lambda, lambda_min, lambda_max, tau);
+        std::make_shared<MasterUpdateBase>(benders, lambda, lambda_min,
+                                           lambda_max, tau);
     std::shared_ptr<ICutsManager> cuts_manager =
         std::make_shared<CutsManagerRunTime>();
 
-    SimulationOptions options(options_file);
-    auto benders = PrepareForExecution(benders_loggers, options, argv[0], env,
-                                       world, method);
     OuterLoop ext_loop(criterion, master_updater, cuts_manager, benders);
     ext_loop.Run();
 
