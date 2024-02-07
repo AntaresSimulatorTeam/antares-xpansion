@@ -8,31 +8,17 @@
 class FullRunOptionsParser : public ProblemGenerationExeOptions {
  public:
   FullRunOptionsParser();
-  virtual ~FullRunOptionsParser() = default;
+  ~FullRunOptionsParser() override = default;
   void Parse(unsigned int argc, const char* const* argv) override;
-  class FullRunOptionInvalidMethod : public std::runtime_error {
-   public:
-    explicit FullRunOptionInvalidMethod(const std::string& method)
-        : std::runtime_error(
-              std::string("Eror in FullRunOptionParser, method: ") + method +
-              " is not supported! Please choose one of: " +
-              FullRunOptionsParser::ListAvailalbleMethods()) {}
-  };
-  BENDERSMETHOD Method() const { return method_; };
+
   std::filesystem::path BendersOptionsFile() const {
     return benders_options_file_;
   }
   std::filesystem::path SolutionFile() const { return solutionFile_; }
-  static inline std::string ListAvailalbleMethods() {
-    return "benders,\n benders_by_batch,\n mergeMPS\n";
-  }
 
  private:
-  std::string method_str_;
-  BENDERSMETHOD method_;
   std::filesystem::path benders_options_file_;
   std::filesystem::path solutionFile_;
-  void SetMethod();
 };
 
 #endif  // ANTARES_XPANSION_SRC_CPP_FULL_RUN_FULLRUNOPTIONSPARSER_H

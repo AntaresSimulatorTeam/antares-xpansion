@@ -64,7 +64,6 @@ class BendersSequentialDouble : public BendersSequential {
   void BuildCut() override{};
   void compute_ub() override { _data.ub = parametrized_ub; };
   CurrentIterationData get_data() const { return _data; }
-  void build_input_map() override{};
   void write_basis() const override{};
   void EndWritingInOutputFile() const override{};
   void UpdateTrace() override{};
@@ -80,11 +79,11 @@ class BendersSequentialDouble : public BendersSequential {
     MatchProblemToId();
 
     auto solver_log_manager = SolverLogManager(solver_log_file());
-    reset_master(new WorkerMaster(master_variable_map, get_master_path(),
+    reset_master(new WorkerMaster(master_variable_map_, get_master_path(),
                                   get_solver_name(), get_log_level(),
                                   _data.nsubproblem, solver_log_manager,
                                   IsResumeMode(), _logger));
-    for (const auto &problem : coupling_map) {
+    for (const auto &problem : coupling_map_) {
       const auto subProblemFilePath = GetSubproblemPath(problem.first);
       AddSubproblem(problem);
       AddSubproblemName(problem.first);

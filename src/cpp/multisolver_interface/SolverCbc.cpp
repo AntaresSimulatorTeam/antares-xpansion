@@ -120,12 +120,16 @@ void SolverCbc::write_prob_mps(const std::filesystem::path &filename) {
     }
   }
 
-  writer.setMpsData(
-      *(_clp_inner_solver.getMatrixByCol()), _clp_inner_solver.getInfinity(),
-      _clp_inner_solver.getColLower(), _clp_inner_solver.getColUpper(),
-      _clp_inner_solver.getObjCoefficients(),
-      hasInteger ? integrality : nullptr, _clp_inner_solver.getRowLower(),
-      _clp_inner_solver.getRowUpper(), colNames, rowNames);
+  {
+    auto mcol = _clp_inner_solver.getMatrixByCol();
+    auto col = *(_clp_inner_solver.getMatrixByCol());
+    auto infinity = _clp_inner_solver.getInfinity();
+    writer.setMpsData(
+        col, infinity, _clp_inner_solver.getColLower(),
+        _clp_inner_solver.getColUpper(), _clp_inner_solver.getObjCoefficients(),
+        hasInteger ? integrality : nullptr, _clp_inner_solver.getRowLower(),
+        _clp_inner_solver.getRowUpper(), colNames, rowNames);
+  }
 
   std::string probName = "";
   _clp_inner_solver.getStrParam(OsiProbName, probName);
