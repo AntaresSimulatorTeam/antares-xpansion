@@ -138,7 +138,7 @@ def launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_
     zip_path = (test_dir.parent / MPS_ZIP).resolve()
     os.chdir(test_dir.parent)
     launch_command = [str(lp_namer_exe), "-a", str(zip_path),
-                      "-e", "contraintes.txt", "-f", master_mode]
+                      "-e", "contraintes.txt", "-f", master_mode, "--unnamed-problems"]
     print(launch_command)
     # when
     returned_l = subprocess.run(launch_command, shell=False)
