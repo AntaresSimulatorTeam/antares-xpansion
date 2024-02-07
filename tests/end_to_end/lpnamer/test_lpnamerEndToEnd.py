@@ -31,14 +31,8 @@ TEST_LP_RELAXED_01 = DATA_TEST_RELAXED / \
 TEST_LP_RELAXED_02 = DATA_TEST_RELAXED / "SmallTestSixCandidatesWithAlreadyInstalledCapacity-relaxed" / "output" \
     / "economy"
 test_data = [
-    (TEST_LP_INTEGER_01, "integer"),
-    (TEST_LP_INTEGER_01, "integer"),
-    (TEST_LP_INTEGER_02, "integer"),
-    (TEST_LP_INTEGER_02, "integer"),
-    (TEST_LP_RELAXED_01, "relaxed"),
-    (TEST_LP_RELAXED_01, "relaxed"),
-    (TEST_LP_RELAXED_02, "relaxed"),
-    (TEST_LP_RELAXED_02, "relaxed"),
+    TEST_LP_INTEGER_01,
+    TEST_LP_INTEGER_02,
 ]
 
 
@@ -51,18 +45,14 @@ class OptionType(Enum):
 options_mode = [OptionType.ARCHIVE, OptionType.OUTPUT, OptionType.STUDY]
 
 test_data_multiple_candidates = [
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB, "integer"),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB, "integer"),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES, "integer"),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES, "integer"),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_HURDLES, "integer"),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_HURDLES, "integer"),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_NULL_PROFILE, "integer"),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_NULL_PROFILE, "integer"),
+    TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB,
+    TEST_LP_INTEGER_MULTIPLE_CANDIDATES,
+    TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_HURDLES,
+    TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_NULL_PROFILE,
 ]
 
 test_data_study_option = [
-    (DATA_TEST / "examples" / "xpansion-test-01-weights", "integer")
+    DATA_TEST / "examples" / "xpansion-test-01-weights"
 ]
 
 @pytest.fixture
@@ -91,7 +81,8 @@ def setup_and_teardown_lp_directory(request):
     yield
 
 
-@pytest.mark.parametrize("test_dir,master_mode", test_data)
+@pytest.mark.parametrize("test_dir", test_data)
+@pytest.mark.parametrize("master_mode", ["integer", "relaxed"])
 @pytest.mark.parametrize("option_mode", options_mode)
 def test_lp_directory_files(install_dir, test_dir, master_mode, option_mode, setup_and_teardown_lp_directory):
     # given
@@ -101,7 +92,8 @@ def test_lp_directory_files(install_dir, test_dir, master_mode, option_mode, set
         launch_and_compare_lp_with_reference_output(install_dir, master_mode, test_dir)
 
 
-@pytest.mark.parametrize("test_dir,master_mode", test_data_multiple_candidates)
+@pytest.mark.parametrize("test_dir", test_data_multiple_candidates)
+@pytest.mark.parametrize("master_mode", ["integer"])
 @pytest.mark.parametrize("option_mode", options_mode)
 def test_lp_multiple_candidates(install_dir, test_dir, master_mode, option_mode, setup_and_teardown_lp_directory):
     if option_mode == OptionType.ARCHIVE:
@@ -110,7 +102,8 @@ def test_lp_multiple_candidates(install_dir, test_dir, master_mode, option_mode,
         launch_and_compare_lp_with_reference_output(install_dir, master_mode, test_dir)
 
 
-@pytest.mark.parametrize("study_dir,master_mode", test_data_study_option)
+@pytest.mark.parametrize("study_dir", test_data_study_option)
+@pytest.mark.parametrize("master_mode", ["integer"])
 @pytest.mark.parametrize("option_mode", [OptionType.STUDY])
 def test_lp_with_study_option(install_dir, study_dir, master_mode, option_mode, ):
     launch_and_compare_lp_with_reference_study(install_dir, master_mode, study_dir)
