@@ -514,7 +514,8 @@ class SolverAbstract {
   virtual void add_rows(int newrows, int newnz, const char *qrtype,
                         const double *rhs, const double *range,
                         const int *mstart, const int *mclind,
-                        const double *dmatval) = 0;
+                        const double *dmatval,
+                        const std::vector<std::string> &names = {}) = 0;
 
   /**
   * @brief Adds new columns to the problem
@@ -548,6 +549,8 @@ class SolverAbstract {
    * @param indice : index of the row or of the column.
    */
   virtual void add_name(int type, const char *cnames, int indice) = 0;
+  virtual void add_names(int type, const std::vector<std::string> &cnames,
+                         int first, int end) = 0;
 
   /**
    * @brief Change coefficients in objective function

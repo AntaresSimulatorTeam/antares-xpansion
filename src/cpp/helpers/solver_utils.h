@@ -88,6 +88,8 @@ void solver_addcols(SolverAbstract &solver_p, std::vector<double> const &objx_p,
  * for the elements in each row.
  * @param dmatval_p : Double array of containing the (contiguous) element
  * values.
+ * @param names : rows names
+ * values.
  *
  * @note ignores non-binding rows
  */
@@ -96,7 +98,8 @@ void solver_addrows(SolverAbstract &solver_p, std::vector<char> const &qrtype_p,
                     std::vector<double> const &range_p,
                     std::vector<int> const &mstart_p,
                     std::vector<int> const &mclind_p,
-                    std::vector<double> const &dmatval_p);
+                    std::vector<double> const &dmatval_p,
+                    std::vector<std::string> const &names = {});
 
 /**
  * @brief returns the solution of a solved problem

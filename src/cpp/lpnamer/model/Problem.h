@@ -108,9 +108,10 @@ class Problem : public SolverAbstract {
   }
   void add_rows(int newrows, int newnz, const char *qrtype, const double *rhs,
                 const double *range, const int *mstart, const int *mclind,
-                const double *dmatval) override {
+                const double *dmatval,
+                const std::vector<std::string> &names = {}) override {
     solver_abstract_->add_rows(newrows, newnz, qrtype, rhs, range, mstart,
-                               mclind, dmatval);
+                               mclind, dmatval, names);
   }
   void add_cols(int newcol, int newnz, const double *objx, const int *mstart,
                 const int *mrwind, const double *dmatval, const double *bdl,
@@ -120,6 +121,10 @@ class Problem : public SolverAbstract {
   }
   void add_name(int type, const char *cnames, int indice) override {
     solver_abstract_->add_name(type, cnames, indice);
+  }
+  void add_names(int type, const std::vector<std::string> &cnames, int first,
+                 int end) override {
+    solver_abstract_->add_names(type, cnames, first, end);
   }
   void chg_obj(const std::vector<int> &mindex,
                const std::vector<double> &obj) override {

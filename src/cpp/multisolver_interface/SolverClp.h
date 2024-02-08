@@ -123,12 +123,15 @@ class SolverClp : public SolverAbstract {
   virtual void add_rows(int newrows, int newnz, const char *qrtype,
                         const double *rhs, const double *range,
                         const int *mstart, const int *mclind,
-                        const double *dmatval) override;
+                        const double *dmatval,
+                        const std::vector<std::string> &names = {}) override;
   virtual void add_cols(int newcol, int newnz, const double *objx,
                         const int *mstart, const int *mrwind,
                         const double *dmatval, const double *bdl,
                         const double *bdu) override;
   virtual void add_name(int type, const char *cnames, int indice) override;
+  virtual void add_names(int type, const std::vector<std::string> &cnames,
+                         int first, int end) override;
   virtual void chg_obj(const std::vector<int> &mindex,
                        const std::vector<double> &obj) override;
   virtual void chg_obj_direction(const bool minimize) override;

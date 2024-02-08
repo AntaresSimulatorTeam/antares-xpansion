@@ -381,13 +381,22 @@ void SolverCbc::del_rows(int first, int last) {
 void SolverCbc::add_rows(int newrows, int newnz, const char *qrtype,
                          const double *rhs, const double *range,
                          const int *mstart, const int *mclind,
-                         const double *dmatval) {
+                         const double *dmatval,
+                         const std::vector<std::string> &row_names) {
   std::vector<double> rowLower(newrows);
   std::vector<double> rowUpper(newrows);
+  int nrowInit = get_nrows();
+
   coin_common::fill_row_bounds_from_new_rows_data(rowLower, rowUpper, newrows,
                                                   qrtype, rhs);
   _clp_inner_solver.addRows(newrows, mstart, mclind, dmatval, rowLower.data(),
                             rowUpper.data());
+  if (row_names.size() > 0) {
+    int nrowFinal = get_nrows();
+    for (int i = nrowInit; i < nrowFinal; i++) {
+      chg_row_name(i, row_names[i - nrowInit]);
+    }
+  }
 }
 
 void SolverCbc::add_cols(int newcol, int newnz, const double *objx,
@@ -405,6 +414,14 @@ void SolverCbc::add_cols(int newcol, int newnz, const double *objx,
 }
 
 void SolverCbc::add_name(int type, const char *cnames, int indice) {
+  auto error =
+      LOGLOCATION + "ERROR : addnames not implemented in the CLP interface.";
+  throw NotImplementedFeatureSolverException(error);
+}
+
+void SolverCbc::add_names(int type, const std::vector<std::string> &cnames,
+                          int first, int end) {
+  // TODO
   auto error =
       LOGLOCATION + "ERROR : addnames not implemented in the CLP interface.";
   throw NotImplementedFeatureSolverException(error);
