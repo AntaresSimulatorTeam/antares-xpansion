@@ -31,10 +31,11 @@ TEST_LP_RELAXED_01 = DATA_TEST_RELAXED / \
 TEST_LP_RELAXED_02 = DATA_TEST_RELAXED / "SmallTestSixCandidatesWithAlreadyInstalledCapacity-relaxed" / "output" \
     / "economy"
 test_data = [
-    TEST_LP_INTEGER_01,
-    TEST_LP_INTEGER_02,
+    (TEST_LP_INTEGER_01, "integer"),
+    (TEST_LP_INTEGER_02, "integer"),
+    (TEST_LP_RELAXED_01, "relaxed"),
+    (TEST_LP_RELAXED_02, "relaxed")
 ]
-
 
 class OptionType(Enum):
     ARCHIVE = 1
@@ -86,8 +87,7 @@ def setup_lp_directory(request):
     yield test_dir
 
 
-@pytest.mark.parametrize("test_dir", test_data)
-@pytest.mark.parametrize("master_mode", ["integer", "relaxed"])
+@pytest.mark.parametrize("test_dir, master_mode", test_data)
 @pytest.mark.parametrize("option_mode", options_mode)
 def test_lp_directory_files(install_dir, test_dir, master_mode, option_mode, setup_lp_directory, tmp_path):
     # given
@@ -136,7 +136,7 @@ def launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_
     lp_dir = test_dir.parent / (test_dir.stem + "-Xpansion") / "lp"
     lp_namer_exe = Path(install_dir) / "lp_namer"
     zip_path = (test_dir.parent / MPS_ZIP).resolve()
-    os.chdir(test_dir.parent)
+    os.chdir(test_dir.parent.parent)
     launch_command = [str(lp_namer_exe), "-a", str(zip_path),
                       "-e", "contraintes.txt", "-f", master_mode, "--unnamed-problems"]
     print(launch_command)
