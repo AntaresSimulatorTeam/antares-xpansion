@@ -17,6 +17,7 @@ void OuterLoop::Run() {
   // cuts_manager_->Save(benders_->CutsCurrentIteration());
   // by default LESSER?
   CRITERION criterion = CRITERION::GREATER;
+  benders_->DoFreeProblems(false);
 
   // auto cuts = cuts_manager_->Load();
   // auto criterion = criterion_->IsCriterionSatisfied(cuts);

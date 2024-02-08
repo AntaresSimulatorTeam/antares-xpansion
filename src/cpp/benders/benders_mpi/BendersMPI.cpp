@@ -236,13 +236,18 @@ void BendersMpi::free() {
  *
  */
 void BendersMpi::Run() {
-  PreRunInitialization();
+  if (init_all_) {
+    PreRunInitialization();
+  } else {
+    init_all_ = false;
+  }
   _data.number_of_subproblem_solved = _data.nsubproblem;
   while (!_data.stop) {
     ++_data.it;
     ResetSimplexIterationsBounds();
 
-    /*Solve Master problem, get optimal value and cost and send it to process*/
+    /*Solve Master problem, get optimal value and cost and send it to
+     * process*/
     step_1_solve_master();
 
     /*Gather cut from each subproblem in master thread and add them to Master
@@ -271,6 +276,7 @@ void BendersMpi::Run() {
   }
   _world.barrier();
 }
+
 void BendersMpi::PreRunInitialization() {
   init_data();
 
@@ -294,14 +300,18 @@ void BendersMpi::PreRunInitialization() {
 }
 
 void BendersMpi::launch() {
-  InitializeProblems();
+  if (init_all_) {
+    InitializeProblems();
+  }
   _world.barrier();
 
   Run();
   _world.barrier();
 
   post_run_actions();
-
-  free();
+  if (free_problems_) {
+    free();
+  }
   _world.barrier();
 }
+

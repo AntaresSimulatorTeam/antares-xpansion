@@ -328,8 +328,7 @@ void BendersBase::ComputeInvestCost() {
   _data.invest_cost = 0;
 
   int ncols = _master->_solver->get_ncols();
-  std::vector<double> obj(ncols);
-  _master->_solver->get_obj(obj.data(), 0, ncols - 1);
+  std::vector<double> obj(ObjectiveFunctionCoeffs());
 
   for (const auto &[col_name, value] : _data.x_cut) {
     int col_id = _master->_name_to_id[col_name];
@@ -884,3 +883,10 @@ void BendersBase::ResetMasterFromLastIteration() {
                                 IsResumeMode(), _logger));
 }
 bool BendersBase::MasterIsEmpty() const { return master_is_empty_; }
+
+std::vector<double> BendersBase::ObjectiveFunctionCoeffs() const {
+  int ncols = _master->_solver->get_ncols();
+  std::vector<double> obj(ncols);
+  _master->_solver->get_obj(obj.data(), 0, ncols - 1);
+  return obj;
+}

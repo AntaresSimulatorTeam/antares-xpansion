@@ -45,9 +45,9 @@ void MasterUpdateBase::UpdateConstraints() {
     benders_->MasterChangeRhs(row_index, lambda_);
 
   } else {
-    benders_->ResetMasterFromLastIteration();
+    // benders_->ResetMasterFromLastIteration();
     auto master_variables = benders_->MasterVariables();
-    auto invest_cost = benders_->BestIterationInvestCost();
+    const auto obj_coeff = benders_->ObjectiveFunctionCoeffs();
     // ajouter la cont:
     auto newnz = master_variables.size();
     int newrows = 1;
@@ -57,9 +57,9 @@ void MasterUpdateBase::UpdateConstraints() {
     std::vector<std::string> row_names(newrows, ADDITIONAL_ROW_NAME);
     size_t mclindCnt_l(0);
     std::vector<double> matval(newnz);
-    for (auto const &[name, cost] : invest_cost) {
-      mclind[mclindCnt_l] = master_variables.at(name);
-      matval[mclindCnt_l] = invest_cost.at(name);
+    for (auto const &[name, var_id] : master_variables) {
+      mclind[mclindCnt_l] = var_id;
+      matval[mclindCnt_l] = obj_coeff.at(var_id);
       ++mclindCnt_l;
     }
     std::vector<int> matstart(newrows + 1);

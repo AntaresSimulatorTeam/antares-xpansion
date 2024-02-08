@@ -57,7 +57,11 @@ void BendersByBatch::BroadcastSingleSubpbCostsUnderApprox() {
   SetAlpha_i(single_subpb_costs_under_approx);
 }
 void BendersByBatch::Run() {
-  PreRunInitialization();
+  if (init_all_) {
+    PreRunInitialization();
+  } else {
+    init_all_ = false;
+  }
   MasterLoop();
   if (Rank() == rank_0) {
     compute_ub();

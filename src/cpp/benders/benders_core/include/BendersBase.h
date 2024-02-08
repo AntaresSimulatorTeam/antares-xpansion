@@ -48,7 +48,7 @@ class BendersBase {
   int MasterRowIndex(const std::string &row_name) const;
   void MasterChangeRhs(int id_row, double val) const;
   const VariableMap &MasterVariables() const { return master_variable_map_; }
-  Point BestIterationInvestCost() const { return best_iteration_data.x_cut; }
+  std::vector<double> ObjectiveFunctionCoeffs() const;
   void MasterAddRows(std::vector<char> const &qrtype_p,
                      std::vector<double> const &rhs_p,
                      std::vector<double> const &range_p,
@@ -59,6 +59,7 @@ class BendersBase {
   void ResetMasterFromLastIteration();
   std::filesystem::path LastMasterPath() const;
   bool MasterIsEmpty() const;
+  bool DoFreeProblems(bool free_problems) { free_problems_ = free_problems; }
 
  protected:
   CurrentIterationData _data;
@@ -67,6 +68,9 @@ class BendersBase {
   VariableMap master_variable_map_;
   CouplingMap coupling_map_;
   std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
+  // for warmstart initialize all data, master, subproblem etc...?
+  bool init_all_ = true;
+  bool free_problems_ = true;
 
  protected:
   virtual void free() = 0;

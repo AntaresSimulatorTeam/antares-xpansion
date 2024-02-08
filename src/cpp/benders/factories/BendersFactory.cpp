@@ -150,7 +150,7 @@ int RunExternalLoop_(char** argv, const std::filesystem::path& options_file,
                                        world);
     double threshold = 5684;
     double epsilon = 1e-2;
-    double lambda_min = 15;
+    double lambda_min = 0;
     double lambda = 16;
     double lambda_max = 17;
     double tau = 0.5;
