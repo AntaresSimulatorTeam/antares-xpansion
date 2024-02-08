@@ -59,7 +59,7 @@ class BendersBase {
   void ResetMasterFromLastIteration();
   std::filesystem::path LastMasterPath() const;
   bool MasterIsEmpty() const;
-  bool DoFreeProblems(bool free_problems) { free_problems_ = free_problems; }
+  void DoFreeProblems(bool free_problems) { free_problems_ = free_problems; }
 
  protected:
   CurrentIterationData _data;
