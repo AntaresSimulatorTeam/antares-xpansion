@@ -626,6 +626,13 @@ std::filesystem::path BendersBase::get_master_path() const {
   return std::filesystem::path(_options.INPUTROOT) /
          (_options.MASTER_NAME + MPS_SUFFIX);
 }
+/*!
+ *  \brief Get path to last mps file of master problem
+ */
+std::filesystem::path BendersBase::LastMasterPath() const {
+  return std::filesystem::path(_options.OUTPUTROOT) /
+         (_options.LAST_MASTER_MPS + MPS_SUFFIX);
+}
 
 /*!
  *  \brief Get path to structure txt file from options
@@ -690,8 +697,12 @@ std::map<std::string, int> BendersBase::get_master_variable_map(
 
 void BendersBase::reset_master(WorkerMaster *worker_master) {
   _master.reset(worker_master);
+  master_is_empty_ = false;
 }
-void BendersBase::free_master() const { _master->free(); }
+void BendersBase::free_master() {
+  _master->free();
+  master_is_empty_ = true;
+}
 WorkerMasterPtr BendersBase::get_master() const { return _master; }
 
 void BendersBase::AddSubproblem(
@@ -866,3 +877,10 @@ void BendersBase::MasterAddRows(
   _master->AddRows(qrtype_p, rhs_p, range_p, mstart_p, mclind_p, dmatval_p,
                    row_names);
 }
+void BendersBase::ResetMasterFromLastIteration() {
+  reset_master(new WorkerMaster(master_variable_map_, LastMasterPath(),
+                                get_solver_name(), get_log_level(),
+                                _data.nsubproblem, solver_log_manager_,
+                                IsResumeMode(), _logger));
+}
+bool BendersBase::MasterIsEmpty() const { return master_is_empty_; }

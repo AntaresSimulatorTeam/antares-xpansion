@@ -19,6 +19,7 @@ class MasterUpdateBase : public IMasterUpdate {
 
  private:
   void UpdateConstraints();
+  bool IsConstraintInMasterProblem(int &row_index) const;
   // void AddCutsInMaster() override;
   // rename
   const std::string ADDITIONAL_ROW_NAME = "NEW_ROW";

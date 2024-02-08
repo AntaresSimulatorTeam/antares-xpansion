@@ -35,12 +35,17 @@ void MasterUpdateBase::Update(const CRITERION &criterion) {
   // deplacer dans Benders
   // AddCutsInMaster();
 }
+bool MasterUpdateBase::IsConstraintInMasterProblem(int &row_index) const {
+  row_index = benders_->MasterRowIndex(ADDITIONAL_ROW_NAME);
+  return row_index > -1;
+}
 void MasterUpdateBase::UpdateConstraints() {
-  if (auto row_index = benders_->MasterRowIndex(ADDITIONAL_ROW_NAME);
-      row_index > -1) {
+  int row_index = -1;
+  if (!benders_->MasterIsEmpty() && IsConstraintInMasterProblem(row_index)) {
     benders_->MasterChangeRhs(row_index, lambda_);
 
   } else {
+    benders_->ResetMasterFromLastIteration();
     auto master_variables = benders_->MasterVariables();
     auto invest_cost = benders_->BestIterationInvestCost();
     // ajouter la cont:

@@ -56,6 +56,9 @@ class BendersBase {
                      std::vector<int> const &mclind_p,
                      std::vector<double> const &dmatval_p,
                      const std::vector<std::string> &row_names) const;
+  void ResetMasterFromLastIteration();
+  std::filesystem::path LastMasterPath() const;
+  bool MasterIsEmpty() const;
 
  protected:
   CurrentIterationData _data;
@@ -95,7 +98,7 @@ class BendersBase {
   [[nodiscard]] LogData bendersDataToLogData(
       const CurrentIterationData &data) const;
   virtual void reset_master(WorkerMaster *worker_master);
-  void free_master() const;
+  void free_master();
   void free_subproblems();
   void AddSubproblem(const std::pair<std::string, VariableMap> &kvp);
   [[nodiscard]] WorkerMasterPtr get_master() const;
@@ -181,6 +184,7 @@ class BendersBase {
   LogData FinalLogData() const;
 
  private:
+  bool master_is_empty_ = true;
   BendersBaseOptions _options;
   unsigned int _totalNbProblems = 0;
   std::filesystem::path solver_log_file_ = "";
