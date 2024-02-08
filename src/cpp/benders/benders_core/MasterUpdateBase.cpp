@@ -49,6 +49,7 @@ void MasterUpdateBase::UpdateConstraints() {
     std::vector<char> rtype(newrows, 'L');
     std::vector<double> rhs(newrows, lambda_);
     std::vector<int> mclind(newnz);
+    std::vector<std::string> row_names(newrows, ADDITIONAL_ROW_NAME);
     size_t mclindCnt_l(0);
     std::vector<double> matval(newnz);
     for (auto const &[name, cost] : invest_cost) {
@@ -59,7 +60,8 @@ void MasterUpdateBase::UpdateConstraints() {
     std::vector<int> matstart(newrows + 1);
     matstart[0] = 0;
     matstart[1] = newnz;
-    benders_->MasterAddRows(rtype, rhs, {}, matstart, mclind, matval);
+    benders_->MasterAddRows(rtype, rhs, {}, matstart, mclind, matval,
+                            row_names);
   }
 }
 

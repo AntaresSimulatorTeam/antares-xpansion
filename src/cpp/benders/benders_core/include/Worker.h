@@ -51,7 +51,8 @@ class Worker {
                std::vector<double> const &range_p,
                std::vector<int> const &mstart_p,
                std::vector<int> const &mclind_p,
-               std::vector<double> const &dmatval_p) const;
+               std::vector<double> const &dmatval_p,
+               const std::vector<std::string> &row_names) const;
 
  public:
   SolverAbstract::Ptr _solver =

@@ -858,11 +858,11 @@ void BendersBase::MasterChangeRhs(int id_row, double val) const {
   _master->ChangeRhs(id_row, val);
 }
 
-void BendersBase::MasterAddRows(std::vector<char> const &qrtype_p,
-                                std::vector<double> const &rhs_p,
-                                std::vector<double> const &range_p,
-                                std::vector<int> const &mstart_p,
-                                std::vector<int> const &mclind_p,
-                                std::vector<double> const &dmatval_p) const {
-  _master->AddRows(qrtype_p, rhs_p, range_p, mstart_p, mclind_p, dmatval_p);
+void BendersBase::MasterAddRows(
+    std::vector<char> const &qrtype_p, std::vector<double> const &rhs_p,
+    std::vector<double> const &range_p, std::vector<int> const &mstart_p,
+    std::vector<int> const &mclind_p, std::vector<double> const &dmatval_p,
+    const std::vector<std::string> &row_names) const {
+  _master->AddRows(qrtype_p, rhs_p, range_p, mstart_p, mclind_p, dmatval_p,
+                   row_names);
 }

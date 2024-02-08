@@ -131,6 +131,8 @@ void Worker::AddRows(std::vector<char> const &qrtype_p,
                      std::vector<double> const &range_p,
                      std::vector<int> const &mstart_p,
                      std::vector<int> const &mclind_p,
-                     std::vector<double> const &dmatval_p) const {
-  solver_addrows(*_solver, qrtype_p, rhs_p, {}, mstart_p, mclind_p, dmatval_p);
+                     std::vector<double> const &dmatval_p,
+                     const std::vector<std::string> &row_names) const {
+  solver_addrows(*_solver, qrtype_p, rhs_p, {}, mstart_p, mclind_p, dmatval_p,
+                 row_names);
 }
