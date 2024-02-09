@@ -35,6 +35,6 @@ class MasterUpdateBase : public IMasterUpdate {
   pBendersBase benders_;
   double lambda_ = 0;
   double lambda_min_ = 0;
-  double lambda_max_ = 1;
+  double lambda_max_ = -1;
   double tau_ = 0.5;
 };

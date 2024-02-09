@@ -3,7 +3,6 @@
 MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau)
     : benders_(std::move(benders)), lambda_(0), lambda_min_(0) {
   CheckTau(tau);
-  SetLambdaMaxToMaxInvestmentCosts();
 }
 
 MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau,
@@ -36,13 +35,20 @@ void MasterUpdateBase::CheckTau(double tau) {
 }
 void MasterUpdateBase::SetLambdaMaxToMaxInvestmentCosts() {
   const auto &obj = benders_->ObjectiveFunctionCoeffs();
-  const auto best_ub = benders_->ObjectiveFunctionCoeffs();
+  const auto max_invest =
+      benders_->BestIterationWorkerMaster().get_max_invest();
   lambda_max_ = 0;
-  for (const auto &[_, var_id] : benders_->MasterVariables()) {
-    lambda_max_ += obj[var_id] * best_ub[var_id];
+  for (const auto &[var_name, var_id] : benders_->MasterVariables()) {
+    lambda_max_ += obj[var_id] * max_invest.at(var_name);
   }
 }
 void MasterUpdateBase::Update(const CRITERION &criterion) {
+  // check lambda_max_
+  // whar abour lambda_min_?
+  if (lambda_max_ < 0 || lambda_max_ <= lambda_min_) {
+    // TODO log
+    SetLambdaMaxToMaxInvestmentCosts();
+  }
   switch (criterion) {
     case CRITERION::LESSER:
       // TODO best it or current data?
