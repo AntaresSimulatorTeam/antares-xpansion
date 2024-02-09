@@ -1,5 +1,16 @@
 #include "MasterUpdate.h"
 
+MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau)
+    : benders_(std::move(benders)), lambda_(0), lambda_min_(0) {
+  CheckTau(tau);
+  SetLambdaMaxToMaxInvestmentCosts();
+}
+
+MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau,
+                                   const std::string &name)
+    : MasterUpdateBase(benders, tau) {
+  additional_constraint_name_ = name;
+}
 MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double lambda,
                                    double lambda_min, double lambda_max,
                                    double tau)
@@ -7,10 +18,7 @@ MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double lambda,
       lambda_(lambda),
       lambda_min_(lambda_min),
       lambda_max_(lambda_max) {
-  if (tau >= 0 && tau <= 1) {
-    // TODO log
-    tau_ = tau;
-  }
+  CheckTau(tau);
 }
 
 MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double lambda,
@@ -20,6 +28,20 @@ MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double lambda,
   additional_constraint_name_ = name;
 }
 
+void MasterUpdateBase::CheckTau(double tau) {
+  if (tau >= 0 && tau <= 1) {
+    // TODO log
+    tau_ = tau;
+  }
+}
+void MasterUpdateBase::SetLambdaMaxToMaxInvestmentCosts() {
+  const auto &obj = benders_->ObjectiveFunctionCoeffs();
+  const auto best_ub = benders_->ObjectiveFunctionCoeffs();
+  lambda_max_ = 0;
+  for (const auto &[_, var_id] : benders_->MasterVariables()) {
+    lambda_max_ += obj[var_id] * best_ub[var_id];
+  }
+}
 void MasterUpdateBase::Update(const CRITERION &criterion) {
   switch (criterion) {
     case CRITERION::LESSER:

@@ -8,16 +8,18 @@
 enum class CRITERION { LESSER, EQUAL, GREATER };
 class IOuterLoopCriterion {
  public:
-  virtual CRITERION IsCriterionSatisfied(const BendersCuts& benders_cuts) = 0;
+  virtual CRITERION IsCriterionSatisfied(
+      const WorkerMasterData& worker_master_data) = 0;
 };
 
 class OuterloopCriterionLOL : public IOuterLoopCriterion {
  public:
   explicit OuterloopCriterionLOL(double threshold, double epsilon);
-  CRITERION IsCriterionSatisfied(const BendersCuts& milp_solution) override;
+  CRITERION IsCriterionSatisfied(
+      const WorkerMasterData& milp_solution) override;
 
  private:
-  double ProcessSum(const BendersCuts& benders_cuts);
+  double ProcessSum(const WorkerMasterData& worker_master_data);
   const std::string positive_unsupplied_vars_prefix_ =
       "^PositiveUnsuppliedEnergy::";
   const std::regex rgx_ = std::regex(positive_unsupplied_vars_prefix_);

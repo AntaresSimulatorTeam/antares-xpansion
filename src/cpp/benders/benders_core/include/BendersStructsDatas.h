@@ -40,14 +40,14 @@ struct CurrentIterationData {
   int max_simplexiter;
 };
 
-/*! \struct to store benders cuts data
- */
-struct BendersCuts {
-  Point x_cut;
-  SubProblemDataMap subsProblemDataMap;
-};
+// /*! \struct to store benders cuts data
+//  */
+// struct BendersCuts {
+//   Point x_cut;
+//   SubProblemDataMap subsProblemDataMap;
+// };
 
-using BendersCutsPerIteration = std::vector<BendersCuts>;
+// using BendersCutsPerIteration = std::vector<BendersCuts>;
 
 /*!
  * \class WorkerMasterData
@@ -78,8 +78,8 @@ class WorkerMasterData {
   Point get_max_invest() const;
 };
 
-using WorkerMasterDataPtr = std::shared_ptr<WorkerMasterData>;
 struct BendersRelevantIterationsData {
-  WorkerMasterDataPtr last;
-  WorkerMasterDataPtr best;
+  WorkerMasterData last;
+  WorkerMasterData best;
 };
+using WorkerMasterDataVect = std::vector<WorkerMasterData>;

@@ -18,9 +18,14 @@ class MasterUpdateBase : public IMasterUpdate {
   explicit MasterUpdateBase(pBendersBase benders, double lambda,
                             double lambda_min, double lambda_max, double tau,
                             const std::string &name);
+  explicit MasterUpdateBase(pBendersBase benders, double tau,
+                            const std::string &name);
+  explicit MasterUpdateBase(pBendersBase benders, double tau);
   void Update(const CRITERION &criterion) override;
 
  private:
+  void CheckTau(double tau);
+  void SetLambdaMaxToMaxInvestmentCosts();
   void UpdateConstraints();
   // bool IsConstraintInMasterProblem(int &row_index) const;
   // void AddCutsInMaster() override;

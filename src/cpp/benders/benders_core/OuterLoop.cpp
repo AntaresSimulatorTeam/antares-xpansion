@@ -27,7 +27,8 @@ void OuterLoop::Run() {
     //  cuts_manager_->Save(benders_->CutsPerIteration());
     //  auto cuts = cuts_manager_->Load();
     //  criterion = criterion_->IsCriterionSatisfied(cuts);
-    criterion = criterion_->IsCriterionSatisfied(benders_->CutsBestIteration());
+    criterion =
+        criterion_->IsCriterionSatisfied(benders_->BestIterationWorkerMaster());
     master_updater_->Update(criterion);
   }
 }
