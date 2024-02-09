@@ -2,16 +2,22 @@
 
 MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double lambda,
                                    double lambda_min, double lambda_max,
-                                   double tau, const std::string &name)
+                                   double tau)
     : benders_(std::move(benders)),
       lambda_(lambda),
       lambda_min_(lambda_min),
-      lambda_max_(lambda_max),
-      additional_constraint_name_(name) {
+      lambda_max_(lambda_max) {
   if (tau >= 0 && tau <= 1) {
     // TODO log
     tau_ = tau;
   }
+}
+
+MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double lambda,
+                                   double lambda_min, double lambda_max,
+                                   double tau, const std::string &name)
+    : MasterUpdateBase(benders, lambda, lambda_min, lambda_max, tau) {
+  additional_constraint_name_ = name;
 }
 
 void MasterUpdateBase::Update(const CRITERION &criterion) {
