@@ -242,8 +242,10 @@ void BendersMpi::free() {
 void BendersMpi::Run() {
   if (init_all_) {
     PreRunInitialization();
-  } else {
     init_all_ = false;
+  } else {
+    // only ?
+    _data.stop = false;
   }
   _data.number_of_subproblem_solved = _data.nsubproblem;
   while (!_data.stop) {

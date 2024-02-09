@@ -50,9 +50,8 @@ void MasterUpdateBase::Update(const CRITERION &criterion) {
 //   return row_index > -1;
 // }
 void MasterUpdateBase::UpdateConstraints() {
-  int row_index = -1;
   if (!benders_->MasterIsEmpty() && additional_constraint_index_ > -1) {
-    benders_->MasterChangeRhs(row_index, lambda_);
+    benders_->MasterChangeRhs(additional_constraint_index_, lambda_);
 
   } else {
     // benders_->ResetMasterFromLastIteration();
