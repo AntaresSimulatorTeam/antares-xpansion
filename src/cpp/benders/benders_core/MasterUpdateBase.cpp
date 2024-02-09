@@ -41,6 +41,7 @@ void MasterUpdateBase::SetLambdaMaxToMaxInvestmentCosts() {
   for (const auto &[var_name, var_id] : benders_->MasterVariables()) {
     lambda_max_ += obj[var_id] * max_invest.at(var_name);
   }
+  // lambda_max_ = 126000 * 300 + 60000 * 2000 + 55400 * 1000 + 60000 * 1000;
 }
 void MasterUpdateBase::Update(const CRITERION &criterion) {
   // check lambda_max_
@@ -88,7 +89,7 @@ void MasterUpdateBase::UpdateConstraints() {
     // ajouter la cont:
     auto newnz = master_variables.size();
     int newrows = 1;
-    std::vector<char> rtype(newrows, 'L');
+    std::vector<char> rtype(newrows, 'G');
     std::vector<double> rhs(newrows, lambda_);
     std::vector<int> mclind(newnz);
 
@@ -110,7 +111,7 @@ void MasterUpdateBase::UpdateConstraints() {
     } else {
       benders_->MasterAddRows(rtype, rhs, {}, matstart, mclind, matval);
     }
-    additional_constraint_index_ = benders_->MasterGetnrows();
+    additional_constraint_index_ = benders_->MasterGetnrows() - 1;
   }
 }
 

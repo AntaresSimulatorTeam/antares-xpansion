@@ -29,7 +29,7 @@ class MasterUpdateBase : public IMasterUpdate {
   void UpdateConstraints();
   // bool IsConstraintInMasterProblem(int &row_index) const;
   // void AddCutsInMaster() override;
-  // rename
+  // rename min invest constraint
   std::string additional_constraint_name_ = "External_Loop_Constraint";
   int additional_constraint_index_ = -1;
   pBendersBase benders_;
