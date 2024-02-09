@@ -14,15 +14,17 @@ class IMasterUpdate {
 class MasterUpdateBase : public IMasterUpdate {
  public:
   explicit MasterUpdateBase(pBendersBase benders, double lambda,
-                            double lambda_min, double lambda_max, double tau);
+                            double lambda_min, double lambda_max, double tau,
+                            const std::string &name = {});
   void Update(const CRITERION &criterion) override;
 
  private:
   void UpdateConstraints();
-  bool IsConstraintInMasterProblem(int &row_index) const;
+  // bool IsConstraintInMasterProblem(int &row_index) const;
   // void AddCutsInMaster() override;
   // rename
-  const std::string ADDITIONAL_ROW_NAME = "NEW_ROW";
+  const std::string additional_constraint_name_ = "External_Loop_Constraint";
+  int additional_constraint_index_ = -1;
   pBendersBase benders_;
   double lambda_ = 0;
   double lambda_min_ = 0;

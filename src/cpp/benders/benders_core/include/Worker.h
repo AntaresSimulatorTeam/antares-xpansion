@@ -54,6 +54,13 @@ class Worker {
                std::vector<double> const &dmatval_p,
                const std::vector<std::string> &row_names) const;
 
+  /**
+   * @brief Returns the number of rows (constraints)
+   *
+   * @param solver_p  : solver containing the model to consider.
+   */
+  int Getnrows() const;
+
  public:
   SolverAbstract::Ptr _solver =
       nullptr; /*!< Problem stocked in the instance Worker*/

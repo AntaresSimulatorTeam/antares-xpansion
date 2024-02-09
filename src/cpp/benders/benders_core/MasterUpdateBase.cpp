@@ -2,11 +2,12 @@
 
 MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double lambda,
                                    double lambda_min, double lambda_max,
-                                   double tau)
+                                   double tau, const std::string &name)
     : benders_(std::move(benders)),
       lambda_(lambda),
       lambda_min_(lambda_min),
-      lambda_max_(lambda_max) {
+      lambda_max_(lambda_max),
+      additional_constraint_name_(name) {
   if (tau >= 0 && tau <= 1) {
     // TODO log
     tau_ = tau;
@@ -35,13 +36,16 @@ void MasterUpdateBase::Update(const CRITERION &criterion) {
   // deplacer dans Benders
   // AddCutsInMaster();
 }
-bool MasterUpdateBase::IsConstraintInMasterProblem(int &row_index) const {
-  row_index = benders_->MasterRowIndex(ADDITIONAL_ROW_NAME);
-  return row_index > -1;
-}
+
+// bool MasterUpdateBase::IsConstraintInMasterProblem(int &row_index) const {
+//   if (!additional_constraint_name_.empty()) {
+//     row_index = benders_->MasterRowIndex(additional_constraint_name_);
+//   }
+//   return row_index > -1;
+// }
 void MasterUpdateBase::UpdateConstraints() {
   int row_index = -1;
-  if (!benders_->MasterIsEmpty() && IsConstraintInMasterProblem(row_index)) {
+  if (!benders_->MasterIsEmpty() && additional_constraint_index_ > -1) {
     benders_->MasterChangeRhs(row_index, lambda_);
 
   } else {
@@ -54,7 +58,7 @@ void MasterUpdateBase::UpdateConstraints() {
     std::vector<char> rtype(newrows, 'L');
     std::vector<double> rhs(newrows, lambda_);
     std::vector<int> mclind(newnz);
-    std::vector<std::string> row_names(newrows, ADDITIONAL_ROW_NAME);
+
     size_t mclindCnt_l(0);
     std::vector<double> matval(newnz);
     for (auto const &[name, var_id] : master_variables) {
@@ -65,8 +69,15 @@ void MasterUpdateBase::UpdateConstraints() {
     std::vector<int> matstart(newrows + 1);
     matstart[0] = 0;
     matstart[1] = newnz;
-    benders_->MasterAddRows(rtype, rhs, {}, matstart, mclind, matval,
-                            row_names);
+    if (!additional_constraint_name_.empty()) {
+      std::vector<std::string> row_names(newrows, additional_constraint_name_);
+
+      benders_->MasterAddRows(rtype, rhs, {}, matstart, mclind, matval,
+                              row_names);
+    } else {
+      benders_->MasterAddRows(rtype, rhs, {}, matstart, mclind, matval);
+    }
+    additional_constraint_index_ = benders_->MasterGetnrows();
   }
 }
 

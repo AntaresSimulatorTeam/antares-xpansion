@@ -136,3 +136,5 @@ void Worker::AddRows(std::vector<char> const &qrtype_p,
   solver_addrows(*_solver, qrtype_p, rhs_p, {}, mstart_p, mclind_p, dmatval_p,
                  row_names);
 }
+
+int Worker::Getnrows() const { return _solver->get_nrows(); }

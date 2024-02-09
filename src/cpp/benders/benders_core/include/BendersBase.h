@@ -41,7 +41,7 @@ class BendersBase {
   virtual std::string BendersName() const = 0;
   // ref of value?
   BendersCutsPerIteration CutsPerIteration() const;
-  BendersCuts CutsCurrentIteration() const;
+  BendersCuts CutsBestIteration() const;
   void Clean();
   LogData GetBestIterationData() const;
   void set_input_map(const CouplingMap &coupling_map);
@@ -55,16 +55,18 @@ class BendersBase {
                      std::vector<int> const &mstart_p,
                      std::vector<int> const &mclind_p,
                      std::vector<double> const &dmatval_p,
-                     const std::vector<std::string> &row_names) const;
+                     const std::vector<std::string> &row_names = {}) const;
   void ResetMasterFromLastIteration();
   std::filesystem::path LastMasterPath() const;
   bool MasterIsEmpty() const;
   void DoFreeProblems(bool free_problems) { free_problems_ = free_problems; }
+  int MasterGetnrows() const;
 
  protected:
   CurrentIterationData _data;
   BendersCutsPerIteration cutsPerIteration_;
-  BendersCuts cuts_;
+  BendersCuts best_iteration_cuts_;
+  BendersCuts current_iteration_cuts_;
   VariableMap master_variable_map_;
   CouplingMap coupling_map_;
   std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;

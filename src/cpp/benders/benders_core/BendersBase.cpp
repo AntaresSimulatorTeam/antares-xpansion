@@ -161,6 +161,7 @@ void BendersBase::update_best_ub() {
     _data.best_ub = _data.ub;
     _data.best_it = _data.it;
     relevantIterationData_.best = relevantIterationData_.last;
+    best_iteration_cuts_ = current_iteration_cuts_;
     best_iteration_data = bendersDataToLogData(_data);
   }
 }
@@ -856,7 +857,9 @@ void BendersBase::write_basis() const {
 BendersCutsPerIteration BendersBase::CutsPerIteration() const {
   return cutsPerIteration_;
 }
-BendersCuts BendersBase::CutsCurrentIteration() const { return cuts_; }
+BendersCuts BendersBase::CutsBestIteration() const {
+  return best_iteration_cuts_;
+}
 
 void BendersBase::Clean() { cutsPerIteration_.clear(); }
 
@@ -890,3 +893,5 @@ std::vector<double> BendersBase::ObjectiveFunctionCoeffs() const {
   _master->_solver->get_obj(obj.data(), 0, ncols - 1);
   return obj;
 }
+
+int BendersBase::MasterGetnrows() const { return _master->Getnrows(); }
