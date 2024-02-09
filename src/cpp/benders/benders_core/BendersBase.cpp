@@ -26,17 +26,18 @@ BendersBase::BendersBase(BendersBaseOptions options, Logger logger,
  *  \brief Initialize set of data used in the loop
  */
 void BendersBase::init_data() {
-  _data.lb = -1e20;
-  _data.ub = +1e20;
-  _data.best_ub = +1e20;
+  _data.lb = relevantIterationData_.last._lb = -1e20;
+  _data.ub = relevantIterationData_.last._ub = +1e20;
+  _data.best_ub = relevantIterationData_.last._best_ub = +1e20;
   _data.stop = false;
   _data.it = 0;
   _data.overall_subpb_cost_under_approx = 0;
-  _data.invest_cost = 0;
+  _data.invest_cost = relevantIterationData_.last._invest_cost = 0;
   _data.best_it = 0;
   _data.stopping_criterion = StoppingCriterion::empty;
   _data.is_in_initial_relaxation = false;
   _data.cumulative_number_of_subproblem_solved = 0;
+  relevantIterationData_.best = relevantIterationData_.last;
 }
 
 void BendersBase::OpenCsvFile() {
