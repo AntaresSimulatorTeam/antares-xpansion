@@ -19,9 +19,11 @@ void OuterLoop::Run() {
   // CRITERION criterion = CRITERION::GREATER;
   benders_->DoFreeProblems(false);
   // invest cost
+  benders_->InitializeProblems();
   auto obj_coeff = benders_->ObjectiveFunctionCoeffs();
   benders_->SetObjectiveFunctionCoeffsToZeros();
   benders_->launch();
+  benders_->SetObjectiveFunction(obj_coeff.data(), 0, obj_coeff.size());
   // de-comment for general case
   //  cuts_manager_->Save(benders_->CutsPerIteration());
   // auto cuts = cuts_manager_->Load();

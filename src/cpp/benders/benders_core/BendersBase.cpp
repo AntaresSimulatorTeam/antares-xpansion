@@ -898,6 +898,11 @@ void BendersBase::SetObjectiveFunctionCoeffsToZeros() const {
   _master->_solver->set_obj_to_zero();
 }
 
+void BendersBase::SetObjectiveFunction(const double *coeffs, int first,
+                                       int last) const {
+  _master->_solver->set_obj(coeffs, first, last);
+}
+
 int BendersBase::MasterGetnrows() const { return _master->Getnrows(); }
 
 WorkerMasterData BendersBase::BestIterationWorkerMaster() const {

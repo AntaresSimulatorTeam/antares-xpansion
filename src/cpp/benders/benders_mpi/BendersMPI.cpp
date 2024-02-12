@@ -40,6 +40,7 @@ void BendersMpi::InitializeProblems() {
     }
     current_problem_id++;
   }
+  init_problems_ = false;
 }
 void BendersMpi::BuildMasterProblem() {
   if (_world.rank() == rank_0) {
@@ -241,9 +242,8 @@ void BendersMpi::free() {
  *
  */
 void BendersMpi::Run() {
-  if (init_all_) {
+  if (init_data_) {
     PreRunInitialization();
-    init_all_ = false;
   } else {
     // only ?
     _data.stop = false;
@@ -304,10 +304,11 @@ void BendersMpi::PreRunInitialization() {
     }
   }
   mathLoggerDriver_->write_header();
+  init_data_ = false;
 }
 
 void BendersMpi::launch() {
-  if (init_all_) {
+  if (init_problems_) {
     InitializeProblems();
   }
   _world.barrier();

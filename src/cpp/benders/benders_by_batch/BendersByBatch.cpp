@@ -46,6 +46,7 @@ void BendersByBatch::InitializeProblems() {
       problem_count++;
     }
   }
+  init_problems_ = false;
 }
 void BendersByBatch::BroadcastSingleSubpbCostsUnderApprox() {
   DblVector single_subpb_costs_under_approx(_data.nsubproblem);
@@ -57,9 +58,8 @@ void BendersByBatch::BroadcastSingleSubpbCostsUnderApprox() {
   SetAlpha_i(single_subpb_costs_under_approx);
 }
 void BendersByBatch::Run() {
-    if (init_all_) {
+  if (init_data_) {
     PreRunInitialization();
-    init_all_ = false;
   } else {
     // only ?
     _data.stop = false;

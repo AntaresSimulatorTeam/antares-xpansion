@@ -63,6 +63,8 @@ class BendersBase {
   int MasterGetnrows() const;
   WorkerMasterData BestIterationWorkerMaster() const;
   void SetObjectiveFunctionCoeffsToZeros() const;
+  void SetObjectiveFunction(const double *coeffs, int first, int last) const;
+  virtual void InitializeProblems() = 0;
 
  protected:
   CurrentIterationData _data;
@@ -73,13 +75,13 @@ class BendersBase {
   CouplingMap coupling_map_;
   std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
   // for warmstart initialize all data, master, subproblem etc...?
-  bool init_all_ = true;
+  bool init_data_ = true;
+  bool init_problems_ = true;
   bool free_problems_ = true;
 
  protected:
   virtual void free() = 0;
   virtual void Run() = 0;
-  virtual void InitializeProblems() = 0;
   virtual void init_data();
   void update_best_ub();
   bool ShouldBendersStop();
