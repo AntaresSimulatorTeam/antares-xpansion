@@ -162,6 +162,7 @@ void BendersBase::update_best_ub() {
     _data.best_ub = _data.ub;
     _data.best_it = _data.it;
     // best_iteration_cuts_ = current_iteration_cuts_;
+    FillWorkerMasterData(relevantIterationData_.best);
     best_iteration_data = bendersDataToLogData(_data);
   }
 }
@@ -199,6 +200,21 @@ bool BendersBase::ShouldBendersStop() {
   return (_data.stopping_criterion != StoppingCriterion::empty) &&
          !_data.is_in_initial_relaxation;
 }
+void BendersBase::FillWorkerMasterData(WorkerMasterData &worker_master_data) {
+  worker_master_data._lb = _data.lb;
+  worker_master_data._ub = _data.ub;
+  worker_master_data._best_ub = _data.best_ub;
+  worker_master_data._x_in = std::make_shared<Point>(_data.x_in);
+  worker_master_data._x_out = std::make_shared<Point>(_data.x_out);
+  worker_master_data._x_cut = std::make_shared<Point>(_data.x_cut);
+  worker_master_data._max_invest = std::make_shared<Point>(_data.max_invest);
+  worker_master_data._min_invest = std::make_shared<Point>(_data.min_invest);
+  worker_master_data._master_duration = _data.timer_master;
+  worker_master_data._subproblem_duration = _data.subproblems_walltime;
+  worker_master_data._invest_cost = _data.invest_cost;
+  worker_master_data._operational_cost = _data.subproblem_cost;
+  worker_master_data._valid = true;
+}
 
 /*!
  *  \brief Update trace of the Benders for the current iteration
@@ -206,24 +222,7 @@ bool BendersBase::ShouldBendersStop() {
  *  Fonction to store the current Benders data in the trace
  */
 void BendersBase::UpdateTrace() {
-  auto &LastWorkerMasterData = relevantIterationData_.last;
-  LastWorkerMasterData._lb = _data.lb;
-  LastWorkerMasterData._ub = _data.ub;
-  LastWorkerMasterData._best_ub = _data.best_ub;
-  LastWorkerMasterData._x_in = std::make_shared<Point>(_data.x_in);
-  LastWorkerMasterData._x_out = std::make_shared<Point>(_data.x_out);
-  LastWorkerMasterData._x_cut = std::make_shared<Point>(_data.x_cut);
-  LastWorkerMasterData._max_invest = std::make_shared<Point>(_data.max_invest);
-  LastWorkerMasterData._min_invest = std::make_shared<Point>(_data.min_invest);
-  LastWorkerMasterData._master_duration = _data.timer_master;
-  LastWorkerMasterData._subproblem_duration = _data.subproblems_walltime;
-  LastWorkerMasterData._invest_cost = _data.invest_cost;
-  LastWorkerMasterData._operational_cost = _data.subproblem_cost;
-  LastWorkerMasterData._valid = true;
-
-  if (relevantIterationData_.last._ub < relevantIterationData_.best._best_ub) {
-    relevantIterationData_.best = relevantIterationData_.last;
-  }
+  FillWorkerMasterData(relevantIterationData_.last);
   workerMasterDataVect_.push_back(relevantIterationData_.last);
 }
 

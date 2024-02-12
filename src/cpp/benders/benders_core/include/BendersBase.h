@@ -192,6 +192,7 @@ class BendersBase {
   [[nodiscard]] virtual bool shouldParallelize() const = 0;
   Output::Iteration iteration(const WorkerMasterData &masterDataPtr_l) const;
   LogData FinalLogData() const;
+  void FillWorkerMasterData(WorkerMasterData &workerMasterData);
 
  private:
   bool master_is_empty_ = true;
