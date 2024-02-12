@@ -223,13 +223,17 @@ void SolverXpress::get_obj(double *obj, int first, int last) const {
 
 void SolverXpress::set_obj_to_zero() {
   auto ncols = get_ncols();
-  std::vector<int> col_ind(ncols);
-  std::iota(col_ind.begin(), col_ind.end(), 0);
   std::vector<double> zeros_val(ncols, 0.0);
-  int status = XPRSchgobj(_xprs, ncols, col_ind.data(), zeros_val.data());
-  zero_status_check(status, "get objective function", LOGLOCATION);
+  set_obj(zeros_val.data(), 0, ncols);
 }
 
+void SolverXpress::set_obj(const double *obj, int first, int last) {
+  auto ncols = last - first + 1;
+  std::vector<int> col_ind(ncols);
+  std::iota(col_ind.begin(), col_ind.end(), first);
+  int status = XPRSchgobj(_xprs, ncols, col_ind.data(), obj);
+  zero_status_check(status, "set objective function", LOGLOCATION);
+}
 void SolverXpress::get_rows(int *mstart, int *mclind, double *dmatval, int size,
                             int *nels, int first, int last) const {
   int status =

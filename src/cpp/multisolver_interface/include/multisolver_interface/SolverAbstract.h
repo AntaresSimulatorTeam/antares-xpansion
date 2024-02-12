@@ -354,10 +354,15 @@ class SolverAbstract {
   virtual void get_obj(double *obj, int first, int last) const = 0;
 
   /**
+   * @brief Set the objective function coefficients to zero
+   */
+  virtual void set_obj_to_zero() = 0;
+
+  /**
    * @brief Set the objective function coefficients for the columns in a
    * given range
    */
-  virtual void set_obj_to_zero() = 0;
+  virtual void set_obj(const double *obj, int first, int last) = 0;
 
   /**
   * @brief get coefficients of rows from index first to last

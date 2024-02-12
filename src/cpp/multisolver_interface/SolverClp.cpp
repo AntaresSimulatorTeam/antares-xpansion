@@ -135,6 +135,16 @@ void SolverClp::set_obj_to_zero() {
   _clp.setRowObjective(zeros_val.data());
 }
 
+void SolverClp::set_obj(const double *obj, int first, int last) {
+  if (last - first + 1 == get_ncols()) {
+    _clp.setRowObjective(obj);
+  } else {
+    for (int index = first; index < last; ++index) {
+      _clp.setObjCoeff(index, obj[index]);
+    }
+  }
+}
+
 void SolverClp::get_rows(int *mstart, int *mclind, double *dmatval, int size,
                          int *nels, int first, int last) const {
   CoinPackedMatrix matrix = *_clp.matrix();
