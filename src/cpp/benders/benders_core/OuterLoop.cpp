@@ -16,11 +16,17 @@ void OuterLoop::Run() {
   // benders_->launch();
   // cuts_manager_->Save(benders_->CutsCurrentIteration());
   // by default LESSER?
-  CRITERION criterion = CRITERION::GREATER;
+  // CRITERION criterion = CRITERION::GREATER;
   benders_->DoFreeProblems(false);
-
+  // invest cost
+  auto obj_coeff = benders_->ObjectiveFunctionCoeffs();
+  benders_->SetObjectiveFunctionCoeffsToZeros();
+  benders_->launch();
+  // de-comment for general case
+  //  cuts_manager_->Save(benders_->CutsPerIteration());
   // auto cuts = cuts_manager_->Load();
-  // auto criterion = criterion_->IsCriterionSatisfied(cuts);
+  auto criterion =
+      criterion_->IsCriterionSatisfied(benders_->BestIterationWorkerMaster());
   while (criterion != CRITERION::EQUAL) {
     benders_->launch();
     // de-comment for general case

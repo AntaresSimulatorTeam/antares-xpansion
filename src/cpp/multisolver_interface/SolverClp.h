@@ -98,6 +98,7 @@ class SolverClp : public SolverAbstract {
   virtual int get_nelems() const override;
   virtual int get_n_integer_vars() const override;
   virtual void get_obj(double *obj, int first, int last) const override;
+  void set_obj_to_zero() override;
   virtual void get_rows(int *mstart, int *mclind, double *dmatval, int size,
                         int *nels, int first, int last) const override;
   virtual void get_row_type(char *qrtype, int first, int last) const override;

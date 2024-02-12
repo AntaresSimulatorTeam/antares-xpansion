@@ -894,6 +894,10 @@ std::vector<double> BendersBase::ObjectiveFunctionCoeffs() const {
   return obj;
 }
 
+void BendersBase::SetObjectiveFunctionCoeffsToZeros() const {
+  _master->_solver->set_obj_to_zero();
+}
+
 int BendersBase::MasterGetnrows() const { return _master->Getnrows(); }
 
 WorkerMasterData BendersBase::BestIterationWorkerMaster() const {

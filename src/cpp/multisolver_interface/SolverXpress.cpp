@@ -3,6 +3,7 @@
 #include <cassert>
 #include <cstring>
 #include <map>
+#include <numeric>
 
 #include "StringManip.h"
 
@@ -217,6 +218,15 @@ int SolverXpress::get_n_integer_vars() const {
 
 void SolverXpress::get_obj(double *obj, int first, int last) const {
   int status = XPRSgetobj(_xprs, obj, first, last);
+  zero_status_check(status, "get objective function", LOGLOCATION);
+}
+
+void SolverXpress::set_obj_to_zero() {
+  auto ncols = get_ncols();
+  std::vector<int> col_ind(ncols);
+  std::iota(col_ind.begin(), col_ind.end(), 0);
+  std::vector<double> zeros_val(ncols, 0.0);
+  int status = XPRSchgobj(_xprs, ncols, col_ind.data(), zeros_val.data());
   zero_status_check(status, "get objective function", LOGLOCATION);
 }
 

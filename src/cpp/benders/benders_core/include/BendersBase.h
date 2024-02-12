@@ -62,6 +62,7 @@ class BendersBase {
   void DoFreeProblems(bool free_problems) { free_problems_ = free_problems; }
   int MasterGetnrows() const;
   WorkerMasterData BestIterationWorkerMaster() const;
+  void SetObjectiveFunctionCoeffsToZeros() const;
 
  protected:
   CurrentIterationData _data;

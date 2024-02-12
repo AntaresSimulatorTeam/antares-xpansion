@@ -238,6 +238,12 @@ void SolverCbc::get_obj(double *obj, int first, int last) const {
   }
 }
 
+void SolverCbc::set_obj_to_zero() {
+  auto ncols = get_ncols();
+  std::vector<double> zeros_val(ncols, 0.0);
+  _clp_inner_solver.setObjective(zeros_val.data());
+}
+
 void SolverCbc::get_rows(int *mstart, int *mclind, double *dmatval, int size,
                          int *nels, int first, int last) const {
   CoinPackedMatrix matrix = *_clp_inner_solver.getMatrixByRow();

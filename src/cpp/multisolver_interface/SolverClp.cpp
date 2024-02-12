@@ -129,6 +129,12 @@ void SolverClp::get_obj(double *obj, int first, int last) const {
   }
 }
 
+void SolverClp::set_obj_to_zero() {
+  auto ncols = get_ncols();
+  std::vector<double> zeros_val(ncols, 0.0);
+  _clp.setRowObjective(zeros_val.data());
+}
+
 void SolverClp::get_rows(int *mstart, int *mclind, double *dmatval, int size,
                          int *nels, int first, int last) const {
   CoinPackedMatrix matrix = *_clp.matrix();

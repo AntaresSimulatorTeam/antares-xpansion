@@ -62,6 +62,8 @@ class Problem : public SolverAbstract {
   void get_obj(double *obj, int first, int last) const override {
     solver_abstract_->get_obj(obj, first, last);
   }
+
+  void set_obj_to_zero() override { solver_abstract_->set_obj_to_zero(); }
   void get_rows(int *mstart, int *mclind, double *dmatval, int size, int *nels,
                 int first, int last) const override {
     solver_abstract_->get_rows(mstart, mclind, dmatval, size, nels, first,
