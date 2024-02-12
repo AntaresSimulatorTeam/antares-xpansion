@@ -163,6 +163,7 @@ void BendersBase::update_best_ub() {
     _data.best_it = _data.it;
     // best_iteration_cuts_ = current_iteration_cuts_;
     FillWorkerMasterData(relevantIterationData_.best);
+    relevantIterationData_.best._cut_trace = relevantIterationData_.last._cut_trace;
     best_iteration_data = bendersDataToLogData(_data);
   }
 }
