@@ -65,6 +65,10 @@ class BendersBase {
   void SetObjectiveFunctionCoeffsToZeros() const;
   void SetObjectiveFunction(const double *coeffs, int first, int last) const;
   virtual void InitializeProblems() = 0;
+  void SetMaxIteration(int max_iteration) {
+    _options.MAX_ITERATIONS = max_iteration;
+  }
+  BendersBaseOptions Options() const { return _options; }
 
  protected:
   CurrentIterationData _data;
@@ -164,7 +168,6 @@ class BendersBase {
   int ProblemToId(const std::string &problem_name) const {
     return _problem_to_id.at(problem_name);
   }
-  BendersBaseOptions Options() const { return _options; }
   virtual void UpdateStoppingCriterion();
   virtual bool ShouldRelaxationStop() const;
   int GetNumOfSubProblemsSolvedBeforeResume() {

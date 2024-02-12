@@ -22,8 +22,13 @@ void OuterLoop::Run() {
   benders_->InitializeProblems();
   auto obj_coeff = benders_->ObjectiveFunctionCoeffs();
   benders_->SetObjectiveFunctionCoeffsToZeros();
+  // auto max_ite = benders_->Options().MAX_ITERATIONS;
+  // benders_->SetMaxIteration(1);
   benders_->launch();
+
   benders_->SetObjectiveFunction(obj_coeff.data(), 0, obj_coeff.size());
+  // benders_->SetMaxIteration(max_ite);
+
   // de-comment for general case
   //  cuts_manager_->Save(benders_->CutsPerIteration());
   // auto cuts = cuts_manager_->Load();

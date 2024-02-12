@@ -894,7 +894,10 @@ std::vector<double> BendersBase::ObjectiveFunctionCoeffs() const {
 }
 
 void BendersBase::SetObjectiveFunctionCoeffsToZeros() const {
-  _master->_solver->set_obj_to_zero();
+  // assuming that master var id are in [0, size-1]
+  auto max_id = master_variable_map_.size() - 1;
+  std::vector<double> zeros(max_id, 0.0);
+  SetObjectiveFunction(zeros.data(), 0, max_id);
 }
 
 void BendersBase::SetObjectiveFunction(const double *coeffs, int first,
