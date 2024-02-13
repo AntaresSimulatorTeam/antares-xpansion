@@ -100,7 +100,7 @@ def test_lp_directory_files(install_dir, test_dir, master_mode, option_mode, set
 @pytest.mark.parametrize("test_dir", test_data_multiple_candidates)
 @pytest.mark.parametrize("master_mode", ["integer"])
 @pytest.mark.parametrize("option_mode", options_mode)
-def test_lp_multiple_candidates(install_dir, test_dir, master_mode, option_mode, setup_and_teardown_lp_directory):
+def test_lp_multiple_candidates(install_dir, test_dir, master_mode, option_mode, setup_lp_directory):
     if option_mode == OptionType.ARCHIVE:
         launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_dir)
     elif option_mode == OptionType.OUTPUT:
@@ -112,6 +112,7 @@ def test_lp_multiple_candidates(install_dir, test_dir, master_mode, option_mode,
 @pytest.mark.parametrize("option_mode", [OptionType.STUDY])
 def test_lp_with_study_option(install_dir, study_dir, master_mode, option_mode, ):
     launch_and_compare_lp_with_reference_study(install_dir, master_mode, study_dir)
+
 
 def launch_and_compare_lp_with_reference_output(install_dir, master_mode, test_dir):
     old_path = os.getcwd()
@@ -139,7 +140,6 @@ def launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_
     os.chdir(test_dir.parent.parent)
     launch_command = [str(lp_namer_exe), "-a", str(zip_path),
                       "-e", "contraintes.txt", "-f", master_mode, "--unnamed-problems"]
-    print(launch_command)
     # when
     returned_l = subprocess.run(launch_command, shell=False)
     # then
@@ -162,7 +162,6 @@ def launch_and_compare_lp_with_reference_study(install_dir, master_mode, study_d
     os.chdir(study_dir)
     launch_command = [str(lp_namer_exe), "--study", str(study_dir),
                       "-e", "contraintes.txt", "-f", master_mode, "--unnamed-problems"]
-    print(launch_command)
     # when
     returned_l = subprocess.run(launch_command, shell=False)
     lp_dir = get_lp_dir(study_dir)
