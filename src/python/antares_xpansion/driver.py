@@ -68,7 +68,7 @@ class XpansionDriver:
         launch antares xpansion steps
         """
 
-        if self.config_loader.step() == "full" and not self.config_loader.memory:
+        if self.config_loader.step() == "full" and not self.config_loader.memory():
             self.launch_antares_step()
             self.logger.info("Post Antares")
             self.problem_generator_driver.set_output_path(
@@ -84,7 +84,7 @@ class XpansionDriver:
                                         self.config_loader.allow_run_as_root())
             self.clean_step()
 
-        if self.config_loader.step() == "full" and self.config_loader.memory:
+        elif self.config_loader.step() == "full" and self.config_loader.memory():
             self.launch_antares_step(memory_mode=True)
             self.launch_problem_generation_step_memory()
             self.launch_benders_step()

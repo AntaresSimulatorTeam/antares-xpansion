@@ -116,16 +116,22 @@ def assert_convergence(solution, options_data, method: BendersMethod):
         <= options_data["ABSOLUTE_GAP"]) or (method == BendersMethod.BENDERS_BY_BATCH and solution["ABSOLUTE_GAP"] <= options_data["ABSOLUTE_GAP"])
 
 
-def verify_solution(study_path, expected_values, expected_investment_solution, method: BendersMethod = BendersMethod.BENDERS):
+def verify_solution(study_path, expected_values, expected_investment_solution,
+                    method: BendersMethod = BendersMethod.BENDERS, use_archive=True):
     output_path = study_path / "output"
-    json_path = get_json_filepath(output_path, "expansion", "out.json")
-    options_path = get_json_filepath(output_path, "lp", "options.json")
 
-    with open(str(json_path), "r") as json_file:
-        json_data = json.load(json_file)
+    if use_archive:
+        json_data = get_json_file_data(output_path, "expansion", "out.json")
+        options_data = get_json_file_data(output_path, "lp", "options.json")
+    else:
+        json_path = get_json_filepath(output_path, "expansion", "out.json")
+        options_path = get_json_filepath(output_path, "lp", "options.json")
 
-    with open(str(options_path), "r") as options_file:
-        options_data = json.load(options_file)
+        with open(str(json_path), "r") as json_file:
+            json_data = json.load(json_file)
+
+        with open(str(options_path), "r") as options_file:
+            options_data = json.load(options_file)
 
     solution = json_data["solution"]
     investment_solution = solution["values"]
@@ -750,7 +756,7 @@ def test_full_study_short_memory(
     shutil.copytree(study_path, tmp_study)
     launch_xpansion_memory(install_dir, tmp_study, BendersMethod.BENDERS,
                            allow_run_as_root, nproc=1)
-    verify_solution(tmp_study, expected_values, expected_investment_solution)
+    verify_solution(tmp_study, expected_values, expected_investment_solution, use_archive=False)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
 
