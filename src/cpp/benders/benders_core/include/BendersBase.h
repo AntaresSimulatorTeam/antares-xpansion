@@ -39,11 +39,12 @@ class BendersBase {
   }
   double execution_time() const;
   virtual std::string BendersName() const = 0;
+  void set_input_map(const CouplingMap &coupling_map);
 
  protected:
   CurrentIterationData _data;
-  VariableMap master_variable_map;
-  CouplingMap coupling_map;
+  VariableMap master_variable_map_;
+  CouplingMap coupling_map_;
   std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
 
  protected:
@@ -75,7 +76,6 @@ class BendersBase {
   [[nodiscard]] std::filesystem::path get_structure_path() const;
   [[nodiscard]] LogData bendersDataToLogData(
       const CurrentIterationData &data) const;
-  virtual void build_input_map();
   virtual void reset_master(WorkerMaster *worker_master);
   void free_master() const;
   void free_subproblems();
@@ -158,8 +158,7 @@ class BendersBase {
   void compute_cut_aggregate(const SubProblemDataMap &subproblem_data_map);
   void compute_cut(const SubProblemDataMap &subproblem_data_map);
   [[nodiscard]] std::map<std::string, int> get_master_variable_map(
-      std::map<std::string, std::map<std::string, int>> input_map) const;
-  [[nodiscard]] CouplingMap GetCouplingMap(CouplingMap input) const;
+      const std::map<std::string, std::map<std::string, int>> &input_map) const;
   [[nodiscard]] virtual bool shouldParallelize() const = 0;
   Output::Iteration iteration(const WorkerMasterDataPtr &masterDataPtr_l) const;
   LogData FinalLogData() const;

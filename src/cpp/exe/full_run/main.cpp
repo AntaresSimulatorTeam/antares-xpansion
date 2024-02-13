@@ -30,10 +30,9 @@ int main(int argc, char** argv) {
   world.barrier();
   int argc_ = 2;
   const auto options_file = options_parser.BendersOptionsFile();
-  const auto benders_method = options_parser.Method();
 
   auto benders_factory =
-      BendersMainFactory(argc_, argv, benders_method, options_file, env, world);
+      BendersMainFactory(argc_, argv, options_file, env, world);
   benders_factory.Run();
 
   if (world.rank() == 0) {

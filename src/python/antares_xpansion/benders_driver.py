@@ -13,13 +13,12 @@ from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 
 
 class BendersDriver:
-    def __init__(self, benders, benders_by_batch, merge_mps, options_file) -> None:
+    def __init__(self, benders, merge_mps, options_file) -> None:
 
         self.oversubscribe = False
         self.allow_run_as_root = False
         self.benders = benders
         self.merge_mps = merge_mps
-        self.benders_by_batch = benders_by_batch
         self.logger = step_logger(__name__, __class__.__name__)
 
         if (options_file != ""):
@@ -92,8 +91,6 @@ class BendersDriver:
             self.solver = self.benders
         elif self.method == "mergeMPS":
             self.solver = self.merge_mps
-        elif self.method == "benders_by_batch":
-            self.solver = self.benders_by_batch
         else:
             self.logger.error("Illegal optim method")
             raise BendersDriver.BendersSolverError(

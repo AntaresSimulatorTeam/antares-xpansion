@@ -28,7 +28,7 @@ void BendersMpi::InitializeProblems() {
   BuildMasterProblem();
   int current_problem_id = 0;
   // Dispatch subproblems to process
-  for (const auto &problem : coupling_map) {
+  for (const auto &problem : coupling_map_) {
     // In case there are more subproblems than process
     if (auto process_to_feed = current_problem_id % _world.size();
         process_to_feed ==
@@ -43,7 +43,7 @@ void BendersMpi::InitializeProblems() {
 }
 void BendersMpi::BuildMasterProblem() {
   if (_world.rank() == rank_0) {
-    reset_master(new WorkerMaster(master_variable_map, get_master_path(),
+    reset_master(new WorkerMaster(master_variable_map_, get_master_path(),
                                   get_solver_name(), get_log_level(),
                                   _data.nsubproblem, solver_log_manager_,
                                   IsResumeMode(), _logger));
@@ -284,9 +284,6 @@ void BendersMpi::PreRunInitialization() {
 }
 
 void BendersMpi::launch() {
-  build_input_map();
-  _world.barrier();
-
   InitializeProblems();
   _world.barrier();
 
