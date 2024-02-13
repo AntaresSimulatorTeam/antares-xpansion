@@ -53,7 +53,7 @@ test_data_multiple_candidates = [
 ]
 
 test_data_study_option = [
-    DATA_TEST / "examples" / "xpansion-test-01-weights"
+    DATA_TEST / "tests_lpnamer" / "SmallTestFiveCandidates"
 ]
 
 @pytest.fixture
@@ -87,6 +87,15 @@ def setup_lp_directory(request):
     yield test_dir
 
 
+@pytest.fixture
+def setup_study(request):
+    tmp_path = request.getfixturevalue('tmp_path')
+    source_dir = request.getfixturevalue('study_dir')
+    shutil.copytree(source_dir, tmp_path / source_dir.stem)
+    index = source_dir.parts.index(source_dir.stem)
+    test_dir = tmp_path.joinpath(*source_dir.parts[index:])
+    yield test_dir
+
 @pytest.mark.parametrize("test_dir, master_mode", test_data)
 @pytest.mark.parametrize("option_mode", [OptionType.ARCHIVE, OptionType.OUTPUT])
 def test_lp_directory_files(install_dir, test_dir, master_mode, option_mode, setup_lp_directory, tmp_path):
@@ -110,8 +119,8 @@ def test_lp_multiple_candidates(install_dir, test_dir, master_mode, option_mode,
 @pytest.mark.parametrize("study_dir", test_data_study_option)
 @pytest.mark.parametrize("master_mode", ["integer"])
 @pytest.mark.parametrize("option_mode", [OptionType.STUDY])
-def test_lp_with_study_option(install_dir, study_dir, master_mode, option_mode, ):
-    launch_and_compare_lp_with_reference_study(install_dir, master_mode, study_dir)
+def test_lp_with_study_option(install_dir, study_dir, master_mode, option_mode, setup_study, tmp_path):
+    launch_and_compare_lp_with_reference_study(install_dir, master_mode, setup_study)
 
 
 def launch_and_compare_lp_with_reference_output(install_dir, master_mode, test_dir):
@@ -152,16 +161,21 @@ def get_lp_dir(study_dir):
 
     # Sort the directories based on creation date
     directories.sort(key=lambda x: os.path.getctime(os.path.join(directory, x)))
-    return directories[-1]
+    return Path(directory) / directories[-1] / "lp"
+
+
+def get_constraint_path(study):
+    return study / "user/expansion/constraints/contraintes.txt"
 
 
 def launch_and_compare_lp_with_reference_study(install_dir, master_mode, study_dir):
     old_path = os.getcwd()
-    reference_lp_dir = study_dir / "output" / "simulation-reference" / "lp"
+    reference_lp_dir = study_dir / "output" / "simulation" / "reference_lp"
     lp_namer_exe = Path(install_dir) / "lp_namer"
     os.chdir(study_dir)
+    constraint_path = get_constraint_path(study_dir)
     launch_command = [str(lp_namer_exe), "--study", str(study_dir),
-                      "-e", "contraintes.txt", "-f", master_mode, "--unnamed-problems"]
+                      "-e", constraint_path, "-f", master_mode, "--unnamed-problems"]
     # when
     returned_l = subprocess.run(launch_command, shell=False)
     lp_dir = get_lp_dir(study_dir)
