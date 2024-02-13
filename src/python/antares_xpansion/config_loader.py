@@ -510,6 +510,7 @@ class ConfigLoader:
         
 
     def _set_xpansion_simulation_name(self):
+        xpansion_dir_suffix ="-Xpansion"
         if self.step() in ["resume", "sensitivity"] : 
             self._xpansion_simulation_name = self._last_study
             if self.is_zip(self._last_study):
@@ -517,10 +518,19 @@ class ConfigLoader:
                 with zipfile.ZipFile(self._last_study, 'r') as output_zip:
                     output_zip.extractall(self._xpansion_simulation_name)
         elif self.step() == "benders":
-            if(not self._last_study.name.endswith("-Xpansion")):
+            if(not self._last_study.name.endswith(xpansion_dir_suffix)):
                 raise ConfigLoader.NotAnXpansionOutputDir(f"Error! {self._last_study} is not an Xpansion output directory")
             self._xpansion_simulation_name = self._last_study
-            
+
+        elif self.step() == "problem_generation":
+            if not self.is_zip(self._last_study):
+                if(not self._last_study.name.endswith(xpansion_dir_suffix)):
+                    raise ConfigLoader.NotAnXpansionOutputDir(f"Error! {self._last_study} is not an Xpansion output directory")
+                else:
+                    self._xpansion_simulation_name = self._last_study
+                    self._last_study =self._last_study.parent /  (self._last_study.stem[:-len(xpansion_dir_suffix)]+".zip")
+
+                
         else:
             self._xpansion_simulation_name = self._last_study.parent / \
                 (self._last_study.stem+"-Xpansion")
