@@ -5,6 +5,7 @@
 
 #include <execution>
 #include <iostream>
+#include <utility>
 
 #include "ActiveLinks.h"
 #include "AdditionalConstraints.h"
@@ -27,6 +28,7 @@
 #include "Version.h"
 #include "WeightsFileReader.h"
 #include "WeightsFileWriter.h"
+#include "XpansionProblemsFromAntaresProvider.h"
 #include "ZipProblemsProviderAdapter.h"
 #include "config.h"
 
@@ -43,21 +45,73 @@ void CreateDirectories(const std::filesystem::path& output_path) {
 }
 
 ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options)
-    : options_(options) {}
+    : options_(options) {
+  if (!options_.StudyPath().empty()) {
+    mode_ = Mode::ANTARES_API;
+  } else if (!options_.XpansionOutputDir().empty()) {
+    mode_ = Mode::FILE;
+  } else if (!options_.ArchivePath().empty()) {
+    mode_ = Mode::ARCHIVE;
+  }
+}
+
+std::filesystem::path ProblemGeneration::performeAntaresSimulation() {
+  Antares::Solver::Application application;
+  application.outputWriter_.PrintMe();
+  using namespace std::literals::string_literals;
+  char* argv[] = {"antares-8.8-solver", options_.StudyPath().string().data(),
+                  "--force-parallel", "4", "-s"};
+  auto argc = 4;
+  auto arg1 = "antares-8.8-solver"s;
+  auto arg2 = options_.StudyPath().string();
+  auto arg3 = "--force-parallel"s;
+  auto arg4 = "4"s;
+  auto arg5 = "-s"s;
+  argv[0] = arg1.data();
+  argv[1] = arg2.data();
+  argv[2] = arg3.data();
+  argv[3] = arg4.data();
+  argv[4] = arg5.data();
+
+  LpsFromAntares lps;
+  application.prepare(argc, argv);
+  application.execute();
+  application.outputWriter_.PrintMe();
+  lps_ = application.outputWriter_.lps;
+
+  return {application.pStudy->folderOutput};
+}
 
 std::filesystem::path ProblemGeneration::updateProblems() {
-  const auto xpansion_output_dir = options_.XpansionOutputDir();
+  using namespace std::string_literals;
+  std::filesystem::path xpansion_output_dir;
   const auto archive_path = options_.ArchivePath();
 
-  auto deduced_xpansion_output_dir =
-      options_.deduceXpansionDirIfEmpty(xpansion_output_dir, archive_path);
+  if (mode_ == Mode::ARCHIVE) {
+    xpansion_output_dir =
+        options_.deduceXpansionDirIfEmpty(xpansion_output_dir, archive_path);
+  }
+
+  if (mode_ == Mode::ANTARES_API) {
+    simulation_dir_ = performeAntaresSimulation();
+  }
+
+  if (mode_ == Mode::FILE) {
+    simulation_dir_ = options_.XpansionOutputDir();  // Legacy naming.
+    // options_.XpansionOutputDir() point in fact to a simulation output from
+    // antares
+  }
+
+  if (mode_ == Mode::ANTARES_API || mode_ == Mode::FILE) {
+    xpansion_output_dir = simulation_dir_;
+  }
 
   const auto log_file_path =
-      deduced_xpansion_output_dir / "lp" / "ProblemGenerationLog.txt";
+      xpansion_output_dir / "lp"s / "ProblemGenerationLog.txt"s;
 
-  CreateDirectories(deduced_xpansion_output_dir);
+  CreateDirectories(xpansion_output_dir);  // Ca ou -Xpansion ?
   auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout,
-                                                  "Problem Generation");
+                                                  "Problem Generation"s);
 
   auto master_formulation = options_.MasterFormulation();
   auto additionalConstraintFilename_l =
@@ -65,9 +119,10 @@ std::filesystem::path ProblemGeneration::updateProblems() {
   auto weights_file = options_.WeightsFile();
   auto unnamed_problems = options_.UnnamedProblems();
 
-  RunProblemGeneration(deduced_xpansion_output_dir, master_formulation,
-                       additionalConstraintFilename_l, archive_path, logger, log_file_path, weights_file, unnamed_problems);
-  return deduced_xpansion_output_dir;
+  RunProblemGeneration(xpansion_output_dir, master_formulation,
+                       additionalConstraintFilename_l, archive_path, logger,
+                       log_file_path, weights_file, unnamed_problems);
+  return xpansion_output_dir;
 }
 
 std::shared_ptr<ArchiveReader> InstantiateZipReader(
@@ -96,7 +151,8 @@ void ProblemGeneration::ExtractUtilsFiles(
     const std::filesystem::path& xpansion_output_dir,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
   auto utils_files_extractor =
-      LpFilesExtractor(antares_archive_path, xpansion_output_dir, logger);
+      LpFilesExtractor(antares_archive_path, xpansion_output_dir,
+                       std::move(logger), mode_, simulation_dir_);
   utils_files_extractor.ExtractFiles();
 }
 
@@ -127,22 +183,33 @@ void validateMasterFormulation(
   }
 }
 
-std::vector<std::shared_ptr<Problem>> getXpansionProblems(
+std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
     SolverLogManager& solver_log_manager, const std::string& solver_name,
     const std::vector<ProblemData>& mpsList, std::filesystem::path& lpDir_,
-    std::shared_ptr<ArchiveReader>& reader, bool with_archive = true) {
+    std::shared_ptr<ArchiveReader>& reader, bool with_archive = true,
+    const LpsFromAntares& lps = {}) {
   std::vector<std::string> problem_names;
   std::transform(mpsList.begin(), mpsList.end(),
                  std::back_inserter(problem_names),
                  [](ProblemData const& data) { return data._problem_mps; });
-  if (with_archive) {
-    auto adapter = std::make_shared<ZipProblemsProviderAdapter>(lpDir_, reader,
-                                                                problem_names);
-    return adapter->provideProblems(solver_name, solver_log_manager);
-  } else {
-    auto adapter =
-        std::make_shared<FileProblemsProviderAdapter>(lpDir_, problem_names);
-    return adapter->provideProblems(solver_name, solver_log_manager);
+  switch (mode_) {
+    case Mode::FILE: {
+      auto adapter =
+          std::make_shared<FileProblemsProviderAdapter>(lpDir_, problem_names);
+      return adapter->provideProblems(solver_name, solver_log_manager);
+    }
+    case Mode::ARCHIVE: {
+      auto adapter = std::make_shared<ZipProblemsProviderAdapter>(
+          lpDir_, reader, problem_names);
+      return adapter->provideProblems(solver_name, solver_log_manager);
+    }
+    case Mode::ANTARES_API: {
+      auto adapter = std::make_shared<XpansionProblemsFromAntaresProvider>(lps);
+      return adapter->provideProblems(solver_name, solver_log_manager);
+    }
+    default:
+      // TODO : log
+      return {};
   }
 }
 
@@ -167,8 +234,7 @@ void ProblemGeneration::RunProblemGeneration(
                    logger);
   }
 
-  if (!antares_archive_path.empty())
-    ExtractUtilsFiles(antares_archive_path, xpansion_output_dir, logger);
+  ExtractUtilsFiles(antares_archive_path, xpansion_output_dir, logger);
 
   std::vector<ActiveLink> links = getLinks(xpansion_output_dir, logger);
 
@@ -188,26 +254,6 @@ void ProblemGeneration::RunProblemGeneration(
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "rename problems: " << std::boolalpha << rename_problems << std::endl;
 
-  Antares::Solver::Application application;
-  application.outputWriter_.PrintMe();
-  using namespace std::literals::string_literals;
-  char* argv[] = {"antares-8.8-solver", "./examples/SmallTestFiveCandidates/",
-                  "--force-parallel", "4"};
-  auto argc = 4;
-  auto arg1 = "antares-8.8-solver"s;
-  auto arg2 = "./examples/SmallTestFiveCandidates/"s;
-  auto arg3 = "--force-parallel"s;
-  auto arg4 = "4"s;
-  argv[0] = arg1.data();
-  argv[1] = arg2.data();
-  argv[2] = arg3.data();
-  argv[3] = arg4.data();
-
-  application.prepare(argc, argv);
-  LpsFromAntares lps;
-  application.pStudy->_lps = &lps;
-  application.execute();
-  application.outputWriter_.PrintMe();
 
   auto files_mapper = FilesMapper(antares_archive_path, xpansion_output_dir);
   auto mpsList = files_mapper.MpsAndVariablesFilesVect();
@@ -223,37 +269,48 @@ void ProblemGeneration::RunProblemGeneration(
   /* Main stuff */
   std::vector<std::shared_ptr<Problem>> xpansion_problems =
       getXpansionProblems(solver_log_manager, solver_name, mpsList, lpDir_,
-                          reader, !antares_archive_path.empty());
+                          reader, !antares_archive_path.empty(), lps_);
 
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
       problems_and_data;
   for (int i = 0; i < xpansion_problems.size(); ++i) {
-    if (options_.StudyPath().empty()) {
-      xpansion_problems.at(i)->_name = mpsList.at(i)._problem_mps;
-      problems_and_data.emplace_back(xpansion_problems.at(i), mpsList.at(i));
-    } else {
+    if (mode_ == Mode::ANTARES_API) {
       ProblemData data{xpansion_problems.at(i)->_name, {}};
       problems_and_data.emplace_back(xpansion_problems.at(i), data);
+    } else {
+      xpansion_problems.at(i)->_name = mpsList.at(i)._problem_mps;
+      problems_and_data.emplace_back(xpansion_problems.at(i), mpsList.at(i));
     }
   }
   auto mps_file_writer = std::make_shared<MPSFileWriter>(lpDir_);
   std::for_each(
-      std::execution::par, problems_and_data.begin(), problems_and_data.end(),
+      std::execution::seq, problems_and_data.begin(), problems_and_data.end(),
       [&](const auto& problem_and_data) {
         const auto& [problem, data] = problem_and_data;
         std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
-        if (antares_archive_path.empty()) {
-          variables_provider = std::make_shared<ProblemVariablesFileAdapter>(
-              data, links, logger, lpDir_);
-        } else {
-          if (rename_problems) {
-            variables_provider = std::make_shared<ProblemVariablesZipAdapter>(
-                reader, data, links, logger);
-          } else {
+        switch (mode_) {
+          case Mode::FILE:
+            variables_provider = std::make_shared<ProblemVariablesFileAdapter>(
+                data, links, logger, lpDir_);
+            break;
+          case Mode::ARCHIVE:
+            if (rename_problems) {
+              variables_provider = std::make_shared<ProblemVariablesZipAdapter>(
+                  reader, data, links, logger);
+            } else {
+              variables_provider =
+                  std::make_shared<ProblemVariablesFromProblemAdapter>(
+                      problem, links, logger);
+            }
+            break;
+          case Mode::ANTARES_API:
             variables_provider =
                 std::make_shared<ProblemVariablesFromProblemAdapter>(
                     problem, links, logger);
-          }
+            break;
+          default:
+            (*logger)(LogUtils::LOGLEVEL::ERR) << "Undefined mode";
+            break;
         }
         linkProblemsGenerator.treat(data._problem_mps, couplings, problem.get(),
                                     variables_provider.get(),
@@ -277,6 +334,3 @@ std::shared_ptr<ArchiveReader> InstantiateZipReader(
   reader->Open();
   return reader;
 }
-ProblemGeneration::MismatchedParameters::MismatchedParameters(
-    const std::string& err_message, const std::string& log_location)
-    : XpansionError(err_message, log_location) {}
