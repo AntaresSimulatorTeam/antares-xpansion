@@ -1,5 +1,6 @@
 #include "OuterLoop.h"
 
+#include "LoggerUtils.h"
 OuterLoop::OuterLoop(std::shared_ptr<IOuterLoopCriterion> criterion,
                      std::shared_ptr<IMasterUpdate> master_updater,
                      std::shared_ptr<ICutsManager> cuts_manager,
@@ -34,8 +35,17 @@ void OuterLoop::Run() {
   // auto cuts = cuts_manager_->Load();
   auto criterion =
       criterion_->IsCriterionSatisfied(benders_->BestIterationWorkerMaster());
+  if (criterion == CRITERION::GREATER) {
+    std::ostringstream err_msg;
+    err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "External Loop")
+            << "Criterion cannot be satisfied for your study:\n"
+            << criterion_->StateAsString();
+    throw CriterionCouldNotBeSatisfied(err_msg.str(), LOGLOCATION);
+  }
   while (criterion != CRITERION::EQUAL) {
+    benders_->ResetData();
     benders_->launch();
+
     // de-comment for general case
     //  cuts_manager_->Save(benders_->CutsPerIteration());
     //  auto cuts = cuts_manager_->Load();

@@ -69,6 +69,7 @@ class BendersBase {
     _options.MAX_ITERATIONS = max_iteration;
   }
   BendersBaseOptions Options() const { return _options; }
+  void ResetData();
 
  protected:
   CurrentIterationData _data;

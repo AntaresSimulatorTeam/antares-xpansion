@@ -911,3 +911,13 @@ int BendersBase::MasterGetnrows() const { return _master->Getnrows(); }
 WorkerMasterData BendersBase::BestIterationWorkerMaster() const {
   return relevantIterationData_.best;
 }
+
+void BendersBase::ResetData() {
+  for (auto logger : std::vector<std::shared_ptr<ILoggerBenders>>{
+           mathLoggerDriver_, _logger}) {
+    logger->display_message("Reset data ...");
+  }
+  _data.best_ub = 1e+20;
+  _data.best_it = 0;
+  _data.stopping_criterion = StoppingCriterion::empty;
+}

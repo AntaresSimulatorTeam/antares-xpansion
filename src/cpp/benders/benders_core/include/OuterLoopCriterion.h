@@ -15,6 +15,7 @@ class IOuterLoopCriterion {
  public:
   virtual CRITERION IsCriterionSatisfied(
       const WorkerMasterData& worker_master_data) = 0;
+  virtual std::string StateAsString() const = 0;
 };
 
 class OuterloopCriterionLOL : public IOuterLoopCriterion {
@@ -22,13 +23,15 @@ class OuterloopCriterionLOL : public IOuterLoopCriterion {
   explicit OuterloopCriterionLOL(double threshold, double epsilon);
   CRITERION IsCriterionSatisfied(
       const WorkerMasterData& milp_solution) override;
+  std::string StateAsString() const override;
 
  private:
-  double ProcessSum(const WorkerMasterData& worker_master_data);
+  void ProcessSum(const WorkerMasterData& worker_master_data);
   const std::string positive_unsupplied_vars_prefix_ =
       "^PositiveUnsuppliedEnergy::";
   const std::regex rgx_ = std::regex(positive_unsupplied_vars_prefix_);
   const int UNSUPPLIED_ENERGY_MAX = 1;
   double threshold_ = 1e6;
   double epsilon_ = 1e-4;
+  double sum_loss_ = 0.0;
 };
