@@ -88,7 +88,7 @@ def setup_lp_directory(request):
 
 
 @pytest.mark.parametrize("test_dir, master_mode", test_data)
-@pytest.mark.parametrize("option_mode", options_mode)
+@pytest.mark.parametrize("option_mode", [OptionType.ARCHIVE, OptionType.OUTPUT])
 def test_lp_directory_files(install_dir, test_dir, master_mode, option_mode, setup_lp_directory, tmp_path):
     # given
     if option_mode == OptionType.ARCHIVE:
@@ -99,12 +99,12 @@ def test_lp_directory_files(install_dir, test_dir, master_mode, option_mode, set
 
 @pytest.mark.parametrize("test_dir", test_data_multiple_candidates)
 @pytest.mark.parametrize("master_mode", ["integer"])
-@pytest.mark.parametrize("option_mode", options_mode)
+@pytest.mark.parametrize("option_mode", [OptionType.ARCHIVE, OptionType.OUTPUT])
 def test_lp_multiple_candidates(install_dir, test_dir, master_mode, option_mode, setup_lp_directory):
     if option_mode == OptionType.ARCHIVE:
-        launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_dir)
+        launch_and_compare_lp_with_reference_archive(install_dir, master_mode, setup_lp_directory)
     elif option_mode == OptionType.OUTPUT:
-        launch_and_compare_lp_with_reference_output(install_dir, master_mode, test_dir)
+        launch_and_compare_lp_with_reference_output(install_dir, master_mode, setup_lp_directory)
 
 
 @pytest.mark.parametrize("study_dir", test_data_study_option)
