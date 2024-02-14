@@ -26,11 +26,7 @@ add_library (benders_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/LastIterationReader.cpp 
 	${CMAKE_CURRENT_SOURCE_DIR}/LastIterationPrinter.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/StartUp.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/CutsManagement.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersMathLogger.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/OuterLoop.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/OuterloopCriterion.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/MasterUpdateBase.cpp
 	)
 
 get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)

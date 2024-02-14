@@ -854,7 +854,7 @@ void BendersBase::write_basis() const {
   _master->write_basis(filename);
 }
 
-WorkerMasterDataVect BendersBase::CutsPerIteration() const {
+WorkerMasterDataVect BendersBase::AllCuts() const {
   return workerMasterDataVect_;
 }
 // BendersCuts BendersBase::CutsBestIteration() const {

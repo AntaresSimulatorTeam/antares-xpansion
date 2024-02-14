@@ -40,7 +40,7 @@ class BendersBase {
   double execution_time() const;
   virtual std::string BendersName() const = 0;
   // ref of value?
-  WorkerMasterDataVect CutsPerIteration() const;
+  WorkerMasterDataVect AllCuts() const;
   // BendersCuts CutsBestIteration() const;
   // void Clean();
   LogData GetBestIterationData() const;
@@ -70,6 +70,7 @@ class BendersBase {
   }
   BendersBaseOptions Options() const { return _options; }
   void ResetData();
+  virtual void free() = 0;
 
  protected:
   CurrentIterationData _data;
@@ -85,7 +86,6 @@ class BendersBase {
   bool free_problems_ = true;
 
  protected:
-  virtual void free() = 0;
   virtual void Run() = 0;
   virtual void init_data();
   void update_best_ub();
