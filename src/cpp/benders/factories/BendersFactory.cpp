@@ -148,8 +148,8 @@ int RunExternalLoop_(char** argv, const std::filesystem::path& options_file,
     SimulationOptions options(options_file);
     auto benders = PrepareForExecution(benders_loggers, options, argv[0], env,
                                        world);
-    double threshold = 2.5;
-    double epsilon = 1e-2;
+    double threshold = 2 * 1.5;  // 2 scenarios
+    double epsilon = 1e-1;
     double lambda_min = 0;
     double lambda = 16;
     double lambda_max = 17;

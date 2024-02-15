@@ -30,8 +30,8 @@ class OuterloopCriterionLOL : public IOuterLoopCriterion {
   const std::string positive_unsupplied_vars_prefix_ =
       "^PositiveUnsuppliedEnergy::";
   const std::regex rgx_ = std::regex(positive_unsupplied_vars_prefix_);
-  const int UNSUPPLIED_ENERGY_MAX = 1;
+  const int UNSUPPLIED_ENERGY_MAX = 0.1;
   double threshold_ = 1e6;
-  double epsilon_ = 1e-4;
+  double epsilon_ = 1e-1;
   double sum_loss_ = 0.0;
 };

@@ -9,16 +9,15 @@ OuterloopCriterionLOL::OuterloopCriterionLOL(double threshold, double epsilon)
 CRITERION OuterloopCriterionLOL::IsCriterionSatisfied(
     const WorkerMasterData& worker_master_data) {
   ProcessSum(worker_master_data);
-  CRITERION ret = (sum_loss_ <= threshold_ + epsilon_)
-                      ? (sum_loss_ >= threshold_ - epsilon_) ? CRITERION::EQUAL
-                                                             : CRITERION::LESSER
-                      : CRITERION::GREATER;
 
-  // CRITERION ret = (sum_loss_ <= threshold_ - epsilon_)   ? CRITERION::LESSER
-  //                 : (sum_loss_ >= threshold_ + epsilon_) ?
-  //                 CRITERION::GREATER
-  //                                                       : CRITERION::EQUAL;
-  return ret;
+  if (sum_loss_ <= threshold_ + epsilon_) {
+    if (sum_loss_ >= threshold_ - epsilon_) {
+      return CRITERION::EQUAL;
+    }
+    return CRITERION::LESSER;
+  } else {
+    return CRITERION::GREATER;
+  }
 }
 
 void OuterloopCriterionLOL::ProcessSum(
