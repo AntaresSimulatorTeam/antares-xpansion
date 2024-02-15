@@ -46,9 +46,10 @@ void MasterUpdateBase::SetLambdaMaxToMaxInvestmentCosts() {
 void MasterUpdateBase::Update(const CRITERION &criterion) {
   // check lambda_max_
   // whar abour lambda_min_?
-  if (lambda_max_ < 0 || lambda_max_ < lambda_min_) {
+  if (lambda_max_ <= 0 || lambda_max_ < lambda_min_) {
     // TODO log
     SetLambdaMaxToMaxInvestmentCosts();
+    return;
   }
   switch (criterion) {
     case CRITERION::LESSER:
