@@ -14,14 +14,20 @@ void MathLoggerBase::setHeadersList() {
   MathLogger::setHeadersList(headers_manager.headers_list);
 }
 
+void MathLoggerBaseExternalLoop::setHeadersList() {
+  auto type = HeadersType();
+  HeadersManagerExternalLoop headers_manager(type, BENDERSMETHOD::BENDERS);
+  MathLogger::setHeadersList(headers_manager.headers_list);
+}
+
 void MathLogger::setHeadersList(const std::vector<std::string>& headers) {
   headers_.clear();
   headers_ = headers;
 }
 
-void PrintData(LogDestination& log_destination,
-               const CurrentIterationData& data, const HEADERSTYPE& type,
-               const BENDERSMETHOD& method) {
+void PrintBendersData(LogDestination& log_destination,
+                      const CurrentIterationData& data, const HEADERSTYPE& type,
+                      const BENDERSMETHOD& method) {
   log_destination << data.it;
   log_destination << std::scientific << std::setprecision(10) << data.lb;
   if (method == BENDERSMETHOD::BENDERS) {
@@ -34,7 +40,7 @@ void PrintData(LogDestination& log_destination,
   }
   log_destination << data.min_simplexiter;
   log_destination << data.max_simplexiter;
-  if (type == HEADERSTYPE::LONG || method == BENDERSMETHOD::BENDERSBYBATCH) {
+  if (type == HEADERSTYPE::LONG || method == BENDERSMETHOD::BENDERS_BY_BATCH) {
     log_destination << data.number_of_subproblem_solved;
   }
   if (type == HEADERSTYPE::LONG) {
@@ -56,19 +62,46 @@ void PrintData(LogDestination& log_destination,
   log_destination << std::endl;
 }
 void MathLoggerBase::Print(const CurrentIterationData& data) {
-  PrintData(LogsDestination(), data, HeadersType(), BENDERSMETHOD::BENDERS);
+  PrintBendersData(LogsDestination(), data, HeadersType(),
+                   BENDERSMETHOD::BENDERS);
+}
+
+void PrintExternalLoopData(LogDestination& log_destination,
+                           const CurrentIterationData& data,
+                           const HEADERSTYPE& type,
+                           const BENDERSMETHOD& method) {
+  log_destination << data.benders_num_run;
+  log_destination << std::scientific << std::setprecision(10)
+                  << data.external_loop_criterion;
+  PrintBendersData(log_destination, data, type, method);
+}
+void MathLoggerBaseExternalLoop::Print(const CurrentIterationData& data) {
+  PrintExternalLoopData(LogsDestination(), data, HeadersType(),
+                        BENDERSMETHOD::BENDERS);
 }
 
 void MathLoggerBendersByBatch::setHeadersList() {
   auto type = HeadersType();
-  HeadersManager headers_manager(type, BENDERSMETHOD::BENDERSBYBATCH);
+  HeadersManager headers_manager(type, BENDERSMETHOD::BENDERS_BY_BATCH);
 
   MathLogger::setHeadersList(headers_manager.headers_list);
 }
 
+void MathLoggerBendersByBatchExternalLoop::setHeadersList() {
+  auto type = HeadersType();
+  HeadersManagerExternalLoop headers_manager(type,
+                                             BENDERSMETHOD::BENDERS_BY_BATCH);
+  MathLogger::setHeadersList(headers_manager.headers_list);
+}
+
 void MathLoggerBendersByBatch::Print(const CurrentIterationData& data) {
-  PrintData(LogsDestination(), data, HeadersType(),
-            BENDERSMETHOD::BENDERSBYBATCH);
+  PrintBendersData(LogsDestination(), data, HeadersType(),
+                   BENDERSMETHOD::BENDERS_BY_BATCH);
+}
+void MathLoggerBendersByBatchExternalLoop::Print(
+    const CurrentIterationData& data) {
+  PrintExternalLoopData(LogsDestination(), data, HeadersType(),
+                        BENDERSMETHOD::BENDERS);
 }
 
 MathLoggerFile::MathLoggerFile(const BENDERSMETHOD& method,

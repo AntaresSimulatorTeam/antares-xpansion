@@ -16,17 +16,33 @@
 #include "gflags/gflags.h"
 #include "glog/logging.h"
 
-BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size) {
-  auto method = (batch_size == 0 || batch_size == coupling_map_size - 1)
-                    ? BENDERSMETHOD::BENDERS
-                    : BENDERSMETHOD::BENDERSBYBATCH;
+BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size,
+                                  bool external_loop) {
+  /*
+    classical benders: 0*100 + 0*10 = 0
+    classical benders + external loop: 0*100 + 1*10 = 10
+    benders by batch: 1*100 + 0*10 = 100
+    benders by batch + external loop: 1*100 + 1*10 = 110
+  */
 
-  return method;
+  auto benders_algo_score =
+      (batch_size == 0 || batch_size == coupling_map_size - 1) ? 0 : 1;
+  auto external_loop_score = external_loop ? 1 : 0;
+  auto total_scrore = 100 * benders_algo_score + 10 * external_loop_score;
+  switch (total_score) {
+    case 0:
+      /* code */
+      break;
+
+    default:
+      break;
+  }
 }
 
 pBendersBase PrepareForExecution(BendersLoggerBase& benders_loggers,
                                  const SimulationOptions& options,
-                                 const char* argv0, mpi::environment& env,
+                                 const char* argv0, bool external_loop,
+                                 mpi::environment& env,
                                  mpi::communicator& world) {
   pBendersBase benders;
   Logger logger;
@@ -77,7 +93,7 @@ pBendersBase PrepareForExecution(BendersLoggerBase& benders_loggers,
       benders = std::make_shared<BendersMpi>(benders_options, logger, writer,
                                              env, world, math_log_driver);
       break;
-    case BENDERSMETHOD::BENDERSBYBATCH:
+    case BENDERSMETHOD::BENDERS_BY_BATCH:
       benders = std::make_shared<BendersByBatch>(
           benders_options, logger, writer, env, world, math_log_driver);
       break;
@@ -98,8 +114,7 @@ pBendersBase PrepareForExecution(BendersLoggerBase& benders_loggers,
   writer->write_master_name(options.MASTER_NAME);
   writer->write_solver_name(options.SOLVER_NAME);
   return benders;
-  }
-
+}
 
 int RunBenders(char** argv, const std::filesystem::path& options_file,
                mpi::environment& env, mpi::communicator& world) {

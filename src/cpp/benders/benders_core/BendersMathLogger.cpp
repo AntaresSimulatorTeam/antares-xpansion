@@ -3,10 +3,15 @@
 #include "LogUtils.h"
 #include "LoggerUtils.h"
 
-HeadersManager::HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method) {
+HeadersManager::HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method)
+    : type_(type), method_(method) {
+  FillHeadersList();
+}
+
+HeadersManager::FillHeadersList() {
   headers_list.push_back("Ite");
   headers_list.push_back("Lb");
-  if (method == BENDERSMETHOD::BENDERS) {
+  if (method_ == BENDERSMETHOD::BENDERS) {
     headers_list.push_back("Ub");
     headers_list.push_back("BestUb");
     headers_list.push_back("AbsGap");
@@ -15,20 +20,31 @@ HeadersManager::HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method) {
   headers_list.push_back("MinSpx");
   headers_list.push_back("MaxSpx");
 
-  if (type == HEADERSTYPE::LONG || method == BENDERSMETHOD::BENDERSBYBATCH) {
+  if (type_ == HEADERSTYPE::LONG ||
+      method_ == BENDERSMETHOD::BENDERS_BY_BATCH) {
     headers_list.push_back("NbSubPbSolv");
   }
 
-  if (type == HEADERSTYPE::LONG) {
+  if (type_ == HEADERSTYPE::LONG) {
     headers_list.push_back("CumulNbSubPbSolv");
   }
   headers_list.push_back("IteTime (s)");
   headers_list.push_back("MasterTime (s)");
   headers_list.push_back("SPWallTime (s)");
-  if (type == HEADERSTYPE::LONG) {
+  if (type_ == HEADERSTYPE::LONG) {
     headers_list.push_back("SPCpuTime (s)");
     headers_list.push_back("NotSolvingWallTime (s)");
   }
+}
+
+HeadersManagerExternalLoop::HeadersManagerExternalLoop(
+    HEADERSTYPE type, const BENDERSMETHOD& method)
+    : HeadersManager(type, method) {}
+
+HeadersManagerExternalLoop::FillHeadersList() {
+  headers_list.push_back("Benders Run");
+  headers_list.push_back("Criterion value");
+  HeadersManager::FillHeadersList();
 }
 
 LogDestination::LogDestination(std::streamsize width)
@@ -73,5 +89,55 @@ void MathLoggerDriver::write_header() {
 void MathLoggerDriver::display_message(const std::string& str) {
   for (auto logger : math_loggers_) {
     logger->display_message(str);
+  }
+}
+
+MathLoggerImplementation::MathLoggerImplementation(
+    const BENDERSMETHOD& method, const std::filesystem::path& file_path,
+    std::streamsize width = 40, HEADERSTYPE type = HEADERSTYPE::LONG) {
+  switch (method) {
+    case BENDERSMETHOD::BENDERS:
+      implementation_ =
+          std::make_shared<MathLoggerBase>(file_path, width, type);
+      break;
+    case BENDERSMETHOD::BENDERS_EXTERNAL_LOOP:
+      implementation_ =
+          std::make_shared<MathLoggerBaseExternalLoop>(file_path, width, type);
+      break;
+    case BENDERSMETHOD::BENDERS_BY_BATCH:
+      implementation_ =
+          std::make_shared<MathLoggerBendersByBatch>(file_path, width, type);
+      break;
+    case BENDERSMETHOD::BENDERS_BY_BATCH_EXTERNAL_LOOP:
+      implementation_ = std::make_shared<MathLoggerBendersByBatchExternalLoop>(
+          file_path, width, type);
+      break;
+
+    default:
+      break;
+  }
+}
+
+MathLoggerImplementation::MathLoggerImplementation(
+    const BENDERSMETHOD& method, std::streamsize width = 40,
+    HEADERSTYPE type = HEADERSTYPE::LONG) {
+    switch (method) {
+    case BENDERSMETHOD::BENDERS:
+      implementation_ = std::make_shared<MathLoggerBase>(width, type);
+      break;
+    case BENDERSMETHOD::BENDERS_EXTERNAL_LOOP:
+      implementation_ =
+          std::make_shared<MathLoggerBaseExternalLoop>(width, type);
+      break;
+    case BENDERSMETHOD::BENDERS_BY_BATCH:
+      implementation_ = std::make_shared<MathLoggerBendersByBatch>(width, type);
+      break;
+    case BENDERSMETHOD::BENDERS_BY_BATCH_EXTERNAL_LOOP:
+      implementation_ =
+          std::make_shared<MathLoggerBendersByBatchExternalLoop>(width, type);
+      break;
+
+    default:
+      break;
   }
 }

@@ -79,7 +79,6 @@ class BendersBase {
   // BendersCuts current_iteration_cuts_;
   VariableMap master_variable_map_;
   CouplingMap coupling_map_;
-  std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
   // for warmstart initialize all data, master, subproblem etc...?
   bool init_data_ = true;
   bool init_problems_ = true;
@@ -219,5 +218,6 @@ class BendersBase {
  public:
   Logger _logger;
   Writer _writer;
+  std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

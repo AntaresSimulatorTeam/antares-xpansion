@@ -49,7 +49,12 @@ typedef std::vector<ActiveCut> ActiveCutStorage;
 typedef std::pair<std::string, std::string> mps_coupling;
 typedef std::list<mps_coupling> mps_coupling_list;
 
-enum class BENDERSMETHOD { BENDERS, BENDERSBYBATCH };
+enum class BENDERSMETHOD {
+  BENDERS,
+  BENDERS_BY_BATCH,
+  BENDERS_EXTERNAL_LOOP,
+  BENDERS_BY_BATCH_EXTERNAL_LOOP
+};
 
 struct Predicate {
   bool operator()(PointPtr const &lhs, PointPtr const &rhs) const {

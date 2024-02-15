@@ -13,7 +13,20 @@ const std::string MATHLOGGERCONTEXT = "Benders";
 enum class HEADERSTYPE { SHORT, LONG };
 struct HeadersManager {
   explicit HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method);
+
   std::vector<std::string> headers_list;
+  HEADERSTYPE type_;
+  BENDERSMETHOD method_;
+
+ protected:
+  virtual void FillHeadersList();
+};
+struct HeadersManagerExternalLoop : HeadersManager {
+  explicit HeadersManagerExternalLoop(HEADERSTYPE type,
+                                      const BENDERSMETHOD& method);
+
+ protected:
+  void FillHeadersList() override;
 };
 
 class LogDestination {
@@ -90,8 +103,17 @@ struct MathLoggerBase : public MathLogger {
   void setHeadersList() override;
 };
 
+struct MathLoggerBaseExternalLoop : public MathLoggerBase {
+  void Print(const CurrentIterationData& data) override;
+  void setHeadersList() override;
+};
+
 struct MathLoggerBendersByBatch : public MathLogger {
   using MathLogger::MathLogger;
+  void Print(const CurrentIterationData& data) override;
+  void setHeadersList() override;
+};
+struct MathLoggerBendersByBatchExternalLoop : public MathLoggerBase {
   void Print(const CurrentIterationData& data) override;
   void setHeadersList() override;
 };
@@ -101,26 +123,10 @@ class MathLoggerImplementation : public MathLoggerBehaviour {
   explicit MathLoggerImplementation(const BENDERSMETHOD& method,
                                     const std::filesystem::path& file_path,
                                     std::streamsize width = 40,
-                                    HEADERSTYPE type = HEADERSTYPE::LONG) {
-    if (method == BENDERSMETHOD::BENDERS) {
-      implementation_ =
-          std::make_shared<MathLoggerBase>(file_path, width, type);
-    } else if (method == BENDERSMETHOD::BENDERSBYBATCH) {
-      implementation_ =
-          std::make_shared<MathLoggerBendersByBatch>(file_path, width, type);
-    }
-    // else
-  }
+                                    HEADERSTYPE type = HEADERSTYPE::LONG);
   explicit MathLoggerImplementation(const BENDERSMETHOD& method,
                                     std::streamsize width = 40,
-                                    HEADERSTYPE type = HEADERSTYPE::LONG) {
-    if (method == BENDERSMETHOD::BENDERS) {
-      implementation_ = std::make_shared<MathLoggerBase>(width, type);
-    } else if (method == BENDERSMETHOD::BENDERSBYBATCH) {
-      implementation_ = std::make_shared<MathLoggerBendersByBatch>(width, type);
-    }
-    // else }
-  }
+                                    HEADERSTYPE type = HEADERSTYPE::LONG);
 
   void Print(const CurrentIterationData& data) { implementation_->Print(data); }
 

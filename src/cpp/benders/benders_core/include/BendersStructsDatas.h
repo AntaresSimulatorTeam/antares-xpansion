@@ -38,6 +38,9 @@ struct CurrentIterationData {
   int cumulative_number_of_subproblem_solved;
   int min_simplexiter;
   int max_simplexiter;
+  // ugly
+  int benders_num_run;
+  double external_loop_criterion;
 };
 
 // /*! \struct to store benders cuts data
