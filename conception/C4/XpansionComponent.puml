@@ -1,0 +1,27 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!include <C4/C4_Component>
+
+LAYOUT_WITH_LEGEND()
+title Component diagram for Xpansion
+
+Container(web, "Antares Web", "React/Python", "Manage studies")
+Container(simulator, "Antares simulator", "C++", "Quantify the adequacy, or the economic performance of interconnected energy systems")
+Container(scripts, "Script R", "R")
+
+Container_Boundary(xpansion, "Xpansion") {
+    Component(pbgen, "Problem Generation", "C++", "Update antares simulator results with candidates")
+    Component(benders, "Benders", "C++", "Solve the problem")
+    Component(driver, "Drivers (executable)", "python", "Perform checks on input data and control application flow")
+    Component(fullrun, "Full run", "c++", "Encompass Problem Generation and Benders")
+
+    Rel(driver, benders, "Start", "CLI")
+    Rel(driver, pbgen, "Start", "CLI")
+    Rel(driver, fullrun, "Start", "CLI")
+}
+
+Rel(driver, simulator, "Run", "CLI")
+Rel(web, driver, "Start", "CLI")
+Rel(scripts, xpansion, "Generate study", "files")
+
+@enduml
