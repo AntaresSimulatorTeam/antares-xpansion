@@ -47,7 +47,7 @@ class UserFile : public ILogger {
       const LogData &best_iterations_data) override;
   void LogAtInitialRelaxation() override;
   void LogAtSwitchToInteger() override;
-  void cumulative_number_of_sub_problem_resolved(int number) override;
+  void cumulative_number_of_sub_problem_solved(int number) override;
 
  private:
   std::ofstream _file;

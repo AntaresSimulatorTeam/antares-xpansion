@@ -8,7 +8,7 @@ FileBuffer FileInBuffer::run(const std::filesystem::path& filePath) {
   std::ifstream file(filePath);
   std::stringstream buffer;
   if (file.bad()) {
-    std::cerr << "Error while reading file : " << filePath.c_str() << std::endl;
+    std::cerr << "Error while reading file : " << filePath << std::endl;
     return {};
   }
   buffer << file.rdbuf();

@@ -23,7 +23,7 @@ typedef struct xo_prob_struct* XPRSprob;
 
 namespace LoadXpress {
 
-void printXpressBanner(bool error);
+void printXpressBanner();
 
 bool initXpressEnv(bool verbose = true, int xpress_oem_license_key = 0);
 

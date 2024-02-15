@@ -13,12 +13,14 @@
 #include "solver_utils.h"
 
 BendersBase::BendersBase(BendersBaseOptions options, Logger logger,
-                         Writer writer)
+                         Writer writer,
+                         std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
     : _options(std::move(options)),
       _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) /
                      (_options.CSV_NAME + ".csv")),
       _logger(std::move(logger)),
-      _writer(std::move(writer)) {}
+      _writer(std::move(writer)),
+      mathLoggerDriver_(mathLoggerDriver) {}
 
 /*!
  *  \brief Initialize set of data used in the loop
@@ -34,7 +36,7 @@ void BendersBase::init_data() {
   _data.best_it = 0;
   _data.stopping_criterion = StoppingCriterion::empty;
   _data.is_in_initial_relaxation = false;
-  _data.number_of_subproblem_resolved = 0;
+  _data.cumulative_number_of_subproblem_solved = 0;
 }
 
 void BendersBase::OpenCsvFile() {
@@ -177,7 +179,7 @@ bool BendersBase::ShouldRelaxationStop() const {
  *
  */
 void BendersBase::UpdateStoppingCriterion() {
-  if (_data.elapsed_time > _options.TIME_LIMIT)
+  if (_data.benders_time > _options.TIME_LIMIT)
     _data.stopping_criterion = StoppingCriterion::timelimit;
   else if ((_options.MAX_ITERATIONS != -1) &&
            (_data.it >= _options.MAX_ITERATIONS))
@@ -467,7 +469,7 @@ LogData BendersBase::FinalLogData() const {
   result.subproblem_cost = best_iteration_data.subproblem_cost;
   result.invest_cost = best_iteration_data.invest_cost;
   result.cumulative_number_of_subproblem_resolved =
-      _data.number_of_subproblem_resolved +
+      _data.cumulative_number_of_subproblem_solved +
       cumulative_number_of_subproblem_resolved_before_resume;
 
   return result;
@@ -525,7 +527,7 @@ Output::Iteration BendersBase::iteration(
       masterDataPtr_l->_invest_cost + masterDataPtr_l->_operational_cost;
   iteration.candidates = candidates_data(masterDataPtr_l);
   iteration.cumulative_number_of_subproblem_resolved =
-      _data.number_of_subproblem_resolved +
+      _data.cumulative_number_of_subproblem_solved +
       cumulative_number_of_subproblem_resolved_before_resume;
   return iteration;
 }
@@ -648,44 +650,33 @@ LogData BendersBase::bendersDataToLogData(
           optimal_gap,
           optimal_gap / data.best_ub,
           _options.MAX_ITERATIONS,
-          data.elapsed_time,
+          data.benders_time,
           data.timer_master,
           data.subproblems_walltime,
-          data.number_of_subproblem_resolved +
+          data.cumulative_number_of_subproblem_solved +
               cumulative_number_of_subproblem_resolved_before_resume};
 }
-void BendersBase::set_log_file(const std::filesystem::path &log_file) {
-  _log_name = log_file;
-
-  solver_log_manager_ = SolverLogManager(log_name());
+void BendersBase::set_solver_log_file(const std::filesystem::path &log_file) {
+  solver_log_file_ = log_file;
+  solver_log_manager_ = SolverLogManager(solver_log_file_);
 }
 
 /*!
- *  \brief Build the input from the structure file
+ *  \brief set the input
  *
- *	Function to build the map linking each problem name to its variables and
- *their id
- *
- *  \param root : root of the structure file
- *
- *  \param summary_name : name of the structure file
- *
- *  \param coupling_map : empty map to increment
- *
- *  \note The id in the coupling_map is that of the variable in the solver
- *responsible for the creation of the structure file.
+ *  \param coupling_map : CouplingMap
  */
-void BendersBase::build_input_map() {
-  auto input = build_input(get_structure_path());
-  _totalNbProblems = input.size();
+void BendersBase::set_input_map(const CouplingMap &coupling_map) {
+  coupling_map_ = coupling_map;
+  _totalNbProblems = coupling_map_.size();
   _writer->write_nbweeks(_totalNbProblems);
   _data.nsubproblem = _totalNbProblems - 1;
-  master_variable_map = get_master_variable_map(input);
-  coupling_map = GetCouplingMap(input);
+  master_variable_map_ = get_master_variable_map(coupling_map_);
+  coupling_map_.erase(get_master_name());
 }
 
 std::map<std::string, int> BendersBase::get_master_variable_map(
-    std::map<std::string, std::map<std::string, int>> input_map) const {
+    const std::map<std::string, std::map<std::string, int>> &input_map) const {
   auto const it_master(input_map.find(get_master_name()));
   if (it_master == input_map.end()) {
     _logger->display_message(LOGLOCATION + "UNABLE TO FIND " +
@@ -693,17 +684,6 @@ std::map<std::string, int> BendersBase::get_master_variable_map(
     std::exit(1);
   }
   return it_master->second;
-}
-
-CouplingMap BendersBase::GetCouplingMap(CouplingMap input) const {
-  CouplingMap couplingMap;
-  auto master_name = get_master_name();
-  std::copy_if(input.begin(), input.end(),
-               std::inserter(couplingMap, couplingMap.end()),
-               [master_name](const CouplingMap::value_type &kvp) {
-                 return kvp.first != master_name;
-               });
-  return couplingMap;
 }
 
 void BendersBase::reset_master(WorkerMaster *worker_master) {
@@ -725,7 +705,7 @@ void BendersBase::free_subproblems() {
 }
 void BendersBase::MatchProblemToId() {
   int count = 0;
-  for (const auto &problem : coupling_map) {
+  for (const auto &problem : coupling_map_) {
     _problem_to_id[problem.first] = count;
     count++;
   }
@@ -773,6 +753,24 @@ void BendersBase::SetSubproblemCost(const double &subproblem_cost) {
   _data.subproblem_cost = subproblem_cost;
 }
 
+/*!
+*	\brief Update maximum and minimum of simplex iterations
+*
+*	\param subproblem_iterations : number of iterations done with the subproblem
+*
+*/
+void BendersBase::BoundSimplexIterations(int subproblem_iterations){
+  
+  _data.max_simplexiter = (_data.max_simplexiter < subproblem_iterations) ? subproblem_iterations : _data.max_simplexiter; 
+  _data.min_simplexiter = (_data.min_simplexiter > subproblem_iterations) ? subproblem_iterations : _data.min_simplexiter; 
+
+}
+
+void BendersBase::ResetSimplexIterationsBounds()
+{
+	_data.max_simplexiter = 0;
+	_data.min_simplexiter = std::numeric_limits<int>::max();
+}
 bool BendersBase::IsResumeMode() const { return _options.RESUME; }
 
 void BendersBase::UpdateMaxNumberIterationResumeMode(
@@ -787,7 +785,7 @@ void BendersBase::UpdateMaxNumberIterationResumeMode(
   }
 }
 
-double BendersBase::execution_time() const { return _data.elapsed_time; }
+double BendersBase::execution_time() const { return _data.benders_time; }
 LogData BendersBase::GetBestIterationData() const {
   return best_iteration_data;
 }
@@ -833,7 +831,7 @@ void BendersBase::ClearCurrentIterationCutTrace() const {
 }
 void BendersBase::EndWritingInOutputFile() const {
   _writer->updateEndTime();
-  _writer->write_duration(_data.elapsed_time);
+  _writer->write_duration(_data.benders_time);
   SaveSolutionInOutputFile();
 }
 double BendersBase::GetBendersTime() const { return benders_timer.elapsed(); }

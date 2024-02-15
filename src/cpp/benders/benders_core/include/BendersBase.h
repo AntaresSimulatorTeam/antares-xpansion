@@ -3,6 +3,7 @@
 #include <execution>
 #include <filesystem>
 
+#include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
 #include "ILogger.h"
 #include "OutputWriter.h"
@@ -29,17 +30,22 @@ auto selectPolicy(lambda f, bool shouldParallelize) {
 class BendersBase {
  public:
   virtual ~BendersBase() = default;
-  BendersBase(BendersBaseOptions options, Logger logger, Writer writer);
+  BendersBase(BendersBaseOptions options, Logger logger, Writer writer,
+              std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
   virtual void launch() = 0;
-  void set_log_file(const std::filesystem::path &log_name);
-  [[nodiscard]] std::filesystem::path log_name() const { return _log_name; }
+  void set_solver_log_file(const std::filesystem::path &log_file);
+  [[nodiscard]] std::filesystem::path solver_log_file() const {
+    return solver_log_file_;
+  }
   double execution_time() const;
   virtual std::string BendersName() const = 0;
+  void set_input_map(const CouplingMap &coupling_map);
 
  protected:
   CurrentIterationData _data;
-  VariableMap master_variable_map;
-  CouplingMap coupling_map;
+  VariableMap master_variable_map_;
+  CouplingMap coupling_map_;
+  std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
 
  protected:
   virtual void free() = 0;
@@ -70,7 +76,6 @@ class BendersBase {
   [[nodiscard]] std::filesystem::path get_structure_path() const;
   [[nodiscard]] LogData bendersDataToLogData(
       const CurrentIterationData &data) const;
-  virtual void build_input_map();
   virtual void reset_master(WorkerMaster *worker_master);
   void free_master() const;
   void free_subproblems();
@@ -132,9 +137,12 @@ class BendersBase {
   BendersBaseOptions Options() const { return _options; }
   virtual void UpdateStoppingCriterion();
   virtual bool ShouldRelaxationStop() const;
-  int GetNumOfSubProblemsResolvedBeforeResume() {
+  int GetNumOfSubProblemsSolvedBeforeResume() {
     return cumulative_number_of_subproblem_resolved_before_resume;
   }
+
+  void BoundSimplexIterations(int subproblem_iteration);
+  void ResetSimplexIterationsBounds();
 
   SolverLogManager solver_log_manager_;
 
@@ -150,8 +158,7 @@ class BendersBase {
   void compute_cut_aggregate(const SubProblemDataMap &subproblem_data_map);
   void compute_cut(const SubProblemDataMap &subproblem_data_map);
   [[nodiscard]] std::map<std::string, int> get_master_variable_map(
-      std::map<std::string, std::map<std::string, int>> input_map) const;
-  [[nodiscard]] CouplingMap GetCouplingMap(CouplingMap input) const;
+      const std::map<std::string, std::map<std::string, int>> &input_map) const;
   [[nodiscard]] virtual bool shouldParallelize() const = 0;
   Output::Iteration iteration(const WorkerMasterDataPtr &masterDataPtr_l) const;
   LogData FinalLogData() const;
@@ -159,7 +166,7 @@ class BendersBase {
  private:
   BendersBaseOptions _options;
   unsigned int _totalNbProblems = 0;
-  std::filesystem::path _log_name = "";
+  std::filesystem::path solver_log_file_ = "";
   BendersRelevantIterationsData relevantIterationData_ = {
       std::make_shared<WorkerMasterData>(), nullptr};
   WorkerMasterPtr _master;

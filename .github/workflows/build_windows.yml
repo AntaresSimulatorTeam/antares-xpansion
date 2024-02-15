@@ -21,7 +21,9 @@ jobs:
       matrix:
         os: [ windows-latest ]
         triplet: [ x64-windows ]
-        xprs: [ XPRESS-ON, XPRESS-OFF ]
+        xprs: [ { value: XPRESS-ON, ref: 8.13a },
+                { value: XPRESS-ON, ref: 9.2.5 },
+                { value: XPRESS-OFF } ]
     env:
       XPRESSDIR: ${{ github.workspace }}\xpress
       XPRESS: ${{ github.workspace }}\xpress\bin
@@ -35,12 +37,12 @@ jobs:
           submodules: true
 
       - name: Checkout xpressmp linux
-        if: matrix.xprs == 'XPRESS-ON'
+        if: matrix.xprs.value == 'XPRESS-ON'
         uses: actions/checkout@v3
         with:
           repository: rte-france/xpress-mp-temp
           path: ${{ env.XPRESSDIR }}
-          ref: 8.13a
+          ref: ${{matrix.xprs.ref}}
           token: ${{ secrets.AS_TOKEN }}
 
       - name: Get release
@@ -125,7 +127,7 @@ jobs:
         #I can't seem to expand the variable in the cmake command line so export it in env
         shell: bash
         run: |
-          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF"
+          [[ ${{ matrix.xprs.value }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF"
           echo "XPRESS_VALUE=$XPRESS_VALUE" >> $GITHUB_ENV
 
       - name: Configure

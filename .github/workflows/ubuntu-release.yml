@@ -98,6 +98,17 @@ jobs:
           cd /usr/src/googletest/
           sudo cmake .
           sudo cmake --build . --target install
+          sudo apt-get install -y g++-10 gcc-10
+
+      - name: Update alternatives
+        #mpicxx  uses "g++" so we need g++ to be symbolic link to g++-10
+        run: |
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
+          sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 30
+          sudo update-alternatives --set cc /usr/bin/gcc
+          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30
+          sudo update-alternatives --set c++ /usr/bin/g++
 
       - name: Read antares-solver version
         id: antares-version
@@ -132,6 +143,7 @@ jobs:
         uses: ./.github/workflows/compile-boost
         with:
           prefix: "../rte-antares-deps-Release/"
+          load-toolset: 'false'
 
       - name: Download userguide
         uses: actions/download-artifact@v3
@@ -221,6 +233,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           gh release upload ${{ steps.get_release.outputs.tag_name }} _build/${{env.TGZ_NAME}}
-          gh release upload ${{ steps.get_release.outputs.tag_name }} _build/${{env.TGZ_NAME}}
+          gh release upload ${{ steps.get_release.outputs.tag_name }} ${{ steps.create-single-file.outputs.archive-path }}
 
       ########################

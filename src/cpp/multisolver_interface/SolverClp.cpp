@@ -10,10 +10,7 @@ int SolverClp::_NumberOfProblems = 0;
 
 SolverClp::SolverClp(SolverLogManager &log_manager) : SolverClp() {
   _fp = log_manager.log_file_ptr;
-  if (!_fp) {
-    std::cout << "Empty log file name, fallback to default behaviour"
-              << std::endl;
-  } else {
+  if (_fp) {
     _clp.messageHandler()->setFilePointer(_fp);
   }
 }
@@ -490,7 +487,7 @@ void SolverClp::get_mip_sol(double *primals) {
 ---------------------------
 *************************************************************************************************/
 void SolverClp::set_output_log_level(int loglevel) {
-  if (loglevel > 0) {
+  if (loglevel > 1 && _fp) {
     _clp.messageHandler()->setLogLevel(1);
   } else {
     _clp.messageHandler()->setLogLevel(0);

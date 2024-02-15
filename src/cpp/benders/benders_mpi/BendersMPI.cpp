@@ -9,8 +9,9 @@
 
 BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger logger,
                        Writer writer, mpi::environment &env,
-                       mpi::communicator &world)
-    : BendersBase(options, logger, std::move(writer)),
+                       mpi::communicator &world,
+                       std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
+    : BendersBase(options, logger, std::move(writer), mathLoggerDriver),
       _env(env),
       _world(world) {}
 
@@ -27,7 +28,7 @@ void BendersMpi::InitializeProblems() {
   BuildMasterProblem();
   int current_problem_id = 0;
   // Dispatch subproblems to process
-  for (const auto &problem : coupling_map) {
+  for (const auto &problem : coupling_map_) {
     // In case there are more subproblems than process
     if (auto process_to_feed = current_problem_id % _world.size();
         process_to_feed ==
@@ -42,7 +43,7 @@ void BendersMpi::InitializeProblems() {
 }
 void BendersMpi::BuildMasterProblem() {
   if (_world.rank() == rank_0) {
-    reset_master(new WorkerMaster(master_variable_map, get_master_path(),
+    reset_master(new WorkerMaster(master_variable_map_, get_master_path(),
                                   get_solver_name(), get_log_level(),
                                   _data.nsubproblem, solver_log_manager_,
                                   IsResumeMode(), _logger));
@@ -120,10 +121,10 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts() {
   check_if_some_proc_had_a_failure(success);
   gather_subproblems_cut_package_and_build_cuts(subproblem_data_map, walltime);
   if (Rank() == rank_0) {
-    _data.number_of_subproblem_resolved += _data.nsubproblem;
-    _logger->cumulative_number_of_sub_problem_resolved(
-        _data.number_of_subproblem_resolved +
-        GetNumOfSubProblemsResolvedBeforeResume());
+    _data.cumulative_number_of_subproblem_solved += _data.nsubproblem;
+    _logger->cumulative_number_of_sub_problem_solved(
+        _data.cumulative_number_of_subproblem_solved +
+        GetNumOfSubProblemsSolvedBeforeResume());
   }
 }
 
@@ -137,6 +138,7 @@ void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
     Reduce(GetSubproblemsCpuTime(), cumulative_subproblems_timer_per_iter,
            std::plus<double>(), rank_0);
     SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter);
+    // only rank_0 receive non-emtpy gathered_subproblem_map
     master_build_cuts(gathered_subproblem_map);
   }
 }
@@ -153,6 +155,8 @@ void BendersMpi::master_build_cuts(
   for (const auto &subproblem_data_map : gathered_subproblem_map) {
     for (auto &&[_, subproblem_data] : subproblem_data_map) {
       SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
+      // compute delta_cut >= options.CUT_MASTER_TOL;
+      BoundSimplexIterations(subproblem_data.simplex_iter);
     }
   }
 
@@ -189,17 +193,16 @@ void BendersMpi::write_exception_message(const std::exception &ex) const {
   _logger->display_message(error);
 }
 
-void BendersMpi::step_4_update_best_solution(int rank,
-                                             const Timer &timer_master) {
+void BendersMpi::step_4_update_best_solution(int rank) {
   if (rank == rank_0) {
     compute_ub();
     update_best_ub();
     _logger->log_at_iteration_end(bendersDataToLogData(_data));
 
     UpdateTrace();
-
-    _data.elapsed_time = GetBendersTime();
-    set_timer_master(timer_master.elapsed());
+    _data.iteration_time = -_data.benders_time;
+    _data.benders_time = GetBendersTime();
+    _data.iteration_time += _data.benders_time;
     _data.stop = ShouldBendersStop();
   }
 }
@@ -224,9 +227,10 @@ void BendersMpi::free() {
  */
 void BendersMpi::Run() {
   PreRunInitialization();
+  _data.number_of_subproblem_solved = _data.nsubproblem;
   while (!_data.stop) {
-    Timer timer_master;
     ++_data.it;
+    ResetSimplexIterationsBounds();
 
     /*Solve Master problem, get optimal value and cost and send it to process*/
     step_1_solve_master();
@@ -238,13 +242,15 @@ void BendersMpi::Run() {
     }
 
     if (!_exceptionRaised) {
-      step_4_update_best_solution(_world.rank(), timer_master);
+      step_4_update_best_solution(_world.rank());
     }
     _data.stop |= _exceptionRaised;
 
     broadcast(_world, _data.is_in_initial_relaxation, rank_0);
     broadcast(_world, _data.stop, rank_0);
-    if (_world.rank() == rank_0) {
+
+    if (Rank() == rank_0) {
+      mathLoggerDriver_->Print(_data);
       SaveCurrentBendersData();
     }
   }
@@ -274,11 +280,10 @@ void BendersMpi::PreRunInitialization() {
       OpenCsvFile();
     }
   }
+  mathLoggerDriver_->write_header();
 }
-void BendersMpi::launch() {
-  build_input_map();
-  _world.barrier();
 
+void BendersMpi::launch() {
   InitializeProblems();
   _world.barrier();
 

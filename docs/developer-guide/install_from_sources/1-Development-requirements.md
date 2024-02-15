@@ -23,14 +23,14 @@ The compilation of  Antares-Xpansion requires C++17 support in order to use [exe
         sudo yum config-manager --set-enabled PowerTools
         ```
     
-    You can then use a more recent version of GCC by enabling `devtoolset-9`:
+    You can then use a more recent version of GCC by enabling `devtoolset-10`:
     ```
-    sudo yum install devtoolset-9
+    sudo yum install devtoolset-10
     ```
     
     Before compiling Antares-Xpansion, we must launch a new shell with `scl` tool :
     ```
-    scl enable devtoolset-9 bash
+    scl enable devtoolset-10 bash
     ```
 === "Ubuntu"
 

@@ -39,7 +39,7 @@ def remove_outputs(study_path):
                 shutil.rmtree(f)
 
 
-def launch_xpansion(install_dir, study_path, method: BendersMethod, allow_run_as_root=False, nproc: int = 4):
+def launch_xpansion(install_dir, study_path, allow_run_as_root=False, nproc: int = 4):
     # Clean study output
     remove_outputs(study_path)
 
@@ -52,8 +52,6 @@ def launch_xpansion(install_dir, study_path, method: BendersMethod, allow_run_as
         install_dir_full,
         "--dataDir",
         str(study_path),
-        "--method",
-        method.value,
         "--step",
         "full",
         "-n",
@@ -353,7 +351,7 @@ def test_full_study_long_sequential(
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study,
-                    BendersMethod.BENDERS, allow_run_as_root, 1)
+                    allow_run_as_root, 1)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -375,8 +373,7 @@ def test_full_study_long_mpi(
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study,
-                    BendersMethod.BENDERS, allow_run_as_root)
+    launch_xpansion(install_dir, tmp_study, allow_run_as_root)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -401,8 +398,7 @@ def test_full_study_long_benders_by_batch_parallel(
     shutil.move(tmp_study/"user"/"expansion"/"settings_by_batch.ini",
                 tmp_study/"user"/"expansion"/"settings.ini")
     method = BendersMethod.BENDERS_BY_BATCH
-    launch_xpansion(install_dir, tmp_study,
-                    method, allow_run_as_root)
+    launch_xpansion(install_dir, tmp_study, allow_run_as_root)
     verify_solution(tmp_study, expected_values,
                     expected_investment_solution, method)
     verify_study_update(
@@ -569,8 +565,7 @@ def test_full_study_medium_sequential(
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study,
-                    BendersMethod.BENDERS, allow_run_as_root, 1)
+    launch_xpansion(install_dir, tmp_study, allow_run_as_root, 1)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -592,8 +587,7 @@ def test_full_study_medium_parallel(
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study,
-                    BendersMethod.BENDERS, allow_run_as_root)
+    launch_xpansion(install_dir, tmp_study, allow_run_as_root)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -618,8 +612,7 @@ def test_full_study_medium_benders_by_batch_parallel(
     shutil.move(tmp_study/"user"/"expansion"/"settings_by_batch.ini",
                 tmp_study/"user"/"expansion"/"settings.ini")
     method = BendersMethod.BENDERS_BY_BATCH
-    launch_xpansion(install_dir, tmp_study,
-                    method, allow_run_as_root)
+    launch_xpansion(install_dir, tmp_study, allow_run_as_root)
     verify_solution(tmp_study, expected_values,
                     expected_investment_solution, method)
     verify_study_update(
@@ -685,7 +678,7 @@ def test_full_study_short_sequential(
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study, BendersMethod.BENDERS,
+    launch_xpansion(install_dir, tmp_study,
                     allow_run_as_root, nproc=1)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
@@ -708,8 +701,7 @@ def test_full_study_short_parallel(
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    launch_xpansion(install_dir, tmp_study,
-                    BendersMethod.BENDERS, allow_run_as_root)
+    launch_xpansion(install_dir, tmp_study, allow_run_as_root)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
@@ -734,8 +726,7 @@ def test_full_study_short_benders_by_batch_parallel(
     shutil.move(tmp_study/"user"/"expansion"/"settings_by_batch.ini",
                 tmp_study/"user"/"expansion"/"settings.ini")
     method = BendersMethod.BENDERS_BY_BATCH
-    launch_xpansion(install_dir, tmp_study,
-                    method, allow_run_as_root)
+    launch_xpansion(install_dir, tmp_study, allow_run_as_root)
     verify_solution(tmp_study, expected_values,
                     expected_investment_solution, method)
     verify_study_update(

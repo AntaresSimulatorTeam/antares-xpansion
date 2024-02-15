@@ -82,6 +82,7 @@ jobs:
           pip3 install wheel #Does not work in requirements
           pip3 install -r requirements-tests.txt
 
+      - uses: ./.github/workflows/compile-gtest
       - name: Compile Boost
         uses: ./.github/workflows/compile-boost
         with:
@@ -99,7 +100,7 @@ jobs:
 
       - name: Configure
         run: |
-          source /opt/rh/devtoolset-9/enable
+          source /opt/rh/devtoolset-10/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake -B _build -S . \
@@ -108,7 +109,7 @@ jobs:
 
       - name: Build
         run: |
-          source /opt/rh/devtoolset-9/enable
+          source /opt/rh/devtoolset-10/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake --build _build --config Release -j2 --target install

@@ -333,6 +333,7 @@ class ConfigLoader:
 
         return int(batch_size_str)
 
+
     def additional_constraints(self):
         """
         returns path to additional constraints file
@@ -537,7 +538,7 @@ class ConfigLoader:
 
     def is_antares_study_output(self, study: Path):
         _, ext = os.path.splitext(study)
-        return ext == ".zip" or os.path.isdir(study) and '-Xpansion' not in study.name
+        return ext == ".zip" or (os.path.isdir(study) and '-Xpansion' in study.name)
 
     def last_modified_study(self, root_dir:Path)-> Path: 
         list_dir = os.listdir(root_dir)
@@ -598,8 +599,6 @@ class ConfigLoader:
     def benders_exe(self):
         return self.exe_path(self._config.BENDERS)
 
-    def benders_by_batch_exe(self):
-        return self.exe_path(self._config.BENDERS_BY_BATCH)
 
     def merge_mps_exe(self):
         return self.exe_path(self._config.MERGE_MPS)

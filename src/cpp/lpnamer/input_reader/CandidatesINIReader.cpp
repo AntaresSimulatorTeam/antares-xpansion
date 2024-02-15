@@ -29,9 +29,11 @@ std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(
     const std::filesystem::path &antaresIntercoFile) const {
   std::ifstream interco_filestream(antaresIntercoFile);
   if (!interco_filestream.good()) {
-    (*logger_)(LogUtils::LOGLEVEL::FATAL)
-        << LOGLOCATION << "unable to open " << antaresIntercoFile.string();
-    std::exit(1);
+    auto loglocation = LOGLOCATION;
+    using namespace std::string_literals;
+    auto message = "unable to open "s + antaresIntercoFile.string();
+    (*logger_)(LogUtils::LOGLEVEL::FATAL) << LOGLOCATION << message;
+    throw InvalidIntercoFile(message, loglocation);
   }
 
   return ReadLineByLineInterco(interco_filestream);

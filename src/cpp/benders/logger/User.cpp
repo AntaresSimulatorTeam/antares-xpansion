@@ -121,7 +121,7 @@ void User::LogAtSwitchToInteger() {
           << "--- Relaxed gap reached, switch master formulation to integer"
           << std::endl;
 }
-void User::cumulative_number_of_sub_problem_resolved(int number) {
+void User::cumulative_number_of_sub_problem_solved(int number) {
   _stream << PrefixMessage(LogUtils::LOGLEVEL::INFO, CONTEXT) << indent_1
           << "cumulative number of subproblem resolutions: " << number
           << std::endl;

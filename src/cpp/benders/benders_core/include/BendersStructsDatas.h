@@ -1,9 +1,9 @@
 #pragma once
 
+#include "ILogger.h"
 #include "SubproblemCut.h"
 #include "Worker.h"
 #include "common.h"
-#include "ILogger.h"
 
 struct CurrentIterationData {
   double subproblems_walltime;
@@ -15,6 +15,7 @@ struct CurrentIterationData {
   double best_ub;
   int deletedcut;
   int it;
+  double iteration_time;
   bool stop;
   double overall_subpb_cost_under_approx;
   std::vector<double> single_subpb_costs_under_approx;
@@ -28,10 +29,13 @@ struct CurrentIterationData {
   Point max_invest;
   int nsubproblem;
   int master_status;
-  double elapsed_time;
+  double benders_time;
   StoppingCriterion stopping_criterion;
   bool is_in_initial_relaxation;
-  int number_of_subproblem_resolved;
+  int number_of_subproblem_solved;
+  int cumulative_number_of_subproblem_solved;
+  int min_simplexiter;
+  int max_simplexiter;
 };
 /*!
  * \class WorkerMasterData

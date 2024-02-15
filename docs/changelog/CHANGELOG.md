@@ -13,7 +13,14 @@ v1.2 (10/2023)
 
 - Fix issue on windows with concurrent access to log files
 
-v1.1 (09/2023)
+v1.1.1 (09/2023)
+--------------------
+
+### Fix
+
+- Update performance graph in the documentation
+
+v1.1.0 (09/2023)
 --------------------
 
 ### Features

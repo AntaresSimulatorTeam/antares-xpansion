@@ -1,0 +1,42 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!include <C4/C4_Container>
+
+LAYOUT_WITH_LEGEND()
+title Container Diagram for Antares (simple)
+
+Person(Alice, "Alice", "Chargée d'étude")
+Person(Toph, "Toph", "Chargée d'étude")
+Person(Bob, "Bob", "Thésard")
+
+System_Boundary(antares, "Platform Antares", "Quantify the adequacy, or the economic performance of interconnected energy systems"){
+    Container(web, "Antares Web", "React/Python", "Manage studies")
+    Container(xpansion, "Xpansion", "C++", "Perform investment simulations for Antares studies")
+    Container(simulator, "Antares simulator", "C++", "Quantify the adequacy, or the economic performance of interconnected energy systems")
+    Container(scripts, "Script R", "R")
+}
+
+Rel(Alice, web, "Configure and run studies", "Web browser")
+Rel(Bob, simulator, "Try new things", "Local file")
+Rel(Bob, xpansion, "Try new things", "Local file")
+
+System_Ext(calin, "Calin", "Host Antares")
+
+Rel(web, calin, "Run simulator", "ssh/scp")
+Rel(web, calin, "Run xpansion", "ssh/scp")
+Rel(xpansion, simulator, "Run several iterations", "Command line")
+Rel(scripts, simulator, "Generate studies")
+Rel(scripts, xpansion, "Generate studies")
+Rel(scripts, web, "Provide studies", Rest)
+
+System_Ext(vms, "Windows Virtual Machines", "Host studies")
+Rel(Toph, vms, "Use VM to manipulate studies")
+Rel(vms, calin, "Run studies on", "Antares Launcher")
+Rel(vms, web, "Share studies", "E:")
+
+System_Ext(out, "Downstream systems (e.g. Imagrid)")
+Rel(out, antares, "Exploit results")
+
+System_Ext(in, "Upstream systems (e.g. User scripts)")
+Rel(in, scripts, "Provide data")
+@enduml

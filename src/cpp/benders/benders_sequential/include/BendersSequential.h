@@ -11,8 +11,9 @@
  */
 class BendersSequential : public BendersBase {
  public:
-  explicit BendersSequential(BendersBaseOptions const &options, Logger logger,
-                             Writer writer);
+  explicit BendersSequential(
+      BendersBaseOptions const &options, Logger logger, Writer writer,
+      std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
   virtual ~BendersSequential() = default;
   virtual void launch();
   virtual void BuildCut();

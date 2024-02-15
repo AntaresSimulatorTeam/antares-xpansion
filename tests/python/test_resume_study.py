@@ -31,7 +31,7 @@ class TestResumeStudy:
 
         with pytest.raises(ResumeStudy.StudyOutputPathError):
             ResumeStudy(ResumeStudyData(
-                output_path, "", "", "", "", ""))
+                output_path, "", "", "", ""))
 
     def test_fail_if_launcher_options_is_not_found(self, tmp_path):
 
@@ -39,7 +39,7 @@ class TestResumeStudy:
         output_path.mkdir()
         with pytest.raises(ResumeStudy.ResumeOptionsFileNotFound):
             resume_study = ResumeStudy(ResumeStudyData(
-                output_path, "fefe", "", "", "", ""))
+                output_path, "fefe", "", "", ""))
 
     def test_fail_if_launcher_options_is_empty(self, tmp_path):
         output_path = tmp_path / "lp"
@@ -48,7 +48,7 @@ class TestResumeStudy:
         launcher_options_file.touch()
         with pytest.raises(json.decoder.JSONDecodeError):
             ResumeStudy(ResumeStudyData(
-                output_path, launcher_options_file.name, "fefe", "", "", ""))
+                output_path, launcher_options_file.name, "fefe", "", ""))
 
     def test_fail_if_options_file_not_found(self, tmp_path):
         output_path = tmp_path / "lp"
@@ -57,7 +57,7 @@ class TestResumeStudy:
         launcher_options_file.write_text("{}")
         with pytest.raises(ResumeStudy.OptionsFileNotFound):
             resume_study = ResumeStudy(ResumeStudyData(
-                output_path, launcher_options_file.name, "fefe", "", "",  ""))
+                output_path, launcher_options_file.name, "fefe", "", ""))
             resume_study.launch()
 
     def test_fail_if_last_master_file_keyword_is_not_found(self, tmp_path):
@@ -78,7 +78,7 @@ class TestResumeStudy:
 
         with pytest.raises(ResumeStudy.KeyWordNotFound):
             resume_study = ResumeStudy(ResumeStudyData(
-                output_path, launcher_options_file.name, benders_options_file_name, "", "",  ""))
+                output_path, launcher_options_file.name, benders_options_file_name, "", ""))
             resume_study.launch()
 
     def test_fail_if_last_master_file_not_found(self, tmp_path):
@@ -99,7 +99,7 @@ class TestResumeStudy:
 
         with pytest.raises(ResumeStudy.LastMasterFileNotFound):
             resume_study = ResumeStudy(ResumeStudyData(
-                output_path, launcher_options_file.name, benders_options_file_name,  "", "", ""))
+                output_path, launcher_options_file.name, benders_options_file_name,  "", ""))
             resume_study.launch()
 
     def test_fail_if_options_file_is_updated(self, tmp_path):
@@ -130,7 +130,7 @@ class TestResumeStudy:
         create_master_file.write_text("master file content")
 
         resume_study = ResumeStudy(ResumeStudyData(
-            output_path, launcher_options_file.name, benders_options_file_name,  "", "", ""))
+            output_path, launcher_options_file.name, benders_options_file_name,  "", ""))
         with patch(MOCK_SUBPROCESS_RUN, autospec=True) as run_function:
             run_function.return_value.returncode = 0
             resume_study.launch()

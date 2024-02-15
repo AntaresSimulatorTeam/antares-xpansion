@@ -18,8 +18,8 @@ const std::map<int, std::string> TYPETONAME = {{1, "rows"}, {2, "columns"}};
 
 SolverXpress::SolverXpress(SolverLogManager &log_manager) : SolverXpress() {
   if (log_manager.log_file_path != "") {
-    _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
     _log_file = log_manager.log_file_path;
+    _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
     add_stream(_log_stream);
   }
 }
@@ -514,7 +514,7 @@ void SolverXpress::set_output_log_level(int loglevel) {
   int status = XPRSsetcbmessage(_xprs, optimizermsg, &get_stream());
   zero_status_check(status, "set message stream to solver stream", LOGLOCATION);
 
-  if (loglevel > 0) {
+  if (loglevel > 1) {
     int status =
         XPRSsetintcontrol(_xprs, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
     zero_status_check(status, "set log level", LOGLOCATION);

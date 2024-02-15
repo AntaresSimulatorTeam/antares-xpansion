@@ -19,7 +19,8 @@ class BendersMpi : public BendersBase {
  public:
   ~BendersMpi() override = default;
   BendersMpi(BendersBaseOptions const &options, Logger logger, Writer writer,
-             mpi::environment &env, mpi::communicator &world);
+             mpi::environment &env, mpi::communicator &world,
+             std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
 
   void launch() override;
   virtual std::string BendersName() const { return "Benders mpi"; }
@@ -34,7 +35,7 @@ class BendersMpi : public BendersBase {
  private:
   void step_1_solve_master();
   void step_2_solve_subproblems_and_build_cuts();
-  void step_4_update_best_solution(int rank, const Timer &timer_master);
+  void step_4_update_best_solution(int rank);
 
   void master_build_cuts(
       std::vector<SubProblemDataMap> gathered_subproblem_map);

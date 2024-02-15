@@ -344,10 +344,23 @@ class NotHandledOption(Exception):
 class NotHandledValue(Exception):
     pass
 
+# return ->tuple[is_a_bool: bool, result: bool]
+
+
+# -> tuple[bool, bool]: not working with python <3.9
+def str_to_bool(my_str: str):
+    if my_str in ["true", "True", "TRUE", "1"]:
+        return (True, True)
+    elif my_str in ["false", "False", "False", "0"]:
+        return (True, False)
+    else:
+        return (False, False)
 
 type_str = str
 type_int = int
 type_float = float
+type_bool = bool
+
 
 # "option": (type, legal_value(s))
 options_types_and_legal_values = {
@@ -408,6 +421,14 @@ def _check_setting_option_type(option, value):
                 logger.error(
                     'check_setting_option_type: Illegal %s option in type, integer is expected .' % option)
                 return False
+    elif option_type == type_bool:
+        [is_a_bool, ret] = str_to_bool(value)
+        if is_a_bool:
+            return True
+        else:
+            logger.error(
+                'check_setting_option_type: Illegal %s option in type, boolean is expected .' % option)
+            return False
 
     return isinstance(value, type_str)
 
@@ -437,6 +458,10 @@ class SeparationParameterValueError(Exception):
 
 
 class BatchSizeValueError(Exception):
+    pass
+
+
+class ExpertLogsValueError(Exception):
     pass
 
 
@@ -496,6 +521,8 @@ def _check_batch_size(value) -> bool:
         logger.error(
             f"Illegal {value} for option batch_size : only greater than or equal to zero values are accepted")
         raise BatchSizeValueError
+
+
 
 
 def _check_separation(value) -> bool:
