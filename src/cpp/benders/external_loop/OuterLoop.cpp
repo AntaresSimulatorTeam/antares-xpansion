@@ -41,11 +41,12 @@ void OuterLoop::Run() {
             << criterion_->StateAsString();
     throw CriterionCouldNotBeSatisfied(err_msg.str(), LOGLOCATION);
   }
+  master_updater_->Update(criterion);
   // remove this line and past it before benders re-run
   benders_->ResetData();
 
   while (criterion != CRITERION::EQUAL) {
-    // benders_->ResetData();
+    benders_->ResetData();
     benders_->launch();
 
     // de-comment for general case
