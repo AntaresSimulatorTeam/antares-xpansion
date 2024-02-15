@@ -361,7 +361,7 @@ void SolverXpress::add_rows(int newrows, int newnz, const char *qrtype,
   zero_status_check(status, "add rows", LOGLOCATION);
   if (row_names.size() > 0) {
     int nrowFinal = get_nrows();
-    add_names(1, row_names, nrowInit, nrowFinal);
+    add_names(1, row_names, nrowInit, nrowFinal - 1);
   }
 }
 

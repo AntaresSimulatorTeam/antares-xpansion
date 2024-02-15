@@ -11,7 +11,8 @@ Json::Value get_value_from_json(const std::filesystem::path &file_name) {
   Json::CharReaderBuilder builder_l;
   std::string errs;
   if (!parseFromStream(builder_l, input_file_l, &_input, &errs)) {
-    std::cerr << LOGLOCATION << "Invalid options file: " << file_name;
+    std::cerr << LOGLOCATION << "Invalid options file: " << file_name << "\n"
+              << errs;
     std::exit(1);
   }
   return _input;

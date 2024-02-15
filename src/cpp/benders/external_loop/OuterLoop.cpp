@@ -26,7 +26,7 @@ void OuterLoop::Run() {
   // benders_->SetMaxIteration(1);
   benders_->launch();
 
-  benders_->SetObjectiveFunction(obj_coeff.data(), 0, obj_coeff.size());
+  benders_->SetObjectiveFunction(obj_coeff.data(), 0, obj_coeff.size() - 1);
   // benders_->SetMaxIteration(max_ite);
 
   // de-comment for general case

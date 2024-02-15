@@ -896,9 +896,9 @@ std::vector<double> BendersBase::ObjectiveFunctionCoeffs() const {
 
 void BendersBase::SetObjectiveFunctionCoeffsToZeros() const {
   // assuming that master var id are in [0, size-1]
-  auto max_id = master_variable_map_.size() - 1;
-  std::vector<double> zeros(max_id, 0.0);
-  SetObjectiveFunction(zeros.data(), 0, max_id);
+  auto master_vars_size = master_variable_map_.size();
+  std::vector<double> zeros(master_vars_size, 0.0);
+  SetObjectiveFunction(zeros.data(), 0, master_vars_size - 1);
 }
 
 void BendersBase::SetObjectiveFunction(const double *coeffs, int first,
@@ -917,7 +917,5 @@ void BendersBase::ResetData() {
            mathLoggerDriver_, _logger}) {
     logger->display_message("Reset data ...");
   }
-  _data.best_ub = 1e+20;
-  _data.best_it = 0;
-  _data.stopping_criterion = StoppingCriterion::empty;
+  init_data();
 }
