@@ -4,11 +4,11 @@
 #include "LoggerUtils.h"
 
 HeadersManager::HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method)
-    : type_(type), method_(method) {
-  FillHeadersList();
-}
+    : type_(type), method_(method) {}
 
-HeadersManager::FillHeadersList() {
+std::vector<std::string> HeadersManager::HeadersList() {
+  std::vector<std::string> headers_list;
+
   headers_list.push_back("Ite");
   headers_list.push_back("Lb");
   if (method_ == BENDERSMETHOD::BENDERS) {
@@ -31,20 +31,27 @@ HeadersManager::FillHeadersList() {
   headers_list.push_back("IteTime (s)");
   headers_list.push_back("MasterTime (s)");
   headers_list.push_back("SPWallTime (s)");
+
   if (type_ == HEADERSTYPE::LONG) {
     headers_list.push_back("SPCpuTime (s)");
     headers_list.push_back("NotSolvingWallTime (s)");
   }
+
+  return headers_list;
 }
 
 HeadersManagerExternalLoop::HeadersManagerExternalLoop(
     HEADERSTYPE type, const BENDERSMETHOD& method)
     : HeadersManager(type, method) {}
 
-HeadersManagerExternalLoop::FillHeadersList() {
+std::vector<std::string> HeadersManagerExternalLoop::HeadersList() {
+  std::vector<std::string> headers_list;
   headers_list.push_back("Benders Run");
   headers_list.push_back("Criterion value");
-  HeadersManager::FillHeadersList();
+  auto base_headers = HeadersManager::HeadersList();
+  std::move(base_headers.begin(), base_headers.end(),
+            std::back_inserter(headers_list));
+  return headers_list;
 }
 
 LogDestination::LogDestination(std::streamsize width)
@@ -94,7 +101,7 @@ void MathLoggerDriver::display_message(const std::string& str) {
 
 MathLoggerImplementation::MathLoggerImplementation(
     const BENDERSMETHOD& method, const std::filesystem::path& file_path,
-    std::streamsize width = 40, HEADERSTYPE type = HEADERSTYPE::LONG) {
+    std::streamsize width, HEADERSTYPE type) {
   switch (method) {
     case BENDERSMETHOD::BENDERS:
       implementation_ =
@@ -118,10 +125,10 @@ MathLoggerImplementation::MathLoggerImplementation(
   }
 }
 
-MathLoggerImplementation::MathLoggerImplementation(
-    const BENDERSMETHOD& method, std::streamsize width = 40,
-    HEADERSTYPE type = HEADERSTYPE::LONG) {
-    switch (method) {
+MathLoggerImplementation::MathLoggerImplementation(const BENDERSMETHOD& method,
+                                                   std::streamsize width,
+                                                   HEADERSTYPE type) {
+  switch (method) {
     case BENDERSMETHOD::BENDERS:
       implementation_ = std::make_shared<MathLoggerBase>(width, type);
       break;

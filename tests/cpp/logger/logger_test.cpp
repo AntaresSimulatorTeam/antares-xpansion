@@ -827,7 +827,7 @@ TEST(MathLoggerHeadersManagerTest, ShortBenders) {
 
 TEST(MathLoggerHeadersManagerTest, LongBendersByBatch) {
   HEADERSTYPE headers_type = HEADERSTYPE::LONG;
-  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERSBYBATCH);
+  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERS_BY_BATCH);
 
   std::vector<std::string> expected_headers = {"Ite",
                                                "Lb",
@@ -845,7 +845,7 @@ TEST(MathLoggerHeadersManagerTest, LongBendersByBatch) {
 
 TEST(MathLoggerHeadersManagerTest, ShortBendersByBatch) {
   HEADERSTYPE headers_type = HEADERSTYPE::SHORT;
-  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERSBYBATCH);
+  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERS_BY_BATCH);
 
   std::vector<std::string> expected_headers = {
       "Ite",         "Lb",      "MinSpx",     "MaxSpx",
@@ -855,7 +855,7 @@ TEST(MathLoggerHeadersManagerTest, ShortBendersByBatch) {
 
 TEST(MathLoggerBendersByBatchTest, HeadersListStdOutShort) {
   HEADERSTYPE headers_type = HEADERSTYPE::SHORT;
-  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERSBYBATCH);
+  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERS_BY_BATCH);
   std::streamsize width = 25;
 
   std::ostringstream expected_msg;
@@ -874,7 +874,7 @@ TEST(MathLoggerBendersByBatchTest, HeadersListStdOutShort) {
 
 TEST(MathLoggerBendersByBatchTest, HeadersListFileLong) {
   HEADERSTYPE headers_type = HEADERSTYPE::LONG;
-  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERSBYBATCH);
+  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERS_BY_BATCH);
   std::streamsize width = 25;
 
   std::ostringstream expected_msg;

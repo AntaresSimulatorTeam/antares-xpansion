@@ -14,19 +14,16 @@ enum class HEADERSTYPE { SHORT, LONG };
 struct HeadersManager {
   explicit HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method);
 
-  std::vector<std::string> headers_list;
   HEADERSTYPE type_;
   BENDERSMETHOD method_;
 
- protected:
-  virtual void FillHeadersList();
+  std::vector<std::string> headers_list;
+  virtual std::vector<std::string> HeadersList();
 };
 struct HeadersManagerExternalLoop : HeadersManager {
   explicit HeadersManagerExternalLoop(HEADERSTYPE type,
                                       const BENDERSMETHOD& method);
-
- protected:
-  void FillHeadersList() override;
+  std::vector<std::string> HeadersList() override;
 };
 
 class LogDestination {
@@ -104,6 +101,7 @@ struct MathLoggerBase : public MathLogger {
 };
 
 struct MathLoggerBaseExternalLoop : public MathLoggerBase {
+  using MathLoggerBase::MathLoggerBase;
   void Print(const CurrentIterationData& data) override;
   void setHeadersList() override;
 };
@@ -113,7 +111,8 @@ struct MathLoggerBendersByBatch : public MathLogger {
   void Print(const CurrentIterationData& data) override;
   void setHeadersList() override;
 };
-struct MathLoggerBendersByBatchExternalLoop : public MathLoggerBase {
+struct MathLoggerBendersByBatchExternalLoop : public MathLoggerBendersByBatch {
+  using MathLoggerBendersByBatch::MathLoggerBendersByBatch;
   void Print(const CurrentIterationData& data) override;
   void setHeadersList() override;
 };

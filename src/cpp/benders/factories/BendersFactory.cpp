@@ -28,14 +28,17 @@ BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size,
   auto benders_algo_score =
       (batch_size == 0 || batch_size == coupling_map_size - 1) ? 0 : 1;
   auto external_loop_score = external_loop ? 1 : 0;
-  auto total_scrore = 100 * benders_algo_score + 10 * external_loop_score;
+  auto total_score = 100 * benders_algo_score + 10 * external_loop_score;
   switch (total_score) {
     case 0:
-      /* code */
-      break;
-
     default:
-      break;
+      return BENDERSMETHOD::BENDERS;
+    case 10:
+      return BENDERSMETHOD::BENDERS_EXTERNAL_LOOP;
+    case 100:
+      return BENDERSMETHOD::BENDERS_BY_BATCH;
+    case 110:
+      return BENDERSMETHOD::BENDERS_BY_BATCH_EXTERNAL_LOOP;
   }
 }
 
@@ -64,8 +67,8 @@ pBendersBase PrepareForExecution(BendersLoggerBase& benders_loggers,
 
   Writer writer;
   const auto coupling_map = build_input(benders_options.STRUCTURE_FILE);
-  const auto method =
-      DeduceBendersMethod(coupling_map.size(), options.BATCH_SIZE);
+  const auto method = DeduceBendersMethod(coupling_map.size(),
+                                          options.BATCH_SIZE, external_loop);
 
   if (world.rank() == 0) {
     auto benders_log_console = benders_options.LOG_LEVEL > 0;
@@ -90,10 +93,12 @@ pBendersBase PrepareForExecution(BendersLoggerBase& benders_loggers,
   benders_loggers.AddLogger(math_log_driver);
   switch (method) {
     case BENDERSMETHOD::BENDERS:
+    case BENDERSMETHOD::BENDERS_EXTERNAL_LOOP:
       benders = std::make_shared<BendersMpi>(benders_options, logger, writer,
                                              env, world, math_log_driver);
       break;
     case BENDERSMETHOD::BENDERS_BY_BATCH:
+    case BENDERSMETHOD::BENDERS_BY_BATCH_EXTERNAL_LOOP:
       benders = std::make_shared<BendersByBatch>(
           benders_options, logger, writer, env, world, math_log_driver);
       break;
@@ -123,8 +128,8 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
 
   try {
     SimulationOptions options(options_file);
-    auto benders = PrepareForExecution(benders_loggers, options, argv[0], env,
-                                       world);
+    auto benders = PrepareForExecution(benders_loggers, options, argv[0], false,
+                                       env, world);
     if (benders) {
       benders->launch();
 
@@ -161,8 +166,8 @@ int RunExternalLoop_(char** argv, const std::filesystem::path& options_file,
 
   try {
     SimulationOptions options(options_file);
-    auto benders = PrepareForExecution(benders_loggers, options, argv[0], env,
-                                       world);
+    auto benders = PrepareForExecution(benders_loggers, options, argv[0], true,
+                                       env, world);
     double threshold = 2 * 1.5;  // 2 scenarios
     double epsilon = 1e-1;
     double lambda_min = 0;

@@ -45,7 +45,7 @@ void OuterLoop::Run() {
   master_updater_->Update(criterion);
 
   while (criterion != CRITERION::EQUAL) {
-    benders_->ResetData();
+    benders_->ResetData(criterion_->CriterionValue());
     benders_->launch();
     criterion =
         criterion_->IsCriterionSatisfied(benders_->BestIterationWorkerMaster());

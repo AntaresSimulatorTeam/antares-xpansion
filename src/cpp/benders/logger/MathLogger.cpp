@@ -11,13 +11,13 @@ double getDurationNotSolving(double iteration, double master,
 void MathLoggerBase::setHeadersList() {
   auto type = HeadersType();
   HeadersManager headers_manager(type, BENDERSMETHOD::BENDERS);
-  MathLogger::setHeadersList(headers_manager.headers_list);
+  MathLogger::setHeadersList(headers_manager.HeadersList());
 }
 
 void MathLoggerBaseExternalLoop::setHeadersList() {
   auto type = HeadersType();
   HeadersManagerExternalLoop headers_manager(type, BENDERSMETHOD::BENDERS);
-  MathLogger::setHeadersList(headers_manager.headers_list);
+  MathLogger::setHeadersList(headers_manager.HeadersList());
 }
 
 void MathLogger::setHeadersList(const std::vector<std::string>& headers) {
@@ -84,14 +84,14 @@ void MathLoggerBendersByBatch::setHeadersList() {
   auto type = HeadersType();
   HeadersManager headers_manager(type, BENDERSMETHOD::BENDERS_BY_BATCH);
 
-  MathLogger::setHeadersList(headers_manager.headers_list);
+  MathLogger::setHeadersList(headers_manager.HeadersList());
 }
 
 void MathLoggerBendersByBatchExternalLoop::setHeadersList() {
   auto type = HeadersType();
   HeadersManagerExternalLoop headers_manager(type,
                                              BENDERSMETHOD::BENDERS_BY_BATCH);
-  MathLogger::setHeadersList(headers_manager.headers_list);
+  MathLogger::setHeadersList(headers_manager.HeadersList());
 }
 
 void MathLoggerBendersByBatch::Print(const CurrentIterationData& data) {

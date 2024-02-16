@@ -16,6 +16,7 @@ class IOuterLoopCriterion {
   virtual CRITERION IsCriterionSatisfied(
       const WorkerMasterData& worker_master_data) = 0;
   virtual std::string StateAsString() const = 0;
+  virtual double CriterionValue() const = 0;
 };
 
 class OuterloopCriterionLOL : public IOuterLoopCriterion {
@@ -24,6 +25,7 @@ class OuterloopCriterionLOL : public IOuterLoopCriterion {
   CRITERION IsCriterionSatisfied(
       const WorkerMasterData& milp_solution) override;
   std::string StateAsString() const override;
+  double CriterionValue() const override { return sum_loss_; }
 
  private:
   void ProcessSum(const WorkerMasterData& worker_master_data);

@@ -308,6 +308,7 @@ void BendersMpi::PreRunInitialization() {
 }
 
 void BendersMpi::launch() {
+  ++_data.benders_num_run;
   if (init_problems_) {
     InitializeProblems();
   }

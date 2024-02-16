@@ -38,6 +38,9 @@ void BendersBase::init_data() {
   _data.is_in_initial_relaxation = false;
   _data.cumulative_number_of_subproblem_solved = 0;
   relevantIterationData_.best = relevantIterationData_.last;
+  _data.iteration_time = 0;
+  _data.timer_master = 0;
+  _data.subproblems_walltime = 0;
 }
 
 void BendersBase::OpenCsvFile() {
@@ -912,10 +915,11 @@ WorkerMasterData BendersBase::BestIterationWorkerMaster() const {
   return relevantIterationData_.best;
 }
 
-void BendersBase::ResetData() {
+void BendersBase::ResetData(double criterion) {
   for (auto logger : std::vector<std::shared_ptr<ILoggerBenders>>{
            mathLoggerDriver_, _logger}) {
     logger->display_message("Reset data ...");
   }
   init_data();
+  _data.external_loop_criterion = criterion;
 }
