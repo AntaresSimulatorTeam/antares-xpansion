@@ -22,6 +22,7 @@ void OuterLoop::Run() {
   benders_->DoFreeProblems(false);
   // invest cost
   benders_->InitializeProblems();
+  benders_->InitExternalValues();
 
   auto obj_coeff = benders_->ObjectiveFunctionCoeffs();
   benders_->SetObjectiveFunctionCoeffsToZeros();

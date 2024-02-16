@@ -71,6 +71,7 @@ class BendersBase {
   BendersBaseOptions Options() const { return _options; }
   void ResetData(double criterion);
   virtual void free() = 0;
+  void InitExternalValues();
 
  protected:
   CurrentIterationData _data;

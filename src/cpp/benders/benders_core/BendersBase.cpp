@@ -917,10 +917,15 @@ WorkerMasterData BendersBase::BestIterationWorkerMaster() const {
 }
 
 void BendersBase::ResetData(double criterion) {
-  for (auto logger : std::vector<std::shared_ptr<ILoggerBenders>>{
-           mathLoggerDriver_, _logger}) {
-    logger->display_message("Reset data ...");
-  }
+  // for (auto logger : std::vector<std::shared_ptr<ILoggerBenders>>{
+  //          mathLoggerDriver_, _logger}) {
+  //   logger->display_message("Reset data ...");
+  // }
   init_data();
   _data.external_loop_criterion = criterion;
+}
+
+void BendersBase::InitExternalValues() {
+  _data.external_loop_criterion = 0;
+  _data.benders_num_run = 0;
 }
