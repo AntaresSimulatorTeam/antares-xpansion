@@ -812,7 +812,7 @@ TEST(MathLoggerHeadersManagerTest, LongBenders) {
                                                "SPWallTime (s)",
                                                "SPCpuTime (s)",
                                                "NotSolvingWallTime (s)"};
-  ASSERT_EQ(expected_headers, headers_manager.headers_list);
+  ASSERT_EQ(expected_headers, headers_manager.HeadersList());
 }
 
 TEST(MathLoggerHeadersManagerTest, ShortBenders) {
@@ -822,7 +822,7 @@ TEST(MathLoggerHeadersManagerTest, ShortBenders) {
   std::vector<std::string> expected_headers = {
       "Ite",    "Lb",     "Ub",      "BestUb",     "AbsGap",    "RelGap",
       "MinSpx", "MaxSpx", "IteTime (s)", "MasterTime (s)", "SPWallTime (s)"};
-  ASSERT_EQ(expected_headers, headers_manager.headers_list);
+  ASSERT_EQ(expected_headers, headers_manager.HeadersList());
 }
 
 TEST(MathLoggerHeadersManagerTest, LongBendersByBatch) {
@@ -840,7 +840,7 @@ TEST(MathLoggerHeadersManagerTest, LongBendersByBatch) {
                                                "SPWallTime (s)",
                                                "SPCpuTime (s)",
                                                "NotSolvingWallTime (s)"};
-  ASSERT_EQ(expected_headers, headers_manager.headers_list);
+  ASSERT_EQ(expected_headers, headers_manager.HeadersList());
 }
 
 TEST(MathLoggerHeadersManagerTest, ShortBendersByBatch) {
@@ -850,7 +850,7 @@ TEST(MathLoggerHeadersManagerTest, ShortBendersByBatch) {
   std::vector<std::string> expected_headers = {
       "Ite",         "Lb",      "MinSpx",     "MaxSpx",
       "NbSubPbSolv", "IteTime (s)", "MasterTime (s)", "SPWallTime (s)"};
-  ASSERT_EQ(expected_headers, headers_manager.headers_list);
+  ASSERT_EQ(expected_headers, headers_manager.HeadersList());
 }
 
 TEST(MathLoggerBendersByBatchTest, HeadersListStdOutShort) {
@@ -859,7 +859,7 @@ TEST(MathLoggerBendersByBatchTest, HeadersListStdOutShort) {
   std::streamsize width = 25;
 
   std::ostringstream expected_msg;
-  for (const auto& header : headers_manager.headers_list) {
+  for (const auto& header : headers_manager.HeadersList()) {
     expected_msg << std::setw(width) << std::left << header;
   }
   expected_msg << std::endl;
@@ -878,7 +878,7 @@ TEST(MathLoggerBendersByBatchTest, HeadersListFileLong) {
   std::streamsize width = 25;
 
   std::ostringstream expected_msg;
-  for (const auto& header : headers_manager.headers_list) {
+  for (const auto& header : headers_manager.HeadersList()) {
     expected_msg << std::setw(width) << std::left << header;
   }
   expected_msg << std::endl;

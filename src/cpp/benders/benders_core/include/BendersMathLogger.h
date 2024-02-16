@@ -17,7 +17,6 @@ struct HeadersManager {
   HEADERSTYPE type_;
   BENDERSMETHOD method_;
 
-  std::vector<std::string> headers_list;
   virtual std::vector<std::string> HeadersList();
 };
 struct HeadersManagerExternalLoop : HeadersManager {
