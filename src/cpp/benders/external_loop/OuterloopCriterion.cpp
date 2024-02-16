@@ -12,11 +12,11 @@ CRITERION OuterloopCriterionLOL::IsCriterionSatisfied(
 
   if (sum_loss_ <= threshold_ + epsilon_) {
     if (sum_loss_ >= threshold_ - epsilon_) {
-      return CRITERION::EQUAL;
+      return CRITERION::IS_MET;
     }
-    return CRITERION::LESSER;
+    return CRITERION::LOW;
   } else {
-    return CRITERION::GREATER;
+    return CRITERION::HIGH;
   }
 }
 

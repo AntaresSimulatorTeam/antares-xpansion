@@ -9,8 +9,8 @@ class CriterionCouldNotBeSatisfied
     : public LogUtils::XpansionError<std::runtime_error> {
   using LogUtils::XpansionError<std::runtime_error>::XpansionError;
 };
-// renomer satisfait, trop_faibleetc..
-enum class CRITERION { LESSER, EQUAL, GREATER };
+
+enum class CRITERION { LOW, IS_MET, HIGH };
 class IOuterLoopCriterion {
  public:
   virtual CRITERION IsCriterionSatisfied(

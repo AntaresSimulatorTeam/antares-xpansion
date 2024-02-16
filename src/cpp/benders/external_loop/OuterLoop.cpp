@@ -17,8 +17,8 @@ OuterLoop::OuterLoop(std::shared_ptr<IOuterLoopCriterion> criterion,
 }
 
 void OuterLoop::Run() {
-  // by default GREATER?
-  // CRITERION criterion = CRITERION::GREATER;
+  // by default HIGH?
+  // CRITERION criterion = CRITERION::HIGH;
   benders_->DoFreeProblems(false);
   // invest cost
   benders_->InitializeProblems();
@@ -36,7 +36,7 @@ void OuterLoop::Run() {
   auto criterion =
       criterion_->IsCriterionSatisfied(benders_->BestIterationWorkerMaster());
   // benders_->display_message(criterion_->StateAsString());
-  if (criterion == CRITERION::GREATER) {
+  if (criterion == CRITERION::HIGH) {
     std::ostringstream err_msg;
     err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "External Loop")
             << "Criterion cannot be satisfied for your study:\n"
@@ -45,7 +45,7 @@ void OuterLoop::Run() {
   }
   master_updater_->Update(criterion);
 
-  while (criterion != CRITERION::EQUAL) {
+  while (criterion != CRITERION::IS_MET) {
     benders_->ResetData(criterion_->CriterionValue());
     benders_->launch();
     criterion =

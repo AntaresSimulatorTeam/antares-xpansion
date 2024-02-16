@@ -52,12 +52,12 @@ void MasterUpdateBase::Update(const CRITERION &criterion) {
     return;
   }
   switch (criterion) {
-    case CRITERION::LESSER:
+    case CRITERION::LOW:
       // TODO best it or current data?
       lambda_max_ =
           std::min(lambda_max_, benders_->GetBestIterationData().invest_cost);
       break;
-    case CRITERION::GREATER:
+    case CRITERION::HIGH:
       lambda_min_ = lambda_;
       break;
 
