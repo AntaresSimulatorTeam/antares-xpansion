@@ -14,7 +14,6 @@ class OuterLoop {
   void Run();
 
  private:
-  void display_message(const std::string& msg) const;
   std::shared_ptr<IOuterLoopCriterion> criterion_;
   std::shared_ptr<IMasterUpdate> master_updater_;
   std::shared_ptr<ICutsManager> cuts_manager_;

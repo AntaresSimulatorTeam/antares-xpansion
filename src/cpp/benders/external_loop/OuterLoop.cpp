@@ -17,10 +17,7 @@ OuterLoop::OuterLoop(std::shared_ptr<IOuterLoopCriterion> criterion,
 }
 
 void OuterLoop::Run() {
-  // by default HIGH?
-  // CRITERION criterion = CRITERION::HIGH;
   benders_->DoFreeProblems(false);
-  // invest cost
   benders_->InitializeProblems();
   benders_->InitExternalValues();
 
@@ -35,7 +32,6 @@ void OuterLoop::Run() {
   // auto cuts = cuts_manager_->Load();
   auto criterion =
       criterion_->IsCriterionSatisfied(benders_->BestIterationWorkerMaster());
-  // benders_->display_message(criterion_->StateAsString());
   if (criterion == CRITERION::HIGH) {
     std::ostringstream err_msg;
     err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "External Loop")
@@ -50,15 +46,8 @@ void OuterLoop::Run() {
     benders_->launch();
     criterion =
         criterion_->IsCriterionSatisfied(benders_->BestIterationWorkerMaster());
-    // benders_->display_message(criterion_->StateAsString());
     master_updater_->Update(criterion);
   }
   cuts_manager_->Save(benders_->AllCuts());
   benders_->free();
-}
-
-void OuterLoop::display_message(const std::string& msg) const {
-  for (auto logger : loggers_) {
-    logger->display_message(msg);
-  }
 }
