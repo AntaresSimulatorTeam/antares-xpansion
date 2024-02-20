@@ -4,11 +4,12 @@
 
 ## Context
 
-The current nominal case is to execute Antares which output MPS files and read them in subsequent xpansion component (
+The current nominal case is to execute Antares which outputs MPS files and reads them in subsequent xpansion component (
 lpnamer).
 Having to write files to reread them is a performance pitfall.
-A way to address this is to have Antares work as lib linked by Xpansion components. This way problems data can be shared
-through API calls and common interface or data structures.
+A way to address this is to have Antares work as a lib linked by Xpansion components. This way problems data can be
+shared
+through API calls and common interfaces or data structures.
 
 ## Decision
 
@@ -19,6 +20,6 @@ through API calls and common interface or data structures.
 ## Consequences
 
 - No intermediate files written between Antares and Xpansion
-- Improve performance in data transmission between component
+- Improve performance in data transmission between components
 - Antares' simulation performed in Xpansion executable. Could lead to decrease performance with MPI if an MPI process
   is running in only one core. Meaning Antares simulation will not be or poorly parallelized.
