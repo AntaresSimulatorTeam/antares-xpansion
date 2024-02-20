@@ -76,7 +76,6 @@ std::filesystem::path ProblemGeneration::performeAntaresSimulation() {
   LpsFromAntares lps;
   application.prepare(argc, argv);
   application.execute();
-  application.outputWriter_.PrintMe();
   lps_ = application.outputWriter_.lps;
 
   return {application.pStudy->folderOutput};
