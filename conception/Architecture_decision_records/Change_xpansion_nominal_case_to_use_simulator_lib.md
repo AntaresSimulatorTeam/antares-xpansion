@@ -1,6 +1,6 @@
 # Change Xpansion nominal case to use Antares as a library
 
-## Accepted [09 Feb 2024]
+## Accepted [09 Feb 2024] (Partial)
 
 ## Context
 
@@ -16,6 +16,8 @@ through API calls and common interfaces or data structures.
 - Make a lib of Antares and expose an API to retrieve problems data
 - Link to this API in Xpansion and retrieve data through said API instead of reading files
 - Handle this case as the nominal case for an Xpansion execution, mainly with Launcher.py
+
+Note: 20 Feb. 2024: awaiting full readiness of study/API mode, archive mode is maintained in the meantime
 
 ## Consequences
 
