@@ -85,7 +85,7 @@ class XpansionDriver:
             self.clean_step()
 
         elif self.config_loader.step() == "full" and self.config_loader.memory():
-            self.launch_antares_step(memory_mode=True)
+            self.update_study_settings(memory_mode=True)
             self.launch_problem_generation_step_memory()
             self.launch_benders_step()
             self.study_update_driver.launch(
@@ -126,12 +126,8 @@ class XpansionDriver:
             )
         shutil.rmtree(self.config_loader.xpansion_simulation_output())
 
-    def launch_antares_step(self, memory_mode=False):
-        self._configure_general_data_processor()
-        self._backup_general_data_ini()
-        self._update_general_data_ini(memory_mode)
-        if memory_mode:
-            return
+    def launch_antares_step(self):
+        self.update_study_settings(memory_mode=False)
         try:
             ret = self.antares_driver.launch(
                 self.config_loader.data_dir(), self.config_loader.antares_n_cpu())
@@ -146,6 +142,11 @@ class XpansionDriver:
             self._backup_general_data_ini_on_error()
             self._revert_general_data_ini()
             raise e
+
+    def update_study_settings(self, memory_mode=False):
+        self._configure_general_data_processor()
+        self._backup_general_data_ini()
+        self._update_general_data_ini(memory_mode)
 
     def _update_general_data_ini(self, memory_mode=False):
         self.gen_data_proc.change_general_data_file_to_configure_antares_execution(memory_mode)
