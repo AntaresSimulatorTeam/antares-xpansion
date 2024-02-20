@@ -51,6 +51,6 @@ class ProblemGeneration {
       const LpsFromAntares& lps);
   LpsFromAntares lps_;
   Mode mode_ = Mode::UNKOWN;
-  virtual std::filesystem::path performeAntaresSimulation();
+  virtual std::filesystem::path performAntaresSimulation();
   std::filesystem::path simulation_dir_;
 };

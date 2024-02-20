@@ -55,7 +55,7 @@ ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options)
   }
 }
 
-std::filesystem::path ProblemGeneration::performeAntaresSimulation() {
+std::filesystem::path ProblemGeneration::performAntaresSimulation() {
   Antares::Solver::Application application;
   application.outputWriter_.PrintMe();
   using namespace std::literals::string_literals;
@@ -92,7 +92,7 @@ std::filesystem::path ProblemGeneration::updateProblems() {
   }
 
   if (mode_ == Mode::ANTARES_API) {
-    simulation_dir_ = performeAntaresSimulation();
+    simulation_dir_ = performAntaresSimulation();
   }
 
   if (mode_ == Mode::FILE) {
