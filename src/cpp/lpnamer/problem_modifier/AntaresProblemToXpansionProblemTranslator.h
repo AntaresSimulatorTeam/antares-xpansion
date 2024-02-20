@@ -4,8 +4,9 @@
 
 #pragma once
 
+#include <antares/solver/simulation/LpsFromAntares.h>
+
 #include "../model/Problem.h"
-#include "LpsFromAntares.h"
 
 class AntaresProblemToXpansionProblemTranslator {
  public:

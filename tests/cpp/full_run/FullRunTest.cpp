@@ -69,7 +69,7 @@ TEST_P(FullRunOptionsParserTestFullPath, OptionsParsing) {
   const char argv8[] = "/path/to/solution.json";
   pargs.push_back(argv7);
   pargs.push_back(argv8);
-  
+
   full_run_options_options_parser_.Parse(pargs.size(), pargs.data());
   ASSERT_EQ(full_run_options_options_parser_.BendersOptionsFile(),
             std::filesystem::path(argv6));

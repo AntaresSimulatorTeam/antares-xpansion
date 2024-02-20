@@ -3,6 +3,7 @@
 #include <map>
 #include <set>
 #include <string>
+#include <utility>
 
 #include "ProblemGenerationLogger.h"
 
@@ -18,13 +19,13 @@ class AdditionalConstraint : public std::map<std::string, double> {
   std::string _sectionName;
   std::string _name;
   std::string _sign;
-  double _rhs;
+  double _rhs = 0.0;
 
  public:
   /**
    * \brief AdditionalConstraint default constructor
    */
-  AdditionalConstraint() : _sectionName(""), _name(""), _sign(""), _rhs(0) {}
+  AdditionalConstraint() = default;
 
   /**
    * @brief AdditionalConstraint constructor
@@ -36,12 +37,11 @@ class AdditionalConstraint : public std::map<std::string, double> {
    * "less_or_equal", "equal" or "greater_or_equal"
    * @param rhs_p : double RHS of the constraint
    */
-  AdditionalConstraint(std::string const& sectionName_p,
-                       std::string const& constraintName_p,
-                       std::string const& sign_p, double rhs_p)
-      : _sectionName(sectionName_p),
-        _name(constraintName_p),
-        _sign(sign_p),
+  AdditionalConstraint(std::string sectionName_p, std::string constraintName_p,
+                       std::string sign_p, double rhs_p)
+      : _sectionName(std::move(sectionName_p)),
+        _name(std::move(constraintName_p)),
+        _sign(std::move(sign_p)),
         _rhs(rhs_p) {}
 
   /**
@@ -54,14 +54,14 @@ class AdditionalConstraint : public std::map<std::string, double> {
    *
    * @param name_p  : string value : name of the constraint
    */
-  std::string getName() const { return _name; }
+  [[nodiscard]] std::string getName() const { return _name; }
 
   /**
    * @brief AdditionalConstraint::_rhs getter
    *
    * @param rhs_p  : double value : rhs of the constraint
    */
-  double getRHS() const { return _rhs; }
+  [[nodiscard]] double getRHS() const { return _rhs; }
 
   /**
    * @brief AdditionalConstraint::_sign getter
@@ -69,7 +69,7 @@ class AdditionalConstraint : public std::map<std::string, double> {
    * @param name_p  : string value : sign of the constraint (supported values
    * "less_or_equal", "equal", "greater_or_equal")
    */
-  std::string getSign() const { return _sign; }
+  [[nodiscard]] std::string getSign() const { return _sign; }
 
   /**
    * @brief adds a term to the constraint
@@ -89,7 +89,7 @@ class AdditionalConstraint : public std::map<std::string, double> {
  *  inherites from a map where keys are unique constraint names and values are
  * the additional constraints
  */
-struct AdditionalConstraints
+class AdditionalConstraints
     : public std::map<std::string, AdditionalConstraint> {
  private:
   // set of variables to which a binary corresponding variable will be created
@@ -102,9 +102,9 @@ struct AdditionalConstraints
   /*!
    *  \brief default constructor for struct AdditionalConstraints
    */
-  AdditionalConstraints(
+  explicit AdditionalConstraints(
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
-      : logger_(logger) {}
+      : logger_(std::move(logger)) {}
 
   /*!
    * \brief AdditionalConstraints constructor from an ini file path
@@ -113,7 +113,7 @@ struct AdditionalConstraints
    * constraints file path
    */
   explicit AdditionalConstraints(
-      std::string const& constraints_file_path,
+      std::string constraints_file_path,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
 
   void SetConstraintsFile(std::string const& constraints_file_path) {
@@ -153,7 +153,8 @@ struct AdditionalConstraints
    * binary variables to create and whose key is the corresponding existing
    * variable to link to
    */
-  std::map<std::string, std::string> const& getVariablesToBinarise() const;
+  [[nodiscard]] std::map<std::string, std::string> const&
+  getVariablesToBinarise() const;
 
   /*!
    * \brief the method is responsible for creating and filling constraints
@@ -172,7 +173,7 @@ struct AdditionalConstraints
    * keys are the constraints entries ("name", "sign", "rhs") \return
    * std::string the constraint name
    */
-  std::string checkAndReturnConstraintName(
+  [[nodiscard]] std::string checkAndReturnConstraintName(
       const std::string& sectionName_l,
       const std::map<std::string, std::string>& constarintsSection_l) const;
 
@@ -183,7 +184,7 @@ struct AdditionalConstraints
    * the constraints entries ("name", "sign", "rhs") \return std::string the
    * constraint sign
    */
-  std::string checkAndReturnSectionSign(
+  [[nodiscard]] std::string checkAndReturnSectionSign(
       const std::string& sectionName_l,
       const std::map<std::string, std::string>& constarintsSection_l) const;
 
@@ -193,7 +194,7 @@ struct AdditionalConstraints
    * constarintsSection_l is a std::map<std::string, std::string> where keys are
    * the constraints entries ("name", "sign", "rhs") \return std::string the rhs
    */
-  double checkAndReturnSectionRhs(
+  [[nodiscard]] double checkAndReturnSectionRhs(
       const std::string& sectionName_l,
       const std::map<std::string, std::string>& constarintsSection_l) const;
 };

@@ -1,0 +1,6 @@
+[1]
+name = additional_c1
+transmission_line = 1
+semibase = 1
+sign = less_or_equal
+rhs = 300

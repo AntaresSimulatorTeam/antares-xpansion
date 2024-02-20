@@ -1,6 +1,6 @@
 # Hold link profile values in vector instead of array
 
-## Accepter
+## Accepted
 
 ## Vector on Heap, arrays on Stack
 

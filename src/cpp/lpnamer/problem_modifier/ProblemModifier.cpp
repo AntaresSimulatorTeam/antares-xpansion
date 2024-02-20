@@ -200,17 +200,18 @@ void ProblemModifier::add_direct_profile_column_constraint(
                 direct_already_installed_profile_at_timestep);
 
   rowtype.push_back('L');
-  colind.push_back(column.id);
+  colind.push_back(static_cast<int>(column.id));
   dmatval.push_back(1);
   for (const auto &candidate : link.getCandidates()) {
     if (candidateContributionDirectIsNotNull(column, chronicle_to_use,
                                              candidate)) {
-      colind.push_back(_candidate_col_id[candidate.get_name()]);
+      colind.push_back(
+          static_cast<int>(_candidate_col_id[candidate.get_name()]));
       dmatval.push_back(
           -candidate.directCapacityFactor(chronicle_to_use, column.time_step));
     }
   }
-  rstart.push_back((int)dmatval.size());
+  rstart.push_back(static_cast<int>(dmatval.size()));
 }
 bool ProblemModifier::candidateContributionDirectIsNotNull(
     const ColumnToChange &column, unsigned int chronicle_to_use,
@@ -234,17 +235,18 @@ void ProblemModifier::add_indirect_profile_ntc_column_constraint(
                 indirect_already_installed_profile_at_timestep);
 
   rowtype.push_back('G');
-  colind.push_back(column.id);
+  colind.push_back(static_cast<int>(column.id));
   dmatval.push_back(1);
   for (const auto &candidate : link.getCandidates()) {
     if (candidateContributionIndirectIsNotNull(column, chronicle_to_use,
                                                candidate)) {
-      colind.push_back(_candidate_col_id[candidate.get_name()]);
+      colind.push_back(
+          static_cast<int>(_candidate_col_id[candidate.get_name()]));
       dmatval.push_back(
           candidate.indirectCapacityFactor(chronicle_to_use, column.time_step));
     }
   }
-  rstart.push_back((int)dmatval.size());
+  rstart.push_back(static_cast<int>(dmatval.size()));
 }
 
 bool ProblemModifier::candidateContributionIndirectIsNotNull(
@@ -276,24 +278,25 @@ void ProblemModifier::add_indirect_cost_column_constraint(
                 indirect_already_installed_profile_at_timestep);
 
   rowtype.push_back('L');
-  colind.push_back(column.id);
+  colind.push_back(static_cast<int>(column.id));
   dmatval.push_back(1);
 
   for (const auto &candidate : link.getCandidates()) {
     if (candidate.indirectCapacityFactor(chronicle_to_use, column.time_step) !=
         0.0) {
-      colind.push_back(_candidate_col_id[candidate.get_name()]);
+      colind.push_back(
+          static_cast<int>(_candidate_col_id[candidate.get_name()]));
       dmatval.push_back(-candidate.indirectCapacityFactor(chronicle_to_use,
                                                           column.time_step));
     }
   }
-  rstart.push_back((int)dmatval.size());
+  rstart.push_back(static_cast<int>(dmatval.size()));
 }
 
 void ProblemModifier::add_new_columns(
     const std::vector<Candidate> &candidates) {
   if (!candidates.empty()) {
-    unsigned int n_candidates = (int)candidates.size();
+    unsigned int n_candidates = candidates.size();
     std::vector<double> objectives(n_candidates, 0);
     std::vector<double> lb(n_candidates, -1e20);
     std::vector<double> ub(n_candidates, 1e20);
@@ -303,7 +306,8 @@ void ProblemModifier::add_new_columns(
 
     for (const auto &candidate : candidates) {
       candidates_colnames.push_back(candidate.get_name());
-      int new_index = (int)_candidate_col_id.size() + (int)_n_cols_at_start;
+      unsigned int new_index =
+          static_cast<unsigned>(_candidate_col_id.size()) + _n_cols_at_start;
       _candidate_col_id[candidate.get_name()] = new_index;
     }
     solver_addcols(*_math_problem, objectives, mstart, {}, {}, lb, ub, coltypes,

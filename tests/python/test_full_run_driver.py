@@ -14,7 +14,8 @@ class TestFullRunDriver:
     def setup_method(self):
 
         self.pb_gen_data = ProblemGeneratorData(keep_mps=False, additional_constraints="str", user_weights_file_path="",
-                                                weight_file_name_for_lp="", lp_namer_exe_path=Path("lp.exe"), active_years=[1, 2])
+                                                weight_file_name_for_lp="", lp_namer_exe_path=Path("lp.exe"),
+                                                active_years=[1, 2], memory=False)
 
         self.benders_driver_options_file = "options_file.json"
 

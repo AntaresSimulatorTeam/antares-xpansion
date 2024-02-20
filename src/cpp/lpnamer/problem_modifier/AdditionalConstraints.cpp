@@ -2,14 +2,16 @@
 #include "AdditionalConstraints.h"
 
 #include <iostream>
+#include <utility>
 
 #include "AdditionalConstraintsReader.h"
 #include "LogUtils.h"
 
 AdditionalConstraints::AdditionalConstraints(
-    std::string const& constraints_file_path,
+    std::string constraints_file_path,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
-    : constraintsFilePath_(constraints_file_path), logger_(logger) {
+    : constraintsFilePath_(std::move(constraints_file_path)),
+      logger_(std::move(logger)) {
   ReadConstraintsFile();
 }
 void AdditionalConstraints::ReadConstraintsFile() {
@@ -21,7 +23,7 @@ void AdditionalConstraints::ReadConstraintsFile() {
   addVariablesToBinarise(variables_section);
 
   // treat constraints sections
-  for (std::string sectionName_l : reader_l.getSections()) {
+  for (const std::string& sectionName_l : reader_l.getSections()) {
     if (sectionName_l != "variables") {
       std::map<std::string, std::string> const& constarintsSection_l =
           reader_l.getSection(sectionName_l);
@@ -54,20 +56,15 @@ AdditionalConstraints::getVariablesToBinarise() const {
 void AdditionalConstraints::constructAdditionalConstraints(
     const std::string& sectionName_l,
     const std::map<std::string, std::string>& constarintsSection_l) {
-  std::string constraintName_l = "";
-  std::string constraintSign_l = "";
-  double constraintRHS_l = 0;
 
   // check that section has defined a unique constraint name
-  constraintName_l =
+  std::string constraintName_l =
       checkAndReturnConstraintName(sectionName_l, constarintsSection_l);
-
   // check that section has defined a sign
-  constraintSign_l =
+  std::string constraintSign_l =
       checkAndReturnSectionSign(sectionName_l, constarintsSection_l);
-
   // check that section has defined a rhs
-  constraintRHS_l =
+  double constraintRHS_l =
       checkAndReturnSectionRhs(sectionName_l, constarintsSection_l);
 
   // create and fill the constraint
@@ -110,7 +107,7 @@ void AdditionalConstraints::constructAdditionalConstraints(
 std::string AdditionalConstraints::checkAndReturnConstraintName(
     const std::string& sectionName_l,
     const std::map<std::string, std::string>& constarintsSection_l) const {
-  std::string constraintName_l = "";
+  std::string constraintName_l;
   // check that section has defined a unique constraint name
   auto temporatyIterator_l = constarintsSection_l.find("name");
   if (temporatyIterator_l == constarintsSection_l.end()) {
@@ -135,7 +132,7 @@ std::string AdditionalConstraints::checkAndReturnSectionSign(
     const std::map<std::string, std::string>& constarintsSection_l) const {
   // check that section has defined a sign
 
-  std::string constraintSign_l = "";
+  std::string constraintSign_l;
   auto temporatyIterator_l = constarintsSection_l.find("sign");
   if (temporatyIterator_l == constarintsSection_l.end()) {
     (*logger_)(LogUtils::LOGLEVEL::FATAL)

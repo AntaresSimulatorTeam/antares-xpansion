@@ -4,6 +4,8 @@
 
 #include "AntaresProblemToXpansionProblemTranslator.h"
 
+#include <cmath>
+
 #include "LogUtils.h"
 #include "multisolver_interface/SolverFactory.h"
 #include "solver_utils.h"
@@ -15,20 +17,39 @@ AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
   SolverFactory factory;
   auto problem = std::make_shared<Problem>(
       factory.create_solver(solver_name, solver_log_manager));
-  problem->init();
   const auto& constant = lps._constant;
   const auto& hebdo = lps._hebdo.at({year, week});
+  problem->_name = hebdo->name;
 
   std::vector<int> tmp(constant->NombreDeVariables, 0);
   std::vector<char> coltypes(constant->NombreDeVariables, 'C');
 
+  auto round10 = []<typename T>(T& collection) {
+    std::ranges::transform(collection, collection.begin(), [](double v) {
+      return round(v * pow(10, 10)) * pow(10, -10);
+    });
+  };
+
+  round10(hebdo->CoutLineaire);
+  round10(hebdo->Xmin);
+  round10(hebdo->Xmax);
+  round10(hebdo->SecondMembre);
+  round10(constant->CoefficientsDeLaMatriceDesContraintes);
+
   problem->add_cols(constant->NombreDeVariables, 0, hebdo->CoutLineaire.data(),
                     tmp.data(), {}, {}, hebdo->Xmin.data(), hebdo->Xmax.data());
+
   problem->add_rows(
       constant->NombreDeContraintes, constant->NombreDeCoefficients,
       convertSignToLEG(hebdo->Sens.data()).data(), hebdo->SecondMembre.data(),
       {}, constant->Mdeb.data(), constant->IndicesColonnes.data(),
       constant->CoefficientsDeLaMatriceDesContraintes.data());
+  for (int i = 0; i < constant->NombreDeVariables; ++i) {
+    problem->chg_col_name(i, hebdo->variables[i]);
+  }
+  for (int i = 0; i < constant->NombreDeContraintes; ++i) {
+    problem->chg_row_name(i, hebdo->constraints[i]);
+  }
   auto rows = problem->get_nrows();
   auto cols = problem->get_ncols();
   auto elem = problem->get_nelems();

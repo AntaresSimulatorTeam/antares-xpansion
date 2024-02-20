@@ -18,6 +18,6 @@ target_link_libraries (lp_namer
 		PRIVATE
 		${PROJECT_NAME}::problem_generation_main
 		${PROJECT_NAME}::lp_namer_helper
-		Boost::serialization)
+)
 
 install(TARGETS lp_namer DESTINATION bin)
