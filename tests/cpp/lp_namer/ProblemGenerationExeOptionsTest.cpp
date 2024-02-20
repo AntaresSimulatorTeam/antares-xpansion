@@ -50,7 +50,7 @@ class ProblemGenerationSpyAndMock : public ProblemGeneration {
   }
 
  private:
-  std::filesystem::path performeAntaresSimulation() override {
+  std::filesystem::path performAntaresSimulation() override {
     return options_.StudyPath() / "simulation";
   }
 
