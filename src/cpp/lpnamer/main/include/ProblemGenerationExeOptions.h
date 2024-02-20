@@ -53,5 +53,7 @@ class ProblemGenerationExeOptions : public OptionsParser,
       const std::filesystem::path& xpansion_output_dir,
       const std::filesystem::path& archive_path) const override;
   [[nodiscard]] std::filesystem::path StudyPath() const override;
+  void checkOnlyOneMandatoryOption(const std::string& log_location) const;
+  void checkAtLeastOneMandatoryOption(const std::string& log_location) const;
 };
 #endif  // ANTARES_XPANSION_SRC_CPP_LPNAMER_MAIN_INCLUDE_PROBLEMGENERATIONEXEOPTIONS_H

@@ -26,19 +26,28 @@ void ProblemGenerationExeOptions::Parse(unsigned int argc,
                                         const char* const* argv) {
   OptionsParser::Parse(argc, argv);
   auto log_location = LOGLOCATION;
-  if (std::vector<std::string> args = {XpansionOutputDir(), ArchivePath(),
-                                       StudyPath()};
-      std::ranges::count_if(args, std::ranges::empty) < (args.size() - 1)) {
-    auto msg = "Only one of [archive, output, study] parameters is accepted"s;
-    throw ProblemGenerationOptions::ConflictingParameters(msg, log_location);
-  }
-  if (std::vector<std::string> mandatory = {XpansionOutputDir(), ArchivePath(),
-                                            StudyPath()};
+  checkOnlyOneMandatoryOption(log_location);
+  checkOnlyOneMandatoryOption(log_location);
+}
+void ProblemGenerationExeOptions::checkAtLeastOneMandatoryOption(
+    const std::string& log_location) const {
+  if (std::vector<std::string> mandatory = {this->XpansionOutputDir(),
+                                            this->ArchivePath(),
+                                            this->StudyPath()};
       std::ranges::all_of(
           mandatory, [](std::string_view string) { return string.empty(); })) {
     auto msg =
         "Need to give at least on of [OutputDir, Archive, Study] options"s;
     throw ProblemGenerationOptions::MissingParameters(msg, log_location);
+  }
+}
+void ProblemGenerationExeOptions::checkOnlyOneMandatoryOption(
+    const std::string& log_location) const {
+  if (std::vector<std::string> args = {this->XpansionOutputDir(),
+                                       this->ArchivePath(), this->StudyPath()};
+      std::ranges::count_if(args, std::ranges::empty) < (args.size() - 1)) {
+    auto msg = "Only one of [archive, output, study] parameters is accepted"s;
+    throw ProblemGenerationOptions::ConflictingParameters(msg, log_location);
   }
 }
 
