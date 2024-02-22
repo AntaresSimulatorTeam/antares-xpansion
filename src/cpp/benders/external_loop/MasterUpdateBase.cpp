@@ -67,18 +67,11 @@ void MasterUpdateBase::Update(const CRITERION &criterion) {
       //   break;
   }
   lambda_ = tau_ * lambda_max_ + (1 - tau_) * lambda_min_;
-  // benders->mas
   UpdateConstraints();
   // deplacer dans Benders
   // AddCutsInMaster();
 }
 
-// bool MasterUpdateBase::IsConstraintInMasterProblem(int &row_index) const {
-//   if (!additional_constraint_name_.empty()) {
-//     row_index = benders_->MasterRowIndex(additional_constraint_name_);
-//   }
-//   return row_index > -1;
-// }
 void MasterUpdateBase::UpdateConstraints() {
   if (!benders_->MasterIsEmpty() && additional_constraint_index_ > -1) {
     benders_->MasterChangeRhs(additional_constraint_index_, lambda_);

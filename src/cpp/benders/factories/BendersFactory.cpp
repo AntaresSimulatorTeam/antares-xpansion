@@ -161,7 +161,6 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
 }
 int RunExternalLoop_(char** argv, const std::filesystem::path& options_file,
                      mpi::environment& env, mpi::communicator& world) {
-  // Read options, needed to have options.OUTPUTROOT
   BendersLoggerBase benders_loggers;
 
   try {
@@ -177,8 +176,6 @@ int RunExternalLoop_(char** argv, const std::filesystem::path& options_file,
     std::shared_ptr<IOuterLoopCriterion> criterion =
         std::make_shared<OuterloopCriterionLOL>(threshold, epsilon);
     std::shared_ptr<IMasterUpdate> master_updater =
-        // std::make_shared<MasterUpdateBase>(benders, lambda, lambda_min,
-        //                                    lambda_max, tau);
         std::make_shared<MasterUpdateBase>(benders, tau);
     std::shared_ptr<ICutsManager> cuts_manager =
         std::make_shared<CutsManagerRunTime>();
