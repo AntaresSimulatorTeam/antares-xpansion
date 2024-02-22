@@ -17,6 +17,7 @@ class SimulationOptions {
   void print(std::ostream &stream) const;
   BendersBaseOptions get_benders_options() const;
   BaseOptions get_base_options() const;
+  ExternalLoopOptions GetExternalLoopOptions() const;
 
   void write_default() const;
   Str2Dbl _weights;

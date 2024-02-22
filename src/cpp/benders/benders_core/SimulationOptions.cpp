@@ -171,3 +171,8 @@ BendersBaseOptions SimulationOptions::get_benders_options() const {
 
   return result;
 }
+
+ExternalLoopOptions SimulationOptions::GetExternalLoopOptions() const {
+  return {EXT_LOOP_LOSS_OF_LOAD_THRESOLD, EXT_LOOP_EPSILON,
+          EXT_LOOP_MAX_UNSUP_ENERGY};
+}

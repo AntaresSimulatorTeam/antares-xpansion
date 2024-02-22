@@ -166,6 +166,12 @@ struct BendersBaseOptions : public BaseOptions {
   size_t BATCH_SIZE;
 };
 
+struct ExternalLoopOptions {
+  double EXT_LOOP_LOSS_OF_LOAD_THRESOLD = 1.0;
+  double EXT_LOOP_EPSILON = 1e-1;
+  double EXT_LOOP_MAX_UNSUP_ENERGY = 1e-1;
+};
+
 void usage(int argc);
 CouplingMap build_input(const std::filesystem::path &structure_path);
 Json::Value get_json_file_content(const std::filesystem::path &json_file);

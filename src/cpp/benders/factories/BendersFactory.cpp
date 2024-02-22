@@ -174,7 +174,8 @@ int RunExternalLoop_(char** argv, const std::filesystem::path& options_file,
     double lambda_max = 17;
     double tau = 0.5;
     std::shared_ptr<IOuterLoopCriterion> criterion =
-        std::make_shared<OuterloopCriterionLOL>(threshold, epsilon);
+        std::make_shared<OuterloopCriterionLossOfLoad>(
+            options.GetExternalLoopOptions());
     std::shared_ptr<IMasterUpdate> master_updater =
         std::make_shared<MasterUpdateBase>(benders, tau);
     std::shared_ptr<ICutsManager> cuts_manager =

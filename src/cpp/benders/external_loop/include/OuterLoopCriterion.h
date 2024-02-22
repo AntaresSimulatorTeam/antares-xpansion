@@ -4,6 +4,7 @@
 
 #include "BendersBase.h"
 #include "LogUtils.h"
+#include "common.h"
 
 class CriterionCouldNotBeSatisfied
     : public LogUtils::XpansionError<std::runtime_error> {
@@ -19,9 +20,9 @@ class IOuterLoopCriterion {
   virtual double CriterionValue() const = 0;
 };
 
-class OuterloopCriterionLOL : public IOuterLoopCriterion {
+class OuterloopCriterionLossOfLoad : public IOuterLoopCriterion {
  public:
-  explicit OuterloopCriterionLOL(double threshold, double epsilon);
+  explicit OuterloopCriterionLossOfLoad(const ExternalLoopOptions& options);
   CRITERION IsCriterionSatisfied(
       const WorkerMasterData& milp_solution) override;
   std::string StateAsString() const override;
@@ -32,8 +33,7 @@ class OuterloopCriterionLOL : public IOuterLoopCriterion {
   const std::string positive_unsupplied_vars_prefix_ =
       "^PositiveUnsuppliedEnergy::";
   const std::regex rgx_ = std::regex(positive_unsupplied_vars_prefix_);
-  const double UNSUPPLIED_ENERGY_MAX = 0.1;
-  double threshold_ = 1e6;
-  double epsilon_ = 1e-1;
+
+  ExternalLoopOptions options_;
   double sum_loss_ = 0.0;
 };
