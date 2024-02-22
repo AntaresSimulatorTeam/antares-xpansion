@@ -18,7 +18,6 @@ if (NOT antares-solver_FOUND)
     endif ()
     #Don't use CMAKE_BUILD_TYPE directly to support exotic build type in xpansion that may not exist in Simulator
 
-    message(STATUS "Building dependency antares-solver: ${REPOSITORY}:${TAG}")
     build_git_dependency(
         NAME
           antares-solver
