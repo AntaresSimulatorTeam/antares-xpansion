@@ -93,14 +93,14 @@ void User::display_restart_message() {
 
 void User::PrintIterationSeparatorBegin() {
   _stream << PrefixMessage(LogUtils::LOGLEVEL::INFO, CONTEXT);
-  std::string sep_msg(74, '_');
-  sep_msg = ' ' + sep_msg + '\n' + '/';
+  std::string sep_msg(74, '-');
+  sep_msg = "/*\\" + sep_msg;
   _stream << sep_msg << std::endl;
 }
 void User::PrintIterationSeparatorEnd() {
   _stream << PrefixMessage(LogUtils::LOGLEVEL::INFO, CONTEXT);
-  std::string sep_msg(74, '_');
-  sep_msg = '\\' + sep_msg;
+  std::string sep_msg(74, '-');
+  sep_msg = "\\*/" + sep_msg;
   _stream << sep_msg << std::endl;
 }
 

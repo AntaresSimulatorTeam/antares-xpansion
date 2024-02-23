@@ -58,7 +58,7 @@ struct MathLoggerBehaviour : public ILoggerBenders {
   }
 
   virtual void display_message(const std::string& str) {
-    LogsDestination() << str;
+    LogsDestination() << str << std::endl;
   }
 
   virtual void Print(const CurrentIterationData& data) = 0;

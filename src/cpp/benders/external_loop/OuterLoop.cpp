@@ -52,16 +52,19 @@ void OuterLoop::Run() {
         criterion_->IsCriterionSatisfied(benders_->BestIterationWorkerMaster());
     master_updater_->Update(criterion);
   }
+  PrintLog();
   cuts_manager_->Save(benders_->AllCuts());
   benders_->free();
 }
 
 void OuterLoop::PrintLog() {
   std::ostringstream msg;
-  msg << "*** Benders Run: " << benders_->GetBendersRunNumber() << std::endl
-      << "*** Criterion value: " << std::scientific << std::setprecision(10)
-      << criterion_->CriterionValue() << std::endl;
   loggers_.PrintIterationSeparatorBegin();
+  msg << "*** Benders Run: " << benders_->GetBendersRunNumber();
+  loggers_.display_message(msg.str());
+  msg.str("");
+  msg << "*** Criterion value: " << std::scientific << std::setprecision(10)
+      << criterion_->CriterionValue();
   loggers_.display_message(msg.str());
   loggers_.PrintIterationSeparatorEnd();
 }
