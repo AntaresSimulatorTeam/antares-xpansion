@@ -64,6 +64,9 @@ struct MathLoggerBehaviour : public ILoggerBenders {
   virtual void Print(const CurrentIterationData& data) = 0;
   virtual std::vector<std::string> Headers() const = 0;
   virtual LogDestination& LogsDestination() = 0;
+
+  virtual void PrintIterationSeparatorBegin() override;
+  virtual void PrintIterationSeparatorEnd() override;
   virtual void setHeadersList() = 0;
 };
 
@@ -148,6 +151,8 @@ class MathLoggerDriver : public ILoggerBenders {
   void display_message(const std::string& str) override;
   void add_logger(std::shared_ptr<MathLoggerImplementation> logger);
   void Print(const CurrentIterationData& data);
+  virtual void PrintIterationSeparatorBegin() override;
+  virtual void PrintIterationSeparatorEnd() override;
 
  private:
   std::vector<std::shared_ptr<MathLoggerImplementation>> math_loggers_;

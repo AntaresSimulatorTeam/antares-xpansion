@@ -861,11 +861,6 @@ void BendersBase::write_basis() const {
 WorkerMasterDataVect BendersBase::AllCuts() const {
   return workerMasterDataVect_;
 }
-// BendersCuts BendersBase::CutsBestIteration() const {
-//   return best_iteration_cuts_;
-// }
-
-// void BendersBase::Clean() { workerMasterDataVect_.clear(); }
 
 int BendersBase::MasterRowIndex(const std::string &row_name) const {
   return _master->RowIndex(row_name);

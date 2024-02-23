@@ -90,6 +90,20 @@ void User::display_restart_message() {
   _stream << PrefixMessage(LogUtils::LOGLEVEL::INFO, CONTEXT)
           << "Restart Study..." << std::endl;
 }
+
+void User::PrintIterationSeparatorBegin() {
+  _stream << PrefixMessage(LogUtils::LOGLEVEL::INFO, CONTEXT);
+  std::string sep_msg(74, '_');
+  sep_msg = ' ' + sep_msg + '\n' + '/';
+  _stream << sep_msg << std::endl;
+}
+void User::PrintIterationSeparatorEnd() {
+  _stream << PrefixMessage(LogUtils::LOGLEVEL::INFO, CONTEXT);
+  std::string sep_msg(74, '_');
+  sep_msg = '\\' + sep_msg;
+  _stream << sep_msg << std::endl;
+}
+
 void User::restart_elapsed_time(const double elapsed_time) {
   _stream << PrefixMessage(LogUtils::LOGLEVEL::INFO, CONTEXT) << indent_1
           << "Elapsed time: " << format_time_str(elapsed_time) << std::endl;

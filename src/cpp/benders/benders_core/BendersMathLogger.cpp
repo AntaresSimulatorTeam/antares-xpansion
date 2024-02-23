@@ -74,6 +74,19 @@ LogDestination::LogDestination(const std::filesystem::path& file_path,
     std::cerr << err_msg.str();
   }
 }
+
+void MathLoggerBehaviour::PrintIterationSeparatorBegin() {
+  std::string sep_msg(74, '_');
+  sep_msg = ' ' + sep_msg + '\n' + '/';
+  LogsDestination() << sep_msg << std::endl;
+}
+
+void MathLoggerBehaviour::PrintIterationSeparatorEnd() {
+  std::string sep_msg(74, '_');
+  sep_msg = '\\' + sep_msg;
+  LogsDestination() << sep_msg << std::endl;
+}
+
 void MathLoggerDriver::add_logger(
     std::shared_ptr<MathLoggerImplementation> logger) {
   if (logger) {
@@ -96,6 +109,18 @@ void MathLoggerDriver::write_header() {
 void MathLoggerDriver::display_message(const std::string& str) {
   for (auto logger : math_loggers_) {
     logger->display_message(str);
+  }
+}
+
+void MathLoggerDriver::PrintIterationSeparatorBegin() {
+  for (auto logger : math_loggers_) {
+    logger->PrintIterationSeparatorBegin();
+  }
+}
+
+void MathLoggerDriver::PrintIterationSeparatorEnd() {
+  for (auto logger : math_loggers_) {
+    logger->PrintIterationSeparatorEnd();
   }
 }
 

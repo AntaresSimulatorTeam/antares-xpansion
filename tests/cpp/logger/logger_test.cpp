@@ -571,6 +571,13 @@ class SimpleLoggerMock : public ILogger {
     _displaymessage = str;
   }
 
+  void PrintIterationSeparatorBegin() override {
+    //
+  }
+  void PrintIterationSeparatorEnd() override {
+    //
+  }
+
   void log_at_initialization(const int it_number) override { _initCall = true; }
 
   void log_iteration_candidates(const LogData& d) override {

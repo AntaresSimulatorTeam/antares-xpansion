@@ -242,17 +242,8 @@ void BendersByBatch::BuildCut(
   Gather(subproblem_data_map, gathered_subproblem_map, rank_0);
   SetSubproblemsWalltime(subproblems_timer_per_proc.elapsed());
 
-  // if (Rank() == rank_0) {
-  //   // TODO decoment to save all cuts
-  //   // workerMasterDataVect_.push_back({_data.x_cut, {}});
-  //   current_iteration_cuts_.x_cut = _data.x_cut;
-  // }
   for (const auto &subproblem_map : gathered_subproblem_map) {
     for (auto &&[sub_problem_name, subproblem_data] : subproblem_map) {
-      // workerMasterDataVect_.back().subsProblemDataMap[sub_problem_name] =
-      //     subproblem_data;
-      // current_iteration_cuts_.subsProblemDataMap[sub_problem_name] =
-      //     subproblem_data;
       SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
       BoundSimplexIterations(subproblem_data.simplex_iter);
     }

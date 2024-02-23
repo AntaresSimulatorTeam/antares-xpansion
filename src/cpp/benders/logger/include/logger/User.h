@@ -20,6 +20,9 @@ class User : public ILogger {
   void display_message(const std::string &str,
                        LogUtils::LOGLEVEL level) override;
 
+  virtual void PrintIterationSeparatorBegin() override;
+  virtual void PrintIterationSeparatorEnd() override;
+
   void log_at_initialization(const int it_number) override;
 
   void log_iteration_candidates(const LogData &d) override;
