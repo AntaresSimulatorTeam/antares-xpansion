@@ -922,5 +922,5 @@ void BendersBase::ResetData(double criterion) {
 
 void BendersBase::InitExternalValues() {
   _data.external_loop_criterion = 0;
-  _data.benders_num_run = 0;
+  _data.benders_num_run = 1;
 }

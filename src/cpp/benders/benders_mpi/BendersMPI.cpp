@@ -308,7 +308,6 @@ void BendersMpi::PreRunInitialization() {
 }
 
 void BendersMpi::launch() {
-  ++_data.benders_num_run;
   if (init_problems_) {
     InitializeProblems();
   }
@@ -321,6 +320,6 @@ void BendersMpi::launch() {
   if (free_problems_) {
     free();
   }
+  ++_data.benders_num_run;
   _world.barrier();
 }
-

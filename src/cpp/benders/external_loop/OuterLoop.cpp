@@ -24,9 +24,8 @@ void OuterLoop::Run() {
 
   auto obj_coeff = benders_->ObjectiveFunctionCoeffs();
   benders_->SetObjectiveFunctionCoeffsToZeros();
-  loggers_.PrintIterationSeparatorBegin();
+  PrintLog();
   benders_->launch();
-  loggers_.PrintIterationSeparatorEnd();
 
   benders_->SetObjectiveFunction(obj_coeff.data(), 0, obj_coeff.size() - 1);
 
@@ -46,13 +45,23 @@ void OuterLoop::Run() {
 
   while (criterion != CRITERION::IS_MET) {
     benders_->ResetData(criterion_->CriterionValue());
-    loggers_.PrintIterationSeparatorBegin();
+    PrintLog();
+    benders_->mathLoggerDriver_->write_header();
     benders_->launch();
-    loggers_.PrintIterationSeparatorEnd();
     criterion =
         criterion_->IsCriterionSatisfied(benders_->BestIterationWorkerMaster());
     master_updater_->Update(criterion);
   }
   cuts_manager_->Save(benders_->AllCuts());
   benders_->free();
+}
+
+void OuterLoop::PrintLog() {
+  std::ostringstream msg;
+  msg << "*** Benders Run: " << benders_->GetBendersRunNumber() << std::endl
+      << "*** Criterion value: " << std::scientific << std::setprecision(10)
+      << criterion_->CriterionValue() << std::endl;
+  loggers_.PrintIterationSeparatorBegin();
+  loggers_.display_message(msg.str());
+  loggers_.PrintIterationSeparatorEnd();
 }

@@ -76,14 +76,14 @@ LogDestination::LogDestination(const std::filesystem::path& file_path,
 }
 
 void MathLoggerBehaviour::PrintIterationSeparatorBegin() {
-  std::string sep_msg(74, '_');
-  sep_msg = ' ' + sep_msg + '\n' + '/';
+  std::string sep_msg(74, '-');
+  sep_msg = "/*\\" + sep_msg;
   LogsDestination() << sep_msg << std::endl;
 }
 
 void MathLoggerBehaviour::PrintIterationSeparatorEnd() {
-  std::string sep_msg(74, '_');
-  sep_msg = '\\' + sep_msg;
+  std::string sep_msg(74, '-');
+  sep_msg = "\\*/" + sep_msg;
   LogsDestination() << sep_msg << std::endl;
 }
 
