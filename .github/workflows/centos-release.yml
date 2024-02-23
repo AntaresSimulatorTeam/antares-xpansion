@@ -279,7 +279,7 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
-          name: ${ {env.SINGLEFILE_NAME}}
+          name: ${{env.SINGLEFILE_NAME}}
           path: .
 
       - name: Upload Release Asset
