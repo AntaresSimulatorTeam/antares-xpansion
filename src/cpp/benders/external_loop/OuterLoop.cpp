@@ -13,8 +13,8 @@ OuterLoop::OuterLoop(std::shared_ptr<IOuterLoopCriterion> criterion,
       benders_(std::move(benders)),
       env_(env),
       world_(world) {
-  loggers_.push_back(benders_->_logger);
-  loggers_.push_back(benders_->mathLoggerDriver_);
+  loggers_.AddLogger(benders_->_logger);
+  loggers_.AddLogger(benders_->mathLoggerDriver_);
 }
 
 void OuterLoop::Run() {
@@ -24,7 +24,9 @@ void OuterLoop::Run() {
 
   auto obj_coeff = benders_->ObjectiveFunctionCoeffs();
   benders_->SetObjectiveFunctionCoeffsToZeros();
+  loggers_.PrintIterationSeparatorBegin();
   benders_->launch();
+  loggers_.PrintIterationSeparatorEnd();
 
   benders_->SetObjectiveFunction(obj_coeff.data(), 0, obj_coeff.size() - 1);
 
@@ -44,7 +46,9 @@ void OuterLoop::Run() {
 
   while (criterion != CRITERION::IS_MET) {
     benders_->ResetData(criterion_->CriterionValue());
+    loggers_.PrintIterationSeparatorBegin();
     benders_->launch();
+    loggers_.PrintIterationSeparatorEnd();
     criterion =
         criterion_->IsCriterionSatisfied(benders_->BestIterationWorkerMaster());
     master_updater_->Update(criterion);

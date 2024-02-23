@@ -18,7 +18,7 @@ class OuterLoop {
   std::shared_ptr<IMasterUpdate> master_updater_;
   std::shared_ptr<ICutsManager> cuts_manager_;
   pBendersBase benders_;
-  std::vector<std::shared_ptr<ILoggerBenders>> loggers_;
+  BendersLoggerBase loggers_;
   mpi::environment& env_;
   mpi::communicator& world_;
 };
