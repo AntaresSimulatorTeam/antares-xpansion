@@ -101,11 +101,7 @@ void BendersByBatch::MasterLoop() {
     remaining_epsilon_ = Gap();
 
     if (Rank() == rank_0) {
-      _logger->display_message(
-          " _______________________________________________________________"
-          "_"
-          "________");
-      _logger->display_message("/");
+      _logger->PrintIterationSeparatorBegin();
 
       _logger->display_message("\tSolving master...");
       get_master_value();
@@ -134,9 +130,7 @@ void BendersByBatch::MasterLoop() {
     _logger->LogSubproblemsSolvingCumulativeCpuTime(
         GetSubproblemsCumulativeCpuTime());
     _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
-    _logger->display_message(
-        "\\________________________________________________________________"
-        "________");
+    _logger->PrintIterationSeparatorEnd();
     mathLoggerDriver_->Print(_data);
   }
 }
