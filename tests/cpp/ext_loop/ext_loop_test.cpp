@@ -1,6 +1,9 @@
 
+// #include "MasterUpdate.h"
 #include "OuterLoopCriterion.h"
 #include "gtest/gtest.h"
+
+//-------------------- OuterLoopCriterionTest -------------------------
 
 class OuterLoopCriterionTest : public ::testing::Test {};
 
@@ -12,8 +15,8 @@ TEST_F(OuterLoopCriterionTest, IsCriterionHigh) {
   PlainData::Variables variables = {
       {"PositiveUnsuppliedEnergy::1", "PositiveUnsuppliedEnergy::2", "var3"},
       {0.2, 0.3, 68}};
-  double criterion_value = 2.0;  // two vars named PositiveUnsuppliedEnergy with
-                                 // value > max_unsup_energy
+  double criterion_value = 2.0;  // two vars named ^PositiveUnsuppliedEnergy
+                                 // with value > max_unsup_energy
 
   PlainData::SubProblemData subProblemData;
   subProblemData.variables = variables;
@@ -80,3 +83,9 @@ TEST_F(OuterLoopCriterionTest, IsMet) {
             CRITERION::IS_MET);
   EXPECT_EQ(criterion.CriterionValue(), criterion_value);
 }
+
+//-------------------- MasterUpdateBaseTest -------------------------
+
+class MasterUpdateBaseTest : public ::testing::Test {};
+
+// TEST_F(MasterUpdateBaseTest, )
