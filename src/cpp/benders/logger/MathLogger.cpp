@@ -112,3 +112,11 @@ MathLoggerFile::MathLoggerFile(const BENDERSMETHOD& method,
 void MathLoggerFile::display_message(const std::string& msg) {
   // keep empty
 }
+
+void MathLoggerFile::PrintIterationSeparatorBegin() {
+  // keep empty
+}
+
+void MathLoggerFile::PrintIterationSeparatorEnd() {
+  // keep empty
+}
