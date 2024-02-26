@@ -126,6 +126,8 @@ jobs:
       - name: Compile tbb
         uses: ./.github/workflows/compile-tbb
 
+      - uses: ./.github/workflows/compile-gtest
+
       - name: Install dependencies
         run: |
           pip3 install --upgrade pip
