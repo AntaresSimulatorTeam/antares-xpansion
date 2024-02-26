@@ -113,6 +113,13 @@ void MathLoggerFile::display_message(const std::string& msg) {
   // keep empty
 }
 
+void MathLoggerOstream::PrintIterationSeparatorBegin() {
+  // keep empty
+}
+
+void MathLoggerOstream::PrintIterationSeparatorEnd() {
+  // keep empty
+}
 void MathLoggerFile::PrintIterationSeparatorBegin() {
   // keep empty
 }

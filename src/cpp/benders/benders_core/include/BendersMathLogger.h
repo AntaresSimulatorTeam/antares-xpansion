@@ -131,6 +131,13 @@ class MathLoggerImplementation : public MathLoggerBehaviour {
 
   void Print(const CurrentIterationData& data) { implementation_->Print(data); }
 
+  void PrintIterationSeparatorBegin() override {
+    implementation_->PrintIterationSeparatorBegin();
+  }
+  void PrintIterationSeparatorEnd() override {
+    implementation_->PrintIterationSeparatorEnd();
+  }
+
  protected:
   void setHeadersList() override { implementation_->setHeadersList(); }
   std::vector<std::string> Headers() const override {

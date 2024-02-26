@@ -59,12 +59,14 @@ void OuterLoop::Run() {
 
 void OuterLoop::PrintLog() {
   std::ostringstream msg;
-  loggers_.PrintIterationSeparatorBegin();
+  // just for operational log?
+  auto logger = benders_->_logger;
+  logger->PrintIterationSeparatorBegin();
   msg << "*** Benders Run: " << benders_->GetBendersRunNumber();
-  loggers_.display_message(msg.str());
+  logger->display_message(msg.str());
   msg.str("");
   msg << "*** Criterion value: " << std::scientific << std::setprecision(10)
       << criterion_->CriterionValue();
-  loggers_.display_message(msg.str());
-  loggers_.PrintIterationSeparatorEnd();
+  logger->display_message(msg.str());
+  logger->PrintIterationSeparatorEnd();
 }
