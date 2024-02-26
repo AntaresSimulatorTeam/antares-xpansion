@@ -12,9 +12,9 @@ CRITERION OuterloopCriterionLossOfLoad::IsCriterionSatisfied(
   ProcessSum(worker_master_data);
 
   if (sum_loss_ <=
-      options_.EXT_LOOP_LOSS_OF_LOAD_THRESOLD + options_.EXT_LOOP_EPSILON) {
+      options_.EXT_LOOP_LOSS_OF_LOAD_THRESHOLD + options_.EXT_LOOP_EPSILON) {
     if (sum_loss_ >=
-        options_.EXT_LOOP_LOSS_OF_LOAD_THRESOLD - options_.EXT_LOOP_EPSILON) {
+        options_.EXT_LOOP_LOSS_OF_LOAD_THRESHOLD - options_.EXT_LOOP_EPSILON) {
       return CRITERION::IS_MET;
     }
     return CRITERION::LOW;
@@ -43,7 +43,7 @@ void OuterloopCriterionLossOfLoad::ProcessSum(
 std::string OuterloopCriterionLossOfLoad::StateAsString() const {
   std::ostringstream msg;
   msg << "Sum loss = " << sum_loss_ << "\n"
-      << "threshold: " << options_.EXT_LOOP_LOSS_OF_LOAD_THRESOLD << "\n"
+      << "threshold: " << options_.EXT_LOOP_LOSS_OF_LOAD_THRESHOLD << "\n"
       << "epsilon: " << options_.EXT_LOOP_EPSILON << "\n";
 
   return msg.str();

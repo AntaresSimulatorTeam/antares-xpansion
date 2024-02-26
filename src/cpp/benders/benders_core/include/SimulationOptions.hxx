@@ -74,7 +74,7 @@ BENDERS_OPTIONS_MACRO(LAST_MASTER_BASIS, std::string, "master_last_basis",
 BENDERS_OPTIONS_MACRO(BATCH_SIZE, size_t, 0, asUInt())
 
 // EXTERNAL Loop Loss of Load thresold
-BENDERS_OPTIONS_MACRO(EXT_LOOP_LOSS_OF_LOAD_THRESOLD, double, 1.0, asDouble())
+BENDERS_OPTIONS_MACRO(EXT_LOOP_LOSS_OF_LOAD_THRESHOLD, double, 1.0, asDouble())
 
 // EXTERNAL Loop epsilon
 BENDERS_OPTIONS_MACRO(EXT_LOOP_EPSILON, double, 1e-1, asDouble())
