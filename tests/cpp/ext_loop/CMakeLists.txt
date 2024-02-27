@@ -3,6 +3,7 @@ add_executable(ext_loop_test
 
 target_link_libraries(ext_loop_test
         PRIVATE
+        solvers
         external_loop
         benders_by_batch_core
         benders_core

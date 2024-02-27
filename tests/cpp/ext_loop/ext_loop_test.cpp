@@ -6,6 +6,7 @@
 #include "OuterLoopCriterion.h"
 #include "WriterFactories.h"
 #include "gtest/gtest.h"
+#include "multisolver_interface/environment.h"
 
 int my_argc;
 char** my_argv;
@@ -154,6 +155,10 @@ class MasterUpdateBaseTest : public ::testing::Test {
 };
 
 TEST_F(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
+  // skipping if xpress is not available
+  if (!LoadXpress::XpressIsCorrectlyInstalled()) {
+    GTEST_SKIP();
+  }
   mpi::environment env(my_argc, my_argv);
   mpi::communicator world;
 
