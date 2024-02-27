@@ -4,7 +4,7 @@ Antares-Xpansion changelog
 v1.2.2 (02/2024)
 --------------------------------------------------------
 
-- Update Antares simulator to 8.8.2
+- Update Antares simulator to 8.8.3
 
 v1.2 (10/2023)
 --------------------------------------------------------
