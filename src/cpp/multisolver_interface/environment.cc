@@ -317,29 +317,58 @@ bool LoadXpressDynamicLibrary(std::string& xpresspath) {
   return ret;
 }
 
+int loadLicence(const std::string& lib_path, bool verbose) {
+  //-----first let xpress find the licence
+  int code = XPRSinit(nullptr);
+  if (!code) {
+    return code;
+  }
+
+  // search for XPAUTH_PATH env var
+  const auto XPAUTH_PATH = "XPAUTH_PATH";
+  std::string xpauth_path_env_var =
+      GetXpressVarFromEnvironmentVariables(XPAUTH_PATH, false);
+  if (!xpauth_path_env_var.empty()) {
+    code = XPRSinit(xpauth_path_env_var.c_str());
+    if (!code) {
+      return code;
+    }
+  } else {
+    if (verbose) {
+      std::cout << "Warning: Environment variable " << XPAUTH_PATH
+                << " undefined.\n";
+    }
+  }
+
+  //-- XPRESS env var
+  const auto XPRESS = "XPRESS";
+
+  std::string xpress_env_var =
+      GetXpressVarFromEnvironmentVariables(XPRESS, false);
+  if (!xpress_env_var.empty()) {
+    code = XPRSinit(xpress_env_var.c_str());
+    if (!code) {
+      return code;
+    }
+  } else {
+    if (verbose) {
+      std::cout << "Warning: Environment variable " << XPRESS
+                << " undefined.\n";
+    }
+  }
+  // --- in xpress bin dir
+  auto xpress_bin_dir =
+      (std::filesystem::path(lib_path).parent_path() / "bin").string();
+  code = XPRSinit(xpress_bin_dir.c_str());
+  return code;
+}
+
 /** init XPRESS environment */
 bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
   std::string xpresspath;
   bool status = LoadXpressDynamicLibrary(xpresspath);
   if (!status) {
     return false;
-  }
-
-  std::string xpress_from_env =
-      GetXpressVarFromEnvironmentVariables("XPRESS", false);
-  if (xpress_from_env == "") {
-    if (verbose) {
-      std::cout << "Warning: Environment variable XPRESS undefined.\n";
-    }
-    if (xpresspath.empty()) {
-      std::cout << "Error: Environment variable XPRESSDIR undefined.\n";
-      return false;
-    }
-    xpresspath =
-        (std::filesystem::path(xpresspath).parent_path() / "bin").string();
-
-  } else {
-    xpresspath = std::filesystem::path(xpress_from_env).string();
   }
 
   int code;
@@ -351,7 +380,7 @@ bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
                 << "\n";
     }
 
-    code = XPRSinit(xpresspath.c_str());
+    code = loadLicence(xpresspath, false);
 
     if (!code) {
       // XPRSbanner informs about Xpress version, options and error messages
