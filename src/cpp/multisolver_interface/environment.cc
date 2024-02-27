@@ -329,7 +329,9 @@ int loadLicence(const std::string& lib_path, bool verbose) {
   std::string xpauth_path_env_var =
       GetXpressVarFromEnvironmentVariables(XPAUTH_PATH, false);
   if (!xpauth_path_env_var.empty()) {
-    code = XPRSinit(xpauth_path_env_var.c_str());
+    auto xpauth_path_parent_path =
+        std::filesystem::path(xpauth_path_env_var).parent_path().string();
+    code = XPRSinit(xpauth_path_parent_path.c_str());
     if (!code) {
       return code;
     }
