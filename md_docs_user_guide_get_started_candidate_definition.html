@@ -135,10 +135,10 @@ $(document).ready(function(){initNavTree('md_docs_user_guide_get_started_candida
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p >Once the Antares study has been prepared for the Antares-Xpansion simulation, by the introduction of virtual nodes as described in <a href="prepare-a-simulation.md#prepare-the-antares-study">Prepare the Antares study</a>, the user must use the <code>candidates.ini</code> file to characterize the investment candidates.</p>
-<h1><a class="anchor" id="autotoc_md109"></a>
+<h1><a class="anchor" id="autotoc_md110"></a>
 Characterization of investment candidates in &lt;tt&gt;candidates.ini&lt;/tt&gt;</h1>
 <p >Not all links in the Antares study are by default investment candidates. The candidates are defined in the <code>candidates.ini</code> file, which must be located inside the <code>user/expansion/</code> directory of the Antares study folder: <code>antares-study-folder/user/expansion/candidates.ini</code>.</p>
-<h2><a class="anchor" id="autotoc_md110"></a>
+<h2><a class="anchor" id="autotoc_md111"></a>
 Overview of the &lt;tt&gt;candidates.ini&lt;/tt&gt; file</h2>
 <p >Each investment candidate is characterized by the following properties:</p>
 <ul>
@@ -166,9 +166,9 @@ Overview of the &lt;tt&gt;candidates.ini&lt;/tt&gt; file</h2>
 <div class="line">already-installed-direct-link-profile = direct_installed_capa_pv.csv</div>
 <div class="line">already-installed-indirect-link-profile = indirect_installed_capa_pv.csv</div>
 </div><!-- fragment --><p >In Antares-Xpansion, the investment decisions only affect the capacity of the Antares' links. Investment in physical generation capacity is done with virtual nodes as described in <a href="prepare-a-simulation.md#prepare-the-antares-study">Prepare the Antares study</a>.</p>
-<h2><a class="anchor" id="autotoc_md111"></a>
+<h2><a class="anchor" id="autotoc_md112"></a>
 Details of the parameters</h2>
-<h3><a class="anchor" id="autotoc_md112"></a>
+<h3><a class="anchor" id="autotoc_md113"></a>
 &lt;tt&gt;name&lt;/tt&gt;</h3>
 <p >String, <b>mandatory</b>. Specifies the name of the investment candidates. Antares-Xpansion uses this name in the output and the logs. </p><blockquote class="doxtable">
 <p >&zwj;:warning: This field must not contain spaces!</p>
@@ -177,28 +177,28 @@ Details of the parameters</h2>
 <p>#### <code>link</code></p>
 <p >String, <b>mandatory</b>. Defines the link of the Antares study candidate for investment, whose capacities (direct and indirect) will be modified by Antares-Xpansion. The syntax of the link name includes the names of the two Antares nodes that are connected by the link, separated by "-", for example: </p><div class="fragment"><div class="line">origin_area – destination_area</div>
 </div><!-- fragment --><p> Node names that include spaces or dashes are not compatible with Antares-Xpansion. The origin area corresponds to the first in the spelling order. The same link may contain several investment candidates (see this section).</p>
-<h3><a class="anchor" id="autotoc_md113"></a>
+<h3><a class="anchor" id="autotoc_md114"></a>
 &lt;tt&gt;annual-cost-per-mw&lt;/tt&gt;</h3>
 <p >Float, <b>mandatory</b>. The decimal separator is the point. It defines the fixed cost annuity of the investment candidate (in €/MW/year). Depending on the type of candidate, the fixed cost annuity can include:</p>
 <ul>
 <li>Fixed operation and maintenance costs,</li>
 <li>An investment cost annuity.</li>
 </ul>
-<h3><a class="anchor" id="autotoc_md114"></a>
+<h3><a class="anchor" id="autotoc_md115"></a>
 &lt;tt&gt;max-investment&lt;/tt&gt;</h3>
 <p >Float. Represents the candidate's potential, i.e. the maximum capacity (in MW) that can be invested in this candidate. If this parameter is set, the invested capacity can take any value in the interval \( [0, \texttt{max-investment}]\).</p>
-<h3><a class="anchor" id="autotoc_md115"></a>
+<h3><a class="anchor" id="autotoc_md116"></a>
 &lt;tt&gt;unit-size&lt;/tt&gt;</h3>
 <p >Float. Defines the nominal capacity (in MW) of the investment candidate's units.</p>
-<h3><a class="anchor" id="autotoc_md116"></a>
+<h3><a class="anchor" id="autotoc_md117"></a>
 &lt;tt&gt;max-units&lt;/tt&gt;</h3>
 <p >Integer. Corresponds to the candidate's potential in terms of number of installable units. If the parameters <code>max-units</code> and <code>unit-size</code> are set, then the invested capacity is necessarily a multiple of <code>unit-size</code> from the set:</p>
 <p >$$ \{0, \texttt{unit-size}, 2 \cdot \texttt{unit-size}, … , \texttt{max-units} \cdot \texttt{unit-size}\}. $$</p>
 <p >!!! Warning The definition of an investment candidate must necessarily include either (i) a maximum potential in MW (<code>max-investment</code>) or (ii) a unit size in MW (<code>unit-size</code>) and a maximum potential in number of units (<code>max-units</code>).</p>
-<h3><a class="anchor" id="autotoc_md117"></a>
+<h3><a class="anchor" id="autotoc_md118"></a>
 &lt;tt&gt;already-installed-capacity&lt;/tt&gt;</h3>
 <p >Float. Corresponds to a capacity that is already installed on the investment candidate's link. If Antares-Xpansion finds that the investment in this candidate is economically relevant, the new capacity will be added to the already installed capacity. The transmission capacities initially indicated in the Antares study are not considered in the <code>already-installed-capacity</code> parameter and are overwritten by Antares-Xpansion.</p>
-<h3><a class="anchor" id="autotoc_md118"></a>
+<h3><a class="anchor" id="autotoc_md119"></a>
 &lt;tt&gt;[in]direct-link-profile&lt;/tt&gt;</h3>
 <p >String, specifying the name of a file. This file must be located in the <code>user/expansion/capa/</code> directory of the Antares study. It must contain at least one column of 8760 numerical values (the decimal separator is the point), see <b>Figure 5</b>. Multiple columns are used in order to use different data depending on the Monte-Carlo year in process, see details here. When only one column is specified, the same profile is used by Antares-Xpansion for all Monte-Carlo years of the Antares study and all assessed capacities.</p>
 <p >!!! Remark Both files <code>direct-link-profile</code> and <code>indirect-link-profile</code> must contain the same number of columns.</p>
@@ -216,11 +216,11 @@ Details of the parameters</h2>
 <div class="line">already-installed-indirect-link-profile = indirect_installed_capa_pv.csv</div>
 </div><!-- fragment --><p> File <code>user/expansion/capa/capa_pv.csv</code>: <img src="../../assets/media/link_profile.PNG" alt="" class="inline"/></p>
 <p ><b>Figure 5</b> – Example of a file containing a load factor profile in the Antares-Xpansion format.</p>
-<h3><a class="anchor" id="autotoc_md119"></a>
+<h3><a class="anchor" id="autotoc_md120"></a>
 &lt;tt&gt;already-installed-[in]direct-link-profile&lt;/tt&gt;</h3>
 <p >String, specifying the name of a file. This file must be located in the <code>user/expansion/capa/</code> directory of the Antares study and has the same format as a <code>[in]direct-link-profile</code> file, see <b>Figure 5</b>. The <code>already-installed-[in]direct-link-profile</code> makes the link between the already installed capacity and the available capacity, in the direct and indirect way of the Antares link, for the 8760 hours of the year. More details are given in this section.</p>
 <p >!!! Note The same file can be used for <code>[in]direct-link-profile</code> and <code>already-installed-[in]direct-link-profile</code> of one or more candidates.</p>
-<h1><a class="anchor" id="autotoc_md120"></a>
+<h1><a class="anchor" id="autotoc_md121"></a>
 Link between invested capacity and capacity of the Antares study</h1>
 <p >!!! Note For simplicity, we often refer to <code>[already-installed]-direct-link-profile</code> and <code>[already-installed]-indirect-link-profile</code> link profiles as just <code>[already-installed]-link-profile</code> in the sequel.</p>
 <p >The parameters <code>link-profile</code>, <code>already-installed-capacity</code> and <code>already-installed-link-profile</code> are used to define the link between the capacity installed by Antares-Xpansion, the already installed capacity and the truly available capacity in the Antares study, hour by hour and in both directions of the link, following the relationship presented in <b>Figure 6</b>.</p>
@@ -237,7 +237,7 @@ Link between invested capacity and capacity of the Antares study</h1>
 <p ><img src="../../assets/media/image14.png" alt="" class="inline"/></p>
 <p ><b>Figure 7</b> – Available hourly capacity of different types of power plants due to outages. Antares-Xpansion allows taking into account either an average hourly availability (purple line), which is still very different from the actual hourly availability over a year or a different profile for each Monte-Carlo year (green lines), more realistic.</p>
 <p >If you use the average availability, to validate the results after running the Antares-Xpansion, it is preferable to re-simulate these outages according to a stochastic process by relaunching an Antares simulation with the capacities obtained by Antares-Xpansion in order to obtain the real production program with outages and RES intermittence varying according to the scenarios.</p>
-<h1><a class="anchor" id="autotoc_md121"></a>
+<h1><a class="anchor" id="autotoc_md122"></a>
 Using different profiles depending on the Monte-Carlo year</h1>
 <p >From Antares-Simulator 8.2, users can define different NTC chronicles for different Monte-Carlo years.</p>
 <p >Briefly, users define any number of chronicles for each link. For each link, users can select (randomly or not) one of the said chronicles in a result we call <em>scenario</em>. Refer to <a href="https://antares-simulator.readthedocs.io/en/latest/reference-guide/04-active_windows/#links">Antares-Simulator documentation</a> for more information.</p>
@@ -247,9 +247,9 @@ Using different profiles depending on the Monte-Carlo year</h1>
 <li>For a given link in the Antares-Simulator study, the number of columns for NTC chronicles must be the same as in the link profiles and already installed profiles for the candidates on this link.</li>
 <li>It is possible not to provide a link profile or already installed profile. A profile with a value of 1 is used whichever Monte-Carlo year is chosen.</li>
 </ol>
-<h1><a class="anchor" id="autotoc_md122"></a>
+<h1><a class="anchor" id="autotoc_md123"></a>
 Examples of candidates</h1>
-<h2><a class="anchor" id="autotoc_md123"></a>
+<h2><a class="anchor" id="autotoc_md124"></a>
 Basic example</h2>
 <p >An example with two investments candidates, one in semi-base generation and one in network capacity, is given below.</p>
 <p ><img src="../../assets/media/image12.png" alt="https://github.com/rte-antares-rpackage/antaresXpansion/raw/master/vignettes/example2nodes.png" class="inline"/></p>
@@ -278,7 +278,7 @@ Basic example</h2>
 <div class="line">direct-link-profile = pv1.txt</div>
 <div class="line">indirect-link-profile = pv1.txt</div>
 </div><!-- fragment --><p> where <code>pv1.txt</code> is a text file, located in the <code>user/expansion/capa/</code> folder of the study, and which contains the load factor time series of the candidate, see <b>Figure 5</b>. When \(x\) MW of the candidate <code>solar_power</code> are invested, the actual time series of available power is equal to the product of \(x\) and the time series <code>pv1.txt</code>.</p>
-<h2><a class="anchor" id="autotoc_md124"></a>
+<h2><a class="anchor" id="autotoc_md125"></a>
 Several investment candidates on the same link</h2>
 <p >The same link in an Antares study can be the support of several investment candidates. The interest of such an approach can be :</p>
 <ul>
@@ -288,7 +288,7 @@ Several investment candidates on the same link</h2>
 <p >The example in <b>Figure 8</b> shows the case of an investment in photovoltaic production with three potentials of increasing cost.</p>
 <p ><img src="../../assets/media/several_candidates.PNG" alt="" class="inline"/> <b>Figure 8</b> – Three potentials of increasing investment cost that applies to the same link in the Antares study.</p>
 <p >This only works with the Antares-Xpansion algorithm (Benders decomposition) if the costs are increasing and if the investment candidates with the same link have the same <code>already-installed-capacity</code> and <code>already-installed-link-profile</code>.</p>
-<h2><a class="anchor" id="autotoc_md125"></a>
+<h2><a class="anchor" id="autotoc_md126"></a>
 Decommissioning candidates</h2>
 <p >In this example, we show how to consider both an investment candidate and a decommissioning candidate on the same link. Candidates for decommissioning must be moved from their physical location to a virtual node as explained in <a href="prepare-a-simulation.md#decommissioning-decisions-for-thermal-capacities">Prepare the Antares study</a>.</p>
 <p >We strongly advise to explicitly specify candidates for decommissioning in the <code>name</code> field of the <code>candidates.ini</code> file (although this is not required by the tool), see <b>Figure 9</b>. This will ease the analysis of Antares-Xpansion output for the user.</p>

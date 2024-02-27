@@ -147,7 +147,7 @@ $(document).ready(function(){initNavTree('md_docs_user_guide_get_started_sensiti
 <li>It determines the min and max capacity of a given candidate for which there exists an \(\varepsilon\)-optimal solution. The associated \(\varepsilon\)-optimal solution is also returned. This allows to define, for each candidate, the interval within which all \(\varepsilon\)-optimal solutions can be found.</li>
 <li>It computes the \(\varepsilon\)-optimal solution that minimizes or maximizes the investment cost (CAPEX).</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md161"></a>
+<h1><a class="anchor" id="autotoc_md162"></a>
 Description of the method</h1>
 <p >The sensitivity analysis computation is based on the last master problem used during the Benders algorithm. The Benders cuts of the last master problem (dotted grey lines in <b>Figure 16</b>) define a piecewise approximation of the cost function (in blue, that is unknown).</p>
 <p >The user sets a threshold \(\varepsilon\) up to which investment solutions are considered <em>near optimal</em> or <em>equivalent</em>. The sensitivity analysis is an exploration, in a given <em>direction</em>, of the set of solutions that are within \(\varepsilon\) euros of the optimal cost (i.e. the best upper bound of the Benders algorithm).</p>
@@ -156,7 +156,7 @@ Description of the method</h1>
 <p >The capacity intervals of all candidates define a <em>hyperrectangle</em> that is (often strictly) larger than the set of \(\varepsilon\)-optimal solutions.</p>
 <p >!!! Warning There may be some solutions within the hyperrectangle that are <b>not \(\varepsilon\)-optimal</b>. For example, the solution where all capacities are taken to be the lower bound of the candidate interval is not necessarily \(\varepsilon\)-optimal. However, for each bound of each candidate interval, the sensitivity analysis module returns an \(\varepsilon\)-optimal solution where this bound is reached.</p>
 <p >It is also possible to find the \(\varepsilon\)-optimal solution that minimizes or maximizes the CAPEX. This is just another <em>direction</em> of exploration of the set of \(\varepsilon\)-optimal solutions.</p>
-<h1><a class="anchor" id="autotoc_md162"></a>
+<h1><a class="anchor" id="autotoc_md163"></a>
 Mathematical formulation of the sensitivity analysis problem</h1>
 <p >Let us recall the formulation of the master problem:</p>
 <p >$$ \begin{aligned} \min_{x \in \mathcal{X}}\ &amp; c^{\top}x + \frac{1}{N} \sum_{l=1}^{N} \sum_{s=1}^{52} p_{l, s}\vartheta_{l, s} \\ \text{s.t.} \ &amp; Ax = b\\ &amp; \vartheta_{l, s} \geq {{}\bar{\pi}_{l, s}^{i}}^{\top} (d_{l, s} - T_{s}x)\ , \quad \forall l \ , \forall s \ , \forall i \end{aligned} $$</p>
@@ -169,7 +169,7 @@ Mathematical formulation of the sensitivity analysis problem</h1>
 <li>With \(\tilde{c} =c\), the sensitivity problem objective is \(c^{\top}x\), which is exactly the CAPEX: we aim at finding the \(\varepsilon\)-optimal solution with the minimum investment cost.</li>
 </ul>
 <p >The sensitivity problem is also solved as a maximization problem to find \(\varepsilon\)-optimal solutions with the maximum installed capacity for some candidate or the maximum CAPEX.</p>
-<h1><a class="anchor" id="autotoc_md163"></a>
+<h1><a class="anchor" id="autotoc_md164"></a>
 Results interpretation</h1>
 <p >Suppose that for candidate \(i\), the one-dimensional projection of \(\varepsilon\)-optimal solutions is the interval \([x_{lb}, x_{ub}]\).</p>
 <ul>
@@ -181,9 +181,9 @@ Results interpretation</h1>
 <li>If the interval \([x_{lb}, x_{ub}]\) is tight, this means that all <em>equivalent</em> solutions have almost the same installed capacity of candidate \(i\). The optimal solution is <em>stable</em> for this candidate, therefore the investment is profitable and robust to small variations of the overall cost.</li>
 <li>If the interval is large, the cost function is flat near the optimum in the direction of candidate \(i\). The economic criterion alone is not sufficient to choose a capacity value over another.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md164"></a>
+<h1><a class="anchor" id="autotoc_md165"></a>
 Launch the sensitivity analysis</h1>
-<h2><a class="anchor" id="autotoc_md165"></a>
+<h2><a class="anchor" id="autotoc_md166"></a>
 Sensitivity input file creation</h2>
 <p >In order to run the sensitivity analysis, the user must create a JSON file named <code>sensitivity_in.json</code> that is stored in the <code>user/expansion/senstivity</code> directory of the Antares study.</p>
 <div class="fragment"><div class="line">antares-study</div>
@@ -211,7 +211,7 @@ Sensitivity input file creation</h2>
 <div class="line">    &quot;capex&quot;: false,</div>
 <div class="line">    &quot;projection&quot;: [&quot;peak&quot;, &quot;semibase&quot;]</div>
 <div class="line">}</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md166"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md167"></a>
 Run the sensitivity analysis</h2>
 <p >The sensitivity analysis can be launched from the command line as follows:</p>
 <div class="fragment"><div class="line">antares-xpansion-launcher.exe -i examples\SmallTestFiveCandidates --step sensitivity  --simulationName mySimulation.zip</div>
@@ -221,7 +221,7 @@ Run the sensitivity analysis</h2>
 <li>The <code>--simulationName</code> parameter (optional) is the name of the Antares-Xpansion output archive on which we wish to perform the sensitivity analysis. If <code>--simulationName</code> is not specified, the most recently modified output of the Antares study folder will be used. The output used by the sensitivity analysis <b>must contain the results of an Antares-Xpansion optimization</b>.</li>
 </ul>
 <p >The problems solved during the sensitivity analysis use the same solver settings and integrality constraints on the candidates as those used beforehand to perform the corresponding Antares-Xpansion optimization.</p>
-<h2><a class="anchor" id="autotoc_md167"></a>
+<h2><a class="anchor" id="autotoc_md168"></a>
 Output of the sensitivity analysis</h2>
 <p >The sensitivity analysis module creates a JSON file <code>sensitvity_out.json</code> that is stored in the directory <code>output/simulation-name/sensitivity</code> of the Antares study folder.</p>
 <p >A sample output file is given below: </p><div class="fragment"><div class="line">{</div>

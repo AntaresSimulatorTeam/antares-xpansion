@@ -135,7 +135,7 @@ $(document).ready(function(){initNavTree('md_docs_how_to.html',''); initResizabl
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><p >This file explains how to generate the onlinedocumentation and the PDF userguide of the project.</p>
-<h1><a class="anchor" id="autotoc_md103"></a>
+<h1><a class="anchor" id="autotoc_md104"></a>
 Online documentation</h1>
 <p >The online documentation is generated using <code>readthedocs</code>. The main configuration files are located in the root directory of the project :</p><ul>
 <li><code>readthedocs.yml</code> specifies the Python environment and the mkdocs configuration file.</li>
@@ -144,7 +144,7 @@ Online documentation</h1>
 <p >The documentation source files are located in the <code>docs</code> directory. Building the online documentation only requires the files specified in the <code>nav</code> section of <code>mkdocs.yml</code> (along with the depending Python code for the Jupyter notebook). The other files, like reStructuredText files (.rst) are only used for the PDF generation, see PDF generation.</p>
 <p >To preview the documentation locally, it is possible to run <code>mkdocs serve</code> from the folder containing the <code>mkdocs.yml</code> file (in a Python environment that contains the package <code>mkdocs</code>).</p>
 <p ><code>readthedocs</code> follows the github branches configured by the admin and displays the documentation accordingly. These choices can be managed <a href="https://readthedocs.org/projects/antares-xpansion/">there</a>. You must be logged in to readthedocs and granted the appropriate modification rights on the project.</p>
-<h1><a class="anchor" id="autotoc_md104"></a>
+<h1><a class="anchor" id="autotoc_md105"></a>
 PDF generation</h1>
 <p >The PDF userguide is built using the latex builder of <a href="https://www.sphinx-doc.org/en/master/">Sphinx</a>.</p>
 <p >In <code>docs/pdf-doc-generation-with-sphinx</code>, you can find :</p><ul>

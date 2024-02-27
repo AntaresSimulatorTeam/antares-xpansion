@@ -137,23 +137,23 @@ $(document).ready(function(){initNavTree('md_docs_developer_guide_xpansion_steps
 <div class="textblock"><p >An Antares-Xpansion simulation is currently run in four separate steps, managed by a Python orchestrator.</p>
 <p >The basic idea behind an Antares-Xpansion simulation is to let Antares-Simulator read the Antares study and build the initial supply-demand optimisation problem without knowledge of the investment candidates. Then the investment optimization problem is built and solved within Antares-Xpansion.</p>
 <p >There are four steps in a full Antares-Xpansion simulation. Each section title is followed by the corresponding value of the variable <code>--step</code> when launching <code>antares-xpansion-launcher</code> from the command line.</p>
-<h1><a class="anchor" id="autotoc_md80"></a>
+<h1><a class="anchor" id="autotoc_md81"></a>
 1- Antares-Simulator optimization problems retrieval: &lt;tt&gt;antares&lt;/tt&gt;</h1>
 <p >The solver of Antares-Simulator, <code>antares-solver</code>, runs the Antares study with a specific configuration set by Antares-Xpansion, see <a class="el" href="md_docs_developer_guide_xpansion_steps_1_antares_solver_problem.html">Antares optimization problem retrieval</a> for more details.</p>
 <p >The weekly supply-demand optimization problems are written as <code>.mps</code> files. In this mode Antares-Simulator writes some additional files that add a business context of the linear problems (<code>variable.txt</code>, <code>area.txt</code> and <code>interco.txt</code>). These files allow to map the variable numbers in the <code>.mps</code> files to their physical meaning. For more details, see <a class="el" href="md_docs_developer_guide_xpansion_steps_1_antares_solver_problem.html">Antares optimization problem retrieval</a>.</p>
-<h1><a class="anchor" id="autotoc_md81"></a>
+<h1><a class="anchor" id="autotoc_md82"></a>
 2- Investment problem generation: &lt;tt&gt;problem_generation&lt;/tt&gt;</h1>
 <p >This stage is responsible for building the investment optimization problem, using the <a class="el" href="md_docs_user_guide_optimization_principles_problem_formalization.html">Benders reformulation</a>, which results in the creation of a <em>master problem</em> and of <em>satellite problems</em>. The <em>master problem</em> takes investment decisions whereas <em>satellite problems</em> solve the Antares supply-demand problems once the investment decisions are taken.</p>
 <p >Using the data on investment candidates specified in the <code>user/expansion/candidates.ini</code> file, Antares-Xpansion modifies the <code>.mps</code> problems provided by Antares-Simulator in the previous step to add information on the candidates. These modified problems, still written as <code>.mps</code> files, are the so-called <em>satellite problems</em>. They correspond to the supply-demand problem to be solved once the investment has been fixed to a given value (that changes during the Antares-Xpansion optimization).</p>
 <p >This stage is also responsible for building the initial <em>master problem</em> used for Benders decomposition. If there are additional constraints linking the investment candidates (defined in the <code>additional-constraints</code> field of the <code>user/expansion/settings.ini</code> file), then they are added to the <em>master problem</em>.</p>
 <p >For more details on how the master and the satellite problems are generated, see <a class="el" href="md_docs_developer_guide_xpansion_steps_2_problem_modification.html">Investment problem generation</a>.</p>
-<h1><a class="anchor" id="autotoc_md82"></a>
+<h1><a class="anchor" id="autotoc_md83"></a>
 3- Resolution stage with Benders decomposition: &lt;tt&gt;benders&lt;/tt&gt;</h1>
 <p >The core step of Antares-Xpansion problem consists in solving the investment problem generated in the previous step. Antares-Xpansion uses a <a href="https://en.wikipedia.org/wiki/Benders_decomposition">Benders decomposition</a> algorithm as it is well-suited to the structure of the investment problem: the <em>satellite problems</em> are independent, i.e. the weekly problems in an Antares study are independent (using water values is not allowed in Antares-Xpansion). Details of the methodology are given in the <a class="el" href="md_docs_user_guide_optimization_principles_investment_problem.html">optimization principles</a> page.</p>
-<h1><a class="anchor" id="autotoc_md83"></a>
+<h1><a class="anchor" id="autotoc_md84"></a>
 4- Update of antares study: &lt;tt&gt;study_update&lt;/tt&gt;</h1>
 <p >The resolution stage provides, for each candidate, the investment that minimizes the overall cost of the investment problem. However, it does not allow access the details provided by an Antares-Simulator simulation. In order to access these details, a "standard" Antares-Simulator simulation is prepared by updating the original Antares study with the values obtained from the resolution stage. Each investment is associated to a link and its investment value is added to the link direct and indirect transfer capacity.</p>
-<h1><a class="anchor" id="autotoc_md84"></a>
+<h1><a class="anchor" id="autotoc_md85"></a>
 Antares-Xpansion package executables</h1>
 <p >Antares-Xpansion consists in four executables and a Python orchestrator that is responsible for calling these executables with the correct options for each step.</p>
 <table class="markdownTable">
