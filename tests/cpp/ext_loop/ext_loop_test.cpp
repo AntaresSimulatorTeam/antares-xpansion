@@ -119,38 +119,6 @@ class MasterUpdateBaseTest : public ::testing::Test {
   BendersBaseOptions BuildBendersOptions() {
     SimulationOptions options(OPTIONS_FILE);
     return options.get_benders_options();
-
-    // BaseOptions base_options;
-
-    // base_options.OUTPUTROOT = ".";
-    // base_options.INPUTROOT = ".";
-    // base_options.STRUCTURE_FILE = "structure.txt";
-    // base_options.LAST_ITERATION_JSON_FILE = "last_iteration_json_file.json";
-    // base_options.MASTER_NAME = "master.mps";
-    // base_options.SOLVER_NAME = "COIN";
-    // base_options.SLAVE_WEIGHT = "CONSTANT";
-    // base_options.LOG_LEVEL = 0;
-    // base_options.SLAVE_WEIGHT_VALUE = 0;
-    // base_options.RESUME = false;
-    // base_options.weights = {};
-
-    // BendersBaseOptions options(base_options);
-
-    // options.MAX_ITERATIONS = -1;
-    // options.ABSOLUTE_GAP = 0;
-    // options.RELATIVE_GAP = 0;
-    // options.RELAXED_GAP = 0;
-    // options.TIME_LIMIT = 0;
-    // options.SEPARATION_PARAM = 1;
-    // options.AGGREGATION = false;
-    // options.TRACE = false;
-    // options.BOUND_ALPHA = false;
-    // options.MASTER_FORMULATION = MasterFormulation::INTEGER;
-    // options.CSV_NAME = "benders_output_trace";
-    // options.LAST_MASTER_MPS = "last_master_mps.mps";
-    // options.LAST_MASTER_BASIS = "last_master.bss";
-    // options.BATCH_SIZE = 0;
-    // return options;
   }
 };
 
