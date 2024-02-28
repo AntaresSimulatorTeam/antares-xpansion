@@ -6,6 +6,7 @@ on:
       - main
       - develop
       - ci/*
+      - dependabot/*
   workflow_dispatch:
   workflow_run:
     workflows: [ "Publish Release" ]
