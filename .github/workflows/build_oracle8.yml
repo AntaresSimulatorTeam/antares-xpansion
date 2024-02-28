@@ -72,6 +72,8 @@ jobs:
         with:
           submodules: true
 
+      - uses: ./.github/workflows/compile-gtest
+
       - name: Checkout xpressmp linux
         uses: actions/checkout@v3
         with:
@@ -102,7 +104,6 @@ jobs:
         uses: ./.github/workflows/compile-boost
         with:
           prefix: "../rte-antares-deps-Release/"
-
       - name: Compile TBB
         uses: ./.github/workflows/compile-tbb
 

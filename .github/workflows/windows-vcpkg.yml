@@ -257,13 +257,13 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
-          name: $ZIP_NAME
+          name: ${{env.ZIP_NAME}}
           path: .
 
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
-          name: $SINGLEFILE_NAME
+          name: ${{env.SINGLEFILE_NAME}}
           path: .
 
       - name: Upload Release Asset
