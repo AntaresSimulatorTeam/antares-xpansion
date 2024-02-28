@@ -8,7 +8,7 @@ MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau)
 MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau,
                                    const std::string &name)
     : MasterUpdateBase(benders, tau) {
-  additional_constraint_name_ = name;
+  min_invest_constraint_name_ = name;
 }
 MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double lambda,
                                    double lambda_min, double lambda_max,
@@ -24,7 +24,7 @@ MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double lambda,
                                    double lambda_min, double lambda_max,
                                    double tau, const std::string &name)
     : MasterUpdateBase(benders, lambda, lambda_min, lambda_max, tau) {
-  additional_constraint_name_ = name;
+  min_invest_constraint_name_ = name;
 }
 
 void MasterUpdateBase::CheckTau(double tau) {
@@ -45,7 +45,7 @@ void MasterUpdateBase::SetLambdaMaxToMaxInvestmentCosts() {
 }
 void MasterUpdateBase::Update(const CRITERION &criterion) {
   // check lambda_max_
-  // whar abour lambda_min_?
+  // whaT abour lambda_min_?
   if (lambda_max_ <= 0 || lambda_max_ < lambda_min_) {
     // TODO log
     SetLambdaMaxToMaxInvestmentCosts();
@@ -62,14 +62,10 @@ void MasterUpdateBase::Update(const CRITERION &criterion) {
       break;
 
     default:
-      // TODO what to do here?
       return;
-      //   break;
   }
   lambda_ = tau_ * lambda_max_ + (1 - tau_) * lambda_min_;
   UpdateConstraints();
-  // deplacer dans Benders
-  // AddCutsInMaster();
 }
 
 void MasterUpdateBase::UpdateConstraints() {
@@ -77,36 +73,40 @@ void MasterUpdateBase::UpdateConstraints() {
     benders_->MasterChangeRhs(additional_constraint_index_, lambda_);
 
   } else {
-    // benders_->ResetMasterFromLastIteration();
-    auto master_variables = benders_->MasterVariables();
-    const auto obj_coeff = benders_->ObjectiveFunctionCoeffs();
-    // ajouter la cont:
-    auto newnz = master_variables.size();
-    int newrows = 1;
-    std::vector<char> rtype(newrows, 'G');
-    std::vector<double> rhs(newrows, lambda_);
-    std::vector<int> mclind(newnz);
-
-    size_t mclindCnt_l(0);
-    std::vector<double> matval(newnz);
-    for (auto const &[name, var_id] : master_variables) {
-      mclind[mclindCnt_l] = var_id;
-      matval[mclindCnt_l] = obj_coeff.at(var_id);
-      ++mclindCnt_l;
-    }
-    std::vector<int> matstart(newrows + 1);
-    matstart[0] = 0;
-    matstart[1] = newnz;
-    if (!additional_constraint_name_.empty()) {
-      std::vector<std::string> row_names(newrows, additional_constraint_name_);
-
-      benders_->MasterAddRows(rtype, rhs, {}, matstart, mclind, matval,
-                              row_names);
-    } else {
-      benders_->MasterAddRows(rtype, rhs, {}, matstart, mclind, matval);
-    }
-    additional_constraint_index_ = benders_->MasterGetnrows() - 1;
+    AddMinInvestConstraint();
   }
 }
 
-// void MasterUpdateBase::AddCutsInMaster() {}
+/**
+ * Add the new constraint in benders main problem
+ * /!\ to be called once
+ */
+void MasterUpdateBase::AddMinInvestConstraint() {
+  auto master_variables = benders_->MasterVariables();
+  const auto obj_coeff = benders_->ObjectiveFunctionCoeffs();
+  auto newnz = master_variables.size();
+  int newrows = 1;
+  std::vector<char> rtype(newrows, 'G');
+  std::vector<double> rhs(newrows, lambda_);
+  std::vector<int> mclind(newnz);
+
+  size_t mclindCnt_l(0);
+  std::vector<double> matval(newnz);
+  for (auto const &[name, var_id] : master_variables) {
+    mclind[mclindCnt_l] = var_id;
+    matval[mclindCnt_l] = obj_coeff.at(var_id);
+    ++mclindCnt_l;
+  }
+  std::vector<int> matstart(newrows + 1);
+  matstart[0] = 0;
+  matstart[1] = newnz;
+  if (!min_invest_constraint_name_.empty()) {
+    std::vector<std::string> row_names(newrows, min_invest_constraint_name_);
+
+    benders_->MasterAddRows(rtype, rhs, {}, matstart, mclind, matval,
+                            row_names);
+  } else {
+    benders_->MasterAddRows(rtype, rhs, {}, matstart, mclind, matval);
+  }
+  additional_constraint_index_ = benders_->MasterGetnrows() - 1;
+}

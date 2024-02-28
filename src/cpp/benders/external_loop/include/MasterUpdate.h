@@ -4,11 +4,6 @@
 class IMasterUpdate {
  public:
   virtual void Update(const CRITERION &criterion) = 0;
-
-  // // à generaliser
-  // virtual void AddConstraints() = 0;
-  // à deplacer
-  // virtual void AddCutsInMaster() = 0;
 };
 
 class MasterUpdateBase : public IMasterUpdate {
@@ -27,10 +22,9 @@ class MasterUpdateBase : public IMasterUpdate {
   void CheckTau(double tau);
   void SetLambdaMaxToMaxInvestmentCosts();
   void UpdateConstraints();
-  // bool IsConstraintInMasterProblem(int &row_index) const;
-  // void AddCutsInMaster() override;
+  void AddMinInvestConstraint();
   // rename min invest constraint
-  std::string additional_constraint_name_ = "External_Loop_Constraint";
+  std::string min_invest_constraint_name_ = "External_Loop_Constraint";
   int additional_constraint_index_ = -1;
   pBendersBase benders_;
   double lambda_ = 0;
