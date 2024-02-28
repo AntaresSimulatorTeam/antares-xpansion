@@ -47,6 +47,8 @@ class BendersBase {
   void set_input_map(const CouplingMap &coupling_map);
   int MasterRowIndex(const std::string &row_name) const;
   void MasterChangeRhs(int id_row, double val) const;
+  // for test
+  void MasterGetRhs(double &rhs, int id_row) const;
   const VariableMap &MasterVariables() const { return master_variable_map_; }
   std::vector<double> ObjectiveFunctionCoeffs() const;
   void MasterAddRows(std::vector<char> const &qrtype_p,

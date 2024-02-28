@@ -46,6 +46,7 @@ class Worker {
              Writer writer) const;
   int RowIndex(const std::string &row_name) const;
   void ChangeRhs(int id_row, double val) const;
+  void GetRhs(double *val, int id_row) const;
   void AddRows(std::vector<char> const &qrtype_p,
                std::vector<double> const &rhs_p,
                std::vector<double> const &range_p,
