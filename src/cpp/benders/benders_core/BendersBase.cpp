@@ -228,7 +228,8 @@ void BendersBase::FillWorkerMasterData(WorkerMasterData &worker_master_data) {
  */
 void BendersBase::UpdateTrace() {
   FillWorkerMasterData(relevantIterationData_.last);
-  workerMasterDataVect_.push_back(relevantIterationData_.last);
+  // TODO Outer loop --> de-comment for general case
+  // workerMasterDataVect_.push_back(relevantIterationData_.last);
 }
 
 bool BendersBase::is_initial_relaxation_requested() const {
