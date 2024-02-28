@@ -23,6 +23,8 @@ void OuterLoop::Run() {
   benders_->InitExternalValues();
 
   auto obj_coeff = benders_->ObjectiveFunctionCoeffs();
+
+  // /!\ partially
   benders_->SetObjectiveFunctionCoeffsToZeros();
   PrintLog();
   benders_->launch();

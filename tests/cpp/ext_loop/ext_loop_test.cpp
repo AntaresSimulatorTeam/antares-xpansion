@@ -3,6 +3,7 @@
 // #include "ext_loop_test.h"
 
 #include "LoggerFactories.h"
+#include "MasterUpdate.h"
 #include "OuterLoopCriterion.h"
 #include "WriterFactories.h"
 #include "gtest/gtest.h"
@@ -136,5 +137,19 @@ TEST_F(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   benders = std::make_shared<BendersMpi>(benders_options, logger, writer, env,
                                          world, math_log_driver);
   benders->set_input_map(coupling_map);
-  // benders->
+  benders->DoFreeProblems(false);
+  benders->InitializeProblems();
+  benders->launch();
+
+  MasterUpdateBase master_updater(benders, 0.5);
+  // update lambda_max
+  master_updater.Update(CRITERION::LOW);
+  benders->ResetData(3.0);
+  benders->launch();
+  auto num_constraints_master_before = benders->MasterGetnrows();
+  master_updater.Update(CRITERION::LOW);
+  auto num_constraints_master_after = benders->MasterGetnrows();
+
+  ASSERT_EQ(num_constraints_master_after, num_constraints_master_before + 1);
+  benders->free();
 }

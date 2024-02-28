@@ -24,7 +24,7 @@ class MasterUpdateBase : public IMasterUpdate {
   void UpdateConstraints();
   void AddMinInvestConstraint();
   // rename min invest constraint
-  std::string min_invest_constraint_name_ = "External_Loop_Constraint";
+  std::string min_invest_constraint_name_ = "Min_Investment_Constraint";
   int additional_constraint_index_ = -1;
   pBendersBase benders_;
   double lambda_ = 0;
