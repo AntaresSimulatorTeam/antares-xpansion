@@ -50,7 +50,6 @@ void OuterLoop::Run() {
   while (criterion != CRITERION::IS_MET) {
     benders_->ResetData(criterion_->CriterionValue());
     PrintLog();
-    // benders_->mathLoggerDriver_->write_header();
     benders_->launch();
     criterion =
         criterion_->IsCriterionSatisfied(benders_->BestIterationWorkerMaster());
@@ -61,7 +60,9 @@ void OuterLoop::Run() {
   auto benders_data = benders_->GetCurrentIterationData();
   benders_data.external_loop_criterion = criterion_->CriterionValue();
   benders_->mathLoggerDriver_->Print(benders_data);
-  // cuts_manager_->Save(benders_->AllCuts());
+
+  // TODO general-case
+  //  cuts_manager_->Save(benders_->AllCuts());
   benders_->free();
 }
 
