@@ -135,8 +135,6 @@ TEST_F(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   if (!LoadXpress::XpressIsCorrectlyInstalled()) {
     GTEST_SKIP();
   }
-  mpi::environment env(my_argc, my_argv);
-  mpi::communicator world;
 
   BendersBaseOptions benders_options = BuildBendersOptions();
   CouplingMap coupling_map = build_input(benders_options.STRUCTURE_FILE);
