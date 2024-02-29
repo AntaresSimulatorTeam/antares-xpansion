@@ -130,6 +130,16 @@ class MasterUpdateBaseTest : public ::testing::Test {
   }
 };
 
+double LambdaMax(pBendersBase benders) {
+  const auto& obj = benders->ObjectiveFunctionCoeffs();
+  const auto max_invest = benders->BestIterationWorkerMaster().get_max_invest();
+  double lambda_max = 0;
+  for (const auto& [var_name, var_id] : benders->MasterVariables()) {
+    lambda_max += obj[var_id] * max_invest.at(var_name);
+  }
+  return lambda_max;
+}
+
 TEST_F(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   // skipping if xpress is not available
   if (!LoadXpress::XpressIsCorrectlyInstalled()) {
@@ -159,46 +169,21 @@ TEST_F(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   benders->free();
 }
 
-double LambdaMax(pBendersBase benders) {
-  const auto& obj = benders->ObjectiveFunctionCoeffs();
-  const auto max_invest = benders->BestIterationWorkerMaster().get_max_invest();
-  double lambda_max = 0;
-  for (const auto& [var_name, var_id] : benders->MasterVariables()) {
-    lambda_max += obj[var_id] * max_invest.at(var_name);
-  }
-  return lambda_max;
-}
-
-struct BendersMpiSpy : public BendersMpi {
-  using BendersMpi::BendersMpi;
-  const double invest_cost = 1719;
-  // std::vector<double> obj = {1, 2, 3};
-  // intercept
-  LogData GetBestIterationData() const {
-    LogData data;
-    data.invest_cost = invest_cost;
-    return data;
-  }
-
-  // std::vector<double> ObjectiveFunctionCoeffs() { return {1, 2, 3}; }
-};
-
 TEST_F(MasterUpdateBaseTest, InitialRhs) {
   // skipping if xpress is not available
   if (!LoadXpress::XpressIsCorrectlyInstalled()) {
     GTEST_SKIP();
   }
-  // mpi::environment env(my_argc, my_argv);
-  // mpi::communicator world;
 
   BendersBaseOptions benders_options = BuildBendersOptions();
   CouplingMap coupling_map = build_input(benders_options.STRUCTURE_FILE);
 
-  benders = std::make_shared<BendersMpiSpy>(benders_options, logger, writer,
-                                            *penv, *pworld, math_log_driver);
+  benders = std::make_shared<BendersMpi>(benders_options, logger, writer, *penv,
+                                         *pworld, math_log_driver);
   benders->set_input_map(coupling_map);
   benders->DoFreeProblems(false);
   benders->InitializeProblems();
+
   benders->launch();
 
   MasterUpdateBase master_updater(benders, 0.5);
@@ -207,9 +192,8 @@ TEST_F(MasterUpdateBaseTest, InitialRhs) {
   auto lambda_max = LambdaMax(benders);
   benders->ResetData(3.0);
   benders->launch();
-  master_updater.Update(CRITERION::LOW);
-  auto expected_initial_rhs =
-      (std::min)(lambda_max, benders->GetBestIterationData().invest_cost);
+  master_updater.Update(CRITERION::HIGH);
+  auto expected_initial_rhs = lambda_max * 0.5;
 
   auto added_row_index = benders->MasterGetnrows() - 1;
   double rhs;
