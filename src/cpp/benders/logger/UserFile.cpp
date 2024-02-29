@@ -42,15 +42,15 @@ void UserFile::display_message(const std::string &str,
 
 void UserFile::PrintIterationSeparatorBegin() {
   _file << PrefixMessage(LogUtils::LOGLEVEL::INFO, CONTEXT);
-  std::string sep_msg(74, '_');
-  sep_msg = ' ' + sep_msg + '\n' + '/';
+  std::string sep_msg("/*\\");
+  sep_msg += std::string(74, '-');
   _file << sep_msg << std::endl;
   _file.flush();
 }
 void UserFile::PrintIterationSeparatorEnd() {
   _file << PrefixMessage(LogUtils::LOGLEVEL::INFO, CONTEXT);
-  std::string sep_msg(74, '_');
-  sep_msg = '\\' + sep_msg;
+  std::string sep_msg(74, '-');
+  sep_msg = "\\*/" + sep_msg;
   _file << sep_msg << std::endl;
   _file.flush();
 }
