@@ -12,8 +12,15 @@
 int my_argc;
 char** my_argv;
 
+boost::mpi::environment* penv = nullptr;
+boost::mpi::communicator* pworld = nullptr;
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);
+
+  mpi::environment env(my_argc, my_argv);
+  mpi::communicator world;
+  penv = &env;
+  pworld = &world;
   my_argc = argc;
   my_argv = argv;
   return RUN_ALL_TESTS();
@@ -134,8 +141,8 @@ TEST_F(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   BendersBaseOptions benders_options = BuildBendersOptions();
   CouplingMap coupling_map = build_input(benders_options.STRUCTURE_FILE);
 
-  benders = std::make_shared<BendersMpi>(benders_options, logger, writer, env,
-                                         world, math_log_driver);
+  benders = std::make_shared<BendersMpi>(benders_options, logger, writer, *penv,
+                                         *pworld, math_log_driver);
   benders->set_input_map(coupling_map);
   benders->DoFreeProblems(false);
   benders->InitializeProblems();
@@ -163,19 +170,34 @@ double LambdaMax(pBendersBase benders) {
   }
   return lambda_max;
 }
+
+struct BendersMpiSpy : public BendersMpi {
+  using BendersMpi::BendersMpi;
+  const double invest_cost = 1719;
+  // std::vector<double> obj = {1, 2, 3};
+  // intercept
+  LogData GetBestIterationData() const {
+    LogData data;
+    data.invest_cost = invest_cost;
+    return data;
+  }
+
+  // std::vector<double> ObjectiveFunctionCoeffs() { return {1, 2, 3}; }
+};
+
 TEST_F(MasterUpdateBaseTest, InitialRhs) {
   // skipping if xpress is not available
   if (!LoadXpress::XpressIsCorrectlyInstalled()) {
     GTEST_SKIP();
   }
-  mpi::environment env(my_argc, my_argv);
-  mpi::communicator world;
+  // mpi::environment env(my_argc, my_argv);
+  // mpi::communicator world;
 
   BendersBaseOptions benders_options = BuildBendersOptions();
   CouplingMap coupling_map = build_input(benders_options.STRUCTURE_FILE);
 
-  benders = std::make_shared<BendersMpi>(benders_options, logger, writer, env,
-                                         world, math_log_driver);
+  benders = std::make_shared<BendersMpiSpy>(benders_options, logger, writer,
+                                            *penv, *pworld, math_log_driver);
   benders->set_input_map(coupling_map);
   benders->DoFreeProblems(false);
   benders->InitializeProblems();
@@ -184,11 +206,12 @@ TEST_F(MasterUpdateBaseTest, InitialRhs) {
   MasterUpdateBase master_updater(benders, 0.5);
   // update lambda_max
   master_updater.Update(CRITERION::LOW);
+  auto lambda_max = LambdaMax(benders);
   benders->ResetData(3.0);
   benders->launch();
   master_updater.Update(CRITERION::LOW);
-  auto expected_initial_rhs = (std::min)(
-      LambdaMax(benders), benders->GetBestIterationData().invest_cost);
+  auto expected_initial_rhs =
+      (std::min)(lambda_max, benders->GetBestIterationData().invest_cost);
 
   auto added_row_index = benders->MasterGetnrows() - 1;
   double rhs;
