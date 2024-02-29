@@ -21,7 +21,7 @@ jobs:
       antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
       antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Read antares-solver version
         id: antares-version
         uses: ./.github/actions/read-json-value
@@ -68,14 +68,14 @@ jobs:
           dnf install -y epel-release git cmake wget rpm-build redhat-lsb-core openmpi-devel
           dnf install -y unzip libuuid-devel boost-test boost-devel gcc-toolset-10-toolchain zlib-devel python3-devel
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
 
       - uses: ./.github/workflows/compile-gtest
 
       - name: Checkout xpressmp linux
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.AS_TOKEN }}
           repository: rte-france/xpress-mp
