@@ -110,7 +110,10 @@ jobs:
     container: 'antaresrte/rte-antares:centos7-system-deps'
     strategy:
       matrix:
-        xprs: [ XPRESS-ON, XPRESS-OFF ]
+        xprs: [
+          XPRESS-ON,
+          #XPRESS-OFF
+        ]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin

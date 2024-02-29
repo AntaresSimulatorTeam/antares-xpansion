@@ -55,7 +55,10 @@ jobs:
       matrix:
         os: [ windows-latest ]
         triplet: [ x64-windows ]
-        xprs: [ XPRESS-ON, XPRESS-OFF ]
+        xprs: [
+          XPRESS-ON,
+          #XPRESS-OFF
+        ]
     env:
       XPRESSDIR: ${{ github.workspace }}\xpress
       XPRESS: ${{ github.workspace }}\xpress\bin
