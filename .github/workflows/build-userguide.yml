@@ -7,6 +7,7 @@ on:
       - develop
       - doc
       - test
+      - dependabot/*
   release:
     types: [ created ]
 
