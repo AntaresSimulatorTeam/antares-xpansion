@@ -167,11 +167,6 @@ int RunExternalLoop_(char** argv, const std::filesystem::path& options_file,
     SimulationOptions options(options_file);
     auto benders = PrepareForExecution(benders_loggers, options, argv[0], true,
                                        env, world);
-    double threshold = 2 * 1.5;  // 2 scenarios
-    double epsilon = 1e-1;
-    double lambda_min = 0;
-    double lambda = 16;
-    double lambda_max = 17;
     double tau = 0.5;
     std::shared_ptr<IOuterLoopCriterion> criterion =
         std::make_shared<OuterloopCriterionLossOfLoad>(
@@ -185,18 +180,7 @@ int RunExternalLoop_(char** argv, const std::filesystem::path& options_file,
                        world);
     ext_loop.Run();
 
-    // benders->launch();
-
-    // std::stringstream str;
-    // str << "Optimization results available in : " << options.JSON_FILE
-    //     << std::endl;
-    // benders_loggers.display_message(str.str());
-
-    // str.str("");
-    // str << "Benders ran in " << benders->execution_time() << " s" <<
-    // std::endl; benders_loggers.display_message(str.str());
-
-  } catch (std::exception& e) {
+    } catch (std::exception& e) {
     std::ostringstream msg;
     msg << "error: " << e.what() << std::endl;
     benders_loggers.display_message(msg.str());
