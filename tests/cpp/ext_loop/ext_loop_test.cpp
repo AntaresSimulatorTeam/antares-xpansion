@@ -158,7 +158,7 @@ TEST_F(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
 
   MasterUpdateBase master_updater(benders, 0.5);
   // update lambda_max
-  master_updater.Update(CRITERION::LOW);
+  master_updater.Init();
   benders->ResetData(3.0);
   benders->launch();
   auto num_constraints_master_before = benders->MasterGetnrows();
@@ -188,7 +188,7 @@ TEST_F(MasterUpdateBaseTest, InitialRhs) {
 
   MasterUpdateBase master_updater(benders, 0.5);
   // update lambda_max
-  master_updater.Update(CRITERION::LOW);
+  master_updater.Init();
   auto lambda_max = LambdaMax(benders);
   benders->ResetData(3.0);
   benders->launch();

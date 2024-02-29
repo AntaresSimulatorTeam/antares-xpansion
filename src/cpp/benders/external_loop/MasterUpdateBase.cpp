@@ -33,6 +33,15 @@ void MasterUpdateBase::CheckTau(double tau) {
     tau_ = tau;
   }
 }
+
+void MasterUpdateBase::Init() {
+  // check lambda_max_
+  // whaT about lambda_min_?
+  if (lambda_max_ <= 0 || lambda_max_ < lambda_min_) {
+    // TODO log
+    SetLambdaMaxToMaxInvestmentCosts();
+  }
+}
 void MasterUpdateBase::SetLambdaMaxToMaxInvestmentCosts() {
   const auto &obj = benders_->ObjectiveFunctionCoeffs();
   const auto max_invest =
@@ -44,14 +53,7 @@ void MasterUpdateBase::SetLambdaMaxToMaxInvestmentCosts() {
   // lambda_max_ = 126000 * 300 + 60000 * 2000 + 55400 * 1000 + 60000 * 1000;
 }
 void MasterUpdateBase::Update(const CRITERION &criterion) {
-  // check lambda_max_
-  // whaT abour lambda_min_?
-  if (lambda_max_ <= 0 || lambda_max_ < lambda_min_) {
-    // TODO log
-    SetLambdaMaxToMaxInvestmentCosts();
-    return;
-  }
-  switch (criterion) {
+    switch (criterion) {
     case CRITERION::LOW:
       // TODO best it or current data?
       lambda_max_ =

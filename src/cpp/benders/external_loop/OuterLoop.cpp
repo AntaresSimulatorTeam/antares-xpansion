@@ -43,7 +43,9 @@ void OuterLoop::Run() {
             << criterion_->StateAsString();
     throw CriterionCouldNotBeSatisfied(err_msg.str(), LOGLOCATION);
   }
-  master_updater_->Update(criterion);
+
+  // lambda_max
+  master_updater_->Init();
 
   while (criterion != CRITERION::IS_MET) {
     benders_->ResetData(criterion_->CriterionValue());

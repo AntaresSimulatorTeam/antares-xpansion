@@ -4,6 +4,7 @@
 class IMasterUpdate {
  public:
   virtual void Update(const CRITERION &criterion) = 0;
+  virtual void Init() = 0;
 };
 
 class MasterUpdateBase : public IMasterUpdate {
@@ -17,6 +18,7 @@ class MasterUpdateBase : public IMasterUpdate {
                             const std::string &name);
   explicit MasterUpdateBase(pBendersBase benders, double tau);
   void Update(const CRITERION &criterion) override;
+  void Init() override;
 
  private:
   void CheckTau(double tau);
