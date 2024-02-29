@@ -6,6 +6,7 @@ on:
       - main
       - develop
       - ci/*
+      - dependabot/*
   workflow_dispatch:
   workflow_run:
     workflows: [ "Publish Release" ]
@@ -110,7 +111,10 @@ jobs:
     container: 'antaresrte/rte-antares:centos7-system-deps'
     strategy:
       matrix:
-        xprs: [ XPRESS-ON, XPRESS-OFF ]
+        xprs: [
+          XPRESS-ON,
+          #XPRESS-OFF
+        ]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
@@ -273,13 +277,13 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
-          name: $ZIP_NAME
+          name: ${{ env.ZIP_NAME}}
           path: .
 
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
-          name: $SINGLEFILE_NAME
+          name: ${{env.SINGLEFILE_NAME}}
           path: .
 
       - name: Upload Release Asset

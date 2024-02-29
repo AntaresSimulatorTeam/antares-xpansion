@@ -6,6 +6,7 @@ on:
       - main
       - develop
       - ci/*
+      - dependabot/*
   workflow_dispatch:
   workflow_run:
     workflows: [ "Publish Release" ]
@@ -81,8 +82,10 @@ jobs:
     container: 'oraclelinux:8'
     strategy:
       matrix:
-        xprs: [ { value: XPRESS-ON, ref: 9.2.5 },
-                { value: XPRESS-OFF } ]
+        xprs: [
+          { value: XPRESS-ON, ref: 9.2.5 },
+          #{ value: XPRESS-OFF }
+        ]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
@@ -125,6 +128,8 @@ jobs:
 
       - name: Compile tbb
         uses: ./.github/workflows/compile-tbb
+
+      - uses: ./.github/workflows/compile-gtest
 
       - name: Install dependencies
         run: |
@@ -249,13 +254,13 @@ jobs:
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
-          name: $ZIP_NAME
+          name: ${{env.ZIP_NAME}}
           path: .
 
       - name: Download Artifact
         uses: actions/download-artifact@v3
         with:
-          name: $SINGLEFILE_NAME
+          name: ${{env.SINGLEFILE_NAME}}
           path: .
 
       - name: Upload Release Asset

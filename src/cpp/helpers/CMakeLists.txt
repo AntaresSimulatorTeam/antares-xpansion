@@ -57,3 +57,8 @@ target_link_libraries (helpers
 		Boost::boost Boost::program_options
 		MINIZIP::minizip-ng
 )
+
+install(FILES
+		$<TARGET_FILE:jsoncpp_lib>
+		DESTINATION bin
+)

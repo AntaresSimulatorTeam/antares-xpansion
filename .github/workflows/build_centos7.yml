@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - develop
+      - dependabot/*
   pull_request:
   release:
     types: [ created ]
@@ -74,9 +75,11 @@ jobs:
     container: 'antaresrte/rte-antares:centos7-system-deps'
     strategy:
       matrix:
-        xprs: [ { value: XPRESS-ON, ref: 8.13a },
+        xprs: [
+          # { value: XPRESS-ON, ref: 8.13a },
                 { value: XPRESS-ON, ref: 9.2.5 },
-                { value: XPRESS-OFF } ]
+          #        { value: XPRESS-OFF }
+        ]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
