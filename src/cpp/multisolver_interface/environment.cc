@@ -324,16 +324,19 @@ int loadLicence(const std::string& lib_path, bool verbose) {
     return code;
   }
 
+  std::cout << "First try xpress init failed\n";
   // search for XPAUTH_PATH env var
   const auto XPAUTH_PATH = "XPAUTH_PATH";
   std::string xpauth_path_env_var =
-      GetXpressVarFromEnvironmentVariables(XPAUTH_PATH, false);
+      GetXpressVarFromEnvironmentVariables(XPAUTH_PATH, verbose);
   if (!xpauth_path_env_var.empty()) {
     auto xpauth_path_parent_path =
         std::filesystem::path(xpauth_path_env_var).parent_path().string();
     code = XPRSinit(xpauth_path_parent_path.c_str());
     if (!code) {
       return code;
+    } else {
+      std::cout << "using XAUTH_PATH faild\n";
     }
   } else {
     if (verbose) {
@@ -382,7 +385,7 @@ bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
                 << "\n";
     }
 
-    code = loadLicence(xpresspath, false);
+    code = loadLicence(xpresspath, verbose);
 
     if (!code) {
       // XPRSbanner informs about Xpress version, options and error messages
@@ -455,7 +458,7 @@ bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
 }
 
 bool XpressIsCorrectlyInstalled() {
-  bool correctlyInstalled = initXpressEnv(false);
+  bool correctlyInstalled = initXpressEnv(true);
   if (correctlyInstalled) {
     XPRSfree();
   }
