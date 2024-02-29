@@ -165,7 +165,6 @@ void BendersBase::update_best_ub() {
     _data.x_in = _data.x_cut;
     _data.best_ub = _data.ub;
     _data.best_it = _data.it;
-    // best_iteration_cuts_ = current_iteration_cuts_;
     FillWorkerMasterData(relevantIterationData_.best);
     relevantIterationData_.best._cut_trace = relevantIterationData_.last._cut_trace;
     best_iteration_data = bendersDataToLogData(_data);
@@ -927,5 +926,9 @@ void BendersBase::ResetData(double criterion) {
 
 void BendersBase::InitExternalValues() {
   _data.external_loop_criterion = 0;
-  _data.benders_num_run = 1;
+  _data.benders_num_run = 0;
+}
+
+CurrentIterationData BendersBase::GetCurrentIterationData() const {
+  return _data;
 }

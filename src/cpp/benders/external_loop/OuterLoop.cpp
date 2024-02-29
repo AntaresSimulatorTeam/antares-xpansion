@@ -56,7 +56,11 @@ void OuterLoop::Run() {
         criterion_->IsCriterionSatisfied(benders_->BestIterationWorkerMaster());
     master_updater_->Update(criterion);
   }
+  // last prints
   PrintLog();
+  auto benders_data = benders_->GetCurrentIterationData();
+  benders_data.external_loop_criterion = criterion_->CriterionValue();
+  benders_->mathLoggerDriver_->Print(benders_data);
   // cuts_manager_->Save(benders_->AllCuts());
   benders_->free();
 }
@@ -66,7 +70,7 @@ void OuterLoop::PrintLog() {
   // just for operational log?
   auto logger = benders_->_logger;
   logger->PrintIterationSeparatorBegin();
-  msg << "*** Benders Run: " << benders_->GetBendersRunNumber();
+  msg << "*** Outer loop: " << benders_->GetBendersRunNumber();
   logger->display_message(msg.str());
   msg.str("");
   msg << "*** Criterion value: " << std::scientific << std::setprecision(10)

@@ -46,7 +46,7 @@ HeadersManagerExternalLoop::HeadersManagerExternalLoop(
 
 std::vector<std::string> HeadersManagerExternalLoop::HeadersList() {
   std::vector<std::string> headers_list;
-  headers_list.push_back("Benders Run");
+  headers_list.push_back("Outer loop");
   headers_list.push_back("Criterion value");
   auto base_headers = HeadersManager::HeadersList();
   std::move(base_headers.begin(), base_headers.end(),

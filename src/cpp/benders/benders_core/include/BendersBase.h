@@ -75,6 +75,7 @@ class BendersBase {
   virtual void free() = 0;
   void InitExternalValues();
   int GetBendersRunNumber() const { return _data.benders_num_run; }
+  CurrentIterationData GetCurrentIterationData() const;
 
  protected:
   CurrentIterationData _data;
