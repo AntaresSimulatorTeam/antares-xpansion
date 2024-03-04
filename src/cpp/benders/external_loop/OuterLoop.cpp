@@ -22,14 +22,15 @@ void OuterLoop::Run() {
   benders_->InitializeProblems();
   benders_->InitExternalValues();
 
-  auto obj_coeff = benders_->ObjectiveFunctionCoeffs();
+  auto obj_coeff = benders_->MasterObjectiveFunctionCoeffs();
 
   // /!\ partially
-  benders_->SetObjectiveFunctionCoeffsToZeros();
+  benders_->SetMasterObjectiveFunctionCoeffsToZeros();
   PrintLog();
   benders_->launch();
 
-  benders_->SetObjectiveFunction(obj_coeff.data(), 0, obj_coeff.size() - 1);
+  benders_->SetMasterObjectiveFunction(obj_coeff.data(), 0,
+                                       obj_coeff.size() - 1);
 
   // de-comment for general case
   //  cuts_manager_->Save(benders_->AllCuts());

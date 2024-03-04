@@ -336,7 +336,7 @@ void BendersBase::ComputeInvestCost() {
   _data.invest_cost = 0;
 
   int ncols = _master->_solver->get_ncols();
-  std::vector<double> obj(ObjectiveFunctionCoeffs());
+  std::vector<double> obj(MasterObjectiveFunctionCoeffs());
 
   for (const auto &[col_name, value] : _data.x_cut) {
     int col_id = _master->_name_to_id[col_name];
@@ -379,7 +379,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
               worker->solve(subproblem_data.lpstatus, _options.OUTPUTROOT,
                             _options.LAST_MASTER_MPS + MPS_SUFFIX, _writer);
               worker->get_value(subproblem_data.subproblem_cost);
-              worker->get_sol(subproblem_data.variables);
+              worker->get_solution(subproblem_data.variables);
               worker->get_subgradient(subproblem_data.var_name_and_subgradient);
               worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
               subproblem_data.subproblem_timer = subproblem_timer.elapsed();
@@ -890,22 +890,22 @@ void BendersBase::ResetMasterFromLastIteration() {
 }
 bool BendersBase::MasterIsEmpty() const { return master_is_empty_; }
 
-std::vector<double> BendersBase::ObjectiveFunctionCoeffs() const {
+std::vector<double> BendersBase::MasterObjectiveFunctionCoeffs() const {
   int ncols = _master->_solver->get_ncols();
   std::vector<double> obj(ncols);
   _master->_solver->get_obj(obj.data(), 0, ncols - 1);
   return obj;
 }
 
-void BendersBase::SetObjectiveFunctionCoeffsToZeros() const {
+void BendersBase::SetMasterObjectiveFunctionCoeffsToZeros() const {
   // assuming that master var id are in [0, size-1]
   auto master_vars_size = master_variable_map_.size();
   std::vector<double> zeros(master_vars_size, 0.0);
-  SetObjectiveFunction(zeros.data(), 0, master_vars_size - 1);
+  SetMasterObjectiveFunction(zeros.data(), 0, master_vars_size - 1);
 }
 
-void BendersBase::SetObjectiveFunction(const double *coeffs, int first,
-                                       int last) const {
+void BendersBase::SetMasterObjectiveFunction(const double *coeffs, int first,
+                                             int last) const {
   _master->_solver->set_obj(coeffs, first, last);
 }
 

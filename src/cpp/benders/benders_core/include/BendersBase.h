@@ -39,6 +39,7 @@ class BendersBase {
   }
   double execution_time() const;
   virtual std::string BendersName() const = 0;
+  // TODO rename to be consistent with data that it hold
   // ref of value?
   WorkerMasterDataVect AllCuts() const;
   // BendersCuts CutsBestIteration() const;
@@ -50,7 +51,7 @@ class BendersBase {
   // for test
   void MasterGetRhs(double &rhs, int id_row) const;
   const VariableMap &MasterVariables() const { return master_variable_map_; }
-  std::vector<double> ObjectiveFunctionCoeffs() const;
+  std::vector<double> MasterObjectiveFunctionCoeffs() const;
   void MasterAddRows(std::vector<char> const &qrtype_p,
                      std::vector<double> const &rhs_p,
                      std::vector<double> const &range_p,
@@ -64,8 +65,9 @@ class BendersBase {
   void DoFreeProblems(bool free_problems) { free_problems_ = free_problems; }
   int MasterGetnrows() const;
   WorkerMasterData BestIterationWorkerMaster() const;
-  void SetObjectiveFunctionCoeffsToZeros() const;
-  void SetObjectiveFunction(const double *coeffs, int first, int last) const;
+  void SetMasterObjectiveFunctionCoeffsToZeros() const;
+  void SetMasterObjectiveFunction(const double *coeffs, int first,
+                                  int last) const;
   virtual void InitializeProblems() = 0;
   void SetMaxIteration(int max_iteration) {
     _options.MAX_ITERATIONS = max_iteration;
@@ -84,7 +86,7 @@ class BendersBase {
   // BendersCuts current_iteration_cuts_;
   VariableMap master_variable_map_;
   CouplingMap coupling_map_;
-  // for warmstart initialize all data, master, subproblem etc...?
+  // for warmstart initialize all data, master, subproblem etc...
   bool init_data_ = true;
   bool init_problems_ = true;
   bool free_problems_ = true;

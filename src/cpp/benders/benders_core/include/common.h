@@ -167,9 +167,9 @@ struct BendersBaseOptions : public BaseOptions {
 };
 
 struct ExternalLoopOptions {
-  double EXT_LOOP_LOSS_OF_LOAD_THRESHOLD = 1.0;
-  double EXT_LOOP_EPSILON = 1e-1;
-  double EXT_LOOP_MAX_UNSUP_ENERGY = 1e-1;
+  double EXT_LOOP_CRITERION_VALUE = 1.0;
+  double EXT_LOOP_CRITERION_TOLERANCE = 1e-1;
+  double EXT_LOOP_CRITERION_COUNT_THRESHOLD = 1e-1;
 };
 
 void usage(int argc);

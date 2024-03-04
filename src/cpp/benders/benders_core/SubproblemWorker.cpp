@@ -73,7 +73,7 @@ void SubproblemWorker::get_subgradient(Point &s) const {
  *
  *  \param lb : reference to a map
  */
-void SubproblemWorker::get_sol(PlainData::Variables &vars) const {
+void SubproblemWorker::get_solution(PlainData::Variables &vars) const {
   vars.values = std::vector<double>(_solver->get_ncols());
 
   if (_solver->get_n_integer_vars() > 0) {

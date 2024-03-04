@@ -43,7 +43,7 @@ void MasterUpdateBase::Init() {
   }
 }
 void MasterUpdateBase::SetLambdaMaxToMaxInvestmentCosts() {
-  const auto &obj = benders_->ObjectiveFunctionCoeffs();
+  const auto &obj = benders_->MasterObjectiveFunctionCoeffs();
   const auto max_invest =
       benders_->BestIterationWorkerMaster().get_max_invest();
   lambda_max_ = 0;
@@ -85,7 +85,7 @@ void MasterUpdateBase::UpdateConstraints() {
  */
 void MasterUpdateBase::AddMinInvestConstraint() {
   auto master_variables = benders_->MasterVariables();
-  const auto obj_coeff = benders_->ObjectiveFunctionCoeffs();
+  const auto obj_coeff = benders_->MasterObjectiveFunctionCoeffs();
   auto newnz = master_variables.size();
   int newrows = 1;
   std::vector<char> rtype(newrows, 'G');

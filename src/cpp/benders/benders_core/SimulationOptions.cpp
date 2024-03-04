@@ -173,6 +173,6 @@ BendersBaseOptions SimulationOptions::get_benders_options() const {
 }
 
 ExternalLoopOptions SimulationOptions::GetExternalLoopOptions() const {
-  return {EXT_LOOP_LOSS_OF_LOAD_THRESHOLD, EXT_LOOP_EPSILON,
-          EXT_LOOP_MAX_UNSUP_ENERGY};
+  return {EXT_LOOP_CRITERION_VALUE, EXT_LOOP_CRITERION_TOLERANCE,
+          EXT_LOOP_CRITERION_COUNT_THRESHOLD};
 }

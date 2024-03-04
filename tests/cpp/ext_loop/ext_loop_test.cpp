@@ -131,7 +131,7 @@ class MasterUpdateBaseTest : public ::testing::Test {
 };
 
 double LambdaMax(pBendersBase benders) {
-  const auto& obj = benders->ObjectiveFunctionCoeffs();
+  const auto& obj = benders->MasterObjectiveFunctionCoeffs();
   const auto max_invest = benders->BestIterationWorkerMaster().get_max_invest();
   double lambda_max = 0;
   for (const auto& [var_name, var_id] : benders->MasterVariables()) {
