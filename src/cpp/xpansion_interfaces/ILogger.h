@@ -69,6 +69,7 @@ struct ILoggerBenders {
   virtual void display_message(const std::string &str) = 0;
   virtual void PrintIterationSeparatorBegin() = 0;
   virtual void PrintIterationSeparatorEnd() = 0;
+  virtual ~ILoggerBenders() = default;
 };
 
 struct BendersLoggerBase : public ILoggerBenders {
