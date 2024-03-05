@@ -122,7 +122,7 @@ struct MathLoggerBendersByBatchExternalLoop : public MathLoggerBendersByBatch {
   using MathLoggerBendersByBatch::MathLoggerBendersByBatch;
   void Print(const CurrentIterationData& data) override;
   void setHeadersList() override;
-  virtual ~MathLoggerBendersByBatch() = default;
+  virtual ~MathLoggerBendersByBatchExternalLoop() = default;
 };
 
 class MathLoggerImplementation : public MathLoggerBehaviour {
