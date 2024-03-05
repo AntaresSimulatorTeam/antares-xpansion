@@ -51,7 +51,7 @@ jobs:
         if: github.event_name == 'release' && github.event.action == 'created'
         id: get_release
         uses:
-          bruceadams/get-release@v1.2.3
+          bruceadams/get-release@v1.3.2
 
       - name: Set up Python
         uses: actions/setup-python@v3
