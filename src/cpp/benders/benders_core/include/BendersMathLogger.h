@@ -68,6 +68,7 @@ struct MathLoggerBehaviour : public ILoggerBenders {
   virtual void PrintIterationSeparatorBegin() override;
   virtual void PrintIterationSeparatorEnd() override;
   virtual void setHeadersList() = 0;
+  virtual ~MathLoggerBehaviour() = default;
 };
 
 struct MathLogger : public MathLoggerBehaviour {
@@ -85,6 +86,7 @@ struct MathLogger : public MathLoggerBehaviour {
   virtual LogDestination& LogsDestination() { return log_destination_; }
   virtual void setHeadersList() = 0;
   HEADERSTYPE HeadersType() const { return type_; }
+  virtual ~MathLogger() = default;
 
  protected:
   void setHeadersList(const std::vector<std::string>& headers);
@@ -100,23 +102,27 @@ struct MathLoggerBase : public MathLogger {
   void Print(const CurrentIterationData& data) override;
 
   void setHeadersList() override;
+  virtual ~MathLoggerBase() = default;
 };
 
 struct MathLoggerBaseExternalLoop : public MathLoggerBase {
   using MathLoggerBase::MathLoggerBase;
   void Print(const CurrentIterationData& data) override;
   void setHeadersList() override;
+  virtual ~MathLoggerBaseExternalLoop() = default;
 };
 
 struct MathLoggerBendersByBatch : public MathLogger {
   using MathLogger::MathLogger;
   void Print(const CurrentIterationData& data) override;
   void setHeadersList() override;
+  virtual ~MathLoggerBendersByBatch() = default;
 };
 struct MathLoggerBendersByBatchExternalLoop : public MathLoggerBendersByBatch {
   using MathLoggerBendersByBatch::MathLoggerBendersByBatch;
   void Print(const CurrentIterationData& data) override;
   void setHeadersList() override;
+  virtual ~MathLoggerBendersByBatch() = default;
 };
 
 class MathLoggerImplementation : public MathLoggerBehaviour {
@@ -137,6 +143,7 @@ class MathLoggerImplementation : public MathLoggerBehaviour {
   void PrintIterationSeparatorEnd() override {
     implementation_->PrintIterationSeparatorEnd();
   }
+  virtual ~MathLoggerImplementation() = default;
 
  protected:
   void setHeadersList() override { implementation_->setHeadersList(); }
@@ -160,6 +167,7 @@ class MathLoggerDriver : public ILoggerBenders {
   void Print(const CurrentIterationData& data);
   virtual void PrintIterationSeparatorBegin() override;
   virtual void PrintIterationSeparatorEnd() override;
+  virtual ~MathLoggerDriver() = default;
 
  private:
   std::vector<std::shared_ptr<MathLoggerImplementation>> math_loggers_;
