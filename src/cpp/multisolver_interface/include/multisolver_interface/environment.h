@@ -16,6 +16,7 @@
 #pragma once
 #include <functional>
 
+#include "ILogger.h"
 #include "dynamic_library.h"
 extern "C" {
 typedef struct xo_prob_struct* XPRSprob;
@@ -25,9 +26,10 @@ namespace LoadXpress {
 
 void printXpressBanner();
 
-bool initXpressEnv(bool verbose = true, int xpress_oem_license_key = 0);
+bool initXpressEnv(std::shared_ptr<ILoggerXpansion> logger, bool verbose = true,
+                   int xpress_oem_license_key = 0);
 
-bool XpressIsCorrectlyInstalled();
+bool XpressIsCorrectlyInstalled(std::shared_ptr<ILoggerXpansion> logger, );
 // clang-format off
 // Force the loading of the xpress dynamic library. It returns true if the
 // library was successfully loaded. This method can only be called once.

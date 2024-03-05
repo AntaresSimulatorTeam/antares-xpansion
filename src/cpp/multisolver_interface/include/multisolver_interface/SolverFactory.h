@@ -30,7 +30,7 @@ class SolverFactory {
   /**
    * @brief Constructor of SolverFactory, fills the list of available solvers
    */
-  SolverFactory();
+  SolverFactory(std::shared_ptr<ILoggerXpansion> logger);
 
  public:
   /**

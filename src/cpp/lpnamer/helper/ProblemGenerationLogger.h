@@ -11,11 +11,13 @@
 #include <set>
 #include <string>
 
+#include "ILogger.h"
 #include "LogUtils.h"
 #include "LoggerUtils.h"
+
 namespace ProblemGenerationLog {
 
-class ProblemGenerationILogger {
+class ProblemGenerationILogger : public ILoggerXpansion {
  public:
   virtual ~ProblemGenerationILogger() = default;
   virtual void display_message(const std::string& message) = 0;

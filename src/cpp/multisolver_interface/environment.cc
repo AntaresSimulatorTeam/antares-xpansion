@@ -366,7 +366,10 @@ int loadLicence(const std::string& lib_path, bool verbose) {
 }
 
 /** init XPRESS environment */
-bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
+bool initXpressEnv(std::shared_ptr<ILoggerXpansion> logger, bool verbose,
+                   int xpress_oem_license_key) {
+  std::ostringstream msg;
+
   std::string xpresspath;
   bool status = LoadXpressDynamicLibrary(xpresspath);
   if (!status) {
@@ -378,8 +381,9 @@ bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
   // if not an OEM key
   if (xpress_oem_license_key == 0) {
     if (verbose) {
-      std::cout << "Initialising xpress-MP with parameter " << xpresspath
-                << "\n";
+      msg.str("");
+      msg << "Initialising xpress-MP with parameter " << xpresspath << "\n";
+      logger->display_msg(msg.str());
     }
 
     code = loadLicence(xpresspath, false);
@@ -390,29 +394,36 @@ bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
         printXpressBanner();
         char version[16];
         XPRSgetversion(version);
-        std::cout << "Warning: "
-                  << "Optimizer version: " << version
-                  << " (Antares-Xpansion was compiled with version "
-                  << XPVERSION << ").\n";
+        msg.str("");
+        msg << "Warning: "
+            << "Optimizer version: " << version
+            << " (Antares-Xpansion was compiled with version " << XPVERSION
+            << ").\n";
+        logger->display_msg(msg.str());
       }
       return true;
     } else {
-      std::cout << "XpressInterface: Xpress found at " << xpresspath << "\n";
+      msg.str("");
+      msg << "XpressInterface: Xpress found at " << xpresspath << "\n";
+
       char errmsg[256];
       XPRSgetlicerrmsg(errmsg, 256);
 
-      std::cout << "Xpress License error : " << errmsg
-                << " (XPRSinit returned code " << code << "). Please check"
-                << " environment variable XPRESS.\n";
+      msg << "Xpress License error : " << errmsg << " (XPRSinit returned code "
+          << code << "). Please check"
+          << " environment variable XPRESS.\n";
+      logger->display_msg(msg.str());
 
       return false;
     }
   } else {
     // if OEM key
     if (verbose) {
-      std::cout << "Warning: "
-                << "Initialising xpress-MP with OEM key "
-                << xpress_oem_license_key << "\n";
+      msg.str("");
+      msg << "Warning: "
+          << "Initialising xpress-MP with OEM key " << xpress_oem_license_key
+          << "\n";
+      logger->display_msg(msg.str());
     }
 
     int nvalue = 0;
@@ -422,24 +433,32 @@ bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
 
     XPRSlicense(&nvalue, slicmsg);
     if (verbose) {
-      std::cout << "First message from XPRSLicense : " << slicmsg << "\n";
+      msg.str("");
+      msg << "First message from XPRSLicense : " << slicmsg << "\n";
+      logger->display_msg(msg.str());
     }
 
     nvalue = xpress_oem_license_key - ((nvalue * nvalue) / 19);
     ierr = XPRSlicense(&nvalue, slicmsg);
 
     if (verbose) {
-      std::cout << "Second message from XPRSLicense : " << slicmsg << "\n";
+      msg.str("");
+      msg << "Second message from XPRSLicense : " << slicmsg << "\n";
+      logger->display_msg(msg.str());
     }
     if (ierr == 16) {
       if (verbose) {
-        std::cout << "Optimizer development software detected\n";
+        msg.str("");
+        msg << "Optimizer development software detected\n";
+        logger->display_msg(msg.str());
       }
     } else if (ierr != 0) {
       // get the license error message
       XPRSgetlicerrmsg(errmsg, 256);
 
-      std::cout << "Xpress Error Message: " << errmsg << "\n";
+      msg.str("");
+      msg << "Xpress Error Message: " << errmsg << "\n";
+      logger->display_msg(msg.str());
       return false;
     }
 
@@ -448,14 +467,16 @@ bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
     if (!code) {
       return true;
     } else {
-      std::cout << "XPRSinit returned code : " << code << "\n";
+      msg.str("");
+      msg << "XPRSinit returned code : " << code << "\n";
+      logger->display_msg(msg.str());
       return false;
     }
   }
 }
 
-bool XpressIsCorrectlyInstalled() {
-  bool correctlyInstalled = initXpressEnv(false);
+bool XpressIsCorrectlyInstalled(std::shared_ptr<ILoggerXpansion> logger, ) {
+  bool correctlyInstalled = initXpressEnv(logger, false);
   if (correctlyInstalled) {
     XPRSfree();
   }
