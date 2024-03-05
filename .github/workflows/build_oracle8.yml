@@ -46,15 +46,12 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        shell: /bin/bash
     container: 'oraclelinux:8'
     strategy:
       matrix:
         xprs: [ #{ value: XPRESS-ON, ref: 8.13a },
-          #      { value: XPRESS-ON, ref: 9.2.5 },
-          { value: XPRESS-OFF }
+          { value: XPRESS-ON, ref: 9.2.5 },
+          # { value: XPRESS-OFF }
         ]
     needs: [ versions ]
     env:
@@ -64,13 +61,15 @@ jobs:
       XPRESSDIR_CONTAINER: ${GITHUB_WORKSPACE}/xpress
       XPRESS_CONTAINER: ${GITHUB_WORKSPACE}/xpress/bin
       XPRS_LIB_Path_CONTAINER: ${GITHUB_WORKSPACE}/xpress/lib
+      #VCPKG_DEFAULT_TRIPLET: x64-linux-dynamic
 
     steps:
       - name: Install System
         run: |
           dnf install -y epel-release git wget rpm-build redhat-lsb-core openmpi-devel
           dnf install -y unzip libuuid-devel gcc-toolset-10-toolchain python3-devel zlib-devel
-          echo "source /opt/rh/gcc-toolset-10/enable" >> ~/.bashrc
+          source /opt/rh/gcc-toolset-10/enable
+          echo $PATH >> $GITHUB_PATH
 
       - run: |
           dnf module install -y nodejs:20/common
@@ -79,6 +78,15 @@ jobs:
         with:
           useLocalCache: false
           useCloudCache: false
+
+      - run: |
+          echo $SHELL
+          echo $PATH
+          which cmake
+          which gcc
+          which g++
+          which ninja
+          cmake --version
 
       - uses: actions/checkout@v3
         with:
@@ -114,21 +122,13 @@ jobs:
 
       - run: |
           mkdir -p ${{ github.workspace }}/vcpkg_cache
-      - run: |
-          which cmake
-          which gcc
-          which g++
-          which ninja
+
       - name: vcpkg install
-        uses: lukka/run-vcpkg@v11
-        with:
-          # This one is not needed, as it is the default value anyway.
-          vcpkgDirectory: '${{ github.workspace }}/vcpkg'
-          vcpkgJsonGlob: '**/vcpkg.json'
-          # let run-cmake do it
-          # runVcpkgInstall: true
-          doNotCache: false
-          binaryCachePath: '${{ github.workspace }}/vcpkg_cache'
+        run: |
+          pushd vcpkg
+          ./bootstrap-vcpkg.sh
+          popd
+          vcpkg/vcpkg install
 
       - name: Configure
         run: |
@@ -150,7 +150,7 @@ jobs:
         run: |
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
-          cmake --build _build --config Release -j2
+          cmake --build _build --config Release -j$(nproc)
 
       - name: Running unit tests
         timeout-minutes: 120
@@ -161,4 +161,4 @@ jobs:
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
           export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build
-          ctest3 -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
+          ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
