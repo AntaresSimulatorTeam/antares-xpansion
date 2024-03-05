@@ -47,7 +47,7 @@ target_include_directories (helpers
 )
 
 jsoncpplib_name(jsonlib)
-target_link_libraries (helpers 
+target_link_libraries (helpers
 	PUBLIC
 		${jsonlib}
 		solvers
