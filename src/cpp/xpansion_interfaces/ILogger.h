@@ -64,24 +64,26 @@ struct LogData {
   double subproblem_time;
   int cumulative_number_of_subproblem_resolved;
 };
-struct ILoggerBenders {
+struct ILoggerXpansion {
   virtual void display_message(const std::string &str) = 0;
+  virtual ~ILoggerXpansion() = default;
 };
 
-struct BendersLoggerBase : public ILoggerBenders {
+struct BendersLoggerBase : public ILoggerXpansion {
   void display_message(const std::string &str) override {
     for (auto logger : loggers) {
       logger->display_message(str);
     }
   }
-  void AddLogger(std::shared_ptr<ILoggerBenders> logger) {
+  void AddLogger(std::shared_ptr<ILoggerXpansion> logger) {
     loggers.push_back(logger);
   }
 
  private:
-  std::vector<std::shared_ptr<ILoggerBenders>> loggers;
+  std::vector<std::shared_ptr<ILoggerXpansion>> loggers;
 };
-class ILogger : public ILoggerBenders {
+
+class ILogger : public ILoggerXpansion {
  public:
   virtual ~ILogger() = default;
 
