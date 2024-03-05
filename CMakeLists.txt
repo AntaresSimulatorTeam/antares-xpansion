@@ -235,7 +235,9 @@ if (SOLVER)
 endif()
 
 find_package(jsoncpp CONFIG REQUIRED)
-
+message("PLOP")
+message($<TARGET_FILE:jsoncpp_lib>)
+message(jsoncpp_lib)
 
 
 ## Coin-OR (Clp and CBC solvers)
