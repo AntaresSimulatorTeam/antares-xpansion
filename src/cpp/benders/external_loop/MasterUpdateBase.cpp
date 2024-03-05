@@ -30,7 +30,7 @@ MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double lambda,
 void MasterUpdateBase::CheckTau(double tau) {
   if (tau >= 0 && tau <= 1) {
     // TODO log
-    tau_ = tau;
+    dichotomy_weight_coeff_ = tau;
   }
 }
 
@@ -66,7 +66,8 @@ void MasterUpdateBase::Update(const CRITERION &criterion) {
     default:
       return;
   }
-  lambda_ = tau_ * lambda_max_ + (1 - tau_) * lambda_min_;
+  lambda_ = dichotomy_weight_coeff_ * lambda_max_ +
+            (1 - dichotomy_weight_coeff_) * lambda_min_;
   UpdateConstraints();
 }
 

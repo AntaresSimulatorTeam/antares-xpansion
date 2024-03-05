@@ -32,5 +32,6 @@ class MasterUpdateBase : public IMasterUpdate {
   double lambda_ = 0;
   double lambda_min_ = 0;
   double lambda_max_ = -1;
-  double tau_ = 0.5;
+  // tau
+  double dichotomy_weight_coeff_ = 0.5;
 };
