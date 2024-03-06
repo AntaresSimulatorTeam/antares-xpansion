@@ -94,23 +94,35 @@ jobs:
         with:
           cmake: 'cmake3'
 
-      - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v1.13
+      - run: |
+          source /opt/rh/devtoolset-10/enable
+          echo $PATH >> $GITHUB_PATH
+
+      - run: |
+          yum install -y nodejs
+
+      - uses: lukka/get-cmake@latest
         with:
-          cmake-version: '3.22.x'
+          useLocalCache: false
+          useCloudCache: true
+
+      - name: vcpkg install
+        run: |
+          pushd vcpkg
+          ./bootstrap-vcpkg.sh
+          popd
+          vcpkg/vcpkg install
 
       - name: Configure
         run: |
-          source /opt/rh/devtoolset-10/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake -B _build -S . \
           -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
-          -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DALLOW_RUN_AS_ROOT=ON
+          -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release  -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DALLOW_RUN_AS_ROOT=ON -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
         run: |
-          source /opt/rh/devtoolset-10/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake --build _build --config Release -j2 --target install
