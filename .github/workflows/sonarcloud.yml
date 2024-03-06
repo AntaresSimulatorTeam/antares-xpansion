@@ -119,7 +119,7 @@ jobs:
           -DCMAKE_INSTALL_PREFIX=_install
 
       - name: Build
-        run: build-wrapper-linux-x86-64 --out-dir $GITHUB_WORKSPACE/_build/output cmake --build _build --config Release -j2
+        run: build-wrapper-linux-x86-64 --out-dir ${{GITHUB_WORKSPACE}}/_build/output cmake --build _build --config Release -j2
 
       - name: Test and generate coverage
         continue-on-error: true
@@ -135,4 +135,4 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_2022 }}
-        run: sonar-scanner --define sonar.host.url="${{ env.SONAR_HOST_URL }}"
+        run: sonar-scanner --define sonar.host.url="${{ env.SONAR_HOST_URL }}" sonar.cfamily.build-wrapper-output="${{GITHUB_WORKSPACE}}/_build/output"
