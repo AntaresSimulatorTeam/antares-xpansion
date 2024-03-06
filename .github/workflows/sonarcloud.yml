@@ -102,7 +102,7 @@ jobs:
         uses: ./.github/workflows/compile-boost
         with:
           prefix: "../rte-antares-deps-Release/"
-          load-toolset: 'false'
+
 
 
       - name: Init submodule

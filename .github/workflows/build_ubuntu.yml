@@ -116,7 +116,7 @@ jobs:
         uses: ./.github/workflows/compile-boost
         with:
           prefix: "../rte-antares-deps-Release/"
-          load-toolset: 'false'
+
 
       - run: |
           mkdir -p ${{ github.workspace }}/vcpkg_cache
