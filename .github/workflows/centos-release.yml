@@ -134,6 +134,25 @@ jobs:
         with:
           submodules: true
 
+      - run: |
+          source /opt/rh/devtoolset-10/enable
+          echo $PATH >> $GITHUB_PATH
+
+      - run: |
+          yum install -y nodejs
+
+      - uses: lukka/get-cmake@latest
+        with:
+          useLocalCache: false
+          useCloudCache: true
+
+      - name: vcpkg install
+        run: |
+          pushd vcpkg
+          ./bootstrap-vcpkg.sh
+          popd
+          vcpkg/vcpkg install
+
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
         with:
@@ -151,8 +170,6 @@ jobs:
 
       - name: Compile tbb
         uses: ./.github/workflows/compile-tbb
-        with:
-          cmake: 'cmake3'
 
       - name: Install dependencies
         run: |
@@ -188,7 +205,7 @@ jobs:
           source /opt/rh/devtoolset-10/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
-          cmake3 -B _build -S . \
+          cmake -B _build -S . \
                  -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
                  -DBUILD_TESTING=ON \
                  -DCMAKE_BUILD_TYPE=Release \
@@ -197,7 +214,8 @@ jobs:
                  -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
                  -DXPRESS=${XPRESS_VALUE} \
                  -DXPRESS_ROOT=${XPRESSDIR} \
-                 -DALLOW_RUN_AS_ROOT=ON
+                 -DALLOW_RUN_AS_ROOT=ON \
+                 -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
         shell: bash
@@ -205,7 +223,7 @@ jobs:
           source /opt/rh/devtoolset-10/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
-          cmake3 --build _build --config Release -j2 --target install
+          cmake --build _build --config Release -j2 --target install
 
       - name: Running unit tests
         timeout-minutes: 120
@@ -216,7 +234,7 @@ jobs:
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
           export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build
-          ctest3 -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
+          ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
 
       - name: set name variables
         id: single_file_name
@@ -234,7 +252,7 @@ jobs:
         run: |
           cd _build
           export FILE_NAME="antaresXpansion-${{env.VERSION_WITH_XPRESS}}-CentOS-7.9.2009"
-          cpack3 -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
+          cpack -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
           echo "TGZ_NAME=$FILE_NAME.tar.gz" >> $GITHUB_ENV
 
       - name: Upload .tar.gz

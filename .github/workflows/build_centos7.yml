@@ -135,8 +135,6 @@ jobs:
 
       - name: Compile tbb
         uses: ./.github/workflows/compile-tbb
-        with:
-          cmake: 'cmake3'
 
       - name: Install dependencies
         run: |
