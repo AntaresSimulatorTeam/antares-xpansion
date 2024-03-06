@@ -34,13 +34,13 @@ jobs:
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
 
       - name: Checkout xpressmp linux
         if: matrix.xprs.value == 'XPRESS-ON'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: rte-france/xpress-mp-temp
           path: ${{ env.XPRESSDIR }}

@@ -54,7 +54,7 @@ jobs:
       pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
@@ -83,7 +83,7 @@ jobs:
       antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
       antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Read antares-solver version
         id: antares-version
         uses: ./.github/actions/read-json-value
@@ -130,7 +130,7 @@ jobs:
         uses: tj-actions/branch-names@v6
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           submodules: true
 
@@ -168,7 +168,7 @@ jobs:
           path: docs/
 
       - name: Checkout xpressmp linux
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.AS_TOKEN }}
           repository: rte-france/xpress-mp
