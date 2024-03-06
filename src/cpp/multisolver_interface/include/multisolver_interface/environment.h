@@ -24,19 +24,28 @@ typedef struct xo_prob_struct* XPRSprob;
 
 namespace LoadXpress {
 
-void printXpressBanner();
+class XpressLoader {
+ public:
+  explicit XpressLoader(std::shared_ptr<ILoggerXpansion> logger =
+                            std::make_shared<EmptyLogger>());
+  bool initXpressEnv(bool verbose = true, int xpress_oem_license_key = 0);
 
-bool initXpressEnv(std::shared_ptr<ILoggerXpansion> logger, bool verbose = true,
-                   int xpress_oem_license_key = 0);
+  bool XpressIsCorrectlyInstalled();
 
-bool XpressIsCorrectlyInstalled(std::shared_ptr<ILoggerXpansion> logger);
-// clang-format off
+ private:
+  // clang-format off
 // Force the loading of the xpress dynamic library. It returns true if the
 // library was successfully loaded. This method can only be called once.
 // Successive calls are no-op.
 //
 // Note that it does not check if a token license can be grabbed.
 bool LoadXpressDynamicLibrary(std::string &xpresspath);
+  void printXpressBanner();
+std::shared_ptr<ILoggerXpansion> logger_;
+std::vector<std::string> XpressDynamicLibraryPotentialPaths(); 
+std::string GetXpressVarFromEnvironmentVariables(const char* XPRESS_var,
+                                                 bool verbose = true);
+                                                 bool LoadXpressFunctions(DynamicLibrary* xpress_dynamic_library);int loadLicence(const std::string& lib_path, bool verbose);};
 
 // The list of #define and extern std::function<> below is generated directly
 // from xprs.h via parse_header_xpress.py

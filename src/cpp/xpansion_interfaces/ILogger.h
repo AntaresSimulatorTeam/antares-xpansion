@@ -18,6 +18,7 @@ enum class StoppingCriterion {
   absolute_gap,
   max_iteration
 };
+
 inline std::string criterion_to_str(
     const StoppingCriterion stopping_criterion) {
   std::string stop_crit("");
@@ -43,6 +44,7 @@ inline std::string criterion_to_str(
   }
   return stop_crit;
 }
+
 struct LogData {
   double lb;
   double best_ub;
@@ -66,7 +68,15 @@ struct LogData {
 };
 struct ILoggerXpansion {
   virtual void display_message(const std::string &str) = 0;
+  void display_message(const std::ostringstream &msg) {
+    display_message(msg.str());
+  }
   virtual ~ILoggerXpansion() = default;
+};
+
+struct EmptyLogger : public ILoggerXpansion {
+  void display_message(const std::string &str) override {}
+  virtual ~EmptyLogger() {}
 };
 
 struct BendersLoggerBase : public ILoggerXpansion {

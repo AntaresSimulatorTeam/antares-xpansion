@@ -2,6 +2,7 @@
 
 #include <set>
 
+#include "ILogger.h"
 #include "multisolver_interface/SolverAbstract.h"
 
 enum class SOLVER_TYPE { INTEGER, CONTINUOUS };
@@ -14,7 +15,8 @@ const std::string UNKNOWN_STR("UNKNOWN"), COIN_STR("COIN"), CBC_STR("CBC"),
  */
 class SolverLoader {
  public:
-  static std::vector<std::string> GetAvailableSolvers();
+  static std::vector<std::string> GetAvailableSolvers(
+      std::shared_ptr<ILoggerXpansion> logger);
 };
 
 /*!
@@ -30,7 +32,8 @@ class SolverFactory {
   /**
    * @brief Constructor of SolverFactory, fills the list of available solvers
    */
-  SolverFactory(std::shared_ptr<ILoggerXpansion> logger);
+  explicit SolverFactory(std::shared_ptr<ILoggerXpansion> logger =
+                             std::make_shared<EmptyLogger>());
 
  public:
   /**
@@ -72,4 +75,6 @@ class SolverFactory {
   const std::vector<std::string> &get_solvers_list() const;
 
   bool isXpress_available_ = false;
+
+  std::shared_ptr<ILoggerXpansion> logger_;
 };
