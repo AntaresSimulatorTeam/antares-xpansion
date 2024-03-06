@@ -49,7 +49,8 @@ jobs:
     container: 'oraclelinux:8'
     strategy:
       matrix:
-        xprs: [ #{ value: XPRESS-ON, ref: 8.13a },
+        xprs: [
+          # { value: XPRESS-ON, ref: 8.13a },
           { value: XPRESS-ON, ref: 9.2.5 },
           # { value: XPRESS-OFF }
         ]
@@ -61,7 +62,6 @@ jobs:
       XPRESSDIR_CONTAINER: ${GITHUB_WORKSPACE}/xpress
       XPRESS_CONTAINER: ${GITHUB_WORKSPACE}/xpress/bin
       XPRS_LIB_Path_CONTAINER: ${GITHUB_WORKSPACE}/xpress/lib
-      #VCPKG_DEFAULT_TRIPLET: x64-linux-dynamic
 
     steps:
       - name: Install System
@@ -78,15 +78,6 @@ jobs:
         with:
           useLocalCache: false
           useCloudCache: false
-
-      - run: |
-          echo $SHELL
-          echo $PATH
-          which cmake
-          which gcc
-          which g++
-          which ninja
-          cmake --version
 
       - uses: actions/checkout@v3
         with:
