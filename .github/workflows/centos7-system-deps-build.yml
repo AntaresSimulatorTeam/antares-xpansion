@@ -132,17 +132,17 @@ jobs:
           source /etc/profile.d/modules.sh
           module load mpi
           cd _build
-          ctest3 -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
+          ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
 
       - name: .tar.gz creation
         run: |
           cd _build
-          cpack3 -G TGZ
+          cpack -G TGZ
 
       - name: Installer .rpm creation
         run: |
           cd _build
-          cpack3 -G RPM
+          cpack -G RPM
 
       - id: create-single-file
         name: Single file .tar.gz creation
