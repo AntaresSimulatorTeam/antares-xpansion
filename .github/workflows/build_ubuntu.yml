@@ -65,7 +65,7 @@ jobs:
       - name: Install mandatory system libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install -y ccache libgtest-dev libjsoncpp-dev libtbb-dev libopenmpi-dev
+          sudo apt-get install -y ccache libgtest-dev libtbb-dev libopenmpi-dev
           sudo apt-get install -y g++-10 gcc-10
 
       - name: Update alternatives
