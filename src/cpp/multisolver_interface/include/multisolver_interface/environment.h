@@ -39,13 +39,14 @@ class XpressLoader {
 // Successive calls are no-op.
 //
 // Note that it does not check if a token license can be grabbed.
-bool LoadXpressDynamicLibrary(std::string &xpresspath);
+  bool LoadXpressDynamicLibrary(std::string &xpresspath);
   void printXpressBanner();
-std::shared_ptr<ILoggerXpansion> logger_;
-std::vector<std::string> XpressDynamicLibraryPotentialPaths(); 
-std::string GetXpressVarFromEnvironmentVariables(const char* XPRESS_var,
-                                                 bool verbose = true);
-                                                 bool LoadXpressFunctions(DynamicLibrary* xpress_dynamic_library);int loadLicence(const std::string& lib_path, bool verbose);
+  std::shared_ptr<ILoggerXpansion> logger_;
+  std::vector<std::string> XpressDynamicLibraryPotentialPaths(); 
+  std::string GetXpressVarFromEnvironmentVariables(const char* XPRESS_var,
+                                                  bool verbose = true);
+  bool LoadXpressFunctions(DynamicLibrary* xpress_dynamic_library);
+  int loadLicence(const std::string& lib_path, bool verbose);
 };
 
 // The list of #define and extern std::function<> below is generated directly
