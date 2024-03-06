@@ -1,6 +1,7 @@
 #include "SolverClp.h"
 
 #include "COIN_common_functions.h"
+using namespace std::literals;
 
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor
@@ -84,7 +85,7 @@ void SolverClp::write_basis(const std::filesystem::path &filename) {
 
 void SolverClp::read_prob_mps(const std::filesystem::path &filename) {
   int status = _clp.readMps(filename.string().c_str(), true, false);
-  zero_status_check(status, "Clp readMps", LOGLOCATION);
+  zero_status_check(status, " Clp readMps "s + filename.string(), LOGLOCATION);
 }
 
 void SolverClp::read_prob_lp(const std::filesystem::path &filename) {

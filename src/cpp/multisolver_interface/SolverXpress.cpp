@@ -3,11 +3,12 @@
 #include <cassert>
 #include <cstring>
 #include <map>
+// #include <string>
 
 #include "StringManip.h"
 
 using namespace LoadXpress;
-
+using namespace std::literals;
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor
 --------------------------------
@@ -165,7 +166,7 @@ void SolverXpress::read_prob(const char *prob_name, const char *flags) {
   */
 
   status = XPRSreadprob(_xprs, prob_name, flags);
-  zero_status_check(status, "read problem", LOGLOCATION);
+  zero_status_check(status, " read problem "s + prob_name, LOGLOCATION);
 
   // If param KEEPNROWS not -1 remove first row which is the objective function
   if (keeprows != -1) {
