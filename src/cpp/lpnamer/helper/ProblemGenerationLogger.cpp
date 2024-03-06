@@ -38,13 +38,13 @@ void ProblemGenerationLogger::AddLogger(
   loggers_.push_back(logger);
   try_to_add_logger_to_enabled_list(logger);
 }
-void ProblemGenerationLogger::display_message(const std::string& message) const {
+void ProblemGenerationLogger::display_message(const std::string& message) {
   for (const auto& logger : enabled_loggers_) {
     logger->display_message(message);
   }
 }
 void ProblemGenerationLogger::display_message(
-    const std::string& message, const LogUtils::LOGLEVEL log_level) const {
+    const std::string& message, const LogUtils::LOGLEVEL log_level) {
   for (const auto& logger : enabled_loggers_) {
     logger->display_message(LogUtils::LogLevelToStr(log_level));
     logger->display_message(message);

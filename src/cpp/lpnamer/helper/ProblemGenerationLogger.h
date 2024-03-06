@@ -60,7 +60,7 @@ class ProblemGenerationLogger;
 using ProblemGenerationLoggerSharedPointer =
     std::shared_ptr<ProblemGenerationLogger>;
 
-class ProblemGenerationLogger {
+class ProblemGenerationLogger : public ILoggerXpansion {
  private:
   LogUtils::LOGLEVEL log_level_;
   std::string context_ = "Unknown Context";
@@ -71,9 +71,9 @@ class ProblemGenerationLogger {
   ~ProblemGenerationLogger() = default;
 
   void AddLogger(const ProblemGenerationILoggerSharedPointer& logger);
-  void display_message(const std::string& message) const;
+  void display_message(const std::string& message);
   void display_message(const std::string& message,
-                       const LogUtils::LOGLEVEL log_level) const;
+                       const LogUtils::LOGLEVEL log_level);
   void setLogLevel(const LogUtils::LOGLEVEL log_level);
   void setContext(const std::string& context) { context_ = context; }
 
