@@ -14,7 +14,7 @@ std::vector<std::string> SolverLoader::GetAvailableSolvers(
     std::shared_ptr<ILoggerXpansion> logger) {
   if (available_solvers.empty()) {
     LoadXpress::XpressLoader xpress_loader(logger);
-    if (xpress_loader.XpressIsCorrectlyInstalled()) {
+    if (xpress_loader.XpressIsCorrectlyInstalled(true)) {
       available_solvers.push_back(XPRESS_STR);
     }
 #ifdef COIN_OR

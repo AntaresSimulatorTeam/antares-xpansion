@@ -28,9 +28,9 @@ class XpressLoader {
  public:
   explicit XpressLoader(std::shared_ptr<ILoggerXpansion> logger =
                             std::make_shared<EmptyLogger>());
-  bool initXpressEnv(bool verbose = true, int xpress_oem_license_key = 0);
+  bool initXpressEnv(bool verbose = false, int xpress_oem_license_key = 0);
 
-  bool XpressIsCorrectlyInstalled();
+  bool XpressIsCorrectlyInstalled(bool verbose = false);
 
  private:
   // clang-format off
