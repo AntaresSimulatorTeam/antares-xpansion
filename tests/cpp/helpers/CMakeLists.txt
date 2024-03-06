@@ -18,6 +18,7 @@ target_link_libraries (helpers_test PRIVATE
 		lp_namer_model
 		lp_namer_input_reader
 		lp_namer_problem_modifier
+		jsoncpp_static
 		${PROJECT_NAME}::benders_sequential_core
 		)
 
