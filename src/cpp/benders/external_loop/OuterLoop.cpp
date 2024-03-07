@@ -21,32 +21,34 @@ void OuterLoop::Run() {
   benders_->DoFreeProblems(false);
   benders_->InitializeProblems();
   benders_->InitExternalValues();
+  CRITERION criterion;
+  if (world_.rank() == 0) {
+    auto obj_coeff = benders_->MasterObjectiveFunctionCoeffs();
 
-  auto obj_coeff = benders_->MasterObjectiveFunctionCoeffs();
+    // /!\ partially
+    benders_->SetMasterObjectiveFunctionCoeffsToZeros();
 
-  // /!\ partially
-  benders_->SetMasterObjectiveFunctionCoeffsToZeros();
-  PrintLog();
-  benders_->launch();
-
-  benders_->SetMasterObjectiveFunction(obj_coeff.data(), 0,
-                                       obj_coeff.size() - 1);
-
-  // de-comment for general case
-  //  cuts_manager_->Save(benders_->AllCuts());
-  // auto cuts = cuts_manager_->Load();
-  auto criterion =
-      criterion_->IsCriterionSatisfied(benders_->BestIterationWorkerMaster());
-  if (criterion == CRITERION::HIGH) {
-    std::ostringstream err_msg;
-    err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "External Loop")
-            << "Criterion cannot be satisfied for your study:\n"
-            << criterion_->StateAsString();
-    throw CriterionCouldNotBeSatisfied(err_msg.str(), LOGLOCATION);
+    PrintLog();
+    benders_->launch();
+    benders_->SetMasterObjectiveFunction(obj_coeff.data(), 0,
+                                         obj_coeff.size() - 1);
+    // de-comment for general case
+    //  cuts_manager_->Save(benders_->AllCuts());
+    // auto cuts = cuts_manager_->Load();
+    criterion =
+        criterion_->IsCriterionSatisfied(benders_->BestIterationWorkerMaster());
+    if (criterion == CRITERION::HIGH) {
+      std::ostringstream err_msg;
+      err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "External Loop")
+              << "Criterion cannot be satisfied for your study:\n"
+              << criterion_->StateAsString();
+      throw CriterionCouldNotBeSatisfied(err_msg.str(), LOGLOCATION);
+    }
+    // lambda_max
+    master_updater_->Init();
   }
-
-  // lambda_max
-  master_updater_->Init();
+  world_.barrier();
+  mpi::broadcast(world_, criterion, 0);
 
   while (criterion != CRITERION::IS_MET) {
     benders_->ResetData(criterion_->CriterionValue());
