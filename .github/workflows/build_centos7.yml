@@ -109,9 +109,6 @@ jobs:
         with:
           cmake-version: '3.28.x'
 
-      - run: |
-          exit(1)
-
       - uses: ./.github/workflows/compile-gtest
       - name: Checkout xpressmp linux
         uses: actions/checkout@v3 #keep v3
