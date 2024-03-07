@@ -116,7 +116,9 @@ jobs:
           -DBUILD_TESTING=ON \
           -DBUILD_antares_solver=OFF \
           -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_INSTALL_PREFIX=_install
+          -DCMAKE_INSTALL_PREFIX=_install \
+          -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+          -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
         run: build-wrapper-linux-x86-64 --out-dir $GITHUB_WORKSPACE/_build/output cmake --build _build --config Release -j2
