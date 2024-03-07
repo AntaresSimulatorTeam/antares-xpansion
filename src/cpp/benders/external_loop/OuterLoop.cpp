@@ -22,14 +22,17 @@ void OuterLoop::Run() {
   benders_->InitializeProblems();
   benders_->InitExternalValues();
   CRITERION criterion;
+  std::vector<double> obj_coeff;
   if (world_.rank() == 0) {
-    auto obj_coeff = benders_->MasterObjectiveFunctionCoeffs();
+    obj_coeff = benders_->MasterObjectiveFunctionCoeffs();
 
     // /!\ partially
     benders_->SetMasterObjectiveFunctionCoeffsToZeros();
 
     PrintLog();
-    benders_->launch();
+  }
+  benders_->launch();
+  if (world_.rank() == 0) {
     benders_->SetMasterObjectiveFunction(obj_coeff.data(), 0,
                                          obj_coeff.size() - 1);
     // de-comment for general case
