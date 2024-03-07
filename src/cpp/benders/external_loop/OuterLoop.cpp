@@ -21,7 +21,7 @@ void OuterLoop::Run() {
   benders_->DoFreeProblems(false);
   benders_->InitializeProblems();
   benders_->InitExternalValues();
-  CRITERION criterion;
+  CRITERION criterion = CRITERION::IS_MET;
   std::vector<double> obj_coeff;
   if (world_.rank() == 0) {
     obj_coeff = benders_->MasterObjectiveFunctionCoeffs();
@@ -50,16 +50,20 @@ void OuterLoop::Run() {
     // lambda_max
     master_updater_->Init();
   }
-  world_.barrier();
+
   mpi::broadcast(world_, criterion, 0);
 
   while (criterion != CRITERION::IS_MET) {
     benders_->ResetData(criterion_->CriterionValue());
     PrintLog();
     benders_->launch();
-    criterion =
-        criterion_->IsCriterionSatisfied(benders_->BestIterationWorkerMaster());
-    master_updater_->Update(criterion);
+    if (world_.rank() == 0) {
+      criterion = criterion_->IsCriterionSatisfied(
+          benders_->BestIterationWorkerMaster());
+      master_updater_->Update(criterion);
+    }
+
+    mpi::broadcast(world_, criterion, 0);
   }
   // last prints
   PrintLog();
