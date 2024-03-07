@@ -120,8 +120,11 @@ jobs:
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
           -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
+      - run: |
+          sed -i 's#: ".*/mpicxx #: "g++ #' $GITHUB_WORKSPACE/_build/compile_commands.json
+
       - name: Build
-        run: build-wrapper-linux-x86-64 --out-dir $GITHUB_WORKSPACE/_build/output cmake --build _build --config Release -j2
+        run: cmake --build _build --config Release -j$(nproc)
 
       - name: Test and generate coverage
         continue-on-error: true
