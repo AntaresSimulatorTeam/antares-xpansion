@@ -145,7 +145,6 @@ jobs:
           ./bootstrap-vcpkg.sh
           popd
           vcpkg/vcpkg install
-          mpirun --version
 
       - name: Configure
         run: |
