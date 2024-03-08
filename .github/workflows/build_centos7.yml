@@ -104,10 +104,15 @@ jobs:
       - run: |
           yum install -y nodejs
 
-      - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v1.13
+      #      - name: Setup cmake
+      #        uses: jwlawson/actions-setup-cmake@v1.13
+      #        with:
+      #          cmake-version: '3.28.x'
+
+      - uses: lukka/get-cmake@latest
         with:
-          cmake-version: '3.28.x'
+          useLocalCache: false
+          useCloudCache: true
 
       - uses: ./.github/workflows/compile-gtest
       - name: Checkout xpressmp linux
