@@ -78,7 +78,6 @@ void OuterLoop::Run() {
 
 void OuterLoop::PrintLog() {
   std::ostringstream msg;
-  // just for operational log?
   auto logger = benders_->_logger;
   logger->PrintIterationSeparatorBegin();
   msg << "*** Outer loop: " << benders_->GetBendersRunNumber();
