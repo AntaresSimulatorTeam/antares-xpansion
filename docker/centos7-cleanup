@@ -1,0 +1,22 @@
+FROM centos:7
+
+# Install requirements: update repo
+RUN yum update -y
+
+# Install requirements : install epel
+RUN yum install -y epel-release 
+
+RUN \
+  yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils &&\
+  yum install -y devtoolset-10-gcc* environment-modules rpm-build zlib-devel &&\
+  yum install -y doxygen graphviz &&\
+  yum install -y install python3-devel && \
+  yum install -y libuuid-devel
+
+RUN \
+    yum -y install https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm &&\
+    yum install -y git
+
+#create user
+RUN useradd user
+# USER user
