@@ -38,7 +38,7 @@ jobs:
           workdir: docker
           dockerfile: centos7-cleanup
           cache: false
-          tags: centos7-system-deps
+          tags: centos7-cleanup
 
   versions:
     runs-on: ubuntu-latest
