@@ -193,7 +193,7 @@ jobs:
         shell: bash
         run: |
           source /etc/profile.d/modules.sh
-          module load mpi
+          export PATH=${GITHUB_WORKSPACE}/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
           export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build
