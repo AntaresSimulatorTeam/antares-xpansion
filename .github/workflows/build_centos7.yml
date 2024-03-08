@@ -104,10 +104,10 @@ jobs:
       - run: |
           yum install -y nodejs
 
-      - name: Setup cmake
-        uses: jwlawson/actions-setup-cmake@v1.13
+      - uses: lukka/get-cmake@latest
         with:
-          cmake-version: '3.28.x'
+          useLocalCache: false
+          useCloudCache: true
 
       - uses: ./.github/workflows/compile-gtest
       - name: Checkout xpressmp linux
@@ -129,11 +129,6 @@ jobs:
           os-full-name: CentOS-7.9.2009
           #variant: -ortools-xpress
 
-      - name: Compile Boost
-        uses: ./.github/workflows/compile-boost
-        with:
-          prefix: "../rte-antares-deps-Release/"
-
       - name: Compile tbb
         uses: ./.github/workflows/compile-tbb
 
@@ -150,6 +145,7 @@ jobs:
           ./bootstrap-vcpkg.sh
           popd
           vcpkg/vcpkg install
+          mpirun --version
 
       - name: Configure
         run: |
@@ -157,6 +153,7 @@ jobs:
           source /opt/rh/devtoolset-10/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
+          mpirun --version
           cmake -B _build -S . \
                  -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
                  -DBUILD_TESTING=ON \
@@ -173,6 +170,7 @@ jobs:
           source /opt/rh/devtoolset-10/enable
           export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
           export PATH=/usr/lib64/openmpi/bin:$PATH
+          mpirun --version
           cmake --build _build --config Release -j8 --target install
       - name: Running unit tests
         timeout-minutes: 120
@@ -180,6 +178,7 @@ jobs:
         run: |
           source /etc/profile.d/modules.sh
           module load mpi
+          mpirun --version
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
           export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build
