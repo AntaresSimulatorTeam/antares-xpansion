@@ -68,11 +68,12 @@ struct LogData {
 };
 
 /**
- * Xpansion Unique log Interface
+ * \interface ILoggerXpansion
+ * \brief Xpansion Unique log Interface
  */
 struct ILoggerXpansion {
   /**
-   * pure virtual method to display a std::string message
+   * \brief pure virtual method to display a std::string message
    * \param str the message to be displayed
    */
   virtual void display_message(const std::string &str) = 0;
@@ -96,7 +97,7 @@ struct EmptyLogger : public ILoggerXpansion {
 };
 
 /**
- * this class act like a log agregator
+ * this \class act like a log agregator
  */
 struct BendersLoggerBase : public ILoggerXpansion {
   void display_message(const std::string &str) override {
@@ -113,7 +114,8 @@ struct BendersLoggerBase : public ILoggerXpansion {
 };
 
 /**
- * operational logs abstract class
+ * \interface
+ * \brief abstract class for operational logs
  */
 class ILogger : public ILoggerXpansion {
  public:
