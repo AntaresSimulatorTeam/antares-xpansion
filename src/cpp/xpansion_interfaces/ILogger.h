@@ -79,7 +79,7 @@ struct ILoggerXpansion {
   virtual void display_message(const std::string &str) = 0;
 
   /**
-   * display the the underlying std::string in std::ostringstream
+   * display the underlying std::string in std::ostringstream
    * \param str the message to be displayed
    */
   void display_message(const std::ostringstream &msg) {
