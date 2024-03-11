@@ -231,7 +231,8 @@ jobs:
         run: |
           source /opt/rh/devtoolset-10/enable
           cmake --build _build --config Release -j$(nproc)
-          cmake --install _build --strip
+          cd _build
+          cmake --install . --strip
 
       - name: Running unit tests
         timeout-minutes: 120
