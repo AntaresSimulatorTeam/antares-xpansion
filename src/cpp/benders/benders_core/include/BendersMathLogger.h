@@ -39,7 +39,7 @@ std::ostream& LogDestination::operator<<(const T& obj) {
   return (*stream_) << std::left << std::setw(width_) << obj;
 }
 
-struct MathLoggerBehaviour : public ILoggerBenders {
+struct MathLoggerBehaviour : public ILoggerXpansion {
   void write_header() {
     setHeadersList();
     for (const auto& header : Headers()) {
@@ -137,7 +137,7 @@ class MathLoggerImplementation : public MathLoggerBehaviour {
   std::shared_ptr<MathLogger> implementation_;
 };
 
-class MathLoggerDriver : public ILoggerBenders {
+class MathLoggerDriver : public ILoggerXpansion {
  public:
   MathLoggerDriver() = default;
   void write_header();

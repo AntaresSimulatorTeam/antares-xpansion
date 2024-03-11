@@ -39,7 +39,7 @@ void Worker::init(VariableMap const &variable_map,
                   std::string const &solver_name, int log_level,
                   SolverLogManager&solver_log_manager) {
   _path_to_mps = path_to_mps;
-  SolverFactory factory;
+  SolverFactory factory(logger_);
 
   if (_is_master) {
     _solver = factory.create_solver(solver_name, SOLVER_TYPE::INTEGER,

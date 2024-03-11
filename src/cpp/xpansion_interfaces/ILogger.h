@@ -18,6 +18,7 @@ enum class StoppingCriterion {
   absolute_gap,
   max_iteration
 };
+
 inline std::string criterion_to_str(
     const StoppingCriterion stopping_criterion) {
   std::string stop_crit("");
@@ -43,6 +44,7 @@ inline std::string criterion_to_str(
   }
   return stop_crit;
 }
+
 struct LogData {
   double lb;
   double best_ub;
@@ -64,24 +66,58 @@ struct LogData {
   double subproblem_time;
   int cumulative_number_of_subproblem_resolved;
 };
-struct ILoggerBenders {
+
+/**
+ * \interface ILoggerXpansion
+ * \brief Xpansion Unique log Interface
+ */
+struct ILoggerXpansion {
+  /**
+   * \brief pure virtual method to display a std::string message
+   * \param str the message to be displayed
+   */
   virtual void display_message(const std::string &str) = 0;
+
+  /**
+   * display the underlying std::string in std::ostringstream
+   * \param str the message to be displayed
+   */
+  void display_message(const std::ostringstream &msg) {
+    display_message(msg.str());
+  }
+  virtual ~ILoggerXpansion() = default;
 };
 
-struct BendersLoggerBase : public ILoggerBenders {
+/**
+ * useful for multi-proc run
+ */
+struct EmptyLogger : public ILoggerXpansion {
+  void display_message(const std::string &str) override {}
+  virtual ~EmptyLogger() {}
+};
+
+/**
+ * this \class act like a log agregator
+ */
+struct BendersLoggerBase : public ILoggerXpansion {
   void display_message(const std::string &str) override {
     for (auto logger : loggers) {
       logger->display_message(str);
     }
   }
-  void AddLogger(std::shared_ptr<ILoggerBenders> logger) {
+  void AddLogger(std::shared_ptr<ILoggerXpansion> logger) {
     loggers.push_back(logger);
   }
 
  private:
-  std::vector<std::shared_ptr<ILoggerBenders>> loggers;
+  std::vector<std::shared_ptr<ILoggerXpansion>> loggers;
 };
-class ILogger : public ILoggerBenders {
+
+/**
+ * \interface
+ * \brief abstract class for operational logs
+ */
+class ILogger : public ILoggerXpansion {
  public:
   virtual ~ILogger() = default;
 

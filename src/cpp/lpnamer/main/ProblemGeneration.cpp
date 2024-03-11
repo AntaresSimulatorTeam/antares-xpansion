@@ -159,8 +159,8 @@ void ProblemGeneration::RunProblemGeneration(
   validateMasterFormulation(master_formulation, logger);
   std::string solver_name = "CBC";  // TODO Use solver selected by user
 
-  SolverLoader::GetAvailableSolvers();  // Dirty fix to populate static value
-                                        // outside multi thread code
+  SolverLoader::GetAvailableSolvers(logger);  // Dirty fix to populate static
+                                              // value outside multi thread code
   Timer problem_generation_timer;
   if (!weights_file.empty()) {
     ProcessWeights(xpansion_output_dir, antares_archive_path, weights_file,

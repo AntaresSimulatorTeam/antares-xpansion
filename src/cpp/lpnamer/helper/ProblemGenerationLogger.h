@@ -11,14 +11,16 @@
 #include <set>
 #include <string>
 
+#include "ILogger.h"
 #include "LogUtils.h"
 #include "LoggerUtils.h"
+
 namespace ProblemGenerationLog {
 
-class ProblemGenerationILogger {
+class ProblemGenerationILogger : public ILoggerXpansion {
  public:
   virtual ~ProblemGenerationILogger() = default;
-  virtual void DisplayMessage(const std::string& message) = 0;
+  virtual void display_message(const std::string& message) = 0;
   virtual std::ostream& GetOstreamObject() = 0;
   LogUtils::LOGGERTYPE Type() const { return type_; }
 
@@ -39,7 +41,7 @@ class ProblemGenerationFileLogger : public ProblemGenerationILogger {
   ~ProblemGenerationFileLogger() override { logFile_.close(); }
   explicit ProblemGenerationFileLogger(
       const std::filesystem::path& logFilePath);
-  void DisplayMessage(const std::string& message) override;
+  void display_message(const std::string& message) override;
   std::ostream& GetOstreamObject() override { return logFile_; }
 };
 
@@ -50,7 +52,7 @@ class ProblemGenerationOstreamLogger : public ProblemGenerationILogger {
  public:
   ~ProblemGenerationOstreamLogger() override = default;
   explicit ProblemGenerationOstreamLogger(std::ostream& stream);
-  void DisplayMessage(const std::string& message) override;
+  void display_message(const std::string& message) override;
   std::ostream& GetOstreamObject() override { return stream_; }
 };
 
@@ -58,7 +60,7 @@ class ProblemGenerationLogger;
 using ProblemGenerationLoggerSharedPointer =
     std::shared_ptr<ProblemGenerationLogger>;
 
-class ProblemGenerationLogger {
+class ProblemGenerationLogger : public ILoggerXpansion {
  private:
   LogUtils::LOGLEVEL log_level_;
   std::string context_ = "Unknown Context";
@@ -69,9 +71,9 @@ class ProblemGenerationLogger {
   ~ProblemGenerationLogger() = default;
 
   void AddLogger(const ProblemGenerationILoggerSharedPointer& logger);
-  void DisplayMessage(const std::string& message) const;
-  void DisplayMessage(const std::string& message,
-                      const LogUtils::LOGLEVEL log_level) const;
+  void display_message(const std::string& message);
+  void display_message(const std::string& message,
+                       const LogUtils::LOGLEVEL log_level);
   void setLogLevel(const LogUtils::LOGLEVEL log_level);
   void setContext(const std::string& context) { context_ = context; }
 
