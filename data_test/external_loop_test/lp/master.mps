@@ -11,6 +11,7 @@ ROWS
  N  COST
 COLUMNS
     G_p_max_0_0  COST             20
+RHS
 BOUNDS
  UP BOUND        G_p_max_0_0      10
 ENDATA

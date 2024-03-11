@@ -112,7 +112,7 @@ const auto STUDY_PATH =
     std::filesystem::path("data_test") / "external_loop_test";
 const auto OPTIONS_FILE = STUDY_PATH / "lp" / "options.json";
 
-class MasterUpdateBaseTest : public ::testing::Test {
+class MasterUpdateBaseTest : public ::testing::TestWithParam<std::string> {
  public:
   pBendersBase benders;
   std::shared_ptr<MathLoggerDriver> math_log_driver;
@@ -130,6 +130,17 @@ class MasterUpdateBaseTest : public ::testing::Test {
   }
 };
 
+auto solvers() {
+  std::vector<std::string> solvers_name;
+  solvers_name.push_back("COIN");
+  if (LoadXpress::XpressIsCorrectlyInstalled()) {
+    solvers_name.push_back("XPRESS");
+  }
+  return solvers_name;
+}
+
+INSTANTIATE_TEST_SUITE_P(availsolvers, MasterUpdateBaseTest,
+                         ::testing::ValuesIn(solvers()));
 double LambdaMax(pBendersBase benders) {
   const auto& obj = benders->MasterObjectiveFunctionCoeffs();
   const auto max_invest = benders->BestIterationWorkerMaster().get_max_invest();
@@ -140,15 +151,11 @@ double LambdaMax(pBendersBase benders) {
   return lambda_max;
 }
 
-TEST_F(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
-  // skipping if xpress is not available
-  if (!LoadXpress::XpressIsCorrectlyInstalled()) {
-    GTEST_SKIP();
-  }
-
+TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   BendersBaseOptions benders_options = BuildBendersOptions();
   CouplingMap coupling_map = build_input(benders_options.STRUCTURE_FILE);
-
+  // override solver
+  benders_options.SOLVER_NAME = GetParam();
   benders = std::make_shared<BendersMpi>(benders_options, logger, writer, *penv,
                                          *pworld, math_log_driver);
   benders->set_input_map(coupling_map);
@@ -169,13 +176,9 @@ TEST_F(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   benders->free();
 }
 
-TEST_F(MasterUpdateBaseTest, InitialRhs) {
-  // skipping if xpress is not available
-  if (!LoadXpress::XpressIsCorrectlyInstalled()) {
-    GTEST_SKIP();
-  }
-
+TEST_P(MasterUpdateBaseTest, InitialRhs) {
   BendersBaseOptions benders_options = BuildBendersOptions();
+  benders_options.SOLVER_NAME = GetParam();
   CouplingMap coupling_map = build_input(benders_options.STRUCTURE_FILE);
 
   benders = std::make_shared<BendersMpi>(benders_options, logger, writer, *penv,

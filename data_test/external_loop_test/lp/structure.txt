@@ -1,2 +1,2 @@
                                             master                                       G_p_max_0_0         0
-                                        subproblem                                       G_p_max_0_0        24
+                                        subproblem.mps                                       G_p_max_0_0        24
