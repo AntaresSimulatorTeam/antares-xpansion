@@ -139,7 +139,7 @@ void SolverClp::set_obj(const double *obj, int first, int last) {
   if (last - first + 1 == get_ncols()) {
     _clp.setRowObjective(obj);
   } else {
-    for (int index = first; index < last; ++index) {
+    for (int index = first; index < last + 1; ++index) {
       _clp.setObjCoeff(index, obj[index]);
     }
   }

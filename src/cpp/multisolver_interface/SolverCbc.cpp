@@ -248,7 +248,7 @@ void SolverCbc::set_obj(const double *obj, int first, int last) {
   if (last - first + 1 == get_ncols()) {
     _clp_inner_solver.setObjective(obj);
   } else {
-    for (int index = first; index < last; ++index) {
+    for (int index = first; index < last + 1; ++index) {
       _clp_inner_solver.setObjCoeff(index, obj[index]);
     }
   }
