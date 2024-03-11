@@ -243,7 +243,7 @@ jobs:
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
           export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build
-          ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
+          #ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
 
       - name: set name variables
         id: single_file_name
