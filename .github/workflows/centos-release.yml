@@ -146,14 +146,6 @@ jobs:
         with:
           cmake-version: '3.28.x'
 
-      - name: vcpkg install
-        run: |
-          pushd vcpkg
-          git fetch --unshallow
-          ./bootstrap-vcpkg.sh
-          popd
-          vcpkg/vcpkg install
-
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
         with:
@@ -208,7 +200,7 @@ jobs:
       - name: vcpkg install
         run: |
           pushd vcpkg
-          #git fetch --unshallow
+          git fetch --unshallow
           ./bootstrap-vcpkg.sh
           popd
           vcpkg/vcpkg install
@@ -238,7 +230,8 @@ jobs:
         shell: bash
         run: |
           source /opt/rh/devtoolset-10/enable
-          cmake --build _build --config Release -j$(nproc) --target install --strip
+          cmake --build _build --config Release -j$(nproc)
+          cmake --install _build --strip
 
       - name: Running unit tests
         timeout-minutes: 120
