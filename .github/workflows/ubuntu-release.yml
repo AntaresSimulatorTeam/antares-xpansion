@@ -43,7 +43,7 @@ jobs:
 
       - name: user guide upload
         id: userguide_upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
@@ -213,13 +213,13 @@ jobs:
 
       #Uploads are not necessary for release but useful in other cases
       - name: Upload .tar.gz
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{env.TGZ_NAME}}
           path: _build/${{env.TGZ_NAME}}
 
       - name: Upload single file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.create-single-file.outputs.archive-name }}
           path: ${{ steps.create-single-file.outputs.archive-path }}
