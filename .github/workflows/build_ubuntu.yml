@@ -143,9 +143,10 @@ jobs:
 
       - name: Build
         run: |
-          cmake --build _build --config Release -j8
+          cmake --build _build --config Release -j$(nproc)
 
       - name: Test
         run: |
+          export PATH=${GITHUB_WORKSPACE}/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"

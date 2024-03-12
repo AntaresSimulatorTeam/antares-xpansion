@@ -125,8 +125,6 @@ jobs:
       - name: Configure
         run: |
           [[ ${{ matrix.xprs.value }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
-          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-          export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake -B _build -S . \
                  -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
                  -DBUILD_TESTING=ON \
@@ -140,16 +138,13 @@ jobs:
 
       - name: Build
         run: |
-          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-          export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake --build _build --config Release -j$(nproc)
 
       - name: Running unit tests
         timeout-minutes: 120
         shell: bash
         run: |
-          source /etc/profile.d/modules.sh
-          module load mpi
+          export PATH=${GITHUB_WORKSPACE}/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
           export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build

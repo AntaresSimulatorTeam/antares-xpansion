@@ -136,6 +136,7 @@ jobs:
 
       - name: Running unit tests
         run: |
+          export PATH=${GITHUB_WORKSPACE}/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
           cd _build
           ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
 
