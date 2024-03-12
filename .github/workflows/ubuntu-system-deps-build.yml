@@ -70,6 +70,7 @@ jobs:
       - name: vcpkg install
         run: |
           pushd vcpkg
+          git fetch --unshallow
           ./bootstrap-vcpkg.sh
           popd
           vcpkg/vcpkg install
