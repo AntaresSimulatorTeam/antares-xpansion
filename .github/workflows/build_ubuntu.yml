@@ -65,7 +65,7 @@ jobs:
       - name: Install mandatory system libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install -y ccache libgtest-dev libtbb-dev libopenmpi-dev
+          sudo apt-get install -y ccache libtbb-dev
           sudo apt-get install -y g++-10 gcc-10
 
       - name: Update alternatives
@@ -111,12 +111,6 @@ jobs:
           antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
           os-full-name: Ubuntu-20.04
-
-      - name: Compile Boost
-        uses: ./.github/workflows/compile-boost
-        with:
-          prefix: "../rte-antares-deps-Release/"
-
 
       - run: |
           mkdir -p ${{ github.workspace }}/vcpkg_cache

@@ -40,18 +40,12 @@ jobs:
       - name: Install mandatory system libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install libgtest-dev libboost-mpi-dev libboost-program-options-dev libtbb-dev
+          sudo apt-get install libtbb-dev
 
       - uses: lukka/get-cmake@latest
         with:
           useLocalCache: false
           useCloudCache: true
-
-      - run: |
-          cd /usr/src/googletest/
-          sudo cmake .
-          sudo cmake --build . --target install
-          sudo apt-get install -y g++-10 gcc-10
 
       - name: Update alternatives
         #mpicxx  uses "g++" so we need g++ to be symbolic link to g++-10
@@ -62,13 +56,6 @@ jobs:
           sudo update-alternatives --set cc /usr/bin/gcc
           sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30
           sudo update-alternatives --set c++ /usr/bin/g++
-
-      - name: Compile Boost
-        uses: ./.github/workflows/compile-boost
-        with:
-          prefix: "../rte-antares-deps-Release/"
-
-
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
@@ -99,7 +86,9 @@ jobs:
 
       - name: Build
         run: |
-          cmake --build _build --config Release -j2 --target install
+          cmake --build _build --config Release -j$(nproc)
+          cd _build
+          cmake --install .
 
       - name: Running unit tests
         run: |
@@ -116,9 +105,3 @@ jobs:
         run: |
           cd _build
           cpack -G TGZ
-
-      - name: Installer .deb creation
-        run: |
-          cd _build
-          cpack -G DEB
-
