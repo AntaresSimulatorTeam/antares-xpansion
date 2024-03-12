@@ -153,7 +153,6 @@ jobs:
           antares-version: ${{needs.versions.outputs.antares-version}}
           os: centos7
           os-full-name: CentOS-7.9.2009
-          #variant: -ortools-xpress
 
       - name: Compile tbb
         uses: ./.github/workflows/compile-tbb
@@ -197,6 +196,7 @@ jobs:
           key: |
             ${{ hashFiles( 'vcpkg.json' ) }}-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}-${{ matrix.triplet }}
 
+
       - name: vcpkg install
         run: |
           pushd vcpkg
@@ -232,7 +232,7 @@ jobs:
           source /opt/rh/devtoolset-10/enable
           cmake --build _build --config Release -j$(nproc)
           cd _build
-          cmake --install . --strip
+          cmake --install .
 
       - name: Running unit tests
         timeout-minutes: 120
@@ -243,7 +243,7 @@ jobs:
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
           export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build
-          #ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
+          ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
 
       - name: set name variables
         id: single_file_name

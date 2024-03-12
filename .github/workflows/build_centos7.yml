@@ -110,6 +110,9 @@ jobs:
         with:
           cmake-version: '3.28.x'
 
+      #Lukka's action doesn't work on runner.
+      #jwlawson's action doesn't work in ACT
+      #I left this here to quicly switch between one or the other
       #      - uses: lukka/get-cmake@latest
       #        with:
       #          useLocalCache: false
@@ -149,7 +152,6 @@ jobs:
           antares-version: ${{needs.versions.outputs.antares-version}}
           os: centos7
           os-full-name: CentOS-7.9.2009
-          #variant: -ortools-xpress
 
       - name: Compile tbb
         uses: ./.github/workflows/compile-tbb
@@ -187,7 +189,7 @@ jobs:
       - name: Build
         run: |
           source /opt/rh/devtoolset-10/enable
-          cmake --build _build --config Release -j8 --target install
+          cmake --build _build --config Release -j$(nproc) --target install
       - name: Running unit tests
         timeout-minutes: 120
         shell: bash
