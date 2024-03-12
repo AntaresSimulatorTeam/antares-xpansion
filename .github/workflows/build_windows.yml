@@ -138,7 +138,10 @@ jobs:
           cmake -B _build -S .  -DDEPS_INSTALL_DIR=rte-antares-deps-Release  -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits"  -DBUILD_TESTING=ON  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"  -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install  -DBUILD_UI=ON  -DXPRESS=${{ env.XPRESS_VALUE }}  -DXPRESS_ROOT="${{ env.XPRESSDIR }}"
       - name: Build
         run: |
-          cmake --build _build --config Release -j2 --target install
+          cmake --build _build --config Release -j$(nproc)
+          cd _build
+          cmake --install .
+
       - name: Running unit tests
         timeout-minutes: 120
         shell: cmd

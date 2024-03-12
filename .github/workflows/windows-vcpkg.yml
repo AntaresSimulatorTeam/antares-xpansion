@@ -190,7 +190,9 @@ jobs:
 
       - name: Build
         run: |
-          cmake --build _build --config Release -j2 --target install
+          cmake --build _build --config Release -j$(nproc)
+          cd _build
+          cmake --install .
 
       - name: Running unit tests
         shell: cmd
