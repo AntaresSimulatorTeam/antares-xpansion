@@ -36,7 +36,7 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           workdir: docker
-          dockerfile: xpansion-centos7
+          dockerfile: centos7-system-deps
           cache: false
           tags: 1.0.0
 
