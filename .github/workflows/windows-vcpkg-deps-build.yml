@@ -76,6 +76,7 @@ jobs:
       - name: Install deps with VCPKG
         run: |
           cd vcpkg
+          git fetch --unshallow
           ./bootstrap-vcpkg.sh
           vcpkg install --triplet ${{matrix.triplet}}
           rm -rf buildtrees
