@@ -74,7 +74,15 @@ if (MSVC)
 	message ("WINDOWS")
 	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 
-	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MD")
+	# If other libraries have been linked statically with C runtime, we need to keep consistent with it
+	if ("${VCPKG_TARGET_TRIPLET}" STREQUAL "x64-windows-static" OR "${VCPKG_TARGET_TRIPLET}" STREQUAL "x86-windows-static")
+		set(CRT_LIBRARY_DEBUG "/MTd")
+		set(CRT_LIBRARY_RELEASE "/MT")
+	else ()
+		set(CRT_LIBRARY_DEBUG "/MDd")
+		set(CRT_LIBRARY_RELEASE "/MD")
+	endif ()
+
 	set (RUNTIME_IGNORE_LIST_RELEASE "/NODEFAULTLIB:msvcrtd.lib /NODEFAULTLIB:msvcprtd.lib /NODEFAULTLIB:libcmtd.lib")
 	set (CMAKE_EXE_LINKER_FLAGS_RELEASE " ${CMAKE_EXE_LINKER_FLAGS_RELEASE} ${RUNTIME_IGNORE_LIST_RELEASE}")
 	set (CMAKE_SHARED_LINKER_FLAGS_RELEASE " ${CMAKE_SHARED_LINKER_FLAGS_RELEASE} ${RUNTIME_IGNORE_LIST_RELEASE}")
@@ -82,8 +90,7 @@ if (MSVC)
 
 	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MDd")
 	set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /EHsc")
-    
-    
+
 
 else ()
 	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
