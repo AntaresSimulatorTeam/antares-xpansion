@@ -11,8 +11,9 @@
 BendersByBatch::BendersByBatch(
     BendersBaseOptions const &options, Logger logger, Writer writer,
     mpi::environment &env, mpi::communicator &world,
-    std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
-    : BendersMpi(options, logger, writer, env, world, mathLoggerDriver) {}
+    std::shared_ptr<MathLoggerDriver> mathLoggerDriver, int argc, char **argv)
+    : BendersMpi(options, logger, writer, env, world, mathLoggerDriver, argc,
+                 argv) {}
 
 void BendersByBatch::InitializeProblems() {
   MatchProblemToId();

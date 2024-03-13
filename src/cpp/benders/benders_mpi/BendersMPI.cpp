@@ -1,6 +1,8 @@
 
 #include "BendersMPI.h"
 
+#include <mpi.h>
+
 #include <algorithm>
 #include <utility>
 
@@ -10,10 +12,13 @@
 BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger logger,
                        Writer writer, mpi::environment &env,
                        mpi::communicator &world,
-                       std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
+                       std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
+                       int argc = 0, char **argv = nullptr)
     : BendersBase(options, logger, std::move(writer), mathLoggerDriver),
       _env(env),
-      _world(world) {}
+      _world(world),
+      argc_(argc),
+      argv_(argv) {}
 
 /*!
  *  \brief Method to load each problem in a thread
@@ -295,3 +300,4 @@ void BendersMpi::launch() {
   free();
   _world.barrier();
 }
+BendersMpi::~BendersMpi() {}

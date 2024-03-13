@@ -46,9 +46,10 @@ target_include_directories (helpers
 		${xpansion_interfaces_path}
 )
 
+jsoncpplib_name(jsonlib)
 target_link_libraries (helpers 
 	PUBLIC
-        jsoncpp_static
+		${jsonlib}
 		solvers
 		glog::glog
 		gflags::gflags

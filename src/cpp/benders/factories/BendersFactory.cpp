@@ -19,7 +19,7 @@ BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size) {
   return method;
 }
 
-int RunBenders(char** argv, const std::filesystem::path& options_file,
+int RunBenders(int argc, char** argv, const std::filesystem::path& options_file,
                mpi::environment& env, mpi::communicator& world) {
   // Read options, needed to have options.OUTPUTROOT
   BendersLoggerBase benders_loggers;
@@ -74,12 +74,13 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
     pBendersBase benders;
     switch (method) {
       case BENDERSMETHOD::BENDERS:
-        benders = std::make_shared<BendersMpi>(benders_options, logger, writer,
-                                               env, world, math_log_driver);
+        benders = std::make_shared<BendersMpi>(benders_options, logger, writer, env,
+                                         world, math_log_driver, argc, argv);
         break;
       case BENDERSMETHOD::BENDERSBYBATCH:
-        benders = std::make_shared<BendersByBatch>(
-            benders_options, logger, writer, env, world, math_log_driver);
+        benders = std::make_shared<BendersByBatch>(benders_options, logger,
+                                                   writer, env, world,
+                                                   math_log_driver, argc, argv);
         break;
     }
 
@@ -140,12 +141,18 @@ BendersMainFactory::BendersMainFactory(int argc, char** argv,
 BendersMainFactory::BendersMainFactory(
     int argc, char** argv, const std::filesystem::path& options_file,
     mpi::environment& env, mpi::communicator& world)
-    : argv_(argv), options_file_(options_file), penv_(&env), pworld_(&world) {
+    : argc_(argc),
+      argv_(argv),
+      options_file_(options_file),
+      penv_(&env),
+      pworld_(&world) {
   // First check usage (options are given)
   if (world.rank() == 0) {
     usage(argc);
+    std::cout << "Call init" << std::endl;
+    // MPI_Init(&argc_, &argv_);
   }
 }
 int BendersMainFactory::Run() const {
-  return RunBenders(argv_, options_file_, *penv_, *pworld_);
+  return RunBenders(argc_, argv_, options_file_, *penv_, *pworld_);
 }
