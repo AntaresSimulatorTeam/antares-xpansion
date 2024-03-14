@@ -235,7 +235,7 @@ endif()
 
 find_package(jsoncpp CONFIG REQUIRED)
 macro(jsoncpplib_name libname)
-	if (msvc)
+	if (MSVC)
 		set(${libname} jsoncpp_lib)
 	else ()
 		set(${libname} jsoncpp_static)
