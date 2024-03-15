@@ -1,0 +1,144 @@
+name: SonarCloud
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - release/*
+      - dependabot/*
+  pull_request:
+
+jobs:
+  sonarcloud:
+    name: SonarCloud
+    runs-on: ${{ matrix.os }}
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    strategy:
+      matrix:
+        os: [ ubuntu-20.04 ]
+
+    env:
+      SONAR_SCANNER_VERSION: 4.7.0.2747 # Find the latest version in the "Linux" link on this page:
+      # https://sonarcloud.io/documentation/analysis/scan/sonarscanner/
+      SONAR_SERVER_URL: "https://sonarcloud.io"
+
+    steps:
+
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Install sonar-scanner and build-wrapper
+        uses: SonarSource/sonarcloud-github-c-cpp@v2
+
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2
+        with:
+          key: sonarcloud-${{ env.SONAR_SCANNER_VERSION }}
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.8
+
+      - name: Install gcovr
+        run: sudo pip install gcovr==5.0 #5.1 generate issues with sonarcloud report parsing
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip3 install -r requirements-tests.txt
+
+      - name: Install libraries
+        run: |
+          sudo apt-get update --fix-missing
+          sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev libboost-program-options-dev libtbb-dev
+          sudo apt-get install g++-10 gcc-10
+          cd /usr/src/googletest/
+          sudo cmake .
+          sudo cmake --build . --target install
+
+      - name: Update alternatives
+        #mpicxx  uses "g++" so we need g++ to be symbolic link to g++-10
+        run: |
+          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
+          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
+          sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 30
+          sudo update-alternatives --set cc /usr/bin/gcc
+          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30
+          sudo update-alternatives --set c++ /usr/bin/g++
+
+      - name: Read antares-solver version
+        id: antares-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_version'
+
+      - name: Read antares-xpansion version
+        id: antares-xpansion-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_xpansion_version'
+
+      - name: Read antares-deps version
+        id: antares-deps-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_deps_version'
+
+      - name: Download pre-compiled librairies
+        uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
+        with:
+          antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
+          antares-version: ${{steps.antares-version.outputs.result}}
+          os: ${{matrix.os}}
+          os-full-name: Ubuntu-20.04
+
+      - name: Compile Boost
+        uses: ./.github/workflows/compile-boost
+        with:
+          prefix: "../rte-antares-deps-Release/"
+          load-toolset: 'false'
+
+
+      - name: Init submodule
+        run: |
+          git submodule update --init --recursive .
+
+      - name: Configure
+        shell: bash
+        run: |
+          cmake -B _build -S . \
+          -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+          -DCMAKE_C_COMPILER=/usr/bin/gcc-10 \
+          -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+          -DCMAKE_CXX_COMPILER=/usr/bin/g++-10 \
+          -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
+          -DCODE_COVERAGE=ON \
+          -DBUILD_TESTING=ON \
+          -DBUILD_antares_solver=OFF \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_INSTALL_PREFIX=_install
+
+      - name: Build
+        run: build-wrapper-linux-x86-64 --out-dir $GITHUB_WORKSPACE/_build/output cmake --build _build --config Release -j2
+
+      - name: Test and generate coverage
+        continue-on-error: true
+        run: |
+          cd $GITHUB_WORKSPACE/_build
+          ctest -C Release --output-on-failure -L "unit"
+
+      - name: Compile coverage reports
+        run: |
+          cmake --build $GITHUB_WORKSPACE/_build --target code-coverage
+
+      - name: Run sonar-scanner
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_2022 }}
+        run: sonar-scanner --define sonar.host.url="${{ env.SONAR_SERVER_URL }}"
