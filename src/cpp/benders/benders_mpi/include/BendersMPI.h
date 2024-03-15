@@ -20,8 +20,7 @@ class BendersMpi : public BendersBase {
   ~BendersMpi() override;
   BendersMpi(BendersBaseOptions const &options, Logger logger, Writer writer,
              mpi::environment &env, mpi::communicator &world,
-             std::shared_ptr<MathLoggerDriver> mathLoggerDriver, int argc,
-             char **argv);
+             std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
 
   void launch() override;
   virtual std::string BendersName() const { return "Benders mpi"; }
@@ -87,5 +86,4 @@ class BendersMpi : public BendersBase {
     mpi::all_reduce(_world, in_value, out_value, op);
   }
   int argc_;
-  char **argv_;
 };

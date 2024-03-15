@@ -74,13 +74,11 @@ int RunBenders(int argc, char** argv, const std::filesystem::path& options_file,
     pBendersBase benders;
     switch (method) {
       case BENDERSMETHOD::BENDERS:
-        benders = std::make_shared<BendersMpi>(benders_options, logger, writer, env,
-                                         world, math_log_driver, argc, argv);
+        benders = std::make_shared<BendersMpi>(benders_options, logger, writer, env, world, math_log_driver);
         break;
       case BENDERSMETHOD::BENDERSBYBATCH:
         benders = std::make_shared<BendersByBatch>(benders_options, logger,
-                                                   writer, env, world,
-                                                   math_log_driver, argc, argv);
+                                                   writer, env, world, math_log_driver);
         break;
     }
 

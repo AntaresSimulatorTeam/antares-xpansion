@@ -12,13 +12,10 @@
 BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger logger,
                        Writer writer, mpi::environment &env,
                        mpi::communicator &world,
-                       std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
-                       int argc = 0, char **argv = nullptr)
+                       std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
     : BendersBase(options, logger, std::move(writer), mathLoggerDriver),
       _env(env),
-      _world(world),
-      argc_(argc),
-      argv_(argv) {}
+      _world(world) {}
 
 /*!
  *  \brief Method to load each problem in a thread
