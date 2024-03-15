@@ -297,4 +297,3 @@ void BendersMpi::launch() {
   free();
   _world.barrier();
 }
-BendersMpi::~BendersMpi() {}

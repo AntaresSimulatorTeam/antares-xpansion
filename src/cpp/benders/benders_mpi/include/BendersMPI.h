@@ -17,7 +17,7 @@
  */
 class BendersMpi : public BendersBase {
  public:
-  ~BendersMpi() override;
+  ~BendersMpi() override = default;
   BendersMpi(BendersBaseOptions const &options, Logger logger, Writer writer,
              mpi::environment &env, mpi::communicator &world,
              std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
@@ -85,5 +85,4 @@ class BendersMpi : public BendersBase {
   void AllReduce(const T &in_value, T &out_value, Op op) const {
     mpi::all_reduce(_world, in_value, out_value, op);
   }
-  int argc_;
 };
