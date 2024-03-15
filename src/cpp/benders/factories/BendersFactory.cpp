@@ -144,8 +144,6 @@ BendersMainFactory::BendersMainFactory(
   // First check usage (options are given)
   if (world.rank() == 0) {
     usage(argc);
-    std::cout << "Call init" << std::endl;
-    // MPI_Init(&argc_, &argv_);
   }
 }
 int BendersMainFactory::Run() const {
