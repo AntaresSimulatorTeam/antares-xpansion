@@ -1,8 +1,6 @@
 
 #include "BendersMPI.h"
 
-#include <mpi.h>
-
 #include <algorithm>
 #include <utility>
 
