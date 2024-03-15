@@ -8,7 +8,6 @@
 
 class BendersMainFactory {
  private:
-  int argc_;
   char** argv_;
   std::filesystem::path options_file_;
   boost::mpi::environment* penv_ = nullptr;

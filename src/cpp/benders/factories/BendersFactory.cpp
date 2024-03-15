@@ -19,7 +19,7 @@ BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size) {
   return method;
 }
 
-int RunBenders(int argc, char** argv, const std::filesystem::path& options_file,
+int RunBenders(char** argv, const std::filesystem::path& options_file,
                mpi::environment& env, mpi::communicator& world) {
   // Read options, needed to have options.OUTPUTROOT
   BendersLoggerBase benders_loggers;
@@ -125,7 +125,6 @@ int RunBenders(int argc, char** argv, const std::filesystem::path& options_file,
 }
 
 BendersMainFactory::BendersMainFactory(int argc, char** argv,
-
                                        mpi::environment& env,
                                        mpi::communicator& world)
     : argv_(argv), penv_(&env), pworld_(&world) {
@@ -139,9 +138,7 @@ BendersMainFactory::BendersMainFactory(int argc, char** argv,
 BendersMainFactory::BendersMainFactory(
     int argc, char** argv, const std::filesystem::path& options_file,
     mpi::environment& env, mpi::communicator& world)
-    : argc_(argc),
-      argv_(argv),
-      options_file_(options_file),
+    : argv_(argv), options_file_(options_file),
       penv_(&env),
       pworld_(&world) {
   // First check usage (options are given)
@@ -152,5 +149,5 @@ BendersMainFactory::BendersMainFactory(
   }
 }
 int BendersMainFactory::Run() const {
-  return RunBenders(argc_, argv_, options_file_, *penv_, *pworld_);
+  return RunBenders(argv_, options_file_, *penv_, *pworld_);
 }
