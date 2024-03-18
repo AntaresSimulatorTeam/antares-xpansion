@@ -62,6 +62,8 @@ class Worker {
    */
   int Getnrows() const;
 
+  int Getncols() const;
+
  public:
   SolverAbstract::Ptr _solver =
       nullptr; /*!< Problem stocked in the instance Worker*/

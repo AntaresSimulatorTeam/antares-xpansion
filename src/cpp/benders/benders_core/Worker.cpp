@@ -142,3 +142,4 @@ void Worker::AddRows(std::vector<char> const &qrtype_p,
 }
 
 int Worker::Getnrows() const { return _solver->get_nrows(); }
+int Worker::Getncols() const { return _solver->get_ncols(); }

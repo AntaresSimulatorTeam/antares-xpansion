@@ -36,7 +36,6 @@ void MasterUpdateBase::CheckTau(double tau) {
 
 void MasterUpdateBase::Init() {
   // check lambda_max_
-  // whaT about lambda_min_?
   if (lambda_max_ <= 0 || lambda_max_ < lambda_min_) {
     // TODO log
     SetLambdaMaxToMaxInvestmentCosts();
@@ -50,21 +49,19 @@ void MasterUpdateBase::SetLambdaMaxToMaxInvestmentCosts() {
   for (const auto &[var_name, var_id] : benders_->MasterVariables()) {
     lambda_max_ += obj[var_id] * max_invest.at(var_name);
   }
-  // lambda_max_ = 126000 * 300 + 60000 * 2000 + 55400 * 1000 + 60000 * 1000;
 }
 void MasterUpdateBase::Update(const CRITERION &criterion) {
     switch (criterion) {
-    case CRITERION::LOW:
-      // TODO best it or current data?
-      lambda_max_ =
-          std::min(lambda_max_, benders_->GetBestIterationData().invest_cost);
-      break;
-    case CRITERION::HIGH:
-      lambda_min_ = lambda_;
-      break;
+      case CRITERION::LOW:
+        lambda_max_ =
+            std::min(lambda_max_, benders_->GetBestIterationData().invest_cost);
+        break;
+      case CRITERION::HIGH:
+        lambda_min_ = lambda_;
+        break;
 
-    default:
-      return;
+      default:
+        return;
   }
   lambda_ = dichotomy_weight_coeff_ * lambda_max_ +
             (1 - dichotomy_weight_coeff_) * lambda_min_;

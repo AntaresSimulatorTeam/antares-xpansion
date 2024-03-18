@@ -151,6 +151,19 @@ double LambdaMax(pBendersBase benders) {
   return lambda_max;
 }
 
+void CheckMinInvestmentConstraint(const VariableMap& master_variables,
+                                  const std::vector<double>& expected_coeffs,
+                                  const double expected_rhs, char expected_sign,
+                                  const std::vector<double>& coeffs,
+                                  const double rhs, char sign) {
+  for (auto const& [name, var_id] : master_variables) {
+    ASSERT_EQ(expected_coeffs[var_id], coeffs[var_id]);
+  }
+
+  ASSERT_EQ(expected_rhs, rhs);
+  ASSERT_EQ(expected_sign, sign);
+}
+
 TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   BendersBaseOptions benders_options = BuildBendersOptions();
   CouplingMap coupling_map = build_input(benders_options.STRUCTURE_FILE);
@@ -172,7 +185,38 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   master_updater.Update(CRITERION::LOW);
   auto num_constraints_master_after = benders->MasterGetnrows();
 
+  auto master_variables = benders->MasterVariables();
+  auto expected_coeffs = benders->MasterObjectiveFunctionCoeffs();
+
+  // criterion is low <=> lambda_max = min(lambda_max, invest_cost)
+  auto lambda_max = (std::min)(LambdaMax(benders),
+                               benders->GetBestIterationData().invest_cost);
+  auto expected_rhs = 0.5 * lambda_max;
+
+  //
   ASSERT_EQ(num_constraints_master_after, num_constraints_master_before + 1);
+
+  std::vector<int> mstart(1 + 1);
+  auto n_elems = benders->MasterGetNElems();
+  auto nnz = master_variables.size();
+  std::vector<int> mclind(n_elems);
+  std::vector<double> matval(n_elems);
+  std::vector<int> p_nels(1, 0);
+
+  auto added_row_index = num_constraints_master_after - 1;
+  benders->MasterRowsCoeffs(mstart, mclind, matval, n_elems, p_nels,
+                            added_row_index, added_row_index);
+  std::vector<double> coeffs(benders->MasterGetncols());
+
+  for (auto ind = mstart[0]; ind < mstart[1]; ++ind) {
+    coeffs[mclind[ind]] = matval[ind];
+  }
+  double rhs;
+  benders->MasterGetRhs(rhs, added_row_index);
+  std::vector<char> qrtype(1);
+  benders->MasterGetRowType(qrtype, added_row_index, added_row_index);
+  CheckMinInvestmentConstraint(master_variables, expected_coeffs, expected_rhs,
+                               'G', coeffs, rhs, qrtype[0]);
   benders->free();
 }
 

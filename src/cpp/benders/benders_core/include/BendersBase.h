@@ -52,6 +52,10 @@ class BendersBase {
   void MasterGetRhs(double &rhs, int id_row) const;
   const VariableMap &MasterVariables() const { return master_variable_map_; }
   std::vector<double> MasterObjectiveFunctionCoeffs() const;
+  void MasterRowsCoeffs(std::vector<int> &mstart, std::vector<int> &mclind,
+                        std::vector<double> &dmatval, int size,
+                        std::vector<int> &nels, int first, int last) const;
+  int MasterGetNElems() const;
   void MasterAddRows(std::vector<char> const &qrtype_p,
                      std::vector<double> const &rhs_p,
                      std::vector<double> const &range_p,
@@ -59,11 +63,13 @@ class BendersBase {
                      std::vector<int> const &mclind_p,
                      std::vector<double> const &dmatval_p,
                      const std::vector<std::string> &row_names = {}) const;
+  void MasterGetRowType(std::vector<char> &qrtype, int first, int last) const;
   void ResetMasterFromLastIteration();
   std::filesystem::path LastMasterPath() const;
   bool MasterIsEmpty() const;
   void DoFreeProblems(bool free_problems) { free_problems_ = free_problems; }
   int MasterGetnrows() const;
+  int MasterGetncols() const;
   WorkerMasterData BestIterationWorkerMaster() const;
   void SetMasterObjectiveFunctionCoeffsToZeros() const;
   void SetMasterObjectiveFunction(const double *coeffs, int first,

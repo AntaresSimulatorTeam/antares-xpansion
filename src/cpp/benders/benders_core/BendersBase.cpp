@@ -897,6 +897,17 @@ std::vector<double> BendersBase::MasterObjectiveFunctionCoeffs() const {
   return obj;
 }
 
+void BendersBase::MasterRowsCoeffs(std::vector<int> &mstart,
+                                   std::vector<int> &mclind,
+                                   std::vector<double> &dmatval, int size,
+                                   std::vector<int> &nels, int first,
+                                   int last) const {
+  _master->_solver->get_rows(mstart.data(), mclind.data(), dmatval.data(), size,
+                             nels.data(), first, last);
+}
+int BendersBase::MasterGetNElems() const {
+  return _master->_solver->get_nelems();
+}
 void BendersBase::SetMasterObjectiveFunctionCoeffsToZeros() const {
   // assuming that master var id are in [0, size-1]
   auto master_vars_size = master_variable_map_.size();
@@ -910,6 +921,11 @@ void BendersBase::SetMasterObjectiveFunction(const double *coeffs, int first,
 }
 
 int BendersBase::MasterGetnrows() const { return _master->Getnrows(); }
+int BendersBase::MasterGetncols() const { return _master->Getncols(); }
+void BendersBase::MasterGetRowType(std::vector<char> &qrtype, int first,
+                                   int last) const {
+  _master->_solver->get_row_type(qrtype.data(), first, last);
+}
 
 WorkerMasterData BendersBase::BestIterationWorkerMaster() const {
   return relevantIterationData_.best;
