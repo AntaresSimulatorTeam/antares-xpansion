@@ -46,6 +46,7 @@ void BendersByBatch::InitializeProblems() {
       problem_count++;
     }
   }
+  init_problems_ = false;
 }
 void BendersByBatch::BroadcastSingleSubpbCostsUnderApprox() {
   DblVector single_subpb_costs_under_approx(_data.nsubproblem);
@@ -57,7 +58,13 @@ void BendersByBatch::BroadcastSingleSubpbCostsUnderApprox() {
   SetAlpha_i(single_subpb_costs_under_approx);
 }
 void BendersByBatch::Run() {
-  PreRunInitialization();
+  if (init_data_) {
+    PreRunInitialization();
+  } else {
+    // only ?
+    _data.stop = false;
+  }
+
   MasterLoop();
   if (Rank() == rank_0) {
     compute_ub();
@@ -94,11 +101,7 @@ void BendersByBatch::MasterLoop() {
     remaining_epsilon_ = Gap();
 
     if (Rank() == rank_0) {
-      _logger->display_message(
-          " _______________________________________________________________"
-          "_"
-          "________");
-      _logger->display_message("/");
+      _logger->PrintIterationSeparatorBegin();
 
       _logger->display_message("\tSolving master...");
       get_master_value();
@@ -127,9 +130,7 @@ void BendersByBatch::MasterLoop() {
     _logger->LogSubproblemsSolvingCumulativeCpuTime(
         GetSubproblemsCumulativeCpuTime());
     _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
-    _logger->display_message(
-        "\\________________________________________________________________"
-        "________");
+    _logger->PrintIterationSeparatorEnd();
     mathLoggerDriver_->Print(_data);
   }
 }
@@ -234,8 +235,9 @@ void BendersByBatch::BuildCut(
   misprice_ = global_misprice;
   Gather(subproblem_data_map, gathered_subproblem_map, rank_0);
   SetSubproblemsWalltime(subproblems_timer_per_proc.elapsed());
+
   for (const auto &subproblem_map : gathered_subproblem_map) {
-    for (auto &&[_, subproblem_data] : subproblem_map) {
+    for (auto &&[sub_problem_name, subproblem_data] : subproblem_map) {
       SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
       BoundSimplexIterations(subproblem_data.simplex_iter);
     }
@@ -264,7 +266,7 @@ void BendersByBatch::GetSubproblemCut(
     if (std::find(batch_sub_problems.cbegin(), batch_sub_problems.cend(),
                   name) != batch_sub_problems.cend()) {
       Timer subproblem_timer;
-      SubProblemData subproblem_data;
+      PlainData::SubProblemData subproblem_data;
       worker->fix_to(_data.x_cut);
       worker->solve(subproblem_data.lpstatus, Options().OUTPUTROOT,
                     Options().LAST_MASTER_MPS + MPS_SUFFIX, _writer);

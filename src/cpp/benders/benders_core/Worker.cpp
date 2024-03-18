@@ -117,3 +117,29 @@ void Worker::get_splex_num_of_ite_last(int &result) const {
 void Worker::write_basis(const std::filesystem::path &filename) const {
   _solver->write_basis(filename);
 }
+
+int Worker::RowIndex(const std::string &row_name) const {
+  return _solver->get_row_index(row_name);
+}
+
+void Worker::ChangeRhs(int id_row, double val) const {
+  _solver->chg_rhs(id_row, val);
+}
+
+void Worker::GetRhs(double *val, int id_row) const {
+  _solver->get_rhs(val, id_row, id_row);
+}
+
+void Worker::AddRows(std::vector<char> const &qrtype_p,
+                     std::vector<double> const &rhs_p,
+                     std::vector<double> const &range_p,
+                     std::vector<int> const &mstart_p,
+                     std::vector<int> const &mclind_p,
+                     std::vector<double> const &dmatval_p,
+                     const std::vector<std::string> &row_names) const {
+  solver_addrows(*_solver, qrtype_p, rhs_p, {}, mstart_p, mclind_p, dmatval_p,
+                 row_names);
+}
+
+int Worker::Getnrows() const { return _solver->get_nrows(); }
+int Worker::Getncols() const { return _solver->get_ncols(); }

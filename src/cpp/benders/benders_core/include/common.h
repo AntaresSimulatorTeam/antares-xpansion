@@ -49,7 +49,12 @@ typedef std::vector<ActiveCut> ActiveCutStorage;
 typedef std::pair<std::string, std::string> mps_coupling;
 typedef std::list<mps_coupling> mps_coupling_list;
 
-enum class BENDERSMETHOD { BENDERS, BENDERSBYBATCH };
+enum class BENDERSMETHOD {
+  BENDERS,
+  BENDERS_BY_BATCH,
+  BENDERS_EXTERNAL_LOOP,
+  BENDERS_BY_BATCH_EXTERNAL_LOOP
+};
 
 struct Predicate {
   bool operator()(PointPtr const &lhs, PointPtr const &rhs) const {
@@ -159,6 +164,12 @@ struct BendersBaseOptions : public BaseOptions {
   std::string LAST_MASTER_BASIS;
 
   size_t BATCH_SIZE;
+};
+
+struct ExternalLoopOptions {
+  double EXT_LOOP_CRITERION_VALUE = 1.0;
+  double EXT_LOOP_CRITERION_TOLERANCE = 1e-1;
+  double EXT_LOOP_CRITERION_COUNT_THRESHOLD = 1e-1;
 };
 
 void usage(int argc);

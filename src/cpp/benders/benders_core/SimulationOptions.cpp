@@ -13,7 +13,8 @@ Json::Value SimulationOptions::get_value_from_json(
   std::string errs;
   if (!parseFromStream(builder_l, input_file_l, &_input, &errs)) {
     using namespace std::string_literals;
-    auto message = LOGLOCATION + "Invalid options file: "s + file_name.string();
+    auto message = LOGLOCATION + "Invalid options file: "s + file_name.string()
+        + "\n" + errs;
     throw InvalidOptionFileException(message);
   }
   return _input;
@@ -175,3 +176,9 @@ BendersBaseOptions SimulationOptions::get_benders_options() const {
 SimulationOptions::InvalidOptionFileException::InvalidOptionFileException(
     const std::string &arg)
     : runtime_error(arg) {}
+
+
+ExternalLoopOptions SimulationOptions::GetExternalLoopOptions() const {
+  return {EXT_LOOP_CRITERION_VALUE, EXT_LOOP_CRITERION_TOLERANCE,
+          EXT_LOOP_CRITERION_COUNT_THRESHOLD};
+}

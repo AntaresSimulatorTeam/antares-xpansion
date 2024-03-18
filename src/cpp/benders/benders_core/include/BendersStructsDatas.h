@@ -5,6 +5,8 @@
 #include "Worker.h"
 #include "common.h"
 
+/*! \struct struct that hold current benders iteration
+ */
 struct CurrentIterationData {
   double subproblems_walltime;
   double subproblems_cputime;
@@ -36,7 +38,20 @@ struct CurrentIterationData {
   int cumulative_number_of_subproblem_solved;
   int min_simplexiter;
   int max_simplexiter;
+  // ugly
+  int benders_num_run;
+  double external_loop_criterion;
 };
+
+// /*! \struct to store benders cuts data
+//  */
+// struct BendersCuts {
+//   Point x_cut;
+//   SubProblemDataMap subsProblemDataMap;
+// };
+
+// using BendersCutsPerIteration = std::vector<BendersCuts>;
+
 /*!
  * \class WorkerMasterData
  * \brief Class use to store trace information during the algorithm run
@@ -66,8 +81,8 @@ class WorkerMasterData {
   Point get_max_invest() const;
 };
 
-using WorkerMasterDataPtr = std::shared_ptr<WorkerMasterData>;
 struct BendersRelevantIterationsData {
-  WorkerMasterDataPtr last;
-  WorkerMasterDataPtr best;
+  WorkerMasterData last;
+  WorkerMasterData best;
 };
+using WorkerMasterDataVect = std::vector<WorkerMasterData>;
