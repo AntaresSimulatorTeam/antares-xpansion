@@ -241,6 +241,11 @@ macro(jsoncpplib_name libname)
 		set(${libname} jsoncpp_static)
 	endif ()
 endmacro()
+jsoncpplib_name(jsonlib)
+install(FILES
+		$<TARGET_FILE:${jsonlib}>
+		DESTINATION bin
+)
 
 ## Coin-OR (Clp and CBC solvers)
 if(COIN_OR)
