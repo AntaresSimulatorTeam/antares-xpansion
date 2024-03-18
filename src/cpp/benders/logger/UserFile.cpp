@@ -40,6 +40,21 @@ void UserFile::display_message(const std::string &str,
   _file.flush();
 }
 
+void UserFile::PrintIterationSeparatorBegin() {
+  _file << PrefixMessage(LogUtils::LOGLEVEL::INFO, CONTEXT);
+  std::string sep_msg("/*\\");
+  sep_msg += std::string(74, '-');
+  _file << sep_msg << std::endl;
+  _file.flush();
+}
+void UserFile::PrintIterationSeparatorEnd() {
+  _file << PrefixMessage(LogUtils::LOGLEVEL::INFO, CONTEXT);
+  std::string sep_msg(74, '-');
+  sep_msg = "\\*/" + sep_msg;
+  _file << sep_msg << std::endl;
+  _file.flush();
+}
+
 void UserFile::log_at_initialization(const int it_number) {
   _file << PrefixMessage(LogUtils::LOGLEVEL::INFO, CONTEXT) << "ITERATION "
         << it_number << ":" << std::endl;

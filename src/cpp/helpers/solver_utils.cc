@@ -59,15 +59,17 @@ void solver_addrows(SolverAbstract &solver_p, std::vector<char> const &qrtype_p,
                     std::vector<double> const &range_p,
                     std::vector<int> const &mstart_p,
                     std::vector<int> const &mclind_p,
-                    std::vector<double> const &dmatval_p)
-{
-    assert(qrtype_p.size() == rhs_p.size());
-    assert((range_p.size() == 0) || (range_p.size() == qrtype_p.size()));
-    assert(mclind_p.size() == dmatval_p.size());
+                    std::vector<double> const &dmatval_p,
+                    std::vector<std::string> const &names) {
+  assert(qrtype_p.size() == rhs_p.size());
+  assert((range_p.size() == 0) || (range_p.size() == qrtype_p.size()));
+  assert(mclind_p.size() == dmatval_p.size());
 
-    int nrows = rhs_p.size();
+  int nrows = rhs_p.size();
 
-    solver_p.add_rows(nrows, dmatval_p.size(), qrtype_p.data(), rhs_p.data(), range_p.data(), mstart_p.data(), mclind_p.data(), dmatval_p.data());
+  solver_p.add_rows(nrows, dmatval_p.size(), qrtype_p.data(), rhs_p.data(),
+                    range_p.data(), mstart_p.data(), mclind_p.data(),
+                    dmatval_p.data(), names);
 }
 
 void solver_getlpsolution(SolverAbstract::Ptr const solver_p, std::vector<double> &x_p)
