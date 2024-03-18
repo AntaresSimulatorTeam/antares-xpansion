@@ -229,6 +229,24 @@ virtual <a class="el" href="classSolverAbstract.html#a8f77d6d39341f89c763b912d95
 <tr class="memitem:aff510b82436f7d54fe4a124d0ae43fd6 inherit pub_methods_classWorker"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorker.html#aff510b82436f7d54fe4a124d0ae43fd6">solve</a> (int &amp;lp_status, const std::string &amp;outputroot, const std::string &amp;output_master_mps_file_name, Writer writer) const</td></tr>
 <tr class="memdesc:aff510b82436f7d54fe4a124d0ae43fd6 inherit pub_methods_classWorker"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to solve a problem.  <a href="classWorker.html#aff510b82436f7d54fe4a124d0ae43fd6">More...</a><br /></td></tr>
 <tr class="separator:aff510b82436f7d54fe4a124d0ae43fd6 inherit pub_methods_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae42dd6a1d5a666c424b0b6fab43fae21 inherit pub_methods_classWorker"><td class="memItemLeft" align="right" valign="top"><a id="ae42dd6a1d5a666c424b0b6fab43fae21" name="ae42dd6a1d5a666c424b0b6fab43fae21"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>RowIndex</b> (const std::string &amp;row_name) const</td></tr>
+<tr class="separator:ae42dd6a1d5a666c424b0b6fab43fae21 inherit pub_methods_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5ca8e8c5caf7b07e82dfafd2eae27fc inherit pub_methods_classWorker"><td class="memItemLeft" align="right" valign="top"><a id="af5ca8e8c5caf7b07e82dfafd2eae27fc" name="af5ca8e8c5caf7b07e82dfafd2eae27fc"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>ChangeRhs</b> (int id_row, double val) const</td></tr>
+<tr class="separator:af5ca8e8c5caf7b07e82dfafd2eae27fc inherit pub_methods_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1e2034fda58d534b6340ad6a3630f1e1 inherit pub_methods_classWorker"><td class="memItemLeft" align="right" valign="top"><a id="a1e2034fda58d534b6340ad6a3630f1e1" name="a1e2034fda58d534b6340ad6a3630f1e1"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>GetRhs</b> (double *val, int id_row) const</td></tr>
+<tr class="separator:a1e2034fda58d534b6340ad6a3630f1e1 inherit pub_methods_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fb3983b7e81996ceec7047d60098fc0 inherit pub_methods_classWorker"><td class="memItemLeft" align="right" valign="top"><a id="a2fb3983b7e81996ceec7047d60098fc0" name="a2fb3983b7e81996ceec7047d60098fc0"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AddRows</b> (std::vector&lt; char &gt; const &amp;qrtype_p, std::vector&lt; double &gt; const &amp;rhs_p, std::vector&lt; double &gt; const &amp;range_p, std::vector&lt; int &gt; const &amp;mstart_p, std::vector&lt; int &gt; const &amp;mclind_p, std::vector&lt; double &gt; const &amp;dmatval_p, const std::vector&lt; std::string &gt; &amp;row_names) const</td></tr>
+<tr class="separator:a2fb3983b7e81996ceec7047d60098fc0 inherit pub_methods_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd83ae773438dcd743a263ba27ee8e2f inherit pub_methods_classWorker"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorker.html#acd83ae773438dcd743a263ba27ee8e2f">Getnrows</a> () const</td></tr>
+<tr class="memdesc:acd83ae773438dcd743a263ba27ee8e2f inherit pub_methods_classWorker"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of rows (constraints)  <a href="classWorker.html#acd83ae773438dcd743a263ba27ee8e2f">More...</a><br /></td></tr>
+<tr class="separator:acd83ae773438dcd743a263ba27ee8e2f inherit pub_methods_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9efad509f7aedb046ee81c2ca21ab50c inherit pub_methods_classWorker"><td class="memItemLeft" align="right" valign="top"><a id="a9efad509f7aedb046ee81c2ca21ab50c" name="a9efad509f7aedb046ee81c2ca21ab50c"></a>
+int&#160;</td><td class="memItemRight" valign="bottom"><b>Getncols</b> () const</td></tr>
+<tr class="separator:a9efad509f7aedb046ee81c2ca21ab50c inherit pub_methods_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>

@@ -38,5 +38,7 @@ var searchData=
   ['containsmatcher_35',['ContainsMatcher',['../structCatch_1_1Matchers_1_1StdString_1_1ContainsMatcher.html',1,'Catch::Matchers::StdString::ContainsMatcher'],['../structCatch_1_1Matchers_1_1Vector_1_1ContainsMatcher.html',1,'Catch::Matchers::Vector::ContainsMatcher&lt; T &gt;']]],
   ['corruptedlockerfile_36',['CorruptedLockerFile',['../classantares__xpansion_1_1study__locker_1_1StudyLocker_1_1CorruptedLockerFile.html',1,'antares_xpansion::study_locker::StudyLocker']]],
   ['counts_37',['Counts',['../structCatch_1_1Counts.html',1,'Catch']]],
-  ['currentiterationdata_38',['CurrentIterationData',['../structCurrentIterationData.html',1,'']]]
+  ['criterioncouldnotbesatisfied_38',['CriterionCouldNotBeSatisfied',['../classCriterionCouldNotBeSatisfied.html',1,'']]],
+  ['currentiterationdata_39',['CurrentIterationData',['../structCurrentIterationData.html',1,'']]],
+  ['cutsmanagerruntime_40',['CutsManagerRunTime',['../classCutsManagerRunTime.html',1,'']]]
 ];

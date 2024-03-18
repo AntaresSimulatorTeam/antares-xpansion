@@ -5432,9 +5432,9 @@ $(document).ready(function(){initNavTree('catch2_8hpp_source.html',''); initResi
 <div class="line"><a id="l05338" name="l05338"></a><span class="lineno"> 5338</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> InputIterator, <span class="keyword">typename</span> InputSentinel,</div>
 <div class="line"><a id="l05339" name="l05339"></a><span class="lineno"> 5339</span>          <span class="keyword">typename</span> ResultType =</div>
 <div class="line"><a id="l05340" name="l05340"></a><span class="lineno"> 5340</span>              <span class="keyword">typename</span> std::iterator_traits&lt;InputIterator&gt;::value_type&gt;</div>
-<div class="line"><a id="l05341" name="l05341"></a><span class="lineno"> 5341</span><a class="code hl_class" href="classCatch_1_1Generators_1_1GeneratorWrapper.html">GeneratorWrapper&lt;ResultType&gt;</a> from_range(InputIterator from, InputSentinel to) {</div>
+<div class="line"><a id="l05341" name="l05341"></a><span class="lineno"> 5341</span><a class="code hl_class" href="classCatch_1_1Generators_1_1GeneratorWrapper.html">GeneratorWrapper&lt;ResultType&gt;</a> from_range(InputIterator from, InputSentinel <a class="code hl_struct" href="structto.html">to</a>) {</div>
 <div class="line"><a id="l05342" name="l05342"></a><span class="lineno"> 5342</span>  <span class="keywordflow">return</span> <a class="code hl_class" href="classCatch_1_1Generators_1_1GeneratorWrapper.html">GeneratorWrapper&lt;ResultType&gt;</a>(</div>
-<div class="line"><a id="l05343" name="l05343"></a><span class="lineno"> 5343</span>      pf::make_unique&lt;<a class="code hl_class" href="classCatch_1_1Generators_1_1IteratorGenerator.html">IteratorGenerator&lt;ResultType&gt;</a>&gt;(from, to));</div>
+<div class="line"><a id="l05343" name="l05343"></a><span class="lineno"> 5343</span>      pf::make_unique&lt;<a class="code hl_class" href="classCatch_1_1Generators_1_1IteratorGenerator.html">IteratorGenerator&lt;ResultType&gt;</a>&gt;(from, <a class="code hl_struct" href="structto.html">to</a>));</div>
 <div class="line"><a id="l05344" name="l05344"></a><span class="lineno"> 5344</span>}</div>
 <div class="line"><a id="l05345" name="l05345"></a><span class="lineno"> 5345</span> </div>
 <div class="line"><a id="l05346" name="l05346"></a><span class="lineno"> 5346</span><span class="keyword">template</span> &lt;<span class="keyword">typename</span> Container,</div>
@@ -18725,8 +18725,9 @@ $(document).ready(function(){initNavTree('catch2_8hpp_source.html',''); initResi
 <div class="ttc" id="astructCatch_1_1pluralise_html"><div class="ttname"><a href="structCatch_1_1pluralise.html">Catch::pluralise</a></div><div class="ttdef"><b>Definition:</b> catch2.hpp:3847</div></div>
 <div class="ttc" id="astructCatch_1_1true__given_html"><div class="ttname"><a href="structCatch_1_1true__given.html">Catch::true_given</a></div><div class="ttdef"><b>Definition:</b> catch2.hpp:1229</div></div>
 <div class="ttc" id="astructCatch__global__namespace__dummy_html"><div class="ttname"><a href="structCatch__global__namespace__dummy.html">Catch_global_namespace_dummy</a></div><div class="ttdef"><b>Definition:</b> catch2.hpp:510</div></div>
-<div class="ttc" id="astructPredicate_html"><div class="ttname"><a href="structPredicate.html">Predicate</a></div><div class="ttdef"><b>Definition:</b> common.h:54</div></div>
+<div class="ttc" id="astructPredicate_html"><div class="ttname"><a href="structPredicate.html">Predicate</a></div><div class="ttdef"><b>Definition:</b> common.h:59</div></div>
 <div class="ttc" id="astructVersion_html"><div class="ttname"><a href="structVersion.html">Version</a></div><div class="ttdef"><b>Definition:</b> Version.h:8</div></div>
+<div class="ttc" id="astructto_html"><div class="ttname"><a href="structto.html">to</a></div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

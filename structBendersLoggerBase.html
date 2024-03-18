@@ -154,9 +154,19 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:afbb3a8bd30c92b99f16551b325579301"><td class="memItemLeft" align="right" valign="top"><a id="afbb3a8bd30c92b99f16551b325579301" name="afbb3a8bd30c92b99f16551b325579301"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AddLogger</b> (std::shared_ptr&lt; <a class="el" href="structILoggerBenders.html">ILoggerBenders</a> &gt; logger)</td></tr>
 <tr class="separator:afbb3a8bd30c92b99f16551b325579301"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aacead1b858474ba652db7283fd023e05"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBendersLoggerBase.html#aacead1b858474ba652db7283fd023e05">PrintIterationSeparatorBegin</a> () override</td></tr>
+<tr class="separator:aacead1b858474ba652db7283fd023e05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa5ea22edf702a3b962716123047a402"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structBendersLoggerBase.html#afa5ea22edf702a3b962716123047a402">PrintIterationSeparatorEnd</a> () override</td></tr>
+<tr class="separator:afa5ea22edf702a3b962716123047a402"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa5adb0476c7fea717360c6fb42535c7c"><td class="memItemLeft" align="right" valign="top"><a id="aa5adb0476c7fea717360c6fb42535c7c" name="aa5adb0476c7fea717360c6fb42535c7c"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>display_message</b> (const std::string &amp;str)=0</td></tr>
 <tr class="separator:aa5adb0476c7fea717360c6fb42535c7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48bf71fbad23772c639fb38ea61dd26b"><td class="memItemLeft" align="right" valign="top"><a id="a48bf71fbad23772c639fb38ea61dd26b" name="a48bf71fbad23772c639fb38ea61dd26b"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintIterationSeparatorBegin</b> ()=0</td></tr>
+<tr class="separator:a48bf71fbad23772c639fb38ea61dd26b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad439daad5d864914d632f619b64560b4"><td class="memItemLeft" align="right" valign="top"><a id="ad439daad5d864914d632f619b64560b4" name="ad439daad5d864914d632f619b64560b4"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintIterationSeparatorEnd</b> ()=0</td></tr>
+<tr class="separator:ad439daad5d864914d632f619b64560b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a2107f7c283403f51b5c48d73fa969fa1" name="a2107f7c283403f51b5c48d73fa969fa1"></a>
@@ -173,6 +183,60 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>display_messa
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>str</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="structILoggerBenders.html">ILoggerBenders</a>.</p>
+
+</div>
+</div>
+<a id="aacead1b858474ba652db7283fd023e05" name="aacead1b858474ba652db7283fd023e05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacead1b858474ba652db7283fd023e05">&#9670;&#160;</a></span>PrintIterationSeparatorBegin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void BendersLoggerBase::PrintIterationSeparatorBegin </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="structILoggerBenders.html">ILoggerBenders</a>.</p>
+
+</div>
+</div>
+<a id="afa5ea22edf702a3b962716123047a402" name="afa5ea22edf702a3b962716123047a402"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa5ea22edf702a3b962716123047a402">&#9670;&#160;</a></span>PrintIterationSeparatorEnd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void BendersLoggerBase::PrintIterationSeparatorEnd </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>

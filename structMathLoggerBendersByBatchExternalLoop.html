@@ -1,0 +1,297 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.9.5"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Antares Xpansion" />
+<meta property="og:image" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/blob/develop/docs/assets/logo.png" />
+<meta property="og:description" content="Investment simulations for Antares studies." />
+<meta property="og:url" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/blob/develop/docs/assets/logo.png" />
+<meta name="twitter:title" content="Antares Xpansion" />
+<meta name="twitter:description" content="Investment simulations for Antares studies." />
+<!-- END twitter metadata -->
+<title>Antares Xpansion: MathLoggerBendersByBatchExternalLoop Struct Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://github.com/AntaresSimulatorTeam/antares-xpansion/ -->
+<a href="https://github.com/AntaresSimulatorTeam/antares-xpansion" class="github-corner" title="View source on GitHub" target="_blank">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Antares Xpansion
+   </div>
+   <div id="projectbrief">Investment simulations for Antares studies</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.9.5 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search');
+  $(document).ready(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function(){initNavTree('structMathLoggerBendersByBatchExternalLoop.html',''); initResizable(); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="structMathLoggerBendersByBatchExternalLoop-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">MathLoggerBendersByBatchExternalLoop Struct Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="dynheader">
+Inheritance diagram for MathLoggerBendersByBatchExternalLoop:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="structMathLoggerBendersByBatchExternalLoop.png" usemap="#MathLoggerBendersByBatchExternalLoop_map" alt=""/>
+  <map id="MathLoggerBendersByBatchExternalLoop_map" name="MathLoggerBendersByBatchExternalLoop_map">
+<area href="structMathLoggerBendersByBatch.html" alt="MathLoggerBendersByBatch" shape="rect" coords="0,168,248,192"/>
+<area href="structMathLogger.html" alt="MathLogger" shape="rect" coords="0,112,248,136"/>
+<area href="structMathLoggerBehaviour.html" alt="MathLoggerBehaviour" shape="rect" coords="0,56,248,80"/>
+<area href="structILoggerBenders.html" alt="ILoggerBenders" shape="rect" coords="0,0,248,24"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a9c03dd137db7e9301df4d77109a31f43"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMathLoggerBendersByBatchExternalLoop.html#a9c03dd137db7e9301df4d77109a31f43">Print</a> (const <a class="el" href="structCurrentIterationData.html">CurrentIterationData</a> &amp;data) override</td></tr>
+<tr class="separator:a9c03dd137db7e9301df4d77109a31f43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a565b7b7ff98bdd7621f6e7fd78c16f9c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMathLoggerBendersByBatchExternalLoop.html#a565b7b7ff98bdd7621f6e7fd78c16f9c">setHeadersList</a> () override</td></tr>
+<tr class="separator:a565b7b7ff98bdd7621f6e7fd78c16f9c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_structMathLoggerBendersByBatch"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structMathLoggerBendersByBatch')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structMathLoggerBendersByBatch.html">MathLoggerBendersByBatch</a></td></tr>
+<tr class="memitem:a1d079d1d34277a27f4c8ffa4ff84ed8b inherit pub_methods_structMathLoggerBendersByBatch"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMathLoggerBendersByBatch.html#a1d079d1d34277a27f4c8ffa4ff84ed8b">Print</a> (const <a class="el" href="structCurrentIterationData.html">CurrentIterationData</a> &amp;data) override</td></tr>
+<tr class="separator:a1d079d1d34277a27f4c8ffa4ff84ed8b inherit pub_methods_structMathLoggerBendersByBatch"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa33479a9be38065c68dae5021c1d35cf inherit pub_methods_structMathLoggerBendersByBatch"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMathLoggerBendersByBatch.html#aa33479a9be38065c68dae5021c1d35cf">setHeadersList</a> () override</td></tr>
+<tr class="separator:aa33479a9be38065c68dae5021c1d35cf inherit pub_methods_structMathLoggerBendersByBatch"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a0014d2054d05fd07decb30a0fe606a inherit pub_methods_structMathLoggerBendersByBatch"><td class="memItemLeft" align="right" valign="top"><a id="a6a0014d2054d05fd07decb30a0fe606a" name="a6a0014d2054d05fd07decb30a0fe606a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MathLogger</b> (const std::filesystem::path &amp;file_path, std::streamsize width=40, HEADERSTYPE type=HEADERSTYPE::LONG)</td></tr>
+<tr class="separator:a6a0014d2054d05fd07decb30a0fe606a inherit pub_methods_structMathLoggerBendersByBatch"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4273fcb5d0995ae431f1baa55d99f04 inherit pub_methods_structMathLoggerBendersByBatch"><td class="memItemLeft" align="right" valign="top"><a id="ad4273fcb5d0995ae431f1baa55d99f04" name="ad4273fcb5d0995ae431f1baa55d99f04"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MathLogger</b> (std::streamsize width=40, HEADERSTYPE type=HEADERSTYPE::SHORT)</td></tr>
+<tr class="separator:ad4273fcb5d0995ae431f1baa55d99f04 inherit pub_methods_structMathLoggerBendersByBatch"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_structMathLogger"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structMathLogger')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structMathLogger.html">MathLogger</a></td></tr>
+<tr class="memitem:a6a0014d2054d05fd07decb30a0fe606a inherit pub_methods_structMathLogger"><td class="memItemLeft" align="right" valign="top"><a id="a6a0014d2054d05fd07decb30a0fe606a" name="a6a0014d2054d05fd07decb30a0fe606a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MathLogger</b> (const std::filesystem::path &amp;file_path, std::streamsize width=40, HEADERSTYPE type=HEADERSTYPE::LONG)</td></tr>
+<tr class="separator:a6a0014d2054d05fd07decb30a0fe606a inherit pub_methods_structMathLogger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4273fcb5d0995ae431f1baa55d99f04 inherit pub_methods_structMathLogger"><td class="memItemLeft" align="right" valign="top"><a id="ad4273fcb5d0995ae431f1baa55d99f04" name="ad4273fcb5d0995ae431f1baa55d99f04"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MathLogger</b> (std::streamsize width=40, HEADERSTYPE type=HEADERSTYPE::SHORT)</td></tr>
+<tr class="separator:ad4273fcb5d0995ae431f1baa55d99f04 inherit pub_methods_structMathLogger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a656f7fb4cf6183481c08b084f4cd9f24 inherit pub_methods_structMathLogger"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMathLogger.html#a656f7fb4cf6183481c08b084f4cd9f24">Print</a> (const <a class="el" href="structCurrentIterationData.html">CurrentIterationData</a> &amp;data)=0</td></tr>
+<tr class="separator:a656f7fb4cf6183481c08b084f4cd9f24 inherit pub_methods_structMathLogger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0c21608673e9ae52403db676b42d0b0f inherit pub_methods_structMathLogger"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMathLogger.html#a0c21608673e9ae52403db676b42d0b0f">Headers</a> () const override</td></tr>
+<tr class="separator:a0c21608673e9ae52403db676b42d0b0f inherit pub_methods_structMathLogger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ef21956206f336caa7864ae40ffb12f inherit pub_methods_structMathLogger"><td class="memItemLeft" align="right" valign="top">virtual <a class="el" href="classLogDestination.html">LogDestination</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMathLogger.html#a2ef21956206f336caa7864ae40ffb12f">LogsDestination</a> ()</td></tr>
+<tr class="separator:a2ef21956206f336caa7864ae40ffb12f inherit pub_methods_structMathLogger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d87cf36f81fe6e97ff4faa92ae3a14e inherit pub_methods_structMathLogger"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMathLogger.html#a4d87cf36f81fe6e97ff4faa92ae3a14e">setHeadersList</a> ()=0</td></tr>
+<tr class="separator:a4d87cf36f81fe6e97ff4faa92ae3a14e inherit pub_methods_structMathLogger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af96e2728e590f5c7e4bf7569f24ebbca inherit pub_methods_structMathLogger"><td class="memItemLeft" align="right" valign="top"><a id="af96e2728e590f5c7e4bf7569f24ebbca" name="af96e2728e590f5c7e4bf7569f24ebbca"></a>
+HEADERSTYPE&#160;</td><td class="memItemRight" valign="bottom"><b>HeadersType</b> () const</td></tr>
+<tr class="separator:af96e2728e590f5c7e4bf7569f24ebbca inherit pub_methods_structMathLogger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_structMathLoggerBehaviour"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structMathLoggerBehaviour')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structMathLoggerBehaviour.html">MathLoggerBehaviour</a></td></tr>
+<tr class="memitem:a30abc924c3c63719d96c71f2db8f4a2f inherit pub_methods_structMathLoggerBehaviour"><td class="memItemLeft" align="right" valign="top"><a id="a30abc924c3c63719d96c71f2db8f4a2f" name="a30abc924c3c63719d96c71f2db8f4a2f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>write_header</b> ()</td></tr>
+<tr class="separator:a30abc924c3c63719d96c71f2db8f4a2f inherit pub_methods_structMathLoggerBehaviour"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cfcca9bcd1d85bcc5a4eb13a8539c30 inherit pub_methods_structMathLoggerBehaviour"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMathLoggerBehaviour.html#a1cfcca9bcd1d85bcc5a4eb13a8539c30">display_message</a> (const std::string &amp;str)</td></tr>
+<tr class="separator:a1cfcca9bcd1d85bcc5a4eb13a8539c30 inherit pub_methods_structMathLoggerBehaviour"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2cb5b8945ad18d9171d0af146f0e7555 inherit pub_methods_structMathLoggerBehaviour"><td class="memItemLeft" align="right" valign="top"><a id="a2cb5b8945ad18d9171d0af146f0e7555" name="a2cb5b8945ad18d9171d0af146f0e7555"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Print</b> (const <a class="el" href="structCurrentIterationData.html">CurrentIterationData</a> &amp;data)=0</td></tr>
+<tr class="separator:a2cb5b8945ad18d9171d0af146f0e7555 inherit pub_methods_structMathLoggerBehaviour"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab43dd09316b1876039c8566e533f74b1 inherit pub_methods_structMathLoggerBehaviour"><td class="memItemLeft" align="right" valign="top"><a id="ab43dd09316b1876039c8566e533f74b1" name="ab43dd09316b1876039c8566e533f74b1"></a>
+virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>Headers</b> () const =0</td></tr>
+<tr class="separator:ab43dd09316b1876039c8566e533f74b1 inherit pub_methods_structMathLoggerBehaviour"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a36883b831c881bde7704fa9938c7429a inherit pub_methods_structMathLoggerBehaviour"><td class="memItemLeft" align="right" valign="top"><a id="a36883b831c881bde7704fa9938c7429a" name="a36883b831c881bde7704fa9938c7429a"></a>
+virtual <a class="el" href="classLogDestination.html">LogDestination</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>LogsDestination</b> ()=0</td></tr>
+<tr class="separator:a36883b831c881bde7704fa9938c7429a inherit pub_methods_structMathLoggerBehaviour"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaeffd930c5f0c9fbe67f60ac906b6779 inherit pub_methods_structMathLoggerBehaviour"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMathLoggerBehaviour.html#aaeffd930c5f0c9fbe67f60ac906b6779">PrintIterationSeparatorBegin</a> () override</td></tr>
+<tr class="separator:aaeffd930c5f0c9fbe67f60ac906b6779 inherit pub_methods_structMathLoggerBehaviour"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad250b62e8a34979ff3d86927687a5664 inherit pub_methods_structMathLoggerBehaviour"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMathLoggerBehaviour.html#ad250b62e8a34979ff3d86927687a5664">PrintIterationSeparatorEnd</a> () override</td></tr>
+<tr class="separator:ad250b62e8a34979ff3d86927687a5664 inherit pub_methods_structMathLoggerBehaviour"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e09c3899d235bdf93b80c9f5483f1d2 inherit pub_methods_structMathLoggerBehaviour"><td class="memItemLeft" align="right" valign="top"><a id="a7e09c3899d235bdf93b80c9f5483f1d2" name="a7e09c3899d235bdf93b80c9f5483f1d2"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setHeadersList</b> ()=0</td></tr>
+<tr class="separator:a7e09c3899d235bdf93b80c9f5483f1d2 inherit pub_methods_structMathLoggerBehaviour"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa5adb0476c7fea717360c6fb42535c7c"><td class="memItemLeft" align="right" valign="top"><a id="aa5adb0476c7fea717360c6fb42535c7c" name="aa5adb0476c7fea717360c6fb42535c7c"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>display_message</b> (const std::string &amp;str)=0</td></tr>
+<tr class="separator:aa5adb0476c7fea717360c6fb42535c7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48bf71fbad23772c639fb38ea61dd26b"><td class="memItemLeft" align="right" valign="top"><a id="a48bf71fbad23772c639fb38ea61dd26b" name="a48bf71fbad23772c639fb38ea61dd26b"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintIterationSeparatorBegin</b> ()=0</td></tr>
+<tr class="separator:a48bf71fbad23772c639fb38ea61dd26b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad439daad5d864914d632f619b64560b4"><td class="memItemLeft" align="right" valign="top"><a id="ad439daad5d864914d632f619b64560b4" name="ad439daad5d864914d632f619b64560b4"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintIterationSeparatorEnd</b> ()=0</td></tr>
+<tr class="separator:ad439daad5d864914d632f619b64560b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pro_methods_structMathLogger"><td colspan="2" onclick="javascript:toggleInherit('pro_methods_structMathLogger')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="structMathLogger.html">MathLogger</a></td></tr>
+<tr class="memitem:ac9e8f204a1d4995f7648acf945e17ef9 inherit pro_methods_structMathLogger"><td class="memItemLeft" align="right" valign="top"><a id="ac9e8f204a1d4995f7648acf945e17ef9" name="ac9e8f204a1d4995f7648acf945e17ef9"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setHeadersList</b> (const std::vector&lt; std::string &gt; &amp;headers)</td></tr>
+<tr class="separator:ac9e8f204a1d4995f7648acf945e17ef9 inherit pro_methods_structMathLogger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a9c03dd137db7e9301df4d77109a31f43" name="a9c03dd137db7e9301df4d77109a31f43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9c03dd137db7e9301df4d77109a31f43">&#9670;&#160;</a></span>Print()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MathLoggerBendersByBatchExternalLoop::Print </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structCurrentIterationData.html">CurrentIterationData</a> &amp;&#160;</td>
+          <td class="paramname"><em>data</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="structMathLoggerBendersByBatch.html">MathLoggerBendersByBatch</a>.</p>
+
+</div>
+</div>
+<a id="a565b7b7ff98bdd7621f6e7fd78c16f9c" name="a565b7b7ff98bdd7621f6e7fd78c16f9c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a565b7b7ff98bdd7621f6e7fd78c16f9c">&#9670;&#160;</a></span>setHeadersList()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MathLoggerBendersByBatchExternalLoop::setHeadersList </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="structMathLoggerBendersByBatch.html">MathLoggerBendersByBatch</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following files:<ul>
+<li>src/cpp/benders/benders_core/include/<a class="el" href="BendersMathLogger_8h_source.html">BendersMathLogger.h</a></li>
+<li>src/cpp/benders/benders_core/BendersMathLogger.cpp</li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="structMathLoggerBendersByBatchExternalLoop.html">MathLoggerBendersByBatchExternalLoop</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.5 </li>
+  </ul>
+</div>
+</body>
+</html>

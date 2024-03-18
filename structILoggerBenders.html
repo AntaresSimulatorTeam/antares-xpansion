@@ -143,21 +143,23 @@ Inheritance diagram for ILoggerBenders:</div>
  <div class="center">
   <img src="structILoggerBenders.png" usemap="#ILoggerBenders_map" alt=""/>
   <map id="ILoggerBenders_map" name="ILoggerBenders_map">
-<area href="structBendersLoggerBase.html" alt="BendersLoggerBase" shape="rect" coords="0,56,174,80"/>
-<area href="classILogger.html" alt="ILogger" shape="rect" coords="368,56,542,80"/>
-<area href="structMathLoggerBehaviour.html" alt="MathLoggerBehaviour" shape="rect" coords="1104,56,1278,80"/>
-<area href="classMathLoggerDriver.html" alt="MathLoggerDriver" shape="rect" coords="1288,56,1462,80"/>
-<area href="classLoggerNOOPStub.html" alt="LoggerNOOPStub" shape="rect" coords="0,112,174,136"/>
-<area href="classSimpleLoggerMock.html" alt="SimpleLoggerMock" shape="rect" coords="184,112,358,136"/>
-<area href="classxpansion_1_1logger_1_1Master.html" alt="xpansion::logger::Master" shape="rect" coords="368,112,542,136"/>
-<area href="classxpansion_1_1logger_1_1User.html" alt="xpansion::logger::User" shape="rect" coords="552,112,726,136"/>
-<area href="classxpansion_1_1logger_1_1UserFile.html" alt="xpansion::logger::UserFile" shape="rect" coords="736,112,910,136"/>
-<area href="structMathLogger.html" alt="MathLogger" shape="rect" coords="920,112,1094,136"/>
-<area href="classMathLoggerImplementation.html" alt="MathLoggerImplementation" shape="rect" coords="1288,112,1462,136"/>
-<area href="structMathLoggerBase.html" alt="MathLoggerBase" shape="rect" coords="828,168,1002,192"/>
-<area href="structMathLoggerBendersByBatch.html" alt="MathLoggerBendersByBatch" shape="rect" coords="1012,168,1186,192"/>
-<area href="classMathLoggerFile.html" alt="MathLoggerFile" shape="rect" coords="1196,168,1370,192"/>
-<area href="classMathLoggerOstream.html" alt="MathLoggerOstream" shape="rect" coords="1380,168,1554,192"/>
+<area href="structBendersLoggerBase.html" alt="BendersLoggerBase" shape="rect" coords="0,56,248,80"/>
+<area href="classILogger.html" alt="ILogger" shape="rect" coords="516,56,764,80"/>
+<area href="structMathLoggerBehaviour.html" alt="MathLoggerBehaviour" shape="rect" coords="1548,56,1796,80"/>
+<area href="classMathLoggerDriver.html" alt="MathLoggerDriver" shape="rect" coords="1806,56,2054,80"/>
+<area href="classLoggerNOOPStub.html" alt="LoggerNOOPStub" shape="rect" coords="0,112,248,136"/>
+<area href="classSimpleLoggerMock.html" alt="SimpleLoggerMock" shape="rect" coords="258,112,506,136"/>
+<area href="classxpansion_1_1logger_1_1Master.html" alt="xpansion::logger::Master" shape="rect" coords="516,112,764,136"/>
+<area href="classxpansion_1_1logger_1_1User.html" alt="xpansion::logger::User" shape="rect" coords="774,112,1022,136"/>
+<area href="classxpansion_1_1logger_1_1UserFile.html" alt="xpansion::logger::UserFile" shape="rect" coords="1032,112,1280,136"/>
+<area href="structMathLogger.html" alt="MathLogger" shape="rect" coords="1290,112,1538,136"/>
+<area href="classMathLoggerImplementation.html" alt="MathLoggerImplementation" shape="rect" coords="1806,112,2054,136"/>
+<area href="structMathLoggerBase.html" alt="MathLoggerBase" shape="rect" coords="1161,168,1409,192"/>
+<area href="structMathLoggerBendersByBatch.html" alt="MathLoggerBendersByBatch" shape="rect" coords="1419,168,1667,192"/>
+<area href="classMathLoggerFile.html" alt="MathLoggerFile" shape="rect" coords="1677,168,1925,192"/>
+<area href="classMathLoggerOstream.html" alt="MathLoggerOstream" shape="rect" coords="1935,168,2183,192"/>
+<area href="structMathLoggerBaseExternalLoop.html" alt="MathLoggerBaseExternalLoop" shape="rect" coords="1161,224,1409,248"/>
+<area href="structMathLoggerBendersByBatchExternalLoop.html" alt="MathLoggerBendersByBatchExternalLoop" shape="rect" coords="1419,224,1667,248"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -166,6 +168,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:aa5adb0476c7fea717360c6fb42535c7c"><td class="memItemLeft" align="right" valign="top"><a id="aa5adb0476c7fea717360c6fb42535c7c" name="aa5adb0476c7fea717360c6fb42535c7c"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>display_message</b> (const std::string &amp;str)=0</td></tr>
 <tr class="separator:aa5adb0476c7fea717360c6fb42535c7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48bf71fbad23772c639fb38ea61dd26b"><td class="memItemLeft" align="right" valign="top"><a id="a48bf71fbad23772c639fb38ea61dd26b" name="a48bf71fbad23772c639fb38ea61dd26b"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintIterationSeparatorBegin</b> ()=0</td></tr>
+<tr class="separator:a48bf71fbad23772c639fb38ea61dd26b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad439daad5d864914d632f619b64560b4"><td class="memItemLeft" align="right" valign="top"><a id="ad439daad5d864914d632f619b64560b4" name="ad439daad5d864914d632f619b64560b4"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintIterationSeparatorEnd</b> ()=0</td></tr>
+<tr class="separator:ad439daad5d864914d632f619b64560b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/cpp/xpansion_interfaces/<a class="el" href="ILogger_8h_source.html">ILogger.h</a></li>

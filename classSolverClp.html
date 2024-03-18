@@ -214,6 +214,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7743e6c94cfa26cb095df2c953b5db5f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverClp.html#a7743e6c94cfa26cb095df2c953b5db5f">get_obj</a> (double *obj, int first, int last) const override</td></tr>
 <tr class="memdesc:a7743e6c94cfa26cb095df2c953b5db5f"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the objective function coefficients for the columns in a given range  <a href="classSolverClp.html#a7743e6c94cfa26cb095df2c953b5db5f">More...</a><br /></td></tr>
 <tr class="separator:a7743e6c94cfa26cb095df2c953b5db5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa56c91704b234c01d954a734095bc499"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverClp.html#aa56c91704b234c01d954a734095bc499">set_obj_to_zero</a> () override</td></tr>
+<tr class="memdesc:aa56c91704b234c01d954a734095bc499"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the objective function coefficients to zero.  <a href="classSolverClp.html#aa56c91704b234c01d954a734095bc499">More...</a><br /></td></tr>
+<tr class="separator:aa56c91704b234c01d954a734095bc499"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab9e5e72ac17787d8631df2f87d100b87"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverClp.html#ab9e5e72ac17787d8631df2f87d100b87">set_obj</a> (const double *obj, int first, int last) override</td></tr>
+<tr class="memdesc:ab9e5e72ac17787d8631df2f87d100b87"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the objective function coefficients for the columns in a given range.  <a href="classSolverClp.html#ab9e5e72ac17787d8631df2f87d100b87">More...</a><br /></td></tr>
+<tr class="separator:ab9e5e72ac17787d8631df2f87d100b87"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a5f8d5db3112996fe66d73d5a0acd7b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverClp.html#a1a5f8d5db3112996fe66d73d5a0acd7b">get_rows</a> (int *mstart, int *mclind, double *dmatval, int size, int *nels, int first, int last) const override</td></tr>
 <tr class="memdesc:a1a5f8d5db3112996fe66d73d5a0acd7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">get coefficients of rows from index first to last  <a href="classSolverClp.html#a1a5f8d5db3112996fe66d73d5a0acd7b">More...</a><br /></td></tr>
 <tr class="separator:a1a5f8d5db3112996fe66d73d5a0acd7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -256,15 +262,17 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ac1b9d4bdce8d5e9880f1f46efde0417b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverClp.html#ac1b9d4bdce8d5e9880f1f46efde0417b">del_rows</a> (int first, int last) override</td></tr>
 <tr class="memdesc:ac1b9d4bdce8d5e9880f1f46efde0417b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes rows between index first and last.  <a href="classSolverClp.html#ac1b9d4bdce8d5e9880f1f46efde0417b">More...</a><br /></td></tr>
 <tr class="separator:ac1b9d4bdce8d5e9880f1f46efde0417b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23ce278bab917d8060d7ed32e0f9b068"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverClp.html#a23ce278bab917d8060d7ed32e0f9b068">add_rows</a> (int newrows, int newnz, const char *qrtype, const double *rhs, const double *range, const int *mstart, const int *mclind, const double *dmatval) override</td></tr>
-<tr class="memdesc:a23ce278bab917d8060d7ed32e0f9b068"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds rows to the problem.  <a href="classSolverClp.html#a23ce278bab917d8060d7ed32e0f9b068">More...</a><br /></td></tr>
-<tr class="separator:a23ce278bab917d8060d7ed32e0f9b068"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a94232131fe77df5b58b539e6fd0b10a9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverClp.html#a94232131fe77df5b58b539e6fd0b10a9">add_rows</a> (int newrows, int newnz, const char *qrtype, const double *rhs, const double *range, const int *mstart, const int *mclind, const double *dmatval, const std::vector&lt; std::string &gt; &amp;names={}) override</td></tr>
+<tr class="memdesc:a94232131fe77df5b58b539e6fd0b10a9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds rows to the problem.  <a href="classSolverClp.html#a94232131fe77df5b58b539e6fd0b10a9">More...</a><br /></td></tr>
+<tr class="separator:a94232131fe77df5b58b539e6fd0b10a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab95a20cf2acc6d7a365a63d7e0923f49"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverClp.html#ab95a20cf2acc6d7a365a63d7e0923f49">add_cols</a> (int newcol, int newnz, const double *objx, const int *mstart, const int *mrwind, const double *dmatval, const double *bdl, const double *bdu) override</td></tr>
 <tr class="memdesc:ab95a20cf2acc6d7a365a63d7e0923f49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds new columns to the problem.  <a href="classSolverClp.html#ab95a20cf2acc6d7a365a63d7e0923f49">More...</a><br /></td></tr>
 <tr class="separator:ab95a20cf2acc6d7a365a63d7e0923f49"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8c52ca73a3482eee8e402dd9d95c1134"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverClp.html#a8c52ca73a3482eee8e402dd9d95c1134">add_name</a> (int type, const char *cnames, int indice) override</td></tr>
 <tr class="memdesc:a8c52ca73a3482eee8e402dd9d95c1134"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a name to a row or a column.  <a href="classSolverClp.html#a8c52ca73a3482eee8e402dd9d95c1134">More...</a><br /></td></tr>
 <tr class="separator:a8c52ca73a3482eee8e402dd9d95c1134"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99d830d8468ceb91ec1488be106e20e8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverClp.html#a99d830d8468ceb91ec1488be106e20e8">add_names</a> (int type, const std::vector&lt; std::string &gt; &amp;cnames, int first, int end) override</td></tr>
+<tr class="separator:a99d830d8468ceb91ec1488be106e20e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c205dc2a3d6aaa45028b24327e0b707"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverClp.html#a4c205dc2a3d6aaa45028b24327e0b707">chg_obj</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; double &gt; &amp;obj) override</td></tr>
 <tr class="memdesc:a4c205dc2a3d6aaa45028b24327e0b707"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change coefficients in objective function.  <a href="classSolverClp.html#a4c205dc2a3d6aaa45028b24327e0b707">More...</a><br /></td></tr>
 <tr class="separator:a4c205dc2a3d6aaa45028b24327e0b707"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -401,6 +409,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_fp</b> (FILE *fp)
 <tr class="memitem:a46de1ce782d732eb07bb5020c2e939cd inherit pub_methods_classSolverAbstract"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#a46de1ce782d732eb07bb5020c2e939cd">get_obj</a> (double *obj, int first, int last) const =0</td></tr>
 <tr class="memdesc:a46de1ce782d732eb07bb5020c2e939cd inherit pub_methods_classSolverAbstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the objective function coefficients for the columns in a given range  <a href="classSolverAbstract.html#a46de1ce782d732eb07bb5020c2e939cd">More...</a><br /></td></tr>
 <tr class="separator:a46de1ce782d732eb07bb5020c2e939cd inherit pub_methods_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbf78f11e71cc3347ed5f00ef83dafa4 inherit pub_methods_classSolverAbstract"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#adbf78f11e71cc3347ed5f00ef83dafa4">set_obj_to_zero</a> ()=0</td></tr>
+<tr class="memdesc:adbf78f11e71cc3347ed5f00ef83dafa4 inherit pub_methods_classSolverAbstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the objective function coefficients to zero.  <a href="classSolverAbstract.html#adbf78f11e71cc3347ed5f00ef83dafa4">More...</a><br /></td></tr>
+<tr class="separator:adbf78f11e71cc3347ed5f00ef83dafa4 inherit pub_methods_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a68eaacdbe4ad1302c2e1ffbe69f92125 inherit pub_methods_classSolverAbstract"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#a68eaacdbe4ad1302c2e1ffbe69f92125">set_obj</a> (const double *obj, int first, int last)=0</td></tr>
+<tr class="memdesc:a68eaacdbe4ad1302c2e1ffbe69f92125 inherit pub_methods_classSolverAbstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the objective function coefficients for the columns in a given range.  <a href="classSolverAbstract.html#a68eaacdbe4ad1302c2e1ffbe69f92125">More...</a><br /></td></tr>
+<tr class="separator:a68eaacdbe4ad1302c2e1ffbe69f92125 inherit pub_methods_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a91edc33d9a8150d42a565ffaeed82f96 inherit pub_methods_classSolverAbstract"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#a91edc33d9a8150d42a565ffaeed82f96">get_rows</a> (int *mstart, int *mclind, double *dmatval, int size, int *nels, int first, int last) const =0</td></tr>
 <tr class="memdesc:a91edc33d9a8150d42a565ffaeed82f96 inherit pub_methods_classSolverAbstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">get coefficients of rows from index first to last  <a href="classSolverAbstract.html#a91edc33d9a8150d42a565ffaeed82f96">More...</a><br /></td></tr>
 <tr class="separator:a91edc33d9a8150d42a565ffaeed82f96 inherit pub_methods_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -443,15 +457,18 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_fp</b> (FILE *fp)
 <tr class="memitem:a29e5ecfb7a74099bcd3873cf2a0a8558 inherit pub_methods_classSolverAbstract"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#a29e5ecfb7a74099bcd3873cf2a0a8558">del_rows</a> (int first, int last)=0</td></tr>
 <tr class="memdesc:a29e5ecfb7a74099bcd3873cf2a0a8558 inherit pub_methods_classSolverAbstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes rows between index first and last.  <a href="classSolverAbstract.html#a29e5ecfb7a74099bcd3873cf2a0a8558">More...</a><br /></td></tr>
 <tr class="separator:a29e5ecfb7a74099bcd3873cf2a0a8558 inherit pub_methods_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba0cf5855d9c5d48e064223fa59fab0a inherit pub_methods_classSolverAbstract"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#aba0cf5855d9c5d48e064223fa59fab0a">add_rows</a> (int newrows, int newnz, const char *qrtype, const double *rhs, const double *range, const int *mstart, const int *mclind, const double *dmatval)=0</td></tr>
-<tr class="memdesc:aba0cf5855d9c5d48e064223fa59fab0a inherit pub_methods_classSolverAbstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds rows to the problem.  <a href="classSolverAbstract.html#aba0cf5855d9c5d48e064223fa59fab0a">More...</a><br /></td></tr>
-<tr class="separator:aba0cf5855d9c5d48e064223fa59fab0a inherit pub_methods_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7cfec83d515d78f875e45c4743668be2 inherit pub_methods_classSolverAbstract"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#a7cfec83d515d78f875e45c4743668be2">add_rows</a> (int newrows, int newnz, const char *qrtype, const double *rhs, const double *range, const int *mstart, const int *mclind, const double *dmatval, const std::vector&lt; std::string &gt; &amp;names={})=0</td></tr>
+<tr class="memdesc:a7cfec83d515d78f875e45c4743668be2 inherit pub_methods_classSolverAbstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds rows to the problem.  <a href="classSolverAbstract.html#a7cfec83d515d78f875e45c4743668be2">More...</a><br /></td></tr>
+<tr class="separator:a7cfec83d515d78f875e45c4743668be2 inherit pub_methods_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4a4dacaf5af0d774302be7487f194f42 inherit pub_methods_classSolverAbstract"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#a4a4dacaf5af0d774302be7487f194f42">add_cols</a> (int newcol, int newnz, const double *objx, const int *mstart, const int *mrwind, const double *dmatval, const double *bdl, const double *bdu)=0</td></tr>
 <tr class="memdesc:a4a4dacaf5af0d774302be7487f194f42 inherit pub_methods_classSolverAbstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds new columns to the problem.  <a href="classSolverAbstract.html#a4a4dacaf5af0d774302be7487f194f42">More...</a><br /></td></tr>
 <tr class="separator:a4a4dacaf5af0d774302be7487f194f42 inherit pub_methods_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc4ceb13f60ec7f53cdc166dd70baee6 inherit pub_methods_classSolverAbstract"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#afc4ceb13f60ec7f53cdc166dd70baee6">add_name</a> (int type, const char *cnames, int indice)=0</td></tr>
 <tr class="memdesc:afc4ceb13f60ec7f53cdc166dd70baee6 inherit pub_methods_classSolverAbstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a name to a row or a column.  <a href="classSolverAbstract.html#afc4ceb13f60ec7f53cdc166dd70baee6">More...</a><br /></td></tr>
 <tr class="separator:afc4ceb13f60ec7f53cdc166dd70baee6 inherit pub_methods_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae72c0220d5653a56df5a0248306189fb inherit pub_methods_classSolverAbstract"><td class="memItemLeft" align="right" valign="top"><a id="ae72c0220d5653a56df5a0248306189fb" name="ae72c0220d5653a56df5a0248306189fb"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>add_names</b> (int type, const std::vector&lt; std::string &gt; &amp;cnames, int first, int end)=0</td></tr>
+<tr class="separator:ae72c0220d5653a56df5a0248306189fb inherit pub_methods_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7bae7d1aa559bb2e4197eb3d16e494d7 inherit pub_methods_classSolverAbstract"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#a7bae7d1aa559bb2e4197eb3d16e494d7">chg_obj</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; double &gt; &amp;obj)=0</td></tr>
 <tr class="memdesc:a7bae7d1aa559bb2e4197eb3d16e494d7 inherit pub_methods_classSolverAbstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change coefficients in objective function.  <a href="classSolverAbstract.html#a7bae7d1aa559bb2e4197eb3d16e494d7">More...</a><br /></td></tr>
 <tr class="separator:a7bae7d1aa559bb2e4197eb3d16e494d7 inherit pub_methods_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -723,8 +740,58 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a23ce278bab917d8060d7ed32e0f9b068" name="a23ce278bab917d8060d7ed32e0f9b068"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a23ce278bab917d8060d7ed32e0f9b068">&#9670;&#160;</a></span>add_rows()</h2>
+<a id="a99d830d8468ceb91ec1488be106e20e8" name="a99d830d8468ceb91ec1488be106e20e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a99d830d8468ceb91ec1488be106e20e8">&#9670;&#160;</a></span>add_names()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SolverClp::add_names </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>type</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>cnames</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>first</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>end</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classSolverAbstract.html">SolverAbstract</a>.</p>
+
+</div>
+</div>
+<a id="a94232131fe77df5b58b539e6fd0b10a9" name="a94232131fe77df5b58b539e6fd0b10a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a94232131fe77df5b58b539e6fd0b10a9">&#9670;&#160;</a></span>add_rows()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -778,7 +845,13 @@ Additional Inherited Members</h2></td></tr>
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">const double *&#160;</td>
-          <td class="paramname"><em>dmatval</em>&#160;</td>
+          <td class="paramname"><em>dmatval</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;&#160;</td>
+          <td class="paramname"><em>names</em> = <code>{}</code>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -808,7 +881,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classSolverAbstract.html#aba0cf5855d9c5d48e064223fa59fab0a">SolverAbstract</a>.</p>
+<p>Implements <a class="el" href="classSolverAbstract.html#a7cfec83d515d78f875e45c4743668be2">SolverAbstract</a>.</p>
 
 </div>
 </div>
@@ -2556,6 +2629,81 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 
 <p>Implements <a class="el" href="classSolverAbstract.html#a6147f2636bd52820a77ebc80e19905ee">SolverAbstract</a>.</p>
+
+</div>
+</div>
+<a id="ab9e5e72ac17787d8631df2f87d100b87" name="ab9e5e72ac17787d8631df2f87d100b87"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab9e5e72ac17787d8631df2f87d100b87">&#9670;&#160;</a></span>set_obj()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SolverClp::set_obj </td>
+          <td>(</td>
+          <td class="paramtype">const double *&#160;</td>
+          <td class="paramname"><em>obj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>first</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>last</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the objective function coefficients for the columns in a given range. </p>
+
+<p>Implements <a class="el" href="classSolverAbstract.html#a68eaacdbe4ad1302c2e1ffbe69f92125">SolverAbstract</a>.</p>
+
+</div>
+</div>
+<a id="aa56c91704b234c01d954a734095bc499" name="aa56c91704b234c01d954a734095bc499"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa56c91704b234c01d954a734095bc499">&#9670;&#160;</a></span>set_obj_to_zero()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SolverClp::set_obj_to_zero </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Set the objective function coefficients to zero. </p>
+
+<p>Implements <a class="el" href="classSolverAbstract.html#adbf78f11e71cc3347ed5f00ef83dafa4">SolverAbstract</a>.</p>
 
 </div>
 </div>

@@ -2,7 +2,7 @@ var classProblem =
 [
     [ "add_cols", "classProblem.html#a3a39dd85d31f7a5fe895fe8d119a7e69", null ],
     [ "add_name", "classProblem.html#a2fd6e04f639afc967adf2f1a3d3d4b85", null ],
-    [ "add_rows", "classProblem.html#a1b8058d98d4724881e57724bf748ba01", null ],
+    [ "add_rows", "classProblem.html#a8fb8c92a38162a74023e798e9e824c80", null ],
     [ "chg_bounds", "classProblem.html#a4bc726350bcf61005c30cc61e6018b4e", null ],
     [ "chg_coef", "classProblem.html#ad0ee54139145f03b9f188d40cb7a0856", null ],
     [ "chg_col_name", "classProblem.html#af4b08904684db423cee3a8f8c58ff800", null ],
@@ -45,6 +45,8 @@ var classProblem =
     [ "read_prob_lp", "classProblem.html#a92a36d2387ec170cc78cad032b521a75", null ],
     [ "read_prob_mps", "classProblem.html#abf009aaf0c40ed6a462dced353f2b7f0", null ],
     [ "set_algorithm", "classProblem.html#a006aad13911c36e8d753f172c10f5465", null ],
+    [ "set_obj", "classProblem.html#a678f5f40e1102d81f5dcb95a575e041a", null ],
+    [ "set_obj_to_zero", "classProblem.html#a3209a8750961478ed949a75b5cef261c", null ],
     [ "set_optimality_gap", "classProblem.html#ad35f966751547d5c8a27feb707df11a5", null ],
     [ "set_output_log_level", "classProblem.html#a87378fed8a194cb4cbb6904eacbed94a", null ],
     [ "set_simplex_iter", "classProblem.html#ae9ba517850933fd58e17a3577a1d5e47", null ],

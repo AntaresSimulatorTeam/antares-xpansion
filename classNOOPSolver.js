@@ -2,7 +2,7 @@ var classNOOPSolver =
 [
     [ "add_cols", "classNOOPSolver.html#a1580de6c19d2196a778ed146cf85d96d", null ],
     [ "add_name", "classNOOPSolver.html#ae32c377fdb30d6d8969dc26f955d358e", null ],
-    [ "add_rows", "classNOOPSolver.html#ac7b238b7dd9f2331b01fb5d35eb1e0e7", null ],
+    [ "add_rows", "classNOOPSolver.html#a8e091428888e75fcba2e8feb5a127054", null ],
     [ "chg_bounds", "classNOOPSolver.html#a92fd94c7364309d7e7de8c2ec159ece7", null ],
     [ "chg_coef", "classNOOPSolver.html#a677a0f4d6e5e327e024dfc80bb44181c", null ],
     [ "chg_col_name", "classNOOPSolver.html#ae7f7da4b76355003f40673ce25459f0c", null ],
@@ -45,6 +45,8 @@ var classNOOPSolver =
     [ "read_prob_lp", "classNOOPSolver.html#a59b1e44b9cb7c12a9c44e05d80e1a5a5", null ],
     [ "read_prob_mps", "classNOOPSolver.html#aa9029d51d3f7146fda970f0fd08c5f6f", null ],
     [ "set_algorithm", "classNOOPSolver.html#ada1e7111945f04571bcc645fe4f80e38", null ],
+    [ "set_obj", "classNOOPSolver.html#a7f3f87a9c644c64845471b765fbcd7c9", null ],
+    [ "set_obj_to_zero", "classNOOPSolver.html#a6e12a6093f67022a11de3f69152aef1f", null ],
     [ "set_optimality_gap", "classNOOPSolver.html#a8707e8a651836631222055329cb7fae6", null ],
     [ "set_output_log_level", "classNOOPSolver.html#a67518a1df5255c05e8c1df9eabb184f6", null ],
     [ "set_simplex_iter", "classNOOPSolver.html#a8dbb97c24a7a7b5b1415c21a0c8d81a8", null ],

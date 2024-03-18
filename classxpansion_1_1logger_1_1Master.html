@@ -157,6 +157,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>addLogger</b> (const 
 <tr class="separator:aedc1d1015a2efc90153fbc02a83bd397"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae665df9c5d7a11412ef7cf08459e65fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxpansion_1_1logger_1_1Master.html#ae665df9c5d7a11412ef7cf08459e65fb">display_message</a> (const std::string &amp;str, LogUtils::LOGLEVEL level) override</td></tr>
 <tr class="separator:ae665df9c5d7a11412ef7cf08459e65fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ddaf5d3cd9173335e2298ce70e5f173"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxpansion_1_1logger_1_1Master.html#a1ddaf5d3cd9173335e2298ce70e5f173">PrintIterationSeparatorBegin</a> () override</td></tr>
+<tr class="separator:a1ddaf5d3cd9173335e2298ce70e5f173"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41c0f6847ade1403bb86dccfc6e410c7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxpansion_1_1logger_1_1Master.html#a41c0f6847ade1403bb86dccfc6e410c7">PrintIterationSeparatorEnd</a> () override</td></tr>
+<tr class="separator:a41c0f6847ade1403bb86dccfc6e410c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7cf11b68e9cac104f75c8ea6bac4affc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxpansion_1_1logger_1_1Master.html#a7cf11b68e9cac104f75c8ea6bac4affc">log_at_initialization</a> (const int it_number) override</td></tr>
 <tr class="separator:a7cf11b68e9cac104f75c8ea6bac4affc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9bd1b758620253a492d0032eeb2dce0b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxpansion_1_1logger_1_1Master.html#a9bd1b758620253a492d0032eeb2dce0b">log_iteration_candidates</a> (const <a class="el" href="structLogData.html">LogData</a> &amp;d) override</td></tr>
@@ -196,6 +200,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>addLogger</b> (const 
 <tr class="memitem:a0c19dbf351694b2d7008bb7f41e6b1e7"><td class="memItemLeft" align="right" valign="top"><a id="a0c19dbf351694b2d7008bb7f41e6b1e7" name="a0c19dbf351694b2d7008bb7f41e6b1e7"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>display_message</b> (const std::string &amp;str, LogUtils::LOGLEVEL level)=0</td></tr>
 <tr class="separator:a0c19dbf351694b2d7008bb7f41e6b1e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72be00a34641a9c5dd0fb0ccb0d3d127"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classILogger.html#a72be00a34641a9c5dd0fb0ccb0d3d127">PrintIterationSeparatorBegin</a> ()=0</td></tr>
+<tr class="separator:a72be00a34641a9c5dd0fb0ccb0d3d127"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90eb75846409ae680cbfb0dc66d43330"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classILogger.html#a90eb75846409ae680cbfb0dc66d43330">PrintIterationSeparatorEnd</a> ()=0</td></tr>
+<tr class="separator:a90eb75846409ae680cbfb0dc66d43330"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab9395632a88cca9907dea085f7c112b8"><td class="memItemLeft" align="right" valign="top"><a id="ab9395632a88cca9907dea085f7c112b8" name="ab9395632a88cca9907dea085f7c112b8"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>log_at_initialization</b> (const int it_number)=0</td></tr>
 <tr class="separator:ab9395632a88cca9907dea085f7c112b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -250,6 +258,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>cumulative_nu
 <tr class="memitem:aa5adb0476c7fea717360c6fb42535c7c"><td class="memItemLeft" align="right" valign="top"><a id="aa5adb0476c7fea717360c6fb42535c7c" name="aa5adb0476c7fea717360c6fb42535c7c"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>display_message</b> (const std::string &amp;str)=0</td></tr>
 <tr class="separator:aa5adb0476c7fea717360c6fb42535c7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48bf71fbad23772c639fb38ea61dd26b"><td class="memItemLeft" align="right" valign="top"><a id="a48bf71fbad23772c639fb38ea61dd26b" name="a48bf71fbad23772c639fb38ea61dd26b"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintIterationSeparatorBegin</b> ()=0</td></tr>
+<tr class="separator:a48bf71fbad23772c639fb38ea61dd26b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad439daad5d864914d632f619b64560b4"><td class="memItemLeft" align="right" valign="top"><a id="ad439daad5d864914d632f619b64560b4" name="ad439daad5d864914d632f619b64560b4"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintIterationSeparatorEnd</b> ()=0</td></tr>
+<tr class="separator:ad439daad5d864914d632f619b64560b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -700,6 +714,60 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>CONTEXT<
           <td>(</td>
           <td class="paramtype">const int&#160;</td>
           <td class="paramname"><em>num_iterations</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classILogger.html">ILogger</a>.</p>
+
+</div>
+</div>
+<a id="a1ddaf5d3cd9173335e2298ce70e5f173" name="a1ddaf5d3cd9173335e2298ce70e5f173"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ddaf5d3cd9173335e2298ce70e5f173">&#9670;&#160;</a></span>PrintIterationSeparatorBegin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void xpansion::logger::Master::PrintIterationSeparatorBegin </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classILogger.html">ILogger</a>.</p>
+
+</div>
+</div>
+<a id="a41c0f6847ade1403bb86dccfc6e410c7" name="a41c0f6847ade1403bb86dccfc6e410c7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a41c0f6847ade1403bb86dccfc6e410c7">&#9670;&#160;</a></span>PrintIterationSeparatorEnd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void xpansion::logger::Master::PrintIterationSeparatorEnd </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
           <td></td>
         </tr>
       </table>

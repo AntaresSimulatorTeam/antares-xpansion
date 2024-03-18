@@ -200,60 +200,78 @@ $(document).ready(function(){initNavTree('ILogger_8h_source.html',''); initResiz
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordtype">double</span> subproblem_time;</div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  <span class="keywordtype">int</span> cumulative_number_of_subproblem_resolved;</div>
 <div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>};</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno"><a class="line" href="structILoggerBenders.html">   67</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structILoggerBenders.html">ILoggerBenders</a> {</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> display_message(<span class="keyword">const</span> std::string &amp;str) = 0;</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>};</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno"><a class="line" href="structBendersLoggerBase.html">   71</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structBendersLoggerBase.html">BendersLoggerBase</a> : <span class="keyword">public</span> <a class="code hl_struct" href="structILoggerBenders.html">ILoggerBenders</a> {</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordtype">void</span> display_message(<span class="keyword">const</span> std::string &amp;str)<span class="keyword"> override </span>{</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> logger : loggers) {</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>      logger-&gt;display_message(str);</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>    }</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  }</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keywordtype">void</span> AddLogger(std::shared_ptr&lt;ILoggerBenders&gt; logger) {</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    loggers.push_back(logger);</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  }</div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  std::vector&lt;std::shared_ptr&lt;ILoggerBenders&gt;&gt; loggers;</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>};</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="classILogger.html">   84</a></span><span class="keyword">class </span><a class="code hl_class" href="classILogger.html">ILogger</a> : <span class="keyword">public</span> <a class="code hl_struct" href="structILoggerBenders.html">ILoggerBenders</a> {</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classILogger.html">~ILogger</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> display_message(<span class="keyword">const</span> std::string &amp;str) = 0;</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> display_message(<span class="keyword">const</span> std::string &amp;str,</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                               LogUtils::LOGLEVEL level) = 0;</div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> log_at_initialization(<span class="keyword">const</span> <span class="keywordtype">int</span> it_number) = 0;</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> log_iteration_candidates(<span class="keyword">const</span> <a class="code hl_struct" href="structLogData.html">LogData</a> &amp;d) = 0;</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> log_master_solving_duration(<span class="keywordtype">double</span> durationInSeconds) = 0;</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> LogSubproblemsSolvingWalltime(<span class="keywordtype">double</span> durationInSeconds) = 0;</div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> LogSubproblemsSolvingCumulativeCpuTime(</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>      <span class="keywordtype">double</span> durationInSeconds) = 0;</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> log_at_iteration_end(<span class="keyword">const</span> <a class="code hl_struct" href="structLogData.html">LogData</a> &amp;d) = 0;</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> log_at_ending(<span class="keyword">const</span> <a class="code hl_struct" href="structLogData.html">LogData</a> &amp;d) = 0;</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> log_total_duration(<span class="keywordtype">double</span> durationInSeconds) = 0;</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> log_stop_criterion_reached(</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>      <span class="keyword">const</span> StoppingCriterion stopping_criterion) = 0;</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> display_restart_message() = 0;</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> restart_elapsed_time(<span class="keyword">const</span> <span class="keywordtype">double</span> elapsed_time) = 0;</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> number_of_iterations_before_restart(</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> num_iterations) = 0;</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> restart_best_iteration(<span class="keyword">const</span> <span class="keywordtype">int</span> best_iterations) = 0;</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> restart_best_iterations_infos(</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>      <span class="keyword">const</span> <a class="code hl_struct" href="structLogData.html">LogData</a> &amp;best_iterations_data) = 0;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> LogAtInitialRelaxation() = 0;</div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> LogAtSwitchToInteger() = 0;</div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> cumulative_number_of_sub_problem_solved(<span class="keywordtype">int</span> number) = 0;</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="keyword">const</span> std::string CONTEXT = <span class="stringliteral">&quot;Benders&quot;</span>;</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>};</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span><span class="keyword">using </span>Logger = std::shared_ptr&lt;ILogger&gt;;</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span> </div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span><span class="preprocessor">#endif  </span><span class="comment">// ANTARESXPANSION_ILOGGER_H</span></div>
-<div class="ttc" id="aclassILogger_html"><div class="ttname"><a href="classILogger.html">ILogger</a></div><div class="ttdef"><b>Definition:</b> ILogger.h:84</div></div>
-<div class="ttc" id="astructBendersLoggerBase_html"><div class="ttname"><a href="structBendersLoggerBase.html">BendersLoggerBase</a></div><div class="ttdef"><b>Definition:</b> ILogger.h:71</div></div>
-<div class="ttc" id="astructILoggerBenders_html"><div class="ttname"><a href="structILoggerBenders.html">ILoggerBenders</a></div><div class="ttdef"><b>Definition:</b> ILogger.h:67</div></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> </div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno"><a class="line" href="structILoggerBenders.html">   68</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structILoggerBenders.html">ILoggerBenders</a> {</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> display_message(<span class="keyword">const</span> std::string &amp;str) = 0;</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> PrintIterationSeparatorBegin() = 0;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> PrintIterationSeparatorEnd() = 0;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keyword">virtual</span> <a class="code hl_struct" href="structILoggerBenders.html">~ILoggerBenders</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>};</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="structBendersLoggerBase.html">   75</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structBendersLoggerBase.html">BendersLoggerBase</a> : <span class="keyword">public</span> <a class="code hl_struct" href="structILoggerBenders.html">ILoggerBenders</a> {</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keywordtype">void</span> display_message(<span class="keyword">const</span> std::string &amp;str)<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> logger : loggers) {</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>      logger-&gt;display_message(str);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    }</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  }</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keywordtype">void</span> AddLogger(std::shared_ptr&lt;ILoggerBenders&gt; logger) {</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    loggers.push_back(logger);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  }</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> PrintIterationSeparatorBegin()<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> logger : loggers) {</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>      logger-&gt;PrintIterationSeparatorBegin();</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>    }</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  }</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> PrintIterationSeparatorEnd()<span class="keyword"> override </span>{</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>    <span class="keywordflow">for</span> (<span class="keyword">auto</span> logger : loggers) {</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>      logger-&gt;PrintIterationSeparatorEnd();</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    }</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  }</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span> </div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>  std::vector&lt;std::shared_ptr&lt;ILoggerBenders&gt;&gt; loggers;</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>};</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="classILogger.html">  100</a></span><span class="keyword">class </span><a class="code hl_class" href="classILogger.html">ILogger</a> : <span class="keyword">public</span> <a class="code hl_struct" href="structILoggerBenders.html">ILoggerBenders</a> {</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classILogger.html">~ILogger</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> display_message(<span class="keyword">const</span> std::string &amp;str) = 0;</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> display_message(<span class="keyword">const</span> std::string &amp;str,</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>                               LogUtils::LOGLEVEL level) = 0;</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> PrintIterationSeparatorBegin() = 0;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> PrintIterationSeparatorEnd() = 0;</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> log_at_initialization(<span class="keyword">const</span> <span class="keywordtype">int</span> it_number) = 0;</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> log_iteration_candidates(<span class="keyword">const</span> <a class="code hl_struct" href="structLogData.html">LogData</a> &amp;d) = 0;</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> log_master_solving_duration(<span class="keywordtype">double</span> durationInSeconds) = 0;</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> LogSubproblemsSolvingWalltime(<span class="keywordtype">double</span> durationInSeconds) = 0;</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> LogSubproblemsSolvingCumulativeCpuTime(</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>      <span class="keywordtype">double</span> durationInSeconds) = 0;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> log_at_iteration_end(<span class="keyword">const</span> <a class="code hl_struct" href="structLogData.html">LogData</a> &amp;d) = 0;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> log_at_ending(<span class="keyword">const</span> <a class="code hl_struct" href="structLogData.html">LogData</a> &amp;d) = 0;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> log_total_duration(<span class="keywordtype">double</span> durationInSeconds) = 0;</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> log_stop_criterion_reached(</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>      <span class="keyword">const</span> StoppingCriterion stopping_criterion) = 0;</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> display_restart_message() = 0;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> restart_elapsed_time(<span class="keyword">const</span> <span class="keywordtype">double</span> elapsed_time) = 0;</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> number_of_iterations_before_restart(</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>      <span class="keyword">const</span> <span class="keywordtype">int</span> num_iterations) = 0;</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> restart_best_iteration(<span class="keyword">const</span> <span class="keywordtype">int</span> best_iterations) = 0;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> restart_best_iterations_infos(</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>      <span class="keyword">const</span> <a class="code hl_struct" href="structLogData.html">LogData</a> &amp;best_iterations_data) = 0;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> LogAtInitialRelaxation() = 0;</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> LogAtSwitchToInteger() = 0;</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> cumulative_number_of_sub_problem_solved(<span class="keywordtype">int</span> number) = 0;</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>  <span class="keyword">const</span> std::string CONTEXT = <span class="stringliteral">&quot;Benders&quot;</span>;</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>};</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span> </div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span><span class="keyword">using </span>Logger = std::shared_ptr&lt;ILogger&gt;;</div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span> </div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="preprocessor">#endif  </span><span class="comment">// ANTARESXPANSION_ILOGGER_H</span></div>
+<div class="ttc" id="aclassILogger_html"><div class="ttname"><a href="classILogger.html">ILogger</a></div><div class="ttdef"><b>Definition:</b> ILogger.h:100</div></div>
+<div class="ttc" id="astructBendersLoggerBase_html"><div class="ttname"><a href="structBendersLoggerBase.html">BendersLoggerBase</a></div><div class="ttdef"><b>Definition:</b> ILogger.h:75</div></div>
+<div class="ttc" id="astructILoggerBenders_html"><div class="ttname"><a href="structILoggerBenders.html">ILoggerBenders</a></div><div class="ttdef"><b>Definition:</b> ILogger.h:68</div></div>
 <div class="ttc" id="astructLogData_html"><div class="ttname"><a href="structLogData.html">LogData</a></div><div class="ttdef"><b>Definition:</b> ILogger.h:46</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
