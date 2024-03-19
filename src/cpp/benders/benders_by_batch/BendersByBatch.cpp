@@ -151,6 +151,7 @@ void BendersByBatch::SeparationLoop() {
     SolveBatches();
 
     if (Rank() == rank_0) {
+      outer_loop_criterion_.push_back(_data.external_loop_criterion);
       UpdateTrace();
       SaveCurrentBendersData();
     }
