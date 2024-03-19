@@ -129,6 +129,22 @@ void SolverClp::get_obj(double *obj, int first, int last) const {
   }
 }
 
+void SolverClp::set_obj_to_zero() {
+  auto ncols = get_ncols();
+  std::vector<double> zeros_val(ncols, 0.0);
+  _clp.setRowObjective(zeros_val.data());
+}
+
+void SolverClp::set_obj(const double *obj, int first, int last) {
+  if (last - first + 1 == get_ncols()) {
+    _clp.setRowObjective(obj);
+  } else {
+    for (int index = first; index < last + 1; ++index) {
+      _clp.setObjCoeff(index, obj[index]);
+    }
+  }
+}
+
 void SolverClp::get_rows(int *mstart, int *mclind, double *dmatval, int size,
                          int *nels, int first, int last) const {
   CoinPackedMatrix matrix = *_clp.matrix();
@@ -256,14 +272,22 @@ void SolverClp::del_rows(int first, int last) {
 void SolverClp::add_rows(int newrows, int newnz, const char *qrtype,
                          const double *rhs, const double *range,
                          const int *mstart, const int *mclind,
-                         const double *dmatval) {
+                         const double *dmatval,
+                         const std::vector<std::string> &row_names) {
   std::vector<double> rowLower(newrows);
   std::vector<double> rowUpper(newrows);
+  int nrowInit = get_nrows();
   coin_common::fill_row_bounds_from_new_rows_data(rowLower, rowUpper, newrows,
                                                   qrtype, rhs);
 
   _clp.addRows(newrows, rowLower.data(), rowUpper.data(), mstart, mclind,
                dmatval);
+  if (row_names.size() > 0) {
+    int nrowFinal = get_nrows();
+    for (int i = nrowInit; i < nrowFinal; i++) {
+      chg_row_name(i, row_names[i - nrowInit]);
+    }
+  }
 }
 
 void SolverClp::add_cols(int newcol, int newnz, const double *objx,
@@ -280,6 +304,13 @@ void SolverClp::add_cols(int newcol, int newnz, const double *objx,
 }
 
 void SolverClp::add_name(int type, const char *cnames, int indice) {
+  auto error =
+      LOGLOCATION + "ERROR : addnames not implemented in the CLP interface.";
+  throw NotImplementedFeatureSolverException(error);
+}
+void SolverClp::add_names(int type, const std::vector<std::string> &cnames,
+                          int first, int end) {
+  // TODO
   auto error =
       LOGLOCATION + "ERROR : addnames not implemented in the CLP interface.";
   throw NotImplementedFeatureSolverException(error);

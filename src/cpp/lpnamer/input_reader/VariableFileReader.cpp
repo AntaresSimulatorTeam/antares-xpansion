@@ -5,7 +5,7 @@
 #include <sstream>
 
 void updateMapColumn(const std::vector<ActiveLink>& links, int link_id,
-                     colId id, int time_step,
+                     colId id, unsigned int time_step,
                      std::map<linkId, ColumnsToChange>& mapColumn) {
   auto it = std::find_if(links.begin(), links.end(),
                          [link_id](const ActiveLink& link) {
@@ -59,7 +59,7 @@ void VariableFileReader::ReadVarsFromStream(
     if (variable == variable_name_config.ntc_variable_name) {
       int pays;
       int link_id;
-      int time_step;
+      unsigned int time_step;
       buffer >> pays;
       buffer >> link_id;
       buffer >> time_step;

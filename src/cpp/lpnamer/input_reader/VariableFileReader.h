@@ -14,7 +14,7 @@
 #include "LogUtils.h"
 
 void updateMapColumn(const std::vector<ActiveLink>& links, int link_id,
-                     colId id, int time_step,
+                     colId id, unsigned int time_step,
                      std::map<linkId, ColumnsToChange>& mapColumn);
 
 struct VariableFileReadNameConfiguration {

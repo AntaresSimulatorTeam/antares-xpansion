@@ -64,8 +64,12 @@ struct LogData {
   double subproblem_time;
   int cumulative_number_of_subproblem_resolved;
 };
+
 struct ILoggerBenders {
   virtual void display_message(const std::string &str) = 0;
+  virtual void PrintIterationSeparatorBegin() = 0;
+  virtual void PrintIterationSeparatorEnd() = 0;
+  virtual ~ILoggerBenders() = default;
 };
 
 struct BendersLoggerBase : public ILoggerBenders {
@@ -78,6 +82,18 @@ struct BendersLoggerBase : public ILoggerBenders {
     loggers.push_back(logger);
   }
 
+  virtual void PrintIterationSeparatorBegin() override {
+    for (auto logger : loggers) {
+      logger->PrintIterationSeparatorBegin();
+    }
+  }
+
+  virtual void PrintIterationSeparatorEnd() override {
+    for (auto logger : loggers) {
+      logger->PrintIterationSeparatorEnd();
+    }
+  }
+
  private:
   std::vector<std::shared_ptr<ILoggerBenders>> loggers;
 };
@@ -88,6 +104,8 @@ class ILogger : public ILoggerBenders {
   virtual void display_message(const std::string &str) = 0;
   virtual void display_message(const std::string &str,
                                LogUtils::LOGLEVEL level) = 0;
+  virtual void PrintIterationSeparatorBegin() = 0;
+  virtual void PrintIterationSeparatorEnd() = 0;
   virtual void log_at_initialization(const int it_number) = 0;
   virtual void log_iteration_candidates(const LogData &d) = 0;
   virtual void log_master_solving_duration(double durationInSeconds) = 0;
