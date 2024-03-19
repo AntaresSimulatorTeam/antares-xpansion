@@ -139,7 +139,8 @@ void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
     Reduce(GetSubproblemsCpuTime(), cumulative_subproblems_timer_per_iter,
            std::plus<double>(), rank_0);
     SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter);
-    ComputeSubproblemsContributionToOuterLoopCriterion(subproblem_data_map);
+    _data.external_loop_criterion =
+        ComputeSubproblemsContributionToOuterLoopCriterion(subproblem_data_map);
     if (_world.rank() == rank_0) {
       outer_loop_criterion_.push_back(_data.external_loop_criterion);
     }
@@ -148,15 +149,19 @@ void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
   }
 }
 
-void BendersMpi::ComputeSubproblemsContributionToOuterLoopCriterion(
+double BendersMpi::ComputeSubproblemsContributionToOuterLoopCriterion(
     const SubProblemDataMap &subproblem_data_map) {
   double outer_loop_criterion_sub_problems_map = 0.0;
+  double outer_loop_criterion_sub_problems_map_result = 0.0;
   for (const auto &[subproblem_name, subproblem_data] : subproblem_data_map) {
     outer_loop_criterion_sub_problems_map +=
         ComputeOuterLoopCriterion(subproblem_name, subproblem_data);
   }
-  Reduce(_data.external_loop_criterion, outer_loop_criterion_sub_problems_map,
-         std::plus<double>(), rank_0);
+  Reduce(outer_loop_criterion_sub_problems_map,
+         outer_loop_criterion_sub_problems_map_result, std::plus<double>(),
+         rank_0);
+
+  return outer_loop_criterion_sub_problems_map;
 }
 
 SubProblemDataMap BendersMpi::get_subproblem_cut_package() {
