@@ -401,6 +401,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
  *
  */
 void BendersBase::compute_cut(const SubProblemDataMap &subproblem_data_map) {
+  current_outer_loop_criterion_ = 0.0;
   for (auto const &[subproblem_name, subproblem_data] : subproblem_data_map) {
     _data.ub += subproblem_data.subproblem_cost;
 
@@ -408,7 +409,9 @@ void BendersBase::compute_cut(const SubProblemDataMap &subproblem_data_map) {
                               subproblem_data.var_name_and_subgradient,
                               _data.x_cut, subproblem_data.subproblem_cost);
     relevantIterationData_.last._cut_trace[subproblem_name] = subproblem_data;
+    ComputeOuterLoopCriterion(subproblem_name, subproblem_data);
   }
+  outer_loop_criterion_.push_back(current_outer_loop_criterion_);
 }
 
 void compute_cut_val(const Point &var_name_subgradient, const Point &x_cut,
@@ -945,19 +948,17 @@ CurrentIterationData BendersBase::GetCurrentIterationData() const {
   return _data;
 }
 
-void BendersBase::ComputeOuterLoopCriterion() {
-  double sum_loss_ = 0;
-  for (const auto &[sub_problem_name, sub_problem_data] :
-       relevantIterationData_.best._cut_trace) {
-    for (auto i(0); i < sub_problem_data.variables.names.size(); ++i) {
-      auto var_name = sub_problem_data.variables.names[i];
-      auto solution = sub_problem_data.variables.values[i];
-      if (std::regex_search(var_name, rgx_) &&
-          solution > _options.EXTERNAL_LOOP_OPTIONS
-                         .EXT_LOOP_CRITERION_COUNT_THRESHOLD) {
-        // 1h of unsupplied energy
-        sum_loss_ += 1;
-      }
+void BendersBase::ComputeOuterLoopCriterion(
+    const std::string &subproblem_name,
+    const PlainData::SubProblemData &sub_problem_data) {
+  for (auto i(0); i < sub_problem_data.variables.names.size(); ++i) {
+    auto var_name = sub_problem_data.variables.names[i];
+    auto solution = sub_problem_data.variables.values[i];
+    if (std::regex_search(var_name, rgx_) &&
+        solution >
+            _options.EXTERNAL_LOOP_OPTIONS.EXT_LOOP_CRITERION_COUNT_THRESHOLD) {
+      // 1h of unsupplied energy
+      current_outer_loop_criterion_ += 1;
     }
   }
 }
