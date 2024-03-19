@@ -944,3 +944,20 @@ void BendersBase::InitExternalValues() {
 CurrentIterationData BendersBase::GetCurrentIterationData() const {
   return _data;
 }
+
+void BendersBase::ComputeOuterLoopCriterion() {
+  double sum_loss_ = 0;
+  for (const auto &[sub_problem_name, sub_problem_data] :
+       relevantIterationData_.best._cut_trace) {
+    for (auto i(0); i < sub_problem_data.variables.names.size(); ++i) {
+      auto var_name = sub_problem_data.variables.names[i];
+      auto solution = sub_problem_data.variables.values[i];
+      if (std::regex_search(var_name, rgx_) &&
+          solution > _options.EXTERNAL_LOOP_OPTIONS
+                         .EXT_LOOP_CRITERION_COUNT_THRESHOLD) {
+        // 1h of unsupplied energy
+        sum_loss_ += 1;
+      }
+    }
+  }
+}

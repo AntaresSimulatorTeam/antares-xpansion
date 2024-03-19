@@ -2,6 +2,7 @@
 
 #include <execution>
 #include <filesystem>
+#include <regex>
 
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
@@ -192,6 +193,8 @@ class BendersBase {
 
   SolverLogManager solver_log_manager_;
 
+  void ComputeOuterLoopCriterion();
+
  private:
   void print_master_and_cut(std::ostream &file, int ite,
                             WorkerMasterData &trace, Point const &xopt);
@@ -227,6 +230,9 @@ class BendersBase {
   int iterations_before_resume = 0;
   int cumulative_number_of_subproblem_resolved_before_resume = 0;
   Timer benders_timer;
+  const std::string positive_unsupplied_vars_prefix_ =
+      "^PositiveUnsuppliedEnergy::";
+  const std::regex rgx_ = std::regex(positive_unsupplied_vars_prefix_);
 
  public:
   Logger _logger;
