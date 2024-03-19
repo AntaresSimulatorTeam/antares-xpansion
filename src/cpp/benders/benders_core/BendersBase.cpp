@@ -401,7 +401,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
  *
  */
 void BendersBase::compute_cut(const SubProblemDataMap &subproblem_data_map) {
-  current_outer_loop_criterion_ = 0.0;
+  // current_outer_loop_criterion_ = 0.0;
   for (auto const &[subproblem_name, subproblem_data] : subproblem_data_map) {
     _data.ub += subproblem_data.subproblem_cost;
 
@@ -409,9 +409,9 @@ void BendersBase::compute_cut(const SubProblemDataMap &subproblem_data_map) {
                               subproblem_data.var_name_and_subgradient,
                               _data.x_cut, subproblem_data.subproblem_cost);
     relevantIterationData_.last._cut_trace[subproblem_name] = subproblem_data;
-    ComputeOuterLoopCriterion(subproblem_name, subproblem_data);
+    // ComputeOuterLoopCriterion(subproblem_name, subproblem_data);
   }
-  outer_loop_criterion_.push_back(current_outer_loop_criterion_);
+  // outer_loop_criterion_.push_back(current_outer_loop_criterion_);
 }
 
 void compute_cut_val(const Point &var_name_subgradient, const Point &x_cut,
@@ -940,7 +940,7 @@ void BendersBase::ResetData(double criterion) {
 }
 
 void BendersBase::InitExternalValues() {
-  _data.external_loop_criterion = 0;
+  // _data.external_loop_criterion = 0;
   _data.benders_num_run = 0;
 }
 
@@ -948,9 +948,10 @@ CurrentIterationData BendersBase::GetCurrentIterationData() const {
   return _data;
 }
 
-void BendersBase::ComputeOuterLoopCriterion(
+double BendersBase::ComputeOuterLoopCriterion(
     const std::string &subproblem_name,
     const PlainData::SubProblemData &sub_problem_data) {
+  double outer_loop_criterion_per_sub_problem = 0.0;
   for (auto i(0); i < sub_problem_data.variables.names.size(); ++i) {
     auto var_name = sub_problem_data.variables.names[i];
     auto solution = sub_problem_data.variables.values[i];
@@ -958,7 +959,8 @@ void BendersBase::ComputeOuterLoopCriterion(
         solution >
             _options.EXTERNAL_LOOP_OPTIONS.EXT_LOOP_CRITERION_COUNT_THRESHOLD) {
       // 1h of unsupplied energy
-      current_outer_loop_criterion_ += 1;
+      outer_loop_criterion_per_sub_problem += 1;
     }
   }
+  return outer_loop_criterion_per_sub_problem;
 }

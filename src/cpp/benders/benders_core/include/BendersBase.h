@@ -97,6 +97,10 @@ class BendersBase {
   bool init_data_ = true;
   bool init_problems_ = true;
   bool free_problems_ = true;
+  const std::string positive_unsupplied_vars_prefix_ =
+      "^PositiveUnsuppliedEnergy::";
+  const std::regex rgx_ = std::regex(positive_unsupplied_vars_prefix_);
+  std::vector<double> outer_loop_criterion_;
 
  protected:
   virtual void Run() = 0;
@@ -193,7 +197,7 @@ class BendersBase {
 
   SolverLogManager solver_log_manager_;
 
-  void ComputeOuterLoopCriterion(
+  double ComputeOuterLoopCriterion(
       const std::string &subproblem_name,
       const PlainData::SubProblemData &sub_problem_data);
 
@@ -232,11 +236,6 @@ class BendersBase {
   int iterations_before_resume = 0;
   int cumulative_number_of_subproblem_resolved_before_resume = 0;
   Timer benders_timer;
-  const std::string positive_unsupplied_vars_prefix_ =
-      "^PositiveUnsuppliedEnergy::";
-  const std::regex rgx_ = std::regex(positive_unsupplied_vars_prefix_);
-  double current_outer_loop_criterion_ = 0;
-  std::vector<double> outer_loop_criterion_;
 
  public:
   Logger _logger;
