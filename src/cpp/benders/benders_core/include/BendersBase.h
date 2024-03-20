@@ -85,6 +85,7 @@ class BendersBase {
   void InitExternalValues();
   int GetBendersRunNumber() const { return _data.benders_num_run; }
   CurrentIterationData GetCurrentIterationData() const;
+  double GetOuterLoopCriterion() const;
 
  protected:
   CurrentIterationData _data;

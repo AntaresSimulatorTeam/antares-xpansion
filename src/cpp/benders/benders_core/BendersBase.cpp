@@ -936,16 +936,19 @@ WorkerMasterData BendersBase::BestIterationWorkerMaster() const {
 
 void BendersBase::ResetData(double criterion) {
   init_data();
-  _data.external_loop_criterion = criterion;
+  _data.outer_loop_criterion = criterion;
 }
 
 void BendersBase::InitExternalValues() {
-  // _data.external_loop_criterion = 0;
+  // _data.outer_loop_criterion = 0;
   _data.benders_num_run = 0;
 }
 
 CurrentIterationData BendersBase::GetCurrentIterationData() const {
   return _data;
+}
+double BendersBase::GetOuterLoopCriterion() const {
+  return _data.outer_loop_criterion;
 }
 
 double BendersBase::ComputeOuterLoopCriterion(

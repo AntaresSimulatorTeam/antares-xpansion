@@ -35,25 +35,12 @@ TEST_F(OuterLoopCriterionTest, IsCriterionHigh) {
   double epsilon = 1e-1;
   double max_unsup_energy = 0.1;
   const ExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
-  PlainData::Variables variables = {
-      {"PositiveUnsuppliedEnergy::1", "PositiveUnsuppliedEnergy::2", "var3"},
-      {0.2, 0.3, 68}};
-  double criterion_value = 2.0;  // two vars named ^PositiveUnsuppliedEnergy
-                                 // with value > max_unsup_energy
 
-  PlainData::SubProblemData subProblemData;
-  subProblemData.variables = variables;
-  SubProblemDataMap cut_trace = {
-      std::make_pair(std::string("P1"), subProblemData)};
-
-  WorkerMasterData worker_master_data;
-  worker_master_data._cut_trace = cut_trace;
-
+  double criterion_value = 2.0;
   OuterloopCriterionLossOfLoad criterion(options);
 
-  EXPECT_EQ(criterion.IsCriterionSatisfied(worker_master_data),
-            CRITERION::HIGH);
-  EXPECT_EQ(criterion.CriterionValue(), criterion_value);
+  // criterion_value = 2 > threshold+epsilon
+  EXPECT_EQ(criterion.IsCriterionSatisfied(criterion_value), CRITERION::HIGH);
 }
 
 TEST_F(OuterLoopCriterionTest, IsCriterionLow) {
@@ -61,24 +48,11 @@ TEST_F(OuterLoopCriterionTest, IsCriterionLow) {
   double epsilon = 1e-1;
   double max_unsup_energy = 0.1;
   const ExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
-  PlainData::Variables variables = {
-      {"PositiveUnsuppliedEnergy::1", "PositiveUnsuppliedEnergy::2", "var3"},
-      {0.2, 0.3, 68}};
-  double criterion_value = 2.0;  // two vars named PositiveUnsuppliedEnergy with
-                                 // value > max_unsup_energy
-
-  PlainData::SubProblemData subProblemData;
-  subProblemData.variables = variables;
-  SubProblemDataMap cut_trace = {
-      std::make_pair(std::string("P1"), subProblemData)};
-
-  WorkerMasterData worker_master_data;
-  worker_master_data._cut_trace = cut_trace;
-
+  double criterion_value = 2.0;
   OuterloopCriterionLossOfLoad criterion(options);
 
-  EXPECT_EQ(criterion.IsCriterionSatisfied(worker_master_data), CRITERION::LOW);
-  EXPECT_EQ(criterion.CriterionValue(), criterion_value);
+  // criterion_value < threshold - epsilon
+  EXPECT_EQ(criterion.IsCriterionSatisfied(criterion_value), CRITERION::LOW);
 }
 
 TEST_F(OuterLoopCriterionTest, IsMet) {
@@ -86,25 +60,12 @@ TEST_F(OuterLoopCriterionTest, IsMet) {
   double epsilon = 1e-1;
   double max_unsup_energy = 0.1;
   const ExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
-  PlainData::Variables variables = {
-      {"PositiveUnsuppliedEnergy::1", "PositiveUnsuppliedEnergy::2", "var3"},
-      {0.2, 0.3, 68}};
-  double criterion_value = 2.0;  // two vars named PositiveUnsuppliedEnergy with
-                                 // value > max_unsup_energy
-
-  PlainData::SubProblemData subProblemData;
-  subProblemData.variables = variables;
-  SubProblemDataMap cut_trace = {
-      std::make_pair(std::string("P1"), subProblemData)};
-
-  WorkerMasterData worker_master_data;
-  worker_master_data._cut_trace = cut_trace;
+  double criterion_value = 2.0;
 
   OuterloopCriterionLossOfLoad criterion(options);
 
-  EXPECT_EQ(criterion.IsCriterionSatisfied(worker_master_data),
-            CRITERION::IS_MET);
-  EXPECT_EQ(criterion.CriterionValue(), criterion_value);
+  //  threshold - epsilon <= criterion_value <= threshold + epsilon
+  EXPECT_EQ(criterion.IsCriterionSatisfied(criterion_value), CRITERION::IS_MET);
 }
 
 //-------------------- MasterUpdateBaseTest -------------------------

@@ -21,7 +21,7 @@ void OuterLoop::Run() {
   benders_->DoFreeProblems(false);
   benders_->InitializeProblems();
   benders_->InitExternalValues();
-  CRITERION criterion = CRITERION::IS_MET;
+  CRITERION criterion_check = CRITERION::IS_MET;
   std::vector<double> obj_coeff;
   if (world_.rank() == 0) {
     obj_coeff = benders_->MasterObjectiveFunctionCoeffs();
@@ -38,9 +38,9 @@ void OuterLoop::Run() {
     // de-comment for general case
     //  cuts_manager_->Save(benders_->AllCuts());
     // auto cuts = cuts_manager_->Load();
-    criterion =
-        criterion_->IsCriterionSatisfied(benders_->BestIterationWorkerMaster());
-    if (criterion == CRITERION::HIGH) {
+    criterion_check =
+        criterion_->IsCriterionSatisfied(benders_->GetOuterLoopCriterion());
+    if (criterion_check == CRITERION::HIGH) {
       std::ostringstream err_msg;
       err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "External Loop")
               << "Criterion cannot be satisfied for your study:\n"
@@ -51,25 +51,23 @@ void OuterLoop::Run() {
     master_updater_->Init();
   }
 
-  mpi::broadcast(world_, criterion, 0);
+  mpi::broadcast(world_, criterion_check, 0);
   bool stop_update_master = false;
   while (!stop_update_master) {
     benders_->ResetData(criterion_->CriterionValue());
     PrintLog();
     benders_->launch();
     if (world_.rank() == 0) {
-      criterion = criterion_->IsCriterionSatisfied(
-          benders_->BestIterationWorkerMaster());
-      stop_update_master = master_updater_->Update(criterion);
+      criterion_check =
+          criterion_->IsCriterionSatisfied(benders_->GetOuterLoopCriterion());
+      stop_update_master = master_updater_->Update(criterion_check);
     }
 
-    mpi::broadcast(world_, criterion, 0);
+    mpi::broadcast(world_, criterion_check, 0);
   }
   // last prints
   PrintLog();
-  auto benders_data = benders_->GetCurrentIterationData();
-  benders_data.external_loop_criterion = criterion_->CriterionValue();
-  benders_->mathLoggerDriver_->Print(benders_data);
+  benders_->mathLoggerDriver_->Print(benders_->GetCurrentIterationData());
 
   // TODO general-case
   //  cuts_manager_->Save(benders_->AllCuts());
