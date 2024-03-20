@@ -176,21 +176,20 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   benders->InitializeProblems();
   benders->launch();
 
-  MasterUpdateBase master_updater(benders, 0.5);
+  MasterUpdateBase master_updater(benders, 0.5, 0.1);
   // update lambda_max
   master_updater.Init();
   benders->ResetData(3.0);
   benders->launch();
   auto num_constraints_master_before = benders->MasterGetnrows();
-  master_updater.Update(CRITERION::LOW);
+  master_updater.Update(CRITERION::HIGH);
   auto num_constraints_master_after = benders->MasterGetnrows();
 
   auto master_variables = benders->MasterVariables();
   auto expected_coeffs = benders->MasterObjectiveFunctionCoeffs();
 
   // criterion is low <=> lambda_max = min(lambda_max, invest_cost)
-  auto lambda_max = (std::min)(LambdaMax(benders),
-                               benders->GetBestIterationData().invest_cost);
+  auto lambda_max = LambdaMax(benders);
   auto expected_rhs = 0.5 * lambda_max;
 
   //
@@ -233,7 +232,7 @@ TEST_P(MasterUpdateBaseTest, InitialRhs) {
 
   benders->launch();
 
-  MasterUpdateBase master_updater(benders, 0.5);
+  MasterUpdateBase master_updater(benders, 0.5, 0.1);
   // update lambda_max
   master_updater.Init();
   auto lambda_max = LambdaMax(benders);

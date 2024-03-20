@@ -52,15 +52,15 @@ void OuterLoop::Run() {
   }
 
   mpi::broadcast(world_, criterion, 0);
-
-  while (criterion != CRITERION::IS_MET) {
+  bool stop_update_master = false;
+  while (!stop_update_master) {
     benders_->ResetData(criterion_->CriterionValue());
     PrintLog();
     benders_->launch();
     if (world_.rank() == 0) {
       criterion = criterion_->IsCriterionSatisfied(
           benders_->BestIterationWorkerMaster());
-      master_updater_->Update(criterion);
+      stop_update_master = master_updater_->Update(criterion);
     }
 
     mpi::broadcast(world_, criterion, 0);

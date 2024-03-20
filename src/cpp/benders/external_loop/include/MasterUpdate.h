@@ -3,21 +3,23 @@
 
 class IMasterUpdate {
  public:
-  virtual void Update(const CRITERION &criterion) = 0;
+  virtual bool Update(const CRITERION &criterion) = 0;
   virtual void Init() = 0;
 };
 
 class MasterUpdateBase : public IMasterUpdate {
  public:
   explicit MasterUpdateBase(pBendersBase benders, double lambda,
-                            double lambda_min, double lambda_max, double tau);
+                            double lambda_min, double lambda_max, double tau,
+                            double epsilon_lambda);
   explicit MasterUpdateBase(pBendersBase benders, double lambda,
                             double lambda_min, double lambda_max, double tau,
-                            const std::string &name);
+                            const std::string &name, double epsilon_lambda);
   explicit MasterUpdateBase(pBendersBase benders, double tau,
-                            const std::string &name);
-  explicit MasterUpdateBase(pBendersBase benders, double tau);
-  void Update(const CRITERION &criterion) override;
+                            const std::string &name, double epsilon_lambda);
+  explicit MasterUpdateBase(pBendersBase benders, double tau,
+                            double epsilon_lambda);
+  bool Update(const CRITERION &criterion) override;
   void Init() override;
 
  private:
@@ -34,4 +36,6 @@ class MasterUpdateBase : public IMasterUpdate {
   double lambda_max_ = -1;
   // tau
   double dichotomy_weight_coeff_ = 0.5;
+  double epsilon_lambda_ = 1e-1;
+  bool stop_update_ = true;
 };

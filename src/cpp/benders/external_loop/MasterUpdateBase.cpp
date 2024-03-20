@@ -1,29 +1,37 @@
 #include "MasterUpdate.h"
 
-MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau)
-    : benders_(std::move(benders)), lambda_(0), lambda_min_(0) {
+MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau,
+                                   double epsilon_lambda)
+    : benders_(std::move(benders)),
+      lambda_(0),
+      lambda_min_(0),
+      epsilon_lambda_(epsilon_lambda) {
   CheckTau(tau);
 }
 
 MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau,
-                                   const std::string &name)
-    : MasterUpdateBase(benders, tau) {
+                                   const std::string &name,
+                                   double epsilon_lambda)
+    : MasterUpdateBase(benders, tau, epsilon_lambda) {
   min_invest_constraint_name_ = name;
 }
 MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double lambda,
                                    double lambda_min, double lambda_max,
-                                   double tau)
+                                   double tau, double epsilon_lambda)
     : benders_(std::move(benders)),
       lambda_(lambda),
       lambda_min_(lambda_min),
-      lambda_max_(lambda_max) {
+      lambda_max_(lambda_max),
+      epsilon_lambda_(epsilon_lambda) {
   CheckTau(tau);
 }
 
 MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double lambda,
                                    double lambda_min, double lambda_max,
-                                   double tau, const std::string &name)
-    : MasterUpdateBase(benders, lambda, lambda_min, lambda_max, tau) {
+                                   double tau, const std::string &name,
+                                   double epsilon_lambda)
+    : MasterUpdateBase(benders, lambda, lambda_min, lambda_max, tau,
+                       epsilon_lambda) {
   min_invest_constraint_name_ = name;
 }
 
@@ -50,22 +58,26 @@ void MasterUpdateBase::SetLambdaMaxToMaxInvestmentCosts() {
     lambda_max_ += obj[var_id] * max_invest.at(var_name);
   }
 }
-void MasterUpdateBase::Update(const CRITERION &criterion) {
-    switch (criterion) {
-      case CRITERION::LOW:
-        lambda_max_ =
-            std::min(lambda_max_, benders_->GetBestIterationData().invest_cost);
-        break;
-      case CRITERION::HIGH:
-        lambda_min_ = lambda_;
-        break;
+bool MasterUpdateBase::Update(const CRITERION &criterion) {
+  switch (criterion) {
+    case CRITERION::LOW:
+      lambda_max_ =
+          std::min(lambda_max_, benders_->GetBestIterationData().invest_cost);
+      break;
+    case CRITERION::HIGH:
+      lambda_min_ = lambda_;
+      break;
 
-      default:
-        return;
+    default:
+      return true;
   }
-  lambda_ = dichotomy_weight_coeff_ * lambda_max_ +
-            (1 - dichotomy_weight_coeff_) * lambda_min_;
-  UpdateConstraints();
+  stop_update_ = std::abs(lambda_max_ - lambda_min_) < epsilon_lambda_;
+  if (!stop_update_) {
+    lambda_ = dichotomy_weight_coeff_ * lambda_max_ +
+              (1 - dichotomy_weight_coeff_) * lambda_min_;
+    UpdateConstraints();
+  }
+  return stop_update_;
 }
 
 void MasterUpdateBase::UpdateConstraints() {
