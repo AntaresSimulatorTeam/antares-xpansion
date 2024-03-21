@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "CustomVector.h"
 #include "Timer.h"
 #include "glog/logging.h"
 
@@ -39,6 +40,10 @@ void BendersMpi::InitializeProblems() {
       AddSubproblemName(problem.first);
     }
     current_problem_id++;
+  }
+
+  if (_world.rank() == rank_0) {
+    SetSubproblemsVariablesIndex();
   }
   init_problems_ = false;
 }
@@ -149,19 +154,23 @@ void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
   }
 }
 
-double BendersMpi::ComputeSubproblemsContributionToOuterLoopCriterion(
+std::vector<double>
+BendersMpi::ComputeSubproblemsContributionToOuterLoopCriterion(
     const SubProblemDataMap &subproblem_data_map) {
-  double outer_loop_criterion_sub_problems_map = 0.0;
-  double outer_loop_criterion_sub_problems_map_result = 0.0;
+  std::vector<double> outer_loop_criterion_per_sub_problem_per_pattern(
+      patterns_.size(), {});
+  std::vector<double> outer_loop_criterion_sub_problems_map_result(
+      patterns_.size(), {});
+  AddVectors vector_add;
   for (const auto &[subproblem_name, subproblem_data] : subproblem_data_map) {
-    outer_loop_criterion_sub_problems_map +=
+    vector_add(outer_loop_criterion_per_sub_problem_per_pattern,
         ComputeOuterLoopCriterion(subproblem_name, subproblem_data);
   }
-  Reduce(outer_loop_criterion_sub_problems_map,
+  Reduce(outer_loop_criterion_per_sub_problem_per_pattern,
          outer_loop_criterion_sub_problems_map_result, std::plus<double>(),
          rank_0);
 
-  return outer_loop_criterion_sub_problems_map;
+  return outer_loop_criterion_sub_problems_map_result;
 }
 
 SubProblemDataMap BendersMpi::get_subproblem_cut_package() {

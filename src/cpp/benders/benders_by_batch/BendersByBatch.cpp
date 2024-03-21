@@ -6,6 +6,7 @@
 #include <numeric>
 
 #include "BatchCollection.h"
+#include "CustomVector.h"
 #include "RandomBatchShuffler.h"
 #include "glog/logging.h"
 BendersByBatch::BendersByBatch(
@@ -46,6 +47,10 @@ void BendersByBatch::InitializeProblems() {
       problem_count++;
     }
   }
+
+  // if (Rank() == rank_0) {
+  SetSubproblemsVariablesIndex();
+  // }
   init_problems_ = false;
 }
 void BendersByBatch::BroadcastSingleSubpbCostsUnderApprox() {
@@ -196,7 +201,7 @@ void BendersByBatch::SolveBatches() {
     const auto &batch_sub_problems = batch.sub_problem_names;
     double batch_subproblems_costs_contribution_in_gap_per_proc = 0;
     double batch_subproblems_costs_contribution_in_gap = 0;
-    double external_loop_criterion_current_batch = 0;
+    std::vector<double> external_loop_criterion_current_batch = 0;
     BuildCut(batch_sub_problems,
              &batch_subproblems_costs_contribution_in_gap_per_proc,
              external_loop_criterion_current_batch);
@@ -205,11 +210,13 @@ void BendersByBatch::SolveBatches() {
            rank_0);
     Reduce(GetSubproblemsCpuTime(), cumulative_subproblems_timer_per_iter_,
            std::plus<double>(), rank_0);
+    AddVectors vector_add;
     if (Rank() == rank_0) {
       _data.number_of_subproblem_solved += batch_sub_problems.size();
       _data.cumulative_number_of_subproblem_solved += batch_sub_problems.size();
       remaining_epsilon_ -= batch_subproblems_costs_contribution_in_gap;
-      _data.outer_loop_criterion += external_loop_criterion_current_batch;
+      vector_add(_data.outer_loop_criterion,
+                 external_loop_criterion_current_batch);
     }
 
     BroadCast(remaining_epsilon_, rank_0);
@@ -227,7 +234,7 @@ void BendersByBatch::SolveBatches() {
 void BendersByBatch::BuildCut(
     const std::vector<std::string> &batch_sub_problems,
     double *batch_subproblems_costs_contribution_in_gap_per_proc,
-    double &external_loop_criterion_current_batch) {
+    std::vector<double> &external_loop_criterion_current_batch) {
   SubProblemDataMap subproblem_data_map;
   Timer subproblems_timer_per_proc;
   GetSubproblemCut(subproblem_data_map, batch_sub_problems,

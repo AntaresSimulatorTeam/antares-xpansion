@@ -14,7 +14,7 @@ class BendersByBatch : public BendersMpi {
   ~BendersByBatch() override = default;
   void Run() override;
   void BuildCut(const std::vector<std::string> &batch_sub_problems, double *sum,
-                double &external_loop_criterion_current_batch);
+                std::vector<double> &external_loop_criterion_current_batch);
   std::string BendersName() const override { return "Benders By Batch mpi"; }
 
  protected:

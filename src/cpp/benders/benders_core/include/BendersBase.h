@@ -85,7 +85,7 @@ class BendersBase {
   void InitExternalValues();
   int GetBendersRunNumber() const { return _data.benders_num_run; }
   CurrentIterationData GetCurrentIterationData() const;
-  double GetOuterLoopCriterion() const;
+  std::vector<double> GetOuterLoopCriterion() const;
 
  protected:
   CurrentIterationData _data;
@@ -102,6 +102,10 @@ class BendersBase {
       "^PositiveUnsuppliedEnergy::";
   const std::regex rgx_ = std::regex(positive_unsupplied_vars_prefix_);
   std::vector<double> outer_loop_criterion_;
+  std::vector<std::string> subproblems_vars_names_ = {};
+  // tmp
+  std::vector<std::regex> patterns_ = {rgx_};
+  std::vector<std::vector<int>> var_indices_;
 
  protected:
   virtual void Run() = 0;
@@ -136,6 +140,15 @@ class BendersBase {
   void AddSubproblem(const std::pair<std::string, VariableMap> &kvp);
   [[nodiscard]] WorkerMasterPtr get_master() const;
   void MatchProblemToId();
+  /**
+   * for the nth variable name, Subproblems shares the same prefix , only the
+   suffix is different
+   * ex variable at index = 0 is named in:
+
+   * subproblems-1-1  --> NTCDirect::link<area1$$area2>::hour<0>
+   * subproblems-3-5  --> NTCDirect::link<area1$$area2>::hour<672>
+   */
+  void SetSubproblemsVariablesIndex();
   void AddSubproblemName(const std::string &name);
   [[nodiscard]] std::string get_master_name() const;
   [[nodiscard]] std::string get_solver_name() const;
@@ -198,7 +211,8 @@ class BendersBase {
 
   SolverLogManager solver_log_manager_;
 
-  double ComputeOuterLoopCriterion(
+  // outer loop criterion per pattern
+  std::vector<double> ComputeOuterLoopCriterion(
       const std::string &subproblem_name,
       const PlainData::SubProblemData &sub_problem_data);
 

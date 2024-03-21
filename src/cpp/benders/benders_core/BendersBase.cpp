@@ -9,6 +9,7 @@
 #include "LastIterationReader.h"
 #include "LastIterationWriter.h"
 #include "LogUtils.h"
+#include "VariablesGroup.h"
 #include "glog/logging.h"
 #include "solver_utils.h"
 
@@ -731,6 +732,16 @@ void BendersBase::MatchProblemToId() {
   }
 }
 
+void BendersBase::SetSubproblemsVariablesIndex() {
+  if (!subproblem_map.empty()) {
+    auto subproblem = subproblem_map.begin();
+    subproblems_vars_names_.clear();
+    subproblems_vars_names_ = subproblem->second->_solver->get_col_names();
+    VariablesGroup variablesGroup(subproblems_vars_names_, patterns_);
+    var_indices_ = variablesGroup.Indices();
+  }
+}
+
 void BendersBase::AddSubproblemName(const std::string &name) {
   subproblems.push_back(name);
 }
@@ -947,22 +958,35 @@ void BendersBase::InitExternalValues() {
 CurrentIterationData BendersBase::GetCurrentIterationData() const {
   return _data;
 }
-double BendersBase::GetOuterLoopCriterion() const {
+std::vector<double> BendersBase::GetOuterLoopCriterion() const {
   return _data.outer_loop_criterion;
 }
 
-double BendersBase::ComputeOuterLoopCriterion(
+std::vector<double> BendersBase::ComputeOuterLoopCriterion(
     const std::string &subproblem_name,
     const PlainData::SubProblemData &sub_problem_data) {
-  double outer_loop_criterion_per_sub_problem = 0.0;
-  for (auto i(0); i < sub_problem_data.variables.names.size(); ++i) {
-    auto var_name = sub_problem_data.variables.names[i];
-    auto solution = sub_problem_data.variables.values[i];
-    if (std::regex_search(var_name, rgx_) &&
-        solution >
-            _options.EXTERNAL_LOOP_OPTIONS.EXT_LOOP_CRITERION_COUNT_THRESHOLD) {
-      // 1h of unsupplied energy
-      outer_loop_criterion_per_sub_problem += 1;
+  std::vector<double> outer_loop_criterion_per_sub_problem(patterns_.size(),
+                                                           {});
+  // for (auto i(0); i < sub_problem_data.variables.names.size(); ++i) {
+  //   auto var_name = sub_problem_data.variables.names[i];
+  //   auto solution = sub_problem_data.variables.values[i];
+  //   if (std::regex_search(var_name, rgx_) &&
+  //       solution >
+  //           _options.EXTERNAL_LOOP_OPTIONS.EXT_LOOP_CRITERION_COUNT_THRESHOLD)
+  //           {
+  //     // 1h of unsupplied energy
+  //     outer_loop_criterion_per_sub_problem += 1;
+  //   }
+  // }
+  for (int pattern_index(0); pattern_index < patterns_.size();
+       ++pattern_index) {
+    auto pattern_variables_indices = var_indices_[pattern_index];
+    for (auto variables_index : pattern_variables_indices) {
+      if (auto solution = sub_problem_data.variables.values[variables_index];
+          solution >
+          _options.EXTERNAL_LOOP_OPTIONS.EXT_LOOP_CRITERION_COUNT_THRESHOLD)
+        // 1h of unsupplied energy
+        outer_loop_criterion_per_sub_problem[pattern_index] += 1;
     }
   }
   return outer_loop_criterion_per_sub_problem;

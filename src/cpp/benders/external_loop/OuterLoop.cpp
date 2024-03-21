@@ -51,7 +51,6 @@ void OuterLoop::Run() {
     master_updater_->Init();
   }
 
-  mpi::broadcast(world_, criterion_check, 0);
   bool stop_update_master = false;
   while (!stop_update_master) {
     benders_->ResetData(criterion_->CriterionValue());
@@ -63,7 +62,7 @@ void OuterLoop::Run() {
       stop_update_master = master_updater_->Update(criterion_check);
     }
 
-    mpi::broadcast(world_, criterion_check, 0);
+    mpi::broadcast(world_, stop_update_master, 0);
   }
   // last prints
   PrintLog();
