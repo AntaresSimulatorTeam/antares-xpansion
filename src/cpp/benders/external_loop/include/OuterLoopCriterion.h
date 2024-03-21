@@ -14,7 +14,7 @@ class CriterionCouldNotBeSatisfied
 enum class CRITERION { LOW, IS_MET, HIGH };
 class IOuterLoopCriterion {
  public:
-  virtual CRITERION IsCriterionSatisfied(
+  virtual bool IsCriterionHigh(
       const std::vector<double>& criterion_value) = 0;
   virtual std::string StateAsString() const = 0;
   virtual std::vector<double> CriterionValues() const = 0;
@@ -24,7 +24,7 @@ class IOuterLoopCriterion {
 class OuterloopCriterionLossOfLoad : public IOuterLoopCriterion {
  public:
   explicit OuterloopCriterionLossOfLoad(const ExternalLoopOptions& options);
-  CRITERION IsCriterionSatisfied(
+  bool IsCriterionHigh(
       const std::vector<double>& criterion_values) override;
   std::string StateAsString() const override;
   std::vector<double> CriterionValues() const override {
@@ -33,6 +33,8 @@ class OuterloopCriterionLossOfLoad : public IOuterLoopCriterion {
   double SumCriterions() const override;
 
  private:
+  bool DoubleCompare(double a, double b);
   ExternalLoopOptions options_;
+  std::vector<double> EXT_LOOP_CRITERION_VALUES_;
   std::vector<double> criterion_values_ = {};
 };

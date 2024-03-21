@@ -380,7 +380,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
               worker->solve(subproblem_data.lpstatus, _options.OUTPUTROOT,
                             _options.LAST_MASTER_MPS + MPS_SUFFIX, _writer);
               worker->get_value(subproblem_data.subproblem_cost);
-              worker->get_solution(subproblem_data.variables);
+              worker->get_solution(subproblem_data.solution);
               worker->get_subgradient(subproblem_data.var_name_and_subgradient);
               worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
               subproblem_data.subproblem_timer = subproblem_timer.elapsed();
@@ -977,7 +977,7 @@ std::vector<double> BendersBase::ComputeOuterLoopCriterion(
        ++pattern_index) {
     auto pattern_variables_indices = var_indices_[pattern_index];
     for (auto variables_index : pattern_variables_indices) {
-      if (auto solution = sub_problem_data.variables.values[variables_index];
+      if (auto solution = sub_problem_data.solution[variables_index];
           solution >
           _options.EXTERNAL_LOOP_OPTIONS.EXT_LOOP_CRITERION_COUNT_THRESHOLD)
         // 1h of unsupplied energy

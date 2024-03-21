@@ -40,7 +40,7 @@ TEST_F(OuterLoopCriterionTest, IsCriterionHigh) {
   OuterloopCriterionLossOfLoad criterion(options);
 
   // criterion_value = 2 > threshold+epsilon
-  EXPECT_EQ(criterion.IsCriterionSatisfied(criterion_value), CRITERION::HIGH);
+  EXPECT_EQ(criterion.IsCriterionHigh(criterion_value), true);
 }
 
 TEST_F(OuterLoopCriterionTest, IsCriterionLow) {
@@ -52,21 +52,21 @@ TEST_F(OuterLoopCriterionTest, IsCriterionLow) {
   OuterloopCriterionLossOfLoad criterion(options);
 
   // criterion_value < threshold - epsilon
-  EXPECT_EQ(criterion.IsCriterionSatisfied(criterion_value), CRITERION::LOW);
+  EXPECT_EQ(criterion.IsCriterionHigh(criterion_value), false);
 }
 
-TEST_F(OuterLoopCriterionTest, IsMet) {
-  double threshold = 2.0;
-  double epsilon = 1e-1;
-  double max_unsup_energy = 0.1;
-  const ExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
-  std::vector<double> criterion_value = {2.0};
+// TEST_F(OuterLoopCriterionTest, IsMet) {
+//   double threshold = 2.0;
+//   double epsilon = 1e-1;
+//   double max_unsup_energy = 0.1;
+//   const ExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
+//   std::vector<double> criterion_value = {2.0};
 
-  OuterloopCriterionLossOfLoad criterion(options);
+//   OuterloopCriterionLossOfLoad criterion(options);
 
-  //  threshold - epsilon <= criterion_value <= threshold + epsilon
-  EXPECT_EQ(criterion.IsCriterionSatisfied(criterion_value), CRITERION::IS_MET);
-}
+//   //  threshold - epsilon <= criterion_value <= threshold + epsilon
+//   EXPECT_EQ(criterion.IsCriterionHigh(criterion_value), CRITERION::IS_MET);
+// }
 
 //-------------------- MasterUpdateBaseTest -------------------------
 const auto STUDY_PATH =
@@ -143,7 +143,7 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   benders->init_data();
   benders->launch();
   auto num_constraints_master_before = benders->MasterGetnrows();
-  master_updater.Update(CRITERION::HIGH);
+  master_updater.Update(true);
   auto num_constraints_master_after = benders->MasterGetnrows();
 
   auto master_variables = benders->MasterVariables();
@@ -199,7 +199,7 @@ TEST_P(MasterUpdateBaseTest, InitialRhs) {
   auto lambda_max = LambdaMax(benders);
   benders->init_data();
   benders->launch();
-  master_updater.Update(CRITERION::HIGH);
+  master_updater.Update(true);
   auto expected_initial_rhs = lambda_max * 0.5;
 
   auto added_row_index = benders->MasterGetnrows() - 1;

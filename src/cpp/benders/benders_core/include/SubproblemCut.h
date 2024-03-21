@@ -5,20 +5,11 @@
 #include "Worker.h"
 #include "common.h"
 namespace PlainData {
-struct Variables {
-  std::vector<std::string> names;
-  std::vector<double> values;
-  template <class Archive>
-  void serialize(Archive &ar, const unsigned int version) {
-    ar & names;
-    ar & values;
-    }
-};
 
 struct SubProblemData {
   double subproblem_cost;
   Point var_name_and_subgradient;
-  Variables variables;
+  std::vector<double> solution;
   double single_subpb_costs_under_approx;
   double subproblem_timer;
   int simplex_iter;
@@ -28,7 +19,7 @@ struct SubProblemData {
   void serialize(Archive &ar, const unsigned int version) {
     ar & subproblem_cost;
     ar & var_name_and_subgradient;
-    ar & variables;
+    ar & solution;
     ar & single_subpb_costs_under_approx;
     ar & subproblem_timer;
     ar & simplex_iter;

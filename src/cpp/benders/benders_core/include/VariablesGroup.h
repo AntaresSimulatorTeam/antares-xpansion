@@ -12,6 +12,6 @@ class VariablesGroup {
  private:
   void Search();
   const std::vector<std::string>& all_variables_;
-  std::vector<std::regex> patterns_;
+  std::vector<std::regex> patterns_;  // pos + zone1 // pos zon 2
   std::vector<std::vector<int>> indices_;
 };

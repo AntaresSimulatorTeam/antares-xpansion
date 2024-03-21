@@ -21,7 +21,7 @@ void OuterLoop::Run() {
   benders_->DoFreeProblems(false);
   benders_->InitializeProblems();
   benders_->InitExternalValues();
-  CRITERION criterion_check = CRITERION::IS_MET;
+  bool criterion_check = false;
   std::vector<double> obj_coeff;
   if (world_.rank() == 0) {
     obj_coeff = benders_->MasterObjectiveFunctionCoeffs();
@@ -39,8 +39,9 @@ void OuterLoop::Run() {
     //  cuts_manager_->Save(benders_->AllCuts());
     // auto cuts = cuts_manager_->Load();
     criterion_check =
-        criterion_->IsCriterionSatisfied(benders_->GetOuterLoopCriterion());
-    if (criterion_check == CRITERION::HIGH) {
+        criterion_->IsCriterionHigh(benders_->GetOuterLoopCriterion());
+    // High
+    if (criterion_check) {
       std::ostringstream err_msg;
       err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "External Loop")
               << "Criterion cannot be satisfied for your study:\n"
@@ -58,7 +59,7 @@ void OuterLoop::Run() {
     benders_->launch();
     if (world_.rank() == 0) {
       criterion_check =
-          criterion_->IsCriterionSatisfied(benders_->GetOuterLoopCriterion());
+          criterion_->IsCriterionHigh(benders_->GetOuterLoopCriterion());
       stop_update_master = master_updater_->Update(criterion_check);
     }
 

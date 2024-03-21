@@ -169,6 +169,7 @@ BendersMpi::ComputeSubproblemsContributionToOuterLoopCriterion(
   Reduce(outer_loop_criterion_per_sub_problem_per_pattern,
          outer_loop_criterion_sub_problems_map_result, std::plus<double>(),
          rank_0);
+  // outer_loop_criterion_sub_problems_map_result/=nbyears;
 
   return outer_loop_criterion_sub_problems_map_result;
 }

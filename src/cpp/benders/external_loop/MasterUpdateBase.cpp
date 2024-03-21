@@ -58,19 +58,14 @@ void MasterUpdateBase::SetLambdaMaxToMaxInvestmentCosts() {
     lambda_max_ += obj[var_id] * max_invest.at(var_name);
   }
 }
-bool MasterUpdateBase::Update(const CRITERION &criterion) {
-  switch (criterion) {
-    case CRITERION::LOW:
-      lambda_max_ =
-          std::min(lambda_max_, benders_->GetBestIterationData().invest_cost);
-      break;
-    case CRITERION::HIGH:
-      lambda_min_ = lambda_;
-      break;
-
-    default:
-      return true;
+bool MasterUpdateBase::Update(bool is_criterion_high) {
+  if (is_criterion_high) {
+    lambda_min_ = lambda_;
+  } else {
+    lambda_max_ =
+        std::min(lambda_max_, benders_->GetBestIterationData().invest_cost);
   }
+
   stop_update_ = std::abs(lambda_max_ - lambda_min_) < epsilon_lambda_;
   if (!stop_update_) {
     lambda_ = dichotomy_weight_coeff_ * lambda_max_ +

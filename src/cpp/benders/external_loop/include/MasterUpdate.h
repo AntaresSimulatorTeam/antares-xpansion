@@ -3,7 +3,7 @@
 
 class IMasterUpdate {
  public:
-  virtual bool Update(const CRITERION &criterion) = 0;
+  virtual bool Update(bool is_criterion_high) = 0;
   virtual void Init() = 0;
 };
 
@@ -19,7 +19,7 @@ class MasterUpdateBase : public IMasterUpdate {
                             const std::string &name, double epsilon_lambda);
   explicit MasterUpdateBase(pBendersBase benders, double tau,
                             double epsilon_lambda);
-  bool Update(const CRITERION &criterion) override;
+  bool Update(bool is_criterion_high) override;
   void Init() override;
 
  private:
