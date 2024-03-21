@@ -36,7 +36,7 @@ TEST_F(OuterLoopCriterionTest, IsCriterionHigh) {
   double max_unsup_energy = 0.1;
   const ExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
 
-  double criterion_value = 2.0;
+  std::vector<double> criterion_value = {2.0};
   OuterloopCriterionLossOfLoad criterion(options);
 
   // criterion_value = 2 > threshold+epsilon
@@ -48,7 +48,7 @@ TEST_F(OuterLoopCriterionTest, IsCriterionLow) {
   double epsilon = 1e-1;
   double max_unsup_energy = 0.1;
   const ExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
-  double criterion_value = 2.0;
+  std::vector<double> criterion_value = {2.0};
   OuterloopCriterionLossOfLoad criterion(options);
 
   // criterion_value < threshold - epsilon
@@ -60,7 +60,7 @@ TEST_F(OuterLoopCriterionTest, IsMet) {
   double epsilon = 1e-1;
   double max_unsup_energy = 0.1;
   const ExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
-  double criterion_value = 2.0;
+  std::vector<double> criterion_value = {2.0};
 
   OuterloopCriterionLossOfLoad criterion(options);
 
@@ -140,7 +140,7 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   MasterUpdateBase master_updater(benders, 0.5, 0.1);
   // update lambda_max
   master_updater.Init();
-  benders->ResetData(3.0);
+  benders->init_data();
   benders->launch();
   auto num_constraints_master_before = benders->MasterGetnrows();
   master_updater.Update(CRITERION::HIGH);
@@ -197,7 +197,7 @@ TEST_P(MasterUpdateBaseTest, InitialRhs) {
   // update lambda_max
   master_updater.Init();
   auto lambda_max = LambdaMax(benders);
-  benders->ResetData(3.0);
+  benders->init_data();
   benders->launch();
   master_updater.Update(CRITERION::HIGH);
   auto expected_initial_rhs = lambda_max * 0.5;

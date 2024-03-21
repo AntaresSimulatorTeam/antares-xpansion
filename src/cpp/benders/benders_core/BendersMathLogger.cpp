@@ -158,8 +158,11 @@ void PrintExternalLoopData(LogDestination& log_destination,
                            const HEADERSTYPE& type,
                            const BENDERSMETHOD& method) {
   log_destination << data.benders_num_run;
+  // TODO
+  // log_destination << std::scientific << std::setprecision(10)
+  //                 << data.outer_loop_criterion;
   log_destination << std::scientific << std::setprecision(10)
-                  << data.outer_loop_criterion;
+                  << data.outer_loop_criterion[0];
   PrintBendersData(log_destination, data, type, method);
 }
 void MathLoggerBaseExternalLoop::Print(const CurrentIterationData& data) {

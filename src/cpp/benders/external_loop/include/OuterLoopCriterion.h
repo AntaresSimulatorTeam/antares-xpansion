@@ -17,7 +17,8 @@ class IOuterLoopCriterion {
   virtual CRITERION IsCriterionSatisfied(
       const std::vector<double>& criterion_value) = 0;
   virtual std::string StateAsString() const = 0;
-  virtual double CriterionValues() const = 0;
+  virtual std::vector<double> CriterionValues() const = 0;
+  virtual double SumCriterions() const = 0;
 };
 
 class OuterloopCriterionLossOfLoad : public IOuterLoopCriterion {
@@ -26,9 +27,12 @@ class OuterloopCriterionLossOfLoad : public IOuterLoopCriterion {
   CRITERION IsCriterionSatisfied(
       const std::vector<double>& criterion_values) override;
   std::string StateAsString() const override;
-  double CriterionValues() const override { return criterion_values_; }
+  std::vector<double> CriterionValues() const override {
+    return criterion_values_;
+  }
+  double SumCriterions() const override;
 
  private:
   ExternalLoopOptions options_;
-  const std::vector<double>& criterion_values_ = {};
+  std::vector<double> criterion_values_ = {};
 };

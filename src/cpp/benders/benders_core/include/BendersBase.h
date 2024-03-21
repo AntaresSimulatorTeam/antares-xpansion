@@ -80,12 +80,12 @@ class BendersBase {
     _options.MAX_ITERATIONS = max_iteration;
   }
   BendersBaseOptions Options() const { return _options; }
-  void ResetData(double criterion);
   virtual void free() = 0;
   void InitExternalValues();
   int GetBendersRunNumber() const { return _data.benders_num_run; }
   CurrentIterationData GetCurrentIterationData() const;
   std::vector<double> GetOuterLoopCriterion() const;
+  virtual void init_data();
 
  protected:
   CurrentIterationData _data;
@@ -101,7 +101,7 @@ class BendersBase {
   const std::string positive_unsupplied_vars_prefix_ =
       "^PositiveUnsuppliedEnergy::";
   const std::regex rgx_ = std::regex(positive_unsupplied_vars_prefix_);
-  std::vector<double> outer_loop_criterion_;
+  std::vector<std::vector<double>> outer_loop_criterion_;
   std::vector<std::string> subproblems_vars_names_ = {};
   // tmp
   std::vector<std::regex> patterns_ = {rgx_};
@@ -109,7 +109,6 @@ class BendersBase {
 
  protected:
   virtual void Run() = 0;
-  virtual void init_data();
   void update_best_ub();
   bool ShouldBendersStop();
   bool is_initial_relaxation_requested() const;

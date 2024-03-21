@@ -945,11 +945,6 @@ WorkerMasterData BendersBase::BestIterationWorkerMaster() const {
   return relevantIterationData_.best;
 }
 
-void BendersBase::ResetData(double criterion) {
-  init_data();
-  _data.outer_loop_criterion = criterion;
-}
-
 void BendersBase::InitExternalValues() {
   // _data.outer_loop_criterion = 0;
   _data.benders_num_run = 0;

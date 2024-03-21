@@ -1,5 +1,7 @@
 #include "OuterLoopCriterion.h"
 
+#include <numeric>
+
 #include "LoggerUtils.h"
 
 OuterloopCriterionLossOfLoad::OuterloopCriterionLossOfLoad(
@@ -9,13 +11,13 @@ OuterloopCriterionLossOfLoad::OuterloopCriterionLossOfLoad(
 CRITERION OuterloopCriterionLossOfLoad::IsCriterionSatisfied(
     const std::vector<double>& criterion_value) {
   criterion_values_ = criterion_value;
-  for (criterion_value : criterion_values_) {
+  for (const auto& criterion_value : criterion_values_) {
     // options_.EXT_LOOP_CRITERION_VALUE --> to  vect
     // options_.EXT_LOOP_CRITERION_TOLERANCE --> to  vect
     if (criterion_value <= options_.EXT_LOOP_CRITERION_VALUE +
                                options_.EXT_LOOP_CRITERION_TOLERANCE) {
-      if (criterion_values >= options_.EXT_LOOP_CRITERION_VALUE -
-                                  options_.EXT_LOOP_CRITERION_TOLERANCE) {
+      if (criterion_value >= options_.EXT_LOOP_CRITERION_VALUE -
+                                 options_.EXT_LOOP_CRITERION_TOLERANCE) {
         return CRITERION::IS_MET;
       }
       return CRITERION::LOW;
@@ -25,9 +27,15 @@ CRITERION OuterloopCriterionLossOfLoad::IsCriterionSatisfied(
   }
 }
 
+double OuterloopCriterionLossOfLoad::SumCriterions() const {
+  return std::accumulate(criterion_values_.begin(), criterion_values_.end(),
+                         0.0);
+}
 std::string OuterloopCriterionLossOfLoad::StateAsString() const {
   std::ostringstream msg;
-  msg << "Sum loss = " << criterion_values_ << "\n"
+  auto sum_loss =
+      std::accumulate(criterion_values_.begin(), criterion_values_.end(), 0.0);
+  msg << "Sum loss = " << sum_loss << "\n"
       << "threshold: " << options_.EXT_LOOP_CRITERION_VALUE << "\n"
       << "epsilon: " << options_.EXT_LOOP_CRITERION_TOLERANCE << "\n";
 

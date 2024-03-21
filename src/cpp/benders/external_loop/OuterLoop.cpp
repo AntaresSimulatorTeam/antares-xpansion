@@ -53,7 +53,7 @@ void OuterLoop::Run() {
 
   bool stop_update_master = false;
   while (!stop_update_master) {
-    benders_->ResetData(criterion_->CriterionValue());
+    benders_->init_data();
     PrintLog();
     benders_->launch();
     if (world_.rank() == 0) {
@@ -80,8 +80,8 @@ void OuterLoop::PrintLog() {
   msg << "*** Outer loop: " << benders_->GetBendersRunNumber();
   logger->display_message(msg.str());
   msg.str("");
-  msg << "*** Criterion value: " << std::scientific << std::setprecision(10)
-      << criterion_->CriterionValue();
+  msg << "*** Sum loss: " << std::scientific << std::setprecision(10)
+      << criterion_->SumCriterions();
   logger->display_message(msg.str());
   logger->PrintIterationSeparatorEnd();
 }
