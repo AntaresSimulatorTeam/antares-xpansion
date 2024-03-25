@@ -42,10 +42,10 @@ void BendersMpi::InitializeProblems() {
     current_problem_id++;
   }
 
-  if (_world.rank() == rank_0) {
-    SetSubproblemsVariablesIndex();
-  }
-  init_problems_ = false;
+  // if (_world.rank() == rank_0) {
+  SetSubproblemsVariablesIndex();
+    // }
+    init_problems_ = false;
 }
 void BendersMpi::BuildMasterProblem() {
   if (_world.rank() == rank_0) {

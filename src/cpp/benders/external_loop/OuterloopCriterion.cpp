@@ -35,6 +35,7 @@ bool OuterloopCriterionLossOfLoad::IsCriterionHigh(
       return true;
     }
   }
+  return false;
 }
 
 double OuterloopCriterionLossOfLoad::SumCriterions() const {

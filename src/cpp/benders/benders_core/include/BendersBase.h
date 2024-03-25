@@ -107,7 +107,8 @@ class BendersBase {
   std::vector<std::vector<double>> outer_loop_criterion_;
   std::vector<std::string> subproblems_vars_names_ = {};
   // tmp
-  std::vector<std::regex> patterns_ = {rgx_, nrgx_};
+  // std::vector<std::regex> patterns_ = {rgx_, nrgx_};
+  std::vector<std::regex> patterns_ = {rgx_};
   std::vector<std::vector<int>> var_indices_;
 
  protected:
