@@ -1,11 +1,16 @@
 {
   "name": "antares-xpansion",
-  "version-string": "0.4.0",
+  "version-string": "1.2.2",
+  "builtin-baseline": "9484a57dd560b89f0a583be08af6753611c57fd5",
   "dependencies": [
     "jsoncpp",
     "gtest",
     "boost-mpi",
     "boost-program-options",
     "zlib"
+  ],
+  "overrides": [
+    { "name": "boost-mpi", "version": "1.81.0" },
+    { "name": "boost-program-options", "version": "1.81.0" }
   ]
 }
