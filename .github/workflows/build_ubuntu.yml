@@ -23,8 +23,8 @@ jobs:
         os: [ ubuntu-20.04 ]
         xprs: [
           #{ value: XPRESS-ON, ref: 8.13a },
-                { value: XPRESS-ON, ref: 9.2.5 },
-          #        { value: XPRESS-OFF }
+          { value: XPRESS-ON, ref: 9.2.5 },
+          #       { value: XPRESS-OFF }
         ]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
@@ -65,7 +65,7 @@ jobs:
       - name: Install mandatory system libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install -y ccache cmake libgtest-dev libjsoncpp-dev libtbb-dev libopenmpi-dev
+          sudo apt-get install -y ccache libtbb-dev
           sudo apt-get install -y g++-10 gcc-10
 
       - name: Update alternatives
@@ -77,6 +77,11 @@ jobs:
           sudo update-alternatives --set cc /usr/bin/gcc
           sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30
           sudo update-alternatives --set c++ /usr/bin/g++
+
+      - uses: lukka/get-cmake@latest
+        with:
+          useLocalCache: false
+          useCloudCache: true
 
       - name: Read antares-solver version
         id: antares-version
@@ -107,11 +112,16 @@ jobs:
           os: ${{matrix.os}}
           os-full-name: Ubuntu-20.04
 
-      - name: Compile Boost
-        uses: ./.github/workflows/compile-boost
-        with:
-          prefix: "../rte-antares-deps-Release/"
-          load-toolset: 'false'
+      - run: |
+          mkdir -p ${{ github.workspace }}/vcpkg_cache
+
+      - name: vcpkg install
+        run: |
+          pushd vcpkg
+          git fetch --unshallow
+          ./bootstrap-vcpkg.sh
+          popd
+          vcpkg/vcpkg install
 
       - name: Configure
         shell: bash
@@ -129,13 +139,15 @@ jobs:
                 -DCMAKE_INSTALL_PREFIX=_install \
                 -DBUILD_UI=ON  \
                 -DXPRESS=${{ env.XPRESS_VALUE }} \
-                -DXPRESS_ROOT=${{ env.XPRESSDIR }}
+                -DXPRESS_ROOT=${{ env.XPRESSDIR }} \
+                -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
         run: |
-          cmake --build _build --config Release -j8
+          cmake --build _build --config Release -j$(nproc)
 
       - name: Test
         run: |
+          export PATH=${GITHUB_WORKSPACE}/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
