@@ -26,7 +26,7 @@ jobs:
       pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
@@ -69,7 +69,7 @@ jobs:
     outputs:
       zip_name: ${{ steps.zip_name.outputs.zip_name }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
 
@@ -78,7 +78,7 @@ jobs:
 
       - name: Checkout xpressmp linux
         if: matrix.xprs == 'XPRESS-ON'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: rte-france/xpress-mp-temp
           path: ${{ env.XPRESSDIR }}
@@ -92,13 +92,13 @@ jobs:
           bruceadams/get-release@main
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
       # Restore both vcpkg and its artifacts from the GitHub cache service.
       - name: Restore vcpkg and its artifacts.
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           # The first path is the location of vcpkg (it contains the vcpkg executable and data files).
           # The other paths starting with '!' are exclusions: they contain termporary files generated during the build of the installed packages.
@@ -150,6 +150,7 @@ jobs:
       - name: Install deps with VCPKG
         run: |
           cd vcpkg
+          git fetch --unshallow
           ./bootstrap-vcpkg.sh
           vcpkg install --triplet ${{matrix.triplet}}
           rm -rf buildtrees
@@ -190,7 +191,9 @@ jobs:
 
       - name: Build
         run: |
-          cmake --build _build --config Release -j2 --target install
+          cmake --build _build --config Release -j4
+          cd _build
+          cmake --install .
 
       - name: Running unit tests
         shell: cmd

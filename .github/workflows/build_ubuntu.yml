@@ -32,13 +32,13 @@ jobs:
       XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
 
       - name: Checkout xpressmp linux
         if: matrix.xprs.value == 'XPRESS-ON'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: rte-france/xpress-mp
           path: ${{ env.XPRESSDIR }}
@@ -51,7 +51,7 @@ jobs:
           key: ${{ matrix.os }}-${{ matrix.xprs.value }}
 
       - name: Set up Python
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           cache: 'pip'
           python-version: 3.8
@@ -65,7 +65,7 @@ jobs:
       - name: Install mandatory system libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install -y ccache libgtest-dev libtbb-dev libopenmpi-dev
+          sudo apt-get install -y ccache libtbb-dev
           sudo apt-get install -y g++-10 gcc-10
 
       - name: Update alternatives
@@ -112,18 +112,13 @@ jobs:
           os: ${{matrix.os}}
           os-full-name: Ubuntu-20.04
 
-      - name: Compile Boost
-        uses: ./.github/workflows/compile-boost
-        with:
-          prefix: "../rte-antares-deps-Release/"
-
-
       - run: |
           mkdir -p ${{ github.workspace }}/vcpkg_cache
 
       - name: vcpkg install
         run: |
           pushd vcpkg
+          git fetch --unshallow
           ./bootstrap-vcpkg.sh
           popd
           vcpkg/vcpkg install
@@ -149,9 +144,10 @@ jobs:
 
       - name: Build
         run: |
-          cmake --build _build --config Release -j8
+          cmake --build _build --config Release -j$(nproc)
 
       - name: Test
         run: |
+          export PATH=${GITHUB_WORKSPACE}/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"

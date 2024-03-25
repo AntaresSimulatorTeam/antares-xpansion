@@ -34,13 +34,13 @@ jobs:
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true
 
       - name: Checkout xpressmp linux
         if: matrix.xprs.value == 'XPRESS-ON'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           repository: rte-france/xpress-mp-temp
           path: ${{ env.XPRESSDIR }}
@@ -51,10 +51,10 @@ jobs:
         if: github.event_name == 'release' && github.event.action == 'created'
         id: get_release
         uses:
-          bruceadams/get-release@v1.2.3
+          bruceadams/get-release@v1.3.2
 
       - name: Set up Python
-        uses: actions/setup-python@v3
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
           cache: 'pip'
@@ -62,7 +62,7 @@ jobs:
 
       # Restore both vcpkg and its artifacts from the GitHub cache service.
       - name: Restore vcpkg and its artifacts.
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           # The first path is the location of vcpkg (it contains the vcpkg executable and data files).
           # The other paths starting with '!' are exclusions: they contain termporary files generated during the build of the installed packages.
@@ -106,6 +106,7 @@ jobs:
       - name: Install deps with VCPKG
         run: |
           cd vcpkg
+          git fetch --unshallow
           ./bootstrap-vcpkg.sh
           vcpkg install --triplet ${{matrix.triplet}}
           rm -rf buildtrees
@@ -135,10 +136,11 @@ jobs:
       - name: Configure
         run: |
           $pwd=Get-Location
-          cmake -B _build -S .  -DDEPS_INSTALL_DIR=rte-antares-deps-Release  -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits"  -DBUILD_TESTING=ON  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"  -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install  -DBUILD_UI=ON  -DXPRESS=${{ env.XPRESS_VALUE }}  -DXPRESS_ROOT="${{ env.XPRESSDIR }}"
+          cmake -B _build -S .  -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits"  -DBUILD_TESTING=ON  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"  -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install  -DBUILD_UI=ON  -DXPRESS=${{ env.XPRESS_VALUE }}  -DXPRESS_ROOT="${{ env.XPRESSDIR }}"
       - name: Build
         run: |
-          cmake --build _build --config Release -j2 --target install
+          cmake --build _build --config Release -j4
+
       - name: Running unit tests
         timeout-minutes: 120
         shell: cmd
