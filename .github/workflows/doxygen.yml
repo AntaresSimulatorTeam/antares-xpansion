@@ -14,22 +14,22 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: true  # Fetch Hugo themes (true OR recursive)
           fetch-depth: 0    # Fetch all history for .GitInfo and .Lastmod
 
       - name: theme
         run: |
-          git clone https://github.com/jothepro/doxygen-awesome-css.git
-          cd doxygen-awesome-css
-          git checkout v2.2.1
-          git apply ../docs/antares-xpansion.patch
-
+             git clone https://github.com/jothepro/doxygen-awesome-css.git
+             cd doxygen-awesome-css
+             git checkout v2.2.1
+             git apply ../docs/antares-xpansion.patch
+             
       - name: Doxygen
         uses: mattnotmitt/doxygen-action@1.9.5
         with:
-          doxyfile-path: docs/Doxyfile
+          doxyfile-path:  docs/Doxyfile
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
