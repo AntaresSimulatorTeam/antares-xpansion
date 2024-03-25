@@ -962,17 +962,7 @@ std::vector<double> BendersBase::ComputeOuterLoopCriterion(
     const PlainData::SubProblemData &sub_problem_data) {
   std::vector<double> outer_loop_criterion_per_sub_problem(patterns_.size(),
                                                            {});
-  // for (auto i(0); i < sub_problem_data.variables.names.size(); ++i) {
-  //   auto var_name = sub_problem_data.variables.names[i];
-  //   auto solution = sub_problem_data.variables.values[i];
-  //   if (std::regex_search(var_name, rgx_) &&
-  //       solution >
-  //           _options.EXTERNAL_LOOP_OPTIONS.EXT_LOOP_CRITERION_COUNT_THRESHOLD)
-  //           {
-  //     // 1h of unsupplied energy
-  //     outer_loop_criterion_per_sub_problem += 1;
-  //   }
-  // }
+
   for (int pattern_index(0); pattern_index < patterns_.size();
        ++pattern_index) {
     auto pattern_variables_indices = var_indices_[pattern_index];

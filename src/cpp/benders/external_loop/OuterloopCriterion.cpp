@@ -25,9 +25,6 @@ bool OuterloopCriterionLossOfLoad::IsCriterionHigh(
   // return std::equal(criterion_value.begin(), criterion_value.end(),
   //                   options_.EXT_LOOP_CRITERION_VALUE.begin(),
   //                   DoubleCompare);
-  // return std::equal(criterion_values.begin(), criterion_values.end(),
-  //                   EXT_LOOP_CRITERION_VALUES_.begin(),
-  //                   &OuterloopCriterionLossOfLoad::DoubleCompare);
 
   for (int index(0); index < criterion_values_.size(); ++index) {
     if (criterion_values_[index] > EXT_LOOP_CRITERION_VALUES_[index] +
