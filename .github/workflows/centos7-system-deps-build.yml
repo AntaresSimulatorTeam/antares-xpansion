@@ -72,7 +72,7 @@ jobs:
 
     steps:
       - id: branch-name
-        uses: tj-actions/branch-names@v6
+        uses: tj-actions/branch-names@v8
 
       - uses: actions/checkout@v3
         with:
