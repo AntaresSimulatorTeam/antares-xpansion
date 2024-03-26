@@ -21,7 +21,7 @@ void OuterLoop::Run() {
   benders_->DoFreeProblems(false);
   benders_->InitializeProblems();
   benders_->InitExternalValues();
-  CRITERION criterion = CRITERION::IS_MET;
+  bool criterion_check = false;
   std::vector<double> obj_coeff;
   if (world_.rank() == 0) {
     obj_coeff = benders_->MasterObjectiveFunctionCoeffs();
@@ -38,9 +38,10 @@ void OuterLoop::Run() {
     // de-comment for general case
     //  cuts_manager_->Save(benders_->AllCuts());
     // auto cuts = cuts_manager_->Load();
-    criterion =
-        criterion_->IsCriterionSatisfied(benders_->BestIterationWorkerMaster());
-    if (criterion == CRITERION::HIGH) {
+    criterion_check =
+        criterion_->IsCriterionHigh(benders_->GetOuterLoopCriterion());
+    // High
+    if (criterion_check) {
       std::ostringstream err_msg;
       err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "External Loop")
               << "Criterion cannot be satisfied for your study:\n"
@@ -51,25 +52,22 @@ void OuterLoop::Run() {
     master_updater_->Init();
   }
 
-  mpi::broadcast(world_, criterion, 0);
-
-  while (criterion != CRITERION::IS_MET) {
-    benders_->ResetData(criterion_->CriterionValue());
+  bool stop_update_master = false;
+  while (!stop_update_master) {
+    benders_->init_data();
     PrintLog();
     benders_->launch();
     if (world_.rank() == 0) {
-      criterion = criterion_->IsCriterionSatisfied(
-          benders_->BestIterationWorkerMaster());
-      master_updater_->Update(criterion);
+      criterion_check =
+          criterion_->IsCriterionHigh(benders_->GetOuterLoopCriterion());
+      stop_update_master = master_updater_->Update(criterion_check);
     }
 
-    mpi::broadcast(world_, criterion, 0);
+    mpi::broadcast(world_, stop_update_master, 0);
   }
   // last prints
   PrintLog();
-  auto benders_data = benders_->GetCurrentIterationData();
-  benders_data.external_loop_criterion = criterion_->CriterionValue();
-  benders_->mathLoggerDriver_->Print(benders_data);
+  benders_->mathLoggerDriver_->Print(benders_->GetCurrentIterationData());
 
   // TODO general-case
   //  cuts_manager_->Save(benders_->AllCuts());
@@ -83,8 +81,8 @@ void OuterLoop::PrintLog() {
   msg << "*** Outer loop: " << benders_->GetBendersRunNumber();
   logger->display_message(msg.str());
   msg.str("");
-  msg << "*** Criterion value: " << std::scientific << std::setprecision(10)
-      << criterion_->CriterionValue();
+  msg << "*** Sum loss: " << std::scientific << std::setprecision(10)
+      << criterion_->SumCriterions();
   logger->display_message(msg.str());
   logger->PrintIterationSeparatorEnd();
 }

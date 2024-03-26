@@ -6,6 +6,7 @@
 #include <numeric>
 
 #include "BatchCollection.h"
+#include "CustomVector.h"
 #include "RandomBatchShuffler.h"
 #include "glog/logging.h"
 BendersByBatch::BendersByBatch(
@@ -46,6 +47,10 @@ void BendersByBatch::InitializeProblems() {
       problem_count++;
     }
   }
+
+  // if (Rank() == rank_0) {
+  SetSubproblemsVariablesIndex();
+  // }
   init_problems_ = false;
 }
 void BendersByBatch::BroadcastSingleSubpbCostsUnderApprox() {
@@ -151,6 +156,7 @@ void BendersByBatch::SeparationLoop() {
     SolveBatches();
 
     if (Rank() == rank_0) {
+      outer_loop_criterion_.push_back(_data.outer_loop_criterion);
       UpdateTrace();
       SaveCurrentBendersData();
     }
@@ -195,8 +201,10 @@ void BendersByBatch::SolveBatches() {
     const auto &batch_sub_problems = batch.sub_problem_names;
     double batch_subproblems_costs_contribution_in_gap_per_proc = 0;
     double batch_subproblems_costs_contribution_in_gap = 0;
+    std::vector<double> external_loop_criterion_current_batch = {};
     BuildCut(batch_sub_problems,
-             &batch_subproblems_costs_contribution_in_gap_per_proc);
+             &batch_subproblems_costs_contribution_in_gap_per_proc,
+             external_loop_criterion_current_batch);
     Reduce(batch_subproblems_costs_contribution_in_gap_per_proc,
            batch_subproblems_costs_contribution_in_gap, std::plus<double>(),
            rank_0);
@@ -206,6 +214,8 @@ void BendersByBatch::SolveBatches() {
       _data.number_of_subproblem_solved += batch_sub_problems.size();
       _data.cumulative_number_of_subproblem_solved += batch_sub_problems.size();
       remaining_epsilon_ -= batch_subproblems_costs_contribution_in_gap;
+      AddVectors<double>(_data.outer_loop_criterion,
+                         external_loop_criterion_current_batch);
     }
 
     BroadCast(remaining_epsilon_, rank_0);
@@ -222,7 +232,8 @@ void BendersByBatch::SolveBatches() {
  */
 void BendersByBatch::BuildCut(
     const std::vector<std::string> &batch_sub_problems,
-    double *batch_subproblems_costs_contribution_in_gap_per_proc) {
+    double *batch_subproblems_costs_contribution_in_gap_per_proc,
+    std::vector<double> &external_loop_criterion_current_batch) {
   SubProblemDataMap subproblem_data_map;
   Timer subproblems_timer_per_proc;
   GetSubproblemCut(subproblem_data_map, batch_sub_problems,
@@ -235,7 +246,8 @@ void BendersByBatch::BuildCut(
   misprice_ = global_misprice;
   Gather(subproblem_data_map, gathered_subproblem_map, rank_0);
   SetSubproblemsWalltime(subproblems_timer_per_proc.elapsed());
-
+  external_loop_criterion_current_batch =
+      ComputeSubproblemsContributionToOuterLoopCriterion(subproblem_data_map);
   for (const auto &subproblem_map : gathered_subproblem_map) {
     for (auto &&[sub_problem_name, subproblem_data] : subproblem_map) {
       SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);

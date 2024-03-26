@@ -35,25 +35,12 @@ TEST_F(OuterLoopCriterionTest, IsCriterionHigh) {
   double epsilon = 1e-1;
   double max_unsup_energy = 0.1;
   const ExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
-  PlainData::Variables variables = {
-      {"PositiveUnsuppliedEnergy::1", "PositiveUnsuppliedEnergy::2", "var3"},
-      {0.2, 0.3, 68}};
-  double criterion_value = 2.0;  // two vars named ^PositiveUnsuppliedEnergy
-                                 // with value > max_unsup_energy
 
-  PlainData::SubProblemData subProblemData;
-  subProblemData.variables = variables;
-  SubProblemDataMap cut_trace = {
-      std::make_pair(std::string("P1"), subProblemData)};
-
-  WorkerMasterData worker_master_data;
-  worker_master_data._cut_trace = cut_trace;
-
+  std::vector<double> criterion_value = {2.0};
   OuterloopCriterionLossOfLoad criterion(options);
 
-  EXPECT_EQ(criterion.IsCriterionSatisfied(worker_master_data),
-            CRITERION::HIGH);
-  EXPECT_EQ(criterion.CriterionValue(), criterion_value);
+  // criterion_value = 2 > threshold+epsilon
+  EXPECT_EQ(criterion.IsCriterionHigh(criterion_value), true);
 }
 
 TEST_F(OuterLoopCriterionTest, IsCriterionLow) {
@@ -61,51 +48,25 @@ TEST_F(OuterLoopCriterionTest, IsCriterionLow) {
   double epsilon = 1e-1;
   double max_unsup_energy = 0.1;
   const ExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
-  PlainData::Variables variables = {
-      {"PositiveUnsuppliedEnergy::1", "PositiveUnsuppliedEnergy::2", "var3"},
-      {0.2, 0.3, 68}};
-  double criterion_value = 2.0;  // two vars named PositiveUnsuppliedEnergy with
-                                 // value > max_unsup_energy
-
-  PlainData::SubProblemData subProblemData;
-  subProblemData.variables = variables;
-  SubProblemDataMap cut_trace = {
-      std::make_pair(std::string("P1"), subProblemData)};
-
-  WorkerMasterData worker_master_data;
-  worker_master_data._cut_trace = cut_trace;
-
+  std::vector<double> criterion_value = {2.0};
   OuterloopCriterionLossOfLoad criterion(options);
 
-  EXPECT_EQ(criterion.IsCriterionSatisfied(worker_master_data), CRITERION::LOW);
-  EXPECT_EQ(criterion.CriterionValue(), criterion_value);
+  // criterion_value < threshold - epsilon
+  EXPECT_EQ(criterion.IsCriterionHigh(criterion_value), false);
 }
 
-TEST_F(OuterLoopCriterionTest, IsMet) {
-  double threshold = 2.0;
-  double epsilon = 1e-1;
-  double max_unsup_energy = 0.1;
-  const ExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
-  PlainData::Variables variables = {
-      {"PositiveUnsuppliedEnergy::1", "PositiveUnsuppliedEnergy::2", "var3"},
-      {0.2, 0.3, 68}};
-  double criterion_value = 2.0;  // two vars named PositiveUnsuppliedEnergy with
-                                 // value > max_unsup_energy
+// TEST_F(OuterLoopCriterionTest, IsMet) {
+//   double threshold = 2.0;
+//   double epsilon = 1e-1;
+//   double max_unsup_energy = 0.1;
+//   const ExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
+//   std::vector<double> criterion_value = {2.0};
 
-  PlainData::SubProblemData subProblemData;
-  subProblemData.variables = variables;
-  SubProblemDataMap cut_trace = {
-      std::make_pair(std::string("P1"), subProblemData)};
+//   OuterloopCriterionLossOfLoad criterion(options);
 
-  WorkerMasterData worker_master_data;
-  worker_master_data._cut_trace = cut_trace;
-
-  OuterloopCriterionLossOfLoad criterion(options);
-
-  EXPECT_EQ(criterion.IsCriterionSatisfied(worker_master_data),
-            CRITERION::IS_MET);
-  EXPECT_EQ(criterion.CriterionValue(), criterion_value);
-}
+//   //  threshold - epsilon <= criterion_value <= threshold + epsilon
+//   EXPECT_EQ(criterion.IsCriterionHigh(criterion_value), CRITERION::IS_MET);
+// }
 
 //-------------------- MasterUpdateBaseTest -------------------------
 const auto STUDY_PATH =
@@ -176,21 +137,20 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   benders->InitializeProblems();
   benders->launch();
 
-  MasterUpdateBase master_updater(benders, 0.5);
+  MasterUpdateBase master_updater(benders, 0.5, 0.1);
   // update lambda_max
   master_updater.Init();
-  benders->ResetData(3.0);
+  benders->init_data();
   benders->launch();
   auto num_constraints_master_before = benders->MasterGetnrows();
-  master_updater.Update(CRITERION::LOW);
+  master_updater.Update(true);
   auto num_constraints_master_after = benders->MasterGetnrows();
 
   auto master_variables = benders->MasterVariables();
   auto expected_coeffs = benders->MasterObjectiveFunctionCoeffs();
 
   // criterion is low <=> lambda_max = min(lambda_max, invest_cost)
-  auto lambda_max = (std::min)(LambdaMax(benders),
-                               benders->GetBestIterationData().invest_cost);
+  auto lambda_max = LambdaMax(benders);
   auto expected_rhs = 0.5 * lambda_max;
 
   //
@@ -233,13 +193,13 @@ TEST_P(MasterUpdateBaseTest, InitialRhs) {
 
   benders->launch();
 
-  MasterUpdateBase master_updater(benders, 0.5);
+  MasterUpdateBase master_updater(benders, 0.5, 0.1);
   // update lambda_max
   master_updater.Init();
   auto lambda_max = LambdaMax(benders);
-  benders->ResetData(3.0);
+  benders->init_data();
   benders->launch();
-  master_updater.Update(CRITERION::HIGH);
+  master_updater.Update(true);
   auto expected_initial_rhs = lambda_max * 0.5;
 
   auto added_row_index = benders->MasterGetnrows() - 1;

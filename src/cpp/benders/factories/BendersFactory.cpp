@@ -168,11 +168,12 @@ int RunExternalLoop_(char** argv, const std::filesystem::path& options_file,
     auto benders = PrepareForExecution(benders_loggers, options, argv[0], true,
                                        env, world);
     double tau = 0.5;
+    double epsilon_lambda = 0.1;
     std::shared_ptr<IOuterLoopCriterion> criterion =
         std::make_shared<OuterloopCriterionLossOfLoad>(
             options.GetExternalLoopOptions());
     std::shared_ptr<IMasterUpdate> master_updater =
-        std::make_shared<MasterUpdateBase>(benders, tau);
+        std::make_shared<MasterUpdateBase>(benders, tau, epsilon_lambda);
     std::shared_ptr<ICutsManager> cuts_manager =
         std::make_shared<CutsManagerRunTime>();
 

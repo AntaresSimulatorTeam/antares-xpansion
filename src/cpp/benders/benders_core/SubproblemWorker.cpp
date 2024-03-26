@@ -73,14 +73,12 @@ void SubproblemWorker::get_subgradient(Point &s) const {
  *
  *  \param lb : reference to a map
  */
-void SubproblemWorker::get_solution(PlainData::Variables &vars) const {
-  vars.values = std::vector<double>(_solver->get_ncols());
+void SubproblemWorker::get_solution(std::vector<double> &solution) const {
+  solution = std::vector<double>(_solver->get_ncols());
 
   if (_solver->get_n_integer_vars() > 0) {
-    _solver->get_mip_sol(vars.values.data());
+    _solver->get_mip_sol(solution.data());
   } else {
-    _solver->get_lp_sol(vars.values.data(), NULL, NULL);
+    _solver->get_lp_sol(solution.data(), NULL, NULL);
   }
-
-  vars.names = _solver->get_col_names();
 }
