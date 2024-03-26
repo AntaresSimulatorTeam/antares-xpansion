@@ -85,6 +85,7 @@ class BendersBase {
   int GetBendersRunNumber() const { return _data.benders_num_run; }
   CurrentIterationData GetCurrentIterationData() const;
   std::vector<double> GetOuterLoopCriterion() const;
+  std::vector<double> GetOuterLoopCriterionAtBestBenders() const;
   virtual void init_data();
 
  protected:
@@ -104,6 +105,7 @@ class BendersBase {
       "^NegativeUnsuppliedEnergy::";
   const std::regex rgx_ = std::regex(positive_unsupplied_vars_prefix_);
   const std::regex nrgx_ = std::regex(negative_unsupplied_vars_prefix_);
+  //
   std::vector<std::vector<double>> outer_loop_criterion_;
   std::vector<std::string> subproblems_vars_names_ = {};
   // tmp

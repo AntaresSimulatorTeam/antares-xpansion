@@ -58,9 +58,9 @@ void OuterLoop::Run() {
     PrintLog();
     benders_->launch();
     if (world_.rank() == 0) {
-      criterion_check =
-          criterion_->IsCriterionHigh(benders_->GetOuterLoopCriterion());
-      stop_update_master = master_updater_->Update(criterion_check);
+      // criterion_check =
+      //     criterion_->IsCriterionHigh(benders_->GetOuterLoopCriterion());
+      stop_update_master = master_updater_->Update();
     }
 
     mpi::broadcast(world_, stop_update_master, 0);
