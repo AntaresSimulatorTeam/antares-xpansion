@@ -980,9 +980,8 @@ std::vector<double> BendersBase::ComputeOuterLoopCriterion(
     const PlainData::SubProblemData &sub_problem_data) {
   std::vector<double> outer_loop_criterion_per_sub_problem(patterns_.size(),
                                                            {});
-  // auto subproblem_weight = SubproblemWeight(_data.nsubproblem,
-  // subproblem_name);
-  auto subproblem_weight = 1;
+  auto subproblem_weight = SubproblemWeight(_data.nsubproblem, subproblem_name);
+  // auto subproblem_weight = 1;
   for (int pattern_index(0); pattern_index < patterns_.size();
        ++pattern_index) {
     auto pattern_variables_indices = var_indices_[pattern_index];
