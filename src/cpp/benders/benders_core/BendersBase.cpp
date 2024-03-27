@@ -959,7 +959,9 @@ std::vector<double> BendersBase::GetOuterLoopCriterion() const {
   return _data.outer_loop_criterion;
 }
 std::vector<double> BendersBase::GetOuterLoopCriterionAtBestBenders() const {
-  return outer_loop_criterion_[_data.best_it - 1];
+  return ((outer_loop_criterion_.size() == 0)
+              ? std::vector<double>()
+              : outer_loop_criterion_[_data.best_it - 1]);
 }
 
 std::vector<double> BendersBase::ComputeOuterLoopCriterion(

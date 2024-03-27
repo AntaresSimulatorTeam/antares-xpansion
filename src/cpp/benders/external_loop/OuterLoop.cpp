@@ -54,8 +54,8 @@ void OuterLoop::Run() {
 
   bool stop_update_master = false;
   while (!stop_update_master) {
-    benders_->init_data();
     PrintLog();
+    benders_->init_data();
     benders_->launch();
     if (world_.rank() == 0) {
       // criterion_check =
@@ -81,8 +81,13 @@ void OuterLoop::PrintLog() {
   msg << "*** Outer loop: " << benders_->GetBendersRunNumber();
   logger->display_message(msg.str());
   msg.str("");
+  // TODO criterion per pattern (aka prefix+area) and why at best Benders ?
+  const auto outer_loop_criterion =
+      benders_->GetOuterLoopCriterionAtBestBenders();
+  auto sum_loss =
+      outer_loop_criterion.size() == 0 ? 0 : outer_loop_criterion[0];
   msg << "*** Sum loss: " << std::scientific << std::setprecision(10)
-      << criterion_->SumCriterions();
+      << sum_loss;
   logger->display_message(msg.str());
   logger->PrintIterationSeparatorEnd();
 }
