@@ -5,12 +5,14 @@
 OuterLoop::OuterLoop(std::shared_ptr<IOuterLoopCriterion> criterion,
                      std::shared_ptr<IMasterUpdate> master_updater,
                      std::shared_ptr<ICutsManager> cuts_manager,
-                     pBendersBase benders, mpi::environment& env,
-                     mpi::communicator& world)
+                     pBendersBase benders,
+                     const ExternalLoopOptions& external_loop_options,
+                     mpi::environment& env, mpi::communicator& world)
     : criterion_(std::move(criterion)),
       master_updater_(std::move(master_updater)),
       cuts_manager_(std::move(cuts_manager)),
       benders_(std::move(benders)),
+      external_loop_options_(std::move(external_loop_options)),
       env_(env),
       world_(world) {
   loggers_.AddLogger(benders_->_logger);
@@ -20,7 +22,7 @@ OuterLoop::OuterLoop(std::shared_ptr<IOuterLoopCriterion> criterion,
 void OuterLoop::Run() {
   benders_->DoFreeProblems(false);
   benders_->InitializeProblems();
-  benders_->InitExternalValues();
+  // benders_->InitExternalValues();
   bool criterion_check = false;
   std::vector<double> obj_coeff;
   if (world_.rank() == 0) {
@@ -29,7 +31,7 @@ void OuterLoop::Run() {
     // /!\ partially
     benders_->SetMasterObjectiveFunctionCoeffsToZeros();
 
-    PrintLog();
+    // PrintLog();
   }
   benders_->launch();
   if (world_.rank() == 0) {
@@ -49,18 +51,21 @@ void OuterLoop::Run() {
       throw CriterionCouldNotBeSatisfied(err_msg.str(), LOGLOCATION);
     }
     // lambda_max
-    master_updater_->Init();
+    // master_updater_->Init();
+    benders_->InitExternalValues(external_loop_options_, false,
+                                 master_updater_->Rhs());
   }
 
   bool stop_update_master = false;
   while (!stop_update_master) {
     PrintLog();
-    benders_->init_data();
+    benders_->init_data(master_updater_->Rhs());
     benders_->launch();
     if (world_.rank() == 0) {
       // criterion_check =
       //     criterion_->IsCriterionHigh(benders_->GetOuterLoopCriterion());
-      stop_update_master = master_updater_->Update();
+      stop_update_master = master_updater_->Update(
+          benders_->ExternalLoopLambdaMin(), benders_->ExternalLoopLambdaMax());
     }
 
     mpi::broadcast(world_, stop_update_master, 0);

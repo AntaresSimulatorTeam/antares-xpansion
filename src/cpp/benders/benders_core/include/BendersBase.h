@@ -7,6 +7,7 @@
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
 #include "ILogger.h"
+#include "OuterLoopBiLevel.h"
 #include "OutputWriter.h"
 #include "SimulationOptions.h"
 #include "SubproblemCut.h"
@@ -81,12 +82,17 @@ class BendersBase {
   }
   BendersBaseOptions Options() const { return _options; }
   virtual void free() = 0;
-  void InitExternalValues();
+  void InitExternalValues(const ExternalLoopOptions &options,
+                          bool is_bilevel_check_all, double lambda);
   int GetBendersRunNumber() const { return _data.benders_num_run; }
   CurrentIterationData GetCurrentIterationData() const;
   std::vector<double> GetOuterLoopCriterion() const;
   std::vector<double> GetOuterLoopCriterionAtBestBenders() const;
   virtual void init_data();
+  void init_data(double external_loop_lambda);
+
+  double ExternalLoopLambdaMax() const;
+  double ExternalLoopLambdaMin() const;
 
  protected:
   CurrentIterationData _data;
@@ -112,6 +118,9 @@ class BendersBase {
   // std::vector<std::regex> patterns_ = {rgx_, nrgx_};
   std::vector<std::regex> patterns_ = {rgx_};
   std::vector<std::vector<int>> var_indices_;
+  OuterLoopBiLevel outer_loop_biLevel_;
+  bool is_bilevel_check_all_ = false;
+  ExternalLoopOptions external_loop_options_;
 
  protected:
   virtual void Run() = 0;

@@ -19,7 +19,6 @@ add_library (external_loop STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/OuterloopCriterion.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/MasterUpdateBase.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/CutsManagement.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopBiLevel.cpp
 	)
 
 

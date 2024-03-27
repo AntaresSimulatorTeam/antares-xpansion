@@ -28,6 +28,7 @@ add_library (benders_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/StartUp.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersMathLogger.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/VariablesGroup.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopBiLevel.cpp
 	)
 
 get_target_property(JSON_INC_PATH jsoncpp_lib INTERFACE_INCLUDE_DIRECTORIES)

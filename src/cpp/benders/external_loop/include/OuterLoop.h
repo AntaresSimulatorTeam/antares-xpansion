@@ -9,8 +9,9 @@ class OuterLoop {
   explicit OuterLoop(std::shared_ptr<IOuterLoopCriterion> criterion,
                      std::shared_ptr<IMasterUpdate> master_updater,
                      std::shared_ptr<ICutsManager> cuts_manager,
-                     pBendersBase benders, mpi::environment& env,
-                     mpi::communicator& world);
+                     pBendersBase benders,
+                     const ExternalLoopOptions& external_loop_options,
+                     mpi::environment& env, mpi::communicator& world);
   void Run();
 
  private:
@@ -19,6 +20,7 @@ class OuterLoop {
   std::shared_ptr<IMasterUpdate> master_updater_;
   std::shared_ptr<ICutsManager> cuts_manager_;
   pBendersBase benders_;
+  ExternalLoopOptions external_loop_options_;
   BendersLoggerBase loggers_;
   mpi::environment& env_;
   mpi::communicator& world_;

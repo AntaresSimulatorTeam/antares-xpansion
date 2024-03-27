@@ -45,6 +45,9 @@ void BendersBase::init_data() {
   _data.subproblems_walltime = 0;
   _data.outer_loop_criterion.clear();
   outer_loop_criterion_.clear();
+  // TODO
+  // _data.outer_loop_bilevel_best_ub = +1e20;
+  _data.benders_num_run = 0;
 }
 
 void BendersBase::OpenCsvFile() {
@@ -947,9 +950,17 @@ WorkerMasterData BendersBase::BestIterationWorkerMaster() const {
   return relevantIterationData_.best;
 }
 
-void BendersBase::InitExternalValues() {
+void BendersBase::InitExternalValues(const ExternalLoopOptions &options,
+                                     bool is_bilevel_check_all, double lambda) {
   // _data.outer_loop_criterion = 0;
-  _data.benders_num_run = 0;
+  external_loop_options_ = options;
+  // _data.benders_num_run = 1;
+  is_bilevel_check_all_ = is_bilevel_check_all;
+  outer_loop_biLevel_.Init(MasterObjectiveFunctionCoeffs(),
+                           BestIterationWorkerMaster().get_max_invest(),
+                           MasterVariables());
+  outer_loop_biLevel_.SetOptions(options);
+  outer_loop_biLevel_.SetLambda(lambda);
 }
 
 CurrentIterationData BendersBase::GetCurrentIterationData() const {
@@ -985,4 +996,18 @@ std::vector<double> BendersBase::ComputeOuterLoopCriterion(
     }
   }
   return outer_loop_criterion_per_sub_problem;
+}
+
+double BendersBase::ExternalLoopLambdaMax() const {
+  return outer_loop_biLevel_.LambdaMax();
+}
+double BendersBase::ExternalLoopLambdaMin() const {
+  return outer_loop_biLevel_.LambdaMin();
+}
+
+void BendersBase::init_data(double external_loop_lambda) {
+  _data.external_loop_lambda = external_loop_lambda;
+  auto tmp = _data.benders_num_run;
+  init_data();
+  _data.benders_num_run = tmp;
 }

@@ -348,6 +348,18 @@ void BendersMpi::launch() {
   _world.barrier();
 
   post_run_actions();
+
+  if (_world.rank() == rank_0 && !is_bilevel_check_all_) {
+    const WorkerMasterData &workerMasterData = BestIterationWorkerMaster();
+    const auto &invest_cost = workerMasterData._invest_cost;
+    const auto &overall_cost = invest_cost + workerMasterData._operational_cost;
+    outer_loop_biLevel_.Update_bilevel_data_if_feasible(
+        workerMasterData._cut_trace,
+        GetOuterLoopCriterionAtBestBenders() /*/!\ must
+                be at best it*/
+        ,
+        overall_cost, invest_cost, _data.external_loop_lambda);
+  }
   if (free_problems_) {
     free();
   }
