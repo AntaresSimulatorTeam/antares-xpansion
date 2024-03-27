@@ -75,14 +75,14 @@ bool MasterUpdateBase::Update() {
   WorkerMasterData workerMasterData = benders_->BestIterationWorkerMaster();
   double invest_cost = workerMasterData._invest_cost;
   double overall_cost = invest_cost + workerMasterData._operational_cost;
-  if (!outerLoopBiLevel_.Update_bilevel_data_if_feasible(
-          workerMasterData._cut_trace, invest_cost,
+  if (outerLoopBiLevel_.Update_bilevel_data_if_feasible(
+          workerMasterData._cut_trace,
           benders_
               ->GetOuterLoopCriterionAtBestBenders() /*/!\ must be at best it*/,
           overall_cost)) {
-    lambda_min_ = lambda_;
+    lambda_max_ = std::min(lambda_max_, invest_cost);
   } else {
-    lambda_max_ = outerLoopBiLevel_.LambdaMax();
+    lambda_min_ = lambda_;
   }
 
   stop_update_ = std::abs(lambda_max_ - lambda_min_) < epsilon_lambda_;

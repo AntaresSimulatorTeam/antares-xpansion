@@ -43,6 +43,8 @@ void BendersBase::init_data() {
   _data.iteration_time = 0;
   _data.timer_master = 0;
   _data.subproblems_walltime = 0;
+  _data.outer_loop_criterion.clear();
+  outer_loop_criterion_.clear();
 }
 
 void BendersBase::OpenCsvFile() {
@@ -965,7 +967,9 @@ std::vector<double> BendersBase::ComputeOuterLoopCriterion(
     const PlainData::SubProblemData &sub_problem_data) {
   std::vector<double> outer_loop_criterion_per_sub_problem(patterns_.size(),
                                                            {});
-
+  // auto subproblem_weight = SubproblemWeight(_data.nsubproblem,
+  // subproblem_name);
+  auto subproblem_weight = 1;
   for (int pattern_index(0); pattern_index < patterns_.size();
        ++pattern_index) {
     auto pattern_variables_indices = var_indices_[pattern_index];
@@ -975,7 +979,7 @@ std::vector<double> BendersBase::ComputeOuterLoopCriterion(
           _options.EXTERNAL_LOOP_OPTIONS.EXT_LOOP_CRITERION_COUNT_THRESHOLD)
         // 1h of unsupplied energy
         outer_loop_criterion_per_sub_problem[pattern_index] +=
-            1 * SubproblemWeight(_data.nsubproblem, subproblem_name);
+            subproblem_weight;
     }
   }
   return outer_loop_criterion_per_sub_problem;
