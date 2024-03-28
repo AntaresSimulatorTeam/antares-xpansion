@@ -13,15 +13,16 @@
 #include "glog/logging.h"
 #include "solver_utils.h"
 
-BendersBase::BendersBase(BendersBaseOptions options, Logger logger,
+BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
                          Writer writer,
                          std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
-    : _options(std::move(options)),
+    : _options(options),
       _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) /
                      (_options.CSV_NAME + ".csv")),
       _logger(std::move(logger)),
       _writer(std::move(writer)),
-      mathLoggerDriver_(mathLoggerDriver) {}
+      mathLoggerDriver_(mathLoggerDriver),
+      outer_loop_biLevel_(options.EXTERNAL_LOOP_OPTIONS) {}
 
 /*!
  *  \brief Initialize set of data used in the loop
@@ -48,6 +49,7 @@ void BendersBase::init_data() {
   // TODO
   _data.outer_loop_bilevel_best_ub = +1e20;
   _data.benders_num_run = 0;
+  _data.external_loop_lambda = 0.0;
 }
 
 void BendersBase::OpenCsvFile() {
@@ -957,7 +959,6 @@ void BendersBase::InitExternalValues(bool is_bilevel_check_all, double lambda) {
   outer_loop_biLevel_.Init(MasterObjectiveFunctionCoeffs(),
                            BestIterationWorkerMaster().get_max_invest(),
                            MasterVariables());
-  outer_loop_biLevel_.SetOptions(_options.EXTERNAL_LOOP_OPTIONS);
   outer_loop_biLevel_.SetLambda(lambda);
 }
 

@@ -1,5 +1,8 @@
 #include "OuterLoopBiLevel.h"
 
+OuterLoopBiLevel::OuterLoopBiLevel(const ExternalLoopOptions &options)
+    : options_(options) {}
+
 bool OuterLoopBiLevel::Update_bilevel_data_if_feasible(
     const SubProblemDataMap &x, const std::vector<double> &outer_loop_criterion,
     double overall_cost, double invest_cost_at_x, double lambda_min) {

@@ -65,8 +65,7 @@ void OuterLoop::CheckFeasibility() {
     if (!benders_->ExternalLoopFoundFeasible()) {
       std::ostringstream err_msg;
       err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "External Loop")
-              << "Criterion cannot be satisfied for your study:\n"
-              << criterion_->StateAsString();
+              << "Criterion cannot be satisfied for your study:\n";
       throw CriterionCouldNotBeSatisfied(err_msg.str(), LOGLOCATION);
     }
     // lambda_max

@@ -3,7 +3,7 @@
 
 class OuterLoopBiLevel {
  public:
-  OuterLoopBiLevel() = default;
+  explicit OuterLoopBiLevel(const ExternalLoopOptions &options);
   bool Update_bilevel_data_if_feasible(
       const SubProblemDataMap &x,
       const std::vector<double> &outer_loop_criterion, double overall_cost,
