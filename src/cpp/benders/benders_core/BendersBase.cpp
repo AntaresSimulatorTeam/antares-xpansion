@@ -1003,12 +1003,12 @@ double BendersBase::ExternalLoopLambdaMin() const {
 }
 
 void BendersBase::init_data(double external_loop_lambda) {
-  _data.external_loop_lambda = external_loop_lambda;
   auto benders_num_run = _data.benders_num_run;
   auto outer_loop_bilevel_best_ub = _data.outer_loop_bilevel_best_ub;
   init_data();
   _data.benders_num_run = benders_num_run;
   _data.outer_loop_bilevel_best_ub = outer_loop_bilevel_best_ub;
+  _data.external_loop_lambda = external_loop_lambda;
 }
 
 bool BendersBase::ExternalLoopFoundFeasible() const {

@@ -68,7 +68,7 @@ void OuterLoopBiLevel::Init(const std::vector<double> &obj,
     SetLambdaMaxToMaxInvestmentCosts(obj, max_invest, master_variable);
   }
   found_feasible_ = false;
-  bilevel_best_ub_ = +1e20;
+  // bilevel_best_ub_ = +1e20;
 }
 void OuterLoopBiLevel::SetLambdaMaxToMaxInvestmentCosts(
     const std::vector<double> &obj, const Point &max_invest,
