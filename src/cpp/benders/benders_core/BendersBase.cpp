@@ -46,7 +46,7 @@ void BendersBase::init_data() {
   _data.outer_loop_criterion.clear();
   outer_loop_criterion_.clear();
   // TODO
-  // _data.outer_loop_bilevel_best_ub = +1e20;
+  _data.outer_loop_bilevel_best_ub = +1e20;
   _data.benders_num_run = 0;
 }
 
@@ -1003,7 +1003,9 @@ double BendersBase::ExternalLoopLambdaMin() const {
 
 void BendersBase::init_data(double external_loop_lambda) {
   _data.external_loop_lambda = external_loop_lambda;
-  auto tmp = _data.benders_num_run;
+  auto benders_num_run = _data.benders_num_run;
+  auto outer_loop_bilevel_best_ub = _data.outer_loop_bilevel_best_ub;
   init_data();
-  _data.benders_num_run = tmp;
+  _data.benders_num_run = benders_num_run;
+  _data.outer_loop_bilevel_best_ub = outer_loop_bilevel_best_ub;
 }

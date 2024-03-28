@@ -360,6 +360,7 @@ void BendersMpi::launch() {
                 be at best it*/
         ,
         overall_cost, invest_cost, _data.external_loop_lambda);
+    _data.outer_loop_bilevel_best_ub = outer_loop_biLevel_.BilevelBestub();
   }
   if (free_problems_) {
     free();

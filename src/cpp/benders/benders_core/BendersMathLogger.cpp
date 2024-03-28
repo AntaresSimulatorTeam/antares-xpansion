@@ -50,8 +50,8 @@ HeadersManagerExternalLoop::HeadersManagerExternalLoop(
 std::vector<std::string> HeadersManagerExternalLoop::HeadersList() {
   std::vector<std::string> headers_list;
   headers_list.push_back("Outer loop");
-  // headers_list.push_back("bilevel best ub");
   headers_list.push_back("Criterion value");
+  headers_list.push_back("bilevel best ub");
   auto base_headers = HeadersManager::HeadersList();
   std::move(base_headers.begin(), base_headers.end(),
             std::back_inserter(headers_list));
@@ -164,6 +164,8 @@ void PrintExternalLoopData(LogDestination& log_destination,
   //                 << data.outer_loop_criterion;
   log_destination << std::scientific << std::setprecision(10)
                   << data.outer_loop_criterion[0];
+  log_destination << std::scientific << std::setprecision(10)
+                  << data.outer_loop_bilevel_best_ub;
   PrintBendersData(log_destination, data, type, method);
 }
 void MathLoggerBaseExternalLoop::Print(const CurrentIterationData& data) {

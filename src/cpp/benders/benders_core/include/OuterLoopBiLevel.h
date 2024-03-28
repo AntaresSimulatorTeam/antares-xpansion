@@ -17,7 +17,7 @@ class OuterLoopBiLevel {
   double LambdaMax() const { return lambda_max_; }
   double LambdaMin() const { return lambda_min_; }
   void SetLambda(double lambda) { lambda_ = lambda; }
-  double bilevel_best_ub() const { return bilevel_best_ub_; }
+  double BilevelBestub() const { return bilevel_best_ub_; }
 
  private:
   void SetLambdaMaxToMaxInvestmentCosts(const std::vector<double> &obj,
