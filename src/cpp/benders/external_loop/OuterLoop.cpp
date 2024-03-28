@@ -21,13 +21,14 @@ void OuterLoop::Run() {
   benders_->DoFreeProblems(false);
   benders_->InitializeProblems();
 
-  CheckFeasibility();
+  benders_->ExternalLoopCheckFeasibility();
 
   bool stop_update_master = false;
   while (!stop_update_master) {
     PrintLog();
     benders_->init_data(master_updater_->Rhs());
     benders_->launch();
+    benders_->RunExternalLoopBilevelChecks();
     if (world_.rank() == 0) {
       stop_update_master = master_updater_->Update(
           benders_->ExternalLoopLambdaMin(), benders_->ExternalLoopLambdaMax());
@@ -35,6 +36,7 @@ void OuterLoop::Run() {
 
     mpi::broadcast(world_, stop_update_master, 0);
   }
+
   // last prints
   PrintLog();
   benders_->mathLoggerDriver_->Print(benders_->GetCurrentIterationData());
@@ -42,35 +44,6 @@ void OuterLoop::Run() {
   // TODO general-case
   //  cuts_manager_->Save(benders_->AllCuts());
   benders_->free();
-}
-
-void OuterLoop::CheckFeasibility() {
-  std::vector<double> obj_coeff;
-  if (world_.rank() == 0) {
-    obj_coeff = benders_->MasterObjectiveFunctionCoeffs();
-
-    // /!\ partially
-    benders_->SetMasterObjectiveFunctionCoeffsToZeros();
-
-    // PrintLog();
-  }
-  benders_->launch();
-  if (world_.rank() == 0) {
-    benders_->SetMasterObjectiveFunction(obj_coeff.data(), 0,
-                                         obj_coeff.size() - 1);
-    // de-comment for general case
-    //  cuts_manager_->Save(benders_->AllCuts());
-    // auto cuts = cuts_manager_->Load();
-    // High
-    if (!benders_->ExternalLoopFoundFeasible()) {
-      std::ostringstream err_msg;
-      err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "External Loop")
-              << "Criterion cannot be satisfied for your study:\n";
-      throw CriterionCouldNotBeSatisfied(err_msg.str(), LOGLOCATION);
-    }
-    // lambda_max
-    benders_->InitExternalValues(false, master_updater_->Rhs());
-  }
 }
 
 void OuterLoop::PrintLog() {

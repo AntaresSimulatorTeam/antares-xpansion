@@ -349,6 +349,55 @@ void BendersMpi::launch() {
 
   post_run_actions();
 
+  if (free_problems_) {
+    free();
+  }
+  _world.barrier();
+}
+
+void BendersMpi::ExternalLoopCheckFeasibility() {
+  std::vector<double> obj_coeff;
+  if (_world.rank() == 0) {
+    obj_coeff = MasterObjectiveFunctionCoeffs();
+
+    // /!\ partially
+    SetMasterObjectiveFunctionCoeffsToZeros();
+
+    // PrintLog();
+  }
+
+  launch();
+  if (_world.rank() == 0) {
+    SetMasterObjectiveFunction(obj_coeff.data(), 0, obj_coeff.size() - 1);
+    UpdateOverallCosts();
+    RunExternalLoopBilevelChecks();
+    // de-comment for general case
+    //  cuts_manager_->Save(benders_->AllCuts());
+    // auto cuts = cuts_manager_->Load();
+    // High
+    if (!ExternalLoopFoundFeasible()) {
+      std::ostringstream err_msg;
+      err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "External Loop")
+              << "Criterion cannot be satisfied for your study:\n";
+      throw CriterionCouldNotBeSatisfied(err_msg.str(), LOGLOCATION);
+    }
+    // lambda_max
+    // benders_->InitExternalValues(false, master_updater_->Rhs());
+    InitExternalValues(false, 0.0);
+  }
+}
+
+void BendersMpi::UpdateOverallCosts() {
+  auto obj = MasterObjectiveFunctionCoeffs();
+  _data.invest_cost = 0;
+  for (const auto &[var_name, var_id] : MasterVariables()) {
+    _data.invest_cost += obj[var_id] * _data.x_cut.at(var_name);
+  }
+
+  relevantIterationData_.best._invest_cost = _data.invest_cost;
+}
+
+void BendersMpi::RunExternalLoopBilevelChecks() {
   if (_world.rank() == rank_0 && Options().EXTERNAL_LOOP_OPTIONS.DO_EXT_LOOP &&
       !is_bilevel_check_all_) {
     const WorkerMasterData &workerMasterData = BestIterationWorkerMaster();
@@ -362,8 +411,4 @@ void BendersMpi::launch() {
         overall_cost, invest_cost, _data.external_loop_lambda);
     _data.outer_loop_bilevel_best_ub = outer_loop_biLevel_.BilevelBestub();
   }
-  if (free_problems_) {
-    free();
-  }
-  _world.barrier();
 }

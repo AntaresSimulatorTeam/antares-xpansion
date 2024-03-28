@@ -6,11 +6,6 @@
 #include "LogUtils.h"
 #include "common.h"
 
-class CriterionCouldNotBeSatisfied
-    : public LogUtils::XpansionError<std::runtime_error> {
-  using LogUtils::XpansionError<std::runtime_error>::XpansionError;
-};
-
 enum class CRITERION { LOW, IS_MET, HIGH };
 class IOuterLoopCriterion {
  public:

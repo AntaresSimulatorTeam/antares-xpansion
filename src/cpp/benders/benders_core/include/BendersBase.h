@@ -93,6 +93,8 @@ class BendersBase {
   double ExternalLoopLambdaMax() const;
   double ExternalLoopLambdaMin() const;
   bool ExternalLoopFoundFeasible() const;
+  virtual void ExternalLoopCheckFeasibility() = 0;
+  virtual void RunExternalLoopBilevelChecks() = 0;
 
  protected:
   CurrentIterationData _data;
@@ -101,6 +103,8 @@ class BendersBase {
   // BendersCuts current_iteration_cuts_;
   VariableMap master_variable_map_;
   CouplingMap coupling_map_;
+  BendersRelevantIterationsData relevantIterationData_ = {WorkerMasterData(),
+                                                          WorkerMasterData()};
   // for warmstart initialize all data, master, subproblem etc...
   bool init_data_ = true;
   bool init_problems_ = true;
@@ -252,8 +256,6 @@ class BendersBase {
   BendersBaseOptions _options;
   unsigned int _totalNbProblems = 0;
   std::filesystem::path solver_log_file_ = "";
-  BendersRelevantIterationsData relevantIterationData_ = {WorkerMasterData(),
-                                                          WorkerMasterData()};
   WorkerMasterPtr _master;
   VariableMap _problem_to_id;
   SubproblemsMapPtr subproblem_map;
