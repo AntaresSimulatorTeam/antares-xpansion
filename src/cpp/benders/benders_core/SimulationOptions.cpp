@@ -168,6 +168,7 @@ BendersBaseOptions SimulationOptions::get_benders_options() const {
   result.LAST_MASTER_MPS = LAST_MASTER_MPS;
   result.LAST_MASTER_BASIS = LAST_MASTER_BASIS;
   result.BATCH_SIZE = BATCH_SIZE;
+  result.EXTERNAL_LOOP_OPTIONS.DO_EXT_LOOP = DO_EXT_LOOP;
   result.EXTERNAL_LOOP_OPTIONS.EXT_LOOP_CRITERION_VALUE =
       EXT_LOOP_CRITERION_VALUE;
   result.EXTERNAL_LOOP_OPTIONS.EXT_LOOP_CRITERION_TOLERANCE =
@@ -178,6 +179,6 @@ BendersBaseOptions SimulationOptions::get_benders_options() const {
 }
 
 ExternalLoopOptions SimulationOptions::GetExternalLoopOptions() const {
-  return {EXT_LOOP_CRITERION_VALUE, EXT_LOOP_CRITERION_TOLERANCE,
+  return {DO_EXT_LOOP, EXT_LOOP_CRITERION_VALUE, EXT_LOOP_CRITERION_TOLERANCE,
           EXT_LOOP_CRITERION_COUNT_THRESHOLD};
 }

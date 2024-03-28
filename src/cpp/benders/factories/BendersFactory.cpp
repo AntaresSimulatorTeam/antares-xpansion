@@ -186,8 +186,8 @@ int RunExternalLoop_(char** argv, const std::filesystem::path& options_file,
     std::shared_ptr<ICutsManager> cuts_manager =
         std::make_shared<CutsManagerRunTime>();
 
-    OuterLoop ext_loop(criterion, master_updater, cuts_manager, benders,
-                       ext_loop_options, env, world);
+    OuterLoop ext_loop(criterion, master_updater, cuts_manager, benders, env,
+                       world);
     ext_loop.Run();
 
     } catch (std::exception& e) {

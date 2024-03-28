@@ -82,8 +82,7 @@ class BendersBase {
   }
   BendersBaseOptions Options() const { return _options; }
   virtual void free() = 0;
-  void InitExternalValues(const ExternalLoopOptions &options,
-                          bool is_bilevel_check_all, double lambda);
+  void InitExternalValues(bool is_bilevel_check_all, double lambda);
   int GetBendersRunNumber() const { return _data.benders_num_run; }
   CurrentIterationData GetCurrentIterationData() const;
   std::vector<double> GetOuterLoopCriterion() const;
@@ -120,7 +119,6 @@ class BendersBase {
   std::vector<std::vector<int>> var_indices_;
   OuterLoopBiLevel outer_loop_biLevel_;
   bool is_bilevel_check_all_ = false;
-  ExternalLoopOptions external_loop_options_;
 
  protected:
   virtual void Run() = 0;

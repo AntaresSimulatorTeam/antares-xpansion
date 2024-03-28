@@ -950,16 +950,14 @@ WorkerMasterData BendersBase::BestIterationWorkerMaster() const {
   return relevantIterationData_.best;
 }
 
-void BendersBase::InitExternalValues(const ExternalLoopOptions &options,
-                                     bool is_bilevel_check_all, double lambda) {
+void BendersBase::InitExternalValues(bool is_bilevel_check_all, double lambda) {
   // _data.outer_loop_criterion = 0;
-  external_loop_options_ = options;
   // _data.benders_num_run = 1;
   is_bilevel_check_all_ = is_bilevel_check_all;
   outer_loop_biLevel_.Init(MasterObjectiveFunctionCoeffs(),
                            BestIterationWorkerMaster().get_max_invest(),
                            MasterVariables());
-  outer_loop_biLevel_.SetOptions(options);
+  outer_loop_biLevel_.SetOptions(_options.EXTERNAL_LOOP_OPTIONS);
   outer_loop_biLevel_.SetLambda(lambda);
 }
 
@@ -981,7 +979,6 @@ std::vector<double> BendersBase::ComputeOuterLoopCriterion(
   std::vector<double> outer_loop_criterion_per_sub_problem(patterns_.size(),
                                                            {});
   auto subproblem_weight = SubproblemWeight(_data.nsubproblem, subproblem_name);
-  // auto subproblem_weight = 1;
   for (int pattern_index(0); pattern_index < patterns_.size();
        ++pattern_index) {
     auto pattern_variables_indices = var_indices_[pattern_index];

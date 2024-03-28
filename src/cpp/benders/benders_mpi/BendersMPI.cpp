@@ -349,7 +349,8 @@ void BendersMpi::launch() {
 
   post_run_actions();
 
-  if (_world.rank() == rank_0 && !is_bilevel_check_all_) {
+  if (_world.rank() == rank_0 && Options().EXTERNAL_LOOP_OPTIONS.DO_EXT_LOOP &&
+      !is_bilevel_check_all_) {
     const WorkerMasterData &workerMasterData = BestIterationWorkerMaster();
     const auto &invest_cost = workerMasterData._invest_cost;
     const auto &overall_cost = invest_cost + workerMasterData._operational_cost;

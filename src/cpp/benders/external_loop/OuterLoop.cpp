@@ -5,14 +5,12 @@
 OuterLoop::OuterLoop(std::shared_ptr<IOuterLoopCriterion> criterion,
                      std::shared_ptr<IMasterUpdate> master_updater,
                      std::shared_ptr<ICutsManager> cuts_manager,
-                     pBendersBase benders,
-                     const ExternalLoopOptions& external_loop_options,
-                     mpi::environment& env, mpi::communicator& world)
+                     pBendersBase benders, mpi::environment& env,
+                     mpi::communicator& world)
     : criterion_(std::move(criterion)),
       master_updater_(std::move(master_updater)),
       cuts_manager_(std::move(cuts_manager)),
       benders_(std::move(benders)),
-      external_loop_options_(std::move(external_loop_options)),
       env_(env),
       world_(world) {
   loggers_.AddLogger(benders_->_logger);
@@ -52,8 +50,7 @@ void OuterLoop::Run() {
     }
     // lambda_max
     // master_updater_->Init();
-    benders_->InitExternalValues(external_loop_options_, false,
-                                 master_updater_->Rhs());
+    benders_->InitExternalValues(false, master_updater_->Rhs());
   }
 
   bool stop_update_master = false;
