@@ -92,6 +92,7 @@ class BendersBase {
 
   double ExternalLoopLambdaMax() const;
   double ExternalLoopLambdaMin() const;
+  bool ExternalLoopFoundFeasible() const;
 
  protected:
   CurrentIterationData _data;

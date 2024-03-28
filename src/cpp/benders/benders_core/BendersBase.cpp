@@ -1009,3 +1009,7 @@ void BendersBase::init_data(double external_loop_lambda) {
   _data.benders_num_run = benders_num_run;
   _data.outer_loop_bilevel_best_ub = outer_loop_bilevel_best_ub;
 }
+
+bool BendersBase::ExternalLoopFoundFeasible() const {
+  return outer_loop_biLevel_.FoundFeasible();
+}

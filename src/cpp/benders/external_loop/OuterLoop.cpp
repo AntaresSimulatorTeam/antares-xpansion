@@ -20,8 +20,31 @@ OuterLoop::OuterLoop(std::shared_ptr<IOuterLoopCriterion> criterion,
 void OuterLoop::Run() {
   benders_->DoFreeProblems(false);
   benders_->InitializeProblems();
-  // benders_->InitExternalValues();
-  bool criterion_check = false;
+
+  CheckFeasibility();
+
+  bool stop_update_master = false;
+  while (!stop_update_master) {
+    PrintLog();
+    benders_->init_data(master_updater_->Rhs());
+    benders_->launch();
+    if (world_.rank() == 0) {
+      stop_update_master = master_updater_->Update(
+          benders_->ExternalLoopLambdaMin(), benders_->ExternalLoopLambdaMax());
+    }
+
+    mpi::broadcast(world_, stop_update_master, 0);
+  }
+  // last prints
+  PrintLog();
+  benders_->mathLoggerDriver_->Print(benders_->GetCurrentIterationData());
+
+  // TODO general-case
+  //  cuts_manager_->Save(benders_->AllCuts());
+  benders_->free();
+}
+
+void OuterLoop::CheckFeasibility() {
   std::vector<double> obj_coeff;
   if (world_.rank() == 0) {
     obj_coeff = benders_->MasterObjectiveFunctionCoeffs();
@@ -38,10 +61,8 @@ void OuterLoop::Run() {
     // de-comment for general case
     //  cuts_manager_->Save(benders_->AllCuts());
     // auto cuts = cuts_manager_->Load();
-    criterion_check =
-        criterion_->IsCriterionHigh(benders_->GetOuterLoopCriterion());
     // High
-    if (criterion_check) {
+    if (!benders_->ExternalLoopFoundFeasible()) {
       std::ostringstream err_msg;
       err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "External Loop")
               << "Criterion cannot be satisfied for your study:\n"
@@ -49,31 +70,8 @@ void OuterLoop::Run() {
       throw CriterionCouldNotBeSatisfied(err_msg.str(), LOGLOCATION);
     }
     // lambda_max
-    // master_updater_->Init();
     benders_->InitExternalValues(false, master_updater_->Rhs());
   }
-
-  bool stop_update_master = false;
-  while (!stop_update_master) {
-    PrintLog();
-    benders_->init_data(master_updater_->Rhs());
-    benders_->launch();
-    if (world_.rank() == 0) {
-      // criterion_check =
-      //     criterion_->IsCriterionHigh(benders_->GetOuterLoopCriterion());
-      stop_update_master = master_updater_->Update(
-          benders_->ExternalLoopLambdaMin(), benders_->ExternalLoopLambdaMax());
-    }
-
-    mpi::broadcast(world_, stop_update_master, 0);
-  }
-  // last prints
-  PrintLog();
-  benders_->mathLoggerDriver_->Print(benders_->GetCurrentIterationData());
-
-  // TODO general-case
-  //  cuts_manager_->Save(benders_->AllCuts());
-  benders_->free();
 }
 
 void OuterLoop::PrintLog() {
