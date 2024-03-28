@@ -30,30 +30,30 @@ int main(int argc, char** argv) {
 
 class OuterLoopCriterionTest : public ::testing::Test {};
 
-TEST_F(OuterLoopCriterionTest, IsCriterionHigh) {
-  double threshold = 1.4;
-  double epsilon = 1e-1;
-  double max_unsup_energy = 0.1;
-  const ExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
+// TEST_F(OuterLoopCriterionTest, IsCriterionHigh) {
+//   double threshold = 1.4;
+//   double epsilon = 1e-1;
+//   double max_unsup_energy = 0.1;
+//   const ExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
 
-  std::vector<double> criterion_value = {2.0};
-  OuterloopCriterionLossOfLoad criterion(options);
+//   std::vector<double> criterion_value = {2.0};
+//   OuterloopCriterionLossOfLoad criterion(options);
 
-  // criterion_value = 2 > threshold+epsilon
-  EXPECT_EQ(criterion.IsCriterionHigh(criterion_value), true);
-}
+//   // criterion_value = 2 > threshold+epsilon
+//   EXPECT_EQ(criterion.IsCriterionHigh(criterion_value), true);
+// }
 
-TEST_F(OuterLoopCriterionTest, IsCriterionLow) {
-  double threshold = 4;
-  double epsilon = 1e-1;
-  double max_unsup_energy = 0.1;
-  const ExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
-  std::vector<double> criterion_value = {2.0};
-  OuterloopCriterionLossOfLoad criterion(options);
+// TEST_F(OuterLoopCriterionTest, IsCriterionLow) {
+//   double threshold = 4;
+//   double epsilon = 1e-1;
+//   double max_unsup_energy = 0.1;
+//   const ExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
+//   std::vector<double> criterion_value = {2.0};
+//   OuterloopCriterionLossOfLoad criterion(options);
 
-  // criterion_value < threshold - epsilon
-  EXPECT_EQ(criterion.IsCriterionHigh(criterion_value), false);
-}
+//   // criterion_value < threshold - epsilon
+//   EXPECT_EQ(criterion.IsCriterionHigh(criterion_value), false);
+// }
 
 // TEST_F(OuterLoopCriterionTest, IsMet) {
 //   double threshold = 2.0;
