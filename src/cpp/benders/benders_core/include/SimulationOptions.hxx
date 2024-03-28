@@ -73,6 +73,9 @@ BENDERS_OPTIONS_MACRO(LAST_MASTER_BASIS, std::string, "master_last_basis",
 // BATCH SIZE (Benders by batch)
 BENDERS_OPTIONS_MACRO(BATCH_SIZE, size_t, 0, asUInt())
 
+// is this an EXTERNAL Loop
+BENDERS_OPTIONS_MACRO(DO_EXT_LOOP, bool, false, asBool())
+
 // EXTERNAL Loop Loss of Load thresold
 BENDERS_OPTIONS_MACRO(EXT_LOOP_CRITERION_VALUE, double, 1.0, asDouble())
 

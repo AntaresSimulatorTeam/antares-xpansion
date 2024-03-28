@@ -14,26 +14,27 @@ class CriterionCouldNotBeSatisfied
 enum class CRITERION { LOW, IS_MET, HIGH };
 class IOuterLoopCriterion {
  public:
-  virtual CRITERION IsCriterionSatisfied(
-      const WorkerMasterData& worker_master_data) = 0;
+  virtual bool IsCriterionHigh(
+      const std::vector<double>& criterion_value) = 0;
   virtual std::string StateAsString() const = 0;
-  virtual double CriterionValue() const = 0;
+  virtual std::vector<double> CriterionValues() const = 0;
+  virtual double SumCriterions() const = 0;
 };
 
 class OuterloopCriterionLossOfLoad : public IOuterLoopCriterion {
  public:
   explicit OuterloopCriterionLossOfLoad(const ExternalLoopOptions& options);
-  CRITERION IsCriterionSatisfied(
-      const WorkerMasterData& milp_solution) override;
+  bool IsCriterionHigh(
+      const std::vector<double>& criterion_values) override;
   std::string StateAsString() const override;
-  double CriterionValue() const override { return sum_loss_; }
+  std::vector<double> CriterionValues() const override {
+    return criterion_values_;
+  }
+  double SumCriterions() const override;
 
  private:
-  void ProcessSum(const WorkerMasterData& worker_master_data);
-  const std::string positive_unsupplied_vars_prefix_ =
-      "^PositiveUnsuppliedEnergy::";
-  const std::regex rgx_ = std::regex(positive_unsupplied_vars_prefix_);
-
+  bool DoubleCompare(double a, double b);
   ExternalLoopOptions options_;
-  double sum_loss_ = 0.0;
+  std::vector<double> EXT_LOOP_CRITERION_VALUES_;
+  std::vector<double> criterion_values_ = {};
 };

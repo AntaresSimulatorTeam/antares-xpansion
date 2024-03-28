@@ -40,7 +40,9 @@ struct CurrentIterationData {
   int max_simplexiter;
   // ugly
   int benders_num_run;
-  double external_loop_criterion;
+  std::vector<double> outer_loop_criterion;
+  double outer_loop_bilevel_best_ub;
+  double external_loop_lambda;
 };
 
 // /*! \struct to store benders cuts data

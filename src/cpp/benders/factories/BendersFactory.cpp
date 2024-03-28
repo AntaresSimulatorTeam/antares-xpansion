@@ -51,6 +51,14 @@ pBendersBase PrepareForExecution(BendersLoggerBase& benders_loggers,
   Logger logger;
   std::shared_ptr<MathLoggerDriver> math_log_driver;
 
+  // tmp for mpi test
+  //  std::cout << "HELLO\n";
+  //  if (world.rank() == 0) {
+  //    int d;
+  //    std::cin >> d;
+  //  }
+  //  world.barrier();
+
   BendersBaseOptions benders_options(options.get_benders_options());
 
   google::InitGoogleLogging(argv0);
@@ -168,11 +176,13 @@ int RunExternalLoop_(char** argv, const std::filesystem::path& options_file,
     auto benders = PrepareForExecution(benders_loggers, options, argv[0], true,
                                        env, world);
     double tau = 0.5;
+    double epsilon_lambda = 0.1;
+    auto ext_loop_options = options.GetExternalLoopOptions();
     std::shared_ptr<IOuterLoopCriterion> criterion =
-        std::make_shared<OuterloopCriterionLossOfLoad>(
-            options.GetExternalLoopOptions());
+        std::make_shared<OuterloopCriterionLossOfLoad>(ext_loop_options);
     std::shared_ptr<IMasterUpdate> master_updater =
-        std::make_shared<MasterUpdateBase>(benders, tau);
+        std::make_shared<MasterUpdateBase>(benders, tau, epsilon_lambda,
+                                           ext_loop_options);
     std::shared_ptr<ICutsManager> cuts_manager =
         std::make_shared<CutsManagerRunTime>();
 

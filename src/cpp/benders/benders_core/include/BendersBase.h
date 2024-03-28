@@ -2,10 +2,12 @@
 
 #include <execution>
 #include <filesystem>
+#include <regex>
 
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
 #include "ILogger.h"
+#include "OuterLoopBiLevel.h"
 #include "OutputWriter.h"
 #include "SimulationOptions.h"
 #include "SubproblemCut.h"
@@ -30,7 +32,7 @@ auto selectPolicy(lambda f, bool shouldParallelize) {
 class BendersBase {
  public:
   virtual ~BendersBase() = default;
-  BendersBase(BendersBaseOptions options, Logger logger, Writer writer,
+  BendersBase(const BendersBaseOptions &options, Logger logger, Writer writer,
               std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
   virtual void launch() = 0;
   void set_solver_log_file(const std::filesystem::path &log_file);
@@ -79,11 +81,18 @@ class BendersBase {
     _options.MAX_ITERATIONS = max_iteration;
   }
   BendersBaseOptions Options() const { return _options; }
-  void ResetData(double criterion);
   virtual void free() = 0;
-  void InitExternalValues();
+  void InitExternalValues(bool is_bilevel_check_all, double lambda);
   int GetBendersRunNumber() const { return _data.benders_num_run; }
   CurrentIterationData GetCurrentIterationData() const;
+  std::vector<double> GetOuterLoopCriterion() const;
+  std::vector<double> GetOuterLoopCriterionAtBestBenders() const;
+  virtual void init_data();
+  void init_data(double external_loop_lambda);
+
+  double ExternalLoopLambdaMax() const;
+  double ExternalLoopLambdaMin() const;
+  bool ExternalLoopFoundFeasible() const;
 
  protected:
   CurrentIterationData _data;
@@ -96,10 +105,24 @@ class BendersBase {
   bool init_data_ = true;
   bool init_problems_ = true;
   bool free_problems_ = true;
+  const std::string positive_unsupplied_vars_prefix_ =
+      "^PositiveUnsuppliedEnergy::";
+  const std::string negative_unsupplied_vars_prefix_ =
+      "^NegativeUnsuppliedEnergy::";
+  const std::regex rgx_ = std::regex(positive_unsupplied_vars_prefix_);
+  const std::regex nrgx_ = std::regex(negative_unsupplied_vars_prefix_);
+  //
+  std::vector<std::vector<double>> outer_loop_criterion_;
+  std::vector<std::string> subproblems_vars_names_ = {};
+  // tmp
+  // std::vector<std::regex> patterns_ = {rgx_, nrgx_};
+  std::vector<std::regex> patterns_ = {rgx_};
+  std::vector<std::vector<int>> var_indices_;
+  OuterLoopBiLevel outer_loop_biLevel_;
+  bool is_bilevel_check_all_ = false;
 
  protected:
   virtual void Run() = 0;
-  virtual void init_data();
   void update_best_ub();
   bool ShouldBendersStop();
   bool is_initial_relaxation_requested() const;
@@ -130,6 +153,15 @@ class BendersBase {
   void AddSubproblem(const std::pair<std::string, VariableMap> &kvp);
   [[nodiscard]] WorkerMasterPtr get_master() const;
   void MatchProblemToId();
+  /**
+   * for the nth variable name, Subproblems shares the same prefix , only the
+   suffix is different
+   * ex variable at index = 0 is named in:
+
+   * subproblems-1-1  --> NTCDirect::link<area1$$area2>::hour<0>
+   * subproblems-3-5  --> NTCDirect::link<area1$$area2>::hour<672>
+   */
+  void SetSubproblemsVariablesIndex();
   void AddSubproblemName(const std::string &name);
   [[nodiscard]] std::string get_master_name() const;
   [[nodiscard]] std::string get_solver_name() const;
@@ -191,6 +223,11 @@ class BendersBase {
   void ResetSimplexIterationsBounds();
 
   SolverLogManager solver_log_manager_;
+
+  // outer loop criterion per pattern
+  std::vector<double> ComputeOuterLoopCriterion(
+      const std::string &subproblem_name,
+      const PlainData::SubProblemData &sub_problem_data);
 
  private:
   void print_master_and_cut(std::ostream &file, int ite,

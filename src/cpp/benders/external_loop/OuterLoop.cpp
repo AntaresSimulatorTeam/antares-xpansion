@@ -20,8 +20,31 @@ OuterLoop::OuterLoop(std::shared_ptr<IOuterLoopCriterion> criterion,
 void OuterLoop::Run() {
   benders_->DoFreeProblems(false);
   benders_->InitializeProblems();
-  benders_->InitExternalValues();
-  CRITERION criterion = CRITERION::IS_MET;
+
+  CheckFeasibility();
+
+  bool stop_update_master = false;
+  while (!stop_update_master) {
+    PrintLog();
+    benders_->init_data(master_updater_->Rhs());
+    benders_->launch();
+    if (world_.rank() == 0) {
+      stop_update_master = master_updater_->Update(
+          benders_->ExternalLoopLambdaMin(), benders_->ExternalLoopLambdaMax());
+    }
+
+    mpi::broadcast(world_, stop_update_master, 0);
+  }
+  // last prints
+  PrintLog();
+  benders_->mathLoggerDriver_->Print(benders_->GetCurrentIterationData());
+
+  // TODO general-case
+  //  cuts_manager_->Save(benders_->AllCuts());
+  benders_->free();
+}
+
+void OuterLoop::CheckFeasibility() {
   std::vector<double> obj_coeff;
   if (world_.rank() == 0) {
     obj_coeff = benders_->MasterObjectiveFunctionCoeffs();
@@ -29,7 +52,7 @@ void OuterLoop::Run() {
     // /!\ partially
     benders_->SetMasterObjectiveFunctionCoeffsToZeros();
 
-    PrintLog();
+    // PrintLog();
   }
   benders_->launch();
   if (world_.rank() == 0) {
@@ -38,42 +61,16 @@ void OuterLoop::Run() {
     // de-comment for general case
     //  cuts_manager_->Save(benders_->AllCuts());
     // auto cuts = cuts_manager_->Load();
-    criterion =
-        criterion_->IsCriterionSatisfied(benders_->BestIterationWorkerMaster());
-    if (criterion == CRITERION::HIGH) {
+    // High
+    if (!benders_->ExternalLoopFoundFeasible()) {
       std::ostringstream err_msg;
       err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "External Loop")
-              << "Criterion cannot be satisfied for your study:\n"
-              << criterion_->StateAsString();
+              << "Criterion cannot be satisfied for your study:\n";
       throw CriterionCouldNotBeSatisfied(err_msg.str(), LOGLOCATION);
     }
     // lambda_max
-    master_updater_->Init();
+    benders_->InitExternalValues(false, master_updater_->Rhs());
   }
-
-  mpi::broadcast(world_, criterion, 0);
-
-  while (criterion != CRITERION::IS_MET) {
-    benders_->ResetData(criterion_->CriterionValue());
-    PrintLog();
-    benders_->launch();
-    if (world_.rank() == 0) {
-      criterion = criterion_->IsCriterionSatisfied(
-          benders_->BestIterationWorkerMaster());
-      master_updater_->Update(criterion);
-    }
-
-    mpi::broadcast(world_, criterion, 0);
-  }
-  // last prints
-  PrintLog();
-  auto benders_data = benders_->GetCurrentIterationData();
-  benders_data.external_loop_criterion = criterion_->CriterionValue();
-  benders_->mathLoggerDriver_->Print(benders_data);
-
-  // TODO general-case
-  //  cuts_manager_->Save(benders_->AllCuts());
-  benders_->free();
 }
 
 void OuterLoop::PrintLog() {
@@ -83,8 +80,13 @@ void OuterLoop::PrintLog() {
   msg << "*** Outer loop: " << benders_->GetBendersRunNumber();
   logger->display_message(msg.str());
   msg.str("");
-  msg << "*** Criterion value: " << std::scientific << std::setprecision(10)
-      << criterion_->CriterionValue();
+  // TODO criterion per pattern (aka prefix+area) and why at best Benders ?
+  const auto outer_loop_criterion =
+      benders_->GetOuterLoopCriterionAtBestBenders();
+  auto sum_loss =
+      outer_loop_criterion.size() == 0 ? 0 : outer_loop_criterion[0];
+  msg << "*** Sum loss: " << std::scientific << std::setprecision(10)
+      << sum_loss;
   logger->display_message(msg.str());
   logger->PrintIterationSeparatorEnd();
 }
