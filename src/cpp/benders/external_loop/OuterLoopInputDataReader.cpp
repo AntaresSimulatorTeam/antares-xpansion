@@ -18,3 +18,7 @@ std::regex OuterLoopPattern::MakeRegex() const {
   return std::regex(pattern);
 }
 
+OuterLoopSingleInputData::OuterLoopSingleInputData(const std::string &prefix,
+                                                   const std::string &body,
+                                                   double criterion)
+    : outer_loop_pattern_(prefix, body), criterion_(criterion) {}
