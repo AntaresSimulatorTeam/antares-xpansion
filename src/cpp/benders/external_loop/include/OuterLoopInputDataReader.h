@@ -15,6 +15,7 @@ class OuterLoopPattern {
   std::string body_;
 };
 
+/// @brief Abstract /*** eaaaaaaaaaaaaasy yaaaaaaaaaall
 class IOuterLoopInputDataReader {
  public:
   virtual void Read(const std::filesystem::path &input_file) = 0;
