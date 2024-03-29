@@ -4,7 +4,7 @@
 #include <string>
 #include <tuple>
 #include <vector>
-
+/// @brief lovely class links techs and BA
 class OuterLoopPattern {
  public:
   explicit OuterLoopPattern(const std::string &prefix, const std::string &body);
