@@ -207,7 +207,6 @@ int RunExternalLoop_(char** argv, const std::filesystem::path& options_file,
 }
 
 BendersMainFactory::BendersMainFactory(int argc, char** argv,
-
                                        mpi::environment& env,
                                        mpi::communicator& world)
     : argv_(argv), penv_(&env), pworld_(&world) {
@@ -222,7 +221,9 @@ BendersMainFactory::BendersMainFactory(int argc, char** argv,
 BendersMainFactory::BendersMainFactory(
     int argc, char** argv, const std::filesystem::path& options_file,
     mpi::environment& env, mpi::communicator& world)
-    : argv_(argv), options_file_(options_file), penv_(&env), pworld_(&world) {
+    : argv_(argv), options_file_(options_file),
+      penv_(&env),
+      pworld_(&world) {
   // First check usage (options are given)
   if (world.rank() == 0) {
     usage(argc);
