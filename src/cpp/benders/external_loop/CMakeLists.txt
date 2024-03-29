@@ -27,8 +27,8 @@ add_library (external_loop STATIC
 
 target_include_directories (external_loop
 		PUBLIC
-			${CMAKE_CURRENT_SOURCE_DIR}/include
-)
+		${CMAKE_CURRENT_SOURCE_DIR}/include
+		)
 
 target_link_libraries (external_loop
 	PUBLIC

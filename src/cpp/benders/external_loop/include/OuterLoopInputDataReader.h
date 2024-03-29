@@ -5,7 +5,21 @@
 #include <tuple>
 #include <vector>
 
+#include "LoggerUtils.h"
+#include "common.h"
+
 namespace Outerloop {
+
+class OuterLoopInputFileIsEmpty
+    : public LogUtils::XpansionError<std::runtime_error> {
+  using LogUtils::XpansionError<std::runtime_error>::XpansionError;
+};
+
+class OuterLoopInputFileNoPatternFound
+    : public LogUtils::XpansionError<std::runtime_error> {
+  using LogUtils::XpansionError<std::runtime_error>::XpansionError;
+};
+
 /// @brief lovely class
 class OuterLoopPattern {
  public:
@@ -47,7 +61,7 @@ class OuterLoopInputData {
   double StoppingThreshold() const { return outer_loop_stopping_threshold_; }
 
  private:
-  double outer_loop_stopping_threshold_;
+  double outer_loop_stopping_threshold_ = 1e-4;
   std::vector<OuterLoopSingleInputData> outer_loop_data_;
 };
 
@@ -57,8 +71,14 @@ class IOuterLoopInputDataReader {
   virtual OuterLoopInputData Read(const std::filesystem::path &input_file) = 0;
 };
 
-// class OuterLoopInputFromJson {
-//   OuterLoopInputFromJson(std)
-// };
+class OuterLoopInputFromJson : public IOuterLoopInputDataReader {
+ public:
+  OuterLoopInputFromJson() = default;
+  OuterLoopInputData Read(const std::filesystem::path &input_file) override;
+
+ private:
+  void Decode(const Json::Value &json_content);
+  OuterLoopInputData outerLoopInputData_;
+};
 
 }  // namespace Outerloop
