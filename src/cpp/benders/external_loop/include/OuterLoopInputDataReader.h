@@ -20,5 +20,11 @@ class IOuterLoopInputDataReader {
   virtual void Read(const std::filesystem::path &input_file) = 0;
 
  private:
+  /*
+   double = criterion; regex :={variable identity, area} // YOU NAMED IT ;)
+   *
+   */
   std::tuple<double, std::vector<std::regex>> data;
 };
+
+//*** = RTE
