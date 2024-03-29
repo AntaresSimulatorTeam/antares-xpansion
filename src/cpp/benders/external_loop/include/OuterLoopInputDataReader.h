@@ -4,6 +4,8 @@
 #include <string>
 #include <tuple>
 #include <vector>
+
+namespace Outerloop {
 /// @brief lovely class links techs and BA
 class OuterLoopPattern {
  public:
@@ -15,17 +17,22 @@ class OuterLoopPattern {
   std::string body_;
 };
 
-/// @brief Abstract /*** eaaaaaaaaaaaaasy yaaaaaaaaaall
+/// @brief Abstract /***
 class IOuterLoopInputDataReader {
  public:
   virtual void Read(const std::filesystem::path &input_file) = 0;
 
  private:
   /*
-   double = criterion; regex :={variable identity, area} // YOU NAMED IT ;)
+   double = criterion; OuterLoopPattern :={variable identity, area} // YOU NAMED
+   IT ;)
    *
    */
-  std::tuple<double, std::vector<std::regex>> data;
+  std::tuple<std::vector<double>, std::vector<OuterLoopPattern>> data;
 };
 
-//*** = RTE
+// class OuterLoopInputFromJson {
+//   OuterLoopInputFromJson(std)
+// };
+
+}  // namespace Outerloop
