@@ -20,6 +20,16 @@ class OuterLoopInputFileNoPatternFound
   using LogUtils::XpansionError<std::runtime_error>::XpansionError;
 };
 
+class OuterLoopInputPatternsShouldBeArray
+    : public LogUtils::XpansionError<std::runtime_error> {
+  using LogUtils::XpansionError<std::runtime_error>::XpansionError;
+};
+
+class OuterLoopCouldNotReadAreaField
+    : public LogUtils::XpansionError<std::runtime_error> {
+  using LogUtils::XpansionError<std::runtime_error>::XpansionError;
+};
+
 /// @brief lovely class
 class OuterLoopPattern {
  public:
@@ -78,6 +88,9 @@ class OuterLoopInputFromJson : public IOuterLoopInputDataReader {
 
  private:
   void Decode(const Json::Value &json_content);
+  std::vector<OuterLoopSingleInputData> DecodePatterns(
+      const Json::Value &patterns) const;
+  OuterLoopSingleInputData DecodePattern(const Json::Value &pattern) const;
   OuterLoopInputData outerLoopInputData_;
 };
 

@@ -63,11 +63,59 @@ void OuterLoopInputFromJson::Decode(const Json::Value &json_content) {
       "outer_loop_stopping_threshold", outer_loop_stopping_threshold_default);
 
   Json::Value patterns;
-  if (json_content.get("patterns", patterns) == Json::nullValue) {
+  if (patterns =
+          json_content.get("patterns", Json::nullValue) == Json::nullValue) {
     std::ostringstream err_msg;
     err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
-            << "outer loop input file must contains at least one pattern: "
+            << "outer loop input file must contains at least one pattern."
             << "\n";
     throw OuterLoopInputFileNoPatternFound(err_msg.str(), LOGLOCATION);
   }
+
+  auto outer_loop_patterns = DecodePatterns(patterns);
+}
+
+std::vector<OuterLoopSingleInputData> OuterLoopInputFromJson::DecodePatterns(
+    const Json::Value &patterns) const {
+  std::vector<OuterLoopSingleInputData> outer_loop_patterns;
+
+  if (!patterns.isArray()) {
+    std::ostringstream err_msg;
+    err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
+            << "In outer loop input file 'patterns' should be an array."
+            << "\n";
+    throw OuterLoopInputPatternsShouldBeArray(err_msg.str(), LOGLOCATION);
+  }
+
+  for (const auto pattern : patterns) {
+    outer_loop_patterns.push_back(DecodePattern(pattern));
+  }
+
+  return outer_loop_patterns;
+}
+
+OuterLoopSingleInputData OuterLoopInputFromJson::DecodePattern(
+    const Json::Value &pattern) const {
+  Json::Value body;
+
+  // specify line And OR #pattern
+  if (body = pattern.get("area", Json::nullValue) == Json::nullValue) {
+    std::ostringstream err_msg;
+    err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
+            << "Error could not read 'area' field in outer loop input file"
+            << "\n";
+    throw OuterLoopCouldNotReadAreaField(err_msg.str(), LOGLOCATION);
+  }
+  Json::Value criterion;
+
+  if (criterion =
+          pattern.get("criterion", Json::nullValue) == Json::nullValue) {
+    std::ostringstream err_msg;
+    err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
+            << "Error could not read 'criterion' field in outer loop input file"
+            << "\n";
+    throw OuterLoopCouldNotReadAreaField(err_msg.str(), LOGLOCATION);
+  }
+
+  return {"PositiveUnsuppliedEnergy::", body.asString(), criterion.asDouble()};
 }
