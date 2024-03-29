@@ -2,7 +2,7 @@
 
 /**
  * prefix could be := PositiveUnsuppliedEnergy:: or something else necessarily
- * /!\ body could be := Brittany or nothing
+ * /!\ body could be := 'Brittany' or equivalent or nothing
  */
 OuterLoopPattern::OuterLoopPattern(const std::string &prefix,
                                    const std::string &body)
