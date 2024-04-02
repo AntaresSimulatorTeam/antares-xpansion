@@ -85,3 +85,7 @@ BENDERS_OPTIONS_MACRO(EXT_LOOP_CRITERION_TOLERANCE, double, 1e-1, asDouble())
 // EXTERNAL Loop Max unsupplied energy per timestep
 BENDERS_OPTIONS_MACRO(EXT_LOOP_CRITERION_COUNT_THRESHOLD, double, 1e-1,
                       asDouble())
+
+// EXTERNAL Loop Options file
+BENDERS_OPTIONS_MACRO(EXT_LOOP_OPTION_FILE, std::string, "ext_loop_option_file",
+                      asString())

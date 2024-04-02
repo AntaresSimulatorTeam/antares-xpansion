@@ -3,15 +3,18 @@
 #include <string>
 #include <vector>
 
+#include "OuterLoopInputDataReader.h"
+namespace Outerloop {
 class VariablesGroup {
  public:
   explicit VariablesGroup(const std::vector<std::string>& all_variables,
-                          const std::vector<std::regex>& patterns);
-  std::vector<std::vector<int>> Indices() const { return indices_; }
+                          const std::vector<OuterLoopSingleInputData>& outer_loop_single_input_data);
+  [[nodiscard]] std::vector<std::vector<int>> Indices() const;
 
  private:
   void Search();
   const std::vector<std::string>& all_variables_;
-  std::vector<std::regex> patterns_;  // pos + zone1 // pos zon 2
+  const std::vector<OuterLoopSingleInputData>& outer_loop_single_input_data_;
   std::vector<std::vector<int>> indices_;
 };
+}  // namespace Outerloop

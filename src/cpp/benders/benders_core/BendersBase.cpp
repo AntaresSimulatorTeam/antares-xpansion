@@ -21,8 +21,14 @@ BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
                      (_options.CSV_NAME + ".csv")),
       _logger(std::move(logger)),
       _writer(std::move(writer)),
-      mathLoggerDriver_(mathLoggerDriver),
-      outer_loop_biLevel_(options.EXTERNAL_LOOP_OPTIONS) {}
+      mathLoggerDriver_(std::move(mathLoggerDriver)) {
+  if (options.EXTERNAL_LOOP_OPTIONS.DO_EXT_LOOP){
+
+    //TODO maybe the input format will change?
+    outer_loop_input_data_ = Outerloop::OuterLoopInputFromJson().Read(_options.EXTERNAL_LOOP_OPTIONS.EXT_LOOP_OPTION_FILE);
+    outer_loop_biLevel_ = OuterLoopBiLevel(options.EXTERNAL_LOOP_OPTIONS);
+  }
+}
 
 /*!
  *  \brief Initialize set of data used in the loop
@@ -741,10 +747,12 @@ void BendersBase::MatchProblemToId() {
 
 void BendersBase::SetSubproblemsVariablesIndex() {
   if (!subproblem_map.empty()) {
+
     auto subproblem = subproblem_map.begin();
     subproblems_vars_names_.clear();
     subproblems_vars_names_ = subproblem->second->_solver->get_col_names();
-    VariablesGroup variablesGroup(subproblems_vars_names_, patterns_);
+    Outerloop::VariablesGroup variablesGroup(subproblems_vars_names_,
+                                             outer_loop_input_data_.OuterLoopData());
     var_indices_ = variablesGroup.Indices();
   }
 }
@@ -969,7 +977,7 @@ std::vector<double> BendersBase::GetOuterLoopCriterion() const {
   return _data.outer_loop_criterion;
 }
 std::vector<double> BendersBase::GetOuterLoopCriterionAtBestBenders() const {
-  return ((outer_loop_criterion_.size() == 0)
+  return ((outer_loop_criterion_.empty())
               ? std::vector<double>()
               : outer_loop_criterion_[_data.best_it - 1]);
 }
@@ -977,10 +985,13 @@ std::vector<double> BendersBase::GetOuterLoopCriterionAtBestBenders() const {
 std::vector<double> BendersBase::ComputeOuterLoopCriterion(
     const std::string &subproblem_name,
     const PlainData::SubProblemData &sub_problem_data) {
-  std::vector<double> outer_loop_criterion_per_sub_problem(patterns_.size(),
+
+  auto outer_loop_input_size = var_indices_.size(); // num of patterns
+  std::vector<double> outer_loop_criterion_per_sub_problem(outer_loop_input_size,
                                                            {});
   auto subproblem_weight = SubproblemWeight(_data.nsubproblem, subproblem_name);
-  for (int pattern_index(0); pattern_index < patterns_.size();
+
+  for (int pattern_index(0); pattern_index < outer_loop_input_size;
        ++pattern_index) {
     auto pattern_variables_indices = var_indices_[pattern_index];
     for (auto variables_index : pattern_variables_indices) {

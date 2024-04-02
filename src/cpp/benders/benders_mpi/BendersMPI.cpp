@@ -158,9 +158,9 @@ std::vector<double>
 BendersMpi::ComputeSubproblemsContributionToOuterLoopCriterion(
     const SubProblemDataMap &subproblem_data_map) {
   std::vector<double> outer_loop_criterion_per_sub_problem_per_pattern(
-      patterns_.size(), {});
+      var_indices_.size(), {});
   std::vector<double> outer_loop_criterion_sub_problems_map_result(
-      patterns_.size(), {});
+      var_indices_.size(), {});
   for (const auto &[subproblem_name, subproblem_data] : subproblem_data_map) {
     AddVectors<double>(
         outer_loop_criterion_per_sub_problem_per_pattern,

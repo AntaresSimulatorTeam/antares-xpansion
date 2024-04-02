@@ -110,23 +110,22 @@ class BendersBase {
   bool init_data_ = true;
   bool init_problems_ = true;
   bool free_problems_ = true;
-  const std::string positive_unsupplied_vars_prefix_ =
-      "^PositiveUnsuppliedEnergy::";
-  const std::string negative_unsupplied_vars_prefix_ =
-      "^NegativeUnsuppliedEnergy::";
-  const std::regex rgx_ = std::regex(positive_unsupplied_vars_prefix_);
-  const std::regex nrgx_ = std::regex(negative_unsupplied_vars_prefix_);
-  //
+//  const std::string positive_unsupplied_vars_prefix_ =
+//      "^PositiveUnsuppliedEnergy::";
+//  const std::string negative_unsupplied_vars_prefix_ =
+//      "^NegativeUnsuppliedEnergy::";
+//  const std::regex rgx_ = std::regex(positive_unsupplied_vars_prefix_);
+//  const std::regex nrgx_ = std::regex(negative_unsupplied_vars_prefix_);
+
   std::vector<std::vector<double>> outer_loop_criterion_;
   std::vector<std::string> subproblems_vars_names_ = {};
   // tmp
   // std::vector<std::regex> patterns_ = {rgx_, nrgx_};
-  std::vector<std::regex> patterns_ = {rgx_};
+  //std::vector<std::regex> patterns_ = {rgx_};
   std::vector<std::vector<int>> var_indices_;
   OuterLoopBiLevel outer_loop_biLevel_;
   bool is_bilevel_check_all_ = false;
-  // std::unique_ptr<Outerloop::IOuterLoopInputDataReader>
-  //     outer_loop_input_reader_;
+  Outerloop::OuterLoopInputData outer_loop_input_data_;
 
   virtual void Run() = 0;
   void update_best_ub();

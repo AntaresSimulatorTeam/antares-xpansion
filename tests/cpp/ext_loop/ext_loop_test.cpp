@@ -34,7 +34,7 @@ class OuterLoopCriterionTest : public ::testing::Test {};
 //   double threshold = 1.4;
 //   double epsilon = 1e-1;
 //   double max_unsup_energy = 0.1;
-//   const ExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
+//   const GetExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
 
 //   std::vector<double> criterion_value = {2.0};
 //   OuterloopCriterionLossOfLoad criterion(options);
@@ -47,7 +47,7 @@ class OuterLoopCriterionTest : public ::testing::Test {};
 //   double threshold = 4;
 //   double epsilon = 1e-1;
 //   double max_unsup_energy = 0.1;
-//   const ExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
+//   const GetExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
 //   std::vector<double> criterion_value = {2.0};
 //   OuterloopCriterionLossOfLoad criterion(options);
 
@@ -59,7 +59,7 @@ class OuterLoopCriterionTest : public ::testing::Test {};
 //   double threshold = 2.0;
 //   double epsilon = 1e-1;
 //   double max_unsup_energy = 0.1;
-//   const ExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
+//   const GetExternalLoopOptions options = {threshold, epsilon, max_unsup_energy};
 //   std::vector<double> criterion_value = {2.0};
 
 //   OuterloopCriterionLossOfLoad criterion(options);
