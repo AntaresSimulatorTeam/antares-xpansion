@@ -148,6 +148,7 @@ void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
         ComputeSubproblemsContributionToOuterLoopCriterion(subproblem_data_map);
     if (_world.rank() == rank_0) {
       outer_loop_criterion_.push_back(_data.outer_loop_current_iteration_data.outer_loop_criterion);
+      UpdateOuterLoopMaxCriterionArea();
     }
     // only rank_0 receive non-emtpy gathered_subproblem_map
     master_build_cuts(gathered_subproblem_map);
