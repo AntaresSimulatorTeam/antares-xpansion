@@ -56,8 +56,8 @@ class OuterLoopSingleInputData {
   OuterLoopSingleInputData(const std::string &prefix, const std::string &body,
                            double criterion);
 
-  OuterLoopPattern Pattern() const { return outer_loop_pattern_; }
-  double Criterion() const { return criterion_; }
+  OuterLoopPattern Pattern() const;
+  double Criterion() const;
 
  private:
   OuterLoopPattern outer_loop_pattern_;
@@ -69,11 +69,11 @@ class OuterLoopInputData {
  public:
   OuterLoopInputData() = default;
 
-  std::vector<OuterLoopSingleInputData> OuterLoopData() const {
-    return outer_loop_data_;
-  }
+  std::vector<OuterLoopSingleInputData> OuterLoopData() const;
 
-  double StoppingThreshold() const { return outer_loop_stopping_threshold_; }
+  void SetStoppingThreshold(double outer_loop_stopping_threshold);
+  double StoppingThreshold() const;
+  void AddSingleData(const OuterLoopSingleInputData &data);
 
  private:
   double outer_loop_stopping_threshold_ = 1e-4;
@@ -93,9 +93,8 @@ class OuterLoopInputFromJson : public IOuterLoopInputDataReader {
 
  private:
   void Decode(const Json::Value &json_content);
-  std::vector<OuterLoopSingleInputData> DecodePatterns(
-      const Json::Value &patterns) const;
-  OuterLoopSingleInputData DecodePattern(const Json::Value &pattern) const;
+  void DecodePatterns(const Json::Value &patterns);
+  void DecodePattern(const Json::Value &pattern);
   OuterLoopInputData outerLoopInputData_;
 };
 

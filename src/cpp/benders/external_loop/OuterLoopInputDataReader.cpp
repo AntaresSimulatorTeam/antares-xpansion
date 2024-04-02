@@ -23,6 +23,28 @@ OuterLoopSingleInputData::OuterLoopSingleInputData(const std::string &prefix,
                                                    double criterion)
     : outer_loop_pattern_(prefix, body), criterion_(criterion) {}
 
+OuterLoopPattern OuterLoopSingleInputData::Pattern() const {
+  return outer_loop_pattern_;
+}
+double OuterLoopSingleInputData::Criterion() const { return criterion_; }
+
+void OuterLoopInputData::AddSingleData(const OuterLoopSingleInputData &data) {
+  outer_loop_data_.push_back(data);
+}
+
+std::vector<OuterLoopSingleInputData> OuterLoopInputData::OuterLoopData()
+    const {
+  return outer_loop_data_;
+}
+
+void OuterLoopInputData::SetStoppingThreshold(
+    double outer_loop_stopping_threshold) {
+  outer_loop_stopping_threshold_ = outer_loop_stopping_threshold;
+}
+
+double OuterLoopInputData::StoppingThreshold() const {
+  return outer_loop_stopping_threshold_;
+}
 OuterLoopInputData OuterLoopInputFromJson::Read(
     const std::filesystem::path &input_file) {
   auto json_content = get_json_file_content(input_file);
@@ -38,6 +60,7 @@ OuterLoopInputData OuterLoopInputFromJson::Read(
 
   return outerLoopInputData_;
 }
+
 /*
 "BendersOuterloop" : {
   "epsilon" : 1e-4,  // critère d'arrêt de l'algo
@@ -59,8 +82,11 @@ void OuterLoopInputFromJson::Decode(const Json::Value &json_content) {
   Json::Value outer_loop_stopping_threshold_default =
       1e-5;  //=outer_loop_stopping_threshold_; default value
              // Json::Value outer_loop_stopping_threshold_;
-  auto outer_loop_stopping_threshold = json_content.get(
-      "outer_loop_stopping_threshold", outer_loop_stopping_threshold_default);
+  outerLoopInputData_.SetStoppingThreshold(
+      json_content
+          .get("outer_loop_stopping_threshold",
+               outer_loop_stopping_threshold_default)
+          .asDouble());
 
   Json::Value patterns;
   if (patterns =
@@ -72,11 +98,10 @@ void OuterLoopInputFromJson::Decode(const Json::Value &json_content) {
     throw OuterLoopInputFileNoPatternFound(err_msg.str(), LOGLOCATION);
   }
 
-  auto outer_loop_patterns = DecodePatterns(patterns);
+  DecodePatterns(patterns);
 }
 
-std::vector<OuterLoopSingleInputData> OuterLoopInputFromJson::DecodePatterns(
-    const Json::Value &patterns) const {
+void OuterLoopInputFromJson::DecodePatterns(const Json::Value &patterns) {
   std::vector<OuterLoopSingleInputData> outer_loop_patterns;
 
   if (!patterns.isArray()) {
@@ -88,14 +113,11 @@ std::vector<OuterLoopSingleInputData> OuterLoopInputFromJson::DecodePatterns(
   }
 
   for (const auto pattern : patterns) {
-    outer_loop_patterns.push_back(DecodePattern(pattern));
+    DecodePattern(pattern);
   }
-
-  return outer_loop_patterns;
 }
 
-OuterLoopSingleInputData OuterLoopInputFromJson::DecodePattern(
-    const Json::Value &pattern) const {
+void OuterLoopInputFromJson::DecodePattern(const Json::Value &pattern) {
   Json::Value body;
 
   // specify line And OR #pattern
@@ -117,5 +139,6 @@ OuterLoopSingleInputData OuterLoopInputFromJson::DecodePattern(
     throw OuterLoopCouldNotReadCriterionField(err_msg.str(), LOGLOCATION);
   }
 
-  return {"PositiveUnsuppliedEnergy::", body.asString(), criterion.asDouble()};
+  outerLoopInputData_.AddSingleData(
+      {"PositiveUnsuppliedEnergy::", body.asString(), criterion.asDouble()});
 }
