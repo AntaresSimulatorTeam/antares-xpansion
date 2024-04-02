@@ -3,13 +3,11 @@
 #include "LoggerUtils.h"
 using namespace Outerloop;
 
-OuterLoop::OuterLoop(std::shared_ptr<IOuterLoopCriterion> criterion,
-                     std::shared_ptr<IMasterUpdate> master_updater,
+OuterLoop::OuterLoop(std::shared_ptr<IMasterUpdate> master_updater,
                      std::shared_ptr<ICutsManager> cuts_manager,
                      pBendersBase benders, mpi::environment& env,
                      mpi::communicator& world)
-    : criterion_(std::move(criterion)),
-      master_updater_(std::move(master_updater)),
+    : master_updater_(std::move(master_updater)),
       cuts_manager_(std::move(cuts_manager)),
       benders_(std::move(benders)),
       env_(env),

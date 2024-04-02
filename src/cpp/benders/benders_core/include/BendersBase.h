@@ -96,6 +96,7 @@ class BendersBase {
   bool ExternalLoopFoundFeasible() const;
   virtual void ExternalLoopCheckFeasibility() = 0;
   virtual void RunExternalLoopBilevelChecks() = 0;
+  double OuterLoopStoppingThreshold() const;
 
  protected:
   CurrentIterationData _data;

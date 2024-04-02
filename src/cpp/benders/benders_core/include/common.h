@@ -144,9 +144,6 @@ typedef BaseOptions MergeMPSOptions;
 
 struct ExternalLoopOptions {
   bool DO_EXT_LOOP = false;
-  double EXT_LOOP_CRITERION_VALUE = 1.0;
-  double EXT_LOOP_CRITERION_TOLERANCE = 1e-1;
-  double EXT_LOOP_CRITERION_COUNT_THRESHOLD = 1e-1;
   std::string EXT_LOOP_OPTION_FILE;
 };
 

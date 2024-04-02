@@ -76,15 +76,6 @@ BENDERS_OPTIONS_MACRO(BATCH_SIZE, size_t, 0, asUInt())
 // is this an EXTERNAL Loop
 BENDERS_OPTIONS_MACRO(DO_EXT_LOOP, bool, false, asBool())
 
-// EXTERNAL Loop Loss of Load thresold
-BENDERS_OPTIONS_MACRO(EXT_LOOP_CRITERION_VALUE, double, 1.0, asDouble())
-
-// EXTERNAL Loop epsilon
-BENDERS_OPTIONS_MACRO(EXT_LOOP_CRITERION_TOLERANCE, double, 1e-1, asDouble())
-
-// EXTERNAL Loop Max unsupplied energy per timestep
-BENDERS_OPTIONS_MACRO(EXT_LOOP_CRITERION_COUNT_THRESHOLD, double, 1e-1,
-                      asDouble())
 
 // EXTERNAL Loop Options file
 BENDERS_OPTIONS_MACRO(EXT_LOOP_OPTION_FILE, std::string, "ext_loop_option_file",

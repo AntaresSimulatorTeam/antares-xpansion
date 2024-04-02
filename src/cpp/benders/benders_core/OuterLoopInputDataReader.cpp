@@ -53,7 +53,7 @@ void OuterLoopInputData::SetCriterionCountThreshold(
     double criterion_count_threshold) {
     criterion_count_threshold_ = criterion_count_threshold;
 }
-double OuterLoopInputData::CriterionCountThreshold() const { return criterion_tolerance_; }
+double OuterLoopInputData::CriterionCountThreshold() const { return criterion_count_threshold_; }
 OuterLoopInputData OuterLoopInputFromJson::Read(
     const std::filesystem::path &input_file) {
   auto json_content = get_json_file_content(input_file);

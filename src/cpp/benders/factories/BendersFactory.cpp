@@ -177,16 +177,13 @@ int RunExternalLoop_(char** argv, const std::filesystem::path& options_file,
                                        env, world);
     double tau = 0.5;
     double epsilon_lambda = 0.1;
-    auto ext_loop_options = options.GetExternalLoopOptions();
-    std::shared_ptr<IOuterLoopCriterion> criterion =
-        std::make_shared<OuterloopCriterionLossOfLoad>(ext_loop_options);
     std::shared_ptr<Outerloop::IMasterUpdate> master_updater =
         std::make_shared<Outerloop::MasterUpdateBase>(
-            benders, tau, epsilon_lambda, ext_loop_options);
+            benders, tau);
     std::shared_ptr<Outerloop::ICutsManager> cuts_manager =
         std::make_shared<Outerloop::CutsManagerRunTime>();
 
-    Outerloop::OuterLoop ext_loop(criterion, master_updater, cuts_manager,
+    Outerloop::OuterLoop ext_loop(master_updater, cuts_manager,
                                   benders, env, world);
     ext_loop.Run();
 

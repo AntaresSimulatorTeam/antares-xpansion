@@ -1,21 +1,19 @@
+#include <utility>
+
 #include "MasterUpdate.h"
 
 using namespace Outerloop;
 
-MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau,
-                                   double epsilon_lambda,
-                                   const ExternalLoopOptions &options)
+MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau)
     : benders_(std::move(benders)),
       lambda_(0),
-      outer_loop_stopping_threshold_(epsilon_lambda) {
+      outer_loop_stopping_threshold_(benders_->OuterLoopStoppingThreshold()) {
   CheckTau(tau);
 }
 
 MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau,
-                                   const std::string &name,
-                                   double epsilon_lambda,
-                                   const ExternalLoopOptions &options)
-    : MasterUpdateBase(benders, tau, epsilon_lambda, options) {
+                                   const std::string &name)
+    : MasterUpdateBase(std::move(benders), tau) {
   min_invest_constraint_name_ = name;
 }
 

@@ -7,20 +7,17 @@ class IMasterUpdate {
  public:
   virtual bool Update(double lambda_min, double lambda_max) = 0;
   virtual void Init() = 0;
-  virtual double Rhs() const = 0;
+  [[nodiscard]] virtual double Rhs() const = 0;
 };
 
 class MasterUpdateBase : public IMasterUpdate {
  public:
+  explicit MasterUpdateBase(pBendersBase benders, double tau);
   explicit MasterUpdateBase(pBendersBase benders, double tau,
-                            double epsilon_lambda,
-                            const ExternalLoopOptions &options);
-  explicit MasterUpdateBase(pBendersBase benders, double tau,
-                            const std::string &name, double epsilon_lambda,
-                            const ExternalLoopOptions &options);
+                            const std::string &name);
   bool Update(double lambda_min, double lambda_max) override;
   void Init() override;
-  double Rhs() const override;
+  [[nodiscard]] double Rhs() const override;
 
  private:
   void CheckTau(double tau);
