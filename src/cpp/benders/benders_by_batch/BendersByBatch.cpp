@@ -156,7 +156,7 @@ void BendersByBatch::SeparationLoop() {
     SolveBatches();
 
     if (Rank() == rank_0) {
-      outer_loop_criterion_.push_back(_data.outer_loop_criterion);
+      outer_loop_criterion_.push_back(_data.outer_loop_current_iteration_data.outer_loop_criterion);
       UpdateTrace();
       SaveCurrentBendersData();
     }
@@ -214,7 +214,7 @@ void BendersByBatch::SolveBatches() {
       _data.number_of_subproblem_solved += batch_sub_problems.size();
       _data.cumulative_number_of_subproblem_solved += batch_sub_problems.size();
       remaining_epsilon_ -= batch_subproblems_costs_contribution_in_gap;
-      AddVectors<double>(_data.outer_loop_criterion,
+      AddVectors<double>(_data.outer_loop_current_iteration_data.outer_loop_criterion,
                          external_loop_criterion_current_batch);
     }
 

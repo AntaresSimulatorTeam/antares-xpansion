@@ -17,6 +17,9 @@ std::regex OuterLoopPattern::MakeRegex() const {
   auto pattern = "(^" + prefix_ + ").*" + body_;
   return std::regex(pattern);
 }
+const std::string &OuterLoopPattern::GetPrefix() const { return prefix_; }
+
+const std::string &OuterLoopPattern::GetBody() const { return body_; }
 
 OuterLoopSingleInputData::OuterLoopSingleInputData(const std::string &prefix,
                                                    const std::string &body,

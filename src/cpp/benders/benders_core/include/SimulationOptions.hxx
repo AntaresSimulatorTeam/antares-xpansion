@@ -78,5 +78,5 @@ BENDERS_OPTIONS_MACRO(DO_EXT_LOOP, bool, false, asBool())
 
 
 // EXTERNAL Loop Options file
-BENDERS_OPTIONS_MACRO(EXT_LOOP_OPTION_FILE, std::string, "ext_loop_option_file",
-                      asString())
+BENDERS_OPTIONS_MACRO(EXT_LOOP_OPTION_FILE, std::string,
+                      "outer_loop_options.json", asString())

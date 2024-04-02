@@ -144,10 +144,10 @@ void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
     Reduce(GetSubproblemsCpuTime(), cumulative_subproblems_timer_per_iter,
            std::plus<double>(), rank_0);
     SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter);
-    _data.outer_loop_criterion =
+    _data.outer_loop_current_iteration_data.outer_loop_criterion =
         ComputeSubproblemsContributionToOuterLoopCriterion(subproblem_data_map);
     if (_world.rank() == rank_0) {
-      outer_loop_criterion_.push_back(_data.outer_loop_criterion);
+      outer_loop_criterion_.push_back(_data.outer_loop_current_iteration_data.outer_loop_criterion);
     }
     // only rank_0 receive non-emtpy gathered_subproblem_map
     master_build_cuts(gathered_subproblem_map);
@@ -338,7 +338,7 @@ void BendersMpi::PreRunInitialization() {
 }
 
 void BendersMpi::launch() {
-  ++_data.benders_num_run;
+  ++_data.outer_loop_current_iteration_data.benders_num_run;
   if (init_problems_) {
     InitializeProblems();
   }
@@ -408,7 +408,7 @@ void BendersMpi::RunExternalLoopBilevelChecks() {
         GetOuterLoopCriterionAtBestBenders() /*/!\ must
                 be at best it*/
         ,
-        overall_cost, invest_cost, _data.external_loop_lambda);
-    _data.outer_loop_bilevel_best_ub = outer_loop_biLevel_.BilevelBestub();
+        overall_cost, invest_cost, _data.outer_loop_current_iteration_data.external_loop_lambda);
+    _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub = outer_loop_biLevel_.BilevelBestub();
   }
 }

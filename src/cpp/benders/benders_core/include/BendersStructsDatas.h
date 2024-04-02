@@ -5,8 +5,17 @@
 #include "Worker.h"
 #include "common.h"
 
-/*! \struct struct that hold current benders iteration
- */
+struct OuterLoopCurrentIterationData{
+  int benders_num_run;
+  std::vector<double> outer_loop_criterion;
+  double max_criterion;
+  double outer_loop_bilevel_best_ub;
+  double external_loop_lambda;
+  std::string max_criterion_area;
+};
+/*! \struct
+ * struct that hold current Benders iteration
+  */
 struct CurrentIterationData {
   double subproblems_walltime;
   double subproblems_cputime;
@@ -39,10 +48,7 @@ struct CurrentIterationData {
   int min_simplexiter;
   int max_simplexiter;
   // ugly
-  int benders_num_run;
-  std::vector<double> outer_loop_criterion;
-  double outer_loop_bilevel_best_ub;
-  double external_loop_lambda;
+ OuterLoopCurrentIterationData outer_loop_current_iteration_data;
 };
 
 // /*! \struct to store benders cuts data

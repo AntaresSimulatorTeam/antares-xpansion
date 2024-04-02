@@ -39,11 +39,14 @@ class OuterLoopCouldNotReadCriterionField
 class OuterLoopPattern {
  public:
   explicit OuterLoopPattern(const std::string &prefix, const std::string &body);
-  std::regex MakeRegex() const;
+  [[nodiscard]] std::regex MakeRegex() const;
+  [[nodiscard]] const std::string &GetPrefix() const;
+  [[nodiscard]] const std::string &GetBody() const;
 
  private:
   std::string prefix_;
   std::string body_;
+
 };
 
 /// @brief holds the pattern and the criterion of the outer loop

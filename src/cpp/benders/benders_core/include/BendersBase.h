@@ -84,7 +84,7 @@ class BendersBase {
   BendersBaseOptions Options() const { return _options; }
   virtual void free() = 0;
   void InitExternalValues(bool is_bilevel_check_all, double lambda);
-  int GetBendersRunNumber() const { return _data.benders_num_run; }
+  int GetBendersRunNumber() const { return _data.outer_loop_current_iteration_data.benders_num_run; }
   CurrentIterationData GetCurrentIterationData() const;
   std::vector<double> GetOuterLoopCriterion() const;
   std::vector<double> GetOuterLoopCriterionAtBestBenders() const;
@@ -234,6 +234,8 @@ class BendersBase {
   std::vector<double> ComputeOuterLoopCriterion(
       const std::string &subproblem_name,
       const PlainData::SubProblemData &sub_problem_data);
+
+  void UpdateOuterLoopMaxCriterionArea();
 
  private:
   void print_master_and_cut(std::ostream &file, int ite,
