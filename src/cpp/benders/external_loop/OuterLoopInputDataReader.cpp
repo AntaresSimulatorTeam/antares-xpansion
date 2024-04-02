@@ -114,7 +114,7 @@ OuterLoopSingleInputData OuterLoopInputFromJson::DecodePattern(
     err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
             << "Error could not read 'criterion' field in outer loop input file"
             << "\n";
-    throw OuterLoopCouldNotReadAreaField(err_msg.str(), LOGLOCATION);
+    throw OuterLoopCouldNotReadCriterionField(err_msg.str(), LOGLOCATION);
   }
 
   return {"PositiveUnsuppliedEnergy::", body.asString(), criterion.asDouble()};

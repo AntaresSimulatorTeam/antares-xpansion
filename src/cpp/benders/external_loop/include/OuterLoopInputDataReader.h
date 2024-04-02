@@ -30,6 +30,11 @@ class OuterLoopCouldNotReadAreaField
   using LogUtils::XpansionError<std::runtime_error>::XpansionError;
 };
 
+class OuterLoopCouldNotReadCriterionField
+    : public LogUtils::XpansionError<std::runtime_error> {
+  using LogUtils::XpansionError<std::runtime_error>::XpansionError;
+};
+
 /// @brief lovely class
 class OuterLoopPattern {
  public:
