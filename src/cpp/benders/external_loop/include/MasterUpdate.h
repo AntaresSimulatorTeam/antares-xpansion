@@ -2,6 +2,7 @@
 #include "OuterLoopCriterion.h"
 #include "common.h"
 
+namespace Outerloop {
 class IMasterUpdate {
  public:
   virtual bool Update(double lambda_min, double lambda_max) = 0;
@@ -35,3 +36,4 @@ class MasterUpdateBase : public IMasterUpdate {
   double outer_loop_stopping_threshold_ = 1e-1;
   bool stop_update_ = true;
 };
+}  // namespace Outerloop

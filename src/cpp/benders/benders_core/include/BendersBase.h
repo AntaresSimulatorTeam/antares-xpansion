@@ -8,6 +8,7 @@
 #include "BendersStructsDatas.h"
 #include "ILogger.h"
 #include "OuterLoopBiLevel.h"
+#include "OuterLoopInputDataReader.h"
 #include "OutputWriter.h"
 #include "SimulationOptions.h"
 #include "SubproblemCut.h"
@@ -18,9 +19,9 @@
 #include "common.h"
 
 /**
- * std execution policies don't share a base type so we can't just select them
- *in place in the foreach This function allow the selection of policy via
- *template deduction
+ * std execution policies don't share a base type so we can't just select
+ *them in place in the foreach This function allow the selection of policy
+ *via template deduction
  **/
 template <class lambda>
 auto selectPolicy(lambda f, bool shouldParallelize) {
@@ -124,8 +125,9 @@ class BendersBase {
   std::vector<std::vector<int>> var_indices_;
   OuterLoopBiLevel outer_loop_biLevel_;
   bool is_bilevel_check_all_ = false;
+  // std::unique_ptr<Outerloop::IOuterLoopInputDataReader>
+  //     outer_loop_input_reader_;
 
- protected:
   virtual void Run() = 0;
   void update_best_ub();
   bool ShouldBendersStop();

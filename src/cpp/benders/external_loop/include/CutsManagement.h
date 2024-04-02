@@ -1,6 +1,8 @@
 #pragma once
 #include "BendersStructsDatas.h"
 
+namespace Outerloop {
+
 class ICutsManager {
  public:
   ICutsManager() = default;
@@ -16,3 +18,5 @@ class CutsManagerRunTime : public ICutsManager {
  private:
   WorkerMasterDataVect benders_cuts_;
 };
+
+}  // namespace Outerloop

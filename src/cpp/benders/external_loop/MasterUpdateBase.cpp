@@ -1,5 +1,7 @@
 #include "MasterUpdate.h"
 
+using namespace Outerloop;
+
 MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau,
                                    double epsilon_lambda,
                                    const ExternalLoopOptions &options)

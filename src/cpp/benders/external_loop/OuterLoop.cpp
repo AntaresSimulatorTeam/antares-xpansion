@@ -1,6 +1,7 @@
 #include "OuterLoop.h"
 
 #include "LoggerUtils.h"
+using namespace Outerloop;
 
 OuterLoop::OuterLoop(std::shared_ptr<IOuterLoopCriterion> criterion,
                      std::shared_ptr<IMasterUpdate> master_updater,

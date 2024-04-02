@@ -4,6 +4,7 @@
 #include "OuterLoopCriterion.h"
 #include "common_mpi.h"
 
+namespace Outerloop {
 class OuterLoop {
  public:
   explicit OuterLoop(std::shared_ptr<IOuterLoopCriterion> criterion,
@@ -23,3 +24,5 @@ class OuterLoop {
   mpi::environment& env_;
   mpi::communicator& world_;
 };
+
+}  // namespace Outerloop
