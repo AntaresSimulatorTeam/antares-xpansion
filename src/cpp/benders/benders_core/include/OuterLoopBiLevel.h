@@ -1,9 +1,10 @@
 #pragma once
+#include "OuterLoopInputDataReader.h"
 #include "SubproblemCut.h"
 
 class OuterLoopBiLevel {
  public:
-  explicit OuterLoopBiLevel(const ExternalLoopOptions &options);
+  explicit OuterLoopBiLevel(const Outerloop::OuterLoopInputData  &outer_loop_input_data);
   OuterLoopBiLevel() = default;
   bool Update_bilevel_data_if_feasible(
       const SubProblemDataMap &x,
@@ -12,7 +13,6 @@ class OuterLoopBiLevel {
   bool Check_bilevel_feasibility(
       const std::vector<double> &outer_loop_criterion, double overall_cost);
   //   double LambdaMax() const { return lambda_max_; }
-  void SetOptions(const ExternalLoopOptions &options) { options_ = options; }
   void Init(const std::vector<double> &obj, const Point &max_invest,
             const VariableMap &master_variable);
   double LambdaMax() const { return lambda_max_; }
@@ -34,6 +34,5 @@ class OuterLoopBiLevel {
   double lambda_max_ = 0.0;
   double lambda_min_ = 0.0;
   double lambda_ = 0.0;
-  ExternalLoopOptions options_;
-  std::vector<double> EXT_LOOP_CRITERION_VALUES_;
+  Outerloop::OuterLoopInputData outer_loop_input_data_;
 };

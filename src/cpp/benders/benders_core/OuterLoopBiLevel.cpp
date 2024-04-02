@@ -1,7 +1,7 @@
 #include "OuterLoopBiLevel.h"
 
-OuterLoopBiLevel::OuterLoopBiLevel(const ExternalLoopOptions &options)
-    : options_(options) {}
+OuterLoopBiLevel::OuterLoopBiLevel(const Outerloop::OuterLoopInputData  &outer_loop_input_data)
+    : outer_loop_input_data_(outer_loop_input_data) {}
 
 bool OuterLoopBiLevel::Update_bilevel_data_if_feasible(
     const SubProblemDataMap &x, const std::vector<double> &outer_loop_criterion,
@@ -29,23 +29,11 @@ bool OuterLoopBiLevel::Check_bilevel_feasibility(
 
 bool OuterLoopBiLevel::IsCriterionSatisfied(
     const std::vector<double> &outer_loop_criterions) {
-  // tmp EXT_LOOP_CRITERION_VALUES must be a vector of size
-  // outer_loop_criterions.size()
-  EXT_LOOP_CRITERION_VALUES_ = std::vector<double>(
-      outer_loop_criterions.size(), options_.EXT_LOOP_CRITERION_VALUE);
-
-  // for (int index(0); index < outer_loop_criterions.size(); ++index) {
-  //   if (outer_loop_criterions[index] <
-  //       EXT_LOOP_CRITERION_VALUES_[index] +
-  //           options_.EXT_LOOP_CRITERION_TOLERANCE) {
-  //     return false;
-  //   }
-  // }
-
+ const auto& outer_loop_input_data = outer_loop_input_data_.OuterLoopData();
   for (int index(0); index < outer_loop_criterions.size(); ++index) {
     if (outer_loop_criterions[index] >
-        EXT_LOOP_CRITERION_VALUES_[index] +
-            options_.EXT_LOOP_CRITERION_TOLERANCE) {
+        outer_loop_input_data[index].Criterion() +
+            outer_loop_input_data_.CriterionTolerance()) {
       return false;
     }
   }

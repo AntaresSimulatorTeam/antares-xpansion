@@ -45,6 +45,15 @@ void OuterLoopInputData::SetStoppingThreshold(
 double OuterLoopInputData::StoppingThreshold() const {
   return outer_loop_stopping_threshold_;
 }
+void OuterLoopInputData::SetCriterionTolerance(double criterion_tolerance) {
+  criterion_tolerance_ = criterion_tolerance;
+}
+double OuterLoopInputData::CriterionTolerance() const { return criterion_tolerance_; }
+void OuterLoopInputData::SetCriterionCountThreshold(
+    double criterion_count_threshold) {
+    criterion_count_threshold_ = criterion_count_threshold;
+}
+double OuterLoopInputData::CriterionCountThreshold() const { return criterion_tolerance_; }
 OuterLoopInputData OuterLoopInputFromJson::Read(
     const std::filesystem::path &input_file) {
   auto json_content = get_json_file_content(input_file);
@@ -63,7 +72,9 @@ OuterLoopInputData OuterLoopInputFromJson::Read(
 
 /*
 "BendersOuterloop" : {
-  "epsilon" : 1e-4,  // critère d'arrêt de l'algo
+  "stopping_threshold" : 1e-4,  // critère d'arrêt de l'algo
+  "criterion_count_threshold" : 1e-1,  //  seuil
+  "criterion_tolerance" : 1e-1,  // tolerance entre seuil et valeur calculée
       "patterns" : [
         {
           "area" : "Zone1",  // ==> verifier que "criterion" est satisfait pour
@@ -79,18 +90,25 @@ OuterLoopInputData OuterLoopInputFromJson::Read(
 }
 */
 void OuterLoopInputFromJson::Decode(const Json::Value &json_content) {
-  Json::Value outer_loop_stopping_threshold_default =
-      1e-5;  //=outer_loop_stopping_threshold_; default value
-             // Json::Value outer_loop_stopping_threshold_;
+
   outerLoopInputData_.SetStoppingThreshold(
       json_content
-          .get("outer_loop_stopping_threshold",
-               outer_loop_stopping_threshold_default)
+          .get("stopping_threshold",
+               1e-4)
+          .asDouble());
+  outerLoopInputData_.SetCriterionCountThreshold(
+      json_content
+          .get("criterion_count_threshold",
+               1e-1)
+          .asDouble());
+outerLoopInputData_.SetCriterionTolerance(
+      json_content
+          .get("criterion_tolerance",
+               1e-1)
           .asDouble());
 
-  Json::Value patterns;
-  if (patterns =
-          json_content.get("patterns", Json::nullValue) == Json::nullValue) {
+  Json::Value patterns = json_content.get("patterns", Json::nullValue);
+  if (patterns  == Json::nullValue) {
     std::ostringstream err_msg;
     err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
             << "outer loop input file must contains at least one pattern."
@@ -112,26 +130,25 @@ void OuterLoopInputFromJson::DecodePatterns(const Json::Value &patterns) {
     throw OuterLoopInputPatternsShouldBeArray(err_msg.str(), LOGLOCATION);
   }
 
-  for (const auto pattern : patterns) {
+  for (const auto& pattern : patterns) {
     DecodePattern(pattern);
   }
 }
 
 void OuterLoopInputFromJson::DecodePattern(const Json::Value &pattern) {
-  Json::Value body;
+  Json::Value body = pattern.get("area", Json::nullValue);
 
   // specify line And OR #pattern
-  if (body = pattern.get("area", Json::nullValue) == Json::nullValue) {
+  if (body  == Json::nullValue) {
     std::ostringstream err_msg;
     err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
             << "Error could not read 'area' field in outer loop input file"
             << "\n";
     throw OuterLoopCouldNotReadAreaField(err_msg.str(), LOGLOCATION);
   }
-  Json::Value criterion;
+  Json::Value criterion = pattern.get("criterion", Json::nullValue);
 
-  if (criterion =
-          pattern.get("criterion", Json::nullValue) == Json::nullValue) {
+  if (criterion  == Json::nullValue) {
     std::ostringstream err_msg;
     err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
             << "Error could not read 'criterion' field in outer loop input file"
