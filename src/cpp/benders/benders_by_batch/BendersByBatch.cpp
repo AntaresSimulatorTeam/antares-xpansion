@@ -215,8 +215,9 @@ void BendersByBatch::SolveBatches() {
       _data.number_of_subproblem_solved += batch_sub_problems.size();
       _data.cumulative_number_of_subproblem_solved += batch_sub_problems.size();
       remaining_epsilon_ -= batch_subproblems_costs_contribution_in_gap;
-      AddVectors<double>(_data.outer_loop_current_iteration_data.outer_loop_criterion,
-                         external_loop_criterion_current_batch);
+      // TODO
+      // AddVectors<double>(_data.outer_loop_current_iteration_data.outer_loop_criterion,
+      //                    external_loop_criterion_current_batch);
     }
 
     BroadCast(remaining_epsilon_, rank_0);
@@ -247,8 +248,10 @@ void BendersByBatch::BuildCut(
   misprice_ = global_misprice;
   Gather(subproblem_data_map, gathered_subproblem_map, rank_0);
   SetSubproblemsWalltime(subproblems_timer_per_proc.elapsed());
-  external_loop_criterion_current_batch =
-      ComputeSubproblemsContributionToOuterLoopCriterion(subproblem_data_map);
+  // if (Options().EXTERNAL_LOOP_OPTIONS.DO_EXT_LOOP) {
+  //   external_loop_criterion_current_batch =
+  //       ComputeSubproblemsContributionToOuterLoopCriterion(subproblem_data_map);
+  // }
   for (const auto &subproblem_map : gathered_subproblem_map) {
     for (auto &&[sub_problem_name, subproblem_data] : subproblem_map) {
       SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
