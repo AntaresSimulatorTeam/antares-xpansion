@@ -157,7 +157,8 @@ void BendersByBatch::SeparationLoop() {
 
     if (Rank() == rank_0) {
       outer_loop_criterion_.push_back(_data.outer_loop_current_iteration_data.outer_loop_criterion);
-      UpdateOuterLoopMaxCriterionArea();
+      // TODO
+      //  UpdateOuterLoopMaxCriterionArea();
       UpdateTrace();
       SaveCurrentBendersData();
     }
