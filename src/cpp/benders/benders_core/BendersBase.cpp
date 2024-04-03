@@ -746,8 +746,7 @@ void BendersBase::MatchProblemToId() {
 }
 
 void BendersBase::SetSubproblemsVariablesIndex() {
-  if (!subproblem_map.empty()) {
-
+  if (!subproblem_map.empty() && _options.EXTERNAL_LOOP_OPTIONS.DO_EXT_LOOP) {
     auto subproblem = subproblem_map.begin();
     subproblems_vars_names_.clear();
     subproblems_vars_names_ = subproblem->second->_solver->get_col_names();

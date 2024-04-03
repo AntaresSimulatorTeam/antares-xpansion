@@ -144,11 +144,15 @@ void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
     Reduce(GetSubproblemsCpuTime(), cumulative_subproblems_timer_per_iter,
            std::plus<double>(), rank_0);
     SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter);
-    _data.outer_loop_current_iteration_data.outer_loop_criterion =
-        ComputeSubproblemsContributionToOuterLoopCriterion(subproblem_data_map);
-    if (_world.rank() == rank_0) {
-      outer_loop_criterion_.push_back(_data.outer_loop_current_iteration_data.outer_loop_criterion);
-      UpdateOuterLoopMaxCriterionArea();
+    if (Options().EXTERNAL_LOOP_OPTIONS.DO_EXT_LOOP) {
+      _data.outer_loop_current_iteration_data.outer_loop_criterion =
+          ComputeSubproblemsContributionToOuterLoopCriterion(
+              subproblem_data_map);
+      if (_world.rank() == rank_0) {
+        outer_loop_criterion_.push_back(
+            _data.outer_loop_current_iteration_data.outer_loop_criterion);
+        UpdateOuterLoopMaxCriterionArea();
+      }
     }
     // only rank_0 receive non-emtpy gathered_subproblem_map
     master_build_cuts(gathered_subproblem_map);
