@@ -68,6 +68,7 @@ jobs:
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
     outputs:
       zip_name: ${{ steps.zip_name.outputs.zip_name }}
+      singlefile_name: ${{steps.zip_name.outputs.singlefile_name}}
     steps:
       - uses: actions/checkout@v4
         with:
