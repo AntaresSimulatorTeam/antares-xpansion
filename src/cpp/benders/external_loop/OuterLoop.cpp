@@ -27,13 +27,19 @@ void OuterLoop::Run() {
     PrintLog();
     benders_->init_data(master_updater_->Rhs());
     benders_->launch();
-    benders_->RunExternalLoopBilevelChecks();
-    if (world_.rank() == 0) {
-      stop_update_master = master_updater_->Update(
-          benders_->ExternalLoopLambdaMin(), benders_->ExternalLoopLambdaMax());
-    }
+    if(!benders_->isExceptionRaised()) {
+      benders_->RunExternalLoopBilevelChecks();
+      if (world_.rank() == 0) {
+        stop_update_master =
+            master_updater_->Update(benders_->ExternalLoopLambdaMin(),
+                                    benders_->ExternalLoopLambdaMax());
+      }
 
-    mpi::broadcast(world_, stop_update_master, 0);
+      mpi::broadcast(world_, stop_update_master, 0);
+    }
+    else {
+      stop_update_master = true;
+    }
   }
 
   // last prints
@@ -56,7 +62,7 @@ void OuterLoop::PrintLog() {
   const auto outer_loop_criterion =
       benders_->GetOuterLoopCriterionAtBestBenders();
   auto sum_loss =
-      outer_loop_criterion.size() == 0 ? 0 : outer_loop_criterion[0];
+      outer_loop_criterion.empty() ? 0 : outer_loop_criterion[0];
   msg << "*** Sum loss: " << std::scientific << std::setprecision(10)
       << sum_loss;
   logger->display_message(msg.str());

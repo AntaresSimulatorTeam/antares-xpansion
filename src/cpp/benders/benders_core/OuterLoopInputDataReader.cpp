@@ -3,7 +3,7 @@
 using namespace Outerloop;
 /**
  * prefix could be := PositiveUnsuppliedEnergy:: or something else necessarily
- * /!\ body could be := 'Brittany' or equivalent or nothing
+ * /!\ body could be := area name or equivalent or nothing
  */
 OuterLoopPattern::OuterLoopPattern(const std::string &prefix,
                                    const std::string &body)

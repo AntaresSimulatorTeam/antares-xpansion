@@ -86,7 +86,7 @@ void BendersMpi::do_solve_master_create_trace_and_update_cuts() {
 }
 
 void BendersMpi::BroadcastXCut() {
-  if (!_exceptionRaised) {
+  if (!exception_raised_) {
     Point x_cut = get_x_cut();
     mpi::broadcast(_world, x_cut, rank_0);
     set_x_cut(x_cut);
@@ -136,7 +136,7 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts() {
 
 void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
     const SubProblemDataMap &subproblem_data_map, const Timer &walltime) {
-  if (!_exceptionRaised) {
+  if (!exception_raised_) {
     std::vector<SubProblemDataMap> gathered_subproblem_map;
     mpi::gather(_world, subproblem_data_map, gathered_subproblem_map, rank_0);
     SetSubproblemsWalltime(walltime.elapsed());
@@ -234,7 +234,7 @@ void BendersMpi::check_if_some_proc_had_a_failure(int success) {
   int global_success;
   mpi::all_reduce(_world, success, global_success, mpi::bitwise_and<int>());
   if (global_success == 0) {
-    _exceptionRaised = true;
+    exception_raised_ = true;
   }
 }
 
@@ -294,14 +294,14 @@ void BendersMpi::Run() {
 
     /*Gather cut from each subproblem in master thread and add them to Master
      * problem*/
-    if (!_exceptionRaised) {
+    if (!exception_raised_) {
       step_2_solve_subproblems_and_build_cuts();
     }
 
-    if (!_exceptionRaised) {
+    if (!exception_raised_) {
       step_4_update_best_solution(_world.rank());
     }
-    _data.stop |= _exceptionRaised;
+    _data.stop |= exception_raised_;
 
     broadcast(_world, _data.is_in_initial_relaxation, rank_0);
     broadcast(_world, _data.stop, rank_0);

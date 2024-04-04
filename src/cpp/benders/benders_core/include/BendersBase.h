@@ -99,6 +99,12 @@ class BendersBase {
   double OuterLoopStoppingThreshold() const;
 
  protected:
+  bool exception_raised_ = false;
+
+ public:
+  bool isExceptionRaised() const;
+
+ protected:
   CurrentIterationData _data;
   WorkerMasterDataVect workerMasterDataVect_;
   // BendersCuts best_iteration_cuts_;

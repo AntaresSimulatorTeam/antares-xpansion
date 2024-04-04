@@ -49,7 +49,6 @@ class BendersMpi : public BendersBase {
 
   void solve_master_and_create_trace();
 
-  bool _exceptionRaised = false;
 
   void do_solve_master_create_trace_and_update_cuts();
 

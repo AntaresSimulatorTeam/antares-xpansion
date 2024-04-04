@@ -1015,6 +1015,7 @@ double BendersBase::ExternalLoopLambdaMin() const {
 }
 
 void BendersBase::init_data(double external_loop_lambda) {
+  benders_timer.restart();
   auto benders_num_run = _data.outer_loop_current_iteration_data.benders_num_run;
   auto outer_loop_bilevel_best_ub = _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub;
   init_data();
@@ -1038,3 +1039,4 @@ void BendersBase::UpdateOuterLoopMaxCriterionArea()  {
   auto  max_criterion_index = std::distance(criterions_begin, max_criterion_it);
  _data.outer_loop_current_iteration_data.max_criterion_area = outer_loop_input_data_.OuterLoopData()[max_criterion_index].Pattern().GetBody();
 }
+bool BendersBase::isExceptionRaised() const { return exception_raised_; }
