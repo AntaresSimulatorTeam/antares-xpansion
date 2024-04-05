@@ -1,4 +1,3 @@
-
 import yaml
 from antares_xpansion.xpansionConfig import ConfigParameters
 
@@ -17,6 +16,7 @@ class ConfigFileParser:
         self.FULL_RUN_DEFAULT = "full_run"
         self.ANTARES_ARCHIVE_UPDATER_DEFAULT = "antares_archive_updater"
         self.SENSITIVITY_DEFAULT = "sensitivity"
+        self.MPIEXEC = "mpiexec"
         self.AVAILABLE_SOLVERS_DEFAULT = []
 
     def get_config_parameters(self) -> ConfigParameters:
@@ -27,21 +27,21 @@ class ConfigFileParser:
 
             self.config = ConfigParameters(
                 default_install_dir=content.get(
-                    "DEFAULT_INSTALL_DIR", self.default_install_dir),
-                ANTARES=content.get('ANTARES', self.ANTARES_DEFAULT),
-                MERGE_MPS=content.get('MERGE_MPS', self.MERGE_MPS_DEFAULT),
-                BENDERS=content.get(
-                    'BENDERS', self.BENDERS_DEFAULT),
-                LP_NAMER=content.get('LP_NAMER', self.LP_NAMER_DEFAULT),
-                STUDY_UPDATER=content.get(
-                    'STUDY_UPDATER', self.STUDY_UPDATER_DEFAULT),
-                FULL_RUN=content.get(
-                    'FULL_RUN', self.FULL_RUN_DEFAULT),
+                    "DEFAULT_INSTALL_DIR", self.default_install_dir
+                ),
+                ANTARES=content.get("ANTARES", self.ANTARES_DEFAULT),
+                MERGE_MPS=content.get("MERGE_MPS", self.MERGE_MPS_DEFAULT),
+                BENDERS=content.get("BENDERS", self.BENDERS_DEFAULT),
+                LP_NAMER=content.get("LP_NAMER", self.LP_NAMER_DEFAULT),
+                STUDY_UPDATER=content.get("STUDY_UPDATER", self.STUDY_UPDATER_DEFAULT),
+                FULL_RUN=content.get("FULL_RUN", self.FULL_RUN_DEFAULT),
                 ANTARES_ARCHIVE_UPDATER=content.get(
-                    'ANTARES_ARCHIVE_UPDATER', self.ANTARES_ARCHIVE_UPDATER_DEFAULT),
-                SENSITIVITY_EXE=content.get(
-                    'SENSITIVITY', self.SENSITIVITY_DEFAULT),
+                    "ANTARES_ARCHIVE_UPDATER", self.ANTARES_ARCHIVE_UPDATER_DEFAULT
+                ),
+                SENSITIVITY_EXE=content.get("SENSITIVITY", self.SENSITIVITY_DEFAULT),
+                MPIEXEC=content.get("mpiexec", self.MPIEXEC_DEFAULT),
                 AVAILABLE_SOLVERS=content.get(
-                    'AVAILABLE_SOLVER', self.AVAILABLE_SOLVERS_DEFAULT)
+                    "AVAILABLE_SOLVER", self.AVAILABLE_SOLVERS_DEFAULT
+                ),
             )
         return self.config

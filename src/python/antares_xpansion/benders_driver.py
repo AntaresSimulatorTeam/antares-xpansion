@@ -13,12 +13,14 @@ from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 
 
 class BendersDriver:
-    def __init__(self, benders, merge_mps, options_file) -> None:
+
+    def __init__(self, benders, merge_mps, options_file, mpiexec=None) -> None:
 
         self.oversubscribe = False
         self.allow_run_as_root = False
         self.benders = benders
         self.merge_mps = merge_mps
+        self.mpiexec = mpiexec
         self.logger = step_logger(__name__, __class__.__name__)
 
         if (options_file != ""):
@@ -132,7 +134,7 @@ class BendersDriver:
 
     def _initialise_system_specific_mpi_vars(self):
         if sys.platform.startswith("win32"):
-            self.MPI_LAUNCHER = "mpiexec"
+            self.MPI_LAUNCHER = self.mpiexec
         elif sys.platform.startswith("linux"):
             self.MPI_LAUNCHER = "mpirun"
         else:
