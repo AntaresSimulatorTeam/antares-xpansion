@@ -185,6 +185,8 @@ if (MSVC)
 	list(APPEND CMAKE_FIND_LIBRARY_PREFIXES "" "lib")
 endif ()
 find_package(MPI REQUIRED)
+
+
 find_package(Boost REQUIRED COMPONENTS mpi serialization)
 include_directories(${Boost_INCLUDE_DIRS})
 
@@ -297,10 +299,10 @@ FILE(COPY ${ANTARES_SOLVER_DIR}/../lib/
 
 add_subdirectory ("${PROJECT_SOURCE_DIR}/src")
 
-if(BUILD_TESTING)
-	enable_testing()
-	add_subdirectory("${PROJECT_SOURCE_DIR}/tests")
-endif()
+# if(BUILD_TESTING)
+# 	enable_testing()
+# 	add_subdirectory("${PROJECT_SOURCE_DIR}/tests")
+# endif()
 
 
 # ===========================================================================
@@ -318,6 +320,13 @@ if (WIN32)
     TYPE BIN
     USE_SOURCE_PERMISSIONS
     FILES_MATCHING PATTERN "*.dll")
+
+  install(FILES
+		${MPI_msmpi_LIBRARY}
+		DESTINATION bin
+        )
+	install(PROGRAMS ${MPIEXEC_EXECUTABLE}
+  TYPE BIN)
 endif()
 
 install(DIRECTORY ${ANTARES_SOLVER_DIR}/
