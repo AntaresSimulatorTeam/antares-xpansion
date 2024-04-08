@@ -299,10 +299,10 @@ FILE(COPY ${ANTARES_SOLVER_DIR}/../lib/
 
 add_subdirectory ("${PROJECT_SOURCE_DIR}/src")
 
-# if(BUILD_TESTING)
-# 	enable_testing()
-# 	add_subdirectory("${PROJECT_SOURCE_DIR}/tests")
-# endif()
+if(BUILD_TESTING)
+	enable_testing()
+	add_subdirectory("${PROJECT_SOURCE_DIR}/tests")
+endif()
 
 
 # ===========================================================================
