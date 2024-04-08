@@ -150,7 +150,8 @@ jobs:
           set XPRESSDIR=${{ env.XPRESSDIR }}
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
-- name: Create installer .zip
+      
+      - name: Create installer .zip
         shell: bash
         run: |
           cd _build
