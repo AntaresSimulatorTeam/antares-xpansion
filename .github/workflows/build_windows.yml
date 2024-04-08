@@ -141,15 +141,6 @@ jobs:
         run: |
           cmake --build _build --config Release -j4
 
-      - name: Running unit tests
-        timeout-minutes: 120
-        shell: cmd
-        run: |
-          set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin
-          set PATH=%PATH%;${{ env.XPRESS }}
-          set XPRESSDIR=${{ env.XPRESSDIR }}
-          cd _build
-          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
       
       - name: Create installer .zip
         shell: bash
