@@ -16,7 +16,7 @@ class ConfigFileParser:
         self.FULL_RUN_DEFAULT = "full_run"
         self.ANTARES_ARCHIVE_UPDATER_DEFAULT = "antares_archive_updater"
         self.SENSITIVITY_DEFAULT = "sensitivity"
-        self.MPIEXEC = "mpiexec"
+        self.MPIEXEC_DEFAULT = "mpiexec"
         self.AVAILABLE_SOLVERS_DEFAULT = []
 
     def get_config_parameters(self) -> ConfigParameters:
