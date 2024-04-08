@@ -47,7 +47,7 @@ jobs:
       antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
       antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
     steps:
-      - uses: actions/checkout@v3 #Keep at 3. v4 uses node 20 which uses glibc_2.27
+      - uses: actions/checkout@v4 #Keep at 3. v4 uses node 20 which uses glibc_2.27
       - name: Read antares-solver version
         id: antares-version
         uses: ./.github/actions/read-json-value
@@ -98,7 +98,7 @@ jobs:
         id: get_release
         uses: bruceadams/get-release@v1.3.2
         
-      - uses: actions/checkout@v3 #Keep at 3
+      - uses: actions/checkout@v4 #Keep at 3
         with:
           submodules: true
 
@@ -119,7 +119,7 @@ jobs:
       #          useCloudCache: true
 
       - name: Checkout xpressmp linux
-        uses: actions/checkout@v3 #keep v3
+        uses: actions/checkout@v4 #keep v3
         with:
           token: ${{ secrets.AS_TOKEN }}
           repository: rte-france/xpress-mp
