@@ -186,7 +186,6 @@ if (MSVC)
 endif ()
 find_package(MPI REQUIRED)
 
-
 find_package(Boost REQUIRED COMPONENTS mpi serialization)
 include_directories(${Boost_INCLUDE_DIRS})
 
@@ -314,8 +313,9 @@ if (USER_GUIDE_PATH)
 endif()
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples/" 		DESTINATION examples)
-cmake_path(GET MPIEXEC_EXECUTABLE PARENT_PATH MPI_BIN_DIR)
 if (WIN32)
+cmake_path(GET MPIEXEC_EXECUTABLE PARENT_PATH MPI_BIN_DIR)
+find_file(msmpi_dll NAMES msmpi.dll REGISTRY_VIEW HOST)
   install(DIRECTORY ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}/
     TYPE BIN
     USE_SOURCE_PERMISSIONS
@@ -323,6 +323,7 @@ if (WIN32)
 
   install(FILES
 		${MPI_msmpi_LIBRARY}
+		${msmpi_dll}
 		DESTINATION bin
         )
 	install(DIRECTORY ${MPI_BIN_DIR}/
