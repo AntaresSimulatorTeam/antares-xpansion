@@ -140,7 +140,8 @@ jobs:
       - name: Build
         run: |
           cmake --build _build --config Release -j4
-
+          cd _build
+          cmake --install .
       
       - name: Create installer .zip
         shell: bash
