@@ -333,7 +333,6 @@ class ConfigLoader:
 
         return int(batch_size_str)
 
-
     def additional_constraints(self):
         """
         returns path to additional constraints file
@@ -507,7 +506,6 @@ class ConfigLoader:
         self._set_xpansion_simulation_name()
     class NotAnXpansionOutputDir(Exception):
         pass
-        
 
     def _set_xpansion_simulation_name(self):
         xpansion_dir_suffix ="-Xpansion"
@@ -530,7 +528,6 @@ class ConfigLoader:
                     self._xpansion_simulation_name = self._last_study
                     self._last_study =self._last_study.parent /  (self._last_study.stem[:-len(xpansion_dir_suffix)]+".zip")
 
-                
         else:
             self._xpansion_simulation_name = self._last_study.parent / \
                 (self._last_study.stem+"-Xpansion")
@@ -538,7 +535,7 @@ class ConfigLoader:
     def is_zip(self, study):
         _, ext = os.path.splitext(study)
         return ext == ".zip" 
-    
+
     def update_last_study_with_sensitivity_results(self):
         if self.is_zip(self._last_study):
             os.remove(self._last_study)
@@ -548,7 +545,7 @@ class ConfigLoader:
 
     def is_antares_study_output(self, study: Path):
         _, ext = os.path.splitext(study)
-        return ext == ".zip" or (os.path.isdir(study) and '-Xpansion' in study.name)
+        return ext == ".zip" or os.path.isdir(study)
 
     def last_modified_study(self, root_dir:Path)-> Path: 
         list_dir = os.listdir(root_dir)
@@ -563,7 +560,7 @@ class ConfigLoader:
         )
         if len(sort_studies) == 0:
             raise ConfigLoader.MissingAntaresOutput("No Antares output is found")
-        
+
         last_study = Path(root_dir) / sort_studies[-1]
         return last_study
 
@@ -608,7 +605,6 @@ class ConfigLoader:
 
     def benders_exe(self):
         return self.exe_path(self._config.BENDERS)
-
 
     def merge_mps_exe(self):
         return self.exe_path(self._config.MERGE_MPS)
