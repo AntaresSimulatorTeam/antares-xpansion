@@ -56,7 +56,7 @@ void PrintExternalLoopData(LogDestination& log_destination,
                            const HEADERSTYPE& type,
                            const BENDERSMETHOD& method);
 
-struct MathLoggerBehaviour : public ILoggerBenders {
+struct MathLoggerBehaviour : public ILoggerXpansion {
   void write_header() {
     setHeadersList();
     for (const auto& header : Headers()) {
@@ -65,7 +65,7 @@ struct MathLoggerBehaviour : public ILoggerBenders {
     LogsDestination() << std::endl;
   }
 
-  virtual void display_message(const std::string& str) {
+  void display_message(const std::string& str) override {
     LogsDestination() << str << std::endl;
   }
 
@@ -166,7 +166,7 @@ class MathLoggerImplementation : public MathLoggerBehaviour {
   std::shared_ptr<MathLogger> implementation_;
 };
 
-class MathLoggerDriver : public ILoggerBenders {
+class MathLoggerDriver : public ILoggerXpansion {
  public:
   MathLoggerDriver() = default;
   void write_header();
