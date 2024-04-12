@@ -21,6 +21,9 @@ class ProblemGenerationILogger : public ILoggerXpansion {
  public:
   virtual ~ProblemGenerationILogger() = default;
   virtual void display_message(const std::string& message) = 0;
+  virtual void PrintIterationSeparatorBegin() = 0;
+  virtual void PrintIterationSeparatorEnd() = 0;
+
   virtual std::ostream& GetOstreamObject() = 0;
   LogUtils::LOGGERTYPE Type() const { return type_; }
 
@@ -42,7 +45,9 @@ class ProblemGenerationFileLogger : public ProblemGenerationILogger {
   explicit ProblemGenerationFileLogger(
       const std::filesystem::path& logFilePath);
   void display_message(const std::string& message) override;
-  std::ostream& GetOstreamObject() override { return logFile_; }
+  void PrintIterationSeparatorBegin() override;
+  void PrintIterationSeparatorEnd() override;
+  std::ostream& GetOstreamObject() override;
 };
 
 class ProblemGenerationOstreamLogger : public ProblemGenerationILogger {
@@ -53,7 +58,9 @@ class ProblemGenerationOstreamLogger : public ProblemGenerationILogger {
   ~ProblemGenerationOstreamLogger() override = default;
   explicit ProblemGenerationOstreamLogger(std::ostream& stream);
   void display_message(const std::string& message) override;
-  std::ostream& GetOstreamObject() override { return stream_; }
+  void PrintIterationSeparatorBegin() override;
+  void PrintIterationSeparatorEnd() override;
+  std::ostream& GetOstreamObject() override;
 };
 
 class ProblemGenerationLogger;
@@ -74,6 +81,8 @@ class ProblemGenerationLogger : public ILoggerXpansion {
   void display_message(const std::string& message);
   void display_message(const std::string& message,
                        const LogUtils::LOGLEVEL log_level);
+  void PrintIterationSeparatorBegin() override;
+  void PrintIterationSeparatorEnd() override;
   void setLogLevel(const LogUtils::LOGLEVEL log_level);
   void setContext(const std::string& context) { context_ = context; }
 
