@@ -18,8 +18,8 @@
 #include <filesystem>
 #include <iostream>
 #include <mutex>
+#include <sstream>
 #include <string>
-
 namespace LoadXpress {
 
 #define STRINGIFY2(X) #X
@@ -137,7 +137,10 @@ std::function<int(char* version)> XPRSgetversion = nullptr;
 std::function<int(XPRSprob prob, int attrib, int* p_value)> XPRSgetintattrib =
     nullptr;
 
-bool LoadXpressFunctions(DynamicLibrary* xpress_dynamic_library) {
+XpressLoader::XpressLoader(std::shared_ptr<ILoggerXpansion> logger)
+    : logger_(std::move(logger)) {}
+
+bool XpressLoader::LoadXpressFunctions(DynamicLibrary* xpress_dynamic_library) {
   // This was generated with the parse_header_xpress.py script.
   // See the comment at the top of the script.
 
@@ -195,22 +198,25 @@ bool LoadXpressFunctions(DynamicLibrary* xpress_dynamic_library) {
         "exhaustive). [" +
         StringJoin(notFound) +
         "]. Please make sure that your XPRESS install is "
-        "up-to-date (>= 8.13.0).");
-    std::cout << msg << std::endl;
+        "up-to-date (>= 8.13.0).\n");
+    logger_->display_message(msg);
     return false;
   }
   return true;
 }
 
-void printXpressBanner() {
+void XpressLoader::printXpressBanner() {
   char banner[XPRS_MAXBANNERLENGTH];
   XPRSgetbanner(banner);
+  std::ostringstream msg;
 
-  std::cout << "Xpress banner :\n" << banner << "\n";
+  msg << "Xpress banner :\n" << banner << "\n";
+  logger_->display_message(msg);
 }
 
-std::string GetXpressVarFromEnvironmentVariables(const char* XPRESS_var,
-                                                 bool verbose = true) {
+std::string XpressLoader::GetXpressVarFromEnvironmentVariables(
+    const char* XPRESS_var, bool verbose) {
+  std::ostringstream msg;
   // Look for libraries pointed by XPRESSDIR first.
   std::string xpress_home_from_env = "";
 #ifdef _MSC_VER
@@ -225,8 +231,10 @@ std::string GetXpressVarFromEnvironmentVariables(const char* XPRESS_var,
              XPRESS_var);
   } else {
     if (verbose) {
-      std::cout << "[Windows getenv_s function]: " << XPRESS_var
-                << " doesn't exist!\n";
+      msg.str("");
+      msg << "[Windows getenv_s function]: " << XPRESS_var
+          << " doesn't exist!\n";
+      logger_->display_message(msg);
     }
   }
 #else
@@ -239,7 +247,8 @@ std::string GetXpressVarFromEnvironmentVariables(const char* XPRESS_var,
   return xpress_home_from_env;
 }
 
-std::vector<std::string> XpressDynamicLibraryPotentialPaths() {
+std::vector<std::string> XpressLoader::XpressDynamicLibraryPotentialPaths() {
+  std::ostringstream msg;
   std::vector<std::string> potential_paths;
 
   const char* XPRESSDIR = "XPRESSDIR";
@@ -255,12 +264,15 @@ std::vector<std::string> XpressDynamicLibraryPotentialPaths() {
 #elif defined(__GNUC__)   // Linux
     potential_paths.push_back((prefix / "lib" / "libxprs.so").string());
 #else
-    std::cout << "OS Not recognized by xpress/environment.cc."
-              << " You won't be able to use Xpress.";
+    msg << "OS Not recognized by xpress/environment.cc."
+        << " You won't be able to use Xpress.";
+    logger_->display_message(msg);
 #endif
   } else {
-    std::cout << "Warning: "
-              << "Environment variable " << XPRESSDIR << " undefined.\n";
+    msg.str("");
+    msg << "Warning: "
+        << "Environment variable " << XPRESSDIR << " undefined.\n";
+    logger_->display_message(msg);
   }
 
   // Search for canonical places.
@@ -272,13 +284,15 @@ std::vector<std::string> XpressDynamicLibraryPotentialPaths() {
 #elif defined(__GNUC__)   // Linux
   potential_paths.push_back("/opt/xpressmp/lib/libxprs.so");
 #else
-  std::cout << "OS Not recognized by environment.cc."
-            << " You won't be able to use Xpress.";
+  msg.str("");
+  msg << "OS Not recognized by environment.cc."
+      << " You won't be able to use Xpress.";
+  logger_->display_message(msg);
 #endif
   return potential_paths;
 }
 
-bool LoadXpressDynamicLibrary(std::string& xpresspath) {
+bool XpressLoader::LoadXpressDynamicLibrary(std::string& xpresspath) {
   static std::string xpress_lib_path;
   static std::once_flag xpress_loading_done;
   static bool ret;
@@ -286,14 +300,16 @@ bool LoadXpressDynamicLibrary(std::string& xpresspath) {
   // static std::mutex mutex;
 
   // mutex.lock();
-
-  std::call_once(xpress_loading_done, []() {
+  std::ostringstream msg;
+  std::call_once(xpress_loading_done, [this, &msg]() {
     const std::vector<std::string> canonical_paths =
         XpressDynamicLibraryPotentialPaths();
     for (const std::string& path : canonical_paths) {
+      msg.str("");
       if (xpress_library.TryToLoad(path)) {
-        std::cout << "Info: "
-                  << "Found the Xpress library in " << path << ".\n";
+        msg << "Info: "
+            << "Found the Xpress library in " << path << ".\n";
+        logger_->display_message(msg);
         xpress_lib_path.clear();
         std::filesystem::path p(path);
         // p.remove_filename();
@@ -305,10 +321,12 @@ bool LoadXpressDynamicLibrary(std::string& xpresspath) {
     if (xpress_library.LibraryIsLoaded()) {
       ret = LoadXpressFunctions(&xpress_library);
     } else {
-      std::string msg("Could not find the Xpress shared library. Looked in: [" +
-                      StringJoin(canonical_paths) +
-                      "]. Please check environment variable XPRESSDIR\n");
-      std::cout << msg << std::endl;
+      msg.str("");
+      msg << "Could not find the Xpress shared library. Looked in: ["
+          << StringJoin(canonical_paths)
+          << "]. Please check environment variable XPRESSDIR\n";
+      msg << std::endl;
+      logger_->display_message(msg);
       ret = false;
     }
   });
@@ -317,7 +335,9 @@ bool LoadXpressDynamicLibrary(std::string& xpresspath) {
   return ret;
 }
 
-int loadLicence(const std::string& lib_path, bool verbose) {
+int XpressLoader::loadLicence(const std::string& lib_path, bool verbose) {
+  std::ostringstream msg;
+
   //-----first let xpress find the licence
   int code = XPRSinit(nullptr);
   if (!code) {
@@ -337,8 +357,9 @@ int loadLicence(const std::string& lib_path, bool verbose) {
     }
   } else {
     if (verbose) {
-      std::cout << "Warning: Environment variable " << XPAUTH_PATH
-                << " undefined.\n";
+      msg.str("");
+      msg << "Warning: Environment variable " << XPAUTH_PATH << " undefined.\n";
+      logger_->display_message(msg);
     }
   }
 
@@ -354,8 +375,9 @@ int loadLicence(const std::string& lib_path, bool verbose) {
     }
   } else {
     if (verbose) {
-      std::cout << "Warning: Environment variable " << XPRESS
-                << " undefined.\n";
+      msg.str("");
+      msg << "Warning: Environment variable " << XPRESS << " undefined.\n";
+      logger_->display_message(msg);
     }
   }
   // --- in xpress bin dir
@@ -366,7 +388,9 @@ int loadLicence(const std::string& lib_path, bool verbose) {
 }
 
 /** init XPRESS environment */
-bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
+bool XpressLoader::initXpressEnv(bool verbose, int xpress_oem_license_key) {
+  std::ostringstream msg;
+
   std::string xpresspath;
   bool status = LoadXpressDynamicLibrary(xpresspath);
   if (!status) {
@@ -378,8 +402,9 @@ bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
   // if not an OEM key
   if (xpress_oem_license_key == 0) {
     if (verbose) {
-      std::cout << "Initialising xpress-MP with parameter " << xpresspath
-                << "\n";
+      msg.str("");
+      msg << "Initialising xpress-MP with parameter " << xpresspath << "\n";
+      logger_->display_message(msg);
     }
 
     code = loadLicence(xpresspath, false);
@@ -390,29 +415,36 @@ bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
         printXpressBanner();
         char version[16];
         XPRSgetversion(version);
-        std::cout << "Warning: "
-                  << "Optimizer version: " << version
-                  << " (Antares-Xpansion was compiled with version "
-                  << XPVERSION << ").\n";
+        msg.str("");
+        msg << "Warning: "
+            << "Optimizer version: " << version
+            << " (Antares-Xpansion was compiled with version " << XPVERSION
+            << ").\n";
+        logger_->display_message(msg);
       }
       return true;
     } else {
-      std::cout << "XpressInterface: Xpress found at " << xpresspath << "\n";
+      msg.str("");
+      msg << "XpressInterface: Xpress found at " << xpresspath << "\n";
+
       char errmsg[256];
       XPRSgetlicerrmsg(errmsg, 256);
 
-      std::cout << "Xpress License error : " << errmsg
-                << " (XPRSinit returned code " << code << "). Please check"
-                << " environment variable XPRESS.\n";
+      msg << "Xpress License error : " << errmsg << " (XPRSinit returned code "
+          << code << "). Please check"
+          << " environment variable XPRESS.\n";
+      logger_->display_message(msg);
 
       return false;
     }
   } else {
     // if OEM key
     if (verbose) {
-      std::cout << "Warning: "
-                << "Initialising xpress-MP with OEM key "
-                << xpress_oem_license_key << "\n";
+      msg.str("");
+      msg << "Warning: "
+          << "Initialising xpress-MP with OEM key " << xpress_oem_license_key
+          << "\n";
+      logger_->display_message(msg);
     }
 
     int nvalue = 0;
@@ -422,24 +454,32 @@ bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
 
     XPRSlicense(&nvalue, slicmsg);
     if (verbose) {
-      std::cout << "First message from XPRSLicense : " << slicmsg << "\n";
+      msg.str("");
+      msg << "First message from XPRSLicense : " << slicmsg << "\n";
+      logger_->display_message(msg);
     }
 
     nvalue = xpress_oem_license_key - ((nvalue * nvalue) / 19);
     ierr = XPRSlicense(&nvalue, slicmsg);
 
     if (verbose) {
-      std::cout << "Second message from XPRSLicense : " << slicmsg << "\n";
+      msg.str("");
+      msg << "Second message from XPRSLicense : " << slicmsg << "\n";
+      logger_->display_message(msg);
     }
     if (ierr == 16) {
       if (verbose) {
-        std::cout << "Optimizer development software detected\n";
+        msg.str("");
+        msg << "Optimizer development software detected\n";
+        logger_->display_message(msg);
       }
     } else if (ierr != 0) {
       // get the license error message
       XPRSgetlicerrmsg(errmsg, 256);
 
-      std::cout << "Xpress Error Message: " << errmsg << "\n";
+      msg.str("");
+      msg << "Xpress Error Message: " << errmsg << "\n";
+      logger_->display_message(msg);
       return false;
     }
 
@@ -448,14 +488,16 @@ bool initXpressEnv(bool verbose, int xpress_oem_license_key) {
     if (!code) {
       return true;
     } else {
-      std::cout << "XPRSinit returned code : " << code << "\n";
+      msg.str("");
+      msg << "XPRSinit returned code : " << code << "\n";
+      logger_->display_message(msg);
       return false;
     }
   }
 }
 
-bool XpressIsCorrectlyInstalled() {
-  bool correctlyInstalled = initXpressEnv(false);
+bool XpressLoader::XpressIsCorrectlyInstalled(bool verbose) {
+  bool correctlyInstalled = initXpressEnv(verbose);
   if (correctlyInstalled) {
     XPRSfree();
   }
