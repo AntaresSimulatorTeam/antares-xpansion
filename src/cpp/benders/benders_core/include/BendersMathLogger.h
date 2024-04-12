@@ -65,7 +65,7 @@ struct MathLoggerBehaviour : public ILoggerXpansion {
     LogsDestination() << std::endl;
   }
 
-  virtual void display_message(const std::string& str) {
+  void display_message(const std::string& str) override {
     LogsDestination() << str << std::endl;
   }
 

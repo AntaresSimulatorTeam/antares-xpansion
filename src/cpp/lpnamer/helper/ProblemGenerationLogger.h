@@ -19,10 +19,10 @@ namespace ProblemGenerationLog {
 
 class ProblemGenerationILogger : public ILoggerXpansion {
  public:
-  virtual ~ProblemGenerationILogger() = default;
-  virtual void display_message(const std::string& message) = 0;
-  virtual void PrintIterationSeparatorBegin() = 0;
-  virtual void PrintIterationSeparatorEnd() = 0;
+  ~ProblemGenerationILogger() override = default;
+  void display_message(const std::string& message) override = 0;
+  void PrintIterationSeparatorBegin() override = 0;
+  void PrintIterationSeparatorEnd() override = 0;
 
   virtual std::ostream& GetOstreamObject() = 0;
   LogUtils::LOGGERTYPE Type() const { return type_; }
