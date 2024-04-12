@@ -21,7 +21,7 @@ jobs:
       antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
       antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Read antares-solver version
         id: antares-version
         uses: ./.github/actions/read-json-value
@@ -49,9 +49,10 @@ jobs:
     container: 'oraclelinux:8'
     strategy:
       matrix:
-        xprs: [ #{ value: XPRESS-ON, ref: 8.13a },
-                { value: XPRESS-ON, ref: 9.2.5 },
-          #        { value: XPRESS-OFF }
+        xprs: [
+          # { value: XPRESS-ON, ref: 8.13a },
+          { value: XPRESS-ON, ref: 9.2.5 },
+          # { value: XPRESS-OFF }
         ]
     needs: [ versions ]
     env:
@@ -63,20 +64,28 @@ jobs:
       XPRS_LIB_Path_CONTAINER: ${GITHUB_WORKSPACE}/xpress/lib
 
     steps:
-
       - name: Install System
         run: |
-          dnf install -y epel-release git cmake wget rpm-build redhat-lsb-core openmpi-devel
-          dnf install -y unzip libuuid-devel boost-test boost-devel gcc-toolset-10-toolchain zlib-devel python3-devel
+          dnf install -y epel-release git wget rpm-build redhat-lsb-core openmpi-devel
+          dnf install -y unzip libuuid-devel gcc-toolset-10-toolchain python3-devel zlib-devel
+          #make gcc &co available system wide and "action wide"
+          source /opt/rh/gcc-toolset-10/enable
+          echo $PATH >> $GITHUB_PATH
 
-      - uses: actions/checkout@v3
+      - run: |
+          dnf module install -y nodejs:20/common
+
+      - uses: lukka/get-cmake@latest
+        with:
+          useLocalCache: false
+          useCloudCache: true
+
+      - uses: actions/checkout@v4
         with:
           submodules: true
 
-      - uses: ./.github/workflows/compile-gtest
-
       - name: Checkout xpressmp linux
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.AS_TOKEN }}
           repository: rte-france/xpress-mp
@@ -89,9 +98,8 @@ jobs:
         run: |
           dnf update -y
           dnf install -y python3 python3-pip
-
-      - run:
-          echo ${{needs.versions.outputs.antares-deps-version}}
+          pip3 install wheel #Too late to install in requirements.txt
+          pip3 install -r requirements-tests.txt
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
@@ -101,27 +109,24 @@ jobs:
           os: Oracle8
           os-full-name: OracleServer-8.9
 
-      - name: Compile Boost
-        uses: ./.github/workflows/compile-boost
-        with:
-          prefix: "../rte-antares-deps-Release/"
       - name: Compile TBB
         uses: ./.github/workflows/compile-tbb
 
-      - name: Install dependencies
+      - run: |
+          mkdir -p ${{ github.workspace }}/vcpkg_cache
+
+      - name: vcpkg install
         run: |
-          source /opt/rh/gcc-toolset-10/enable
-          pip3 install wheel #Too late to install in requirements.txt
-          pip3 install -r requirements-tests.txt
+          pushd vcpkg
+          git fetch --unshallow
+          ./bootstrap-vcpkg.sh
+          popd
+          vcpkg/vcpkg install
 
       - name: Configure
         run: |
           [[ ${{ matrix.xprs.value }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
-          source /opt/rh/gcc-toolset-10/enable
-          dnf install jsoncpp-devel
-          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-          export PATH=/usr/lib64/openmpi/bin:$PATH
-          cmake3 -B _build -S . \
+          cmake -B _build -S . \
                  -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
                  -DBUILD_TESTING=ON \
                  -DCMAKE_BUILD_TYPE=Release \
@@ -129,23 +134,19 @@ jobs:
                  -DBUILD_UI=OFF \
                  -DXPRESS=${{ env.XPRESS_VALUE }} \
                  -DXPRESS_ROOT=${{ env.XPRESSDIR }} \
-                 -DALLOW_RUN_AS_ROOT=ON
-
+                 -DALLOW_RUN_AS_ROOT=ON \
+                 -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
         run: |
-          source /opt/rh/gcc-toolset-10/enable
-          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-          export PATH=/usr/lib64/openmpi/bin:$PATH
-          cmake --build _build --config Release -j2
+          cmake --build _build --config Release -j$(nproc)
 
       - name: Running unit tests
         timeout-minutes: 120
         shell: bash
         run: |
-          source /etc/profile.d/modules.sh
-          module load mpi
+          export PATH=${GITHUB_WORKSPACE}/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
           export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build
-          ctest3 -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
+          ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"

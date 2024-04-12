@@ -571,6 +571,13 @@ class SimpleLoggerMock : public ILogger {
     _displaymessage = str;
   }
 
+  void PrintIterationSeparatorBegin() override {
+    //
+  }
+  void PrintIterationSeparatorEnd() override {
+    //
+  }
+
   void log_at_initialization(const int it_number) override { _initCall = true; }
 
   void log_iteration_candidates(const LogData& d) override {
@@ -812,7 +819,7 @@ TEST(MathLoggerHeadersManagerTest, LongBenders) {
                                                "SPWallTime (s)",
                                                "SPCpuTime (s)",
                                                "NotSolvingWallTime (s)"};
-  ASSERT_EQ(expected_headers, headers_manager.headers_list);
+  ASSERT_EQ(expected_headers, headers_manager.HeadersList());
 }
 
 TEST(MathLoggerHeadersManagerTest, ShortBenders) {
@@ -822,12 +829,12 @@ TEST(MathLoggerHeadersManagerTest, ShortBenders) {
   std::vector<std::string> expected_headers = {
       "Ite",    "Lb",     "Ub",      "BestUb",     "AbsGap",    "RelGap",
       "MinSpx", "MaxSpx", "IteTime (s)", "MasterTime (s)", "SPWallTime (s)"};
-  ASSERT_EQ(expected_headers, headers_manager.headers_list);
+  ASSERT_EQ(expected_headers, headers_manager.HeadersList());
 }
 
 TEST(MathLoggerHeadersManagerTest, LongBendersByBatch) {
   HEADERSTYPE headers_type = HEADERSTYPE::LONG;
-  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERSBYBATCH);
+  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERS_BY_BATCH);
 
   std::vector<std::string> expected_headers = {"Ite",
                                                "Lb",
@@ -840,26 +847,26 @@ TEST(MathLoggerHeadersManagerTest, LongBendersByBatch) {
                                                "SPWallTime (s)",
                                                "SPCpuTime (s)",
                                                "NotSolvingWallTime (s)"};
-  ASSERT_EQ(expected_headers, headers_manager.headers_list);
+  ASSERT_EQ(expected_headers, headers_manager.HeadersList());
 }
 
 TEST(MathLoggerHeadersManagerTest, ShortBendersByBatch) {
   HEADERSTYPE headers_type = HEADERSTYPE::SHORT;
-  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERSBYBATCH);
+  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERS_BY_BATCH);
 
   std::vector<std::string> expected_headers = {
       "Ite",         "Lb",      "MinSpx",     "MaxSpx",
       "NbSubPbSolv", "IteTime (s)", "MasterTime (s)", "SPWallTime (s)"};
-  ASSERT_EQ(expected_headers, headers_manager.headers_list);
+  ASSERT_EQ(expected_headers, headers_manager.HeadersList());
 }
 
 TEST(MathLoggerBendersByBatchTest, HeadersListStdOutShort) {
   HEADERSTYPE headers_type = HEADERSTYPE::SHORT;
-  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERSBYBATCH);
+  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERS_BY_BATCH);
   std::streamsize width = 25;
 
   std::ostringstream expected_msg;
-  for (const auto& header : headers_manager.headers_list) {
+  for (const auto& header : headers_manager.HeadersList()) {
     expected_msg << std::setw(width) << std::left << header;
   }
   expected_msg << std::endl;
@@ -874,11 +881,11 @@ TEST(MathLoggerBendersByBatchTest, HeadersListStdOutShort) {
 
 TEST(MathLoggerBendersByBatchTest, HeadersListFileLong) {
   HEADERSTYPE headers_type = HEADERSTYPE::LONG;
-  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERSBYBATCH);
+  HeadersManager headers_manager(headers_type, BENDERSMETHOD::BENDERS_BY_BATCH);
   std::streamsize width = 25;
 
   std::ostringstream expected_msg;
-  for (const auto& header : headers_manager.headers_list) {
+  for (const auto& header : headers_manager.HeadersList()) {
     expected_msg << std::setw(width) << std::left << header;
   }
   expected_msg << std::endl;

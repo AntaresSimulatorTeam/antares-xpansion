@@ -12,6 +12,8 @@ class MathLoggerFile : public MathLoggerImplementation {
                           std::streamsize width = 30);
 
   void display_message(const std::string& msg) override;
+  virtual void PrintIterationSeparatorBegin() override;
+  virtual void PrintIterationSeparatorEnd() override;
 
  private:
   std::ofstream file_stream_;
@@ -21,4 +23,7 @@ class MathLoggerOstream : public MathLoggerImplementation {
   explicit MathLoggerOstream(const BENDERSMETHOD& method,
                              std::streamsize width = 20)
       : MathLoggerImplementation(method, width, HEADERSTYPE::SHORT) {}
+
+  virtual void PrintIterationSeparatorBegin() override;
+  virtual void PrintIterationSeparatorEnd() override;
 };

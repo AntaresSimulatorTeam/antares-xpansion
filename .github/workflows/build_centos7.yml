@@ -32,13 +32,13 @@ jobs:
         if: steps.changed-files.outputs.any_changed == 'true'
         uses: elgohr/Publish-Docker-Github-Action@main
         with:
-          name: antaresrte/rte-antares
+          name: antaresrte/xpansion-centos7
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           workdir: docker
           dockerfile: centos7-system-deps
           cache: false
-          tags: centos7-system-deps
+          tags: latest,1.0.0
 
   versions:
     runs-on: ubuntu-latest
@@ -47,7 +47,7 @@ jobs:
       antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
       antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3 #Keep at 3. v4 uses node 20 which uses glibc_2.27
       - name: Read antares-solver version
         id: antares-version
         uses: ./.github/actions/read-json-value
@@ -72,13 +72,13 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: [ docker_publish, versions ]
-    container: 'antaresrte/rte-antares:centos7-system-deps'
+    container: 'antaresrte/xpansion-centos7'
     strategy:
       matrix:
         xprs: [
           # { value: XPRESS-ON, ref: 8.13a },
-                { value: XPRESS-ON, ref: 9.2.5 },
-          #        { value: XPRESS-OFF }
+          { value: XPRESS-ON, ref: 9.2.5 },
+          #{ value: XPRESS-OFF }
         ]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
@@ -87,19 +87,39 @@ jobs:
       XPRESSDIR_CONTAINER: ${GITHUB_WORKSPACE}/xpress
       XPRESS_CONTAINER: ${GITHUB_WORKSPACE}/xpress/bin
       XPRS_LIB_Path_CONTAINER: ${GITHUB_WORKSPACE}/xpress/lib
+      VCPKG_ROOT: ${{ github.workspace }}/vcpkg
 
     steps:
+      - run: |
+          source /opt/rh/devtoolset-10/enable
+          echo $PATH >> $GITHUB_PATH
       - name: Get release
         if: github.event_name == 'release' && github.event.action == 'created'
         id: get_release
-        uses: bruceadams/get-release@v1.2.3
-      - uses: actions/checkout@v3
+        uses: bruceadams/get-release@v1.3.2
+        
+      - uses: actions/checkout@v3 #Keep at 3
         with:
           submodules: true
 
-      - uses: ./.github/workflows/compile-gtest
+      - run: |
+          yum install -y nodejs
+
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1.13
+        with:
+          cmake-version: '3.28.x'
+
+      #Lukka's action doesn't work on runner.
+      #jwlawson's action doesn't work in ACT
+      #I left this here to quicly switch between one or the other
+      #      - uses: lukka/get-cmake@latest
+      #        with:
+      #          useLocalCache: false
+      #          useCloudCache: true
+
       - name: Checkout xpressmp linux
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3 #keep v3
         with:
           token: ${{ secrets.AS_TOKEN }}
           repository: rte-france/xpress-mp
@@ -108,6 +128,23 @@ jobs:
           ref: ${{matrix.xprs.ref}}
         if: matrix.xprs.value == 'XPRESS-ON'
 
+      - name: Restore vcpkg and its artifacts.
+        uses: actions/cache@v3
+        with:
+          # The first path is the location of vcpkg (it contains the vcpkg executable and data files).
+          # The other paths starting with '!' are exclusions: they contain termporary files generated during the build of the installed packages.
+          path: |
+            ${{ env.VCPKG_ROOT }}
+            !${{ env.VCPKG_ROOT }}/buildtrees
+            !${{ env.VCPKG_ROOT }}/packages
+            !${{ env.VCPKG_ROOT }}/downloads
+          # The key is composed in a way that it gets properly invalidated: this must happen whenever vcpkg's Git commit id changes, or the list of packages changes. In this case a cache miss must happen and a new entry with a new key with be pushed to GitHub the cache service.
+          # The key includes: hash of the vcpkg.json file, the hash of the vcpkg Git commit id, and the used vcpkg's triplet. The vcpkg's commit id would suffice, but computing an hash out it does not harm.
+          # Note: given a key, the cache content is immutable. If a cache entry has been created improperly, in order the recreate the right content the key must be changed as well, and it must be brand new (i.e. not existing already).
+          key: |
+            ${{ hashFiles( 'vcpkg.json' ) }}-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}-${{ matrix.triplet }}
+
+
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
         with:
@@ -115,17 +152,9 @@ jobs:
           antares-version: ${{needs.versions.outputs.antares-version}}
           os: centos7
           os-full-name: CentOS-7.9.2009
-          #variant: -ortools-xpress
-
-      - name: Compile Boost
-        uses: ./.github/workflows/compile-boost
-        with:
-          prefix: "../rte-antares-deps-Release/"
 
       - name: Compile tbb
         uses: ./.github/workflows/compile-tbb
-        with:
-          cmake: 'cmake3'
 
       - name: Install dependencies
         run: |
@@ -133,13 +162,20 @@ jobs:
           pip3 install wheel #Does not work in requirements
           pip3 install -r requirements-tests.txt
           pip3 install -r requirements-ui.txt
+
+      - name: vcpkg install
+        run: |
+          pushd vcpkg
+          git fetch --unshallow
+          ./bootstrap-vcpkg.sh
+          popd
+          vcpkg/vcpkg install
+
       - name: Configure
         run: |
           [[ ${{ matrix.xprs.value }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
           source /opt/rh/devtoolset-10/enable
-          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-          export PATH=/usr/lib64/openmpi/bin:$PATH
-          cmake3 -B _build -S . \
+          cmake -B _build -S . \
                  -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
                  -DBUILD_TESTING=ON \
                  -DCMAKE_BUILD_TYPE=Release \
@@ -147,20 +183,19 @@ jobs:
                  -DBUILD_UI=ON \
                  -DXPRESS=${{ env.XPRESS_VALUE }} \
                  -DXPRESS_ROOT=${{ env.XPRESSDIR }} \
-                 -DALLOW_RUN_AS_ROOT=ON
+                 -DALLOW_RUN_AS_ROOT=ON \
+                 -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
+
       - name: Build
         run: |
-          source /opt/rh/devtoolset-10/enable
-          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-          export PATH=/usr/lib64/openmpi/bin:$PATH
-          cmake3 --build _build --config Release -j8 --target install
+          cmake --build _build --config Release -j$(nproc)
+
       - name: Running unit tests
         timeout-minutes: 120
         shell: bash
         run: |
-          source /etc/profile.d/modules.sh
-          module load mpi
+          export PATH=${GITHUB_WORKSPACE}/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
           export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build
-          ctest3 -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
+          ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"

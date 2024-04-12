@@ -13,7 +13,16 @@ const std::string MATHLOGGERCONTEXT = "Benders";
 enum class HEADERSTYPE { SHORT, LONG };
 struct HeadersManager {
   explicit HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method);
-  std::vector<std::string> headers_list;
+
+  HEADERSTYPE type_;
+  BENDERSMETHOD method_;
+
+  virtual std::vector<std::string> HeadersList();
+};
+struct HeadersManagerExternalLoop : HeadersManager {
+  explicit HeadersManagerExternalLoop(HEADERSTYPE type,
+                                      const BENDERSMETHOD& method);
+  std::vector<std::string> HeadersList() override;
 };
 
 class LogDestination {
@@ -38,6 +47,14 @@ template <class T>
 std::ostream& LogDestination::operator<<(const T& obj) {
   return (*stream_) << std::left << std::setw(width_) << obj;
 }
+void PrintBendersData(LogDestination& log_destination,
+                      const CurrentIterationData& data, const HEADERSTYPE& type,
+                      const BENDERSMETHOD& method);
+
+void PrintExternalLoopData(LogDestination& log_destination,
+                           const CurrentIterationData& data,
+                           const HEADERSTYPE& type,
+                           const BENDERSMETHOD& method);
 
 struct MathLoggerBehaviour : public ILoggerXpansion {
   void write_header() {
@@ -49,13 +66,17 @@ struct MathLoggerBehaviour : public ILoggerXpansion {
   }
 
   virtual void display_message(const std::string& str) {
-    LogsDestination() << str;
+    LogsDestination() << str << std::endl;
   }
 
   virtual void Print(const CurrentIterationData& data) = 0;
   virtual std::vector<std::string> Headers() const = 0;
   virtual LogDestination& LogsDestination() = 0;
+
+  virtual void PrintIterationSeparatorBegin() override;
+  virtual void PrintIterationSeparatorEnd() override;
   virtual void setHeadersList() = 0;
+  virtual ~MathLoggerBehaviour() = default;
 };
 
 struct MathLogger : public MathLoggerBehaviour {
@@ -73,6 +94,7 @@ struct MathLogger : public MathLoggerBehaviour {
   virtual LogDestination& LogsDestination() { return log_destination_; }
   virtual void setHeadersList() = 0;
   HEADERSTYPE HeadersType() const { return type_; }
+  virtual ~MathLogger() = default;
 
  protected:
   void setHeadersList(const std::vector<std::string>& headers);
@@ -88,12 +110,27 @@ struct MathLoggerBase : public MathLogger {
   void Print(const CurrentIterationData& data) override;
 
   void setHeadersList() override;
+  virtual ~MathLoggerBase() = default;
+};
+
+struct MathLoggerBaseExternalLoop : public MathLoggerBase {
+  using MathLoggerBase::MathLoggerBase;
+  void Print(const CurrentIterationData& data) override;
+  void setHeadersList() override;
+  virtual ~MathLoggerBaseExternalLoop() = default;
 };
 
 struct MathLoggerBendersByBatch : public MathLogger {
   using MathLogger::MathLogger;
   void Print(const CurrentIterationData& data) override;
   void setHeadersList() override;
+  virtual ~MathLoggerBendersByBatch() = default;
+};
+struct MathLoggerBendersByBatchExternalLoop : public MathLoggerBendersByBatch {
+  using MathLoggerBendersByBatch::MathLoggerBendersByBatch;
+  void Print(const CurrentIterationData& data) override;
+  void setHeadersList() override;
+  virtual ~MathLoggerBendersByBatchExternalLoop() = default;
 };
 
 class MathLoggerImplementation : public MathLoggerBehaviour {
@@ -101,28 +138,20 @@ class MathLoggerImplementation : public MathLoggerBehaviour {
   explicit MathLoggerImplementation(const BENDERSMETHOD& method,
                                     const std::filesystem::path& file_path,
                                     std::streamsize width = 40,
-                                    HEADERSTYPE type = HEADERSTYPE::LONG) {
-    if (method == BENDERSMETHOD::BENDERS) {
-      implementation_ =
-          std::make_shared<MathLoggerBase>(file_path, width, type);
-    } else if (method == BENDERSMETHOD::BENDERSBYBATCH) {
-      implementation_ =
-          std::make_shared<MathLoggerBendersByBatch>(file_path, width, type);
-    }
-    // else
-  }
+                                    HEADERSTYPE type = HEADERSTYPE::LONG);
   explicit MathLoggerImplementation(const BENDERSMETHOD& method,
                                     std::streamsize width = 40,
-                                    HEADERSTYPE type = HEADERSTYPE::LONG) {
-    if (method == BENDERSMETHOD::BENDERS) {
-      implementation_ = std::make_shared<MathLoggerBase>(width, type);
-    } else if (method == BENDERSMETHOD::BENDERSBYBATCH) {
-      implementation_ = std::make_shared<MathLoggerBendersByBatch>(width, type);
-    }
-    // else }
-  }
+                                    HEADERSTYPE type = HEADERSTYPE::LONG);
 
   void Print(const CurrentIterationData& data) { implementation_->Print(data); }
+
+  void PrintIterationSeparatorBegin() override {
+    implementation_->PrintIterationSeparatorBegin();
+  }
+  void PrintIterationSeparatorEnd() override {
+    implementation_->PrintIterationSeparatorEnd();
+  }
+  virtual ~MathLoggerImplementation() = default;
 
  protected:
   void setHeadersList() override { implementation_->setHeadersList(); }
@@ -144,6 +173,9 @@ class MathLoggerDriver : public ILoggerXpansion {
   void display_message(const std::string& str) override;
   void add_logger(std::shared_ptr<MathLoggerImplementation> logger);
   void Print(const CurrentIterationData& data);
+  virtual void PrintIterationSeparatorBegin() override;
+  virtual void PrintIterationSeparatorEnd() override;
+  virtual ~MathLoggerDriver() = default;
 
  private:
   std::vector<std::shared_ptr<MathLoggerImplementation>> math_loggers_;

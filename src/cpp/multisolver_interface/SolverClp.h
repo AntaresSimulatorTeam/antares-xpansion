@@ -98,6 +98,8 @@ class SolverClp : public SolverAbstract {
   virtual int get_nelems() const override;
   virtual int get_n_integer_vars() const override;
   virtual void get_obj(double *obj, int first, int last) const override;
+  void set_obj_to_zero() override;
+  void set_obj(const double *obj, int first, int last) override;
   virtual void get_rows(int *mstart, int *mclind, double *dmatval, int size,
                         int *nels, int first, int last) const override;
   virtual void get_row_type(char *qrtype, int first, int last) const override;
@@ -123,12 +125,15 @@ class SolverClp : public SolverAbstract {
   virtual void add_rows(int newrows, int newnz, const char *qrtype,
                         const double *rhs, const double *range,
                         const int *mstart, const int *mclind,
-                        const double *dmatval) override;
+                        const double *dmatval,
+                        const std::vector<std::string> &names = {}) override;
   virtual void add_cols(int newcol, int newnz, const double *objx,
                         const int *mstart, const int *mrwind,
                         const double *dmatval, const double *bdl,
                         const double *bdu) override;
   virtual void add_name(int type, const char *cnames, int indice) override;
+  virtual void add_names(int type, const std::vector<std::string> &cnames,
+                         int first, int end) override;
   virtual void chg_obj(const std::vector<int> &mindex,
                        const std::vector<double> &obj) override;
   virtual void chg_obj_direction(const bool minimize) override;

@@ -74,16 +74,15 @@ if (MSVC)
 	message ("WINDOWS")
 	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /EHsc")
 
-	set (CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MD")
+	set(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} /MD")
 	set (RUNTIME_IGNORE_LIST_RELEASE "/NODEFAULTLIB:msvcrtd.lib /NODEFAULTLIB:msvcprtd.lib /NODEFAULTLIB:libcmtd.lib")
 	set (CMAKE_EXE_LINKER_FLAGS_RELEASE " ${CMAKE_EXE_LINKER_FLAGS_RELEASE} ${RUNTIME_IGNORE_LIST_RELEASE}")
 	set (CMAKE_SHARED_LINKER_FLAGS_RELEASE " ${CMAKE_SHARED_LINKER_FLAGS_RELEASE} ${RUNTIME_IGNORE_LIST_RELEASE}")
 	set (CMAKE_STATIC_LINKER_FLAGS_RELEASE " ${CMAKE_STATIC_LINKER_FLAGS_RELEASE} ${RUNTIME_IGNORE_LIST_RELEASE}")
-		
-    set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MDd")
+
+	set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /MDd")
 	set (CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} /EHsc")
-    
-    
+
 
 else ()
 	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
@@ -235,8 +234,18 @@ if (SOLVER)
 endif()
 
 find_package(jsoncpp CONFIG REQUIRED)
-
-
+macro(jsoncpplib_name libname)
+	if (MSVC)
+		set(${libname} jsoncpp_lib)
+	else ()
+		set(${libname} jsoncpp_static)
+	endif ()
+endmacro()
+jsoncpplib_name(jsonlib)
+install(FILES
+		$<TARGET_FILE:${jsonlib}>
+		DESTINATION bin
+)
 
 ## Coin-OR (Clp and CBC solvers)
 if(COIN_OR)
@@ -323,20 +332,6 @@ install(DIRECTORY ${ANTARES_SOLVER_DIR}/../lib/
 
 install(PROGRAMS ${ANTARES_SOLVER_PATH}
   TYPE BIN)
-
-find_package(antares-study-updater)
-if (antares-study-updater_FOUND)
-
-	if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
-		get_target_property(ANTARES_STUDY_UPDATER_PATH antares-${ANTARES_VERSION}-study-updater IMPORTED_LOCATION_RELEASE)
-	else ()
-		get_target_property(ANTARES_STUDY_UPDATER_PATH antares-${ANTARES_VERSION}-study-updater IMPORTED_LOCATION_DEBUG)
-	endif ()
-
-	install(PROGRAMS ${ANTARES_STUDY_UPDATER_PATH}
-			TYPE BIN)
-
-endif ()
 
 include (InstallRequiredSystemLibraries)
 

@@ -85,6 +85,8 @@ struct ILoggerXpansion {
   void display_message(const std::ostringstream &msg) {
     display_message(msg.str());
   }
+  virtual void PrintIterationSeparatorBegin() = 0;
+  virtual void PrintIterationSeparatorEnd() = 0;
   virtual ~ILoggerXpansion() = default;
 };
 
@@ -93,7 +95,10 @@ struct ILoggerXpansion {
  */
 struct EmptyLogger : public ILoggerXpansion {
   void display_message(const std::string &str) override {}
+  void PrintIterationSeparatorBegin() override {};
+  void PrintIterationSeparatorEnd() override {};
   virtual ~EmptyLogger() {}
+
 };
 
 /**
@@ -107,6 +112,18 @@ struct BendersLoggerBase : public ILoggerXpansion {
   }
   void AddLogger(std::shared_ptr<ILoggerXpansion> logger) {
     loggers.push_back(logger);
+  }
+
+  virtual void PrintIterationSeparatorBegin() override {
+    for (auto logger : loggers) {
+      logger->PrintIterationSeparatorBegin();
+    }
+  }
+
+  virtual void PrintIterationSeparatorEnd() override {
+    for (auto logger : loggers) {
+      logger->PrintIterationSeparatorEnd();
+    }
   }
 
  private:
@@ -124,6 +141,8 @@ class ILogger : public ILoggerXpansion {
   virtual void display_message(const std::string &str) = 0;
   virtual void display_message(const std::string &str,
                                LogUtils::LOGLEVEL level) = 0;
+  virtual void PrintIterationSeparatorBegin() = 0;
+  virtual void PrintIterationSeparatorEnd() = 0;
   virtual void log_at_initialization(const int it_number) = 0;
   virtual void log_iteration_candidates(const LogData &d) = 0;
   virtual void log_master_solving_duration(double durationInSeconds) = 0;

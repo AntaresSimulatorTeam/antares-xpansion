@@ -21,7 +21,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Get release
         if: github.event_name == 'release' && github.event.action == 'created'

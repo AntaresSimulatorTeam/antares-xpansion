@@ -18,10 +18,10 @@ jobs:
         id: docker_push
         uses: elgohr/Publish-Docker-Github-Action@main
         with:
-          name: antaresrte/rte-antares
+          name: antaresrte/xpansion-centos7
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           workdir: docker
           dockerfile: centos7-system-deps
           cache: false
-          tags: centos7-system-deps
+          tags: latest,1.0.0
