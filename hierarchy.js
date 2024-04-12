@@ -1,5 +1,6 @@
 var hierarchy =
 [
+    [ "act", "classact.html", null ],
     [ "ActiveLink", "classActiveLink.html", null ],
     [ "ActiveLinksBuilder", "classActiveLinksBuilder.html", null ],
     [ "AdditionalConstraintsReader", "structAdditionalConstraintsReader.html", null ],
@@ -212,8 +213,9 @@ var hierarchy =
     [ "Catch::IExceptionTranslator", "structCatch_1_1IExceptionTranslator.html", null ],
     [ "Catch::IExceptionTranslatorRegistry", "structCatch_1_1IExceptionTranslatorRegistry.html", null ],
     [ "Catch::IGeneratorTracker", "structCatch_1_1IGeneratorTracker.html", null ],
-    [ "ILoggerBenders", "structILoggerBenders.html", [
+    [ "ILoggerXpansion", "structILoggerXpansion.html", [
       [ "BendersLoggerBase", "structBendersLoggerBase.html", null ],
+      [ "EmptyLogger", "structEmptyLogger.html", null ],
       [ "ILogger", "classILogger.html", [
         [ "LoggerNOOPStub", "classLoggerNOOPStub.html", null ],
         [ "SimpleLoggerMock", "classSimpleLoggerMock.html", null ],
@@ -235,7 +237,12 @@ var hierarchy =
           [ "MathLoggerOstream", "classMathLoggerOstream.html", null ]
         ] ]
       ] ],
-      [ "MathLoggerDriver", "classMathLoggerDriver.html", null ]
+      [ "MathLoggerDriver", "classMathLoggerDriver.html", null ],
+      [ "ProblemGenerationLog::ProblemGenerationILogger", "classProblemGenerationLog_1_1ProblemGenerationILogger.html", [
+        [ "ProblemGenerationLog::ProblemGenerationFileLogger", "classProblemGenerationLog_1_1ProblemGenerationFileLogger.html", null ],
+        [ "ProblemGenerationLog::ProblemGenerationOstreamLogger", "classProblemGenerationLog_1_1ProblemGenerationOstreamLogger.html", null ]
+      ] ],
+      [ "ProblemGenerationLog::ProblemGenerationLogger", "classProblemGenerationLog_1_1ProblemGenerationLogger.html", null ]
     ] ],
     [ "IMasterUpdate", "classIMasterUpdate.html", [
       [ "MasterUpdateBase", "classMasterUpdateBase.html", null ]
@@ -406,11 +413,6 @@ var hierarchy =
     [ "ProblemGeneration", "classProblemGeneration.html", [
       [ "ProblemGenerationSpyAndMock", "classProblemGenerationSpyAndMock.html", null ]
     ] ],
-    [ "ProblemGenerationLog::ProblemGenerationILogger", "classProblemGenerationLog_1_1ProblemGenerationILogger.html", [
-      [ "ProblemGenerationLog::ProblemGenerationFileLogger", "classProblemGenerationLog_1_1ProblemGenerationFileLogger.html", null ],
-      [ "ProblemGenerationLog::ProblemGenerationOstreamLogger", "classProblemGenerationLog_1_1ProblemGenerationOstreamLogger.html", null ]
-    ] ],
-    [ "ProblemGenerationLog::ProblemGenerationLogger", "classProblemGenerationLog_1_1ProblemGenerationLogger.html", null ],
     [ "ProblemGenerationOptions", "classProblemGenerationOptions.html", [
       [ "ProblemGenerationExeOptions", "classProblemGenerationExeOptions.html", null ]
     ] ],
@@ -664,6 +666,7 @@ var hierarchy =
     [ "antares_xpansion.xpansionConfig.XpansionConfig", "classantares__xpansion_1_1xpansionConfig_1_1XpansionConfig.html", null ],
     [ "antares_xpansion.driver.XpansionDriver", "classantares__xpansion_1_1driver_1_1XpansionDriver.html", null ],
     [ "antares_xpansion.xpansion_study_reader.XpansionStudyReader", "classantares__xpansion_1_1xpansion__study__reader_1_1XpansionStudyReader.html", null ],
+    [ "LoadXpress::XpressLoader", "classLoadXpress_1_1XpressLoader.html", null ],
     [ "YearlyWeightsWriter", "classYearlyWeightsWriter.html", null ],
     [ "antares_xpansion.yearly_weight_writer.YearlyWeightWriter", "classantares__xpansion_1_1yearly__weight__writer_1_1YearlyWeightWriter.html", null ],
     [ "Enum", null, [

@@ -12,7 +12,7 @@ var searchData=
   ['igeneratortracker_9',['IGeneratorTracker',['../structCatch_1_1IGeneratorTracker.html',1,'Catch']]],
   ['illegalcharsincandidatename_10',['IllegalCharsInCandidateName',['../classantares__xpansion_1_1input__checker_1_1IllegalCharsInCandidateName.html',1,'antares_xpansion::input_checker']]],
   ['ilogger_11',['ILogger',['../classILogger.html',1,'']]],
-  ['iloggerbenders_12',['ILoggerBenders',['../structILoggerBenders.html',1,'']]],
+  ['iloggerxpansion_12',['ILoggerXpansion',['../structILoggerXpansion.html',1,'']]],
   ['imasterupdate_13',['IMasterUpdate',['../classIMasterUpdate.html',1,'']]],
   ['imutablecontext_14',['IMutableContext',['../structCatch_1_1IMutableContext.html',1,'Catch']]],
   ['imutableenumvaluesregistry_15',['IMutableEnumValuesRegistry',['../structCatch_1_1IMutableEnumValuesRegistry.html',1,'Catch']]],

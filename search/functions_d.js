@@ -19,7 +19,7 @@ var searchData=
   ['solverabstract_16',['SolverAbstract',['../classSolverAbstract.html#a765549330512481765387972db04ee43',1,'SolverAbstract::SolverAbstract()'],['../classSolverAbstract.html#a365b9e1c1813590b5b3f1be5103041c7',1,'SolverAbstract::SolverAbstract(const std::string &amp;name, const SolverAbstract::Ptr toCopy)']]],
   ['solvercbc_17',['SolverCbc',['../classSolverCbc.html#a6aa4a44407cb816965a0ac21ff8e101e',1,'SolverCbc::SolverCbc()'],['../classSolverCbc.html#a21a7dfd94c6bd1ac0e32a35a866d98fb',1,'SolverCbc::SolverCbc(const std::shared_ptr&lt; const SolverAbstract &gt; toCopy)']]],
   ['solverclp_18',['SolverClp',['../classSolverClp.html#a2187e8b150f471557445330c9942424d',1,'SolverClp::SolverClp()'],['../classSolverClp.html#a6ede61a1e2d075a806fa269a75849d6b',1,'SolverClp::SolverClp(const std::shared_ptr&lt; const SolverAbstract &gt; toCopy)']]],
-  ['solverfactory_19',['SolverFactory',['../classSolverFactory.html#adf1746e2ce7203c972707c7688866056',1,'SolverFactory']]],
+  ['solverfactory_19',['SolverFactory',['../classSolverFactory.html#ad70db765e0de8baa6de02b29295dfce7',1,'SolverFactory']]],
   ['solverxpress_20',['SolverXpress',['../classSolverXpress.html#a3fa04264091ce029e091b1c3eac8c560',1,'SolverXpress::SolverXpress()'],['../classSolverXpress.html#aa2c353455282b7595fac4d3ff31adb85',1,'SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy)']]],
   ['studyupdater_21',['StudyUpdater',['../classStudyUpdater.html#a7b905acf253affe43d606b27e1daf84e',1,'StudyUpdater']]],
   ['subproblemweight_22',['SubproblemWeight',['../classBendersBase.html#af1ed0d083a39816fcecdd2bf1b100f8f',1,'BendersBase']]],

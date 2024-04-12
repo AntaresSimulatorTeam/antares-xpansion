@@ -315,11 +315,11 @@ var NAVTREEINDEX =
 [
 "ActiveLinks_8h_source.html",
 "classClockMock.html",
-"classProblemModifier.html",
-"classSolverXpress.html#a60e26e2a342599a079f66001918a8db7",
-"classantares__xpansion_1_1input__checker_1_1OptionTypeError.html",
-"md_docs_changelog_CHANGELOG.html#autotoc_md14",
-"structCatch_1_1IResultCapture.html"
+"classProblemGenerationLog_1_1ProblemGenerationILogger.html",
+"classSolverXpress.html#a2ba0696e0acbd93d06a0beaa556a0a44",
+"classantares__xpansion_1_1input__checker_1_1IllegalCharsInCandidateName.html",
+"functions_z.html",
+"structBendersRelevantIterationsData.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

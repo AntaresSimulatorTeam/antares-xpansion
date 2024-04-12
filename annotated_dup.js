@@ -286,6 +286,9 @@ var annotated_dup =
       [ "WaitForKeypress", "structCatch_1_1WaitForKeypress.html", null ],
       [ "WarnAbout", "structCatch_1_1WarnAbout.html", null ]
     ] ],
+    [ "LoadXpress", null, [
+      [ "XpressLoader", "classLoadXpress_1_1XpressLoader.html", "classLoadXpress_1_1XpressLoader" ]
+    ] ],
     [ "LogUtils", null, [
       [ "XpansionError", "classLogUtils_1_1XpansionError.html", null ]
     ] ],
@@ -308,10 +311,10 @@ var annotated_dup =
       [ "Variables", "structPlainData_1_1Variables.html", null ]
     ] ],
     [ "ProblemGenerationLog", null, [
-      [ "ProblemGenerationFileLogger", "classProblemGenerationLog_1_1ProblemGenerationFileLogger.html", null ],
-      [ "ProblemGenerationILogger", "classProblemGenerationLog_1_1ProblemGenerationILogger.html", null ],
-      [ "ProblemGenerationLogger", "classProblemGenerationLog_1_1ProblemGenerationLogger.html", null ],
-      [ "ProblemGenerationOstreamLogger", "classProblemGenerationLog_1_1ProblemGenerationOstreamLogger.html", null ]
+      [ "ProblemGenerationFileLogger", "classProblemGenerationLog_1_1ProblemGenerationFileLogger.html", "classProblemGenerationLog_1_1ProblemGenerationFileLogger" ],
+      [ "ProblemGenerationILogger", "classProblemGenerationLog_1_1ProblemGenerationILogger.html", "classProblemGenerationLog_1_1ProblemGenerationILogger" ],
+      [ "ProblemGenerationLogger", "classProblemGenerationLog_1_1ProblemGenerationLogger.html", "classProblemGenerationLog_1_1ProblemGenerationLogger" ],
+      [ "ProblemGenerationOstreamLogger", "classProblemGenerationLog_1_1ProblemGenerationOstreamLogger.html", "classProblemGenerationLog_1_1ProblemGenerationOstreamLogger" ]
     ] ],
     [ "StringManip", null, [
       [ "IsNot", "classStringManip_1_1IsNot.html", null ],
@@ -392,11 +395,12 @@ var annotated_dup =
       [ "logger", null, [
         [ "CandidateLog", "classxpansion_1_1logger_1_1CandidateLog.html", null ],
         [ "IterationResultLog", "classxpansion_1_1logger_1_1IterationResultLog.html", null ],
-        [ "Master", "classxpansion_1_1logger_1_1Master.html", null ],
-        [ "User", "classxpansion_1_1logger_1_1User.html", null ],
-        [ "UserFile", "classxpansion_1_1logger_1_1UserFile.html", null ]
+        [ "Master", "classxpansion_1_1logger_1_1Master.html", "classxpansion_1_1logger_1_1Master" ],
+        [ "User", "classxpansion_1_1logger_1_1User.html", "classxpansion_1_1logger_1_1User" ],
+        [ "UserFile", "classxpansion_1_1logger_1_1UserFile.html", "classxpansion_1_1logger_1_1UserFile" ]
       ] ]
     ] ],
+    [ "act", "classact.html", null ],
     [ "ActiveLink", "classActiveLink.html", null ],
     [ "ActiveLinksBuilder", "classActiveLinksBuilder.html", "classActiveLinksBuilder" ],
     [ "AdditionalConstraint", "classAdditionalConstraint.html", "classAdditionalConstraint" ],
@@ -426,7 +430,7 @@ var annotated_dup =
     [ "BendersBase", "classBendersBase.html", "classBendersBase" ],
     [ "BendersBaseOptions", "structBendersBaseOptions.html", null ],
     [ "BendersByBatch", "classBendersByBatch.html", "classBendersByBatch" ],
-    [ "BendersLoggerBase", "structBendersLoggerBase.html", null ],
+    [ "BendersLoggerBase", "structBendersLoggerBase.html", "structBendersLoggerBase" ],
     [ "BendersMainFactory", "classBendersMainFactory.html", null ],
     [ "BendersMpi", "classBendersMpi.html", "classBendersMpi" ],
     [ "BendersRelevantIterationsData", "structBendersRelevantIterationsData.html", null ],
@@ -450,6 +454,7 @@ var annotated_dup =
     [ "CutsManagerRunTime", "classCutsManagerRunTime.html", null ],
     [ "DirectAccessScenarioToChronicleProvider", "classDirectAccessScenarioToChronicleProvider.html", null ],
     [ "DynamicLibrary", "classDynamicLibrary.html", null ],
+    [ "EmptyLogger", "structEmptyLogger.html", "structEmptyLogger" ],
     [ "ExternalLoopOptions", "structExternalLoopOptions.html", null ],
     [ "FakeWorkerMaster", "classFakeWorkerMaster.html", null ],
     [ "FileAndStdoutLoggerFactory", "classFileAndStdoutLoggerFactory.html", null ],
@@ -469,8 +474,8 @@ var annotated_dup =
     [ "HeadersManagerExternalLoop", "structHeadersManagerExternalLoop.html", null ],
     [ "HebdoDataFromAntares", "classHebdoDataFromAntares.html", null ],
     [ "ICutsManager", "classICutsManager.html", null ],
-    [ "ILogger", "classILogger.html", null ],
-    [ "ILoggerBenders", "structILoggerBenders.html", null ],
+    [ "ILogger", "classILogger.html", "classILogger" ],
+    [ "ILoggerXpansion", "structILoggerXpansion.html", "structILoggerXpansion" ],
     [ "IMasterUpdate", "classIMasterUpdate.html", null ],
     [ "IniFileNotFound", "classIniFileNotFound.html", null ],
     [ "INIReader", "classINIReader.html", null ],
@@ -510,7 +515,7 @@ var annotated_dup =
     [ "LinkProfileReaderTest", "classLinkProfileReaderTest.html", null ],
     [ "LogData", "structLogData.html", null ],
     [ "LogDestination", "classLogDestination.html", null ],
-    [ "LoggerNOOPStub", "classLoggerNOOPStub.html", null ],
+    [ "LoggerNOOPStub", "classLoggerNOOPStub.html", "classLoggerNOOPStub" ],
     [ "LpFilesExtractor", "classLpFilesExtractor.html", "classLpFilesExtractor" ],
     [ "LpFilesExtractorTest", "classLpFilesExtractorTest.html", null ],
     [ "LpsFromAntares", "classLpsFromAntares.html", null ],
@@ -522,12 +527,12 @@ var annotated_dup =
     [ "MathLogger", "structMathLogger.html", null ],
     [ "MathLoggerBase", "structMathLoggerBase.html", null ],
     [ "MathLoggerBaseExternalLoop", "structMathLoggerBaseExternalLoop.html", null ],
-    [ "MathLoggerBehaviour", "structMathLoggerBehaviour.html", null ],
+    [ "MathLoggerBehaviour", "structMathLoggerBehaviour.html", "structMathLoggerBehaviour" ],
     [ "MathLoggerBendersByBatch", "structMathLoggerBendersByBatch.html", null ],
     [ "MathLoggerBendersByBatchExternalLoop", "structMathLoggerBendersByBatchExternalLoop.html", null ],
-    [ "MathLoggerDriver", "classMathLoggerDriver.html", null ],
+    [ "MathLoggerDriver", "classMathLoggerDriver.html", "classMathLoggerDriver" ],
     [ "MathLoggerFactory", "classMathLoggerFactory.html", null ],
-    [ "MathLoggerFile", "classMathLoggerFile.html", null ],
+    [ "MathLoggerFile", "classMathLoggerFile.html", "classMathLoggerFile" ],
     [ "MathLoggerImplementation", "classMathLoggerImplementation.html", null ],
     [ "MathLoggerOstream", "classMathLoggerOstream.html", null ],
     [ "MergeMPS", "classMergeMPS.html", "classMergeMPS" ],
@@ -585,7 +590,7 @@ var annotated_dup =
     [ "SensitivityUserLoggerTest", "classSensitivityUserLoggerTest.html", null ],
     [ "SensitivityWriter", "classSensitivityWriter.html", null ],
     [ "SensitivityWriterTest", "classSensitivityWriterTest.html", null ],
-    [ "SimpleLoggerMock", "classSimpleLoggerMock.html", null ],
+    [ "SimpleLoggerMock", "classSimpleLoggerMock.html", "classSimpleLoggerMock" ],
     [ "SimulationOptions", "classSimulationOptions.html", "classSimulationOptions" ],
     [ "SinglePbData", "structSinglePbData.html", null ],
     [ "SolverAbstract", "classSolverAbstract.html", "classSolverAbstract" ],

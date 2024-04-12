@@ -141,10 +141,10 @@ $(document).ready(function(){initNavTree('classSolverFactory.html',''); initResi
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:adf1746e2ce7203c972707c7688866056"><td class="memItemLeft" align="right" valign="top"><a id="adf1746e2ce7203c972707c7688866056" name="adf1746e2ce7203c972707c7688866056"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SolverFactory</b> ()</td></tr>
-<tr class="memdesc:adf1746e2ce7203c972707c7688866056"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor of <a class="el" href="classSolverFactory.html">SolverFactory</a>, fills the list of available solvers. <br /></td></tr>
-<tr class="separator:adf1746e2ce7203c972707c7688866056"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad70db765e0de8baa6de02b29295dfce7"><td class="memItemLeft" align="right" valign="top"><a id="ad70db765e0de8baa6de02b29295dfce7" name="ad70db765e0de8baa6de02b29295dfce7"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SolverFactory</b> (std::shared_ptr&lt; <a class="el" href="structILoggerXpansion.html">ILoggerXpansion</a> &gt; logger=std::make_shared&lt; <a class="el" href="structEmptyLogger.html">EmptyLogger</a> &gt;())</td></tr>
+<tr class="memdesc:ad70db765e0de8baa6de02b29295dfce7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor of <a class="el" href="classSolverFactory.html">SolverFactory</a>, fills the list of available solvers. <br /></td></tr>
+<tr class="separator:ad70db765e0de8baa6de02b29295dfce7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a68874a808a9e5799ba78afbe50b9c4c4"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverAbstract.html#a8f77d6d39341f89c763b912d95254c30">SolverAbstract::Ptr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverFactory.html#a68874a808a9e5799ba78afbe50b9c4c4">create_solver</a> (const std::string &amp;solver_name) const</td></tr>
 <tr class="memdesc:a68874a808a9e5799ba78afbe50b9c4c4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates and returns to an object solver from the wanted implementation.  <a href="classSolverFactory.html#a68874a808a9e5799ba78afbe50b9c4c4">More...</a><br /></td></tr>
 <tr class="separator:a68874a808a9e5799ba78afbe50b9c4c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -173,6 +173,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ab8710266afbf2df197c27f9d7466121d"><td class="memItemLeft" align="right" valign="top"><a id="ab8710266afbf2df197c27f9d7466121d" name="ab8710266afbf2df197c27f9d7466121d"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isXpress_available_</b> = false</td></tr>
 <tr class="separator:ab8710266afbf2df197c27f9d7466121d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06d0c22024001e3ae99871865842bffa"><td class="memItemLeft" align="right" valign="top"><a id="a06d0c22024001e3ae99871865842bffa" name="a06d0c22024001e3ae99871865842bffa"></a>
+std::shared_ptr&lt; <a class="el" href="structILoggerXpansion.html">ILoggerXpansion</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></tr>
+<tr class="separator:a06d0c22024001e3ae99871865842bffa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a48d60e1159d855c4d0c225a24652cd51" name="a48d60e1159d855c4d0c225a24652cd51"></a>

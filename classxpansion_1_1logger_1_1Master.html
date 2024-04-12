@@ -144,7 +144,7 @@ Inheritance diagram for xpansion::logger::Master:</div>
   <img src="classxpansion_1_1logger_1_1Master.png" usemap="#xpansion::logger::Master_map" alt=""/>
   <map id="xpansion::logger::Master_map" name="xpansion::logger::Master_map">
 <area href="classILogger.html" alt="ILogger" shape="rect" coords="0,56,149,80"/>
-<area href="structILoggerBenders.html" alt="ILoggerBenders" shape="rect" coords="0,0,149,24"/>
+<area href="structILoggerXpansion.html" title="Xpansion Unique log Interface." alt="ILoggerXpansion" shape="rect" coords="0,0,149,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -154,6 +154,7 @@ Public Member Functions</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>addLogger</b> (const std::shared_ptr&lt; <a class="el" href="classILogger.html">ILogger</a> &gt; &amp;logger)</td></tr>
 <tr class="separator:a0d32abeccabfb5cc914e282ff907a9b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aedc1d1015a2efc90153fbc02a83bd397"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxpansion_1_1logger_1_1Master.html#aedc1d1015a2efc90153fbc02a83bd397">display_message</a> (const std::string &amp;str) override</td></tr>
+<tr class="memdesc:aedc1d1015a2efc90153fbc02a83bd397"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method to display a std::string message  <a href="classxpansion_1_1logger_1_1Master.html#aedc1d1015a2efc90153fbc02a83bd397">More...</a><br /></td></tr>
 <tr class="separator:aedc1d1015a2efc90153fbc02a83bd397"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae665df9c5d7a11412ef7cf08459e65fb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxpansion_1_1logger_1_1Master.html#ae665df9c5d7a11412ef7cf08459e65fb">display_message</a> (const std::string &amp;str, LogUtils::LOGLEVEL level) override</td></tr>
 <tr class="separator:ae665df9c5d7a11412ef7cf08459e65fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -196,6 +197,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>addLogger</b> (const 
 <tr class="memitem:abe76c86c8da7ad2c918819a3fdcedf7d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxpansion_1_1logger_1_1Master.html#abe76c86c8da7ad2c918819a3fdcedf7d">cumulative_number_of_sub_problem_solved</a> (int number) override</td></tr>
 <tr class="separator:abe76c86c8da7ad2c918819a3fdcedf7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1326996d4147821e1dad10103a0dc2e8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classILogger.html#a1326996d4147821e1dad10103a0dc2e8">display_message</a> (const std::string &amp;str)=0</td></tr>
+<tr class="memdesc:a1326996d4147821e1dad10103a0dc2e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method to display a std::string message  <a href="classILogger.html#a1326996d4147821e1dad10103a0dc2e8">More...</a><br /></td></tr>
 <tr class="separator:a1326996d4147821e1dad10103a0dc2e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c19dbf351694b2d7008bb7f41e6b1e7"><td class="memItemLeft" align="right" valign="top"><a id="a0c19dbf351694b2d7008bb7f41e6b1e7" name="a0c19dbf351694b2d7008bb7f41e6b1e7"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>display_message</b> (const std::string &amp;str, LogUtils::LOGLEVEL level)=0</td></tr>
@@ -255,15 +257,18 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>LogAtSwitchTo
 <tr class="memitem:afaafc923870f4dbb59ed8483fa0116d7"><td class="memItemLeft" align="right" valign="top"><a id="afaafc923870f4dbb59ed8483fa0116d7" name="afaafc923870f4dbb59ed8483fa0116d7"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>cumulative_number_of_sub_problem_solved</b> (int number)=0</td></tr>
 <tr class="separator:afaafc923870f4dbb59ed8483fa0116d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5adb0476c7fea717360c6fb42535c7c"><td class="memItemLeft" align="right" valign="top"><a id="aa5adb0476c7fea717360c6fb42535c7c" name="aa5adb0476c7fea717360c6fb42535c7c"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>display_message</b> (const std::string &amp;str)=0</td></tr>
-<tr class="separator:aa5adb0476c7fea717360c6fb42535c7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48bf71fbad23772c639fb38ea61dd26b"><td class="memItemLeft" align="right" valign="top"><a id="a48bf71fbad23772c639fb38ea61dd26b" name="a48bf71fbad23772c639fb38ea61dd26b"></a>
+<tr class="inherit_header pub_methods_structILoggerXpansion"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structILoggerXpansion')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structILoggerXpansion.html">ILoggerXpansion</a></td></tr>
+<tr class="memitem:a5d5ef0a1321f54372ecba334a7ae1acd inherit pub_methods_structILoggerXpansion"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structILoggerXpansion.html#a5d5ef0a1321f54372ecba334a7ae1acd">display_message</a> (const std::string &amp;str)=0</td></tr>
+<tr class="memdesc:a5d5ef0a1321f54372ecba334a7ae1acd inherit pub_methods_structILoggerXpansion"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method to display a std::string message  <a href="structILoggerXpansion.html#a5d5ef0a1321f54372ecba334a7ae1acd">More...</a><br /></td></tr>
+<tr class="separator:a5d5ef0a1321f54372ecba334a7ae1acd inherit pub_methods_structILoggerXpansion"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac29cdc7dc59c2dde6ce45201c91e770e inherit pub_methods_structILoggerXpansion"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structILoggerXpansion.html#ac29cdc7dc59c2dde6ce45201c91e770e">display_message</a> (const std::ostringstream &amp;msg)</td></tr>
+<tr class="separator:ac29cdc7dc59c2dde6ce45201c91e770e inherit pub_methods_structILoggerXpansion"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84a1518b16ae160c5d5581ef5a8f88a1 inherit pub_methods_structILoggerXpansion"><td class="memItemLeft" align="right" valign="top"><a id="a84a1518b16ae160c5d5581ef5a8f88a1" name="a84a1518b16ae160c5d5581ef5a8f88a1"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintIterationSeparatorBegin</b> ()=0</td></tr>
-<tr class="separator:a48bf71fbad23772c639fb38ea61dd26b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad439daad5d864914d632f619b64560b4"><td class="memItemLeft" align="right" valign="top"><a id="ad439daad5d864914d632f619b64560b4" name="ad439daad5d864914d632f619b64560b4"></a>
+<tr class="separator:a84a1518b16ae160c5d5581ef5a8f88a1 inherit pub_methods_structILoggerXpansion"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0b39d5c01cf0d620e517186e66f99af inherit pub_methods_structILoggerXpansion"><td class="memItemLeft" align="right" valign="top"><a id="ae0b39d5c01cf0d620e517186e66f99af" name="ae0b39d5c01cf0d620e517186e66f99af"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintIterationSeparatorEnd</b> ()=0</td></tr>
-<tr class="separator:ad439daad5d864914d632f619b64560b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ae0b39d5c01cf0d620e517186e66f99af inherit pub_methods_structILoggerXpansion"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -325,7 +330,15 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>CONTEXT<
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="classILogger.html">ILogger</a>.</p>
+<p>pure virtual method to display a std::string message </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>the message to be displayed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classILogger.html#a1326996d4147821e1dad10103a0dc2e8">ILogger</a>.</p>
 
 </div>
 </div>

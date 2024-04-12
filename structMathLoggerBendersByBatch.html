@@ -145,7 +145,7 @@ Inheritance diagram for MathLoggerBendersByBatch:</div>
   <map id="MathLoggerBendersByBatch_map" name="MathLoggerBendersByBatch_map">
 <area href="structMathLogger.html" alt="MathLogger" shape="rect" coords="0,112,248,136"/>
 <area href="structMathLoggerBehaviour.html" alt="MathLoggerBehaviour" shape="rect" coords="0,56,248,80"/>
-<area href="structILoggerBenders.html" alt="ILoggerBenders" shape="rect" coords="0,0,248,24"/>
+<area href="structILoggerXpansion.html" title="Xpansion Unique log Interface." alt="ILoggerXpansion" shape="rect" coords="0,0,248,24"/>
 <area href="structMathLoggerBendersByBatchExternalLoop.html" alt="MathLoggerBendersByBatchExternalLoop" shape="rect" coords="0,224,248,248"/>
   </map>
 </div></div>
@@ -184,8 +184,9 @@ HEADERSTYPE&#160;</td><td class="memItemRight" valign="bottom"><b>HeadersType</b
 <tr class="memitem:a30abc924c3c63719d96c71f2db8f4a2f inherit pub_methods_structMathLoggerBehaviour"><td class="memItemLeft" align="right" valign="top"><a id="a30abc924c3c63719d96c71f2db8f4a2f" name="a30abc924c3c63719d96c71f2db8f4a2f"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>write_header</b> ()</td></tr>
 <tr class="separator:a30abc924c3c63719d96c71f2db8f4a2f inherit pub_methods_structMathLoggerBehaviour"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1cfcca9bcd1d85bcc5a4eb13a8539c30 inherit pub_methods_structMathLoggerBehaviour"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMathLoggerBehaviour.html#a1cfcca9bcd1d85bcc5a4eb13a8539c30">display_message</a> (const std::string &amp;str)</td></tr>
-<tr class="separator:a1cfcca9bcd1d85bcc5a4eb13a8539c30 inherit pub_methods_structMathLoggerBehaviour"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1022740a469fe1cdfdf08854ce334df inherit pub_methods_structMathLoggerBehaviour"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structMathLoggerBehaviour.html#ab1022740a469fe1cdfdf08854ce334df">display_message</a> (const std::string &amp;str) override</td></tr>
+<tr class="memdesc:ab1022740a469fe1cdfdf08854ce334df inherit pub_methods_structMathLoggerBehaviour"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method to display a std::string message  <a href="structMathLoggerBehaviour.html#ab1022740a469fe1cdfdf08854ce334df">More...</a><br /></td></tr>
+<tr class="separator:ab1022740a469fe1cdfdf08854ce334df inherit pub_methods_structMathLoggerBehaviour"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2cb5b8945ad18d9171d0af146f0e7555 inherit pub_methods_structMathLoggerBehaviour"><td class="memItemLeft" align="right" valign="top"><a id="a2cb5b8945ad18d9171d0af146f0e7555" name="a2cb5b8945ad18d9171d0af146f0e7555"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>Print</b> (const <a class="el" href="structCurrentIterationData.html">CurrentIterationData</a> &amp;data)=0</td></tr>
 <tr class="separator:a2cb5b8945ad18d9171d0af146f0e7555 inherit pub_methods_structMathLoggerBehaviour"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -202,15 +203,18 @@ virtual <a class="el" href="classLogDestination.html">LogDestination</a> &amp;&#
 <tr class="memitem:a7e09c3899d235bdf93b80c9f5483f1d2 inherit pub_methods_structMathLoggerBehaviour"><td class="memItemLeft" align="right" valign="top"><a id="a7e09c3899d235bdf93b80c9f5483f1d2" name="a7e09c3899d235bdf93b80c9f5483f1d2"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>setHeadersList</b> ()=0</td></tr>
 <tr class="separator:a7e09c3899d235bdf93b80c9f5483f1d2 inherit pub_methods_structMathLoggerBehaviour"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa5adb0476c7fea717360c6fb42535c7c"><td class="memItemLeft" align="right" valign="top"><a id="aa5adb0476c7fea717360c6fb42535c7c" name="aa5adb0476c7fea717360c6fb42535c7c"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>display_message</b> (const std::string &amp;str)=0</td></tr>
-<tr class="separator:aa5adb0476c7fea717360c6fb42535c7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48bf71fbad23772c639fb38ea61dd26b"><td class="memItemLeft" align="right" valign="top"><a id="a48bf71fbad23772c639fb38ea61dd26b" name="a48bf71fbad23772c639fb38ea61dd26b"></a>
+<tr class="inherit_header pub_methods_structILoggerXpansion"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structILoggerXpansion')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structILoggerXpansion.html">ILoggerXpansion</a></td></tr>
+<tr class="memitem:a5d5ef0a1321f54372ecba334a7ae1acd inherit pub_methods_structILoggerXpansion"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structILoggerXpansion.html#a5d5ef0a1321f54372ecba334a7ae1acd">display_message</a> (const std::string &amp;str)=0</td></tr>
+<tr class="memdesc:a5d5ef0a1321f54372ecba334a7ae1acd inherit pub_methods_structILoggerXpansion"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method to display a std::string message  <a href="structILoggerXpansion.html#a5d5ef0a1321f54372ecba334a7ae1acd">More...</a><br /></td></tr>
+<tr class="separator:a5d5ef0a1321f54372ecba334a7ae1acd inherit pub_methods_structILoggerXpansion"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac29cdc7dc59c2dde6ce45201c91e770e inherit pub_methods_structILoggerXpansion"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structILoggerXpansion.html#ac29cdc7dc59c2dde6ce45201c91e770e">display_message</a> (const std::ostringstream &amp;msg)</td></tr>
+<tr class="separator:ac29cdc7dc59c2dde6ce45201c91e770e inherit pub_methods_structILoggerXpansion"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84a1518b16ae160c5d5581ef5a8f88a1 inherit pub_methods_structILoggerXpansion"><td class="memItemLeft" align="right" valign="top"><a id="a84a1518b16ae160c5d5581ef5a8f88a1" name="a84a1518b16ae160c5d5581ef5a8f88a1"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintIterationSeparatorBegin</b> ()=0</td></tr>
-<tr class="separator:a48bf71fbad23772c639fb38ea61dd26b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad439daad5d864914d632f619b64560b4"><td class="memItemLeft" align="right" valign="top"><a id="ad439daad5d864914d632f619b64560b4" name="ad439daad5d864914d632f619b64560b4"></a>
+<tr class="separator:a84a1518b16ae160c5d5581ef5a8f88a1 inherit pub_methods_structILoggerXpansion"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0b39d5c01cf0d620e517186e66f99af inherit pub_methods_structILoggerXpansion"><td class="memItemLeft" align="right" valign="top"><a id="ae0b39d5c01cf0d620e517186e66f99af" name="ae0b39d5c01cf0d620e517186e66f99af"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintIterationSeparatorEnd</b> ()=0</td></tr>
-<tr class="separator:ad439daad5d864914d632f619b64560b4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:ae0b39d5c01cf0d620e517186e66f99af inherit pub_methods_structILoggerXpansion"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>

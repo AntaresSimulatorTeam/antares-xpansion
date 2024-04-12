@@ -143,7 +143,8 @@ Inheritance diagram for ProblemGenerationLog::ProblemGenerationFileLogger:</div>
  <div class="center">
   <img src="classProblemGenerationLog_1_1ProblemGenerationFileLogger.png" usemap="#ProblemGenerationLog::ProblemGenerationFileLogger_map" alt=""/>
   <map id="ProblemGenerationLog::ProblemGenerationFileLogger_map" name="ProblemGenerationLog::ProblemGenerationFileLogger_map">
-<area href="classProblemGenerationLog_1_1ProblemGenerationILogger.html" alt="ProblemGenerationLog::ProblemGenerationILogger" shape="rect" coords="0,0,316,24"/>
+<area href="classProblemGenerationLog_1_1ProblemGenerationILogger.html" alt="ProblemGenerationLog::ProblemGenerationILogger" shape="rect" coords="0,56,316,80"/>
+<area href="structILoggerXpansion.html" title="Xpansion Unique log Interface." alt="ILoggerXpansion" shape="rect" coords="0,0,316,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -152,20 +153,41 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3ba3f4f3bdf61e34acaad5fb83ac5338"><td class="memItemLeft" align="right" valign="top"><a id="a3ba3f4f3bdf61e34acaad5fb83ac5338" name="a3ba3f4f3bdf61e34acaad5fb83ac5338"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ProblemGenerationFileLogger</b> (const std::filesystem::path &amp;logFilePath)</td></tr>
 <tr class="separator:a3ba3f4f3bdf61e34acaad5fb83ac5338"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab5fad13991dad23910ada984b6d942e8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblemGenerationLog_1_1ProblemGenerationFileLogger.html#ab5fad13991dad23910ada984b6d942e8">DisplayMessage</a> (const std::string &amp;message) override</td></tr>
-<tr class="separator:ab5fad13991dad23910ada984b6d942e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04c480d1c20542a7aa7d8445ff86f906"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblemGenerationLog_1_1ProblemGenerationFileLogger.html#a04c480d1c20542a7aa7d8445ff86f906">display_message</a> (const std::string &amp;message) override</td></tr>
+<tr class="memdesc:a04c480d1c20542a7aa7d8445ff86f906"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method to display a std::string message  <a href="classProblemGenerationLog_1_1ProblemGenerationFileLogger.html#a04c480d1c20542a7aa7d8445ff86f906">More...</a><br /></td></tr>
+<tr class="separator:a04c480d1c20542a7aa7d8445ff86f906"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac304511256dfd6615da21b1c10c46357"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblemGenerationLog_1_1ProblemGenerationFileLogger.html#ac304511256dfd6615da21b1c10c46357">PrintIterationSeparatorBegin</a> () override</td></tr>
+<tr class="separator:ac304511256dfd6615da21b1c10c46357"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a523b1983d62d23bda8bc4d1f54b809d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblemGenerationLog_1_1ProblemGenerationFileLogger.html#a523b1983d62d23bda8bc4d1f54b809d9">PrintIterationSeparatorEnd</a> () override</td></tr>
+<tr class="separator:a523b1983d62d23bda8bc4d1f54b809d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a18e5e99d9573d5fa9dbf393d9c4bc955"><td class="memItemLeft" align="right" valign="top">std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblemGenerationLog_1_1ProblemGenerationFileLogger.html#a18e5e99d9573d5fa9dbf393d9c4bc955">GetOstreamObject</a> () override</td></tr>
 <tr class="separator:a18e5e99d9573d5fa9dbf393d9c4bc955"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classProblemGenerationLog_1_1ProblemGenerationILogger"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classProblemGenerationLog_1_1ProblemGenerationILogger')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classProblemGenerationLog_1_1ProblemGenerationILogger.html">ProblemGenerationLog::ProblemGenerationILogger</a></td></tr>
-<tr class="memitem:afc58832a96c6c0eed53d015ff38145a5 inherit pub_methods_classProblemGenerationLog_1_1ProblemGenerationILogger"><td class="memItemLeft" align="right" valign="top"><a id="afc58832a96c6c0eed53d015ff38145a5" name="afc58832a96c6c0eed53d015ff38145a5"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>DisplayMessage</b> (const std::string &amp;message)=0</td></tr>
-<tr class="separator:afc58832a96c6c0eed53d015ff38145a5 inherit pub_methods_classProblemGenerationLog_1_1ProblemGenerationILogger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ade69bbe369ecbfb6888ecc6e0f82e517 inherit pub_methods_classProblemGenerationLog_1_1ProblemGenerationILogger"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblemGenerationLog_1_1ProblemGenerationILogger.html#ade69bbe369ecbfb6888ecc6e0f82e517">display_message</a> (const std::string &amp;message) override=0</td></tr>
+<tr class="memdesc:ade69bbe369ecbfb6888ecc6e0f82e517 inherit pub_methods_classProblemGenerationLog_1_1ProblemGenerationILogger"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method to display a std::string message  <a href="classProblemGenerationLog_1_1ProblemGenerationILogger.html#ade69bbe369ecbfb6888ecc6e0f82e517">More...</a><br /></td></tr>
+<tr class="separator:ade69bbe369ecbfb6888ecc6e0f82e517 inherit pub_methods_classProblemGenerationLog_1_1ProblemGenerationILogger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1f9971bffe65d8ecc5234ac19f01d303 inherit pub_methods_classProblemGenerationLog_1_1ProblemGenerationILogger"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblemGenerationLog_1_1ProblemGenerationILogger.html#a1f9971bffe65d8ecc5234ac19f01d303">PrintIterationSeparatorBegin</a> () override=0</td></tr>
+<tr class="separator:a1f9971bffe65d8ecc5234ac19f01d303 inherit pub_methods_classProblemGenerationLog_1_1ProblemGenerationILogger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4aad16f63e88c547f63a554c0f0afbdc inherit pub_methods_classProblemGenerationLog_1_1ProblemGenerationILogger"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblemGenerationLog_1_1ProblemGenerationILogger.html#a4aad16f63e88c547f63a554c0f0afbdc">PrintIterationSeparatorEnd</a> () override=0</td></tr>
+<tr class="separator:a4aad16f63e88c547f63a554c0f0afbdc inherit pub_methods_classProblemGenerationLog_1_1ProblemGenerationILogger"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5fe24c5a1dbd8391374adbdf7ebed3d9 inherit pub_methods_classProblemGenerationLog_1_1ProblemGenerationILogger"><td class="memItemLeft" align="right" valign="top"><a id="a5fe24c5a1dbd8391374adbdf7ebed3d9" name="a5fe24c5a1dbd8391374adbdf7ebed3d9"></a>
 virtual std::ostream &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>GetOstreamObject</b> ()=0</td></tr>
 <tr class="separator:a5fe24c5a1dbd8391374adbdf7ebed3d9 inherit pub_methods_classProblemGenerationLog_1_1ProblemGenerationILogger"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a944ca173e63855ed61acc454d8b09640 inherit pub_methods_classProblemGenerationLog_1_1ProblemGenerationILogger"><td class="memItemLeft" align="right" valign="top"><a id="a944ca173e63855ed61acc454d8b09640" name="a944ca173e63855ed61acc454d8b09640"></a>
 LogUtils::LOGGERTYPE&#160;</td><td class="memItemRight" valign="bottom"><b>Type</b> () const</td></tr>
 <tr class="separator:a944ca173e63855ed61acc454d8b09640 inherit pub_methods_classProblemGenerationLog_1_1ProblemGenerationILogger"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_structILoggerXpansion"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_structILoggerXpansion')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structILoggerXpansion.html">ILoggerXpansion</a></td></tr>
+<tr class="memitem:a5d5ef0a1321f54372ecba334a7ae1acd inherit pub_methods_structILoggerXpansion"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structILoggerXpansion.html#a5d5ef0a1321f54372ecba334a7ae1acd">display_message</a> (const std::string &amp;str)=0</td></tr>
+<tr class="memdesc:a5d5ef0a1321f54372ecba334a7ae1acd inherit pub_methods_structILoggerXpansion"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method to display a std::string message  <a href="structILoggerXpansion.html#a5d5ef0a1321f54372ecba334a7ae1acd">More...</a><br /></td></tr>
+<tr class="separator:a5d5ef0a1321f54372ecba334a7ae1acd inherit pub_methods_structILoggerXpansion"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac29cdc7dc59c2dde6ce45201c91e770e inherit pub_methods_structILoggerXpansion"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structILoggerXpansion.html#ac29cdc7dc59c2dde6ce45201c91e770e">display_message</a> (const std::ostringstream &amp;msg)</td></tr>
+<tr class="separator:ac29cdc7dc59c2dde6ce45201c91e770e inherit pub_methods_structILoggerXpansion"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84a1518b16ae160c5d5581ef5a8f88a1 inherit pub_methods_structILoggerXpansion"><td class="memItemLeft" align="right" valign="top"><a id="a84a1518b16ae160c5d5581ef5a8f88a1" name="a84a1518b16ae160c5d5581ef5a8f88a1"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintIterationSeparatorBegin</b> ()=0</td></tr>
+<tr class="separator:a84a1518b16ae160c5d5581ef5a8f88a1 inherit pub_methods_structILoggerXpansion"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0b39d5c01cf0d620e517186e66f99af inherit pub_methods_structILoggerXpansion"><td class="memItemLeft" align="right" valign="top"><a id="ae0b39d5c01cf0d620e517186e66f99af" name="ae0b39d5c01cf0d620e517186e66f99af"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintIterationSeparatorEnd</b> ()=0</td></tr>
+<tr class="separator:ae0b39d5c01cf0d620e517186e66f99af inherit pub_methods_structILoggerXpansion"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -175,8 +197,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetType</b> (const Lo
 <tr class="separator:a7dc52be3f45731bfec826ba336985a84 inherit pro_methods_classProblemGenerationLog_1_1ProblemGenerationILogger"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ab5fad13991dad23910ada984b6d942e8" name="ab5fad13991dad23910ada984b6d942e8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab5fad13991dad23910ada984b6d942e8">&#9670;&#160;</a></span>DisplayMessage()</h2>
+<a id="a04c480d1c20542a7aa7d8445ff86f906" name="a04c480d1c20542a7aa7d8445ff86f906"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04c480d1c20542a7aa7d8445ff86f906">&#9670;&#160;</a></span>display_message()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -185,10 +207,10 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetType</b> (const Lo
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void ProblemGenerationLog::ProblemGenerationFileLogger::DisplayMessage </td>
+          <td class="memname">void ProblemGenerationLog::ProblemGenerationFileLogger::display_message </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>message</em></td><td>)</td>
+          <td class="paramname"><em>str</em></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -199,7 +221,15 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetType</b> (const Lo
 </table>
 </div><div class="memdoc">
 
-<p>Implements <a class="el" href="classProblemGenerationLog_1_1ProblemGenerationILogger.html">ProblemGenerationLog::ProblemGenerationILogger</a>.</p>
+<p>pure virtual method to display a std::string message </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">str</td><td>the message to be displayed </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classProblemGenerationLog_1_1ProblemGenerationILogger.html#ade69bbe369ecbfb6888ecc6e0f82e517">ProblemGenerationLog::ProblemGenerationILogger</a>.</p>
 
 </div>
 </div>
@@ -221,7 +251,61 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetType</b> (const Lo
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classProblemGenerationLog_1_1ProblemGenerationILogger.html">ProblemGenerationLog::ProblemGenerationILogger</a>.</p>
+
+</div>
+</div>
+<a id="ac304511256dfd6615da21b1c10c46357" name="ac304511256dfd6615da21b1c10c46357"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac304511256dfd6615da21b1c10c46357">&#9670;&#160;</a></span>PrintIterationSeparatorBegin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ProblemGenerationLog::ProblemGenerationFileLogger::PrintIterationSeparatorBegin </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classProblemGenerationLog_1_1ProblemGenerationILogger.html">ProblemGenerationLog::ProblemGenerationILogger</a>.</p>
+
+</div>
+</div>
+<a id="a523b1983d62d23bda8bc4d1f54b809d9" name="a523b1983d62d23bda8bc4d1f54b809d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a523b1983d62d23bda8bc4d1f54b809d9">&#9670;&#160;</a></span>PrintIterationSeparatorEnd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ProblemGenerationLog::ProblemGenerationFileLogger::PrintIterationSeparatorEnd </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
