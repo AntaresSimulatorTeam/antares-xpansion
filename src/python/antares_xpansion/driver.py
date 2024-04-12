@@ -50,7 +50,8 @@ class XpansionDriver:
         self.benders_driver = BendersDriver(
             self.config_loader.benders_exe(),
             self.config_loader.merge_mps_exe(),
-            self.config_loader.options_file_name()
+            self.config_loader.options_file_name(),
+            self.config_loader.mpi_exe(),
         )
 
         self.study_update_driver = StudyUpdaterDriver(

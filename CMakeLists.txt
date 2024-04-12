@@ -185,6 +185,7 @@ if (MSVC)
 	list(APPEND CMAKE_FIND_LIBRARY_PREFIXES "" "lib")
 endif ()
 find_package(MPI REQUIRED)
+
 find_package(Boost REQUIRED COMPONENTS mpi serialization)
 include_directories(${Boost_INCLUDE_DIRS})
 
@@ -312,12 +313,28 @@ if (USER_GUIDE_PATH)
 endif()
 
 install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples/" 		DESTINATION examples)
-
 if (WIN32)
-  install(DIRECTORY ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}/
-    TYPE BIN
-    USE_SOURCE_PERMISSIONS
-    FILES_MATCHING PATTERN "*.dll")
+	cmake_path(GET MPIEXEC_EXECUTABLE PARENT_PATH MPI_BIN_DIR)
+	
+	#Copy associated .so and .dll to build directory
+	FILE(COPY  ${MPI_BIN_DIR}/
+		DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
+		USE_SOURCE_PERMISSIONS)
+	find_file(msmpi_dll NAMES msmpi.dll REGISTRY_VIEW HOST)
+  
+	install(DIRECTORY ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}/
+		TYPE BIN
+		USE_SOURCE_PERMISSIONS
+		FILES_MATCHING PATTERN "*.dll")
+
+  	install(FILES
+		${MPI_msmpi_LIBRARY}
+		${msmpi_dll}
+		DESTINATION bin
+        )
+
+	install(DIRECTORY ${MPI_BIN_DIR}/
+  		TYPE BIN)
 endif()
 
 install(DIRECTORY ${ANTARES_SOLVER_DIR}/
