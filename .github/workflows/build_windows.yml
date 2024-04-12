@@ -140,42 +140,13 @@ jobs:
       - name: Build
         run: |
           cmake --build _build --config Release -j4
-          cd _build
-          cmake --install .
-      
-      - name: Create installer .zip
-        shell: bash
+
+      - name: Running unit tests
+        timeout-minutes: 120
+        shell: cmd
         run: |
+          set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin
+          set PATH=%PATH%;${{ env.XPRESS }}
+          set XPRESSDIR=${{ env.XPRESSDIR }}
           cd _build
-          cpack -G ZIP
-          export ZIP_NAME=$(ls *.zip)
-          echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
-
-      - name: set name variables
-        id: single_file_name
-        shell: bash
-        run: |
-          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
-          XPRS=${{ env.XPRESS_VALUE }}
-          [ $XPRS == "ON" ] && WITH_XPRS="-xpress" || WITH_XPRS=""
-          VERSION=${{steps.antares-xpansion-version.outputs.result}}${WITH_XPRS}
-          echo "VERSION_WITH_XPRESS=$VERSION"
-          echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
-
-      - name: Upload installer
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{env.ZIP_NAME}}
-          path: _build/${{env.ZIP_NAME}}
-
-      - name: Create single file .zip
-        id: create-single-file
-        uses: ./.github/workflows/single-file-creation-zip
-        with:
-          antares-xpansion-version: ${{env.VERSION_WITH_XPRESS}}
-
-      - name: Upload single file
-        uses: actions/upload-artifact@v3
-        with:
-          name: ${{ steps.create-single-file.outputs.archive-name }}
-          path: ${{ steps.create-single-file.outputs.archive-path }}          
+          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
