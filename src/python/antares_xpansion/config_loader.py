@@ -519,7 +519,6 @@ class ConfigLoader:
                     output_zip.extractall(self._xpansion_simulation_name)
         elif self.step() == "benders":
             if self.is_zip(self._last_study):
-                # if(not self._last_study.name.endswith(xpansion_dir_suffix)):
                 raise ConfigLoader.NotAnXpansionOutputDir(
                     f"Error! {self._last_study} is not an Xpansion output directory"
                 )
