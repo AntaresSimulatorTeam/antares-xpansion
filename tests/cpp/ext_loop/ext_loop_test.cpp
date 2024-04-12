@@ -133,7 +133,8 @@ class MasterUpdateBaseTest : public ::testing::TestWithParam<std::string> {
 auto solvers() {
   std::vector<std::string> solvers_name;
   solvers_name.push_back("COIN");
-  if (LoadXpress::XpressIsCorrectlyInstalled()) {
+  LoadXpress::XpressLoader xpress_loader;
+  if (xpress_loader.XpressIsCorrectlyInstalled()) {
     solvers_name.push_back("XPRESS");
   }
   return solvers_name;
