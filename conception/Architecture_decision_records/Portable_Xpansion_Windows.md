@@ -1,4 +1,4 @@
-# [Windows pakcage] Export Mpi alongside Xpansion
+# [Windows package] Export Mpi alongside Xpansion
 
 
 ## Status
