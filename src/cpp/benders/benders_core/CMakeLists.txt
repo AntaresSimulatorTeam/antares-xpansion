@@ -13,7 +13,7 @@ endif()
 if (TBB_VERSION_MAJOR VERSION_GREATER "2020")
 	message(FATAL_ERROR "Require tbb 2018 to 2020.")
 endif()
-
+find_package(yaml-cpp CONFIG REQUIRED)
 add_library (benders_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/SubproblemWorker.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/SimulationOptions.cpp
@@ -48,6 +48,7 @@ target_link_libraries (benders_core
 		glog::glog
 		TBB::tbb
 		${jsonlib}
+		yaml-cpp
 )
 
 add_library (${PROJECT_NAME}::benders_core ALIAS benders_core)
