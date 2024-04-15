@@ -64,8 +64,6 @@ class FullRunDriver:
 
         os.chdir(lp_path)
         self.logger.info(f"Current directory is now: {os.getcwd()}")
-        self.logger.info(f"Command is {self.full_command()}")
-        print(self.full_command())
         ret = subprocess.run(
             self.full_command(), shell=False, stdout=sys.stdout, stderr=sys.stderr,
             encoding='utf-8')

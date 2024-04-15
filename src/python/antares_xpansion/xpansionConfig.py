@@ -21,6 +21,7 @@ class ConfigParameters:
     SENSITIVITY_EXE: str
     FULL_RUN: str
     ANTARES_ARCHIVE_UPDATER: str
+    MPIEXEC: str
     AVAILABLE_SOLVERS: List[str]
 
 
@@ -62,6 +63,7 @@ class XpansionConfig:
         self.ANTARES_ARCHIVE_UPDATER: str = ""
         self.MPI_LAUNCHER: str = ""
         self.MPI_N: str = ""
+        self.MPIEXEC: str = ""
         self.AVAILABLE_SOLVER: List[str]
 
         self._get_config_values()
@@ -242,4 +244,5 @@ class XpansionConfig:
         self.FULL_RUN = self.config_parameters.FULL_RUN
         self.ANTARES_ARCHIVE_UPDATER = self.config_parameters.ANTARES_ARCHIVE_UPDATER
         self.SENSITIVITY_EXE = self.config_parameters.SENSITIVITY_EXE
+        self.MPIEXEC = self.config_parameters.MPIEXEC
         self.AVAILABLE_SOLVER = self.config_parameters.AVAILABLE_SOLVERS
