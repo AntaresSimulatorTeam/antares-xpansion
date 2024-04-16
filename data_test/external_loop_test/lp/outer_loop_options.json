@@ -1,0 +1,27 @@
+{
+  "stopping_threshold": 1e-4, // critère d'arrêt de l'algo
+  "criterion_count_threshold": 1e-1, //  seuil
+  "criterion_tolerance": 1e-5, // tolerance entre seuil et valeur calculée
+  "patterns": [
+    {
+      "area": "N0", // ==> verifier que "criterion" est satisfait pour
+      // la défaillance positive dans la Zone1
+      "criterion": 1
+    },
+    {
+      "area": "N1", // ==> verifier que "criterion" est satisfait pour
+      // la défaillance positive dans la Zone1
+      "criterion": 1
+    },
+    {
+      "area": "N2", // ==> verifier que "criterion" est satisfait pour
+      // la défaillance positive dans la Zone1
+      "criterion": 1
+    },
+    {
+      "area": "N3", // ==> verifier que "criterion" est satisfait pour
+      // la défaillance positive dans la Zone1
+      "criterion": 1
+    }
+  ]
+}

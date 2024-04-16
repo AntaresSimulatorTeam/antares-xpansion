@@ -1,0 +1,42 @@
+We describe a system with 4 nodes, on 1 timestep, 2 scenarios :
+ 
+ 
+    |------- N1
+    |
+    N0 ----- N2
+    |
+    |------- N3
+ 
+    On node 0, there is a generator with :
+        - Initial P_max = 1
+        - Prod cost = 1
+        - Investment cost = 20
+ 
+    On nodes N1, N2, N3, there is a demand that differ between scenarios :
+        - On N1 : Demand1 = [1, 3]
+        - On N2 : Demand2 = [3, 3]
+        - On N3 : Demand3 = [0, 3]
+ 
+    Over the whole system we have :
+        - Spillage cost = 1
+        - ENS cost = 10
+ 
+    There are also transmission costs on lines :
+        - On L01 : transmission cost = 2
+        - On L02 : transmission cost = 1
+        - On L03 : transmission cost = 3
+ 
+    As the investment cost is higher than the ENS cost, adding 1MW of capacity would cost 20 to reduce ENS cost only by 10, hence an increased overall cost. Therefore the optimal investment is not to add any capacity beyond the existing one. Given the transmission cost, all flow will get to node 2.
+ 
+    This use case is simple enough so that we can count the number of hours with ENS with respect to the investment. Then we could use this test to check the behavior of any heuristic that aims at reaching a given target of LOLE (not done here).
+ 
+    We add 1 hour of ENS if there is at least 0.1 MWh of unsupplied energy, the "optimal" situation leads to 5h of ENS hours overall, hence 2.5h in expectation.
+ 
+    Each invested capacity will first go to node 2, then to node 1 and finally to node 3 given the transmission costs.
+ 
+    Hence we can deduce the number expected hours of ENS given the total capacity as follows  (invested capacity is total capacity - 1 as P_max = 1 initially):
+        - 0 <= P_max <= 2.9 : 2.5h
+        - 2.9 <= P_max <= 3.9 : 1.5h
+        - 3.9 <= P_max <= 5.9 : 1h
+        - 5.9 <= P_max <= 8.9 : 0.5h
+        - 8.9 <= P_max : 0h
