@@ -25,7 +25,8 @@ BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
   if (options.EXTERNAL_LOOP_OPTIONS.DO_EXT_LOOP){
 
     //TODO maybe the input format will change?
-    outer_loop_input_data_ = Outerloop::OuterLoopInputFromJson().Read(_options.EXTERNAL_LOOP_OPTIONS.EXT_LOOP_OPTION_FILE);
+    outer_loop_input_data_ = Outerloop::OuterLoopInputFromYaml().Read(
+        _options.EXTERNAL_LOOP_OPTIONS.EXT_LOOP_OPTION_FILE);
     outer_loop_biLevel_ = OuterLoopBiLevel(outer_loop_input_data_);
   }
 }

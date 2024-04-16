@@ -95,9 +95,9 @@ class IOuterLoopInputDataReader {
   virtual OuterLoopInputData Read(const std::filesystem::path &input_file) = 0;
 };
 
-class OuterLoopInputFromJson : public IOuterLoopInputDataReader {
+class OuterLoopInputFromYaml : public IOuterLoopInputDataReader {
  public:
-  OuterLoopInputFromJson() = default;
+  OuterLoopInputFromYaml() = default;
   OuterLoopInputData Read(const std::filesystem::path &input_file) override;
 
  private:

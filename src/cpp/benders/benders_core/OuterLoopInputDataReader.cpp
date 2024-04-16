@@ -57,7 +57,7 @@ void OuterLoopInputData::SetCriterionCountThreshold(
     criterion_count_threshold_ = criterion_count_threshold;
 }
 double OuterLoopInputData::CriterionCountThreshold() const { return criterion_count_threshold_; }
-OuterLoopInputData OuterLoopInputFromJson::Read(
+OuterLoopInputData OuterLoopInputFromYaml::Read(
     const std::filesystem::path &input_file) {
   auto json_content = get_json_file_content(input_file);
 
@@ -92,8 +92,7 @@ OuterLoopInputData OuterLoopInputFromJson::Read(
       ]
 }
 */
-void OuterLoopInputFromJson::Decode(const Json::Value &json_content) {
-
+void OuterLoopInputFromYaml::Decode(const Json::Value &json_content) {
   outerLoopInputData_.SetStoppingThreshold(
       json_content
           .get("stopping_threshold",
@@ -122,7 +121,7 @@ outerLoopInputData_.SetCriterionTolerance(
   DecodePatterns(patterns);
 }
 
-void OuterLoopInputFromJson::DecodePatterns(const Json::Value &patterns) {
+void OuterLoopInputFromYaml::DecodePatterns(const Json::Value &patterns) {
   std::vector<OuterLoopSingleInputData> outer_loop_patterns;
 
   if (!patterns.isArray()) {
@@ -138,7 +137,7 @@ void OuterLoopInputFromJson::DecodePatterns(const Json::Value &patterns) {
   }
 }
 
-void OuterLoopInputFromJson::DecodePattern(const Json::Value &pattern) {
+void OuterLoopInputFromYaml::DecodePattern(const Json::Value &pattern) {
   Json::Value body = pattern.get("area", Json::nullValue);
 
   // specify line And OR #pattern
