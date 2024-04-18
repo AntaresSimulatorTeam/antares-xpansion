@@ -25,10 +25,15 @@ BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
   if (options.EXTERNAL_LOOP_OPTIONS.DO_EXT_LOOP){
 
     //TODO maybe the input format will change?
-    outer_loop_input_data_ = Outerloop::OuterLoopInputFromYaml().Read(
-        _options.EXTERNAL_LOOP_OPTIONS.EXT_LOOP_OPTION_FILE);
+    outer_loop_input_data_ =
+        Outerloop::OuterLoopInputFromYaml().Read(OuterloopOptionsFile());
     outer_loop_biLevel_ = OuterLoopBiLevel(outer_loop_input_data_);
   }
+}
+
+std::filesystem::path BendersBase::OuterloopOptionsFile() const {
+  return std::filesystem::path(_options.INPUTROOT) /
+         _options.EXTERNAL_LOOP_OPTIONS.EXT_LOOP_OPTION_FILE;
 }
 
 /*!

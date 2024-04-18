@@ -1,6 +1,7 @@
 #include "OuterLoopInputDataReader.h"
 
 using namespace Outerloop;
+
 /**
  * prefix could be := PositiveUnsuppliedEnergy:: or something else necessarily
  * /!\ body could be := area name or equivalent or nothing
@@ -18,8 +19,12 @@ std::regex OuterLoopPattern::MakeRegex() const {
   return std::regex(pattern);
 }
 const std::string &OuterLoopPattern::GetPrefix() const { return prefix_; }
-
+void OuterLoopPattern::SetPrefix(const std::string &prefix) {
+  prefix_ = prefix;
+}
 const std::string &OuterLoopPattern::GetBody() const { return body_; }
+
+void OuterLoopPattern::SetBody(const std::string &body) { body_ = body; }
 
 OuterLoopSingleInputData::OuterLoopSingleInputData(const std::string &prefix,
                                                    const std::string &body,
@@ -30,6 +35,15 @@ OuterLoopPattern OuterLoopSingleInputData::Pattern() const {
   return outer_loop_pattern_;
 }
 double OuterLoopSingleInputData::Criterion() const { return criterion_; }
+
+void OuterLoopSingleInputData::SetCriterion(double criterion) {
+  criterion_ = criterion;
+}
+void OuterLoopSingleInputData::ResetPattern(const std::string &prefix,
+                                            const std::string &body) {
+  outer_loop_pattern_.SetPrefix(prefix);
+  outer_loop_pattern_.SetBody(body);
+}
 
 void OuterLoopInputData::AddSingleData(const OuterLoopSingleInputData &data) {
   outer_loop_data_.push_back(data);
@@ -59,17 +73,25 @@ void OuterLoopInputData::SetCriterionCountThreshold(
 double OuterLoopInputData::CriterionCountThreshold() const { return criterion_count_threshold_; }
 OuterLoopInputData OuterLoopInputFromYaml::Read(
     const std::filesystem::path &input_file) {
-  auto json_content = get_json_file_content(input_file);
+  /*auto json_content = get_json_file_content(input_file);
 
   if (json_content.empty()) {
     std::ostringstream err_msg;
     err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
             << "outer loop input file is empty: " << input_file << "\n";
     throw OuterLoopInputFileIsEmpty(err_msg.str(), LOGLOCATION);
+  }*/
+  auto yaml_content = YAML::LoadFile(input_file.string());
+
+  if (yaml_content.IsNull()) {
+    std::ostringstream err_msg;
+    err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
+            << "outer loop input file is empty: " << input_file << "\n";
+    throw OuterLoopInputFileIsEmpty(err_msg.str(), LOGLOCATION);
   }
 
-  Decode(json_content);
-
+  // std::cout << "******* " << yaml_content["eps"].as<double>() << "\n";
+  outerLoopInputData_ = yaml_content.as<OuterLoopInputData>();
   return outerLoopInputData_;
 }
 
@@ -92,72 +114,79 @@ OuterLoopInputData OuterLoopInputFromYaml::Read(
       ]
 }
 */
-void OuterLoopInputFromYaml::Decode(const Json::Value &json_content) {
-  outerLoopInputData_.SetStoppingThreshold(
-      json_content
-          .get("stopping_threshold",
-               1e-4)
-          .asDouble());
-  outerLoopInputData_.SetCriterionCountThreshold(
-      json_content
-          .get("criterion_count_threshold",
-               1e-1)
-          .asDouble());
-outerLoopInputData_.SetCriterionTolerance(
-      json_content
-          .get("criterion_tolerance",
-               1e-1)
-          .asDouble());
+namespace YAML {
 
-  Json::Value patterns = json_content.get("patterns", Json::nullValue);
-  if (patterns  == Json::nullValue) {
-    std::ostringstream err_msg;
-    err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
-            << "outer loop input file must contains at least one pattern."
-            << "\n";
-    throw OuterLoopInputFileNoPatternFound(err_msg.str(), LOGLOCATION);
+template <>
+struct convert<OuterLoopSingleInputData> {
+  static Node encode(const OuterLoopSingleInputData &rhs) {
+    //
   }
 
-  DecodePatterns(patterns);
-}
+  static bool decode(const Node &pattern, OuterLoopSingleInputData &rhs) {
+    auto body = pattern["area"];
 
-void OuterLoopInputFromYaml::DecodePatterns(const Json::Value &patterns) {
-  std::vector<OuterLoopSingleInputData> outer_loop_patterns;
+    // specify line And OR #pattern
+    if (body.IsNull()) {
+      std::ostringstream err_msg;
+      err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
+              << "Error could not read 'area' field in outer loop input file"
+              << "\n";
+      throw OuterLoopCouldNotReadAreaField(err_msg.str(), LOGLOCATION);
+    }
+    auto criterion = pattern["criterion"];
 
-  if (!patterns.isArray()) {
-    std::ostringstream err_msg;
-    err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
-            << "In outer loop input file 'patterns' should be an array."
-            << "\n";
-    throw OuterLoopInputPatternsShouldBeArray(err_msg.str(), LOGLOCATION);
+    if (criterion.IsNull()) {
+      std::ostringstream err_msg;
+      err_msg
+          << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
+          << "Error could not read 'criterion' field in outer loop input file"
+          << "\n";
+      throw OuterLoopCouldNotReadCriterionField(err_msg.str(), LOGLOCATION);
+    }
+
+    rhs.SetCriterion(criterion.as<double>());
+    rhs.ResetPattern("PositiveUnsuppliedEnergy::", body.as<std::string>());
+    return true;
+  }
+};
+template <>
+struct convert<OuterLoopInputData> {
+  static Node encode(const OuterLoopInputData &rhs) {
+    //
   }
 
-  for (const auto& pattern : patterns) {
-    DecodePattern(pattern);
-  }
-}
+  static void DecodePatterns(const Node &patterns, OuterLoopInputData &rhs) {
+    if (!patterns.IsSequence()) {
+      std::ostringstream err_msg;
+      err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
+              << "In outer loop input file 'patterns' should be an array."
+              << "\n";
+      throw OuterLoopInputPatternsShouldBeArray(err_msg.str(), LOGLOCATION);
+    }
 
-void OuterLoopInputFromYaml::DecodePattern(const Json::Value &pattern) {
-  Json::Value body = pattern.get("area", Json::nullValue);
-
-  // specify line And OR #pattern
-  if (body  == Json::nullValue) {
-    std::ostringstream err_msg;
-    err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
-            << "Error could not read 'area' field in outer loop input file"
-            << "\n";
-    throw OuterLoopCouldNotReadAreaField(err_msg.str(), LOGLOCATION);
-  }
-  Json::Value criterion = pattern.get("criterion", Json::nullValue);
-
-  if (criterion  == Json::nullValue) {
-    std::ostringstream err_msg;
-    err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
-            << "Error could not read 'criterion' field in outer loop input file"
-            << "\n";
-    throw OuterLoopCouldNotReadCriterionField(err_msg.str(), LOGLOCATION);
+    for (const auto &pattern : patterns) {
+      rhs.AddSingleData(pattern.as<OuterLoopSingleInputData>());
+    }
   }
 
-  outerLoopInputData_.AddSingleData(
-      {"PositiveUnsuppliedEnergy::", body.asString(), criterion.asDouble()});
-}
+  static bool decode(const Node &node, OuterLoopInputData &rhs) {
+    std::cout << "********* " << node["stopping_threshold"].as<double>()
+              << "\n";
+    rhs.SetStoppingThreshold(node["stopping_threshold"].as<double>(1e-4));
+    rhs.SetCriterionCountThreshold(
+        node["criterion_count_threshold"].as<double>(1e-1));
+    rhs.SetCriterionTolerance(node["criterion_tolerance"].as<double>(1e-1));
+
+    if (auto patterns = node["patterns"]) {
+      DecodePatterns(patterns, rhs);
+    } else {
+      std::ostringstream err_msg;
+      err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
+              << "outer loop input file must contains at least one pattern."
+              << "\n";
+      throw OuterLoopInputFileNoPatternFound(err_msg.str(), LOGLOCATION);
+    }
+    return true;
+  }
+};
+}  // namespace YAML

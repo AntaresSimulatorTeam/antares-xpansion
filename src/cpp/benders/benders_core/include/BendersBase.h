@@ -157,6 +157,7 @@ class BendersBase {
                                         std::string const &name) const;
   [[nodiscard]] std::filesystem::path get_master_path() const;
   [[nodiscard]] std::filesystem::path get_structure_path() const;
+  [[nodiscard]] std::filesystem::path OuterloopOptionsFile() const;
   [[nodiscard]] LogData bendersDataToLogData(
       const CurrentIterationData &data) const;
   virtual void reset_master(WorkerMaster *worker_master);

@@ -7,6 +7,7 @@
 
 #include "LoggerUtils.h"
 #include "common.h"
+#include "yaml-cpp/yaml.h"
 
 namespace Outerloop {
 
@@ -39,9 +40,12 @@ class OuterLoopCouldNotReadCriterionField
 class OuterLoopPattern {
  public:
   explicit OuterLoopPattern(const std::string &prefix, const std::string &body);
+  OuterLoopPattern() = default;
   [[nodiscard]] std::regex MakeRegex() const;
   [[nodiscard]] const std::string &GetPrefix() const;
+  void SetPrefix(const std::string &prefix);
   [[nodiscard]] const std::string &GetBody() const;
+  void SetBody(const std::string &body);
 
  private:
   std::string prefix_;
@@ -52,6 +56,7 @@ class OuterLoopPattern {
 /// @brief holds the pattern and the criterion of the outer loop
 class OuterLoopSingleInputData {
  public:
+  OuterLoopSingleInputData() = default;
   /// @brief constructor
   /// @param prefix the prefix in the variable's name
   /// @param body any string that could be in the variable's name
@@ -59,12 +64,13 @@ class OuterLoopSingleInputData {
   OuterLoopSingleInputData(const std::string &prefix, const std::string &body,
                            double criterion);
 
-  OuterLoopPattern Pattern() const;
-  double Criterion() const;
-
+  [[nodiscard]] OuterLoopPattern Pattern() const;
+  [[nodiscard]] double Criterion() const;
+  void SetCriterion(double criterion);
+  void ResetPattern(const std::string &prefix, const std::string &body);
  private:
   OuterLoopPattern outer_loop_pattern_;
-  double criterion_;
+  double criterion_ = 0;
 };
 
 /// @brief this class contains all data read from user input file
@@ -72,7 +78,7 @@ class OuterLoopInputData {
  public:
   OuterLoopInputData() = default;
 
-  std::vector<OuterLoopSingleInputData> OuterLoopData() const;
+  [[nodiscard]] std::vector<OuterLoopSingleInputData> OuterLoopData() const;
 
   void SetStoppingThreshold(double outer_loop_stopping_threshold);
   [[nodiscard]] double StoppingThreshold() const;
