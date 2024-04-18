@@ -40,6 +40,7 @@ void BendersMpi::InitializeProblems() {
     }
     current_problem_id++;
   }
+  init_problems_ = false;
 }
 void BendersMpi::BuildMasterProblem() {
   if (_world.rank() == rank_0) {
@@ -152,8 +153,21 @@ SubProblemDataMap BendersMpi::get_subproblem_cut_package() {
 void BendersMpi::master_build_cuts(
     std::vector<SubProblemDataMap> gathered_subproblem_map) {
   SetSubproblemCost(0);
+
+  // if (Rank() == rank_0) {
+  // TODO decoment to save all cuts
+  // workerMasterDataVect_.push_back({_data.x_cut, {}});
+  // may be unuseful
+  // current_iteration_cuts_.x_cut = _data.x_cut;
+  // }
   for (const auto &subproblem_data_map : gathered_subproblem_map) {
-    for (auto &&[_, subproblem_data] : subproblem_data_map) {
+    for (auto &&[sub_problem_name, subproblem_data] : subproblem_data_map) {
+      // save current cuts
+      // workerMasterDataVect_.back().subsProblemDataMap[sub_problem_name] =
+      //     subproblem_data;
+
+      // current_iteration_cuts_.subsProblemDataMap[sub_problem_name] =
+      //     subproblem_data;
       SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
       // compute delta_cut >= options.CUT_MASTER_TOL;
       BoundSimplexIterations(subproblem_data.simplex_iter);
@@ -163,9 +177,11 @@ void BendersMpi::master_build_cuts(
   _logger->display_message("\tSolving subproblems...");
 
   _data.ub = 0;
+
   for (const auto &subproblem_data_map : gathered_subproblem_map) {
     BuildCutFull(subproblem_data_map);
   }
+
   _logger->LogSubproblemsSolvingCumulativeCpuTime(
       GetSubproblemsCumulativeCpuTime());
   _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
@@ -226,13 +242,19 @@ void BendersMpi::free() {
  *
  */
 void BendersMpi::Run() {
-  PreRunInitialization();
+  if (init_data_) {
+    PreRunInitialization();
+  } else {
+    // only ?
+    _data.stop = false;
+  }
   _data.number_of_subproblem_solved = _data.nsubproblem;
   while (!_data.stop) {
     ++_data.it;
     ResetSimplexIterationsBounds();
 
-    /*Solve Master problem, get optimal value and cost and send it to process*/
+    /*Solve Master problem, get optimal value and cost and send it to
+     * process*/
     step_1_solve_master();
 
     /*Gather cut from each subproblem in master thread and add them to Master
@@ -261,6 +283,7 @@ void BendersMpi::Run() {
   }
   _world.barrier();
 }
+
 void BendersMpi::PreRunInitialization() {
   init_data();
 
@@ -281,17 +304,22 @@ void BendersMpi::PreRunInitialization() {
     }
   }
   mathLoggerDriver_->write_header();
+  init_data_ = false;
 }
 
 void BendersMpi::launch() {
-  InitializeProblems();
+  ++_data.benders_num_run;
+  if (init_problems_) {
+    InitializeProblems();
+  }
   _world.barrier();
 
   Run();
   _world.barrier();
 
   post_run_actions();
-
-  free();
+  if (free_problems_) {
+    free();
+  }
   _world.barrier();
 }

@@ -112,5 +112,16 @@ void Master::cumulative_number_of_sub_problem_solved(int number) {
   }
 }
 
+void Master::PrintIterationSeparatorBegin() {
+  for (auto logger : _loggers) {
+    logger->PrintIterationSeparatorBegin();
+  }
+}
+void Master::PrintIterationSeparatorEnd() {
+  for (auto logger : _loggers) {
+    logger->PrintIterationSeparatorEnd();
+  }
+}
+
 }  // namespace logger
 }  // namespace xpansion

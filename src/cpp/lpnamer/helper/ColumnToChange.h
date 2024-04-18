@@ -4,7 +4,8 @@
 #include <vector>
 using colId = unsigned int;
 struct ColumnToChange {
-  ColumnToChange(colId id, int time_step) : id(id), time_step(time_step){};
+  ColumnToChange(colId id, unsigned int time_step)
+      : id(id), time_step(time_step){};
   bool operator==(const ColumnToChange& other) const;
 
   colId id;

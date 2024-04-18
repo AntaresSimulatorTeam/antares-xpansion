@@ -7,5 +7,6 @@ STUDY_UPDATER                   : $<TARGET_FILE_NAME:xpansion-study-updater>
 FULL_RUN                        : $<TARGET_FILE_NAME:full_run>
 SENSITIVITY                     : $<TARGET_FILE_NAME:sensitivity>
 ANTARES_ARCHIVE_UPDATER         : $<TARGET_FILE_NAME:antares_archive_updater>
+mpiexec                         : @MPIEXEC_EXECUTABLE@
 AVAILABLE_SOLVER :
 @AVAILABLE_SOLVER_YML_LIST@

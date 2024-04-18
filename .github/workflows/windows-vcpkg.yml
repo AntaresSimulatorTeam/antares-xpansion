@@ -68,6 +68,7 @@ jobs:
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
     outputs:
       zip_name: ${{ steps.zip_name.outputs.zip_name }}
+      singlefile_name: ${{steps.zip_name.outputs.singlefile_name}}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -150,6 +151,7 @@ jobs:
       - name: Install deps with VCPKG
         run: |
           cd vcpkg
+          git fetch --unshallow
           ./bootstrap-vcpkg.sh
           vcpkg install --triplet ${{matrix.triplet}}
           rm -rf buildtrees
@@ -190,7 +192,9 @@ jobs:
 
       - name: Build
         run: |
-          cmake --build _build --config Release -j2 --target install
+          cmake --build _build --config Release -j4
+          cd _build
+          cmake --install .
 
       - name: Running unit tests
         shell: cmd
