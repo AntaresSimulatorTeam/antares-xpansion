@@ -24,5 +24,5 @@
     "LAST_MASTER_MPS": "master_last_iteration",
     "LAST_MASTER_BASIS": "master_last_basis.bss",
     "DO_EXT_LOOP": true,
-    "EXT_LOOP_OPTION_FILE": "outer_loop_options.json"
+    "EXT_LOOP_OPTION_FILE": "outer_loop_options.yml"
 }
