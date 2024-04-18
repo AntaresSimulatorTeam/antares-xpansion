@@ -39,18 +39,66 @@ class BendersBase {
   }
   double execution_time() const;
   virtual std::string BendersName() const = 0;
+  // TODO rename to be consistent with data that it hold
+  // ref of value?
+  WorkerMasterDataVect AllCuts() const;
+  // BendersCuts CutsBestIteration() const;
+  // void Clean();
+  LogData GetBestIterationData() const;
   void set_input_map(const CouplingMap &coupling_map);
+  int MasterRowIndex(const std::string &row_name) const;
+  void MasterChangeRhs(int id_row, double val) const;
+  // for test
+  void MasterGetRhs(double &rhs, int id_row) const;
+  const VariableMap &MasterVariables() const { return master_variable_map_; }
+  std::vector<double> MasterObjectiveFunctionCoeffs() const;
+  void MasterRowsCoeffs(std::vector<int> &mstart, std::vector<int> &mclind,
+                        std::vector<double> &dmatval, int size,
+                        std::vector<int> &nels, int first, int last) const;
+  int MasterGetNElems() const;
+  void MasterAddRows(std::vector<char> const &qrtype_p,
+                     std::vector<double> const &rhs_p,
+                     std::vector<double> const &range_p,
+                     std::vector<int> const &mstart_p,
+                     std::vector<int> const &mclind_p,
+                     std::vector<double> const &dmatval_p,
+                     const std::vector<std::string> &row_names = {}) const;
+  void MasterGetRowType(std::vector<char> &qrtype, int first, int last) const;
+  void ResetMasterFromLastIteration();
+  std::filesystem::path LastMasterPath() const;
+  bool MasterIsEmpty() const;
+  void DoFreeProblems(bool free_problems) { free_problems_ = free_problems; }
+  int MasterGetnrows() const;
+  int MasterGetncols() const;
+  WorkerMasterData BestIterationWorkerMaster() const;
+  void SetMasterObjectiveFunctionCoeffsToZeros() const;
+  void SetMasterObjectiveFunction(const double *coeffs, int first,
+                                  int last) const;
+  virtual void InitializeProblems() = 0;
+  void SetMaxIteration(int max_iteration) {
+    _options.MAX_ITERATIONS = max_iteration;
+  }
+  BendersBaseOptions Options() const { return _options; }
+  void ResetData(double criterion);
+  virtual void free() = 0;
+  void InitExternalValues();
+  int GetBendersRunNumber() const { return _data.benders_num_run; }
+  CurrentIterationData GetCurrentIterationData() const;
 
  protected:
   CurrentIterationData _data;
+  WorkerMasterDataVect workerMasterDataVect_;
+  // BendersCuts best_iteration_cuts_;
+  // BendersCuts current_iteration_cuts_;
   VariableMap master_variable_map_;
   CouplingMap coupling_map_;
-  std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
+  // for warmstart initialize all data, master, subproblem etc...
+  bool init_data_ = true;
+  bool init_problems_ = true;
+  bool free_problems_ = true;
 
  protected:
-  virtual void free() = 0;
   virtual void Run() = 0;
-  virtual void InitializeProblems() = 0;
   virtual void init_data();
   void update_best_ub();
   bool ShouldBendersStop();
@@ -77,7 +125,7 @@ class BendersBase {
   [[nodiscard]] LogData bendersDataToLogData(
       const CurrentIterationData &data) const;
   virtual void reset_master(WorkerMaster *worker_master);
-  void free_master() const;
+  void free_master();
   void free_subproblems();
   void AddSubproblem(const std::pair<std::string, VariableMap> &kvp);
   [[nodiscard]] WorkerMasterPtr get_master() const;
@@ -106,7 +154,6 @@ class BendersBase {
     return std::filesystem::path(_options.LAST_ITERATION_JSON_FILE);
   }
   void UpdateMaxNumberIterationResumeMode(const unsigned nb_iteration_done);
-  LogData GetBestIterationData() const;
   void SaveCurrentIterationInOutputFile() const;
   void SaveSolutionInOutputFile() const;
   void PrintCurrentIterationCsv();
@@ -114,7 +161,7 @@ class BendersBase {
   void CloseCsvFile();
   void ChecksResumeMode();
   virtual void SaveCurrentBendersData();
-  void ClearCurrentIterationCutTrace() const;
+  void ClearCurrentIterationCutTrace();
   virtual void EndWritingInOutputFile() const;
   [[nodiscard]] int GetNumIterationsBeforeRestart() const {
     return iterations_before_resume;
@@ -134,7 +181,6 @@ class BendersBase {
   int ProblemToId(const std::string &problem_name) const {
     return _problem_to_id.at(problem_name);
   }
-  BendersBaseOptions Options() const { return _options; }
   virtual void UpdateStoppingCriterion();
   virtual bool ShouldRelaxationStop() const;
   int GetNumOfSubProblemsSolvedBeforeResume() {
@@ -148,8 +194,8 @@ class BendersBase {
 
  private:
   void print_master_and_cut(std::ostream &file, int ite,
-                            WorkerMasterDataPtr &trace, Point const &xopt);
-  void print_master_csv(std::ostream &stream, const WorkerMasterDataPtr &trace,
+                            WorkerMasterData &trace, Point const &xopt);
+  void print_master_csv(std::ostream &stream, const WorkerMasterData &trace,
                         Point const &xopt) const;
   void check_status(const SubProblemDataMap &subproblem_data_map) const;
   [[nodiscard]] LogData build_log_data_from_data() const;
@@ -160,15 +206,17 @@ class BendersBase {
   [[nodiscard]] std::map<std::string, int> get_master_variable_map(
       const std::map<std::string, std::map<std::string, int>> &input_map) const;
   [[nodiscard]] virtual bool shouldParallelize() const = 0;
-  Output::Iteration iteration(const WorkerMasterDataPtr &masterDataPtr_l) const;
+  Output::Iteration iteration(const WorkerMasterData &masterDataPtr_l) const;
   LogData FinalLogData() const;
+  void FillWorkerMasterData(WorkerMasterData &workerMasterData);
 
  private:
+  bool master_is_empty_ = true;
   BendersBaseOptions _options;
   unsigned int _totalNbProblems = 0;
   std::filesystem::path solver_log_file_ = "";
-  BendersRelevantIterationsData relevantIterationData_ = {
-      std::make_shared<WorkerMasterData>(), nullptr};
+  BendersRelevantIterationsData relevantIterationData_ = {WorkerMasterData(),
+                                                          WorkerMasterData()};
   WorkerMasterPtr _master;
   VariableMap _problem_to_id;
   SubproblemsMapPtr subproblem_map;
@@ -183,5 +231,6 @@ class BendersBase {
  public:
   Logger _logger;
   Writer _writer;
+  std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

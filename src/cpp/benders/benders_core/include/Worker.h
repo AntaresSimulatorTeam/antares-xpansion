@@ -44,6 +44,25 @@ class Worker {
   void solve(int &lp_status, const std::string &outputroot,
              const std::string &output_master_mps_file_name,
              Writer writer) const;
+  int RowIndex(const std::string &row_name) const;
+  void ChangeRhs(int id_row, double val) const;
+  void GetRhs(double *val, int id_row) const;
+  void AddRows(std::vector<char> const &qrtype_p,
+               std::vector<double> const &rhs_p,
+               std::vector<double> const &range_p,
+               std::vector<int> const &mstart_p,
+               std::vector<int> const &mclind_p,
+               std::vector<double> const &dmatval_p,
+               const std::vector<std::string> &row_names) const;
+
+  /**
+   * @brief Returns the number of rows (constraints)
+   *
+   * @param solver_p  : solver containing the model to consider.
+   */
+  int Getnrows() const;
+
+  int Getncols() const;
 
  public:
   SolverAbstract::Ptr _solver =
