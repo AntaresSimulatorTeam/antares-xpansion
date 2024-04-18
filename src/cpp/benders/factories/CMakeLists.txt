@@ -12,6 +12,7 @@ target_link_libraries (factories
         output_core
         logger_lib
         ${PROJECT_NAME}::benders_mpi_core
+        external_loop
         )
 
 target_include_directories (factories
