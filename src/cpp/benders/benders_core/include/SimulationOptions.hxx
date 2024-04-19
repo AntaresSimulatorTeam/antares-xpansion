@@ -33,7 +33,7 @@ BENDERS_OPTIONS_MACRO(TRACE, bool, true, asBool())
 BENDERS_OPTIONS_MACRO(SLAVE_WEIGHT, std::string, "CONSTANT", asString())
 
 // If SLAVE_WEIGHT is CONSTANT, set here the divisor required
-BENDERS_OPTIONS_MACRO(SLAVE_WEIGHT_VALUE, double, 1, asInt())
+BENDERS_OPTIONS_MACRO(SLAVE_WEIGHT_VALUE, double, 1, asDouble())
 
 // Name of the master problem file, if different from 'master'
 BENDERS_OPTIONS_MACRO(MASTER_NAME, std::string, "master", asString())
