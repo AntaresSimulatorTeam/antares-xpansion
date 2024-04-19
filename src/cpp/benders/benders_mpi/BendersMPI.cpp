@@ -144,7 +144,7 @@ void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
     Reduce(GetSubproblemsCpuTime(), cumulative_subproblems_timer_per_iter,
            std::plus<double>(), rank_0);
     SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter);
-    if (Options().EXTERNAL_LOOP_OPTIONS.DO_EXT_LOOP) {
+    if (Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
       _data.outer_loop_current_iteration_data.outer_loop_criterion =
           ComputeSubproblemsContributionToOuterLoopCriterion(
               subproblem_data_map);
@@ -403,7 +403,7 @@ void BendersMpi::UpdateOverallCosts() {
 }
 
 void BendersMpi::RunExternalLoopBilevelChecks() {
-  if (_world.rank() == rank_0 && Options().EXTERNAL_LOOP_OPTIONS.DO_EXT_LOOP &&
+  if (_world.rank() == rank_0 && Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP &&
       !is_bilevel_check_all_) {
     const WorkerMasterData &workerMasterData = BestIterationWorkerMaster();
     const auto &invest_cost = workerMasterData._invest_cost;

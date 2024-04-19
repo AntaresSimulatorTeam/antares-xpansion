@@ -143,9 +143,9 @@ struct BaseOptions {
 typedef BaseOptions MergeMPSOptions;
 
 struct ExternalLoopOptions {
-  bool DO_EXT_LOOP = false;
-  std::string EXT_LOOP_OPTION_FILE;
-  unsigned int EXT_LOOP_NUMBER_OF_SCENARIOS = 1;
+  bool DO_OUTER_LOOP = false;
+  std::string OUTER_LOOP_OPTION_FILE;
+  unsigned int OUTER_LOOP_NUMBER_OF_SCENARIOS = 1;
 };
 
 struct BendersBaseOptions : public BaseOptions {

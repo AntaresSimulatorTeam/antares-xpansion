@@ -249,7 +249,7 @@ void BendersByBatch::BuildCut(
   misprice_ = global_misprice;
   Gather(subproblem_data_map, gathered_subproblem_map, rank_0);
   SetSubproblemsWalltime(subproblems_timer_per_proc.elapsed());
-  // if (Options().EXTERNAL_LOOP_OPTIONS.DO_EXT_LOOP) {
+  // if (Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
   //   external_loop_criterion_current_batch =
   //       ComputeSubproblemsContributionToOuterLoopCriterion(subproblem_data_map);
   // }

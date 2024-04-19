@@ -22,8 +22,7 @@ BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
       _logger(std::move(logger)),
       _writer(std::move(writer)),
       mathLoggerDriver_(std::move(mathLoggerDriver)) {
-  if (options.EXTERNAL_LOOP_OPTIONS.DO_EXT_LOOP){
-
+  if (options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
     //TODO maybe the input format will change?
     outer_loop_input_data_ =
         Outerloop::OuterLoopInputFromYaml().Read(OuterloopOptionsFile());
@@ -33,7 +32,7 @@ BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
 
 std::filesystem::path BendersBase::OuterloopOptionsFile() const {
   return std::filesystem::path(_options.INPUTROOT) /
-         _options.EXTERNAL_LOOP_OPTIONS.EXT_LOOP_OPTION_FILE;
+         _options.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE;
 }
 
 /*!
@@ -747,7 +746,7 @@ void BendersBase::MatchProblemToId() {
 }
 
 void BendersBase::SetSubproblemsVariablesIndex() {
-  if (!subproblem_map.empty() && _options.EXTERNAL_LOOP_OPTIONS.DO_EXT_LOOP) {
+  if (!subproblem_map.empty() && _options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
     auto subproblem = subproblem_map.begin();
     subproblems_vars_names_.clear();
     subproblems_vars_names_ = subproblem->second->_solver->get_col_names();
@@ -993,7 +992,7 @@ std::vector<double> BendersBase::ComputeOuterLoopCriterion(
   double criterion_count_threshold =
       outer_loop_input_data_.CriterionCountThreshold();
   auto number_of_scenarios =
-      _options.EXTERNAL_LOOP_OPTIONS.EXT_LOOP_NUMBER_OF_SCENARIOS;
+      _options.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_NUMBER_OF_SCENARIOS;
 
   for (int pattern_index(0); pattern_index < outer_loop_input_size;
        ++pattern_index) {

@@ -173,5 +173,6 @@ BendersBaseOptions SimulationOptions::get_benders_options() const {
 }
 
 ExternalLoopOptions SimulationOptions::GetExternalLoopOptions() const {
-  return {DO_EXT_LOOP, EXT_LOOP_OPTION_FILE, EXT_LOOP_NUMBER_OF_SCENARIOS};
+  return {DO_OUTER_LOOP, OUTER_LOOP_OPTION_FILE,
+          OUTER_LOOP_NUMBER_OF_SCENARIOS};
 }
