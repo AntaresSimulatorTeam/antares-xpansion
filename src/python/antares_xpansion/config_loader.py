@@ -486,7 +486,7 @@ class ConfigLoader:
         options_values[OptimisationKeys.batch_size_key()] = self.get_batch_size()
         options_values[OptimisationKeys.do_outer_loop_key()] = self._config.method == "outer_loop"
         options_values[OptimisationKeys.outer_loop_option_file_key()] = self.outer_loop_options_path()
-        options_values[OptimisationKeys.outer_loop_number_of_scenarios_key()] = self.active_years()
+        options_values[OptimisationKeys.outer_loop_number_of_scenarios_key()] = len(self.active_years)
         # generate options file for the solver
         with open(self.options_file_path(), "w") as options_file:
             json.dump(options_values, options_file, indent=4)
@@ -731,11 +731,11 @@ class ConfigLoader:
         return self.exe_path(Path(self._config.MPIEXEC).name)
 
     def outer_loop_options_path(self):
-        return self.outer_loop_dir() / self._config.OUTER_LOOP_FILE
+        return os.path.join(self.outer_loop_dir(), self._config.OUTER_LOOP_FILE)
 
     def outer_loop_dir(self):
-        return (Path(
-            self.data_dir())
-                / self._config.USER
-                / self._config.EXPANSION
-                / self._config.OUTER_LOOP_DIR)
+        return os.path.normpath(os.path.join(
+            self.data_dir(),
+            self._config.USER,
+            self._config.EXPANSION,
+            self._config.OUTER_LOOP_DIR))
