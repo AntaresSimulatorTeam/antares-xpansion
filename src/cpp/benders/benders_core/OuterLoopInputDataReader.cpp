@@ -71,16 +71,9 @@ void OuterLoopInputData::SetCriterionCountThreshold(
     criterion_count_threshold_ = criterion_count_threshold;
 }
 double OuterLoopInputData::CriterionCountThreshold() const { return criterion_count_threshold_; }
+
 OuterLoopInputData OuterLoopInputFromYaml::Read(
     const std::filesystem::path &input_file) {
-  /*auto json_content = get_json_file_content(input_file);
-
-  if (json_content.empty()) {
-    std::ostringstream err_msg;
-    err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
-            << "outer loop input file is empty: " << input_file << "\n";
-    throw OuterLoopInputFileIsEmpty(err_msg.str(), LOGLOCATION);
-  }*/
   auto yaml_content = YAML::LoadFile(input_file.string());
 
   if (yaml_content.IsNull()) {
@@ -90,30 +83,27 @@ OuterLoopInputData OuterLoopInputFromYaml::Read(
     throw OuterLoopInputFileIsEmpty(err_msg.str(), LOGLOCATION);
   }
 
-  // std::cout << "******* " << yaml_content["eps"].as<double>() << "\n";
-  outerLoopInputData_ = yaml_content.as<OuterLoopInputData>();
-  return outerLoopInputData_;
+  return yaml_content.as<OuterLoopInputData>();
 }
 
 /*
-"BendersOuterloop" : {
-  "stopping_threshold" : 1e-4,  // critère d'arrêt de l'algo
-  "criterion_count_threshold" : 1e-1,  //  seuil
-  "criterion_tolerance" : 1e-1,  // tolerance entre seuil et valeur calculée
-      "patterns" : [
-        {
-          "area" : "Zone1",  // ==> verifier que "criterion" est satisfait pour
-                             // la défaillance positive dans la Zone1
-          "criterion" : 666
-        },
-        {
-          "area" : "all",  // ==> verifier que "criterion" est satisfait pour la
-                           // défaillance positive pour toutes les zones
-          "criterion" : 159
-        }
-      ]
-}
+# critère d'arrêt de l'algo
+stopping_threshold: 1e-4
+# seuil
+criterion_count_threshold: 1e-1
+ # tolerance entre seuil et valeur calculée
+criterion_tolerance: 1e-5
+patterns:
+  - area: "N0"
+    criterion: 1
+  - area: "N1"
+    criterion: 1
+  - area: "N2"
+    criterion: 1
+  - area: "N3"
+    criterion: 1
 */
+
 namespace YAML {
 
 template <>
@@ -170,8 +160,6 @@ struct convert<OuterLoopInputData> {
   }
 
   static bool decode(const Node &node, OuterLoopInputData &rhs) {
-    std::cout << "********* " << node["stopping_threshold"].as<double>()
-              << "\n";
     rhs.SetStoppingThreshold(node["stopping_threshold"].as<double>(1e-4));
     rhs.SetCriterionCountThreshold(
         node["criterion_count_threshold"].as<double>(1e-1));

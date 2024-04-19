@@ -6,11 +6,11 @@
 #include "common.h"
 
 struct OuterLoopCurrentIterationData{
-  int benders_num_run;
-  std::vector<double> outer_loop_criterion;
-  double max_criterion;
-  double outer_loop_bilevel_best_ub;
-  double external_loop_lambda;
+  int benders_num_run = 0;
+  std::vector<double> outer_loop_criterion = {};
+  double max_criterion = 0.;
+  double outer_loop_bilevel_best_ub = +1e20;
+  double external_loop_lambda = 0.;
   std::string max_criterion_area;
 };
 /*! \struct

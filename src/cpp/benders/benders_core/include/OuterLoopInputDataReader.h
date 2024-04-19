@@ -2,11 +2,9 @@
 #include <filesystem>
 #include <regex>
 #include <string>
-#include <tuple>
 #include <vector>
 
 #include "LoggerUtils.h"
-#include "common.h"
 #include "yaml-cpp/yaml.h"
 
 namespace Outerloop {
@@ -107,9 +105,6 @@ class OuterLoopInputFromYaml : public IOuterLoopInputDataReader {
   OuterLoopInputData Read(const std::filesystem::path &input_file) override;
 
  private:
-  void Decode(const Json::Value &json_content);
-  void DecodePatterns(const Json::Value &patterns);
-  void DecodePattern(const Json::Value &pattern);
   OuterLoopInputData outerLoopInputData_;
 };
 

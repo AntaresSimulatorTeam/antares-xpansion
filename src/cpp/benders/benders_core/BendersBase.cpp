@@ -56,12 +56,7 @@ void BendersBase::init_data() {
   _data.iteration_time = 0;
   _data.timer_master = 0;
   _data.subproblems_walltime = 0;
-  _data.outer_loop_current_iteration_data.outer_loop_criterion.clear();
   outer_loop_criterion_.clear();
-  // TODO
-  _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub = +1e20;
-  _data.outer_loop_current_iteration_data.benders_num_run = 0;
-  _data.outer_loop_current_iteration_data.external_loop_lambda = 0.0;
 }
 
 void BendersBase::OpenCsvFile() {
@@ -1025,6 +1020,7 @@ void BendersBase::init_data(double external_loop_lambda) {
   auto benders_num_run = _data.outer_loop_current_iteration_data.benders_num_run;
   auto outer_loop_bilevel_best_ub = _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub;
   init_data();
+  _data.outer_loop_current_iteration_data.outer_loop_criterion.clear();
   _data.outer_loop_current_iteration_data.benders_num_run = benders_num_run;
   _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub = outer_loop_bilevel_best_ub;
   _data.outer_loop_current_iteration_data.external_loop_lambda = external_loop_lambda;
