@@ -992,6 +992,8 @@ std::vector<double> BendersBase::ComputeOuterLoopCriterion(
   auto subproblem_weight = SubproblemWeight(_data.nsubproblem, subproblem_name);
   double criterion_count_threshold =
       outer_loop_input_data_.CriterionCountThreshold();
+  auto number_of_scenarios =
+      _options.EXTERNAL_LOOP_OPTIONS.EXT_LOOP_NUMBER_OF_SCENARIOS;
 
   for (int pattern_index(0); pattern_index < outer_loop_input_size;
        ++pattern_index) {
@@ -1000,9 +1002,9 @@ std::vector<double> BendersBase::ComputeOuterLoopCriterion(
 
       if (auto solution = sub_problem_data.solution[variables_index];
           solution > criterion_count_threshold)
-        // 1h of unsupplied energy
+        // 1h of no supplied energy
         outer_loop_criterion_per_sub_problem[pattern_index] +=
-            subproblem_weight;
+            subproblem_weight / number_of_scenarios;
     }
   }
   return outer_loop_criterion_per_sub_problem;
