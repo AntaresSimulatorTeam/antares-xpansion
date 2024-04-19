@@ -24,6 +24,7 @@
 #include <vector>
 
 enum class MasterFormulation { INTEGER, RELAXED };
+enum class SOLVER { BENDERS, OUTER_LOOP, MERGE_MPS };
 
 struct Predicate;
 typedef std::map<std::string, double> Point;

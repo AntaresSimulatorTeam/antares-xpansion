@@ -42,29 +42,20 @@ BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size,
   }
 }
 
-pBendersBase PrepareForExecution(BendersLoggerBase& benders_loggers,
-                                 const SimulationOptions& options,
-                                 const char* argv0, bool external_loop,
-                                 mpi::environment& env,
-                                 mpi::communicator& world) {
+pBendersBase BendersMainFactory::PrepareForExecution(
+    BendersLoggerBase& benders_loggers, const SimulationOptions& options,
+    bool external_loop) const {
   pBendersBase benders;
   Logger logger;
   std::shared_ptr<MathLoggerDriver> math_log_driver;
 
-  // tmp for mpi test
-  //  std::cout << "HELLO\n";
-  //  if (world.rank() == 0) {
-  //    int d;
-  //    std::cin >> d;
-  //  }
-  //  world.barrier();
 
   BendersBaseOptions benders_options(options.get_benders_options());
 
-  google::InitGoogleLogging(argv0);
+  google::InitGoogleLogging(argv_[0]);
   auto path_to_log =
       std::filesystem::path(options.OUTPUTROOT) /
-      ("bendersLog-rank" + std::to_string(world.rank()) + ".txt.");
+      ("bendersLog-rank" + std::to_string(pworld_->rank()) + ".txt.");
   google::SetLogDestination(google::GLOG_INFO, path_to_log.string().c_str());
 
   auto log_reports_name =
@@ -78,7 +69,7 @@ pBendersBase PrepareForExecution(BendersLoggerBase& benders_loggers,
   const auto method = DeduceBendersMethod(coupling_map.size(),
                                           options.BATCH_SIZE, external_loop);
 
-  if (world.rank() == 0) {
+  if (pworld_->rank() == 0) {
     auto benders_log_console = benders_options.LOG_LEVEL > 0;
     auto logger_factory =
         FileAndStdoutLoggerFactory(log_reports_name, benders_log_console);
@@ -103,12 +94,12 @@ pBendersBase PrepareForExecution(BendersLoggerBase& benders_loggers,
     case BENDERSMETHOD::BENDERS:
     case BENDERSMETHOD::BENDERS_EXTERNAL_LOOP:
       benders = std::make_shared<BendersMpi>(benders_options, logger, writer,
-                                             env, world, math_log_driver);
+                                             *penv_, *pworld_, math_log_driver);
       break;
     case BENDERSMETHOD::BENDERS_BY_BATCH:
     case BENDERSMETHOD::BENDERS_BY_BATCH_EXTERNAL_LOOP:
       benders = std::make_shared<BendersByBatch>(
-          benders_options, logger, writer, env, world, math_log_driver);
+          benders_options, logger, writer, *penv_, *pworld_, math_log_driver);
       break;
   }
   benders->set_input_map(coupling_map);
@@ -119,7 +110,7 @@ pBendersBase PrepareForExecution(BendersLoggerBase& benders_loggers,
   if (benders_options.LOG_LEVEL > 1) {
     auto solver_log = std::filesystem::path(options.OUTPUTROOT) /
                       (std::string("solver_log_proc_") +
-                       std::to_string(world.rank()) + ".txt");
+                       std::to_string(pworld_->rank()) + ".txt");
 
     benders->set_solver_log_file(solver_log);
   }
@@ -129,15 +120,13 @@ pBendersBase PrepareForExecution(BendersLoggerBase& benders_loggers,
   return benders;
 }
 
-int RunBenders(char** argv, const std::filesystem::path& options_file,
-               mpi::environment& env, mpi::communicator& world) {
+int BendersMainFactory::RunBenders() const {
   // Read options, needed to have options.OUTPUTROOT
   BendersLoggerBase benders_loggers;
 
   try {
-    SimulationOptions options(options_file);
-    auto benders = PrepareForExecution(benders_loggers, options, argv[0], false,
-                                       env, world);
+    SimulationOptions options(options_file_);
+    auto benders = PrepareForExecution(benders_loggers, options, false);
     if (benders) {
       benders->launch();
 
@@ -167,14 +156,12 @@ int RunBenders(char** argv, const std::filesystem::path& options_file,
   }
   return 0;
 }
-int RunExternalLoop_(char** argv, const std::filesystem::path& options_file,
-                     mpi::environment& env, mpi::communicator& world) {
+int BendersMainFactory::RunExternalLoop() const {
   BendersLoggerBase benders_loggers;
 
   try {
-    SimulationOptions options(options_file);
-    auto benders = PrepareForExecution(benders_loggers, options, argv[0], true,
-                                       env, world);
+    SimulationOptions options(options_file_);
+    auto benders = PrepareForExecution(benders_loggers, options, true);
     double tau = 0.5;
     double epsilon_lambda = 0.1;
     std::shared_ptr<Outerloop::IMasterUpdate> master_updater =
@@ -183,8 +170,8 @@ int RunExternalLoop_(char** argv, const std::filesystem::path& options_file,
     std::shared_ptr<Outerloop::ICutsManager> cuts_manager =
         std::make_shared<Outerloop::CutsManagerRunTime>();
 
-    Outerloop::OuterLoop ext_loop(master_updater, cuts_manager,
-                                  benders, env, world);
+    Outerloop::OuterLoop ext_loop(master_updater, cuts_manager, benders, *penv_,
+                                  *pworld_);
     ext_loop.Run();
 
     } catch (std::exception& e) {
@@ -205,8 +192,9 @@ int RunExternalLoop_(char** argv, const std::filesystem::path& options_file,
 
 BendersMainFactory::BendersMainFactory(int argc, char** argv,
                                        mpi::environment& env,
-                                       mpi::communicator& world)
-    : argv_(argv), penv_(&env), pworld_(&world) {
+                                       mpi::communicator& world,
+                                       const SOLVER& solver)
+    : argv_(argv), penv_(&env), pworld_(&world), solver_(solver) {
   // First check usage (options are given)
   if (world.rank() == 0) {
     usage(argc);
@@ -217,20 +205,20 @@ BendersMainFactory::BendersMainFactory(int argc, char** argv,
 
 BendersMainFactory::BendersMainFactory(
     int argc, char** argv, const std::filesystem::path& options_file,
-    mpi::environment& env, mpi::communicator& world)
+    mpi::environment& env, mpi::communicator& world, const SOLVER& solver)
     : argv_(argv), options_file_(options_file),
       penv_(&env),
-      pworld_(&world) {
+      pworld_(&world),
+      solver_(solver) {
   // First check usage (options are given)
   if (world.rank() == 0) {
     usage(argc);
   }
 }
-
 int BendersMainFactory::Run() const {
-  return RunBenders(argv_, options_file_, *penv_, *pworld_);
-}
-
-int BendersMainFactory::RunExternalLoop() const {
-  return RunExternalLoop_(argv_, options_file_, *penv_, *pworld_);
+  if (solver_ == SOLVER::BENDERS) {
+    return RunBenders();
+  } else {
+    return RunExternalLoop();
+  }
 }

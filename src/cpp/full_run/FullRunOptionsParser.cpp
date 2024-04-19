@@ -10,8 +10,11 @@ FullRunOptionsParser::FullRunOptionsParser() : ProblemGenerationExeOptions() {
       "benders options file")(
       "solution,s",
       po::value<std::filesystem::path>(&solutionFile_)->required(),
-      "path to json solution file");
+      "path to json solution file")(
+      "solver", po::value<std::string>(&solver_)->required(),
+      "solver (benders, outer_loop, ");  // Add mergeMps?
 }
 void FullRunOptionsParser::Parse(unsigned int argc, const char* const* argv) {
   ProblemGenerationExeOptions::Parse(argc, argv);
 }
+std::string FullRunOptionsParser::Solver() const { return solver_; }

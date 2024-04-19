@@ -81,11 +81,12 @@ class FullRunDriver:
     def full_command(self) -> List:
         bare_solver_command = [
             self.full_exe, "--benders_options", self.benders_driver.options_file,  "-s",
-            str(self.json_file_path)]
+            str(self.json_file_path), "--solver", self.benders_driver.method]
         bare_solver_command.extend(
             self.problem_generation_driver.lp_namer_options())
 
-        if self.benders_driver.solver == self.benders_driver.benders and self.benders_driver.n_mpi > 1:
+        if self.benders_driver.solver in [self.benders_driver.benders,
+                                          self.benders_driver.outer_loop] and self.benders_driver.n_mpi > 1:
             mpi_command = self.benders_driver.get_mpi_run_command_root()
             mpi_command.extend(bare_solver_command)
             return mpi_command
