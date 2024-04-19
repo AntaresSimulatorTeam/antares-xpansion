@@ -20,6 +20,7 @@ class FullRunDriver:
 
     def prepare_drivers(self, output_path: Path,
                         problem_generation_is_relaxed: bool,
+                        method: str,
                         json_file_path,
                         benders_keep_mps=False,
                         benders_n_mpi=1,
@@ -36,7 +37,7 @@ class FullRunDriver:
         self.keep_mps = benders_keep_mps
         # Benders pre-step
 
-        self.benders_driver.method = "benders"
+        self.benders_driver.method = method
         self.benders_driver.n_mpi = benders_n_mpi
         self.benders_driver.oversubscribe = benders_oversubscribe
         self.benders_driver.allow_run_as_root = benders_allow_run_as_root
@@ -47,13 +48,14 @@ class FullRunDriver:
 
     def launch(self,  output_path: Path,
                problem_generation_is_relaxed: bool,
+               method: str,
                json_file_path,
                benders_keep_mps=False,
                benders_n_mpi=1,
                benders_oversubscribe=False,
                benders_allow_run_as_root=False):
         self.prepare_drivers(
-            output_path, problem_generation_is_relaxed,
+            output_path, problem_generation_is_relaxed, method,
             json_file_path, benders_keep_mps, benders_n_mpi, benders_oversubscribe, benders_allow_run_as_root)
         self.run()
 
