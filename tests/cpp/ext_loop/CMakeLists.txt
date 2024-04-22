@@ -1,7 +1,7 @@
 add_executable(ext_loop_test 
-        ext_loop_test.cpp)
+        outer_loop_test.cpp)
 
-target_link_libraries(ext_loop_test
+target_link_libraries(outer_loop_test
         PRIVATE
         solvers
         external_loop
@@ -12,10 +12,5 @@ target_link_libraries(ext_loop_test
         GTest::Main
         tests_utils)
 
-# target_include_directories(ext_loop_test
-#         PRIVATE
-#         ${CMAKE_CURRENT_SOURCE_DIR}/../TestDoubles/
-#         )
-
-add_test(NAME unit_ext_loop COMMAND ext_loop_test WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
-set_property(TEST unit_ext_loop PROPERTY LABELS unit)
+add_test(NAME unit_outer_loop COMMAND ext_loop_test WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+set_property(TEST unit_outer_loop PROPERTY LABELS unit)
