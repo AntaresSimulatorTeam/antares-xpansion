@@ -1,6 +1,7 @@
 #include "SolverCbc.h"
 
 #include "COIN_common_functions.h"
+using namespace std::literals;
 
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor
@@ -183,7 +184,8 @@ void SolverCbc::setClpSimplexRowNamesFromInnerSolver(ClpSimplex *clps) const {
 
 void SolverCbc::read_prob_mps(const std::filesystem::path &prob_name) {
   int status = _clp_inner_solver.readMps(prob_name.string().c_str());
-  zero_status_check(status, "read problem", LOGLOCATION);
+  zero_status_check(status, " read problem "s + prob_name.string(),
+                    LOGLOCATION);
   defineCbcModelFromInnerSolver();
 }
 
