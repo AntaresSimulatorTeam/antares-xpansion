@@ -192,7 +192,7 @@ TEST_F(OuterLoopPatternTest, RegexGivenPrefixAndBody) {
 
 class OuterLoopInputFromYamlTest : public ::testing::Test {};
 
-TEST_F(OuterLoopInputFromYamlTest, YamlFileDoestNoExist) {
+TEST_F(OuterLoopInputFromYamlTest, YamlFileDoesNotExist) {
   std::filesystem::path empty("");
   std::ostringstream expected_msg;
   expected_msg << "Could not read outer loop input file: " << empty << "\n"
@@ -201,6 +201,22 @@ TEST_F(OuterLoopInputFromYamlTest, YamlFileDoestNoExist) {
     OuterLoopInputFromYaml parser;
     parser.Read(empty);
   } catch (const OuterLoopInputFileError& e) {
+    ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
+  }
+}
+
+TEST_F(OuterLoopInputFromYamlTest, YamlFileIsEmpty) {
+  std::filesystem::path empty(std::filesystem::temp_directory_path() /
+                              "empty.yml");
+  std::ofstream of(empty);
+  of.close();
+  
+  std::ostringstream expected_msg;
+  expected_msg << "outer loop input file is empty: " << empty << "\n";
+  try {
+    OuterLoopInputFromYaml parser;
+    parser.Read(empty);
+  } catch (const OuterLoopInputFileIsEmpty& e) {
     ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
   }
 }

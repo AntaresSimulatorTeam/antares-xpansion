@@ -87,9 +87,10 @@ OuterLoopInputData OuterLoopInputFromYaml::Read(
   }
   if (yaml_content.IsNull()) {
     std::ostringstream err_msg;
-    err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
-            << "outer loop input file is empty: " << input_file << "\n";
-    throw OuterLoopInputFileIsEmpty(err_msg.str(), LOGLOCATION);
+    err_msg << "outer loop input file is empty: " << input_file << "\n";
+    throw OuterLoopInputFileIsEmpty(
+        PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop"), err_msg.str(),
+        LOGLOCATION);
   }
 
   return yaml_content.as<OuterLoopInputData>();
