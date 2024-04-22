@@ -4,6 +4,7 @@
 
 #include "LoggerFactories.h"
 #include "MasterUpdate.h"
+#include "OuterLoopInputDataReader.h"
 #include "WriterFactories.h"
 #include "gtest/gtest.h"
 #include "multisolver_interface/environment.h"
@@ -13,6 +14,9 @@ char** my_argv;
 
 boost::mpi::environment* penv = nullptr;
 boost::mpi::communicator* pworld = nullptr;
+
+using namespace Outerloop;
+
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);
 
@@ -168,3 +172,20 @@ const auto OPTIONS_FILE = STUDY_PATH / "lp" / "options.json";
 //   EXPECT_EQ(expected_initial_rhs, rhs);
 //   benders->free();
 // }
+
+class OuterLoopPatternTest : public ::testing::Test {};
+
+TEST_F(OuterLoopPatternTest, RegexGivenPrefixAndBody) {
+  const std::string prefix = "prefix";
+  const std::string body = "body";
+  OuterLoopPattern o(prefix, body);
+
+  auto ret_regex = o.MakeRegex();
+
+  ASSERT_EQ(std::regex_search(prefix + body, ret_regex), true);
+  ASSERT_EQ(std::regex_search(prefix + "::" + body + "::suffix", ret_regex),
+            true);
+  ASSERT_EQ(std::regex_search(body + prefix, ret_regex), false);
+  ASSERT_EQ(std::regex_search(prefix + "::", ret_regex), false);
+  ASSERT_EQ(std::regex_search(body, ret_regex), false);
+}
