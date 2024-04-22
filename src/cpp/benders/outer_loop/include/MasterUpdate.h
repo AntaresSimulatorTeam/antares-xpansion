@@ -1,5 +1,5 @@
 #pragma once
-#include "OuterLoopCriterion.h"
+#include "BendersBase.h"
 #include "common.h"
 
 namespace Outerloop {

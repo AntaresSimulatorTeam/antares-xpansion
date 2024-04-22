@@ -4,7 +4,6 @@
 
 #include "LoggerFactories.h"
 #include "MasterUpdate.h"
-#include "OuterLoopCriterion.h"
 #include "WriterFactories.h"
 #include "gtest/gtest.h"
 #include "multisolver_interface/environment.h"
@@ -25,49 +24,6 @@ int main(int argc, char** argv) {
   my_argv = argv;
   return RUN_ALL_TESTS();
 }
-
-//-------------------- OuterLoopCriterionTest -------------------------
-
-class OuterLoopCriterionTest : public ::testing::Test {};
-
-// TEST_F(OuterLoopCriterionTest, IsCriterionHigh) {
-//   double threshold = 1.4;
-//   double epsilon = 1e-1;
-//   double max_unsup_energy = 0.1;
-//   const GetExternalLoopOptions options = {threshold, epsilon,
-//   max_unsup_energy};
-
-//   std::vector<double> criterion_value = {2.0};
-//   OuterloopCriterionLossOfLoad criterion(options);
-
-//   // criterion_value = 2 > threshold+epsilon
-//   EXPECT_EQ(criterion.IsCriterionHigh(criterion_value), true);
-// }
-
-// TEST_F(OuterLoopCriterionTest, IsCriterionLow) {
-//   double threshold = 4;
-//   double epsilon = 1e-1;
-//   double max_unsup_energy = 0.1;
-//   const GetExternalLoopOptions options = {threshold, epsilon,
-//   max_unsup_energy}; std::vector<double> criterion_value = {2.0};
-//   OuterloopCriterionLossOfLoad criterion(options);
-
-//   // criterion_value < threshold - epsilon
-//   EXPECT_EQ(criterion.IsCriterionHigh(criterion_value), false);
-// }
-
-// TEST_F(OuterLoopCriterionTest, IsMet) {
-//   double threshold = 2.0;
-//   double epsilon = 1e-1;
-//   double max_unsup_energy = 0.1;
-//   const GetExternalLoopOptions options = {threshold, epsilon,
-//   max_unsup_energy}; std::vector<double> criterion_value = {2.0};
-
-//   OuterloopCriterionLossOfLoad criterion(options);
-
-//   //  threshold - epsilon <= criterion_value <= threshold + epsilon
-//   EXPECT_EQ(criterion.IsCriterionHigh(criterion_value), CRITERION::IS_MET);
-// }
 
 //-------------------- MasterUpdateBaseTest -------------------------
 const auto STUDY_PATH =

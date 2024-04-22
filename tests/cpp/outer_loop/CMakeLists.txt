@@ -1,10 +1,10 @@
-add_executable(ext_loop_test 
+add_executable(outer_loop_test 
         outer_loop_test.cpp)
 
 target_link_libraries(outer_loop_test
         PRIVATE
         solvers
-        external_loop
+        outer_loop_lib
         benders_by_batch_core
         benders_core
         output_core
