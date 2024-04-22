@@ -158,10 +158,11 @@ struct convert<OuterLoopInputData> {
   static void DecodePatterns(const Node &patterns, OuterLoopInputData &rhs) {
     if (!patterns.IsSequence()) {
       std::ostringstream err_msg;
-      err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
-              << "In outer loop input file 'patterns' should be an array."
+      err_msg << "In outer loop input file 'patterns' should be an array."
               << "\n";
-      throw OuterLoopInputPatternsShouldBeArray(err_msg.str(), LOGLOCATION);
+      throw OuterLoopInputPatternsShouldBeArray(
+          PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop"), err_msg.str(),
+          LOGLOCATION);
     }
 
     for (const auto &pattern : patterns) {

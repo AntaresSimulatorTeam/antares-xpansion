@@ -238,3 +238,22 @@ TEST_F(OuterLoopInputFromYamlTest, YamlFileShouldContainsAtLeast1Pattern) {
     ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
   }
 }
+
+TEST_F(OuterLoopInputFromYamlTest, YamlFilePatternsShouldAnArray) {
+  std::filesystem::path patterns_not_array(
+      std::filesystem::temp_directory_path() / "patterns_not_array.yml");
+  std::ofstream of(patterns_not_array);
+  of << "stopping_threshold: " << 17.07 << "\n"
+     << "patterns: " << 786;
+  of.close();
+
+  std::ostringstream expected_msg;
+  expected_msg << "In outer loop input file 'patterns' should be an array."
+               << "\n";
+  try {
+    OuterLoopInputFromYaml parser;
+    parser.Read(patterns_not_array);
+  } catch (const OuterLoopInputPatternsShouldBeArray& e) {
+    ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
+  }
+}
