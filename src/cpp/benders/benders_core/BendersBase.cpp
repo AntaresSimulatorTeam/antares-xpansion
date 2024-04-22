@@ -180,6 +180,10 @@ void BendersBase::update_best_ub() {
     _data.best_ub = _data.ub;
     _data.best_it = _data.it;
     FillWorkerMasterData(relevantIterationData_.best);
+    _data.outer_loop_current_iteration_data.max_criterion_best_it =
+        _data.outer_loop_current_iteration_data.max_criterion;
+    _data.outer_loop_current_iteration_data.max_criterion_area_best_it =
+        _data.outer_loop_current_iteration_data.max_criterion_area;
     relevantIterationData_.best._cut_trace = relevantIterationData_.last._cut_trace;
     best_iteration_data = bendersDataToLogData(_data);
   }
@@ -972,8 +976,8 @@ void BendersBase::InitExternalValues(bool is_bilevel_check_all, double lambda) {
 CurrentIterationData BendersBase::GetCurrentIterationData() const {
   return _data;
 }
-std::vector<double> BendersBase::GetOuterLoopCriterion() const {
-  return _data.outer_loop_current_iteration_data.outer_loop_criterion;
+OuterLoopCurrentIterationData BendersBase::GetOuterLoopData() const {
+  return _data.outer_loop_current_iteration_data;
 }
 std::vector<double> BendersBase::GetOuterLoopCriterionAtBestBenders() const {
   return ((outer_loop_criterion_.empty())

@@ -86,7 +86,7 @@ class BendersBase {
   void InitExternalValues(bool is_bilevel_check_all, double lambda);
   int GetBendersRunNumber() const { return _data.outer_loop_current_iteration_data.benders_num_run; }
   CurrentIterationData GetCurrentIterationData() const;
-  std::vector<double> GetOuterLoopCriterion() const;
+  OuterLoopCurrentIterationData GetOuterLoopData() const;
   std::vector<double> GetOuterLoopCriterionAtBestBenders() const;
   virtual void init_data();
   void init_data(double external_loop_lambda);

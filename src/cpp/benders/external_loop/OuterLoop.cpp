@@ -58,13 +58,12 @@ void OuterLoop::PrintLog() {
   msg << "*** Outer loop: " << benders_->GetBendersRunNumber();
   logger->display_message(msg.str());
   msg.str("");
-  // TODO criterion per pattern (aka prefix+area) and why at best Benders ?
-  const auto outer_loop_criterion =
-      benders_->GetOuterLoopCriterionAtBestBenders();
-  auto sum_loss =
-      outer_loop_criterion.empty() ? 0 : outer_loop_criterion[0];
-  msg << "*** Sum loss: " << std::scientific << std::setprecision(10)
-      << sum_loss;
+  // TODO criterion per pattern (aka prefix+area) at best Benders ?
+  const auto outer_loop_data = benders_->GetOuterLoopData();
+  msg << "*** Max Criterion: " << std::scientific << std::setprecision(10)
+      << outer_loop_data.max_criterion_best_it;
+  msg << "*** Max Criterion Area: " << std::scientific << std::setprecision(10)
+      << outer_loop_data.max_criterion_area_best_it;
   logger->display_message(msg.str());
   logger->PrintIterationSeparatorEnd();
 }

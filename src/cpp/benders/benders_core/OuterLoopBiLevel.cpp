@@ -56,14 +56,10 @@ void OuterLoopBiLevel::Init(const std::vector<double> &obj,
     SetLambdaMaxToMaxInvestmentCosts(obj, max_invest, master_variable);
   }
   found_feasible_ = false;
-  // bilevel_best_ub_ = +1e20;
 }
 void OuterLoopBiLevel::SetLambdaMaxToMaxInvestmentCosts(
     const std::vector<double> &obj, const Point &max_invest,
     const VariableMap &master_variable) {
-  // const auto &obj = benders_->MasterObjectiveFunctionCoeffs();
-  // const auto max_invest =
-  //     benders_->BestIterationWorkerMaster().get_max_invest();
   lambda_max_ = 0;
   for (const auto &[var_name, var_id] : master_variable) {
     lambda_max_ += obj[var_id] * max_invest.at(var_name);
