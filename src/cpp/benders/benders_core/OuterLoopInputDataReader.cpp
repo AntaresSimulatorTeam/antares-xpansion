@@ -179,10 +179,11 @@ struct convert<OuterLoopInputData> {
       DecodePatterns(patterns, rhs);
     } else {
       std::ostringstream err_msg;
-      err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
-              << "outer loop input file must contains at least one pattern."
+      err_msg << "outer loop input file must contains at least one pattern."
               << "\n";
-      throw OuterLoopInputFileNoPatternFound(err_msg.str(), LOGLOCATION);
+      throw OuterLoopInputFileNoPatternFound(
+          PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop"), err_msg.str(),
+          LOGLOCATION);
     }
     return true;
   }

@@ -210,13 +210,31 @@ TEST_F(OuterLoopInputFromYamlTest, YamlFileIsEmpty) {
                               "empty.yml");
   std::ofstream of(empty);
   of.close();
-  
+
   std::ostringstream expected_msg;
   expected_msg << "outer loop input file is empty: " << empty << "\n";
   try {
     OuterLoopInputFromYaml parser;
     parser.Read(empty);
   } catch (const OuterLoopInputFileIsEmpty& e) {
+    ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
+  }
+}
+
+TEST_F(OuterLoopInputFromYamlTest, YamlFileShouldContainsAtLeast1Pattern) {
+  std::filesystem::path empty_patterns(std::filesystem::temp_directory_path() /
+                                       "empty_patterns.yml");
+  std::ofstream of(empty_patterns);
+  of << "stopping_threshold: " << 17.07;
+  of.close();
+
+  std::ostringstream expected_msg;
+  expected_msg << "outer loop input file must contains at least one pattern."
+               << "\n";
+  try {
+    OuterLoopInputFromYaml parser;
+    parser.Read(empty_patterns);
+  } catch (const OuterLoopInputFileNoPatternFound& e) {
     ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
   }
 }
