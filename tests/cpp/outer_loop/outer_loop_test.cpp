@@ -189,3 +189,18 @@ TEST_F(OuterLoopPatternTest, RegexGivenPrefixAndBody) {
   ASSERT_EQ(std::regex_search(prefix + "::", ret_regex), false);
   ASSERT_EQ(std::regex_search(body, ret_regex), false);
 }
+
+class OuterLoopInputFromYamlTest : public ::testing::Test {};
+
+TEST_F(OuterLoopInputFromYamlTest, YamlFileDoestNoExist) {
+  std::filesystem::path empty("");
+  std::ostringstream expected_msg;
+  expected_msg << "Could not read outer loop input file: " << empty << "\n"
+               << "bad file: " << empty.string();
+  try {
+    OuterLoopInputFromYaml parser;
+    parser.Read(empty);
+  } catch (const OuterLoopInputFileError& e) {
+    ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
+  }
+}

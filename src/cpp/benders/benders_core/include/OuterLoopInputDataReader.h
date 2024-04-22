@@ -9,6 +9,10 @@
 
 namespace Outerloop {
 
+class OuterLoopInputFileError
+    : public LogUtils::XpansionError<std::runtime_error> {
+  using LogUtils::XpansionError<std::runtime_error>::XpansionError;
+};
 class OuterLoopInputFileIsEmpty
     : public LogUtils::XpansionError<std::runtime_error> {
   using LogUtils::XpansionError<std::runtime_error>::XpansionError;

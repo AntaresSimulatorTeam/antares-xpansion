@@ -74,8 +74,17 @@ double OuterLoopInputData::CriterionCountThreshold() const { return criterion_co
 
 OuterLoopInputData OuterLoopInputFromYaml::Read(
     const std::filesystem::path &input_file) {
-  auto yaml_content = YAML::LoadFile(input_file.string());
-
+  YAML::Node yaml_content;
+  try {
+    yaml_content = YAML::LoadFile(input_file.string());
+  } catch (const std::exception &e) {
+    std::ostringstream err_msg;
+    err_msg << "Could not read outer loop input file: " << input_file << "\n"
+            << e.what();
+    throw OuterLoopInputFileError(
+        PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop"), err_msg.str(),
+        LOGLOCATION);
+  }
   if (yaml_content.IsNull()) {
     std::ostringstream err_msg;
     err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
