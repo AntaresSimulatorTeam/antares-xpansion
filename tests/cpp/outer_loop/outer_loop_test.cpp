@@ -257,3 +257,37 @@ TEST_F(OuterLoopInputFromYamlTest, YamlFilePatternsShouldAnArray) {
     ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
   }
 }
+
+TEST_F(OuterLoopInputFromYamlTest, ReadValidFile) {
+  std::filesystem::path valid_file(std::filesystem::temp_directory_path() /
+                                   "valid_file.yml");
+
+  std::ofstream of(valid_file);
+  auto my_yaml = R"(stopping_threshold: 1e-4
+# seuil
+criterion_count_threshold: 1e-1
+ # tolerance entre seuil et valeur calculée
+criterion_tolerance: 1e-5
+patterns:
+  - area: "N0"
+    criterion: 185
+  - area: "N1"
+    criterion: 1
+  - area: "N2"
+    criterion: 1
+  - area: "N3"
+    criterion: 1)";
+  of << my_yaml;
+  of.close();
+  auto data = OuterLoopInputFromYaml().Read(valid_file);
+
+  ASSERT_EQ(data.StoppingThreshold(), 1e-4);
+  ASSERT_EQ(data.CriterionTolerance(), 1e-5);
+  ASSERT_EQ(data.CriterionCountThreshold(), 1e-1);
+
+  auto patterns = data.OuterLoopData();
+  ASSERT_EQ(patterns.size(), 4);
+  auto pattern1 = patterns[0];
+  ASSERT_EQ(pattern1.Criterion(), 185.0);
+  ASSERT_EQ(pattern1.Pattern().GetBody(), "N0");
+}
