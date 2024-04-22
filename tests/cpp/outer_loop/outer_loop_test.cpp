@@ -239,7 +239,7 @@ TEST_F(OuterLoopInputFromYamlTest, YamlFileShouldContainsAtLeast1Pattern) {
   }
 }
 
-TEST_F(OuterLoopInputFromYamlTest, YamlFilePatternsShouldAnArray) {
+TEST_F(OuterLoopInputFromYamlTest, YamlFilePatternsShouldBeAnArray) {
   std::filesystem::path patterns_not_array(
       std::filesystem::temp_directory_path() / "patterns_not_array.yml");
   std::ofstream of(patterns_not_array);
