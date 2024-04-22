@@ -269,12 +269,12 @@ else()
 	set(CURRENT_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endif()
 
-find_package(antares-solver REQUIRED)
+find_package(Antares REQUIRED)
 
 #Default RELEASE antares-solver use
-get_target_property( ANTARES_SOLVER_PATH antares-solver IMPORTED_LOCATION_RELEASE )
+get_target_property( ANTARES_SOLVER_PATH Antares::antares-solver IMPORTED_LOCATION_RELEASE )
 if (NOT ANTARES_SOLVER_PATH)
-	get_target_property( ANTARES_SOLVER_PATH antares-solver IMPORTED_LOCATION_DEBUG )
+	get_target_property( ANTARES_SOLVER_PATH Antares::antares-solver IMPORTED_LOCATION_DEBUG )
 endif()
 
 get_filename_component(ANTARES_SOLVER_DIR ${ANTARES_SOLVER_PATH} DIRECTORY)
