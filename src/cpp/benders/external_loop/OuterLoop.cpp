@@ -62,7 +62,9 @@ void OuterLoop::PrintLog() {
   const auto outer_loop_data = benders_->GetOuterLoopData();
   msg << "*** Max Criterion: " << std::scientific << std::setprecision(10)
       << outer_loop_data.max_criterion_best_it;
-  msg << "*** Max Criterion Area: " << std::scientific << std::setprecision(10)
+  logger->display_message(msg.str());
+  msg.str("");
+  msg << "*** Max Criterion Area: "
       << outer_loop_data.max_criterion_area_best_it;
   logger->display_message(msg.str());
   logger->PrintIterationSeparatorEnd();
