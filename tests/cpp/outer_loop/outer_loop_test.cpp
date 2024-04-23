@@ -31,7 +31,8 @@ int main(int argc, char** argv) {
 //-------------------- MasterUpdateBaseTest -------------------------
 const auto STUDY_PATH =
     std::filesystem::path("data_test") / "external_loop_test";
-const auto OPTIONS_FILE = "options.json";
+const auto LP_DIR = STUDY_PATH / "lp";
+const auto OPTIONS_FILE = LP_DIR / "options.json";
 const auto OUTER_OPTIONS_FILE = "outer_loop_options.yml";
 
 class MasterUpdateBaseTest : public ::testing::TestWithParam<std::string> {
