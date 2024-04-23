@@ -47,7 +47,7 @@ jobs:
       antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
       antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
     steps:
-      - uses: actions/checkout@v3 #Keep at 3. v4 uses node 20 which uses glibc_2.27
+      - uses: actions/checkout@v4
       - name: Read antares-solver version
         id: antares-version
         uses: ./.github/actions/read-json-value
