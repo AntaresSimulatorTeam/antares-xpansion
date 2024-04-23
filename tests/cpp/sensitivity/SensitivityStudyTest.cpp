@@ -107,7 +107,8 @@ class SensitivityStudyTest : public ::testing::Test {
       std::string mps_path,
       std::map<std::string, std::vector<SinglePbData>> expec_output_data_map) {
     std::vector<std::string> solvers_name = {coin_name};
-    if (LoadXpress::XpressIsCorrectlyInstalled()) {
+    LoadXpress::XpressLoader xpress_loader;
+    if (xpress_loader.XpressIsCorrectlyInstalled()) {
       solvers_name.push_back(xpress_name);
     }
 

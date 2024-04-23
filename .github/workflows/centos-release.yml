@@ -54,7 +54,7 @@ jobs:
       pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
@@ -83,7 +83,7 @@ jobs:
       antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
       antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Read antares-solver version
         id: antares-version
         uses: ./.github/actions/read-json-value
@@ -127,10 +127,10 @@ jobs:
       singlefile_name: ${{ steps.zip_name.outputs.singlefile_name }}
     steps:
       - id: branch-name
-        uses: tj-actions/branch-names@v6
+        uses: tj-actions/branch-names@v8
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3 #keep v3
         with:
           submodules: true
 
