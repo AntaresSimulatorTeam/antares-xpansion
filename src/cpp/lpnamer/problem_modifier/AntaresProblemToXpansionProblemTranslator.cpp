@@ -4,51 +4,57 @@
 
 #include "AntaresProblemToXpansionProblemTranslator.h"
 
+#include <algorithm>
 #include <cmath>
 
 #include "LogUtils.h"
 #include "multisolver_interface/SolverFactory.h"
 #include "solver_utils.h"
 
+/**
+ *
+ * @Note: In case of performance issue we can accept non-const lps and work on
+ * references to constant and hebdo parts
+ */
 std::shared_ptr<Problem>
 AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
-    const LpsFromAntares& lps, unsigned int year, unsigned int week,
+    const Antares::Solver::LpsFromAntares& lps, unsigned int year, unsigned int week,
     const std::string& solver_name, SolverLogManager& solver_log_manager) {
   SolverFactory factory;
   auto problem = std::make_shared<Problem>(
       factory.create_solver(solver_name, solver_log_manager));
-  const auto& constant = lps._constant;
-  const auto& hebdo = lps._hebdo.at({year, week});
-  problem->_name = hebdo->name;
+  auto constant = lps.constantProblemData;
+  auto hebdo = lps.weeklyProblems.at({year, week});
+  problem->_name = hebdo.name;
 
-  std::vector<int> tmp(constant->NombreDeVariables, 0);
-  std::vector<char> coltypes(constant->NombreDeVariables, 'C');
+  std::vector<int> tmp(constant.VariablesCount, 0);
+  std::vector<char> coltypes(constant.VariablesCount, 'C');
 
-  auto round10 = []<typename T>(T& collection) {
+  auto round10 = [](auto& collection) {
     std::ranges::transform(collection, collection.begin(), [](double v) {
       return round(v * pow(10, 10)) * pow(10, -10);
     });
   };
 
-  round10(hebdo->CoutLineaire);
-  round10(hebdo->Xmin);
-  round10(hebdo->Xmax);
-  round10(hebdo->SecondMembre);
-  round10(constant->CoefficientsDeLaMatriceDesContraintes);
+  round10(hebdo.LinearCost);
+  round10(hebdo.Xmin);
+  round10(hebdo.Xmax);
+  round10(hebdo.RHS);
+  round10(constant.ConstraintsMatrixCoeff);
 
-  problem->add_cols(constant->NombreDeVariables, 0, hebdo->CoutLineaire.data(),
-                    tmp.data(), {}, {}, hebdo->Xmin.data(), hebdo->Xmax.data());
+  problem->add_cols(constant.VariablesCount, 0, hebdo.LinearCost.data(),
+                    tmp.data(), {}, {}, hebdo.Xmin.data(), hebdo.Xmax.data());
 
   problem->add_rows(
-      constant->NombreDeContraintes, constant->NombreDeCoefficients,
-      convertSignToLEG(hebdo->Sens.data()).data(), hebdo->SecondMembre.data(),
-      {}, constant->Mdeb.data(), constant->IndicesColonnes.data(),
-      constant->CoefficientsDeLaMatriceDesContraintes.data());
-  for (int i = 0; i < constant->NombreDeVariables; ++i) {
-    problem->chg_col_name(i, hebdo->variables[i]);
+      constant.ConstraintesCount, constant.CoeffCount,
+      convertSignToLEG(hebdo.Direction.data()).data(), hebdo.RHS.data(),
+      {}, reinterpret_cast<const int *>(constant.Mdeb.data()), reinterpret_cast<const int *>(constant.ColumnIndexes.data()),
+      constant.ConstraintsMatrixCoeff.data(), {});
+  for (int i = 0; i < constant.VariablesCount; ++i) {
+    problem->chg_col_name(i, hebdo.variables[i]);
   }
-  for (int i = 0; i < constant->NombreDeContraintes; ++i) {
-    problem->chg_row_name(i, hebdo->constraints[i]);
+  for (int i = 0; i < constant.ConstraintesCount; ++i) {
+    problem->chg_row_name(i, hebdo.constraints[i]);
   }
   auto rows = problem->get_nrows();
   auto cols = problem->get_ncols();
