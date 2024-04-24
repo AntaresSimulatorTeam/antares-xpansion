@@ -144,11 +144,7 @@ var annotated_dup =
         [ "GeneratorUntypedBase", "classCatch_1_1Generators_1_1GeneratorUntypedBase.html", null ],
         [ "GeneratorWrapper", "classCatch_1_1Generators_1_1GeneratorWrapper.html", null ],
         [ "IGenerator", "structCatch_1_1Generators_1_1IGenerator.html", null ],
-        [ "IteratorGenerator", "classCatch_1_1Generators_1_1IteratorGenerator.html", null ],
         [ "MapGenerator", "classCatch_1_1Generators_1_1MapGenerator.html", null ],
-        [ "RandomFloatingGenerator", "classCatch_1_1Generators_1_1RandomFloatingGenerator.html", null ],
-        [ "RandomIntegerGenerator", "classCatch_1_1Generators_1_1RandomIntegerGenerator.html", null ],
-        [ "RangeGenerator", "classCatch_1_1Generators_1_1RangeGenerator.html", null ],
         [ "RepeatGenerator", "classCatch_1_1Generators_1_1RepeatGenerator.html", null ],
         [ "SingleValueGenerator", "classCatch_1_1Generators_1_1SingleValueGenerator.html", null ],
         [ "TakeGenerator", "classCatch_1_1Generators_1_1TakeGenerator.html", null ]
@@ -161,9 +157,6 @@ var annotated_dup =
           [ "WithinAbsMatcher", "structCatch_1_1Matchers_1_1Floating_1_1WithinAbsMatcher.html", null ],
           [ "WithinRelMatcher", "structCatch_1_1Matchers_1_1Floating_1_1WithinRelMatcher.html", null ],
           [ "WithinUlpsMatcher", "structCatch_1_1Matchers_1_1Floating_1_1WithinUlpsMatcher.html", null ]
-        ] ],
-        [ "Generic", null, [
-          [ "PredicateMatcher", "classCatch_1_1Matchers_1_1Generic_1_1PredicateMatcher.html", null ]
         ] ],
         [ "Impl", null, [
           [ "MatchAllOf", "structCatch_1_1Matchers_1_1Impl_1_1MatchAllOf.html", null ],
@@ -181,13 +174,6 @@ var annotated_dup =
           [ "RegexMatcher", "structCatch_1_1Matchers_1_1StdString_1_1RegexMatcher.html", null ],
           [ "StartsWithMatcher", "structCatch_1_1Matchers_1_1StdString_1_1StartsWithMatcher.html", null ],
           [ "StringMatcherBase", "structCatch_1_1Matchers_1_1StdString_1_1StringMatcherBase.html", null ]
-        ] ],
-        [ "Vector", null, [
-          [ "ApproxMatcher", "structCatch_1_1Matchers_1_1Vector_1_1ApproxMatcher.html", null ],
-          [ "ContainsElementMatcher", "structCatch_1_1Matchers_1_1Vector_1_1ContainsElementMatcher.html", null ],
-          [ "ContainsMatcher", "structCatch_1_1Matchers_1_1Vector_1_1ContainsMatcher.html", null ],
-          [ "EqualsMatcher", "structCatch_1_1Matchers_1_1Vector_1_1EqualsMatcher.html", null ],
-          [ "UnorderedEqualsMatcher", "structCatch_1_1Matchers_1_1Vector_1_1UnorderedEqualsMatcher.html", null ]
         ] ]
       ] ],
       [ "always_false", "structCatch_1_1always__false.html", null ],
@@ -203,17 +189,13 @@ var annotated_dup =
       [ "ExceptionTranslatorRegistrar", "classCatch_1_1ExceptionTranslatorRegistrar.html", null ],
       [ "ExprLhs", "classCatch_1_1ExprLhs.html", null ],
       [ "GeneratorException", "classCatch_1_1GeneratorException.html", null ],
-      [ "IConfig", "structCatch_1_1IConfig.html", null ],
       [ "IContext", "structCatch_1_1IContext.html", null ],
       [ "IExceptionTranslator", "structCatch_1_1IExceptionTranslator.html", null ],
       [ "IExceptionTranslatorRegistry", "structCatch_1_1IExceptionTranslatorRegistry.html", null ],
       [ "IGeneratorTracker", "structCatch_1_1IGeneratorTracker.html", null ],
       [ "IMutableContext", "structCatch_1_1IMutableContext.html", null ],
       [ "IMutableEnumValuesRegistry", "structCatch_1_1IMutableEnumValuesRegistry.html", null ],
-      [ "IMutableRegistryHub", "structCatch_1_1IMutableRegistryHub.html", null ],
-      [ "IRegistryHub", "structCatch_1_1IRegistryHub.html", null ],
       [ "IResultCapture", "structCatch_1_1IResultCapture.html", null ],
-      [ "IRunner", "structCatch_1_1IRunner.html", null ],
       [ "is_callable", "structCatch_1_1is__callable.html", null ],
       [ "is_callable< Fun(Args...)>", "structCatch_1_1is__callable_3_01Fun_07Args_8_8_8_08_4.html", null ],
       [ "is_callable_tester", "structCatch_1_1is__callable__tester.html", null ],
@@ -223,25 +205,21 @@ var annotated_dup =
       [ "ITestInvoker", "structCatch_1_1ITestInvoker.html", null ],
       [ "ITransientExpression", "structCatch_1_1ITransientExpression.html", null ],
       [ "LazyExpression", "classCatch_1_1LazyExpression.html", null ],
-      [ "MatchExpr", "classCatch_1_1MatchExpr.html", null ],
       [ "MessageBuilder", "structCatch_1_1MessageBuilder.html", null ],
       [ "MessageInfo", "structCatch_1_1MessageInfo.html", null ],
       [ "MessageStream", "structCatch_1_1MessageStream.html", null ],
       [ "NameAndTags", "structCatch_1_1NameAndTags.html", null ],
       [ "NonCopyable", "classCatch_1_1NonCopyable.html", null ],
       [ "not_this_one", "structCatch_1_1not__this__one.html", null ],
-      [ "Option", "classCatch_1_1Option.html", null ],
       [ "pluralise", "structCatch_1_1pluralise.html", null ],
       [ "RegistrarForTagAliases", "structCatch_1_1RegistrarForTagAliases.html", null ],
       [ "ResultDisposition", "structCatch_1_1ResultDisposition.html", null ],
       [ "ResultWas", "structCatch_1_1ResultWas.html", null ],
       [ "ReusableStringStream", "classCatch_1_1ReusableStringStream.html", null ],
-      [ "RunTests", "structCatch_1_1RunTests.html", null ],
       [ "ScopedMessage", "classCatch_1_1ScopedMessage.html", null ],
       [ "Section", "classCatch_1_1Section.html", null ],
       [ "SectionEndInfo", "structCatch_1_1SectionEndInfo.html", null ],
       [ "SectionInfo", "structCatch_1_1SectionInfo.html", null ],
-      [ "ShowDurations", "structCatch_1_1ShowDurations.html", null ],
       [ "SimplePcg32", "classCatch_1_1SimplePcg32.html", null ],
       [ "SourceLineInfo", "structCatch_1_1SourceLineInfo.html", null ],
       [ "StreamEndStop", "structCatch_1_1StreamEndStop.html", null ],
@@ -281,10 +259,7 @@ var annotated_dup =
       [ "Timer", "classCatch_1_1Timer.html", null ],
       [ "Totals", "structCatch_1_1Totals.html", null ],
       [ "true_given", "structCatch_1_1true__given.html", null ],
-      [ "UnaryExpr", "classCatch_1_1UnaryExpr.html", null ],
-      [ "UseColour", "structCatch_1_1UseColour.html", null ],
-      [ "WaitForKeypress", "structCatch_1_1WaitForKeypress.html", null ],
-      [ "WarnAbout", "structCatch_1_1WarnAbout.html", null ]
+      [ "UnaryExpr", "classCatch_1_1UnaryExpr.html", null ]
     ] ],
     [ "LoadXpress", null, [
       [ "XpressLoader", "classLoadXpress_1_1XpressLoader.html", "classLoadXpress_1_1XpressLoader" ]

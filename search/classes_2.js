@@ -1,7 +1,7 @@
 var searchData=
 [
   ['candidate_0',['Candidate',['../classCandidate.html',1,'']]],
-  ['candidatedata_1',['CandidateData',['../structCandidateData.html',1,'CandidateData'],['../structOutput_1_1CandidateData.html',1,'Output::CandidateData']]],
+  ['candidatedata_1',['candidatedata',['../structCandidateData.html',1,'CandidateData'],['../structOutput_1_1CandidateData.html',1,'Output::CandidateData']]],
   ['candidateduplicationdetected_2',['CandidateDuplicationDetected',['../classActiveLinksBuilder_1_1CandidateDuplicationDetected.html',1,'ActiveLinksBuilder']]],
   ['candidatefilenotfound_3',['CandidateFileNotFound',['../classantares__xpansion_1_1profile__link__checker_1_1ProfileLinkChecker_1_1CandidateFileNotFound.html',1,'antares_xpansion::profile_link_checker::ProfileLinkChecker']]],
   ['candidatefilewrongtypevalue_4',['CandidateFileWrongTypeValue',['../classantares__xpansion_1_1input__checker_1_1CandidateFileWrongTypeValue.html',1,'antares_xpansion::input_checker']]],
@@ -16,7 +16,7 @@ var searchData=
   ['candidatesinireadertest_13',['CandidatesINIReaderTest',['../classCandidatesINIReaderTest.html',1,'']]],
   ['candidatesreader_14',['CandidatesReader',['../classantares__xpansion_1_1candidates__reader_1_1CandidatesReader.html',1,'antares_xpansion::candidates_reader']]],
   ['candidatewasnotaddedinproblem_15',['CandidateWasNotAddedInProblem',['../classProblemModifier_1_1CandidateWasNotAddedInProblem.html',1,'ProblemModifier']]],
-  ['capacitydirnotfound_16',['CapacityDirNotFound',['../classantares__xpansion_1_1profile__link__checker_1_1ProfileLinkChecker_1_1CapacityDirNotFound.html',1,'antares_xpansion.profile_link_checker.ProfileLinkChecker.CapacityDirNotFound'],['../classantares__xpansion_1_1split__link__profile_1_1SplitLinkProfile_1_1CapacityDirNotFound.html',1,'antares_xpansion.split_link_profile.SplitLinkProfile.CapacityDirNotFound']]],
+  ['capacitydirnotfound_16',['capacitydirnotfound',['../classantares__xpansion_1_1profile__link__checker_1_1ProfileLinkChecker_1_1CapacityDirNotFound.html',1,'antares_xpansion.profile_link_checker.ProfileLinkChecker.CapacityDirNotFound'],['../classantares__xpansion_1_1split__link__profile_1_1SplitLinkProfile_1_1CapacityDirNotFound.html',1,'antares_xpansion.split_link_profile.SplitLinkProfile.CapacityDirNotFound']]],
   ['capturer_17',['Capturer',['../classCatch_1_1Capturer.html',1,'Catch']]],
   ['casedstring_18',['CasedString',['../structCatch_1_1Matchers_1_1StdString_1_1CasedString.html',1,'Catch::Matchers::StdString']]],
   ['casesensitive_19',['CaseSensitive',['../structCatch_1_1CaseSensitive.html',1,'Catch']]],
@@ -34,11 +34,10 @@ var searchData=
   ['configparameters_31',['ConfigParameters',['../classantares__xpansion_1_1xpansionConfig_1_1ConfigParameters.html',1,'antares_xpansion::xpansionConfig']]],
   ['conflictingparameters_32',['ConflictingParameters',['../classProblemGenerationOptions_1_1ConflictingParameters.html',1,'ProblemGenerationOptions']]],
   ['constantdatafromantares_33',['ConstantDataFromAntares',['../classConstantDataFromAntares.html',1,'']]],
-  ['containselementmatcher_34',['ContainsElementMatcher',['../structCatch_1_1Matchers_1_1Vector_1_1ContainsElementMatcher.html',1,'Catch::Matchers::Vector']]],
-  ['containsmatcher_35',['ContainsMatcher',['../structCatch_1_1Matchers_1_1StdString_1_1ContainsMatcher.html',1,'Catch::Matchers::StdString::ContainsMatcher'],['../structCatch_1_1Matchers_1_1Vector_1_1ContainsMatcher.html',1,'Catch::Matchers::Vector::ContainsMatcher&lt; T &gt;']]],
-  ['corruptedlockerfile_36',['CorruptedLockerFile',['../classantares__xpansion_1_1study__locker_1_1StudyLocker_1_1CorruptedLockerFile.html',1,'antares_xpansion::study_locker::StudyLocker']]],
-  ['counts_37',['Counts',['../structCatch_1_1Counts.html',1,'Catch']]],
-  ['criterioncouldnotbesatisfied_38',['CriterionCouldNotBeSatisfied',['../classCriterionCouldNotBeSatisfied.html',1,'']]],
-  ['currentiterationdata_39',['CurrentIterationData',['../structCurrentIterationData.html',1,'']]],
-  ['cutsmanagerruntime_40',['CutsManagerRunTime',['../classCutsManagerRunTime.html',1,'']]]
+  ['containsmatcher_34',['ContainsMatcher',['../structCatch_1_1Matchers_1_1StdString_1_1ContainsMatcher.html',1,'Catch::Matchers::StdString']]],
+  ['corruptedlockerfile_35',['CorruptedLockerFile',['../classantares__xpansion_1_1study__locker_1_1StudyLocker_1_1CorruptedLockerFile.html',1,'antares_xpansion::study_locker::StudyLocker']]],
+  ['counts_36',['Counts',['../structCatch_1_1Counts.html',1,'Catch']]],
+  ['criterioncouldnotbesatisfied_37',['CriterionCouldNotBeSatisfied',['../classCriterionCouldNotBeSatisfied.html',1,'']]],
+  ['currentiterationdata_38',['CurrentIterationData',['../structCurrentIterationData.html',1,'']]],
+  ['cutsmanagerruntime_39',['CutsManagerRunTime',['../classCutsManagerRunTime.html',1,'']]]
 ];

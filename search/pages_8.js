@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['user_20interface_20creation_0',['User interface creation',['../md_docs_developer_guide_install_from_sources_5_ui_creation.html',1,'']]]
+  ['mathematical_20aspects_20of_20the_20investment_20problem_0',['Mathematical aspects of the investment problem',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html',1,'']]]
 ];

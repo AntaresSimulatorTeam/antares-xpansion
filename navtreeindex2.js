@@ -1,12 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"classProblemGenerationLog_1_1ProblemGenerationILogger.html":[24,0,9,1],
-"classProblemGenerationLog_1_1ProblemGenerationILogger.html#ade69bbe369ecbfb6888ecc6e0f82e517":[24,0,9,1,0],
-"classProblemGenerationLog_1_1ProblemGenerationLogger.html":[24,0,9,2],
-"classProblemGenerationLog_1_1ProblemGenerationLogger.html#a0f7069c5f38511d88445f584c5b8c592":[24,0,9,2,0],
-"classProblemGenerationLog_1_1ProblemGenerationOstreamLogger.html":[24,0,9,3],
-"classProblemGenerationLog_1_1ProblemGenerationOstreamLogger.html#aa49af64c3b66de97221aacf6e59d64de":[24,0,9,3,0],
-"classProblemGenerationLoggerTest.html":[24,0,166],
 "classProblemGenerationOptions.html":[24,0,167],
 "classProblemGenerationOptions_1_1ConflictingParameters.html":[24,0,167,0],
 "classProblemGenerationOptions_1_1MismatchedParameters.html":[24,0,167,1],
@@ -249,5 +242,12 @@ var NAVTREEINDEX2 =
 "classSolverXpress.html#a12ef1cde8c6b872124f5e2a9f312da17":[24,0,213,53],
 "classSolverXpress.html#a13482a18ef605e5bcf9dcc165d9b3695":[24,0,213,20],
 "classSolverXpress.html#a1cfa539487637bafe3f787d5d13fc5d9":[24,0,213,55],
-"classSolverXpress.html#a225c0f0832d22c6ca8b1dcdd152ba3dc":[24,0,213,18]
+"classSolverXpress.html#a225c0f0832d22c6ca8b1dcdd152ba3dc":[24,0,213,18],
+"classSolverXpress.html#a2ba0696e0acbd93d06a0beaa556a0a44":[24,0,213,39],
+"classSolverXpress.html#a2d07cf11919794579134af3599a80dd5":[24,0,213,26],
+"classSolverXpress.html#a30b56a03a4c060bbabf2bb6fc1faa4d3":[24,0,213,42],
+"classSolverXpress.html#a3bceada323c347824539cf47cc7dd5c6":[24,0,213,31],
+"classSolverXpress.html#a3d66403a0b9cad3c4988c5f943fcfc57":[24,0,213,3],
+"classSolverXpress.html#a3ed1a373d758132913bbe7481c8224c6":[24,0,213,56],
+"classSolverXpress.html#a3fa04264091ce029e091b1c3eac8c560":[24,0,213,0]
 };

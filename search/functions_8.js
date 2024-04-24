@@ -5,6 +5,6 @@ var searchData=
   ['initialize_2',['initialize',['../classOutput_1_1JsonWriter.html#aee3cc2a6e0300509d23bbbb8de1eae94',1,'Output::JsonWriter::initialize()'],['../classOutput_1_1VoidWriter.html#ad6904d7f602e37270c000a9dbe564cde',1,'Output::VoidWriter::initialize()'],['../classOutput_1_1OutputWriter.html#a3a0f989f5e057b16bf4ead25ab992f05',1,'Output::OutputWriter::initialize()'],['../classWriterNOOPStub.html#acff703f70a39e1ea0c0162f0f33862b8',1,'WriterNOOPStub::initialize()']]],
   ['initializeproblems_3',['InitializeProblems',['../classBendersMpi.html#a217d3af6fbe78082f30fa9ef75cf1dfb',1,'BendersMpi']]],
   ['initxpressenv_4',['initXpressEnv',['../classLoadXpress_1_1XpressLoader.html#a1a17e7973088bd65105007a7e2f2481e',1,'LoadXpress::XpressLoader']]],
-  ['is_5faccurate_5',['is_accurate',['../classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a8640fe9783df098abaefc74e71bbe789',1,'antares_xpansion::config_loader::ConfigLoader']]],
-  ['is_5frelaxed_6',['is_relaxed',['../classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#af0d5be8e0f8e595d58e2affce9a49a90',1,'antares_xpansion::config_loader::ConfigLoader']]]
+  ['is_5faccurate_5',['is_accurate',['../classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a0c3fa0cf225d9b7bb06864a8aa7f1b45',1,'antares_xpansion::config_loader::ConfigLoader']]],
+  ['is_5frelaxed_6',['is_relaxed',['../classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a4b43dd57f999df86ffacede36f47e197',1,'antares_xpansion::config_loader::ConfigLoader']]]
 ];

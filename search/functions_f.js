@@ -7,6 +7,6 @@ var searchData=
   ['updatecapacities_4',['updateCapacities',['../structLinkdataRecord.html#aa46f4f8abc7f1561d5f38cfc007db565',1,'LinkdataRecord']]],
   ['updateendtime_5',['updateEndTime',['../classOutput_1_1JsonWriter.html#a4dacd7f08c2264f7aaf8b436ee9b8975',1,'Output::JsonWriter']]],
   ['updatelinkdatafile_6',['updateLinkdataFile',['../classStudyUpdater.html#a9db49727f1ceb8bb7c871dcdb99a099f',1,'StudyUpdater']]],
-  ['updatestoppingcriterion_7',['UpdateStoppingCriterion',['../classBendersByBatch.html#abc79d5e65838ad7a27b352ecfeb0dfa0',1,'BendersByBatch::UpdateStoppingCriterion()'],['../classBendersBase.html#a12e1da335571d21dc124f5d1b2de41e0',1,'BendersBase::UpdateStoppingCriterion()']]],
-  ['updatetrace_8',['UpdateTrace',['../classBendersBase.html#adb953cbbd95d83ed70de4244f975d436',1,'BendersBase::UpdateTrace()'],['../classBendersSequentialDouble.html#a01aa233cda314c1882c9c5ef216d1ea3',1,'BendersSequentialDouble::UpdateTrace()']]]
+  ['updatestoppingcriterion_7',['updatestoppingcriterion',['../classBendersByBatch.html#abc79d5e65838ad7a27b352ecfeb0dfa0',1,'BendersByBatch::UpdateStoppingCriterion()'],['../classBendersBase.html#a12e1da335571d21dc124f5d1b2de41e0',1,'BendersBase::UpdateStoppingCriterion()']]],
+  ['updatetrace_8',['updatetrace',['../classBendersBase.html#adb953cbbd95d83ed70de4244f975d436',1,'BendersBase::UpdateTrace()'],['../classBendersSequentialDouble.html#a01aa233cda314c1882c9c5ef216d1ea3',1,'BendersSequentialDouble::UpdateTrace()']]]
 ];

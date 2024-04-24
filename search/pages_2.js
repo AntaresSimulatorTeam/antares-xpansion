@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['define_20the_20candidates_0',['Define the candidates',['../md_docs_user_guide_get_started_candidate_definition.html',1,'']]],
-  ['dependencies_20install_1',['Dependencies install',['../md_docs_developer_guide_install_from_sources_2_Dependencies_install.html',1,'']]],
-  ['development_20requirements_2',['Development requirements',['../md_docs_developer_guide_install_from_sources_1_Development_requirements.html',1,'']]],
-  ['documention_20generation_20guidelines_3',['Documention generation guidelines',['../md_docs_how_to.html',1,'']]]
+  ['candidates_0',['Define the candidates',['../md_docs_2user-guide_2get-started_2candidate-definition.html',1,'']]],
+  ['changelog_1',['Antares-Xpansion changelog',['../md_docs_2changelog_2CHANGELOG.html',1,'']]],
+  ['changes_2',['Study format changes',['../md_docs_2changelog_2format__changes.html',1,'']]],
+  ['creation_3',['creation',['../md_docs_2developer-guide_2install__from__sources_26-Installer-creation.html',1,'Installer creation'],['../md_docs_2developer-guide_2install__from__sources_25-ui-creation.html',1,'User interface creation']]]
 ];

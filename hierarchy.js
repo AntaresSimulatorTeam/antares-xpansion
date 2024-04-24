@@ -180,19 +180,13 @@ var hierarchy =
       [ "Catch::Generators::IGenerator< std::vector< T > >", "structCatch_1_1Generators_1_1IGenerator.html", [
         [ "Catch::Generators::ChunkGenerator< T >", "classCatch_1_1Generators_1_1ChunkGenerator.html", null ]
       ] ],
-      [ "Catch::Generators::IGenerator< Float >", "structCatch_1_1Generators_1_1IGenerator.html", [
-        [ "Catch::Generators::RandomFloatingGenerator< Float >", "classCatch_1_1Generators_1_1RandomFloatingGenerator.html", null ]
-      ] ],
-      [ "Catch::Generators::IGenerator< Integer >", "structCatch_1_1Generators_1_1IGenerator.html", [
-        [ "Catch::Generators::RandomIntegerGenerator< Integer >", "classCatch_1_1Generators_1_1RandomIntegerGenerator.html", null ]
-      ] ],
+      [ "Catch::Generators::IGenerator< Float >", "structCatch_1_1Generators_1_1IGenerator.html", null ],
+      [ "Catch::Generators::IGenerator< Integer >", "structCatch_1_1Generators_1_1IGenerator.html", null ],
       [ "Catch::Generators::IGenerator< T >", "structCatch_1_1Generators_1_1IGenerator.html", [
         [ "Catch::Generators::FilterGenerator< T, Predicate >", "classCatch_1_1Generators_1_1FilterGenerator.html", null ],
         [ "Catch::Generators::FixedValuesGenerator< T >", "classCatch_1_1Generators_1_1FixedValuesGenerator.html", null ],
         [ "Catch::Generators::Generators< T >", "classCatch_1_1Generators_1_1Generators.html", null ],
-        [ "Catch::Generators::IteratorGenerator< T >", "classCatch_1_1Generators_1_1IteratorGenerator.html", null ],
         [ "Catch::Generators::MapGenerator< T, U, Func >", "classCatch_1_1Generators_1_1MapGenerator.html", null ],
-        [ "Catch::Generators::RangeGenerator< T >", "classCatch_1_1Generators_1_1RangeGenerator.html", null ],
         [ "Catch::Generators::RepeatGenerator< T >", "classCatch_1_1Generators_1_1RepeatGenerator.html", null ],
         [ "Catch::Generators::SingleValueGenerator< T >", "classCatch_1_1Generators_1_1SingleValueGenerator.html", null ],
         [ "Catch::Generators::TakeGenerator< T >", "classCatch_1_1Generators_1_1TakeGenerator.html", null ]
@@ -248,7 +242,6 @@ var hierarchy =
       [ "MasterUpdateBase", "classMasterUpdateBase.html", null ]
     ] ],
     [ "Catch::IMutableEnumValuesRegistry", "structCatch_1_1IMutableEnumValuesRegistry.html", null ],
-    [ "Catch::IMutableRegistryHub", "structCatch_1_1IMutableRegistryHub.html", null ],
     [ "antares_xpansion.general_data_reader.IniReader", "classantares__xpansion_1_1general__data__reader_1_1IniReader.html", null ],
     [ "INIReader", "classINIReader.html", null ],
     [ "IniReaderUtils", "classIniReaderUtils.html", null ],
@@ -277,9 +270,7 @@ var hierarchy =
     [ "IProblemWriter", "classIProblemWriter.html", [
       [ "MPSFileWriter", "classMPSFileWriter.html", null ]
     ] ],
-    [ "Catch::IRegistryHub", "structCatch_1_1IRegistryHub.html", null ],
     [ "Catch::IResultCapture", "structCatch_1_1IResultCapture.html", null ],
-    [ "Catch::IRunner", "structCatch_1_1IRunner.html", null ],
     [ "Catch::is_callable< T >", "structCatch_1_1is__callable.html", null ],
     [ "Catch::is_callable_tester", "structCatch_1_1is__callable__tester.html", null ],
     [ "Catch::is_range< T >", "structCatch_1_1is__range.html", null ],
@@ -295,7 +286,6 @@ var hierarchy =
     ] ],
     [ "Catch::ITransientExpression", "structCatch_1_1ITransientExpression.html", [
       [ "Catch::BinaryExpr< LhsT, RhsT >", "classCatch_1_1BinaryExpr.html", null ],
-      [ "Catch::MatchExpr< ArgT, MatcherT >", "classCatch_1_1MatchExpr.html", null ],
       [ "Catch::UnaryExpr< LhsT >", "classCatch_1_1UnaryExpr.html", null ]
     ] ],
     [ "IWriterLogger", "classIWriterLogger.html", null ],
@@ -351,19 +341,13 @@ var hierarchy =
         [ "Catch::Matchers::Floating::WithinAbsMatcher", "structCatch_1_1Matchers_1_1Floating_1_1WithinAbsMatcher.html", null ],
         [ "Catch::Matchers::Floating::WithinRelMatcher", "structCatch_1_1Matchers_1_1Floating_1_1WithinRelMatcher.html", null ],
         [ "Catch::Matchers::Floating::WithinUlpsMatcher", "structCatch_1_1Matchers_1_1Floating_1_1WithinUlpsMatcher.html", null ],
-        [ "Catch::Matchers::Generic::PredicateMatcher< T >", "classCatch_1_1Matchers_1_1Generic_1_1PredicateMatcher.html", null ],
         [ "Catch::Matchers::StdString::RegexMatcher", "structCatch_1_1Matchers_1_1StdString_1_1RegexMatcher.html", null ],
         [ "Catch::Matchers::StdString::StringMatcherBase", "structCatch_1_1Matchers_1_1StdString_1_1StringMatcherBase.html", [
           [ "Catch::Matchers::StdString::ContainsMatcher", "structCatch_1_1Matchers_1_1StdString_1_1ContainsMatcher.html", null ],
           [ "Catch::Matchers::StdString::EndsWithMatcher", "structCatch_1_1Matchers_1_1StdString_1_1EndsWithMatcher.html", null ],
           [ "Catch::Matchers::StdString::EqualsMatcher", "structCatch_1_1Matchers_1_1StdString_1_1EqualsMatcher.html", null ],
           [ "Catch::Matchers::StdString::StartsWithMatcher", "structCatch_1_1Matchers_1_1StdString_1_1StartsWithMatcher.html", null ]
-        ] ],
-        [ "Catch::Matchers::Vector::ApproxMatcher< T >", "structCatch_1_1Matchers_1_1Vector_1_1ApproxMatcher.html", null ],
-        [ "Catch::Matchers::Vector::ContainsElementMatcher< T >", "structCatch_1_1Matchers_1_1Vector_1_1ContainsElementMatcher.html", null ],
-        [ "Catch::Matchers::Vector::ContainsMatcher< T >", "structCatch_1_1Matchers_1_1Vector_1_1ContainsMatcher.html", null ],
-        [ "Catch::Matchers::Vector::EqualsMatcher< T >", "structCatch_1_1Matchers_1_1Vector_1_1EqualsMatcher.html", null ],
-        [ "Catch::Matchers::Vector::UnorderedEqualsMatcher< T >", "structCatch_1_1Matchers_1_1Vector_1_1UnorderedEqualsMatcher.html", null ]
+        ] ]
       ] ]
     ] ],
     [ "Catch::Matchers::Impl::MatcherUntypedBase", "classCatch_1_1Matchers_1_1Impl_1_1MatcherUntypedBase.html", [
@@ -383,13 +367,11 @@ var hierarchy =
     [ "Catch::NameAndTags", "structCatch_1_1NameAndTags.html", null ],
     [ "Catch::NonCopyable", "classCatch_1_1NonCopyable.html", [
       [ "Catch::AutoReg", "structCatch_1_1AutoReg.html", null ],
-      [ "Catch::IConfig", "structCatch_1_1IConfig.html", null ],
       [ "Catch::ReusableStringStream", "classCatch_1_1ReusableStringStream.html", null ],
       [ "Catch::Section", "classCatch_1_1Section.html", null ]
     ] ],
     [ "Catch::not_this_one", "structCatch_1_1not__this__one.html", null ],
     [ "antares_xpansion.optimisation_keys.OptimisationKeys", "classantares__xpansion_1_1optimisation__keys_1_1OptimisationKeys.html", null ],
-    [ "Catch::Option< T >", "classCatch_1_1Option.html", null ],
     [ "OptionsParser", "classOptionsParser.html", [
       [ "AntaresArchiveUpdaterExeOptions", "classAntaresArchiveUpdaterExeOptions.html", null ],
       [ "ProblemGenerationExeOptions", "classProblemGenerationExeOptions.html", [
@@ -430,7 +412,6 @@ var hierarchy =
     [ "Catch::ResultWas", "structCatch_1_1ResultWas.html", null ],
     [ "antares_xpansion.resume_study.ResumeStudy", "classantares__xpansion_1_1resume__study_1_1ResumeStudy.html", null ],
     [ "antares_xpansion.resume_study.ResumeStudyData", "classantares__xpansion_1_1resume__study_1_1ResumeStudyData.html", null ],
-    [ "Catch::RunTests", "structCatch_1_1RunTests.html", null ],
     [ "std::runtime_error", null, [
       [ "LogUtils::XpansionError< std::runtime_error >", "classLogUtils_1_1XpansionError.html", [
         [ "ActiveLinksBuilder::CandidateDuplicationDetected", "classActiveLinksBuilder_1_1CandidateDuplicationDetected.html", null ],
@@ -493,7 +474,6 @@ var hierarchy =
     ] ],
     [ "SensitivityStudy", "classSensitivityStudy.html", null ],
     [ "SensitivityWriter", "classSensitivityWriter.html", null ],
-    [ "Catch::ShowDurations", "structCatch_1_1ShowDurations.html", null ],
     [ "Catch::SimplePcg32", "classCatch_1_1SimplePcg32.html", null ],
     [ "SimulationOptions", "classSimulationOptions.html", null ],
     [ "SinglePbData", "structSinglePbData.html", null ],
@@ -646,15 +626,12 @@ var hierarchy =
     [ "std::true_type", null, [
       [ "Catch::true_given< typename >", "structCatch_1_1true__given.html", null ]
     ] ],
-    [ "Catch::UseColour", "structCatch_1_1UseColour.html", null ],
     [ "VariableFileLine", "structVariableFileLine.html", null ],
     [ "VariableFileReader", "classVariableFileReader.html", null ],
     [ "VariableFileReadNameConfiguration", "structVariableFileReadNameConfiguration.html", null ],
     [ "VariableNameComposition", "structVariableNameComposition.html", null ],
     [ "PlainData::Variables", "structPlainData_1_1Variables.html", null ],
     [ "Version", "structVersion.html", null ],
-    [ "Catch::WaitForKeypress", "structCatch_1_1WaitForKeypress.html", null ],
-    [ "Catch::WarnAbout", "structCatch_1_1WarnAbout.html", null ],
     [ "WeightsFileReader", "classWeightsFileReader.html", null ],
     [ "Worker", "classWorker.html", [
       [ "SubproblemWorker", "classSubproblemWorker.html", null ],

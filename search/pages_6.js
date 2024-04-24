@@ -1,7 +1,13 @@
 var searchData=
 [
-  ['sensitivity_20analysis_0',['Sensitivity analysis',['../md_docs_user_guide_get_started_sensitivity_analysis.html',1,'']]],
-  ['set_20up_20an_20antares_2dxpansion_20study_1',['Set up an Antares-Xpansion study',['../md_docs_user_guide_get_started_prepare_a_simulation.html',1,'']]],
-  ['settings_20of_20the_20algorithm_2',['Settings of the algorithm',['../md_docs_user_guide_get_started_settings_definition.html',1,'']]],
-  ['study_20format_20changes_3',['Study format changes',['../md_docs_changelog_format_changes.html',1,'']]]
+  ['in_20antares_20xpansion_0',['The optimal investment problem in Antares-Xpansion',['../md_docs_2user-guide_2optimization-principles_2investment-problem.html',1,'']]],
+  ['index_1',['index',['../md_docs_2index.html',1,'']]],
+  ['install_2',['Dependencies install',['../md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html',1,'']]],
+  ['installation_3',['Installation',['../md_docs_2user-guide_2get-started_2installation.html',1,'']]],
+  ['installer_20creation_4',['Installer creation',['../md_docs_2developer-guide_2install__from__sources_26-Installer-creation.html',1,'']]],
+  ['interface_20creation_5',['User interface creation',['../md_docs_2developer-guide_2install__from__sources_25-ui-creation.html',1,'']]],
+  ['introduction_6',['Introduction',['../md_docs_2developer-guide_2install__from__sources_20-INSTALL.html',1,'']]],
+  ['investment_20problem_7',['Mathematical aspects of the investment problem',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html',1,'']]],
+  ['investment_20problem_20generation_8',['Investment problem generation',['../md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html',1,'']]],
+  ['investment_20problem_20in_20antares_20xpansion_9',['The optimal investment problem in Antares-Xpansion',['../md_docs_2user-guide_2optimization-principles_2investment-problem.html',1,'']]]
 ];

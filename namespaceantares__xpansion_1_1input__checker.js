@@ -24,5 +24,11 @@ var namespaceantares__xpansion_1_1input__checker =
     [ "SeparationParameterValueError", "classantares__xpansion_1_1input__checker_1_1SeparationParameterValueError.html", null ],
     [ "TimelimitValueError", "classantares__xpansion_1_1input__checker_1_1TimelimitValueError.html", null ],
     [ "UnrecognizedCandidateOptionType", "classantares__xpansion_1_1input__checker_1_1UnrecognizedCandidateOptionType.html", null ],
-    [ "check_options", "namespaceantares__xpansion_1_1input__checker.html#a9f77df0f96b2745fa8708d7107425844", null ]
+    [ "_check_candidate_link", "namespaceantares__xpansion_1_1input__checker.html#a16ac28238886dd434aa43f348eaf4708", null ],
+    [ "_check_candidate_name", "namespaceantares__xpansion_1_1input__checker.html#a45a9d07446dee99f5444c5501a8bf103", null ],
+    [ "_check_candidate_option_type", "namespaceantares__xpansion_1_1input__checker.html#abb88ac7230d67b32f83d000ad04e866a", null ],
+    [ "_check_profile_file", "namespaceantares__xpansion_1_1input__checker.html#a1f3d06c7c9c333e6348dad1926429372", null ],
+    [ "_check_setting_option_type", "namespaceantares__xpansion_1_1input__checker.html#a99b546c1befa0e0b5961fcac0f2c3cbf", null ],
+    [ "_check_setting_option_value", "namespaceantares__xpansion_1_1input__checker.html#af8d45eb83f785a4a1975282c99798592", null ],
+    [ "check_options", "namespaceantares__xpansion_1_1input__checker.html#a6384647641c8b6636e1e0b97286ff37f", null ]
 ];
