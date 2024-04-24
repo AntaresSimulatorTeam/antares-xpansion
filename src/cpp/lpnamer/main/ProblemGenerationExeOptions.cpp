@@ -26,7 +26,7 @@ void ProblemGenerationExeOptions::Parse(unsigned int argc,
                                         const char* const* argv) {
   OptionsParser::Parse(argc, argv);
   auto log_location = LOGLOCATION;
-  checkOnlyOneMandatoryOption(log_location);
+  checkAtLeastOneMandatoryOption(log_location);
   checkOnlyOneMandatoryOption(log_location);
 }
 void ProblemGenerationExeOptions::checkAtLeastOneMandatoryOption(
