@@ -182,3 +182,9 @@ ExternalLoopOptions SimulationOptions::GetExternalLoopOptions() const {
   return {EXT_LOOP_CRITERION_VALUE, EXT_LOOP_CRITERION_TOLERANCE,
           EXT_LOOP_CRITERION_COUNT_THRESHOLD};
 }
+
+
+ExternalLoopOptions SimulationOptions::GetExternalLoopOptions() const {
+  return {EXT_LOOP_CRITERION_VALUE, EXT_LOOP_CRITERION_TOLERANCE,
+          EXT_LOOP_CRITERION_COUNT_THRESHOLD};
+}

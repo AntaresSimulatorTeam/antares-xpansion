@@ -17,7 +17,7 @@ jobs:
           fetch-depth: 0
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v32
+        uses: tj-actions/changed-files@v44
         with:
           files: |
             docker/centos7-system-deps
@@ -42,7 +42,7 @@ jobs:
       antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
       antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Read antares-solver version
         id: antares-version
         uses: ./.github/actions/read-json-value
@@ -74,7 +74,7 @@ jobs:
       - id: branch-name
         uses: tj-actions/branch-names@v8
 
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v3 #keep v3
         with:
           submodules: true
 
