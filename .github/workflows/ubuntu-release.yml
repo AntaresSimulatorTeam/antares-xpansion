@@ -179,7 +179,6 @@ jobs:
                 -DBUILD_UI=ON  \
                 -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
                 -DXPRESS=${{ env.XPRESS_VALUE }} \
-                -DXPRESS_ROOT=${{ env.XPRESSDIR }} \
                 -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
