@@ -21,10 +21,9 @@ target_include_directories (output_core
 			${xpansion_interfaces_path}
 )
 
-jsoncpplib_name(jsonlib)
 target_link_libraries (output_core
 	PUBLIC
-		${jsonlib}
+		${JSONCPP_LIB}
 		helpers
 )
 

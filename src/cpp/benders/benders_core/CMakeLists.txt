@@ -35,7 +35,6 @@ target_include_directories (benders_core
 			${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-jsoncpplib_name(jsonlib)
 target_link_libraries (benders_core
 	PUBLIC
 		helpers
@@ -43,7 +42,7 @@ target_link_libraries (benders_core
 		solvers
 		glog::glog
 		TBB::tbb
-		${jsonlib}
+		${JSONCPP_LIB}
 )
 
 add_library (${PROJECT_NAME}::benders_core ALIAS benders_core)
