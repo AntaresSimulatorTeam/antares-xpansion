@@ -236,9 +236,9 @@ endif()
 
 find_package(jsoncpp CONFIG REQUIRED)
 if (MSVC)
-	set(${JSONCPP_LIB} jsoncpp_lib)
+	set(JSONCPP_LIB jsoncpp_lib)
 else ()
-	set(${JSONCPP_LIB} jsoncpp_static)
+	set(JSONCPP_LIB jsoncpp_static)
 endif ()
 message("Using jsoncpp target ${JSONCPP_LIB}")
 
