@@ -139,7 +139,6 @@ jobs:
                 -DCMAKE_INSTALL_PREFIX=_install \
                 -DBUILD_UI=ON  \
                 -DXPRESS=${{ env.XPRESS_VALUE }} \
-                -DXPRESS_ROOT=${{ env.XPRESSDIR }} \
                 -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
