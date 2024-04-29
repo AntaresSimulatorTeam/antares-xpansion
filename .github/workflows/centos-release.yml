@@ -130,7 +130,7 @@ jobs:
         uses: tj-actions/branch-names@v8
 
       - name: Checkout
-        uses: actions/checkout@v3 #keep v3
+        uses: actions/checkout@v4 #keep v3
         with:
           submodules: true
 
@@ -171,7 +171,7 @@ jobs:
           path: docs/
 
       - name: Checkout xpressmp linux
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           token: ${{ secrets.AS_TOKEN }}
           repository: rte-france/xpress-mp
