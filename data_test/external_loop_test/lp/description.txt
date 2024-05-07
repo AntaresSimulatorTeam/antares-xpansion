@@ -12,7 +12,7 @@ We describe a system with 4 nodes, on 1 timestep, 2 scenarios :
         - Prod cost = 1
         - Investment cost = 20
  
-    On nodes N1, N2, N3, there is a demand that differ between scenarios :
+    On nodes N1, N2, N3, there is a demand that differs between scenarios :
         - On N1 : Demand1 = [1, 3]
         - On N2 : Demand2 = [3, 3]
         - On N3 : Demand3 = [0, 3]
@@ -35,8 +35,10 @@ We describe a system with 4 nodes, on 1 timestep, 2 scenarios :
     Each invested capacity will first go to node 2, then to node 1 and finally to node 3 given the transmission costs.
  
     Hence we can deduce the number expected hours of ENS given the total capacity as follows  (invested capacity is total capacity - 1 as P_max = 1 initially):
-        - 0 <= P_max <= 2.9 : 2.5h
-        - 2.9 <= P_max <= 3.9 : 1.5h
-        - 3.9 <= P_max <= 5.9 : 1h
-        - 5.9 <= P_max <= 8.9 : 0.5h
-        - 8.9 <= P_max : 0h
+        - 0 <= P_max <= 2.9 : 2.5h (1 in area 1, 1 in area 2, 0.5 in area 3)
+        - 2.9 <= P_max <= 3.9 : 1.5h (1 in area 1, 0 in area 2, 0.5 in area 3)
+        - 3.9 <= P_max <= 5.9 : 1h (0.5 in area 1, 0 in area 2, 0.5 in area 3)
+        - 5.9 <= P_max <= 8.9 : 0.5h (0 in area 1, 0 in area 2, 0.5 in area 3)
+        - 8.9 <= P_max : 0h (0 in area 1, 0 in area 2, 0 in area 3)
+
+    Now, to test the heuristic taking into account the reliability constraint we can easily deduce the expected result depending on the criterion. For the test case, we require that all areas have less than 0.5 hours with ENS, hence, the solution is to have a total capacity of 3.9 (i.e. invest 2.9 as P_max = 1 initially)
