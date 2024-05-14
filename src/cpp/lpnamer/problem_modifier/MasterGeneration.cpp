@@ -37,8 +37,7 @@ void MasterGeneration::write_master_mps(
     std::string const &master_formulation, std::string const &solver_name,
     const AdditionalConstraints &additionalConstraints_p,
     SolverLogManager&solver_log_manager) const {
-  SolverAbstract::Ptr master_l =
-      MasterProblemBuilder(master_formulation)
+  auto master_l = MasterProblemBuilder(master_formulation)
           .build(solver_name, candidates, solver_log_manager);
   treatAdditionalConstraints(master_l, additionalConstraints_p, logger_);
 

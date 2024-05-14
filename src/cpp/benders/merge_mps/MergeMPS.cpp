@@ -20,7 +20,6 @@ void MergeMPS::launch() {
   std::string solver_to_use =
       (_options.SOLVER_NAME == "COIN") ? "CBC" : _options.SOLVER_NAME;
   SolverAbstract::Ptr mergedSolver_l = factory.create_solver(solver_to_use);
-  mergedSolver_l->init();
   mergedSolver_l->set_output_log_level(_options.LOG_LEVEL);
 
   int nslaves = input.size() - 1;
@@ -31,7 +30,6 @@ void MergeMPS::launch() {
   for (auto const &kvp : input) {
     auto problem_name(inputRootDir / (kvp.first));
     SolverAbstract::Ptr solver_l = factory.create_solver(solver_to_use);
-    solver_l->init();
     solver_l->set_output_log_level(_options.LOG_LEVEL);
 
     if (kvp.first != _options.MASTER_NAME) {

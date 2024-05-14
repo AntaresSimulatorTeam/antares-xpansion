@@ -35,23 +35,25 @@ SolverFactory::SolverFactory(std::shared_ptr<ILoggerXpansion> logger)
 
 SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name, const SOLVER_TYPE solver_type) const {
-  if (solver_name == "") {
+  SolverAbstract::Ptr ret;
+  if (solver_name.empty()) {
     throw InvalidSolverNameException(solver_name, LOGLOCATION);
   }
-
   else if (isXpress_available_ && solver_name == XPRESS_STR) {
-    return std::make_shared<SolverXpress>();
+    ret = std::make_shared<SolverXpress>();
   }
 #ifdef COIN_OR
   if (solver_name == COIN_STR && solver_type == SOLVER_TYPE::CONTINUOUS) {
-    return std::make_shared<SolverClp>();
+    ret = std::make_shared<SolverClp>();
   } else if (solver_name == COIN_STR && solver_type == SOLVER_TYPE::INTEGER) {
-    return std::make_shared<SolverCbc>();
+    ret = std::make_shared<SolverCbc>();
   }
 #endif
   else {
     throw InvalidSolverNameException(solver_name, LOGLOCATION);
   }
+  ret->init();
+  return ret;
 }
 
 SolverAbstract::Ptr SolverFactory::create_solver(
@@ -69,41 +71,47 @@ SolverAbstract::Ptr SolverFactory::create_solver(
 
 SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name) const {
-  if (solver_name == "") {
+  SolverAbstract::Ptr ret;
+  if (solver_name.empty()) {
     throw InvalidSolverNameException(solver_name, LOGLOCATION);
   } else if (isXpress_available_ && solver_name == XPRESS_STR) {
-    return std::make_shared<SolverXpress>();
+    ret = std::make_shared<SolverXpress>();
   }
 #ifdef COIN_OR
   else if (solver_name == CLP_STR) {
-    return std::make_shared<SolverClp>();
+    ret = std::make_shared<SolverClp>();
   } else if (solver_name == CBC_STR) {
-    return std::make_shared<SolverCbc>();
+    ret = std::make_shared<SolverCbc>();
   }
 #endif
   else {
     throw InvalidSolverNameException(solver_name, LOGLOCATION);
   }
+  ret->init();
+  return ret;
 }
 
 SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name, SolverLogManager &log_manager) const {
-  if (solver_name == "") {
+  if (solver_name.empty()) {
     throw InvalidSolverNameException(solver_name, LOGLOCATION);
   }
+  SolverAbstract::Ptr ret;
   if (isXpress_available_ && solver_name == XPRESS_STR) {
-    return std::make_shared<SolverXpress>(log_manager);
+    ret = std::make_shared<SolverXpress>(log_manager);
   }
 #ifdef COIN_OR
   else if (solver_name == CLP_STR) {
-    return std::make_shared<SolverClp>(log_manager);
+    ret = std::make_shared<SolverClp>(log_manager);
   } else if (solver_name == CBC_STR) {
-    return std::make_shared<SolverCbc>(log_manager);
+    ret = std::make_shared<SolverCbc>(log_manager);
   }
 #endif
   else {
     throw InvalidSolverNameException(solver_name, LOGLOCATION);
   }
+  ret->init();
+  return ret;
 }
 
 SolverAbstract::Ptr SolverFactory::copy_solver(
