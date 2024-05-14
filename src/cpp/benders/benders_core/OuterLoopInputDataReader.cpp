@@ -173,7 +173,7 @@ struct convert<OuterLoopInputData> {
   static bool decode(const Node &node, OuterLoopInputData &rhs) {
     rhs.SetStoppingThreshold(node["stopping_threshold"].as<double>(1e-4));
     rhs.SetCriterionCountThreshold(
-        node["criterion_count_threshold"].as<double>(1e-1));
+        node["criterion_count_threshold"].as<double>(1));
     rhs.SetCriterionTolerance(node["criterion_tolerance"].as<double>(1e-1));
 
     if (auto patterns = node["patterns"]) {
