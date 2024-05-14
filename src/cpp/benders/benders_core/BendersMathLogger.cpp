@@ -52,7 +52,7 @@ std::vector<std::string> HeadersManagerExternalLoop::HeadersList() {
   headers_list.push_back("Outer loop");
   headers_list.push_back("Max Criterion");
   headers_list.push_back("Area Max Criterion");
-  headers_list.push_back("bilevel best ub");
+  headers_list.push_back("Bilevel best ub");
   auto base_headers = HeadersManager::HeadersList();
   std::move(base_headers.begin(), base_headers.end(),
             std::back_inserter(headers_list));
