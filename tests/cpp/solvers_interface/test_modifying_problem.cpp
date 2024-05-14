@@ -18,7 +18,6 @@ TEST_CASE("Modification: deleting rows", "[modif][del-rows]") {
       //========================================================================================
       // solver declaration
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-      solver->init();
       solver->read_prob_mps(instance);
 
       //========================================================================================
@@ -59,7 +58,6 @@ TEST_CASE("Modification: add rows", "[modif][add-rows]") {
         //========================================================================================
         // solver declaration
         SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-        solver->init();
         solver->read_prob_mps(instance);
 
         //========================================================================================
@@ -145,7 +143,6 @@ TEST_CASE("Modification: change obj", "[modif][chg-obj]") {
       //========================================================================================
       // solver declaration
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-      solver->init();
       solver->read_prob_mps(instance);
 
       //========================================================================================
@@ -187,7 +184,6 @@ TEST_CASE("Modification: change right-hand side", "[modif][chg-rhs]") {
       //========================================================================================
       // solver declaration
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-      solver->init();
       solver->read_prob_mps(instance);
 
       //========================================================================================
@@ -227,7 +223,6 @@ TEST_CASE("Modification: change matrix coefficient", "[modif][chg-coef]") {
       //========================================================================================
       // solver declaration
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-      solver->init();
       solver->read_prob_mps(instance);
 
       //========================================================================================
@@ -284,7 +279,6 @@ TEST_CASE("Modification: add columns", "[modif][add-cols]") {
         //========================================================================================
         // solver declaration
         SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-        solver->init();
         solver->read_prob_mps(instance);
 
         //========================================================================================
@@ -413,7 +407,6 @@ TEST_CASE("Modification: change name of row and column", "[modif][chg-names]") {
     for (auto const& solver_name : factory.get_solvers_list()) {
       std::filesystem::path instance = datas[inst]._path;
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-      solver->init();
       solver->read_prob_mps(instance);
 
       // Test change col name
@@ -452,7 +445,6 @@ TEST_CASE("Modification: add cols and a row associated to those columns",
     for (auto const& solver_name : factory.get_solvers_list()) {
       std::filesystem::path instance = datas[inst]._path;
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-      solver->init();
       solver->read_prob_mps(instance);
 
       /*--------------------------------------------------------------------------------*/
