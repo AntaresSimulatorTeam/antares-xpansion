@@ -126,7 +126,7 @@ For build instructions, please visit the [developer guide][developer-guide].
 
 
 
-[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/workflows/Ubuntu%20CI%20(system%20libs)/badge.svg
+[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/workflows/ubuntu-release.yml/badge.svg
 [ubuntu_release]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ubuntu-release.yml?query=branch%3Adevelop
 [windows_vcpkg_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/workflows/Windows%20CI%20(VCPKG)/badge.svg
 [windows_vcpkg_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions?query=workflow%3A"Windows%20CI%20(VCPKG)"+branch%3Adevelop
