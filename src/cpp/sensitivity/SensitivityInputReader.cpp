@@ -55,7 +55,6 @@ SolverAbstract::Ptr SensitivityInputReader::get_last_master() const {
     last_master = factory.create_solver(
         _benders_data[Output::OPTIONS_C]["SOLVER_NAME"].asString());
   }
-  last_master->init();
   last_master->set_threads(1);
   last_master->set_output_log_level(
       _benders_data[Output::OPTIONS_C]["LOG_LEVEL"].asInt());

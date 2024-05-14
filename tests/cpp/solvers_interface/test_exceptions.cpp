@@ -23,7 +23,6 @@ TEST_CASE("InvalidRowSizeException", "[exceptions][invalid_row_size]") {
   //========================================================================================
   // solver declaration
   SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-  solver->init();
 
   try {
     std::vector<std::string> names = solver->get_row_names(0, 9);
@@ -108,7 +107,6 @@ TEST_CASE("InvalidSetAlgorithm", "[exceptions][invalid_set_algorithm]") {
   for (auto const& solver_name : {"CBC", "CLP"}) {
     SolverFactory factory;
     SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-    solver->init();
 
     try {
       solver->set_algorithm("BARRIER");
@@ -123,7 +121,6 @@ TEST_CASE("InvalidSetSimpleIter", "[exceptions][set_simplex_iter]") {
   for (auto const& solver_name : {"CBC"}) {
     SolverFactory factory;
     SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-    solver->init();
 
     try {
       solver->set_simplex_iter(10);
@@ -138,7 +135,6 @@ TEST_CASE("InvalidSetOptimatilityGap", "[exceptions][set_optimality_gap]") {
   for (auto const& solver_name : {"CBC", "CLP"}) {
     SolverFactory factory;
     SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-    solver->init();
 
     try {
       solver->set_optimality_gap(10);
