@@ -34,7 +34,6 @@ TEST_CASE("Write and read basis", "[basis]") {
       // As CLP is a pure LP solver, it cannot pass this test
       if (solver_name != "CLP") {
         SolverAbstract::Ptr expec_solver = factory.create_solver(solver_name);
-        expec_solver->init();
         expec_solver->read_prob_mps(instance);
         expec_solver->solve_mip();
 
@@ -42,7 +41,6 @@ TEST_CASE("Write and read basis", "[basis]") {
         expec_solver->write_basis(basis_file);
 
         SolverAbstract::Ptr current_solver = factory.create_solver(solver_name);
-        current_solver->init();
         current_solver->read_prob_mps(instance);
         current_solver->read_basis(basis_file);
 

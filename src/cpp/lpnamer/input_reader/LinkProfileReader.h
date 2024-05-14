@@ -3,6 +3,7 @@
 
 #include <filesystem>
 #include <map>
+#include <utility>
 
 #include "Candidate.h"
 #include "LinkProfile.h"
@@ -10,9 +11,9 @@
 
 class LinkProfileReader {
  public:
-  LinkProfileReader(
+  explicit LinkProfileReader(
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
-      : logger_(logger) {}
+      : logger_(std::move(logger)) {}
 
   std::vector<LinkProfile> ReadLinkProfile(
       const std::filesystem::path& direct_filename,

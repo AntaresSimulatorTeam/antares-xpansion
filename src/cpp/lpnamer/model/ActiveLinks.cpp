@@ -235,7 +235,7 @@ double ActiveLink::already_installed_indirect_profile(size_t chronicle_number,
       .getIndirectProfile(timeStep);
 }
 
-int ActiveLink::get_idLink() const { return _idLink; }
+unsigned ActiveLink::get_idLink() const { return _idLink; }
 
 LinkName ActiveLink::get_LinkName() const { return _name; }
 

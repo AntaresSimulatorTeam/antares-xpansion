@@ -7,12 +7,12 @@
 
 #include <algorithm>
 #include <unordered_map>
+#include <utility>
 
 #include "LogUtils.h"
 
-MasterProblemBuilder::MasterProblemBuilder(
-    const std::string& master_formulation)
-    : _master_formulation(master_formulation) {}
+MasterProblemBuilder::MasterProblemBuilder(std::string master_formulation)
+    : _master_formulation(std::move(master_formulation)) {}
 
 std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(
     const std::string& solverName, const std::vector<Candidate>& candidates,
@@ -42,7 +42,7 @@ std::shared_ptr<SolverAbstract> MasterProblemBuilder::build(
 
 void MasterProblemBuilder::addPmaxConstraint(
     const std::vector<Candidate>& candidatesInteger, SolverAbstract& master_l) {
-  auto n_integer = (int)candidatesInteger.size();
+  auto n_integer = static_cast<unsigned>(candidatesInteger.size());
   if (n_integer > 0) {
     std::vector<double> dmatval;
     std::vector<int> colind;
@@ -63,7 +63,7 @@ void MasterProblemBuilder::addPmaxConstraint(
       int nVarColumNumber = nbColPmaxVar + positionInIntegerCandidadeList;
 
       // pMax  - n unit_size = 0
-      rstart.push_back((int)dmatval.size());
+      rstart.push_back(static_cast<int>(dmatval.size()));
       rhs.push_back(0);
       rowtype.push_back('E');
 
