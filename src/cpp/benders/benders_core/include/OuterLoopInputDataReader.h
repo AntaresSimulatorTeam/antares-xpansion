@@ -94,7 +94,7 @@ class OuterLoopInputData {
   double outer_loop_stopping_threshold_ = 1e-4;
   std::vector<OuterLoopSingleInputData> outer_loop_data_;
   double criterion_tolerance_ = 1e-1;
-  double criterion_count_threshold_ = 1e-1;
+  double criterion_count_threshold_ = 1;
 };
 
 /// @brief Abstract /***
