@@ -4,7 +4,7 @@ var searchData=
   ['activelink_1',['ActiveLink',['../classActiveLink.html',1,'']]],
   ['activelinksbuilder_2',['ActiveLinksBuilder',['../classActiveLinksBuilder.html',1,'']]],
   ['additionalconstraint_3',['AdditionalConstraint',['../classAdditionalConstraint.html',1,'']]],
-  ['additionalconstraints_4',['AdditionalConstraints',['../structAdditionalConstraints.html',1,'']]],
+  ['additionalconstraints_4',['AdditionalConstraints',['../classAdditionalConstraints.html',1,'']]],
   ['additionalconstraintsreader_5',['AdditionalConstraintsReader',['../structAdditionalConstraintsReader.html',1,'']]],
   ['additionalconstraintsreadertest_6',['AdditionalConstraintsReaderTest',['../classAdditionalConstraintsReaderTest.html',1,'']]],
   ['additionalconstraintstest_7',['AdditionalConstraintsTest',['../classAdditionalConstraintsTest.html',1,'']]],

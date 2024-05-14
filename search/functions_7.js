@@ -59,5 +59,5 @@ var searchData=
   ['getsubproblemcut_56',['GetSubproblemCut',['../classBendersBase.html#a14511a50f100e5076dfe0f7e8ea08070',1,'BendersBase']]],
   ['getsubproblempath_57',['GetSubproblemPath',['../classBendersBase.html#a534370fd14cc3b3eaa99909557f6b63c',1,'BendersBase']]],
   ['getvariablessection_58',['getVariablesSection',['../structAdditionalConstraintsReader.html#a8224a377cf48e9947ced7da5ef3be211',1,'AdditionalConstraintsReader']]],
-  ['getvariablestobinarise_59',['getVariablesToBinarise',['../structAdditionalConstraints.html#a86675d9f6129dd67df9ebfb883d4a8fc',1,'AdditionalConstraints']]]
+  ['getvariablestobinarise_59',['getVariablesToBinarise',['../classAdditionalConstraints.html#a86675d9f6129dd67df9ebfb883d4a8fc',1,'AdditionalConstraints']]]
 ];

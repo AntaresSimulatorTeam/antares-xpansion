@@ -306,6 +306,11 @@ var annotated_dup =
               [ "TestCandidateReader", "classtests_1_1end__to__end_1_1examples_1_1test_1_1test__candidates__reader_1_1TestCandidateReader.html", "classtests_1_1end__to__end_1_1examples_1_1test_1_1test__candidates__reader_1_1TestCandidateReader" ]
             ] ]
           ] ]
+        ] ],
+        [ "lpnamer", null, [
+          [ "test_lpnamerEndToEnd", null, [
+            [ "OptionType", "classtests_1_1end__to__end_1_1lpnamer_1_1test__lpnamerEndToEnd_1_1OptionType.html", null ]
+          ] ]
         ] ]
       ] ],
       [ "python", "namespacetests_1_1python.html", [
@@ -379,7 +384,7 @@ var annotated_dup =
     [ "ActiveLink", "classActiveLink.html", null ],
     [ "ActiveLinksBuilder", "classActiveLinksBuilder.html", "classActiveLinksBuilder" ],
     [ "AdditionalConstraint", "classAdditionalConstraint.html", "classAdditionalConstraint" ],
-    [ "AdditionalConstraints", "structAdditionalConstraints.html", "structAdditionalConstraints" ],
+    [ "AdditionalConstraints", "classAdditionalConstraints.html", "classAdditionalConstraints" ],
     [ "AdditionalConstraintsReader", "structAdditionalConstraintsReader.html", "structAdditionalConstraintsReader" ],
     [ "AdditionalConstraintsReaderTest", "classAdditionalConstraintsReaderTest.html", null ],
     [ "AdditionalConstraintsTest", "classAdditionalConstraintsTest.html", null ],

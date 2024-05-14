@@ -79,7 +79,7 @@ var searchData=
   ['getsubproblempath_76',['GetSubproblemPath',['../classBendersBase.html#a534370fd14cc3b3eaa99909557f6b63c',1,'BendersBase']]],
   ['getting_20started_77',['Getting started',['../index.html#autotoc_md6',1,'']]],
   ['getvariablessection_78',['getVariablesSection',['../structAdditionalConstraintsReader.html#a8224a377cf48e9947ced7da5ef3be211',1,'AdditionalConstraintsReader']]],
-  ['getvariablestobinarise_79',['getVariablesToBinarise',['../structAdditionalConstraints.html#a86675d9f6129dd67df9ebfb883d4a8fc',1,'AdditionalConstraints']]],
+  ['getvariablestobinarise_79',['getVariablesToBinarise',['../classAdditionalConstraints.html#a86675d9f6129dd67df9ebfb883d4a8fc',1,'AdditionalConstraints']]],
   ['git_80',['Automatic libraries compilation from git',['../md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html#autotoc_md67',1,'']]],
   ['git_20submodule_81',['Update git submodule',['../md_docs_2developer-guide_2install__from__sources_23-Build.html#autotoc_md72',1,'']]],
   ['git_20version_82',['@ref &quot;git-version&quot; &quot;Git version&quot;',['../md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html#autotoc_md64',1,'']]],
