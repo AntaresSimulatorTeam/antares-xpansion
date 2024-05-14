@@ -31,9 +31,9 @@ void ProblemGenerationExeOptions::Parse(unsigned int argc,
 }
 void ProblemGenerationExeOptions::checkAtLeastOneMandatoryOption(
     const std::string& log_location) const {
-  if (std::vector<std::string> mandatory = {this->XpansionOutputDir(),
-                                            this->ArchivePath(),
-                                            this->StudyPath()};
+  if (std::vector<std::string> mandatory = {this->XpansionOutputDir().string(),
+                                            this->ArchivePath().string(),
+                                            this->StudyPath().string()};
       std::ranges::all_of(
           mandatory, [](std::string_view string) { return string.empty(); })) {
     auto msg =
@@ -43,8 +43,8 @@ void ProblemGenerationExeOptions::checkAtLeastOneMandatoryOption(
 }
 void ProblemGenerationExeOptions::checkOnlyOneMandatoryOption(
     const std::string& log_location) const {
-  if (std::vector<std::string> args = {this->XpansionOutputDir(),
-                                       this->ArchivePath(), this->StudyPath()};
+  if (std::vector<std::string> args = {this->XpansionOutputDir().string(),
+                                       this->ArchivePath().string(), this->StudyPath().string()};
       std::ranges::count_if(args, std::ranges::empty) < (args.size() - 1)) {
     auto msg = "Only one of [archive, output, study] parameters is accepted"s;
     throw ProblemGenerationOptions::ConflictingParameters(msg, log_location);
