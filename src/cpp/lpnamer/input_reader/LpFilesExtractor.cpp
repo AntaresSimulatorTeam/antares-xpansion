@@ -62,7 +62,7 @@ void LpFilesExtractor::ExtractFiles() const {
     } catch (const std::filesystem::filesystem_error& e) {
       auto log_location = LOGLOCATION;
       (*logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << e.what();
-      throw e;
+      throw;
     }
   }
 
@@ -92,7 +92,7 @@ void LpFilesExtractor::ExtractFiles() const {
     } catch (const std::filesystem::filesystem_error& e) {
       auto log_location = LOGLOCATION;
       (*logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << e.what();
-      throw e;
+      throw;
     }
   }
 }
