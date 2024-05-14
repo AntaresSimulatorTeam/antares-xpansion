@@ -409,7 +409,7 @@ void BendersMpi::RunExternalLoopBilevelChecks() {
     const auto &invest_cost = workerMasterData._invest_cost;
     const auto &overall_cost = invest_cost + workerMasterData._operational_cost;
     outer_loop_biLevel_.Update_bilevel_data_if_feasible(
-        _data._x_cut,
+        _data.x_cut,
         GetOuterLoopCriterionAtBestBenders() /*/!\ must
                 be at best it*/
         ,
