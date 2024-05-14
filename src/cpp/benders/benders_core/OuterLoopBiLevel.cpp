@@ -4,7 +4,7 @@ OuterLoopBiLevel::OuterLoopBiLevel(const Outerloop::OuterLoopInputData  &outer_l
     : outer_loop_input_data_(outer_loop_input_data) {}
 
 bool OuterLoopBiLevel::Update_bilevel_data_if_feasible(
-    const SubProblemDataMap &x, const std::vector<double> &outer_loop_criterion,
+    const Point &x, const std::vector<double> &outer_loop_criterion,
     double overall_cost, double invest_cost_at_x, double lambda_min) {
   if (found_feasible_ =
           Check_bilevel_feasibility(outer_loop_criterion, overall_cost);
@@ -40,7 +40,7 @@ bool OuterLoopBiLevel::IsCriterionSatisfied(
   return true;
 }
 
-void OuterLoopBiLevel::Update(const SubProblemDataMap &x, double overall_cost,
+void OuterLoopBiLevel::Update(const Point &x, double overall_cost,
                               double invest_cost_at_x) {
   bilevel_best_x_ = x;
   bilevel_best_ub_ = overall_cost;

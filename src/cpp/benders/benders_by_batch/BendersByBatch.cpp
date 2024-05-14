@@ -66,7 +66,6 @@ void BendersByBatch::Run() {
   if (init_data_) {
     PreRunInitialization();
   } else {
-    // only ?
     _data.stop = false;
   }
 
