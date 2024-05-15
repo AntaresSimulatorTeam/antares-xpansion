@@ -1,4 +1,4 @@
-[![Ubuntu CI Status][ubuntu_system_svg]][ubuntu_release]  [![Windows CI Status][windows_vcpkg_svg]][windows_vcpkg_link] [![Centos CI Status][centos_system_svg]][centos_system_link][![OL8 CI Status][oracle_svg]][oracle_link]  [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=AntaresSimulatorTeam_antares-xpansion&metric=alert_status)][sonarcloud_link]
+[![Status][ubuntu_system_svg]][ubuntu_system_link]  [![Status][windows_vcpkg_svg]][windows_vcpkg_link] [![Status][centos_system_svg]][centos_system_link] [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0) [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=AntaresSimulatorTeam_antares-xpansion&metric=alert_status)][sonarcloud_link]
 
 ![C++](https://img.shields.io/badge/c++-%2300599C.svg?style=for-the-badge&logo=c%2B%2B&logoColor=white) ![Python](https://img.shields.io/badge/python-3670A0?style=for-the-badge&logo=python&logoColor=ffdd54)
 
@@ -43,14 +43,12 @@ of the power system, but induces an additional **investment annuity** that inclu
 Antares-Xpansion is currently under development. Feel free to submit any issue.
 
 
-[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ubuntu-release.yml/badge.svg?query=branch%3Adevelop
-[ubuntu_release]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ubuntu-release.yml?query=branch%3Adevelop
-[windows_vcpkg_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/windows-vcpkg.yml/badge.svg?query=branch%3Adevelop
+[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ubuntu-system-deps-build.yml/badge.svg
+[ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ubuntu-release.yml?query=branch%3Adevelop
+[windows_vcpkg_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/windows-vcpkg-deps-build.yml/badge.svg
 [windows_vcpkg_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/windows-vcpkg.yml?query=branch%3Adevelop
-[centos_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/centos-release.yml/badge.svg?query=branch%3Adevelop
+[centos_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/centos7-system-deps-build.yml/badge.svg
 [centos_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/centos-release.yml?query=branch%3Adevelop
-[oracle_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ol8-release.yml/badge.svg?query=branch%3Adevelop
-[oracle_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ol8-release.yml?query=branch%3Adevelop
 [sonarcloud_link]: https://sonarcloud.io/dashboard?id=AntaresSimulatorTeam_antares-xpansion
 
 [xpansion-github]: https://github.com/AntaresSimulatorTeam/antares-xpansion
