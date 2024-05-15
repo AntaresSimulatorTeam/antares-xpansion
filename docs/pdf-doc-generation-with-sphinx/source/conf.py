@@ -29,6 +29,9 @@ author = "RTE"
 # ones.
 extensions = ["myst_parser"]
 
+# For math parsing
+myst_enable_extensions = ["dollarmath", "amsmath"]
+
 # Auto-generated header anchors
 myst_heading_anchors = 4
 
