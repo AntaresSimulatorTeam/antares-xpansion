@@ -6,47 +6,7 @@
 #include "ArchiveReader.h"
 
 void LpFilesExtractor::ExtractFiles() const {
-  std::vector<std::filesystem::path> vect_area_files;
-  std::vector<std::filesystem::path> vect_interco_files;
-
-  switch (mode_) {
-    case Mode::ARCHIVE: {
-      auto archive_reader = ArchiveReader(antares_archive_path_);
-      archive_reader.Open();
-      vect_area_files =
-          archive_reader.ExtractPattern("area*.txt", "", xpansion_output_dir_);
-
-      vect_interco_files = archive_reader.ExtractPattern("interco*.txt", "",
-                                                         xpansion_output_dir_);
-
-      archive_reader.ExtractPattern("ts-numbers*", "", xpansion_output_dir_);
-      archive_reader.Close();
-      archive_reader.Delete();
-      break;
-    }
-    case Mode::ANTARES_API:
-      [[fallthrough]];
-    case Mode::FILE: {
-      auto dit = std::filesystem::directory_iterator(simulation_dir_);
-      std::ranges::for_each(
-          dit, [&vect_area_files, &vect_interco_files](const auto& entry) {
-            if (entry.path().extension() == ".txt") {
-              if (entry.path().filename().string().starts_with("area")) {
-                vect_area_files.push_back(entry.path());
-              }
-              if (entry.path().filename().string().starts_with("interco")) {
-                vect_interco_files.push_back(entry.path());
-              }
-            }
-          });
-    } break;
-    case Mode::UNKOWN:
-      throw LogUtils::XpansionError<std::runtime_error>(
-          "Mode is unknown", LOGLOCATION);
-    default:
-      throw LogUtils::XpansionError<std::runtime_error>(
-          "Mode is not supported:", LOGLOCATION);
-  }
+  auto [vect_area_files, vect_interco_files] = getAreaIntercoFilePaths();
   if (auto num_areas_file = vect_area_files.size(); num_areas_file == 0) {
     std::ostringstream msg;
     auto log_location = LOGLOCATION;
@@ -125,3 +85,47 @@ void LpFilesExtractor::ExtractFiles() const {
           "Mode is not supported:", LOGLOCATION);
   }
 }
+std::pair<std::vector<std::filesystem::path>, std::vector<std::filesystem::path>> LpFilesExtractor::getAreaIntercoFilePaths() const{
+  std::vector<std::filesystem::path> vect_area_files;
+  std::vector<std::filesystem::path> vect_interco_files;
+  switch (this->mode_) {
+    case Mode::ARCHIVE: {
+      auto archive_reader = ArchiveReader(this->antares_archive_path_);
+      archive_reader.Open();
+      vect_area_files =
+          archive_reader.ExtractPattern("area*.txt", "", this->xpansion_output_dir_);
+
+      vect_interco_files = archive_reader.ExtractPattern("interco*.txt", "",
+                                                         this->xpansion_output_dir_);
+
+      archive_reader.ExtractPattern("ts-numbers*", "", this->xpansion_output_dir_);
+      archive_reader.Close();
+      archive_reader.Delete();
+      break;
+    }
+    case Mode::ANTARES_API:
+      [[fallthrough]];
+    case Mode::FILE: {
+      auto dit = std::filesystem::directory_iterator(this->simulation_dir_);
+      std::ranges::for_each(
+          dit, [&vect_area_files, &vect_interco_files](const auto& entry) {
+            if (entry.path().extension() == ".txt") {
+              if (entry.path().filename().string().starts_with("area")) {
+                vect_area_files.push_back(entry.path());
+              }
+              if (entry.path().filename().string().starts_with("interco")) {
+                vect_interco_files.push_back(entry.path());
+              }
+            }
+          });
+    } break;
+    case Mode::UNKOWN:
+      throw LogUtils::XpansionError<std::runtime_error>(
+          "Mode is unknown", LOGLOCATION);
+    default:
+      throw LogUtils::XpansionError<std::runtime_error>(
+          "Mode is not supported:", LOGLOCATION);
+  }
+  return std::make_pair(vect_area_files, vect_interco_files);
+}
+
