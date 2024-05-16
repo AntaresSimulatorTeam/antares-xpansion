@@ -60,3 +60,7 @@ include/google/protobuf/message.h
 
 # vscode
 .vscode
+
+# Local env
+.venv
+vcpkg_installed

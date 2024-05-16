@@ -28,30 +28,31 @@ class ActiveLink {
 
   void addCandidate(const CandidateData& candidate_data,
                     const std::vector<LinkProfile>& candidate_profile);
-  const std::vector<Candidate>& getCandidates() const;
+  [[nodiscard]] const std::vector<Candidate>& getCandidates() const;
 
-  double already_installed_direct_profile(size_t timeStep) const;
-  double already_installed_indirect_profile(size_t timeStep) const;
+  [[nodiscard]] double already_installed_direct_profile(size_t timeStep) const;
+  [[nodiscard]] double already_installed_indirect_profile(
+      size_t timeStep) const;
   [[nodiscard]] double already_installed_direct_profile(size_t chronicle_number,
                                                         size_t timeStep) const;
   [[nodiscard]] double already_installed_indirect_profile(
       size_t chronicle_number, size_t timeStep) const;
 
-  int get_idLink() const;
-  LinkName get_LinkName() const;
-  std::string get_linkor() const;
-  std::string get_linkex() const;
-  double get_already_installed_capacity() const;
+  [[nodiscard]] unsigned get_idLink() const;
+  [[nodiscard]] LinkName get_LinkName() const;
+  [[nodiscard]] std::string get_linkor() const;
+  [[nodiscard]] std::string get_linkex() const;
+  [[nodiscard]] double get_already_installed_capacity() const;
 
   [[nodiscard]] std::map<unsigned int, unsigned int> McYearToChronicle() const {
     return mc_year_to_chronicle_;
   }
 
-  unsigned long number_of_chronicles() const;
+  [[nodiscard]] unsigned long number_of_chronicles() const;
 
  private:
   std::map<unsigned, unsigned> mc_year_to_chronicle_;
-  int _idLink;
+  unsigned int _idLink;
   LinkName _name;
   std::string _linkor;
   std::string _linkex;

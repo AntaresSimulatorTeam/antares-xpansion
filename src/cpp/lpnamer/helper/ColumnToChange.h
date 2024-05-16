@@ -9,7 +9,7 @@ struct ColumnToChange {
   bool operator==(const ColumnToChange& other) const;
 
   colId id;
-  int time_step;
+  unsigned int time_step;
 };
 
 using ColumnsToChange = std::vector<ColumnToChange>;
