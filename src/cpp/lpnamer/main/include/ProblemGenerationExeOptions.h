@@ -49,9 +49,6 @@ class ProblemGenerationExeOptions : public OptionsParser,
   [[nodiscard]] std::filesystem::path deduceXpansionDirIfEmpty(
       std::filesystem::path xpansion_output_dir,
       const std::filesystem::path& archive_path) const override;
-  [[nodiscard]] std::filesystem::path deduceArchivePathIfEmpty(
-      const std::filesystem::path& xpansion_output_dir,
-      const std::filesystem::path& archive_path) const override;
   [[nodiscard]] std::filesystem::path StudyPath() const override;
   void checkMandatoryOptions(const std::string& log_location) const;
   [[nodiscard]] auto exclusiveMandatoryParameters() const;
