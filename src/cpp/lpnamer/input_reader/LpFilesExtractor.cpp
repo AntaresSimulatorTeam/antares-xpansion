@@ -118,6 +118,14 @@ LpFilesExtractor::areaAndIntecoPaths LpFilesExtractor::getFiles() const{
   }
   return std::make_pair(vect_area_files, vect_interco_files);
 }
+
+/**
+ * @brief This method is used to extract files from an archive.
+ *
+ * The patterns it looks for are "area*.txt", "interco*.txt", and "ts-numbers*". The extracted files are stored in the `xpansion_output_dir_` directory.
+ *
+ * @return A pair of vectors containing the paths of the extracted files. The first vector contains the paths of the "area*.txt" files and the second vector contains the paths of the "interco*.txt" files.
+ */
 LpFilesExtractor::areaAndIntecoPaths LpFilesExtractor::getFilesFromArchive() const {
   std::vector<std::filesystem::path> vect_area_files;
   std::vector<std::filesystem::path> vect_interco_files;
@@ -130,7 +138,5 @@ LpFilesExtractor::areaAndIntecoPaths LpFilesExtractor::getFilesFromArchive() con
                                                      this->xpansion_output_dir_);
 
   archive_reader.ExtractPattern("ts-numbers*", "", this->xpansion_output_dir_);
-  archive_reader.Close();
-  archive_reader.Delete();
   return std::make_pair(vect_area_files, vect_interco_files);
 }
