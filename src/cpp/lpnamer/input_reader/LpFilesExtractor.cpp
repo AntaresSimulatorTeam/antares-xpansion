@@ -7,19 +7,7 @@
 
 void LpFilesExtractor::ExtractFiles() const {
   auto [vect_area_files, vect_interco_files] = getFiles();
-  if (auto num_areas_file = vect_area_files.size(); num_areas_file == 0) {
-    std::ostringstream msg;
-    auto log_location = LOGLOCATION;
-    msg << "No area*.txt file found" << std::endl;
-    (*logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << msg.str();
-    throw ErrorWithAreaFile(msg.str(), log_location);
-  } else if (num_areas_file > 1) {
-    std::ostringstream msg;
-    auto log_location = LOGLOCATION;
-    msg << "More than one area*.txt file found" << std::endl;
-    (*logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << msg.str();
-    throw ErrorWithAreaFile(msg.str(), log_location);
-  }
+  checkProperNumberOfAreaFiles(vect_area_files);
 
   switch (mode_) {
     case Mode::ANTARES_API:
@@ -85,13 +73,37 @@ void LpFilesExtractor::ExtractFiles() const {
           "Mode is not supported:", LOGLOCATION);
   }
 }
+
+/**
+ * @brief This method checks if the number of area files is correct.
+ *
+ * We should have only one file named "area*.txt".
+ *
+ * @param vect_area_files
+ */
+void LpFilesExtractor::checkProperNumberOfAreaFiles(
+    const std::vector<std::filesystem::path>& vect_area_files) const {
+  if (auto num_areas_file = vect_area_files.size(); num_areas_file == 0) {
+    std::ostringstream msg;
+    auto log_location = LOGLOCATION;
+    msg << "No area*.txt file found" << std::endl;
+    (*this->logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << msg.str();
+    throw ErrorWithAreaFile(msg.str(), log_location);
+  } else if (num_areas_file > 1) {
+    std::ostringstream msg;
+    auto log_location = LOGLOCATION;
+    msg << "More than one area*.txt file found" << std::endl;
+    (*this->logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << msg.str();
+    throw ErrorWithAreaFile(msg.str(), log_location);
+  }
+}
+
 LpFilesExtractor::areaAndIntecoPaths LpFilesExtractor::getFiles() const{
   std::vector<std::filesystem::path> vect_area_files;
   std::vector<std::filesystem::path> vect_interco_files;
   switch (this->mode_) {
     case Mode::ARCHIVE: {
       return getFilesFromArchive();
-      break;
     }
     case Mode::ANTARES_API:
       [[fallthrough]];

@@ -39,5 +39,7 @@ class LpFilesExtractor {
   using areaAndIntecoPaths = std::pair<std::vector<std::filesystem::path>, std::vector<std::filesystem::path>>;
   [[nodiscard]] areaAndIntecoPaths getFiles() const;
   [[nodiscard]] areaAndIntecoPaths getFilesFromArchive() const;
+  void checkProperNumberOfAreaFiles(
+      const std::vector<std::filesystem::path>& vect_area_files) const;
 };
 #endif  // SRC_CPP_LPNAMER_INPUTREADER_LP_FILES_EXTRACTOR_H
