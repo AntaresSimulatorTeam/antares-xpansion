@@ -42,5 +42,9 @@ class LpFilesExtractor {
   void checkProperNumberOfAreaFiles(
       const std::vector<std::filesystem::path>& vect_area_files) const;
   void produceAreatxtFile(const std::vector<std::filesystem::path>& vect_area_files) const;
+  void checkProperNumberOfIntercoFiles(
+      const std::vector<std::filesystem::path>& vect_interco_files) const;
+  void produceIntercotxtFile(
+      const std::vector<std::filesystem::path>& vect_interco_files) const;
 };
 #endif  // SRC_CPP_LPNAMER_INPUTREADER_LP_FILES_EXTRACTOR_H
