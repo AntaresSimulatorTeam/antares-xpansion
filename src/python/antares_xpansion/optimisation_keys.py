@@ -64,6 +64,10 @@ class OptimisationKeys:
         return "LAST_MASTER_MPS"
 
     @staticmethod
+    def last_master_basis_key():
+        return "LAST_MASTER_BASIS"
+
+    @staticmethod
     def json_file_key():
         return "JSON_FILE"
 
@@ -94,3 +98,15 @@ class OptimisationKeys:
     @staticmethod
     def batch_size_key():
         return "BATCH_SIZE"
+
+    @staticmethod
+    def do_outer_loop_key():
+        return "DO_OUTER_LOOP"
+
+    @staticmethod
+    def outer_loop_option_file_key():
+        return "OUTER_LOOP_OPTION_FILE"
+
+    @staticmethod
+    def outer_loop_number_of_scenarios_key():
+        return "OUTER_LOOP_NUMBER_OF_SCENARIOS"

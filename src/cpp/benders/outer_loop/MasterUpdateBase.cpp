@@ -1,29 +1,19 @@
+#include <utility>
+
 #include "MasterUpdate.h"
 
+using namespace Outerloop;
+
 MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau)
-    : benders_(std::move(benders)), lambda_(0), lambda_min_(0) {
+    : benders_(std::move(benders)),
+      lambda_(0),
+      outer_loop_stopping_threshold_(benders_->OuterLoopStoppingThreshold()) {
   CheckTau(tau);
 }
 
 MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau,
                                    const std::string &name)
-    : MasterUpdateBase(benders, tau) {
-  min_invest_constraint_name_ = name;
-}
-MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double lambda,
-                                   double lambda_min, double lambda_max,
-                                   double tau)
-    : benders_(std::move(benders)),
-      lambda_(lambda),
-      lambda_min_(lambda_min),
-      lambda_max_(lambda_max) {
-  CheckTau(tau);
-}
-
-MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double lambda,
-                                   double lambda_min, double lambda_max,
-                                   double tau, const std::string &name)
-    : MasterUpdateBase(benders, lambda, lambda_min, lambda_max, tau) {
+    : MasterUpdateBase(std::move(benders), tau) {
   min_invest_constraint_name_ = name;
 }
 
@@ -35,37 +25,42 @@ void MasterUpdateBase::CheckTau(double tau) {
 }
 
 void MasterUpdateBase::Init() {
-  // check lambda_max_
-  if (lambda_max_ <= 0 || lambda_max_ < lambda_min_) {
-    // TODO log
-    SetLambdaMaxToMaxInvestmentCosts();
-  }
+  // check lambda_max
+  // if (lambda_max <= 0 || lambda_max < lambda_min) {
+  //   // TODO log
+  //   SetLambdaMaxToMaxInvestmentCosts();
+  // }
 }
-void MasterUpdateBase::SetLambdaMaxToMaxInvestmentCosts() {
-  const auto &obj = benders_->MasterObjectiveFunctionCoeffs();
-  const auto max_invest =
-      benders_->BestIterationWorkerMaster().get_max_invest();
-  lambda_max_ = 0;
-  for (const auto &[var_name, var_id] : benders_->MasterVariables()) {
-    lambda_max_ += obj[var_id] * max_invest.at(var_name);
-  }
-}
-void MasterUpdateBase::Update(const CRITERION &criterion) {
-    switch (criterion) {
-      case CRITERION::LOW:
-        lambda_max_ =
-            std::min(lambda_max_, benders_->GetBestIterationData().invest_cost);
-        break;
-      case CRITERION::HIGH:
-        lambda_min_ = lambda_;
-        break;
 
-      default:
-        return;
+bool MasterUpdateBase::Update(double lambda_min, double lambda_max) {
+  // if (is_criterion_high) {
+  //   lambda_min = lambda_;
+  // } else {
+  //   lambda_max =
+  //       std::min(lambda_max, benders_->GetBestIterationData().invest_cost);
+  // }
+  // WorkerMasterData workerMasterData = benders_->BestIterationWorkerMaster();
+  // double invest_cost = workerMasterData._invest_cost;
+  // double overall_cost = invest_cost + workerMasterData._operational_cost;
+  // if (outerLoopBiLevel_.Update_bilevel_data_if_feasible(
+  //         workerMasterData._cut_trace,
+  //         benders_
+  //             ->GetOuterLoopCriterionAtBestBenders() /*/!\ must be at best
+  //             it*/,
+  //         overall_cost)) {
+  //   lambda_max = std::min(lambda_max, invest_cost);
+  // } else {
+  //   lambda_min = lambda_;
+  // }
+
+  stop_update_ =
+      std::abs(lambda_max - lambda_min) < outer_loop_stopping_threshold_;
+  if (!stop_update_) {
+    lambda_ = dichotomy_weight_coeff_ * lambda_max +
+              (1 - dichotomy_weight_coeff_) * lambda_min;
+    UpdateConstraints();
   }
-  lambda_ = dichotomy_weight_coeff_ * lambda_max_ +
-            (1 - dichotomy_weight_coeff_) * lambda_min_;
-  UpdateConstraints();
+  return stop_update_;
 }
 
 void MasterUpdateBase::UpdateConstraints() {
@@ -110,3 +105,5 @@ void MasterUpdateBase::AddMinInvestConstraint() {
   }
   additional_constraint_index_ = benders_->MasterGetnrows() - 1;
 }
+
+double MasterUpdateBase::Rhs() const { return lambda_; }

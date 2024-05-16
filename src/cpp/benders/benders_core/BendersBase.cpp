@@ -9,18 +9,31 @@
 #include "LastIterationReader.h"
 #include "LastIterationWriter.h"
 #include "LogUtils.h"
+#include "VariablesGroup.h"
 #include "glog/logging.h"
 #include "solver_utils.h"
 
-BendersBase::BendersBase(BendersBaseOptions options, Logger logger,
+BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
                          Writer writer,
                          std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
-    : _options(std::move(options)),
+    : _options(options),
       _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) /
                      (_options.CSV_NAME + ".csv")),
       _logger(std::move(logger)),
       _writer(std::move(writer)),
-      mathLoggerDriver_(mathLoggerDriver) {}
+      mathLoggerDriver_(std::move(mathLoggerDriver)) {
+  if (options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
+    //TODO maybe the input format will change?
+    outer_loop_input_data_ =
+        Outerloop::OuterLoopInputFromYaml().Read(OuterloopOptionsFile());
+    outer_loop_biLevel_ = OuterLoopBiLevel(outer_loop_input_data_);
+  }
+}
+
+std::filesystem::path BendersBase::OuterloopOptionsFile() const {
+  return std::filesystem::path(
+         _options.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE);
+}
 
 /*!
  *  \brief Initialize set of data used in the loop
@@ -42,6 +55,7 @@ void BendersBase::init_data() {
   _data.iteration_time = 0;
   _data.timer_master = 0;
   _data.subproblems_walltime = 0;
+  outer_loop_criterion_.clear();
 }
 
 void BendersBase::OpenCsvFile() {
@@ -166,6 +180,10 @@ void BendersBase::update_best_ub() {
     _data.best_ub = _data.ub;
     _data.best_it = _data.it;
     FillWorkerMasterData(relevantIterationData_.best);
+    _data.outer_loop_current_iteration_data.max_criterion_best_it =
+        _data.outer_loop_current_iteration_data.max_criterion;
+    _data.outer_loop_current_iteration_data.max_criterion_area_best_it =
+        _data.outer_loop_current_iteration_data.max_criterion_area;
     relevantIterationData_.best._cut_trace = relevantIterationData_.last._cut_trace;
     best_iteration_data = bendersDataToLogData(_data);
   }
@@ -379,7 +397,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
               worker->solve(subproblem_data.lpstatus, _options.OUTPUTROOT,
                             _options.LAST_MASTER_MPS + MPS_SUFFIX, _writer);
               worker->get_value(subproblem_data.subproblem_cost);
-              worker->get_solution(subproblem_data.variables);
+              worker->get_solution(subproblem_data.solution);
               worker->get_subgradient(subproblem_data.var_name_and_subgradient);
               worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
               subproblem_data.subproblem_timer = subproblem_timer.elapsed();
@@ -401,6 +419,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
  *
  */
 void BendersBase::compute_cut(const SubProblemDataMap &subproblem_data_map) {
+  // current_outer_loop_criterion_ = 0.0;
   for (auto const &[subproblem_name, subproblem_data] : subproblem_data_map) {
     _data.ub += subproblem_data.subproblem_cost;
 
@@ -408,7 +427,9 @@ void BendersBase::compute_cut(const SubProblemDataMap &subproblem_data_map) {
                               subproblem_data.var_name_and_subgradient,
                               _data.x_cut, subproblem_data.subproblem_cost);
     relevantIterationData_.last._cut_trace[subproblem_name] = subproblem_data;
+    // ComputeOuterLoopCriterion(subproblem_name, subproblem_data);
   }
+  // outer_loop_criterion_.push_back(current_outer_loop_criterion_);
 }
 
 void compute_cut_val(const Point &var_name_subgradient, const Point &x_cut,
@@ -728,6 +749,17 @@ void BendersBase::MatchProblemToId() {
   }
 }
 
+void BendersBase::SetSubproblemsVariablesIndex() {
+  if (!subproblem_map.empty() && _options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
+    auto subproblem = subproblem_map.begin();
+    subproblems_vars_names_.clear();
+    subproblems_vars_names_ = subproblem->second->_solver->get_col_names();
+    Outerloop::VariablesGroup variablesGroup(subproblems_vars_names_,
+                                             outer_loop_input_data_.OuterLoopData());
+    var_indices_ = variablesGroup.Indices();
+  }
+}
+
 void BendersBase::AddSubproblemName(const std::string &name) {
   subproblems.push_back(name);
 }
@@ -931,16 +963,87 @@ WorkerMasterData BendersBase::BestIterationWorkerMaster() const {
   return relevantIterationData_.best;
 }
 
-void BendersBase::ResetData(double criterion) {
-  init_data();
-  _data.external_loop_criterion = criterion;
-}
-
-void BendersBase::InitExternalValues() {
-  _data.external_loop_criterion = 0;
-  _data.benders_num_run = 0;
+void BendersBase::InitExternalValues(bool is_bilevel_check_all, double lambda) {
+  // _data.outer_loop_current_iteration_data.outer_loop_criterion = 0;
+  // _data.outer_loop_current_iteration_data.benders_num_run = 1;
+  is_bilevel_check_all_ = is_bilevel_check_all;
+  outer_loop_biLevel_.Init(MasterObjectiveFunctionCoeffs(),
+                           BestIterationWorkerMaster().get_max_invest(),
+                           MasterVariables());
+  outer_loop_biLevel_.SetLambda(lambda);
 }
 
 CurrentIterationData BendersBase::GetCurrentIterationData() const {
   return _data;
 }
+OuterLoopCurrentIterationData BendersBase::GetOuterLoopData() const {
+  return _data.outer_loop_current_iteration_data;
+}
+std::vector<double> BendersBase::GetOuterLoopCriterionAtBestBenders() const {
+  return ((outer_loop_criterion_.empty())
+              ? std::vector<double>()
+              : outer_loop_criterion_[_data.best_it - 1]);
+}
+
+std::vector<double> BendersBase::ComputeOuterLoopCriterion(
+    const std::string &subproblem_name,
+    const PlainData::SubProblemData &sub_problem_data) {
+
+  auto outer_loop_input_size = var_indices_.size(); // num of patterns
+  std::vector<double> outer_loop_criterion_per_sub_problem(outer_loop_input_size,
+                                                           {});
+  auto subproblem_weight = SubproblemWeight(_data.nsubproblem, subproblem_name);
+  double criterion_count_threshold =
+      outer_loop_input_data_.CriterionCountThreshold();
+  auto number_of_scenarios =
+      _options.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_NUMBER_OF_SCENARIOS;
+
+  for (int pattern_index(0); pattern_index < outer_loop_input_size;
+       ++pattern_index) {
+    auto pattern_variables_indices = var_indices_[pattern_index];
+    for (auto variables_index : pattern_variables_indices) {
+
+      if (auto solution = sub_problem_data.solution[variables_index];
+          solution > criterion_count_threshold)
+        // 1h of no supplied energy
+        outer_loop_criterion_per_sub_problem[pattern_index] +=
+            subproblem_weight / number_of_scenarios;
+    }
+  }
+  return outer_loop_criterion_per_sub_problem;
+}
+
+double BendersBase::ExternalLoopLambdaMax() const {
+  return outer_loop_biLevel_.LambdaMax();
+}
+double BendersBase::ExternalLoopLambdaMin() const {
+  return outer_loop_biLevel_.LambdaMin();
+}
+
+void BendersBase::init_data(double external_loop_lambda) {
+  benders_timer.restart();
+  auto benders_num_run = _data.outer_loop_current_iteration_data.benders_num_run;
+  auto outer_loop_bilevel_best_ub = _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub;
+  init_data();
+  _data.outer_loop_current_iteration_data.outer_loop_criterion.clear();
+  _data.outer_loop_current_iteration_data.benders_num_run = benders_num_run;
+  _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub = outer_loop_bilevel_best_ub;
+  _data.outer_loop_current_iteration_data.external_loop_lambda = external_loop_lambda;
+}
+
+bool BendersBase::ExternalLoopFoundFeasible() const {
+  return outer_loop_biLevel_.FoundFeasible();
+}
+double BendersBase::OuterLoopStoppingThreshold() const { return outer_loop_input_data_.StoppingThreshold(); }
+
+void BendersBase::UpdateOuterLoopMaxCriterionArea()  {
+  auto criterions_begin =
+      _data.outer_loop_current_iteration_data.outer_loop_criterion.cbegin();
+  auto criterions_end =
+      _data.outer_loop_current_iteration_data.outer_loop_criterion.cend();
+  auto max_criterion_it = std::max_element(criterions_begin, criterions_end);
+  _data.outer_loop_current_iteration_data.max_criterion = *max_criterion_it;
+  auto  max_criterion_index = std::distance(criterions_begin, max_criterion_it);
+ _data.outer_loop_current_iteration_data.max_criterion_area = outer_loop_input_data_.OuterLoopData()[max_criterion_index].Pattern().GetBody();
+}
+bool BendersBase::isExceptionRaised() const { return exception_raised_; }
