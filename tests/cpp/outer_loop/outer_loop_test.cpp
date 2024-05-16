@@ -97,7 +97,7 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   benders_options.SOLVER_NAME = GetParam();
   benders_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = true;
   benders_options.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE =
-      OUTER_OPTIONS_FILE;
+      OUTER_OPTIONS_FILE.string();
   benders = std::make_shared<BendersMpi>(benders_options, logger, writer, *penv,
                                          *pworld, math_log_driver);
   benders->set_input_map(coupling_map);
