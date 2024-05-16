@@ -36,6 +36,8 @@ class LpFilesExtractor {
     using LogUtils::XpansionError<std::runtime_error>::XpansionError;
   };
  private:
-  [[nodiscard]] std::pair<std::vector<std::filesystem::path>, std::vector<std::filesystem::path>> getAreaIntercoFilePaths() const;
+  using areaAndIntecoPaths = std::pair<std::vector<std::filesystem::path>, std::vector<std::filesystem::path>>;
+  [[nodiscard]] areaAndIntecoPaths getFiles() const;
+  [[nodiscard]] areaAndIntecoPaths getFilesFromArchive() const;
 };
 #endif  // SRC_CPP_LPNAMER_INPUTREADER_LP_FILES_EXTRACTOR_H

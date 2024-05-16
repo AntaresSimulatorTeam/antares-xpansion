@@ -6,7 +6,7 @@
 #include "ArchiveReader.h"
 
 void LpFilesExtractor::ExtractFiles() const {
-  auto [vect_area_files, vect_interco_files] = getAreaIntercoFilePaths();
+  auto [vect_area_files, vect_interco_files] = getFiles();
   if (auto num_areas_file = vect_area_files.size(); num_areas_file == 0) {
     std::ostringstream msg;
     auto log_location = LOGLOCATION;
@@ -85,22 +85,12 @@ void LpFilesExtractor::ExtractFiles() const {
           "Mode is not supported:", LOGLOCATION);
   }
 }
-std::pair<std::vector<std::filesystem::path>, std::vector<std::filesystem::path>> LpFilesExtractor::getAreaIntercoFilePaths() const{
+LpFilesExtractor::areaAndIntecoPaths LpFilesExtractor::getFiles() const{
   std::vector<std::filesystem::path> vect_area_files;
   std::vector<std::filesystem::path> vect_interco_files;
   switch (this->mode_) {
     case Mode::ARCHIVE: {
-      auto archive_reader = ArchiveReader(this->antares_archive_path_);
-      archive_reader.Open();
-      vect_area_files =
-          archive_reader.ExtractPattern("area*.txt", "", this->xpansion_output_dir_);
-
-      vect_interco_files = archive_reader.ExtractPattern("interco*.txt", "",
-                                                         this->xpansion_output_dir_);
-
-      archive_reader.ExtractPattern("ts-numbers*", "", this->xpansion_output_dir_);
-      archive_reader.Close();
-      archive_reader.Delete();
+      return getFilesFromArchive();
       break;
     }
     case Mode::ANTARES_API:
@@ -128,4 +118,19 @@ std::pair<std::vector<std::filesystem::path>, std::vector<std::filesystem::path>
   }
   return std::make_pair(vect_area_files, vect_interco_files);
 }
+LpFilesExtractor::areaAndIntecoPaths LpFilesExtractor::getFilesFromArchive() const {
+  std::vector<std::filesystem::path> vect_area_files;
+  std::vector<std::filesystem::path> vect_interco_files;
+  auto archive_reader = ArchiveReader(this->antares_archive_path_);
+  archive_reader.Open();
+  vect_area_files =
+      archive_reader.ExtractPattern("area*.txt", "", this->xpansion_output_dir_);
 
+  vect_interco_files = archive_reader.ExtractPattern("interco*.txt", "",
+                                                     this->xpansion_output_dir_);
+
+  archive_reader.ExtractPattern("ts-numbers*", "", this->xpansion_output_dir_);
+  archive_reader.Close();
+  archive_reader.Delete();
+  return std::make_pair(vect_area_files, vect_interco_files);
+}
