@@ -147,14 +147,14 @@ void LpFilesExtractor::produceAreatxtFile(
  */
 void LpFilesExtractor::checkProperNumberOfIntercoFiles(
     const std::vector<std::filesystem::path>& vect_interco_files) const {
-  if (auto num_intercos_file = vect_interco_files.size();
-      num_intercos_file == 0) {
+  if (auto num_interco_file = vect_interco_files.size();
+      num_interco_file == 0) {
     std::ostringstream msg;
     msg << "No interco*.txt file found" << std::endl;
     auto log_location = LOGLOCATION;
     (*this->logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << msg.str();
     throw ErrorWithIntercosFile(msg.str(), log_location);
-  } else if (num_intercos_file > 1) {
+  } else if (num_interco_file > 1) {
     std::ostringstream msg;
     auto log_location = LOGLOCATION;
     msg << "More than one interco*.txt file found" << std::endl;
