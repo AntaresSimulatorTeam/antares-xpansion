@@ -33,7 +33,7 @@ const auto STUDY_PATH =
     std::filesystem::path("data_test") / "external_loop_test";
 const auto LP_DIR = STUDY_PATH / "lp";
 const auto OPTIONS_FILE = LP_DIR / "options.json";
-const auto OUTER_OPTIONS_FILE = "outer_loop_options.yml";
+const auto OUTER_OPTIONS_FILE = LP_DIR / "outer_loop_options.yml";
 
 class MasterUpdateBaseTest : public ::testing::TestWithParam<std::string> {
  public:
