@@ -21,7 +21,7 @@ add_library (lp_namer_model STATIC
 		${CMAKE_CURRENT_SOURCE_DIR}/ChronicleMapReader.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ChronicleMapProvider.h
 		${CMAKE_CURRENT_SOURCE_DIR}/ChronicleMapProvider.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/Mode.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/SimulationInputMode.h
 )
 
 target_include_directories (lp_namer_model

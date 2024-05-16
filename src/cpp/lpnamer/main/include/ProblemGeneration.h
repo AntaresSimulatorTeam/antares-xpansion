@@ -8,8 +8,8 @@
 #include <string>
 
 #include "../../input_reader/MpsTxtWriter.h"
-#include "../../model/Mode.h"
 #include "../../model/Problem.h"
+#include "../../model/SimulationInputMode.h"
 #include "ArchiveReader.h"
 #include "ProblemGenerationExeOptions.h"
 #include "ProblemGenerationLogger.h"
@@ -46,6 +46,6 @@ class ProblemGeneration {
       SolverLogManager& solver_log_manager, const std::string& solver_name,
       const std::vector<ProblemData>& mpsList, std::filesystem::path& lpDir_,
       std::shared_ptr<ArchiveReader>& reader, bool with_archive);
-  Mode mode_ = Mode::UNKOWN;
+  SimulationInputMode mode_ = SimulationInputMode::UNKOWN;
   std::filesystem::path simulation_dir_;
 };

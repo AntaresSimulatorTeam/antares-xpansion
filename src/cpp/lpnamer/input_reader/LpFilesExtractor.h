@@ -4,15 +4,15 @@
 #include <utility>
 
 #include "LogUtils.h"
-#include "Mode.h"
 #include "ProblemGenerationLogger.h"
+#include "SimulationInputMode.h"
 
 class LpFilesExtractor {
  private:
   const std::filesystem::path antares_archive_path_;
   const std::filesystem::path xpansion_output_dir_;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
-  const Mode mode_;
+  const SimulationInputMode mode_;
   const std::filesystem::path& simulation_dir_;
 
  public:
@@ -20,7 +20,7 @@ class LpFilesExtractor {
       std::filesystem::path antares_archive_path,
       std::filesystem::path xpansion_output_dir,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
-      Mode mode = Mode::UNKOWN,
+      SimulationInputMode mode = SimulationInputMode::UNKOWN,
       const std::filesystem::path& simulation_dir = {})
       : antares_archive_path_(std::move(antares_archive_path)),
         xpansion_output_dir_(std::move(xpansion_output_dir)),

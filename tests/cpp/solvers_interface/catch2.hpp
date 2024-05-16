@@ -5810,9 +5810,9 @@ struct ITagAliasRegistry {
 namespace Catch {
 
 class TestSpecParser {
-  enum Mode { None, Name, QuotedName, Tag, EscapedName };
-  Mode m_mode = None;
-  Mode lastMode = None;
+  enum SimulationInputMode { None, Name, QuotedName, Tag, EscapedName };
+  SimulationInputMode m_mode = None;
+  SimulationInputMode lastMode = None;
   bool m_exclusion = false;
   std::size_t m_pos = 0;
   std::size_t m_realPatternPos = 0;
@@ -5832,7 +5832,7 @@ class TestSpecParser {
 
  private:
   bool visitChar(char c);
-  void startNewMode(Mode mode);
+  void startNewMode(SimulationInputMode mode);
   bool processNoneChar(char c);
   void processNameChar(char c);
   bool processOtherChar(char c);
@@ -15204,7 +15204,7 @@ bool TestSpecParser::processOtherChar(char c) {
   endMode();
   return true;
 }
-void TestSpecParser::startNewMode(Mode mode) { m_mode = mode; }
+void TestSpecParser::startNewMode(SimulationInputMode mode) { m_mode = mode; }
 void TestSpecParser::endMode() {
   switch (m_mode) {
     case Name:
