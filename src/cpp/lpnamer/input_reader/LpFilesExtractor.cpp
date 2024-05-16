@@ -117,7 +117,7 @@ void LpFilesExtractor::produceAreatxtFile(
       [[fallthrough]];
     case SimulationInputMode::FILE:
       try {
-        std::filesystem::copy(vect_area_files[0],
+        std::filesystem::rename(vect_area_files[0],
                               this->xpansion_output_dir_ / "area.txt");
       } catch (const std::filesystem::filesystem_error& e) {
         auto log_location = LOGLOCATION;
@@ -178,7 +178,7 @@ void LpFilesExtractor::produceIntercotxtFile(
       [[fallthrough]];
     case SimulationInputMode::FILE:
       try {
-        std::filesystem::copy(vect_interco_files[0],
+        std::filesystem::rename(vect_interco_files[0],
                               this->xpansion_output_dir_ / "interco.txt");
       } catch (const std::filesystem::filesystem_error& e) {
         auto log_location = LOGLOCATION;
