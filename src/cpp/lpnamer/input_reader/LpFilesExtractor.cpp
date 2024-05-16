@@ -9,30 +9,7 @@ void LpFilesExtractor::ExtractFiles() const {
   auto [vect_area_files, vect_interco_files] = getFiles();
   checkProperNumberOfAreaFiles(vect_area_files);
 
-  switch (mode_) {
-    case Mode::ANTARES_API:
-      [[fallthrough]];
-    case Mode::FILE:
-      try {
-        std::filesystem::copy(vect_area_files[0],
-                              xpansion_output_dir_ / "area.txt");
-      } catch (const std::filesystem::filesystem_error& e) {
-        auto log_location = LOGLOCATION;
-        (*logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << e.what();
-        throw;
-      }
-      break;
-    case Mode::ARCHIVE:
-      std::filesystem::rename(vect_area_files[0],
-                              xpansion_output_dir_ / "area.txt");
-      break;
-    case Mode::UNKOWN:
-      throw LogUtils::XpansionError<std::runtime_error>(
-          "Mode is unknown", LOGLOCATION);
-    default:
-      throw LogUtils::XpansionError<std::runtime_error>(
-          "Mode is not supported:", LOGLOCATION);
-  }
+  produceAreatxtFile(vect_area_files);
 
   if (auto num_intercos_file = vect_interco_files.size();
       num_intercos_file == 0) {
@@ -64,6 +41,41 @@ void LpFilesExtractor::ExtractFiles() const {
     case Mode::ARCHIVE:
       std::filesystem::rename(vect_interco_files[0],
                               xpansion_output_dir_ / "interco.txt");
+      break;
+    case Mode::UNKOWN:
+      throw LogUtils::XpansionError<std::runtime_error>(
+          "Mode is unknown", LOGLOCATION);
+    default:
+      throw LogUtils::XpansionError<std::runtime_error>(
+          "Mode is not supported:", LOGLOCATION);
+  }
+}
+
+/**
+ * @brief This method is used to produce the "area.txt" file from "area*.txt"
+ *
+ * In archive mode the file is just rename. Otherwise, the file is copied from the simulation directory to the `xpansion_output_dir_` directory.
+ *
+ * @param vect_area_files
+ */
+void LpFilesExtractor::produceAreatxtFile(
+    const std::vector<std::filesystem::path>& vect_area_files) const {
+  switch (this->mode_) {
+    case Mode::ANTARES_API:
+      [[fallthrough]];
+    case Mode::FILE:
+      try {
+        std::filesystem::copy(vect_area_files[0],
+                              this->xpansion_output_dir_ / "area.txt");
+      } catch (const std::filesystem::filesystem_error& e) {
+        auto log_location = LOGLOCATION;
+        (*this->logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << e.what();
+        throw;
+      }
+      break;
+    case Mode::ARCHIVE:
+      std::filesystem::rename(vect_area_files[0],
+                              this->xpansion_output_dir_ / "area.txt");
       break;
     case Mode::UNKOWN:
       throw LogUtils::XpansionError<std::runtime_error>(
