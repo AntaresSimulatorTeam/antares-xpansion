@@ -61,7 +61,7 @@ std::filesystem::path ProblemGenerationExeOptions::deduceArchivePathIfEmpty(
       auto log_location = LOGLOCATION;
       auto msg =
           "Archive path is missing and output path does not contains"s
-          " \"-Xpansion\" suffixe. Can't deduce archive file name."s;
+          " \"-Xpansion\" suffix. Can't deduce archive file name."s;
       throw MismatchedParameters(msg, log_location);
     }
     auto deduced_archive_path = xpansion_output_dir;
