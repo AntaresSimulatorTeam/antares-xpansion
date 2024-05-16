@@ -52,7 +52,7 @@ LpFilesExtractor::areaAndIntecoPaths LpFilesExtractor::getFiles() const{
       throw LogUtils::XpansionError<std::runtime_error>(
           "Mode is not supported:", LOGLOCATION);
   }
-  return std::make_pair(vect_area_files, vect_interco_files);
+  return std::pair(vect_area_files, vect_interco_files);
 }
 
 /**
@@ -74,7 +74,7 @@ LpFilesExtractor::areaAndIntecoPaths LpFilesExtractor::getFilesFromArchive() con
                                                      this->xpansion_output_dir_);
 
   archive_reader.ExtractPattern("ts-numbers*", "", this->xpansion_output_dir_);
-  return std::make_pair(vect_area_files, vect_interco_files);
+  return std::pair(vect_area_files, vect_interco_files);
 }
 
 
