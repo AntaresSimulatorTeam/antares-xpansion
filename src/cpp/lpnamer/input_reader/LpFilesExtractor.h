@@ -35,5 +35,7 @@ class LpFilesExtractor {
   class ErrorWithIntercosFile : public LogUtils::XpansionError<std::runtime_error> {
     using LogUtils::XpansionError<std::runtime_error>::XpansionError;
   };
+ private:
+  [[nodiscard]] std::pair<std::vector<std::filesystem::path>, std::vector<std::filesystem::path>> getAreaIntercoFilePaths() const;
 };
 #endif  // SRC_CPP_LPNAMER_INPUTREADER_LP_FILES_EXTRACTOR_H
