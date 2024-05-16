@@ -36,9 +36,9 @@ class LpFilesExtractor {
     using LogUtils::XpansionError<std::runtime_error>::XpansionError;
   };
  private:
-  using areaAndIntecoPaths = std::pair<std::vector<std::filesystem::path>, std::vector<std::filesystem::path>>;
-  [[nodiscard]] areaAndIntecoPaths getFiles() const;
-  [[nodiscard]] areaAndIntecoPaths getFilesFromArchive() const;
+  using areaAndIntercoPaths = std::pair<std::vector<std::filesystem::path>, std::vector<std::filesystem::path>>;
+  [[nodiscard]] areaAndIntercoPaths getFiles() const;
+  [[nodiscard]] areaAndIntercoPaths getFilesFromArchive() const;
   void checkProperNumberOfAreaFiles(
       const std::vector<std::filesystem::path>& vect_area_files) const;
   void produceAreatxtFile(const std::vector<std::filesystem::path>& vect_area_files) const;

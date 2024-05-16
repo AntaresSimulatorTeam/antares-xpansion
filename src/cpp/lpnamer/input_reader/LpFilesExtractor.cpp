@@ -22,7 +22,7 @@ void LpFilesExtractor::ExtractFiles() const {
  *
  * @return A pair of vectors containing the paths of the files. The first vector contains the paths of the "area*.txt" files and the second vector contains the paths of the "interco*.txt" files.
  */
-LpFilesExtractor::areaAndIntecoPaths LpFilesExtractor::getFiles() const{
+LpFilesExtractor::areaAndIntercoPaths LpFilesExtractor::getFiles() const{
   std::vector<std::filesystem::path> vect_area_files;
   std::vector<std::filesystem::path> vect_interco_files;
   switch (this->mode_) {
@@ -62,7 +62,7 @@ LpFilesExtractor::areaAndIntecoPaths LpFilesExtractor::getFiles() const{
  *
  * @return A pair of vectors containing the paths of the extracted files. The first vector contains the paths of the "area*.txt" files and the second vector contains the paths of the "interco*.txt" files.
  */
-LpFilesExtractor::areaAndIntecoPaths LpFilesExtractor::getFilesFromArchive() const {
+LpFilesExtractor::areaAndIntercoPaths LpFilesExtractor::getFilesFromArchive() const {
   std::vector<std::filesystem::path> vect_area_files;
   std::vector<std::filesystem::path> vect_interco_files;
   auto archive_reader = ArchiveReader(this->antares_archive_path_);
