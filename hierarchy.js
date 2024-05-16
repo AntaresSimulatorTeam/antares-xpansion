@@ -57,6 +57,8 @@ var hierarchy =
     [ "antares_xpansion.config_loader.ConfigLoader", "classantares__xpansion_1_1config__loader_1_1ConfigLoader.html", null ],
     [ "antares_xpansion.xpansionConfig.ConfigParameters", "classantares__xpansion_1_1xpansionConfig_1_1ConfigParameters.html", null ],
     [ "ConstantDataFromAntares", "classConstantDataFromAntares.html", null ],
+    [ "YAML::convert< OuterLoopInputData >", "structYAML_1_1convert_3_01OuterLoopInputData_01_4.html", null ],
+    [ "YAML::convert< OuterLoopSingleInputData >", "structYAML_1_1convert_3_01OuterLoopSingleInputData_01_4.html", null ],
     [ "Catch::Counts", "structCatch_1_1Counts.html", null ],
     [ "CurrentIterationData", "structCurrentIterationData.html", null ],
     [ "Catch::Decomposer", "structCatch_1_1Decomposer.html", null ],
@@ -201,8 +203,8 @@ var hierarchy =
     [ "Catch::IContext", "structCatch_1_1IContext.html", [
       [ "Catch::IMutableContext", "structCatch_1_1IMutableContext.html", null ]
     ] ],
-    [ "ICutsManager", "classICutsManager.html", [
-      [ "CutsManagerRunTime", "classCutsManagerRunTime.html", null ]
+    [ "Outerloop::ICutsManager", "classOuterloop_1_1ICutsManager.html", [
+      [ "Outerloop::CutsManagerRunTime", "classOuterloop_1_1CutsManagerRunTime.html", null ]
     ] ],
     [ "Catch::IExceptionTranslator", "structCatch_1_1IExceptionTranslator.html", null ],
     [ "Catch::IExceptionTranslatorRegistry", "structCatch_1_1IExceptionTranslatorRegistry.html", null ],
@@ -238,8 +240,8 @@ var hierarchy =
       ] ],
       [ "ProblemGenerationLog::ProblemGenerationLogger", "classProblemGenerationLog_1_1ProblemGenerationLogger.html", null ]
     ] ],
-    [ "IMasterUpdate", "classIMasterUpdate.html", [
-      [ "MasterUpdateBase", "classMasterUpdateBase.html", null ]
+    [ "Outerloop::IMasterUpdate", "classOuterloop_1_1IMasterUpdate.html", [
+      [ "Outerloop::MasterUpdateBase", "classOuterloop_1_1MasterUpdateBase.html", null ]
     ] ],
     [ "Catch::IMutableEnumValuesRegistry", "structCatch_1_1IMutableEnumValuesRegistry.html", null ],
     [ "antares_xpansion.general_data_reader.IniReader", "classantares__xpansion_1_1general__data__reader_1_1IniReader.html", null ],
@@ -254,8 +256,8 @@ var hierarchy =
         [ "LinkProfile::InvalidHourForProfile", "classLinkProfile_1_1InvalidHourForProfile.html", null ]
       ] ]
     ] ],
-    [ "IOuterLoopCriterion", "classIOuterLoopCriterion.html", [
-      [ "OuterloopCriterionLossOfLoad", "classOuterloopCriterionLossOfLoad.html", null ]
+    [ "Outerloop::IOuterLoopInputDataReader", "classOuterloop_1_1IOuterLoopInputDataReader.html", [
+      [ "Outerloop::OuterLoopInputFromYaml", "classOuterloop_1_1OuterLoopInputFromYaml.html", null ]
     ] ],
     [ "IProblemProviderPort", "classIProblemProviderPort.html", [
       [ "FileProblemProviderAdapter", "classFileProblemProviderAdapter.html", null ],
@@ -379,7 +381,12 @@ var hierarchy =
       ] ],
       [ "StudyUpdaterExeOptions", "classStudyUpdaterExeOptions.html", null ]
     ] ],
-    [ "OuterLoop", "classOuterLoop.html", null ],
+    [ "Outerloop::OuterLoop", "classOuterloop_1_1OuterLoop.html", null ],
+    [ "OuterLoopBiLevel", "classOuterLoopBiLevel.html", null ],
+    [ "OuterLoopCurrentIterationData", "structOuterLoopCurrentIterationData.html", null ],
+    [ "Outerloop::OuterLoopInputData", "classOuterloop_1_1OuterLoopInputData.html", null ],
+    [ "Outerloop::OuterLoopPattern", "classOuterloop_1_1OuterLoopPattern.html", null ],
+    [ "Outerloop::OuterLoopSingleInputData", "classOuterloop_1_1OuterLoopSingleInputData.html", null ],
     [ "Output::OutputWriter", "classOutput_1_1OutputWriter.html", [
       [ "Output::JsonWriter", "classOutput_1_1JsonWriter.html", null ],
       [ "Output::VoidWriter", "classOutput_1_1VoidWriter.html", null ],
@@ -434,6 +441,12 @@ var hierarchy =
         [ "LpFilesExtractor::ErrorWithIntercosFile", "classLpFilesExtractor_1_1ErrorWithIntercosFile.html", null ],
         [ "OptionsParser::InvalidNumberOfArgumentsPassedToParser", "classOptionsParser_1_1InvalidNumberOfArgumentsPassedToParser.html", null ],
         [ "OptionsParser::NullArgumentsValues", "classOptionsParser_1_1NullArgumentsValues.html", null ],
+        [ "Outerloop::OuterLoopCouldNotReadAreaField", "classOuterloop_1_1OuterLoopCouldNotReadAreaField.html", null ],
+        [ "Outerloop::OuterLoopCouldNotReadCriterionField", "classOuterloop_1_1OuterLoopCouldNotReadCriterionField.html", null ],
+        [ "Outerloop::OuterLoopInputFileError", "classOuterloop_1_1OuterLoopInputFileError.html", null ],
+        [ "Outerloop::OuterLoopInputFileIsEmpty", "classOuterloop_1_1OuterLoopInputFileIsEmpty.html", null ],
+        [ "Outerloop::OuterLoopInputFileNoPatternFound", "classOuterloop_1_1OuterLoopInputFileNoPatternFound.html", null ],
+        [ "Outerloop::OuterLoopInputPatternsShouldBeArray", "classOuterloop_1_1OuterLoopInputPatternsShouldBeArray.html", null ],
         [ "ProblemGenerationOptions::ConflictingParameters", "classProblemGenerationOptions_1_1ConflictingParameters.html", null ],
         [ "ProblemGenerationOptions::MismatchedParameters", "classProblemGenerationOptions_1_1MismatchedParameters.html", null ],
         [ "ProblemGenerationOptions::MissingParameters", "classProblemGenerationOptions_1_1MissingParameters.html", null ],
@@ -489,6 +502,7 @@ var hierarchy =
     [ "SolverFactory", "classSolverFactory.html", null ],
     [ "SolverLoader", "classSolverLoader.html", null ],
     [ "SolverLogManager", "classSolverLogManager.html", null ],
+    [ "antares_xpansion.benders_driver.SolversExe", "classantares__xpansion_1_1benders__driver_1_1SolversExe.html", null ],
     [ "Catch::SourceLineInfo", "structCatch_1_1SourceLineInfo.html", null ],
     [ "antares_xpansion.split_link_profile.SplitLinkProfile", "classantares__xpansion_1_1split__link__profile_1_1SplitLinkProfile.html", null ],
     [ "StandardLp", "classStandardLp.html", null ],
@@ -524,7 +538,6 @@ var hierarchy =
     [ "Catch::StringMaker< wchar_t const * >", "structCatch_1_1StringMaker_3_01wchar__t_01const_01_5_01_4.html", null ],
     [ "Catch::StringRef", "classCatch_1_1StringRef.html", null ],
     [ "StringManip::StringUtils", "classStringManip_1_1StringUtils.html", null ],
-    [ "struct", "structstruct.html", null ],
     [ "antares_xpansion.study_locker.StudyLocker", "classantares__xpansion_1_1study__locker_1_1StudyLocker.html", null ],
     [ "antares_xpansion.study_output_cleaner.StudyOutputCleaner", "classantares__xpansion_1_1study__output__cleaner_1_1StudyOutputCleaner.html", null ],
     [ "StudyUpdater", "classStudyUpdater.html", null ],
@@ -562,7 +575,8 @@ var hierarchy =
       [ "MasterLoggerTest", "classMasterLoggerTest.html", null ],
       [ "MpsTxtWriterTest", "classMpsTxtWriterTest.html", null ],
       [ "OptionsParserTest", "classOptionsParserTest.html", null ],
-      [ "OuterLoopCriterionTest", "classOuterLoopCriterionTest.html", null ],
+      [ "OuterLoopInputFromYamlTest", "classOuterLoopInputFromYamlTest.html", null ],
+      [ "OuterLoopPatternTest", "classOuterLoopPatternTest.html", null ],
       [ "ProblemGenerationExeOptionsTest", "classProblemGenerationExeOptionsTest.html", null ],
       [ "ProblemGenerationLoggerTest", "classProblemGenerationLoggerTest.html", null ],
       [ "ProblemModifierTest", "classProblemModifierTest.html", [
@@ -630,7 +644,7 @@ var hierarchy =
     [ "VariableFileReader", "classVariableFileReader.html", null ],
     [ "VariableFileReadNameConfiguration", "structVariableFileReadNameConfiguration.html", null ],
     [ "VariableNameComposition", "structVariableNameComposition.html", null ],
-    [ "PlainData::Variables", "structPlainData_1_1Variables.html", null ],
+    [ "Outerloop::VariablesGroup", "classOuterloop_1_1VariablesGroup.html", null ],
     [ "Version", "structVersion.html", null ],
     [ "WeightsFileReader", "classWeightsFileReader.html", null ],
     [ "Worker", "classWorker.html", [

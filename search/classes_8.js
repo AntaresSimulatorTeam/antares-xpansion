@@ -1,7 +1,7 @@
 var searchData=
 [
   ['icontext_0',['IContext',['../structCatch_1_1IContext.html',1,'Catch']]],
-  ['icutsmanager_1',['ICutsManager',['../classICutsManager.html',1,'']]],
+  ['icutsmanager_1',['ICutsManager',['../classOuterloop_1_1ICutsManager.html',1,'Outerloop']]],
   ['iexceptiontranslator_2',['IExceptionTranslator',['../structCatch_1_1IExceptionTranslator.html',1,'Catch']]],
   ['iexceptiontranslatorregistry_3',['IExceptionTranslatorRegistry',['../structCatch_1_1IExceptionTranslatorRegistry.html',1,'Catch']]],
   ['igenerator_4',['IGenerator',['../structCatch_1_1Generators_1_1IGenerator.html',1,'Catch::Generators']]],
@@ -12,7 +12,7 @@ var searchData=
   ['illegalcharsincandidatename_9',['IllegalCharsInCandidateName',['../classantares__xpansion_1_1input__checker_1_1IllegalCharsInCandidateName.html',1,'antares_xpansion::input_checker']]],
   ['ilogger_10',['ILogger',['../classILogger.html',1,'']]],
   ['iloggerxpansion_11',['ILoggerXpansion',['../structILoggerXpansion.html',1,'']]],
-  ['imasterupdate_12',['IMasterUpdate',['../classIMasterUpdate.html',1,'']]],
+  ['imasterupdate_12',['IMasterUpdate',['../classOuterloop_1_1IMasterUpdate.html',1,'Outerloop']]],
   ['imutablecontext_13',['IMutableContext',['../structCatch_1_1IMutableContext.html',1,'Catch']]],
   ['imutableenumvaluesregistry_14',['IMutableEnumValuesRegistry',['../structCatch_1_1IMutableEnumValuesRegistry.html',1,'Catch']]],
   ['inifilenotfound_15',['inifilenotfound',['../classIniFileNotFound.html',1,'IniFileNotFound'],['../classantares__xpansion_1_1general__data__reader_1_1IniFileNotFound.html',1,'antares_xpansion.general_data_reader.IniFileNotFound'],['../classantares__xpansion_1_1candidates__reader_1_1IniFileNotFound.html',1,'antares_xpansion.candidates_reader.IniFileNotFound']]],
@@ -38,7 +38,7 @@ var searchData=
   ['invalidstatusexception_35',['InvalidStatusException',['../classInvalidStatusException.html',1,'']]],
   ['invalidyearsweightnumber_36',['invalidyearsweightnumber',['../classantares__xpansion_1_1xpansion__study__reader_1_1XpansionStudyReader_1_1InvalidYearsWeightNumber.html',1,'antares_xpansion.xpansion_study_reader.XpansionStudyReader.InvalidYearsWeightNumber'],['../classWeightsFileReader_1_1InvalidYearsWeightNumber.html',1,'WeightsFileReader::InvalidYearsWeightNumber']]],
   ['invalidyearsweightvalue_37',['invalidyearsweightvalue',['../classantares__xpansion_1_1xpansion__study__reader_1_1XpansionStudyReader_1_1InvalidYearsWeightValue.html',1,'antares_xpansion.xpansion_study_reader.XpansionStudyReader.InvalidYearsWeightValue'],['../classWeightsFileReader_1_1InvalidYearsWeightValue.html',1,'WeightsFileReader::InvalidYearsWeightValue']]],
-  ['iouterloopcriterion_38',['IOuterLoopCriterion',['../classIOuterLoopCriterion.html',1,'']]],
+  ['iouterloopinputdatareader_38',['IOuterLoopInputDataReader',['../classOuterloop_1_1IOuterLoopInputDataReader.html',1,'Outerloop']]],
   ['iproblemproviderport_39',['IProblemProviderPort',['../classIProblemProviderPort.html',1,'']]],
   ['iproblemvariablesproviderport_40',['IProblemVariablesProviderPort',['../classIProblemVariablesProviderPort.html',1,'']]],
   ['iproblemwriter_41',['IProblemWriter',['../classIProblemWriter.html',1,'']]],

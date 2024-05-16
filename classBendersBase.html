@@ -155,9 +155,9 @@ Inheritance diagram for BendersBase:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:aaec1fb3bda04bde60009f366f6a0c7d6" id="r_aaec1fb3bda04bde60009f366f6a0c7d6"><td class="memItemLeft" align="right" valign="top"><a id="aaec1fb3bda04bde60009f366f6a0c7d6" name="aaec1fb3bda04bde60009f366f6a0c7d6"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BendersBase</b> (<a class="el" href="structBendersBaseOptions.html">BendersBaseOptions</a> options, Logger logger, Writer writer, std::shared_ptr&lt; <a class="el" href="classMathLoggerDriver.html">MathLoggerDriver</a> &gt; mathLoggerDriver)</td></tr>
-<tr class="separator:aaec1fb3bda04bde60009f366f6a0c7d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fb3f1ca5c0671fca337da4be5e5a27f" id="r_a2fb3f1ca5c0671fca337da4be5e5a27f"><td class="memItemLeft" align="right" valign="top"><a id="a2fb3f1ca5c0671fca337da4be5e5a27f" name="a2fb3f1ca5c0671fca337da4be5e5a27f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>BendersBase</b> (const <a class="el" href="structBendersBaseOptions.html">BendersBaseOptions</a> &amp;options, Logger logger, Writer writer, std::shared_ptr&lt; <a class="el" href="classMathLoggerDriver.html">MathLoggerDriver</a> &gt; mathLoggerDriver)</td></tr>
+<tr class="separator:a2fb3f1ca5c0671fca337da4be5e5a27f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa41936ea3aa14acf3f3d4883ed418063" id="r_aa41936ea3aa14acf3f3d4883ed418063"><td class="memItemLeft" align="right" valign="top"><a id="aa41936ea3aa14acf3f3d4883ed418063" name="aa41936ea3aa14acf3f3d4883ed418063"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>launch</b> ()=0</td></tr>
 <tr class="separator:aa41936ea3aa14acf3f3d4883ed418063"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -245,20 +245,50 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetMaxIteration</b> (
 <tr class="memitem:aff9e743beef559b1bb1526a8030df9c0" id="r_aff9e743beef559b1bb1526a8030df9c0"><td class="memItemLeft" align="right" valign="top"><a id="aff9e743beef559b1bb1526a8030df9c0" name="aff9e743beef559b1bb1526a8030df9c0"></a>
 <a class="el" href="structBendersBaseOptions.html">BendersBaseOptions</a>&#160;</td><td class="memItemRight" valign="bottom"><b>Options</b> () const</td></tr>
 <tr class="separator:aff9e743beef559b1bb1526a8030df9c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3726978fcc131ceabc694a1e02b9bb3" id="r_ad3726978fcc131ceabc694a1e02b9bb3"><td class="memItemLeft" align="right" valign="top"><a id="ad3726978fcc131ceabc694a1e02b9bb3" name="ad3726978fcc131ceabc694a1e02b9bb3"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetData</b> (double criterion)</td></tr>
-<tr class="separator:ad3726978fcc131ceabc694a1e02b9bb3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2fe1ebf81325e8190482c29d32b6002" id="r_af2fe1ebf81325e8190482c29d32b6002"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersBase.html#af2fe1ebf81325e8190482c29d32b6002">free</a> ()=0</td></tr>
 <tr class="separator:af2fe1ebf81325e8190482c29d32b6002"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad4bb3c330345378189f83ac18bf3599c" id="r_ad4bb3c330345378189f83ac18bf3599c"><td class="memItemLeft" align="right" valign="top"><a id="ad4bb3c330345378189f83ac18bf3599c" name="ad4bb3c330345378189f83ac18bf3599c"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>InitExternalValues</b> ()</td></tr>
-<tr class="separator:ad4bb3c330345378189f83ac18bf3599c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a083e309bf4edd9fe39a8fe431504fc6f" id="r_a083e309bf4edd9fe39a8fe431504fc6f"><td class="memItemLeft" align="right" valign="top"><a id="a083e309bf4edd9fe39a8fe431504fc6f" name="a083e309bf4edd9fe39a8fe431504fc6f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>InitExternalValues</b> (bool is_bilevel_check_all, double lambda)</td></tr>
+<tr class="separator:a083e309bf4edd9fe39a8fe431504fc6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa24eed1c6a43a636946bef99a8953daa" id="r_aa24eed1c6a43a636946bef99a8953daa"><td class="memItemLeft" align="right" valign="top"><a id="aa24eed1c6a43a636946bef99a8953daa" name="aa24eed1c6a43a636946bef99a8953daa"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>GetBendersRunNumber</b> () const</td></tr>
 <tr class="separator:aa24eed1c6a43a636946bef99a8953daa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af9a5ed5a1bc0ed04c32a39fb3e1806df" id="r_af9a5ed5a1bc0ed04c32a39fb3e1806df"><td class="memItemLeft" align="right" valign="top"><a id="af9a5ed5a1bc0ed04c32a39fb3e1806df" name="af9a5ed5a1bc0ed04c32a39fb3e1806df"></a>
 <a class="el" href="structCurrentIterationData.html">CurrentIterationData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetCurrentIterationData</b> () const</td></tr>
 <tr class="separator:af9a5ed5a1bc0ed04c32a39fb3e1806df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1c251293f24591f95e855de56176ef74" id="r_a1c251293f24591f95e855de56176ef74"><td class="memItemLeft" align="right" valign="top"><a id="a1c251293f24591f95e855de56176ef74" name="a1c251293f24591f95e855de56176ef74"></a>
+<a class="el" href="structOuterLoopCurrentIterationData.html">OuterLoopCurrentIterationData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetOuterLoopData</b> () const</td></tr>
+<tr class="separator:a1c251293f24591f95e855de56176ef74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a919c6f64f842a3d98fe60bd15965959d" id="r_a919c6f64f842a3d98fe60bd15965959d"><td class="memItemLeft" align="right" valign="top"><a id="a919c6f64f842a3d98fe60bd15965959d" name="a919c6f64f842a3d98fe60bd15965959d"></a>
+std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetOuterLoopCriterionAtBestBenders</b> () const</td></tr>
+<tr class="separator:a919c6f64f842a3d98fe60bd15965959d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a62a819640d2a7530fce9418547f45d65" id="r_a62a819640d2a7530fce9418547f45d65"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersBase.html#a62a819640d2a7530fce9418547f45d65">init_data</a> ()</td></tr>
+<tr class="memdesc:a62a819640d2a7530fce9418547f45d65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize set of data used in the loop.  <br /></td></tr>
+<tr class="separator:a62a819640d2a7530fce9418547f45d65"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc77fa1874326a883320977abcc72e3c" id="r_adc77fa1874326a883320977abcc72e3c"><td class="memItemLeft" align="right" valign="top"><a id="adc77fa1874326a883320977abcc72e3c" name="adc77fa1874326a883320977abcc72e3c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>init_data</b> (double external_loop_lambda)</td></tr>
+<tr class="separator:adc77fa1874326a883320977abcc72e3c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aea629ccf5712f9d052277b1ad41254ff" id="r_aea629ccf5712f9d052277b1ad41254ff"><td class="memItemLeft" align="right" valign="top"><a id="aea629ccf5712f9d052277b1ad41254ff" name="aea629ccf5712f9d052277b1ad41254ff"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>ExternalLoopLambdaMax</b> () const</td></tr>
+<tr class="separator:aea629ccf5712f9d052277b1ad41254ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af7f563e653f185a9d7162b08f1478677" id="r_af7f563e653f185a9d7162b08f1478677"><td class="memItemLeft" align="right" valign="top"><a id="af7f563e653f185a9d7162b08f1478677" name="af7f563e653f185a9d7162b08f1478677"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>ExternalLoopLambdaMin</b> () const</td></tr>
+<tr class="separator:af7f563e653f185a9d7162b08f1478677"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a817377aee2ea1e6e1b0a1e0c27e9c088" id="r_a817377aee2ea1e6e1b0a1e0c27e9c088"><td class="memItemLeft" align="right" valign="top"><a id="a817377aee2ea1e6e1b0a1e0c27e9c088" name="a817377aee2ea1e6e1b0a1e0c27e9c088"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>ExternalLoopFoundFeasible</b> () const</td></tr>
+<tr class="separator:a817377aee2ea1e6e1b0a1e0c27e9c088"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a456ed0c6b72b07125ffd068cdb803a7e" id="r_a456ed0c6b72b07125ffd068cdb803a7e"><td class="memItemLeft" align="right" valign="top"><a id="a456ed0c6b72b07125ffd068cdb803a7e" name="a456ed0c6b72b07125ffd068cdb803a7e"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ExternalLoopCheckFeasibility</b> ()=0</td></tr>
+<tr class="separator:a456ed0c6b72b07125ffd068cdb803a7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a530a2e870d147e4301ef6f52309388de" id="r_a530a2e870d147e4301ef6f52309388de"><td class="memItemLeft" align="right" valign="top"><a id="a530a2e870d147e4301ef6f52309388de" name="a530a2e870d147e4301ef6f52309388de"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>RunExternalLoopBilevelChecks</b> ()=0</td></tr>
+<tr class="separator:a530a2e870d147e4301ef6f52309388de"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac242df9c4b271f052da4663de3ffce77" id="r_ac242df9c4b271f052da4663de3ffce77"><td class="memItemLeft" align="right" valign="top"><a id="ac242df9c4b271f052da4663de3ffce77" name="ac242df9c4b271f052da4663de3ffce77"></a>
+double&#160;</td><td class="memItemRight" valign="bottom"><b>OuterLoopStoppingThreshold</b> () const</td></tr>
+<tr class="separator:ac242df9c4b271f052da4663de3ffce77"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:accdf5da57618fe748bea6ecf2b819401" id="r_accdf5da57618fe748bea6ecf2b819401"><td class="memItemLeft" align="right" valign="top"><a id="accdf5da57618fe748bea6ecf2b819401" name="accdf5da57618fe748bea6ecf2b819401"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>isExceptionRaised</b> () const</td></tr>
+<tr class="separator:accdf5da57618fe748bea6ecf2b819401"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -276,9 +306,6 @@ std::shared_ptr&lt; <a class="el" href="classMathLoggerDriver.html">MathLoggerDr
 Protected Member Functions</h2></td></tr>
 <tr class="memitem:a25e30de3bc2efc3d0b4d493ff09be00e" id="r_a25e30de3bc2efc3d0b4d493ff09be00e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersBase.html#a25e30de3bc2efc3d0b4d493ff09be00e">Run</a> ()=0</td></tr>
 <tr class="separator:a25e30de3bc2efc3d0b4d493ff09be00e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a62a819640d2a7530fce9418547f45d65" id="r_a62a819640d2a7530fce9418547f45d65"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersBase.html#a62a819640d2a7530fce9418547f45d65">init_data</a> ()</td></tr>
-<tr class="memdesc:a62a819640d2a7530fce9418547f45d65"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize set of data used in the loop.  <br /></td></tr>
-<tr class="separator:a62a819640d2a7530fce9418547f45d65"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af938b540f0daa0592257f5fb9fcfc80f" id="r_af938b540f0daa0592257f5fb9fcfc80f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersBase.html#af938b540f0daa0592257f5fb9fcfc80f">update_best_ub</a> ()</td></tr>
 <tr class="memdesc:af938b540f0daa0592257f5fb9fcfc80f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Update best upper bound and best optimal variables.  <br /></td></tr>
 <tr class="separator:af938b540f0daa0592257f5fb9fcfc80f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -342,6 +369,9 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>get_
 std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>get_structure_path</b> () const</td></tr>
 <tr class="memdesc:a23e96af784f5eb3f68edbe50581482c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get path to structure txt file from options. <br /></td></tr>
 <tr class="separator:a23e96af784f5eb3f68edbe50581482c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c9927050f6436b081f5ea30ce4082db" id="r_a5c9927050f6436b081f5ea30ce4082db"><td class="memItemLeft" align="right" valign="top"><a id="a5c9927050f6436b081f5ea30ce4082db" name="a5c9927050f6436b081f5ea30ce4082db"></a>
+std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>OuterloopOptionsFile</b> () const</td></tr>
+<tr class="separator:a5c9927050f6436b081f5ea30ce4082db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9936a17b0dd7c359c41f331ccf7d30cf" id="r_a9936a17b0dd7c359c41f331ccf7d30cf"><td class="memItemLeft" align="right" valign="top"><a id="a9936a17b0dd7c359c41f331ccf7d30cf" name="a9936a17b0dd7c359c41f331ccf7d30cf"></a>
 <a class="el" href="structLogData.html">LogData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>bendersDataToLogData</b> (const <a class="el" href="structCurrentIterationData.html">CurrentIterationData</a> &amp;data) const</td></tr>
 <tr class="separator:a9936a17b0dd7c359c41f331ccf7d30cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -363,6 +393,8 @@ WorkerMasterPtr&#160;</td><td class="memItemRight" valign="bottom"><b>get_master
 <tr class="memitem:aadfff76348ae02bac6de5c5e95fee99b" id="r_aadfff76348ae02bac6de5c5e95fee99b"><td class="memItemLeft" align="right" valign="top"><a id="aadfff76348ae02bac6de5c5e95fee99b" name="aadfff76348ae02bac6de5c5e95fee99b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>MatchProblemToId</b> ()</td></tr>
 <tr class="separator:aadfff76348ae02bac6de5c5e95fee99b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c9092f43782dbfc0c84e85073e70e92" id="r_a8c9092f43782dbfc0c84e85073e70e92"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersBase.html#a8c9092f43782dbfc0c84e85073e70e92">SetSubproblemsVariablesIndex</a> ()</td></tr>
+<tr class="separator:a8c9092f43782dbfc0c84e85073e70e92"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2196cf767f06d5d5107ec0d9a2439c17" id="r_a2196cf767f06d5d5107ec0d9a2439c17"><td class="memItemLeft" align="right" valign="top"><a id="a2196cf767f06d5d5107ec0d9a2439c17" name="a2196cf767f06d5d5107ec0d9a2439c17"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AddSubproblemName</b> (const std::string &amp;name)</td></tr>
 <tr class="separator:a2196cf767f06d5d5107ec0d9a2439c17"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -504,9 +536,18 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>GetNumOfSubProblemsSol
 <tr class="memitem:a945b1fcfaf6a0412ae7751e0ae96b33c" id="r_a945b1fcfaf6a0412ae7751e0ae96b33c"><td class="memItemLeft" align="right" valign="top"><a id="a945b1fcfaf6a0412ae7751e0ae96b33c" name="a945b1fcfaf6a0412ae7751e0ae96b33c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetSimplexIterationsBounds</b> ()</td></tr>
 <tr class="separator:a945b1fcfaf6a0412ae7751e0ae96b33c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a663245de183762074a35fec293a4fd7c" id="r_a663245de183762074a35fec293a4fd7c"><td class="memItemLeft" align="right" valign="top"><a id="a663245de183762074a35fec293a4fd7c" name="a663245de183762074a35fec293a4fd7c"></a>
+std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ComputeOuterLoopCriterion</b> (const std::string &amp;subproblem_name, const <a class="el" href="structPlainData_1_1SubProblemData.html">PlainData::SubProblemData</a> &amp;sub_problem_data)</td></tr>
+<tr class="separator:a663245de183762074a35fec293a4fd7c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91da20a4abb2270e36f40e6705ab7fbd" id="r_a91da20a4abb2270e36f40e6705ab7fbd"><td class="memItemLeft" align="right" valign="top"><a id="a91da20a4abb2270e36f40e6705ab7fbd" name="a91da20a4abb2270e36f40e6705ab7fbd"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateOuterLoopMaxCriterionArea</b> ()</td></tr>
+<tr class="separator:a91da20a4abb2270e36f40e6705ab7fbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
+<tr class="memitem:aa482d778154123a5d1d711afb0de1136" id="r_aa482d778154123a5d1d711afb0de1136"><td class="memItemLeft" align="right" valign="top"><a id="aa482d778154123a5d1d711afb0de1136" name="aa482d778154123a5d1d711afb0de1136"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>exception_raised_</b> = false</td></tr>
+<tr class="separator:aa482d778154123a5d1d711afb0de1136"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad3eae2b36184904cb9c67c8c411da4ed" id="r_ad3eae2b36184904cb9c67c8c411da4ed"><td class="memItemLeft" align="right" valign="top"><a id="ad3eae2b36184904cb9c67c8c411da4ed" name="ad3eae2b36184904cb9c67c8c411da4ed"></a>
 <a class="el" href="structCurrentIterationData.html">CurrentIterationData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>_data</b></td></tr>
 <tr class="separator:ad3eae2b36184904cb9c67c8c411da4ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -519,6 +560,8 @@ VariableMap&#160;</td><td class="memItemRight" valign="bottom"><b>master_variabl
 <tr class="memitem:abecce65445c68127a10574ddd8b7e92f" id="r_abecce65445c68127a10574ddd8b7e92f"><td class="memItemLeft" align="right" valign="top"><a id="abecce65445c68127a10574ddd8b7e92f" name="abecce65445c68127a10574ddd8b7e92f"></a>
 CouplingMap&#160;</td><td class="memItemRight" valign="bottom"><b>coupling_map_</b></td></tr>
 <tr class="separator:abecce65445c68127a10574ddd8b7e92f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad1a67361ef2f93f2dcc1783f05c62f50" id="r_ad1a67361ef2f93f2dcc1783f05c62f50"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structBendersRelevantIterationsData.html">BendersRelevantIterationsData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersBase.html#ad1a67361ef2f93f2dcc1783f05c62f50">relevantIterationData_</a></td></tr>
+<tr class="separator:ad1a67361ef2f93f2dcc1783f05c62f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d08dc380a98609faaafca8891b0cb78" id="r_a6d08dc380a98609faaafca8891b0cb78"><td class="memItemLeft" align="right" valign="top"><a id="a6d08dc380a98609faaafca8891b0cb78" name="a6d08dc380a98609faaafca8891b0cb78"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>init_data_</b> = true</td></tr>
 <tr class="separator:a6d08dc380a98609faaafca8891b0cb78"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -528,6 +571,24 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>init_problems_</b> = 
 <tr class="memitem:af473bb0ee2a96ec72ba74d8d475e0ef9" id="r_af473bb0ee2a96ec72ba74d8d475e0ef9"><td class="memItemLeft" align="right" valign="top"><a id="af473bb0ee2a96ec72ba74d8d475e0ef9" name="af473bb0ee2a96ec72ba74d8d475e0ef9"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>free_problems_</b> = true</td></tr>
 <tr class="separator:af473bb0ee2a96ec72ba74d8d475e0ef9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0952566f6aef10287fb94cc4d0b0a753" id="r_a0952566f6aef10287fb94cc4d0b0a753"><td class="memItemLeft" align="right" valign="top"><a id="a0952566f6aef10287fb94cc4d0b0a753" name="a0952566f6aef10287fb94cc4d0b0a753"></a>
+std::vector&lt; std::vector&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>outer_loop_criterion_</b></td></tr>
+<tr class="separator:a0952566f6aef10287fb94cc4d0b0a753"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac323d84acff9ba341a837c5647186193" id="r_ac323d84acff9ba341a837c5647186193"><td class="memItemLeft" align="right" valign="top"><a id="ac323d84acff9ba341a837c5647186193" name="ac323d84acff9ba341a837c5647186193"></a>
+std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>subproblems_vars_names_</b> = {}</td></tr>
+<tr class="separator:ac323d84acff9ba341a837c5647186193"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c6dc4cd84c8e25e156423334e1df6d6" id="r_a8c6dc4cd84c8e25e156423334e1df6d6"><td class="memItemLeft" align="right" valign="top"><a id="a8c6dc4cd84c8e25e156423334e1df6d6" name="a8c6dc4cd84c8e25e156423334e1df6d6"></a>
+std::vector&lt; std::vector&lt; int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>var_indices_</b></td></tr>
+<tr class="separator:a8c6dc4cd84c8e25e156423334e1df6d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e83366b8b4184779100bb72e7c6ca44" id="r_a0e83366b8b4184779100bb72e7c6ca44"><td class="memItemLeft" align="right" valign="top"><a id="a0e83366b8b4184779100bb72e7c6ca44" name="a0e83366b8b4184779100bb72e7c6ca44"></a>
+<a class="el" href="classOuterLoopBiLevel.html">OuterLoopBiLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><b>outer_loop_biLevel_</b></td></tr>
+<tr class="separator:a0e83366b8b4184779100bb72e7c6ca44"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a20f3b8b6ec92c7b839f0a8d8f0b3e2c2" id="r_a20f3b8b6ec92c7b839f0a8d8f0b3e2c2"><td class="memItemLeft" align="right" valign="top"><a id="a20f3b8b6ec92c7b839f0a8d8f0b3e2c2" name="a20f3b8b6ec92c7b839f0a8d8f0b3e2c2"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_bilevel_check_all_</b> = false</td></tr>
+<tr class="separator:a20f3b8b6ec92c7b839f0a8d8f0b3e2c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a931fea73233e1635fd92880dfcd20d47" id="r_a931fea73233e1635fd92880dfcd20d47"><td class="memItemLeft" align="right" valign="top"><a id="a931fea73233e1635fd92880dfcd20d47" name="a931fea73233e1635fd92880dfcd20d47"></a>
+<a class="el" href="classOuterloop_1_1OuterLoopInputData.html">Outerloop::OuterLoopInputData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>outer_loop_input_data_</b></td></tr>
+<tr class="separator:a931fea73233e1635fd92880dfcd20d47"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a897cc03471332c177b24423cfc292e66" id="r_a897cc03471332c177b24423cfc292e66"><td class="memItemLeft" align="right" valign="top"><a id="a897cc03471332c177b24423cfc292e66" name="a897cc03471332c177b24423cfc292e66"></a>
 <a class="el" href="classSolverLogManager.html">SolverLogManager</a>&#160;</td><td class="memItemRight" valign="bottom"><b>solver_log_manager_</b></td></tr>
 <tr class="separator:a897cc03471332c177b24423cfc292e66"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -712,7 +773,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>free_problems_</b> = 
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -800,6 +861,33 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>free_problems_</b> = 
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a8c9092f43782dbfc0c84e85073e70e92" name="a8c9092f43782dbfc0c84e85073e70e92"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8c9092f43782dbfc0c84e85073e70e92">&#9670;&#160;</a></span>SetSubproblemsVariablesIndex()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BendersBase::SetSubproblemsVariablesIndex </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>for the nth variable name, Subproblems shares the same prefix , only the suffix is different ex variable at index = 0 is named in:</p>
+<p>subproblems-1-1 --&gt; NTCDirect::link&lt;area1$$area2&gt;::hour&lt;0&gt; subproblems-3-5 --&gt; NTCDirect::link&lt;area1$$area2&gt;::hour&lt;672&gt; </p>
 
 </div>
 </div>
@@ -963,6 +1051,32 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>free_problems_</b> = 
 
 <p>Reimplemented in <a class="el" href="classBendersSequentialDouble.html#a01aa233cda314c1882c9c5ef216d1ea3">BendersSequentialDouble</a>.</p>
 
+</div>
+</div>
+<h2 class="groupheader">Member Data Documentation</h2>
+<a id="ad1a67361ef2f93f2dcc1783f05c62f50" name="ad1a67361ef2f93f2dcc1783f05c62f50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad1a67361ef2f93f2dcc1783f05c62f50">&#9670;&#160;</a></span>relevantIterationData_</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="structBendersRelevantIterationsData.html">BendersRelevantIterationsData</a> BendersBase::relevantIterationData_</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">= {<a class="code hl_class" href="classWorkerMasterData.html">WorkerMasterData</a>(),</div>
+<div class="line">                                                          <a class="code hl_class" href="classWorkerMasterData.html">WorkerMasterData</a>()}</div>
+<div class="ttc" id="aclassWorkerMasterData_html"><div class="ttname"><a href="classWorkerMasterData.html">WorkerMasterData</a></div><div class="ttdoc">Class use to store trace information during the algorithm run.</div><div class="ttdef"><b>Definition</b> BendersStructsDatas.h:69</div></div>
+</div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>

@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: src/cpp/benders/external_loop/include/OuterLoop.h Source File</title>
+<title>Antares Xpansion: src/cpp/benders/outer_loop/include/OuterLoop.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -142,38 +142,38 @@ $(document).ready(function(){initNavTree('OuterLoop_8h_source.html',''); initRes
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;CutsManagement.h&quot;</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;MasterUpdate.h&quot;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;OuterLoopCriterion.h&quot;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;common_mpi.h&quot;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;common_mpi.h&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">namespace </span>Outerloop {</div>
 <div class="foldopen" id="foldopen00007" data-start="{" data-end="};">
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="classOuterLoop.html">    7</a></span><span class="keyword">class </span><a class="code hl_class" href="classOuterLoop.html">OuterLoop</a> {</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="classOuterloop_1_1OuterLoop.html">    7</a></span><span class="keyword">class </span><a class="code hl_class" href="classOuterloop_1_1OuterLoop.html">OuterLoop</a> {</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="classOuterLoop.html">OuterLoop</a>(std::shared_ptr&lt;IOuterLoopCriterion&gt; criterion,</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>                     std::shared_ptr&lt;IMasterUpdate&gt; master_updater,</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>                     std::shared_ptr&lt;ICutsManager&gt; cuts_manager,</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>                     pBendersBase benders, mpi::environment&amp; env,</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>                     mpi::communicator&amp; world);</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  <span class="keywordtype">void</span> Run();</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keywordtype">void</span> PrintLog();</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  std::shared_ptr&lt;IOuterLoopCriterion&gt; criterion_;</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  std::shared_ptr&lt;IMasterUpdate&gt; master_updater_;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  std::shared_ptr&lt;ICutsManager&gt; cuts_manager_;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  pBendersBase benders_;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <a class="code hl_struct" href="structBendersLoggerBase.html">BendersLoggerBase</a> loggers_;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  mpi::environment&amp; env_;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  mpi::communicator&amp; world_;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>};</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="classOuterloop_1_1OuterLoop.html">OuterLoop</a>(std::shared_ptr&lt;IMasterUpdate&gt; master_updater,</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>                     std::shared_ptr&lt;ICutsManager&gt; cuts_manager,</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>                     pBendersBase benders, mpi::environment&amp; env,</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>                     mpi::communicator&amp; world);</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  <span class="keywordtype">void</span> Run();</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <span class="keywordtype">void</span> PrintLog();</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  std::shared_ptr&lt;IMasterUpdate&gt; master_updater_;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  std::shared_ptr&lt;ICutsManager&gt; cuts_manager_;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  pBendersBase benders_;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <a class="code hl_struct" href="structBendersLoggerBase.html">BendersLoggerBase</a> loggers_;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  mpi::environment&amp; env_;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  mpi::communicator&amp; world_;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>};</div>
 </div>
-<div class="ttc" id="aclassOuterLoop_html"><div class="ttname"><a href="classOuterLoop.html">OuterLoop</a></div><div class="ttdef"><b>Definition</b> OuterLoop.h:7</div></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>}  <span class="comment">// namespace Outerloop</span></div>
+<div class="ttc" id="aclassOuterloop_1_1OuterLoop_html"><div class="ttname"><a href="classOuterloop_1_1OuterLoop.html">Outerloop::OuterLoop</a></div><div class="ttdef"><b>Definition</b> OuterLoop.h:7</div></div>
 <div class="ttc" id="astructBendersLoggerBase_html"><div class="ttname"><a href="structBendersLoggerBase.html">BendersLoggerBase</a></div><div class="ttdef"><b>Definition</b> ILogger.h:107</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_dfdbda394c3f7a3aa55229f33a559c41.html">cpp</a></li><li class="navelem"><a class="el" href="dir_ae16667f9fc0e5d86966b2c65475a56a.html">benders</a></li><li class="navelem"><a class="el" href="dir_5f55b2a10a4f2f5a8c152bd7af880ac8.html">external_loop</a></li><li class="navelem"><a class="el" href="dir_c7c80bb8cc7c7a27ca9468bfca91939e.html">include</a></li><li class="navelem"><b>OuterLoop.h</b></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_dfdbda394c3f7a3aa55229f33a559c41.html">cpp</a></li><li class="navelem"><a class="el" href="dir_ae16667f9fc0e5d86966b2c65475a56a.html">benders</a></li><li class="navelem"><a class="el" href="dir_f632cfb2f9433bf506b59b1a5d5e8528.html">outer_loop</a></li><li class="navelem"><a class="el" href="dir_10ca32da59bbdee17edcca9d1d408127.html">include</a></li><li class="navelem"><b>OuterLoop.h</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

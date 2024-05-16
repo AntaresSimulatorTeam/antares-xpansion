@@ -7,7 +7,7 @@ var searchData=
   ['mastergeneration_4',['MasterGeneration',['../classMasterGeneration.html',1,'']]],
   ['masterloggertest_5',['MasterLoggerTest',['../classMasterLoggerTest.html',1,'']]],
   ['masterproblembuilder_6',['MasterProblemBuilder',['../classMasterProblemBuilder.html',1,'']]],
-  ['masterupdatebase_7',['MasterUpdateBase',['../classMasterUpdateBase.html',1,'']]],
+  ['masterupdatebase_7',['MasterUpdateBase',['../classOuterloop_1_1MasterUpdateBase.html',1,'Outerloop']]],
   ['masterupdatebasetest_8',['MasterUpdateBaseTest',['../classMasterUpdateBaseTest.html',1,'']]],
   ['matchallof_9',['MatchAllOf',['../structCatch_1_1Matchers_1_1Impl_1_1MatchAllOf.html',1,'Catch::Matchers::Impl']]],
   ['matchanyof_10',['MatchAnyOf',['../structCatch_1_1Matchers_1_1Impl_1_1MatchAnyOf.html',1,'Catch::Matchers::Impl']]],

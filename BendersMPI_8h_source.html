@@ -145,94 +145,109 @@ $(document).ready(function(){initNavTree('BendersMPI_8h_source.html',''); initRe
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;BendersBase.h&quot;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;BendersStructsDatas.h&quot;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;ILogger.h&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;SubproblemCut.h&quot;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;SubproblemWorker.h&quot;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;Timer.h&quot;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;Worker.h&quot;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;WorkerMaster.h&quot;</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;common_mpi.h&quot;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="foldopen" id="foldopen00018" data-start="{" data-end="};">
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classBendersMpi.html">   18</a></span><span class="keyword">class </span><a class="code hl_class" href="classBendersMpi.html">BendersMpi</a> : <span class="keyword">public</span> <a class="code hl_class" href="classBendersBase.html">BendersBase</a> {</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <a class="code hl_class" href="classBendersMpi.html">~BendersMpi</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <a class="code hl_class" href="classBendersMpi.html">BendersMpi</a>(<a class="code hl_struct" href="structBendersBaseOptions.html">BendersBaseOptions</a> <span class="keyword">const</span> &amp;options, Logger logger, Writer writer,</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>             mpi::environment &amp;env, mpi::communicator &amp;world,</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>             std::shared_ptr&lt;MathLoggerDriver&gt; mathLoggerDriver);</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <span class="keywordtype">void</span> <a class="code hl_namespace" href="namespacelaunch.html">launch</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="keyword">virtual</span> std::string BendersName()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="stringliteral">&quot;Benders mpi&quot;</span>; }</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> rank_0 = 0;</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> <span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classBendersMpi.html#af435deb52a324bfbf0d953bf78644cf4">free</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classBendersMpi.html#a497d3f6ee2594fe0e5563635aacf45de">Run</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classBendersMpi.html#a217d3af6fbe78082f30fa9ef75cf1dfb">InitializeProblems</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keywordtype">void</span> BroadcastXCut();</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordtype">void</span> step_1_solve_master();</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordtype">void</span> step_2_solve_subproblems_and_build_cuts();</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keywordtype">void</span> step_4_update_best_solution(<span class="keywordtype">int</span> rank);</div>
-<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <span class="keywordtype">void</span> master_build_cuts(</div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>      std::vector&lt;SubProblemDataMap&gt; gathered_subproblem_map);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  SubProblemDataMap get_subproblem_cut_package();</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordtype">void</span> solve_master_and_create_trace();</div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordtype">bool</span> _exceptionRaised = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordtype">void</span> do_solve_master_create_trace_and_update_cuts();</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordtype">void</span> gather_subproblems_cut_package_and_build_cuts(</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      <span class="keyword">const</span> SubProblemDataMap &amp;subproblem_data_map, <span class="keyword">const</span> <a class="code hl_class" href="classTimer.html">Timer</a> &amp;process_timer);</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordtype">void</span> write_exception_message(<span class="keyword">const</span> std::exception &amp;ex) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordtype">void</span> check_if_some_proc_had_a_failure(<span class="keywordtype">int</span> success);</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  mpi::environment &amp;_env;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  mpi::communicator &amp;_world;</div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> <span class="keyword">protected</span>:</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  [[nodiscard]] <span class="keywordtype">bool</span> shouldParallelize() <span class="keyword">const</span> <span class="keyword">final</span> { <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  <span class="keywordtype">void</span> PreRunInitialization();</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keywordtype">int</span> Rank()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _world.rank(); }</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  <span class="keywordtype">void</span> BroadCast(T &amp;value, <span class="keywordtype">int</span> root)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    mpi::broadcast(_world, value, root);</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>  }</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <span class="keywordtype">void</span> BroadCast(T *values, <span class="keywordtype">int</span> n, <span class="keywordtype">int</span> root)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>    mpi::broadcast(_world, values, n, root);</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  }</div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordtype">void</span> Gather(<span class="keyword">const</span> T &amp;value, std::vector&lt;T&gt; &amp;vector_of_values,</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>              <span class="keywordtype">int</span> root)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>    mpi::gather(_world, value, vector_of_values, root);</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  }</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keywordtype">void</span> BuildMasterProblem();</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keywordtype">int</span> WorldSize()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _world.size(); }</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  <span class="keywordtype">void</span> Barrier()<span class="keyword"> const </span>{ _world.barrier(); }</div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> Op&gt;</div>
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>  <span class="keywordtype">void</span> Reduce(<span class="keyword">const</span> T &amp;in_value, T &amp;out_value, Op op, <span class="keywordtype">int</span> root)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    mpi::reduce(_world, in_value, out_value, op, root);</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  }</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> Op&gt;</div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keywordtype">void</span> AllReduce(<span class="keyword">const</span> T &amp;in_value, T &amp;out_value, Op op)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>    mpi::all_reduce(_world, in_value, out_value, op);</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  }</div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>};</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;LoggerUtils.h&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;SubproblemCut.h&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;SubproblemWorker.h&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;Timer.h&quot;</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;Worker.h&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;WorkerMaster.h&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;common_mpi.h&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="foldopen" id="foldopen00015" data-start="{" data-end="};">
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="classCriterionCouldNotBeSatisfied.html">   15</a></span><span class="keyword">class </span><a class="code hl_class" href="classCriterionCouldNotBeSatisfied.html">CriterionCouldNotBeSatisfied</a></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    : <span class="keyword">public</span> <a class="code hl_class" href="classLogUtils_1_1XpansionError.html">LogUtils::XpansionError</a>&lt;std::runtime_error&gt; {</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keyword">using </span><a class="code hl_class" href="classLogUtils_1_1XpansionError.html">LogUtils::XpansionError</a>&lt;std::runtime_error&gt;::XpansionError;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>};</div>
 </div>
-<div class="ttc" id="aclassBendersBase_html"><div class="ttname"><a href="classBendersBase.html">BendersBase</a></div><div class="ttdef"><b>Definition</b> BendersBase.h:30</div></div>
-<div class="ttc" id="aclassBendersMpi_html"><div class="ttname"><a href="classBendersMpi.html">BendersMpi</a></div><div class="ttdoc">Class use run the benders algorithm in parallel.</div><div class="ttdef"><b>Definition</b> BendersMPI.h:18</div></div>
-<div class="ttc" id="aclassBendersMpi_html_a217d3af6fbe78082f30fa9ef75cf1dfb"><div class="ttname"><a href="classBendersMpi.html#a217d3af6fbe78082f30fa9ef75cf1dfb">BendersMpi::InitializeProblems</a></div><div class="ttdeci">void InitializeProblems() override</div><div class="ttdoc">Method to load each problem in a thread.</div><div class="ttdef"><b>Definition</b> BendersMPI.cpp:25</div></div>
-<div class="ttc" id="aclassBendersMpi_html_a497d3f6ee2594fe0e5563635aacf45de"><div class="ttname"><a href="classBendersMpi.html#a497d3f6ee2594fe0e5563635aacf45de">BendersMpi::Run</a></div><div class="ttdeci">void Run() override</div><div class="ttdoc">Run Benders algorithm in parallel.</div><div class="ttdef"><b>Definition</b> BendersMPI.cpp:244</div></div>
-<div class="ttc" id="aclassBendersMpi_html_af435deb52a324bfbf0d953bf78644cf4"><div class="ttname"><a href="classBendersMpi.html#af435deb52a324bfbf0d953bf78644cf4">BendersMpi::free</a></div><div class="ttdeci">void free() override</div><div class="ttdoc">Method to free the memory used by each problem.</div><div class="ttdef"><b>Definition</b> BendersMPI.cpp:229</div></div>
+<div class="foldopen" id="foldopen00023" data-start="{" data-end="};">
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno"><a class="line" href="classBendersMpi.html">   23</a></span><span class="keyword">class </span><a class="code hl_class" href="classBendersMpi.html">BendersMpi</a> : <span class="keyword">public</span> <a class="code hl_class" href="classBendersBase.html">BendersBase</a> {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <a class="code hl_class" href="classBendersMpi.html">~BendersMpi</a>() <span class="keyword">override</span> = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <a class="code hl_class" href="classBendersMpi.html">BendersMpi</a>(<a class="code hl_struct" href="structBendersBaseOptions.html">BendersBaseOptions</a> <span class="keyword">const</span> &amp;options, Logger logger, Writer writer,</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>             mpi::environment &amp;env, mpi::communicator &amp;world,</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>             std::shared_ptr&lt;MathLoggerDriver&gt; mathLoggerDriver);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keywordtype">void</span> <a class="code hl_namespace" href="namespacelaunch.html">launch</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keyword">virtual</span> std::string BendersName()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="stringliteral">&quot;Benders mpi&quot;</span>; }</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> rank_0 = 0;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> ExternalLoopCheckFeasibility() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classBendersMpi.html#af435deb52a324bfbf0d953bf78644cf4">free</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classBendersMpi.html#a497d3f6ee2594fe0e5563635aacf45de">Run</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classBendersMpi.html#a217d3af6fbe78082f30fa9ef75cf1dfb">InitializeProblems</a>() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>  <span class="keywordtype">void</span> BroadcastXCut();</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordtype">void</span> step_1_solve_master();</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  <span class="keywordtype">void</span> step_2_solve_subproblems_and_build_cuts();</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  <span class="keywordtype">void</span> step_4_update_best_solution(<span class="keywordtype">int</span> rank);</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keywordtype">void</span> master_build_cuts(</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      std::vector&lt;SubProblemDataMap&gt; gathered_subproblem_map);</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  SubProblemDataMap get_subproblem_cut_package();</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordtype">void</span> solve_master_and_create_trace();</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordtype">void</span> do_solve_master_create_trace_and_update_cuts();</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> </div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordtype">void</span> gather_subproblems_cut_package_and_build_cuts(</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>      <span class="keyword">const</span> SubProblemDataMap &amp;subproblem_data_map, <span class="keyword">const</span> <a class="code hl_class" href="classTimer.html">Timer</a> &amp;process_timer);</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  <span class="keywordtype">void</span> write_exception_message(<span class="keyword">const</span> std::exception &amp;ex) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  <span class="keywordtype">void</span> check_if_some_proc_had_a_failure(<span class="keywordtype">int</span> success);</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <span class="keywordtype">void</span> UpdateOverallCosts();</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <span class="keywordtype">void</span> RunExternalLoopBilevelChecks() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>  mpi::environment &amp;_env;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>  mpi::communicator &amp;_world;</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span> <span class="keyword">protected</span>:</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  [[nodiscard]] <span class="keywordtype">bool</span> shouldParallelize() <span class="keyword">const</span> <span class="keyword">final</span> { <span class="keywordflow">return</span> <span class="keyword">false</span>; }</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>  <span class="keywordtype">void</span> PreRunInitialization();</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  <span class="keywordtype">int</span> Rank()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _world.rank(); }</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordtype">void</span> BroadCast(T &amp;value, <span class="keywordtype">int</span> root)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>    mpi::broadcast(_world, value, root);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  }</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keywordtype">void</span> BroadCast(T *values, <span class="keywordtype">int</span> n, <span class="keywordtype">int</span> root)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    mpi::broadcast(_world, values, n, root);</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>  }</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T&gt;</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>  <span class="keywordtype">void</span> Gather(<span class="keyword">const</span> T &amp;value, std::vector&lt;T&gt; &amp;vector_of_values,</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>              <span class="keywordtype">int</span> root)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>    mpi::gather(_world, value, vector_of_values, root);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  }</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  <span class="keywordtype">void</span> BuildMasterProblem();</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keywordtype">int</span> WorldSize()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> _world.size(); }</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keywordtype">void</span> Barrier()<span class="keyword"> const </span>{ _world.barrier(); }</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> Op&gt;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  <span class="keywordtype">void</span> Reduce(<span class="keyword">const</span> T &amp;in_value, T &amp;out_value, Op op, <span class="keywordtype">int</span> root)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>    mpi::reduce(_world, in_value, out_value, op, root);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  }</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="keyword">template</span> &lt;<span class="keyword">typename</span> T, <span class="keyword">typename</span> Op&gt;</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keywordtype">void</span> AllReduce(<span class="keyword">const</span> T &amp;in_value, T &amp;out_value, Op op)<span class="keyword"> const </span>{</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>    mpi::all_reduce(_world, in_value, out_value, op);</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  }</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="keyword">virtual</span> std::vector&lt;double&gt;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  ComputeSubproblemsContributionToOuterLoopCriterion(</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>      <span class="keyword">const</span> SubProblemDataMap &amp;subproblem_data_map);</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>};</div>
+</div>
+<div class="ttc" id="aclassBendersBase_html"><div class="ttname"><a href="classBendersBase.html">BendersBase</a></div><div class="ttdef"><b>Definition</b> BendersBase.h:33</div></div>
+<div class="ttc" id="aclassBendersMpi_html"><div class="ttname"><a href="classBendersMpi.html">BendersMpi</a></div><div class="ttdoc">Class use run the benders algorithm in parallel.</div><div class="ttdef"><b>Definition</b> BendersMPI.h:23</div></div>
+<div class="ttc" id="aclassBendersMpi_html_a217d3af6fbe78082f30fa9ef75cf1dfb"><div class="ttname"><a href="classBendersMpi.html#a217d3af6fbe78082f30fa9ef75cf1dfb">BendersMpi::InitializeProblems</a></div><div class="ttdeci">void InitializeProblems() override</div><div class="ttdoc">Method to load each problem in a thread.</div><div class="ttdef"><b>Definition</b> BendersMPI.cpp:26</div></div>
+<div class="ttc" id="aclassBendersMpi_html_a497d3f6ee2594fe0e5563635aacf45de"><div class="ttname"><a href="classBendersMpi.html#a497d3f6ee2594fe0e5563635aacf45de">BendersMpi::Run</a></div><div class="ttdeci">void Run() override</div><div class="ttdoc">Run Benders algorithm in parallel.</div><div class="ttdef"><b>Definition</b> BendersMPI.cpp:279</div></div>
+<div class="ttc" id="aclassBendersMpi_html_af435deb52a324bfbf0d953bf78644cf4"><div class="ttname"><a href="classBendersMpi.html#af435deb52a324bfbf0d953bf78644cf4">BendersMpi::free</a></div><div class="ttdeci">void free() override</div><div class="ttdoc">Method to free the memory used by each problem.</div><div class="ttdef"><b>Definition</b> BendersMPI.cpp:264</div></div>
+<div class="ttc" id="aclassCriterionCouldNotBeSatisfied_html"><div class="ttname"><a href="classCriterionCouldNotBeSatisfied.html">CriterionCouldNotBeSatisfied</a></div><div class="ttdef"><b>Definition</b> BendersMPI.h:16</div></div>
+<div class="ttc" id="aclassLogUtils_1_1XpansionError_html"><div class="ttname"><a href="classLogUtils_1_1XpansionError.html">LogUtils::XpansionError</a></div><div class="ttdef"><b>Definition</b> LogUtils.h:12</div></div>
 <div class="ttc" id="aclassTimer_html"><div class="ttname"><a href="classTimer.html">Timer</a></div><div class="ttdef"><b>Definition</b> Timer.h:10</div></div>
 <div class="ttc" id="anamespacelaunch_html"><div class="ttname"><a href="namespacelaunch.html">launch</a></div><div class="ttdef"><b>Definition</b> launch.py:1</div></div>
-<div class="ttc" id="astructBendersBaseOptions_html"><div class="ttname"><a href="structBendersBaseOptions.html">BendersBaseOptions</a></div><div class="ttdef"><b>Definition</b> common.h:144</div></div>
+<div class="ttc" id="astructBendersBaseOptions_html"><div class="ttname"><a href="structBendersBaseOptions.html">BendersBaseOptions</a></div><div class="ttdef"><b>Definition</b> common.h:152</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -8,7 +8,8 @@ var annotated_dup =
         [ "AntaresDriver", "classantares__xpansion_1_1antares__driver_1_1AntaresDriver.html", "classantares__xpansion_1_1antares__driver_1_1AntaresDriver" ]
       ] ],
       [ "benders_driver", "namespaceantares__xpansion_1_1benders__driver.html", [
-        [ "BendersDriver", "classantares__xpansion_1_1benders__driver_1_1BendersDriver.html", "classantares__xpansion_1_1benders__driver_1_1BendersDriver" ]
+        [ "BendersDriver", "classantares__xpansion_1_1benders__driver_1_1BendersDriver.html", "classantares__xpansion_1_1benders__driver_1_1BendersDriver" ],
+        [ "SolversExe", "classantares__xpansion_1_1benders__driver_1_1SolversExe.html", null ]
       ] ],
       [ "candidates_reader", null, [
         [ "CandidateNotFound", "classantares__xpansion_1_1candidates__reader_1_1CandidateNotFound.html", null ],
@@ -267,6 +268,25 @@ var annotated_dup =
     [ "LogUtils", null, [
       [ "XpansionError", "classLogUtils_1_1XpansionError.html", null ]
     ] ],
+    [ "Outerloop", null, [
+      [ "CutsManagerRunTime", "classOuterloop_1_1CutsManagerRunTime.html", null ],
+      [ "ICutsManager", "classOuterloop_1_1ICutsManager.html", null ],
+      [ "IMasterUpdate", "classOuterloop_1_1IMasterUpdate.html", null ],
+      [ "IOuterLoopInputDataReader", "classOuterloop_1_1IOuterLoopInputDataReader.html", null ],
+      [ "MasterUpdateBase", "classOuterloop_1_1MasterUpdateBase.html", null ],
+      [ "OuterLoop", "classOuterloop_1_1OuterLoop.html", null ],
+      [ "OuterLoopCouldNotReadAreaField", "classOuterloop_1_1OuterLoopCouldNotReadAreaField.html", null ],
+      [ "OuterLoopCouldNotReadCriterionField", "classOuterloop_1_1OuterLoopCouldNotReadCriterionField.html", null ],
+      [ "OuterLoopInputData", "classOuterloop_1_1OuterLoopInputData.html", null ],
+      [ "OuterLoopInputFileError", "classOuterloop_1_1OuterLoopInputFileError.html", null ],
+      [ "OuterLoopInputFileIsEmpty", "classOuterloop_1_1OuterLoopInputFileIsEmpty.html", null ],
+      [ "OuterLoopInputFileNoPatternFound", "classOuterloop_1_1OuterLoopInputFileNoPatternFound.html", null ],
+      [ "OuterLoopInputFromYaml", "classOuterloop_1_1OuterLoopInputFromYaml.html", null ],
+      [ "OuterLoopInputPatternsShouldBeArray", "classOuterloop_1_1OuterLoopInputPatternsShouldBeArray.html", null ],
+      [ "OuterLoopPattern", "classOuterloop_1_1OuterLoopPattern.html", "classOuterloop_1_1OuterLoopPattern" ],
+      [ "OuterLoopSingleInputData", "classOuterloop_1_1OuterLoopSingleInputData.html", "classOuterloop_1_1OuterLoopSingleInputData" ],
+      [ "VariablesGroup", "classOuterloop_1_1VariablesGroup.html", null ]
+    ] ],
     [ "Output", null, [
       [ "CandidateData", "structOutput_1_1CandidateData.html", null ],
       [ "Iteration", "structOutput_1_1Iteration.html", null ],
@@ -282,8 +302,7 @@ var annotated_dup =
       [ "PerfPlotsGenerator", "classperformance_1_1PerfPlotsGenerator.html", null ]
     ] ],
     [ "PlainData", null, [
-      [ "SubProblemData", "structPlainData_1_1SubProblemData.html", null ],
-      [ "Variables", "structPlainData_1_1Variables.html", null ]
+      [ "SubProblemData", "structPlainData_1_1SubProblemData.html", null ]
     ] ],
     [ "ProblemGenerationLog", null, [
       [ "ProblemGenerationFileLogger", "classProblemGenerationLog_1_1ProblemGenerationFileLogger.html", "classProblemGenerationLog_1_1ProblemGenerationFileLogger" ],
@@ -380,6 +399,10 @@ var annotated_dup =
         [ "UserFile", "classxpansion_1_1logger_1_1UserFile.html", "classxpansion_1_1logger_1_1UserFile" ]
       ] ]
     ] ],
+    [ "YAML", null, [
+      [ "convert< OuterLoopInputData >", "structYAML_1_1convert_3_01OuterLoopInputData_01_4.html", null ],
+      [ "convert< OuterLoopSingleInputData >", "structYAML_1_1convert_3_01OuterLoopSingleInputData_01_4.html", null ]
+    ] ],
     [ "act", "classact.html", null ],
     [ "ActiveLink", "classActiveLink.html", null ],
     [ "ActiveLinksBuilder", "classActiveLinksBuilder.html", "classActiveLinksBuilder" ],
@@ -431,7 +454,6 @@ var annotated_dup =
     [ "ConstantDataFromAntares", "classConstantDataFromAntares.html", null ],
     [ "CriterionCouldNotBeSatisfied", "classCriterionCouldNotBeSatisfied.html", null ],
     [ "CurrentIterationData", "structCurrentIterationData.html", null ],
-    [ "CutsManagerRunTime", "classCutsManagerRunTime.html", null ],
     [ "DirectAccessScenarioToChronicleProvider", "classDirectAccessScenarioToChronicleProvider.html", null ],
     [ "DynamicLibrary", "classDynamicLibrary.html", null ],
     [ "EmptyLogger", "structEmptyLogger.html", "structEmptyLogger" ],
@@ -453,10 +475,8 @@ var annotated_dup =
     [ "HeadersManager", "structHeadersManager.html", null ],
     [ "HeadersManagerExternalLoop", "structHeadersManagerExternalLoop.html", null ],
     [ "HebdoDataFromAntares", "classHebdoDataFromAntares.html", null ],
-    [ "ICutsManager", "classICutsManager.html", null ],
     [ "ILogger", "classILogger.html", "classILogger" ],
     [ "ILoggerXpansion", "structILoggerXpansion.html", "structILoggerXpansion" ],
-    [ "IMasterUpdate", "classIMasterUpdate.html", null ],
     [ "IniFileNotFound", "classIniFileNotFound.html", null ],
     [ "INIReader", "classINIReader.html", null ],
     [ "IniReaderUtils", "classIniReaderUtils.html", null ],
@@ -471,7 +491,6 @@ var annotated_dup =
     [ "InvalidSolverOptionException", "classInvalidSolverOptionException.html", null ],
     [ "InvalidSolverStatusException", "classInvalidSolverStatusException.html", null ],
     [ "InvalidStatusException", "classInvalidStatusException.html", null ],
-    [ "IOuterLoopCriterion", "classIOuterLoopCriterion.html", null ],
     [ "IProblemProviderPort", "classIProblemProviderPort.html", null ],
     [ "IProblemVariablesProviderPort", "classIProblemVariablesProviderPort.html", null ],
     [ "IProblemWriter", "classIProblemWriter.html", null ],
@@ -502,7 +521,6 @@ var annotated_dup =
     [ "MasterGeneration", "classMasterGeneration.html", null ],
     [ "MasterLoggerTest", "classMasterLoggerTest.html", null ],
     [ "MasterProblemBuilder", "classMasterProblemBuilder.html", null ],
-    [ "MasterUpdateBase", "classMasterUpdateBase.html", null ],
     [ "MasterUpdateBaseTest", "classMasterUpdateBaseTest.html", null ],
     [ "MathLogger", "structMathLogger.html", null ],
     [ "MathLoggerBase", "structMathLoggerBase.html", null ],
@@ -523,9 +541,10 @@ var annotated_dup =
     [ "NotImplementedFeatureSolverException", "classNotImplementedFeatureSolverException.html", null ],
     [ "OptionsParser", "classOptionsParser.html", "classOptionsParser" ],
     [ "OptionsParserTest", "classOptionsParserTest.html", null ],
-    [ "OuterLoop", "classOuterLoop.html", null ],
-    [ "OuterloopCriterionLossOfLoad", "classOuterloopCriterionLossOfLoad.html", null ],
-    [ "OuterLoopCriterionTest", "classOuterLoopCriterionTest.html", null ],
+    [ "OuterLoopBiLevel", "classOuterLoopBiLevel.html", "classOuterLoopBiLevel" ],
+    [ "OuterLoopCurrentIterationData", "structOuterLoopCurrentIterationData.html", null ],
+    [ "OuterLoopInputFromYamlTest", "classOuterLoopInputFromYamlTest.html", null ],
+    [ "OuterLoopPatternTest", "classOuterLoopPatternTest.html", null ],
     [ "Predicate", "structPredicate.html", null ],
     [ "Problem", "classProblem.html", "classProblem" ],
     [ "ProblemConstructionTest", "classProblemConstructionTest.html", null ],
@@ -582,7 +601,6 @@ var annotated_dup =
     [ "SolverLogManager", "classSolverLogManager.html", null ],
     [ "SolverXpress", "classSolverXpress.html", "classSolverXpress" ],
     [ "StandardLp", "classStandardLp.html", null ],
-    [ "struct", "structstruct.html", null ],
     [ "StudyUpdateLinkCapacitiesStrategy", "classStudyUpdateLinkCapacitiesStrategy.html", null ],
     [ "StudyUpdateLinkParameterStrategy", "classStudyUpdateLinkParameterStrategy.html", "classStudyUpdateLinkParameterStrategy" ],
     [ "StudyUpdater", "classStudyUpdater.html", "classStudyUpdater" ],

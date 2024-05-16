@@ -48,7 +48,7 @@ var searchData=
   ['build_45',['build',['../md_docs_2developer-guide_2install__from__sources_23-Build.html',1,'Build'],['../md_docs_2developer-guide_2install__from__sources_23-Build.html#autotoc_md74',1,'Build']]],
   ['build_20and_20installation_20details_46',['Build and installation details',['../md_docs_2developer-guide_2install__from__sources_20-INSTALL.html#autotoc_md59',1,'']]],
   ['build_20with_20cmake_47',['Configure build with CMake',['../md_docs_2developer-guide_2install__from__sources_23-Build.html#autotoc_md73',1,'']]],
-  ['buildcut_48',['buildcut',['../classBendersSequentialDouble.html#a51acd36960e970d6b70621db819e5b42',1,'BendersSequentialDouble::BuildCut()'],['../classBendersSequential.html#a2d1b29260a6ab2204f7ef276204951d7',1,'BendersSequential::BuildCut()'],['../classBendersByBatch.html#ab9975a5a3dbc3bd26f6bd0fd0833d340',1,'BendersByBatch::BuildCut()']]],
+  ['buildcut_48',['buildcut',['../classBendersSequentialDouble.html#a51acd36960e970d6b70621db819e5b42',1,'BendersSequentialDouble::BuildCut()'],['../classBendersSequential.html#a2d1b29260a6ab2204f7ef276204951d7',1,'BendersSequential::BuildCut()'],['../classBendersByBatch.html#a3a055a28f871d97cba325ece39c9c41c',1,'BendersByBatch::BuildCut()']]],
   ['buildcutfull_49',['BuildCutFull',['../classBendersBase.html#affc499db6586868162f6bd7efa8898ea',1,'BendersBase']]],
   ['by_20batch_20algorithm_50',['The Benders by batch algorithm',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md203',1,'']]]
 ];

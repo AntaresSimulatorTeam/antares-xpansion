@@ -10,6 +10,7 @@ var classBendersBase =
     [ "init_data", "classBendersBase.html#a62a819640d2a7530fce9418547f45d65", null ],
     [ "LastMasterPath", "classBendersBase.html#a473263e38eb70f9a74a8de2a7867c6e2", null ],
     [ "set_input_map", "classBendersBase.html#a762f7724ccf0b5bed0176744f578d8c2", null ],
+    [ "SetSubproblemsVariablesIndex", "classBendersBase.html#a8c9092f43782dbfc0c84e85073e70e92", null ],
     [ "ShouldRelaxationStop", "classBendersBase.html#a805ed56ad6729dd00f5d16dc705af264", null ],
     [ "SubproblemWeight", "classBendersBase.html#af1ed0d083a39816fcecdd2bf1b100f8f", null ],
     [ "update_best_ub", "classBendersBase.html#af938b540f0daa0592257f5fb9fcfc80f", null ],
