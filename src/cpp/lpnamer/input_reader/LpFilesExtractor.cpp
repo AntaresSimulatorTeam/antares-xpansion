@@ -16,126 +16,12 @@ void LpFilesExtractor::ExtractFiles() const {
 }
 
 /**
- * @brief This method is used to produce the "interco.txt" file from "interco*.txt"
+ * @brief This method is used to get the files from the simulation directory.
  *
- * In archive mode the file is just rename. Otherwise, the file is copied from
- * the simulation directory to the `xpansion_output_dir_` directory.
+ * The patterns it looks for are "area*.txt" and "interco*.txt".
  *
- * @param vect_interco_files
+ * @return A pair of vectors containing the paths of the files. The first vector contains the paths of the "area*.txt" files and the second vector contains the paths of the "interco*.txt" files.
  */
-void LpFilesExtractor::produceIntercotxtFile(
-    const std::vector<std::filesystem::path>& vect_interco_files) const {
-  switch (this->mode_) {
-    case Mode::ANTARES_API:
-      [[fallthrough]];
-    case Mode::FILE:
-      try {
-        std::filesystem::copy(vect_interco_files[0],
-                              this->xpansion_output_dir_ / "interco.txt");
-      } catch (const std::filesystem::filesystem_error& e) {
-        auto log_location = LOGLOCATION;
-        (*this->logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << e.what();
-        throw;
-      }
-      break;
-    case Mode::ARCHIVE:
-      std::filesystem::rename(vect_interco_files[0],
-                              this->xpansion_output_dir_ / "interco.txt");
-      break;
-    case Mode::UNKOWN:
-      throw LogUtils::XpansionError<std::runtime_error>(
-          "Mode is unknown", LOGLOCATION);
-    default:
-      throw LogUtils::XpansionError<std::runtime_error>(
-          "Mode is not supported:", LOGLOCATION);
-  }
-}
-
-/**
- * @brief This method checks if the number of interco files is correct.
- *
- * We should have only one file named "interco*.txt".
- *
- * @param vect_interco_files
- */
-void LpFilesExtractor::checkProperNumberOfIntercoFiles(
-    const std::vector<std::filesystem::path>& vect_interco_files) const {
-  if (auto num_intercos_file = vect_interco_files.size();
-      num_intercos_file == 0) {
-    std::ostringstream msg;
-    msg << "No interco*.txt file found" << std::endl;
-    auto log_location = LOGLOCATION;
-    (*this->logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << msg.str();
-    throw ErrorWithIntercosFile(msg.str(), log_location);
-  } else if (num_intercos_file > 1) {
-    std::ostringstream msg;
-    auto log_location = LOGLOCATION;
-    msg << "More than one interco*.txt file found" << std::endl;
-    (*this->logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << msg.str();
-    throw ErrorWithIntercosFile(msg.str(), log_location);
-  }
-}
-
-/**
- * @brief This method is used to produce the "area.txt" file from "area*.txt"
- *
- * In archive mode the file is just rename. Otherwise, the file is copied from
- * the simulation directory to the `xpansion_output_dir_` directory.
- *
- * @param vect_area_files
- */
-void LpFilesExtractor::produceAreatxtFile(
-    const std::vector<std::filesystem::path>& vect_area_files) const {
-  switch (this->mode_) {
-    case Mode::ANTARES_API:
-      [[fallthrough]];
-    case Mode::FILE:
-      try {
-        std::filesystem::copy(vect_area_files[0],
-                              this->xpansion_output_dir_ / "area.txt");
-      } catch (const std::filesystem::filesystem_error& e) {
-        auto log_location = LOGLOCATION;
-        (*this->logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << e.what();
-        throw;
-      }
-      break;
-    case Mode::ARCHIVE:
-      std::filesystem::rename(vect_area_files[0],
-                              this->xpansion_output_dir_ / "area.txt");
-      break;
-    case Mode::UNKOWN:
-      throw LogUtils::XpansionError<std::runtime_error>(
-          "Mode is unknown", LOGLOCATION);
-    default:
-      throw LogUtils::XpansionError<std::runtime_error>(
-          "Mode is not supported:", LOGLOCATION);
-  }
-}
-
-/**
- * @brief This method checks if the number of area files is correct.
- *
- * We should have only one file named "area*.txt".
- *
- * @param vect_area_files
- */
-void LpFilesExtractor::checkProperNumberOfAreaFiles(
-    const std::vector<std::filesystem::path>& vect_area_files) const {
-  if (auto num_areas_file = vect_area_files.size(); num_areas_file == 0) {
-    std::ostringstream msg;
-    auto log_location = LOGLOCATION;
-    msg << "No area*.txt file found" << std::endl;
-    (*this->logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << msg.str();
-    throw ErrorWithAreaFile(msg.str(), log_location);
-  } else if (num_areas_file > 1) {
-    std::ostringstream msg;
-    auto log_location = LOGLOCATION;
-    msg << "More than one area*.txt file found" << std::endl;
-    (*this->logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << msg.str();
-    throw ErrorWithAreaFile(msg.str(), log_location);
-  }
-}
-
 LpFilesExtractor::areaAndIntecoPaths LpFilesExtractor::getFiles() const{
   std::vector<std::filesystem::path> vect_area_files;
   std::vector<std::filesystem::path> vect_interco_files;
@@ -189,4 +75,126 @@ LpFilesExtractor::areaAndIntecoPaths LpFilesExtractor::getFilesFromArchive() con
 
   archive_reader.ExtractPattern("ts-numbers*", "", this->xpansion_output_dir_);
   return std::make_pair(vect_area_files, vect_interco_files);
+}
+
+
+/**
+ * @brief This method checks if the number of area files is correct.
+ *
+ * We should have only one file named "area*.txt".
+ *
+ * @param vect_area_files
+ */
+void LpFilesExtractor::checkProperNumberOfAreaFiles(
+    const std::vector<std::filesystem::path>& vect_area_files) const {
+  if (auto num_areas_file = vect_area_files.size(); num_areas_file == 0) {
+    std::ostringstream msg;
+    auto log_location = LOGLOCATION;
+    msg << "No area*.txt file found" << std::endl;
+    (*this->logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << msg.str();
+    throw ErrorWithAreaFile(msg.str(), log_location);
+  } else if (num_areas_file > 1) {
+    std::ostringstream msg;
+    auto log_location = LOGLOCATION;
+    msg << "More than one area*.txt file found" << std::endl;
+    (*this->logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << msg.str();
+    throw ErrorWithAreaFile(msg.str(), log_location);
+  }
+}
+
+/**
+ * @brief This method is used to produce the "area.txt" file from "area*.txt"
+ *
+ * In archive mode the file is just rename. Otherwise, the file is copied from
+ * the simulation directory to the `xpansion_output_dir_` directory.
+ *
+ * @param vect_area_files
+ */
+void LpFilesExtractor::produceAreatxtFile(
+    const std::vector<std::filesystem::path>& vect_area_files) const {
+  switch (this->mode_) {
+    case Mode::ANTARES_API:
+      [[fallthrough]];
+    case Mode::FILE:
+      try {
+        std::filesystem::copy(vect_area_files[0],
+                              this->xpansion_output_dir_ / "area.txt");
+      } catch (const std::filesystem::filesystem_error& e) {
+        auto log_location = LOGLOCATION;
+        (*this->logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << e.what();
+        throw;
+      }
+      break;
+    case Mode::ARCHIVE:
+      std::filesystem::rename(vect_area_files[0],
+                              this->xpansion_output_dir_ / "area.txt");
+      break;
+    case Mode::UNKOWN:
+      throw LogUtils::XpansionError<std::runtime_error>(
+          "Mode is unknown", LOGLOCATION);
+    default:
+      throw LogUtils::XpansionError<std::runtime_error>(
+          "Mode is not supported:", LOGLOCATION);
+  }
+}
+
+/**
+ * @brief This method checks if the number of interco files is correct.
+ *
+ * We should have only one file named "interco*.txt".
+ *
+ * @param vect_interco_files
+ */
+void LpFilesExtractor::checkProperNumberOfIntercoFiles(
+    const std::vector<std::filesystem::path>& vect_interco_files) const {
+  if (auto num_intercos_file = vect_interco_files.size();
+      num_intercos_file == 0) {
+    std::ostringstream msg;
+    msg << "No interco*.txt file found" << std::endl;
+    auto log_location = LOGLOCATION;
+    (*this->logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << msg.str();
+    throw ErrorWithIntercosFile(msg.str(), log_location);
+  } else if (num_intercos_file > 1) {
+    std::ostringstream msg;
+    auto log_location = LOGLOCATION;
+    msg << "More than one interco*.txt file found" << std::endl;
+    (*this->logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << msg.str();
+    throw ErrorWithIntercosFile(msg.str(), log_location);
+  }
+}
+
+/**
+ * @brief This method is used to produce the "interco.txt" file from "interco*.txt"
+ *
+ * In archive mode the file is just rename. Otherwise, the file is copied from
+ * the simulation directory to the `xpansion_output_dir_` directory.
+ *
+ * @param vect_interco_files
+ */
+void LpFilesExtractor::produceIntercotxtFile(
+    const std::vector<std::filesystem::path>& vect_interco_files) const {
+  switch (this->mode_) {
+    case Mode::ANTARES_API:
+      [[fallthrough]];
+    case Mode::FILE:
+      try {
+        std::filesystem::copy(vect_interco_files[0],
+                              this->xpansion_output_dir_ / "interco.txt");
+      } catch (const std::filesystem::filesystem_error& e) {
+        auto log_location = LOGLOCATION;
+        (*this->logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << e.what();
+        throw;
+      }
+      break;
+    case Mode::ARCHIVE:
+      std::filesystem::rename(vect_interco_files[0],
+                              this->xpansion_output_dir_ / "interco.txt");
+      break;
+    case Mode::UNKOWN:
+      throw LogUtils::XpansionError<std::runtime_error>(
+          "Mode is unknown", LOGLOCATION);
+    default:
+      throw LogUtils::XpansionError<std::runtime_error>(
+          "Mode is not supported:", LOGLOCATION);
+  }
 }
