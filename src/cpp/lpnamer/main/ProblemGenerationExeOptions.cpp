@@ -53,28 +53,6 @@ void ProblemGenerationExeOptions::checkMandatoryOptions(
   }
 }
 
-std::filesystem::path ProblemGenerationExeOptions::deduceArchivePathIfEmpty(
-    const std::filesystem::path& xpansion_output_dir,
-    const std::filesystem::path& archive_path) const {
-  if (archive_path.empty() && !xpansion_output_dir.empty()) {
-    if (xpansion_output_dir.string().find("-Xpansion") == std::string::npos) {
-      auto log_location = LOGLOCATION;
-      auto msg =
-          "Archive path is missing and output path does not contains"s
-          " \"-Xpansion\" suffix. Can't deduce archive file name."s;
-      throw MismatchedParameters(msg, log_location);
-    }
-    auto deduced_archive_path = xpansion_output_dir;
-    auto dir_name = deduced_archive_path.stem().string();
-    dir_name = dir_name.substr(0, dir_name.find("-Xpansion"s));
-    deduced_archive_path =
-        deduced_archive_path.replace_filename(dir_name).replace_extension(
-            ".zip");
-    return deduced_archive_path;
-  }
-  return archive_path;
-}
-
 std::filesystem::path ProblemGenerationExeOptions::deduceXpansionDirIfEmpty(
     std::filesystem::path xpansion_output_dir,
     const std::filesystem::path& archive_path) const {
