@@ -26,28 +26,30 @@ void ProblemGenerationExeOptions::Parse(unsigned int argc,
                                         const char* const* argv) {
   OptionsParser::Parse(argc, argv);
   auto log_location = LOGLOCATION;
-  checkAtLeastOneMandatoryOption(log_location);
-  checkOnlyOneMandatoryOption(log_location);
+  checkMandatoryOptions(log_location);
 }
-void ProblemGenerationExeOptions::checkAtLeastOneMandatoryOption(
+
+auto ProblemGenerationExeOptions::exclusiveMandatoryParameters() const {
+  return std::vector{this->XpansionOutputDir().string(),
+           this->ArchivePath().string(),
+           this->StudyPath().string()};
+}
+
+namespace {
+auto notEmpty = [](auto k) { return !k.empty(); };
+}
+void ProblemGenerationExeOptions::checkMandatoryOptions(
     const std::string& log_location) const {
-  if (std::vector<std::string> mandatory = {this->XpansionOutputDir().string(),
-                                            this->ArchivePath().string(),
-                                            this->StudyPath().string()};
-      std::ranges::all_of(
-          mandatory, [](std::string_view string) { return string.empty(); })) {
+  auto args = exclusiveMandatoryParameters();
+  auto count = std::ranges::count_if(args, notEmpty);
+  if (count > 1) {
+    auto msg = "Only one of [archive, output, study] parameters is accepted"s;
+    throw ProblemGenerationOptions::ConflictingParameters(msg, log_location);
+  }
+  if (count == 0) {
     auto msg =
         "Need to give at least on of [OutputDir, Archive, Study] options"s;
     throw ProblemGenerationOptions::MissingParameters(msg, log_location);
-  }
-}
-void ProblemGenerationExeOptions::checkOnlyOneMandatoryOption(
-    const std::string& log_location) const {
-  if (std::vector<std::string> args = {this->XpansionOutputDir().string(),
-                                       this->ArchivePath().string(), this->StudyPath().string()};
-      std::ranges::count_if(args, std::ranges::empty) < (args.size() - 1)) {
-    auto msg = "Only one of [archive, output, study] parameters is accepted"s;
-    throw ProblemGenerationOptions::ConflictingParameters(msg, log_location);
   }
 }
 
