@@ -121,7 +121,7 @@ namespace YAML {
 template <>
 struct convert<OuterLoopSingleInputData> {
   static Node encode(const OuterLoopSingleInputData &rhs) {
-    //
+    return {};
   }
 
   static bool decode(const Node &pattern, OuterLoopSingleInputData &rhs) {
@@ -154,7 +154,7 @@ struct convert<OuterLoopSingleInputData> {
 template <>
 struct convert<OuterLoopInputData> {
   static Node encode(const OuterLoopInputData &rhs) {
-    //
+    return {};
   }
 
   static void DecodePatterns(const Node &patterns, OuterLoopInputData &rhs) {
