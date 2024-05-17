@@ -26,10 +26,10 @@ BendersSequential::BendersSequential(
 void BendersSequential::InitializeProblems() {
   MatchProblemToId();
 
-  reset_master(new WorkerMaster(master_variable_map_, get_master_path(),
+  reset_master<WorkerMaster>(master_variable_map_, get_master_path(),
                                 get_solver_name(), get_log_level(),
                                 _data.nsubproblem, solver_log_manager_,
-                                IsResumeMode(), _logger));
+                                IsResumeMode(), _logger);
   for (const auto &problem : coupling_map_) {
     const auto subProblemFilePath = GetSubproblemPath(problem.first);
 

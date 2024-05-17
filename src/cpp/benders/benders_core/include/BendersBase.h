@@ -150,11 +150,12 @@ class BendersBase {
   [[nodiscard]] std::filesystem::path OuterloopOptionsFile() const;
   [[nodiscard]] LogData bendersDataToLogData(
       const CurrentIterationData &data) const;
-  virtual void reset_master(WorkerMaster *worker_master);
+  template <typename T, typename... Args>
+  void reset_master(Args &&...args);
   void free_master();
   void free_subproblems();
   void AddSubproblem(const std::pair<std::string, VariableMap> &kvp);
-  [[nodiscard]] WorkerMasterPtr get_master() const;
+  [[nodiscard]] virtual WorkerMasterPtr get_master() const;
   void MatchProblemToId();
   /**
    * for the nth variable name, Subproblems shares the same prefix , only the
