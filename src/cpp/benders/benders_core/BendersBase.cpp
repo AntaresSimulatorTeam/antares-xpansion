@@ -1007,7 +1007,7 @@ std::vector<double> BendersBase::ComputeOuterLoopCriterion(
           solution > criterion_count_threshold)
         // 1h of no supplied energy
         outer_loop_criterion_per_sub_problem[pattern_index] +=
-            subproblem_weight / number_of_scenarios;
+            subproblem_weight;
     }
   }
   return outer_loop_criterion_per_sub_problem;
