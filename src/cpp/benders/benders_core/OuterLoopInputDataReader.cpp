@@ -1,14 +1,16 @@
 #include "OuterLoopInputDataReader.h"
 
+#include <utility>
+
 using namespace Outerloop;
 
 /**
  * prefix could be := PositiveUnsuppliedEnergy:: or something else necessarily
  * /!\ body could be := area name or equivalent or nothing
  */
-OuterLoopPattern::OuterLoopPattern(const std::string &prefix,
-                                   const std::string &body)
-    : prefix_(prefix), body_(body) {}
+OuterLoopPattern::OuterLoopPattern(std::string prefix,
+                                   std::string body)
+    : prefix_(std::move(prefix)), body_(std::move(body)) {}
 
 /**
  * just do
