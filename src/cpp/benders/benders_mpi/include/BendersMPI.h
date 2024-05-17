@@ -28,9 +28,9 @@ class BendersMpi : public BendersBase {
              std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
 
   void launch() override;
-  virtual std::string BendersName() const { return "Benders mpi"; }
+  std::string BendersName() const override { return "Benders mpi"; }
   const unsigned int rank_0 = 0;
-  virtual void ExternalLoopCheckFeasibility() override;
+  void ExternalLoopCheckFeasibility() override;
 
  protected:
   void free() override;

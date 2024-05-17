@@ -720,12 +720,6 @@ std::map<std::string, int> BendersBase::get_master_variable_map(
   return it_master->second;
 }
 
-template <typename T, typename... Args>
-void BendersBase::reset_master(Args &&...args) {
-  _master = std::make_shared<T>(std::forward<Args>(args)...);
-  master_is_empty_ = false;
-}
-
 void BendersBase::free_master() {
   _master->free();
   master_is_empty_ = true;

@@ -151,7 +151,10 @@ class BendersBase {
   [[nodiscard]] LogData bendersDataToLogData(
       const CurrentIterationData &data) const;
   template <typename T, typename... Args>
-  void reset_master(Args &&...args);
+  void reset_master(Args &&...args) {
+    _master = std::make_shared<T>(std::forward<Args>(args)...);
+    master_is_empty_ = false;
+  }
   void free_master();
   void free_subproblems();
   void AddSubproblem(const std::pair<std::string, VariableMap> &kvp);
