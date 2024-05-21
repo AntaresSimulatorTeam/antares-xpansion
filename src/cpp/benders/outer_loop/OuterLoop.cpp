@@ -47,7 +47,7 @@ void OuterLoop::Run() {
   // last prints
   PrintLog();
   benders_->mathLoggerDriver_->Print(benders_->GetCurrentIterationData());
-
+  benders_->SaveOuterLoopSolutionInOutputFile();
   // TODO general-case
   //  cuts_manager_->Save(benders_->AllCuts());
   benders_->free();

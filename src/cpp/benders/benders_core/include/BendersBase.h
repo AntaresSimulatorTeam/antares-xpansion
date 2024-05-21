@@ -98,6 +98,7 @@ class BendersBase {
   virtual void RunExternalLoopBilevelChecks() = 0;
   double OuterLoopStoppingThreshold() const;
   Output::SolutionData GetOuterLoopSolution() const;
+  void SaveOuterLoopSolutionInOutputFile() const;
 
  protected:
   bool exception_raised_ = false;

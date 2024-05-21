@@ -513,15 +513,21 @@ void BendersBase::post_run_actions() const {
 }
 
 void BendersBase::SaveCurrentIterationInOutputFile() const {
-  auto &LastWorkerMasterData = relevantIterationData_.last;
-  if (LastWorkerMasterData._valid) {
-    _writer->write_iteration(iteration(LastWorkerMasterData),
-                             _data.it + iterations_before_resume);
-    _writer->dump();
+  if (!_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
+    auto &LastWorkerMasterData = relevantIterationData_.last;
+    if (LastWorkerMasterData._valid) {
+      _writer->write_iteration(iteration(LastWorkerMasterData),
+                               _data.it + iterations_before_resume);
+      _writer->dump();
+    }
   }
 }
 void BendersBase::SaveSolutionInOutputFile() const {
   _writer->write_solution(solution());
+  _writer->dump();
+}
+void BendersBase::SaveOuterLoopSolutionInOutputFile() const {
+  _writer->write_outer_loop_solution(GetOuterLoopSolution());
   _writer->dump();
 }
 
