@@ -12,6 +12,8 @@ struct OuterLoopCurrentIterationData{
   double max_criterion_best_it = 0.;
   double outer_loop_bilevel_best_ub = +1e20;
   double external_loop_lambda = 0.;
+  double external_loop_lambda_min = 0.;
+  double external_loop_lambda_max = 0.;
   std::string max_criterion_area;
   std::string max_criterion_area_best_it;
 };
