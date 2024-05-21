@@ -71,7 +71,7 @@ jobs:
 
       - name: user guide upload
         id: userguide_upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3 #aligned with download in centOS job
         with:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}

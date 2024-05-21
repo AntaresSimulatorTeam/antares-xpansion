@@ -42,7 +42,7 @@ jobs:
 
       - name: user guide upload
         id: userguide_upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
@@ -151,7 +151,7 @@ jobs:
           pip3 install -r requirements-ui.txt
 
       - name: Download userguide
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: user-guide
           path: docs/
@@ -225,7 +225,7 @@ jobs:
           echo "TGZ_NAME=$FILE_NAME.tar.gz" >> $GITHUB_ENV
 
       - name: Upload .tar.gz
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{env.TGZ_NAME}}
           path: _build/${{env.TGZ_NAME}}
@@ -237,7 +237,7 @@ jobs:
           antares-xpansion-version: ${{env.VERSION_WITH_XPRESS}}
 
       - name: Upload single file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.create-single-file.outputs.archive-name }}
           path: ${{ steps.create-single-file.outputs.archive-path }}
@@ -262,13 +262,13 @@ jobs:
         uses: bruceadams/get-release@main
 
       - name: Download Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ${{env.ZIP_NAME}}
           path: .
 
       - name: Download Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ${{env.SINGLEFILE_NAME}}
           path: .
