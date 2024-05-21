@@ -89,7 +89,7 @@ class BendersBase {
   OuterLoopCurrentIterationData GetOuterLoopData() const;
   std::vector<double> GetOuterLoopCriterionAtBestBenders() const;
   virtual void init_data();
-  void init_data(double external_loop_lambda);
+  void init_data(double external_loop_lambda, double external_loop_lambda_min, double external_loop_lambda_max);
 
   double ExternalLoopLambdaMax() const;
   double ExternalLoopLambdaMin() const;
@@ -150,11 +150,15 @@ class BendersBase {
   [[nodiscard]] std::filesystem::path OuterloopOptionsFile() const;
   [[nodiscard]] LogData bendersDataToLogData(
       const CurrentIterationData &data) const;
-  virtual void reset_master(WorkerMaster *worker_master);
+  template <typename T, typename... Args>
+  void reset_master(Args &&...args) {
+    _master = std::make_shared<T>(std::forward<Args>(args)...);
+    master_is_empty_ = false;
+  }
   void free_master();
   void free_subproblems();
   void AddSubproblem(const std::pair<std::string, VariableMap> &kvp);
-  [[nodiscard]] WorkerMasterPtr get_master() const;
+  [[nodiscard]] virtual WorkerMasterPtr get_master() const;
   void MatchProblemToId();
   /**
    * for the nth variable name, Subproblems shares the same prefix , only the

@@ -41,7 +41,7 @@ class OuterLoopCouldNotReadCriterionField
 /// @brief lovely class
 class OuterLoopPattern {
  public:
-  explicit OuterLoopPattern(const std::string &prefix, const std::string &body);
+  explicit OuterLoopPattern(std::string prefix, std::string body);
   OuterLoopPattern() = default;
   [[nodiscard]] std::regex MakeRegex() const;
   [[nodiscard]] const std::string &GetPrefix() const;
