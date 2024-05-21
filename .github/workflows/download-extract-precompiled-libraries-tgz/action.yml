@@ -34,7 +34,7 @@ runs:
       tar -xvf rte-antares-deps-${{inputs.os}}-${{inputs.buildtype}}.tar.gz
       rm -rf rte-antares-deps-${{inputs.os}}-${{inputs.buildtype}}.tar.gz
       
-      wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{inputs.antares-version}}/antares-${{inputs.antares-version}}-${{inputs.os-full-name}}${{inputs.variant}}.tar.gz
+      wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{inputs.antares-version}}/antares-9.1.0-${{inputs.os-full-name}}${{inputs.variant}}.tar.gz
       tar -xvf antares-${{inputs.antares-version}}-${{inputs.os-full-name}}${{inputs.variant}}.tar.gz -C rte-antares-deps-${{inputs.buildtype}} --strip-components=1
       rm -rf antares-${{inputs.antares-version}}-${{inputs.os-full-name}}${{inputs.variant}}.tar.gz
       
