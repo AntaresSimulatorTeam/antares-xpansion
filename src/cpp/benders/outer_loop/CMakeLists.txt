@@ -33,6 +33,9 @@ target_include_directories (outer_loop_lib
 
 target_link_libraries (outer_loop_lib
 	PUBLIC
+		Boost::mpi
+		MPI::MPI_C
+		Boost::serialization
 		helpers
 		benders_core
 		benders_mpi_core
