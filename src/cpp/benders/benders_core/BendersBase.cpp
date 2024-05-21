@@ -898,7 +898,9 @@ void BendersBase::ClearCurrentIterationCutTrace() {
 void BendersBase::EndWritingInOutputFile() const {
   _writer->updateEndTime();
   _writer->write_duration(_data.benders_time);
-  SaveSolutionInOutputFile();
+  if (!_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
+    SaveSolutionInOutputFile();
+  }
 }
 double BendersBase::GetBendersTime() const { return benders_timer.elapsed(); }
 void BendersBase::write_basis() const {
