@@ -53,10 +53,6 @@ void VoidWriter::write_solution(const SolutionData &solution) {
   // keep this method empty
 }
 
-void VoidWriter::write_outer_loop_solution(const SolutionData &solution) {
-  // keep this method empty
-}
-
 void VoidWriter::write_iteration(const Iteration &iteration_data,
                                  const size_t iteration_num) {
   // keep this method empty

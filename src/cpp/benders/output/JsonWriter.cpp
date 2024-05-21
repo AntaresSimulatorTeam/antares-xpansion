@@ -93,33 +93,21 @@ void JsonWriter::write_iteration(const Iteration &iter,
 }
 
 void JsonWriter::write_solution(const SolutionData &solution) {
-  // solution
-  write_solution_(SOLUTION_C, solution);
-}
-
-void JsonWriter::write_outer_loop_solution(const SolutionData &solution) {
-  // solution
-  write_solution_(OUTER_LOOP_SOLUTION_C, solution);
-}
-
-void JsonWriter::write_solution_(const std::string &solution_name,
-                                 const SolutionData &solution) {
-  // solution
-  _output[solution_name][ITERATION_C] = solution.best_it;
-  _output[solution_name][INVESTMENT_COST_C] = solution.solution.investment_cost;
-  _output[solution_name][OPERATIONAL_COST_C] =
-      solution.solution.operational_cost;
-  _output[solution_name][OVERALL_COST_C] = solution.solution.overall_cost;
+    // solution
+  _output[SOLUTION_C][ITERATION_C] = solution.best_it;
+  _output[SOLUTION_C][INVESTMENT_COST_C] = solution.solution.investment_cost;
+  _output[SOLUTION_C][OPERATIONAL_COST_C] = solution.solution.operational_cost;
+  _output[SOLUTION_C][OVERALL_COST_C] = solution.solution.overall_cost;
 
   for (const auto &candidate : solution.solution.candidates) {
-    _output[solution_name][VALUES_C][candidate.name] = candidate.invest;
+    _output[SOLUTION_C][VALUES_C][candidate.name] = candidate.invest;
   }
 
-  _output[solution_name][OPTIMALITY_GAP_C] = solution.solution.optimality_gap;
-  _output[solution_name][RELATIVE_GAP_C] = solution.solution.relative_gap;
+  _output[SOLUTION_C][OPTIMALITY_GAP_C] = solution.solution.optimality_gap;
+  _output[SOLUTION_C][RELATIVE_GAP_C] = solution.solution.relative_gap;
 
-  _output[solution_name][STOPPING_CRITERION_C] = solution.stopping_criterion;
-  _output[solution_name][PROBLEM_STATUS_C] = solution.problem_status;
+  _output[SOLUTION_C][STOPPING_CRITERION_C] = solution.stopping_criterion;
+  _output[SOLUTION_C][PROBLEM_STATUS_C] = solution.problem_status;
 }
 
 void JsonWriter::update_solution(const SolutionData &solution_data) {

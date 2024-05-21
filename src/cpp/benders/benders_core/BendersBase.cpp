@@ -538,7 +538,7 @@ void BendersBase::SaveSolutionInOutputFile() const {
   _writer->dump();
 }
 void BendersBase::SaveOuterLoopSolutionInOutputFile() const {
-  _writer->write_outer_loop_solution(GetOuterLoopSolution());
+  _writer->write_solution(GetOuterLoopSolution());
   _writer->dump();
 }
 

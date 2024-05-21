@@ -118,7 +118,6 @@ class OutputWriter {
   virtual void write_master_name(const std::string &master_name) = 0;
   virtual void write_log_level(const int log_level) = 0;
   virtual void write_solution(const SolutionData &solution) = 0;
-  virtual void write_outer_loop_solution(const SolutionData &solution) = 0;
   virtual void write_iteration(const Iteration &iteration_data,
                                const size_t iteration_num) = 0;
   virtual void updateBeginTime() = 0;

@@ -24,8 +24,6 @@ class JsonWriter : public OutputWriter {
   // attributes of the optimization execution
   Json::Value _output;
   void write_iterations(const IterationsData &iterations_data);
-  void write_solution_(const std::string &solution_name,
-                       const SolutionData &solution);
 
   void _open_file();
 
@@ -77,7 +75,6 @@ class JsonWriter : public OutputWriter {
   void write_master_name(const std::string &master_name) override;
   void write_log_level(const int log_level) override;
   void write_solution(const SolutionData &solution) override;
-  void write_outer_loop_solution(const SolutionData &solution) override;
   void write_nbweeks(const int nb_weeks) override;
   void write_duration(const double duration) override;
   std::string solution_status() const override;
