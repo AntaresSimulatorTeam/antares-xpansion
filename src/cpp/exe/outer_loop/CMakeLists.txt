@@ -20,7 +20,7 @@ set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
 endif()
 
 target_link_libraries(outer_loop
-			${PROJECT_NAME}::benders_mpi_core
+			${PROJECT_NAME}::outer_loop_lib
 			factories
 			)
 
