@@ -522,6 +522,17 @@ void BendersBase::SaveCurrentIterationInOutputFile() const {
     }
   }
 }
+
+void BendersBase::SaveCurrentOuterLoopIterationInOutputFile() const {
+  auto &LastWorkerMasterData = relevantIterationData_.last;
+  if (LastWorkerMasterData._valid) {
+    _writer->write_iteration(
+        iteration(LastWorkerMasterData),
+        _data.outer_loop_current_iteration_data.benders_num_run);
+    _writer->dump();
+  }
+}
+
 void BendersBase::SaveSolutionInOutputFile() const {
   _writer->write_solution(solution());
   _writer->dump();
@@ -897,11 +908,13 @@ void BendersBase::ClearCurrentIterationCutTrace() {
 }
 void BendersBase::EndWritingInOutputFile() const {
   _writer->updateEndTime();
+  // TODO duration for outer loop
   _writer->write_duration(_data.benders_time);
   if (!_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
     SaveSolutionInOutputFile();
   }
 }
+
 double BendersBase::GetBendersTime() const { return benders_timer.elapsed(); }
 void BendersBase::write_basis() const {
   const auto filename(std::filesystem::path(_options.OUTPUTROOT) /

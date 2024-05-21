@@ -416,6 +416,8 @@ void BendersMpi::RunExternalLoopBilevelChecks() {
             _data.outer_loop_current_iteration_data.external_loop_lambda)) {
       UpdateOuterLoopSolution();
     }
-    _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub = outer_loop_biLevel_.BilevelBestub();
+    SaveCurrentOuterLoopIterationInOutputFile();
+    _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub =
+        outer_loop_biLevel_.BilevelBestub();
   }
 }

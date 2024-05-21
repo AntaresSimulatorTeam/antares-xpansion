@@ -99,6 +99,7 @@ class BendersBase {
   double OuterLoopStoppingThreshold() const;
   Output::SolutionData GetOuterLoopSolution() const;
   void SaveOuterLoopSolutionInOutputFile() const;
+  void SaveCurrentOuterLoopIterationInOutputFile() const;
 
  protected:
   bool exception_raised_ = false;
