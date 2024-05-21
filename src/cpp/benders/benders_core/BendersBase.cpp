@@ -720,10 +720,6 @@ std::map<std::string, int> BendersBase::get_master_variable_map(
   return it_master->second;
 }
 
-void BendersBase::reset_master(WorkerMaster *worker_master) {
-  _master.reset(worker_master);
-  master_is_empty_ = false;
-}
 void BendersBase::free_master() {
   _master->free();
   master_is_empty_ = true;
@@ -915,10 +911,10 @@ void BendersBase::MasterAddRows(
                    row_names);
 }
 void BendersBase::ResetMasterFromLastIteration() {
-  reset_master(new WorkerMaster(master_variable_map_, LastMasterPath(),
+  reset_master<WorkerMaster>(master_variable_map_, LastMasterPath(),
                                 get_solver_name(), get_log_level(),
                                 _data.nsubproblem, solver_log_manager_,
-                                IsResumeMode(), _logger));
+                                IsResumeMode(), _logger);
 }
 bool BendersBase::MasterIsEmpty() const { return master_is_empty_; }
 
