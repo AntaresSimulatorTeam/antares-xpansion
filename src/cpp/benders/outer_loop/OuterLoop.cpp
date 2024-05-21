@@ -25,7 +25,9 @@ void OuterLoop::Run() {
   bool stop_update_master = false;
   while (!stop_update_master) {
     PrintLog();
-    benders_->init_data(master_updater_->Rhs());
+    benders_->init_data(master_updater_->Rhs(),
+                        benders_->ExternalLoopLambdaMin(),
+                        benders_->ExternalLoopLambdaMax());
     benders_->launch();
     if(!benders_->isExceptionRaised()) {
       benders_->RunExternalLoopBilevelChecks();

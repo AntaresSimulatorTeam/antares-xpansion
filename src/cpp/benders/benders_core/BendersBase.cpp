@@ -1020,15 +1020,25 @@ double BendersBase::ExternalLoopLambdaMin() const {
   return outer_loop_biLevel_.LambdaMin();
 }
 
-void BendersBase::init_data(double external_loop_lambda) {
+void BendersBase::init_data(double external_loop_lambda,
+                            double external_loop_lambda_min,
+                            double external_loop_lambda_max) {
   benders_timer.restart();
-  auto benders_num_run = _data.outer_loop_current_iteration_data.benders_num_run;
-  auto outer_loop_bilevel_best_ub = _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub;
+  auto benders_num_run =
+      _data.outer_loop_current_iteration_data.benders_num_run;
+  auto outer_loop_bilevel_best_ub =
+      _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub;
   init_data();
   _data.outer_loop_current_iteration_data.outer_loop_criterion.clear();
   _data.outer_loop_current_iteration_data.benders_num_run = benders_num_run;
-  _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub = outer_loop_bilevel_best_ub;
-  _data.outer_loop_current_iteration_data.external_loop_lambda = external_loop_lambda;
+  _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub =
+      outer_loop_bilevel_best_ub;
+  _data.outer_loop_current_iteration_data.external_loop_lambda =
+      external_loop_lambda;
+  _data.outer_loop_current_iteration_data.external_loop_lambda_min =
+      external_loop_lambda_min;
+  _data.outer_loop_current_iteration_data.external_loop_lambda_max =
+      external_loop_lambda_max;
 }
 
 bool BendersBase::ExternalLoopFoundFeasible() const {
