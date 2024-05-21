@@ -577,7 +577,6 @@ var hierarchy =
       [ "OptionsParserTest", "classOptionsParserTest.html", null ],
       [ "OuterLoopInputFromYamlTest", "classOuterLoopInputFromYamlTest.html", null ],
       [ "OuterLoopPatternTest", "classOuterLoopPatternTest.html", null ],
-      [ "ProblemGenerationExeOptionsTest", "classProblemGenerationExeOptionsTest.html", null ],
       [ "ProblemGenerationLoggerTest", "classProblemGenerationLoggerTest.html", null ],
       [ "ProblemModifierTest", "classProblemModifierTest.html", [
         [ "ProblemModifierTestMultiChronicle", "classProblemModifierTestMultiChronicle.html", null ],
@@ -631,7 +630,8 @@ var hierarchy =
       ] ],
       [ "FullRunOptionsParserTestParameterizedMethod_output", "classFullRunOptionsParserTestParameterizedMethod__output.html", null ],
       [ "MasterUpdateBaseTest", "classMasterUpdateBaseTest.html", null ],
-      [ "ProblemConstructionTest", "classProblemConstructionTest.html", null ]
+      [ "ProblemConstructionTest", "classProblemConstructionTest.html", null ],
+      [ "ProblemGenerationExeOptionsTest", "classProblemGenerationExeOptionsTest.html", null ]
     ] ],
     [ "Catch::Timer", "classCatch_1_1Timer.html", null ],
     [ "Timer", "classTimer.html", null ],

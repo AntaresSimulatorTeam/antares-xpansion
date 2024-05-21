@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"namespaceantares__xpansion.html":[23,0,0],
 "namespaceantares__xpansion_1_1antares__driver.html":[23,0,0,0],
 "namespaceantares__xpansion_1_1benders__driver.html":[23,0,0,1],
 "namespaceantares__xpansion_1_1config__loader.html":[23,0,0,2],

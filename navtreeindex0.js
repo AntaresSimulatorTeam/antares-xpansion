@@ -101,6 +101,7 @@ var NAVTREEINDEX0 =
 "SensitivityProblemModifier_8h_source.html":[25,0,0,0,5,0,8],
 "SensitivityStudy_8h_source.html":[25,0,0,0,5,0,9],
 "SensitivityWriter_8h_source.html":[25,0,0,0,5,0,10],
+"SimulationInputMode_8h_source.html":[25,0,0,0,3,3,7],
 "SimulationOptions_8h_source.html":[25,0,0,0,0,1,0,10],
 "SimulationOptions_8hxx_source.html":[25,0,0,0,0,1,0,11],
 "SolverAbstract_8h_source.html":[25,0,0,0,4,0,0,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "classCatch_1_1ReusableStringStream.html":[24,0,3,42],
 "classCatch_1_1ScopedMessage.html":[24,0,3,43],
 "classCatch_1_1Section.html":[24,0,3,44],
-"classCatch_1_1SimplePcg32.html":[24,0,3,47],
-"classCatch_1_1StringRef.html":[24,0,3,78]
+"classCatch_1_1SimplePcg32.html":[24,0,3,47]
 };

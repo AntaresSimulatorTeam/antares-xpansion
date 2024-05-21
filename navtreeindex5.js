@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"functions_func.html":[24,3,1],
 "functions_func.html":[24,3,1,0],
 "functions_func_a.html":[24,3,1,1],
 "functions_func_b.html":[24,3,1,2],
@@ -42,8 +43,8 @@ var NAVTREEINDEX5 =
 "functions_z.html":[24,3,0,21],
 "functions_~.html":[24,3,0,22],
 "hierarchy.html":[24,2],
-"index.html":[],
 "index.html":[0],
+"index.html":[],
 "index.html#autotoc_md1":[0,0],
 "index.html#autotoc_md10":[0,0,6],
 "index.html#autotoc_md2":[0,0,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md200":[22,1],
 "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md201":[22,1,0],
 "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md202":[22,1,1],
-"md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md203":[22,1,2],
-"namespaceantares__xpansion.html":[23,0,0]
+"md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md203":[22,1,2]
 };

@@ -6129,9 +6129,9 @@ $(document).ready(function(){initNavTree('catch2_8hpp_source.html',''); initResi
 <div class="line"><a id="l05810" name="l05810"></a><span class="lineno"> 5810</span><span class="keyword">namespace </span>Catch {</div>
 <div class="line"><a id="l05811" name="l05811"></a><span class="lineno"> 5811</span> </div>
 <div class="line"><a id="l05812" name="l05812"></a><span class="lineno"> 5812</span><span class="keyword">class </span>TestSpecParser {</div>
-<div class="line"><a id="l05813" name="l05813"></a><span class="lineno"> 5813</span>  <span class="keyword">enum</span> Mode { None, Name, QuotedName, Tag, EscapedName };</div>
-<div class="line"><a id="l05814" name="l05814"></a><span class="lineno"> 5814</span>  Mode m_mode = None;</div>
-<div class="line"><a id="l05815" name="l05815"></a><span class="lineno"> 5815</span>  Mode lastMode = None;</div>
+<div class="line"><a id="l05813" name="l05813"></a><span class="lineno"> 5813</span>  <span class="keyword">enum</span> SimulationInputMode { None, Name, QuotedName, Tag, EscapedName };</div>
+<div class="line"><a id="l05814" name="l05814"></a><span class="lineno"> 5814</span>  SimulationInputMode m_mode = None;</div>
+<div class="line"><a id="l05815" name="l05815"></a><span class="lineno"> 5815</span>  SimulationInputMode lastMode = None;</div>
 <div class="line"><a id="l05816" name="l05816"></a><span class="lineno"> 5816</span>  <span class="keywordtype">bool</span> m_exclusion = <span class="keyword">false</span>;</div>
 <div class="line"><a id="l05817" name="l05817"></a><span class="lineno"> 5817</span>  std::size_t m_pos = 0;</div>
 <div class="line"><a id="l05818" name="l05818"></a><span class="lineno"> 5818</span>  std::size_t m_realPatternPos = 0;</div>
@@ -6151,7 +6151,7 @@ $(document).ready(function(){initNavTree('catch2_8hpp_source.html',''); initResi
 <div class="line"><a id="l05832" name="l05832"></a><span class="lineno"> 5832</span> </div>
 <div class="line"><a id="l05833" name="l05833"></a><span class="lineno"> 5833</span> <span class="keyword">private</span>:</div>
 <div class="line"><a id="l05834" name="l05834"></a><span class="lineno"> 5834</span>  <span class="keywordtype">bool</span> visitChar(<span class="keywordtype">char</span> c);</div>
-<div class="line"><a id="l05835" name="l05835"></a><span class="lineno"> 5835</span>  <span class="keywordtype">void</span> startNewMode(Mode mode);</div>
+<div class="line"><a id="l05835" name="l05835"></a><span class="lineno"> 5835</span>  <span class="keywordtype">void</span> startNewMode(SimulationInputMode mode);</div>
 <div class="line"><a id="l05836" name="l05836"></a><span class="lineno"> 5836</span>  <span class="keywordtype">bool</span> processNoneChar(<span class="keywordtype">char</span> c);</div>
 <div class="line"><a id="l05837" name="l05837"></a><span class="lineno"> 5837</span>  <span class="keywordtype">void</span> processNameChar(<span class="keywordtype">char</span> c);</div>
 <div class="line"><a id="l05838" name="l05838"></a><span class="lineno"> 5838</span>  <span class="keywordtype">bool</span> processOtherChar(<span class="keywordtype">char</span> c);</div>
@@ -7953,7 +7953,7 @@ $(document).ready(function(){initNavTree('catch2_8hpp_source.html',''); initResi
 <div class="line"><a id="l07641" name="l07641"></a><span class="lineno"> 7641</span>  <span class="keywordtype">double</span> jack_mean = mean(jack.begin(), jack.end());</div>
 <div class="line"><a id="l07642" name="l07642"></a><span class="lineno"> 7642</span>  <span class="keywordtype">double</span> sum_squares, sum_cubes;</div>
 <div class="line"><a id="l07643" name="l07643"></a><span class="lineno"> 7643</span>  std::tie(sum_squares, sum_cubes) =</div>
-<div class="line"><a id="l07644" name="l07644"></a><span class="lineno"> 7644</span>      std::accumulate(jack.begin(), jack.end(), std::make_pair(0., 0.),</div>
+<div class="line"><a id="l07644" name="l07644"></a><span class="lineno"> 7644</span>      std::accumulate(jack.begin(), jack.end(), std::pair(0., 0.),</div>
 <div class="line"><a id="l07645" name="l07645"></a><span class="lineno"> 7645</span>                      [jack_mean](std::pair&lt;double, double&gt; sqcb,</div>
 <div class="line"><a id="l07646" name="l07646"></a><span class="lineno"> 7646</span>                                  <span class="keywordtype">double</span> x) -&gt; std::pair&lt;double, double&gt; {</div>
 <div class="line"><a id="l07647" name="l07647"></a><span class="lineno"> 7647</span>                        auto d = jack_mean - x;</div>
@@ -12206,7 +12206,7 @@ $(document).ready(function(){initNavTree('catch2_8hpp_source.html',''); initResi
 <div class="line"><a id="l11895" name="l11895"></a><span class="lineno">11895</span>      <span class="keyword">auto</span> countIt = tagCounts.find(lcaseTagName);</div>
 <div class="line"><a id="l11896" name="l11896"></a><span class="lineno">11896</span>      <span class="keywordflow">if</span> (countIt == tagCounts.end())</div>
 <div class="line"><a id="l11897" name="l11897"></a><span class="lineno">11897</span>        countIt =</div>
-<div class="line"><a id="l11898" name="l11898"></a><span class="lineno">11898</span>            tagCounts.insert(std::make_pair(lcaseTagName, TagInfo())).first;</div>
+<div class="line"><a id="l11898" name="l11898"></a><span class="lineno">11898</span>            tagCounts.insert(std::pair(lcaseTagName, TagInfo())).first;</div>
 <div class="line"><a id="l11899" name="l11899"></a><span class="lineno">11899</span>      countIt-&gt;second.add(tagName);</div>
 <div class="line"><a id="l11900" name="l11900"></a><span class="lineno">11900</span>    }</div>
 <div class="line"><a id="l11901" name="l11901"></a><span class="lineno">11901</span>  }</div>
@@ -14794,7 +14794,7 @@ $(document).ready(function(){initNavTree('catch2_8hpp_source.html',''); initResi
 <div class="line"><a id="l14493" name="l14493"></a><span class="lineno">14493</span>                                      &lt;&lt; lineInfo);</div>
 <div class="line"><a id="l14494" name="l14494"></a><span class="lineno">14494</span> </div>
 <div class="line"><a id="l14495" name="l14495"></a><span class="lineno">14495</span>  CATCH_ENFORCE(</div>
-<div class="line"><a id="l14496" name="l14496"></a><span class="lineno">14496</span>      m_registry.insert(std::make_pair(alias, TagAlias(tag, lineInfo))).second,</div>
+<div class="line"><a id="l14496" name="l14496"></a><span class="lineno">14496</span>      m_registry.insert(std::pair(alias, TagAlias(tag, lineInfo))).second,</div>
 <div class="line"><a id="l14497" name="l14497"></a><span class="lineno">14497</span>      <span class="stringliteral">&quot;error: tag alias, &#39;&quot;</span> &lt;&lt; alias &lt;&lt; <span class="stringliteral">&quot;&#39; already registered.\n&quot;</span></div>
 <div class="line"><a id="l14498" name="l14498"></a><span class="lineno">14498</span>                            &lt;&lt; <span class="stringliteral">&quot;\tFirst seen at: &quot;</span> &lt;&lt; find(alias)-&gt;lineInfo</div>
 <div class="line"><a id="l14499" name="l14499"></a><span class="lineno">14499</span>                            &lt;&lt; <span class="stringliteral">&quot;\n&quot;</span></div>
@@ -15504,7 +15504,7 @@ $(document).ready(function(){initNavTree('catch2_8hpp_source.html',''); initResi
 <div class="line"><a id="l15204" name="l15204"></a><span class="lineno">15204</span>  endMode();</div>
 <div class="line"><a id="l15205" name="l15205"></a><span class="lineno">15205</span>  <span class="keywordflow">return</span> <span class="keyword">true</span>;</div>
 <div class="line"><a id="l15206" name="l15206"></a><span class="lineno">15206</span>}</div>
-<div class="line"><a id="l15207" name="l15207"></a><span class="lineno">15207</span><span class="keywordtype">void</span> TestSpecParser::startNewMode(Mode mode) { m_mode = mode; }</div>
+<div class="line"><a id="l15207" name="l15207"></a><span class="lineno">15207</span><span class="keywordtype">void</span> TestSpecParser::startNewMode(SimulationInputMode mode) { m_mode = mode; }</div>
 <div class="line"><a id="l15208" name="l15208"></a><span class="lineno">15208</span><span class="keywordtype">void</span> TestSpecParser::endMode() {</div>
 <div class="line"><a id="l15209" name="l15209"></a><span class="lineno">15209</span>  <span class="keywordflow">switch</span> (m_mode) {</div>
 <div class="line"><a id="l15210" name="l15210"></a><span class="lineno">15210</span>    <span class="keywordflow">case</span> Name:</div>

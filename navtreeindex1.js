@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"classCatch_1_1StringRef.html":[24,0,3,78],
 "classCatch_1_1TestCase.html":[24,0,3,79],
 "classCatch_1_1TestInvokerAsMethod.html":[24,0,3,82],
 "classCatch_1_1Timer.html":[24,0,3,83],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "classProblem.html#a92a36d2387ec170cc78cad032b521a75":[24,0,157,42],
 "classProblem.html#a995719eb062c198744fcf9637ae165f3":[24,0,157,11],
 "classProblem.html#a9a280b880061bcb76c43b7dfb1718390":[24,0,157,38],
-"classProblem.html#a9b1add4a9bff8ab15a533c81818214fc":[24,0,157,18],
-"classProblem.html#aa34e941ed834b66bb6a2ee4211073454":[24,0,157,31]
+"classProblem.html#a9b1add4a9bff8ab15a533c81818214fc":[24,0,157,18]
 };
