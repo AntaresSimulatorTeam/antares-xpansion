@@ -15,6 +15,9 @@ class WriterNOOPStub : public Output::OutputWriter {
   void write_master_name(const std::string& master_name) override {}
   void write_log_level(const int log_level) override {}
   void write_solution(const Output::SolutionData& solution) override {}
+  void write_outer_loop_solution(
+      const Output::SolutionData& solution) override {}
+
   void write_iteration(const Output::Iteration& iteration_data,
                        const size_t iteration_num) override {}
   void updateBeginTime() override {}

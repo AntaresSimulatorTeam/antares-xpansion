@@ -408,12 +408,14 @@ void BendersMpi::RunExternalLoopBilevelChecks() {
     const WorkerMasterData &workerMasterData = BestIterationWorkerMaster();
     const auto &invest_cost = workerMasterData._invest_cost;
     const auto &overall_cost = invest_cost + workerMasterData._operational_cost;
-    outer_loop_biLevel_.Update_bilevel_data_if_feasible(
-        _data.x_cut,
-        GetOuterLoopCriterionAtBestBenders() /*/!\ must
-                be at best it*/
-        ,
-        overall_cost, invest_cost, _data.outer_loop_current_iteration_data.external_loop_lambda);
+    if (outer_loop_biLevel_.Update_bilevel_data_if_feasible(
+            _data.x_cut, GetOuterLoopCriterionAtBestBenders() /*/!\ must
+                                 be at best it*/
+            ,
+            overall_cost, invest_cost,
+            _data.outer_loop_current_iteration_data.external_loop_lambda)) {
+      UpdateOuterLoopSolution();
+    }
     _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub = outer_loop_biLevel_.BilevelBestub();
   }
 }

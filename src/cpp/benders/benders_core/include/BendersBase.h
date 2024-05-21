@@ -97,6 +97,7 @@ class BendersBase {
   virtual void ExternalLoopCheckFeasibility() = 0;
   virtual void RunExternalLoopBilevelChecks() = 0;
   double OuterLoopStoppingThreshold() const;
+  Output::SolutionData GetOuterLoopSolution() const;
 
  protected:
   bool exception_raised_ = false;
@@ -237,6 +238,7 @@ class BendersBase {
       const PlainData::SubProblemData &sub_problem_data);
 
   void UpdateOuterLoopMaxCriterionArea();
+  void UpdateOuterLoopSolution();
 
  private:
   void print_master_and_cut(std::ostream &file, int ite,
@@ -246,6 +248,7 @@ class BendersBase {
   void check_status(const SubProblemDataMap &subproblem_data_map) const;
   [[nodiscard]] LogData build_log_data_from_data() const;
   [[nodiscard]] Output::SolutionData solution() const;
+  [[nodiscard]] Output::SolutionData BendersSolution() const;
   [[nodiscard]] std::string status_from_criterion() const;
   void compute_cut_aggregate(const SubProblemDataMap &subproblem_data_map);
   void compute_cut(const SubProblemDataMap &subproblem_data_map);
@@ -271,6 +274,7 @@ class BendersBase {
   int iterations_before_resume = 0;
   int cumulative_number_of_subproblem_resolved_before_resume = 0;
   Timer benders_timer;
+  Output::SolutionData outer_loop_solution_data_;
 
  public:
   Logger _logger;

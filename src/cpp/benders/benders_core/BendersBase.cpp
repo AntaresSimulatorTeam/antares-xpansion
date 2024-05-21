@@ -562,9 +562,24 @@ Output::Iteration BendersBase::iteration(
 }
 
 Output::SolutionData BendersBase::solution() const {
+  auto solution_data = BendersSolution();
+  solution_data.best_it = _data.best_it + iterations_before_resume;
+
+  return solution_data;
+}
+
+void BendersBase::UpdateOuterLoopSolution() {
+  outer_loop_solution_data_ = BendersSolution();
+  outer_loop_solution_data_.best_it =
+      _data.outer_loop_current_iteration_data.benders_num_run;
+}
+
+Output::SolutionData BendersBase::GetOuterLoopSolution() const {
+  return outer_loop_solution_data_;
+}
+Output::SolutionData BendersBase::BendersSolution() const {
   Output::SolutionData solution_data;
   solution_data.nbWeeks_p = _totalNbProblems;
-  solution_data.best_it = _data.best_it + iterations_before_resume;
   solution_data.problem_status = status_from_criterion();
   const auto optimal_gap(_data.best_ub - _data.lb);
   const auto relative_gap(optimal_gap / _data.best_ub);

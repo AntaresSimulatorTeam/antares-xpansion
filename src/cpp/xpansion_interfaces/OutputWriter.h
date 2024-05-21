@@ -18,6 +18,7 @@ const std::string ANTARES_C("antares"), VERSION_C("version"),
     OPERATIONAL_COST_C("operational_cost"), OPTIMALITY_GAP_C("optimality_gap"),
     OVERALL_COST_C("overall_cost"), RELATIVE_GAP_C("relative_gap"), UB_C("ub"),
     NBWEEKS_C("nbWeeks"), OPTIONS_C("options"), SOLUTION_C("solution"),
+    OUTER_LOOP_SOLUTION_C("security criterion solution"),
     ITERATION_C("iteration"), PROBLEM_STATUS_C("problem_status"),
     OPTIMAL_C("OPTIMAL"), LIMIT_REACHED_C("limit reached"), ERROR_C("ERROR"),
     VALUES_C("values"), STOPPING_CRITERION_C("stopping_criterion"),
@@ -117,6 +118,7 @@ class OutputWriter {
   virtual void write_master_name(const std::string &master_name) = 0;
   virtual void write_log_level(const int log_level) = 0;
   virtual void write_solution(const SolutionData &solution) = 0;
+  virtual void write_outer_loop_solution(const SolutionData &solution) = 0;
   virtual void write_iteration(const Iteration &iteration_data,
                                const size_t iteration_num) = 0;
   virtual void updateBeginTime() = 0;

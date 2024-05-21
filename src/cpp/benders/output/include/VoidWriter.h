@@ -63,6 +63,7 @@ class VoidWriter : public OutputWriter {
   void write_master_name(const std::string &master_name) override;
   void write_log_level(const int log_level) override;
   void write_solution(const SolutionData &solution) override;
+  void write_outer_loop_solution(const SolutionData &solution) override;
   void write_iteration(const Iteration &iteration_data,
                        const size_t iteration_num) override;
   void updateBeginTime() override;
