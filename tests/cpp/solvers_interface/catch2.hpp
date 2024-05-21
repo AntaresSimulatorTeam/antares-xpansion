@@ -5810,9 +5810,9 @@ struct ITagAliasRegistry {
 namespace Catch {
 
 class TestSpecParser {
-  enum Mode { None, Name, QuotedName, Tag, EscapedName };
-  Mode m_mode = None;
-  Mode lastMode = None;
+  enum SimulationInputMode { None, Name, QuotedName, Tag, EscapedName };
+  SimulationInputMode m_mode = None;
+  SimulationInputMode lastMode = None;
   bool m_exclusion = false;
   std::size_t m_pos = 0;
   std::size_t m_realPatternPos = 0;
@@ -5832,7 +5832,7 @@ class TestSpecParser {
 
  private:
   bool visitChar(char c);
-  void startNewMode(Mode mode);
+  void startNewMode(SimulationInputMode mode);
   bool processNoneChar(char c);
   void processNameChar(char c);
   bool processOtherChar(char c);
@@ -7641,7 +7641,7 @@ Estimate<double> bootstrap(double confidence_level, Iterator first,
   double jack_mean = mean(jack.begin(), jack.end());
   double sum_squares, sum_cubes;
   std::tie(sum_squares, sum_cubes) =
-      std::accumulate(jack.begin(), jack.end(), std::make_pair(0., 0.),
+      std::accumulate(jack.begin(), jack.end(), std::pair(0., 0.),
                       [jack_mean](std::pair<double, double> sqcb,
                                   double x) -> std::pair<double, double> {
                         auto d = jack_mean - x;
@@ -11895,7 +11895,7 @@ std::size_t listTags(Config const& config) {
       auto countIt = tagCounts.find(lcaseTagName);
       if (countIt == tagCounts.end())
         countIt =
-            tagCounts.insert(std::make_pair(lcaseTagName, TagInfo())).first;
+            tagCounts.insert(std::pair(lcaseTagName, TagInfo())).first;
       countIt->second.add(tagName);
     }
   }
@@ -14493,7 +14493,7 @@ void TagAliasRegistry::add(std::string const& alias, std::string const& tag,
                                       << lineInfo);
 
   CATCH_ENFORCE(
-      m_registry.insert(std::make_pair(alias, TagAlias(tag, lineInfo))).second,
+      m_registry.insert(std::pair(alias, TagAlias(tag, lineInfo))).second,
       "error: tag alias, '" << alias << "' already registered.\n"
                             << "\tFirst seen at: " << find(alias)->lineInfo
                             << "\n"
@@ -15204,7 +15204,7 @@ bool TestSpecParser::processOtherChar(char c) {
   endMode();
   return true;
 }
-void TestSpecParser::startNewMode(Mode mode) { m_mode = mode; }
+void TestSpecParser::startNewMode(SimulationInputMode mode) { m_mode = mode; }
 void TestSpecParser::endMode() {
   switch (m_mode) {
     case Name:

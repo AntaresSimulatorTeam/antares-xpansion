@@ -8,7 +8,7 @@ import sys
 from pathlib import Path
 
 from antares_xpansion.antares_driver import AntaresDriver
-from antares_xpansion.benders_driver import BendersDriver
+from antares_xpansion.benders_driver import BendersDriver, SolversExe
 from antares_xpansion.config_loader import ConfigLoader
 from antares_xpansion.logger import step_logger
 from antares_xpansion.general_data_processor import GeneralDataProcessor
@@ -46,8 +46,10 @@ class XpansionDriver:
                                                                                     ))
 
         self.benders_driver = BendersDriver(
-            self.config_loader.benders_exe(),
-            self.config_loader.merge_mps_exe(),
+            SolversExe(
+                self.config_loader.benders_exe(),
+                self.config_loader.merge_mps_exe(),
+                self.config_loader.outer_loop_exe()),
             self.config_loader.options_file_name(),
             self.config_loader.mpi_exe(),
         )
@@ -76,6 +78,7 @@ class XpansionDriver:
             self.config_loader.benders_pre_actions()
             self.full_run_driver.launch(self.config_loader.simulation_output_path(),
                                         self.config_loader.is_relaxed(),
+                                        self.config_loader.method(),
                                         self.config_loader.json_file_path(),
                                         self.config_loader.keep_mps(),
                                         self.config_loader.n_mpi(),

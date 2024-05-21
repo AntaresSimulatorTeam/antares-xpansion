@@ -20,6 +20,7 @@ class FullRunDriver:
 
     def prepare_drivers(self, output_path: Path,
                         problem_generation_is_relaxed: bool,
+                        method: str,
                         json_file_path,
                         benders_keep_mps=False,
                         benders_n_mpi=1,
@@ -36,7 +37,7 @@ class FullRunDriver:
         self.keep_mps = benders_keep_mps
         # Benders pre-step
 
-        self.benders_driver.method = "benders"
+        self.benders_driver.method = method
         self.benders_driver.n_mpi = benders_n_mpi
         self.benders_driver.oversubscribe = benders_oversubscribe
         self.benders_driver.allow_run_as_root = benders_allow_run_as_root
@@ -47,13 +48,14 @@ class FullRunDriver:
 
     def launch(self,  output_path: Path,
                problem_generation_is_relaxed: bool,
+               method: str,
                json_file_path,
                benders_keep_mps=False,
                benders_n_mpi=1,
                benders_oversubscribe=False,
                benders_allow_run_as_root=False):
         self.prepare_drivers(
-            output_path, problem_generation_is_relaxed,
+            output_path, problem_generation_is_relaxed, method,
             json_file_path, benders_keep_mps, benders_n_mpi, benders_oversubscribe, benders_allow_run_as_root)
         self.run()
 
@@ -79,11 +81,12 @@ class FullRunDriver:
     def full_command(self) -> List:
         bare_solver_command = [
             self.full_exe, "--benders_options", self.benders_driver.options_file,  "-s",
-            str(self.json_file_path)]
+            str(self.json_file_path), "--solver", self.benders_driver.method]
         bare_solver_command.extend(
             self.problem_generation_driver.lp_namer_options())
 
-        if self.benders_driver.solver == self.benders_driver.benders and self.benders_driver.n_mpi > 1:
+        if self.benders_driver.solver in [self.benders_driver.benders,
+                                          self.benders_driver.outer_loop] and self.benders_driver.n_mpi > 1:
             mpi_command = self.benders_driver.get_mpi_run_command_root()
             mpi_command.extend(bare_solver_command)
             return mpi_command

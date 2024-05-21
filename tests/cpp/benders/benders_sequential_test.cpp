@@ -7,27 +7,6 @@
 #include "RandomDirGenerator.h"
 #include "gtest/gtest.h"
 
-class FakeWorkerMaster : public WorkerMaster {
- public:
-  WorkerMasterPtr worker_master;
-
-  FakeWorkerMaster(WorkerMasterPtr worker_master)
-      : WorkerMaster(worker_master->logger_), worker_master(worker_master){};
-  std::vector<int> get_id_nb_units() const override {
-    return worker_master->get_id_nb_units();
-  };
-
-  void DeactivateIntegrityConstraints() const override {
-    worker_master->DeactivateIntegrityConstraints();
-  };
-
-  void ActivateIntegrityConstraints() const override {
-    worker_master->ActivateIntegrityConstraints();
-  };
-
-  SolverAbstract::Ptr solver() const override { return worker_master->_solver; }
-};
-
 class BendersSequentialDouble : public BendersSequential {
  public:
   bool parametrized_stop = false;
@@ -56,7 +35,7 @@ class BendersSequentialDouble : public BendersSequential {
     _data.it = parametrized_it;
   };
 
-  [[nodiscard]] WorkerMasterPtr get_master() const {
+  [[nodiscard]] WorkerMasterPtr get_master() const override {
     return BendersSequential::get_master();
   };
 
@@ -69,20 +48,15 @@ class BendersSequentialDouble : public BendersSequential {
   void UpdateTrace() override{};
   void post_run_actions() const override{};
   void SaveCurrentBendersData() override{};
-  void reset_master(WorkerMaster *worker_master) override {
-    WorkerMasterPtr var;
-    var.reset(worker_master);
-    BendersBase::reset_master(new FakeWorkerMaster(var));
-  };
   void free() override{};
   void InitializeProblems() override {
     MatchProblemToId();
 
     auto solver_log_manager = SolverLogManager(solver_log_file());
-    reset_master(new WorkerMaster(master_variable_map_, get_master_path(),
+    reset_master<WorkerMaster>(master_variable_map_, get_master_path(),
                                   get_solver_name(), get_log_level(),
                                   _data.nsubproblem, solver_log_manager,
-                                  IsResumeMode(), _logger));
+                                  IsResumeMode(), _logger);
     for (const auto &problem : coupling_map_) {
       const auto subProblemFilePath = GetSubproblemPath(problem.first);
       AddSubproblem(problem);

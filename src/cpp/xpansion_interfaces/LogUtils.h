@@ -14,6 +14,10 @@ class XpansionError : public T {
   explicit XpansionError(const std::string& err_message,
                          const std::string& log_location)
       : T(log_location + err_message), err_message_(err_message) {}
+  explicit XpansionError(const std::string& prefix,
+                         const std::string& err_message,
+                         const std::string& log_location)
+      : T(log_location + prefix + err_message), err_message_(err_message) {}
 
  public:
   std::string ErrorMessage() const { return err_message_; }

@@ -20,9 +20,7 @@ class ProblemGenerationOptions {
   [[nodiscard]] virtual std::filesystem::path deduceXpansionDirIfEmpty(
       std::filesystem::path xpansion_output_dir,
       const std::filesystem::path& archive_path) const = 0;
-  [[nodiscard]] virtual std::filesystem::path deduceArchivePathIfEmpty(
-      const std::filesystem::path& xpansion_output_dir,
-      const std::filesystem::path& archive_path) const = 0;
+  [[nodiscard]] virtual std::filesystem::path StudyPath() const = 0;
 
   class ConflictingParameters
       : public LogUtils::XpansionError<std::runtime_error> {

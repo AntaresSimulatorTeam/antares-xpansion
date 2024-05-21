@@ -200,19 +200,19 @@ TEST_F(StudyUpdateTest, computeNewCapacities) {
       {"peak", 1000}, {"transmission_line", 0}};
 
   ASSERT_EQ(studyupdater.computeNewCapacities(investissments, _links[1], 0),
-            std::make_pair(0., 250.));
+            std::pair(0., 250.));
   ASSERT_EQ(studyupdater.computeNewCapacities(investissments, _links[1], 1),
-            std::make_pair(500., 750.));
+            std::pair(500., 750.));
   ASSERT_EQ(studyupdater.computeNewCapacities(investissments, _links[1], 2),
-            std::make_pair(1000., 1000.));
+            std::pair(1000., 1000.));
 
   // link 0 : area1 - area2 has an already installed capacity of 100
   ASSERT_EQ(studyupdater.computeNewCapacities(investissments, _links[0], 0),
-            std::make_pair(100., 100.));
+            std::pair(100., 100.));
   ASSERT_EQ(studyupdater.computeNewCapacities(investissments, _links[0], 1),
-            std::make_pair(100., 100.));
+            std::pair(100., 100.));
   ASSERT_EQ(studyupdater.computeNewCapacities(investissments, _links[0], 2),
-            std::make_pair(100., 100.));
+            std::pair(100., 100.));
 }
 
 TEST_F(StudyUpdateTest, no_computed_investment_for_candidate_peak) {

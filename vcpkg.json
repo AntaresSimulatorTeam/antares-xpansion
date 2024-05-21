@@ -7,7 +7,8 @@
     "gtest",
     "boost-mpi",
     "boost-program-options",
-    "zlib"
+    "zlib",
+    "yaml-cpp"
   ],
   "overrides": [
     { "name": "boost-mpi", "version": "1.81.0" },

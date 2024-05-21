@@ -18,8 +18,7 @@ TEST_CASE("A LP problem is solved", "[solve-lp]") {
       //========================================================================================
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-      solver->init();
-      solver->read_prob_mps(instance);
+            solver->read_prob_mps(instance);
 
       //========================================================================================
       // Solve as LP
@@ -68,8 +67,7 @@ TEST_CASE("A LP problem is solved and we can get the LP value",
       //========================================================================================
       // Solver declaration
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-      solver->init();
-      solver->read_prob_mps(instance);
+            solver->read_prob_mps(instance);
 
       //========================================================================================
       // Solve as LP
@@ -126,8 +124,7 @@ TEST_CASE("A LP problem is solved and we can get the LP solution",
       //========================================================================================
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-      solver->init();
-      solver->read_prob_mps(instance);
+            solver->read_prob_mps(instance);
 
       //========================================================================================
       // Solve as LP and get solution
@@ -211,7 +208,6 @@ TEST_CASE("A problem is solved and we can get the optimal solution",
         //========================================================================================
         // Solver declaration
         SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-        solver->init();
         solver->read_prob_mps(instance);
 
         //========================================================================================

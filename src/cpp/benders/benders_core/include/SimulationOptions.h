@@ -24,4 +24,10 @@ class SimulationOptions {
 
  private:
   void set_weights();
+  Json::Value get_value_from_json(const std::filesystem::path &file_name);
+
+  class InvalidOptionFileException : public std::runtime_error {
+   public:
+    explicit InvalidOptionFileException(const std::string &arg);
+  };
 };

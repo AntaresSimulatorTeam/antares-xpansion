@@ -33,7 +33,7 @@ BENDERS_OPTIONS_MACRO(TRACE, bool, true, asBool())
 BENDERS_OPTIONS_MACRO(SLAVE_WEIGHT, std::string, "CONSTANT", asString())
 
 // If SLAVE_WEIGHT is CONSTANT, set here the divisor required
-BENDERS_OPTIONS_MACRO(SLAVE_WEIGHT_VALUE, double, 1, asInt())
+BENDERS_OPTIONS_MACRO(SLAVE_WEIGHT_VALUE, double, 1, asDouble())
 
 // Name of the master problem file, if different from 'master'
 BENDERS_OPTIONS_MACRO(MASTER_NAME, std::string, "master", asString())
@@ -73,12 +73,12 @@ BENDERS_OPTIONS_MACRO(LAST_MASTER_BASIS, std::string, "master_last_basis",
 // BATCH SIZE (Benders by batch)
 BENDERS_OPTIONS_MACRO(BATCH_SIZE, size_t, 0, asUInt())
 
-// EXTERNAL Loop Loss of Load thresold
-BENDERS_OPTIONS_MACRO(EXT_LOOP_CRITERION_VALUE, double, 1.0, asDouble())
+// is this an outer Loop
+BENDERS_OPTIONS_MACRO(DO_OUTER_LOOP, bool, false, asBool())
 
-// EXTERNAL Loop epsilon
-BENDERS_OPTIONS_MACRO(EXT_LOOP_CRITERION_TOLERANCE, double, 1e-1, asDouble())
+// Outer Loop Options file
+BENDERS_OPTIONS_MACRO(OUTER_LOOP_OPTION_FILE, std::string,
+                      "outer_loop_options.json", asString())
 
-// EXTERNAL Loop Max unsupplied energy per timestep
-BENDERS_OPTIONS_MACRO(EXT_LOOP_CRITERION_COUNT_THRESHOLD, double, 1e-1,
-                      asDouble())
+// Outer Loop number of scenarios (mc years)
+BENDERS_OPTIONS_MACRO(OUTER_LOOP_NUMBER_OF_SCENARIOS, unsigned int, 1, asUInt())

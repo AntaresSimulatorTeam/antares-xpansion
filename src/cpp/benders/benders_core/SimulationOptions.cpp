@@ -5,15 +5,17 @@
 #include <filesystem>
 
 #include "LogUtils.h"
-Json::Value get_value_from_json(const std::filesystem::path &file_name) {
+Json::Value SimulationOptions::get_value_from_json(
+    const std::filesystem::path &file_name) {
   Json::Value _input;
   std::ifstream input_file_l(file_name, std::ifstream::binary);
   Json::CharReaderBuilder builder_l;
   std::string errs;
   if (!parseFromStream(builder_l, input_file_l, &_input, &errs)) {
-    std::cerr << LOGLOCATION << "Invalid options file: " << file_name << "\n"
-              << errs;
-    std::exit(1);
+    using namespace std::string_literals;
+    auto message = LOGLOCATION + "Invalid options file: "s + file_name.string()
+        + "\n" + errs;
+    throw InvalidOptionFileException(message);
   }
   return _input;
 }
@@ -168,11 +170,15 @@ BendersBaseOptions SimulationOptions::get_benders_options() const {
   result.LAST_MASTER_MPS = LAST_MASTER_MPS;
   result.LAST_MASTER_BASIS = LAST_MASTER_BASIS;
   result.BATCH_SIZE = BATCH_SIZE;
-
+  result.EXTERNAL_LOOP_OPTIONS = GetExternalLoopOptions();
   return result;
 }
+SimulationOptions::InvalidOptionFileException::InvalidOptionFileException(
+    const std::string &arg)
+    : runtime_error(arg) {}
+
 
 ExternalLoopOptions SimulationOptions::GetExternalLoopOptions() const {
-  return {EXT_LOOP_CRITERION_VALUE, EXT_LOOP_CRITERION_TOLERANCE,
-          EXT_LOOP_CRITERION_COUNT_THRESHOLD};
+  return {DO_OUTER_LOOP, OUTER_LOOP_OPTION_FILE,
+          OUTER_LOOP_NUMBER_OF_SCENARIOS};
 }
