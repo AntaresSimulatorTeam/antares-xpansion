@@ -235,16 +235,15 @@ if (SOLVER)
 endif()
 
 find_package(jsoncpp CONFIG REQUIRED)
-macro(jsoncpplib_name libname)
-	if (MSVC)
-		set(${libname} jsoncpp_lib)
-	else ()
-		set(${libname} jsoncpp_static)
-	endif ()
-endmacro()
-jsoncpplib_name(jsonlib)
+if (MSVC)
+	set(JSONCPP_LIB jsoncpp_lib)
+else ()
+	set(JSONCPP_LIB jsoncpp_static)
+endif ()
+message("Using jsoncpp target ${JSONCPP_LIB}")
+
 install(FILES
-		$<TARGET_FILE:${jsonlib}>
+		$<TARGET_FILE:${JSONCPP_LIB}>
 		DESTINATION bin
 )
 

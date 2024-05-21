@@ -22,7 +22,7 @@ class LpFilesExtractorTest : public ::testing::Test {
 
 TEST_F(LpFilesExtractorTest, IfNoAreaFileIsInAntaresArchive) {
   auto lp_files_extractor = LpFilesExtractor(EMPTY_ARCHIVE, std::filesystem::temp_directory_path(),
-                       logger_, Mode::ARCHIVE);
+                       logger_, SimulationInputMode::ARCHIVE);
 
   std::ostringstream expectedErrorString;
   expectedErrorString << "No area*.txt file found" << std::endl;
@@ -36,7 +36,7 @@ TEST_F(LpFilesExtractorTest, IfNoAreaFileIsInAntaresArchive) {
 TEST_F(LpFilesExtractorTest, IfMoreThanOneAreaFileFoundInAntaresArchive) {
   auto lp_files_extractor = LpFilesExtractor(
       TWO_AREAS_FILES_ARCHIVE, std::filesystem::temp_directory_path(), logger_,
-      Mode::ARCHIVE);
+      SimulationInputMode::ARCHIVE);
 
   std::ostringstream expectedErrorString;
   expectedErrorString << "More than one area*.txt file found" << std::endl;
@@ -50,7 +50,7 @@ TEST_F(LpFilesExtractorTest, IfMoreThanOneAreaFileFoundInAntaresArchive) {
 TEST_F(LpFilesExtractorTest, IfNoIntercoFileIsInAntaresArchive) {
   auto out_dir = std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
   std::filesystem::create_directory(out_dir);
-  auto lp_files_extractor = LpFilesExtractor(ONE_AREA_0_INTERCO, out_dir, logger_, Mode::ARCHIVE);
+  auto lp_files_extractor = LpFilesExtractor(ONE_AREA_0_INTERCO, out_dir, logger_, SimulationInputMode::ARCHIVE);
 
   std::ostringstream expectedErrorString;
   expectedErrorString << "No interco*.txt file found" << std::endl;
@@ -65,7 +65,8 @@ TEST_F(LpFilesExtractorTest, IfMoreThanOneIntercoFileFoundInAntaresArchive) {
   auto out_dir = std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
   std::filesystem::create_directory(out_dir);
   auto lp_files_extractor = LpFilesExtractor(THREE_INTERCOS_FILES_ARCHIVE,
-                                             out_dir, logger_, Mode::ARCHIVE);
+                                             out_dir, logger_,
+                       SimulationInputMode::ARCHIVE);
 
   std::ostringstream expectedErrorString;
   expectedErrorString << "More than one interco*.txt file found" << std::endl;

@@ -170,7 +170,7 @@ BendersBaseOptions SimulationOptions::get_benders_options() const {
   result.LAST_MASTER_MPS = LAST_MASTER_MPS;
   result.LAST_MASTER_BASIS = LAST_MASTER_BASIS;
   result.BATCH_SIZE = BATCH_SIZE;
-
+  result.EXTERNAL_LOOP_OPTIONS = GetExternalLoopOptions();
   return result;
 }
 SimulationOptions::InvalidOptionFileException::InvalidOptionFileException(
@@ -179,6 +179,6 @@ SimulationOptions::InvalidOptionFileException::InvalidOptionFileException(
 
 
 ExternalLoopOptions SimulationOptions::GetExternalLoopOptions() const {
-  return {EXT_LOOP_CRITERION_VALUE, EXT_LOOP_CRITERION_TOLERANCE,
-          EXT_LOOP_CRITERION_COUNT_THRESHOLD};
+  return {DO_OUTER_LOOP, OUTER_LOOP_OPTION_FILE,
+          OUTER_LOOP_NUMBER_OF_SCENARIOS};
 }

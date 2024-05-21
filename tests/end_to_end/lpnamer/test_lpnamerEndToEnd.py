@@ -57,7 +57,7 @@ test_data_study_option = [
 ]
 
 @pytest.fixture
-def setup_lp_directory(request):
+def setup_lp_directory(request, tmp_path):
     tmp_path = request.getfixturevalue('tmp_path')
     source_dir = request.getfixturevalue('test_dir')
     study_path = source_dir.parent.parent
@@ -88,7 +88,7 @@ def setup_lp_directory(request):
 
 
 @pytest.fixture
-def setup_study(request):
+def setup_study(request, tmp_path):
     tmp_path = request.getfixturevalue('tmp_path')
     source_dir = request.getfixturevalue('study_dir')
     shutil.copytree(source_dir, tmp_path / source_dir.stem)

@@ -14,9 +14,8 @@ if (TBB_VERSION_MAJOR VERSION_GREATER "2020")
 	message(FATAL_ERROR "Require tbb 2018 to 2020.")
 endif()
 
-add_library (external_loop STATIC
+add_library (outer_loop_lib STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/OuterLoop.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/OuterloopCriterion.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/MasterUpdateBase.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/CutsManagement.cpp
 	)
@@ -24,12 +23,12 @@ add_library (external_loop STATIC
 
 
 
-target_include_directories (external_loop
+target_include_directories (outer_loop_lib
 		PUBLIC
-			${CMAKE_CURRENT_SOURCE_DIR}/include
-)
+		${CMAKE_CURRENT_SOURCE_DIR}/include
+		)
 
-target_link_libraries (external_loop
+target_link_libraries (outer_loop_lib
 	PUBLIC
 		helpers
 		benders_core
@@ -37,4 +36,4 @@ target_link_libraries (external_loop
 		benders_by_batch_core		
 )
 
-add_library (${PROJECT_NAME}::external_loop ALIAS external_loop)
+add_library (${PROJECT_NAME}::outer_loop_lib ALIAS outer_loop_lib)

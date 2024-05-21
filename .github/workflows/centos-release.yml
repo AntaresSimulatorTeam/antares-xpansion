@@ -71,7 +71,7 @@ jobs:
 
       - name: user guide upload
         id: userguide_upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3 #aligned with download in centOS job
         with:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
@@ -222,7 +222,6 @@ jobs:
                  -DBUILD_UI=ON \
                  -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
                  -DXPRESS=${XPRESS_VALUE} \
-                 -DXPRESS_ROOT=${XPRESSDIR} \
                  -DALLOW_RUN_AS_ROOT=ON \
                  -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 

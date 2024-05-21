@@ -10,8 +10,8 @@
 #include <string>
 
 #include "../../input_reader/MpsTxtWriter.h"
-#include "../../model/Mode.h"
 #include "../../model/Problem.h"
+#include "../../model/SimulationInputMode.h"
 #include "ArchiveReader.h"
 #include "ProblemGenerationExeOptions.h"
 #include "ProblemGenerationLogger.h"
@@ -50,7 +50,7 @@ class ProblemGeneration {
       std::shared_ptr<ArchiveReader>& reader, bool with_archive,
       const Antares::Solver::LpsFromAntares& lps);
   Antares::Solver::LpsFromAntares lps_;
-  Mode mode_ = Mode::UNKOWN;
+  SimulationInputMode mode_ = SimulationInputMode::UNKOWN;
   virtual std::filesystem::path performAntaresSimulation();
   std::filesystem::path simulation_dir_;
 };

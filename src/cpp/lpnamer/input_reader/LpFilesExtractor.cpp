@@ -22,16 +22,16 @@ void LpFilesExtractor::ExtractFiles() const {
  *
  * @return A pair of vectors containing the paths of the files. The first vector contains the paths of the "area*.txt" files and the second vector contains the paths of the "interco*.txt" files.
  */
-LpFilesExtractor::areaAndIntecoPaths LpFilesExtractor::getFiles() const{
+LpFilesExtractor::areaAndIntercoPaths LpFilesExtractor::getFiles() const{
   std::vector<std::filesystem::path> vect_area_files;
   std::vector<std::filesystem::path> vect_interco_files;
   switch (this->mode_) {
-    case Mode::ARCHIVE: {
+    case SimulationInputMode::ARCHIVE: {
       return getFilesFromArchive();
     }
-    case Mode::ANTARES_API:
+    case SimulationInputMode::ANTARES_API:
       [[fallthrough]];
-    case Mode::FILE: {
+    case SimulationInputMode::FILE: {
       auto dit = std::filesystem::directory_iterator(this->simulation_dir_);
       std::ranges::for_each(
           dit, [&vect_area_files, &vect_interco_files](const auto& entry) {
@@ -45,14 +45,14 @@ LpFilesExtractor::areaAndIntecoPaths LpFilesExtractor::getFiles() const{
             }
           });
     } break;
-    case Mode::UNKOWN:
+    case SimulationInputMode::UNKOWN:
       throw LogUtils::XpansionError<std::runtime_error>(
-          "Mode is unknown", LOGLOCATION);
+          "SimulationInputMode is unknown", LOGLOCATION);
     default:
       throw LogUtils::XpansionError<std::runtime_error>(
-          "Mode is not supported:", LOGLOCATION);
+          "SimulationInputMode is not supported:", LOGLOCATION);
   }
-  return std::make_pair(vect_area_files, vect_interco_files);
+  return std::pair(vect_area_files, vect_interco_files);
 }
 
 /**
@@ -62,7 +62,7 @@ LpFilesExtractor::areaAndIntecoPaths LpFilesExtractor::getFiles() const{
  *
  * @return A pair of vectors containing the paths of the extracted files. The first vector contains the paths of the "area*.txt" files and the second vector contains the paths of the "interco*.txt" files.
  */
-LpFilesExtractor::areaAndIntecoPaths LpFilesExtractor::getFilesFromArchive() const {
+LpFilesExtractor::areaAndIntercoPaths LpFilesExtractor::getFilesFromArchive() const {
   std::vector<std::filesystem::path> vect_area_files;
   std::vector<std::filesystem::path> vect_interco_files;
   auto archive_reader = ArchiveReader(this->antares_archive_path_);
@@ -74,7 +74,7 @@ LpFilesExtractor::areaAndIntecoPaths LpFilesExtractor::getFilesFromArchive() con
                                                      this->xpansion_output_dir_);
 
   archive_reader.ExtractPattern("ts-numbers*", "", this->xpansion_output_dir_);
-  return std::make_pair(vect_area_files, vect_interco_files);
+  return std::pair(vect_area_files, vect_interco_files);
 }
 
 
@@ -113,11 +113,11 @@ void LpFilesExtractor::checkProperNumberOfAreaFiles(
 void LpFilesExtractor::produceAreatxtFile(
     const std::vector<std::filesystem::path>& vect_area_files) const {
   switch (this->mode_) {
-    case Mode::ANTARES_API:
+    case SimulationInputMode::ANTARES_API:
       [[fallthrough]];
-    case Mode::FILE:
+    case SimulationInputMode::FILE:
       try {
-        std::filesystem::copy(vect_area_files[0],
+        std::filesystem::rename(vect_area_files[0],
                               this->xpansion_output_dir_ / "area.txt");
       } catch (const std::filesystem::filesystem_error& e) {
         auto log_location = LOGLOCATION;
@@ -125,16 +125,16 @@ void LpFilesExtractor::produceAreatxtFile(
         throw;
       }
       break;
-    case Mode::ARCHIVE:
+    case SimulationInputMode::ARCHIVE:
       std::filesystem::rename(vect_area_files[0],
                               this->xpansion_output_dir_ / "area.txt");
       break;
-    case Mode::UNKOWN:
+    case SimulationInputMode::UNKOWN:
       throw LogUtils::XpansionError<std::runtime_error>(
-          "Mode is unknown", LOGLOCATION);
+          "SimulationInputMode is unknown", LOGLOCATION);
     default:
       throw LogUtils::XpansionError<std::runtime_error>(
-          "Mode is not supported:", LOGLOCATION);
+          "SimulationInputMode is not supported:", LOGLOCATION);
   }
 }
 
@@ -147,14 +147,14 @@ void LpFilesExtractor::produceAreatxtFile(
  */
 void LpFilesExtractor::checkProperNumberOfIntercoFiles(
     const std::vector<std::filesystem::path>& vect_interco_files) const {
-  if (auto num_intercos_file = vect_interco_files.size();
-      num_intercos_file == 0) {
+  if (auto num_interco_file = vect_interco_files.size();
+      num_interco_file == 0) {
     std::ostringstream msg;
     msg << "No interco*.txt file found" << std::endl;
     auto log_location = LOGLOCATION;
     (*this->logger_)(LogUtils::LOGLEVEL::FATAL) << log_location << msg.str();
     throw ErrorWithIntercosFile(msg.str(), log_location);
-  } else if (num_intercos_file > 1) {
+  } else if (num_interco_file > 1) {
     std::ostringstream msg;
     auto log_location = LOGLOCATION;
     msg << "More than one interco*.txt file found" << std::endl;
@@ -174,11 +174,11 @@ void LpFilesExtractor::checkProperNumberOfIntercoFiles(
 void LpFilesExtractor::produceIntercotxtFile(
     const std::vector<std::filesystem::path>& vect_interco_files) const {
   switch (this->mode_) {
-    case Mode::ANTARES_API:
+    case SimulationInputMode::ANTARES_API:
       [[fallthrough]];
-    case Mode::FILE:
+    case SimulationInputMode::FILE:
       try {
-        std::filesystem::copy(vect_interco_files[0],
+        std::filesystem::rename(vect_interco_files[0],
                               this->xpansion_output_dir_ / "interco.txt");
       } catch (const std::filesystem::filesystem_error& e) {
         auto log_location = LOGLOCATION;
@@ -186,15 +186,15 @@ void LpFilesExtractor::produceIntercotxtFile(
         throw;
       }
       break;
-    case Mode::ARCHIVE:
+    case SimulationInputMode::ARCHIVE:
       std::filesystem::rename(vect_interco_files[0],
                               this->xpansion_output_dir_ / "interco.txt");
       break;
-    case Mode::UNKOWN:
+    case SimulationInputMode::UNKOWN:
       throw LogUtils::XpansionError<std::runtime_error>(
-          "Mode is unknown", LOGLOCATION);
+          "SimulationInputMode is unknown", LOGLOCATION);
     default:
       throw LogUtils::XpansionError<std::runtime_error>(
-          "Mode is not supported:", LOGLOCATION);
+          "SimulationInputMode is not supported:", LOGLOCATION);
   }
 }

@@ -84,7 +84,7 @@ auto flattenPairs(const std::tuple<Ts...>& tuple) {
 // Terminal case : only a pair
 template <typename T>
 auto flattenPairs(const std::pair<T, T>& pair) {
-  return std::make_tuple(pair.first, pair.second);
+  return std::tuple(pair.first, pair.second);
 }
 
 // Recursive case: process the first pair and concatenate it with the flattened
@@ -94,19 +94,19 @@ auto flattenPairs(const std::pair<T, T>& pair) {
 // => f( pair(A,B) ) + f( pair(C, D) ) + f ( pair(E, F) ) + f ( {} )
 template <typename T1, typename T2, typename... Ts>
 auto flattenPairs(const std::pair<T1, T2>& pair, const Ts&... rest) {
-  return std::tuple_cat(std::make_tuple(pair.first, pair.second),
+  return std::tuple_cat(std::tuple(pair.first, pair.second),
                         flattenPairs(rest...));
 }
 
 auto cases() {
   using namespace std::string_literals;
   return ::testing::Combine(
-      ::testing::Values(std::make_pair("--archive"s, "archive.zip"s),
-                        std::make_pair("--output"s, "output-Xpansion"s),
-                        std::make_pair("--study"s, "the_study"s)),
-      ::testing::Values(std::make_pair("--archive"s, "archive.zip"s),
-                        std::make_pair("--output"s, "output-Xpansion"s),
-                        std::make_pair("--study"s, "the_study"s)));
+      ::testing::Values(std::pair("--archive"s, "archive.zip"s),
+                        std::pair("--output"s, "output-Xpansion"s),
+                        std::pair("--study"s, "the_study"s)),
+      ::testing::Values(std::pair("--archive"s, "archive.zip"s),
+                        std::pair("--output"s, "output-Xpansion"s),
+                        std::pair("--study"s, "the_study"s)));
 }
 TEST_P(ProblemGenerationExeOptionsTest, Parameters_mutually_exclusives) {
   auto test_root =
@@ -116,7 +116,7 @@ TEST_P(ProblemGenerationExeOptionsTest, Parameters_mutually_exclusives) {
 
   auto params = GetParam();
   if (std::get<0>(params) == std::get<1>(params)) {
-    GTEST_SKIP();
+    GTEST_SKIP() << "Same parameters";
   }
   auto tuple =
       std::apply([](auto... args) { return flattenPairs(args...); }, params);

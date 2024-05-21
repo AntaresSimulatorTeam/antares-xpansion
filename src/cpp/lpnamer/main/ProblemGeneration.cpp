@@ -48,11 +48,11 @@ void CreateDirectories(const std::filesystem::path& output_path) {
 ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options)
     : options_(options) {
   if (!options_.StudyPath().empty()) {
-    mode_ = Mode::ANTARES_API;
+    mode_ = SimulationInputMode::ANTARES_API;
   } else if (!options_.XpansionOutputDir().empty()) {
-    mode_ = Mode::FILE;
+    mode_ = SimulationInputMode::FILE;
   } else if (!options_.ArchivePath().empty()) {
-    mode_ = Mode::ARCHIVE;
+    mode_ = SimulationInputMode::ARCHIVE;
   }
 }
 
@@ -71,22 +71,22 @@ std::filesystem::path ProblemGeneration::updateProblems() {
   std::filesystem::path xpansion_output_dir;
   const auto archive_path = options_.ArchivePath();
 
-  if (mode_ == Mode::ARCHIVE) {
+  if (mode_ == SimulationInputMode::ARCHIVE) {
     xpansion_output_dir =
         options_.deduceXpansionDirIfEmpty(xpansion_output_dir, archive_path);
   }
 
-  if (mode_ == Mode::ANTARES_API) {
+  if (mode_ == SimulationInputMode::ANTARES_API) {
     simulation_dir_ = performAntaresSimulation();
   }
 
-  if (mode_ == Mode::FILE) {
+  if (mode_ == SimulationInputMode::FILE) {
     simulation_dir_ = options_.XpansionOutputDir();  // Legacy naming.
     // options_.XpansionOutputDir() point in fact to a simulation output from
     // antares
   }
 
-  if (mode_ == Mode::ANTARES_API || mode_ == Mode::FILE) {
+  if (mode_ == SimulationInputMode::ANTARES_API || mode_ == SimulationInputMode::FILE) {
     xpansion_output_dir = simulation_dir_;
   }
 
@@ -177,17 +177,17 @@ std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
                  std::back_inserter(problem_names),
                  [](ProblemData const& data) { return data._problem_mps; });
   switch (mode_) {
-    case Mode::FILE: {
+    case SimulationInputMode::FILE: {
       auto adapter =
           std::make_unique<FileProblemsProviderAdapter>(lpDir_, problem_names);
       return adapter->provideProblems(solver_name, solver_log_manager);
     }
-    case Mode::ARCHIVE: {
+    case SimulationInputMode::ARCHIVE: {
       auto adapter = std::make_unique<ZipProblemsProviderAdapter>(
           lpDir_, reader, problem_names);
       return adapter->provideProblems(solver_name, solver_log_manager);
     }
-    case Mode::ANTARES_API: {
+    case SimulationInputMode::ANTARES_API: {
       auto adapter = std::make_unique<XpansionProblemsFromAntaresProvider>(lps);
       return adapter->provideProblems(solver_name, solver_log_manager);
     }
@@ -253,12 +253,12 @@ void ProblemGeneration::RunProblemGeneration(
   /* Main stuff */
   std::vector<std::shared_ptr<Problem>> xpansion_problems =
       getXpansionProblems(solver_log_manager, solver_name, mpsList, lpDir_,
-                          reader, !antares_archive_path.empty(), lps_);
+                          reader, !antares_archive_path.empty());
 
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
       problems_and_data;
   for (int i = 0; i < xpansion_problems.size(); ++i) {
-    if (mode_ == Mode::ANTARES_API) {
+    if (mode_ == SimulationInputMode::ANTARES_API) {
       ProblemData data{xpansion_problems.at(i)->_name, {}};
       problems_and_data.emplace_back(xpansion_problems.at(i), data);
     } else {
@@ -273,11 +273,11 @@ void ProblemGeneration::RunProblemGeneration(
         const auto& [problem, data] = problem_and_data;
         std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
         switch (mode_) {
-          case Mode::FILE:
+          case SimulationInputMode::FILE:
             variables_provider = std::make_shared<ProblemVariablesFileAdapter>(
                 data, links, logger, lpDir_);
             break;
-          case Mode::ARCHIVE:
+          case SimulationInputMode::ARCHIVE:
             if (rename_problems) {
               variables_provider = std::make_shared<ProblemVariablesZipAdapter>(
                   reader, data, links, logger);
@@ -287,7 +287,7 @@ void ProblemGeneration::RunProblemGeneration(
                       problem, links, logger);
             }
             break;
-          case Mode::ANTARES_API:
+          case SimulationInputMode::ANTARES_API:
             variables_provider =
                 std::make_shared<ProblemVariablesFromProblemAdapter>(
                     problem, links, logger);
@@ -301,7 +301,7 @@ void ProblemGeneration::RunProblemGeneration(
                                     mps_file_writer.get());
       });
 
-  if (mode_ == Mode::ARCHIVE) {
+  if (mode_ == SimulationInputMode::ARCHIVE) {
     reader->Close();
     reader->Delete();
   }
