@@ -649,9 +649,7 @@ var hierarchy =
     [ "WeightsFileReader", "classWeightsFileReader.html", null ],
     [ "Worker", "classWorker.html", [
       [ "SubproblemWorker", "classSubproblemWorker.html", null ],
-      [ "WorkerMaster", "classWorkerMaster.html", [
-        [ "FakeWorkerMaster", "classFakeWorkerMaster.html", null ]
-      ] ]
+      [ "WorkerMaster", "classWorkerMaster.html", null ]
     ] ],
     [ "WorkerMasterData", "classWorkerMasterData.html", null ],
     [ "antares_xpansion.xpansionConfig.XpansionConfig", "classantares__xpansion_1_1xpansionConfig_1_1XpansionConfig.html", null ],

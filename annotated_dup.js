@@ -458,7 +458,6 @@ var annotated_dup =
     [ "DynamicLibrary", "classDynamicLibrary.html", null ],
     [ "EmptyLogger", "structEmptyLogger.html", "structEmptyLogger" ],
     [ "ExternalLoopOptions", "structExternalLoopOptions.html", null ],
-    [ "FakeWorkerMaster", "classFakeWorkerMaster.html", null ],
     [ "FileAndStdoutLoggerFactory", "classFileAndStdoutLoggerFactory.html", null ],
     [ "FileBuffer", "structFileBuffer.html", null ],
     [ "FileInBuffer", "classFileInBuffer.html", null ],

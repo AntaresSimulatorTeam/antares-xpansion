@@ -162,9 +162,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:ac4ef023803a7459d35d7e1c7cf3dc8f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afcf6259727ddfb67257174022337b25d" id="r_afcf6259727ddfb67257174022337b25d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersMpi.html#afcf6259727ddfb67257174022337b25d">launch</a> () override</td></tr>
 <tr class="separator:afcf6259727ddfb67257174022337b25d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7163ba09a785e8d83a7f85ba1a95bd7" id="r_aa7163ba09a785e8d83a7f85ba1a95bd7"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersMpi.html#aa7163ba09a785e8d83a7f85ba1a95bd7">BendersName</a> () const</td></tr>
-<tr class="separator:aa7163ba09a785e8d83a7f85ba1a95bd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adff0738715e252fa5ac1690adae9138f" id="r_adff0738715e252fa5ac1690adae9138f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersMpi.html#adff0738715e252fa5ac1690adae9138f">ExternalLoopCheckFeasibility</a> () override</td></tr>
+<tr class="memitem:a5c55993b8d58a3d29c571947c5c13a93" id="r_a5c55993b8d58a3d29c571947c5c13a93"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersMpi.html#a5c55993b8d58a3d29c571947c5c13a93">BendersName</a> () const override</td></tr>
+<tr class="separator:a5c55993b8d58a3d29c571947c5c13a93"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adff0738715e252fa5ac1690adae9138f" id="r_adff0738715e252fa5ac1690adae9138f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersMpi.html#adff0738715e252fa5ac1690adae9138f">ExternalLoopCheckFeasibility</a> () override</td></tr>
 <tr class="separator:adff0738715e252fa5ac1690adae9138f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classBendersBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classBendersBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classBendersBase.html">BendersBase</a></td></tr>
 <tr class="memitem:a2fb3f1ca5c0671fca337da4be5e5a27f inherit pub_methods_classBendersBase" id="r_a2fb3f1ca5c0671fca337da4be5e5a27f"><td class="memItemLeft" align="right" valign="top">
@@ -426,9 +426,10 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>Oute
 <tr class="memitem:a9936a17b0dd7c359c41f331ccf7d30cf inherit pro_methods_classBendersBase" id="r_a9936a17b0dd7c359c41f331ccf7d30cf"><td class="memItemLeft" align="right" valign="top">
 <a class="el" href="structLogData.html">LogData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>bendersDataToLogData</b> (const <a class="el" href="structCurrentIterationData.html">CurrentIterationData</a> &amp;data) const</td></tr>
 <tr class="separator:a9936a17b0dd7c359c41f331ccf7d30cf inherit pro_methods_classBendersBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9f1f936a62961992d0ddc9b384e71fcb inherit pro_methods_classBendersBase" id="r_a9f1f936a62961992d0ddc9b384e71fcb"><td class="memItemLeft" align="right" valign="top">
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>reset_master</b> (<a class="el" href="classWorkerMaster.html">WorkerMaster</a> *worker_master)</td></tr>
-<tr class="separator:a9f1f936a62961992d0ddc9b384e71fcb inherit pro_methods_classBendersBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02aaf07400f86a9934ae2ea336350cde inherit pro_methods_classBendersBase" id="r_a02aaf07400f86a9934ae2ea336350cde"><td class="memTemplParams" colspan="2">
+template&lt;typename T , typename... Args&gt; </td></tr>
+<tr class="memitem:a02aaf07400f86a9934ae2ea336350cde inherit pro_methods_classBendersBase"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>reset_master</b> (Args &amp;&amp;...args)</td></tr>
+<tr class="separator:a02aaf07400f86a9934ae2ea336350cde inherit pro_methods_classBendersBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85dac29b78144c35660e7382e81e887d inherit pro_methods_classBendersBase" id="r_a85dac29b78144c35660e7382e81e887d"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>free_master</b> ()</td></tr>
 <tr class="separator:a85dac29b78144c35660e7382e81e887d inherit pro_methods_classBendersBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -439,7 +440,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>free_subproblems</b> 
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AddSubproblem</b> (const std::pair&lt; std::string, VariableMap &gt; &amp;kvp)</td></tr>
 <tr class="separator:a5520fb96d042575a4d0a4aabd4d7d688 inherit pro_methods_classBendersBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09c00fd7c3c7591d2c9b8cb1fe48afd8 inherit pro_methods_classBendersBase" id="r_a09c00fd7c3c7591d2c9b8cb1fe48afd8"><td class="memItemLeft" align="right" valign="top">
-WorkerMasterPtr&#160;</td><td class="memItemRight" valign="bottom"><b>get_master</b> () const</td></tr>
+virtual WorkerMasterPtr&#160;</td><td class="memItemRight" valign="bottom"><b>get_master</b> () const</td></tr>
 <tr class="separator:a09c00fd7c3c7591d2c9b8cb1fe48afd8 inherit pro_methods_classBendersBase"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aadfff76348ae02bac6de5c5e95fee99b inherit pro_methods_classBendersBase" id="r_aadfff76348ae02bac6de5c5e95fee99b"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>MatchProblemToId</b> ()</td></tr>
@@ -648,8 +649,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_bilevel_check_all_
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class use run the benders algorithm in parallel. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="aa7163ba09a785e8d83a7f85ba1a95bd7" name="aa7163ba09a785e8d83a7f85ba1a95bd7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa7163ba09a785e8d83a7f85ba1a95bd7">&#9670;&#160;</a></span>BendersName()</h2>
+<a id="a5c55993b8d58a3d29c571947c5c13a93" name="a5c55993b8d58a3d29c571947c5c13a93"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5c55993b8d58a3d29c571947c5c13a93">&#9670;&#160;</a></span>BendersName()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -658,7 +659,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_bilevel_check_all_
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual std::string BendersMpi::BendersName </td>
+          <td class="memname">std::string BendersMpi::BendersName </td>
           <td>(</td>
           <td class="paramname"></td><td>)</td>
           <td> const</td>
@@ -666,7 +667,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_bilevel_check_all_
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

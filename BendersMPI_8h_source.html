@@ -168,9 +168,9 @@ $(document).ready(function(){initNavTree('BendersMPI_8h_source.html',''); initRe
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>             std::shared_ptr&lt;MathLoggerDriver&gt; mathLoggerDriver);</div>
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keywordtype">void</span> <a class="code hl_namespace" href="namespacelaunch.html">launch</a>() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keyword">virtual</span> std::string BendersName()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> <span class="stringliteral">&quot;Benders mpi&quot;</span>; }</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  std::string BendersName()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> <span class="stringliteral">&quot;Benders mpi&quot;</span>; }</div>
 <div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> rank_0 = 0;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> ExternalLoopCheckFeasibility() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keywordtype">void</span> ExternalLoopCheckFeasibility() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> <span class="keyword">protected</span>:</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classBendersMpi.html#af435deb52a324bfbf0d953bf78644cf4">free</a>() <span class="keyword">override</span>;</div>
