@@ -238,6 +238,10 @@ class BendersBase {
 
   void UpdateOuterLoopMaxCriterionArea();
 
+  // Temporary public, only for POC purposes, should be private
+  [[nodiscard]] Output::SolutionData solution() const;
+  Output::Iteration iteration(const WorkerMasterData &masterDataPtr_l) const;
+
  private:
   void print_master_and_cut(std::ostream &file, int ite,
                             WorkerMasterData &trace, Point const &xopt);
@@ -245,14 +249,14 @@ class BendersBase {
                         Point const &xopt) const;
   void check_status(const SubProblemDataMap &subproblem_data_map) const;
   [[nodiscard]] LogData build_log_data_from_data() const;
-  [[nodiscard]] Output::SolutionData solution() const;
+  
   [[nodiscard]] std::string status_from_criterion() const;
   void compute_cut_aggregate(const SubProblemDataMap &subproblem_data_map);
   void compute_cut(const SubProblemDataMap &subproblem_data_map);
   [[nodiscard]] std::map<std::string, int> get_master_variable_map(
       const std::map<std::string, std::map<std::string, int>> &input_map) const;
   [[nodiscard]] virtual bool shouldParallelize() const = 0;
-  Output::Iteration iteration(const WorkerMasterData &masterDataPtr_l) const;
+  
   LogData FinalLogData() const;
   void FillWorkerMasterData(WorkerMasterData &workerMasterData);
 

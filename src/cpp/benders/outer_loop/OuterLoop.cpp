@@ -45,8 +45,12 @@ void OuterLoop::Run() {
   }
 
   // last prints
+  Output::SolutionData solution_data = benders_->solution();
+  solution_data.solution = benders_->iteration(benders_->_data.outer_loop_current_iteration_data.outer_loop_best_master_data);
+
   PrintLog();
   benders_->mathLoggerDriver_->Print(benders_->GetCurrentIterationData());
+  benders_->_writer->write_solution();
 
   // TODO general-case
   //  cuts_manager_->Save(benders_->AllCuts());

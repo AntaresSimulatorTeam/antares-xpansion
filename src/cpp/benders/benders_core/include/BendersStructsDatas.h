@@ -16,6 +16,8 @@ struct OuterLoopCurrentIterationData{
   double external_loop_lambda_max = 0.;
   std::string max_criterion_area;
   std::string max_criterion_area_best_it;
+  Point outer_loop_bilevel_best_x;
+  WorkerMasterData outer_loop_best_master_data;
 };
 /*! \struct
  * struct that hold current Benders iteration

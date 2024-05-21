@@ -44,15 +44,15 @@ void BendersMpi::InitializeProblems() {
 
   // if (_world.rank() == rank_0) {
   SetSubproblemsVariablesIndex();
-    // }
-    init_problems_ = false;
+  // }
+  init_problems_ = false;
 }
 void BendersMpi::BuildMasterProblem() {
   if (_world.rank() == rank_0) {
     reset_master<WorkerMaster>(master_variable_map_, get_master_path(),
-                                  get_solver_name(), get_log_level(),
-                                  _data.nsubproblem, solver_log_manager_,
-                                  IsResumeMode(), _logger);
+                               get_solver_name(), get_log_level(),
+                               _data.nsubproblem, solver_log_manager_,
+                               IsResumeMode(), _logger);
   }
 }
 /*!
@@ -403,17 +403,26 @@ void BendersMpi::UpdateOverallCosts() {
 }
 
 void BendersMpi::RunExternalLoopBilevelChecks() {
-  if (_world.rank() == rank_0 && Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP &&
-      !is_bilevel_check_all_) {
+  if (_world.rank() == rank_0 &&
+      Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP && !is_bilevel_check_all_) {
     const WorkerMasterData &workerMasterData = BestIterationWorkerMaster();
     const auto &invest_cost = workerMasterData._invest_cost;
     const auto &overall_cost = invest_cost + workerMasterData._operational_cost;
-    outer_loop_biLevel_.Update_bilevel_data_if_feasible(
-        _data.x_cut,
-        GetOuterLoopCriterionAtBestBenders() /*/!\ must
-                be at best it*/
+    bool found_feasible = outer_loop_biLevel_.Update_bilevel_data_if_feasible(
+        _data.x_cut, GetOuterLoopCriterionAtBestBenders() /*/!\ must
+                             be at best it*/
         ,
-        overall_cost, invest_cost, _data.outer_loop_current_iteration_data.external_loop_lambda);
-    _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub = outer_loop_biLevel_.BilevelBestub();
+        overall_cost, invest_cost,
+        _data.outer_loop_current_iteration_data.external_loop_lambda);
+
+    // TODO: Ugly, improve this
+    if (found_feasible) {
+      _data.outer_loop_current_iteration_data.outer_loop_best_master_data =
+          std::make_shared<WorkerMasterData>(workerMasterData);
+    }
+    _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub =
+        outer_loop_biLevel_.BilevelBestub();
+    _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_x =
+        outer_loop_biLevel_.BilevelBestX();
   }
 }
