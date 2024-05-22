@@ -253,7 +253,7 @@ void ProblemGeneration::RunProblemGeneration(
   /* Main stuff */
   std::vector<std::shared_ptr<Problem>> xpansion_problems =
       getXpansionProblems(solver_log_manager, solver_name, mpsList, lpDir_,
-                          reader, !antares_archive_path.empty());
+                          reader, !antares_archive_path.empty(), lps_);
 
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
       problems_and_data;
