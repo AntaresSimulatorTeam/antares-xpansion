@@ -8,7 +8,7 @@
 #include "SimulationOptions.h"
 #include "Worker.h"
 #include "WriterFactories.h"
-#include "glog/logging.h"
+
 #include "logger/User.h"
 #include "solver_utils.h"
 
@@ -23,10 +23,7 @@ int main(int argc, char **argv) {
 
   Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
 
-  google::InitGoogleLogging(argv[0]);
-  auto path_to_log = std::filesystem::path(options.OUTPUTROOT) / "merge_mpsLog";
-  google::SetLogDestination(google::GLOG_INFO, path_to_log.string().c_str());
-  LOG(INFO) << "starting merge_mps" << std::endl;
+  logger->display_message("starting merge_mps");
 
   Writer writer =
       build_json_writer(std::filesystem::path(options.JSON_FILE), false);
@@ -36,7 +33,6 @@ int main(int argc, char **argv) {
   } catch (std::exception &ex) {
     std::string error =
         "Exception raised and program stopped : " + std::string(ex.what());
-    LOG(WARNING) << error << std::endl;
     logger->display_message(error);
     exit(1);
   }

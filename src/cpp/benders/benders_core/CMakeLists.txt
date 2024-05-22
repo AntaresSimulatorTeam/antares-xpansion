@@ -44,7 +44,6 @@ target_link_libraries (benders_core
 		helpers
 		output_core
 		solvers
-		glog::glog
 		TBB::tbb
 		${JSONCPP_LIB}
 		yaml-cpp

@@ -13,8 +13,6 @@
 #include "Timer.h"
 #include "Worker.h"
 #include "WriterFactories.h"
-#include "gflags/gflags.h"
-#include "glog/logging.h"
 
 BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size,
                                   bool external_loop) {
@@ -52,11 +50,9 @@ pBendersBase BendersMainFactory::PrepareForExecution(
 
   BendersBaseOptions benders_options(options.get_benders_options());
 
-  google::InitGoogleLogging(argv_[0]);
   auto path_to_log =
       std::filesystem::path(options.OUTPUTROOT) /
       ("bendersLog-rank" + std::to_string(pworld_->rank()) + ".txt.");
-  google::SetLogDestination(google::GLOG_INFO, path_to_log.string().c_str());
 
   auto log_reports_name =
       std::filesystem::path(options.OUTPUTROOT) / "reportbenders.txt";

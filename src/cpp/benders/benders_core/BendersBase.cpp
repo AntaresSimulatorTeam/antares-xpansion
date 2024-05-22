@@ -10,7 +10,7 @@
 #include "LastIterationWriter.h"
 #include "LogUtils.h"
 #include "VariablesGroup.h"
-#include "glog/logging.h"
+
 #include "solver_utils.h"
 
 BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
@@ -68,8 +68,8 @@ void BendersBase::OpenCsvFile() {
                    "time;basis;"
                 << std::endl;
     } else {
-      LOG(INFO) << "Impossible to open the .csv file: " << _csv_file_path
-                << std::endl;
+      using namespace std::string_literals;
+      _logger->display_message("Impossible to open the .csv file: "s + _csv_file_path.string());
     }
   }
 }

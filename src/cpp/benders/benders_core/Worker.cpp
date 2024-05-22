@@ -1,7 +1,7 @@
 #include "Worker.h"
 
 #include "LogUtils.h"
-#include "glog/logging.h"
+
 #include "solver_utils.h"
 /*!
  *  \brief Free the problem
