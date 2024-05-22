@@ -6,7 +6,7 @@
 
 #include "CustomVector.h"
 #include "Timer.h"
-#include "glog/logging.h"
+
 
 BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger logger,
                        Writer writer, mpi::environment &env,
@@ -240,7 +240,6 @@ void BendersMpi::check_if_some_proc_had_a_failure(int success) {
 
 void BendersMpi::write_exception_message(const std::exception &ex) const {
   std::string error = "Exception raised : " + std::string(ex.what());
-  LOG(WARNING) << error << std::endl;
   _logger->display_message(error);
 }
 

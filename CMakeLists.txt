@@ -2,7 +2,7 @@
 # CMake configuration
 # ===========================================================================
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
 
 # ===========================================================================
 # Project configuration
@@ -216,7 +216,6 @@ find_package(Cgl REQUIRED)
 find_package(Clp REQUIRED)
 find_package(CoinUtils REQUIRED)
 find_package(Osi REQUIRED)
-find_package(glog REQUIRED)
 
 if(POLICY CMP0074)
 	cmake_policy(SET CMP0074 NEW)
