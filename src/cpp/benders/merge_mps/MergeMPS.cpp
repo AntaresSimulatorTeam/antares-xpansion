@@ -5,7 +5,6 @@
 #include "ArchiveReader.h"
 #include "LogUtils.h"
 #include "Timer.h"
-#include "glog/logging.h"
 
 MergeMPS::MergeMPS(const MergeMPSOptions &options, Logger &logger,
                    Writer writer)
@@ -26,7 +25,7 @@ void MergeMPS::launch() {
   CouplingMap x_mps_id;
   int cntProblems_l(0);
 
-  LOG(INFO) << "Merging problems..." << std::endl;
+  _logger->display_message("Merging problems...");
   for (auto const &kvp : input) {
     auto problem_name(inputRootDir / (kvp.first));
     SolverAbstract::Ptr solver_l = factory.create_solver(solver_to_use);
@@ -87,8 +86,8 @@ void MergeMPS::launch() {
     neles_reserve += kvp.second.size() * (kvp.second.size() - 1);
     nrows_reserve += kvp.second.size() * (kvp.second.size() - 1) / 2;
   }
-  LOG(INFO) << "About to add " << nrows_reserve << " coupling constraints"
-            << std::endl;
+  _logger->display_message("About to add " + std::to_string(nrows_reserve) +
+                           " coupling constraints");
   values.reserve(neles_reserve);
   cindex.reserve(neles_reserve);
   mstart.reserve(nrows_reserve + 1);
@@ -96,7 +95,7 @@ void MergeMPS::launch() {
   // adding coupling constraints
   for (auto const &kvp : x_mps_id) {
     std::string const var_name(kvp.first);
-    LOG(INFO) << var_name << std::endl;
+    _logger->display_message(var_name);
     bool is_first(true);
     int id1(-1);
     std::string first_mps;
@@ -125,11 +124,11 @@ void MergeMPS::launch() {
   CharVector sense(nrows, 'E');
   solver_addrows(*mergedSolver_l, sense, rhs, {}, mstart, cindex, values);
 
-  LOG(INFO) << "Problems merged." << std::endl;
-  LOG(INFO) << "Writting mps file" << std::endl;
+  _logger->display_message("Problems merged.");
+  _logger->display_message("Writing mps file");
   mergedSolver_l->write_prob_mps(std::filesystem::path(_options.OUTPUTROOT) /
                                  ("log_merged" + MPS_SUFFIX));
-  LOG(INFO) << "Writting lp file" << std::endl;
+  _logger->display_message("Writing lp file");
   mergedSolver_l->write_prob_lp(std::filesystem::path(_options.OUTPUTROOT) /
                                 "log_merged.lp");
 
