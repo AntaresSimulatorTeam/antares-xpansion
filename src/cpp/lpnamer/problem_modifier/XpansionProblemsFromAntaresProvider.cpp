@@ -16,7 +16,8 @@ XpansionProblemsFromAntaresProvider::XpansionProblemsFromAntaresProvider(
 std::vector<std::shared_ptr<Problem>>
 XpansionProblemsFromAntaresProvider::provideProblems(
     const std::string& solver_name,
-    SolverLogManager& solver_log_manager) const {
+    SolverLogManager& solver_log_manager) const
+{
   std::vector<std::shared_ptr<Problem>> xpansion_problems;
   xpansion_problems.reserve(
       XpansionProblemsFromAntaresProvider::antares_hebdo_problems.weekCount());
