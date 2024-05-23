@@ -7,6 +7,7 @@
     "gtest",
     "boost-mpi",
     "boost-program-options",
+    "boost-test",
     "zlib",
     "yaml-cpp"
   ],
