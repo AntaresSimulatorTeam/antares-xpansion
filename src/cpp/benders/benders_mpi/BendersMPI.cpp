@@ -45,6 +45,7 @@ void BendersMpi::InitializeProblems() {
   if (_world.rank() == rank_0) {
     SetSubproblemsVariablesIndex();
   }
+
   BroadCast(var_indices_, rank_0);
   init_problems_ = false;
 }

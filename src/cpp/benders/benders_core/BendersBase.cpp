@@ -777,6 +777,9 @@ void BendersBase::MatchProblemToId() {
   }
 }
 
+// Search for variables in sub problems that satify patterns
+// var_indices is a vector(for each patterns p) of vector (var indices related
+// to p)
 void BendersBase::SetSubproblemsVariablesIndex() {
   if (!subproblem_map.empty() && _options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
     auto subproblem = subproblem_map.begin();
