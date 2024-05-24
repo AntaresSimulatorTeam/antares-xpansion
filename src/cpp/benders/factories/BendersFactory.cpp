@@ -49,7 +49,7 @@ pBendersBase BendersMainFactory::PrepareForExecution(
 
 
   BendersBaseOptions benders_options(options.get_benders_options());
-
+  benders_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = external_loop;
 
   auto log_reports_name =
       std::filesystem::path(options.OUTPUTROOT) / "reportbenders.txt";
