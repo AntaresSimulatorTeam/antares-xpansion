@@ -47,7 +47,7 @@ jobs:
           token: ${{ secrets.AS_TOKEN }} #reniew token periodically
 
       - run: |
-          apt-get update
+          sudo apt-get update
 
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.3
