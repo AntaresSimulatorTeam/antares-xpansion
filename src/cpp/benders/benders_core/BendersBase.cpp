@@ -397,7 +397,12 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
               worker->solve(subproblem_data.lpstatus, _options.OUTPUTROOT,
                             _options.LAST_MASTER_MPS + MPS_SUFFIX, _writer);
               worker->get_value(subproblem_data.subproblem_cost);
-              worker->get_solution(subproblem_data.solution);
+              if (_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
+                std::vector<double> solution;
+                worker->get_solution(solution);
+                subproblem_data.outer_loop_criterions =
+                    ComputeOuterLoopCriterion(name, solution);
+              }
               worker->get_subgradient(subproblem_data.var_name_and_subgradient);
               worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
               subproblem_data.subproblem_timer = subproblem_timer.elapsed();
@@ -427,9 +432,7 @@ void BendersBase::compute_cut(const SubProblemDataMap &subproblem_data_map) {
                               subproblem_data.var_name_and_subgradient,
                               _data.x_cut, subproblem_data.subproblem_cost);
     relevantIterationData_.last._cut_trace[subproblem_name] = subproblem_data;
-    // ComputeOuterLoopCriterion(subproblem_name, subproblem_data);
   }
-  // outer_loop_criterion_.push_back(current_outer_loop_criterion_);
 }
 
 void compute_cut_val(const Point &var_name_subgradient, const Point &x_cut,
@@ -1022,8 +1025,7 @@ std::vector<double> BendersBase::GetOuterLoopCriterionAtBestBenders() const {
 
 std::vector<double> BendersBase::ComputeOuterLoopCriterion(
     const std::string &subproblem_name,
-    const PlainData::SubProblemData &sub_problem_data) {
-
+    const std::vector<double> &sub_problem_solution) {
   auto outer_loop_input_size = var_indices_.size(); // num of patterns
   std::vector<double> outer_loop_criterion_per_sub_problem(outer_loop_input_size,
                                                            {});
@@ -1037,8 +1039,7 @@ std::vector<double> BendersBase::ComputeOuterLoopCriterion(
        ++pattern_index) {
     auto pattern_variables_indices = var_indices_[pattern_index];
     for (auto variables_index : pattern_variables_indices) {
-
-      if (auto solution = sub_problem_data.solution[variables_index];
+      if (auto solution = sub_problem_solution[variables_index];
           solution > criterion_count_threshold)
         // 1h of no supplied energy
         outer_loop_criterion_per_sub_problem[pattern_index] +=
