@@ -161,12 +161,15 @@ TEST_F(OuterLoopPatternTest, RegexGivenPrefixAndBody) {
 
   auto ret_regex = o.MakeRegex();
 
-  ASSERT_EQ(std::regex_search(prefix + body, ret_regex), true);
+  ASSERT_EQ(std::regex_search(prefix + body, ret_regex), false);
   ASSERT_EQ(std::regex_search(prefix + "::" + body + "::suffix", ret_regex),
-            true);
+            false);
   ASSERT_EQ(std::regex_search(body + prefix, ret_regex), false);
   ASSERT_EQ(std::regex_search(prefix + "::", ret_regex), false);
   ASSERT_EQ(std::regex_search(body, ret_regex), false);
+  ASSERT_EQ(std::regex_search(prefix + "area<" + body + ">", ret_regex), true);
+  ASSERT_EQ(std::regex_search(prefix + "area<" + body + ">::suffix", ret_regex), true);
+  ASSERT_EQ(std::regex_search(prefix + "area<" + body + "_other_area>::suffix", ret_regex), false);
 }
 
 class OuterLoopInputFromYamlTest : public ::testing::Test {};
