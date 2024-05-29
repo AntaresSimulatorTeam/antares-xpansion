@@ -1,7 +1,7 @@
 #include "Worker.h"
 
 #include "LogUtils.h"
-#include "glog/logging.h"
+
 #include "solver_utils.h"
 /*!
  *  \brief Free the problem
@@ -49,7 +49,6 @@ void Worker::init(VariableMap const &variable_map,
                                     solver_log_manager);
   }
 
-  _solver->init();
   _solver->set_threads(1);
   _solver->set_output_log_level(log_level);
   _solver->read_prob_mps(path_to_mps);

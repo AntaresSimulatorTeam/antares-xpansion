@@ -11,7 +11,6 @@ target_include_directories (helpers_test
 		${CMAKE_CURRENT_SOURCE_DIR}
 		)
 
-jsoncpplib_name(jsonlib)
 target_link_libraries (helpers_test PRIVATE
 		GTest::Main
 		helpers
@@ -19,7 +18,7 @@ target_link_libraries (helpers_test PRIVATE
 		lp_namer_model
 		lp_namer_input_reader
 		lp_namer_problem_modifier
-		${jsonlib}
+		${JSONCPP_LIB}
 		${PROJECT_NAME}::benders_sequential_core
 		)
 

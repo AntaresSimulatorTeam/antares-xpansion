@@ -23,7 +23,6 @@ target_link_libraries (benders_sequential_core
 		helpers
 		output_core
 		solvers
-		glog::glog
 		${PROJECT_NAME}::factories
 
 

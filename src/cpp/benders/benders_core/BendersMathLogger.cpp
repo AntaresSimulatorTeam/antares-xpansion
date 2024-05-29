@@ -50,7 +50,12 @@ HeadersManagerExternalLoop::HeadersManagerExternalLoop(
 std::vector<std::string> HeadersManagerExternalLoop::HeadersList() {
   std::vector<std::string> headers_list;
   headers_list.push_back("Outer loop");
-  headers_list.push_back("Criterion value");
+  headers_list.push_back("Max Criterion");
+  headers_list.push_back("Area Max Criterion");
+  headers_list.push_back("Bilevel best ub");
+  headers_list.push_back("Lambda");
+  headers_list.push_back("Lambda min");
+  headers_list.push_back("Lambda max");
   auto base_headers = HeadersManager::HeadersList();
   std::move(base_headers.begin(), base_headers.end(),
             std::back_inserter(headers_list));
@@ -157,9 +162,26 @@ void PrintExternalLoopData(LogDestination& log_destination,
                            const CurrentIterationData& data,
                            const HEADERSTYPE& type,
                            const BENDERSMETHOD& method) {
-  log_destination << data.benders_num_run;
+  log_destination << data.outer_loop_current_iteration_data.benders_num_run;
+  // TODO
+  // log_destination << std::scientific << std::setprecision(10)
+  //                 << data.outer_loop_criterion;
   log_destination << std::scientific << std::setprecision(10)
-                  << data.external_loop_criterion;
+                  << data.outer_loop_current_iteration_data.max_criterion;
+  log_destination << data.outer_loop_current_iteration_data.max_criterion_area;
+
+  log_destination
+      << std::scientific << std::setprecision(10)
+      << data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub;
+  log_destination
+      << std::scientific << std::setprecision(10)
+      << data.outer_loop_current_iteration_data.external_loop_lambda;
+  log_destination
+      << std::scientific << std::setprecision(10)
+      << data.outer_loop_current_iteration_data.external_loop_lambda_min;
+  log_destination
+      << std::scientific << std::setprecision(10)
+      << data.outer_loop_current_iteration_data.external_loop_lambda_max;
   PrintBendersData(log_destination, data, type, method);
 }
 void MathLoggerBaseExternalLoop::Print(const CurrentIterationData& data) {

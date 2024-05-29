@@ -41,7 +41,6 @@ class SensitivityStudyTest : public ::testing::Test {
     SolverFactory factory;
     auto solver_log_manager = SolverLogManager(std::tmpnam(nullptr));
     math_problem = factory.create_solver(solver_name, solver_log_manager);
-    math_problem->init();
     math_problem->read_prob_mps(last_master_mps_path);
   }
 

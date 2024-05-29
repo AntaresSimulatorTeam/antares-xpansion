@@ -2,7 +2,7 @@
 # CMake configuration
 # ===========================================================================
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
 
 # ===========================================================================
 # Project configuration
@@ -216,7 +216,6 @@ find_package(Cgl REQUIRED)
 find_package(Clp REQUIRED)
 find_package(CoinUtils REQUIRED)
 find_package(Osi REQUIRED)
-find_package(glog REQUIRED)
 
 if(POLICY CMP0074)
 	cmake_policy(SET CMP0074 NEW)
@@ -235,16 +234,15 @@ if (SOLVER)
 endif()
 
 find_package(jsoncpp CONFIG REQUIRED)
-macro(jsoncpplib_name libname)
-	if (MSVC)
-		set(${libname} jsoncpp_lib)
-	else ()
-		set(${libname} jsoncpp_static)
-	endif ()
-endmacro()
-jsoncpplib_name(jsonlib)
+if (MSVC)
+	set(JSONCPP_LIB jsoncpp_lib)
+else ()
+	set(JSONCPP_LIB jsoncpp_static)
+endif ()
+message("Using jsoncpp target ${JSONCPP_LIB}")
+
 install(FILES
-		$<TARGET_FILE:${jsonlib}>
+		$<TARGET_FILE:${JSONCPP_LIB}>
 		DESTINATION bin
 )
 

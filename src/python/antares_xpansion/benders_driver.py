@@ -10,20 +10,30 @@ from pathlib import Path
 
 from antares_xpansion.logger import step_logger
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
+from dataclasses import dataclass
 
+
+@dataclass
+class SolversExe:
+    benders: Path
+    merge_mps: Path
+    outer_loop: Path
 
 class BendersDriver:
 
-    def __init__(self, benders, merge_mps, options_file, mpiexec=None) -> None:
+    def __init__(self, solvers_exe: SolversExe, options_file, mpiexec=None) -> None:
 
         self.oversubscribe = False
         self.allow_run_as_root = False
-        self.benders = benders
-        self.merge_mps = merge_mps
+        self.benders = solvers_exe.benders
+        self.merge_mps = solvers_exe.merge_mps
+        self.outer_loop = solvers_exe.outer_loop
         self.mpiexec = mpiexec
+        self.method = "benders"
+        self.n_mpi = 1
         self.logger = step_logger(__name__, __class__.__name__)
 
-        if (options_file != ""):
+        if options_file != "":
             self.options_file = options_file
         else:
             raise BendersDriver.BendersOptionsFileError(
@@ -91,6 +101,8 @@ class BendersDriver:
     def set_solver(self):
         if self.method == "benders":
             self.solver = self.benders
+        elif self.method == "outer_loop":
+            self.solver = self.outer_loop
         elif self.method == "mergeMPS":
             self.solver = self.merge_mps
         else:

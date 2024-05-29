@@ -2,10 +2,13 @@
 
 #include <execution>
 #include <filesystem>
+#include <regex>
 
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
 #include "ILogger.h"
+#include "OuterLoopBiLevel.h"
+#include "OuterLoopInputDataReader.h"
 #include "OutputWriter.h"
 #include "SimulationOptions.h"
 #include "SubproblemCut.h"
@@ -16,9 +19,9 @@
 #include "common.h"
 
 /**
- * std execution policies don't share a base type so we can't just select them
- *in place in the foreach This function allow the selection of policy via
- *template deduction
+ * std execution policies don't share a base type so we can't just select
+ *them in place in the foreach This function allow the selection of policy
+ *via template deduction
  **/
 template <class lambda>
 auto selectPolicy(lambda f, bool shouldParallelize) {
@@ -30,7 +33,7 @@ auto selectPolicy(lambda f, bool shouldParallelize) {
 class BendersBase {
  public:
   virtual ~BendersBase() = default;
-  BendersBase(BendersBaseOptions options, Logger logger, Writer writer,
+  BendersBase(const BendersBaseOptions &options, Logger logger, Writer writer,
               std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
   virtual void launch() = 0;
   void set_solver_log_file(const std::filesystem::path &log_file);
@@ -79,11 +82,30 @@ class BendersBase {
     _options.MAX_ITERATIONS = max_iteration;
   }
   BendersBaseOptions Options() const { return _options; }
-  void ResetData(double criterion);
   virtual void free() = 0;
-  void InitExternalValues();
-  int GetBendersRunNumber() const { return _data.benders_num_run; }
+  void InitExternalValues(bool is_bilevel_check_all, double lambda);
+  int GetBendersRunNumber() const { return _data.outer_loop_current_iteration_data.benders_num_run; }
   CurrentIterationData GetCurrentIterationData() const;
+  OuterLoopCurrentIterationData GetOuterLoopData() const;
+  std::vector<double> GetOuterLoopCriterionAtBestBenders() const;
+  virtual void init_data();
+  void init_data(double external_loop_lambda, double external_loop_lambda_min, double external_loop_lambda_max);
+
+  double ExternalLoopLambdaMax() const;
+  double ExternalLoopLambdaMin() const;
+  bool ExternalLoopFoundFeasible() const;
+  virtual void ExternalLoopCheckFeasibility() = 0;
+  virtual void RunExternalLoopBilevelChecks() = 0;
+  double OuterLoopStoppingThreshold() const;
+  Output::SolutionData GetOuterLoopSolution() const;
+  void SaveOuterLoopSolutionInOutputFile() const;
+  void SaveCurrentOuterLoopIterationInOutputFile() const;
+
+ protected:
+  bool exception_raised_ = false;
+
+ public:
+  bool isExceptionRaised() const;
 
  protected:
   CurrentIterationData _data;
@@ -92,14 +114,20 @@ class BendersBase {
   // BendersCuts current_iteration_cuts_;
   VariableMap master_variable_map_;
   CouplingMap coupling_map_;
-  // for warmstart initialize all data, master, subproblem etc...
+  BendersRelevantIterationsData relevantIterationData_ = {WorkerMasterData(),
+                                                          WorkerMasterData()};
   bool init_data_ = true;
   bool init_problems_ = true;
   bool free_problems_ = true;
 
- protected:
+  std::vector<std::vector<double>> outer_loop_criterion_;
+  std::vector<std::string> subproblems_vars_names_ = {};
+  std::vector<std::vector<int>> var_indices_;
+  OuterLoopBiLevel outer_loop_biLevel_;
+  bool is_bilevel_check_all_ = false;
+  Outerloop::OuterLoopInputData outer_loop_input_data_;
+
   virtual void Run() = 0;
-  virtual void init_data();
   void update_best_ub();
   bool ShouldBendersStop();
   bool is_initial_relaxation_requested() const;
@@ -122,14 +150,28 @@ class BendersBase {
                                         std::string const &name) const;
   [[nodiscard]] std::filesystem::path get_master_path() const;
   [[nodiscard]] std::filesystem::path get_structure_path() const;
+  [[nodiscard]] std::filesystem::path OuterloopOptionsFile() const;
   [[nodiscard]] LogData bendersDataToLogData(
       const CurrentIterationData &data) const;
-  virtual void reset_master(WorkerMaster *worker_master);
+  template <typename T, typename... Args>
+  void reset_master(Args &&...args) {
+    _master = std::make_shared<T>(std::forward<Args>(args)...);
+    master_is_empty_ = false;
+  }
   void free_master();
   void free_subproblems();
   void AddSubproblem(const std::pair<std::string, VariableMap> &kvp);
-  [[nodiscard]] WorkerMasterPtr get_master() const;
+  [[nodiscard]] virtual WorkerMasterPtr get_master() const;
   void MatchProblemToId();
+  /**
+   * for the nth variable name, Subproblems shares the same prefix , only the
+   suffix is different
+   * ex variable at index = 0 is named in:
+
+   * subproblems-1-1  --> NTCDirect::link<area1$$area2>::hour<0>
+   * subproblems-3-5  --> NTCDirect::link<area1$$area2>::hour<672>
+   */
+  void SetSubproblemsVariablesIndex();
   void AddSubproblemName(const std::string &name);
   [[nodiscard]] std::string get_master_name() const;
   [[nodiscard]] std::string get_solver_name() const;
@@ -192,6 +234,14 @@ class BendersBase {
 
   SolverLogManager solver_log_manager_;
 
+  // outer loop criterion per pattern
+  std::vector<double> ComputeOuterLoopCriterion(
+      const std::string &subproblem_name,
+      const PlainData::SubProblemData &sub_problem_data);
+
+  void UpdateOuterLoopMaxCriterionArea();
+  void UpdateOuterLoopSolution();
+
  private:
   void print_master_and_cut(std::ostream &file, int ite,
                             WorkerMasterData &trace, Point const &xopt);
@@ -200,6 +250,7 @@ class BendersBase {
   void check_status(const SubProblemDataMap &subproblem_data_map) const;
   [[nodiscard]] LogData build_log_data_from_data() const;
   [[nodiscard]] Output::SolutionData solution() const;
+  [[nodiscard]] Output::SolutionData BendersSolution() const;
   [[nodiscard]] std::string status_from_criterion() const;
   void compute_cut_aggregate(const SubProblemDataMap &subproblem_data_map);
   void compute_cut(const SubProblemDataMap &subproblem_data_map);
@@ -215,8 +266,6 @@ class BendersBase {
   BendersBaseOptions _options;
   unsigned int _totalNbProblems = 0;
   std::filesystem::path solver_log_file_ = "";
-  BendersRelevantIterationsData relevantIterationData_ = {WorkerMasterData(),
-                                                          WorkerMasterData()};
   WorkerMasterPtr _master;
   VariableMap _problem_to_id;
   SubproblemsMapPtr subproblem_map;
@@ -227,6 +276,7 @@ class BendersBase {
   int iterations_before_resume = 0;
   int cumulative_number_of_subproblem_resolved_before_resume = 0;
   Timer benders_timer;
+  Output::SolutionData outer_loop_solution_data_;
 
  public:
   Logger _logger;

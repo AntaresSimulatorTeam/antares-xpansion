@@ -30,7 +30,7 @@ jobs:
 
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v32
+        uses: tj-actions/changed-files@v44
         with:
           files: |
             docker/centos7-system-deps
@@ -54,7 +54,7 @@ jobs:
       pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
@@ -71,7 +71,7 @@ jobs:
 
       - name: user guide upload
         id: userguide_upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v3 #aligned with download in centOS job
         with:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
@@ -83,7 +83,7 @@ jobs:
       antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
       antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Read antares-solver version
         id: antares-version
         uses: ./.github/actions/read-json-value
@@ -127,10 +127,10 @@ jobs:
       singlefile_name: ${{ steps.zip_name.outputs.singlefile_name }}
     steps:
       - id: branch-name
-        uses: tj-actions/branch-names@v6
+        uses: tj-actions/branch-names@v8
 
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v3 #keep v3
         with:
           submodules: true
 
@@ -222,7 +222,6 @@ jobs:
                  -DBUILD_UI=ON \
                  -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
                  -DXPRESS=${XPRESS_VALUE} \
-                 -DXPRESS_ROOT=${XPRESSDIR} \
                  -DALLOW_RUN_AS_ROOT=ON \
                  -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 

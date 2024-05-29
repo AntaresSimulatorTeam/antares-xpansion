@@ -5,7 +5,7 @@
 #include <utility>
 
 #include "Timer.h"
-#include "glog/logging.h"
+
 #include "solver_utils.h"
 
 /*!
@@ -26,10 +26,10 @@ BendersSequential::BendersSequential(
 void BendersSequential::InitializeProblems() {
   MatchProblemToId();
 
-  reset_master(new WorkerMaster(master_variable_map_, get_master_path(),
+  reset_master<WorkerMaster>(master_variable_map_, get_master_path(),
                                 get_solver_name(), get_log_level(),
                                 _data.nsubproblem, solver_log_manager_,
-                                IsResumeMode(), _logger));
+                                IsResumeMode(), _logger);
   for (const auto &problem : coupling_map_) {
     const auto subProblemFilePath = GetSubproblemPath(problem.first);
 
@@ -129,18 +129,16 @@ void BendersSequential::Run() {
 }
 
 void BendersSequential::launch() {
-  LOG(INFO) << "Building input" << std::endl;
-
-  LOG(INFO) << "Constructing workers..." << std::endl;
+  _logger->display_message("Building input");
+  _logger->display_message("Constructing workers...");
 
   InitializeProblems();
-  LOG(INFO) << "Running solver..." << std::endl;
+  _logger->display_message("Running solver...");
   try {
     Run();
-    LOG(INFO) << BendersName() + " solver terminated." << std::endl;
+    _logger->display_message(BendersName() + " solver terminated.");
   } catch (std::exception const &ex) {
     std::string error = "Exception raised : " + std::string(ex.what());
-    LOG(WARNING) << error << std::endl;
     _logger->display_message(error);
   }
 

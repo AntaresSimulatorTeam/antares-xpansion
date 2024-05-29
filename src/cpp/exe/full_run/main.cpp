@@ -31,10 +31,19 @@ int main(int argc, char** argv) {
   int argc_ = 2;
   const auto options_file = options_parser.BendersOptionsFile();
 
-  auto benders_factory =
-      BendersMainFactory(argc_, argv, options_file, env, world);
-  benders_factory.Run();
-
+  auto solver = options_parser.Solver();
+  if (solver == "benders") {
+    auto benders_factory = BendersMainFactory(argc_, argv, options_file, env,
+                                              world, SOLVER::BENDERS);
+    benders_factory.Run();
+  }
+  if (solver == "outer_loop") {
+    auto benders_factory = BendersMainFactory(argc_, argv, options_file, env,
+                                              world, SOLVER::OUTER_LOOP);
+    benders_factory.Run();
+  } else {
+    // TODO merge mps?
+  }
   if (world.rank() == 0) {
     auto log_file_path = xpansion_output_dir / "lp" / "StudyUpdateLog.txt";
     auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout,

@@ -43,7 +43,7 @@ jobs:
 
       - name: user guide upload
         id: userguide_upload
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
@@ -172,7 +172,7 @@ jobs:
           os: ${{matrix.os}}
 
       - name: Download userguide
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: user-guide
           path: docs/
@@ -188,7 +188,7 @@ jobs:
         #Inverted ternary : @({'condition is false'},{'condition is true'})[$condition] => ({true}, {false})[!$condition]
         run: |
           $pwd=Get-Location
-          cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" -DXPRESS=${{ env.XPRESS_VALUE }} -DXPRESS_ROOT="${{ env.XPRESSDIR }}"
+          cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" -DXPRESS=${{ env.XPRESS_VALUE }}
 
       - name: Build
         run: |
@@ -225,7 +225,7 @@ jobs:
           echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
 
       - name: Upload installer
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{env.ZIP_NAME}}
           path: _build/${{env.ZIP_NAME}}
@@ -237,7 +237,7 @@ jobs:
           antares-xpansion-version: ${{env.VERSION_WITH_XPRESS}}
 
       - name: Upload single file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: ${{ steps.create-single-file.outputs.archive-name }}
           path: ${{ steps.create-single-file.outputs.archive-path }}
@@ -262,13 +262,13 @@ jobs:
         uses: bruceadams/get-release@main
 
       - name: Download Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ${{env.ZIP_NAME}}
           path: .
 
       - name: Download Artifact
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: ${{env.SINGLEFILE_NAME}}
           path: .

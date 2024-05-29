@@ -36,7 +36,6 @@ target_link_libraries (benders_by_batch_core
 		helpers
 		output_core
 		solvers
-		glog::glog
 )
 
 add_library (${PROJECT_NAME}::benders_by_batch_core ALIAS benders_by_batch_core)

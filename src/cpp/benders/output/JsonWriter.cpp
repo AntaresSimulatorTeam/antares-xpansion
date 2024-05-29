@@ -91,8 +91,9 @@ void JsonWriter::write_iteration(const Iteration &iter,
   }
   _output[ITERATIONS_C][strIterCnt_l][CANDIDATES_C] = vectCandidates_l;
 }
+
 void JsonWriter::write_solution(const SolutionData &solution) {
-  // solution
+    // solution
   _output[SOLUTION_C][ITERATION_C] = solution.best_it;
   _output[SOLUTION_C][INVESTMENT_COST_C] = solution.solution.investment_cost;
   _output[SOLUTION_C][OPERATIONAL_COST_C] = solution.solution.operational_cost;

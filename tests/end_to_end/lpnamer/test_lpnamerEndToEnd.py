@@ -3,6 +3,7 @@ import os
 import shutil
 import subprocess
 import zipfile
+from enum import Enum
 from pathlib import Path
 
 import pytest
@@ -30,62 +31,97 @@ TEST_LP_RELAXED_01 = DATA_TEST_RELAXED / \
 TEST_LP_RELAXED_02 = DATA_TEST_RELAXED / "SmallTestSixCandidatesWithAlreadyInstalledCapacity-relaxed" / "output" \
     / "economy"
 test_data = [
-    (TEST_LP_INTEGER_01, "integer", True),
-    (TEST_LP_INTEGER_01, "integer", False),
-    (TEST_LP_INTEGER_02, "integer", True),
-    (TEST_LP_INTEGER_02, "integer", False),
-    (TEST_LP_RELAXED_01, "relaxed", True),
-    (TEST_LP_RELAXED_01, "relaxed", False),
-    (TEST_LP_RELAXED_02, "relaxed", True),
-    (TEST_LP_RELAXED_02, "relaxed", False),
+    (TEST_LP_INTEGER_01, "integer"),
+    (TEST_LP_INTEGER_02, "integer"),
+    (TEST_LP_RELAXED_01, "relaxed"),
+    (TEST_LP_RELAXED_02, "relaxed")
 ]
+
+class OptionType(Enum):
+    ARCHIVE = 1
+    OUTPUT = 2
+    STUDY = 3
+
+
+options_mode = [OptionType.ARCHIVE, OptionType.OUTPUT, OptionType.STUDY]
 
 test_data_multiple_candidates = [
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB, "integer", True),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB, "integer", False),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES, "integer", True),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES, "integer", False),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_HURDLES, "integer", True),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_HURDLES, "integer", False),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_NULL_PROFILE, "integer", True),
-    (TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_NULL_PROFILE, "integer", False),
+    TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB,
+    TEST_LP_INTEGER_MULTIPLE_CANDIDATES,
+    TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_HURDLES,
+    TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_NULL_PROFILE,
 ]
 
+test_data_study_option = [
+    DATA_TEST / "tests_lpnamer" / "SmallTestFiveCandidates"
+]
 
 @pytest.fixture
-def setup_and_teardown_lp_directory(request):
-    test_dir = request.getfixturevalue('test_dir')
-    lp_dir = test_dir.parent / (test_dir.stem + "-Xpansion") / "lp"
-    if Path(lp_dir).is_dir():
-        shutil.rmtree(lp_dir)
-    Path(lp_dir).mkdir(parents=True, exist_ok=True)
+def setup_lp_directory(request, tmp_path):
+    tmp_path = request.getfixturevalue('tmp_path')
+    source_dir = request.getfixturevalue('test_dir')
+    study_path = source_dir.parent.parent
+    shutil.copytree(study_path, tmp_path / study_path.stem)
+    index = source_dir.parts.index(study_path.stem)
+    test_dir = tmp_path.joinpath(*source_dir.parts[index:])
+    output_dir = test_dir.parent / test_dir.stem / "lp"
+    if Path(output_dir).is_dir():
+        shutil.rmtree(output_dir)
+    Path(output_dir).mkdir(parents=True, exist_ok=True)
+
+    archive_output_dir = test_dir.parent / (test_dir.stem + "-Xpansion") / "lp"
+    if Path(archive_output_dir).is_dir():
+        shutil.rmtree(archive_output_dir.parent)
+    Path(archive_output_dir).mkdir(parents=True, exist_ok=True)
 
     list_files = list(Path(test_dir).glob("*.mps"))
     list_files.extend(list(Path(test_dir).glob("variables*.txt")))
     list_files.extend(list(Path(test_dir).glob("area*.txt")))
     list_files.extend(list(Path(test_dir).glob("interco*.txt")))
+    if Path(test_dir.parent / MPS_ZIP).exists():
+        os.remove(test_dir.parent / MPS_ZIP)
     with zipfile.ZipFile(test_dir.parent / MPS_ZIP, "w") as write_mps_zip:
         for file in list_files:
             write_mps_zip.write(
                 file, file.name, compress_type=zipfile.ZIP_DEFLATED)
-    yield
+    yield test_dir
 
 
-@pytest.mark.parametrize("test_dir,master_mode, use_archive", test_data)
-def test_lp_directory_files(install_dir, test_dir, master_mode, use_archive, setup_and_teardown_lp_directory):
+@pytest.fixture
+def setup_study(request, tmp_path):
+    tmp_path = request.getfixturevalue('tmp_path')
+    source_dir = request.getfixturevalue('study_dir')
+    shutil.copytree(source_dir, tmp_path / source_dir.stem)
+    index = source_dir.parts.index(source_dir.stem)
+    test_dir = tmp_path.joinpath(*source_dir.parts[index:])
+    yield test_dir
+
+@pytest.mark.parametrize("test_dir, master_mode", test_data)
+@pytest.mark.parametrize("option_mode", [OptionType.ARCHIVE, OptionType.OUTPUT])
+def test_lp_directory_files(install_dir, test_dir, master_mode, option_mode, setup_lp_directory, tmp_path):
     # given
-    if use_archive:
-        launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_dir)
-    else:
-        launch_and_compare_lp_with_reference_output(install_dir, master_mode, test_dir)
+    if option_mode == OptionType.ARCHIVE:
+        launch_and_compare_lp_with_reference_archive(install_dir, master_mode, setup_lp_directory)
+    elif option_mode == OptionType.OUTPUT:
+        launch_and_compare_lp_with_reference_output(install_dir, master_mode, setup_lp_directory)
 
 
-@pytest.mark.parametrize("test_dir,master_mode, use_archive", test_data_multiple_candidates)
-def test_lp_multiple_candidates(install_dir, test_dir, master_mode, use_archive, setup_and_teardown_lp_directory):
-    if use_archive:
-        launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_dir)
-    else:
-        launch_and_compare_lp_with_reference_output(install_dir, master_mode, test_dir)
+@pytest.mark.parametrize("test_dir", test_data_multiple_candidates)
+@pytest.mark.parametrize("master_mode", ["integer"])
+@pytest.mark.parametrize("option_mode", [OptionType.ARCHIVE, OptionType.OUTPUT])
+def test_lp_multiple_candidates(install_dir, test_dir, master_mode, option_mode, setup_lp_directory):
+    if option_mode == OptionType.ARCHIVE:
+        launch_and_compare_lp_with_reference_archive(install_dir, master_mode, setup_lp_directory)
+    elif option_mode == OptionType.OUTPUT:
+        launch_and_compare_lp_with_reference_output(install_dir, master_mode, setup_lp_directory)
+
+
+@pytest.mark.parametrize("study_dir", test_data_study_option)
+@pytest.mark.parametrize("master_mode", ["integer"])
+@pytest.mark.parametrize("option_mode", [OptionType.STUDY])
+@pytest.mark.skip(reason="study option not implemented yet")
+def test_lp_with_study_option(install_dir, study_dir, master_mode, option_mode, setup_study, tmp_path):
+    launch_and_compare_lp_with_reference_study(install_dir, master_mode, setup_study)
 
 
 def launch_and_compare_lp_with_reference_output(install_dir, master_mode, test_dir):
@@ -111,11 +147,39 @@ def launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_
     lp_dir = test_dir.parent / (test_dir.stem + "-Xpansion") / "lp"
     lp_namer_exe = Path(install_dir) / "lp_namer"
     zip_path = (test_dir.parent / MPS_ZIP).resolve()
-    os.chdir(test_dir.parent)
+    os.chdir(test_dir.parent.parent)
     launch_command = [str(lp_namer_exe), "-a", str(zip_path),
                       "-e", "contraintes.txt", "-f", master_mode, "--unnamed-problems"]
     # when
     returned_l = subprocess.run(launch_command, shell=False)
+    # then
+    then(lp_dir, old_path, reference_lp_dir, returned_l)
+
+
+def get_lp_dir(study_dir):
+    directory = os.path.abspath(study_dir / "output")
+    directories = [d for d in os.listdir(directory) if os.path.isdir(os.path.join(directory, d))]
+
+    # Sort the directories based on creation date
+    directories.sort(key=lambda x: os.path.getctime(os.path.join(directory, x)))
+    return Path(directory) / directories[-1] / "lp"
+
+
+def get_constraint_path(study):
+    return study / "user/expansion/constraints/contraintes.txt"
+
+
+def launch_and_compare_lp_with_reference_study(install_dir, master_mode, study_dir):
+    old_path = os.getcwd()
+    reference_lp_dir = study_dir / "output" / "simulation" / "reference_lp"
+    lp_namer_exe = Path(install_dir) / "lp_namer"
+    os.chdir(study_dir)
+    constraint_path = get_constraint_path(study_dir)
+    launch_command = [str(lp_namer_exe), "--study", str(study_dir),
+                      "-e", constraint_path, "-f", master_mode, "--unnamed-problems"]
+    # when
+    returned_l = subprocess.run(launch_command, shell=False)
+    lp_dir = get_lp_dir(study_dir)
     # then
     then(lp_dir, old_path, reference_lp_dir, returned_l)
 
