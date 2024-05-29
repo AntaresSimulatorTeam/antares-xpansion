@@ -30,7 +30,7 @@ jobs:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
       XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
-      ORTOOLS_DIR: ${{ github.workspace }}/or-tools
+      ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
 
     steps:
       - uses: actions/checkout@v4
@@ -123,9 +123,6 @@ jobs:
           ortools-dir: ${{env.ORTOOLS_DIR}}
 
       - run: |
-          ls ${{env.ORTOOLS_DIR}}
-
-      - run: |
           mkdir -p ${{ github.workspace }}/vcpkg_cache
 
       - name: Unshallow vcpkg for action
@@ -135,6 +132,8 @@ jobs:
 
       - name: vcpkg
         uses: lukka/run-vcpkg@v11
+        with:
+          doNotCache: false
 
       - name: Configure
         shell: bash
@@ -153,8 +152,7 @@ jobs:
                 -DCMAKE_PREFIX_PATH=${{env.ORTOOLS_DIR}}/install \
                 -DBUILD_UI=ON  \
                 -DXPRESS=${{ env.XPRESS_VALUE }} \
-                -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake \
-                -DCMAKE_FIND_DEBUG_MODE=TRUE
+                -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
         run: |
