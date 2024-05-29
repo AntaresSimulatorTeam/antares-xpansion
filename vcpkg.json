@@ -1,6 +1,6 @@
 {
   "name": "antares-xpansion",
-  "version-string": "1.3.0-rc1",
+  "version-string": "1.3.0-rc2",
   "builtin-baseline": "9484a57dd560b89f0a583be08af6753611c57fd5",
   "dependencies": [
     "jsoncpp",
