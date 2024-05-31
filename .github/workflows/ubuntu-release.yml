@@ -64,6 +64,7 @@ jobs:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
       XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
+      ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
 
     steps:
       - uses: actions/checkout@v4
@@ -143,6 +144,8 @@ jobs:
           antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
           os-full-name: Ubuntu-20.04
+          ortools-url: ${{env.ORTOOLS_URL}}
+          ortools-dir: ${{env.ORTOOLS_DIR}}
 
       - name: Download userguide
         uses: actions/download-artifact@v4
