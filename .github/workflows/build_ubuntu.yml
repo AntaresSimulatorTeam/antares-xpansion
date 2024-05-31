@@ -128,7 +128,7 @@ jobs:
       - name: Unshallow vcpkg for action
         run: |
           pushd vcpkg
-          #git fetch --unshallow
+          git fetch --unshallow
 
       - name: vcpkg
         uses: lukka/run-vcpkg@v11
