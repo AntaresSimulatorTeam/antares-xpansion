@@ -61,6 +61,10 @@ std::filesystem::path ProblemGeneration::performAntaresSimulation() {
   //Add parallel
 
   //Handle errors
+  if (!results.error) {
+    std::cerr << "Error: " << results.error->reason << std::endl;
+    exit(1);
+  }
 
   lps_ = std::move(results.antares_problems);
   return {results.simulationPath};
