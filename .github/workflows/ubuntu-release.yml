@@ -137,6 +137,10 @@ jobs:
           path: 'antares-version.json'
           key: 'antares_deps_version'
 
+      - name: Config OR-Tools URL
+        run: |
+          echo "ORTOOLS_URL=https://github.com/rte-france/or-tools/releases/download/v9.8-rte1.0/ortools_cxx_ubuntu-20.04_static_sirius.zip" >> $GITHUB_ENV
+
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
         with:
