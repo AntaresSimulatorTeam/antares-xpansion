@@ -82,10 +82,7 @@ jobs:
           sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30
           sudo update-alternatives --set c++ /usr/bin/g++
 
-      - uses: lukka/get-cmake@latest
-        with:
-          useLocalCache: false
-          useCloudCache: true
+      - run: pip install cmake==3.28.1
 
       - name: Read antares-solver version
         id: antares-version
@@ -128,12 +125,7 @@ jobs:
       - name: Unshallow vcpkg for action
         run: |
           pushd vcpkg
-          git fetch --unshallow
-
-      - name: vcpkg
-        uses: lukka/run-vcpkg@v11
-        with:
-          doNotCache: false
+          ./bootstrap-vcpkg.sh
 
       - name: Configure
         shell: bash
