@@ -165,8 +165,6 @@ jobs:
           pushd vcpkg
           git fetch --unshallow
           ./bootstrap-vcpkg.sh
-          popd
-          vcpkg/vcpkg install
 
       - name: Configure
         shell: bash
