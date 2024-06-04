@@ -129,6 +129,8 @@ jobs:
         run: |
           pushd vcpkg
           ./bootstrap-vcpkg.sh
+          git fetch --unshallow
+          popd
 
       - name: Configure
         shell: bash
