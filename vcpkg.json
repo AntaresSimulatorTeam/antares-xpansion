@@ -14,7 +14,7 @@
       "version>=": "1.81.0"
     },
     {
-      "name":"boost-test",
+      "name":"boost-algorithm",
       "version>=": "1.81.0"
     },
     "yaml-cpp",
