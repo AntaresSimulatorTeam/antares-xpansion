@@ -5,14 +5,22 @@
   "dependencies": [
     "jsoncpp",
     "gtest",
-    "boost-mpi",
-    "boost-program-options",
-    "boost-test",
-    "zlib",
-    "yaml-cpp"
-  ],
-  "overrides": [
-    { "name": "boost-mpi", "version": "1.81.0" },
-    { "name": "boost-program-options", "version": "1.81.0" }
+    {
+      "name":"boost-mpi",
+      "version>=": "1.81.0"
+    },
+    {
+      "name":"boost-program-options",
+      "version>=": "1.81.0"
+    },
+    "yaml-cpp",
+    {
+      "name": "minizip-ng",
+      "default-features": false,
+      "version>=": "4.0.0",
+      "features": [
+        "zlib"
+      ]
+    }
   ]
 }
