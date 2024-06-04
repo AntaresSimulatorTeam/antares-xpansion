@@ -180,7 +180,8 @@ jobs:
                 -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
                 -DBUILD_TESTING=ON \
                 -DCMAKE_BUILD_TYPE=Release \
-                -DCMAKE_INSTALL_PREFIX="_install;antares-9.1.0-Ubuntu-20.04;${{env.ORTOOLS_DIR}}/install" \
+                -DCMAKE_INSTALL_PREFIX="_install;
+                -DCMAKE_PREFIX_PATH="${{env.ORTOOLS_DIR}}/install" \
                 -DBUILD_UI=ON  \
                 -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
                 -DXPRESS=${{ env.XPRESS_VALUE }} \
