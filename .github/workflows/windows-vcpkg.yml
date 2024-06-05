@@ -94,6 +94,7 @@ jobs:
           bruceadams/get-release@main
 
       - name: Config OR-Tools URL
+        shell: bash
         run: |
           echo "ORTOOLS_URL=https://github.com/rte-france/or-tools/releases/download/v9.8-rte1.0/ortools_cxx_ubuntu-20.04_static_sirius.zip" >> $GITHUB_ENV
 
