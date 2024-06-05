@@ -2,7 +2,7 @@
 # CMake configuration
 # ===========================================================================
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.0)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
 
 # ===========================================================================
 # Project configuration

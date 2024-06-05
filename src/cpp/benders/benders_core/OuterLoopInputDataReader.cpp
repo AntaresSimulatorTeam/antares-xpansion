@@ -17,7 +17,7 @@ OuterLoopPattern::OuterLoopPattern(std::string prefix,
  * just cat ;)
  */
 std::regex OuterLoopPattern::MakeRegex() const {
-  auto pattern = "(^" + prefix_ + ").*" + body_;
+  auto pattern = "(^" + prefix_ + "area<" + body_ + ">" + ")";
   return std::regex(pattern);
 }
 const std::string &OuterLoopPattern::GetPrefix() const { return prefix_; }

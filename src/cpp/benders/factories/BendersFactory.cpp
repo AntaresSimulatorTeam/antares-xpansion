@@ -49,10 +49,7 @@ pBendersBase BendersMainFactory::PrepareForExecution(
 
 
   BendersBaseOptions benders_options(options.get_benders_options());
-
-  auto path_to_log =
-      std::filesystem::path(options.OUTPUTROOT) /
-      ("bendersLog-rank" + std::to_string(pworld_->rank()) + ".txt.");
+  benders_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = external_loop;
 
   auto log_reports_name =
       std::filesystem::path(options.OUTPUTROOT) / "reportbenders.txt";
