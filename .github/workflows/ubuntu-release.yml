@@ -57,7 +57,7 @@ jobs:
       matrix:
         os: [ ubuntu-20.04 ]
         xprs: [
-          XPRESS-ON,
+          { value: XPRESS-ON, ref: 9.2.5 },
           #XPRESS-OFF
         ]
     env:
@@ -77,7 +77,7 @@ jobs:
         with:
           repository: rte-france/xpress-mp
           path: ${{ env.XPRESSDIR }}
-          ref: 8.13a
+          ref: ${{ matrix.xprs.ref}}
           token: ${{ secrets.AS_TOKEN }} #reniew token periodically
 
       - name: ccache
@@ -169,21 +169,19 @@ jobs:
       - name: Configure
         shell: bash
         run: |
-          if [ ${{ matrix.xprs }} == "XPRESS-ON" ]; then
-            XPRESS_VALUE="ON"
-          else
-            XPRESS_VALUE="OFF"
-          fi
+          [[ ${{ matrix.xprs.value }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
           cmake -B _build -S . \
                 -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+                -DCMAKE_C_COMPILER=/usr/bin/gcc-10 \
                 -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+                -DCMAKE_CXX_COMPILER=/usr/bin/g++-10 \
                 -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
                 -DBUILD_TESTING=ON \
                 -DCMAKE_BUILD_TYPE=Release \
                 -DCMAKE_INSTALL_PREFIX="_install"
                 -DCMAKE_PREFIX_PATH="${{env.ORTOOLS_DIR}}/install" \
                 -DBUILD_UI=ON  \
-                -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}"
+                -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
                 -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake \
                 -DXPRESS=${{ env.XPRESS_VALUE }}
                 
