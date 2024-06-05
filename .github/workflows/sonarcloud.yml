@@ -17,6 +17,8 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-20.04 ]
+    env:
+      ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
 
     steps:
 
@@ -86,6 +88,10 @@ jobs:
           path: 'antares-version.json'
           key: 'antares_deps_version'
 
+      - name: Config OR-Tools URL
+        run: |
+          echo "ORTOOLS_URL=https://github.com/rte-france/or-tools/releases/download/v9.8-rte1.0/ortools_cxx_ubuntu-20.04_static_sirius.zip" >> $GITHUB_ENV
+
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
         with:
@@ -93,6 +99,8 @@ jobs:
           antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
           os-full-name: Ubuntu-20.04
+          ortools-url: ${{env.ORTOOLS_URL}}
+          ortools-dir: ${{env.ORTOOLS_DIR}}
 
       - name: Compile Boost
         uses: ./.github/workflows/compile-boost
