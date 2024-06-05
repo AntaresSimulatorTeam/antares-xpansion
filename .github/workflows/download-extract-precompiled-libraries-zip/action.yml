@@ -36,8 +36,8 @@ runs:
         rm -rf rte-antares-deps-${{inputs.os}}-${{inputs.buildtype}}.zip
         
         wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{inputs.antares-version}}/rte-antares-9.1.0-installer-64bits.zip
-        unzip rte-antares-${{inputs.antares-version}}-installer-64bits.zip
-        rm -rf rte-antares-${{inputs.antares-version}}-installer-64bits.zip
+        unzip rte-antares-9.1.0-installer-64bits.zip
+        rm -rf rte-antares-9.1.0-installer-64bits.zip
 
     - name: Download & extract OR-Tools
       shell: bash
