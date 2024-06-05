@@ -163,7 +163,7 @@ jobs:
       - name: vcpkg install
         run: |
           pushd vcpkg
-          git fetch --unshallow
+          #git fetch --unshallow
           ./bootstrap-vcpkg.sh
 
       - name: Configure
@@ -183,9 +183,10 @@ jobs:
                 -DCMAKE_INSTALL_PREFIX="_install"
                 -DCMAKE_PREFIX_PATH="${{env.ORTOOLS_DIR}}/install" \
                 -DBUILD_UI=ON  \
-                -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
-                -DXPRESS=${{ env.XPRESS_VALUE }} \
-                -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
+                -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}"
+                -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake \
+                -DXPRESS=${{ env.XPRESS_VALUE }}
+                
 
       - name: Build
         run: |
