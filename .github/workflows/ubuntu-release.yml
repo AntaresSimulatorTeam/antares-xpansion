@@ -178,7 +178,7 @@ jobs:
                 -DCMAKE_INSTALL_PREFIX="_install" \
                 -DCMAKE_PREFIX_PATH="${{env.ORTOOLS_DIR}}/install" \
                 -DBUILD_UI=ON  \
-                -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}"
+                -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
                 -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
                 
 
