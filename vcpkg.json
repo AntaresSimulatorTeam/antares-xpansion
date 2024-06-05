@@ -1,7 +1,7 @@
 {
   "name": "antares-xpansion",
   "version-string": "1.2.2",
-  "builtin-baseline": "9484a57dd560b89f0a583be08af6753611c57fd5",
+  "builtin-baseline": "01f602195983451bc83e72f4214af2cbc495aa94",
   "dependencies": [
     "jsoncpp",
     "gtest",
