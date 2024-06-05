@@ -142,10 +142,12 @@ jobs:
           [[ ${{ matrix.xprs.value }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF"
           echo "XPRESS_VALUE=$XPRESS_VALUE" >> $GITHUB_ENV
 
+      - run: cmake --version
       - name: Configure
         run: |
           $pwd=Get-Location
           cmake -B _build -S .  -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits"  -DBUILD_TESTING=ON  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"  -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install  -DBUILD_UI=ON -DCMAKE_PREFIX_PATH=${{env.ORTOOLS_DIR}}/install
+
       - name: Build
         run: |
           cmake --build _build --config Release -j4
