@@ -32,11 +32,16 @@ jobs:
       XPRS_LIB_Path: ${{ github.workspace }}\xpress\lib
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+      ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
 
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: true
+
+      - name: Config OR-Tools URL
+        run: |
+          echo "ORTOOLS_URL=https://github.com/rte-france/or-tools/releases/download/v9.8-rte1.0/ortools_cxx_ubuntu-20.04_static_sirius.zip" >> $GITHUB_ENV
 
       - name: Checkout xpressmp linux
         if: matrix.xprs.value == 'XPRESS-ON'
@@ -108,10 +113,6 @@ jobs:
           cd vcpkg
           git fetch --unshallow
           ./bootstrap-vcpkg.sh
-          vcpkg install --triplet ${{matrix.triplet}}
-          rm -rf buildtrees
-          rm -rf packages
-          rm -rf downloads
         shell: bash
 
       - name: Compile tbb
@@ -125,6 +126,8 @@ jobs:
           antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
           antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
+          ortools-url: ${{env.ORTOOLS_URL}}
+          ortools-dir: ${{env.ORTOOLS_DIR}}
 
       - name: Expand xpress value in env
         #I can't seem to expand the variable in the cmake command line so export it in env
@@ -136,7 +139,7 @@ jobs:
       - name: Configure
         run: |
           $pwd=Get-Location
-          cmake -B _build -S .  -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits"  -DBUILD_TESTING=ON  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"  -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install  -DBUILD_UI=ON  -DXPRESS=${{ env.XPRESS_VALUE }}
+          cmake -B _build -S .  -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits"  -DBUILD_TESTING=ON  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"  -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install  -DBUILD_UI=ON -DCMAKE_PREFIX_PATH=${{env.ORTOOLS_DIR}}/install
       - name: Build
         run: |
           cmake --build _build --config Release -j4

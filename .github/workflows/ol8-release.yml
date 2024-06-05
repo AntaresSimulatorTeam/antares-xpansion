@@ -93,6 +93,7 @@ jobs:
       XPRESSDIR_CONTAINER: ${GITHUB_WORKSPACE}/xpress
       XPRESS_CONTAINER: ${GITHUB_WORKSPACE}/xpress/bin
       XPRS_LIB_Path_CONTAINER: ${GITHUB_WORKSPACE}/xpress/lib
+      ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
     outputs:
       zip_name: ${{ steps.zip_name.outputs.zip_name }}
       singlefile_name: ${{ steps.zip_name.outputs.singlefile_name }}
@@ -115,6 +116,10 @@ jobs:
       - run: |
           dnf module install -y nodejs:20/common
 
+      - name: Config OR-Tools URL
+        run: |
+          echo "ORTOOLS_URL=https://github.com/rte-france/or-tools/releases/download/v9.8-rte1.0/ortools_cxx_ubuntu-20.04_static_sirius.zip" >> $GITHUB_ENV
+
       - uses: lukka/get-cmake@latest
         with:
           useLocalCache: false
@@ -128,8 +133,6 @@ jobs:
           pushd vcpkg
           git fetch --unshallow
           ./bootstrap-vcpkg.sh
-          popd
-          vcpkg/vcpkg install
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
@@ -138,7 +141,8 @@ jobs:
           antares-version: ${{needs.versions.outputs.antares-version}}
           os: oracle8
           os-full-name: OracleServer-8.9
-          #variant: -ortools-xpress
+          ortools-url: ${{env.ORTOOLS_URL}}
+          ortools-dir: ${{env.ORTOOLS_DIR}}
 
       - name: Compile tbb
         uses: ./.github/workflows/compile-tbb
@@ -184,7 +188,7 @@ jobs:
                  -DCMAKE_INSTALL_PREFIX=_install \
                  -DBUILD_UI=ON \
                  -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" \
-                 -DXPRESS=${XPRESS_VALUE} \
+                 -DCMAKE_PREFIX_PATH=${{env.ORTOOLS_DIR}}/install \
                  -DALLOW_RUN_AS_ROOT=ON \
                  -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 

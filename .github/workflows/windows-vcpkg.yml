@@ -66,6 +66,7 @@ jobs:
       XPRS_LIB_Path: ${{ github.workspace }}\xpress\lib
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+      ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
     outputs:
       zip_name: ${{ steps.zip_name.outputs.zip_name }}
       singlefile_name: ${{steps.zip_name.outputs.singlefile_name}}
@@ -91,6 +92,10 @@ jobs:
         id: get_release
         uses:
           bruceadams/get-release@main
+
+      - name: Config OR-Tools URL
+        run: |
+          echo "ORTOOLS_URL=https://github.com/rte-france/or-tools/releases/download/v9.8-rte1.0/ortools_cxx_ubuntu-20.04_static_sirius.zip" >> $GITHUB_ENV
 
       - name: Set up Python
         uses: actions/setup-python@v5
@@ -153,10 +158,6 @@ jobs:
           cd vcpkg
           git fetch --unshallow
           ./bootstrap-vcpkg.sh
-          vcpkg install --triplet ${{matrix.triplet}}
-          rm -rf buildtrees
-          rm -rf packages
-          rm -rf downloads
         shell: bash
 
       - name: Compile tbb
@@ -170,6 +171,8 @@ jobs:
           antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
           antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
+          ortools-url: ${{env.ORTOOLS_URL}}
+          ortools-dir: ${{env.ORTOOLS_DIR}}
 
       - name: Download userguide
         uses: actions/download-artifact@v4
@@ -188,7 +191,7 @@ jobs:
         #Inverted ternary : @({'condition is false'},{'condition is true'})[$condition] => ({true}, {false})[!$condition]
         run: |
           $pwd=Get-Location
-          cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" -DXPRESS=${{ env.XPRESS_VALUE }}
+          cmake -B _build -S . -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits" -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON -DUSER_GUIDE_PATH="docs/${{ needs.userguide.outputs.pdf-name }}" -DCMAKE_PREFIX_PATH=${{env.ORTOOLS_DIR}}/install
 
       - name: Build
         run: |

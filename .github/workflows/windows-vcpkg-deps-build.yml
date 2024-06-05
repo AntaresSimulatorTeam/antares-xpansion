@@ -78,10 +78,6 @@ jobs:
           cd vcpkg
           git fetch --unshallow
           ./bootstrap-vcpkg.sh
-          vcpkg install --triplet ${{matrix.triplet}}
-          rm -rf buildtrees
-          rm -rf packages
-          rm -rf downloads
         shell: bash
 
       - name: Compile tbb
