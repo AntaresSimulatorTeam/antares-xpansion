@@ -163,7 +163,7 @@ jobs:
       - name: vcpkg install
         run: |
           pushd vcpkg
-          #git fetch --unshallow
+          git fetch --unshallow
           ./bootstrap-vcpkg.sh
 
       - name: Configure
