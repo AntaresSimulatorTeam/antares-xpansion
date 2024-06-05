@@ -112,7 +112,7 @@ jobs:
           antares-deps-version: ${{needs.versions.outputs.antares-deps-version}}
           antares-version: ${{needs.versions.outputs.antares-version}}
           os: Oracle8
-          os-full-name: OracleServer-8.9
+          os-full-name: OracleServer-8.10
           ortools-url: ${{env.ORTOOLS_URL}}
           ortools-dir: ${{env.ORTOOLS_DIR}}
 
