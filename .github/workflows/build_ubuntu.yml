@@ -162,6 +162,13 @@ jobs:
           cd _build
           #ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
+      - name: Cache vcpkg binary dir
+        if: always()
+        id: save-cache-vcpkg-binary
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ github.workspace }}/vcpkg_cache
+          key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
 
       #######################
       - name: Install
