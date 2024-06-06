@@ -15,6 +15,34 @@ env:
   GITHUB_TOKEN: ${{ github.token }}
 
 jobs:
+  userguide:
+    runs-on: ubuntu-latest
+    outputs:
+      pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read antares-xpansion version
+        id: antares-xpansion-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_xpansion_version'
+
+      - id: create-user-guide
+        name: user guide pdf creation
+        uses: ./.github/workflows/generate-userguide-pdf
+        with:
+          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
+
+      - name: user guide upload
+        id: userguide_upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: user-guide
+          path: ${{ steps.create-user-guide.outputs.pdf-path }}
+
   build:
     runs-on: ${{ matrix.os }}
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
@@ -150,3 +178,31 @@ jobs:
           export PATH=${GITHUB_WORKSPACE}/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
+
+      #######################
+      - name: Upload .tar.gz
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{env.TGZ_NAME}}
+          path: _build/${{env.TGZ_NAME}}
+
+      - name: Upload single file
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.create-single-file.outputs.archive-name }}
+          path: ${{ steps.create-single-file.outputs.archive-path }}
+
+      #######################
+
+      - name: Get release
+        if: github.event_name == 'release' && github.event.action == 'created'
+        id: get_release
+        uses: bruceadams/get-release@main
+
+      - name: Upload Release Asset
+        if: github.event_name == 'release' && github.event.action == 'created'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload ${{ steps.get_release.outputs.tag_name }} _build/${{env.TGZ_NAME}}
+          gh release upload ${{ steps.get_release.outputs.tag_name }} ${{ steps.create-single-file.outputs.archive-path }}
