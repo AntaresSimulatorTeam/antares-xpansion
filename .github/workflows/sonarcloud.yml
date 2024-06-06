@@ -103,13 +103,12 @@ jobs:
         run: |
           git submodule update --init --recursive .
           
-            - run: |
+      - run: |
           mkdir -p ${{ github.workspace }}/vcpkg_cache
 
       - name: vcpkg install
         run: |
           pushd vcpkg
-          git fetch --unshallow
           ./bootstrap-vcpkg.sh --disableMetrics
 
       - name: Restore vcpkg binary dir from cache
