@@ -169,6 +169,7 @@ jobs:
 
       #######################
       - name: Install
+        if: github.event_name == 'release' && github.event.action == 'created'
         run: |
           cd _build
           cmake --install .
