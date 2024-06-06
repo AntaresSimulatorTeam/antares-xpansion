@@ -159,7 +159,7 @@ jobs:
         run: |
           export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
           cd _build
-          #ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
+          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
       - name: Cache vcpkg binary dir
         if: always()
