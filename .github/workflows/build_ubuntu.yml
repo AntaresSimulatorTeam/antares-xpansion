@@ -164,6 +164,33 @@ jobs:
 
 
       #######################
+      - name: Install
+        run: |
+          cd _build
+          cmake --install .
+
+      - name: set name variables
+        id: single_file_name
+        shell: bash
+        run: |
+          VERSION=${{steps.antares-xpansion-version.outputs.result}}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - id: create-single-file
+        name: Single file .tar.gz creation
+        uses: ./.github/workflows/single-file-creation-tgz
+        with:
+          antares-xpansion-version: ${{env.VERSION}}
+
+      - name: Installer .tar.gz creation
+        run: |
+          cd _build
+          export FILE_NAME="antaresXpansion-${{env.VERSION}}-${{ matrix.os }}"
+          cpack -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
+          #Need to differentiate between xpress/no_xpress files
+          #Cpack command line doesn't seem to care about -P or -R options
+          echo "TGZ_NAME=$FILE_NAME.tar.gz" >> $GITHUB_ENV
+
       - name: Upload .tar.gz
         uses: actions/upload-artifact@v4
         with:
@@ -229,7 +256,7 @@ jobs:
           name: ${{needs.build.outputs.TGZ_NAME}}
           path: _build/
 
-      - name: Download build assets sigle file
+      - name: Download build assets single file
         uses: actions/download-artifact@v4
         with:
           name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
