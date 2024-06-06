@@ -126,7 +126,7 @@ jobs:
       - name: Build
         run: |
           cmake --build _build --config Release -j4
-          
+
       - name: Cache vcpkg binary dir
         if: always()
         id: save-cache-vcpkg-binary
