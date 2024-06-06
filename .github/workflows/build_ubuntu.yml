@@ -123,7 +123,7 @@ jobs:
         run: |
           pushd vcpkg
           git fetch --unshallow
-          ./bootstrap-vcpkg.sh -disableMetrics
+          ./bootstrap-vcpkg.sh --disableMetrics
 
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
@@ -137,7 +137,6 @@ jobs:
       - name: Configure
         shell: bash
         run: |
-          [[ ${{ matrix.xprs.value }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
           cmake -B _build -S . \
                 -DCMAKE_C_COMPILER_LAUNCHER=ccache \
                 -DCMAKE_C_COMPILER=/usr/bin/gcc-10 \
@@ -148,7 +147,6 @@ jobs:
                 -DCMAKE_BUILD_TYPE=Release \
                 -DCMAKE_INSTALL_PREFIX=_install \
                 -DBUILD_UI=ON  \
-                -DXPRESS=${{ env.XPRESS_VALUE }} \
                 -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
@@ -171,6 +169,7 @@ jobs:
 
       #######################
       - name: Install
+        if: github.event_name == 'release' && github.event.action == 'created'
         run: |
           cd _build
           cmake --install .

@@ -15,7 +15,7 @@ env:
   GITHUB_TOKEN: ${{ github.token }}
 
 jobs:
-  windows:
+  build:
     runs-on: ${{ matrix.os }}
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
@@ -33,6 +33,10 @@ jobs:
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
 
+    outputs:
+      zip_name: ${{ steps.zip_name.outputs.zip_name }}
+      singlefile_name: ${{steps.zip_name.outputs.singlefile_name}}
+
     steps:
       - uses: actions/checkout@v4
         with:
@@ -47,35 +51,12 @@ jobs:
           ref: ${{matrix.xprs.ref}}
           token: ${{ secrets.AS_TOKEN }}
 
-      - name: Get release
-        if: github.event_name == 'release' && github.event.action == 'created'
-        id: get_release
-        uses:
-          bruceadams/get-release@v1.3.2
-
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.x'
           cache: 'pip'
           cache-dependency-path: requirements*.txt
-
-      # Restore both vcpkg and its artifacts from the GitHub cache service.
-      - name: Restore vcpkg and its artifacts.
-        uses: actions/cache@v4
-        with:
-          # The first path is the location of vcpkg (it contains the vcpkg executable and data files).
-          # The other paths starting with '!' are exclusions: they contain termporary files generated during the build of the installed packages.
-          path: |
-            ${{ env.VCPKG_ROOT }}
-            !${{ env.VCPKG_ROOT }}/buildtrees
-            !${{ env.VCPKG_ROOT }}/packages
-            !${{ env.VCPKG_ROOT }}/downloads
-          # The key is composed in a way that it gets properly invalidated: this must happen whenever vcpkg's Git commit id changes, or the list of packages changes. In this case a cache miss must happen and a new entry with a new key with be pushed to GitHub the cache service.
-          # The key includes: hash of the vcpkg.json file, the hash of the vcpkg Git commit id, and the used vcpkg's triplet. The vcpkg's commit id would suffice, but computing an hash out it does not harm.
-          # Note: given a key, the cache content is immutable. If a cache entry has been created improperly, in order the recreate the right content the key must be changed as well, and it must be brand new (i.e. not existing already).
-          key: |
-            ${{ hashFiles( 'vcpkg.json' ) }}-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}-${{ matrix.triplet }}
 
       - name: Install dependencies
         run: |
@@ -103,16 +84,22 @@ jobs:
           path: 'antares-version.json'
           key: 'antares_deps_version'
 
-      - name: Install deps with VCPKG
-        run: |
-          cd vcpkg
-          git fetch --unshallow
-          ./bootstrap-vcpkg.sh
-          vcpkg install --triplet ${{matrix.triplet}}
-          rm -rf buildtrees
-          rm -rf packages
-          rm -rf downloads
+      - name: vcpkg install
         shell: bash
+        run: |
+          mkdir -p ${{ github.workspace }}/vcpkg_cache
+          pushd vcpkg
+          git fetch --unshallow
+          ./bootstrap-vcpkg.sh --disableMetrics
+
+      - name: Restore vcpkg binary dir from cache
+        id: cache-vcpkg-binary
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ github.workspace }}/vcpkg_cache
+          key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
+          # Allows to restore a cache when deps have only partially changed (like adding a dependency)
+          restore-keys: vcpkg-cache-ubuntu-
 
       - name: Compile tbb
         uses: ./.github/workflows/compile-tbb
@@ -126,20 +113,21 @@ jobs:
           antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
 
-      - name: Expand xpress value in env
-        #I can't seem to expand the variable in the cmake command line so export it in env
-        shell: bash
-        run: |
-          [[ ${{ matrix.xprs.value }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF"
-          echo "XPRESS_VALUE=$XPRESS_VALUE" >> $GITHUB_ENV
-
       - name: Configure
         run: |
           $pwd=Get-Location
-          cmake -B _build -S .  -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits"  -DBUILD_TESTING=ON  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"  -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install  -DBUILD_UI=ON  -DXPRESS=${{ env.XPRESS_VALUE }}
+          cmake -B _build -S .  -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits"  -DBUILD_TESTING=ON  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"  -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install  -DBUILD_UI=ON
       - name: Build
         run: |
           cmake --build _build --config Release -j4
+          
+      - name: Cache vcpkg binary dir
+        if: always()
+        id: save-cache-vcpkg-binary
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ github.workspace }}/vcpkg_cache
+          key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
 
       - name: Running unit tests
         timeout-minutes: 120
@@ -150,3 +138,108 @@ jobs:
           set XPRESSDIR=${{ env.XPRESSDIR }}
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
+      ##############
+      - name: Create installer .zip
+        shell: bash
+        run: |
+          cd _build
+          cpack -G ZIP
+          export ZIP_NAME=$(ls *.zip)
+          echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
+
+      - name: set name variables
+        id: single_file_name
+        shell: bash
+        run: |
+          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
+          XPRS=${{ env.XPRESS_VALUE }}
+          [ $XPRS == "ON" ] && WITH_XPRS="-xpress" || WITH_XPRS=""
+          VERSION=${{steps.antares-xpansion-version.outputs.result}}${WITH_XPRS}
+          echo "VERSION_WITH_XPRESS=$VERSION"
+          echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{env.ZIP_NAME}}
+          path: _build/${{env.ZIP_NAME}}
+
+      - name: Create single file .zip
+        id: create-single-file
+        uses: ./.github/workflows/single-file-creation-zip
+        with:
+          antares-xpansion-version: ${{env.VERSION_WITH_XPRESS}}
+
+      - name: Upload single file
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.create-single-file.outputs.archive-name }}
+          path: ${{ steps.create-single-file.outputs.archive-path }}
+
+      - id: zip_name
+        shell: bash
+        run: |
+          echo "zip_name=${{env.ZIP_NAME}}" >> "$GITHUB_OUTPUT"
+          echo "singlefile_name=${{steps.create-single-file.outputs.archive-name}}" >> "$GITHUB_OUTPUT"
+  userguide:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'created'
+    outputs:
+      pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read antares-xpansion version
+        id: antares-xpansion-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_xpansion_version'
+
+      - id: create-user-guide
+        name: user guide pdf creation
+        uses: ./.github/workflows/generate-userguide-pdf
+        with:
+          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
+
+      - name: user guide upload
+        id: userguide_upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: user-guide
+          path: ${{ steps.create-user-guide.outputs.pdf-path }}
+
+  upload_asset_to_release:
+    if: github.event_name == 'release' && github.event.action == 'created'
+    runs-on: ubuntu-latest
+    needs: [build, userguide]
+    env:
+      ZIP_NAME: ${{needs.build.outputs.zip_name}}
+      SINGLEFILE_NAME: ${{needs.build.outputs.singlefile_name}}
+    steps:
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@main
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{env.ZIP_NAME}}
+          path: .
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{env.SINGLEFILE_NAME}}
+          path: .
+
+      - name: Upload Release Asset
+        env:
+          GH_REPO: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} ${{env.ZIP_NAME}}
+          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} ${{env.SINGLEFILE_NAME}}
+
+      ########################
