@@ -66,13 +66,23 @@ jobs:
       - run: |
           mkdir -p ${{ github.workspace }}/vcpkg_cache
 
+      - run: |
+          mkdir -p ${{ github.workspace }}/vcpkg_cache
+
       - name: vcpkg install
         run: |
           pushd vcpkg
           git fetch --unshallow
-          ./bootstrap-vcpkg.sh
-          popd
-          vcpkg/vcpkg install
+          ./bootstrap-vcpkg.sh --disableMetrics
+
+      - name: Restore vcpkg binary dir from cache
+        id: cache-vcpkg-binary
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ github.workspace }}/vcpkg_cache
+          key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
+          # Allows to restore a cache when deps have only partially changed (like adding a dependency)
+          restore-keys: vcpkg-cache-ubuntu-
 
       - name: Configure
         run: |
@@ -83,6 +93,14 @@ jobs:
                 -DCMAKE_INSTALL_PREFIX=_install \
                 -DBUILD_UI=ON \
                 -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
+
+      - name: Cache vcpkg binary dir
+        if: always()
+        id: save-cache-vcpkg-binary
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ github.workspace }}/vcpkg_cache
+          key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
 
       - name: Build
         run: |
