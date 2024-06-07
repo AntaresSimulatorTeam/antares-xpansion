@@ -90,6 +90,10 @@ jobs:
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
       ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
 
+    outputs:
+      TGZ_NAME: ${{ steps.export_output.outputs.TGZ_NAME }}
+      SINGLE_FILE_NAME: ${{ steps.export_output.outputs.SINGLE_FILE_NAME }}
+
     steps:
       - run: |
           source /opt/rh/devtoolset-10/enable
@@ -170,15 +174,26 @@ jobs:
           pip3 install -r requirements-tests.txt
           pip3 install -r requirements-ui.txt
 
+      - run: |
+          mkdir -p ${{ github.workspace }}/vcpkg_cache
+
       - name: vcpkg install
         run: |
           pushd vcpkg
           git fetch --unshallow
-          ./bootstrap-vcpkg.sh
+          ./bootstrap-vcpkg.sh --disableMetrics
+
+      - name: Restore vcpkg binary dir from cache
+        id: cache-vcpkg-binary
+        uses: actions/cache/restore@v3
+        with:
+          path: ${{ github.workspace }}/vcpkg_cache
+          key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
+          # Allows to restore a cache when deps have only partially changed (like adding a dependency)
+          restore-keys: vcpkg-cache-ubuntu-
 
       - name: Configure
         run: |
-          [[ ${{ matrix.xprs.value }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
           source /opt/rh/devtoolset-10/enable
           cmake -B _build -S . \
                  -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
@@ -194,12 +209,131 @@ jobs:
         run: |
           cmake --build _build --config Release -j$(nproc)
 
+      - name: Cache vcpkg binary dir
+        if: always()
+        id: save-cache-vcpkg-binary
+        uses: actions/cache/save@v3
+        with:
+          path: ${{ github.workspace }}/vcpkg_cache
+          key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
+
       - name: Running unit tests
         timeout-minutes: 120
         shell: bash
         run: |
-          export PATH=${GITHUB_WORKSPACE}/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
+          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
           export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build
           ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
+
+      #######################
+      - name: Install
+        run: |
+          cd _build
+          cmake --install .
+
+      - name: set name variables
+        id: single_file_name
+        shell: bash
+        run: |
+          VERSION=${{steps.antares-xpansion-version.outputs.result}}
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+
+      - id: create-single-file
+        name: Single file .tar.gz creation
+        uses: ./.github/workflows/single-file-creation-tgz
+        with:
+          antares-xpansion-version: ${{env.VERSION}}
+
+      - name: Installer .tar.gz creation
+        run: |
+          cd _build
+          export FILE_NAME="antaresXpansion-${{env.VERSION}}-CentOS-7.9.2009"
+          cpack -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
+          #Need to differentiate between xpress/no_xpress files
+          #Cpack command line doesn't seem to care about -P or -R options
+          echo "TGZ_NAME=$FILE_NAME.tar.gz" >> $GITHUB_ENV
+
+      - name: Upload .tar.gz
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{env.TGZ_NAME}}
+          path: _build/${{env.TGZ_NAME}}
+
+      - name: Upload single file
+        uses: actions/upload-artifact@v3
+        with:
+          name: ${{ steps.create-single-file.outputs.archive-name }}
+          path: ${{ steps.create-single-file.outputs.archive-path }}
+
+      - name: export asset name in output
+        id: export_output
+        run: |
+          echo "TGZ_NAME=${{env.TGZ_NAME}}" >> $GITHUB_OUTPUT
+          echo "SINGLE_FILE_NAME=${{ steps.create-single-file.outputs.archive-name }}" >> $GITHUB_OUTPUT
+
+      #######################
+  userguide:
+    if: github.event_name == 'release' && github.event.action == 'created'
+    runs-on: ubuntu-latest
+    outputs:
+      pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read antares-xpansion version
+        id: antares-xpansion-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_xpansion_version'
+
+      - id: create-user-guide
+        name: user guide pdf creation
+        uses: ./.github/workflows/generate-userguide-pdf
+        with:
+          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
+
+      - name: user guide upload
+        id: userguide_upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: user-guide
+          path: ${{ steps.create-user-guide.outputs.pdf-path }}
+
+  release:
+    runs-on: ubuntu-latest
+    needs: [ build, userguide ]
+    if: github.event_name == 'release' && github.event.action == 'created'
+    steps:
+      - name: Download userguide
+        uses: actions/download-artifact@v4
+        with:
+          name: user-guide
+          path: docs/
+
+      - name: Download build assets
+        uses: actions/download-artifact@v3 #build use v3
+        with:
+          name: ${{needs.build.outputs.TGZ_NAME}}
+          path: _build/
+
+      - name: Download build assets single file
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
+          path: .
+
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@main
+
+      - name: Upload Release Asset
+        env:
+          GH_REPO: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} _build/${{needs.build.outputs.TGZ_NAME}}
+          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} ${{needs.build.outputs.SINGLE_FILE_NAME}}
