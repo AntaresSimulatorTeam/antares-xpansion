@@ -22,6 +22,8 @@ class ArchiveWriter : public ArchiveIO {
 
   int32_t Close() override;
   void Delete() override;
+  int32_t CloseGuarded();
+  void DeleteGuarded();
 
   int Open() override;
   void InitFileInfo();
