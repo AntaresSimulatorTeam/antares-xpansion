@@ -66,6 +66,9 @@ jobs:
       - run: |
           mkdir -p ${{ github.workspace }}/vcpkg_cache
 
+      - run: |
+          mkdir -p ${{ github.workspace }}/vcpkg_cache
+
       - name: vcpkg install
         run: |
           pushd vcpkg
