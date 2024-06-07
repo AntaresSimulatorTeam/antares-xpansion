@@ -71,12 +71,22 @@ jobs:
           path: 'antares-version.json'
           key: 'antares_xpansion_version'
 
-      - name: Install deps with VCPKG
-        run: |
-          cd vcpkg
-          git fetch --unshallow
-          ./bootstrap-vcpkg.sh
+      - name: vcpkg install
         shell: bash
+        run: |
+          mkdir -p ${{ github.workspace }}/vcpkg_cache
+          pushd vcpkg
+          git fetch --unshallow
+          ./bootstrap-vcpkg.sh --disableMetrics
+
+      - name: Restore vcpkg binary dir from cache
+        id: cache-vcpkg-binary
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ github.workspace }}/vcpkg_cache
+          key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
+          # Allows to restore a cache when deps have only partially changed (like adding a dependency)
+          restore-keys: vcpkg-cache-ubuntu-
 
       - name: Compile tbb
         uses: ./.github/workflows/compile-tbb
@@ -87,6 +97,14 @@ jobs:
         run: |
           $pwd=Get-Location
           cmake -B _build -S . -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="vcpkg/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON
+
+      - name: Cache vcpkg binary dir
+        if: always()
+        id: save-cache-vcpkg-binary
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ github.workspace }}/vcpkg_cache
+          key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
 
       - name: Build
         run: |
