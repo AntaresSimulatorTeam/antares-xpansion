@@ -20,6 +20,8 @@
 #include <mutex>
 #include <sstream>
 #include <string>
+
+#include "StringManip.h"
 namespace LoadXpress {
 
 #define STRINGIFY2(X) #X
@@ -244,7 +246,11 @@ std::string XpressLoader::GetXpressVarFromEnvironmentVariables(
     xpress_home_from_env = path;
   }
 #endif
-  return xpress_home_from_env;
+  if (auto env_var_size = xpress_home_from_env.size(); env_var_size > 0) {
+    return xpress_home_from_env.substr(0, env_var_size - 1);
+  } else {
+    xpress_home_from_env;
+  }
 }
 
 std::vector<std::string> XpressLoader::XpressDynamicLibraryPotentialPaths() {
