@@ -6,7 +6,7 @@ on:
       - ci/*
       - dependabot/*
   schedule:
-    - cron: '00 00 * * 0'
+    - cron: '00 00 * * 0' # Sunday, midnight
 jobs:
 
   build:
