@@ -119,6 +119,7 @@ jobs:
           -DBUILD_TESTING=ON \
           -DBUILD_antares_solver=OFF \
           -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_PREFIX_PATH=${{ github.workspace }}/deps \
           -DCMAKE_INSTALL_PREFIX=_install \
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
           -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
