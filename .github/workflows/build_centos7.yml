@@ -45,7 +45,6 @@ jobs:
     outputs:
       antares-version: ${{steps.antares-version.outputs.result}}
       antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
-      antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
     steps:
       - uses: actions/checkout@v4
       - name: Read antares-solver version
@@ -61,13 +60,6 @@ jobs:
         with:
           path: 'antares-version.json'
           key: 'antares_xpansion_version'
-
-      - name: Read antares-deps version
-        id: antares-deps-version
-        uses: ./.github/actions/read-json-value
-        with:
-          path: 'antares-version.json'
-          key: 'antares_deps_version'
 
   build:
     runs-on: ubuntu-latest
@@ -135,7 +127,6 @@ jobs:
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
         with:
-          antares-deps-version: ${{needs.versions.outputs.antares-deps-version}}
           antares-version: ${{needs.versions.outputs.antares-version}}
           os: centos7
           os-full-name: CentOS-7.9.2009
@@ -172,7 +163,6 @@ jobs:
         run: |
           source /opt/rh/devtoolset-10/enable
           cmake -B _build -S . \
-                 -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
                  -DBUILD_TESTING=ON \
                  -DCMAKE_BUILD_TYPE=Release \
                  -DCMAKE_INSTALL_PREFIX=_install \
