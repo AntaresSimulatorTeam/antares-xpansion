@@ -131,6 +131,7 @@ jobs:
                  -DBUILD_TESTING=ON \
                  -DCMAKE_BUILD_TYPE=Release \
                  -DCMAKE_INSTALL_PREFIX=_install \
+                 -DCMAKE_PREFIX_PATH=${{ github.workspace }}/deps \
                  -DBUILD_UI=OFF \
                  -DALLOW_RUN_AS_ROOT=ON \
                  -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
