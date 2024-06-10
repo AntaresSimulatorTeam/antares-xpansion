@@ -9,7 +9,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
 # ===========================================================================
 
 PROJECT(antaresXpansion VERSION 1.3.0)
-set(ANTARES_XPANSION_RC 4)
+set(ANTARES_XPANSION_RC 5)
 
 # ===========================================================================
 # Default parameters
