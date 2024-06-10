@@ -101,17 +101,9 @@ jobs:
           path: 'antares-version.json'
           key: 'antares_xpansion_version'
 
-      - name: Read antares-deps version
-        id: antares-deps-version
-        uses: ./.github/actions/read-json-value
-        with:
-          path: 'antares-version.json'
-          key: 'antares_deps_version'
-
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
         with:
-          antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
           antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
           os-full-name: Ubuntu-20.04
@@ -142,7 +134,6 @@ jobs:
                 -DCMAKE_C_COMPILER=/usr/bin/gcc-10 \
                 -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
                 -DCMAKE_CXX_COMPILER=/usr/bin/g++-10 \
-                -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
                 -DBUILD_TESTING=ON \
                 -DCMAKE_BUILD_TYPE=Release \
                 -DCMAKE_INSTALL_PREFIX=_install \

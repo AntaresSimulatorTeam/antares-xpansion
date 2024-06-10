@@ -77,12 +77,7 @@ jobs:
         with:
           path: 'antares-version.json'
           key: 'antares_version'
-      - name: Read antares-deps version
-        id: antares-deps-version
-        uses: ./.github/actions/read-json-value
-        with:
-          path: 'antares-version.json'
-          key: 'antares_deps_version'
+
       - name: Read antares-xpansion version
         id: antares-xpansion-version
         uses: ./.github/actions/read-json-value
@@ -115,14 +110,13 @@ jobs:
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-zip
         with:
-          antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
           antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
 
       - name: Configure
         run: |
           $pwd=Get-Location
-          cmake -B _build -S .  -DDEPS_INSTALL_DIR=rte-antares-deps-Release -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits"  -DBUILD_TESTING=ON  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"  -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install  -DBUILD_UI=ON
+          cmake -B _build -S . -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits"  -DBUILD_TESTING=ON  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"  -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install  -DBUILD_UI=ON
       - name: Build
         run: |
           cmake --build _build --config Release -j4
