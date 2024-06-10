@@ -21,7 +21,6 @@
 #include <sstream>
 #include <string>
 
-#include "StringManip.h"
 namespace LoadXpress {
 
 #define STRINGIFY2(X) #X
