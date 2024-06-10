@@ -113,3 +113,9 @@ jobs:
         with:
           antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
 
+      #Always upload vcpkg\buildtrees\antares-deps asset
+      - name: Upload buildtrees
+        uses: actions/upload-artifact@v4
+        with:
+          name: antares-deps
+          path: vcpkg/buildtrees/antares-deps
