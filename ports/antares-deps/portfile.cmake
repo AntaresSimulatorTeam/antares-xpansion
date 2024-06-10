@@ -1,8 +1,8 @@
 vcpkg_from_github(
         OUT_SOURCE_PATH SOURCE_PATH
         REPO "AntaresSimulatorTeam/antares-deps"
-        REF "e6c4202cd40d959b84b4da83535a048cd9835732"
-        SHA512 0ac6200bc14141c0d75f00f21234223f4dfc3b9eb532df4e95b93d2d679e00fe0007e3c026980481c31bd930207d4f0ee9ce142c90ef9ef1ea4989f00fe23c4b
+        REF "d1b03d7fcfc938c19164f3e6b8cb73ef73755350"
+        SHA512 3f482c67e14f411fa9b27baab0c4c6be46061c81bb4f0df8f7b5d8ec6283eaf180c23111c9a5994e3be4f86e10631c0323f69eba6b303a6a5519826258144f9f
         HEAD_REF feature/install
 )
 
