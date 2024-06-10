@@ -8,6 +8,7 @@
     ]
   },
   "dependencies": [
+    "antares-deps",
     "jsoncpp",
     "gtest",
     {
