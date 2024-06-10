@@ -230,7 +230,7 @@ std::string XpressLoader::GetXpressVarFromEnvironmentVariables(
     // Get the value of the LIB environment variable.
     getenv_s(&requiredSize, xpress_home_from_env.data(), requiredSize,
              XPRESS_var);
-    xpress_home_from_env = xpress_home_from_env.substr(0, env_var_size - 1);
+    xpress_home_from_env = xpress_home_from_env.substr(0, requiredSize - 1);
 
   } else {
     if (verbose) {
