@@ -173,23 +173,16 @@ jobs:
           cd _build
           cmake --install .
 
-      - name: set name variables
-        id: single_file_name
-        shell: bash
-        run: |
-          VERSION=${{steps.antares-xpansion-version.outputs.result}}
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-
       - id: create-single-file
         name: Single file .tar.gz creation
         uses: ./.github/workflows/single-file-creation-tgz
         with:
-          antares-xpansion-version: ${{env.VERSION}}
+          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
 
       - name: Installer .tar.gz creation
         run: |
           cd _build
-          export FILE_NAME="antaresXpansion-${{env.VERSION}}-${{ matrix.os }}"
+          export FILE_NAME="antaresXpansion-${{steps.antares-xpansion-version.outputs.result}}-${{ matrix.os }}"
           cpack -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
           #Need to differentiate between xpress/no_xpress files
           #Cpack command line doesn't seem to care about -P or -R options

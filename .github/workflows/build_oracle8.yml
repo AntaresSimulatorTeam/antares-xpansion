@@ -173,17 +173,10 @@ jobs:
           cd _build
           cmake --install .
           
-      - name: set name variables
-        id: single_file_name
-        shell: bash
-        run: |
-          VERSION=${{needs.versions.outputs.antares-xpansion-version}}
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-
       - name: .tar.gz creation
         run: |
           cd _build
-          export FILE_NAME="antaresXpansion-${{env.VERSION}}-OracleServer-8.9"
+          export FILE_NAME="antaresXpansion-${{needs.versions.outputs.antares-xpansion-version}}-OracleServer-8.9"
           cpack -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
           echo "TGZ_NAME=$FILE_NAME.tar.gz" >> $GITHUB_ENV
 
@@ -197,7 +190,7 @@ jobs:
         name: Single file .tar.gz creation
         uses: ./.github/workflows/single-file-creation-tgz
         with:
-          antares-xpansion-version: ${{env.VERSION}}
+          antares-xpansion-version: ${{needs.versions.outputs.antares-xpansion-version}}
 
       - name: Upload single file
         uses: actions/upload-artifact@v4

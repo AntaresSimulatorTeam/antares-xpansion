@@ -153,17 +153,6 @@ jobs:
           export ZIP_NAME=$(ls *.zip)
           echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
 
-      - name: set name variables
-        id: single_file_name
-        shell: bash
-        run: |
-          [[ ${{ matrix.xprs }} == "XPRESS-ON" ]] && XPRESS_VALUE="ON" || XPRESS_VALUE="OFF" 
-          XPRS=${{ env.XPRESS_VALUE }}
-          [ $XPRS == "ON" ] && WITH_XPRS="-xpress" || WITH_XPRS=""
-          VERSION=${{steps.antares-xpansion-version.outputs.result}}${WITH_XPRS}
-          echo "VERSION_WITH_XPRESS=$VERSION"
-          echo "VERSION_WITH_XPRESS=$VERSION" >> $GITHUB_ENV
-
       - name: Upload installer
         uses: actions/upload-artifact@v4
         with:
@@ -174,7 +163,7 @@ jobs:
         id: create-single-file
         uses: ./.github/workflows/single-file-creation-zip
         with:
-          antares-xpansion-version: ${{env.VERSION_WITH_XPRESS}}
+          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
 
       - name: Upload single file
         uses: actions/upload-artifact@v4
