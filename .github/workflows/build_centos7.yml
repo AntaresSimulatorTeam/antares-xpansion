@@ -207,7 +207,7 @@ jobs:
         uses: actions/cache/save@v3
         with:
           path: ${{ github.workspace }}/vcpkg_cache
-          key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
+          key: vcpkg-cache-centOS-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
 
       - name: Running unit tests
         timeout-minutes: 120
