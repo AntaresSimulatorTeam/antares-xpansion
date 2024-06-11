@@ -26,7 +26,7 @@ runs:
       run: |
         export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
         export PATH=/usr/lib64/openmpi/bin:$PATH
-        mkdir ${{ github.workspace }}/deps
+        mkdir deps
         wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{inputs.antares-version}}/antares-${{inputs.antares-version}}-${{inputs.os-full-name}}${{inputs.variant}}.tar.gz
-        tar -xvf antares-${{inputs.antares-version}}-${{inputs.os-full-name}}${{inputs.variant}}.tar.gz -C ${{ github.workspace }}/deps --strip-components=1
+        tar -xvf antares-${{inputs.antares-version}}-${{inputs.os-full-name}}${{inputs.variant}}.tar.gz -C deps --strip-components=1
         rm -rf antares-${{inputs.antares-version}}-${{inputs.os-full-name}}${{inputs.variant}}.tar.gz
