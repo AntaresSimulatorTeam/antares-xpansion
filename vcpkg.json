@@ -10,6 +10,7 @@
   "dependencies": [
     "jsoncpp",
     "gtest",
+    "coin-or-cbc",
     {
       "name": "boost-mpi",
       "version>=": "1.81.0"
@@ -34,14 +35,6 @@
     {
       "name": "sirius-solver",
       "version>=": "1.5"
-    },
-    {
-      "name": "coin-utils"
-    }
-  ],
-  "overrides": [
-    {
-      "name": "coin-utils", "version": "2.11.4"
     }
   ]
 }

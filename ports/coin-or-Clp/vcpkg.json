@@ -1,8 +1,8 @@
 {
-  "name": "coin-utils",
-  "version": "2.11.6",
+  "name": "coin-or-cbc",
+  "version": "2.10.7",
   "port-version": 0,
-  "description": "Sirius solver",
+  "description": "Fork from CBC",
   "dependencies": [
     {
       "name": "vcpkg-cmake",
@@ -11,6 +11,10 @@
     {
       "name": "vcpkg-cmake-config",
       "host": true
-    }
+    },
+    "coin-or-cgl",
+    "coin-or-clp",
+    "coin-or-osi",
+    "coinutils"
   ]
 }

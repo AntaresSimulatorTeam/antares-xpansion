@@ -139,8 +139,6 @@ if (${BUILD_antares_solver})
 	endif()
 endif()
 
-add_subdirectory(antares-deps)
-
 add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_BINARY_DIR}/build_deps)
 find_package(minizip-ng REQUIRED)
 # ---------------------------------------------------------------------------
