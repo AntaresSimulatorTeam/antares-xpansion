@@ -131,6 +131,15 @@ jobs:
           os: centos7
           os-full-name: CentOS-7.9.2009
 
+      - run: |
+          ls 
+          echo " 2 --------------"
+          ls ${{ github.workspace }}
+          echo " 3 --------------"
+          ls ${GITHUB_WORKSPACE}
+          echo " 4 ----------------"
+          ls ${{ github.workspace }}/deps
+
       - name: Compile tbb
         uses: ./.github/workflows/compile-tbb
 
