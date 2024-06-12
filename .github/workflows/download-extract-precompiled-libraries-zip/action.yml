@@ -1,5 +1,5 @@
 name: "Download extract .zip precompiled libraries"
-description: "Download and extract .zip precompiled libraries from antares-deps and antares-simulator repository"
+description: "Download and extract .zip precompiled antares-simulator repository"
 inputs:
   antares-version:
     description: 'antares-solver version'
