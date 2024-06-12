@@ -114,37 +114,6 @@ endif ()
 include("cmake/utils.cmake")
 include("cmake/json-cmake-1.1.0/JSONParser.cmake")
 
-#Define install directory
-if (NOT DEPS_INSTALL_DIR)
-    SET(DEPS_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../rte-antares-deps-${CMAKE_BUILD_TYPE})
-else()
-    if(NOT IS_ABSOLUTE ${DEPS_INSTALL_DIR})
-        SET(DEPS_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/${DEPS_INSTALL_DIR})
-    endif()    
-endif()
-
-# Build Needed dependencies
-list(APPEND CMAKE_PREFIX_PATH ${DEPS_INSTALL_DIR})
-
-# Add DEPS_INSTALL_DIR with antares-simulator CMAKE_BUILD_TYPE special case
-if (${CMAKE_BUILD_TYPE} STREQUAL  "Release")
-
-	string(REPLACE ${CMAKE_BUILD_TYPE} release
-			DEPS_INSTALL_DIR_ANTARES
-			${DEPS_INSTALL_DIR})
-	
-	list(APPEND CMAKE_PREFIX_PATH ${DEPS_INSTALL_DIR_ANTARES})
-	
-elseif(${CMAKE_BUILD_TYPE} STREQUAL  "Debug")
-
-	string(REPLACE ${CMAKE_BUILD_TYPE} debug
-			DEPS_INSTALL_DIR_ANTARES
-			${DEPS_INSTALL_DIR})
-	
-	list(APPEND CMAKE_PREFIX_PATH ${DEPS_INSTALL_DIR_ANTARES})
-
-endif()
-
 message(STATUS "CMAKE_PREFIX_PATH : ${CMAKE_PREFIX_PATH}")
 
 file(READ antares-version.json jsonContent)
@@ -210,7 +179,7 @@ find_package(Threads REQUIRED)
 find_package(ZLIB REQUIRED) #Required for CoinUtils
 
 set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
-find_package(gflags REQUIRED)
+#find_package(gflags REQUIRED)
 find_package(Cbc REQUIRED)
 find_package(Cgl REQUIRED)
 find_package(Clp REQUIRED)
@@ -221,8 +190,9 @@ if(POLICY CMP0074)
 	cmake_policy(SET CMP0074 NEW)
 endif()
 
+set(CMAKE_FIND_DEBUG_MODE TRUE)
 find_package(sirius_solver REQUIRED)
-
+set(CMAKE_FIND_DEBUG_MODE FALSE)
 if (SOLVER)
 	if (SOLVER STREQUAL "xpress")
 		add_definitions (-DXPRESS_SOLVER -DUSE_XPRESS)

@@ -1,14 +1,13 @@
 {
   "name": "antares-xpansion",
   "version-string": "1.2.2",
-  "builtin-baseline": "943c5ef1c8f6b5e6ced092b242c8299caae2ff01",
+  "builtin-baseline": "eb0f108ebd674c6ed79acb1c2e123208c416af0d",
   "vcpkg-configuration": {
     "overlay-ports": [
       "./ports"
     ]
   },
   "dependencies": [
-    "antares-deps",
     "jsoncpp",
     "gtest",
     {
@@ -31,6 +30,18 @@
       "features": [
         "zlib"
       ]
+    },
+    {
+      "name": "sirius-solver",
+      "version>=": "1.5"
+    },
+    {
+      "name": "coin-utils"
+    }
+  ],
+  "overrides": [
+    {
+      "name": "coin-utils", "version": "2.11.4"
     }
   ]
 }
