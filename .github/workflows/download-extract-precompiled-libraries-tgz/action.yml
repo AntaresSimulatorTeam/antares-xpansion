@@ -1,5 +1,5 @@
 name: "Download extract .tgz precompiled libraries"
-description: "Download and extract .tgz precompiled libraries from antares-deps and antares-simulator repository"
+description: "Download and extract .tgz precompiled antares-simulator repository"
 inputs:
   antares-version:
     description: 'antares-solver version'
