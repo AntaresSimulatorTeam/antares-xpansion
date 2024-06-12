@@ -133,12 +133,10 @@ jobs:
 
       - run: |
           ls 
-          echo " 2 --------------"
-          ls ${{ github.workspace }}
           echo " 3 --------------"
           ls ${GITHUB_WORKSPACE}
           echo " 4 ----------------"
-          ls ${{ github.workspace }}/deps
+          ls ${GITHUB_WORKSPACE}/deps
 
       - name: Compile tbb
         uses: ./.github/workflows/compile-tbb
@@ -173,7 +171,7 @@ jobs:
           source /opt/rh/devtoolset-10/enable
           cmake -B _build -S . \
                  -DBUILD_TESTING=ON \
-                 -DCMAKE_PREFIX_PATH=${{ github.workspace }}/deps \
+                 -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/deps \
                  -DCMAKE_BUILD_TYPE=Release \
                  -DCMAKE_INSTALL_PREFIX=_install \
                  -DBUILD_UI=ON \
