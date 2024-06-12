@@ -19,8 +19,6 @@ if (MSVC)
 	cmake_policy(SET CMP0111 OLD) #To remove warning for not found configuration on MSVC
 endif ()
 
-set(CMAKE_POLICY_DEFAULT_CMP0077 NEW) #To force OR-Tools build and set option for antares-deps
-
 if (CMAKE_TOOLCHAIN_FILE)
 	if(NOT IS_ABSOLUTE ${CMAKE_TOOLCHAIN_FILE})
 		SET(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_TOOLCHAIN_FILE})
