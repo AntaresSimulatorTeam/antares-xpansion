@@ -1,8 +1,8 @@
 {
-  "name": "coin-or-cbc",
-  "version": "2.10.7",
+  "name": "coin-or-clp",
+  "version": "1.17",
   "port-version": 0,
-  "description": "Fork from CBC",
+  "description": "Fork from Clp",
   "dependencies": [
     {
       "name": "vcpkg-cmake",
@@ -12,8 +12,6 @@
       "name": "vcpkg-cmake-config",
       "host": true
     },
-    "coin-or-cgl",
-    "coin-or-clp",
     "coin-or-osi",
     "coinutils"
   ]
