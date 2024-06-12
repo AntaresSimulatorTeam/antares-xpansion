@@ -1,8 +1,8 @@
 vcpkg_from_github(
         OUT_SOURCE_PATH SOURCE_PATH
-        REPO "Mizux/Cbc"
-        REF "5714054827d852fae3beb7a4065f84ea56f207bb"
-        SHA512 addd95047c935fd3199f6951bf6f269887c0a66f285d4d9947b6290de24ab54867f459a340da1010451331272e4168d413ab167c52019fb4dbe486633f8b93d9
+        REPO "Mizux/Clp"
+        REF "d8cdeb5fd6d51ac7d0f50778d2b2feccaa716228"
+        SHA512 58e737deeb5276e4894fbebac0f60da13e8419b6cff531be381bc582320ceeab0f4688c8ec29d4e7248b6cc5256edb27b2e98496913262ce0f2960b6b6ab598c
         HEAD_REF master
 )
 
