@@ -1,8 +1,8 @@
 {
-  "name": "antares-deps",
-  "version": "2.0.7",
+  "name": "sirius-solver",
+  "version": "1.4",
   "port-version": 0,
-  "description": "Antares Deps",
+  "description": "Sirius solver",
   "dependencies": [
     {
       "name": "vcpkg-cmake",
