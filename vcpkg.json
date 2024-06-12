@@ -10,6 +10,7 @@
   "dependencies": [
     "jsoncpp",
     "gtest",
+    "gflags",
     "coin-or-cbc",
     {
       "name": "boost-mpi",
