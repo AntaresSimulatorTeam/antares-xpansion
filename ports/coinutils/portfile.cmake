@@ -4,6 +4,7 @@ vcpkg_from_github(
         REF "d92accd9a2aa4cffe84e8f9a5a71eea06fb1ba87"
         SHA512 addd95047c935fd3199f6951bf6f269887c0a66f285d4d9947b6290de24ab54867f459a340da1010451331272e4168d413ab167c52019fb4dbe486633f8b93d9
         HEAD_REF master
+        PATCHES log.patch
 )
 
 if(MSVC OR WIN32)
