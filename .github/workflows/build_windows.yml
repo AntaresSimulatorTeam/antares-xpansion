@@ -110,6 +110,14 @@ jobs:
         run: |
           $pwd=Get-Location
           cmake -B _build -S . -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits"  -DBUILD_TESTING=ON  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"  -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install  -DBUILD_UI=ON
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: logs
+          path: vcpkg\buildtrees\coin-or-osi
+
       - name: Build
         run: |
           cmake --build _build --config Release -j4
