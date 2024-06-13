@@ -40,8 +40,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-        with:
-          submodules: true
 
       - name: Checkout xpressmp linux
         if: matrix.xprs.value == 'XPRESS-ON'
