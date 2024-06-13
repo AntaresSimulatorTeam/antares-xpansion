@@ -7,19 +7,10 @@ vcpkg_from_github(
         PATCHES log.patch
 )
 
-if(MSVC OR WIN32)
-    message(WARNING "BUILDING FOR MSVC WITH SHARED LIBS")
     vcpkg_cmake_configure(
             SOURCE_PATH "${SOURCE_PATH}"
-            OPTIONS
-            "-DCMAKE_PROJECT_INCLUDE=${CMAKE_CURRENT_LIST_DIR}/static_patch.cmake"
+    )
 
-    )
-else ()
-    vcpkg_cmake_configure(
-            SOURCE_PATH "${SOURCE_PATH}"
-    )
-endif ()
 
 vcpkg_cmake_install()
 
