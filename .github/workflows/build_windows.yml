@@ -129,6 +129,13 @@ jobs:
           name: build
           path: vcpkg\packages\coin*
 
+      - name: Upload installed
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: installed
+          path: _build\vcpkg_installed\x64-windows-release
+
       - name: Build
         run: |
           cmake --build _build --config Release -j4
