@@ -127,6 +127,12 @@ jobs:
         run: |
           cmake --build _build --config Release -j4
 
+      - run: |
+          ls
+          echo "---------"
+          ls ${{ github.workspace }}
+        if: always()
+
       - name: Cache vcpkg binary dir
         if: always()
         id: save-cache-vcpkg-binary
