@@ -9,7 +9,7 @@ if(MSVC OR WIN32)
     message(WARNING "BUILDING FOR MSVC WITH SHARED LIBS")
     vcpkg_cmake_configure(
             SOURCE_PATH "${SOURCE_PATH}"
-            MAYBE_UNUSED_VARIABLES -DDLL_EXPORT
+            MAYBE_UNUSED_VARIABLES DLL_EXPORT
     )
 else ()
 vcpkg_cmake_configure(
