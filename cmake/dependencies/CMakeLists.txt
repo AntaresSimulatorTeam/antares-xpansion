@@ -3,7 +3,7 @@
 #####################
 if(BUILD_antares_solver)
 
-find_package(antares-solver)
+find_package(antares-solver QUIET)
 
 if (NOT antares-solver_FOUND)
 
