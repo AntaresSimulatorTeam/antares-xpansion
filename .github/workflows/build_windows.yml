@@ -127,7 +127,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: installed
-          path: _build\vcpkg_installed\x64-windows-release
+          path: |
+            _build\vcpkg_installed\x64-windows-release\include\coin*
+            _build\vcpkg_installed\x64-windows-release\lib\coin*
+            _build\vcpkg_installed\x64-windows-release\share\coin*
+            
 
       - name: Build
         run: |
