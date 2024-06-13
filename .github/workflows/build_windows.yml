@@ -21,7 +21,7 @@ jobs:
     strategy:
       matrix:
         os: [ windows-latest ]
-        triplet: [ x64-windows ]
+        triplet: [ x64-windows-release ]
         xprs: [ #{ value: XPRESS-ON, ref: 8.13a },
           { value: XPRESS-ON, ref: 9.2.5 },
           #{ value: XPRESS-OFF }
@@ -88,10 +88,8 @@ jobs:
       - name: vcpkg install
         shell: bash
         run: |
-          mkdir -p ${{ github.workspace }}\vcpkg_cache
-          pushd vcpkg
-          git fetch --unshallow
-          ./bootstrap-vcpkg.sh --disableMetrics
+          git submodule update --init vcpkg
+          ./vcpkg/bootstrap-vcpkg.sh --disableMetrics
 
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
@@ -134,7 +132,7 @@ jobs:
         id: save-cache-vcpkg-binary
         uses: actions/cache/save@v4
         with:
-          path: ${{ github.workspace }}\vcpkg_cache
+          path: ${{ github.workspace }}/vcpkg_cache
           key: vcpkg-cache-windows-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
 
       - name: Running unit tests
