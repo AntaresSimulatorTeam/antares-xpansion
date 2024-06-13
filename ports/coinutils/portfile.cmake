@@ -1,3 +1,7 @@
+if (VCPKG_TARGET_IS_WINDOWS) #AND NOT VCPKG_TARGET_IS_MINGW ?
+    vcpkg_check_linkage(ONLY_STATIC_LIBRARY)
+endif()
+
 vcpkg_from_github(
         OUT_SOURCE_PATH SOURCE_PATH
         REPO "Mizux/CoinUtils"
@@ -7,10 +11,11 @@ vcpkg_from_github(
         PATCHES log.patch
 )
 
+vcpkg_check_linkage(ONLY_STATIC_LIBRARY)
+
     vcpkg_cmake_configure(
             SOURCE_PATH "${SOURCE_PATH}"
     )
-
 
 vcpkg_cmake_install()
 
