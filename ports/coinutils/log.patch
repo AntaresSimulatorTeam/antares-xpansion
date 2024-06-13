@@ -15,6 +15,7 @@ diff --git a/src/CoinUtilsConfig.h b/src/CoinUtilsConfig.h
 +#define XSTR(x) STR(x)
 +#define STR(x) #x
 +
++#pragma message("PLOP")
 +#pragma message(XSTR(_WIN32) " " XSTR(DLL_EXPORT))
 +
  #ifdef DLL_EXPORT
