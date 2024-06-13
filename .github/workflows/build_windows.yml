@@ -32,6 +32,7 @@ jobs:
       XPRS_LIB_Path: ${{ github.workspace }}\xpress\lib
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+      VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
 
     outputs:
       zip_name: ${{ steps.zip_name.outputs.zip_name }}
@@ -126,12 +127,6 @@ jobs:
       - name: Build
         run: |
           cmake --build _build --config Release -j4
-
-      - run: |
-          ls
-          echo "---------"
-          ls ${{ github.workspace }}
-        if: always()
 
       - name: Cache vcpkg binary dir
         if: always()
