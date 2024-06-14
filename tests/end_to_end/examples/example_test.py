@@ -1,15 +1,15 @@
-from enum import Enum
-import os
-from pathlib import Path
-import sys
-import shutil
 import json
+import os
+import shutil
+import subprocess
+import sys
 import zipfile
+from enum import Enum
+from pathlib import Path
 
 import numpy as np
-import subprocess
-
 import pytest
+
 from src.python.antares_xpansion.candidates_reader import CandidatesReader
 
 ALL_STUDIES_PATH = Path("../../../data_test/examples")
@@ -60,10 +60,11 @@ def launch_xpansion(install_dir, study_path, allow_run_as_root=False, nproc: int
     ]
     if allow_run_as_root == "True":
         command.append("--allow-run-as-root")
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=None)
-    output = process.communicate()
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=None, errors="utf-8")
+    [output, error] = process.communicate()
     if process.returncode != 0:
         print(output)
+        print(error)
 
     # Check return value
     assert process.returncode == 0
