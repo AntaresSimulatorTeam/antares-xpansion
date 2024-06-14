@@ -1,0 +1,27 @@
+name: Publish docker image
+
+on:
+  workflow_dispatch:
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+
+jobs:
+  docker_publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@master
+        with:
+          fetch-depth: 0
+
+      - name: Docker file push
+        id: docker_push
+        uses: elgohr/Publish-Docker-Github-Action@main
+        with:
+          name: antaresrte/xpansion-centos7
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+          workdir: docker
+          dockerfile: centos7-system-deps
+          cache: false
+          tags: latest,1.0.0
