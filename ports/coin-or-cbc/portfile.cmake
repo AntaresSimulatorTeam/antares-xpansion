@@ -5,6 +5,7 @@ vcpkg_from_github(
         SHA512 d9d563b7af6102ba29c522cabf983ebde31a38f7010f578bc0dca258e63245c92b975fd0a3d5b96c7eeba886034b1e188d1399eb0d67769e0fa560c23e088ebf
         HEAD_REF master
 )
+vcpkg_check_linkage(ONLY_STATIC_LIBRARY)
 
 vcpkg_cmake_configure(
         SOURCE_PATH "${SOURCE_PATH}"
