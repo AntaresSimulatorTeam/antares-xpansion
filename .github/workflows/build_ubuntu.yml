@@ -113,7 +113,7 @@ jobs:
 
       - name: vcpkg install
         run: |
-          git submodule update --init vcpkg
+          git submodule update --remote --init vcpkg
           pushd vcpkg
           git pull
           ./bootstrap-vcpkg.sh -disableMetrics
