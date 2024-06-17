@@ -57,10 +57,8 @@ jobs:
       - name: vcpkg install
         shell: bash
         run: |
-          mkdir -p ${{ github.workspace }}/vcpkg_cache
-          pushd vcpkg
-          git fetch --unshallow
-          ./bootstrap-vcpkg.sh --disableMetrics
+          git submodule update --init vcpkg
+          ./vcpkg/bootstrap-vcpkg.sh --disableMetrics
 
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary

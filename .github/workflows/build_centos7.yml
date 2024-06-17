@@ -131,13 +131,6 @@ jobs:
           os: centos7
           os-full-name: CentOS-7.9.2009
 
-      - run: |
-          ls 
-          echo " 3 --------------"
-          ls ${GITHUB_WORKSPACE}
-          echo " 4 ----------------"
-          ls ${GITHUB_WORKSPACE}/deps
-
       - name: Compile tbb
         uses: ./.github/workflows/compile-tbb
 
@@ -148,14 +141,10 @@ jobs:
           pip3 install -r requirements-tests.txt
           pip3 install -r requirements-ui.txt
 
-      - run: |
-          mkdir -p ${{ github.workspace }}/vcpkg_cache
-
       - name: vcpkg install
         run: |
-          pushd vcpkg
-          git fetch --unshallow
-          ./bootstrap-vcpkg.sh --disableMetrics
+          git submodule update --init vcpkg
+          ./vcpkg/bootstrap-vcpkg.sh --disableMetrics
 
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
