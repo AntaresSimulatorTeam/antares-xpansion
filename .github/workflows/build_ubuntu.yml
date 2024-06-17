@@ -160,6 +160,13 @@ jobs:
           path: ${{ github.workspace }}/vcpkg_cache
           key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
 
+      - name: Cache build in case of error
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: build
+          path: _build
+
       #######################
       - name: Install
         run: |
