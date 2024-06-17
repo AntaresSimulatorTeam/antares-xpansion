@@ -114,14 +114,9 @@ jobs:
       - name: vcpkg install
         run: |
           git submodule update --remote --init vcpkg
-          git fetch --unshallow
           pushd vcpkg
-          git log
-          git fetch
-          git pull
-          git log
+          git fetch --unshallow
           ./bootstrap-vcpkg.sh -disableMetrics
-          git show f7423ee180c4b7f40d43402c2feb3859161ef625
 
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
@@ -164,13 +159,6 @@ jobs:
         with:
           path: ${{ github.workspace }}/vcpkg_cache
           key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
-
-      - name: Cache build in case of error
-        if: failure()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build
-          path: _build
 
       #######################
       - name: Install
