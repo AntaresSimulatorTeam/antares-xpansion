@@ -49,6 +49,12 @@ jobs:
           ref: ${{ matrix.xprs.ref}}
           token: ${{ secrets.AS_TOKEN }} #reniew token periodically
 
+      - name: Install mandatory system libraries
+        run: |
+          sudo apt-get update --fix-missing
+          sudo apt-get install -y ccache libtbb-dev
+          sudo apt-get install -y g++-10 gcc-10
+
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.3
         with:
@@ -65,12 +71,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-tests.txt
           pip install -r requirements-ui.txt
-
-      - name: Install mandatory system libraries
-        run: |
-          sudo apt-get update --fix-missing
-          sudo apt-get install -y ccache libtbb-dev
-          sudo apt-get install -y g++-10 gcc-10
 
       - name: Update alternatives
         #mpicxx  uses "g++" so we need g++ to be symbolic link to g++-10
@@ -114,7 +114,7 @@ jobs:
       - name: vcpkg install
         run: |
           git submodule update --init vcpkg
-          ./vcpkg/bootstrap-vcpkg.sh --disableMetrics
+          ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
 
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
