@@ -144,7 +144,7 @@ jobs:
       - name: vcpkg install
         run: |
           git submodule update --init vcpkg
-          ./vcpkg/bootstrap-vcpkg.sh --disableMetrics
+          ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
 
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
