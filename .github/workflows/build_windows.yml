@@ -89,6 +89,7 @@ jobs:
         run: |
           git submodule update --remote --init vcpkg
           pushd vcpkg
+          git fetch --unshallow
           ./bootstrap-vcpkg.bat -disableMetrics
 
       - name: Restore vcpkg binary dir from cache
