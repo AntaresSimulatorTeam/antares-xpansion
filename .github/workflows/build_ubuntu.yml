@@ -120,6 +120,7 @@ jobs:
           git pull
           git log
           ./bootstrap-vcpkg.sh -disableMetrics
+          git show eb0f108ebd674c6ed79acb1c2e123208c416af0d
 
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
