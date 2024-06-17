@@ -70,11 +70,6 @@ class FullRunDriver:
             self.full_command(), shell=False, stdout=sys.stdout, stderr=sys.stderr,
             encoding='utf-8')
         if ret.returncode != 0:
-            print(f"ERROR: exited {self.full_exe} with status {ret.returncode}")
-            print(f"output is {ret.stdout}")
-            print(f"err is {ret.stderr}")
-            print(f"output is {sys.stdout}")
-            print(f"err is {sys.stderr}")
             raise FullRunDriver.FullRunExecutionError(
                 f"ERROR: exited {self.full_exe} with status {ret.returncode}"
             )
