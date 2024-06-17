@@ -115,7 +115,10 @@ jobs:
         run: |
           git submodule update --remote --init vcpkg
           pushd vcpkg
+          git log
+          git fetch
           git pull
+          git log
           ./bootstrap-vcpkg.sh -disableMetrics
 
       - name: Restore vcpkg binary dir from cache
@@ -161,7 +164,7 @@ jobs:
           key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
 
       - name: Cache build in case of error
-        if: always()
+        if: failure()
         uses: actions/upload-artifact@v4
         with:
           name: build
