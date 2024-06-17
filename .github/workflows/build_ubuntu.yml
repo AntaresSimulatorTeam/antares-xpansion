@@ -114,14 +114,13 @@ jobs:
       - name: vcpkg install
         run: |
           git submodule update --remote --init vcpkg
-          git fetch --unshallow
           pushd vcpkg
           git log
           git fetch
           git pull
           git log
           ./bootstrap-vcpkg.sh -disableMetrics
-          git show eb0f108ebd674c6ed79acb1c2e123208c416af0d
+          git show f7423ee180c4b7f40d43402c2feb3859161ef625
 
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
