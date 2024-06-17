@@ -9,6 +9,7 @@
   },
   "dependencies": [
     "jsoncpp",
+    "tbb",
     "gtest",
     "gflags",
     "coin-or-cbc",
