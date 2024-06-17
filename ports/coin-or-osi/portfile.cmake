@@ -5,19 +5,11 @@ vcpkg_from_github(
         SHA512 fb173c04e3920c863e4d29e202cbaf182ee21332dc05ce293ffc39ead1b124f86f9682cc12032d216a712ea9aa3d0c98176bcbcd1b217e93afc6ce5a1ced68ed
         HEAD_REF master
 )
-if(MSVC OR WIN32)
-    message(WARNING "BUILDING FOR MSVC WITH SHARED LIBS")
-    vcpkg_cmake_configure(
-            SOURCE_PATH "${SOURCE_PATH}"
-            OPTIONS
-            "-DCMAKE_PROJECT_INCLUDE=${CMAKE_CURRENT_LIST_DIR}/static_patch.cmake"
+vcpkg_check_linkage(ONLY_STATIC_LIBRARY)
 
-    )
-else ()
 vcpkg_cmake_configure(
         SOURCE_PATH "${SOURCE_PATH}"
 )
-endif ()
 
 vcpkg_cmake_install()
 
