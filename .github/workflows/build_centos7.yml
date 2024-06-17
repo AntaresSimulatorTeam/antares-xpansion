@@ -143,6 +143,7 @@ jobs:
 
       - name: vcpkg install
         run: |
+          git config --global --add safe.directory .
           git submodule update --remote --init vcpkg
           pushd vcpkg
           git fetch --unshallow
