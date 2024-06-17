@@ -114,6 +114,7 @@ jobs:
       - name: vcpkg install
         run: |
           git submodule update --remote --init vcpkg
+          git fetch --unshallow
           pushd vcpkg
           git log
           git fetch
