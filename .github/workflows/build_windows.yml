@@ -77,7 +77,7 @@ jobs:
           path: 'antares-version.json'
           key: 'antares_version'
 
-      - name: vcpkg install
+      - name: vcpkg insta
         shell: bash
         run: |
           git submodule update --remote --init vcpkg
