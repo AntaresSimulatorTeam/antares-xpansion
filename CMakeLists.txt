@@ -14,14 +14,14 @@ set(ANTARES_XPANSION_RC 5)
 # ===========================================================================
 # Default parameters
 # ===========================================================================
-
+message(WARNING "Install prefix is ${CMAKE_INSTALL_PREFIX}")
 if (MSVC)
 	cmake_policy(SET CMP0111 OLD) #To remove warning for not found configuration on MSVC
 endif ()
 
 if (CMAKE_TOOLCHAIN_FILE)
 	if(NOT IS_ABSOLUTE ${CMAKE_TOOLCHAIN_FILE})
-		SET(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_TOOLCHAIN_FILE})
+		SET(CMAKE_TOOLCHAIN_FILE                                                                                                                                                                                                                                      ${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_TOOLCHAIN_FILE})
 	endif()
 endif()
 
@@ -188,6 +188,10 @@ endif()
 
 set(CMAKE_FIND_DEBUG_MODE TRUE)
 find_package(sirius_solver REQUIRED)
+install(FILES
+		$<TARGET_FILE:sirius_solver>
+		DESTINATION bin
+)
 set(CMAKE_FIND_DEBUG_MODE FALSE)
 if (SOLVER)
 	if (SOLVER STREQUAL "xpress")
