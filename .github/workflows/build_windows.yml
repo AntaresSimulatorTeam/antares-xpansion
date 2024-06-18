@@ -83,6 +83,12 @@ jobs:
         with:
           path: 'antares-version.json'
           key: 'antares_deps_version'
+      - name: Read antares-xpansion version
+        id: antares-xpansion-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_xpansion_version'
 
       - name: vcpkg install
         shell: bash
