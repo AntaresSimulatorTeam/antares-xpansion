@@ -212,12 +212,12 @@ jobs:
         name: Single file .tar.gz creation
         uses: ./.github/workflows/single-file-creation-tgz
         with:
-          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
+          antares-xpansion-version: ${{needs.versions.outputs.antares-xpansion-version}}
 
       - name: Installer .tar.gz creation
         run: |
           cd _build
-          export FILE_NAME="antaresXpansion-${{steps.antares-xpansion-version.outputs.result}}-CentOS-7.9.2009"
+          export FILE_NAME="antaresXpansion-${{needs.versions.outputs.antares-xpansion-version}}-CentOS-7.9.2009"
           cpack -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
           #Need to differentiate between xpress/no_xpress files
           #Cpack command line doesn't seem to care about -P or -R options
