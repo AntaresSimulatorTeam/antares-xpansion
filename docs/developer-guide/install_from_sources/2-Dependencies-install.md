@@ -8,7 +8,6 @@ Antares-Xpansion depends on several mandatory libraries:
 - [Boost](https://www.boost.org/) : MPI serialization (only for MPI benders compilation), program-options,
 - [Doxygen](https://www.doxygen.nl/index.html) for documentation generation,
 - [GraphViz](https://graphviz.org/) for Doxygen use.
-- [TBB](https://github.com/oneapi-src/oneTBB) for execution policy and parallelization
 
 This section describes the install procedures for the third-party open source libraries used by Antares-Xpansion.
 The install procedure can be done:
@@ -45,7 +44,7 @@ The install procedure can be done:
     3. Install dependencies:
         ```
         cd vcpkg
-        vcpkg install jsoncpp gtest boost-mpi boost-program-options tbb --triplet <vcpkg-triplet> 
+        vcpkg install jsoncpp gtest boost-mpi boost-program-options --triplet <vcpkg-triplet> 
         ```
         
         !!! Note
@@ -64,23 +63,10 @@ The install procedure can be done:
     sudo yum install libuuid-devel
     ```
 
-=== "Centos (other dependencies)"
-
-    Antares-Xpansion depends on 2018 <= TBB <= 2020 for libstdc++9 compatibility but centos7 only provide 2013 version. TBB can be build from source using the [official source code compatible branch](https://github.com/oneapi-src/oneTBB/tree/tbb_2020)
-    Unfortuanatly the compilation and installation of the official source code can be tedious. One alternative is to trust a third party repository which provide cmake build system for TBB.
-    We propose to use the following [third party repository](https://github.com/wjakob/tbb.git) installation procedure
-    
-    git clone https://github.com/wjakob/tbb.git
-    cd tbb/build
-    cmake3 ..
-    cmake3 --build . --target install -j8
-
-    Include and libraries will be installed in /usr/local
-    
 === "Ubuntu (apt-get)"
 
     ```
-    sudo apt-get install lsb-release libjsoncpp-dev libgtest-dev libboost-mpi-dev doxygen graphviz libboost-program-options-dev libtbb-dev
+    sudo apt-get install lsb-release libjsoncpp-dev libgtest-dev libboost-mpi-dev doxygen graphviz libboost-program-options-dev
     sudo apt-get install unzip uuid-dev
     ```
     !!! Note

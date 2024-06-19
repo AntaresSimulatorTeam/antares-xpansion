@@ -15,7 +15,7 @@ This disparity is further enhanced by the unavailability of some dependencies in
 ## Decision
 
 We should strive to use only one methode to manage dependencies. We choose to use vcpkg for all dependencies.
-In some case we will have to create custom vcpkg ports for dependencies that are not available in vcpkg.
+In some cases, we will have to create custom vcpkg ports for dependencies that are not available in vcpkg.
 
 ## Consequences
 
@@ -25,9 +25,7 @@ In some case we will have to create custom vcpkg ports for dependencies that are
 
 ## Limitations
 
-- TBB: TBB as been rebranded as oneTBB. The new API is not supported by GCC 10 standard implementation.
-To use oneTBB we would either need to upgrade and impose a new compiler or use oneDPL library.
-If a port of oneTBB exists, there is no port for oneDPL despite some effort to do so (https://github.com/microsoft/vcpkg/pull/25174)
-- Some dependencies (sirius) are not first degree dependencies but N-degree, mainly for simulator. While a custom port or registry of Antares Simulator is build
-we need manage those dependencies.
-- Ortools is difficult to port to vcpkg. Work in progress.
+- Some dependencies (sirius) are not first degree dependencies but N-degree, mainly for simulator.
+  While a custom port or registry of Antares Simulator is build,
+we need to manage those dependencies.
+- Ortools is challenging to port to vcpkg. Work in progress.

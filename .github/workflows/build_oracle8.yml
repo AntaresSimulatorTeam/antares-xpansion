@@ -104,9 +104,6 @@ jobs:
           os: Oracle8
           os-full-name: OracleServer-8.10
 
-      - name: Compile TBB
-        uses: ./.github/workflows/compile-tbb
-
       - name: vcpkg install
         run: |
           git config --global safe.directory '*'
