@@ -1,5 +1,8 @@
 var NAVTREEINDEX6 =
 {
+"md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md204":[22,1,0],
+"md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md205":[22,1,1],
+"md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md206":[22,1,2],
 "namespaceantares__xpansion.html":[23,0,0],
 "namespaceantares__xpansion_1_1antares__driver.html":[23,0,0,0],
 "namespaceantares__xpansion_1_1benders__driver.html":[23,0,0,1],

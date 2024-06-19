@@ -134,7 +134,7 @@ $(document).ready(function(){initNavTree('md_docs_2developer-guide_2install__fro
   <div class="headertitle"><div class="title">Dependencies install</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md65"></a> Antares-Xpansion depends on several mandatory libraries:</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md68"></a> Antares-Xpansion depends on several mandatory libraries:</p>
 <ul>
 <li><a href="https://github.com/open-source-parsers/jsoncpp">JsonCpp</a>,</li>
 <li><a href="https://github.com/google/googletest">Google Test</a>,</li>
@@ -149,7 +149,7 @@ $(document).ready(function(){initNavTree('md_docs_2developer-guide_2install__fro
 <li>By using a package manager,</li>
 <li>By compiling the sources after cloning the official git repository.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md66"></a>
+<h1><a class="anchor" id="autotoc_md69"></a>
 Install with a package manager</h1>
 <p>=== "Windows (VCPKG)" </p><pre class="fragment">For Windows we use [vcpkg](https://github.com/microsoft/vcpkg) to download and compile the libraries. `vcpkg` is available as a submodule in Antares-Xpansion.
 
@@ -212,18 +212,18 @@ sudo apt-get install unzip uuid-dev
     sudo cmake .
     sudo cmake --build . --target install
     ```
-</pre> <h1><a class="anchor" id="autotoc_md67"></a>
+</pre> <h1><a class="anchor" id="autotoc_md70"></a>
 Automatic libraries compilation from git</h1>
 <p><a href="https://github.com/AntaresSimulatorTeam/antares-deps">Antares dependencies compilation repository</a> is used as a git submodule for automatic libraries compilation from git.</p>
 <p>ALL dependencies can be built at configure time using the option <code>-DBUILD_ALL=ON</code> (<code>OFF</code> by default), see <a href="3-Build.md#configure">here</a>. For a list of available option see <a href="https://github.com/AntaresSimulatorTeam/antares-deps">Antares dependencies compilation repository</a>.</p>
 <p>Some dependencies cannot be installed with a package manager. They can be built at configure step with a <code>cmake</code> option : <code>-DBUILD_not_system=ON</code> (<code>ON</code> by default):</p>
 <p>!!! warning <code>boost-mpi</code> is not compiled with this repository. On windows, VCPKG use is mandatory or you must compile <code>boost-mpi</code> by yourself.</p>
-<h2><a class="anchor" id="autotoc_md68"></a>
+<h2><a class="anchor" id="autotoc_md71"></a>
 Defining dependency install directory</h2>
 <p>When using multiple directories for Antares development with multiple branches it can be useful to have a common dependency install directory.</p>
 <p>Dependencies install directory can be specified with <code>-DDEPS_INSTALL_DIR</code>. By default, the install directory is <code>&lt;antares_xpansion_checkout_dir&gt;/../rte-antares-deps-&lt;build_type&gt;</code>.</p>
 <p>!!! Note <code>DEPS_INSTALL_DIR</code> is added to <code>CMAKE_PREFIX_PATH</code>.</p>
-<h2><a class="anchor" id="autotoc_md69"></a>
+<h2><a class="anchor" id="autotoc_md72"></a>
 Pre-compiled libraries download : release version only</h2>
 <p>You can download pre-compiled <code>antares-deps</code> archive from the <a href="https://github.com/AntaresSimulatorTeam/antares-deps/releases/tag/v2.0.0-rc2">Antares dependencies compilation repository</a>. Only release versions are available.</p>
 <p>!!! Note For windows, you must you use a MSVC version compatible with the MSVC version used in GitHub Action. </p>

@@ -134,8 +134,8 @@ $(document).ready(function(){initNavTree('md_docs_2user-guide_2get-started_2prep
   <div class="headertitle"><div class="title">Set up an Antares-Xpansion study</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md150"></a> </p>
-<h1><a class="anchor" id="autotoc_md151"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md153"></a> </p>
+<h1><a class="anchor" id="autotoc_md154"></a>
 Overview</h1>
 <p>The Antares-Xpansion package is based on the Antares software and its data format.</p>
 <p>Antares-Xpansion is based on an already existing Antares study. Some of the capacities of this study, usually fixed as input in the Antares paradigm, will be optimized by the investment optimization module of the Antares-Xpansion package.</p>
@@ -158,7 +158,7 @@ Overview</h1>
 <div class="line">│       │   ...</div>
 </div><!-- fragment --><p> <b>Figure 1</b> - Structure of an Antares study folder ready for an Antares-Xpansion optimization</p>
 <p>Depending on the type of investment considered in the study, some modifications of the Antares study are necessary before filling the <code>candidates.ini</code> and <code>settings.ini</code> files.</p>
-<h1><a class="anchor" id="autotoc_md152"></a>
+<h1><a class="anchor" id="autotoc_md155"></a>
 Prepare the Antares study</h1>
 <p>The first step to set up an Antares-Xpansion study consists in defining investment candidates. <b><a class="el" href="classCandidate.html" title="Candidate class.">Candidate</a> capacities for investment are necessarily links from an Antares study</b>. Investment candidates can be generation assets, or even flexibilities, by adopting a virtual node logic as described below.</p>
 <table class="markdownTable">
@@ -175,14 +175,14 @@ Prepare the Antares study</h1>
 <li>Renewable generation capacity</li>
 <li>Flexibility</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md153"></a>
+<h2><a class="anchor" id="autotoc_md156"></a>
 Investment in transmission capacity between two areas</h2>
 <p>The Antares link candidate for investment, shown in red in <b>Figure 3 (a)</b>, is directly the interconnection for which the interest in increasing capacity is being studied.</p>
 <ul>
 <li>In the case of the construction of a new line, a link must be added in the Antares study between the two involved areas.</li>
 <li>In the case of a grid reinforcement between two already interconnected areas, the link between these two areas already exists in the Antares study. The parameter <a href="candidate-definition.md#already-installed-capacity"><code>already-installed-capacity</code></a> will be used in the <code>candidates.ini</code> file to specify the capacity of the grid that already exists between the two zones. In this way, Antares-Xpansion will assess the economic interest of increasing this capacity beyond what is already installed.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md154"></a>
+<h2><a class="anchor" id="autotoc_md157"></a>
 Investment in thermal generation capacity</h2>
 <p>Suppose that the thermal generation capacity subject to expansion is physically located in <code>area1</code> for the example in <b>Figure 3 (b)</b>. As Antares-Xpansion only performs investment through links of the study, the modelling trick consists in creating a virtual node, here <code>invest_semibase</code>, connected to the physical node <code>area1</code>. The Antares link of the investment candidate is the link between these two nodes.</p>
 <p>The generation unit, candidate for investment, must be defined by a thermal cluster with the following technical and economic parameters:</p>
@@ -205,7 +205,7 @@ Other cluster parameters (&lt;em&gt;pmin&lt;/em&gt;, &lt;em&gt;start-up costs&lt
 defined. However, they will only be taken into account by
 Antares-Xpansion if the unit-commitment type is set to &lt;a href="settings-definition.md#uc_type" &gt;&lt;tt&gt;expansion_accurate&lt;/tt&gt;&lt;/a&gt;.
 
-@subsection autotoc_md155 Investment in renewable generation capacity
+@subsection autotoc_md158 Investment in renewable generation capacity
 
 Similarly as for thermal generation, the renewable
 generation capacity subject to expansion, physically located for the
@@ -220,7 +220,7 @@ potential&lt;/strong&gt; (&lt;tt&gt;max-investment&lt;/tt&gt;) of the candidate.
 parameters &lt;a href="candidate-definition.md#indirect-link-profile" &gt;&lt;tt&gt;[in]direct-link-profile&lt;/tt&gt;&lt;/a&gt; from the &lt;tt&gt;candidates.ini&lt;/tt&gt; file will then be used to define the
 hourly load factor.
 
-@subsection autotoc_md156 Investment in flexibility
+@subsection autotoc_md159 Investment in flexibility
 
 The modeling of flexibilities, such as pumped storage, is generally based in Antares
 on a set of virtual nodes/links and coupling constraints. To make
@@ -240,11 +240,11 @@ positive &lt;tt&gt;ROW Balance&lt;/tt&gt; in &lt;tt&gt;psp-out&lt;/tt&gt; and th
 
 &lt;img src="../../assets/media/image9.png" alt=""/&gt;
 
-@subsection autotoc_md157 Decommissioning decisions for thermal capacities
+@subsection autotoc_md160 Decommissioning decisions for thermal capacities
 
 With Antares-Xpansion, it is possible to consider decommissioning decisions, the corresponding assets are referred as &lt;em&gt;decommissioning candidates&lt;/em&gt;. The difference between &lt;em&gt;investment candidates&lt;/em&gt; and &lt;em&gt;decommissioning candidates&lt;/em&gt; lies in the fixed-cost annuity.
 
-@subsubsection autotoc_md158 Fixed-cost annuity for investment candidates
+@subsubsection autotoc_md161 Fixed-cost annuity for investment candidates
 
 The annuity of an &lt;em&gt;investment candidate&lt;/em&gt; includes the sum of:
 
@@ -255,7 +255,7 @@ In this configuration, Antares-Xpansion makes an economic choice by comparing th
 costs (mainly fuel costs and penalties associated with loss of load)
 due to the new investment.
 
-@subsubsection autotoc_md159 Fixed-cost annuity for decommissioning candidates
+@subsubsection autotoc_md162 Fixed-cost annuity for decommissioning candidates
 
 The annuity for &lt;em&gt;decommissioning candidates&lt;/em&gt; only includes the fixed annual
 operation and maintenance costs. There is indeed no investment cost, since the decision consists only in choosing whether to maintain operation with the associated maintenance costs.
@@ -279,7 +279,7 @@ The decommissioning decision is made in Antares-Xpansion through the capacity of
 
 Details on how to fill in the file &lt;tt&gt;candidates.ini&lt;/tt&gt; for &lt;em&gt;decommissioning candidates&lt;/em&gt; are given in the &lt;a href="candidate-definition.md#decommissioning-candidates" &gt;next part&lt;/a&gt;.
 
-@subsection autotoc_md160 Additional characteristics for links of investment candidates
+@subsection autotoc_md163 Additional characteristics for links of investment candidates
 
 In the four aforementioned cases, the link used to define investment
 candidates (in red in &lt;strong&gt;Figure 3&lt;/strong&gt;):
