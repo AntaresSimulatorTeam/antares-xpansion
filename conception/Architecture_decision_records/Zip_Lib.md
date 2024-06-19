@@ -4,11 +4,11 @@ This ADR aims to select the library that will be used to manage MPS files in ZIP
 
 Status
 === 
-[minizip-ng](https://github.com/zlib-ng/minizip-ng): Accepted [08/2022]
+[minizip-ng](https://github.com/zlib-ng/minizip-ng): Deprecated [06/2024] by [Create_custom_vcpkg_ports_for_deps.md](Create_custom_vcpkg_ports_for_deps.md)
 
 Context
 ===
-Mps files produced by both Antares Simulator and Xpansion can have a signicant weigths on disk space. It's has been proven that putting them in an archive does not alterate Antares and Xpansion algorithms and naturaly resulting zipped files has a less demand on disk space.
+Mps files produced by both Antares Simulator and Xpansion can have a signicant weigths on disk space. It has been proven that putting them in an archive does not alterate Antares and Xpansion algorithms and naturaly resulting zipped files has a less demand on disk space.
 
 Decision
 ===
