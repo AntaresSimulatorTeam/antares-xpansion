@@ -49,7 +49,7 @@ jobs:
       - name: Install libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install g++-10 gcc-10
+          sudo apt-get install g++-10 gcc-10 libgtest-dev
           cd /usr/src/googletest/
           sudo cmake .
           sudo cmake --build . --target install
