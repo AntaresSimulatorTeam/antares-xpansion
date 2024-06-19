@@ -111,7 +111,7 @@ jobs:
           antares-deps-version: ${{needs.versions.outputs.antares-deps-version}}
           antares-version: ${{needs.versions.outputs.antares-version}}
           os: Oracle8
-          os-full-name: OracleServer-8.9
+          os-full-name: OracleServer-8.10
 
       - name: Compile TBB
         uses: ./.github/workflows/compile-tbb
@@ -176,7 +176,7 @@ jobs:
       - name: .tar.gz creation
         run: |
           cd _build
-          export FILE_NAME="antaresXpansion-${{needs.versions.outputs.antares-xpansion-version}}-OracleServer-8.9"
+          export FILE_NAME="antaresXpansion-${{needs.versions.outputs.antares-xpansion-version}}-OracleServer-8.10"
           cpack -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
           echo "TGZ_NAME=$FILE_NAME.tar.gz" >> $GITHUB_ENV
 
