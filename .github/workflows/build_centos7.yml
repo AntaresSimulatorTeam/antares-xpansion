@@ -140,9 +140,6 @@ jobs:
           os: centos7
           os-full-name: CentOS-7.9.2009
 
-      - name: Compile tbb
-        uses: ./.github/workflows/compile-tbb
-
       - name: Install dependencies
         run: |
           pip3 install --upgrade pip

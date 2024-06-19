@@ -49,7 +49,7 @@ jobs:
       - name: Install libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev libboost-program-options-dev libtbb-dev
+          sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev libboost-program-options-dev
           sudo apt-get install g++-10 gcc-10
           cd /usr/src/googletest/
           sudo cmake .
