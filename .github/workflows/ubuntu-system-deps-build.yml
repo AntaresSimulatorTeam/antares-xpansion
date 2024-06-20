@@ -39,7 +39,7 @@ jobs:
       - name: Install mandatory system libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install
+          sudo apt-get install g++-10 gcc-10
 
       - uses: lukka/get-cmake@latest
         with:
