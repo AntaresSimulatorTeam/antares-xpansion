@@ -142,7 +142,6 @@ $(document).ready(function(){initNavTree('md_docs_2developer-guide_2install__fro
 <li><a href="https://www.boost.org/">Boost</a> : MPI serialization (only for MPI benders compilation), program-options,</li>
 <li><a href="https://www.doxygen.nl/index.html">Doxygen</a> for documentation generation,</li>
 <li><a href="https://graphviz.org/">GraphViz</a> for Doxygen use.</li>
-<li><a href="https://github.com/oneapi-src/oneTBB">TBB</a> for execution policy and parallelization</li>
 </ul>
 <p>This section describes the install procedures for the third-party open source libraries used by Antares-Xpansion. The install procedure can be done:</p>
 <ul>
@@ -176,7 +175,7 @@ Install with a package manager</h1>
 3. Install dependencies:
     ```
     cd vcpkg
-    vcpkg install jsoncpp gtest boost-mpi boost-program-options tbb --triplet &lt;vcpkg-triplet&gt; 
+    vcpkg install jsoncpp gtest boost-mpi boost-program-options --triplet &lt;vcpkg-triplet&gt; 
     ```
 
     !!! Note
@@ -191,18 +190,8 @@ sudo yum install
 sudo yum install environment-modules jsoncpp-devel gtest-devel openmpi-devel boost-openmpi-devel boost-program-options doxygen graphviz redhat-lsb-core
 sudo yum install libuuid-devel
 ```
-</pre><p> === "Centos (other dependencies)" </p><pre class="fragment">Antares-Xpansion depends on 2018 &lt;= TBB &lt;= 2020 for libstdc++9 compatibility but centos7 only provide 2013 version. TBB can be build from source using the [official source code compatible branch](https://github.com/oneapi-src/oneTBB/tree/tbb_2020)
-Unfortuanatly the compilation and installation of the official source code can be tedious. One alternative is to trust a third party repository which provide cmake build system for TBB.
-We propose to use the following [third party repository](https://github.com/wjakob/tbb.git) installation procedure
-
-git clone https://github.com/wjakob/tbb.git
-cd tbb/build
-cmake3 ..
-cmake3 --build . --target install -j8
-
-Include and libraries will be installed in /usr/local
 </pre><p> === "Ubuntu (apt-get)" </p><pre class="fragment">```
-sudo apt-get install lsb-release libjsoncpp-dev libgtest-dev libboost-mpi-dev doxygen graphviz libboost-program-options-dev libtbb-dev
+sudo apt-get install lsb-release libjsoncpp-dev libgtest-dev libboost-mpi-dev doxygen graphviz libboost-program-options-dev
 sudo apt-get install unzip uuid-dev
 ```
 !!! Note
