@@ -173,9 +173,9 @@ endif ()
 find_package(Threads REQUIRED)
 
 find_package(ZLIB REQUIRED) #Required for CoinUtils
-find_package(gflags REQUIRED)
+
 set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
-#find_package(gflags REQUIRED)
+find_package(gflags REQUIRED)
 find_package(Cbc REQUIRED)
 find_package(Cgl REQUIRED)
 find_package(Clp REQUIRED)
