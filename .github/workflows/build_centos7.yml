@@ -45,7 +45,6 @@ jobs:
     outputs:
       antares-version: ${{steps.antares-version.outputs.result}}
       antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
-      antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
     steps:
       - uses: actions/checkout@v4
       - name: Read antares-solver version
@@ -61,13 +60,6 @@ jobs:
         with:
           path: 'antares-version.json'
           key: 'antares_xpansion_version'
-
-      - name: Read antares-deps version
-        id: antares-deps-version
-        uses: ./.github/actions/read-json-value
-        with:
-          path: 'antares-version.json'
-          key: 'antares_deps_version'
 
   build:
     runs-on: ubuntu-latest
@@ -137,35 +129,14 @@ jobs:
           ref: ${{matrix.xprs.ref}}
         if: matrix.xprs.value == 'XPRESS-ON'
 
-      - name: Restore vcpkg and its artifacts.
-        uses: actions/cache@v3
-        with:
-          # The first path is the location of vcpkg (it contains the vcpkg executable and data files).
-          # The other paths starting with '!' are exclusions: they contain termporary files generated during the build of the installed packages.
-          path: |
-            ${{ env.VCPKG_ROOT }}
-            !${{ env.VCPKG_ROOT }}/buildtrees
-            !${{ env.VCPKG_ROOT }}/packages
-            !${{ env.VCPKG_ROOT }}/downloads
-          # The key is composed in a way that it gets properly invalidated: this must happen whenever vcpkg's Git commit id changes, or the list of packages changes. In this case a cache miss must happen and a new entry with a new key with be pushed to GitHub the cache service.
-          # The key includes: hash of the vcpkg.json file, the hash of the vcpkg Git commit id, and the used vcpkg's triplet. The vcpkg's commit id would suffice, but computing an hash out it does not harm.
-          # Note: given a key, the cache content is immutable. If a cache entry has been created improperly, in order the recreate the right content the key must be changed as well, and it must be brand new (i.e. not existing already).
-          key: |
-            ${{ hashFiles( 'vcpkg.json' ) }}-${{ hashFiles( '.git/modules/vcpkg/HEAD' )}}-${{ matrix.triplet }}
-
-
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
         with:
-          antares-deps-version: ${{needs.versions.outputs.antares-deps-version}}
           antares-version: ${{needs.versions.outputs.antares-version}}
           os: centos7
           os-full-name: CentOS-7.9.2009
           ortools-url: ${{env.ORTOOLS_URL}}
           ortools-dir: ${{env.ORTOOLS_DIR}}
-
-      - name: Compile tbb
-        uses: ./.github/workflows/compile-tbb
 
       - name: Install dependencies
         run: |
@@ -174,30 +145,32 @@ jobs:
           pip3 install -r requirements-tests.txt
           pip3 install -r requirements-ui.txt
 
-      - run: |
-          mkdir -p ${{ github.workspace }}/vcpkg_cache
-
       - name: vcpkg install
         run: |
+          git config --global safe.directory '*'
+          git submodule update --remote --init vcpkg
           pushd vcpkg
           git fetch --unshallow
-          ./bootstrap-vcpkg.sh --disableMetrics
+          ./bootstrap-vcpkg.sh -disableMetrics
+          echo "VCPKG_ROOT=$GITHUB_WORKSPACE/vcpkg" >> $GITHUB_ENV
+          echo "VCPKG_CACHE_DIR=$GITHUB_WORKSPACE/vcpkg_cache" >> $GITHUB_ENV
+          echo "VCPKG_BINARY_SOURCES=clear;files,$GITHUB_WORKSPACE/vcpkg_cache,readwrite" >> $GITHUB_ENV
 
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
         uses: actions/cache/restore@v3
         with:
-          path: ${{ github.workspace }}/vcpkg_cache
-          key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
+          path: ${{ env.VCPKG_CACHE_DIR }}
+          key: vcpkg-cache-centOS-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
           # Allows to restore a cache when deps have only partially changed (like adding a dependency)
-          restore-keys: vcpkg-cache-ubuntu-
+          restore-keys: vcpkg-cache-centOS-
 
       - name: Configure
         run: |
           source /opt/rh/devtoolset-10/enable
           cmake -B _build -S . \
-                 -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
                  -DBUILD_TESTING=ON \
+                 -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/deps \
                  -DCMAKE_BUILD_TYPE=Release \
                  -DCMAKE_INSTALL_PREFIX=_install \
                  -DCMAKE_PREFIX_PATH=${{env.ORTOOLS_DIR}}/install \
@@ -214,8 +187,8 @@ jobs:
         id: save-cache-vcpkg-binary
         uses: actions/cache/save@v3
         with:
-          path: ${{ github.workspace }}/vcpkg_cache
-          key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
+          path: ${{ env.VCPKG_CACHE_DIR }}
+          key: vcpkg-cache-centOS-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
 
       - name: Running unit tests
         timeout-minutes: 120
@@ -233,23 +206,16 @@ jobs:
           cd _build
           cmake --install .
 
-      - name: set name variables
-        id: single_file_name
-        shell: bash
-        run: |
-          VERSION=${{steps.antares-xpansion-version.outputs.result}}
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-
       - id: create-single-file
         name: Single file .tar.gz creation
         uses: ./.github/workflows/single-file-creation-tgz
         with:
-          antares-xpansion-version: ${{env.VERSION}}
+          antares-xpansion-version: ${{needs.versions.outputs.antares-xpansion-version}}
 
       - name: Installer .tar.gz creation
         run: |
           cd _build
-          export FILE_NAME="antaresXpansion-${{env.VERSION}}-CentOS-7.9.2009"
+          export FILE_NAME="antaresXpansion-${{needs.versions.outputs.antares-xpansion-version}}-CentOS-7.9.2009"
           cpack -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
           #Need to differentiate between xpress/no_xpress files
           #Cpack command line doesn't seem to care about -P or -R options

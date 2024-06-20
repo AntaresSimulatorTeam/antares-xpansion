@@ -16,6 +16,8 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-20.04 ]
+    env:
+      VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
 
     steps:
       - uses: actions/checkout@v4
@@ -39,7 +41,7 @@ jobs:
       - name: Install mandatory system libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install libtbb-dev
+          sudo apt-get install g++-10 gcc-10
 
       - uses: lukka/get-cmake@latest
         with:
@@ -71,9 +73,10 @@ jobs:
 
       - name: vcpkg install
         run: |
+          git submodule update --remote --init vcpkg
           pushd vcpkg
           git fetch --unshallow
-          ./bootstrap-vcpkg.sh --disableMetrics
+          ./bootstrap-vcpkg.sh -disableMetrics
 
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
@@ -110,7 +113,7 @@ jobs:
 
       - name: Running unit tests
         run: |
-          export PATH=${GITHUB_WORKSPACE}/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
+          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 

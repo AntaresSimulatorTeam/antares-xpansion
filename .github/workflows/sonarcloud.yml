@@ -18,6 +18,7 @@ jobs:
       matrix:
         os: [ ubuntu-20.04 ]
     env:
+      VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
       ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
 
     steps:
@@ -51,8 +52,7 @@ jobs:
       - name: Install libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev libboost-program-options-dev libtbb-dev
-          sudo apt-get install g++-10 gcc-10
+          sudo apt-get install g++-10 gcc-10 libgtest-dev
           cd /usr/src/googletest/
           sudo cmake .
           sudo cmake --build . --target install
@@ -81,13 +81,6 @@ jobs:
           path: 'antares-version.json'
           key: 'antares_xpansion_version'
 
-      - name: Read antares-deps version
-        id: antares-deps-version
-        uses: ./.github/actions/read-json-value
-        with:
-          path: 'antares-version.json'
-          key: 'antares_deps_version'
-
       - name: Config OR-Tools URL
         shell: bash
         run: |
@@ -96,29 +89,20 @@ jobs:
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
         with:
-          antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
           antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
           os-full-name: Ubuntu-20.04
           ortools-url: ${{env.ORTOOLS_URL}}
           ortools-dir: ${{env.ORTOOLS_DIR}}
 
-      - name: Compile Boost
-        uses: ./.github/workflows/compile-boost
-        with:
-          prefix: "../rte-antares-deps-Release/"
-
       - name: Init submodule
         run: |
           git submodule update --init --recursive .
-          
-      - run: |
-          mkdir -p ${{ github.workspace }}/vcpkg_cache
 
       - name: vcpkg install
         run: |
-          pushd vcpkg
-          ./bootstrap-vcpkg.sh --disableMetrics
+          git submodule update --init vcpkg
+          ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
 
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
@@ -137,13 +121,12 @@ jobs:
           -DCMAKE_C_COMPILER=/usr/bin/gcc-10 \
           -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
           -DCMAKE_CXX_COMPILER=/usr/bin/g++-10 \
-          -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
           -DCODE_COVERAGE=ON \
           -DBUILD_TESTING=ON \
           -DBUILD_antares_solver=OFF \
           -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_PREFIX_PATH="${{ github.workspace }}/deps;${{env.ORTOOLS_DIR}}/install" \
           -DCMAKE_INSTALL_PREFIX=_install \
-          -DCMAKE_PREFIX_PATH=${{env.ORTOOLS_DIR}}/install \
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
           -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 

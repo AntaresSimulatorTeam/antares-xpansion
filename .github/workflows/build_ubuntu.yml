@@ -30,6 +30,7 @@ jobs:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
       XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
+      VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
       ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
 
     outputs:
@@ -50,8 +51,11 @@ jobs:
           ref: ${{ matrix.xprs.ref}}
           token: ${{ secrets.AS_TOKEN }} #reniew token periodically
 
-      - run: |
-          sudo apt-get update
+      - name: Install mandatory system libraries
+        run: |
+          sudo apt-get update --fix-missing
+          sudo apt-get install -y ccache
+          sudo apt-get install -y g++-10 gcc-10
 
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.3
@@ -69,12 +73,6 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-tests.txt
           pip install -r requirements-ui.txt
-
-      - name: Install mandatory system libraries
-        run: |
-          sudo apt-get update --fix-missing
-          sudo apt-get install -y ccache libtbb-dev
-          sudo apt-get install -y g++-10 gcc-10
 
       - name: Update alternatives
         #mpicxx  uses "g++" so we need g++ to be symbolic link to g++-10
@@ -105,13 +103,6 @@ jobs:
           path: 'antares-version.json'
           key: 'antares_xpansion_version'
 
-      - name: Read antares-deps version
-        id: antares-deps-version
-        uses: ./.github/actions/read-json-value
-        with:
-          path: 'antares-version.json'
-          key: 'antares_deps_version'
-
       - name: Config OR-Tools URL
         run: |
           echo "ORTOOLS_URL=https://github.com/rte-france/or-tools/releases/download/v9.8-rte1.0/ortools_cxx_ubuntu-20.04_static_sirius.zip" >> $GITHUB_ENV
@@ -119,21 +110,18 @@ jobs:
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
         with:
-          antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
           antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
           os-full-name: Ubuntu-20.04
           ortools-url: ${{env.ORTOOLS_URL}}
           ortools-dir: ${{env.ORTOOLS_DIR}}
 
-      - run: |
-          mkdir -p ${{ github.workspace }}/vcpkg_cache
-
       - name: vcpkg install
         run: |
+          git submodule update --remote --init vcpkg
           pushd vcpkg
           git fetch --unshallow
-          ./bootstrap-vcpkg.sh --disableMetrics
+          ./bootstrap-vcpkg.sh -disableMetrics
 
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
@@ -152,11 +140,10 @@ jobs:
                 -DCMAKE_C_COMPILER=/usr/bin/gcc-10 \
                 -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
                 -DCMAKE_CXX_COMPILER=/usr/bin/g++-10 \
-                -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
                 -DBUILD_TESTING=ON \
                 -DCMAKE_BUILD_TYPE=Release \
                 -DCMAKE_INSTALL_PREFIX=_install \
-                -DCMAKE_PREFIX_PATH=${{env.ORTOOLS_DIR}}/install \
+                -DCMAKE_PREFIX_PATH="${{ github.workspace }}/deps;${{env.ORTOOLS_DIR}}/install" \
                 -DBUILD_UI=ON  \
                 -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
@@ -184,23 +171,16 @@ jobs:
           cd _build
           cmake --install .
 
-      - name: set name variables
-        id: single_file_name
-        shell: bash
-        run: |
-          VERSION=${{steps.antares-xpansion-version.outputs.result}}
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-
       - id: create-single-file
         name: Single file .tar.gz creation
         uses: ./.github/workflows/single-file-creation-tgz
         with:
-          antares-xpansion-version: ${{env.VERSION}}
+          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
 
       - name: Installer .tar.gz creation
         run: |
           cd _build
-          export FILE_NAME="antaresXpansion-${{env.VERSION}}-${{ matrix.os }}"
+          export FILE_NAME="antaresXpansion-${{steps.antares-xpansion-version.outputs.result}}-${{ matrix.os }}"
           cpack -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME
           #Need to differentiate between xpress/no_xpress files
           #Cpack command line doesn't seem to care about -P or -R options
