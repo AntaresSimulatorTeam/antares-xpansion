@@ -49,11 +49,8 @@ jobs:
       - name: Install libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev libboost-program-options-dev
+          sudo apt-get install libjsoncpp-dev libboost-mpi-dev libboost-program-options-dev
           sudo apt-get install g++-10 gcc-10
-          cd /usr/src/googletest/
-          sudo cmake .
-          sudo cmake --build . --target install
 
       - name: Update alternatives
         #mpicxx  uses "g++" so we need g++ to be symbolic link to g++-10
