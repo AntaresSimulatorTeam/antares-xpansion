@@ -113,9 +113,6 @@ jobs:
           os: Oracle8
           os-full-name: OracleServer-8.10
 
-      - name: Compile TBB
-        uses: ./.github/workflows/compile-tbb
-
       - run: |
           mkdir -p ${{ github.workspace }}/vcpkg_cache
 

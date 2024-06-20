@@ -69,7 +69,7 @@ jobs:
       - name: Install mandatory system libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install -y ccache libtbb-dev
+          sudo apt-get install -y ccache
           sudo apt-get install -y g++-10 gcc-10
 
       - name: Update alternatives
