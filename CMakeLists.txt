@@ -14,7 +14,6 @@ set(ANTARES_XPANSION_RC 5)
 # ===========================================================================
 # Default parameters
 # ===========================================================================
-message(WARNING "Install prefix is ${CMAKE_INSTALL_PREFIX}")
 if (MSVC)
 	cmake_policy(SET CMP0111 OLD) #To remove warning for not found configuration on MSVC
 endif ()
