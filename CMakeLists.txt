@@ -218,13 +218,11 @@ if(POLICY CMP0074)
 	cmake_policy(SET CMP0074 NEW)
 endif()
 
-#set(CMAKE_FIND_DEBUG_MODE TRUE)
 find_package(sirius_solver REQUIRED)
 install(FILES
 		$<TARGET_FILE:sirius_solver>
 		DESTINATION bin
 )
-set(CMAKE_FIND_DEBUG_MODE FALSE)
 if (SOLVER)
 	if (SOLVER STREQUAL "xpress")
 		add_definitions (-DXPRESS_SOLVER -DUSE_XPRESS)
