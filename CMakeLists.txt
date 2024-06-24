@@ -111,37 +111,6 @@ endif ()
 include("cmake/utils.cmake")
 include("cmake/json-cmake-1.1.0/JSONParser.cmake")
 
-#Define deps install directory
-if (NOT DEPS_INSTALL_DIR)
-	SET(DEPS_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../rte-antares-deps-${CMAKE_BUILD_TYPE})
-else()
-	if(NOT IS_ABSOLUTE ${DEPS_INSTALL_DIR})
-		SET(DEPS_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/${DEPS_INSTALL_DIR})
-	endif()
-endif()
-
-# Build Needed dependencies
-list(APPEND CMAKE_PREFIX_PATH ${DEPS_INSTALL_DIR})
-
-# Add DEPS_INSTALL_DIR with antares-simulator CMAKE_BUILD_TYPE special case
-if (${CMAKE_BUILD_TYPE} STREQUAL  "Release")
-
-	string(REPLACE ${CMAKE_BUILD_TYPE} release
-			DEPS_INSTALL_DIR_ANTARES
-			${DEPS_INSTALL_DIR})
-
-	list(APPEND CMAKE_PREFIX_PATH ${DEPS_INSTALL_DIR_ANTARES})
-
-elseif(${CMAKE_BUILD_TYPE} STREQUAL  "Debug")
-
-	string(REPLACE ${CMAKE_BUILD_TYPE} debug
-			DEPS_INSTALL_DIR_ANTARES
-			${DEPS_INSTALL_DIR})
-
-	list(APPEND CMAKE_PREFIX_PATH ${DEPS_INSTALL_DIR_ANTARES})
-
-endif()
-
 file(READ antares-version.json jsonContent)
 sbeParseJson(antares_version jsonContent)
 
@@ -155,20 +124,20 @@ sbeClearJson(antares_version)
 # Build dependencies not handled by antares-deps repository
 option(BUILD_antares_solver "Build antares solver" ON)
 message(STATUS "Build antares solver: ${BUILD_antares_solver}")
-
 if (${BUILD_antares_solver})
 	#check if antares_solver available before asking for sirius and ortools build
-	find_package(antares-solver QUIET)
-	if (NOT antares-solver_FOUND)
+	find_package(Antares QUIET)
+	if (NOT Antares_FOUND)
+		message(WARNING "Antares solver not found, will be build")
 		set(BUILD_sirius ON)
 		set(BUILD_ortools ON)
+		add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_BINARY_DIR}/build_deps)
 	endif()
 endif()
 
+find_package(Antares REQUIRED)
 message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
-add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_BINARY_DIR}/build_deps)
-find_package(antares-solver REQUIRED)
-message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
+set(CMAKE_FIND_DEBUG_MODE false)
 
 find_package(minizip-ng REQUIRED)
 # ---------------------------------------------------------------------------
