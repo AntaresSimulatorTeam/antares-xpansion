@@ -34,8 +34,8 @@ runs:
         export PATH=/usr/lib64/openmpi/bin:$PATH
         mkdir deps
         wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{inputs.antares-version}}/antares-9.1.0-${{inputs.os-full-name}}${{inputs.variant}}.tar.gz
-        tar -xvf antares-${{inputs.antares-version}}-${{inputs.os-full-name}}${{inputs.variant}}.tar.gz -C rte-antares-deps-${{inputs.buildtype}} --strip-components=1
-        rm -rf antares-${{inputs.antares-version}}-${{inputs.os-full-name}}${{inputs.variant}}.tar.gz
+        tar -xvf antares-9.1.0-${{inputs.os-full-name}}${{inputs.variant}}.tar.gz -C rte-antares-deps-${{inputs.buildtype}} --strip-components=1
+        rm -rf antares-9.1.0-${{inputs.os-full-name}}${{inputs.variant}}.tar.gz
 
     - name: Download & extract OR-Tools
       shell: bash
