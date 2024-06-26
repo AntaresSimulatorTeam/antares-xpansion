@@ -23,7 +23,7 @@ inputs:
 runs:
   using: "composite"
   steps:
-    - id: download-extract antares
+    - name: download-extract antares
       shell: bash
       run: |
         mkdir deps
