@@ -1,4 +1,4 @@
-NAME          ClpDefau  FREE
+NAME          Pb        FREE
 ROWS
  N  OBJROW
  E  AreaBalance::area<area1>::hour<0>
@@ -18878,8 +18878,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<144> R0004496 1
     NTCDirect::link<flex$$store_in>::hour<144> AreaBalance::area<flex>::hour<144> 1
     NTCDirect::link<flex$$store_in>::hour<144> AreaBalance::area<store_in>::hour<144> -1
+    NTCDirect::link<flex$$store_in>::hour<144> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<144> AreaBalance::area<flex>::hour<144> 1
     NTCDirect::link<flex$$store_out>::hour<144> AreaBalance::area<store_out>::hour<144> -1
+    NTCDirect::link<flex$$store_out>::hour<144> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<144> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<144> AreaBalance::area<area1>::hour<144> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<144> FictiveLoads::area<area1>::hour<144> -1
@@ -18973,8 +18975,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<145> R0004498 1
     NTCDirect::link<flex$$store_in>::hour<145> AreaBalance::area<flex>::hour<145> 1
     NTCDirect::link<flex$$store_in>::hour<145> AreaBalance::area<store_in>::hour<145> -1
+    NTCDirect::link<flex$$store_in>::hour<145> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<145> AreaBalance::area<flex>::hour<145> 1
     NTCDirect::link<flex$$store_out>::hour<145> AreaBalance::area<store_out>::hour<145> -1
+    NTCDirect::link<flex$$store_out>::hour<145> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<145> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<145> AreaBalance::area<area1>::hour<145> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<145> FictiveLoads::area<area1>::hour<145> -1
@@ -19068,8 +19072,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<146> R0004500 1
     NTCDirect::link<flex$$store_in>::hour<146> AreaBalance::area<flex>::hour<146> 1
     NTCDirect::link<flex$$store_in>::hour<146> AreaBalance::area<store_in>::hour<146> -1
+    NTCDirect::link<flex$$store_in>::hour<146> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<146> AreaBalance::area<flex>::hour<146> 1
     NTCDirect::link<flex$$store_out>::hour<146> AreaBalance::area<store_out>::hour<146> -1
+    NTCDirect::link<flex$$store_out>::hour<146> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<146> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<146> AreaBalance::area<area1>::hour<146> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<146> FictiveLoads::area<area1>::hour<146> -1
@@ -19163,8 +19169,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<147> R0004502 1
     NTCDirect::link<flex$$store_in>::hour<147> AreaBalance::area<flex>::hour<147> 1
     NTCDirect::link<flex$$store_in>::hour<147> AreaBalance::area<store_in>::hour<147> -1
+    NTCDirect::link<flex$$store_in>::hour<147> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<147> AreaBalance::area<flex>::hour<147> 1
     NTCDirect::link<flex$$store_out>::hour<147> AreaBalance::area<store_out>::hour<147> -1
+    NTCDirect::link<flex$$store_out>::hour<147> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<147> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<147> AreaBalance::area<area1>::hour<147> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<147> FictiveLoads::area<area1>::hour<147> -1
@@ -19258,8 +19266,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<148> R0004504 1
     NTCDirect::link<flex$$store_in>::hour<148> AreaBalance::area<flex>::hour<148> 1
     NTCDirect::link<flex$$store_in>::hour<148> AreaBalance::area<store_in>::hour<148> -1
+    NTCDirect::link<flex$$store_in>::hour<148> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<148> AreaBalance::area<flex>::hour<148> 1
     NTCDirect::link<flex$$store_out>::hour<148> AreaBalance::area<store_out>::hour<148> -1
+    NTCDirect::link<flex$$store_out>::hour<148> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<148> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<148> AreaBalance::area<area1>::hour<148> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<148> FictiveLoads::area<area1>::hour<148> -1
@@ -19353,8 +19363,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<149> R0004506 1
     NTCDirect::link<flex$$store_in>::hour<149> AreaBalance::area<flex>::hour<149> 1
     NTCDirect::link<flex$$store_in>::hour<149> AreaBalance::area<store_in>::hour<149> -1
+    NTCDirect::link<flex$$store_in>::hour<149> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<149> AreaBalance::area<flex>::hour<149> 1
     NTCDirect::link<flex$$store_out>::hour<149> AreaBalance::area<store_out>::hour<149> -1
+    NTCDirect::link<flex$$store_out>::hour<149> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<149> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<149> AreaBalance::area<area1>::hour<149> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<149> FictiveLoads::area<area1>::hour<149> -1
@@ -19448,8 +19460,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<150> R0004508 1
     NTCDirect::link<flex$$store_in>::hour<150> AreaBalance::area<flex>::hour<150> 1
     NTCDirect::link<flex$$store_in>::hour<150> AreaBalance::area<store_in>::hour<150> -1
+    NTCDirect::link<flex$$store_in>::hour<150> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<150> AreaBalance::area<flex>::hour<150> 1
     NTCDirect::link<flex$$store_out>::hour<150> AreaBalance::area<store_out>::hour<150> -1
+    NTCDirect::link<flex$$store_out>::hour<150> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<150> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<150> AreaBalance::area<area1>::hour<150> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<150> FictiveLoads::area<area1>::hour<150> -1
@@ -19543,8 +19557,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<151> R0004510 1
     NTCDirect::link<flex$$store_in>::hour<151> AreaBalance::area<flex>::hour<151> 1
     NTCDirect::link<flex$$store_in>::hour<151> AreaBalance::area<store_in>::hour<151> -1
+    NTCDirect::link<flex$$store_in>::hour<151> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<151> AreaBalance::area<flex>::hour<151> 1
     NTCDirect::link<flex$$store_out>::hour<151> AreaBalance::area<store_out>::hour<151> -1
+    NTCDirect::link<flex$$store_out>::hour<151> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<151> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<151> AreaBalance::area<area1>::hour<151> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<151> FictiveLoads::area<area1>::hour<151> -1
@@ -19638,8 +19654,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<152> R0004512 1
     NTCDirect::link<flex$$store_in>::hour<152> AreaBalance::area<flex>::hour<152> 1
     NTCDirect::link<flex$$store_in>::hour<152> AreaBalance::area<store_in>::hour<152> -1
+    NTCDirect::link<flex$$store_in>::hour<152> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<152> AreaBalance::area<flex>::hour<152> 1
     NTCDirect::link<flex$$store_out>::hour<152> AreaBalance::area<store_out>::hour<152> -1
+    NTCDirect::link<flex$$store_out>::hour<152> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<152> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<152> AreaBalance::area<area1>::hour<152> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<152> FictiveLoads::area<area1>::hour<152> -1
@@ -19733,8 +19751,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<153> R0004514 1
     NTCDirect::link<flex$$store_in>::hour<153> AreaBalance::area<flex>::hour<153> 1
     NTCDirect::link<flex$$store_in>::hour<153> AreaBalance::area<store_in>::hour<153> -1
+    NTCDirect::link<flex$$store_in>::hour<153> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<153> AreaBalance::area<flex>::hour<153> 1
     NTCDirect::link<flex$$store_out>::hour<153> AreaBalance::area<store_out>::hour<153> -1
+    NTCDirect::link<flex$$store_out>::hour<153> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<153> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<153> AreaBalance::area<area1>::hour<153> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<153> FictiveLoads::area<area1>::hour<153> -1
@@ -19828,8 +19848,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<154> R0004516 1
     NTCDirect::link<flex$$store_in>::hour<154> AreaBalance::area<flex>::hour<154> 1
     NTCDirect::link<flex$$store_in>::hour<154> AreaBalance::area<store_in>::hour<154> -1
+    NTCDirect::link<flex$$store_in>::hour<154> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<154> AreaBalance::area<flex>::hour<154> 1
     NTCDirect::link<flex$$store_out>::hour<154> AreaBalance::area<store_out>::hour<154> -1
+    NTCDirect::link<flex$$store_out>::hour<154> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<154> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<154> AreaBalance::area<area1>::hour<154> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<154> FictiveLoads::area<area1>::hour<154> -1
@@ -19923,8 +19945,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<155> R0004518 1
     NTCDirect::link<flex$$store_in>::hour<155> AreaBalance::area<flex>::hour<155> 1
     NTCDirect::link<flex$$store_in>::hour<155> AreaBalance::area<store_in>::hour<155> -1
+    NTCDirect::link<flex$$store_in>::hour<155> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<155> AreaBalance::area<flex>::hour<155> 1
     NTCDirect::link<flex$$store_out>::hour<155> AreaBalance::area<store_out>::hour<155> -1
+    NTCDirect::link<flex$$store_out>::hour<155> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<155> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<155> AreaBalance::area<area1>::hour<155> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<155> FictiveLoads::area<area1>::hour<155> -1
@@ -20018,8 +20042,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<156> R0004520 1
     NTCDirect::link<flex$$store_in>::hour<156> AreaBalance::area<flex>::hour<156> 1
     NTCDirect::link<flex$$store_in>::hour<156> AreaBalance::area<store_in>::hour<156> -1
+    NTCDirect::link<flex$$store_in>::hour<156> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<156> AreaBalance::area<flex>::hour<156> 1
     NTCDirect::link<flex$$store_out>::hour<156> AreaBalance::area<store_out>::hour<156> -1
+    NTCDirect::link<flex$$store_out>::hour<156> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<156> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<156> AreaBalance::area<area1>::hour<156> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<156> FictiveLoads::area<area1>::hour<156> -1
@@ -20113,8 +20139,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<157> R0004522 1
     NTCDirect::link<flex$$store_in>::hour<157> AreaBalance::area<flex>::hour<157> 1
     NTCDirect::link<flex$$store_in>::hour<157> AreaBalance::area<store_in>::hour<157> -1
+    NTCDirect::link<flex$$store_in>::hour<157> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<157> AreaBalance::area<flex>::hour<157> 1
     NTCDirect::link<flex$$store_out>::hour<157> AreaBalance::area<store_out>::hour<157> -1
+    NTCDirect::link<flex$$store_out>::hour<157> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<157> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<157> AreaBalance::area<area1>::hour<157> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<157> FictiveLoads::area<area1>::hour<157> -1
@@ -20208,8 +20236,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<158> R0004524 1
     NTCDirect::link<flex$$store_in>::hour<158> AreaBalance::area<flex>::hour<158> 1
     NTCDirect::link<flex$$store_in>::hour<158> AreaBalance::area<store_in>::hour<158> -1
+    NTCDirect::link<flex$$store_in>::hour<158> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<158> AreaBalance::area<flex>::hour<158> 1
     NTCDirect::link<flex$$store_out>::hour<158> AreaBalance::area<store_out>::hour<158> -1
+    NTCDirect::link<flex$$store_out>::hour<158> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<158> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<158> AreaBalance::area<area1>::hour<158> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<158> FictiveLoads::area<area1>::hour<158> -1
@@ -20303,8 +20333,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<159> R0004526 1
     NTCDirect::link<flex$$store_in>::hour<159> AreaBalance::area<flex>::hour<159> 1
     NTCDirect::link<flex$$store_in>::hour<159> AreaBalance::area<store_in>::hour<159> -1
+    NTCDirect::link<flex$$store_in>::hour<159> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<159> AreaBalance::area<flex>::hour<159> 1
     NTCDirect::link<flex$$store_out>::hour<159> AreaBalance::area<store_out>::hour<159> -1
+    NTCDirect::link<flex$$store_out>::hour<159> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<159> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<159> AreaBalance::area<area1>::hour<159> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<159> FictiveLoads::area<area1>::hour<159> -1
@@ -20398,8 +20430,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<160> R0004528 1
     NTCDirect::link<flex$$store_in>::hour<160> AreaBalance::area<flex>::hour<160> 1
     NTCDirect::link<flex$$store_in>::hour<160> AreaBalance::area<store_in>::hour<160> -1
+    NTCDirect::link<flex$$store_in>::hour<160> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<160> AreaBalance::area<flex>::hour<160> 1
     NTCDirect::link<flex$$store_out>::hour<160> AreaBalance::area<store_out>::hour<160> -1
+    NTCDirect::link<flex$$store_out>::hour<160> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<160> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<160> AreaBalance::area<area1>::hour<160> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<160> FictiveLoads::area<area1>::hour<160> -1
@@ -20493,8 +20527,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<161> R0004530 1
     NTCDirect::link<flex$$store_in>::hour<161> AreaBalance::area<flex>::hour<161> 1
     NTCDirect::link<flex$$store_in>::hour<161> AreaBalance::area<store_in>::hour<161> -1
+    NTCDirect::link<flex$$store_in>::hour<161> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<161> AreaBalance::area<flex>::hour<161> 1
     NTCDirect::link<flex$$store_out>::hour<161> AreaBalance::area<store_out>::hour<161> -1
+    NTCDirect::link<flex$$store_out>::hour<161> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<161> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<161> AreaBalance::area<area1>::hour<161> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<161> FictiveLoads::area<area1>::hour<161> -1
@@ -20588,8 +20624,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<162> R0004532 1
     NTCDirect::link<flex$$store_in>::hour<162> AreaBalance::area<flex>::hour<162> 1
     NTCDirect::link<flex$$store_in>::hour<162> AreaBalance::area<store_in>::hour<162> -1
+    NTCDirect::link<flex$$store_in>::hour<162> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<162> AreaBalance::area<flex>::hour<162> 1
     NTCDirect::link<flex$$store_out>::hour<162> AreaBalance::area<store_out>::hour<162> -1
+    NTCDirect::link<flex$$store_out>::hour<162> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<162> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<162> AreaBalance::area<area1>::hour<162> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<162> FictiveLoads::area<area1>::hour<162> -1
@@ -20683,8 +20721,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<163> R0004534 1
     NTCDirect::link<flex$$store_in>::hour<163> AreaBalance::area<flex>::hour<163> 1
     NTCDirect::link<flex$$store_in>::hour<163> AreaBalance::area<store_in>::hour<163> -1
+    NTCDirect::link<flex$$store_in>::hour<163> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<163> AreaBalance::area<flex>::hour<163> 1
     NTCDirect::link<flex$$store_out>::hour<163> AreaBalance::area<store_out>::hour<163> -1
+    NTCDirect::link<flex$$store_out>::hour<163> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<163> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<163> AreaBalance::area<area1>::hour<163> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<163> FictiveLoads::area<area1>::hour<163> -1
@@ -20778,8 +20818,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<164> R0004536 1
     NTCDirect::link<flex$$store_in>::hour<164> AreaBalance::area<flex>::hour<164> 1
     NTCDirect::link<flex$$store_in>::hour<164> AreaBalance::area<store_in>::hour<164> -1
+    NTCDirect::link<flex$$store_in>::hour<164> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<164> AreaBalance::area<flex>::hour<164> 1
     NTCDirect::link<flex$$store_out>::hour<164> AreaBalance::area<store_out>::hour<164> -1
+    NTCDirect::link<flex$$store_out>::hour<164> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<164> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<164> AreaBalance::area<area1>::hour<164> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<164> FictiveLoads::area<area1>::hour<164> -1
@@ -20873,8 +20915,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<165> R0004538 1
     NTCDirect::link<flex$$store_in>::hour<165> AreaBalance::area<flex>::hour<165> 1
     NTCDirect::link<flex$$store_in>::hour<165> AreaBalance::area<store_in>::hour<165> -1
+    NTCDirect::link<flex$$store_in>::hour<165> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<165> AreaBalance::area<flex>::hour<165> 1
     NTCDirect::link<flex$$store_out>::hour<165> AreaBalance::area<store_out>::hour<165> -1
+    NTCDirect::link<flex$$store_out>::hour<165> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<165> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<165> AreaBalance::area<area1>::hour<165> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<165> FictiveLoads::area<area1>::hour<165> -1
@@ -20968,8 +21012,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<166> R0004540 1
     NTCDirect::link<flex$$store_in>::hour<166> AreaBalance::area<flex>::hour<166> 1
     NTCDirect::link<flex$$store_in>::hour<166> AreaBalance::area<store_in>::hour<166> -1
+    NTCDirect::link<flex$$store_in>::hour<166> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<166> AreaBalance::area<flex>::hour<166> 1
     NTCDirect::link<flex$$store_out>::hour<166> AreaBalance::area<store_out>::hour<166> -1
+    NTCDirect::link<flex$$store_out>::hour<166> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<166> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<166> AreaBalance::area<area1>::hour<166> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<166> FictiveLoads::area<area1>::hour<166> -1
@@ -21063,8 +21109,10 @@ COLUMNS
     NTCDirect::link<area2$$pv>::hour<167> R0004542 1
     NTCDirect::link<flex$$store_in>::hour<167> AreaBalance::area<flex>::hour<167> 1
     NTCDirect::link<flex$$store_in>::hour<167> AreaBalance::area<store_in>::hour<167> -1
+    NTCDirect::link<flex$$store_in>::hour<167> Storing_balance::daily::day<6> 0.8
     NTCDirect::link<flex$$store_out>::hour<167> AreaBalance::area<flex>::hour<167> 1
     NTCDirect::link<flex$$store_out>::hour<167> AreaBalance::area<store_out>::hour<167> -1
+    NTCDirect::link<flex$$store_out>::hour<167> Storing_balance::daily::day<6> 1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<167> OBJROW 19.9994564001
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<167> AreaBalance::area<area1>::hour<167> -1
     DispatchableProduction::area<area1>::ThermalCluster<Base>::hour<167> FictiveLoads::area<area1>::hour<167> -1
