@@ -40,14 +40,14 @@ jobs:
         with:
           submodules: true
 
-      - name: Checkout xpressmp linux
-        if: matrix.xprs.value == 'XPRESS-ON'
-        uses: actions/checkout@v4
-        with:
-          repository: rte-france/xpress-mp
-          path: ${{ env.XPRESSDIR }}
-          ref: ${{ matrix.xprs.ref}}
-          token: ${{ secrets.AS_TOKEN }} #reniew token periodically
+      # - name: Checkout xpressmp linux
+      #   if: matrix.xprs.value == 'XPRESS-ON'
+      #   uses: actions/checkout@v4
+      #   with:
+      #     repository: rte-france/xpress-mp
+      #     path: ${{ env.XPRESSDIR }}
+      #     ref: ${{ matrix.xprs.ref}}
+      #     token: ${{ secrets.AS_TOKEN }} #reniew token periodically
 
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.3
