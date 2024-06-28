@@ -69,8 +69,8 @@ jobs:
       matrix:
         xprs: [
           # { value: XPRESS-ON, ref: 8.13a },
-          #{ value: XPRESS-ON, ref: 9.2.5 },
-          { value: XPRESS-OFF }
+          { value: XPRESS-ON, ref: 9.2.5 },
+          #{ value: XPRESS-OFF }
         ]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
@@ -97,7 +97,7 @@ jobs:
 
       - name: Config OR-Tools URL
         run: |
-          echo "ORTOOLS_URL=https://github.com/rte-france/or-tools/releases/download/v9.8-rte1.0/ortools_cxx_centos7_static_sirius.zip" >> $GITHUB_ENV
+          echo "ORTOOLS_URL=https://github.com/rte-france/or-tools/releases/download/v9.8-rte1.0/ortools_cxx_ubuntu-20.04_static_sirius.zip" >> $GITHUB_ENV
 
       - uses: actions/checkout@v3 #Keep at 3
         with:
@@ -106,9 +106,10 @@ jobs:
       - run: |
           yum install -y nodejs
 
-      - run: |
-          python3 -m pip install --upgrade pip
-          python3 -m pip install cmake
+      - name: Setup cmake
+        uses: jwlawson/actions-setup-cmake@v1.13
+        with:
+          cmake-version: '3.28.x'
 
       #Lukka's action doesn't work on runner.
       #jwlawson's action doesn't work in ACT
@@ -149,6 +150,7 @@ jobs:
           git config --global safe.directory '*'
           git submodule update --remote --init vcpkg
           pushd vcpkg
+          git fetch --unshallow
           ./bootstrap-vcpkg.sh -disableMetrics
           echo "VCPKG_ROOT=$GITHUB_WORKSPACE/vcpkg" >> $GITHUB_ENV
           echo "VCPKG_CACHE_DIR=$GITHUB_WORKSPACE/vcpkg_cache" >> $GITHUB_ENV
@@ -173,8 +175,7 @@ jobs:
                  -DCMAKE_INSTALL_PREFIX=_install \
                  -DBUILD_UI=ON \
                  -DALLOW_RUN_AS_ROOT=ON \
-                 -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake \
-                 -DCMAKE_VERBOSE_MAKEFILE:BOOL=TRUE
+                 -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
         run: |
