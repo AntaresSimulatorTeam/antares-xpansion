@@ -30,6 +30,7 @@ jobs:
       XPRESSDIR: ${{ github.workspace }}/xpress
       XPRESS: ${{ github.workspace }}/xpress/bin
       XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
+      VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
 
     outputs:
       TGZ_NAME: ${{ steps.export_output.outputs.TGZ_NAME }}
@@ -107,9 +108,6 @@ jobs:
           antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
           os-full-name: Ubuntu-20.04
-
-      - run: |
-          mkdir -p ${{ github.workspace }}/vcpkg_cache
 
       - name: vcpkg install
         run: |
