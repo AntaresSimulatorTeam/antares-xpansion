@@ -3,6 +3,7 @@
 #include <time.h>
 
 #include <iostream>
+#include <mutex>
 #include <sstream>
 
 #include "LogUtils.h"
