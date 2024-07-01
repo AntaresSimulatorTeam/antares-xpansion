@@ -175,6 +175,7 @@ jobs:
                  -DCMAKE_INSTALL_PREFIX=_install \
                  -DBUILD_UI=ON \
                  -DALLOW_RUN_AS_ROOT=ON \
+                 -DVCPKG_TARGET_TRIPLET=x64-linux-release \
                  -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build

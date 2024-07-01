@@ -140,6 +140,7 @@ jobs:
                  -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/deps;${{env.ORTOOLS_DIR}}/install" \
                  -DBUILD_UI=OFF \
                  -DALLOW_RUN_AS_ROOT=ON \
+                 -DVCPKG_TARGET_TRIPLET=x64-linux-release \
                  -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
