@@ -95,6 +95,7 @@ jobs:
                 -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release \
                 -DCMAKE_INSTALL_PREFIX=_install \
                 -DBUILD_UI=ON \
+                -DVCPKG_TARGET_TRIPLET=x64-linux-release \
                 -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Cache vcpkg binary dir
@@ -113,7 +114,7 @@ jobs:
 
       - name: Running unit tests
         run: |
-          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
+          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin/:$PATH
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
