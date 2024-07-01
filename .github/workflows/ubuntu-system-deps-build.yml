@@ -3,11 +3,10 @@ name: Ubuntu CI full build
 on:
   push:
     branches:
-      - main
-      - develop
-      - release/*
       - ci/*
       - dependabot/*
+  schedule:
+    - cron: '00 00 * * 0' # Sunday, midnight
 jobs:
 
   build:
@@ -40,7 +39,7 @@ jobs:
       - name: Install mandatory system libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install libtbb-dev
+          sudo apt-get install g++-10 gcc-10
 
       - uses: lukka/get-cmake@latest
         with:
@@ -67,13 +66,23 @@ jobs:
       - run: |
           mkdir -p ${{ github.workspace }}/vcpkg_cache
 
+      - run: |
+          mkdir -p ${{ github.workspace }}/vcpkg_cache
+
       - name: vcpkg install
         run: |
           pushd vcpkg
           git fetch --unshallow
-          ./bootstrap-vcpkg.sh
-          popd
-          vcpkg/vcpkg install
+          ./bootstrap-vcpkg.sh --disableMetrics
+
+      - name: Restore vcpkg binary dir from cache
+        id: cache-vcpkg-binary
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ github.workspace }}/vcpkg_cache
+          key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
+          # Allows to restore a cache when deps have only partially changed (like adding a dependency)
+          restore-keys: vcpkg-cache-ubuntu-
 
       - name: Configure
         run: |
@@ -85,6 +94,14 @@ jobs:
                 -DBUILD_UI=ON \
                 -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
+      - name: Cache vcpkg binary dir
+        if: always()
+        id: save-cache-vcpkg-binary
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ github.workspace }}/vcpkg_cache
+          key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
+
       - name: Build
         run: |
           cmake --build _build --config Release -j$(nproc)
@@ -93,7 +110,7 @@ jobs:
 
       - name: Running unit tests
         run: |
-          export PATH=${GITHUB_WORKSPACE}/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
+          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 

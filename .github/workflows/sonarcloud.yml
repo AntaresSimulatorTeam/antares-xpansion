@@ -49,7 +49,7 @@ jobs:
       - name: Install libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev libboost-program-options-dev libtbb-dev
+          sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev libboost-program-options-dev
           sudo apt-get install g++-10 gcc-10
           cd /usr/src/googletest/
           sudo cmake .
@@ -102,6 +102,23 @@ jobs:
       - name: Init submodule
         run: |
           git submodule update --init --recursive .
+          
+      - run: |
+          mkdir -p ${{ github.workspace }}/vcpkg_cache
+
+      - name: vcpkg install
+        run: |
+          pushd vcpkg
+          ./bootstrap-vcpkg.sh --disableMetrics
+
+      - name: Restore vcpkg binary dir from cache
+        id: cache-vcpkg-binary
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ github.workspace }}/vcpkg_cache
+          key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
+          # Allows to restore a cache when deps have only partially changed (like adding a dependency)
+          restore-keys: vcpkg-cache-ubuntu-
 
       - name: Configure
         shell: bash
@@ -119,6 +136,14 @@ jobs:
           -DCMAKE_INSTALL_PREFIX=_install \
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
           -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
+
+      - name: Cache vcpkg binary dir
+        if: always()
+        id: save-cache-vcpkg-binary
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ github.workspace }}/vcpkg_cache
+          key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
 
       - run: |
           sed -i 's#: ".*/mpicxx #: "g++ #' $GITHUB_WORKSPACE/_build/compile_commands.json
