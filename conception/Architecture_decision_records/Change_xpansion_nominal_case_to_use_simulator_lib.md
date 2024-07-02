@@ -23,5 +23,5 @@ Note: 20 Feb. 2024: awaiting full readiness of study/API mode, archive mode is m
 
 - No intermediate files written between Antares and Xpansion
 - Improve performance in data transmission between components
-- Antares' simulation performed in Xpansion executable. Could lead to decrease performance with MPI if an MPI process
-  is running in only one core. Meaning Antares simulation will not be or poorly parallelized.
+- Antares' simulation performed in Xpansion executable. It Could lead to decreasing performance with MPI if an MPI process
+  is running in only one core. Meaning, Antares simulation will not be or poorly parallelized. Must be studied and evaluated.
