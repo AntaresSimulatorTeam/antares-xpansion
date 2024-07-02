@@ -119,7 +119,7 @@ jobs:
           ortools-url: ${{env.ORTOOLS_URL}}
           ortools-dir: ${{env.ORTOOLS_DIR}}
 
-      - run: echo "version=$(echo ${{inputs.antares-version}} | sed 's/-.*//')" >> $GITHUB_ENV
+      - run: echo "version=$(echo ${{steps.antares-version.outputs.result}} | sed 's/-.*//')" >> $GITHUB_ENV
         shell: bash
       - name: Configure
         run: |
