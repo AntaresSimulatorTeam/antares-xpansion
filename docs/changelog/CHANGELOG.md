@@ -1,17 +1,19 @@
 Antares-Xpansion changelog
 =================
 
-v1.3.0 (04/2024)
+v1.3.0 (06/2024)
 --------------------------------------------------------
 
 ### Features
 
-Embed Mpi in Windows
-Allow sensitivy study to run unzipped study
-
+Embedding Mpi in Windows
+Allow sensitivity study to run unzipped study
+First Implementation of Benders Outer Loop
 ### Bug Fixes
 
 Duplicate Xpress loading messages
+remove whitespace from Xpress path on Windows 
+fix truncated xpress path on linux
 
 v1.2.2 (02/2024)
 --------------------------------------------------------
