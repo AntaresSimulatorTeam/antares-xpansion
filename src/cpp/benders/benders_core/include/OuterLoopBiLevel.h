@@ -7,12 +7,10 @@ class OuterLoopBiLevel {
   explicit OuterLoopBiLevel(const Outerloop::OuterLoopInputData  &outer_loop_input_data);
   OuterLoopBiLevel() = default;
   bool Update_bilevel_data_if_feasible(
-      const Point &x,
-      const std::vector<double> &outer_loop_criterion, double overall_cost,
-      double invest_cost_at_x, double lambda_min);
+      const Point &x, const std::vector<double> &outer_loop_criterion,
+      double overall_cost, double invest_cost_at_x, double lambda);
   bool Check_bilevel_feasibility(
       const std::vector<double> &outer_loop_criterion, double overall_cost);
-  //   double LambdaMax() const { return lambda_max_; }
   void Init(const std::vector<double> &obj, const Point &max_invest,
             const VariableMap &master_variable);
   double LambdaMax() const { return lambda_max_; }
