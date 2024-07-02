@@ -119,10 +119,12 @@ jobs:
           ortools-url: ${{env.ORTOOLS_URL}}
           ortools-dir: ${{env.ORTOOLS_DIR}}
 
+      - run: echo "version=$(echo ${{inputs.antares-version}} | sed 's/-.*//')" >> $GITHUB_ENV
+        shell: bash
       - name: Configure
         run: |
           $pwd=Get-Location
-          cmake -B _build -S . -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits;${{env.ORTOOLS_DIR}}/install"  -DBUILD_TESTING=ON  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"  -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install  -DBUILD_UI=ON
+          cmake -B _build -S . -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/rte-antares-${{env.version}}-installer-64bits;${{env.ORTOOLS_DIR}}/install"  -DBUILD_TESTING=ON  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"  -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install  -DBUILD_UI=ON
 
       - name: Build
         run: |
