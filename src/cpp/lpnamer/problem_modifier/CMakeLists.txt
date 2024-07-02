@@ -6,7 +6,6 @@
 # Targets
 # ===========================================================================
 
-find_package(Antares REQUIRED)
 add_library(lp_namer_problem_modifier STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/LinkdataRecord.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/LinkProblemsGenerator.cpp
