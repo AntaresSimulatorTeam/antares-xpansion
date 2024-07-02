@@ -27,7 +27,7 @@ var NAVTREE =
   [ "Antares Xpansion", "index.html", [
     [ "Antares-Xpansion", "index.html", "index" ],
     [ "Antares-Xpansion changelog", "md_docs_2changelog_2CHANGELOG.html", [
-      [ "v1.3.0 (04/2024)", "md_docs_2changelog_2CHANGELOG.html#autotoc_md11", [
+      [ "v1.3.0 (06/2024)", "md_docs_2changelog_2CHANGELOG.html#autotoc_md11", [
         [ "Features", "md_docs_2changelog_2CHANGELOG.html#autotoc_md12", null ],
         [ "Bug Fixes", "md_docs_2changelog_2CHANGELOG.html#autotoc_md13", null ]
       ] ],

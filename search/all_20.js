@@ -18,7 +18,7 @@ var searchData=
   ['v1_201_201_2009_202023_15',['v1.1.1 (09/2023)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md18',1,'']]],
   ['v1_202_2010_202023_16',['v1.2 (10/2023)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md15',1,'']]],
   ['v1_202_202_2002_202024_17',['v1.2.2 (02/2024)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md14',1,'']]],
-  ['v1_203_200_2004_202024_18',['v1.3.0 (04/2024)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md11',1,'']]],
+  ['v1_203_200_2006_202024_18',['v1.3.0 (06/2024)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md11',1,'']]],
   ['variable_20column_20id_20mapping_20file_19',['5- Creation of a variable / column ID mapping file',['../md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md105',1,'']]],
   ['variablefileline_20',['VariableFileLine',['../structVariableFileLine.html',1,'']]],
   ['variablefilereader_21',['VariableFileReader',['../classVariableFileReader.html',1,'']]],
