@@ -136,7 +136,7 @@ void compareArchiveAndDir(const std::filesystem::path& archivePath,
                           const std::filesystem::path& tmpDir) {
   void* reader = NULL;
 
-  mz_zip_reader_create(&reader);
+  reader = mz_zip_reader_create();
   const auto& archive_path_str = archivePath.string();
   auto archive_path_c_str = archive_path_str.c_str();
   assert(mz_zip_reader_open_file(reader, archive_path_c_str) == MZ_OK);
