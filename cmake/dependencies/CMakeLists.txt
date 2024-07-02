@@ -4,6 +4,7 @@
 if(BUILD_antares_solver)
 
 find_package(Antares QUIET)
+if (NOT Antares_FOUND)
     set(REPOSITORY "https://github.com/AntaresSimulatorTeam/Antares_Simulator.git")
     set(TAG "v${ANTARES_VERSION_TAG}")
     set(CMAKE_ARGS "-DBUILD_UI=OFF -DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE} -DDEPS_INSTALL_DIR=${DEPS_INSTALL_DIR} -DBUILD_not_system=OFF -DBUILD_ortools=ON")
@@ -27,6 +28,6 @@ find_package(Antares QUIET)
         SOURCE_SUBDIR
           "src"
       )
-  
+endif()
 endif()
 
