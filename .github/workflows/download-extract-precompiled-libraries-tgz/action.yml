@@ -1,9 +1,6 @@
 name: "Download extract .tgz precompiled libraries"
-description: "Download and extract .tgz precompiled libraries from antares-deps and antares-simulator repository"
+description: "Download and extract .tgz precompiled antares-simulator repository"
 inputs:
-  antares-deps-version:
-    description: 'antares-deps version'
-    required: true  
   antares-version:
     description: 'antares-solver version'
     required: true
@@ -23,19 +20,13 @@ inputs:
     default: ""
 runs:
   using: "composite"
-  steps: 
-  - id: download-extract
-    shell: bash
-    run: |
-      export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-      export PATH=/usr/lib64/openmpi/bin:$PATH
-      
-      wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v${{inputs.antares-deps-version}}/rte-antares-deps-${{inputs.os}}-${{inputs.buildtype}}.tar.gz
-      tar -xvf rte-antares-deps-${{inputs.os}}-${{inputs.buildtype}}.tar.gz
-      rm -rf rte-antares-deps-${{inputs.os}}-${{inputs.buildtype}}.tar.gz
-      
-      wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{inputs.antares-version}}/antares-${{inputs.antares-version}}-${{inputs.os-full-name}}${{inputs.variant}}.tar.gz
-      tar -xvf antares-${{inputs.antares-version}}-${{inputs.os-full-name}}${{inputs.variant}}.tar.gz -C rte-antares-deps-${{inputs.buildtype}} --strip-components=1
-      rm -rf antares-${{inputs.antares-version}}-${{inputs.os-full-name}}${{inputs.variant}}.tar.gz
-      
-      
+  steps:
+    - id: download-extract
+      shell: bash
+      run: |
+        export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
+        export PATH=/usr/lib64/openmpi/bin:$PATH
+        mkdir deps
+        wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{inputs.antares-version}}/antares-${{inputs.antares-version}}-${{inputs.os-full-name}}${{inputs.variant}}.tar.gz
+        tar -xvf antares-${{inputs.antares-version}}-${{inputs.os-full-name}}${{inputs.variant}}.tar.gz -C deps --strip-components=1
+        rm -rf antares-${{inputs.antares-version}}-${{inputs.os-full-name}}${{inputs.variant}}.tar.gz

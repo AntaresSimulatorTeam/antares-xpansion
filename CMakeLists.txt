@@ -14,16 +14,13 @@ set(ANTARES_XPANSION_RC 5)
 # ===========================================================================
 # Default parameters
 # ===========================================================================
-
 if (MSVC)
 	cmake_policy(SET CMP0111 OLD) #To remove warning for not found configuration on MSVC
 endif ()
 
-set(CMAKE_POLICY_DEFAULT_CMP0077 NEW) #To force OR-Tools build and set option for antares-deps
-
 if (CMAKE_TOOLCHAIN_FILE)
 	if(NOT IS_ABSOLUTE ${CMAKE_TOOLCHAIN_FILE})
-		SET(CMAKE_TOOLCHAIN_FILE ${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_TOOLCHAIN_FILE})
+		SET(CMAKE_TOOLCHAIN_FILE                                                                                                                                                                                                                                      ${CMAKE_CURRENT_SOURCE_DIR}/${CMAKE_TOOLCHAIN_FILE})
 	endif()
 endif()
 
@@ -114,13 +111,13 @@ endif ()
 include("cmake/utils.cmake")
 include("cmake/json-cmake-1.1.0/JSONParser.cmake")
 
-#Define install directory
+#Define deps install directory
 if (NOT DEPS_INSTALL_DIR)
-    SET(DEPS_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../rte-antares-deps-${CMAKE_BUILD_TYPE})
+	SET(DEPS_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../rte-antares-deps-${CMAKE_BUILD_TYPE})
 else()
-    if(NOT IS_ABSOLUTE ${DEPS_INSTALL_DIR})
-        SET(DEPS_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/${DEPS_INSTALL_DIR})
-    endif()    
+	if(NOT IS_ABSOLUTE ${DEPS_INSTALL_DIR})
+		SET(DEPS_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/${DEPS_INSTALL_DIR})
+	endif()
 endif()
 
 # Build Needed dependencies
@@ -132,20 +129,18 @@ if (${CMAKE_BUILD_TYPE} STREQUAL  "Release")
 	string(REPLACE ${CMAKE_BUILD_TYPE} release
 			DEPS_INSTALL_DIR_ANTARES
 			${DEPS_INSTALL_DIR})
-	
+
 	list(APPEND CMAKE_PREFIX_PATH ${DEPS_INSTALL_DIR_ANTARES})
-	
+
 elseif(${CMAKE_BUILD_TYPE} STREQUAL  "Debug")
 
 	string(REPLACE ${CMAKE_BUILD_TYPE} debug
 			DEPS_INSTALL_DIR_ANTARES
 			${DEPS_INSTALL_DIR})
-	
+
 	list(APPEND CMAKE_PREFIX_PATH ${DEPS_INSTALL_DIR_ANTARES})
 
 endif()
-
-message(STATUS "CMAKE_PREFIX_PATH : ${CMAKE_PREFIX_PATH}")
 
 file(READ antares-version.json jsonContent)
 sbeParseJson(antares_version jsonContent)
@@ -163,16 +158,18 @@ message(STATUS "Build antares solver: ${BUILD_antares_solver}")
 
 if (${BUILD_antares_solver})
 	#check if antares_solver available before asking for sirius and ortools build
-	find_package(antares-solver)
+	find_package(antares-solver QUIET)
 	if (NOT antares-solver_FOUND)
 		set(BUILD_sirius ON)
 		set(BUILD_ortools ON)
 	endif()
 endif()
 
-add_subdirectory(antares-deps)
-
+message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
 add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_BINARY_DIR}/build_deps)
+find_package(antares-solver REQUIRED)
+message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
+
 find_package(minizip-ng REQUIRED)
 # ---------------------------------------------------------------------------
 # Boost
@@ -222,7 +219,10 @@ if(POLICY CMP0074)
 endif()
 
 find_package(sirius_solver REQUIRED)
-
+install(FILES
+		$<TARGET_FILE:sirius_solver>
+		DESTINATION bin
+)
 if (SOLVER)
 	if (SOLVER STREQUAL "xpress")
 		add_definitions (-DXPRESS_SOLVER -DUSE_XPRESS)
@@ -288,6 +288,11 @@ FILE(COPY  ${ANTARES_SOLVER_DIR}/
 	DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
     USE_SOURCE_PERMISSIONS
     FILES_MATCHING PATTERN "*.dll")
+
+FILE(COPY ${ANTARES_SOLVER_DIR}/
+		DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
+		USE_SOURCE_PERMISSIONS
+		FILES_MATCHING PATTERN "*.so")
 
 FILE(COPY ${ANTARES_SOLVER_DIR}/../lib/
 	DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}

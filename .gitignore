@@ -35,7 +35,6 @@
 # build
 _build
 _install
-antares-deps
 include/google
 vcpkg_installed
 

@@ -20,6 +20,7 @@ jobs:
     env:
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+      VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
 
     steps:
       - uses: actions/checkout@v4
@@ -57,10 +58,10 @@ jobs:
       - name: vcpkg install
         shell: bash
         run: |
-          mkdir -p ${{ github.workspace }}/vcpkg_cache
+          git submodule update --remote --init vcpkg
           pushd vcpkg
           git fetch --unshallow
-          ./bootstrap-vcpkg.sh --disableMetrics
+          ./bootstrap-vcpkg.bat -disableMetrics
 
       - name: Restore vcpkg binary dir from cache
         id: cache-vcpkg-binary
@@ -107,4 +108,3 @@ jobs:
         uses: ./.github/workflows/single-file-creation-zip
         with:
           antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
-

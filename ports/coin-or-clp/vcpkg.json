@@ -1,0 +1,18 @@
+{
+  "name": "coin-or-clp",
+  "version": "1.17",
+  "port-version": 0,
+  "description": "Fork from Clp",
+  "dependencies": [
+    {
+      "name": "vcpkg-cmake",
+      "host": true
+    },
+    {
+      "name": "vcpkg-cmake-config",
+      "host": true
+    },
+    "coin-or-osi",
+    "coinutils"
+  ]
+}
