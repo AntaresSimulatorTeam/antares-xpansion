@@ -17,6 +17,8 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-20.04 ]
+    env:
+      VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
 
     steps:
 
@@ -49,8 +51,7 @@ jobs:
       - name: Install libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install libjsoncpp-dev libgtest-dev libboost-mpi-dev libboost-program-options-dev libtbb-dev
-          sudo apt-get install g++-10 gcc-10
+          sudo apt-get install g++-10 gcc-10 libgtest-dev
           cd /usr/src/googletest/
           sudo cmake .
           sudo cmake --build . --target install
@@ -79,29 +80,30 @@ jobs:
           path: 'antares-version.json'
           key: 'antares_xpansion_version'
 
-      - name: Read antares-deps version
-        id: antares-deps-version
-        uses: ./.github/actions/read-json-value
-        with:
-          path: 'antares-version.json'
-          key: 'antares_deps_version'
-
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
         with:
-          antares-deps-version: ${{steps.antares-deps-version.outputs.result}}
           antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
           os-full-name: Ubuntu-20.04
 
-      - name: Compile Boost
-        uses: ./.github/workflows/compile-boost
-        with:
-          prefix: "../rte-antares-deps-Release/"
-
       - name: Init submodule
         run: |
           git submodule update --init --recursive .
+
+      - name: vcpkg install
+        run: |
+          git submodule update --init vcpkg
+          ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
+
+      - name: Restore vcpkg binary dir from cache
+        id: cache-vcpkg-binary
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ github.workspace }}/vcpkg_cache
+          key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
+          # Allows to restore a cache when deps have only partially changed (like adding a dependency)
+          restore-keys: vcpkg-cache-ubuntu-
 
       - name: Configure
         shell: bash
@@ -111,14 +113,22 @@ jobs:
           -DCMAKE_C_COMPILER=/usr/bin/gcc-10 \
           -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
           -DCMAKE_CXX_COMPILER=/usr/bin/g++-10 \
-          -DDEPS_INSTALL_DIR=rte-antares-deps-Release \
           -DCODE_COVERAGE=ON \
           -DBUILD_TESTING=ON \
           -DBUILD_antares_solver=OFF \
           -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_PREFIX_PATH=${{ github.workspace }}/deps \
           -DCMAKE_INSTALL_PREFIX=_install \
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
           -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
+
+      - name: Cache vcpkg binary dir
+        if: always()
+        id: save-cache-vcpkg-binary
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ github.workspace }}/vcpkg_cache
+          key: vcpkg-cache-ubuntu-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
 
       - run: |
           sed -i 's#: ".*/mpicxx #: "g++ #' $GITHUB_WORKSPACE/_build/compile_commands.json

@@ -29,7 +29,6 @@ target_link_libraries (benders_mpi_core
 		output_core
 		Boost::mpi
 		MPI::MPI_C
-		glog::glog
 		${PROJECT_NAME}::factories
 		logger_lib
 		Boost::serialization

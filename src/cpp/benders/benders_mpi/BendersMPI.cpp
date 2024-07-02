@@ -6,7 +6,7 @@
 
 #include "CustomVector.h"
 #include "Timer.h"
-#include "glog/logging.h"
+
 
 BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger logger,
                        Writer writer, mpi::environment &env,
@@ -42,10 +42,12 @@ void BendersMpi::InitializeProblems() {
     current_problem_id++;
   }
 
-  // if (_world.rank() == rank_0) {
-  SetSubproblemsVariablesIndex();
-    // }
-    init_problems_ = false;
+  if (_world.rank() == rank_0) {
+    SetSubproblemsVariablesIndex();
+  }
+
+  BroadCast(var_indices_, rank_0);
+  init_problems_ = false;
 }
 void BendersMpi::BuildMasterProblem() {
   if (_world.rank() == rank_0) {
@@ -240,7 +242,6 @@ void BendersMpi::check_if_some_proc_had_a_failure(int success) {
 
 void BendersMpi::write_exception_message(const std::exception &ex) const {
   std::string error = "Exception raised : " + std::string(ex.what());
-  LOG(WARNING) << error << std::endl;
   _logger->display_message(error);
 }
 
@@ -408,12 +409,16 @@ void BendersMpi::RunExternalLoopBilevelChecks() {
     const WorkerMasterData &workerMasterData = BestIterationWorkerMaster();
     const auto &invest_cost = workerMasterData._invest_cost;
     const auto &overall_cost = invest_cost + workerMasterData._operational_cost;
-    outer_loop_biLevel_.Update_bilevel_data_if_feasible(
-        _data.x_cut,
-        GetOuterLoopCriterionAtBestBenders() /*/!\ must
-                be at best it*/
-        ,
-        overall_cost, invest_cost, _data.outer_loop_current_iteration_data.external_loop_lambda);
-    _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub = outer_loop_biLevel_.BilevelBestub();
+    if (outer_loop_biLevel_.Update_bilevel_data_if_feasible(
+            _data.x_cut, GetOuterLoopCriterionAtBestBenders() /*/!\ must
+                                 be at best it*/
+            ,
+            overall_cost, invest_cost,
+            _data.outer_loop_current_iteration_data.external_loop_lambda)) {
+      UpdateOuterLoopSolution();
+    }
+    SaveCurrentOuterLoopIterationInOutputFile();
+    _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub =
+        outer_loop_biLevel_.BilevelBestub();
   }
 }

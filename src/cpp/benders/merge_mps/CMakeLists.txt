@@ -26,7 +26,6 @@ target_link_libraries (merge_mps_core
         factories
 		output_core
 		solvers
-		glog::glog
 )
 
 add_library (${PROJECT_NAME}::merge_mps_core ALIAS merge_mps_core)

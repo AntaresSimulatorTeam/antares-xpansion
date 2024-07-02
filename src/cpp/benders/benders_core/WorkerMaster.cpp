@@ -1,6 +1,6 @@
 #include "WorkerMaster.h"
 
-#include "glog/logging.h"
+
 #include "solver_utils.h"
 
 WorkerMaster::WorkerMaster(Logger logger) : Worker(logger) {
@@ -301,9 +301,7 @@ void WorkerMaster::_set_alpha_var() {
       solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
     }
   } else {
-    LOG(INFO)
-        << "ERROR a variable named overall_subpb_cost_under_approx is in input"
-        << std::endl;
+    logger_->display_message("ERROR a variable named overall_subpb_cost_under_approx is in input", LogUtils::LOGLEVEL::ERR);
   }
 }
 

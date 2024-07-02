@@ -6,15 +6,6 @@
 # Targets
 # ===========================================================================
 
-find_package(TBB REQUIRED CONFIG)
-find_package(Antares REQUIRED)
-if (TBB_VERSION_MAJOR VERSION_LESS "2018")
-	message(FATAL_ERROR "Require tbb 2018 or higher.")
-endif()
-if (TBB_VERSION_MAJOR VERSION_GREATER "2020")
-	message(FATAL_ERROR "Require tbb 2018 to 2020.")
-endif()
-
 add_library(lp_namer_problem_modifier STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/LinkdataRecord.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/LinkProblemsGenerator.cpp
@@ -70,8 +61,6 @@ target_link_libraries (lp_namer_problem_modifier
 		lp_namer_helper
 		helpers
 		solvers
-		TBB::tbb
-		Antares::antares-solver-simulation
 )
 
 add_library (${PROJECT_NAME}::lp_namer_problem_modifier ALIAS lp_namer_problem_modifier)

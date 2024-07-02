@@ -8,7 +8,7 @@
 #include "BatchCollection.h"
 #include "CustomVector.h"
 #include "RandomBatchShuffler.h"
-#include "glog/logging.h"
+
 BendersByBatch::BendersByBatch(
     BendersBaseOptions const &options, Logger logger, Writer writer,
     mpi::environment &env, mpi::communicator &world,

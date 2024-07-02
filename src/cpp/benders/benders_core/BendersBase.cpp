@@ -10,7 +10,7 @@
 #include "LastIterationWriter.h"
 #include "LogUtils.h"
 #include "VariablesGroup.h"
-#include "glog/logging.h"
+
 #include "solver_utils.h"
 
 BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
@@ -68,8 +68,8 @@ void BendersBase::OpenCsvFile() {
                    "time;basis;"
                 << std::endl;
     } else {
-      LOG(INFO) << "Impossible to open the .csv file: " << _csv_file_path
-                << std::endl;
+      using namespace std::string_literals;
+      _logger->display_message("Impossible to open the .csv file: "s + _csv_file_path.string());
     }
   }
 }
@@ -513,15 +513,32 @@ void BendersBase::post_run_actions() const {
 }
 
 void BendersBase::SaveCurrentIterationInOutputFile() const {
+  if (!_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
+    auto &LastWorkerMasterData = relevantIterationData_.last;
+    if (LastWorkerMasterData._valid) {
+      _writer->write_iteration(iteration(LastWorkerMasterData),
+                               _data.it + iterations_before_resume);
+      _writer->dump();
+    }
+  }
+}
+
+void BendersBase::SaveCurrentOuterLoopIterationInOutputFile() const {
   auto &LastWorkerMasterData = relevantIterationData_.last;
   if (LastWorkerMasterData._valid) {
-    _writer->write_iteration(iteration(LastWorkerMasterData),
-                             _data.it + iterations_before_resume);
+    _writer->write_iteration(
+        iteration(LastWorkerMasterData),
+        _data.outer_loop_current_iteration_data.benders_num_run);
     _writer->dump();
   }
 }
+
 void BendersBase::SaveSolutionInOutputFile() const {
   _writer->write_solution(solution());
+  _writer->dump();
+}
+void BendersBase::SaveOuterLoopSolutionInOutputFile() const {
+  _writer->write_solution(GetOuterLoopSolution());
   _writer->dump();
 }
 
@@ -562,9 +579,24 @@ Output::Iteration BendersBase::iteration(
 }
 
 Output::SolutionData BendersBase::solution() const {
+  auto solution_data = BendersSolution();
+  solution_data.best_it = _data.best_it + iterations_before_resume;
+
+  return solution_data;
+}
+
+void BendersBase::UpdateOuterLoopSolution() {
+  outer_loop_solution_data_ = BendersSolution();
+  outer_loop_solution_data_.best_it =
+      _data.outer_loop_current_iteration_data.benders_num_run;
+}
+
+Output::SolutionData BendersBase::GetOuterLoopSolution() const {
+  return outer_loop_solution_data_;
+}
+Output::SolutionData BendersBase::BendersSolution() const {
   Output::SolutionData solution_data;
   solution_data.nbWeeks_p = _totalNbProblems;
-  solution_data.best_it = _data.best_it + iterations_before_resume;
   solution_data.problem_status = status_from_criterion();
   const auto optimal_gap(_data.best_ub - _data.lb);
   const auto relative_gap(optimal_gap / _data.best_ub);
@@ -745,6 +777,9 @@ void BendersBase::MatchProblemToId() {
   }
 }
 
+// Search for variables in sub problems that satify patterns
+// var_indices is a vector(for each patterns p) of vector (var indices related
+// to p)
 void BendersBase::SetSubproblemsVariablesIndex() {
   if (!subproblem_map.empty() && _options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
     auto subproblem = subproblem_map.begin();
@@ -876,9 +911,13 @@ void BendersBase::ClearCurrentIterationCutTrace() {
 }
 void BendersBase::EndWritingInOutputFile() const {
   _writer->updateEndTime();
+  // TODO duration for outer loop
   _writer->write_duration(_data.benders_time);
-  SaveSolutionInOutputFile();
+  if (!_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
+    SaveSolutionInOutputFile();
+  }
 }
+
 double BendersBase::GetBendersTime() const { return benders_timer.elapsed(); }
 void BendersBase::write_basis() const {
   const auto filename(std::filesystem::path(_options.OUTPUTROOT) /

@@ -1,9 +1,6 @@
 name: "Download extract .zip precompiled libraries"
-description: "Download and extract .zip precompiled libraries from antares-deps and antares-simulator repository"
+description: "Download and extract .zip precompiled antares-simulator repository"
 inputs:
-  antares-deps-version:
-    description: 'antares-deps version'
-    required: true
   antares-version:
     description: 'antares-solver version'
     required: true
@@ -25,10 +22,6 @@ runs:
   - id: download-extract
     shell: bash
     run: |
-           wget https://github.com/AntaresSimulatorTeam/antares-deps/releases/download/v${{inputs.antares-deps-version}}/rte-antares-deps-${{inputs.os}}-${{inputs.buildtype}}.zip
-           unzip rte-antares-deps-${{inputs.os}}-${{inputs.buildtype}}.zip
-           rm -rf rte-antares-deps-${{inputs.os}}-${{inputs.buildtype}}.zip
-           
            wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{inputs.antares-version}}/rte-antares-${{inputs.antares-version}}-installer-64bits.zip
            unzip rte-antares-${{inputs.antares-version}}-installer-64bits.zip
            rm -rf rte-antares-${{inputs.antares-version}}-installer-64bits.zip

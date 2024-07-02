@@ -6,12 +6,15 @@
 # Targets
 # ===========================================================================
 
-find_package(TBB REQUIRED CONFIG)
-if (TBB_VERSION_MAJOR VERSION_LESS "2018")
-	message(FATAL_ERROR "Require tbb 2018 or higher.")
-endif()
-if (TBB_VERSION_MAJOR VERSION_GREATER "2020")
-	message(FATAL_ERROR "Require tbb 2018 to 2020.")
+find_package (MPI REQUIRED COMPONENTS C)
+message ("MPI_C_INCLUDE_PATH ${MPI_C_INCLUDE_PATH}")
+message ("MPI_C_INCLUDE_DIRS ${MPI_C_INCLUDE_DIRS}")
+message ("MPI_C_LIBRARIES ${MPI_C_LIBRARIES}")
+
+find_package(MPI REQUIRED)
+
+if(UNIX)
+set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
 endif()
 
 add_library (outer_loop_lib STATIC
@@ -26,10 +29,14 @@ add_library (outer_loop_lib STATIC
 target_include_directories (outer_loop_lib
 		PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/include
+	    INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
 		)
 
 target_link_libraries (outer_loop_lib
 	PUBLIC
+		Boost::mpi
+		MPI::MPI_C
+		Boost::serialization
 		helpers
 		benders_core
 		benders_mpi_core

@@ -5,7 +5,7 @@
 #include <utility>
 
 #include "Timer.h"
-#include "glog/logging.h"
+
 #include "solver_utils.h"
 
 /*!
@@ -129,18 +129,16 @@ void BendersSequential::Run() {
 }
 
 void BendersSequential::launch() {
-  LOG(INFO) << "Building input" << std::endl;
-
-  LOG(INFO) << "Constructing workers..." << std::endl;
+  _logger->display_message("Building input");
+  _logger->display_message("Constructing workers...");
 
   InitializeProblems();
-  LOG(INFO) << "Running solver..." << std::endl;
+  _logger->display_message("Running solver...");
   try {
     Run();
-    LOG(INFO) << BendersName() + " solver terminated." << std::endl;
+    _logger->display_message(BendersName() + " solver terminated.");
   } catch (std::exception const &ex) {
     std::string error = "Exception raised : " + std::string(ex.what());
-    LOG(WARNING) << error << std::endl;
     _logger->display_message(error);
   }
 

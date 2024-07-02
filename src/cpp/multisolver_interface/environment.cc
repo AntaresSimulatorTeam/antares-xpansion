@@ -20,6 +20,7 @@
 #include <mutex>
 #include <sstream>
 #include <string>
+
 namespace LoadXpress {
 
 #define STRINGIFY2(X) #X
@@ -229,6 +230,8 @@ std::string XpressLoader::GetXpressVarFromEnvironmentVariables(
     // Get the value of the LIB environment variable.
     getenv_s(&requiredSize, xpress_home_from_env.data(), requiredSize,
              XPRESS_var);
+    xpress_home_from_env = xpress_home_from_env.substr(0, requiredSize - 1);
+
   } else {
     if (verbose) {
       msg.str("");
