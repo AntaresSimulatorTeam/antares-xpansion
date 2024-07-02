@@ -287,6 +287,13 @@ void BendersByBatch::GetSubproblemCut(
       worker->solve(subproblem_data.lpstatus, Options().OUTPUTROOT,
                     Options().LAST_MASTER_MPS + MPS_SUFFIX, _writer);
       // worker->get_solution(subproblem_data.solution);
+      // TODO not supported yet
+      //      if (Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
+      //        std::vector<double> solution;
+      //        worker->get_solution(solution);
+      //        subproblem_data.outer_loop_criterions =
+      //            ComputeOuterLoopCriterion(name, solution);
+      //      }
       worker->get_value(subproblem_data.subproblem_cost);  // solution phi(x,s)
       worker->get_subgradient(
           subproblem_data.var_name_and_subgradient);  // dual pi_s
