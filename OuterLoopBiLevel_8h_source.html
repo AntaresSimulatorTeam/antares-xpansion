@@ -149,35 +149,33 @@ $(document).ready(function(){initNavTree('OuterLoopBiLevel_8h_source.html',''); 
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="classOuterLoopBiLevel.html">OuterLoopBiLevel</a>(<span class="keyword">const</span> <a class="code hl_class" href="classOuterloop_1_1OuterLoopInputData.html">Outerloop::OuterLoopInputData</a>  &amp;outer_loop_input_data);</div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>  <a class="code hl_class" href="classOuterLoopBiLevel.html">OuterLoopBiLevel</a>() = <span class="keywordflow">default</span>;</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>  <span class="keywordtype">bool</span> Update_bilevel_data_if_feasible(</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>      <span class="keyword">const</span> Point &amp;x,</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>      <span class="keyword">const</span> std::vector&lt;double&gt; &amp;outer_loop_criterion, <span class="keywordtype">double</span> overall_cost,</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>      <span class="keywordtype">double</span> invest_cost_at_x, <span class="keywordtype">double</span> lambda_min);</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classOuterLoopBiLevel.html#a54b3322c3335d4aca9d2aadca5fc393b">Check_bilevel_feasibility</a>(</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>      <span class="keyword">const</span> std::vector&lt;double&gt; &amp;outer_loop_criterion, <span class="keywordtype">double</span> overall_cost);</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <span class="comment">//   double LambdaMax() const { return lambda_max_; }</span></div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <span class="keywordtype">void</span> Init(<span class="keyword">const</span> std::vector&lt;double&gt; &amp;obj, <span class="keyword">const</span> Point &amp;max_invest,</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>            <span class="keyword">const</span> VariableMap &amp;master_variable);</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="keywordtype">double</span> LambdaMax()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> lambda_max_; }</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="keywordtype">double</span> LambdaMin()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> lambda_min_; }</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="keywordtype">void</span> SetLambda(<span class="keywordtype">double</span> lambda) { lambda_ = lambda; }</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="keywordtype">double</span> BilevelBestub()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> bilevel_best_ub_; }</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="keywordtype">bool</span> FoundFeasible()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> found_feasible_; }</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  <span class="keywordtype">void</span> SetLambdaMaxToMaxInvestmentCosts(<span class="keyword">const</span> std::vector&lt;double&gt; &amp;obj,</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                                        <span class="keyword">const</span> Point &amp;max_invest,</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>                                        <span class="keyword">const</span> VariableMap &amp;master_variable);</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keywordtype">void</span> Update(<span class="keyword">const</span> Point &amp;x, <span class="keywordtype">double</span> overall_cost,</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>              <span class="keywordtype">double</span> invest_cost_at_x);</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keywordtype">bool</span> IsCriterionSatisfied(<span class="keyword">const</span> std::vector&lt;double&gt; &amp;outer_loop_criterions);</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keywordtype">bool</span> found_feasible_ = <span class="keyword">false</span>;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keywordtype">double</span> bilevel_best_ub_ = +1e20;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  Point bilevel_best_x_;</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keywordtype">double</span> lambda_max_ = 0.0;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <span class="keywordtype">double</span> lambda_min_ = 0.0;</div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordtype">double</span> lambda_ = 0.0;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  <a class="code hl_class" href="classOuterloop_1_1OuterLoopInputData.html">Outerloop::OuterLoopInputData</a> outer_loop_input_data_;</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>};</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>      <span class="keyword">const</span> Point &amp;x, <span class="keyword">const</span> std::vector&lt;double&gt; &amp;outer_loop_criterion,</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>      <span class="keywordtype">double</span> overall_cost, <span class="keywordtype">double</span> invest_cost_at_x, <span class="keywordtype">double</span> lambda);</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  <span class="keywordtype">bool</span> <a class="code hl_function" href="classOuterLoopBiLevel.html#a54b3322c3335d4aca9d2aadca5fc393b">Check_bilevel_feasibility</a>(</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>      <span class="keyword">const</span> std::vector&lt;double&gt; &amp;outer_loop_criterion, <span class="keywordtype">double</span> overall_cost);</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  <span class="keywordtype">void</span> Init(<span class="keyword">const</span> std::vector&lt;double&gt; &amp;obj, <span class="keyword">const</span> Point &amp;max_invest,</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>            <span class="keyword">const</span> VariableMap &amp;master_variable);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <span class="keywordtype">double</span> LambdaMax()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> lambda_max_; }</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keywordtype">double</span> LambdaMin()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> lambda_min_; }</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="keywordtype">void</span> SetLambda(<span class="keywordtype">double</span> lambda) { lambda_ = lambda; }</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="keywordtype">double</span> BilevelBestub()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> bilevel_best_ub_; }</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="keywordtype">bool</span> FoundFeasible()<span class="keyword"> const </span>{ <span class="keywordflow">return</span> found_feasible_; }</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="keywordtype">void</span> SetLambdaMaxToMaxInvestmentCosts(<span class="keyword">const</span> std::vector&lt;double&gt; &amp;obj,</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                                        <span class="keyword">const</span> Point &amp;max_invest,</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                                        <span class="keyword">const</span> VariableMap &amp;master_variable);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="keywordtype">void</span> Update(<span class="keyword">const</span> Point &amp;x, <span class="keywordtype">double</span> overall_cost,</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>              <span class="keywordtype">double</span> invest_cost_at_x);</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keywordtype">bool</span> IsCriterionSatisfied(<span class="keyword">const</span> std::vector&lt;double&gt; &amp;outer_loop_criterions);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="keywordtype">bool</span> found_feasible_ = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="keywordtype">double</span> bilevel_best_ub_ = +1e20;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  Point bilevel_best_x_;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keywordtype">double</span> lambda_max_ = 0.0;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <span class="keywordtype">double</span> lambda_min_ = 0.0;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keywordtype">double</span> lambda_ = 0.0;</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>  <a class="code hl_class" href="classOuterloop_1_1OuterLoopInputData.html">Outerloop::OuterLoopInputData</a> outer_loop_input_data_;</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>};</div>
 </div>
 <div class="ttc" id="aclassOuterLoopBiLevel_html"><div class="ttname"><a href="classOuterLoopBiLevel.html">OuterLoopBiLevel</a></div><div class="ttdef"><b>Definition</b> OuterLoopBiLevel.h:5</div></div>
 <div class="ttc" id="aclassOuterLoopBiLevel_html_a54b3322c3335d4aca9d2aadca5fc393b"><div class="ttname"><a href="classOuterLoopBiLevel.html#a54b3322c3335d4aca9d2aadca5fc393b">OuterLoopBiLevel::Check_bilevel_feasibility</a></div><div class="ttdeci">bool Check_bilevel_feasibility(const std::vector&lt; double &gt; &amp;outer_loop_criterion, double overall_cost)</div><div class="ttdef"><b>Definition</b> OuterLoopBiLevel.cpp:20</div></div>
