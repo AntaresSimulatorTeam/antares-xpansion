@@ -123,8 +123,12 @@ jobs:
         shell: bash
       - name: Configure
         run: |
+          antares_path = $(pwd)/rte-antares-${{env.version}}-installer-64bits
+          ortools_path = ${{env.ORTOOLS_DIR}}/install
+          echo ${antares_path}
+          echo ${ortools_path}
           cmake -B _build -S . \
-          -DCMAKE_PREFIX_PATH="$pwd/rte-antares-${{env.version}}-installer-64bits;${{env.ORTOOLS_DIR}}/install" \
+          -DCMAKE_PREFIX_PATH="${antares_path};${ortools_path}" \
           -DBUILD_TESTING=ON \
           -DCMAKE_BUILD_TYPE=Release \
           -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" \
