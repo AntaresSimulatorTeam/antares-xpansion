@@ -124,7 +124,7 @@ jobs:
       - name: Configure
         run: |
           cmake -B _build -S . \
-          -DCMAKE_PREFIX_PATH="${{github.workspace}}/rte-antares-${{env.version}}-installer-64bits;${{env.ORTOOLS_DIR}}/install" \
+          -DCMAKE_PREFIX_PATH="$pwd/rte-antares-${{env.version}}-installer-64bits;${{env.ORTOOLS_DIR}}/install" \
           -DBUILD_TESTING=ON \
           -DCMAKE_BUILD_TYPE=Release \
           -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" \
