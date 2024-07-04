@@ -147,9 +147,7 @@ void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
            std::plus<double>(), rank_0);
     SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter);
     if (Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
-      _data.outer_loop_current_iteration_data.outer_loop_criterion =
-          ComputeSubproblemsContributionToOuterLoopCriterion(
-              subproblem_data_map);
+      ComputeSubproblemsContributionToOuterLoopCriterion(subproblem_data_map);
       if (_world.rank() == rank_0) {
         outer_loop_criterion_.push_back(
             _data.outer_loop_current_iteration_data.outer_loop_criterion);
@@ -161,25 +159,30 @@ void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
   }
 }
 
-std::vector<double>
-BendersMpi::ComputeSubproblemsContributionToOuterLoopCriterion(
+void BendersMpi::ComputeSubproblemsContributionToOuterLoopCriterion(
     const SubProblemDataMap &subproblem_data_map) {
   std::vector<double> outer_loop_criterion_per_sub_problem_per_pattern(
       var_indices_.size(), {});
-  std::vector<double> outer_loop_criterion_sub_problems_map_result(
+  _data.outer_loop_current_iteration_data.outer_loop_criterion.resize(
+      var_indices_.size(), 0.);
+  std::vector<double> outer_loop_patterns_values_per_sub_problem_per_pattern(
       var_indices_.size(), {});
+  _data.outer_loop_current_iteration_data.outer_loop_patterns_values.resize(
+      var_indices_.size(), 0.);
 
   for (const auto &[subproblem_name, subproblem_data] : subproblem_data_map) {
-    AddVectors<double>(
-        outer_loop_criterion_per_sub_problem_per_pattern,
+    AddVectors<double>(outer_loop_criterion_per_sub_problem_per_pattern,
                        subproblem_data.outer_loop_criterions);
+    AddVectors<double>(outer_loop_patterns_values_per_sub_problem_per_pattern,
+                       subproblem_data.outer_loop_patterns_values);
   }
 
   Reduce(outer_loop_criterion_per_sub_problem_per_pattern,
-         outer_loop_criterion_sub_problems_map_result, std::plus<double>(),
-         rank_0);
-
-  return outer_loop_criterion_sub_problems_map_result;
+         _data.outer_loop_current_iteration_data.outer_loop_criterion,
+         std::plus<double>(), rank_0);
+  Reduce(outer_loop_patterns_values_per_sub_problem_per_pattern,
+         _data.outer_loop_current_iteration_data.outer_loop_patterns_values,
+         std::plus<double>(), rank_0);
 }
 
 SubProblemDataMap BendersMpi::get_subproblem_cut_package() {

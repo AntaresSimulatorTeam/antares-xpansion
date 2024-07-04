@@ -10,6 +10,8 @@ struct SubProblemData {
   double subproblem_cost;
   Point var_name_and_subgradient;
   std::vector<double> outer_loop_criterions;
+  // no-supplied energy
+  std::vector<double> outer_loop_patterns_values;
   double single_subpb_costs_under_approx;
   double subproblem_timer;
   int simplex_iter;
