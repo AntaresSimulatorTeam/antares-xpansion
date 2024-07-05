@@ -1,4 +1,4 @@
-name: Centos7 Build
+name: test ubuntu archive
 
 on:
   merge_group:
@@ -13,7 +13,7 @@ env:
 jobs:
 
 
-  ubuntu-20.04:
+  ubuntu-20-04:
     runs-on: ubuntu-latest
     container: 'ubuntu/20.04'
     strategy:
