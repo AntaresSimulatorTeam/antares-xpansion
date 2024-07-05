@@ -35,6 +35,7 @@ jobs:
 
     steps:
       - run: |
+          DEBIAN_FRONTEND=noninteractive
           apt -y update 
           apt -y install libjsoncpp-dev wget libopenmpi3
           wget https://github.com/AntaresSimulatorTeam/antares-xpansion/releases/download/v1.3.0/antaresXpansion-1.3.0-xpress-Ubuntu-20.04-single-file.tar.gz
