@@ -139,7 +139,10 @@ struct MathLoggerExternalLoopSpecific : public MathLogger {
       const std::filesystem::path& file_path,
       const std::vector<std::string>& headers,
       T OuterLoopCurrentIterationData::*ptr)
-      : MathLogger(file_path), headers_(headers), ptr_(ptr) {}
+      : MathLogger(file_path), ptr_(ptr) {
+    headers_.push_back("Outer loop");
+    headers_.insert(headers_.end(), headers.begin(), headers.end());
+  }
 
   void setHeadersList() override;
   void Print(const CurrentIterationData& data) override;
@@ -220,6 +223,7 @@ void MathLoggerExternalLoopSpecific<T>::setHeadersList() {
 template <class T>
 void MathLoggerExternalLoopSpecific<T>::Print(
     const CurrentIterationData& data) {
+  LogsDestination() << data.outer_loop_current_iteration_data.benders_num_run;
   for (const auto& t : data.outer_loop_current_iteration_data.*ptr_) {
     LogsDestination() << std::scientific << std::setprecision(10) << t;
   }
