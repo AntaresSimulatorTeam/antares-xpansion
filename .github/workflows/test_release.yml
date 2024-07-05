@@ -38,9 +38,9 @@ jobs:
       - run: |
           apt-get -y update 
           apt-get -y install libjsoncpp-dev wget libopenmpi3
-          wget https://github.com/AntaresSimulatorTeam/antares-xpansion/releases/download/v1.3.0/antaresXpansion-1.3.0-xpress-Ubuntu-20.04-single-file.tar.gz
+          wget https://github.com/AntaresSimulatorTeam/antares-xpansion/releases/download/v1.3.0/antaresXpansion-1.3.0-xpress-ubuntu-20.04.tar.gz
           mkdir test
-          tar xvfz antaresXpansion-1.3.0-xpress-Ubuntu-20.04-single-file.tar.gz -C test
+          tar xvfz antaresXpansion-1.3.0-xpress-ubuntu-20.04.tar.gz -C test
       - run: |    
           cd test
           ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
