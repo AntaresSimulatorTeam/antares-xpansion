@@ -2,6 +2,8 @@
 
 #include <utility>
 
+#include "StringManip.h"
+
 using namespace Outerloop;
 
 /**
@@ -54,6 +56,23 @@ void OuterLoopInputData::AddSingleData(const OuterLoopSingleInputData &data) {
 std::vector<OuterLoopSingleInputData> OuterLoopInputData::OuterLoopData()
     const {
   return outer_loop_data_;
+}
+
+std::vector<std::string> OuterLoopInputData::PatternBodies() const {
+  std::vector<std::string> ret;
+  for (const auto &data : outer_loop_data_) {
+    ret.push_back(data.Pattern().GetBody());
+  }
+  return ret;
+}
+
+std::string OuterLoopInputData::PatternsPrefix() const {
+  std::string ret("");
+  if (!outer_loop_data_.empty()) {
+    ret =
+        StringManip::split(outer_loop_data_[0].Pattern().GetPrefix(), "::")[0];
+  }
+  return ret;
 }
 
 void OuterLoopInputData::SetStoppingThreshold(

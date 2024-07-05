@@ -99,6 +99,7 @@ void MathLoggerBase::Print(const CurrentIterationData& data) {
   PrintBendersData(LogsDestination(), data, HeadersType(),
                    BENDERSMETHOD::BENDERS);
 }
+
 void MathLoggerBase::setHeadersList() {
   auto type = HeadersType();
   HeadersManager headers_manager(type, BENDERSMETHOD::BENDERS);
@@ -298,3 +299,7 @@ MathLoggerImplementation::MathLoggerImplementation(const BENDERSMETHOD& method,
       break;
   }
 }
+
+MathLoggerImplementation::MathLoggerImplementation(
+    std::shared_ptr<MathLogger> implementation)
+    : implementation_(std::move(implementation)) {}

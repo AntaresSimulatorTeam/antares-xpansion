@@ -133,6 +133,24 @@ struct MathLoggerBendersByBatchExternalLoop : public MathLoggerBendersByBatch {
   virtual ~MathLoggerBendersByBatchExternalLoop() = default;
 };
 
+template <class T>
+struct MathLoggerExternalLoopSpecific : public MathLogger {
+  explicit MathLoggerExternalLoopSpecific(
+      const std::filesystem::path& file_path,
+      const std::vector<std::string>& headers,
+      T OuterLoopCurrentIterationData::*ptr)
+      : MathLogger(file_path), headers_(headers), ptr_(ptr) {}
+
+  void setHeadersList() override;
+  void Print(const CurrentIterationData& data) override;
+
+  virtual ~MathLoggerExternalLoopSpecific() = default;
+
+ private:
+  std::vector<std::string> headers_;
+  T OuterLoopCurrentIterationData::*ptr_;
+};
+
 class MathLoggerImplementation : public MathLoggerBehaviour {
  public:
   explicit MathLoggerImplementation(const BENDERSMETHOD& method,
@@ -142,6 +160,7 @@ class MathLoggerImplementation : public MathLoggerBehaviour {
   explicit MathLoggerImplementation(const BENDERSMETHOD& method,
                                     std::streamsize width = 40,
                                     HEADERSTYPE type = HEADERSTYPE::LONG);
+  explicit MathLoggerImplementation(std::shared_ptr<MathLogger> implementation);
 
   void Print(const CurrentIterationData& data) { implementation_->Print(data); }
 
@@ -172,6 +191,10 @@ class MathLoggerDriver : public ILoggerXpansion {
   void write_header();
   void display_message(const std::string& str) override;
   void add_logger(std::shared_ptr<MathLoggerImplementation> logger);
+  template <class T>
+  void add_logger(const std::filesystem::path& file_path,
+                  const std::vector<std::string>& headers,
+                  T OuterLoopCurrentIterationData::*t);
   void Print(const CurrentIterationData& data);
   virtual void PrintIterationSeparatorBegin() override;
   virtual void PrintIterationSeparatorEnd() override;
@@ -180,3 +203,25 @@ class MathLoggerDriver : public ILoggerXpansion {
  private:
   std::vector<std::shared_ptr<MathLoggerImplementation>> math_loggers_;
 };
+
+template <class T>
+void MathLoggerDriver::add_logger(const std::filesystem::path& file_path,
+                                  const std::vector<std::string>& headers,
+                                  T OuterLoopCurrentIterationData::*t) {
+  auto impl = std::make_shared<MathLoggerExternalLoopSpecific<T>>(file_path,
+                                                                  headers, t);
+  add_logger(std::make_shared<MathLoggerImplementation>(impl));
+}
+
+template <class T>
+void MathLoggerExternalLoopSpecific<T>::setHeadersList() {
+  MathLogger::setHeadersList(headers_);
+}
+template <class T>
+void MathLoggerExternalLoopSpecific<T>::Print(
+    const CurrentIterationData& data) {
+  for (const auto& t : data.outer_loop_current_iteration_data.*ptr_) {
+    LogsDestination() << std::scientific << std::setprecision(10) << t;
+  }
+  LogsDestination() << std::endl;
+}

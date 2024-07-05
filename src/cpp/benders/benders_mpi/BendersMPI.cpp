@@ -342,6 +342,17 @@ void BendersMpi::PreRunInitialization() {
     if (is_trace()) {
       OpenCsvFile();
     }
+
+    if (Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
+      const auto &headers = outer_loop_input_data_.PatternBodies();
+      mathLoggerDriver_->add_logger(
+          std::filesystem::path(Options().OUTPUTROOT) / "criterions.txt",
+          headers, &OuterLoopCurrentIterationData::outer_loop_criterion);
+      mathLoggerDriver_->add_logger(
+          std::filesystem::path(Options().OUTPUTROOT) /
+              (outer_loop_input_data_.PatternsPrefix() + ".txt"),
+          headers, &OuterLoopCurrentIterationData::outer_loop_patterns_values);
+    }
   }
   mathLoggerDriver_->write_header();
   init_data_ = false;
