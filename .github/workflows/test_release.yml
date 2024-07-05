@@ -41,7 +41,6 @@ jobs:
           wget https://github.com/AntaresSimulatorTeam/antares-xpansion/releases/download/v1.3.0/antaresXpansion-1.3.0-xpress-Ubuntu-20.04-single-file.tar.gz
           tar xvfz antaresXpansion-1.3.0-xpress-Ubuntu-20.04-single-file.tar.gz
       - run: |    
-          cd antaresXpansion-1.3.0-xpress-Ubuntu-20.04-single-file
           ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
           echo "****************************"
           ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2 --allow-run-as-root
