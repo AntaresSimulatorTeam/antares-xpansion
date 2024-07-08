@@ -248,8 +248,6 @@ TEST_F(OuterLoopInputFromYamlTest, ReadValidFile) {
   auto my_yaml = R"(stopping_threshold: 1e-4
 # seuil
 criterion_count_threshold: 1e-1
- # tolerance entre seuil et valeur calculée
-criterion_tolerance: 1e-5
 patterns:
   - area: "N0"
     criterion: 185
@@ -264,7 +262,6 @@ patterns:
   auto data = OuterLoopInputFromYaml().Read(valid_file);
 
   ASSERT_EQ(data.StoppingThreshold(), 1e-4);
-  ASSERT_EQ(data.CriterionTolerance(), 1e-5);
   ASSERT_EQ(data.CriterionCountThreshold(), 1e-1);
 
   auto patterns = data.OuterLoopData();

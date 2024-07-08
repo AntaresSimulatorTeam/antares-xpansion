@@ -32,8 +32,7 @@ bool OuterLoopBiLevel::IsCriterionSatisfied(
  const auto& outer_loop_input_data = outer_loop_input_data_.OuterLoopData();
   for (int index(0); index < outer_loop_criterions.size(); ++index) {
     if (outer_loop_criterions[index] >
-        outer_loop_input_data[index].Criterion() +
-            outer_loop_input_data_.CriterionTolerance()) {
+        outer_loop_input_data[index].Criterion()) {
       return false;
     }
   }

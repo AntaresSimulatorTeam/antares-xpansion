@@ -84,8 +84,6 @@ class OuterLoopInputData {
 
   void SetStoppingThreshold(double outer_loop_stopping_threshold);
   [[nodiscard]] double StoppingThreshold() const;
-  void SetCriterionTolerance(double criterion_tolerance);
-  [[nodiscard]] double CriterionTolerance() const;
   void SetCriterionCountThreshold(double criterion_count_threshold);
   [[nodiscard]] double CriterionCountThreshold() const;
   void AddSingleData(const OuterLoopSingleInputData &data);
@@ -93,7 +91,6 @@ class OuterLoopInputData {
  private:
   double outer_loop_stopping_threshold_ = 1e-4;
   std::vector<OuterLoopSingleInputData> outer_loop_data_;
-  double criterion_tolerance_ = 1e-1;
   double criterion_count_threshold_ = 1;
 };
 
