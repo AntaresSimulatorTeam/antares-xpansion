@@ -1032,8 +1032,6 @@ std::vector<double> BendersBase::ComputeOuterLoopCriterion(
   auto subproblem_weight = SubproblemWeight(_data.nsubproblem, subproblem_name);
   double criterion_count_threshold =
       outer_loop_input_data_.CriterionCountThreshold();
-  auto number_of_scenarios =
-      _options.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_NUMBER_OF_SCENARIOS;
 
   for (int pattern_index(0); pattern_index < outer_loop_input_size;
        ++pattern_index) {
