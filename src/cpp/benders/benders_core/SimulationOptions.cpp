@@ -179,6 +179,5 @@ SimulationOptions::InvalidOptionFileException::InvalidOptionFileException(
 
 
 ExternalLoopOptions SimulationOptions::GetExternalLoopOptions() const {
-  return {DO_OUTER_LOOP, OUTER_LOOP_OPTION_FILE,
-          OUTER_LOOP_NUMBER_OF_SCENARIOS};
+  return {DO_OUTER_LOOP, OUTER_LOOP_OPTION_FILE};
 }

@@ -80,5 +80,3 @@ BENDERS_OPTIONS_MACRO(DO_OUTER_LOOP, bool, false, asBool())
 BENDERS_OPTIONS_MACRO(OUTER_LOOP_OPTION_FILE, std::string,
                       "outer_loop_options.json", asString())
 
-// Outer Loop number of scenarios (mc years)
-BENDERS_OPTIONS_MACRO(OUTER_LOOP_NUMBER_OF_SCENARIOS, unsigned int, 1, asUInt())
