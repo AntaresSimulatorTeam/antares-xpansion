@@ -64,10 +64,6 @@ void OuterLoopInputData::SetStoppingThreshold(
 double OuterLoopInputData::StoppingThreshold() const {
   return outer_loop_stopping_threshold_;
 }
-void OuterLoopInputData::SetCriterionTolerance(double criterion_tolerance) {
-  criterion_tolerance_ = criterion_tolerance;
-}
-double OuterLoopInputData::CriterionTolerance() const { return criterion_tolerance_; }
 void OuterLoopInputData::SetCriterionCountThreshold(
     double criterion_count_threshold) {
     criterion_count_threshold_ = criterion_count_threshold;
@@ -103,8 +99,6 @@ OuterLoopInputData OuterLoopInputFromYaml::Read(
 stopping_threshold: 1e-4
 # seuil
 criterion_count_threshold: 1e-1
- # tolerance entre seuil et valeur calculée
-criterion_tolerance: 1e-5
 patterns:
   - area: "N0"
     criterion: 1
@@ -176,7 +170,6 @@ struct convert<OuterLoopInputData> {
     rhs.SetStoppingThreshold(node["stopping_threshold"].as<double>(1e-4));
     rhs.SetCriterionCountThreshold(
         node["criterion_count_threshold"].as<double>(1));
-    rhs.SetCriterionTolerance(node["criterion_tolerance"].as<double>(1e-1));
 
     if (auto patterns = node["patterns"]) {
       DecodePatterns(patterns, rhs);
