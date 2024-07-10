@@ -113,31 +113,3 @@ decomposition - is an iterative method, which for each iteration:
   These derivatives are also called Bender cuts.
 
 A mathematical formulation of the optimization problem solved by Antares-Xpansion as well as details on the Benders decomposition method ar given in [Mathematical formulation of the investment problem](../optimization-principles/problem-formalization.md).
-
-## Notes on the computation time
-
-The Benders decomposition method has been shown to converge towards the optimal solution of the investment problem described above and is also commonly used to solve large
-stochastic problems. The number of iterations required to reach the
-optimum strongly depends on the structure of the problem and on the
-variants/algorithmic parameters used. In general, it strongly increases with the number of defined investment variables, see **Table 1**.
-
-| **Number of investment candidates** | **Order of magnitude of the number of iterations** |
-| ----------------------------------- | -------------------------------------------------- |
-| 5                                   | 10                                                 |
-| 10                                  | 40                                                 |
-| 25                                  | 100                                                |
-| 50                                  | 300                                                |
-| 100                                 | 800                                                |
-
-**Table 1** - Order of magnitude of the number of iterations
-required to reach the optimum with Antares-Xpansion v0.12.
-
-Each iteration of the Antares-Xpansion algorithm includes an Antares
-simulation. However, the simulation of "operational" studies of several
-tens of nodes and with several hundred Monte-Carlo scenarios (TYNDP,
-Generation adequacy report on the electricity supply-demand, etc.)
-requires a significant amount of computing time, sometimes several
-hours. The search for the optimal solution to the problem solved by
-Antares-Xpansion can therefore be relatively long, and in some cases
-requires a simplification of the problem being solved.
-
