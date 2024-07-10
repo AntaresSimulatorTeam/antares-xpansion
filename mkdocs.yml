@@ -44,6 +44,7 @@ nav:
         - 'Define the candidates': 'user-guide/get-started/candidate-definition.md'
         - 'Settings of the algorithm': 'user-guide/get-started/settings-definition.md'
       - 'Launch the optimization': 'user-guide/get-started/launching-optimization.md'
+      - 'Adequacy criterion': 'user-guide/get-started/adequacy-criterion.md'
       - 'Sensitivity analysis': 'user-guide/get-started/sensitivity-analysis.md'
   - 'Developer guide': 
     - 'Install from sources':
