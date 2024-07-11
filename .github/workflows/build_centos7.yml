@@ -134,9 +134,8 @@ jobs:
       
       - name: openmpi-devel
         run: |
-          wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.6-1.src.rpm 
-          rpm -i openmpi-4.1.6-1.src.rpm        
-          
+          yum install -y openmpi-devel 
+      
       - name: Compile Boost
         uses: ./.github/workflows/compile-boost
         with:
