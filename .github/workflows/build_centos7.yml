@@ -134,6 +134,7 @@ jobs:
       
       - name: openmpi-devel
         run: |
+          yum update
           yum install -y openmpi-devel 
       
       - name: Compile Boost
