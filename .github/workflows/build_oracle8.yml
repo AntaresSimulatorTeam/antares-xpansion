@@ -67,6 +67,11 @@ jobs:
           #make gcc &co available system wide and "action wide"
           source /opt/rh/gcc-toolset-10/enable
           echo $PATH >> $GITHUB_PATH
+      
+      - name: Compile Boost
+        uses: ./.github/workflows/compile-boost
+        with:
+          prefix: "${GITHUB_WORKSPACE}/deps"          
 
       - run: |
           dnf module install -y nodejs:20/common

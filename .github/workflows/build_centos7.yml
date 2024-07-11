@@ -131,7 +131,12 @@ jobs:
           antares-version: ${{needs.versions.outputs.antares-version}}
           os: centos7
           os-full-name: CentOS-7.9.2009
-
+      
+      - name: Compile Boost
+        uses: ./.github/workflows/compile-boost
+        with:
+          prefix: "${GITHUB_WORKSPACE}/deps"
+      
       - name: Install dependencies
         run: |
           pip3 install --upgrade pip
