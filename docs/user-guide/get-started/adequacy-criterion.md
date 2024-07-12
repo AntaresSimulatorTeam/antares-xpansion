@@ -28,7 +28,7 @@ patterns:
 - `criterion_count_threshold` in MWh (positive float): Number of MWh of unsupplied energy in a given hour to consider that this is an hour with loss of load (ex: An hour is considered to be with loss of load if there is more than 1 MWh of unsupplied energy).
     - Default value: `1`
 - `patterns`: A list giving the area names and the associated criterion.
-    - Default value: Empty (no criterion on any area)
+    - required at least a pair of (criterion; area)
     - `area` (string): Name of the area
     - `criterion` in hours (positive float): Maximum expected number of hours with loss of load over all scenarios for the corresponding area
 
