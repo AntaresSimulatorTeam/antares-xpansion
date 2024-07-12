@@ -33,7 +33,7 @@ const auto STUDY_PATH =
     std::filesystem::path("data_test") / "adequacy_criterion_test";
 const auto LP_DIR = STUDY_PATH / "lp";
 const auto OPTIONS_FILE = LP_DIR / "options.json";
-const auto OUTER_OPTIONS_FILE = LP_DIR / "adequacy_criterion_options.yml";
+const auto OUTER_OPTIONS_FILE = LP_DIR / "adequacy_criterion.yml";
 
 class MasterUpdateBaseTest : public ::testing::TestWithParam<std::string> {
  public:
