@@ -1,7 +1,6 @@
-#include <utility>
-
 #include "AdequacyCriterionInputDataReader.h"
-#include "StringManip.h"
+
+#include <utility>
 
 using namespace AdequacyCriterionSpace;
 
@@ -58,11 +57,6 @@ void AdequacyCriterionInputData::AddSingleData(
   adequacy_criterion_data_.push_back(data);
 }
 
-std::vector<AdequacyCriterionSingleInputData>
-AdequacyCriterionInputData::AdequacyCriterionData() const {
-  return adequacy_criterion_data_;
-}
-
 std::vector<std::string> AdequacyCriterionInputData::PatternBodies() const {
   std::vector<std::string> ret;
   for (const auto &data : adequacy_criterion_data_) {
@@ -78,6 +72,10 @@ std::string AdequacyCriterionInputData::PatternsPrefix() const {
                              "::")[0];
   }
   return ret;
+}
+std::vector<AdequacyCriterionSingleInputData>
+AdequacyCriterionInputData::AdequacyCriterionData() const {
+  return adequacy_criterion_data_;
 }
 
 void AdequacyCriterionInputData::SetStoppingThreshold(

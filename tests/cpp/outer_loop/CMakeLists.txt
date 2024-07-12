@@ -1,10 +1,10 @@
-add_executable(outer_loop_test 
-        outer_loop_test.cpp)
+add_executable(adequacy_criterion_test 
+        adequacy_criterion_test.cpp)
 
-target_link_libraries(outer_loop_test
+target_link_libraries(adequacy_criterion_test
         PRIVATE
         solvers
-        outer_loop_lib
+        adequacy_criterion_lib
         benders_by_batch_core
         benders_core
         output_core
@@ -12,5 +12,5 @@ target_link_libraries(outer_loop_test
         GTest::Main
         tests_utils)
 
-add_test(NAME unit_outer_loop COMMAND outer_loop_test WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
-set_property(TEST unit_outer_loop PROPERTY LABELS unit)
+add_test(NAME unit_adequacy_criterion COMMAND adequacy_criterion_test WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
+set_property(TEST unit_adequacy_criterion PROPERTY LABELS unit)

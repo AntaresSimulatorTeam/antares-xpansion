@@ -21,8 +21,8 @@ add_library (benders_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/StartUp.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersMathLogger.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/VariablesGroup.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopBiLevel.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopInputDataReader.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/AdequacyCriterionBiLevel.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/AdequacyCriterionInputDataReader.cpp
 
 	)
 

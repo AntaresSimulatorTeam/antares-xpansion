@@ -17,8 +17,8 @@ if(UNIX)
 set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
 endif()
 
-add_library (outer_loop_lib STATIC
-	${CMAKE_CURRENT_SOURCE_DIR}/OuterLoop.cpp
+add_library (adequacy_criterion_lib STATIC
+	${CMAKE_CURRENT_SOURCE_DIR}/AdequacyCriterion.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/MasterUpdateBase.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/CutsManagement.cpp
 	)
@@ -26,13 +26,13 @@ add_library (outer_loop_lib STATIC
 
 
 
-target_include_directories (outer_loop_lib
+target_include_directories (adequacy_criterion_lib
 		PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}/include
 	    INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
 		)
 
-target_link_libraries (outer_loop_lib
+target_link_libraries (adequacy_criterion_lib
 	PUBLIC
 		Boost::mpi
 		MPI::MPI_C
@@ -43,4 +43,4 @@ target_link_libraries (outer_loop_lib
 		benders_by_batch_core		
 )
 
-add_library (${PROJECT_NAME}::outer_loop_lib ALIAS outer_loop_lib)
+add_library (${PROJECT_NAME}::adequacy_criterion_lib ALIAS adequacy_criterion_lib)

@@ -17,7 +17,7 @@ from dataclasses import dataclass
 class SolversExe:
     benders: Path
     merge_mps: Path
-    outer_loop: Path
+    adequacy_criterion: Path
 
 class BendersDriver:
 
@@ -27,7 +27,7 @@ class BendersDriver:
         self.allow_run_as_root = False
         self.benders = solvers_exe.benders
         self.merge_mps = solvers_exe.merge_mps
-        self.outer_loop = solvers_exe.outer_loop
+        self.adequacy_criterion = solvers_exe.adequacy_criterion
         self.mpiexec = mpiexec
         self.method = "benders"
         self.n_mpi = 1
@@ -101,8 +101,8 @@ class BendersDriver:
     def set_solver(self):
         if self.method == "benders":
             self.solver = self.benders
-        elif self.method == "outer_loop":
-            self.solver = self.outer_loop
+        elif self.method == "adequacy_criterion":
+            self.solver = self.adequacy_criterion
         elif self.method == "mergeMPS":
             self.solver = self.merge_mps
         else:

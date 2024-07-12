@@ -3,13 +3,13 @@
 #include "MasterUpdate.h"
 #include "common_mpi.h"
 
-namespace Outerloop {
-class OuterLoop {
+namespace AdequacyCriterionSpace {
+class AdequacyCriterion {
  public:
-  explicit OuterLoop(std::shared_ptr<IMasterUpdate> master_updater,
-                     std::shared_ptr<ICutsManager> cuts_manager,
-                     pBendersBase benders, mpi::environment& env,
-                     mpi::communicator& world);
+  explicit AdequacyCriterion(std::shared_ptr<IMasterUpdate> master_updater,
+                             std::shared_ptr<ICutsManager> cuts_manager,
+                             pBendersBase benders, mpi::environment& env,
+                             mpi::communicator& world);
   void Run();
 
  private:
@@ -22,4 +22,4 @@ class OuterLoop {
   mpi::communicator& world_;
 };
 
-}  // namespace Outerloop
+}  // namespace AdequacyCriterionSpace

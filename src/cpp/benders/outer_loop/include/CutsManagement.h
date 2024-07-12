@@ -1,7 +1,7 @@
 #pragma once
 #include "BendersStructsDatas.h"
 
-namespace Outerloop {
+namespace AdequacyCriterionSpace {
 
 class ICutsManager {
  public:
@@ -19,4 +19,4 @@ class CutsManagerRunTime : public ICutsManager {
   WorkerMasterDataVect benders_cuts_;
 };
 
-}  // namespace Outerloop
+}  // namespace AdequacyCriterionSpace

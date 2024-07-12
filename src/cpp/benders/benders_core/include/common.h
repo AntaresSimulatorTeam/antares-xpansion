@@ -24,7 +24,7 @@
 #include <vector>
 
 enum class MasterFormulation { INTEGER, RELAXED };
-enum class SOLVER { BENDERS, OUTER_LOOP, MERGE_MPS };
+enum class SOLVER { BENDERS, ADEQUACY_CRITERION, MERGE_MPS };
 
 struct Predicate;
 typedef std::map<std::string, double> Point;
@@ -144,8 +144,8 @@ struct BaseOptions {
 typedef BaseOptions MergeMPSOptions;
 
 struct ExternalLoopOptions {
-  bool DO_OUTER_LOOP = false;
-  std::string OUTER_LOOP_OPTION_FILE;
+  bool DO_ADEQUACY_CRITERION = false;
+  std::string ADEQUACY_CRITERION_OPTION_FILE;
 };
 
 struct BendersBaseOptions : public BaseOptions {

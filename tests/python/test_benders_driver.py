@@ -141,11 +141,10 @@ class TestBendersDriver:
             args, _ = run_function.call_args_list[0]
             assert args[0] == expected_cmd
 
-    def test_benders_cmd_outer_loop(self, tmp_path):
-        my_outer_loop = "something"
+    def test_benders_cmd_adequacy_criterion(self, tmp_path):
+        my_adequacy_criterion = "something"
         my_install_dir = Path("Path/to/")
-        exe_path = os.path.normpath(
-            os.path.join(my_install_dir, my_outer_loop))
+        exe_path = os.path.normpath(os.path.join(my_install_dir, my_adequacy_criterion))
 
         benders_driver = BendersDriver(
             SolversExe("", "", exe_path), self.OPTIONS_JSON, self.MPI_LAUNCHER
@@ -159,7 +158,7 @@ class TestBendersDriver:
         with patch(MOCK_SUBPROCESS_RUN, autospec=True) as run_function:
             expected_cmd = [exe_path, self.OPTIONS_JSON]
             run_function.return_value.returncode = 0
-            benders_driver.launch(simulation_output_path, "outer_loop", True)
+            benders_driver.launch(simulation_output_path, "adequacy_criterion", True)
             args, _ = run_function.call_args_list[0]
             assert args[0] == expected_cmd
 

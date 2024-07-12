@@ -1,9 +1,9 @@
 
 // #include "MasterUpdate.h"
 
+#include "AdequacyCriterionInputDataReader.h"
 #include "LoggerFactories.h"
 #include "MasterUpdate.h"
-#include "OuterLoopInputDataReader.h"
 #include "WriterFactories.h"
 #include "gtest/gtest.h"
 #include "multisolver_interface/environment.h"
@@ -14,7 +14,7 @@ char** my_argv;
 boost::mpi::environment* penv = nullptr;
 boost::mpi::communicator* pworld = nullptr;
 
-using namespace Outerloop;
+using namespace AdequacyCriterionSpace;
 
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);
@@ -30,10 +30,10 @@ int main(int argc, char** argv) {
 
 //-------------------- MasterUpdateBaseTest -------------------------
 const auto STUDY_PATH =
-    std::filesystem::path("data_test") / "external_loop_test";
+    std::filesystem::path("data_test") / "adequacy_criterion_test";
 const auto LP_DIR = STUDY_PATH / "lp";
 const auto OPTIONS_FILE = LP_DIR / "options.json";
-const auto OUTER_OPTIONS_FILE = LP_DIR / "outer_loop_options.yml";
+const auto OUTER_OPTIONS_FILE = LP_DIR / "adequacy_criterion_options.yml";
 
 class MasterUpdateBaseTest : public ::testing::TestWithParam<std::string> {
  public:
@@ -95,8 +95,8 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
                   benders_options.STRUCTURE_FILE);
   // override solver
   benders_options.SOLVER_NAME = GetParam();
-  benders_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = true;
-  benders_options.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE =
+  benders_options.EXTERNAL_LOOP_OPTIONS.DO_ADEQUACY_CRITERION = true;
+  benders_options.EXTERNAL_LOOP_OPTIONS.ADEQUACY_CRITERION_OPTION_FILE =
       OUTER_OPTIONS_FILE.string();
   benders = std::make_shared<BendersMpi>(benders_options, logger, writer, *penv,
                                          *pworld, math_log_driver);
@@ -152,12 +152,12 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   benders->free();
 }
 
-class OuterLoopPatternTest : public ::testing::Test {};
+class AdequacyCriterionPatternTest : public ::testing::Test {};
 
-TEST_F(OuterLoopPatternTest, RegexGivenPrefixAndBody) {
+TEST_F(AdequacyCriterionPatternTest, RegexGivenPrefixAndBody) {
   const std::string prefix = "prefix";
   const std::string body = "body";
-  OuterLoopPattern o(prefix, body);
+  AdequacyCriterionPattern o(prefix, body);
 
   auto ret_regex = o.MakeRegex();
 
@@ -172,22 +172,22 @@ TEST_F(OuterLoopPatternTest, RegexGivenPrefixAndBody) {
   ASSERT_EQ(std::regex_search(prefix + "area<" + body + "_other_area>::suffix", ret_regex), false);
 }
 
-class OuterLoopInputFromYamlTest : public ::testing::Test {};
+class AdequacyCriterionInputFromYamlTest : public ::testing::Test {};
 
-TEST_F(OuterLoopInputFromYamlTest, YamlFileDoesNotExist) {
+TEST_F(AdequacyCriterionInputFromYamlTest, YamlFileDoesNotExist) {
   std::filesystem::path empty("");
   std::ostringstream expected_msg;
   expected_msg << "Could not read outer loop input file: " << empty << "\n"
                << "bad file: " << empty.string();
   try {
-    OuterLoopInputFromYaml parser;
+    AdequacyCriterionInputFromYaml parser;
     parser.Read(empty);
-  } catch (const OuterLoopInputFileError& e) {
+  } catch (const AdequacyCriterionInputFileError& e) {
     ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
   }
 }
 
-TEST_F(OuterLoopInputFromYamlTest, YamlFileIsEmpty) {
+TEST_F(AdequacyCriterionInputFromYamlTest, YamlFileIsEmpty) {
   std::filesystem::path empty(std::filesystem::temp_directory_path() /
                               "empty.yml");
   std::ofstream of(empty);
@@ -196,14 +196,15 @@ TEST_F(OuterLoopInputFromYamlTest, YamlFileIsEmpty) {
   std::ostringstream expected_msg;
   expected_msg << "outer loop input file is empty: " << empty << "\n";
   try {
-    OuterLoopInputFromYaml parser;
+    AdequacyCriterionInputFromYaml parser;
     parser.Read(empty);
-  } catch (const OuterLoopInputFileIsEmpty& e) {
+  } catch (const AdequacyCriterionInputFileIsEmpty& e) {
     ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
   }
 }
 
-TEST_F(OuterLoopInputFromYamlTest, YamlFileShouldContainsAtLeast1Pattern) {
+TEST_F(AdequacyCriterionInputFromYamlTest,
+       YamlFileShouldContainsAtLeast1Pattern) {
   std::filesystem::path empty_patterns(std::filesystem::temp_directory_path() /
                                        "empty_patterns.yml");
   std::ofstream of(empty_patterns);
@@ -214,14 +215,14 @@ TEST_F(OuterLoopInputFromYamlTest, YamlFileShouldContainsAtLeast1Pattern) {
   expected_msg << "outer loop input file must contains at least one pattern."
                << "\n";
   try {
-    OuterLoopInputFromYaml parser;
+    AdequacyCriterionInputFromYaml parser;
     parser.Read(empty_patterns);
-  } catch (const OuterLoopInputFileNoPatternFound& e) {
+  } catch (const AdequacyCriterionInputFileNoPatternFound& e) {
     ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
   }
 }
 
-TEST_F(OuterLoopInputFromYamlTest, YamlFilePatternsShouldBeAnArray) {
+TEST_F(AdequacyCriterionInputFromYamlTest, YamlFilePatternsShouldBeAnArray) {
   std::filesystem::path patterns_not_array(
       std::filesystem::temp_directory_path() / "patterns_not_array.yml");
   std::ofstream of(patterns_not_array);
@@ -233,14 +234,14 @@ TEST_F(OuterLoopInputFromYamlTest, YamlFilePatternsShouldBeAnArray) {
   expected_msg << "In outer loop input file 'patterns' should be an array."
                << "\n";
   try {
-    OuterLoopInputFromYaml parser;
+    AdequacyCriterionInputFromYaml parser;
     parser.Read(patterns_not_array);
-  } catch (const OuterLoopInputPatternsShouldBeArray& e) {
+  } catch (const AdequacyCriterionInputPatternsShouldBeArray& e) {
     ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
   }
 }
 
-TEST_F(OuterLoopInputFromYamlTest, ReadValidFile) {
+TEST_F(AdequacyCriterionInputFromYamlTest, ReadValidFile) {
   std::filesystem::path valid_file(std::filesystem::temp_directory_path() /
                                    "valid_file.yml");
 
@@ -259,12 +260,12 @@ patterns:
     criterion: 1)";
   of << my_yaml;
   of.close();
-  auto data = OuterLoopInputFromYaml().Read(valid_file);
+  auto data = AdequacyCriterionInputFromYaml().Read(valid_file);
 
   ASSERT_EQ(data.StoppingThreshold(), 1e-4);
   ASSERT_EQ(data.CriterionCountThreshold(), 1e-1);
 
-  auto patterns = data.OuterLoopData();
+  auto patterns = data.AdequacyCriterionData();
   ASSERT_EQ(patterns.size(), 4);
   auto pattern1 = patterns[0];
   ASSERT_EQ(pattern1.Criterion(), 185.0);

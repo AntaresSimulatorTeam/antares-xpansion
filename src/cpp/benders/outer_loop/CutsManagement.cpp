@@ -1,6 +1,6 @@
 #include "CutsManagement.h"
 
-using namespace Outerloop;
+using namespace AdequacyCriterionSpace;
 
 void CutsManagerRunTime::Save(const WorkerMasterDataVect& benders_cuts) {
   benders_cuts_ = benders_cuts;

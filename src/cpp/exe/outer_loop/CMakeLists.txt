@@ -10,7 +10,7 @@
 # MPI Benders Exe
 # ---------------------------------------------------------------------------
 
-add_executable(outer_loop
+add_executable(adequacy_criterion
 	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
 )
 
@@ -19,9 +19,9 @@ if(UNIX)
 set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
 endif()
 
-target_link_libraries(outer_loop
-			${PROJECT_NAME}::outer_loop_lib
+target_link_libraries(adequacy_criterion
+			${PROJECT_NAME}::adequacy_criterion_lib
 			factories
 			)
 
-install(TARGETS outer_loop DESTINATION bin)
+install(TARGETS adequacy_criterion DESTINATION bin)

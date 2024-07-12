@@ -1,13 +1,14 @@
 
+#include "BendersFactory.h"
+
 #include <filesystem>
 
+#include "AdequacyCriterion.h"
 #include "BendersByBatch.h"
 #include "BendersSequential.h"
 #include "ILogger.h"
-#include "BendersFactory.h"
 #include "LogUtils.h"
 #include "LoggerFactories.h"
-#include "OuterLoop.h"
 #include "OutputWriter.h"
 #include "StartUp.h"
 #include "Timer.h"
@@ -15,7 +16,7 @@
 #include "WriterFactories.h"
 
 BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size,
-                                  bool external_loop) {
+                                  bool adequacy_criterion) {
   /*
     classical benders: 0*100 + 0*10 = 0
     classical benders + external loop: 0*100 + 1*10 = 10
@@ -25,8 +26,8 @@ BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size,
 
   auto benders_algo_score =
       (batch_size == 0 || batch_size == coupling_map_size - 1) ? 0 : 1;
-  auto external_loop_score = external_loop ? 1 : 0;
-  auto total_score = 100 * benders_algo_score + 10 * external_loop_score;
+  auto adequacy_criterion_score = adequacy_criterion ? 1 : 0;
+  auto total_score = 100 * benders_algo_score + 10 * adequacy_criterion_score;
   switch (total_score) {
     case 0:
     default:
@@ -42,14 +43,15 @@ BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size,
 
 pBendersBase BendersMainFactory::PrepareForExecution(
     BendersLoggerBase& benders_loggers, const SimulationOptions& options,
-    bool external_loop) const {
+    bool adequacy_criterion) const {
   pBendersBase benders;
   Logger logger;
   std::shared_ptr<MathLoggerDriver> math_log_driver;
 
 
   BendersBaseOptions benders_options(options.get_benders_options());
-  benders_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = external_loop;
+  benders_options.EXTERNAL_LOOP_OPTIONS.DO_ADEQUACY_CRITERION =
+      adequacy_criterion;
 
   auto log_reports_name =
       std::filesystem::path(options.OUTPUTROOT) / "reportbenders.txt";
@@ -59,8 +61,8 @@ pBendersBase BendersMainFactory::PrepareForExecution(
 
   Writer writer;
   const auto coupling_map = build_input(benders_options.STRUCTURE_FILE);
-  const auto method = DeduceBendersMethod(coupling_map.size(),
-                                          options.BATCH_SIZE, external_loop);
+  const auto method = DeduceBendersMethod(
+      coupling_map.size(), options.BATCH_SIZE, adequacy_criterion);
 
   if (pworld_->rank() == 0) {
     auto benders_log_console = benders_options.LOG_LEVEL > 0;
@@ -157,14 +159,14 @@ int BendersMainFactory::RunExternalLoop() const {
     auto benders = PrepareForExecution(benders_loggers, options, true);
     double tau = 0.5;
     double epsilon_lambda = 0.1;
-    std::shared_ptr<Outerloop::IMasterUpdate> master_updater =
-        std::make_shared<Outerloop::MasterUpdateBase>(
-            benders, tau);
-    std::shared_ptr<Outerloop::ICutsManager> cuts_manager =
-        std::make_shared<Outerloop::CutsManagerRunTime>();
+    std::shared_ptr<AdequacyCriterionSpace::IMasterUpdate> master_updater =
+        std::make_shared<AdequacyCriterionSpace::MasterUpdateBase>(benders,
+                                                                   tau);
+    std::shared_ptr<AdequacyCriterionSpace::ICutsManager> cuts_manager =
+        std::make_shared<AdequacyCriterionSpace::CutsManagerRunTime>();
 
-    Outerloop::OuterLoop ext_loop(master_updater, cuts_manager, benders, *penv_,
-                                  *pworld_);
+    AdequacyCriterionSpace::AdequacyCriterion ext_loop(
+        master_updater, cuts_manager, benders, *penv_, *pworld_);
     ext_loop.Run();
 
     } catch (std::exception& e) {

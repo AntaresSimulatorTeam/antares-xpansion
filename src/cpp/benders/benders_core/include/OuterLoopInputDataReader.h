@@ -7,42 +7,42 @@
 #include "LoggerUtils.h"
 #include "yaml-cpp/yaml.h"
 
-namespace Outerloop {
+namespace AdequacyCriterionSpace {
 
-class OuterLoopInputFileError
+class AdequacyCriterionInputFileError
     : public LogUtils::XpansionError<std::runtime_error> {
   using LogUtils::XpansionError<std::runtime_error>::XpansionError;
 };
-class OuterLoopInputFileIsEmpty
-    : public LogUtils::XpansionError<std::runtime_error> {
-  using LogUtils::XpansionError<std::runtime_error>::XpansionError;
-};
-
-class OuterLoopInputFileNoPatternFound
+class AdequacyCriterionInputFileIsEmpty
     : public LogUtils::XpansionError<std::runtime_error> {
   using LogUtils::XpansionError<std::runtime_error>::XpansionError;
 };
 
-class OuterLoopInputPatternsShouldBeArray
+class AdequacyCriterionInputFileNoPatternFound
     : public LogUtils::XpansionError<std::runtime_error> {
   using LogUtils::XpansionError<std::runtime_error>::XpansionError;
 };
 
-class OuterLoopCouldNotReadAreaField
+class AdequacyCriterionInputPatternsShouldBeArray
     : public LogUtils::XpansionError<std::runtime_error> {
   using LogUtils::XpansionError<std::runtime_error>::XpansionError;
 };
 
-class OuterLoopCouldNotReadCriterionField
+class AdequacyCriterionCouldNotReadAreaField
+    : public LogUtils::XpansionError<std::runtime_error> {
+  using LogUtils::XpansionError<std::runtime_error>::XpansionError;
+};
+
+class AdequacyCriterionCouldNotReadCriterionField
     : public LogUtils::XpansionError<std::runtime_error> {
   using LogUtils::XpansionError<std::runtime_error>::XpansionError;
 };
 
 /// @brief lovely class
-class OuterLoopPattern {
+class AdequacyCriterionPattern {
  public:
-  explicit OuterLoopPattern(std::string prefix, std::string body);
-  OuterLoopPattern() = default;
+  explicit AdequacyCriterionPattern(std::string prefix, std::string body);
+  AdequacyCriterionPattern() = default;
   [[nodiscard]] std::regex MakeRegex() const;
   [[nodiscard]] const std::string &GetPrefix() const;
   void SetPrefix(const std::string &prefix);
@@ -52,63 +52,66 @@ class OuterLoopPattern {
  private:
   std::string prefix_;
   std::string body_;
-
 };
 
 /// @brief holds the pattern and the criterion of the outer loop
-class OuterLoopSingleInputData {
+class AdequacyCriterionSingleInputData {
  public:
-  OuterLoopSingleInputData() = default;
+  AdequacyCriterionSingleInputData() = default;
   /// @brief constructor
   /// @param prefix the prefix in the variable's name
   /// @param body any string that could be in the variable's name
   /// @param criterion the criterion that should be satisfied
-  OuterLoopSingleInputData(const std::string &prefix, const std::string &body,
-                           double criterion);
+  AdequacyCriterionSingleInputData(const std::string &prefix,
+                                   const std::string &body, double criterion);
 
-  [[nodiscard]] OuterLoopPattern Pattern() const;
+  [[nodiscard]] AdequacyCriterionPattern Pattern() const;
   [[nodiscard]] double Criterion() const;
   void SetCriterion(double criterion);
   void ResetPattern(const std::string &prefix, const std::string &body);
  private:
-  OuterLoopPattern outer_loop_pattern_;
+  AdequacyCriterionPattern adequacy_criterion_pattern_;
   double criterion_ = 0;
 };
 
 /// @brief this class contains all data read from user input file
-class OuterLoopInputData {
+class AdequacyCriterionInputData {
  public:
-  OuterLoopInputData() = default;
+  AdequacyCriterionInputData() = default;
 
-  [[nodiscard]] std::vector<OuterLoopSingleInputData> OuterLoopData() const;
+  [[nodiscard]] std::vector<AdequacyCriterionSingleInputData>
+  AdequacyCriterionData() const;
   [[nodiscard]] std::vector<std::string> PatternBodies() const;
   [[nodiscard]] std::string PatternsPrefix() const;
 
-  void SetStoppingThreshold(double outer_loop_stopping_threshold);
+  void SetStoppingThreshold(double adequacy_criterion_stopping_threshold);
   [[nodiscard]] double StoppingThreshold() const;
   void SetCriterionCountThreshold(double criterion_count_threshold);
   [[nodiscard]] double CriterionCountThreshold() const;
-  void AddSingleData(const OuterLoopSingleInputData &data);
+  void AddSingleData(const AdequacyCriterionSingleInputData &data);
 
  private:
-  double outer_loop_stopping_threshold_ = 1e-4;
-  std::vector<OuterLoopSingleInputData> outer_loop_data_;
+  double adequacy_criterion_stopping_threshold_ = 1e-4;
+  std::vector<AdequacyCriterionSingleInputData> adequacy_criterion_data_;
   double criterion_count_threshold_ = 1;
 };
 
 /// @brief Abstract /***
-class IOuterLoopInputDataReader {
+class IAdequacyCriterionInputDataReader {
  public:
-  virtual OuterLoopInputData Read(const std::filesystem::path &input_file) = 0;
+  virtual AdequacyCriterionInputData Read(
+      const std::filesystem::path &input_file) = 0;
 };
 
-class OuterLoopInputFromYaml : public IOuterLoopInputDataReader {
+class AdequacyCriterionInputFromYaml
+    : public IAdequacyCriterionInputDataReader {
  public:
-  OuterLoopInputFromYaml() = default;
-  OuterLoopInputData Read(const std::filesystem::path &input_file) override;
+  AdequacyCriterionInputFromYaml() = default;
+  AdequacyCriterionInputData Read(
+      const std::filesystem::path &input_file) override;
 
  private:
-  OuterLoopInputData outerLoopInputData_;
+  AdequacyCriterionInputData outerLoopInputData_;
 };
 
-}  // namespace Outerloop
+}  // namespace AdequacyCriterionSpace

@@ -4,11 +4,11 @@
 #include <filesystem>
 #include <regex>
 
+#include "AdequacyCriterionBiLevel.h"
+#include "AdequacyCriterionInputDataReader.h"
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
 #include "ILogger.h"
-#include "OuterLoopBiLevel.h"
-#include "OuterLoopInputDataReader.h"
 #include "OutputWriter.h"
 #include "SimulationOptions.h"
 #include "SubproblemCut.h"
@@ -84,22 +84,26 @@ class BendersBase {
   BendersBaseOptions Options() const { return _options; }
   virtual void free() = 0;
   void InitExternalValues(bool is_bilevel_check_all, double lambda);
-  int GetBendersRunNumber() const { return _data.outer_loop_current_iteration_data.benders_num_run; }
+  int GetBendersRunNumber() const {
+    return _data.adequacy_criterion_current_iteration_data.benders_num_run;
+  }
   CurrentIterationData GetCurrentIterationData() const;
-  OuterLoopCurrentIterationData GetOuterLoopData() const;
-  std::vector<double> GetOuterLoopCriterionAtBestBenders() const;
+  AdequacyCriterionCurrentIterationData GetAdequacyCriterionData() const;
+  std::vector<double> GetAdequacyCriterionAtBestBenders() const;
   virtual void init_data();
-  void init_data(double external_loop_lambda, double external_loop_lambda_min, double external_loop_lambda_max);
+  void init_data(double adequacy_criterion_lambda,
+                 double adequacy_criterion_lambda_min,
+                 double adequacy_criterion_lambda_max);
 
   double ExternalLoopLambdaMax() const;
   double ExternalLoopLambdaMin() const;
   bool ExternalLoopFoundFeasible() const;
   virtual void ExternalLoopCheckFeasibility() = 0;
   virtual void RunExternalLoopBilevelChecks() = 0;
-  double OuterLoopStoppingThreshold() const;
-  Output::SolutionData GetOuterLoopSolution() const;
-  void SaveOuterLoopSolutionInOutputFile() const;
-  void SaveCurrentOuterLoopIterationInOutputFile() const;
+  double AdequacyCriterionStoppingThreshold() const;
+  Output::SolutionData GetAdequacyCriterionSolution() const;
+  void SaveAdequacyCriterionSolutionInOutputFile() const;
+  void SaveCurrentAdequacyCriterionIterationInOutputFile() const;
 
  protected:
   bool exception_raised_ = false;
@@ -120,12 +124,13 @@ class BendersBase {
   bool init_problems_ = true;
   bool free_problems_ = true;
 
-  std::vector<std::vector<double>> outer_loop_criterion_;
+  std::vector<std::vector<double>> adequacy_criterion_;
   std::vector<std::string> subproblems_vars_names_ = {};
   std::vector<std::vector<int>> var_indices_;
-  OuterLoopBiLevel outer_loop_biLevel_;
+  AdequacyCriterionBiLevel adequacy_criterion_biLevel_;
   bool is_bilevel_check_all_ = false;
-  Outerloop::OuterLoopInputData outer_loop_input_data_;
+  AdequacyCriterionSpace::AdequacyCriterionInputData
+      adequacy_criterion_input_data_;
 
   virtual void Run() = 0;
   void update_best_ub();
@@ -150,7 +155,7 @@ class BendersBase {
                                         std::string const &name) const;
   [[nodiscard]] std::filesystem::path get_master_path() const;
   [[nodiscard]] std::filesystem::path get_structure_path() const;
-  [[nodiscard]] std::filesystem::path OuterloopOptionsFile() const;
+  [[nodiscard]] std::filesystem::path AdequacyCriterionSpaceOptionsFile() const;
   [[nodiscard]] LogData bendersDataToLogData(
       const CurrentIterationData &data) const;
   template <typename T, typename... Args>
@@ -235,13 +240,12 @@ class BendersBase {
   SolverLogManager solver_log_manager_;
 
   // outer loop criterion per pattern
-  void ComputeOuterLoopCriterion(
-      const std::string &subproblem_name,
-      const std::vector<double> &sub_problem_solution,
-      PlainData::SubProblemData &subproblem_data);
+  void ComputeAdequacyCriterion(const std::string &subproblem_name,
+                                const std::vector<double> &sub_problem_solution,
+                                PlainData::SubProblemData &subproblem_data);
 
-  void UpdateOuterLoopMaxCriterionArea();
-  void UpdateOuterLoopSolution();
+  void UpdateAdequacyCriterionMaxCriterionArea();
+  void UpdateAdequacyCriterionSolution();
 
  private:
   void print_master_and_cut(std::ostream &file, int ite,
@@ -277,7 +281,7 @@ class BendersBase {
   int iterations_before_resume = 0;
   int cumulative_number_of_subproblem_resolved_before_resume = 0;
   Timer benders_timer;
-  Output::SolutionData outer_loop_solution_data_;
+  Output::SolutionData adequacy_criterion_solution_data_;
 
  public:
   Logger _logger;

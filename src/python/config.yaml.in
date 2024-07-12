@@ -5,7 +5,7 @@ BENDERS                         : @BENDERS@
 LP_NAMER                        : $<TARGET_FILE_NAME:lp_namer>
 STUDY_UPDATER                   : $<TARGET_FILE_NAME:xpansion-study-updater>
 FULL_RUN                        : $<TARGET_FILE_NAME:full_run>
-OUTER_LOOP                      : $<TARGET_FILE_NAME:outer_loop>
+ADEQUACY_CRITERION                      : $<TARGET_FILE_NAME:adequacy_criterion>
 SENSITIVITY                     : $<TARGET_FILE_NAME:sensitivity>
 ANTARES_ARCHIVE_UPDATER         : $<TARGET_FILE_NAME:antares_archive_updater>
 mpiexec                         : @MPIEXEC_EXECUTABLE@

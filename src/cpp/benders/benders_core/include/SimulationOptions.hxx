@@ -74,9 +74,8 @@ BENDERS_OPTIONS_MACRO(LAST_MASTER_BASIS, std::string, "master_last_basis",
 BENDERS_OPTIONS_MACRO(BATCH_SIZE, size_t, 0, asUInt())
 
 // is this an outer Loop
-BENDERS_OPTIONS_MACRO(DO_OUTER_LOOP, bool, false, asBool())
+BENDERS_OPTIONS_MACRO(DO_ADEQUACY_CRITERION, bool, false, asBool())
 
-// Outer Loop Options file
-BENDERS_OPTIONS_MACRO(OUTER_LOOP_OPTION_FILE, std::string,
-                      "outer_loop_options.json", asString())
-
+// Adequacy Criterion Options file
+BENDERS_OPTIONS_MACRO(ADEQUACY_CRITERION_OPTION_FILE, std::string,
+                      "adequacy_criterion_options.json", asString())

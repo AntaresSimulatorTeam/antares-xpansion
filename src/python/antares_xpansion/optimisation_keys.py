@@ -100,10 +100,9 @@ class OptimisationKeys:
         return "BATCH_SIZE"
 
     @staticmethod
-    def do_outer_loop_key():
-        return "DO_OUTER_LOOP"
+    def do_adequacy_criterion_key():
+        return "DO_ADEQUACY_CRITERION"
 
     @staticmethod
-    def outer_loop_option_file_key():
-        return "OUTER_LOOP_OPTION_FILE"
-
+    def adequacy_criterion_option_file_key():
+        return "ADEQUACY_CRITERION_OPTION_FILE"

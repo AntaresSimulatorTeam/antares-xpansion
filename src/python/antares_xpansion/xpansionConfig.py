@@ -20,7 +20,7 @@ class ConfigParameters:
     STUDY_UPDATER: str
     SENSITIVITY_EXE: str
     FULL_RUN: str
-    OUTER_LOOP: str
+    ADEQUACY_CRITERION: str
     ANTARES_ARCHIVE_UPDATER: str
     MPIEXEC: str
     AVAILABLE_SOLVERS: List[str]
@@ -61,7 +61,7 @@ class XpansionConfig:
         self.STUDY_UPDATER: str = ""
         self.SENSITIVITY_EXE: str = ""
         self.FULL_RUN: str = ""
-        self.OUTER_LOOP: str = ""
+        self.ADEQUACY_CRITERION: str = ""
         self.ANTARES_ARCHIVE_UPDATER: str = ""
         self.MPI_LAUNCHER: str = ""
         self.MPI_N: str = ""
@@ -146,8 +146,8 @@ class XpansionConfig:
         self.LAST_MASTER_BASIS = "master_last_basis.bss"
         self.WEIGHTS = "weights"
         self.CONSTRAINTS = "constraints"
-        self.OUTER_LOOP_FILE = "outer_loop.yml"
-        self.OUTER_LOOP_DIR = "outer_loop"
+        self.ADEQUACY_CRITERION_FILE = "adequacy_criterion.yml"
+        self.ADEQUACY_CRITERION_DIR = "adequacy_criterion"
 
     def _set_default_settings(self):
         self.settings_default = {
@@ -246,7 +246,7 @@ class XpansionConfig:
         self.LP_NAMER = self.config_parameters.LP_NAMER
         self.STUDY_UPDATER = self.config_parameters.STUDY_UPDATER
         self.FULL_RUN = self.config_parameters.FULL_RUN
-        self.OUTER_LOOP = self.config_parameters.OUTER_LOOP
+        self.ADEQUACY_CRITERION = self.config_parameters.ADEQUACY_CRITERION
         self.ANTARES_ARCHIVE_UPDATER = self.config_parameters.ANTARES_ARCHIVE_UPDATER
         self.SENSITIVITY_EXE = self.config_parameters.SENSITIVITY_EXE
         self.MPIEXEC = self.config_parameters.MPIEXEC

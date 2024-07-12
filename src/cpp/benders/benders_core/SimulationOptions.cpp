@@ -179,5 +179,5 @@ SimulationOptions::InvalidOptionFileException::InvalidOptionFileException(
 
 
 ExternalLoopOptions SimulationOptions::GetExternalLoopOptions() const {
-  return {DO_OUTER_LOOP, OUTER_LOOP_OPTION_FILE};
+  return {DO_ADEQUACY_CRITERION, ADEQUACY_CRITERION_OPTION_FILE};
 }

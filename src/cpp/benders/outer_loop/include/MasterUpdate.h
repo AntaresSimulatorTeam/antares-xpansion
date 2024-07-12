@@ -2,7 +2,7 @@
 #include "BendersBase.h"
 #include "common.h"
 
-namespace Outerloop {
+namespace AdequacyCriterionSpace {
 class IMasterUpdate {
  public:
   virtual bool Update(double lambda_min, double lambda_max) = 0;
@@ -30,7 +30,7 @@ class MasterUpdateBase : public IMasterUpdate {
   double lambda_ = 0;
   // tau
   double dichotomy_weight_coeff_ = 0.5;
-  double outer_loop_stopping_threshold_ = 1e-1;
+  double adequacy_criterion_stopping_threshold_ = 1e-1;
   bool stop_update_ = true;
 };
-}  // namespace Outerloop
+}  // namespace AdequacyCriterionSpace

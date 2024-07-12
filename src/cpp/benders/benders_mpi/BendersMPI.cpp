@@ -146,12 +146,12 @@ void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
     Reduce(GetSubproblemsCpuTime(), cumulative_subproblems_timer_per_iter,
            std::plus<double>(), rank_0);
     SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter);
-    if (Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
-      ComputeSubproblemsContributionToOuterLoopCriterion(subproblem_data_map);
+    if (Options().EXTERNAL_LOOP_OPTIONS.DO_ADEQUACY_CRITERION) {
+      ComputeSubproblemsContributionToAdequacyCriterion(subproblem_data_map);
       if (_world.rank() == rank_0) {
-        outer_loop_criterion_.push_back(
-            _data.outer_loop_current_iteration_data.outer_loop_criterion);
-        UpdateOuterLoopMaxCriterionArea();
+        adequacy_criterion_.push_back(
+            _data.adequacy_criterion_current_iteration_data.adequacy_criterion);
+        UpdateAdequacyCriterionMaxCriterionArea();
       }
     }
     // only rank_0 receive non-emtpy gathered_subproblem_map
@@ -159,29 +159,32 @@ void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
   }
 }
 
-void BendersMpi::ComputeSubproblemsContributionToOuterLoopCriterion(
+void BendersMpi::ComputeSubproblemsContributionToAdequacyCriterion(
     const SubProblemDataMap &subproblem_data_map) {
-  std::vector<double> outer_loop_criterion_per_sub_problem_per_pattern(
+  std::vector<double> adequacy_criterion_per_sub_problem_per_pattern(
       var_indices_.size(), {});
-  _data.outer_loop_current_iteration_data.outer_loop_criterion.resize(
+  _data.adequacy_criterion_current_iteration_data.adequacy_criterion.resize(
       var_indices_.size(), 0.);
-  std::vector<double> outer_loop_patterns_values_per_sub_problem_per_pattern(
-      var_indices_.size(), {});
-  _data.outer_loop_current_iteration_data.outer_loop_patterns_values.resize(
-      var_indices_.size(), 0.);
+  std::vector<double>
+      adequacy_criterion_patterns_values_per_sub_problem_per_pattern(
+          var_indices_.size(), {});
+  _data.adequacy_criterion_current_iteration_data
+      .adequacy_criterion_patterns_values.resize(var_indices_.size(), 0.);
 
   for (const auto &[subproblem_name, subproblem_data] : subproblem_data_map) {
-    AddVectors<double>(outer_loop_criterion_per_sub_problem_per_pattern,
-                       subproblem_data.outer_loop_criterions);
-    AddVectors<double>(outer_loop_patterns_values_per_sub_problem_per_pattern,
-                       subproblem_data.outer_loop_patterns_values);
+    AddVectors<double>(adequacy_criterion_per_sub_problem_per_pattern,
+                       subproblem_data.adequacy_criterions);
+    AddVectors<double>(
+        adequacy_criterion_patterns_values_per_sub_problem_per_pattern,
+        subproblem_data.adequacy_criterion_patterns_values);
   }
 
-  Reduce(outer_loop_criterion_per_sub_problem_per_pattern,
-         _data.outer_loop_current_iteration_data.outer_loop_criterion,
+  Reduce(adequacy_criterion_per_sub_problem_per_pattern,
+         _data.adequacy_criterion_current_iteration_data.adequacy_criterion,
          std::plus<double>(), rank_0);
-  Reduce(outer_loop_patterns_values_per_sub_problem_per_pattern,
-         _data.outer_loop_current_iteration_data.outer_loop_patterns_values,
+  Reduce(adequacy_criterion_patterns_values_per_sub_problem_per_pattern,
+         _data.adequacy_criterion_current_iteration_data
+             .adequacy_criterion_patterns_values,
          std::plus<double>(), rank_0);
 }
 
@@ -343,15 +346,17 @@ void BendersMpi::PreRunInitialization() {
       OpenCsvFile();
     }
 
-    if (Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
-      const auto &headers = outer_loop_input_data_.PatternBodies();
+    if (Options().EXTERNAL_LOOP_OPTIONS.DO_ADEQUACY_CRITERION) {
+      const auto &headers = adequacy_criterion_input_data_.PatternBodies();
       mathLoggerDriver_->add_logger(
           std::filesystem::path(Options().OUTPUTROOT) / "criterions.txt",
-          headers, &OuterLoopCurrentIterationData::outer_loop_criterion);
+          headers, &AdequacyCriterionCurrentIterationData::adequacy_criterion);
       mathLoggerDriver_->add_logger(
           std::filesystem::path(Options().OUTPUTROOT) /
-              (outer_loop_input_data_.PatternsPrefix() + ".txt"),
-          headers, &OuterLoopCurrentIterationData::outer_loop_patterns_values);
+              (adequacy_criterion_input_data_.PatternsPrefix() + ".txt"),
+          headers,
+          &AdequacyCriterionCurrentIterationData::
+              adequacy_criterion_patterns_values);
     }
   }
   mathLoggerDriver_->write_header();
@@ -359,7 +364,7 @@ void BendersMpi::PreRunInitialization() {
 }
 
 void BendersMpi::launch() {
-  ++_data.outer_loop_current_iteration_data.benders_num_run;
+  ++_data.adequacy_criterion_current_iteration_data.benders_num_run;
   if (init_problems_) {
     InitializeProblems();
   }
@@ -419,21 +424,24 @@ void BendersMpi::UpdateOverallCosts() {
 }
 
 void BendersMpi::RunExternalLoopBilevelChecks() {
-  if (_world.rank() == rank_0 && Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP &&
+  if (_world.rank() == rank_0 &&
+      Options().EXTERNAL_LOOP_OPTIONS.DO_ADEQUACY_CRITERION &&
       !is_bilevel_check_all_) {
     const WorkerMasterData &workerMasterData = BestIterationWorkerMaster();
     const auto &invest_cost = workerMasterData._invest_cost;
     const auto &overall_cost = invest_cost + workerMasterData._operational_cost;
-    if (outer_loop_biLevel_.Update_bilevel_data_if_feasible(
-            _data.x_cut, GetOuterLoopCriterionAtBestBenders() /*/!\ must
+    if (adequacy_criterion_biLevel_.Update_bilevel_data_if_feasible(
+            _data.x_cut, GetAdequacyCriterionAtBestBenders() /*/!\ must
                                  be at best it*/
             ,
             overall_cost, invest_cost,
-            _data.outer_loop_current_iteration_data.external_loop_lambda)) {
-      UpdateOuterLoopSolution();
+            _data.adequacy_criterion_current_iteration_data
+                .adequacy_criterion_lambda)) {
+      UpdateAdequacyCriterionSolution();
     }
-    SaveCurrentOuterLoopIterationInOutputFile();
-    _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub =
-        outer_loop_biLevel_.BilevelBestub();
+    SaveCurrentAdequacyCriterionIterationInOutputFile();
+    _data.adequacy_criterion_current_iteration_data
+        .adequacy_criterion_bilevel_best_ub =
+        adequacy_criterion_biLevel_.BilevelBestub();
   }
 }

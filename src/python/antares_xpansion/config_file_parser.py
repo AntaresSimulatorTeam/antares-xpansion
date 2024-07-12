@@ -14,7 +14,7 @@ class ConfigFileParser:
         self.LP_NAMER_DEFAULT = "lp_namer"
         self.STUDY_UPDATER_DEFAULT = "study_updater"
         self.FULL_RUN_DEFAULT = "full_run"
-        self.OUTER_LOOP_DEFAULT = "outer_loop"
+        self.ADEQUACY_CRITERION_DEFAULT = "adequacy_criterion"
         self.ANTARES_ARCHIVE_UPDATER_DEFAULT = "antares_archive_updater"
         self.SENSITIVITY_DEFAULT = "sensitivity"
         self.MPIEXEC_DEFAULT = "mpiexec"
@@ -36,7 +36,9 @@ class ConfigFileParser:
                 LP_NAMER=content.get("LP_NAMER", self.LP_NAMER_DEFAULT),
                 STUDY_UPDATER=content.get("STUDY_UPDATER", self.STUDY_UPDATER_DEFAULT),
                 FULL_RUN=content.get("FULL_RUN", self.FULL_RUN_DEFAULT),
-                OUTER_LOOP=content.get("OUTER_LOOP", self.FULL_RUN_DEFAULT),
+                ADEQUACY_CRITERION=content.get(
+                    "ADEQUACY_CRITERION", self.FULL_RUN_DEFAULT
+                ),
                 ANTARES_ARCHIVE_UPDATER=content.get(
                     "ANTARES_ARCHIVE_UPDATER", self.ANTARES_ARCHIVE_UPDATER_DEFAULT
                 ),

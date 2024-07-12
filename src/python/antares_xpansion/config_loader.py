@@ -484,9 +484,11 @@ class ConfigLoader:
         ] = self._config.LAST_MASTER_MPS
         options_values[OptimisationKeys.last_master_basis_key()] = self._config.LAST_MASTER_BASIS
         options_values[OptimisationKeys.batch_size_key()] = self.get_batch_size()
-        options_values[OptimisationKeys.do_outer_loop_key()] = self._config.method == "outer_loop"
-        options_values[OptimisationKeys.outer_loop_option_file_key()] = (
-            self.outer_loop_options_path()
+        options_values[OptimisationKeys.do_adequacy_criterion_key()] = (
+            self._config.method == "adequacy_criterion"
+        )
+        options_values[OptimisationKeys.adequacy_criterion_option_file_key()] = (
+            self.adequacy_criterion_options_path()
         )
         # generate options file for the solver
         with open(self.options_file_path(), "w") as options_file:
@@ -629,8 +631,8 @@ class ConfigLoader:
     def antares_archive_updater_exe(self):
         return self.exe_path(self._config.ANTARES_ARCHIVE_UPDATER)
 
-    def outer_loop_exe(self):
-        return self.exe_path(self._config.OUTER_LOOP)
+    def adequacy_criterion_exe(self):
+        return self.exe_path(self._config.ADEQUACY_CRITERION)
 
     def method(self):
         return self._config.method
@@ -731,12 +733,17 @@ class ConfigLoader:
     def mpi_exe(self):
         return self.exe_path(Path(self._config.MPIEXEC).name)
 
-    def outer_loop_options_path(self):
-        return os.path.join(self.outer_loop_dir(), self._config.OUTER_LOOP_FILE)
+    def adequacy_criterion_options_path(self):
+        return os.path.join(
+            self.adequacy_criterion_dir(), self._config.ADEQUACY_CRITERION_FILE
+        )
 
-    def outer_loop_dir(self):
-        return os.path.normpath(os.path.join(
-            self.data_dir(),
-            self._config.USER,
-            self._config.EXPANSION,
-            self._config.OUTER_LOOP_DIR))
+    def adequacy_criterion_dir(self):
+        return os.path.normpath(
+            os.path.join(
+                self.data_dir(),
+                self._config.USER,
+                self._config.EXPANSION,
+                self._config.ADEQUACY_CRITERION_DIR,
+            )
+        )

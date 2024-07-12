@@ -1,12 +1,11 @@
-#include "OuterLoop.h"
-
+#include "AdequacyCriterion.h"
 #include "LoggerUtils.h"
-using namespace Outerloop;
+using namespace AdequacyCriterionSpace;
 
-OuterLoop::OuterLoop(std::shared_ptr<IMasterUpdate> master_updater,
-                     std::shared_ptr<ICutsManager> cuts_manager,
-                     pBendersBase benders, mpi::environment& env,
-                     mpi::communicator& world)
+AdequacyCriterion::AdequacyCriterion(
+    std::shared_ptr<IMasterUpdate> master_updater,
+    std::shared_ptr<ICutsManager> cuts_manager, pBendersBase benders,
+    mpi::environment& env, mpi::communicator& world)
     : master_updater_(std::move(master_updater)),
       cuts_manager_(std::move(cuts_manager)),
       benders_(std::move(benders)),
@@ -16,7 +15,7 @@ OuterLoop::OuterLoop(std::shared_ptr<IMasterUpdate> master_updater,
   loggers_.AddLogger(benders_->mathLoggerDriver_);
 }
 
-void OuterLoop::Run() {
+void AdequacyCriterion::Run() {
   benders_->DoFreeProblems(false);
   benders_->InitializeProblems();
 
@@ -47,27 +46,27 @@ void OuterLoop::Run() {
   // last prints
   PrintLog();
   benders_->mathLoggerDriver_->Print(benders_->GetCurrentIterationData());
-  benders_->SaveOuterLoopSolutionInOutputFile();
+  benders_->SaveAdequacyCriterionSolutionInOutputFile();
   // TODO general-case
   //  cuts_manager_->Save(benders_->AllCuts());
   benders_->free();
 }
 
-void OuterLoop::PrintLog() {
+void AdequacyCriterion::PrintLog() {
   std::ostringstream msg;
   auto logger = benders_->_logger;
   logger->PrintIterationSeparatorBegin();
-  msg << "*** Outer loop: " << benders_->GetBendersRunNumber();
+  msg << "*** Adequacy Criterion: " << benders_->GetBendersRunNumber();
   logger->display_message(msg.str());
   msg.str("");
   // TODO criterion per pattern (aka prefix+area) at best Benders ?
-  const auto outer_loop_data = benders_->GetOuterLoopData();
+  const auto adequacy_criterion_data = benders_->GetAdequacyCriterionData();
   msg << "*** Max Criterion: " << std::scientific << std::setprecision(10)
-      << outer_loop_data.max_criterion_best_it;
+      << adequacy_criterion_data.max_criterion_best_it;
   logger->display_message(msg.str());
   msg.str("");
   msg << "*** Max Criterion Area: "
-      << outer_loop_data.max_criterion_area_best_it;
+      << adequacy_criterion_data.max_criterion_area_best_it;
   logger->display_message(msg.str());
   logger->PrintIterationSeparatorEnd();
 }

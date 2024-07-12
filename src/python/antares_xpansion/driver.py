@@ -49,7 +49,8 @@ class XpansionDriver:
             SolversExe(
                 self.config_loader.benders_exe(),
                 self.config_loader.merge_mps_exe(),
-                self.config_loader.outer_loop_exe()),
+                self.config_loader.adequacy_criterion_exe(),
+            ),
             self.config_loader.options_file_name(),
             self.config_loader.mpi_exe(),
         )

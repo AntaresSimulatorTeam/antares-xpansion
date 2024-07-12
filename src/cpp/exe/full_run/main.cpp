@@ -37,9 +37,9 @@ int main(int argc, char** argv) {
                                               world, SOLVER::BENDERS);
     benders_factory.Run();
   }
-  if (solver == "outer_loop") {
-    auto benders_factory = BendersMainFactory(argc_, argv, options_file, env,
-                                              world, SOLVER::OUTER_LOOP);
+  if (solver == "adequacy_criterion") {
+    auto benders_factory = BendersMainFactory(
+        argc_, argv, options_file, env, world, SOLVER::ADEQUACY_CRITERION);
     benders_factory.Run();
   } else {
     // TODO merge mps?

@@ -22,17 +22,19 @@ BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
       _logger(std::move(logger)),
       _writer(std::move(writer)),
       mathLoggerDriver_(std::move(mathLoggerDriver)) {
-  if (options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
+  if (options.EXTERNAL_LOOP_OPTIONS.DO_ADEQUACY_CRITERION) {
     //TODO maybe the input format will change?
-    outer_loop_input_data_ =
-        Outerloop::OuterLoopInputFromYaml().Read(OuterloopOptionsFile());
-    outer_loop_biLevel_ = OuterLoopBiLevel(outer_loop_input_data_);
+    adequacy_criterion_input_data_ =
+        AdequacyCriterionSpace::AdequacyCriterionInputFromYaml().Read(
+            AdequacyCriterionSpaceOptionsFile());
+    adequacy_criterion_biLevel_ =
+        AdequacyCriterionBiLevel(adequacy_criterion_input_data_);
   }
 }
 
-std::filesystem::path BendersBase::OuterloopOptionsFile() const {
+std::filesystem::path BendersBase::AdequacyCriterionSpaceOptionsFile() const {
   return std::filesystem::path(
-         _options.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE);
+      _options.EXTERNAL_LOOP_OPTIONS.ADEQUACY_CRITERION_OPTION_FILE);
 }
 
 /*!
@@ -55,7 +57,7 @@ void BendersBase::init_data() {
   _data.iteration_time = 0;
   _data.timer_master = 0;
   _data.subproblems_walltime = 0;
-  outer_loop_criterion_.clear();
+  adequacy_criterion_.clear();
 }
 
 void BendersBase::OpenCsvFile() {
@@ -180,10 +182,10 @@ void BendersBase::update_best_ub() {
     _data.best_ub = _data.ub;
     _data.best_it = _data.it;
     FillWorkerMasterData(relevantIterationData_.best);
-    _data.outer_loop_current_iteration_data.max_criterion_best_it =
-        _data.outer_loop_current_iteration_data.max_criterion;
-    _data.outer_loop_current_iteration_data.max_criterion_area_best_it =
-        _data.outer_loop_current_iteration_data.max_criterion_area;
+    _data.adequacy_criterion_current_iteration_data.max_criterion_best_it =
+        _data.adequacy_criterion_current_iteration_data.max_criterion;
+    _data.adequacy_criterion_current_iteration_data.max_criterion_area_best_it =
+        _data.adequacy_criterion_current_iteration_data.max_criterion_area;
     relevantIterationData_.best._cut_trace = relevantIterationData_.last._cut_trace;
     best_iteration_data = bendersDataToLogData(_data);
   }
@@ -245,7 +247,7 @@ void BendersBase::FillWorkerMasterData(WorkerMasterData &worker_master_data) {
  */
 void BendersBase::UpdateTrace() {
   FillWorkerMasterData(relevantIterationData_.last);
-  // TODO Outer loop --> de-comment for general case
+  // TODO Adequacy Criterion --> de-comment for general case
   // workerMasterDataVect_.push_back(relevantIterationData_.last);
 }
 
@@ -397,10 +399,10 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
               worker->solve(subproblem_data.lpstatus, _options.OUTPUTROOT,
                             _options.LAST_MASTER_MPS + MPS_SUFFIX, _writer);
               worker->get_value(subproblem_data.subproblem_cost);
-              if (_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
+              if (_options.EXTERNAL_LOOP_OPTIONS.DO_ADEQUACY_CRITERION) {
                 std::vector<double> solution;
                 worker->get_solution(solution);
-                ComputeOuterLoopCriterion(name, solution, subproblem_data);
+                ComputeAdequacyCriterion(name, solution, subproblem_data);
               }
               worker->get_subgradient(subproblem_data.var_name_and_subgradient);
               worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
@@ -423,7 +425,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
  *
  */
 void BendersBase::compute_cut(const SubProblemDataMap &subproblem_data_map) {
-  // current_outer_loop_criterion_ = 0.0;
+  // current_adequacy_criterion_ = 0.0;
   for (auto const &[subproblem_name, subproblem_data] : subproblem_data_map) {
     _data.ub += subproblem_data.subproblem_cost;
 
@@ -515,7 +517,7 @@ void BendersBase::post_run_actions() const {
 }
 
 void BendersBase::SaveCurrentIterationInOutputFile() const {
-  if (!_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
+  if (!_options.EXTERNAL_LOOP_OPTIONS.DO_ADEQUACY_CRITERION) {
     auto &LastWorkerMasterData = relevantIterationData_.last;
     if (LastWorkerMasterData._valid) {
       _writer->write_iteration(iteration(LastWorkerMasterData),
@@ -525,12 +527,12 @@ void BendersBase::SaveCurrentIterationInOutputFile() const {
   }
 }
 
-void BendersBase::SaveCurrentOuterLoopIterationInOutputFile() const {
+void BendersBase::SaveCurrentAdequacyCriterionIterationInOutputFile() const {
   auto &LastWorkerMasterData = relevantIterationData_.last;
   if (LastWorkerMasterData._valid) {
     _writer->write_iteration(
         iteration(LastWorkerMasterData),
-        _data.outer_loop_current_iteration_data.benders_num_run);
+        _data.adequacy_criterion_current_iteration_data.benders_num_run);
     _writer->dump();
   }
 }
@@ -539,8 +541,8 @@ void BendersBase::SaveSolutionInOutputFile() const {
   _writer->write_solution(solution());
   _writer->dump();
 }
-void BendersBase::SaveOuterLoopSolutionInOutputFile() const {
-  _writer->write_solution(GetOuterLoopSolution());
+void BendersBase::SaveAdequacyCriterionSolutionInOutputFile() const {
+  _writer->write_solution(GetAdequacyCriterionSolution());
   _writer->dump();
 }
 
@@ -587,14 +589,14 @@ Output::SolutionData BendersBase::solution() const {
   return solution_data;
 }
 
-void BendersBase::UpdateOuterLoopSolution() {
-  outer_loop_solution_data_ = BendersSolution();
-  outer_loop_solution_data_.best_it =
-      _data.outer_loop_current_iteration_data.benders_num_run;
+void BendersBase::UpdateAdequacyCriterionSolution() {
+  adequacy_criterion_solution_data_ = BendersSolution();
+  adequacy_criterion_solution_data_.best_it =
+      _data.adequacy_criterion_current_iteration_data.benders_num_run;
 }
 
-Output::SolutionData BendersBase::GetOuterLoopSolution() const {
-  return outer_loop_solution_data_;
+Output::SolutionData BendersBase::GetAdequacyCriterionSolution() const {
+  return adequacy_criterion_solution_data_;
 }
 Output::SolutionData BendersBase::BendersSolution() const {
   Output::SolutionData solution_data;
@@ -783,12 +785,14 @@ void BendersBase::MatchProblemToId() {
 // var_indices is a vector(for each patterns p) of vector (var indices related
 // to p)
 void BendersBase::SetSubproblemsVariablesIndex() {
-  if (!subproblem_map.empty() && _options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
+  if (!subproblem_map.empty() &&
+      _options.EXTERNAL_LOOP_OPTIONS.DO_ADEQUACY_CRITERION) {
     auto subproblem = subproblem_map.begin();
     subproblems_vars_names_.clear();
     subproblems_vars_names_ = subproblem->second->_solver->get_col_names();
-    Outerloop::VariablesGroup variablesGroup(subproblems_vars_names_,
-                                             outer_loop_input_data_.OuterLoopData());
+    AdequacyCriterionSpace::VariablesGroup variablesGroup(
+        subproblems_vars_names_,
+        adequacy_criterion_input_data_.AdequacyCriterionData());
     var_indices_ = variablesGroup.Indices();
   }
 }
@@ -915,7 +919,7 @@ void BendersBase::EndWritingInOutputFile() const {
   _writer->updateEndTime();
   // TODO duration for outer loop
   _writer->write_duration(_data.benders_time);
-  if (!_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
+  if (!_options.EXTERNAL_LOOP_OPTIONS.DO_ADEQUACY_CRITERION) {
     SaveSolutionInOutputFile();
   }
 }
@@ -1001,94 +1005,105 @@ WorkerMasterData BendersBase::BestIterationWorkerMaster() const {
 }
 
 void BendersBase::InitExternalValues(bool is_bilevel_check_all, double lambda) {
-  // _data.outer_loop_current_iteration_data.outer_loop_criterion = 0;
-  // _data.outer_loop_current_iteration_data.benders_num_run = 1;
+  // _data.adequacy_criterion_current_iteration_data.adequacy_criterion
+  // = 0; _data.adequacy_criterion_current_iteration_data.benders_num_run = 1;
   is_bilevel_check_all_ = is_bilevel_check_all;
-  outer_loop_biLevel_.Init(MasterObjectiveFunctionCoeffs(),
-                           BestIterationWorkerMaster().get_max_invest(),
-                           MasterVariables());
-  outer_loop_biLevel_.SetLambda(lambda);
+  adequacy_criterion_biLevel_.Init(MasterObjectiveFunctionCoeffs(),
+                                   BestIterationWorkerMaster().get_max_invest(),
+                                   MasterVariables());
+  adequacy_criterion_biLevel_.SetLambda(lambda);
 }
 
 CurrentIterationData BendersBase::GetCurrentIterationData() const {
   return _data;
 }
-OuterLoopCurrentIterationData BendersBase::GetOuterLoopData() const {
-  return _data.outer_loop_current_iteration_data;
+AdequacyCriterionCurrentIterationData BendersBase::GetAdequacyCriterionData()
+    const {
+  return _data.adequacy_criterion_current_iteration_data;
 }
-std::vector<double> BendersBase::GetOuterLoopCriterionAtBestBenders() const {
-  return ((outer_loop_criterion_.empty())
+std::vector<double> BendersBase::GetAdequacyCriterionAtBestBenders() const {
+  return ((adequacy_criterion_.empty())
               ? std::vector<double>()
-              : outer_loop_criterion_[_data.best_it - 1]);
+              : adequacy_criterion_[_data.best_it - 1]);
 }
 
-void BendersBase::ComputeOuterLoopCriterion(
+void BendersBase::ComputeAdequacyCriterion(
     const std::string &subproblem_name,
     const std::vector<double> &sub_problem_solution,
     PlainData::SubProblemData &subproblem_data) {
-  auto outer_loop_input_size = var_indices_.size(); // num of patterns
-  subproblem_data.outer_loop_criterions.resize(outer_loop_input_size, 0.);
-  subproblem_data.outer_loop_patterns_values.resize(outer_loop_input_size, 0.);
+  auto adequacy_criterion_input_size = var_indices_.size();  // num of patterns
+  subproblem_data.adequacy_criterions.resize(adequacy_criterion_input_size, 0.);
+  subproblem_data.adequacy_criterion_patterns_values.resize(
+      adequacy_criterion_input_size, 0.);
 
   auto subproblem_weight = SubproblemWeight(_data.nsubproblem, subproblem_name);
   double criterion_count_threshold =
-      outer_loop_input_data_.CriterionCountThreshold();
+      adequacy_criterion_input_data_.CriterionCountThreshold();
 
-  for (int pattern_index(0); pattern_index < outer_loop_input_size;
+  for (int pattern_index(0); pattern_index < adequacy_criterion_input_size;
        ++pattern_index) {
     auto pattern_variables_indices = var_indices_[pattern_index];
     for (auto variables_index : pattern_variables_indices) {
       const auto &solution = sub_problem_solution[variables_index];
-      subproblem_data.outer_loop_patterns_values[pattern_index] += solution;
+      subproblem_data.adequacy_criterion_patterns_values[pattern_index] +=
+          solution;
       if (solution > criterion_count_threshold)
         // 1h of no supplied energy
-        subproblem_data.outer_loop_criterions[pattern_index] +=
-            subproblem_weight;
+        subproblem_data.adequacy_criterions[pattern_index] += subproblem_weight;
     }
   }
 }
 
 double BendersBase::ExternalLoopLambdaMax() const {
-  return outer_loop_biLevel_.LambdaMax();
+  return adequacy_criterion_biLevel_.LambdaMax();
 }
 double BendersBase::ExternalLoopLambdaMin() const {
-  return outer_loop_biLevel_.LambdaMin();
+  return adequacy_criterion_biLevel_.LambdaMin();
 }
 
-void BendersBase::init_data(double external_loop_lambda,
-                            double external_loop_lambda_min,
-                            double external_loop_lambda_max) {
+void BendersBase::init_data(double adequacy_criterion_lambda,
+                            double adequacy_criterion_lambda_min,
+                            double adequacy_criterion_lambda_max) {
   benders_timer.restart();
   auto benders_num_run =
-      _data.outer_loop_current_iteration_data.benders_num_run;
-  auto outer_loop_bilevel_best_ub =
-      _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub;
+      _data.adequacy_criterion_current_iteration_data.benders_num_run;
+  auto adequacy_criterion_bilevel_best_ub =
+      _data.adequacy_criterion_current_iteration_data
+          .adequacy_criterion_bilevel_best_ub;
   init_data();
-  _data.outer_loop_current_iteration_data.outer_loop_criterion.clear();
-  _data.outer_loop_current_iteration_data.benders_num_run = benders_num_run;
-  _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub =
-      outer_loop_bilevel_best_ub;
-  _data.outer_loop_current_iteration_data.external_loop_lambda =
-      external_loop_lambda;
-  _data.outer_loop_current_iteration_data.external_loop_lambda_min =
-      external_loop_lambda_min;
-  _data.outer_loop_current_iteration_data.external_loop_lambda_max =
-      external_loop_lambda_max;
+  _data.adequacy_criterion_current_iteration_data.adequacy_criterion.clear();
+  _data.adequacy_criterion_current_iteration_data.benders_num_run =
+      benders_num_run;
+  _data.adequacy_criterion_current_iteration_data
+      .adequacy_criterion_bilevel_best_ub = adequacy_criterion_bilevel_best_ub;
+  _data.adequacy_criterion_current_iteration_data.adequacy_criterion_lambda =
+      adequacy_criterion_lambda;
+  _data.adequacy_criterion_current_iteration_data
+      .adequacy_criterion_lambda_min = adequacy_criterion_lambda_min;
+  _data.adequacy_criterion_current_iteration_data
+      .adequacy_criterion_lambda_max = adequacy_criterion_lambda_max;
 }
 
 bool BendersBase::ExternalLoopFoundFeasible() const {
-  return outer_loop_biLevel_.FoundFeasible();
+  return adequacy_criterion_biLevel_.FoundFeasible();
 }
-double BendersBase::OuterLoopStoppingThreshold() const { return outer_loop_input_data_.StoppingThreshold(); }
+double BendersBase::AdequacyCriterionStoppingThreshold() const {
+  return adequacy_criterion_input_data_.StoppingThreshold();
+}
 
-void BendersBase::UpdateOuterLoopMaxCriterionArea()  {
-  auto criterions_begin =
-      _data.outer_loop_current_iteration_data.outer_loop_criterion.cbegin();
+void BendersBase::UpdateAdequacyCriterionMaxCriterionArea() {
+  auto criterions_begin = _data.adequacy_criterion_current_iteration_data
+                              .adequacy_criterion.cbegin();
   auto criterions_end =
-      _data.outer_loop_current_iteration_data.outer_loop_criterion.cend();
+      _data.adequacy_criterion_current_iteration_data.adequacy_criterion.cend();
   auto max_criterion_it = std::max_element(criterions_begin, criterions_end);
-  _data.outer_loop_current_iteration_data.max_criterion = *max_criterion_it;
+  _data.adequacy_criterion_current_iteration_data.max_criterion =
+      *max_criterion_it;
   auto  max_criterion_index = std::distance(criterions_begin, max_criterion_it);
- _data.outer_loop_current_iteration_data.max_criterion_area = outer_loop_input_data_.OuterLoopData()[max_criterion_index].Pattern().GetBody();
+  _data.adequacy_criterion_current_iteration_data.max_criterion_area =
+      adequacy_criterion_input_data_
+          .AdequacyCriterionData()[max_criterion_index]
+          .Pattern()
+          .GetBody();
 }
 bool BendersBase::isExceptionRaised() const { return exception_raised_; }

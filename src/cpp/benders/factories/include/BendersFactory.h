@@ -14,7 +14,7 @@ class BendersMainFactory {
   [[nodiscard]] int RunBenders() const;
   pBendersBase PrepareForExecution(BendersLoggerBase& benders_loggers,
                                    const SimulationOptions& options,
-                                   bool external_loop) const;
+                                   bool adequacy_criterion) const;
 
  public:
   explicit BendersMainFactory(int argc, char** argv,

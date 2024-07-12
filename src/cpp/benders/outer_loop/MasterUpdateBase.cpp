@@ -2,12 +2,13 @@
 
 #include "MasterUpdate.h"
 
-using namespace Outerloop;
+using namespace AdequacyCriterionSpace;
 
 MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau)
     : benders_(std::move(benders)),
       lambda_(0),
-      outer_loop_stopping_threshold_(benders_->OuterLoopStoppingThreshold()) {
+      adequacy_criterion_stopping_threshold_(
+          benders_->AdequacyCriterionStoppingThreshold()) {
   CheckTau(tau);
 }
 
@@ -45,16 +46,16 @@ bool MasterUpdateBase::Update(double lambda_min, double lambda_max) {
   // if (outerLoopBiLevel_.Update_bilevel_data_if_feasible(
   //         workerMasterData._cut_trace,
   //         benders_
-  //             ->GetOuterLoopCriterionAtBestBenders() /*/!\ must be at best
-  //             it*/,
+  //             ->GetAdequacyCriterionAtBestBenders() /*/!\ must be at
+  //             best it*/,
   //         overall_cost)) {
   //   lambda_max = std::min(lambda_max, invest_cost);
   // } else {
   //   lambda_min = lambda_;
   // }
 
-  stop_update_ =
-      std::abs(lambda_max - lambda_min) < outer_loop_stopping_threshold_;
+  stop_update_ = std::abs(lambda_max - lambda_min) <
+                 adequacy_criterion_stopping_threshold_;
   if (!stop_update_) {
     lambda_ = dichotomy_weight_coeff_ * lambda_max +
               (1 - dichotomy_weight_coeff_) * lambda_min;

@@ -93,6 +93,6 @@ class BendersMpi : public BendersBase {
   void AllReduce(const T &in_value, T &out_value, Op op) const {
     mpi::all_reduce(_world, in_value, out_value, op);
   }
-  virtual void ComputeSubproblemsContributionToOuterLoopCriterion(
+  virtual void ComputeSubproblemsContributionToAdequacyCriterion(
       const SubProblemDataMap &subproblem_data_map);
 };
