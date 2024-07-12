@@ -24,7 +24,7 @@ patterns:
 ```
 
 - `stopping_threshold` in euros (positive float): Stopping criterion of the algorithm, that is the difference between `lambda_min` and `lambda_max`, see [Reliability-constrained investment problem](../optimization-principles/problem-formalization.md#reliability-constrained-investment-problem).
-    - Default value: `1e4`
+    - Default value: `1e-4`
 - `criterion_count_threshold` in MWh (positive float): Number of MWh of unsupplied energy in a given hour to consider that this is an hour with loss of load (ex: An hour is considered to be with loss of load if there is more than 1 MWh of unsupplied energy).
     - Default value: `1`
 - `patterns`: A list giving the area names and the associated criterion.
