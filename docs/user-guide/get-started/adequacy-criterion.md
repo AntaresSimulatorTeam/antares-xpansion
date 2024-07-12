@@ -5,7 +5,7 @@ By default, Antares-Xpansion tries to solve an investment problem by minimising 
 However, Antares-Xpansion is able to enforce solutions to satisfy a maximum number of expected hours of loss of load per area. To use this feature, the user must:
 
 1. Define the reliability constraints in an input file `user/expansion/adequacy_criterion/adequacy_criterion.yml`.
-2. Launch the optimization with the `--adequacy_criterion` flag.
+2. Launch the optimization with the `-m adequacy_criterion` flag.
 
 The resolution of the reliability-constrained investment problem is based on a heuristic that is described in [Reliability-constrained investment problem](../optimization-principles/problem-formalization.md#reliability-constrained-investment-problem).
 
