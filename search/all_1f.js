@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['uc_5ftype_20tt_0',['&lt;tt&gt;uc_type&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md179',1,'']]],
+  ['uc_5ftype_20tt_0',['&lt;tt&gt;uc_type&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md183',1,'']]],
   ['unaryexpr_1',['UnaryExpr',['../classCatch_1_1UnaryExpr.html',1,'Catch']]],
-  ['unit_20size_20tt_2',['&lt;tt&gt;unit-size&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md119',1,'']]],
-  ['units_20tt_3',['&lt;tt&gt;max-units&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md120',1,'']]],
+  ['unit_20size_20tt_2',['&lt;tt&gt;unit-size&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md123',1,'']]],
+  ['units_20tt_3',['&lt;tt&gt;max-units&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md124',1,'']]],
   ['unknownstep_4',['UnknownStep',['../classantares__xpansion_1_1driver_1_1XpansionDriver_1_1UnknownStep.html',1,'antares_xpansion::driver::XpansionDriver']]],
   ['unrecognizedcandidateoptiontype_5',['UnrecognizedCandidateOptionType',['../classantares__xpansion_1_1input__checker_1_1UnrecognizedCandidateOptionType.html',1,'antares_xpansion::input_checker']]],
   ['up_20an_20antares_20xpansion_20study_6',['Set up an Antares-Xpansion study',['../md_docs_2user-guide_2get-started_2prepare-a-simulation.html',1,'']]],
@@ -18,14 +18,14 @@ var searchData=
   ['updateendtime_15',['updateEndTime',['../classOutput_1_1JsonWriter.html#a4dacd7f08c2264f7aaf8b436ee9b8975',1,'Output::JsonWriter']]],
   ['updatelinkdatafile_16',['updateLinkdataFile',['../classStudyUpdater.html#a9db49727f1ceb8bb7c871dcdb99a099f',1,'StudyUpdater']]],
   ['updaterexecutionerror_17',['UpdaterExecutionError',['../classantares__xpansion_1_1study__updater__driver_1_1StudyUpdaterDriver_1_1UpdaterExecutionError.html',1,'antares_xpansion::study_updater_driver::StudyUpdaterDriver']]],
-  ['updates_20of_20candidate_20links_18',['Updates of candidate links',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md150',1,'']]],
+  ['updates_20of_20candidate_20links_18',['Updates of candidate links',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md154',1,'']]],
   ['updatestoppingcriterion_19',['updatestoppingcriterion',['../classBendersBase.html#a12e1da335571d21dc124f5d1b2de41e0',1,'BendersBase::UpdateStoppingCriterion()'],['../classBendersByBatch.html#abc79d5e65838ad7a27b352ecfeb0dfa0',1,'BendersByBatch::UpdateStoppingCriterion()']]],
   ['updatetrace_20',['updatetrace',['../classBendersSequentialDouble.html#a01aa233cda314c1882c9c5ef216d1ea3',1,'BendersSequentialDouble::UpdateTrace()'],['../classBendersBase.html#adb953cbbd95d83ed70de4244f975d436',1,'BendersBase::UpdateTrace()']]],
-  ['usage_21',['usage',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md134',1,'Command line usage'],['../index.html#autotoc_md7',1,'Command-line usage']]],
+  ['usage_21',['usage',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md138',1,'Command line usage'],['../index.html#autotoc_md7',1,'Command-line usage']]],
   ['user_22',['User',['../classxpansion_1_1logger_1_1User.html',1,'xpansion::logger']]],
-  ['user_20interface_23',['user interface',['../index.html#autotoc_md8',1,'Graphical user interface'],['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md147',1,'Graphical user interface']]],
+  ['user_20interface_23',['user interface',['../index.html#autotoc_md8',1,'Graphical user interface'],['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md151',1,'Graphical user interface']]],
   ['user_20interface_20creation_24',['User interface creation',['../md_docs_2developer-guide_2install__from__sources_25-ui-creation.html',1,'']]],
   ['userfile_25',['UserFile',['../classxpansion_1_1logger_1_1UserFile.html',1,'xpansion::logger']]],
   ['userloggertest_26',['UserLoggerTest',['../classUserLoggerTest.html',1,'']]],
-  ['using_20different_20profiles_20depending_20on_20the_20monte_20carlo_20year_27',['Using different profiles depending on the Monte-Carlo year',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md125',1,'']]]
+  ['using_20different_20profiles_20depending_20on_20the_20monte_20carlo_20year_27',['Using different profiles depending on the Monte-Carlo year',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md129',1,'']]]
 ];

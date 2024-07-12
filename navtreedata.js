@@ -161,122 +161,127 @@ var NAVTREE =
         [ "Antares-Xpansion simulation", "md_docs_2index.html#autotoc_md111", null ]
       ] ]
     ] ],
+    [ "Adequacy criterion", "md_docs_2user-guide_2get-started_2adequacy-criterion.html", [
+      [ "Input data for adequacy criterion in <tt>adequacy_criterion.yml</tt>", "md_docs_2user-guide_2get-started_2adequacy-criterion.html#autotoc_md113", null ],
+      [ "Launching the optimization with the adequacy criterion", "md_docs_2user-guide_2get-started_2adequacy-criterion.html#autotoc_md114", null ],
+      [ "Outputs", "md_docs_2user-guide_2get-started_2adequacy-criterion.html#autotoc_md115", null ]
+    ] ],
     [ "Define the candidates", "md_docs_2user-guide_2get-started_2candidate-definition.html", [
-      [ "Characterization of investment candidates in <tt>candidates.ini</tt>", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md113", [
-        [ "Overview of the <tt>candidates.ini</tt> file", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md114", null ],
-        [ "Details of the parameters", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md115", [
-          [ "<tt>name</tt>", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md116", null ],
-          [ "<tt>annual-cost-per-mw</tt>", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md117", null ],
-          [ "<tt>max-investment</tt>", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md118", null ],
-          [ "<tt>unit-size</tt>", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md119", null ],
-          [ "<tt>max-units</tt>", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md120", null ],
-          [ "<tt>already-installed-capacity</tt>", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md121", null ],
-          [ "<tt>[in]direct-link-profile</tt>", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md122", null ],
-          [ "<tt>already-installed-[in]direct-link-profile</tt>", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md123", null ]
+      [ "Characterization of investment candidates in <tt>candidates.ini</tt>", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md117", [
+        [ "Overview of the <tt>candidates.ini</tt> file", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md118", null ],
+        [ "Details of the parameters", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md119", [
+          [ "<tt>name</tt>", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md120", null ],
+          [ "<tt>annual-cost-per-mw</tt>", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md121", null ],
+          [ "<tt>max-investment</tt>", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md122", null ],
+          [ "<tt>unit-size</tt>", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md123", null ],
+          [ "<tt>max-units</tt>", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md124", null ],
+          [ "<tt>already-installed-capacity</tt>", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md125", null ],
+          [ "<tt>[in]direct-link-profile</tt>", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md126", null ],
+          [ "<tt>already-installed-[in]direct-link-profile</tt>", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md127", null ]
         ] ]
       ] ],
-      [ "Link between invested capacity and capacity of the Antares study", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md124", null ],
-      [ "Using different profiles depending on the Monte-Carlo year", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md125", null ],
-      [ "Examples of candidates", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md126", [
-        [ "Basic example", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md127", null ],
-        [ "Several investment candidates on the same link", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md128", null ],
-        [ "Decommissioning candidates", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md129", null ]
+      [ "Link between invested capacity and capacity of the Antares study", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md128", null ],
+      [ "Using different profiles depending on the Monte-Carlo year", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md129", null ],
+      [ "Examples of candidates", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md130", [
+        [ "Basic example", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md131", null ],
+        [ "Several investment candidates on the same link", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md132", null ],
+        [ "Decommissioning candidates", "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md133", null ]
       ] ]
     ] ],
     [ "Installation", "md_docs_2user-guide_2get-started_2installation.html", [
-      [ "Download Antares-Xpansion", "md_docs_2user-guide_2get-started_2installation.html#autotoc_md131", null ],
-      [ "Installation instruction", "md_docs_2user-guide_2get-started_2installation.html#autotoc_md132", null ]
+      [ "Download Antares-Xpansion", "md_docs_2user-guide_2get-started_2installation.html#autotoc_md135", null ],
+      [ "Installation instruction", "md_docs_2user-guide_2get-started_2installation.html#autotoc_md136", null ]
     ] ],
     [ "Launch the optimization", "md_docs_2user-guide_2get-started_2launching-optimization.html", [
-      [ "Command line usage", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md134", [
-        [ "Quick start", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md135", null ],
-        [ "Command line parameters", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md136", [
-          [ "<tt>-h, --help</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md137", null ],
-          [ "<tt>--step {full, antares, problem_generation, benders, study_update, sensitivity, resume}</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md138", null ],
-          [ "<tt>-i, --dataDir</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md139", null ],
-          [ "<tt>--simulationName {last, your-antares-output-directory}</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md140", null ],
-          [ "<tt>-m, --method {benders, benders_by_batch, mergeMPS}</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md141", null ],
-          [ "<tt>-n, --np</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md142", null ],
-          [ "<tt>--antares-n-cpu</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md143", null ],
-          [ "<tt>--keepMps</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md144", null ],
-          [ "<tt>-v, --version</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md145", null ],
-          [ "<tt>--antares-version</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md146", null ]
+      [ "Command line usage", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md138", [
+        [ "Quick start", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md139", null ],
+        [ "Command line parameters", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md140", [
+          [ "<tt>-h, --help</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md141", null ],
+          [ "<tt>--step {full, antares, problem_generation, benders, study_update, sensitivity, resume}</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md142", null ],
+          [ "<tt>-i, --dataDir</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md143", null ],
+          [ "<tt>--simulationName {last, your-antares-output-directory}</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md144", null ],
+          [ "<tt>-m, --method {benders, benders_by_batch, mergeMPS, adequacy_criterion}</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md145", null ],
+          [ "<tt>-n, --np</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md146", null ],
+          [ "<tt>--antares-n-cpu</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md147", null ],
+          [ "<tt>--keepMps</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md148", null ],
+          [ "<tt>-v, --version</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md149", null ],
+          [ "<tt>--antares-version</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md150", null ]
         ] ]
       ] ],
-      [ "Graphical user interface", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md147", null ],
-      [ "Output of Antares-Xpansion", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md148", [
-        [ "Results", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md149", null ],
-        [ "Updates of candidate links", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md150", null ],
-        [ "Logs", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md151", null ]
+      [ "Graphical user interface", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md151", null ],
+      [ "Output of Antares-Xpansion", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md152", [
+        [ "Results", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md153", null ],
+        [ "Updates of candidate links", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md154", null ],
+        [ "Logs", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md155", null ]
       ] ],
-      [ "Errors", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md152", null ]
+      [ "Errors", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md156", null ]
     ] ],
     [ "Set up an Antares-Xpansion study", "md_docs_2user-guide_2get-started_2prepare-a-simulation.html", [
-      [ "Overview", "md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md154", null ],
-      [ "Prepare the Antares study", "md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md155", [
-        [ "Investment in transmission capacity between two areas", "md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md156", null ],
-        [ "Investment in thermal generation capacity", "md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md157", null ],
-        [ "Investment in renewable generation capacity", "md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md158", null ],
-        [ "Investment in flexibility", "md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md159", null ],
-        [ "Decommissioning decisions for thermal capacities", "md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md160", [
-          [ "Fixed-cost annuity for investment candidates", "md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md161", null ],
-          [ "Fixed-cost annuity for decommissioning candidates", "md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md162", null ]
+      [ "Overview", "md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md158", null ],
+      [ "Prepare the Antares study", "md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md159", [
+        [ "Investment in transmission capacity between two areas", "md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md160", null ],
+        [ "Investment in thermal generation capacity", "md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md161", null ],
+        [ "Investment in renewable generation capacity", "md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md162", null ],
+        [ "Investment in flexibility", "md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md163", null ],
+        [ "Decommissioning decisions for thermal capacities", "md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md164", [
+          [ "Fixed-cost annuity for investment candidates", "md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md165", null ],
+          [ "Fixed-cost annuity for decommissioning candidates", "md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md166", null ]
         ] ],
-        [ "Additional characteristics for links of investment candidates", "md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md163", null ]
+        [ "Additional characteristics for links of investment candidates", "md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md167", null ]
       ] ]
     ] ],
     [ "Sensitivity analysis", "md_docs_2user-guide_2get-started_2sensitivity-analysis.html", [
-      [ "Description of the method", "md_docs_2user-guide_2get-started_2sensitivity-analysis.html#autotoc_md165", null ],
-      [ "Mathematical formulation of the sensitivity analysis problem", "md_docs_2user-guide_2get-started_2sensitivity-analysis.html#autotoc_md166", null ],
-      [ "Results interpretation", "md_docs_2user-guide_2get-started_2sensitivity-analysis.html#autotoc_md167", null ],
-      [ "Launch the sensitivity analysis", "md_docs_2user-guide_2get-started_2sensitivity-analysis.html#autotoc_md168", [
-        [ "Sensitivity input file creation", "md_docs_2user-guide_2get-started_2sensitivity-analysis.html#autotoc_md169", null ],
-        [ "Run the sensitivity analysis", "md_docs_2user-guide_2get-started_2sensitivity-analysis.html#autotoc_md170", null ],
-        [ "Output of the sensitivity analysis", "md_docs_2user-guide_2get-started_2sensitivity-analysis.html#autotoc_md171", null ]
+      [ "Description of the method", "md_docs_2user-guide_2get-started_2sensitivity-analysis.html#autotoc_md169", null ],
+      [ "Mathematical formulation of the sensitivity analysis problem", "md_docs_2user-guide_2get-started_2sensitivity-analysis.html#autotoc_md170", null ],
+      [ "Results interpretation", "md_docs_2user-guide_2get-started_2sensitivity-analysis.html#autotoc_md171", null ],
+      [ "Launch the sensitivity analysis", "md_docs_2user-guide_2get-started_2sensitivity-analysis.html#autotoc_md172", [
+        [ "Sensitivity input file creation", "md_docs_2user-guide_2get-started_2sensitivity-analysis.html#autotoc_md173", null ],
+        [ "Run the sensitivity analysis", "md_docs_2user-guide_2get-started_2sensitivity-analysis.html#autotoc_md174", null ],
+        [ "Output of the sensitivity analysis", "md_docs_2user-guide_2get-started_2sensitivity-analysis.html#autotoc_md175", null ]
       ] ]
     ] ],
     [ "Settings of the algorithm", "md_docs_2user-guide_2get-started_2settings-definition.html", [
-      [ "Overview of the <tt>settings.ini</tt> file", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md173", null ],
-      [ "Details of the parameters", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md174", [
-        [ "<tt>optimality_gap</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md175", null ],
-        [ "<tt>relative_gap</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md176", null ],
-        [ "<tt>max_iteration</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md177", null ],
-        [ "<tt>timelimit</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md178", null ],
-        [ "<tt>uc_type</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md179", null ],
-        [ "<tt>master</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md180", null ],
-        [ "<tt>yearly-weights</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md181", null ],
-        [ "<tt>solver</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md182", null ],
-        [ "<tt>log_level</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md183", null ],
-        [ "<tt>additional-constraints</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md184", null ],
-        [ "<tt>separation_parameter</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md185", null ],
-        [ "<tt>relaxed_optimality_gap</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md186", null ],
-        [ "<tt>batch_size</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md187", null ]
+      [ "Overview of the <tt>settings.ini</tt> file", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md177", null ],
+      [ "Details of the parameters", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md178", [
+        [ "<tt>optimality_gap</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md179", null ],
+        [ "<tt>relative_gap</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md180", null ],
+        [ "<tt>max_iteration</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md181", null ],
+        [ "<tt>timelimit</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md182", null ],
+        [ "<tt>uc_type</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md183", null ],
+        [ "<tt>master</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md184", null ],
+        [ "<tt>yearly-weights</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md185", null ],
+        [ "<tt>solver</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md186", null ],
+        [ "<tt>log_level</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md187", null ],
+        [ "<tt>additional-constraints</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md188", null ],
+        [ "<tt>separation_parameter</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md189", null ],
+        [ "<tt>relaxed_optimality_gap</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md190", null ],
+        [ "<tt>batch_size</tt>", "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md191", null ]
       ] ]
     ] ],
     [ "The optimal investment problem in Antares-Xpansion", "md_docs_2user-guide_2optimization-principles_2investment-problem.html", [
-      [ "General description", "md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md189", null ],
-      [ "Investment variables", "md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md190", null ],
-      [ "Resolution with the Benders decomposition", "md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md191", null ],
-      [ "Notes on the computation time", "md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md192", null ]
+      [ "General description", "md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md193", null ],
+      [ "Investment variables", "md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md194", null ],
+      [ "Resolution with the Benders decomposition", "md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md195", null ]
     ] ],
     [ "Mathematical aspects of the investment problem", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html", [
-      [ "Problem formulation", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md194", [
-        [ "Variables and costs", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md195", [
-          [ "Invested capacity and investment cost", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md196", null ],
-          [ "Operating cost", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md197", [
-            [ "The operating cost as the solution of an Antares simulation", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md198", null ],
-            [ "Splitting the weeks", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md199", null ]
+      [ "Problem formulation", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md197", [
+        [ "Variables and costs", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md198", [
+          [ "Invested capacity and investment cost", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md199", null ],
+          [ "Operating cost", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md200", [
+            [ "The operating cost as the solution of an Antares simulation", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md201", null ],
+            [ "Splitting the weeks", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md202", null ]
           ] ],
-          [ "Summary of the costs", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md200", null ]
+          [ "Summary of the costs", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md203", null ]
         ] ],
-        [ "Constraints (for the investment problem)", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md201", null ],
-        [ "Investment problem", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md202", null ]
+        [ "Constraints (for the investment problem)", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md204", null ],
+        [ "Investment problem", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md205", null ]
       ] ],
-      [ "Benders reformulation and decomposition algorithm", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md203", [
-        [ "Benders reformulation of the investment problem", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md204", null ],
-        [ "The Benders decomposition algorithm", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md205", null ],
-        [ "The Benders by batch algorithm", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md206", null ]
-      ] ]
+      [ "Benders reformulation and decomposition algorithm", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md206", [
+        [ "Benders reformulation of the investment problem", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md207", null ],
+        [ "The Benders decomposition algorithm", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md208", null ],
+        [ "The Benders by batch algorithm", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md209", null ]
+      ] ],
+      [ "Reliability-constrained investment problem", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md210", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],

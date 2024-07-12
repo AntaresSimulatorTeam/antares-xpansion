@@ -1,8 +1,9 @@
 var searchData=
 [
-  ['year_0',['Using different profiles depending on the Monte-Carlo year',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md125',1,'']]],
-  ['yearly_20weights_20tt_1',['&lt;tt&gt;yearly-weights&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md181',1,'']]],
+  ['year_0',['Using different profiles depending on the Monte-Carlo year',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md129',1,'']]],
+  ['yearly_20weights_20tt_1',['&lt;tt&gt;yearly-weights&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md185',1,'']]],
   ['yearlyweightswriter_2',['YearlyWeightsWriter',['../classYearlyWeightsWriter.html',1,'']]],
   ['yearlyweightwriter_3',['YearlyWeightWriter',['../classantares__xpansion_1_1yearly__weight__writer_1_1YearlyWeightWriter.html',1,'antares_xpansion::yearly_weight_writer']]],
-  ['your_20antares_20output_20directory_20tt_4',['&lt;tt&gt;--simulationName {last, your-antares-output-directory}&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md140',1,'']]]
+  ['yml_20tt_4',['Input data for adequacy criterion in &lt;tt&gt;adequacy_criterion.yml&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2adequacy-criterion.html#autotoc_md113',1,'']]],
+  ['your_20antares_20output_20directory_20tt_5',['&lt;tt&gt;--simulationName {last, your-antares-output-directory}&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md144',1,'']]]
 ];

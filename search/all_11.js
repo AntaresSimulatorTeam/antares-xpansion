@@ -1,14 +1,14 @@
 var searchData=
 [
   ['gapvalueerror_0',['GapValueError',['../classantares__xpansion_1_1input__checker_1_1GapValueError.html',1,'antares_xpansion::input_checker']]],
-  ['general_20description_1',['General description',['../md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md189',1,'']]],
+  ['general_20description_1',['General description',['../md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md193',1,'']]],
   ['general_5fdata_2',['general_data',['../classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a2d69cced84114b716a8b06830836f34e',1,'antares_xpansion::config_loader::ConfigLoader']]],
   ['generaldatafileexceptions_3',['GeneralDataFileExceptions',['../classantares__xpansion_1_1general__data__processor_1_1GeneralDataFileExceptions.html',1,'antares_xpansion::general_data_processor']]],
   ['generaldatafilenotfound_4',['GeneralDataFileNotFound',['../classantares__xpansion_1_1general__data__processor_1_1GeneralDataFileExceptions_1_1GeneralDataFileNotFound.html',1,'antares_xpansion::general_data_processor::GeneralDataFileExceptions']]],
   ['generaldatainireader_5',['generaldatainireader',['../classGeneralDataIniReader.html',1,'GeneralDataIniReader'],['../classantares__xpansion_1_1general__data__reader_1_1GeneralDataIniReader.html',1,'antares_xpansion.general_data_reader.GeneralDataIniReader']]],
   ['generaldataprocessor_6',['GeneralDataProcessor',['../classantares__xpansion_1_1general__data__processor_1_1GeneralDataProcessor.html',1,'antares_xpansion::general_data_processor']]],
   ['generation_7',['generation',['../md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html',1,'Investment problem generation'],['../md_docs_2how__to.html#autotoc_md108',1,'PDF generation']]],
-  ['generation_20capacity_8',['generation capacity',['../md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md158',1,'Investment in renewable generation capacity'],['../md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md157',1,'Investment in thermal generation capacity']]],
+  ['generation_20capacity_8',['generation capacity',['../md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md162',1,'Investment in renewable generation capacity'],['../md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md161',1,'Investment in thermal generation capacity']]],
   ['generation_20for_20resource_20file_9',['Force new generation for resource file',['../md_docs_2developer-guide_2install__from__sources_25-ui-creation.html#autotoc_md81',1,'']]],
   ['generation_20guidelines_10',['Documention generation guidelines',['../md_docs_2how__to.html',1,'']]],
   ['generation_3a_20tt_20problem_5fgeneration_20tt_11',['2- Investment problem generation: &lt;tt&gt;problem_generation&lt;/tt&gt;',['../md_docs_2developer-guide_2xpansion__steps_20-overview.html#autotoc_md85',1,'']]],
@@ -84,6 +84,6 @@ var searchData=
   ['git_20submodule_81',['Update git submodule',['../md_docs_2developer-guide_2install__from__sources_23-Build.html#autotoc_md75',1,'']]],
   ['git_20version_82',['@ref &quot;git-version&quot; &quot;Git version&quot;',['../md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html#autotoc_md67',1,'']]],
   ['git_20version_20git_20version_83',['@ref &quot;git-version&quot; &quot;Git version&quot;',['../md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html#autotoc_md67',1,'']]],
-  ['graphical_20user_20interface_84',['graphical user interface',['../index.html#autotoc_md8',1,'Graphical user interface'],['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md147',1,'Graphical user interface']]],
+  ['graphical_20user_20interface_84',['graphical user interface',['../index.html#autotoc_md8',1,'Graphical user interface'],['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md151',1,'Graphical user interface']]],
   ['guidelines_85',['Documention generation guidelines',['../md_docs_2how__to.html',1,'']]]
 ];

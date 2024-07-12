@@ -134,9 +134,9 @@ $(document).ready(function(){initNavTree('md_docs_2user-guide_2get-started_2sett
   <div class="headertitle"><div class="title">Settings of the algorithm</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md172"></a> In order to solve the investment problem defined by an Antares study and its associated <code>candidates.ini</code> file, Antares-Xpansion uses the <a class="el" href="md_docs_2user-guide_2optimization-principles_2investment-problem.html">Benders decomposition algorithm</a>. The simulation options and algorithmic parameters are defined in the <code>settings.ini</code> file, located in the folder <code>user/expansion/</code> of the Antares study.</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md176"></a> In order to solve the investment problem defined by an Antares study and its associated <code>candidates.ini</code> file, Antares-Xpansion uses the <a class="el" href="md_docs_2user-guide_2optimization-principles_2investment-problem.html">Benders decomposition algorithm</a>. The simulation options and algorithmic parameters are defined in the <code>settings.ini</code> file, located in the folder <code>user/expansion/</code> of the Antares study.</p>
 <p>The following section lists the configurable parameters. If the user does not specify the value of a parameter, its default value is used.</p>
-<h1><a class="anchor" id="autotoc_md173"></a>
+<h1><a class="anchor" id="autotoc_md177"></a>
 Overview of the &lt;tt&gt;settings.ini&lt;/tt&gt; file</h1>
 <table class="markdownTable">
 <tr class="markdownTableHead">
@@ -175,9 +175,9 @@ Overview of the &lt;tt&gt;settings.ini&lt;/tt&gt; file</h1>
 <div class="line">timelimit = 300</div>
 <div class="line">additional-constraints = constraint.txt</div>
 <div class="line">log_level = 0</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md174"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md178"></a>
 Details of the parameters</h1>
-<h2><a class="anchor" id="autotoc_md175"></a>
+<h2><a class="anchor" id="autotoc_md179"></a>
 &lt;tt&gt;optimality_gap&lt;/tt&gt;</h2>
 <p>Positive float. Default value: <code>1</code>.</p>
 <p>The <code>optimality_gap</code>, defined in euros, is the tolerance on the absolute gap for the Antares-Xpansion algorithm.</p>
@@ -195,22 +195,22 @@ Details of the parameters</h1>
 <li>I have to run several expansion optimizations of different variants of a study and compare them. In that case, if the optimal solutions are not returned by the package, the comparison of several variants can be tricky. The inaccuracy of the method might indeed be of the same order of magnitude as the changes brought by the input variations. It is therefore advised to be as closed as possible from the optimum of the expansion problem. To do so, we advise to set the <code>optimality_gap</code> to zero.</li>
 <li>I am building one consistent generation/transmission scenario. As the optimal solution is not more realistic than an approximate solution of the modelled expansion problem, the settings can be less constraining with an <code>optimality_gap</code> of a few million euros.</li>
 </ol>
-<h2><a class="anchor" id="autotoc_md176"></a>
+<h2><a class="anchor" id="autotoc_md180"></a>
 &lt;tt&gt;relative_gap&lt;/tt&gt;</h2>
 <p>Positive float. Default value: <code>1e-6</code>.</p>
 <p>The <code>relative_gap</code> parameter is the tolerance on the relative gap for the Antares-Xpansion algorithm.</p>
 <p>At each iteration, the algorithm computes upper and lower bounds on the optimal cost. The algorithm stops as soon as the quantity <code>(best_upper_bound - best_lower_bound) / max(|best_upper_bound|, |best_lower_bound|)</code> falls below <code>relative_gap</code>. For a relative gap \(\alpha\), the cost of the solution returned by the algorithm satisfies:</p>
 <p>$$\frac{{\scriptstyle\texttt{xpansion solution cost}} - {\scriptstyle\texttt{optimal cost}}}{{\scriptstyle\texttt{optimal cost}}} &lt; \alpha .$$</p>
 <p>!!! Remark The algorithm stops as soon as the first criterion among <code>optimality_gap</code> and <code>relative_gap</code> is met. Keep in mind that if either parameter is not specified by the user, the default value is used.</p>
-<h2><a class="anchor" id="autotoc_md177"></a>
+<h2><a class="anchor" id="autotoc_md181"></a>
 &lt;tt&gt;max_iteration&lt;/tt&gt;</h2>
 <p>Strictly positive integer or infinite. Default value: <code>+Inf</code>.</p>
 <p>Maximum number of iterations for the Benders decomposition algorithm. Once this number of iterations is reached, the Antares-Xpansion algorithm ends, regardless of the quality of the solution.</p>
-<h2><a class="anchor" id="autotoc_md178"></a>
+<h2><a class="anchor" id="autotoc_md182"></a>
 &lt;tt&gt;timelimit&lt;/tt&gt;</h2>
 <p>Strictly positive integer. Default value: <code>1e12</code>.</p>
 <p>Maximum allowed time in seconds for the execution of the Benders step of Antares-Xpansion (i.e. the time of the initial Antares simulation and for the problem generation step is not accounted for). Once the timelimit is reached, the algorithm finishes the current Benders iteration - which can take several additional seconds or minutes - and terminates.</p>
-<h2><a class="anchor" id="autotoc_md179"></a>
+<h2><a class="anchor" id="autotoc_md183"></a>
 &lt;tt&gt;uc_type&lt;/tt&gt;</h2>
 <p>Possible values: <code>expansion_fast</code> and <code>expansion_accurate</code>. By default: <code>expansion_fast</code>.</p>
 <p>The <code>uc_type</code> (unit-commitment type) parameter specifies the simulation mode used by Antares to evaluate the operating costs of the electrical system:</p>
@@ -218,7 +218,7 @@ Details of the parameters</h1>
 <li>If <code>uc_type = expansion_fast</code>: the <em>fast</em> mode of Antares is used, deactivating the flexibility constraints of the thermal units (Pmin constraints and minimum up and down times), and not taking into account either the start-up costs or the impact of the day-ahead reserve.</li>
 <li>If <code>uc_type = expansion_accurate</code>: the <em>expansion</em> mode of Antares is used. This simulation mode corresponds to the <em>accurate</em> mode of Antares in which the unit-commitment variables are relaxed. The flexibility constraints of the thermal units as well as the start-up costs are taken into account.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md180"></a>
+<h2><a class="anchor" id="autotoc_md184"></a>
 &lt;tt&gt;master&lt;/tt&gt;</h2>
 <p>Possible values: <code>integer</code> and <code>relaxed</code>. By default: <code>integer</code>.</p>
 <p>The <code>master</code> parameter provides information on how integer variables are taken into account in the Antares-Xpansion master problem.</p>
@@ -227,7 +227,7 @@ Details of the parameters</h1>
 <li>If <code>master = integer</code>: the investment problem is solved by taking into account <a href="candidate-definition.md#unit-size"><code>unit-size</code></a> constraints of the candidates. The master problem is a MILP (Mixed-Integer Linear Program).</li>
 </ul>
 <p>For problems with several investment candidates with large <code>max-units</code>, using <code>master = relaxed</code> can accelerate the Antares-Xpansion algorithm very significantly.</p>
-<h2><a class="anchor" id="autotoc_md181"></a>
+<h2><a class="anchor" id="autotoc_md185"></a>
 &lt;tt&gt;yearly-weights&lt;/tt&gt;</h2>
 <p>String, specifying the name of a file. Default: <code>None</code>.</p>
 <p>The parameter <code>yearly-weights</code> allows to assume that the Monte Carlo years simulated in the Antares study are not equally probable. The most representative years may be given greater weight than those that are less representative. The <code>yearly-weights</code> parameter defines a file that stores a vector \(\left( \omega_{1},\ldots,\omega_{n} \right)\), with \(n\) the number of Monte-Carlo years in the study, which is used to evaluate the expected production cost:</p>
@@ -243,13 +243,13 @@ Details of the parameters</h1>
 <p><b>Figure 11</b> – Example of a setting of Antares-Xpansion with Monte-Carlo years that are not equally-weighted.</p>
 <p>If the <code>yearly-weights</code> parameter is not used, the Monte-Carlo years of the Antares study are considered to be equally-weighted.</p>
 <p>The <code>yearly-weights</code> parameter <b>must be set in line with the Antares study playlist by the user</b>: years with zero weights must be removed from the Antares study playlist in order not to be simulated unnecessarily.</p>
-<h2><a class="anchor" id="autotoc_md182"></a>
+<h2><a class="anchor" id="autotoc_md186"></a>
 &lt;tt&gt;solver&lt;/tt&gt;</h2>
 <p>String. Default value: <code>Cbc</code>.</p>
 <p>Defines the solver that is used to solve the master and the subproblems in the <a class="el" href="md_docs_2user-guide_2optimization-principles_2investment-problem.html">Benders decomposition</a>. The user can either write <code>solver = Cbc</code> or <code>solver = Coin</code> to use the COIN-OR optimization suite. These settings are identical: depending on whether the problem has integer variables, Antares-Xpansion calls either the linear solver (<a href="https://github.com/coin-or/Clp">Clp</a>) or the MILP solver (<a href="https://github.com/coin-or/Cbc">Cbc</a>) of the COIN-OR optimization suite.</p>
 <p>!!! Remark In Antares-Xpansion, the subproblems are always linear. If <code>master = relaxed</code>, the master problem is linear as well, whereas if <code>master = integer</code>, the master problem is a MILP.</p>
 <p>To use another solver, you have to build the package with the chosen solver, please contact us. It’s not possible to put it on github for the moment.</p>
-<h2><a class="anchor" id="autotoc_md183"></a>
+<h2><a class="anchor" id="autotoc_md187"></a>
 &lt;tt&gt;log_level&lt;/tt&gt;</h2>
 <p>Possible values :<code>{0, 1, 2}</code>, specifying the <code>solver</code>'s log severity. Default value: <code>0</code>.</p>
 <p>Logs can be printed both in the console and in a file. There are 3 types of logs:</p>
@@ -267,7 +267,7 @@ Details of the parameters</h1>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><b>Console</b>   </td><td class="markdownTableBodyNone">0   </td><td class="markdownTableBodyNone">&gt;= 1   </td><td class="markdownTableBodyNone">Never   </td></tr>
 </table>
-<h2><a class="anchor" id="autotoc_md184"></a>
+<h2><a class="anchor" id="autotoc_md188"></a>
 &lt;tt&gt;additional-constraints&lt;/tt&gt;</h2>
 <p>String, specifying the name of a file. Default: <code>None</code>.</p>
 <p>The file defined by the <code>additional-constraints</code> parameter must be located in the <code>user/expansion/constraints</code> folder of the Antares study. It allows to impose linear constraints between the invested capacities of investment candidates. These linear constraints will be added to the master problem.</p>
@@ -290,7 +290,7 @@ Details of the parameters</h1>
 <p>!!! Warning The use of binary variables is not recommended as it greatly increases the calculation time.</p>
 <p><img src="../../assets/media/image19.png" alt="" class="inline"/></p>
 <p><b>Figure 13</b> – Example of an additional constraint file.</p>
-<h2><a class="anchor" id="autotoc_md185"></a>
+<h2><a class="anchor" id="autotoc_md189"></a>
 &lt;tt&gt;separation_parameter&lt;/tt&gt;</h2>
 <p>Float in \([0,1]\). Default value: <code>0.5</code>.</p>
 <p>Defines the step size for the in-out separation. If \(x_{in}\) is the current best feasible solution and \(x_{out}\) is the master solution at the current iteration, the investment in the subproblems is set to</p>
@@ -300,12 +300,12 @@ Details of the parameters</h1>
 <li>Solve the first iterations with the relaxed formulation using the in-out stabilisation technique,</li>
 <li>Once the gap is <em>sufficiently small</em> (see `relaxed_optimality_gap`), switch back to the integer formulation and set back <code>separation_parameter = 1</code> i.e. use the classical Benders algorithm.</li>
 </ol>
-<h2><a class="anchor" id="autotoc_md186"></a>
+<h2><a class="anchor" id="autotoc_md190"></a>
 &lt;tt&gt;relaxed_optimality_gap&lt;/tt&gt;</h2>
 <p>Positive float. Default value: <code>1e-5</code>.</p>
 <p>The <code>relaxed_optimality_gap</code> parameter only has effect when <code>master = integer</code>. In this case, the master problem is relaxed in the first iterations. The <code>relaxed_optimality_gap</code> is the threshold from which to switch back from the relaxed to the integer master formulation.</p>
 <p>In the first iterations, the algorithm computes upper and lower bounds on the optimal cost of the relaxed master problem. The algorithm switches to the integer formulation as soon as the quantity <code>(best_upper_bound - best_lower_bound) / best_upper_bound</code> falls below <code>relaxed_optimality_gap</code>. For the subsequent iterations, the best upper bound is reset to \(+\infty\) as the solutions of the relaxed problem are not feasible for the integer formulation.</p>
-<h2><a class="anchor" id="autotoc_md187"></a>
+<h2><a class="anchor" id="autotoc_md191"></a>
 &lt;tt&gt;batch_size&lt;/tt&gt;</h2>
 <p>Positive integer. Default value: <code>0</code>.</p>
 <p>This parameter is used only when <code>--method</code> is <code>benders_by_batch</code>, otherwise it has no effect. The <code>batch_size</code> specifies the number of subproblems per batch. If set to <code>0</code>, then all subproblems are in the same batch. In this case, the Benders by batch algorithm is launched with a single batch, which is mathematically equivalent to the classical Benders algorithm. </p>

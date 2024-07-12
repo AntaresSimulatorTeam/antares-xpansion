@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['v_20version_20tt_0',['&lt;tt&gt;-v, --version&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md145',1,'']]],
+  ['v_20version_20tt_0',['&lt;tt&gt;-v, --version&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md149',1,'']]],
   ['v0_201_200_2003_202021_1',['v0.1.0 (03/2021)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md57',1,'']]],
   ['v0_202_200_2004_202021_2',['v0.2.0 (04/2021)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md54',1,'']]],
   ['v0_203_200_2005_202021_3',['v0.3.0 (05/2021)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md51',1,'']]],
@@ -25,8 +25,8 @@ var searchData=
   ['variablefilereadertest_22',['VariableFileReaderTest',['../classVariableFileReaderTest.html',1,'']]],
   ['variablefilereadnameconfiguration_23',['VariableFileReadNameConfiguration',['../structVariableFileReadNameConfiguration.html',1,'']]],
   ['variablenamecomposition_24',['VariableNameComposition',['../structVariableNameComposition.html',1,'']]],
-  ['variables_25',['Investment variables',['../md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md190',1,'']]],
-  ['variables_20and_20costs_26',['Variables and costs',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md195',1,'']]],
+  ['variables_25',['Investment variables',['../md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md194',1,'']]],
+  ['variables_20and_20costs_26',['Variables and costs',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md198',1,'']]],
   ['variables_20txt_20tt_20file_20for_20each_20tt_20mps_20tt_20file_27',['&lt;tt&gt;variables.txt&lt;/tt&gt; file for each &lt;tt&gt;.mps&lt;/tt&gt; file',['../md_docs_2developer-guide_2xpansion__steps_21-antares-solver-problem.html#autotoc_md93',1,'']]],
   ['variablesgroup_28',['VariablesGroup',['../classOuterloop_1_1VariablesGroup.html',1,'Outerloop']]],
   ['variablesnotfound_29',['VariablesNotFound',['../classVariableFileReader_1_1VariablesNotFound.html',1,'VariableFileReader']]],
@@ -36,6 +36,6 @@ var searchData=
   ['version_20git_20version_33',['@ref &quot;git-version&quot; &quot;Git version&quot;',['../md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html#autotoc_md67',1,'']]],
   ['version_20only_34',['Pre-compiled libraries download : release version only',['../md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html#autotoc_md72',1,'']]],
   ['version_20python_20version_35',['@ref &quot;python-version&quot; &quot;Python version&quot;',['../md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html#autotoc_md66',1,'']]],
-  ['version_20tt_36',['version tt',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md146',1,'&lt;tt&gt;--antares-version&lt;/tt&gt;'],['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md145',1,'&lt;tt&gt;-v, --version&lt;/tt&gt;']]],
+  ['version_20tt_36',['version tt',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md150',1,'&lt;tt&gt;--antares-version&lt;/tt&gt;'],['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md149',1,'&lt;tt&gt;-v, --version&lt;/tt&gt;']]],
   ['voidwriter_37',['voidwriter',['../classOutput_1_1VoidWriter.html#a3aebfa9d16828185951c57390b00ca0a',1,'Output::VoidWriter::VoidWriter()'],['../classOutput_1_1VoidWriter.html',1,'Output::VoidWriter']]]
 ];

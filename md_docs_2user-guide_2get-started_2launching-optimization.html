@@ -134,11 +134,11 @@ $(document).ready(function(){initNavTree('md_docs_2user-guide_2get-started_2laun
   <div class="headertitle"><div class="title">Launch the optimization</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md133"></a> Once you have <a class="el" href="md_docs_2user-guide_2get-started_2prepare-a-simulation.html">set up your Antares study</a> with the <code>candidates.ini</code> and <code>settings.ini</code> files, you are ready to launch the Antares-Xpansion package to solve the investment problem.</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md137"></a> Once you have <a class="el" href="md_docs_2user-guide_2get-started_2prepare-a-simulation.html">set up your Antares study</a> with the <code>candidates.ini</code> and <code>settings.ini</code> files, you are ready to launch the Antares-Xpansion package to solve the investment problem.</p>
 <p>Antares-Xpansion includes an experimental graphical interface but it is optimally used as a command line prompt. </p>
-<h1><a class="anchor" id="autotoc_md134"></a>
+<h1><a class="anchor" id="autotoc_md138"></a>
 Command line usage</h1>
-<h2><a class="anchor" id="autotoc_md135"></a>
+<h2><a class="anchor" id="autotoc_md139"></a>
 Quick start</h2>
 <ol type="1">
 <li>Open a command prompt in your Antares-Xpansion install directory (by default it is named <code>antaresXpansion-x.y.z-win64</code> where <code>x.y.z</code> is the version number). <pre class="fragment">You can launch a command line prompt by typing `cmd` in the path.
@@ -150,12 +150,12 @@ Quick start</h2>
 </blockquote>
 </li>
 </ol>
-<h2><a class="anchor" id="autotoc_md136"></a>
+<h2><a class="anchor" id="autotoc_md140"></a>
 Command line parameters</h2>
-<h3><a class="anchor" id="autotoc_md137"></a>
+<h3><a class="anchor" id="autotoc_md141"></a>
 &lt;tt&gt;-h, --help&lt;/tt&gt;</h3>
 <p>Show a help message and exit.</p>
-<h3><a class="anchor" id="autotoc_md138"></a>
+<h3><a class="anchor" id="autotoc_md142"></a>
 &lt;tt&gt;--step {full, antares, problem_generation, benders, study_update, sensitivity, resume}&lt;/tt&gt;</h3>
 <p>Default value: <code>full</code>.</p>
 <p>The execution of Antares-Xpansion consists of several steps that can be run separately. The <code>--step</code> parameter allows to select the steps to execute:</p>
@@ -177,15 +177,15 @@ Command line parameters</h2>
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyLeft"><code>resume</code>   </td><td class="markdownTableBodyNone">resume benders step of a study in accordance with <code>--simulationName</code>, by default <code>last</code> study is resumed.   </td></tr>
 </table>
-<h3><a class="anchor" id="autotoc_md139"></a>
+<h3><a class="anchor" id="autotoc_md143"></a>
 &lt;tt&gt;-i, --dataDir&lt;/tt&gt;</h3>
 <p>Specifies the Antares study folder path. Use quotes <code>“antares study path”</code> in case of a space in the path.</p>
-<h3><a class="anchor" id="autotoc_md140"></a>
+<h3><a class="anchor" id="autotoc_md144"></a>
 &lt;tt&gt;--simulationName {last, your-antares-output-directory}&lt;/tt&gt;</h3>
 <p>Default value: <code>last</code>.</p>
 <p>Defines the name of the Antares-Simulator output archive that Antares-Xpansion uses to generate the expansion problem. If the value is <code>last</code>, the most recent run will be used. This option only has an effect when <code>--step</code> is among <code>{problem_generation, benders, study_update, sensitivity}</code>. In a step by step workflow keep both _.zip_ file and <em>-Xpansion</em> corresponding folder.</p>
-<h3><a class="anchor" id="autotoc_md141"></a>
-&lt;tt&gt;-m, --method {benders, benders_by_batch, mergeMPS}&lt;/tt&gt;</h3>
+<h3><a class="anchor" id="autotoc_md145"></a>
+&lt;tt&gt;-m, --method {benders, benders_by_batch, mergeMPS, adequacy_criterion}&lt;/tt&gt;</h3>
 <p>Default value: <code>benders</code>.</p>
 <p>Sets the optimization method used by Antares-Xpansion.</p>
 <table class="markdownTable">
@@ -196,36 +196,39 @@ Command line parameters</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyNone"><code>benders_by_batch</code>   </td><td class="markdownTableBodyNone">Launch the Benders by batch algorithm.    </td></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>mergeMPS</code>   </td><td class="markdownTableBodyNone">Launch a frontal resolution of the investment problem (i.e. without decomposition). This is much more time-consuming than using Benders decomposition.   </td></tr>
+<td class="markdownTableBodyNone"><code>mergeMPS</code>   </td><td class="markdownTableBodyNone">Launch a frontal resolution of the investment problem (i.e. without decomposition). This is much more time-consuming than using Benders decomposition.    </td></tr>
+<tr class="markdownTableRowEven">
+<td class="markdownTableBodyNone"><code>adequacy_criterion</code>   </td><td class="markdownTableBodyNone">Launch Antares-Xpansion with reliability constraints, see <a class="el" href="md_docs_2user-guide_2get-started_2adequacy-criterion.html">Adequacy criterion</a>.   </td></tr>
 </table>
-<h3><a class="anchor" id="autotoc_md142"></a>
+<h3><a class="anchor" id="autotoc_md146"></a>
 &lt;tt&gt;-n, --np&lt;/tt&gt;</h3>
 <p>Default value: 2.</p>
 <p>Sets the number of MPI processes to use for the Benders decomposition. This option only has an effect when <code>-m</code> is set to <code>benders</code> or <code>benders_by_batch</code>.</p>
-<h3><a class="anchor" id="autotoc_md143"></a>
+<h3><a class="anchor" id="autotoc_md147"></a>
 &lt;tt&gt;--antares-n-cpu&lt;/tt&gt;</h3>
 <p>Default value: 1.</p>
 <p>Sets the number of threads to use for Antares-Simulator in the initial <code>antares</code> step.</p>
-<h3><a class="anchor" id="autotoc_md144"></a>
+<h3><a class="anchor" id="autotoc_md148"></a>
 &lt;tt&gt;--keepMps&lt;/tt&gt;</h3>
 <p>Default value: <code>False</code>.</p>
 <p>If set to <code>True</code>, keeps <code>mps</code> files that encodes the problems solved by the optimizer. This option must be set to <code>True</code> if the user intends to launch the optimization several times on the same study (<code>--step benders</code>) without doing the other steps of Antares-Xpansion. </p>
-<h3><a class="anchor" id="autotoc_md145"></a>
+<h3><a class="anchor" id="autotoc_md149"></a>
 &lt;tt&gt;-v, --version&lt;/tt&gt;</h3>
 <p>Show the Antares-Xpansion version.</p>
-<h3><a class="anchor" id="autotoc_md146"></a>
+<h3><a class="anchor" id="autotoc_md150"></a>
 &lt;tt&gt;--antares-version&lt;/tt&gt;</h3>
 <p>Show the Antares-Simulator version (used in the <code>antares</code> step).</p>
-<h1><a class="anchor" id="autotoc_md147"></a>
+<h1><a class="anchor" id="autotoc_md151"></a>
 Graphical user interface</h1>
 <p>Since v0.6.0, Antares-Xpansion comes with a GUI. The GUI can be launched by running <code>antares-xpansion-ui.exe</code>. For now, this GUI is in the experimental phase.</p>
 <p><img src="../../assets/media/ui.png" alt="" class="inline"/></p>
-<h1><a class="anchor" id="autotoc_md148"></a>
+<h1><a class="anchor" id="autotoc_md152"></a>
 Output of Antares-Xpansion</h1>
-<h2><a class="anchor" id="autotoc_md149"></a>
+<h2><a class="anchor" id="autotoc_md153"></a>
 Results</h2>
 <p>When the Antares-Xpansion algorithm terminates, i.e. when an optimal investment combination has been found, the package produces an archive <code>simulation-name.zip</code> located in the <code>output</code> folder of the Antares study.</p>
-<p>Once you unzip the archive, the files <code>lp/reportbenders.txt</code> and the <code>expansion/out.json</code> log information for each iteration:</p><ol type="1">
+<p>Once you unzip the archive, the files <code>lp/reportbenders.txt</code> and the <code>expansion/out.json</code> log information for each iteration:</p>
+<ol type="1">
 <li>The investment combination that has been evaluated,</li>
 <li>The operational, investment and overall costs,</li>
 <li>The current lower and upper bounds (no upper bound for the Benders by batch),</li>
@@ -235,14 +238,14 @@ Results</h2>
 </ol>
 <p>There is also information on the iteration number which has led to the best solution. The file <code>out.json</code> also gives the parameters that are used by the optimization algorithm (some of them are defined by the user in <code>settings.ini</code>). <br  />
 </p>
-<h2><a class="anchor" id="autotoc_md150"></a>
+<h2><a class="anchor" id="autotoc_md154"></a>
 Updates of candidate links</h2>
 <p>At the end of the run, Antares-Xpansion updates the Antares study by replacing the capacities of investment candidate links with their optimal value taking into account the <code>link-profile</code>, the <code>already-installed-capacity</code> and the <code>already-installed-link-profile</code>, see <b>Figure 15</b>.</p>
 <p>The user can therefore immediately launch an Antares simulation using the results of the best iteration.</p>
 <p>!!! Advice It is recommended to relaunch an Antares study with the optimal solution returned by Antares-Xpansion for further analysis. Antares-Xpansion relaxes some constraints (see <code>link-profile</code> and <code>uc_type</code> parameters for example), therefore the total cost may be a bit different.</p>
 <p><img src="../../assets/media/image23.png" alt="" class="inline"/></p>
 <p><b>Figure</b> <b>15</b> – Update of the Antares study.</p>
-<h2><a class="anchor" id="autotoc_md151"></a>
+<h2><a class="anchor" id="autotoc_md155"></a>
 Logs</h2>
 <p>During the simulation, logs are displayed on the console to give information on the current iteration, corresponding to the data written in the <code>reportbenders.txt</code> text file.</p>
 <div class="fragment"><div class="line">ITERATION 6:</div>
@@ -291,7 +294,7 @@ Logs</h2>
 <div class="line">Problem ran in 7.93209 s</div>
 <div class="line">Optimization results available in : C:\\antaresXpansion-x.y.z-win64\examples\SmallTestFiveCandidates\output\20211126-1755eco\lp\.\out.json</div>
 <div class="line">-- Study Update</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md152"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md156"></a>
 Errors</h1>
 <p>Xpansion will not work if the initial Antares study is not running. The user must therefore check beforehand that the Antares simulations do not contain any errors.</p>
 <p>Be careful to check the consistency between the names of the links in the <code>candidates.ini</code> file and in the Antares study and to use a unique index and name per candidate.</p>
