@@ -226,7 +226,8 @@ var hierarchy =
           ] ],
           [ "MathLoggerBendersByBatch", "structMathLoggerBendersByBatch.html", [
             [ "MathLoggerBendersByBatchExternalLoop", "structMathLoggerBendersByBatchExternalLoop.html", null ]
-          ] ]
+          ] ],
+          [ "MathLoggerExternalLoopSpecific< T >", "structMathLoggerExternalLoopSpecific.html", null ]
         ] ],
         [ "MathLoggerImplementation", "classMathLoggerImplementation.html", [
           [ "MathLoggerFile", "classMathLoggerFile.html", null ],

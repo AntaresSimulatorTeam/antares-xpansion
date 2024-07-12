@@ -152,26 +152,28 @@ $(document).ready(function(){initNavTree('SubproblemCut_8h_source.html',''); ini
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  <span class="keywordtype">double</span> subproblem_cost;</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  Point var_name_and_subgradient;</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  std::vector&lt;double&gt; outer_loop_criterions;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  <span class="keywordtype">double</span> single_subpb_costs_under_approx;</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  <span class="keywordtype">double</span> subproblem_timer;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <span class="keywordtype">int</span> simplex_iter;</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <span class="keywordtype">int</span> lpstatus;</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keyword">friend</span> <span class="keyword">class </span>boost::serialization::access;</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="keyword">template</span> &lt;<span class="keyword">class</span> Archive&gt;</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="keywordtype">void</span> serialize(Archive &amp;ar, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> version) {</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    ar &amp; subproblem_cost;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    ar &amp; var_name_and_subgradient;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    ar &amp; outer_loop_criterions;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    ar &amp; single_subpb_costs_under_approx;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    ar &amp; subproblem_timer;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    ar &amp; simplex_iter;</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    ar &amp; lpstatus;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  }</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>};</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  <span class="comment">// no-supplied energy</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  std::vector&lt;double&gt; outer_loop_patterns_values;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <span class="keywordtype">double</span> single_subpb_costs_under_approx;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <span class="keywordtype">double</span> subproblem_timer;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keywordtype">int</span> simplex_iter;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="keywordtype">int</span> lpstatus;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="keyword">friend</span> <span class="keyword">class </span>boost::serialization::access;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="keyword">template</span> &lt;<span class="keyword">class</span> Archive&gt;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="keywordtype">void</span> serialize(Archive &amp;ar, <span class="keyword">const</span> <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> version) {</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    ar &amp; subproblem_cost;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    ar &amp; var_name_and_subgradient;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    ar &amp; outer_loop_criterions;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    ar &amp; single_subpb_costs_under_approx;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    ar &amp; subproblem_timer;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    ar &amp; simplex_iter;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    ar &amp; lpstatus;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  }</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>};</div>
 </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>}  <span class="comment">// namespace PlainData</span></div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">using </span>SubProblemDataMap = std::map&lt;std::string, PlainData::SubProblemData&gt;;</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>}  <span class="comment">// namespace PlainData</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="keyword">using </span>SubProblemDataMap = std::map&lt;std::string, PlainData::SubProblemData&gt;;</div>
 <div class="ttc" id="astructPlainData_1_1SubProblemData_html"><div class="ttname"><a href="structPlainData_1_1SubProblemData.html">PlainData::SubProblemData</a></div><div class="ttdef"><b>Definition</b> SubproblemCut.h:9</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

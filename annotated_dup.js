@@ -528,6 +528,7 @@ var annotated_dup =
     [ "MathLoggerBendersByBatch", "structMathLoggerBendersByBatch.html", null ],
     [ "MathLoggerBendersByBatchExternalLoop", "structMathLoggerBendersByBatchExternalLoop.html", null ],
     [ "MathLoggerDriver", "classMathLoggerDriver.html", "classMathLoggerDriver" ],
+    [ "MathLoggerExternalLoopSpecific", "structMathLoggerExternalLoopSpecific.html", null ],
     [ "MathLoggerFactory", "classMathLoggerFactory.html", null ],
     [ "MathLoggerFile", "classMathLoggerFile.html", "classMathLoggerFile" ],
     [ "MathLoggerImplementation", "classMathLoggerImplementation.html", null ],
