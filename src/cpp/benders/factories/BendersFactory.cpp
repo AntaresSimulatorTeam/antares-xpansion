@@ -18,15 +18,15 @@ BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size,
                                   bool external_loop) {
   if (batch_size == 0 || batch_size == coupling_map_size - 1) {
     if (external_loop) {
-      return BendersMethod::BENDERS_EXTERNAL_LOOP;
+      return BENDERSMETHOD::BENDERS_EXTERNAL_LOOP;
     } else {
-      return BendersMethod::BENDERS;
+      return BENDERSMETHOD::BENDERS;
     }
   } else {
     if (external_loop) {
-      return BendersMethod::BENDERS_BY_BATCH_EXTERNAL_LOOP;
+      return BENDERSMETHOD::BENDERS_BY_BATCH_EXTERNAL_LOOP;
     } else {
-      return BendersMethod::BENDERS_BY_BATCH;
+      return BENDERSMETHOD::BENDERS_BY_BATCH;
     }
   }
 }
