@@ -484,7 +484,9 @@ class ConfigLoader:
         ] = self._config.LAST_MASTER_MPS
         options_values[OptimisationKeys.last_master_basis_key()] = self._config.LAST_MASTER_BASIS
         options_values[OptimisationKeys.batch_size_key()] = self.get_batch_size()
-        options_values[OptimisationKeys.do_outer_loop_key()] = self._config.method == "outer_loop"
+        options_values[OptimisationKeys.do_outer_loop_key()] = (
+            self._config.method == "adequacy_criterion"
+        )
         options_values[OptimisationKeys.outer_loop_option_file_key()] = (
             self.outer_loop_options_path()
         )

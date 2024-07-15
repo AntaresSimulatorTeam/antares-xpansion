@@ -57,7 +57,7 @@ void OuterLoop::PrintLog() {
   std::ostringstream msg;
   auto logger = benders_->_logger;
   logger->PrintIterationSeparatorBegin();
-  msg << "*** Outer loop: " << benders_->GetBendersRunNumber();
+  msg << "*** Adequacy criterion loop: " << benders_->GetBendersRunNumber();
   logger->display_message(msg.str());
   msg.str("");
   // TODO criterion per pattern (aka prefix+area) at best Benders ?

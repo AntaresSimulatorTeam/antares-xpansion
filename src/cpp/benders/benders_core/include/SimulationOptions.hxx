@@ -78,5 +78,4 @@ BENDERS_OPTIONS_MACRO(DO_OUTER_LOOP, bool, false, asBool())
 
 // Outer Loop Options file
 BENDERS_OPTIONS_MACRO(OUTER_LOOP_OPTION_FILE, std::string,
-                      "outer_loop_options.json", asString())
-
+                      "adequacy_criterion.yml", asString())

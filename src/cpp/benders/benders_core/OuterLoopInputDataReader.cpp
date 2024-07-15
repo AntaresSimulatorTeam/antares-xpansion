@@ -113,22 +113,6 @@ OuterLoopInputData OuterLoopInputFromYaml::Read(
   return yaml_content.as<OuterLoopInputData>();
 }
 
-/*
-# critère d'arrêt de l'algo
-stopping_threshold: 1e-4
-# seuil
-criterion_count_threshold: 1e-1
-patterns:
-  - area: "N0"
-    criterion: 1
-  - area: "N1"
-    criterion: 1
-  - area: "N2"
-    criterion: 1
-  - area: "N3"
-    criterion: 1
-*/
-
 namespace YAML {
 
 template <>
