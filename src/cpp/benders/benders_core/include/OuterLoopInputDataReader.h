@@ -81,6 +81,8 @@ class OuterLoopInputData {
   OuterLoopInputData() = default;
 
   [[nodiscard]] std::vector<OuterLoopSingleInputData> OuterLoopData() const;
+  [[nodiscard]] std::vector<std::string> PatternBodies() const;
+  [[nodiscard]] std::string PatternsPrefix() const;
 
   void SetStoppingThreshold(double outer_loop_stopping_threshold);
   [[nodiscard]] double StoppingThreshold() const;

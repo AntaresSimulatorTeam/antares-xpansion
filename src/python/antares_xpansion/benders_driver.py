@@ -101,7 +101,7 @@ class BendersDriver:
     def set_solver(self):
         if self.method == "benders":
             self.solver = self.benders
-        elif self.method == "outer_loop":
+        elif self.method == "adequacy_criterion":
             self.solver = self.outer_loop
         elif self.method == "mergeMPS":
             self.solver = self.merge_mps
