@@ -37,7 +37,7 @@ int main(int argc, char** argv) {
                                               world, SOLVER::BENDERS);
     benders_factory.Run();
   }
-  if (solver == "outer_loop") {
+  if (solver == "adequacy_criterion") {
     auto benders_factory = BendersMainFactory(argc_, argv, options_file, env,
                                               world, SOLVER::OUTER_LOOP);
     benders_factory.Run();
