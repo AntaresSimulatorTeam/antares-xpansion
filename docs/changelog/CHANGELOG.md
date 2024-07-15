@@ -1,6 +1,20 @@
 Antares-Xpansion changelog
 =================
 
+v1.3.1 (07/2024)
+--------------------------------------------------------
+
+### Features
+
+"outer_loop" option is renamed "adequacy_criterion"
+### Bug Fixes
+
+Fix Mpi issues on single file assets
+
+### Doc
+
+The doc has been updated with a description of the adequacy criterion feature
+
 v1.3.0 (06/2024)
 --------------------------------------------------------
 
