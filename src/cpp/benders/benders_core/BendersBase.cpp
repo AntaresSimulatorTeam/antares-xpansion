@@ -26,13 +26,13 @@ BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
     //TODO maybe the input format will change?
     adequacy_criterion_input_data_ =
         AdequacyCriterionSpace::AdequacyCriterionInputFromYaml().Read(
-            AdequacyCriterionSpaceOptionsFile());
+            AdequacyCriterionOptionsFile());
     adequacy_criterion_biLevel_ =
         AdequacyCriterionBiLevel(adequacy_criterion_input_data_);
   }
 }
 
-std::filesystem::path BendersBase::AdequacyCriterionSpaceOptionsFile() const {
+std::filesystem::path BendersBase::AdequacyCriterionOptionsFile() const {
   return std::filesystem::path(
       _options.EXTERNAL_LOOP_OPTIONS.ADEQUACY_CRITERION_OPTION_FILE);
 }

@@ -155,7 +155,7 @@ class BendersBase {
                                         std::string const &name) const;
   [[nodiscard]] std::filesystem::path get_master_path() const;
   [[nodiscard]] std::filesystem::path get_structure_path() const;
-  [[nodiscard]] std::filesystem::path AdequacyCriterionSpaceOptionsFile() const;
+  [[nodiscard]] std::filesystem::path AdequacyCriterionOptionsFile() const;
   [[nodiscard]] LogData bendersDataToLogData(
       const CurrentIterationData &data) const;
   template <typename T, typename... Args>
