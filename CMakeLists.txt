@@ -124,6 +124,7 @@ sbeClearJson(antares_version)
 # Build dependencies not handled by antares-deps repository
 option(BUILD_antares_solver "Build antares solver" ON)
 message(STATUS "Build antares solver: ${BUILD_antares_solver}")
+set(CMAKE_MAP_IMPORTED_CONFIG_RELWITHDEBINFO RELEASE DEBUG)
 if (${BUILD_antares_solver})
     #check if antares_solver available before asking for sirius and ortools build
     find_package(Antares QUIET)

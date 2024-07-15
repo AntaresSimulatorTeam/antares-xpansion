@@ -32,8 +32,56 @@
 #include "XpansionProblemsFromAntaresProvider.h"
 #include "ZipProblemsProviderAdapter.h"
 #include "config.h"
+#include <boost/serialization/serialization.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/serialization/vector.hpp>
+#include <boost/serialization/map.hpp>
+#include <boost/serialization/string.hpp>
+#include <ittnotify.h>
 
 static const std::string LP_DIRNAME = "lp";
+
+namespace boost::serialization {
+template <class Archive>
+void serialize(Archive& ar, Antares::Solver::ConstantDataFromAntares& data, const unsigned int version) {
+        ar& data.VariablesCount;
+        ar& data.ConstraintesCount;
+        ar& data.CoeffCount;
+        ar& data.VariablesType;
+        ar& data.Mdeb;
+        ar& data.NotNullTermCount;
+        ar& data.ColumnIndexes;
+        ar& data.ConstraintsMatrixCoeff;
+        ar& data.VariablesMeaning;
+        ar& data.ConstraintsMeaning;
+}
+
+template <class Archive>
+void serialize(Archive& ar, Antares::Solver::WeeklyProblemId& data, const unsigned int version) {
+  ar& data.year;
+  ar& data.week;
+}
+
+
+template <class Archive>
+void serialize(Archive& ar, Antares::Solver::WeeklyDataFromAntares& data, const unsigned int version) {
+  ar& data.Direction;
+  ar& data.Xmax;
+  ar& data.Xmin;
+  ar& data.LinearCost;
+  ar& data.RHS;
+  ar& data.name;
+  ar& data.variables;
+  ar& data.constraints;
+}
+
+template <class Archive>
+void serialize(Archive& ar, Antares::Solver::LpsFromAntares& data, const unsigned int version) {
+        ar& data.constantProblemData;
+        ar& data.weeklyProblems;
+}
+}  // namespace boost::serialization
 
 void CreateDirectories(const std::filesystem::path& output_path) {
   if (!std::filesystem::exists(output_path)) {
@@ -57,9 +105,9 @@ ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options)
 }
 
 std::filesystem::path ProblemGeneration::performAntaresSimulation() {
+#ifdef SAVE
   auto results = Antares::API::PerformSimulation(options_.StudyPath());
   //Add parallel
-
   //Handle errors
   if (results.error) {
     std::cerr << "Error: " << results.error->reason << std::endl;
@@ -67,7 +115,17 @@ std::filesystem::path ProblemGeneration::performAntaresSimulation() {
   }
 
   lps_ = std::move(results.antares_problems);
+  std::ofstream ofs("lps.txt");
+  boost::archive::text_oarchive oa(ofs);
+  oa << lps_;
+  //TODO save simulation path
   return {results.simulationPath};
+#else
+  std::ifstream ifs("lps.txt");
+  boost::archive::text_iarchive ia(ifs);
+  ia >> lps_;
+  return "/home/marechaljas/Téléchargements/study_1_integer/output/20240715-1416eco";
+#endif
 }
 
 std::filesystem::path ProblemGeneration::updateProblems() {
@@ -82,6 +140,7 @@ std::filesystem::path ProblemGeneration::updateProblems() {
 
   if (mode_ == SimulationInputMode::ANTARES_API) {
     simulation_dir_ = performAntaresSimulation();
+    __itt_resume();
   }
 
   if (mode_ == SimulationInputMode::FILE) {
