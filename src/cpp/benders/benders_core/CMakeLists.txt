@@ -6,7 +6,6 @@
 # Targets
 # ===========================================================================
 
-find_package(yaml-cpp CONFIG REQUIRED)
 add_library (benders_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/SubproblemWorker.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/SimulationOptions.cpp

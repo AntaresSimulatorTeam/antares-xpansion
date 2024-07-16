@@ -5,6 +5,7 @@
 # ===========================================================================
 # Targets
 # ===========================================================================
+find_package(yaml-cpp CONFIG REQUIRED)
 
 find_package (MPI REQUIRED COMPONENTS C)
 message ("MPI_C_INCLUDE_PATH ${MPI_C_INCLUDE_PATH}")
