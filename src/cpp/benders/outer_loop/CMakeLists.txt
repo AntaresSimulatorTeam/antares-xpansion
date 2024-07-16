@@ -20,6 +20,7 @@ endif()
 add_library (outer_loop_lib STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/OuterLoop.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/MasterUpdateBase.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopBiLevel.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/CutsManagement.cpp
 	)
 

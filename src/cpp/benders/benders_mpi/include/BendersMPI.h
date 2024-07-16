@@ -30,7 +30,7 @@ class BendersMpi : public BendersBase {
   void launch() override;
   std::string BendersName() const override { return "Benders mpi"; }
   const unsigned int rank_0 = 0;
-  void ExternalLoopCheckFeasibility() override;
+  void OuterLoopCheckFeasibility() override;
 
  protected:
   void free() override;
@@ -60,7 +60,7 @@ class BendersMpi : public BendersBase {
   void check_if_some_proc_had_a_failure(int success);
 
   void UpdateOverallCosts();
-  void RunExternalLoopBilevelChecks() override;
+  void OuterLoopBilevelChecks() override;
   mpi::environment &_env;
   mpi::communicator &_world;
 

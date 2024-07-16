@@ -376,7 +376,7 @@ void BendersMpi::launch() {
   _world.barrier();
 }
 
-void BendersMpi::ExternalLoopCheckFeasibility() {
+void BendersMpi::OuterLoopCheckFeasibility() {
   std::vector<double> obj_coeff;
   if (_world.rank() == 0) {
     obj_coeff = MasterObjectiveFunctionCoeffs();
@@ -391,7 +391,7 @@ void BendersMpi::ExternalLoopCheckFeasibility() {
   if (_world.rank() == 0) {
     SetMasterObjectiveFunction(obj_coeff.data(), 0, obj_coeff.size() - 1);
     UpdateOverallCosts();
-    RunExternalLoopBilevelChecks();
+    OuterLoopBilevelChecks();
     // de-comment for general case
     //  cuts_manager_->Save(benders_->AllCuts());
     // auto cuts = cuts_manager_->Load();
@@ -418,7 +418,7 @@ void BendersMpi::UpdateOverallCosts() {
   relevantIterationData_.best._invest_cost = _data.invest_cost;
 }
 
-void BendersMpi::RunExternalLoopBilevelChecks() {
+void BendersMpi::OuterLoopBilevelChecks() {
   if (_world.rank() == rank_0 && Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP &&
       !is_bilevel_check_all_) {
     const WorkerMasterData &workerMasterData = BestIterationWorkerMaster();

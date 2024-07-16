@@ -20,6 +20,7 @@ endif()
 add_library (benders_mpi_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/common_mpi.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersMPI.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopBenders.cpp
 )
 
 target_link_libraries (benders_mpi_core
@@ -32,6 +33,7 @@ target_link_libraries (benders_mpi_core
 		${PROJECT_NAME}::factories
 		logger_lib
 		Boost::serialization
+		outer_loop_lib
 )
 
 #if (WIN32)

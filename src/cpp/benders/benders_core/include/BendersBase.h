@@ -91,11 +91,11 @@ class BendersBase {
   virtual void init_data();
   void init_data(double external_loop_lambda, double external_loop_lambda_min, double external_loop_lambda_max);
 
-  double ExternalLoopLambdaMax() const;
-  double ExternalLoopLambdaMin() const;
+  double OuterLoopLambdaMax() const;
+  double OuterLoopLambdaMin() const;
   bool ExternalLoopFoundFeasible() const;
-  virtual void ExternalLoopCheckFeasibility() = 0;
-  virtual void RunExternalLoopBilevelChecks() = 0;
+  virtual void OuterLoopCheckFeasibility() = 0;
+  virtual void OuterLoopBilevelChecks() = 0;
   double OuterLoopStoppingThreshold() const;
   Output::SolutionData GetOuterLoopSolution() const;
   void SaveOuterLoopSolutionInOutputFile() const;

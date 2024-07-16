@@ -1,25 +1,19 @@
 #pragma once
 #include "CutsManagement.h"
 #include "MasterUpdate.h"
-#include "common_mpi.h"
 
 namespace Outerloop {
-class OuterLoop {
+class IOuterLoop {
  public:
-  explicit OuterLoop(std::shared_ptr<IMasterUpdate> master_updater,
-                     std::shared_ptr<ICutsManager> cuts_manager,
-                     pBendersBase benders, mpi::environment& env,
-                     mpi::communicator& world);
-  void Run();
+  explicit IOuterLoop(std::shared_ptr<IMasterUpdate> master_updater,
+                      std::shared_ptr<ICutsManager> cuts_manager);
+  virtual void Run() = 0;
+  virtual void OuterLoopCheckFeasibility() = 0;
+  virtual void OuterLoopBilevelChecks() = 0;
 
  private:
-  void PrintLog();
   std::shared_ptr<IMasterUpdate> master_updater_;
   std::shared_ptr<ICutsManager> cuts_manager_;
-  pBendersBase benders_;
-  BendersLoggerBase loggers_;
-  mpi::environment& env_;
-  mpi::communicator& world_;
 };
 
 }  // namespace Outerloop

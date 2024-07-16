@@ -21,7 +21,6 @@ add_library (benders_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/StartUp.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersMathLogger.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/VariablesGroup.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopBiLevel.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopInputDataReader.cpp
 
 	)
@@ -40,5 +39,3 @@ target_link_libraries (benders_core
 		${JSONCPP_LIB}
 		yaml-cpp::yaml-cpp
 )
-
-add_library (${PROJECT_NAME}::benders_core ALIAS benders_core)

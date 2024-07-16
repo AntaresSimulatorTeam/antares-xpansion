@@ -1048,10 +1048,10 @@ void BendersBase::ComputeOuterLoopCriterion(
   }
 }
 
-double BendersBase::ExternalLoopLambdaMax() const {
+double BendersBase::OuterLoopLambdaMax() const {
   return outer_loop_biLevel_.LambdaMax();
 }
-double BendersBase::ExternalLoopLambdaMin() const {
+double BendersBase::OuterLoopLambdaMin() const {
   return outer_loop_biLevel_.LambdaMin();
 }
 
