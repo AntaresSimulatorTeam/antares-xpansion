@@ -1,7 +1,9 @@
 #pragma once
 #include "OuterLoopInputDataReader.h"
-#include "SubproblemCut.h"
-
+// TODO
+typedef std::map<std::string, double> Point;
+typedef std::map<std::string, int> VariableMap;
+//
 class OuterLoopBiLevel {
  public:
   explicit OuterLoopBiLevel(const Outerloop::OuterLoopInputData  &outer_loop_input_data);
