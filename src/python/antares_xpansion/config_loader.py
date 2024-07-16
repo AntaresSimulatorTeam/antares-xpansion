@@ -491,7 +491,7 @@ class ConfigLoader:
             self.outer_loop_options_path()
         )
         if os.path.exists(self.outer_loop_options_path()):
-            shutil.copyfile(self.outer_loop_options_path(), self._simulation_lp_path())
+            shutil.copy(self.outer_loop_options_path(), self._simulation_lp_path())
 
         # generate options file for the solver
         with open(self.options_file_path(), "w") as options_file:
