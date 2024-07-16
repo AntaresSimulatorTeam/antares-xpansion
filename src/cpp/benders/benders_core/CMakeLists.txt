@@ -20,8 +20,6 @@ add_library (benders_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/LastIterationPrinter.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/StartUp.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersMathLogger.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/VariablesGroup.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopInputDataReader.cpp
 
 	)
 
@@ -37,5 +35,5 @@ target_link_libraries (benders_core
 		output_core
 		solvers
 		${JSONCPP_LIB}
-		yaml-cpp::yaml-cpp
+		outer_loop_lib
 )

@@ -103,11 +103,11 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   benders->set_input_map(coupling_map);
   benders->DoFreeProblems(false);
   benders->InitializeProblems();
-  benders->ExternalLoopCheckFeasibility();
+  benders->OuterLoopCheckFeasibility();
 
   auto num_constraints_master_before = benders->MasterGetnrows();
-  auto lambda_min = benders->ExternalLoopLambdaMin();
-  auto lambda_max = benders->ExternalLoopLambdaMax();
+  auto lambda_min = benders->OuterLoopLambdaMin();
+  auto lambda_max = benders->OuterLoopLambdaMax();
   auto expected_lambda_max = LambdaMax(benders);
   //--------
   ASSERT_EQ(lambda_max, expected_lambda_max);

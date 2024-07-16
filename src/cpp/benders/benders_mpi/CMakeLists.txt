@@ -33,7 +33,6 @@ target_link_libraries (benders_mpi_core
 		${PROJECT_NAME}::factories
 		logger_lib
 		Boost::serialization
-		outer_loop_lib
 )
 
 #if (WIN32)
