@@ -490,6 +490,9 @@ class ConfigLoader:
         options_values[OptimisationKeys.outer_loop_option_file_key()] = (
             self.outer_loop_options_path()
         )
+        if os.path.exists(self.outer_loop_options_path()):
+            shutil.copyfile(self.outer_loop_options_path(), self._simulation_lp_path())
+
         # generate options file for the solver
         with open(self.options_file_path(), "w") as options_file:
             json.dump(options_values, options_file, indent=4)
