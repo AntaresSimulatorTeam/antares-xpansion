@@ -2,7 +2,6 @@
     Class to work on config
 """
 
-import glob
 import json
 import os
 import re
@@ -488,7 +487,7 @@ class ConfigLoader:
             self._config.method == "adequacy_criterion"
         )
         options_values[OptimisationKeys.outer_loop_option_file_key()] = (
-            self.outer_loop_options_path()
+            self._config.OUTER_LOOP_FILE
         )
         if os.path.exists(self.outer_loop_options_path()):
             shutil.copy(self.outer_loop_options_path(), self._simulation_lp_path())
