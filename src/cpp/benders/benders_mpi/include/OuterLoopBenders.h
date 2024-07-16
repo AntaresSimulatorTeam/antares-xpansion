@@ -1,7 +1,8 @@
 #pragma once
+#include "BendersBase.h"
 #include "CutsManagement.h"
 #include "IMasterUpdate.h"
-#include "OuterLoop.h"
+#include "IOuterLoop.h"
 #include "common_mpi.h"
 
 namespace Outerloop {

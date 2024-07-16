@@ -1,11 +1,11 @@
 #include "OuterLoopBenders.h"
-
+namespace Outerloop {
 OuterLoopBenders::OuterLoopBenders(
     std::shared_ptr<IMasterUpdate> master_updater,
     std::shared_ptr<ICutsManager> cuts_manager, pBendersBase benders,
     mpi::environment& env, mpi::communicator& world)
     : master_updater_(std::move(master_updater)),
-      cuts_manager_(std::move(cuts_manager),
+      cuts_manager_(std::move(cuts_manager)),
       benders_(std::move(benders)),
       env_(env),
       world_(world) {
@@ -25,7 +25,7 @@ void OuterLoopBenders::Run() {
     benders_->init_data(master_updater_->Rhs(), benders_->OuterLoopLambdaMin(),
                         benders_->OuterLoopLambdaMax());
     benders_->launch();
-    if(!benders_->isExceptionRaised()) {
+    if (!benders_->isExceptionRaised()) {
       benders_->OuterLoopBilevelChecks();
       if (world_.rank() == 0) {
         stop_update_master = master_updater_->Update(
@@ -33,8 +33,7 @@ void OuterLoopBenders::Run() {
       }
 
       mpi::broadcast(world_, stop_update_master, 0);
-    }
-    else {
+    } else {
       stop_update_master = true;
     }
   }
@@ -74,3 +73,4 @@ void OuterLoopBenders::OuterLoopCheckFeasibility() {
 void OuterLoopBenders::OuterLoopBilevelChecks() {
   benders_->OuterLoopBilevelChecks();
 }
+}  // namespace Outerloop
