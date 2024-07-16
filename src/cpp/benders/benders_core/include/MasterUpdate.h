@@ -1,14 +1,9 @@
 #pragma once
 #include "BendersBase.h"
+#include "IMasterUpdate.h"
 #include "common.h"
 
 namespace Outerloop {
-class IMasterUpdate {
- public:
-  virtual bool Update(double lambda_min, double lambda_max) = 0;
-  virtual void Init() = 0;
-  [[nodiscard]] virtual double Rhs() const = 0;
-};
 
 class MasterUpdateBase : public IMasterUpdate {
  public:

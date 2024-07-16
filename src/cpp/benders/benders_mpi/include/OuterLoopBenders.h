@@ -1,6 +1,9 @@
 #pragma once
+#include "CutsManagement.h"
+#include "IMasterUpdate.h"
 #include "OuterLoop.h"
 #include "common_mpi.h"
+
 namespace Outerloop {
 class OuterLoopBenders : public IOuterLoop {
  public:
