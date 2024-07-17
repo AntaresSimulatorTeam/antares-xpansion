@@ -22,6 +22,7 @@ add_library (outer_loop_lib STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopBiLevel.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/VariablesGroup.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopInputDataReader.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/OuterLoop.cpp
 	)
 
 
