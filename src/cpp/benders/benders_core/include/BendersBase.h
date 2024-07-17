@@ -238,7 +238,8 @@ class BendersBase {
   void ComputeOuterLoopCriterion(
       const std::string &subproblem_name,
       const std::vector<double> &sub_problem_solution,
-      PlainData::SubProblemData &subproblem_data);
+      std::vector<double> &outerLoopCriterions,
+      std::vector<double> &outerLoopPatternsValues);
 
   void UpdateOuterLoopMaxCriterionArea();
   void UpdateOuterLoopSolution();

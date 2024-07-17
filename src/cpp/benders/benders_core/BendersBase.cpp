@@ -400,7 +400,9 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
               if (_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
                 std::vector<double> solution;
                 worker->get_solution(solution);
-                ComputeOuterLoopCriterion(name, solution, subproblem_data);
+                ComputeOuterLoopCriterion(
+                    name, solution, subproblem_data.outer_loop_criterions,
+                    subproblem_data.outer_loop_patterns_values);
               }
               worker->get_subgradient(subproblem_data.var_name_and_subgradient);
               worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
@@ -1025,10 +1027,11 @@ std::vector<double> BendersBase::GetOuterLoopCriterionAtBestBenders() const {
 void BendersBase::ComputeOuterLoopCriterion(
     const std::string &subproblem_name,
     const std::vector<double> &sub_problem_solution,
-    PlainData::SubProblemData &subproblem_data) {
+    std::vector<double> &outerLoopCriterions,
+    std::vector<double> &outerLoopPatternsValues) {
   auto outer_loop_input_size = var_indices_.size(); // num of patterns
-  subproblem_data.outer_loop_criterions.resize(outer_loop_input_size, 0.);
-  subproblem_data.outer_loop_patterns_values.resize(outer_loop_input_size, 0.);
+  outerLoopCriterions.resize(outer_loop_input_size, 0.);
+  outerLoopPatternsValues.resize(outer_loop_input_size, 0.);
 
   auto subproblem_weight = SubproblemWeight(_data.nsubproblem, subproblem_name);
   double criterion_count_threshold =
@@ -1039,11 +1042,10 @@ void BendersBase::ComputeOuterLoopCriterion(
     auto pattern_variables_indices = var_indices_[pattern_index];
     for (auto variables_index : pattern_variables_indices) {
       const auto &solution = sub_problem_solution[variables_index];
-      subproblem_data.outer_loop_patterns_values[pattern_index] += solution;
+      outerLoopPatternsValues[pattern_index] += solution;
       if (solution > criterion_count_threshold)
         // 1h of no supplied energy
-        subproblem_data.outer_loop_criterions[pattern_index] +=
-            subproblem_weight;
+        outerLoopCriterions[pattern_index] += subproblem_weight;
     }
   }
 }

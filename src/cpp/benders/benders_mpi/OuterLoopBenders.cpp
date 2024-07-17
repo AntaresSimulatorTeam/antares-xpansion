@@ -49,15 +49,19 @@ void OuterLoopBenders::init_data() {
   benders_->init_data(master_updater_->Rhs(), OuterLoopLambdaMin(),
                       OuterLoopLambdaMax());
 }
+
 bool OuterLoopBenders::isExceptionRaised() {
   return benders_->isExceptionRaised();
 }
+
 double OuterLoopBenders::OuterLoopLambdaMin() const {
   return benders_->OuterLoopLambdaMin();
 }
+
 double OuterLoopBenders::OuterLoopLambdaMax() const {
   return benders_->OuterLoopLambdaMax();
 }
+
 bool OuterLoopBenders::UpdateMaster() {
   bool stop_update_master = false;
   if (world_.rank() == 0) {
@@ -76,4 +80,5 @@ OuterLoopBenders::~OuterLoopBenders() {
   //  cuts_manager_->Save(benders_->AllCuts());
   benders_->free();
 }
+
 }  // namespace Outerloop
