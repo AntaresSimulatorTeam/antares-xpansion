@@ -6,6 +6,7 @@
 
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
+#include "CriterionComputation.h"
 #include "ILogger.h"
 #include "OuterLoopBiLevel.h"
 #include "OuterLoopInputDataReader.h"
@@ -17,7 +18,6 @@
 #include "Worker.h"
 #include "WorkerMaster.h"
 #include "common.h"
-
 /**
  * std execution policies don't share a base type so we can't just select
  *them in place in the foreach This function allow the selection of policy
@@ -121,11 +121,9 @@ class BendersBase {
   bool free_problems_ = true;
 
   std::vector<std::vector<double>> outer_loop_criterion_;
-  std::vector<std::string> subproblems_vars_names_ = {};
-  std::vector<std::vector<int>> var_indices_;
   OuterLoopBiLevel outer_loop_biLevel_;
   bool is_bilevel_check_all_ = false;
-  Outerloop::OuterLoopInputData outer_loop_input_data_;
+  Outerloop::CriterionComputation criterion_computation_;
 
   virtual void Run() = 0;
   void update_best_ub();
@@ -233,13 +231,6 @@ class BendersBase {
   void ResetSimplexIterationsBounds();
 
   SolverLogManager solver_log_manager_;
-
-  // outer loop criterion per pattern
-  void ComputeOuterLoopCriterion(
-      const std::string &subproblem_name,
-      const std::vector<double> &sub_problem_solution,
-      std::vector<double> &outerLoopCriterions,
-      std::vector<double> &outerLoopPatternsValues);
 
   void UpdateOuterLoopMaxCriterionArea();
   void UpdateOuterLoopSolution();

@@ -4,9 +4,9 @@
 #include <algorithm>
 #include <utility>
 
+#include "CriterionComputation.h"
 #include "CustomVector.h"
 #include "Timer.h"
-
 
 BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger logger,
                        Writer writer, mpi::environment &env,
@@ -46,7 +46,7 @@ void BendersMpi::InitializeProblems() {
     SetSubproblemsVariablesIndex();
   }
 
-  BroadCast(var_indices_, rank_0);
+  BroadCast(criterion_computation_.getVarIndices(), rank_0);
   init_problems_ = false;
 }
 void BendersMpi::BuildMasterProblem() {
@@ -161,14 +161,15 @@ void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
 
 void BendersMpi::ComputeSubproblemsContributionToOuterLoopCriterion(
     const SubProblemDataMap &subproblem_data_map) {
+  const auto vars_size = criterion_computation_.getVarIndices().size();
   std::vector<double> outer_loop_criterion_per_sub_problem_per_pattern(
-      var_indices_.size(), {});
-  _data.outer_loop_current_iteration_data.outer_loop_criterion.resize(
-      var_indices_.size(), 0.);
+      vars_size, {});
+  _data.outer_loop_current_iteration_data.outer_loop_criterion.resize(vars_size,
+                                                                      0.);
   std::vector<double> outer_loop_patterns_values_per_sub_problem_per_pattern(
-      var_indices_.size(), {});
+      vars_size, {});
   _data.outer_loop_current_iteration_data.outer_loop_patterns_values.resize(
-      var_indices_.size(), 0.);
+      vars_size, 0.);
 
   for (const auto &[subproblem_name, subproblem_data] : subproblem_data_map) {
     AddVectors<double>(outer_loop_criterion_per_sub_problem_per_pattern,
@@ -344,13 +345,15 @@ void BendersMpi::PreRunInitialization() {
     }
 
     if (Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
-      const auto &headers = outer_loop_input_data_.PatternBodies();
+      const auto &headers =
+          criterion_computation_.getOuterLoopInputData().PatternBodies();
       mathLoggerDriver_->add_logger(
           std::filesystem::path(Options().OUTPUTROOT) / "criterions.txt",
           headers, &OuterLoopCurrentIterationData::outer_loop_criterion);
       mathLoggerDriver_->add_logger(
           std::filesystem::path(Options().OUTPUTROOT) /
-              (outer_loop_input_data_.PatternsPrefix() + ".txt"),
+              (criterion_computation_.getOuterLoopInputData().PatternsPrefix() +
+               ".txt"),
           headers, &OuterLoopCurrentIterationData::outer_loop_patterns_values);
     }
   }
