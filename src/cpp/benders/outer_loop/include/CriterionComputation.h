@@ -6,8 +6,8 @@
 namespace Outerloop {
 class CriterionComputation {
  public:
-  explicit CriterionComputation(
-      const std::filesystem::path &outer_loop_input_file);
+  CriterionComputation() = default;
+  void LoadData(const std::filesystem::path &outer_loop_input_file);
   void SearchVariables(const std::vector<std::string> &variables);
   // outer loop criterion per pattern
   void ComputeOuterLoopCriterion(
@@ -21,7 +21,6 @@ class CriterionComputation {
   std::vector<std::vector<int>> var_indices_;
 
  private:
-  const std::filesystem::path outer_loop_input_file_;
   OuterLoopInputData outer_loop_input_data_;
 };
 }  // namespace Outerloop
