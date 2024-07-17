@@ -47,7 +47,7 @@ void OuterLoopBenders::OuterLoopBilevelChecks() {
 void OuterLoopBenders::RunAttachedAlgo() { benders_->launch(); }
 void OuterLoopBenders::init_data() {
   benders_->init_data(master_updater_->Rhs(), OuterLoopLambdaMin(),
-                      OuterLoopLambdaMin());
+                      OuterLoopLambdaMax());
 }
 bool OuterLoopBenders::isExceptionRaised() {
   return benders_->isExceptionRaised();
