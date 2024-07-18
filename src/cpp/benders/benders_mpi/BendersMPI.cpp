@@ -401,7 +401,7 @@ void BendersMpi::OuterLoopCheckFeasibility() {
     // High
     if (!ExternalLoopFoundFeasible()) {
       std::ostringstream err_msg;
-      err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "External Loop")
+      err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
               << "Criterion cannot be satisfied for your study:\n";
       throw CriterionCouldNotBeSatisfied(err_msg.str(), LOGLOCATION);
     }
