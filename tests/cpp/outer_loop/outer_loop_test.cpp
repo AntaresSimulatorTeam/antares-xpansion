@@ -50,7 +50,7 @@ class MasterUpdateBaseTest : public ::testing::TestWithParam<std::string> {
   }
   BendersBaseOptions BuildBendersOptions() {
     SimulationOptions options(OPTIONS_FILE);
-    return options.get_bendersoptions();
+    return options.get_benders_options();
   }
 };
 
@@ -89,32 +89,7 @@ void CheckMinInvestmentConstraint(const VariableMap& master_variables,
   ASSERT_EQ(expected_sign, sign);
 }
 
-// TODOs
-static void OuterLoopCheckFeasibility(pBendersBase benders) {
-  std::vector<double> obj_coeff;
-  obj_coeff = benders->MasterObjectiveFunctionCoeffs();
 
-  // /!\ partially
-  benders->SetMasterObjectiveFunctionCoeffsToZeros();
-
-  benders->launch();
-  benders->SetMasterObjectiveFunction(obj_coeff.data(), 0,
-                                      obj_coeff.size() - 1);
-  benders->UpdateOverallCosts();
-  benders->OuterLoopBilevelChecks();
-  // de-comment for general case
-  //  cuts_manager_->Save(benders->AllCuts());
-  // auto cuts = cuts_manager_->Load();
-  // High
-  if (!benders->ExternalLoopFoundFeasible()) {
-    std::ostringstream err_msg;
-    err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
-            << "Criterion cannot be satisfied for your study\n";
-    throw Outerloop::CriterionCouldNotBeSatisfied(err_msg.str(), LOGLOCATION);
-  }
-
-  benders->InitExternalValues(false, 0.0);
-}
 
 TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   BendersBaseOptions bendersoptions = BuildBendersOptions();
@@ -129,9 +104,12 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   benders = std::make_shared<BendersMpi>(bendersoptions, logger, writer, *penv,
                                          *pworld, math_log_driver);
   benders->set_input_map(coupling_map);
-  benders->DoFreeProblems(false);
-  benders->InitializeProblems();
-  OuterLoopCheckFeasibility(benders);
+  auto master_updater = std::make_shared<MasterUpdateBase>(benders, 0.5);
+  auto cut_manager = std::make_shared<Outerloop::CutsManagerRunTime>();
+
+  Outerloop::OuterLoopBenders out_loop(master_updater, cut_manager, benders,
+                                       *penv, *pworld);
+  out_loop.OuterLoopCheckFeasibility();
 
   auto num_constraints_master_before = benders->MasterGetnrows();
   auto lambda_min = benders->OuterLoopLambdaMin();
@@ -140,9 +118,8 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   //--------
   ASSERT_EQ(lambda_max, expected_lambda_max);
   //--------
-  MasterUpdateBase master_updater(benders, 0.5);
 
-  master_updater.Update(lambda_min, lambda_max);
+  master_updater->Update(lambda_min, lambda_max);
   auto num_constraints_master_after = benders->MasterGetnrows();
 
   //------
