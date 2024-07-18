@@ -1,5 +1,6 @@
 #include "OuterLoop.h"
 namespace Outerloop {
+
 void OuterLoop::Run() {
   OuterLoopCheckFeasibility();
 
@@ -17,4 +18,5 @@ void OuterLoop::Run() {
   }
   PrintLog();
 }
+
 }  // namespace Outerloop

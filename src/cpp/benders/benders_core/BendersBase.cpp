@@ -5,12 +5,10 @@
 #include <numeric>
 #include <utility>
 
-#include "CriterionComputation.h"
 #include "LastIterationPrinter.h"
 #include "LastIterationReader.h"
 #include "LastIterationWriter.h"
 #include "LogUtils.h"
-#include "VariablesGroup.h"
 #include "solver_utils.h"
 
 BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,

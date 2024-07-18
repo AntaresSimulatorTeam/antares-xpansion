@@ -405,8 +405,7 @@ void BendersMpi::OuterLoopCheckFeasibility() {
               << "Criterion cannot be satisfied for your study:\n";
       throw CriterionCouldNotBeSatisfied(err_msg.str(), LOGLOCATION);
     }
-    // lambda_max
-    // benders_->InitExternalValues(false, master_updater_->Rhs());
+    
     InitExternalValues(false, 0.0);
   }
 }

@@ -1,5 +1,4 @@
 #pragma once
-#include <vector>
 
 #include "OuterLoopInputDataReader.h"
 #include "VariablesGroup.h"
