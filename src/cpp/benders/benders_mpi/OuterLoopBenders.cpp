@@ -108,20 +108,23 @@ void OuterLoopBenders::OuterLoopBilevelChecks() {
   if (world_.rank() == 0 &&
       benders_->Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP &&
       !is_bilevel_check_all_) {
-    const WorkerMasterData &workerMasterData = BestIterationWorkerMaster();
+    const WorkerMasterData& workerMasterData =
+        benders_->BestIterationWorkerMaster();
     const auto &invest_cost = workerMasterData._invest_cost;
     const auto &overall_cost = invest_cost + workerMasterData._operational_cost;
+    const auto& x_cut = benders_->GetCurrentIterationData().x_cut;
+    const auto& external_loop_lambda =
+        benders_->GetCurrentIterationData()
+            .outer_loop_current_iteration_data.external_loop_lambda;
     if (outer_loop_biLevel->Update_bilevel_data_if_feasible(
-            _data.x_cut, GetOuterLoopCriterionAtBestBenders() /*/!\ must
-                                 be at best it*/
+            x_cut, benders_->GetOuterLoopCriterionAtBestBenders() /*/!\ must
+       be at best it*/
             ,
-            overall_cost, invest_cost,
-            _data.outer_loop_current_iteration_data.external_loop_lambda)) {
-      UpdateOuterLoopSolution();
+            overall_cost, invest_cost, external_loop_lambda)) {
+      benders_->UpdateOuterLoopSolution();
     }
-    SaveCurrentOuterLoopIterationInOutputFile();
-    _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub =
-        outer_loop_biLevel_->BilevelBestub();
+    benders_->SaveCurrentOuterLoopIterationInOutputFile();
+    benders_->SetBilevelBestub(outer_loop_biLevel_->BilevelBestub());
   }
 }
 }  // namespace Outerloop

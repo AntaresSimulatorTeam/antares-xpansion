@@ -101,6 +101,8 @@ class BendersBase {
   void SaveOuterLoopSolutionInOutputFile() const;
   void SaveCurrentOuterLoopIterationInOutputFile() const;
 
+  void UpdateOuterLoopSolution();
+
  protected:
   bool exception_raised_ = false;
 
@@ -234,7 +236,6 @@ class BendersBase {
   SolverLogManager solver_log_manager_;
 
   void UpdateOuterLoopMaxCriterionArea();
-  void UpdateOuterLoopSolution();
 
  private:
   void print_master_and_cut(std::ostream &file, int ite,
