@@ -7,7 +7,6 @@ typedef std::map<std::string, int> VariableMap;
 class OuterLoopBiLevel {
  public:
   explicit OuterLoopBiLevel(const Outerloop::OuterLoopInputData  &outer_loop_input_data);
-  OuterLoopBiLevel() = default;
   bool Update_bilevel_data_if_feasible(
       const Point &x, const std::vector<double> &outer_loop_criterion,
       double overall_cost, double invest_cost_at_x, double lambda);
@@ -34,5 +33,5 @@ class OuterLoopBiLevel {
   double lambda_max_ = 0.0;
   double lambda_min_ = 0.0;
   double lambda_ = 0.0;
-  Outerloop::OuterLoopInputData outer_loop_input_data_;
+  const Outerloop::OuterLoopInputData &outer_loop_input_data_;
 };

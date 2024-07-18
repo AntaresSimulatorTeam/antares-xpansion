@@ -2,6 +2,7 @@
 
 #include <execution>
 #include <filesystem>
+#include <optional>
 #include <regex>
 
 #include "BendersMathLogger.h"
@@ -121,7 +122,7 @@ class BendersBase {
   bool free_problems_ = true;
 
   std::vector<std::vector<double>> outer_loop_criterion_;
-  OuterLoopBiLevel outer_loop_biLevel_;
+  std::optional<OuterLoopBiLevel> outer_loop_biLevel_;
   bool is_bilevel_check_all_ = false;
   Outerloop::CriterionComputation criterion_computation_;
 

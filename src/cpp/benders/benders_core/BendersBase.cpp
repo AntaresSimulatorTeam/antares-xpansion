@@ -24,8 +24,8 @@ BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
       mathLoggerDriver_(std::move(mathLoggerDriver)) {
   if (options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
     criterion_computation_.LoadData(OuterloopOptionsFile());
-    outer_loop_biLevel_ =
-        OuterLoopBiLevel(criterion_computation_.getOuterLoopInputData());
+    outer_loop_biLevel_.emplace(
+        OuterLoopBiLevel(criterion_computation_.getOuterLoopInputData()));
   }
 }
 
@@ -1004,10 +1004,10 @@ void BendersBase::InitExternalValues(bool is_bilevel_check_all, double lambda) {
   // _data.outer_loop_current_iteration_data.outer_loop_criterion = 0;
   // _data.outer_loop_current_iteration_data.benders_num_run = 1;
   is_bilevel_check_all_ = is_bilevel_check_all;
-  outer_loop_biLevel_.Init(MasterObjectiveFunctionCoeffs(),
-                           BestIterationWorkerMaster().get_max_invest(),
-                           MasterVariables());
-  outer_loop_biLevel_.SetLambda(lambda);
+  outer_loop_biLevel_->Init(MasterObjectiveFunctionCoeffs(),
+                            BestIterationWorkerMaster().get_max_invest(),
+                            MasterVariables());
+  outer_loop_biLevel_->SetLambda(lambda);
 }
 
 CurrentIterationData BendersBase::GetCurrentIterationData() const {
@@ -1023,10 +1023,10 @@ std::vector<double> BendersBase::GetOuterLoopCriterionAtBestBenders() const {
 }
 
 double BendersBase::OuterLoopLambdaMax() const {
-  return outer_loop_biLevel_.LambdaMax();
+  return outer_loop_biLevel_->LambdaMax();
 }
 double BendersBase::OuterLoopLambdaMin() const {
-  return outer_loop_biLevel_.LambdaMin();
+  return outer_loop_biLevel_->LambdaMin();
 }
 
 void BendersBase::init_data(double external_loop_lambda,
@@ -1051,7 +1051,7 @@ void BendersBase::init_data(double external_loop_lambda,
 }
 
 bool BendersBase::ExternalLoopFoundFeasible() const {
-  return outer_loop_biLevel_.FoundFeasible();
+  return outer_loop_biLevel_->FoundFeasible();
 }
 double BendersBase::OuterLoopStoppingThreshold() const {
   return criterion_computation_.getOuterLoopInputData().StoppingThreshold();
