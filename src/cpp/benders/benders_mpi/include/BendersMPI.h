@@ -12,10 +12,6 @@
 #include "WorkerMaster.h"
 #include "common_mpi.h"
 
-class CriterionCouldNotBeSatisfied
-    : public LogUtils::XpansionError<std::runtime_error> {
-  using LogUtils::XpansionError<std::runtime_error>::XpansionError;
-};
 /*!
  * \class BendersMpi
  * \brief Class use run the benders algorithm in parallel
@@ -30,7 +26,6 @@ class BendersMpi : public BendersBase {
   void launch() override;
   std::string BendersName() const override { return "Benders mpi"; }
   const unsigned int rank_0 = 0;
-  void OuterLoopCheckFeasibility() override;
 
  protected:
   void free() override;
@@ -59,7 +54,6 @@ class BendersMpi : public BendersBase {
 
   void check_if_some_proc_had_a_failure(int success);
 
-  void UpdateOverallCosts();
   void OuterLoopBilevelChecks() override;
   mpi::environment &_env;
   mpi::communicator &_world;

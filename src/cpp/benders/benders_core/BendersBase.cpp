@@ -1071,3 +1071,16 @@ void BendersBase::UpdateOuterLoopMaxCriterionArea()  {
 }
 
 bool BendersBase::isExceptionRaised() const { return exception_raised_; }
+/*
+ * after the 1st loop of the outer loop, we must  re-build the objective
+ * function and costs
+ */
+void BendersBase::UpdateOverallCosts() {
+  auto obj = MasterObjectiveFunctionCoeffs();
+  _data.invest_cost = 0;
+  for (const auto &[var_name, var_id] : MasterVariables()) {
+    _data.invest_cost += obj[var_id] * _data.x_cut.at(var_name);
+  }
+
+  relevantIterationData_.best._invest_cost = _data.invest_cost;
+}

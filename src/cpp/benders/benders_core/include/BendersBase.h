@@ -95,7 +95,6 @@ class BendersBase {
   double OuterLoopLambdaMax() const;
   double OuterLoopLambdaMin() const;
   bool ExternalLoopFoundFeasible() const;
-  virtual void OuterLoopCheckFeasibility() = 0;
   virtual void OuterLoopBilevelChecks() = 0;
   double OuterLoopStoppingThreshold() const;
   Output::SolutionData GetOuterLoopSolution() const;
@@ -107,6 +106,7 @@ class BendersBase {
 
  public:
   bool isExceptionRaised() const;
+  void UpdateOverallCosts();
 
  protected:
   CurrentIterationData _data;

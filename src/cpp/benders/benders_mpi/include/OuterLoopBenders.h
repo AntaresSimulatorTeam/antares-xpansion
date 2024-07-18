@@ -6,6 +6,12 @@
 #include "common_mpi.h"
 
 namespace Outerloop {
+
+class CriterionCouldNotBeSatisfied
+    : public LogUtils::XpansionError<std::runtime_error> {
+  using LogUtils::XpansionError<std::runtime_error>::XpansionError;
+};
+
 class OuterLoopBenders : public OuterLoop {
  public:
   explicit OuterLoopBenders(std::shared_ptr<IMasterUpdate> master_updater,

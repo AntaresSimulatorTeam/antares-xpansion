@@ -37,9 +37,6 @@ void OuterLoopBenders::PrintLog() {
   logger->PrintIterationSeparatorEnd();
 }
 
-void OuterLoopBenders::OuterLoopCheckFeasibility() {
-  benders_->OuterLoopCheckFeasibility();
-}
 
 void OuterLoopBenders::OuterLoopBilevelChecks() {
   benders_->OuterLoopBilevelChecks();
@@ -79,6 +76,36 @@ OuterLoopBenders::~OuterLoopBenders() {
   // TODO general-case
   //  cuts_manager_->Save(benders_->AllCuts());
   benders_->free();
+}
+
+void OuterLoopBenders::OuterLoopCheckFeasibility() {
+  std::vector<double> obj_coeff;
+  if (world_.rank() == 0) {
+    obj_coeff = benders_->MasterObjectiveFunctionCoeffs();
+
+    // /!\ partially
+    benders_->SetMasterObjectiveFunctionCoeffsToZeros();
+  }
+
+  benders_->launch();
+  if (world_.rank() == 0) {
+    benders_->SetMasterObjectiveFunction(obj_coeff.data(), 0,
+                                         obj_coeff.size() - 1);
+    benders_->UpdateOverallCosts();
+    OuterLoopBilevelChecks();
+    // de-comment for general case
+    //  cuts_manager_->Save(benders_->AllCuts());
+    // auto cuts = cuts_manager_->Load();
+    // High
+    if (!benders_->ExternalLoopFoundFeasible()) {
+      std::ostringstream err_msg;
+      err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
+              << "Criterion cannot be satisfied for your study\n";
+      throw CriterionCouldNotBeSatisfied(err_msg.str(), LOGLOCATION);
+    }
+
+    benders_->InitExternalValues(false, 0.0);
+  }
 }
 
 }  // namespace Outerloop

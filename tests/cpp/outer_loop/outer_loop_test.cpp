@@ -3,6 +3,7 @@
 
 #include "LoggerFactories.h"
 #include "MasterUpdate.h"
+#include "OuterLoopBenders.h"
 #include "OuterLoopInputDataReader.h"
 #include "WriterFactories.h"
 #include "gtest/gtest.h"
@@ -49,7 +50,7 @@ class MasterUpdateBaseTest : public ::testing::TestWithParam<std::string> {
   }
   BendersBaseOptions BuildBendersOptions() {
     SimulationOptions options(OPTIONS_FILE);
-    return options.get_benders_options();
+    return options.get_bendersoptions();
   }
 };
 
@@ -88,22 +89,49 @@ void CheckMinInvestmentConstraint(const VariableMap& master_variables,
   ASSERT_EQ(expected_sign, sign);
 }
 
+// TODOs
+static void OuterLoopCheckFeasibility(pBendersBase benders) {
+  std::vector<double> obj_coeff;
+  obj_coeff = benders->MasterObjectiveFunctionCoeffs();
+
+  // /!\ partially
+  benders->SetMasterObjectiveFunctionCoeffsToZeros();
+
+  benders->launch();
+  benders->SetMasterObjectiveFunction(obj_coeff.data(), 0,
+                                      obj_coeff.size() - 1);
+  benders->UpdateOverallCosts();
+  benders->OuterLoopBilevelChecks();
+  // de-comment for general case
+  //  cuts_manager_->Save(benders->AllCuts());
+  // auto cuts = cuts_manager_->Load();
+  // High
+  if (!benders->ExternalLoopFoundFeasible()) {
+    std::ostringstream err_msg;
+    err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
+            << "Criterion cannot be satisfied for your study\n";
+    throw Outerloop::CriterionCouldNotBeSatisfied(err_msg.str(), LOGLOCATION);
+  }
+
+  benders->InitExternalValues(false, 0.0);
+}
+
 TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
-  BendersBaseOptions benders_options = BuildBendersOptions();
+  BendersBaseOptions bendersoptions = BuildBendersOptions();
   CouplingMap coupling_map =
-      build_input(std::filesystem::path(benders_options.INPUTROOT) /
-                  benders_options.STRUCTURE_FILE);
+      build_input(std::filesystem::path(bendersoptions.INPUTROOT) /
+                  bendersoptions.STRUCTURE_FILE);
   // override solver
-  benders_options.SOLVER_NAME = GetParam();
-  benders_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = true;
-  benders_options.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE =
+  bendersoptions.SOLVER_NAME = GetParam();
+  bendersoptions.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = true;
+  bendersoptions.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE =
       OUTER_OPTIONS_FILE.string();
-  benders = std::make_shared<BendersMpi>(benders_options, logger, writer, *penv,
+  benders = std::make_shared<BendersMpi>(bendersoptions, logger, writer, *penv,
                                          *pworld, math_log_driver);
   benders->set_input_map(coupling_map);
   benders->DoFreeProblems(false);
   benders->InitializeProblems();
-  benders->OuterLoopCheckFeasibility();
+  OuterLoopCheckFeasibility(benders);
 
   auto num_constraints_master_before = benders->MasterGetnrows();
   auto lambda_min = benders->OuterLoopLambdaMin();
