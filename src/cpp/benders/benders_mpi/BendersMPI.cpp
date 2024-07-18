@@ -378,25 +378,3 @@ void BendersMpi::launch() {
   }
   _world.barrier();
 }
-
-
-
-void BendersMpi::OuterLoopBilevelChecks() {
-  if (_world.rank() == rank_0 && Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP &&
-      !is_bilevel_check_all_) {
-    const WorkerMasterData &workerMasterData = BestIterationWorkerMaster();
-    const auto &invest_cost = workerMasterData._invest_cost;
-    const auto &overall_cost = invest_cost + workerMasterData._operational_cost;
-    if (outer_loop_biLevel_->Update_bilevel_data_if_feasible(
-            _data.x_cut, GetOuterLoopCriterionAtBestBenders() /*/!\ must
-                                 be at best it*/
-            ,
-            overall_cost, invest_cost,
-            _data.outer_loop_current_iteration_data.external_loop_lambda)) {
-      UpdateOuterLoopSolution();
-    }
-    SaveCurrentOuterLoopIterationInOutputFile();
-    _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub =
-        outer_loop_biLevel_->BilevelBestub();
-  }
-}

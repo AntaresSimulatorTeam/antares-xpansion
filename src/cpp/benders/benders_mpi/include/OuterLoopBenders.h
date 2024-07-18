@@ -37,5 +37,6 @@ class OuterLoopBenders : public OuterLoop {
   BendersLoggerBase loggers_;
   mpi::environment& env_;
   mpi::communicator& world_;
+  bool is_bilevel_check_all_ = false;
 };
 }  // namespace Outerloop
