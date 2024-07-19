@@ -4,7 +4,7 @@
 namespace Outerloop {
 class OuterLoop {
  public:
-  explicit OuterLoop(const OuterLoopInputData& outer_loop_input_data);
+  explicit OuterLoop(CriterionComputation& criterion_computation_);
   void Run();
   virtual void OuterLoopCheckFeasibility() = 0;
   virtual void OuterLoopBilevelChecks() = 0;
@@ -18,7 +18,7 @@ class OuterLoop {
   virtual ~OuterLoop() = default;
 
  protected:
-  CriterionComputation criterion_computation_;
+  CriterionComputation& criterion_computation_;
   OuterLoopBiLevel outer_loop_biLevel_;
 };
 

@@ -7,7 +7,6 @@
 
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
-#include "CriterionComputation.h"
 #include "ILogger.h"
 #include "OuterLoopBiLevel.h"
 #include "OuterLoopInputDataReader.h"
@@ -84,7 +83,6 @@ class BendersBase {
   }
   BendersBaseOptions Options() const { return _options; }
   virtual void free() = 0;
-  void InitExternalValues(bool is_bilevel_check_all, double lambda);
   int GetBendersRunNumber() const { return _data.outer_loop_current_iteration_data.benders_num_run; }
   CurrentIterationData GetCurrentIterationData() const;
   OuterLoopCurrentIterationData GetOuterLoopData() const;

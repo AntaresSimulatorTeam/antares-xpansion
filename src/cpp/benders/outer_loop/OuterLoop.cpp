@@ -19,8 +19,8 @@ void OuterLoop::Run() {
   PrintLog();
 }
 
-OuterLoop::OuterLoop(const OuterLoopInputData& outer_loop_input_data)
-    : criterion_computation_(outer_loop_input_data),
-      outer_loop_biLevel_(outer_loop_input_data) {}
+OuterLoop::OuterLoop(CriterionComputation &criterion_computation)
+    : criterion_computation_(criterion_computation),
+      outer_loop_biLevel_(criterion_computation.getOuterLoopInputData()) {}
 
 }  // namespace Outerloop

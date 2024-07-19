@@ -2,11 +2,11 @@
 namespace Outerloop {
 
 OuterLoopBenders::OuterLoopBenders(
-    const OuterLoopInputData& outer_loop_input_data,
+    CriterionComputation& criterion_computation,
     std::shared_ptr<IMasterUpdate> master_updater,
     std::shared_ptr<ICutsManager> cuts_manager, pBendersBase benders,
     mpi::environment& env, mpi::communicator& world)
-    : OuterLoop(outer_loop_input_data),
+    : OuterLoop(criterion_computation),
       master_updater_(std::move(master_updater)),
       cuts_manager_(std::move(cuts_manager)),
       benders_(std::move(benders)),
@@ -102,7 +102,7 @@ void OuterLoopBenders::OuterLoopCheckFeasibility() {
       throw CriterionCouldNotBeSatisfied(err_msg.str(), LOGLOCATION);
     }
 
-    benders_->InitExternalValues(false, 0.0);
+    InitExternalValues(false, 0.0);
   }
 }
 
