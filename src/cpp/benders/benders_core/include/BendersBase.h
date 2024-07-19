@@ -91,8 +91,6 @@ class BendersBase {
   std::vector<double> GetOuterLoopCriterionAtBestBenders() const;
   virtual void init_data();
   void init_data(double external_loop_lambda, double external_loop_lambda_min, double external_loop_lambda_max);
-  virtual void OuterLoopBilevelChecks() = 0;
-  double OuterLoopStoppingThreshold() const;
   Output::SolutionData GetOuterLoopSolution() const;
   void SaveOuterLoopSolutionInOutputFile() const;
   void SaveCurrentOuterLoopIterationInOutputFile() const;

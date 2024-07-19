@@ -7,8 +7,10 @@ namespace Outerloop {
 
 class MasterUpdateBase : public IMasterUpdate {
  public:
-  explicit MasterUpdateBase(pBendersBase benders, double tau);
   explicit MasterUpdateBase(pBendersBase benders, double tau,
+                            double outer_loop_stopping_threshold);
+  explicit MasterUpdateBase(pBendersBase benders, double tau,
+                            double outer_loop_stopping_threshold,
                             const std::string &name);
   bool Update(double lambda_min, double lambda_max) override;
   void Init() override;

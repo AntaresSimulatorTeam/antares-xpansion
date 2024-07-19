@@ -26,12 +26,7 @@ void CriterionComputation::ComputeOuterLoopCriterion(
   }
 }
 
-void Outerloop::CriterionComputation::LoadData(
 
-    const std::filesystem::path &outer_loop_input_file) {
-  outer_loop_input_data_ =
-      Outerloop::OuterLoopInputFromYaml().Read(outer_loop_input_file);
-}
 
 void CriterionComputation::SearchVariables(
     const std::vector<std::string> &variables) {
@@ -48,7 +43,7 @@ std::vector<std::vector<int>> &CriterionComputation::getVarIndices() {
   return var_indices_;
 }
 CriterionComputation::CriterionComputation(
-    OuterLoopInputData &outer_loop_input_data)
+    const OuterLoopInputData &outer_loop_input_data)
     : outer_loop_input_data_(outer_loop_input_data) {}
 
 }  // namespace Outerloop

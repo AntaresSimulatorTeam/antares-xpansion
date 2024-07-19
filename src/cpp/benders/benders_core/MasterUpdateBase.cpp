@@ -4,16 +4,18 @@
 
 using namespace Outerloop;
 
-MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau)
+MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau,
+                                   double outer_loop_stopping_threshold)
     : benders_(std::move(benders)),
       lambda_(0),
-      outer_loop_stopping_threshold_(benders_->OuterLoopStoppingThreshold()) {
+      outer_loop_stopping_threshold_(outer_loop_stopping_threshold) {
   CheckTau(tau);
 }
 
 MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau,
+                                   double outer_loop_stopping_threshold,
                                    const std::string &name)
-    : MasterUpdateBase(std::move(benders), tau) {
+    : MasterUpdateBase(std::move(benders), tau, outer_loop_stopping_threshold) {
   min_invest_constraint_name_ = name;
 }
 

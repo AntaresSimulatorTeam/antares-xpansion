@@ -20,7 +20,6 @@ class BendersSequential : public BendersBase {
   virtual void InitializeProblems();
   std::string BendersName() const { return "Sequential"; }
 
-  void OuterLoopBilevelChecks() override {}
 
  protected:
   virtual void free();

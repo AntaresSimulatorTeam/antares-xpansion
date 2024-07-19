@@ -148,13 +148,6 @@ int BendersMainFactory::RunExternalLoop() const {
   try {
     SimulationOptions options(options_file_);
     auto benders = PrepareForExecution(benders_loggers, options, true);
-    double tau = 0.5;
-    double epsilon_lambda = 0.1;
-    std::shared_ptr<Outerloop::IMasterUpdate> master_updater =
-        std::make_shared<Outerloop::MasterUpdateBase>(
-            benders, tau);
-    std::shared_ptr<Outerloop::ICutsManager> cuts_manager =
-        std::make_shared<Outerloop::CutsManagerRunTime>();
 
     auto outer_loop_input_data =
         Outerloop::OuterLoopInputFromYaml().Read(std::filesystem::path(
@@ -163,6 +156,15 @@ int BendersMainFactory::RunExternalLoop() const {
     //     Outerloop::OuterLoopInputFromYaml().Read(
     //         std::filesystem::path(benders->Options().INPUTROOT) /
     //         benders->Options().EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE);
+
+    double tau = 0.5;
+    double epsilon_lambda = 0.1;
+
+    std::shared_ptr<Outerloop::IMasterUpdate> master_updater =
+        std::make_shared<Outerloop::MasterUpdateBase>(
+            benders, tau, outer_loop_input_data.StoppingThreshold());
+    std::shared_ptr<Outerloop::ICutsManager> cuts_manager =
+        std::make_shared<Outerloop::CutsManagerRunTime>();
 
     Outerloop::OuterLoopBenders ext_loop(outer_loop_input_data, master_updater,
                                          cuts_manager, benders, *penv_,

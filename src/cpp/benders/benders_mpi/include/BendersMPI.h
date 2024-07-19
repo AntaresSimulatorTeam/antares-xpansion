@@ -54,7 +54,6 @@ class BendersMpi : public BendersBase {
 
   void check_if_some_proc_had_a_failure(int success);
 
-  void OuterLoopBilevelChecks() override;
   mpi::environment &_env;
   mpi::communicator &_world;
 

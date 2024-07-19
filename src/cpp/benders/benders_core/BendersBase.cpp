@@ -1026,9 +1026,6 @@ void BendersBase::init_data(double external_loop_lambda,
       external_loop_lambda_max;
 }
 
-double BendersBase::OuterLoopStoppingThreshold() const {
-  return criterion_computation_.getOuterLoopInputData().StoppingThreshold();
-}
 
 void BendersBase::UpdateOuterLoopMaxCriterionArea()  {
   auto criterions_begin =
