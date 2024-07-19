@@ -91,16 +91,12 @@ class BendersBase {
   std::vector<double> GetOuterLoopCriterionAtBestBenders() const;
   virtual void init_data();
   void init_data(double external_loop_lambda, double external_loop_lambda_min, double external_loop_lambda_max);
-
-  double OuterLoopLambdaMax() const;
-  double OuterLoopLambdaMin() const;
-  bool ExternalLoopFoundFeasible() const;
   virtual void OuterLoopBilevelChecks() = 0;
   double OuterLoopStoppingThreshold() const;
   Output::SolutionData GetOuterLoopSolution() const;
   void SaveOuterLoopSolutionInOutputFile() const;
   void SaveCurrentOuterLoopIterationInOutputFile() const;
-
+  void SetBilevelBestub(double bilevel_best_ub);
   void UpdateOuterLoopSolution();
 
  protected:
@@ -108,6 +104,7 @@ class BendersBase {
 
  public:
   bool isExceptionRaised() const;
+  [[nodiscard]] std::filesystem::path OuterloopOptionsFile() const;
   void UpdateOverallCosts();
 
  protected:
@@ -124,7 +121,6 @@ class BendersBase {
   bool free_problems_ = true;
 
   std::vector<std::vector<double>> outer_loop_criterion_;
-  std::optional<OuterLoopBiLevel> outer_loop_biLevel_;
   bool is_bilevel_check_all_ = false;
   Outerloop::CriterionComputation criterion_computation_;
 
@@ -151,7 +147,6 @@ class BendersBase {
                                         std::string const &name) const;
   [[nodiscard]] std::filesystem::path get_master_path() const;
   [[nodiscard]] std::filesystem::path get_structure_path() const;
-  [[nodiscard]] std::filesystem::path OuterloopOptionsFile() const;
   [[nodiscard]] LogData bendersDataToLogData(
       const CurrentIterationData &data) const;
   template <typename T, typename... Args>

@@ -14,7 +14,8 @@ class CriterionCouldNotBeSatisfied
 
 class OuterLoopBenders : public OuterLoop {
  public:
-  explicit OuterLoopBenders(std::shared_ptr<IMasterUpdate> master_updater,
+  explicit OuterLoopBenders(const OuterLoopInputData& outer_loop_input_data,
+                            std::shared_ptr<IMasterUpdate> master_updater,
                             std::shared_ptr<ICutsManager> cuts_manager,
                             pBendersBase benders, mpi::environment& env,
                             mpi::communicator& world);
@@ -38,5 +39,6 @@ class OuterLoopBenders : public OuterLoop {
   mpi::environment& env_;
   mpi::communicator& world_;
   bool is_bilevel_check_all_ = false;
+  void InitExternalValues(bool is_bilevel_check_all, double lambda);
 };
 }  // namespace Outerloop

@@ -156,8 +156,17 @@ int BendersMainFactory::RunExternalLoop() const {
     std::shared_ptr<Outerloop::ICutsManager> cuts_manager =
         std::make_shared<Outerloop::CutsManagerRunTime>();
 
-    Outerloop::OuterLoopBenders ext_loop(master_updater, cuts_manager, benders,
-                                         *penv_, *pworld_);
+    auto outer_loop_input_data =
+        Outerloop::OuterLoopInputFromYaml().Read(std::filesystem::path(
+            benders->Options().EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE));
+    // after https://github.com/AntaresSimulatorTeam/antares-xpansion/pull/876
+    //     Outerloop::OuterLoopInputFromYaml().Read(
+    //         std::filesystem::path(benders->Options().INPUTROOT) /
+    //         benders->Options().EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE);
+
+    Outerloop::OuterLoopBenders ext_loop(outer_loop_input_data, master_updater,
+                                         cuts_manager, benders, *penv_,
+                                         *pworld_);
     ext_loop.Run();
 
     } catch (std::exception& e) {

@@ -47,5 +47,8 @@ const OuterLoopInputData &CriterionComputation::getOuterLoopInputData() const {
 std::vector<std::vector<int>> &CriterionComputation::getVarIndices() {
   return var_indices_;
 }
+CriterionComputation::CriterionComputation(
+    OuterLoopInputData &outer_loop_input_data)
+    : outer_loop_input_data_(outer_loop_input_data) {}
 
 }  // namespace Outerloop

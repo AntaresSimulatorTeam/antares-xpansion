@@ -2,10 +2,12 @@
 namespace Outerloop {
 
 OuterLoopBenders::OuterLoopBenders(
+    const OuterLoopInputData& outer_loop_input_data,
     std::shared_ptr<IMasterUpdate> master_updater,
     std::shared_ptr<ICutsManager> cuts_manager, pBendersBase benders,
     mpi::environment& env, mpi::communicator& world)
-    : master_updater_(std::move(master_updater)),
+    : OuterLoop(outer_loop_input_data),
+      master_updater_(std::move(master_updater)),
       cuts_manager_(std::move(cuts_manager)),
       benders_(std::move(benders)),
       env_(env),
@@ -48,18 +50,18 @@ bool OuterLoopBenders::isExceptionRaised() {
 }
 
 double OuterLoopBenders::OuterLoopLambdaMin() const {
-  return benders_->OuterLoopLambdaMin();
+  return outer_loop_biLevel_.LambdaMin();
 }
 
 double OuterLoopBenders::OuterLoopLambdaMax() const {
-  return benders_->OuterLoopLambdaMax();
+  return outer_loop_biLevel_.LambdaMax();
 }
 
 bool OuterLoopBenders::UpdateMaster() {
   bool stop_update_master = false;
   if (world_.rank() == 0) {
     stop_update_master = master_updater_->Update(
-        benders_->OuterLoopLambdaMin(), benders_->OuterLoopLambdaMax());
+        outer_loop_biLevel_.LambdaMin(), outer_loop_biLevel_.LambdaMax());
   }
 
   mpi::broadcast(world_, stop_update_master, 0);
@@ -93,7 +95,7 @@ void OuterLoopBenders::OuterLoopCheckFeasibility() {
     //  cuts_manager_->Save(benders_->AllCuts());
     // auto cuts = cuts_manager_->Load();
     // High
-    if (!benders_->ExternalLoopFoundFeasible()) {
+    if (!outer_loop_biLevel_.FoundFeasible()) {
       std::ostringstream err_msg;
       err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
               << "Criterion cannot be satisfied for your study\n";
@@ -102,6 +104,18 @@ void OuterLoopBenders::OuterLoopCheckFeasibility() {
 
     benders_->InitExternalValues(false, 0.0);
   }
+}
+
+void OuterLoopBenders::InitExternalValues(bool is_bilevel_check_all,
+                                          double lambda) {
+  // _data.outer_loop_current_iteration_data.outer_loop_criterion = 0;
+  // _data.outer_loop_current_iteration_data.benders_num_run = 1;
+  is_bilevel_check_all_ = is_bilevel_check_all;
+  outer_loop_biLevel_.Init(
+      benders_->MasterObjectiveFunctionCoeffs(),
+      benders_->BestIterationWorkerMaster().get_max_invest(),
+      benders_->MasterVariables());
+  outer_loop_biLevel_.SetLambda(lambda);
 }
 
 void OuterLoopBenders::OuterLoopBilevelChecks() {
@@ -116,7 +130,7 @@ void OuterLoopBenders::OuterLoopBilevelChecks() {
     const auto& external_loop_lambda =
         benders_->GetCurrentIterationData()
             .outer_loop_current_iteration_data.external_loop_lambda;
-    if (outer_loop_biLevel->Update_bilevel_data_if_feasible(
+    if (outer_loop_biLevel_.Update_bilevel_data_if_feasible(
             x_cut, benders_->GetOuterLoopCriterionAtBestBenders() /*/!\ must
        be at best it*/
             ,
@@ -124,7 +138,7 @@ void OuterLoopBenders::OuterLoopBilevelChecks() {
       benders_->UpdateOuterLoopSolution();
     }
     benders_->SaveCurrentOuterLoopIterationInOutputFile();
-    benders_->SetBilevelBestub(outer_loop_biLevel_->BilevelBestub());
+    benders_->SetBilevelBestub(outer_loop_biLevel_.BilevelBestub());
   }
 }
 }  // namespace Outerloop
