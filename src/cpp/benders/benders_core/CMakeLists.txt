@@ -38,7 +38,7 @@ target_link_libraries (benders_core
 		output_core
 		solvers
 		${JSONCPP_LIB}
-		yaml-cpp
+		yaml-cpp::yaml-cpp
 )
 
 add_library (${PROJECT_NAME}::benders_core ALIAS benders_core)

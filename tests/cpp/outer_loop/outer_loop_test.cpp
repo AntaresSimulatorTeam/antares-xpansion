@@ -33,7 +33,7 @@ const auto STUDY_PATH =
     std::filesystem::path("data_test") / "external_loop_test";
 const auto LP_DIR = STUDY_PATH / "lp";
 const auto OPTIONS_FILE = LP_DIR / "options.json";
-const auto OUTER_OPTIONS_FILE = LP_DIR / "outer_loop_options.yml";
+const auto OUTER_OPTIONS_FILE = LP_DIR / "adequacy_criterion.yml";
 
 class MasterUpdateBaseTest : public ::testing::TestWithParam<std::string> {
  public:
@@ -248,8 +248,6 @@ TEST_F(OuterLoopInputFromYamlTest, ReadValidFile) {
   auto my_yaml = R"(stopping_threshold: 1e-4
 # seuil
 criterion_count_threshold: 1e-1
- # tolerance entre seuil et valeur calculée
-criterion_tolerance: 1e-5
 patterns:
   - area: "N0"
     criterion: 185
@@ -264,7 +262,6 @@ patterns:
   auto data = OuterLoopInputFromYaml().Read(valid_file);
 
   ASSERT_EQ(data.StoppingThreshold(), 1e-4);
-  ASSERT_EQ(data.CriterionTolerance(), 1e-5);
   ASSERT_EQ(data.CriterionCountThreshold(), 1e-1);
 
   auto patterns = data.OuterLoopData();

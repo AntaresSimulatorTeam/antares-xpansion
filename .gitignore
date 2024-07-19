@@ -35,8 +35,6 @@
 # build
 _build
 _install
-include/google
-vcpkg_installed
 
 # Cmake generated files
 CMakeCache.txt

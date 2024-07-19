@@ -146,8 +146,8 @@ class XpansionConfig:
         self.LAST_MASTER_BASIS = "master_last_basis.bss"
         self.WEIGHTS = "weights"
         self.CONSTRAINTS = "constraints"
-        self.OUTER_LOOP_FILE = "outer_loop.yml"
-        self.OUTER_LOOP_DIR = "outer_loop"
+        self.OUTER_LOOP_FILE = "adequacy_criterion.yml"
+        self.OUTER_LOOP_DIR = "adequacy_criterion"
 
     def _set_default_settings(self):
         self.settings_default = {

@@ -28,7 +28,7 @@ jobs:
 
       - id: sonar-install
         name: Install sonar-scanner and build-wrapper
-        uses: SonarSource/sonarcloud-github-c-cpp@v2
+        uses: SonarSource/sonarcloud-github-c-cpp@v3
 
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
@@ -52,6 +52,7 @@ jobs:
         run: |
           sudo apt-get update --fix-missing
           sudo apt-get install g++-10 gcc-10 libgtest-dev
+          sudo apt-get install -y libopenmpi-dev
           cd /usr/src/googletest/
           sudo cmake .
           sudo cmake --build . --target install
@@ -65,7 +66,12 @@ jobs:
           sudo update-alternatives --set cc /usr/bin/gcc
           sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30
           sudo update-alternatives --set c++ /usr/bin/g++
-
+      
+      - name: Compile Boost
+        uses: ./.github/workflows/compile-boost
+        with:
+          prefix: "${GITHUB_WORKSPACE}/deps"     
+      
       - name: Read antares-solver version
         id: antares-version
         uses: ./.github/actions/read-json-value

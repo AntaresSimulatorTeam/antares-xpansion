@@ -235,9 +235,10 @@ class BendersBase {
   SolverLogManager solver_log_manager_;
 
   // outer loop criterion per pattern
-  std::vector<double> ComputeOuterLoopCriterion(
+  void ComputeOuterLoopCriterion(
       const std::string &subproblem_name,
-      const PlainData::SubProblemData &sub_problem_data);
+      const std::vector<double> &sub_problem_solution,
+      PlainData::SubProblemData &subproblem_data);
 
   void UpdateOuterLoopMaxCriterionArea();
   void UpdateOuterLoopSolution();

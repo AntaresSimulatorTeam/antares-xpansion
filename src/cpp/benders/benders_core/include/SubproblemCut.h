@@ -9,7 +9,9 @@ namespace PlainData {
 struct SubProblemData {
   double subproblem_cost;
   Point var_name_and_subgradient;
-  std::vector<double> solution;
+  std::vector<double> outer_loop_criterions;
+  // no-supplied energy
+  std::vector<double> outer_loop_patterns_values;
   double single_subpb_costs_under_approx;
   double subproblem_timer;
   int simplex_iter;
@@ -19,7 +21,7 @@ struct SubProblemData {
   void serialize(Archive &ar, const unsigned int version) {
     ar & subproblem_cost;
     ar & var_name_and_subgradient;
-    ar & solution;
+    ar & outer_loop_criterions;
     ar & single_subpb_costs_under_approx;
     ar & subproblem_timer;
     ar & simplex_iter;

@@ -5,13 +5,13 @@ OuterLoopBiLevel::OuterLoopBiLevel(const Outerloop::OuterLoopInputData  &outer_l
 
 bool OuterLoopBiLevel::Update_bilevel_data_if_feasible(
     const Point &x, const std::vector<double> &outer_loop_criterion,
-    double overall_cost, double invest_cost_at_x, double lambda_min) {
+    double overall_cost, double invest_cost_at_x, double lambda) {
   if (found_feasible_ =
           Check_bilevel_feasibility(outer_loop_criterion, overall_cost);
       found_feasible_) {
     Update(x, overall_cost, invest_cost_at_x);
   } else {
-    lambda_min_ = lambda_min;
+    lambda_min_ = lambda;
   }
 
   return found_feasible_;
@@ -32,8 +32,7 @@ bool OuterLoopBiLevel::IsCriterionSatisfied(
  const auto& outer_loop_input_data = outer_loop_input_data_.OuterLoopData();
   for (int index(0); index < outer_loop_criterions.size(); ++index) {
     if (outer_loop_criterions[index] >
-        outer_loop_input_data[index].Criterion() +
-            outer_loop_input_data_.CriterionTolerance()) {
+        outer_loop_input_data[index].Criterion()) {
       return false;
     }
   }
