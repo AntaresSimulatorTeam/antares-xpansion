@@ -198,6 +198,11 @@ install(FILES
 		$<TARGET_FILE:Boost::program_options>
 		DESTINATION bin)
 
+find_package(ittapi REQUIRED)
+install(FILES
+	$<TARGET_FILE:ittapi::ittnotify
+)
+
 # ---------------------------------------------------------------------------
 # Threads
 # ---------------------------------------------------------------------------
