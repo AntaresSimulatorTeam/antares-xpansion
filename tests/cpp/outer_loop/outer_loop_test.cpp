@@ -104,16 +104,26 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   benders = std::make_shared<BendersMpi>(bendersoptions, logger, writer, *penv,
                                          *pworld, math_log_driver);
   benders->set_input_map(coupling_map);
-  auto master_updater = std::make_shared<MasterUpdateBase>(benders, 0.5);
-  auto cut_manager = std::make_shared<Outerloop::CutsManagerRunTime>();
 
-  Outerloop::OuterLoopBenders out_loop(master_updater, cut_manager, benders,
-                                       *penv, *pworld);
+  auto outer_loop_input_data =
+      Outerloop::OuterLoopInputFromYaml().Read(std::filesystem::path(
+          bendersoptions.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE));
+  // after https://github.com/AntaresSimulatorTeam/antares-xpansion/pull/876
+  //     Outerloop::OuterLoopInputFromYaml().Read(
+  //         std::filesystem::path(Options.INPUTROOT) /
+  //         benders->Options().EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE);
+  Outerloop::CriterionComputation criterion_computation(outer_loop_input_data);
+
+  auto master_updater = std::make_shared<MasterUpdateBase>(
+      benders, 0.5, outer_loop_input_data.StoppingThreshold());
+  auto cut_manager = std::make_shared<Outerloop::CutsManagerRunTime>();
+  Outerloop::OuterLoopBenders out_loop(criterion_computation, master_updater,
+                                       cut_manager, benders, *penv, *pworld);
   out_loop.OuterLoopCheckFeasibility();
 
   auto num_constraints_master_before = benders->MasterGetnrows();
-  auto lambda_min = benders->OuterLoopLambdaMin();
-  auto lambda_max = benders->OuterLoopLambdaMax();
+  auto lambda_min = out_loop.OuterLoopLambdaMin();
+  auto lambda_max = out_loop.OuterLoopLambdaMax();
   auto expected_lambda_max = LambdaMax(benders);
   //--------
   ASSERT_EQ(lambda_max, expected_lambda_max);
