@@ -37,6 +37,7 @@ class GeneralDataIniReader {
   std::string ReadPlaylist(const std::string& current_section,
                            const std::string& line);
   void ReadPlaylistVal(const std::string& key, int val);
+  void ReadPlaylist(const std::string& line);
 
  public:
   explicit GeneralDataIniReader(

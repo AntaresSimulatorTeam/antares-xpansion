@@ -28,7 +28,7 @@ class IniReaderUtils {
 
   static std::pair<std::string, int> GetKeyValFromLine(std::string_view line) {
     auto key = StringManip::trim(StringManip::split(line, '=')[0]);
-    auto val = std::atoi(StringManip::trim(StringManip::split(line, '=')[1]).c_str());
+    auto val = std::stoi(StringManip::trim(StringManip::split(line, '=')[1]));
     return {key, val};
   }
 };
@@ -136,13 +136,18 @@ std::string GeneralDataIniReader::ReadPlaylist(
     const std::string& current_section, const std::string& line) {
   if (IniReaderUtils::LineIsNotASectionHeader(line)) {
     if (current_section == "playlist") {
-      auto [key, val] = IniReaderUtils::GetKeyValFromLine(line);
-      ReadPlaylistVal(key, val);
+      ReadPlaylist(line);
     }
   } else {
     return IniReaderUtils::ReadSectionHeader(line);
   }
   return current_section;
+}
+void GeneralDataIniReader::ReadPlaylist(const std::string& line) {
+  if (line.find("playlist_reset") == std::string::npos) {
+    auto [key, val] = IniReaderUtils::GetKeyValFromLine(line);
+    ReadPlaylistVal(key, val);
+  }
 }
 
 void GeneralDataIniReader::ReadPlaylistVal(const std::string& key, int val) {
