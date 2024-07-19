@@ -4,6 +4,7 @@
 #include <filesystem>
 
 #include "BendersByBatch.h"
+#include "BendersMpiOuterLoop.h"
 #include "BendersSequential.h"
 #include "ILogger.h"
 #include "LogUtils.h"
@@ -78,10 +79,13 @@ pBendersBase BendersMainFactory::PrepareForExecution(
   benders_loggers.AddLogger(math_log_driver);
   switch (method) {
     case BENDERSMETHOD::BENDERS:
-    case BENDERSMETHOD::BENDERS_EXTERNAL_LOOP:
       benders = std::make_shared<BendersMpi>(benders_options, logger, writer,
                                              *penv_, *pworld_, math_log_driver);
       break;
+    case BENDERSMETHOD::BENDERS_EXTERNAL_LOOP:
+      benders = std::make_shared<BendersMpiOuterLoop>(
+          benders_options, logger, writer, *penv_, *pworld_, math_log_driver);
+
     case BENDERSMETHOD::BENDERS_BY_BATCH:
     case BENDERSMETHOD::BENDERS_BY_BATCH_EXTERNAL_LOOP:
       benders = std::make_shared<BendersByBatch>(

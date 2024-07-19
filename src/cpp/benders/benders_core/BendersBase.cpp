@@ -382,29 +382,30 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
             policy, nameAndWorkers.begin(), nameAndWorkers.end(),
             [this, &m, &subproblem_data_map](
                 const std::pair<std::string, SubproblemWorkerPtr> &kvp) {
-              const auto &[name, worker] = kvp;
-              Timer subproblem_timer;
               PlainData::SubProblemData subproblem_data;
-              worker->fix_to(_data.x_cut);
-              worker->solve(subproblem_data.lpstatus, _options.OUTPUTROOT,
-                            _options.LAST_MASTER_MPS + MPS_SUFFIX, _writer);
-              worker->get_value(subproblem_data.subproblem_cost);
-              if (_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
-                std::vector<double> solution;
-                worker->get_solution(solution);
-                criterion_computation_.ComputeOuterLoopCriterion(
-                    SubproblemWeight(_data.nsubproblem, name), solution,
-                    subproblem_data.outer_loop_criterions,
-                    subproblem_data.outer_loop_patterns_values);
-              }
-              worker->get_subgradient(subproblem_data.var_name_and_subgradient);
-              worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
-              subproblem_data.subproblem_timer = subproblem_timer.elapsed();
+              const auto &[name, worker] = kvp;
+              SolveSubproblem(subproblem_data_map, subproblem_data, name,
+                              worker);
+
               std::lock_guard guard(m);
-              subproblem_data_map[name] = subproblem_data;
             });
       },
       shouldParallelize());
+}
+void BendersBase::SolveSubproblem(
+    SubProblemDataMap &subproblem_data_map,
+    PlainData::SubProblemData &subproblem_data, const std::string &name,
+    const std::shared_ptr<SubproblemWorker> &worker) {
+  Timer subproblem_timer;
+  worker->fix_to(_data.x_cut);
+  worker->solve(subproblem_data.lpstatus, _options.OUTPUTROOT,
+                _options.LAST_MASTER_MPS + MPS_SUFFIX, _writer);
+  worker->get_value(subproblem_data.subproblem_cost);
+
+  worker->get_subgradient(subproblem_data.var_name_and_subgradient);
+  worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
+  subproblem_data.subproblem_timer = subproblem_timer.elapsed();
+  subproblem_data_map[name] = subproblem_data;
 }
 
 /*!
@@ -774,17 +775,7 @@ void BendersBase::MatchProblemToId() {
   }
 }
 
-// Search for variables in sub problems that satify patterns
-// var_indices is a vector(for each patterns p) of vector (var indices related
-// to p)
-void BendersBase::SetSubproblemsVariablesIndex() {
-  if (!subproblem_map.empty() && _options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
-    auto subproblem = subproblem_map.begin();
 
-    criterion_computation_.SearchVariables(
-        subproblem->second->_solver->get_col_names());
-  }
-}
 
 void BendersBase::AddSubproblemName(const std::string &name) {
   subproblems.push_back(name);
@@ -1027,20 +1018,6 @@ void BendersBase::init_data(double external_loop_lambda,
 }
 
 
-void BendersBase::UpdateOuterLoopMaxCriterionArea()  {
-  auto criterions_begin =
-      _data.outer_loop_current_iteration_data.outer_loop_criterion.cbegin();
-  auto criterions_end =
-      _data.outer_loop_current_iteration_data.outer_loop_criterion.cend();
-  auto max_criterion_it = std::max_element(criterions_begin, criterions_end);
-  _data.outer_loop_current_iteration_data.max_criterion = *max_criterion_it;
-  auto  max_criterion_index = std::distance(criterions_begin, max_criterion_it);
-  _data.outer_loop_current_iteration_data.max_criterion_area =
-      criterion_computation_.getOuterLoopInputData()
-          .OuterLoopData()[max_criterion_index]
-          .Pattern()
-          .GetBody();
-}
 
 bool BendersBase::isExceptionRaised() const { return exception_raised_; }
 /*

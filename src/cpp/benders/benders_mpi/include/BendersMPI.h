@@ -33,6 +33,8 @@ class BendersMpi : public BendersBase {
   void InitializeProblems() override;
   void BroadcastXCut();
 
+  mpi::communicator &_world;
+
  private:
   void step_1_solve_master();
   void step_2_solve_subproblems_and_build_cuts();
@@ -47,7 +49,7 @@ class BendersMpi : public BendersBase {
 
   void do_solve_master_create_trace_and_update_cuts();
 
-  void gather_subproblems_cut_package_and_build_cuts(
+  virtual void gather_subproblems_cut_package_and_build_cuts(
       const SubProblemDataMap &subproblem_data_map, const Timer &process_timer);
 
   void write_exception_message(const std::exception &ex) const;
@@ -55,7 +57,6 @@ class BendersMpi : public BendersBase {
   void check_if_some_proc_had_a_failure(int success);
 
   mpi::environment &_env;
-  mpi::communicator &_world;
 
  protected:
   [[nodiscard]] bool shouldParallelize() const final { return false; }
@@ -86,6 +87,8 @@ class BendersMpi : public BendersBase {
   void AllReduce(const T &in_value, T &out_value, Op op) const {
     mpi::all_reduce(_world, in_value, out_value, op);
   }
-  virtual void ComputeSubproblemsContributionToOuterLoopCriterion(
-      const SubProblemDataMap &subproblem_data_map);
+  void BuildGatheredCuts(const SubProblemDataMap &subproblem_data_map,
+                         const Timer &walltime);
+  virtual void GatherCuts(const SubProblemDataMap &subproblem_data_map,
+                          const Timer &walltime);
 };

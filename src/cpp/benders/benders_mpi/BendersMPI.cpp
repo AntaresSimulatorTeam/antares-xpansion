@@ -5,7 +5,6 @@
 #include <utility>
 
 #include "CriterionComputation.h"
-#include "CustomVector.h"
 #include "Timer.h"
 
 BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger logger,
@@ -42,12 +41,6 @@ void BendersMpi::InitializeProblems() {
     current_problem_id++;
   }
 
-  if (_world.rank() == rank_0) {
-    SetSubproblemsVariablesIndex();
-  }
-
-  BroadCast(criterion_computation_.getVarIndices(), rank_0);
-  init_problems_ = false;
 }
 void BendersMpi::BuildMasterProblem() {
   if (_world.rank() == rank_0) {
@@ -139,51 +132,25 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts() {
 void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
     const SubProblemDataMap &subproblem_data_map, const Timer &walltime) {
   if (!exception_raised_) {
-    std::vector<SubProblemDataMap> gathered_subproblem_map;
-    mpi::gather(_world, subproblem_data_map, gathered_subproblem_map, rank_0);
-    SetSubproblemsWalltime(walltime.elapsed());
-    double cumulative_subproblems_timer_per_iter(0);
-    Reduce(GetSubproblemsCpuTime(), cumulative_subproblems_timer_per_iter,
-           std::plus<double>(), rank_0);
-    SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter);
-    if (Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
-      ComputeSubproblemsContributionToOuterLoopCriterion(subproblem_data_map);
-      if (_world.rank() == rank_0) {
-        outer_loop_criterion_.push_back(
-            _data.outer_loop_current_iteration_data.outer_loop_criterion);
-        UpdateOuterLoopMaxCriterionArea();
-      }
-    }
-    // only rank_0 receive non-emtpy gathered_subproblem_map
-    master_build_cuts(gathered_subproblem_map);
+    GatherCuts(subproblem_data_map, walltime);
   }
 }
-
-void BendersMpi::ComputeSubproblemsContributionToOuterLoopCriterion(
-    const SubProblemDataMap &subproblem_data_map) {
-  const auto vars_size = criterion_computation_.getVarIndices().size();
-  std::vector<double> outer_loop_criterion_per_sub_problem_per_pattern(
-      vars_size, {});
-  _data.outer_loop_current_iteration_data.outer_loop_criterion.resize(vars_size,
-                                                                      0.);
-  std::vector<double> outer_loop_patterns_values_per_sub_problem_per_pattern(
-      vars_size, {});
-  _data.outer_loop_current_iteration_data.outer_loop_patterns_values.resize(
-      vars_size, 0.);
-
-  for (const auto &[subproblem_name, subproblem_data] : subproblem_data_map) {
-    AddVectors<double>(outer_loop_criterion_per_sub_problem_per_pattern,
-                       subproblem_data.outer_loop_criterions);
-    AddVectors<double>(outer_loop_patterns_values_per_sub_problem_per_pattern,
-                       subproblem_data.outer_loop_patterns_values);
-  }
-
-  Reduce(outer_loop_criterion_per_sub_problem_per_pattern,
-         _data.outer_loop_current_iteration_data.outer_loop_criterion,
+void BendersMpi::GatherCuts(const SubProblemDataMap &subproblem_data_map,
+                            const Timer &walltime) {
+  BuildGatheredCuts(subproblem_data_map, walltime);
+}
+void BendersMpi::BuildGatheredCuts(const SubProblemDataMap &subproblem_data_map,
+                                   const Timer &walltime) {
+  std::vector<SubProblemDataMap> gathered_subproblem_map;
+  mpi::gather(_world, subproblem_data_map, gathered_subproblem_map, rank_0);
+  SetSubproblemsWalltime(walltime.elapsed());
+  double cumulative_subproblems_timer_per_iter(0);
+  Reduce(GetSubproblemsCpuTime(), cumulative_subproblems_timer_per_iter,
          std::plus<double>(), rank_0);
-  Reduce(outer_loop_patterns_values_per_sub_problem_per_pattern,
-         _data.outer_loop_current_iteration_data.outer_loop_patterns_values,
-         std::plus<double>(), rank_0);
+  SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter);
+
+  // only rank_0 receive non-emtpy gathered_subproblem_map
+  master_build_cuts(gathered_subproblem_map);
 }
 
 SubProblemDataMap BendersMpi::get_subproblem_cut_package() {
@@ -344,25 +311,12 @@ void BendersMpi::PreRunInitialization() {
       OpenCsvFile();
     }
 
-    if (Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
-      const auto &headers =
-          criterion_computation_.getOuterLoopInputData().PatternBodies();
-      mathLoggerDriver_->add_logger(
-          std::filesystem::path(Options().OUTPUTROOT) / "criterions.txt",
-          headers, &OuterLoopCurrentIterationData::outer_loop_criterion);
-      mathLoggerDriver_->add_logger(
-          std::filesystem::path(Options().OUTPUTROOT) /
-              (criterion_computation_.getOuterLoopInputData().PatternsPrefix() +
-               ".txt"),
-          headers, &OuterLoopCurrentIterationData::outer_loop_patterns_values);
-    }
   }
   mathLoggerDriver_->write_header();
   init_data_ = false;
 }
 
 void BendersMpi::launch() {
-  ++_data.outer_loop_current_iteration_data.benders_num_run;
   if (init_problems_) {
     InitializeProblems();
   }

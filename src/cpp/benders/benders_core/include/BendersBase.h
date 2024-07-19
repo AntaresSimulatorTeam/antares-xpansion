@@ -120,7 +120,6 @@ class BendersBase {
 
   std::vector<std::vector<double>> outer_loop_criterion_;
   bool is_bilevel_check_all_ = false;
-  Outerloop::CriterionComputation criterion_computation_;
 
   virtual void Run() = 0;
   void update_best_ub();
@@ -165,7 +164,6 @@ class BendersBase {
    * subproblems-1-1  --> NTCDirect::link<area1$$area2>::hour<0>
    * subproblems-3-5  --> NTCDirect::link<area1$$area2>::hour<672>
    */
-  void SetSubproblemsVariablesIndex();
   void AddSubproblemName(const std::string &name);
   [[nodiscard]] std::string get_master_name() const;
   [[nodiscard]] std::string get_solver_name() const;
@@ -226,9 +224,13 @@ class BendersBase {
   void BoundSimplexIterations(int subproblem_iteration);
   void ResetSimplexIterationsBounds();
 
+  SubproblemsMapPtr subproblem_map;
   SolverLogManager solver_log_manager_;
 
-  void UpdateOuterLoopMaxCriterionArea();
+  virtual void SolveSubproblem(SubProblemDataMap &subproblem_data_map,
+                               PlainData::SubProblemData &subproblem_data,
+                               const std::string &name,
+                               const std::shared_ptr<SubproblemWorker> &worker);
 
  private:
   void print_master_and_cut(std::ostream &file, int ite,
@@ -256,7 +258,6 @@ class BendersBase {
   std::filesystem::path solver_log_file_ = "";
   WorkerMasterPtr _master;
   VariableMap _problem_to_id;
-  SubproblemsMapPtr subproblem_map;
   StrVector subproblems;
   std::ofstream _csv_file;
   std::filesystem::path _csv_file_path;
