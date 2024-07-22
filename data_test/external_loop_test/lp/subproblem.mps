@@ -22,20 +22,20 @@ ROWS
 COLUMNS
     N0_NegativeUnsuppliedEnergy_0_0  COST                                0.5  N0_Balance                           -1
     N0_NegativeUnsuppliedEnergy_0_1  COST                                0.5  N0_Balance_1                         -1
-    PositiveUnsuppliedEnergy::N0::0::0  COST                                  5  N0_Balance                            1
-    PositiveUnsuppliedEnergy::N0::0::1  COST                                  5  N0_Balance_1                          1
+    PositiveUnsuppliedEnergy::area<N0>::0::0  COST                                  5  N0_Balance                            1
+    PositiveUnsuppliedEnergy::area<N0>::0::1  COST                                  5  N0_Balance_1                          1
     N1_NegativeUnsuppliedEnergy_0_0  COST                                0.5  N1_Balance                           -1
     N1_NegativeUnsuppliedEnergy_0_1  COST                                0.5  N1_Balance_2                         -1
-    PositiveUnsuppliedEnergy::N1::0::0  COST                                  5  N1_Balance                            1
-    PositiveUnsuppliedEnergy::N1::0::1  COST                                  5  N1_Balance_2                          1
+    PositiveUnsuppliedEnergy::area<N1>::0::0  COST                                  5  N1_Balance                            1
+    PositiveUnsuppliedEnergy::area<N1>::0::1  COST                                  5  N1_Balance_2                          1
     N2_NegativeUnsuppliedEnergy_0_0  COST                                0.5  N2_Balance                           -1
     N2_NegativeUnsuppliedEnergy_0_1  COST                                0.5  N2_Balance_3                         -1
-    PositiveUnsuppliedEnergy::N2::0::0  COST                                  5  N2_Balance                            1
-    PositiveUnsuppliedEnergy::N2::0::1  COST                                  5  N2_Balance_3                          1
+    PositiveUnsuppliedEnergy::area<N2>::0::0  COST                                  5  N2_Balance                            1
+    PositiveUnsuppliedEnergy::area<N2>::0::1  COST                                  5  N2_Balance_3                          1
     N3_NegativeUnsuppliedEnergy_0_0  COST                                0.5  N3_Balance                           -1
     N3_NegativeUnsuppliedEnergy_0_1  COST                                0.5  N3_Balance_4                         -1
-    PositiveUnsuppliedEnergy::N3::0::0  COST                                  5  N3_Balance                            1
-    PositiveUnsuppliedEnergy::N3::0::1  COST                                  5  N3_Balance_4                          1
+    PositiveUnsuppliedEnergy::area<N3>::0::0  COST                                  5  N3_Balance                            1
+    PositiveUnsuppliedEnergy::area<N3>::0::1  COST                                  5  N3_Balance_4                          1
     L01_flow_0_0                     COST                                  1  N0_Balance                           -1
     L01_flow_0_0                     N1_Balance                            1
     L01_flow_0_1                     COST                                  1  N0_Balance_1                         -1
@@ -62,20 +62,20 @@ RHS
 BOUNDS
  PL BOUND                            N0_NegativeUnsuppliedEnergy_0_0
  PL BOUND                            N0_NegativeUnsuppliedEnergy_0_1
- PL BOUND                            PositiveUnsuppliedEnergy::N0::0::0
- PL BOUND                            PositiveUnsuppliedEnergy::N0::0::1
+ PL BOUND                            PositiveUnsuppliedEnergy::area<N0>::0::0
+ PL BOUND                            PositiveUnsuppliedEnergy::area<N0>::0::1
  PL BOUND                            N1_NegativeUnsuppliedEnergy_0_0
  PL BOUND                            N1_NegativeUnsuppliedEnergy_0_1
- PL BOUND                            PositiveUnsuppliedEnergy::N1::0::0
- PL BOUND                            PositiveUnsuppliedEnergy::N1::0::1
+ PL BOUND                            PositiveUnsuppliedEnergy::area<N1>::0::0
+ PL BOUND                            PositiveUnsuppliedEnergy::area<N1>::0::1
  PL BOUND                            N2_NegativeUnsuppliedEnergy_0_0
  PL BOUND                            N2_NegativeUnsuppliedEnergy_0_1
- PL BOUND                            PositiveUnsuppliedEnergy::N2::0::0
- PL BOUND                            PositiveUnsuppliedEnergy::N2::0::1
+ PL BOUND                            PositiveUnsuppliedEnergy::area<N2>::0::0
+ PL BOUND                            PositiveUnsuppliedEnergy::area<N2>::0::1
  PL BOUND                            N3_NegativeUnsuppliedEnergy_0_0
  PL BOUND                            N3_NegativeUnsuppliedEnergy_0_1
- PL BOUND                            PositiveUnsuppliedEnergy::N3::0::0
- PL BOUND                            PositiveUnsuppliedEnergy::N3::0::1
+ PL BOUND                            PositiveUnsuppliedEnergy::area<N3>::0::0
+ PL BOUND                            PositiveUnsuppliedEnergy::area<N3>::0::1
  UP BOUND                            L01_flow_0_0                        100
  UP BOUND                            L01_flow_0_1                        100
  UP BOUND                            L02_flow_0_0                        100

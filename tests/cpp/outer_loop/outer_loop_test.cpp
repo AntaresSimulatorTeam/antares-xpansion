@@ -34,7 +34,7 @@ const auto STUDY_PATH =
     std::filesystem::path("data_test") / "external_loop_test";
 const auto LP_DIR = STUDY_PATH / "lp";
 const auto OPTIONS_FILE = LP_DIR / "options.json";
-const auto OUTER_OPTIONS_FILE = LP_DIR / "adequacy_criterion.yml";
+const auto OUTER_OPTIONS_FILE = "adequacy_criterion.yml";
 
 class MasterUpdateBaseTest : public ::testing::TestWithParam<std::string> {
  public:
@@ -100,18 +100,13 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   bendersoptions.SOLVER_NAME = GetParam();
   bendersoptions.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = true;
   bendersoptions.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE =
-      OUTER_OPTIONS_FILE.string();
+      OUTER_OPTIONS_FILE;
   benders = std::make_shared<BendersMpi>(bendersoptions, logger, writer, *penv,
                                          *pworld, math_log_driver);
   benders->set_input_map(coupling_map);
 
-  auto outer_loop_input_data =
-      Outerloop::OuterLoopInputFromYaml().Read(std::filesystem::path(
-          bendersoptions.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE));
-  // after https://github.com/AntaresSimulatorTeam/antares-xpansion/pull/876
-  //     Outerloop::OuterLoopInputFromYaml().Read(
-  //         std::filesystem::path(Options.INPUTROOT) /
-  //         benders->Options().EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE);
+  auto outer_loop_input_data = Outerloop::OuterLoopInputFromYaml().Read(
+      std::filesystem::path(bendersoptions.INPUTROOT) / OUTER_OPTIONS_FILE);
   Outerloop::CriterionComputation criterion_computation(outer_loop_input_data);
 
   auto master_updater = std::make_shared<MasterUpdateBase>(

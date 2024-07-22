@@ -154,11 +154,8 @@ int BendersMainFactory::RunExternalLoop() const {
   try {
     SimulationOptions options(options_file_);
     auto outer_loop_input_data = Outerloop::OuterLoopInputFromYaml().Read(
-        std::filesystem::path(options.OUTER_LOOP_OPTION_FILE));
-    // after https://github.com/AntaresSimulatorTeam/antares-xpansion/pull/876
-    //     Outerloop::OuterLoopInputFromYaml().Read(
-    //         std::filesystem::path(Options.INPUTROOT) /
-    //         benders->Options().EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE);
+        std::filesystem::path(options.INPUTROOT) /
+        options.OUTER_LOOP_OPTION_FILE);
     Outerloop::CriterionComputation criterion_computation(
         outer_loop_input_data);
     auto benders = PrepareForExecution(benders_loggers, options, true,
