@@ -1,9 +1,9 @@
 var searchData=
 [
-  ['xpansion_0',['xpansion',['../index.html',1,'Antares-Xpansion'],['../md_docs_2user-guide_2get-started_2installation.html#autotoc_md135',1,'Download Antares-Xpansion'],['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md152',1,'Output of Antares-Xpansion'],['../md_docs_2developer-guide_2xpansion__steps_21-antares-solver-problem.html#autotoc_md90',1,'Specific configuration for Antares-Xpansion'],['../md_docs_2user-guide_2optimization-principles_2investment-problem.html',1,'The optimal investment problem in Antares-Xpansion']]],
+  ['xpansion_0',['xpansion',['../index.html',1,'Antares-Xpansion'],['../md_docs_2user-guide_2get-started_2installation.html#autotoc_md140',1,'Download Antares-Xpansion'],['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md157',1,'Output of Antares-Xpansion'],['../md_docs_2developer-guide_2xpansion__steps_21-antares-solver-problem.html#autotoc_md95',1,'Specific configuration for Antares-Xpansion'],['../md_docs_2user-guide_2optimization-principles_2investment-problem.html',1,'The optimal investment problem in Antares-Xpansion']]],
   ['xpansion_20changelog_1',['Antares-Xpansion changelog',['../md_docs_2changelog_2CHANGELOG.html',1,'']]],
-  ['xpansion_20package_20executables_2',['Antares-Xpansion package executables',['../md_docs_2developer-guide_2xpansion__steps_20-overview.html#autotoc_md88',1,'']]],
-  ['xpansion_20simulation_3',['xpansion simulation',['../index.html#autotoc_md3',1,'Antares-Xpansion simulation'],['../md_docs_2index.html#autotoc_md111',1,'Antares-Xpansion simulation']]],
+  ['xpansion_20package_20executables_2',['Antares-Xpansion package executables',['../md_docs_2developer-guide_2xpansion__steps_20-overview.html#autotoc_md93',1,'']]],
+  ['xpansion_20simulation_3',['xpansion simulation',['../index.html#autotoc_md3',1,'Antares-Xpansion simulation'],['../md_docs_2index.html#autotoc_md116',1,'Antares-Xpansion simulation']]],
   ['xpansion_20simulation_20procedure_4',['Antares-Xpansion simulation procedure',['../md_docs_2developer-guide_2xpansion__steps_20-overview.html',1,'']]],
   ['xpansion_20study_5',['Set up an Antares-Xpansion study',['../md_docs_2user-guide_2get-started_2prepare-a-simulation.html',1,'']]],
   ['xpansionconfig_6',['XpansionConfig',['../classantares__xpansion_1_1xpansionConfig_1_1XpansionConfig.html',1,'antares_xpansion::xpansionConfig']]],
