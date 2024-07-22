@@ -21,7 +21,7 @@ TEST_P(GeneralDataIniReaderTests, ReadPlaylistReset_option) {
           "user-playlist=true\n"
           "[playlist]\n"
           "playlist_reset = ";
-  GetParam() ? file << "true\n" : file << "false\n";
+  file << (GetParam() ? "true\n" : "false\n");
   file << "playlist_year += 0\n"
           "playlist_year += 5\n"
           "playlist_year += 8\n"
