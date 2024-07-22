@@ -39,6 +39,7 @@
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/string.hpp>
 #include <ittnotify.h>
+#include "include/memory.h"
 
 static const std::string LP_DIRNAME = "lp";
 
@@ -105,27 +106,40 @@ ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options)
 }
 
 std::filesystem::path ProblemGeneration::performAntaresSimulation() {
-#ifdef SAVE
+//#ifdef SAVE
+//  auto results = Antares::API::PerformSimulation(options_.StudyPath());
+//  //Add parallel
+//  //Handle errors
+//  if (results.error) {
+//    std::cerr << "Error: " << results.error->reason << std::endl;
+//    exit(1);
+//  }
+//
+//  lps_ = std::move(results.antares_problems);
+//  std::ofstream ofs("lps.txt");
+//  boost::archive::text_oarchive oa(ofs);
+//  oa << lps_;
+//  //TODO save simulation path
+//  return {results.simulationPath};
+//#else
+//  std::ifstream ifs("lps.txt");
+//  boost::archive::text_iarchive ia(ifs);
+//  ia >> lps_;
+//  return "/home/marechaljas/Téléchargements/study_1_integer/output/20240715-1416eco";
+//#endif
+  std::cout << "Memory usage before simulation: " << Memory::Available() << "/" << Memory::Total() << std::endl;
+
   auto results = Antares::API::PerformSimulation(options_.StudyPath());
-  //Add parallel
-  //Handle errors
+
+  std::cout << "Memory usage after simulation: " << Memory::Available() << "/" << Memory::Total() << std::endl;
+  //  //Add parallel
+  //  //Handle errors
   if (results.error) {
     std::cerr << "Error: " << results.error->reason << std::endl;
     exit(1);
   }
-
   lps_ = std::move(results.antares_problems);
-  std::ofstream ofs("lps.txt");
-  boost::archive::text_oarchive oa(ofs);
-  oa << lps_;
-  //TODO save simulation path
   return {results.simulationPath};
-#else
-  std::ifstream ifs("lps.txt");
-  boost::archive::text_iarchive ia(ifs);
-  ia >> lps_;
-  return "/home/marechaljas/Téléchargements/study_1_integer/output/20240715-1416eco";
-#endif
 }
 
 std::filesystem::path ProblemGeneration::updateProblems() {
@@ -334,6 +348,11 @@ void ProblemGeneration::RunProblemGeneration(
       std::execution::par, problems_and_data.begin(), problems_and_data.end(),
       [&](const auto& problem_and_data) {
         const auto& [problem, data] = problem_and_data;
+        std::cout << "Start " << data._problem_mps << "\n";
+        std::cout << "Memory usage subproblem "<<
+            data._problem_mps << " mcyear " << problem->McYear() << " : "
+                  << Memory::Available() << "/" << Memory::Total() << std::endl;
+
         std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
         switch (mode_) {
           case SimulationInputMode::FILE:
@@ -362,6 +381,8 @@ void ProblemGeneration::RunProblemGeneration(
         linkProblemsGenerator.treat(data._problem_mps, couplings, problem.get(),
                                     variables_provider.get(),
                                     mps_file_writer.get());
+        std::cout << "End " << data._problem_mps << "\n";
+
       });
 
   if (mode_ == SimulationInputMode::ARCHIVE) {
