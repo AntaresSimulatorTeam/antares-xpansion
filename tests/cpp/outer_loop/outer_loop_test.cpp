@@ -312,3 +312,50 @@ TEST_F(VariablesGroupTest, SingleDataWithInvalidPrefixAndBody) {
   ASSERT_EQ(vect_indices.size(), 1);
   ASSERT_TRUE(vect_indices[0].empty());
 }
+
+TEST_F(VariablesGroupTest, SingleDataWithUnMatchedPrefix) {
+  std::vector<std::string> variables{
+      "PositiveUnsuppliedEnergy::area<test>::hour<125>"};
+  std::vector<Outerloop::OuterLoopSingleInputData> data{
+      Outerloop::OuterLoopSingleInputData("UnsuppliedEnergy::", "test",
+                                          1534.0)};
+
+  Outerloop::VariablesGroup var_grp(variables, data);
+  const auto& vect_indices = var_grp.Indices();
+  ASSERT_EQ(vect_indices.size(), 1);
+  ASSERT_TRUE(vect_indices[0].empty());
+}
+
+TEST_F(VariablesGroupTest, SingleDataWithUnMatchedBody) {
+  std::vector<std::string> variables{
+      "PositiveUnsuppliedEnergy::area<test>::hour<125>"};
+  std::vector<Outerloop::OuterLoopSingleInputData> data{
+      Outerloop::OuterLoopSingleInputData("PositiveUnsuppliedEnergy::", "Body",
+                                          1534.0)};
+
+  Outerloop::VariablesGroup var_grp(variables, data);
+  const auto& vect_indices = var_grp.Indices();
+  ASSERT_EQ(vect_indices.size(), 1);
+  ASSERT_TRUE(vect_indices[0].empty());
+}
+TEST_F(VariablesGroupTest, With2ValidPatterns) {
+  std::vector<std::string> variables{
+      "Gold::area<Sun>::hour<9999>", "Blue::area<Earth>::hour<125>",
+      "Red::area<Mars>::hour<1546>", "Blue::area<Earth>::hour<3336>"};
+  std::vector<Outerloop::OuterLoopSingleInputData> data{
+      {"Blue::", "Earth", 1534.0}, {"Red::", "Mars", 65.0}};
+
+  Outerloop::VariablesGroup var_grp(variables, data);
+  const auto& vect_indices = var_grp.Indices();
+  ASSERT_EQ(vect_indices.size(), 2);
+  // 2 vars for the 2nd pattern
+  const auto& first_pattern_vars = vect_indices[0];
+  ASSERT_EQ(first_pattern_vars.size(), 2);
+  // variable indices
+  ASSERT_EQ(first_pattern_vars[0], 1);
+  ASSERT_EQ(first_pattern_vars[1], 3);
+  // 1 var for the 2nd pattern
+  const auto& second_pattern_vars = vect_indices[1];
+  ASSERT_EQ(second_pattern_vars.size(), 1);
+  ASSERT_EQ(second_pattern_vars[0], 2);
+}
