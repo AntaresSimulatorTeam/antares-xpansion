@@ -200,7 +200,7 @@ install(FILES
 
 find_package(ittapi REQUIRED)
 install(FILES
-	$<TARGET_FILE:ittapi::ittnotify
+	$<TARGET_FILE:ittapi::ittnotify>
 	DESTINATION bin
 )
 
