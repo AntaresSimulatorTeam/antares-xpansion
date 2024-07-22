@@ -177,7 +177,7 @@ jobs:
         run: |
           cd ittapi
           python buildall.py --force_bits 64
-          cd build_linux/64
+          cd build_linux2/64
           cmake --install .  --prefix ${GITHUB_WORKSPACE}/itt
 
       - name: Configure
