@@ -31,8 +31,8 @@ BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
 }
 
 std::filesystem::path BendersBase::OuterloopOptionsFile() const {
-  return std::filesystem::path(
-         _options.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE);
+  return std::filesystem::path(_options.INPUTROOT) /
+         _options.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE;
 }
 
 /*!
