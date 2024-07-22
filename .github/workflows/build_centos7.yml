@@ -166,9 +166,12 @@ jobs:
           # Allows to restore a cache when deps have only partially changed (like adding a dependency)
           restore-keys: vcpkg-cache-centOS-
 
+      - uses: actions/checkout@v3 #keep v3
+        with:
+          repository: intel/ittapi.git
+          github-server-url: https://github.com
       - name: Install itt vtune
         run: |
-          git checkout https://github.com/intel/ittapi.git
           cd ittapi
           python buildall.py --force_bits 64
           cd build_linux/64
