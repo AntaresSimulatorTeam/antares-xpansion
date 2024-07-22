@@ -31,6 +31,12 @@ uint64_t Total();
 */
 uint64_t Available();
 
+struct memory_usage {
+  float available_go = 0;
+  float total_go = 0;
+};
+memory_usage MemoryUsageGo();
+
 /*!
 ** \brief Information about the current memory usage
 **

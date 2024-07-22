@@ -349,9 +349,10 @@ void ProblemGeneration::RunProblemGeneration(
       [&](const auto& problem_and_data) {
         const auto& [problem, data] = problem_and_data;
         std::cout << "Start " << data._problem_mps << "\n";
+        auto [dispo, total] = Memory::MemoryUsageGo();
         std::cout << "Memory usage subproblem "<<
             data._problem_mps << " mcyear " << problem->McYear() << " : "
-                  << Memory::Available() << "/" << Memory::Total() << std::endl;
+                  << dispo << "/" << total << std::endl;
 
         std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
         switch (mode_) {

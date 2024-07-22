@@ -189,13 +189,19 @@ uint64_t Total()
   {
     // Directly using sysinfo (2), which should be faster than parsing /proc/meminfo
     struct sysinfo s;
-    return (!sysinfo(&s)) ? (s.mem_unit * s.totalram) / 1024 / 1024 / 1024 : (uint64_t)defaultTotal;
+    return (!sysinfo(&s)) ? (s.mem_unit * s.totalram) : (uint64_t)defaultTotal;
   }
 #else
   {
     return Usage().total;
   }
 #endif
+}
+memory_usage MemoryUsageGo() {
+  auto total = Total();
+  auto dispo = Available();
+  return {.available_go = dispo / 1024.f / 1024.f / 1024.f,
+           .total_go = total / 1024.f / 1024.f / 1024.f};
 }
 
 #endif // YUNI_OS_LINUX
