@@ -387,6 +387,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
               SolveSubproblem(subproblem_data_map, subproblem_data, name,
                               worker);
 
+              subproblem_data_map[name] = subproblem_data;
               std::lock_guard guard(m);
             });
       },
@@ -405,7 +406,6 @@ void BendersBase::SolveSubproblem(
   worker->get_subgradient(subproblem_data.var_name_and_subgradient);
   worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
   subproblem_data.subproblem_timer = subproblem_timer.elapsed();
-  subproblem_data_map[name] = subproblem_data;
 }
 
 /*!
