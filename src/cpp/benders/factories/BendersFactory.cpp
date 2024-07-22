@@ -94,6 +94,7 @@ pBendersBase BendersMainFactory::PrepareForExecution(
           benders_options, logger, writer, *penv_, *pworld_, math_log_driver);
       break;
   }
+
   benders->set_input_map(coupling_map);
   std::ostringstream oss_l = start_message(options, benders->BendersName());
   oss_l << std::endl;
