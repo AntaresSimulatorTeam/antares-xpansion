@@ -12,6 +12,7 @@ on:
 
 env:
   GITHUB_TOKEN: ${{ github.token }}
+  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
 
 jobs:
   docker_publish:
