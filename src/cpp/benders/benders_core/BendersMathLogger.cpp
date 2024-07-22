@@ -189,9 +189,6 @@ void PrintExternalLoopData(LogDestination& log_destination,
                            const HEADERSTYPE& type,
                            const BENDERSMETHOD& method) {
   log_destination << data.outer_loop_current_iteration_data.benders_num_run;
-  // TODO
-  // log_destination << std::scientific << std::setprecision(10)
-  //                 << data.outer_loop_criterion;
   log_destination << std::scientific << std::setprecision(10)
                   << data.outer_loop_current_iteration_data.max_criterion;
   log_destination << data.outer_loop_current_iteration_data.max_criterion_area;

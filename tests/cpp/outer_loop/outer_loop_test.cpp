@@ -5,6 +5,7 @@
 #include "MasterUpdate.h"
 #include "OuterLoopBenders.h"
 #include "OuterLoopInputDataReader.h"
+#include "VariablesGroup.h"
 #include "WriterFactories.h"
 #include "gtest/gtest.h"
 #include "multisolver_interface/environment.h"
@@ -279,4 +280,35 @@ patterns:
   auto pattern1 = patterns[0];
   ASSERT_EQ(pattern1.Criterion(), 185.0);
   ASSERT_EQ(pattern1.Pattern().GetBody(), "N0");
+}
+
+class VariablesGroupTest : public ::testing::Test {};
+
+TEST_F(VariablesGroupTest, EmptyVariablesListGivesEmptyIndices) {
+  std::vector<std::string> variables;
+  std::vector<Outerloop::OuterLoopSingleInputData> data;
+
+  Outerloop::VariablesGroup var_grp(variables, data);
+  ASSERT_TRUE(var_grp.Indices().empty());
+}
+
+TEST_F(VariablesGroupTest, EmptyPatternsListGivesEmptyIndices) {
+  std::vector<std::string> variables{
+      "PositiveUnsuppliedEnergy::area<test>::hour<125>"};
+  std::vector<Outerloop::OuterLoopSingleInputData> data;
+
+  Outerloop::VariablesGroup var_grp(variables, data);
+  ASSERT_TRUE(var_grp.Indices().empty());
+}
+
+TEST_F(VariablesGroupTest, SingleDataWithInvalidPrefixAndBody) {
+  std::vector<std::string> variables{
+      "PositiveUnsuppliedEnergy::area<test>::hour<125>"};
+  std::vector<Outerloop::OuterLoopSingleInputData> data{
+      Outerloop::OuterLoopSingleInputData("Pref", "Body", 1534.0)};
+
+  Outerloop::VariablesGroup var_grp(variables, data);
+  const auto& vect_indices = var_grp.Indices();
+  ASSERT_EQ(vect_indices.size(), 1);
+  ASSERT_TRUE(vect_indices[0].empty());
 }
