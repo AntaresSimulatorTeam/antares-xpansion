@@ -170,6 +170,8 @@ jobs:
         with:
           repository: intel/ittapi.git
           github-server-url: https://github.com
+          branch: master
+
       - name: Install itt vtune
         run: |
           cd ittapi
