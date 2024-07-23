@@ -1,6 +1,11 @@
 Antares-Xpansion changelog
 =================
 
+v1.3.2 (07/2024)
+--------------------------------------------------------
+### Bug Fixes
+Fix an issue where the application would crash if a user specified a value for "playlist_reset" in general_data.ini
+
 v1.3.1 (07/2024)
 --------------------------------------------------------
 
