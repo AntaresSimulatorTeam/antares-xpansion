@@ -1,5 +1,6 @@
 var NAVTREEINDEX4 =
 {
+"classantares__xpansion_1_1driver_1_1XpansionDriver.html#a6612a74b7dd7938cce8254608e1bbd64":[25,0,1,6,0,2],
 "classantares__xpansion_1_1driver_1_1XpansionDriver.html#a6612a74b7dd7938cce8254608e1bbd64":[24,0,0,3,0,2],
 "classantares__xpansion_1_1driver_1_1XpansionDriver.html#adcef35c8ddd96e2e5c4b4b69cdc51c94":[24,0,0,3,0,3],
 "classantares__xpansion_1_1driver_1_1XpansionDriver.html#adcef35c8ddd96e2e5c4b4b69cdc51c94":[25,0,1,6,0,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX4 =
 "functions_b.html":[25,3,0,2],
 "functions_c.html":[25,3,0,3],
 "functions_d.html":[25,3,0,4],
-"functions_e.html":[25,3,0,5],
-"functions_f.html":[25,3,0,6]
+"functions_e.html":[25,3,0,5]
 };

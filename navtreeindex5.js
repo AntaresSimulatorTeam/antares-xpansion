@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"functions_f.html":[25,3,0,6],
 "functions_func.html":[25,3,1],
 "functions_func.html":[25,3,1,0],
 "functions_func_a.html":[25,3,1,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md199":[22,1],
 "md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md200":[22,2],
 "md_docs_2user-guide_2optimization-principles_2problem-formalization.html":[23],
-"md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md202":[23,0],
-"md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md203":[23,0,0]
+"md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md202":[23,0]
 };

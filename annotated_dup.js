@@ -470,6 +470,7 @@ var annotated_dup =
     [ "FullRunOptionsParserTestFullPath", "classFullRunOptionsParserTestFullPath.html", null ],
     [ "FullRunOptionsParserTestParameterizedMethod_output", "classFullRunOptionsParserTestParameterizedMethod__output.html", null ],
     [ "GeneralDataIniReader", "classGeneralDataIniReader.html", null ],
+    [ "GeneralDataIniReaderTests", "classGeneralDataIniReaderTests.html", null ],
     [ "GenericSolverException", "classGenericSolverException.html", null ],
     [ "HeadersManager", "structHeadersManager.html", null ],
     [ "HeadersManagerExternalLoop", "structHeadersManagerExternalLoop.html", null ],

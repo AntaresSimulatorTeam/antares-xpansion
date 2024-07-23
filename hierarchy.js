@@ -630,6 +630,7 @@ var hierarchy =
         [ "FullRunOptionsParserTestFullPath", "classFullRunOptionsParserTestFullPath.html", null ]
       ] ],
       [ "FullRunOptionsParserTestParameterizedMethod_output", "classFullRunOptionsParserTestParameterizedMethod__output.html", null ],
+      [ "GeneralDataIniReaderTests", "classGeneralDataIniReaderTests.html", null ],
       [ "MasterUpdateBaseTest", "classMasterUpdateBaseTest.html", null ],
       [ "ProblemConstructionTest", "classProblemConstructionTest.html", null ],
       [ "ProblemGenerationExeOptionsTest", "classProblemGenerationExeOptionsTest.html", null ]
