@@ -132,6 +132,20 @@ jobs:
           # Allows to restore a cache when deps have only partially changed (like adding a dependency)
           restore-keys: vcpkg-cache-ubuntu-
 
+      - uses: actions/checkout@v3 #keep v3
+        with:
+          repository: intel/ittapi.git
+          github-server-url: https://github.com
+          ref: master
+          path: ${{ github.workspace }}/ittapi
+
+      - name: Install itt vtune
+        run: |
+          cd ittapi
+          python buildall.py --force_bits 64
+          cd build_linux2/64
+          cmake --install .  --prefix ${GITHUB_WORKSPACE}/itt
+
       - name: Configure
         shell: bash
         run: |
@@ -143,7 +157,7 @@ jobs:
                 -DBUILD_TESTING=ON \
                 -DCMAKE_BUILD_TYPE=Release \
                 -DCMAKE_INSTALL_PREFIX=_install \
-                -DCMAKE_PREFIX_PATH="${{ github.workspace }}/deps;${{env.ORTOOLS_DIR}}/install" \
+                -DCMAKE_PREFIX_PATH="${{ github.workspace }}/deps;${{env.ORTOOLS_DIR}}/install;${{ github.workspace }}/itt" \
                 -DBUILD_UI=ON  \
                 -DVCPKG_TARGET_TRIPLET=x64-linux-release \
                 -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
