@@ -1,8 +1,38 @@
 #include "GeneralDataReader.h"
 
+#include <algorithm>
+#include <filesystem>
+#include <fstream>
 #include <iterator>
+#include <numeric>
+#include <sstream>
+#include <stdexcept>
+#include <vector>
 
+#include "INIReader.h"
 #include "LogUtils.h"
+#include "ProblemGenerationLogger.h"
+#include "StringManip.h"
+class IniReaderUtils {
+ public:
+  static bool LineIsNotASectionHeader(const std::string& line) {
+    return StringManip::split(StringManip::trim(line), '=').size() == 2;
+  }
+
+  static std::string ReadSectionHeader(const std::string& line) {
+    auto str = StringManip::trim(line);
+    str.erase(std::remove(str.begin(), str.end(), '['), str.end());
+    str.erase(std::remove(str.begin(), str.end(), ']'), str.end());
+    return str;
+  }
+
+  static std::pair<std::string, int> GetKeyValFromLine(std::string_view line) {
+    const auto splitLine = StringManip::split(line, '=');
+    auto key = StringManip::trim(splitLine[0]);
+    auto val = std::stoi(StringManip::trim(splitLine[1]));
+    return {key, val};
+  }
+};
 GeneralDataIniReader::GeneralDataIniReader(
     const std::filesystem::path& file_path,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
@@ -52,7 +82,7 @@ std::vector<int> GeneralDataIniReader::GetActiveYears_() {
 std::vector<int> GeneralDataIniReader::ActiveYearsFromActiveList() {
   std::vector<int> active_years;
   for (auto year = 0; year < mc_years_; year++) {
-    if (std::find(active_year_list_.begin(), active_year_list_.end(), year) !=
+    if (std::ranges::find(active_year_list_, year) !=
         active_year_list_.end()) {
       active_years.push_back(year + 1);
     }
@@ -63,7 +93,7 @@ std::vector<int> GeneralDataIniReader::ActiveYearsFromActiveList() {
 std::vector<int> GeneralDataIniReader::ActiveYearsFromInactiveList() {
   std::vector<int> active_years;
   for (auto year = 0; year < mc_years_; year++) {
-    if (std::find(inactive_year_list_.begin(), inactive_year_list_.end(),
+    if (std::ranges::find(inactive_year_list_,
                   year) == inactive_year_list_.end()) {
       active_years.push_back(year + 1);
     }
@@ -79,6 +109,9 @@ GeneralDataIniReader::GetRawPlaylist() {
   for (const auto& line : file_lines_) {
     if (IniReaderUtils::LineIsNotASectionHeader(line)) {
       if (current_section == "playlist") {
+        if (line.find("playlist_reset") != std::string::npos) {
+          continue;
+        }
         auto [key, val] = IniReaderUtils::GetKeyValFromLine(line);
         ReadPlaylistVal(key, val);
       }
@@ -104,13 +137,18 @@ std::string GeneralDataIniReader::ReadPlaylist(
     const std::string& current_section, const std::string& line) {
   if (IniReaderUtils::LineIsNotASectionHeader(line)) {
     if (current_section == "playlist") {
-      auto [key, val] = IniReaderUtils::GetKeyValFromLine(line);
-      ReadPlaylistVal(key, val);
+      ReadPlaylist(line);
     }
   } else {
     return IniReaderUtils::ReadSectionHeader(line);
   }
   return current_section;
+}
+void GeneralDataIniReader::ReadPlaylist(const std::string& line) {
+  if (line.find("playlist_reset") == std::string::npos) {
+    auto [key, val] = IniReaderUtils::GetKeyValFromLine(line);
+    ReadPlaylistVal(key, val);
+  }
 }
 
 void GeneralDataIniReader::ReadPlaylistVal(const std::string& key, int val) {

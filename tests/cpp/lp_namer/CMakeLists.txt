@@ -36,6 +36,7 @@ add_executable (lp_namer_tests
         WeightsFileReaderTest.cpp
         LpFilesExtractorTest.cpp
         MpsTxtWriterTest.cpp
+        GeneralDataReadetTests.cpp
         AntaresProblemToXpansionProblemTranslatorTest.cpp
 )
 
