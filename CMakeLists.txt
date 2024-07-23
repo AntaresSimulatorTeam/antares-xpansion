@@ -8,8 +8,8 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
 # Project configuration
 # ===========================================================================
 
-PROJECT(antaresXpansion VERSION 1.3.0)
-set(ANTARES_XPANSION_RC 5)
+PROJECT(antaresXpansion VERSION 1.4.0)
+set(ANTARES_XPANSION_RC 0)
 
 # ===========================================================================
 # Default parameters
@@ -323,7 +323,7 @@ if (USER_GUIDE_PATH)
 	install(FILES ${USER_GUIDE_PATH} DESTINATION .)
 endif()
 
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples/" 		DESTINATION examples)
+#install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples/" 		DESTINATION examples)
 if (WIN32)
 	cmake_path(GET MPIEXEC_EXECUTABLE PARENT_PATH MPI_BIN_DIR)
 	
