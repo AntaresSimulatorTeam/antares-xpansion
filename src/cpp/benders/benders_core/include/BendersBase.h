@@ -8,8 +8,6 @@
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
 #include "ILogger.h"
-#include "OuterLoopBiLevel.h"
-#include "OuterLoopInputDataReader.h"
 #include "OutputWriter.h"
 #include "SimulationOptions.h"
 #include "SubproblemCut.h"

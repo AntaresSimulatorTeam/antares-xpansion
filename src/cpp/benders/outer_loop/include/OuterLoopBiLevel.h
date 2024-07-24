@@ -4,14 +4,15 @@
 typedef std::map<std::string, double> Point;
 typedef std::map<std::string, int> VariableMap;
 //
+namespace Outerloop {
 class OuterLoopBiLevel {
  public:
-  explicit OuterLoopBiLevel(const Outerloop::OuterLoopInputData  &outer_loop_input_data);
+  explicit OuterLoopBiLevel(
+      const Outerloop::OuterLoopInputData &outer_loop_input_data);
   bool Update_bilevel_data_if_feasible(
       const Point &x, const std::vector<double> &outer_loop_criterion,
       double overall_cost, double invest_cost_at_x, double lambda);
-  bool Check_bilevel_feasibility(
-      const std::vector<double> &outer_loop_criterion, double overall_cost);
+
   void Init(const std::vector<double> &obj, const Point &max_invest,
             const VariableMap &master_variable);
   double LambdaMax() const { return lambda_max_; }
@@ -21,11 +22,12 @@ class OuterLoopBiLevel {
   bool FoundFeasible() const { return found_feasible_; }
 
  private:
+  bool Check_bilevel_feasibility(
+      const std::vector<double> &outer_loop_criterion, double overall_cost);
   void SetLambdaMaxToMaxInvestmentCosts(const std::vector<double> &obj,
                                         const Point &max_invest,
                                         const VariableMap &master_variable);
-  void Update(const Point &x, double overall_cost,
-              double invest_cost_at_x);
+  void Update(const Point &x, double overall_cost, double invest_cost_at_x);
   bool IsCriterionSatisfied(const std::vector<double> &outer_loop_criterions);
   bool found_feasible_ = false;
   double bilevel_best_ub_ = +1e20;
@@ -35,3 +37,4 @@ class OuterLoopBiLevel {
   double lambda_ = 0.0;
   const Outerloop::OuterLoopInputData &outer_loop_input_data_;
 };
+}  // namespace Outerloop

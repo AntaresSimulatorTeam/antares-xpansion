@@ -1,6 +1,7 @@
 #include "OuterLoopBiLevel.h"
-
-OuterLoopBiLevel::OuterLoopBiLevel(const Outerloop::OuterLoopInputData  &outer_loop_input_data)
+namespace Outerloop {
+OuterLoopBiLevel::OuterLoopBiLevel(
+    const Outerloop::OuterLoopInputData &outer_loop_input_data)
     : outer_loop_input_data_(outer_loop_input_data) {}
 
 bool OuterLoopBiLevel::Update_bilevel_data_if_feasible(
@@ -29,7 +30,7 @@ bool OuterLoopBiLevel::Check_bilevel_feasibility(
 
 bool OuterLoopBiLevel::IsCriterionSatisfied(
     const std::vector<double> &outer_loop_criterions) {
- const auto& outer_loop_input_data = outer_loop_input_data_.OuterLoopData();
+  const auto &outer_loop_input_data = outer_loop_input_data_.OuterLoopData();
   for (int index(0); index < outer_loop_criterions.size(); ++index) {
     if (outer_loop_criterions[index] >
         outer_loop_input_data[index].Criterion()) {
@@ -49,10 +50,9 @@ void OuterLoopBiLevel::Update(const Point &x, double overall_cost,
 void OuterLoopBiLevel::Init(const std::vector<double> &obj,
                             const Point &max_invest,
                             const VariableMap &master_variable) {
-  
   // TODO log
   SetLambdaMaxToMaxInvestmentCosts(obj, max_invest, master_variable);
-  
+
   found_feasible_ = false;
 }
 void OuterLoopBiLevel::SetLambdaMaxToMaxInvestmentCosts(
@@ -63,3 +63,4 @@ void OuterLoopBiLevel::SetLambdaMaxToMaxInvestmentCosts(
     lambda_max_ += obj[var_id] * max_invest.at(var_name);
   }
 }
+}  // namespace Outerloop

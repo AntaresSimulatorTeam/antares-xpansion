@@ -4,12 +4,12 @@
 #include "LoggerFactories.h"
 #include "MasterUpdate.h"
 #include "OuterLoopBenders.h"
+#include "OuterLoopBiLevel.h"
 #include "OuterLoopInputDataReader.h"
 #include "VariablesGroup.h"
 #include "WriterFactories.h"
 #include "gtest/gtest.h"
 #include "multisolver_interface/environment.h"
-
 int my_argc;
 char** my_argv;
 
@@ -359,3 +359,7 @@ TEST_F(VariablesGroupTest, With2ValidPatterns) {
   ASSERT_EQ(second_pattern_vars.size(), 1);
   ASSERT_EQ(second_pattern_vars[0], 2);
 }
+
+class OuterLoopBiLevelTest : public ::testing::Test {};
+
+// TEST_F(OuterLoopBiLevelTest, )
