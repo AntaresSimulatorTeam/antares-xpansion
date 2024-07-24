@@ -62,4 +62,5 @@ void OuterLoopBiLevel::SetLambdaMaxToMaxInvestmentCosts(
     lambda_max_ += obj[var_id] * max_invest.at(var_name);
   }
 }
+const Point &OuterLoopBiLevel::BilevelBestX() const { return bilevel_best_x_; }
 }  // namespace Outerloop

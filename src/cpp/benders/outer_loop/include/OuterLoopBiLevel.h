@@ -20,6 +20,7 @@ class OuterLoopBiLevel {
   void SetLambda(double lambda) { lambda_ = lambda; }
   double BilevelBestub() const { return bilevel_best_ub_; }
   bool FoundFeasible() const { return found_feasible_; }
+  const Point &BilevelBestX() const;
 
  private:
   bool Check_bilevel_feasibility(
@@ -32,6 +33,8 @@ class OuterLoopBiLevel {
   bool found_feasible_ = false;
   double bilevel_best_ub_ = +1e20;
   Point bilevel_best_x_;
+
+ private:
   double lambda_max_ = 0.0;
   double lambda_min_ = 0.0;
   double lambda_ = 0.0;

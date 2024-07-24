@@ -10,8 +10,6 @@
 #include "WriterFactories.h"
 #include "gtest/gtest.h"
 #include "multisolver_interface/environment.h"
-int my_argc;
-char** my_argv;
 
 boost::mpi::environment* penv = nullptr;
 boost::mpi::communicator* pworld = nullptr;
@@ -21,12 +19,11 @@ using namespace Outerloop;
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);
 
-  mpi::environment env(my_argc, my_argv);
+  mpi::environment env(argc, argv);
   mpi::communicator world;
   penv = &env;
   pworld = &world;
-  my_argc = argc;
-  my_argv = argv;
+
   return RUN_ALL_TESTS();
 }
 
@@ -368,12 +365,34 @@ TEST_F(OuterLoopBiLevelTest, BiLevelBestUbInitialization) {
   Outerloop::OuterLoopBiLevel outerLoopBiLevel(data);
   ASSERT_EQ(outerLoopBiLevel.BilevelBestub(), 1e20);
 }
+
 TEST_F(OuterLoopBiLevelTest, UnfeasibilityWithHigherCriterions) {
   Outerloop::OuterLoopBiLevel outerLoopBiLevel(data);
   const std::vector<double> criterions = {data[0].Criterion() + 12,
-                                          data[0].Criterion() + 2024};
+                                          data[1].Criterion() + 2024};
   const auto lambda = 1205;
   ASSERT_FALSE(outerLoopBiLevel.Update_bilevel_data_if_feasible(
       {}, criterions, 0., 0., lambda));
   ASSERT_EQ(outerLoopBiLevel.LambdaMin(), lambda);
+}
+TEST_F(OuterLoopBiLevelTest, FeasibleScenario1) {
+  const auto lambda = 1205;
+  const auto overall_cost = 105;
+  const auto invest_cost_at_x = 10;
+  const auto cand = "candidate";
+  const Point max_x = {{cand, 30}};
+  Outerloop::OuterLoopBiLevel outerLoopBiLevel(data);
+  const auto cand_coeff = 2.0;
+  outerLoopBiLevel.Init({cand_coeff}, max_x, {{cand, 0}});
+  ASSERT_EQ(outerLoopBiLevel.LambdaMax(), cand_coeff * max_x.at(cand));
+  const std::vector<double> criterions = {data[0].Criterion() - 12,
+                                          data[1].Criterion() - 24};
+  const Point x = {{cand, max_x.at(cand) / 2}};
+
+  ASSERT_TRUE(outerLoopBiLevel.Update_bilevel_data_if_feasible(
+      x, criterions, overall_cost, invest_cost_at_x, lambda));
+  ASSERT_EQ(outerLoopBiLevel.LambdaMin(), 0.);
+  ASSERT_EQ(outerLoopBiLevel.LambdaMax(), invest_cost_at_x);
+  ASSERT_EQ(outerLoopBiLevel.BilevelBestub(), overall_cost);
+  ASSERT_EQ(outerLoopBiLevel.BilevelBestX(), x);
 }
