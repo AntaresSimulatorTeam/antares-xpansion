@@ -1,6 +1,4 @@
 
-// #include "MasterUpdate.h"
-
 #include "LoggerFactories.h"
 #include "MasterUpdate.h"
 #include "OuterLoopBenders.h"
@@ -366,7 +364,7 @@ TEST_F(OuterLoopBiLevelTest, BiLevelBestUbInitialization) {
   ASSERT_EQ(outerLoopBiLevel.BilevelBestub(), 1e20);
 }
 
-TEST_F(OuterLoopBiLevelTest, UnfeasibilityWithHigherCriterions) {
+TEST_F(OuterLoopBiLevelTest, Unfeasibility_With_High_Criterions) {
   Outerloop::OuterLoopBiLevel outerLoopBiLevel(data);
   const std::vector<double> criterions = {data[0].Criterion() + 12,
                                           data[1].Criterion() + 2024};
@@ -375,6 +373,7 @@ TEST_F(OuterLoopBiLevelTest, UnfeasibilityWithHigherCriterions) {
       {}, criterions, 0., 0., lambda));
   ASSERT_EQ(outerLoopBiLevel.LambdaMin(), lambda);
 }
+
 TEST_F(OuterLoopBiLevelTest, UnfeasibilityWithInfiniteOverAllCosts) {
   Outerloop::OuterLoopBiLevel outerLoopBiLevel(data);
   const std::vector<double> criterions = {data[0].Criterion() - 12,
@@ -385,7 +384,8 @@ TEST_F(OuterLoopBiLevelTest, UnfeasibilityWithInfiniteOverAllCosts) {
       {}, criterions, overall_cost, 0., lambda));
   ASSERT_EQ(outerLoopBiLevel.LambdaMin(), lambda);
 }
-TEST_F(OuterLoopBiLevelTest, FeasibleScenario1) {
+
+TEST_F(OuterLoopBiLevelTest, FeasibleScenario) {
   const auto lambda = 1205;
   const auto overall_cost = 105;
   const auto invest_cost_at_x = 10;
@@ -408,7 +408,7 @@ TEST_F(OuterLoopBiLevelTest, FeasibleScenario1) {
 }
 
 TEST_F(OuterLoopBiLevelTest,
-       FeasibleScenario2HigherInvestCostAtXThanInitialLambdaMax) {
+       FeasibleScenario_InvestCostAtX_Higher_Than_Initial_LambdaMax) {
   const auto lambda = 1205;
   const auto overall_cost = 105;
   const auto cand = "candidate";
