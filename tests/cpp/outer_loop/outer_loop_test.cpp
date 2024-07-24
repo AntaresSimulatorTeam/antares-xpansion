@@ -350,7 +350,7 @@ TEST_F(VariablesGroupTest, With2ValidPatterns) {
   Outerloop::VariablesGroup var_grp(variables, data);
   const auto& vect_indices = var_grp.Indices();
   ASSERT_EQ(vect_indices.size(), 2);
-  // 2 vars for the 2nd pattern
+  // 2 vars for the 1st pattern
   const auto& first_pattern_vars = vect_indices[0];
   ASSERT_EQ(first_pattern_vars.size(), 2);
   // variable indices
