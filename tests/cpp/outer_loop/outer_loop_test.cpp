@@ -338,12 +338,14 @@ TEST_F(VariablesGroupTest, SingleDataWithUnMatchedBody) {
   ASSERT_EQ(vect_indices.size(), 1);
   ASSERT_TRUE(vect_indices[0].empty());
 }
+
+static const std::vector<Outerloop::OuterLoopSingleInputData> data{
+    {"Blue::", "Earth", 1534.0}, {"Red::", "Mars", 65.0}};
+
 TEST_F(VariablesGroupTest, With2ValidPatterns) {
   std::vector<std::string> variables{
       "Gold::area<Sun>::hour<9999>", "Blue::area<Earth>::hour<125>",
       "Red::area<Mars>::hour<1546>", "Blue::area<Earth>::hour<3336>"};
-  std::vector<Outerloop::OuterLoopSingleInputData> data{
-      {"Blue::", "Earth", 1534.0}, {"Red::", "Mars", 65.0}};
 
   Outerloop::VariablesGroup var_grp(variables, data);
   const auto& vect_indices = var_grp.Indices();
@@ -362,4 +364,16 @@ TEST_F(VariablesGroupTest, With2ValidPatterns) {
 
 class OuterLoopBiLevelTest : public ::testing::Test {};
 
-// TEST_F(OuterLoopBiLevelTest, )
+TEST_F(OuterLoopBiLevelTest, BiLevelBestUbInitialization) {
+  Outerloop::OuterLoopBiLevel outerLoopBiLevel(data);
+  ASSERT_EQ(outerLoopBiLevel.BilevelBestub(), 1e20);
+}
+TEST_F(OuterLoopBiLevelTest, UnfeasibilityWithHigherCriterions) {
+  Outerloop::OuterLoopBiLevel outerLoopBiLevel(data);
+  const std::vector<double> criterions = {data[0].Criterion() + 12,
+                                          data[0].Criterion() + 2024};
+  const auto lambda = 1205;
+  ASSERT_FALSE(outerLoopBiLevel.Update_bilevel_data_if_feasible(
+      {}, criterions, 0., 0., lambda));
+  ASSERT_EQ(outerLoopBiLevel.LambdaMin(), lambda);
+}
