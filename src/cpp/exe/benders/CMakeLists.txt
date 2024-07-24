@@ -29,5 +29,3 @@ endif()
 			factories
 			)
 #ENDIF (WIN32)
-
-install(TARGETS benders DESTINATION bin)

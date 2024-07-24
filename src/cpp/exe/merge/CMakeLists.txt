@@ -21,6 +21,3 @@ target_link_libraries (merge_mps
 		helpers
 		logger_lib
 )
-
-
-install(TARGETS merge_mps DESTINATION bin)
