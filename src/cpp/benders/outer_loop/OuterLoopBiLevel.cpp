@@ -1,7 +1,7 @@
 #include "OuterLoopBiLevel.h"
 namespace Outerloop {
 OuterLoopBiLevel::OuterLoopBiLevel(
-    const Outerloop::OuterLoopInputData &outer_loop_input_data)
+    const std::vector<OuterLoopSingleInputData> &outer_loop_input_data)
     : outer_loop_input_data_(outer_loop_input_data) {}
 
 bool OuterLoopBiLevel::Update_bilevel_data_if_feasible(
@@ -30,10 +30,9 @@ bool OuterLoopBiLevel::Check_bilevel_feasibility(
 
 bool OuterLoopBiLevel::IsCriterionSatisfied(
     const std::vector<double> &outer_loop_criterions) {
-  const auto &outer_loop_input_data = outer_loop_input_data_.OuterLoopData();
   for (int index(0); index < outer_loop_criterions.size(); ++index) {
     if (outer_loop_criterions[index] >
-        outer_loop_input_data[index].Criterion()) {
+        outer_loop_input_data_[index].Criterion()) {
       return false;
     }
   }

@@ -21,6 +21,7 @@ void OuterLoop::Run() {
 
 OuterLoop::OuterLoop(CriterionComputation &criterion_computation)
     : criterion_computation_(criterion_computation),
-      outer_loop_biLevel_(criterion_computation.getOuterLoopInputData()) {}
+      outer_loop_biLevel_(
+          criterion_computation.getOuterLoopInputData().OuterLoopData()) {}
 
 }  // namespace Outerloop
