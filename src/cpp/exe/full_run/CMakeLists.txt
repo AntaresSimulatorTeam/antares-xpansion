@@ -36,5 +36,3 @@ target_link_libraries (full_run
 		${PROJECT_NAME}::benders_sequential_core
 		${PROJECT_NAME}::xpansion_study_updater_lib
 )
-
-install(TARGETS full_run DESTINATION bin)
