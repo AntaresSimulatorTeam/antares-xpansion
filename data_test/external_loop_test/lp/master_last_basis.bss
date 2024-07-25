@@ -1,5 +1,5 @@
 NAME                                                                          
- LL G_p_max_0_0                            0
- XU alpha             R1                          19             0
- XL alpha_0           R2                          19           -19
+ UL G_p_max_0_0                           10
+ XU alpha             R1                          36             0
+ XL alpha_0           R5                          36           -36
 ENDATA 

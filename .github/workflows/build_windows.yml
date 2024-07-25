@@ -33,6 +33,7 @@ jobs:
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
       VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
+      ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
 
     outputs:
       zip_name: ${{ steps.zip_name.outputs.zip_name }}
@@ -40,6 +41,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+
+      - name: Config OR-Tools URL
+        run: |
+          echo "ORTOOLS_URL=https://github.com/rte-france/or-tools/releases/download/v9.8-rte1.0/ortools_cxx_windows-latest_static_sirius.zip" >> $GITHUB_ENV
 
       - name: Checkout xpressmp linux
         if: matrix.xprs.value == 'XPRESS-ON'
@@ -100,16 +105,33 @@ jobs:
           # Allows to restore a cache when deps have only partially changed (like adding a dependency)
           restore-keys: vcpkg-cache-windows-
 
+      - name: Config OR-Tools URL
+        shell: bash
+        run: |
+          echo "ORTOOLS_URL=https://github.com/rte-france/or-tools/releases/download/v9.8-rte1.0/ortools_cxx_windows-latest_static_sirius.zip" >> $GITHUB_ENV
+
+      - run: echo ${{env.ORTOOLS_URL}}
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-zip
         with:
           antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
+          ortools-url: ${{env.ORTOOLS_URL}}
+          ortools-dir: ${{env.ORTOOLS_DIR}}
 
+      - run: echo "version=$(echo ${{steps.antares-version.outputs.result}} | sed 's/-.*//')" >> $GITHUB_ENV
+        shell: bash
       - name: Configure
+        shell: bash
         run: |
-          $pwd=Get-Location
-          cmake -B _build -S . -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits"  -DBUILD_TESTING=ON  -DCMAKE_BUILD_TYPE=Release  -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"  -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}  -DCMAKE_INSTALL_PREFIX=_install  -DBUILD_UI=ON
+          cmake -B _build -S . \
+          -DCMAKE_PREFIX_PATH="${{github.workspace}}/rte-antares-${{env.version}}-installer-64bits;${{env.ORTOOLS_DIR}}/install" \
+          -DBUILD_TESTING=ON \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake" \
+          -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} \
+          -DCMAKE_INSTALL_PREFIX=_install \
+          -DBUILD_UI=ON
 
       - name: Build
         run: |

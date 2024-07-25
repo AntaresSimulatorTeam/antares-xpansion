@@ -54,6 +54,7 @@ jobs:
       XPRESSDIR_CONTAINER: ${GITHUB_WORKSPACE}/xpress
       XPRESS_CONTAINER: ${GITHUB_WORKSPACE}/xpress/bin
       XPRS_LIB_Path_CONTAINER: ${GITHUB_WORKSPACE}/xpress/lib
+      ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
 
     outputs:
       zip_name: ${{ steps.zip_name.outputs.zip_name }}
@@ -63,10 +64,14 @@ jobs:
       - name: Install System
         run: |
           dnf install -y epel-release git wget rpm-build redhat-lsb-core openmpi-devel
-          dnf install -y unzip libuuid-devel gcc-toolset-10-toolchain python3-devel zlib-devel
+          dnf install -y unzip libuuid-devel gcc-toolset-11 python3-devel zlib-devel
           #make gcc &co available system wide and "action wide"
-          source /opt/rh/gcc-toolset-10/enable
+          source /opt/rh/gcc-toolset-11/enable
           echo $PATH >> $GITHUB_PATH
+
+      - name: Config OR-Tools URL
+        run: |
+          echo "ORTOOLS_URL=https://github.com/rte-france/or-tools/releases/download/v9.8-rte1.0/ortools_cxx_oraclelinux-8_static_sirius.zip" >> $GITHUB_ENV
 
       - run: |
           dnf module install -y nodejs:20/common
@@ -103,6 +108,8 @@ jobs:
           antares-version: ${{needs.versions.outputs.antares-version}}
           os: Oracle8
           os-full-name: OracleServer-8.10
+          ortools-url: ${{env.ORTOOLS_URL}}
+          ortools-dir: ${{env.ORTOOLS_DIR}}
 
       - name: vcpkg install
         run: |
@@ -130,9 +137,10 @@ jobs:
                  -DBUILD_TESTING=ON \
                  -DCMAKE_BUILD_TYPE=Release \
                  -DCMAKE_INSTALL_PREFIX=_install \
-                 -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/deps \
+                 -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/deps;${{env.ORTOOLS_DIR}}/install" \
                  -DBUILD_UI=OFF \
                  -DALLOW_RUN_AS_ROOT=ON \
+                 -DVCPKG_TARGET_TRIPLET=x64-linux-release \
                  -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
@@ -143,7 +151,7 @@ jobs:
         timeout-minutes: 120
         shell: bash
         run: |
-          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
+          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin/:$PATH
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
           export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build

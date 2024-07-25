@@ -47,7 +47,7 @@ add_library(lp_namer_problem_modifier STATIC
 		${CMAKE_CURRENT_SOURCE_DIR}/FileProblemsProviderAdapter.h
 		${CMAKE_CURRENT_SOURCE_DIR}/FileProblemProviderAdapter.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/FileProblemProviderAdapter.h
-		)
+)
 
 target_include_directories (lp_namer_problem_modifier
 	PUBLIC
@@ -61,6 +61,7 @@ target_link_libraries (lp_namer_problem_modifier
 		lp_namer_helper
 		helpers
 		solvers
+        Antares::antares-solver-simulation
 )
 
 add_library (${PROJECT_NAME}::lp_namer_problem_modifier ALIAS lp_namer_problem_modifier)

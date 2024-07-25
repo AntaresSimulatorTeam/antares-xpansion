@@ -80,6 +80,7 @@ jobs:
       XPRESS_CONTAINER: ${GITHUB_WORKSPACE}/xpress/bin
       XPRS_LIB_Path_CONTAINER: ${GITHUB_WORKSPACE}/xpress/lib
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+      ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
 
     outputs:
       TGZ_NAME: ${{ steps.export_output.outputs.TGZ_NAME }}
@@ -93,6 +94,10 @@ jobs:
         if: github.event_name == 'release' && github.event.action == 'created'
         id: get_release
         uses: bruceadams/get-release@v1.3.2
+
+      - name: Config OR-Tools URL
+        run: |
+          echo "ORTOOLS_URL=https://github.com/rte-france/or-tools/releases/download/v9.8-rte1.0/ortools_cxx_centos7_static_sirius.zip" >> $GITHUB_ENV
 
       - uses: actions/checkout@v3 #Keep at 3
         with:
@@ -130,6 +135,8 @@ jobs:
           antares-version: ${{needs.versions.outputs.antares-version}}
           os: centos7
           os-full-name: CentOS-7.9.2009
+          ortools-url: ${{env.ORTOOLS_URL}}
+          ortools-dir: ${{env.ORTOOLS_DIR}}
 
       - name: Install dependencies
         run: |
@@ -163,11 +170,12 @@ jobs:
           source /opt/rh/devtoolset-10/enable
           cmake -B _build -S . \
                  -DBUILD_TESTING=ON \
-                 -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/deps \
+                 -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/deps;${{env.ORTOOLS_DIR}}/install" \
                  -DCMAKE_BUILD_TYPE=Release \
                  -DCMAKE_INSTALL_PREFIX=_install \
                  -DBUILD_UI=ON \
                  -DALLOW_RUN_AS_ROOT=ON \
+                 -DVCPKG_TARGET_TRIPLET=x64-linux-release \
                  -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
@@ -186,7 +194,7 @@ jobs:
         timeout-minutes: 120
         shell: bash
         run: |
-          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
+          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin/:$PATH
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
           export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build

@@ -19,6 +19,7 @@ jobs:
         os: [ ubuntu-20.04 ]
     env:
       VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
+      ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
 
     steps:
 
@@ -80,12 +81,19 @@ jobs:
           path: 'antares-version.json'
           key: 'antares_xpansion_version'
 
+      - name: Config OR-Tools URL
+        shell: bash
+        run: |
+          echo "ORTOOLS_URL=https://github.com/rte-france/or-tools/releases/download/v9.8-rte1.0/ortools_cxx_ubuntu-20.04_static_sirius.zip" >> $GITHUB_ENV
+
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
         with:
           antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
           os-full-name: Ubuntu-20.04
+          ortools-url: ${{env.ORTOOLS_URL}}
+          ortools-dir: ${{env.ORTOOLS_DIR}}
 
       - name: Init submodule
         run: |
@@ -117,7 +125,7 @@ jobs:
           -DBUILD_TESTING=ON \
           -DBUILD_antares_solver=OFF \
           -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_PREFIX_PATH=${{ github.workspace }}/deps \
+          -DCMAKE_PREFIX_PATH="${{ github.workspace }}/deps;${{env.ORTOOLS_DIR}}/install" \
           -DCMAKE_INSTALL_PREFIX=_install \
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
           -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake

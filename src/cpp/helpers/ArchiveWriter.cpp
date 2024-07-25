@@ -3,6 +3,7 @@
 #include <time.h>
 
 #include <iostream>
+#include <mutex>
 #include <sstream>
 
 #include "LogUtils.h"
@@ -26,12 +27,13 @@ void ArchiveWriter::InitFileInfo() {
 }
 int32_t ArchiveWriter::Open() {
   // disk-spanning is disabled, meaning that only one file is created
+  std::unique_lock lock(mutex_);
   const auto err = mz_zip_writer_open_file(
       pmz_zip_writer_instance_, ArchivePath().string().c_str(),
       0 /* disk-spanning disabled */, 1 /* append */);
   if (err != MZ_OK) {
-    Close();
-    Delete();
+    CloseGuarded();
+    DeleteGuarded();
     std::stringstream errMsg;
     errMsg << "Open Archive: " << ArchivePath().string() << std::endl;
     throw ArchiveIOGeneralException(err, errMsg.str(), LOGLOCATION);
@@ -123,6 +125,16 @@ int32_t ArchiveWriter::CloseInternal() {
     return mz_zip_writer_close(pmz_zip_writer_instance_);
   }
   return MZ_OK;
+}
+
+int32_t ArchiveWriter::CloseGuarded() {
+  if (pmz_zip_writer_instance_) {
+    return mz_zip_writer_close(pmz_zip_writer_instance_);
+  }
+  return MZ_OK;
+}
+void ArchiveWriter::DeleteGuarded() {
+  return mz_zip_writer_delete(&pmz_zip_writer_instance_);
 }
 
 void ArchiveWriter::DeleteInternal() {

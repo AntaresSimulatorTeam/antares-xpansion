@@ -1,8 +1,8 @@
 vcpkg_from_github(
         OUT_SOURCE_PATH SOURCE_PATH
         REPO "Mizux/Osi"
-        REF "d724c4a5a0d87669d63e44179c468d8a02f4f69a"
-        SHA512 fb173c04e3920c863e4d29e202cbaf182ee21332dc05ce293ffc39ead1b124f86f9682cc12032d216a712ea9aa3d0c98176bcbcd1b217e93afc6ce5a1ced68ed
+        REF "d2809dd1ab01eb5c766edce7cea2ca2c1c5ecd2a" #stable/0.108
+        SHA512 0b15a823666f7d381dadf360b6443fd28e9ba1f2c4c157309e10318d0a836014ec2a37bce0f0efdd9960769d839352aca0ba60f862b9c7eeaa96fabdffb7e9ca
         HEAD_REF master
 )
 vcpkg_check_linkage(ONLY_STATIC_LIBRARY)

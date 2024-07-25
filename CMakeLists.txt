@@ -111,7 +111,29 @@ endif ()
 include("cmake/utils.cmake")
 include("cmake/json-cmake-1.1.0/JSONParser.cmake")
 
-#Define deps install directory
+file(READ antares-version.json jsonContent)
+sbeParseJson(antares_version jsonContent)
+
+#need to know antares solver version because antares-solver targets still refers to antares version
+SET(ANTARES_VERSION ${antares_version.antares_version_executable})
+SET(ANTARES_VERSION_TAG ${antares_version.antares_version})
+SET(MINIZIP_TAG ${antares_version.minizip_ng_version})
+
+sbeClearJson(antares_version)
+
+# Build dependencies not handled by antares-deps repository
+option(BUILD_antares_solver "Build antares solver" ON)
+message(STATUS "Build antares solver: ${BUILD_antares_solver}")
+if (${BUILD_antares_solver})
+    #check if antares_solver available before asking for sirius and ortools build
+    find_package(Antares QUIET)
+    if (NOT Antares_FOUND)
+        message(WARNING "Antares solver not found, will be build")
+        set(BUILD_sirius ON)
+        set(BUILD_ortools ON)
+        if (NOT Antares_FOUND)
+            message(STATUS "Antares not found, building it from source")
+            #Define deps install directory
 if (NOT DEPS_INSTALL_DIR)
 	SET(DEPS_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../rte-antares-deps-${CMAKE_BUILD_TYPE})
 else()
@@ -140,35 +162,14 @@ elseif(${CMAKE_BUILD_TYPE} STREQUAL  "Debug")
 
 	list(APPEND CMAKE_PREFIX_PATH ${DEPS_INSTALL_DIR_ANTARES})
 
-endif()
-
-file(READ antares-version.json jsonContent)
-sbeParseJson(antares_version jsonContent)
-
-#need to know antares solver version because antares-solver targets still refers to antares version
-SET(ANTARES_VERSION ${antares_version.antares_version_executable})
-SET(ANTARES_VERSION_TAG ${antares_version.antares_version})
-SET(MINIZIP_TAG ${antares_version.minizip_ng_version})
-
-sbeClearJson(antares_version)
-
-# Build dependencies not handled by antares-deps repository
-option(BUILD_antares_solver "Build antares solver" ON)
-message(STATUS "Build antares solver: ${BUILD_antares_solver}")
-
-if (${BUILD_antares_solver})
-	#check if antares_solver available before asking for sirius and ortools build
-	find_package(antares-solver QUIET)
-	if (NOT antares-solver_FOUND)
-		set(BUILD_sirius ON)
-		set(BUILD_ortools ON)
-	endif()
-endif()
-
+            endif ()
+            add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_BINARY_DIR}/build_deps)
+        endif ()
+    endif ()
+endif ()
+find_package(Antares REQUIRED)
 message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
-add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_BINARY_DIR}/build_deps)
-find_package(antares-solver REQUIRED)
-message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
+set(CMAKE_FIND_DEBUG_MODE false)
 
 find_package(minizip-ng REQUIRED)
 # ---------------------------------------------------------------------------
@@ -267,12 +268,12 @@ else()
 	set(CURRENT_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endif()
 
-find_package(Antares REQUIRED)
+find_package(antares-solver REQUIRED)
 
 #Default RELEASE antares-solver use
-get_target_property( ANTARES_SOLVER_PATH Antares::antares-solver IMPORTED_LOCATION_RELEASE )
+get_target_property( ANTARES_SOLVER_PATH antares-solver IMPORTED_LOCATION_RELEASE )
 if (NOT ANTARES_SOLVER_PATH)
-	get_target_property( ANTARES_SOLVER_PATH Antares::antares-solver IMPORTED_LOCATION_DEBUG )
+	get_target_property( ANTARES_SOLVER_PATH antares-solver IMPORTED_LOCATION_DEBUG )
 endif()
 
 get_filename_component(ANTARES_SOLVER_DIR ${ANTARES_SOLVER_PATH} DIRECTORY)

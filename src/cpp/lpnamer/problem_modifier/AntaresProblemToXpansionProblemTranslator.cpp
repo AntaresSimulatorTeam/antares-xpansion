@@ -45,10 +45,12 @@ AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
   problem->add_cols(constant.VariablesCount, 0, hebdo.LinearCost.data(),
                     tmp.data(), {}, {}, hebdo.Xmin.data(), hebdo.Xmax.data());
 
+  std::span<char> signs(hebdo.Direction.data(), hebdo.Direction.size());
+  auto LEG_vector = convertSignToLEG(signs);
   problem->add_rows(
       constant.ConstraintesCount, constant.CoeffCount,
-      convertSignToLEG(hebdo.Direction.data()).data(), hebdo.RHS.data(),
-      {}, reinterpret_cast<const int *>(constant.Mdeb.data()), reinterpret_cast<const int *>(constant.ColumnIndexes.data()),
+      convertSignToLEG(signs).data(), hebdo.RHS.data(),
+      nullptr, reinterpret_cast<const int *>(constant.Mdeb.data()), reinterpret_cast<const int *>(constant.ColumnIndexes.data()),
       constant.ConstraintsMatrixCoeff.data(), {});
   for (int i = 0; i < constant.VariablesCount; ++i) {
     problem->chg_col_name(i, hebdo.variables[i]);
@@ -64,26 +66,21 @@ AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
   // définissant une autre implémentation de IProblemVariablesProviderPort
   return problem;
 }
+
 std::vector<char> AntaresProblemToXpansionProblemTranslator::convertSignToLEG(
-    char* data) {
+    std::span<char> data) {
   std::vector<char> LEG_vector;
-  char c = *data;
-  while (c != '\0') {
+  //Exclude final '\0' character
+  std::ranges::transform(data, std::back_inserter(LEG_vector), [](char c) {
     if ('=' == c) {
-      LEG_vector.push_back('E');
-      c = *++data;
-      continue;
+      return 'E';
     } else if ('<' == c) {
-      LEG_vector.push_back('L');
-      c = *++data;
-      continue;
+      return 'L';
     } else if ('>' == c) {
-      LEG_vector.push_back('G');
-      c = *++data;
-      continue;
+      return 'G';
     } else {
       throw std::runtime_error(LOGLOCATION + "Bad character parsing " + c);
     }
-  }
+  });
   return LEG_vector;
 }
