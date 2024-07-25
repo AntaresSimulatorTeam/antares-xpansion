@@ -56,6 +56,8 @@ jobs:
           sudo apt-get update --fix-missing
           sudo apt-get install -y ccache
           sudo apt-get install -y g++-10 gcc-10
+          sudo apt-get install -y libopenmpi-dev
+      
 
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.3
@@ -84,6 +86,11 @@ jobs:
           sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30
           sudo update-alternatives --set c++ /usr/bin/g++
 
+      - name: Compile Boost
+        uses: ./.github/workflows/compile-boost
+        with:
+          prefix: "${GITHUB_WORKSPACE}/deps"          
+          
       - uses: lukka/get-cmake@latest
         with:
           useLocalCache: false

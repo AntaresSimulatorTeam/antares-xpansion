@@ -31,8 +31,8 @@ BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
 }
 
 std::filesystem::path BendersBase::OuterloopOptionsFile() const {
-  return std::filesystem::path(
-         _options.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE);
+  return std::filesystem::path(_options.INPUTROOT) /
+         _options.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE;
 }
 
 /*!
@@ -400,8 +400,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
               if (_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
                 std::vector<double> solution;
                 worker->get_solution(solution);
-                subproblem_data.outer_loop_criterions =
-                    ComputeOuterLoopCriterion(name, solution);
+                ComputeOuterLoopCriterion(name, solution, subproblem_data);
               }
               worker->get_subgradient(subproblem_data.var_name_and_subgradient);
               worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
@@ -1023,30 +1022,30 @@ std::vector<double> BendersBase::GetOuterLoopCriterionAtBestBenders() const {
               : outer_loop_criterion_[_data.best_it - 1]);
 }
 
-std::vector<double> BendersBase::ComputeOuterLoopCriterion(
+void BendersBase::ComputeOuterLoopCriterion(
     const std::string &subproblem_name,
-    const std::vector<double> &sub_problem_solution) {
+    const std::vector<double> &sub_problem_solution,
+    PlainData::SubProblemData &subproblem_data) {
   auto outer_loop_input_size = var_indices_.size(); // num of patterns
-  std::vector<double> outer_loop_criterion_per_sub_problem(outer_loop_input_size,
-                                                           {});
+  subproblem_data.outer_loop_criterions.resize(outer_loop_input_size, 0.);
+  subproblem_data.outer_loop_patterns_values.resize(outer_loop_input_size, 0.);
+
   auto subproblem_weight = SubproblemWeight(_data.nsubproblem, subproblem_name);
   double criterion_count_threshold =
       outer_loop_input_data_.CriterionCountThreshold();
-  auto number_of_scenarios =
-      _options.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_NUMBER_OF_SCENARIOS;
 
   for (int pattern_index(0); pattern_index < outer_loop_input_size;
        ++pattern_index) {
     auto pattern_variables_indices = var_indices_[pattern_index];
     for (auto variables_index : pattern_variables_indices) {
-      if (auto solution = sub_problem_solution[variables_index];
-          solution > criterion_count_threshold)
+      const auto &solution = sub_problem_solution[variables_index];
+      subproblem_data.outer_loop_patterns_values[pattern_index] += solution;
+      if (solution > criterion_count_threshold)
         // 1h of no supplied energy
-        outer_loop_criterion_per_sub_problem[pattern_index] +=
+        subproblem_data.outer_loop_criterions[pattern_index] +=
             subproblem_weight;
     }
   }
-  return outer_loop_criterion_per_sub_problem;
 }
 
 double BendersBase::ExternalLoopLambdaMax() const {

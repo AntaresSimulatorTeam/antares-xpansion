@@ -8,6 +8,7 @@
 struct OuterLoopCurrentIterationData{
   int benders_num_run = 0;
   std::vector<double> outer_loop_criterion = {};
+  std::vector<double> outer_loop_patterns_values = {};
   double max_criterion = 0.;
   double max_criterion_best_it = 0.;
   double outer_loop_bilevel_best_ub = +1e20;

@@ -184,3 +184,17 @@ The optimality gap is the difference (either absolute or relative) between the l
 ### The Benders by batch algorithm
 
 In the classical Benders algorithm, all subproblems are solved at each iteration, resulting in \\(52 N\\) resolutions and as many cuts are added in the master problem. This can be quite time-consuming. The idea of the Benders by batch algorithm is to solve subproblems by batch and stop solving them at a given iteration once we know that the master solution is not optimal. Each iteration consists in fewer subproblems resolution (and fewer cuts added to the master) but we need more iterations to converge. Overall the tradeoff makes the Benders by batch algorithm usually faster than the classical Benders method. A comprehensive description of the Benders by batch algorithm can be found in the thesis of Xavier Blanchot[@blanchot_solving_2022].
+
+## Reliability-constrained investment problem
+
+Starting from version 1.3.0, Antares-Xpansion can take into account a reliability constraint on the maximum expected number of hours of loss of load. This means that the user is able to specify, for each area, an expected number of hours of loss a load that should not be exceeded, see [Adequacy criterion](../get-started/adequacy-criterion.md). Antares-Xpansion will output a solution that satisfy this reliability criterion using a Benders-based matheuristic designed in Chapter 5 of the thesis of Xavier Blanchot[@blanchot_solving_2022].
+
+The heuristic is based on the insight that increasing the investment cost is strongly correlated to a decrease in loss of load. It works by iteratively solving the classical investment problem (without the reliability constraint) to which we add a minimum investment cost constraint \\(c^{\top}x \geq \Lambda\\). 
+
+After each resolution, the expected loss of load is checked and the minimum investment cost \\(\Lambda\\) is adjusted using a dichotomy of an interval \\([\underline{\Lambda}, \overline{\Lambda}]\\). If we denote by \\(\Lambda^{(k)}, \underline{\Lambda}^{(k)}, \overline{\Lambda}^{(k)}\\) the values from the \\(k\\)-th resolution of the investment problem:
+    
+- If there is too much loss of load, we increase \\(\underline{\Lambda}\\) : \\(\underline{\Lambda}^{(k+1)} = \Lambda^{(k)}\\)`, 
+- Otherwise, we decrease \\(\overline{\Lambda}\\): \\(\overline{\Lambda}^{(k+1)} = \Lambda^{(k)}\\)`.
+- Then, we take \\(\Lambda^{(k+1)} = \frac{\overline{\Lambda}^{(k+1)}-\underline{\Lambda}^{(k+1)}}{2}\\)
+    
+The algorithm stops when \\(\overline{\Lambda}^{(k+1)}-\underline{\Lambda}^{(k+1)} < \varepsilon\\) where \\(\varepsilon\\) is user-defined. Antares-Xpansion outputs a feasible solution for the reliability-constrained that should be of good quality thanks to the initial insight linking investment cost and loss of load. This procedure is a heuristic so there is no guarantee to get the theoretical optimal solution.

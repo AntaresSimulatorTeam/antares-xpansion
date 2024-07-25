@@ -44,6 +44,7 @@ nav:
         - 'Define the candidates': 'user-guide/get-started/candidate-definition.md'
         - 'Settings of the algorithm': 'user-guide/get-started/settings-definition.md'
       - 'Launch the optimization': 'user-guide/get-started/launching-optimization.md'
+      - 'Adequacy criterion': 'user-guide/get-started/adequacy-criterion.md'
       - 'Sensitivity analysis': 'user-guide/get-started/sensitivity-analysis.md'
   - 'Developer guide': 
     - 'Install from sources':
@@ -85,8 +86,8 @@ markdown_extensions:
       permalink: true
       toc_depth: 3
   - pymdownx.emoji:
-      emoji_index: !!python/name:materialx.emoji.twemoji
-      emoji_generator: !!python/name:materialx.emoji.to_svg
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
   - admonition
   - pymdownx.details
   - pymdownx.superfences

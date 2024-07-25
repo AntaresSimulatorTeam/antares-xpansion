@@ -1,6 +1,6 @@
 {
   "name": "antares-xpansion",
-  "version-string": "1.3.0",
+  "version-string": "1.3.1",
   "builtin-baseline": "943c5ef1c8f6b5e6ced092b242c8299caae2ff01",
   "vcpkg-configuration": {
     "overlay-ports": [
@@ -14,15 +14,18 @@
     "coin-or-cbc",
     {
       "name": "boost-mpi",
-      "version>=": "1.81.0"
+      "version>=": "1.81.0",
+      "platform": "windows"
     },
     {
       "name": "boost-program-options",
-      "version>=": "1.81.0"
+      "version>=": "1.81.0",
+      "platform": "windows"
     },
     {
       "name": "boost-algorithm",
-      "version>=": "1.81.0"
+      "version>=": "1.81.0",
+      "platform": "windows"
     },
     "yaml-cpp",
     {
