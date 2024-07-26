@@ -7,6 +7,8 @@ v1.3.1 (07/2024)
 ### Features
 
 - **outer_loop** option is renamed **adequacy_criterion**
+- New output file **criterions.txt** is added under **lp/** dir to store adequacy criterions for all valid patterns (area+criterion)
+- New output file **PositiveUnsuppliedEnergy.txt** is added under **lp/** dir to store the amount of unsupplied energy for all valid patterns (area+criterion)
 
 ### Bug Fixes
 
