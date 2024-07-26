@@ -47,5 +47,5 @@ Several log files are written:
 
 - `reportbenders.txt` gives information on the progress of the algorithm with an operational perspective,
 - `benders_solver.log` contains more detailed information on all data of interest to follow the progress of the algorithm (`lambda_min`, `lambda_max`, detailed solving times, ...).
-- New output file **criterions.txt** is added under **lp/** dir to store adequacy criterions for all valid patterns (area+criterion)
-- New output file **PositiveUnsuppliedEnergy.txt** is added under **lp/** dir to store the amount of unsupplied energy for all valid patterns (area+criterion)
+- New output file `criterions.txt` is added under `lp/` dir to store adequacy criterions for all valid patterns (area+criterion)
+- New output file `PositiveUnsuppliedEnergy.txt` is added under `lp/` dir to store the amount of unsupplied energy for all valid patterns (area+criterion)
