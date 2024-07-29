@@ -13,7 +13,6 @@ MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau,
                                    double outer_loop_stopping_threshold,
                                    const std::string &name)
     : benders_(std::move(benders)),
-      lambda_(0),
       outer_loop_stopping_threshold_(outer_loop_stopping_threshold),
       min_invest_constraint_name_(name) {
   CheckTau(tau);
