@@ -5,7 +5,8 @@
 namespace Outerloop {
 class CriterionComputation {
  public:
-  CriterionComputation(const OuterLoopInputData &outer_loop_input_data);
+  explicit CriterionComputation(
+      const OuterLoopInputData &outer_loop_input_data);
   void SearchVariables(const std::vector<std::string> &variables);
   // outer loop criterion per pattern
   void ComputeOuterLoopCriterion(
@@ -17,8 +18,6 @@ class CriterionComputation {
 
  private:
   std::vector<std::vector<int>> var_indices_;
-
- private:
   const OuterLoopInputData &outer_loop_input_data_;
 };
 }  // namespace Outerloop
