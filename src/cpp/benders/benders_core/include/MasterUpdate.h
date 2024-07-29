@@ -13,8 +13,8 @@ class MasterUpdateBase : public IMasterUpdate {
                             double outer_loop_stopping_threshold,
                             const std::string &name);
   bool Update(double lambda_min, double lambda_max) override;
-  void Init() override;
   [[nodiscard]] double Rhs() const override;
+  virtual ~MasterUpdateBase() = default;
 
  private:
   void CheckTau(double tau);

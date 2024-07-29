@@ -21,39 +21,12 @@ MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau,
 
 void MasterUpdateBase::CheckTau(double tau) {
   if (tau >= 0 && tau <= 1) {
-    // TODO log
     dichotomy_weight_coeff_ = tau;
   }
 }
 
-void MasterUpdateBase::Init() {
-  // check lambda_max
-  // if (lambda_max <= 0 || lambda_max < lambda_min) {
-  //   // TODO log
-  //   SetLambdaMaxToMaxInvestmentCosts();
-  // }
-}
 
 bool MasterUpdateBase::Update(double lambda_min, double lambda_max) {
-  // if (is_criterion_high) {
-  //   lambda_min = lambda_;
-  // } else {
-  //   lambda_max =
-  //       std::min(lambda_max, benders_->GetBestIterationData().invest_cost);
-  // }
-  // WorkerMasterData workerMasterData = benders_->BestIterationWorkerMaster();
-  // double invest_cost = workerMasterData._invest_cost;
-  // double overall_cost = invest_cost + workerMasterData._operational_cost;
-  // if (outerLoopBiLevel_.Update_bilevel_data_if_feasible(
-  //         workerMasterData._cut_trace,
-  //         benders_
-  //             ->GetOuterLoopCriterionAtBestBenders() /*/!\ must be at best
-  //             it*/,
-  //         overall_cost)) {
-  //   lambda_max = std::min(lambda_max, invest_cost);
-  // } else {
-  //   lambda_min = lambda_;
-  // }
 
   stop_update_ =
       std::abs(lambda_max - lambda_min) < outer_loop_stopping_threshold_;

@@ -5,12 +5,11 @@ OuterLoopBenders::OuterLoopBenders(
     CriterionComputation& criterion_computation,
     std::shared_ptr<IMasterUpdate> master_updater,
     std::shared_ptr<ICutsManager> cuts_manager, pBendersBase benders,
-    mpi::environment& env, mpi::communicator& world)
+    mpi::communicator& world)
     : OuterLoop(criterion_computation),
       master_updater_(std::move(master_updater)),
       cuts_manager_(std::move(cuts_manager)),
       benders_(std::move(benders)),
-      env_(env),
       world_(world) {
   loggers_.AddLogger(benders_->_logger);
   loggers_.AddLogger(benders_->mathLoggerDriver_);
@@ -27,7 +26,6 @@ void OuterLoopBenders::PrintLog() {
   msg << "*** Adequacy criterion loop: " << benders_->GetBendersRunNumber();
   logger->display_message(msg.str());
   msg.str("");
-  // TODO criterion per pattern (aka prefix+area) at best Benders ?
   const auto outer_loop_data = benders_->GetOuterLoopData();
   msg << "*** Max Criterion: " << std::scientific << std::setprecision(10)
       << outer_loop_data.max_criterion_best_it;
@@ -71,8 +69,6 @@ bool OuterLoopBenders::UpdateMaster() {
 OuterLoopBenders::~OuterLoopBenders() {
   benders_->mathLoggerDriver_->Print(benders_->GetCurrentIterationData());
   benders_->SaveOuterLoopSolutionInOutputFile();
-  // TODO general-case
-  //  cuts_manager_->Save(benders_->AllCuts());
   benders_->free();
 }
 
@@ -91,10 +87,6 @@ void OuterLoopBenders::OuterLoopCheckFeasibility() {
                                          obj_coeff.size() - 1);
     benders_->UpdateOverallCosts();
     OuterLoopBilevelChecks();
-    // de-comment for general case
-    //  cuts_manager_->Save(benders_->AllCuts());
-    // auto cuts = cuts_manager_->Load();
-    // High
     if (!outer_loop_biLevel_.FoundFeasible()) {
       std::ostringstream err_msg;
       err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
@@ -108,8 +100,6 @@ void OuterLoopBenders::OuterLoopCheckFeasibility() {
 
 void OuterLoopBenders::InitExternalValues(bool is_bilevel_check_all,
                                           double lambda) {
-  // _data.outer_loop_current_iteration_data.outer_loop_criterion = 0;
-  // _data.outer_loop_current_iteration_data.benders_num_run = 1;
   is_bilevel_check_all_ = is_bilevel_check_all;
   outer_loop_biLevel_.Init(
       benders_->MasterObjectiveFunctionCoeffs(),

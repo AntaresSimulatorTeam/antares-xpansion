@@ -17,8 +17,7 @@ class OuterLoopBenders : public OuterLoop {
   explicit OuterLoopBenders(CriterionComputation& criterion_computation,
                             std::shared_ptr<IMasterUpdate> master_updater,
                             std::shared_ptr<ICutsManager> cuts_manager,
-                            pBendersBase benders, mpi::environment& env,
-                            mpi::communicator& world);
+                            pBendersBase benders, mpi::communicator& world);
   //  void Run() override;
   void OuterLoopCheckFeasibility() override;
   void OuterLoopBilevelChecks() override;
@@ -36,7 +35,6 @@ class OuterLoopBenders : public OuterLoop {
   std::shared_ptr<ICutsManager> cuts_manager_;
   pBendersBase benders_;
   BendersLoggerBase loggers_;
-  mpi::environment& env_;
   mpi::communicator& world_;
   bool is_bilevel_check_all_ = false;
   void InitExternalValues(bool is_bilevel_check_all, double lambda);
