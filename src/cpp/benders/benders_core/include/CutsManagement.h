@@ -15,7 +15,6 @@ class CutsManagerRunTime : public ICutsManager {
  public:
   void Save(const WorkerMasterDataVect& benders_cuts) override;
   WorkerMasterDataVect Load() override;
-  virtual ~CutsManagerRunTime() = default;
 
  private:
   WorkerMasterDataVect benders_cuts_;

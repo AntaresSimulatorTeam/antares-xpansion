@@ -49,7 +49,6 @@ void OuterLoopBiLevel::Update(const Point &x, double overall_cost,
 void OuterLoopBiLevel::Init(const std::vector<double> &obj,
                             const Point &max_invest,
                             const VariableMap &master_variable) {
-  // TODO log
   SetLambdaMaxToMaxInvestmentCosts(obj, max_invest, master_variable);
 
   found_feasible_ = false;

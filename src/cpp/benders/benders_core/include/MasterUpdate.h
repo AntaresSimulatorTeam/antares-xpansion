@@ -14,7 +14,6 @@ class MasterUpdateBase : public IMasterUpdate {
                             const std::string &name);
   bool Update(double lambda_min, double lambda_max) override;
   [[nodiscard]] double Rhs() const override;
-  virtual ~MasterUpdateBase() = default;
 
  private:
   void CheckTau(double tau);
