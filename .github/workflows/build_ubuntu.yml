@@ -238,7 +238,7 @@ jobs:
       - name: run launcher
         run: |
           sudo apt-get update -y
-          sudo apt-get openmpi-bin -y
+          sudo apt-get install openmpi-bin -y
           ls
           ./antares-xpansion-launcher -h
           ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
@@ -258,7 +258,7 @@ jobs:
       - name: run launcher
         run: |
           sudo apt-get update -y
-          sudo apt-get openmpi-bin -y
+          sudo apt-get install openmpi-bin -y
           ls
           ./antares-xpansion-launcher -h
           ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
