@@ -237,10 +237,12 @@ jobs:
 
       - name: run launcher
         run: |
+          apt-get update -y
+          apt-get openmpi-bin -y
           ls
           ./antares-xpansion-launcher -h
-          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
-          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates --allow-run-as-root
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2 --allow-run-as-root
 
   test_single_file_asset:
     runs-on: ubuntu-latest
@@ -255,10 +257,12 @@ jobs:
           tar --strip-components=1 -xzf ${{needs.build.outputs.SINGLE_FILE_NAME}}
       - name: run launcher
         run: |
+          apt-get update -y
+          apt-get openmpi-bin -y
           ls
           ./antares-xpansion-launcher -h
-          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
-          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates --allow-run-as-root
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2 --allow-run-as-root
     
 
   release:
