@@ -233,7 +233,8 @@ jobs:
           name: ${{needs.build.outputs.TGZ_NAME}}
       - name: extract
         run: |
-          tar -xzf ${{needs.build.outputs.TGZ_NAME}}
+          tar -xvf ${{needs.build.outputs.TGZ_NAME}}
+          ls
       - name: run launcher
         run: |
           ./antares-xpansion-launcher -h
@@ -250,7 +251,8 @@ jobs:
           name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
       - name: extract
         run: |
-          tar -xzf ${{needs.build.outputs.SINGLE_FILE_NAME}}
+          tar -xvf ${{needs.build.outputs.SINGLE_FILE_NAME}}
+          ls
       - name: run launcher
         run: |
           ./antares-xpansion-launcher -h
