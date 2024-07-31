@@ -33,7 +33,7 @@ const auto STUDY_PATH =
     std::filesystem::path("data_test") / "external_loop_test";
 const auto LP_DIR = STUDY_PATH / "lp";
 const auto OPTIONS_FILE = LP_DIR / "options.json";
-const auto OUTER_OPTIONS_FILE = LP_DIR / "adequacy_criterion.yml";
+const auto OUTER_OPTIONS_FILE = "adequacy_criterion.yml";
 
 class MasterUpdateBaseTest : public ::testing::TestWithParam<std::string> {
  public:
@@ -97,7 +97,7 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   benders_options.SOLVER_NAME = GetParam();
   benders_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = true;
   benders_options.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE =
-      OUTER_OPTIONS_FILE.string();
+      OUTER_OPTIONS_FILE;
   benders = std::make_shared<BendersMpi>(benders_options, logger, writer, *penv,
                                          *pworld, math_log_driver);
   benders->set_input_map(coupling_map);

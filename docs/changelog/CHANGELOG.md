@@ -12,28 +12,32 @@ v1.3.1 (07/2024)
 
 ### Features
 
-"outer_loop" option is renamed "adequacy_criterion"
+- **outer_loop** option is renamed **adequacy_criterion**
+
 ### Bug Fixes
 
-Fix Mpi issues on single file assets
+- Fix Mpi issues on single file assets
 
 ### Doc
 
-The doc has been updated with a description of the adequacy criterion feature
+- The doc has been updated with a description of the adequacy criterion feature
 
 v1.3.0 (06/2024)
 --------------------------------------------------------
 
+### ⚠️ Single-file versions in Ubuntu are known to have MPI-related issues. Please use the other ones.
+
 ### Features
 
-Embedding Mpi in Windows
-Allow sensitivity study to run unzipped study
-First Implementation of Benders Outer Loop
+- Embedding Mpi in Windows
+- Allow sensitivity study to run unzipped study
+- Allow to specify a security criterion in number of hours of loss of load in the study. This feature is referred as outer_loop (renamed to adequacy_criterion in 1.3.1)
+
 ### Bug Fixes
 
-Duplicate Xpress loading messages
-remove whitespace from Xpress path on Windows 
-fix truncated xpress path on linux
+- Duplicate Xpress loading messages
+- Remove whitespace from Xpress path on Windows 
+- Fix truncated xpress path on linux
 
 v1.2.2 (02/2024)
 --------------------------------------------------------
