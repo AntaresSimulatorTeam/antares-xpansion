@@ -6,6 +6,7 @@ on:
     branches:
       - develop
       - dependabot/*
+      - release/*
   pull_request:
   release:
     types: [ created ]
@@ -112,14 +113,6 @@ jobs:
         with:
           cmake-version: '3.28.x'
 
-      #Lukka's action doesn't work on runner.
-      #jwlawson's action doesn't work in ACT
-      #I left this here to quicly switch between one or the other
-      #      - uses: lukka/get-cmake@latest
-      #        with:
-      #          useLocalCache: false
-      #          useCloudCache: true
-
       - name: Checkout xpressmp linux
         uses: actions/checkout@v3 #keep v3
         with:
@@ -139,18 +132,12 @@ jobs:
           ortools-url: ${{env.ORTOOLS_URL}}
           ortools-dir: ${{env.ORTOOLS_DIR}}
 
-      - name: openmpi-devel
+      - name: repo update
         run: |
           yum update
           sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo
           sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
           sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
-          yum install -y openmpi-devel 
-      
-      - name: Compile Boost
-        uses: ./.github/workflows/compile-boost
-        with:
-          prefix: "${GITHUB_WORKSPACE}/deps"
       
       - name: Install dependencies
         run: |
@@ -182,8 +169,6 @@ jobs:
       - name: Configure
         run: |
           source /opt/rh/devtoolset-10/enable
-          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-          export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake -B _build -S . \
                  -DBUILD_TESTING=ON \
                  -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/deps;${{env.ORTOOLS_DIR}}/install" \
@@ -210,8 +195,8 @@ jobs:
         timeout-minutes: 120
         shell: bash
         run: |
-          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-          export PATH=/usr/lib64/openmpi/bin:${{ env.XPRS_LIB_Path_CONTAINER }}:$PATH
+          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
+          export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
           export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build
           ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"

@@ -66,12 +66,7 @@ jobs:
           sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 30
           sudo update-alternatives --set cc /usr/bin/gcc
           sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30
-          sudo update-alternatives --set c++ /usr/bin/g++
-      
-      - name: Compile Boost
-        uses: ./.github/workflows/compile-boost
-        with:
-          prefix: "${GITHUB_WORKSPACE}/deps"     
+          sudo update-alternatives --set c++ /usr/bin/g++ 
       
       - name: Read antares-solver version
         id: antares-version

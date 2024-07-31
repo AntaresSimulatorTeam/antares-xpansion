@@ -6,6 +6,7 @@ on:
     branches:
       - develop
       - dependabot/*
+      - release/*
   pull_request:
   release:
     types: [ created ]
@@ -63,12 +64,11 @@ jobs:
     steps:
       - name: Install System
         run: |
-          dnf install -y epel-release git wget rpm-build redhat-lsb-core openmpi-devel
+          dnf install -y epel-release git wget rpm-build redhat-lsb-core
           dnf install -y unzip libuuid-devel gcc-toolset-11 python3-devel zlib-devel
           #make gcc &co available system wide and "action wide"
           source /opt/rh/gcc-toolset-11/enable
           echo $PATH >> $GITHUB_PATH
-      
 
       - name: Config OR-Tools URL
         run: |
@@ -85,11 +85,6 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: true
-
-      - name: Compile Boost
-        uses: ./.github/workflows/compile-boost
-        with:
-          prefix: "${GITHUB_WORKSPACE}/deps"          
           
       - name: Checkout xpressmp linux
         uses: actions/checkout@v4
@@ -139,8 +134,6 @@ jobs:
 
       - name: Configure
         run: |
-          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:$LD_LIBRARY_PATH
-          export PATH=/usr/lib64/openmpi/bin:$PATH
           cmake -B _build -S . \
                  -DBUILD_TESTING=ON \
                  -DCMAKE_BUILD_TYPE=Release \
@@ -159,8 +152,8 @@ jobs:
         timeout-minutes: 120
         shell: bash
         run: |
-          export PATH=/usr/lib64/openmpi/bin:$PATH
-          export LD_LIBRARY_PATH=/usr/lib64/openmpi/lib:${{ env.XPRS_LIB_Path_CONTAINER }}:$LD_LIBRARY_PATH
+          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
+          export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
           export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build
           ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
