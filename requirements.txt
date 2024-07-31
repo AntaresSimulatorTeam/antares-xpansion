@@ -1,5 +1,6 @@
 wheel
-pyinstaller>=4.3
+pyinstaller==4.5.1; platform_system=='Linux' #Version 6 cause issue when packaging mpi see #882
+pyinstaller>=4.5.1; platform_system=='Windows' #Issues with 4.5 on Windows. Proper condition should be on python version
 pyyaml
 dataclasses
 psutil==5.8.0

@@ -14,18 +14,15 @@
     "coin-or-cbc",
     {
       "name": "boost-mpi",
-      "version>=": "1.81.0",
-      "platform": "windows"
+      "version>=": "1.81.0"
     },
     {
       "name": "boost-program-options",
-      "version>=": "1.81.0",
-      "platform": "windows"
+      "version>=": "1.81.0"
     },
     {
       "name": "boost-algorithm",
-      "version>=": "1.81.0",
-      "platform": "windows"
+      "version>=": "1.81.0"
     },
     "yaml-cpp",
     {
