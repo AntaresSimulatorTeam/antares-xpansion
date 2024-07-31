@@ -4,7 +4,8 @@ Antares-Xpansion changelog
 v1.3.2 (07/2024)
 --------------------------------------------------------
 ### Bug Fixes
-Fix an issue where the application would crash if a user specified a value for "playlist_reset" in general_data.ini
+* Fix an issue where the application would crash if a user specified a value for "playlist_reset" in general_data.ini
+* Fix an issue with "singleFiles" assets on Ubuntu not working due to mpi runtime library not being found
 
 v1.3.1 (07/2024)
 --------------------------------------------------------
