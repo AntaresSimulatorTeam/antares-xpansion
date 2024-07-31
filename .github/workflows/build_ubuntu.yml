@@ -24,8 +24,8 @@ jobs:
         os: [ ubuntu-20.04 ]
         xprs: [
           #{ value: XPRESS-ON, ref: 8.13a },
-          { value: XPRESS-ON, ref: 9.2.5 },
-          #       { value: XPRESS-OFF }
+          #{ value: XPRESS-ON, ref: 9.2.5 },
+                 { value: XPRESS-OFF }
         ]
     env:
       XPRESSDIR: ${{ github.workspace }}/xpress
@@ -115,7 +115,6 @@ jobs:
         run: |
           git submodule update --remote --init vcpkg
           pushd vcpkg
-          git fetch --unshallow
           ./bootstrap-vcpkg.sh -disableMetrics
 
       - name: Restore vcpkg binary dir from cache
@@ -233,10 +232,11 @@ jobs:
           name: ${{needs.build.outputs.TGZ_NAME}}
       - name: extract
         run: |
-          tar -xvf ${{needs.build.outputs.TGZ_NAME}}
-          ls
+          tar --strip-components=1 -xzf ${{needs.build.outputs.TGZ_NAME}}
+
       - name: run launcher
         run: |
+          ls
           ./antares-xpansion-launcher -h
           ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
           ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
@@ -251,10 +251,10 @@ jobs:
           name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
       - name: extract
         run: |
-          tar -xvf ${{needs.build.outputs.SINGLE_FILE_NAME}}
-          ls
+          tar --strip-components=1 -xzf ${{needs.build.outputs.SINGLE_FILE_NAME}}
       - name: run launcher
         run: |
+          ls
           ./antares-xpansion-launcher -h
           ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
           ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
