@@ -26,11 +26,10 @@ runs:
     - name: download-extract antares
       shell: bash
       run: |
-        version=$(echo ${{inputs.antares-version}} | sed 's/-.*//')
         mkdir -p deps
-        wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{inputs.antares-version}}/antares-${version}-${{inputs.os-full-name}}.tar.gz
-        tar -xvf antares-${version}-${{inputs.os-full-name}}.tar.gz -C deps --strip-components=1
-        rm -rf antares-${version}-${{inputs.os-full-name}}.tar.gz
+        wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{inputs.antares-version}}/antares-${{inputs.antares-version}}-${{inputs.os-full-name}}.tar.gz
+        tar -xvf antares-${{inputs.antares-version}}-${{inputs.os-full-name}}.tar.gz -C deps --strip-components=1
+        rm -rf antares-${{inputs.antares-version}}-${{inputs.os-full-name}}.tar.gz
 
     - name: Download & extract OR-Tools
       shell: bash
