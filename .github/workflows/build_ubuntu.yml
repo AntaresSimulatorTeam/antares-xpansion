@@ -231,17 +231,18 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{needs.build.outputs.TGZ_NAME}}
-      - name: extract
+      - name: setup
         run: |
           tar --strip-components=1 -xzf ${{needs.build.outputs.TGZ_NAME}}
+          sudo apt-get update -y
+          sudo apt-get install openmpi-bin -y
 
       - name: run launcher
         run: |
-          sudo apt-get update -y
-          sudo apt-get install openmpi-bin -y
-          ls
-          ./antares-xpansion-launcher -h
           ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
+
+      - name: run launcher parallel
+        run: |
           ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
 
   test_single_file_asset:
@@ -252,18 +253,18 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
-      - name: extract
+      - name: setup
         run: |
           tar --strip-components=1 -xzf ${{needs.build.outputs.SINGLE_FILE_NAME}}
-      - name: run launcher
-        run: |
           sudo apt-get update -y
           sudo apt-get install openmpi-bin -y
-          ls
-          ./antares-xpansion-launcher -h
+
+      - name: run launcher
+        run: |
           ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
-          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
-    
+      - name: run launcher parallel
+        run: |
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2    
 
   release:
     runs-on: ubuntu-latest
