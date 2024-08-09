@@ -40,11 +40,34 @@ runs:
         unzip ortools.zip
         rm ortools.zip
 
-    - name: download-extract sirius
+    #It's simpler to split each case than to try and define a general case and map OS names with Sirius asset names
+    - name: download-extract sirius centos
       shell: bash
+      if: ${{ inputs.os-full-name == 'Centos-7.9.2009'}}
       run: |
-        wget https://github.com/rte-france/sirius-solver/releases/download/antares-integration-v1.5/${{inputs.os-full-name}}_sirius-solver.zip
-        unzip ${{inputs.os-full-name}}_sirius-solver.zip
-        dirname=`echo "${{inputs.os-full-name}}_sirius-solver" | awk '{print tolower($0)}'`
-        cp -r ${dirname}-install/* deps
-        rm -rf ${{inputs.os-full-name}}_sirius-solver.zip
+        wget https://github.com/rte-france/sirius-solver/releases/download/antares-integration-v1.5/centos-7_sirius-solver.zip
+        unzip centos-7_sirius-solver.zip
+        cp -r centos-7-install/* deps
+        rm -rf centos-7_sirius-solver.zip
+        rm -rf centos-7-install
+        
+
+    - name: download-extract sirius ubuntu
+      shell: bash
+      if: ${{ inputs.os-full-name == 'Ubuntu-20.04' }}
+      run: |
+        wget https://github.com/rte-france/sirius-solver/releases/download/antares-integration-v1.5/ubuntu-20.04_sirius-solver.zip
+        unzip ubuntu-20.04_sirius-solver.zip
+        cp -r ubuntu-20.04-install/* deps
+        rm -rf ubuntu-20.04_sirius-solver.zip
+        rm -rf ubuntu-20.04-install
+
+    - name: download-extract sirius oracle 8
+      shell: bash
+      if: ${{ inputs.os-full-name == 'oraclelinux-8'}}
+      run: |
+        wget https://github.com/rte-france/sirius-solver/releases/download/antares-integration-v1.5/oraclelinux-8_sirius-solver.zip
+        unzip oraclelinux-8_sirius-solver.zip
+        cp -r oraclelinux-8_sirius-solver-install/* deps
+        rm -rf oraclelinux-8_sirius-solver.zip
+        rm -rf oraclelinux-8_sirius-solver-install
