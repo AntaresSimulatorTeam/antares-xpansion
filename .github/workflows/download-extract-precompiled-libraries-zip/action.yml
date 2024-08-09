@@ -40,3 +40,12 @@ runs:
         wget ${{inputs.ortools-url}} -O ortools.zip
         unzip ortools.zip
         rm ortools.zip
+
+    - name: download-extract sirius
+      shell: bash
+      run: |
+        wget https://github.com/rte-france/sirius-solver/releases/download/antares-integration-v1.5/${{inputs.os-full-name}}_sirius-solver.zip
+        unzip ${{inputs.os-full-name}}_sirius-solver.zip
+        dirname=`echo "${{inputs.os-full-name}}_sirius-solver" | awk '{print tolower($0)}'`
+        cp -r ${dirname}-install/* deps
+        rm -rf ${{inputs.os-full-name}}_sirius-solver.zip
