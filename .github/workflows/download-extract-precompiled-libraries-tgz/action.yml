@@ -47,9 +47,9 @@ runs:
       run: |
         wget https://github.com/rte-france/sirius-solver/releases/download/antares-integration-v1.5/centos-7_sirius-solver.zip
         unzip centos-7_sirius-solver.zip
-        cp -r centos-7-install/* deps
+        cp -r centos-7_sirius-solver-install/* deps
         rm -rf centos-7_sirius-solver.zip
-        rm -rf centos-7-install
+        rm -rf centos-7_sirius-solver-install
         
 
     - name: download-extract sirius ubuntu
@@ -58,9 +58,9 @@ runs:
       run: |
         wget https://github.com/rte-france/sirius-solver/releases/download/antares-integration-v1.5/ubuntu-20.04_sirius-solver.zip
         unzip ubuntu-20.04_sirius-solver.zip
-        cp -r ubuntu-20.04-install/* deps
+        cp -r ubuntu-20.04_sirius-solver-install/* deps
         rm -rf ubuntu-20.04_sirius-solver.zip
-        rm -rf ubuntu-20.04-install
+        rm -rf ubuntu-20.04_sirius-solver-install
 
     - name: download-extract sirius oracle 8
       shell: bash
