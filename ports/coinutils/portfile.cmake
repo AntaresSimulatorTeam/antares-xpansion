@@ -6,7 +6,7 @@ vcpkg_from_github(
         HEAD_REF master
 )
 
-if (win32)
+if (WIN32)
     vcpkg_check_linkage(ONLY_STATIC_LIBRARY)
 endif()
 

@@ -5,7 +5,7 @@ vcpkg_from_github(
         SHA512 c6a90007dc3177bb37800ae5c5c632403437df3a9ee54dfecf433e4c8b2ea403047c179ffdeef33b3aeab00c7ad2d859f4f56cca4488502dca8866889d909f1f
         HEAD_REF master
 )
-if (win32)
+if (WIN32)
     vcpkg_check_linkage(ONLY_STATIC_LIBRARY)
 endif()
 vcpkg_cmake_configure(
