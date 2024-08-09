@@ -1,12 +1,20 @@
 Antares-Xpansion changelog
 =================
 
+v1.3.2 (07/2024)
+--------------------------------------------------------
+### Bug Fixes
+* Fix an issue where the application would crash if a user specified a value for "playlist_reset" in general_data.ini
+* Fix an issue with "singleFiles" assets on Ubuntu not working due to mpi runtime library not being found
+
 v1.3.1 (07/2024)
 --------------------------------------------------------
 
 ### Features
 
 - **outer_loop** option is renamed **adequacy_criterion**
+- New output file **criterions.txt** is added under **lp/** dir to store adequacy criterions for all valid patterns (area+criterion)
+- New output file **PositiveUnsuppliedEnergy.txt** is added under **lp/** dir to store the amount of unsupplied energy for all valid patterns (area+criterion)
 
 ### Bug Fixes
 
