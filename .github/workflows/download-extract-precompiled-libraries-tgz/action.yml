@@ -64,7 +64,7 @@ runs:
 
     - name: download-extract sirius oracle 8
       shell: bash
-      if: ${{ inputs.os-full-name == 'oraclelinux-8'}}
+      if: ${{ inputs.os-full-name == 'OracleServer-8.10'}}
       run: |
         wget https://github.com/rte-france/sirius-solver/releases/download/antares-integration-v1.5/oraclelinux-8_sirius-solver.zip
         unzip oraclelinux-8_sirius-solver.zip
