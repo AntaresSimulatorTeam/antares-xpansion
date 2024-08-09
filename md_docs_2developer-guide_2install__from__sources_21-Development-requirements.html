@@ -134,8 +134,8 @@ $(document).ready(function(){initNavTree('md_docs_2developer-guide_2install__fro
   <div class="headertitle"><div class="title">Development requirements</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md68"></a> </p>
-<h1><a class="anchor" id="autotoc_md69"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md70"></a> </p>
+<h1><a class="anchor" id="autotoc_md71"></a>
 @ref "c++-version" "C++ version"</h1>
 <p>The compilation of Antares-Xpansion requires C++17 support in order to use <a href="https://en.cppreference.com/w/cpp/algorithm/execution_policy_tag_t">execution policy</a>.</p>
 <p>=== "Windows" </p><pre class="fragment">Compilation is tested on MSVC 2019.
@@ -165,7 +165,7 @@ scl enable devtoolset-10 bash
 </pre><p> === "Ubuntu" </p><pre class="fragment">```
 sudo apt install build-essential
 ```
-</pre> <h1><a class="anchor" id="autotoc_md70"></a>
+</pre> <h1><a class="anchor" id="autotoc_md72"></a>
 @ref "cmake-version" "CMake version"</h1>
 <p>CMake 3.x must be used.</p>
 <p>=== "Windows" </p><pre class="fragment">You can download latest Windows version directly from [CMake website](https://cmake.org/download/).
@@ -176,7 +176,7 @@ sudo yum install cmake3
 </pre><p> === "Ubuntu" </p><pre class="fragment">```
 sudo apt install cmake
 ```
-</pre> <h1><a class="anchor" id="autotoc_md71"></a>
+</pre> <h1><a class="anchor" id="autotoc_md73"></a>
 @ref "python-version" "Python version"</h1>
 <p>Python 3.x must be used.</p>
 <p>=== "Windows" </p><pre class="fragment">You can download latest Windows version directly from [Python website](https://www.python.org/downloads/windows/).
@@ -187,7 +187,7 @@ sudo yum install python3 python3-pip
 sudo apt-get install python3 python3-pip
 ```
 </pre><p> Required python modules can be installed with: </p><div class="fragment"><div class="line">pip install -r requirements-tests.txt</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md72"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md74"></a>
 @ref "git-version" "Git version"</h1>
 <p>Git version must be above 2.15 for external dependencies build because <code>--ignore-whitespace</code> is not used by default and we have an issue with OR-Tools compilation of ZLib and application of patch on Windows (see <a href="https://github.com/google/or-tools/issues/1193">https://github.com/google/or-tools/issues/1193</a>).</p>
 <p>=== "Windows" </p><pre class="fragment">You can download latest Windows version directly from [Git website](https://gitforwindows.org/).

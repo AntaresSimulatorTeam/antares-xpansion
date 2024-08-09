@@ -134,16 +134,16 @@ $(document).ready(function(){initNavTree('md_docs_2developer-guide_2install__fro
   <div class="headertitle"><div class="title">Build</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md78"></a> </p>
-<h1><a class="anchor" id="autotoc_md79"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md80"></a> </p>
+<h1><a class="anchor" id="autotoc_md81"></a>
 Environnement settings</h1>
 <p>On Centos, enable <code>devtoolset-10</code> and <code>rh-git227</code> and load <code>mpi</code> module: </p><div class="fragment"><div class="line">scl enable devtoolset-10 bash</div>
 <div class="line">source /opt/rh/rh-git227/enable</div>
 <div class="line">module load mpi</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md80"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md82"></a>
 Update git submodule</h1>
 <div class="fragment"><div class="line">git submodule update --init antares-deps</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md81"></a>
+</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md83"></a>
 Configure build with CMake</h1>
 <p>=== "Windows" </p><pre class="fragment">```
 cmake -B _build -S . -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows
@@ -193,7 +193,7 @@ cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyLeft"><code>XPRESS_ROOT</code>   </td><td class="markdownTableBodyNone"><code>C:/xpressmp</code> on Windows, <code>/opt/xpressmp</code> on Unix.   </td><td class="markdownTableBodyNone">Define Xpress installation directory.   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md82"></a>
+<h1><a class="anchor" id="autotoc_md84"></a>
 Build</h1>
 <p>=== "Windows" </p><pre class="fragment">```
 cmake --build _build --config Release -j8 --target install
