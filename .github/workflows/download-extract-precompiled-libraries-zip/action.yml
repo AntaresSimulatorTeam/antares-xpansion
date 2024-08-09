@@ -46,6 +46,4 @@ runs:
       run: |
         wget https://github.com/rte-france/sirius-solver/releases/download/antares-integration-v1.5/windows-latest_sirius-solver.zip
         unzip windows-latest_sirius-solver.zip
-        cp -r windows-latest_sirius-solver-install/* deps
         rm -rf windows-latest_sirius-solver.zip
-        rm -rf windows-latest_sirius-solver-install
