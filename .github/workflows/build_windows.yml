@@ -38,6 +38,7 @@ jobs:
     outputs:
       zip_name: ${{ steps.zip_name.outputs.zip_name }}
       singlefile_name: ${{steps.zip_name.outputs.singlefile_name}}
+      version: ${{ steps.antares-xpansion-version.outputs.result }}
 
     steps:
       - uses: actions/checkout@v4
@@ -220,10 +221,12 @@ jobs:
 
       - name: run launcher
         run: |
+          cd ${{needs.build.outputs.version}}
           ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
 
       - name: run launcher parallel
         run: |
+          cd ${{needs.build.outputs.version}}
           ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
 
   test_single_file_asset:
