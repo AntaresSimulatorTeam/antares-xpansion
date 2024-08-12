@@ -32,10 +32,6 @@
       "features": [
         "zlib"
       ]
-    },
-    {
-      "name": "sirius-solver",
-      "version>=": "1.5"
     }
   ]
 }
