@@ -220,12 +220,10 @@ jobs:
 
       - name: run launcher
         run: |
-          cd asset
           ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
 
       - name: run launcher parallel
         run: |
-          cd asset
           ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
 
   test_single_file_asset:
