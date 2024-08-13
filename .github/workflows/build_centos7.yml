@@ -276,6 +276,7 @@ jobs:
             sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
             sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
             yum update -y
+            yum install wget -y
             wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.6.tar.bz2
             tar -xvf openmpi-4.1.6.tar.bz2
             cd openmpi-4.1.6
