@@ -279,7 +279,7 @@ jobs:
             yum install openmpi -y
             set -x
             find / -name mpirun
-            export PATH=$PATH:/usr/lib64/openmpi/bin/mpirun
+            export PATH=$PATH:/usr/lib64/openmpi/bin
             mpirun --version
             cd /work
             ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
@@ -297,7 +297,7 @@ jobs:
             yum install openmpi -y
             set -x
             find / -name mpirun
-            export PATH=$PATH:/usr/lib64/openmpi/bin/mpirun
+            export PATH=$PATH:/usr/lib64/openmpi/bin
             mpirun --version
             cd /work
             ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
