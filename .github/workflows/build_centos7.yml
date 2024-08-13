@@ -277,6 +277,7 @@ jobs:
             sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
             yum update -y
             yum install openmpi -y
+            export PATH=$PATH:/usr/lib64/openmpi/bin/mpirun
             mpirun --version
             cd /work
             ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
@@ -292,6 +293,7 @@ jobs:
             sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
             yum update -y
             yum install openmpi -y
+            export PATH=$PATH:/usr/lib64/openmpi/bin/mpirun
             mpirun --version
             cd /work
             ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
