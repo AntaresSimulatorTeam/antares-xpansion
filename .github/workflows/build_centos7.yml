@@ -277,6 +277,8 @@ jobs:
             sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
             yum update -y
             yum install openmpi -y
+            set -x
+            find / -name mpirun
             export PATH=$PATH:/usr/lib64/openmpi/bin/mpirun
             mpirun --version
             cd /work
@@ -293,6 +295,8 @@ jobs:
             sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
             yum update -y
             yum install openmpi -y
+            set -x
+            find / -name mpirun
             export PATH=$PATH:/usr/lib64/openmpi/bin/mpirun
             mpirun --version
             cd /work
