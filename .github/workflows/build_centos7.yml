@@ -272,6 +272,8 @@ jobs:
           shell: bash
           options: -v ${{ github.workspace }}:/work
           run: |
+            yum install openmpi -y
+            mpirun --version
             cd /work
             ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
 
@@ -281,6 +283,8 @@ jobs:
           shell: bash
           options: -v ${{ github.workspace }}:/work
           run: |
+            yum install openmpi -y
+            mpirun --version
             cd /work
             ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
 
