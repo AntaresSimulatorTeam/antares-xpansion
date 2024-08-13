@@ -276,8 +276,12 @@ jobs:
             sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
             sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
             yum update -y
-            yum install openmpi -y
-            set -x
+            wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.6.tar.bz2
+            tar -xvf openmpi-4.1.6.tar.bz2
+            cd openmpi-4.1.6
+            ./configure --prefix=/usr/lib64/openmpi
+            make -j$(nproc)
+            make install
             find / -name mpirun
             export PATH=$PATH:/usr/lib64/openmpi/bin
             mpirun --version
