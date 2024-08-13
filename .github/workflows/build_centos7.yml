@@ -266,17 +266,23 @@ jobs:
           sudo apt-get update -y
           docker pull centos:7
 
-      - name: run launcher
-        run: |
-          docker run -it -v $PWD:/mnt centos:7 /bin/bash
-          cd /mnt
-          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
+      - uses: addnab/docker-run-action@v3
+        with:
+          image: centos:7
+          shell: bash
+          options: -v ${{ github.workspace }}:/work
+          run: |
+            cd /work
+            ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
 
-      - name: run launcher parallel
-        run: |
-          docker run -it -v $PWD:/mnt centos:7 /bin/bash
-          cd /mnt
-          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
+      - uses: addnab/docker-run-action@v3
+        with:
+          image: centos:7
+          shell: bash
+          options: -v ${{ github.workspace }}:/work
+          run: |
+            cd /work
+            ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
 
   test_single_file_asset:
     runs-on: ubuntu-latest
