@@ -4,7 +4,7 @@ This ADR aims to select the library that will be used to manage MPS files in ZIP
 
 Status
 === 
-[minizip-ng](https://github.com/zlib-ng/minizip-ng): Deprecated [06/2024] by [Create_custom_vcpkg_ports_for_deps.md](Create_custom_vcpkg_ports_for_deps.md)
+[minizip-ng](https://github.com/zlib-ng/minizip-ng): Deprecated [06/2024] by [[010] Create custom vcpkg ports for deps](%5B010%5D Create_custom_vcpkg_ports_for_deps.md)
 
 Context
 ===
