@@ -39,7 +39,8 @@ var searchData=
   ['convert_3c_20outerloopsingleinputdata_20_3e_36',['convert&lt; OuterLoopSingleInputData &gt;',['../structYAML_1_1convert_3_01OuterLoopSingleInputData_01_4.html',1,'YAML']]],
   ['corruptedlockerfile_37',['CorruptedLockerFile',['../classantares__xpansion_1_1study__locker_1_1StudyLocker_1_1CorruptedLockerFile.html',1,'antares_xpansion::study_locker::StudyLocker']]],
   ['counts_38',['Counts',['../structCatch_1_1Counts.html',1,'Catch']]],
-  ['criterioncouldnotbesatisfied_39',['CriterionCouldNotBeSatisfied',['../classCriterionCouldNotBeSatisfied.html',1,'']]],
-  ['currentiterationdata_40',['CurrentIterationData',['../structCurrentIterationData.html',1,'']]],
-  ['cutsmanagerruntime_41',['CutsManagerRunTime',['../classOuterloop_1_1CutsManagerRunTime.html',1,'Outerloop']]]
+  ['criterioncomputation_39',['CriterionComputation',['../classOuterloop_1_1CriterionComputation.html',1,'Outerloop']]],
+  ['criterioncouldnotbesatisfied_40',['CriterionCouldNotBeSatisfied',['../classOuterloop_1_1CriterionCouldNotBeSatisfied.html',1,'Outerloop']]],
+  ['currentiterationdata_41',['CurrentIterationData',['../structCurrentIterationData.html',1,'']]],
+  ['cutsmanagerruntime_42',['CutsManagerRunTime',['../classOuterloop_1_1CutsManagerRunTime.html',1,'Outerloop']]]
 ];

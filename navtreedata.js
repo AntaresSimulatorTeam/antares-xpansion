@@ -209,7 +209,7 @@ var NAVTREE =
           [ "<tt>--step {full, antares, problem_generation, benders, study_update, sensitivity, resume}</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md149", null ],
           [ "<tt>-i, --dataDir</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md150", null ],
           [ "<tt>--simulationName {last, your-antares-output-directory}</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md151", null ],
-          [ "<tt>-m, --method {benders, benders_by_batch, mergeMPS, adequacy_criterion}</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md152", null ],
+          [ "<tt>-m, --method {benders, mergeMPS, adequacy_criterion}</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md152", null ],
           [ "<tt>-n, --np</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md153", null ],
           [ "<tt>--antares-n-cpu</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md154", null ],
           [ "<tt>--keepMps</tt>", "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md155", null ],
@@ -319,12 +319,12 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "ActiveLinks_8h_source.html",
-"classCatch_1_1StringRef.html",
-"classProblem.html#a9b1add4a9bff8ab15a533c81818214fc",
-"classSolverClp.html#ad7727728c67fb67d2cde154942f9fe91",
-"classantares__xpansion_1_1driver_1_1XpansionDriver.html#a6612a74b7dd7938cce8254608e1bbd64",
-"functions_f.html",
-"md_docs_2user-guide_2optimization-principles_2problem-formalization.html"
+"classCatch_1_1ReusableStringStream.html",
+"classProblem.html#a87378fed8a194cb4cbb6904eacbed94a",
+"classSolverClp.html#ab9346e1b8f81c91ac2e522bf2501e48e",
+"classantares__xpansion_1_1config__loader_1_1ConfigLoader_1_1MissingFile.html",
+"dynamic__library_8h_source.html",
+"md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md193"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

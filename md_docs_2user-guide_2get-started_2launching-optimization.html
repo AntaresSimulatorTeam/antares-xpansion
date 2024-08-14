@@ -185,25 +185,23 @@ Command line parameters</h2>
 <p>Default value: <code>last</code>.</p>
 <p>Defines the name of the Antares-Simulator output archive that Antares-Xpansion uses to generate the expansion problem. If the value is <code>last</code>, the most recent run will be used. This option only has an effect when <code>--step</code> is among <code>{problem_generation, benders, study_update, sensitivity}</code>. In a step by step workflow keep both _.zip_ file and <em>-Xpansion</em> corresponding folder.</p>
 <h3><a class="anchor" id="autotoc_md152"></a>
-&lt;tt&gt;-m, --method {benders, benders_by_batch, mergeMPS, adequacy_criterion}&lt;/tt&gt;</h3>
+&lt;tt&gt;-m, --method {benders, mergeMPS, adequacy_criterion}&lt;/tt&gt;</h3>
 <p>Default value: <code>benders</code>.</p>
 <p>Sets the optimization method used by Antares-Xpansion.</p>
 <table class="markdownTable">
 <tr class="markdownTableHead">
 <th class="markdownTableHeadNone">Option   </th><th class="markdownTableHeadNone">Description    </th></tr>
 <tr class="markdownTableRowOdd">
-<td class="markdownTableBodyNone"><code>benders</code>   </td><td class="markdownTableBodyNone">Launch the classical Benders decomposition.    </td></tr>
+<td class="markdownTableBodyNone"><code>benders</code>   </td><td class="markdownTableBodyNone">Launch the classical Benders decomposition or the Benders by batch algorithm depending on <code>batch_size</code>.    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyNone"><code>benders_by_batch</code>   </td><td class="markdownTableBodyNone">Launch the Benders by batch algorithm.    </td></tr>
-<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>mergeMPS</code>   </td><td class="markdownTableBodyNone">Launch a frontal resolution of the investment problem (i.e. without decomposition). This is much more time-consuming than using Benders decomposition.    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyNone"><code>adequacy_criterion</code>   </td><td class="markdownTableBodyNone">Launch Antares-Xpansion with reliability constraints, see <a class="el" href="md_docs_2user-guide_2get-started_2adequacy-criterion.html">Adequacy criterion</a>.   </td></tr>
 </table>
 <h3><a class="anchor" id="autotoc_md153"></a>
 &lt;tt&gt;-n, --np&lt;/tt&gt;</h3>
 <p>Default value: 2.</p>
-<p>Sets the number of MPI processes to use for the Benders decomposition. This option only has an effect when <code>-m</code> is set to <code>benders</code> or <code>benders_by_batch</code>.</p>
+<p>Sets the number of MPI processes to use for the Benders decomposition. This option only has an effect when <code>-m</code> is set to <code>benders</code>.</p>
 <h3><a class="anchor" id="autotoc_md154"></a>
 &lt;tt&gt;--antares-n-cpu&lt;/tt&gt;</h3>
 <p>Default value: 1.</p>

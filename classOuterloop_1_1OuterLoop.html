@@ -133,19 +133,65 @@ $(document).ready(function(){initNavTree('classOuterloop_1_1OuterLoop.html','');
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classOuterloop_1_1OuterLoop-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">Outerloop::OuterLoop Class Reference</div></div>
+  <div class="headertitle"><div class="title">Outerloop::OuterLoop Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
 </div><!--header-->
 <div class="contents">
+<div class="dynheader">
+Inheritance diagram for Outerloop::OuterLoop:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classOuterloop_1_1OuterLoop.png" usemap="#Outerloop::OuterLoop_map" alt=""/>
+  <map id="Outerloop::OuterLoop_map" name="Outerloop::OuterLoop_map">
+<area href="classOuterloop_1_1OuterLoopBenders.html" alt="Outerloop::OuterLoopBenders" shape="rect" coords="0,56,181,80"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7c8771acf40f141803cd37e664e415c4" id="r_a7c8771acf40f141803cd37e664e415c4"><td class="memItemLeft" align="right" valign="top"><a id="a7c8771acf40f141803cd37e664e415c4" name="a7c8771acf40f141803cd37e664e415c4"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>OuterLoop</b> (std::shared_ptr&lt; <a class="el" href="classOuterloop_1_1IMasterUpdate.html">IMasterUpdate</a> &gt; master_updater, std::shared_ptr&lt; <a class="el" href="classOuterloop_1_1ICutsManager.html">ICutsManager</a> &gt; cuts_manager, pBendersBase benders, mpi::environment &amp;env, mpi::communicator &amp;world)</td></tr>
-<tr class="separator:a7c8771acf40f141803cd37e664e415c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7050da97f831aabdf0b923866c36067c" id="r_a7050da97f831aabdf0b923866c36067c"><td class="memItemLeft" align="right" valign="top"><a id="a7050da97f831aabdf0b923866c36067c" name="a7050da97f831aabdf0b923866c36067c"></a>
+<tr class="memitem:abd0a6776b2ff22208e1d125b727ab101" id="r_abd0a6776b2ff22208e1d125b727ab101"><td class="memItemLeft" align="right" valign="top"><a id="abd0a6776b2ff22208e1d125b727ab101" name="abd0a6776b2ff22208e1d125b727ab101"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>OuterLoop</b> (<a class="el" href="classOuterloop_1_1CriterionComputation.html">CriterionComputation</a> &amp;criterion_computation_)</td></tr>
+<tr class="separator:abd0a6776b2ff22208e1d125b727ab101"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a777bf0761eb3c9ab5a73a62a36991ea0" id="r_a777bf0761eb3c9ab5a73a62a36991ea0"><td class="memItemLeft" align="right" valign="top"><a id="a777bf0761eb3c9ab5a73a62a36991ea0" name="a777bf0761eb3c9ab5a73a62a36991ea0"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>Run</b> ()</td></tr>
-<tr class="separator:a7050da97f831aabdf0b923866c36067c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a777bf0761eb3c9ab5a73a62a36991ea0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6d72b30c0e1013de7c8c520bc74c5839" id="r_a6d72b30c0e1013de7c8c520bc74c5839"><td class="memItemLeft" align="right" valign="top"><a id="a6d72b30c0e1013de7c8c520bc74c5839" name="a6d72b30c0e1013de7c8c520bc74c5839"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OuterLoopCheckFeasibility</b> ()=0</td></tr>
+<tr class="separator:a6d72b30c0e1013de7c8c520bc74c5839"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3bb5840148071249fc26ba88a312f54" id="r_ac3bb5840148071249fc26ba88a312f54"><td class="memItemLeft" align="right" valign="top"><a id="ac3bb5840148071249fc26ba88a312f54" name="ac3bb5840148071249fc26ba88a312f54"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>OuterLoopBilevelChecks</b> ()=0</td></tr>
+<tr class="separator:ac3bb5840148071249fc26ba88a312f54"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad02f68c1b3c5c62e341ac8e9204efee0" id="r_ad02f68c1b3c5c62e341ac8e9204efee0"><td class="memItemLeft" align="right" valign="top"><a id="ad02f68c1b3c5c62e341ac8e9204efee0" name="ad02f68c1b3c5c62e341ac8e9204efee0"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>RunAttachedAlgo</b> ()=0</td></tr>
+<tr class="separator:ad02f68c1b3c5c62e341ac8e9204efee0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac66be1c216ed51b0aa5f2e59b112f722" id="r_ac66be1c216ed51b0aa5f2e59b112f722"><td class="memItemLeft" align="right" valign="top"><a id="ac66be1c216ed51b0aa5f2e59b112f722" name="ac66be1c216ed51b0aa5f2e59b112f722"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateMaster</b> ()=0</td></tr>
+<tr class="separator:ac66be1c216ed51b0aa5f2e59b112f722"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0a3fcc0748da40e94ca3730b241dc6d" id="r_ae0a3fcc0748da40e94ca3730b241dc6d"><td class="memItemLeft" align="right" valign="top"><a id="ae0a3fcc0748da40e94ca3730b241dc6d" name="ae0a3fcc0748da40e94ca3730b241dc6d"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintLog</b> ()=0</td></tr>
+<tr class="separator:ae0a3fcc0748da40e94ca3730b241dc6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a45ea87dda4951f4769cf9fe60c72b4b9" id="r_a45ea87dda4951f4769cf9fe60c72b4b9"><td class="memItemLeft" align="right" valign="top"><a id="a45ea87dda4951f4769cf9fe60c72b4b9" name="a45ea87dda4951f4769cf9fe60c72b4b9"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>init_data</b> ()=0</td></tr>
+<tr class="separator:a45ea87dda4951f4769cf9fe60c72b4b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44878c12462ace744bc6e03b38a450df" id="r_a44878c12462ace744bc6e03b38a450df"><td class="memItemLeft" align="right" valign="top"><a id="a44878c12462ace744bc6e03b38a450df" name="a44878c12462ace744bc6e03b38a450df"></a>
+virtual bool&#160;</td><td class="memItemRight" valign="bottom"><b>isExceptionRaised</b> ()=0</td></tr>
+<tr class="separator:a44878c12462ace744bc6e03b38a450df"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ecf8d1cd28da0c1a10e4ec8163689ca" id="r_a9ecf8d1cd28da0c1a10e4ec8163689ca"><td class="memItemLeft" align="right" valign="top"><a id="a9ecf8d1cd28da0c1a10e4ec8163689ca" name="a9ecf8d1cd28da0c1a10e4ec8163689ca"></a>
+virtual double&#160;</td><td class="memItemRight" valign="bottom"><b>OuterLoopLambdaMin</b> () const =0</td></tr>
+<tr class="separator:a9ecf8d1cd28da0c1a10e4ec8163689ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a062009373341f3adb662418ba644fc10" id="r_a062009373341f3adb662418ba644fc10"><td class="memItemLeft" align="right" valign="top"><a id="a062009373341f3adb662418ba644fc10" name="a062009373341f3adb662418ba644fc10"></a>
+virtual double&#160;</td><td class="memItemRight" valign="bottom"><b>OuterLoopLambdaMax</b> () const =0</td></tr>
+<tr class="separator:a062009373341f3adb662418ba644fc10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a2ba8c0bbdb92dca3114bdd43e4fb5fb8" id="r_a2ba8c0bbdb92dca3114bdd43e4fb5fb8"><td class="memItemLeft" align="right" valign="top"><a id="a2ba8c0bbdb92dca3114bdd43e4fb5fb8" name="a2ba8c0bbdb92dca3114bdd43e4fb5fb8"></a>
+<a class="el" href="classOuterloop_1_1CriterionComputation.html">CriterionComputation</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>criterion_computation_</b></td></tr>
+<tr class="separator:a2ba8c0bbdb92dca3114bdd43e4fb5fb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fdd182aa41bf3a5d24ab85a653fba4d" id="r_a5fdd182aa41bf3a5d24ab85a653fba4d"><td class="memItemLeft" align="right" valign="top"><a id="a5fdd182aa41bf3a5d24ab85a653fba4d" name="a5fdd182aa41bf3a5d24ab85a653fba4d"></a>
+<a class="el" href="classOuterloop_1_1OuterLoopBiLevel.html">OuterLoopBiLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><b>outer_loop_biLevel_</b></td></tr>
+<tr class="separator:a5fdd182aa41bf3a5d24ab85a653fba4d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/cpp/benders/outer_loop/include/<a class="el" href="OuterLoop_8h_source.html">OuterLoop.h</a></li>

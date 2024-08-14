@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['m_20method_20benders_20benders_5fby_5fbatch_20mergemps_20adequacy_5fcriterion_20tt_0',['&lt;tt&gt;-m, --method {benders, benders_by_batch, mergeMPS, adequacy_criterion}&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md152',1,'']]],
+  ['m_20method_20benders_20mergemps_20adequacy_5fcriterion_20tt_0',['&lt;tt&gt;-m, --method {benders, mergeMPS, adequacy_criterion}&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md152',1,'']]],
   ['mainwidget_1',['MainWidget',['../classantares-xpansion-ui_1_1MainWidget.html',1,'antares-xpansion-ui']]],
   ['makeregex_2',['MakeRegex',['../classOuterloop_1_1OuterLoopPattern.html#ac4cbe17dc806e25504cb0ea26275ba67',1,'Outerloop::OuterLoopPattern']]],
   ['manager_3',['Install with a package manager',['../md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html#autotoc_md76',1,'']]],
@@ -54,12 +54,12 @@ var searchData=
   ['maxunitsandmaxinvestmentarenullsimultaneously_51',['MaxUnitsAndMaxInvestmentAreNullSimultaneously',['../classantares__xpansion_1_1input__checker_1_1MaxUnitsAndMaxInvestmentAreNullSimultaneously.html',1,'antares_xpansion::input_checker']]],
   ['maxunitsandmaxinvestmentnonnullsimultaneously_52',['MaxUnitsAndMaxInvestmentNonNullSimultaneously',['../classantares__xpansion_1_1input__checker_1_1MaxUnitsAndMaxInvestmentNonNullSimultaneously.html',1,'antares_xpansion::input_checker']]],
   ['mergemps_53',['MergeMPS',['../classMergeMPS.html',1,'']]],
-  ['mergemps_20adequacy_5fcriterion_20tt_54',['&lt;tt&gt;-m, --method {benders, benders_by_batch, mergeMPS, adequacy_criterion}&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md152',1,'']]],
+  ['mergemps_20adequacy_5fcriterion_20tt_54',['&lt;tt&gt;-m, --method {benders, mergeMPS, adequacy_criterion}&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md152',1,'']]],
   ['messagebuilder_55',['MessageBuilder',['../structCatch_1_1MessageBuilder.html',1,'Catch']]],
   ['messageinfo_56',['MessageInfo',['../structCatch_1_1MessageInfo.html',1,'Catch']]],
   ['messagestream_57',['MessageStream',['../structCatch_1_1MessageStream.html',1,'Catch']]],
   ['method_58',['Description of the method',['../md_docs_2user-guide_2get-started_2sensitivity-analysis.html#autotoc_md176',1,'']]],
-  ['method_20benders_20benders_5fby_5fbatch_20mergemps_20adequacy_5fcriterion_20tt_59',['&lt;tt&gt;-m, --method {benders, benders_by_batch, mergeMPS, adequacy_criterion}&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md152',1,'']]],
+  ['method_20benders_20mergemps_20adequacy_5fcriterion_20tt_59',['&lt;tt&gt;-m, --method {benders, mergeMPS, adequacy_criterion}&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md152',1,'']]],
   ['mini_5finstance_5finfeasible_60',['mini_instance_infeasible',['..//github/workspace/tests/end_to_end/restart/README.md#autotoc_md237',1,'mini_instance_INFEASIBLE'],['..//github/workspace/tests/end_to_end/benders/README.md#autotoc_md226',1,'mini_instance_INFEASIBLE']]],
   ['mini_5finstance_5flp_5fdefault_61',['mini_instance_lp_default',['..//github/workspace/tests/end_to_end/benders/README.md#autotoc_md223',1,'mini_instance_LP_default'],['..//github/workspace/tests/end_to_end/restart/README.md#autotoc_md234',1,'mini_instance_LP_default']]],
   ['mini_5finstance_5fmip_5fdefault_62',['mini_instance_mip_default',['..//github/workspace/tests/end_to_end/benders/README.md#autotoc_md224',1,'mini_instance_MIP_default'],['..//github/workspace/tests/end_to_end/restart/README.md#autotoc_md235',1,'mini_instance_MIP_default']]],

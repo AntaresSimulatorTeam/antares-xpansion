@@ -97,7 +97,7 @@ var searchData=
   ['tt_20keepmps_20tt_94',['&lt;tt&gt;--keepMps&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md155',1,'']]],
   ['tt_20log_5flevel_20tt_95',['&lt;tt&gt;log_level&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md194',1,'']]],
   ['tt_20lp_5fnamer_20tt_96',['Modification of weekly problems with &lt;tt&gt;lp_namer&lt;/tt&gt;',['../md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md105',1,'']]],
-  ['tt_20m_20method_20benders_20benders_5fby_5fbatch_20mergemps_20adequacy_5fcriterion_20tt_97',['&lt;tt&gt;-m, --method {benders, benders_by_batch, mergeMPS, adequacy_criterion}&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md152',1,'']]],
+  ['tt_20m_20method_20benders_20mergemps_20adequacy_5fcriterion_20tt_97',['&lt;tt&gt;-m, --method {benders, mergeMPS, adequacy_criterion}&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md152',1,'']]],
   ['tt_20master_20tt_98',['&lt;tt&gt;master&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md191',1,'']]],
   ['tt_20max_20investment_20tt_99',['&lt;tt&gt;max-investment&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md129',1,'']]],
   ['tt_20max_20units_20tt_100',['&lt;tt&gt;max-units&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md131',1,'']]],

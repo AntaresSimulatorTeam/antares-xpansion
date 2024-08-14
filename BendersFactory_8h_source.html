@@ -142,37 +142,40 @@ $(document).ready(function(){initNavTree('BendersFactory_8h_source.html',''); in
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#ifndef ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#define ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;BendersMPI.h&quot;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;common.h&quot;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="foldopen" id="foldopen00006" data-start="{" data-end="};">
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="classBendersMainFactory.html">    6</a></span><span class="keyword">class </span><a class="code hl_class" href="classBendersMainFactory.html">BendersMainFactory</a> {</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>  <span class="keywordtype">char</span>** argv_;</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>  std::filesystem::path options_file_;</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  boost::mpi::environment* penv_ = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  boost::mpi::communicator* pworld_ = <span class="keyword">nullptr</span>;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  SOLVER solver_ = SOLVER::BENDERS;</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  [[nodiscard]] <span class="keywordtype">int</span> RunExternalLoop() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  [[nodiscard]] <span class="keywordtype">int</span> RunBenders() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  pBendersBase PrepareForExecution(<a class="code hl_struct" href="structBendersLoggerBase.html">BendersLoggerBase</a>&amp; benders_loggers,</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>                                   <span class="keyword">const</span> <a class="code hl_class" href="classSimulationOptions.html">SimulationOptions</a>&amp; options,</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>                                   <span class="keywordtype">bool</span> external_loop) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span> </div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="classBendersMainFactory.html">BendersMainFactory</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv,</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>                              boost::mpi::environment&amp; env,</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>                              boost::mpi::communicator&amp; world,</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                              <span class="keyword">const</span> SOLVER&amp; solver);</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="classBendersMainFactory.html">BendersMainFactory</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv,</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                              <span class="keyword">const</span> std::filesystem::path&amp; options_file,</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                              boost::mpi::environment&amp; env,</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>                              boost::mpi::communicator&amp; world,</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>                              <span class="keyword">const</span> SOLVER&amp; solver);</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="keywordtype">int</span> Run() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>};</div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;CriterionComputation.h&quot;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &quot;common.h&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="foldopen" id="foldopen00007" data-start="{" data-end="};">
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="classBendersMainFactory.html">    7</a></span><span class="keyword">class </span><a class="code hl_class" href="classBendersMainFactory.html">BendersMainFactory</a> {</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>  <span class="keywordtype">char</span>** argv_;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  std::filesystem::path options_file_;</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  boost::mpi::environment* penv_ = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  boost::mpi::communicator* pworld_ = <span class="keyword">nullptr</span>;</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  SOLVER solver_ = SOLVER::BENDERS;</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  [[nodiscard]] <span class="keywordtype">int</span> RunExternalLoop() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  [[nodiscard]] <span class="keywordtype">int</span> RunBenders() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  pBendersBase PrepareForExecution(</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>      <a class="code hl_struct" href="structBendersLoggerBase.html">BendersLoggerBase</a>&amp; benders_loggers, <span class="keyword">const</span> <a class="code hl_class" href="classSimulationOptions.html">SimulationOptions</a>&amp; options,</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>      <span class="keywordtype">bool</span> external_loop,</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>      <a class="code hl_class" href="classOuterloop_1_1CriterionComputation.html">Outerloop::CriterionComputation</a>* computation = <span class="keyword">nullptr</span>) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="classBendersMainFactory.html">BendersMainFactory</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv,</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                              boost::mpi::environment&amp; env,</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                              boost::mpi::communicator&amp; world,</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                              <span class="keyword">const</span> SOLVER&amp; solver);</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="classBendersMainFactory.html">BendersMainFactory</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span>** argv,</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>                              <span class="keyword">const</span> std::filesystem::path&amp; options_file,</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>                              boost::mpi::environment&amp; env,</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>                              boost::mpi::communicator&amp; world,</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                              <span class="keyword">const</span> SOLVER&amp; solver);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keywordtype">int</span> Run() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>};</div>
 </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#endif  </span><span class="comment">// ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H</span></div>
-<div class="ttc" id="aclassBendersMainFactory_html"><div class="ttname"><a href="classBendersMainFactory.html">BendersMainFactory</a></div><div class="ttdef"><b>Definition</b> BendersFactory.h:6</div></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="preprocessor">#endif  </span><span class="comment">// ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H</span></div>
+<div class="ttc" id="aclassBendersMainFactory_html"><div class="ttname"><a href="classBendersMainFactory.html">BendersMainFactory</a></div><div class="ttdef"><b>Definition</b> BendersFactory.h:7</div></div>
+<div class="ttc" id="aclassOuterloop_1_1CriterionComputation_html"><div class="ttname"><a href="classOuterloop_1_1CriterionComputation.html">Outerloop::CriterionComputation</a></div><div class="ttdef"><b>Definition</b> CriterionComputation.h:6</div></div>
 <div class="ttc" id="aclassSimulationOptions_html"><div class="ttname"><a href="classSimulationOptions.html">SimulationOptions</a></div><div class="ttdef"><b>Definition</b> SimulationOptions.h:5</div></div>
 <div class="ttc" id="astructBendersLoggerBase_html"><div class="ttname"><a href="structBendersLoggerBase.html">BendersLoggerBase</a></div><div class="ttdef"><b>Definition</b> ILogger.h:107</div></div>
 </div><!-- fragment --></div><!-- contents -->

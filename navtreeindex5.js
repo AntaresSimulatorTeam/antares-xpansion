@@ -1,5 +1,15 @@
 var NAVTREEINDEX5 =
 {
+"dynamic__library_8h_source.html":[26,0,0,0,4,0,0,0],
+"environment_8h_source.html":[26,0,0,0,4,0,0,1],
+"files.html":[26,0],
+"functions.html":[25,3,0],
+"functions.html":[25,3,0,0],
+"functions_a.html":[25,3,0,1],
+"functions_b.html":[25,3,0,2],
+"functions_c.html":[25,3,0,3],
+"functions_d.html":[25,3,0,4],
+"functions_e.html":[25,3,0,5],
 "functions_f.html":[25,3,0,6],
 "functions_func.html":[25,3,1],
 "functions_func.html":[25,3,1,0],
@@ -239,15 +249,5 @@ var NAVTREEINDEX5 =
 "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md189":[21,1,3],
 "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md190":[21,1,4],
 "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md191":[21,1,5],
-"md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md192":[21,1,6],
-"md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md193":[21,1,7],
-"md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md194":[21,1,8],
-"md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md195":[21,1,9],
-"md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md196":[21,1,10],
-"md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md197":[21,1,11],
-"md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md198":[21,1,12],
-"md_docs_2user-guide_2optimization-principles_2investment-problem.html":[22],
-"md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md200":[22,0],
-"md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md201":[22,1],
-"md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md202":[22,2]
+"md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md192":[21,1,6]
 };

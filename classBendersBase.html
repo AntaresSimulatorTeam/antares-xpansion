@@ -146,10 +146,11 @@ Inheritance diagram for BendersBase:</div>
  <div class="center">
   <img src="classBendersBase.png" usemap="#BendersBase_map" alt=""/>
   <map id="BendersBase_map" name="BendersBase_map">
-<area href="classBendersMpi.html" title="Class use run the benders algorithm in parallel." alt="BendersMpi" shape="rect" coords="0,56,157,80"/>
-<area href="classBendersSequential.html" title="Class use run the benders algorithm in sequential." alt="BendersSequential" shape="rect" coords="167,56,324,80"/>
-<area href="classBendersByBatch.html" alt="BendersByBatch" shape="rect" coords="0,112,157,136"/>
-<area href="classBendersSequentialDouble.html" alt="BendersSequentialDouble" shape="rect" coords="167,112,324,136"/>
+<area href="classBendersMpi.html" title="Class use run the benders algorithm in parallel." alt="BendersMpi" shape="rect" coords="106,56,308,80"/>
+<area href="classBendersSequential.html" title="Class use run the benders algorithm in sequential." alt="BendersSequential" shape="rect" coords="424,56,626,80"/>
+<area href="classBendersByBatch.html" alt="BendersByBatch" shape="rect" coords="0,112,202,136"/>
+<area href="classOuterloop_1_1BendersMpiOuterLoop.html" alt="Outerloop::BendersMpiOuterLoop" shape="rect" coords="212,112,414,136"/>
+<area href="classBendersSequentialDouble.html" alt="BendersSequentialDouble" shape="rect" coords="424,112,626,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -247,9 +248,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SetMaxIteration</b> (
 <tr class="separator:aff9e743beef559b1bb1526a8030df9c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af2fe1ebf81325e8190482c29d32b6002" id="r_af2fe1ebf81325e8190482c29d32b6002"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersBase.html#af2fe1ebf81325e8190482c29d32b6002">free</a> ()=0</td></tr>
 <tr class="separator:af2fe1ebf81325e8190482c29d32b6002"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a083e309bf4edd9fe39a8fe431504fc6f" id="r_a083e309bf4edd9fe39a8fe431504fc6f"><td class="memItemLeft" align="right" valign="top"><a id="a083e309bf4edd9fe39a8fe431504fc6f" name="a083e309bf4edd9fe39a8fe431504fc6f"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>InitExternalValues</b> (bool is_bilevel_check_all, double lambda)</td></tr>
-<tr class="separator:a083e309bf4edd9fe39a8fe431504fc6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa24eed1c6a43a636946bef99a8953daa" id="r_aa24eed1c6a43a636946bef99a8953daa"><td class="memItemLeft" align="right" valign="top"><a id="aa24eed1c6a43a636946bef99a8953daa" name="aa24eed1c6a43a636946bef99a8953daa"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>GetBendersRunNumber</b> () const</td></tr>
 <tr class="separator:aa24eed1c6a43a636946bef99a8953daa"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -268,24 +266,6 @@ std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><
 <tr class="memitem:aab5e8c8e57d812f0d6dcdb9d107b6f46" id="r_aab5e8c8e57d812f0d6dcdb9d107b6f46"><td class="memItemLeft" align="right" valign="top"><a id="aab5e8c8e57d812f0d6dcdb9d107b6f46" name="aab5e8c8e57d812f0d6dcdb9d107b6f46"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>init_data</b> (double external_loop_lambda, double external_loop_lambda_min, double external_loop_lambda_max)</td></tr>
 <tr class="separator:aab5e8c8e57d812f0d6dcdb9d107b6f46"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea629ccf5712f9d052277b1ad41254ff" id="r_aea629ccf5712f9d052277b1ad41254ff"><td class="memItemLeft" align="right" valign="top"><a id="aea629ccf5712f9d052277b1ad41254ff" name="aea629ccf5712f9d052277b1ad41254ff"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>ExternalLoopLambdaMax</b> () const</td></tr>
-<tr class="separator:aea629ccf5712f9d052277b1ad41254ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7f563e653f185a9d7162b08f1478677" id="r_af7f563e653f185a9d7162b08f1478677"><td class="memItemLeft" align="right" valign="top"><a id="af7f563e653f185a9d7162b08f1478677" name="af7f563e653f185a9d7162b08f1478677"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>ExternalLoopLambdaMin</b> () const</td></tr>
-<tr class="separator:af7f563e653f185a9d7162b08f1478677"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a817377aee2ea1e6e1b0a1e0c27e9c088" id="r_a817377aee2ea1e6e1b0a1e0c27e9c088"><td class="memItemLeft" align="right" valign="top"><a id="a817377aee2ea1e6e1b0a1e0c27e9c088" name="a817377aee2ea1e6e1b0a1e0c27e9c088"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>ExternalLoopFoundFeasible</b> () const</td></tr>
-<tr class="separator:a817377aee2ea1e6e1b0a1e0c27e9c088"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a456ed0c6b72b07125ffd068cdb803a7e" id="r_a456ed0c6b72b07125ffd068cdb803a7e"><td class="memItemLeft" align="right" valign="top"><a id="a456ed0c6b72b07125ffd068cdb803a7e" name="a456ed0c6b72b07125ffd068cdb803a7e"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ExternalLoopCheckFeasibility</b> ()=0</td></tr>
-<tr class="separator:a456ed0c6b72b07125ffd068cdb803a7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a530a2e870d147e4301ef6f52309388de" id="r_a530a2e870d147e4301ef6f52309388de"><td class="memItemLeft" align="right" valign="top"><a id="a530a2e870d147e4301ef6f52309388de" name="a530a2e870d147e4301ef6f52309388de"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>RunExternalLoopBilevelChecks</b> ()=0</td></tr>
-<tr class="separator:a530a2e870d147e4301ef6f52309388de"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac242df9c4b271f052da4663de3ffce77" id="r_ac242df9c4b271f052da4663de3ffce77"><td class="memItemLeft" align="right" valign="top"><a id="ac242df9c4b271f052da4663de3ffce77" name="ac242df9c4b271f052da4663de3ffce77"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>OuterLoopStoppingThreshold</b> () const</td></tr>
-<tr class="separator:ac242df9c4b271f052da4663de3ffce77"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5dd30e34f65121c709fe6a4bd53d71cf" id="r_a5dd30e34f65121c709fe6a4bd53d71cf"><td class="memItemLeft" align="right" valign="top"><a id="a5dd30e34f65121c709fe6a4bd53d71cf" name="a5dd30e34f65121c709fe6a4bd53d71cf"></a>
 <a class="el" href="structOutput_1_1SolutionData.html">Output::SolutionData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetOuterLoopSolution</b> () const</td></tr>
 <tr class="separator:a5dd30e34f65121c709fe6a4bd53d71cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -295,9 +275,21 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>SaveOuterLoopSolution
 <tr class="memitem:a2ce0230221f2625754d9260bc04cd766" id="r_a2ce0230221f2625754d9260bc04cd766"><td class="memItemLeft" align="right" valign="top"><a id="a2ce0230221f2625754d9260bc04cd766" name="a2ce0230221f2625754d9260bc04cd766"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SaveCurrentOuterLoopIterationInOutputFile</b> () const</td></tr>
 <tr class="separator:a2ce0230221f2625754d9260bc04cd766"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a090716f36af994198ead9d18f575763f" id="r_a090716f36af994198ead9d18f575763f"><td class="memItemLeft" align="right" valign="top"><a id="a090716f36af994198ead9d18f575763f" name="a090716f36af994198ead9d18f575763f"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetBilevelBestub</b> (double bilevel_best_ub)</td></tr>
+<tr class="separator:a090716f36af994198ead9d18f575763f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a656001fac113d609c8e09bfe0fd60f76" id="r_a656001fac113d609c8e09bfe0fd60f76"><td class="memItemLeft" align="right" valign="top"><a id="a656001fac113d609c8e09bfe0fd60f76" name="a656001fac113d609c8e09bfe0fd60f76"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateOuterLoopSolution</b> ()</td></tr>
+<tr class="separator:a656001fac113d609c8e09bfe0fd60f76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accdf5da57618fe748bea6ecf2b819401" id="r_accdf5da57618fe748bea6ecf2b819401"><td class="memItemLeft" align="right" valign="top"><a id="accdf5da57618fe748bea6ecf2b819401" name="accdf5da57618fe748bea6ecf2b819401"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isExceptionRaised</b> () const</td></tr>
 <tr class="separator:accdf5da57618fe748bea6ecf2b819401"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5c9927050f6436b081f5ea30ce4082db" id="r_a5c9927050f6436b081f5ea30ce4082db"><td class="memItemLeft" align="right" valign="top"><a id="a5c9927050f6436b081f5ea30ce4082db" name="a5c9927050f6436b081f5ea30ce4082db"></a>
+std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>OuterloopOptionsFile</b> () const</td></tr>
+<tr class="separator:a5c9927050f6436b081f5ea30ce4082db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1dc32430cc9897fd4a6ce15643c4c69" id="r_ab1dc32430cc9897fd4a6ce15643c4c69"><td class="memItemLeft" align="right" valign="top"><a id="ab1dc32430cc9897fd4a6ce15643c4c69" name="ab1dc32430cc9897fd4a6ce15643c4c69"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateOverallCosts</b> ()</td></tr>
+<tr class="separator:ab1dc32430cc9897fd4a6ce15643c4c69"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -378,9 +370,6 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>get_
 std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>get_structure_path</b> () const</td></tr>
 <tr class="memdesc:a23e96af784f5eb3f68edbe50581482c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get path to structure txt file from options. <br /></td></tr>
 <tr class="separator:a23e96af784f5eb3f68edbe50581482c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c9927050f6436b081f5ea30ce4082db" id="r_a5c9927050f6436b081f5ea30ce4082db"><td class="memItemLeft" align="right" valign="top"><a id="a5c9927050f6436b081f5ea30ce4082db" name="a5c9927050f6436b081f5ea30ce4082db"></a>
-std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>OuterloopOptionsFile</b> () const</td></tr>
-<tr class="separator:a5c9927050f6436b081f5ea30ce4082db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9936a17b0dd7c359c41f331ccf7d30cf" id="r_a9936a17b0dd7c359c41f331ccf7d30cf"><td class="memItemLeft" align="right" valign="top"><a id="a9936a17b0dd7c359c41f331ccf7d30cf" name="a9936a17b0dd7c359c41f331ccf7d30cf"></a>
 <a class="el" href="structLogData.html">LogData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>bendersDataToLogData</b> (const <a class="el" href="structCurrentIterationData.html">CurrentIterationData</a> &amp;data) const</td></tr>
 <tr class="separator:a9936a17b0dd7c359c41f331ccf7d30cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -403,10 +392,7 @@ virtual WorkerMasterPtr&#160;</td><td class="memItemRight" valign="bottom"><b>ge
 <tr class="memitem:aadfff76348ae02bac6de5c5e95fee99b" id="r_aadfff76348ae02bac6de5c5e95fee99b"><td class="memItemLeft" align="right" valign="top"><a id="aadfff76348ae02bac6de5c5e95fee99b" name="aadfff76348ae02bac6de5c5e95fee99b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>MatchProblemToId</b> ()</td></tr>
 <tr class="separator:aadfff76348ae02bac6de5c5e95fee99b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c9092f43782dbfc0c84e85073e70e92" id="r_a8c9092f43782dbfc0c84e85073e70e92"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersBase.html#a8c9092f43782dbfc0c84e85073e70e92">SetSubproblemsVariablesIndex</a> ()</td></tr>
-<tr class="separator:a8c9092f43782dbfc0c84e85073e70e92"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2196cf767f06d5d5107ec0d9a2439c17" id="r_a2196cf767f06d5d5107ec0d9a2439c17"><td class="memItemLeft" align="right" valign="top"><a id="a2196cf767f06d5d5107ec0d9a2439c17" name="a2196cf767f06d5d5107ec0d9a2439c17"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>AddSubproblemName</b> (const std::string &amp;name)</td></tr>
+<tr class="memitem:a2196cf767f06d5d5107ec0d9a2439c17" id="r_a2196cf767f06d5d5107ec0d9a2439c17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersBase.html#a2196cf767f06d5d5107ec0d9a2439c17">AddSubproblemName</a> (const std::string &amp;name)</td></tr>
 <tr class="separator:a2196cf767f06d5d5107ec0d9a2439c17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a094c16937cb11a0ea1f2cc87ed1d54ff" id="r_a094c16937cb11a0ea1f2cc87ed1d54ff"><td class="memItemLeft" align="right" valign="top"><a id="a094c16937cb11a0ea1f2cc87ed1d54ff" name="a094c16937cb11a0ea1f2cc87ed1d54ff"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>get_master_name</b> () const</td></tr>
@@ -546,15 +532,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>GetNumOfSubProblemsSol
 <tr class="memitem:a945b1fcfaf6a0412ae7751e0ae96b33c" id="r_a945b1fcfaf6a0412ae7751e0ae96b33c"><td class="memItemLeft" align="right" valign="top"><a id="a945b1fcfaf6a0412ae7751e0ae96b33c" name="a945b1fcfaf6a0412ae7751e0ae96b33c"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetSimplexIterationsBounds</b> ()</td></tr>
 <tr class="separator:a945b1fcfaf6a0412ae7751e0ae96b33c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a003d305f84e30c10eb6e22409d91b6e8" id="r_a003d305f84e30c10eb6e22409d91b6e8"><td class="memItemLeft" align="right" valign="top"><a id="a003d305f84e30c10eb6e22409d91b6e8" name="a003d305f84e30c10eb6e22409d91b6e8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>ComputeOuterLoopCriterion</b> (const std::string &amp;subproblem_name, const std::vector&lt; double &gt; &amp;sub_problem_solution, <a class="el" href="structPlainData_1_1SubProblemData.html">PlainData::SubProblemData</a> &amp;subproblem_data)</td></tr>
-<tr class="separator:a003d305f84e30c10eb6e22409d91b6e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91da20a4abb2270e36f40e6705ab7fbd" id="r_a91da20a4abb2270e36f40e6705ab7fbd"><td class="memItemLeft" align="right" valign="top"><a id="a91da20a4abb2270e36f40e6705ab7fbd" name="a91da20a4abb2270e36f40e6705ab7fbd"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateOuterLoopMaxCriterionArea</b> ()</td></tr>
-<tr class="separator:a91da20a4abb2270e36f40e6705ab7fbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a656001fac113d609c8e09bfe0fd60f76" id="r_a656001fac113d609c8e09bfe0fd60f76"><td class="memItemLeft" align="right" valign="top"><a id="a656001fac113d609c8e09bfe0fd60f76" name="a656001fac113d609c8e09bfe0fd60f76"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateOuterLoopSolution</b> ()</td></tr>
-<tr class="separator:a656001fac113d609c8e09bfe0fd60f76"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5a01bc641edad3a02822c12b18e4e0bc" id="r_a5a01bc641edad3a02822c12b18e4e0bc"><td class="memItemLeft" align="right" valign="top"><a id="a5a01bc641edad3a02822c12b18e4e0bc" name="a5a01bc641edad3a02822c12b18e4e0bc"></a>
+virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SolveSubproblem</b> (SubProblemDataMap &amp;subproblem_data_map, <a class="el" href="structPlainData_1_1SubProblemData.html">PlainData::SubProblemData</a> &amp;subproblem_data, const std::string &amp;name, const std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt; &amp;worker)</td></tr>
+<tr class="separator:a5a01bc641edad3a02822c12b18e4e0bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -587,26 +567,45 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>free_problems_</b> = 
 <tr class="memitem:a0952566f6aef10287fb94cc4d0b0a753" id="r_a0952566f6aef10287fb94cc4d0b0a753"><td class="memItemLeft" align="right" valign="top"><a id="a0952566f6aef10287fb94cc4d0b0a753" name="a0952566f6aef10287fb94cc4d0b0a753"></a>
 std::vector&lt; std::vector&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>outer_loop_criterion_</b></td></tr>
 <tr class="separator:a0952566f6aef10287fb94cc4d0b0a753"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac323d84acff9ba341a837c5647186193" id="r_ac323d84acff9ba341a837c5647186193"><td class="memItemLeft" align="right" valign="top"><a id="ac323d84acff9ba341a837c5647186193" name="ac323d84acff9ba341a837c5647186193"></a>
-std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>subproblems_vars_names_</b> = {}</td></tr>
-<tr class="separator:ac323d84acff9ba341a837c5647186193"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8c6dc4cd84c8e25e156423334e1df6d6" id="r_a8c6dc4cd84c8e25e156423334e1df6d6"><td class="memItemLeft" align="right" valign="top"><a id="a8c6dc4cd84c8e25e156423334e1df6d6" name="a8c6dc4cd84c8e25e156423334e1df6d6"></a>
-std::vector&lt; std::vector&lt; int &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>var_indices_</b></td></tr>
-<tr class="separator:a8c6dc4cd84c8e25e156423334e1df6d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e83366b8b4184779100bb72e7c6ca44" id="r_a0e83366b8b4184779100bb72e7c6ca44"><td class="memItemLeft" align="right" valign="top"><a id="a0e83366b8b4184779100bb72e7c6ca44" name="a0e83366b8b4184779100bb72e7c6ca44"></a>
-<a class="el" href="classOuterLoopBiLevel.html">OuterLoopBiLevel</a>&#160;</td><td class="memItemRight" valign="bottom"><b>outer_loop_biLevel_</b></td></tr>
-<tr class="separator:a0e83366b8b4184779100bb72e7c6ca44"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20f3b8b6ec92c7b839f0a8d8f0b3e2c2" id="r_a20f3b8b6ec92c7b839f0a8d8f0b3e2c2"><td class="memItemLeft" align="right" valign="top"><a id="a20f3b8b6ec92c7b839f0a8d8f0b3e2c2" name="a20f3b8b6ec92c7b839f0a8d8f0b3e2c2"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_bilevel_check_all_</b> = false</td></tr>
 <tr class="separator:a20f3b8b6ec92c7b839f0a8d8f0b3e2c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a931fea73233e1635fd92880dfcd20d47" id="r_a931fea73233e1635fd92880dfcd20d47"><td class="memItemLeft" align="right" valign="top"><a id="a931fea73233e1635fd92880dfcd20d47" name="a931fea73233e1635fd92880dfcd20d47"></a>
-<a class="el" href="classOuterloop_1_1OuterLoopInputData.html">Outerloop::OuterLoopInputData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>outer_loop_input_data_</b></td></tr>
-<tr class="separator:a931fea73233e1635fd92880dfcd20d47"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe1c122095d367009893d3d8ab73490c" id="r_abe1c122095d367009893d3d8ab73490c"><td class="memItemLeft" align="right" valign="top"><a id="abe1c122095d367009893d3d8ab73490c" name="abe1c122095d367009893d3d8ab73490c"></a>
+SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subproblem_map</b></td></tr>
+<tr class="separator:abe1c122095d367009893d3d8ab73490c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a897cc03471332c177b24423cfc292e66" id="r_a897cc03471332c177b24423cfc292e66"><td class="memItemLeft" align="right" valign="top"><a id="a897cc03471332c177b24423cfc292e66" name="a897cc03471332c177b24423cfc292e66"></a>
 <a class="el" href="classSolverLogManager.html">SolverLogManager</a>&#160;</td><td class="memItemRight" valign="bottom"><b>solver_log_manager_</b></td></tr>
 <tr class="separator:a897cc03471332c177b24423cfc292e66"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
+<a id="a2196cf767f06d5d5107ec0d9a2439c17" name="a2196cf767f06d5d5107ec0d9a2439c17"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2196cf767f06d5d5107ec0d9a2439c17">&#9670;&#160;</a></span>AddSubproblemName()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BendersBase::AddSubproblemName </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>name</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>for the nth variable name, Subproblems shares the same prefix , only the suffix is different ex variable at index = 0 is named in:</p>
+<p>subproblems-1-1 --&gt; NTCDirect::link&lt;area1$$area2&gt;::hour&lt;0&gt; subproblems-3-5 --&gt; NTCDirect::link&lt;area1$$area2&gt;::hour&lt;672&gt; </p>
+
+</div>
+</div>
 <a id="a0fa4c04cc9815d16d43cd4a73d89f895" name="a0fa4c04cc9815d16d43cd4a73d89f895"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0fa4c04cc9815d16d43cd4a73d89f895">&#9670;&#160;</a></span>BoundSimplexIterations()</h2>
 
@@ -820,7 +819,7 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_bilevel_check_all_
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classBendersMpi.html#a217d3af6fbe78082f30fa9ef75cf1dfb">BendersMpi</a>.</p>
+<p>Implemented in <a class="el" href="classBendersMpi.html#a217d3af6fbe78082f30fa9ef75cf1dfb">BendersMpi</a>, and <a class="el" href="classOuterloop_1_1BendersMpiOuterLoop.html#a92374cfea41d421bf149823c531b001c">Outerloop::BendersMpiOuterLoop</a>.</p>
 
 </div>
 </div>
@@ -874,33 +873,6 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_bilevel_check_all_
   </table>
   </dd>
 </dl>
-
-</div>
-</div>
-<a id="a8c9092f43782dbfc0c84e85073e70e92" name="a8c9092f43782dbfc0c84e85073e70e92"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8c9092f43782dbfc0c84e85073e70e92">&#9670;&#160;</a></span>SetSubproblemsVariablesIndex()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void BendersBase::SetSubproblemsVariablesIndex </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>for the nth variable name, Subproblems shares the same prefix , only the suffix is different ex variable at index = 0 is named in:</p>
-<p>subproblems-1-1 --&gt; NTCDirect::link&lt;area1$$area2&gt;::hour&lt;0&gt; subproblems-3-5 --&gt; NTCDirect::link&lt;area1$$area2&gt;::hour&lt;672&gt; </p>
 
 </div>
 </div>

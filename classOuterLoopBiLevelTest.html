@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: OuterLoopBiLevel Class Reference</title>
+<title>Antares Xpansion: OuterLoopBiLevelTest Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -105,7 +105,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('classOuterLoopBiLevel.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('classOuterLoopBiLevelTest.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -131,82 +131,24 @@ $(document).ready(function(){initNavTree('classOuterLoopBiLevel.html',''); initR
 </div>
 
 <div class="header">
-  <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="classOuterLoopBiLevel-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">OuterLoopBiLevel Class Reference</div></div>
+  <div class="headertitle"><div class="title">OuterLoopBiLevelTest Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:a812235e4e085c7b029bf57be6d71aeef" id="r_a812235e4e085c7b029bf57be6d71aeef"><td class="memItemLeft" align="right" valign="top"><a id="a812235e4e085c7b029bf57be6d71aeef" name="a812235e4e085c7b029bf57be6d71aeef"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>OuterLoopBiLevel</b> (const <a class="el" href="classOuterloop_1_1OuterLoopInputData.html">Outerloop::OuterLoopInputData</a> &amp;outer_loop_input_data)</td></tr>
-<tr class="separator:a812235e4e085c7b029bf57be6d71aeef"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af9d0bd061c21192b86001360a1343df3" id="r_af9d0bd061c21192b86001360a1343df3"><td class="memItemLeft" align="right" valign="top"><a id="af9d0bd061c21192b86001360a1343df3" name="af9d0bd061c21192b86001360a1343df3"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>Update_bilevel_data_if_feasible</b> (const Point &amp;x, const std::vector&lt; double &gt; &amp;outer_loop_criterion, double overall_cost, double invest_cost_at_x, double lambda)</td></tr>
-<tr class="separator:af9d0bd061c21192b86001360a1343df3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a54b3322c3335d4aca9d2aadca5fc393b" id="r_a54b3322c3335d4aca9d2aadca5fc393b"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classOuterLoopBiLevel.html#a54b3322c3335d4aca9d2aadca5fc393b">Check_bilevel_feasibility</a> (const std::vector&lt; double &gt; &amp;outer_loop_criterion, double overall_cost)</td></tr>
-<tr class="separator:a54b3322c3335d4aca9d2aadca5fc393b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a88e2766fb34c97098292b9614458a699" id="r_a88e2766fb34c97098292b9614458a699"><td class="memItemLeft" align="right" valign="top"><a id="a88e2766fb34c97098292b9614458a699" name="a88e2766fb34c97098292b9614458a699"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>Init</b> (const std::vector&lt; double &gt; &amp;obj, const Point &amp;max_invest, const VariableMap &amp;master_variable)</td></tr>
-<tr class="separator:a88e2766fb34c97098292b9614458a699"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a65d33038422f09e454943461e698d935" id="r_a65d33038422f09e454943461e698d935"><td class="memItemLeft" align="right" valign="top"><a id="a65d33038422f09e454943461e698d935" name="a65d33038422f09e454943461e698d935"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>LambdaMax</b> () const</td></tr>
-<tr class="separator:a65d33038422f09e454943461e698d935"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa0b45f13a697d39a35a0115d4b21895b" id="r_aa0b45f13a697d39a35a0115d4b21895b"><td class="memItemLeft" align="right" valign="top"><a id="aa0b45f13a697d39a35a0115d4b21895b" name="aa0b45f13a697d39a35a0115d4b21895b"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>LambdaMin</b> () const</td></tr>
-<tr class="separator:aa0b45f13a697d39a35a0115d4b21895b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a04b5214b9a282d55e2b66ac83f6bdc62" id="r_a04b5214b9a282d55e2b66ac83f6bdc62"><td class="memItemLeft" align="right" valign="top"><a id="a04b5214b9a282d55e2b66ac83f6bdc62" name="a04b5214b9a282d55e2b66ac83f6bdc62"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>SetLambda</b> (double lambda)</td></tr>
-<tr class="separator:a04b5214b9a282d55e2b66ac83f6bdc62"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a941cf13446faca6b72640513b6c72a99" id="r_a941cf13446faca6b72640513b6c72a99"><td class="memItemLeft" align="right" valign="top"><a id="a941cf13446faca6b72640513b6c72a99" name="a941cf13446faca6b72640513b6c72a99"></a>
-double&#160;</td><td class="memItemRight" valign="bottom"><b>BilevelBestub</b> () const</td></tr>
-<tr class="separator:a941cf13446faca6b72640513b6c72a99"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba4560d1be21ae22a2bbd3152f8e2539" id="r_aba4560d1be21ae22a2bbd3152f8e2539"><td class="memItemLeft" align="right" valign="top"><a id="aba4560d1be21ae22a2bbd3152f8e2539" name="aba4560d1be21ae22a2bbd3152f8e2539"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>FoundFeasible</b> () const</td></tr>
-<tr class="separator:aba4560d1be21ae22a2bbd3152f8e2539"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-<h2 class="groupheader">Member Function Documentation</h2>
-<a id="a54b3322c3335d4aca9d2aadca5fc393b" name="a54b3322c3335d4aca9d2aadca5fc393b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a54b3322c3335d4aca9d2aadca5fc393b">&#9670;&#160;</a></span>Check_bilevel_feasibility()</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool OuterLoopBiLevel::Check_bilevel_feasibility </td>
-          <td>(</td>
-          <td class="paramtype">const std::vector&lt; double &gt; &amp;&#160;</td>
-          <td class="paramname"><em>outer_loop_criterion</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">double&#160;</td>
-          <td class="paramname"><em>overall_cost</em>&#160;</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td>)</td>
-          <td></td><td></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>else if method == opt ...</p>
-
-</div>
-</div>
-<hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/cpp/benders/benders_core/include/<a class="el" href="OuterLoopBiLevel_8h_source.html">OuterLoopBiLevel.h</a></li>
-<li>src/cpp/benders/benders_core/<b>OuterLoopBiLevel.cpp</b></li>
+<div class="dynheader">
+Inheritance diagram for OuterLoopBiLevelTest:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classOuterLoopBiLevelTest.png" alt=""/>
+ </div></div>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>tests/cpp/outer_loop/<b>outer_loop_test.cpp</b></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="classOuterLoopBiLevel.html">OuterLoopBiLevel</a></li>
+    <li class="navelem"><a class="el" href="classOuterLoopBiLevelTest.html">OuterLoopBiLevelTest</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

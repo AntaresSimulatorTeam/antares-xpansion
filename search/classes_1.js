@@ -17,13 +17,14 @@ var searchData=
   ['bendersmainfactory_14',['BendersMainFactory',['../classBendersMainFactory.html',1,'']]],
   ['bendersmethod_15',['BendersMethod',['../classtests_1_1end__to__end_1_1examples_1_1example__test_1_1BendersMethod.html',1,'tests::end_to_end::examples::example_test']]],
   ['bendersmpi_16',['BendersMpi',['../classBendersMpi.html',1,'']]],
-  ['bendersoptionsfileerror_17',['BendersOptionsFileError',['../classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersOptionsFileError.html',1,'antares_xpansion::benders_driver::BendersDriver']]],
-  ['bendersoutputpatherror_18',['BendersOutputPathError',['../classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersOutputPathError.html',1,'antares_xpansion::benders_driver::BendersDriver']]],
-  ['bendersrelevantiterationsdata_19',['BendersRelevantIterationsData',['../structBendersRelevantIterationsData.html',1,'']]],
-  ['benderssequential_20',['BendersSequential',['../classBendersSequential.html',1,'']]],
-  ['benderssequentialdouble_21',['BendersSequentialDouble',['../classBendersSequentialDouble.html',1,'']]],
-  ['benderssequentialtest_22',['BendersSequentialTest',['../classBendersSequentialTest.html',1,'']]],
-  ['benderssolvererror_23',['BendersSolverError',['../classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersSolverError.html',1,'antares_xpansion::benders_driver::BendersDriver']]],
-  ['bendersunsupportedplatform_24',['BendersUnsupportedPlatform',['../classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersUnsupportedPlatform.html',1,'antares_xpansion::benders_driver::BendersDriver']]],
-  ['binaryexpr_25',['BinaryExpr',['../classCatch_1_1BinaryExpr.html',1,'Catch']]]
+  ['bendersmpiouterloop_17',['BendersMpiOuterLoop',['../classOuterloop_1_1BendersMpiOuterLoop.html',1,'Outerloop']]],
+  ['bendersoptionsfileerror_18',['BendersOptionsFileError',['../classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersOptionsFileError.html',1,'antares_xpansion::benders_driver::BendersDriver']]],
+  ['bendersoutputpatherror_19',['BendersOutputPathError',['../classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersOutputPathError.html',1,'antares_xpansion::benders_driver::BendersDriver']]],
+  ['bendersrelevantiterationsdata_20',['BendersRelevantIterationsData',['../structBendersRelevantIterationsData.html',1,'']]],
+  ['benderssequential_21',['BendersSequential',['../classBendersSequential.html',1,'']]],
+  ['benderssequentialdouble_22',['BendersSequentialDouble',['../classBendersSequentialDouble.html',1,'']]],
+  ['benderssequentialtest_23',['BendersSequentialTest',['../classBendersSequentialTest.html',1,'']]],
+  ['benderssolvererror_24',['BendersSolverError',['../classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersSolverError.html',1,'antares_xpansion::benders_driver::BendersDriver']]],
+  ['bendersunsupportedplatform_25',['BendersUnsupportedPlatform',['../classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersUnsupportedPlatform.html',1,'antares_xpansion::benders_driver::BendersDriver']]],
+  ['binaryexpr_26',['BinaryExpr',['../classCatch_1_1BinaryExpr.html',1,'Catch']]]
 ];

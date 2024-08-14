@@ -28,7 +28,8 @@ var hierarchy =
     [ "BatchCollection", "classBatchCollection.html", null ],
     [ "BendersBase", "classBendersBase.html", [
       [ "BendersMpi", "classBendersMpi.html", [
-        [ "BendersByBatch", "classBendersByBatch.html", null ]
+        [ "BendersByBatch", "classBendersByBatch.html", null ],
+        [ "Outerloop::BendersMpiOuterLoop", "classOuterloop_1_1BendersMpiOuterLoop.html", null ]
       ] ],
       [ "BendersSequential", "classBendersSequential.html", [
         [ "BendersSequentialDouble", "classBendersSequentialDouble.html", null ]
@@ -60,6 +61,7 @@ var hierarchy =
     [ "YAML::convert< OuterLoopInputData >", "structYAML_1_1convert_3_01OuterLoopInputData_01_4.html", null ],
     [ "YAML::convert< OuterLoopSingleInputData >", "structYAML_1_1convert_3_01OuterLoopSingleInputData_01_4.html", null ],
     [ "Catch::Counts", "structCatch_1_1Counts.html", null ],
+    [ "Outerloop::CriterionComputation", "classOuterloop_1_1CriterionComputation.html", null ],
     [ "CurrentIterationData", "structCurrentIterationData.html", null ],
     [ "Catch::Decomposer", "structCatch_1_1Decomposer.html", null ],
     [ "DirectAccessScenarioToChronicleProvider", "classDirectAccessScenarioToChronicleProvider.html", null ],
@@ -382,8 +384,10 @@ var hierarchy =
       ] ],
       [ "StudyUpdaterExeOptions", "classStudyUpdaterExeOptions.html", null ]
     ] ],
-    [ "Outerloop::OuterLoop", "classOuterloop_1_1OuterLoop.html", null ],
-    [ "OuterLoopBiLevel", "classOuterLoopBiLevel.html", null ],
+    [ "Outerloop::OuterLoop", "classOuterloop_1_1OuterLoop.html", [
+      [ "Outerloop::OuterLoopBenders", "classOuterloop_1_1OuterLoopBenders.html", null ]
+    ] ],
+    [ "Outerloop::OuterLoopBiLevel", "classOuterloop_1_1OuterLoopBiLevel.html", null ],
     [ "OuterLoopCurrentIterationData", "structOuterLoopCurrentIterationData.html", null ],
     [ "Outerloop::OuterLoopInputData", "classOuterloop_1_1OuterLoopInputData.html", null ],
     [ "Outerloop::OuterLoopPattern", "classOuterloop_1_1OuterLoopPattern.html", null ],
@@ -428,7 +432,6 @@ var hierarchy =
         [ "ActiveLinksBuilder::MultipleLinkIddetectedForLink", "classActiveLinksBuilder_1_1MultipleLinkIddetectedForLink.html", null ],
         [ "ActiveLinksBuilder::ThereIsNoLinkProfileAssociatedWithThisProfile", "classActiveLinksBuilder_1_1ThereIsNoLinkProfileAssociatedWithThisProfile.html", null ],
         [ "CandidatesINIReader::InvalidIntercoFile", "classCandidatesINIReader_1_1InvalidIntercoFile.html", null ],
-        [ "CriterionCouldNotBeSatisfied", "classCriterionCouldNotBeSatisfied.html", null ],
         [ "InvalidBoundTypeException", "classInvalidBoundTypeException.html", null ],
         [ "InvalidColSizeException", "classInvalidColSizeException.html", null ],
         [ "InvalidColTypeException", "classInvalidColTypeException.html", null ],
@@ -442,6 +445,7 @@ var hierarchy =
         [ "LpFilesExtractor::ErrorWithIntercosFile", "classLpFilesExtractor_1_1ErrorWithIntercosFile.html", null ],
         [ "OptionsParser::InvalidNumberOfArgumentsPassedToParser", "classOptionsParser_1_1InvalidNumberOfArgumentsPassedToParser.html", null ],
         [ "OptionsParser::NullArgumentsValues", "classOptionsParser_1_1NullArgumentsValues.html", null ],
+        [ "Outerloop::CriterionCouldNotBeSatisfied", "classOuterloop_1_1CriterionCouldNotBeSatisfied.html", null ],
         [ "Outerloop::OuterLoopCouldNotReadAreaField", "classOuterloop_1_1OuterLoopCouldNotReadAreaField.html", null ],
         [ "Outerloop::OuterLoopCouldNotReadCriterionField", "classOuterloop_1_1OuterLoopCouldNotReadCriterionField.html", null ],
         [ "Outerloop::OuterLoopInputFileError", "classOuterloop_1_1OuterLoopInputFileError.html", null ],
@@ -576,6 +580,7 @@ var hierarchy =
       [ "MasterLoggerTest", "classMasterLoggerTest.html", null ],
       [ "MpsTxtWriterTest", "classMpsTxtWriterTest.html", null ],
       [ "OptionsParserTest", "classOptionsParserTest.html", null ],
+      [ "OuterLoopBiLevelTest", "classOuterLoopBiLevelTest.html", null ],
       [ "OuterLoopInputFromYamlTest", "classOuterLoopInputFromYamlTest.html", null ],
       [ "OuterLoopPatternTest", "classOuterLoopPatternTest.html", null ],
       [ "ProblemGenerationLoggerTest", "classProblemGenerationLoggerTest.html", null ],
@@ -595,6 +600,7 @@ var hierarchy =
       [ "UpdateCapacitiesTest", "classUpdateCapacitiesTest.html", null ],
       [ "UserLoggerTest", "classUserLoggerTest.html", null ],
       [ "VariableFileReaderTest", "classVariableFileReaderTest.html", null ],
+      [ "VariablesGroupTest", "classVariablesGroupTest.html", null ],
       [ "WeightsFileReaderTest", "classWeightsFileReaderTest.html", null ]
     ] ],
     [ "tests.python.test_antares_driver.TestAntaresDriver", "classtests_1_1python_1_1test__antares__driver_1_1TestAntaresDriver.html", null ],
