@@ -100,6 +100,7 @@ class OuterLoopInputData {
 class IOuterLoopInputDataReader {
  public:
   virtual OuterLoopInputData Read(const std::filesystem::path &input_file) = 0;
+  virtual ~IOuterLoopInputDataReader() = default;
 };
 
 class OuterLoopInputFromYaml : public IOuterLoopInputDataReader {

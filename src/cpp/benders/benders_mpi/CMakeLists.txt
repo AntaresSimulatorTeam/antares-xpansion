@@ -20,6 +20,8 @@ endif()
 add_library (benders_mpi_core STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/common_mpi.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/BendersMPI.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopBenders.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/BendersMpiOuterLoop.cpp
 )
 
 target_link_libraries (benders_mpi_core

@@ -12,10 +12,6 @@
 #include "WorkerMaster.h"
 #include "common_mpi.h"
 
-class CriterionCouldNotBeSatisfied
-    : public LogUtils::XpansionError<std::runtime_error> {
-  using LogUtils::XpansionError<std::runtime_error>::XpansionError;
-};
 /*!
  * \class BendersMpi
  * \brief Class use run the benders algorithm in parallel
@@ -30,13 +26,14 @@ class BendersMpi : public BendersBase {
   void launch() override;
   std::string BendersName() const override { return "Benders mpi"; }
   const unsigned int rank_0 = 0;
-  void ExternalLoopCheckFeasibility() override;
 
  protected:
   void free() override;
   void Run() override;
   void InitializeProblems() override;
   void BroadcastXCut();
+
+  mpi::communicator &_world;
 
  private:
   void step_1_solve_master();
@@ -52,17 +49,14 @@ class BendersMpi : public BendersBase {
 
   void do_solve_master_create_trace_and_update_cuts();
 
-  void gather_subproblems_cut_package_and_build_cuts(
+  virtual void gather_subproblems_cut_package_and_build_cuts(
       const SubProblemDataMap &subproblem_data_map, const Timer &process_timer);
 
   void write_exception_message(const std::exception &ex) const;
 
   void check_if_some_proc_had_a_failure(int success);
 
-  void UpdateOverallCosts();
-  void RunExternalLoopBilevelChecks() override;
   mpi::environment &_env;
-  mpi::communicator &_world;
 
  protected:
   [[nodiscard]] bool shouldParallelize() const final { return false; }
@@ -93,6 +87,8 @@ class BendersMpi : public BendersBase {
   void AllReduce(const T &in_value, T &out_value, Op op) const {
     mpi::all_reduce(_world, in_value, out_value, op);
   }
-  virtual void ComputeSubproblemsContributionToOuterLoopCriterion(
-      const SubProblemDataMap &subproblem_data_map);
+  void BuildGatheredCuts(const SubProblemDataMap &subproblem_data_map,
+                         const Timer &walltime);
+  virtual void GatherCuts(const SubProblemDataMap &subproblem_data_map,
+                          const Timer &walltime);
 };

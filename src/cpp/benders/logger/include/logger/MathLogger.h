@@ -18,6 +18,7 @@ class MathLoggerFile : public MathLoggerImplementation {
  private:
   std::ofstream file_stream_;
 };
+
 class MathLoggerOstream : public MathLoggerImplementation {
  public:
   explicit MathLoggerOstream(const BENDERSMETHOD& method,
