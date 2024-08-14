@@ -7,6 +7,7 @@ on:
       - main
       - develop
       - dependabot/*
+      - profiling
   pull_request:
   release:
     types: [ created ]
