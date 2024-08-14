@@ -19,3 +19,5 @@ target_link_libraries (lp_namer
 		${PROJECT_NAME}::problem_generation_main
 		${PROJECT_NAME}::lp_namer_helper
 )
+
+install(TARGETS lp_namer DESTINATION bin)
