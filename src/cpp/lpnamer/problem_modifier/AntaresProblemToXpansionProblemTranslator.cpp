@@ -30,7 +30,7 @@ AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
   std::vector<int> tmp(constant.VariablesCount, 0);
   std::vector<char> coltypes(constant.VariablesCount, 'C');
 
-  roundTo10Digit(constant, hebdo);
+  //roundTo10Digit(constant, hebdo);
 
   problem->add_cols(constant.VariablesCount, 0, hebdo.LinearCost.data(),
                     tmp.data(), {}, {}, hebdo.Xmin.data(), hebdo.Xmax.data());
