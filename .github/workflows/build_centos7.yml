@@ -266,27 +266,22 @@ jobs:
           sudo apt-get update -y
           docker pull centos:7
 
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and export
+        uses: docker/build-push-action@v6
+        with:
+          tags: centos:run
+          file: docker/centos7_test_run
+          load: true
+
       - uses: addnab/docker-run-action@v3
         with:
           image: centos:7
           shell: bash
           options: -v ${{ github.workspace }}:/work
           run: |
-            set -x
-            sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo
-            sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
-            sed -i s/mirrorlist=http/vault=http/g /etc/yum.repos.d/*.repo
-            yum update -y
-            yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make scl-utils
-            yum install -y devtoolset-10-gcc* environment-modules rpm-build zlib-devel bzip2
-            source /opt/rh/devtoolset-10/enable
-            wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.6.tar.bz2
-            tar -xvf openmpi-4.1.6.tar.bz2
-            cd openmpi-4.1.6
-            ./configure --prefix=/usr/lib64/openmpi
-            make -j$(nproc)
-            make install
-            find / -name mpirun
             export PATH=$PATH:/usr/lib64/openmpi/bin
             export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/openmpi/lib
             mpirun --version
@@ -299,20 +294,6 @@ jobs:
           shell: bash
           options: -v ${{ github.workspace }}:/work
           run: |
-            sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo
-            sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
-            sed -i s/mirrorlist=http/vault=http/g /etc/yum.repos.d/*.repo
-            yum update -y
-            yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make scl-utils
-            yum install -y devtoolset-10-gcc* environment-modules rpm-build zlib-devel bzip2
-            source /opt/rh/devtoolset-10/enable
-            wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.6.tar.bz2
-            tar -xvf openmpi-4.1.6.tar.bz2
-            cd openmpi-4.1.6
-            ./configure --prefix=/usr/lib64/openmpi
-            make -j$(nproc)
-            make install
-            find / -name mpirun
             export PATH=$PATH:/usr/lib64/openmpi/bin
             export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/openmpi/lib
             mpirun --version
@@ -332,58 +313,40 @@ jobs:
           tar --strip-components=1 -xzf ${{needs.build.outputs.SINGLE_FILE_NAME}}
           sudo apt-get update -y
           docker pull centos:7
+          
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and export
+        uses: docker/build-push-action@v6
+        with:
+          tags: centos:run
+          file: docker/centos7_test_run
+          load: true
 
       - uses: addnab/docker-run-action@v3
         with:
-          image: centos:7
+          image: centos:run
           shell: bash
           options: -v ${{ github.workspace }}:/work
           run: |
-            sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo
-            sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
-            sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
-            yum update -y
-            yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make scl-utils
-            yum install -y devtoolset-10-gcc* environment-modules rpm-build zlib-devel bzip2
-            source /opt/rh/devtoolset-10/enable
-            wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.6.tar.bz2
-            tar -xvf openmpi-4.1.6.tar.bz2
-            cd openmpi-4.1.6
-            ./configure --prefix=/usr/lib64/openmpi
-            make -j$(nproc)
-            make install
-            find / -name mpirun
             export PATH=$PATH:/usr/lib64/openmpi/bin
             export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/openmpi/lib
             mpirun --version
             cd /work
             ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
+
       - uses: addnab/docker-run-action@v3
         with:
           image: centos:7
           shell: bash
           options: -v ${{ github.workspace }}:/work
           run: |
-            sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo
-            sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
-            sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
-            yum update -y
-            yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make scl-utils
-            yum install -y devtoolset-10-gcc* environment-modules rpm-build zlib-devel bzip2
-            source /opt/rh/devtoolset-10/enable
-            wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.6.tar.bz2
-            tar -xvf openmpi-4.1.6.tar.bz2
-            cd openmpi-4.1.6
-            ./configure --prefix=/usr/lib64/openmpi
-            make -j$(nproc)
-            make install
-            find / -name mpirun
             export PATH=$PATH:/usr/lib64/openmpi/bin
             export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/openmpi/lib
             mpirun --version
             cd /work
             ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
-
 
   release:
     runs-on: ubuntu-latest
