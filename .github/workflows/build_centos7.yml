@@ -275,7 +275,7 @@ jobs:
             set -x
             sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo
             sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
-            sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
+            sed -i s/mirrorlist=http/vault=http/g /etc/yum.repos.d/*.repo
             yum update -y
             yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
             yum install -y devtoolset-10-gcc* environment-modules rpm-build zlib-devel bzip2
@@ -300,7 +300,7 @@ jobs:
           run: |
             sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo
             sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
-            sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
+            sed -i s/mirrorlist=http/vault=http/g /etc/yum.repos.d/*.repo
             yum update -y
             yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
             yum install -y devtoolset-10-gcc* environment-modules rpm-build zlib-devel bzip2
