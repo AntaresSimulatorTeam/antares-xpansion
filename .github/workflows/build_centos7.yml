@@ -278,6 +278,7 @@ jobs:
             yum update -y
             yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
             yum install -y devtoolset-10-gcc* environment-modules rpm-build zlib-devel
+            source /opt/rh/devtoolset-10/enable
             wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.6.tar.bz2
             tar -xvf openmpi-4.1.6.tar.bz2
             cd openmpi-4.1.6
@@ -302,6 +303,7 @@ jobs:
             yum update -y
             yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
             yum install -y devtoolset-10-gcc* environment-modules rpm-build zlib-devel
+            source /opt/rh/devtoolset-10/enable
             wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.6.tar.bz2
             tar -xvf openmpi-4.1.6.tar.bz2
             cd openmpi-4.1.6
@@ -340,6 +342,7 @@ jobs:
             yum update -y
             yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
             yum install -y devtoolset-10-gcc* environment-modules rpm-build zlib-devel
+            source /opt/rh/devtoolset-10/enable
             wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.6.tar.bz2
             tar -xvf openmpi-4.1.6.tar.bz2
             cd openmpi-4.1.6
@@ -363,6 +366,7 @@ jobs:
             yum update -y
             yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils
             yum install -y devtoolset-10-gcc* environment-modules rpm-build zlib-devel
+            source /opt/rh/devtoolset-10/enable
             wget https://download.open-mpi.org/release/open-mpi/v4.1/openmpi-4.1.6.tar.bz2
             tar -xvf openmpi-4.1.6.tar.bz2
             cd openmpi-4.1.6
