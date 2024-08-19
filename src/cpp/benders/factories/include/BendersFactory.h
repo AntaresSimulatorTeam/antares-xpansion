@@ -1,6 +1,7 @@
 #ifndef ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
 #define ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
 #include "BendersMPI.h"
+#include "CriterionComputation.h"
 #include "common.h"
 
 class BendersMainFactory {
@@ -12,9 +13,10 @@ class BendersMainFactory {
   SOLVER solver_ = SOLVER::BENDERS;
   [[nodiscard]] int RunExternalLoop() const;
   [[nodiscard]] int RunBenders() const;
-  pBendersBase PrepareForExecution(BendersLoggerBase& benders_loggers,
-                                   const SimulationOptions& options,
-                                   bool external_loop) const;
+  pBendersBase PrepareForExecution(
+      BendersLoggerBase& benders_loggers, const SimulationOptions& options,
+      bool external_loop,
+      Outerloop::CriterionComputation* computation = nullptr) const;
 
  public:
   explicit BendersMainFactory(int argc, char** argv,

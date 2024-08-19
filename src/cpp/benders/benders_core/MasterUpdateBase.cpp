@@ -4,54 +4,28 @@
 
 using namespace Outerloop;
 
-MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau)
-    : benders_(std::move(benders)),
-      lambda_(0),
-      outer_loop_stopping_threshold_(benders_->OuterLoopStoppingThreshold()) {
-  CheckTau(tau);
-}
+MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau,
+                                   double outer_loop_stopping_threshold)
+    : MasterUpdateBase(std::move(benders), tau, outer_loop_stopping_threshold,
+                       "Min_Investment_Constraint") {}
 
 MasterUpdateBase::MasterUpdateBase(pBendersBase benders, double tau,
+                                   double outer_loop_stopping_threshold,
                                    const std::string &name)
-    : MasterUpdateBase(std::move(benders), tau) {
-  min_invest_constraint_name_ = name;
+    : benders_(std::move(benders)),
+      outer_loop_stopping_threshold_(outer_loop_stopping_threshold),
+      min_invest_constraint_name_(name) {
+  CheckTau(tau);
 }
 
 void MasterUpdateBase::CheckTau(double tau) {
   if (tau >= 0 && tau <= 1) {
-    // TODO log
     dichotomy_weight_coeff_ = tau;
   }
 }
 
-void MasterUpdateBase::Init() {
-  // check lambda_max
-  // if (lambda_max <= 0 || lambda_max < lambda_min) {
-  //   // TODO log
-  //   SetLambdaMaxToMaxInvestmentCosts();
-  // }
-}
 
 bool MasterUpdateBase::Update(double lambda_min, double lambda_max) {
-  // if (is_criterion_high) {
-  //   lambda_min = lambda_;
-  // } else {
-  //   lambda_max =
-  //       std::min(lambda_max, benders_->GetBestIterationData().invest_cost);
-  // }
-  // WorkerMasterData workerMasterData = benders_->BestIterationWorkerMaster();
-  // double invest_cost = workerMasterData._invest_cost;
-  // double overall_cost = invest_cost + workerMasterData._operational_cost;
-  // if (outerLoopBiLevel_.Update_bilevel_data_if_feasible(
-  //         workerMasterData._cut_trace,
-  //         benders_
-  //             ->GetOuterLoopCriterionAtBestBenders() /*/!\ must be at best
-  //             it*/,
-  //         overall_cost)) {
-  //   lambda_max = std::min(lambda_max, invest_cost);
-  // } else {
-  //   lambda_min = lambda_;
-  // }
 
   stop_update_ =
       std::abs(lambda_max - lambda_min) < outer_loop_stopping_threshold_;
