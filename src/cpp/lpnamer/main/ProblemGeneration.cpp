@@ -127,12 +127,18 @@ std::filesystem::path ProblemGeneration::performAntaresSimulation() {
 //  ia >> lps_;
 //  return "/home/marechaljas/Téléchargements/study_1_integer/output/20240715-1416eco";
 //#endif
-  std::cout << "Memory usage before simulation: " << Memory::Available() << "/" << Memory::Total() << std::endl;
-
+{
+  auto [dispo, total] = Memory::MemoryUsageGo();
+  std::cout << "Memory usage before simulation: " << dispo << "/"
+            << total << std::endl;
+}
   auto results = Antares::API::PerformSimulation(options_.StudyPath());
 
-  std::cout << "Memory usage after simulation: " << Memory::Available() << "/" << Memory::Total() << std::endl;
-  //  //Add parallel
+  {
+    auto [dispo, total] = Memory::MemoryUsageGo();
+    std::cout << "Memory usage after simulation: " << dispo << "/"
+              << total << std::endl;
+  }  //  //Add parallel
   //  //Handle errors
   if (results.error) {
     std::cerr << "Error: " << results.error->reason << std::endl;
