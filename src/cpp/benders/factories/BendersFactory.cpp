@@ -1,13 +1,16 @@
 
+#include "BendersFactory.h"
+
 #include <filesystem>
 
 #include "BendersByBatch.h"
+#include "BendersMpiOuterLoop.h"
 #include "BendersSequential.h"
 #include "ILogger.h"
-#include "BendersFactory.h"
 #include "LogUtils.h"
 #include "LoggerFactories.h"
-#include "OuterLoop.h"
+#include "MasterUpdate.h"
+#include "OuterLoopBenders.h"
 #include "OutputWriter.h"
 #include "StartUp.h"
 #include "Timer.h"
@@ -33,7 +36,8 @@ BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size,
 
 pBendersBase BendersMainFactory::PrepareForExecution(
     BendersLoggerBase& benders_loggers, const SimulationOptions& options,
-    bool external_loop) const {
+    bool external_loop,
+    Outerloop::CriterionComputation* criterion_computation) const {
   pBendersBase benders;
   Logger logger;
   std::shared_ptr<MathLoggerDriver> math_log_driver;
@@ -76,9 +80,13 @@ pBendersBase BendersMainFactory::PrepareForExecution(
   benders_loggers.AddLogger(math_log_driver);
   switch (method) {
     case BENDERSMETHOD::BENDERS:
-    case BENDERSMETHOD::BENDERS_EXTERNAL_LOOP:
       benders = std::make_shared<BendersMpi>(benders_options, logger, writer,
                                              *penv_, *pworld_, math_log_driver);
+      break;
+    case BENDERSMETHOD::BENDERS_EXTERNAL_LOOP:
+      benders = std::make_shared<Outerloop::BendersMpiOuterLoop>(
+          benders_options, logger, writer, *penv_, *pworld_, math_log_driver,
+          *criterion_computation);
       break;
     case BENDERSMETHOD::BENDERS_BY_BATCH:
     case BENDERSMETHOD::BENDERS_BY_BATCH_EXTERNAL_LOOP:
@@ -86,6 +94,7 @@ pBendersBase BendersMainFactory::PrepareForExecution(
           benders_options, logger, writer, *penv_, *pworld_, math_log_driver);
       break;
   }
+
   benders->set_input_map(coupling_map);
   std::ostringstream oss_l = start_message(options, benders->BendersName());
   oss_l << std::endl;
@@ -145,17 +154,25 @@ int BendersMainFactory::RunExternalLoop() const {
 
   try {
     SimulationOptions options(options_file_);
-    auto benders = PrepareForExecution(benders_loggers, options, true);
+    auto outer_loop_input_data = Outerloop::OuterLoopInputFromYaml().Read(
+        std::filesystem::path(options.INPUTROOT) /
+        options.OUTER_LOOP_OPTION_FILE);
+    Outerloop::CriterionComputation criterion_computation(
+        outer_loop_input_data);
+    auto benders = PrepareForExecution(benders_loggers, options, true,
+                                       &criterion_computation);
+
     double tau = 0.5;
     double epsilon_lambda = 0.1;
+
     std::shared_ptr<Outerloop::IMasterUpdate> master_updater =
         std::make_shared<Outerloop::MasterUpdateBase>(
-            benders, tau);
+            benders, tau, outer_loop_input_data.StoppingThreshold());
     std::shared_ptr<Outerloop::ICutsManager> cuts_manager =
         std::make_shared<Outerloop::CutsManagerRunTime>();
 
-    Outerloop::OuterLoop ext_loop(master_updater, cuts_manager, benders, *penv_,
-                                  *pworld_);
+    Outerloop::OuterLoopBenders ext_loop(criterion_computation, master_updater,
+                                         cuts_manager, benders, *pworld_);
     ext_loop.Run();
 
     } catch (std::exception& e) {
