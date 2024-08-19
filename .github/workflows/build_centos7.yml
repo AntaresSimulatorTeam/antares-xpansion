@@ -295,6 +295,7 @@ jobs:
           tar --strip-components=1 -xzf ${{needs.build.outputs.TGZ_NAME}}
 
       - uses: addnab/docker-run-action@v3
+        name: Run tests
         with:
           image: centos:run
           shell: bash
@@ -302,11 +303,11 @@ jobs:
           run: |
             export PATH=$PATH:/usr/lib64/openmpi/bin
             export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/openmpi/lib
-            mpirun --version
             cd /work
-            ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
+            ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates --allow-run-as-root
 
       - uses: addnab/docker-run-action@v3
+        name: run tests with 2 processes
         with:
           image: centos:run
           shell: bash
@@ -314,9 +315,8 @@ jobs:
           run: |
             export PATH=$PATH:/usr/lib64/openmpi/bin
             export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/openmpi/lib
-            mpirun --version
             cd /work
-            ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
+            ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2 --allow-run-as-root
 
   test_single_file_asset:
     runs-on: ubuntu-latest
@@ -339,9 +339,10 @@ jobs:
 
       - name: setup
         run: |
-          tar --strip-components=1 -xzf ${{needs.build.outputs.TGZ_NAME}}
+          tar --strip-components=1 -xzf ${{needs.build.outputs.SINGLE_FILE_NAME}}
 
       - uses: addnab/docker-run-action@v3
+        name: Run tests
         with:
           image: centos:run
           shell: bash
@@ -349,11 +350,11 @@ jobs:
           run: |
             export PATH=$PATH:/usr/lib64/openmpi/bin
             export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/openmpi/lib
-            mpirun --version
             cd /work
-            ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
+            ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates --allow-run-as-root
 
       - uses: addnab/docker-run-action@v3
+        name: run tests with 2 processes
         with:
           image: centos:run
           shell: bash
@@ -361,9 +362,8 @@ jobs:
           run: |
             export PATH=$PATH:/usr/lib64/openmpi/bin
             export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/openmpi/lib
-            mpirun --version
             cd /work
-            ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
+            ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2 --allow-run-as-root
 
   release:
     runs-on: ubuntu-latest
