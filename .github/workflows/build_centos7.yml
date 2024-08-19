@@ -269,7 +269,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: centos.tar
-          path: /tmp
+          path: /tmp/centos.tar
 
   test_assets:
     runs-on: ubuntu-latest
@@ -284,7 +284,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: centos.tar
-          path: /tmp
+          path: /tmp/centos.tar
 
       - name: Load image
         run: |
@@ -331,7 +331,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: centos.tar
-          path: /tmp
+          path: /tmp/centos.tar
 
       - name: Load image
         run: |
