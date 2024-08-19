@@ -18,26 +18,6 @@ class IniFileNotFound : public std::runtime_error {
   explicit IniFileNotFound(const std::string& msg) : std::runtime_error(msg) {}
 };
 
-class IniReaderUtils {
- public:
-  static bool LineIsNotASectionHeader(const std::string& line) {
-    return StringManip::split(StringManip::trim(line), '=').size() == 2;
-  }
-
-  static std::string ReadSectionHeader(const std::string& line) {
-    auto str = StringManip::trim(line);
-    str.erase(std::remove(str.begin(), str.end(), '['), str.end());
-    str.erase(std::remove(str.begin(), str.end(), ']'), str.end());
-    return str;
-  }
-
-  static std::pair<std::string, int> GetKeyValFromLine(std::string_view line) {
-    auto key = StringManip::trim(StringManip::split(line, '=')[0]);
-    auto val = std::stoi(StringManip::trim(StringManip::split(line, '=')[1]));
-    return {key, val};
-  }
-};
-
 class GeneralDataIniReader {
  private:
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
@@ -57,6 +37,7 @@ class GeneralDataIniReader {
   std::string ReadPlaylist(const std::string& current_section,
                            const std::string& line);
   void ReadPlaylistVal(const std::string& key, int val);
+  void ReadPlaylist(const std::string& line);
 
  public:
   explicit GeneralDataIniReader(

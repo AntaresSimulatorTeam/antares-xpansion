@@ -107,6 +107,3 @@ class OptimisationKeys:
     def outer_loop_option_file_key():
         return "OUTER_LOOP_OPTION_FILE"
 
-    @staticmethod
-    def outer_loop_number_of_scenarios_key():
-        return "OUTER_LOOP_NUMBER_OF_SCENARIOS"

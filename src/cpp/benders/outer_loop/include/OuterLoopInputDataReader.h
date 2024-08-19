@@ -81,11 +81,11 @@ class OuterLoopInputData {
   OuterLoopInputData() = default;
 
   [[nodiscard]] std::vector<OuterLoopSingleInputData> OuterLoopData() const;
+  [[nodiscard]] std::vector<std::string> PatternBodies() const;
+  [[nodiscard]] std::string PatternsPrefix() const;
 
   void SetStoppingThreshold(double outer_loop_stopping_threshold);
   [[nodiscard]] double StoppingThreshold() const;
-  void SetCriterionTolerance(double criterion_tolerance);
-  [[nodiscard]] double CriterionTolerance() const;
   void SetCriterionCountThreshold(double criterion_count_threshold);
   [[nodiscard]] double CriterionCountThreshold() const;
   void AddSingleData(const OuterLoopSingleInputData &data);
@@ -93,7 +93,6 @@ class OuterLoopInputData {
  private:
   double outer_loop_stopping_threshold_ = 1e-4;
   std::vector<OuterLoopSingleInputData> outer_loop_data_;
-  double criterion_tolerance_ = 1e-1;
   double criterion_count_threshold_ = 1;
 };
 
@@ -101,6 +100,7 @@ class OuterLoopInputData {
 class IOuterLoopInputDataReader {
  public:
   virtual OuterLoopInputData Read(const std::filesystem::path &input_file) = 0;
+  virtual ~IOuterLoopInputDataReader() = default;
 };
 
 class OuterLoopInputFromYaml : public IOuterLoopInputDataReader {

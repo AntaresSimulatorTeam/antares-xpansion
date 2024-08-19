@@ -6,12 +6,14 @@ on:
     branches:
       - develop
       - dependabot/*
+      - release/*
   pull_request:
   release:
     types: [ created ]
 
 env:
   GITHUB_TOKEN: ${{ github.token }}
+  ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
 
 jobs:
   docker_publish:
@@ -106,14 +108,6 @@ jobs:
         with:
           cmake-version: '3.28.x'
 
-      #Lukka's action doesn't work on runner.
-      #jwlawson's action doesn't work in ACT
-      #I left this here to quicly switch between one or the other
-      #      - uses: lukka/get-cmake@latest
-      #        with:
-      #          useLocalCache: false
-      #          useCloudCache: true
-
       - name: Checkout xpressmp linux
         uses: actions/checkout@v3 #keep v3
         with:
@@ -130,7 +124,14 @@ jobs:
           antares-version: ${{needs.versions.outputs.antares-version}}
           os: centos7
           os-full-name: CentOS-7.9.2009
-
+      
+      - name: repo update
+        run: |
+          yum update
+          sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo
+          sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
+          sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
+      
       - name: Install dependencies
         run: |
           pip3 install --upgrade pip

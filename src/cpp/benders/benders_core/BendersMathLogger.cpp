@@ -83,6 +83,14 @@ LogDestination::LogDestination(const std::filesystem::path& file_path,
   }
 }
 
+void MathLoggerBehaviour::write_header() {
+  setHeadersList();
+  for (const auto& header : Headers()) {
+    LogsDestination() << header;
+  }
+  LogsDestination() << std::endl;
+}
+
 void MathLoggerBehaviour::PrintIterationSeparatorBegin() {
   std::string sep_msg("/*\\");
   sep_msg += std::string(74, '-');
@@ -95,10 +103,28 @@ void MathLoggerBehaviour::PrintIterationSeparatorEnd() {
   LogsDestination() << sep_msg << std::endl;
 }
 
+MathLogger::MathLogger(const std::filesystem::path& file_path,
+                       std::streamsize width, HEADERSTYPE type)
+    : log_destination_(file_path, width), type_(type) {}
+
+MathLogger::MathLogger(std::streamsize width, HEADERSTYPE type)
+    : log_destination_(width), type_(type) {}
+
+void MathLogger::display_message(const std::string& str) {
+  LogsDestination() << str << std::endl;
+}
+
+std::vector<std::string> MathLogger::Headers() const { return headers_; }
+
+LogDestination& MathLogger::LogsDestination() { return log_destination_; }
+
+HEADERSTYPE MathLogger::HeadersType() const { return type_; }
+
 void MathLoggerBase::Print(const CurrentIterationData& data) {
   PrintBendersData(LogsDestination(), data, HeadersType(),
                    BENDERSMETHOD::BENDERS);
 }
+
 void MathLoggerBase::setHeadersList() {
   auto type = HeadersType();
   HeadersManager headers_manager(type, BENDERSMETHOD::BENDERS);
@@ -163,9 +189,6 @@ void PrintExternalLoopData(LogDestination& log_destination,
                            const HEADERSTYPE& type,
                            const BENDERSMETHOD& method) {
   log_destination << data.outer_loop_current_iteration_data.benders_num_run;
-  // TODO
-  // log_destination << std::scientific << std::setprecision(10)
-  //                 << data.outer_loop_criterion;
   log_destination << std::scientific << std::setprecision(10)
                   << data.outer_loop_current_iteration_data.max_criterion;
   log_destination << data.outer_loop_current_iteration_data.max_criterion_area;
@@ -297,4 +320,36 @@ MathLoggerImplementation::MathLoggerImplementation(const BENDERSMETHOD& method,
     default:
       break;
   }
+}
+
+MathLoggerImplementation::MathLoggerImplementation(
+    std::shared_ptr<MathLogger> implementation)
+    : implementation_(std::move(implementation)) {}
+
+void MathLoggerImplementation::display_message(const std::string& str) {
+  implementation_->display_message(str);
+}
+
+void MathLoggerImplementation::Print(const CurrentIterationData& data) {
+  implementation_->Print(data);
+}
+
+void MathLoggerImplementation::PrintIterationSeparatorBegin() {
+  implementation_->PrintIterationSeparatorBegin();
+}
+
+void MathLoggerImplementation::PrintIterationSeparatorEnd() {
+  implementation_->PrintIterationSeparatorEnd();
+}
+
+void MathLoggerImplementation::setHeadersList() {
+  implementation_->setHeadersList();
+}
+
+std::vector<std::string> MathLoggerImplementation::Headers() const {
+  return implementation_->Headers();
+}
+
+LogDestination& MathLoggerImplementation::LogsDestination() {
+  return implementation_->LogsDestination();
 }

@@ -4,17 +4,16 @@
 #include <algorithm>
 #include <utility>
 
-#include "CustomVector.h"
+#include "CriterionComputation.h"
 #include "Timer.h"
-
 
 BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger logger,
                        Writer writer, mpi::environment &env,
                        mpi::communicator &world,
                        std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
     : BendersBase(options, logger, std::move(writer), mathLoggerDriver),
-      _env(env),
-      _world(world) {}
+      _world(world),
+      _env(env) {}
 
 /*!
  *  \brief Method to load each problem in a thread
@@ -42,12 +41,6 @@ void BendersMpi::InitializeProblems() {
     current_problem_id++;
   }
 
-  if (_world.rank() == rank_0) {
-    SetSubproblemsVariablesIndex();
-  }
-
-  BroadCast(var_indices_, rank_0);
-  init_problems_ = false;
 }
 void BendersMpi::BuildMasterProblem() {
   if (_world.rank() == rank_0) {
@@ -139,47 +132,25 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts() {
 void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
     const SubProblemDataMap &subproblem_data_map, const Timer &walltime) {
   if (!exception_raised_) {
-    std::vector<SubProblemDataMap> gathered_subproblem_map;
-    mpi::gather(_world, subproblem_data_map, gathered_subproblem_map, rank_0);
-    SetSubproblemsWalltime(walltime.elapsed());
-    double cumulative_subproblems_timer_per_iter(0);
-    Reduce(GetSubproblemsCpuTime(), cumulative_subproblems_timer_per_iter,
-           std::plus<double>(), rank_0);
-    SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter);
-    if (Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
-      _data.outer_loop_current_iteration_data.outer_loop_criterion =
-          ComputeSubproblemsContributionToOuterLoopCriterion(
-              subproblem_data_map);
-      if (_world.rank() == rank_0) {
-        outer_loop_criterion_.push_back(
-            _data.outer_loop_current_iteration_data.outer_loop_criterion);
-        UpdateOuterLoopMaxCriterionArea();
-      }
-    }
-    // only rank_0 receive non-emtpy gathered_subproblem_map
-    master_build_cuts(gathered_subproblem_map);
+    GatherCuts(subproblem_data_map, walltime);
   }
 }
+void BendersMpi::GatherCuts(const SubProblemDataMap &subproblem_data_map,
+                            const Timer &walltime) {
+  BuildGatheredCuts(subproblem_data_map, walltime);
+}
+void BendersMpi::BuildGatheredCuts(const SubProblemDataMap &subproblem_data_map,
+                                   const Timer &walltime) {
+  std::vector<SubProblemDataMap> gathered_subproblem_map;
+  mpi::gather(_world, subproblem_data_map, gathered_subproblem_map, rank_0);
+  SetSubproblemsWalltime(walltime.elapsed());
+  double cumulative_subproblems_timer_per_iter(0);
+  Reduce(GetSubproblemsCpuTime(), cumulative_subproblems_timer_per_iter,
+         std::plus<double>(), rank_0);
+  SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter);
 
-std::vector<double>
-BendersMpi::ComputeSubproblemsContributionToOuterLoopCriterion(
-    const SubProblemDataMap &subproblem_data_map) {
-  std::vector<double> outer_loop_criterion_per_sub_problem_per_pattern(
-      var_indices_.size(), {});
-  std::vector<double> outer_loop_criterion_sub_problems_map_result(
-      var_indices_.size(), {});
-
-  for (const auto &[subproblem_name, subproblem_data] : subproblem_data_map) {
-    AddVectors<double>(
-        outer_loop_criterion_per_sub_problem_per_pattern,
-                       subproblem_data.outer_loop_criterions);
-  }
-
-  Reduce(outer_loop_criterion_per_sub_problem_per_pattern,
-         outer_loop_criterion_sub_problems_map_result, std::plus<double>(),
-         rank_0);
-
-  return outer_loop_criterion_sub_problems_map_result;
+  // only rank_0 receive non-emtpy gathered_subproblem_map
+  master_build_cuts(gathered_subproblem_map);
 }
 
 SubProblemDataMap BendersMpi::get_subproblem_cut_package() {
@@ -339,13 +310,13 @@ void BendersMpi::PreRunInitialization() {
     if (is_trace()) {
       OpenCsvFile();
     }
+
   }
   mathLoggerDriver_->write_header();
   init_data_ = false;
 }
 
 void BendersMpi::launch() {
-  ++_data.outer_loop_current_iteration_data.benders_num_run;
   if (init_problems_) {
     InitializeProblems();
   }
@@ -360,66 +331,4 @@ void BendersMpi::launch() {
     free();
   }
   _world.barrier();
-}
-
-void BendersMpi::ExternalLoopCheckFeasibility() {
-  std::vector<double> obj_coeff;
-  if (_world.rank() == 0) {
-    obj_coeff = MasterObjectiveFunctionCoeffs();
-
-    // /!\ partially
-    SetMasterObjectiveFunctionCoeffsToZeros();
-
-    // PrintLog();
-  }
-
-  launch();
-  if (_world.rank() == 0) {
-    SetMasterObjectiveFunction(obj_coeff.data(), 0, obj_coeff.size() - 1);
-    UpdateOverallCosts();
-    RunExternalLoopBilevelChecks();
-    // de-comment for general case
-    //  cuts_manager_->Save(benders_->AllCuts());
-    // auto cuts = cuts_manager_->Load();
-    // High
-    if (!ExternalLoopFoundFeasible()) {
-      std::ostringstream err_msg;
-      err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "External Loop")
-              << "Criterion cannot be satisfied for your study:\n";
-      throw CriterionCouldNotBeSatisfied(err_msg.str(), LOGLOCATION);
-    }
-    // lambda_max
-    // benders_->InitExternalValues(false, master_updater_->Rhs());
-    InitExternalValues(false, 0.0);
-  }
-}
-
-void BendersMpi::UpdateOverallCosts() {
-  auto obj = MasterObjectiveFunctionCoeffs();
-  _data.invest_cost = 0;
-  for (const auto &[var_name, var_id] : MasterVariables()) {
-    _data.invest_cost += obj[var_id] * _data.x_cut.at(var_name);
-  }
-
-  relevantIterationData_.best._invest_cost = _data.invest_cost;
-}
-
-void BendersMpi::RunExternalLoopBilevelChecks() {
-  if (_world.rank() == rank_0 && Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP &&
-      !is_bilevel_check_all_) {
-    const WorkerMasterData &workerMasterData = BestIterationWorkerMaster();
-    const auto &invest_cost = workerMasterData._invest_cost;
-    const auto &overall_cost = invest_cost + workerMasterData._operational_cost;
-    if (outer_loop_biLevel_.Update_bilevel_data_if_feasible(
-            _data.x_cut, GetOuterLoopCriterionAtBestBenders() /*/!\ must
-                                 be at best it*/
-            ,
-            overall_cost, invest_cost,
-            _data.outer_loop_current_iteration_data.external_loop_lambda)) {
-      UpdateOuterLoopSolution();
-    }
-    SaveCurrentOuterLoopIterationInOutputFile();
-    _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub =
-        outer_loop_biLevel_.BilevelBestub();
-  }
 }

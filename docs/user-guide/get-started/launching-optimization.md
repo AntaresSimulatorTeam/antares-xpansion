@@ -57,7 +57,7 @@ If the value is `last`, the most recent run will be used. This option only has a
 among `{problem_generation, benders, study_update, sensitivity}`.
 In a step by step workflow keep both _.zip_ file and _-Xpansion_ corresponding folder.
 
-#### `-m, --method {benders, benders_by_batch, mergeMPS}`
+#### `-m, --method {benders, mergeMPS, adequacy_criterion}`
 
 Default value: `benders`. 
 
@@ -65,15 +65,15 @@ Sets the optimization method used by Antares-Xpansion.
 
 | Option | Description                           |
 | ---------- | ----------------------------------------------------------------------- |
-| `benders` | Launch the classical Benders decomposition.
-| `benders_by_batch` | Launch the Benders by batch algorithm. |
+| `benders` | Launch the classical Benders decomposition or the Benders by batch algorithm depending on `batch_size`.
 | `mergeMPS`   | Launch a frontal resolution of the investment problem (i.e. without decomposition). This is much more time-consuming than using Benders decomposition.|
+| `adequacy_criterion`   | Launch Antares-Xpansion with reliability constraints, see [Adequacy criterion](adequacy-criterion.md). |
 
 #### `-n, --np`
 
 Default value: 2. 
 
-Sets the number of MPI processes to use for the Benders decomposition. This option only has an effect when `-m` is set to `benders` or `benders_by_batch`.
+Sets the number of MPI processes to use for the Benders decomposition. This option only has an effect when `-m` is set to `benders`.
 
 #### `--antares-n-cpu`
 
@@ -108,6 +108,7 @@ investment combination has been found, the
 package produces an archive `simulation-name.zip` located in the `output` folder of the Antares study.
 
 Once you unzip the archive, the files `lp/reportbenders.txt` and the `expansion/out.json` log information for each iteration:
+
 1. The investment combination that has been evaluated,
 2. The operational, investment and overall costs, 
 3. The current lower and upper bounds (no upper bound for the Benders by batch),

@@ -1,19 +1,45 @@
 Antares-Xpansion changelog
 =================
 
-v1.3.0 (06/2024)
+v1.3.2 (07/2024)
+--------------------------------------------------------
+### Bug Fixes
+* Fix an issue where the application would crash if a user specified a value for "playlist_reset" in general_data.ini
+* Fix an issue with "singleFiles" assets on Ubuntu not working due to mpi runtime library not being found
+
+v1.3.1 (07/2024)
 --------------------------------------------------------
 
 ### Features
 
-Embedding Mpi in Windows
-Allow sensitivity study to run unzipped study
-First Implementation of Benders Outer Loop
+- **outer_loop** option is renamed **adequacy_criterion**
+- New output file **criterions.txt** is added under **lp/** dir to store adequacy criterions for all valid patterns (area+criterion)
+- New output file **PositiveUnsuppliedEnergy.txt** is added under **lp/** dir to store the amount of unsupplied energy for all valid patterns (area+criterion)
+
 ### Bug Fixes
 
-Duplicate Xpress loading messages
-remove whitespace from Xpress path on Windows 
-fix truncated xpress path on linux
+- Fix Mpi issues on single file assets
+
+### Doc
+
+- The doc has been updated with a description of the adequacy criterion feature
+
+v1.3.0 (06/2024)
+--------------------------------------------------------
+
+### ⚠️ Single-file versions in Ubuntu are known to have MPI-related issues. Please use the other ones.
+
+### Features
+
+- Embedding Mpi in Windows
+- Allow sensitivity study to run unzipped study
+- Allow to specify a security criterion in number of hours of loss of load in the study. This feature is referred as outer_loop (renamed to adequacy_criterion in 1.3.1)
+
+### Bug Fixes
+
+- Duplicate Xpress loading messages
+- Remove whitespace from Xpress path on Windows 
+- Fix truncated xpress path on linux
 
 v1.2.2 (02/2024)
 --------------------------------------------------------

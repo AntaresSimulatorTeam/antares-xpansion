@@ -159,7 +159,7 @@ class TestBendersDriver:
         with patch(MOCK_SUBPROCESS_RUN, autospec=True) as run_function:
             expected_cmd = [exe_path, self.OPTIONS_JSON]
             run_function.return_value.returncode = 0
-            benders_driver.launch(simulation_output_path, "outer_loop", True)
+            benders_driver.launch(simulation_output_path, "adequacy_criterion", True)
             args, _ = run_function.call_args_list[0]
             assert args[0] == expected_cmd
 

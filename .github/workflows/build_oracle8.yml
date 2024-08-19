@@ -6,6 +6,7 @@ on:
     branches:
       - develop
       - dependabot/*
+      - release/*
   pull_request:
   release:
     types: [ created ]
@@ -62,7 +63,7 @@ jobs:
     steps:
       - name: Install System
         run: |
-          dnf install -y epel-release git wget rpm-build redhat-lsb-core openmpi-devel
+          dnf install -y epel-release git wget rpm-build redhat-lsb-core
           dnf install -y unzip libuuid-devel gcc-toolset-10-toolchain python3-devel zlib-devel
           #make gcc &co available system wide and "action wide"
           source /opt/rh/gcc-toolset-10/enable
@@ -79,7 +80,7 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: true
-
+          
       - name: Checkout xpressmp linux
         uses: actions/checkout@v4
         with:
