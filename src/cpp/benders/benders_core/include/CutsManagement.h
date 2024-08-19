@@ -8,6 +8,7 @@ class ICutsManager {
   ICutsManager() = default;
   void virtual Save(const WorkerMasterDataVect& benders_cuts) = 0;
   virtual WorkerMasterDataVect Load() = 0;
+  virtual ~ICutsManager() = default;
 };
 
 class CutsManagerRunTime : public ICutsManager {

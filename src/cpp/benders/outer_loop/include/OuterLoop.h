@@ -1,25 +1,25 @@
 #pragma once
-#include "CutsManagement.h"
-#include "MasterUpdate.h"
-#include "common_mpi.h"
-
+#include "CriterionComputation.h"
+#include "OuterLoopBiLevel.h"
 namespace Outerloop {
 class OuterLoop {
  public:
-  explicit OuterLoop(std::shared_ptr<IMasterUpdate> master_updater,
-                     std::shared_ptr<ICutsManager> cuts_manager,
-                     pBendersBase benders, mpi::environment& env,
-                     mpi::communicator& world);
+  explicit OuterLoop(CriterionComputation& criterion_computation_);
   void Run();
+  virtual void OuterLoopCheckFeasibility() = 0;
+  virtual void OuterLoopBilevelChecks() = 0;
+  virtual void RunAttachedAlgo() = 0;
+  virtual bool UpdateMaster() = 0;
+  virtual void PrintLog() = 0;
+  virtual void init_data() = 0;
+  virtual bool isExceptionRaised() = 0;
+  virtual double OuterLoopLambdaMin() const = 0;
+  virtual double OuterLoopLambdaMax() const = 0;
+  virtual ~OuterLoop() = default;
 
- private:
-  void PrintLog();
-  std::shared_ptr<IMasterUpdate> master_updater_;
-  std::shared_ptr<ICutsManager> cuts_manager_;
-  pBendersBase benders_;
-  BendersLoggerBase loggers_;
-  mpi::environment& env_;
-  mpi::communicator& world_;
+ protected:
+  CriterionComputation& criterion_computation_;
+  OuterLoopBiLevel outer_loop_biLevel_;
 };
 
 }  // namespace Outerloop

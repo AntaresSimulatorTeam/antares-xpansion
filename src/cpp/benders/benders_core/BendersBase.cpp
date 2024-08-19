@@ -9,25 +9,17 @@
 #include "LastIterationReader.h"
 #include "LastIterationWriter.h"
 #include "LogUtils.h"
-#include "VariablesGroup.h"
-
 #include "solver_utils.h"
 
 BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
                          Writer writer,
                          std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
-    : _options(options),
+    : _options(std::move(options)),
       _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) /
                      (_options.CSV_NAME + ".csv")),
       _logger(std::move(logger)),
       _writer(std::move(writer)),
       mathLoggerDriver_(std::move(mathLoggerDriver)) {
-  if (options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
-    //TODO maybe the input format will change?
-    outer_loop_input_data_ =
-        Outerloop::OuterLoopInputFromYaml().Read(OuterloopOptionsFile());
-    outer_loop_biLevel_ = OuterLoopBiLevel(outer_loop_input_data_);
-  }
 }
 
 std::filesystem::path BendersBase::OuterloopOptionsFile() const {
@@ -390,26 +382,30 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
             policy, nameAndWorkers.begin(), nameAndWorkers.end(),
             [this, &m, &subproblem_data_map](
                 const std::pair<std::string, SubproblemWorkerPtr> &kvp) {
-              const auto &[name, worker] = kvp;
-              Timer subproblem_timer;
               PlainData::SubProblemData subproblem_data;
-              worker->fix_to(_data.x_cut);
-              worker->solve(subproblem_data.lpstatus, _options.OUTPUTROOT,
-                            _options.LAST_MASTER_MPS + MPS_SUFFIX, _writer);
-              worker->get_value(subproblem_data.subproblem_cost);
-              if (_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
-                std::vector<double> solution;
-                worker->get_solution(solution);
-                ComputeOuterLoopCriterion(name, solution, subproblem_data);
-              }
-              worker->get_subgradient(subproblem_data.var_name_and_subgradient);
-              worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
-              subproblem_data.subproblem_timer = subproblem_timer.elapsed();
-              std::lock_guard guard(m);
+              const auto &[name, worker] = kvp;
+              SolveSubproblem(subproblem_data_map, subproblem_data, name,
+                              worker);
+
               subproblem_data_map[name] = subproblem_data;
+              std::lock_guard guard(m);
             });
       },
       shouldParallelize());
+}
+void BendersBase::SolveSubproblem(
+    SubProblemDataMap &subproblem_data_map,
+    PlainData::SubProblemData &subproblem_data, const std::string &name,
+    const std::shared_ptr<SubproblemWorker> &worker) {
+  Timer subproblem_timer;
+  worker->fix_to(_data.x_cut);
+  worker->solve(subproblem_data.lpstatus, _options.OUTPUTROOT,
+                _options.LAST_MASTER_MPS + MPS_SUFFIX, _writer);
+  worker->get_value(subproblem_data.subproblem_cost);
+
+  worker->get_subgradient(subproblem_data.var_name_and_subgradient);
+  worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
+  subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 }
 
 /*!
@@ -779,19 +775,7 @@ void BendersBase::MatchProblemToId() {
   }
 }
 
-// Search for variables in sub problems that satify patterns
-// var_indices is a vector(for each patterns p) of vector (var indices related
-// to p)
-void BendersBase::SetSubproblemsVariablesIndex() {
-  if (!subproblem_map.empty() && _options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
-    auto subproblem = subproblem_map.begin();
-    subproblems_vars_names_.clear();
-    subproblems_vars_names_ = subproblem->second->_solver->get_col_names();
-    Outerloop::VariablesGroup variablesGroup(subproblems_vars_names_,
-                                             outer_loop_input_data_.OuterLoopData());
-    var_indices_ = variablesGroup.Indices();
-  }
-}
+
 
 void BendersBase::AddSubproblemName(const std::string &name) {
   subproblems.push_back(name);
@@ -1000,16 +984,6 @@ WorkerMasterData BendersBase::BestIterationWorkerMaster() const {
   return relevantIterationData_.best;
 }
 
-void BendersBase::InitExternalValues(bool is_bilevel_check_all, double lambda) {
-  // _data.outer_loop_current_iteration_data.outer_loop_criterion = 0;
-  // _data.outer_loop_current_iteration_data.benders_num_run = 1;
-  is_bilevel_check_all_ = is_bilevel_check_all;
-  outer_loop_biLevel_.Init(MasterObjectiveFunctionCoeffs(),
-                           BestIterationWorkerMaster().get_max_invest(),
-                           MasterVariables());
-  outer_loop_biLevel_.SetLambda(lambda);
-}
-
 CurrentIterationData BendersBase::GetCurrentIterationData() const {
   return _data;
 }
@@ -1020,39 +994,6 @@ std::vector<double> BendersBase::GetOuterLoopCriterionAtBestBenders() const {
   return ((outer_loop_criterion_.empty())
               ? std::vector<double>()
               : outer_loop_criterion_[_data.best_it - 1]);
-}
-
-void BendersBase::ComputeOuterLoopCriterion(
-    const std::string &subproblem_name,
-    const std::vector<double> &sub_problem_solution,
-    PlainData::SubProblemData &subproblem_data) {
-  auto outer_loop_input_size = var_indices_.size(); // num of patterns
-  subproblem_data.outer_loop_criterions.resize(outer_loop_input_size, 0.);
-  subproblem_data.outer_loop_patterns_values.resize(outer_loop_input_size, 0.);
-
-  auto subproblem_weight = SubproblemWeight(_data.nsubproblem, subproblem_name);
-  double criterion_count_threshold =
-      outer_loop_input_data_.CriterionCountThreshold();
-
-  for (int pattern_index(0); pattern_index < outer_loop_input_size;
-       ++pattern_index) {
-    auto pattern_variables_indices = var_indices_[pattern_index];
-    for (auto variables_index : pattern_variables_indices) {
-      const auto &solution = sub_problem_solution[variables_index];
-      subproblem_data.outer_loop_patterns_values[pattern_index] += solution;
-      if (solution > criterion_count_threshold)
-        // 1h of no supplied energy
-        subproblem_data.outer_loop_criterions[pattern_index] +=
-            subproblem_weight;
-    }
-  }
-}
-
-double BendersBase::ExternalLoopLambdaMax() const {
-  return outer_loop_biLevel_.LambdaMax();
-}
-double BendersBase::ExternalLoopLambdaMin() const {
-  return outer_loop_biLevel_.LambdaMin();
 }
 
 void BendersBase::init_data(double external_loop_lambda,
@@ -1076,19 +1017,23 @@ void BendersBase::init_data(double external_loop_lambda,
       external_loop_lambda_max;
 }
 
-bool BendersBase::ExternalLoopFoundFeasible() const {
-  return outer_loop_biLevel_.FoundFeasible();
-}
-double BendersBase::OuterLoopStoppingThreshold() const { return outer_loop_input_data_.StoppingThreshold(); }
 
-void BendersBase::UpdateOuterLoopMaxCriterionArea()  {
-  auto criterions_begin =
-      _data.outer_loop_current_iteration_data.outer_loop_criterion.cbegin();
-  auto criterions_end =
-      _data.outer_loop_current_iteration_data.outer_loop_criterion.cend();
-  auto max_criterion_it = std::max_element(criterions_begin, criterions_end);
-  _data.outer_loop_current_iteration_data.max_criterion = *max_criterion_it;
-  auto  max_criterion_index = std::distance(criterions_begin, max_criterion_it);
- _data.outer_loop_current_iteration_data.max_criterion_area = outer_loop_input_data_.OuterLoopData()[max_criterion_index].Pattern().GetBody();
-}
+
 bool BendersBase::isExceptionRaised() const { return exception_raised_; }
+/*
+ * after the 1st loop of the outer loop, we must  re-build the objective
+ * function and costs
+ */
+void BendersBase::UpdateOverallCosts() {
+  auto obj = MasterObjectiveFunctionCoeffs();
+  _data.invest_cost = 0;
+  for (const auto &[var_name, var_id] : MasterVariables()) {
+    _data.invest_cost += obj[var_id] * _data.x_cut.at(var_name);
+  }
+
+  relevantIterationData_.best._invest_cost = _data.invest_cost;
+}
+void BendersBase::SetBilevelBestub(double bilevel_best_ub) {
+  _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub =
+      bilevel_best_ub;
+}

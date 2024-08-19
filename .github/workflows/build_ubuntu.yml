@@ -237,6 +237,49 @@ jobs:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
 
+  test_assets:
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    steps:
+      - name: Download build assets
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{needs.build.outputs.TGZ_NAME}}
+      - name: setup
+        run: |
+          tar --strip-components=1 -xzf ${{needs.build.outputs.TGZ_NAME}}
+          sudo apt-get update -y
+          sudo apt-get install openmpi-bin -y
+
+      - name: run launcher
+        run: |
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
+
+      - name: run launcher parallel
+        run: |
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
+
+  test_single_file_asset:
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    steps:
+      - name: Download build assets
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
+      - name: setup
+        run: |
+          tar --strip-components=1 -xzf ${{needs.build.outputs.SINGLE_FILE_NAME}}
+          sudo apt-get update -y
+          sudo apt-get install openmpi-bin -y
+
+      - name: run launcher
+        run: |
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
+      - name: run launcher parallel
+        run: |
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2    
+
   release:
     runs-on: ubuntu-latest
     needs: [ build, userguide ]
