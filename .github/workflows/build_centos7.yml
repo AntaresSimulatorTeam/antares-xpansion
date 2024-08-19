@@ -288,6 +288,7 @@ jobs:
             make install
             find / -name mpirun
             export PATH=$PATH:/usr/lib64/openmpi/bin
+            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/openmpi/lib
             mpirun --version
             cd /work
             ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
@@ -313,6 +314,7 @@ jobs:
             make install
             find / -name mpirun
             export PATH=$PATH:/usr/lib64/openmpi/bin
+            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/openmpi/lib
             mpirun --version
             cd /work
             ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
@@ -352,6 +354,7 @@ jobs:
             make install
             find / -name mpirun
             export PATH=$PATH:/usr/lib64/openmpi/bin
+            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/openmpi/lib
             mpirun --version
             cd /work
             ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
@@ -376,6 +379,7 @@ jobs:
             make install
             find / -name mpirun
             export PATH=$PATH:/usr/lib64/openmpi/bin
+            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/openmpi/lib
             mpirun --version
             cd /work
             ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
