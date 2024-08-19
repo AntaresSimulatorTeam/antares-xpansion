@@ -322,13 +322,17 @@ void ProblemGeneration::RunProblemGeneration(
       << "rename problems: " << std::boolalpha << rename_problems << std::endl;
 
 
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading problems" << std::endl;
   auto files_mapper = FilesMapper(antares_archive_path, xpansion_output_dir);
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading mps" << std::endl;
   auto mpsList = files_mapper.MpsAndVariablesFilesVect();
-
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading mps done" << std::endl;
   auto solver_log_manager = SolverLogManager(log_file_path);
   Couplings couplings;
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading couplings" << std::endl;
   LinkProblemsGenerator linkProblemsGenerator(
       lpDir_, links, solver_name, logger, solver_log_manager, rename_problems);
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading couplings done" << std::endl;
   std::shared_ptr<ArchiveReader> reader =
       antares_archive_path.empty() ? std::make_shared<ArchiveReader>()
                                    : InstantiateZipReader(antares_archive_path);
@@ -337,7 +341,7 @@ void ProblemGeneration::RunProblemGeneration(
   std::vector<std::shared_ptr<Problem>> xpansion_problems =
       getXpansionProblems(solver_log_manager, solver_name, mpsList, lpDir_,
                           reader, !antares_archive_path.empty(), lps_);
-
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "Problems read" << std::endl;
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
       problems_and_data;
   for (int i = 0; i < xpansion_problems.size(); ++i) {
@@ -349,6 +353,7 @@ void ProblemGeneration::RunProblemGeneration(
       problems_and_data.emplace_back(xpansion_problems.at(i), mpsList.at(i));
     }
   }
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "Start problem generation" << std::endl;
   auto mps_file_writer = std::make_shared<MPSFileWriter>(lpDir_);
   std::for_each(
       std::execution::par, problems_and_data.begin(), problems_and_data.end(),
