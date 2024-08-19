@@ -268,8 +268,8 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: myimage
-          path: /tmp/centos.tar
+          name: centos.tar
+          path: /tmp
 
   test_assets:
     runs-on: ubuntu-latest
