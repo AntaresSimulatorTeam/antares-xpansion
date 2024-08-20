@@ -1,6 +1,6 @@
 {
   "antares_version": "9.2.0-api01",
-  "antares_version_executable": "9.2",
+  "antares_version_executable": "9.2-rc1",
   "antares_xpansion_version": "1.4.1",
   "minizip_ng_version": "3.0.6"
 }
