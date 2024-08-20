@@ -21,8 +21,8 @@ Follow this [link][Doxygen_Code_Documentation] for Doxygen code documentation.
 - [UI creation](5-ui-creation.md)
 - [Installer creation](6-Installer-creation.md)
 
-[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ubuntu-system-deps-build.yml/badge.svg
-[ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ubuntu-system-deps-build.yml
-[windows_vcpkg_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/windows-vcpkg-deps-build.yml/badge.svg
-[windows_vcpkg_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/windows-vcpkg-deps-build.yml
+[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ubuntu-system-deps-build.yml/badge.svg?query=branch%3Adevelop
+[ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ubuntu-system-deps-build.yml?query=branch%3Adevelop
+[windows_vcpkg_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/windows-vcpkg-deps-build.yml/badge.svg?query=branch%3Adevelop
+[windows_vcpkg_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/windows-vcpkg-deps-build.yml?query=branch%3Adevelop
 [Doxygen_Code_Documentation]: https://antaressimulatorteam.github.io/antares-xpansion/annotated.html
