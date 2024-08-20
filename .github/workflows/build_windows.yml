@@ -38,6 +38,7 @@ jobs:
     outputs:
       zip_name: ${{ steps.zip_name.outputs.zip_name }}
       singlefile_name: ${{steps.zip_name.outputs.singlefile_name}}
+      version: ${{ steps.antares-xpansion-version.outputs.result }}
 
     steps:
       - uses: actions/checkout@v4
@@ -171,6 +172,9 @@ jobs:
         run: |
           echo "zip_name=${{env.ZIP_NAME}}" >> "$GITHUB_OUTPUT"
           echo "singlefile_name=${{steps.create-single-file.outputs.archive-name}}" >> "$GITHUB_OUTPUT"
+          
+          
+
   userguide:
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'created'
@@ -199,6 +203,54 @@ jobs:
         with:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
+
+  test_assets:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ windows-latest ]
+    needs: [ build ]
+    steps:
+      - name: Download build assets
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{needs.build.outputs.zip_name}}
+      - name: setup
+        run: |
+          unzip ${{needs.build.outputs.zip_name}}
+
+      - name: run launcher
+        run: |
+          cd antaresXpansion-${{needs.build.outputs.version}}-win64
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
+
+      - name: run launcher parallel
+        run: |
+          cd antaresXpansion-${{needs.build.outputs.version}}-win64
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
+
+  test_single_file_asset:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ windows-latest ]
+
+    needs: [ build ]
+    steps:
+      - name: Download build assets
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{needs.build.outputs.singlefile_name}}
+      - name: setup
+        run: |
+          unzip ${{needs.build.outputs.singlefile_name}}
+
+      - name: run launcher
+        run: |
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
+      - name: run launcher parallel
+        run: |
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2   
 
   upload_asset_to_release:
     if: github.event_name == 'release' && github.event.action == 'created'

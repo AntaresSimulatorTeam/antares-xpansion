@@ -2,13 +2,12 @@
 
 #include <execution>
 #include <filesystem>
+#include <optional>
 #include <regex>
 
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
 #include "ILogger.h"
-#include "OuterLoopBiLevel.h"
-#include "OuterLoopInputDataReader.h"
 #include "OutputWriter.h"
 #include "SimulationOptions.h"
 #include "SubproblemCut.h"
@@ -17,7 +16,6 @@
 #include "Worker.h"
 #include "WorkerMaster.h"
 #include "common.h"
-
 /**
  * std execution policies don't share a base type so we can't just select
  *them in place in the foreach This function allow the selection of policy
@@ -83,29 +81,25 @@ class BendersBase {
   }
   BendersBaseOptions Options() const { return _options; }
   virtual void free() = 0;
-  void InitExternalValues(bool is_bilevel_check_all, double lambda);
   int GetBendersRunNumber() const { return _data.outer_loop_current_iteration_data.benders_num_run; }
   CurrentIterationData GetCurrentIterationData() const;
   OuterLoopCurrentIterationData GetOuterLoopData() const;
   std::vector<double> GetOuterLoopCriterionAtBestBenders() const;
   virtual void init_data();
   void init_data(double external_loop_lambda, double external_loop_lambda_min, double external_loop_lambda_max);
-
-  double ExternalLoopLambdaMax() const;
-  double ExternalLoopLambdaMin() const;
-  bool ExternalLoopFoundFeasible() const;
-  virtual void ExternalLoopCheckFeasibility() = 0;
-  virtual void RunExternalLoopBilevelChecks() = 0;
-  double OuterLoopStoppingThreshold() const;
   Output::SolutionData GetOuterLoopSolution() const;
   void SaveOuterLoopSolutionInOutputFile() const;
   void SaveCurrentOuterLoopIterationInOutputFile() const;
+  void SetBilevelBestub(double bilevel_best_ub);
+  void UpdateOuterLoopSolution();
 
  protected:
   bool exception_raised_ = false;
 
  public:
   bool isExceptionRaised() const;
+  [[nodiscard]] std::filesystem::path OuterloopOptionsFile() const;
+  void UpdateOverallCosts();
 
  protected:
   CurrentIterationData _data;
@@ -121,11 +115,7 @@ class BendersBase {
   bool free_problems_ = true;
 
   std::vector<std::vector<double>> outer_loop_criterion_;
-  std::vector<std::string> subproblems_vars_names_ = {};
-  std::vector<std::vector<int>> var_indices_;
-  OuterLoopBiLevel outer_loop_biLevel_;
   bool is_bilevel_check_all_ = false;
-  Outerloop::OuterLoopInputData outer_loop_input_data_;
 
   virtual void Run() = 0;
   void update_best_ub();
@@ -150,7 +140,6 @@ class BendersBase {
                                         std::string const &name) const;
   [[nodiscard]] std::filesystem::path get_master_path() const;
   [[nodiscard]] std::filesystem::path get_structure_path() const;
-  [[nodiscard]] std::filesystem::path OuterloopOptionsFile() const;
   [[nodiscard]] LogData bendersDataToLogData(
       const CurrentIterationData &data) const;
   template <typename T, typename... Args>
@@ -171,7 +160,6 @@ class BendersBase {
    * subproblems-1-1  --> NTCDirect::link<area1$$area2>::hour<0>
    * subproblems-3-5  --> NTCDirect::link<area1$$area2>::hour<672>
    */
-  void SetSubproblemsVariablesIndex();
   void AddSubproblemName(const std::string &name);
   [[nodiscard]] std::string get_master_name() const;
   [[nodiscard]] std::string get_solver_name() const;
@@ -232,16 +220,13 @@ class BendersBase {
   void BoundSimplexIterations(int subproblem_iteration);
   void ResetSimplexIterationsBounds();
 
+  SubproblemsMapPtr subproblem_map;
   SolverLogManager solver_log_manager_;
 
-  // outer loop criterion per pattern
-  void ComputeOuterLoopCriterion(
-      const std::string &subproblem_name,
-      const std::vector<double> &sub_problem_solution,
-      PlainData::SubProblemData &subproblem_data);
-
-  void UpdateOuterLoopMaxCriterionArea();
-  void UpdateOuterLoopSolution();
+  virtual void SolveSubproblem(SubProblemDataMap &subproblem_data_map,
+                               PlainData::SubProblemData &subproblem_data,
+                               const std::string &name,
+                               const std::shared_ptr<SubproblemWorker> &worker);
 
  private:
   void print_master_and_cut(std::ostream &file, int ite,
@@ -269,7 +254,6 @@ class BendersBase {
   std::filesystem::path solver_log_file_ = "";
   WorkerMasterPtr _master;
   VariableMap _problem_to_id;
-  SubproblemsMapPtr subproblem_map;
   StrVector subproblems;
   std::ofstream _csv_file;
   std::filesystem::path _csv_file_path;
