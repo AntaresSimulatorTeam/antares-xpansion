@@ -24,7 +24,6 @@ runs:
   using: "composite"
   steps:
     - name: download-extract antares
-    - name: download-extract antares
       shell: bash
       run: |
         mkdir -p deps
