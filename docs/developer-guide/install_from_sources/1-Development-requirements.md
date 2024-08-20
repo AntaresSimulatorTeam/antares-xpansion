@@ -43,11 +43,20 @@ CMake 3.x must be used.
     sudo yum install epel-release
     sudo yum install cmake3
     ```
+Or
+    ```
+    python -m pip install cmake
+    ```
+    
 === "Ubuntu"
 
     ```
     sudo apt install cmake
     ```
+Or
+```
+python -m pip install cmake
+```
 
 ## [Python version](#python-version)
 Python 3.x must be used.
