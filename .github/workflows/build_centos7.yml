@@ -7,6 +7,7 @@ on:
       - develop
       - dependabot/*
       - profiling
+      - release/*
   pull_request:
   release:
     types: [ created ]
@@ -113,14 +114,6 @@ jobs:
         with:
           cmake-version: '3.28.x'
 
-      #Lukka's action doesn't work on runner.
-      #jwlawson's action doesn't work in ACT
-      #I left this here to quicly switch between one or the other
-      #      - uses: lukka/get-cmake@latest
-      #        with:
-      #          useLocalCache: false
-      #          useCloudCache: true
-
       - name: Checkout xpressmp linux
         uses: actions/checkout@v3 #keep v3
         with:
@@ -139,6 +132,13 @@ jobs:
           os-full-name: CentOS-7.9.2009
           ortools-url: ${{env.ORTOOLS_URL}}
           ortools-dir: ${{env.ORTOOLS_DIR}}
+
+      - name: repo update
+        run: |
+          yum update
+          sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo
+          sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo
+          sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
 
       - name: Install dependencies
         run: |

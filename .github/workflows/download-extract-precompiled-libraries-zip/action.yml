@@ -28,10 +28,9 @@ runs:
     - id: download-extract
       shell: bash
       run: |
-           version=$(echo ${{inputs.antares-version}} | sed 's/-.*//')
-           wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{inputs.antares-version}}/rte-antares-${version}-installer-64bits.zip
-           unzip rte-antares-${version}-installer-64bits.zip
-           rm -rf rte-antares-${version}-installer-64bits.zip
+           wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{inputs.antares-version}}/rte-antares-${{inputs.antares-version}}-installer-64bits.zip
+           unzip rte-antares-${{inputs.antares-version}}-installer-64bits.zip
+           rm -rf rte-antares-${{inputs.antares-version}}-installer-64bits.zip
 
     - name: Download & extract OR-Tools
       shell: bash
@@ -41,3 +40,10 @@ runs:
         wget ${{inputs.ortools-url}} -O ortools.zip
         unzip ortools.zip
         rm ortools.zip
+
+    - name: download-extract sirius
+      shell: bash
+      run: |
+        wget https://github.com/rte-france/sirius-solver/releases/download/antares-integration-v1.5/windows-latest_sirius-solver.zip
+        unzip windows-latest_sirius-solver.zip
+        rm -rf windows-latest_sirius-solver.zip

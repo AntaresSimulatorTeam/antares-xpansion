@@ -294,4 +294,4 @@ In the first iterations, the algorithm computes upper and lower bounds on the op
 
 Positive integer. Default value: `0`.
 
-This parameter is used only when `--method` is `benders_by_batch`, otherwise it has no effect. The `batch_size` specifies the number of subproblems per batch. If set to `0`, then all subproblems are in the same batch. In this case, the Benders by batch algorithm is launched with a single batch, which is mathematically equivalent to the classical Benders algorithm.
+This parameter specifies the number of subproblems per batch. If set to `0`, then all subproblems are in the same batch. In this case, the classical Benders is launched.

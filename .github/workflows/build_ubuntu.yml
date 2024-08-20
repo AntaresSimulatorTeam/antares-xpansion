@@ -7,7 +7,7 @@ on:
       - main
       - develop
       - dependabot/*
-      - profiling
+      - release/*
   pull_request:
   release:
     types: [ created ]
@@ -57,6 +57,7 @@ jobs:
           sudo apt-get update --fix-missing
           sudo apt-get install -y ccache
           sudo apt-get install -y g++-10 gcc-10
+      
 
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.3
@@ -106,7 +107,7 @@ jobs:
 
       - name: Config OR-Tools URL
         run: |
-          echo "ORTOOLS_URL=https://github.com/rte-france/or-tools/releases/download/v9.8-rte1.0/ortools_cxx_ubuntu-20.04_static_sirius.zip" >> $GITHUB_ENV
+          echo "ORTOOLS_URL=https://github.com/rte-france/or-tools-rte/releases/download/v9.10-rte1.1/ortools_cxx_ubuntu-20.04_static_sirius.zip" >> $GITHUB_ENV
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
@@ -133,20 +134,6 @@ jobs:
           # Allows to restore a cache when deps have only partially changed (like adding a dependency)
           restore-keys: vcpkg-cache-ubuntu-
 
-      - uses: actions/checkout@v3 #keep v3
-        with:
-          repository: intel/ittapi.git
-          github-server-url: https://github.com
-          ref: master
-          path: ${{ github.workspace }}/ittapi
-
-      - name: Install itt vtune
-        run: |
-          cd ittapi
-          python buildall.py --force_bits 64
-          cd build_linux2/64
-          cmake --install .  --prefix ${GITHUB_WORKSPACE}/itt
-
       - name: Configure
         shell: bash
         run: |
@@ -158,7 +145,7 @@ jobs:
                 -DBUILD_TESTING=ON \
                 -DCMAKE_BUILD_TYPE=Release \
                 -DCMAKE_INSTALL_PREFIX=_install \
-                -DCMAKE_PREFIX_PATH="${{ github.workspace }}/deps;${{env.ORTOOLS_DIR}}/install;${{ github.workspace }}/itt" \
+                -DCMAKE_PREFIX_PATH="${{ github.workspace }}/deps;${{env.ORTOOLS_DIR}}/install" \
                 -DBUILD_UI=ON  \
                 -DVCPKG_TARGET_TRIPLET=x64-linux-release \
                 -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
@@ -249,6 +236,49 @@ jobs:
         with:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
+
+  test_assets:
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    steps:
+      - name: Download build assets
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{needs.build.outputs.TGZ_NAME}}
+      - name: setup
+        run: |
+          tar --strip-components=1 -xzf ${{needs.build.outputs.TGZ_NAME}}
+          sudo apt-get update -y
+          sudo apt-get install openmpi-bin -y
+
+      - name: run launcher
+        run: |
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
+
+      - name: run launcher parallel
+        run: |
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
+
+  test_single_file_asset:
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    steps:
+      - name: Download build assets
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
+      - name: setup
+        run: |
+          tar --strip-components=1 -xzf ${{needs.build.outputs.SINGLE_FILE_NAME}}
+          sudo apt-get update -y
+          sudo apt-get install openmpi-bin -y
+
+      - name: run launcher
+        run: |
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
+      - name: run launcher parallel
+        run: |
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2    
 
   release:
     runs-on: ubuntu-latest

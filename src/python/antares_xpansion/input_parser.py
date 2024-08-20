@@ -33,14 +33,15 @@ class InputParser:
                                  dest=LauncherOptionsKeys.installDir_key(),
                                  help="The directory where all binaries are located",
                                  default=LauncherOptionsDefaultValues.DEFAULT_VALUE())
-        self.parser.add_argument("-m", "--method",
-                                 dest=LauncherOptionsKeys.method_key(),
-                                 type=str,
-                                 choices=["benders",
-                                          "mergeMPS",
-                                          "outer_loop"],
-                                 help="Choose the optimization method",
-                                 default=LauncherOptionsDefaultValues.DEFAULT_VALUE())
+        self.parser.add_argument(
+            "-m",
+            "--method",
+            dest=LauncherOptionsKeys.method_key(),
+            type=str,
+            choices=["benders", "mergeMPS", "adequacy_criterion"],
+            help="Choose the optimization method",
+            default=LauncherOptionsDefaultValues.DEFAULT_VALUE(),
+        )
         self.parser.add_argument("-n", "--np",
                                  dest=LauncherOptionsKeys.n_mpi_key(),
                                  default=LauncherOptionsDefaultValues.DEFAULT_VALUE(),

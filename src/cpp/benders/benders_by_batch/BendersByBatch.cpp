@@ -49,7 +49,7 @@ void BendersByBatch::InitializeProblems() {
   }
 
   // if (Rank() == rank_0) {
-  SetSubproblemsVariablesIndex();
+  //  SetSubproblemsVariablesIndex();
   // }
   init_problems_ = false;
 }

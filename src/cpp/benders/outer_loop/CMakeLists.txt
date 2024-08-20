@@ -5,6 +5,7 @@
 # ===========================================================================
 # Targets
 # ===========================================================================
+find_package(yaml-cpp CONFIG REQUIRED)
 
 find_package (MPI REQUIRED COMPONENTS C)
 message ("MPI_C_INCLUDE_PATH ${MPI_C_INCLUDE_PATH}")
@@ -18,9 +19,11 @@ set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
 endif()
 
 add_library (outer_loop_lib STATIC
-	${CMAKE_CURRENT_SOURCE_DIR}/OuterLoop.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/MasterUpdateBase.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/CutsManagement.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopBiLevel.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/VariablesGroup.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopInputDataReader.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/OuterLoop.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/CriterionComputation.cpp
 	)
 
 
@@ -34,13 +37,8 @@ target_include_directories (outer_loop_lib
 
 target_link_libraries (outer_loop_lib
 	PUBLIC
-		Boost::mpi
-		MPI::MPI_C
-		Boost::serialization
 		helpers
-		benders_core
-		benders_mpi_core
-		benders_by_batch_core		
+		yaml-cpp::yaml-cpp
 )
 
 add_library (${PROJECT_NAME}::outer_loop_lib ALIAS outer_loop_lib)

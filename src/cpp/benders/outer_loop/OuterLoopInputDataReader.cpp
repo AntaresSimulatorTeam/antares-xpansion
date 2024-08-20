@@ -2,6 +2,8 @@
 
 #include <utility>
 
+#include "StringManip.h"
+
 using namespace Outerloop;
 
 /**
@@ -56,6 +58,23 @@ std::vector<OuterLoopSingleInputData> OuterLoopInputData::OuterLoopData()
   return outer_loop_data_;
 }
 
+std::vector<std::string> OuterLoopInputData::PatternBodies() const {
+  std::vector<std::string> ret;
+  for (const auto &data : outer_loop_data_) {
+    ret.push_back(data.Pattern().GetBody());
+  }
+  return ret;
+}
+
+std::string OuterLoopInputData::PatternsPrefix() const {
+  std::string ret("");
+  if (!outer_loop_data_.empty()) {
+    ret =
+        StringManip::split(outer_loop_data_[0].Pattern().GetPrefix(), "::")[0];
+  }
+  return ret;
+}
+
 void OuterLoopInputData::SetStoppingThreshold(
     double outer_loop_stopping_threshold) {
   outer_loop_stopping_threshold_ = outer_loop_stopping_threshold;
@@ -64,10 +83,6 @@ void OuterLoopInputData::SetStoppingThreshold(
 double OuterLoopInputData::StoppingThreshold() const {
   return outer_loop_stopping_threshold_;
 }
-void OuterLoopInputData::SetCriterionTolerance(double criterion_tolerance) {
-  criterion_tolerance_ = criterion_tolerance;
-}
-double OuterLoopInputData::CriterionTolerance() const { return criterion_tolerance_; }
 void OuterLoopInputData::SetCriterionCountThreshold(
     double criterion_count_threshold) {
     criterion_count_threshold_ = criterion_count_threshold;
@@ -97,24 +112,6 @@ OuterLoopInputData OuterLoopInputFromYaml::Read(
 
   return yaml_content.as<OuterLoopInputData>();
 }
-
-/*
-# critère d'arrêt de l'algo
-stopping_threshold: 1e-4
-# seuil
-criterion_count_threshold: 1e-1
- # tolerance entre seuil et valeur calculée
-criterion_tolerance: 1e-5
-patterns:
-  - area: "N0"
-    criterion: 1
-  - area: "N1"
-    criterion: 1
-  - area: "N2"
-    criterion: 1
-  - area: "N3"
-    criterion: 1
-*/
 
 namespace YAML {
 
@@ -176,7 +173,6 @@ struct convert<OuterLoopInputData> {
     rhs.SetStoppingThreshold(node["stopping_threshold"].as<double>(1e-4));
     rhs.SetCriterionCountThreshold(
         node["criterion_count_threshold"].as<double>(1));
-    rhs.SetCriterionTolerance(node["criterion_tolerance"].as<double>(1e-1));
 
     if (auto patterns = node["patterns"]) {
       DecodePatterns(patterns, rhs);
