@@ -29,7 +29,7 @@ The compilation of Antares-Xpansion requires C++20.
 === "Ubuntu"
 
     ```
-    sudo apt install build-essential
+    sudo apt install build-essential gcc10 g++10
     ```
 ## [CMake version](#cmake-version)
 CMake 3.x must be used.
