@@ -66,7 +66,6 @@ Sets the optimization method used by Antares-Xpansion.
 | Option | Description                           |
 | ---------- | ----------------------------------------------------------------------- |
 | `benders` | Launch the classical Benders decomposition.
-| `benders_by_batch` | Launch the Benders by batch algorithm. |
 | `mergeMPS`   | Launch a frontal resolution of the investment problem (i.e. without decomposition). This is much more time-consuming than using Benders decomposition.|
 | `adequacy_criterion`   | Launch Antares-Xpansion with reliability constraints, see [Adequacy criterion](adequacy-criterion.md). |
 
@@ -74,7 +73,7 @@ Sets the optimization method used by Antares-Xpansion.
 
 Default value: 2. 
 
-Sets the number of MPI processes to use for the Benders decomposition. This option only has an effect when `-m` is set to `benders` or `benders_by_batch`.
+Sets the number of MPI processes to use for the Benders decomposition. This option only has an effect when `-m` is set to `benders` or `adequacy_criterion`.
 
 #### `--antares-n-cpu`
 
