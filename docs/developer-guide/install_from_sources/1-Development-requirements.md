@@ -1,13 +1,13 @@
 # Development requirements
 
 ## [C++ version](#c++-version)
-The compilation of  Antares-Xpansion requires C++17 support in order to use [execution policy](https://en.cppreference.com/w/cpp/algorithm/execution_policy_tag_t).
+The compilation of Antares-Xpansion requires C++20.
 
 === "Windows"
 
-    Compilation is tested on MSVC 2019.
+    Compilation is tested on Visual Studio 17 2022.
 
-=== "Centos"
+=== "Centos" :warning: CentOS is considered EoL (end of life) and is not supported anymore. We recommend using a more recent distribution like Oracle Linux 8
 
     By default, GCC version of Centos7 is 4.8.5. Some external repositories must be enabled:
 
@@ -15,12 +15,6 @@ The compilation of  Antares-Xpansion requires C++17 support in order to use [exe
         ``` 
         sudo yum install epel-release
         sudo yum install centos-release-scl
-        ```
-    
-    === "Centos 8 (PowerTools)"    
-        ```
-        sudo yum install dnf-plugins-core
-        sudo yum config-manager --set-enabled PowerTools
         ```
     
     You can then use a more recent version of GCC by enabling `devtoolset-10`:
