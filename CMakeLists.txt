@@ -8,7 +8,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
 # Project configuration
 # ===========================================================================
 
-PROJECT(antaresXpansion VERSION 1.3.2)
+PROJECT(antaresXpansion VERSION 1.4.1)
 set(ANTARES_XPANSION_RC 0)
 
 # ===========================================================================
@@ -124,6 +124,7 @@ sbeClearJson(antares_version)
 # Build dependencies not handled by antares-deps repository
 option(BUILD_antares_solver "Build antares solver" ON)
 message(STATUS "Build antares solver: ${BUILD_antares_solver}")
+set(CMAKE_MAP_IMPORTED_CONFIG_RELWITHDEBINFO RELEASE DEBUG)
 if (${BUILD_antares_solver})
     #check if antares_solver available before asking for sirius and ortools build
     find_package(Antares QUIET)
@@ -196,6 +197,12 @@ install(FILES
         $<TARGET_FILE:Boost::serialization>
         $<TARGET_FILE:Boost::program_options>
         DESTINATION bin)
+
+find_package(ittapi REQUIRED)
+install(FILES
+	$<TARGET_FILE:ittapi::ittnotify>
+	DESTINATION bin
+)
 
 # ---------------------------------------------------------------------------
 # Threads
@@ -315,7 +322,7 @@ if (USER_GUIDE_PATH)
     install(FILES ${USER_GUIDE_PATH} DESTINATION .)
 endif ()
 
-install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples/" DESTINATION examples)
+#install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/examples/" 		DESTINATION examples)
 if (WIN32)
     cmake_path(GET MPIEXEC_EXECUTABLE PARENT_PATH MPI_BIN_DIR)
 

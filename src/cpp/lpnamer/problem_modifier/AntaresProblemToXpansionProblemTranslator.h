@@ -16,4 +16,6 @@ class AntaresProblemToXpansionProblemTranslator {
       const Antares::Solver::LpsFromAntares& lps, unsigned int year, unsigned int week,
       const std::string& solver_name, SolverLogManager& solver_log_manager);
   static std::vector<char> convertSignToLEG(std::span<char> data);
+  static void roundTo10Digit(Antares::Solver::ConstantDataFromAntares& constant,
+                             Antares::Solver::WeeklyDataFromAntares& hebdo);
 };

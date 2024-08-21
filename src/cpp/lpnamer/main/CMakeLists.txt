@@ -10,7 +10,7 @@
 # Problem Generation  runner lib
 # ---------------------------------------------------------------------------
 
-find_package(Antares REQUIRED)
+find_package(ittapi REQUIRED)
 add_library (problem_generation_main STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/ProblemGenerationExeOptions.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ProblemGeneration.cpp
@@ -18,6 +18,8 @@ add_library (problem_generation_main STATIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include/ProblemGenerationOptions.h
 		${CMAKE_CURRENT_SOURCE_DIR}/Version.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/Version.h
+		include/memory.h
+		memory.cpp
 )
 
 target_link_libraries (problem_generation_main 
@@ -26,9 +28,10 @@ target_link_libraries (problem_generation_main
 		${PROJECT_NAME}::lp_namer_model
 		${PROJECT_NAME}::lp_namer_input_reader
 		${PROJECT_NAME}::lp_namer_problem_modifier
-		Boost::boost Boost::program_options
+		Boost::boost Boost::program_options Boost::serialization
 		helpers
 		Antares::solver_api
+		ittapi::ittnotify
 		PUBLIC
 		Antares::antares-solver-simulation
 )
@@ -41,6 +44,9 @@ target_include_directories(problem_generation_main
         ${helpers_include}
 )
 
+if (SAVE)
+	target_compile_definitions(problem_generation_main PUBLIC -DSAVE)
+endif ()
 
 add_library (${PROJECT_NAME}::problem_generation_main ALIAS problem_generation_main)
 

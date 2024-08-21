@@ -32,8 +32,57 @@
 #include "XpansionProblemsFromAntaresProvider.h"
 #include "ZipProblemsProviderAdapter.h"
 #include "config.h"
+#include <boost/serialization/serialization.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/serialization/vector.hpp>
+#include <boost/serialization/map.hpp>
+#include <boost/serialization/string.hpp>
+#include <ittnotify.h>
+#include "include/memory.h"
 
 static const std::string LP_DIRNAME = "lp";
+
+namespace boost::serialization {
+template <class Archive>
+void serialize(Archive& ar, Antares::Solver::ConstantDataFromAntares& data, const unsigned int version) {
+        ar& data.VariablesCount;
+        ar& data.ConstraintesCount;
+        ar& data.CoeffCount;
+        ar& data.VariablesType;
+        ar& data.Mdeb;
+        ar& data.NotNullTermCount;
+        ar& data.ColumnIndexes;
+        ar& data.ConstraintsMatrixCoeff;
+        ar& data.VariablesMeaning;
+        ar& data.ConstraintsMeaning;
+}
+
+template <class Archive>
+void serialize(Archive& ar, Antares::Solver::WeeklyProblemId& data, const unsigned int version) {
+  ar& data.year;
+  ar& data.week;
+}
+
+
+template <class Archive>
+void serialize(Archive& ar, Antares::Solver::WeeklyDataFromAntares& data, const unsigned int version) {
+  ar& data.Direction;
+  ar& data.Xmax;
+  ar& data.Xmin;
+  ar& data.LinearCost;
+  ar& data.RHS;
+  ar& data.name;
+  ar& data.variables;
+  ar& data.constraints;
+}
+
+template <class Archive>
+void serialize(Archive& ar, Antares::Solver::LpsFromAntares& data, const unsigned int version) {
+        ar& data.constantProblemData;
+        ar& data.weeklyProblems;
+}
+}  // namespace boost::serialization
 
 void CreateDirectories(const std::filesystem::path& output_path) {
   if (!std::filesystem::exists(output_path)) {
@@ -57,15 +106,44 @@ ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options)
 }
 
 std::filesystem::path ProblemGeneration::performAntaresSimulation() {
+//#ifdef SAVE
+//  auto results = Antares::API::PerformSimulation(options_.StudyPath());
+//  //Add parallel
+//  //Handle errors
+//  if (results.error) {
+//    std::cerr << "Error: " << results.error->reason << std::endl;
+//    exit(1);
+//  }
+//
+//  lps_ = std::move(results.antares_problems);
+//  std::ofstream ofs("lps.txt");
+//  boost::archive::text_oarchive oa(ofs);
+//  oa << lps_;
+//  //TODO save simulation path
+//  return {results.simulationPath};
+//#else
+//  std::ifstream ifs("lps.txt");
+//  boost::archive::text_iarchive ia(ifs);
+//  ia >> lps_;
+//  return "/home/marechaljas/Téléchargements/study_1_integer/output/20240715-1416eco";
+//#endif
+{
+  auto [dispo, total] = Memory::MemoryUsageGo();
+  std::cout << "Memory usage before simulation: " << dispo << "/"
+            << total << std::endl;
+}
   auto results = Antares::API::PerformSimulation(options_.StudyPath());
-  //Add parallel
 
-  //Handle errors
+  {
+    auto [dispo, total] = Memory::MemoryUsageGo();
+    std::cout << "Memory usage after simulation: " << dispo << "/"
+              << total << std::endl;
+  }  //  //Add parallel
+  //  //Handle errors
   if (results.error) {
     std::cerr << "Error: " << results.error->reason << std::endl;
     exit(1);
   }
-
   lps_ = std::move(results.antares_problems);
   return {results.simulationPath};
 }
@@ -82,6 +160,7 @@ std::filesystem::path ProblemGeneration::updateProblems() {
 
   if (mode_ == SimulationInputMode::ANTARES_API) {
     simulation_dir_ = performAntaresSimulation();
+    __itt_resume();
   }
 
   if (mode_ == SimulationInputMode::FILE) {
@@ -243,13 +322,17 @@ void ProblemGeneration::RunProblemGeneration(
       << "rename problems: " << std::boolalpha << rename_problems << std::endl;
 
 
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading problems" << std::endl;
   auto files_mapper = FilesMapper(antares_archive_path, xpansion_output_dir);
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading mps" << std::endl;
   auto mpsList = files_mapper.MpsAndVariablesFilesVect();
-
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading mps done" << std::endl;
   auto solver_log_manager = SolverLogManager(log_file_path);
   Couplings couplings;
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading couplings" << std::endl;
   LinkProblemsGenerator linkProblemsGenerator(
       lpDir_, links, solver_name, logger, solver_log_manager, rename_problems);
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading couplings done" << std::endl;
   std::shared_ptr<ArchiveReader> reader =
       antares_archive_path.empty() ? std::make_shared<ArchiveReader>()
                                    : InstantiateZipReader(antares_archive_path);
@@ -258,7 +341,7 @@ void ProblemGeneration::RunProblemGeneration(
   std::vector<std::shared_ptr<Problem>> xpansion_problems =
       getXpansionProblems(solver_log_manager, solver_name, mpsList, lpDir_,
                           reader, !antares_archive_path.empty(), lps_);
-
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "Problems read" << std::endl;
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
       problems_and_data;
   for (int i = 0; i < xpansion_problems.size(); ++i) {
@@ -270,11 +353,18 @@ void ProblemGeneration::RunProblemGeneration(
       problems_and_data.emplace_back(xpansion_problems.at(i), mpsList.at(i));
     }
   }
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "Start problem generation" << std::endl;
   auto mps_file_writer = std::make_shared<MPSFileWriter>(lpDir_);
   std::for_each(
       std::execution::par, problems_and_data.begin(), problems_and_data.end(),
       [&](const auto& problem_and_data) {
         const auto& [problem, data] = problem_and_data;
+        std::cout << "Start " << data._problem_mps << "\n";
+        auto [dispo, total] = Memory::MemoryUsageGo();
+        std::cout << "Memory usage subproblem "<<
+            data._problem_mps << " mcyear " << problem->McYear() << " : "
+                  << dispo << "/" << total << std::endl;
+
         std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
         switch (mode_) {
           case SimulationInputMode::FILE:
@@ -303,6 +393,8 @@ void ProblemGeneration::RunProblemGeneration(
         linkProblemsGenerator.treat(data._problem_mps, couplings, problem.get(),
                                     variables_provider.get(),
                                     mps_file_writer.get());
+        std::cout << "End " << data._problem_mps << "\n";
+
       });
 
   if (mode_ == SimulationInputMode::ARCHIVE) {
