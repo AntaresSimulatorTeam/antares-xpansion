@@ -27,7 +27,7 @@ runs:
       shell: bash
       run: |
         mkdir -p deps
-        wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/9.2.0-api01/antares-9.2.0-rc1-${{inputs.os-full-name}}.tar.gz
+        wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/9.2.0-api02/antares-9.2.0-rc1-${{inputs.os-full-name}}.tar.gz
         tar -xvf antares-9.2.0-rc1-${{inputs.os-full-name}}.tar.gz -C deps --strip-components=1
         rm -rf antares-9.2.0-rc1-${{inputs.os-full-name}}.tar.gz
 
