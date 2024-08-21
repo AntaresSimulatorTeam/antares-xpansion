@@ -1,6 +1,6 @@
 mkdocs
 mkdocs-material
-mkdocs-material-extensions
+mkdocs-material-extensions~=1.3
 sphinx
 myst-parser
 mkdocs-jupyter
