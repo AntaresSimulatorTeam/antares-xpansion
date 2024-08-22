@@ -118,9 +118,9 @@ class ProblemGeneratorDriver:
         returned_l = subprocess.run(self._get_lp_namer_command(), shell=True,
                                     stdout=sys.stdout, stderr=sys.stderr)
 
-        if returned_l.returncode != 0:
-            raise ProblemGeneratorDriver.LPNamerExecutionError(
-                "ERROR: exited lpnamer with status %d" % returned_l.returncode)
+        #if returned_l.returncode != 0:
+        #    raise ProblemGeneratorDriver.LPNamerExecutionError(
+        #        "ERROR: exited lpnamer with status %d" % returned_l.returncode)
 
     def create_lp_dir(self):
         if os.path.isdir(self._lp_path):

@@ -85,9 +85,33 @@ void serialize(Archive& ar, Antares::Solver::LpsFromAntares& data, const unsigne
 }  // namespace boost::serialization
 
 namespace {
+struct self_mem {
+  long double vm_usage = 0.0;
+  long resident_set = 0.0;
+};
+self_mem process_mem_usage()
+{
+  self_mem mem;
+
+  // the two fields we want
+  unsigned long vsize;
+  long rss;
+  {
+    std::string ignore;
+    std::ifstream ifs("/proc/self/stat", std::ios_base::in);
+    ifs >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore
+        >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore
+        >> ignore >> ignore >> vsize >> rss;
+  }
+
+  long page_size_kb = sysconf(_SC_PAGE_SIZE) / 1024; // in case x86-64 is configured to use 2MB pages
+  return {vsize / 1024.0l / 1024.l, rss * page_size_kb};
+}
 void memory() {
   auto [dispo, total] = Memory::MemoryUsageGo();
+  auto [vm, rss] = process_mem_usage();
   std::cout << "Memory usage: " << dispo << "/" << total << std::endl;
+  std::cout << "VM: " << vm << "Mb; RSS: " << rss << std::endl;
 }
 }
 
@@ -136,15 +160,15 @@ std::filesystem::path ProblemGeneration::performAntaresSimulation() {
 //#endif
 {
   auto [dispo, total] = Memory::MemoryUsageGo();
-  std::cout << "Memory usage before simulation: " << dispo << "/"
-            << total << std::endl;
+  std::cout << "Memory usage before simulation:\n ";
+  memory();
 }
   auto results = Antares::API::PerformSimulation(options_.StudyPath());
 
   {
     auto [dispo, total] = Memory::MemoryUsageGo();
-    std::cout << "Memory usage after simulation: " << dispo << "/"
-              << total << std::endl;
+    std::cout << "Memory usage after simulation:\n";
+    memory();
   }  //  //Add parallel
   //  //Handle errors
   if (results.error) {
@@ -384,10 +408,9 @@ void ProblemGeneration::RunProblemGeneration(
       [&](const auto& problem_and_data) {
         const auto& [problem, data] = problem_and_data;
         std::cout << "Start " << data._problem_mps << "\n";
-        auto [dispo, total] = Memory::MemoryUsageGo();
         std::cout << "Memory usage subproblem "<<
-            data._problem_mps << " mcyear " << problem->McYear() << " : "
-                  << dispo << "/" << total << std::endl;
+            data._problem_mps << " mcyear " << problem->McYear() << " :\n";
+        memory();
 
         std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
         switch (mode_) {
