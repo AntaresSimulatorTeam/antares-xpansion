@@ -114,8 +114,8 @@ class ProblemGeneratorDriver:
 
             produces a file named with xpansionConfig.MPS_TXT
         """
-
-        returned_l = subprocess.run(self._get_lp_namer_command(), shell=False,
+        print(self._get_lp_namer_command())
+        returned_l = subprocess.run(self._get_lp_namer_command(), shell=True,
                                     stdout=sys.stdout, stderr=sys.stderr)
 
         if returned_l.returncode != 0:
@@ -147,8 +147,9 @@ class ProblemGeneratorDriver:
         if not self.lp_namer_exe_path.is_file():
             raise ProblemGeneratorDriver.LPNamerExeError(
                 f"LP namer exe: {self.lp_namer_exe_path} not found")
-        command = [self.lp_namer_exe_path]
-        command.extend(self.lp_namer_options())
+        command = 'gdb -batch -ex "run '
+        command += ' '.join(self.lp_namer_options())
+        command += '" -ex "bt" ' + str(self.lp_namer_exe_path)# + ' 2>&1 | grep -v ^"No stack."$'
         return command
 
     output_path = property(get_output_path, set_output_path)
