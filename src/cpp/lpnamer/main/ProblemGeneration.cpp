@@ -84,6 +84,13 @@ void serialize(Archive& ar, Antares::Solver::LpsFromAntares& data, const unsigne
 }
 }  // namespace boost::serialization
 
+namespace {
+void memory() {
+  auto [dispo, total] = Memory::MemoryUsageGo();
+  std::cout << "Memory usage: " << dispo << "/" << total << std::endl;
+}
+}
+
 void CreateDirectories(const std::filesystem::path& output_path) {
   if (!std::filesystem::exists(output_path)) {
     std::filesystem::create_directories(output_path);
@@ -280,6 +287,7 @@ std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
   }
 }
 
+
 void ProblemGeneration::RunProblemGeneration(
     const std::filesystem::path& xpansion_output_dir,
     const std::string& master_formulation,
@@ -290,6 +298,7 @@ void ProblemGeneration::RunProblemGeneration(
     const std::filesystem::path& weights_file, bool unnamed_problems) {
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Launching Problem Generation" << std::endl;
+  memory();
   validateMasterFormulation(master_formulation, logger);
   std::string solver_name = "CBC";  // TODO Use solver selected by user
 
@@ -300,17 +309,22 @@ void ProblemGeneration::RunProblemGeneration(
     ProcessWeights(xpansion_output_dir, antares_archive_path, weights_file,
                    logger);
   }
-
+  //Print weight ok
+  std::cout << "Weight ok" << std::endl;
+  memory();
   ExtractUtilsFiles(antares_archive_path, xpansion_output_dir, logger);
 
   std::vector<ActiveLink> links = getLinks(xpansion_output_dir, logger);
-
+  std::cout << "Links ok" << std::endl;
+  memory();
   AdditionalConstraints additionalConstraints(logger);
   if (!additionalConstraintFilename_l.empty()) {
     additionalConstraints =
         AdditionalConstraints(additionalConstraintFilename_l, logger);
   }
+  std::cout << "Additional constraints ok" << std::endl;
 
+  memory();
   auto lpDir_ = xpansion_output_dir / "lp";
   Version antares_version(ANTARES_VERSION);
   // TODO update the version of simulator that come with named mps
@@ -322,26 +336,35 @@ void ProblemGeneration::RunProblemGeneration(
       << "rename problems: " << std::boolalpha << rename_problems << std::endl;
 
 
-  (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading problems" << std::endl;
+
+  memory();
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "File mapping" << std::endl;
   auto files_mapper = FilesMapper(antares_archive_path, xpansion_output_dir);
+  memory();
   (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading mps" << std::endl;
   auto mpsList = files_mapper.MpsAndVariablesFilesVect();
+  auto [dispo, total] = Memory::MemoryUsageGo();
+  std::cout << "Memory usage: "
+            << dispo << "/" << total << std::endl;
   (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading mps done" << std::endl;
   auto solver_log_manager = SolverLogManager(log_file_path);
   Couplings couplings;
   (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading couplings" << std::endl;
   LinkProblemsGenerator linkProblemsGenerator(
       lpDir_, links, solver_name, logger, solver_log_manager, rename_problems);
+  memory();
   (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading couplings done" << std::endl;
   std::shared_ptr<ArchiveReader> reader =
       antares_archive_path.empty() ? std::make_shared<ArchiveReader>()
                                    : InstantiateZipReader(antares_archive_path);
 
   /* Main stuff */
+
   std::vector<std::shared_ptr<Problem>> xpansion_problems =
       getXpansionProblems(solver_log_manager, solver_name, mpsList, lpDir_,
                           reader, !antares_archive_path.empty(), lps_);
   (*logger)(LogUtils::LOGLEVEL::INFO) << "Problems read" << std::endl;
+  memory();
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
       problems_and_data;
   for (int i = 0; i < xpansion_problems.size(); ++i) {
@@ -354,6 +377,7 @@ void ProblemGeneration::RunProblemGeneration(
     }
   }
   (*logger)(LogUtils::LOGLEVEL::INFO) << "Start problem generation" << std::endl;
+  memory();
   auto mps_file_writer = std::make_shared<MPSFileWriter>(lpDir_);
   std::for_each(
       std::execution::par, problems_and_data.begin(), problems_and_data.end(),
