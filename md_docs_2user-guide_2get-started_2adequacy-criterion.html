@@ -134,14 +134,14 @@ $(document).ready(function(){initNavTree('md_docs_2user-guide_2get-started_2adeq
   <div class="headertitle"><div class="title">Adequacy criterion</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md119"></a> By default, Antares-Xpansion tries to solve an investment problem by minimising the sum of expected operational costs and investment cost. Nothing guarantees that the expected number of hours of loss of load is under a certain reliability threshold.</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md121"></a> By default, Antares-Xpansion tries to solve an investment problem by minimising the sum of expected operational costs and investment cost. Nothing guarantees that the expected number of hours of loss of load is under a certain reliability threshold.</p>
 <p>However, Antares-Xpansion is able to enforce solutions to satisfy a maximum number of expected hours of loss of load per area. To use this feature, the user must:</p>
 <ol type="1">
 <li>Define the reliability constraints in an input file <code>user/expansion/adequacy_criterion/adequacy_criterion.yml</code>.</li>
 <li>Launch the optimization with the <code>-m adequacy_criterion</code> flag.</li>
 </ol>
 <p>The resolution of the reliability-constrained investment problem is based on a heuristic that is described in <a href="../optimization-principles/problem-formalization.md#reliability-constrained-investment-problem">Reliability-constrained investment problem</a>.</p>
-<h1><a class="anchor" id="autotoc_md120"></a>
+<h1><a class="anchor" id="autotoc_md122"></a>
 Input data for adequacy criterion in &lt;tt&gt;adequacy_criterion.yml&lt;/tt&gt;</h1>
 <p>The input file for the adequacy criterion should be located in <code>antares-study-folder/user/expansion/adequacy_criterion/adequacy_criterion.yml</code>. It is in YAML format and follows the following template:</p>
 <div class="fragment"><div class="line">stopping_threshold: 1e4</div>
@@ -167,10 +167,10 @@ Input data for adequacy criterion in &lt;tt&gt;adequacy_criterion.yml&lt;/tt&gt;
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md121"></a>
+<h1><a class="anchor" id="autotoc_md123"></a>
 Launching the optimization with the adequacy criterion</h1>
 <p>To launch the optimization with the adequacy criterion, simply use the option <code>-m adequacy_criterion</code> in the command line: </p><div class="fragment"><div class="line">antares-xpansion-launcher.exe -i examples\SmallTestFiveCandidates -m adequacy_criterion</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md122"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md124"></a>
 Outputs</h1>
 <p>The final solution can be read in the file <code>output/&lt;simulation-name&gt;/expansion/out.json</code>, in the field <code>solution</code>.</p>
 <p>Several log files are written:</p>

@@ -1,9 +1,6 @@
 var searchData=
 [
-  ['json_5fsensitivity_5fin_5fpath_0',['json_sensitivity_in_path',['../classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a267de5478c27b566118f8dfefa000f06',1,'antares_xpansion::config_loader::ConfigLoader']]],
-  ['jsonfileprocessor_1',['JsonFileProcessor',['../classperformance_1_1JsonFileProcessor.html',1,'performance']]],
-  ['jsonwriter_2',['jsonwriter',['../classOutput_1_1JsonWriter.html',1,'Output::JsonWriter'],['../classOutput_1_1JsonWriter.html#a7a049c5ecc69ad9c580407aa9756dce9',1,'Output::JsonWriter::JsonWriter()']]],
-  ['jsonwritertest_3',['JsonWriterTest',['../classJsonWriterTest.html',1,'']]],
-  ['jsonxpansionreader_4',['jsonxpansionreader',['../classJsonXpansionReader.html',1,'JsonXpansionReader'],['../classJsonXpansionReader.html#a20a444a0537dddce96305ccc71034ddb',1,'JsonXpansionReader::JsonXpansionReader()']]],
-  ['jsonxpansionreadertest_5',['JsonXpansionReaderTest',['../classJsonXpansionReaderTest.html',1,'']]]
+  ['keepmps_20tt_0',['&lt;tt&gt;--keepMps&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md157',1,'']]],
+  ['keywordnotfound_1',['KeyWordNotFound',['../classantares__xpansion_1_1resume__study_1_1ResumeStudy_1_1KeyWordNotFound.html',1,'antares_xpansion::resume_study::ResumeStudy']]],
+  ['known_20to_20have_20mpi_20related_20issues_20please_20use_20the_20other_20ones_2',['⚠️ Single-file versions in Ubuntu are known to have MPI-related issues. Please use the other ones.',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md18',1,'']]]
 ];

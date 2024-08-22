@@ -137,20 +137,14 @@ $(document).ready(function(){initNavTree('md_docs_2developer-guide_2install__fro
 <div class="textblock"><p><a class="anchor" id="autotoc_md70"></a> </p>
 <h1><a class="anchor" id="autotoc_md71"></a>
 @ref "c++-version" "C++ version"</h1>
-<p>The compilation of Antares-Xpansion requires C++17 support in order to use <a href="https://en.cppreference.com/w/cpp/algorithm/execution_policy_tag_t">execution policy</a>.</p>
-<p>=== "Windows" </p><pre class="fragment">Compilation is tested on MSVC 2019.
-</pre><p> === "Centos" </p><pre class="fragment">By default, GCC version of Centos7 is 4.8.5. Some external repositories must be enabled:
+<p>The compilation of Antares-Xpansion requires C++20.</p>
+<p>=== "Windows" </p><pre class="fragment">Compilation is tested on Visual Studio 17 2022.
+</pre><p> === "Centos" :warning: CentOS is considered EoL (end of life) and is not supported anymore. We recommend using a more recent distribution like Oracle Linux 8 </p><pre class="fragment">By default, GCC version of Centos7 is 4.8.5. Some external repositories must be enabled:
 
 === "Centos 7 (EPEL)"    
     ``` 
     sudo yum install epel-release
     sudo yum install centos-release-scl
-    ```
-
-=== "Centos 8 (PowerTools)"    
-    ```
-    sudo yum install dnf-plugins-core
-    sudo yum config-manager --set-enabled PowerTools
     ```
 
 You can then use a more recent version of GCC by enabling `devtoolset-10`:
@@ -163,7 +157,7 @@ Before compiling Antares-Xpansion, we must launch a new shell with `scl` tool :
 scl enable devtoolset-10 bash
 ```
 </pre><p> === "Ubuntu" </p><pre class="fragment">```
-sudo apt install build-essential
+sudo apt install build-essential gcc10 g++10
 ```
 </pre> <h1><a class="anchor" id="autotoc_md72"></a>
 @ref "cmake-version" "CMake version"</h1>
@@ -173,10 +167,12 @@ sudo apt install build-essential
 sudo yum install epel-release
 sudo yum install cmake3
 ```
-</pre><p> === "Ubuntu" </p><pre class="fragment">```
+</pre><p> Or <code> python -m pip install cmake </code></p>
+<p>=== "Ubuntu" </p><pre class="fragment">```
 sudo apt install cmake
 ```
-</pre> <h1><a class="anchor" id="autotoc_md73"></a>
+</pre><p> Or </p><div class="fragment"><div class="line">python -m pip install cmake</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md73"></a>
 @ref "python-version" "Python version"</h1>
 <p>Python 3.x must be used.</p>
 <p>=== "Windows" </p><pre class="fragment">You can download latest Windows version directly from [Python website](https://www.python.org/downloads/windows/).

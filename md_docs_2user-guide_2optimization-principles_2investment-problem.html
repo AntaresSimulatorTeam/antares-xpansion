@@ -134,8 +134,8 @@ $(document).ready(function(){initNavTree('md_docs_2user-guide_2optimization-prin
   <div class="headertitle"><div class="title">The optimal investment problem in Antares-Xpansion</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md199"></a></p>
-<h1><a class="anchor" id="autotoc_md200"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md201"></a></p>
+<h1><a class="anchor" id="autotoc_md202"></a>
 General description</h1>
 <p>Antares-Xpansion minimizes the following cost:</p>
 <p>$$ \min (\text{expected operating costs for one year} + \text{fixed cost annuity}) $$ over a set of investment variables specified by the user.</p>
@@ -152,7 +152,7 @@ General description</h1>
 <p>The final cost result - which will be called the total cost later on - is a convex function. It therefore has a minimum solution plateau (see <b>Figure 2</b>) which in most (but not all) applications on real data sets is reduced to a single point (see <b>Figure 1</b>). In some cases, there are several points leading to the optimal cost. Antares-Xpansion looks for an optimal solution, i.e. the point that minimizes the total cost, or any point of the minimum plateau in the case of a so-called degenerate problem.</p>
 <p><img src="../../assets/media/image4.png" alt="" class="inline"/></p>
 <p><b>Figure</b> <b>2</b> – Generic case (but uncommon in practical Antares-Xpansion cases) with a set of optimal solutions (a plateau).</p>
-<h1><a class="anchor" id="autotoc_md201"></a>
+<h1><a class="anchor" id="autotoc_md203"></a>
 Investment variables</h1>
 <p>The investment variables are the installed capacities (in MW) of the generation and/or transmission assets defined in the input of Antares-Xpansion as candidates for investment.</p>
 <p>The cases shown in <b>Figure 1</b> and <b>Figure 2</b> contain only one investment variable. The search for the optimal solution is then carried out over the interval [0, available potential], bounded on the left by zero and on the right by the maximum available potential of the investment under consideration. The available potential is one of the input data of Antares-Xpansion.</p>
@@ -169,7 +169,7 @@ Investment variables</h1>
 </li>
 <li><b>Linear constraints between investable capacities.</b> Linear constraints between variables can be defined in investment problems. For example, they may require the sum of the capacities of two investment candidates to be greater or less than a given limit.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md202"></a>
+<h1><a class="anchor" id="autotoc_md204"></a>
 Resolution with the Benders decomposition</h1>
 <p>The resolution method used by Antares-Xpansion - called Benders decomposition - is an iterative method, which for each iteration:</p>
 <ul>

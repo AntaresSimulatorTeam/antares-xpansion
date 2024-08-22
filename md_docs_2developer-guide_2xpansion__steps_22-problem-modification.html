@@ -134,8 +134,8 @@ $(document).ready(function(){initNavTree('md_docs_2developer-guide_2xpansion__st
   <div class="headertitle"><div class="title">Investment problem generation</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md103"></a> The goal of this step is to modify the <code>.mps</code> files of the weekly Antares problems to create the so-called <em>satellite problems</em> of the investment problem. The <em>master problem</em> is also generated in this step.</p>
-<h1><a class="anchor" id="autotoc_md104"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md105"></a> The goal of this step is to modify the <code>.mps</code> files of the weekly Antares problems to create the so-called <em>satellite problems</em> of the investment problem. The <em>master problem</em> is also generated in this step.</p>
+<h1><a class="anchor" id="autotoc_md106"></a>
 Python orchestrator &lt;tt&gt;get_names&lt;/tt&gt;</h1>
 <p>Before changing the <code>.mps</code> file, a post-processing of the files created by <code>antares-solver</code> must be done.</p>
 <p>The goal is to produce a file <code>mps.txt</code> containing each <code>.mps</code> with his associated <code>variables.txt</code> file (defining the mapping between the column IDs and variable names). Each line of the <code>mps.txt</code> file looks as follows:</p>
@@ -146,20 +146,20 @@ Python orchestrator &lt;tt&gt;get_names&lt;/tt&gt;</h1>
 <li>The <code>area-&lt;mc_year&gt;-&lt;week&gt;-&lt;timestamp&gt;.txt</code> file produced by <code>antares-solver</code> is copied as <code>area.txt</code>.</li>
 <li>The <code>interco-&lt;mc_year&gt;-&lt;week&gt;-&lt;timestamp&gt;.txt</code> file produced by <code>antares-solver</code> is also copied as <code>interco.txt</code>.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md105"></a>
+<h1><a class="anchor" id="autotoc_md107"></a>
 Modification of weekly problems with &lt;tt&gt;lp_namer&lt;/tt&gt;</h1>
 <p>Here are the main steps of problem modification with <code>lp_namer</code>, that lead to the creation of the <em>satellite problems</em>.</p>
-<h2><a class="anchor" id="autotoc_md106"></a>
+<h2><a class="anchor" id="autotoc_md108"></a>
 1- Read candidates and get link column ID</h2>
 <p>Each investment link corresponds to a variable in the weekly optimization problem. The first step is to retrieve the column ID of each investment candidate link from its name specified in <code>candidates.ini</code>:</p>
 <ul>
 <li>The <code>area.txt</code> and <code>interco.txt</code> files are used to map area names to link IDs.</li>
 <li>Candidates defined in <code>candidates.ini</code> and the associated link profile (if defined) are read.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md107"></a>
+<h2><a class="anchor" id="autotoc_md109"></a>
 2- Modification of .mps file</h2>
 <p>In order to create the <em>satellite problems</em>, some contraints of the weekly problems must be changed and some variables must be added.</p>
-<h3><a class="anchor" id="autotoc_md108"></a>
+<h3><a class="anchor" id="autotoc_md110"></a>
 Initial weekly problems</h3>
 <p>In the initial weekly problems, we have the following variables:</p>
 <table class="markdownTable">
@@ -179,7 +179,7 @@ Initial weekly problems</h3>
 <p>$$ 0 \leq F_{l,t}^{-} \leq \bar{C}_{l,t}^{-} $$</p>
 <p>There are also constraints linking the forward and backward flows:</p>
 <p>$$ F_{l,t} = F_{l,t}^{+} - F_{l,t}^{-} $$</p>
-<h3><a class="anchor" id="autotoc_md109"></a>
+<h3><a class="anchor" id="autotoc_md111"></a>
 Modifications for &lt;em&gt;satellite problems&lt;/em&gt;</h3>
 <p>In order to create the <em>satellite problems</em>, the constraints must be changed as follows:</p>
 <p>$$ -\infty \leq F_{l,t} \leq +\infty $$</p>
@@ -200,10 +200,10 @@ Modifications for &lt;em&gt;satellite problems&lt;/em&gt;</h3>
 <li>Add the constraints on <code>CoutOrigineVersExtremiteDeLInterconnexion</code>,</li>
 <li>Add the constraints on <code>CoutExtremiteVersOrigineDeLInterconnexion</code>.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md110"></a>
+<h2><a class="anchor" id="autotoc_md112"></a>
 3- Read additional candidate constraints</h2>
 <p>The <code>additional-constraints</code> parameter, that specifies the path to file, may be defined in the <code>settings.ini</code>. This is used to define linear constraints between the invested capacities of investment candidates, and is read at this stage of Antares-Xpansion process. For more information on the file format, see the <a href="../../user-guide/get-started/settings-definition.md#additional-constraints">corresponding part</a> of the user guide.</p>
-<h2><a class="anchor" id="autotoc_md111"></a>
+<h2><a class="anchor" id="autotoc_md113"></a>
 4- Creation of master problem</h2>
 <p>The <em>master problem</em> is created from the list of candidates in the following way:</p>
 <ul>
@@ -219,7 +219,7 @@ Modifications for &lt;em&gt;satellite problems&lt;/em&gt;</h3>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md112"></a>
+<h2><a class="anchor" id="autotoc_md114"></a>
 5- Creation of a variable / column ID mapping file</h2>
 <p>A file (<code>structure.txt</code>) is created, containing for each <code>.mps</code> file, the associated column ID for the candidates.</p>
 <p>!!! Example <code> master battery 0 master peak 1 master pv 2 master semibase 3 master transmission_line 4 problem-1-1-20210713-163528 battery 5547 problem-1-1-20210713-163528 peak 5545 problem-1-1-20210713-163528 pv 5548 problem-1-1-20210713-163528 semibase 5546 problem-1-1-20210713-163528 transmission_line 5544 </code></p>

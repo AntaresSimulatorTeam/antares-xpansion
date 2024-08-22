@@ -1,9 +1,6 @@
 var searchData=
 [
-  ['year_0',['Using different profiles depending on the Monte-Carlo year',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md136',1,'']]],
-  ['yearly_20weights_20tt_1',['&lt;tt&gt;yearly-weights&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md192',1,'']]],
-  ['yearlyweightswriter_2',['YearlyWeightsWriter',['../classYearlyWeightsWriter.html',1,'']]],
-  ['yearlyweightwriter_3',['YearlyWeightWriter',['../classantares__xpansion_1_1yearly__weight__writer_1_1YearlyWeightWriter.html',1,'antares_xpansion::yearly_weight_writer']]],
-  ['yml_20tt_4',['Input data for adequacy criterion in &lt;tt&gt;adequacy_criterion.yml&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2adequacy-criterion.html#autotoc_md120',1,'']]],
-  ['your_20antares_20output_20directory_20tt_5',['&lt;tt&gt;--simulationName {last, your-antares-output-directory}&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md151',1,'']]]
+  ['zero_5fstatus_5fcheck_0',['zero_status_check',['../classSolverAbstract.html#aff87b9285872f0012d0f2c183bbf395e',1,'SolverAbstract']]],
+  ['zipproblemprovideradapter_1',['ZipProblemProviderAdapter',['../classZipProblemProviderAdapter.html',1,'']]],
+  ['zipproblemsprovideradapter_2',['ZipProblemsProviderAdapter',['../classZipProblemsProviderAdapter.html',1,'']]]
 ];

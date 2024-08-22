@@ -134,7 +134,7 @@ $(document).ready(function(){initNavTree('md_docs_2developer-guide_2install__fro
   <div class="headertitle"><div class="title">Tests</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md85"></a> Tests compilation can be enabled at configure time using the option <code>-DBUILD_TESTING=ON</code> (<code>OFF</code> by default). After build, tests can be run with <code>ctest</code>:</p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md87"></a> Tests compilation can be enabled at configure time using the option <code>-DBUILD_TESTING=ON</code> (<code>OFF</code> by default). After build, tests can be run with <code>ctest</code>:</p>
 <div class="fragment"><div class="line">cd _build</div>
 <div class="line">ctest -C Release --output-on-failure</div>
 </div><!-- fragment --><p>All tests are associated to a label and multiple labels can be defined. You can choose which tests to execute when launching <code>ctest</code>. The list of available labels is the following:</p>
@@ -156,28 +156,30 @@ $(document).ready(function(){initNavTree('md_docs_2developer-guide_2install__fro
 <tr class="markdownTableRowOdd">
 <td class="markdownTableBodyLeft"><code>helpers_test</code>   </td><td class="markdownTableBodyNone"><code>unit</code>   </td><td class="markdownTableBodyNone">Unit test for helpers (json reader, <a class="el" href="classAntaresVersionProvider.html">AntaresVersionProvider</a>).    </td></tr>
 <tr class="markdownTableRowEven">
+<td class="markdownTableBodyLeft"><code>full_run_tests</code>   </td><td class="markdownTableBodyNone"><code>unit</code>   </td><td class="markdownTableBodyNone">Unit tests for the full run executable    </td></tr>
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyLeft"><code>lpnamer_end_to_end</code>   </td><td class="markdownTableBodyNone"><code>lpnamer</code> <code>end_to_end</code>   </td><td class="markdownTableBodyNone">End-to-end tests for lpnamer.    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyLeft"><code>examples_short_sequential</code>   </td><td class="markdownTableBodyNone"><code>short</code> <code>short_sequential</code> <code>end_to_end</code>   </td><td class="markdownTableBodyNone">Non-parallel end-to-end tests using benders algorithm on antares studies (short duration).    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyLeft"><code>examples_short_mpi</code>   </td><td class="markdownTableBodyNone"><code>short</code> <code>short_mpi</code> <code>end_to_end</code>   </td><td class="markdownTableBodyNone">Parallel end-to-end tests using benders algorithm on antares studies (short duration).    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyLeft"><code>examples_short_benders_by_batch_mpi</code>   </td><td class="markdownTableBodyNone"><code>short</code> <code>short_mpi</code> <code>end_to_end</code> <code>benders_by_batch</code>   </td><td class="markdownTableBodyNone">Parallel end-to-end tests using benders by batch algorithm on antares studies (short duration).    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyLeft"><code>examples_medium_sequential</code>   </td><td class="markdownTableBodyNone"><code>medium</code> <code>medium_sequential</code> <code>end_to_end</code>   </td><td class="markdownTableBodyNone">Non-parallel end-to-end tests using benders algorithm on antares studies (medium duration).    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyLeft"><code>examples_medium_mpi</code>   </td><td class="markdownTableBodyNone"><code>medium</code> <code>medium_mpi</code> <code>end_to_end</code>   </td><td class="markdownTableBodyNone">Parallel end-to-end tests using benders algorithm on antares studies (medium duration).    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyLeft"><code>examples_medium_benders_by_batch_mpi</code>   </td><td class="markdownTableBodyNone"><code>medium</code> <code>medium_mpi</code> <code>end_to_end</code> <code>benders_by_batch</code>   </td><td class="markdownTableBodyNone">Parallel end-to-end tests using benders by batch algorithm on antares studies (medium duration).    </td></tr>
-<tr class="markdownTableRowOdd">
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyLeft"><code>examples_long_sequential</code>   </td><td class="markdownTableBodyNone"><code>long</code> <code>long_sequential</code> <code>end_to_end</code>   </td><td class="markdownTableBodyNone">Non-parallel end-to-end tests using benders algorithm on antares studies (long duration).    </td></tr>
-<tr class="markdownTableRowEven">
+<tr class="markdownTableRowOdd">
 <td class="markdownTableBodyLeft"><code>examples_long_mpi</code>   </td><td class="markdownTableBodyNone"><code>long</code> <code>long_mpi</code> <code>end_to_end</code>   </td><td class="markdownTableBodyNone">Parallel end-to-end tests using benders algorithm on antares studies (long duration).    </td></tr>
-<tr class="markdownTableRowOdd">
-<td class="markdownTableBodyLeft"><code>mpibenders</code>   </td><td class="markdownTableBodyNone"><code>benders</code>, <code>benders-mpi</code> <code>end_to_end</code>   </td><td class="markdownTableBodyNone">End-to-end tests for benders mpi optimization.    </td></tr>
 <tr class="markdownTableRowEven">
-<td class="markdownTableBodyLeft"><code>sequential</code>   </td><td class="markdownTableBodyNone"><code>benders</code> <code>benders-sequential</code> <code>end_to_end</code>   </td><td class="markdownTableBodyNone">End-to-end tests for benders sequential optimization.    </td></tr>
+<td class="markdownTableBodyLeft"><code>mpibenders</code>   </td><td class="markdownTableBodyNone"><code>benders</code>, <code>benders-mpi</code> <code>end_to_end</code>   </td><td class="markdownTableBodyNone">End-to-end tests for benders mpi optimization.    </td></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><code>sequential</code>   </td><td class="markdownTableBodyNone"><code>benders</code> <code>benders-sequential</code> <code>end_to_end</code>   </td><td class="markdownTableBodyNone">End-to-end tests for benders sequential optimization.    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyLeft"><code>merge_mps</code>   </td><td class="markdownTableBodyNone"><code>benders</code> <code>merge-mps</code> <code>end_to_end</code>   </td><td class="markdownTableBodyNone">End-to-end tests for merge mps optimization.   </td></tr>
 </table>
 <p>!!! Note Use <code>ctest -N</code> to see all available tests.</p>
