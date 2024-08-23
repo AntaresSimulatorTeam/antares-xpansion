@@ -187,7 +187,7 @@ jobs:
           cmake -B _build -S . \
                  -DBUILD_TESTING=OFF \
                  -DCMAKE_PREFIX_PATH="${GITHUB_WORKSPACE}/deps;${{env.ORTOOLS_DIR}}/install;${GITHUB_WORKSPACE}/itt" \
-                 -DCMAKE_BUILD_TYPE=Release \
+                 -DCMAKE_BUILD_TYPE=RelWithDebInfo \
                  -DCMAKE_INSTALL_PREFIX=_install \
                  -DBUILD_UI=OFF \
                  -DALLOW_RUN_AS_ROOT=ON \
