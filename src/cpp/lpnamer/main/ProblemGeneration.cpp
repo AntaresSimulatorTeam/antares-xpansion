@@ -454,7 +454,8 @@ void ProblemGeneration::RunProblemGeneration(
   std::shared_ptr<ArchiveReader> reader =
       antares_archive_path.empty() ? std::make_shared<ArchiveReader>()
                                    : InstantiateZipReader(antares_archive_path);
-
+  std::cout << "Archive opend\n";
+  memory();
   /* Main stuff */
 
   std::vector<std::shared_ptr<Problem>> xpansion_problems =
