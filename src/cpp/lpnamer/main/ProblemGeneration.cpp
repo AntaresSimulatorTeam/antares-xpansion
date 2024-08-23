@@ -255,6 +255,8 @@ std::filesystem::path ProblemGeneration::updateProblems() {
   if (mode_ == SimulationInputMode::ARCHIVE) {
     xpansion_output_dir =
         options_.deduceXpansionDirIfEmpty(xpansion_output_dir, archive_path);
+    study_dir = xpansion_output_dir.parent_path();
+
   }
 
   if (mode_ == SimulationInputMode::ANTARES_API) {
@@ -266,12 +268,14 @@ std::filesystem::path ProblemGeneration::updateProblems() {
     simulation_dir_ = options_.XpansionOutputDir();  // Legacy naming.
     // options_.XpansionOutputDir() point in fact to a simulation output from
     // antares
+    study_dir = simulation_dir_;
   }
 
   if (mode_ == SimulationInputMode::ANTARES_API || mode_ == SimulationInputMode::FILE) {
     xpansion_output_dir = simulation_dir_;
+    study_dir = simulation_dir_;
   }
-  study_dir = simulation_dir_;
+
 
   const auto log_file_path =
       xpansion_output_dir / "lp"s / "ProblemGenerationLog.txt"s;
