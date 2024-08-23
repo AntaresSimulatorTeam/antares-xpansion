@@ -1,10 +1,18 @@
 
 #include "include/ProblemGeneration.h"
 
-#include <antares/api/solver.h>
 #include <antares/api/SimulationResults.h>
+#include <antares/api/solver.h>
+#include <ittnotify.h>
 
+#include <boost/archive/text_iarchive.hpp>
+#include <boost/archive/text_oarchive.hpp>
+#include <boost/serialization/map.hpp>
+#include <boost/serialization/serialization.hpp>
+#include <boost/serialization/string.hpp>
+#include <boost/serialization/vector.hpp>
 #include <execution>
+#include <filesystem>
 #include <iostream>
 #include <utility>
 
@@ -32,13 +40,6 @@
 #include "XpansionProblemsFromAntaresProvider.h"
 #include "ZipProblemsProviderAdapter.h"
 #include "config.h"
-#include <boost/serialization/serialization.hpp>
-#include <boost/archive/text_oarchive.hpp>
-#include <boost/archive/text_iarchive.hpp>
-#include <boost/serialization/vector.hpp>
-#include <boost/serialization/map.hpp>
-#include <boost/serialization/string.hpp>
-#include <ittnotify.h>
 #include "include/memory.h"
 
 static const std::string LP_DIRNAME = "lp";
@@ -144,6 +145,29 @@ self_mem process_mem_usage()
   long page_size_kb = sysconf(_SC_PAGE_SIZE) / 1024; // in case x86-64 is configured to use 2MB pages
   return {vsize / 1024.0l / 1024.l, rss * page_size_kb};
 }
+static std::string study_dir = "";
+
+namespace fs = std::filesystem;
+std::uintmax_t calculate_directory_size(const fs::path& directory) {
+  std::uintmax_t total_size = 0;
+  std::error_code ec;
+
+  for (const auto& entry : fs::recursive_directory_iterator(directory, ec)) {
+    if (ec) {
+      std::cerr << "Error accessing " << entry.path() << ": " << ec.message() << std::endl;
+      continue;
+    }
+    if (fs::is_regular_file(entry.status())) {
+      total_size += fs::file_size(entry.path(), ec);
+      if (ec) {
+        std::cerr << "Error getting size of " << entry.path() << ": " << ec.message() << std::endl;
+      }
+    }
+  }
+
+  return total_size;
+}
+
 void memory() {
   auto [dispo, total] = Memory::MemoryUsageGo();
   auto [vm, rss] = process_mem_usage();
@@ -151,8 +175,12 @@ void memory() {
   std::cout << "Memory usage: " << dispo << "/" << total << "\n";
   std::cout << "VM: " << vm << "Mb; RSS: " << rss << "\n";
   std::cout << "------------------------------------\n";
-  const auto dirs = {"/scratch", "/tmp"};
+  using namespace std::string_literals;
+  const auto dirs = {"/scratch"s, "/tmp"s};
   print_disk_space_info(dirs);
+  std::cout << "------------------------------------\n";
+  std::uintmax_t dir_size = calculate_directory_size(study_dir);
+  std::cout << "Total size of directory " << study_dir << " is " << dir_size / 1024.f / 1024.f << " Mo." << std::endl;
   std::cout << "====================================" << std::endl;
 }
 }
@@ -243,6 +271,7 @@ std::filesystem::path ProblemGeneration::updateProblems() {
   if (mode_ == SimulationInputMode::ANTARES_API || mode_ == SimulationInputMode::FILE) {
     xpansion_output_dir = simulation_dir_;
   }
+  study_dir = simulation_dir_;
 
   const auto log_file_path =
       xpansion_output_dir / "lp"s / "ProblemGenerationLog.txt"s;
