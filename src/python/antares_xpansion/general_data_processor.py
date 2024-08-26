@@ -99,8 +99,8 @@ class GeneralDataProcessor:
             ("other preferences", "unit-commitment-mode"): "accurate"
             if self.is_accurate
             else "fast",
-            (general_section, "year-by-year"): "false",
-            (output_section, "synthesis"): "false",
+            # (general_section, "year-by-year"): "false",
+            # (output_section, "synthesis"): "false",
             ("input", "import"): "",
         }
 
