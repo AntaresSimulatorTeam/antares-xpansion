@@ -154,13 +154,13 @@ std::uintmax_t calculate_directory_size(const fs::path& directory) {
 
   for (const auto& entry : fs::recursive_directory_iterator(directory, ec)) {
     if (ec) {
-      std::cerr << "Error accessing " << entry.path() << ": " << ec.message() << std::endl;
+      std::cerr << "Error accessing " << entry.path() << ": " << ec.message() << "\n";
       continue;
     }
     if (fs::is_regular_file(entry.status())) {
       total_size += fs::file_size(entry.path(), ec);
       if (ec) {
-        std::cerr << "Error getting size of " << entry.path() << ": " << ec.message() << std::endl;
+        std::cerr << "Error getting size of " << entry.path() << ": " << ec.message() << "\n";
       }
     }
   }
@@ -180,8 +180,8 @@ void memory() {
   print_disk_space_info(dirs);
   std::cout << "------------------------------------\n";
   std::uintmax_t dir_size = calculate_directory_size(study_dir);
-  std::cout << "Total size of directory " << study_dir << " is " << dir_size / 1024.f / 1024.f << " Mo." << std::endl;
-  std::cout << "====================================" << std::endl;
+  std::cout << "Total size of directory " << study_dir << " is " << dir_size / 1024.f / 1024.f << " Mo." << "\n";
+  std::cout << "====================================" << "\n";
 }
 }
 
@@ -212,7 +212,7 @@ std::filesystem::path ProblemGeneration::performAntaresSimulation() {
 //  //Add parallel
 //  //Handle errors
 //  if (results.error) {
-//    std::cerr << "Error: " << results.error->reason << std::endl;
+//    std::cerr << "Error: " << results.error->reason << "\n";
 //    exit(1);
 //  }
 //
@@ -240,7 +240,7 @@ std::filesystem::path ProblemGeneration::performAntaresSimulation() {
   }  //  //Add parallel
   //  //Handle errors
   if (results.error) {
-    std::cerr << "Error: " << results.error->reason << std::endl;
+    std::cerr << "Error: " << results.error->reason << "\n";
     exit(1);
   }
   lps_ = std::move(results.antares_problems);
@@ -349,7 +349,7 @@ void validateMasterFormulation(
         << LOGLOCATION
         << "Invalid formulation argument : argument must be "
            "\"integer\" or \"relaxed\""
-        << std::endl;
+        << "\n";
     exit(1);
   }
 }
@@ -394,7 +394,7 @@ void ProblemGeneration::RunProblemGeneration(
     const std::filesystem::path& log_file_path,
     const std::filesystem::path& weights_file, bool unnamed_problems) {
   (*logger)(LogUtils::LOGLEVEL::INFO)
-      << "Launching Problem Generation" << std::endl;
+      << "Launching Problem Generation" << "\n";
   memory();
   validateMasterFormulation(master_formulation, logger);
   std::string solver_name = "CBC";  // TODO Use solver selected by user
@@ -407,19 +407,19 @@ void ProblemGeneration::RunProblemGeneration(
                    logger);
   }
   //Print weight ok
-  std::cout << "Weight ok" << std::endl;
+  std::cout << "Weight ok" << "\n";
   memory();
   ExtractUtilsFiles(antares_archive_path, xpansion_output_dir, logger);
 
   std::vector<ActiveLink> links = getLinks(xpansion_output_dir, logger);
-  std::cout << "Links ok" << std::endl;
+  std::cout << "Links ok" << "\n";
   memory();
   AdditionalConstraints additionalConstraints(logger);
   if (!additionalConstraintFilename_l.empty()) {
     additionalConstraints =
         AdditionalConstraints(additionalConstraintFilename_l, logger);
   }
-  std::cout << "Additional constraints ok" << std::endl;
+  std::cout << "Additional constraints ok" << "\n";
 
   memory();
   auto lpDir_ = xpansion_output_dir / "lp";
@@ -430,27 +430,27 @@ void ProblemGeneration::RunProblemGeneration(
       unnamed_problems ||
       antares_version < first_version_without_variables_files;
   (*logger)(LogUtils::LOGLEVEL::INFO)
-      << "rename problems: " << std::boolalpha << rename_problems << std::endl;
+      << "rename problems: " << std::boolalpha << rename_problems << "\n";
 
 
 
   memory();
-  (*logger)(LogUtils::LOGLEVEL::INFO) << "File mapping" << std::endl;
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "File mapping" << "\n";
   auto files_mapper = FilesMapper(antares_archive_path, xpansion_output_dir);
   memory();
-  (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading mps" << std::endl;
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading mps" << "\n";
   auto mpsList = files_mapper.MpsAndVariablesFilesVect();
   auto [dispo, total] = Memory::MemoryUsageGo();
   std::cout << "Memory usage: "
-            << dispo << "/" << total << std::endl;
-  (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading mps done" << std::endl;
+            << dispo << "/" << total << "\n";
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading mps done" << "\n";
   auto solver_log_manager = SolverLogManager(log_file_path);
   Couplings couplings;
-  (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading couplings" << std::endl;
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading couplings" << "\n";
   LinkProblemsGenerator linkProblemsGenerator(
       lpDir_, links, solver_name, logger, solver_log_manager, rename_problems);
   memory();
-  (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading couplings done" << std::endl;
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "Reading couplings done" << "\n";
   std::shared_ptr<ArchiveReader> reader =
       antares_archive_path.empty() ? std::make_shared<ArchiveReader>()
                                    : InstantiateZipReader(antares_archive_path);
@@ -461,7 +461,9 @@ void ProblemGeneration::RunProblemGeneration(
   std::vector<std::shared_ptr<Problem>> xpansion_problems =
       getXpansionProblems(solver_log_manager, solver_name, mpsList, lpDir_,
                           reader, !antares_archive_path.empty(), lps_);
-  (*logger)(LogUtils::LOGLEVEL::INFO) << "Problems read" << std::endl;
+  lps_.weeklyProblems.clear();
+  lps_.constantProblemData = {};
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "Problems read" << "\n";
   memory();
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
       problems_and_data;
@@ -474,7 +476,7 @@ void ProblemGeneration::RunProblemGeneration(
       problems_and_data.emplace_back(xpansion_problems.at(i), mpsList.at(i));
     }
   }
-  (*logger)(LogUtils::LOGLEVEL::INFO) << "Start problem generation" << std::endl;
+  (*logger)(LogUtils::LOGLEVEL::INFO) << "Start problem generation" << "\n";
   memory();
   auto mps_file_writer = std::make_shared<MPSFileWriter>(lpDir_);
   std::for_each(
@@ -527,7 +529,7 @@ void ProblemGeneration::RunProblemGeneration(
       master_formulation, solver_name, logger, solver_log_manager);
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Problem Generation ran in: "
-      << format_time_str(problem_generation_timer.elapsed()) << std::endl;
+      << format_time_str(problem_generation_timer.elapsed()) << "\n";
 }
 std::shared_ptr<ArchiveReader> InstantiateZipReader(
     const std::filesystem::path& antares_archive_path) {

@@ -11,9 +11,9 @@
 
 class XpansionProblemsFromAntaresProvider : public IXpansionProblemsProvider {
  public:
-  explicit XpansionProblemsFromAntaresProvider(Antares::Solver::LpsFromAntares antares);
+  explicit XpansionProblemsFromAntaresProvider(const Antares::Solver::LpsFromAntares& antares);
   [[nodiscard]] std::vector<std::shared_ptr<Problem>> provideProblems(
       const std::string& solver_name,
       SolverLogManager& solver_log_manager) const override;
-  Antares::Solver::LpsFromAntares antares_hebdo_problems;
+  const Antares::Solver::LpsFromAntares& antares_hebdo_problems;
 };

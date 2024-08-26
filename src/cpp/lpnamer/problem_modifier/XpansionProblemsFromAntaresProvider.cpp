@@ -10,8 +10,10 @@
 #include "AntaresProblemToXpansionProblemTranslator.h"
 
 XpansionProblemsFromAntaresProvider::XpansionProblemsFromAntaresProvider(
-    Antares::Solver::LpsFromAntares lps)
-    : antares_hebdo_problems(std::move(lps)) {}
+    const Antares::Solver::LpsFromAntares& lps)
+    : antares_hebdo_problems(lps) {
+  std::cout << "Provider by copy \n";
+}
 
 std::vector<std::shared_ptr<Problem>>
 XpansionProblemsFromAntaresProvider::provideProblems(
