@@ -116,6 +116,8 @@ std::function<int(XPRSprob prob, int row, int col, double coef)> XPRSchgcoef =
     nullptr;
 std::function<int(XPRSprob prob, int rowstat[], int colstat[])> XPRSgetbasis =
     nullptr;
+std::function<int(XPRSprob prob, int rowstat[], int colstat[])> XPRSloadbasis =
+    nullptr;
 std::function<int(XPRSprob prob, int attrib, double* p_value)>
     XPRSgetdblattrib = nullptr;
 std::function<int(XPRSprob prob, double x[], double slack[], double duals[],
@@ -144,7 +146,8 @@ std::function<int(XPRSprob prob, int attrib, int* p_value)> XPRSgetintattrib =
 XpressLoader::XpressLoader(std::shared_ptr<ILoggerXpansion> logger)
     : logger_(std::move(logger)) {}
 
-bool XpressLoader::LoadXpressFunctions(Solver::DynamicLibrary* xpress_dynamic_library) {
+bool XpressLoader::LoadXpressFunctions(
+    Solver::DynamicLibrary* xpress_dynamic_library) {
   // This was generated with the parse_header_xpress.py script.
   // See the comment at the top of the script.
 
@@ -184,6 +187,7 @@ bool XpressLoader::LoadXpressFunctions(Solver::DynamicLibrary* xpress_dynamic_li
   xpress_dynamic_library->GetFunction(&XPRSchgrhs, "XPRSchgrhs");
   xpress_dynamic_library->GetFunction(&XPRSchgcoef, "XPRSchgcoef");
   xpress_dynamic_library->GetFunction(&XPRSgetbasis, "XPRSgetbasis");
+  xpress_dynamic_library->GetFunction(&XPRSloadbasis, "XPRSloadbasis");
   xpress_dynamic_library->GetFunction(&XPRSgetlpsol, "XPRSgetlpsol");
   xpress_dynamic_library->GetFunction(&XPRSgetdblattrib, "XPRSgetdblattrib");
   xpress_dynamic_library->GetFunction(&XPRSgetmipsol, "XPRSgetmipsol");
@@ -276,8 +280,8 @@ std::vector<std::string> XpressLoader::XpressDynamicLibraryPotentialPaths() {
 #endif
   } else {
     msg.str("");
-    msg << "Warning: "
-        << "Environment variable " << XPRESSDIR << " undefined.\n";
+    msg << "Warning: " << "Environment variable " << XPRESSDIR
+        << " undefined.\n";
     logger_->display_message(msg);
   }
 
@@ -313,8 +317,7 @@ bool XpressLoader::LoadXpressDynamicLibrary(std::string& xpresspath) {
     for (const std::string& path : canonical_paths) {
       msg.str("");
       if (xpress_library.TryToLoad(path)) {
-        msg << "Info: "
-            << "Found the Xpress library in " << path << ".\n";
+        msg << "Info: " << "Found the Xpress library in " << path << ".\n";
         logger_->display_message(msg);
         xpress_lib_path.clear();
         std::filesystem::path p(path);
@@ -422,8 +425,7 @@ bool XpressLoader::initXpressEnv(bool verbose, int xpress_oem_license_key) {
         char version[16];
         XPRSgetversion(version);
         msg.str("");
-        msg << "Warning: "
-            << "Optimizer version: " << version
+        msg << "Warning: " << "Optimizer version: " << version
             << " (Antares-Xpansion was compiled with version " << XPVERSION
             << ").\n";
         logger_->display_message(msg);
@@ -437,8 +439,7 @@ bool XpressLoader::initXpressEnv(bool verbose, int xpress_oem_license_key) {
       XPRSgetlicerrmsg(errmsg, 256);
 
       msg << "Xpress License error : " << errmsg << " (XPRSinit returned code "
-          << code << "). Please check"
-          << " environment variable XPRESS.\n";
+          << code << "). Please check" << " environment variable XPRESS.\n";
       logger_->display_message(msg);
 
       return false;
@@ -447,9 +448,8 @@ bool XpressLoader::initXpressEnv(bool verbose, int xpress_oem_license_key) {
     // if OEM key
     if (verbose) {
       msg.str("");
-      msg << "Warning: "
-          << "Initialising xpress-MP with OEM key " << xpress_oem_license_key
-          << "\n";
+      msg << "Warning: " << "Initialising xpress-MP with OEM key "
+          << xpress_oem_license_key << "\n";
       logger_->display_message(msg);
     }
 

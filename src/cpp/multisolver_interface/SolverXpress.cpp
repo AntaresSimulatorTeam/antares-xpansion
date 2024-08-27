@@ -507,8 +507,8 @@ void SolverXpress::get_basis(int *rstatus, int *cstatus) const {
 }
 
 void SolverXpress::SetBasis(std::vector<int> rstatus, std::vector<int> cstatus) {
-  int status = XPRSloadbasis (_xprs, rstatus.data(), cstatus.data());
-  zero_status_check(status, "set basis");
+  int status = XPRSloadbasis(_xprs, rstatus.data(), cstatus.data());
+  zero_status_check(status, "set basis", LOGLOCATION);
 }
 
 double SolverXpress::get_mip_value() const {
