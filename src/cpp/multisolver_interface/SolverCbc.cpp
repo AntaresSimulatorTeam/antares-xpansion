@@ -168,10 +168,7 @@ void SolverCbc::write_basis(const std::filesystem::path &filename) {
   zero_status_check(status, "write basis", LOGLOCATION);
 }
 
-void SolverCbc::write_sol(const std::filesystem::path &filename) {
-  auto error = LOGLOCATION + "Write solution not implemented with CBC";
-  throw NotImplementedFeatureSolverException(error);
-}
+void SolverCbc::write_sol(const std::filesystem::path &filename) {}
 
 void SolverCbc::setClpSimplexColNamesFromInnerSolver(ClpSimplex *clps) const {
   for (int col_id(0); col_id < get_ncols(); col_id++) {
