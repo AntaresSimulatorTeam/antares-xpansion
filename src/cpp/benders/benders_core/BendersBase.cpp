@@ -917,7 +917,8 @@ void BendersBase::writeLastIterationSubproblemsSolution() const {
   const auto &sub_pblm_map = GetSubProblemMap();
 
   for (const auto &[name, worker] : sub_pblm_map) {
-    worker->_solver->write_sol(dirname / name);
+    worker->_solver->write_sol(dirname /
+                               std::filesystem::path(name).replace_extension());
   }
 }
 

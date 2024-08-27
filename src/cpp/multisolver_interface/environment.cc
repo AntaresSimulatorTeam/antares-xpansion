@@ -151,6 +151,7 @@ bool XpressLoader::LoadXpressFunctions(DynamicLibrary* xpress_dynamic_library) {
   xpress_dynamic_library->GetFunction(&XPRSinit, "XPRSinit");
   xpress_dynamic_library->GetFunction(&XPRScopyprob, "XPRScopyprob");
   xpress_dynamic_library->GetFunction(&XPRSwritebasis, "XPRSwritebasis");
+  xpress_dynamic_library->GetFunction(&XPRSwritesol, "XPRSwritesol");
   xpress_dynamic_library->GetFunction(&XPRSreadprob, "XPRSreadprob");
   xpress_dynamic_library->GetFunction(&XPRSreadbasis, "XPRSreadbasis");
   xpress_dynamic_library->GetFunction(&XPRSgetrows, "XPRSgetrows");
