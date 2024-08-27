@@ -68,7 +68,7 @@ class BendersDriver:
 
         # delete execution logs
         self._clean_log_files()
-
+        print(self._get_solver_cmd())
         ret = subprocess.run(
             self._get_solver_cmd(), shell=False, stdout=sys.stdout, stderr=sys.stderr,
             encoding='utf-8')
@@ -131,7 +131,7 @@ class BendersDriver:
         """
         returns a list consisting of the path to the required solver and its launching options
         """
-        bare_solver_command = [self.solver, self.options_file, self.construct_all_problems]
+        bare_solver_command = [self.solver, self.options_file, str(self.construct_all_problems)]
         if self.n_mpi > 1:
             mpi_command = self.get_mpi_run_command_root()
             mpi_command.extend(bare_solver_command)
