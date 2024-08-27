@@ -8,6 +8,7 @@ on:
       - develop
       - dependabot/*
       - release/*
+      - test/*
   pull_request:
   release:
     types: [ created ]
