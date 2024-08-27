@@ -89,56 +89,57 @@ class InputParser:
 
 
 def parse_args(self, args: List[str] = None) -> InputParameters:
-        params = self.parser.parse_args(args)
-        if params.step != "resume":
-            self._fill_default_values(params)
-        self._check_antares_cpu_option(params)
+    params = self.parser.parse_args(args)
+    if params.step != "resume":
+        self._fill_default_values(params)
+    self._check_antares_cpu_option(params)
 
-        my_parameters = InputParameters(
-            step=params.step,
-            simulation_name=params.simulationName,
-            data_dir=params.dataDir,
-            install_dir=params.installDir,
-            method=params.method,
-            n_mpi=params.n_mpi,
-            antares_n_cpu=params.antares_n_cpu,
-            keep_mps=params.keep_mps,
-            oversubscribe=params.oversubscribe,
-            allow_run_as_root=params.allow_run_as_root,
-            memory=params.memory,
-            construct_all_problems=params.construct_all_problems
-        )
-        return my_parameters
+    my_parameters = InputParameters(
+        step=params.step,
+        simulation_name=params.simulationName,
+        data_dir=params.dataDir,
+        install_dir=params.installDir,
+        method=params.method,
+        n_mpi=params.n_mpi,
+        antares_n_cpu=params.antares_n_cpu,
+        keep_mps=params.keep_mps,
+        oversubscribe=params.oversubscribe,
+        allow_run_as_root=params.allow_run_as_root,
+        memory=params.memory,
+        construct_all_problems=params.construct_all_problems
+    )
+    return my_parameters
 
-    def _check_antares_cpu_option(self, params):
 
-        if (params.antares_n_cpu == 1) and (params.n_mpi > 2):
-            params.antares_n_cpu = params.n_mpi
+def _check_antares_cpu_option(self, params):
+    if (params.antares_n_cpu == 1) and (params.n_mpi > 2):
+        params.antares_n_cpu = params.n_mpi
 
-    def _fill_default_values(self, params):
-        if params.simulationName == LauncherOptionsDefaultValues.DEFAULT_VALUE():
-            params.simulationName = LauncherOptionsDefaultValues.DEFAULT_SIMULATION_NAME()
 
-        if params.installDir == LauncherOptionsDefaultValues.DEFAULT_VALUE():
-            params.installDir = LauncherOptionsDefaultValues.DEFAULT_INSTALLDIR()
+def _fill_default_values(self, params):
+    if params.simulationName == LauncherOptionsDefaultValues.DEFAULT_VALUE():
+        params.simulationName = LauncherOptionsDefaultValues.DEFAULT_SIMULATION_NAME()
 
-        if params.method == LauncherOptionsDefaultValues.DEFAULT_VALUE():
-            params.method = LauncherOptionsDefaultValues.DEFAULT_METHOD()
+    if params.installDir == LauncherOptionsDefaultValues.DEFAULT_VALUE():
+        params.installDir = LauncherOptionsDefaultValues.DEFAULT_INSTALLDIR()
 
-        if params.n_mpi == LauncherOptionsDefaultValues.DEFAULT_VALUE():
-            params.n_mpi = LauncherOptionsDefaultValues.DEFAULT_NP()
+    if params.method == LauncherOptionsDefaultValues.DEFAULT_VALUE():
+        params.method = LauncherOptionsDefaultValues.DEFAULT_METHOD()
 
-        if params.antares_n_cpu == LauncherOptionsDefaultValues.DEFAULT_VALUE():
-            params.antares_n_cpu = LauncherOptionsDefaultValues.DEFAULT_ANTARES_N_CPU()
+    if params.n_mpi == LauncherOptionsDefaultValues.DEFAULT_VALUE():
+        params.n_mpi = LauncherOptionsDefaultValues.DEFAULT_NP()
 
-        if params.keep_mps == LauncherOptionsDefaultValues.DEFAULT_VALUE():
-            params.keep_mps = LauncherOptionsDefaultValues.DEFAULT_KEEPMPS()
+    if params.antares_n_cpu == LauncherOptionsDefaultValues.DEFAULT_VALUE():
+        params.antares_n_cpu = LauncherOptionsDefaultValues.DEFAULT_ANTARES_N_CPU()
 
-        if params.oversubscribe == LauncherOptionsDefaultValues.DEFAULT_VALUE():
-            params.oversubscribe = LauncherOptionsDefaultValues.DEFAULT_OVERSUBSCRIBE()
+    if params.keep_mps == LauncherOptionsDefaultValues.DEFAULT_VALUE():
+        params.keep_mps = LauncherOptionsDefaultValues.DEFAULT_KEEPMPS()
 
-        if params.allow_run_as_root == LauncherOptionsDefaultValues.DEFAULT_VALUE():
-            params.allow_run_as_root = LauncherOptionsDefaultValues.DEFAULT_ALLOW_RUN_AS_ROOT()
+    if params.oversubscribe == LauncherOptionsDefaultValues.DEFAULT_VALUE():
+        params.oversubscribe = LauncherOptionsDefaultValues.DEFAULT_OVERSUBSCRIBE()
 
-        if params.construct_all_problems == LauncherOptionsDefaultValues.DEFAULT_VALUE():
-            params.construct_all_problems = LauncherOptionsDefaultValues.DEFAULT_CONSTRUCT_ALL_PROBLEMS()
+    if params.allow_run_as_root == LauncherOptionsDefaultValues.DEFAULT_VALUE():
+        params.allow_run_as_root = LauncherOptionsDefaultValues.DEFAULT_ALLOW_RUN_AS_ROOT()
+
+    if params.construct_all_problems == LauncherOptionsDefaultValues.DEFAULT_VALUE():
+        params.construct_all_problems = LauncherOptionsDefaultValues.DEFAULT_CONSTRUCT_ALL_PROBLEMS()

@@ -11,28 +11,40 @@
 #include "LogUtils.h"
 #include "solver_utils.h"
 
+namespace {
+template <class T>
+std::vector<std::pair<std::string, T>> mapToVector(
+    std::map<std::string, T> map_to_flatten) {
+  std::vector<std::pair<std::string, T>> flatten_result;
+  flatten_result.reserve(map_to_flatten.size());
+  for (const auto &[name, value] : map_to_flatten) {
+    flatten_result.emplace_back(name, value);
+  }
+  return flatten_result;
+}
+}  // namespace
+
 BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
                          Writer writer,
                          std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
-    : BendersBase(options, logger, writer, mathLoggerDriver, std::make_shared<MPSUtils>()) {
+    : BendersBase(options, std::move(logger), std::move(writer),
+                  std::move(mathLoggerDriver), std::make_shared<MPSUtils>()) {}
 
-}
-
-BendersBase::BendersBase(BendersBaseOptions options, Logger &logger,
-                         Writer writer, std::shared_ptr<MathLoggerDriver> mathLoggerDriver, std::shared_ptr<MPSUtils> mps_utils)
+BendersBase::BendersBase(BendersBaseOptions options, Logger logger,
+                         Writer writer,
+                         std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
+                         std::shared_ptr<MPSUtils> mps_utils)
     : options_(std::move(options)),
       _csv_file_path(std::filesystem::path(options_.OUTPUTROOT) /
                      (options_.CSV_NAME + ".csv")),
       _logger(std::move(logger)),
       _writer(std::move(writer)),
       mathLoggerDriver_(std::move(mathLoggerDriver)),
-      mps_utils_(std::move(mps_utils))
-{
-}
+      mps_utils_(std::move(mps_utils)) {}
 
 std::filesystem::path BendersBase::OuterloopOptionsFile() const {
   return std::filesystem::path(options_.INPUTROOT) /
-         options_.EXTERNAL_LOOPoptions_.OUTER_LOOP_OPTION_FILE;
+         options_.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE;
 }
 
 /*!
@@ -69,7 +81,8 @@ void BendersBase::OpenCsvFile() {
                 << std::endl;
     } else {
       using namespace std::string_literals;
-      _logger->display_message("Impossible to open the .csv file: "s + _csv_file_path.string());
+      _logger->display_message("Impossible to open the .csv file: "s +
+                               _csv_file_path.string());
     }
   }
 }
@@ -112,8 +125,7 @@ void print_cut_csv(std::ostream &stream,
                    const PlainData::SubProblemData &subproblem_data,
                    std::string const &subproblem_name, int subproblem_index,
                    double alpha_i) {
-  stream << "Subproblem"
-         << ";";
+  stream << "Subproblem" << ";";
   stream << subproblem_name << ";";
   stream << subproblem_index << ";";
   stream << subproblem_data.subproblem_cost << ";";
@@ -154,8 +166,7 @@ void BendersBase::print_master_and_cut(std::ostream &file, int ite,
 void BendersBase::print_master_csv(std::ostream &stream,
                                    const WorkerMasterData &trace,
                                    Point const &x_cut) const {
-  stream << "Master"
-         << ";";
+  stream << "Master" << ";";
   stream << options_.MASTER_NAME << ";";
   stream << _data.nsubproblem << ";";
   stream << trace._ub << ";";
@@ -184,7 +195,8 @@ void BendersBase::update_best_ub() {
         _data.outer_loop_current_iteration_data.max_criterion;
     _data.outer_loop_current_iteration_data.max_criterion_area_best_it =
         _data.outer_loop_current_iteration_data.max_criterion_area;
-    relevantIterationData_.best._cut_trace = relevantIterationData_.last._cut_trace;
+    relevantIterationData_.best._cut_trace =
+        relevantIterationData_.last._cut_trace;
     best_iteration_data = bendersDataToLogData(_data);
   }
 }
@@ -373,18 +385,18 @@ void BendersBase::compute_ub() {
  *  Method to solve and store optimal variables of all Subproblem Problems
  * after fixing trial values
  *
- *  \param subproblem_cut_package : map storing for each subproblem its cut
+ *  \param subproblem_data_map : map storing for each subproblem its cut
  */
 void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
   // so we project it in a vector
   if (Options().CONSTRUCT_ALL_PROBLEMS) {
-    getSubproblemCut_Fast(subproblem_cut_package);
+    getSubproblemCut_Fast(subproblem_data_map);
   } else {
-    getSubproblemCut_ConstructWorker(subproblem_cut_package);
+    getSubproblemCut_ConstructWorker(subproblem_data_map);
   }
 }
 void BendersBase::getSubproblemCut_Fast(
-    SubproblemCutPackage &subproblem_cut_package) {
+    SubProblemDataMap &subproblem_data_map) {
   std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
   nameAndWorkers.reserve(subproblem_map.size());
   for (const auto &[name, worker] : subproblem_map) {
@@ -402,31 +414,34 @@ void BendersBase::getSubproblemCut_Fast(
               SolveSubproblem(subproblem_data_map, subproblem_data, name,
                               worker);
 
-              subproblem_data_map[name] = subproblem_data;
               std::lock_guard guard(m);
+              subproblem_data_map[name] = subproblem_data;
             });
       },
       shouldParallelize());
 }
 
 void BendersBase::getSubproblemCut_ConstructWorker(
-    SubproblemCutPackage &subproblem_cut_package) {
-  auto nameAndVariableMap = FlattenMap(coupling_map);
+    SubProblemDataMap &subproblem_data_map) {
+  auto nameAndVariableMap = mapToVector(coupling_map_);
   std::mutex m;
   selectPolicy(
-      [this, &nameAndVariableMap, &m, &subproblem_cut_package](auto &policy) {
-        std::for_each(
-            policy, nameAndVariableMap.begin(), nameAndVariableMap.end(),
-            [this, &m, &subproblem_cut_package](const std::pair<std::string, VariableMap> &kvp) {
-              const auto &[name, variables] = kvp;
-              std::shared_ptr<SubproblemWorker> worker =
-                  BuildProblem(kvp, name);
-              auto subproblem_cut_data = ComputeSubProblemCutData(worker);
-              auto [rstatus, cstatus] = GetProblemBasis(worker);
-              std::lock_guard guard(m);
-              subproblem_cut_package[name] = *subproblem_cut_data;
-              basiss_[name] = std::make_pair(rstatus, cstatus);
-            });
+      [this, &nameAndVariableMap, &m, &subproblem_data_map](auto &policy) {
+        std::for_each(policy, nameAndVariableMap.begin(),
+                      nameAndVariableMap.end(),
+                      [this, &m, &subproblem_data_map](
+                          const std::pair<std::string, VariableMap> &kvp) {
+                        const auto &[name, variables] = kvp;
+                        std::shared_ptr<SubproblemWorker> worker =
+                            BuildProblem(kvp, name);
+                        PlainData::SubProblemData subproblem_data;
+                        SolveSubproblem(
+                            subproblem_data_map, subproblem_data, name, worker);
+                        auto [rstatus, cstatus] = GetProblemBasis(worker);
+                        std::lock_guard guard(m);
+                        subproblem_data_map[name] = subproblem_data;
+                        basiss_[name] = std::make_pair(rstatus, cstatus);
+                      });
       },
       shouldParallelize());
 }
@@ -549,7 +564,7 @@ void BendersBase::post_run_actions() const {
 }
 
 void BendersBase::SaveCurrentIterationInOutputFile() const {
-  if (!options_.EXTERNAL_LOOPoptions_.DO_OUTER_LOOP) {
+  if (!options_.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
     auto &LastWorkerMasterData = relevantIterationData_.last;
     if (LastWorkerMasterData._valid) {
       _writer->write_iteration(iteration(LastWorkerMasterData),
@@ -799,10 +814,10 @@ void BendersBase::AddSubproblem(
   subproblem_map[kvp.first] = makeSubproblemWorker(kvp);
 }
 std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
-    const std::pair<std::string, VariableMap> &kvp) const {
+    const std::pair<std::string, VariableMap> &kvp) {
   return std::make_shared<SubproblemWorker>(
       kvp.second, GetSubproblemPath(kvp.first),
-      SubproblemWeight(_data.nsubproblem, kvp.first), Options().SOLVER_NAME,
+      SubproblemWeight(_data.nsubproblem, kvp.first), options_.SOLVER_NAME,
       options_.LOG_LEVEL, solver_log_manager_, _logger);
 }
 
@@ -816,8 +831,6 @@ void BendersBase::MatchProblemToId() {
     count++;
   }
 }
-
-
 
 void BendersBase::AddSubproblemName(const std::string &name) {
   subproblems.push_back(name);
@@ -862,22 +875,24 @@ void BendersBase::SetSubproblemCost(const double &subproblem_cost) {
 }
 
 /*!
-*	\brief Update maximum and minimum of simplex iterations
-*
-*	\param subproblem_iterations : number of iterations done with the subproblem
-*
-*/
-void BendersBase::BoundSimplexIterations(int subproblem_iterations){
-  
-  _data.max_simplexiter = (_data.max_simplexiter < subproblem_iterations) ? subproblem_iterations : _data.max_simplexiter; 
-  _data.min_simplexiter = (_data.min_simplexiter > subproblem_iterations) ? subproblem_iterations : _data.min_simplexiter; 
-
+ *	\brief Update maximum and minimum of simplex iterations
+ *
+ *	\param subproblem_iterations : number of iterations done with the
+ *subproblem
+ *
+ */
+void BendersBase::BoundSimplexIterations(int subproblem_iterations) {
+  _data.max_simplexiter = (_data.max_simplexiter < subproblem_iterations)
+                              ? subproblem_iterations
+                              : _data.max_simplexiter;
+  _data.min_simplexiter = (_data.min_simplexiter > subproblem_iterations)
+                              ? subproblem_iterations
+                              : _data.min_simplexiter;
 }
 
-void BendersBase::ResetSimplexIterationsBounds()
-{
-	_data.max_simplexiter = 0;
-	_data.min_simplexiter = std::numeric_limits<int>::max();
+void BendersBase::ResetSimplexIterationsBounds() {
+  _data.max_simplexiter = 0;
+  _data.min_simplexiter = std::numeric_limits<int>::max();
 }
 bool BendersBase::IsResumeMode() const { return options_.RESUME; }
 
@@ -941,7 +956,7 @@ void BendersBase::EndWritingInOutputFile() const {
   _writer->updateEndTime();
   // TODO duration for outer loop
   _writer->write_duration(_data.benders_time);
-  if (!options_.EXTERNAL_LOOPoptions_.DO_OUTER_LOOP) {
+  if (!options_.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
     SaveSolutionInOutputFile();
   }
 }
@@ -952,32 +967,7 @@ void BendersBase::write_basis() const {
                       (options_.LAST_MASTER_BASIS));
   _master->write_basis(filename);
 }
-//Solve
-auto BendersBase::ComputeSubProblemCutData(const std::shared_ptr<SubproblemWorker> &worker) const {
-  Timer subproblem_timer;
-  auto subproblem_cut_data(std::make_shared<SubproblemCutData>());
-  auto handler = std::make_shared<SubproblemCutDataHandler>(
-      subproblem_cut_data);
-  worker->fix_to(_data.x0);
-  worker->solve(handler->get_int(LPSTATUS), options_.OUTPUTROOT,
-                options_.LAST_MASTER_MPS + MPS_SUFFIX);
-  worker->get_value(handler->get_dbl(SUBPROBLEM_COST));
-  worker->get_subgradient(handler->get_subgradient());
-  worker->get_splex_num_of_ite_last(
-      handler->get_int(SIMPLEXITER));
-  handler->get_dbl(SUBPROBLEM_TIMER) = subproblem_timer.elapsed();
-  return subproblem_cut_data;
-}
 
-template <class T>
-std::vector<std::pair<std::string, T>> FlattenMap(std::map<std::string, T> map_to_flatten) {
-  std::vector<std::pair<std::string, T>> flatten_result;
-  flatten_result.reserve(map_to_flatten.size());
-  for (const auto &[name, value] : map_to_flatten) {
-    flatten_result.emplace_back(name, value);
-  }
-  return flatten_result;
-}
 std::pair<std::vector<int>, std::vector<int>> BendersBase::GetProblemBasis(
     const std::shared_ptr<SubproblemWorker> &worker) const {
   int row_number = worker->_solver->get_nrows();
@@ -1001,7 +991,6 @@ const SubproblemsMapPtr &BendersBase::getSubproblemMap() const {
   return subproblem_map;
 }
 const StrVector &BendersBase::getSubproblems() const { return subproblems; }
-const BendersBaseOptions &BendersBase::Options() const { return options_; }
 
 WorkerMasterDataVect BendersBase::AllCuts() const {
   return workerMasterDataVect_;
@@ -1029,9 +1018,9 @@ void BendersBase::MasterAddRows(
 }
 void BendersBase::ResetMasterFromLastIteration() {
   reset_master<WorkerMaster>(master_variable_map_, LastMasterPath(),
-                                get_solver_name(), get_log_level(),
-                                _data.nsubproblem, solver_log_manager_,
-                                IsResumeMode(), _logger);
+                             get_solver_name(), get_log_level(),
+                             _data.nsubproblem, solver_log_manager_,
+                             IsResumeMode(), _logger);
 }
 bool BendersBase::MasterIsEmpty() const { return master_is_empty_; }
 
@@ -1108,8 +1097,6 @@ void BendersBase::init_data(double external_loop_lambda,
   _data.outer_loop_current_iteration_data.external_loop_lambda_max =
       external_loop_lambda_max;
 }
-
-
 
 bool BendersBase::isExceptionRaised() const { return exception_raised_; }
 /*

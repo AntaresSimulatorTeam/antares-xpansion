@@ -27,7 +27,6 @@ class BendersMpi : public BendersBase {
   std::string BendersName() const override { return "Benders mpi"; }
   const unsigned int rank_0 = 0;
   void AssignProblemToWorker();
-  void ReduceCouplingMapForEachWorker();
 
  protected:
   void free() override;

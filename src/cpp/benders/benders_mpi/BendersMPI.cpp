@@ -48,34 +48,16 @@ void BendersMpi::InitializeProblems() {
     }
   }
 }
-void BendersMpi::ReduceCouplingMapForEachWorker() {  // Each node will work on a
-                                                     // subset of problems in
-                                                     // coupling map
-  int current_problem_id = 0;
-  for (const auto &problem : coupling_map_) {
-    // In case there are more subproblems than process
-    if (auto process_to_feed = current_problem_id % _world.size();
-        process_to_feed ==
-        _world
-            .rank()) {  // Assign  [problemNumber % processCount] to processID
-
-      const auto subProblemFilePath = GetSubproblemPath(problem.first);
-      AddSubproblem(problem);
-      AddSubproblemName(problem.first);
-    }
-    current_problem_id++;
-  }
-}
 void BendersMpi::AssignProblemToWorker() {  // Dispatch subproblems to process
   int current_problem_id = 0;
   auto subproblemProcessCount = _world.size() - 1;
-  for (const auto &problem : coupling_map) {
+  for (const auto &problem : coupling_map_) {
     auto process_to_feed =
         current_problem_id % subproblemProcessCount +
         1;  // In case there are more subproblems than process
     if (process_to_feed ==
         _world.rank()) {  //Assign [problemNumber % processCount] to processID
-      addSubproblem(problem);
+      AddSubproblem(problem);
       AddSubproblemName(problem.first);
     }
     current_problem_id++;

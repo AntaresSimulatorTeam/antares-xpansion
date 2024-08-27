@@ -31,8 +31,8 @@ auto selectPolicy(lambda f, bool shouldParallelize) {
 class BendersBase {
  public:
   virtual ~BendersBase() = default;
-  explicit BendersBase(BendersBaseOptions options, Logger &logger, Writer writer, std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
-  explicit BendersBase(BendersBaseOptions options, Logger &logger, Writer writer, std::shared_ptr<MathLoggerDriver> mathLoggerDriver, std::shared_ptr<MPSUtils> mps_utils);
+  explicit BendersBase(const BendersBaseOptions& options, Logger logger, Writer writer, std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
+  explicit BendersBase(BendersBaseOptions  options, Logger logger, Writer writer, std::shared_ptr<MathLoggerDriver> mathLoggerDriver, std::shared_ptr<MPSUtils> mps_utils);
 
   virtual void launch() = 0;
   void set_solver_log_file(const std::filesystem::path &log_file);
@@ -78,9 +78,9 @@ class BendersBase {
                                   int last) const;
   virtual void InitializeProblems() = 0;
   void SetMaxIteration(int max_iteration) {
-    _options.MAX_ITERATIONS = max_iteration;
+    options_.MAX_ITERATIONS = max_iteration;
   }
-  BendersBaseOptions Options() const { return _options; }
+  BendersBaseOptions Options() const { return options_; }
   virtual void free() = 0;
   int GetBendersRunNumber() const { return _data.outer_loop_current_iteration_data.benders_num_run; }
   CurrentIterationData GetCurrentIterationData() const;
@@ -143,7 +143,6 @@ class BendersBase {
   [[nodiscard]] std::filesystem::path get_structure_path() const;
   [[nodiscard]] LogData bendersDataToLogData(
       const CurrentIterationData &data) const;
-  virtual void build_input_map();
   template <typename T, typename... Args>
   void reset_master(Args &&...args) {
     _master = std::make_shared<T>(std::forward<Args>(args)...);
@@ -203,9 +202,9 @@ class BendersBase {
   // SubproblemsMapPtr GetSubProblemsMapPtr() { return subproblem_map; }
   SubproblemsMapPtr GetSubProblemMap() const { return subproblem_map; }
   StrVector GetSubProblemNames() const { return subproblems; }
-  double AbsoluteGap() const { return _options.ABSOLUTE_GAP; }
-  double RelativeGap() const { return _options.RELATIVE_GAP; }
-  double RelaxedGap() const { return _options.RELAXED_GAP; }
+  double AbsoluteGap() const { return options_.ABSOLUTE_GAP; }
+  double RelativeGap() const { return options_.RELATIVE_GAP; }
+  double RelaxedGap() const { return options_.RELAXED_GAP; }
   DblVector GetAlpha_i() const { return _data.single_subpb_costs_under_approx; }
   void SetAlpha_i(const DblVector &single_subpb_costs_under_approx) {
     _data.single_subpb_costs_under_approx = single_subpb_costs_under_approx;
@@ -215,7 +214,7 @@ class BendersBase {
   }
   virtual void UpdateStoppingCriterion();
   virtual bool ShouldRelaxationStop() const;
-  int GetNumOfSubProblemsSolvedBeforeResume() {
+  int GetNumOfSubProblemsSolvedBeforeResume() const {
     return cumulative_number_of_subproblem_resolved_before_resume;
   }
 
@@ -279,18 +278,17 @@ class BendersBase {
 
  protected:
   virtual std::shared_ptr<SubproblemWorker> makeSubproblemWorker(
-      const std::pair<std::string, VariableMap> &kvp) const;
+      const std::pair<std::string, VariableMap> &kvp);
  private:
   std::map<std::string, std::pair<std::vector<int>, std::vector<int>>> basiss_;
   std::shared_ptr<SubproblemWorker> BuildProblem(
       const std::pair<std::string, VariableMap> &kvp, const std::string &name);
   std::pair<std::vector<int>, std::vector<int>> GetProblemBasis(
       const std::shared_ptr<SubproblemWorker> &worker) const;
-  auto ComputeSubProblemCutData(const std::shared_ptr<SubproblemWorker> &worker) const;
   void getSubproblemCut_Fast(
-      SubproblemCutPackage &subproblem_cut_package) const;
+      SubProblemDataMap &subproblem_cut_package);
   void getSubproblemCut_ConstructWorker(
-      SubproblemCutPackage &subproblem_cut_package);
+      SubProblemDataMap &subproblem_cut_package);
 
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

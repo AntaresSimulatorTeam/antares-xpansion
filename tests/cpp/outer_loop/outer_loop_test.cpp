@@ -85,13 +85,12 @@ void CheckMinInvestmentConstraint(const VariableMap& master_variables,
   ASSERT_EQ(expected_sign, sign);
 }
 
-
-
 TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   BendersBaseOptions bendersoptions = BuildBendersOptions();
+  MPSUtils mps_utils;
   CouplingMap coupling_map =
-      build_input(std::filesystem::path(bendersoptions.INPUTROOT) /
-                  bendersoptions.STRUCTURE_FILE);
+      mps_utils.build_input(std::filesystem::path(bendersoptions.INPUTROOT) /
+                            bendersoptions.STRUCTURE_FILE);
   // override solver
   bendersoptions.SOLVER_NAME = GetParam();
   bendersoptions.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = true;
@@ -174,8 +173,11 @@ TEST_F(OuterLoopPatternTest, RegexGivenPrefixAndBody) {
   ASSERT_EQ(std::regex_search(prefix + "::", ret_regex), false);
   ASSERT_EQ(std::regex_search(body, ret_regex), false);
   ASSERT_EQ(std::regex_search(prefix + "area<" + body + ">", ret_regex), true);
-  ASSERT_EQ(std::regex_search(prefix + "area<" + body + ">::suffix", ret_regex), true);
-  ASSERT_EQ(std::regex_search(prefix + "area<" + body + "_other_area>::suffix", ret_regex), false);
+  ASSERT_EQ(std::regex_search(prefix + "area<" + body + ">::suffix", ret_regex),
+            true);
+  ASSERT_EQ(std::regex_search(prefix + "area<" + body + "_other_area>::suffix",
+                              ret_regex),
+            false);
 }
 
 class OuterLoopInputFromYamlTest : public ::testing::Test {};

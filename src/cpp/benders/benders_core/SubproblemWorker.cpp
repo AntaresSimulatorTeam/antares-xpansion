@@ -13,8 +13,7 @@
 SubproblemWorker::SubproblemWorker(
     VariableMap const &variable_map, const std::filesystem::path &path_to_mps,
     double const &slave_weight, const std::string &solver_name,
-    const int log_level, SolverLogManager&solver_log_manager,
-    Logger logger)
+    const int log_level, SolverLogManager &solver_log_manager, Logger logger)
     : Worker(logger) {
   init(variable_map, path_to_mps, solver_name, log_level, solver_log_manager);
 
@@ -79,6 +78,7 @@ void SubproblemWorker::get_solution(std::vector<double> &solution) const {
   if (_solver->get_n_integer_vars() > 0) {
     _solver->get_mip_sol(solution.data());
   } else {
-    _solver->get_lp_sol(solution.data(), NULL, NULL);
+    _solver->get_lp_sol(solution.data(), nullptr, nullptr);
   }
 }
+SubproblemWorker::SubproblemWorker(Logger logger) : Worker(std::move(logger)) {}

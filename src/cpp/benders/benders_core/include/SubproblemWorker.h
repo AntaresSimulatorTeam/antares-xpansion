@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #include "SubproblemCut.h"
 #include "Worker.h"
 
@@ -14,17 +16,15 @@ typedef std::map<std::string, SubproblemWorkerPtr> SubproblemsMapPtr;
 
 class SubproblemWorker : public Worker {
  public:
-  explicit SubproblemWorker(Logger logger) : Worker(logger) {}
+  explicit SubproblemWorker(Logger logger);
   SubproblemWorker(VariableMap const &variable_map,
                    const std::filesystem::path &path_to_mps,
                    double const &slave_weight, const std::string &solver_name,
-                   const int log_level,
-                   SolverLogManager&solver_log_manager,
+                   int log_level, SolverLogManager &solver_log_manager,
                    Logger logger);
-  virtual ~SubproblemWorker() = default;
+  ~SubproblemWorker() override = default;
   void get_solution(std::vector<double> &solution) const;
 
- public:
   void fix_to(Point const &x0) const;
 
   void get_subgradient(Point &s) const;

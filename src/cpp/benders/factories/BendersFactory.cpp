@@ -53,7 +53,8 @@ pBendersBase BendersMainFactory::PrepareForExecution(
       std::filesystem::path(options.OUTPUTROOT) / "benders_solver.log";
 
   Writer writer;
-  const auto coupling_map = build_input(benders_options.STRUCTURE_FILE);
+  MPSUtils mps_utils;
+  const auto coupling_map = mps_utils.build_input(benders_options.STRUCTURE_FILE);
   const auto method = DeduceBendersMethod(coupling_map.size(),
                                           options.BATCH_SIZE, external_loop);
 

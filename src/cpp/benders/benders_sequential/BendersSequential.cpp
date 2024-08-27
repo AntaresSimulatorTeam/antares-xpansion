@@ -19,7 +19,7 @@
 BendersSequential::BendersSequential(
     BendersBaseOptions const &options, Logger logger, Writer writer,
     std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
-    : BendersBase(options, std::move(logger), std::move(writer),
+    : BendersBase(options, logger, std::move(writer),
                   mathLoggerDriver, std::make_shared<MPSUtils>()) {}
 
 BendersSequential::BendersSequential(
