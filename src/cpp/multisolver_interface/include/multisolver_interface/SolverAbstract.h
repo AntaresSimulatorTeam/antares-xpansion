@@ -293,6 +293,13 @@ class SolverAbstract {
   virtual void write_basis(const std::filesystem::path &filename) = 0;
 
   /**
+   * @brief Writes the current solution to a CSV format ASCII file, problem_name.asc (and .hdr).
+   *
+   * @param filename    : file name where the solution is written
+   */
+  virtual void write_sol(const std::filesystem::path &filename) = 0;
+
+  /**
    * @brief reads an optimization problem contained in a MPS file
    *
    * @param name   : name of the file to read

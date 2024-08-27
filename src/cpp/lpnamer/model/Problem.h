@@ -37,6 +37,9 @@ class Problem : public SolverAbstract {
   void write_prob_mps(const std::filesystem::path &filename) override {
     solver_abstract_->write_prob_mps(filename);
   }
+  void write_sol(const std::filesystem::path &filename) override {
+    solver_abstract_->write_sol(filename);
+  }
   void write_prob_lp(const std::filesystem::path &filename) override {
     solver_abstract_->write_prob_lp(filename);
   }

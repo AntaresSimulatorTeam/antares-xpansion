@@ -83,6 +83,11 @@ void SolverClp::write_basis(const std::filesystem::path &filename) {
   zero_status_check(status, "write basis", LOGLOCATION);
 }
 
+void SolverClp::write_sol(const std::filesystem::path &filename) {
+  auto error = LOGLOCATION + "Write solution not implemented with Clp";
+  throw NotImplementedFeatureSolverException(error);
+}
+
 void SolverClp::read_prob_mps(const std::filesystem::path &filename) {
   int status = _clp.readMps(filename.string().c_str(), true, false);
   zero_status_check(status, " Clp readMps "s + filename.string(), LOGLOCATION);

@@ -40,6 +40,8 @@ std::function<int(XPRSprob dest, XPRSprob src, const char* name)> XPRScopyprob =
     nullptr;
 std::function<int(XPRSprob prob, const char* filename, const char* flags)>
     XPRSwritebasis = nullptr;
+  std::function<int(XPRSprob prob, const char* filename, const char* flags)>
+    XPRSwritesol = nullptr;
 std::function<int(XPRSprob prob, const char* filename, const char* flags)>
     XPRSreadprob = nullptr;
 std::function<int(XPRSprob prob, const char* filename, const char* flags)>

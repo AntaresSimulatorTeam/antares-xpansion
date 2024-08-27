@@ -198,6 +198,7 @@ class BendersBase {
   }
   double GetBendersTime() const;
   virtual void write_basis() const;
+  void writeLastIterationSubproblemsSolution() const;
   // SubproblemsMapPtr GetSubProblemsMapPtr() { return subproblem_map; }
   SubproblemsMapPtr GetSubProblemMap() const { return subproblem_map; }
   StrVector GetSubProblemNames() const { return subproblems; }
