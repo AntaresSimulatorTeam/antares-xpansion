@@ -107,3 +107,7 @@ class OptimisationKeys:
     def outer_loop_option_file_key():
         return "OUTER_LOOP_OPTION_FILE"
 
+    @staticmethod
+    def construnt_all_problem_key():
+        return "CONSTRUCT_ALL_PROBLEM"
+

@@ -497,6 +497,7 @@ class ConfigLoader:
         )
         if os.path.exists(self.outer_loop_options_path()):
             shutil.copy(self.outer_loop_options_path(), self._simulation_lp_path())
+        options_values[OptimisationKeys.construnt_all_problem_key()] = self.construct_all_problems()
 
         # generate options file for the solver
         with open(self.options_file_path(), "w") as options_file:

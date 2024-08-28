@@ -24,11 +24,7 @@ double norm_point(Point const &x0, Point const &x1) {
  */
 void usage(int argc) {
   if (argc < 2) {
-    std::cerr << "Error: usage is : <exe> <option_file> [True|False]" << std::endl;
-    std::exit(1);
-  }
-  if (argc > 3) {
-    std::cerr << "Error too many parameters: usage is : <exe> <option_file> [True|False]" << std::endl;
+    std::cerr << "Error: usage is : <exe> <option_file> " << std::endl;
     std::exit(1);
   }
 }
