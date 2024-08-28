@@ -162,6 +162,7 @@ class BendersSequentialTest : public ::testing::Test {
     options.CSV_NAME = "my_trace";
     options.LAST_MASTER_MPS = "my_last_iteration";
     options.LAST_MASTER_BASIS = "my_last_basis";
+    options.CONSTRUCT_ALL_PROBLEMS = true;
 
     return options;
   }
