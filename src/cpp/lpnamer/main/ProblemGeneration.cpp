@@ -296,8 +296,15 @@ std::filesystem::path ProblemGeneration::updateProblems() {
   return xpansion_output_dir;
 }
 
+namespace {
 std::shared_ptr<ArchiveReader> InstantiateZipReader(
-    const std::filesystem::path& antares_archive_path);
+    const std::filesystem::path& antares_archive_path) {
+  auto reader = std::make_shared<ArchiveReader>(antares_archive_path);
+  reader->Open();
+  return reader;
+}
+}
+
 void ProblemGeneration::ProcessWeights(
     const std::filesystem::path& xpansion_output_dir,
     const std::filesystem::path& antares_archive_path,
@@ -313,7 +320,7 @@ void ProblemGeneration::ProcessWeights(
   auto weights_vector = weights_file_reader.WeightsList();
   auto yearly_weight_writer = YearlyWeightsWriter(
       xpansion_output_dir, antares_archive_path, weights_vector,
-      weights_file.filename(), active_years);
+      weights_file.filename(), active_years, mode_);
   yearly_weight_writer.CreateWeightFile();
 }
 
@@ -531,9 +538,4 @@ void ProblemGeneration::RunProblemGeneration(
       << "Problem Generation ran in: "
       << format_time_str(problem_generation_timer.elapsed()) << "\n";
 }
-std::shared_ptr<ArchiveReader> InstantiateZipReader(
-    const std::filesystem::path& antares_archive_path) {
-  auto reader = std::make_shared<ArchiveReader>(antares_archive_path);
-  reader->Open();
-  return reader;
-}
+

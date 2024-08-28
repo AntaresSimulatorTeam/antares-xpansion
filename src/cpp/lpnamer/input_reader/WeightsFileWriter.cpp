@@ -11,12 +11,13 @@ YearlyWeightsWriter::YearlyWeightsWriter(
     const std::filesystem::path& antares_archive_path,
     const std::vector<double>& weights_vector,
     const std::filesystem::path& output_file,
-    const std::vector<int>& active_years)
+    const std::vector<int>& active_years, SimulationInputMode mode)
     : xpansion_output_dir_(xpansion_output_dir),
       antares_archive_path_(antares_archive_path),
       weights_vector_(weights_vector),
       output_file_(output_file),
-      active_years_(active_years) {
+      active_years_(active_years),
+      mode_(mode) {
   xpansion_lp_dir_ = xpansion_output_dir / LP_DIR;
   if (!std::filesystem::is_directory(xpansion_lp_dir_)) {
     std::filesystem::create_directory(xpansion_lp_dir_);
@@ -30,19 +31,11 @@ void YearlyWeightsWriter::CreateWeightFile() {
 
 void YearlyWeightsWriter::FillMpsWeightsMap() {
   mps_weights_.clear();
-  auto zip_reader = ArchiveReader(antares_archive_path_);
-  zip_reader.Open();
-  zip_reader.LoadEntriesPath();
-  const auto& mps_files = zip_reader.GetEntriesPathWithExtension(".mps");
-  for (auto& mps_file : mps_files) {
-    auto year = GetYearFromMpsName(mps_file.string());
-    auto year_index =
-        std::find(active_years_.begin(), active_years_.end(), year) -
-        active_years_.begin();
-    mps_weights_[mps_file.filename()] = weights_vector_[year_index];
+  if (mode_ == SimulationInputMode::ARCHIVE) {
+    FillMpsWeightsMapArchive();
+  } else {
+    FillMpsWeightsMapFile();
   }
-  zip_reader.Close();
-  zip_reader.Delete();
 }
 
 int YearlyWeightsWriter::GetYearFromMpsName(
@@ -64,4 +57,31 @@ void YearlyWeightsWriter::DumpMpsWeightsToFile() const {
                                   weights_vector_.end())
                    << std::endl;
   mps_weights_file.close();
+}
+void YearlyWeightsWriter::FillMpsWeightsMapArchive() {
+  auto zip_reader = ArchiveReader(antares_archive_path_);
+  zip_reader.Open();
+  zip_reader.LoadEntriesPath();
+  const auto& mps_files = zip_reader.GetEntriesPathWithExtension(".mps");
+  for (auto& mps_file : mps_files) {
+    auto year = GetYearFromMpsName(mps_file.string());
+    auto year_index =
+        std::find(active_years_.begin(), active_years_.end(), year) -
+        active_years_.begin();
+    mps_weights_[mps_file.filename()] = weights_vector_[year_index];
+  }
+  zip_reader.Close();
+  zip_reader.Delete();
+}
+void YearlyWeightsWriter::FillMpsWeightsMapFile() {
+  auto mps_files = std::filesystem::directory_iterator(xpansion_lp_dir_);
+  for (const auto& mps_file : mps_files) {
+    if (mps_file.path().extension() == ".mps") {
+      auto year = GetYearFromMpsName(mps_file.path().filename().string());
+      auto year_index =
+          std::find(active_years_.begin(), active_years_.end(), year) -
+          active_years_.begin();
+      mps_weights_[mps_file.path().filename()] = weights_vector_[year_index];
+    }
+  }
 }
