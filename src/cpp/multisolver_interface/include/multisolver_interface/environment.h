@@ -439,6 +439,7 @@ extern std::function<int(XPRSprob dest, XPRSprob src, const char* name)> XPRScop
 extern std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSwritebasis;
 extern std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSreadprob;
 extern std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSreadbasis;
+extern std::function<int(XPRSprob prob, int nr, int nc, const int mrow[], const int mcol[])> XPRSloadsecurevecs;
 extern std::function<int(XPRSprob prob, int start[], int colind[], double colcoef[], int maxcoefs, int* p_ncoefs, int first, int last)> XPRSgetrows;
 extern std::function<int(XPRSprob prob, int type, const char* name, int* p_index)> XPRSgetindex;
 extern std::function<int(XPRSprob prob, int type, char names[], int first, int last)> XPRSgetnames;
@@ -472,6 +473,7 @@ extern std::function<int(XPRSprob prob, int attrib, double* p_value)> XPRSgetdbl
 extern std::function<int(XPRSprob prob, double x[], double slack[], double duals[], double djs[])> XPRSgetlpsol;
 extern std::function<int(XPRSprob prob, double x[], double slack[])> XPRSgetmipsol;
 extern std::function<int(XPRSprob prob, void (XPRS_CC *f_message)(XPRSprob cbprob, void* cbdata, const char* msg, int msglen, int msgtype), void* p)> XPRSsetcbmessage;
+extern std::function<int(XPRSprob prob, void (XPRS_CC *f_message)(XPRSprob cbprob, void* cbdata, const char* msg, int msglen, int msgtype), void* p, int priority)> XPRSaddcbmessage;
 extern std::function<int(XPRSprob prob, int control, int value)> XPRSsetintcontrol;
 extern std::function<int(XPRSprob prob, int control, double value)> XPRSsetdblcontrol;
 extern std::function<int(char* banner)> XPRSgetbanner;
@@ -479,7 +481,8 @@ extern std::function<int(char* banner)> XPRSgetbanner;
 extern std::function<int(char* buffer, int maxbytes)> XPRSgetlicerrmsg;
 extern std::function<int(int* p_i, char* p_c)> XPRSlicense;
 extern std::function<int(char* version)> XPRSgetversion;
-
+extern std::function<int(XPRSprob prob, int rowmap[], int colmap[])>
+    XPRSgetpresolvemap;
 
 }  // namespace LoadXpress
 

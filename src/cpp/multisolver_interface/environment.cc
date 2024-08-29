@@ -126,6 +126,12 @@ std::function<int(
                              int msglen, int msgtype),
     void* p)>
     XPRSsetcbmessage = nullptr;
+std::function<int(
+    XPRSprob prob,
+    void(XPRS_CC* f_message)(XPRSprob cbprob, void* cbdata, const char* msg,
+                             int msglen, int msgtype),
+    void* p, int priority)>
+    XPRSaddcbmessage = nullptr;
 std::function<int(XPRSprob prob, int control, int value)> XPRSsetintcontrol =
     nullptr;
 std::function<int(XPRSprob prob, int control, double value)> XPRSsetdblcontrol =
@@ -137,6 +143,11 @@ std::function<int(int* p_i, char* p_c)> XPRSlicense = nullptr;
 std::function<int(char* version)> XPRSgetversion = nullptr;
 std::function<int(XPRSprob prob, int attrib, int* p_value)> XPRSgetintattrib =
     nullptr;
+std::function<int(XPRSprob prob, int nr, int nc, const int mrow[],
+                  const int mcol[])>
+    XPRSloadsecurevecs = nullptr;
+std::function<int(XPRSprob prob, int rowmap[], int colmap[])>
+    XPRSgetpresolvemap = nullptr;
 
 XpressLoader::XpressLoader(std::shared_ptr<ILoggerXpansion> logger)
     : logger_(std::move(logger)) {}
@@ -151,6 +162,8 @@ bool XpressLoader::LoadXpressFunctions(DynamicLibrary* xpress_dynamic_library) {
   xpress_dynamic_library->GetFunction(&XPRSwritebasis, "XPRSwritebasis");
   xpress_dynamic_library->GetFunction(&XPRSreadprob, "XPRSreadprob");
   xpress_dynamic_library->GetFunction(&XPRSreadbasis, "XPRSreadbasis");
+  xpress_dynamic_library->GetFunction(&XPRSloadsecurevecs,
+                                      "XPRSloadsecurevecs");
   xpress_dynamic_library->GetFunction(&XPRSgetrows, "XPRSgetrows");
   xpress_dynamic_library->GetFunction(&XPRSgetindex, "XPRSgetindex");
   xpress_dynamic_library->GetFunction(&XPRSgetnames, "XPRSgetnames");
@@ -185,12 +198,15 @@ bool XpressLoader::LoadXpressFunctions(DynamicLibrary* xpress_dynamic_library) {
   xpress_dynamic_library->GetFunction(&XPRSgetdblattrib, "XPRSgetdblattrib");
   xpress_dynamic_library->GetFunction(&XPRSgetmipsol, "XPRSgetmipsol");
   xpress_dynamic_library->GetFunction(&XPRSsetcbmessage, "XPRSsetcbmessage");
+  xpress_dynamic_library->GetFunction(&XPRSaddcbmessage, "XPRSaddcbmessage");
   xpress_dynamic_library->GetFunction(&XPRSsetintcontrol, "XPRSsetintcontrol");
   xpress_dynamic_library->GetFunction(&XPRSsetdblcontrol, "XPRSsetdblcontrol");
   xpress_dynamic_library->GetFunction(&XPRSgetbanner, "XPRSgetbanner");
   xpress_dynamic_library->GetFunction(&XPRSgetlicerrmsg, "XPRSgetlicerrmsg");
   xpress_dynamic_library->GetFunction(&XPRSlicense, "XPRSlicense");
   xpress_dynamic_library->GetFunction(&XPRSgetversion, "XPRSgetversion");
+  xpress_dynamic_library->GetFunction(&XPRSgetpresolvemap,
+                                      "XPRSgetpresolvemap");
 
   auto notFound = xpress_dynamic_library->FunctionsNotFound();
   if (!notFound.empty()) {
