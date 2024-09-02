@@ -297,7 +297,8 @@ class SolverAbstract {
    *
    * @param name   : name of the file to read
    */
-  virtual void read_prob_mps(const std::filesystem::path &filename) = 0;
+  virtual void read_prob_mps(const std::filesystem::path &filename,
+                             bool compressed) = 0;
 
   /**
    * @brief reads an optimization problem contained in a MPS file

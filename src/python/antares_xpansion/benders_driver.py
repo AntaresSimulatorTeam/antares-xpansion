@@ -68,6 +68,7 @@ class BendersDriver:
 
         # delete execution logs
         self._clean_log_files()
+        print(f"Launching Benders: {self._get_solver_cmd()}\n")
         ret = subprocess.run(
             self._get_solver_cmd(), shell=False, stdout=sys.stdout, stderr=sys.stderr,
             encoding='utf-8')

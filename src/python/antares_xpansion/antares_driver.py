@@ -7,9 +7,9 @@ import subprocess
 from datetime import datetime
 from pathlib import Path
 
+from antares_xpansion.__version__ import __antares_simulator_version__
 from antares_xpansion.logger import step_logger
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
-from antares_xpansion.__version__ import __antares_simulator_version__
 from packaging import version
 
 
@@ -100,7 +100,8 @@ class AntaresDriver:
             self.simulation_name = list_of_dirs[-1]
 
     def _get_antares_cmd(self):
-        cmd = [str(self.antares_exe_path), self.data_dir, self.ANTARES_N_CPU_OPTION, str(self.antares_n_cpu), self.zip_option]
+        cmd = [str(self.antares_exe_path), self.data_dir, self.ANTARES_N_CPU_OPTION, str(self.antares_n_cpu), self.zip_option, "--use-ortools", "--ortools-solver=xpress"]
+        #cmd = [str(self.antares_exe_path), self.data_dir, self.ANTARES_N_CPU_OPTION, str(self.antares_n_cpu), self.zip_option]
         simulator_version = version.parse(__antares_simulator_version__)
         simulator_version_with_named_mps = version.parse(self.FIRST_VERSION_WITH_NAMED_PROBLEMS)
         if (simulator_version.major > simulator_version_with_named_mps.major) or (simulator_version.major >= simulator_version_with_named_mps.major and simulator_version.minor >= simulator_version_with_named_mps.minor):

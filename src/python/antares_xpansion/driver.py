@@ -92,9 +92,9 @@ class XpansionDriver:
             self.update_study_settings(memory_mode=True)
             self.launch_problem_generation_step_memory()
             self.launch_benders_step()
-            self.study_update_driver.launch(
-                self.config_loader.xpansion_simulation_output(), self.config_loader.json_file_path(),
-                self.config_loader.keep_mps())
+           # self.study_update_driver.launch(
+           #     self.config_loader.xpansion_simulation_output(), self.config_loader.json_file_path(),
+           #     self.config_loader.keep_mps())
 
         elif self.config_loader.step() == "antares":
             self.launch_antares_step()
@@ -120,6 +120,7 @@ class XpansionDriver:
                 f"Launching failed! {self.config_loader.step()} is not an Xpansion step.")
 
     def clean_step(self):
+        return
         ret = subprocess.run(
             [str(self.config_loader.antares_archive_updater_exe()), "-a", str(self.config_loader.simulation_output_path()),
              "-p", self.config_loader.simulation_lp_path(), self.config_loader.expansion_dir(), "-d"], shell=False, stdout=sys.stdout, stderr=sys.stderr,

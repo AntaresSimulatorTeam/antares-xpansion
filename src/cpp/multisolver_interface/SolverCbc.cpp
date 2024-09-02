@@ -182,9 +182,10 @@ void SolverCbc::setClpSimplexRowNamesFromInnerSolver(ClpSimplex *clps) const {
   }
 }
 
-void SolverCbc::read_prob_mps(const std::filesystem::path &prob_name) {
-  int status = _clp_inner_solver.readMps(prob_name.string().c_str());
-  zero_status_check(status, " read problem "s + prob_name.string(),
+void SolverCbc::read_prob_mps(const std::filesystem::path &filename,
+                              bool compressed) {
+  int status = _clp_inner_solver.readMps(filename.string().c_str());
+  zero_status_check(status, " read problem "s + filename.string(),
                     LOGLOCATION);
   defineCbcModelFromInnerSolver();
 }
