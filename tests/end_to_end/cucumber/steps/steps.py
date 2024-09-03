@@ -13,7 +13,7 @@ from utils_functions import get_mpi_command, get_conf
 def study_path_is(context, string):
     context.study_path = os.path.join(Path() / "../../",
                                       string.replace("/", os.sep))
-    print(f"********** context.options_file={context.study_path} ")
+    # print(f"********** context.options_file={context.study_path} ")
 
 
 def build_outer_loop_command(context):
@@ -36,7 +36,7 @@ def run_outer_loop(context, n):
     context.nproc = int(n)
     context.allow_run_as_root = get_conf("allow_run_as_root")
     command = build_outer_loop_command(context)
-    print(f"Running command: {command}")
+    # print(f"Running command: {command}")
     old_cwd = os.getcwd()
     lp_path = Path(context.study_path) / "lp"
 
