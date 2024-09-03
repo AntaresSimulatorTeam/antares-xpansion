@@ -53,8 +53,6 @@ target_include_directories (lp_namer_problem_modifier
 	PUBLIC
 		${CMAKE_CURRENT_SOURCE_DIR}
 )
-target_compile_options(lp_namer_problem_modifier PUBLIC -shared-libgcc)
-
 
 target_link_libraries (lp_namer_problem_modifier
 	PUBLIC

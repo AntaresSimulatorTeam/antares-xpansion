@@ -83,8 +83,7 @@ void SolverClp::write_basis(const std::filesystem::path &filename) {
   zero_status_check(status, "write basis", LOGLOCATION);
 }
 
-void SolverClp::read_prob_mps(const std::filesystem::path &filename,
-                              bool compressed) {
+void SolverClp::read_prob_mps(const std::filesystem::path &filename) {
   int status = _clp.readMps(filename.string().c_str(), true, false);
   zero_status_check(status, " Clp readMps "s + filename.string(), LOGLOCATION);
 }

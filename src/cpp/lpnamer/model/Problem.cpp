@@ -6,8 +6,7 @@
 
 #include "ProblemNameParser.h"
 
-void Problem::read_prob_mps(const std::filesystem::path& filename,
-                            bool compressed) {
+void Problem::read_prob_mps(const std::filesystem::path& filename) {
   mc_year = MCYear(filename);
-  solver_abstract_->read_prob_mps(filename, false);
+  solver_abstract_->read_prob_mps(filename);
 }

@@ -50,8 +50,8 @@ TEST_CASE("MPS file can be read and we can get number of columns",
 
       //========================================================================================
       // initalization and read problem
-
-      solver->read_prob_mps(instance, false);
+      
+      solver->read_prob_mps(instance);
 
       //========================================================================================
       // Get number of columns
@@ -76,8 +76,8 @@ TEST_CASE("MPS file can be read and we can get number of rows",
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
       REQUIRE(solver->get_number_of_instances() == 1);
-
-      solver->read_prob_mps(instance, false);
+      
+      solver->read_prob_mps(instance);
 
       //========================================================================================
       // Get numer of rows
@@ -102,8 +102,8 @@ TEST_CASE("MPS file can be read and we can get number of integer variables",
       // Solver declaration
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
       REQUIRE(solver->get_number_of_instances() == 1);
-
-      solver->read_prob_mps(instance, false);
+      
+      solver->read_prob_mps(instance);
 
       //========================================================================================
       // Get number of integer variables
@@ -130,8 +130,8 @@ TEST_CASE(
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
       REQUIRE(solver->get_number_of_instances() == 1);
-
-      solver->read_prob_mps(instance, false);
+      
+      solver->read_prob_mps(instance);
 
       //========================================================================================
       // Get number of non zero elements in matrix
@@ -156,8 +156,8 @@ TEST_CASE("MPS file can be read and we can get objective function coefficients",
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
       REQUIRE(solver->get_number_of_instances() == 1);
-
-      solver->read_prob_mps(instance, false);
+      
+      solver->read_prob_mps(instance);
 
       //========================================================================================
       // Get objective function
@@ -188,8 +188,8 @@ TEST_CASE("MPS file can be read and we can get matrix coefficients",
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
       REQUIRE(solver->get_number_of_instances() == 1);
-
-      solver->read_prob_mps(instance, false);
+      
+      solver->read_prob_mps(instance);
 
       //========================================================================================
       // Get necessary datas from solver
@@ -234,8 +234,8 @@ TEST_CASE("MPS file can be read and we can get right hand side",
       // Solver declaration
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
       REQUIRE(solver->get_number_of_instances() == 1);
-
-      solver->read_prob_mps(instance, false);
+      
+      solver->read_prob_mps(instance);
 
       //========================================================================================
       // Get Constraints Right Hand Sides
@@ -268,8 +268,8 @@ TEST_CASE("MPS file can be read and we can get row types",
       // Solver Declaration
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
       REQUIRE(solver->get_number_of_instances() == 1);
-
-      solver->read_prob_mps(instance, false);
+      
+      solver->read_prob_mps(instance);
 
       REQUIRE(solver->get_nrows() == datas[inst]._nrows);
       //========================================================================================
@@ -300,8 +300,8 @@ TEST_CASE("MPS file can be read and we can get types of columns",
       // Solver Declaration
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
       REQUIRE(solver->get_number_of_instances() == 1);
-
-      solver->read_prob_mps(instance, false);
+      
+      solver->read_prob_mps(instance);
 
       //========================================================================================
       // Get column types
@@ -331,8 +331,8 @@ TEST_CASE("MPS file can be read and we can get lower bounds on variables",
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
       REQUIRE(solver->get_number_of_instances() == 1);
-
-      solver->read_prob_mps(instance, false);
+      
+      solver->read_prob_mps(instance);
 
       //========================================================================================
       // Get lower bounds on variables
@@ -362,8 +362,8 @@ TEST_CASE("MPS file can be read and we can get upper bounds on variables",
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
       REQUIRE(solver->get_number_of_instances() == 1);
-
-      solver->read_prob_mps(instance, false);
+      
+      solver->read_prob_mps(instance);
 
       //========================================================================================
       // Get upper bounds on variables
@@ -400,8 +400,8 @@ TEST_CASE(
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
       REQUIRE(solver->get_number_of_instances() == 1);
-
-      solver->read_prob_mps(instance, false);
+      
+      solver->read_prob_mps(instance);
 
       //========================================================================================
       // Required datas
@@ -505,8 +505,8 @@ TEST_CASE(
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
       REQUIRE(solver->get_number_of_instances() == 1);
-
-      solver->read_prob_mps(instance, false);
+      
+      solver->read_prob_mps(instance);
 
       if (solver_name == "XPRESS") {
         auto prb_name = std::filesystem::path("test" + ind);
@@ -553,8 +553,8 @@ TEST_CASE("We can get the indices of rows and columns by their names",
       // Solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
       REQUIRE(solver->get_number_of_instances() == 1);
-
-      solver->read_prob_mps(instance, false);
+      
+      solver->read_prob_mps(instance);
 
       if (solver_name == "XPRESS") {
         auto prb_name = std::filesystem::path("test" + ind);
@@ -596,7 +596,7 @@ TEST_CASE("Testing copy constructor", "[init][copy-constructor]") {
       //========================================================================================
       // Intial solver declaration and read problem
       SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-      solver->read_prob_mps(instance, false);
+            solver->read_prob_mps(instance);
       REQUIRE(solver->get_number_of_instances() == 1);
 
       REQUIRE(solver->get_ncols() == datas[inst]._ncols);

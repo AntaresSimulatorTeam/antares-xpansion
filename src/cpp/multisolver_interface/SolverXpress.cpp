@@ -116,7 +116,7 @@ void SolverXpress::free() {
 *************************************************************************************************/
 void SolverXpress::write_prob_mps(const std::filesystem::path &filename) {
   std::string nFlags = "";
-  int status = XPRSsaveas(_xprs, filename.string().c_str());
+  int status = XPRSwriteprob(_xprs, filename.string().c_str(), nFlags.c_str());
   zero_status_check(status, "write problem", LOGLOCATION);
 }
 
@@ -133,19 +133,9 @@ void SolverXpress::write_basis(const std::filesystem::path &filename) {
   zero_status_check(status, "write basis", LOGLOCATION);
 }
 
-void SolverXpress::read_prob_mps(const std::filesystem::path &filename,
-                                 bool compressed) {
-  std::string nFlags = "z";
-  if (!compressed)
-    nFlags = "";
-  if (!compressed)
-    read_prob(filename.string().c_str(), nFlags.c_str());
-  else {
-    std::string nFlags = "";
-    int status = XPRSrestore(_xprs, filename.string().c_str(),
-                             nFlags.c_str());
-    zero_status_check(status, "restore", LOGLOCATION);
-  }
+void SolverXpress::read_prob_mps(const std::filesystem::path &filename) {
+  std::string nFlags = "";
+  read_prob(filename.string().c_str(), nFlags.c_str());
 }
 void SolverXpress::read_prob_lp(const std::filesystem::path &filename) {
   std::string nFlags = "l";

@@ -33,7 +33,7 @@ void MergeMPS::launch() {
     solver_l->set_output_log_level(_options.LOG_LEVEL);
 
     if (kvp.first != _options.MASTER_NAME) {
-      solver_l->read_prob_mps(problem_name, false);
+      solver_l->read_prob_mps(problem_name);
       std::filesystem::remove(problem_name);
       int mps_ncols(solver_l->get_ncols());
 
@@ -49,7 +49,7 @@ void MergeMPS::launch() {
       }
       solver_l->chg_obj(sequence, o);
     } else {
-      solver_l->read_prob_mps(problem_name, false);
+      solver_l->read_prob_mps(problem_name);
     }
     StandardLp lpData(*solver_l);
     std::string varPrefix_l = "prob" + std::to_string(cntProblems_l) + "_";

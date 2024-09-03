@@ -14,8 +14,7 @@ class NOOPSolver: public SolverAbstract {
   virtual void free() override {}
   virtual void write_prob_mps(const std::filesystem::path &filename) override {}
   virtual void write_prob_lp(const std::filesystem::path &filename) override {}
-  virtual void read_prob_mps(const std::filesystem::path &filename,
-                             bool compressed) override {}
+  virtual void read_prob_mps(const std::filesystem::path &filename) override {}
   virtual void read_prob_lp(const std::filesystem::path &filename) override {}
   virtual void copy_prob(Ptr fictif_solv) override {}
   virtual int get_ncols() const override { return 0; }

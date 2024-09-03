@@ -15,7 +15,7 @@ std::shared_ptr<Problem> MPSFileProblemProviderAdapter::provide_problem(
   auto in_prblm = std::make_shared<Problem>(
       factory.create_solver(solver_name, solver_log_manager));
 
-  in_prblm->read_prob_mps(lp_mps_name, false);
+  in_prblm->read_prob_mps(lp_mps_name);
   return in_prblm;
 }
 MPSFileProblemProviderAdapter::MPSFileProblemProviderAdapter(

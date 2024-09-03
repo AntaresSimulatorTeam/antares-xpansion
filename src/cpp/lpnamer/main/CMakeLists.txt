@@ -43,7 +43,7 @@ target_include_directories(problem_generation_main
         ${CMAKE_CURRENT_SOURCE_DIR}/include
         ${helpers_include}
 )
-target_compile_options(problem_generation_main PUBLIC -shared-libgcc)
+
 if (SAVE)
 	target_compile_definitions(problem_generation_main PUBLIC -DSAVE)
 endif ()

@@ -54,7 +54,7 @@ int main(int argc, char** argv) {
 
     const std::vector<ActiveLink> links = linksBuilder.getLinks();
 
-    //updateStudy(xpansion_output_dir, links, solutionFile_l, logger);
+    updateStudy(xpansion_output_dir, links, solutionFile_l, logger);
   }
   return 0;
 }
