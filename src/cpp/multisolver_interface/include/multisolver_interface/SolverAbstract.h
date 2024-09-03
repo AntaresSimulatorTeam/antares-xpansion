@@ -635,6 +635,10 @@ class SolverAbstract {
    * @param name   : new name of the column
    */
   virtual void chg_col_name(int id_col, std::string const &name) = 0;
+  virtual void chg_col_names(int id_col,
+                             const std::vector<std::string> &name) = 0;
+  virtual void chg_row_names(int id_col,
+                             const std::vector<std::string> &names) = 0;
 
   /*************************************************************************************************
   -----------------------------    Methods to solve the problem

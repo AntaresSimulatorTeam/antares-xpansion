@@ -443,6 +443,43 @@ void SolverXpress::chg_col_name(int id_col, std::string const &name) {
   zero_status_check(status, "Set col name", LOGLOCATION);
 }
 
+char* convert_to_null_terminated(const std::vector<std::string>& vec) {
+  // Calculate the total size needed
+  size_t total_size = 0;
+  for (const auto& str : vec) {
+    total_size += str.size()+ 1; // +1 for the null terminator
+  }
+
+  // Allocate memory for the concatenated result
+  char* result = new char[total_size];
+  char* current_pos = result;
+
+  // Copy each string followed by a null terminator
+  for (const auto& str : vec) {
+    std::move(str.begin(), str.end(), current_pos);
+    current_pos += str.size();
+    *current_pos = '\0'; // Add null terminator
+    current_pos++;
+  }
+
+  return result;
+}
+
+void SolverXpress::chg_col_names(int id_col,
+                                 const std::vector<std::string> &name) {
+  auto* names = convert_to_null_terminated(name);
+  int status = XPRSaddnames(_xprs, 2, names, 0, id_col-1);
+  delete names;
+  zero_status_check(status, "Set col name", LOGLOCATION);
+}
+void SolverXpress::chg_row_names(int id_col,
+                                 const std::vector<std::string> &name) {
+  auto* names = convert_to_null_terminated(name);
+  int status = XPRSaddnames(_xprs, 1, names, 0, id_col-1);
+  delete names;
+  zero_status_check(status, "Set row name", LOGLOCATION);
+}
+
 /*************************************************************************************************
 -----------------------------    Methods to solve the problem
 ---------------------------------

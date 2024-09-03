@@ -194,4 +194,7 @@ class SolverClp : public SolverAbstract {
   virtual void set_simplex_iter(int iter) override;
   virtual void SetBasis(std::vector<int> rstatus,
                         std::vector<int> cstatus) override;
+  void chg_col_names(int id_col, const std::vector<std::string> &name) override;
+  void chg_row_names(int id_col,
+                     const std::vector<std::string> &names) override;
 };

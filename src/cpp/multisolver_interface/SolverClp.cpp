@@ -36,6 +36,11 @@ SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy)
   }
 }
 
+void SolverClp::chg_col_names(int id_col,
+                              const std::vector<std::string> &name) {}
+void SolverClp::chg_row_names(int id_col,
+                              const std::vector<std::string> &names) {}
+
 SolverClp::~SolverClp() {
   _NumberOfProblems -= 1;
   free();

@@ -192,6 +192,9 @@ class SolverXpress : public SolverAbstract {
   virtual void set_threads(int n_threads) override;
   virtual void set_optimality_gap(double gap) override;
   virtual void set_simplex_iter(int iter) override;
+  void chg_col_names(int id_col, const std::vector<std::string> &name) override;
+  void chg_row_names(int id_col,
+                     const std::vector<std::string> &names) override;
 
  public:
   std::ofstream _log_stream;

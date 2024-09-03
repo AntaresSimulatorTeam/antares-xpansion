@@ -144,6 +144,11 @@ void SolverCbc::write_prob_mps(const std::filesystem::path &filename) {
                   nullptr);
 }
 
+void SolverCbc::chg_col_names(int id_col,
+                              const std::vector<std::string> &name) {}
+void SolverCbc::chg_row_names(int id_col,
+                              const std::vector<std::string> &names) {}
+
 void SolverCbc::write_prob_lp(const std::filesystem::path &filename) {
   _clp_inner_solver.writeLpNative(filename.string().c_str(), nullptr, nullptr);
 }

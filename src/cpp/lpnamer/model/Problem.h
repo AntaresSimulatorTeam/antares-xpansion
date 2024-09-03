@@ -159,6 +159,12 @@ class Problem : public SolverAbstract {
   void chg_col_name(int id_col, const std::string &name) override {
     solver_abstract_->chg_col_name(id_col, name);
   }
+  void chg_col_names(int last, const std::vector<std::string>& names) override {
+    solver_abstract_->chg_col_names(last, names);
+  }
+  void chg_row_names(int last, const std::vector<std::string>& names) override {
+    solver_abstract_->chg_row_names(last, names);
+  }
   int solve_lp() override { return solver_abstract_->solve_lp(); }
   int solve_mip() override { return solver_abstract_->solve_mip(); }
   void get_basis(int *rstatus, int *cstatus) const override {
