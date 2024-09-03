@@ -8,7 +8,7 @@ RUN yum install -y epel-release
 
 RUN \
   yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils &&\
-  yum install -y devtoolset-10-gcc* environment-modules rpm-build zlib-devel &&\
+  yum install -y devtoolset-11-gcc* environment-modules rpm-build zlib-devel &&\
   yum install -y doxygen graphviz &&\
   yum install -y install python3-devel && \
   yum install -y libuuid-devel
