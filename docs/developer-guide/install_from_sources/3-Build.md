@@ -21,12 +21,12 @@ git submodule update --init antares-deps
 === "Centos"
 
     ```
-    cmake3 -B _build -S . -DCMAKE_BUILD_TYPE=Release 
+    cmake3 -B _build -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-linux-release
     ```
 === "Ubuntu"
 
     ```
-    cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release 
+    cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-linux-release
     ```
 
 Here is a list of available CMake configure options:
@@ -37,12 +37,11 @@ Here is a list of available CMake configure options:
 |`DBUILD_antares_solver`|`ON`|Enable build of antares-solver.|
 |`BUILD_not_system`|`ON`|Enable build of external librairies not available on system package manager.|
 |`BUILD_ALL`|`OFF`|Enable build of ALL external librairies.|
-|`DEPS_INSTALL_DIR`|`../rte-antares-deps-<CMAKE_BUILD_TYPE>`|Define dependencies install directory.|
 |`BUILD_TESTING`|`OFF`|Enable test build.|
 |`BUILD_UI`|`OFF`|Enable UI build.|
 |`ALLOW_RUN_AS_ROOT`|`OFF`|allow mpi to run as root for centOs docker.|
 
-Additionnal options for Windows:
+Additionnal vcpkg options:
 
 |Option |Description |
 |:-------|-------|
