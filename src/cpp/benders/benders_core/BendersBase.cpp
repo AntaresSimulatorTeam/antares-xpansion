@@ -424,6 +424,7 @@ void BendersBase::getSubproblemCut_Fast(
 void BendersBase::getSubproblemCut_ConstructWorker(
     SubProblemDataMap &subproblem_data_map) {
   auto nameAndVariableMap = mapToVector(coupling_map_);
+  _logger->display_message(LOGLOCATION + "Solving subproblems construct worker");
   std::mutex m;
   selectPolicy(
       [this, &nameAndVariableMap, &m, &subproblem_data_map](auto &policy) {

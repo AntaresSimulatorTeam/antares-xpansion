@@ -51,6 +51,9 @@ void BendersMpi::InitializeProblems() {
 void BendersMpi::AssignProblemToWorker() {  // Dispatch subproblems to process
   int current_problem_id = 0;
   auto subproblemProcessCount = _world.size() - 1;
+  if (subproblemProcessCount == 0) {
+    subproblemProcessCount = 1;
+  }
   for (const auto &problem : coupling_map_) {
     auto process_to_feed =
         current_problem_id % subproblemProcessCount +
@@ -290,6 +293,7 @@ self_mem process_mem_usage() {
 }
 }
 void BendersMpi::memory() {
+  return;
   auto [dispo, total] = Memory::MemoryUsageGo();
   auto [vm, rss] = process_mem_usage();
   _logger->display_message("Memory usage: " + std::to_string(dispo) + "/" +
@@ -374,6 +378,9 @@ void BendersMpi::PreRunInitialization() {
 }
 
 void BendersMpi::launch() {
+  int i = 0;
+  //while (!i)
+  //  sleep(5);
   if (init_problems_) {
     InitializeProblems();
   }

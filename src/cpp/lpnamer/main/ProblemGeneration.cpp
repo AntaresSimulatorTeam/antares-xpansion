@@ -7,6 +7,8 @@
 
 #include <boost/archive/text_iarchive.hpp>
 #include <boost/archive/text_oarchive.hpp>
+#include <boost/archive/binary_iarchive.hpp>
+#include <boost/archive/binary_oarchive.hpp>
 #include <boost/serialization/map.hpp>
 #include <boost/serialization/serialization.hpp>
 #include <boost/serialization/string.hpp>
@@ -218,16 +220,16 @@ std::filesystem::path ProblemGeneration::performAntaresSimulation() {
 //  }
 //
 //  lps_ = std::move(results.antares_problems);
-//  std::ofstream ofs("lps.txt");
-//  boost::archive::text_oarchive oa(ofs);
+//  std::ofstream ofs("lps.bin");
+//  boost::archive::binary_oarchive oa(ofs);
 //  oa << lps_;
 //  //TODO save simulation path
 //  return {results.simulationPath};
 //#else
-//  std::ifstream ifs("lps.txt");
-//  boost::archive::text_iarchive ia(ifs);
+//  std::ifstream ifs("lps.bin");
+//  boost::archive::binary_iarchive ia(ifs);
 //  ia >> lps_;
-//  return "/home/marechaljas/Téléchargements/study_1_integer/output/20240715-1416eco";
+//  return "/home/marechaljas/Téléchargements/BP23/output/seri";
 //#endif
 {
   std::cout << "Memory usage before simulation:\n ";
