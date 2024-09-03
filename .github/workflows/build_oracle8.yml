@@ -134,6 +134,7 @@ jobs:
                  -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/deps \
                  -DBUILD_UI=OFF \
                  -DALLOW_RUN_AS_ROOT=ON \
+                 -DVCPKG_TARGET_TRIPLET=x64-linux-release \
                  -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
@@ -144,7 +145,7 @@ jobs:
         timeout-minutes: 120
         shell: bash
         run: |
-          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
+          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin/:$PATH
           export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
           export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build
