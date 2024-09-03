@@ -17,4 +17,4 @@ runs:
       shell: bash
       run: |
         cd tests/end-to-end
-        behave --tags ${{ inputs.tags }} "cucumber/"${{ inputs.feature }}
+        behave --tags ${{ inputs.tags }} cucumber/${{ inputs.feature }}
