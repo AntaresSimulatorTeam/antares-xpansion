@@ -40,7 +40,8 @@ class Problem : public SolverAbstract {
   void write_prob_lp(const std::filesystem::path &filename) override {
     solver_abstract_->write_prob_lp(filename);
   }
-  void read_prob_mps(const std::filesystem::path &filename) override;
+  void read_prob_mps(const std::filesystem::path &filename,
+                     bool compressed) override;
   void read_prob_lp(const std::filesystem::path &filename) override {
     solver_abstract_->read_prob_lp(filename);
   }

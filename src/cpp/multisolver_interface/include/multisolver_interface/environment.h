@@ -439,6 +439,8 @@ extern std::function<int(XPRSprob dest, XPRSprob src, const char* name)> XPRScop
 extern std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSwritebasis;
 extern std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSreadprob;
 extern std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSreadbasis;
+extern std::function<int(XPRSprob prob, const char* filename)> XPRSsaveas;
+extern std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSrestore;
 extern std::function<int(XPRSprob prob, int start[], int colind[], double colcoef[], int maxcoefs, int* p_ncoefs, int first, int last)> XPRSgetrows;
 extern std::function<int(XPRSprob prob, int type, const char* name, int* p_index)> XPRSgetindex;
 extern std::function<int(XPRSprob prob, int type, char names[], int first, int last)> XPRSgetnames;
