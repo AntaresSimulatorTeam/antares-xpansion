@@ -244,8 +244,10 @@ double ActiveLink::get_already_installed_capacity() const {
 }
 
 std::string ActiveLink::get_linkor() const { return _linkor; }
+const std::string& ActiveLink::linkor() const { return _linkor; }
 
 std::string ActiveLink::get_linkex() const { return _linkex; }
+const std::string& ActiveLink::linkex() const { return _linkex; }
 
 unsigned long ActiveLink::number_of_chronicles() const {
   // We don't check for correctness of the number of chronicles across profiles
