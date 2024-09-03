@@ -169,6 +169,7 @@ std::uintmax_t calculate_directory_size(const fs::path& directory) {
 }
 
 void memory() {
+  return;
   auto [dispo, total] = Memory::MemoryUsageGo();
   auto [vm, rss] = process_mem_usage();
   std::cout << "====================================\n";
