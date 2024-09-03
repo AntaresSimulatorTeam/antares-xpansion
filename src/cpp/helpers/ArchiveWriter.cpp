@@ -32,8 +32,8 @@ int32_t ArchiveWriter::Open() {
       pmz_zip_writer_instance_, ArchivePath().string().c_str(),
       0 /* disk-spanning disabled */, 1 /* append */);
   if (err != MZ_OK) {
-    CloseGuarded();
-    DeleteGuarded();
+    CloseUnsafe();
+    DeleteUnsafe();
     std::stringstream errMsg;
     errMsg << "Open Archive: " << ArchivePath().string() << std::endl;
     throw ArchiveIOGeneralException(err, errMsg.str(), LOGLOCATION);
@@ -127,13 +127,30 @@ int32_t ArchiveWriter::CloseInternal() {
   return MZ_OK;
 }
 
-int32_t ArchiveWriter::CloseGuarded() {
+/**
+ * @brief Close the archive
+ * Not thread safe
+ * Meant to be used with DeleteUnsafe and both of them guarded by a single mutex
+ * to prevent concurrency issues between Close() and Delete()
+ *
+ * @return int32_t
+ */
+int32_t ArchiveWriter::CloseUnsafe() {
   if (pmz_zip_writer_instance_) {
     return mz_zip_writer_close(pmz_zip_writer_instance_);
   }
   return MZ_OK;
 }
-void ArchiveWriter::DeleteGuarded() {
+
+/**
+ * @brief Delete the archive
+ * Not thread safe
+ * Meant to be used with CloseUnsafe and both of them guarded by a single mutex
+ * to prevent concurrency issues between Close() and Delete()
+ *
+ * @return int32_t
+ */
+void ArchiveWriter::DeleteUnsafe() {
   return mz_zip_writer_delete(&pmz_zip_writer_instance_);
 }
 
