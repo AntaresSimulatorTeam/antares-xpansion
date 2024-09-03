@@ -1,13 +1,11 @@
 FROM centos:7
 
-# Install requirements: update repo
-RUN yum update -y
-
 # Install requirements : install epel
 
 RUN           sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo &&\
               sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo &&\
               sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
+RUN yum update -y
 RUN yum install -y epel-release
 
 RUN \
