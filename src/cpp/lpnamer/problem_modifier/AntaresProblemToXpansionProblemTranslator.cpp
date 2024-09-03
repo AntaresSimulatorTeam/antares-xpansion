@@ -42,12 +42,14 @@ AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
       convertSignToLEG(signs).data(), hebdo.RHS.data(),
       nullptr, reinterpret_cast<const int *>(constant.Mdeb.data()), reinterpret_cast<const int *>(constant.ColumnIndexes.data()),
       constant.ConstraintsMatrixCoeff.data(), {});
-  for (int i = 0; i < constant.VariablesCount; ++i) {
-    problem->chg_col_name(i, hebdo.variables[i]);
-  }
-  for (int i = 0; i < constant.ConstraintesCount; ++i) {
-    problem->chg_row_name(i, hebdo.constraints[i]);
-  }
+  problem->chg_col_names(constant.VariablesCount, hebdo.variables);
+  problem->chg_row_names(constant.ConstraintesCount, hebdo.constraints);
+//  for (int i = 0; i < constant.VariablesCount; ++i) {
+//    problem->chg_col_name(i, hebdo.variables[i]);
+//  }
+//  for (int i = 0; i < constant.ConstraintesCount; ++i) {
+//    problem->chg_row_name(i, hebdo.constraints[i]);
+//  }
   auto rows = problem->get_nrows();
   auto cols = problem->get_ncols();
   auto elem = problem->get_nelems();
