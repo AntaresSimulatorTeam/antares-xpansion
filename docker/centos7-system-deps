@@ -4,7 +4,7 @@ FROM centos:7
 
 RUN     sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo &&\
         sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo &&\
-        sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
+        sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo &&\
         yum update -y
 
 #not a typo, centos-release-scl is needed to install devtoolset-10 but introduce deprecated mirror
@@ -13,6 +13,7 @@ RUN yum install -y epel-release centos-release-scl
 RUN           sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo &&\
               sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo &&\
               sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
+
 RUN \
   yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils &&\
   yum install -y devtoolset-11-gcc* environment-modules rpm-build zlib-devel &&\
