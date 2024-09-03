@@ -34,14 +34,14 @@ TEST_CASE("Write and read basis", "[basis]") {
       // As CLP is a pure LP solver, it cannot pass this test
       if (solver_name != "CLP") {
         SolverAbstract::Ptr expec_solver = factory.create_solver(solver_name);
-        expec_solver->read_prob_mps(instance);
+        expec_solver->read_prob_mps(instance, false);
         expec_solver->solve_mip();
 
         std::filesystem::path basis_file = std::tmpnam(nullptr);
         expec_solver->write_basis(basis_file);
 
         SolverAbstract::Ptr current_solver = factory.create_solver(solver_name);
-        current_solver->read_prob_mps(instance);
+        current_solver->read_prob_mps(instance, false);
         current_solver->read_basis(basis_file);
 
         assert_basis_equality(expec_solver, current_solver);
