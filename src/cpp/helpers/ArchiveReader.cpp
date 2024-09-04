@@ -1,10 +1,9 @@
 #include "ArchiveReader.h"
 
-#include <algorithm>
 #include <iostream>
-#include <iterator>
 #include <regex>
 #include <vector>
+#include <mutex>
 
 #include "LogUtils.h"
 
