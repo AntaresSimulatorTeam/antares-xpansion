@@ -194,7 +194,7 @@ void ProblemGeneration::RunProblemGeneration(
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Launching Problem Generation" << std::endl;
   validateMasterFormulation(master_formulation, logger);
-  std::string solver_name = "CBC";  // TODO Use solver selected by user
+  std::string solver_name = "XPRESS";  // TODO Use solver selected by user
 
   SolverLoader::GetAvailableSolvers(logger);  // Dirty fix to populate static
                                               // value outside multi thread code
