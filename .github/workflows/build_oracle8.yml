@@ -140,13 +140,21 @@ jobs:
         run: |
           cmake --build _build --config Release -j$(nproc)
 
+      - name: mpi-xpress
+        run: |
+          echo "PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux/tools/openmpi/bin:$PATH" >> $GITHUB_ENV
+          echo "LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}" >> $GITHUB_ENV
+          echo "XPRESS=${{ env.XPRESS_CONTAINER }}" >> $GITHUB_ENV
+
+      - name: Run cucumber on outer_loop tests
+        uses: ./.github/workflows/cucumber-tests
+        with:
+          feature: "features/outer_loop_tests.feature"
+
       - name: Running unit tests
         timeout-minutes: 120
         shell: bash
         run: |
-          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux/tools/openmpi/bin/:$PATH
-          export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
-          export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build
           ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
 
