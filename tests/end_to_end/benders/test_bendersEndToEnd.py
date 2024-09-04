@@ -5,7 +5,7 @@ import subprocess
 from pathlib import Path
 import numpy as np
 
-from utils_functions import get_conf, get_mpi_command
+from tests.end_to_end.utils_functions import get_conf, get_mpi_command
 
 # File RESULT_FILE_PATH
 # Json file containing
