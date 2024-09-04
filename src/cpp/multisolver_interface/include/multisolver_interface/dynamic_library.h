@@ -26,6 +26,7 @@
 #include <dlfcn.h>
 #endif
 
+namespace Solver {
 class DynamicLibrary {
   static constexpr size_t kMaxFunctionsNotFound = 10;
 
@@ -111,5 +112,6 @@ class DynamicLibrary {
     }
   };
 };
+}
 
 #endif  // OR_TOOLS_BASE_DYNAMIC_LIBRARY_H_

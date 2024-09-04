@@ -32,9 +32,11 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 
 # for centos docker to run MPI tests as root
-IF(ALLOW_RUN_AS_ROOT)
-	set(ALLOW_RUN_AS_ROOT "True")
-ENDIF() 
+if (ALLOW_RUN_AS_ROOT)
+	set(ALLOW_RUN_AS_ROOT "true")
+else ()
+	set(ALLOW_RUN_AS_ROOT "false")
+endif ()
 
 # Set solvers to use
 option (COIN_OR "Use COIN Clp and Cbc solvers" ON)
@@ -218,11 +220,6 @@ if(POLICY CMP0074)
 	cmake_policy(SET CMP0074 NEW)
 endif()
 
-find_package(sirius_solver REQUIRED)
-install(FILES
-		$<TARGET_FILE:sirius_solver>
-		DESTINATION bin
-)
 if (SOLVER)
 	if (SOLVER STREQUAL "xpress")
 		add_definitions (-DXPRESS_SOLVER -DUSE_XPRESS)
@@ -293,6 +290,13 @@ FILE(COPY ${ANTARES_SOLVER_DIR}/
 		DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
 		USE_SOURCE_PERMISSIONS
 		FILES_MATCHING PATTERN "*.so")
+
+#Glob *.so files in antares_solver_dir
+file(GLOB_RECURSE ANTARES_SOLVER_LIBS ${ANTARES_SOLVER_DIR}/*.so)
+INSTALL(FILES ${ANTARES_SOLVER_LIBS} DESTINATION bin)
+file(GLOB_RECURSE ANTARES_SOLVER_LIBS ${ANTARES_SOLVER_DIR}/*.dll)
+INSTALL(FILES ${ANTARES_SOLVER_LIBS} DESTINATION bin)
+
 
 FILE(COPY ${ANTARES_SOLVER_DIR}/../lib/
 	DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}

@@ -41,7 +41,9 @@ class ActiveLink {
   [[nodiscard]] unsigned get_idLink() const;
   [[nodiscard]] LinkName get_LinkName() const;
   [[nodiscard]] std::string get_linkor() const;
+  [[nodiscard]] const std::string& linkor() const;
   [[nodiscard]] std::string get_linkex() const;
+  [[nodiscard]] const std::string& linkex() const;
   [[nodiscard]] double get_already_installed_capacity() const;
 
   [[nodiscard]] std::map<unsigned int, unsigned int> McYearToChronicle() const {
