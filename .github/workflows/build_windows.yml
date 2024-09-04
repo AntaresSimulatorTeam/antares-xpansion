@@ -112,7 +112,7 @@ jobs:
         shell: bash
         run: >
           cmake -B _build -S .
-          -DCMAKE_PREFIX_PATH="$pwd\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits"
+          -DCMAKE_PREFIX_PATH="${{github.workspace}}/rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits"
           -DBUILD_TESTING=ON
           -DCMAKE_BUILD_TYPE=Release
           -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"
