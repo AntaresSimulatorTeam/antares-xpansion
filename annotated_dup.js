@@ -429,7 +429,7 @@ var annotated_dup =
     [ "ArchiveReader", "classArchiveReader.html", null ],
     [ "ArchiveReaderTest", "classArchiveReaderTest.html", null ],
     [ "ArchiveUpdaterTest", "classArchiveUpdaterTest.html", null ],
-    [ "ArchiveWriter", "classArchiveWriter.html", null ],
+    [ "ArchiveWriter", "classArchiveWriter.html", "classArchiveWriter" ],
     [ "ArchiveWriterTest", "classArchiveWriterTest.html", null ],
     [ "BaseOptions", "structBaseOptions.html", null ],
     [ "Batch", "structBatch.html", null ],

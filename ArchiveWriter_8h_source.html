@@ -164,18 +164,22 @@ $(document).ready(function(){initNavTree('ArchiveWriter_8h_source.html',''); ini
 <div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
 <div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  int32_t Close() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keywordtype">void</span> Delete() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="keywordtype">int</span> Open() <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <span class="keywordtype">void</span> InitFileInfo();</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  int32_t AddFileInArchive(<span class="keyword">const</span> <a class="code hl_struct" href="structFileBuffer.html">FileBuffer</a>&amp; FileBufferToAdd);</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  int32_t AddFileInArchive(<span class="keyword">const</span> std::filesystem::path&amp; FileToAdd);</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  int32_t AddPathInArchive(<span class="keyword">const</span> std::filesystem::path&amp; path_to_add,</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                           <span class="keyword">const</span> std::filesystem::path&amp; root_path);</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keywordtype">void</span>* InternalPointer()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> pmz_zip_writer_instance_; }</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>};</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>  int32_t <a class="code hl_function" href="classArchiveWriter.html#a38ac4d8d0cdcc1319696927f2bb0174d">CloseUnsafe</a>();</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classArchiveWriter.html#a3ed3d5397499b800effb5e89ed4894b9">DeleteUnsafe</a>();</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keywordtype">int</span> Open() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="keywordtype">void</span> InitFileInfo();</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  int32_t AddFileInArchive(<span class="keyword">const</span> <a class="code hl_struct" href="structFileBuffer.html">FileBuffer</a>&amp; FileBufferToAdd);</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  int32_t AddFileInArchive(<span class="keyword">const</span> std::filesystem::path&amp; FileToAdd);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  int32_t AddPathInArchive(<span class="keyword">const</span> std::filesystem::path&amp; path_to_add,</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                           <span class="keyword">const</span> std::filesystem::path&amp; root_path);</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keywordtype">void</span>* InternalPointer()<span class="keyword"> const override </span>{ <span class="keywordflow">return</span> pmz_zip_writer_instance_; }</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>};</div>
 </div>
 <div class="ttc" id="aclassArchiveIO_html"><div class="ttname"><a href="classArchiveIO.html">ArchiveIO</a></div><div class="ttdef"><b>Definition</b> ArchiveIO.h:36</div></div>
 <div class="ttc" id="aclassArchiveWriter_html"><div class="ttname"><a href="classArchiveWriter.html">ArchiveWriter</a></div><div class="ttdef"><b>Definition</b> ArchiveWriter.h:8</div></div>
+<div class="ttc" id="aclassArchiveWriter_html_a38ac4d8d0cdcc1319696927f2bb0174d"><div class="ttname"><a href="classArchiveWriter.html#a38ac4d8d0cdcc1319696927f2bb0174d">ArchiveWriter::CloseUnsafe</a></div><div class="ttdeci">int32_t CloseUnsafe()</div><div class="ttdoc">Close the archive Not thread safe Meant to be used with DeleteUnsafe and both of them guarded by a si...</div><div class="ttdef"><b>Definition</b> ArchiveWriter.cpp:138</div></div>
+<div class="ttc" id="aclassArchiveWriter_html_a3ed3d5397499b800effb5e89ed4894b9"><div class="ttname"><a href="classArchiveWriter.html#a3ed3d5397499b800effb5e89ed4894b9">ArchiveWriter::DeleteUnsafe</a></div><div class="ttdeci">void DeleteUnsafe()</div><div class="ttdoc">Delete the archive Not thread safe Meant to be used with CloseUnsafe and both of them guarded by a si...</div><div class="ttdef"><b>Definition</b> ArchiveWriter.cpp:153</div></div>
 <div class="ttc" id="astructFileBuffer_html"><div class="ttname"><a href="structFileBuffer.html">FileBuffer</a></div><div class="ttdef"><b>Definition</b> FileInBuffer.h:6</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

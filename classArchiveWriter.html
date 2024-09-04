@@ -156,6 +156,12 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a6a32365b26186e6ec74057bc600b1d12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a851dd9c23c62aa00f503eedf3b04b98f" id="r_a851dd9c23c62aa00f503eedf3b04b98f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArchiveWriter.html#a851dd9c23c62aa00f503eedf3b04b98f">Delete</a> () override</td></tr>
 <tr class="separator:a851dd9c23c62aa00f503eedf3b04b98f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a38ac4d8d0cdcc1319696927f2bb0174d" id="r_a38ac4d8d0cdcc1319696927f2bb0174d"><td class="memItemLeft" align="right" valign="top">int32_t&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArchiveWriter.html#a38ac4d8d0cdcc1319696927f2bb0174d">CloseUnsafe</a> ()</td></tr>
+<tr class="memdesc:a38ac4d8d0cdcc1319696927f2bb0174d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Close the archive Not thread safe Meant to be used with DeleteUnsafe and both of them guarded by a single mutex to prevent concurrency issues between Close() and Delete()  <br /></td></tr>
+<tr class="separator:a38ac4d8d0cdcc1319696927f2bb0174d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ed3d5397499b800effb5e89ed4894b9" id="r_a3ed3d5397499b800effb5e89ed4894b9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArchiveWriter.html#a3ed3d5397499b800effb5e89ed4894b9">DeleteUnsafe</a> ()</td></tr>
+<tr class="memdesc:a3ed3d5397499b800effb5e89ed4894b9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Delete the archive Not thread safe Meant to be used with CloseUnsafe and both of them guarded by a single mutex to prevent concurrency issues between Close() and Delete()  <br /></td></tr>
+<tr class="separator:a3ed3d5397499b800effb5e89ed4894b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c746e88f3aae2976274c67c247a6ea4" id="r_a0c746e88f3aae2976274c67c247a6ea4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classArchiveWriter.html#a0c746e88f3aae2976274c67c247a6ea4">Open</a> () override</td></tr>
 <tr class="separator:a0c746e88f3aae2976274c67c247a6ea4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2b44ea63ab16bb22701ffa8167c4fc4a" id="r_a2b44ea63ab16bb22701ffa8167c4fc4a"><td class="memItemLeft" align="right" valign="top"><a id="a2b44ea63ab16bb22701ffa8167c4fc4a" name="a2b44ea63ab16bb22701ffa8167c4fc4a"></a>
@@ -218,6 +224,26 @@ std::shared_mutex&#160;</td><td class="memItemRight" valign="bottom"><b>mutex_</
 
 </div>
 </div>
+<a id="a38ac4d8d0cdcc1319696927f2bb0174d" name="a38ac4d8d0cdcc1319696927f2bb0174d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a38ac4d8d0cdcc1319696927f2bb0174d">&#9670;&#160;</a></span>CloseUnsafe()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int32_t ArchiveWriter::CloseUnsafe </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Close the archive Not thread safe Meant to be used with DeleteUnsafe and both of them guarded by a single mutex to prevent concurrency issues between Close() and Delete() </p>
+<dl class="section return"><dt>Returns</dt><dd>int32_t </dd></dl>
+
+</div>
+</div>
 <a id="a851dd9c23c62aa00f503eedf3b04b98f" name="a851dd9c23c62aa00f503eedf3b04b98f"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a851dd9c23c62aa00f503eedf3b04b98f">&#9670;&#160;</a></span>Delete()</h2>
 
@@ -242,6 +268,26 @@ std::shared_mutex&#160;</td><td class="memItemRight" valign="bottom"><b>mutex_</
 </div><div class="memdoc">
 
 <p>Implements <a class="el" href="classArchiveIO.html">ArchiveIO</a>.</p>
+
+</div>
+</div>
+<a id="a3ed3d5397499b800effb5e89ed4894b9" name="a3ed3d5397499b800effb5e89ed4894b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ed3d5397499b800effb5e89ed4894b9">&#9670;&#160;</a></span>DeleteUnsafe()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ArchiveWriter::DeleteUnsafe </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Delete the archive Not thread safe Meant to be used with CloseUnsafe and both of them guarded by a single mutex to prevent concurrency issues between Close() and Delete() </p>
+<dl class="section return"><dt>Returns</dt><dd>int32_t </dd></dl>
 
 </div>
 </div>

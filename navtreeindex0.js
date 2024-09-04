@@ -182,6 +182,8 @@ var NAVTREEINDEX0 =
 "classArchiveReaderTest.html":[25,0,34],
 "classArchiveUpdaterTest.html":[25,0,35],
 "classArchiveWriter.html":[25,0,36],
+"classArchiveWriter.html#a38ac4d8d0cdcc1319696927f2bb0174d":[25,0,36,0],
+"classArchiveWriter.html#a3ed3d5397499b800effb5e89ed4894b9":[25,0,36,1],
 "classArchiveWriterTest.html":[25,0,37],
 "classBatchCollection.html":[25,0,40],
 "classBatchCollectionTest.html":[25,0,41],
@@ -247,7 +249,5 @@ var NAVTREEINDEX0 =
 "classCatch_1_1Generators_1_1SingleValueGenerator.html":[25,0,3,1,10],
 "classCatch_1_1Generators_1_1TakeGenerator.html":[25,0,3,1,11],
 "classCatch_1_1LazyExpression.html":[25,0,3,31],
-"classCatch_1_1Matchers_1_1Exception_1_1ExceptionMessageMatcher.html":[25,0,3,2,0,0],
-"classCatch_1_1Matchers_1_1Impl_1_1MatcherUntypedBase.html":[25,0,3,2,2,4],
-"classCatch_1_1NonCopyable.html":[25,0,3,36]
+"classCatch_1_1Matchers_1_1Exception_1_1ExceptionMessageMatcher.html":[25,0,3,2,0,0]
 };

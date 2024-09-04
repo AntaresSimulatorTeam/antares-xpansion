@@ -1,5 +1,7 @@
 var NAVTREEINDEX6 =
 {
+"md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md191":[21,1,3],
+"md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md192":[21,1,4],
 "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md193":[21,1,5],
 "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md194":[21,1,6],
 "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md195":[21,1,7],
