@@ -43,9 +43,9 @@ def run_outer_loop(context, n):
     os.chdir(lp_path)
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
     out, err = process.communicate()
-    # print(out)
-    # print("*****")
-    # print(err)
+    print(out)
+    print("*****")
+    print(err)
     context.return_code = process.returncode
     context.outputs = read_outputs(Path("..") / "expansion" / "out.json")
     os.chdir(old_cwd)
