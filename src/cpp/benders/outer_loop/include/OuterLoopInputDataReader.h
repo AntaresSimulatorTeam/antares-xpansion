@@ -80,7 +80,8 @@ class OuterLoopInputData {
  public:
   OuterLoopInputData() = default;
 
-  [[nodiscard]] std::vector<OuterLoopSingleInputData> OuterLoopData() const;
+  [[nodiscard]] const std::vector<OuterLoopSingleInputData> &OuterLoopData()
+      const;
   [[nodiscard]] std::vector<std::string> PatternBodies() const;
   [[nodiscard]] std::string PatternsPrefix() const;
 

@@ -40,7 +40,7 @@ jobs:
           workdir: docker
           dockerfile: centos7-system-deps
           cache: false
-          tags: latest,1.0.0
+          tags: latest,1.1.0
 
   versions:
     runs-on: ubuntu-latest
@@ -89,7 +89,7 @@ jobs:
 
     steps:
       - run: |
-          source /opt/rh/devtoolset-10/enable
+          source /opt/rh/devtoolset-11/enable
           echo $PATH >> $GITHUB_PATH
       - name: Get release
         if: github.event_name == 'release' && github.event.action == 'created'
@@ -161,7 +161,7 @@ jobs:
 
       - name: Configure
         run: |
-          source /opt/rh/devtoolset-10/enable
+          source /opt/rh/devtoolset-11/enable
           cmake -B _build -S . \
                  -DBUILD_TESTING=ON \
                  -DCMAKE_PREFIX_PATH=${GITHUB_WORKSPACE}/deps \
