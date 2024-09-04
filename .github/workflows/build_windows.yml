@@ -119,7 +119,6 @@ jobs:
           -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}
           -DCMAKE_INSTALL_PREFIX=_install
           -DBUILD_UI=ON
-          -DBUILD_antares_solver=OFF
 
       - name: Build
         run: |
