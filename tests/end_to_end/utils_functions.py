@@ -6,7 +6,7 @@ import yaml
 
 # File CONFIG_FILE_PATH
 # yaml file containing executable name
-CONFIG_FILE_PATH = Path(os.path.abspath(__file__)) / ".." / ".." / \
+CONFIG_FILE_PATH = Path(os.path.pardir) / ".." / ".." / \
                    "src" / 'python' / 'config.yaml'
 
 
