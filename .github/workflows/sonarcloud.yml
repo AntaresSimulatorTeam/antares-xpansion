@@ -121,6 +121,7 @@ jobs:
           -DCMAKE_PREFIX_PATH=${{ github.workspace }}/deps \
           -DCMAKE_INSTALL_PREFIX=_install \
           -DCMAKE_EXPORT_COMPILE_COMMANDS=ON \
+          -DVCPKG_TARGET_TRIPLET=x64-linux-release \
           -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Cache vcpkg binary dir
