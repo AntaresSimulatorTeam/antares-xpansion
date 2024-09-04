@@ -18,4 +18,4 @@ runs:
       run: |
         export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux/tools/openmpi/bin:$PATH
         cd tests/end_to_end
-        behave --tags ${{ inputs.tags }} cucumber/${{ inputs.feature }}
+        behave --tags ${{ inputs.tags }} cucumber/${{ inputs.feature }} --no-capture
