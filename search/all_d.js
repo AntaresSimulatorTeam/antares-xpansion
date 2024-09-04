@@ -35,5 +35,5 @@ var searchData=
   ['documention_20generation_20guidelines_32',['Documention generation guidelines',['../md_docs_2how__to.html',1,'']]],
   ['download_20antares_20xpansion_33',['Download Antares-Xpansion',['../md_docs_2user-guide_2get-started_2installation.html#autotoc_md144',1,'']]],
   ['dump_34',['dump',['../classWriterNOOPStub.html#a1f2e13c67176b49374cda6142c4e3b24',1,'WriterNOOPStub::dump()'],['../classOutput_1_1OutputWriter.html#abe45b40cf82f15fa815d4c56d062efca',1,'Output::OutputWriter::dump()'],['../classOutput_1_1VoidWriter.html#aa91f6182476c0a67dad018f58e0a6a70',1,'Output::VoidWriter::dump()'],['../classOutput_1_1JsonWriter.html#a6ad7bb14475e566bc2584dcc4911095d',1,'Output::JsonWriter::dump()']]],
-  ['dynamiclibrary_35',['DynamicLibrary',['../classDynamicLibrary.html',1,'']]]
+  ['dynamiclibrary_35',['DynamicLibrary',['../classSolver_1_1DynamicLibrary.html',1,'Solver']]]
 ];

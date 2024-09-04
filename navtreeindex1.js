@@ -11,13 +11,12 @@ var NAVTREEINDEX1 =
 "classCatch_1_1TestInvokerAsMethod.html":[25,0,3,82],
 "classCatch_1_1Timer.html":[25,0,3,83],
 "classCatch_1_1UnaryExpr.html":[25,0,3,86],
-"classChronicleProviderTest.html":[25,0,57],
-"classChronicleTest.html":[25,0,58],
-"classClock.html":[25,0,60],
-"classClockMock.html":[25,0,61],
-"classConstantDataFromAntares.html":[25,0,63],
-"classDirectAccessScenarioToChronicleProvider.html":[25,0,65],
-"classDynamicLibrary.html":[25,0,66],
+"classChronicleProviderTest.html":[25,0,58],
+"classChronicleTest.html":[25,0,59],
+"classClock.html":[25,0,61],
+"classClockMock.html":[25,0,62],
+"classConstantDataFromAntares.html":[25,0,64],
+"classDirectAccessScenarioToChronicleProvider.html":[25,0,66],
 "classFileAndStdoutLoggerFactory.html":[25,0,69],
 "classFileInBuffer.html":[25,0,71],
 "classFileLoggerTest.html":[25,0,72],
@@ -249,5 +248,6 @@ var NAVTREEINDEX1 =
 "classProblem.html#a708234655849d976c5698615cd67c65c":[25,0,158,53],
 "classProblem.html#a7415aee60e1b8a3b83f9b4e2a989a827":[25,0,158,12],
 "classProblem.html#a7f85cacdc241722dad22e570957890aa":[25,0,158,9],
-"classProblem.html#a824fa83671eb0273279277b1867b6909":[25,0,158,7]
+"classProblem.html#a824fa83671eb0273279277b1867b6909":[25,0,158,7],
+"classProblem.html#a82dd5531409fba5131d8db8ae201f73d":[25,0,158,29]
 };

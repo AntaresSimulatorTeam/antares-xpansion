@@ -315,6 +315,9 @@ var annotated_dup =
       [ "ProblemGenerationLogger", "classProblemGenerationLog_1_1ProblemGenerationLogger.html", "classProblemGenerationLog_1_1ProblemGenerationLogger" ],
       [ "ProblemGenerationOstreamLogger", "classProblemGenerationLog_1_1ProblemGenerationOstreamLogger.html", "classProblemGenerationLog_1_1ProblemGenerationOstreamLogger" ]
     ] ],
+    [ "Solver", null, [
+      [ "DynamicLibrary", "classSolver_1_1DynamicLibrary.html", null ]
+    ] ],
     [ "StringManip", null, [
       [ "IsNot", "classStringManip_1_1IsNot.html", null ],
       [ "StringUtils", "classStringManip_1_1StringUtils.html", null ]
@@ -459,7 +462,6 @@ var annotated_dup =
     [ "ConstantDataFromAntares", "classConstantDataFromAntares.html", null ],
     [ "CurrentIterationData", "structCurrentIterationData.html", null ],
     [ "DirectAccessScenarioToChronicleProvider", "classDirectAccessScenarioToChronicleProvider.html", null ],
-    [ "DynamicLibrary", "classDynamicLibrary.html", null ],
     [ "EmptyLogger", "structEmptyLogger.html", "structEmptyLogger" ],
     [ "ExternalLoopOptions", "structExternalLoopOptions.html", null ],
     [ "FileAndStdoutLoggerFactory", "classFileAndStdoutLoggerFactory.html", null ],

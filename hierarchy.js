@@ -65,7 +65,7 @@ var hierarchy =
     [ "CurrentIterationData", "structCurrentIterationData.html", null ],
     [ "Catch::Decomposer", "structCatch_1_1Decomposer.html", null ],
     [ "DirectAccessScenarioToChronicleProvider", "classDirectAccessScenarioToChronicleProvider.html", null ],
-    [ "DynamicLibrary", "classDynamicLibrary.html", null ],
+    [ "Solver::DynamicLibrary", "classSolver_1_1DynamicLibrary.html", null ],
     [ "Catch::Detail::EnumInfo", "structCatch_1_1Detail_1_1EnumInfo.html", null ],
     [ "Exception", null, [
       [ "antares_xpansion.antares_driver.AntaresDriver.AntaresExecutionError", "classantares__xpansion_1_1antares__driver_1_1AntaresDriver_1_1AntaresExecutionError.html", null ],
