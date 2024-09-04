@@ -21,6 +21,9 @@
 #include <sstream>
 #include <string>
 
+namespace Solver {
+class DynamicLibrary;
+}
 namespace LoadXpress {
 
 #define STRINGIFY2(X) #X
@@ -141,7 +144,7 @@ std::function<int(XPRSprob prob, int attrib, int* p_value)> XPRSgetintattrib =
 XpressLoader::XpressLoader(std::shared_ptr<ILoggerXpansion> logger)
     : logger_(std::move(logger)) {}
 
-bool XpressLoader::LoadXpressFunctions(DynamicLibrary* xpress_dynamic_library) {
+bool XpressLoader::LoadXpressFunctions(Solver::DynamicLibrary* xpress_dynamic_library) {
   // This was generated with the parse_header_xpress.py script.
   // See the comment at the top of the script.
 
@@ -299,7 +302,7 @@ bool XpressLoader::LoadXpressDynamicLibrary(std::string& xpresspath) {
   static std::string xpress_lib_path;
   static std::once_flag xpress_loading_done;
   static bool ret;
-  static DynamicLibrary xpress_library;
+  static Solver::DynamicLibrary xpress_library;
   // static std::mutex mutex;
 
   // mutex.lock();
