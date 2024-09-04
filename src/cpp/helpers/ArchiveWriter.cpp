@@ -1,11 +1,12 @@
 #include "ArchiveWriter.h"
 
-#include <time.h>
-
+#include <ctime>
 #include <iostream>
 #include <sstream>
+#include <mutex>
 
 #include "LogUtils.h"
+
 ArchiveWriter::ArchiveWriter(const std::filesystem::path& archivePath)
     : ArchiveIO(archivePath) {
   Create();
