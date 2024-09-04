@@ -65,7 +65,7 @@ jobs:
       - name: Install System
         run: |
           dnf install -y epel-release git wget rpm-build redhat-lsb-core
-          dnf install -y unzip libuuid-devel gcc-toolset-11 python3-devel zlib-devel
+          dnf install -y unzip libuuid-devel gcc-toolset-11-toolchain python3-devel zlib-devel
           #make gcc &co available system wide and "action wide"
           source /opt/rh/gcc-toolset-11/enable
           echo $PATH >> $GITHUB_PATH

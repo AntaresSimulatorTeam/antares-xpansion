@@ -58,7 +58,6 @@ target_link_libraries(solvers
 		${CMAKE_DL_LIBS}
 )
 
-
 #CLP-CBC
 if(COIN_OR)
 	target_link_libraries (solvers
