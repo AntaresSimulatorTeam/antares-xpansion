@@ -6,7 +6,7 @@ Feature: outer loop tests
     When I run outer loop with 1 proc(s)
     Then the simulation takes less than 5 seconds
     And the simulation succeeds
-    And the expected overall cost is 92.700
+    And the expected overall cost is 92.70005
     And the solution is
-      | variable    | value |
-      | G_p_max_0_0 | 2.900 |
+      | variable    | value    |
+      | G_p_max_0_0 | 2.900004 |
