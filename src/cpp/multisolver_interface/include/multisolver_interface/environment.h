@@ -59,7 +59,7 @@ class XpressLoader {
   std::vector<std::string> XpressDynamicLibraryPotentialPaths(); 
   std::string GetXpressVarFromEnvironmentVariables(const char* XPRESS_var,
                                                   bool verbose = true);
-  bool LoadXpressFunctions(DynamicLibrary* xpress_dynamic_library);
+  bool LoadXpressFunctions(Solver::DynamicLibrary* xpress_dynamic_library);
   int loadLicence(const std::string& lib_path, bool verbose);
 };
 
