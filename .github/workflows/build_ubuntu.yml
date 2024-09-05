@@ -149,7 +149,6 @@ jobs:
 
       - name: print
         run: |
-          ls _build/vcpkg_installed/x64-linux/tools/openmpi/bin
           echo "*****************************++++++++++++++++++++++++++"
           ls ${{ github.workspace }}/_build/vcpkg_installed/x64-linux/tools/openmpi/bin
 
