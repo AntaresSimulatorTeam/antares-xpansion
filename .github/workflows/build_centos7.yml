@@ -195,9 +195,9 @@ jobs:
         timeout-minutes: 120
         shell: bash
         run: |
-          echo "PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH" >> $GITHUB_ENV
-          echo "LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}" >> $GITHUB_ENV
-          echo "XPRESS=${{ env.XPRESS_CONTAINER }}" >> $GITHUB_ENV
+          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin/:$PATH
+          export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
+          export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build
           ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
 
