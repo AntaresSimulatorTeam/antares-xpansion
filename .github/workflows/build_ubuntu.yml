@@ -147,6 +147,12 @@ jobs:
         run: |
           cmake --build _build --config Release -j$(nproc)
 
+      - name: print
+        run: |
+          ls _build/vcpkg_installed/x64-linux/tools/openmpi/bin
+          echo "*****************************++++++++++++++++++++++++++"
+          ls ${{ github.workspace }}/_build/vcpkg_installed/x64-linux/tools/openmpi/bin
+
 
       - name: Run cucumber on outer_loop tests
         uses: ./.github/workflows/cucumber-tests
