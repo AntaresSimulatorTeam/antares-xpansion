@@ -359,7 +359,7 @@ int XpressLoader::loadLicence(const std::string& lib_path, bool verbose) {
       return code;
     }
   } else {
-    if (verbose) {
+    if (0) {
       msg.str("");
       msg << "Warning: Environment variable " << XPAUTH_PATH << " undefined.\n";
       logger_->display_message(msg);
@@ -377,7 +377,7 @@ int XpressLoader::loadLicence(const std::string& lib_path, bool verbose) {
       return code;
     }
   } else {
-    if (verbose) {
+    if (0) {
       msg.str("");
       msg << "Warning: Environment variable " << XPRESS << " undefined.\n";
       logger_->display_message(msg);

@@ -29,7 +29,7 @@ SolverXpress::SolverXpress() {
   int status = 0;
   if (_NumberOfProblems == 0) {
     LoadXpress::XpressLoader xpress_loader;
-    xpress_loader.initXpressEnv();
+    xpress_loader.initXpressEnv(true);
     status = XPRSinit(NULL);
     zero_status_check(status, "initialize XPRESS environment", LOGLOCATION);
   }

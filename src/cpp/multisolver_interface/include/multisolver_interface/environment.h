@@ -38,13 +38,13 @@ class XpressLoader {
   /**
    * \brief intialiaze xpress env : load libs and check the licence
    */
-  bool initXpressEnv(bool verbose = false, int xpress_oem_license_key = 0);
+  bool initXpressEnv(bool verbose = true, int xpress_oem_license_key = 0);
 
   /**
    * \brief return true is Xpress is correctly installed (libs and licence
    * found)
    */
-  bool XpressIsCorrectlyInstalled(bool verbose = false);
+  bool XpressIsCorrectlyInstalled(bool verbose = true);
 
  private:
   // clang-format off
@@ -60,7 +60,7 @@ class XpressLoader {
   std::string GetXpressVarFromEnvironmentVariables(const char* XPRESS_var,
                                                   bool verbose = true);
   bool LoadXpressFunctions(DynamicLibrary* xpress_dynamic_library);
-  int loadLicence(const std::string& lib_path, bool verbose);
+  int loadLicence(const std::string& lib_path, bool verbose = true);
 };
 
 // The list of #define and extern std::function<> below is generated directly

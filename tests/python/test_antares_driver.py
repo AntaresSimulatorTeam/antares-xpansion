@@ -2,9 +2,8 @@ import configparser
 import os
 from pathlib import Path
 from unittest.mock import patch
-import pytest
-from packaging import version
 
+import pytest
 from antares_xpansion.antares_driver import AntaresDriver
 from antares_xpansion.general_data_processor import (
     GeneralDataFileExceptions,
@@ -13,7 +12,7 @@ from antares_xpansion.general_data_processor import (
 from antares_xpansion.general_data_reader import IniReader, GeneralDataIniReader
 
 from tests.build_config_reader import get_antares_solver_path
-from antares_xpansion.__version__ import __antares_simulator_version__
+
 SUBPROCESS_RUN = "antares_xpansion.antares_driver.subprocess.run"
 
 
@@ -248,7 +247,7 @@ class TestAntaresDriver:
         # mock subprocess.run
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, 1)
-            expected_cmd = [exe_path, study_dir, "--force-parallel", "1", "-z"]
+            expected_cmd = [exe_path, study_dir, "--force-parallel", "1", "-z", "--use-ortools", "--ortools-solver=xpress"]
             if(self.nammed_problems):
                 expected_cmd.append("--named-mps-problems")
 
@@ -265,7 +264,7 @@ class TestAntaresDriver:
             antares_driver.launch(study_dir, n_cpu)
 
             expected_cmd = [exe_path, study_dir,
-                            "--force-parallel", str(n_cpu), "-z"]
+                            "--force-parallel", str(n_cpu), "-z", "--use-ortools", "--ortools-solver=xpress"]
             if(self.nammed_problems):
                 expected_cmd.append("--named-mps-problems")
             run_function.assert_called_once_with(
@@ -285,7 +284,7 @@ class TestAntaresDriver:
                 study_dir,
                 "--force-parallel",
                 str(expected_n_cpu),
-                "-z"
+                "-z", "--use-ortools", "--ortools-solver=xpress"
             ]
             if(self.nammed_problems):
                 expected_cmd.append("--named-mps-problems")
@@ -303,7 +302,7 @@ class TestAntaresDriver:
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
             expected_cmd = [str(exe_path), study_dir,
-                            "--force-parallel", str(n_cpu), "-z"]
+                            "--force-parallel", str(n_cpu), "-z", "--use-ortools", "--ortools-solver=xpress"]
             if(self.nammed_problems):
                 expected_cmd.append("--named-mps-problems")
             run_function.assert_called_once_with(
@@ -366,7 +365,7 @@ class TestAntaresDriver:
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
             expected_cmd = [str(exe_path), study_dir,
-                            "--force-parallel", str(n_cpu), "-z"]
+                            "--force-parallel", str(n_cpu), "-z", "--use-ortools", "--ortools-solver=xpress"]
             if(self.nammed_problems):
                 expected_cmd.append("--named-mps-problems")
             run_function.assert_called_once_with(
@@ -392,7 +391,7 @@ class TestAntaresDriver:
         with patch(SUBPROCESS_RUN, autospec=True) as run_function:
             antares_driver.launch(study_dir, n_cpu)
             expected_cmd = [str(exe_path), study_dir,
-                            "--force-parallel", str(n_cpu), "-z"]
+                            "--force-parallel", str(n_cpu), "-z", "--use-ortools", "--ortools-solver=xpress"]
             if(self.nammed_problems):
                 expected_cmd.append("--named-mps-problems")
             run_function.assert_called_once_with(
