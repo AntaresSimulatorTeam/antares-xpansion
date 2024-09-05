@@ -30,18 +30,6 @@ AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
   std::vector<int> tmp(constant.VariablesCount, 0);
   std::vector<char> coltypes(constant.VariablesCount, 'C');
 
-  auto round10 = [](auto& collection) {
-    std::ranges::transform(collection, collection.begin(), [](double v) {
-      return round(v * pow(10, 10)) * pow(10, -10);
-    });
-  };
-
-  round10(hebdo.LinearCost);
-  round10(hebdo.Xmin);
-  round10(hebdo.Xmax);
-  round10(hebdo.RHS);
-  round10(constant.ConstraintsMatrixCoeff);
-
   problem->add_cols(constant.VariablesCount, 0, hebdo.LinearCost.data(),
                     tmp.data(), {}, {}, hebdo.Xmin.data(), hebdo.Xmax.data());
 
@@ -58,9 +46,6 @@ AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
   for (int i = 0; i < constant.ConstraintesCount; ++i) {
     problem->chg_row_name(i, hebdo.constraints[i]);
   }
-  auto rows = problem->get_nrows();
-  auto cols = problem->get_ncols();
-  auto elem = problem->get_nelems();
   // On peut ajouter la partie qui renomme les variables ici si on stocke les
   // données du type de variables dans ConstantDataFromAntares, i.e. en
   // définissant une autre implémentation de IProblemVariablesProviderPort
