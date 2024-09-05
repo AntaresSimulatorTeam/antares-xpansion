@@ -58,7 +58,7 @@ def launch_xpansion(install_dir, study_path, allow_run_as_root=False, nproc: int
         str(nproc),
         "--oversubscribe",
     ]
-    if allow_run_as_root == "True":
+    if allow_run_as_root:
         command.append("--allow-run-as-root")
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=None)
     output = process.communicate()
