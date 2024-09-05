@@ -100,7 +100,7 @@ def launch_xpansion_memory(install_dir, study_path, method: BendersMethod, allow
         "--memory"
     ]
     if allow_run_as_root == "True":
-        command.append("--allow-run-ans-root")
+        command.append("--allow-run-as-root")
     print(command)
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=None)
     output = process.communicate()
