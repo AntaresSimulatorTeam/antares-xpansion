@@ -73,7 +73,8 @@ std::filesystem::path ProblemGeneration::updateProblems() {
     // antares
   }
 
-  if (mode_ == SimulationInputMode::ANTARES_API || mode_ == SimulationInputMode::FILE) {
+  if (mode_ == SimulationInputMode::ANTARES_API ||
+      mode_ == SimulationInputMode::FILE) {
     xpansion_output_dir = simulation_dir_;
   }
 
@@ -157,8 +158,7 @@ void validateMasterFormulation(
 std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
     SolverLogManager& solver_log_manager, const std::string& solver_name,
     const std::vector<ProblemData>& mpsList, std::filesystem::path& lpDir_,
-    std::shared_ptr<ArchiveReader>& reader, bool with_archive = true
-    ) {
+    std::shared_ptr<ArchiveReader>& reader, bool with_archive = true) {
   std::vector<std::string> problem_names;
   std::transform(mpsList.begin(), mpsList.end(),
                  std::back_inserter(problem_names),
@@ -224,7 +224,6 @@ void ProblemGeneration::RunProblemGeneration(
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "rename problems: " << std::boolalpha << rename_problems << std::endl;
 
-
   auto files_mapper = FilesMapper(antares_archive_path, xpansion_output_dir);
   auto mpsList = files_mapper.MpsAndVariablesFilesVect();
 
@@ -239,8 +238,7 @@ void ProblemGeneration::RunProblemGeneration(
   /* Main stuff */
   std::vector<std::shared_ptr<Problem>> xpansion_problems =
       getXpansionProblems(solver_log_manager, solver_name, mpsList, lpDir_,
-                          reader, !antares_archive_path.empty()
-                          );
+                          reader, !antares_archive_path.empty());
 
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
       problems_and_data;
