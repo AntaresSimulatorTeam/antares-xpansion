@@ -4,7 +4,7 @@
 
 ## Context
 
-Given that the new nominal case is [to use Antares as a library](Change_xpansion_nomila_case_to_use_simulator_lib.md) we
+Given that the new nominal case is [to use Antares as a library](%5B012%5D%20Change_xpansion_nomila_case_to_use_simulator_lib.md) we
 could remove
 support for archive mode in problem generation. Given that archive mode was a way to reduce the size on disk and now
 memory mode
