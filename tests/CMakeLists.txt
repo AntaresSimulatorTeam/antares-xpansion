@@ -41,7 +41,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
 
         add_test(
                 NAME examples_short_memory
-                COMMAND Python3::Interpreter -m pytest -m short_memory --allow_run_as_root=${ALLOW_RUN_AS_ROOT} --installDir=${XPANSION_INSTALL_DIR} example_test.py
+                COMMAND Python3::Interpreter -m pytest -m short_memory ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
         )
         set_property(TEST examples_short_memory PROPERTY LABELS short short_memory end_to_end)
