@@ -19,6 +19,10 @@ runs:
     - name: Run tests
       shell: bash
       run: |
+        echo "${{ inputs.mpi_path }}"
+        echo "******************************"
         export PATH="${{ inputs.mpi_path }}:$PATH"
+        echo "******************************"
+        echo "$PATH"
         cd tests/end_to_end
         behave --tags ${{ inputs.tags }} cucumber/${{ inputs.feature }} --no-capture
