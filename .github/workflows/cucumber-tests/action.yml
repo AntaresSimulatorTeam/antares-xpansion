@@ -9,6 +9,9 @@ inputs:
     description: 'Tags to run (default skips tests marked @flaky)'
     required: false
     default: '~@flaky'
+  mpi_path:
+    description: "Mpi install directory"
+    required: true
 runs:
   using: "composite"
   steps:
@@ -16,5 +19,6 @@ runs:
     - name: Run tests
       shell: bash
       run: |
+        export PATH=${{ inputs.mpi_path }}:$PATH
         cd tests/end_to_end
         behave --tags ${{ inputs.tags }} cucumber/${{ inputs.feature }} --no-capture

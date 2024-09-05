@@ -31,6 +31,8 @@ def read_outputs(output_path):
         outputs = json.load(file)
 
     return outputs
+
+
 @when('I run outer loop with {n} proc(s)')
 def run_outer_loop(context, n):
     context.nproc = int(n)

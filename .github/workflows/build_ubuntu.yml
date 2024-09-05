@@ -147,14 +147,13 @@ jobs:
         run: |
           cmake --build _build --config Release -j$(nproc)
 
-      - name: mpi
-        run: |
-          echo "PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux/tools/openmpi/bin:$PATH" >> $GITHUB_ENV
 
       - name: Run cucumber on outer_loop tests
         uses: ./.github/workflows/cucumber-tests
         with:
           feature: "features/outer_loop_tests.feature"
+          mpi_path: "${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux/tools/openmpi/bin"
+
 
       - name: Test
         run: |
