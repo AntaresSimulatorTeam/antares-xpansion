@@ -41,15 +41,15 @@ int ReadTimeStep(const std::string& input) {
 }
 
 void updateMapColumn(const std::vector<ActiveLink>& links,
-                     const std::string& link_origin,
-                     const std::string& link_destination, colId id,
+                     const std::string_view link_origin,
+                     const std::string_view link_destination, colId id,
                      int time_step,
                      std::map<linkId, ColumnsToChange>& mapColumn) {
   auto it =
       std::find_if(links.begin(), links.end(),
                    [&link_origin, &link_destination](const ActiveLink& link) {
-                     return link.get_linkor() == link_origin &&
-                            link.get_linkex() == link_destination;
+                     return link.linkor() == link_origin &&
+                            link.linkex() == link_destination;
                    });
 
   if (it != links.end()) {
