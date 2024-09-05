@@ -119,7 +119,6 @@ def test_lp_multiple_candidates(install_dir, test_dir, master_mode, option_mode,
 @pytest.mark.parametrize("study_dir", test_data_study_option)
 @pytest.mark.parametrize("master_mode", ["integer"])
 @pytest.mark.parametrize("option_mode", [OptionType.STUDY])
-@pytest.mark.skip(reason="study option not implemented yet")
 def test_lp_with_study_option(install_dir, study_dir, master_mode, option_mode, setup_study, tmp_path):
     launch_and_compare_lp_with_reference_study(install_dir, master_mode, setup_study)
 

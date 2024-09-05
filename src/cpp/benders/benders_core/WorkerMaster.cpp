@@ -24,7 +24,7 @@ WorkerMaster::WorkerMaster(
     const std::string &solver_name, const int log_level, int subproblems_count,
     SolverLogManager&solver_log_manager,
     const bool mps_has_alpha, Logger logger)
-    : Worker(logger),
+    : Worker(std::move(logger)),
       subproblems_count(subproblems_count),
       _mps_has_alpha(mps_has_alpha) {
   _is_master = true;
@@ -56,7 +56,7 @@ void WorkerMaster::get(Point &x_out, double &overall_subpb_cost_under_approx,
   if (_solver->get_n_integer_vars() > 0) {
     _solver->get_mip_sol(ptr.data());
   } else {
-    _solver->get_lp_sol(ptr.data(), NULL, NULL);
+    _solver->get_lp_sol(ptr.data(), nullptr, nullptr);
   }
   assert(id_single_subpb_costs_under_approx_.back() + 1 == ptr.size());
   for (auto const &kvp : _id_to_name) {

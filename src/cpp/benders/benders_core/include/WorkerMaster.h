@@ -14,19 +14,19 @@ class WorkerMaster : public Worker {
   explicit WorkerMaster(Logger logger);
   WorkerMaster(VariableMap const &variable_map,
                const std::filesystem::path &path_to_mps,
-               const std::string &solver_name, const int log_level,
+               const std::string &solver_name, int log_level,
                int subproblems_count,
                SolverLogManager&solver_log_manager,
                bool mps_has_alpha, Logger logger);
-  virtual ~WorkerMaster() = default;
+  ~WorkerMaster() override = default;
 
   void get(Point &x0, double &overall_subpb_cost_under_approx,
            DblVector &single_subpb_costs_under_approx);
   void get_dual_values(std::vector<double> &dual) const;
-  int get_number_constraint() const;
+  [[nodiscard]] int get_number_constraint() const;
 
   void add_cut(Point const &s, Point const &x0, double const &rhs) const;
-  void add_cut_by_iter(int const i, Point const &s, double const &sx0,
+  void add_cut_by_iter(int i, Point const &s, double const &sx0,
                        double const &rhs) const;
   void add_dynamic_cut(Point const &s, double const &sx0,
                        double const &rhs) const;
@@ -36,7 +36,7 @@ class WorkerMaster : public Worker {
 
   virtual void DeactivateIntegrityConstraints() const;
   virtual void ActivateIntegrityConstraints() const;
-  virtual std::vector<int> get_id_nb_units() const { return _id_nb_units; };
+  [[nodiscard]] virtual std::vector<int> get_id_nb_units() const { return _id_nb_units; };
 
  private:
   std::vector<int> _id_nb_units;
@@ -54,7 +54,7 @@ class WorkerMaster : public Worker {
   void define_rhs_from_sx0(const double &sx0, const double &rhs,
                            std::vector<double> &rowrhs) const;
 
-  void define_matval_mclind_for_index(const int i, const Point &s,
+  void define_matval_mclind_for_index(int i, const Point &s,
                                       std::vector<double> &matval,
                                       std::vector<int> &mclind) const;
   void _set_upper_bounds() const;

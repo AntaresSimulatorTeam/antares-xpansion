@@ -1,12 +1,13 @@
 vcpkg_from_github(
         OUT_SOURCE_PATH SOURCE_PATH
         REPO "Mizux/Cgl"
-        REF "925ad49fdd958ddb51f3ecfd87d222b0ea8d26a8"
-        SHA512 365c204272f6d20f881ce5e14cfa3c2c1d5b0aef1ff92a7f8a889c708b2d091105bc1ba2dfdee911b3cab876af677f5ee3e55657f9fdb9356915966379587261
+        REF "59d95fba6605329d615d44ac7be0be2397210d5a" #stable/0.60
+        SHA512 5667c59a632bf30f43dbb993b434d81599d6933ffff874bbee92f4850229b0e6b0c20deacabc31d30ffd5c7484d048df1835e4524e98162b838deb621e94a373
         HEAD_REF master
 )
-vcpkg_check_linkage(ONLY_STATIC_LIBRARY)
-
+if (WIN32)
+    vcpkg_check_linkage(ONLY_STATIC_LIBRARY)
+endif()
 vcpkg_cmake_configure(
         SOURCE_PATH "${SOURCE_PATH}"
 )

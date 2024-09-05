@@ -24,6 +24,10 @@
       "name": "boost-algorithm",
       "version>=": "1.81.0"
     },
+    {
+      "name": "boost-serialization",
+      "version>=": "1.81.0"
+    },
     "yaml-cpp",
     {
       "name": "minizip-ng",
@@ -32,10 +36,6 @@
       "features": [
         "zlib"
       ]
-    },
-    {
-      "name": "sirius-solver",
-      "version>=": "1.5"
     }
   ]
 }

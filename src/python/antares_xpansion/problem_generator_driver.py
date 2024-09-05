@@ -21,6 +21,7 @@ class ProblemGeneratorData:
     weight_file_name_for_lp: str
     lp_namer_exe_path: Path
     active_years: List
+    memory: bool
 
 
 class ProblemGeneratorDriver:
@@ -61,6 +62,7 @@ class ProblemGeneratorDriver:
         self.is_relaxed = False
         self._lp_path = None
         self.logger = step_logger(__name__, __class__.__name__)
+        self.memory = problem_generator_data.memory
 
     def launch(self, output_path: Path, is_relaxed: bool):
         """
@@ -72,6 +74,15 @@ class ProblemGeneratorDriver:
 
         self.create_lp_dir()
 
+        self.is_relaxed = is_relaxed
+        self._lp_step()
+
+    def launch_memory(self, study_path: Path, is_relaxed: bool):
+        """
+            problem generation step : getnames + lp_namer
+        """
+        self.logger.info("Problem Generation")
+        self.study_path = study_path
         self.is_relaxed = is_relaxed
         self._lp_step()
 
@@ -103,13 +114,13 @@ class ProblemGeneratorDriver:
 
             produces a file named with xpansionConfig.MPS_TXT
         """
-
-        returned_l = subprocess.run(self._get_lp_namer_command(), shell=False,
+        print(self._get_lp_namer_command())
+        returned_l = subprocess.run(self._get_lp_namer_command(), shell=True,
                                     stdout=sys.stdout, stderr=sys.stderr)
 
-        if returned_l.returncode != 0:
-            raise ProblemGeneratorDriver.LPNamerExecutionError(
-                "ERROR: exited lpnamer with status %d" % returned_l.returncode)
+        #if returned_l.returncode != 0:
+        #    raise ProblemGeneratorDriver.LPNamerExecutionError(
+        #        "ERROR: exited lpnamer with status %d" % returned_l.returncode)
 
     def create_lp_dir(self):
         if os.path.isdir(self._lp_path):
@@ -118,7 +129,10 @@ class ProblemGeneratorDriver:
 
     def lp_namer_options(self):
         is_relaxed = 'relaxed' if self.is_relaxed else 'integer'
-        ret = ["-a", str(self.output_path), "-f", is_relaxed]
+        if self.memory:
+            ret = ["--study", str(self.study_path), "-f", is_relaxed]  # study/output/xpansion_output_dir
+        else:
+            ret = ["-a", str(self.output_path), "-f", is_relaxed]
         if self.weight_file_name_for_lp:
             ret.extend(["-w", str(self.user_weights_file_path)])
 
@@ -133,8 +147,9 @@ class ProblemGeneratorDriver:
         if not self.lp_namer_exe_path.is_file():
             raise ProblemGeneratorDriver.LPNamerExeError(
                 f"LP namer exe: {self.lp_namer_exe_path} not found")
-        command = [self.lp_namer_exe_path]
-        command.extend(self.lp_namer_options())
+        command = 'gdb -batch -ex "run '
+        command += ' '.join(self.lp_namer_options())
+        command += '" -ex "bt" ' + str(self.lp_namer_exe_path)# + ' 2>&1 | grep -v ^"No stack."$'
         return command
 
     output_path = property(get_output_path, set_output_path)

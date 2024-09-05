@@ -1,6 +1,8 @@
 #include "ArchiveReader.h"
 
 #include <iostream>
+#include <iterator>
+#include <mutex>
 #include <regex>
 #include <vector>
 #include <mutex>

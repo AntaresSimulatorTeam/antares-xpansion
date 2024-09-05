@@ -58,6 +58,8 @@ class BendersMpi : public BendersBase {
 
   mpi::environment &_env;
 
+  void memory();
+
  protected:
   [[nodiscard]] bool shouldParallelize() const final { return false; }
   void PreRunInitialization();

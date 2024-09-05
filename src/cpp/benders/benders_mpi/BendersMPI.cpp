@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <utility>
 
+#include "include/memory.h"
 #include "CriterionComputation.h"
 #include "Timer.h"
 
@@ -243,6 +244,41 @@ void BendersMpi::free() {
   _world.barrier();
 }
 
+namespace {
+struct self_mem {
+  long double vm_usage = 0.0;
+  long resident_set = 0.0;
+};
+self_mem process_mem_usage() {
+  self_mem mem;
+
+  // the two fields we want
+  unsigned long vsize;
+  long rss;
+  {
+    std::string ignore;
+    std::ifstream ifs("/proc/self/stat", std::ios_base::in);
+    ifs >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >>
+        ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >>
+        ignore >> ignore >> ignore >> ignore >> ignore >> ignore >> ignore >>
+        ignore >> vsize >> rss;
+  }
+
+  long page_size_kb = sysconf(_SC_PAGE_SIZE) /
+                      1024;  // in case x86-64 is configured to use 2MB pages
+  return {vsize / 1024.0l / 1024.l, rss * page_size_kb};
+}
+}
+void BendersMpi::memory() {
+  auto [dispo, total] = Memory::MemoryUsageGo();
+  auto [vm, rss] = process_mem_usage();
+  _logger->display_message("Memory usage: " + std::to_string(dispo) + "/" +
+                           std::to_string(total));
+  _logger->display_message("VM: " + std::to_string(vm) + "Mb; RSS: " +
+                           std::to_string(rss));
+}
+
+
 /*!
  *  \brief Run Benders algorithm in parallel
  *
@@ -258,6 +294,7 @@ void BendersMpi::Run() {
   }
   _data.number_of_subproblem_solved = _data.nsubproblem;
   while (!_data.stop) {
+    memory();
     ++_data.it;
     ResetSimplexIterationsBounds();
 
