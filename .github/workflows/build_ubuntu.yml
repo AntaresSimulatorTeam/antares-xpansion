@@ -24,7 +24,7 @@ jobs:
         os: [ ubuntu-20.04 ]
         xprs: [
           #{ value: XPRESS-ON, ref: 8.13a },
-          { value: XPRESS-ON, ref: 9.2.5 },
+          { value: XPRESS-ON, ref: master },
           #       { value: XPRESS-OFF }
         ]
     env:
