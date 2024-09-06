@@ -11,6 +11,7 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/build_config.yaml.in ${CMAKE_CURRENT_
 find_python_module(pytest)
 find_python_module(numpy)
 
+
 # for centos docker to run MPI tests as root
 
 set(allow_run_as_root_option "")

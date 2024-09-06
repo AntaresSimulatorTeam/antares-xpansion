@@ -45,7 +45,7 @@ option (XPRESS  "Use solver FICO XPRESS" OFF)
 if(COIN_OR)
 	message("Coin-OR Solvers Clp and Cbc used. Solvers version are those present in orTools release linked to project.")
 else ()
-	message(FATAL_ERRROR "COIN_OR has to be true, it is required in lpnamer module of Antares Xpansion.")	
+	message(FATAL_ERROR "COIN_OR has to be true, it is required in lpnamer module of Antares Xpansion.")
 endif()
 
 

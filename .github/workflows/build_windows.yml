@@ -124,6 +124,14 @@ jobs:
         run: |
           cmake --build _build --config Release -j4
 
+
+      - name: Run cucumber on outer_loop tests
+        uses: ./.github/workflows/cucumber-tests
+        with:
+          feature: "features/outer_loop_tests.feature"
+          mpi_path: /c/Program Files/Microsoft MPI/Bin
+
+      
       - name: Cache vcpkg binary dir
         if: always()
         id: save-cache-vcpkg-binary

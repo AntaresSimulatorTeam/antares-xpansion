@@ -9,5 +9,7 @@ OUTER_LOOP                      : $<TARGET_FILE_NAME:outer_loop>
 SENSITIVITY                     : $<TARGET_FILE_NAME:sensitivity>
 ANTARES_ARCHIVE_UPDATER         : $<TARGET_FILE_NAME:antares_archive_updater>
 mpiexec                         : @MPIEXEC_EXECUTABLE@
+#for test only
+allow_run_as_root               : ${ALLOW_RUN_AS_ROOT}
 AVAILABLE_SOLVER :
 @AVAILABLE_SOLVER_YML_LIST@
