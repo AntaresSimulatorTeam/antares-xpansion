@@ -197,18 +197,17 @@ std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
                  [](ProblemData const& data) { return data._problem_mps; });
   switch (mode_.value()) {
     case SimulationInputMode::FILE: {
-      auto adapter =
-          std::make_unique<FileProblemsProviderAdapter>(lpDir_, problem_names);
-      return adapter->provideProblems(solver_name, solver_log_manager);
+      FileProblemsProviderAdapter adapter(lpDir_, problem_names);
+      return adapter.provideProblems(solver_name, solver_log_manager);
     }
     case SimulationInputMode::ARCHIVE: {
-      auto adapter = std::make_unique<ZipProblemsProviderAdapter>(
+      ZipProblemsProviderAdapter adapter(
           lpDir_, std::move(reader), problem_names);
-      return adapter->provideProblems(solver_name, solver_log_manager);
+      return adapter.provideProblems(solver_name, solver_log_manager);
     }
     case SimulationInputMode::ANTARES_API: {
-      auto adapter = std::make_unique<XpansionProblemsFromAntaresProvider>(lps);
-      return adapter->provideProblems(solver_name, solver_log_manager);
+      XpansionProblemsFromAntaresProvider adapter(lps);
+      return adapter.provideProblems(solver_name, solver_log_manager);
     }
     default:
       throw LogUtils::XpansionError<std::runtime_error>(
