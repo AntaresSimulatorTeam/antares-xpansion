@@ -175,10 +175,21 @@ void validateMasterFormulation(
   }
 }
 
+/**
+ *
+ * @param solver_log_manager
+ * @param solver_name
+ * @param mpsList
+ * @param lpDir_
+ * @param reader shared pointer to the archive reader to share with ZipProblemsProviderAdapter
+ * @param with_archive
+ * @param lps data from antares. Passed by reference to prevent heavy copy
+ * @return
+ */
 std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
     SolverLogManager& solver_log_manager, const std::string& solver_name,
     const std::vector<ProblemData>& mpsList, std::filesystem::path& lpDir_,
-    std::shared_ptr<ArchiveReader>& reader, bool with_archive = true,
+    std::shared_ptr<ArchiveReader> reader,
     const Antares::Solver::LpsFromAntares& lps = {}) {
   std::vector<std::string> problem_names;
   std::transform(mpsList.begin(), mpsList.end(),
@@ -192,7 +203,7 @@ std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
     }
     case SimulationInputMode::ARCHIVE: {
       auto adapter = std::make_unique<ZipProblemsProviderAdapter>(
-          lpDir_, reader, problem_names);
+          lpDir_, std::move(reader), problem_names);
       return adapter->provideProblems(solver_name, solver_log_manager);
     }
     case SimulationInputMode::ANTARES_API: {
@@ -200,8 +211,8 @@ std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
       return adapter->provideProblems(solver_name, solver_log_manager);
     }
     default:
-      // TODO : log
-      return {};
+      throw LogUtils::XpansionError<std::runtime_error>(
+          "Unhandled simulation mode", LOGLOCATION);
   }
 }
 
@@ -259,9 +270,8 @@ void ProblemGeneration::RunProblemGeneration(
                                    : InstantiateZipReader(antares_archive_path);
 
   /* Main stuff */
-  std::vector<std::shared_ptr<Problem>> xpansion_problems =
-      getXpansionProblems(solver_log_manager, solver_name, mpsList, lpDir_,
-                          reader, !antares_archive_path.empty(), lps_);
+  std::vector<std::shared_ptr<Problem>> xpansion_problems = getXpansionProblems(
+      solver_log_manager, solver_name, mpsList, lpDir_, reader, lps_);
 
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
       problems_and_data;
