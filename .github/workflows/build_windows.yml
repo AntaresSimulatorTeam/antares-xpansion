@@ -113,6 +113,7 @@ jobs:
           -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"
           -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}
           -DCMAKE_INSTALL_PREFIX=_install
+          -DPython3_EXECUTABLE="${{ env.Python3_ROOT_DIR }}/python.exe"
           -DBUILD_UI=ON
 
       - name: Build
