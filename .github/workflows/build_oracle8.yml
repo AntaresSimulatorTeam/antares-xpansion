@@ -36,17 +36,6 @@ jobs:
           path: 'antares-version.json'
           key: 'antares_xpansion_version'
 
-      - name: Set-up Xpress with pip for Ubuntu
-        shell: bash
-        run: |
-          python -m pip install "xpress>=9.2,<9.3"
-          echo ${{ env.pythonLocation }}
-          XPRESS_DIR=${{ env.pythonLocation }}/lib/python3.8/site-packages/xpress
-          echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
-          echo "XPAUTH_PATH=$XPRESS_DIR/license/community-xpauth.xpr" >> $GITHUB_ENV
-          echo "Create symbolic link for XPRESS library file because it is missing in the Python installation"
-          ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so
-
   build:
     name: Build
     runs-on: ubuntu-latest
@@ -87,12 +76,18 @@ jobs:
           pip3 install wheel #Too late to install in requirements.txt
           pip3 install -r requirements-tests.txt
 
+      - name: Set up conda
+        run: |
+          wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.5.1-0-Linux-x86_64.sh
+          bash Miniconda3-py38_23.5.1-0-Linux-x86_64.sh -b
+          rm -f Miniconda3-py38_23.5.1-0-Linux-x86_64.sh
+
       - name: Set-up Xpress with pip for Oracle 8
         shell: bash
         run: |
-          pip3 install "xpress"
-          echo ${{ env.pythonLocation }}
-          XPRESS_DIR=${{ env.pythonLocation }}/lib/python3.6/site-packages/xpress
+          export PATH=/root/miniconda3/condabin:$PATH
+          conda install -c fico-xpress "xpress>=9.2,<9.3"
+          XPRESS_DIR=/root/miniconda3/lib/python3.8/site-packages/xpress
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
           echo "XPAUTH_PATH=$XPRESS_DIR/license/community-xpauth.xpr" >> $GITHUB_ENV
           echo "Create symbolic link for XPRESS library file because it is missing in the Python installation"

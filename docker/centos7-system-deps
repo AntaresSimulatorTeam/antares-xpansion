@@ -31,6 +31,9 @@ RUN \
 RUN \
     bash Miniconda3-py38_23.5.1-0-Linux-x86_64.sh -b
 
+RUN \
+    rm -f Miniconda3-py38_23.5.1-0-Linux-x86_64.sh
+
 
 #create user
 RUN useradd user
