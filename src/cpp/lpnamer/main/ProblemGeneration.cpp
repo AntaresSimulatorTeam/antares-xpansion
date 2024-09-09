@@ -66,8 +66,8 @@ std::filesystem::path ProblemGeneration::performAntaresSimulation() {
 
   //Handle errors
   if (results.error) {
-    std::cerr << "Error: " << results.error->reason << std::endl;
-    exit(1);
+    throw LogUtils::XpansionError<std::runtime_error>(
+        "Antares simulation failed:\n\t" + results.error->reason, LOGLOCATION);
   }
 
   lps_ = std::move(results.antares_problems);
