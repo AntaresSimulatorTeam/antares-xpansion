@@ -86,6 +86,8 @@ jobs:
         shell: bash
         run: |
           export PATH=/root/miniconda3/condabin:$PATH
+          echo "************"
+          ls /root/miniconda3/condabin
           conda install -c fico-xpress "xpress>=9.2,<9.3"
           XPRESS_DIR=/root/miniconda3/lib/python3.8/site-packages/xpress
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
