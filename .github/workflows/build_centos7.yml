@@ -117,10 +117,6 @@ jobs:
           pip3 install -r requirements-tests.txt
           pip3 install -r requirements-ui.txt
 
-      - name: Install dependencies
-        run: |
-          wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.5.1-0-Linux-x86_64.sh \
-          bash Miniconda3-py38_23.5.1-0-Linux-x86_64.sh -b
 
       - name: Set-up Xpress with pip for centos 7
         shell: bash
