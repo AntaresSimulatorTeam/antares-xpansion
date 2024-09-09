@@ -78,7 +78,7 @@ jobs:
 
       - uses: conda-incubator/setup-miniconda@v3
         with:
-          miniconda-version: "23.5.1"
+          miniconda-version: "py38_23.5.1-0"
           python-version: "3.8"
 
       - name: Set-up Xpress with pip for Oracle 8
