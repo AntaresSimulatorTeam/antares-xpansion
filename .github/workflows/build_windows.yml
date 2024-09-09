@@ -61,6 +61,8 @@ jobs:
           ls $XPRESS_DIR/lib
           echo "**********"
           ls $XPRESS_DIR/bin
+          echo "**********"
+          ls $XPRESS_DIR/license
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
           echo "$XPRESS_DIR/bin" >> $GITHUB_PATH
 
