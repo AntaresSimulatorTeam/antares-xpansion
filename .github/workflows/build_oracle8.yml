@@ -83,9 +83,8 @@ jobs:
       - name: Set-up Xpress with pip for Oracle 8
         shell: bash
         run: |
-          export PATH=/root/miniconda3/condabin:$PATH
           conda install -c fico-xpress "xpress>=9.2,<9.3"
-          XPRESS_DIR=$CONDA/xpress
+          XPRESS_DIR=$CONDA/lib/python3.8/site-packages/xpress
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
           echo "XPAUTH_PATH=$XPRESS_DIR/license/community-xpauth.xpr" >> $GITHUB_ENV
           echo "Create symbolic link for XPRESS library file because it is missing in the Python installation"
