@@ -54,6 +54,10 @@ ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options)
   } else if (!options_.ArchivePath().empty()) {
     mode_ = SimulationInputMode::ARCHIVE;
   }
+  if (!mode_) {
+    throw LogUtils::XpansionError<std::runtime_error>(
+        "SimulationInputMode is unknown", LOGLOCATION);
+  }
 }
 
 std::filesystem::path ProblemGeneration::performAntaresSimulation() {
@@ -140,7 +144,7 @@ void ProblemGeneration::ExtractUtilsFiles(
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
   auto utils_files_extractor =
       LpFilesExtractor(antares_archive_path, xpansion_output_dir,
-                       std::move(logger), mode_, simulation_dir_);
+                       std::move(logger), mode_.value(), simulation_dir_);
   utils_files_extractor.ExtractFiles();
 }
 
@@ -180,7 +184,7 @@ std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
   std::transform(mpsList.begin(), mpsList.end(),
                  std::back_inserter(problem_names),
                  [](ProblemData const& data) { return data._problem_mps; });
-  switch (mode_) {
+  switch (mode_.value()) {
     case SimulationInputMode::FILE: {
       auto adapter =
           std::make_unique<FileProblemsProviderAdapter>(lpDir_, problem_names);
@@ -276,7 +280,7 @@ void ProblemGeneration::RunProblemGeneration(
       [&](const auto& problem_and_data) {
         const auto& [problem, data] = problem_and_data;
         std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
-        switch (mode_) {
+        switch (mode_.value()) {
           case SimulationInputMode::FILE:
             variables_provider = std::make_shared<ProblemVariablesFileAdapter>(
                 data, links, logger, lpDir_);

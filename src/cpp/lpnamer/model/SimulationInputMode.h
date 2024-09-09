@@ -8,5 +8,4 @@ enum class SimulationInputMode {
   ANTARES_API,
   FILE,
   ARCHIVE,
-  UNKOWN,
 };

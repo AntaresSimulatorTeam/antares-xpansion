@@ -45,9 +45,6 @@ LpFilesExtractor::areaAndIntercoPaths LpFilesExtractor::getFiles() const{
             }
           });
     } break;
-    case SimulationInputMode::UNKOWN:
-      throw LogUtils::XpansionError<std::runtime_error>(
-          "SimulationInputMode is unknown", LOGLOCATION);
     default:
       throw LogUtils::XpansionError<std::runtime_error>(
           "SimulationInputMode is not supported:", LOGLOCATION);
@@ -129,9 +126,6 @@ void LpFilesExtractor::produceAreatxtFile(
       std::filesystem::rename(vect_area_files[0],
                               this->xpansion_output_dir_ / "area.txt");
       break;
-    case SimulationInputMode::UNKOWN:
-      throw LogUtils::XpansionError<std::runtime_error>(
-          "SimulationInputMode is unknown", LOGLOCATION);
     default:
       throw LogUtils::XpansionError<std::runtime_error>(
           "SimulationInputMode is not supported:", LOGLOCATION);
@@ -190,9 +184,6 @@ void LpFilesExtractor::produceIntercotxtFile(
       std::filesystem::rename(vect_interco_files[0],
                               this->xpansion_output_dir_ / "interco.txt");
       break;
-    case SimulationInputMode::UNKOWN:
-      throw LogUtils::XpansionError<std::runtime_error>(
-          "SimulationInputMode is unknown", LOGLOCATION);
     default:
       throw LogUtils::XpansionError<std::runtime_error>(
           "SimulationInputMode is not supported:", LOGLOCATION);

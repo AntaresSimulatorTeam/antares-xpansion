@@ -50,7 +50,7 @@ class ProblemGeneration {
       std::shared_ptr<ArchiveReader>& reader, bool with_archive,
       const Antares::Solver::LpsFromAntares& lps);
   Antares::Solver::LpsFromAntares lps_;
-  SimulationInputMode mode_ = SimulationInputMode::UNKOWN;
+  std::optional<SimulationInputMode> mode_;
   virtual std::filesystem::path performAntaresSimulation();
   std::filesystem::path simulation_dir_;
 };
