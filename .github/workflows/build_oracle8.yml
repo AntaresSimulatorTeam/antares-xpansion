@@ -79,7 +79,7 @@ jobs:
       - name: Set up conda
         run: |
           wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.5.1-0-Linux-x86_64.sh
-          bash Miniconda3-py38_23.5.1-0-Linux-x86_64.sh -b -p /opt/miniconda3
+          bash Miniconda3-py38_23.5.1-0-Linux-x86_64.sh -b -p /root/miniconda3
           rm -f Miniconda3-py38_23.5.1-0-Linux-x86_64.sh
 
       - name: Set-up Xpress with pip for Oracle 8
