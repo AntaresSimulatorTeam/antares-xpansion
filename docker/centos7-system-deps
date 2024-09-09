@@ -25,6 +25,11 @@ RUN \
     yum -y install https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm &&\
     yum install -y git
 
+RUN \
+    wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.5.1-0-Linux-x86_64.sh \
+    bash Miniconda3-py38_23.5.1-0-Linux-x86_64.sh -b
+
+
 #create user
 RUN useradd user
 # USER user
