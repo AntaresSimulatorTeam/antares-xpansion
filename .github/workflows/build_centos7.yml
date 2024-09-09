@@ -120,7 +120,7 @@ jobs:
       - name: Set-up Xpress with pip for CentOS 7
         shell: bash
         run: |
-          pip3 install "xpress>=8.14.9,<9.3"
+          pip3 install "xpress"
           echo ${{ env.pythonLocation }}
           XPRESS_DIR=${{ env.pythonLocation }}/lib/python3.6/site-packages/xpress
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
