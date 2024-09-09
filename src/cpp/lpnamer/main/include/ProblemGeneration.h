@@ -8,6 +8,7 @@
 
 #include <filesystem>
 #include <string>
+#include <optional>
 
 #include "../../input_reader/MpsTxtWriter.h"
 #include "../../model/Problem.h"
