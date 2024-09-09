@@ -183,6 +183,13 @@ jobs:
         run: |
           cmake --build _build --config Release -j$(nproc)
 
+
+      - name: Run cucumber on outer_loop tests
+        uses: ./.github/workflows/cucumber-tests
+        with:
+          feature: "features/outer_loop_tests.feature"
+          mpi_path: ${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin
+
       - name: Cache vcpkg binary dir
         if: always()
         id: save-cache-vcpkg-binary

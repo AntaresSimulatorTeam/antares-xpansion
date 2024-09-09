@@ -1,0 +1,24 @@
+name: "Run cucumber tests"
+description: "Run cucumber tests"
+inputs:
+  feature:
+    description: 'Feature file or folder to run (default runs all features in "features" folder)'
+    required: false
+    default: 'features'
+  tags:
+    description: 'Tags to run (default skips tests marked @flaky)'
+    required: false
+    default: '~@flaky'
+  mpi_path:
+    description: "Mpi install directory"
+    required: true
+runs:
+  using: "composite"
+  steps:
+
+    - name: Run tests
+      shell: bash
+      run: |
+        export PATH="${{ inputs.mpi_path }}:$PATH"
+        cd tests/end_to_end
+        behave --tags ${{ inputs.tags }} cucumber/${{ inputs.feature }} --no-capture
