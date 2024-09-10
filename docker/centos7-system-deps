@@ -28,7 +28,7 @@ RUN \
 # The default python version (3.6) is too old to download xpress with pip
 # This version of miniconda embeds python3.8
 RUN \
-    yum install rh-python38
+    yum install -y rh-python38
 
 
 
