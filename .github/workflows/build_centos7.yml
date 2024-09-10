@@ -122,7 +122,7 @@ jobs:
         shell: bash
         run: |
           scl enable rh-python38 bash
-          whereis python38
+          whereis python3.8
           ls /opt/rh/rh-python38/root/usr/local/lib64/
       #          python3.8 -m pip install "xpress>=9.2,<9.3"
       #          XPRESS_DIR=/opt/rh/rh-python38/root/usr/local/lib64/python3.8/site-packages/xpress
