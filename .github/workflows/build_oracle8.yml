@@ -69,20 +69,14 @@ jobs:
           
 
 
-      - name: Set up Python
-        run: |
-          dnf update -y
-          dnf install -y python3 python3-pip
-          pip3 install wheel #Too late to install in requirements.txt
-          pip3 install -r requirements-tests.txt
-
       # the default python version (3.6) is too old to download xpress with pip
       # this version of miniconda embeds python3.8
-      - name: Set up conda
+      - name: Set up Python
         run: |
           dnf install -y oracle-epel-release-el8
           dnf install -y python38
-
+          python3.8 -m pip install wheel #Too late to install in requirements.txt
+          python3.8 -m pip install -r requirements-tests.txt
 
 
       - name: Set-up Xpress with pip for Oracle 8
