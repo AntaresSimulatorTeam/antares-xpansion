@@ -80,6 +80,7 @@ jobs:
       # this version of miniconda embeds python3.8
       - name: Set up conda
         run: |
+          yum install -y centos-release-scl
           yum install -y rh-python38
 
 
