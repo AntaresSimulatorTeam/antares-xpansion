@@ -80,8 +80,8 @@ jobs:
       # this version of miniconda embeds python3.8
       - name: Set up conda
         run: |
-          yum install -y centos-release-scl
-          yum install -y rh-python38
+          dnf install -y oracle-epel-release-el8
+          dnf install -y python38
 
 
 
@@ -90,7 +90,7 @@ jobs:
         run: |
           scl enable rh-python38 bash 
           python3.8 -m pip install "xpress>=9.2,<9.3"
-          XPRESS_DIR=/opt/rh/rh-python38/root/usr/local/lib64/python3.8/site-packages/xpress
+          XPRESS_DIR=/usr/local/lib64/python3.8/site-packages/xpress
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
           echo "XPAUTH_PATH=$XPRESS_DIR/license/community-xpauth.xpr" >> $GITHUB_ENV
           echo "Create symbolic link for XPRESS library file because it is missing in the Python installation"
