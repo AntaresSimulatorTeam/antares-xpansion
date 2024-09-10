@@ -28,13 +28,8 @@ RUN \
 # The default python version (3.6) is too old to download xpress with pip
 # This version of miniconda embeds python3.8
 RUN \
-    wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.5.1-0-Linux-x86_64.sh
+    yum install rh-python38
 
-RUN \
-    bash Miniconda3-py38_23.5.1-0-Linux-x86_64.sh -b
-
-RUN \
-    rm -f Miniconda3-py38_23.5.1-0-Linux-x86_64.sh
 
 
 #create user
