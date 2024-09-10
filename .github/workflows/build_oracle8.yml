@@ -76,6 +76,8 @@ jobs:
           pip3 install wheel #Too late to install in requirements.txt
           pip3 install -r requirements-tests.txt
 
+      # the default python version (3.6) is too old to download xpress with pip
+      # this version of miniconda embeds python3.8
       - name: Set up conda
         run: |
           wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.5.1-0-Linux-x86_64.sh
