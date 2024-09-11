@@ -10,21 +10,6 @@
 #include "multisolver_interface/../../SolverXpress.h"
 #include "multisolver_interface/environment.h"
 
-void XPRS_CC Message(XPRSprob my_prob, void *object, const char *msg, int len,
-                     int msgtype) {
-  switch (msgtype) {
-    case 4: /* error */
-    case 3: /* warning */
-    case 2: /* not used */
-    case 1: /* information */
-      printf("%s\n", msg);
-      break;
-    default: /* exiting - buffers need flushing */
-      fflush(stdout);
-      break;
-  }
-}
-
 int main(int argc, char **argv) {
   // Initialize Xpress;
   LoadXpress::XpressLoader xpressLoader;
@@ -32,7 +17,6 @@ int main(int argc, char **argv) {
   XPRSprob xprsProb;
   LoadXpress::XPRSinit(NULL);
   LoadXpress::XPRScreateprob(&xprsProb);
-  LoadXpress::XPRSaddcbmessage(xprsProb, Message, NULL, 0);
   LoadXpress::XPRSsetintcontrol(xprsProb, XPRS_OUTPUTLOG,
                                 XPRS_OUTPUTLOG_FULL_OUTPUT);
 
@@ -67,7 +51,7 @@ int main(int argc, char **argv) {
     } else {
       // Do the actual presolve work for subproblems
       std::filesystem::path fullMpsPath = lpDir / pbName;
-      LoadXpress::XPRSreadprob(xprsProb, fullMpsPath.c_str(), "");
+      LoadXpress::XPRSrestore(xprsProb, fullMpsPath.c_str(), "");
       LoadXpress::XPRSloadsecurevecs(xprsProb, 0, candidates.size(), nullptr,
                                      candidates.data());
       LoadXpress::XPRSsetintcontrol(xprsProb, XPRS_LPITERLIMIT, 0);
@@ -78,7 +62,6 @@ int main(int argc, char **argv) {
           presolvedPrefix + fullMpsPath.filename().string();
       std::filesystem::path presolvedPath =
           fullMpsPath.parent_path() / presolvedFilename;
-      LoadXpress::XPRSwriteprob(xprsProb, presolvedPath.c_str(), "");
 
       // Get candidates id in presolved problem
       int nbCols(0);
@@ -108,6 +91,17 @@ int main(int argc, char **argv) {
         presolvedCouplings[presolvedFilename.string()][varName] =
             initIdToPresolvedId[id];
       }
+
+      // Write and read again problem so that it is not in presolved state
+      // anymore, to be able to change obj function in Benders later on
+      // LoadXpress::XPRSsetintcontrol(xprsProb, XPRS_LPITERLIMIT, 2147483645);
+      LoadXpress::XPRSwriteprob(xprsProb, presolvedPath.c_str(), "");
+
+      XPRSprob xprsProbToSave;
+      LoadXpress::XPRScreateprob(&xprsProbToSave);
+      LoadXpress::XPRSreadprob(xprsProbToSave, presolvedPath.c_str(), "");
+      LoadXpress::XPRSsaveas(xprsProbToSave, presolvedPath.c_str());
+      std::filesystem::remove(presolvedPath);
     }
   }
 
