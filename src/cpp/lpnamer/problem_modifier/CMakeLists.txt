@@ -34,7 +34,6 @@ add_library(lp_namer_problem_modifier STATIC
 		${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesFileAdapter.h
 		${CMAKE_CURRENT_SOURCE_DIR}/MPSFileProblemProviderAdapter.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/MPSFileProblemProviderAdapter.h
-		${CMAKE_CURRENT_SOURCE_DIR}/LpsFromAntares.h
 		${CMAKE_CURRENT_SOURCE_DIR}/XpansionProblemsFromAntaresProvider.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/XpansionProblemsFromAntaresProvider.h
 		${CMAKE_CURRENT_SOURCE_DIR}/AntaresProblemToXpansionProblemTranslator.cpp
@@ -44,10 +43,10 @@ add_library(lp_namer_problem_modifier STATIC
 		${CMAKE_CURRENT_SOURCE_DIR}/ZipProblemsProviderAdapter.h
 		${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesFromProblemAdapter.cpp
 		${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesFromProblemAdapter.h
-		FileProblemsProviderAdapter.cpp
-		FileProblemsProviderAdapter.h
-		FileProblemProviderAdapter.cpp
-		FileProblemProviderAdapter.h
+		${CMAKE_CURRENT_SOURCE_DIR}/FileProblemsProviderAdapter.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/FileProblemsProviderAdapter.h
+		${CMAKE_CURRENT_SOURCE_DIR}/FileProblemProviderAdapter.cpp
+		${CMAKE_CURRENT_SOURCE_DIR}/FileProblemProviderAdapter.h
 )
 
 target_include_directories (lp_namer_problem_modifier
@@ -62,6 +61,7 @@ target_link_libraries (lp_namer_problem_modifier
 		lp_namer_helper
 		helpers
 		solvers
+        Antares::antares-solver-simulation
 )
 
 add_library (${PROJECT_NAME}::lp_namer_problem_modifier ALIAS lp_namer_problem_modifier)

@@ -21,6 +21,8 @@ runs:
       LSB_RELEASE_VERSION_SHORT=$(lsb_release --short --release)
       cd _install
       rm -f ./antares-xpansion-launcher*
+      ls -l
+      ls -l bin
       pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml:." --add-data "./bin/:bin"
       mv ./dist/antares-xpansion-launcher* .
       rm -rf bin

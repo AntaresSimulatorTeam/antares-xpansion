@@ -15,13 +15,35 @@ inputs:
     description: 'extra qualifiers'
     required: false
     default: ""
+  ortools-url:
+    description: 'URL for OR-Tools'
+    required: true
+  ortools-dir:
+    description: 'Destination directory for OR-Tools'
+    required: true
 
 runs:
   using: "composite"
-  steps: 
-  - id: download-extract
-    shell: bash
-    run: |
+  steps:
+    - id: download-extract
+      shell: bash
+      run: |
            wget https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{inputs.antares-version}}/rte-antares-${{inputs.antares-version}}-installer-64bits.zip
            unzip rte-antares-${{inputs.antares-version}}-installer-64bits.zip
            rm -rf rte-antares-${{inputs.antares-version}}-installer-64bits.zip
+
+    - name: Download & extract OR-Tools
+      shell: bash
+      run: |
+        mkdir "${{inputs.ortools-dir}}"
+        cd "${{inputs.ortools-dir}}"
+        wget ${{inputs.ortools-url}} -O ortools.zip
+        unzip ortools.zip
+        rm ortools.zip
+
+    - name: download-extract sirius
+      shell: bash
+      run: |
+        wget https://github.com/rte-france/sirius-solver/releases/download/antares-integration-v1.5/windows-latest_sirius-solver.zip
+        unzip windows-latest_sirius-solver.zip
+        rm -rf windows-latest_sirius-solver.zip

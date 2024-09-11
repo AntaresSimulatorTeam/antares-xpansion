@@ -49,6 +49,11 @@ class ProblemGenerationSpyAndMock : public ProblemGeneration {
     unnamed_problems_ = unnamed_problems;
   }
 
+ private:
+  std::filesystem::path performAntaresSimulation() override {
+    return options_.StudyPath() / "simulation";
+  }
+
  public:
   std::filesystem::path xpansion_output_dir_;
   std::string master_formulation_;
@@ -172,7 +177,6 @@ TEST_F(ProblemGenerationExeOptionsTest,
 }
 
 TEST_F(ProblemGenerationExeOptionsTest, study) {
-  GTEST_SKIP() << "Unimplemented";
   auto test_root =
       std::filesystem::temp_directory_path() / std::tmpnam(nullptr);
 
