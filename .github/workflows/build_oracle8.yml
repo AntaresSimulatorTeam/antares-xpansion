@@ -40,22 +40,7 @@ jobs:
     name: Build
     runs-on: ubuntu-latest
     container: 'oraclelinux:8'
-    strategy:
-      matrix:
-        xprs: [
-          # { value: XPRESS-ON, ref: 8.13a },
-          { value: XPRESS-ON, ref: master },
-          # { value: XPRESS-OFF }
-        ]
     needs: [ versions ]
-    env:
-      XPRESSDIR: ${{ github.workspace }}/xpress
-      XPRESS: ${{ github.workspace }}/xpress/bin
-      XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
-      XPRESSDIR_CONTAINER: ${GITHUB_WORKSPACE}/xpress
-      XPRESS_CONTAINER: ${GITHUB_WORKSPACE}/xpress/bin
-      XPRS_LIB_Path_CONTAINER: ${GITHUB_WORKSPACE}/xpress/lib
-      ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
 
     outputs:
       zip_name: ${{ steps.zip_name.outputs.zip_name }}
@@ -86,15 +71,7 @@ jobs:
         with:
           submodules: true
           
-      - name: Checkout xpressmp linux
-        uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.AS_TOKEN }}
-          repository: rte-france/xpress-mp
-          path: ${{ env.XPRESSDIR }}
-          github-server-url: https://github.com
-          ref: ${{matrix.xprs.ref}}
-        if: matrix.xprs.value == 'XPRESS-ON'
+
 
       - name: Set up Python
         run: |
@@ -102,6 +79,25 @@ jobs:
           dnf install -y python3 python3-pip
           pip3 install wheel #Too late to install in requirements.txt
           pip3 install -r requirements-tests.txt
+
+      # the default python version (3.6) is too old to download xpress with pip
+      # this version of miniconda embeds python3.8
+      - name: Set up conda
+        run: |
+          wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.5.1-0-Linux-x86_64.sh
+          bash Miniconda3-py38_23.5.1-0-Linux-x86_64.sh -b -p /root/miniconda3
+          rm -f Miniconda3-py38_23.5.1-0-Linux-x86_64.sh
+
+      - name: Set-up Xpress with pip for Oracle 8
+        shell: bash
+        run: |
+          export PATH=/root/miniconda3/condabin:$PATH
+          conda install -c fico-xpress "xpress>=9.2,<9.3"
+          XPRESS_DIR=/root/miniconda3/lib/python3.8/site-packages/xpress
+          echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
+          echo "XPAUTH_PATH=$XPRESS_DIR/license/community-xpauth.xpr" >> $GITHUB_ENV
+          echo "Create symbolic link for XPRESS library file because it is missing in the Python installation"
+          ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so   
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
@@ -160,8 +156,6 @@ jobs:
         shell: bash
         run: |
           export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin/:$PATH
-          export LD_LIBRARY_PATH=LD_LIBRARY_PATH:${{ env.XPRS_LIB_Path_CONTAINER }}
-          export XPRESS=${{ env.XPRESS_CONTAINER }}
           cd _build
           ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
 

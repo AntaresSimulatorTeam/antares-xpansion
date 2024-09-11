@@ -23,14 +23,7 @@ jobs:
       matrix:
         os: [ windows-latest ]
         triplet: [ x64-windows-release ]
-        xprs: [ #{ value: XPRESS-ON, ref: 8.13a },
-          { value: XPRESS-ON, ref: master },
-          #{ value: XPRESS-OFF }
-        ]
     env:
-      XPRESSDIR: ${{ github.workspace }}\xpress
-      XPRESS: ${{ github.workspace }}\xpress\bin
-      XPRS_LIB_Path: ${{ github.workspace }}\xpress\lib
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
       VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
@@ -44,23 +37,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Config OR-Tools URL
-        run: |
-          echo "ORTOOLS_URL=https://github.com/rte-france/or-tools-rte/releases/download/v9.10-rte1.2-test-3/ortools_cxx_windows-latest_static_sirius.zip" >> $GITHUB_ENV
 
-      - name: Checkout xpressmp linux
-        if: matrix.xprs.value == 'XPRESS-ON'
-        uses: actions/checkout@v4
-        with:
-          repository: rte-france/xpress-mp-temp
-          path: ${{ env.XPRESSDIR }}
-          ref: ${{matrix.xprs.ref}}
-          token: ${{ secrets.AS_TOKEN }}
 
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.x'
+          python-version: '3.8'
           cache: 'pip'
           cache-dependency-path: requirements*.txt
 
@@ -69,6 +51,16 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-tests.txt
           pip install -r requirements-ui.txt
+
+      - name: Set-up Xpress with pip
+        shell: bash
+        run: |
+          python -m pip install --no-cache-dir "xpress>=9.2,<9.3"
+          XPRESS_DIR="${{ env.pythonLocation }}\Lib\site-packages\xpress"
+          cp -r $XPRESS_DIR/lib $XPRESS_DIR/bin
+          cp $XPRESS_DIR/license/community-xpauth.xpr $XPRESS_DIR/bin/xpauth.xpr
+          echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
+          echo "$XPRESS_DIR/bin" >> $GITHUB_PATH
 
       - name: Pre-requisites
         shell: cmd
@@ -131,6 +123,7 @@ jobs:
           -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"
           -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}
           -DCMAKE_INSTALL_PREFIX=_install
+          -DPython3_EXECUTABLE="${{ env.Python3_ROOT_DIR }}/python.exe"
           -DBUILD_UI=ON
 
       - name: Build
@@ -158,8 +151,6 @@ jobs:
         shell: cmd
         run: |
           set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin
-          set PATH=%PATH%;${{ env.XPRESS }}
-          set XPRESSDIR=${{ env.XPRESSDIR }}
           cd _build
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
