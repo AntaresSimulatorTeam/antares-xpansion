@@ -46,7 +46,6 @@ class BendersMpi : public BendersBase {
 
   void solve_master_and_create_trace();
 
-
   void do_solve_master_create_trace_and_update_cuts();
 
   virtual void gather_subproblems_cut_package_and_build_cuts(
@@ -57,6 +56,8 @@ class BendersMpi : public BendersBase {
   void check_if_some_proc_had_a_failure(int success);
 
   mpi::environment &_env;
+
+  void memory();
 
  protected:
   [[nodiscard]] bool shouldParallelize() const final { return false; }
