@@ -32,9 +32,11 @@ if (NOT CMAKE_BUILD_TYPE)
 endif ()
 
 # for centos docker to run MPI tests as root
-IF (ALLOW_RUN_AS_ROOT)
-    set(ALLOW_RUN_AS_ROOT "True")
-ENDIF ()
+if (ALLOW_RUN_AS_ROOT)
+	set(ALLOW_RUN_AS_ROOT "true")
+else ()
+	set(ALLOW_RUN_AS_ROOT "false")
+endif ()
 
 # Set solvers to use
 option(COIN_OR "Use COIN Clp and Cbc solvers" ON)
@@ -43,8 +45,8 @@ option(XPRESS "Use solver FICO XPRESS" OFF)
 if (COIN_OR)
     message("Coin-OR Solvers Clp and Cbc used. Solvers version are those present in orTools release linked to project.")
 else ()
-    message(FATAL_ERRROR "COIN_OR has to be true, it is required in lpnamer module of Antares Xpansion.")
-endif ()
+	message(FATAL_ERROR "COIN_OR has to be true, it is required in lpnamer module of Antares Xpansion.")
+endif()
 
 
 # ===========================================================================
@@ -295,6 +297,13 @@ FILE(COPY ${ANTARES_SOLVER_DIR}/
         DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
         USE_SOURCE_PERMISSIONS
         FILES_MATCHING PATTERN "*.so")
+
+#Glob *.so files in antares_solver_dir
+file(GLOB_RECURSE ANTARES_SOLVER_LIBS ${ANTARES_SOLVER_DIR}/*.so)
+INSTALL(FILES ${ANTARES_SOLVER_LIBS} DESTINATION bin)
+file(GLOB_RECURSE ANTARES_SOLVER_LIBS ${ANTARES_SOLVER_DIR}/*.dll)
+INSTALL(FILES ${ANTARES_SOLVER_LIBS} DESTINATION bin)
+
 
 FILE(COPY ${ANTARES_SOLVER_DIR}/../lib/
         DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}

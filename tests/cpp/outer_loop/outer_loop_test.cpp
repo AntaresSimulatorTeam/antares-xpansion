@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
 //-------------------- MasterUpdateBaseTest -------------------------
 const auto STUDY_PATH =
     std::filesystem::path("data_test") / "external_loop_test";
-const auto LP_DIR = STUDY_PATH / "lp";
+const auto LP_DIR = std::filesystem::absolute((STUDY_PATH / "lp"));
 const auto OPTIONS_FILE = LP_DIR / "options.json";
 const auto OUTER_OPTIONS_FILE = "adequacy_criterion.yml";
 
@@ -40,6 +40,11 @@ class MasterUpdateBaseTest : public ::testing::TestWithParam<std::string> {
   Writer writer;
 
   void SetUp() override {
+    // Save the current working directory
+    original_working_dir_ = std::filesystem::current_path();
+
+    // Change to the desired working directory
+    std::filesystem::current_path(LP_DIR);
     math_log_driver = MathLoggerFactory::get_void_logger();
     logger = build_void_logger();
     writer = build_void_writer();
@@ -48,6 +53,12 @@ class MasterUpdateBaseTest : public ::testing::TestWithParam<std::string> {
     SimulationOptions options(OPTIONS_FILE);
     return options.get_benders_options();
   }
+
+  void TearDown() override {
+    // Restore the original working directory after the test
+    std::filesystem::current_path(original_working_dir_);
+  }
+  std::filesystem::path original_working_dir_;
 };
 
 auto solvers() {

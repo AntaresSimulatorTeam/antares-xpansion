@@ -26,7 +26,7 @@ jobs:
           fetch-depth: 0
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v44
+        uses: tj-actions/changed-files@v45
         with:
           files: |
             docker/centos7-system-deps
@@ -42,7 +42,7 @@ jobs:
           workdir: docker
           dockerfile: centos7-system-deps
           cache: false
-          tags: latest,1.1.0
+          tags: 1.1.0
 
   versions:
     runs-on: ubuntu-latest
@@ -65,24 +65,12 @@ jobs:
           path: 'antares-version.json'
           key: 'antares_xpansion_version'
 
+
   build:
     runs-on: ubuntu-latest
     needs: [ docker_publish, versions ]
-    container: 'antaresrte/xpansion-centos7:1.0.1'
-    strategy:
-      matrix:
-        xprs: [
-          # { value: XPRESS-ON, ref: 8.13a },
-          { value: XPRESS-ON, ref: 9.2.5 },
-          #{ value: XPRESS-OFF }
-        ]
+    container: 'antaresrte/xpansion-centos7:1.1.0'
     env:
-      XPRESSDIR: ${{ github.workspace }}/xpress
-      XPRESS: ${{ github.workspace }}/xpress/bin
-      XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
-      XPRESSDIR_CONTAINER: ${GITHUB_WORKSPACE}/xpress
-      XPRESS_CONTAINER: ${GITHUB_WORKSPACE}/xpress/bin
-      XPRS_LIB_Path_CONTAINER: ${GITHUB_WORKSPACE}/xpress/lib
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
       ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
 
@@ -115,16 +103,6 @@ jobs:
         with:
           cmake-version: '3.28.x'
 
-      - name: Checkout xpressmp linux
-        uses: actions/checkout@v3 #keep v3
-        with:
-          token: ${{ secrets.AS_TOKEN }}
-          repository: rte-france/xpress-mp
-          path: ${{ env.XPRESSDIR }}
-          github-server-url: https://github.com
-          ref: ${{matrix.xprs.ref}}
-        if: matrix.xprs.value == 'XPRESS-ON'
-
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
         with:
@@ -147,6 +125,19 @@ jobs:
           pip3 install wheel #Does not work in requirements
           pip3 install -r requirements-tests.txt
           pip3 install -r requirements-ui.txt
+
+
+      - name: Set-up Xpress with pip for centos 7
+        shell: bash
+        run: |
+          export PATH=/root/miniconda3/condabin:$PATH
+          conda install -c fico-xpress "xpress>=9.2,<9.3"
+          XPRESS_DIR=/root/miniconda3/lib/python3.8/site-packages/xpress
+          echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
+          echo "XPAUTH_PATH=$XPRESS_DIR/license/community-xpauth.xpr" >> $GITHUB_ENV
+          echo "Create symbolic link for XPRESS library file because it is missing in the Python installation"
+          ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so         
+      
 
       - name: vcpkg install
         run: |
@@ -198,6 +189,13 @@ jobs:
       - name: Build
         run: |
           cmake --build _build --config RelWithDebInfo -j$(nproc)
+
+
+      - name: Run cucumber on outer_loop tests
+        uses: ./.github/workflows/cucumber-tests
+        with:
+          feature: "features/outer_loop_tests.feature"
+          mpi_path: ${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin
 
       - name: Cache vcpkg binary dir
         if: always()
@@ -285,6 +283,119 @@ jobs:
         with:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
+
+  build_running_image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build and export
+        uses: docker/build-push-action@v6
+        with:
+          tags: centos:run
+          file: docker/centos7_test_run
+          outputs: type=docker,dest=/tmp/centos.tar
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: centos
+          path: /tmp/centos.tar
+
+  test_assets:
+    runs-on: ubuntu-latest
+    needs: [ build, build_running_image ]
+    steps:
+      - name: Download build assets
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{needs.build.outputs.TGZ_NAME}}
+
+      - name: Download image
+        uses: actions/download-artifact@v4
+        with:
+          name: centos
+          path: /tmp
+
+      - name: Load image
+        run: |
+          docker load --input /tmp/centos.tar
+
+      - name: setup
+        run: |
+          tar --strip-components=1 -xzf ${{needs.build.outputs.TGZ_NAME}}
+
+      - uses: addnab/docker-run-action@v3
+        name: Run tests
+        with:
+          image: centos:run
+          shell: bash
+          options: -v ${{ github.workspace }}:/work
+          run: |
+            export PATH=$PATH:/usr/lib64/openmpi/bin
+            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/openmpi/lib
+            cd /work
+            ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates --allow-run-as-root
+
+      - uses: addnab/docker-run-action@v3
+        name: run tests with 2 processes
+        with:
+          image: centos:run
+          shell: bash
+          options: -v ${{ github.workspace }}:/work
+          run: |
+            export PATH=$PATH:/usr/lib64/openmpi/bin
+            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/openmpi/lib
+            cd /work
+            ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2 --allow-run-as-root
+
+  test_single_file_asset:
+    runs-on: ubuntu-latest
+    needs: [ build, build_running_image ]
+    steps:
+      - name: Download build assets
+        uses: actions/download-artifact@v3
+        with:
+          name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
+
+      - name: Download image
+        uses: actions/download-artifact@v4
+        with:
+          name: centos
+          path: /tmp
+
+      - name: Load image
+        run: |
+          docker load --input /tmp/centos.tar
+
+      - name: setup
+        run: |
+          tar --strip-components=1 -xzf ${{needs.build.outputs.SINGLE_FILE_NAME}}
+
+      - uses: addnab/docker-run-action@v3
+        name: Run tests
+        with:
+          image: centos:run
+          shell: bash
+          options: -v ${{ github.workspace }}:/work
+          run: |
+            export PATH=$PATH:/usr/lib64/openmpi/bin
+            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/openmpi/lib
+            cd /work
+            ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates --allow-run-as-root
+
+      - uses: addnab/docker-run-action@v3
+        name: run tests with 2 processes
+        with:
+          image: centos:run
+          shell: bash
+          options: -v ${{ github.workspace }}:/work
+          run: |
+            export PATH=$PATH:/usr/lib64/openmpi/bin
+            export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib64/openmpi/lib
+            cd /work
+            ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2 --allow-run-as-root
 
   release:
     runs-on: ubuntu-latest

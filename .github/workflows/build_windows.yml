@@ -1,0 +1,297 @@
+name: Windows build
+
+on:
+  merge_group:
+  push:
+    branches:
+      - main
+      - develop
+      - dependabot/*
+      - release/*
+  pull_request:
+  release:
+    types: [ created ]
+
+env:
+  GITHUB_TOKEN: ${{ github.token }}
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    if: "!contains(github.event.head_commit.message, '[skip ci]')"
+    strategy:
+      matrix:
+        os: [ windows-latest ]
+        triplet: [ x64-windows-release ]
+    env:
+      # Indicates the location of the vcpkg as a Git submodule of the project repository.
+      VCPKG_ROOT: ${{ github.workspace }}/vcpkg
+      VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
+
+    outputs:
+      zip_name: ${{ steps.zip_name.outputs.zip_name }}
+      singlefile_name: ${{steps.zip_name.outputs.singlefile_name}}
+      version: ${{ steps.antares-xpansion-version.outputs.result }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.8'
+          cache: 'pip'
+          cache-dependency-path: requirements*.txt
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements-tests.txt
+          pip install -r requirements-ui.txt
+
+      - name: Set-up Xpress with pip
+        shell: bash
+        run: |
+          python -m pip install --no-cache-dir "xpress>=9.2,<9.3"
+          XPRESS_DIR="${{ env.pythonLocation }}\Lib\site-packages\xpress"
+          cp -r $XPRESS_DIR/lib $XPRESS_DIR/bin
+          cp $XPRESS_DIR/license/community-xpauth.xpr $XPRESS_DIR/bin/xpauth.xpr
+          echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
+          echo "$XPRESS_DIR/bin" >> $GITHUB_PATH
+
+      - name: Pre-requisites
+        shell: cmd
+        run: |
+          choco install wget zip unzip --no-progress
+          wget -nv https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
+          msmpisetup.exe -unattend
+
+      - name: Read antares-solver version
+        id: antares-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_version'
+
+      - name: Read antares-xpansion version
+        id: antares-xpansion-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_xpansion_version'
+
+      - name: vcpkg install
+        shell: bash
+        run: |
+          git submodule update --remote --init vcpkg
+          pushd vcpkg
+          ./bootstrap-vcpkg.bat -disableMetrics
+
+      - name: Restore vcpkg binary dir from cache
+        id: cache-vcpkg-binary
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ github.workspace }}/vcpkg_cache
+          key: vcpkg-cache-windows-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
+          # Allows to restore a cache when deps have only partially changed (like adding a dependency)
+          restore-keys: vcpkg-cache-windows-
+
+      - name: Download pre-compiled librairies
+        uses: ./.github/workflows/download-extract-precompiled-libraries-zip
+        with:
+          antares-version: ${{steps.antares-version.outputs.result}}
+          os: ${{matrix.os}}
+
+      - name: Configure
+        shell: bash
+        run: >
+          cmake -B _build -S .
+          -DCMAKE_PREFIX_PATH="${{github.workspace}}/rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits"
+          -DBUILD_TESTING=ON
+          -DCMAKE_BUILD_TYPE=Release
+          -DCMAKE_TOOLCHAIN_FILE="${{env.VCPKG_ROOT}}/scripts/buildsystems/vcpkg.cmake"
+          -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }}
+          -DCMAKE_INSTALL_PREFIX=_install
+          -DPython3_EXECUTABLE="${{ env.Python3_ROOT_DIR }}/python.exe"
+          -DBUILD_UI=ON
+
+      - name: Build
+        run: |
+          cmake --build _build --config Release -j4
+
+
+      - name: Run cucumber on outer_loop tests
+        uses: ./.github/workflows/cucumber-tests
+        with:
+          feature: "features/outer_loop_tests.feature"
+          mpi_path: /c/Program Files/Microsoft MPI/Bin
+
+      
+      - name: Cache vcpkg binary dir
+        if: always()
+        id: save-cache-vcpkg-binary
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ github.workspace }}/vcpkg_cache
+          key: vcpkg-cache-windows-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
+
+      - name: Running unit tests
+        timeout-minutes: 120
+        shell: cmd
+        run: |
+          set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin
+          cd _build
+          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
+
+      ##############
+      - name: install
+        run: |
+          cd _build
+          cmake --install .
+
+      - name: Create installer .zip
+        shell: bash
+        run: |
+          cd _build
+          cpack -G ZIP
+          export ZIP_NAME=$(ls *.zip)
+          echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
+
+      - name: Upload installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{env.ZIP_NAME}}
+          path: _build/${{env.ZIP_NAME}}
+
+      - name: Create single file .zip
+        id: create-single-file
+        uses: ./.github/workflows/single-file-creation-zip
+        with:
+          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
+
+      - name: Upload single file
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ steps.create-single-file.outputs.archive-name }}
+          path: ${{ steps.create-single-file.outputs.archive-path }}
+
+      - id: zip_name
+        shell: bash
+        run: |
+          echo "zip_name=${{env.ZIP_NAME}}" >> "$GITHUB_OUTPUT"
+          echo "singlefile_name=${{steps.create-single-file.outputs.archive-name}}" >> "$GITHUB_OUTPUT"
+          
+          
+
+  userguide:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'release' && github.event.action == 'created'
+    outputs:
+      pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Read antares-xpansion version
+        id: antares-xpansion-version
+        uses: ./.github/actions/read-json-value
+        with:
+          path: 'antares-version.json'
+          key: 'antares_xpansion_version'
+
+      - id: create-user-guide
+        name: user guide pdf creation
+        uses: ./.github/workflows/generate-userguide-pdf
+        with:
+          antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
+
+      - name: user guide upload
+        id: userguide_upload
+        uses: actions/upload-artifact@v4
+        with:
+          name: user-guide
+          path: ${{ steps.create-user-guide.outputs.pdf-path }}
+
+  test_assets:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ windows-latest ]
+    needs: [ build ]
+    steps:
+      - name: Download build assets
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{needs.build.outputs.zip_name}}
+      - name: setup
+        run: |
+          unzip ${{needs.build.outputs.zip_name}}
+
+      - name: run launcher
+        run: |
+          cd antaresXpansion-${{needs.build.outputs.version}}-win64
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
+
+      - name: run launcher parallel
+        run: |
+          cd antaresXpansion-${{needs.build.outputs.version}}-win64
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
+
+  test_single_file_asset:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ windows-latest ]
+
+    needs: [ build ]
+    steps:
+      - name: Download build assets
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{needs.build.outputs.singlefile_name}}
+      - name: setup
+        run: |
+          unzip ${{needs.build.outputs.singlefile_name}}
+
+      - name: run launcher
+        run: |
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
+      - name: run launcher parallel
+        run: |
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2   
+
+  upload_asset_to_release:
+    if: github.event_name == 'release' && github.event.action == 'created'
+    runs-on: ubuntu-latest
+    needs: [build, userguide]
+    env:
+      ZIP_NAME: ${{needs.build.outputs.zip_name}}
+      SINGLEFILE_NAME: ${{needs.build.outputs.singlefile_name}}
+    steps:
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@main
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{env.ZIP_NAME}}
+          path: .
+
+      - name: Download Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{env.SINGLEFILE_NAME}}
+          path: .
+
+      - name: Upload Release Asset
+        env:
+          GH_REPO: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} ${{env.ZIP_NAME}}
+          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} ${{env.SINGLEFILE_NAME}}
+
+      ########################

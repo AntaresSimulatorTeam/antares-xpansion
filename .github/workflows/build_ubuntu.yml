@@ -14,6 +14,7 @@ on:
 
 env:
   GITHUB_TOKEN: ${{ github.token }}
+  PYTHON_VERSION: 3.8
 
 jobs:
   build:
@@ -22,15 +23,7 @@ jobs:
     strategy:
       matrix:
         os: [ ubuntu-20.04 ]
-        xprs: [
-          #{ value: XPRESS-ON, ref: 8.13a },
-          { value: XPRESS-ON, ref: 9.2.5 },
-          #       { value: XPRESS-OFF }
-        ]
     env:
-      XPRESSDIR: ${{ github.workspace }}/xpress
-      XPRESS: ${{ github.workspace }}/xpress/bin
-      XPRS_LIB_Path: ${{ github.workspace }}/xpress/lib
       VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
       ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
 
@@ -43,14 +36,7 @@ jobs:
         with:
           submodules: true
 
-      - name: Checkout xpressmp linux
-        if: matrix.xprs.value == 'XPRESS-ON'
-        uses: actions/checkout@v4
-        with:
-          repository: rte-france/xpress-mp
-          path: ${{ env.XPRESSDIR }}
-          ref: ${{ matrix.xprs.ref}}
-          token: ${{ secrets.AS_TOKEN }} #reniew token periodically
+
 
       - name: Install mandatory system libraries
         run: |
@@ -66,15 +52,27 @@ jobs:
 
       - name: Set up Python
         uses: actions/setup-python@v5
+        id: python-setup
         with:
           cache: 'pip'
-          python-version: 3.8
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements-tests.txt
           pip install -r requirements-ui.txt
+
+      - name: Set-up Xpress with pip for Ubuntu
+        shell: bash
+        run: |
+          python -m pip install "xpress>=9.2,<9.3"
+          echo ${{ env.pythonLocation }}
+          XPRESS_DIR=${{ env.pythonLocation }}/lib/python${{ env.PYTHON_VERSION }}/site-packages/xpress
+          echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
+          echo "XPAUTH_PATH=$XPRESS_DIR/license/community-xpauth.xpr" >> $GITHUB_ENV
+          echo "Create symbolic link for XPRESS library file because it is missing in the Python installation"
+          ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so          
 
       - name: Update alternatives
         #mpicxx  uses "g++" so we need g++ to be symbolic link to g++-10
