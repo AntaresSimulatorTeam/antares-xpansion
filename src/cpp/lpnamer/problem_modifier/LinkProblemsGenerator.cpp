@@ -46,8 +46,8 @@ void LinkProblemsGenerator::treat(
   }
   auto problem_modifier = ProblemModifier(logger_);
   problem_modifier.changeProblem(problem, _links, problem_variables.ntc_columns,
-      problem_variables.direct_cost_columns,
-      problem_variables.indirect_cost_columns);
+                                 problem_variables.direct_cost_columns,
+                                 problem_variables.indirect_cost_columns);
 
   // couplings creation
   for (const ActiveLink &link : _links) {
@@ -61,13 +61,14 @@ void LinkProblemsGenerator::treat(
   }
   auto const lp_mps_name = lpDir_ / problem->_name;
   problem->_name = lp_mps_name.string();
+  std::filesystem::remove(lp_mps_name);
   writer->Write_problem(problem);
 }
 
 void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
                                       Couplings &couplings,
                                       const std::vector<ProblemData> &mps_list,
-                                      IProblemWriter* writer) {
+                                      IProblemWriter *writer) {
   std::for_each(
       std::execution::par, mps_list.begin(), mps_list.end(),
       [&](const auto &mps) {

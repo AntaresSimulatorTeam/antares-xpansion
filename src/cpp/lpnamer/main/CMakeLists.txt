@@ -10,7 +10,7 @@
 # Problem Generation  runner lib
 # ---------------------------------------------------------------------------
 
-find_package(ittapi REQUIRED)
+# find_package(ittapi REQUIRED)
 add_library (problem_generation_main STATIC
 	${CMAKE_CURRENT_SOURCE_DIR}/ProblemGenerationExeOptions.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ProblemGeneration.cpp
@@ -31,7 +31,7 @@ target_link_libraries (problem_generation_main
 		Boost::boost Boost::program_options Boost::serialization
 		helpers
 		Antares::solver_api
-		ittapi::ittnotify
+		# ittapi::ittnotify
 		PUBLIC
 		Antares::antares-solver-simulation
 )
