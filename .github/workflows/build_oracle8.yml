@@ -42,6 +42,9 @@ jobs:
     container: 'oraclelinux:8'
     needs: [ versions ]
 
+    env:
+      ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
+
     outputs:
       zip_name: ${{ steps.zip_name.outputs.zip_name }}
       singlefile_name: ${{ steps.zip_name.outputs.singlefile_name }}
