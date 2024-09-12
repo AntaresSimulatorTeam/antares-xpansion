@@ -71,11 +71,6 @@ SolverXpress::~SolverXpress() {
     std::lock_guard<std::mutex> guard(license_guard);
     _NumberOfProblems -= 1;
     SolverXpress::free();
-
-    if (_NumberOfProblems == 0) {
-      int status = XPRSfree();
-      zero_status_check(status, "free XPRESS environment", LOGLOCATION);
-    }
   }
   if (_log_stream.is_open()) {
     _log_stream.close();
@@ -107,7 +102,9 @@ void SolverXpress::init() {
 void SolverXpress::free() {
   int status = XPRSdestroyprob(_xprs);
   _xprs = NULL;
-  zero_status_check(status, "destroy XPRESS problem", LOGLOCATION);
+  if (!status) {
+    std::cerr << "Failed to destroy XPRESS problem " << LOGLOCATION << "\n";
+  }
 }
 
 /*************************************************************************************************
