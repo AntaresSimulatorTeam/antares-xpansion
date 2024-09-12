@@ -163,7 +163,6 @@ int BendersMainFactory::RunExternalLoop() const {
                                        &criterion_computation);
 
     double tau = 0.5;
-    double epsilon_lambda = 0.1;
 
     std::shared_ptr<Outerloop::IMasterUpdate> master_updater =
         std::make_shared<Outerloop::MasterUpdateBase>(

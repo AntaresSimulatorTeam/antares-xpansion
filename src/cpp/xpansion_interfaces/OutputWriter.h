@@ -27,26 +27,28 @@ const std::string ANTARES_C("antares"), VERSION_C("version"),
     PROBLEMPATH_C("problem_path"),
     CUMULATIVE_NUMBER_OF_SUBPROBLEM_RESOLVED_C(
         "cumulative_number_of_subproblem_resolutions");
+
 struct CandidateData {
-  std::string name;
-  double invest;
-  double min;
-  double max;
+  std::string name = "";
+  double invest = 0.;
+  double min = 0.;
+  double max = 0.;
 };
+
 typedef std::vector<CandidateData> CandidatesVec;
 struct Iteration {
-  double master_duration;
-  double subproblem_duration;
-  double lb;
-  double ub;
-  double best_ub;
-  double optimality_gap;
-  double relative_gap;
-  double investment_cost;
-  double operational_cost;
-  double overall_cost;
-  CandidatesVec candidates;
-  int cumulative_number_of_subproblem_resolved;
+  double master_duration = 0.;
+  double subproblem_duration = 0.;
+  double lb = 0.;
+  double ub = 0.;
+  double best_ub = 0.;
+  double optimality_gap = 0.;
+  double relative_gap = 0.;
+  double investment_cost = 0.;
+  double operational_cost = 0.;
+  double overall_cost = 0.;
+  CandidatesVec candidates = {};
+  int cumulative_number_of_subproblem_resolved = 0;
 };
 typedef std::vector<Iteration> Iterations;
 /*!
@@ -56,11 +58,11 @@ typedef std::vector<Iteration> Iterations;
  *   solution : solution data as iteration
  */
 struct SolutionData {
-  Iteration solution;
-  int nbWeeks_p;
-  int best_it;
-  std::string problem_status;
-  std::string stopping_criterion;
+  Iteration solution = {};
+  int nbWeeks_p = 0;
+  int best_it = 0;
+  std::string problem_status = "";
+  std::string stopping_criterion = "";
 };
 /*!
  *  \brief struct containing some entries to be later written to the json file
@@ -73,16 +75,18 @@ struct SolutionData {
  *   max_iter : maximum number of iterations
  */
 struct IterationsData {
-  int nbWeeks_p;
-  double elapsed_time;
-  Iterations iters;
-  SolutionData solution_data;
+  int nbWeeks_p = 0;
+  double elapsed_time = 0;
+  Iterations iters = {};
+  SolutionData solution_data = {};
 };
+
 struct ProblemData {
-  std::string name;
-  std::filesystem::path path;
-  std::string status;
+  std::string name = "";
+  std::filesystem::path path = "";
+  std::string status = "";
 };
+
 /*!
  * \class OutputWriter
  * \brief OutputWriter class to describe the execuion session of an antares

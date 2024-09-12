@@ -147,7 +147,6 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   // get added constraint infos (coeff, sign & rhs)
   std::vector<int> mstart(1 + 1);
   auto n_elems = benders->MasterGetNElems();
-  auto nnz = master_variables.size();
   std::vector<int> mclind(n_elems);
   std::vector<double> matval(n_elems);
   std::vector<int> p_nels(1, 0);

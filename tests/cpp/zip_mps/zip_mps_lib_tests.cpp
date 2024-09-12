@@ -139,17 +139,17 @@ void compareArchiveAndDir(const std::filesystem::path& archivePath,
   reader = mz_zip_reader_create();
   const auto& archive_path_str = archivePath.string();
   auto archive_path_c_str = archive_path_str.c_str();
-  assert(mz_zip_reader_open_file(reader, archive_path_c_str) == MZ_OK);
+  ASSERT_EQ(mz_zip_reader_open_file(reader, archive_path_c_str), MZ_OK);
 
   for (const auto& file : std::filesystem::directory_iterator(dirPath)) {
     const auto& filename_path = file.path().filename();
     const auto& filename_str = filename_path.string();
     const auto searchFilename = filename_str.c_str();
-    assert(mz_zip_reader_locate_entry(reader, searchFilename, 1) == MZ_OK);
-    assert(mz_zip_reader_entry_open(reader) == MZ_OK);
+    ASSERT_EQ(mz_zip_reader_locate_entry(reader, searchFilename, 1), MZ_OK);
+    ASSERT_EQ(mz_zip_reader_entry_open(reader), MZ_OK);
     const auto extractedFilePath = tmpDir / searchFilename;
     mz_zip_reader_entry_save_file(reader, extractedFilePath.string().c_str());
-    assert(equal_files(extractedFilePath, file.path()));
+    ASSERT_TRUE(equal_files(extractedFilePath, file.path()));
   }
   mz_zip_reader_close(reader);
   mz_zip_reader_delete(&reader);

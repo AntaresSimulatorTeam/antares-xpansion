@@ -949,14 +949,11 @@ TEST(MathLoggerBendersByBatchTest, DataInFileLong) {
 }
 
 TEST(MathLoggerBendersByBatchTest, DataInStdOutShort) {
-  HEADERSTYPE headers_type = HEADERSTYPE::SHORT;
   std::streamsize width = 25;
 
   CurrentIterationData data;
   data.it = 35;
   data.lb = 256999;
-  // data.ub = 222256999;
-  // data.best_ub = 222256999;
   data.min_simplexiter = 3;
   data.max_simplexiter = 30;
   data.number_of_subproblem_solved = 657;
@@ -965,8 +962,6 @@ TEST(MathLoggerBendersByBatchTest, DataInStdOutShort) {
   data.timer_master = 10;
   data.subproblems_walltime = 16;
   data.subproblems_cumulative_cputime = 160;
-  auto time_not_solving =
-      data.iteration_time - data.timer_master - data.subproblems_walltime;
 
   std::ostringstream expected_msg;
   expected_msg << std::left << std::setw(width) << data.it;
@@ -1055,7 +1050,6 @@ TEST(MathLoggerBendersBaseTest, DataInFileLong) {
 }
 
 TEST(MathLoggerBendersBaseTest, DataInStdOutShort) {
-  HEADERSTYPE headers_type = HEADERSTYPE::SHORT;
   std::streamsize width = 25;
 
   CurrentIterationData data;
@@ -1071,8 +1065,6 @@ TEST(MathLoggerBendersBaseTest, DataInStdOutShort) {
   data.timer_master = 10;
   data.subproblems_walltime = 16;
   data.subproblems_cumulative_cputime = 160;
-  auto time_not_solving =
-      data.iteration_time - data.timer_master - data.subproblems_walltime;
 
   std::ostringstream expected_msg;
   expected_msg << std::left << std::setw(width) << data.it;

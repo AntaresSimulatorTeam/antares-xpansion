@@ -701,7 +701,6 @@ TEST_F(ProblemModifierTest, candidateWithNullProfileIsRemoved) {
                                  p_direct_cost_columns,
                                  p_indirect_cost_columns);
 
-  const int cand1_id = -1;
 
   ASSERT_THROW(problem_modifier.get_candidate_col_id(cand1.name),
                std::runtime_error);
@@ -936,7 +935,6 @@ TEST_F(ProblemModifierTestMultiChronicle, candidateWithNotNullProfileExists) {
                                  p_direct_cost_columns,
                                  p_indirect_cost_columns);
 
-  const int cand1_id = 3;
 
   ASSERT_TRUE(problem_modifier.has_candidate_col_id(cand1.name));
 }

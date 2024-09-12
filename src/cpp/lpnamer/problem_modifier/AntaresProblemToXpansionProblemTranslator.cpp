@@ -29,9 +29,6 @@ AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
       convertSignToLEG(hebdo->Sens.data()).data(), hebdo->SecondMembre.data(),
       {}, constant->Mdeb.data(), constant->IndicesColonnes.data(),
       constant->CoefficientsDeLaMatriceDesContraintes.data());
-  auto rows = problem->get_nrows();
-  auto cols = problem->get_ncols();
-  auto elem = problem->get_nelems();
   // On peut ajouter la partie qui renomme les variables ici si on stocke les
   // données du type de variables dans ConstantDataFromAntares, i.e. en
   // définissant une autre implémentation de IProblemVariablesProviderPort

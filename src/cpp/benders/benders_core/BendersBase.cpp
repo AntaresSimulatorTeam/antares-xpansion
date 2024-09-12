@@ -345,7 +345,6 @@ void BendersBase::ComputeXCut() {
 void BendersBase::ComputeInvestCost() {
   _data.invest_cost = 0;
 
-  int ncols = _master->_solver->get_ncols();
   std::vector<double> obj(MasterObjectiveFunctionCoeffs());
 
   for (const auto &[col_name, value] : _data.x_cut) {

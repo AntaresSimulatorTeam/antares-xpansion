@@ -59,7 +59,8 @@ int32_t ArchiveWriter::AddFileInArchive(const FileBuffer& FileBufferToAdd) {
   }
   const auto len = FileBufferToAdd.buffer.size();
   auto bw = mz_zip_writer_entry_write(pmz_zip_writer_instance_,
-                                      FileBufferToAdd.buffer.c_str(), len);
+                                      FileBufferToAdd.buffer.c_str(),
+                                      static_cast<int32_t>(len));
   if (bw != len) {
     Close();
     Delete();

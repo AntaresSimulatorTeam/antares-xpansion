@@ -46,25 +46,25 @@ inline std::string criterion_to_str(
 }
 
 struct LogData {
-  double lb;
-  double best_ub;
-  double ub;
-  int it;
-  int best_it;
-  double subproblem_cost;
-  double invest_cost;
-  LogPoint x_in;
-  LogPoint x_out;
-  LogPoint x_cut;
-  LogPoint min_invest;
-  LogPoint max_invest;
-  double optimality_gap;
-  double relative_gap;
-  int max_iterations;
-  double benders_elapsed_time;
-  double master_time;
-  double subproblem_time;
-  int cumulative_number_of_subproblem_resolved;
+  double lb = 0.;
+  double best_ub = 0.;
+  double ub = 0.;
+  int it = 0;
+  int best_it = 0;
+  double subproblem_cost = 0.;
+  double invest_cost = 0.;
+  LogPoint x_in = {};
+  LogPoint x_out = {};
+  LogPoint x_cut = {};
+  LogPoint min_invest = {};
+  LogPoint max_invest = {};
+  double optimality_gap = 0.;
+  double relative_gap = 0.;
+  int max_iterations = 0;
+  double benders_elapsed_time = 0.;
+  double master_time = 0.;
+  double subproblem_time = 0.;
+  int cumulative_number_of_subproblem_resolved = 0;
 };
 
 /**
