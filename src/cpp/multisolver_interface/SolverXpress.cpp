@@ -287,16 +287,16 @@ int SolverXpress::get_col_index(std::string const &name) {
   return id;
 }
 
-std::vector<std::string> SolverXpress::get_names(int type, size_t nelements) {
+std::vector<std::string> SolverXpress::get_names(int type, int n_elements) {
   int xprs_name_length;
   zero_status_check(XPRSgetintattrib(_xprs, XPRS_NAMELENGTH, &xprs_name_length),
                     "get xprs name length", LOGLOCATION);
 
   std::string names_in_one_string;
-  names_in_one_string.resize((8 * xprs_name_length + 1) * nelements);
+  names_in_one_string.resize((8 * xprs_name_length + 1) * n_elements);
 
   zero_status_check(
-      XPRSgetnames(_xprs, type, names_in_one_string.data(), 0, nelements - 1),
+      XPRSgetnames(_xprs, type, names_in_one_string.data(), 0, n_elements - 1),
       "get " + TYPETONAME.at(type) + " names.", LOGLOCATION);
 
   return StringManip::split(StringManip::trim(names_in_one_string), '\0');
@@ -394,7 +394,8 @@ void SolverXpress::add_names(int type, const std::vector<std::string> &cnames,
 void SolverXpress::chg_obj(const std::vector<int> &mindex,
                            const std::vector<double> &obj) {
   assert(obj.size() == mindex.size());
-  int status = XPRSchgobj(_xprs, obj.size(), mindex.data(), obj.data());
+  int status = XPRSchgobj(_xprs, static_cast<int>(obj.size()), mindex.data(),
+                          obj.data());
   zero_status_check(status, "change objective", LOGLOCATION);
 }
 
@@ -409,16 +410,16 @@ void SolverXpress::chg_bounds(const std::vector<int> &mindex,
                               const std::vector<double> &bnd) {
   assert(qbtype.size() == mindex.size());
   assert(bnd.size() == mindex.size());
-  int status = XPRSchgbounds(_xprs, mindex.size(), mindex.data(), qbtype.data(),
-                             bnd.data());
+  int status = XPRSchgbounds(_xprs, static_cast<int>(mindex.size()),
+                             mindex.data(), qbtype.data(), bnd.data());
   zero_status_check(status, "change bounds", LOGLOCATION);
 }
 
 void SolverXpress::chg_col_type(const std::vector<int> &mindex,
                                 const std::vector<char> &qctype) {
   assert(qctype.size() == mindex.size());
-  int status =
-      XPRSchgcoltype(_xprs, mindex.size(), mindex.data(), qctype.data());
+  int status = XPRSchgcoltype(_xprs, static_cast<int>(mindex.size()),
+                              mindex.data(), qctype.data());
   zero_status_check(status, "change column types", LOGLOCATION);
 }
 
