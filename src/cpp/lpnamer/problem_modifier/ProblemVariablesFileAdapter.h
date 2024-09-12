@@ -9,13 +9,13 @@
 class ProblemVariablesFileAdapter : public IProblemVariablesProviderPort {
  public:
   ProblemVariablesFileAdapter(
-      ProblemData data, std::vector<struct ActiveLink> vector_1,
+      ProblemData data, std::vector<ActiveLink> vector_1,
       std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger>
           shared_ptr_1,
       std::filesystem::path path);
   ProblemVariables Provide() override;
   const ProblemData problem_data_;
-  const std::vector<struct ActiveLink> active_links_;
+  const std::vector<ActiveLink> active_links_;
   std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
   void extract_variables(
       const std::filesystem::path& file, std::vector<std::string>& var_names,
