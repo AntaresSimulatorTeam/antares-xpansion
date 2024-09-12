@@ -111,8 +111,8 @@ void SolverXpress::free() {
   int status = XPRSdestroyprob(_xprs);
   _xprs = NULL;
   if (status) {
-    std::cerr << "Failed destroy XPRESS problem with status: " << status << " "
-              << LOGLOCATION;
+    std::cerr << "Failed to destroy XPRESS problem with status: " << status
+              << " " << LOGLOCATION;
   }
 }
 
