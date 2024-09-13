@@ -4,8 +4,11 @@
 
 #pragma once
 
+#include <antares/solver/lps/LpsFromAntares.h>
+
 #include <filesystem>
 #include <string>
+#include <optional>
 
 #include "../../input_reader/MpsTxtWriter.h"
 #include "../../model/Problem.h"
@@ -45,7 +48,10 @@ class ProblemGeneration {
   std::vector<std::shared_ptr<Problem>> getXpansionProblems(
       SolverLogManager& solver_log_manager, const std::string& solver_name,
       const std::vector<ProblemData>& mpsList, std::filesystem::path& lpDir_,
-      std::shared_ptr<ArchiveReader>& reader, bool with_archive);
-  SimulationInputMode mode_ = SimulationInputMode::UNKOWN;
+      std::shared_ptr<ArchiveReader> reader,
+      const Antares::Solver::LpsFromAntares& lps);
+  Antares::Solver::LpsFromAntares lps_;
+  std::optional<SimulationInputMode> mode_;
+  virtual std::filesystem::path performAntaresSimulation();
   std::filesystem::path simulation_dir_;
 };

@@ -1,12 +1,11 @@
 import argparse
+import sys
 from typing import List
 
-import sys
-from antares_xpansion.launcher_options_default_value import LauncherOptionsDefaultValues
-
-from antares_xpansion.xpansionConfig import InputParameters
 from antares_xpansion.__version__ import __version__, __antares_simulator_version__
+from antares_xpansion.launcher_options_default_value import LauncherOptionsDefaultValues
 from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
+from antares_xpansion.xpansionConfig import InputParameters
 
 
 class InputParser:
@@ -77,6 +76,11 @@ class InputParser:
                                  default=LauncherOptionsDefaultValues.DEFAULT_VALUE(),
                                  action='store_true',
                                  help='allow-run-as-root option (linux only)')
+        self.parser.add_argument("--memory",
+                                 dest=LauncherOptionsKeys.memory_key(),
+                                 default=False,
+                                 action='store_true',
+                                 help="Work in memory, don't write file if possible")
 
     def parse_args(self, args: List[str] = None) -> InputParameters:
         params = self.parser.parse_args(args)
@@ -95,6 +99,7 @@ class InputParser:
             keep_mps=params.keep_mps,
             oversubscribe=params.oversubscribe,
             allow_run_as_root=params.allow_run_as_root,
+            memory=params.memory,
         )
         return my_parameters
 

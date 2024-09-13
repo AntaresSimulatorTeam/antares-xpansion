@@ -122,7 +122,6 @@ void SolverCbc::write_prob_mps(const std::filesystem::path &filename) {
   }
 
   {
-    auto mcol = _clp_inner_solver.getMatrixByCol();
     auto col = *(_clp_inner_solver.getMatrixByCol());
     auto infinity = _clp_inner_solver.getInfinity();
     writer.setMpsData(
