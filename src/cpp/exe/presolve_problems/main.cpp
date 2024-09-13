@@ -48,6 +48,7 @@ int main(int argc, char **argv) {
       std::execution::par, pbNameTocandidatesId.begin(),
       pbNameTocandidatesId.end(), [&](const auto &pbNameAndCandidate) {
         auto [pbName, candidates] = pbNameAndCandidate;
+        std::cout << pbName << std::endl;
         if (pbName == "master") {
           // Copy couplings for master
           for (auto &[varName, id] : couplings[pbName]) {
