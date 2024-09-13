@@ -150,7 +150,7 @@ jobs:
         continue-on-error: true
         run: |
           cd $GITHUB_WORKSPACE/_build
-          ctest -C Release --output-on-failure -L "unit"
+          ctest -C Release --output-on-failure -L "unit|short"
 
       - name: Compile coverage reports
         run: |
