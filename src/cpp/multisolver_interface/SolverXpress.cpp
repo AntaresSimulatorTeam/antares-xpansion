@@ -74,7 +74,12 @@ SolverXpress::~SolverXpress() {
 
     if (_NumberOfProblems == 0) {
       int status = XPRSfree();
-      zero_status_check(status, "free XPRESS environment", LOGLOCATION);
+      if (status) {
+        for (auto &stream : get_stream()) {
+          *stream << "Failed to free XPRESS environment with status: " << status
+                  << LOGLOCATION;
+        }
+      }
     }
   }
   if (_log_stream.is_open()) {
@@ -107,7 +112,12 @@ void SolverXpress::init() {
 void SolverXpress::free() {
   int status = XPRSdestroyprob(_xprs);
   _xprs = NULL;
-  zero_status_check(status, "destroy XPRESS problem", LOGLOCATION);
+  if (status) {
+    for (auto &stream : get_stream()) {
+      *stream << "Failed to destroy XPRESS problem with status: " << status
+              << " " << LOGLOCATION;
+    }
+  }
 }
 
 /*************************************************************************************************
