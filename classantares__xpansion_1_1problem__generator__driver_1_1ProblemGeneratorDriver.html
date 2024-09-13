@@ -169,6 +169,8 @@ None&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b> (self, <
 <tr class="separator:a173b2155bc9790fb048409b766a2ce78"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a57b147627ce44e3ca6815ea09727b464" id="r_a57b147627ce44e3ca6815ea09727b464"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classantares__xpansion_1_1problem__generator__driver_1_1ProblemGeneratorDriver.html#a57b147627ce44e3ca6815ea09727b464">launch</a> (self, Path output_path, bool is_relaxed)</td></tr>
 <tr class="separator:a57b147627ce44e3ca6815ea09727b464"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaf34454184efdb771b32b6b04edeb88e" id="r_aaf34454184efdb771b32b6b04edeb88e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classantares__xpansion_1_1problem__generator__driver_1_1ProblemGeneratorDriver.html#aaf34454184efdb771b32b6b04edeb88e">launch_memory</a> (self, Path study_path, bool is_relaxed)</td></tr>
+<tr class="separator:aaf34454184efdb771b32b6b04edeb88e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a09a28ccb4f1461893e52b001dc4b250c" id="r_a09a28ccb4f1461893e52b001dc4b250c"><td class="memItemLeft" align="right" valign="top"><a id="a09a28ccb4f1461893e52b001dc4b250c" name="a09a28ccb4f1461893e52b001dc4b250c"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>set_output_path</b> (self, output_path)</td></tr>
 <tr class="separator:a09a28ccb4f1461893e52b001dc4b250c"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -217,6 +219,12 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:abccfd12ccfc3e0429da0f14058e597b2" id="r_abccfd12ccfc3e0429da0f14058e597b2"><td class="memItemLeft" align="right" valign="top"><a id="abccfd12ccfc3e0429da0f14058e597b2" name="abccfd12ccfc3e0429da0f14058e597b2"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>logger</b></td></tr>
 <tr class="separator:abccfd12ccfc3e0429da0f14058e597b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c46b10dfe284dd8fa6f37298b0152f2" id="r_a3c46b10dfe284dd8fa6f37298b0152f2"><td class="memItemLeft" align="right" valign="top"><a id="a3c46b10dfe284dd8fa6f37298b0152f2" name="a3c46b10dfe284dd8fa6f37298b0152f2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>memory</b></td></tr>
+<tr class="separator:a3c46b10dfe284dd8fa6f37298b0152f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9871f38a9e6c61bd16494303624592d2" id="r_a9871f38a9e6c61bd16494303624592d2"><td class="memItemLeft" align="right" valign="top"><a id="a9871f38a9e6c61bd16494303624592d2" name="a9871f38a9e6c61bd16494303624592d2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>study_path</b></td></tr>
+<tr class="separator:a9871f38a9e6c61bd16494303624592d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fb3fb3fd5150e175e41464be1d22452" id="r_a2fb3fb3fd5150e175e41464be1d22452"><td class="memItemLeft" align="right" valign="top"><a id="a2fb3fb3fd5150e175e41464be1d22452" name="a2fb3fb3fd5150e175e41464be1d22452"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>xpansion_output_dir</b></td></tr>
 <tr class="separator:a2fb3fb3fd5150e175e41464be1d22452"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -291,6 +299,41 @@ Properties</h2></td></tr>
           <td></td>
           <td class="paramtype">Path&#160;</td>
           <td class="paramname"><em>output_path</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">bool&#160;</td>
+          <td class="paramname"><em>is_relaxed</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">    problem generation step : getnames + lp_namer
+</pre> 
+</div>
+</div>
+<a id="aaf34454184efdb771b32b6b04edeb88e" name="aaf34454184efdb771b32b6b04edeb88e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aaf34454184efdb771b32b6b04edeb88e">&#9670;&#160;</a></span>launch_memory()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.problem_generator_driver.ProblemGeneratorDriver.launch_memory </td>
+          <td>(</td>
+          <td class="paramtype">&#160;</td>
+          <td class="paramname"><em>self</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Path&#160;</td>
+          <td class="paramname"><em>study_path</em>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

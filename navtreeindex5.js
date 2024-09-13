@@ -1,6 +1,5 @@
 var NAVTREEINDEX5 =
 {
-"dir_faa1d96b2f25a770f3b4b59c3c248f9f.html":[26,0,0,0,3,1],
 "dir_fbf86ebd20f6f17731d5583a52a5d286.html":[26,0,1,0,2],
 "dynamic__library_8h_source.html":[26,0,0,0,4,0,0,0],
 "environment_8h_source.html":[26,0,0,0,4,0,0,1],
@@ -249,5 +248,6 @@ var NAVTREEINDEX5 =
 "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md187":[21,1],
 "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md188":[21,1,0],
 "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md189":[21,1,1],
-"md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md190":[21,1,2]
+"md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md190":[21,1,2],
+"md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md191":[21,1,3]
 };

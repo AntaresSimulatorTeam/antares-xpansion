@@ -5,6 +5,7 @@ var dir_946c05255043ca8101e844cb51ac1488 =
     [ "ChronicleMapProvider.h", "ChronicleMapProvider_8h_source.html", null ],
     [ "ChronicleMapReader.h", "ChronicleMapReader_8h_source.html", null ],
     [ "LinkProfile.h", "LinkProfile_8h_source.html", null ],
+    [ "Mode.h", "Mode_8h_source.html", null ],
     [ "Problem.h", "Problem_8h_source.html", null ],
     [ "ProblemNameParser.h", "ProblemNameParser_8h_source.html", null ],
     [ "SimulationInputMode.h", "SimulationInputMode_8h_source.html", null ]

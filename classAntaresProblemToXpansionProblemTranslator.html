@@ -140,13 +140,68 @@ $(document).ready(function(){initNavTree('classAntaresProblemToXpansionProblemTr
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
 Static Public Member Functions</h2></td></tr>
-<tr class="memitem:abb8b16e8929e39988215b5238975ba24" id="r_abb8b16e8929e39988215b5238975ba24"><td class="memItemLeft" align="right" valign="top"><a id="abb8b16e8929e39988215b5238975ba24" name="abb8b16e8929e39988215b5238975ba24"></a>
-static std::shared_ptr&lt; <a class="el" href="classProblem.html">Problem</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>translateToXpansionProblem</b> (const <a class="el" href="classLpsFromAntares.html">LpsFromAntares</a> &amp;lps, unsigned int year, unsigned int week, const std::string &amp;solver_name, <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;solver_log_manager)</td></tr>
-<tr class="separator:abb8b16e8929e39988215b5238975ba24"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a80c3702f7f651a93d327142b49b48368" id="r_a80c3702f7f651a93d327142b49b48368"><td class="memItemLeft" align="right" valign="top"><a id="a80c3702f7f651a93d327142b49b48368" name="a80c3702f7f651a93d327142b49b48368"></a>
-static std::vector&lt; char &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>convertSignToLEG</b> (char *data)</td></tr>
-<tr class="separator:a80c3702f7f651a93d327142b49b48368"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a387ab8a6f70af07841a08f1ee8637a53" id="r_a387ab8a6f70af07841a08f1ee8637a53"><td class="memItemLeft" align="right" valign="top">static std::shared_ptr&lt; <a class="el" href="classProblem.html">Problem</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAntaresProblemToXpansionProblemTranslator.html#a387ab8a6f70af07841a08f1ee8637a53">translateToXpansionProblem</a> (const Antares::Solver::LpsFromAntares &amp;lps, unsigned int year, unsigned int week, const std::string &amp;solver_name, <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;solver_log_manager)</td></tr>
+<tr class="separator:a387ab8a6f70af07841a08f1ee8637a53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad61b6ebec64127ffa0875a9bdb349a76" id="r_ad61b6ebec64127ffa0875a9bdb349a76"><td class="memItemLeft" align="right" valign="top"><a id="ad61b6ebec64127ffa0875a9bdb349a76" name="ad61b6ebec64127ffa0875a9bdb349a76"></a>
+static std::vector&lt; char &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>convertSignToLEG</b> (std::span&lt; char &gt; data)</td></tr>
+<tr class="separator:ad61b6ebec64127ffa0875a9bdb349a76"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a387ab8a6f70af07841a08f1ee8637a53" name="a387ab8a6f70af07841a08f1ee8637a53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a387ab8a6f70af07841a08f1ee8637a53">&#9670;&#160;</a></span>translateToXpansionProblem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::shared_ptr&lt; <a class="el" href="classProblem.html">Problem</a> &gt; AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem </td>
+          <td>(</td>
+          <td class="paramtype">const Antares::Solver::LpsFromAntares &amp;&#160;</td>
+          <td class="paramname"><em>lps</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>year</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>week</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>solver_name</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;&#160;</td>
+          <td class="paramname"><em>solver_log_manager</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>@Note: In case of performance issue we can accept non-const lps and work on references to constant and hebdo parts </p>
+
+</div>
+</div>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/cpp/lpnamer/problem_modifier/<a class="el" href="AntaresProblemToXpansionProblemTranslator_8h_source.html">AntaresProblemToXpansionProblemTranslator.h</a></li>
 <li>src/cpp/lpnamer/problem_modifier/<b>AntaresProblemToXpansionProblemTranslator.cpp</b></li>

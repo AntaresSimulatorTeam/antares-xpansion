@@ -57,7 +57,6 @@ var hierarchy =
     [ "antares_xpansion.config_file_parser.ConfigFileParser", "classantares__xpansion_1_1config__file__parser_1_1ConfigFileParser.html", null ],
     [ "antares_xpansion.config_loader.ConfigLoader", "classantares__xpansion_1_1config__loader_1_1ConfigLoader.html", null ],
     [ "antares_xpansion.xpansionConfig.ConfigParameters", "classantares__xpansion_1_1xpansionConfig_1_1ConfigParameters.html", null ],
-    [ "ConstantDataFromAntares", "classConstantDataFromAntares.html", null ],
     [ "YAML::convert< OuterLoopInputData >", "structYAML_1_1convert_3_01OuterLoopInputData_01_4.html", null ],
     [ "YAML::convert< OuterLoopSingleInputData >", "structYAML_1_1convert_3_01OuterLoopSingleInputData_01_4.html", null ],
     [ "Catch::Counts", "structCatch_1_1Counts.html", null ],
@@ -201,7 +200,6 @@ var hierarchy =
     [ "HeadersManager", "structHeadersManager.html", [
       [ "HeadersManagerExternalLoop", "structHeadersManagerExternalLoop.html", null ]
     ] ],
-    [ "HebdoDataFromAntares", "classHebdoDataFromAntares.html", null ],
     [ "Catch::IContext", "structCatch_1_1IContext.html", [
       [ "Catch::IMutableContext", "structCatch_1_1IMutableContext.html", null ]
     ] ],
@@ -317,7 +315,6 @@ var hierarchy =
     [ "LogDestination", "classLogDestination.html", null ],
     [ "antares_xpansion.log_utils.LogUtils", "classantares__xpansion_1_1log__utils_1_1LogUtils.html", null ],
     [ "LpFilesExtractor", "classLpFilesExtractor.html", null ],
-    [ "LpsFromAntares", "classLpsFromAntares.html", null ],
     [ "std::map", null, [
       [ "AdditionalConstraint", "classAdditionalConstraint.html", null ],
       [ "AdditionalConstraints", "classAdditionalConstraints.html", null ]
@@ -412,7 +409,6 @@ var hierarchy =
     ] ],
     [ "antares_xpansion.problem_generator_driver.ProblemGeneratorData", "classantares__xpansion_1_1problem__generator__driver_1_1ProblemGeneratorData.html", null ],
     [ "antares_xpansion.problem_generator_driver.ProblemGeneratorDriver", "classantares__xpansion_1_1problem__generator__driver_1_1ProblemGeneratorDriver.html", null ],
-    [ "ProblemHebdoId", "structProblemHebdoId.html", null ],
     [ "ProblemModifier", "classProblemModifier.html", null ],
     [ "ProblemNameCase", "structProblemNameCase.html", null ],
     [ "ProblemVariables", "structProblemVariables.html", null ],
