@@ -1,11 +1,12 @@
 
 #include "include/ProblemGeneration.h"
 
-#include <antares/api/solver.h>
 #include <antares/api/SimulationResults.h>
+#include <antares/api/solver.h>
 
 #include <execution>
 #include <iostream>
+#include <span>
 #include <utility>
 
 #include "ActiveLinks.h"
@@ -35,6 +36,7 @@
 
 static const std::string LP_DIRNAME = "lp";
 
+namespace {
 void CreateDirectories(const std::filesystem::path& output_path) {
   if (!std::filesystem::exists(output_path)) {
     std::filesystem::create_directories(output_path);
@@ -43,6 +45,25 @@ void CreateDirectories(const std::filesystem::path& output_path) {
   if (!std::filesystem::exists(lp_path)) {
     std::filesystem::create_directories(lp_path);
   }
+}
+
+std::vector<char> convertSignToLEG(
+    std::span<char> data) {
+  std::vector<char> LEG_vector;
+  // Exclude final '\0' character
+  std::ranges::transform(data, std::back_inserter(LEG_vector), [](char c) {
+    if ('=' == c) {
+      return 'E';
+    } else if ('<' == c) {
+      return 'L';
+    } else if ('>' == c) {
+      return 'G';
+    } else {
+      throw std::runtime_error(LOGLOCATION + "Bad character parsing " + c);
+    }
+  });
+  return LEG_vector;
+}
 }
 
 ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options)
@@ -94,7 +115,8 @@ std::filesystem::path ProblemGeneration::updateProblems() {
     // antares
   }
 
-  if (mode_ == SimulationInputMode::ANTARES_API || mode_ == SimulationInputMode::FILE) {
+  if (mode_ == SimulationInputMode::ANTARES_API ||
+      mode_ == SimulationInputMode::FILE) {
     xpansion_output_dir = simulation_dir_;
   }
 
@@ -226,7 +248,7 @@ void ProblemGeneration::RunProblemGeneration(
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Launching Problem Generation" << std::endl;
   validateMasterFormulation(master_formulation, logger);
-  std::string solver_name = "CBC";  // TODO Use solver selected by user
+  std::string solver_name = "XPRESS";  // TODO Use solver selected by user
 
   SolverLoader::GetAvailableSolvers(logger);  // Dirty fix to populate static
                                               // value outside multi thread code
@@ -256,7 +278,6 @@ void ProblemGeneration::RunProblemGeneration(
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "rename problems: " << std::boolalpha << rename_problems << std::endl;
 
-
   auto files_mapper = FilesMapper(antares_archive_path, xpansion_output_dir);
   auto mpsList = files_mapper.MpsAndVariablesFilesVect();
 
@@ -269,54 +290,98 @@ void ProblemGeneration::RunProblemGeneration(
                                    : InstantiateZipReader(antares_archive_path);
 
   /* Main stuff */
-  std::vector<std::shared_ptr<Problem>> xpansion_problems = getXpansionProblems(
-      solver_log_manager, solver_name, mpsList, lpDir_, reader, lps_);
-
-  std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
-      problems_and_data;
-  for (int i = 0; i < xpansion_problems.size(); ++i) {
-    if (mode_ == SimulationInputMode::ANTARES_API) {
-      ProblemData data{xpansion_problems.at(i)->_name, {}};
-      problems_and_data.emplace_back(xpansion_problems.at(i), data);
-    } else {
-      xpansion_problems.at(i)->_name = mpsList.at(i)._problem_mps;
-      problems_and_data.emplace_back(xpansion_problems.at(i), mpsList.at(i));
-    }
-  }
+  std::vector<std::shared_ptr<Problem>> xpansion_problems;
   auto mps_file_writer = std::make_shared<MPSFileWriter>(lpDir_);
-  std::for_each(
-      std::execution::par, problems_and_data.begin(), problems_and_data.end(),
-      [&](const auto& problem_and_data) {
-        const auto& [problem, data] = problem_and_data;
-        std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
-        switch (mode_.value()) {
-          case SimulationInputMode::FILE:
-            variables_provider = std::make_shared<ProblemVariablesFileAdapter>(
-                data, links, logger, lpDir_);
-            break;
-          case SimulationInputMode::ARCHIVE:
-            if (rename_problems) {
-              variables_provider = std::make_shared<ProblemVariablesZipAdapter>(
-                  reader, data, links, logger);
-            } else {
+  if (mode_ != SimulationInputMode::ANTARES_API) {
+    xpansion_problems = getXpansionProblems(solver_log_manager, solver_name,
+                                            mpsList, lpDir_, reader, lps_);
+
+    std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
+        problems_and_data;
+    for (int i = 0; i < xpansion_problems.size(); ++i) {
+      if (mode_ == SimulationInputMode::ANTARES_API) {
+        ProblemData data{xpansion_problems.at(i)->_name, {}};
+        problems_and_data.emplace_back(xpansion_problems.at(i), data);
+      } else {
+        xpansion_problems.at(i)->_name = mpsList.at(i)._problem_mps;
+        problems_and_data.emplace_back(xpansion_problems.at(i), mpsList.at(i));
+      }
+    }
+    std::for_each(
+        std::execution::par, problems_and_data.begin(), problems_and_data.end(),
+        [&](const auto& problem_and_data) {
+          const auto& [problem, data] = problem_and_data;
+          std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
+          switch (mode_.value()) {
+            case SimulationInputMode::FILE:
+              variables_provider =
+                  std::make_shared<ProblemVariablesFileAdapter>(data, links,
+                                                                logger, lpDir_);
+              break;
+            case SimulationInputMode::ARCHIVE:
+              if (rename_problems) {
+                variables_provider =
+                    std::make_shared<ProblemVariablesZipAdapter>(reader, data,
+                                                                 links, logger);
+              } else {
+                variables_provider =
+                    std::make_shared<ProblemVariablesFromProblemAdapter>(
+                        problem, links, logger);
+              }
+              break;
+            case SimulationInputMode::ANTARES_API:
               variables_provider =
                   std::make_shared<ProblemVariablesFromProblemAdapter>(
                       problem, links, logger);
-            }
-            break;
-          case SimulationInputMode::ANTARES_API:
-            variables_provider =
-                std::make_shared<ProblemVariablesFromProblemAdapter>(
-                    problem, links, logger);
-            break;
-          default:
-            (*logger)(LogUtils::LOGLEVEL::ERR) << "Undefined mode";
-            break;
-        }
-        linkProblemsGenerator.treat(data._problem_mps, couplings, problem.get(),
-                                    variables_provider.get(),
-                                    mps_file_writer.get());
-      });
+              break;
+            default:
+              (*logger)(LogUtils::LOGLEVEL::ERR) << "Undefined mode";
+              break;
+          }
+          linkProblemsGenerator.treat(data._problem_mps, couplings,
+                                      problem.get(), variables_provider.get(),
+                                      mps_file_writer.get());
+        });
+  } else {
+    std::for_each(
+        std::execution::par, lps_.weeklyProblems.begin(), lps_.weeklyProblems.end(),
+        [&](const auto& idAndData) {
+          const auto& [id, data] = idAndData;
+
+          SolverFactory factory;
+          auto problem = std::make_shared<Problem>(
+              factory.create_solver(solver_name, solver_log_manager));
+          auto constant = lps_.constantProblemData;
+          auto hebdo = data;
+          problem->_name = hebdo.name;
+
+          std::vector<int> tmp(constant.VariablesCount, 0);
+          std::vector<char> coltypes(constant.VariablesCount, 'C');
+
+          problem->add_cols(constant.VariablesCount, 0, hebdo.LinearCost.data(),
+                            tmp.data(), {}, {}, hebdo.Xmin.data(), hebdo.Xmax.data());
+
+          std::span<char> signs(hebdo.Direction.data(), hebdo.Direction.size());
+          auto LEG_vector = convertSignToLEG(signs);
+          problem->add_rows(
+              constant.ConstraintesCount, constant.CoeffCount,
+              convertSignToLEG(signs).data(), hebdo.RHS.data(),
+              nullptr, reinterpret_cast<const int *>(constant.Mdeb.data()), reinterpret_cast<const int *>(constant.ColumnIndexes.data()),
+              constant.ConstraintsMatrixCoeff.data(), {});
+          for (int i = 0; i < constant.VariablesCount; ++i) {
+            problem->chg_col_name(i, hebdo.variables[i]);
+          }
+          for (int i = 0; i < constant.ConstraintesCount; ++i) {
+            problem->chg_row_name(i, hebdo.constraints[i]);
+          }
+
+
+          ProblemVariablesFromProblemAdapter variables_provider(problem, links, logger);
+          linkProblemsGenerator.treat(problem->_name, couplings,
+                                      problem.get(), &variables_provider,
+                                      mps_file_writer.get());
+        });
+  }
 
   if (mode_ == SimulationInputMode::ARCHIVE) {
     reader->Close();

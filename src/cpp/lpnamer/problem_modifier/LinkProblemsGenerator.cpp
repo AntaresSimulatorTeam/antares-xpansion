@@ -61,6 +61,7 @@ void LinkProblemsGenerator::treat(
   }
   auto const lp_mps_name = lpDir_ / problem->_name;
   problem->_name = lp_mps_name.string();
+  std::filesystem::remove(lp_mps_name);
   writer->Write_problem(problem);
 }
 

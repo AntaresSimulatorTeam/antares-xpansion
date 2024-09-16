@@ -50,6 +50,6 @@ TEST_F(ProblemConstructionTest, McYearAvailableInProblem) {
   auto problem = std::make_shared<Problem>(solver) ;
 
   std::filesystem::path file_name("Path/To/inner-dir/problem-3-45-20220214-124051.mps");
-  problem->read_prob_mps(file_name);
+  problem->read_prob_mps(file_name, false);
   EXPECT_EQ(problem->McYear(), 3);
 }

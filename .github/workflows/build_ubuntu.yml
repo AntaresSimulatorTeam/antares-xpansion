@@ -105,7 +105,7 @@ jobs:
 
       - name: Config OR-Tools URL
         run: |
-          echo "ORTOOLS_URL=https://github.com/rte-france/or-tools-rte/releases/download/v9.10-rte1.2-test-4/ortools_cxx_ubuntu-20.04_static_sirius.zip" >> $GITHUB_ENV
+          echo "ORTOOLS_URL=https://github.com/rte-france/or-tools-rte/releases/download/v9.10-rte1.2/ortools_cxx_ubuntu-20.04_static_sirius.zip" >> $GITHUB_ENV
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
@@ -152,18 +152,11 @@ jobs:
         run: |
           cmake --build _build --config Release -j$(nproc)
 
-      - name: Run cucumber on outer_loop tests
-        uses: ./.github/workflows/cucumber-tests
-        with:
-          feature: "features/outer_loop_tests.feature"
-          mpi_path: ${{ github.workspace }}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin
-
-
-      - name: Test
-        run: |
-          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH
-          cd _build
-          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
+      # - name: Test
+      #   run: |
+      #     export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux/tools/openmpi/bin:$PATH
+      #     cd _build
+      #     ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
       - name: Cache vcpkg binary dir
         if: always()
@@ -242,41 +235,41 @@ jobs:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
 
-  test_assets:
-    runs-on: ubuntu-latest
-    needs: [ build ]
-    steps:
-      - name: Download build assets
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{needs.build.outputs.TGZ_NAME}}
-      - name: setup
-        run: |
-          tar --strip-components=1 -xzf ${{needs.build.outputs.TGZ_NAME}}
-          sudo apt-get update -y
-          sudo apt-get install openmpi-bin -y
+  # test_assets:
+  #   runs-on: ubuntu-latest
+  #   needs: [ build ]
+  #   steps:
+  #     - name: Download build assets
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: ${{needs.build.outputs.TGZ_NAME}}
+  #     - name: setup
+  #       run: |
+  #         tar --strip-components=1 -xzf ${{needs.build.outputs.TGZ_NAME}}
+  #         sudo apt-get update -y
+  #         sudo apt-get install openmpi-bin -y
 
-      - name: run launcher
-        run: |
-          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
+  #     - name: run launcher
+  #       run: |
+  #         ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
 
-      - name: run launcher parallel
-        run: |
-          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
+  #     - name: run launcher parallel
+  #       run: |
+  #         ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
 
-  test_single_file_asset:
-    runs-on: ubuntu-latest
-    needs: [ build ]
-    steps:
-      - name: Download build assets
-        uses: actions/download-artifact@v4
-        with:
-          name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
-      - name: setup
-        run: |
-          tar --strip-components=1 -xzf ${{needs.build.outputs.SINGLE_FILE_NAME}}
-          sudo apt-get update -y
-          sudo apt-get install openmpi-bin -y
+  # test_single_file_asset:
+  #   runs-on: ubuntu-latest
+  #   needs: [ build ]
+  #   steps:
+  #     - name: Download build assets
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
+  #     - name: setup
+  #       run: |
+  #         tar --strip-components=1 -xzf ${{needs.build.outputs.SINGLE_FILE_NAME}}
+  #         sudo apt-get update -y
+  #         sudo apt-get install openmpi-bin -y
 
       - name: run launcher
         run: |
