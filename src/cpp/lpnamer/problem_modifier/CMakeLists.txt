@@ -56,7 +56,6 @@ target_include_directories (lp_namer_problem_modifier
 
 target_link_libraries (lp_namer_problem_modifier
 	PUBLIC
-		TestApi::TestApi
 	    lp_namer_model
 		lp_namer_input_reader
 		lp_namer_helper

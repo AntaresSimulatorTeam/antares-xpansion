@@ -138,16 +138,19 @@ if (${BUILD_antares_solver})
         message(WARNING "Antares solver not found, will be build")
         set(REPOSITORY "https://github.com/AntaresSimulatorTeam/Antares_Simulator.git")
         set(TAG "v${ANTARES_VERSION_TAG}")
-        set(FETCHCONTENT_QUIET OFF)
+        set(FETCHCONTENT_UPDATES_DISCONNECTED TRUE)  #To avoid fetching updates everytime
+        #set(FETCHCONTENT_QUIET FALSE) for more log
         FetchContent_Declare(
                 Antares
                 GIT_REPOSITORY ${REPOSITORY}
-                GIT_TAG ${TAG}
-                GIT_PROGRESS TRUE
-                USES_TERMINAL_DOWNLOAD TRUE
+                GIT_TAG feature/full_build_fixes
+                GIT_SHALLOW TRUE
                 SOURCE_SUBDIR src
                 GIT_SUBMODULES ""
+                #USES_TERMINAL_DOWNLOAD TRUE #For verbosity
+                #GIT_PROGRESS TRUE
                 OVERRIDE_FIND_PACKAGE
+                EXCLUDE_FROM_ALL
         )
         set(BUILD_ortools ON)
         set(BUILD_UI OFF)
@@ -157,17 +160,7 @@ if (${BUILD_antares_solver})
         FetchContent_MakeAvailable(Antares)
     endif ()
 endif ()
-set(CMAKE_FIND_DEBUG_MODE ON)
 find_package(Antares REQUIRED)
-fetchcontent_declare(
-        TestAPI
-        GIT_REPOSITORY https://gitlab.com/JasonMarechal25/testapi.git
-        OVERRIDE_FIND_PACKAGE
-        SOURCE_SUBDIR lib
-)
-fetchcontent_makeavailable(TestAPI)
-find_package(TestAPI REQUIRED)
-set(CMAKE_FIND_DEBUG_MODE OFF)
 
 find_package(minizip-ng REQUIRED)
 # ---------------------------------------------------------------------------
