@@ -20,9 +20,9 @@ jobs:
     env:
       VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
       ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
+      ORTOOLS_URL: "https://github.com/rte-france/or-tools-rte/releases/download/v9.10-rte1.2-test-4/ortools_cxx_ubuntu-20.04_static_sirius.zip"
 
     steps:
-
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
@@ -81,11 +81,6 @@ jobs:
         with:
           path: 'antares-version.json'
           key: 'antares_xpansion_version'
-
-      - name: Config OR-Tools URL
-        shell: bash
-        run: |
-          echo "ORTOOLS_URL=https://github.com/rte-france/or-tools-rte/releases/download/v9.10-rte1.2-test-4/ortools_cxx_ubuntu-20.04_static_sirius.zip" >> $GITHUB_ENV
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
