@@ -1,0 +1,18 @@
+name: Auto Reply Bot on Comment
+
+on:
+  issue_comment:
+    types: [created]
+
+jobs:
+  auto-reply:
+    runs-on: ubuntu-latest
+    if: github.event.issue.pull_request # Only trigger on pull requests (not issues)
+    steps:
+    - name: Check for @reply in comment
+      if: contains(github.event.comment.body, '@reply') # Check if the comment contains '@reply'
+      uses: peter-evans/create-or-update-comment@v1
+      with:
+        issue-number: ${{ github.event.issue.number }}
+        body: |
+          If my reply addresses the issue, please mark this thread as resolved.
