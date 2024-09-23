@@ -161,6 +161,9 @@ if (${BUILD_antares_solver})
     endif ()
 endif ()
 find_package(Antares REQUIRED)
+find_package(sirius_solver REQUIRED CONFIG)
+get_property(sirius_lib TARGET sirius_solver PROPERTY LOCATION)
+configure_file(${sirius_lib} ${CMAKE_CURRENT_BINARY_DIR}/sirius_solver COPYONLY)
 
 find_package(minizip-ng REQUIRED)
 # ---------------------------------------------------------------------------
