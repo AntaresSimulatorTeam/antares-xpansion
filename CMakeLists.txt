@@ -126,52 +126,47 @@ sbeClearJson(antares_version)
 # Build dependencies not handled by antares-deps repository
 option(BUILD_antares_solver "Build antares solver" ON)
 message(STATUS "Build antares solver: ${BUILD_antares_solver}")
+include(FetchContent)
+
+#Log imported targets
+get_property(importTargets DIRECTORY "${CMAKE_SOURCE_DIR}" PROPERTY IMPORTED_TARGETS)
+
 if (${BUILD_antares_solver})
     #check if antares_solver available before asking for sirius and ortools build
     find_package(Antares QUIET)
     if (NOT Antares_FOUND)
         message(WARNING "Antares solver not found, will be build")
-        set(BUILD_sirius ON)
+        set(REPOSITORY "https://github.com/AntaresSimulatorTeam/Antares_Simulator.git")
+        set(TAG "v${ANTARES_VERSION_TAG}")
+        set(FETCHCONTENT_UPDATES_DISCONNECTED TRUE)  #To avoid fetching updates everytime
+        #set(FETCHCONTENT_QUIET FALSE) for more log
+        FetchContent_Declare(
+                Antares
+                GIT_REPOSITORY ${REPOSITORY}
+                GIT_TAG feature/full_build_fixes
+                GIT_SHALLOW TRUE
+                SOURCE_SUBDIR src
+                GIT_SUBMODULES ""
+                #USES_TERMINAL_DOWNLOAD TRUE #For verbosity
+                #GIT_PROGRESS TRUE
+                OVERRIDE_FIND_PACKAGE
+                EXCLUDE_FROM_ALL
+        )
         set(BUILD_ortools ON)
-        if (NOT Antares_FOUND)
-            message(STATUS "Antares not found, building it from source")
-            #Define deps install directory
-            if (NOT DEPS_INSTALL_DIR)
-                SET(DEPS_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../rte-antares-deps-${CMAKE_BUILD_TYPE})
-            else ()
-                if (NOT IS_ABSOLUTE ${DEPS_INSTALL_DIR})
-                    SET(DEPS_INSTALL_DIR ${CMAKE_CURRENT_SOURCE_DIR}/${DEPS_INSTALL_DIR})
-                endif ()
-            endif ()
-
-            # Build Needed dependencies
-            list(APPEND CMAKE_PREFIX_PATH ${DEPS_INSTALL_DIR})
-
-            # Add DEPS_INSTALL_DIR with antares-simulator CMAKE_BUILD_TYPE special case
-            if (${CMAKE_BUILD_TYPE} STREQUAL "Release")
-
-                string(REPLACE ${CMAKE_BUILD_TYPE} release
-                        DEPS_INSTALL_DIR_ANTARES
-                        ${DEPS_INSTALL_DIR})
-
-                list(APPEND CMAKE_PREFIX_PATH ${DEPS_INSTALL_DIR_ANTARES})
-
-            elseif (${CMAKE_BUILD_TYPE} STREQUAL "Debug")
-
-                string(REPLACE ${CMAKE_BUILD_TYPE} debug
-                        DEPS_INSTALL_DIR_ANTARES
-                        ${DEPS_INSTALL_DIR})
-
-                list(APPEND CMAKE_PREFIX_PATH ${DEPS_INSTALL_DIR_ANTARES})
-
-            endif ()
-            add_subdirectory(cmake/dependencies ${CMAKE_CURRENT_BINARY_DIR}/build_deps)
-        endif ()
+        set(BUILD_UI OFF)
+        set(BUILD_not_system OFF)
+        set(BUILD_TESTING OFF)
+        set(BUILD_TOOLS OFF)
+        FetchContent_MakeAvailable(Antares)
     endif ()
 endif ()
 find_package(Antares REQUIRED)
-message(STATUS "Build type is ${CMAKE_BUILD_TYPE}")
-set(CMAKE_FIND_DEBUG_MODE false)
+get_target_property(ANTARES_SOLVER_APP antares-solver NAME)
+
+find_package(sirius_solver REQUIRED CONFIG)
+get_target_property(sirius_lib sirius_solver LOCATION)
+get_filename_component(sirius_lib_name ${sirius_lib} NAME)
+configure_file(${sirius_lib} ${CMAKE_CURRENT_BINARY_DIR}/${sirius_lib_name} COPYONLY)
 
 find_package(minizip-ng REQUIRED)
 # ---------------------------------------------------------------------------
@@ -263,50 +258,6 @@ if (WIN32)
 else ()
     set(CURRENT_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR})
 endif ()
-
-find_package(antares-solver REQUIRED)
-
-#Default RELEASE antares-solver use
-get_target_property(ANTARES_SOLVER_PATH antares-solver IMPORTED_LOCATION_RELEASE)
-if (NOT ANTARES_SOLVER_PATH)
-    get_target_property(ANTARES_SOLVER_PATH antares-solver IMPORTED_LOCATION_DEBUG)
-endif ()
-
-get_filename_component(ANTARES_SOLVER_DIR ${ANTARES_SOLVER_PATH} DIRECTORY)
-get_filename_component(ANTARES_SOLVER_APP ${ANTARES_SOLVER_PATH} NAME)
-
-#Copy antares-solver to build directory
-FILE(COPY ${ANTARES_SOLVER_PATH}
-        DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
-        USE_SOURCE_PERMISSIONS)
-
-#Copy associated .so and .dll to build directory
-FILE(COPY ${ANTARES_SOLVER_DIR}/
-        DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
-        USE_SOURCE_PERMISSIONS
-        FILES_MATCHING PATTERN "*.dll")
-
-FILE(COPY ${ANTARES_SOLVER_DIR}/
-        DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
-        USE_SOURCE_PERMISSIONS
-        FILES_MATCHING PATTERN "*.so")
-
-#Glob *.so files in antares_solver_dir
-file(GLOB_RECURSE ANTARES_SOLVER_LIBS ${ANTARES_SOLVER_DIR}/*.so)
-INSTALL(FILES ${ANTARES_SOLVER_LIBS} DESTINATION bin)
-file(GLOB_RECURSE ANTARES_SOLVER_LIBS ${ANTARES_SOLVER_DIR}/*.dll)
-INSTALL(FILES ${ANTARES_SOLVER_LIBS} DESTINATION bin)
-
-
-FILE(COPY ${ANTARES_SOLVER_DIR}/../lib/
-        DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
-        USE_SOURCE_PERMISSIONS
-        FILES_MATCHING PATTERN "*.so")
-
-FILE(COPY ${ANTARES_SOLVER_DIR}/../bin/
-        DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
-        USE_SOURCE_PERMISSIONS
-        FILES_MATCHING PATTERN "*.so")
 
 add_subdirectory("${PROJECT_SOURCE_DIR}/src")
 
