@@ -156,7 +156,6 @@ if (${BUILD_antares_solver})
                 SOURCE_SUBDIR src
                 GIT_SHALLOW TRUE
                 FIND_PACKAGE_ARGUMENTS "OVERRIDE_FIND_PACKAGE" "GIT_PROGRESS TRUE" "USES_TERMINAL_DOWNLOAD TRUE"
-                EXCLUDE_FROM_ALL
                 OPTIONS
                 "BUILD_ortools ON"
                 "BUILD_UI OFF"
@@ -167,45 +166,12 @@ if (${BUILD_antares_solver})
     endif ()
 endif ()
 find_package(Antares REQUIRED)
-
-#Default RELEASE antares-solver use
-#
-##Copy antares-solver to build directory
-#FILE(COPY ${ANTARES_SOLVER_PATH}
-#        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
-#        USE_SOURCE_PERMISSIONS)
-#
-##Copy associated .so and .dll to build directory
-#FILE(COPY ${ANTARES_SOLVER_DIR}/
-#        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
-#        USE_SOURCE_PERMISSIONS
-#        FILES_MATCHING PATTERN "*.dll")
-#
-#FILE(COPY ${ANTARES_SOLVER_DIR}/
-#        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
-#        USE_SOURCE_PERMISSIONS
-#        FILES_MATCHING PATTERN "*.so")
-#
-##Glob *.so files in antares_solver_dir
-#file(GLOB_RECURSE ANTARES_SOLVER_LIBS ${ANTARES_SOLVER_DIR}/*.so)
-#INSTALL(FILES ${ANTARES_SOLVER_LIBS} DESTINATION bin)
-#file(GLOB_RECURSE ANTARES_SOLVER_LIBS ${ANTARES_SOLVER_DIR}/*.dll)
-#INSTALL(FILES ${ANTARES_SOLVER_LIBS} DESTINATION bin)
-#
-#
-#FILE(COPY ${ANTARES_SOLVER_DIR}/../lib/
-#        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
-#        USE_SOURCE_PERMISSIONS
-#        FILES_MATCHING PATTERN "*.so")
-#
-#FILE(COPY ${ANTARES_SOLVER_DIR}/../bin/
-#        DESTINATION ${CMAKE_CURRENT_BINARY_DIR}
-#        USE_SOURCE_PERMISSIONS
-#        FILES_MATCHING PATTERN "*.so")
+get_target_property(ANTARES_SOLVER_APP antares-solver NAME)
 
 find_package(sirius_solver REQUIRED CONFIG)
-get_property(sirius_lib TARGET sirius_solver PROPERTY LOCATION)
-configure_file(${sirius_lib} ${CMAKE_CURRENT_BINARY_DIR}/sirius_solver COPYONLY)
+get_target_property(sirius_lib sirius_solver LOCATION)
+get_filename_component(sirius_lib_name ${sirius_lib} NAME)
+configure_file(${sirius_lib} ${CMAKE_CURRENT_BINARY_DIR}/${sirius_lib_name} COPYONLY)
 
 find_package(minizip-ng REQUIRED)
 # ---------------------------------------------------------------------------
