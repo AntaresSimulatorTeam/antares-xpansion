@@ -161,9 +161,12 @@ if (${BUILD_antares_solver})
     endif ()
 endif ()
 find_package(Antares REQUIRED)
+get_target_property(ANTARES_SOLVER_APP antares-solver NAME)
+
 find_package(sirius_solver REQUIRED CONFIG)
-get_property(sirius_lib TARGET sirius_solver PROPERTY LOCATION)
-configure_file(${sirius_lib} ${CMAKE_CURRENT_BINARY_DIR}/sirius_solver COPYONLY)
+get_target_property(sirius_lib sirius_solver LOCATION)
+get_filename_component(sirius_lib_name ${sirius_lib} NAME)
+configure_file(${sirius_lib} ${CMAKE_CURRENT_BINARY_DIR}/${sirius_lib_name} COPYONLY)
 
 find_package(minizip-ng REQUIRED)
 # ---------------------------------------------------------------------------
