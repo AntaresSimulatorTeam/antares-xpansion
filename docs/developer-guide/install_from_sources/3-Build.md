@@ -10,6 +10,13 @@ module load mpi
 ```
 
 ## Configure build with CMake
+
+Remember to set -DCMAKE_PREFIX_PATH to the path of the dependencies if using pre-built dependencies.
+
+The first time vcpkg will download and compile all dependencies. This can take a long time. Especially openmpi.
+Unless some dependencies are updated, nothing will be done on the next build.
+VCPKG store sources in a cache folder, removing your build folder will only remove the compiled dependencies. Meaning later builds will be faster than the first one even if you remove your build folder
+
 === "Windows"
 
     ```
