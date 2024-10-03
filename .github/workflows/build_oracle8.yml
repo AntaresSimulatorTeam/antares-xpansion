@@ -43,7 +43,7 @@ jobs:
     needs: [ versions ]
     env:
       ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
-      ORTOOLS_URL: "https://github.com/rte-france/or-tools-rte/releases/download/v9.10-rte1.2/ortools_cxx_oraclelinux-8_static_sirius.zip"
+      ORTOOLS_URL: "https://github.com/rte-france/or-tools-rte/releases/download/v9.11-rte1.1/ortools_cxx_oraclelinux-8_static_sirius.zip"
 
     outputs:
       zip_name: ${{ steps.zip_name.outputs.zip_name }}
