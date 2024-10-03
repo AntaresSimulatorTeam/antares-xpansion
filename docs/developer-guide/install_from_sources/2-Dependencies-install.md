@@ -58,7 +58,15 @@ export PATH=$PATH:<path_to_vcpkg>/installed/<triplet>/tools/openmpi/bin
 Alternatively you can install openmpi yourself 
 
 ## Other dependencies
-- Antares Simulator: either build it from source, download precompiled binaries or use the next method
+- Antares Simulator: either build it from source, download precompiled binaries or use the automatic build method
+- Or-tools: either build it from source, download precompiled binaries or use the automatic build method
+
+### Using pre-build dependency
+If using built from source or pre-built release of Simulator, Or-tools or other dependency, you can specify the path to the dependency in the CMake configuration.
+
+```
+cmake -B build -S . -DCMAKE_PREFIX_PATH="<path_to_simulator>;<path_to_or_tools>"
+```
 
 ## Automatic Antares Simulator build
 If Antares Simulator is not installed, it will be automatically downloaded and built by the build system.
