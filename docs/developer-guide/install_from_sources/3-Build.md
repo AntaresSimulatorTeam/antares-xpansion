@@ -69,17 +69,17 @@ sudo apt install lsb-release
 === "Windows"
 
     ```
-    cmake --build _build --config Release -j8 --target install
+    cmake --build _build --config Release -j8
     ```
 === "Centos"
 
     ```
-    cmake3 --build _build --config Release -j8 --target install
+    cmake3 --build _build --config Release -j8
     ```
 === "Ubuntu"
 
     ```
-    cmake --build _build --config Release -j8 --target install
+    cmake --build _build --config Release -j8
     ```
 !!! Note
     Compilation can be done on several processor with the `-j` option.
