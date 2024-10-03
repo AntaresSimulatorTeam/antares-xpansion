@@ -106,3 +106,8 @@ Git version must be above 2.15 for external dependencies build because `--ignore
     ```
     sudo apt-get install git
     ```
+Now you can clone the repository:
+```
+git clone https://github.com/AntaresSimulatorTeam/antares-xpansion.git
+```
+Most of the rest of the guide will assume that you are in the root directory of the repository.
