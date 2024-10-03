@@ -71,6 +71,7 @@ jobs:
     env:
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
       ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
+      ORTOOLS_URL: "https://github.com/rte-france/or-tools-rte/releases/download/v9.11-rte1.1/ortools_cxx_centos7_static_sirius.zip"
 
     outputs:
       TGZ_NAME: ${{ steps.export_output.outputs.TGZ_NAME }}
@@ -84,10 +85,6 @@ jobs:
         if: github.event_name == 'release' && github.event.action == 'created'
         id: get_release
         uses: bruceadams/get-release@v1.3.2
-
-      - name: Config OR-Tools URL
-        run: |
-          echo "ORTOOLS_URL=https://github.com/rte-france/or-tools-rte/releases/download/v9.10-rte1.2-test-4/ortools_cxx_centos7_static_sirius.zip" >> $GITHUB_ENV
 
       - uses: actions/checkout@v3 #Keep at 3
         with:
