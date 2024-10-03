@@ -9,7 +9,10 @@
     "gflags",
     "sirius-solver",
     "coin-or-cbc",
-    "libuuid",
+    {
+      "name": "libuuid",
+      "platform": "!windows"
+    },
     {
       "name": "boost-mpi",
       "version>=": "1.81.0"
