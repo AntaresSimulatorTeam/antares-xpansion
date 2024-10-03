@@ -62,11 +62,14 @@ Alternatively you can install openmpi yourself
 - Or-tools: either build it from source, download precompiled binaries or use the automatic build method
 
 ### Using pre-build dependency
-If using built from source or pre-built release of Simulator, Or-tools or other dependency, you can specify the path to the dependency in the CMake configuration.
+If using built from source or pre-built release of Simulator, Or-tools-rte or other dependency, you can specify the path to the dependency in the CMake configuration.
 
 ```
 cmake -B build -S . -DCMAKE_PREFIX_PATH="<path_to_simulator>;<path_to_or_tools>"
 ```
+### Versions
+- [Antares Simulator](https://github.com/AntaresSimulatorTeam/Antares_Simulator): usually [the latest version](https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/latest) is recommended. You can check antares-version.json for the specific version tied to your code version.
+- [Or-tools-rte](https://github.com/rte-france/or-tools-rte): Or-tools-rte is not a direct dependency of Xpansion but one of Simulator, the version or or-tools-rte should match the version used by your version of Simulator. You can check antares-version.json for the specific version tied to your code version. Select the <your-plateform>_static_sirius.zip file. Other variants may work but are not tested.
 
 ## Automatic Antares Simulator build
 If Antares Simulator is not installed, it will be automatically downloaded and built by the build system.
