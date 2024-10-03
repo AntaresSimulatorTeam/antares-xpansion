@@ -3,8 +3,8 @@ import os
 import shutil
 from pathlib import Path
 
-from antares_xpansion.logger import step_logger
 from antares_xpansion.general_data_reader import GeneralDataIniReader
+from antares_xpansion.logger import step_logger
 
 
 class GeneralDataFileExceptions:
@@ -39,14 +39,14 @@ class GeneralDataProcessor:
     def get_general_data_ini_file(self) -> Path:
         return self._general_data_ini_file
 
-    def change_general_data_file_to_configure_antares_execution(self):
+    def change_general_data_file_to_configure_antares_execution(self, memory_mode=False):
         self.logger.info("Pre Antares")
         ini_file_backup = self._general_data_ini_file.with_suffix(
             self._general_data_ini_file.suffix + ".with-playlist")
         shutil.copyfile(self._general_data_ini_file, ini_file_backup)
         config = configparser.ConfigParser(strict=False)
         config.read(self._general_data_ini_file)
-        value_to_change = self._get_values_to_change_general_data_file()
+        value_to_change = self._get_values_to_change_general_data_file(memory_mode)
         for (section, key) in value_to_change:
             if not config.has_section(section):
                 config.add_section(section)
@@ -78,13 +78,13 @@ class GeneralDataProcessor:
         get_general_data_ini_file, set_general_data_ini_file
     )
 
-    def _get_values_to_change_general_data_file(self):
+    def _get_values_to_change_general_data_file(self, memory_mode=False):
         optimization = "optimization"
         general_section = "general"
         output_section = "output"
 
         return {
-            (optimization, "include-exportmps"): "optim-1",
+            (optimization, "include-exportmps"): "false" if memory_mode else "optim-1",
             (optimization, "include-exportstructure"): "true",
             ("adequacy patch", "include-adq-patch"): "false",
             (optimization, "include-tc-minstablepower"): "true"

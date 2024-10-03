@@ -53,17 +53,19 @@ target_include_directories (solvers
 		${xpansion_interfaces_path}	
 )
 
-
+target_link_libraries(solvers
+		PUBLIC
+		${CMAKE_DL_LIBS}
+)
 
 #CLP-CBC
 if(COIN_OR)
 	target_link_libraries (solvers
-		PUBLIC
+		PRIVATE
 			Coin::Clp
 			Coin::Cgl
 			Coin::CoinUtils
 			Coin::Osi
 			Coin::Cbc
-		   ${CMAKE_DL_LIBS}
 	)
 endif()

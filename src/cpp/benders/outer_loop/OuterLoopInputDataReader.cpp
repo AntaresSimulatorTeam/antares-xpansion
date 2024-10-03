@@ -53,7 +53,7 @@ void OuterLoopInputData::AddSingleData(const OuterLoopSingleInputData &data) {
   outer_loop_data_.push_back(data);
 }
 
-std::vector<OuterLoopSingleInputData> OuterLoopInputData::OuterLoopData()
+const std::vector<OuterLoopSingleInputData> &OuterLoopInputData::OuterLoopData()
     const {
   return outer_loop_data_;
 }

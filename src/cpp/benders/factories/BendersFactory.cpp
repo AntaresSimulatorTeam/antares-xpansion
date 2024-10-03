@@ -139,13 +139,11 @@ int BendersMainFactory::RunBenders() const {
     msg << "error: " << e.what() << std::endl;
     benders_loggers.display_message(msg.str());
     mpi::environment::abort(1);
-    return 1;
   } catch (...) {
     std::ostringstream msg;
     msg << "Exception of unknown type!" << std::endl;
     benders_loggers.display_message(msg.str());
     mpi::environment::abort(1);
-    return 1;
   }
   return 0;
 }
@@ -180,13 +178,11 @@ int BendersMainFactory::RunExternalLoop() const {
     msg << "error: " << e.what() << std::endl;
     benders_loggers.display_message(msg.str());
     mpi::environment::abort(1);
-    return 1;
   } catch (...) {
     std::ostringstream msg;
     msg << "Exception of unknown type!" << std::endl;
     benders_loggers.display_message(msg.str());
     mpi::environment::abort(1);
-    return 1;
   }
   return 0;
 }

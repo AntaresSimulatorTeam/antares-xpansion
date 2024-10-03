@@ -7,15 +7,15 @@ import os
 import re
 import shutil
 import sys
-from pathlib import Path
 import zipfile
+from pathlib import Path
 
 from antares_xpansion.chronicles_checker import ChronicleChecker
-from antares_xpansion.logger import step_logger
 from antares_xpansion.general_data_reader import GeneralDataIniReader
 from antares_xpansion.input_checker import check_candidates_file, check_options
 from antares_xpansion.launcher_options_default_value import LauncherOptionsDefaultValues
 from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
+from antares_xpansion.logger import step_logger
 from antares_xpansion.optimisation_keys import OptimisationKeys
 from antares_xpansion.xpansionConfig import XpansionConfig
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
@@ -105,6 +105,9 @@ class ConfigLoader:
         )]
         self._config.allow_run_as_root = options[
             LauncherOptionsKeys.allow_run_as_root_key()
+        ]
+        self._config.memory = options[
+            LauncherOptionsKeys.memory_key()
         ]
 
     def _verify_settings_ini_file_exists(self):
@@ -345,11 +348,14 @@ class ConfigLoader:
             return ""
         return self._get_constraints_file_path_in_constraints_dir(additional_constraints_filename)
 
+    def memory(self):
+        return self._config.memory
+
     def simulation_lp_path(self):
         return self._simulation_lp_path()
 
     def _simulation_lp_path(self):
-        return self.xpansion_simulation_output() / "lp"
+        return Path(self.xpansion_simulation_output()) / "lp"
 
     def xpansion_simulation_output(self) -> Path:
         if self._xpansion_simulation_name == "last":
@@ -518,7 +524,7 @@ class ConfigLoader:
         xpansion_dir_suffix ="-Xpansion"
         self._xpansion_simulation_name = self._last_study
 
-        if self.step() in ["resume", "sensitivity"] : 
+        if self.step() in ["resume", "sensitivity"] :
             self._xpansion_simulation_name = self._last_study
             if self.is_zip(self._last_study):
                 self._xpansion_simulation_name = self._last_study.parent / self._last_study.stem
@@ -537,9 +543,10 @@ class ConfigLoader:
                 else:
                     self._xpansion_simulation_name = self._last_study
                     self._last_study = self._last_study.parent / (
-                        self._last_study.stem[: -len(xpansion_dir_suffix)] + ".zip"
+                            self._last_study.stem[: -len(xpansion_dir_suffix)] + ".zip"
                     )
-
+        elif self.step() == "full" and self.memory():
+            self._xpansion_simulation_name = self._last_study
         else:
             self._xpansion_simulation_name = self._last_study.parent / \
                 (self._last_study.stem+"-Xpansion")
@@ -557,7 +564,10 @@ class ConfigLoader:
 
     def is_antares_study_output(self, study: Path):
         _, ext = os.path.splitext(study)
-        return ext == ".zip" or os.path.isdir(study)
+        if self.memory() and '-Xpansion' not in study.name:  # memory mode we work with files essentially
+            return os.path.isdir(study)
+        else:
+            return ext == ".zip" or os.path.isdir(study)
 
     def last_modified_study(self, root_dir:Path)-> Path: 
         list_dir = os.listdir(root_dir)

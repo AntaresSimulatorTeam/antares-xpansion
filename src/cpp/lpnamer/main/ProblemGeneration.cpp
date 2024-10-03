@@ -1,6 +1,9 @@
 
 #include "include/ProblemGeneration.h"
 
+#include <antares/api/solver.h>
+#include <antares/api/SimulationResults.h>
+
 #include <execution>
 #include <iostream>
 #include <utility>
@@ -51,6 +54,24 @@ ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options)
   } else if (!options_.ArchivePath().empty()) {
     mode_ = SimulationInputMode::ARCHIVE;
   }
+  if (!mode_) {
+    throw LogUtils::XpansionError<std::runtime_error>(
+        "SimulationInputMode is unknown", LOGLOCATION);
+  }
+}
+
+std::filesystem::path ProblemGeneration::performAntaresSimulation() {
+  auto results = Antares::API::PerformSimulation(options_.StudyPath());
+  //Add parallel
+
+  //Handle errors
+  if (results.error) {
+    throw LogUtils::XpansionError<std::runtime_error>(
+        "Antares simulation failed:\n\t" + results.error->reason, LOGLOCATION);
+  }
+
+  lps_ = std::move(results.antares_problems);
+  return {results.simulationPath};
 }
 
 std::filesystem::path ProblemGeneration::updateProblems() {
@@ -64,7 +85,7 @@ std::filesystem::path ProblemGeneration::updateProblems() {
   }
 
   if (mode_ == SimulationInputMode::ANTARES_API) {
-    throw std::runtime_error("SimulationInputMode API Not implemented yet");
+    simulation_dir_ = performAntaresSimulation();
   }
 
   if (mode_ == SimulationInputMode::FILE) {
@@ -123,7 +144,7 @@ void ProblemGeneration::ExtractUtilsFiles(
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
   auto utils_files_extractor =
       LpFilesExtractor(antares_archive_path, xpansion_output_dir,
-                       std::move(logger), mode_, simulation_dir_);
+                       std::move(logger), mode_.value(), simulation_dir_);
   utils_files_extractor.ExtractFiles();
 }
 
@@ -154,32 +175,43 @@ void validateMasterFormulation(
   }
 }
 
+/**
+ *
+ * @param solver_log_manager
+ * @param solver_name
+ * @param mpsList
+ * @param lpDir_
+ * @param reader shared pointer to the archive reader to share with ZipProblemsProviderAdapter
+ * @param with_archive
+ * @param lps data from antares. Passed by reference to prevent heavy copy
+ * @return
+ */
 std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
     SolverLogManager& solver_log_manager, const std::string& solver_name,
     const std::vector<ProblemData>& mpsList, std::filesystem::path& lpDir_,
-    std::shared_ptr<ArchiveReader>& reader, bool with_archive = true
-    ) {
+    std::shared_ptr<ArchiveReader> reader,
+    const Antares::Solver::LpsFromAntares& lps = {}) {
   std::vector<std::string> problem_names;
   std::transform(mpsList.begin(), mpsList.end(),
                  std::back_inserter(problem_names),
                  [](ProblemData const& data) { return data._problem_mps; });
-  switch (mode_) {
+  switch (mode_.value()) {
     case SimulationInputMode::FILE: {
-      auto adapter =
-          std::make_unique<FileProblemsProviderAdapter>(lpDir_, problem_names);
-      return adapter->provideProblems(solver_name, solver_log_manager);
+      FileProblemsProviderAdapter adapter(lpDir_, problem_names);
+      return adapter.provideProblems(solver_name, solver_log_manager);
     }
     case SimulationInputMode::ARCHIVE: {
-      auto adapter = std::make_unique<ZipProblemsProviderAdapter>(
-          lpDir_, reader, problem_names);
-      return adapter->provideProblems(solver_name, solver_log_manager);
+      ZipProblemsProviderAdapter adapter(
+          lpDir_, std::move(reader), problem_names);
+      return adapter.provideProblems(solver_name, solver_log_manager);
     }
     case SimulationInputMode::ANTARES_API: {
-      throw std::runtime_error("SimulationInputMode API Not implemented yet");
+      XpansionProblemsFromAntaresProvider adapter(lps);
+      return adapter.provideProblems(solver_name, solver_log_manager);
     }
     default:
-      // TODO : log
-      return {};
+      throw LogUtils::XpansionError<std::runtime_error>(
+          "Unhandled simulation mode", LOGLOCATION);
   }
 }
 
@@ -237,10 +269,8 @@ void ProblemGeneration::RunProblemGeneration(
                                    : InstantiateZipReader(antares_archive_path);
 
   /* Main stuff */
-  std::vector<std::shared_ptr<Problem>> xpansion_problems =
-      getXpansionProblems(solver_log_manager, solver_name, mpsList, lpDir_,
-                          reader, !antares_archive_path.empty()
-                          );
+  std::vector<std::shared_ptr<Problem>> xpansion_problems = getXpansionProblems(
+      solver_log_manager, solver_name, mpsList, lpDir_, reader, lps_);
 
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
       problems_and_data;
@@ -259,7 +289,7 @@ void ProblemGeneration::RunProblemGeneration(
       [&](const auto& problem_and_data) {
         const auto& [problem, data] = problem_and_data;
         std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
-        switch (mode_) {
+        switch (mode_.value()) {
           case SimulationInputMode::FILE:
             variables_provider = std::make_shared<ProblemVariablesFileAdapter>(
                 data, links, logger, lpDir_);

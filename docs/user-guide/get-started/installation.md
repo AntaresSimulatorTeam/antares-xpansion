@@ -28,12 +28,12 @@ antares-xpansion-launcher.exe -i examples\SmallTestFiveCandidates
 
 See [Launch the optimization](launching-optimization.md) for more details on how to launch the software.
 
-[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ubuntu-release.yml/badge.svg?query=branch%3Adevelop
-[ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ubuntu-release.yml?query=branch%3Adevelop
-[windows_vcpkg_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/windows-vcpkg.yml/badge.svg?query=branch%3Adevelop
-[windows_vcpkg_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/windows-vcpkg.yml?query=branch%3Adevelop
-[centos_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/centos-release.yml/badge.svg?query=branch%3Adevelop
-[centos_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/centos-release.yml?query=branch%3Adevelop
-[oracle_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ol8-release.yml/badge.svg?query=branch%3Adevelop
-[oracle_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ol8-release.yml?query=branch%3Adevelop
+[ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_ubuntu.yml/badge.svg?query=branch%3Adevelop
+[ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_ubuntu.yml?query=branch%3Adevelop
+[windows_vcpkg_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_windows.yml/badge.svg?query=branch%3Adevelop
+[windows_vcpkg_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_windows.yml?query=branch%3Adevelop
+[centos_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_centos7.yml/badge.svg?query=branch%3Adevelop
+[centos_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_centos7.yml?query=branch%3Adevelop
+[oracle_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_oracle8.yml/badge.svg?query=branch%3Adevelop
+[oracle_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/build_oracle8.yml?query=branch%3Adevelop
 [antares_xpansion_release_url]: https://github.com/AntaresSimulatorTeam/antares-xpansion/releases

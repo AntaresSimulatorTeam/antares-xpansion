@@ -29,9 +29,9 @@ void solver_addcols(SolverAbstract &solver_p, std::vector<double> const &objx_p,
     assert((objx_p.size() == mstart_p.size()) || (mstart_p.size() == 0));
     assert(mrwind_p.size() == dmatval_p.size());
 
-    int newCols = colTypes_p.size();
-    int ncolInit = solver_p.get_ncols();
-    int newnnz = dmatval_p.size();
+    int newCols = static_cast<int>(colTypes_p.size());
+    int ncolInit = static_cast<int>(solver_p.get_ncols());
+    int newnnz = static_cast<int>(dmatval_p.size());
 
     solver_p.add_cols(newCols, newnnz, objx_p.data(), mstart_p.data(),
                       mrwind_p.data(), dmatval_p.data(), bdl_p.data(), bdu_p.data());
@@ -65,11 +65,11 @@ void solver_addrows(SolverAbstract &solver_p, std::vector<char> const &qrtype_p,
   assert((range_p.size() == 0) || (range_p.size() == qrtype_p.size()));
   assert(mclind_p.size() == dmatval_p.size());
 
-  int nrows = rhs_p.size();
+  int nrows = static_cast<int>(rhs_p.size());
 
-  solver_p.add_rows(nrows, dmatval_p.size(), qrtype_p.data(), rhs_p.data(),
-                    range_p.data(), mstart_p.data(), mclind_p.data(),
-                    dmatval_p.data(), names);
+  solver_p.add_rows(nrows, static_cast<int>(dmatval_p.size()), qrtype_p.data(),
+                    rhs_p.data(), range_p.data(), mstart_p.data(),
+                    mclind_p.data(), dmatval_p.data(), names);
 }
 
 void solver_getlpsolution(SolverAbstract::Ptr const solver_p, std::vector<double> &x_p)

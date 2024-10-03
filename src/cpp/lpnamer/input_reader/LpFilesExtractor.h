@@ -20,7 +20,7 @@ class LpFilesExtractor {
       std::filesystem::path antares_archive_path,
       std::filesystem::path xpansion_output_dir,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
-      SimulationInputMode mode = SimulationInputMode::UNKOWN,
+      SimulationInputMode mode,
       const std::filesystem::path& simulation_dir = {})
       : antares_archive_path_(std::move(antares_archive_path)),
         xpansion_output_dir_(std::move(xpansion_output_dir)),

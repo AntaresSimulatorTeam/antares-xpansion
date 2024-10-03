@@ -6,7 +6,7 @@ from tests import build_config_reader
 def pytest_addoption(parser):
     parser.addoption("--installDir", action="store",
                      default=build_config_reader.get_install_dir())
-    parser.addoption("--allow_run_as_root", action="store", default="")
+    parser.addoption("--allow_run_as_root", action="store_true", default=False)
 
 
 @pytest.fixture()

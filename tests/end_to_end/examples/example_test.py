@@ -1,15 +1,15 @@
-from enum import Enum
-import os
-from pathlib import Path
-import sys
-import shutil
 import json
+import os
+import shutil
+import subprocess
+import sys
 import zipfile
+from enum import Enum
+from pathlib import Path
 
 import numpy as np
-import subprocess
-
 import pytest
+
 from src.python.antares_xpansion.candidates_reader import CandidatesReader
 
 ALL_STUDIES_PATH = Path("../../../data_test/examples")
@@ -21,6 +21,14 @@ class BendersMethod(Enum):
     BENDERS = "benders"
     BENDERS_BY_BATCH = "benders_by_batch"
 
+
+def get_json_filepath(output_dir, folder, filename):
+    op = []
+    for path in Path(output_dir).iterdir():
+        for jsonpath in Path(path / folder).rglob(filename):
+            op.append(jsonpath)
+    assert len(op) == 1
+    return op[0]
 
 def get_json_file_data(output_dir, folder, filename):
     data = None
@@ -58,7 +66,7 @@ def launch_xpansion(install_dir, study_path, allow_run_as_root=False, nproc: int
         str(nproc),
         "--oversubscribe",
     ]
-    if allow_run_as_root == "True":
+    if allow_run_as_root:
         command.append("--allow-run-as-root")
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=None)
     output = process.communicate()
@@ -69,16 +77,61 @@ def launch_xpansion(install_dir, study_path, allow_run_as_root=False, nproc: int
     assert process.returncode == 0
 
 
+def launch_xpansion_memory(install_dir, study_path, method: BendersMethod, allow_run_as_root=False, nproc: int = 4):
+    # Clean study output
+    remove_outputs(study_path)
+
+    install_dir_full = str(Path(install_dir).resolve())
+
+    command = [
+        sys.executable,
+        "../../../src/python/launch.py",
+        "--installDir",
+        install_dir_full,
+        "--dataDir",
+        str(study_path),
+        "--method",
+        method.value,
+        "--step",
+        "full",
+        "-n",
+        str(nproc),
+        "--oversubscribe",
+        "--memory"
+    ]
+    if allow_run_as_root == "True":
+        command.append("--allow-run-as-root")
+    print(command)
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=None)
+    output = process.communicate()
+    if process.returncode != 0:
+        print(output)
+
+    # Check return value
+    assert process.returncode == 0
+
 def assert_convergence(solution, options_data, method: BendersMethod):
     assert (solution["relative_gap"] <= options_data["RELATIVE_GAP"]) or (
         solution["overall_cost"] * solution["relative_gap"]
         <= options_data["ABSOLUTE_GAP"]) or (method == BendersMethod.BENDERS_BY_BATCH and solution["ABSOLUTE_GAP"] <= options_data["ABSOLUTE_GAP"])
 
 
-def verify_solution(study_path, expected_values, expected_investment_solution, method: BendersMethod = BendersMethod.BENDERS):
+def verify_solution(study_path, expected_values, expected_investment_solution,
+                    method: BendersMethod = BendersMethod.BENDERS, use_archive=True):
     output_path = study_path / "output"
-    json_data = get_json_file_data(output_path, "expansion", "out.json")
-    options_data = get_json_file_data(output_path, "lp", "options.json")
+
+    if use_archive:
+        json_data = get_json_file_data(output_path, "expansion", "out.json")
+        options_data = get_json_file_data(output_path, "lp", "options.json")
+    else:
+        json_path = get_json_filepath(output_path, "expansion", "out.json")
+        options_path = get_json_filepath(output_path, "lp", "options.json")
+
+        with open(str(json_path), "r") as json_file:
+            json_data = json.load(json_file)
+
+        with open(str(options_path), "r") as options_file:
+            options_data = json.load(options_file)
 
     solution = json_data["solution"]
     investment_solution = solution["values"]
@@ -681,6 +734,29 @@ def test_full_study_short_sequential(
     launch_xpansion(install_dir, tmp_study,
                     allow_run_as_root, nproc=1)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
+    verify_study_update(
+        tmp_study, expected_investment_solution, antares_version)
+
+
+@pytest.mark.parametrize(
+    parameters_names,
+    short_parameters_values,
+)
+@pytest.mark.short_memory
+def test_full_study_short_memory(
+        install_dir,
+        allow_run_as_root,
+        study_path,
+        expected_values,
+        expected_investment_solution,
+        tmp_path,
+        antares_version,
+):
+    tmp_study = tmp_path / study_path.name
+    shutil.copytree(study_path, tmp_study)
+    launch_xpansion_memory(install_dir, tmp_study, BendersMethod.BENDERS,
+                           allow_run_as_root, nproc=1)
+    verify_solution(tmp_study, expected_values, expected_investment_solution, use_archive=False)
     verify_study_update(
         tmp_study, expected_investment_solution, antares_version)
 
