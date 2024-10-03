@@ -8,10 +8,7 @@ scl enable devtoolset-10 bash
 source /opt/rh/rh-git227/enable
 module load mpi
 ```
-## Update git submodule
-```
-git submodule update --init antares-deps
-```
+
 ## Configure build with CMake
 === "Windows"
 
