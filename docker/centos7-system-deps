@@ -18,8 +18,7 @@ RUN \
   yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils &&\
   yum install -y devtoolset-11-gcc* environment-modules rpm-build zlib-devel &&\
   yum install -y doxygen graphviz &&\
-  yum install -y install python3-devel && \
-  yum install -y libuuid-devel
+  yum install -y install python3-devel
 
 RUN \
     yum -y install https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm &&\

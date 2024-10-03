@@ -24,4 +24,4 @@ jobs:
           workdir: docker
           dockerfile: centos7-system-deps
           cache: false
-          tags: latest,1.1.0
+          tags: latest,1.1.1
