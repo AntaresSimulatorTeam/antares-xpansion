@@ -59,6 +59,12 @@ Additionnal options for Xpress use:
 |`XPRESS`|`OFF`| Enable Xpress support. |
 |`XPRESS_ROOT`|`C:/xpressmp` on Windows, `/opt/xpressmp` on Unix. | Define Xpress installation directory. |
 
+You may need to install lsb_release
+Example on Ubuntu:
+```
+sudo apt install lsb-release
+```
+
 ## Build
 === "Windows"
 
