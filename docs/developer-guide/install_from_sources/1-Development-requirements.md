@@ -3,6 +3,9 @@
 ## [C++ version](#c++-version)
 The compilation of Antares-Xpansion requires C++20.
 
+_mpicxx_ is used to build some executable with MPI support. _mpicxx_ relly on `/usr/bin/c++` on linux to compile the code. Please be sure that `/usr/bin/c++` is a C++20 compiler or link to one. If it is not the case you
+will get error linking to tbb : `fatal error: tbb/blocked_range.h`
+
 === "Windows"
 
     Compilation is tested on Visual Studio 17 2022.
