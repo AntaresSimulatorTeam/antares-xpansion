@@ -134,17 +134,16 @@ $(document).ready(function(){initNavTree('md_docs_2developer-guide_2install__fro
   <div class="headertitle"><div class="title">Build</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md82"></a> </p>
-<h1><a class="anchor" id="autotoc_md83"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md84"></a> </p>
+<h1><a class="anchor" id="autotoc_md85"></a>
 Environnement settings</h1>
 <p>On Centos, enable <code>devtoolset-10</code> and <code>rh-git227</code> and load <code>mpi</code> module: </p><div class="fragment"><div class="line">scl enable devtoolset-10 bash</div>
 <div class="line">source /opt/rh/rh-git227/enable</div>
 <div class="line">module load mpi</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md84"></a>
-Update git submodule</h1>
-<div class="fragment"><div class="line">git submodule update --init antares-deps</div>
-</div><!-- fragment --> <h1><a class="anchor" id="autotoc_md85"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md86"></a>
 Configure build with CMake</h1>
+<p>Remember to set -DCMAKE_PREFIX_PATH to the path of the dependencies if using pre-built dependencies.</p>
+<p>The first time vcpkg will download and compile all dependencies. This can take a long time. Especially openmpi. Unless some dependencies are updated, nothing will be done on the next build. VCPKG store sources in a cache folder, removing your build folder will only remove the compiled dependencies. Meaning later builds will be faster than the first one even if you remove your build folder</p>
 <p>=== "Windows" </p><pre class="fragment">```
 cmake -B _build -S . -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake -DVCPKG_TARGET_TRIPLET=x64-windows
 ```
@@ -191,16 +190,17 @@ cmake -B _build -S . -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=vcpkg/scr
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyLeft"><code>XPRESS_ROOT</code>   </td><td class="markdownTableBodyNone"><code>C:/xpressmp</code> on Windows, <code>/opt/xpressmp</code> on Unix.   </td><td class="markdownTableBodyNone">Define Xpress installation directory.   </td></tr>
 </table>
-<h1><a class="anchor" id="autotoc_md86"></a>
+<p>You may need to install lsb_release Example on Ubuntu: </p><div class="fragment"><div class="line">sudo apt install lsb-release</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md87"></a>
 Build</h1>
 <p>=== "Windows" </p><pre class="fragment">```
-cmake --build _build --config Release -j8 --target install
+cmake --build _build --config Release -j8
 ```
 </pre><p> === "Centos" </p><pre class="fragment">```
-cmake3 --build _build --config Release -j8 --target install
+cmake3 --build _build --config Release -j8
 ```
 </pre><p> === "Ubuntu" </p><pre class="fragment">```
-cmake --build _build --config Release -j8 --target install
+cmake --build _build --config Release -j8
 ```
 </pre><p> !!! Note Compilation can be done on several processor with the <code>-j</code> option. </p>
 </div></div><!-- contents -->

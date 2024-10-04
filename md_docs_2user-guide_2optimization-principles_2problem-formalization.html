@@ -134,13 +134,13 @@ $(document).ready(function(){initNavTree('md_docs_2user-guide_2optimization-prin
   <div class="headertitle"><div class="title">Mathematical aspects of the investment problem</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md205"></a> In this part, we give the mathematical formulation of the investment problem considered in Antares-Xpansion. We also explain the Benders decomposition algorithm that is used.</p>
-<h1><a class="anchor" id="autotoc_md206"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md206"></a> In this part, we give the mathematical formulation of the investment problem considered in Antares-Xpansion. We also explain the Benders decomposition algorithm that is used.</p>
+<h1><a class="anchor" id="autotoc_md207"></a>
 Problem formulation</h1>
 <p>We consider a power system with given production and trasmission capacities. Antares-Xpansion seeks to invest in additional capacties in order to minimize the sum of annualized investment costs and yearly operating costs.</p>
-<h2><a class="anchor" id="autotoc_md207"></a>
+<h2><a class="anchor" id="autotoc_md208"></a>
 Variables and costs</h2>
-<h3><a class="anchor" id="autotoc_md208"></a>
+<h3><a class="anchor" id="autotoc_md209"></a>
 Invested capacity and investment cost</h3>
 <p>Let \((x_i)_{1 \leq i \leq n}\) be the variables modeling the invested capacities (in MW) of the candidates.</p>
 <ul>
@@ -153,10 +153,10 @@ Invested capacity and investment cost</h3>
 </ul>
 <p>Each candidate is also characterized by an annualized investment cost per MW installed \(c_{i} \in \mathbb{R}_{+}\ \).</p>
 <p>The investment vector is denoted by \(x = (x_{1}, \ldots, x_{n})\) and the cost vector by \(c = (c_{1}, \ldots, c_{n})\), so that the investment cost is \(c^{\top}x\).</p>
-<h3><a class="anchor" id="autotoc_md209"></a>
+<h3><a class="anchor" id="autotoc_md210"></a>
 Operating cost</h3>
 <p>The system is also characterized by an expected yearly operating cost, denoted by \(\Theta(x) \in \mathbb{R}\). The cost \(\Theta(x)\) is the output of an Antares simulation for the system with the investment level \(x\).</p>
-<h4><a class="anchor" id="autotoc_md210"></a>
+<h4><a class="anchor" id="autotoc_md211"></a>
 The operating cost as the solution of an Antares simulation</h4>
 <p>The expected operating cost in Antares is estimated over \(N\) scenarios (a.k.a. MC years), that is:</p>
 <p>$$ \Theta(x) = \sum_{l=1}^{N} p_{l} \theta_{l}(x) $$</p>
@@ -164,7 +164,7 @@ The operating cost as the solution of an Antares simulation</h4>
 <p>$$ \begin{aligned} \theta_{l}(x) = \min_{y \in \mathcal{Y}} \ &amp; g_{l}^{\top} y\\ \text{s.t.} \ &amp; Wy = d_{l} - T_{l}x \end{aligned} $$</p>
 <p>where \(y\) represents all the variables of the Antares problem, \(\mathcal{Y}\) is the admissible set and \(g_{l}\) is the cost vector. The matrices \(W\) and \(T_{l}\) as well as the vector \(d_{l}\) are used to model the constraints of the system. The differences between MC years come from the availability of thermal plants, the load, the wind and solar power generation, and the hydraulic inflows, that are taken into account in the right-hand side of the constraint through the term \(d_{l}\). The term \(T_{l}\) changes between MC years due to link profiles on investment candidates.</p>
 <p>More details on the Antares problem can be found in the <a href="https://antares-simulator.readthedocs.io/en/latest/reference-guide/11-modeling/">Antares documentation</a>. We simply mention that the linear problem presented here and used in Antares-Xpansion is a relaxation of the Antares problem as unit-commitment constraints (minimum on and off time) are not taken into account.</p>
-<h4><a class="anchor" id="autotoc_md211"></a>
+<h4><a class="anchor" id="autotoc_md212"></a>
 Splitting the weeks</h4>
 <p>In fact, the variables in the Antares problem are defined with an hourly time step so that \(y = (y_{1}, \ldots, y_{8760})\), where \(y_{h}\) gathers all the variables of the Antares problem at hour \(h\) of the year. Antares solves weekly problems, that involves only the variables of a given week i.e. the problem on week \(s \in [1,52]\) involves only the subvector \(y_{s} = (y_{168 (s-1) + 1}, \ldots, y_{168s})\). In the sequel, the index \(_s\) always denotes subvectors correponding to week \(s\).</p>
 <p>In Antares-Xpansion, the <b>weekly problems are assumed to be independent</b>, this is why, <b>no coupling constraints between the weeks</b> are allowed. By doing so, the matrix \(W\) is <b>block diagonal</b> i.e. \(W = \mathrm{diag}(W_{1}, \ldots, W_{52})\). Writing:</p>
@@ -178,21 +178,21 @@ Splitting the weeks</h4>
 <p>where \(\theta_{l, s}(x)\) is the operational cost of week \(s\) of MC year \(l\) and \(\mathcal{Y}_{s}\) is the admissible set for the variables of week \(s\).</p>
 <p>Overall, the expected yearly operating cost becomes:</p>
 <p>$$ \Theta(x) = \sum_{l=1}^{N} p_{l} \sum_{s=1}^{52} \theta_{l, s}(x) $$</p>
-<h3><a class="anchor" id="autotoc_md212"></a>
+<h3><a class="anchor" id="autotoc_md213"></a>
 Summary of the costs</h3>
 <p>For an investment \(x\), the overall cost of the system is given by \(c^{\top}x + \Theta(x)\), where \(\Theta(x)\) is computed from the solution of \(52N\) linear weekly Antares problems, with \(N\) the number of MC years.</p>
-<h2><a class="anchor" id="autotoc_md213"></a>
+<h2><a class="anchor" id="autotoc_md214"></a>
 Constraints (for the investment problem)</h2>
 <p>The invested capacities of the different candidates can be bound by linear constraints, specified by the user with the <a href="../get-started/settings-definition.md#additional-constraints"><code>additional-constraints</code></a> parameter. These constraints are written \(Ax = b\), with \(A \in \mathbb{R}^{m \times n}\) and \(b \in \mathbb{R}^{m}\), where \(m\) is the number of constraints.</p>
-<h2><a class="anchor" id="autotoc_md214"></a>
+<h2><a class="anchor" id="autotoc_md215"></a>
 Investment problem</h2>
 <p>The optimal investment problem is therefore:</p>
 <p>$$ \begin{aligned} \min_{x \in \mathcal{X}}\ &amp; c^{\top}x + \Theta(x) \\ \text{s.t.} \ &amp; Ax = b\ \end{aligned} $$</p>
 <p>where \(\mathcal{X} = \prod_{i \in \mathcal{R}} [0, \overline{x}_{i}] \times \prod_{i \in \mathcal{I}} \{0, u_{i}, \ldots, K_{i}u_{i}\}\) is the set of admissible investment levels.</p>
-<h1><a class="anchor" id="autotoc_md215"></a>
+<h1><a class="anchor" id="autotoc_md216"></a>
 Benders reformulation and decomposition algorithm</h1>
 <p>The problem structure, with investments as first stage decision and optimal dispatch as second stage decision, is naturally suited for a Benders decomposition. We briefly expose the ideas of the Benders reformulation and of the Benders decomposition algorithm.</p>
-<h2><a class="anchor" id="autotoc_md216"></a>
+<h2><a class="anchor" id="autotoc_md217"></a>
 Benders reformulation of the investment problem</h2>
 <p>Taking the dual of the weekly Antares problem, we get:</p>
 <p>$$ \begin{aligned} \theta_{l, s}(x) = \max_{\pi_{l, s} \in \Pi_{l, s}} \ &amp; \pi_{l, s}^{\top} (d_{l, s} - T_{l, s}x)\\ \text{s.t.} \ &amp; W_{s}^{\top}\pi_{l, s} \geq g_{l, s} \end{aligned} $$</p>
@@ -204,7 +204,7 @@ Benders reformulation of the investment problem</h2>
 <p>This problem can be linearized by introducing continuous variables \(\vartheta_{l, s} \in \mathbb{R}\) for \(l \in [1, N]\) and \(s \in [1,52]\), which gives rise to an equivalent reformulation of the investment problem, known as the Benders reformulation or <em>Benders master problem</em>:</p>
 <p>$$ \begin{aligned} \min_{x \in \mathcal{X}}\ &amp; c^{\top}x + \sum_{l=1}^{N} p_{l} \sum_{s=1}^{52} \vartheta_{l, s} \\ \text{s.t.} \ &amp; Ax = b\\ &amp; \vartheta_{l, s} \geq \pi_{l, s}^{\top} (d_{l, s} - T_{l, s}x)\ , \quad \forall l \ , \forall s \ , \forall \pi_{l, s} \in \mathrm{extr}(F_{l, s}) \end{aligned} $$</p>
 <p>The constraints of the form \(\vartheta_{l, s} \geq \pi_{l, s}^{\top} (d_{l, s} - T_{l, s}x)\) in the master problem are referred as <em>Benders cuts</em> in the sequel. </p>
-<h2><a class="anchor" id="autotoc_md217"></a>
+<h2><a class="anchor" id="autotoc_md218"></a>
 The Benders decomposition algorithm</h2>
 <p>As the number of extreme points of \(F_{l, s}\) is often very large, the full Benders master problem has a large number of constraints, so it is difficult to work directly with.</p>
 <p>This is why, the Benders decomposition algorithm proceeds iteratively:</p>
@@ -225,10 +225,10 @@ The Benders decomposition algorithm</h2>
 <li>With a given investment level \(\bar{x}\), we get a feasible solution with a cost equal to the sum of the investment cost and of the optimal cost of the subproblems: \(c^{\top}\bar{x} + \sum_{l=1}^{N} p_{l} \sum_{s=1}^{52} \bar{\pi}_{l, s}^{\top} (d_{l, s} - T_{l, s}\bar{x})\). This gives a valid upper bound for the investment problem.</li>
 </ul>
 <p>The optimality gap is the difference (either absolute or relative) between the lower and the upper bound. The Benders decomposition algorithm stops when the optimality gap falls below a value specified by the user (or set by default), see <a href="../get-started/settings-definition.md#optimality_gap"><code>optimality_gap</code></a> and <a href="../get-started/settings-definition.md#relative_gap"><code>relative_gap</code></a>.</p>
-<h2><a class="anchor" id="autotoc_md218"></a>
+<h2><a class="anchor" id="autotoc_md219"></a>
 The Benders by batch algorithm</h2>
 <p>In the classical Benders algorithm, all subproblems are solved at each iteration, resulting in \(52 N\) resolutions and as many cuts are added in the master problem. This can be quite time-consuming. The idea of the Benders by batch algorithm is to solve subproblems by batch and stop solving them at a given iteration once we know that the master solution is not optimal. Each iteration consists in fewer subproblems resolution (and fewer cuts added to the master) but we need more iterations to converge. Overall the tradeoff makes the Benders by batch algorithm usually faster than the classical Benders method. A comprehensive description of the Benders by batch algorithm can be found in the thesis of Xavier Blanchot[@blanchot_solving_2022].</p>
-<h1><a class="anchor" id="autotoc_md219"></a>
+<h1><a class="anchor" id="autotoc_md220"></a>
 Reliability-constrained investment problem</h1>
 <p>Starting from version 1.3.0, Antares-Xpansion can take into account a reliability constraint on the maximum expected number of hours of loss of load. This means that the user is able to specify, for each area, an expected number of hours of loss a load that should not be exceeded, see <a class="el" href="md_docs_2user-guide_2get-started_2adequacy-criterion.html">Adequacy criterion</a>. Antares-Xpansion will output a solution that satisfy this reliability criterion using a Benders-based matheuristic designed in Chapter 5 of the thesis of Xavier Blanchot[@blanchot_solving_2022].</p>
 <p>The heuristic is based on the insight that increasing the investment cost is strongly correlated to a decrease in loss of load. It works by iteratively solving the classical investment problem (without the reliability constraint) to which we add a minimum investment cost constraint \(c^{\top}x \geq \Lambda\).</p>

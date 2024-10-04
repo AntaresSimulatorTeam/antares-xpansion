@@ -175,9 +175,20 @@ Runtime dependency</h3>
 <h1><a class="anchor" id="autotoc_md80"></a>
 Other dependencies</h1>
 <ul>
-<li>Antares Simulator: either build it from source, download precompiled binaries or use the next method</li>
+<li>Antares Simulator: either build it from source, download precompiled binaries or use the automatic build method</li>
+<li>Or-tools: either build it from source, download precompiled binaries or use the automatic build method</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md81"></a>
+<h2><a class="anchor" id="autotoc_md81"></a>
+Using pre-build dependency</h2>
+<p>If using built from source or pre-built release of Simulator, Or-tools-rte or other dependency, you can specify the path to the dependency in the CMake configuration.</p>
+<div class="fragment"><div class="line">cmake -B build -S . -DCMAKE_PREFIX_PATH=&quot;&lt;path_to_simulator&gt;;&lt;path_to_or_tools&gt;&quot;</div>
+</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md82"></a>
+Versions</h2>
+<ul>
+<li><a href="https://github.com/AntaresSimulatorTeam/Antares_Simulator">Antares Simulator</a>: usually <a href="https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/latest">the latest version</a> is recommended. You can check antares-version.json for the specific version tied to your code version.</li>
+<li><a href="https://github.com/rte-france/or-tools-rte">Or-tools-rte</a>: Or-tools-rte is not a direct dependency of Xpansion but one of Simulator, the version or or-tools-rte should match the version used by your version of Simulator. You can check antares-version.json for the specific version tied to your code version. Select the &lt;your-plateform&gt;_static_sirius.zip file. Other variants may work but are not tested.</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md83"></a>
 Automatic Antares Simulator build</h1>
 <p>If Antares Simulator is not installed, it will be automatically downloaded and built by the build system. </p>
 </div></div><!-- contents -->
