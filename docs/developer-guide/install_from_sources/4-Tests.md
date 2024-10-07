@@ -2,6 +2,14 @@
 
 Tests compilation  can be enabled at configure time using the option `-DBUILD_TESTING=ON` (`OFF` by default). After build, tests can be run with `ctest`:
 
+!!! Note
+    You need mpirun in your path for several tests.
+    You can use the one build by vcpkg in packages/openmpi_x64-linux-release/tools/openmpi/bin/
+    Exemple:
+    ```
+    export PATH=$PATH:/path/to/vcpkg/packages/openmpi_x64-linux-release/tools/openmpi/bin/
+    ```
+
 ```
 cd _build
 ctest -C Release --output-on-failure
