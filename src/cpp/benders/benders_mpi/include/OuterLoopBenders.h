@@ -18,7 +18,7 @@ class OuterLoopBenders : public OuterLoop {
                             std::shared_ptr<IMasterUpdate> master_updater,
                             std::shared_ptr<ICutsManager> cuts_manager,
                             pBendersBase benders, mpi::communicator& world);
-  //  void Run() override;
+
   void OuterLoopCheckFeasibility() override;
   void OuterLoopBilevelChecks() override;
   void RunAttachedAlgo() override;

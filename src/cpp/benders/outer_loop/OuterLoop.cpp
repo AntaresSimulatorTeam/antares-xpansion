@@ -1,4 +1,5 @@
 #include "OuterLoop.h"
+
 namespace Outerloop {
 
 void OuterLoop::Run() {

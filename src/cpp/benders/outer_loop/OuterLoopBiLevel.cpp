@@ -1,5 +1,7 @@
 #include "OuterLoopBiLevel.h"
+
 namespace Outerloop {
+
 OuterLoopBiLevel::OuterLoopBiLevel(
     const std::vector<OuterLoopSingleInputData> &outer_loop_input_data)
     : outer_loop_input_data_(outer_loop_input_data) {}
@@ -53,6 +55,7 @@ void OuterLoopBiLevel::Init(const std::vector<double> &obj,
 
   found_feasible_ = false;
 }
+
 void OuterLoopBiLevel::SetLambdaMaxToMaxInvestmentCosts(
     const std::vector<double> &obj, const Point &max_invest,
     const VariableMap &master_variable) {
@@ -61,5 +64,6 @@ void OuterLoopBiLevel::SetLambdaMaxToMaxInvestmentCosts(
     lambda_max_ += obj[var_id] * max_invest.at(var_name);
   }
 }
+
 const Point &OuterLoopBiLevel::BilevelBestX() const { return bilevel_best_x_; }
 }  // namespace Outerloop

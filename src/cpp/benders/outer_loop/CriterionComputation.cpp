@@ -26,8 +26,6 @@ void CriterionComputation::ComputeOuterLoopCriterion(
   }
 }
 
-
-
 void CriterionComputation::SearchVariables(
     const std::vector<std::string> &variables) {
   Outerloop::VariablesGroup variablesGroup(
