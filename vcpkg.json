@@ -1,12 +1,18 @@
 {
   "name": "antares-xpansion",
   "version-string": "1.3.2",
+  "$comment 1": "libuuid by transitivity for Simulator-> yuni",
+  "$comment 2": "sirius-solver by transitivity for Simulator",
   "dependencies": [
     "jsoncpp",
     "gtest",
     "gflags",
     "sirius-solver",
     "coin-or-cbc",
+    {
+      "name": "libuuid",
+      "platform": "!windows"
+    },
     {
       "name": "boost-mpi",
       "version>=": "1.81.0"
