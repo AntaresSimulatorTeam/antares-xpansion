@@ -35,7 +35,7 @@ For non-default installations, you need to manually configure the `XPRESSDIR` en
 set XPRESSDIR=C:\custom\xpress\path
 ```
 
-#### Linux
+#### Linux/macOS
 ```bash
 export XPRESSDIR=/home/user/custom/xpress/path
 ```
