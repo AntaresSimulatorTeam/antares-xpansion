@@ -120,7 +120,6 @@ std::shared_ptr<ArchiveReader> InstantiateZipReader(
     const std::filesystem::path& antares_archive_path);
 void ProblemGeneration::ProcessWeights(
     const std::filesystem::path& xpansion_output_dir,
-    const std::filesystem::path& antares_archive_path,
     const std::filesystem::path& weights_file,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
   const auto settings_dir = xpansion_output_dir / ".." / ".." / "settings";
@@ -314,8 +313,7 @@ void ProblemGeneration::RunProblemGeneration(
       });
 
   if (!weights_file.empty()) {
-    ProcessWeights(xpansion_output_dir, antares_archive_path, weights_file,
-                   logger);
+    ProcessWeights(xpansion_output_dir, weights_file, logger);
   }
 
   if (mode_ == SimulationInputMode::ARCHIVE) {
