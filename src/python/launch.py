@@ -37,7 +37,7 @@ logger.info(f"hostname: {LogUtils.host_name()}", extra=step_info)
 logger.info(f"Xpansion version: {__version__}", extra=step_info)
 logger.info(f"Xpansion revision: {__revision__}", extra=step_info)
 logger.info(
-    f"antares simulator version: {__antares_simulator_version__}", extra=step_info)
+    f"Antares Simulator version: {__antares_simulator_version__}", extra=step_info)
 logger.info(
     "----------------------------------------------------------------", extra=simple_message)
 
