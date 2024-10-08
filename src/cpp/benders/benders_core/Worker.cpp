@@ -49,9 +49,9 @@ void Worker::init(VariableMap const &variable_map,
                                     solver_log_manager);
   }
 
-  _solver->set_threads(1);
   _solver->set_output_log_level(log_level);
   _solver->read_prob_mps(path_to_mps, true);
+  _solver->set_threads(1);
 
   _name_to_id = variable_map;
 
