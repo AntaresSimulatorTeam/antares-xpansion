@@ -15,13 +15,19 @@ def study_path_is(context, string):
                                       string.replace("/", os.sep))
 
 
-def build_outer_loop_command(context):
-    command = get_mpi_command(allow_run_as_root=context.allow_run_as_root, nproc=context.nproc)
+def build_outer_loop_command(context, n: int):
+    command = get_mpi_command(allow_run_as_root=context.allow_run_as_root, nproc=n)
     exe_path = Path(get_conf("DEFAULT_INSTALL_DIR")) / get_conf("OUTER_LOOP")
     command.append(str(exe_path))
     command.append("options.json")
     return command
 
+
+def build_launch_command(study_dir: str, method: str, nproc: int, in_memory: bool):
+    command = f"python ../../src/python/launch.py --installDir {get_conf('DEFAULT_INSTALL_DIR')} --dataDir {study_dir} --method {method} -n {nproc} --oversubscribe"
+    if in_memory:
+        command += " --memory"
+    return command
 
 
 def read_outputs(output_path):
@@ -31,11 +37,10 @@ def read_outputs(output_path):
     return outputs
 
 
-@when('I run outer loop with {n} proc(s)')
+@when('I run outer loop with {n:d} proc(s)')
 def run_outer_loop(context, n):
-    context.nproc = int(n)
     context.allow_run_as_root = get_conf("allow_run_as_root")
-    command = build_outer_loop_command(context)
+    command = build_outer_loop_command(context, n)
     print(f"Running command: {command}")
     old_cwd = os.getcwd()
     lp_path = Path(context.study_path) / "lp"
@@ -51,20 +56,28 @@ def run_outer_loop(context, n):
     os.chdir(old_cwd)
 
 
-@then("the simulation takes less than {seconds} seconds")
+@when('I run antares-xpansion in memory with the {method} method and {n:d} proc(s)')
+def run_antares_xpansion(context, method, n):
+    command = build_launch_command(context.study_path, method, n, True)
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, shell=True)
+    out, err = process.communicate()
+    context.return_code = process.returncode
+    context.outputs = read_outputs(Path(parse_output_folder_from_logs(out)) / "expansion" / "out.json")
+
+
+@then("the simulation takes less than {seconds:d} seconds")
 def check_simu_time(context, seconds):
-    assert context.outputs["run_duration"] <= float(seconds)
+    assert context.outputs["run_duration"] <= seconds
 
 
 @then("the simulation succeeds")
 def simu_success(context):
-    return context.return_code == 0
+    assert context.return_code == 0
 
 
-@then("the expected overall cost is {value}")
+@then("the expected overall cost is {value:g}")
 def check_overall_cost(context, value):
-    np.testing.assert_allclose(float(value),
-                               context.outputs["solution"]["overall_cost"], rtol=1e-6, atol=0)
+    np.testing.assert_allclose(value, context.outputs["solution"]["overall_cost"], rtol=1e-6, atol=0)
 
 
 def assert_dict_allclose(actual, expected, rtol=1e-06, atol=0):
@@ -82,3 +95,10 @@ def assert_dict_allclose(actual, expected, rtol=1e-06, atol=0):
 def check_solution(context):
     expected_solution = {row['variable']: float(row['value']) for row in context.table}
     assert_dict_allclose(context.outputs["solution"]["values"], expected_solution)
+
+
+def parse_output_folder_from_logs(logs: bytes) -> str:
+    for line in logs.splitlines():
+        if b'Output folder : ' in line:
+            return line.split(b'Output folder : ')[1].decode('ascii')
+    raise LookupError("Could not parse output folder in output logs")
