@@ -19,8 +19,7 @@ BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
                      (_options.CSV_NAME + ".csv")),
       _logger(std::move(logger)),
       _writer(std::move(writer)),
-      mathLoggerDriver_(std::move(mathLoggerDriver)) {
-}
+      mathLoggerDriver_(std::move(mathLoggerDriver)) {}
 
 std::filesystem::path BendersBase::OuterloopOptionsFile() const {
   return std::filesystem::path(_options.INPUTROOT) /
@@ -61,7 +60,8 @@ void BendersBase::OpenCsvFile() {
                 << std::endl;
     } else {
       using namespace std::string_literals;
-      _logger->display_message("Impossible to open the .csv file: "s + _csv_file_path.string());
+      _logger->display_message("Impossible to open the .csv file: "s +
+                               _csv_file_path.string());
     }
   }
 }
@@ -176,7 +176,8 @@ void BendersBase::update_best_ub() {
         _data.outer_loop_current_iteration_data.max_criterion;
     _data.outer_loop_current_iteration_data.max_criterion_area_best_it =
         _data.outer_loop_current_iteration_data.max_criterion_area;
-    relevantIterationData_.best._cut_trace = relevantIterationData_.last._cut_trace;
+    relevantIterationData_.best._cut_trace =
+        relevantIterationData_.last._cut_trace;
     best_iteration_data = bendersDataToLogData(_data);
   }
 }
@@ -775,8 +776,6 @@ void BendersBase::MatchProblemToId() {
   }
 }
 
-
-
 void BendersBase::AddSubproblemName(const std::string &name) {
   subproblems.push_back(name);
 }
@@ -820,22 +819,24 @@ void BendersBase::SetSubproblemCost(const double &subproblem_cost) {
 }
 
 /*!
-*	\brief Update maximum and minimum of simplex iterations
-*
-*	\param subproblem_iterations : number of iterations done with the subproblem
-*
-*/
-void BendersBase::BoundSimplexIterations(int subproblem_iterations){
-  
-  _data.max_simplexiter = (_data.max_simplexiter < subproblem_iterations) ? subproblem_iterations : _data.max_simplexiter; 
-  _data.min_simplexiter = (_data.min_simplexiter > subproblem_iterations) ? subproblem_iterations : _data.min_simplexiter; 
-
+ *	\brief Update maximum and minimum of simplex iterations
+ *
+ *	\param subproblem_iterations : number of iterations done with the
+ *subproblem
+ *
+ */
+void BendersBase::BoundSimplexIterations(int subproblem_iterations) {
+  _data.max_simplexiter = (_data.max_simplexiter < subproblem_iterations)
+                              ? subproblem_iterations
+                              : _data.max_simplexiter;
+  _data.min_simplexiter = (_data.min_simplexiter > subproblem_iterations)
+                              ? subproblem_iterations
+                              : _data.min_simplexiter;
 }
 
-void BendersBase::ResetSimplexIterationsBounds()
-{
-	_data.max_simplexiter = 0;
-	_data.min_simplexiter = std::numeric_limits<int>::max();
+void BendersBase::ResetSimplexIterationsBounds() {
+  _data.max_simplexiter = 0;
+  _data.min_simplexiter = std::numeric_limits<int>::max();
 }
 bool BendersBase::IsResumeMode() const { return _options.RESUME; }
 
@@ -911,6 +912,16 @@ void BendersBase::write_basis() const {
   _master->write_basis(filename);
 }
 
+void BendersBase::writeLastIterationSubproblemsSolution() const {
+  const auto dirname(std::filesystem::path(_options.OUTPUTROOT));
+  const auto &sub_pblm_map = GetSubProblemMap();
+
+  for (const auto &[name, worker] : sub_pblm_map) {
+    worker->_solver->write_sol(dirname /
+                               std::filesystem::path(name).replace_extension());
+  }
+}
+
 WorkerMasterDataVect BendersBase::AllCuts() const {
   return workerMasterDataVect_;
 }
@@ -937,9 +948,9 @@ void BendersBase::MasterAddRows(
 }
 void BendersBase::ResetMasterFromLastIteration() {
   reset_master<WorkerMaster>(master_variable_map_, LastMasterPath(),
-                                get_solver_name(), get_log_level(),
-                                _data.nsubproblem, solver_log_manager_,
-                                IsResumeMode(), _logger);
+                             get_solver_name(), get_log_level(),
+                             _data.nsubproblem, solver_log_manager_,
+                             IsResumeMode(), _logger);
 }
 bool BendersBase::MasterIsEmpty() const { return master_is_empty_; }
 
@@ -1016,8 +1027,6 @@ void BendersBase::init_data(double external_loop_lambda,
   _data.outer_loop_current_iteration_data.external_loop_lambda_max =
       external_loop_lambda_max;
 }
-
-
 
 bool BendersBase::isExceptionRaised() const { return exception_raised_; }
 /*

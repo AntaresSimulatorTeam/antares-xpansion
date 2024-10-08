@@ -126,6 +126,7 @@ void BendersSequential::Run() {
   CloseCsvFile();
   EndWritingInOutputFile();
   write_basis();
+  writeLastIterationSubproblemsSolution();
 }
 
 void BendersSequential::launch() {

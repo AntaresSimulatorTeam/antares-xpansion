@@ -288,6 +288,7 @@ void BendersMpi::Run() {
     CloseCsvFile();
     EndWritingInOutputFile();
     write_basis();
+    writeLastIterationSubproblemsSolution();
   }
   _world.barrier();
 }
