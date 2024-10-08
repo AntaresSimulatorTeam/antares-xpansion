@@ -2,7 +2,7 @@ import argparse
 import sys
 from typing import List
 
-from antares_xpansion.__version__ import __version__, __antares_simulator_version__
+from antares_xpansion.__version__ import __version__, __revision__, __antares_simulator_version__
 from antares_xpansion.launcher_options_default_value import LauncherOptionsDefaultValues
 from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
 from antares_xpansion.xpansionConfig import InputParameters
@@ -62,6 +62,10 @@ class InputParser:
                                  action='version',
                                  version=__version__,
                                  help='show antares-xpansion version and exit ')
+        self.parser.add_argument("--revision",
+                                 action='version',
+                                 version=__revision__,
+                                 help='show the latest abbreviated commit hash ')
         self.parser.add_argument("--antares-version",
                                  action='version',
                                  version=__antares_simulator_version__,

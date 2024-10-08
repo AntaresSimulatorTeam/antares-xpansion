@@ -52,12 +52,6 @@ Additionnal vcpkg options:
 |`CMAKE_TOOLCHAIN_FILE`|Define `vcpkg` toolchain file. |
 |`VCPKG_TARGET_TRIPLET`|Define `<vcpkg-triplet>`. |
 
-Additionnal options for Xpress use:
-
-|Option | Default|Description |
-|:-------|-------|-------|
-|`XPRESS`|`OFF`| Enable Xpress support. |
-|`XPRESS_ROOT`|`C:/xpressmp` on Windows, `/opt/xpressmp` on Unix. | Define Xpress installation directory. |
 
 You may need to install lsb_release
 Example on Ubuntu:

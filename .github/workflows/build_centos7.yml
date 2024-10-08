@@ -40,7 +40,7 @@ jobs:
           workdir: docker
           dockerfile: centos7-system-deps
           cache: false
-          tags: 1.1.0
+          tags: 1.1.1
 
   versions:
     runs-on: ubuntu-latest
@@ -67,7 +67,7 @@ jobs:
   build:
     runs-on: ubuntu-latest
     needs: [ docker_publish, versions ]
-    container: 'antaresrte/xpansion-centos7:1.1.0'
+    container: 'antaresrte/xpansion-centos7:1.1.1'
     env:
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
       ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools

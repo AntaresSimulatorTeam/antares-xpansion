@@ -7,9 +7,9 @@ import subprocess
 from datetime import datetime
 from pathlib import Path
 
+from antares_xpansion.__version__ import __antares_simulator_version__
 from antares_xpansion.logger import step_logger
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
-from antares_xpansion.__version__ import __antares_simulator_version__
 from packaging import version
 
 
@@ -75,6 +75,10 @@ class AntaresDriver:
         if returned_l.returncode == 1:
             raise AntaresDriver.AntaresExecutionError(
                 f"Error: exited antares with status {returned_l.returncode}")
+        elif returned_l.returncode == -9:
+            raise AntaresDriver.AntaresExecutionError(
+                f"Error: exited antares with status {returned_l.returncode}"
+                f" (probably due to memory limit)")
         elif returned_l.returncode != 0 and returned_l.returncode != 1:
             self.logger.info(
                 f"Warning: exited antares with status {returned_l.returncode}")
