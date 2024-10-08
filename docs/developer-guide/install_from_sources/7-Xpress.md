@@ -1,6 +1,6 @@
 # Installing Xpress Solver and Loading it Dynamically
 
-This document explains how to install the Xpress solver in both default and non-default locations, as well as how Anatres-Xpansion dynamically loads the Xpress library and license. 
+This document explains how to install the Xpress solver in both default and non-default locations, as well as how Antares-Xpansion dynamically loads the Xpress library and license. 
 
 ## Table of Contents
 
@@ -11,7 +11,6 @@ This document explains how to install the Xpress solver in both default and non-
    - [Locating Xpress Libraries](#locating-xpress-libraries)
    - [Loading License Information](#loading-license-information)
    - [Handling Different Platforms](#handling-different-platforms)
-3. [Key Functions in the Code](#key-functions-in-the-code)
 
 ---
 
