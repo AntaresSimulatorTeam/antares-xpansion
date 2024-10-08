@@ -71,10 +71,20 @@ The C++ code dynamically loads the Xpress solver library and configures the lice
    The code looks for a `license` subdirectory inside the `XPRESSDIR` path. This folder typically contains the necessary license files for the Xpress solver.
 
 2. **Set Environment Variables for License**:  
-   The code configures the environment by setting specific variables that point to the license file, ensuring that Xpress can authenticate properly.
+   To ensure Xpress can authenticate properly, the code sets the following environment variables:
+
+   - **`XPRESSDIR`**: Points to the root installation directory of the Xpress solver.
+   - **`XPAUTH`**: If this environment variable is set, it points directly to the license file (e.g., `xpauth.xpr`). This provides a more explicit way to define the path to the license file rather than relying on the default `license` subdirectory.
+
+   This approach allows greater flexibility when managing license files, especially in environments where the `XPRESSDIR/license/` directory may not be the default location for license files.
 
 3. **Error Handling for License**:  
-   If the license file or directory is missing, the code raises an error and provides recommendations (such as manually setting the path to the license or checking the license configuration).
+   If the license file or directory is missing, the code raises an error and provides recommendations:
+   - Suggests checking the value of `XPRESSDIR` and ensuring the license file exists in the default `license` subdirectory.
+   - Advises checking or setting the `XPAUTH` environment variable to the correct license file path in case the file is stored in a custom location.
+
+Using `XPAUTH` allows for better flexibility in license management, particularly in cloud or containerized environments, where environment variables are commonly used to configure paths dynamically.
+
 
 ### Handling Different Platforms
 
