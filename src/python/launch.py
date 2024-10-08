@@ -12,7 +12,7 @@ from antares_xpansion.config_file_parser import ConfigFileParser
 from antares_xpansion.xpansionConfig import XpansionConfig
 from antares_xpansion.driver import XpansionDriver
 from antares_xpansion.config_loader import ConfigLoader
-from antares_xpansion.__version__ import __version__, __antares_simulator_version__
+from antares_xpansion.__version__ import __version__,__revision__, __antares_simulator_version__
 from antares_xpansion.logger import get_logger, step_logger
 from antares_xpansion.log_utils import LogUtils
 import os
@@ -35,8 +35,9 @@ logger.info("Running Antares Xpansion ... ", extra=step_info)
 logger.info(f"user: {LogUtils.user_name()}", extra=step_info)
 logger.info(f"hostname: {LogUtils.host_name()}", extra=step_info)
 logger.info(f"Xpansion version: {__version__}", extra=step_info)
+logger.info(f"Xpansion revision: {__revision__}", extra=step_info)
 logger.info(
-    f"antares simulator version: {__antares_simulator_version__}", extra=step_info)
+    f"Antares Simulator version: {__antares_simulator_version__}", extra=step_info)
 logger.info(
     "----------------------------------------------------------------", extra=simple_message)
 
