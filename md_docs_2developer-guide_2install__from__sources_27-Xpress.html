@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: Documention generation guidelines</title>
+<title>Antares Xpansion: Installing Xpress Solver and Loading it Dynamically</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -105,7 +105,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('md_docs_2how__to.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('md_docs_2developer-guide_2install__from__sources_27-Xpress.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -131,27 +131,101 @@ $(document).ready(function(){initNavTree('md_docs_2how__to.html',''); initResiza
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">Documention generation guidelines</div></div>
+  <div class="headertitle"><div class="title">Installing Xpress Solver and Loading it Dynamically</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md128"></a> This file explains how to generate the onlinedocumentation and the PDF userguide of the project.</p>
-<h1><a class="anchor" id="autotoc_md129"></a>
-Online documentation</h1>
-<p>The online documentation is generated using <code>readthedocs</code>. The main configuration files are located in the root directory of the project :</p><ul>
-<li><code>readthedocs.yml</code> specifies the Python environment and the mkdocs configuration file.</li>
-<li><code>mkdocs.yml</code> speficies the configuration of mkdocs.</li>
+<div class="textblock"><p><a class="anchor" id="autotoc_md93"></a> This document explains how to install the Xpress solver in both default and non-default locations, as well as how Antares-Xpansion dynamically loads the Xpress library and license.</p>
+<h1><a class="anchor" id="autotoc_md94"></a>
+Table of Contents</h1>
+<ol type="1">
+<li>Installing Xpress<ul>
+<li>Default Installation</li>
+<li>Non-Default Installation</li>
 </ul>
-<p>The documentation source files are located in the <code>docs</code> directory. Building the online documentation only requires the files specified in the <code>nav</code> section of <code>mkdocs.yml</code> (along with the depending Python code for the Jupyter notebook). The other files, like reStructuredText files (.rst) are only used for the PDF generation, see PDF generation.</p>
-<p>To preview the documentation locally, it is possible to run <code>mkdocs serve</code> from the folder containing the <code>mkdocs.yml</code> file (in a Python environment that contains the package <code>mkdocs</code>).</p>
-<p><code>readthedocs</code> follows the github branches configured by the admin and displays the documentation accordingly. These choices can be managed <a href="https://readthedocs.org/projects/antares-xpansion/">there</a>. You must be logged in to readthedocs and granted the appropriate modification rights on the project.</p>
-<h1><a class="anchor" id="autotoc_md130"></a>
-PDF generation</h1>
-<p>The PDF userguide is built using the latex builder of <a href="https://www.sphinx-doc.org/en/master/">Sphinx</a>.</p>
-<p>In <code>docs/pdf-doc-generation-with-sphinx</code>, you can find :</p><ul>
-<li>A folder <code>source</code> that contains the sphinx configuration file <code>conf.py</code>, and a file <code>index.rst</code> that describes the main sections of the document. Note that the tree structure of the docs is given for the online docs in <code>mkdocs.yml</code> whereas it is in <code>docs/pdf-doc-generation-with-sphinx/index.rst</code> for the PDF. These two structures should agree, otherwise there might be build errors or inconsistencies between the two docs.</li>
-<li>A bash script <code>create_pdf_doc.sh</code> that copies the docs markdown source files (only the user guide) in <code>docs/pdf-doc-generation-with-sphinx/source</code>. Then, it replaces some characters so that the source files can be correctly interpreted by the latex compiler. Then it builds the PDF userguide and deletes the source files that were copied earlier.</li>
+</li>
+<li>How the Code Loads Xpress<ul>
+<li>Locating Xpress Libraries</li>
+<li>Loading License Information</li>
+<li>Handling Different Platforms</li>
 </ul>
-<p>Having a table of contents that is consistent between the online and the PDF documentation is tricky and involves playing with the <code>.rst</code> files that are located in the different subfolders of the documentation source files. </p>
+</li>
+</ol>
+<hr  />
+<h1><a class="anchor" id="autotoc_md96"></a>
+Installing Xpress</h1>
+<h2><a class="anchor" id="autotoc_md97"></a>
+Default Installation</h2>
+<p>By default, the Xpress solver will be installed in system-wide directories depending on your operating system. The default installation paths are:</p>
+<ul>
+<li><b>Windows</b>: <code>C:\xpressmp\bin\xprs.dll</code> or <code>C:\Program Files\xpressmp\bin\xprs.dll</code></li>
+<li><b>macOS</b>: <code>/Library/xpressmp/lib/libxprs.dylib</code></li>
+<li><b>Linux</b>: <code>/opt/xpressmp/lib/libxprs.so</code></li>
+</ul>
+<p>After installing the Xpress solver, the environment variable <code>XPRESSDIR</code> should point to the installation directory. This will help the system locate the required libraries.</p>
+<h2><a class="anchor" id="autotoc_md98"></a>
+Non-Default Installation</h2>
+<p>For non-default installations, you need to manually configure the <code>XPRESSDIR</code> environment variable to point to the custom installation path. For example:</p>
+<h3><a class="anchor" id="autotoc_md99"></a>
+Windows</h3>
+<div class="fragment"><div class="line">set XPRESSDIR=C:\custom\xpress\path</div>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md100"></a>
+Linux/macOS</h3>
+<div class="fragment"><div class="line">export XPRESSDIR=/home/user/custom/xpress/path</div>
+</div><!-- fragment --><p> Make sure that the dynamic libraries (e.g., xprs.dll, libxprs.dylib, or libxprs.so) are located in the appropriate subdirectories (bin or lib) under the directory specified by XPRESSDIR.</p>
+<h1><a class="anchor" id="autotoc_md101"></a>
+How the Code Loads Xpress</h1>
+<p>The C++ code dynamically loads the Xpress solver library and configures the licensing environment at runtime. Here's a step-by-step explanation of how it works:</p>
+<h2><a class="anchor" id="autotoc_md102"></a>
+Locating Xpress Libraries</h2>
+<ol type="1">
+<li><b>Check for <code>XPRESSDIR</code></b>: <br  />
+ The code first checks if the <code>XPRESSDIR</code> environment variable is defined. This variable should point to the directory where the Xpress solver is installed.</li>
+<li><b>Build the Path to the Library</b>: <br  />
+ Depending on the platform, the code appends the correct subdirectory to the <code>XPRESSDIR</code> path:<ul>
+<li><b>Windows</b>: Adds <code>\bin</code> (e.g., <code>C:\xpressmp\bin\xprs.dll</code>).</li>
+<li><b>macOS/Linux</b>: Adds <code>/lib</code> (e.g., <code>/opt/xpressmp/lib/libxprs.so</code>).</li>
+</ul>
+</li>
+<li><b>Attempt to Load the Library</b>: <br  />
+ The code then attempts to load the Xpress library using platform-specific functions:<ul>
+<li><b>Windows</b>: Uses <code>LoadLibrary()</code> to load <code>xprs.dll</code>.</li>
+<li><b>macOS</b>: Uses <code>dlopen()</code> to load <code>libxprs.dylib</code>.</li>
+<li><b>Linux</b>: Uses <code>dlopen()</code> to load <code>libxprs.so</code>.</li>
+</ul>
+</li>
+<li><b>Error Handling</b>: <br  />
+ If the library cannot be found or loaded, an error message is displayed, providing troubleshooting suggestions for the user (e.g., checking <code>XPRESSDIR</code> or ensuring the file is in the correct path).</li>
+</ol>
+<h2><a class="anchor" id="autotoc_md103"></a>
+Loading License Information</h2>
+<ol type="1">
+<li><b>Locate License Directory</b>: <br  />
+ The code looks for a <code>license</code> subdirectory inside the <code>XPRESSDIR</code> path. This folder typically contains the necessary license files for the Xpress solver.</li>
+<li><p class="startli"><b>Set Environment Variables for License</b>: <br  />
+ To ensure Xpress can authenticate properly, the code sets the following environment variables:</p><ul>
+<li>**<code>XPRESSDIR</code>**: Points to the root installation directory of the Xpress solver.</li>
+<li>**<code>XPAUTH</code>**: If this environment variable is set, it points directly to the license file (e.g., <code>xpauth.xpr</code>). This provides a more explicit way to define the path to the license file rather than relying on the default <code>license</code> subdirectory.</li>
+</ul>
+<p class="startli">This approach allows greater flexibility when managing license files, especially in environments where the <code>XPRESSDIR/license/</code> directory may not be the default location for license files.</p>
+</li>
+<li><b>Error Handling for License</b>: <br  />
+ If the license file or directory is missing, the code raises an error and provides recommendations:<ul>
+<li>Suggests checking the value of <code>XPRESSDIR</code> and ensuring the license file exists in the default <code>license</code> subdirectory.</li>
+<li>Advises checking or setting the <code>XPAUTH</code> environment variable to the correct license file path in case the file is stored in a custom location.</li>
+</ul>
+</li>
+</ol>
+<p>Using <code>XPAUTH</code> allows for better flexibility in license management, particularly in cloud or containerized environments, where environment variables are commonly used to configure paths dynamically.</p>
+<h2><a class="anchor" id="autotoc_md104"></a>
+Handling Different Platforms</h2>
+<p>To ensure cross-platform compatibility, the code contains specific logic to handle each operating system:</p>
+<ul>
+<li><b>Windows</b>: <br  />
+ The code uses the <code>LoadLibrary()</code> function to load the <code>xprs.dll</code> file. After loading, it retrieves function pointers from the library using <code>GetProcAddress()</code>.</li>
+<li><b>Linux/macOS</b>: <br  />
+ The code uses <code>dlopen()</code> to load shared libraries (<code>libxprs.so</code> for Linux and <code>libxprs.dylib</code> for macOS). Function pointers are retrieved using <code>dlsym()</code>.</li>
+</ul>
+<p>The dynamic loading process ensures that the program does not need to be recompiled when the library is installed in different locations or on different platforms. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
