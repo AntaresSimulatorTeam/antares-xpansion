@@ -20,6 +20,7 @@ Follow this [link][Doxygen_Code_Documentation] for Doxygen code documentation.
 - [Tests](4-Tests.md)
 - [UI creation](5-ui-creation.md)
 - [Installer creation](6-Installer-creation.md)
+- [Xpress integration](7-Xpress.md)
 
 [ubuntu_system_svg]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ubuntu-system-deps-build.yml/badge.svg?query=branch%3Adevelop
 [ubuntu_system_link]: https://github.com/AntaresSimulatorTeam/antares-xpansion/actions/workflows/ubuntu-system-deps-build.yml?query=branch%3Adevelop
