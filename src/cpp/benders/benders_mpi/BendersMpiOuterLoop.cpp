@@ -28,7 +28,7 @@ BendersMpiOuterLoop::BendersMpiOuterLoop(
     const auto& headers =
         criterion_computation_.getOuterLoopInputData().PatternBodies();
     mathLoggerDriver_->add_logger(
-        std::filesystem::path(Options().OUTPUTROOT) / "criterions.txt", headers,
+        std::filesystem::path(Options().OUTPUTROOT) / "LOLD.txt", headers,
         &OuterLoopCurrentIterationData::outer_loop_criterion);
     mathLoggerDriver_->add_logger(
         std::filesystem::path(Options().OUTPUTROOT) /
