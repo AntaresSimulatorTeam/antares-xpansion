@@ -13,10 +13,17 @@ class BendersMainFactory {
   SOLVER solver_ = SOLVER::BENDERS;
   [[nodiscard]] int RunExternalLoop() const;
   [[nodiscard]] int RunBenders() const;
+  std::shared_ptr<MathLoggerDriver> BuildMathLogger(
+      const SimulationOptions& options,
+      const std::shared_ptr<Outerloop::CriterionComputation>
+          criterion_computation,
+      const std::filesystem::path& math_logs_file, const BENDERSMETHOD& method,
+      bool benders_log_console) const;
   pBendersBase PrepareForExecution(
       BendersLoggerBase& benders_loggers, const SimulationOptions& options,
       bool external_loop,
-      Outerloop::CriterionComputation* computation = nullptr) const;
+      std::shared_ptr<Outerloop::CriterionComputation> computation =
+          nullptr) const;
 
  public:
   explicit BendersMainFactory(int argc, char** argv,

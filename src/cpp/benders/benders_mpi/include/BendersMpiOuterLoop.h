@@ -9,8 +9,7 @@ class BendersMpiOuterLoop : public BendersMpi {
   BendersMpiOuterLoop(BendersBaseOptions const &options, Logger logger,
                       Writer writer, mpi::environment &env,
                       mpi::communicator &world,
-                      std::shared_ptr<MathLoggerDriver> mathLoggerDriver,
-                      CriterionComputation &criterion_computation);
+                      std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
 
  protected:
   void GatherCuts(const SubProblemDataMap &subproblem_data_map,
@@ -31,8 +30,6 @@ class BendersMpiOuterLoop : public BendersMpi {
   void SetSubproblemsVariablesIndex();
   void UpdateOuterLoopMaxCriterionArea();
 
- private:
-  CriterionComputation &criterion_computation_;
 };
 
 }  // namespace Outerloop

@@ -7,6 +7,7 @@
 
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
+#include "CriterionComputation.h"
 #include "ILogger.h"
 #include "OutputWriter.h"
 #include "SimulationOptions.h"
@@ -92,16 +93,17 @@ class BendersBase {
   void SaveCurrentOuterLoopIterationInOutputFile() const;
   void SetBilevelBestub(double bilevel_best_ub);
   void UpdateOuterLoopSolution();
-
- protected:
-  bool exception_raised_ = false;
-
- public:
   bool isExceptionRaised() const;
   [[nodiscard]] std::filesystem::path OuterloopOptionsFile() const;
   void UpdateOverallCosts();
+  Logger _logger;
+  Writer _writer;
+  std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
+  void setCriterionsComputation(
+      std::shared_ptr<Outerloop::CriterionComputation> criterionsComputation);
 
  protected:
+  bool exception_raised_ = false;
   CurrentIterationData _data;
   WorkerMasterDataVect workerMasterDataVect_;
   // BendersCuts best_iteration_cuts_;
@@ -227,6 +229,8 @@ class BendersBase {
                                PlainData::SubProblemData &subproblem_data,
                                const std::string &name,
                                const std::shared_ptr<SubproblemWorker> &worker);
+  // TODO to be rethink
+  std::shared_ptr<Outerloop::CriterionComputation> criterions_computation_;
 
  private:
   void print_master_and_cut(std::ostream &file, int ite,
@@ -246,8 +250,6 @@ class BendersBase {
   Output::Iteration iteration(const WorkerMasterData &masterDataPtr_l) const;
   LogData FinalLogData() const;
   void FillWorkerMasterData(WorkerMasterData &workerMasterData);
-
- private:
   bool master_is_empty_ = true;
   BendersBaseOptions _options;
   unsigned int _totalNbProblems = 0;
@@ -263,9 +265,5 @@ class BendersBase {
   Timer benders_timer;
   Output::SolutionData outer_loop_solution_data_;
 
- public:
-  Logger _logger;
-  Writer _writer;
-  std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

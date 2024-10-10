@@ -71,6 +71,7 @@ void BendersBase::CloseCsvFile() {
     _csv_file.close();
   }
 }
+
 void BendersBase::PrintCurrentIterationCsv() {
   if (relevantIterationData_.last._valid) {
     auto ite = _data.it - 1;
@@ -393,6 +394,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
       },
       shouldParallelize());
 }
+
 void BendersBase::SolveSubproblem(
     SubProblemDataMap &subproblem_data_map,
     PlainData::SubProblemData &subproblem_data, const std::string &name,
@@ -1036,4 +1038,8 @@ void BendersBase::UpdateOverallCosts() {
 void BendersBase::SetBilevelBestub(double bilevel_best_ub) {
   _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub =
       bilevel_best_ub;
+}
+void BendersBase::setCriterionsComputation(
+    std::shared_ptr<Outerloop::CriterionComputation> criterionsComputation) {
+  criterions_computation_ = criterionsComputation;
 }
