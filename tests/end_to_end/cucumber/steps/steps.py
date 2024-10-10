@@ -62,7 +62,7 @@ def run_antares_xpansion(context, method, n):
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, shell=True)
     out, err = process.communicate()
     context.return_code = process.returncode
-    context.outputs = read_outputs(Path(parse_output_folder_from_logs(out)) / "expansion" / "out.json")
+    context.outputs = read_outputs(Path(get_results_file_path_from_logs(out)))
 
 
 @then("the simulation takes less than {seconds:d} seconds")
@@ -97,8 +97,8 @@ def check_solution(context):
     assert_dict_allclose(context.outputs["solution"]["values"], expected_solution)
 
 
-def parse_output_folder_from_logs(logs: bytes) -> str:
+def get_results_file_path_from_logs(logs: bytes) -> str:
     for line in logs.splitlines():
-        if b'Output folder : ' in line:
-            return line.split(b'Output folder : ')[1].decode('ascii')
-    raise LookupError("Could not parse output folder in output logs")
+        if b'Optimization results available in : ' in line:
+            return line.split(b'Optimization results available in : ')[1].decode('ascii')
+    raise LookupError("Could not find results file path in output logs")

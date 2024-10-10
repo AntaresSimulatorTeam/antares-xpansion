@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <numeric>
+#include <ranges>
 
 #include "StringManip.h"
 
@@ -27,16 +28,16 @@ void YearlyWeightsWriter::CreateWeightFile() {
 
 void YearlyWeightsWriter::FillMpsWeightsMap() {
   mps_weights_.clear();
-  std::vector<std::filesystem::path> mps_files;
-  for (auto& p : std::filesystem::directory_iterator(xpansion_lp_dir_)) {
-    if (p.path().extension() == ".mps") mps_files.emplace_back(p.path());
-  }
-  for (auto& mps_file : mps_files) {
-    auto year = GetYearFromMpsName(mps_file.filename().string());
+  auto it = std::filesystem::directory_iterator(xpansion_lp_dir_);
+  auto mps_list = it | std::views::filter([](const auto& p) {
+                    return p.path().extension() == ".mps";
+                  });
+  for (auto& mps_file : mps_list ) {
+    auto year = GetYearFromMpsName(mps_file.path().filename().string());
     auto year_index =
         std::find(active_years_.begin(), active_years_.end(), year) -
         active_years_.begin();
-    mps_weights_[mps_file.filename()] = weights_vector_[year_index];
+    mps_weights_[mps_file.path().filename()] = weights_vector_[year_index];
   }
 }
 
