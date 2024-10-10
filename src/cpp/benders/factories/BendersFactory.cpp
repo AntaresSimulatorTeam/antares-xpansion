@@ -144,6 +144,14 @@ int BendersMainFactory::RunBenders() const {
 
   try {
     SimulationOptions options(options_file_);
+    const auto fpath = std::filesystem::path(options.INPUTROOT) /
+                       options.OUTER_LOOP_OPTION_FILE;
+    auto outer_loop_input_data =
+        Outerloop::OuterLoopInputFromYaml().Read(fpath);
+    auto criterion_computation =
+        std::make_shared<Outerloop::CriterionComputation>(
+            outer_loop_input_data);
+    
     auto benders = PrepareForExecution(benders_loggers, options, false);
     if (benders) {
       benders->launch();
@@ -177,9 +185,10 @@ int BendersMainFactory::RunExternalLoop() const {
 
   try {
     SimulationOptions options(options_file_);
-    auto outer_loop_input_data = Outerloop::OuterLoopInputFromYaml().Read(
-        std::filesystem::path(options.INPUTROOT) /
-        options.OUTER_LOOP_OPTION_FILE);
+    const auto fpath = std::filesystem::path(options.INPUTROOT) /
+                       options.OUTER_LOOP_OPTION_FILE;
+    auto outer_loop_input_data =
+        Outerloop::OuterLoopInputFromYaml().Read(fpath);
     auto criterion_computation =
         std::make_shared<Outerloop::CriterionComputation>(
             outer_loop_input_data);
