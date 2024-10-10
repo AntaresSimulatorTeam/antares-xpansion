@@ -25,17 +25,7 @@ void BendersMpiOuterLoop::SolveSubproblem(
       subproblem_data.outer_loop_patterns_values);
 }
 
-// Search for variables in sub problems that satisfy patterns
-// var_indices is a vector(for each patterns p) of vector (var indices related
-// to p)
-void BendersMpiOuterLoop::SetSubproblemsVariablesIndex() {
-  if (!subproblem_map.empty()) {
-    auto subproblem = subproblem_map.begin();
 
-    criterions_computation_->SearchVariables(
-        subproblem->second->_solver->get_col_names());
-  }
-}
 
 void BendersMpiOuterLoop::UpdateOuterLoopMaxCriterionArea() {
   auto criterions_begin =
@@ -54,12 +44,6 @@ void BendersMpiOuterLoop::UpdateOuterLoopMaxCriterionArea() {
 
 void BendersMpiOuterLoop::InitializeProblems() {
   BendersMpi::InitializeProblems();
-
-  if (_world.rank() == rank_0) {
-    SetSubproblemsVariablesIndex();
-  }
-
-  BroadCast(criterions_computation_->getVarIndices(), rank_0);
   init_problems_ = false;
 }
 

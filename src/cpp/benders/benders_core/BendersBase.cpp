@@ -410,6 +410,17 @@ void BendersBase::SolveSubproblem(
   subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 }
 
+// Search for variables in sub problems that satisfy patterns
+// var_indices is a vector(for each patterns p) of vector (var indices related
+// to p)
+void BendersBase::SetSubproblemsVariablesIndices() {
+  if (!subproblem_map.empty()) {
+    auto subproblem = subproblem_map.begin();
+
+    criterions_computation_->SearchVariables(
+        subproblem->second->_solver->get_col_names());
+  }
+}
 /*!
  *  \brief Add cut to Master Problem and store the cut in a set
  *

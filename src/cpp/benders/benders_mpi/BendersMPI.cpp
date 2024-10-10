@@ -40,8 +40,16 @@ void BendersMpi::InitializeProblems() {
     }
     current_problem_id++;
   }
-
+  BroadCastVariablesIndices();
 }
+
+void BendersMpi::BroadCastVariablesIndices() {
+  if (_world.rank() == rank_0) {
+    SetSubproblemsVariablesIndices();
+  }
+  BroadCast(criterions_computation_->getVarIndices(), rank_0);
+}
+
 void BendersMpi::BuildMasterProblem() {
   if (_world.rank() == rank_0) {
     reset_master<WorkerMaster>(master_variable_map_, get_master_path(),

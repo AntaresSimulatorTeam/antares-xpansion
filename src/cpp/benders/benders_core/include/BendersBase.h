@@ -231,6 +231,10 @@ class BendersBase {
                                const std::shared_ptr<SubproblemWorker> &worker);
   // TODO to be rethink
   std::shared_ptr<Outerloop::CriterionComputation> criterions_computation_;
+  // Search for variables in sub problems that satisfy patterns
+  // var_indices is a vector(for each patterns p) of vector (var indices related
+  // to p)
+  void SetSubproblemsVariablesIndices();
 
  private:
   void print_master_and_cut(std::ostream &file, int ite,

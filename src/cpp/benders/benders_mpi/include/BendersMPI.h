@@ -91,4 +91,5 @@ class BendersMpi : public BendersBase {
                          const Timer &walltime);
   virtual void GatherCuts(const SubProblemDataMap &subproblem_data_map,
                           const Timer &walltime);
+  void BroadCastVariablesIndices();
 };
