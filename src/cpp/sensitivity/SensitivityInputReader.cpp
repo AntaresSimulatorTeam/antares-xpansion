@@ -6,7 +6,7 @@
 
 #include "LogUtils.h"
 #include "OutputWriter.h"
-#include "common.h"
+#include "antares-xpansion/benders/benders_core/common.h"
 #include "multisolver_interface/SolverFactory.h"
 
 const std::string EPSILON_C("epsilon");

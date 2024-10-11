@@ -12,6 +12,6 @@
 #include <boost/serialization/utility.hpp>
 #include <boost/serialization/vector.hpp>
 
-#include "common.h"
+#include "antares-xpansion/benders/benders_core/common.h"
 
 namespace mpi = boost::mpi;

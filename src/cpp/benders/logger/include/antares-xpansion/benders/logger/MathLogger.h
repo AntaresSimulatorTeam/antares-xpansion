@@ -2,7 +2,7 @@
 #pragma once
 #include <filesystem>
 
-#include "BendersMathLogger.h"
+#include "antares-xpansion/benders/benders_core/BendersMathLogger.h"
 #include "LoggerUtils.h"
 
 class MathLoggerFile : public MathLoggerImplementation {

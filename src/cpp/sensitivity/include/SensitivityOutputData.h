@@ -3,7 +3,7 @@
 #include <iostream>
 #include <utility>
 
-#include "common.h"
+#include "antares-xpansion/benders/benders_core/common.h"
 
 const std::string MIN_C("min");
 const std::string MAX_C("max");

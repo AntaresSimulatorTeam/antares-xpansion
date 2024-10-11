@@ -1,9 +1,9 @@
 #pragma once
 
 #include "ArchiveReader.h"
-#include "BendersBase.h"
+#include "antares-xpansion/benders/benders_core/BendersBase.h"
 #include "ILogger.h"
-#include "common.h"
+#include "antares-xpansion/benders/benders_core/common.h"
 
 /*!
  * \class BendersSequential

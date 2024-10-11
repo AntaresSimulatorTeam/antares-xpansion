@@ -5,7 +5,7 @@
 #include "antares-xpansion/benders/output/JsonWriter.h"
 #include "OutputWriter.h"
 #include "antares-xpansion/benders/output/VoidWriter.h"
-#include "common.h"
+#include "antares-xpansion/benders/benders_core/common.h"
 
 Writer build_void_writer() { return std::make_shared<Output::VoidWriter>(); }
 

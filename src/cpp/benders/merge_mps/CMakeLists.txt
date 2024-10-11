@@ -20,7 +20,7 @@ target_include_directories(merge_mps_core
 
 target_link_libraries(merge_mps_core
         PUBLIC
-        benders_core
+        antaresXpansion::benders_core
         helpers
         antaresXpansion::logger_lib
         antaresXpansion::factories

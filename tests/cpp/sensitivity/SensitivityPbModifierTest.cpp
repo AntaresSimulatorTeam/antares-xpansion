@@ -2,7 +2,7 @@
 #include <multisolver_interface/SolverFactory.h>
 #include "ProblemModifierCapex.h"
 #include "ProblemModifierProjection.h"
-#include "BendersBase.h"
+#include "antares-xpansion/benders/benders_core/BendersBase.h"
 
 const int peak_id = 0;
 const int semibase_id = 1;

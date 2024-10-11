@@ -6,7 +6,7 @@
 #include <numeric>
 
 #include "BatchCollection.h"
-#include "CustomVector.h"
+#include "antares-xpansion/benders/benders_core/CustomVector.h"
 #include "RandomBatchShuffler.h"
 
 BendersByBatch::BendersByBatch(

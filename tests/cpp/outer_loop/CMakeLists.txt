@@ -6,7 +6,7 @@ target_link_libraries(outer_loop_test
         solvers
         antaresXpansion::outer_loop_lib
         benders_by_batch_core
-        benders_core
+        antaresXpansion::benders_core
         antaresXpansion::output_core
         antaresXpansion::logger_lib
         GTest::Main

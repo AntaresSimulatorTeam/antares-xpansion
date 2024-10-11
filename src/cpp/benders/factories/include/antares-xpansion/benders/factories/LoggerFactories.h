@@ -6,7 +6,7 @@
 
 #include "BendersFactory.h"
 #include "ILogger.h"
-#include "SimulationOptions.h"
+#include "antares-xpansion/benders/benders_core/SimulationOptions.h"
 #include "antares-xpansion/benders/logger/Master.h"
 #include "antares-xpansion/benders/logger/MathLogger.h"
 #include "antares-xpansion/benders/logger/UserFile.h"

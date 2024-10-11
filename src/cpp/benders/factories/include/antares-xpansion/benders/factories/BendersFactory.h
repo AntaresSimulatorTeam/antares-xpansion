@@ -2,7 +2,7 @@
 #define ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
 #include "antares-xpansion/benders/outer_loop/CriterionComputation.h"
-#include "common.h"
+#include "antares-xpansion/benders/benders_core/common.h"
 
 class BendersMainFactory {
  private:

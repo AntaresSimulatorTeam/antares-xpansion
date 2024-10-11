@@ -6,7 +6,7 @@ add_executable(restart_lib_tests
 
 target_link_libraries(restart_lib_tests
         PRIVATE
-        benders_core
+        antaresXpansion::benders_core
         antaresXpansion::logger_lib
         GTest::Main)
 

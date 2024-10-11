@@ -9,12 +9,12 @@
 #include "ILogger.h"
 #include "LogUtils.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
-#include "MasterUpdate.h"
+#include "antares-xpansion/benders/benders_core/MasterUpdate.h"
 #include "antares-xpansion/benders/benders_mpi/OuterLoopBenders.h"
 #include "OutputWriter.h"
-#include "StartUp.h"
+#include "antares-xpansion/benders/benders_core/StartUp.h"
 #include "Timer.h"
-#include "Worker.h"
+#include "antares-xpansion/benders/benders_core/Worker.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 
 BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size,

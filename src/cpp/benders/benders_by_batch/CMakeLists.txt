@@ -30,7 +30,7 @@ target_include_directories (benders_by_batch_core
 
 target_link_libraries (benders_by_batch_core
 	PUBLIC
-        benders_core
+		antaresXpansion::benders_core
 		antaresXpansion::benders_sequential_core
 		antaresXpansion::benders_mpi_core
 		helpers

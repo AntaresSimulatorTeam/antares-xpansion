@@ -20,7 +20,7 @@ target_include_directories(benders_sequential_core
 
 target_link_libraries(benders_sequential_core
         PUBLIC
-        benders_core
+        antaresXpansion::benders_core
         helpers
         antaresXpansion::output_core
         solvers

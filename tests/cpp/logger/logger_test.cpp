@@ -3,7 +3,7 @@
 #include <ostream>
 #include <sstream>
 
-#include "BendersMathLogger.h"
+#include "antares-xpansion/benders/benders_core/BendersMathLogger.h"
 #include "ILogger.h"
 #include "LogPrefixManip.h"
 #include "RandomDirGenerator.h"

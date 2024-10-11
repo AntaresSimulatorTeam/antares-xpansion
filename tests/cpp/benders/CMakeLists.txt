@@ -6,7 +6,7 @@ target_link_libraries(benders_sequential_test
         PRIVATE
         antaresXpansion::benders_sequential_core
         benders_by_batch_core
-        benders_core
+        antaresXpansion::benders_core
         antaresXpansion::output_core
         antaresXpansion::logger_lib
         tests_utils

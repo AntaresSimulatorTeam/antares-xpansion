@@ -2,7 +2,7 @@
 
 #include <multisolver_interface/SolverAbstract.h>
 
-#include "common.h"
+#include "antares-xpansion/benders/benders_core/common.h"
 
 class SensitivityProblemModifier {
  public:

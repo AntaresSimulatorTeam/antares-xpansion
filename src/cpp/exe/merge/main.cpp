@@ -5,8 +5,8 @@
 
 #include "antares-xpansion/benders/output/JsonWriter.h"
 #include "antares-xpansion/benders/merge_mps/MergeMPS.h"
-#include "SimulationOptions.h"
-#include "Worker.h"
+#include "antares-xpansion/benders/benders_core/SimulationOptions.h"
+#include "antares-xpansion/benders/benders_core/Worker.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 
 #include "antares-xpansion/benders/logger/User.h"
