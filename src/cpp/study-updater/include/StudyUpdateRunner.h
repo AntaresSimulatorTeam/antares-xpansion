@@ -7,9 +7,9 @@
 #include <sstream>
 
 #include "ActiveLinks.h"
-#include "CandidatesINIReader.h"
+#include "antares-xpansion/lpnamer/input_reader/CandidatesINIReader.h"
 #include "LauncherHelpers.h"
-#include "LinkProfileReader.h"
+#include "antares-xpansion/lpnamer/input_reader/LinkProfileReader.h"
 #include "antares-xpansion/helpers/OptionsParser.h"
 #include "StudyUpdater.h"
 class StudyUpdaterExeOptions : public OptionsParser {

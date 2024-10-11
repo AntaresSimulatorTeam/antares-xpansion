@@ -5,9 +5,9 @@
 #include <filesystem>
 
 #include "Candidate.h"
-#include "CandidatesINIReader.h"
+#include "antares-xpansion/lpnamer/input_reader/CandidatesINIReader.h"
 #include "LinkProblemsGenerator.h"
-#include "LinkProfileReader.h"
+#include "antares-xpansion/lpnamer/input_reader/LinkProfileReader.h"
 #include "LogUtils.h"
 
 void treatAdditionalConstraints(

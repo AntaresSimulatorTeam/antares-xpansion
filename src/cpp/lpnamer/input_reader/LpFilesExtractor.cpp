@@ -1,4 +1,4 @@
-#include "LpFilesExtractor.h"
+#include "antares-xpansion/lpnamer/input_reader/LpFilesExtractor.h"
 
 #include <algorithm>
 #include <sstream>

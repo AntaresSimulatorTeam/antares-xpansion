@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "Candidate.h"
-#include "INIReader.h"
+#include "antares-xpansion/lpnamer/input_reader/INIReader.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
 struct IntercoFileData {

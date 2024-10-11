@@ -2,8 +2,8 @@
 #include <fstream>
 
 #include "ActiveLinks.h"
-#include "CandidatesINIReader.h"
-#include "LinkProfileReader.h"
+#include "antares-xpansion/lpnamer/input_reader/CandidatesINIReader.h"
+#include "antares-xpansion/lpnamer/input_reader/LinkProfileReader.h"
 #include "LinkdataRecord.h"
 #include "LoggerBuilder.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"

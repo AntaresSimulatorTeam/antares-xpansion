@@ -4,7 +4,7 @@
 #include <iostream>
 #include <utility>
 
-#include "AdditionalConstraintsReader.h"
+#include "antares-xpansion/lpnamer/input_reader/AdditionalConstraintsReader.h"
 #include "LogUtils.h"
 
 AdditionalConstraints::AdditionalConstraints(

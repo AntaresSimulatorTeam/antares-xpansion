@@ -1,6 +1,6 @@
 #include <fstream>
 
-#include "LinkProfileReader.h"
+#include "antares-xpansion/lpnamer/input_reader/LinkProfileReader.h"
 #include "LoggerBuilder.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "gtest/gtest.h"

@@ -1,4 +1,4 @@
-#include "GeneralDataReader.h"
+#include "antares-xpansion/lpnamer/input_reader/GeneralDataReader.h"
 
 #include <algorithm>
 #include <filesystem>
@@ -9,7 +9,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include "INIReader.h"
+#include "antares-xpansion/lpnamer/input_reader/INIReader.h"
 #include "LogUtils.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "StringManip.h"

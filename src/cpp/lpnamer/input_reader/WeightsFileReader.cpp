@@ -1,4 +1,4 @@
-#include "WeightsFileReader.h"
+#include "antares-xpansion/lpnamer/input_reader/WeightsFileReader.h"
 
 #include <fstream>
 #include <sstream>

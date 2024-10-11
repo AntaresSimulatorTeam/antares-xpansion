@@ -6,7 +6,7 @@
 
 #include <utility>
 
-#include "VariableFileReader.h"
+#include "antares-xpansion/lpnamer/input_reader/VariableFileReader.h"
 
 void ProblemVariablesFileAdapter::extract_variables(
     const std::filesystem::path& file, std::vector<std::string>& var_names,

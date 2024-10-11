@@ -8,7 +8,7 @@
 
 #include "antares-xpansion/helpers/ArchiveReader.h"
 #include "LinkProblemsGenerator.h"
-#include "VariableFileReader.h"
+#include "antares-xpansion/lpnamer/input_reader/VariableFileReader.h"
 
 void ProblemVariablesZipAdapter::extract_variables(
     std::istringstream& variableFileContent,

@@ -1,6 +1,6 @@
 #include <fstream>
 
-#include "CandidatesINIReader.h"
+#include "antares-xpansion/lpnamer/input_reader/CandidatesINIReader.h"
 #include "LoggerBuilder.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "gtest/gtest.h"

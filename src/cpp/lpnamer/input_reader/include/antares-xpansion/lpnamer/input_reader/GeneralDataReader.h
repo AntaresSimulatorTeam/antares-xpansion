@@ -9,7 +9,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include "INIReader.h"
+#include "antares-xpansion/lpnamer/input_reader/INIReader.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "StringManip.h"
 

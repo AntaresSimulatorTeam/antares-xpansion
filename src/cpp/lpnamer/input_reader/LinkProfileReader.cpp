@@ -1,4 +1,4 @@
-#include "LinkProfileReader.h"
+#include "antares-xpansion/lpnamer/input_reader/LinkProfileReader.h"
 
 #include <filesystem>
 

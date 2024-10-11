@@ -46,7 +46,7 @@ target_link_libraries (lp_namer_tests PRIVATE
         antaresXpansion::helpers
         antaresXpansion::lp_namer_helper
         lp_namer_model
-        lp_namer_input_reader
+        antaresXpansion::lp_namer_input_reader
         lp_namer_problem_modifier
         xpansion_study_updater_lib
         problem_generation_main

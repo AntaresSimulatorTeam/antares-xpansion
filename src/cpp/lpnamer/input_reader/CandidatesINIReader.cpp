@@ -1,10 +1,10 @@
 //
 
-#include "CandidatesINIReader.h"
+#include "antares-xpansion/lpnamer/input_reader/CandidatesINIReader.h"
 
 #include <exception>
 
-#include "INIReader.h"
+#include "antares-xpansion/lpnamer/input_reader/INIReader.h"
 #include "LogUtils.h"
 #include "StringManip.h"
 

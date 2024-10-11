@@ -13,11 +13,11 @@
 #include "IProblemProviderPort.h"
 #include "IProblemVariablesProviderPort.h"
 #include "IProblemWriter.h"
-#include "MpsTxtWriter.h"
+#include "antares-xpansion/lpnamer/input_reader/MpsTxtWriter.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "ProblemModifier.h"
 #include "StringManip.h"
-#include "VariableFileReader.h"
+#include "antares-xpansion/lpnamer/input_reader/VariableFileReader.h"
 
 const std::string CANDIDATES_INI{"candidates.ini"};
 const std::string STRUCTURE_FILE{"structure.txt"};

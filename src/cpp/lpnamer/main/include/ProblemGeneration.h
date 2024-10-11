@@ -10,7 +10,7 @@
 #include <string>
 #include <optional>
 
-#include "../../input_reader/MpsTxtWriter.h"
+#include "antares-xpansion/lpnamer/input_reader/MpsTxtWriter.h"
 #include "../../model/Problem.h"
 #include "../../model/SimulationInputMode.h"
 #include "antares-xpansion/helpers/ArchiveReader.h"

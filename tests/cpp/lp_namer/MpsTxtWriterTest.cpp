@@ -2,7 +2,7 @@
 #include <vector>
 
 #include "antares-xpansion/helpers/ArchiveWriter.h"
-#include "MpsTxtWriter.h"
+#include "antares-xpansion/lpnamer/input_reader/MpsTxtWriter.h"
 #include "gtest/gtest.h"
 
 const std::vector<MpsVariableConstraintsFiles> EXPECTED_RESULTS = {

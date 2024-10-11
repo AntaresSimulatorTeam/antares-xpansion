@@ -8,11 +8,11 @@
 #include "IProblemVariablesProviderPort.h"
 #include "IProblemWriter.h"
 #include "MPSFileProblemProviderAdapter.h"
-#include "MpsTxtWriter.h"
+#include "antares-xpansion/lpnamer/input_reader/MpsTxtWriter.h"
 #include "ProblemVariablesFileAdapter.h"
 #include "ProblemVariablesFromProblemAdapter.h"
 #include "ProblemVariablesZipAdapter.h"
-#include "VariableFileReader.h"
+#include "antares-xpansion/lpnamer/input_reader/VariableFileReader.h"
 #include "ZipProblemProviderAdapter.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 
