@@ -11,8 +11,8 @@
 #include <set>
 #include <string>
 
-#include "ILogger.h"
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/helpers/LoggerUtils.h"
 
 namespace ProblemGenerationLog {

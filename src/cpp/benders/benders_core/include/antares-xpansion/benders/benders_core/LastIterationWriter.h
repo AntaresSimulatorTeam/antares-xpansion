@@ -4,7 +4,7 @@
 
 #include <filesystem>
 
-#include "ILogger.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 class LastIterationWriter {
  public:
   explicit LastIterationWriter(const std::filesystem::path &last_iteration_file)

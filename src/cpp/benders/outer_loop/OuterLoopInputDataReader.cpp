@@ -2,7 +2,7 @@
 
 #include <utility>
 
-#include "StringManip.h"
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
 using namespace Outerloop;
 

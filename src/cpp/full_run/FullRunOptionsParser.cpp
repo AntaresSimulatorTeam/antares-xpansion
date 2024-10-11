@@ -1,6 +1,6 @@
 #include "antares-xpansion/full_run/FullRunOptionsParser.h"
 
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 namespace po = boost::program_options;
 
 FullRunOptionsParser::FullRunOptionsParser() : ProblemGenerationExeOptions() {

@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 void updateMapColumn(const std::vector<ActiveLink>& links, int link_id,
                      colId id, unsigned int time_step,

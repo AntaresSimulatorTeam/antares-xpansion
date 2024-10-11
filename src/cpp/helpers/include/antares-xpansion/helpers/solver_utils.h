@@ -3,7 +3,7 @@
 #include <cassert>
 #include <sstream>
 
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/multisolver_interface/Solver.h"
 
 class InvalidSolverStatusException

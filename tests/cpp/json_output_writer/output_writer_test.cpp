@@ -9,7 +9,7 @@
 #include <ostream>
 
 #include "antares-xpansion/benders/output/JsonWriter.h"
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "gtest/gtest.h"
 
 using namespace Output;

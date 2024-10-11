@@ -25,7 +25,7 @@ add_executable (test_solver
 target_link_libraries (test_solver
 	PUBLIC
 		antaresXpansion::solvers
-		xpansion_interfaces
+		antaresXpansion::xpansion_interfaces
 )
 
 add_test(NAME unit_solver COMMAND test_solver WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})

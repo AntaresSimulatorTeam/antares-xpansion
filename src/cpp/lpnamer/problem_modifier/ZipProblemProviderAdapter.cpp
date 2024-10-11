@@ -7,7 +7,7 @@
 #include <utility>
 
 #include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
-#include "StringManip.h"
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 void ZipProblemProviderAdapter::reader_extract_file(
     const std::string& problem_name, ArchiveReader& reader,

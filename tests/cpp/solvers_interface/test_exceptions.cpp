@@ -1,4 +1,4 @@
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "catch2.hpp"
 #include "antares-xpansion/multisolver_interface/Solver.h"
 

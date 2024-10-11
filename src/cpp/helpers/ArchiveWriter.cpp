@@ -6,7 +6,7 @@
 #include <sstream>
 #include <mutex>
 
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 ArchiveWriter::ArchiveWriter(const std::filesystem::path& archivePath)
     : ArchiveIO(archivePath) {

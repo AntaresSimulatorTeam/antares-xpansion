@@ -7,7 +7,7 @@
 #include <unordered_map>
 
 #include "antares-xpansion/lpnamer/model/ChronicleMapProvider.h"
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
 using LinkName = std::string;

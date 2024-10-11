@@ -7,7 +7,7 @@
 
 #include <ostream>
 
-#include "ILogger.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
 namespace xpansion {
 namespace logger {

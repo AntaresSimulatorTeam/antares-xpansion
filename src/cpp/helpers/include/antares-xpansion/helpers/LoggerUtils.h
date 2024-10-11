@@ -1,6 +1,6 @@
 #pragma once
 #include "Clock.h"
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 inline std::string PrefixMessage(const LogUtils::LOGLEVEL &log_level,
                                  const std::string &context) {

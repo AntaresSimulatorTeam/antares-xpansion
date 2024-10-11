@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <utility>
 
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "antares-xpansion/lpnamer/model/SimulationInputMode.h"
 

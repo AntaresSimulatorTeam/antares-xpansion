@@ -2,8 +2,8 @@
 
 #include <filesystem>
 
-#include "ILogger.h"
-#include "OutputWriter.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
+#include "antares-xpansion/xpansion_interfaces/OutputWriter.h"
 #include "common.h"
 #include "antares-xpansion/multisolver_interface/Solver.h"
 class Worker;

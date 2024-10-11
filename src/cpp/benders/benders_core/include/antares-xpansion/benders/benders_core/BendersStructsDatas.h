@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ILogger.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "SubproblemCut.h"
 #include "Worker.h"
 #include "common.h"

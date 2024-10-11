@@ -6,7 +6,7 @@
 #include "SolverCbc.h"
 #include "SolverClp.h"
 #endif
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
 std::vector<std::string> available_solvers;
 

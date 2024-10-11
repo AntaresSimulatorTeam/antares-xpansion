@@ -11,7 +11,7 @@
 
 #include "antares-xpansion/lpnamer/input_reader/INIReader.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
-#include "StringManip.h"
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
 class IniFileNotFound : public std::runtime_error {
  public:

@@ -11,7 +11,7 @@
 #include <string>
 #include <vector>
 
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 class SolverLogManager {
  public:

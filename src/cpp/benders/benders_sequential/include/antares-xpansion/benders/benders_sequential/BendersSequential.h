@@ -2,7 +2,7 @@
 
 #include "antares-xpansion/helpers/ArchiveReader.h"
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
-#include "ILogger.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 
 /*!

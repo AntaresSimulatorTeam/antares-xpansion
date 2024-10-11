@@ -6,7 +6,7 @@
 #include <fstream>
 #include <ostream>
 
-#include "ILogger.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "antares-xpansion/benders/logger/User.h"
 
 namespace xpansion {

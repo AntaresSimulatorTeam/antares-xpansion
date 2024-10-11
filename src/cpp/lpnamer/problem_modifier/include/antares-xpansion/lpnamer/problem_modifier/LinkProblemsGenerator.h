@@ -16,7 +16,7 @@
 #include "antares-xpansion/lpnamer/input_reader/MpsTxtWriter.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "antares-xpansion/lpnamer/problem_modifier/ProblemModifier.h"
-#include "StringManip.h"
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
 #include "antares-xpansion/lpnamer/input_reader/VariableFileReader.h"
 
 const std::string CANDIDATES_INI{"candidates.ini"};

@@ -5,7 +5,7 @@
 #include <stdexcept>
 #include <string>
 
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 class OptionsParser {
  private:

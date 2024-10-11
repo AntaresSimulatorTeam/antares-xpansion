@@ -8,7 +8,7 @@
 #include "antares-xpansion/lpnamer/input_reader/CandidatesINIReader.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 #include "antares-xpansion/lpnamer/input_reader/LinkProfileReader.h"
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 void treatAdditionalConstraints(
     SolverAbstract::Ptr master_p,

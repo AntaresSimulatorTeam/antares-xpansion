@@ -7,7 +7,7 @@
 #include <utility>
 #include <vector>
 
-#include "StringManip.h"
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
 // a pair to hold double key (year and week)
 using YearAndWeek = std::pair<int, int>;

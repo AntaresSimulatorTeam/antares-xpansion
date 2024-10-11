@@ -7,8 +7,8 @@
 
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
-#include "ILogger.h"
-#include "OutputWriter.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
+#include "antares-xpansion/xpansion_interfaces/OutputWriter.h"
 #include "SimulationOptions.h"
 #include "SubproblemCut.h"
 #include "SubproblemWorker.h"

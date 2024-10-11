@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <cmath>
 
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 

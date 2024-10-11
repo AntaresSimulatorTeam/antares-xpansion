@@ -5,7 +5,7 @@
 #include <fstream>
 #include <iostream>
 
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 namespace {
 

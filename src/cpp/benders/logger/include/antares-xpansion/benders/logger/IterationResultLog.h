@@ -5,7 +5,7 @@
 #include <string>
 
 #include "Commons.h"
-#include "ILogger.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
 using xpansion::logger::commons::indent_0;
 using xpansion::logger::commons::indent_1;

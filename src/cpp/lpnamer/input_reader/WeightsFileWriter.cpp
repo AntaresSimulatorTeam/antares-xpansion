@@ -5,7 +5,7 @@
 #include <ranges>
 
 #include "antares-xpansion/helpers/ArchiveReader.h"
-#include "StringManip.h"
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
 YearlyWeightsWriter::YearlyWeightsWriter(
     const std::filesystem::path& xpansion_output_dir,

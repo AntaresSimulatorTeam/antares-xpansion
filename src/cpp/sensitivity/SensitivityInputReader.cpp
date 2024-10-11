@@ -4,8 +4,8 @@
 #include <fstream>
 #include <utility>
 
-#include "LogUtils.h"
-#include "OutputWriter.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/OutputWriter.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
 

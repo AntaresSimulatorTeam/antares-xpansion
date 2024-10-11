@@ -8,7 +8,7 @@
 #include "antares-xpansion/benders/benders_core/LastIterationPrinter.h"
 #include "antares-xpansion/benders/benders_core/LastIterationReader.h"
 #include "antares-xpansion/benders/benders_core/LastIterationWriter.h"
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 
 BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,

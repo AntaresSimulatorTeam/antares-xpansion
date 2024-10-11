@@ -5,7 +5,7 @@
 #include <filesystem>
 #include <string>
 
-#include "OutputWriter.h"
+#include "antares-xpansion/xpansion_interfaces/OutputWriter.h"
 
 Writer build_void_writer();
 

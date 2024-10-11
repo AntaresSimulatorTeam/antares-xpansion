@@ -2,7 +2,7 @@
 
 #include <set>
 
-#include "ILogger.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
 /**

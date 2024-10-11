@@ -4,7 +4,7 @@
 
 #include <filesystem>
 
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 Json::Value SimulationOptions::get_value_from_json(
     const std::filesystem::path &file_name) {
   Json::Value _input;

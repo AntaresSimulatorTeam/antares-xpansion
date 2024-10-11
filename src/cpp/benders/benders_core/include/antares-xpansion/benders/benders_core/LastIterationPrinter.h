@@ -1,5 +1,5 @@
 #ifndef __LASTITERATIONPRINTER_H__
-#include "ILogger.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
 class LastIterationPrinter {
  public:

@@ -10,7 +10,7 @@
 
 #include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 #include "antares-xpansion/lpnamer/helper/ColumnToChange.h"
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/lpnamer/model/Problem.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 

@@ -4,7 +4,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
 class WeightsFileReader {

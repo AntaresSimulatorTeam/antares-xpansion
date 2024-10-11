@@ -5,7 +5,7 @@
 #pragma once
 
 #include "antares-xpansion/lpnamer/model/ActiveLinks.h"
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
 class StudyUpdateStrategy {

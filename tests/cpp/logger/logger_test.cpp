@@ -4,7 +4,7 @@
 #include <sstream>
 
 #include "antares-xpansion/benders/benders_core/BendersMathLogger.h"
-#include "ILogger.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "LogPrefixManip.h"
 #include "RandomDirGenerator.h"
 #include "gtest/gtest.h"

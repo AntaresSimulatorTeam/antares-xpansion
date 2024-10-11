@@ -3,7 +3,7 @@
 
 #include <filesystem>
 
-#include "ILogger.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
 class LastIterationReader {
  public:

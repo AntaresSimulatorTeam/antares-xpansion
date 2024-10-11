@@ -5,9 +5,9 @@ constexpr int NUMBER_OF_HOUR_PER_YEAR = 8760;
 #include <array>
 #include <exception>
 
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
-#include "StringManip.h"
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
 /*!
  *  \struct LinkProfile

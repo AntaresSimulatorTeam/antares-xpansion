@@ -1,6 +1,6 @@
 #include "antares-xpansion/benders/benders_core/Worker.h"
 
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 #include "antares-xpansion/helpers/solver_utils.h"
 /*!

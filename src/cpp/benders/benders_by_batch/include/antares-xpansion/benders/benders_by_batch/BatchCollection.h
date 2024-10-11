@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "ILogger.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
 struct Batch {
   std::vector<std::string> sub_problem_names;

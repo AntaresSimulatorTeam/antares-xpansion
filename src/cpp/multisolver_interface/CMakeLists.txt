@@ -57,17 +57,16 @@ target_sources(solvers PRIVATE
 
 add_library(antaresXpansion::solvers ALIAS solvers)
 
-get_target_property(xpansion_interfaces_path xpansion_interfaces INTERFACE_INCLUDE_DIRECTORIES)
 target_include_directories(solvers
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        ${xpansion_interfaces_path}
         PRIVATE
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/private>
 )
 
 target_link_libraries(solvers
         PUBLIC
+        ${PROJECT_NAME}::xpansion_interfaces
         ${CMAKE_DL_LIBS}
 )
 

@@ -7,7 +7,7 @@
 #include <sstream>
 
 #include "antares-xpansion/benders/logger/Commons.h"
-#include "ILogger.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
 namespace xpansion {
 namespace logger {

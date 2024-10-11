@@ -3,7 +3,7 @@
 #include <filesystem>
 
 #include "antares-xpansion/helpers/ArchiveReader.h"
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/helpers/Timer.h"
 
 MergeMPS::MergeMPS(const MergeMPSOptions &options, Logger &logger,

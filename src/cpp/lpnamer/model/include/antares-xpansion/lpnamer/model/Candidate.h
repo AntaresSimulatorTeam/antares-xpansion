@@ -3,7 +3,7 @@
 
 #include "antares-xpansion/lpnamer/model/LinkProfile.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
-#include "StringManip.h"
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
 struct CandidateData {
   bool enable = true;

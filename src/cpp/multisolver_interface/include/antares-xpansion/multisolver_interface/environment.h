@@ -16,7 +16,7 @@
 #pragma once
 #include <functional>
 
-#include "ILogger.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "dynamic_library.h"
 extern "C" {
 typedef struct xo_prob_struct* XPRSprob;

@@ -4,7 +4,7 @@
 #include <sstream>
 
 #include "CoinFinite.hpp"
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 namespace coin_common {
 

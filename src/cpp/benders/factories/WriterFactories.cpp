@@ -3,7 +3,7 @@
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 
 #include "antares-xpansion/benders/output/JsonWriter.h"
-#include "OutputWriter.h"
+#include "antares-xpansion/xpansion_interfaces/OutputWriter.h"
 #include "antares-xpansion/benders/output/VoidWriter.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 
