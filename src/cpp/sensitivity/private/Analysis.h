@@ -1,8 +1,8 @@
 #ifndef __ANALYSIS_H__
 #define __ANALYSIS_H__
-#include "SensitivityILogger.h"
-#include "SensitivityInputReader.h"
-#include "SensitivityStudy.h"
+#include "antares-xpansion/sensitivity/SensitivityILogger.h"
+#include "antares-xpansion/sensitivity/SensitivityInputReader.h"
+#include "antares-xpansion/sensitivity/SensitivityStudy.h"
 
 class Analysis {
  public:

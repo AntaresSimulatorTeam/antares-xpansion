@@ -3,8 +3,8 @@
 
 #include <string>
 
-#include "SensitivityInputReader.h"
-#include "SensitivityOutputData.h"
+#include "antares-xpansion/sensitivity/SensitivityInputReader.h"
+#include "antares-xpansion/sensitivity/SensitivityOutputData.h"
 
 class SensitivityILogger {
  public:

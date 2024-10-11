@@ -4,7 +4,7 @@
 #include <list>
 #include <memory>
 
-#include "SensitivityILogger.h"
+#include "antares-xpansion/sensitivity/SensitivityILogger.h"
 
 class SensitivityMasterLogger : public SensitivityILogger {
  public:

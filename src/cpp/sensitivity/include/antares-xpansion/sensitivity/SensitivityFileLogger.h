@@ -5,8 +5,8 @@
 #include <fstream>
 #include <memory>
 
-#include "SensitivityILogger.h"
-#include "SensitivityLogger.h"
+#include "antares-xpansion/sensitivity/SensitivityILogger.h"
+#include "antares-xpansion/sensitivity/SensitivityLogger.h"
 
 class SensitivityFileLogger : public SensitivityILogger {
  public:

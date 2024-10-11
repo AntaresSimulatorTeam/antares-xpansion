@@ -2,11 +2,11 @@
 
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
-#include "SensitivityILogger.h"
-#include "SensitivityInputReader.h"
-#include "SensitivityOutputData.h"
-#include "SensitivityProblemModifier.h"
-#include "SensitivityWriter.h"
+#include "antares-xpansion/sensitivity/SensitivityILogger.h"
+#include "antares-xpansion/sensitivity/SensitivityInputReader.h"
+#include "antares-xpansion/sensitivity/SensitivityOutputData.h"
+#include "antares-xpansion/sensitivity/SensitivityProblemModifier.h"
+#include "antares-xpansion/sensitivity/SensitivityWriter.h"
 
 class SensitivityStudy {
  public:

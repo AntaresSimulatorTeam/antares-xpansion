@@ -4,8 +4,8 @@
 
 #include <filesystem>
 
-#include "SensitivityInputReader.h"
-#include "SensitivityOutputData.h"
+#include "antares-xpansion/sensitivity/SensitivityInputReader.h"
+#include "antares-xpansion/sensitivity/SensitivityOutputData.h"
 
 const std::string ANTARES_C("antares");
 const std::string VERSION_C("version");

@@ -1,8 +1,8 @@
 #include "antares-xpansion/benders/logger/Commons.h"
-#include "SensitivityFileLogger.h"
-#include "SensitivityILogger.h"
-#include "SensitivityLogger.h"
-#include "SensitivityMasterLogger.h"
+#include "antares-xpansion/sensitivity/SensitivityFileLogger.h"
+#include "antares-xpansion/sensitivity/SensitivityILogger.h"
+#include "antares-xpansion/sensitivity/SensitivityLogger.h"
+#include "antares-xpansion/sensitivity/SensitivityMasterLogger.h"
 #include "gtest/gtest.h"
 
 class SensitivityFileLoggerTest : public ::testing::Test {

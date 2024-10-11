@@ -1,4 +1,4 @@
-#include "SensitivityInputReader.h"
+#include "antares-xpansion/sensitivity/SensitivityInputReader.h"
 
 #include <boost/algorithm/string/trim.hpp>
 #include <fstream>

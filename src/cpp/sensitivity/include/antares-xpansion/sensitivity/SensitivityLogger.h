@@ -3,7 +3,7 @@
 
 #include <ostream>
 
-#include "SensitivityILogger.h"
+#include "antares-xpansion/sensitivity/SensitivityILogger.h"
 
 const std::string indent_1("\t");
 const std::string EUROS(" e");

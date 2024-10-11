@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
-#include "ProblemModifierCapex.h"
-#include "ProblemModifierProjection.h"
+#include "antares-xpansion/sensitivity/ProblemModifierCapex.h"
+#include "antares-xpansion/sensitivity/ProblemModifierProjection.h"
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
 
 const int peak_id = 0;

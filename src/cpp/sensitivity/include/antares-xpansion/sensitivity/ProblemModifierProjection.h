@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SensitivityProblemModifier.h"
+#include "antares-xpansion/sensitivity/SensitivityProblemModifier.h"
 
 class ProblemModifierProjection : public SensitivityProblemModifier {
 public:

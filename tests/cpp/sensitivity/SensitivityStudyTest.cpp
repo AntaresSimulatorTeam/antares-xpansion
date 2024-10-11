@@ -1,5 +1,5 @@
-#include "SensitivityFileLogger.h"
-#include "SensitivityStudy.h"
+#include "antares-xpansion/sensitivity/SensitivityFileLogger.h"
+#include "antares-xpansion/sensitivity/SensitivityStudy.h"
 #include "gtest/gtest.h"
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
