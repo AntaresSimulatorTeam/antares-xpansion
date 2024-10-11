@@ -6,7 +6,7 @@
 
 #include <filesystem>
 
-#include "ActiveLinks.h"
+#include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 #include "antares-xpansion/helpers/AntaresVersionProvider.h"
 #include "LinkProblemsGenerator.h"
 /*!

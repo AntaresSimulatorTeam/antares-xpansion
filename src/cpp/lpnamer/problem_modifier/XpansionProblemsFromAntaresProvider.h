@@ -6,7 +6,7 @@
 
 #include <antares/solver/lps/LpsFromAntares.h>
 
-#include "../model/Problem.h"
+#include "antares-xpansion/lpnamer/model/Problem.h"
 #include "IXpansionProblemsProvider.h"
 
 class XpansionProblemsFromAntaresProvider : public IXpansionProblemsProvider {

@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "../../lpnamer/model/Problem.h"
+#include "antares-xpansion/lpnamer/model/Problem.h"
 class IProblemWriter {
  public:
   virtual ~IProblemWriter() = default;

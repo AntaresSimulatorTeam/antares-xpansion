@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "../model/Problem.h"
+#include "antares-xpansion/lpnamer/model/Problem.h"
 
 class IXpansionProblemsProvider {
  public:

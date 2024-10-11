@@ -36,7 +36,7 @@ target_include_directories(lp_namer_input_reader
 
 target_link_libraries(lp_namer_input_reader
         PUBLIC
-        lp_namer_model
+        antaresXpansion::lp_namer_model
         antaresXpansion::helpers
         solvers
 )

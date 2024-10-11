@@ -3,7 +3,7 @@
 #ifndef ANTARESXPANSION_VARIABLEFILEREADER_H
 #define ANTARESXPANSION_VARIABLEFILEREADER_H
 
-#include <ActiveLinks.h>
+#include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 #include <antares-xpansion/lpnamer/helper/ColumnToChange.h>
 
 #include <istream>

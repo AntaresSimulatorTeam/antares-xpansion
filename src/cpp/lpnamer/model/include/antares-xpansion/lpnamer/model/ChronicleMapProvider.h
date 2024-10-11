@@ -10,7 +10,7 @@
 #include <fstream>
 #include <utility>
 
-#include "ChronicleMapReader.h"
+#include "antares-xpansion/lpnamer/model/ChronicleMapReader.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
 class DirectAccessScenarioToChronicleProvider {

@@ -2,11 +2,11 @@
 #ifndef ANTARESXPANSION_ACTIVELINKS_H
 #define ANTARESXPANSION_ACTIVELINKS_H
 
-#include <Candidate.h>
+#include "antares-xpansion/lpnamer/model/Candidate.h"
 
 #include <unordered_map>
 
-#include "ChronicleMapProvider.h"
+#include "antares-xpansion/lpnamer/model/ChronicleMapProvider.h"
 #include "LogUtils.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 

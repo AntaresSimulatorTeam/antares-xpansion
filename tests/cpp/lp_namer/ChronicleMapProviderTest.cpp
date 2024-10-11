@@ -8,8 +8,8 @@
 #include <fstream>
 #include <utility>
 
-#include "ChronicleMapProvider.h"
-#include "ChronicleMapReader.h"
+#include "antares-xpansion/lpnamer/model/ChronicleMapProvider.h"
+#include "antares-xpansion/lpnamer/model/ChronicleMapReader.h"
 #include "LoggerBuilder.h"
 
 class ChronicleProviderTest : public ::testing::Test {

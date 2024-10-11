@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <map>
 
-#include "ActiveLinks.h"
+#include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 #include "AdditionalConstraints.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "antares-xpansion/helpers/solver_utils.h"

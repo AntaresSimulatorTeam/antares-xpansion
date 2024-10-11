@@ -1,7 +1,7 @@
 #include <filesystem>
 #include <fstream>
 
-#include "ActiveLinks.h"
+#include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 #include "antares-xpansion/lpnamer/input_reader/CandidatesINIReader.h"
 #include "antares-xpansion/lpnamer/input_reader/LinkProfileReader.h"
 #include "LinkdataRecord.h"

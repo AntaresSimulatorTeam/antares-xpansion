@@ -56,7 +56,7 @@ target_include_directories (lp_namer_problem_modifier
 
 target_link_libraries (lp_namer_problem_modifier
 	PUBLIC
-	    lp_namer_model
+		antaresXpansion::lp_namer_model
 		antaresXpansion::lp_namer_input_reader
 		antaresXpansion::lp_namer_helper
 		antaresXpansion::helpers

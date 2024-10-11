@@ -7,7 +7,7 @@
 #include <filesystem>
 #include <unordered_map>
 
-#include "ActiveLinks.h"
+#include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 
 #ifndef ANTARESXPANSION_MASTERPROBLEMBUILDER_H
 #define ANTARESXPANSION_MASTERPROBLEMBUILDER_H

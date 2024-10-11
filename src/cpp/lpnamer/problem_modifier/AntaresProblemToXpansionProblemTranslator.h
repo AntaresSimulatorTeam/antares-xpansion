@@ -8,7 +8,7 @@
 
 #include <span>
 
-#include "../model/Problem.h"
+#include "antares-xpansion/lpnamer/model/Problem.h"
 
 class AntaresProblemToXpansionProblemTranslator {
  public:

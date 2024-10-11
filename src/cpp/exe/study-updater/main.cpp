@@ -5,7 +5,7 @@
 #include <iostream>
 #include <sstream>
 
-#include "ActiveLinks.h"
+#include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 #include "antares-xpansion/lpnamer/input_reader/CandidatesINIReader.h"
 #include "LauncherHelpers.h"
 #include "antares-xpansion/lpnamer/input_reader/LinkProfileReader.h"

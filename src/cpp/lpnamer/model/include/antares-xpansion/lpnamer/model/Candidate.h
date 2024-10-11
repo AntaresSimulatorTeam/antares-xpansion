@@ -1,7 +1,7 @@
 #ifndef ANTARESXPANSION_CANDIDATE_H
 #define ANTARESXPANSION_CANDIDATE_H
 
-#include "LinkProfile.h"
+#include "antares-xpansion/lpnamer/model/LinkProfile.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "StringManip.h"
 

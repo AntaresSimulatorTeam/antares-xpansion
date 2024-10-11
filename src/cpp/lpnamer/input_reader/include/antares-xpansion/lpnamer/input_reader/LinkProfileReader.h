@@ -5,8 +5,8 @@
 #include <map>
 #include <utility>
 
-#include "Candidate.h"
-#include "LinkProfile.h"
+#include "antares-xpansion/lpnamer/model/Candidate.h"
+#include "antares-xpansion/lpnamer/model/LinkProfile.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
 class LinkProfileReader {

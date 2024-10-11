@@ -15,7 +15,7 @@ target_link_libraries (helpers_test PRIVATE
 		GTest::Main
 		antaresXpansion::helpers
 		antaresXpansion::lp_namer_helper
-		lp_namer_model
+		antaresXpansion::lp_namer_model
 		antaresXpansion::lp_namer_input_reader
 		lp_namer_problem_modifier
 		${JSONCPP_LIB}

@@ -7,7 +7,7 @@
 #include <iostream>
 #include <utility>
 
-#include "ActiveLinks.h"
+#include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 #include "AdditionalConstraints.h"
 #include "FileProblemsProviderAdapter.h"
 #include "antares-xpansion/lpnamer/input_reader/GeneralDataReader.h"

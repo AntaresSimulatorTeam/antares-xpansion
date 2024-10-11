@@ -4,7 +4,7 @@
 
 #include <filesystem>
 
-#include "Candidate.h"
+#include "antares-xpansion/lpnamer/model/Candidate.h"
 #include "antares-xpansion/lpnamer/input_reader/CandidatesINIReader.h"
 #include "LinkProblemsGenerator.h"
 #include "antares-xpansion/lpnamer/input_reader/LinkProfileReader.h"

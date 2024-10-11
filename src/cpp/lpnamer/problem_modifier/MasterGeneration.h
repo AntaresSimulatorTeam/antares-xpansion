@@ -3,7 +3,7 @@
 
 #include <filesystem>
 
-#include "ActiveLinks.h"
+#include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 #include "AdditionalConstraints.h"
 #include "LinkProblemsGenerator.h"
 class MasterGeneration {

@@ -8,10 +8,10 @@
 #include <memory>
 #include <vector>
 
-#include "ActiveLinks.h"
+#include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 #include "antares-xpansion/lpnamer/helper/ColumnToChange.h"
 #include "LogUtils.h"
-#include "Problem.h"
+#include "antares-xpansion/lpnamer/model/Problem.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
 class ProblemModifier {

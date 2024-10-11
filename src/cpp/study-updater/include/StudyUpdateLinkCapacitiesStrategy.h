@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "ActiveLinks.h"
+#include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 #include "StudyUpdateStrategy.h"
 class StudyUpdateLinkCapacitiesStrategy : public StudyUpdateStrategy {
  public:

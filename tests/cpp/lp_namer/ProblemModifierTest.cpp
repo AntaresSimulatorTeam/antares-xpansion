@@ -1,5 +1,5 @@
 
-#include <ActiveLinks.h>
+#include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 #include <ProblemModifier.h>
 #include <multisolver_interface/SolverFactory.h>
 #include <antares-xpansion/helpers/solver_utils.h>
@@ -7,7 +7,7 @@
 #include <fstream>
 
 #include "LoggerBuilder.h"
-#include "Problem.h"
+#include "antares-xpansion/lpnamer/model/Problem.h"
 #include "gtest/gtest.h"
 
 const std::string P_LINK = "p_link";
