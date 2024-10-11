@@ -4,13 +4,13 @@
 #include <filesystem>
 
 #include "BendersByBatch.h"
-#include "BendersMpiOuterLoop.h"
+#include "antares-xpansion/benders/benders_mpi/BendersMpiOuterLoop.h"
 #include "antares-xpansion/benders/benders_sequential/BendersSequential.h"
 #include "ILogger.h"
 #include "LogUtils.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "MasterUpdate.h"
-#include "OuterLoopBenders.h"
+#include "antares-xpansion/benders/benders_mpi/OuterLoopBenders.h"
 #include "OutputWriter.h"
 #include "StartUp.h"
 #include "Timer.h"

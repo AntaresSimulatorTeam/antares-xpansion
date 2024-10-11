@@ -6,7 +6,7 @@
 #include "ProblemGeneration.h"
 #include "ProblemGenerationLogger.h"
 #include "StudyUpdateRunner.h"
-#include "common_mpi.h"
+#include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 namespace po = boost::program_options;
 
 int main(int argc, char** argv) {

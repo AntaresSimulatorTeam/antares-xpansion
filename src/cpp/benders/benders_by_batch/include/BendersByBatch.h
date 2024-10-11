@@ -1,8 +1,8 @@
 #ifndef SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_
 #define SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_
 #include "BatchCollection.h"
-#include "BendersMPI.h"
-#include "common_mpi.h"
+#include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
+#include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 
 class BendersByBatch : public BendersMpi {
   std::vector<unsigned> random_batch_permutation_;

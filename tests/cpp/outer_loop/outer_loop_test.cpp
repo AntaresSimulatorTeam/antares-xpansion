@@ -1,7 +1,7 @@
 
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "MasterUpdate.h"
-#include "OuterLoopBenders.h"
+#include "antares-xpansion/benders/benders_mpi/OuterLoopBenders.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoopInputDataReader.h"
 #include "antares-xpansion/benders/outer_loop/VariablesGroup.h"
