@@ -164,31 +164,70 @@ Outerloop::OuterLoopInputData BendersMainFactory::ProcessCriterionInput(
   }
   // else compute criterion for all areas!
   else {
-    // convert benders_loggers_ to shared_ptr
-    //    SolverFactory factory(benders_loggers_);
-    SolverFactory factory(logger_);
-    auto solver_log_manager = SolverLogManager(LogReportsName());
-    auto solver = factory.create_solver(
-        options_.SOLVER_NAME, SOLVER_TYPE::CONTINUOUS, solver_log_manager);
-    solver->set_threads(1);
+    return GetInputFromSubProblem(couplingMap);
+  }
+}
+Outerloop::OuterLoopInputData BendersMainFactory::GetInputFromSubProblem(
+    const CouplingMap& couplingMap) {
+  auto first_subproblem_pair = std::find_if_not(
+      couplingMap.begin(), couplingMap.end(),
+      [this](const auto& in) { return in.first == options_.MASTER_NAME; });
+  if (first_subproblem_pair == couplingMap.end()) {
+    std::ostringstream stream;
+    auto log_location = LOGLOCATION;
+    stream << "Could not find any Subproblem in structure file "
+           << options_.STRUCTURE_FILE << std::endl;
+    benders_loggers_.display_message(log_location + stream.str());
+    throw InvalidStructureFile(
+        PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Benders"), stream.str(),
+        log_location);
+  } else {
+    const auto first_subproblem_name = first_subproblem_pair->first;
+    return PatternsFromSupbProblem(first_subproblem_name);
+  }
+}
 
-    auto first_subproblem_pair = std::find_if_not(
-        couplingMap.begin(), couplingMap.end(),
-        [this](const auto& in) { return in.first == options_.MASTER_NAME; });
-    if (first_subproblem_pair != couplingMap.end()) {
-      solver->read_prob_mps(std::filesystem::path(options_.INPUTROOT) /
-                            first_subproblem_pair->first);
-    } else {
-      std::ostringstream stream;
-      auto log_location = LOGLOCATION;
-      stream << "Could not find any Subproblem in structure file "
-             << options_.STRUCTURE_FILE << std::endl;
-      benders_loggers_.display_message(log_location + stream.str());
-      throw InvalidStructureFile(
-          PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Benders"), stream.str(),
-          log_location);
+Outerloop::OuterLoopInputData BendersMainFactory::PatternsFromSupbProblem(
+    const std::string& first_subproblem_name) const {
+  SolverAbstract::Ptr solver = BuildSolver(first_subproblem_name);
+  const auto all_variables_name = solver->get_col_names();
+  std::set<std::string> unique_areas = UniqueAreas(all_variables_name);
+  Outerloop::OuterLoopInputData ret;
+  // TODO check this value
+  ret.SetCriterionCountThreshold(1);
+  for (const auto& area : unique_areas) {
+    Outerloop::OuterLoopSingleInputData singleInputData(
+        Outerloop::PositiveUnsuppliedEnergy, area, 1);
+    ret.AddSingleData(singleInputData);
+  }
+  solver->free();
+  return ret;
+}
+
+std::set<std::string> BendersMainFactory::UniqueAreas(
+    const std::vector<std::string>& all_variables_name) const {
+  std::set<std::string> unique_areas;
+  std::regex area_regex(
+      "area<([^>]+)>");  // Regular expression to match area<...>
+
+  for (const auto& str : all_variables_name) {
+    std::smatch match;
+    if (std::regex_search(str, match, area_regex)) {
+      unique_areas.insert(match[1]);  // Insert the matched area into the set
     }
   }
+  return unique_areas;
+}
+SolverAbstract::Ptr BendersMainFactory::BuildSolver(
+    const std::string& first_subproblem_name) const {
+  SolverFactory factory(logger_);
+  auto solver_log_manager = SolverLogManager(LogReportsName());
+  auto solver = factory.create_solver(
+      options_.SOLVER_NAME, SOLVER_TYPE::CONTINUOUS, solver_log_manager);
+  solver->set_threads(1);
+  solver->read_prob_mps(std::filesystem::path(options_.INPUTROOT) /
+                        first_subproblem_name);
+  return solver;
 }
 
 int BendersMainFactory::RunExternalLoop() {

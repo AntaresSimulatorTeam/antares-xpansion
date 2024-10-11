@@ -29,6 +29,8 @@ class BendersMainFactory {
   pBendersBase PrepareForExecution(bool external_loop);
   [[nodiscard]] Outerloop::OuterLoopInputData ProcessCriterionInput(
       const CouplingMap& couplingMap);
+  Outerloop::OuterLoopInputData GetInputFromSubProblem(
+      const CouplingMap& couplingMap);
 
  public:
   explicit BendersMainFactory(int argc, char** argv,
@@ -42,5 +44,11 @@ class BendersMainFactory {
                               const SOLVER& solver);
   int Run();
   std::filesystem::path LogReportsName() const;
+  Outerloop::OuterLoopInputData PatternsFromSupbProblem(
+      const std::string& first_subproblem_name) const;
+  SolverAbstract::Ptr BuildSolver(
+      const std::string& first_subproblem_name) const;
+  std::set<std::string> UniqueAreas(
+      const std::vector<std::string>& all_variables_name) const;
 };
 #endif  // ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
