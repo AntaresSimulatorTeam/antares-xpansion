@@ -4,7 +4,7 @@
 
 #include "antares-xpansion/full_run/FullRunOptionsParser.h"
 #include "ProblemGeneration.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "StudyUpdateRunner.h"
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 namespace po = boost::program_options;

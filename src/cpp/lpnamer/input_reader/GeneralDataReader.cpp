@@ -11,7 +11,7 @@
 
 #include "INIReader.h"
 #include "LogUtils.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "StringManip.h"
 class IniReaderUtils {
  public:

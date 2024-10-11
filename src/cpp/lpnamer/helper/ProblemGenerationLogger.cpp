@@ -1,4 +1,4 @@
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
 #include "antares-xpansion/helpers/Clock.h"
 

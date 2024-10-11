@@ -5,7 +5,7 @@
 #include <string>
 #include <utility>
 
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
 /*!
  *  \class AdditionalConstraint

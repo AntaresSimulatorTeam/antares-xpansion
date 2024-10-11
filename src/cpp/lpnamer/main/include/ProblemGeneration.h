@@ -15,7 +15,7 @@
 #include "../../model/SimulationInputMode.h"
 #include "antares-xpansion/helpers/ArchiveReader.h"
 #include "ProblemGenerationExeOptions.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "ProblemGenerationOptions.h"
 #include "multisolver_interface/SolverAbstract.h"
 

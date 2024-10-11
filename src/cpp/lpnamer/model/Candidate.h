@@ -2,7 +2,7 @@
 #define ANTARESXPANSION_CANDIDATE_H
 
 #include "LinkProfile.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "StringManip.h"
 
 struct CandidateData {

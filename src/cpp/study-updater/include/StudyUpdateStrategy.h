@@ -6,7 +6,7 @@
 
 #include "ActiveLinks.h"
 #include "LogUtils.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
 class StudyUpdateStrategy {
  public:

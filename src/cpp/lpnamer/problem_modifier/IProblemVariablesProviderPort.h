@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "ColumnToChange.h"
+#include "antares-xpansion/lpnamer/helper/ColumnToChange.h"
 
 struct ProblemVariables {
   std::vector<std::string> variable_names;

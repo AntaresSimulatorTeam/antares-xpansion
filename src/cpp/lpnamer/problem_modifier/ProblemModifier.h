@@ -9,10 +9,10 @@
 #include <vector>
 
 #include "ActiveLinks.h"
-#include "ColumnToChange.h"
+#include "antares-xpansion/lpnamer/helper/ColumnToChange.h"
 #include "LogUtils.h"
 #include "Problem.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
 class ProblemModifier {
  public:

@@ -6,7 +6,7 @@ constexpr int NUMBER_OF_HOUR_PER_YEAR = 8760;
 #include <exception>
 
 #include "LogUtils.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "StringManip.h"
 
 /*!

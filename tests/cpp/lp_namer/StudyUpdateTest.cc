@@ -6,7 +6,7 @@
 #include "LinkProfileReader.h"
 #include "LinkdataRecord.h"
 #include "LoggerBuilder.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "StudyUpdateLinkParameterStrategy.h"
 #include "StudyUpdater.h"
 #include "gtest/gtest.h"

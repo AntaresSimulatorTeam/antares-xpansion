@@ -14,7 +14,7 @@
 #include "IProblemVariablesProviderPort.h"
 #include "IProblemWriter.h"
 #include "MpsTxtWriter.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "ProblemModifier.h"
 #include "StringManip.h"
 #include "VariableFileReader.h"

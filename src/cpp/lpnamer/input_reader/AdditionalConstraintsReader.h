@@ -4,7 +4,7 @@
 #include <set>
 #include <string>
 
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
 /*!
  *  \struct AdditionalConstraintsReader

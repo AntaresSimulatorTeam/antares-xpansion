@@ -7,7 +7,7 @@
 
 #include "Candidate.h"
 #include "LinkProfile.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
 class LinkProfileReader {
  public:

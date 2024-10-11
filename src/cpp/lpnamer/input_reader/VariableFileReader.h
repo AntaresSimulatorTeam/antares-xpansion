@@ -4,7 +4,7 @@
 #define ANTARESXPANSION_VARIABLEFILEREADER_H
 
 #include <ActiveLinks.h>
-#include <ColumnToChange.h>
+#include <antares-xpansion/lpnamer/helper/ColumnToChange.h>
 
 #include <istream>
 #include <sstream>

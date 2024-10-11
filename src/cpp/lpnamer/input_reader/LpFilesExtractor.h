@@ -4,7 +4,7 @@
 #include <utility>
 
 #include "LogUtils.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "SimulationInputMode.h"
 
 class LpFilesExtractor {

@@ -5,7 +5,7 @@
 #include "ActiveLinks.h"
 #include "antares-xpansion/helpers/AntaresVersionProvider.h"
 #include "LinkProblemsGenerator.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
 /*!
  * \class StudyUpdater

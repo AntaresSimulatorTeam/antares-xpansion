@@ -9,7 +9,7 @@
 #include "CandidatesINIReader.h"
 #include "LauncherHelpers.h"
 #include "LinkProfileReader.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "StudyUpdateRunner.h"
 #include "StudyUpdater.h"
 

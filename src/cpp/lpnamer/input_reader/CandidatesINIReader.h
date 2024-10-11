@@ -10,7 +10,7 @@
 
 #include "Candidate.h"
 #include "INIReader.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
 struct IntercoFileData {
   int index_interco;

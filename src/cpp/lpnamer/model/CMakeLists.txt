@@ -31,7 +31,7 @@ target_include_directories (lp_namer_model
 
 target_link_libraries (lp_namer_model
 	PUBLIC
-	    lp_namer_helper
+		antaresXpansion::lp_namer_helper
 		antaresXpansion::helpers
 		solvers
 )

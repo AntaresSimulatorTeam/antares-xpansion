@@ -3,7 +3,7 @@
 
 #include "AdditionalConstraintsReader.h"
 #include "LoggerBuilder.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "gtest/gtest.h"
 
 class AdditionalConstraintsReaderTest : public ::testing::Test {

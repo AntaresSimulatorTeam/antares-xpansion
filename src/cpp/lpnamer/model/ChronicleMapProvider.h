@@ -11,7 +11,7 @@
 #include <utility>
 
 #include "ChronicleMapReader.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
 class DirectAccessScenarioToChronicleProvider {
  public:

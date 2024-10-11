@@ -19,7 +19,7 @@
 #include "MasterGeneration.h"
 #include "MasterProblemBuilder.h"
 #include "MpsTxtWriter.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "ProblemVariablesFileAdapter.h"
 #include "ProblemVariablesFromProblemAdapter.h"
 #include "ProblemVariablesZipAdapter.h"

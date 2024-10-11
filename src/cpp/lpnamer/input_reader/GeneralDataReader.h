@@ -10,7 +10,7 @@
 #include <vector>
 
 #include "INIReader.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "StringManip.h"
 
 class IniFileNotFound : public std::runtime_error {
