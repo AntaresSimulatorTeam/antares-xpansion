@@ -2,7 +2,7 @@
 #define ANTARES_XPANSION_SRC_CPP_FULL_RUN_FULLRUNOPTIONSPARSER_H
 #include <stdexcept>
 
-#include "BendersFactory.h"
+#include "antares-xpansion/benders/factories/BendersFactory.h"
 #include "ProblemGenerationExeOptions.h"
 
 class FullRunOptionsParser : public ProblemGenerationExeOptions {

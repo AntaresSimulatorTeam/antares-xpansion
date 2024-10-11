@@ -1,6 +1,6 @@
 
 
-#include "WriterFactories.h"
+#include "antares-xpansion/benders/factories/WriterFactories.h"
 
 #include "antares-xpansion/benders/output/JsonWriter.h"
 #include "OutputWriter.h"

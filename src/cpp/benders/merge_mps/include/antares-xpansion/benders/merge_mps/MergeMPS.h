@@ -1,6 +1,6 @@
 #pragma once
 
-#include "WriterFactories.h"
+#include "antares-xpansion/benders/factories/WriterFactories.h"
 #include "common.h"
 #include "antares-xpansion/benders/logger/User.h"
 #include "solver_utils.h"

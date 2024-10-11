@@ -1,4 +1,4 @@
-#include "BendersFactory.h"
+#include "antares-xpansion/benders/factories/BendersFactory.h"
 #include "common_mpi.h"
 
 int main(int argc, char **argv) {

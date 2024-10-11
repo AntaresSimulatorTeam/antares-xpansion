@@ -7,7 +7,7 @@
 #include "antares-xpansion/benders/merge_mps/MergeMPS.h"
 #include "SimulationOptions.h"
 #include "Worker.h"
-#include "WriterFactories.h"
+#include "antares-xpansion/benders/factories/WriterFactories.h"
 
 #include "antares-xpansion/benders/logger/User.h"
 #include "solver_utils.h"

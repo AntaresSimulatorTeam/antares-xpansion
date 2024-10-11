@@ -23,7 +23,7 @@ target_link_libraries(merge_mps_core
         benders_core
         helpers
         antaresXpansion::logger_lib
-        factories
+        antaresXpansion::factories
         antaresXpansion::output_core
         solvers
 )

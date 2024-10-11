@@ -1,11 +1,11 @@
 
-#include "LoggerFactories.h"
+#include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "MasterUpdate.h"
 #include "OuterLoopBenders.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h"
 #include "antares-xpansion/benders/outer_loop/OuterLoopInputDataReader.h"
 #include "antares-xpansion/benders/outer_loop/VariablesGroup.h"
-#include "WriterFactories.h"
+#include "antares-xpansion/benders/factories/WriterFactories.h"
 #include "gtest/gtest.h"
 #include "multisolver_interface/environment.h"
 
