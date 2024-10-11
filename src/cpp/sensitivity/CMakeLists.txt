@@ -19,7 +19,7 @@ target_include_directories (sensitivity_core
 
 target_link_libraries (sensitivity_core
 	PUBLIC
-		logger_lib
+		antaresXpansion::logger_lib
 )
 
 add_library (${PROJECT_NAME}::sensitivity_core ALIAS sensitivity_core)

@@ -8,9 +8,9 @@
 #include "LogPrefixManip.h"
 #include "RandomDirGenerator.h"
 #include "gtest/gtest.h"
-#include "logger/Master.h"
-#include "logger/User.h"
-#include "logger/UserFile.h"
+#include "antares-xpansion/benders/logger/Master.h"
+#include "antares-xpansion/benders/logger/User.h"
+#include "antares-xpansion/benders/logger/UserFile.h"
 
 using namespace xpansion::logger;
 

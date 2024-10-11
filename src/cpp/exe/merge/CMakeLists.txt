@@ -19,7 +19,7 @@ target_link_libraries (merge_mps
 		${PROJECT_NAME}::factories
 		${PROJECT_NAME}::output_core
 		helpers
-		logger_lib
+		antaresXpansion::logger_lib
 )
 
 

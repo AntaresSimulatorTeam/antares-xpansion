@@ -10,7 +10,7 @@ target_link_libraries (factories
         benders_sequential_core
 	benders_by_batch_core
         antaresXpansion::output_core
-        logger_lib
+        antaresXpansion::logger_lib
         ${PROJECT_NAME}::benders_mpi_core
         antaresXpansion::outer_loop_lib
         )

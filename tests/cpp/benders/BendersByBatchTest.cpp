@@ -5,8 +5,8 @@
 #include "LogPrefixManip.h"
 #include "RandomBatchShuffler.h"
 #include "gtest/gtest.h"
-#include "logger/Master.h"
-#include "logger/User.h"
+#include "antares-xpansion/benders/logger/Master.h"
+#include "antares-xpansion/benders/logger/User.h"
 
 class BatchCollectionTest : public ::testing::Test {
  public:

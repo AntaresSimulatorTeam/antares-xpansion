@@ -32,7 +32,7 @@ target_link_libraries(benders_mpi_core
         Boost::mpi
         MPI::MPI_C
         ${PROJECT_NAME}::factories
-        logger_lib
+        antaresXpansion::logger_lib
         Boost::serialization
 )
 

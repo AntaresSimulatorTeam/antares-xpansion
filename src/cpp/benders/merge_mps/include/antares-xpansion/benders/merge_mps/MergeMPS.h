@@ -2,7 +2,7 @@
 
 #include "WriterFactories.h"
 #include "common.h"
-#include "logger/User.h"
+#include "antares-xpansion/benders/logger/User.h"
 #include "solver_utils.h"
 
 enum Attribute {

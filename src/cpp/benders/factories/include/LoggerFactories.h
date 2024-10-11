@@ -7,9 +7,9 @@
 #include "BendersFactory.h"
 #include "ILogger.h"
 #include "SimulationOptions.h"
-#include "logger/Master.h"
-#include "logger/MathLogger.h"
-#include "logger/UserFile.h"
+#include "antares-xpansion/benders/logger/Master.h"
+#include "antares-xpansion/benders/logger/MathLogger.h"
+#include "antares-xpansion/benders/logger/UserFile.h"
 Logger build_void_logger();
 
 std::ostringstream start_message(const SimulationOptions &options,

@@ -9,7 +9,7 @@
 #include "Worker.h"
 #include "WriterFactories.h"
 
-#include "logger/User.h"
+#include "antares-xpansion/benders/logger/User.h"
 #include "solver_utils.h"
 
 //@suggest: create and move to standardlp.cpp

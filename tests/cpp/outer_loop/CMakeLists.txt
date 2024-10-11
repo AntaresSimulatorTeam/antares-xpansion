@@ -8,7 +8,7 @@ target_link_libraries(outer_loop_test
         benders_by_batch_core
         benders_core
         antaresXpansion::output_core
-        logger_lib
+        antaresXpansion::logger_lib
         GTest::Main
         tests_utils)
 
