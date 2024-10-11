@@ -1,8 +1,8 @@
 #pragma once
 #include "BendersBase.h"
 #include "CutsManagement.h"
-#include "IMasterUpdate.h"
-#include "OuterLoop.h"
+#include "antares-xpansion/benders/outer_loop/IMasterUpdate.h"
+#include "antares-xpansion/benders/outer_loop/OuterLoop.h"
 #include "common_mpi.h"
 
 namespace Outerloop {

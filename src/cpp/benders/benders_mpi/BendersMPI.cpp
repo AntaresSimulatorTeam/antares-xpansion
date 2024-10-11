@@ -4,7 +4,7 @@
 #include <algorithm>
 #include <utility>
 
-#include "CriterionComputation.h"
+#include "antares-xpansion/benders/outer_loop/CriterionComputation.h"
 #include "Timer.h"
 
 BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger logger,

@@ -1,6 +1,6 @@
 #pragma once
 #include "BendersBase.h"
-#include "IMasterUpdate.h"
+#include "antares-xpansion/benders/outer_loop/IMasterUpdate.h"
 #include "common.h"
 
 namespace Outerloop {
