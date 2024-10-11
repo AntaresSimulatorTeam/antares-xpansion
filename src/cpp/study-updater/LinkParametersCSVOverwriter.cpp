@@ -2,11 +2,11 @@
 // Created by marechaljas on 16/06/22.
 //
 
-#include "LinkParametersCSVOverwriter.h"
+#include "antares-xpansion/study-updater/LinkParametersCSVOverwriter.h"
 
 #include "antares-xpansion/helpers/JsonXpansionReader.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LinkdataRecord.h"
-#include "StudyUpdater.h"
+#include "antares-xpansion/study-updater/StudyUpdater.h"
 
 bool LinkParametersCSVOverWriter::open(
     const std::filesystem::path& linkdataFilename_l) {

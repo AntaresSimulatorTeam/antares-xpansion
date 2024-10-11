@@ -3,9 +3,9 @@
 //
 
 #pragma once
-#include "LinkParametersCSVOverwriter.h"
+#include "antares-xpansion/study-updater/LinkParametersCSVOverwriter.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LinkdataRecord.h"
-#include "StudyUpdater.h"
+#include "antares-xpansion/study-updater/StudyUpdater.h"
 
 class LinkCapacitiesCSVWriter {
  public:

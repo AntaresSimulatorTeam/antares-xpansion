@@ -7,8 +7,8 @@
 #include "antares-xpansion/lpnamer/problem_modifier/LinkdataRecord.h"
 #include "LoggerBuilder.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
-#include "StudyUpdateLinkParameterStrategy.h"
-#include "StudyUpdater.h"
+#include "antares-xpansion/study-updater/StudyUpdateLinkParameterStrategy.h"
+#include "antares-xpansion/study-updater/StudyUpdater.h"
 #include "gtest/gtest.h"
 
 class StudyUpdateTest : public ::testing::Test {

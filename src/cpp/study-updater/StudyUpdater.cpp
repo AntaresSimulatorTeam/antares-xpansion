@@ -1,11 +1,11 @@
-#include "StudyUpdater.h"
+#include "antares-xpansion/study-updater/StudyUpdater.h"
 
 #include <utility>
 
 #include "antares-xpansion/helpers/JsonXpansionReader.h"
-#include "StudyUpdateLinkCapacitiesStrategy.h"
-#include "StudyUpdateLinkParameterStrategy.h"
-#include "StudyUpdateStrategy.h"
+#include "antares-xpansion/study-updater/StudyUpdateLinkCapacitiesStrategy.h"
+#include "antares-xpansion/study-updater/StudyUpdateLinkParameterStrategy.h"
+#include "antares-xpansion/study-updater/StudyUpdateStrategy.h"
 
 constexpr int ANTARES_VERSION_CAPACITIES_IN_INDIVIDUAL_FILES = 820;
 

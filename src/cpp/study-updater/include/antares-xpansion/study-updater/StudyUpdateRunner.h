@@ -11,7 +11,7 @@
 #include "antares-xpansion/lpnamer/problem_modifier/LauncherHelpers.h"
 #include "antares-xpansion/lpnamer/input_reader/LinkProfileReader.h"
 #include "antares-xpansion/helpers/OptionsParser.h"
-#include "StudyUpdater.h"
+#include "antares-xpansion/study-updater/StudyUpdater.h"
 class StudyUpdaterExeOptions : public OptionsParser {
  private:
   std::filesystem::path xpansion_output_dir_;

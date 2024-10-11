@@ -1,7 +1,7 @@
 #include <fstream>
 
 #include "antares-xpansion/lpnamer/problem_modifier/LinkdataRecord.h"
-#include "StudyUpdater.h"
+#include "antares-xpansion/study-updater/StudyUpdater.h"
 #include "gtest/gtest.h"
 
 class LinkdataRecordTest : public ::testing::Test

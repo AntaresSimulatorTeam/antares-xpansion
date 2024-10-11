@@ -10,8 +10,8 @@
 #include "antares-xpansion/lpnamer/problem_modifier/LauncherHelpers.h"
 #include "antares-xpansion/lpnamer/input_reader/LinkProfileReader.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
-#include "StudyUpdateRunner.h"
-#include "StudyUpdater.h"
+#include "antares-xpansion/study-updater/StudyUpdateRunner.h"
+#include "antares-xpansion/study-updater/StudyUpdater.h"
 
 /**
  * \fn int main (void)
