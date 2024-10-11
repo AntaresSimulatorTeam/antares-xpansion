@@ -4,7 +4,7 @@
 #include <filesystem>
 
 #include "antares-xpansion/benders/output/JsonWriter.h"
-#include "MergeMPS.h"
+#include "antares-xpansion/benders/merge_mps/MergeMPS.h"
 #include "SimulationOptions.h"
 #include "Worker.h"
 #include "WriterFactories.h"
