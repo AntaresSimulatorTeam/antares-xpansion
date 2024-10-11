@@ -2,7 +2,7 @@
 
 #include "LogUtils.h"
 
-#include "solver_utils.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 /*!
  *  \brief Free the problem
  */

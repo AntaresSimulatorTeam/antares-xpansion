@@ -4,7 +4,7 @@
 #include <sstream>
 
 #include "LogUtils.h"
-#include "LoggerUtils.h"
+#include "antares-xpansion/helpers/LoggerUtils.h"
 
 HeadersManager::HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method)
     : type_(type), method_(method) {}

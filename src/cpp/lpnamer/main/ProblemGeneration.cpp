@@ -23,7 +23,7 @@
 #include "ProblemVariablesFileAdapter.h"
 #include "ProblemVariablesFromProblemAdapter.h"
 #include "ProblemVariablesZipAdapter.h"
-#include "Timer.h"
+#include "antares-xpansion/helpers/Timer.h"
 #include "Version.h"
 #include "WeightsFileReader.h"
 #include "WeightsFileWriter.h"

@@ -10,7 +10,7 @@
 #include "CandidatesINIReader.h"
 #include "LauncherHelpers.h"
 #include "LinkProfileReader.h"
-#include "OptionsParser.h"
+#include "antares-xpansion/helpers/OptionsParser.h"
 #include "StudyUpdater.h"
 class StudyUpdaterExeOptions : public OptionsParser {
  private:

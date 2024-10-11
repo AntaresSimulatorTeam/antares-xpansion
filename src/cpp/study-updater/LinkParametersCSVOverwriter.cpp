@@ -4,7 +4,7 @@
 
 #include "LinkParametersCSVOverwriter.h"
 
-#include "JsonXpansionReader.h"
+#include "antares-xpansion/helpers/JsonXpansionReader.h"
 #include "LinkdataRecord.h"
 #include "StudyUpdater.h"
 

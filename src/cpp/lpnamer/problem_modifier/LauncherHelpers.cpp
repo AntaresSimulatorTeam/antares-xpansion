@@ -1,6 +1,6 @@
 #include "LauncherHelpers.h"
 
-#include <ArchiveReader.h>
+#include <antares-xpansion/helpers/ArchiveReader.h>
 
 #include <filesystem>
 

@@ -3,7 +3,7 @@
 //
 #include "MasterProblemBuilder.h"
 
-#include <solver_utils.h>
+#include <antares-xpansion/helpers/solver_utils.h>
 
 #include <algorithm>
 #include <unordered_map>

@@ -1,7 +1,7 @@
 //
 // Created by s90365 on 23/08/2021.
 //
-#include <solver_utils.h>
+#include <antares-xpansion/helpers/solver_utils.h>
 
 #include "LoggerBuilder.h"
 #include "MasterProblemBuilder.h"

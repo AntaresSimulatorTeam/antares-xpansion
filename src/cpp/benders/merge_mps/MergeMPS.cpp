@@ -2,9 +2,9 @@
 
 #include <filesystem>
 
-#include "ArchiveReader.h"
+#include "antares-xpansion/helpers/ArchiveReader.h"
 #include "LogUtils.h"
-#include "Timer.h"
+#include "antares-xpansion/helpers/Timer.h"
 
 MergeMPS::MergeMPS(const MergeMPSOptions &options, Logger &logger,
                    Writer writer)

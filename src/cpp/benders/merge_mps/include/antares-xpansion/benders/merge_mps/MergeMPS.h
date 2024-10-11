@@ -3,7 +3,7 @@
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/logger/User.h"
-#include "solver_utils.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 
 enum Attribute {
   INT_VALUE,

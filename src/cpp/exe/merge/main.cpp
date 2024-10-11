@@ -10,7 +10,7 @@
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 
 #include "antares-xpansion/benders/logger/User.h"
-#include "solver_utils.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 
 //@suggest: create and move to standardlp.cpp
 // Initialize static member

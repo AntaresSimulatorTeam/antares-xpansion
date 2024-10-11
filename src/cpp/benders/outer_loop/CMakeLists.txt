@@ -41,7 +41,7 @@ target_include_directories(outer_loop_lib
 
 target_link_libraries(outer_loop_lib
         PUBLIC
-        helpers
+        antaresXpansion::helpers
         yaml-cpp::yaml-cpp
 )
 

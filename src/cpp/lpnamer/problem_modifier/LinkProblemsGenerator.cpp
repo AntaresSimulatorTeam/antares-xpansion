@@ -14,7 +14,7 @@
 #include "ProblemVariablesZipAdapter.h"
 #include "VariableFileReader.h"
 #include "ZipProblemProviderAdapter.h"
-#include "solver_utils.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 
 /**
  * \brief That function create new optimization problems with new candidates

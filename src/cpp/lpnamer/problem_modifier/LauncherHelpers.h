@@ -6,7 +6,7 @@
 #include "ActiveLinks.h"
 #include "AdditionalConstraints.h"
 #include "ProblemGenerationLogger.h"
-#include "solver_utils.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 /**
  * \brief adds binary variables and additional constraints to an existent solver
  *

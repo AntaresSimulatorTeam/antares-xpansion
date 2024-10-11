@@ -2,7 +2,7 @@
 #include <ActiveLinks.h>
 #include <ProblemModifier.h>
 #include <multisolver_interface/SolverFactory.h>
-#include <solver_utils.h>
+#include <antares-xpansion/helpers/solver_utils.h>
 
 #include <fstream>
 

@@ -15,7 +15,7 @@ add_executable (antares_archive_updater
 )
 
 target_link_libraries (antares_archive_updater
-				helpers
+		antaresXpansion::helpers
 )
 
 install(TARGETS antares_archive_updater DESTINATION bin)

@@ -1,9 +1,9 @@
-#include "AntaresArchiveUpdater.h"
+#include "antares-xpansion/helpers/AntaresArchiveUpdater.h"
 
 #include <iostream>
 #include <vector>
 
-#include "ArchiveReader.h"
+#include "antares-xpansion/helpers/ArchiveReader.h"
 #include "StringManip.h"
 
 const std::string CRITERION_FILES_PREFIX = "criterion";

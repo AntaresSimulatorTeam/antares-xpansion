@@ -13,7 +13,7 @@ target_include_directories (helpers_test
 
 target_link_libraries (helpers_test PRIVATE
 		GTest::Main
-		helpers
+		antaresXpansion::helpers
 		lp_namer_helper
 		lp_namer_model
 		lp_namer_input_reader

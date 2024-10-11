@@ -1,7 +1,7 @@
 #include <fstream>
 #include <vector>
 
-#include "ArchiveWriter.h"
+#include "antares-xpansion/helpers/ArchiveWriter.h"
 #include "MpsTxtWriter.h"
 #include "gtest/gtest.h"
 

@@ -9,7 +9,7 @@
 #include "antares-xpansion/benders/benders_core/LastIterationReader.h"
 #include "antares-xpansion/benders/benders_core/LastIterationWriter.h"
 #include "LogUtils.h"
-#include "solver_utils.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 
 BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
                          Writer writer,

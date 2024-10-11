@@ -7,9 +7,9 @@
 #include <mutex>
 #include <utility>
 
-#include "ArchiveReader.h"
-#include "ArchiveWriter.h"
-#include "FileInBuffer.h"
+#include "antares-xpansion/helpers/ArchiveReader.h"
+#include "antares-xpansion/helpers/ArchiveWriter.h"
+#include "antares-xpansion/helpers/FileInBuffer.h"
 #include "IProblemProviderPort.h"
 #include "IProblemVariablesProviderPort.h"
 #include "IProblemWriter.h"

@@ -1,6 +1,6 @@
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
 
-#include "solver_utils.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 
 /*!
  *  \brief Constructor of a Worker Slave

@@ -49,7 +49,7 @@ target_include_directories(benders_core
 
 target_link_libraries(benders_core
         PUBLIC
-        helpers
+        antaresXpansion::helpers
         antaresXpansion::output_core
         solvers
         ${JSONCPP_LIB}

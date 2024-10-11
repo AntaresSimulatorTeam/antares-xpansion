@@ -13,7 +13,7 @@
 
 #include "ILogger.h"
 #include "LogUtils.h"
-#include "LoggerUtils.h"
+#include "antares-xpansion/helpers/LoggerUtils.h"
 
 namespace ProblemGenerationLog {
 

@@ -13,8 +13,8 @@ target_link_libraries (xpansion_study_updater_lib
 		${PROJECT_NAME}::lp_namer_helper
 		${PROJECT_NAME}::lp_namer_model
 		${PROJECT_NAME}::lp_namer_input_reader
-		${PROJECT_NAME}::lp_namer_problem_modifier	
-		helpers
+		${PROJECT_NAME}::lp_namer_problem_modifier
+		antaresXpansion::helpers
 		)
 get_target_property(lp_namer_model_include lp_namer_model INTERFACE_INCLUDE_DIRECTORIES)
 get_target_property(helpers_include helpers INTERFACE_INCLUDE_DIRECTORIES)

@@ -26,7 +26,7 @@ target_include_directories(output_core
 target_link_libraries(output_core
         PUBLIC
         ${JSONCPP_LIB}
-        helpers
+        antaresXpansion::helpers
 )
 
 add_library(${PROJECT_NAME}::output_core ALIAS output_core)

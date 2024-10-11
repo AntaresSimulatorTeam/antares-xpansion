@@ -3,7 +3,7 @@
 #include <numeric>
 #include <utility>
 
-#include "solver_utils.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 
 ProblemModifierProjection::ProblemModifierProjection(
     double epsilon, double best_ub,

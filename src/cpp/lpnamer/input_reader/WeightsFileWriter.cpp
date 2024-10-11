@@ -4,6 +4,7 @@
 #include <numeric>
 #include <ranges>
 
+#include "antares-xpansion/helpers/ArchiveReader.h"
 #include "StringManip.h"
 
 YearlyWeightsWriter::YearlyWeightsWriter(

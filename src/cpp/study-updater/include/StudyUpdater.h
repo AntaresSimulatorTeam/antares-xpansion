@@ -3,7 +3,7 @@
 #include <filesystem>
 
 #include "ActiveLinks.h"
-#include "AntaresVersionProvider.h"
+#include "antares-xpansion/helpers/AntaresVersionProvider.h"
 #include "LinkProblemsGenerator.h"
 #include "ProblemGenerationLogger.h"
 

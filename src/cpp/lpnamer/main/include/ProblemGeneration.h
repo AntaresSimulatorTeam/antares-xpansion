@@ -13,7 +13,7 @@
 #include "../../input_reader/MpsTxtWriter.h"
 #include "../../model/Problem.h"
 #include "../../model/SimulationInputMode.h"
-#include "ArchiveReader.h"
+#include "antares-xpansion/helpers/ArchiveReader.h"
 #include "ProblemGenerationExeOptions.h"
 #include "ProblemGenerationLogger.h"
 #include "ProblemGenerationOptions.h"

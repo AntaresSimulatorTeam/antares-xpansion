@@ -6,7 +6,7 @@
 
 #include <utility>
 
-#include "ArchiveReader.h"
+#include "antares-xpansion/helpers/ArchiveReader.h"
 #include "LinkProblemsGenerator.h"
 #include "VariableFileReader.h"
 

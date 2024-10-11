@@ -27,7 +27,7 @@ target_link_libraries (problem_generation_main
 		${PROJECT_NAME}::lp_namer_input_reader
 		${PROJECT_NAME}::lp_namer_problem_modifier
 		Boost::boost Boost::program_options
-		helpers
+		antaresXpansion::helpers
 		Antares::solver_api
 		PUBLIC
 		Antares::antares-solver-simulation

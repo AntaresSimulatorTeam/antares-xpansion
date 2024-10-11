@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <vector>
 
-#include "OptionsParser.h"
+#include "antares-xpansion/helpers/OptionsParser.h"
 #include "ProblemGenerationOptions.h"
 
 class ProblemGenerationExeOptions : public OptionsParser,
