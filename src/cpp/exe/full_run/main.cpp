@@ -2,7 +2,7 @@
 #include <exception>
 #include <iostream>
 
-#include "FullRunOptionsParser.h"
+#include "antares-xpansion/full_run/FullRunOptionsParser.h"
 #include "ProblemGeneration.h"
 #include "ProblemGenerationLogger.h"
 #include "StudyUpdateRunner.h"
