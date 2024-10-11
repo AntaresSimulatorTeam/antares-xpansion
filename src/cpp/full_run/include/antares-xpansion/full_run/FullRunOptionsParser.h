@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 #include "antares-xpansion/benders/factories/BendersFactory.h"
-#include "ProblemGenerationExeOptions.h"
+#include "antares-xpansion/lpnamer/main/ProblemGenerationExeOptions.h"
 
 class FullRunOptionsParser : public ProblemGenerationExeOptions {
  public:

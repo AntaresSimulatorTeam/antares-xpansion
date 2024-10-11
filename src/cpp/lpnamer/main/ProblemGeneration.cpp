@@ -1,5 +1,5 @@
 
-#include "include/ProblemGeneration.h"
+#include "antares-xpansion/lpnamer/main/ProblemGeneration.h"
 
 #include <antares/api/solver.h>
 

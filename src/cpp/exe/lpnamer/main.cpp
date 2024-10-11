@@ -1,8 +1,8 @@
 
 #include <iostream>
 
-#include "ProblemGeneration.h"
-#include "ProblemGenerationExeOptions.h"
+#include "antares-xpansion/lpnamer/main/ProblemGeneration.h"
+#include "antares-xpansion/lpnamer/main/ProblemGenerationExeOptions.h"
 
 int main(int argc, char** argv) {
   try {
