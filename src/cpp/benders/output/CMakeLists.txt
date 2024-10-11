@@ -15,18 +15,16 @@ target_sources(output_core PRIVATE
         include/antares-xpansion/benders/output/JsonWriter.h
 )
 
-get_target_property(xpansion_interfaces_path xpansion_interfaces INTERFACE_INCLUDE_DIRECTORIES)
-
 target_include_directories(output_core
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        ${xpansion_interfaces_path}
 )
 
 target_link_libraries(output_core
         PUBLIC
         ${JSONCPP_LIB}
         antaresXpansion::helpers
+        ${PROJECT_NAME}::xpansion_interfaces
 )
 
 add_library(${PROJECT_NAME}::output_core ALIAS output_core)
