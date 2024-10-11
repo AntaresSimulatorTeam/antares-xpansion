@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "IProblemProviderPort.h"
+#include "antares-xpansion/lpnamer/problem_modifier/IProblemProviderPort.h"
 class FileProblemProviderAdapter : public IProblemProviderPort {
  public:
   explicit FileProblemProviderAdapter(std::filesystem::path lp_dir,

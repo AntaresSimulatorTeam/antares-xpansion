@@ -2,7 +2,7 @@
 // Created by marechaljas on 22/11/22.
 //
 
-#include "AntaresProblemToXpansionProblemTranslator.h"
+#include "antares-xpansion/lpnamer/problem_modifier/AntaresProblemToXpansionProblemTranslator.h"
 
 #include <algorithm>
 #include <cmath>

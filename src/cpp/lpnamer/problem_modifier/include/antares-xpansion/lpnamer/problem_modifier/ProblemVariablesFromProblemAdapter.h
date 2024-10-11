@@ -1,7 +1,7 @@
 #pragma once
 
-#include "IProblemVariablesProviderPort.h"
-#include "LinkProblemsGenerator.h"
+#include "antares-xpansion/lpnamer/problem_modifier/IProblemVariablesProviderPort.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 
 class ProblemVariablesFromProblemAdapter
     : public IProblemVariablesProviderPort {

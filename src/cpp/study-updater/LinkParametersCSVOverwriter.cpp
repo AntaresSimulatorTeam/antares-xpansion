@@ -5,7 +5,7 @@
 #include "LinkParametersCSVOverwriter.h"
 
 #include "antares-xpansion/helpers/JsonXpansionReader.h"
-#include "LinkdataRecord.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LinkdataRecord.h"
 #include "StudyUpdater.h"
 
 bool LinkParametersCSVOverWriter::open(

@@ -1,4 +1,4 @@
-#include "LauncherHelpers.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LauncherHelpers.h"
 
 #include <antares-xpansion/helpers/ArchiveReader.h>
 
@@ -6,7 +6,7 @@
 
 #include "antares-xpansion/lpnamer/model/Candidate.h"
 #include "antares-xpansion/lpnamer/input_reader/CandidatesINIReader.h"
-#include "LinkProblemsGenerator.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 #include "antares-xpansion/lpnamer/input_reader/LinkProfileReader.h"
 #include "LogUtils.h"
 

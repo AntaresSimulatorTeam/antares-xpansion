@@ -1,7 +1,7 @@
 //
 // Created by s90365 on 23/08/2021.
 //
-#include "MasterProblemBuilder.h"
+#include "antares-xpansion/lpnamer/problem_modifier/MasterProblemBuilder.h"
 
 #include <antares-xpansion/helpers/solver_utils.h>
 

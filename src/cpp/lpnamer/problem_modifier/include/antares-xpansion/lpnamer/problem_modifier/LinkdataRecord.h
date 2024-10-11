@@ -8,7 +8,7 @@
 
 #include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 #include "antares-xpansion/helpers/AntaresVersionProvider.h"
-#include "LinkProblemsGenerator.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 /*!
  * \struct LinkdataRecord
  * \brief struct describing a line in a linkdata file of antares

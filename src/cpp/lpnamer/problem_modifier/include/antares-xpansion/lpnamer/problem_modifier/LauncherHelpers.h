@@ -4,7 +4,7 @@
 #include <map>
 
 #include "antares-xpansion/lpnamer/model/ActiveLinks.h"
-#include "AdditionalConstraints.h"
+#include "antares-xpansion/lpnamer/problem_modifier/AdditionalConstraints.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 /**

@@ -2,7 +2,7 @@
 // Created by marechaljas on 09/01/24.
 //
 
-#include "FileProblemProviderAdapter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/FileProblemProviderAdapter.h"
 
 #include <utility>
 

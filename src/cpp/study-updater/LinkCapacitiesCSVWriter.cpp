@@ -2,7 +2,7 @@
 // Created by marechaljas on 16/06/22.
 //
 #include "LinkCapacitiesCSVWriter.h"
-#include "LinkdataRecord.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LinkdataRecord.h"
 
 LinkCapacitiesCSVWriter::LinkCapacitiesCSVWriter(
     const ActiveLink& link_p, const std::filesystem::path& linkPath) {

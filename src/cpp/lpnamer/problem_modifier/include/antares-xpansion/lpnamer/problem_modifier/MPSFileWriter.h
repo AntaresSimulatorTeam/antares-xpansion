@@ -1,7 +1,7 @@
 #pragma once
 
-#include "IProblemWriter.h"
-#include "LinkProblemsGenerator.h"
+#include "antares-xpansion/lpnamer/problem_modifier/IProblemWriter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 
 class MPSFileWriter : public IProblemWriter {
   void Write_problem(Problem *in_prblm) override;

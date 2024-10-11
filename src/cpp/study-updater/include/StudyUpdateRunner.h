@@ -8,7 +8,7 @@
 
 #include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 #include "antares-xpansion/lpnamer/input_reader/CandidatesINIReader.h"
-#include "LauncherHelpers.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LauncherHelpers.h"
 #include "antares-xpansion/lpnamer/input_reader/LinkProfileReader.h"
 #include "antares-xpansion/helpers/OptionsParser.h"
 #include "StudyUpdater.h"

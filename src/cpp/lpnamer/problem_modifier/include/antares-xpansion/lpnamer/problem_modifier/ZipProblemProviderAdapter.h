@@ -4,8 +4,8 @@
 
 #pragma once
 
-#include "IProblemProviderPort.h"
-#include "LinkProblemsGenerator.h"
+#include "antares-xpansion/lpnamer/problem_modifier/IProblemProviderPort.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 class ZipProblemProviderAdapter : public IProblemProviderPort {
  public:
   explicit ZipProblemProviderAdapter(std::filesystem::path lp_dir,

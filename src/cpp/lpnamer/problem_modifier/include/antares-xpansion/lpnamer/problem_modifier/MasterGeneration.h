@@ -4,8 +4,8 @@
 #include <filesystem>
 
 #include "antares-xpansion/lpnamer/model/ActiveLinks.h"
-#include "AdditionalConstraints.h"
-#include "LinkProblemsGenerator.h"
+#include "antares-xpansion/lpnamer/problem_modifier/AdditionalConstraints.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 class MasterGeneration {
  public:
   /**

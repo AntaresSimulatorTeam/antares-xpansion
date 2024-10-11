@@ -2,7 +2,7 @@
 // Created by marechaljas on 09/11/22.
 //
 
-#include "ProblemVariablesFileAdapter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesFileAdapter.h"
 
 #include <utility>
 

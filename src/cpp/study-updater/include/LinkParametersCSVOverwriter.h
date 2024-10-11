@@ -6,7 +6,7 @@
 
 #include <filesystem>
 
-#include "LinkdataRecord.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LinkdataRecord.h"
 
 class LinkParametersCSVOverWriter {
  public:

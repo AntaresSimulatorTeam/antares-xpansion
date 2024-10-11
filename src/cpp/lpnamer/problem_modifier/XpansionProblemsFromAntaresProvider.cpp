@@ -2,12 +2,12 @@
 // Created by marechaljas on 18/11/22.
 //
 
-#include "XpansionProblemsFromAntaresProvider.h"
+#include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
 
 #include <utility>
 
 #include "antares-xpansion/lpnamer/model/Problem.h"
-#include "AntaresProblemToXpansionProblemTranslator.h"
+#include "antares-xpansion/lpnamer/problem_modifier/AntaresProblemToXpansionProblemTranslator.h"
 
 XpansionProblemsFromAntaresProvider::XpansionProblemsFromAntaresProvider(
     Antares::Solver::LpsFromAntares lps)

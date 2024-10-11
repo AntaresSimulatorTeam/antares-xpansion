@@ -1,6 +1,6 @@
 
 #include "antares-xpansion/lpnamer/model/ActiveLinks.h"
-#include <ProblemModifier.h>
+#include "antares-xpansion/lpnamer/problem_modifier/ProblemModifier.h"
 #include <multisolver_interface/SolverFactory.h>
 #include <antares-xpansion/helpers/solver_utils.h>
 

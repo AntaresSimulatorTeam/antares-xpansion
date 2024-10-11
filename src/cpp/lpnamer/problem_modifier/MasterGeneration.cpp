@@ -1,10 +1,10 @@
-#include "MasterGeneration.h"
+#include "antares-xpansion/lpnamer/problem_modifier/MasterGeneration.h"
 
 #include <algorithm>
 #include <filesystem>
 
-#include "LauncherHelpers.h"
-#include "MasterProblemBuilder.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LauncherHelpers.h"
+#include "antares-xpansion/lpnamer/problem_modifier/MasterProblemBuilder.h"
 #include "multisolver_interface/SolverAbstract.h"
 
 MasterGeneration::MasterGeneration(

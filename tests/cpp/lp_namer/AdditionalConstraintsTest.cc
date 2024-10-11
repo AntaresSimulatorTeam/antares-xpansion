@@ -1,8 +1,8 @@
 #include <fstream>
 #include <sstream>
 
-#include "AdditionalConstraints.h"
-#include "LauncherHelpers.h"
+#include "antares-xpansion/lpnamer/problem_modifier/AdditionalConstraints.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LauncherHelpers.h"
 #include "LoggerBuilder.h"
 #include "gtest/gtest.h"
 
