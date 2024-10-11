@@ -33,7 +33,7 @@ target_include_directories (benders_core
 target_link_libraries (benders_core
 	PUBLIC
 		helpers
-		output_core
+		antaresXpansion::output_core
 		solvers
 		${JSONCPP_LIB}
 		outer_loop_lib

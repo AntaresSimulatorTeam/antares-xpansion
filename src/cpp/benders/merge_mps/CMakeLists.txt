@@ -24,7 +24,7 @@ target_link_libraries (merge_mps_core
 		helpers
         logger_lib
         factories
-		output_core
+		antaresXpansion::output_core
 		solvers
 )
 

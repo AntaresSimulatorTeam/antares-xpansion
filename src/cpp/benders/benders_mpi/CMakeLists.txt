@@ -28,7 +28,7 @@ target_link_libraries(benders_mpi_core
         PUBLIC
         benders_core
         benders_sequential_core
-        output_core
+        antaresXpansion::output_core
         Boost::mpi
         MPI::MPI_C
         ${PROJECT_NAME}::factories

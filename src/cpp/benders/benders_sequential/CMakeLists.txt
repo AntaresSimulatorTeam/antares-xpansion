@@ -21,7 +21,7 @@ target_link_libraries (benders_sequential_core
 	PUBLIC
         benders_core
 		helpers
-		output_core
+		antaresXpansion::output_core
 		solvers
 		${PROJECT_NAME}::factories
 

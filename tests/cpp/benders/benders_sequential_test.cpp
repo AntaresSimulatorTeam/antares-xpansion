@@ -2,7 +2,7 @@
 
 #include "ArchiveWriter.h"
 #include "BendersSequential.h"
-#include "JsonWriter.h"
+#include "antares-xpansion/benders/output/JsonWriter.h"
 #include "LoggerStub.h"
 #include "RandomDirGenerator.h"
 #include "gtest/gtest.h"

@@ -2,9 +2,9 @@
 
 #include "WriterFactories.h"
 
-#include "JsonWriter.h"
+#include "antares-xpansion/benders/output/JsonWriter.h"
 #include "OutputWriter.h"
-#include "VoidWriter.h"
+#include "antares-xpansion/benders/output/VoidWriter.h"
 #include "common.h"
 
 Writer build_void_writer() { return std::make_shared<Output::VoidWriter>(); }

@@ -3,7 +3,7 @@
 
 #include <filesystem>
 
-#include "JsonWriter.h"
+#include "antares-xpansion/benders/output/JsonWriter.h"
 #include "MergeMPS.h"
 #include "SimulationOptions.h"
 #include "Worker.h"

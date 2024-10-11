@@ -8,7 +8,7 @@
 #include <iostream>
 #include <ostream>
 
-#include "JsonWriter.h"
+#include "antares-xpansion/benders/output/JsonWriter.h"
 #include "LogUtils.h"
 #include "gtest/gtest.h"
 

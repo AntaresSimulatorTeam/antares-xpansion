@@ -34,7 +34,7 @@ target_link_libraries (benders_by_batch_core
 		benders_sequential_core
 		benders_mpi_core
 		helpers
-		output_core
+		antaresXpansion::output_core
 		solvers
 )
 
