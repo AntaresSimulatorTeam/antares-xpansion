@@ -3,7 +3,7 @@
 
 #include <filesystem>
 
-#include "BendersByBatch.h"
+#include "antares-xpansion/benders/benders_by_batch/BendersByBatch.h"
 #include "antares-xpansion/benders/benders_mpi/BendersMpiOuterLoop.h"
 #include "antares-xpansion/benders/benders_sequential/BendersSequential.h"
 #include "ILogger.h"

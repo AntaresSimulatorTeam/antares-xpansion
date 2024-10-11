@@ -1,9 +1,9 @@
 #include <numeric>
 
-#include "BatchCollection.h"
-#include "BendersByBatch.h"
+#include "antares-xpansion/benders/benders_by_batch/BatchCollection.h"
+#include "antares-xpansion/benders/benders_by_batch/BendersByBatch.h"
 #include "LogPrefixManip.h"
-#include "RandomBatchShuffler.h"
+#include "antares-xpansion/benders/benders_by_batch/RandomBatchShuffler.h"
 #include "gtest/gtest.h"
 #include "antares-xpansion/benders/logger/Master.h"
 #include "antares-xpansion/benders/logger/User.h"

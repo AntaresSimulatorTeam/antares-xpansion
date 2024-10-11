@@ -5,7 +5,7 @@ target_link_libraries(outer_loop_test
         PRIVATE
         solvers
         antaresXpansion::outer_loop_lib
-        benders_by_batch_core
+        antaresXpansion::benders_by_batch_core
         antaresXpansion::benders_core
         antaresXpansion::output_core
         antaresXpansion::logger_lib

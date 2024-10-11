@@ -1,4 +1,4 @@
-#include "BatchCollection.h"
+#include "antares-xpansion/benders/benders_by_batch/BatchCollection.h"
 
 #include <cmath>
 #include <iostream>
