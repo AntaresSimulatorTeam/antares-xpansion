@@ -6,26 +6,30 @@
 # Targets
 # ===========================================================================
 
-add_library (benders_sequential_core STATIC
-	${CMAKE_CURRENT_SOURCE_DIR}/BendersSequential.cpp
-        )
+add_library(benders_sequential_core)
 
-target_include_directories (benders_sequential_core
-		PUBLIC
-			${CMAKE_CURRENT_SOURCE_DIR}/include
-		PUBLIC
-			${CMAKE_CURRENT_SOURCE_DIR}
+target_sources(benders_sequential_core PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/BendersSequential.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_sequential/BendersSequential.h
 )
 
-target_link_libraries (benders_sequential_core
-	PUBLIC
+target_include_directories(benders_sequential_core
+        PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+
+target_link_libraries(benders_sequential_core
+        PUBLIC
         benders_core
-		helpers
-		antaresXpansion::output_core
-		solvers
-		${PROJECT_NAME}::factories
+        helpers
+        antaresXpansion::output_core
+        solvers
+        ${PROJECT_NAME}::factories
 
 
 )
 
-add_library (${PROJECT_NAME}::benders_sequential_core ALIAS benders_sequential_core)
+add_library(${PROJECT_NAME}::benders_sequential_core ALIAS benders_sequential_core)
+install(DIRECTORY include/antares-xpansion
+        DESTINATION "include"
+)

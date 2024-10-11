@@ -11,7 +11,7 @@ target_sources(factories PRIVATE
 target_link_libraries(factories
         PUBLIC
         benders_core
-        benders_sequential_core
+        antaresXpansion::benders_sequential_core
         benders_by_batch_core
         antaresXpansion::output_core
         antaresXpansion::logger_lib

@@ -5,7 +5,7 @@
 
 #include "BendersByBatch.h"
 #include "BendersMpiOuterLoop.h"
-#include "BendersSequential.h"
+#include "antares-xpansion/benders/benders_sequential/BendersSequential.h"
 #include "ILogger.h"
 #include "LogUtils.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"

@@ -27,7 +27,7 @@ add_library(benders_mpi_core STATIC
 target_link_libraries(benders_mpi_core
         PUBLIC
         benders_core
-        benders_sequential_core
+        antaresXpansion::benders_sequential_core
         antaresXpansion::output_core
         Boost::mpi
         MPI::MPI_C

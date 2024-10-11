@@ -4,7 +4,7 @@ add_executable(benders_sequential_test
 
 target_link_libraries(benders_sequential_test
         PRIVATE
-        benders_sequential_core
+        antaresXpansion::benders_sequential_core
         benders_by_batch_core
         benders_core
         antaresXpansion::output_core
