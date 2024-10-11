@@ -24,7 +24,7 @@ add_executable (test_solver
 #get_target_property(xpansion_interfaces_path xpansion_interfaces INTERFACE_INCLUDE_DIRECTORIES)
 target_link_libraries (test_solver
 	PUBLIC
-		solvers
+		antaresXpansion::solvers
 		xpansion_interfaces
 )
 

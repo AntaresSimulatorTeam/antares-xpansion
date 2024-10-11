@@ -4,7 +4,7 @@
 #include <sstream>
 
 #include "LogUtils.h"
-#include "multisolver_interface/Solver.h"
+#include "antares-xpansion/multisolver_interface/Solver.h"
 
 class InvalidSolverStatusException
     : public LogUtils::XpansionError<std::runtime_error> {

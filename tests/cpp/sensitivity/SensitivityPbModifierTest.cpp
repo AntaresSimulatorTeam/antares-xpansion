@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
-#include <multisolver_interface/SolverFactory.h>
+#include "antares-xpansion/multisolver_interface/SolverFactory.h"
 #include "ProblemModifierCapex.h"
 #include "ProblemModifierProjection.h"
 #include "antares-xpansion/benders/benders_core/BendersBase.h"

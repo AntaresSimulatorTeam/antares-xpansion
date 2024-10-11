@@ -2,7 +2,7 @@
 #ifndef ANTARESXPANSION_PROBLEMMODIFIER_H
 #define ANTARESXPANSION_PROBLEMMODIFIER_H
 
-#include <multisolver_interface/SolverAbstract.h>
+#include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
 #include <map>
 #include <memory>

@@ -25,7 +25,7 @@ target_link_libraries(merge_mps_core
         antaresXpansion::logger_lib
         antaresXpansion::factories
         antaresXpansion::output_core
-        solvers
+        antaresXpansion::solvers
 )
 
 add_library(${PROJECT_NAME}::merge_mps_core ALIAS merge_mps_core)

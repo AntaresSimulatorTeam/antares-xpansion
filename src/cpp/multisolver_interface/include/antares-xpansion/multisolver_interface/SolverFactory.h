@@ -3,7 +3,7 @@
 #include <set>
 
 #include "ILogger.h"
-#include "multisolver_interface/SolverAbstract.h"
+#include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
 /**
  * \enum mapper::SOLVER_TYPE

@@ -38,7 +38,7 @@ target_link_libraries(lp_namer_input_reader
         PUBLIC
         antaresXpansion::lp_namer_model
         antaresXpansion::helpers
-        solvers
+        antaresXpansion::solvers
 )
 
 add_library(${PROJECT_NAME}::lp_namer_input_reader ALIAS lp_namer_input_reader)

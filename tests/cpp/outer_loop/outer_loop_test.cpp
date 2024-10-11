@@ -7,7 +7,7 @@
 #include "antares-xpansion/benders/outer_loop/VariablesGroup.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 #include "gtest/gtest.h"
-#include "multisolver_interface/environment.h"
+#include "antares-xpansion/multisolver_interface/environment.h"
 
 boost::mpi::environment* penv = nullptr;
 boost::mpi::communicator* pworld = nullptr;

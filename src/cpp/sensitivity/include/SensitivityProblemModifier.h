@@ -1,6 +1,6 @@
 #pragma once
 
-#include <multisolver_interface/SolverAbstract.h>
+#include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
 #include "antares-xpansion/benders/benders_core/common.h"
 

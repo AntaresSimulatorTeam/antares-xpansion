@@ -1,13 +1,13 @@
 
 #include "SolverXpress.h"
-#include "multisolver_interface/environment.h"
+#include "antares-xpansion/multisolver_interface/environment.h"
 
 #ifdef COIN_OR
 #include "SolverCbc.h"
 #include "SolverClp.h"
 #endif
 #include "LogUtils.h"
-#include "multisolver_interface/SolverFactory.h"
+#include "antares-xpansion/multisolver_interface/SolverFactory.h"
 std::vector<std::string> available_solvers;
 
 std::vector<std::string> SolverLoader::GetAvailableSolvers(

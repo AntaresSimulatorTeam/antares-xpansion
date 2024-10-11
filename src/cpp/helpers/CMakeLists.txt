@@ -52,7 +52,7 @@ target_include_directories (helpers
 target_link_libraries (helpers
 	PUBLIC
 		${JSONCPP_LIB}
-		solvers
+		antaresXpansion::solvers
 		gflags::gflags
 		Boost::boost Boost::program_options
 		MINIZIP::minizip-ng

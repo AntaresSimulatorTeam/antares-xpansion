@@ -6,7 +6,7 @@
 #include <filesystem>
 #include "antares-xpansion/lpnamer/model/ProblemNameParser.h"
 #include "antares-xpansion/lpnamer/model/Problem.h"
-#include "multisolver_interface/SolverFactory.h"
+#include "antares-xpansion/multisolver_interface/SolverFactory.h"
 #include "NOOPSolver.h"
 
 struct ProblemNameCase {

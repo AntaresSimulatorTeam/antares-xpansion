@@ -5,7 +5,7 @@
 #include <vector>
 #include <filesystem>
 
-#include "multisolver_interface/SolverAbstract.h"
+#include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
 /* Contains all the data to check the results of the tests on an instance*/
 class InstanceData {

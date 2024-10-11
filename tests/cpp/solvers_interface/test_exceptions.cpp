@@ -1,6 +1,6 @@
 #include "LogUtils.h"
 #include "catch2.hpp"
-#include "multisolver_interface/Solver.h"
+#include "antares-xpansion/multisolver_interface/Solver.h"
 
 TEST_CASE("InvalidStatusException", "[exceptions][invalid_status]") {
   SolverFactory factory;

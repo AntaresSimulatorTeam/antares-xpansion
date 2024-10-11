@@ -2,7 +2,7 @@
 // Created by s90365 on 23/08/2021.
 //
 
-#include <multisolver_interface/SolverAbstract.h>
+#include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
 #include <filesystem>
 #include <unordered_map>

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <json/json.h>
-#include <multisolver_interface/SolverAbstract.h>
+#include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
 #include <iostream>
 

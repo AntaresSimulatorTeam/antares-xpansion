@@ -7,7 +7,7 @@
 #include "LogUtils.h"
 #include "OutputWriter.h"
 #include "antares-xpansion/benders/benders_core/common.h"
-#include "multisolver_interface/SolverFactory.h"
+#include "antares-xpansion/multisolver_interface/SolverFactory.h"
 
 const std::string EPSILON_C("epsilon");
 const std::string CAPEX_C("capex");

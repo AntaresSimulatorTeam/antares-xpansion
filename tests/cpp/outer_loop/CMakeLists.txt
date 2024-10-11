@@ -3,7 +3,7 @@ add_executable(outer_loop_test
 
 target_link_libraries(outer_loop_test
         PRIVATE
-        solvers
+        antaresXpansion::solvers
         antaresXpansion::outer_loop_lib
         antaresXpansion::benders_by_batch_core
         antaresXpansion::benders_core

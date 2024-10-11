@@ -51,7 +51,7 @@ target_link_libraries(benders_core
         PUBLIC
         antaresXpansion::helpers
         antaresXpansion::output_core
-        solvers
+        antaresXpansion::solvers
         ${JSONCPP_LIB}
         antaresXpansion::outer_loop_lib
 )

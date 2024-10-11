@@ -3,8 +3,8 @@
 #include <fstream>
 #include <mutex>
 
-#include "multisolver_interface/SolverAbstract.h"
-#include "multisolver_interface/environment.h"
+#include "antares-xpansion/multisolver_interface/SolverAbstract.h"
+#include "antares-xpansion/multisolver_interface/environment.h"
 
 /*!
  * \class class SolverXpress

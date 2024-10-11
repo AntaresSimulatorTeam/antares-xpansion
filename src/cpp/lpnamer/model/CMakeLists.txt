@@ -34,7 +34,7 @@ target_link_libraries(lp_namer_model
         PUBLIC
         antaresXpansion::lp_namer_helper
         antaresXpansion::helpers
-        solvers
+        antaresXpansion::solvers
 )
 
 add_library(${PROJECT_NAME}::lp_namer_model ALIAS lp_namer_model)

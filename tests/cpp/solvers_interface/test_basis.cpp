@@ -1,6 +1,6 @@
 #include "catch2.hpp"
 #include "define_datas.hpp"
-#include "multisolver_interface/Solver.h"
+#include "antares-xpansion/multisolver_interface/Solver.h"
 
 void assert_basis_equality(SolverAbstract::Ptr expec_solver,
                            SolverAbstract::Ptr current_solver) {

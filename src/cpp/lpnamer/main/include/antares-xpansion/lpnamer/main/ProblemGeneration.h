@@ -17,7 +17,7 @@
 #include "antares-xpansion/lpnamer/main/ProblemGenerationExeOptions.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "ProblemGenerationOptions.h"
-#include "multisolver_interface/SolverAbstract.h"
+#include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
 class ProblemGeneration {
  public:

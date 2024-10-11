@@ -6,7 +6,7 @@
 
 #include <utility>
 
-#include "multisolver_interface/SolverFactory.h"
+#include "antares-xpansion/multisolver_interface/SolverFactory.h"
 std::shared_ptr<Problem> FileProblemProviderAdapter::provide_problem(
     const std::string& solver_name,
     SolverLogManager& solver_log_manager) const {

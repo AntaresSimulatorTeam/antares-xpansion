@@ -23,7 +23,7 @@ target_link_libraries(benders_sequential_core
         antaresXpansion::benders_core
         antaresXpansion::helpers
         antaresXpansion::output_core
-        solvers
+        antaresXpansion::solvers
         ${PROJECT_NAME}::factories
 
 

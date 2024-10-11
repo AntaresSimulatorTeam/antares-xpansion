@@ -7,7 +7,7 @@
 #include "CoinHelperFunctions.hpp"
 #include "CoinMpsIO.hpp"
 #include "OsiClpSolverInterface.hpp"
-#include "multisolver_interface/SolverAbstract.h"
+#include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
 /*!
  * \class class SolverCbc

@@ -61,7 +61,7 @@ target_link_libraries(lp_namer_problem_modifier
         antaresXpansion::lp_namer_input_reader
         antaresXpansion::lp_namer_helper
         antaresXpansion::helpers
-        solvers
+        antaresXpansion::solvers
         Antares::antares-solver-simulation
 )
 

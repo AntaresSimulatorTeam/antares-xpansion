@@ -7,7 +7,7 @@
 
 #include <utility>
 
-#include "multisolver_interface/SolverAbstract.h"
+#include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
 /**
  * @brief Decorator to the SolverAbstract class

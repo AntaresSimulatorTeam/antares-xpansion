@@ -5,7 +5,7 @@
 #include "ILogger.h"
 #include "OutputWriter.h"
 #include "common.h"
-#include "multisolver_interface/Solver.h"
+#include "antares-xpansion/multisolver_interface/Solver.h"
 class Worker;
 typedef std::shared_ptr<Worker> WorkerPtr;
 

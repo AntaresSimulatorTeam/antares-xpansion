@@ -37,7 +37,7 @@ target_link_libraries(benders_by_batch_core
         antaresXpansion::benders_mpi_core
         antaresXpansion::helpers
         antaresXpansion::output_core
-        solvers
+        antaresXpansion::solvers
 )
 
 add_library(${PROJECT_NAME}::benders_by_batch_core ALIAS benders_by_batch_core)
