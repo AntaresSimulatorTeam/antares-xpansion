@@ -48,7 +48,7 @@ CouplingMap build_input(const std::filesystem::path &structure_path) {
   CouplingMap coupling_map;
   std::ifstream summary(structure_path, std::ios::in);
   if (!summary) {
-    std::cout << "Cannot open file summary " << structure_path << std::endl;
+    std::cout << "Cannot open structure file " << structure_path << std::endl;
     return coupling_map;
   }
   std::string line;

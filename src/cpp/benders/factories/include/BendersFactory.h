@@ -4,6 +4,11 @@
 #include "CriterionComputation.h"
 #include "common.h"
 
+struct InvalidStructureFile
+    : public LogUtils::XpansionError<std::runtime_error> {
+  using LogUtils::XpansionError<std::runtime_error>::XpansionError;
+};
+
 class BendersMainFactory {
  private:
   char** argv_;
@@ -14,12 +19,16 @@ class BendersMainFactory {
   BendersLoggerBase benders_loggers_;
   std::shared_ptr<Outerloop::CriterionComputation> criterion_computation_ =
       nullptr;
+  Logger logger_ = nullptr;
+  Writer writer_ = nullptr;
+
   [[nodiscard]] int RunExternalLoop();
   [[nodiscard]] int RunBenders();
   [[nodiscard]] std::shared_ptr<MathLoggerDriver> BuildMathLogger(
       const BENDERSMETHOD& method, bool benders_log_console) const;
   pBendersBase PrepareForExecution(bool external_loop);
-  [[nodiscard]] Outerloop::OuterLoopInputData ProcessCriterionInput() const;
+  [[nodiscard]] Outerloop::OuterLoopInputData ProcessCriterionInput(
+      const CouplingMap& couplingMap);
 
  public:
   explicit BendersMainFactory(int argc, char** argv,
@@ -32,5 +41,6 @@ class BendersMainFactory {
                               boost::mpi::communicator& world,
                               const SOLVER& solver);
   int Run();
+  std::filesystem::path LogReportsName() const;
 };
 #endif  // ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
