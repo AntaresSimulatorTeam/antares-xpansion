@@ -38,7 +38,6 @@ class ProblemGeneration {
 
   void ProcessWeights(
       const std::filesystem::path& xpansion_output_dir,
-      const std::filesystem::path& antares_archive_path,
       const std::filesystem::path& weights_file,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
   void ExtractUtilsFiles(
