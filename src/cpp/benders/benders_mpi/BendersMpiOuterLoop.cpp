@@ -56,13 +56,16 @@ void BendersMpiOuterLoop::UpdateOuterLoopMaxCriterionArea() {
   auto criterions_end =
       _data.outer_loop_current_iteration_data.outer_loop_criterion.cend();
   auto max_criterion_it = std::max_element(criterions_begin, criterions_end);
-  _data.outer_loop_current_iteration_data.max_criterion = *max_criterion_it;
-  auto max_criterion_index = std::distance(criterions_begin, max_criterion_it);
-  _data.outer_loop_current_iteration_data.max_criterion_area =
-      criterion_computation_.getOuterLoopInputData()
-          .OuterLoopData()[max_criterion_index]
-          .Pattern()
-          .GetBody();
+  if (max_criterion_it != criterions_end) {
+    _data.outer_loop_current_iteration_data.max_criterion = *max_criterion_it;
+    auto max_criterion_index =
+        std::distance(criterions_begin, max_criterion_it);
+    _data.outer_loop_current_iteration_data.max_criterion_area =
+        criterion_computation_.getOuterLoopInputData()
+            .OuterLoopData()[max_criterion_index]
+            .Pattern()
+            .GetBody();
+  }
 }
 
 void BendersMpiOuterLoop::InitializeProblems() {
