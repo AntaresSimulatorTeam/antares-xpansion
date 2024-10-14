@@ -130,6 +130,7 @@ struct MathLoggerExternalLoopSpecific : public MathLogger {
       T OuterLoopCurrentIterationData::*ptr)
       : MathLogger(file_path), ptr_(ptr) {
     headers_.push_back("Outer loop");
+    headers_.push_back("Ite");
     headers_.insert(headers_.end(), headers.begin(), headers.end());
   }
 
@@ -206,6 +207,7 @@ template <class T>
 void MathLoggerExternalLoopSpecific<T>::Print(
     const CurrentIterationData& data) {
   LogsDestination() << data.outer_loop_current_iteration_data.benders_num_run;
+  LogsDestination() << data.it;
   for (const auto& t : data.outer_loop_current_iteration_data.*ptr_) {
     LogsDestination() << std::scientific << std::setprecision(10) << t;
   }
