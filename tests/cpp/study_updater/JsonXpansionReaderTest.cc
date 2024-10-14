@@ -1,7 +1,7 @@
 #include <fstream>
 #include <sstream>
 
-#include "antares-xpansion/helpers/JsonXpansionReader.h"
+#include "JsonXpansionReader.h"
 #include "gtest/gtest.h"
 
 class JsonXpansionReaderTest : public ::testing::Test {
