@@ -42,24 +42,26 @@ def read_file(output_path):
     return outputs
 
 
-@when('I run outer loop with {n:d} proc(s) and {option_file} as option file')
+@when('I run outer loop with {n:d} proc(s) and "{option_file}" as option file')
 @when('I run outer loop with {n:d} proc(s)')
 def run_outer_loop(context, n, option_file: str = "options.json"):
     context.allow_run_as_root = get_conf("allow_run_as_root")
     command = build_outer_loop_command(context, n, option_file)
     print(f"Running command: {command}")
     old_cwd = os.getcwd()
-    lp_path = Path(context.study_path) / "lp"
+
+    lp_path = Path(context.study_path) / "lp" if (Path(context.study_path) / "lp").exists() else Path(
+        context.study_path)
 
     os.chdir(lp_path)
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
     process.communicate()
     context.return_code = process.returncode
-    options = read_json_file(lp_path / option_file)
+    options = read_json_file(option_file)
     output_file_path = options["JSON_FILE"]
     context.outputs = read_json_file(output_file_path)
-    context.loss_of_load_file = Path(options["OUTPUTROOT"]) / "LOLD.txt"
-    context.positive_unsupplied_energy_file = Path(options["OUTPUTROOT"]) / "PositiveUnsuppliedEnergy.txt"
+    context.loss_of_load_file = (Path(options["OUTPUTROOT"]) / "LOLD.txt").absolute()
+    context.positive_unsupplied_energy_file = (Path(options["OUTPUTROOT"]) / "PositiveUnsuppliedEnergy.txt").absolute()
 
     os.chdir(old_cwd)
 
@@ -127,8 +129,8 @@ def is_column_full_of_zeros(filename, column_index):
 
 @then("LOLD.txt and PositiveUnsuppliedEnergy.txt files are full of zeros")
 def check_other_outputs(context):
-    assert (is_column_full_of_zeros(context.loss_of_load_file), 1)
-    assert (is_column_full_of_zeros(context.positive_unsupplied_energy_file), 1)
+    assert (is_column_full_of_zeros(context.loss_of_load_file, 1))
+    assert (is_column_full_of_zeros(context.positive_unsupplied_energy_file, 1))
 
 def get_results_file_path_from_logs(logs: bytes) -> str:
     for line in logs.splitlines():
