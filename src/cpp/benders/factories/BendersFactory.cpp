@@ -37,20 +37,15 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
 
 
   const auto coupling_map = build_input(benders_options.STRUCTURE_FILE);
-  auto outer_loop_input_data = ProcessCriterionInput(coupling_map);
-  criterion_computation_ =
-      std::make_shared<Outerloop::CriterionComputation>(outer_loop_input_data);
 
   const auto method = DeduceBendersMethod(coupling_map.size(),
                                           options_.BATCH_SIZE, external_loop);
-
+  auto benders_log_console = benders_options.LOG_LEVEL > 0;
   if (pworld_->rank() == 0) {
-    auto benders_log_console = benders_options.LOG_LEVEL > 0;
     auto logger_factory =
         FileAndStdoutLoggerFactory(LogReportsName(), benders_log_console);
     logger_ = logger_factory.get_logger();
 
-    math_log_driver = BuildMathLogger(method, benders_log_console);
 
     writer_ = build_json_writer(options_.JSON_FILE, options_.RESUME);
     if (Benders::StartUp startup;
@@ -60,6 +55,13 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
     logger_ = build_void_logger();
     writer_ = build_void_writer();
     math_log_driver = MathLoggerFactory::get_void_logger();
+  }
+
+  auto outer_loop_input_data = ProcessCriterionInput(coupling_map);
+  criterion_computation_ =
+      std::make_shared<Outerloop::CriterionComputation>(outer_loop_input_data);
+  if (pworld_->rank() == 0) {
+    math_log_driver = BuildMathLogger(method, benders_log_console);
   }
 
   benders_loggers_.AddLogger(logger_);

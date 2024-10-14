@@ -73,6 +73,6 @@ class CriterionComputation {
 
  private:
   std::vector<std::vector<int>> var_indices_;
-  const OuterLoopInputData &outer_loop_input_data_;
+  const OuterLoopInputData outer_loop_input_data_;
 };
 }  // namespace Outerloop
