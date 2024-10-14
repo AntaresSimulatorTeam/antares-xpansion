@@ -408,7 +408,7 @@ endif ()
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/python/antares_xpansion/__version__.py.in ${CMAKE_CURRENT_SOURCE_DIR}/src/python/antares_xpansion/__version__.py)
 include(CPack)
 
-add_custom_target(graphviz ALL
+add_custom_target(graphviz
         COMMAND ${CMAKE_COMMAND} "--graphviz=xpansion.dot" .
         COMMAND dot -Tsvg xpansion.dot -o xpansion.svg
         COMMAND dot -Tpng xpansion.dot -o xpansion.png
