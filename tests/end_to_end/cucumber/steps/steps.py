@@ -15,11 +15,11 @@ def study_path_is(context, string):
                                       string.replace("/", os.sep))
 
 
-def build_outer_loop_command(context, n: int):
+def build_outer_loop_command(context, n: int, option_file: str = "options.json"):
     command = get_mpi_command(allow_run_as_root=context.allow_run_as_root, nproc=n)
     exe_path = Path(get_conf("DEFAULT_INSTALL_DIR")) / get_conf("OUTER_LOOP")
     command.append(str(exe_path))
-    command.append("options.json")
+    command.append(option_file)
     return command
 
 
@@ -30,29 +30,37 @@ def build_launch_command(study_dir: str, method: str, nproc: int, in_memory: boo
     return command
 
 
-def read_outputs(output_path):
+def read_json_file(output_path):
     with open(output_path, 'r') as file:
         outputs = json.load(file)
-
     return outputs
 
 
+def read_file(output_path):
+    with open(output_path, 'r') as file:
+        outputs = file.readlines()
+    return outputs
+
+
+@when('I run outer loop with {n:d} proc(s) and {option_file} as option file')
 @when('I run outer loop with {n:d} proc(s)')
-def run_outer_loop(context, n):
+def run_outer_loop(context, n, option_file: str = "options.json"):
     context.allow_run_as_root = get_conf("allow_run_as_root")
-    command = build_outer_loop_command(context, n)
+    command = build_outer_loop_command(context, n, option_file)
     print(f"Running command: {command}")
     old_cwd = os.getcwd()
     lp_path = Path(context.study_path) / "lp"
 
     os.chdir(lp_path)
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
-    out, err = process.communicate()
-    print(out)
-    print("*****")
-    print(err)
+    process.communicate()
     context.return_code = process.returncode
-    context.outputs = read_outputs(Path("..") / "expansion" / "out.json")
+    options = read_json_file(lp_path / option_file)
+    output_file_path = options["JSON_FILE"]
+    context.outputs = read_json_file(output_file_path)
+    context.loss_of_load_file = Path(options["OUTPUTROOT"]) / "LOLD.txt"
+    context.positive_unsupplied_energy_file = Path(options["OUTPUTROOT"]) / "PositiveUnsuppliedEnergy.txt"
+
     os.chdir(old_cwd)
 
 
@@ -62,7 +70,7 @@ def run_antares_xpansion(context, method, n):
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, shell=True)
     out, err = process.communicate()
     context.return_code = process.returncode
-    context.outputs = read_outputs(Path(get_results_file_path_from_logs(out)))
+    context.outputs = read_json_file(Path(get_results_file_path_from_logs(out)))
 
 
 @then("the simulation takes less than {seconds:d} seconds")
@@ -96,6 +104,31 @@ def check_solution(context):
     expected_solution = {row['variable']: float(row['value']) for row in context.table}
     assert_dict_allclose(context.outputs["solution"]["values"], expected_solution)
 
+
+def is_column_full_of_zeros(filename, column_index):
+    with open(filename, 'r') as file:
+        # Skip the header
+        next(file)
+
+        # Check each line in the file
+        for line in file:
+            # Split the line by whitespace and get the value in the target column
+            columns = line.split()
+
+            # Check if the column value is not zero
+            try:
+                if float(columns[column_index]) != 0.0:
+                    return False
+            except (ValueError, IndexError):
+                print(f"Error parsing line: {line.strip()}")
+                return False
+    return True
+
+
+@then("LOLD.txt and PositiveUnsuppliedEnergy.txt files are full of zeros")
+def check_other_outputs(context):
+    assert (is_column_full_of_zeros(context.loss_of_load_file), 1)
+    assert (is_column_full_of_zeros(context.positive_unsupplied_energy_file), 1)
 
 def get_results_file_path_from_logs(logs: bytes) -> str:
     for line in logs.splitlines():
