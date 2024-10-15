@@ -2,18 +2,16 @@
 
 #include <fstream>
 #include <numeric>
+#include <ranges>
 
-#include "ArchiveReader.h"
 #include "StringManip.h"
 
 YearlyWeightsWriter::YearlyWeightsWriter(
     const std::filesystem::path& xpansion_output_dir,
-    const std::filesystem::path& antares_archive_path,
     const std::vector<double>& weights_vector,
     const std::filesystem::path& output_file,
     const std::vector<int>& active_years)
     : xpansion_output_dir_(xpansion_output_dir),
-      antares_archive_path_(antares_archive_path),
       weights_vector_(weights_vector),
       output_file_(output_file),
       active_years_(active_years) {
@@ -30,19 +28,17 @@ void YearlyWeightsWriter::CreateWeightFile() {
 
 void YearlyWeightsWriter::FillMpsWeightsMap() {
   mps_weights_.clear();
-  auto zip_reader = ArchiveReader(antares_archive_path_);
-  zip_reader.Open();
-  zip_reader.LoadEntriesPath();
-  const auto& mps_files = zip_reader.GetEntriesPathWithExtension(".mps");
-  for (auto& mps_file : mps_files) {
-    auto year = GetYearFromMpsName(mps_file.string());
+  auto it = std::filesystem::directory_iterator(xpansion_lp_dir_);
+  auto mps_list = it | std::views::filter([](const auto& p) {
+                    return p.path().extension() == ".mps";
+                  });
+  for (auto& mps_file : mps_list ) {
+    auto year = GetYearFromMpsName(mps_file.path().filename().string());
     auto year_index =
         std::find(active_years_.begin(), active_years_.end(), year) -
         active_years_.begin();
-    mps_weights_[mps_file.filename()] = weights_vector_[year_index];
+    mps_weights_[mps_file.path().filename()] = weights_vector_[year_index];
   }
-  zip_reader.Close();
-  zip_reader.Delete();
 }
 
 int YearlyWeightsWriter::GetYearFromMpsName(

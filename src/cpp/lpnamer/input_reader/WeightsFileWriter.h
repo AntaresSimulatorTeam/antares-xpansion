@@ -7,7 +7,6 @@
 class YearlyWeightsWriter {
  public:
   explicit YearlyWeightsWriter(const std::filesystem::path& xpansion_output_dir,
-                               const std::filesystem::path& zipped_output_path,
                                const std::vector<double>& weights_vector,
                                const std::filesystem::path& output_file,
                                const std::vector<int>& active_years);

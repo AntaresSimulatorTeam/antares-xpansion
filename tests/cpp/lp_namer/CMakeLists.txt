@@ -34,6 +34,7 @@ add_executable (lp_namer_tests
         LoggerBuilder.cpp
         ProblemGenerationLoggerTest.cpp
         WeightsFileReaderTest.cpp
+        WeightsFileWriterTest.cpp
         LpFilesExtractorTest.cpp
         MpsTxtWriterTest.cpp
         AntaresProblemToXpansionProblemTranslatorTest.cpp
