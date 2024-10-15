@@ -12,7 +12,6 @@
 #include "../../../src/cpp/archive_handler/include/antares-xpansion/archive_handler/ArchiveReader.h"
 #include "RandomDirGenerator.h"
 #include "antares-xpansion/archive_handler/ArchiveWriter.h"
-#include "antares-xpansion/archive_handler/FileInBuffer.h"
 #include "antares-xpansion/archive_updater/AntaresArchiveUpdater.h"
 #include "gtest/gtest.h"
 
@@ -120,17 +119,6 @@ class ArchiveWriterTest : public ::testing::Test {
   ArchiveWriterTest() = default;
 };
 
-FileBufferVector GetBufferVectorOfFilesInDir(const std::filesystem::path& dir) {
-  FileBufferVector result;
-  for (const auto& file : std::filesystem::directory_iterator(dir)) {
-    const auto& pathToFile = file.path();
-    std::ifstream fileStream(pathToFile);
-    std::stringstream buffer;
-    buffer << fileStream.rdbuf();
-    result.push_back({pathToFile.filename().string(), buffer.str()});
-  }
-  return result;
-}
 void compareArchiveAndDir(const std::filesystem::path& archivePath,
                           const std::filesystem::path& dirPath,
                           const std::filesystem::path& tmpDir) {
@@ -154,23 +142,7 @@ void compareArchiveAndDir(const std::filesystem::path& archivePath,
   mz_zip_reader_close(reader);
   mz_zip_reader_delete(&reader);
 }
-TEST_F(ArchiveWriterTest, ShouldCreateArchiveWithVecBuffer) {
-  const auto tmpArchiveRoot = std::filesystem::temp_directory_path();
-  const auto tmpDir =
-      CreateRandomSubDir(std::filesystem::temp_directory_path());
-  std::string archiveName = GenerateRandomString(6);
-  archiveName += ".zip";
-  const auto archivePath = tmpDir / archiveName;
-  ArchiveWriter writer(archivePath);
-  ASSERT_EQ(writer.Open(), MZ_OK);
-  const auto mpsBufferVec = GetBufferVectorOfFilesInDir(archive1Dir);
-  for (const auto& mpsBuf : mpsBufferVec) {
-    ASSERT_EQ(writer.AddFileInArchive(mpsBuf), MZ_OK);
-  }
-  ASSERT_EQ(writer.Close(), MZ_OK);
-  writer.Delete();
-  compareArchiveAndDir(archivePath, archive1Dir, tmpDir);
-}
+
 class ArchiveUpdaterTest : public ::testing::Test {
  public:
   ArchiveUpdaterTest() = default;

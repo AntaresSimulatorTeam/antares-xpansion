@@ -3,7 +3,6 @@
 #include <vector>
 
 #include "ArchiveIO.h"
-#include "FileInBuffer.h"
 
 class ArchiveWriter : public ArchiveIO {
  private:
@@ -27,7 +26,6 @@ class ArchiveWriter : public ArchiveIO {
 
   int Open() override;
   void InitFileInfo();
-  int32_t AddFileInArchive(const FileBuffer& FileBufferToAdd);
   int32_t AddFileInArchive(const std::filesystem::path& FileToAdd);
   int32_t AddPathInArchive(const std::filesystem::path& path_to_add,
                            const std::filesystem::path& root_path);

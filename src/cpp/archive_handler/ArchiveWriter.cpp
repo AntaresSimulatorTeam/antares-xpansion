@@ -44,42 +44,6 @@ int32_t ArchiveWriter::Open() {
 int32_t ArchiveWriter::Close() { return CloseInternal(); }
 void ArchiveWriter::Delete() { return DeleteInternal(); }
 
-int32_t ArchiveWriter::AddFileInArchive(const FileBuffer& FileBufferToAdd) {
-  std::unique_lock lock(mutex_);
-  fileInfo_.filename = FileBufferToAdd.fname.c_str();
-  fileInfo_.creation_date = std::time(0);
-  int32_t err = mz_zip_writer_entry_open(pmz_zip_writer_instance_, &fileInfo_);
-  if (err != MZ_OK) {
-    Close();
-    Delete();
-    std::stringstream errMsg;
-    errMsg << "Open entry: " << FileBufferToAdd.fname
-           << " in archive: " << ArchivePath().string() << std::endl;
-    throw ArchiveIOGeneralException(err, errMsg.str(), LOGLOCATION);
-  }
-  const auto len = FileBufferToAdd.buffer.size();
-  auto bw = mz_zip_writer_entry_write(pmz_zip_writer_instance_,
-                                      FileBufferToAdd.buffer.c_str(), len);
-  if (bw != len) {
-    Close();
-    Delete();
-    std::stringstream errMsg;
-    errMsg << "[KO] mz_zip_writer_entry_write, expected " << len
-           << "data to be read got" << bw << std::endl;
-    throw ArchiveIOSpecificException(err, errMsg.str(), LOGLOCATION);
-  }
-  err = mz_zip_writer_entry_close(pmz_zip_writer_instance_);
-  if (MZ_OK != err) {
-    Close();
-    Delete();
-    std::stringstream errMsg;
-    errMsg << "[KO] mz_zip_writer_entry_close error: could not close entry: "
-           << FileBufferToAdd.fname << std::endl;
-    throw ArchiveIOSpecificException(err, errMsg.str(), LOGLOCATION);
-  }
-
-  return MZ_OK;
-}
 int32_t ArchiveWriter::AddFileInArchive(
     const std::filesystem::path& FileToAdd) {
   std::unique_lock lock(mutex_);

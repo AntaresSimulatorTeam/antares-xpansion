@@ -9,7 +9,6 @@
 
 #include "antares-xpansion/archive_handler/ArchiveReader.h"
 #include "antares-xpansion/archive_handler/ArchiveWriter.h"
-#include "antares-xpansion/archive_handler/FileInBuffer.h"
 #include "antares-xpansion/lpnamer/problem_modifier/IProblemProviderPort.h"
 #include "antares-xpansion/lpnamer/problem_modifier/IProblemVariablesProviderPort.h"
 #include "antares-xpansion/lpnamer/problem_modifier/IProblemWriter.h"
