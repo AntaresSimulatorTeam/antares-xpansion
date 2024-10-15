@@ -289,6 +289,7 @@ BendersMainFactory::BendersMainFactory(
     usage(argc);
   }
 }
+
 std::filesystem::path BendersMainFactory::LogReportsName() const {
   return std::filesystem::path(options_.OUTPUTROOT) / "reportbenders.txt";
 }
