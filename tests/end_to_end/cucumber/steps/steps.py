@@ -138,8 +138,8 @@ def is_column_full_of_zeros(filename, column_index, rel_tol=1e-9, abs_tol=0.0):
 
 @then("LOLD.txt and PositiveUnsuppliedEnergy.txt files are full of zeros")
 def check_other_outputs(context):
-    assert (is_column_full_of_zeros(context.loss_of_load_file, 1))
-    assert (is_column_full_of_zeros(context.positive_unsupplied_energy_file, 1))
+    assert (is_column_full_of_zeros(context.loss_of_load_file, 2))
+    assert (is_column_full_of_zeros(context.positive_unsupplied_energy_file, 2))
 
 def get_results_file_path_from_logs(logs: bytes) -> str:
     for line in logs.splitlines():
