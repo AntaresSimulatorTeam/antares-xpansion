@@ -195,7 +195,6 @@ Outerloop::OuterLoopInputData BendersMainFactory::PatternsFromSupbProblem(
   const auto all_variables_name = solver->get_col_names();
   std::set<std::string> unique_areas = UniqueAreas(all_variables_name);
   Outerloop::OuterLoopInputData ret;
-  // TODO check this value
   ret.SetCriterionCountThreshold(1);
   for (const auto& area : unique_areas) {
     Outerloop::OuterLoopSingleInputData singleInputData(
@@ -226,9 +225,9 @@ SolverAbstract::Ptr BendersMainFactory::BuildSolver(
   auto solver_log_manager = SolverLogManager(LogReportsName());
   auto solver = factory.create_solver(
       options_.SOLVER_NAME, SOLVER_TYPE::CONTINUOUS, solver_log_manager);
-  solver->set_threads(1);
   solver->read_prob_mps(std::filesystem::path(options_.INPUTROOT) /
                         first_subproblem_name);
+  solver->set_threads(1);
   return solver;
 }
 
