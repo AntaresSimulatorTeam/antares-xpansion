@@ -110,6 +110,7 @@ def check_solution(context):
 
 def is_column_full_of_zeros(filename, column_index, rel_tol=1e-9, abs_tol=0.0):
     with open(filename, 'r') as file:
+        print(file.readlines())
         # Skip the header
         next(file)
 
