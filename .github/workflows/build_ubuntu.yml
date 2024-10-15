@@ -4,11 +4,14 @@ on:
   merge_group:
   push:
     branches:
-      - main
       - develop
-      - dependabot/*
+      - feature/*
+      - features/*
+      - fix/*
+      - issue-*
       - release/*
-  pull_request:
+      - doc/*
+      - dependabot/*
   release:
     types: [ created ]
 
