@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <vector>
 
-#include "ArchiveWriter.h"
+#include "antares-xpansion/archive_handler/ArchiveWriter.h"
 
 class AntaresArchiveUpdater {
  public:

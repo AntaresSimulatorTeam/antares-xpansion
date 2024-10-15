@@ -33,6 +33,7 @@ target_sources(benders_mpi_core PRIVATE
 
 target_link_libraries(benders_mpi_core
         PUBLIC
+        antaresXpansion::archive_handler
         antaresXpansion::benders_core
         antaresXpansion::benders_sequential_core
         antaresXpansion::output_core

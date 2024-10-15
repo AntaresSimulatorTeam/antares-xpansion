@@ -13,7 +13,7 @@
 #include "antares-xpansion/lpnamer/input_reader/MpsTxtWriter.h"
 #include "antares-xpansion/lpnamer/model/Problem.h"
 #include "antares-xpansion/lpnamer/model/SimulationInputMode.h"
-#include "antares-xpansion/helpers/ArchiveReader.h"
+#include "antares-xpansion/archive_handler/ArchiveReader.h"
 #include "antares-xpansion/lpnamer/main/ProblemGenerationExeOptions.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "ProblemGenerationOptions.h"

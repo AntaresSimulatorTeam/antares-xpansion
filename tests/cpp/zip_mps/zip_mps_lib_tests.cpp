@@ -9,11 +9,11 @@
 #include <fstream>
 #include <iterator>
 
-#include "antares-xpansion/helpers/AntaresArchiveUpdater.h"
-#include "antares-xpansion/helpers/ArchiveReader.h"
-#include "antares-xpansion/helpers/ArchiveWriter.h"
-#include "antares-xpansion/helpers/FileInBuffer.h"
+#include "../../../src/cpp/archive_handler/include/antares-xpansion/archive_handler/ArchiveReader.h"
 #include "RandomDirGenerator.h"
+#include "antares-xpansion/archive_handler/ArchiveWriter.h"
+#include "antares-xpansion/archive_handler/FileInBuffer.h"
+#include "antares-xpansion/archive_updater/AntaresArchiveUpdater.h"
 #include "gtest/gtest.h"
 
 /*

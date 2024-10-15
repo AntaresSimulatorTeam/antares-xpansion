@@ -7,7 +7,7 @@
 #include <execution>
 #include <utility>
 
-#include "antares-xpansion/helpers/ArchiveReader.h"
+#include "antares-xpansion/archive_handler/ArchiveReader.h"
 #include "antares-xpansion/lpnamer/problem_modifier/ZipProblemProviderAdapter.h"
 
 std::vector<std::shared_ptr<Problem>>

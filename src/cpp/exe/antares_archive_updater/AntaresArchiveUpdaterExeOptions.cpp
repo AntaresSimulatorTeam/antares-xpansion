@@ -1,4 +1,4 @@
-#include "antares-xpansion/helpers/AntaresArchiveUpdaterExeOptions.h"
+#include "antares-xpansion/archive_updater/AntaresArchiveUpdaterExeOptions.h"
 
 namespace po = boost::program_options;
 

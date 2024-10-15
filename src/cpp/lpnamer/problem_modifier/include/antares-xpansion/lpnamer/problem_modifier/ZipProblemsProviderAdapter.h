@@ -4,7 +4,7 @@
 
 #pragma once
 
-#include "antares-xpansion/helpers/ArchiveReader.h"
+#include "antares-xpansion/archive_handler/ArchiveReader.h"
 #include "IXpansionProblemsProvider.h"
 class ZipProblemsProviderAdapter : public IXpansionProblemsProvider {
  public:

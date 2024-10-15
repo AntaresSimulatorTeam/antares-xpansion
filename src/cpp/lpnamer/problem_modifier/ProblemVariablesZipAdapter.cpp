@@ -6,7 +6,6 @@
 
 #include <utility>
 
-#include "antares-xpansion/helpers/ArchiveReader.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 #include "antares-xpansion/lpnamer/input_reader/VariableFileReader.h"
 

@@ -3,7 +3,7 @@
 #include <algorithm>
 #include <sstream>
 
-#include "antares-xpansion/helpers/ArchiveReader.h"
+#include "antares-xpansion/archive_handler/ArchiveReader.h"
 
 void LpFilesExtractor::ExtractFiles() const {
   auto [vect_area_files, vect_interco_files] = getFiles();

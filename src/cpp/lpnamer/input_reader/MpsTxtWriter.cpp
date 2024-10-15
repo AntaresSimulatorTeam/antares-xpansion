@@ -3,7 +3,7 @@
 
 #include <fstream>
 
-#include "antares-xpansion/helpers/ArchiveReader.h"
+#include "antares-xpansion/archive_handler/ArchiveReader.h"
 
 using namespace std::string_literals;
 

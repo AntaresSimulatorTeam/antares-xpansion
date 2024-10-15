@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <vector>
 
-#include "OptionsParser.h"
+#include "antares-xpansion/helpers/OptionsParser.h"
 
 class AntaresArchiveUpdaterExeOptions : public OptionsParser {
  private:
