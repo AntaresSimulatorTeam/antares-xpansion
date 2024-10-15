@@ -1,4 +1,5 @@
 import json
+import math
 import os
 import subprocess
 from pathlib import Path
@@ -107,23 +108,30 @@ def check_solution(context):
     assert_dict_allclose(context.outputs["solution"]["values"], expected_solution)
 
 
-def is_column_full_of_zeros(filename, column_index):
+def is_column_full_of_zeros(filename, column_index, rel_tol=1e-9, abs_tol=0.0):
     with open(filename, 'r') as file:
         # Skip the header
         next(file)
 
         # Check each line in the file
         for line in file:
-            # Split the line by whitespace and get the value in the target column
             columns = line.split()
 
-            # Check if the column value is not zero
+            # Ensure column exists
+            if column_index >= len(columns):
+                print(f"Error: Missing column at index {column_index} in line: {line.strip()}")
+                return False
+
             try:
-                if float(columns[column_index]) != 0.0:
-                    return False
+                value = float(columns[column_index])
             except (ValueError, IndexError):
                 print(f"Error parsing line: {line.strip()}")
                 return False
+
+            # Use math.isclose to compare to zero with tolerance
+            if not math.isclose(value, 0.0, rel_tol=rel_tol, abs_tol=abs_tol):
+                return False
+
     return True
 
 
