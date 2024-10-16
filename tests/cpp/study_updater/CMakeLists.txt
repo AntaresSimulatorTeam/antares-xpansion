@@ -8,7 +8,7 @@ target_sources(study_updater_test PRIVATE
 get_target_property(STUDY_UPDATER_SOURCE_DIR ${PROJECT_NAME}::xpansion_study_updater_lib SOURCE_DIR)
 
 target_include_directories(study_updater_test
-PRIVATE
+        PRIVATE
         ${STUDY_UPDATER_SOURCE_DIR}/private # for private headers
 )
 
