@@ -1,6 +1,6 @@
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
-#include "Clock.h"
+#include "antares-xpansion/helpers/Clock.h"
 
 namespace ProblemGenerationLog {
 ProblemGenerationFileLogger::ProblemGenerationFileLogger(

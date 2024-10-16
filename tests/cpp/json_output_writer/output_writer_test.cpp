@@ -8,8 +8,8 @@
 #include <iostream>
 #include <ostream>
 
-#include "JsonWriter.h"
-#include "LogUtils.h"
+#include "antares-xpansion/benders/output/JsonWriter.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "gtest/gtest.h"
 
 using namespace Output;

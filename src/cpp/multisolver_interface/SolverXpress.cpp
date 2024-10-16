@@ -5,7 +5,7 @@
 #include <map>
 #include <numeric>
 
-#include "StringManip.h"
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
 using namespace LoadXpress;
 using namespace std::literals;

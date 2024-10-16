@@ -4,8 +4,8 @@
 #include <sstream>
 
 #include "CoinFinite.hpp"
-#include "LogUtils.h"
-#include "multisolver_interface/SolverAbstract.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+#include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 namespace coin_common {
 
 void fill_rows_from_COIN_matrix(const CoinPackedMatrix &matrix, int *mstart,

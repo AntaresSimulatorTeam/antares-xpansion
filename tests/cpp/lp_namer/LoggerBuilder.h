@@ -1,7 +1,7 @@
 #ifndef __TESTS_LOGGER_UTILS_h__
 #define __TESTS_LOGGER_UTILS_h__
 
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
 ProblemGenerationLog::ProblemGenerationLoggerSharedPointer emptyLogger();
 ProblemGenerationLog::ProblemGenerationLoggerSharedPointer

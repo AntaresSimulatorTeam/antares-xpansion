@@ -2,14 +2,14 @@
 // Created by marechaljas on 22/11/22.
 //
 
-#include "AntaresProblemToXpansionProblemTranslator.h"
+#include "antares-xpansion/lpnamer/problem_modifier/AntaresProblemToXpansionProblemTranslator.h"
 
 #include <algorithm>
 #include <cmath>
 
-#include "LogUtils.h"
-#include "multisolver_interface/SolverFactory.h"
-#include "solver_utils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+#include "antares-xpansion/multisolver_interface/SolverFactory.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 
 /**
  *

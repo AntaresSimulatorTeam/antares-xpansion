@@ -1,6 +1,6 @@
 
 #include "LoggerBuilder.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "gtest/gtest.h"
 using namespace ProblemGenerationLog;
 class ProblemGenerationLoggerTest : public ::testing::Test {

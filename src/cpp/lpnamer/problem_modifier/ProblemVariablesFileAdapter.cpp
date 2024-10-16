@@ -2,11 +2,11 @@
 // Created by marechaljas on 09/11/22.
 //
 
-#include "ProblemVariablesFileAdapter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesFileAdapter.h"
 
 #include <utility>
 
-#include "VariableFileReader.h"
+#include "antares-xpansion/lpnamer/input_reader/VariableFileReader.h"
 
 void ProblemVariablesFileAdapter::extract_variables(
     const std::filesystem::path& file, std::vector<std::string>& var_names,

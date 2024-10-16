@@ -11,17 +11,17 @@
 # ---------------------------------------------------------------------------
 
 add_executable(outer_loop
-	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
 )
 
 find_package(MPI REQUIRED)
-if(UNIX)
-set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
-endif()
+if (UNIX)
+    set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
+endif ()
 
 target_link_libraries(outer_loop
-			${PROJECT_NAME}::outer_loop_lib
-			factories
-			)
+        ${PROJECT_NAME}::outer_loop_lib
+        antaresXpansion::factories
+)
 
 install(TARGETS outer_loop DESTINATION bin)

@@ -1,8 +1,8 @@
-#include "OuterLoopInputDataReader.h"
+#include "antares-xpansion/benders/outer_loop/OuterLoopInputDataReader.h"
 
 #include <utility>
 
-#include "StringManip.h"
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
 using namespace Outerloop;
 

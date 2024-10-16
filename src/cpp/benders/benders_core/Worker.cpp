@@ -1,8 +1,8 @@
-#include "Worker.h"
+#include "antares-xpansion/benders/benders_core/Worker.h"
 
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
-#include "solver_utils.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 /*!
  *  \brief Free the problem
  */

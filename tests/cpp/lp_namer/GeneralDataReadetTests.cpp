@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include "GeneralDataReader.h"
+#include "antares-xpansion/lpnamer/input_reader/GeneralDataReader.h"
 
 //Test for the GeneralDataIniReader class
 class GeneralDataIniReaderTests : public testing::TestWithParam<bool> {

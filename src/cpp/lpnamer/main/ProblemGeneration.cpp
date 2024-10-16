@@ -1,5 +1,5 @@
 
-#include "include/ProblemGeneration.h"
+#include "antares-xpansion/lpnamer/main/ProblemGeneration.h"
 
 #include <antares/api/solver.h>
 
@@ -7,28 +7,29 @@
 #include <iostream>
 #include <utility>
 
-#include "ActiveLinks.h"
-#include "AdditionalConstraints.h"
-#include "FileProblemsProviderAdapter.h"
-#include "GeneralDataReader.h"
-#include "LauncherHelpers.h"
-#include "LinkProblemsGenerator.h"
-#include "LogUtils.h"
-#include "LpFilesExtractor.h"
-#include "MPSFileWriter.h"
-#include "MasterGeneration.h"
-#include "MasterProblemBuilder.h"
-#include "MpsTxtWriter.h"
-#include "ProblemGenerationLogger.h"
-#include "ProblemVariablesFileAdapter.h"
-#include "ProblemVariablesFromProblemAdapter.h"
-#include "ProblemVariablesZipAdapter.h"
-#include "Timer.h"
+#include "antares-xpansion/lpnamer/model/ActiveLinks.h"
+#include "antares-xpansion/lpnamer/problem_modifier/AdditionalConstraints.h"
+#include "antares-xpansion/lpnamer/problem_modifier/FileProblemsProviderAdapter.h"
+#include "antares-xpansion/lpnamer/input_reader/GeneralDataReader.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LauncherHelpers.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+#include "antares-xpansion/lpnamer/input_reader/LpFilesExtractor.h"
+#include "antares-xpansion/lpnamer/problem_modifier/MPSFileWriter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/MasterGeneration.h"
+#include "antares-xpansion/lpnamer/problem_modifier/MasterProblemBuilder.h"
+#include "antares-xpansion/lpnamer/input_reader/MpsTxtWriter.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesFileAdapter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesFromProblemAdapter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesZipAdapter.h"
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
+#include "antares-xpansion/helpers/Timer.h"
 #include "Version.h"
-#include "WeightsFileReader.h"
-#include "WeightsFileWriter.h"
-#include "XpansionProblemsFromAntaresProvider.h"
-#include "ZipProblemsProviderAdapter.h"
+#include "antares-xpansion/lpnamer/input_reader/WeightsFileReader.h"
+#include "antares-xpansion/lpnamer/input_reader/WeightsFileWriter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
+#include "antares-xpansion/lpnamer/problem_modifier/ZipProblemsProviderAdapter.h"
 #include "config.h"
 
 static const std::string LP_DIRNAME = "lp";

@@ -1,8 +1,8 @@
-#include "ProblemModifierCapex.h"
+#include "antares-xpansion/sensitivity/ProblemModifierCapex.h"
 
 #include <numeric>
 
-#include "solver_utils.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 
 ProblemModifierCapex::ProblemModifierCapex(
     double epsilon, double best_ub,

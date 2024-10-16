@@ -3,14 +3,14 @@
 
 #include <filesystem>
 
-#include "JsonWriter.h"
-#include "MergeMPS.h"
-#include "SimulationOptions.h"
-#include "Worker.h"
-#include "WriterFactories.h"
+#include "antares-xpansion/benders/output/JsonWriter.h"
+#include "antares-xpansion/benders/merge_mps/MergeMPS.h"
+#include "antares-xpansion/benders/benders_core/SimulationOptions.h"
+#include "antares-xpansion/benders/benders_core/Worker.h"
+#include "antares-xpansion/benders/factories/WriterFactories.h"
 
-#include "logger/User.h"
-#include "solver_utils.h"
+#include "antares-xpansion/benders/logger/User.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 
 //@suggest: create and move to standardlp.cpp
 // Initialize static member

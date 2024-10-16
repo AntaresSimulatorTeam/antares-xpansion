@@ -1,4 +1,4 @@
-#include "logger/UserFile.h"
+#include "antares-xpansion/benders/logger/UserFile.h"
 
 #include <algorithm>
 #include <iomanip>
@@ -6,11 +6,11 @@
 #include <list>
 #include <sstream>
 
-#include "CandidateLog.h"
-#include "Commons.h"
-#include "IterationResultLog.h"
-#include "LoggerUtils.h"
-#include "Timer.h"
+#include "antares-xpansion/benders/logger/CandidateLog.h"
+#include "antares-xpansion/benders/logger/Commons.h"
+#include "antares-xpansion/benders/logger/IterationResultLog.h"
+#include "antares-xpansion/helpers/LoggerUtils.h"
+#include "antares-xpansion/helpers/Timer.h"
 using xpansion::logger::commons::indent_1;
 
 namespace xpansion {
