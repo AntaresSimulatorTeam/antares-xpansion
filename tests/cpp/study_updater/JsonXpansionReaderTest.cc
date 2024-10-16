@@ -16,146 +16,145 @@ class JsonXpansionReaderTest : public ::testing::Test {
     // dummy interco tmp file name
     file_l.open("temp_out.json");
 
-    content_l =
-        "\
-{\n\
-	\"antares\" : \n\
-	{\n\
-		\"name\" : \"unknown\",\n\
-		\"version\" : \"unknown\"\n\
-	},\n\
-	\"antares_xpansion\" : \n\
-	{\n\
-		\"version\" : \"1.2.0\"\n\
-	},\n\
-	\"begin\" : \"20-11-2020 17:23:15\",\n\
-	\"duration\" : 0.0,\n\
-	\"end\" : \"20-11-2020 17:23:15\",\n\
-	\"iterations\" : \n\
-	{\n\
-		\"1\" : \n\
-		{\n\
-			\"best_ub\" : 4.0,\n\
-			\"candidates\" : \n\
-			[\n\
-				{\n\
-					\"invest\" : 0.0,\n\
-					\"max\" : 10.0,\n\
-					\"min\" : 0.0,\n\
-					\"name\" : \"x\"\n\
-				}\n\
-			],\n\
-			\"duration\" : 0.0074719799999999996,\n\
-			\"gap\" : 10000000004.0,\n\
-			\"investment_cost\" : 0.0,\n\
-			\"lb\" : -10000000000.0,\n\
-			\"operational_cost\" : 4.0,\n\
-			\"overall_cost\" : 4.0,\n\
-			\"relative_gap\" : 2500000001.0,\n\
-			\"ub\" : 4.0\n\
-		},\n\
-		\"2\" : \n\
-		{\n\
-			\"best_ub\" : 4.0,\n\
-			\"candidates\" : \n\
-			[\n\
-				{\n\
-					\"invest\" : 10.0,\n\
-					\"max\" : 10.0,\n\
-					\"min\" : 0.0,\n\
-					\"name\" : \"x\"\n\
-				}\n\
-			],\n\
-			\"duration\" : 0.0022926299999999999,\n\
-			\"gap\" : 5.0,\n\
-			\"investment_cost\" : 15.0,\n\
-			\"lb\" : -1.0,\n\
-			\"operational_cost\" : 0.0,\n\
-			\"overall_cost\" : 15.0,\n\
-			\"relative_gap\" : 1.0666666666666667,\n\
-			\"ub\" : 15.0\n\
-		},\n\
-		\"3\" : \n\
-		{\n\
-			\"best_ub\" : 3.25,\n\
-			\"candidates\" : \n\
-			[\n\
-				{\n\
-					\"invest\" : 1.5,\n\
-					\"max\" : 10.0,\n\
-					\"min\" : 0.0,\n\
-					\"name\" : \"x\"\n\
-				}\n\
-			],\n\
-			\"duration\" : 0.001730494,\n\
-			\"gap\" : 0.0,\n\
-			\"investment_cost\" : 2.25,\n\
-			\"lb\" : 3.25,\n\
-			\"operational_cost\" : 1.0,\n\
-			\"overall_cost\" : 3.25,\n\
-			\"relative_gap\" : 0.0,\n\
-			\"ub\" : 3.25\n\
-		},\n\
-        \"4\" : \n\
-		{\n\
-			\"best_ub\" : 3.25,\n\
-			\"candidates\" : \n\
-			[\n\
-				{\n\
-					\"invest\" : 10.0,\n\
-					\"max\" : 10.0,\n\
-					\"min\" : 0.0,\n\
-					\"name\" : \"x\"\n\
-				}\n\
-			],\n\
-			\"duration\" : 0.0022926299999999999,\n\
-			\"gap\" : 5.0,\n\
-			\"investment_cost\" : 15.0,\n\
-			\"lb\" : -1.0,\n\
-			\"operational_cost\" : 0.0,\n\
-			\"overall_cost\" : 15.0,\n\
-			\"relative_gap\" : 1.0666666666666667,\n\
-			\"ub\" : 15.0\n\
-		}\n\
-	},\n\
-	\"nbWeeks\" : 3,\n\
-	\"options\" : \n\
-	{\n\
-		\"ACTIVECUTS\" : false,\n\
-		\"AGGREGATION\" : false,\n\
-		\"BASIS\" : true,\n\
-		\"BOUND_ALPHA\" : true,\n\
-		\"CSV_NAME\" : \"benders_output_trace\",\n\
-		\"JSON_NAME\" : \"out\",\n\
-		\"DELETE_CUT\" : false,\n\
-		\"GAP\" : 9.9999999999999995e-07,\n\
-		\"INPUTROOT\" : \".\",\n\
-		\"LOG_LEVEL\" : 3,\n\
-		\"MASTER_NAME\" : \"master\",\n\
-		\"MAX_ITERATIONS\" : -1,\n\
-		\"OUTPUTROOT\" : \".\",\n\
-		\"RAND_AGGREGATION\" : 0,\n\
-		\"SLAVE_WEIGHT_VALUE\" : 1.0,\n\
-		\"STRUCTURE_FILE\" : \"structure.txt\",\n\
-		\"THRESHOLD_AGGREGATION\" : 0,\n\
-		\"THRESHOLD_ITERATION\" : 0,\n\
-		\"TRACE\" : true\n\
-	},\n\
-	\"solution\" : \n\
-	{\n\
-		\"gap\" : 0.0,\n\
-		\"investment_cost\" : 2.25,\n\
-		\"iteration\" : 3,\n\
-		\"operational_cost\" : 1.0,\n\
-		\"overall_cost\" : 3.25,\n\
-		\"problem_status\" : \"OPTIMAL\",\n\
-		\"values\" : \n\
-		{\n\
-			\"x\" : 1.5\n\
-		}\n\
-	}\n\
-}\n\
-";
+    content_l = R"(
+{
+	"antares" : 
+	{
+		"name" : "unknown",
+		"version" : "unknown"
+	},
+	"antares_xpansion" : 
+	{
+		"version" : "1.2.0"
+	},
+	"begin" : "20-11-2020 17:23:15",
+	"duration" : 0.0,
+	"end" : "20-11-2020 17:23:15",
+	"iterations" : 
+	{
+		"1" : 
+		{
+			"best_ub" : 4.0,
+			"candidates" : 
+			[
+				{
+					"invest" : 0.0,
+					"max" : 10.0,
+					"min" : 0.0,
+					"name" : "x"
+				}
+			],
+			"duration" : 0.0074719799999999996,
+			"gap" : 10000000004.0,
+			"investment_cost" : 0.0,
+			"lb" : -10000000000.0,
+			"operational_cost" : 4.0,
+			"overall_cost" : 4.0,
+			"relative_gap" : 2500000001.0,
+			"ub" : 4.0
+		},
+		"2" : 
+		{
+			"best_ub" : 4.0,
+			"candidates" : 
+			[
+				{
+					"invest" : 10.0,
+					"max" : 10.0,
+					"min" : 0.0,
+					"name" : "x"
+				}
+			],
+			"duration" : 0.0022926299999999999,
+			"gap" : 5.0,
+			"investment_cost" : 15.0,
+			"lb" : -1.0,
+			"operational_cost" : 0.0,
+			"overall_cost" : 15.0,
+			"relative_gap" : 1.0666666666666667,
+			"ub" : 15.0
+		},
+		"3" : 
+		{
+			"best_ub" : 3.25,
+			"candidates" : 
+			[
+				{
+					"invest" : 1.5,
+					"max" : 10.0,
+					"min" : 0.0,
+					"name" : "x"
+				}
+			],
+			"duration" : 0.001730494,
+			"gap" : 0.0,
+			"investment_cost" : 2.25,
+			"lb" : 3.25,
+			"operational_cost" : 1.0,
+			"overall_cost" : 3.25,
+			"relative_gap" : 0.0,
+			"ub" : 3.25
+		},
+        "4" : 
+		{
+			"best_ub" : 3.25,
+			"candidates" : 
+			[
+				{
+					"invest" : 10.0,
+					"max" : 10.0,
+					"min" : 0.0,
+					"name" : "x"
+				}
+			],
+			"duration" : 0.0022926299999999999,
+			"gap" : 5.0,
+			"investment_cost" : 15.0,
+			"lb" : -1.0,
+			"operational_cost" : 0.0,
+			"overall_cost" : 15.0,
+			"relative_gap" : 1.0666666666666667,
+			"ub" : 15.0
+		}
+	},
+	"nbWeeks" : 3,
+	"options" : 
+	{
+		"ACTIVECUTS" : false,
+		"AGGREGATION" : false,
+		"BASIS" : true,
+		"BOUND_ALPHA" : true,
+		"CSV_NAME" : "benders_output_trace",
+		"JSON_NAME" : "out",
+		"DELETE_CUT" : false,
+		"GAP" : 9.9999999999999995e-07,
+		"INPUTROOT" : ".",
+		"LOG_LEVEL" : 3,
+		"MASTER_NAME" : "master",
+		"MAX_ITERATIONS" : -1,
+		"OUTPUTROOT" : ".",
+		"RAND_AGGREGATION" : 0,
+		"SLAVE_WEIGHT_VALUE" : 1.0,
+		"STRUCTURE_FILE" : "structure.txt",
+		"THRESHOLD_AGGREGATION" : 0,
+		"THRESHOLD_ITERATION" : 0,
+		"TRACE" : true
+	},
+	"solution" : 
+	{
+		"gap" : 0.0,
+		"investment_cost" : 2.25,
+		"iteration" : 3,
+		"operational_cost" : 1.0,
+		"overall_cost" : 3.25,
+		"problem_status" : "OPTIMAL",
+		"values" : 
+		{
+			"x" : 1.5
+		}
+	}
+}
+)";
 
     file_l << content_l;
     file_l.close();
