@@ -4,7 +4,7 @@
 
 #include "Version.h"
 
-#include "StringManip.h"
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
 Version::Version(std::string_view version) {
   auto split_version = StringManip::split(StringManip::trim(version), '.');

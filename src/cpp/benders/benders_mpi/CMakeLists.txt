@@ -17,34 +17,38 @@ if (UNIX)
     set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
 endif ()
 
-add_library(benders_mpi_core STATIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/common_mpi.cpp
+add_library(benders_mpi_core)
+
+target_sources(benders_mpi_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/BendersMPI.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopBenders.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/BendersMpiOuterLoop.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopBenders.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/common_mpi.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_mpi/BendersMPI.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_mpi/BendersMpiOuterLoop.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_mpi/OuterLoopBenders.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_mpi/common_mpi.h
+
 )
 
 target_link_libraries(benders_mpi_core
         PUBLIC
-        benders_core
-        benders_sequential_core
-        output_core
+        antaresXpansion::benders_core
+        antaresXpansion::benders_sequential_core
+        antaresXpansion::output_core
         Boost::mpi
         MPI::MPI_C
         ${PROJECT_NAME}::factories
-        logger_lib
+        antaresXpansion::logger_lib
         Boost::serialization
 )
 
-#if (WIN32)
-#	target_link_libraries (benders_mpi_core PUBLIC ${MPI_C_LIBRARIES})
-#endif ()
-
 target_include_directories(benders_mpi_core
-        #	PUBLIC ${MPI_C_INCLUDE_DIRS}
         PUBLIC
-        ${CMAKE_CURRENT_SOURCE_DIR}/include
-        INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
 
 add_library(${PROJECT_NAME}::benders_mpi_core ALIAS benders_mpi_core)
+install(DIRECTORY include/antares-xpansion
+        DESTINATION "include"
+)

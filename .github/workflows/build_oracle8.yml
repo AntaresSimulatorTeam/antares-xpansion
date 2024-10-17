@@ -5,9 +5,13 @@ on:
   push:
     branches:
       - develop
-      - dependabot/*
+      - feature/*
+      - features/*
+      - fix/*
+      - issue-*
       - release/*
-  pull_request:
+      - doc/*
+      - dependabot/*
   release:
     types: [ created ]
 

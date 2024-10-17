@@ -1,20 +1,20 @@
-#include "LinkProblemsGenerator.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 
 #include <algorithm>
 #include <execution>
 #include <utility>
 
-#include "IProblemProviderPort.h"
-#include "IProblemVariablesProviderPort.h"
-#include "IProblemWriter.h"
-#include "MPSFileProblemProviderAdapter.h"
-#include "MpsTxtWriter.h"
-#include "ProblemVariablesFileAdapter.h"
-#include "ProblemVariablesFromProblemAdapter.h"
-#include "ProblemVariablesZipAdapter.h"
-#include "VariableFileReader.h"
-#include "ZipProblemProviderAdapter.h"
-#include "solver_utils.h"
+#include "antares-xpansion/lpnamer/problem_modifier/IProblemProviderPort.h"
+#include "antares-xpansion/lpnamer/problem_modifier/IProblemVariablesProviderPort.h"
+#include "antares-xpansion/lpnamer/problem_modifier/IProblemWriter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/MPSFileProblemProviderAdapter.h"
+#include "antares-xpansion/lpnamer/input_reader/MpsTxtWriter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesFileAdapter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesFromProblemAdapter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesZipAdapter.h"
+#include "antares-xpansion/lpnamer/input_reader/VariableFileReader.h"
+#include "antares-xpansion/lpnamer/problem_modifier/ZipProblemProviderAdapter.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 
 /**
  * \brief That function create new optimization problems with new candidates

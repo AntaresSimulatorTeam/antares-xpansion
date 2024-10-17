@@ -7,38 +7,46 @@
 # ===========================================================================
 find_package(yaml-cpp CONFIG REQUIRED)
 
-find_package (MPI REQUIRED COMPONENTS C)
-message ("MPI_C_INCLUDE_PATH ${MPI_C_INCLUDE_PATH}")
-message ("MPI_C_INCLUDE_DIRS ${MPI_C_INCLUDE_DIRS}")
-message ("MPI_C_LIBRARIES ${MPI_C_LIBRARIES}")
+find_package(MPI REQUIRED COMPONENTS C)
+message("MPI_C_INCLUDE_PATH ${MPI_C_INCLUDE_PATH}")
+message("MPI_C_INCLUDE_DIRS ${MPI_C_INCLUDE_DIRS}")
+message("MPI_C_LIBRARIES ${MPI_C_LIBRARIES}")
 
 find_package(MPI REQUIRED)
 
-if(UNIX)
-set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
-endif()
+if (UNIX)
+    set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
+endif ()
 
-add_library (outer_loop_lib STATIC
-	${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopBiLevel.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/VariablesGroup.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopInputDataReader.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/OuterLoop.cpp
-		${CMAKE_CURRENT_SOURCE_DIR}/CriterionComputation.cpp
-	)
+add_library(outer_loop_lib)
+target_sources(outer_loop_lib PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/CriterionComputation.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/OuterLoop.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopBiLevel.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopInputDataReader.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/VariablesGroup.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/CriterionComputation.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/IMasterUpdate.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/OuterLoop.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/OuterLoopInputDataReader.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/VariablesGroup.h
 
-
-
-
-target_include_directories (outer_loop_lib
-		PUBLIC
-		${CMAKE_CURRENT_SOURCE_DIR}/include
-	    INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}
-		)
-
-target_link_libraries (outer_loop_lib
-	PUBLIC
-		helpers
-		yaml-cpp::yaml-cpp
 )
 
-add_library (${PROJECT_NAME}::outer_loop_lib ALIAS outer_loop_lib)
+target_include_directories(outer_loop_lib
+        PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+
+target_link_libraries(outer_loop_lib
+        PUBLIC
+        antaresXpansion::helpers
+        yaml-cpp::yaml-cpp
+)
+
+add_library(${PROJECT_NAME}::outer_loop_lib ALIAS outer_loop_lib)
+
+install(DIRECTORY include/antares-xpansion
+        DESTINATION "include"
+)

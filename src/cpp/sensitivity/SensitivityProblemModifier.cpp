@@ -1,9 +1,9 @@
-#include "SensitivityProblemModifier.h"
+#include "antares-xpansion/sensitivity/SensitivityProblemModifier.h"
 
 #include <numeric>
 #include <utility>
 
-#include "solver_utils.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 
 SensitivityProblemModifier::SensitivityProblemModifier(
     double epsilon, double best_ub,

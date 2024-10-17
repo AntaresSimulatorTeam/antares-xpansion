@@ -3,11 +3,11 @@
 #include <iomanip>
 #include <iostream>
 
-#include "SensitivityFileLogger.h"
-#include "SensitivityInputReader.h"
-#include "SensitivityLogger.h"
-#include "SensitivityMasterLogger.h"
-#include "SensitivityStudy.h"
+#include "antares-xpansion/sensitivity/SensitivityFileLogger.h"
+#include "antares-xpansion/sensitivity/SensitivityInputReader.h"
+#include "antares-xpansion/sensitivity/SensitivityLogger.h"
+#include "antares-xpansion/sensitivity/SensitivityMasterLogger.h"
+#include "antares-xpansion/sensitivity/SensitivityStudy.h"
 namespace po = boost::program_options;
 
 const std::string DEFAULT_SENSITIVITY_OUTPUT_JSON("sensitivity.json");

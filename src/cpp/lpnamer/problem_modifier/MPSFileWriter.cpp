@@ -1,10 +1,10 @@
 
-#include "MPSFileWriter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/MPSFileWriter.h"
 
 #include <utility>
 
-#include "IProblemWriter.h"
-#include "LinkProblemsGenerator.h"
+#include "antares-xpansion/lpnamer/problem_modifier/IProblemWriter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 
 void MPSFileWriter::Write_problem(Problem *in_prblm) {
   auto const lp_mps_name = lp_dir_ / in_prblm->_name;

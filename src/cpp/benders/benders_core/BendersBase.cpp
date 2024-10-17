@@ -1,15 +1,15 @@
-#include "BendersBase.h"
+#include "antares-xpansion/benders/benders_core/BendersBase.h"
 
 #include <memory>
 #include <mutex>
 #include <numeric>
 #include <utility>
 
-#include "LastIterationPrinter.h"
-#include "LastIterationReader.h"
-#include "LastIterationWriter.h"
-#include "LogUtils.h"
-#include "solver_utils.h"
+#include "antares-xpansion/benders/benders_core/LastIterationPrinter.h"
+#include "antares-xpansion/benders/benders_core/LastIterationReader.h"
+#include "antares-xpansion/benders/benders_core/LastIterationWriter.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 
 BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
                          Writer writer,

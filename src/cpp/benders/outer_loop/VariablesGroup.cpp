@@ -1,4 +1,4 @@
-#include "VariablesGroup.h"
+#include "antares-xpansion/benders/outer_loop/VariablesGroup.h"
 using namespace Outerloop;
 
 VariablesGroup::VariablesGroup(

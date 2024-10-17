@@ -3,7 +3,7 @@
 //
 
 #pragma once
-#include "OutputWriter.h"
+#include "antares-xpansion/xpansion_interfaces/OutputWriter.h"
 
 class WriterNOOPStub : public Output::OutputWriter {
  public:

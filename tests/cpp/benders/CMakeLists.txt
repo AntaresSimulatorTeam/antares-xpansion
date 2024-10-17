@@ -4,11 +4,11 @@ add_executable(benders_sequential_test
 
 target_link_libraries(benders_sequential_test
         PRIVATE
-        benders_sequential_core
-        benders_by_batch_core
-        benders_core
-        output_core
-        logger_lib
+        antaresXpansion::benders_sequential_core
+        antaresXpansion::benders_by_batch_core
+        antaresXpansion::benders_core
+        antaresXpansion::output_core
+        antaresXpansion::logger_lib
         tests_utils
         GTest::Main
         tests_utils)

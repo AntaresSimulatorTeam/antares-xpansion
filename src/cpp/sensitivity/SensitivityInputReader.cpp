@@ -1,13 +1,13 @@
-#include "SensitivityInputReader.h"
+#include "antares-xpansion/sensitivity/SensitivityInputReader.h"
 
 #include <boost/algorithm/string/trim.hpp>
 #include <fstream>
 #include <utility>
 
-#include "LogUtils.h"
-#include "OutputWriter.h"
-#include "common.h"
-#include "multisolver_interface/SolverFactory.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/OutputWriter.h"
+#include "antares-xpansion/benders/benders_core/common.h"
+#include "antares-xpansion/multisolver_interface/SolverFactory.h"
 
 const std::string EPSILON_C("epsilon");
 const std::string CAPEX_C("capex");

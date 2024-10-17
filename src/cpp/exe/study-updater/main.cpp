@@ -5,13 +5,13 @@
 #include <iostream>
 #include <sstream>
 
-#include "ActiveLinks.h"
-#include "CandidatesINIReader.h"
-#include "LauncherHelpers.h"
-#include "LinkProfileReader.h"
-#include "ProblemGenerationLogger.h"
-#include "StudyUpdateRunner.h"
-#include "StudyUpdater.h"
+#include "antares-xpansion/lpnamer/model/ActiveLinks.h"
+#include "antares-xpansion/lpnamer/input_reader/CandidatesINIReader.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LauncherHelpers.h"
+#include "antares-xpansion/lpnamer/input_reader/LinkProfileReader.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
+#include "antares-xpansion/study-updater/StudyUpdateRunner.h"
+#include "antares-xpansion/study-updater/StudyUpdater.h"
 
 /**
  * \fn int main (void)
