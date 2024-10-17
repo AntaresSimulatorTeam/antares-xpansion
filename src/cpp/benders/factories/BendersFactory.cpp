@@ -109,8 +109,9 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
 
 std::shared_ptr<MathLoggerDriver> BendersMainFactory::BuildMathLogger(
     const BENDERSMETHOD& method, bool benders_log_console) const {
-  auto math_logs_file =
-      std::filesystem::path(options_.OUTPUTROOT) / "benders_solver.log";
+  const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
+  auto math_logs_file = output_root / "benders_solver.log";
+
   auto math_log_factory =
       MathLoggerFactory(method, benders_log_console, math_logs_file);
 
@@ -119,10 +120,10 @@ std::shared_ptr<MathLoggerDriver> BendersMainFactory::BuildMathLogger(
   const auto& headers =
       criterion_computation_->getOuterLoopInputData().PatternBodies();
   math_log_driver->add_logger(
-      std::filesystem::path(options_.OUTPUTROOT) / "LOLD.txt", headers,
+      output_root / "LOLD.txt", headers,
       &OuterLoopCurrentIterationData::outer_loop_criterion);
   math_log_driver->add_logger(
-      std::filesystem::path(options_.OUTPUTROOT) /
+      output_root /
           (criterion_computation_->getOuterLoopInputData().PatternsPrefix() +
            ".txt"),
       headers, &OuterLoopCurrentIterationData::outer_loop_patterns_values);
@@ -202,11 +203,13 @@ Outerloop::OuterLoopInputData BendersMainFactory::PatternsFromSupbProblem(
   std::set<std::string> unique_areas = UniqueAreas(all_variables_name);
   Outerloop::OuterLoopInputData ret;
   ret.SetCriterionCountThreshold(1);
+  
   for (const auto& area : unique_areas) {
     Outerloop::OuterLoopSingleInputData singleInputData(
         Outerloop::PositiveUnsuppliedEnergy, area, 1);
     ret.AddSingleData(singleInputData);
   }
+
   solver->free();
   return ret;
 }
