@@ -109,7 +109,7 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
 
 std::shared_ptr<MathLoggerDriver> BendersMainFactory::BuildMathLogger(
     const BENDERSMETHOD& method, bool benders_log_console) const {
-  const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
+  const std::filesystem::path output_root(options_.OUTPUTROOT);
   auto math_logs_file = output_root / "benders_solver.log";
 
   auto math_log_factory =
@@ -136,16 +136,7 @@ int BendersMainFactory::RunBenders() {
     auto benders = PrepareForExecution(false);
     if (benders) {
       benders->launch();
-
-      std::stringstream str;
-      str << "Optimization results available in : " << options_.JSON_FILE
-          << std::endl;
-      benders_loggers_.display_message(str.str());
-
-      str.str("");
-      str << "Benders ran in " << benders->execution_time() << " s"
-          << std::endl;
-      benders_loggers_.display_message(str.str());
+      EndMessage(benders->execution_time());
     }
 
   } catch (std::exception& e) {
@@ -160,6 +151,18 @@ int BendersMainFactory::RunBenders() {
     mpi::environment::abort(1);
   }
   return 0;
+}
+
+void BendersMainFactory::EndMessage(const double execution_time) {
+  std::ostringstream str;
+  str << "Optimization results available in : " << options_.JSON_FILE
+      << std::endl;
+  benders_loggers_.display_message(str.str());
+
+  str.str("");
+
+  str << "Benders ran in " << execution_time << " s" << std::endl;
+  benders_loggers_.display_message(str.str());
 }
 
 Outerloop::OuterLoopInputData BendersMainFactory::ProcessCriterionInput(
@@ -203,7 +206,7 @@ Outerloop::OuterLoopInputData BendersMainFactory::PatternsFromSupbProblem(
   std::set<std::string> unique_areas = UniqueAreas(all_variables_name);
   Outerloop::OuterLoopInputData ret;
   ret.SetCriterionCountThreshold(1);
-  
+
   for (const auto& area : unique_areas) {
     Outerloop::OuterLoopSingleInputData singleInputData(
         Outerloop::PositiveUnsuppliedEnergy, area, 1);
