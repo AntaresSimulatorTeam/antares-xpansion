@@ -237,22 +237,10 @@ void BendersMpi::master_build_cuts(
     std::vector<SubProblemDataMap> gathered_subproblem_map) {
   SetSubproblemCost(0);
 
-  // if (Rank() == rank_0) {
-  // TODO decoment to save all cuts
-  // workerMasterDataVect_.push_back({_data.x_cut, {}});
-  // may be unuseful
-  // current_iteration_cuts_.x_cut = _data.x_cut;
-  // }
   for (const auto &subproblem_data_map : gathered_subproblem_map) {
     for (auto &&[sub_problem_name, subproblem_data] : subproblem_data_map) {
-      // save current cuts
-      // workerMasterDataVect_.back().subsProblemDataMap[sub_problem_name] =
-      //     subproblem_data;
 
-      // current_iteration_cuts_.subsProblemDataMap[sub_problem_name] =
-      //     subproblem_data;
       SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
-      // compute delta_cut >= options.CUT_MASTER_TOL;
       BoundSimplexIterations(subproblem_data.simplex_iter);
     }
   }
