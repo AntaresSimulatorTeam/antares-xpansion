@@ -5,13 +5,11 @@
 
 #include "antares-xpansion/benders/benders_by_batch/BendersByBatch.h"
 #include "antares-xpansion/benders/benders_mpi/BendersMpiOuterLoop.h"
-#include "antares-xpansion/benders/benders_sequential/BendersSequential.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/benders_core/MasterUpdate.h"
 #include "antares-xpansion/benders/benders_mpi/OuterLoopBenders.h"
-#include "antares-xpansion/xpansion_interfaces/OutputWriter.h"
 #include "antares-xpansion/benders/benders_core/StartUp.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/benders/benders_core/Worker.h"
@@ -100,10 +98,12 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
 
     benders->set_solver_log_file(solver_log);
   }
+
   writer_->write_log_level(options_.LOG_LEVEL);
   writer_->write_master_name(options_.MASTER_NAME);
   writer_->write_solver_name(options_.SOLVER_NAME);
   benders->setCriterionsComputation(criterion_computation_);
+
   return benders;
 }
 
@@ -130,7 +130,6 @@ std::shared_ptr<MathLoggerDriver> BendersMainFactory::BuildMathLogger(
 }
 
 int BendersMainFactory::RunBenders() {
-  // Read options, needed to have options.OUTPUTROOT
 
   try {
     auto benders = PrepareForExecution(false);
@@ -175,6 +174,7 @@ Outerloop::OuterLoopInputData BendersMainFactory::ProcessCriterionInput(
     return GetInputFromSubProblem(couplingMap);
   }
 }
+
 Outerloop::OuterLoopInputData BendersMainFactory::GetInputFromSubProblem(
     const CouplingMap& couplingMap) {
   auto first_subproblem_pair = std::find_if_not(
@@ -225,6 +225,7 @@ std::set<std::string> BendersMainFactory::UniqueAreas(
   }
   return unique_areas;
 }
+
 SolverAbstract::Ptr BendersMainFactory::BuildSolver(
     const std::string& first_subproblem_name) const {
   SolverFactory factory(logger_);
