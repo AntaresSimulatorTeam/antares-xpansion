@@ -8,6 +8,8 @@
 #include "yaml-cpp/yaml.h"
 
 namespace Outerloop {
+static constexpr const char *const PositiveUnsuppliedEnergy =
+    "PositiveUnsuppliedEnergy::";
 
 class OuterLoopInputFileError
     : public LogUtils::XpansionError<std::runtime_error> {

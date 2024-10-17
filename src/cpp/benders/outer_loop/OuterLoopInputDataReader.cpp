@@ -144,7 +144,7 @@ struct convert<OuterLoopSingleInputData> {
     }
 
     rhs.SetCriterion(criterion.as<double>());
-    rhs.ResetPattern("PositiveUnsuppliedEnergy::", body.as<std::string>());
+    rhs.ResetPattern(PositiveUnsuppliedEnergy, body.as<std::string>());
     return true;
   }
 };
