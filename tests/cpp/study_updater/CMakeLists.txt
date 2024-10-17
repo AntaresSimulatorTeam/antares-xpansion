@@ -14,9 +14,8 @@ target_include_directories(study_updater_test
 
 target_link_libraries(study_updater_test
         PRIVATE
-        ${PROJECT_NAME}::xpansion_study_updater_lib
-        ${JSONCPP_LIB}
         GTest::Main
+        ${PROJECT_NAME}::xpansion_study_updater_lib
 )
 add_test(NAME study_updater_test COMMAND study_updater_test WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
 set_property(TEST study_updater_test PROPERTY LABELS unit)
