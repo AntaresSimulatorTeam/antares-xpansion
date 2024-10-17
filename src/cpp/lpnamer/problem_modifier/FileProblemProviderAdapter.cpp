@@ -2,11 +2,11 @@
 // Created by marechaljas on 09/01/24.
 //
 
-#include "FileProblemProviderAdapter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/FileProblemProviderAdapter.h"
 
 #include <utility>
 
-#include "multisolver_interface/SolverFactory.h"
+#include "antares-xpansion/multisolver_interface/SolverFactory.h"
 std::shared_ptr<Problem> FileProblemProviderAdapter::provide_problem(
     const std::string& solver_name,
     SolverLogManager& solver_log_manager) const {

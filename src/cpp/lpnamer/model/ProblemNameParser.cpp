@@ -4,7 +4,7 @@
 
 #include <filesystem>
 #include <boost/tokenizer.hpp>
-#include "ProblemNameParser.h"
+#include "antares-xpansion/lpnamer/model/ProblemNameParser.h"
 
 unsigned int MCYear(const std::filesystem::path &file_path) {
   return MCYear(file_path.filename().string());

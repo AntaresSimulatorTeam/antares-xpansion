@@ -1,8 +1,8 @@
-#include "ProblemModifier.h"
+#include "antares-xpansion/lpnamer/problem_modifier/ProblemModifier.h"
 
 #include <algorithm>
 
-#include "solver_utils.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 
 std::set<int> extract_time_steps(
     const std::map<linkId, ColumnsToChange> &p_columns) {

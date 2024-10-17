@@ -1,6 +1,5 @@
-#include "VariablesGroup.h"
+#include "antares-xpansion/benders/outer_loop/VariablesGroup.h"
 #include <regex>
-
 
 using namespace Outerloop;
 
@@ -8,7 +7,7 @@ using namespace Outerloop;
  * @file VariablesGroup.cpp
  * @brief Implementation of the VariablesGroup class.
  *
- * This file contains the implementation of the VariablesGroup class, 
+ * This file contains the implementation of the VariablesGroup class,
  * which is responsible for grouping variables based on provided input patterns.
  */
 

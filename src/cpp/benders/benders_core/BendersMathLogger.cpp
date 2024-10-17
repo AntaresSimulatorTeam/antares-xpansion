@@ -1,10 +1,10 @@
-#include "BendersMathLogger.h"
+#include "antares-xpansion/benders/benders_core/BendersMathLogger.h"
 
 #include <iomanip>
 #include <sstream>
 
-#include "LogUtils.h"
-#include "LoggerUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+#include "antares-xpansion/helpers/LoggerUtils.h"
 
 HeadersManager::HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method)
     : type_(type), method_(method) {}

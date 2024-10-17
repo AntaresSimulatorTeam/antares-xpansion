@@ -1,12 +1,12 @@
 //
 
-#include "CandidatesINIReader.h"
+#include "antares-xpansion/lpnamer/input_reader/CandidatesINIReader.h"
 
 #include <exception>
 
-#include "INIReader.h"
-#include "LogUtils.h"
-#include "StringManip.h"
+#include "antares-xpansion/lpnamer/input_reader/INIReader.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
 CandidatesINIReader::CandidatesINIReader(
     const std::filesystem::path &antaresIntercoFile,

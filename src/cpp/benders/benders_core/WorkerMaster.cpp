@@ -1,7 +1,7 @@
-#include "WorkerMaster.h"
+#include "antares-xpansion/benders/benders_core/WorkerMaster.h"
 
 
-#include "solver_utils.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 
 WorkerMaster::WorkerMaster(Logger logger) : Worker(logger) {
   _is_master = true;

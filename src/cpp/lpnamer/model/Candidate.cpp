@@ -1,4 +1,4 @@
-#include "Candidate.h"
+#include "antares-xpansion/lpnamer/model/Candidate.h"
 
 #include <algorithm>
 #include <utility>

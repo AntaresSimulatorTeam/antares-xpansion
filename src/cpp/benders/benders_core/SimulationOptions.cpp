@@ -1,10 +1,10 @@
-#include "SimulationOptions.h"
+#include "antares-xpansion/benders/benders_core/SimulationOptions.h"
 
 #include <json/json.h>
 
 #include <filesystem>
 
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 Json::Value SimulationOptions::get_value_from_json(
     const std::filesystem::path &file_name) {
   Json::Value _input;
@@ -28,7 +28,7 @@ SimulationOptions::SimulationOptions()
 #define BENDERS_OPTIONS_MACRO(name__, type__, default__, \
                               deserialization_method__)  \
   name__(default__),
-#include "SimulationOptions.hxx"
+#include "antares-xpansion/benders/benders_core/SimulationOptions.hxx"
 #undef BENDERS_OPTIONS_MACRO
       _weights() {
 }
@@ -64,7 +64,7 @@ void SimulationOptions::read(const std::filesystem::path &file_name) {
                               deserialization_method__) \
   if (#var__ == var_name)                               \
     var__ = options_values[var_name].deserialization_method__;
-#include "SimulationOptions.hxx"
+#include "antares-xpansion/benders/benders_core/SimulationOptions.hxx"
 #undef BENDERS_OPTIONS_MACRO
   }
   set_weights();
@@ -116,7 +116,7 @@ void SimulationOptions::print(std::ostream &stream) const {
 #define BENDERS_OPTIONS_MACRO(name__, type__, default__, \
                               deserialization_method__)  \
   stream << std::setw(30) << #name__ << std::setw(50)<<std::boolalpha << name__ << std::endl;
-#include "SimulationOptions.hxx"
+#include "antares-xpansion/benders/benders_core/SimulationOptions.hxx"
 #undef BENDERS_OPTIONS_MACRO
   stream << std::endl;
 }

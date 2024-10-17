@@ -1,8 +1,8 @@
 #include "Analysis.h"
 
-#include "ProblemModifierCapex.h"
-#include "ProblemModifierProjection.h"
-#include "SensitivityOutputData.h"
+#include "antares-xpansion/sensitivity/ProblemModifierCapex.h"
+#include "antares-xpansion/sensitivity/ProblemModifierProjection.h"
+#include "antares-xpansion/sensitivity/SensitivityOutputData.h"
 
 Analysis::Analysis(SensitivityInputData input_data, std::string candidate_name,
                    std::shared_ptr<SensitivityILogger> logger,

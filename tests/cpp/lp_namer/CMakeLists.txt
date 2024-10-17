@@ -43,13 +43,13 @@ add_executable (lp_namer_tests
 
 target_link_libraries (lp_namer_tests PRIVATE
         GTest::Main
-        helpers 
-        lp_namer_helper
-        lp_namer_model
-        lp_namer_input_reader
-        lp_namer_problem_modifier
-        xpansion_study_updater_lib
-        problem_generation_main
+        antaresXpansion::helpers
+        antaresXpansion::lp_namer_helper
+        antaresXpansion::lp_namer_model
+        antaresXpansion::lp_namer_input_reader
+        antaresXpansion::lp_namer_problem_modifier
+        antaresXpansion::xpansion_study_updater_lib
+        antaresXpansion::problem_generation_main
         )
 
 

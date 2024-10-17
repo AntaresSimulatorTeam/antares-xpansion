@@ -1,10 +1,10 @@
 //
 // Created by s90365 on 23/08/2021.
 //
-#include <solver_utils.h>
+#include <antares-xpansion/helpers/solver_utils.h>
 
 #include "LoggerBuilder.h"
-#include "MasterProblemBuilder.h"
+#include "antares-xpansion/lpnamer/problem_modifier/MasterProblemBuilder.h"
 #include "gtest/gtest.h"
 
 TEST(MasterProblemBuilderTest, test_one_candidate_not_integer) {

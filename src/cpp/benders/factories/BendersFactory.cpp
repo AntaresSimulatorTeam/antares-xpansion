@@ -1,15 +1,21 @@
 
-#include "BendersFactory.h"
+#include "antares-xpansion/benders/factories/BendersFactory.h"
 
-#include "BendersByBatch.h"
-#include "BendersMpiOuterLoop.h"
-#include "LogUtils.h"
-#include "LoggerFactories.h"
-#include "MasterUpdate.h"
-#include "OuterLoopBenders.h"
-#include "StartUp.h"
-#include "Timer.h"
-#include "WriterFactories.h"
+#include <filesystem>
+
+#include "antares-xpansion/benders/benders_by_batch/BendersByBatch.h"
+#include "antares-xpansion/benders/benders_mpi/BendersMpiOuterLoop.h"
+#include "antares-xpansion/benders/benders_sequential/BendersSequential.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+#include "antares-xpansion/benders/factories/LoggerFactories.h"
+#include "antares-xpansion/benders/benders_core/MasterUpdate.h"
+#include "antares-xpansion/benders/benders_mpi/OuterLoopBenders.h"
+#include "antares-xpansion/xpansion_interfaces/OutputWriter.h"
+#include "antares-xpansion/benders/benders_core/StartUp.h"
+#include "antares-xpansion/helpers/Timer.h"
+#include "antares-xpansion/benders/benders_core/Worker.h"
+#include "antares-xpansion/benders/factories/WriterFactories.h"
 
 BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size,
                                   bool external_loop) {

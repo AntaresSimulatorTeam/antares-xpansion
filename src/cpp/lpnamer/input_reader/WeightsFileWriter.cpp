@@ -1,10 +1,11 @@
-#include "WeightsFileWriter.h"
+#include "antares-xpansion/lpnamer/input_reader/WeightsFileWriter.h"
 
 #include <fstream>
 #include <numeric>
 #include <ranges>
 
-#include "StringManip.h"
+#include "antares-xpansion/helpers/ArchiveReader.h"
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
 YearlyWeightsWriter::YearlyWeightsWriter(
     const std::filesystem::path& xpansion_output_dir,

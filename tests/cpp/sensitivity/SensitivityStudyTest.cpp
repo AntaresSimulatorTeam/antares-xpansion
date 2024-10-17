@@ -1,8 +1,8 @@
-#include "SensitivityFileLogger.h"
-#include "SensitivityStudy.h"
+#include "antares-xpansion/sensitivity/SensitivityFileLogger.h"
+#include "antares-xpansion/sensitivity/SensitivityStudy.h"
 #include "gtest/gtest.h"
-#include "multisolver_interface/SolverFactory.h"
-#include "multisolver_interface/environment.h"
+#include "antares-xpansion/multisolver_interface/SolverFactory.h"
+#include "antares-xpansion/multisolver_interface/environment.h"
 
 class SensitivityStudyTest : public ::testing::Test {
  public:

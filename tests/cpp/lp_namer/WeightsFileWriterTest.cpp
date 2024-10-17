@@ -1,6 +1,6 @@
 #include <fstream>
 
-#include "WeightsFileWriter.h"
+#include "antares-xpansion/lpnamer/input_reader/WeightsFileWriter.h"
 #include "gtest/gtest.h"
 
 void writeDummyFileInTempLpDir(std::string name) {

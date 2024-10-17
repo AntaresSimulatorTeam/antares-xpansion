@@ -3,7 +3,7 @@
 //
 #include <fstream>
 #include "gtest/gtest.h"
-#include "ChronicleMapReader.h"
+#include "antares-xpansion/lpnamer/model/ChronicleMapReader.h"
 
 class ChronicleTest: public ::testing::Test {
  public:
