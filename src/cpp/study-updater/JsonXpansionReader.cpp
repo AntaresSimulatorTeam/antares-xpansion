@@ -1,4 +1,4 @@
-#include "antares-xpansion/helpers/JsonXpansionReader.h"
+#include "JsonXpansionReader.h"
 
 #include <json/json.h>
 

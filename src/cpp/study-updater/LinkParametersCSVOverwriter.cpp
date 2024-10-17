@@ -4,9 +4,8 @@
 
 #include "antares-xpansion/study-updater/LinkParametersCSVOverwriter.h"
 
-#include "antares-xpansion/helpers/JsonXpansionReader.h"
+#include "JsonXpansionReader.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LinkdataRecord.h"
-#include "antares-xpansion/study-updater/StudyUpdater.h"
 
 bool LinkParametersCSVOverWriter::open(
     const std::filesystem::path& linkdataFilename_l) {

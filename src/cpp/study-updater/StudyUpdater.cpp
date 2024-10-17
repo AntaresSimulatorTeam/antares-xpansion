@@ -2,7 +2,7 @@
 
 #include <utility>
 
-#include "antares-xpansion/helpers/JsonXpansionReader.h"
+#include "JsonXpansionReader.h"
 #include "antares-xpansion/study-updater/StudyUpdateLinkCapacitiesStrategy.h"
 #include "antares-xpansion/study-updater/StudyUpdateLinkParameterStrategy.h"
 #include "antares-xpansion/study-updater/StudyUpdateStrategy.h"
