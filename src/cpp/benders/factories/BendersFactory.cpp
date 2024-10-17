@@ -286,10 +286,10 @@ BendersMainFactory::BendersMainFactory(
     int argc, char** argv, const std::filesystem::path& options_file,
     mpi::environment& env, mpi::communicator& world, const SOLVER& solver)
     : argv_(argv),
-      options_(options_file),
       penv_(&env),
       pworld_(&world),
-      solver_(solver) {
+      solver_(solver),
+      options_(options_file) {
   // First check usage (options are given)
   if (world.rank() == 0) {
     usage(argc);

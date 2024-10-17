@@ -11,7 +11,6 @@ class BendersMpiOuterLoop : public BendersMpi {
                       mpi::communicator &world,
                       std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
 
- public:
   void launch() override;
 
 };
