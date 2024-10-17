@@ -1,9 +1,11 @@
 
+
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
 
 #include <algorithm>
 #include <utility>
 
+#include "antares-xpansion/benders/benders_core/CustomVector.h"
 #include "antares-xpansion/benders/outer_loop/CriterionComputation.h"
 #include "antares-xpansion/helpers/Timer.h"
 
