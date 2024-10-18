@@ -19,6 +19,8 @@ class OuterLoopBenders : public OuterLoop {
                             std::shared_ptr<ICutsManager> cuts_manager,
                             pBendersBase benders, mpi::communicator& world);
 
+  void Run() override;
+
   void OuterLoopCheckFeasibility() override;
   void OuterLoopBilevelChecks() override;
   void RunAttachedAlgo() override;
@@ -28,7 +30,7 @@ class OuterLoopBenders : public OuterLoop {
   double OuterLoopLambdaMin() const override;
   double OuterLoopLambdaMax() const override;
   bool UpdateMaster() override;
-  ~OuterLoopBenders() override;
+  ~OuterLoopBenders() override = default;
 
  private:
   std::shared_ptr<IMasterUpdate> master_updater_;

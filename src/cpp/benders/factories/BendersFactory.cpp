@@ -262,8 +262,9 @@ int BendersMainFactory::RunExternalLoop() {
                                          master_updater, cuts_manager, benders,
                                          *pworld_);
     ext_loop.Run();
-
-    } catch (std::exception& e) {
+    EndMessage(ext_loop.Runtime());
+    
+  } catch (std::exception& e) {
     std::ostringstream msg;
     msg << "error: " << e.what() << std::endl;
     benders_loggers_.display_message(msg.str());
