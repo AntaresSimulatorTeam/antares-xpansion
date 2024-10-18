@@ -53,8 +53,8 @@ typedef std::list<mps_coupling> mps_coupling_list;
 enum class BENDERSMETHOD {
   BENDERS,
   BENDERS_BY_BATCH,
-  BENDERS_EXTERNAL_LOOP,
-  BENDERS_BY_BATCH_EXTERNAL_LOOP
+  BENDERS_OUTERLOOP,
+  BENDERS_BY_BATCH_OUTERLOOP
 };
 
 struct Predicate {

@@ -19,13 +19,13 @@ BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size,
                                   bool external_loop) {
   if (batch_size == 0 || batch_size == coupling_map_size - 1) {
     if (external_loop) {
-      return BENDERSMETHOD::BENDERS_EXTERNAL_LOOP;
+      return BENDERSMETHOD::BENDERS_OUTERLOOP;
     } else {
       return BENDERSMETHOD::BENDERS;
     }
   } else {
     if (external_loop) {
-      return BENDERSMETHOD::BENDERS_BY_BATCH_EXTERNAL_LOOP;
+      return BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP;
     } else {
       return BENDERSMETHOD::BENDERS_BY_BATCH;
     }
@@ -75,12 +75,12 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
       benders = std::make_shared<BendersMpi>(benders_options, logger_, writer_,
                                              *penv_, *pworld_, math_log_driver);
       break;
-    case BENDERSMETHOD::BENDERS_EXTERNAL_LOOP:
+    case BENDERSMETHOD::BENDERS_OUTERLOOP:
       benders = std::make_shared<Outerloop::BendersMpiOuterLoop>(
           benders_options, logger_, writer_, *penv_, *pworld_, math_log_driver);
       break;
     case BENDERSMETHOD::BENDERS_BY_BATCH:
-    case BENDERSMETHOD::BENDERS_BY_BATCH_EXTERNAL_LOOP:
+    case BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP:
       benders = std::make_shared<BendersByBatch>(
           benders_options, logger_, writer_, *penv_, *pworld_, math_log_driver);
       break;
