@@ -66,11 +66,6 @@ bool OuterLoopBenders::UpdateMaster() {
   return stop_update_master;
 }
 
-OuterLoopBenders::~OuterLoopBenders() {
-  benders_->mathLoggerDriver_->Print(benders_->GetCurrentIterationData());
-  benders_->SaveOuterLoopSolutionInOutputFile();
-  benders_->free();
-}
 
 void OuterLoopBenders::OuterLoopCheckFeasibility() {
   std::vector<double> obj_coeff;
@@ -130,5 +125,11 @@ void OuterLoopBenders::OuterLoopBilevelChecks() {
     benders_->SaveCurrentOuterLoopIterationInOutputFile();
     benders_->SetBilevelBestub(outer_loop_biLevel_.BilevelBestub());
   }
+}
+void OuterLoopBenders::Run() {
+  OuterLoop::Run();
+  benders_->mathLoggerDriver_->Print(benders_->GetCurrentIterationData());
+  benders_->SaveOuterLoopSolutionInOutputFile();
+  benders_->free();
 }
 }  // namespace Outerloop

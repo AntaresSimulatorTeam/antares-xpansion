@@ -280,7 +280,7 @@ MathLoggerImplementation::MathLoggerImplementation(
       implementation_ =
           std::make_shared<MathLoggerBase>(file_path, width, type);
       break;
-    case BENDERSMETHOD::BENDERS_EXTERNAL_LOOP:
+    case BENDERSMETHOD::BENDERS_OUTERLOOP:
       implementation_ =
           std::make_shared<MathLoggerBaseExternalLoop>(file_path, width, type);
       break;
@@ -288,7 +288,7 @@ MathLoggerImplementation::MathLoggerImplementation(
       implementation_ =
           std::make_shared<MathLoggerBendersByBatch>(file_path, width, type);
       break;
-    case BENDERSMETHOD::BENDERS_BY_BATCH_EXTERNAL_LOOP:
+    case BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP:
       implementation_ = std::make_shared<MathLoggerBendersByBatchExternalLoop>(
           file_path, width, type);
       break;
@@ -305,14 +305,14 @@ MathLoggerImplementation::MathLoggerImplementation(const BENDERSMETHOD& method,
     case BENDERSMETHOD::BENDERS:
       implementation_ = std::make_shared<MathLoggerBase>(width, type);
       break;
-    case BENDERSMETHOD::BENDERS_EXTERNAL_LOOP:
+    case BENDERSMETHOD::BENDERS_OUTERLOOP:
       implementation_ =
           std::make_shared<MathLoggerBaseExternalLoop>(width, type);
       break;
     case BENDERSMETHOD::BENDERS_BY_BATCH:
       implementation_ = std::make_shared<MathLoggerBendersByBatch>(width, type);
       break;
-    case BENDERSMETHOD::BENDERS_BY_BATCH_EXTERNAL_LOOP:
+    case BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP:
       implementation_ =
           std::make_shared<MathLoggerBendersByBatchExternalLoop>(width, type);
       break;

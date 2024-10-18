@@ -48,9 +48,7 @@ void BendersByBatch::InitializeProblems() {
     }
   }
 
-  // if (Rank() == rank_0) {
-  //  SetSubproblemsVariablesIndex();
-  // }
+  BroadCastVariablesIndices();
   init_problems_ = false;
 }
 void BendersByBatch::BroadcastSingleSubpbCostsUnderApprox() {
