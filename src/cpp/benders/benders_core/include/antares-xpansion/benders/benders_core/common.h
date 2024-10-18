@@ -57,6 +57,22 @@ enum class BENDERSMETHOD {
   BENDERS_BY_BATCH_OUTERLOOP
 };
 
+constexpr inline std::string_view bendersmethod_to_string(
+    BENDERSMETHOD method) {
+  switch (method) {
+    case BENDERSMETHOD::BENDERS:
+      return "Benders";
+    case BENDERSMETHOD::BENDERS_BY_BATCH:
+      return "Benders by batch";
+    case BENDERSMETHOD::BENDERS_OUTERLOOP:
+      return "Outerloop around Benders";
+    case BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP:
+      return "Outerloop around Benders by batch";
+    default:
+      return "Unknown";
+  }
+}
+
 struct Predicate {
   bool operator()(PointPtr const &lhs, PointPtr const &rhs) const {
     return *lhs < *rhs;

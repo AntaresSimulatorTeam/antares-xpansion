@@ -42,8 +42,8 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
 
   const auto coupling_map = build_input(benders_options.STRUCTURE_FILE);
 
-  const auto method = DeduceBendersMethod(coupling_map.size(),
-                                          options_.BATCH_SIZE, external_loop);
+  method_ = DeduceBendersMethod(coupling_map.size(), options_.BATCH_SIZE,
+                                external_loop);
   auto benders_log_console = benders_options.LOG_LEVEL > 0;
   if (pworld_->rank() == 0) {
     auto logger_factory =
@@ -65,12 +65,12 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
   criterion_computation_ =
       std::make_shared<Outerloop::CriterionComputation>(outer_loop_input_data);
   if (pworld_->rank() == 0) {
-    math_log_driver = BuildMathLogger(method, benders_log_console);
+    math_log_driver = BuildMathLogger(benders_log_console);
   }
 
   benders_loggers_.AddLogger(logger_);
   benders_loggers_.AddLogger(math_log_driver);
-  switch (method) {
+  switch (method_) {
     case BENDERSMETHOD::BENDERS:
       benders = std::make_shared<BendersMpi>(benders_options, logger_, writer_,
                                              *penv_, *pworld_, math_log_driver);
@@ -108,12 +108,12 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
 }
 
 std::shared_ptr<MathLoggerDriver> BendersMainFactory::BuildMathLogger(
-    const BENDERSMETHOD& method, bool benders_log_console) const {
+    bool benders_log_console) const {
   const std::filesystem::path output_root(options_.OUTPUTROOT);
   auto math_logs_file = output_root / "benders_solver.log";
 
   auto math_log_factory =
-      MathLoggerFactory(method, benders_log_console, math_logs_file);
+      MathLoggerFactory(method_, benders_log_console, math_logs_file);
 
   auto math_log_driver = math_log_factory.get_logger();
 
@@ -161,7 +161,8 @@ void BendersMainFactory::EndMessage(const double execution_time) {
 
   str.str("");
 
-  str << "Benders ran in " << execution_time << " s" << std::endl;
+  str << bendersmethod_to_string(method_) << " ran in " << execution_time
+      << " s" << std::endl;
   benders_loggers_.display_message(str.str());
 }
 

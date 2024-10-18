@@ -21,11 +21,12 @@ class BendersMainFactory {
       nullptr;
   Logger logger_ = nullptr;
   Writer writer_ = nullptr;
+  BENDERSMETHOD method_ = BENDERSMETHOD::BENDERS;
 
   [[nodiscard]] int RunExternalLoop();
   [[nodiscard]] int RunBenders();
   [[nodiscard]] std::shared_ptr<MathLoggerDriver> BuildMathLogger(
-      const BENDERSMETHOD& method, bool benders_log_console) const;
+      bool benders_log_console) const;
   pBendersBase PrepareForExecution(bool external_loop);
   [[nodiscard]] Outerloop::OuterLoopInputData ProcessCriterionInput(
       const CouplingMap& couplingMap);
