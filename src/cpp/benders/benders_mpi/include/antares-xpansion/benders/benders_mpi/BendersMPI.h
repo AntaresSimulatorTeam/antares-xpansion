@@ -96,5 +96,5 @@ class BendersMpi : public BendersBase {
       SubProblemDataMap &subproblem_data_map,
       PlainData::SubProblemData &subproblem_data, const std::string &name,
       const std::shared_ptr<SubproblemWorker> &worker) override;
-  void UpdateOuterLoopMaxCriterionArea();
+  void UpdateMaxCriterionArea();
 };

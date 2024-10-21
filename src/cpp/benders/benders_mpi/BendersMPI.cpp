@@ -163,7 +163,7 @@ void BendersMpi::GatherCuts(const SubProblemDataMap &subproblem_data_map,
   if (_world.rank() == rank_0) {
     outer_loop_criterion_.push_back(
         _data.outer_loop_current_iteration_data.outer_loop_criterion);
-    UpdateOuterLoopMaxCriterionArea();
+    UpdateMaxCriterionArea();
   }
 }
 
@@ -182,7 +182,7 @@ void BendersMpi::SolveSubproblem(
       subproblem_data.outer_loop_patterns_values);
 }
 
-void BendersMpi::UpdateOuterLoopMaxCriterionArea() {
+void BendersMpi::UpdateMaxCriterionArea() {
   auto criterions_begin =
       _data.outer_loop_current_iteration_data.outer_loop_criterion.cbegin();
   auto criterions_end =
