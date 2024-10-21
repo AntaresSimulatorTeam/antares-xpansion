@@ -108,7 +108,7 @@ def check_solution(context):
     assert_dict_allclose(context.outputs["solution"]["values"], expected_solution)
 
 
-def is_column_full_of_zeros(filename, column_index, rel_tol=1e-9, abs_tol=0.0):
+def is_column_full_of_zeros(filename, column_index, abs_tol=1e-9):
     with open(filename, 'r') as file:
         # Skip the header
         next(file)
@@ -129,7 +129,7 @@ def is_column_full_of_zeros(filename, column_index, rel_tol=1e-9, abs_tol=0.0):
                 return False
 
             # Use math.isclose to compare to zero with tolerance
-            if not math.isclose(value, 0.0, rel_tol=rel_tol, abs_tol=abs_tol):
+            if not math.isclose(value, 0.0, abs_tol=abs_tol):
                 print(f"Error {value} is not close to 0")
                 return False
 
