@@ -1,12 +1,12 @@
-#include "BendersSequential.h"
+#include "antares-xpansion/benders/benders_sequential/BendersSequential.h"
 
 #include <algorithm>
 #include <iomanip>
 #include <utility>
 
-#include "Timer.h"
+#include "antares-xpansion/helpers/Timer.h"
 
-#include "solver_utils.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 
 /*!
  *  \brief Constructor of class BendersSequential

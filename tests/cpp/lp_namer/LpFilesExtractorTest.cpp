@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include "LoggerBuilder.h"
-#include "LpFilesExtractor.h"
+#include "antares-xpansion/lpnamer/input_reader/LpFilesExtractor.h"
 
 const auto LP_FILE_EXTRACTOR_TEST_DIR =
     std::filesystem::path("data_test") / "tests_lpnamer" / "LpFilesExtractor";

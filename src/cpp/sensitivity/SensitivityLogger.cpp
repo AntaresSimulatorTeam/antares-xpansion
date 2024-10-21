@@ -1,8 +1,8 @@
-#include "SensitivityLogger.h"
+#include "antares-xpansion/sensitivity/SensitivityLogger.h"
 
 #include <iostream>
 
-#include "Commons.h"
+#include "antares-xpansion/benders/logger/Commons.h"
 
 SensitivityLogger::SensitivityLogger(std::ostream& stream) : _stream(stream) {
   if (_stream.fail()) {

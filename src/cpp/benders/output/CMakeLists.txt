@@ -6,25 +6,29 @@
 # Targets
 # ===========================================================================
 
-add_library (output_core STATIC
-	${CMAKE_CURRENT_SOURCE_DIR}/VoidWriter.cpp
-	${CMAKE_CURRENT_SOURCE_DIR}/JsonWriter.cpp
-        )
+add_library(output_core)
 
-get_target_property(xpansion_interfaces_path xpansion_interfaces INTERFACE_INCLUDE_DIRECTORIES)
-
-target_include_directories (output_core
-		PUBLIC
-			${CMAKE_CURRENT_SOURCE_DIR}/include
-		PUBLIC
-			${CMAKE_CURRENT_SOURCE_DIR}
-			${xpansion_interfaces_path}
+target_sources(output_core PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/VoidWriter.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/JsonWriter.cpp
+        include/antares-xpansion/benders/output/VoidWriter.h
+        include/antares-xpansion/benders/output/JsonWriter.h
 )
 
-target_link_libraries (output_core
-	PUBLIC
-		${JSONCPP_LIB}
-		helpers
+target_include_directories(output_core
+        PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
 
-add_library (${PROJECT_NAME}::output_core ALIAS output_core)
+target_link_libraries(output_core
+        PUBLIC
+        ${JSONCPP_LIB}
+        antaresXpansion::helpers
+        ${PROJECT_NAME}::xpansion_interfaces
+)
+
+add_library(${PROJECT_NAME}::output_core ALIAS output_core)
+
+install(DIRECTORY include/antares-xpansion
+        DESTINATION "include"
+)

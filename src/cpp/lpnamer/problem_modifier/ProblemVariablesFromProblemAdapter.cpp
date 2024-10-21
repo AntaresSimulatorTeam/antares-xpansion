@@ -4,8 +4,7 @@
 
 #include <utility>
 
-#include "ProblemVariablesFromProblemAdapter.h"
-// #include "VariableFileReader.h"
+#include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesFromProblemAdapter.h"
 
 const std::string SEPARATOR = "::";
 const std::string AREA_SEPARATOR = "$$";

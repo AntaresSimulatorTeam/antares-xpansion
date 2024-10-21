@@ -1,4 +1,4 @@
-#include "IterationResultLog.h"
+#include "antares-xpansion/benders/logger/IterationResultLog.h"
 
 #include <algorithm>
 #include <iomanip>
@@ -6,9 +6,8 @@
 #include <map>
 #include <sstream>
 
-#include "Commons.h"
-#include "ILogger.h"
-#include "IterationResultLog.h"
+#include "antares-xpansion/benders/logger/Commons.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
 namespace xpansion {
 namespace logger {

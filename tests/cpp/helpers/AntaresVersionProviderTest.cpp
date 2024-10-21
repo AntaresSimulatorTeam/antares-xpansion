@@ -4,7 +4,7 @@
 
 #include <fstream>
 
-#include "AntaresVersionProvider.h"
+#include "antares-xpansion/helpers/AntaresVersionProvider.h"
 #include "gtest/gtest.h"
 
 

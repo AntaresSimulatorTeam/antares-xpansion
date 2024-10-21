@@ -1,6 +1,6 @@
-#include "BendersMpiOuterLoop.h"
+#include "antares-xpansion/benders/benders_mpi/BendersMpiOuterLoop.h"
 
-#include "CustomVector.h"
+#include "antares-xpansion/benders/benders_core/CustomVector.h"
 
 namespace Outerloop {
 void BendersMpiOuterLoop::SolveSubproblem(

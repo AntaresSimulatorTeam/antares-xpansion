@@ -2,13 +2,13 @@
 // Created by marechaljas on 29/04/2022.
 //
 
-#include "ChronicleMapProvider.h"
+#include "antares-xpansion/lpnamer/model/ChronicleMapProvider.h"
 
 #include <filesystem>
 #include <fstream>
 #include <utility>
 
-#include "ChronicleMapReader.h"
+#include "antares-xpansion/lpnamer/model/ChronicleMapReader.h"
 std::map<unsigned int, unsigned int>
 DirectAccessScenarioToChronicleProvider::GetMap(
     const std::string& link_from, const std::string& link_to) const {

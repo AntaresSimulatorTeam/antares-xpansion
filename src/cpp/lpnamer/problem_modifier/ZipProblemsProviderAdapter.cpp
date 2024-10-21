@@ -2,13 +2,13 @@
 // Created by marechaljas on 25/11/22.
 //
 
-#include "ZipProblemsProviderAdapter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/ZipProblemsProviderAdapter.h"
 
 #include <execution>
 #include <utility>
 
-#include "ArchiveReader.h"
-#include "ZipProblemProviderAdapter.h"
+#include "antares-xpansion/helpers/ArchiveReader.h"
+#include "antares-xpansion/lpnamer/problem_modifier/ZipProblemProviderAdapter.h"
 
 std::vector<std::shared_ptr<Problem>>
 ZipProblemsProviderAdapter::provideProblems(

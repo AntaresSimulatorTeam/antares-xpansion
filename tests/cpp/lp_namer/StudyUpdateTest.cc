@@ -1,14 +1,14 @@
 #include <filesystem>
 #include <fstream>
 
-#include "ActiveLinks.h"
-#include "CandidatesINIReader.h"
-#include "LinkProfileReader.h"
-#include "LinkdataRecord.h"
+#include "antares-xpansion/lpnamer/model/ActiveLinks.h"
+#include "antares-xpansion/lpnamer/input_reader/CandidatesINIReader.h"
+#include "antares-xpansion/lpnamer/input_reader/LinkProfileReader.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LinkdataRecord.h"
 #include "LoggerBuilder.h"
-#include "ProblemGenerationLogger.h"
-#include "StudyUpdateLinkParameterStrategy.h"
-#include "StudyUpdater.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
+#include "antares-xpansion/study-updater/StudyUpdateLinkParameterStrategy.h"
+#include "antares-xpansion/study-updater/StudyUpdater.h"
 #include "gtest/gtest.h"
 
 class StudyUpdateTest : public ::testing::Test {
