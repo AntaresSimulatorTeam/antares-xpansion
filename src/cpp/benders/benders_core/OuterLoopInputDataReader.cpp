@@ -4,7 +4,7 @@
 
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
-using namespace Outerloop;
+using namespace Benders::Criterion;
 
 /**
  * prefix could be := PositiveUnsuppliedEnergy:: or something else necessarily

@@ -2,7 +2,8 @@
 namespace Outerloop {
 
 OuterLoopBiLevel::OuterLoopBiLevel(
-    const std::vector<OuterLoopSingleInputData> &outer_loop_input_data)
+    const std::vector<Benders::Criterion::OuterLoopSingleInputData>
+        &outer_loop_input_data)
     : outer_loop_input_data_(outer_loop_input_data) {}
 
 bool OuterLoopBiLevel::Update_bilevel_data_if_feasible(

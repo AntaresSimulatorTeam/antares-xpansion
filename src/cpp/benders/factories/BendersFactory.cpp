@@ -63,7 +63,8 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
 
   auto outer_loop_input_data = ProcessCriterionInput(coupling_map);
   criterion_computation_ =
-      std::make_shared<Outerloop::CriterionComputation>(outer_loop_input_data);
+      std::make_shared<Benders::Criterion::CriterionComputation>(
+          outer_loop_input_data);
   if (pworld_->rank() == 0) {
     math_log_driver = BuildMathLogger(benders_log_console);
   }
@@ -166,13 +167,13 @@ void BendersMainFactory::EndMessage(const double execution_time) {
   benders_loggers_.display_message(str.str());
 }
 
-Outerloop::OuterLoopInputData BendersMainFactory::ProcessCriterionInput(
-    const CouplingMap& couplingMap) {
+Benders::Criterion::OuterLoopInputData
+BendersMainFactory::ProcessCriterionInput(const CouplingMap& couplingMap) {
   const auto fpath = std::filesystem::path(options_.INPUTROOT) /
                      options_.OUTER_LOOP_OPTION_FILE;
   // if adequacy_criterion.yml is provided read it
   if (std::filesystem::exists(fpath)) {
-    return Outerloop::OuterLoopInputFromYaml().Read(fpath);
+    return Benders::Criterion::OuterLoopInputFromYaml().Read(fpath);
   }
   // else compute criterion for all areas!
   else {
@@ -180,8 +181,8 @@ Outerloop::OuterLoopInputData BendersMainFactory::ProcessCriterionInput(
   }
 }
 
-Outerloop::OuterLoopInputData BendersMainFactory::GetInputFromSubProblem(
-    const CouplingMap& couplingMap) {
+Benders::Criterion::OuterLoopInputData
+BendersMainFactory::GetInputFromSubProblem(const CouplingMap& couplingMap) {
   auto first_subproblem_pair = std::find_if_not(
       couplingMap.begin(), couplingMap.end(),
       [this](const auto& in) { return in.first == options_.MASTER_NAME; });
@@ -200,17 +201,18 @@ Outerloop::OuterLoopInputData BendersMainFactory::GetInputFromSubProblem(
   }
 }
 
-Outerloop::OuterLoopInputData BendersMainFactory::PatternsFromSupbProblem(
+Benders::Criterion::OuterLoopInputData
+BendersMainFactory::PatternsFromSupbProblem(
     const std::string& first_subproblem_name) const {
   SolverAbstract::Ptr solver = BuildSolver(first_subproblem_name);
   const auto all_variables_name = solver->get_col_names();
   std::set<std::string> unique_areas = UniqueAreas(all_variables_name);
-  Outerloop::OuterLoopInputData ret;
+  Benders::Criterion::OuterLoopInputData ret;
   ret.SetCriterionCountThreshold(1);
 
   for (const auto& area : unique_areas) {
-    Outerloop::OuterLoopSingleInputData singleInputData(
-        Outerloop::PositiveUnsuppliedEnergy, area, 1);
+    Benders::Criterion::OuterLoopSingleInputData singleInputData(
+        Benders::Criterion::PositiveUnsuppliedEnergy, area, 1);
     ret.AddSingleData(singleInputData);
   }
 

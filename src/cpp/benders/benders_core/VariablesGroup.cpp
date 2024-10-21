@@ -2,7 +2,7 @@
 
 #include <regex>
 
-using namespace Outerloop;
+using namespace Benders::Criterion;
 
 /**
  * @file VariablesGroup.cpp

@@ -1051,6 +1051,7 @@ void BendersBase::SetBilevelBestub(double bilevel_best_ub) {
       bilevel_best_ub;
 }
 void BendersBase::setCriterionsComputation(
-    std::shared_ptr<Outerloop::CriterionComputation> criterionsComputation) {
+    std::shared_ptr<Benders::Criterion::CriterionComputation>
+        criterionsComputation) {
   criterions_computation_ = criterionsComputation;
 }

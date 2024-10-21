@@ -2,7 +2,7 @@
 
 #include "OuterLoopInputDataReader.h"
 #include "VariablesGroup.h"
-namespace Outerloop {
+namespace Benders::Criterion {
 
 class CriterionComputation {
  public:
@@ -75,4 +75,4 @@ class CriterionComputation {
   std::vector<std::vector<int>> var_indices_;
   const OuterLoopInputData outer_loop_input_data_;
 };
-}  // namespace Outerloop
+}  // namespace Benders::Criterion

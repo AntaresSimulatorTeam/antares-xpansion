@@ -101,7 +101,8 @@ class BendersBase {
   Writer _writer;
   std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
   void setCriterionsComputation(
-      std::shared_ptr<Outerloop::CriterionComputation> criterionsComputation);
+      std::shared_ptr<Benders::Criterion::CriterionComputation>
+          criterionsComputation);
 
  protected:
   bool exception_raised_ = false;
@@ -223,7 +224,8 @@ class BendersBase {
                                const std::string &name,
                                const std::shared_ptr<SubproblemWorker> &worker);
   // TODO to be rethink
-  std::shared_ptr<Outerloop::CriterionComputation> criterions_computation_;
+  std::shared_ptr<Benders::Criterion::CriterionComputation>
+      criterions_computation_;
   /**
    * for the nth variable name, Subproblems shares the same prefix , only the
    suffix is different

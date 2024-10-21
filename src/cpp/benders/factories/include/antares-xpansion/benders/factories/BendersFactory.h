@@ -17,8 +17,8 @@ class BendersMainFactory {
   SOLVER solver_ = SOLVER::BENDERS;
   SimulationOptions options_;
   BendersLoggerBase benders_loggers_;
-  std::shared_ptr<Outerloop::CriterionComputation> criterion_computation_ =
-      nullptr;
+  std::shared_ptr<Benders::Criterion::CriterionComputation>
+      criterion_computation_ = nullptr;
   Logger logger_ = nullptr;
   Writer writer_ = nullptr;
   BENDERSMETHOD method_ = BENDERSMETHOD::BENDERS;
@@ -28,12 +28,12 @@ class BendersMainFactory {
   [[nodiscard]] std::shared_ptr<MathLoggerDriver> BuildMathLogger(
       bool benders_log_console) const;
   pBendersBase PrepareForExecution(bool external_loop);
-  [[nodiscard]] Outerloop::OuterLoopInputData ProcessCriterionInput(
+  [[nodiscard]] Benders::Criterion::OuterLoopInputData ProcessCriterionInput(
       const CouplingMap& couplingMap);
-  Outerloop::OuterLoopInputData GetInputFromSubProblem(
+  Benders::Criterion::OuterLoopInputData GetInputFromSubProblem(
       const CouplingMap& couplingMap);
 
-  Outerloop::OuterLoopInputData PatternsFromSupbProblem(
+  Benders::Criterion::OuterLoopInputData PatternsFromSupbProblem(
       const std::string& first_subproblem_name) const;
   SolverAbstract::Ptr BuildSolver(
       const std::string& first_subproblem_name) const;

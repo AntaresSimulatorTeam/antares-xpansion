@@ -13,6 +13,7 @@ boost::mpi::environment* penv = nullptr;
 boost::mpi::communicator* pworld = nullptr;
 
 using namespace Outerloop;
+using namespace Benders::Criterion;
 
 int main(int argc, char** argv) {
   ::testing::InitGoogleTest(&argc, argv);
@@ -112,10 +113,12 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
                                          *pworld, math_log_driver);
   benders->set_input_map(coupling_map);
 
-  auto outer_loop_input_data = Outerloop::OuterLoopInputFromYaml().Read(
-      std::filesystem::path(bendersoptions.INPUTROOT) / OUTER_OPTIONS_FILE);
+  auto outer_loop_input_data =
+      Benders::Criterion::OuterLoopInputFromYaml().Read(
+          std::filesystem::path(bendersoptions.INPUTROOT) / OUTER_OPTIONS_FILE);
   auto criterion_computation =
-      std::make_shared<Outerloop::CriterionComputation>(outer_loop_input_data);
+      std::make_shared<Benders::Criterion::CriterionComputation>(
+          outer_loop_input_data);
   benders->setCriterionsComputation(criterion_computation);
 
   auto master_updater = std::make_shared<MasterUpdateBase>(
@@ -295,28 +298,28 @@ class VariablesGroupTest : public ::testing::Test {};
 
 TEST_F(VariablesGroupTest, EmptyVariablesListGivesEmptyIndices) {
   std::vector<std::string> variables;
-  std::vector<Outerloop::OuterLoopSingleInputData> data;
+  std::vector<Benders::Criterion::OuterLoopSingleInputData> data;
 
-  Outerloop::VariablesGroup var_grp(variables, data);
+  Benders::Criterion::VariablesGroup var_grp(variables, data);
   ASSERT_TRUE(var_grp.Indices().empty());
 }
 
 TEST_F(VariablesGroupTest, EmptyPatternsListGivesEmptyIndices) {
   std::vector<std::string> variables{
       "PositiveUnsuppliedEnergy::area<test>::hour<125>"};
-  std::vector<Outerloop::OuterLoopSingleInputData> data;
+  std::vector<Benders::Criterion::OuterLoopSingleInputData> data;
 
-  Outerloop::VariablesGroup var_grp(variables, data);
+  Benders::Criterion::VariablesGroup var_grp(variables, data);
   ASSERT_TRUE(var_grp.Indices().empty());
 }
 
 TEST_F(VariablesGroupTest, SingleDataWithInvalidPrefixAndBody) {
   std::vector<std::string> variables{
       "PositiveUnsuppliedEnergy::area<test>::hour<125>"};
-  std::vector<Outerloop::OuterLoopSingleInputData> data{
-      Outerloop::OuterLoopSingleInputData("Pref", "Body", 1534.0)};
+  std::vector<Benders::Criterion::OuterLoopSingleInputData> data{
+      Benders::Criterion::OuterLoopSingleInputData("Pref", "Body", 1534.0)};
 
-  Outerloop::VariablesGroup var_grp(variables, data);
+  Benders::Criterion::VariablesGroup var_grp(variables, data);
   const auto& vect_indices = var_grp.Indices();
   ASSERT_EQ(vect_indices.size(), 1);
   ASSERT_TRUE(vect_indices[0].empty());
@@ -325,11 +328,11 @@ TEST_F(VariablesGroupTest, SingleDataWithInvalidPrefixAndBody) {
 TEST_F(VariablesGroupTest, SingleDataWithUnMatchedPrefix) {
   std::vector<std::string> variables{
       "PositiveUnsuppliedEnergy::area<test>::hour<125>"};
-  std::vector<Outerloop::OuterLoopSingleInputData> data{
-      Outerloop::OuterLoopSingleInputData("UnsuppliedEnergy::", "test",
-                                          1534.0)};
+  std::vector<Benders::Criterion::OuterLoopSingleInputData> data{
+      Benders::Criterion::OuterLoopSingleInputData("UnsuppliedEnergy::", "test",
+                                                   1534.0)};
 
-  Outerloop::VariablesGroup var_grp(variables, data);
+  Benders::Criterion::VariablesGroup var_grp(variables, data);
   const auto& vect_indices = var_grp.Indices();
   ASSERT_EQ(vect_indices.size(), 1);
   ASSERT_TRUE(vect_indices[0].empty());
@@ -338,17 +341,17 @@ TEST_F(VariablesGroupTest, SingleDataWithUnMatchedPrefix) {
 TEST_F(VariablesGroupTest, SingleDataWithUnMatchedBody) {
   std::vector<std::string> variables{
       "PositiveUnsuppliedEnergy::area<test>::hour<125>"};
-  std::vector<Outerloop::OuterLoopSingleInputData> data{
-      Outerloop::OuterLoopSingleInputData("PositiveUnsuppliedEnergy::", "Body",
-                                          1534.0)};
+  std::vector<Benders::Criterion::OuterLoopSingleInputData> data{
+      Benders::Criterion::OuterLoopSingleInputData(
+          "PositiveUnsuppliedEnergy::", "Body", 1534.0)};
 
-  Outerloop::VariablesGroup var_grp(variables, data);
+  Benders::Criterion::VariablesGroup var_grp(variables, data);
   const auto& vect_indices = var_grp.Indices();
   ASSERT_EQ(vect_indices.size(), 1);
   ASSERT_TRUE(vect_indices[0].empty());
 }
 
-static const std::vector<Outerloop::OuterLoopSingleInputData> data{
+static const std::vector<Benders::Criterion::OuterLoopSingleInputData> data{
     {"Blue::", "Earth", 1534.0}, {"Red::", "Mars", 65.0}};
 
 TEST_F(VariablesGroupTest, With2ValidPatterns) {
@@ -356,7 +359,7 @@ TEST_F(VariablesGroupTest, With2ValidPatterns) {
       "Gold::area<Sun>::hour<9999>", "Blue::area<Earth>::hour<125>",
       "Red::area<Mars>::hour<1546>", "Blue::area<Earth>::hour<3336>"};
 
-  Outerloop::VariablesGroup var_grp(variables, data);
+  Benders::Criterion::VariablesGroup var_grp(variables, data);
   const auto& vect_indices = var_grp.Indices();
   ASSERT_EQ(vect_indices.size(), 2);
   // 2 vars for the 1st pattern
