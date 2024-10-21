@@ -1,13 +1,13 @@
 
-#include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/benders_core/MasterUpdate.h"
+#include "antares-xpansion/benders/benders_core/OuterLoopInputDataReader.h"
+#include "antares-xpansion/benders/benders_core/VariablesGroup.h"
 #include "antares-xpansion/benders/benders_mpi/OuterLoopBenders.h"
-#include "antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h"
-#include "antares-xpansion/benders/outer_loop/OuterLoopInputDataReader.h"
-#include "antares-xpansion/benders/outer_loop/VariablesGroup.h"
+#include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
-#include "gtest/gtest.h"
+#include "antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
+#include "gtest/gtest.h"
 
 boost::mpi::environment* penv = nullptr;
 boost::mpi::communicator* pworld = nullptr;

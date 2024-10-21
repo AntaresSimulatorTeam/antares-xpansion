@@ -1,8 +1,8 @@
 #ifndef ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
 #define ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
-#include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
-#include "antares-xpansion/benders/outer_loop/CriterionComputation.h"
+#include "antares-xpansion/benders/benders_core/CriterionComputation.h"
 #include "antares-xpansion/benders/benders_core/common.h"
+#include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
 
 struct InvalidStructureFile
     : public LogUtils::XpansionError<std::runtime_error> {

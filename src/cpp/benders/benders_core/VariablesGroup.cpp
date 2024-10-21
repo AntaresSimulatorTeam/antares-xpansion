@@ -1,4 +1,5 @@
-#include "antares-xpansion/benders/outer_loop/VariablesGroup.h"
+#include "include/antares-xpansion/benders/benders_core/VariablesGroup.h"
+
 #include <regex>
 
 using namespace Outerloop;

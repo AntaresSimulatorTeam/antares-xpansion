@@ -1,6 +1,6 @@
 #pragma once
 #include "BendersMPI.h"
-#include "antares-xpansion/benders/outer_loop/CriterionComputation.h"
+#include "antares-xpansion/benders/benders_core/CriterionComputation.h"
 namespace Outerloop {
 
 class BendersMpiOuterLoop : public BendersMpi {

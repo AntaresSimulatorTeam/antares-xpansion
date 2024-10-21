@@ -20,17 +20,11 @@ endif ()
 
 add_library(outer_loop_lib)
 target_sources(outer_loop_lib PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/CriterionComputation.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/OuterLoop.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopBiLevel.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/OuterLoopInputDataReader.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/VariablesGroup.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/CriterionComputation.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/IMasterUpdate.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/OuterLoop.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/OuterLoopBiLevel.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/OuterLoopInputDataReader.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/outer_loop/VariablesGroup.h
 
 )
 
