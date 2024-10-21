@@ -24,10 +24,6 @@ void OuterLoop::Run() {
   PrintLog();
 }
 
-OuterLoop::OuterLoop(CriterionComputation &criterion_computation)
-    : criterion_computation_(criterion_computation),
-      outer_loop_biLevel_(
-          criterion_computation.getOuterLoopInputData().OuterLoopData()) {}
 
 double OuterLoop::Runtime() const { return runtime_; }
 

@@ -258,8 +258,9 @@ int BendersMainFactory::RunExternalLoop() {
     std::shared_ptr<Outerloop::ICutsManager> cuts_manager =
         std::make_shared<Outerloop::CutsManagerRunTime>();
 
-    Outerloop::OuterLoopBenders ext_loop(*criterion_computation_,
-                                         master_updater, cuts_manager, benders,
+    Outerloop::OuterLoopBenders ext_loop(
+        criterion_computation_->getOuterLoopInputData().OuterLoopData(),
+        master_updater, cuts_manager, benders,
                                          *pworld_);
     ext_loop.Run();
     EndMessage(ext_loop.Runtime());

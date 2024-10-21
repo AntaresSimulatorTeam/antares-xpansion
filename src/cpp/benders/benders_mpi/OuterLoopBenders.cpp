@@ -2,11 +2,11 @@
 namespace Outerloop {
 
 OuterLoopBenders::OuterLoopBenders(
-    CriterionComputation& criterion_computation,
+    const std::vector<OuterLoopSingleInputData>& outer_loop_data,
     std::shared_ptr<IMasterUpdate> master_updater,
     std::shared_ptr<ICutsManager> cuts_manager, pBendersBase benders,
     mpi::communicator& world)
-    : OuterLoop(criterion_computation),
+    : outer_loop_biLevel_(outer_loop_data),
       master_updater_(std::move(master_updater)),
       cuts_manager_(std::move(cuts_manager)),
       benders_(std::move(benders)),

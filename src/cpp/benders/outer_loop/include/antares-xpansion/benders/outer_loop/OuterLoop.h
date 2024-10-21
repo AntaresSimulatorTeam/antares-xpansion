@@ -1,10 +1,7 @@
 #pragma once
-#include "CriterionComputation.h"
-#include "OuterLoopBiLevel.h"
 namespace Outerloop {
 class OuterLoop {
  public:
-  explicit OuterLoop(CriterionComputation& criterion_computation_);
   virtual void Run();
   virtual void OuterLoopCheckFeasibility() = 0;
   virtual void OuterLoopBilevelChecks() = 0;
@@ -22,8 +19,6 @@ class OuterLoop {
   double Runtime() const;
 
  protected:
-  CriterionComputation& criterion_computation_;
-  OuterLoopBiLevel outer_loop_biLevel_;
   double runtime_ = 0.;
 };
 
