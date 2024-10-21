@@ -155,14 +155,6 @@ class BendersBase {
   void AddSubproblem(const std::pair<std::string, VariableMap> &kvp);
   [[nodiscard]] virtual WorkerMasterPtr get_master() const;
   void MatchProblemToId();
-  /**
-   * for the nth variable name, Subproblems shares the same prefix , only the
-   suffix is different
-   * ex variable at index = 0 is named in:
-
-   * subproblems-1-1  --> NTCDirect::link<area1$$area2>::hour<0>
-   * subproblems-3-5  --> NTCDirect::link<area1$$area2>::hour<672>
-   */
   void AddSubproblemName(const std::string &name);
   [[nodiscard]] std::string get_master_name() const;
   [[nodiscard]] std::string get_solver_name() const;
@@ -232,6 +224,15 @@ class BendersBase {
                                const std::shared_ptr<SubproblemWorker> &worker);
   // TODO to be rethink
   std::shared_ptr<Outerloop::CriterionComputation> criterions_computation_;
+  /**
+   * for the nth variable name, Subproblems shares the same prefix , only the
+   suffix is different
+   * ex variable at index = 0 is named in:
+
+  * subproblems-1-1  --> NTCDirect::link<area1$$area2>::hour<0>
+                                    * subproblems-3-5  -->
+  NTCDirect::link<area1$$area2>::hour<672>
+   */
   // Search for variables in sub problems that satisfy patterns
   // var_indices is a vector(for each patterns p) of vector (var indices related
   // to p)
