@@ -141,6 +141,7 @@ def check_other_outputs(context):
     assert (is_column_full_of_zeros(context.loss_of_load_file, 2))
     assert (is_column_full_of_zeros(context.positive_unsupplied_energy_file, 2))
 
+
 def get_results_file_path_from_logs(logs: bytes) -> str:
     for line in logs.splitlines():
         if b'Optimization results available in : ' in line:
