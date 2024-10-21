@@ -250,17 +250,16 @@ int BendersMainFactory::RunExternalLoop() {
     auto benders = PrepareForExecution(true);
     double tau = 0.5;
 
+    const auto& criterion_input_data =
+        criterion_computation_->getOuterLoopInputData();
     std::shared_ptr<Outerloop::IMasterUpdate> master_updater =
         std::make_shared<Outerloop::MasterUpdateBase>(
-            benders, tau,
-            criterion_computation_->getOuterLoopInputData()
-                .StoppingThreshold());
+            benders, tau, criterion_input_data.StoppingThreshold());
     std::shared_ptr<Outerloop::ICutsManager> cuts_manager =
         std::make_shared<Outerloop::CutsManagerRunTime>();
 
-    Outerloop::OuterLoopBenders ext_loop(
-        criterion_computation_->getOuterLoopInputData().OuterLoopData(),
-        master_updater, cuts_manager, benders,
+    Outerloop::OuterLoopBenders ext_loop(criterion_input_data.OuterLoopData(),
+                                         master_updater, cuts_manager, benders,
                                          *pworld_);
     ext_loop.Run();
     EndMessage(ext_loop.Runtime());
