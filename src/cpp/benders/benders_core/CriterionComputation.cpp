@@ -44,4 +44,4 @@ CriterionComputation::CriterionComputation(
     const OuterLoopInputData &outer_loop_input_data)
     : outer_loop_input_data_(outer_loop_input_data) {}
 
-}  // namespace Outerloop
+}  // namespace Benders::Criterion
