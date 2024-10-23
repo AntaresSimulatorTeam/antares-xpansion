@@ -38,7 +38,7 @@ var searchData=
   ['convert_3c_20outerloopsingleinputdata_20_3e_35',['convert&lt; OuterLoopSingleInputData &gt;',['../structYAML_1_1convert_3_01OuterLoopSingleInputData_01_4.html',1,'YAML']]],
   ['corruptedlockerfile_36',['CorruptedLockerFile',['../classantares__xpansion_1_1study__locker_1_1StudyLocker_1_1CorruptedLockerFile.html',1,'antares_xpansion::study_locker::StudyLocker']]],
   ['counts_37',['Counts',['../structCatch_1_1Counts.html',1,'Catch']]],
-  ['criterioncomputation_38',['CriterionComputation',['../classOuterloop_1_1CriterionComputation.html',1,'Outerloop']]],
+  ['criterioncomputation_38',['CriterionComputation',['../classBenders_1_1Criterion_1_1CriterionComputation.html',1,'Benders::Criterion']]],
   ['criterioncouldnotbesatisfied_39',['CriterionCouldNotBeSatisfied',['../classOuterloop_1_1CriterionCouldNotBeSatisfied.html',1,'Outerloop']]],
   ['currentiterationdata_40',['CurrentIterationData',['../structCurrentIterationData.html',1,'']]],
   ['cutsmanagerruntime_41',['CutsManagerRunTime',['../classOuterloop_1_1CutsManagerRunTime.html',1,'Outerloop']]]

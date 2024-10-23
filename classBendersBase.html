@@ -290,6 +290,9 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>Oute
 <tr class="memitem:ab1dc32430cc9897fd4a6ce15643c4c69" id="r_ab1dc32430cc9897fd4a6ce15643c4c69"><td class="memItemLeft" align="right" valign="top"><a id="ab1dc32430cc9897fd4a6ce15643c4c69" name="ab1dc32430cc9897fd4a6ce15643c4c69"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateOverallCosts</b> ()</td></tr>
 <tr class="separator:ab1dc32430cc9897fd4a6ce15643c4c69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f6728302575647f0506c64bb329e770" id="r_a2f6728302575647f0506c64bb329e770"><td class="memItemLeft" align="right" valign="top"><a id="a2f6728302575647f0506c64bb329e770" name="a2f6728302575647f0506c64bb329e770"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setCriterionsComputation</b> (std::shared_ptr&lt; <a class="el" href="classBenders_1_1Criterion_1_1CriterionComputation.html">Benders::Criterion::CriterionComputation</a> &gt; criterionsComputation)</td></tr>
+<tr class="separator:a2f6728302575647f0506c64bb329e770"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -392,7 +395,8 @@ virtual WorkerMasterPtr&#160;</td><td class="memItemRight" valign="bottom"><b>ge
 <tr class="memitem:aadfff76348ae02bac6de5c5e95fee99b" id="r_aadfff76348ae02bac6de5c5e95fee99b"><td class="memItemLeft" align="right" valign="top"><a id="aadfff76348ae02bac6de5c5e95fee99b" name="aadfff76348ae02bac6de5c5e95fee99b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>MatchProblemToId</b> ()</td></tr>
 <tr class="separator:aadfff76348ae02bac6de5c5e95fee99b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2196cf767f06d5d5107ec0d9a2439c17" id="r_a2196cf767f06d5d5107ec0d9a2439c17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersBase.html#a2196cf767f06d5d5107ec0d9a2439c17">AddSubproblemName</a> (const std::string &amp;name)</td></tr>
+<tr class="memitem:a2196cf767f06d5d5107ec0d9a2439c17" id="r_a2196cf767f06d5d5107ec0d9a2439c17"><td class="memItemLeft" align="right" valign="top"><a id="a2196cf767f06d5d5107ec0d9a2439c17" name="a2196cf767f06d5d5107ec0d9a2439c17"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AddSubproblemName</b> (const std::string &amp;name)</td></tr>
 <tr class="separator:a2196cf767f06d5d5107ec0d9a2439c17"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a094c16937cb11a0ea1f2cc87ed1d54ff" id="r_a094c16937cb11a0ea1f2cc87ed1d54ff"><td class="memItemLeft" align="right" valign="top"><a id="a094c16937cb11a0ea1f2cc87ed1d54ff" name="a094c16937cb11a0ea1f2cc87ed1d54ff"></a>
 std::string&#160;</td><td class="memItemRight" valign="bottom"><b>get_master_name</b> () const</td></tr>
@@ -535,6 +539,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetSimplexIteration
 <tr class="memitem:a5a01bc641edad3a02822c12b18e4e0bc" id="r_a5a01bc641edad3a02822c12b18e4e0bc"><td class="memItemLeft" align="right" valign="top"><a id="a5a01bc641edad3a02822c12b18e4e0bc" name="a5a01bc641edad3a02822c12b18e4e0bc"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SolveSubproblem</b> (SubProblemDataMap &amp;subproblem_data_map, <a class="el" href="structPlainData_1_1SubProblemData.html">PlainData::SubProblemData</a> &amp;subproblem_data, const std::string &amp;name, const std::shared_ptr&lt; <a class="el" href="classSubproblemWorker.html">SubproblemWorker</a> &gt; &amp;worker)</td></tr>
 <tr class="separator:a5a01bc641edad3a02822c12b18e4e0bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5845635a9719841fc3abdb70312dd389" id="r_a5845635a9719841fc3abdb70312dd389"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersBase.html#a5845635a9719841fc3abdb70312dd389">SetSubproblemsVariablesIndices</a> ()</td></tr>
+<tr class="separator:a5845635a9719841fc3abdb70312dd389"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
@@ -576,36 +582,11 @@ SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subprobl
 <tr class="memitem:a897cc03471332c177b24423cfc292e66" id="r_a897cc03471332c177b24423cfc292e66"><td class="memItemLeft" align="right" valign="top"><a id="a897cc03471332c177b24423cfc292e66" name="a897cc03471332c177b24423cfc292e66"></a>
 <a class="el" href="classSolverLogManager.html">SolverLogManager</a>&#160;</td><td class="memItemRight" valign="bottom"><b>solver_log_manager_</b></td></tr>
 <tr class="separator:a897cc03471332c177b24423cfc292e66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad60587284ef0d59592478efb1f7f18d8" id="r_ad60587284ef0d59592478efb1f7f18d8"><td class="memItemLeft" align="right" valign="top"><a id="ad60587284ef0d59592478efb1f7f18d8" name="ad60587284ef0d59592478efb1f7f18d8"></a>
+std::shared_ptr&lt; <a class="el" href="classBenders_1_1Criterion_1_1CriterionComputation.html">Benders::Criterion::CriterionComputation</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>criterions_computation_</b></td></tr>
+<tr class="separator:ad60587284ef0d59592478efb1f7f18d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a2196cf767f06d5d5107ec0d9a2439c17" name="a2196cf767f06d5d5107ec0d9a2439c17"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2196cf767f06d5d5107ec0d9a2439c17">&#9670;&#160;</a></span>AddSubproblemName()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void BendersBase::AddSubproblemName </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;&#160;</td>
-          <td class="paramname"><em>name</em></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<p>for the nth variable name, Subproblems shares the same prefix , only the suffix is different ex variable at index = 0 is named in:</p>
-<p>subproblems-1-1 --&gt; NTCDirect::link&lt;area1$$area2&gt;::hour&lt;0&gt; subproblems-3-5 --&gt; NTCDirect::link&lt;area1$$area2&gt;::hour&lt;672&gt; </p>
-
-</div>
-</div>
 <a id="a0fa4c04cc9815d16d43cd4a73d89f895" name="a0fa4c04cc9815d16d43cd4a73d89f895"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a0fa4c04cc9815d16d43cd4a73d89f895">&#9670;&#160;</a></span>BoundSimplexIterations()</h2>
 
@@ -819,7 +800,7 @@ SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subprobl
 </table>
 </div><div class="memdoc">
 
-<p>Implemented in <a class="el" href="classBendersMpi.html#a217d3af6fbe78082f30fa9ef75cf1dfb">BendersMpi</a>, and <a class="el" href="classOuterloop_1_1BendersMpiOuterLoop.html#a92374cfea41d421bf149823c531b001c">Outerloop::BendersMpiOuterLoop</a>.</p>
+<p>Implemented in <a class="el" href="classBendersMpi.html#a217d3af6fbe78082f30fa9ef75cf1dfb">BendersMpi</a>.</p>
 
 </div>
 </div>
@@ -873,6 +854,33 @@ SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subprobl
   </table>
   </dd>
 </dl>
+
+</div>
+</div>
+<a id="a5845635a9719841fc3abdb70312dd389" name="a5845635a9719841fc3abdb70312dd389"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5845635a9719841fc3abdb70312dd389">&#9670;&#160;</a></span>SetSubproblemsVariablesIndices()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BendersBase::SetSubproblemsVariablesIndices </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>for the nth variable name, Subproblems shares the same prefix , only the suffix is different ex variable at index = 0 is named in:</p>
+<p>subproblems-1-1 --&gt; NTCDirect::link&lt;area1$$area2&gt;::hour&lt;0&gt; subproblems-3-5 --&gt; NTCDirect::link&lt;area1$$area2&gt;::hour&lt;672&gt; </p>
 
 </div>
 </div>

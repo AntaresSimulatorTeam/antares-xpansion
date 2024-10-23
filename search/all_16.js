@@ -3,7 +3,7 @@ var searchData=
   ['m_20method_20benders_20mergemps_20adequacy_5fcriterion_20tt_0',['&lt;tt&gt;-m, --method {benders, mergeMPS, adequacy_criterion}&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md167',1,'']]],
   ['macos_1',['Linux/macOS',['../md_docs_2developer-guide_2install__from__sources_27-Xpress.html#autotoc_md100',1,'']]],
   ['mainwidget_2',['MainWidget',['../classantares-xpansion-ui_1_1MainWidget.html',1,'antares-xpansion-ui']]],
-  ['makeregex_3',['MakeRegex',['../classOuterloop_1_1OuterLoopPattern.html#ac4cbe17dc806e25504cb0ea26275ba67',1,'Outerloop::OuterLoopPattern']]],
+  ['makeregex_3',['MakeRegex',['../classBenders_1_1Criterion_1_1OuterLoopPattern.html#ac4cbe17dc806e25504cb0ea26275ba67',1,'Benders::Criterion::OuterLoopPattern']]],
   ['manager_4',['Install with a VCPKG package manager',['../md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html#autotoc_md76',1,'']]],
   ['mapgenerator_5',['MapGenerator',['../classCatch_1_1Generators_1_1MapGenerator.html',1,'Catch::Generators']]],
   ['mapping_20file_6',['5- Creation of a variable / column ID mapping file',['../md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md127',1,'']]],

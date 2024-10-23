@@ -5,7 +5,7 @@ var searchData=
   ['variablefilereadertest_2',['VariableFileReaderTest',['../classVariableFileReaderTest.html',1,'']]],
   ['variablefilereadnameconfiguration_3',['VariableFileReadNameConfiguration',['../structVariableFileReadNameConfiguration.html',1,'']]],
   ['variablenamecomposition_4',['VariableNameComposition',['../structVariableNameComposition.html',1,'']]],
-  ['variablesgroup_5',['VariablesGroup',['../classOuterloop_1_1VariablesGroup.html',1,'Outerloop']]],
+  ['variablesgroup_5',['VariablesGroup',['../classBenders_1_1Criterion_1_1VariablesGroup.html',1,'Benders::Criterion']]],
   ['variablesgrouptest_6',['VariablesGroupTest',['../classVariablesGroupTest.html',1,'']]],
   ['variablesnotfound_7',['VariablesNotFound',['../classVariableFileReader_1_1VariablesNotFound.html',1,'VariableFileReader']]],
   ['version_8',['Version',['../structVersion.html',1,'']]],

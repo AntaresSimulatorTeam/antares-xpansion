@@ -128,6 +128,21 @@ var annotated_dup =
       ] ]
     ] ],
     [ "Benders", null, [
+      [ "Criterion", null, [
+        [ "CriterionComputation", "classBenders_1_1Criterion_1_1CriterionComputation.html", "classBenders_1_1Criterion_1_1CriterionComputation" ],
+        [ "IOuterLoopInputDataReader", "classBenders_1_1Criterion_1_1IOuterLoopInputDataReader.html", null ],
+        [ "OuterLoopCouldNotReadAreaField", "classBenders_1_1Criterion_1_1OuterLoopCouldNotReadAreaField.html", null ],
+        [ "OuterLoopCouldNotReadCriterionField", "classBenders_1_1Criterion_1_1OuterLoopCouldNotReadCriterionField.html", null ],
+        [ "OuterLoopInputData", "classBenders_1_1Criterion_1_1OuterLoopInputData.html", null ],
+        [ "OuterLoopInputFileError", "classBenders_1_1Criterion_1_1OuterLoopInputFileError.html", null ],
+        [ "OuterLoopInputFileIsEmpty", "classBenders_1_1Criterion_1_1OuterLoopInputFileIsEmpty.html", null ],
+        [ "OuterLoopInputFileNoPatternFound", "classBenders_1_1Criterion_1_1OuterLoopInputFileNoPatternFound.html", null ],
+        [ "OuterLoopInputFromYaml", "classBenders_1_1Criterion_1_1OuterLoopInputFromYaml.html", null ],
+        [ "OuterLoopInputPatternsShouldBeArray", "classBenders_1_1Criterion_1_1OuterLoopInputPatternsShouldBeArray.html", null ],
+        [ "OuterLoopPattern", "classBenders_1_1Criterion_1_1OuterLoopPattern.html", "classBenders_1_1Criterion_1_1OuterLoopPattern" ],
+        [ "OuterLoopSingleInputData", "classBenders_1_1Criterion_1_1OuterLoopSingleInputData.html", "classBenders_1_1Criterion_1_1OuterLoopSingleInputData" ],
+        [ "VariablesGroup", "classBenders_1_1Criterion_1_1VariablesGroup.html", null ]
+      ] ],
       [ "StartUp", "classBenders_1_1StartUp.html", null ]
     ] ],
     [ "Catch", null, [
@@ -269,28 +284,15 @@ var annotated_dup =
       [ "XpansionError", "classLogUtils_1_1XpansionError.html", null ]
     ] ],
     [ "Outerloop", null, [
-      [ "BendersMpiOuterLoop", "classOuterloop_1_1BendersMpiOuterLoop.html", "classOuterloop_1_1BendersMpiOuterLoop" ],
-      [ "CriterionComputation", "classOuterloop_1_1CriterionComputation.html", null ],
+      [ "BendersMpiOuterLoop", "classOuterloop_1_1BendersMpiOuterLoop.html", null ],
       [ "CriterionCouldNotBeSatisfied", "classOuterloop_1_1CriterionCouldNotBeSatisfied.html", null ],
       [ "CutsManagerRunTime", "classOuterloop_1_1CutsManagerRunTime.html", null ],
       [ "ICutsManager", "classOuterloop_1_1ICutsManager.html", null ],
       [ "IMasterUpdate", "classOuterloop_1_1IMasterUpdate.html", null ],
-      [ "IOuterLoopInputDataReader", "classOuterloop_1_1IOuterLoopInputDataReader.html", null ],
       [ "MasterUpdateBase", "classOuterloop_1_1MasterUpdateBase.html", null ],
       [ "OuterLoop", "classOuterloop_1_1OuterLoop.html", null ],
       [ "OuterLoopBenders", "classOuterloop_1_1OuterLoopBenders.html", null ],
-      [ "OuterLoopBiLevel", "classOuterloop_1_1OuterLoopBiLevel.html", null ],
-      [ "OuterLoopCouldNotReadAreaField", "classOuterloop_1_1OuterLoopCouldNotReadAreaField.html", null ],
-      [ "OuterLoopCouldNotReadCriterionField", "classOuterloop_1_1OuterLoopCouldNotReadCriterionField.html", null ],
-      [ "OuterLoopInputData", "classOuterloop_1_1OuterLoopInputData.html", null ],
-      [ "OuterLoopInputFileError", "classOuterloop_1_1OuterLoopInputFileError.html", null ],
-      [ "OuterLoopInputFileIsEmpty", "classOuterloop_1_1OuterLoopInputFileIsEmpty.html", null ],
-      [ "OuterLoopInputFileNoPatternFound", "classOuterloop_1_1OuterLoopInputFileNoPatternFound.html", null ],
-      [ "OuterLoopInputFromYaml", "classOuterloop_1_1OuterLoopInputFromYaml.html", null ],
-      [ "OuterLoopInputPatternsShouldBeArray", "classOuterloop_1_1OuterLoopInputPatternsShouldBeArray.html", null ],
-      [ "OuterLoopPattern", "classOuterloop_1_1OuterLoopPattern.html", "classOuterloop_1_1OuterLoopPattern" ],
-      [ "OuterLoopSingleInputData", "classOuterloop_1_1OuterLoopSingleInputData.html", "classOuterloop_1_1OuterLoopSingleInputData" ],
-      [ "VariablesGroup", "classOuterloop_1_1VariablesGroup.html", null ]
+      [ "OuterLoopBiLevel", "classOuterloop_1_1OuterLoopBiLevel.html", null ]
     ] ],
     [ "Output", null, [
       [ "CandidateData", "structOutput_1_1CandidateData.html", null ],
@@ -495,6 +497,7 @@ var annotated_dup =
     [ "InvalidSolverOptionException", "classInvalidSolverOptionException.html", null ],
     [ "InvalidSolverStatusException", "classInvalidSolverStatusException.html", null ],
     [ "InvalidStatusException", "classInvalidStatusException.html", null ],
+    [ "InvalidStructureFile", "structInvalidStructureFile.html", null ],
     [ "IProblemProviderPort", "classIProblemProviderPort.html", null ],
     [ "IProblemVariablesProviderPort", "classIProblemVariablesProviderPort.html", null ],
     [ "IProblemWriter", "classIProblemWriter.html", null ],

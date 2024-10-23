@@ -60,7 +60,7 @@ var hierarchy =
     [ "YAML::convert< OuterLoopInputData >", "structYAML_1_1convert_3_01OuterLoopInputData_01_4.html", null ],
     [ "YAML::convert< OuterLoopSingleInputData >", "structYAML_1_1convert_3_01OuterLoopSingleInputData_01_4.html", null ],
     [ "Catch::Counts", "structCatch_1_1Counts.html", null ],
-    [ "Outerloop::CriterionComputation", "classOuterloop_1_1CriterionComputation.html", null ],
+    [ "Benders::Criterion::CriterionComputation", "classBenders_1_1Criterion_1_1CriterionComputation.html", null ],
     [ "CurrentIterationData", "structCurrentIterationData.html", null ],
     [ "Catch::Decomposer", "structCatch_1_1Decomposer.html", null ],
     [ "DirectAccessScenarioToChronicleProvider", "classDirectAccessScenarioToChronicleProvider.html", null ],
@@ -257,8 +257,8 @@ var hierarchy =
         [ "LinkProfile::InvalidHourForProfile", "classLinkProfile_1_1InvalidHourForProfile.html", null ]
       ] ]
     ] ],
-    [ "Outerloop::IOuterLoopInputDataReader", "classOuterloop_1_1IOuterLoopInputDataReader.html", [
-      [ "Outerloop::OuterLoopInputFromYaml", "classOuterloop_1_1OuterLoopInputFromYaml.html", null ]
+    [ "Benders::Criterion::IOuterLoopInputDataReader", "classBenders_1_1Criterion_1_1IOuterLoopInputDataReader.html", [
+      [ "Benders::Criterion::OuterLoopInputFromYaml", "classBenders_1_1Criterion_1_1OuterLoopInputFromYaml.html", null ]
     ] ],
     [ "IProblemProviderPort", "classIProblemProviderPort.html", [
       [ "FileProblemProviderAdapter", "classFileProblemProviderAdapter.html", null ],
@@ -386,9 +386,9 @@ var hierarchy =
     ] ],
     [ "Outerloop::OuterLoopBiLevel", "classOuterloop_1_1OuterLoopBiLevel.html", null ],
     [ "OuterLoopCurrentIterationData", "structOuterLoopCurrentIterationData.html", null ],
-    [ "Outerloop::OuterLoopInputData", "classOuterloop_1_1OuterLoopInputData.html", null ],
-    [ "Outerloop::OuterLoopPattern", "classOuterloop_1_1OuterLoopPattern.html", null ],
-    [ "Outerloop::OuterLoopSingleInputData", "classOuterloop_1_1OuterLoopSingleInputData.html", null ],
+    [ "Benders::Criterion::OuterLoopInputData", "classBenders_1_1Criterion_1_1OuterLoopInputData.html", null ],
+    [ "Benders::Criterion::OuterLoopPattern", "classBenders_1_1Criterion_1_1OuterLoopPattern.html", null ],
+    [ "Benders::Criterion::OuterLoopSingleInputData", "classBenders_1_1Criterion_1_1OuterLoopSingleInputData.html", null ],
     [ "Output::OutputWriter", "classOutput_1_1OutputWriter.html", [
       [ "Output::JsonWriter", "classOutput_1_1JsonWriter.html", null ],
       [ "Output::VoidWriter", "classOutput_1_1VoidWriter.html", null ],
@@ -427,6 +427,12 @@ var hierarchy =
         [ "ActiveLinksBuilder::MultipleAlreadyInstalledProfileDetectedForLink", "classActiveLinksBuilder_1_1MultipleAlreadyInstalledProfileDetectedForLink.html", null ],
         [ "ActiveLinksBuilder::MultipleLinkIddetectedForLink", "classActiveLinksBuilder_1_1MultipleLinkIddetectedForLink.html", null ],
         [ "ActiveLinksBuilder::ThereIsNoLinkProfileAssociatedWithThisProfile", "classActiveLinksBuilder_1_1ThereIsNoLinkProfileAssociatedWithThisProfile.html", null ],
+        [ "Benders::Criterion::OuterLoopCouldNotReadAreaField", "classBenders_1_1Criterion_1_1OuterLoopCouldNotReadAreaField.html", null ],
+        [ "Benders::Criterion::OuterLoopCouldNotReadCriterionField", "classBenders_1_1Criterion_1_1OuterLoopCouldNotReadCriterionField.html", null ],
+        [ "Benders::Criterion::OuterLoopInputFileError", "classBenders_1_1Criterion_1_1OuterLoopInputFileError.html", null ],
+        [ "Benders::Criterion::OuterLoopInputFileIsEmpty", "classBenders_1_1Criterion_1_1OuterLoopInputFileIsEmpty.html", null ],
+        [ "Benders::Criterion::OuterLoopInputFileNoPatternFound", "classBenders_1_1Criterion_1_1OuterLoopInputFileNoPatternFound.html", null ],
+        [ "Benders::Criterion::OuterLoopInputPatternsShouldBeArray", "classBenders_1_1Criterion_1_1OuterLoopInputPatternsShouldBeArray.html", null ],
         [ "CandidatesINIReader::InvalidIntercoFile", "classCandidatesINIReader_1_1InvalidIntercoFile.html", null ],
         [ "InvalidBoundTypeException", "classInvalidBoundTypeException.html", null ],
         [ "InvalidColSizeException", "classInvalidColSizeException.html", null ],
@@ -437,17 +443,12 @@ var hierarchy =
         [ "InvalidSolverOptionException", "classInvalidSolverOptionException.html", null ],
         [ "InvalidSolverStatusException", "classInvalidSolverStatusException.html", null ],
         [ "InvalidStatusException", "classInvalidStatusException.html", null ],
+        [ "InvalidStructureFile", "structInvalidStructureFile.html", null ],
         [ "LpFilesExtractor::ErrorWithAreaFile", "classLpFilesExtractor_1_1ErrorWithAreaFile.html", null ],
         [ "LpFilesExtractor::ErrorWithIntercosFile", "classLpFilesExtractor_1_1ErrorWithIntercosFile.html", null ],
         [ "OptionsParser::InvalidNumberOfArgumentsPassedToParser", "classOptionsParser_1_1InvalidNumberOfArgumentsPassedToParser.html", null ],
         [ "OptionsParser::NullArgumentsValues", "classOptionsParser_1_1NullArgumentsValues.html", null ],
         [ "Outerloop::CriterionCouldNotBeSatisfied", "classOuterloop_1_1CriterionCouldNotBeSatisfied.html", null ],
-        [ "Outerloop::OuterLoopCouldNotReadAreaField", "classOuterloop_1_1OuterLoopCouldNotReadAreaField.html", null ],
-        [ "Outerloop::OuterLoopCouldNotReadCriterionField", "classOuterloop_1_1OuterLoopCouldNotReadCriterionField.html", null ],
-        [ "Outerloop::OuterLoopInputFileError", "classOuterloop_1_1OuterLoopInputFileError.html", null ],
-        [ "Outerloop::OuterLoopInputFileIsEmpty", "classOuterloop_1_1OuterLoopInputFileIsEmpty.html", null ],
-        [ "Outerloop::OuterLoopInputFileNoPatternFound", "classOuterloop_1_1OuterLoopInputFileNoPatternFound.html", null ],
-        [ "Outerloop::OuterLoopInputPatternsShouldBeArray", "classOuterloop_1_1OuterLoopInputPatternsShouldBeArray.html", null ],
         [ "ProblemGenerationOptions::ConflictingParameters", "classProblemGenerationOptions_1_1ConflictingParameters.html", null ],
         [ "ProblemGenerationOptions::MismatchedParameters", "classProblemGenerationOptions_1_1MismatchedParameters.html", null ],
         [ "ProblemGenerationOptions::MissingParameters", "classProblemGenerationOptions_1_1MissingParameters.html", null ],
@@ -648,7 +649,7 @@ var hierarchy =
     [ "VariableFileReader", "classVariableFileReader.html", null ],
     [ "VariableFileReadNameConfiguration", "structVariableFileReadNameConfiguration.html", null ],
     [ "VariableNameComposition", "structVariableNameComposition.html", null ],
-    [ "Outerloop::VariablesGroup", "classOuterloop_1_1VariablesGroup.html", null ],
+    [ "Benders::Criterion::VariablesGroup", "classBenders_1_1Criterion_1_1VariablesGroup.html", null ],
     [ "Version", "structVersion.html", null ],
     [ "WeightsFileReader", "classWeightsFileReader.html", null ],
     [ "Worker", "classWorker.html", [

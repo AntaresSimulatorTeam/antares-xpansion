@@ -1,5 +1,10 @@
 var NAVTREEINDEX6 =
 {
+"md_docs_2how__to.html":[14],
+"md_docs_2how__to.html#autotoc_md129":[14,0],
+"md_docs_2how__to.html#autotoc_md130":[14,1],
+"md_docs_2index.html":[15],
+"md_docs_2index.html#autotoc_md131":[15,0],
 "md_docs_2index.html#autotoc_md132":[15,0,0],
 "md_docs_2index.html#autotoc_md133":[15,0,1],
 "md_docs_2user-guide_2get-started_2adequacy-criterion.html":[16],
@@ -237,17 +242,12 @@ var NAVTREEINDEX6 =
 "structILoggerXpansion.html#a5d5ef0a1321f54372ecba334a7ae1acd":[26,0,85,1],
 "structILoggerXpansion.html#ac29cdc7dc59c2dde6ce45201c91e770e":[26,0,85,0],
 "structIntercoFileData.html":[26,0,90],
-"structLinkdataRecord.html":[26,0,114],
-"structLinkdataRecord.html#a12279383606cfad20c9c61b23947c04a":[26,0,114,5],
-"structLinkdataRecord.html#a80fbca65660bf152d9523946037b4e38":[26,0,114,4],
-"structLinkdataRecord.html#aa20ce772cba9b224e845426dff9a374e":[26,0,114,3],
-"structLinkdataRecord.html#aa46f4f8abc7f1561d5f38cfc007db565":[26,0,114,6],
-"structLinkdataRecord.html#ac225589197f2bc3346b67b3a6ae9ef80":[26,0,114,2],
-"structLinkdataRecord.html#ae9b0c3f12a949600310ea69db43425d4":[26,0,114,1],
-"structLinkdataRecord_1_1FileColumns.html":[26,0,114,0],
-"structLinkdataRecord_1_1FileColumns.html#a087c9dfcfef544c84f61925adcc1a7d4":[26,0,114,0,6],
-"structLinkdataRecord_1_1FileColumns.html#a72660e6f946994368a7a69859aa7dde0":[26,0,114,0,4],
-"structLinkdataRecord_1_1FileColumns.html#a729097b7eca4ae27add0d332decf53d9":[26,0,114,0,2],
-"structLinkdataRecord_1_1FileColumns.html#a8d83f0f99914a833dfb34896ab69be36":[26,0,114,0,5],
-"structLinkdataRecord_1_1FileColumns.html#ac1c6534362074e573d6a052f0432a111":[26,0,114,0,0]
+"structInvalidStructureFile.html":[26,0,100],
+"structLinkdataRecord.html":[26,0,115],
+"structLinkdataRecord.html#a12279383606cfad20c9c61b23947c04a":[26,0,115,5],
+"structLinkdataRecord.html#a80fbca65660bf152d9523946037b4e38":[26,0,115,4],
+"structLinkdataRecord.html#aa20ce772cba9b224e845426dff9a374e":[26,0,115,3],
+"structLinkdataRecord.html#aa46f4f8abc7f1561d5f38cfc007db565":[26,0,115,6],
+"structLinkdataRecord.html#ac225589197f2bc3346b67b3a6ae9ef80":[26,0,115,2],
+"structLinkdataRecord.html#ae9b0c3f12a949600310ea69db43425d4":[26,0,115,1]
 };
