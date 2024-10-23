@@ -102,7 +102,7 @@ struct EmptyLogger : public ILoggerXpansion {
 };
 
 /**
- * this \class act like a log agregator
+ * this \class act like a log aggregator
  */
 struct BendersLoggerBase : public ILoggerXpansion {
   void display_message(const std::string &str) override {

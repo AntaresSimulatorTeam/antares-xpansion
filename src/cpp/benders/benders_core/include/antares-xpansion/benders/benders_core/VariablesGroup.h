@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "OuterLoopInputDataReader.h"
-namespace Outerloop {
+namespace Benders::Criterion {
 class VariablesGroup {
  public:
   explicit VariablesGroup(const std::vector<std::string>& all_variables,
@@ -17,4 +17,4 @@ class VariablesGroup {
   const std::vector<OuterLoopSingleInputData>& outer_loop_single_input_data_;
   std::vector<std::vector<int>> indices_;
 };
-}  // namespace Outerloop
+}  // namespace Benders::Criterion

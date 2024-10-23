@@ -1,10 +1,12 @@
 
+
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
 
 #include <algorithm>
 #include <utility>
 
-#include "antares-xpansion/benders/outer_loop/CriterionComputation.h"
+#include "antares-xpansion/benders/benders_core/CriterionComputation.h"
+#include "antares-xpansion/benders/benders_core/CustomVector.h"
 #include "antares-xpansion/helpers/Timer.h"
 
 BendersMpi::BendersMpi(BendersBaseOptions const &options, Logger logger,
@@ -40,8 +42,17 @@ void BendersMpi::InitializeProblems() {
     }
     current_problem_id++;
   }
-
+  BroadCastVariablesIndices();
+  init_problems_ = false;
 }
+
+void BendersMpi::BroadCastVariablesIndices() {
+  if (_world.rank() == rank_0) {
+    SetSubproblemsVariablesIndices();
+  }
+  BroadCast(criterions_computation_->getVarIndices(), rank_0);
+}
+
 void BendersMpi::BuildMasterProblem() {
   if (_world.rank() == rank_0) {
     reset_master<WorkerMaster>(master_variable_map_, get_master_path(),
@@ -137,10 +148,6 @@ void BendersMpi::gather_subproblems_cut_package_and_build_cuts(
 }
 void BendersMpi::GatherCuts(const SubProblemDataMap &subproblem_data_map,
                             const Timer &walltime) {
-  BuildGatheredCuts(subproblem_data_map, walltime);
-}
-void BendersMpi::BuildGatheredCuts(const SubProblemDataMap &subproblem_data_map,
-                                   const Timer &walltime) {
   std::vector<SubProblemDataMap> gathered_subproblem_map;
   mpi::gather(_world, subproblem_data_map, gathered_subproblem_map, rank_0);
   SetSubproblemsWalltime(walltime.elapsed());
@@ -151,6 +158,73 @@ void BendersMpi::BuildGatheredCuts(const SubProblemDataMap &subproblem_data_map,
 
   // only rank_0 receive non-emtpy gathered_subproblem_map
   master_build_cuts(gathered_subproblem_map);
+
+  ComputeSubproblemsContributionToOuterLoopCriterion(subproblem_data_map);
+  if (_world.rank() == rank_0) {
+    outer_loop_criterion_.push_back(
+        _data.outer_loop_current_iteration_data.outer_loop_criterion);
+    UpdateMaxCriterionArea();
+  }
+}
+
+void BendersMpi::SolveSubproblem(
+    SubProblemDataMap &subproblem_data_map,
+    PlainData::SubProblemData &subproblem_data, const std::string &name,
+    const std::shared_ptr<SubproblemWorker> &worker) {
+  BendersBase::SolveSubproblem(subproblem_data_map, subproblem_data, name,
+                               worker);
+
+  std::vector<double> solution;
+  worker->get_solution(solution);
+  criterions_computation_->ComputeOuterLoopCriterion(
+      SubproblemWeight(_data.nsubproblem, name), solution,
+      subproblem_data.outer_loop_criterions,
+      subproblem_data.outer_loop_patterns_values);
+}
+
+void BendersMpi::UpdateMaxCriterionArea() {
+  auto criterions_begin =
+      _data.outer_loop_current_iteration_data.outer_loop_criterion.cbegin();
+  auto criterions_end =
+      _data.outer_loop_current_iteration_data.outer_loop_criterion.cend();
+  auto max_criterion_it = std::max_element(criterions_begin, criterions_end);
+  if (max_criterion_it != criterions_end) {
+    _data.outer_loop_current_iteration_data.max_criterion = *max_criterion_it;
+    auto max_criterion_index =
+        std::distance(criterions_begin, max_criterion_it);
+    _data.outer_loop_current_iteration_data.max_criterion_area =
+        criterions_computation_->getOuterLoopInputData()
+            .OuterLoopData()[max_criterion_index]
+            .Pattern()
+            .GetBody();
+  }
+}
+
+void BendersMpi::ComputeSubproblemsContributionToOuterLoopCriterion(
+    const SubProblemDataMap &subproblem_data_map) {
+  const auto vars_size = criterions_computation_->getVarIndices().size();
+  std::vector<double> outer_loop_criterion_per_sub_problem_per_pattern(
+      vars_size, {});
+  _data.outer_loop_current_iteration_data.outer_loop_criterion.resize(vars_size,
+                                                                      0.);
+  std::vector<double> outer_loop_patterns_values_per_sub_problem_per_pattern(
+      vars_size, {});
+  _data.outer_loop_current_iteration_data.outer_loop_patterns_values.resize(
+      vars_size, 0.);
+
+  for (const auto &[subproblem_name, subproblem_data] : subproblem_data_map) {
+    AddVectors<double>(outer_loop_criterion_per_sub_problem_per_pattern,
+                       subproblem_data.outer_loop_criterions);
+    AddVectors<double>(outer_loop_patterns_values_per_sub_problem_per_pattern,
+                       subproblem_data.outer_loop_patterns_values);
+  }
+
+  Reduce(outer_loop_criterion_per_sub_problem_per_pattern,
+         _data.outer_loop_current_iteration_data.outer_loop_criterion,
+         std::plus<double>(), rank_0);
+  Reduce(outer_loop_patterns_values_per_sub_problem_per_pattern,
+         _data.outer_loop_current_iteration_data.outer_loop_patterns_values,
+         std::plus<double>(), rank_0);
 }
 
 SubProblemDataMap BendersMpi::get_subproblem_cut_package() {
@@ -163,22 +237,10 @@ void BendersMpi::master_build_cuts(
     std::vector<SubProblemDataMap> gathered_subproblem_map) {
   SetSubproblemCost(0);
 
-  // if (Rank() == rank_0) {
-  // TODO decoment to save all cuts
-  // workerMasterDataVect_.push_back({_data.x_cut, {}});
-  // may be unuseful
-  // current_iteration_cuts_.x_cut = _data.x_cut;
-  // }
   for (const auto &subproblem_data_map : gathered_subproblem_map) {
     for (auto &&[sub_problem_name, subproblem_data] : subproblem_data_map) {
-      // save current cuts
-      // workerMasterDataVect_.back().subsProblemDataMap[sub_problem_name] =
-      //     subproblem_data;
 
-      // current_iteration_cuts_.subsProblemDataMap[sub_problem_name] =
-      //     subproblem_data;
       SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
-      // compute delta_cut >= options.CUT_MASTER_TOL;
       BoundSimplexIterations(subproblem_data.simplex_iter);
     }
   }

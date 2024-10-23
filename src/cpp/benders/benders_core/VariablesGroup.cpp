@@ -1,5 +1,16 @@
-#include "antares-xpansion/benders/outer_loop/VariablesGroup.h"
-using namespace Outerloop;
+#include "include/antares-xpansion/benders/benders_core/VariablesGroup.h"
+
+#include <regex>
+
+using namespace Benders::Criterion;
+
+/**
+ * @file VariablesGroup.cpp
+ * @brief Implementation of the VariablesGroup class.
+ *
+ * This file contains the implementation of the VariablesGroup class,
+ * which is responsible for grouping variables based on provided input patterns.
+ */
 
 VariablesGroup::VariablesGroup(
     const std::vector<std::string>& all_variables,

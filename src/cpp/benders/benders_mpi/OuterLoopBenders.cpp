@@ -2,11 +2,12 @@
 namespace Outerloop {
 
 OuterLoopBenders::OuterLoopBenders(
-    CriterionComputation& criterion_computation,
+    const std::vector<Benders::Criterion::OuterLoopSingleInputData>&
+        outer_loop_data,
     std::shared_ptr<IMasterUpdate> master_updater,
     std::shared_ptr<ICutsManager> cuts_manager, pBendersBase benders,
     mpi::communicator& world)
-    : OuterLoop(criterion_computation),
+    : outer_loop_biLevel_(outer_loop_data),
       master_updater_(std::move(master_updater)),
       cuts_manager_(std::move(cuts_manager)),
       benders_(std::move(benders)),
@@ -66,11 +67,6 @@ bool OuterLoopBenders::UpdateMaster() {
   return stop_update_master;
 }
 
-OuterLoopBenders::~OuterLoopBenders() {
-  benders_->mathLoggerDriver_->Print(benders_->GetCurrentIterationData());
-  benders_->SaveOuterLoopSolutionInOutputFile();
-  benders_->free();
-}
 
 void OuterLoopBenders::OuterLoopCheckFeasibility() {
   std::vector<double> obj_coeff;
@@ -130,5 +126,11 @@ void OuterLoopBenders::OuterLoopBilevelChecks() {
     benders_->SaveCurrentOuterLoopIterationInOutputFile();
     benders_->SetBilevelBestub(outer_loop_biLevel_.BilevelBestub());
   }
+}
+void OuterLoopBenders::Run() {
+  OuterLoop::Run();
+  benders_->mathLoggerDriver_->Print(benders_->GetCurrentIterationData());
+  benders_->SaveOuterLoopSolutionInOutputFile();
+  benders_->free();
 }
 }  // namespace Outerloop
