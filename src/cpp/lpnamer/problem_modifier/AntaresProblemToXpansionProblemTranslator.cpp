@@ -9,7 +9,6 @@
 
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
-#include "antares-xpansion/helpers/solver_utils.h"
 
 /**
  *
@@ -26,6 +25,8 @@ AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
   auto constant = lps.constantProblemData;
   auto hebdo = lps.weeklyProblems.at({year, week});
   problem->_name = hebdo.name;
+  problem->mc_year = year;
+  problem->week = week;
 
   std::vector<int> tmp(constant.VariablesCount, 0);
   std::vector<char> coltypes(constant.VariablesCount, 'C');
