@@ -57,6 +57,7 @@ void PrintExternalLoopData(LogDestination& log_destination,
                            const BENDERSMETHOD& method);
 
 struct MathLoggerBehaviour : public ILoggerXpansion {
+  using ILoggerXpansion::display_message;
   void write_header();
 
   virtual void Print(const CurrentIterationData& data) = 0;
@@ -173,6 +174,7 @@ class MathLoggerImplementation : public MathLoggerBehaviour {
 
 class MathLoggerDriver : public ILoggerXpansion {
  public:
+  using ILoggerXpansion::display_message;
   MathLoggerDriver() = default;
   void write_header();
   void display_message(const std::string& str) override;

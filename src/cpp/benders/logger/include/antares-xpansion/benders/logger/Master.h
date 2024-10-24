@@ -25,8 +25,8 @@ class Master : public ILogger {
   }
 
   void display_message(const std::string &str) override;
-  void display_message(const std::string &str,
-                       LogUtils::LOGLEVEL level) override;
+  virtual void display_message(const std::string &str, LogUtils::LOGLEVEL level,
+                               const std::string &context = "Benders") override;
 
   virtual void PrintIterationSeparatorBegin() override;
   virtual void PrintIterationSeparatorEnd() override;

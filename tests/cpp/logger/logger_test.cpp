@@ -567,9 +567,6 @@ class SimpleLoggerMock : public ILogger {
   }
 
   void display_message(const std::string& str) { _displaymessage = str; }
-  void display_message(const std::string& str, LogUtils::LOGLEVEL level) {
-    _displaymessage = str;
-  }
 
   void PrintIterationSeparatorBegin() override {
     //

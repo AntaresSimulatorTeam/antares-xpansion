@@ -137,6 +137,7 @@ BaseOptions SimulationOptions::get_base_options() const {
   result.SOLVER_NAME = SOLVER_NAME;
   result.weights = _weights;
   result.RESUME = RESUME;
+  result.AREA_FILE = AREA_FILE;
 
   return result;
 }

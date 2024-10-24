@@ -57,8 +57,7 @@ enum class BENDERSMETHOD {
   BENDERS_BY_BATCH_OUTERLOOP
 };
 
-constexpr inline std::string_view bendersmethod_to_string(
-    BENDERSMETHOD method) {
+inline std::string bendersmethod_to_string(BENDERSMETHOD method) {
   switch (method) {
     case BENDERSMETHOD::BENDERS:
       return "Benders";
@@ -149,6 +148,7 @@ struct BaseOptions {
   std::string MASTER_NAME;
   std::string SOLVER_NAME;
   std::string SLAVE_WEIGHT;
+  std::string AREA_FILE;
 
   int LOG_LEVEL = 0;
 

@@ -1,6 +1,6 @@
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
-#include "antares-xpansion/helpers/Clock.h"
+#include "antares-xpansion/xpansion_interfaces/Clock.h"
 
 namespace ProblemGenerationLog {
 ProblemGenerationFileLogger::ProblemGenerationFileLogger(
@@ -103,6 +103,9 @@ ProblemGenerationLogger& ProblemGenerationLogger::operator<<(
     subLogger->GetOstreamObject() << f;
   }
   return *this;
+}
+const std::string& ProblemGenerationLogger::getContext() const {
+  return context_;
 }
 
 ProblemGenerationLoggerSharedPointer BuildLogger(

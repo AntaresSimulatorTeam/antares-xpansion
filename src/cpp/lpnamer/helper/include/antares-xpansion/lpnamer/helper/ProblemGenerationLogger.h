@@ -13,12 +13,13 @@
 
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
-#include "antares-xpansion/helpers/LoggerUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LoggerUtils.h"
 
 namespace ProblemGenerationLog {
 
 class ProblemGenerationILogger : public ILoggerXpansion {
  public:
+  using ILoggerXpansion::display_message;
   ~ProblemGenerationILogger() override = default;
   void display_message(const std::string& message) override = 0;
   void PrintIterationSeparatorBegin() override = 0;
@@ -73,9 +74,12 @@ class ProblemGenerationLogger : public ILoggerXpansion {
   std::string context_ = "Unknown Context";
 
  public:
+  using ILoggerXpansion::display_message;
+
   explicit ProblemGenerationLogger(const LogUtils::LOGLEVEL log_level)
       : log_level_(log_level) {}
   ~ProblemGenerationLogger() = default;
+  const std::string& getContext() const;
 
   void AddLogger(const ProblemGenerationILoggerSharedPointer& logger);
   void display_message(const std::string& message);

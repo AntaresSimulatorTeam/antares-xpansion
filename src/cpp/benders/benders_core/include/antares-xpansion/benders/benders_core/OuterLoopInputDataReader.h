@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "antares-xpansion/helpers/LoggerUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LoggerUtils.h"
 #include "yaml-cpp/yaml.h"
 
 namespace Benders::Criterion {

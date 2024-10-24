@@ -31,13 +31,9 @@ class CandidatesINIReader {
       const std::filesystem::path& antaresIntercoFile) const;
   std::vector<IntercoFileData> ReadAntaresIntercoFile(
       std::istringstream& antaresIntercoFileInStringStream) const;
-  std::vector<std::string> ReadAreaFile(
-      const std::filesystem::path& areaFile) const;
-  std::vector<std::string> ReadAreaFile(
-      std::istringstream& areaFileInStringStream) const;
+
   std::vector<IntercoFileData> ReadLineByLineInterco(
       std::istream& stream) const;
-  std::vector<std::string> ReadLineByLineArea(std::istream& stream) const;
   std::vector<CandidateData> readCandidateData(
       const std::filesystem::path& candidateFile) const;
 
@@ -57,6 +53,7 @@ class CandidatesINIReader {
   std::vector<IntercoFileData> _intercoFileData;
   std::vector<std::string> _areaNames;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  void ProcessAreaFile(const std::filesystem::path& areaFile);
 };
 
 #endif  // ANTARESXPANSION_CANDIDATESINIREADER_H

@@ -6,7 +6,7 @@
 #include <filesystem>
 #include <fstream>
 
-#include "antares-xpansion/helpers/Clock.h"
+#include "antares-xpansion/xpansion_interfaces/Clock.h"
 #include "antares-xpansion/xpansion_interfaces/OutputWriter.h"
 
 namespace Output {
