@@ -73,6 +73,9 @@ class ProblemGenerationLogger : public ILoggerXpansion {
   std::string context_ = "Unknown Context";
 
  public:
+  const std::string& getContext() const;
+
+ public:
   explicit ProblemGenerationLogger(const LogUtils::LOGLEVEL log_level)
       : log_level_(log_level) {}
   ~ProblemGenerationLogger() = default;

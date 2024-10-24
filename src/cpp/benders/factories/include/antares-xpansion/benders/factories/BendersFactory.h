@@ -33,12 +33,8 @@ class BendersMainFactory {
   Benders::Criterion::OuterLoopInputData GetInputFromSubProblem(
       const CouplingMap& couplingMap);
 
-  Benders::Criterion::OuterLoopInputData PatternsFromSupbProblem(
-      const std::string& first_subproblem_name) const;
-  SolverAbstract::Ptr BuildSolver(
-      const std::string& first_subproblem_name) const;
-  std::set<std::string> UniqueAreas(
-      const std::vector<std::string>& all_variables_name) const;
+  Benders::Criterion::OuterLoopInputData BuildPatternsuUsingAreaFile() const;
+  std::set<std::string> ReadAreaFile() const;
   void EndMessage(const double execution_time);
 
  public:

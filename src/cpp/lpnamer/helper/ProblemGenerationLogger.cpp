@@ -104,6 +104,9 @@ ProblemGenerationLogger& ProblemGenerationLogger::operator<<(
   }
   return *this;
 }
+const std::string& ProblemGenerationLogger::getContext() const {
+  return context_;
+}
 
 ProblemGenerationLoggerSharedPointer BuildLogger(
     const std::filesystem::path& log_file_path, std::ostream& stream,

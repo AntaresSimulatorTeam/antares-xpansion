@@ -4,6 +4,7 @@
 
 #include <exception>
 
+#include "antares-xpansion/helpers/AreaParser.h"
 #include "antares-xpansion/lpnamer/input_reader/INIReader.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
@@ -14,7 +15,14 @@ CandidatesINIReader::CandidatesINIReader(
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
     : logger_(logger) {
   _intercoFileData = ReadAntaresIntercoFile(antaresIntercoFile);
-  _areaNames = ReadAreaFile(areaFile);
+  const auto areaFileData = AreaParser::ReadAreaFile(areaFile);
+  if (const auto &msg = areaFileData.error_message;
+      !areaFileData.error_message.empty()) {
+    (*logger_)(LogUtils::LOGLEVEL::FATAL) << msg;
+    throw AreaFileError(
+        PrefixMessage(LogUtils::LOGLEVEL::FATAL, logger_->getContext()), msg);
+  }
+  _areaNames = areaFileData.areas;
   for (auto const &intercoFileData : _intercoFileData) {
     // TODO : check if index is available in areaNames
     std::string const &pays_or(_areaNames[intercoFileData.index_pays_origine]);
@@ -63,35 +71,6 @@ std::vector<IntercoFileData> CandidatesINIReader::ReadLineByLineInterco(
   return result;
 }
 
-std::vector<std::string> CandidatesINIReader::ReadAreaFile(
-    const std::filesystem::path &areaFile) const {
-  std::ifstream area_filestream(areaFile);
-  if (!area_filestream.good()) {
-    (*logger_)(LogUtils::LOGLEVEL::FATAL)
-        << LOGLOCATION << "unable to open " << areaFile.string();
-    std::exit(1);
-  }
-
-  return ReadLineByLineArea(area_filestream);
-}
-
-std::vector<std::string> CandidatesINIReader::ReadAreaFile(
-    std::istringstream &areaFileInStringStream) const {
-  return ReadLineByLineArea(areaFileInStringStream);
-}
-
-std::vector<std::string> CandidatesINIReader::ReadLineByLineArea(
-    std::istream &stream) const {
-  std::vector<std::string> result;
-
-  std::string line;
-  while (std::getline(stream, line)) {
-    if (!line.empty() && line.front() != '#') {
-      result.push_back(StringManip::StringUtils::ToLowercase(line));
-    }
-  }
-  return result;
-}
 
 std::string getStrVal(const INIReader &reader, const std::string &sectionName,
                       const std::string &key) {

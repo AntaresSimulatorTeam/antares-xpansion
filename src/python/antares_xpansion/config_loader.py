@@ -501,6 +501,9 @@ class ConfigLoader:
         options_values[OptimisationKeys.outer_loop_option_file_key()] = (
             self._config.OUTER_LOOP_FILE
         )
+        options_values[OptimisationKeys.area_file_key()] = (
+            self._config.AREA_FILE
+        )
         if os.path.exists(self.outer_loop_options_path()):
             shutil.copy(self.outer_loop_options_path(), self._simulation_lp_path())
 

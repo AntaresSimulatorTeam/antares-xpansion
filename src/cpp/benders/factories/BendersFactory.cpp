@@ -197,16 +197,13 @@ BendersMainFactory::GetInputFromSubProblem(const CouplingMap& couplingMap) {
         log_location);
   } else {
     const auto first_subproblem_name = first_subproblem_pair->first;
-    return PatternsFromSupbProblem(first_subproblem_name);
+    return BuildPatternsuUsingAreaFile();
   }
 }
 
 Benders::Criterion::OuterLoopInputData
-BendersMainFactory::PatternsFromSupbProblem(
-    const std::string& first_subproblem_name) const {
-  SolverAbstract::Ptr solver = BuildSolver(first_subproblem_name);
-  const auto all_variables_name = solver->get_col_names();
-  std::set<std::string> unique_areas = UniqueAreas(all_variables_name);
+BendersMainFactory::BuildPatternsuUsingAreaFile() const {
+  std::set<std::string> unique_areas = ReadAreaFile();
   Benders::Criterion::OuterLoopInputData ret;
   ret.SetCriterionCountThreshold(1);
 
@@ -216,36 +213,21 @@ BendersMainFactory::PatternsFromSupbProblem(
     ret.AddSingleData(singleInputData);
   }
 
-  solver->free();
   return ret;
 }
 
-std::set<std::string> BendersMainFactory::UniqueAreas(
-    const std::vector<std::string>& all_variables_name) const {
+std::set<std::string> BendersMainFactory::ReadAreaFile() const {
   std::set<std::string> unique_areas;
-  std::regex area_regex(
-      "area<([^>]+)>");  // Regular expression to match area<...>
+  const auto area_file =
+      std::filesystem::path(options_.INPUTROOT) / options_.AREA_FILE;
 
-  for (const auto& str : all_variables_name) {
-    std::smatch match;
-    if (std::regex_search(str, match, area_regex)) {
-      unique_areas.insert(match[1]);  // Insert the matched area into the set
-    }
+  if (!std::filesystem::exists(area_file)) {
+    return {};
   }
+
   return unique_areas;
 }
 
-SolverAbstract::Ptr BendersMainFactory::BuildSolver(
-    const std::string& first_subproblem_name) const {
-  SolverFactory factory(logger_);
-  auto solver_log_manager = SolverLogManager(LogReportsName());
-  auto solver = factory.create_solver(
-      options_.SOLVER_NAME, SOLVER_TYPE::CONTINUOUS, solver_log_manager);
-  solver->read_prob_mps(std::filesystem::path(options_.INPUTROOT) /
-                        first_subproblem_name);
-  solver->set_threads(1);
-  return solver;
-}
 
 int BendersMainFactory::RunExternalLoop() {
   try {

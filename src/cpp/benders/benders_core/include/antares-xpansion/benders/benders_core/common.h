@@ -149,6 +149,7 @@ struct BaseOptions {
   std::string MASTER_NAME;
   std::string SOLVER_NAME;
   std::string SLAVE_WEIGHT;
+  std::string AREA_FILE;
 
   int LOG_LEVEL = 0;
 
