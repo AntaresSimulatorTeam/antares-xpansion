@@ -396,10 +396,16 @@ class ConfigLoader:
         return self._last_study
 
     def benders_pre_actions(self):
+        self.copy_area_file_to_lpdir()
         self.save_launcher_options()
         if self._config.step != "resume":  # expansion dir alaready in resume mode
             self.create_expansion_dir()
         self._set_options_for_benders_solver()
+
+    def copy_area_file_to_lpdir(self):
+        area_file = self.xpansion_simulation_output() / "area.txt"
+        if area_file.exists():
+            shutil.copy(area_file, self._simulation_lp_path())
 
     def save_launcher_options(self):
         options = {}
