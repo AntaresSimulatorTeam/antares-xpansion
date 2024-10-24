@@ -21,7 +21,6 @@ target_sources(helpers PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/AntaresVersionProvider.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ArchiveReader.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ArchiveWriter.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/Clock.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/FileInBuffer.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/JsonXpansionReader.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/OptionsParser.cpp
