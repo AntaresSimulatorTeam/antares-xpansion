@@ -39,7 +39,7 @@ TEST_F(BatchCollectionTest,
   auto expected = std::string(" batch_size(") + std::to_string(batch_size) +
                   ") can not be greater than number of subproblems (" +
                   std::to_string(sub_problems_name_list_size) + ")\n" +
-                  " Setting batch_size = number of subproblems(" +
+                  "Setting batch_size = number of subproblems(" +
                   std::to_string(sub_problems_name_list_size) +
                   ")\nWhich means that there is only one batch!\n";
   auto batch_collection =

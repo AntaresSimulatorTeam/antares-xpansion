@@ -24,8 +24,7 @@ User::User(std::ostream &stream) : _stream(stream) {
 }
 
 void User::display_message(const std::string &str) {
-  _stream << PrefixMessage(LogUtils::LOGLEVEL::INFO, context_) << str
-          << std::endl;
+  _stream << str << std::endl;
 }
 
 void User::log_at_initialization(const int it_number) {

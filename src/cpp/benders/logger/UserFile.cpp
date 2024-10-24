@@ -31,8 +31,7 @@ UserFile::~UserFile() {
 }
 
 void UserFile::display_message(const std::string &str) {
-  _file << PrefixMessage(LogUtils::LOGLEVEL::INFO, context_) << str
-        << std::endl;
+  _file << str << std::endl;
   _file.flush();
 }
 
