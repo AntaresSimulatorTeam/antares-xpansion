@@ -40,8 +40,8 @@ int ReadTimeStep(const std::string& input, const unsigned int week) {
   // Two possible cases:
   // - either index is yearly (starts at (week-1)*167) => nothing to do
   // - or the index is weekly (starts at 0) => it needs to be shifted by +(week-1)*167
-  if (timestep_in_problem < (week - 1) * 167) {
-    timestep_in_problem += (week - 1) * 167;
+  if (timestep_in_problem < (week - 1) * 168) {
+    timestep_in_problem += (week - 1) * 168;
   }
   return timestep_in_problem;
 }
