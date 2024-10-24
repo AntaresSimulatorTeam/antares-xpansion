@@ -32,9 +32,7 @@ target_sources(helpers PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/helpers/ArchiveIO.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/helpers/ArchiveReader.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/helpers/ArchiveWriter.h
-        ../xpansion_interfaces/include/antares-xpansion/xpansion_interfaces/Clock.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/helpers/FileInBuffer.h
-        ../xpansion_interfaces/include/antares-xpansion/xpansion_interfaces/LoggerUtils.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/helpers/OptionsParser.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/helpers/Timer.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/helpers/solver_utils.h
