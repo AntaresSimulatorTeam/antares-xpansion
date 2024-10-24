@@ -22,20 +22,21 @@ class BendersMainFactory {
   Logger logger_ = nullptr;
   Writer writer_ = nullptr;
   BENDERSMETHOD method_ = BENDERSMETHOD::BENDERS;
+  std::string context_ = bendersmethod_to_string(BENDERSMETHOD::BENDERS);
+  std::string positive_unsupplied_file_;
+  static constexpr const char* const LOLD_FILE = "LOLD.txt";
 
   [[nodiscard]] int RunExternalLoop();
   [[nodiscard]] int RunBenders();
   [[nodiscard]] std::shared_ptr<MathLoggerDriver> BuildMathLogger(
       bool benders_log_console) const;
   pBendersBase PrepareForExecution(bool external_loop);
-  [[nodiscard]] Benders::Criterion::OuterLoopInputData ProcessCriterionInput(
-      const CouplingMap& couplingMap);
-  Benders::Criterion::OuterLoopInputData GetInputFromSubProblem(
-      const CouplingMap& couplingMap);
+  [[nodiscard]] Benders::Criterion::OuterLoopInputData ProcessCriterionInput();
 
-  Benders::Criterion::OuterLoopInputData BuildPatternsuUsingAreaFile() const;
-  std::set<std::string> ReadAreaFile() const;
+  Benders::Criterion::OuterLoopInputData BuildPatternsuUsingAreaFile();
+  std::set<std::string> ReadAreaFile();
   void EndMessage(const double execution_time);
+  void AddCriterionOutput(std::shared_ptr<MathLoggerDriver> math_log_driver);
 
  public:
   explicit BendersMainFactory(int argc, char** argv,

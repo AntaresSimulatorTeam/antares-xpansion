@@ -57,8 +57,7 @@ enum class BENDERSMETHOD {
   BENDERS_BY_BATCH_OUTERLOOP
 };
 
-constexpr inline std::string_view bendersmethod_to_string(
-    BENDERSMETHOD method) {
+constexpr inline std::string bendersmethod_to_string(BENDERSMETHOD method) {
   switch (method) {
     case BENDERSMETHOD::BENDERS:
       return "Benders";

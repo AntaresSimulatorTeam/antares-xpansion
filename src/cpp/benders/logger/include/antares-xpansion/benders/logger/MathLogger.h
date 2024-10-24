@@ -3,7 +3,7 @@
 #include <filesystem>
 
 #include "antares-xpansion/benders/benders_core/BendersMathLogger.h"
-#include "antares-xpansion/helpers/LoggerUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LoggerUtils.h"
 
 class MathLoggerFile : public MathLoggerImplementation {
  public:

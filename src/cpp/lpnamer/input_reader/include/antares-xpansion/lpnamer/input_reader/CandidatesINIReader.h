@@ -53,6 +53,7 @@ class CandidatesINIReader {
   std::vector<IntercoFileData> _intercoFileData;
   std::vector<std::string> _areaNames;
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  void ProcessAreaFile(const std::filesystem::path& areaFile);
 };
 
 #endif  // ANTARESXPANSION_CANDIDATESINIREADER_H

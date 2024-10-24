@@ -17,8 +17,6 @@ class User : public ILogger {
   User(std::ostream &stream);
 
   void display_message(const std::string &str) override;
-  void display_message(const std::string &str,
-                       LogUtils::LOGLEVEL level) override;
 
   virtual void PrintIterationSeparatorBegin() override;
   virtual void PrintIterationSeparatorEnd() override;

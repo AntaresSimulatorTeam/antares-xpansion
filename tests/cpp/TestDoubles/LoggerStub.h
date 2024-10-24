@@ -8,9 +8,9 @@
 
 class LoggerNOOPStub : public ILogger {
  public:
+  using ILoggerXpansion::display_message;
+
   void display_message(const std::string& str) override {}
-  void display_message(const std::string& str,
-                       LogUtils::LOGLEVEL level) override {}
   void PrintIterationSeparatorBegin() override {
     //
   }

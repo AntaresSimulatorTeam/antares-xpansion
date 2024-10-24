@@ -15,14 +15,9 @@ CandidatesINIReader::CandidatesINIReader(
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
     : logger_(logger) {
   _intercoFileData = ReadAntaresIntercoFile(antaresIntercoFile);
-  const auto areaFileData = AreaParser::ReadAreaFile(areaFile);
-  if (const auto &msg = areaFileData.error_message;
-      !areaFileData.error_message.empty()) {
-    (*logger_)(LogUtils::LOGLEVEL::FATAL) << msg;
-    throw AreaFileError(
-        PrefixMessage(LogUtils::LOGLEVEL::FATAL, logger_->getContext()), msg);
-  }
-  _areaNames = areaFileData.areas;
+
+  ProcessAreaFile(areaFile);
+
   for (auto const &intercoFileData : _intercoFileData) {
     // TODO : check if index is available in areaNames
     std::string const &pays_or(_areaNames[intercoFileData.index_pays_origine]);
@@ -31,6 +26,16 @@ CandidatesINIReader::CandidatesINIReader(
     std::string linkName = pays_or + " - " + pays_ex;
     _intercoIndexMap[linkName] = intercoFileData.index_interco;
   }
+}
+void CandidatesINIReader::ProcessAreaFile(
+    const std::filesystem::path &areaFile) {
+  const auto areaFileData = AreaParser::ReadAreaFile(areaFile);
+  if (const auto &msg = areaFileData.error_message; !msg.empty()) {
+    (*logger_)(LogUtils::LOGLEVEL::FATAL) << msg;
+    throw AreaFileError(
+        PrefixMessage(LogUtils::LOGLEVEL::FATAL, logger_->getContext()), msg);
+  }
+  _areaNames = areaFileData.areas;
 }
 
 std::vector<IntercoFileData> CandidatesINIReader::ReadAntaresIntercoFile(

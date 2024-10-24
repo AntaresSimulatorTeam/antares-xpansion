@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 
-#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LoggerUtils.h"
 
 typedef std::map<std::string, double> LogPoint;
 
@@ -85,6 +85,12 @@ struct ILoggerXpansion {
   void display_message(const std::ostringstream &msg) {
     display_message(msg.str());
   }
+
+  virtual void display_message(const std::string &str, LogUtils::LOGLEVEL level,
+                               const std::string &context = "Xpansion") {
+    display_message(PrefixMessage(level, context) + str);
+  }
+
   virtual void PrintIterationSeparatorBegin() = 0;
   virtual void PrintIterationSeparatorEnd() = 0;
   virtual ~ILoggerXpansion() = default;
@@ -94,6 +100,7 @@ struct ILoggerXpansion {
  * useful for multi-proc run
  */
 struct EmptyLogger : public ILoggerXpansion {
+  using ILoggerXpansion::display_message;
   void display_message(const std::string &str) override {}
   void PrintIterationSeparatorBegin() override {};
   void PrintIterationSeparatorEnd() override {};
@@ -125,6 +132,13 @@ struct BendersLoggerBase : public ILoggerXpansion {
       logger->PrintIterationSeparatorEnd();
     }
   }
+  virtual void display_message(
+      const std::string &str, LogUtils::LOGLEVEL level,
+      const std::string &context = "Xpansion") override {
+    for (auto logger : loggers) {
+      logger->display_message(str, level, context);
+    }
+  }
 
  private:
   std::vector<std::shared_ptr<ILoggerXpansion>> loggers;
@@ -136,11 +150,11 @@ struct BendersLoggerBase : public ILoggerXpansion {
  */
 class ILogger : public ILoggerXpansion {
  public:
+  using ILoggerXpansion::display_message;
+
   virtual ~ILogger() = default;
 
   virtual void display_message(const std::string &str) = 0;
-  virtual void display_message(const std::string &str,
-                               LogUtils::LOGLEVEL level) = 0;
   virtual void PrintIterationSeparatorBegin() = 0;
   virtual void PrintIterationSeparatorEnd() = 0;
   virtual void log_at_initialization(const int it_number) = 0;
@@ -164,7 +178,8 @@ class ILogger : public ILoggerXpansion {
   virtual void LogAtInitialRelaxation() = 0;
   virtual void LogAtSwitchToInteger() = 0;
   virtual void cumulative_number_of_sub_problem_solved(int number) = 0;
-  const std::string CONTEXT = "Benders";
+  std::string context_ = "Benders";
+  void setContext(const std::string &context) { context_ = context; }
 };
 
 using Logger = std::shared_ptr<ILogger>;
