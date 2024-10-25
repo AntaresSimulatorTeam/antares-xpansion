@@ -17,6 +17,8 @@ var hierarchy =
       [ "ArchiveReader", "classArchiveReader.html", null ],
       [ "ArchiveWriter", "classArchiveWriter.html", null ]
     ] ],
+    [ "AreaFileData", "structAreaFileData.html", null ],
+    [ "AreaParser", "structAreaParser.html", null ],
     [ "Catch::Generators::as< T >", "structCatch_1_1Generators_1_1as.html", null ],
     [ "Catch::AssertionHandler", "classCatch_1_1AssertionHandler.html", null ],
     [ "Catch::AssertionInfo", "structCatch_1_1AssertionInfo.html", null ],
@@ -166,6 +168,11 @@ var hierarchy =
     [ "Catch::ExceptionTranslatorRegistrar", "classCatch_1_1ExceptionTranslatorRegistrar.html", null ],
     [ "Catch::ExprLhs< LhsT >", "classCatch_1_1ExprLhs.html", null ],
     [ "ExternalLoopOptions", "structExternalLoopOptions.html", null ],
+    [ "std::ios_base::failure", null, [
+      [ "LogUtils::XpansionError< std::ios_base::failure >", "classLogUtils_1_1XpansionError.html", [
+        [ "AreaFileError", "structAreaFileError.html", null ]
+      ] ]
+    ] ],
     [ "std::false_type", null, [
       [ "Catch::always_false< T >", "structCatch_1_1always__false.html", null ]
     ] ],

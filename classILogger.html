@@ -158,9 +158,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a1326996d4147821e1dad10103a0dc2e8" id="r_a1326996d4147821e1dad10103a0dc2e8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classILogger.html#a1326996d4147821e1dad10103a0dc2e8">display_message</a> (const std::string &amp;str)=0</td></tr>
 <tr class="memdesc:a1326996d4147821e1dad10103a0dc2e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method to display a std::string message  <br /></td></tr>
 <tr class="separator:a1326996d4147821e1dad10103a0dc2e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0c19dbf351694b2d7008bb7f41e6b1e7" id="r_a0c19dbf351694b2d7008bb7f41e6b1e7"><td class="memItemLeft" align="right" valign="top"><a id="a0c19dbf351694b2d7008bb7f41e6b1e7" name="a0c19dbf351694b2d7008bb7f41e6b1e7"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>display_message</b> (const std::string &amp;str, LogUtils::LOGLEVEL level)=0</td></tr>
-<tr class="separator:a0c19dbf351694b2d7008bb7f41e6b1e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3bd1d4e7872a1de170e4016dcb1ae0a5" id="r_a3bd1d4e7872a1de170e4016dcb1ae0a5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classILogger.html#a3bd1d4e7872a1de170e4016dcb1ae0a5">display_message</a> (const std::string &amp;str, LogUtils::LOGLEVEL level, const std::string &amp;context)=0</td></tr>
+<tr class="separator:a3bd1d4e7872a1de170e4016dcb1ae0a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72be00a34641a9c5dd0fb0ccb0d3d127" id="r_a72be00a34641a9c5dd0fb0ccb0d3d127"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classILogger.html#a72be00a34641a9c5dd0fb0ccb0d3d127">PrintIterationSeparatorBegin</a> ()=0</td></tr>
 <tr class="separator:a72be00a34641a9c5dd0fb0ccb0d3d127"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a90eb75846409ae680cbfb0dc66d43330" id="r_a90eb75846409ae680cbfb0dc66d43330"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classILogger.html#a90eb75846409ae680cbfb0dc66d43330">PrintIterationSeparatorEnd</a> ()=0</td></tr>
@@ -228,7 +227,7 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>CONTEXT<
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a1326996d4147821e1dad10103a0dc2e8" name="a1326996d4147821e1dad10103a0dc2e8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1326996d4147821e1dad10103a0dc2e8">&#9670;&#160;</a></span>display_message()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a1326996d4147821e1dad10103a0dc2e8">&#9670;&#160;</a></span>display_message() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -262,6 +261,50 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>CONTEXT<
 <p>Implements <a class="el" href="structILoggerXpansion.html#a5d5ef0a1321f54372ecba334a7ae1acd">ILoggerXpansion</a>.</p>
 
 <p>Implemented in <a class="el" href="classSimpleLoggerMock.html#a4d6fb0377ff9865b580a0a82216ce28b">SimpleLoggerMock</a>, <a class="el" href="classxpansion_1_1logger_1_1Master.html#aedc1d1015a2efc90153fbc02a83bd397">xpansion::logger::Master</a>, <a class="el" href="classxpansion_1_1logger_1_1User.html#a7d02e013cf851b057661d0718c13f58a">xpansion::logger::User</a>, <a class="el" href="classxpansion_1_1logger_1_1UserFile.html#a20209f11f5576c3ea4f74a999fdda486">xpansion::logger::UserFile</a>, and <a class="el" href="classLoggerNOOPStub.html#a9b5b63dad6fbfdc9aa563b6b4c26af48">LoggerNOOPStub</a>.</p>
+
+</div>
+</div>
+<a id="a3bd1d4e7872a1de170e4016dcb1ae0a5" name="a3bd1d4e7872a1de170e4016dcb1ae0a5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3bd1d4e7872a1de170e4016dcb1ae0a5">&#9670;&#160;</a></span>display_message() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void ILogger::display_message </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">LogUtils::LOGLEVEL&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>context</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="structILoggerXpansion.html">ILoggerXpansion</a>.</p>
 
 </div>
 </div>

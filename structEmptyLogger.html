@@ -154,6 +154,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a69cb84c65248af6f19ec4518a44c02ae" id="r_a69cb84c65248af6f19ec4518a44c02ae"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structEmptyLogger.html#a69cb84c65248af6f19ec4518a44c02ae">display_message</a> (const std::string &amp;str) override</td></tr>
 <tr class="memdesc:a69cb84c65248af6f19ec4518a44c02ae"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method to display a std::string message  <br /></td></tr>
 <tr class="separator:a69cb84c65248af6f19ec4518a44c02ae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae3946862a7eeafd2986a435aad90bf29" id="r_ae3946862a7eeafd2986a435aad90bf29"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structEmptyLogger.html#ae3946862a7eeafd2986a435aad90bf29">display_message</a> (const std::string &amp;str, LogUtils::LOGLEVEL level, const std::string &amp;context) override</td></tr>
+<tr class="separator:ae3946862a7eeafd2986a435aad90bf29"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01e96300fce4672ab5708cc9d50bf0e8" id="r_a01e96300fce4672ab5708cc9d50bf0e8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structEmptyLogger.html#a01e96300fce4672ab5708cc9d50bf0e8">PrintIterationSeparatorBegin</a> () override</td></tr>
 <tr class="separator:a01e96300fce4672ab5708cc9d50bf0e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5230c3d9763fe71d6c185ff0d9717198" id="r_a5230c3d9763fe71d6c185ff0d9717198"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structEmptyLogger.html#a5230c3d9763fe71d6c185ff0d9717198">PrintIterationSeparatorEnd</a> () override</td></tr>
@@ -166,7 +168,7 @@ Public Member Functions</h2></td></tr>
 <div class="textblock"><p>useful for multi-proc run </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a69cb84c65248af6f19ec4518a44c02ae" name="a69cb84c65248af6f19ec4518a44c02ae"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a69cb84c65248af6f19ec4518a44c02ae">&#9670;&#160;</a></span>display_message()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a69cb84c65248af6f19ec4518a44c02ae">&#9670;&#160;</a></span>display_message() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -198,6 +200,50 @@ Public Member Functions</h2></td></tr>
 </dl>
 
 <p>Implements <a class="el" href="structILoggerXpansion.html#a5d5ef0a1321f54372ecba334a7ae1acd">ILoggerXpansion</a>.</p>
+
+</div>
+</div>
+<a id="ae3946862a7eeafd2986a435aad90bf29" name="ae3946862a7eeafd2986a435aad90bf29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae3946862a7eeafd2986a435aad90bf29">&#9670;&#160;</a></span>display_message() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void EmptyLogger::display_message </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>str</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">LogUtils::LOGLEVEL&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>context</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="structILoggerXpansion.html">ILoggerXpansion</a>.</p>
 
 </div>
 </div>

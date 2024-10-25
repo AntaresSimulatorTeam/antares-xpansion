@@ -154,8 +154,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a4d6fb0377ff9865b580a0a82216ce28b" id="r_a4d6fb0377ff9865b580a0a82216ce28b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimpleLoggerMock.html#a4d6fb0377ff9865b580a0a82216ce28b">display_message</a> (const std::string &amp;str)</td></tr>
 <tr class="memdesc:a4d6fb0377ff9865b580a0a82216ce28b"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method to display a std::string message  <br /></td></tr>
 <tr class="separator:a4d6fb0377ff9865b580a0a82216ce28b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a6ee8757ad392b8d75703c902a0c1db" id="r_a6a6ee8757ad392b8d75703c902a0c1db"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimpleLoggerMock.html#a6a6ee8757ad392b8d75703c902a0c1db">display_message</a> (const std::string &amp;str, LogUtils::LOGLEVEL level)</td></tr>
-<tr class="separator:a6a6ee8757ad392b8d75703c902a0c1db"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a764cd64bd06d4a1cefe9f61460b5455e" id="r_a764cd64bd06d4a1cefe9f61460b5455e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimpleLoggerMock.html#a764cd64bd06d4a1cefe9f61460b5455e">display_message</a> (const std::string &amp;str, LogUtils::LOGLEVEL level, const std::string &amp;context)</td></tr>
+<tr class="separator:a764cd64bd06d4a1cefe9f61460b5455e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abe20deb631b42b0723fe2912362c0d32" id="r_abe20deb631b42b0723fe2912362c0d32"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimpleLoggerMock.html#abe20deb631b42b0723fe2912362c0d32">PrintIterationSeparatorBegin</a> () override</td></tr>
 <tr class="separator:abe20deb631b42b0723fe2912362c0d32"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a24e51f35a23c788fb2c3c11eb8a3ee8f" id="r_a24e51f35a23c788fb2c3c11eb8a3ee8f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSimpleLoggerMock.html#a24e51f35a23c788fb2c3c11eb8a3ee8f">PrintIterationSeparatorEnd</a> () override</td></tr>
@@ -306,8 +306,8 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>CONTEXT<
 
 </div>
 </div>
-<a id="a6a6ee8757ad392b8d75703c902a0c1db" name="a6a6ee8757ad392b8d75703c902a0c1db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a6ee8757ad392b8d75703c902a0c1db">&#9670;&#160;</a></span>display_message() <span class="overload">[2/2]</span></h2>
+<a id="a764cd64bd06d4a1cefe9f61460b5455e" name="a764cd64bd06d4a1cefe9f61460b5455e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a764cd64bd06d4a1cefe9f61460b5455e">&#9670;&#160;</a></span>display_message() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -325,7 +325,13 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>CONTEXT<
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">LogUtils::LOGLEVEL&#160;</td>
-          <td class="paramname"><em>level</em>&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>context</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

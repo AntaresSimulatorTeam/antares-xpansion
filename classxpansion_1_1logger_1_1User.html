@@ -156,8 +156,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a7d02e013cf851b057661d0718c13f58a" id="r_a7d02e013cf851b057661d0718c13f58a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxpansion_1_1logger_1_1User.html#a7d02e013cf851b057661d0718c13f58a">display_message</a> (const std::string &amp;str) override</td></tr>
 <tr class="memdesc:a7d02e013cf851b057661d0718c13f58a"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method to display a std::string message  <br /></td></tr>
 <tr class="separator:a7d02e013cf851b057661d0718c13f58a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0a3a193b758b7ec237fd89d83d5ad9c1" id="r_a0a3a193b758b7ec237fd89d83d5ad9c1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxpansion_1_1logger_1_1User.html#a0a3a193b758b7ec237fd89d83d5ad9c1">display_message</a> (const std::string &amp;str, LogUtils::LOGLEVEL level) override</td></tr>
-<tr class="separator:a0a3a193b758b7ec237fd89d83d5ad9c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9869eea34dc31210124d1316a115e9e2" id="r_a9869eea34dc31210124d1316a115e9e2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxpansion_1_1logger_1_1User.html#a9869eea34dc31210124d1316a115e9e2">display_message</a> (const std::string &amp;str, LogUtils::LOGLEVEL level, const std::string &amp;context) override</td></tr>
+<tr class="separator:a9869eea34dc31210124d1316a115e9e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7c72fef0da3f04e23c317c5285bad8d1" id="r_a7c72fef0da3f04e23c317c5285bad8d1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxpansion_1_1logger_1_1User.html#a7c72fef0da3f04e23c317c5285bad8d1">PrintIterationSeparatorBegin</a> () override</td></tr>
 <tr class="separator:a7c72fef0da3f04e23c317c5285bad8d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7384bfe789d012ec9cc0635c27f7cdb0" id="r_a7384bfe789d012ec9cc0635c27f7cdb0"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classxpansion_1_1logger_1_1User.html#a7384bfe789d012ec9cc0635c27f7cdb0">PrintIterationSeparatorEnd</a> () override</td></tr>
@@ -272,8 +272,8 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>CONTEXT<
 
 </div>
 </div>
-<a id="a0a3a193b758b7ec237fd89d83d5ad9c1" name="a0a3a193b758b7ec237fd89d83d5ad9c1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0a3a193b758b7ec237fd89d83d5ad9c1">&#9670;&#160;</a></span>display_message() <span class="overload">[2/2]</span></h2>
+<a id="a9869eea34dc31210124d1316a115e9e2" name="a9869eea34dc31210124d1316a115e9e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9869eea34dc31210124d1316a115e9e2">&#9670;&#160;</a></span>display_message() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -291,7 +291,13 @@ const std::string&#160;</td><td class="memItemRight" valign="bottom"><b>CONTEXT<
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype">LogUtils::LOGLEVEL&#160;</td>
-          <td class="paramname"><em>level</em>&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>context</em>&#160;</td>
         </tr>
         <tr>
           <td></td>

@@ -157,6 +157,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a23ff89b503fdd2aa217c40d5c65b507d" id="r_a23ff89b503fdd2aa217c40d5c65b507d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMathLoggerFile.html#a23ff89b503fdd2aa217c40d5c65b507d">display_message</a> (const std::string &amp;msg) override</td></tr>
 <tr class="memdesc:a23ff89b503fdd2aa217c40d5c65b507d"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method to display a std::string message  <br /></td></tr>
 <tr class="separator:a23ff89b503fdd2aa217c40d5c65b507d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a666751b9dd0543ac1ec4a57a057a2546" id="r_a666751b9dd0543ac1ec4a57a057a2546"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMathLoggerFile.html#a666751b9dd0543ac1ec4a57a057a2546">display_message</a> (const std::string &amp;msg, LogUtils::LOGLEVEL level, const std::string &amp;context) override</td></tr>
+<tr class="separator:a666751b9dd0543ac1ec4a57a057a2546"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab02bf4ad488db0e1d559fd46b518c0b6" id="r_ab02bf4ad488db0e1d559fd46b518c0b6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMathLoggerFile.html#ab02bf4ad488db0e1d559fd46b518c0b6">PrintIterationSeparatorBegin</a> () override</td></tr>
 <tr class="separator:ab02bf4ad488db0e1d559fd46b518c0b6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac611320d7cfb7efc63e6aeab8dad1e30" id="r_ac611320d7cfb7efc63e6aeab8dad1e30"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMathLoggerFile.html#ac611320d7cfb7efc63e6aeab8dad1e30">PrintIterationSeparatorEnd</a> () override</td></tr>
@@ -174,6 +176,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a433bd4d646c45306a225e310f681493d inherit pub_methods_classMathLoggerImplementation" id="r_a433bd4d646c45306a225e310f681493d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMathLoggerImplementation.html#a433bd4d646c45306a225e310f681493d">display_message</a> (const std::string &amp;str) override</td></tr>
 <tr class="memdesc:a433bd4d646c45306a225e310f681493d inherit pub_methods_classMathLoggerImplementation"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method to display a std::string message  <br /></td></tr>
 <tr class="separator:a433bd4d646c45306a225e310f681493d inherit pub_methods_classMathLoggerImplementation"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ba5b324e12f86c26dd194ad6c72c936 inherit pub_methods_classMathLoggerImplementation" id="r_a5ba5b324e12f86c26dd194ad6c72c936"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMathLoggerImplementation.html#a5ba5b324e12f86c26dd194ad6c72c936">display_message</a> (const std::string &amp;str, LogUtils::LOGLEVEL level, const std::string &amp;context) override</td></tr>
+<tr class="separator:a5ba5b324e12f86c26dd194ad6c72c936 inherit pub_methods_classMathLoggerImplementation"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa8ef7b0a2fd6aec8aad21b2b72eb08b8 inherit pub_methods_classMathLoggerImplementation" id="r_aa8ef7b0a2fd6aec8aad21b2b72eb08b8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMathLoggerImplementation.html#aa8ef7b0a2fd6aec8aad21b2b72eb08b8">Print</a> (const <a class="el" href="structCurrentIterationData.html">CurrentIterationData</a> &amp;data) override</td></tr>
 <tr class="separator:aa8ef7b0a2fd6aec8aad21b2b72eb08b8 inherit pub_methods_classMathLoggerImplementation"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a72ed6296790d0c4b29cd2b1b4c82d4b6 inherit pub_methods_classMathLoggerImplementation" id="r_a72ed6296790d0c4b29cd2b1b4c82d4b6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classMathLoggerImplementation.html#a72ed6296790d0c4b29cd2b1b4c82d4b6">PrintIterationSeparatorBegin</a> () override</td></tr>
@@ -200,7 +204,7 @@ Additional Inherited Members</h2></td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a23ff89b503fdd2aa217c40d5c65b507d" name="a23ff89b503fdd2aa217c40d5c65b507d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a23ff89b503fdd2aa217c40d5c65b507d">&#9670;&#160;</a></span>display_message()</h2>
+<h2 class="memtitle"><span class="permalink"><a href="#a23ff89b503fdd2aa217c40d5c65b507d">&#9670;&#160;</a></span>display_message() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -232,6 +236,50 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 
 <p>Implements <a class="el" href="structILoggerXpansion.html#a5d5ef0a1321f54372ecba334a7ae1acd">ILoggerXpansion</a>.</p>
+
+</div>
+</div>
+<a id="a666751b9dd0543ac1ec4a57a057a2546" name="a666751b9dd0543ac1ec4a57a057a2546"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a666751b9dd0543ac1ec4a57a057a2546">&#9670;&#160;</a></span>display_message() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MathLoggerFile::display_message </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>msg</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">LogUtils::LOGLEVEL&#160;</td>
+          <td class="paramname"><em>level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>context</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="structILoggerXpansion.html">ILoggerXpansion</a>.</p>
 
 </div>
 </div>

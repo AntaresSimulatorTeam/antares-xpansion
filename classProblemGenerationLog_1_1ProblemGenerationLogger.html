@@ -155,12 +155,11 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9a0e4b7b98dd7810de7a0eb2ed507cb8" id="r_a9a0e4b7b98dd7810de7a0eb2ed507cb8"><td class="memItemLeft" align="right" valign="top"><a id="a9a0e4b7b98dd7810de7a0eb2ed507cb8" name="a9a0e4b7b98dd7810de7a0eb2ed507cb8"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>AddLogger</b> (const ProblemGenerationILoggerSharedPointer &amp;logger)</td></tr>
 <tr class="separator:a9a0e4b7b98dd7810de7a0eb2ed507cb8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0f7069c5f38511d88445f584c5b8c592" id="r_a0f7069c5f38511d88445f584c5b8c592"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblemGenerationLog_1_1ProblemGenerationLogger.html#a0f7069c5f38511d88445f584c5b8c592">display_message</a> (const std::string &amp;message)</td></tr>
-<tr class="memdesc:a0f7069c5f38511d88445f584c5b8c592"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method to display a std::string message  <br /></td></tr>
-<tr class="separator:a0f7069c5f38511d88445f584c5b8c592"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ae6ea1d23ad74d423bf540c128c559a" id="r_a0ae6ea1d23ad74d423bf540c128c559a"><td class="memItemLeft" align="right" valign="top"><a id="a0ae6ea1d23ad74d423bf540c128c559a" name="a0ae6ea1d23ad74d423bf540c128c559a"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>display_message</b> (const std::string &amp;message, const LogUtils::LOGLEVEL log_level)</td></tr>
-<tr class="separator:a0ae6ea1d23ad74d423bf540c128c559a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a48179fac6a558d55a0ea68c76d209295" id="r_a48179fac6a558d55a0ea68c76d209295"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblemGenerationLog_1_1ProblemGenerationLogger.html#a48179fac6a558d55a0ea68c76d209295">display_message</a> (const std::string &amp;message) override</td></tr>
+<tr class="memdesc:a48179fac6a558d55a0ea68c76d209295"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method to display a std::string message  <br /></td></tr>
+<tr class="separator:a48179fac6a558d55a0ea68c76d209295"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a50d44f14b61524215452ffb75d6128af" id="r_a50d44f14b61524215452ffb75d6128af"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblemGenerationLog_1_1ProblemGenerationLogger.html#a50d44f14b61524215452ffb75d6128af">display_message</a> (const std::string &amp;message, const LogUtils::LOGLEVEL log_level, const std::string &amp;context) override</td></tr>
+<tr class="separator:a50d44f14b61524215452ffb75d6128af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af5c060bdd74b6e7012304f0865a9aa03" id="r_af5c060bdd74b6e7012304f0865a9aa03"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblemGenerationLog_1_1ProblemGenerationLogger.html#af5c060bdd74b6e7012304f0865a9aa03">PrintIterationSeparatorBegin</a> () override</td></tr>
 <tr class="separator:af5c060bdd74b6e7012304f0865a9aa03"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a23d841644ceef79886ccacc8eeffc4a1" id="r_a23d841644ceef79886ccacc8eeffc4a1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblemGenerationLog_1_1ProblemGenerationLogger.html#a23d841644ceef79886ccacc8eeffc4a1">PrintIterationSeparatorEnd</a> () override</td></tr>
@@ -171,6 +170,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setLogLevel</b> (cons
 <tr class="memitem:a73f57075de266a808cc29cc778e05900" id="r_a73f57075de266a808cc29cc778e05900"><td class="memItemLeft" align="right" valign="top"><a id="a73f57075de266a808cc29cc778e05900" name="a73f57075de266a808cc29cc778e05900"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>setContext</b> (const std::string &amp;context)</td></tr>
 <tr class="separator:a73f57075de266a808cc29cc778e05900"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32dc4b5612340c45dd9e39b55013c204" id="r_a32dc4b5612340c45dd9e39b55013c204"><td class="memItemLeft" align="right" valign="top"><a id="a32dc4b5612340c45dd9e39b55013c204" name="a32dc4b5612340c45dd9e39b55013c204"></a>
+const std::string &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>getContext</b> () const</td></tr>
+<tr class="separator:a32dc4b5612340c45dd9e39b55013c204"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a36abc984a6b628ce873f4ac62e877a1e" id="r_a36abc984a6b628ce873f4ac62e877a1e"><td class="memItemLeft" align="right" valign="top"><a id="a36abc984a6b628ce873f4ac62e877a1e" name="a36abc984a6b628ce873f4ac62e877a1e"></a>
 <a class="el" href="classProblemGenerationLog_1_1ProblemGenerationLogger.html">ProblemGenerationLogger</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator()</b> (const LogUtils::LOGLEVEL log_level)</td></tr>
 <tr class="separator:a36abc984a6b628ce873f4ac62e877a1e"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -195,8 +197,8 @@ template&lt;typename T &gt; </td></tr>
 <tr class="separator:ac29cdc7dc59c2dde6ce45201c91e770e inherit pub_methods_structILoggerXpansion"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a0f7069c5f38511d88445f584c5b8c592" name="a0f7069c5f38511d88445f584c5b8c592"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0f7069c5f38511d88445f584c5b8c592">&#9670;&#160;</a></span>display_message()</h2>
+<a id="a48179fac6a558d55a0ea68c76d209295" name="a48179fac6a558d55a0ea68c76d209295"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a48179fac6a558d55a0ea68c76d209295">&#9670;&#160;</a></span>display_message() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -214,7 +216,7 @@ template&lt;typename T &gt; </td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -228,6 +230,50 @@ template&lt;typename T &gt; </td></tr>
 </dl>
 
 <p>Implements <a class="el" href="structILoggerXpansion.html#a5d5ef0a1321f54372ecba334a7ae1acd">ILoggerXpansion</a>.</p>
+
+</div>
+</div>
+<a id="a50d44f14b61524215452ffb75d6128af" name="a50d44f14b61524215452ffb75d6128af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a50d44f14b61524215452ffb75d6128af">&#9670;&#160;</a></span>display_message() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ProblemGenerationLog::ProblemGenerationLogger::display_message </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>message</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const LogUtils::LOGLEVEL&#160;</td>
+          <td class="paramname"><em>log_level</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
+          <td class="paramname"><em>context</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="structILoggerXpansion.html">ILoggerXpansion</a>.</p>
 
 </div>
 </div>

@@ -10,12 +10,13 @@ var searchData=
   ['xpansiondriver_7',['XpansionDriver',['../classantares__xpansion_1_1driver_1_1XpansionDriver.html',1,'antares_xpansion::driver']]],
   ['xpansionerror_8',['XpansionError',['../classLogUtils_1_1XpansionError.html',1,'LogUtils']]],
   ['xpansionerror_3c_20std_3a_3ainvalid_5fargument_20_3e_9',['XpansionError&lt; std::invalid_argument &gt;',['../classLogUtils_1_1XpansionError.html',1,'LogUtils']]],
-  ['xpansionerror_3c_20std_3a_3aruntime_5ferror_20_3e_10',['XpansionError&lt; std::runtime_error &gt;',['../classLogUtils_1_1XpansionError.html',1,'LogUtils']]],
-  ['xpansionproblemsfromantaresprovider_11',['XpansionProblemsFromAntaresProvider',['../classXpansionProblemsFromAntaresProvider.html',1,'']]],
-  ['xpansionstudyreader_12',['XpansionStudyReader',['../classantares__xpansion_1_1xpansion__study__reader_1_1XpansionStudyReader.html',1,'antares_xpansion::xpansion_study_reader']]],
-  ['xpress_13',['xpress',['../md_docs_2developer-guide_2install__from__sources_27-Xpress.html#autotoc_md101',1,'How the Code Loads Xpress'],['../md_docs_2developer-guide_2install__from__sources_27-Xpress.html#autotoc_md96',1,'Installing Xpress']]],
-  ['xpress_20libraries_14',['Locating Xpress Libraries',['../md_docs_2developer-guide_2install__from__sources_27-Xpress.html#autotoc_md102',1,'']]],
-  ['xpress_20solver_20and_20loading_20it_20dynamically_15',['Installing Xpress Solver and Loading it Dynamically',['../md_docs_2developer-guide_2install__from__sources_27-Xpress.html',1,'']]],
-  ['xpressiscorrectlyinstalled_16',['XpressIsCorrectlyInstalled',['../classLoadXpress_1_1XpressLoader.html#a3b63466fe650798a2c3498c26220b943',1,'LoadXpress::XpressLoader']]],
-  ['xpressloader_17',['xpressloader',['../classLoadXpress_1_1XpressLoader.html#a6756de139955720c1c7bf5ed6d4e6245',1,'LoadXpress::XpressLoader::XpressLoader()'],['../classLoadXpress_1_1XpressLoader.html',1,'LoadXpress::XpressLoader']]]
+  ['xpansionerror_3c_20std_3a_3aios_5fbase_3a_3afailure_20_3e_10',['XpansionError&lt; std::ios_base::failure &gt;',['../classLogUtils_1_1XpansionError.html',1,'LogUtils']]],
+  ['xpansionerror_3c_20std_3a_3aruntime_5ferror_20_3e_11',['XpansionError&lt; std::runtime_error &gt;',['../classLogUtils_1_1XpansionError.html',1,'LogUtils']]],
+  ['xpansionproblemsfromantaresprovider_12',['XpansionProblemsFromAntaresProvider',['../classXpansionProblemsFromAntaresProvider.html',1,'']]],
+  ['xpansionstudyreader_13',['XpansionStudyReader',['../classantares__xpansion_1_1xpansion__study__reader_1_1XpansionStudyReader.html',1,'antares_xpansion::xpansion_study_reader']]],
+  ['xpress_14',['xpress',['../md_docs_2developer-guide_2install__from__sources_27-Xpress.html#autotoc_md101',1,'How the Code Loads Xpress'],['../md_docs_2developer-guide_2install__from__sources_27-Xpress.html#autotoc_md96',1,'Installing Xpress']]],
+  ['xpress_20libraries_15',['Locating Xpress Libraries',['../md_docs_2developer-guide_2install__from__sources_27-Xpress.html#autotoc_md102',1,'']]],
+  ['xpress_20solver_20and_20loading_20it_20dynamically_16',['Installing Xpress Solver and Loading it Dynamically',['../md_docs_2developer-guide_2install__from__sources_27-Xpress.html',1,'']]],
+  ['xpressiscorrectlyinstalled_17',['XpressIsCorrectlyInstalled',['../classLoadXpress_1_1XpressLoader.html#a3b63466fe650798a2c3498c26220b943',1,'LoadXpress::XpressLoader']]],
+  ['xpressloader_18',['xpressloader',['../classLoadXpress_1_1XpressLoader.html#a6756de139955720c1c7bf5ed6d4e6245',1,'LoadXpress::XpressLoader::XpressLoader()'],['../classLoadXpress_1_1XpressLoader.html',1,'LoadXpress::XpressLoader']]]
 ];

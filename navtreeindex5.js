@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"dir_65d90d6a2bd106d71c05f593d54b14f6.html":[27,0,0,0,0,1,0,0,0],
 "dir_6680cecd65a6c2b92518370619a63cfd.html":[27,0,0,0,3,1,0,0],
 "dir_680465501a7f01ea3db3a9fd10e84022.html":[27,0,0,0,0,8,0,0,0,0],
 "dir_68267d1309a1af8e8297ef4c3efbcdba.html":[27,0,0],
@@ -70,8 +71,8 @@ var NAVTREEINDEX5 =
 "dynamic__library_8h_source.html":[27,0,0,0,4,0,0,0,0],
 "environment_8h_source.html":[27,0,0,0,4,0,0,0,1],
 "files.html":[27,0],
-"functions.html":[26,3,0],
 "functions.html":[26,3,0,0],
+"functions.html":[26,3,0],
 "functions_a.html":[26,3,0,1],
 "functions_b.html":[26,3,0,2],
 "functions_c.html":[26,3,0,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md123":[13,1,1,0],
 "md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md124":[13,1,1,1],
 "md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md125":[13,1,2],
-"md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md126":[13,1,3],
-"md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md127":[13,1,4]
+"md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md126":[13,1,3]
 };

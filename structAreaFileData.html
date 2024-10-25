@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: src/cpp/xpansion_interfaces/include/antares-xpansion/xpansion_interfaces/Clock.h Source File</title>
+<title>Antares Xpansion: AreaFileData Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -92,11 +92,6 @@ $(function() {
 /* @license-end */
 </script>
 <div id="main-nav"></div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function() { init_codefold(0); });
-/* @license-end */
-</script>
 </div><!-- top -->
 <div id="side-nav" class="ui-resizable side-nav-resizable">
   <div id="nav-tree">
@@ -110,7 +105,7 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('Clock_8h_source.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('structAreaFileData.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -136,56 +131,31 @@ $(document).ready(function(){initNavTree('Clock_8h_source.html',''); initResizab
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">Clock.h</div></div>
+  <div class="summary">
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="structAreaFileData-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">AreaFileData Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span> </div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;ctime&gt;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;string&gt;</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="foldopen" id="foldopen00007" data-start="{" data-end="};">
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno"><a class="line" href="classClock.html">    7</a></span><span class="keyword">class </span><a class="code hl_class" href="classClock.html">Clock</a> {</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>  <a class="code hl_class" href="classClock.html">Clock</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classClock.html">~Clock</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  <span class="keyword">virtual</span> std::time_t getTime() {</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    std::time_t beginTime = std::time(<span class="keyword">nullptr</span>);</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keywordflow">return</span> beginTime;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  }</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>};</div>
-</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span> </div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="keyword">inline</span> <span class="keywordtype">void</span> localtime_platform(<span class="keyword">const</span> std::time_t &amp;time_p,</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>                               <span class="keyword">struct</span> tm &amp;local_time) {</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#if defined(WIN32) || defined(_WIN32) || defined(__WIN32__) || defined(__NT__)</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  localtime_s(&amp;local_time, &amp;time_p);</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="preprocessor">#else  </span><span class="comment">// defined(__unix__) || (__APPLE__)</span></div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  localtime_r(&amp;time_p, &amp;local_time);</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="preprocessor">#endif</span></div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>}</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span><span class="keyword">namespace </span>clock_utils {</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span><span class="keyword">inline</span> std::string timeToStr(<span class="keyword">const</span> std::time_t &amp;time_p) {</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keyword">struct </span>tm local_time;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  localtime_platform(time_p, local_time);</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>  <span class="comment">// localtime_r(&amp;time_p, &amp;local_time); // Compliant</span></div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>  <span class="keyword">const</span> <span class="keywordtype">char</span> *FORMAT = <span class="stringliteral">&quot;%d-%m-%Y %H:%M:%S&quot;</span>;</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  <span class="keywordtype">char</span> buffer_l[100];</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  strftime(buffer_l, <span class="keyword">sizeof</span>(buffer_l), FORMAT, &amp;local_time);</div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  std::string strTime_l(buffer_l);</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>  <span class="keywordflow">return</span> strTime_l;</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>}</div>
-<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>}</div>
-<div class="ttc" id="aclassClock_html"><div class="ttname"><a href="classClock.html">Clock</a></div><div class="ttdef"><b>Definition</b> Clock.h:7</div></div>
-</div><!-- fragment --></div><!-- contents -->
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:ab4977ef64b7e0894713c356592b41bc9" id="r_ab4977ef64b7e0894713c356592b41bc9"><td class="memItemLeft" align="right" valign="top"><a id="ab4977ef64b7e0894713c356592b41bc9" name="ab4977ef64b7e0894713c356592b41bc9"></a>
+std::string&#160;</td><td class="memItemRight" valign="bottom"><b>error_message</b> = &quot;&quot;</td></tr>
+<tr class="separator:ab4977ef64b7e0894713c356592b41bc9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a384dde1ea374f01c408fc18c539381d4" id="r_a384dde1ea374f01c408fc18c539381d4"><td class="memItemLeft" align="right" valign="top"><a id="a384dde1ea374f01c408fc18c539381d4" name="a384dde1ea374f01c408fc18c539381d4"></a>
+std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>areas</b></td></tr>
+<tr class="separator:a384dde1ea374f01c408fc18c539381d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>src/cpp/helpers/include/antares-xpansion/helpers/<a class="el" href="AreaParser_8h_source.html">AreaParser.h</a></li>
+</ul>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_dfdbda394c3f7a3aa55229f33a559c41.html">cpp</a></li><li class="navelem"><a class="el" href="dir_f9f6b70f75734e75e6e4b3806d757814.html">xpansion_interfaces</a></li><li class="navelem"><a class="el" href="dir_df4013546a3c74d96d311a0534ef60d6.html">include</a></li><li class="navelem"><a class="el" href="dir_af292ebb471d63fd00df4a78887ee600.html">antares-xpansion</a></li><li class="navelem"><a class="el" href="dir_b96569a5a7a28edd6a3d2c2709963559.html">xpansion_interfaces</a></li><li class="navelem"><b>Clock.h</b></li>
+    <li class="navelem"><a class="el" href="structAreaFileData.html">AreaFileData</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>
