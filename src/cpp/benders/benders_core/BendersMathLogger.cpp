@@ -113,7 +113,11 @@ MathLogger::MathLogger(std::streamsize width, HEADERSTYPE type)
 void MathLogger::display_message(const std::string& str) {
   LogsDestination() << str << std::endl;
 }
-
+void MathLogger::display_message(const std::string& str,
+                                 LogUtils::LOGLEVEL level,
+                                 const std::string& context) {
+  LogsDestination() << PrefixMessage(level, context) << str << std::endl;
+}
 std::vector<std::string> MathLogger::Headers() const { return headers_; }
 
 LogDestination& MathLogger::LogsDestination() { return log_destination_; }
@@ -260,6 +264,14 @@ void MathLoggerDriver::display_message(const std::string& str) {
   }
 }
 
+void MathLoggerDriver::display_message(const std::string& str,
+                                       LogUtils::LOGLEVEL level,
+                                       const std::string& context) {
+  for (auto logger : math_loggers_) {
+    logger->display_message(str, level, context);
+  }
+}
+
 void MathLoggerDriver::PrintIterationSeparatorBegin() {
   for (auto logger : math_loggers_) {
     logger->PrintIterationSeparatorBegin();
@@ -330,6 +342,11 @@ void MathLoggerImplementation::display_message(const std::string& str) {
   implementation_->display_message(str);
 }
 
+void MathLoggerImplementation::display_message(const std::string& str,
+                                               LogUtils::LOGLEVEL level,
+                                               const std::string& context) {
+  implementation_->display_message(str, level, context);
+}
 void MathLoggerImplementation::Print(const CurrentIterationData& data) {
   implementation_->Print(data);
 }

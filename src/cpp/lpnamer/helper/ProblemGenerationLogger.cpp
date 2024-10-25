@@ -19,6 +19,13 @@ void ProblemGenerationFileLogger::display_message(const std::string& message) {
   logFile_.flush();
 }
 
+void ProblemGenerationFileLogger::display_message(
+    const std::string& message, const LogUtils::LOGLEVEL log_level,
+    const std::string& context) {
+  logFile_ << PrefixMessage(log_level, context) << message << std::endl;
+  logFile_.flush();
+}
+
 std::ostream& ProblemGenerationFileLogger::GetOstreamObject() {
   return logFile_;
 }
@@ -40,6 +47,12 @@ void ProblemGenerationOstreamLogger::display_message(
   stream_ << message << std::endl;
 }
 
+void ProblemGenerationOstreamLogger::display_message(
+    const std::string& message, const LogUtils::LOGLEVEL log_level,
+    const std::string& context) {
+  stream_ << PrefixMessage(log_level, context) << message << std::endl;
+}
+
 void ProblemGenerationOstreamLogger::PrintIterationSeparatorBegin() {}
 void ProblemGenerationOstreamLogger::PrintIterationSeparatorEnd() {}
 std::ostream& ProblemGenerationOstreamLogger::GetOstreamObject() {
@@ -57,10 +70,10 @@ void ProblemGenerationLogger::display_message(const std::string& message) {
   }
 }
 void ProblemGenerationLogger::display_message(
-    const std::string& message, const LogUtils::LOGLEVEL log_level) {
+    const std::string& message, const LogUtils::LOGLEVEL log_level,
+    const std::string& context) {
   for (const auto& logger : enabled_loggers_) {
-    logger->display_message(LogUtils::LogLevelToStr(log_level));
-    logger->display_message(message);
+    logger->display_message(message, log_level, context);
   }
 }
 

@@ -51,8 +51,7 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
     auto logger_factory =
         FileAndStdoutLoggerFactory(LogReportsName(), benders_log_console);
     logger_ = logger_factory.get_logger();
-
-
+    math_log_driver = BuildMathLogger(benders_log_console);
     writer_ = build_json_writer(options_.JSON_FILE, options_.RESUME);
     if (Benders::StartUp startup;
         startup.StudyAlreadyAchievedCriterion(options_, writer_, logger_))
@@ -62,17 +61,13 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
     writer_ = build_void_writer();
     math_log_driver = MathLoggerFactory::get_void_logger();
   }
-  auto outer_loop_input_data = ProcessCriterionInput();
-  logger_->setContext(context_);
-  if (pworld_->rank() == 0) {
-    math_log_driver = BuildMathLogger(benders_log_console);
-  }
-  criterion_computation_ =
-      std::make_shared<Benders::Criterion::CriterionComputation>(
-          outer_loop_input_data);
 
   benders_loggers_.AddLogger(logger_);
   benders_loggers_.AddLogger(math_log_driver);
+  auto outer_loop_input_data = ProcessCriterionInput();
+  criterion_computation_ =
+      std::make_shared<Benders::Criterion::CriterionComputation>(
+          outer_loop_input_data);
 
   if (pworld_->rank() == 0 && !outer_loop_input_data.OuterLoopData().empty()) {
     AddCriterionOutput(math_log_driver);
@@ -172,13 +167,15 @@ void BendersMainFactory::EndMessage(const double execution_time) {
   std::ostringstream str;
   str << "Optimization results available in : " << options_.JSON_FILE
       << std::endl;
-  benders_loggers_.display_message(str.str());
+  benders_loggers_.display_message(str.str(), LogUtils::LOGLEVEL::INFO,
+                                   context_);
 
   str.str("");
 
   str << bendersmethod_to_string(method_) << " ran in " << execution_time
       << " s" << std::endl;
-  benders_loggers_.display_message(str.str());
+  benders_loggers_.display_message(str.str(), LogUtils::LOGLEVEL::INFO,
+                                   context_);
 }
 
 Benders::Criterion::OuterLoopInputData

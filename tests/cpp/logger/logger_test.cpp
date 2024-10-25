@@ -494,7 +494,7 @@ TEST_F(UserLoggerTest, DifferentCallsAddToTheSameStream) {
 
 TEST_F(UserLoggerTest, DisplayMessage) {
   std::stringstream expected;
-  expected << "Message" << std::endl;
+  expected << " Message" << std::endl;
 
   _logger.display_message("Message");
   auto logWithoutPrefix = RemovePrefixFromLineMessage(_stream.str());
@@ -567,6 +567,10 @@ class SimpleLoggerMock : public ILogger {
   }
 
   void display_message(const std::string& str) { _displaymessage = str; }
+  void display_message(const std::string& str, LogUtils::LOGLEVEL level,
+                       const std::string& context) {
+    _displaymessage = str;
+  }
 
   void PrintIterationSeparatorBegin() override {
     //

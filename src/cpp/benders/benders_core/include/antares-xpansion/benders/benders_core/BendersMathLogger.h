@@ -57,7 +57,6 @@ void PrintExternalLoopData(LogDestination& log_destination,
                            const BENDERSMETHOD& method);
 
 struct MathLoggerBehaviour : public ILoggerXpansion {
-  using ILoggerXpansion::display_message;
   void write_header();
 
   virtual void Print(const CurrentIterationData& data) = 0;
@@ -79,6 +78,8 @@ struct MathLogger : public MathLoggerBehaviour {
                       HEADERSTYPE type = HEADERSTYPE::SHORT);
 
   void display_message(const std::string& str) override;
+  void display_message(const std::string& str, LogUtils::LOGLEVEL level,
+                       const std::string& context) override;
   virtual void Print(const CurrentIterationData& data) = 0;
   std::vector<std::string> Headers() const override;
   LogDestination& LogsDestination() override;
@@ -138,6 +139,8 @@ struct MathLoggerExternalLoopSpecific : public MathLogger {
   void setHeadersList() override;
   void Print(const CurrentIterationData& data) override;
   void display_message(const std::string& msg) override;
+  void display_message(const std::string& str, LogUtils::LOGLEVEL level,
+                       const std::string& context) override;
   virtual ~MathLoggerExternalLoopSpecific() = default;
 
  private:
@@ -157,6 +160,8 @@ class MathLoggerImplementation : public MathLoggerBehaviour {
   explicit MathLoggerImplementation(std::shared_ptr<MathLogger> implementation);
 
   void display_message(const std::string& str) override;
+  void display_message(const std::string& str, LogUtils::LOGLEVEL level,
+                       const std::string& context) override;
   void Print(const CurrentIterationData& data) override;
   void PrintIterationSeparatorBegin() override;
   void PrintIterationSeparatorEnd() override;
@@ -174,10 +179,11 @@ class MathLoggerImplementation : public MathLoggerBehaviour {
 
 class MathLoggerDriver : public ILoggerXpansion {
  public:
-  using ILoggerXpansion::display_message;
   MathLoggerDriver() = default;
   void write_header();
   void display_message(const std::string& str) override;
+  void display_message(const std::string& str, LogUtils::LOGLEVEL level,
+                       const std::string& context) override;
   void add_logger(std::shared_ptr<MathLoggerImplementation> logger);
   template <class T>
   void add_logger(const std::filesystem::path& file_path,
@@ -219,5 +225,12 @@ void MathLoggerExternalLoopSpecific<T>::Print(
 template <class T>
 void MathLoggerExternalLoopSpecific<T>::display_message(
     const std::string& msg) {
+  // keep empty
+}
+
+template <class T>
+void MathLoggerExternalLoopSpecific<T>::display_message(
+    const std::string& str, LogUtils::LOGLEVEL level,
+    const std::string& context) {
   // keep empty
 }

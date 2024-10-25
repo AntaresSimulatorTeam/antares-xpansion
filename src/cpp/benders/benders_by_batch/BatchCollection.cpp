@@ -16,7 +16,7 @@ void BatchCollection::BuildBatches() {
         std::string("batch_size(") + std::to_string(batch_size_) +
             ") can not be greater than number of subproblems (" +
             std::to_string(sub_problems_number_) + ")",
-        LogUtils::LOGLEVEL::WARNING);
+        LogUtils::LOGLEVEL::WARNING, "Benders By batch");
     logger_->display_message(
         std::string("Setting batch_size = number of subproblems(") +
         std::to_string(sub_problems_number_) +

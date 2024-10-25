@@ -12,6 +12,8 @@ class MathLoggerFile : public MathLoggerImplementation {
                           std::streamsize width = 30);
 
   void display_message(const std::string& msg) override;
+  void display_message(const std::string& msg, LogUtils::LOGLEVEL level,
+                       const std::string& context) override;
   virtual void PrintIterationSeparatorBegin() override;
   virtual void PrintIterationSeparatorEnd() override;
 

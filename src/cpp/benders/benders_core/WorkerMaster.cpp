@@ -301,7 +301,10 @@ void WorkerMaster::_set_alpha_var() {
       solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
     }
   } else {
-    logger_->display_message("ERROR a variable named overall_subpb_cost_under_approx is in input", LogUtils::LOGLEVEL::ERR);
+    logger_->display_message(
+        "ERROR There is already a variable called "
+        "overall_subpb_cost_under_approx in the input.",
+        LogUtils::LOGLEVEL::ERR, "Alpha var");
   }
 }
 
