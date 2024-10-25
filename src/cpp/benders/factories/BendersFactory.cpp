@@ -188,12 +188,12 @@ BendersMainFactory::ProcessCriterionInput() {
   }
   // else compute criterion for all areas!
   else {
-    return BuildPatternsuUsingAreaFile();
+    return BuildPatternsUsingAreaFile();
   }
 }
 
 Benders::Criterion::OuterLoopInputData
-BendersMainFactory::BuildPatternsuUsingAreaFile() {
+BendersMainFactory::BuildPatternsUsingAreaFile() {
   std::set<std::string> unique_areas = ReadAreaFile();
   Benders::Criterion::OuterLoopInputData ret;
   ret.SetCriterionCountThreshold(1);

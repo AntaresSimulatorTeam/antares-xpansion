@@ -5,13 +5,13 @@
 AreaFileData AreaParser::ReadAreaFile(const std::filesystem::path &areaFile) {
   std::ifstream area_filestream(areaFile);
 
-  std::ostringstream out_message("");
   if (!area_filestream.good()) {
+    std::ostringstream out_message("");
     out_message << LOGLOCATION << "unable to open " << areaFile.string();
+    return {.error_message = out_message.str(), .areas = {}};
   }
 
-  return {.error_message = out_message.str(),
-          .areas = ReadLineByLineArea(area_filestream)};
+  return {.error_message = "", .areas = ReadLineByLineArea(area_filestream)};
 }
 
 std::vector<std::string> AreaParser::ReadAreaFile(

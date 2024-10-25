@@ -33,7 +33,7 @@ class BendersMainFactory {
   pBendersBase PrepareForExecution(bool external_loop);
   [[nodiscard]] Benders::Criterion::OuterLoopInputData ProcessCriterionInput();
 
-  Benders::Criterion::OuterLoopInputData BuildPatternsuUsingAreaFile();
+  Benders::Criterion::OuterLoopInputData BuildPatternsUsingAreaFile();
   std::set<std::string> ReadAreaFile();
   void EndMessage(const double execution_time);
   void AddCriterionOutput(std::shared_ptr<MathLoggerDriver> math_log_driver);
