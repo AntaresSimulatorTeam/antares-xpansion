@@ -494,7 +494,7 @@ TEST_F(UserLoggerTest, DifferentCallsAddToTheSameStream) {
 
 TEST_F(UserLoggerTest, DisplayMessage) {
   std::stringstream expected;
-  expected << " Message" << std::endl;
+  expected << "Message" << std::endl;
 
   _logger.display_message("Message");
   auto logWithoutPrefix = RemovePrefixFromLineMessage(_stream.str());
