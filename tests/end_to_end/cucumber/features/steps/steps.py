@@ -1,19 +1,23 @@
 import json
 import math
 import os
+import shutil
 import subprocess
 from pathlib import Path
-
+from pytest import fixture
 import numpy as np
 from behave import *
 
 from utils_functions import get_mpi_command, get_conf
 
 
+
 @given('the study path is "{string}"')
 def study_path_is(context, string):
-    context.study_path = os.path.join(Path() / "../../",
-                                      string.replace("/", os.sep))
+    # context.study_path
+    context.study_path = Path() / "../../" / string
+    context.tmp_study = context.temp_dir / context.study_path.name
+    shutil.copytree(context.study_path, context.tmp_study)
 
 
 def build_outer_loop_command(context, n: int, option_file: str = "options.json"):
@@ -51,8 +55,8 @@ def run_outer_loop(context, n, option_file: str = "options.json"):
     print(f"Running command: {command}")
     old_cwd = os.getcwd()
 
-    lp_path = Path(context.study_path) / "lp" if (Path(context.study_path) / "lp").exists() else Path(
-        context.study_path)
+    lp_path = Path(context.tmp_study) / "lp" if (Path(context.tmp_study) / "lp").exists() else Path(
+        context.tmp_study)
 
     os.chdir(lp_path)
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
