@@ -567,7 +567,8 @@ class SimpleLoggerMock : public ILogger {
   }
 
   void display_message(const std::string& str) { _displaymessage = str; }
-  void display_message(const std::string& str, LogUtils::LOGLEVEL level) {
+  void display_message(const std::string& str, LogUtils::LOGLEVEL level,
+                       const std::string& context) {
     _displaymessage = str;
   }
 

@@ -85,6 +85,10 @@ struct ILoggerXpansion {
   void display_message(const std::ostringstream &msg) {
     display_message(msg.str());
   }
+
+  virtual void display_message(const std::string &msg, LogUtils::LOGLEVEL level,
+                               const std::string &context) = 0;
+
   virtual void PrintIterationSeparatorBegin() = 0;
   virtual void PrintIterationSeparatorEnd() = 0;
   virtual ~ILoggerXpansion() = default;
@@ -95,6 +99,9 @@ struct ILoggerXpansion {
  */
 struct EmptyLogger : public ILoggerXpansion {
   void display_message(const std::string &str) override {}
+  void display_message(const std::string &str, LogUtils::LOGLEVEL level,
+                       const std::string &context) override {}
+
   void PrintIterationSeparatorBegin() override {};
   void PrintIterationSeparatorEnd() override {};
   virtual ~EmptyLogger() {}
@@ -102,7 +109,7 @@ struct EmptyLogger : public ILoggerXpansion {
 };
 
 /**
- * this \class act like a log agregator
+ * this \class act like a log aggregator
  */
 struct BendersLoggerBase : public ILoggerXpansion {
   void display_message(const std::string &str) override {
@@ -125,6 +132,12 @@ struct BendersLoggerBase : public ILoggerXpansion {
       logger->PrintIterationSeparatorEnd();
     }
   }
+  virtual void display_message(const std::string &msg, LogUtils::LOGLEVEL level,
+                               const std::string &context) override {
+    for (auto logger : loggers) {
+      logger->display_message(msg, level, context);
+    }
+  }
 
  private:
   std::vector<std::shared_ptr<ILoggerXpansion>> loggers;
@@ -139,8 +152,8 @@ class ILogger : public ILoggerXpansion {
   virtual ~ILogger() = default;
 
   virtual void display_message(const std::string &str) = 0;
-  virtual void display_message(const std::string &str,
-                               LogUtils::LOGLEVEL level) = 0;
+  virtual void display_message(const std::string &str, LogUtils::LOGLEVEL level,
+                               const std::string &context) = 0;
   virtual void PrintIterationSeparatorBegin() = 0;
   virtual void PrintIterationSeparatorEnd() = 0;
   virtual void log_at_initialization(const int it_number) = 0;

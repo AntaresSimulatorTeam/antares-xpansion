@@ -23,8 +23,10 @@ class Problem : public SolverAbstract {
 
  public:
   [[nodiscard]] unsigned int McYear() const { return mc_year; }
+  [[nodiscard]] unsigned int Week() const { return week; }
 
   unsigned int mc_year = 0;
+  unsigned int week = 0;
 
   int get_number_of_instances() override {
     return solver_abstract_->get_number_of_instances();

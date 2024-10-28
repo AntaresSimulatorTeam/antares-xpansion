@@ -1,10 +1,10 @@
-#include "antares-xpansion/benders/outer_loop/OuterLoopInputDataReader.h"
+#include "include/antares-xpansion/benders/benders_core/OuterLoopInputDataReader.h"
 
 #include <utility>
 
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
-using namespace Outerloop;
+using namespace Benders::Criterion;
 
 /**
  * prefix could be := PositiveUnsuppliedEnergy:: or something else necessarily
@@ -144,7 +144,7 @@ struct convert<OuterLoopSingleInputData> {
     }
 
     rhs.SetCriterion(criterion.as<double>());
-    rhs.ResetPattern("PositiveUnsuppliedEnergy::", body.as<std::string>());
+    rhs.ResetPattern(PositiveUnsuppliedEnergy, body.as<std::string>());
     return true;
   }
 };

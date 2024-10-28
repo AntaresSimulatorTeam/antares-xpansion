@@ -150,6 +150,7 @@ class XpansionConfig:
         self.CONSTRAINTS = "constraints"
         self.OUTER_LOOP_FILE = "adequacy_criterion.yml"
         self.OUTER_LOOP_DIR = "adequacy_criterion"
+        self.AREA_FILE = "area.txt"
 
     def _set_default_settings(self):
         self.settings_default = {

@@ -1,4 +1,5 @@
 import json
+import math
 import os
 import subprocess
 from pathlib import Path
@@ -15,11 +16,11 @@ def study_path_is(context, string):
                                       string.replace("/", os.sep))
 
 
-def build_outer_loop_command(context, n: int):
+def build_outer_loop_command(context, n: int, option_file: str = "options.json"):
     command = get_mpi_command(allow_run_as_root=context.allow_run_as_root, nproc=n)
     exe_path = Path(get_conf("DEFAULT_INSTALL_DIR")) / get_conf("OUTER_LOOP")
     command.append(str(exe_path))
-    command.append("options.json")
+    command.append(option_file)
     return command
 
 
@@ -30,29 +31,39 @@ def build_launch_command(study_dir: str, method: str, nproc: int, in_memory: boo
     return command
 
 
-def read_outputs(output_path):
+def read_json_file(output_path):
     with open(output_path, 'r') as file:
         outputs = json.load(file)
-
     return outputs
 
 
+def read_file(output_path):
+    with open(output_path, 'r') as file:
+        outputs = file.readlines()
+    return outputs
+
+
+@when('I run outer loop with {n:d} proc(s) and "{option_file}" as option file')
 @when('I run outer loop with {n:d} proc(s)')
-def run_outer_loop(context, n):
+def run_outer_loop(context, n, option_file: str = "options.json"):
     context.allow_run_as_root = get_conf("allow_run_as_root")
-    command = build_outer_loop_command(context, n)
+    command = build_outer_loop_command(context, n, option_file)
     print(f"Running command: {command}")
     old_cwd = os.getcwd()
-    lp_path = Path(context.study_path) / "lp"
+
+    lp_path = Path(context.study_path) / "lp" if (Path(context.study_path) / "lp").exists() else Path(
+        context.study_path)
 
     os.chdir(lp_path)
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
-    out, err = process.communicate()
-    print(out)
-    print("*****")
-    print(err)
+    process.communicate()
     context.return_code = process.returncode
-    context.outputs = read_outputs(Path("..") / "expansion" / "out.json")
+    options = read_json_file(option_file)
+    output_file_path = options["JSON_FILE"]
+    context.outputs = read_json_file(output_file_path)
+    context.loss_of_load_file = (Path(options["OUTPUTROOT"]) / "LOLD.txt").absolute()
+    context.positive_unsupplied_energy_file = (Path(options["OUTPUTROOT"]) / "PositiveUnsuppliedEnergy.txt").absolute()
+
     os.chdir(old_cwd)
 
 
@@ -62,7 +73,7 @@ def run_antares_xpansion(context, method, n):
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, shell=True)
     out, err = process.communicate()
     context.return_code = process.returncode
-    context.outputs = read_outputs(Path(get_results_file_path_from_logs(out)))
+    context.outputs = read_json_file(Path(get_results_file_path_from_logs(out)))
 
 
 @then("the simulation takes less than {seconds:d} seconds")
@@ -95,6 +106,40 @@ def assert_dict_allclose(actual, expected, rtol=1e-06, atol=0):
 def check_solution(context):
     expected_solution = {row['variable']: float(row['value']) for row in context.table}
     assert_dict_allclose(context.outputs["solution"]["values"], expected_solution)
+
+
+def is_column_full_of_zeros(filename, column_index, abs_tol=1e-9):
+    with open(filename, 'r') as file:
+        # Skip the header
+        next(file)
+
+        # Check each line in the file
+        for line in file:
+            columns = line.split()
+
+            # Ensure column exists
+            if column_index >= len(columns):
+                print(f"Error: Missing column at index {column_index} in line: {line.strip()}")
+                return False
+
+            try:
+                value = float(columns[column_index])
+            except (ValueError, IndexError):
+                print(f"Error parsing line: {line.strip()}")
+                return False
+
+            # Use math.isclose to compare to zero with tolerance
+            if not math.isclose(value, 0.0, abs_tol=abs_tol):
+                print(f"Error {value} is not close to 0")
+                return False
+
+    return True
+
+
+@then("LOLD.txt and PositiveUnsuppliedEnergy.txt files are full of zeros")
+def check_other_outputs(context):
+    assert (is_column_full_of_zeros(context.loss_of_load_file, 2))
+    assert (is_column_full_of_zeros(context.positive_unsupplied_energy_file, 2))
 
 
 def get_results_file_path_from_logs(logs: bytes) -> str:

@@ -6,7 +6,6 @@
 #include <filesystem>
 #include "antares-xpansion/lpnamer/model/ProblemNameParser.h"
 #include "antares-xpansion/lpnamer/model/Problem.h"
-#include "antares-xpansion/multisolver_interface/SolverFactory.h"
 #include "NOOPSolver.h"
 
 struct ProblemNameCase {
@@ -19,10 +18,11 @@ class ProblemConstructionTest: public testing::TestWithParam<ProblemNameCase> {
 };
 
 TEST_F(ProblemConstructionTest, ExtractMCYear1FromName) {
-  std::string file_name = "problem-1-1-20220214-124051.mps";
+  std::string file_name = "problem-1-37-20220214-124051.mps";
 
-  unsigned int res = MCYear(file_name);
-  EXPECT_EQ(res, 1);
+  auto [year, week] = McYearAndWeek(file_name);
+  EXPECT_EQ(year, 1);
+  EXPECT_EQ(week, 37);
 }
 
 ProblemNameCase cases[] = {
@@ -33,15 +33,17 @@ ProblemNameCase cases[] = {
 };
 TEST_P(ProblemConstructionTest, ExtractSeveralFileNameCase) {
   auto const& input = GetParam();
-  EXPECT_EQ(MCYear(input.problem_name), input.expected_mc_year);
+  EXPECT_EQ(McYearAndWeek(input.problem_name).first, input.expected_mc_year);
 }
 INSTANTIATE_TEST_SUITE_P(BulkTest, ProblemConstructionTest,
                          testing::ValuesIn(cases));
 
 TEST_F(ProblemConstructionTest, ExtractMCYearFromPath) {
-  std::filesystem::path path = std::filesystem::path("path") / "To" / "inner-dir" / "problem-2-1-20220214-124051.mps";
+  std::filesystem::path path = std::filesystem::path("path") / "To" / "inner-dir" / "problem-2-10-20220214-124051.mps";
 
-  EXPECT_EQ(MCYear(path), 2);
+  auto [year, week] = McYearAndWeek(path);
+  EXPECT_EQ(year, 2);
+  EXPECT_EQ(week, 10);
 }
 
 
@@ -52,4 +54,5 @@ TEST_F(ProblemConstructionTest, McYearAvailableInProblem) {
   std::filesystem::path file_name("Path/To/inner-dir/problem-3-45-20220214-124051.mps");
   problem->read_prob_mps(file_name);
   EXPECT_EQ(problem->McYear(), 3);
+  EXPECT_EQ(problem->Week(), 45);
 }

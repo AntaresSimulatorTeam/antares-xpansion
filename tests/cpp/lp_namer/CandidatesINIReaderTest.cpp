@@ -1,8 +1,9 @@
 #include <fstream>
 
-#include "antares-xpansion/lpnamer/input_reader/CandidatesINIReader.h"
 #include "LoggerBuilder.h"
+#include "antares-xpansion/helpers/AreaParser.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/input_reader/CandidatesINIReader.h"
 #include "gtest/gtest.h"
 
 const std::string interco_content_l =
@@ -104,9 +105,9 @@ TEST_F(CandidatesINIReaderTest, testReadIntero) {
 }
 
 TEST_F(CandidatesINIReaderTest, testReadArea) {
-  std::vector<std::string> areaList =
-      CandidatesINIReader(emptyLogger_).ReadAreaFile("temp_area.txt");
+  const auto areaFileData = AreaParser::ReadAreaFile("temp_area.txt");
 
+  const auto& areaList = areaFileData.areas;
   ASSERT_EQ(areaList[0], "area1");
   ASSERT_EQ(areaList[1], "area2");
   ASSERT_EQ(areaList[2], "flex");

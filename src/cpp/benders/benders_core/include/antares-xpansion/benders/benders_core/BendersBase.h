@@ -7,14 +7,15 @@
 
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
-#include "antares-xpansion/xpansion_interfaces/ILogger.h"
-#include "antares-xpansion/xpansion_interfaces/OutputWriter.h"
+#include "CriterionComputation.h"
 #include "SimulationOptions.h"
 #include "SubproblemCut.h"
 #include "SubproblemWorker.h"
-#include "antares-xpansion/helpers/Timer.h"
 #include "Worker.h"
 #include "WorkerMaster.h"
+#include "antares-xpansion/helpers/Timer.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
+#include "antares-xpansion/xpansion_interfaces/OutputWriter.h"
 #include "common.h"
 /**
  * std execution policies don't share a base type so we can't just select
@@ -93,15 +94,18 @@ class BendersBase {
   void SetBilevelBestub(double bilevel_best_ub);
   void UpdateOuterLoopSolution();
 
- protected:
-  bool exception_raised_ = false;
-
- public:
   bool isExceptionRaised() const;
   [[nodiscard]] std::filesystem::path OuterloopOptionsFile() const;
   void UpdateOverallCosts();
+  Logger _logger;
+  Writer _writer;
+  std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
+  void setCriterionsComputation(
+      std::shared_ptr<Benders::Criterion::CriterionComputation>
+          criterionsComputation);
 
  protected:
+  bool exception_raised_ = false;
   CurrentIterationData _data;
   WorkerMasterDataVect workerMasterDataVect_;
   // BendersCuts best_iteration_cuts_;
@@ -152,14 +156,6 @@ class BendersBase {
   void AddSubproblem(const std::pair<std::string, VariableMap> &kvp);
   [[nodiscard]] virtual WorkerMasterPtr get_master() const;
   void MatchProblemToId();
-  /**
-   * for the nth variable name, Subproblems shares the same prefix , only the
-   suffix is different
-   * ex variable at index = 0 is named in:
-
-   * subproblems-1-1  --> NTCDirect::link<area1$$area2>::hour<0>
-   * subproblems-3-5  --> NTCDirect::link<area1$$area2>::hour<672>
-   */
   void AddSubproblemName(const std::string &name);
   [[nodiscard]] std::string get_master_name() const;
   [[nodiscard]] std::string get_solver_name() const;
@@ -227,6 +223,22 @@ class BendersBase {
                                PlainData::SubProblemData &subproblem_data,
                                const std::string &name,
                                const std::shared_ptr<SubproblemWorker> &worker);
+  // TODO to be rethink
+  std::shared_ptr<Benders::Criterion::CriterionComputation>
+      criterions_computation_;
+  /**
+   * for the nth variable name, Subproblems shares the same prefix , only the
+   suffix is different
+   * ex variable at index = 0 is named in:
+
+  * subproblems-1-1  --> NTCDirect::link<area1$$area2>::hour<0>
+                                    * subproblems-3-5  -->
+  NTCDirect::link<area1$$area2>::hour<672>
+   */
+  // Search for variables in sub problems that satisfy patterns
+  // var_indices is a vector(for each patterns p) of vector (var indices related
+  // to p)
+  void SetSubproblemsVariablesIndices();
 
  private:
   void print_master_and_cut(std::ostream &file, int ite,
@@ -246,8 +258,6 @@ class BendersBase {
   Output::Iteration iteration(const WorkerMasterData &masterDataPtr_l) const;
   LogData FinalLogData() const;
   void FillWorkerMasterData(WorkerMasterData &workerMasterData);
-
- private:
   bool master_is_empty_ = true;
   BendersBaseOptions _options;
   unsigned int _totalNbProblems = 0;
@@ -263,9 +273,5 @@ class BendersBase {
   Timer benders_timer;
   Output::SolutionData outer_loop_solution_data_;
 
- public:
-  Logger _logger;
-  Writer _writer;
-  std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
 };
 using pBendersBase = std::shared_ptr<BendersBase>;

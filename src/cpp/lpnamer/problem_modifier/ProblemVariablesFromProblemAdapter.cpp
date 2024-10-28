@@ -2,9 +2,9 @@
 // Created by marechaljas on 09/11/22.
 //
 
-#include <utility>
-
 #include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesFromProblemAdapter.h"
+
+#include <utility>
 
 const std::string SEPARATOR = "::";
 const std::string AREA_SEPARATOR = "$$";
@@ -34,9 +34,16 @@ void ReadLinkZones(const std::string& input, std::string& origin,
                ' ');
 }
 
-int ReadTimeStep(const std::string& input) {
+int ReadTimeStep(const std::string& input, const unsigned int week) {
   // input format should be x<timeStep>
-  return std::stoi(StringBetweenChevrons(input));
+  int timestep_in_problem = std::stoi(StringBetweenChevrons(input));
+  // Two possible cases:
+  // - either index is yearly (starts at (week-1)*167) => nothing to do
+  // - or the index is weekly (starts at 0) => it needs to be shifted by +(week-1)*167
+  if (timestep_in_problem < (week - 1) * 168) {
+    timestep_in_problem += (week - 1) * 168;
+  }
+  return timestep_in_problem;
 }
 
 void updateMapColumn(const std::vector<ActiveLink>& links,
@@ -90,17 +97,20 @@ void ProblemVariablesFromProblemAdapter::extract_variables(
       ReadLinkZones(split_name[1], origin, destination);
 
       updateMapColumn(active_links_, origin, destination, var_index,
-                      ReadTimeStep(split_name[2]), p_ntc_columns);
+                      ReadTimeStep(split_name[2], problem_->Week()),
+                      p_ntc_columns);
     } else if (split_name[0] ==
                variable_name_config.cost_origin_variable_name) {
       ReadLinkZones(split_name[1], origin, destination);
       updateMapColumn(active_links_, origin, destination, var_index,
-                      ReadTimeStep(split_name[2]), p_direct_cost_columns);
+                      ReadTimeStep(split_name[2], problem_->Week()),
+                      p_direct_cost_columns);
     } else if (split_name[0] ==
                variable_name_config.cost_extremite_variable_name) {
       ReadLinkZones(split_name[1], origin, destination);
       updateMapColumn(active_links_, origin, destination, var_index,
-                      ReadTimeStep(split_name[2]), p_indirect_cost_columns);
+                      ReadTimeStep(split_name[2], problem_->Week()),
+                      p_indirect_cost_columns);
     }
   }
 }

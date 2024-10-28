@@ -9,8 +9,8 @@
 #include "antares-xpansion/benders/logger/CandidateLog.h"
 #include "antares-xpansion/benders/logger/Commons.h"
 #include "antares-xpansion/benders/logger/IterationResultLog.h"
-#include "antares-xpansion/helpers/LoggerUtils.h"
 #include "antares-xpansion/helpers/Timer.h"
+#include "antares-xpansion/xpansion_interfaces/LoggerUtils.h"
 using xpansion::logger::commons::indent_1;
 
 namespace xpansion {
@@ -34,9 +34,9 @@ void UserFile::display_message(const std::string &str) {
   _file << PrefixMessage(LogUtils::LOGLEVEL::INFO, CONTEXT) << str << std::endl;
   _file.flush();
 }
-void UserFile::display_message(const std::string &str,
-                               LogUtils::LOGLEVEL level) {
-  _file << PrefixMessage(level, CONTEXT) << str << std::endl;
+void UserFile::display_message(const std::string &str, LogUtils::LOGLEVEL level,
+                               const std::string &context) {
+  _file << PrefixMessage(level, context) << str << std::endl;
   _file.flush();
 }
 

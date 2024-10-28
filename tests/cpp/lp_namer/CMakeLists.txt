@@ -39,6 +39,7 @@ add_executable (lp_namer_tests
         MpsTxtWriterTest.cpp
         AntaresProblemToXpansionProblemTranslatorTest.cpp
         GeneralDataReadetTests.cpp
+        ProblemVariablesFromProblemAdapterTest.cpp
 )
 
 target_link_libraries (lp_namer_tests PRIVATE

@@ -12,8 +12,7 @@
 #include <string>
 
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
-#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
-#include "antares-xpansion/helpers/LoggerUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LoggerUtils.h"
 
 namespace ProblemGenerationLog {
 
@@ -21,6 +20,8 @@ class ProblemGenerationILogger : public ILoggerXpansion {
  public:
   ~ProblemGenerationILogger() override = default;
   void display_message(const std::string& message) override = 0;
+  void display_message(const std::string& str, LogUtils::LOGLEVEL level,
+                       const std::string& context) override = 0;
   void PrintIterationSeparatorBegin() override = 0;
   void PrintIterationSeparatorEnd() override = 0;
 
@@ -45,6 +46,9 @@ class ProblemGenerationFileLogger : public ProblemGenerationILogger {
   explicit ProblemGenerationFileLogger(
       const std::filesystem::path& logFilePath);
   void display_message(const std::string& message) override;
+  void display_message(const std::string& message,
+                       const LogUtils::LOGLEVEL log_level,
+                       const std::string& context) override;
   void PrintIterationSeparatorBegin() override;
   void PrintIterationSeparatorEnd() override;
   std::ostream& GetOstreamObject() override;
@@ -58,6 +62,9 @@ class ProblemGenerationOstreamLogger : public ProblemGenerationILogger {
   ~ProblemGenerationOstreamLogger() override = default;
   explicit ProblemGenerationOstreamLogger(std::ostream& stream);
   void display_message(const std::string& message) override;
+  void display_message(const std::string& message,
+                       const LogUtils::LOGLEVEL log_level,
+                       const std::string& context) override;
   void PrintIterationSeparatorBegin() override;
   void PrintIterationSeparatorEnd() override;
   std::ostream& GetOstreamObject() override;
@@ -78,14 +85,15 @@ class ProblemGenerationLogger : public ILoggerXpansion {
   ~ProblemGenerationLogger() = default;
 
   void AddLogger(const ProblemGenerationILoggerSharedPointer& logger);
-  void display_message(const std::string& message);
+  void display_message(const std::string& message) override;
   void display_message(const std::string& message,
-                       const LogUtils::LOGLEVEL log_level);
+                       const LogUtils::LOGLEVEL log_level,
+                       const std::string& context) override;
   void PrintIterationSeparatorBegin() override;
   void PrintIterationSeparatorEnd() override;
   void setLogLevel(const LogUtils::LOGLEVEL log_level);
   void setContext(const std::string& context) { context_ = context; }
-
+  const std::string& getContext() const;
   ProblemGenerationLogger& operator()(const LogUtils::LOGLEVEL log_level) {
     return (*this) << log_level;
   }

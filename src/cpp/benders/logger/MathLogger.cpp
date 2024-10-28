@@ -9,6 +9,12 @@ void MathLoggerFile::display_message(const std::string& msg) {
   // keep empty
 }
 
+void MathLoggerFile::display_message(const std::string& msg,
+                                     LogUtils::LOGLEVEL level,
+                                     const std::string& context) {
+  // keep empty
+}
+
 void MathLoggerOstream::PrintIterationSeparatorBegin() {
   // keep empty
 }

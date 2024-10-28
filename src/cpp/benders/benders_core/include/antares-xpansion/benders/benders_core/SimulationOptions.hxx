@@ -79,3 +79,5 @@ BENDERS_OPTIONS_MACRO(DO_OUTER_LOOP, bool, false, asBool())
 // Outer Loop Options file
 BENDERS_OPTIONS_MACRO(OUTER_LOOP_OPTION_FILE, std::string,
                       "adequacy_criterion.yml", asString())
+// area file
+BENDERS_OPTIONS_MACRO(AREA_FILE, std::string, "area.txt", asString())

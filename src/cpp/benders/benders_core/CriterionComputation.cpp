@@ -1,6 +1,6 @@
-#include "antares-xpansion/benders/outer_loop/CriterionComputation.h"
+#include "antares-xpansion/benders/benders_core/CriterionComputation.h"
 
-namespace Outerloop {
+namespace Benders::Criterion {
 
 void CriterionComputation::ComputeOuterLoopCriterion(
     double subproblem_weight, const std::vector<double> &sub_problem_solution,
@@ -26,11 +26,9 @@ void CriterionComputation::ComputeOuterLoopCriterion(
   }
 }
 
-
-
 void CriterionComputation::SearchVariables(
     const std::vector<std::string> &variables) {
-  Outerloop::VariablesGroup variablesGroup(
+  Benders::Criterion::VariablesGroup variablesGroup(
       variables, outer_loop_input_data_.OuterLoopData());
   var_indices_ = variablesGroup.Indices();
 }
@@ -46,4 +44,4 @@ CriterionComputation::CriterionComputation(
     const OuterLoopInputData &outer_loop_input_data)
     : outer_loop_input_data_(outer_loop_input_data) {}
 
-}  // namespace Outerloop
+}  // namespace Benders::Criterion

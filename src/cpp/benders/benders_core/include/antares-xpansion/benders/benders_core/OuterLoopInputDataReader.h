@@ -4,10 +4,12 @@
 #include <string>
 #include <vector>
 
-#include "antares-xpansion/helpers/LoggerUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LoggerUtils.h"
 #include "yaml-cpp/yaml.h"
 
-namespace Outerloop {
+namespace Benders::Criterion {
+static constexpr const char *const PositiveUnsuppliedEnergy =
+    "PositiveUnsuppliedEnergy::";
 
 class OuterLoopInputFileError
     : public LogUtils::XpansionError<std::runtime_error> {
@@ -113,4 +115,4 @@ class OuterLoopInputFromYaml : public IOuterLoopInputDataReader {
   OuterLoopInputData outerLoopInputData_;
 };
 
-}  // namespace Outerloop
+}  // namespace Benders::Criterion

@@ -53,9 +53,24 @@ typedef std::list<mps_coupling> mps_coupling_list;
 enum class BENDERSMETHOD {
   BENDERS,
   BENDERS_BY_BATCH,
-  BENDERS_EXTERNAL_LOOP,
-  BENDERS_BY_BATCH_EXTERNAL_LOOP
+  BENDERS_OUTERLOOP,
+  BENDERS_BY_BATCH_OUTERLOOP
 };
+
+inline std::string bendersmethod_to_string(BENDERSMETHOD method) {
+  switch (method) {
+    case BENDERSMETHOD::BENDERS:
+      return "Benders";
+    case BENDERSMETHOD::BENDERS_BY_BATCH:
+      return "Benders by batch";
+    case BENDERSMETHOD::BENDERS_OUTERLOOP:
+      return "Outerloop around Benders";
+    case BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP:
+      return "Outerloop around Benders by batch";
+    default:
+      return "Unknown";
+  }
+}
 
 struct Predicate {
   bool operator()(PointPtr const &lhs, PointPtr const &rhs) const {
@@ -133,6 +148,7 @@ struct BaseOptions {
   std::string MASTER_NAME;
   std::string SOLVER_NAME;
   std::string SLAVE_WEIGHT;
+  std::string AREA_FILE;
 
   int LOG_LEVEL = 0;
 
