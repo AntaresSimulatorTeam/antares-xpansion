@@ -1,11 +1,11 @@
 
 
-#include "WriterFactories.h"
+#include "antares-xpansion/benders/factories/WriterFactories.h"
 
-#include "JsonWriter.h"
-#include "OutputWriter.h"
-#include "VoidWriter.h"
-#include "common.h"
+#include "antares-xpansion/benders/output/JsonWriter.h"
+#include "antares-xpansion/xpansion_interfaces/OutputWriter.h"
+#include "antares-xpansion/benders/output/VoidWriter.h"
+#include "antares-xpansion/benders/benders_core/common.h"
 
 Writer build_void_writer() { return std::make_shared<Output::VoidWriter>(); }
 

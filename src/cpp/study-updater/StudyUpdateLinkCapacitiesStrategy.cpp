@@ -2,9 +2,9 @@
 // Created by marechaljas on 16/06/22.
 //
 
-#include "StudyUpdateLinkCapacitiesStrategy.h"
+#include "antares-xpansion/study-updater/StudyUpdateLinkCapacitiesStrategy.h"
 
-#include "LinkCapacitiesCSVWriter.h"
+#include "antares-xpansion/study-updater/LinkCapacitiesCSVWriter.h"
 
 int StudyUpdateLinkCapacitiesStrategy::UpdateLinkCapacities(
     const ActiveLink& link_p,

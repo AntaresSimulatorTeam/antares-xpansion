@@ -4,13 +4,13 @@
 
 #pragma once
 
-#include "ILogger.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
 class LoggerNOOPStub : public ILogger {
  public:
   void display_message(const std::string& str) override {}
-  void display_message(const std::string& str,
-                       LogUtils::LOGLEVEL level) override {}
+  void display_message(const std::string& str, LogUtils::LOGLEVEL level,
+                       const std::string& context) override {}
   void PrintIterationSeparatorBegin() override {
     //
   }

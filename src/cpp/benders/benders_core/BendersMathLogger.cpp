@@ -1,10 +1,10 @@
-#include "BendersMathLogger.h"
+#include "antares-xpansion/benders/benders_core/BendersMathLogger.h"
 
 #include <iomanip>
 #include <sstream>
 
-#include "LogUtils.h"
-#include "LoggerUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LoggerUtils.h"
 
 HeadersManager::HeadersManager(HEADERSTYPE type, const BENDERSMETHOD& method)
     : type_(type), method_(method) {}
@@ -113,7 +113,11 @@ MathLogger::MathLogger(std::streamsize width, HEADERSTYPE type)
 void MathLogger::display_message(const std::string& str) {
   LogsDestination() << str << std::endl;
 }
-
+void MathLogger::display_message(const std::string& str,
+                                 LogUtils::LOGLEVEL level,
+                                 const std::string& context) {
+  LogsDestination() << PrefixMessage(level, context) << str << std::endl;
+}
 std::vector<std::string> MathLogger::Headers() const { return headers_; }
 
 LogDestination& MathLogger::LogsDestination() { return log_destination_; }
@@ -260,6 +264,14 @@ void MathLoggerDriver::display_message(const std::string& str) {
   }
 }
 
+void MathLoggerDriver::display_message(const std::string& str,
+                                       LogUtils::LOGLEVEL level,
+                                       const std::string& context) {
+  for (auto logger : math_loggers_) {
+    logger->display_message(str, level, context);
+  }
+}
+
 void MathLoggerDriver::PrintIterationSeparatorBegin() {
   for (auto logger : math_loggers_) {
     logger->PrintIterationSeparatorBegin();
@@ -280,7 +292,7 @@ MathLoggerImplementation::MathLoggerImplementation(
       implementation_ =
           std::make_shared<MathLoggerBase>(file_path, width, type);
       break;
-    case BENDERSMETHOD::BENDERS_EXTERNAL_LOOP:
+    case BENDERSMETHOD::BENDERS_OUTERLOOP:
       implementation_ =
           std::make_shared<MathLoggerBaseExternalLoop>(file_path, width, type);
       break;
@@ -288,7 +300,7 @@ MathLoggerImplementation::MathLoggerImplementation(
       implementation_ =
           std::make_shared<MathLoggerBendersByBatch>(file_path, width, type);
       break;
-    case BENDERSMETHOD::BENDERS_BY_BATCH_EXTERNAL_LOOP:
+    case BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP:
       implementation_ = std::make_shared<MathLoggerBendersByBatchExternalLoop>(
           file_path, width, type);
       break;
@@ -305,14 +317,14 @@ MathLoggerImplementation::MathLoggerImplementation(const BENDERSMETHOD& method,
     case BENDERSMETHOD::BENDERS:
       implementation_ = std::make_shared<MathLoggerBase>(width, type);
       break;
-    case BENDERSMETHOD::BENDERS_EXTERNAL_LOOP:
+    case BENDERSMETHOD::BENDERS_OUTERLOOP:
       implementation_ =
           std::make_shared<MathLoggerBaseExternalLoop>(width, type);
       break;
     case BENDERSMETHOD::BENDERS_BY_BATCH:
       implementation_ = std::make_shared<MathLoggerBendersByBatch>(width, type);
       break;
-    case BENDERSMETHOD::BENDERS_BY_BATCH_EXTERNAL_LOOP:
+    case BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP:
       implementation_ =
           std::make_shared<MathLoggerBendersByBatchExternalLoop>(width, type);
       break;
@@ -330,6 +342,11 @@ void MathLoggerImplementation::display_message(const std::string& str) {
   implementation_->display_message(str);
 }
 
+void MathLoggerImplementation::display_message(const std::string& str,
+                                               LogUtils::LOGLEVEL level,
+                                               const std::string& context) {
+  implementation_->display_message(str, level, context);
+}
 void MathLoggerImplementation::Print(const CurrentIterationData& data) {
   implementation_->Print(data);
 }

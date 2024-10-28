@@ -1,8 +1,8 @@
 #include <fstream>
 
-#include "LinkProfileReader.h"
+#include "antares-xpansion/lpnamer/input_reader/LinkProfileReader.h"
 #include "LoggerBuilder.h"
-#include "ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "gtest/gtest.h"
 
 const std::string VALID_DIRECT_PROFILE_NAME("temp_direct_profile.txt");

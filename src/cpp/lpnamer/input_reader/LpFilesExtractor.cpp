@@ -1,9 +1,9 @@
-#include "LpFilesExtractor.h"
+#include "antares-xpansion/lpnamer/input_reader/LpFilesExtractor.h"
 
 #include <algorithm>
 #include <sstream>
 
-#include "ArchiveReader.h"
+#include "antares-xpansion/helpers/ArchiveReader.h"
 
 void LpFilesExtractor::ExtractFiles() const {
   auto [vect_area_files, vect_interco_files] = getFiles();

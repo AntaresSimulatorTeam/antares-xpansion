@@ -1,15 +1,15 @@
 //
 // Created by s90365 on 23/08/2021.
 //
-#include "MasterProblemBuilder.h"
+#include "antares-xpansion/lpnamer/problem_modifier/MasterProblemBuilder.h"
 
-#include <solver_utils.h>
+#include <antares-xpansion/helpers/solver_utils.h>
 
 #include <algorithm>
 #include <unordered_map>
 #include <utility>
 
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 MasterProblemBuilder::MasterProblemBuilder(std::string master_formulation)
     : _master_formulation(std::move(master_formulation)) {}

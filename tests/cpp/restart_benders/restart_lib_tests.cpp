@@ -1,11 +1,11 @@
 
-#include "ILogger.h"
-#include "LastIterationReader.h"
-#include "LastIterationWriter.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
+#include "antares-xpansion/benders/benders_core/LastIterationReader.h"
+#include "antares-xpansion/benders/benders_core/LastIterationWriter.h"
 #include "LoggerStub.h"
-#include "StartUp.h"
+#include "antares-xpansion/benders/benders_core/StartUp.h"
 #include "WriterStub.h"
-#include "common.h"
+#include "antares-xpansion/benders/benders_core/common.h"
 #include "gtest/gtest.h"
 bool operator==(const LogPoint& lhs, const LogPoint& rhs) {
   return lhs.size() == rhs.size() &&

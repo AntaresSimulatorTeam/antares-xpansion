@@ -1,4 +1,4 @@
-#include "logger/MathLogger.h"
+#include "antares-xpansion/benders/logger/MathLogger.h"
 
 MathLoggerFile::MathLoggerFile(const BENDERSMETHOD& method,
                                const std::filesystem::path& filename,
@@ -6,6 +6,12 @@ MathLoggerFile::MathLoggerFile(const BENDERSMETHOD& method,
     : MathLoggerImplementation(method, filename, width, HEADERSTYPE::LONG) {}
 
 void MathLoggerFile::display_message(const std::string& msg) {
+  // keep empty
+}
+
+void MathLoggerFile::display_message(const std::string& msg,
+                                     LogUtils::LOGLEVEL level,
+                                     const std::string& context) {
   // keep empty
 }
 

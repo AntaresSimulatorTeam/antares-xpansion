@@ -1,4 +1,4 @@
-#include "GeneralDataReader.h"
+#include "antares-xpansion/lpnamer/input_reader/GeneralDataReader.h"
 
 #include <algorithm>
 #include <filesystem>
@@ -9,10 +9,10 @@
 #include <stdexcept>
 #include <vector>
 
-#include "INIReader.h"
-#include "LogUtils.h"
-#include "ProblemGenerationLogger.h"
-#include "StringManip.h"
+#include "antares-xpansion/lpnamer/input_reader/INIReader.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
 class IniReaderUtils {
  public:
   static bool LineIsNotASectionHeader(const std::string& line) {

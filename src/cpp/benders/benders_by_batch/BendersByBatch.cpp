@@ -1,13 +1,13 @@
-#include "BendersByBatch.h"
+#include "antares-xpansion/benders/benders_by_batch/BendersByBatch.h"
 
 #include <algorithm>
 #include <functional>
 #include <mutex>
 #include <numeric>
 
-#include "BatchCollection.h"
-#include "CustomVector.h"
-#include "RandomBatchShuffler.h"
+#include "antares-xpansion/benders/benders_by_batch/BatchCollection.h"
+#include "antares-xpansion/benders/benders_core/CustomVector.h"
+#include "antares-xpansion/benders/benders_by_batch/RandomBatchShuffler.h"
 
 BendersByBatch::BendersByBatch(
     BendersBaseOptions const &options, Logger logger, Writer writer,
@@ -48,9 +48,7 @@ void BendersByBatch::InitializeProblems() {
     }
   }
 
-  // if (Rank() == rank_0) {
-  //  SetSubproblemsVariablesIndex();
-  // }
+  BroadCastVariablesIndices();
   init_problems_ = false;
 }
 void BendersByBatch::BroadcastSingleSubpbCostsUnderApprox() {

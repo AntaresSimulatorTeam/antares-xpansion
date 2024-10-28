@@ -1,7 +1,7 @@
 #include <fstream>
 
 #include "LoggerBuilder.h"
-#include "VariableFileReader.h"
+#include "antares-xpansion/lpnamer/input_reader/VariableFileReader.h"
 #include "gtest/gtest.h"
 
 const char* TEMP_FILE_NAME = "temp_variable.txt";

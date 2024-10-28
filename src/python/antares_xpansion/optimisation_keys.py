@@ -107,3 +107,6 @@ class OptimisationKeys:
     def outer_loop_option_file_key():
         return "OUTER_LOOP_OPTION_FILE"
 
+    @staticmethod
+    def area_file_key():
+        return "AREA_FILE"

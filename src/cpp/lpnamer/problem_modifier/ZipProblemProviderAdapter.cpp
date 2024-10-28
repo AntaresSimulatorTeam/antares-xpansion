@@ -2,13 +2,13 @@
 // Created by marechaljas on 02/11/22.
 //
 
-#include "ZipProblemProviderAdapter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/ZipProblemProviderAdapter.h"
 
 #include <utility>
 
-#include "LinkProblemsGenerator.h"
-#include "StringManip.h"
-#include "solver_utils.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 void ZipProblemProviderAdapter::reader_extract_file(
     const std::string& problem_name, ArchiveReader& reader,
     const std::filesystem::path& lpDir) const {

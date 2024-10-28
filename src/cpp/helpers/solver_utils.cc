@@ -1,4 +1,4 @@
-#include "solver_utils.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 
 void solver_getrows(const SolverAbstract &solver_p, std::vector<int> &mstart_p,
                     std::vector<int> &mclind_p,

@@ -1,5 +1,5 @@
-#include "BendersFactory.h"
-#include "common_mpi.h"
+#include "antares-xpansion/benders/factories/BendersFactory.h"
+#include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 
 int main(int argc, char **argv) {
   mpi::environment env(argc, argv);

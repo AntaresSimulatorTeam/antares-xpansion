@@ -1,6 +1,6 @@
 //
 
-#include "LinkProfile.h"
+#include "antares-xpansion/lpnamer/model/LinkProfile.h"
 
 constexpr int MAX_LINK_PROFILE_HOUR = NUMBER_OF_HOUR_PER_YEAR - 1;
 

@@ -1,11 +1,11 @@
 
-#include "AdditionalConstraints.h"
+#include "antares-xpansion/lpnamer/problem_modifier/AdditionalConstraints.h"
 
 #include <iostream>
 #include <utility>
 
-#include "AdditionalConstraintsReader.h"
-#include "LogUtils.h"
+#include "antares-xpansion/lpnamer/input_reader/AdditionalConstraintsReader.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 AdditionalConstraints::AdditionalConstraints(
     std::string constraints_file_path,

@@ -1,4 +1,4 @@
-#include "CandidateLog.h"
+#include "antares-xpansion/benders/logger/CandidateLog.h"
 
 #include <algorithm>
 #include <iomanip>
@@ -6,8 +6,7 @@
 #include <map>
 #include <sstream>
 
-#include "CandidateLog.h"
-#include "ILogger.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
 namespace xpansion {
 namespace logger {

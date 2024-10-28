@@ -2,11 +2,11 @@
 #include <exception>
 #include <iostream>
 
-#include "FullRunOptionsParser.h"
-#include "ProblemGeneration.h"
-#include "ProblemGenerationLogger.h"
-#include "StudyUpdateRunner.h"
-#include "common_mpi.h"
+#include "antares-xpansion/full_run/FullRunOptionsParser.h"
+#include "antares-xpansion/lpnamer/main/ProblemGeneration.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
+#include "antares-xpansion/study-updater/StudyUpdateRunner.h"
+#include "antares-xpansion/benders/benders_mpi/common_mpi.h"
 namespace po = boost::program_options;
 
 int main(int argc, char** argv) {

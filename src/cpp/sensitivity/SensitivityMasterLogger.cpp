@@ -1,4 +1,4 @@
-#include "SensitivityMasterLogger.h"
+#include "antares-xpansion/sensitivity/SensitivityMasterLogger.h"
 
 void SensitivityMasterLogger::display_message(const std::string& msg) {
   for (const auto& logger : _loggers) {

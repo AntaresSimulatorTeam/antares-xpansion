@@ -1,4 +1,4 @@
-#include "VoidWriter.h"
+#include "antares-xpansion/benders/output/VoidWriter.h"
 namespace Output {
 
 void VoidWriter::updateBeginTime() {

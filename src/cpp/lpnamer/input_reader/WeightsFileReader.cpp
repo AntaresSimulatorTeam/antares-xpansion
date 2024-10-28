@@ -1,10 +1,10 @@
-#include "WeightsFileReader.h"
+#include "antares-xpansion/lpnamer/input_reader/WeightsFileReader.h"
 
 #include <fstream>
 #include <sstream>
 
-#include "LogUtils.h"
-#include "StringManip.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
 bool WeightsFileReader::CheckWeightsFile() {
   std::ifstream file_reader;

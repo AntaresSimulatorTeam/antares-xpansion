@@ -1,0 +1,4 @@
+#justt for test: area N0 doesn't make sense in .mps of the current directory
+patterns:
+  - area: "N0"
+    criterion: 1

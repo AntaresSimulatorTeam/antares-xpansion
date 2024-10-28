@@ -2,9 +2,9 @@
 // Created by marechaljas on 16/06/22.
 //
 
-#include "StudyUpdateLinkParameterStrategy.h"
+#include "antares-xpansion/study-updater/StudyUpdateLinkParameterStrategy.h"
 
-#include "LinkParametersCSVOverwriter.h"
+#include "antares-xpansion/study-updater/LinkParametersCSVOverwriter.h"
 int StudyUpdateLinkParameterStrategy::Update(
     const ActiveLink& link, const std::map<std::string, double>& map) {
   return UpdateLinkDataParameters(link, map);

@@ -2,11 +2,11 @@
 // Created by marechaljas on 09/01/24.
 //
 
-#include "FileProblemsProviderAdapter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/FileProblemsProviderAdapter.h"
 
 #include <execution>
 
-#include "FileProblemProviderAdapter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/FileProblemProviderAdapter.h"
 
 std::vector<std::shared_ptr<Problem>>
 FileProblemsProviderAdapter::provideProblems(

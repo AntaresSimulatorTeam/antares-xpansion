@@ -2,7 +2,7 @@
 
 #include "catch2.hpp"
 #include "define_datas.hpp"
-#include "multisolver_interface/Solver.h"
+#include "antares-xpansion/multisolver_interface/Solver.h"
 
 TEST_CASE("Modification: deleting rows", "[modif][del-rows]") {
   AllDatas datas;

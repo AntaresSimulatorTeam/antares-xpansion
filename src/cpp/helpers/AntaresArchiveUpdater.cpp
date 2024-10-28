@@ -1,10 +1,10 @@
-#include "AntaresArchiveUpdater.h"
+#include "antares-xpansion/helpers/AntaresArchiveUpdater.h"
 
 #include <iostream>
 #include <vector>
 
-#include "ArchiveReader.h"
-#include "StringManip.h"
+#include "antares-xpansion/helpers/ArchiveReader.h"
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
 const std::string CRITERION_FILES_PREFIX = "criterion";
 const std::string CONSTRAINTS_FILES_PREFIX = "constraints";

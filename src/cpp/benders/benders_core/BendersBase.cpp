@@ -1,15 +1,15 @@
-#include "BendersBase.h"
+#include "antares-xpansion/benders/benders_core/BendersBase.h"
 
 #include <memory>
 #include <mutex>
 #include <numeric>
 #include <utility>
 
-#include "LastIterationPrinter.h"
-#include "LastIterationReader.h"
-#include "LastIterationWriter.h"
-#include "LogUtils.h"
-#include "solver_utils.h"
+#include "antares-xpansion/benders/benders_core/LastIterationPrinter.h"
+#include "antares-xpansion/benders/benders_core/LastIterationReader.h"
+#include "antares-xpansion/benders/benders_core/LastIterationWriter.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 
 BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
                          Writer writer,
@@ -71,6 +71,7 @@ void BendersBase::CloseCsvFile() {
     _csv_file.close();
   }
 }
+
 void BendersBase::PrintCurrentIterationCsv() {
   if (relevantIterationData_.last._valid) {
     auto ite = _data.it - 1;
@@ -393,6 +394,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
       },
       shouldParallelize());
 }
+
 void BendersBase::SolveSubproblem(
     SubProblemDataMap &subproblem_data_map,
     PlainData::SubProblemData &subproblem_data, const std::string &name,
@@ -408,6 +410,17 @@ void BendersBase::SolveSubproblem(
   subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 }
 
+// Search for variables in sub problems that satisfy patterns
+// var_indices is a vector(for each patterns p) of vector (var indices related
+// to p)
+void BendersBase::SetSubproblemsVariablesIndices() {
+  if (!subproblem_map.empty()) {
+    auto subproblem = subproblem_map.begin();
+
+    criterions_computation_->SearchVariables(
+        subproblem->second->_solver->get_col_names());
+  }
+}
 /*!
  *  \brief Add cut to Master Problem and store the cut in a set
  *
@@ -1036,4 +1049,9 @@ void BendersBase::UpdateOverallCosts() {
 void BendersBase::SetBilevelBestub(double bilevel_best_ub) {
   _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub =
       bilevel_best_ub;
+}
+void BendersBase::setCriterionsComputation(
+    std::shared_ptr<Benders::Criterion::CriterionComputation>
+        criterionsComputation) {
+  criterions_computation_ = criterionsComputation;
 }

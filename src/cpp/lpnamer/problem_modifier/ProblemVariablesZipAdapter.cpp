@@ -2,13 +2,13 @@
 // Created by marechaljas on 08/11/22.
 //
 
-#include "ProblemVariablesZipAdapter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesZipAdapter.h"
 
 #include <utility>
 
-#include "ArchiveReader.h"
-#include "LinkProblemsGenerator.h"
-#include "VariableFileReader.h"
+#include "antares-xpansion/helpers/ArchiveReader.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
+#include "antares-xpansion/lpnamer/input_reader/VariableFileReader.h"
 
 void ProblemVariablesZipAdapter::extract_variables(
     std::istringstream& variableFileContent,

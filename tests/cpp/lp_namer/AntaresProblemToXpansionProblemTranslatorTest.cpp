@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "AntaresProblemToXpansionProblemTranslator.h"
+#include "antares-xpansion/lpnamer/problem_modifier/AntaresProblemToXpansionProblemTranslator.h"
 
 TEST(AntaresProblemToXpansionProblemTranslatorTest, convertSignToLEGSpan) {
   std::vector<char> signs = {'<', '=', '>'};

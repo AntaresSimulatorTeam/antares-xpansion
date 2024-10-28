@@ -1,8 +1,8 @@
 #include <concepts>
 #include <string_view>
 
-#include "ProblemGeneration.h"
-#include "ProblemGenerationExeOptions.h"
+#include "antares-xpansion/lpnamer/main/ProblemGeneration.h"
+#include "antares-xpansion/lpnamer/main/ProblemGenerationExeOptions.h"
 #include "gtest/gtest.h"
 
 namespace po = boost::program_options;

@@ -1,6 +1,6 @@
 #include <utility>
 
-#include "FullRunOptionsParser.h"
+#include "antares-xpansion/full_run/FullRunOptionsParser.h"
 #include "gtest/gtest.h"
 
 namespace po = boost::program_options;

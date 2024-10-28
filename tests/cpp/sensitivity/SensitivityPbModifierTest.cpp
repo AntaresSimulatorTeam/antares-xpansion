@@ -1,8 +1,8 @@
 #include "gtest/gtest.h"
-#include <multisolver_interface/SolverFactory.h>
-#include "ProblemModifierCapex.h"
-#include "ProblemModifierProjection.h"
-#include "BendersBase.h"
+#include "antares-xpansion/multisolver_interface/SolverFactory.h"
+#include "antares-xpansion/sensitivity/ProblemModifierCapex.h"
+#include "antares-xpansion/sensitivity/ProblemModifierProjection.h"
+#include "antares-xpansion/benders/benders_core/BendersBase.h"
 
 const int peak_id = 0;
 const int semibase_id = 1;

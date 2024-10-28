@@ -13,7 +13,7 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 
-#include "multisolver_interface/environment.h"
+#include "antares-xpansion/multisolver_interface/environment.h"
 
 #include <filesystem>
 #include <iostream>

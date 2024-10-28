@@ -1,4 +1,4 @@
-#include "logger/Master.h"
+#include "antares-xpansion/benders/logger/Master.h"
 
 namespace xpansion {
 namespace logger {
@@ -8,9 +8,10 @@ void Master::display_message(const std::string &str) {
     logger->display_message(str);
   }
 }
-void Master::display_message(const std::string &str, LogUtils::LOGLEVEL level) {
+void Master::display_message(const std::string &str, LogUtils::LOGLEVEL level,
+                             const std::string &context) {
   for (auto logger : _loggers) {
-    logger->display_message(str, level);
+    logger->display_message(str, level, context);
   }
 }
 

@@ -1,8 +1,8 @@
 #include <iostream>
 
-#include "AntaresArchiveUpdater.h"
-#include "AntaresArchiveUpdaterExeOptions.h"
-#include "ArchiveWriter.h"
+#include "antares-xpansion/helpers/AntaresArchiveUpdater.h"
+#include "antares-xpansion/helpers/AntaresArchiveUpdaterExeOptions.h"
+#include "antares-xpansion/helpers/ArchiveWriter.h"
 
 int main(int argc, char** argv) {
   AntaresArchiveUpdaterExeOptions options_parser;

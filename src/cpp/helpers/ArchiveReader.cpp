@@ -1,11 +1,11 @@
-#include "ArchiveReader.h"
+#include "antares-xpansion/helpers/ArchiveReader.h"
 
 #include <iostream>
 #include <regex>
 #include <vector>
 #include <mutex>
 
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 ArchiveReader::ArchiveReader(const std::filesystem::path& archivePath)
     : ArchiveIO(archivePath) {

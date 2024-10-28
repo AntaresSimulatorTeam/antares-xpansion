@@ -5,7 +5,7 @@
 #ifndef ANTARESXPANSION_TESTS_CPP_LP_NAMER_NOOPSOLVER_H_
 #define ANTARESXPANSION_TESTS_CPP_LP_NAMER_NOOPSOLVER_H_
 
-#include "multisolver_interface/SolverAbstract.h"
+#include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 class NOOPSolver: public SolverAbstract {
  public:
   virtual int get_number_of_instances() override { return 0; }

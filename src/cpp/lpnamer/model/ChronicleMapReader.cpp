@@ -3,7 +3,7 @@
 //
 
 #include "gtest/gtest.h"
-#include "ChronicleMapReader.h"
+#include "antares-xpansion/lpnamer/model/ChronicleMapReader.h"
 #include <fstream>
 
 std::map<unsigned int, unsigned int> ScenarioToChronicleReader::read(

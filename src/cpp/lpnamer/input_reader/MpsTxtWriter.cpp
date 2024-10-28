@@ -1,9 +1,9 @@
 
-#include "MpsTxtWriter.h"
+#include "antares-xpansion/lpnamer/input_reader/MpsTxtWriter.h"
 
 #include <fstream>
 
-#include "ArchiveReader.h"
+#include "antares-xpansion/helpers/ArchiveReader.h"
 
 using namespace std::string_literals;
 

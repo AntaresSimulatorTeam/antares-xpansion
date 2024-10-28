@@ -2,7 +2,7 @@
 // Created by marechaljas on 03/06/22.
 //
 
-#include "AntaresVersionProvider.h"
+#include "antares-xpansion/helpers/AntaresVersionProvider.h"
 
 #include <fstream>
 #include <iostream>

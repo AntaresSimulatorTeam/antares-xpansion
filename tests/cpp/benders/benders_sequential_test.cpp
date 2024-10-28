@@ -1,8 +1,8 @@
 #include <algorithm>
 
-#include "ArchiveWriter.h"
-#include "BendersSequential.h"
-#include "JsonWriter.h"
+#include "antares-xpansion/helpers/ArchiveWriter.h"
+#include "antares-xpansion/benders/benders_sequential/BendersSequential.h"
+#include "antares-xpansion/benders/output/JsonWriter.h"
 #include "LoggerStub.h"
 #include "RandomDirGenerator.h"
 #include "gtest/gtest.h"

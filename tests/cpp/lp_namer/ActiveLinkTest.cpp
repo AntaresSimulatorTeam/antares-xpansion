@@ -1,4 +1,4 @@
-#include "ActiveLinks.h"
+#include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 #include "gtest/gtest.h"
 
 const double DEFAULT_CAPACITY = 0;

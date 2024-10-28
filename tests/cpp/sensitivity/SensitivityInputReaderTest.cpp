@@ -1,4 +1,4 @@
-#include "SensitivityInputReader.h"
+#include "antares-xpansion/sensitivity/SensitivityInputReader.h"
 #include "gtest/gtest.h"
 
 class SensitivityInputReaderTest : public ::testing::Test {

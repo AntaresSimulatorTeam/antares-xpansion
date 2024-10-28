@@ -1,6 +1,6 @@
 #include <cstdio>
 
-#include "WeightsFileReader.h"
+#include "antares-xpansion/lpnamer/input_reader/WeightsFileReader.h"
 #include "gtest/gtest.h"
 using namespace ProblemGenerationLog;
 class WeightsFileReaderTest : public ::testing::Test {

@@ -1,10 +1,10 @@
-#include "MergeMPS.h"
+#include "antares-xpansion/benders/merge_mps/MergeMPS.h"
 
 #include <filesystem>
 
-#include "ArchiveReader.h"
-#include "LogUtils.h"
-#include "Timer.h"
+#include "antares-xpansion/helpers/ArchiveReader.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+#include "antares-xpansion/helpers/Timer.h"
 
 MergeMPS::MergeMPS(const MergeMPSOptions &options, Logger &logger,
                    Writer writer)

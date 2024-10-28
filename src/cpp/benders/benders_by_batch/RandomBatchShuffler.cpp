@@ -1,4 +1,4 @@
-#include "RandomBatchShuffler.h"
+#include "antares-xpansion/benders/benders_by_batch/RandomBatchShuffler.h"
 
 std::vector<unsigned> RandomBatchShuffler::GetCyclicBatchOrder(
     unsigned batch_counter) const {

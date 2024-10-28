@@ -1,36 +1,35 @@
 
-#include "include/ProblemGeneration.h"
+#include "antares-xpansion/lpnamer/main/ProblemGeneration.h"
 
 #include <antares/api/solver.h>
-#include <antares/api/SimulationResults.h>
 
 #include <execution>
 #include <iostream>
 #include <utility>
 
-#include "ActiveLinks.h"
-#include "AdditionalConstraints.h"
-#include "FileProblemsProviderAdapter.h"
-#include "GeneralDataReader.h"
-#include "LauncherHelpers.h"
-#include "LinkProblemsGenerator.h"
-#include "LogUtils.h"
-#include "LpFilesExtractor.h"
-#include "MPSFileWriter.h"
-#include "MasterGeneration.h"
-#include "MasterProblemBuilder.h"
-#include "MpsTxtWriter.h"
-#include "ProblemGenerationLogger.h"
-#include "ProblemVariablesFileAdapter.h"
-#include "ProblemVariablesFromProblemAdapter.h"
-#include "ProblemVariablesZipAdapter.h"
-#include "StringManip.h"
-#include "Timer.h"
+#include "antares-xpansion/lpnamer/model/ActiveLinks.h"
+#include "antares-xpansion/lpnamer/problem_modifier/AdditionalConstraints.h"
+#include "antares-xpansion/lpnamer/problem_modifier/FileProblemsProviderAdapter.h"
+#include "antares-xpansion/lpnamer/input_reader/GeneralDataReader.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LauncherHelpers.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+#include "antares-xpansion/lpnamer/input_reader/LpFilesExtractor.h"
+#include "antares-xpansion/lpnamer/problem_modifier/MPSFileWriter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/MasterGeneration.h"
+#include "antares-xpansion/lpnamer/problem_modifier/MasterProblemBuilder.h"
+#include "antares-xpansion/lpnamer/input_reader/MpsTxtWriter.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesFileAdapter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesFromProblemAdapter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesZipAdapter.h"
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
+#include "antares-xpansion/helpers/Timer.h"
 #include "Version.h"
-#include "WeightsFileReader.h"
-#include "WeightsFileWriter.h"
-#include "XpansionProblemsFromAntaresProvider.h"
-#include "ZipProblemsProviderAdapter.h"
+#include "antares-xpansion/lpnamer/input_reader/WeightsFileReader.h"
+#include "antares-xpansion/lpnamer/input_reader/WeightsFileWriter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
+#include "antares-xpansion/lpnamer/problem_modifier/ZipProblemsProviderAdapter.h"
 #include "config.h"
 
 static const std::string LP_DIRNAME = "lp";
@@ -62,9 +61,9 @@ ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options)
 
 std::filesystem::path ProblemGeneration::performAntaresSimulation() {
   auto results = Antares::API::PerformSimulation(options_.StudyPath());
-  //Add parallel
+  // Add parallel
 
-  //Handle errors
+  // Handle errors
   if (results.error) {
     throw LogUtils::XpansionError<std::runtime_error>(
         "Antares simulation failed:\n\t" + results.error->reason, LOGLOCATION);
@@ -94,7 +93,8 @@ std::filesystem::path ProblemGeneration::updateProblems() {
     // antares
   }
 
-  if (mode_ == SimulationInputMode::ANTARES_API || mode_ == SimulationInputMode::FILE) {
+  if (mode_ == SimulationInputMode::ANTARES_API ||
+      mode_ == SimulationInputMode::FILE) {
     xpansion_output_dir = simulation_dir_;
   }
 
@@ -121,7 +121,6 @@ std::shared_ptr<ArchiveReader> InstantiateZipReader(
     const std::filesystem::path& antares_archive_path);
 void ProblemGeneration::ProcessWeights(
     const std::filesystem::path& xpansion_output_dir,
-    const std::filesystem::path& antares_archive_path,
     const std::filesystem::path& weights_file,
     ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
   const auto settings_dir = xpansion_output_dir / ".." / ".." / "settings";
@@ -132,9 +131,9 @@ void ProblemGeneration::ProcessWeights(
                                         logger);
   weights_file_reader.CheckWeightsFile();
   auto weights_vector = weights_file_reader.WeightsList();
-  auto yearly_weight_writer = YearlyWeightsWriter(
-      xpansion_output_dir, antares_archive_path, weights_vector,
-      weights_file.filename(), active_years);
+  auto yearly_weight_writer =
+      YearlyWeightsWriter(xpansion_output_dir, weights_vector,
+                          weights_file.filename(), active_years);
   yearly_weight_writer.CreateWeightFile();
 }
 
@@ -181,7 +180,8 @@ void validateMasterFormulation(
  * @param solver_name
  * @param mpsList
  * @param lpDir_
- * @param reader shared pointer to the archive reader to share with ZipProblemsProviderAdapter
+ * @param reader shared pointer to the archive reader to share with
+ * ZipProblemsProviderAdapter
  * @param with_archive
  * @param lps data from antares. Passed by reference to prevent heavy copy
  * @return
@@ -201,8 +201,8 @@ std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
       return adapter.provideProblems(solver_name, solver_log_manager);
     }
     case SimulationInputMode::ARCHIVE: {
-      ZipProblemsProviderAdapter adapter(
-          lpDir_, std::move(reader), problem_names);
+      ZipProblemsProviderAdapter adapter(lpDir_, std::move(reader),
+                                         problem_names);
       return adapter.provideProblems(solver_name, solver_log_manager);
     }
     case SimulationInputMode::ANTARES_API: {
@@ -231,10 +231,6 @@ void ProblemGeneration::RunProblemGeneration(
   SolverLoader::GetAvailableSolvers(logger);  // Dirty fix to populate static
                                               // value outside multi thread code
   Timer problem_generation_timer;
-  if (!weights_file.empty()) {
-    ProcessWeights(xpansion_output_dir, antares_archive_path, weights_file,
-                   logger);
-  }
 
   ExtractUtilsFiles(antares_archive_path, xpansion_output_dir, logger);
 
@@ -255,7 +251,6 @@ void ProblemGeneration::RunProblemGeneration(
       antares_version < first_version_without_variables_files;
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "rename problems: " << std::boolalpha << rename_problems << std::endl;
-
 
   auto files_mapper = FilesMapper(antares_archive_path, xpansion_output_dir);
   auto mpsList = files_mapper.MpsAndVariablesFilesVect();
@@ -317,6 +312,10 @@ void ProblemGeneration::RunProblemGeneration(
                                     variables_provider.get(),
                                     mps_file_writer.get());
       });
+
+  if (!weights_file.empty()) {
+    ProcessWeights(xpansion_output_dir, weights_file, logger);
+  }
 
   if (mode_ == SimulationInputMode::ARCHIVE) {
     reader->Close();

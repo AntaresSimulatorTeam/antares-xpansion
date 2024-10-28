@@ -2,7 +2,7 @@
 // Created by marechaljas on 16/06/22.
 //
 
-#include "StudyUpdateStrategy.h"
+#include "antares-xpansion/study-updater/StudyUpdateStrategy.h"
 
 static const std::filesystem::path ANTARES_LINK_FOLDER =
     std::filesystem::path("input") / "links";

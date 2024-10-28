@@ -1,11 +1,11 @@
-#include "AdditionalConstraintsReader.h"
+#include "antares-xpansion/lpnamer/input_reader/AdditionalConstraintsReader.h"
 
 #include <algorithm>
 #include <cctype>
 #include <fstream>
 #include <iostream>
 
-#include "LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 namespace {
 

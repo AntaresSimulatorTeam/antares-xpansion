@@ -2,14 +2,13 @@
 // Created by marechaljas on 22/11/22.
 //
 
-#include "AntaresProblemToXpansionProblemTranslator.h"
+#include "antares-xpansion/lpnamer/problem_modifier/AntaresProblemToXpansionProblemTranslator.h"
 
 #include <algorithm>
 #include <cmath>
 
-#include "LogUtils.h"
-#include "multisolver_interface/SolverFactory.h"
-#include "solver_utils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+#include "antares-xpansion/multisolver_interface/SolverFactory.h"
 
 /**
  *
@@ -26,6 +25,8 @@ AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
   auto constant = lps.constantProblemData;
   auto hebdo = lps.weeklyProblems.at({year, week});
   problem->_name = hebdo.name;
+  problem->mc_year = year;
+  problem->week = week;
 
   std::vector<int> tmp(constant.VariablesCount, 0);
   std::vector<char> coltypes(constant.VariablesCount, 'C');

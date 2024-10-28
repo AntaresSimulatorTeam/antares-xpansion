@@ -1,7 +1,7 @@
-#include "WorkerMaster.h"
+#include "antares-xpansion/benders/benders_core/WorkerMaster.h"
 
 
-#include "solver_utils.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 
 WorkerMaster::WorkerMaster(Logger logger) : Worker(logger) {
   _is_master = true;
@@ -301,7 +301,10 @@ void WorkerMaster::_set_alpha_var() {
       solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
     }
   } else {
-    logger_->display_message("ERROR a variable named overall_subpb_cost_under_approx is in input", LogUtils::LOGLEVEL::ERR);
+    logger_->display_message(
+        "ERROR There is already a variable called "
+        "overall_subpb_cost_under_approx in the input.",
+        LogUtils::LOGLEVEL::ERR, "Alpha var");
   }
 }
 
