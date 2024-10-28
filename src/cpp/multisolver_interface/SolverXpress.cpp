@@ -604,12 +604,12 @@ void SolverXpress::set_simplex_iter(int iter) {
 }
 
 void SolverXpress::save_prob(const std::filesystem::path &filename) {
-  throw std::logic_error(
-      "save_prob : not implemented for xpress");
+  int status = XPRSsaveas(_xprs, filename.string().c_str());
+  zero_status_check(status, "save problem", LOGLOCATION);
 }
 void SolverXpress::restore_prob(const std::filesystem::path &filename) {
-  throw std::logic_error(
-      "restore_prob : not implemented for xpress");
+    int status = XPRSrestore(_xprs, filename.string().c_str(), "");
+    zero_status_check(status, "restore problem", LOGLOCATION);
 }
 
 void XPRS_CC optimizermsg(XPRSprob prob, void *strPtr, const char *sMsg,
