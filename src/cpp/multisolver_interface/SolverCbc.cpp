@@ -688,3 +688,19 @@ void SolverCbc::set_simplex_iter(int iter) {
   throw InvalidSolverOptionException(
       "set_simplex_iter : " + std::to_string(iter), LOGLOCATION);
 }
+
+/**
+ * CBC default to write_prob_mps implementation
+ * @param filename
+ */
+void SolverCbc::save_prob(const std::filesystem::path &filename) {
+  write_prob_mps(filename);
+}
+
+/**
+ * CBC default to read_prob_mps implementation
+ * @param filename
+ */
+void SolverCbc::restore_prob(const std::filesystem::path &filename) {
+  read_prob_mps(filename);
+}

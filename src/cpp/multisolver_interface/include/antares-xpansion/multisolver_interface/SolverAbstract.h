@@ -285,6 +285,15 @@ class SolverAbstract {
   virtual void write_prob_lp(const std::filesystem::path &filename) = 0;
 
   /**
+   * @brief write an optimisation problem in a file
+   *
+   * File format is not garanteed and depend on implementation
+   *
+   * @param name   : name of the file to read
+   */
+  virtual void save_prob(const std::filesystem::path &filename) = 0;
+
+  /**
    * @brief Writes the current basis to a file for later input into the
    * optimizer
    *
@@ -305,6 +314,15 @@ class SolverAbstract {
    * @param name   : name of the file to read
    */
   virtual void read_prob_lp(const std::filesystem::path &filename) = 0;
+
+  /**
+   * @brief read an optimisation problem from a file
+   *
+   * File format supposed to be the same used by save_prob
+   *
+   * @param name   : name of the file to read
+   */
+  virtual void restore_prob(const std::filesystem::path &filename) = 0;
 
   /**
    * @brief Instructs the optimizer to read in a previously saved basis from a

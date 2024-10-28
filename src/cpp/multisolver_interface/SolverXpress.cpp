@@ -603,6 +603,15 @@ void SolverXpress::set_simplex_iter(int iter) {
   zero_status_check(status, "set simplex max iter", LOGLOCATION);
 }
 
+void SolverXpress::save_prob(const std::filesystem::path &filename) {
+  throw std::logic_error(
+      "save_prob : not implemented for xpress");
+}
+void SolverXpress::restore_prob(const std::filesystem::path &filename) {
+  throw std::logic_error(
+      "restore_prob : not implemented for xpress");
+}
+
 void XPRS_CC optimizermsg(XPRSprob prob, void *strPtr, const char *sMsg,
                           int nLen, int nMsglvl) {
   std::list<std::ostream *> *ptr = NULL;

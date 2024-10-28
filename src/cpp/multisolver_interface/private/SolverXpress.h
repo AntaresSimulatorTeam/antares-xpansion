@@ -74,10 +74,12 @@ class SolverXpress : public SolverAbstract {
  public:
   virtual void write_prob_mps(const std::filesystem::path &filename) override;
   virtual void write_prob_lp(const std::filesystem::path &filename) override;
+  void save_prob(const std::filesystem::path &filename) override;
   virtual void write_basis(const std::filesystem::path &filename) override;
 
   virtual void read_prob_mps(const std::filesystem::path &filename) override;
   virtual void read_prob_lp(const std::filesystem::path &filename) override;
+  void restore_prob(const std::filesystem::path &filename) override;
   virtual void read_basis(const std::filesystem::path &filename) override;
 
   virtual void copy_prob(const SolverAbstract::Ptr fictif_solv) override;

@@ -542,3 +542,19 @@ void SolverClp::set_optimality_gap(double gap) {
 }
 
 void SolverClp::set_simplex_iter(int iter) { _clp.setMaximumIterations(iter); }
+
+/**
+ * CLP default to write_prob_mps implementation
+ * @param filename
+ */
+void SolverClp::save_prob(const std::filesystem::path &filename) {
+  write_prob_mps(filename);
+}
+
+/**
+ * CLP default to read_prob_mps implementation
+ * @param filename
+ */
+void SolverClp::restore_prob(const std::filesystem::path &filename) {
+  read_prob_mps(filename);
+}

@@ -203,6 +203,8 @@ class Problem : public SolverAbstract {
   void read_basis(const std::filesystem::path &filename) override {
     solver_abstract_->read_basis(filename);
   }
+  void save_prob(const std::filesystem::path &filename) override;
+  void restore_prob(const std::filesystem::path &filename) override;
 };
 
 #endif  // ANTARESXPANSION_SRC_CPP_LPNAMER_MODEL_PROBLEM_H_
