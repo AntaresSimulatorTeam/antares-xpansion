@@ -7,7 +7,8 @@ from pathlib import Path
 import numpy as np
 from behave import *
 
-from utils_functions import get_mpi_command, get_conf
+from utils_functions import get_mpi_command, get_conf, read_outputs
+
 
 
 
@@ -70,13 +71,16 @@ def run_outer_loop(context, n, option_file: str = "options.json"):
     os.chdir(old_cwd)
 
 
-@when('I run antares-xpansion in memory with the {method} method and {n:d} proc(s)')
-def run_antares_xpansion(context, method, n):
-    command = build_launch_command(context.study_path, method, n, True)
+@when('I run antares-xpansion with the {method} method and {n:d} proc(s)')
+@when('I run antares-xpansion in {memory} with the {method} method and {n:d} proc(s)')
+def run_antares_xpansion(context, method, memory=None, n: int = 1):
+    memory = True if memory is not None else False
+    command = build_launch_command(context.tmp_study, method, n, memory)
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, shell=True)
     out, err = process.communicate()
     context.return_code = process.returncode
-    context.outputs = read_json_file(Path(get_results_file_path_from_logs(out)))
+    output_path = context.tmp_study / "output"
+    context.outputs, context.options_data = read_outputs(output_path, use_archive=True)
 
 
 @then("the simulation takes less than {seconds:d} seconds")
