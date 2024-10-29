@@ -77,12 +77,13 @@ def get_out_data(output_dir, files_to_read: FilesToRead) -> Outputs:
         if path.suffix == ".zip":
             with zipfile.ZipFile(path, "r") as archive:
                 out = Outputs()
-                out.out_json = json.loads(archive.read(files_to_read.out_json))
-                out.out_json = json.loads(archive.read(files_to_read.out_json))
+                out.out_json = json.loads(archive.read(files_to_read.out_json.as_posix()))
+                out.options_json = json.loads(archive.read(files_to_read.out_json.as_posix()))
                 if files_to_read.lold:
-                    out.lold = archive.read(files_to_read.lold).decode('utf-8')
+                    out.lold = archive.read(files_to_read.lold.as_posix()).decode('utf-8')
                 if files_to_read.positive_unsupplied_energy:
-                    out.positive_unsupplied_energy = archive.read(files_to_read.positive_unsupplied_energy).decode(
+                    out.positive_unsupplied_energy = archive.read(
+                        files_to_read.positive_unsupplied_energy.as_posix()).decode(
                         'utf-8')
 
                 return out
