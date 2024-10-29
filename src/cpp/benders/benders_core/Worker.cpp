@@ -51,7 +51,7 @@ void Worker::init(VariableMap const &variable_map,
 
   _solver->set_threads(1);
   _solver->set_output_log_level(log_level);
-  _solver->read_prob_mps(path_to_mps);
+  read_prob(_solver.get(), path_to_mps);
 
   _name_to_id = variable_map;
 
@@ -142,3 +142,15 @@ void Worker::AddRows(std::vector<char> const &qrtype_p,
 
 int Worker::Getnrows() const { return _solver->get_nrows(); }
 int Worker::Getncols() const { return _solver->get_ncols(); }
+
+/**
+ * Have `problem` read the problem problem data from `path`
+ *
+ * Used to hold logic to select between mps/save/etc.
+ * @param problem
+ * @param path
+ */
+void Worker::read_prob(SolverAbstract * problem,
+                       const std::filesystem::path &path) const {
+  problem->restore_prob(path);
+}
