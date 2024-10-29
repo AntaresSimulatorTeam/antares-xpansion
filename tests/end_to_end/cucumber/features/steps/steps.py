@@ -4,7 +4,6 @@ import os
 import shutil
 import subprocess
 from pathlib import Path
-from pytest import fixture
 import numpy as np
 from behave import *
 
@@ -145,6 +144,11 @@ def check_other_outputs(context):
     assert (is_column_full_of_zeros(context.loss_of_load_file, 2))
     assert (is_column_full_of_zeros(context.positive_unsupplied_energy_file, 2))
 
+
+@then("the LOLD.txt is:")
+def check_other_outputs(context):
+    expected_solution = {row['variable']: float(row['value']) for row in context.table}
+    assert_dict_allclose(context.outputs["solution"]["values"], expected_solution)
 
 def get_results_file_path_from_logs(logs: bytes) -> str:
     for line in logs.splitlines():
