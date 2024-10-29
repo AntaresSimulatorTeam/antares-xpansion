@@ -150,10 +150,16 @@ jobs:
         run: |
           cmake --build _build --config Release -j$(nproc)
 
-      - name: Run cucumber on outer_loop tests
+      - name: outer_loop tests with cucumber
         uses: ./.github/workflows/cucumber-tests
         with:
           feature: "features/outer_loop_tests.feature"
+          mpi_path: ${{ github.workspace }}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin
+
+      - name: tests Benders Outputs with cucumber
+        uses: ./.github/workflows/cucumber-tests
+        with:
+          feature: "features/Benders_criterion_output_tests.feature"
           mpi_path: ${{ github.workspace }}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin
 
 
