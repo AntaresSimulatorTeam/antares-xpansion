@@ -41,12 +41,6 @@ def read_json_file(output_path):
     return outputs
 
 
-def read_file(output_path):
-    with open(output_path, 'r') as file:
-        outputs = file.readlines()
-    return outputs
-
-
 @when('I run outer loop with {n:d} proc(s) and "{option_file}" as option file')
 @when('I run outer loop with {n:d} proc(s)')
 def run_outer_loop(context, n, option_file: str = "options.json"):
@@ -80,7 +74,11 @@ def run_antares_xpansion(context, method, memory=None, n: int = 1):
     out, err = process.communicate()
     context.return_code = process.returncode
     output_path = context.tmp_study / "output"
-    context.outputs, context.options_data = read_outputs(output_path, use_archive=True)
+    outputs = read_outputs(output_path, use_archive=True, lold=True, positive_unsupplied_energy=True)
+    context.outputs = outputs.out_json
+    context.options_data = outputs.options_json
+    context.lold = outputs.lold
+    context.positive_unsupplied_energy = outputs.positive_unsupplied_energy
 
 
 @then("the simulation takes less than {seconds:d} seconds")

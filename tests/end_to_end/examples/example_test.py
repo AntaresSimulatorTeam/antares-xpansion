@@ -102,8 +102,9 @@ def assert_convergence(solution, options_data, method: BendersMethod):
 def verify_solution(study_path, expected_values, expected_investment_solution,
                     method: BendersMethod = BendersMethod.BENDERS, use_archive=True):
     output_path = study_path / "output"
-
-    json_data, options_data = read_outputs(output_path, use_archive)
+    outputs = read_outputs(output_path, use_archive)
+    json_data = outputs.out_json
+    options_data = outputs.options_json
 
     solution = json_data["solution"]
     investment_solution = solution["values"]
