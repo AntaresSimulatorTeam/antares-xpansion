@@ -78,7 +78,7 @@ def get_out_data(output_dir, files_to_read: FilesToRead) -> Outputs:
             with zipfile.ZipFile(path, "r") as archive:
                 out = Outputs()
                 out.out_json = json.loads(archive.read(files_to_read.out_json.as_posix()))
-                out.options_json = json.loads(archive.read(files_to_read.out_json.as_posix()))
+                out.options_json = json.loads(archive.read(files_to_read.options_json.as_posix()))
                 if files_to_read.lold:
                     out.lold = archive.read(files_to_read.lold.as_posix()).decode('utf-8')
                 if files_to_read.positive_unsupplied_energy:
