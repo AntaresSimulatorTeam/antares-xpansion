@@ -76,7 +76,7 @@ def get_out_data(output_dir, files_to_read: FilesToRead) -> Outputs:
     for path in Path(output_dir).iterdir():
         if path.suffix == ".zip":
             with zipfile.ZipFile(path, "r") as archive:
-                out: Outputs = None
+                out = Outputs()
                 out.out_json = json.loads(archive.read(files_to_read.out_json))
                 out.out_json = json.loads(archive.read(files_to_read.out_json))
                 if files_to_read.lold:
@@ -90,7 +90,7 @@ def get_out_data(output_dir, files_to_read: FilesToRead) -> Outputs:
 
 
 def read_outputs(output_path, use_archive=True, lold=False, positive_unsupplied_energy=False):
-    files_to_read: FilesToRead = None
+    files_to_read = FilesToRead()
     files_to_read.out_json = Path("expansion") / "out.json"
     files_to_read.options_json = Path("lp") / "options.json"
 
@@ -102,7 +102,7 @@ def read_outputs(output_path, use_archive=True, lold=False, positive_unsupplied_
     if use_archive:
         return get_out_data(output_path, files_to_read)
     else:
-        out: Outputs = None
+        out = Outputs()
         json_path = get_filepath(output_path, "expansion", "out.json")
         options_path = get_filepath(output_path, "lp", "options.json")
 
