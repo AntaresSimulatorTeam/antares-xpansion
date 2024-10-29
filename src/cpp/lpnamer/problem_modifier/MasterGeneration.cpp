@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <filesystem>
 
+#include "antares-xpansion/lpnamer/problem_modifier/FileWriter.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LauncherHelpers.h"
 #include "antares-xpansion/lpnamer/problem_modifier/MasterProblemBuilder.h"
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
@@ -41,8 +42,10 @@ void MasterGeneration::write_master_mps(
           .build(solver_name, candidates, solver_log_manager);
   treatAdditionalConstraints(master_l, additionalConstraints_p, logger_);
 
-  std::string const &lp_name = "master";
-  master_l->write_prob_mps(rootPath / "lp" / (lp_name + ".mps"));
+  FileWriter writer(rootPath / "lp");
+  Problem master_problem(master_l);
+  master_problem._name = "master.mps";
+  writer.Write_problem(&master_problem);
 }
 
 void MasterGeneration::write_structure_file(
