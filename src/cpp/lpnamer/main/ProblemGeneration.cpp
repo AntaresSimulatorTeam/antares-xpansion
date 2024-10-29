@@ -20,6 +20,7 @@
 #include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 #include "antares-xpansion/lpnamer/problem_modifier/AdditionalConstraints.h"
 #include "antares-xpansion/lpnamer/problem_modifier/FileProblemsProviderAdapter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/FileWriter.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LauncherHelpers.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 #include "antares-xpansion/lpnamer/problem_modifier/MPSFileWriter.h"
@@ -338,7 +339,7 @@ void ProblemGeneration::RunProblemGeneration(
       problems_and_data.emplace_back(xpansion_problems.at(i), mpsList.at(i));
     }
   }
-  auto mps_file_writer = std::make_shared<MPSFileWriter>(lpDir_);
+  auto mps_file_writer = std::make_shared<FileWriter>(lpDir_);
   std::for_each(
       std::execution::par, problems_and_data.begin(), problems_and_data.end(),
       [&](const auto& problem_and_data) {
