@@ -18,7 +18,7 @@ v1.4.0 (09/2024)
 ### New Contributors
 * @pet-mit made their first contribution in https://github.com/AntaresSimulatorTeam/antares-xpansion/pull/944
 
-**Full Changelog**: https://github.com/AntaresSimulatorTeam/antares-xpansion/compare/v1.3.2...v1.4.0-RC1
+**Full Changelog**: https://github.com/AntaresSimulatorTeam/antares-xpansion/compare/v1.3.2...v1.4.0-rc1
 
 v1.3.2 (07/2024)
 --------------------------------------------------------
