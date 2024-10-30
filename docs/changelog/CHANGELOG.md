@@ -5,6 +5,8 @@ v1.4.0 (09/2024)
 --------------------------------------------------------
 ### Features
 * Update Antares Simulator to  9.2-RC4
+* Output file **criterions.txt** is renamed **LOLD.txt** as it gathers the loss of load for each area at each iteration of the algorithm
+* Support for in memory problems between Antares and problem generation
 * Properly handle Antares Simulator errors. Especially error -9 occurring when running out of memory where Xpansion tried to continue in an improper state.
 
 ### For developers
@@ -16,7 +18,7 @@ v1.4.0 (09/2024)
 ### New Contributors
 * @pet-mit made their first contribution in https://github.com/AntaresSimulatorTeam/antares-xpansion/pull/944
 
-**Full Changelog**: https://github.com/AntaresSimulatorTeam/antares-xpansion/compare/v1.3.2...v2.0-RC1
+**Full Changelog**: https://github.com/AntaresSimulatorTeam/antares-xpansion/compare/v1.3.2...v1.4.0-RC1
 
 v1.3.2 (07/2024)
 --------------------------------------------------------
