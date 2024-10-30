@@ -1,6 +1,23 @@
 Antares-Xpansion changelog
 =================
 
+v1.4.0 (09/2024)
+--------------------------------------------------------
+### Features
+* Update Antares Simulator to  9.2-RC4
+* Properly handle Antares Simulator errors. Especially error -9 occurring when running out of memory where Xpansion tried to continue in an improper state.
+
+### For developers
+* Various improvement on dependency management through vcpkg.
+* Update and improve documentation
+* Use devtoolset 11 for CentOS and OL8
+* Add some tests using cucumber
+
+### New Contributors
+* @pet-mit made their first contribution in https://github.com/AntaresSimulatorTeam/antares-xpansion/pull/944
+
+**Full Changelog**: https://github.com/AntaresSimulatorTeam/antares-xpansion/compare/v1.3.2...v2.0-RC1
+
 v1.3.2 (07/2024)
 --------------------------------------------------------
 ### Bug Fixes
