@@ -13,7 +13,7 @@
 void treatAdditionalConstraints(
     SolverAbstract::Ptr master_p,
     const AdditionalConstraints &additionalConstraints_p,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger) {
   // add requested binary variables
   addBinaryVariables(master_p, additionalConstraints_p.getVariablesToBinarise(),
                      logger);
@@ -26,7 +26,7 @@ void treatAdditionalConstraints(
 
 char getConstraintSenseSymbol(
     const AdditionalConstraint &additionalConstraint_p,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger) {
   char rtype;
   if (std::string sign_l = additionalConstraint_p.getSign();
       sign_l == "less_or_equal") {
@@ -47,7 +47,7 @@ char getConstraintSenseSymbol(
 void addAdditionalConstraint(
     SolverAbstract::Ptr master_p,
     const AdditionalConstraint &additionalConstraint_p,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger) {
   auto newnz = (int)additionalConstraint_p.size();
   int newrows = 1;
   std::vector<char> rtype(newrows);
@@ -81,7 +81,7 @@ void addAdditionalConstraint(
 void addBinaryVariables(
     SolverAbstract::Ptr master_p,
     const std::map<std::string, std::string> &variablesToBinarise_p,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger) {
   for (const auto &pairOldNewVarnames : variablesToBinarise_p) {
     int col_index = master_p->get_col_index(pairOldNewVarnames.first);
 
@@ -139,7 +139,7 @@ void addBinaryVariables(
 
 ActiveLinksBuilder get_link_builders(
     const std::filesystem::path &xpansion_output_dir,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger) {
   const auto area_file_name = xpansion_output_dir / "area.txt";
 
   const auto interco_file_name = xpansion_output_dir / "interco.txt";

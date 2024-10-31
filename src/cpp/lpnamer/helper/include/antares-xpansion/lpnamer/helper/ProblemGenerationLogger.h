@@ -70,10 +70,6 @@ class ProblemGenerationOstreamLogger : public ProblemGenerationILogger {
   std::ostream& GetOstreamObject() override;
 };
 
-class ProblemGenerationLogger;
-using ProblemGenerationLoggerSharedPointer =
-    std::shared_ptr<ProblemGenerationLogger>;
-
 class ProblemGenerationLogger : public ILoggerXpansion {
  private:
   LogUtils::LOGLEVEL log_level_;
@@ -103,7 +99,7 @@ class ProblemGenerationLogger : public ILoggerXpansion {
 
   ProblemGenerationLogger& operator<<(std::ostream& (*f)(std::ostream&));
   ProblemGenerationLogger& operator<<(
-      const ProblemGenerationLoggerSharedPointer logger) {
+      const std::shared_ptr<ProblemGenerationLogger> logger) {
     return (*logger);
   }
   ProblemGenerationLogger& operator<<(const LogUtils::LOGLEVEL log_level);
@@ -125,7 +121,7 @@ ProblemGenerationLogger& ProblemGenerationLogger::operator<<(T const& t) {
   }
   return *this;
 }
-ProblemGenerationLoggerSharedPointer BuildLogger(
+std::shared_ptr<ProblemGenerationLogger> BuildLogger(
     const std::filesystem::path& log_file_path, std::ostream& stream,
     const std::string& context);
 

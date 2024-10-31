@@ -121,7 +121,7 @@ const std::string& ProblemGenerationLogger::getContext() const {
   return context_;
 }
 
-ProblemGenerationLoggerSharedPointer BuildLogger(
+std::shared_ptr<ProblemGenerationLogger> BuildLogger(
     const std::filesystem::path& log_file_path, std::ostream& stream,
     const std::string& context) {
   auto logFile = std::make_shared<ProblemGenerationFileLogger>(log_file_path);

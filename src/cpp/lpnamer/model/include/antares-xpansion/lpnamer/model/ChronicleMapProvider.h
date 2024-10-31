@@ -17,7 +17,7 @@ class DirectAccessScenarioToChronicleProvider {
  public:
   explicit DirectAccessScenarioToChronicleProvider(
       std::filesystem::path ts_info_root,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
       : ts_info_root_(std::move(ts_info_root)), logger_(logger) {}
 
   [[nodiscard]] std::map<unsigned int, unsigned int> GetMap(
@@ -28,7 +28,7 @@ class DirectAccessScenarioToChronicleProvider {
                                 const std::string& link_to) const;
   std::filesystem::path ts_info_root_;
   ScenarioToChronicleReader chronicle_map_reader_;
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
 };
 
 #endif  // ANTARESXPANSION_TESTS_CPP_LP_NAMER_CHRONICLEMAPPROVIDERTEST_CPP_CHRONICLEMAPPROVIDER_H_

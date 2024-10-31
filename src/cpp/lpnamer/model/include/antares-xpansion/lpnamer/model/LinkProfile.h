@@ -22,7 +22,7 @@ class LinkProfile {
    *
    */
   explicit LinkProfile(
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
       : logger_(logger) {}
 
   /*!
@@ -60,7 +60,7 @@ class LinkProfile {
   };
 
  private:
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
 };
 
 #endif  // ANTARESXPANSION_LINKPROFILE_H

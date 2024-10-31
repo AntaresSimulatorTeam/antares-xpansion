@@ -36,7 +36,7 @@ class ProblemGenerationSpyAndMock : public ProblemGeneration {
       const std::string& master_formulation,
       const std::string& additionalConstraintFilename_l,
       const std::filesystem::path& archive_path,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
+      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger,
       const std::filesystem::path& log_file_path,
       const std::filesystem::path& weights_file,
       bool unnamed_problems) override {

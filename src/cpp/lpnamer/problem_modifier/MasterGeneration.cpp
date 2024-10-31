@@ -9,6 +9,11 @@
 #include "antares-xpansion/lpnamer/problem_modifier/MasterProblemBuilder.h"
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
+namespace {
+  using ProblemName = std::string;
+  using CandidateName = std::string;
+  using Structure = std::map<ProblemName, std::map<CandidateName, ColId>>;
+}
 MasterGeneration::MasterGeneration(
     const std::filesystem::path &rootPath, const std::vector<ActiveLink> &links,
     const AdditionalConstraints &additionalConstraints_p, Couplings &couplings,
@@ -58,19 +63,19 @@ void MasterGeneration::write_master_mps(
 
 void MasterGeneration::write_structure_file(
     const std::filesystem::path &rootPath, const Couplings &couplings) const {
-  std::map<std::string, std::map<std::string, unsigned int>> output;
+  Structure structure;
   for (const auto &[candidate_name_and_mps_filePath, colId] : couplings) {
-    output[candidate_name_and_mps_filePath.second]
+    structure[candidate_name_and_mps_filePath.second]
           [candidate_name_and_mps_filePath.first] = colId;
   }
   unsigned int i = 0;
   for (auto const &candidate : candidates) {
-    output["master"][candidate.get_name()] = i;
+    structure["master"][candidate.get_name()] = i;
     ++i;
   }
 
   std::ofstream coupling_file(rootPath / "lp" / STRUCTURE_FILE);
-  for (auto const &[mps_file_path, candidates_name_and_colId] : output) {
+  for (auto const &[mps_file_path, candidates_name_and_colId] : structure) {
     for (auto const &[candidate_name, colId] : candidates_name_and_colId) {
       coupling_file << std::setw(50) << mps_file_path;
       coupling_file << std::setw(50) << candidate_name;

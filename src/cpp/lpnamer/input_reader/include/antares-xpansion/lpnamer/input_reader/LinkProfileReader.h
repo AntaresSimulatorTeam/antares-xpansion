@@ -12,7 +12,7 @@
 class LinkProfileReader {
  public:
   explicit LinkProfileReader(
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
       : logger_(std::move(logger)) {}
 
   std::vector<LinkProfile> ReadLinkProfile(
@@ -39,7 +39,7 @@ class LinkProfileReader {
   void UpdateProfile(std::vector<LinkProfile>& result, bool directProfile,
                      double value, int chronicle_id, size_t time_step)const;
   void EnsureFileIsGood(const std::filesystem::path& direct_filename) const;
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
 };
 
 #endif  // ANTARESXPANSION_LINKPROFILEREADER_H

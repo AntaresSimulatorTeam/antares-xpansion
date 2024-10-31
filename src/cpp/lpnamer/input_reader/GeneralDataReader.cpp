@@ -36,7 +36,7 @@ class IniReaderUtils {
 };
 GeneralDataIniReader::GeneralDataIniReader(
     const std::filesystem::path& file_path,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
     : logger_(logger) {
   if (file_path.empty() || !std::filesystem::exists(file_path)) {
     std::ostringstream msg;

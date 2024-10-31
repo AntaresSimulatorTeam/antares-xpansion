@@ -16,7 +16,7 @@ const std::filesystem::path ONE_AREA_0_INTERCO =
 
 class LpFilesExtractorTest : public ::testing::Test {
  protected:
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_ =
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_ =
       emptyLogger();
 };
 

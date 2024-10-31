@@ -55,7 +55,7 @@ class LinkProblemsGenerator {
   const std::vector<ActiveLink>& _links;
   SolverConfig solver_config_;
   std::filesystem::path lpDir_ = "";
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
   mutable std::mutex coupling_mutex_;
   bool rename_problems_ = false;
   SolverLogManager& solver_log_manager_;

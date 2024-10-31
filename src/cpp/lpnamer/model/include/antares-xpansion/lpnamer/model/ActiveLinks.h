@@ -17,11 +17,11 @@ class ActiveLink {
   ActiveLink(int idLink, const std::string& linkName, const std::string& linkor,
              const std::string& linkex,
              const double& already_installed_capacity,
-             ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+             std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
   ActiveLink(int idLink, std::string linkName, std::string linkor,
              std::string linkex, const double& already_installed_capacity,
              std::map<unsigned, unsigned> mc_year_to_chronicle,
-             ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+             std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
 
   void setAlreadyInstalledLinkProfiles(
       const std::vector<LinkProfile>& linkProfile);
@@ -63,7 +63,7 @@ class ActiveLink {
   // Profile de la capa
   std::vector<LinkProfile> _already_installed_profile = {};
   std::vector<Candidate> _candidates = {};
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
 };
 
 class ActiveLinksBuilder {
@@ -72,12 +72,12 @@ class ActiveLinksBuilder {
       std::vector<CandidateData> candidateList,
       std::map<std::string, std::vector<LinkProfile>> profile_map,
       DirectAccessScenarioToChronicleProvider scenario_to_chronicle_provider,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
 
   ActiveLinksBuilder(
       const std::vector<CandidateData>& candidateList,
       const std::map<std::string, std::vector<LinkProfile>>& profile_map,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
 
   class MultipleAlreadyInstalledCapacityDetectedForLink
       : public LogUtils::XpansionError<std::runtime_error> {
@@ -135,7 +135,7 @@ class ActiveLinksBuilder {
   const std::map<std::string, std::vector<LinkProfile>> _profile_map;
   std::vector<ActiveLink> _links;
   DirectAccessScenarioToChronicleProvider scenario_to_chronicle_provider_;
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
 };
 
 #endif  // ANTARESXPANSION_ACTIVELINKS_H

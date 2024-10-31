@@ -12,7 +12,7 @@ constexpr int ANTARES_VERSION_CAPACITIES_IN_INDIVIDUAL_FILES = 820;
 StudyUpdater::StudyUpdater(
     std::filesystem::path studyPath_p,
     const AntaresVersionProvider& antares_version_provider,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
     : studyPath_(std::move(studyPath_p)), logger_(logger) {
   antaresVersion_ = antares_version_provider.getAntaresVersion(studyPath_);
 }

@@ -30,14 +30,14 @@ struct AdditionalConstraintsReader {
   std::string _line = "";
   //! number of the line that is being currently processed
   int _lineNb = 0;
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
 
  public:
   /*!
    *  default constructor for struct AdditionalConstraintsReader
    */
   AdditionalConstraintsReader(
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
       : logger_(logger) {}
 
   /*!
@@ -48,7 +48,7 @@ struct AdditionalConstraintsReader {
    */
   explicit AdditionalConstraintsReader(
       std::string const& constraints_file_path,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
 
   /*!
    * \brief return the section defining the binary variables to add

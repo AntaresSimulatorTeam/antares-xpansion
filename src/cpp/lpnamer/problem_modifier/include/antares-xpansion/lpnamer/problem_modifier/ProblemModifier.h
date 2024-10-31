@@ -17,7 +17,7 @@
 class ProblemModifier {
  public:
   ProblemModifier(
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
       : logger_(logger) {}
 
   void changeProblem(
@@ -97,7 +97,7 @@ class ProblemModifier {
   bool candidateContributionIndirectIsNotNull(const ColumnToChange &column,
                                               unsigned int chronicle_to_use,
                                               const Candidate &candidate) const;
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
 };
 
 #endif  // ANTARESXPANSION_PROBLEMMODIFIER_H

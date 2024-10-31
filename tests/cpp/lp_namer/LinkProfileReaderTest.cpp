@@ -11,7 +11,7 @@ const std::string INVALID_DIRECT_PROFILE("temp_invalid_direct_profile.txt");
 
 class LinkProfileReaderTest : public ::testing::Test {
  protected:
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_ =
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_ =
       emptyLogger();
   static void createMergedProfileFile(
       const std::string& temp_profile_name,

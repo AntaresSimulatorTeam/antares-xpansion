@@ -96,14 +96,14 @@ class AdditionalConstraints
   std::map<std::string, std::string> _variablesToBinarise;
   std::set<std::string> _binaryVariables;
   std::string constraintsFilePath_;
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
 
  public:
   /*!
    *  \brief default constructor for struct AdditionalConstraints
    */
   explicit AdditionalConstraints(
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
       : logger_(std::move(logger)) {}
 
   /*!
@@ -114,7 +114,7 @@ class AdditionalConstraints
    */
   explicit AdditionalConstraints(
       std::string constraints_file_path,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
 
   void SetConstraintsFile(std::string const& constraints_file_path) {
     constraintsFilePath_ = constraints_file_path;

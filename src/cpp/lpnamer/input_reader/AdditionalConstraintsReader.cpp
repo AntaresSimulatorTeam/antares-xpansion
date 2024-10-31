@@ -105,7 +105,7 @@ void AdditionalConstraintsReader::processEntryLine() {
 
 AdditionalConstraintsReader::AdditionalConstraintsReader(
     std::string const& constraints_file_path,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
     : logger_(logger) {
   std::ifstream file_l(constraints_file_path);
 

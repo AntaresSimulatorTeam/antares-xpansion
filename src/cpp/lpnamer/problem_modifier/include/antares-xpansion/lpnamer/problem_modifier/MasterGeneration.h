@@ -41,7 +41,7 @@ class MasterGeneration {
 
  private: /*members*/
   std::vector<Candidate> candidates;
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
   SaveMode save_mode_;
 };
 #endif  //__MASTER_GENERATION__

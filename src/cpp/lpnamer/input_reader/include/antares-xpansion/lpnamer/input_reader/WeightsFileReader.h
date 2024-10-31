@@ -11,7 +11,7 @@ class WeightsFileReader {
  private:
   std::filesystem::path weights_file_path_;
   size_t number_of_active_years_;
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
   bool null_weights = true;
   std::vector<double> weights_list_;
 
@@ -25,7 +25,7 @@ class WeightsFileReader {
   explicit WeightsFileReader(
       const std::filesystem::path& weights_file_path,
       const size_t number_of_active_years,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
       : weights_file_path_(weights_file_path),
         number_of_active_years_(number_of_active_years),
         logger_(logger) {}

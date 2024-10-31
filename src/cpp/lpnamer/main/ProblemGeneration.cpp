@@ -184,7 +184,7 @@ std::shared_ptr<ArchiveReader> InstantiateZipReader(
 void ProblemGeneration::ProcessWeights(
     const std::filesystem::path& xpansion_output_dir,
     const std::filesystem::path& weights_file,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger) {
   const auto settings_dir = xpansion_output_dir / ".." / ".." / "settings";
   const auto general_data_file = settings_dir / "generaldata.ini";
   auto genera_data_reader = GeneralDataIniReader(general_data_file, logger);
@@ -202,7 +202,7 @@ void ProblemGeneration::ProcessWeights(
 void ProblemGeneration::ExtractUtilsFiles(
     const std::filesystem::path& antares_archive_path,
     const std::filesystem::path& xpansion_output_dir,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger) {
   auto utils_files_extractor =
       LpFilesExtractor(antares_archive_path, xpansion_output_dir,
                        std::move(logger), mode_.value(), simulation_dir_);
@@ -211,7 +211,7 @@ void ProblemGeneration::ExtractUtilsFiles(
 
 std::vector<ActiveLink> getLinks(
     const std::filesystem::path& xpansion_output_dir,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger) {
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger>& logger) {
   ActiveLinksBuilder linkBuilder =
       get_link_builders(xpansion_output_dir, logger);
   std::vector<ActiveLink> links = linkBuilder.getLinks();
@@ -225,7 +225,7 @@ std::vector<ActiveLink> getLinks(
  */
 void validateMasterFormulation(
     const std::string& master_formulation,
-    const ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger) {
+    const std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger>& logger) {
   if ((master_formulation != "relaxed") && (master_formulation != "integer")) {
     (*logger)(LogUtils::LOGLEVEL::FATAL)
         << LOGLOCATION
@@ -282,7 +282,7 @@ void ProblemGeneration::RunProblemGeneration(
     const std::string& master_formulation,
     const std::string& additionalConstraintFilename_l,
     const std::filesystem::path& antares_archive_path,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger,
     const std::filesystem::path& log_file_path,
     const std::filesystem::path& weights_file, bool unnamed_problems) {
   (*logger)(LogUtils::LOGLEVEL::INFO)

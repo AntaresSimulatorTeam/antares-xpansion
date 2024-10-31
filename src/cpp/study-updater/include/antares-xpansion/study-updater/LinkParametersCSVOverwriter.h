@@ -11,7 +11,7 @@
 class LinkParametersCSVOverWriter {
  public:
   LinkParametersCSVOverWriter(
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
       : logger_(logger) {}
 
   bool open(const std::filesystem::path& linkdataFilename_l);
@@ -28,5 +28,5 @@ class LinkParametersCSVOverWriter {
   std::ifstream inputCsv_l_;
   std::ofstream tempOutCsvFile;
   bool already_warned_ = false;
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
 };
