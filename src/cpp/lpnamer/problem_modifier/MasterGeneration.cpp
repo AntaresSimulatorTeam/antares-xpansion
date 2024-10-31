@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <filesystem>
+#include <utility>
 
 #include "antares-xpansion/lpnamer/problem_modifier/FileWriter.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LauncherHelpers.h"
@@ -11,10 +12,10 @@
 MasterGeneration::MasterGeneration(
     const std::filesystem::path &rootPath, const std::vector<ActiveLink> &links,
     const AdditionalConstraints &additionalConstraints_p, Couplings &couplings,
-    std::string const &master_formulation, std::string const &solver_name,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
-    SolverLogManager&solver_log_manager)
-    : logger_(logger) {
+    const std::string &master_formulation, const std::string &solver_name,
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger,
+    SolverLogManager &solver_log_manager, SaveMode mode = SaveMode::MPS)
+    : logger_(std::move(logger)), save_mode_(mode) {
   add_candidates(links);
   write_master_mps(rootPath, master_formulation, solver_name,
                    additionalConstraints_p, solver_log_manager);
@@ -37,15 +38,22 @@ void MasterGeneration::write_master_mps(
     const std::filesystem::path &rootPath,
     std::string const &master_formulation, std::string const &solver_name,
     const AdditionalConstraints &additionalConstraints_p,
-    SolverLogManager&solver_log_manager) const {
+    SolverLogManager &solver_log_manager) const {
   auto master_l = MasterProblemBuilder(master_formulation)
-          .build(solver_name, candidates, solver_log_manager);
+                      .build(solver_name, candidates, solver_log_manager);
   treatAdditionalConstraints(master_l, additionalConstraints_p, logger_);
-
-  FileWriter writer(rootPath / "lp");
   Problem master_problem(master_l);
-  master_problem._name = "master.mps";
-  writer.Write_problem(&master_problem);
+  master_problem._name = "master";
+  switch (save_mode_) {
+    case SaveMode::MPS:
+      master_problem.write_prob_mps(rootPath / "lp" / "master");
+      break;
+    case SaveMode::SAVE:
+      master_problem.save_prob(rootPath / "lp" / "master");
+      break;
+    default:
+        throw std::runtime_error("Unknown save mode " + std::to_string(static_cast<int>(save_mode_)));
+  }
 }
 
 void MasterGeneration::write_structure_file(

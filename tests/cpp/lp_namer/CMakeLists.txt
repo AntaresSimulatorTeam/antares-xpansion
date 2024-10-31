@@ -30,6 +30,7 @@ add_executable (lp_namer_tests
         LpFilesExtractorTest.cpp
         MasterProblemBuilderTest.cpp
         MpsTxtWriterTest.cpp
+        MasterGenerationTest.cpp
         NOOPSolver.h
         ProblemConstructionTest.cpp
         ProblemGenerationExeOptionsTest.cpp

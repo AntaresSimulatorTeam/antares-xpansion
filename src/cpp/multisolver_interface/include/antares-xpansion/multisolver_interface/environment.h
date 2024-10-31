@@ -439,6 +439,7 @@ extern std::function<int(XPRSprob dest, XPRSprob src, const char* name)> XPRScop
 extern std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSwritebasis;
 extern std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSreadprob;
 extern std::function<int(XPRSprob prob, int nr, int nc, const int mrow[], const int mcol[])> XPRSloadsecurevecs;
+extern std::function<int(XPRSprob prob, const char* msg)> XPRSgetlasterror;
 extern std::function<int(XPRSprob prob, const char* filename)> XPRSsaveas;
 extern std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSrestore;
 extern std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSreadbasis;
