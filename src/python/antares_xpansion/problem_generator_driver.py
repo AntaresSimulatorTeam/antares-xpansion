@@ -7,7 +7,7 @@ import shutil
 import subprocess
 import sys
 from dataclasses import dataclass
-from pathlib import Path, PurePath
+from pathlib import Path
 from typing import List
 
 from antares_xpansion.logger import step_logger
@@ -130,7 +130,9 @@ class ProblemGeneratorDriver:
     def lp_namer_options(self):
         is_relaxed = 'relaxed' if self.is_relaxed else 'integer'
         if self.memory:
+
             ret = ["--study", str(self.study_path), "-f", is_relaxed]  # study/output/xpansion_output_dir
+
         else:
             ret = ["-a", str(self.output_path), "-f", is_relaxed]
         if self.weight_file_name_for_lp:
