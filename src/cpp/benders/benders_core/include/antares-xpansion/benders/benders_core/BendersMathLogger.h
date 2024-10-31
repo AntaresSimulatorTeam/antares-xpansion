@@ -37,6 +37,7 @@ class LogDestination {
 
   template <class T>
   std::ostream& operator<<(const T& obj);
+  std::ostream& InsertDelimiter() { return *stream_ << "| "; }
 
  private:
   std::ofstream file_stream_;
@@ -45,7 +46,7 @@ class LogDestination {
 };
 template <class T>
 std::ostream& LogDestination::operator<<(const T& obj) {
-  return (*stream_) << "| " << std::left << std::setw(width_) << obj;
+  return (*stream_) << std::left << std::setw(width_) << obj;
 }
 void PrintBendersData(LogDestination& log_destination,
                       const CurrentIterationData& data, const HEADERSTYPE& type,
