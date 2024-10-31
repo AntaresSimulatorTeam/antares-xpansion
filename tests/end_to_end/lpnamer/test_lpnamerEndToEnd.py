@@ -164,7 +164,7 @@ def get_lp_dir(study_dir):
     return Path(directory) / directories[-1] / "lp"
 
 
-def get_constraint_path(study):
+def get_constraint_path(study) -> Path:
     return study / "user" / "expansion" / "constraints" / "contraintes.txt"
 
 
