@@ -30,23 +30,24 @@ class MasterGenerationTest : public ::testing::Test {
   SolverLogManager solver_log_manager_;
 };
 
-// Test that master.mps is generated
-TEST_F(MasterGenerationTest, master_mps_is_generated) {
-  MasterGeneration master_generation(
-      temp_test_dir, std::vector<ActiveLink>(), additionalConstraints_,
-      couplings_, "master_formulation", "XPRESS", nullptr, solver_log_manager_,
-      MasterGeneration::SaveMode::MPS);
-  ASSERT_TRUE(std::filesystem::exists(temp_test_dir / "lp" / "master.mps"));
-}
+using Expectation = std::pair<MasterGeneration::SaveMode, std::string>;
+class MasterGenerationSaveModeTest : public MasterGenerationTest,
+                                     public ::testing::WithParamInterface<Expectation> {};
 
-// Test that master.svf is generated
-TEST_F(MasterGenerationTest, master_sfx_is_generated) {
+// Test that master.mps is generated
+TEST_P(MasterGenerationSaveModeTest, master_file_is_generated) {
+  auto [value, ext_expectation] = GetParam();
   MasterGeneration master_generation(
       temp_test_dir, std::vector<ActiveLink>(), additionalConstraints_,
       couplings_, "master_formulation", "XPRESS", nullptr, solver_log_manager_,
-      MasterGeneration::SaveMode::SAVE);
-  ASSERT_TRUE(std::filesystem::exists(temp_test_dir / "lp" / "master.svf"));
+      value);
+  auto master_file = temp_test_dir / "lp" / "master";
+  master_file.replace_extension(ext_expectation);
+  ASSERT_TRUE(std::filesystem::exists(master_file));
 }
+INSTANTIATE_TEST_SUITE_P(Test_save_modes_master_generation,
+                         MasterGenerationSaveModeTest,
+                         ::testing::Values(Expectation{MasterGeneration::SaveMode::MPS, "mps"}, Expectation {MasterGeneration::SaveMode::SAVE, "svf"}));
 
 //Structure file is written
 TEST_F(MasterGenerationTest, structure_file_is_written) {
