@@ -165,7 +165,7 @@ def get_lp_dir(study_dir):
 
 
 def get_constraint_path(study):
-    return study / "user/expansion/constraints/contraintes.txt"
+    return study / "user" / "expansion" / "constraints" / "contraintes.txt"
 
 
 def launch_and_compare_lp_with_reference_study(install_dir, master_mode, study_dir):
