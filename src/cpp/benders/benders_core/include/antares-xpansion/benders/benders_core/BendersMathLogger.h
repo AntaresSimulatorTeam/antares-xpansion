@@ -37,12 +37,16 @@ class LogDestination {
 
   template <class T>
   std::ostream& operator<<(const T& obj);
-  std::ostream& InsertDelimiter() { return *stream_ << "| "; }
+  std::ostream& InsertDelimiter() { return *stream_ << delimiter_; }
 
  private:
   std::ofstream file_stream_;
   std::ostream* stream_;
   std::streamsize width_ = 40;
+  std::string delimiter_ = "|";
+
+ public:
+  void setDelimiter(const std::string& delimiter);
 };
 template <class T>
 std::ostream& LogDestination::operator<<(const T& obj) {
@@ -216,9 +220,12 @@ template <class T>
 void MathLoggerExternalLoopSpecific<T>::Print(
     const CurrentIterationData& data) {
   LogsDestination() << data.outer_loop_current_iteration_data.benders_num_run;
+  LogsDestination().InsertDelimiter();
   LogsDestination() << data.it;
+  LogsDestination().InsertDelimiter();
   for (const auto& t : data.outer_loop_current_iteration_data.*ptr_) {
     LogsDestination() << std::scientific << std::setprecision(10) << t;
+    LogsDestination().InsertDelimiter();
   }
   LogsDestination() << std::endl;
 }

@@ -82,11 +82,15 @@ LogDestination::LogDestination(const std::filesystem::path& file_path,
     std::cerr << err_msg.str();
   }
 }
+void LogDestination::setDelimiter(const std::string& delimiter) {
+  delimiter_ = delimiter;
+}
 
 void MathLoggerBehaviour::write_header() {
   setHeadersList();
   for (const auto& header : Headers()) {
     LogsDestination() << header;
+    LogsDestination().InsertDelimiter();
   }
   LogsDestination() << std::endl;
 }
@@ -185,18 +189,22 @@ void PrintBendersData(LogDestination& log_destination,
 
   log_destination << std::setprecision(2) << data.iteration_time;
   log_destination.InsertDelimiter();
+
   log_destination << std::setprecision(2) << data.timer_master;
   log_destination.InsertDelimiter();
+
   log_destination << std::setprecision(2) << data.subproblems_walltime;
   log_destination.InsertDelimiter();
 
   if (type == HEADERSTYPE::LONG) {
     log_destination << std::setprecision(2)
                     << data.subproblems_cumulative_cputime;
+    log_destination.InsertDelimiter();
     log_destination << std::setprecision(2)
                     << getDurationNotSolving(data.iteration_time,
                                              data.timer_master,
                                              data.subproblems_walltime);
+    log_destination.InsertDelimiter();
   }
   log_destination << std::endl;
 }
@@ -206,22 +214,29 @@ void PrintExternalLoopData(LogDestination& log_destination,
                            const HEADERSTYPE& type,
                            const BENDERSMETHOD& method) {
   log_destination << data.outer_loop_current_iteration_data.benders_num_run;
+  log_destination.InsertDelimiter();
   log_destination << std::scientific << std::setprecision(10)
                   << data.outer_loop_current_iteration_data.max_criterion;
+  log_destination.InsertDelimiter();
   log_destination << data.outer_loop_current_iteration_data.max_criterion_area;
+  log_destination.InsertDelimiter();
 
   log_destination
       << std::scientific << std::setprecision(10)
       << data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub;
+  log_destination.InsertDelimiter();
   log_destination
       << std::scientific << std::setprecision(10)
       << data.outer_loop_current_iteration_data.external_loop_lambda;
+  log_destination.InsertDelimiter();
   log_destination
       << std::scientific << std::setprecision(10)
       << data.outer_loop_current_iteration_data.external_loop_lambda_min;
+  log_destination.InsertDelimiter();
   log_destination
       << std::scientific << std::setprecision(10)
       << data.outer_loop_current_iteration_data.external_loop_lambda_max;
+  log_destination.InsertDelimiter();
   PrintBendersData(log_destination, data, type, method);
 }
 void MathLoggerBaseExternalLoop::Print(const CurrentIterationData& data) {
