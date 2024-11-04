@@ -1,4 +1,6 @@
 
+#include <utility>
+
 #include "SolverXpress.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
 
@@ -9,20 +11,34 @@
 #include "antares-xpansion/multisolver_interface/SolverConfig.h"
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+
+namespace {
+// not std::string, static initialization fiasco with tests static initialization
+const char* COIN_STR("COIN");
+const char* CBC_STR("CBC");
+const char* CLP_STR("CLP");
+const char* XPRESS_STR("XPRESS");
+
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 std::vector<std::string> available_solvers;
+std::once_flag solver_flag;
+void GetAvailableSolversInternal(std::shared_ptr<ILoggerXpansion> logger) {
+  if (available_solvers.empty()) {
+    LoadXpress::XpressLoader xpress_loader(std::move(logger));
+    if (xpress_loader.XpressIsCorrectlyInstalled(true)) {
+      available_solvers.emplace_back(XPRESS_STR);
+    }
+#ifdef COIN_OR
+    available_solvers.emplace_back(CLP_STR);
+    available_solvers.emplace_back(CBC_STR);
+#endif
+  }
+}
+}  // namespace
 
 std::vector<std::string> SolverLoader::GetAvailableSolvers(
     std::shared_ptr<ILoggerXpansion> logger) {
-  if (available_solvers.empty()) {
-    LoadXpress::XpressLoader xpress_loader(logger);
-    if (xpress_loader.XpressIsCorrectlyInstalled(true)) {
-      available_solvers.push_back(XPRESS_STR);
-    }
-#ifdef COIN_OR
-    available_solvers.push_back(CLP_STR);
-    available_solvers.push_back(CBC_STR);
-#endif
-  }
+  std::call_once(solver_flag, GetAvailableSolversInternal, logger);
   return available_solvers;
 }
 

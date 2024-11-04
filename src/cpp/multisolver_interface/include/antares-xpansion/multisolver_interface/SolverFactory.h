@@ -11,8 +11,6 @@
  * \brief algo type
  */
 enum class SOLVER_TYPE { INTEGER, CONTINUOUS };
-const std::string UNKNOWN_STR("UNKNOWN"), COIN_STR("COIN"), CBC_STR("CBC"),
-    CLP_STR("CLP"), XPRESS_STR("XPRESS");
 
 /*!
  * \class class SolverLoader
