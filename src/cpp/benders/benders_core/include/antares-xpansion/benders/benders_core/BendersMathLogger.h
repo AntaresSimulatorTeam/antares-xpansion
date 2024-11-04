@@ -219,6 +219,7 @@ void MathLoggerExternalLoopSpecific<T>::setHeadersList() {
 template <class T>
 void MathLoggerExternalLoopSpecific<T>::Print(
     const CurrentIterationData& data) {
+  LogsDestination().InsertDelimiter();
   LogsDestination() << data.outer_loop_current_iteration_data.benders_num_run;
   LogsDestination().InsertDelimiter();
   LogsDestination() << data.it;

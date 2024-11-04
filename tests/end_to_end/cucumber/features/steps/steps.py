@@ -1,3 +1,5 @@
+import csv
+import io
 import json
 import math
 import os
@@ -8,8 +10,6 @@ import numpy as np
 from behave import *
 
 from utils_functions import get_mpi_command, get_conf, read_outputs
-
-
 
 
 @given('the study path is "{string}"')
@@ -147,40 +147,22 @@ def check_other_outputs(context):
     assert (is_column_full_of_zeros(context.positive_unsupplied_energy_file, 2))
 
 
-def read_table_from_file(filename):
-    current_results = []
-
+def read_cucumber_table_from_file(filename):
     with open(filename, 'r') as file:
-        # Read the header line and remove the leading pipe
-        headers = file.readline().strip().split('|')[1:]  # Skip the first empty element
-
-        # Read each subsequent line
-        for line in file:
-            # Strip whitespace and split by '|', skipping the first element
-            values = line.strip().split('|')[1:]  # Skip the first empty element
-            # Create a dictionary for the current row
-            row_dict = {headers[i].strip(): values[i].strip() for i in range(len(headers))}
-            current_results.append(row_dict)
-
-    return current_results
+        reader = csv.reader(file, delimiter='|')
+        header = [item.strip() for item in
+                  next(reader)[1:-1]]  # Store the header row, ignoring the first and last columns
+        current_results = [{header[index]: item.strip() for index, item in enumerate(row[1:-1])} for row in
+                           reader]
+        return current_results
 
 
 def read_table_from_string(raw_data):
-    current_results = []
-
-    # Split the raw data into lines
-    lines = raw_data.strip().split('\n')
-
-    # Read the header line and remove the leading pipe
-    headers = lines[0].strip().split('|')[1:]  # Skip the first empty element
-
-    # Read each subsequent line
-    for line in lines[1:]:
-        # Strip whitespace and split by '|', skipping the first element
-        values = line.strip().split('|')[1:]  # Skip the first empty element
-        # Create a dictionary for the current row
-        row_dict = {headers[i].strip(): float(values[i].strip()) for i in range(len(headers))}
-        current_results.append(row_dict)
+    reader = csv.reader(io.StringIO(raw_data), delimiter='|')
+    header = [item.strip() for item in
+              next(reader)[1:-1]]  # Store the header row, ignoring the first and last columns
+    current_results = [{header[index]: item.strip() for index, item in enumerate(row[1:-1])} for row in
+                       reader]
 
     return current_results
 
@@ -188,6 +170,7 @@ def read_table_from_string(raw_data):
 @then("the expected Positive Unsupplied Energy is:")
 def check_positive_unsupplied_energy(context):
     results = read_table_from_string(context.positive_unsupplied_energy)
+    print(f"*********** {results} ************")
     headers = context.table.headings
 
     assert len(context.table) == len(results)
@@ -198,6 +181,7 @@ def check_positive_unsupplied_energy(context):
 
             np.testing.assert_allclose(actual, expected_value, rtol=1e-6, atol=0,
                                        err_msg=f"Mismatch in row {i + 1}, column '{header}': expected {expected_value}, got {actual_value}")
+
 
 def get_results_file_path_from_logs(logs: bytes) -> str:
     for line in logs.splitlines():

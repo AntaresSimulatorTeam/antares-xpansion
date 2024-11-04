@@ -88,6 +88,7 @@ void LogDestination::setDelimiter(const std::string& delimiter) {
 
 void MathLoggerBehaviour::write_header() {
   setHeadersList();
+  LogsDestination().InsertDelimiter();
   for (const auto& header : Headers()) {
     LogsDestination() << header;
     LogsDestination().InsertDelimiter();
@@ -158,6 +159,7 @@ double getDurationNotSolving(double iteration, double master,
 void PrintBendersData(LogDestination& log_destination,
                       const CurrentIterationData& data, const HEADERSTYPE& type,
                       const BENDERSMETHOD& method) {
+  log_destination.InsertDelimiter();
   log_destination << data.it;
   log_destination.InsertDelimiter();
   log_destination << std::scientific << std::setprecision(10) << data.lb;
@@ -213,6 +215,7 @@ void PrintExternalLoopData(LogDestination& log_destination,
                            const CurrentIterationData& data,
                            const HEADERSTYPE& type,
                            const BENDERSMETHOD& method) {
+  log_destination.InsertDelimiter();
   log_destination << data.outer_loop_current_iteration_data.benders_num_run;
   log_destination.InsertDelimiter();
   log_destination << std::scientific << std::setprecision(10)
@@ -236,7 +239,6 @@ void PrintExternalLoopData(LogDestination& log_destination,
   log_destination
       << std::scientific << std::setprecision(10)
       << data.outer_loop_current_iteration_data.external_loop_lambda_max;
-  log_destination.InsertDelimiter();
   PrintBendersData(log_destination, data, type, method);
 }
 void MathLoggerBaseExternalLoop::Print(const CurrentIterationData& data) {
