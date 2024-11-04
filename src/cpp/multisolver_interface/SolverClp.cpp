@@ -63,7 +63,11 @@ void SolverClp::free() {
 -------------------------------
 *************************************************************************************************/
 void SolverClp::write_prob_mps(const std::filesystem::path &filename) {
-  _clp.writeMps(filename.string().c_str(), 1);
+  auto filename_to_use = filename;
+  if (filename_to_use.extension() != ".mps") {
+    filename_to_use.replace_extension(".mps");
+  }
+  _clp.writeMps(filename_to_use.string().c_str(), 1);
 }
 
 void SolverClp::write_prob_lp(const std::filesystem::path &filename) {

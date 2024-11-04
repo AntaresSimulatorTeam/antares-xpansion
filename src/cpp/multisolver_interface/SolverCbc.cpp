@@ -139,7 +139,11 @@ void SolverCbc::write_prob_mps(const std::filesystem::path &filename) {
   _clp_inner_solver.getDblParam(OsiObjOffset, objOffset);
   writer.setObjectiveOffset(objOffset);
 
-  writer.writeMps(filename.string().c_str(), 0 /*gzip it*/, 1, 1, nullptr, 0,
+  auto filename_to_use = filename;
+  if (filename_to_use.extension() != ".mps") {
+    filename_to_use.replace_extension(".mps");
+  }
+  writer.writeMps(filename_to_use.string().c_str(), 0 /*gzip it*/, 1, 1, nullptr, 0,
                   nullptr);
 }
 

@@ -3,10 +3,6 @@
 #include "antares-xpansion/lpnamer/problem_modifier/MasterGeneration.h"
 #include "antares-xpansion/multisolver_interface/Solver.h"
 
-namespace {
-std::once_flag flag;
-}
-
 // Noop ProblemGenerationLogger
 class NoopProblemGenerationLogger
     : public ProblemGenerationLog::ProblemGenerationLogger {
@@ -51,6 +47,7 @@ class MasterGenerationTest : public ::testing::Test {
 };
 
 using Expectation = std::pair<MasterGeneration::SaveMode, std::string>;
+using SolverAndExpectation = std::pair<std::string, Expectation>;
 class MasterGenerationExtExpectationTest
     : public MasterGenerationTest,
       public ::testing::WithParamInterface<Expectation> {};
@@ -60,25 +57,26 @@ class MasterGenerationSaveModeTest
       public ::testing::WithParamInterface<MasterGeneration::SaveMode> {};
 
 using SolverName = std::string;
-struct SolverAndExpectationParams {
-  using TupleT = std::tuple<SolverName, Expectation>;
-  SolverName solver_name;
-  Expectation mode_expectation;
-  SolverAndExpectationParams(TupleT t) : solver_name(std::get<0>(t)), mode_expectation(std::get<1>(t)) {}
-};
-
 class TestForSolverAndMode : public MasterGenerationTest,
-                             public ::testing::WithParamInterface<std::pair<SolverName, MasterGeneration::SaveMode>> {};
+                             public ::testing::WithParamInterface<std::tuple<SolverName, MasterGeneration::SaveMode>> {};
+
+using SolverAndExpectationParams = std::pair<SolverName, Expectation>;
 class TestForSolverAndExpectation : public MasterGenerationTest,
                                     public ::testing::WithParamInterface<SolverAndExpectationParams> {};
-auto solverNamesGenerator = ::testing::ValuesIn(SolverLoader::GetAvailableSolvers(std::make_shared<NoopProblemGenerationLogger>(LogUtils::LOGLEVEL::INFO)));
+auto solverNamesGenerator = ::testing::ValuesIn(SolverLoader::GetSupportedSolvers());
 auto solverAndSaveModeGenerator = ::testing::Combine(solverNamesGenerator, ::testing::Values(MasterGeneration::SaveMode::MPS, MasterGeneration::SaveMode::SAVE));
-auto solverAndExpectationGenerator = ::testing::ConvertGenerator<SolverAndExpectationParams::TupleT>(::testing::Combine(solverNamesGenerator, ::testing::Values(Expectation{MasterGeneration::SaveMode::MPS, "mps"}, Expectation{MasterGeneration::SaveMode::SAVE, "svf"})));
+
+#define SKIP_UNAVAILABLE_SOLVER(solver_name) \
+  auto available_solvers = SolverLoader::GetAvailableSolvers(std::make_shared<NoopProblemGenerationLogger>(LogUtils::LOGLEVEL::INFO)); \
+  if (std::ranges::find(available_solvers, solver_name) == available_solvers.end()) { \
+    GTEST_SKIP() << "Solver " << solver_name << " is not available"; \
+  }
 
 TEST_P(TestForSolverAndExpectation, master_file_is_generated) {
-
   auto&& [solver_name, expectation] = GetParam();
   auto&& [value, ext_expectation] = expectation;
+  SKIP_UNAVAILABLE_SOLVER(solver_name)
+  AddCandidate("dummy_candidate");
   MasterGeneration master_generation(temp_test_dir, active_links_,
                                      additionalConstraints_, couplings_,
                                      "master_formulation", solver_name, nullptr,
@@ -87,25 +85,36 @@ TEST_P(TestForSolverAndExpectation, master_file_is_generated) {
   master_file.replace_extension(ext_expectation);
   ASSERT_TRUE(std::filesystem::exists(master_file));
 }
+INSTANTIATE_TEST_SUITE_P(
+    Test_save_modes_master_generation, TestForSolverAndExpectation,
+    ::testing::Values(
+        SolverAndExpectation{"XPRESS", Expectation{MasterGeneration::SaveMode::MPS, "mps"}},
+        SolverAndExpectation{"XPRESS", Expectation{MasterGeneration::SaveMode::SAVE, "svf"}},
+        SolverAndExpectation{"CBC", Expectation{MasterGeneration::SaveMode::MPS, "mps"}},
+        SolverAndExpectation{"CBC", Expectation{MasterGeneration::SaveMode::SAVE, "mps"}},
+        SolverAndExpectation{"CLP", Expectation{MasterGeneration::SaveMode::MPS, "mps"}},
+        SolverAndExpectation{"CLP", Expectation{MasterGeneration::SaveMode::SAVE, "mps"}}));
 
 // Structure file is written
-TEST_P(TestForSolverAndExpectation, structure_file_is_written) {
-  auto&& [solver_name, expectation] = GetParam();
-  auto&& [value, ext_expectation] = expectation;
+TEST_P(TestForSolverAndMode, structure_file_is_written) {
+  auto&& [solver_name, save_mode] = GetParam();
+  SKIP_UNAVAILABLE_SOLVER(solver_name)
+  AddCandidate("dummy_candidate");
   MasterGeneration master_generation(
       temp_test_dir, active_links_, additionalConstraints_,
       couplings_, "master_formulation", solver_name, nullptr, solver_log_manager_,
-      value);
+      save_mode);
   ASSERT_TRUE(std::filesystem::exists(temp_test_dir / "lp" / "structure.txt"));
 }
-
 INSTANTIATE_TEST_SUITE_P(
-    Test_save_modes_master_generation, TestForSolverAndExpectation,
-    solverAndExpectationGenerator);
+    Test_save_modes_master_generation, TestForSolverAndMode,
+    solverAndSaveModeGenerator);
+
 
 // Structure file contains master name
 TEST_P(MasterGenerationSaveModeTest, structure_file_contains_master_name) {
   AddCandidate("dummy_candidate");
+  //SKIP_UNAVAILABLE_SOLVER(solver_name)
   MasterGeneration master_generation(
       temp_test_dir, active_links_, additionalConstraints_,
       couplings_, "master_formulation", "XPRESS", nullptr, solver_log_manager_,
@@ -131,6 +140,7 @@ TEST_P(MasterGenerationExtExpectationTest,
        structure_file_contains_master_name_without_extension) {
   AddCandidate("dummy_candidate");
   auto [value, ext_expectation] = GetParam();
+  //SKIP_UNAVAILABLE_SOLVER(solver_name)
   MasterGeneration master_generation(
       temp_test_dir, active_links_, additionalConstraints_,
       couplings_, "master_formulation", "XPRESS", nullptr, solver_log_manager_,

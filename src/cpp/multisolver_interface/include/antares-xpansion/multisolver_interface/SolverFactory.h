@@ -20,6 +20,12 @@ class SolverLoader {
  public:
   static std::vector<std::string> GetAvailableSolvers(
       std::shared_ptr<ILoggerXpansion> logger);
+
+  /**
+   * @brief Returns a list of supported solvers
+   * Supported doesn't mean available, for exemple if licence are not available
+   */
+  static std::vector<std::string> GetSupportedSolvers();
 };
 
 /*!

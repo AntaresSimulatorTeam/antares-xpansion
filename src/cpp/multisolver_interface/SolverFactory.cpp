@@ -13,11 +13,12 @@
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 namespace {
-// not std::string, static initialization fiasco with tests static initialization
-const char* COIN_STR("COIN");
-const char* CBC_STR("CBC");
-const char* CLP_STR("CLP");
-const char* XPRESS_STR("XPRESS");
+// not std::string, static initialization fiasco with tests static
+// initialization
+const char *COIN_STR("COIN");
+const char *CBC_STR("CBC");
+const char *CLP_STR("CLP");
+const char *XPRESS_STR("XPRESS");
 
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 std::vector<std::string> available_solvers;
@@ -40,6 +41,17 @@ std::vector<std::string> SolverLoader::GetAvailableSolvers(
     std::shared_ptr<ILoggerXpansion> logger) {
   std::call_once(solver_flag, GetAvailableSolversInternal, logger);
   return available_solvers;
+}
+std::vector<std::string> SolverLoader::GetSupportedSolvers() {
+  static std::vector<std::string> supported_solvers;
+  if (supported_solvers.empty()) {
+    supported_solvers.emplace_back(XPRESS_STR);
+#ifdef COIN_OR
+    supported_solvers.emplace_back(CLP_STR);
+    supported_solvers.emplace_back(CBC_STR);
+#endif
+  }
+  return supported_solvers;
 }
 
 SolverFactory::SolverFactory(std::shared_ptr<ILoggerXpansion> logger)
