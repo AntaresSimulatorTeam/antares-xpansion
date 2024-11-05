@@ -165,13 +165,20 @@ def check_other_outputs(context):
     assert (is_file_full_of_zeros(context.positive_unsupplied_energy_file))
 
 
-
-
-@then("the expected Positive Unsupplied Energy is")
+@then("the expected positive unsupplied energy is")
 def check_positive_unsupplied_energy(context):
     results = read_table_from_string(context.positive_unsupplied_energy)
-    headers = context.table.headings
+    check_cucumber_table(context, results)
 
+
+@then("the expected loss of load is")
+def check_loss_of_load_is(context):
+    results = read_table_from_string(context.lold)
+    check_cucumber_table(context, results)
+
+
+def check_cucumber_table(context, results):
+    headers = context.table.headings
     for i, row in enumerate(context.table):
         for header in headers:
             expected_value = float(row[header])
