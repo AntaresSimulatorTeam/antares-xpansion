@@ -118,38 +118,14 @@ def check_solution(context):
     assert_dict_allclose(context.outputs["solution"]["values"], expected_solution)
 
 
-def is_column_full_of_zeros(filename, column_index, abs_tol=1e-9):
-    with open(filename, 'r') as file:
-        # Skip the header
-        next(file)
+def read_table_from_string(raw_data):
+    reader = csv.reader(io.StringIO(raw_data), delimiter='|')
+    header = [item.strip() for item in
+              next(reader)[1:-1]]  # Store the header row, ignoring the first and last columns
+    current_results = [{header[index]: item.strip() for index, item in enumerate(row[1:-1])} for row in
+                       reader]
 
-        # Check each line in the file
-        for line in file:
-            columns = line.split()
-
-            # Ensure column exists
-            if column_index >= len(columns):
-                print(f"Error: Missing column at index {column_index} in line: {line.strip()}")
-                return False
-
-            try:
-                value = float(columns[column_index])
-            except (ValueError, IndexError):
-                print(f"Error parsing line: {line.strip()}")
-                return False
-
-            # Use math.isclose to compare to zero with tolerance
-            if not math.isclose(value, 0.0, abs_tol=abs_tol):
-                print(f"Error {value} is not close to 0")
-                return False
-
-    return True
-
-
-@then("LOLD.txt and PositiveUnsuppliedEnergy.txt files are full of zeros")
-def check_other_outputs(context):
-    assert (is_column_full_of_zeros(context.loss_of_load_file, 2))
-    assert (is_column_full_of_zeros(context.positive_unsupplied_energy_file, 2))
+    return current_results
 
 
 def read_cucumber_table_from_file(filename):
@@ -162,14 +138,33 @@ def read_cucumber_table_from_file(filename):
         return current_results
 
 
-def read_table_from_string(raw_data):
-    reader = csv.reader(io.StringIO(raw_data), delimiter='|')
-    header = [item.strip() for item in
-              next(reader)[1:-1]]  # Store the header row, ignoring the first and last columns
-    current_results = [{header[index]: item.strip() for index, item in enumerate(row[1:-1])} for row in
-                       reader]
+def is_file_full_of_zeros(filename, abs_tol=1e-9):
+    data = read_cucumber_table_from_file(filename)
 
-    return current_results
+    for line_number, line in enumerate(data):
+
+        for key, value in line.items():
+            if key in ["Outer loop", "Ite"]:
+                continue
+            try:
+                value = float(value)
+            except (ValueError, IndexError):
+                print(f"Error parsing line: {line_number} at column {key}")
+                return False
+
+            # Use math.isclose to compare to zero with tolerance
+            if not math.isclose(value, 0.0, abs_tol=abs_tol):
+                print(f"Error {value} is not close to 0")
+                return False
+
+    return True
+
+@then("LOLD.txt and PositiveUnsuppliedEnergy.txt files are full of zeros")
+def check_other_outputs(context):
+    assert (is_file_full_of_zeros(context.loss_of_load_file))
+    assert (is_file_full_of_zeros(context.positive_unsupplied_energy_file))
+
+
 
 
 @then("the expected Positive Unsupplied Energy is")
