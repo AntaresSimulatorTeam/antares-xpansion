@@ -55,6 +55,7 @@ class TestForSolverAndMode : public MasterGenerationTest,
 
 class TestForSolverAndExpectation : public MasterGenerationTest,
                                     public ::testing::WithParamInterface<SolverAndExpectation> {};
+
 auto solverNamesGenerator = ::testing::ValuesIn(SolverLoader::GetSupportedSolvers());
 auto solverAndSaveModeGenerator = ::testing::Combine(solverNamesGenerator, ::testing::Values(MasterGeneration::SaveMode::MPS, MasterGeneration::SaveMode::SAVE));
 
@@ -150,3 +151,39 @@ INSTANTIATE_TEST_SUITE_P(
         SolverAndExpectation{"CBC", Expectation{MasterGeneration::SaveMode::SAVE, "mps"}},
         SolverAndExpectation{"CLP", Expectation{MasterGeneration::SaveMode::MPS, "mps"}},
         SolverAndExpectation{"CLP", Expectation{MasterGeneration::SaveMode::SAVE, "mps"}}));
+
+/**
+ * Test that the structure file contains the problem file with the file extension
+ */
+TEST_P(TestForSolverAndExpectation,
+       structure_file_contains_problem_name_with_extension) {
+  /**
+   * This test isn't quiet good. It doesn't really test that a structures file
+   * contains the problem name but it tests that the structure file contains
+   * what is in the coupligs map.
+   */
+  auto&& [solver_name, expectation] = GetParam();
+  auto&& [value, ext_expectation] = expectation;
+  SKIP_UNAVAILABLE_SOLVER(solver_name)
+
+  AddCandidate("dummy_candidate");
+  couplings_.insert({{"dummy_candidate", "dummy_problem." + ext_expectation}, 0});
+  MasterGeneration master_generation(
+      temp_test_dir, active_links_, additionalConstraints_,
+      couplings_, "master_formulation", solver_name, nullptr, solver_log_manager_,
+      value);
+  std::ifstream structure_file(temp_test_dir / "lp" / "structure.txt");
+  std::string line;
+  bool found = false;
+  while (std::getline(structure_file, line)) {
+    auto pos = line.find("dummy_problem");
+    if (pos != std::string::npos) {
+      auto with_ext_pos = line.find("dummy_problem." + ext_expectation);
+      if (with_ext_pos == pos) {
+        found = true;
+        break;
+      }
+    }
+  }
+  ASSERT_TRUE(found);
+}
