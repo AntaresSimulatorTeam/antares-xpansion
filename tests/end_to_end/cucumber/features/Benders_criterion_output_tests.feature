@@ -1,4 +1,4 @@
-Feature: outer loop tests
+Feature: Benders Criterion files
 
   @fast @short @Benders
   Scenario: xpansion-test-01
@@ -6,7 +6,7 @@ Feature: outer loop tests
     When I run antares-xpansion with the benders method and 1 proc(s)
     Then the simulation takes less than 300 seconds
     And the simulation succeeds
-    And the expected Positive Unsupplied Energy is:
+    And the expected Positive Unsupplied Energy is
       | Outer loop | Ite | area1            | area2            | flex             | peak             | pv               | semibase         | store_in         | store_out        |
       | 0          | 1   | 5.3771400000e+05 | 4.3137090000e+06 | 0.0000000000e+00 | 0.0000000000e+00 | 0.0000000000e+00 | 0.0000000000e+00 | 2.6208000000e+07 | 0.0000000000e+00 |
       | 0          | 2   | 3.5308500000e+04 | 3.1096971069e+06 | 0.0000000000e+00 | 0.0000000000e+00 | 0.0000000000e+00 | 0.0000000000e+00 | 2.5156337018e+07 | 1.9520000000e-02 |
