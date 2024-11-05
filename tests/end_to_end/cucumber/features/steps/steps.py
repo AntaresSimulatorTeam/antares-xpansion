@@ -175,14 +175,12 @@ def read_table_from_string(raw_data):
 @then("the expected Positive Unsupplied Energy is")
 def check_positive_unsupplied_energy(context):
     results = read_table_from_string(context.positive_unsupplied_energy)
-    print(f"*********** {results} ************")
     headers = context.table.headings
 
-    # assert len(context.table) == len(results)
     for i, row in enumerate(context.table):
         for header in headers:
             expected_value = float(row[header])
-            actual_value = results[i][header]
+            actual_value = float(results[i][header])
 
             np.testing.assert_allclose(actual_value, expected_value, rtol=1e-6, atol=0,
                                        err_msg=f"Mismatch in row {i + 1}, column '{header}': expected {expected_value}, got {actual_value}")
