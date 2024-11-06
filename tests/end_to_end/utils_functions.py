@@ -50,6 +50,7 @@ def get_filepath(output_dir, folder, filename):
         for jsonpath in Path(path / folder).rglob(filename):
             print(f"----------{jsonpath}---------------")
             op.append(jsonpath)
+    print(f"op = {op}***************************")
     assert len(op) == 1
     return op[0]
 
