@@ -1,10 +1,11 @@
 #include <algorithm>
 
-#include "antares-xpansion/helpers/ArchiveWriter.h"
-#include "antares-xpansion/benders/benders_sequential/BendersSequential.h"
-#include "antares-xpansion/benders/output/JsonWriter.h"
 #include "LoggerStub.h"
 #include "RandomDirGenerator.h"
+#include "antares-xpansion/benders/benders_sequential/BendersSequential.h"
+#include "antares-xpansion/benders/output/JsonWriter.h"
+#include "antares-xpansion/helpers/ArchiveWriter.h"
+#include "antares-xpansion/multisolver_interface/environment.h"
 #include "gtest/gtest.h"
 
 class BendersSequentialDouble : public BendersSequential {
@@ -39,31 +40,33 @@ class BendersSequentialDouble : public BendersSequential {
     return BendersSequential::get_master();
   };
 
-  void get_master_value() override{};
-  void BuildCut() override{};
+  void get_master_value() override {};
+  void BuildCut() override {};
   void compute_ub() override { _data.ub = parametrized_ub; };
   CurrentIterationData get_data() const { return _data; }
-  void write_basis() const override{};
-  void EndWritingInOutputFile() const override{};
-  void UpdateTrace() override{};
-  void post_run_actions() const override{};
-  void SaveCurrentBendersData() override{};
-  void free() override{};
-  void InitializeProblems() override {
-    MatchProblemToId();
+  void write_basis() const override {};
+  void EndWritingInOutputFile() const override {};
+  void UpdateTrace() override {};
+  void post_run_actions() const override {};
+  void SaveCurrentBendersData() override {};
+  void free() override {};
+  SubproblemsMapPtr problems() const { return GetSubProblemMap(); }
 
-    auto solver_log_manager = SolverLogManager(solver_log_file());
-    reset_master<WorkerMaster>(master_variable_map_, get_master_path(),
-                                  get_solver_name(), get_log_level(),
-                                  _data.nsubproblem, solver_log_manager,
-                                  IsResumeMode(), _logger);
-    for (const auto &problem : coupling_map_) {
-      const auto subProblemFilePath = GetSubproblemPath(problem.first);
-      AddSubproblem(problem);
-      AddSubproblemName(problem.first);
-      std::filesystem::remove(subProblemFilePath);
-    }
-  }
+  //  void InitializeProblems() override {
+  //    MatchProblemToId();
+  //
+  //    auto solver_log_manager = SolverLogManager(solver_log_file());
+  //    reset_master<WorkerMaster>(master_variable_map_, get_master_path(),
+  //                                  get_solver_name(), get_log_level(),
+  //                                  _data.nsubproblem, solver_log_manager,
+  //                                  IsResumeMode(), _logger);
+  //    for (const auto &problem : coupling_map_) {
+  //      const auto subProblemFilePath = GetSubproblemPath(problem.first);
+  //      AddSubproblem(problem);
+  //      AddSubproblemName(problem.first);
+  //      std::filesystem::remove(subProblemFilePath);
+  //    }
+  //  }
   // No override as the base class function is const
   void DeactivateIntegrityConstraints() const override {
     _deactivateIntConstraintCall = true;
@@ -116,14 +119,30 @@ class BendersSequentialTest : public ::testing::Test {
     logger = std::make_shared<LoggerNOOPStub>();
     writer = std::make_shared<Output::JsonWriter>(std::make_shared<Clock>(),
                                                   std::tmpnam(nullptr));
+    original_dir = std::filesystem::current_path();
   }
+
+  void TearDown() override {
+    std::filesystem::current_path(original_dir);
+  }
+
   void copyMasterMps() {
     tmpDir = CreateRandomSubDir(std::filesystem::temp_directory_path());
 
     std::filesystem::copy(mps_dir / "mip_toy_prob.mps", tmpDir,
                           std::filesystem::copy_options::update_existing);
   }
-  BaseOptions init_base_options() const {
+
+  void copyData() {
+    std::filesystem::path data_test_dir = "data_test";
+    std::filesystem::path data_dir = data_test_dir / "mini_network";
+    tmpDir = CreateRandomSubDir(std::filesystem::temp_directory_path());
+
+    std::filesystem::copy(data_dir, tmpDir,
+                          std::filesystem::copy_options::recursive);
+  }
+
+  BaseOptions init_base_options(const std::string &solver = "COIN") const {
     BaseOptions base_options;
 
     base_options.LOG_LEVEL = 0;
@@ -133,17 +152,17 @@ class BendersSequentialTest : public ::testing::Test {
     base_options.MASTER_NAME = "mip_toy_prob";
     base_options.STRUCTURE_FILE = "my_structure.txt";
     base_options.INPUTROOT = tmpDir.string();
-    base_options.SOLVER_NAME = "COIN";
+    base_options.SOLVER_NAME = solver;
     base_options.weights = {};
     base_options.RESUME = false;
 
     return base_options;
   }
 
-  BendersBaseOptions init_benders_options(MasterFormulation master_formulation,
-                                          int max_iter, double relaxed_gap,
-                                          double sep_param) const {
-    BaseOptions base_options(init_base_options());
+  BendersBaseOptions init_benders_options(
+      MasterFormulation master_formulation, int max_iter, double relaxed_gap,
+      double sep_param, const std::string &solver = "COIN") const {
+    BaseOptions base_options(init_base_options(solver));
     BendersBaseOptions options(base_options);
 
     options.MAX_ITERATIONS = max_iter;
@@ -168,9 +187,11 @@ class BendersSequentialTest : public ::testing::Test {
 
   BendersSequentialDouble init_benders_sequential(
       MasterFormulation master_formulation, int max_iter, double relaxed_gap,
-      double sep_param) {
+      double sep_param, const std::string &solver = "COIN",
+      ProblemsFormat format = ProblemsFormat::MPS_FILE) {
     BendersBaseOptions options = init_benders_options(
-        master_formulation, max_iter, relaxed_gap, sep_param);
+        master_formulation, max_iter, relaxed_gap, sep_param, solver);
+    options.problems_format = format;
     return BendersSequentialDouble(options, logger, writer, mathLoggerDriver);
   }
 
@@ -184,6 +205,7 @@ class BendersSequentialTest : public ::testing::Test {
     }
     return nb_units_col_types;
   }
+  std::filesystem::path original_dir;
 };
 
 TEST_F(BendersSequentialTest, MasterNotRelaxedWhenSepSetToOne) {
@@ -382,3 +404,127 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhenImprovement) {
   EXPECT_EQ(benders.get_data().best_ub, current_ub);
   EXPECT_EQ(benders.get_data().best_it, current_it + 1);
 }
+
+auto solvers() {
+  std::vector<std::string> solvers_name;
+  solvers_name.push_back("COIN");
+  if (LoadXpress::XpressLoader xpressLoader;
+      xpressLoader.XpressIsCorrectlyInstalled()) {
+    solvers_name.push_back("XPRESS");
+  }
+  return solvers_name;
+}
+
+class BendersSequentialTestBySolver
+    : public BendersSequentialTest,
+      public ::testing::WithParamInterface<std::string> {};
+
+TEST_P(BendersSequentialTestBySolver, CreateMasterProblemProperly) {
+  copyMasterMps();
+  BendersSequentialDouble benders = init_benders_sequential(
+      MasterFormulation::RELAXED, 100, 1e-4, 1e-6, GetParam());
+  benders.InitializeProblems();
+
+  // Assert that the master problem has been created properly
+  EXPECT_TRUE(benders.get_master());
+}
+
+// Problems
+TEST_P(BendersSequentialTestBySolver, CreateProblemsProperly) {
+  copyData();
+  std::filesystem::current_path(tmpDir);
+
+  SimulationOptions options;
+  options.read(tmpDir / "options_default.json");
+  options.SOLVER_NAME = GetParam();
+  BendersSequentialDouble benders(options.get_benders_options(), logger, writer, mathLoggerDriver);
+  auto coupling_map = build_input(options.get_benders_options().STRUCTURE_FILE);
+  benders.set_input_map(coupling_map);
+  benders.InitializeProblems();
+  auto&& problems = benders.problems();
+
+  // Assert that the master problem has been created properly
+  EXPECT_TRUE(problems.size() == 2);
+}
+
+class BendersSequentialTestSolverAndFormat
+    : public BendersSequentialTest,
+      public ::testing::WithParamInterface<
+          std::tuple<std::string, ProblemsFormat>> {};
+
+// Master svf
+TEST_P(BendersSequentialTestBySolver, CreateMasterProblemProperlyWhenRestore) {
+  copyMasterMps();
+
+  SolverFactory factory;
+  auto &&solver = factory.create_solver(GetParam() == "COIN" ? "CBC" : GetParam());
+  solver->read_prob_mps(tmpDir / "mip_toy_prob.mps");
+  std::filesystem::remove(tmpDir / "mip_toy_prob.mps");
+  solver->save_prob(tmpDir / "mip_toy_prob");
+
+  BendersSequentialDouble benders =
+      init_benders_sequential(MasterFormulation::RELAXED, 100, 1e-4, 1e-6,
+                              GetParam(), ProblemsFormat::SAVED_FILE);
+  benders.InitializeProblems();
+
+  // Assert that the master problem has been created properly
+  EXPECT_TRUE(benders.get_master());
+}
+
+void updateStructureFile(const std::string& structure_file_path, const std::string& solver) {
+  if (solver == "XPRESS") {
+    auto struct_file = std::ifstream(structure_file_path);
+    auto replaced_text = std::ostringstream();
+    std::regex mps_ext(".mps");
+    std::string line;
+    while (std::getline(struct_file, line)) {
+      replaced_text << std::regex_replace(line, mps_ext, ".svf") << "\n";
+    }
+    struct_file.close();
+    auto new_struct_file = std::ofstream(structure_file_path);
+    new_struct_file << replaced_text.str();
+    new_struct_file.close();
+  }
+}
+
+TEST_P(BendersSequentialTestBySolver, CreateProblemsProperlyWhenRestore) {
+  copyData();
+  std::filesystem::current_path(tmpDir);
+
+  SimulationOptions options;
+  options.read(tmpDir / "options_default.json");
+
+  SolverFactory factory;
+  auto &&solver = factory.create_solver(GetParam() == "COIN" ? "CBC" : GetParam());
+  solver->read_prob_mps(tmpDir / "SP1.mps");
+  std::filesystem::remove(tmpDir / "SP1.mps");
+  solver->save_prob(tmpDir / "SP1");
+
+  solver->read_prob_mps(tmpDir / "SP2.mps");
+  std::filesystem::remove(tmpDir / "SP2.mps");
+  solver->save_prob(tmpDir / "SP2");
+
+  updateStructureFile(options.STRUCTURE_FILE, GetParam());
+
+  options.SOLVER_NAME = GetParam();
+  BendersSequentialDouble benders(options.get_benders_options(), logger, writer, mathLoggerDriver);
+  auto coupling_map = build_input(options.get_benders_options().STRUCTURE_FILE);
+  benders.set_input_map(coupling_map);
+  benders.InitializeProblems();
+  auto&& problems = benders.problems();
+
+  // Assert that the master problem has been created properly
+  EXPECT_TRUE(problems.size() == 2);
+  if (GetParam() == "COIN") {
+    EXPECT_TRUE(problems["SP1.mps"]);
+    EXPECT_TRUE(problems["SP2.mps"]);
+  } else {
+        EXPECT_TRUE(problems["SP1.svf"]);
+        EXPECT_TRUE(problems["SP2.svf"]);
+  }
+}
+
+INSTANTIATE_TEST_SUITE_P(Solvers, BendersSequentialTestBySolver,
+                         ::testing::ValuesIn(solvers()));
+
+// Problems svf

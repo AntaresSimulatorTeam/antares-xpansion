@@ -152,5 +152,11 @@ int Worker::Getncols() const { return _solver->get_ncols(); }
  */
 void Worker::read_prob(SolverAbstract * problem,
                        const std::filesystem::path &path) const {
-  problem->restore_prob(path);
+  if (path.extension() == ".mps") {
+    problem->read_prob_mps(path);
+  } else if (path.extension() == ".svf") {//Brittle
+    problem->restore_prob(path);
+  } else {
+    throw LogUtils::XpansionError<std::runtime_error>("Unknown file extension for problem file: " + path.string(), LOGLOCATION);
+  }
 }

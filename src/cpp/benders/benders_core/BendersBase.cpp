@@ -686,8 +686,13 @@ double BendersBase::SubproblemWeight(int subproblem_count,
  *  \brief Get path to master problem mps file from options
  */
 std::filesystem::path BendersBase::get_master_path() const {
-  return std::filesystem::path(_options.INPUTROOT) /
-         (_options.MASTER_NAME + MPS_SUFFIX);
+  if (_options.problems_format == ProblemsFormat::SAVED_FILE && _options.SOLVER_NAME == "XPRESS") {
+    return std::filesystem::path(_options.INPUTROOT) /
+           (_options.MASTER_NAME + SAVE_SUFFIX);
+  } else {
+    return std::filesystem::path(_options.INPUTROOT) /
+           (_options.MASTER_NAME + MPS_SUFFIX);
+  }
 }
 /*!
  *  \brief Get path to last mps file of master problem
