@@ -122,9 +122,7 @@ class BendersSequentialTest : public ::testing::Test {
     original_dir = std::filesystem::current_path();
   }
 
-  void TearDown() override {
-    std::filesystem::current_path(original_dir);
-  }
+  void TearDown() override { std::filesystem::current_path(original_dir); }
 
   void copyMasterMps() {
     tmpDir = CreateRandomSubDir(std::filesystem::temp_directory_path());
@@ -437,11 +435,12 @@ TEST_P(BendersSequentialTestBySolver, CreateProblemsProperly) {
   SimulationOptions options;
   options.read(tmpDir / "options_default.json");
   options.SOLVER_NAME = GetParam();
-  BendersSequentialDouble benders(options.get_benders_options(), logger, writer, mathLoggerDriver);
+  BendersSequentialDouble benders(options.get_benders_options(), logger, writer,
+                                  mathLoggerDriver);
   auto coupling_map = build_input(options.get_benders_options().STRUCTURE_FILE);
   benders.set_input_map(coupling_map);
   benders.InitializeProblems();
-  auto&& problems = benders.problems();
+  auto &&problems = benders.problems();
 
   // Assert that the master problem has been created properly
   EXPECT_TRUE(problems.size() == 2);
@@ -457,7 +456,8 @@ TEST_P(BendersSequentialTestBySolver, CreateMasterProblemProperlyWhenRestore) {
   copyMasterMps();
 
   SolverFactory factory;
-  auto &&solver = factory.create_solver(GetParam() == "COIN" ? "CBC" : GetParam());
+  auto &&solver =
+      factory.create_solver(GetParam() == "COIN" ? "CBC" : GetParam());
   solver->read_prob_mps(tmpDir / "mip_toy_prob.mps");
   std::filesystem::remove(tmpDir / "mip_toy_prob.mps");
   solver->save_prob(tmpDir / "mip_toy_prob");
@@ -471,7 +471,8 @@ TEST_P(BendersSequentialTestBySolver, CreateMasterProblemProperlyWhenRestore) {
   EXPECT_TRUE(benders.get_master());
 }
 
-void updateStructureFile(const std::string& structure_file_path, const std::string& solver) {
+void updateStructureFile(const std::string &structure_file_path,
+                         const std::string &solver) {
   if (solver == "XPRESS") {
     auto struct_file = std::ifstream(structure_file_path);
     auto replaced_text = std::ostringstream();
@@ -495,23 +496,22 @@ TEST_P(BendersSequentialTestBySolver, CreateProblemsProperlyWhenRestore) {
   options.read(tmpDir / "options_default.json");
 
   SolverFactory factory;
-  auto &&solver = factory.create_solver(GetParam() == "COIN" ? "CBC" : GetParam());
-  solver->read_prob_mps(tmpDir / "SP1.mps");
-  std::filesystem::remove(tmpDir / "SP1.mps");
-  solver->save_prob(tmpDir / "SP1");
-
-  solver->read_prob_mps(tmpDir / "SP2.mps");
-  std::filesystem::remove(tmpDir / "SP2.mps");
-  solver->save_prob(tmpDir / "SP2");
-
+  auto &&solver =
+      factory.create_solver(GetParam() == "COIN" ? "CBC" : GetParam());
+  for (std::string problem: {"SP1", "SP2"}) {
+    solver->read_prob_mps(tmpDir / (problem + ".mps"));
+    std::filesystem::remove(tmpDir / (problem + ".mps"));
+    solver->save_prob(tmpDir / problem);
+  }
   updateStructureFile(options.STRUCTURE_FILE, GetParam());
 
   options.SOLVER_NAME = GetParam();
-  BendersSequentialDouble benders(options.get_benders_options(), logger, writer, mathLoggerDriver);
+  BendersSequentialDouble benders(options.get_benders_options(), logger, writer,
+                                  mathLoggerDriver);
   auto coupling_map = build_input(options.get_benders_options().STRUCTURE_FILE);
   benders.set_input_map(coupling_map);
   benders.InitializeProblems();
-  auto&& problems = benders.problems();
+  auto &&problems = benders.problems();
 
   // Assert that the master problem has been created properly
   EXPECT_TRUE(problems.size() == 2);
@@ -519,8 +519,8 @@ TEST_P(BendersSequentialTestBySolver, CreateProblemsProperlyWhenRestore) {
     EXPECT_TRUE(problems["SP1.mps"]);
     EXPECT_TRUE(problems["SP2.mps"]);
   } else {
-        EXPECT_TRUE(problems["SP1.svf"]);
-        EXPECT_TRUE(problems["SP2.svf"]);
+    EXPECT_TRUE(problems["SP1.svf"]);
+    EXPECT_TRUE(problems["SP2.svf"]);
   }
 }
 
