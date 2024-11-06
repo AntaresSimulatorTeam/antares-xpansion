@@ -5,6 +5,7 @@ import math
 import os
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 import numpy as np
 from behave import *
@@ -28,10 +29,15 @@ def build_outer_loop_command(context, n: int, option_file: str = "options.json")
     return command
 
 
-def build_launch_command(study_dir: str, method: str, nproc: int, in_memory: bool):
-    command = f"python ../../src/python/launch.py --installDir {get_conf('DEFAULT_INSTALL_DIR')} --dataDir {study_dir} --method {method} -n {nproc} --oversubscribe"
+def build_launch_command(study_dir: Path, method: str, nproc: int, in_memory: bool):
+    command = [
+        sys.executable,
+        "../../src/python/launch.py", "--installDir", str(get_conf('DEFAULT_INSTALL_DIR')), "--dataDir",
+        str(study_dir), "--method",
+        method, "-n", str(nproc), "--oversubscribe"]
     if in_memory:
-        command += " --memory"
+        command.append("--memory")
+        print(command)
     return command
 
 
@@ -71,24 +77,29 @@ def run_antares_xpansion(context, method, memory=None, n: int = 1):
     memory = True if memory is not None else False
     # Clean study output
     remove_outputs(context.tmp_study)
-    command = build_launch_command(context.tmp_study, method, n, memory)
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, shell=True)
-    out, err = process.communicate()
-    print("*********************** Begin stdout ***********************")
-    print(out)
-    print("*********************** End stdout ***********************")
+    run_command(context.tmp_study, memory, method, n)
 
-    print("*********************** Begin stderr ***********************")
-    print(err)
-    print("*********************** End stderr ***********************")
-
-    context.return_code = process.returncode
     output_path = context.tmp_study / "output"
     outputs = read_outputs(output_path, use_archive=not memory, lold=True, positive_unsupplied_energy=True)
     context.outputs = outputs.out_json
     context.options_data = outputs.options_json
     context.lold = outputs.lold
     context.positive_unsupplied_energy = outputs.positive_unsupplied_energy
+
+
+def run_command(study_path, memory, method, n_mpi):
+    command = build_launch_command(study_path, method, n_mpi, memory)
+    print(f"Running command: {command}")
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, shell=True)
+    out, err = process.communicate()
+    if process.returncode != 0:
+        print("*********************** Begin stdout ***********************")
+        print(out)
+        print("*********************** End stdout ***********************")
+
+        print("*********************** Begin stderr ***********************")
+        print(err)
+        print("*********************** End stderr ***********************")
 
 
 @then("the simulation takes less than {seconds:d} seconds")
