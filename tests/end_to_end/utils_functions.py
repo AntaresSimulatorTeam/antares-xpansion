@@ -47,9 +47,8 @@ def get_mpi_command(allow_run_as_root=False, nproc: int = 1):
 def remove_outputs(study_path):
     output_path = study_path / "output"
     if os.path.isdir(output_path):
-        for f in Path(output_path).iterdir():
-            if f.is_dir():
-                shutil.rmtree(f)
+        shutil.rmtree(output_path)
+    os.makedirs(output_path)
 
 def get_filepath(output_dir, folder, filename):
     op = []
