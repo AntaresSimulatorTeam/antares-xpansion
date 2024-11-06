@@ -10,7 +10,7 @@ import numpy as np
 import pytest
 
 from src.python.antares_xpansion.candidates_reader import CandidatesReader
-from tests.end_to_end.utils_functions import read_outputs
+from tests.end_to_end.utils_functions import read_outputs, remove_outputs
 ALL_STUDIES_PATH = Path("../../../data_test/examples")
 RELATIVE_TOLERANCE = 1e-4
 RELATIVE_TOLERANCE_LIGHT = 1e-2
@@ -19,15 +19,6 @@ RELATIVE_TOLERANCE_LIGHT = 1e-2
 class BendersMethod(Enum):
     BENDERS = "benders"
     BENDERS_BY_BATCH = "benders_by_batch"
-
-
-
-def remove_outputs(study_path):
-    output_path = study_path / "output"
-    if os.path.isdir(output_path):
-        for f in Path(output_path).iterdir():
-            if f.is_dir():
-                shutil.rmtree(f)
 
 
 def launch_xpansion(install_dir, study_path, allow_run_as_root=False, nproc: int = 4):

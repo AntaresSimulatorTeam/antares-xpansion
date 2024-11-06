@@ -9,7 +9,7 @@ from pathlib import Path
 import numpy as np
 from behave import *
 
-from utils_functions import get_mpi_command, get_conf, read_outputs
+from utils_functions import get_mpi_command, get_conf, read_outputs, remove_outputs
 
 
 @given('the study path is "{string}"')
@@ -69,6 +69,8 @@ def run_outer_loop(context, n, option_file: str = "options.json"):
 @when('I run antares-xpansion in {memory} with the {method} method and {n:d} proc(s)')
 def run_antares_xpansion(context, method, memory=None, n: int = 1):
     memory = True if memory is not None else False
+    # Clean study output
+    remove_outputs(context.tmp_study)
     command = build_launch_command(context.tmp_study, method, n, memory)
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, shell=True)
     out, err = process.communicate()
