@@ -46,7 +46,9 @@ def get_mpi_command(allow_run_as_root=False, nproc: int = 1):
 def get_filepath(output_dir, folder, filename):
     op = []
     for path in Path(output_dir).iterdir():
+        print(f"----------{path}---------------")
         for jsonpath in Path(path / folder).rglob(filename):
+            print(f"----------{jsonpath}---------------")
             op.append(jsonpath)
     assert len(op) == 1
     return op[0]
