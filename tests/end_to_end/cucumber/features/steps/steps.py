@@ -29,7 +29,7 @@ def build_outer_loop_command(context, n: int, option_file: str = "options.json")
     return command
 
 
-def build_launch_command(study_dir: Path, method: str, nproc: int, in_memory: bool):
+def build_launch_command(study_dir: Path, method: str, nproc: int, in_memory: bool, allow_run_as_root: bool = False):
     command = [
         sys.executable,
         "../../src/python/launch.py", "--installDir", str(get_conf('DEFAULT_INSTALL_DIR')), "--dataDir",
@@ -38,6 +38,8 @@ def build_launch_command(study_dir: Path, method: str, nproc: int, in_memory: bo
     if in_memory:
         command.append("--memory")
         print(command)
+    if allow_run_as_root:
+        command.append("--allow-run-as-root")
     return command
 
 
@@ -77,7 +79,9 @@ def run_antares_xpansion(context, method, memory=None, n: int = 1):
     memory = True if memory is not None else False
     # Clean study output
     remove_outputs(context.tmp_study)
-    context.return_code = run_command(context.tmp_study, memory, method, n)
+
+    context.return_code = run_command(context.tmp_study, memory=memory, method=method, n_mpi=n,
+                                      allow_run_as_root=get_conf("allow_run_as_root"))
 
     output_path = context.tmp_study / "output"
     outputs = read_outputs(output_path, use_archive=not memory, lold=True, positive_unsupplied_energy=True)
@@ -87,8 +91,9 @@ def run_antares_xpansion(context, method, memory=None, n: int = 1):
     context.positive_unsupplied_energy = outputs.positive_unsupplied_energy
 
 
-def run_command(study_path, memory, method, n_mpi):
-    command = build_launch_command(study_path, method, n_mpi, memory)
+def run_command(study_path, memory, method, n_mpi, allow_run_as_root=False):
+    command = build_launch_command(study_path, method, nproc=n_mpi, in_memory=memory,
+                                   allow_run_as_root=allow_run_as_root)
     print(f"Running command: {command}")
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, shell=True)
     out, err = process.communicate()

@@ -1,5 +1,3 @@
-import json
-import os
 import shutil
 import subprocess
 import sys
@@ -11,6 +9,7 @@ import pytest
 
 from src.python.antares_xpansion.candidates_reader import CandidatesReader
 from tests.end_to_end.utils_functions import read_outputs, remove_outputs
+
 ALL_STUDIES_PATH = Path("../../../data_test/examples")
 RELATIVE_TOLERANCE = 1e-4
 RELATIVE_TOLERANCE_LIGHT = 1e-2
