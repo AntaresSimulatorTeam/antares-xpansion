@@ -72,14 +72,16 @@ def run_antares_xpansion(context, method, memory=None, n: int = 1):
     command = build_launch_command(context.tmp_study, method, n, memory)
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL, shell=True)
     out, err = process.communicate()
-    print(out)
-    print("*****************")
-    print(err)
-    print("*****************")
+    # print(out)
+    # print("*****************")
+    # print(err)
 
     context.return_code = process.returncode
     output_path = context.tmp_study / "output"
-    outputs = read_outputs(output_path, use_archive=True, lold=True, positive_unsupplied_energy=True)
+    outputs = read_outputs(output_path, use_archive=not memory, lold=True, positive_unsupplied_energy=True)
+    print("*****************")
+    print(outputs.out_json)
+    print("*****************")
     context.outputs = outputs.out_json
     context.options_data = outputs.options_json
     context.lold = outputs.lold
