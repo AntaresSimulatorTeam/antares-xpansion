@@ -77,7 +77,7 @@ def run_antares_xpansion(context, method, memory=None, n: int = 1):
     memory = True if memory is not None else False
     # Clean study output
     remove_outputs(context.tmp_study)
-    run_command(context.tmp_study, memory, method, n)
+    context.return_code = run_command(context.tmp_study, memory, method, n)
 
     output_path = context.tmp_study / "output"
     outputs = read_outputs(output_path, use_archive=not memory, lold=True, positive_unsupplied_energy=True)
@@ -100,6 +100,8 @@ def run_command(study_path, memory, method, n_mpi):
         print("*********************** Begin stderr ***********************")
         print(err)
         print("*********************** End stderr ***********************")
+
+    return process.returncode
 
 
 @then("the simulation takes less than {seconds:d} seconds")

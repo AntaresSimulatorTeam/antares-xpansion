@@ -28,13 +28,9 @@ def get_conf(key: str):
 
 
 def get_mpi_command(allow_run_as_root=False, nproc: int = 1):
-    MPI_LAUNCHER = ""
-    MPI_N = ""
     nproc_str = str(nproc)
     if sys.platform.startswith("win32"):
-        MPI_LAUNCHER = "mpiexec"
-        MPI_N = "-n"
-        return [MPI_LAUNCHER, MPI_N, nproc_str]
+        return ["mpiexec", "-n", nproc_str]
     elif sys.platform.startswith("linux"):
         MPI_LAUNCHER = "mpirun"
         MPI_N = "-np"
@@ -53,11 +49,8 @@ def remove_outputs(study_path):
 def get_filepath(output_dir, folder, filename):
     op = []
     for path in Path(output_dir).iterdir():
-        print(f"----------{path}---------------")
         for jsonpath in Path(path / folder).rglob(filename):
-            print(f"----------{jsonpath}---------------")
             op.append(jsonpath)
-    print(f"op = {op}***************************")
     assert len(op) == 1
     return op[0]
 
