@@ -82,7 +82,6 @@ def run_antares_xpansion(context, method, memory=None, n: int = 1):
 
     context.return_code = process.returncode
     output_path = context.tmp_study / "output"
-    subprocess.run(["ls", str(output_path)])
     outputs = read_outputs(output_path, use_archive=not memory, lold=True, positive_unsupplied_energy=True)
     context.outputs = outputs.out_json
     context.options_data = outputs.options_json
