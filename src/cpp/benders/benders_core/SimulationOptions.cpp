@@ -19,6 +19,9 @@ Json::Value SimulationOptions::get_value_from_json(
   }
   return _input;
 }
+
+template <> inline ProblemsFormat Json::Value::as<ProblemsFormat>() const { return problemsFormatFromString(asString()); }
+
 /*!
  *  \brief Constructor of Benders Options
  *
@@ -133,6 +136,7 @@ BaseOptions SimulationOptions::get_base_options() const {
   result.SLAVE_WEIGHT = SLAVE_WEIGHT;
   result.MASTER_NAME = MASTER_NAME;
   result.STRUCTURE_FILE = STRUCTURE_FILE;
+  result.PROBLEMS_FORMAT = PROBLEMS_FORMAT;
   result.INPUTROOT = INPUTROOT;
   result.SOLVER_NAME = SOLVER_NAME;
   result.weights = _weights;

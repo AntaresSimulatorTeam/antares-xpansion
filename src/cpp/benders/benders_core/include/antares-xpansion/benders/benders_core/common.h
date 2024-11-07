@@ -23,6 +23,8 @@
 #include <tuple>
 #include <vector>
 
+#include "ProblemFormat.h"
+
 enum class MasterFormulation { INTEGER, RELAXED };
 enum class SOLVER { BENDERS, OUTER_LOOP, MERGE_MPS };
 
@@ -141,18 +143,13 @@ const std::string WEIGHT_SUM_CST_STR("WEIGHT_SUM");
 const std::string MPS_SUFFIX = ".mps";
 const std::string SAVE_SUFFIX = ".svf";
 
-enum class ProblemsFormat {
-  MPS_FILE,
-  SAVED_FILE
-};
-
 struct BaseOptions {
   std::string OUTPUTROOT;
   std::string INPUTROOT;
   std::string STRUCTURE_FILE;
   std::string LAST_ITERATION_JSON_FILE;
   std::string MASTER_NAME;
-  ProblemsFormat problems_format = ProblemsFormat::MPS_FILE;
+  ProblemsFormat PROBLEMS_FORMAT = ProblemsFormat::MPS_FILE;
   std::string SOLVER_NAME;
   std::string SLAVE_WEIGHT;
   std::string AREA_FILE;

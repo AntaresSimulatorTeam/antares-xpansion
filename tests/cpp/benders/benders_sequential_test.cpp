@@ -189,7 +189,7 @@ class BendersSequentialTest : public ::testing::Test {
       ProblemsFormat format = ProblemsFormat::MPS_FILE) {
     BendersBaseOptions options = init_benders_options(
         master_formulation, max_iter, relaxed_gap, sep_param, solver);
-    options.problems_format = format;
+    options.PROBLEMS_FORMAT = format;
     return BendersSequentialDouble(options, logger, writer, mathLoggerDriver);
   }
 
