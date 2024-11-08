@@ -7,29 +7,31 @@
 #include <iostream>
 #include <utility>
 
+#include "antares-xpansion/lpnamer/input_reader/SettingsReader.h"
+#include "Version.h"
+#include "antares-xpansion/helpers/Timer.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/input_reader/GeneralDataReader.h"
+#include "antares-xpansion/lpnamer/input_reader/LpFilesExtractor.h"
+#include "antares-xpansion/lpnamer/input_reader/MpsTxtWriter.h"
+#include "antares-xpansion/lpnamer/input_reader/SettingsReader.h"
+#include "antares-xpansion/lpnamer/input_reader/WeightsFileReader.h"
+#include "antares-xpansion/lpnamer/input_reader/WeightsFileWriter.h"
 #include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 #include "antares-xpansion/lpnamer/problem_modifier/AdditionalConstraints.h"
 #include "antares-xpansion/lpnamer/problem_modifier/FileProblemsProviderAdapter.h"
-#include "antares-xpansion/lpnamer/input_reader/GeneralDataReader.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LauncherHelpers.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
-#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
-#include "antares-xpansion/lpnamer/input_reader/LpFilesExtractor.h"
 #include "antares-xpansion/lpnamer/problem_modifier/MPSFileWriter.h"
 #include "antares-xpansion/lpnamer/problem_modifier/MasterGeneration.h"
 #include "antares-xpansion/lpnamer/problem_modifier/MasterProblemBuilder.h"
-#include "antares-xpansion/lpnamer/input_reader/MpsTxtWriter.h"
-#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesFileAdapter.h"
 #include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesFromProblemAdapter.h"
 #include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesZipAdapter.h"
-#include "antares-xpansion/xpansion_interfaces/StringManip.h"
-#include "antares-xpansion/helpers/Timer.h"
-#include "Version.h"
-#include "antares-xpansion/lpnamer/input_reader/WeightsFileReader.h"
-#include "antares-xpansion/lpnamer/input_reader/WeightsFileWriter.h"
 #include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
 #include "antares-xpansion/lpnamer/problem_modifier/ZipProblemsProviderAdapter.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
 #include "config.h"
 
 static const std::string LP_DIRNAME = "lp";
@@ -110,6 +112,9 @@ std::filesystem::path ProblemGeneration::updateProblems() {
       options_.AdditionalConstraintsFilename();
   auto weights_file = options_.WeightsFile();
   auto unnamed_problems = options_.UnnamedProblems();
+
+  SettingsReader settingsReader(xpansion_output_dir, logger.get());
+  solver_name_ = settingsReader.Solver();
 
   RunProblemGeneration(xpansion_output_dir, master_formulation,
                        additionalConstraintFilename_l, archive_path, logger,
@@ -226,7 +231,6 @@ void ProblemGeneration::RunProblemGeneration(
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Launching Problem Generation" << std::endl;
   validateMasterFormulation(master_formulation, logger);
-  std::string solver_name = "CBC";  // TODO Use solver selected by user
 
   SolverLoader::GetAvailableSolvers(logger);  // Dirty fix to populate static
                                               // value outside multi thread code
@@ -258,14 +262,14 @@ void ProblemGeneration::RunProblemGeneration(
   auto solver_log_manager = SolverLogManager(log_file_path);
   Couplings couplings;
   LinkProblemsGenerator linkProblemsGenerator(
-      lpDir_, links, solver_name, logger, solver_log_manager, rename_problems);
+      lpDir_, links, solver_name_, logger, solver_log_manager, rename_problems);
   std::shared_ptr<ArchiveReader> reader =
       antares_archive_path.empty() ? std::make_shared<ArchiveReader>()
                                    : InstantiateZipReader(antares_archive_path);
 
   /* Main stuff */
   std::vector<std::shared_ptr<Problem>> xpansion_problems = getXpansionProblems(
-      solver_log_manager, solver_name, mpsList, lpDir_, reader, lps_);
+      solver_log_manager, solver_name_, mpsList, lpDir_, reader, lps_);
 
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
       problems_and_data;
@@ -323,7 +327,7 @@ void ProblemGeneration::RunProblemGeneration(
   }
   MasterGeneration master_generation(
       xpansion_output_dir, links, additionalConstraints, couplings,
-      master_formulation, solver_name, logger, solver_log_manager);
+      master_formulation, solver_name_, logger, solver_log_manager);
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Problem Generation ran in: "
       << format_time_str(problem_generation_timer.elapsed()) << std::endl;
