@@ -118,8 +118,8 @@ def read_outputs(output_path, use_archive=True, lold=False, positive_unsupplied_
 
         if lold:
             out.lold = read_file(get_filepath(output_path, "lp", "LOLD.txt"))
-            if positive_unsupplied_energy:
-                out.positive_unsupplied_energy = read_file(
-                    get_filepath(output_path, "lp", "PositiveUnsuppliedEnergy.txt"))
+        if positive_unsupplied_energy:
+            out.positive_unsupplied_energy = read_file(
+                get_filepath(output_path, "lp", "PositiveUnsuppliedEnergy.txt"))
 
         return out
