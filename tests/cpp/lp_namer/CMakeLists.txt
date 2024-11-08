@@ -28,9 +28,9 @@ add_executable (lp_namer_tests
         LoggerBuilder.cpp
         LoggerBuilder.h
         LpFilesExtractorTest.cpp
+        MasterGenerationTest.cpp
         MasterProblemBuilderTest.cpp
         MpsTxtWriterTest.cpp
-        MasterGenerationTest.cpp
         NOOPSolver.h
         ProblemConstructionTest.cpp
         ProblemGenerationExeOptionsTest.cpp

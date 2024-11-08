@@ -20,10 +20,9 @@
 #include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 #include "antares-xpansion/lpnamer/problem_modifier/AdditionalConstraints.h"
 #include "antares-xpansion/lpnamer/problem_modifier/FileProblemsProviderAdapter.h"
-#include "antares-xpansion/lpnamer/problem_modifier/FileWriter.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LauncherHelpers.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
-#include "antares-xpansion/lpnamer/problem_modifier/MPSFileWriter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/FileWriter.h"
 #include "antares-xpansion/lpnamer/problem_modifier/MasterGeneration.h"
 #include "antares-xpansion/lpnamer/problem_modifier/MasterProblemBuilder.h"
 #include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesFileAdapter.h"
@@ -288,7 +287,6 @@ void ProblemGeneration::RunProblemGeneration(
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Launching Problem Generation" << std::endl;
   validateMasterFormulation(master_formulation, logger);
-  std::string solver_name = "CBC";  // TODO Use solver selected by user
 
   SolverLoader::GetAvailableSolvers(logger);  // Dirty fix to populate static
                                               // value outside multi thread code
