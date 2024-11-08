@@ -23,7 +23,7 @@ class AntaresDriver:
         self.antares_exe_path = antares_exe_path
         # antares study dir is set just before launch
         self.data_dir = ""
-
+        self.use_xpress = False
         self.output = 'output'
         self.ANTARES_N_CPU_OPTION = "--force-parallel"
         self.antares_n_cpu = 1  # default
@@ -33,8 +33,9 @@ class AntaresDriver:
         self.FIRST_VERSION_WITH_NAMED_PROBLEMS = "8.7"
 
 
-    def launch(self, antares_study_path, antares_n_cpu: int) -> bool:
+    def launch(self, antares_study_path, antares_n_cpu: int, use_xpress: bool = False) -> bool:
         self._set_antares_n_cpu(antares_n_cpu)
+        self.use_xpress = use_xpress
         return self._launch(antares_study_path)
 
     def _set_antares_n_cpu(self, antares_n_cpu: int):
@@ -104,8 +105,11 @@ class AntaresDriver:
             self.simulation_name = list_of_dirs[-1]
 
     def _get_antares_cmd(self):
-        cmd = [str(self.antares_exe_path), self.data_dir, self.ANTARES_N_CPU_OPTION, str(self.antares_n_cpu), self.zip_option,
-               "--use-ortools", "--ortools-solver=sirius"]
+        cmd = [str(self.antares_exe_path), self.data_dir, self.ANTARES_N_CPU_OPTION, str(self.antares_n_cpu), self.zip_option]
+        if self.use_xpress:
+            cmd.extend(["--use-ortools", "--ortools-solver=xpress"])
+        else:
+            cmd.extend(["--use-ortools", "--ortools-solver=sirius"])
         simulator_version = version.parse(__antares_simulator_version__)
         simulator_version_with_named_mps = version.parse(self.FIRST_VERSION_WITH_NAMED_PROBLEMS)
         if (simulator_version.major > simulator_version_with_named_mps.major) or (simulator_version.major >= simulator_version_with_named_mps.major and simulator_version.minor >= simulator_version_with_named_mps.minor):

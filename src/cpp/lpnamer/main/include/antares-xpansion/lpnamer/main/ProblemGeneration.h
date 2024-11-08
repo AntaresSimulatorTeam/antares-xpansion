@@ -53,4 +53,5 @@ class ProblemGeneration {
   std::optional<SimulationInputMode> mode_;
   virtual std::filesystem::path performAntaresSimulation();
   std::filesystem::path simulation_dir_;
+  std::string solver_name_;
 };
