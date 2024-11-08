@@ -743,7 +743,7 @@ TEST_F(MasterLoggerTest, LogSwitchToInteger) {
   ASSERT_TRUE(_logger->_switchToIntegerCall);
   ASSERT_TRUE(_logger2->_switchToIntegerCall);
 }
-static constexpr const char* const DELIMITER = "|";
+static constexpr const char* const DELIMITER = "\t";
 
 TEST(LogDestinationTest, WithInvalidEmptyFilePath) {
   const std::filesystem::path invalid_file_path("");
