@@ -43,7 +43,7 @@ class LogDestination {
   std::ofstream file_stream_;
   std::ostream* stream_;
   std::streamsize width_ = 40;
-  std::string delimiter_ = "|";
+  std::string delimiter_ = "\t";
 
  public:
   void setDelimiter(const std::string& delimiter);

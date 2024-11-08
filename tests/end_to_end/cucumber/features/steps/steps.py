@@ -147,7 +147,7 @@ def check_solution(context):
 
 
 def read_table_from_string(raw_data):
-    reader = csv.reader(io.StringIO(raw_data), delimiter='|')
+    reader = csv.reader(io.StringIO(raw_data), delimiter='\t')
     header = [item.strip() for item in
               next(reader)[1:-1]]  # Store the header row, ignoring the first and last columns
     current_results = [{header[index]: item.strip() for index, item in enumerate(row[1:-1])} for row in
@@ -158,7 +158,7 @@ def read_table_from_string(raw_data):
 
 def read_cucumber_table_from_file(filename):
     with open(filename, 'r') as file:
-        reader = csv.reader(file, delimiter='|')
+        reader = csv.reader(file, delimiter='\t')
         header = [item.strip() for item in
                   next(reader)[1:-1]]  # Store the header row, ignoring the first and last columns
         current_results = [{header[index]: item.strip() for index, item in enumerate(row[1:-1])} for row in
