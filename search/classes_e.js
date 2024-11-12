@@ -25,5 +25,6 @@ var searchData=
   ['outerlooppatterntest_22',['OuterLoopPatternTest',['../classOuterLoopPatternTest.html',1,'']]],
   ['outerloopsingleinputdata_23',['OuterLoopSingleInputData',['../classBenders_1_1Criterion_1_1OuterLoopSingleInputData.html',1,'Benders::Criterion']]],
   ['outputpatherror_24',['OutputPathError',['../classantares__xpansion_1_1problem__generator__driver_1_1ProblemGeneratorDriver_1_1OutputPathError.html',1,'antares_xpansion::problem_generator_driver::ProblemGeneratorDriver']]],
-  ['outputwriter_25',['OutputWriter',['../classOutput_1_1OutputWriter.html',1,'Output']]]
+  ['outputs_25',['Outputs',['../classtests_1_1end__to__end_1_1utils__functions_1_1Outputs.html',1,'tests::end_to_end::utils_functions']]],
+  ['outputwriter_26',['OutputWriter',['../classOutput_1_1OutputWriter.html',1,'Output']]]
 ];

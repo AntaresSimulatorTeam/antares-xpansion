@@ -1,5 +1,7 @@
 var NAVTREEINDEX6 =
 {
+"md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md125":[13,1,2],
+"md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md126":[13,1,3],
 "md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md127":[13,1,4],
 "md_docs_2how__to.html":[14],
 "md_docs_2how__to.html#autotoc_md129":[14,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX6 =
 "structILoggerXpansion.html#ac29cdc7dc59c2dde6ce45201c91e770e":[26,0,88,0],
 "structIntercoFileData.html":[26,0,93],
 "structInvalidStructureFile.html":[26,0,103],
-"structLinkdataRecord.html":[26,0,118],
-"structLinkdataRecord.html#a12279383606cfad20c9c61b23947c04a":[26,0,118,5],
-"structLinkdataRecord.html#a80fbca65660bf152d9523946037b4e38":[26,0,118,4]
+"structLinkdataRecord.html":[26,0,118]
 };

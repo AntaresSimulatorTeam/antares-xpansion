@@ -340,6 +340,10 @@ var annotated_dup =
           [ "test_lpnamerEndToEnd", null, [
             [ "OptionType", "classtests_1_1end__to__end_1_1lpnamer_1_1test__lpnamerEndToEnd_1_1OptionType.html", null ]
           ] ]
+        ] ],
+        [ "utils_functions", null, [
+          [ "FilesToRead", "classtests_1_1end__to__end_1_1utils__functions_1_1FilesToRead.html", null ],
+          [ "Outputs", "classtests_1_1end__to__end_1_1utils__functions_1_1Outputs.html", null ]
         ] ]
       ] ],
       [ "python", "namespacetests_1_1python.html", [

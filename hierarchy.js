@@ -181,6 +181,7 @@ var hierarchy =
     [ "LinkdataRecord::FileColumns", "structLinkdataRecord_1_1FileColumns.html", null ],
     [ "FileInBuffer", "classFileInBuffer.html", null ],
     [ "FilesMapper", "classFilesMapper.html", null ],
+    [ "tests.end_to_end.utils_functions.FilesToRead", "classtests_1_1end__to__end_1_1utils__functions_1_1FilesToRead.html", null ],
     [ "antares_xpansion.full_run_driver.FullRunDriver", "classantares__xpansion_1_1full__run__driver_1_1FullRunDriver.html", null ],
     [ "antares_xpansion.general_data_processor.GeneralDataFileExceptions", "classantares__xpansion_1_1general__data__processor_1_1GeneralDataFileExceptions.html", null ],
     [ "antares_xpansion.general_data_reader.GeneralDataIniReader", "classantares__xpansion_1_1general__data__reader_1_1GeneralDataIniReader.html", null ],
@@ -396,6 +397,7 @@ var hierarchy =
     [ "Benders::Criterion::OuterLoopInputData", "classBenders_1_1Criterion_1_1OuterLoopInputData.html", null ],
     [ "Benders::Criterion::OuterLoopPattern", "classBenders_1_1Criterion_1_1OuterLoopPattern.html", null ],
     [ "Benders::Criterion::OuterLoopSingleInputData", "classBenders_1_1Criterion_1_1OuterLoopSingleInputData.html", null ],
+    [ "tests.end_to_end.utils_functions.Outputs", "classtests_1_1end__to__end_1_1utils__functions_1_1Outputs.html", null ],
     [ "Output::OutputWriter", "classOutput_1_1OutputWriter.html", [
       [ "Output::JsonWriter", "classOutput_1_1JsonWriter.html", null ],
       [ "Output::VoidWriter", "classOutput_1_1VoidWriter.html", null ],
