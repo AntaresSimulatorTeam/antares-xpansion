@@ -68,7 +68,7 @@ namespace {
 }
 static std::string solverXpansionToSimulator(const SolverConfig& in) {
   // in could be Cbc or CBC depending on whether it is defined or not in the
-  // settings file 
+  // settings file
   // Use lowerCase in any case to be robust to these subtleties
   assert(islower(in.Name()));
   if (in.Name() == "xpress") return "xpress";
@@ -132,6 +132,9 @@ std::filesystem::path ProblemGeneration::updateProblems() {
     study_dir =
         std::filesystem::absolute(archive_path).parent_path().parent_path();
     // Assume study/output/archive.zip
+    //If doesn't work
+    //study_dir = xpansion_output_dir.parent_path().parent_path(); //Assume study/output/archive.zip
+
   }
 
   if (mode_ == SimulationInputMode::ANTARES_API) {
