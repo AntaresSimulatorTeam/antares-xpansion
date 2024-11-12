@@ -43,7 +43,7 @@ void SettingsReader::check_file_exist(
   if (file_path.empty() || !std::filesystem::exists(file_path)) {
     std::ostringstream msg;
     msg << LOGLOCATION
-        << "General data file is not found : " << file_path.string()
+        << "Settings file is not found : " << file_path.string()
         << std::endl;
     (*this->logger_)(LogUtils::LOGLEVEL::FATAL) << msg.str();
     throw IniFileNotFound(msg.str());
