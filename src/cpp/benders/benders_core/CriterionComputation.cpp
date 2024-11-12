@@ -29,7 +29,7 @@ void CriterionComputation::ComputeOuterLoopCriterion(
 void CriterionComputation::SearchVariables(
     const std::vector<std::string> &variables) {
   Benders::Criterion::VariablesGroup variablesGroup(
-      variables, outer_loop_input_data_.OuterLoopData());
+      variables, outer_loop_input_data_.CriterionsData());
   var_indices_ = variablesGroup.Indices();
 }
 

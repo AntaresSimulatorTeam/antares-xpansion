@@ -125,7 +125,7 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
       benders, 0.5, outer_loop_input_data.StoppingThreshold());
   auto cut_manager = std::make_shared<Outerloop::CutsManagerRunTime>();
   Outerloop::OuterLoopBenders out_loop(
-      criterion_computation->getOuterLoopInputData().OuterLoopData(),
+      criterion_computation->getOuterLoopInputData().CriterionsData(),
       master_updater, cut_manager, benders, *pworld);
   out_loop.OuterLoopCheckFeasibility();
 
@@ -205,7 +205,7 @@ TEST_F(OuterLoopInputFromYamlTest, YamlFileDoesNotExist) {
   try {
     CriterionInputFromYaml parser;
     parser.Read(empty);
-  } catch (const OuterLoopInputFileError& e) {
+  } catch (const CriterionInputFileError& e) {
     ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
   }
 }
@@ -221,7 +221,7 @@ TEST_F(OuterLoopInputFromYamlTest, YamlFileIsEmpty) {
   try {
     CriterionInputFromYaml parser;
     parser.Read(empty);
-  } catch (const OuterLoopInputFileIsEmpty& e) {
+  } catch (const CriterionInputFileIsEmpty& e) {
     ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
   }
 }
@@ -239,7 +239,7 @@ TEST_F(OuterLoopInputFromYamlTest, YamlFileShouldContainsAtLeast1Pattern) {
   try {
     CriterionInputFromYaml parser;
     parser.Read(empty_patterns);
-  } catch (const OuterLoopInputFileNoPatternFound& e) {
+  } catch (const CriterionInputFileNoPatternFound& e) {
     ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
   }
 }
@@ -258,7 +258,7 @@ TEST_F(OuterLoopInputFromYamlTest, YamlFilePatternsShouldBeAnArray) {
   try {
     CriterionInputFromYaml parser;
     parser.Read(patterns_not_array);
-  } catch (const OuterLoopInputPatternsShouldBeArray& e) {
+  } catch (const CriterionInputPatternsShouldBeArray& e) {
     ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
   }
 }
@@ -287,7 +287,7 @@ patterns:
   ASSERT_EQ(data.StoppingThreshold(), 1e-4);
   ASSERT_EQ(data.CriterionCountThreshold(), 1e-1);
 
-  auto patterns = data.OuterLoopData();
+  auto patterns = data.CriterionsData();
   ASSERT_EQ(patterns.size(), 4);
   auto pattern1 = patterns[0];
   ASSERT_EQ(pattern1.Criterion(), 185.0);

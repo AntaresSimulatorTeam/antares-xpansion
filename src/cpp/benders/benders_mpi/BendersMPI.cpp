@@ -194,7 +194,7 @@ void BendersMpi::UpdateMaxCriterionArea() {
         std::distance(criterions_begin, max_criterion_it);
     _data.outer_loop_current_iteration_data.max_criterion_area =
         criterions_computation_->getOuterLoopInputData()
-            .OuterLoopData()[max_criterion_index]
+            .CriterionsData()[max_criterion_index]
             .Pattern()
             .GetBody();
   }

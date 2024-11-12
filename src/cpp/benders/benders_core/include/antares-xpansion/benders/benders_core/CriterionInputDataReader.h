@@ -11,31 +11,31 @@ namespace Benders::Criterion {
 static constexpr const char *const PositiveUnsuppliedEnergy =
     "PositiveUnsuppliedEnergy::";
 
-class OuterLoopInputFileError
+class CriterionInputFileError
     : public LogUtils::XpansionError<std::runtime_error> {
   using LogUtils::XpansionError<std::runtime_error>::XpansionError;
 };
-class OuterLoopInputFileIsEmpty
-    : public LogUtils::XpansionError<std::runtime_error> {
-  using LogUtils::XpansionError<std::runtime_error>::XpansionError;
-};
-
-class OuterLoopInputFileNoPatternFound
+class CriterionInputFileIsEmpty
     : public LogUtils::XpansionError<std::runtime_error> {
   using LogUtils::XpansionError<std::runtime_error>::XpansionError;
 };
 
-class OuterLoopInputPatternsShouldBeArray
+class CriterionInputFileNoPatternFound
     : public LogUtils::XpansionError<std::runtime_error> {
   using LogUtils::XpansionError<std::runtime_error>::XpansionError;
 };
 
-class OuterLoopCouldNotReadAreaField
+class CriterionInputPatternsShouldBeArray
     : public LogUtils::XpansionError<std::runtime_error> {
   using LogUtils::XpansionError<std::runtime_error>::XpansionError;
 };
 
-class OuterLoopCouldNotReadCriterionField
+class CriterionCouldNotReadAreaField
+    : public LogUtils::XpansionError<std::runtime_error> {
+  using LogUtils::XpansionError<std::runtime_error>::XpansionError;
+};
+
+class CriterionCouldNotReadCriterionField
     : public LogUtils::XpansionError<std::runtime_error> {
   using LogUtils::XpansionError<std::runtime_error>::XpansionError;
 };
@@ -57,7 +57,7 @@ class CriterionPattern {
 
 };
 
-/// @brief holds the pattern and the criterion of the outer loop
+/// @brief holds the pattern and the criterion
 class CriterionSingleInputData {
  public:
   CriterionSingleInputData() = default;
@@ -73,7 +73,7 @@ class CriterionSingleInputData {
   void SetCriterion(double criterion);
   void ResetPattern(const std::string &prefix, const std::string &body);
  private:
-  CriterionPattern outer_loop_pattern_;
+  CriterionPattern pattern_;
   double criterion_ = 0;
 };
 
@@ -82,7 +82,7 @@ class CriterionInputData {
  public:
   CriterionInputData() = default;
 
-  [[nodiscard]] const std::vector<CriterionSingleInputData> &OuterLoopData()
+  [[nodiscard]] const std::vector<CriterionSingleInputData> &CriterionsData()
       const;
   [[nodiscard]] std::vector<std::string> PatternBodies() const;
   [[nodiscard]] std::string PatternsPrefix() const;
@@ -112,7 +112,7 @@ class CriterionInputFromYaml : public ICriterionInputDataReader {
   CriterionInputData Read(const std::filesystem::path &input_file) override;
 
  private:
-  CriterionInputData outerLoopInputData_;
+  CriterionInputData criterion_input_data_;
 };
 
 }  // namespace Benders::Criterion

@@ -32,11 +32,9 @@ void CriterionPattern::SetBody(const std::string &body) { body_ = body; }
 CriterionSingleInputData::CriterionSingleInputData(const std::string &prefix,
                                                    const std::string &body,
                                                    double criterion)
-    : outer_loop_pattern_(prefix, body), criterion_(criterion) {}
+    : pattern_(prefix, body), criterion_(criterion) {}
 
-CriterionPattern CriterionSingleInputData::Pattern() const {
-  return outer_loop_pattern_;
-}
+CriterionPattern CriterionSingleInputData::Pattern() const { return pattern_; }
 double CriterionSingleInputData::Criterion() const { return criterion_; }
 
 void CriterionSingleInputData::SetCriterion(double criterion) {
@@ -44,16 +42,16 @@ void CriterionSingleInputData::SetCriterion(double criterion) {
 }
 void CriterionSingleInputData::ResetPattern(const std::string &prefix,
                                             const std::string &body) {
-  outer_loop_pattern_.SetPrefix(prefix);
-  outer_loop_pattern_.SetBody(body);
+  pattern_.SetPrefix(prefix);
+  pattern_.SetBody(body);
 }
 
 void CriterionInputData::AddSingleData(const CriterionSingleInputData &data) {
   criterions_.push_back(data);
 }
 
-const std::vector<CriterionSingleInputData> &CriterionInputData::OuterLoopData()
-    const {
+const std::vector<CriterionSingleInputData> &
+CriterionInputData::CriterionsData() const {
   return criterions_;
 }
 
@@ -96,14 +94,14 @@ CriterionInputData CriterionInputFromYaml::Read(
     std::ostringstream err_msg;
     err_msg << "Could not read outer loop input file: " << input_file << "\n"
             << e.what();
-    throw OuterLoopInputFileError(
+    throw CriterionInputFileError(
         PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop"), err_msg.str(),
         LOGLOCATION);
   }
   if (yaml_content.IsNull()) {
     std::ostringstream err_msg;
     err_msg << "outer loop input file is empty: " << input_file << "\n";
-    throw OuterLoopInputFileIsEmpty(
+    throw CriterionInputFileIsEmpty(
         PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop"), err_msg.str(),
         LOGLOCATION);
   }
@@ -126,7 +124,7 @@ struct convert<CriterionSingleInputData> {
       err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
               << "Error could not read 'area' field in outer loop input file"
               << "\n";
-      throw OuterLoopCouldNotReadAreaField(err_msg.str(), LOGLOCATION);
+      throw CriterionCouldNotReadAreaField(err_msg.str(), LOGLOCATION);
     }
     auto criterion = pattern["criterion"];
 
@@ -136,7 +134,7 @@ struct convert<CriterionSingleInputData> {
           << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
           << "Error could not read 'criterion' field in outer loop input file"
           << "\n";
-      throw OuterLoopCouldNotReadCriterionField(err_msg.str(), LOGLOCATION);
+      throw CriterionCouldNotReadCriterionField(err_msg.str(), LOGLOCATION);
     }
 
     rhs.SetCriterion(criterion.as<double>());
@@ -153,7 +151,7 @@ struct convert<CriterionInputData> {
       std::ostringstream err_msg;
       err_msg << "In outer loop input file 'patterns' should be an array."
               << "\n";
-      throw OuterLoopInputPatternsShouldBeArray(
+      throw CriterionInputPatternsShouldBeArray(
           PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop"), err_msg.str(),
           LOGLOCATION);
     }
@@ -174,7 +172,7 @@ struct convert<CriterionInputData> {
       std::ostringstream err_msg;
       err_msg << "outer loop input file must contains at least one pattern."
               << "\n";
-      throw OuterLoopInputFileNoPatternFound(
+      throw CriterionInputFileNoPatternFound(
           PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop"), err_msg.str(),
           LOGLOCATION);
     }

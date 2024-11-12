@@ -69,7 +69,7 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
       std::make_shared<Benders::Criterion::CriterionComputation>(
           outer_loop_input_data);
 
-  if (pworld_->rank() == 0 && !outer_loop_input_data.OuterLoopData().empty()) {
+  if (pworld_->rank() == 0 && !outer_loop_input_data.CriterionsData().empty()) {
     AddCriterionOutput(math_log_driver);
   }
 
@@ -242,7 +242,7 @@ int BendersMainFactory::RunExternalLoop() {
     std::shared_ptr<Outerloop::ICutsManager> cuts_manager =
         std::make_shared<Outerloop::CutsManagerRunTime>();
 
-    Outerloop::OuterLoopBenders ext_loop(criterion_input_data.OuterLoopData(),
+    Outerloop::OuterLoopBenders ext_loop(criterion_input_data.CriterionsData(),
                                          master_updater, cuts_manager, benders,
                                          *pworld_);
     ext_loop.Run();
