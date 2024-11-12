@@ -227,7 +227,7 @@ std::vector<ActiveLink> getLinks(
  */
 void validateMasterFormulation(
     const std::string& master_formulation,
-    const std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger>& logger) {
+    const std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger) {
   if ((master_formulation != "relaxed") && (master_formulation != "integer")) {
     (*logger)(LogUtils::LOGLEVEL::FATAL)
         << LOGLOCATION
