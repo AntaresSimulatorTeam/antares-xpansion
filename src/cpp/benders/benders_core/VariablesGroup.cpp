@@ -14,7 +14,7 @@ using namespace Benders::Criterion;
 
 VariablesGroup::VariablesGroup(
     const std::vector<std::string>& all_variables,
-    const std::vector<OuterLoopSingleInputData>& outer_loop_single_input_data)
+    const std::vector<CriterionSingleInputData>& outer_loop_single_input_data)
     : all_variables_(all_variables), outer_loop_single_input_data_(outer_loop_single_input_data) {
   Search();
 }

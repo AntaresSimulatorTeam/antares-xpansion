@@ -178,7 +178,7 @@ void BendersMainFactory::EndMessage(const double execution_time) {
                                    context_);
 }
 
-Benders::Criterion::OuterLoopInputData
+Benders::Criterion::CriterionInputData
 BendersMainFactory::ProcessCriterionInput() {
   const auto fpath = std::filesystem::path(options_.INPUTROOT) /
                      options_.OUTER_LOOP_OPTION_FILE;
@@ -186,7 +186,7 @@ BendersMainFactory::ProcessCriterionInput() {
   if ((method_ == BENDERSMETHOD::BENDERS_OUTERLOOP ||
        method_ == BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP) &&
       std::filesystem::exists(fpath)) {
-    return Benders::Criterion::OuterLoopInputFromYaml().Read(fpath);
+    return Benders::Criterion::CriterionInputFromYaml().Read(fpath);
   }
   // else compute criterion for all areas!
   else {
@@ -194,14 +194,14 @@ BendersMainFactory::ProcessCriterionInput() {
   }
 }
 
-Benders::Criterion::OuterLoopInputData
+Benders::Criterion::CriterionInputData
 BendersMainFactory::BuildPatternsUsingAreaFile() {
   std::set<std::string> unique_areas = ReadAreaFile();
-  Benders::Criterion::OuterLoopInputData ret;
+  Benders::Criterion::CriterionInputData ret;
   ret.SetCriterionCountThreshold(1);
 
   for (const auto& area : unique_areas) {
-    Benders::Criterion::OuterLoopSingleInputData singleInputData(
+    Benders::Criterion::CriterionSingleInputData singleInputData(
         Benders::Criterion::PositiveUnsuppliedEnergy, area, 1);
     ret.AddSingleData(singleInputData);
   }

@@ -33,7 +33,7 @@ void CriterionComputation::SearchVariables(
   var_indices_ = variablesGroup.Indices();
 }
 
-const OuterLoopInputData &CriterionComputation::getOuterLoopInputData() const {
+const CriterionInputData &CriterionComputation::getOuterLoopInputData() const {
   return outer_loop_input_data_;
 }
 
@@ -41,7 +41,7 @@ std::vector<std::vector<int>> &CriterionComputation::getVarIndices() {
   return var_indices_;
 }
 CriterionComputation::CriterionComputation(
-    const OuterLoopInputData &outer_loop_input_data)
+    const CriterionInputData &outer_loop_input_data)
     : outer_loop_input_data_(outer_loop_input_data) {}
 
 }  // namespace Benders::Criterion

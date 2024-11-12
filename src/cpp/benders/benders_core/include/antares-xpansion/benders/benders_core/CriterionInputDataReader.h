@@ -41,10 +41,10 @@ class OuterLoopCouldNotReadCriterionField
 };
 
 /// @brief lovely class
-class OuterLoopPattern {
+class CriterionPattern {
  public:
-  explicit OuterLoopPattern(std::string prefix, std::string body);
-  OuterLoopPattern() = default;
+  explicit CriterionPattern(std::string prefix, std::string body);
+  CriterionPattern() = default;
   [[nodiscard]] std::regex MakeRegex() const;
   [[nodiscard]] const std::string &GetPrefix() const;
   void SetPrefix(const std::string &prefix);
@@ -58,61 +58,61 @@ class OuterLoopPattern {
 };
 
 /// @brief holds the pattern and the criterion of the outer loop
-class OuterLoopSingleInputData {
+class CriterionSingleInputData {
  public:
-  OuterLoopSingleInputData() = default;
+  CriterionSingleInputData() = default;
   /// @brief constructor
   /// @param prefix the prefix in the variable's name
   /// @param body any string that could be in the variable's name
   /// @param criterion the criterion that should be satisfied
-  OuterLoopSingleInputData(const std::string &prefix, const std::string &body,
+  CriterionSingleInputData(const std::string &prefix, const std::string &body,
                            double criterion);
 
-  [[nodiscard]] OuterLoopPattern Pattern() const;
+  [[nodiscard]] CriterionPattern Pattern() const;
   [[nodiscard]] double Criterion() const;
   void SetCriterion(double criterion);
   void ResetPattern(const std::string &prefix, const std::string &body);
  private:
-  OuterLoopPattern outer_loop_pattern_;
+  CriterionPattern outer_loop_pattern_;
   double criterion_ = 0;
 };
 
 /// @brief this class contains all data read from user input file
-class OuterLoopInputData {
+class CriterionInputData {
  public:
-  OuterLoopInputData() = default;
+  CriterionInputData() = default;
 
-  [[nodiscard]] const std::vector<OuterLoopSingleInputData> &OuterLoopData()
+  [[nodiscard]] const std::vector<CriterionSingleInputData> &OuterLoopData()
       const;
   [[nodiscard]] std::vector<std::string> PatternBodies() const;
   [[nodiscard]] std::string PatternsPrefix() const;
 
-  void SetStoppingThreshold(double outer_loop_stopping_threshold);
+  void SetStoppingThreshold(double stopping_threshold);
   [[nodiscard]] double StoppingThreshold() const;
-  void SetCriterionCountThreshold(double criterion_count_threshold);
+  void SetCriterionCountThreshold(double count_threshold);
   [[nodiscard]] double CriterionCountThreshold() const;
-  void AddSingleData(const OuterLoopSingleInputData &data);
+  void AddSingleData(const CriterionSingleInputData &data);
 
  private:
-  double outer_loop_stopping_threshold_ = 1e-4;
-  std::vector<OuterLoopSingleInputData> outer_loop_data_;
-  double criterion_count_threshold_ = 1;
+  double stopping_threshold_ = 1e-4;
+  std::vector<CriterionSingleInputData> criterions_;
+  double count_threshold_ = 1;
 };
 
 /// @brief Abstract /***
-class IOuterLoopInputDataReader {
+class ICriterionInputDataReader {
  public:
-  virtual OuterLoopInputData Read(const std::filesystem::path &input_file) = 0;
-  virtual ~IOuterLoopInputDataReader() = default;
+  virtual CriterionInputData Read(const std::filesystem::path &input_file) = 0;
+  virtual ~ICriterionInputDataReader() = default;
 };
 
-class OuterLoopInputFromYaml : public IOuterLoopInputDataReader {
+class CriterionInputFromYaml : public ICriterionInputDataReader {
  public:
-  OuterLoopInputFromYaml() = default;
-  OuterLoopInputData Read(const std::filesystem::path &input_file) override;
+  CriterionInputFromYaml() = default;
+  CriterionInputData Read(const std::filesystem::path &input_file) override;
 
  private:
-  OuterLoopInputData outerLoopInputData_;
+  CriterionInputData outerLoopInputData_;
 };
 
 }  // namespace Benders::Criterion

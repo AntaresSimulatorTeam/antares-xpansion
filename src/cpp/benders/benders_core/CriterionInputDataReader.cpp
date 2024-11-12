@@ -10,86 +10,84 @@ using namespace Benders::Criterion;
  * prefix could be := PositiveUnsuppliedEnergy:: or something else necessarily
  * /!\ body could be := area name or equivalent or nothing
  */
-OuterLoopPattern::OuterLoopPattern(std::string prefix,
-                                   std::string body)
+CriterionPattern::CriterionPattern(std::string prefix, std::string body)
     : prefix_(std::move(prefix)), body_(std::move(body)) {}
 
 /**
  * just do
  * just cat ;)
  */
-std::regex OuterLoopPattern::MakeRegex() const {
+std::regex CriterionPattern::MakeRegex() const {
   auto pattern = "(^" + prefix_ + "area<" + body_ + ">" + ")";
   return std::regex(pattern);
 }
-const std::string &OuterLoopPattern::GetPrefix() const { return prefix_; }
-void OuterLoopPattern::SetPrefix(const std::string &prefix) {
+const std::string &CriterionPattern::GetPrefix() const { return prefix_; }
+void CriterionPattern::SetPrefix(const std::string &prefix) {
   prefix_ = prefix;
 }
-const std::string &OuterLoopPattern::GetBody() const { return body_; }
+const std::string &CriterionPattern::GetBody() const { return body_; }
 
-void OuterLoopPattern::SetBody(const std::string &body) { body_ = body; }
+void CriterionPattern::SetBody(const std::string &body) { body_ = body; }
 
-OuterLoopSingleInputData::OuterLoopSingleInputData(const std::string &prefix,
+CriterionSingleInputData::CriterionSingleInputData(const std::string &prefix,
                                                    const std::string &body,
                                                    double criterion)
     : outer_loop_pattern_(prefix, body), criterion_(criterion) {}
 
-OuterLoopPattern OuterLoopSingleInputData::Pattern() const {
+CriterionPattern CriterionSingleInputData::Pattern() const {
   return outer_loop_pattern_;
 }
-double OuterLoopSingleInputData::Criterion() const { return criterion_; }
+double CriterionSingleInputData::Criterion() const { return criterion_; }
 
-void OuterLoopSingleInputData::SetCriterion(double criterion) {
+void CriterionSingleInputData::SetCriterion(double criterion) {
   criterion_ = criterion;
 }
-void OuterLoopSingleInputData::ResetPattern(const std::string &prefix,
+void CriterionSingleInputData::ResetPattern(const std::string &prefix,
                                             const std::string &body) {
   outer_loop_pattern_.SetPrefix(prefix);
   outer_loop_pattern_.SetBody(body);
 }
 
-void OuterLoopInputData::AddSingleData(const OuterLoopSingleInputData &data) {
-  outer_loop_data_.push_back(data);
+void CriterionInputData::AddSingleData(const CriterionSingleInputData &data) {
+  criterions_.push_back(data);
 }
 
-const std::vector<OuterLoopSingleInputData> &OuterLoopInputData::OuterLoopData()
+const std::vector<CriterionSingleInputData> &CriterionInputData::OuterLoopData()
     const {
-  return outer_loop_data_;
+  return criterions_;
 }
 
-std::vector<std::string> OuterLoopInputData::PatternBodies() const {
+std::vector<std::string> CriterionInputData::PatternBodies() const {
   std::vector<std::string> ret;
-  for (const auto &data : outer_loop_data_) {
+  for (const auto &data : criterions_) {
     ret.push_back(data.Pattern().GetBody());
   }
   return ret;
 }
 
-std::string OuterLoopInputData::PatternsPrefix() const {
+std::string CriterionInputData::PatternsPrefix() const {
   std::string ret("");
-  if (!outer_loop_data_.empty()) {
-    ret =
-        StringManip::split(outer_loop_data_[0].Pattern().GetPrefix(), "::")[0];
+  if (!criterions_.empty()) {
+    ret = StringManip::split(criterions_[0].Pattern().GetPrefix(), "::")[0];
   }
   return ret;
 }
 
-void OuterLoopInputData::SetStoppingThreshold(
-    double outer_loop_stopping_threshold) {
-  outer_loop_stopping_threshold_ = outer_loop_stopping_threshold;
+void CriterionInputData::SetStoppingThreshold(double stopping_threshold) {
+  stopping_threshold_ = stopping_threshold;
 }
 
-double OuterLoopInputData::StoppingThreshold() const {
-  return outer_loop_stopping_threshold_;
+double CriterionInputData::StoppingThreshold() const {
+  return stopping_threshold_;
 }
-void OuterLoopInputData::SetCriterionCountThreshold(
-    double criterion_count_threshold) {
-    criterion_count_threshold_ = criterion_count_threshold;
+void CriterionInputData::SetCriterionCountThreshold(double count_threshold) {
+  count_threshold_ = count_threshold;
 }
-double OuterLoopInputData::CriterionCountThreshold() const { return criterion_count_threshold_; }
+double CriterionInputData::CriterionCountThreshold() const {
+  return count_threshold_;
+}
 
-OuterLoopInputData OuterLoopInputFromYaml::Read(
+CriterionInputData CriterionInputFromYaml::Read(
     const std::filesystem::path &input_file) {
   YAML::Node yaml_content;
   try {
@@ -110,18 +108,16 @@ OuterLoopInputData OuterLoopInputFromYaml::Read(
         LOGLOCATION);
   }
 
-  return yaml_content.as<OuterLoopInputData>();
+  return yaml_content.as<CriterionInputData>();
 }
 
 namespace YAML {
 
 template <>
-struct convert<OuterLoopSingleInputData> {
-  static Node encode(const OuterLoopSingleInputData &rhs) {
-    return {};
-  }
+struct convert<CriterionSingleInputData> {
+  static Node encode(const CriterionSingleInputData &rhs) { return {}; }
 
-  static bool decode(const Node &pattern, OuterLoopSingleInputData &rhs) {
+  static bool decode(const Node &pattern, CriterionSingleInputData &rhs) {
     auto body = pattern["area"];
 
     // specify line And OR #pattern
@@ -149,12 +145,10 @@ struct convert<OuterLoopSingleInputData> {
   }
 };
 template <>
-struct convert<OuterLoopInputData> {
-  static Node encode(const OuterLoopInputData &rhs) {
-    return {};
-  }
+struct convert<CriterionInputData> {
+  static Node encode(const CriterionInputData &rhs) { return {}; }
 
-  static void DecodePatterns(const Node &patterns, OuterLoopInputData &rhs) {
+  static void DecodePatterns(const Node &patterns, CriterionInputData &rhs) {
     if (!patterns.IsSequence()) {
       std::ostringstream err_msg;
       err_msg << "In outer loop input file 'patterns' should be an array."
@@ -165,11 +159,11 @@ struct convert<OuterLoopInputData> {
     }
 
     for (const auto &pattern : patterns) {
-      rhs.AddSingleData(pattern.as<OuterLoopSingleInputData>());
+      rhs.AddSingleData(pattern.as<CriterionSingleInputData>());
     }
   }
 
-  static bool decode(const Node &node, OuterLoopInputData &rhs) {
+  static bool decode(const Node &node, CriterionInputData &rhs) {
     rhs.SetStoppingThreshold(node["stopping_threshold"].as<double>(1e-4));
     rhs.SetCriterionCountThreshold(
         node["criterion_count_threshold"].as<double>(1));

@@ -16,7 +16,7 @@ class CriterionComputation {
    * computation.
    */
   explicit CriterionComputation(
-      const OuterLoopInputData &outer_loop_input_data);
+      const CriterionInputData &outer_loop_input_data);
 
   /**
    * @brief Searches for relevant variables based on the provided variable
@@ -69,10 +69,10 @@ class CriterionComputation {
    *
    * @return A constant reference to the OuterLoopInputData object.
    */
-  const OuterLoopInputData &getOuterLoopInputData() const;
+  const CriterionInputData &getOuterLoopInputData() const;
 
  private:
   std::vector<std::vector<int>> var_indices_;
-  const OuterLoopInputData outer_loop_input_data_;
+  const CriterionInputData outer_loop_input_data_;
 };
 }  // namespace Benders::Criterion

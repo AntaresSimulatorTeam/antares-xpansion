@@ -114,7 +114,7 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   benders->set_input_map(coupling_map);
 
   auto outer_loop_input_data =
-      Benders::Criterion::OuterLoopInputFromYaml().Read(
+      Benders::Criterion::CriterionInputFromYaml().Read(
           std::filesystem::path(bendersoptions.INPUTROOT) / OUTER_OPTIONS_FILE);
   auto criterion_computation =
       std::make_shared<Benders::Criterion::CriterionComputation>(
@@ -180,7 +180,7 @@ class OuterLoopPatternTest : public ::testing::Test {};
 TEST_F(OuterLoopPatternTest, RegexGivenPrefixAndBody) {
   const std::string prefix = "prefix";
   const std::string body = "body";
-  OuterLoopPattern o(prefix, body);
+  CriterionPattern o(prefix, body);
 
   auto ret_regex = o.MakeRegex();
 
@@ -203,7 +203,7 @@ TEST_F(OuterLoopInputFromYamlTest, YamlFileDoesNotExist) {
   expected_msg << "Could not read outer loop input file: " << empty << "\n"
                << "bad file: " << empty.string();
   try {
-    OuterLoopInputFromYaml parser;
+    CriterionInputFromYaml parser;
     parser.Read(empty);
   } catch (const OuterLoopInputFileError& e) {
     ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
@@ -219,7 +219,7 @@ TEST_F(OuterLoopInputFromYamlTest, YamlFileIsEmpty) {
   std::ostringstream expected_msg;
   expected_msg << "outer loop input file is empty: " << empty << "\n";
   try {
-    OuterLoopInputFromYaml parser;
+    CriterionInputFromYaml parser;
     parser.Read(empty);
   } catch (const OuterLoopInputFileIsEmpty& e) {
     ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
@@ -237,7 +237,7 @@ TEST_F(OuterLoopInputFromYamlTest, YamlFileShouldContainsAtLeast1Pattern) {
   expected_msg << "outer loop input file must contains at least one pattern."
                << "\n";
   try {
-    OuterLoopInputFromYaml parser;
+    CriterionInputFromYaml parser;
     parser.Read(empty_patterns);
   } catch (const OuterLoopInputFileNoPatternFound& e) {
     ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
@@ -256,7 +256,7 @@ TEST_F(OuterLoopInputFromYamlTest, YamlFilePatternsShouldBeAnArray) {
   expected_msg << "In outer loop input file 'patterns' should be an array."
                << "\n";
   try {
-    OuterLoopInputFromYaml parser;
+    CriterionInputFromYaml parser;
     parser.Read(patterns_not_array);
   } catch (const OuterLoopInputPatternsShouldBeArray& e) {
     ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
@@ -282,7 +282,7 @@ patterns:
     criterion: 1)";
   of << my_yaml;
   of.close();
-  auto data = OuterLoopInputFromYaml().Read(valid_file);
+  auto data = CriterionInputFromYaml().Read(valid_file);
 
   ASSERT_EQ(data.StoppingThreshold(), 1e-4);
   ASSERT_EQ(data.CriterionCountThreshold(), 1e-1);
@@ -298,7 +298,7 @@ class VariablesGroupTest : public ::testing::Test {};
 
 TEST_F(VariablesGroupTest, EmptyVariablesListGivesEmptyIndices) {
   std::vector<std::string> variables;
-  std::vector<Benders::Criterion::OuterLoopSingleInputData> data;
+  std::vector<Benders::Criterion::CriterionSingleInputData> data;
 
   Benders::Criterion::VariablesGroup var_grp(variables, data);
   ASSERT_TRUE(var_grp.Indices().empty());
@@ -307,7 +307,7 @@ TEST_F(VariablesGroupTest, EmptyVariablesListGivesEmptyIndices) {
 TEST_F(VariablesGroupTest, EmptyPatternsListGivesEmptyIndices) {
   std::vector<std::string> variables{
       "PositiveUnsuppliedEnergy::area<test>::hour<125>"};
-  std::vector<Benders::Criterion::OuterLoopSingleInputData> data;
+  std::vector<Benders::Criterion::CriterionSingleInputData> data;
 
   Benders::Criterion::VariablesGroup var_grp(variables, data);
   ASSERT_TRUE(var_grp.Indices().empty());
@@ -316,8 +316,8 @@ TEST_F(VariablesGroupTest, EmptyPatternsListGivesEmptyIndices) {
 TEST_F(VariablesGroupTest, SingleDataWithInvalidPrefixAndBody) {
   std::vector<std::string> variables{
       "PositiveUnsuppliedEnergy::area<test>::hour<125>"};
-  std::vector<Benders::Criterion::OuterLoopSingleInputData> data{
-      Benders::Criterion::OuterLoopSingleInputData("Pref", "Body", 1534.0)};
+  std::vector<Benders::Criterion::CriterionSingleInputData> data{
+      Benders::Criterion::CriterionSingleInputData("Pref", "Body", 1534.0)};
 
   Benders::Criterion::VariablesGroup var_grp(variables, data);
   const auto& vect_indices = var_grp.Indices();
@@ -328,8 +328,8 @@ TEST_F(VariablesGroupTest, SingleDataWithInvalidPrefixAndBody) {
 TEST_F(VariablesGroupTest, SingleDataWithUnMatchedPrefix) {
   std::vector<std::string> variables{
       "PositiveUnsuppliedEnergy::area<test>::hour<125>"};
-  std::vector<Benders::Criterion::OuterLoopSingleInputData> data{
-      Benders::Criterion::OuterLoopSingleInputData("UnsuppliedEnergy::", "test",
+  std::vector<Benders::Criterion::CriterionSingleInputData> data{
+      Benders::Criterion::CriterionSingleInputData("UnsuppliedEnergy::", "test",
                                                    1534.0)};
 
   Benders::Criterion::VariablesGroup var_grp(variables, data);
@@ -341,8 +341,8 @@ TEST_F(VariablesGroupTest, SingleDataWithUnMatchedPrefix) {
 TEST_F(VariablesGroupTest, SingleDataWithUnMatchedBody) {
   std::vector<std::string> variables{
       "PositiveUnsuppliedEnergy::area<test>::hour<125>"};
-  std::vector<Benders::Criterion::OuterLoopSingleInputData> data{
-      Benders::Criterion::OuterLoopSingleInputData(
+  std::vector<Benders::Criterion::CriterionSingleInputData> data{
+      Benders::Criterion::CriterionSingleInputData(
           "PositiveUnsuppliedEnergy::", "Body", 1534.0)};
 
   Benders::Criterion::VariablesGroup var_grp(variables, data);
@@ -351,7 +351,7 @@ TEST_F(VariablesGroupTest, SingleDataWithUnMatchedBody) {
   ASSERT_TRUE(vect_indices[0].empty());
 }
 
-static const std::vector<Benders::Criterion::OuterLoopSingleInputData> data{
+static const std::vector<Benders::Criterion::CriterionSingleInputData> data{
     {"Blue::", "Earth", 1534.0}, {"Red::", "Mars", 65.0}};
 
 TEST_F(VariablesGroupTest, With2ValidPatterns) {
