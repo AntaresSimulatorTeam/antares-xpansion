@@ -79,20 +79,24 @@ std::filesystem::path ProblemGeneration::updateProblems() {
   using namespace std::string_literals;
   std::filesystem::path xpansion_output_dir;
   const auto archive_path = options_.ArchivePath();
+  std::filesystem::path study_dir;
 
   if (mode_ == SimulationInputMode::ARCHIVE) {
     xpansion_output_dir =
         options_.deduceXpansionDirIfEmpty(xpansion_output_dir, archive_path);
+    study_dir = xpansion_output_dir.parent_path().parent_path(); //Assume study/output/archive.zip
   }
 
   if (mode_ == SimulationInputMode::ANTARES_API) {
     simulation_dir_ = performAntaresSimulation();
+    study_dir = options_.StudyPath();
   }
 
   if (mode_ == SimulationInputMode::FILE) {
     simulation_dir_ = options_.XpansionOutputDir();  // Legacy naming.
     // options_.XpansionOutputDir() point in fact to a simulation output from
     // antares
+    study_dir = simulation_dir_.parent_path().parent_path(); //Assume study/output/simulation
   }
 
   if (mode_ == SimulationInputMode::ANTARES_API ||
@@ -113,7 +117,7 @@ std::filesystem::path ProblemGeneration::updateProblems() {
   auto weights_file = options_.WeightsFile();
   auto unnamed_problems = options_.UnnamedProblems();
 
-  SettingsReader settingsReader(xpansion_output_dir, logger.get());
+  SettingsReader settingsReader(study_dir / "user/expansion/settings.ini", logger.get());
   solver_name_ = settingsReader.Solver();
 
   RunProblemGeneration(xpansion_output_dir, master_formulation,
