@@ -46,8 +46,8 @@ class SolverFactory {
    *
    * @param solver_name : Name of the solver to use
    */
-  SolverAbstract::Ptr create_solver(const std::string &solver_name) const;
-  SolverAbstract::Ptr create_solver(const std::string &solver_name,
+  SolverAbstract::Ptr create_solver(std::string solver_name) const;
+  SolverAbstract::Ptr create_solver(std::string solver_name,
                                     SolverLogManager &log_manager) const;
 
   /**
@@ -71,7 +71,7 @@ class SolverFactory {
    */
   SolverAbstract::Ptr copy_solver(SolverAbstract::Ptr to_copy);
   SolverAbstract::Ptr copy_solver(
-      const std::shared_ptr<const SolverAbstract> &to_copy);
+      const std::shared_ptr<const SolverAbstract> &to_copy) const;
 
   /**
    * @brief Returns a reference to the list of available solvers

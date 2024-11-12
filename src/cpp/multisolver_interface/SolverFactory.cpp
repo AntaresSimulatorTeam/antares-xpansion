@@ -70,8 +70,9 @@ SolverAbstract::Ptr SolverFactory::create_solver(
 }
 
 SolverAbstract::Ptr SolverFactory::create_solver(
-    const std::string &solver_name) const {
+    std::string solver_name) const {
   SolverAbstract::Ptr ret;
+  std::transform(solver_name.begin(), solver_name.end(), solver_name.begin(), ::toupper);
   if (solver_name.empty()) {
     throw InvalidSolverNameException(solver_name, LOGLOCATION);
   } else if (isXpress_available_ && solver_name == XPRESS_STR) {
@@ -92,10 +93,11 @@ SolverAbstract::Ptr SolverFactory::create_solver(
 }
 
 SolverAbstract::Ptr SolverFactory::create_solver(
-    const std::string &solver_name, SolverLogManager &log_manager) const {
+    std::string solver_name, SolverLogManager &log_manager) const {
   if (solver_name.empty()) {
     throw InvalidSolverNameException(solver_name, LOGLOCATION);
   }
+  std::transform(solver_name.begin(), solver_name.end(), solver_name.begin(), ::toupper);
   SolverAbstract::Ptr ret;
   if (isXpress_available_ && solver_name == XPRESS_STR) {
     ret = std::make_shared<SolverXpress>(log_manager);
@@ -115,10 +117,10 @@ SolverAbstract::Ptr SolverFactory::create_solver(
 }
 
 SolverAbstract::Ptr SolverFactory::copy_solver(
-    const std::shared_ptr<const SolverAbstract> &to_copy) {
+    const std::shared_ptr<const SolverAbstract> &to_copy) const {
   std::string solver_name = to_copy->get_solver_name();
-
-  if (solver_name == "") {
+  std::transform(solver_name.begin(), solver_name.end(), solver_name.begin(), ::toupper);
+  if (solver_name.empty()) {
     throw InvalidSolverNameException(solver_name, LOGLOCATION);
   }
   if (isXpress_available_ && solver_name == XPRESS_STR) {
