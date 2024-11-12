@@ -1,6 +1,6 @@
 
+#include "antares-xpansion/benders/benders_core/CriterionInputDataReader.h"
 #include "antares-xpansion/benders/benders_core/MasterUpdate.h"
-#include "antares-xpansion/benders/benders_core/OuterLoopInputDataReader.h"
 #include "antares-xpansion/benders/benders_core/VariablesGroup.h"
 #include "antares-xpansion/benders/benders_mpi/OuterLoopBenders.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"

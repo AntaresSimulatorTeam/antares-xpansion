@@ -1,5 +1,5 @@
 #pragma once
-#include "antares-xpansion/benders/benders_core/OuterLoopInputDataReader.h"
+#include "antares-xpansion/benders/benders_core/CriterionInputDataReader.h"
 
 // TODO
 typedef std::map<std::string, double> Point;

@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "OuterLoopInputDataReader.h"
+#include "CriterionInputDataReader.h"
 namespace Benders::Criterion {
 class VariablesGroup {
  public:

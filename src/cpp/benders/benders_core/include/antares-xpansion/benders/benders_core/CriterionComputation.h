@@ -1,6 +1,6 @@
 #pragma once
 
-#include "OuterLoopInputDataReader.h"
+#include "CriterionInputDataReader.h"
 #include "VariablesGroup.h"
 namespace Benders::Criterion {
 

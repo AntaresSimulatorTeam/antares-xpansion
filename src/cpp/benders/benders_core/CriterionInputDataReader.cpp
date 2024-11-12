@@ -1,4 +1,4 @@
-#include "include/antares-xpansion/benders/benders_core/OuterLoopInputDataReader.h"
+#include "include/antares-xpansion/benders/benders_core/CriterionInputDataReader.h"
 
 #include <utility>
 
