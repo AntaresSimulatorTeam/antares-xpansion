@@ -95,7 +95,7 @@ class CriterionInputData {
 
  private:
   double stopping_threshold_ = 1e-4;
-  std::vector<CriterionSingleInputData> criterions_;
+  std::vector<CriterionSingleInputData> criterion_vector_;
   double count_threshold_ = 1;
 };
 

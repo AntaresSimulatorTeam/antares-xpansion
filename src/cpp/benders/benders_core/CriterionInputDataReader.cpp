@@ -47,17 +47,17 @@ void CriterionSingleInputData::ResetPattern(const std::string &prefix,
 }
 
 void CriterionInputData::AddSingleData(const CriterionSingleInputData &data) {
-  criterions_.push_back(data);
+  criterion_vector_.push_back(data);
 }
 
 const std::vector<CriterionSingleInputData> &
 CriterionInputData::CriterionsData() const {
-  return criterions_;
+  return criterion_vector_;
 }
 
 std::vector<std::string> CriterionInputData::PatternBodies() const {
   std::vector<std::string> ret;
-  for (const auto &data : criterions_) {
+  for (const auto &data : criterion_vector_) {
     ret.push_back(data.Pattern().GetBody());
   }
   return ret;
@@ -65,8 +65,9 @@ std::vector<std::string> CriterionInputData::PatternBodies() const {
 
 std::string CriterionInputData::PatternsPrefix() const {
   std::string ret("");
-  if (!criterions_.empty()) {
-    ret = StringManip::split(criterions_[0].Pattern().GetPrefix(), "::")[0];
+  if (!criterion_vector_.empty()) {
+    ret =
+        StringManip::split(criterion_vector_[0].Pattern().GetPrefix(), "::")[0];
   }
   return ret;
 }

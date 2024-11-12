@@ -22,11 +22,6 @@ BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
       mathLoggerDriver_(std::move(mathLoggerDriver)) {
 }
 
-std::filesystem::path BendersBase::OuterloopOptionsFile() const {
-  return std::filesystem::path(_options.INPUTROOT) /
-         _options.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE;
-}
-
 /*!
  *  \brief Initialize set of data used in the loop
  */
@@ -417,7 +412,7 @@ void BendersBase::SetSubproblemsVariablesIndices() {
   if (!subproblem_map.empty()) {
     auto subproblem = subproblem_map.begin();
 
-    criterions_computation_->SearchVariables(
+    criterion_computation_.SearchVariables(
         subproblem->second->_solver->get_col_names());
   }
 }
@@ -1050,8 +1045,9 @@ void BendersBase::SetBilevelBestub(double bilevel_best_ub) {
   _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub =
       bilevel_best_ub;
 }
-void BendersBase::setCriterionsComputation(
-    std::shared_ptr<Benders::Criterion::CriterionComputation>
-        criterionsComputation) {
-  criterions_computation_ = criterionsComputation;
+
+void BendersBase::setCriterionComputationInputs(
+    const Benders::Criterion::CriterionInputData &criterion_input_data) {
+  criterion_computation_ =
+      Benders::Criterion::CriterionComputation(criterion_input_data);
 }

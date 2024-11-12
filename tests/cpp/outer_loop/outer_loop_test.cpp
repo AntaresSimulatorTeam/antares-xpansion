@@ -116,17 +116,14 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   auto outer_loop_input_data =
       Benders::Criterion::CriterionInputFromYaml().Read(
           std::filesystem::path(bendersoptions.INPUTROOT) / OUTER_OPTIONS_FILE);
-  auto criterion_computation =
-      std::make_shared<Benders::Criterion::CriterionComputation>(
-          outer_loop_input_data);
-  benders->setCriterionsComputation(criterion_computation);
+
+  benders->setCriterionComputationInputs(outer_loop_input_data);
 
   auto master_updater = std::make_shared<MasterUpdateBase>(
       benders, 0.5, outer_loop_input_data.StoppingThreshold());
   auto cut_manager = std::make_shared<Outerloop::CutsManagerRunTime>();
-  Outerloop::OuterLoopBenders out_loop(
-      criterion_computation->getOuterLoopInputData().CriterionsData(),
-      master_updater, cut_manager, benders, *pworld);
+  Outerloop::OuterLoopBenders out_loop(outer_loop_input_data.CriterionsData(),
+                                       master_updater, cut_manager, benders, *pworld);
   out_loop.OuterLoopCheckFeasibility();
 
   auto num_constraints_master_before = benders->MasterGetnrows();

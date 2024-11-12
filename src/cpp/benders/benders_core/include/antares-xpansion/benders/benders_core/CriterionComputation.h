@@ -7,6 +7,11 @@ namespace Benders::Criterion {
 class CriterionComputation {
  public:
   /**
+   * @brief  default constructor
+   */
+  explicit CriterionComputation() = default;
+
+  /**
    * @brief Constructs a CriterionComputation object.
    *
    * This constructor initializes the CriterionComputation instance with the
@@ -72,7 +77,7 @@ class CriterionComputation {
   const CriterionInputData &getOuterLoopInputData() const;
 
  private:
-  std::vector<std::vector<int>> var_indices_;
-  const CriterionInputData outer_loop_input_data_;
+  std::vector<std::vector<int>> var_indices_ = {};
+  CriterionInputData outer_loop_input_data_;
 };
 }  // namespace Benders::Criterion

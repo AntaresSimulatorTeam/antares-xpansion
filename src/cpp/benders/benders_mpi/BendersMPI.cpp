@@ -50,7 +50,7 @@ void BendersMpi::BroadCastVariablesIndices() {
   if (_world.rank() == rank_0) {
     SetSubproblemsVariablesIndices();
   }
-  BroadCast(criterions_computation_->getVarIndices(), rank_0);
+  BroadCast(criterion_computation_.getVarIndices(), rank_0);
 }
 
 void BendersMpi::BuildMasterProblem() {
@@ -176,7 +176,7 @@ void BendersMpi::SolveSubproblem(
 
   std::vector<double> solution;
   worker->get_solution(solution);
-  criterions_computation_->ComputeOuterLoopCriterion(
+  criterion_computation_.ComputeOuterLoopCriterion(
       SubproblemWeight(_data.nsubproblem, name), solution,
       subproblem_data.outer_loop_criterions,
       subproblem_data.outer_loop_patterns_values);
@@ -193,7 +193,7 @@ void BendersMpi::UpdateMaxCriterionArea() {
     auto max_criterion_index =
         std::distance(criterions_begin, max_criterion_it);
     _data.outer_loop_current_iteration_data.max_criterion_area =
-        criterions_computation_->getOuterLoopInputData()
+        criterion_computation_.getOuterLoopInputData()
             .CriterionsData()[max_criterion_index]
             .Pattern()
             .GetBody();
@@ -202,7 +202,7 @@ void BendersMpi::UpdateMaxCriterionArea() {
 
 void BendersMpi::ComputeSubproblemsContributionToOuterLoopCriterion(
     const SubProblemDataMap &subproblem_data_map) {
-  const auto vars_size = criterions_computation_->getVarIndices().size();
+  const auto vars_size = criterion_computation_.getVarIndices().size();
   std::vector<double> outer_loop_criterion_per_sub_problem_per_pattern(
       vars_size, {});
   _data.outer_loop_current_iteration_data.outer_loop_criterion.resize(vars_size,

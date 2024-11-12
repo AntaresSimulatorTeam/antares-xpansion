@@ -17,8 +17,7 @@ class BendersMainFactory {
   SOLVER solver_ = SOLVER::BENDERS;
   SimulationOptions options_;
   BendersLoggerBase benders_loggers_;
-  std::shared_ptr<Benders::Criterion::CriterionComputation>
-      criterion_computation_ = nullptr;
+  Benders::Criterion::CriterionInputData criterion_input_data_;
   Logger logger_ = nullptr;
   Writer writer_ = nullptr;
   BENDERSMETHOD method_ = BENDERSMETHOD::BENDERS;

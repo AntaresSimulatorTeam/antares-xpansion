@@ -95,14 +95,12 @@ class BendersBase {
   void UpdateOuterLoopSolution();
 
   bool isExceptionRaised() const;
-  [[nodiscard]] std::filesystem::path OuterloopOptionsFile() const;
   void UpdateOverallCosts();
   Logger _logger;
   Writer _writer;
   std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
-  void setCriterionsComputation(
-      std::shared_ptr<Benders::Criterion::CriterionComputation>
-          criterionsComputation);
+  void setCriterionComputationInputs(
+      const Benders::Criterion::CriterionInputData &criterion_input_data);
 
  protected:
   bool exception_raised_ = false;
@@ -223,9 +221,8 @@ class BendersBase {
                                PlainData::SubProblemData &subproblem_data,
                                const std::string &name,
                                const std::shared_ptr<SubproblemWorker> &worker);
-  // TODO to be rethink
-  std::shared_ptr<Benders::Criterion::CriterionComputation>
-      criterions_computation_;
+
+  Benders::Criterion::CriterionComputation criterion_computation_;
   /**
    * for the nth variable name, Subproblems shares the same prefix , only the
    suffix is different

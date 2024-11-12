@@ -64,12 +64,9 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
 
   benders_loggers_.AddLogger(logger_);
   benders_loggers_.AddLogger(math_log_driver);
-  auto outer_loop_input_data = ProcessCriterionInput();
-  criterion_computation_ =
-      std::make_shared<Benders::Criterion::CriterionComputation>(
-          outer_loop_input_data);
+  criterion_input_data_ = ProcessCriterionInput();
 
-  if (pworld_->rank() == 0 && !outer_loop_input_data.CriterionsData().empty()) {
+  if (pworld_->rank() == 0 && !criterion_input_data_.CriterionsData().empty()) {
     AddCriterionOutput(math_log_driver);
   }
 
@@ -105,7 +102,7 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
   writer_->write_log_level(options_.LOG_LEVEL);
   writer_->write_master_name(options_.MASTER_NAME);
   writer_->write_solver_name(options_.SOLVER_NAME);
-  benders->setCriterionsComputation(criterion_computation_);
+  benders->setCriterionComputationInputs(criterion_input_data_);
 
   return benders;
 }
@@ -127,14 +124,12 @@ void BendersMainFactory::AddCriterionOutput(
     std::shared_ptr<MathLoggerDriver> math_log_driver) {
   const std::filesystem::path output_root(options_.OUTPUTROOT);
 
-  const auto& headers =
-      criterion_computation_->getOuterLoopInputData().PatternBodies();
+  const auto& headers = criterion_input_data_.PatternBodies();
   math_log_driver->add_logger(
       output_root / LOLD_FILE, headers,
       &OuterLoopCurrentIterationData::outer_loop_criterion);
 
-  positive_unsupplied_file_ =
-      criterion_computation_->getOuterLoopInputData().PatternsPrefix() + ".txt";
+  positive_unsupplied_file_ = criterion_input_data_.PatternsPrefix() + ".txt";
   math_log_driver->add_logger(
       output_root / positive_unsupplied_file_, headers,
       &OuterLoopCurrentIterationData::outer_loop_patterns_values);
@@ -234,15 +229,13 @@ int BendersMainFactory::RunExternalLoop() {
     auto benders = PrepareForExecution(true);
     double tau = 0.5;
 
-    const auto& criterion_input_data =
-        criterion_computation_->getOuterLoopInputData();
     std::shared_ptr<Outerloop::IMasterUpdate> master_updater =
         std::make_shared<Outerloop::MasterUpdateBase>(
-            benders, tau, criterion_input_data.StoppingThreshold());
+            benders, tau, criterion_input_data_.StoppingThreshold());
     std::shared_ptr<Outerloop::ICutsManager> cuts_manager =
         std::make_shared<Outerloop::CutsManagerRunTime>();
 
-    Outerloop::OuterLoopBenders ext_loop(criterion_input_data.CriterionsData(),
+    Outerloop::OuterLoopBenders ext_loop(criterion_input_data_.CriterionsData(),
                                          master_updater, cuts_manager, benders,
                                          *pworld_);
     ext_loop.Run();
