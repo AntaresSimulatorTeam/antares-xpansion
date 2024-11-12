@@ -64,9 +64,9 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
 
   benders_loggers_.AddLogger(logger_);
   benders_loggers_.AddLogger(math_log_driver);
-  criterion_input_data_ = ProcessCriterionInput();
+  criterion_input_holder_ = ProcessCriterionInput();
 
-  if (pworld_->rank() == 0 && !criterion_input_data_.CriterionsData().empty()) {
+  if (pworld_->rank() == 0 && !isCriterionListEmpty()) {
     AddCriterionOutput(math_log_driver);
   }
 
@@ -102,9 +102,17 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
   writer_->write_log_level(options_.LOG_LEVEL);
   writer_->write_master_name(options_.MASTER_NAME);
   writer_->write_solver_name(options_.SOLVER_NAME);
-  benders->setCriterionComputationInputs(criterion_input_data_);
+  benders->setCriterionComputationInputs(
+      std::get<Benders::Criterion::CriterionInputData>(
+          criterion_input_holder_));
 
   return benders;
+}
+
+bool BendersMainFactory::isCriterionListEmpty() const {
+  return std::visit(
+      [](auto&& the_variant) { return the_variant.CriterionsData().empty(); },
+      criterion_input_holder_);
 }
 
 std::shared_ptr<MathLoggerDriver> BendersMainFactory::BuildMathLogger(
@@ -124,12 +132,15 @@ void BendersMainFactory::AddCriterionOutput(
     std::shared_ptr<MathLoggerDriver> math_log_driver) {
   const std::filesystem::path output_root(options_.OUTPUTROOT);
 
-  const auto& headers = criterion_input_data_.PatternBodies();
+  const auto& criterion_input_data =
+      std::get<Benders::Criterion::CriterionInputData>(criterion_input_holder_);
+
+  const auto& headers = criterion_input_data.PatternBodies();
   math_log_driver->add_logger(
       output_root / LOLD_FILE, headers,
       &OuterLoopCurrentIterationData::outer_loop_criterion);
 
-  positive_unsupplied_file_ = criterion_input_data_.PatternsPrefix() + ".txt";
+  positive_unsupplied_file_ = criterion_input_data.PatternsPrefix() + ".txt";
   math_log_driver->add_logger(
       output_root / positive_unsupplied_file_, headers,
       &OuterLoopCurrentIterationData::outer_loop_patterns_values);
@@ -173,7 +184,8 @@ void BendersMainFactory::EndMessage(const double execution_time) {
                                    context_);
 }
 
-Benders::Criterion::CriterionInputData
+std::variant<Benders::Criterion::CriterionInputData,
+             Benders::Criterion::OuterLoopCriterionInputData>
 BendersMainFactory::ProcessCriterionInput() {
   const auto fpath = std::filesystem::path(options_.INPUTROOT) /
                      options_.OUTER_LOOP_OPTION_FILE;
@@ -229,13 +241,16 @@ int BendersMainFactory::RunExternalLoop() {
     auto benders = PrepareForExecution(true);
     double tau = 0.5;
 
+    const auto& outer_loop_inputs =
+        std::get<Benders::Criterion::OuterLoopCriterionInputData>(
+            criterion_input_holder_);
     std::shared_ptr<Outerloop::IMasterUpdate> master_updater =
         std::make_shared<Outerloop::MasterUpdateBase>(
-            benders, tau, criterion_input_data_.StoppingThreshold());
+            benders, tau, outer_loop_inputs.StoppingThreshold());
     std::shared_ptr<Outerloop::ICutsManager> cuts_manager =
         std::make_shared<Outerloop::CutsManagerRunTime>();
 
-    Outerloop::OuterLoopBenders ext_loop(criterion_input_data_.CriterionsData(),
+    Outerloop::OuterLoopBenders ext_loop(outer_loop_inputs.CriterionsData(),
                                          master_updater, cuts_manager, benders,
                                          *pworld_);
     ext_loop.Run();

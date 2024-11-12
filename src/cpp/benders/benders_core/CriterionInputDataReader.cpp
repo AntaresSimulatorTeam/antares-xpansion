@@ -72,13 +72,7 @@ std::string CriterionInputData::PatternsPrefix() const {
   return ret;
 }
 
-void CriterionInputData::SetStoppingThreshold(double stopping_threshold) {
-  stopping_threshold_ = stopping_threshold;
-}
 
-double CriterionInputData::StoppingThreshold() const {
-  return stopping_threshold_;
-}
 void CriterionInputData::SetCriterionCountThreshold(double count_threshold) {
   count_threshold_ = count_threshold;
 }
@@ -86,7 +80,7 @@ double CriterionInputData::CriterionCountThreshold() const {
   return count_threshold_;
 }
 
-CriterionInputData CriterionInputFromYaml::Read(
+OuterLoopCriterionInputData CriterionInputFromYaml::Read(
     const std::filesystem::path &input_file) {
   YAML::Node yaml_content;
   try {
@@ -107,7 +101,16 @@ CriterionInputData CriterionInputFromYaml::Read(
         LOGLOCATION);
   }
 
-  return yaml_content.as<CriterionInputData>();
+  return yaml_content.as<OuterLoopCriterionInputData>();
+}
+
+double OuterLoopCriterionInputData::StoppingThreshold() const {
+  return stopping_threshold_;
+}
+
+void OuterLoopCriterionInputData::setStoppingThreshold(
+    double stoppingThreshold) {
+  stopping_threshold_ = stoppingThreshold;
 }
 
 namespace YAML {
@@ -144,8 +147,8 @@ struct convert<CriterionSingleInputData> {
   }
 };
 template <>
-struct convert<CriterionInputData> {
-  static Node encode(const CriterionInputData &rhs) { return {}; }
+struct convert<OuterLoopCriterionInputData> {
+  static Node encode(const OuterLoopCriterionInputData &rhs) { return {}; }
 
   static void DecodePatterns(const Node &patterns, CriterionInputData &rhs) {
     if (!patterns.IsSequence()) {
@@ -162,8 +165,10 @@ struct convert<CriterionInputData> {
     }
   }
 
-  static bool decode(const Node &node, CriterionInputData &rhs) {
-    rhs.SetStoppingThreshold(node["stopping_threshold"].as<double>(1e-4));
+  static bool decode(const Node &node, OuterLoopCriterionInputData &rhs) {
+    rhs.setStoppingThreshold(node["stopping_threshold"].as<double>(1e-4));
+    Benders::Criterion::CriterionInputData sub_rhs;
+
     rhs.SetCriterionCountThreshold(
         node["criterion_count_threshold"].as<double>(1));
 

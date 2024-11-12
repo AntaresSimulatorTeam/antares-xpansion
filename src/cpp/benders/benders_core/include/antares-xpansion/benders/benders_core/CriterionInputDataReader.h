@@ -87,29 +87,39 @@ class CriterionInputData {
   [[nodiscard]] std::vector<std::string> PatternBodies() const;
   [[nodiscard]] std::string PatternsPrefix() const;
 
-  void SetStoppingThreshold(double stopping_threshold);
-  [[nodiscard]] double StoppingThreshold() const;
   void SetCriterionCountThreshold(double count_threshold);
   [[nodiscard]] double CriterionCountThreshold() const;
   void AddSingleData(const CriterionSingleInputData &data);
 
  private:
-  double stopping_threshold_ = 1e-4;
   std::vector<CriterionSingleInputData> criterion_vector_;
   double count_threshold_ = 1;
+};
+
+/// @brief this class contains all data read from user input file
+class OuterLoopCriterionInputData : public CriterionInputData {
+ public:
+  OuterLoopCriterionInputData() = default;
+  [[nodiscard]] double StoppingThreshold() const;
+  void setStoppingThreshold(double stoppingThreshold);
+
+ private:
+  double stopping_threshold_ = 1e-4;
 };
 
 /// @brief Abstract /***
 class ICriterionInputDataReader {
  public:
-  virtual CriterionInputData Read(const std::filesystem::path &input_file) = 0;
+  virtual OuterLoopCriterionInputData Read(
+      const std::filesystem::path &input_file) = 0;
   virtual ~ICriterionInputDataReader() = default;
 };
 
 class CriterionInputFromYaml : public ICriterionInputDataReader {
  public:
   CriterionInputFromYaml() = default;
-  CriterionInputData Read(const std::filesystem::path &input_file) override;
+  OuterLoopCriterionInputData Read(
+      const std::filesystem::path &input_file) override;
 
  private:
   CriterionInputData criterion_input_data_;

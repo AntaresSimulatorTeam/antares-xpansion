@@ -1,5 +1,7 @@
 #ifndef ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
 #define ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
+#include <variant>
+
 #include "antares-xpansion/benders/benders_core/CriterionComputation.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
@@ -17,7 +19,9 @@ class BendersMainFactory {
   SOLVER solver_ = SOLVER::BENDERS;
   SimulationOptions options_;
   BendersLoggerBase benders_loggers_;
-  Benders::Criterion::CriterionInputData criterion_input_data_;
+  std::variant<Benders::Criterion::CriterionInputData,
+               Benders::Criterion::OuterLoopCriterionInputData>
+      criterion_input_holder_;
   Logger logger_ = nullptr;
   Writer writer_ = nullptr;
   BENDERSMETHOD method_ = BENDERSMETHOD::BENDERS;
@@ -30,7 +34,9 @@ class BendersMainFactory {
   [[nodiscard]] std::shared_ptr<MathLoggerDriver> BuildMathLogger(
       bool benders_log_console) const;
   pBendersBase PrepareForExecution(bool external_loop);
-  [[nodiscard]] Benders::Criterion::CriterionInputData ProcessCriterionInput();
+  [[nodiscard]] std::variant<Benders::Criterion::CriterionInputData,
+                             Benders::Criterion::OuterLoopCriterionInputData>
+  ProcessCriterionInput();
 
   Benders::Criterion::CriterionInputData BuildPatternsUsingAreaFile();
   std::set<std::string> ReadAreaFile();
@@ -49,5 +55,6 @@ class BendersMainFactory {
                               const SOLVER& solver);
   int Run();
   std::filesystem::path LogReportsName() const;
+  bool isCriterionListEmpty() const;
 };
 #endif  // ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
