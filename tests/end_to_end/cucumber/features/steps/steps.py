@@ -1,16 +1,18 @@
 import csv
+import fileinput
 import io
 import json
 import math
 import os
+import re
 import shutil
 import subprocess
 import sys
 from pathlib import Path
+
 import numpy as np
 from behave import *
-
-from utils_functions import get_mpi_command, get_conf, read_outputs, remove_outputs
+from utils_functions import get_mpi_command, get_conf, read_outputs, remove_outputs, find_in_simulator_log
 
 
 @given('the study path is "{string}"')
@@ -19,6 +21,18 @@ def study_path_is(context, string):
     context.study_path = Path() / "../../" / string
     context.tmp_study = context.temp_dir / context.study_path.name
     shutil.copytree(context.study_path, context.tmp_study)
+
+@given('solver is "{string}"')
+def set_solver(context, string):
+    context.solver = string
+    match = False
+    with fileinput.FileInput(context.tmp_study / "user/expansion/settings.ini", inplace=True) as file:
+        for line in file:
+            match = match or re.search(r'solver\s*=.*', line)
+            print(re.sub(r'solver\s*=.*', f'solver= {string}', line), end='')
+    if not match:
+        with open(context.tmp_study / "user/expansion/settings.ini", 'a') as file:
+            file.write(f'\nsolver = {string}')
 
 
 def build_outer_loop_command(context, n: int, option_file: str = "options.json"):
@@ -89,6 +103,7 @@ def run_antares_xpansion(context, method, memory=None, n: int = 1):
     context.options_data = outputs.options_json
     context.lold = outputs.lold
     context.positive_unsupplied_energy = outputs.positive_unsupplied_energy
+    print(f"output path is {output_path}")
 
 
 def run_command(study_path, memory, method, n_mpi, allow_run_as_root=False):
@@ -221,3 +236,8 @@ def get_results_file_path_from_logs(logs: bytes) -> str:
         if b'Optimization results available in : ' in line:
             return line.split(b'Optimization results available in : ')[1].decode('ascii')
     raise LookupError("Could not find results file path in output logs")
+
+@then('Simulator has been launched with solver "{string}"')
+def check_simulator_solver(context, string):
+    string_to_find = f"ortools solver {string} used for problem resolution"
+    assert(find_in_simulator_log(context.tmp_study / "output", string_to_find))

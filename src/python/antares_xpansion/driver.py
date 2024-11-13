@@ -133,7 +133,7 @@ class XpansionDriver:
     def launch_antares_step(self):
         self.update_study_settings(memory_mode=False)
 
-        use_xpress = str(self.config_loader.options["solver"]).capitalize() == "XPRESS"
+        use_xpress = str(self.config_loader.options["solver"]).upper() == "XPRESS"
 
         try:
             ret = self.antares_driver.launch(
