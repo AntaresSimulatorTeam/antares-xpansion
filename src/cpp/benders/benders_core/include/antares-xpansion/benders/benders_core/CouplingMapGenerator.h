@@ -1,6 +1,7 @@
 #pragma once
 #include "common.h"
 
-struct CouplingMapGenerator {
-  static CouplingMap build_input(const std::filesystem::path &structure_path);
+class CouplingMapGenerator {
+ public:
+  static CouplingMap BuildInput(const std::filesystem::path &structure_path);
 };

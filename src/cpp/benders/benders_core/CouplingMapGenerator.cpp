@@ -21,7 +21,7 @@ struct InvalidStructureFile
  *  \note The id in the coupling_map is that of the variable in the solver
  *responsible for the creation of the structure file.
  */
-CouplingMap CouplingMapGenerator::build_input(
+CouplingMap CouplingMapGenerator::BuildInput(
     const std::filesystem::path &structure_path) {
   CouplingMap coupling_map;
   std::ifstream summary(structure_path, std::ios::in);

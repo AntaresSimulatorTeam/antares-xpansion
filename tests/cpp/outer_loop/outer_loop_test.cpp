@@ -102,7 +102,7 @@ void CheckMinInvestmentConstraint(const VariableMap& master_variables,
 
 TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   BendersBaseOptions bendersoptions = BuildBendersOptions();
-  CouplingMap coupling_map = CouplingMapGenerator::build_input(
+  CouplingMap coupling_map = CouplingMapGenerator::BuildInput(
       std::filesystem::path(bendersoptions.INPUTROOT) /
       bendersoptions.STRUCTURE_FILE);
   // override solver

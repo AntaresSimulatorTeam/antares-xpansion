@@ -40,7 +40,7 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
   benders_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = external_loop;
 
   const auto coupling_map =
-      CouplingMapGenerator::build_input(benders_options.STRUCTURE_FILE);
+      CouplingMapGenerator::BuildInput(benders_options.STRUCTURE_FILE);
 
   method_ = DeduceBendersMethod(coupling_map.size(), options_.BATCH_SIZE,
                                 external_loop);
