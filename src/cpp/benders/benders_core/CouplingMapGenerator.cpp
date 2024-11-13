@@ -1,8 +1,7 @@
 #include <antares-xpansion/benders/benders_core/CouplingMapGenerator.h>
 #include <antares-xpansion/xpansion_interfaces/LoggerUtils.h>
 
-struct InvalidStructureFile
-    : public LogUtils::XpansionError<std::runtime_error> {
+struct InvalidStructureFile : LogUtils::XpansionError<std::runtime_error> {
   using LogUtils::XpansionError<std::runtime_error>::XpansionError;
 };
 
@@ -34,7 +33,6 @@ CouplingMap CouplingMapGenerator::BuildInput(
     throw InvalidStructureFile(
         PrefixMessage(LogUtils::LOGLEVEL::FATAL, context), msg.str(),
         log_location);
-    return coupling_map;
   }
   std::string line;
 

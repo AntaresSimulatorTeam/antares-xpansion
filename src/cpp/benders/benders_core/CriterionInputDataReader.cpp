@@ -116,9 +116,8 @@ void OuterLoopCriterionInputData::setStoppingThreshold(
 namespace YAML {
 
 template <>
-struct convert<CriterionSingleInputData> {
-  static Node encode(const CriterionSingleInputData &rhs) { return {}; }
-
+class convert<CriterionSingleInputData> {
+ public:
   static bool decode(const Node &pattern, CriterionSingleInputData &rhs) {
     auto body = pattern["area"];
 
@@ -147,9 +146,8 @@ struct convert<CriterionSingleInputData> {
   }
 };
 template <>
-struct convert<OuterLoopCriterionInputData> {
-  static Node encode(const OuterLoopCriterionInputData &rhs) { return {}; }
-
+class convert<OuterLoopCriterionInputData> {
+ public:
   static void DecodePatterns(const Node &patterns, CriterionInputData &rhs) {
     if (!patterns.IsSequence()) {
       std::ostringstream err_msg;

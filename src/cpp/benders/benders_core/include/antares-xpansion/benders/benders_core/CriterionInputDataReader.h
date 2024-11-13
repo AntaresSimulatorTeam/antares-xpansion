@@ -107,7 +107,7 @@ class OuterLoopCriterionInputData : public CriterionInputData {
   double stopping_threshold_ = 1e-4;
 };
 
-/// @brief Abstract /***
+/// @brief Abstract
 class ICriterionInputDataReader {
  public:
   virtual OuterLoopCriterionInputData Read(

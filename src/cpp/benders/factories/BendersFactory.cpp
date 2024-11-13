@@ -102,7 +102,7 @@ void BendersMainFactory::ConfigureBenders(
   benders_->set_input_map(coupling_map);
   benders_->setCriterionComputationInputs(std::visit(
       [](auto&& the_variant) {
-        return (Benders::Criterion::CriterionInputData)the_variant;
+        return static_cast<Benders::Criterion::CriterionInputData>(the_variant);
       },
       criterion_input_holder_));
 }

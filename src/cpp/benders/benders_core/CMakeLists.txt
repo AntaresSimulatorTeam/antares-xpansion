@@ -49,7 +49,6 @@ target_sources(benders_core PRIVATE
 
 add_library(antaresXpansion::benders_core ALIAS benders_core)
 
-#set_target_properties(benders_core PROPERTIES UNITY_BUILD ON)
 target_include_directories(benders_core
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
