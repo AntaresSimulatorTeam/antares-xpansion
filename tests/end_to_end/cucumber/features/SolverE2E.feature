@@ -9,3 +9,4 @@ Feature:
         When I run antares-xpansion with the benders method and 1 proc(s)
         Then the simulation succeeds
         And Simulator has been launched with solver "Xpress"
+        And Benders has been launched with solver "Xpress"

@@ -241,3 +241,7 @@ def get_results_file_path_from_logs(logs: bytes) -> str:
 def check_simulator_solver(context, string):
     string_to_find = f"ortools solver {string} used for problem resolution"
     assert(find_in_simulator_log(context.tmp_study / "output", string_to_find))
+
+@then('Benders has been launched with solver "{string}"')
+def check_benders_solver(context, string):
+    assert context.options_data["SOLVER_NAME"].upper() == string.upper()
