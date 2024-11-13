@@ -17,8 +17,10 @@ class BendersMainFactory {
   std::variant<Benders::Criterion::CriterionInputData,
                Benders::Criterion::OuterLoopCriterionInputData>
       criterion_input_holder_;
+  pBendersBase benders_ = nullptr;
   Logger logger_ = nullptr;
   Writer writer_ = nullptr;
+  std::shared_ptr<MathLoggerDriver> math_log_driver_;
   BENDERSMETHOD method_ = BENDERSMETHOD::BENDERS;
   std::string context_ = bendersmethod_to_string(BENDERSMETHOD::BENDERS);
   std::string positive_unsupplied_file_;
@@ -28,7 +30,7 @@ class BendersMainFactory {
   [[nodiscard]] int RunBenders();
   [[nodiscard]] std::shared_ptr<MathLoggerDriver> BuildMathLogger(
       bool benders_log_console) const;
-  pBendersBase PrepareForExecution(bool external_loop);
+  void PrepareForExecution(bool external_loop);
   [[nodiscard]] std::variant<Benders::Criterion::CriterionInputData,
                              Benders::Criterion::OuterLoopCriterionInputData>
   ProcessCriterionInput();
@@ -36,7 +38,12 @@ class BendersMainFactory {
   Benders::Criterion::CriterionInputData BuildPatternsUsingAreaFile();
   std::set<std::string> ReadAreaFile();
   void EndMessage(const double execution_time);
-  void AddCriterionOutput(std::shared_ptr<MathLoggerDriver> math_log_driver);
+  void AddCriterionOutput();
+  bool isCriterionListEmpty() const;
+  void SetupLoggerAndOutputWriter(const BendersBaseOptions& benders_options);
+  void ConfigureBenders(const BendersBaseOptions& benders_options,
+                        const CouplingMap& coupling_map);
+  void ConfigureSolverLog();
 
  public:
   explicit BendersMainFactory(int argc, char** argv,
@@ -50,6 +57,5 @@ class BendersMainFactory {
                               const SOLVER& solver);
   int Run();
   std::filesystem::path LogReportsName() const;
-  bool isCriterionListEmpty() const;
 };
 #endif  // ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
