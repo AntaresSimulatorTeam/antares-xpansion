@@ -141,7 +141,7 @@ void BendersMainFactory::AddCriterionOutput(
       &OuterLoopCurrentIterationData::outer_loop_criterion);
 
   positive_unsupplied_file_ = std::visit(
-      [](auto&& the_variant) { return the_variant.PatternsPrefix(); },
+      [](auto&& the_variant) { return the_variant.PatternsPrefix() + ".txt"; },
       criterion_input_holder_);
   math_log_driver->add_logger(
       output_root / positive_unsupplied_file_, headers,
