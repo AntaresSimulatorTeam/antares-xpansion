@@ -12,7 +12,6 @@
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 #include "antares-xpansion/helpers/AreaParser.h"
 #include "antares-xpansion/helpers/Timer.h"
-#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size,
@@ -39,8 +38,8 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
   BendersBaseOptions benders_options(options_.get_benders_options());
   benders_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = external_loop;
 
-
-  const auto coupling_map = build_input(benders_options.STRUCTURE_FILE);
+  const auto coupling_map =
+      CouplingMapGenerator::build_input(benders_options.STRUCTURE_FILE);
 
   method_ = DeduceBendersMethod(coupling_map.size(), options_.BATCH_SIZE,
                                 external_loop);

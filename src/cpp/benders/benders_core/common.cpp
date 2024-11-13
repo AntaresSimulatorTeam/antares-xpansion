@@ -1,5 +1,6 @@
 #include "antares-xpansion/benders/benders_core/common.h"
 
+#include <antares-xpansion/xpansion_interfaces/LogUtils.h>
 /*!
  *  \brief Return the distance between two point using 2-norm
  *
@@ -29,6 +30,11 @@ void usage(int argc) {
   }
 }
 
+struct InvalidStructureFile
+    : public LogUtils::XpansionError<std::runtime_error> {
+  using LogUtils::XpansionError<std::runtime_error>::XpansionError;
+};
+
 /*!
  *  \brief Build the input from the structure file
  *
@@ -44,7 +50,8 @@ void usage(int argc) {
  *  \note The id in the coupling_map is that of the variable in the solver
  *responsible for the creation of the structure file.
  */
-CouplingMap build_input(const std::filesystem::path &structure_path) {
+CouplingMap CouplingMapGenerator::build_input(
+    const std::filesystem::path &structure_path) {
   CouplingMap coupling_map;
   std::ifstream summary(structure_path, std::ios::in);
   if (!summary) {

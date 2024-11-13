@@ -6,11 +6,6 @@
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
 
-struct InvalidStructureFile
-    : public LogUtils::XpansionError<std::runtime_error> {
-  using LogUtils::XpansionError<std::runtime_error>::XpansionError;
-};
-
 class BendersMainFactory {
  private:
   char** argv_;
