@@ -1028,6 +1028,7 @@ void BendersBase::init_data(double external_loop_lambda,
 
 
 bool BendersBase::isExceptionRaised() const { return exception_raised_; }
+
 /*
  * after the 1st loop of the outer loop, we must  re-build the objective
  * function and costs
@@ -1041,6 +1042,7 @@ void BendersBase::UpdateOverallCosts() {
 
   relevantIterationData_.best._invest_cost = _data.invest_cost;
 }
+
 void BendersBase::SetBilevelBestub(double bilevel_best_ub) {
   _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub =
       bilevel_best_ub;

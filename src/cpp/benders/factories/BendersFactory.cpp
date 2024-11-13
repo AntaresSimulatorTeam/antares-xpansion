@@ -102,9 +102,11 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
   writer_->write_log_level(options_.LOG_LEVEL);
   writer_->write_master_name(options_.MASTER_NAME);
   writer_->write_solver_name(options_.SOLVER_NAME);
-  benders->setCriterionComputationInputs(
-      std::get<Benders::Criterion::CriterionInputData>(
-          criterion_input_holder_));
+  benders->setCriterionComputationInputs(std::visit(
+      [](auto&& the_variant) {
+        return (Benders::Criterion::CriterionInputData)the_variant;
+      },
+      criterion_input_holder_));
 
   return benders;
 }
@@ -132,15 +134,16 @@ void BendersMainFactory::AddCriterionOutput(
     std::shared_ptr<MathLoggerDriver> math_log_driver) {
   const std::filesystem::path output_root(options_.OUTPUTROOT);
 
-  const auto& criterion_input_data =
-      std::get<Benders::Criterion::CriterionInputData>(criterion_input_holder_);
-
-  const auto& headers = criterion_input_data.PatternBodies();
+  const auto& headers =
+      std::visit([](auto&& the_variant) { return the_variant.PatternBodies(); },
+                 criterion_input_holder_);
   math_log_driver->add_logger(
       output_root / LOLD_FILE, headers,
       &OuterLoopCurrentIterationData::outer_loop_criterion);
 
-  positive_unsupplied_file_ = criterion_input_data.PatternsPrefix() + ".txt";
+  positive_unsupplied_file_ = std::visit(
+      [](auto&& the_variant) { return the_variant.PatternsPrefix(); },
+      criterion_input_holder_);
   math_log_driver->add_logger(
       output_root / positive_unsupplied_file_, headers,
       &OuterLoopCurrentIterationData::outer_loop_patterns_values);
