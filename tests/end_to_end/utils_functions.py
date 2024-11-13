@@ -79,6 +79,7 @@ def get_out_data(output_dir, files_to_read: FilesToRead) -> Outputs:
     for path in Path(output_dir).iterdir():
         if path.suffix == ".zip":
             with zipfile.ZipFile(path, "r") as archive:
+                print(f"---------------\n {archive.namelist()}\n---------------")
                 out = Outputs()
                 out.out_json = json.loads(archive.read(files_to_read.out_json.as_posix()))
                 out.options_json = json.loads(archive.read(files_to_read.options_json.as_posix()))
