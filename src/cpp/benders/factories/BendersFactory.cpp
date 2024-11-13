@@ -4,6 +4,7 @@
 #include <filesystem>
 
 #include "antares-xpansion/benders/benders_by_batch/BendersByBatch.h"
+#include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_core/MasterUpdate.h"
 #include "antares-xpansion/benders/benders_core/StartUp.h"
 #include "antares-xpansion/benders/benders_mpi/BendersMpiOuterLoop.h"
