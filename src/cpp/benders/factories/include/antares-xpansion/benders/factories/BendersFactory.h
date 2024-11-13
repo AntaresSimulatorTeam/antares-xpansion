@@ -38,7 +38,7 @@ class BendersMainFactory {
   Benders::Criterion::CriterionInputData BuildPatternsUsingAreaFile();
   std::set<std::string> ReadAreaFile();
   void EndMessage(const double execution_time);
-  void AddCriterionOutput();
+  void AddCriterionOutputs();
   bool isCriterionListEmpty() const;
   void SetupLoggerAndOutputWriter(const BendersBaseOptions& benders_options);
   void ConfigureBenders(const BendersBaseOptions& benders_options,
@@ -57,5 +57,6 @@ class BendersMainFactory {
                               const SOLVER& solver);
   int Run();
   std::filesystem::path LogReportsName() const;
+  void StartMessage();
 };
 #endif  // ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H

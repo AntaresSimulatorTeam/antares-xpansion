@@ -12,9 +12,6 @@
 #include "antares-xpansion/benders/logger/UserFile.h"
 Logger build_void_logger();
 
-std::ostringstream start_message(const SimulationOptions &options,
-                                 const std::string &benders_type);
-
 class FileAndStdoutLoggerFactory {
  private:
   Logger logger;

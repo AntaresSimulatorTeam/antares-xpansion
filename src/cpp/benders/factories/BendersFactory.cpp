@@ -16,15 +16,15 @@
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size,
-                                  bool external_loop) {
+                                  bool outer_loop) {
   if (batch_size == 0 || batch_size == coupling_map_size - 1) {
-    if (external_loop) {
+    if (outer_loop) {
       return BENDERSMETHOD::BENDERS_OUTERLOOP;
     } else {
       return BENDERSMETHOD::BENDERS;
     }
   } else {
-    if (external_loop) {
+    if (outer_loop) {
       return BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP;
     } else {
       return BENDERSMETHOD::BENDERS_BY_BATCH;
@@ -54,16 +54,11 @@ void BendersMainFactory::PrepareForExecution(bool external_loop) {
       return;
     }
     if (!isCriterionListEmpty()) {
-      AddCriterionOutput();
+      AddCriterionOutputs();
     }
   }
 
   ConfigureBenders(benders_options, coupling_map);
-
-  std::ostringstream oss_l = start_message(options_, benders_->BendersName());
-  oss_l << std::endl;
-  benders_loggers_.display_message(oss_l.str());
-
   ConfigureSolverLog();
 }
 
@@ -147,7 +142,7 @@ std::shared_ptr<MathLoggerDriver> BendersMainFactory::BuildMathLogger(
   return math_log_driver;
 }
 
-void BendersMainFactory::AddCriterionOutput() {
+void BendersMainFactory::AddCriterionOutputs() {
   const std::filesystem::path output_root(options_.OUTPUTROOT);
 
   const auto& headers =
@@ -170,6 +165,7 @@ int BendersMainFactory::RunBenders() {
   try {
     PrepareForExecution(false);
     if (benders_) {
+      StartMessage();
       benders_->launch();
       EndMessage(benders_->execution_time());
     }
@@ -188,6 +184,14 @@ int BendersMainFactory::RunBenders() {
   return 0;
 }
 
+void BendersMainFactory::StartMessage() {
+  std::ostringstream oss_l;
+  oss_l << "Starting " << context_ << std::endl;
+  options_.print(oss_l);
+  oss_l << std::endl;
+  benders_loggers_.display_message(oss_l.str());
+}
+
 void BendersMainFactory::EndMessage(const double execution_time) {
   std::ostringstream str;
   str << "Optimization results available in : " << options_.JSON_FILE
@@ -197,8 +201,7 @@ void BendersMainFactory::EndMessage(const double execution_time) {
 
   str.str("");
 
-  str << bendersmethod_to_string(method_) << " ran in " << execution_time
-      << " s" << std::endl;
+  str << context_ << " ran in " << execution_time << " s" << std::endl;
   benders_loggers_.display_message(str.str(), LogUtils::LOGLEVEL::INFO,
                                    context_);
 }
@@ -272,6 +275,7 @@ int BendersMainFactory::RunExternalLoop() {
     Outerloop::OuterLoopBenders ext_loop(outer_loop_inputs.CriterionsData(),
                                          master_updater, cuts_manager, benders_,
                                          *pworld_);
+    StartMessage();
     ext_loop.Run();
     EndMessage(ext_loop.Runtime());
     
