@@ -104,7 +104,8 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   BendersBaseOptions bendersoptions = BuildBendersOptions();
   CouplingMap coupling_map = CouplingMapGenerator::BuildInput(
       std::filesystem::path(bendersoptions.INPUTROOT) /
-      bendersoptions.STRUCTURE_FILE);
+          bendersoptions.STRUCTURE_FILE,
+      logger, ::testing::UnitTest::GetInstance()->current_test_info()->name());
   // override solver
   bendersoptions.SOLVER_NAME = GetParam();
   bendersoptions.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = true;

@@ -39,12 +39,7 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
   BendersBaseOptions benders_options(options_.get_benders_options());
   benders_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = external_loop;
 
-  const auto coupling_map =
-      CouplingMapGenerator::BuildInput(benders_options.STRUCTURE_FILE);
 
-  method_ = DeduceBendersMethod(coupling_map.size(), options_.BATCH_SIZE,
-                                external_loop);
-  context_ = bendersmethod_to_string(method_);
 
   auto benders_log_console = benders_options.LOG_LEVEL > 0;
   if (pworld_->rank() == 0) {
@@ -64,6 +59,14 @@ pBendersBase BendersMainFactory::PrepareForExecution(bool external_loop) {
 
   benders_loggers_.AddLogger(logger_);
   benders_loggers_.AddLogger(math_log_driver);
+  const auto coupling_map = CouplingMapGenerator::BuildInput(
+      benders_options.STRUCTURE_FILE,
+      std::make_shared<BendersLoggerBase>(benders_loggers_), "Benders");
+
+  method_ = DeduceBendersMethod(coupling_map.size(), options_.BATCH_SIZE,
+                                external_loop);
+  context_ = bendersmethod_to_string(method_);
+
   criterion_input_holder_ = ProcessCriterionInput();
 
   if (pworld_->rank() == 0 && !isCriterionListEmpty()) {
