@@ -4,8 +4,8 @@
 namespace LogUtils {
 inline std::string LogLocationToStr(int line, const char* file,
                                     const char* func) {
-  return std::string("This is line ") + std::to_string(line) + " of file " +
-         file + " (function " + func + ")\n";
+  return std::string("Logged from function '") + func + "' in file '" + file +
+         "' at line " + std::to_string(line) + ".\n";
 }
 
 template <typename T>
