@@ -133,6 +133,8 @@ jobs:
         with:
           #          feature: "features/outer_loop_tests.feature"
           mpi_path: /c/Program Files/Microsoft MPI/Bin
+          build_path: ${{ github.workspace }}/_build
+
 
       
       - name: Cache vcpkg binary dir

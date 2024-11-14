@@ -12,6 +12,9 @@ inputs:
   mpi_path:
     description: "Mpi install directory"
     required: true
+  build_path:
+    description: "Build directory"
+    required: false
 runs:
   using: "composite"
   steps:
@@ -19,6 +22,6 @@ runs:
     - name: Run tests
       shell: bash
       run: |
-        export PATH="${{ inputs.mpi_path }}:$PATH"
+        export PATH="${{ inputs.mpi_path }}:${{build_path}}:$PATH"
         cd tests/end_to_end
         behave --tags ${{ inputs.tags }} cucumber/${{ inputs.feature }} --no-capture --no-capture-stderr --format pretty
