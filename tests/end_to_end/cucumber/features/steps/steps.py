@@ -244,4 +244,6 @@ def check_simulator_solver(context, string):
 
 @then('Benders has been launched with solver "{string}"')
 def check_benders_solver(context, string):
-    assert context.options_data["SOLVER_NAME"].upper() == string.upper()
+    solver_in_benders = context.options_data["SOLVER_NAME"]
+    print(f"Solver in benders: {solver_in_benders}\n")
+    assert solver_in_benders.upper() == string.upper()

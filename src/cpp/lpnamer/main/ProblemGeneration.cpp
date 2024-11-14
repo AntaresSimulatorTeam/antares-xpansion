@@ -117,8 +117,7 @@ std::filesystem::path ProblemGeneration::updateProblems() {
   auto weights_file = options_.WeightsFile();
   auto unnamed_problems = options_.UnnamedProblems();
 
-  SettingsReader settingsReader(study_dir / "user/expansion/settings.ini", logger.get());
-  solver_name_ = settingsReader.Solver();
+  set_solver(study_dir, logger.get());
 
   RunProblemGeneration(xpansion_output_dir, master_formulation,
                        additionalConstraintFilename_l, archive_path, logger,
@@ -336,6 +335,11 @@ void ProblemGeneration::RunProblemGeneration(
       << "Problem Generation ran in: "
       << format_time_str(problem_generation_timer.elapsed()) << std::endl;
 }
+void ProblemGeneration::set_solver(std::filesystem::path study_dir, ProblemGenerationLog::ProblemGenerationLogger* logger) {
+  SettingsReader settingsReader(study_dir / "user/expansion/settings.ini", logger);
+  solver_name_ = settingsReader.Solver();
+}
+
 std::shared_ptr<ArchiveReader> InstantiateZipReader(
     const std::filesystem::path& antares_archive_path) {
   auto reader = std::make_shared<ArchiveReader>(antares_archive_path);
