@@ -52,6 +52,10 @@ def get_filepath(output_dir, folder, filename):
     print(f"filename: {filename}")
     for path in Path(output_dir).iterdir():
         print(f"path: {path}")
+        assert Path(path / folder).exists()
+        #Print file name in path / folder
+        for jsonpath in Path(path / folder).iterdir():
+            print(f"file: {jsonpath}")
         for jsonpath in Path(path / folder).rglob( filename):
             print(f"jsonpath: {jsonpath}")
             op.append(jsonpath)
