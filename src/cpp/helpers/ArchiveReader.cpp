@@ -18,6 +18,12 @@ void ArchiveReader::Create() {
 }
 
 int32_t ArchiveReader::Open() {
+  if (!std::filesystem::exists(ArchivePath())) {
+    std::ostringstream errMsg;
+    errMsg << "Archive: " << ArchivePath().string() << " does not exist"
+           << std::endl;
+    throw ArchiveIOGeneralException(MZ_EXIST_ERROR, errMsg.str(), LOGLOCATION);
+  }
   auto err = mz_zip_reader_open_file(pmz_zip_reader_instance_,
                                      ArchivePath().string().c_str());
   if (err != MZ_OK) {
