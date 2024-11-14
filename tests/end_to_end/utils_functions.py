@@ -48,6 +48,7 @@ def remove_outputs(study_path):
 def get_filepath(output_dir, folder, filename):
     op = []
     print(f"output_dir: {output_dir}")
+    assert Path(output_dir).exists()
     print(f"folder: {folder}")
     print(f"filename: {filename}")
     for path in Path(output_dir).iterdir():
