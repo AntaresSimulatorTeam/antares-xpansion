@@ -6,7 +6,6 @@ import zipfile
 from pathlib import Path
 
 import yaml
-from dataclasses import dataclass
 
 # File CONFIG_FILE_PATH
 # yaml file containing executable name
@@ -48,10 +47,15 @@ def remove_outputs(study_path):
 
 def get_filepath(output_dir, folder, filename):
     op = []
+    print(f"output_dir: {output_dir}")
+    print(f"folder: {folder}")
+    print(f"filename: {filename}")
     for path in Path(output_dir).iterdir():
-        for jsonpath in Path(path / folder).rglob(filename):
+        print(f"path: {path}")
+        for jsonpath in Path(path / folder).rglob( filename):
+            print(f"jsonpath: {jsonpath}")
             op.append(jsonpath)
-    assert len(op) == 1
+        assert len(op) == 1
     return op[0]
 
 
