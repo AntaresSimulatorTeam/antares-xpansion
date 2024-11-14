@@ -110,8 +110,9 @@ def run_command(study_path, memory, method, n_mpi, allow_run_as_root=False):
     command = build_launch_command(study_path, method, nproc=n_mpi, in_memory=memory,
                                    allow_run_as_root=allow_run_as_root)
     print(f"Running command: {command}")
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = process.communicate()
+    print(f"Process finished with code: {process.returncode}")
     if process.returncode != 0:
         print("*********************** Begin stdout ***********************")
         print(out)
