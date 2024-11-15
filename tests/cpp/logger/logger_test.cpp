@@ -743,6 +743,7 @@ TEST_F(MasterLoggerTest, LogSwitchToInteger) {
   ASSERT_TRUE(_logger->_switchToIntegerCall);
   ASSERT_TRUE(_logger2->_switchToIntegerCall);
 }
+static constexpr const char* const DELIMITER = "\t";
 
 TEST(LogDestinationTest, WithInvalidEmptyFilePath) {
   const std::filesystem::path invalid_file_path("");
@@ -867,8 +868,10 @@ TEST(MathLoggerBendersByBatchTest, HeadersListStdOutShort) {
   std::streamsize width = 25;
 
   std::ostringstream expected_msg;
+  expected_msg << DELIMITER;
   for (const auto& header : headers_manager.HeadersList()) {
     expected_msg << std::setw(width) << std::left << header;
+    expected_msg << DELIMITER;
   }
   expected_msg << std::endl;
   std::stringstream redirectedStdout;
@@ -886,8 +889,10 @@ TEST(MathLoggerBendersByBatchTest, HeadersListFileLong) {
   std::streamsize width = 25;
 
   std::ostringstream expected_msg;
+  expected_msg << DELIMITER;
   for (const auto& header : headers_manager.HeadersList()) {
     expected_msg << std::setw(width) << std::left << header;
+    expected_msg << DELIMITER;
   }
   expected_msg << std::endl;
   auto log_file =
@@ -919,27 +924,39 @@ TEST(MathLoggerBendersByBatchTest, DataInFileLong) {
       data.iteration_time - data.timer_master - data.subproblems_walltime;
 
   std::ostringstream expected_msg;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << data.it;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::scientific
                << std::setprecision(10) << data.lb;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << data.min_simplexiter;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << data.max_simplexiter;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width)
                << data.number_of_subproblem_solved;
+  expected_msg << DELIMITER;
 
   expected_msg << std::left << std::setw(width)
                << data.cumulative_number_of_subproblem_solved;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
                << data.iteration_time;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
                << data.timer_master;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
                << data.subproblems_walltime;
+  expected_msg << DELIMITER;
 
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
                << data.subproblems_cumulative_cputime;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
                << time_not_solving;
+  expected_msg << DELIMITER;
   expected_msg << std::endl;
   auto log_file =
       CreateRandomSubDir(std::filesystem::temp_directory_path()) / "log.txt";
@@ -970,20 +987,29 @@ TEST(MathLoggerBendersByBatchTest, DataInStdOutShort) {
       data.iteration_time - data.timer_master - data.subproblems_walltime;
 
   std::ostringstream expected_msg;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << data.it;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::scientific
                << std::setprecision(10) << data.lb;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << data.min_simplexiter;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << data.max_simplexiter;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width)
                << data.number_of_subproblem_solved;
+  expected_msg << DELIMITER;
 
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
                << data.iteration_time;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
                << data.timer_master;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
                << data.subproblems_walltime;
+  expected_msg << DELIMITER;
 
   expected_msg << std::endl;
   std::stringstream redirectedStdout;
@@ -1016,36 +1042,52 @@ TEST(MathLoggerBendersBaseTest, DataInFileLong) {
       data.iteration_time - data.timer_master - data.subproblems_walltime;
 
   std::ostringstream expected_msg;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << data.it;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::scientific
                << std::setprecision(10) << data.lb;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::scientific
                << std::setprecision(10) << data.ub;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::scientific
                << std::setprecision(10) << data.best_ub;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::scientific
                << std::setprecision(2) << data.best_ub - data.lb;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::scientific
                << std::setprecision(2)
                << (data.best_ub - data.lb) / data.best_ub;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << data.min_simplexiter;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << data.max_simplexiter;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width)
                << data.number_of_subproblem_solved;
+  expected_msg << DELIMITER;
 
   expected_msg << std::left << std::setw(width)
                << data.cumulative_number_of_subproblem_solved;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
                << data.iteration_time;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
                << data.timer_master;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
                << data.subproblems_walltime;
+  expected_msg << DELIMITER;
 
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
                << data.subproblems_cumulative_cputime;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
                << time_not_solving;
+  expected_msg << DELIMITER;
   expected_msg << std::endl;
   auto log_file =
       CreateRandomSubDir(std::filesystem::temp_directory_path()) / "log.txt";
@@ -1076,28 +1118,40 @@ TEST(MathLoggerBendersBaseTest, DataInStdOutShort) {
       data.iteration_time - data.timer_master - data.subproblems_walltime;
 
   std::ostringstream expected_msg;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << data.it;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::scientific
                << std::setprecision(10) << data.lb;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::scientific
                << std::setprecision(10) << data.ub;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::scientific
                << std::setprecision(10) << data.best_ub;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::scientific
                << std::setprecision(2) << data.best_ub - data.lb;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::scientific
                << std::setprecision(2)
                << (data.best_ub - data.lb) / data.best_ub;
+  expected_msg << DELIMITER;
 
   expected_msg << std::left << std::setw(width) << data.min_simplexiter;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << data.max_simplexiter;
+  expected_msg << DELIMITER;
 
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
                << data.iteration_time;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
                << data.timer_master;
+  expected_msg << DELIMITER;
   expected_msg << std::left << std::setw(width) << std::setprecision(2)
                << data.subproblems_walltime;
+  expected_msg << DELIMITER;
 
   expected_msg << std::endl;
   std::stringstream redirectedStdout;

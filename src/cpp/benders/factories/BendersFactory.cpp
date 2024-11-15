@@ -183,7 +183,9 @@ BendersMainFactory::ProcessCriterionInput() {
   const auto fpath = std::filesystem::path(options_.INPUTROOT) /
                      options_.OUTER_LOOP_OPTION_FILE;
   // if adequacy_criterion.yml is provided read it
-  if (std::filesystem::exists(fpath)) {
+  if ((method_ == BENDERSMETHOD::BENDERS_OUTERLOOP ||
+       method_ == BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP) &&
+      std::filesystem::exists(fpath)) {
     return Benders::Criterion::OuterLoopInputFromYaml().Read(fpath);
   }
   // else compute criterion for all areas!

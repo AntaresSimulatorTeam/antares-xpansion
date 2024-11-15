@@ -407,3 +407,10 @@ endif ()
 #version file to define Xpansion and Antares-simulator versions
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/python/antares_xpansion/__version__.py.in ${CMAKE_CURRENT_SOURCE_DIR}/src/python/antares_xpansion/__version__.py)
 include(CPack)
+
+add_custom_target(graphviz
+        COMMAND ${CMAKE_COMMAND} "--graphviz=xpansion.dot" .
+        COMMAND dot -Tsvg xpansion.dot -o xpansion.svg
+        COMMAND dot -Tpng xpansion.dot -o xpansion.png
+        WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+)
