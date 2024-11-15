@@ -83,20 +83,19 @@ def run_antares_xpansion(context, method, memory=None, n: int = 1):
     context.return_code = run_command(context.tmp_study, memory=memory, method=method, n_mpi=n,
                                       allow_run_as_root=get_conf("allow_run_as_root"))
 
-    if context.return_code == 0:
-        output_path = context.tmp_study / "output"
-        outputs = read_outputs(output_path, use_archive=not memory, lold=True, positive_unsupplied_energy=True)
-        context.outputs = outputs.out_json
-        context.options_data = outputs.options_json
-        context.lold = outputs.lold
-        context.positive_unsupplied_energy = outputs.positive_unsupplied_energy
+    output_path = context.tmp_study / "output"
+    outputs = read_outputs(output_path, use_archive=not memory, lold=True, positive_unsupplied_energy=True)
+    context.outputs = outputs.out_json
+    context.options_data = outputs.options_json
+    context.lold = outputs.lold
+    context.positive_unsupplied_energy = outputs.positive_unsupplied_energy
 
 
 def run_command(study_path, memory, method, n_mpi, allow_run_as_root=False):
     command = build_launch_command(study_path, method, nproc=n_mpi, in_memory=memory,
                                    allow_run_as_root=allow_run_as_root)
     print(f"Running command: {command}")
-    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
     out, err = process.communicate()
     if process.returncode != 0:
         print("*********************** Begin stdout ***********************")

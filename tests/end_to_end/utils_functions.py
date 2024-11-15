@@ -47,12 +47,10 @@ def remove_outputs(study_path):
 
 def get_filepath(output_dir, folder, filename):
     op = []
-    assert Path(output_dir).exists()
     for path in Path(output_dir).iterdir():
-        assert Path(path / folder).exists()
-        for jsonpath in Path(path / folder).rglob( filename):
+        for jsonpath in Path(path / folder).rglob(filename):
             op.append(jsonpath)
-        assert len(op) == 1
+    assert len(op) == 1
     return op[0]
 
 
