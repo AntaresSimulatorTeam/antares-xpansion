@@ -174,7 +174,7 @@ def launch_and_compare_lp_with_reference_study(install_dir, master_mode, study_d
     lp_namer_exe = Path(install_dir) / "lp_namer"
     os.chdir(study_dir)
     constraint_path = get_constraint_path(study_dir)
-    launch_command = [str(lp_namer_exe), "--study", str(study_dir),
+    launch_command = [str(lp_namer_exe), "--study", study_dir,
                       "-e", constraint_path, "-f", master_mode, "--unnamed-problems"]
     # when
     returned_l = subprocess.run(launch_command, shell=False)
