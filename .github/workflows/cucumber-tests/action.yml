@@ -12,9 +12,6 @@ inputs:
   mpi_path:
     description: "Mpi install directory"
     required: true
-  ld_path:
-    description: "Additional library path"
-    required: false
 runs:
   using: "composite"
   steps:
@@ -23,6 +20,5 @@ runs:
       shell: bash
       run: |
         export PATH="${{ inputs.mpi_path }}:$PATH"
-        export LD_LIBRARY_PATH="${{ inputs.ld_path }}:$LD_LIBRARY_PATH"
         cd tests/end_to_end
         behave --tags ${{ inputs.tags }} cucumber/${{ inputs.feature }} --no-capture --no-capture-stderr --format pretty
