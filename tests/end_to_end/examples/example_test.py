@@ -1,9 +1,6 @@
-import json
-import os
 import shutil
 import subprocess
 import sys
-import zipfile
 from enum import Enum
 from pathlib import Path
 
@@ -11,6 +8,7 @@ import numpy as np
 import pytest
 
 from src.python.antares_xpansion.candidates_reader import CandidatesReader
+from tests.end_to_end.utils_functions import read_outputs, remove_outputs
 
 ALL_STUDIES_PATH = Path("../../../data_test/examples")
 RELATIVE_TOLERANCE = 1e-4
@@ -20,31 +18,6 @@ RELATIVE_TOLERANCE_LIGHT = 1e-2
 class BendersMethod(Enum):
     BENDERS = "benders"
     BENDERS_BY_BATCH = "benders_by_batch"
-
-
-def get_json_filepath(output_dir, folder, filename):
-    op = []
-    for path in Path(output_dir).iterdir():
-        for jsonpath in Path(path / folder).rglob(filename):
-            op.append(jsonpath)
-    assert len(op) == 1
-    return op[0]
-
-def get_json_file_data(output_dir, folder, filename):
-    data = None
-    for path in Path(output_dir).iterdir():
-        if path.suffix == ".zip":
-            with zipfile.ZipFile(path, "r") as archive:
-                data = json.loads(archive.read(folder+"/"+filename))
-    return data
-
-
-def remove_outputs(study_path):
-    output_path = study_path / "output"
-    if os.path.isdir(output_path):
-        for f in Path(output_path).iterdir():
-            if f.is_dir():
-                shutil.rmtree(f)
 
 
 def launch_xpansion(install_dir, study_path, allow_run_as_root=False, nproc: int = 4):
@@ -119,19 +92,9 @@ def assert_convergence(solution, options_data, method: BendersMethod):
 def verify_solution(study_path, expected_values, expected_investment_solution,
                     method: BendersMethod = BendersMethod.BENDERS, use_archive=True):
     output_path = study_path / "output"
-
-    if use_archive:
-        json_data = get_json_file_data(output_path, "expansion", "out.json")
-        options_data = get_json_file_data(output_path, "lp", "options.json")
-    else:
-        json_path = get_json_filepath(output_path, "expansion", "out.json")
-        options_path = get_json_filepath(output_path, "lp", "options.json")
-
-        with open(str(json_path), "r") as json_file:
-            json_data = json.load(json_file)
-
-        with open(str(options_path), "r") as options_file:
-            options_data = json.load(options_file)
+    outputs = read_outputs(output_path, use_archive)
+    json_data = outputs.out_json
+    options_data = outputs.options_json
 
     solution = json_data["solution"]
     investment_solution = solution["values"]

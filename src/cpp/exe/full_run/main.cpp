@@ -19,6 +19,10 @@ int main(int argc, char** argv) {
     try {
       ProblemGeneration pbg(options_parser);
       xpansion_output_dir = pbg.updateProblems();
+      std::filesystem::copy_file(
+          xpansion_output_dir / "area.txt",
+          xpansion_output_dir / "lp" / "area.txt",
+          std::filesystem::copy_options::overwrite_existing);
 
     } catch (std::exception& e) {
       std::cerr << "error: " << e.what() << std::endl;
