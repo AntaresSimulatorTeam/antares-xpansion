@@ -44,5 +44,6 @@ var searchData=
   ['version_20tt_41',['version tt',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md172',1,'&lt;tt&gt;--antares-version&lt;/tt&gt;'],['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md171',1,'&lt;tt&gt;-v, --version&lt;/tt&gt;']]],
   ['versions_42',['Versions',['../md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html#autotoc_md82',1,'']]],
   ['versions_20in_20ubuntu_20are_20known_20to_20have_20mpi_20related_20issues_20please_20use_20the_20other_20ones_43',['⚠️ Single-file versions in Ubuntu are known to have MPI-related issues. Please use the other ones.',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md18',1,'']]],
-  ['voidwriter_44',['voidwriter',['../classOutput_1_1VoidWriter.html',1,'Output::VoidWriter'],['../classOutput_1_1VoidWriter.html#a3aebfa9d16828185951c57390b00ca0a',1,'Output::VoidWriter::VoidWriter()']]]
+  ['void_5ftype_44',['void_type',['../structCatch_1_1detail_1_1void__type.html',1,'Catch::detail']]],
+  ['voidwriter_45',['voidwriter',['../classOutput_1_1VoidWriter.html',1,'Output::VoidWriter'],['../classOutput_1_1VoidWriter.html#a3aebfa9d16828185951c57390b00ca0a',1,'Output::VoidWriter::VoidWriter()']]]
 ];

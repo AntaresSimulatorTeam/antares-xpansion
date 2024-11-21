@@ -345,7 +345,7 @@ var NAVTREEINDEX =
 "classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#af6df09ad232598a2e9bb9b017b81ee12",
 "dir_5ea3104aea17c1a3dc0c6adca6e0e79d.html",
 "md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md125",
-"structLinkdataRecord.html#a12279383606cfad20c9c61b23947c04a"
+"structInvalidStructureFile.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

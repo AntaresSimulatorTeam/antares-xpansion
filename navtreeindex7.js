@@ -1,5 +1,7 @@
 var NAVTREEINDEX7 =
 {
+"structInvalidStructureFile.html":[26,0,103],
+"structLinkdataRecord.html":[26,0,118],
 "structLinkdataRecord.html#a12279383606cfad20c9c61b23947c04a":[26,0,118,5],
 "structLinkdataRecord.html#a80fbca65660bf152d9523946037b4e38":[26,0,118,4],
 "structLinkdataRecord.html#aa20ce772cba9b224e845426dff9a374e":[26,0,118,3],

@@ -174,7 +174,10 @@ var hierarchy =
       ] ]
     ] ],
     [ "std::false_type", null, [
-      [ "Catch::always_false< T >", "structCatch_1_1always__false.html", null ]
+      [ "Catch::always_false< T >", "structCatch_1_1always__false.html", null ],
+      [ "Catch::detail::is_range_impl< T, typename >", "structCatch_1_1detail_1_1is__range__impl.html", [
+        [ "Catch::is_range< T >", "structCatch_1_1is__range.html", null ]
+      ] ]
     ] ],
     [ "FileAndStdoutLoggerFactory", "classFileAndStdoutLoggerFactory.html", null ],
     [ "FileBuffer", "structFileBuffer.html", null ],
@@ -284,7 +287,6 @@ var hierarchy =
     [ "Catch::IResultCapture", "structCatch_1_1IResultCapture.html", null ],
     [ "Catch::is_callable< T >", "structCatch_1_1is__callable.html", null ],
     [ "Catch::is_callable_tester", "structCatch_1_1is__callable__tester.html", null ],
-    [ "Catch::is_range< T >", "structCatch_1_1is__range.html", null ],
     [ "StringManip::IsNot< mask >", "classStringManip_1_1IsNot.html", null ],
     [ "Catch::Detail::IsStreamInsertable< T >", "classCatch_1_1Detail_1_1IsStreamInsertable.html", null ],
     [ "Catch::IStream", "structCatch_1_1IStream.html", null ],
@@ -338,13 +340,15 @@ var hierarchy =
         [ "Catch::Matchers::Impl::MatchNotOf< ArgT >", "structCatch_1_1Matchers_1_1Impl_1_1MatchNotOf.html", null ]
       ] ],
       [ "Catch::Matchers::Impl::MatcherBase< std::string >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherBase.html", null ],
-      [ "Catch::Matchers::Impl::MatcherBase< std::vector< T > >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherBase.html", null ]
+      [ "Catch::Matchers::Impl::MatcherBase< std::vector< T, AllocMatch > >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherBase.html", null ],
+      [ "Catch::Matchers::Impl::MatcherBase< std::vector< T, Alloc > >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherBase.html", null ]
     ] ],
     [ "Catch::Matchers::Impl::MatcherMethod< ArgT >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherMethod.html", null ],
     [ "Catch::Matchers::Impl::MatcherMethod< double >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherMethod.html", null ],
     [ "Catch::Matchers::Impl::MatcherMethod< std::exception >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherMethod.html", null ],
     [ "Catch::Matchers::Impl::MatcherMethod< std::string >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherMethod.html", null ],
-    [ "Catch::Matchers::Impl::MatcherMethod< std::vector< T > >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherMethod.html", null ],
+    [ "Catch::Matchers::Impl::MatcherMethod< std::vector< T, Alloc > >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherMethod.html", null ],
+    [ "Catch::Matchers::Impl::MatcherMethod< std::vector< T, AllocMatch > >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherMethod.html", null ],
     [ "Catch::Matchers::Impl::MatcherMethod< T >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherMethod.html", [
       [ "Catch::Matchers::Impl::MatcherBase< T >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherBase.html", [
         [ "Catch::Matchers::Exception::ExceptionMessageMatcher", "classCatch_1_1Matchers_1_1Exception_1_1ExceptionMessageMatcher.html", null ],
@@ -365,7 +369,8 @@ var hierarchy =
       [ "Catch::Matchers::Impl::MatcherBase< double >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherBase.html", null ],
       [ "Catch::Matchers::Impl::MatcherBase< ArgT >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherBase.html", null ],
       [ "Catch::Matchers::Impl::MatcherBase< std::string >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherBase.html", null ],
-      [ "Catch::Matchers::Impl::MatcherBase< std::vector< T > >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherBase.html", null ],
+      [ "Catch::Matchers::Impl::MatcherBase< std::vector< T, AllocMatch > >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherBase.html", null ],
+      [ "Catch::Matchers::Impl::MatcherBase< std::vector< T, Alloc > >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherBase.html", null ],
       [ "Catch::Matchers::Impl::MatcherBase< T >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherBase.html", null ]
     ] ],
     [ "MathLoggerFactory", "classMathLoggerFactory.html", null ],
@@ -380,7 +385,6 @@ var hierarchy =
       [ "Catch::ReusableStringStream", "classCatch_1_1ReusableStringStream.html", null ],
       [ "Catch::Section", "classCatch_1_1Section.html", null ]
     ] ],
-    [ "Catch::not_this_one", "structCatch_1_1not__this__one.html", null ],
     [ "antares_xpansion.optimisation_keys.OptimisationKeys", "classantares__xpansion_1_1optimisation__keys_1_1OptimisationKeys.html", null ],
     [ "OptionsParser", "classOptionsParser.html", [
       [ "AntaresArchiveUpdaterExeOptions", "classAntaresArchiveUpdaterExeOptions.html", null ],
@@ -652,6 +656,7 @@ var hierarchy =
     [ "to", "structto.html", null ],
     [ "Catch::Totals", "structCatch_1_1Totals.html", null ],
     [ "std::true_type", null, [
+      [ "Catch::detail::is_range_impl< T, typename void_type< decltype(begin(std::declval< T >()))>::type >", "structCatch_1_1detail_1_1is__range__impl_3_01T_00_01typename_01void__type_3_01decltype_07begin_0efe009a05f00a00c1e4e06989d122a22.html", null ],
       [ "Catch::true_given< typename >", "structCatch_1_1true__given.html", null ]
     ] ],
     [ "VariableFileLine", "structVariableFileLine.html", null ],
@@ -660,6 +665,7 @@ var hierarchy =
     [ "VariableNameComposition", "structVariableNameComposition.html", null ],
     [ "Benders::Criterion::VariablesGroup", "classBenders_1_1Criterion_1_1VariablesGroup.html", null ],
     [ "Version", "structVersion.html", null ],
+    [ "Catch::detail::void_type<... >", "structCatch_1_1detail_1_1void__type.html", null ],
     [ "WeightsFileReader", "classWeightsFileReader.html", null ],
     [ "Worker", "classWorker.html", [
       [ "SubproblemWorker", "classSubproblemWorker.html", null ],

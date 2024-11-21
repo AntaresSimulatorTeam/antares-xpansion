@@ -151,6 +151,11 @@ var annotated_dup =
         [ "EnumInfo", "structCatch_1_1Detail_1_1EnumInfo.html", null ],
         [ "IsStreamInsertable", "classCatch_1_1Detail_1_1IsStreamInsertable.html", null ]
       ] ],
+      [ "detail", null, [
+        [ "is_range_impl", "structCatch_1_1detail_1_1is__range__impl.html", null ],
+        [ "is_range_impl< T, typename void_type< decltype(begin(std::declval< T >()))>::type >", "structCatch_1_1detail_1_1is__range__impl_3_01T_00_01typename_01void__type_3_01decltype_07begin_0efe009a05f00a00c1e4e06989d122a22.html", null ],
+        [ "void_type", "structCatch_1_1detail_1_1void__type.html", null ]
+      ] ],
       [ "Generators", null, [
         [ "as", "structCatch_1_1Generators_1_1as.html", null ],
         [ "ChunkGenerator", "classCatch_1_1Generators_1_1ChunkGenerator.html", null ],
@@ -226,7 +231,6 @@ var annotated_dup =
       [ "MessageStream", "structCatch_1_1MessageStream.html", null ],
       [ "NameAndTags", "structCatch_1_1NameAndTags.html", null ],
       [ "NonCopyable", "classCatch_1_1NonCopyable.html", null ],
-      [ "not_this_one", "structCatch_1_1not__this__one.html", null ],
       [ "pluralise", "structCatch_1_1pluralise.html", null ],
       [ "RegistrarForTagAliases", "structCatch_1_1RegistrarForTagAliases.html", null ],
       [ "ResultDisposition", "structCatch_1_1ResultDisposition.html", null ],
