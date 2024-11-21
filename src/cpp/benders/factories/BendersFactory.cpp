@@ -32,9 +32,9 @@ BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size,
   }
 }
 
-void BendersMainFactory::PrepareForExecution(bool external_loop) {
+void BendersMainFactory::PrepareForExecution(bool outer_loop) {
   BendersBaseOptions benders_options(options_.get_benders_options());
-  benders_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = external_loop;
+  benders_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = outer_loop;
 
   SetupLoggerAndOutputWriter(benders_options);
 
@@ -42,8 +42,8 @@ void BendersMainFactory::PrepareForExecution(bool external_loop) {
       benders_options.STRUCTURE_FILE,
       std::make_shared<BendersLoggerBase>(benders_loggers_), "Benders");
 
-  method_ = DeduceBendersMethod(coupling_map.size(), options_.BATCH_SIZE,
-                                external_loop);
+  method_ =
+      DeduceBendersMethod(coupling_map.size(), options_.BATCH_SIZE, outer_loop);
   context_ = bendersmethod_to_string(method_);
 
   criterion_input_holder_ = ProcessCriterionInput();
@@ -262,7 +262,6 @@ int BendersMainFactory::RunExternalLoop() {
   try {
     PrepareForExecution(true);
     double tau = 0.5;
-
     const auto& outer_loop_inputs =
         std::get<Benders::Criterion::OuterLoopCriterionInputData>(
             criterion_input_holder_);

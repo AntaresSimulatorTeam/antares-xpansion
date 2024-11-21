@@ -30,13 +30,14 @@ class BendersMainFactory {
   [[nodiscard]] int RunBenders();
   [[nodiscard]] std::shared_ptr<MathLoggerDriver> BuildMathLogger(
       bool benders_log_console) const;
-  void PrepareForExecution(bool external_loop);
+  void PrepareForExecution(bool outer_loop);
   [[nodiscard]] std::variant<Benders::Criterion::CriterionInputData,
                              Benders::Criterion::OuterLoopCriterionInputData>
   ProcessCriterionInput();
 
   Benders::Criterion::CriterionInputData BuildPatternsUsingAreaFile();
   std::set<std::string> ReadAreaFile();
+  void StartMessage();
   void EndMessage(const double execution_time);
   void AddCriterionOutputs();
   bool isCriterionListEmpty() const;
@@ -57,6 +58,5 @@ class BendersMainFactory {
                               const SOLVER& solver);
   int Run();
   std::filesystem::path LogReportsName() const;
-  void StartMessage();
 };
 #endif  // ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
