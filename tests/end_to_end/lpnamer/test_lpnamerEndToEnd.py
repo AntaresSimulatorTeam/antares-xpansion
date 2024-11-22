@@ -14,6 +14,8 @@ DATA_TEST_INTEGER = DATA_TEST / "tests_lpnamer" / "tests_integer"
 DATA_TEST_RELAXED = DATA_TEST / "tests_lpnamer" / "tests_relaxed"
 TEST_LP_INTEGER_01 = DATA_TEST_INTEGER / \
     "test_lpnamer_01" / "output" / "economy"
+TEST_LP_INTEGER_01_XPRESS = DATA_TEST_INTEGER / \
+                            "test_lpnamer_01_Xpress" / "output" / "economy"
 TEST_LP_INTEGER_02 = DATA_TEST_INTEGER / \
     "test_one_link_one_candidate_1week" / "output" / "economy/"
 TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB = DATA_TEST_INTEGER / "test_one_link_two_candidates_simple_prob" \
@@ -32,6 +34,7 @@ TEST_LP_RELAXED_02 = DATA_TEST_RELAXED / "SmallTestSixCandidatesWithAlreadyInsta
     / "economy"
 test_data = [
     (TEST_LP_INTEGER_01, "integer"),
+    (TEST_LP_INTEGER_01_XPRESS, "integer"),
     (TEST_LP_INTEGER_02, "integer"),
     (TEST_LP_RELAXED_01, "relaxed"),
     (TEST_LP_RELAXED_02, "relaxed")
@@ -186,7 +189,6 @@ def launch_and_compare_lp_with_reference_study(install_dir, master_mode, study_d
 def then(lp_dir, old_path, reference_lp_dir, returned_l):
     os.chdir(old_path)
     files_to_compare = os.listdir(reference_lp_dir)
-    print(f"******* {lp_dir} ********")
     match, mismatch, errors = filecmp.cmpfiles(
         reference_lp_dir, lp_dir, files_to_compare)
     assert len(match) == len(files_to_compare)
