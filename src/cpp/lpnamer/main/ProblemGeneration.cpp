@@ -200,28 +200,31 @@ std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
     const std::vector<ProblemData>& mpsList, std::filesystem::path& lpDir_,
     std::shared_ptr<ArchiveReader> reader,
     const Antares::Solver::LpsFromAntares& lps = {}) {
-  std::vector<std::string> problem_names;
-  std::transform(mpsList.begin(), mpsList.end(),
-                 std::back_inserter(problem_names),
-                 [](ProblemData const& data) { return data._problem_mps; });
-  switch (mode_.value()) {
-    case SimulationInputMode::FILE: {
-      FileProblemsProviderAdapter adapter(lpDir_, problem_names);
-      return adapter.provideProblems(solver_name, solver_log_manager);
+    std::cout << "ProblemGeneration::getXpansionProblems()" << LOGLOCATION << std::endl;
+    std::vector<std::string> problem_names;
+    std::transform(mpsList.begin(), mpsList.end(),
+                   std::back_inserter(problem_names),
+                   [](ProblemData const &data) { return data._problem_mps; });
+    switch (mode_.value()) {
+        case SimulationInputMode::FILE: {
+            FileProblemsProviderAdapter adapter(lpDir_, problem_names);
+            return adapter.provideProblems(solver_name, solver_log_manager);
+        }
+        case SimulationInputMode::ARCHIVE: {
+            ZipProblemsProviderAdapter adapter(lpDir_, std::move(reader),
+                                               problem_names);
+            std::cout << "END ProblemGeneration::getXpansionProblems() " << LOGLOCATION << std::endl;
+
+            return adapter.provideProblems(solver_name, solver_log_manager);
+        }
+        case SimulationInputMode::ANTARES_API: {
+            XpansionProblemsFromAntaresProvider adapter(lps);
+            return adapter.provideProblems(solver_name, solver_log_manager);
+        }
+        default:
+            throw LogUtils::XpansionError<std::runtime_error>(
+                "Unhandled simulation mode", LOGLOCATION);
     }
-    case SimulationInputMode::ARCHIVE: {
-      ZipProblemsProviderAdapter adapter(lpDir_, std::move(reader),
-                                         problem_names);
-      return adapter.provideProblems(solver_name, solver_log_manager);
-    }
-    case SimulationInputMode::ANTARES_API: {
-      XpansionProblemsFromAntaresProvider adapter(lps);
-      return adapter.provideProblems(solver_name, solver_log_manager);
-    }
-    default:
-      throw LogUtils::XpansionError<std::runtime_error>(
-          "Unhandled simulation mode", LOGLOCATION);
-  }
 }
 
 void ProblemGeneration::RunProblemGeneration(
@@ -265,16 +268,20 @@ void ProblemGeneration::RunProblemGeneration(
 
   auto solver_log_manager = SolverLogManager(log_file_path);
   Couplings couplings;
+  std::cout << LOGLOCATION << std::endl;
   LinkProblemsGenerator linkProblemsGenerator(
       lpDir_, links, solver_name_, logger, solver_log_manager, rename_problems);
   std::shared_ptr<ArchiveReader> reader =
       antares_archive_path.empty() ? std::make_shared<ArchiveReader>()
                                    : InstantiateZipReader(antares_archive_path);
+  std::cout << LOGLOCATION << std::endl;
 
   /* Main stuff */
+  std::cout << LOGLOCATION << std::endl;
   std::vector<std::shared_ptr<Problem>> xpansion_problems = getXpansionProblems(
       solver_log_manager, solver_name_, mpsList, lpDir_, reader, lps_);
 
+  std::cout << LOGLOCATION << std::endl;
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
       problems_and_data;
   for (int i = 0; i < xpansion_problems.size(); ++i) {
@@ -284,8 +291,10 @@ void ProblemGeneration::RunProblemGeneration(
     } else {
       xpansion_problems.at(i)->_name = mpsList.at(i)._problem_mps;
       problems_and_data.emplace_back(xpansion_problems.at(i), mpsList.at(i));
+      std::cout << LOGLOCATION << std::endl;
     }
   }
+  std::cout << LOGLOCATION << std::endl;
   auto mps_file_writer = std::make_shared<MPSFileWriter>(lpDir_);
   std::for_each(
       std::execution::par, problems_and_data.begin(), problems_and_data.end(),
@@ -296,18 +305,23 @@ void ProblemGeneration::RunProblemGeneration(
           case SimulationInputMode::FILE:
             variables_provider = std::make_shared<ProblemVariablesFileAdapter>(
                 data, links, logger, lpDir_);
+            std::cout << LOGLOCATION << std::endl;
             break;
           case SimulationInputMode::ARCHIVE:
             if (rename_problems) {
-              variables_provider = std::make_shared<ProblemVariablesZipAdapter>(
-                  reader, data, links, logger);
+std::cout << LOGLOCATION << std::endl;
+variables_provider = std::make_shared<ProblemVariablesZipAdapter>(
+    reader, data, links, logger);
+std::cout << LOGLOCATION << std::endl;
             } else {
-              variables_provider =
-                  std::make_shared<ProblemVariablesFromProblemAdapter>(
-                      problem, links, logger);
+                std::cout << LOGLOCATION << std::endl;
+                variables_provider =
+                        std::make_shared<ProblemVariablesFromProblemAdapter>(
+                            problem, links, logger);
+                std::cout << LOGLOCATION << std::endl;
             }
             break;
-          case SimulationInputMode::ANTARES_API:
+        case SimulationInputMode::ANTARES_API:
             variables_provider =
                 std::make_shared<ProblemVariablesFromProblemAdapter>(
                     problem, links, logger);
@@ -316,9 +330,11 @@ void ProblemGeneration::RunProblemGeneration(
             (*logger)(LogUtils::LOGLEVEL::ERR) << "Undefined mode";
             break;
         }
+        std::cout << LOGLOCATION << std::endl;
         linkProblemsGenerator.treat(data._problem_mps, couplings, problem.get(),
                                     variables_provider.get(),
                                     mps_file_writer.get());
+std::cout << LOGLOCATION << std::endl;
       });
 
   if (!weights_file.empty()) {
@@ -329,12 +345,14 @@ void ProblemGeneration::RunProblemGeneration(
     reader->Close();
     reader->Delete();
   }
+  std::cout << LOGLOCATION << std::endl;
   MasterGeneration master_generation(
       xpansion_output_dir, links, additionalConstraints, couplings,
       master_formulation, solver_name_, logger, solver_log_manager);
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Problem Generation ran in: "
       << format_time_str(problem_generation_timer.elapsed()) << std::endl;
+std::cout << LOGLOCATION << std::endl;
 }
 void ProblemGeneration::set_solver(std::filesystem::path study_dir, ProblemGenerationLog::ProblemGenerationLogger* logger) {
     SettingsReader settingsReader(study_dir / "user" / "expansion" / "settings.ini", logger);

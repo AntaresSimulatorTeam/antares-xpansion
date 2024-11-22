@@ -24,8 +24,10 @@ std::shared_ptr<Problem> ZipProblemProviderAdapter::provide_problem(
                            ZipProblemProviderAdapter::problem_name_;
   auto in_prblm = std::make_shared<Problem>(
       factory.create_solver(solver_name, solver_log_manager));
+  std::cout << LOGLOCATION << std::endl;
 
   in_prblm->read_prob_mps(lp_mps_name);
+std::cout << LOGLOCATION << std::endl;
   return in_prblm;
 }
 
