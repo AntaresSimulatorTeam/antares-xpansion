@@ -4,6 +4,7 @@ import shutil
 import subprocess
 import zipfile
 from enum import Enum
+from fileinput import close
 from pathlib import Path
 
 import pytest
@@ -153,9 +154,36 @@ def launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_
     launch_command = [str(lp_namer_exe), "-a", str(zip_path),
                       "-e", "contraintes.txt", "-f", master_mode, "--unnamed-problems"]
     # when
-    returned_l = subprocess.run(launch_command, shell=False)
+    f = open("stdoutt", "w+")
+    g = open("stderrr", "w+")
+    try:
+        returned_l = subprocess.Popen(launch_command, stdout=f, stderr=g)
+        out, err = returned_l.communicate()
+        exit(1)
+    except:
+        method_name(f, g)
+
+    method_name(f, g)
+    f.close()
+    g.close()
+
+    print(f"Process finished with code: {returned_l.returncode}")
+    print("*********************** Begin stdout ***********************")
+    print(out)
+    print("*********************** End stdout ***********************")
+
+    print("*********************** Begin stderr ***********************")
+    print(err)
+    print("*********************** End stderr ***********************")
     # then
     then(lp_dir, old_path, reference_lp_dir, returned_l)
+
+
+def method_name(f, g):
+    print("******* stdout ********")
+    f.readlines()
+    print("******* stderr ********")
+    g.readlines()
 
 
 def get_lp_dir(study_dir):
