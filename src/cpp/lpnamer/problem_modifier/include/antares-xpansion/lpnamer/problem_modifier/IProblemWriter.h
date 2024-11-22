@@ -8,5 +8,6 @@
 class IProblemWriter {
  public:
   virtual ~IProblemWriter() = default;
-  virtual void Write_problem(Problem *in_prblm) = 0;
+
+  virtual void Write_problem(Problem *in_prblm, const std::filesystem::path &output_file) = 0;
 };

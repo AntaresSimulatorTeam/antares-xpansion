@@ -186,6 +186,7 @@ def launch_and_compare_lp_with_reference_study(install_dir, master_mode, study_d
 def then(lp_dir, old_path, reference_lp_dir, returned_l):
     os.chdir(old_path)
     files_to_compare = os.listdir(reference_lp_dir)
+    print(f"******* {lp_dir} ********")
     match, mismatch, errors = filecmp.cmpfiles(
         reference_lp_dir, lp_dir, files_to_compare)
     assert len(match) == len(files_to_compare)
