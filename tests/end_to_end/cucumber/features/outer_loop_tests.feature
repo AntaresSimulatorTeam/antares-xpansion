@@ -4,8 +4,8 @@ Feature: outer loop tests
   Scenario: a system with 4 nodes, on 1 timestep, 2 scenarios
     Given the study path is "data_test/external_loop_test"
     When I run outer loop with 1 proc(s)
-    Then the simulation takes less than 5 seconds
-    And the simulation succeeds
+    Then the simulation succeeds
+    And the simulation takes less than 5 seconds
     And the expected overall cost is 92.70005
     And the solution is
       | variable    | value    |

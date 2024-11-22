@@ -4,8 +4,8 @@ Feature: Benders Criterion files
   Scenario: xpansion-test-01
     Given the study path is "data_test/examples/xpansion-test-01"
     When I run antares-xpansion with the benders method and 1 proc(s)
-    Then the simulation takes less than 300 seconds
-    And the simulation succeeds
+    Then the simulation succeeds
+    And the simulation takes less than 300 seconds
     And the expected positive unsupplied energy is
       | Outer loop | Ite | area1            | area2            | flex             | peak             | pv               | semibase         | store_in         | store_out        |
       | 0          | 1   | 5.3771400000e+05 | 4.3137090000e+06 | 0.0000000000e+00 | 0.0000000000e+00 | 0.0000000000e+00 | 0.0000000000e+00 | 2.6208000000e+07 | 0.0000000000e+00 |

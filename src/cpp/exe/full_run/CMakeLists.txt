@@ -34,4 +34,8 @@ target_link_libraries(full_run
         antaresXpansion::helpers
 )
 
+if (TBB_FOUND)
+    target_link_libraries(full_run PRIVATE tbb)
+endif ()
+
 install(TARGETS full_run DESTINATION bin)

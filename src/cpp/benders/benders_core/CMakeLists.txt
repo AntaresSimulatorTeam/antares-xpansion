@@ -62,6 +62,10 @@ target_link_libraries(benders_core
         antaresXpansion::outer_loop_lib
 )
 
+if (TBB_FOUND)
+    target_link_libraries(benders_core PRIVATE tbb)
+endif ()
+
 install(DIRECTORY include/antares-xpansion
         DESTINATION "include"
 )
