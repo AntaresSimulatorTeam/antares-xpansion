@@ -160,6 +160,7 @@ jobs:
         run: |
           export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH
           cd _build
+          lp_namer -o ../data_test/tests_lpnamer/tests_integer/test_lpnamer_01_Xpress/output/economy -e contraintes.txt -f integer --unnamed-problems 
           ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
       - name: Cache vcpkg binary dir
