@@ -20,11 +20,10 @@ ZipProblemsProviderAdapter::provideProblems(
                  /*std::transform preserves order of element*/
                  problem_names_.begin(), problem_names_.end(), problems.begin(),
                  [&](auto name) {
-std::cout << LOGLOCATION << std::endl;
-ZipProblemProviderAdapter problem_provider(lp_dir_, name,
-                                           archive_reader_);
-return problem_provider.provide_problem(solver_name,
-                                        solver_log_manager);
+                   ZipProblemProviderAdapter problem_provider(lp_dir_, name,
+                                                              archive_reader_);
+                   return problem_provider.provide_problem(solver_name,
+                                                           solver_log_manager);
                  });
   return problems;
 }

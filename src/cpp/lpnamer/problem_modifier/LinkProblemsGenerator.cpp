@@ -32,7 +32,6 @@ void LinkProblemsGenerator::treat(
     IProblemVariablesProviderPort *variable_provider, IProblemWriter *writer) {
   auto in_prblm =
       problem_provider->provide_problem(_solver_name, solver_log_manager_);
-    in_prblm->add_stream(std::cout);
 
   treat(problem_name, couplings, in_prblm.get(), variable_provider, writer);
 }
