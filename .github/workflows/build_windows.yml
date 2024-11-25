@@ -31,7 +31,7 @@ jobs:
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
       VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
       ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
-      ORTOOLS_URL: "https://github.com/rte-france/or-tools-rte/releases/download/v9.11-rte1.1/ortools_cxx_windows-latest_static.zip"
+      ORTOOLS_URL: "https://github.com/rte-france/or-tools-rte/releases/download/v9.11-rte1.1/ortools_cxx_windows-latest_static_sirius.zip"
 
     outputs:
       zip_name: ${{ steps.zip_name.outputs.zip_name }}
@@ -133,7 +133,6 @@ jobs:
         with:
           #          feature: "features/outer_loop_tests.feature"
           mpi_path: /c/Program Files/Microsoft MPI/Bin
-
       
       - name: Cache vcpkg binary dir
         if: always()

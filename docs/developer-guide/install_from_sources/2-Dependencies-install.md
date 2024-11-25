@@ -60,6 +60,7 @@ Alternatively you can install openmpi yourself
 ## Other dependencies
 - Antares Simulator: either build it from source, download precompiled binaries or use the automatic build method
 - Or-tools: either build it from source, download precompiled binaries or use the automatic build method
+  - If you are downloading pre-compiled binaries of or-tools you need to select a version supporting Sirius solver
 
 ### Using pre-build dependency
 If using built from source or pre-built release of Simulator, Or-tools-rte or other dependency, you can specify the path to the dependency in the CMake configuration.

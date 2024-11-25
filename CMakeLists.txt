@@ -130,7 +130,7 @@ if (${BUILD_antares_solver})
     #check if antares_solver available before asking for sirius and ortools build
     find_package(Antares QUIET)
     if (NOT Antares_FOUND)
-        message(WARNING "Antares solver not found, will be build")
+        message(WARNING "Antares solver not found, will be built")
         set(BUILD_sirius ON)
         set(BUILD_ortools ON)
         if (NOT Antares_FOUND)
@@ -206,6 +206,7 @@ if (CMAKE_SYSTEM_NAME STREQUAL Linux)
     set(THREADS_PREFER_PTHREAD_FLAG ON)
 endif ()
 find_package(Threads REQUIRED)
+find_package(TBB COMPONENTS tbb) # required for ubuntu 22+
 
 find_package(ZLIB REQUIRED) #Required for CoinUtils
 
