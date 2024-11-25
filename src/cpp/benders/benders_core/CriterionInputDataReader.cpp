@@ -51,7 +51,7 @@ void CriterionInputData::AddSingleData(const CriterionSingleInputData &data) {
 }
 
 const std::vector<CriterionSingleInputData> &
-CriterionInputData::CriterionsData() const {
+CriterionInputData::Criteria() const {
   return criterion_vector_;
 }
 
@@ -127,9 +127,9 @@ class convert<CriterionSingleInputData> {
       err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
               << "Error could not read 'area' field in outer loop input file"
               << "\n";
-      throw CriterionCouldNotReadAreaField(err_msg.str(), LOGLOCATION);
+      throw CouldNotReadAreaField(err_msg.str(), LOGLOCATION);
     }
-    auto criterion = pattern["criterion"];
+    const auto criterion = pattern["criterion"];
 
     if (criterion.IsNull()) {
       std::ostringstream err_msg;
@@ -137,7 +137,7 @@ class convert<CriterionSingleInputData> {
           << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
           << "Error could not read 'criterion' field in outer loop input file"
           << "\n";
-      throw CriterionCouldNotReadCriterionField(err_msg.str(), LOGLOCATION);
+      throw CouldNotReadCriterionField(err_msg.str(), LOGLOCATION);
     }
 
     rhs.SetCriterion(criterion.as<double>());

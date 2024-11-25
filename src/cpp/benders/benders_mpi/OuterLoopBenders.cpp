@@ -115,7 +115,7 @@ void OuterLoopBenders::OuterLoopBilevelChecks() {
     const auto& x_cut = benders_->GetCurrentIterationData().x_cut;
     const auto& external_loop_lambda =
         benders_->GetCurrentIterationData()
-            .outer_loop_current_iteration_data.external_loop_lambda;
+            .criteria_current_iteration_data.lambda;
     if (outer_loop_biLevel_.Update_bilevel_data_if_feasible(
             x_cut, benders_->GetOuterLoopCriterionAtBestBenders() /*/!\ must
        be at best it*/

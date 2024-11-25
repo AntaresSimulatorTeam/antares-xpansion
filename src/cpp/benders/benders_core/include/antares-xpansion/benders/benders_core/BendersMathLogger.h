@@ -134,7 +134,7 @@ struct MathLoggerExternalLoopSpecific : public MathLogger {
   explicit MathLoggerExternalLoopSpecific(
       const std::filesystem::path& file_path,
       const std::vector<std::string>& headers,
-      T OuterLoopCurrentIterationData::*ptr)
+      T CriteriaCurrentIterationData::*ptr)
       : MathLogger(file_path), ptr_(ptr) {
     headers_.push_back("Outer loop");
     headers_.push_back("Ite");
@@ -150,7 +150,7 @@ struct MathLoggerExternalLoopSpecific : public MathLogger {
 
  private:
   std::vector<std::string> headers_;
-  T OuterLoopCurrentIterationData::*ptr_;
+  T CriteriaCurrentIterationData::*ptr_;
 };
 
 class MathLoggerImplementation : public MathLoggerBehaviour {
@@ -193,7 +193,7 @@ class MathLoggerDriver : public ILoggerXpansion {
   template <class T>
   void add_logger(const std::filesystem::path& file_path,
                   const std::vector<std::string>& headers,
-                  T OuterLoopCurrentIterationData::*t);
+                  T CriteriaCurrentIterationData::*t);
   void Print(const CurrentIterationData& data);
   virtual void PrintIterationSeparatorBegin() override;
   virtual void PrintIterationSeparatorEnd() override;
@@ -206,7 +206,7 @@ class MathLoggerDriver : public ILoggerXpansion {
 template <class T>
 void MathLoggerDriver::add_logger(const std::filesystem::path& file_path,
                                   const std::vector<std::string>& headers,
-                                  T OuterLoopCurrentIterationData::*t) {
+                                  T CriteriaCurrentIterationData::*t) {
   auto impl = std::make_shared<MathLoggerExternalLoopSpecific<T>>(file_path,
                                                                   headers, t);
   add_logger(std::make_shared<MathLoggerImplementation>(impl));
@@ -220,11 +220,11 @@ template <class T>
 void MathLoggerExternalLoopSpecific<T>::Print(
     const CurrentIterationData& data) {
   LogsDestination().InsertDelimiter();
-  LogsDestination() << data.outer_loop_current_iteration_data.benders_num_run;
+  LogsDestination() << data.criteria_current_iteration_data.benders_num_run;
   LogsDestination().InsertDelimiter();
   LogsDestination() << data.it;
   LogsDestination().InsertDelimiter();
-  for (const auto& t : data.outer_loop_current_iteration_data.*ptr_) {
+  for (const auto& t : data.criteria_current_iteration_data.*ptr_) {
     LogsDestination() << std::scientific << std::setprecision(10) << t;
     LogsDestination().InsertDelimiter();
   }

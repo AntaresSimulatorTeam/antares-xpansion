@@ -125,8 +125,8 @@ void BendersMainFactory::SetupLoggerAndOutputWriter(
 
 bool BendersMainFactory::isCriterionListEmpty() const {
   return std::visit(
-      [](auto&& the_variant) { return the_variant.CriterionsData().empty(); },
-      criterion_input_holder_);
+    [](auto &&the_variant) { return the_variant.Criteria().empty(); },
+    criterion_input_holder_);
 }
 
 std::shared_ptr<MathLoggerDriver> BendersMainFactory::BuildMathLogger(
@@ -150,14 +150,14 @@ void BendersMainFactory::AddCriterionOutputs() {
                  criterion_input_holder_);
   math_log_driver_->add_logger(
       output_root / LOLD_FILE, headers,
-      &OuterLoopCurrentIterationData::outer_loop_criterion);
+      &CriteriaCurrentIterationData::criteria);
 
   positive_unsupplied_file_ = std::visit(
       [](auto&& the_variant) { return the_variant.PatternsPrefix() + ".txt"; },
       criterion_input_holder_);
   math_log_driver_->add_logger(
       output_root / positive_unsupplied_file_, headers,
-      &OuterLoopCurrentIterationData::outer_loop_patterns_values);
+      &CriteriaCurrentIterationData::patterns_values);
 }
 
 int BendersMainFactory::RunBenders() {
@@ -271,7 +271,7 @@ int BendersMainFactory::RunExternalLoop() {
     std::shared_ptr<Outerloop::ICutsManager> cuts_manager =
         std::make_shared<Outerloop::CutsManagerRunTime>();
 
-    Outerloop::OuterLoopBenders ext_loop(outer_loop_inputs.CriterionsData(),
+    Outerloop::OuterLoopBenders ext_loop(outer_loop_inputs.Criteria(),
                                          master_updater, cuts_manager, benders_,
                                          *pworld_);
     StartMessage();

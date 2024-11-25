@@ -124,7 +124,7 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   auto master_updater = std::make_shared<MasterUpdateBase>(
       benders, 0.5, outer_loop_input_data.StoppingThreshold());
   auto cut_manager = std::make_shared<Outerloop::CutsManagerRunTime>();
-  Outerloop::OuterLoopBenders out_loop(outer_loop_input_data.CriterionsData(),
+  Outerloop::OuterLoopBenders out_loop(outer_loop_input_data.Criteria(),
                                        master_updater, cut_manager, benders, *pworld);
   out_loop.OuterLoopCheckFeasibility();
 
@@ -286,7 +286,7 @@ patterns:
   ASSERT_EQ(data.StoppingThreshold(), 1e-4);
   ASSERT_EQ(data.CriterionCountThreshold(), 1e-1);
 
-  auto patterns = data.CriterionsData();
+  auto patterns = data.Criteria();
   ASSERT_EQ(patterns.size(), 4);
   auto pattern1 = patterns[0];
   ASSERT_EQ(pattern1.Criterion(), 185.0);
@@ -380,24 +380,28 @@ TEST_F(OuterLoopBiLevelTest, BiLevelBestUbInitialization) {
   ASSERT_EQ(outerLoopBiLevel.BilevelBestub(), 1e20);
 }
 
-TEST_F(OuterLoopBiLevelTest, Unfeasibility_With_High_Criterions) {
+TEST_F(OuterLoopBiLevelTest, Unfeasibility_With_High_Criteria) {
   Outerloop::OuterLoopBiLevel outerLoopBiLevel(data);
-  const std::vector<double> criterions = {data[0].Criterion() + 12,
-                                          data[1].Criterion() + 2024};
+  const std::vector<double> criteria = {
+    data[0].Criterion() + 12,
+    data[1].Criterion() + 2024
+  };
   const auto lambda = 1205;
   ASSERT_FALSE(outerLoopBiLevel.Update_bilevel_data_if_feasible(
-      {}, criterions, 0., 0., lambda));
+    {}, criteria, 0., 0., lambda));
   ASSERT_EQ(outerLoopBiLevel.LambdaMin(), lambda);
 }
 
 TEST_F(OuterLoopBiLevelTest, UnfeasibilityWithInfiniteOverAllCosts) {
   Outerloop::OuterLoopBiLevel outerLoopBiLevel(data);
-  const std::vector<double> criterions = {data[0].Criterion() - 12,
-                                          data[1].Criterion() - 24};
+  const std::vector<double> criteria = {
+    data[0].Criterion() - 12,
+    data[1].Criterion() - 24
+  };
   const auto lambda = 1205;
   const auto overall_cost = 1e20;
   ASSERT_FALSE(outerLoopBiLevel.Update_bilevel_data_if_feasible(
-      {}, criterions, overall_cost, 0., lambda));
+    {}, criteria, overall_cost, 0., lambda));
   ASSERT_EQ(outerLoopBiLevel.LambdaMin(), lambda);
 }
 
@@ -411,12 +415,14 @@ TEST_F(OuterLoopBiLevelTest, FeasibleScenario) {
   const auto cand_coeff = 2.0;
   outerLoopBiLevel.Init({cand_coeff}, max_x, {{cand, 0}});
   ASSERT_EQ(outerLoopBiLevel.LambdaMax(), cand_coeff * max_x.at(cand));
-  const std::vector<double> criterions = {data[0].Criterion() - 12,
-                                          data[1].Criterion() - 24};
+  const std::vector<double> criteria = {
+    data[0].Criterion() - 12,
+    data[1].Criterion() - 24
+  };
   const Point x = {{cand, max_x.at(cand) / 2}};
 
   ASSERT_TRUE(outerLoopBiLevel.Update_bilevel_data_if_feasible(
-      x, criterions, overall_cost, invest_cost_at_x, lambda));
+    x, criteria, overall_cost, invest_cost_at_x, lambda));
   ASSERT_EQ(outerLoopBiLevel.LambdaMin(), 0.);
   ASSERT_EQ(outerLoopBiLevel.LambdaMax(), invest_cost_at_x);
   ASSERT_EQ(outerLoopBiLevel.BilevelBestub(), overall_cost);
@@ -436,12 +442,14 @@ TEST_F(OuterLoopBiLevelTest,
   // higher than lambda_max initial value
   const auto invest_cost_at_x = initial_lambda_max * 30;
   ASSERT_EQ(outerLoopBiLevel.LambdaMax(), initial_lambda_max);
-  const std::vector<double> criterions = {data[0].Criterion() - 12,
-                                          data[1].Criterion() - 24};
+  const std::vector<double> criteria = {
+    data[0].Criterion() - 12,
+    data[1].Criterion() - 24
+  };
   const Point x = {{cand, max_x.at(cand) / 2}};
 
   ASSERT_TRUE(outerLoopBiLevel.Update_bilevel_data_if_feasible(
-      x, criterions, overall_cost, invest_cost_at_x, lambda));
+    x, criteria, overall_cost, invest_cost_at_x, lambda));
   ASSERT_EQ(outerLoopBiLevel.LambdaMin(), 0.);
   ASSERT_EQ(outerLoopBiLevel.LambdaMax(), initial_lambda_max);
   ASSERT_EQ(outerLoopBiLevel.BilevelBestub(), overall_cost);

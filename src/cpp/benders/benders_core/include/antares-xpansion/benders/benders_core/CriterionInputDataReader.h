@@ -30,14 +30,14 @@ class CriterionInputPatternsShouldBeArray
   using LogUtils::XpansionError<std::runtime_error>::XpansionError;
 };
 
-class CriterionCouldNotReadAreaField
-    : public LogUtils::XpansionError<std::runtime_error> {
-  using LogUtils::XpansionError<std::runtime_error>::XpansionError;
+class CouldNotReadAreaField
+  : public LogUtils::XpansionError<std::runtime_error> {
+ using LogUtils::XpansionError<std::runtime_error>::XpansionError;
 };
 
-class CriterionCouldNotReadCriterionField
-    : public LogUtils::XpansionError<std::runtime_error> {
-  using LogUtils::XpansionError<std::runtime_error>::XpansionError;
+class CouldNotReadCriterionField
+  : public LogUtils::XpansionError<std::runtime_error> {
+ using LogUtils::XpansionError<std::runtime_error>::XpansionError;
 };
 
 /// @brief lovely class
@@ -82,8 +82,9 @@ class CriterionInputData {
  public:
   CriterionInputData() = default;
 
-  [[nodiscard]] const std::vector<CriterionSingleInputData> &CriterionsData()
-      const;
+  [[nodiscard]] const std::vector<CriterionSingleInputData> &Criteria()
+  const;
+
   [[nodiscard]] std::vector<std::string> PatternBodies() const;
   [[nodiscard]] std::string PatternsPrefix() const;
 

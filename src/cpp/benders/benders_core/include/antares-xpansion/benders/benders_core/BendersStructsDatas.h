@@ -5,16 +5,16 @@
 #include "Worker.h"
 #include "common.h"
 
-struct OuterLoopCurrentIterationData{
+struct CriteriaCurrentIterationData {
   int benders_num_run = 0;
-  std::vector<double> outer_loop_criterion = {};
-  std::vector<double> outer_loop_patterns_values = {};
+  std::vector<double> criteria = {};
+  std::vector<double> patterns_values = {};
   double max_criterion = 0.;
   double max_criterion_best_it = 0.;
   double outer_loop_bilevel_best_ub = +1e20;
-  double external_loop_lambda = 0.;
-  double external_loop_lambda_min = 0.;
-  double external_loop_lambda_max = 0.;
+  double lambda = 0.;
+  double lambda_min = 0.;
+  double lambda_max = 0.;
   std::string max_criterion_area = "N/A";
   std::string max_criterion_area_best_it = "N/A";
 };
@@ -53,7 +53,7 @@ struct CurrentIterationData {
   int min_simplexiter;
   int max_simplexiter;
   // ugly
- OuterLoopCurrentIterationData outer_loop_current_iteration_data;
+  CriteriaCurrentIterationData criteria_current_iteration_data;
 };
 
 // /*! \struct to store benders cuts data
