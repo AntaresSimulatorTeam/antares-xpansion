@@ -114,7 +114,7 @@ def test_lp_directory_files(install_dir, test_dir, master_mode, option_mode, set
 
 @pytest.mark.parametrize("test_dir, master_mode", test_data_xpress)
 def test_lp_directory_files(install_dir, test_dir, master_mode, setup_lp_directory, tmp_path):
-    launch_and_compare_lp_with_reference_archive(install_dir, master_mode, setup_lp_directory)
+    launch_and_compare_lp_with_reference_archive(install_dir, master_mode, setup_lp_directory, False)
 
 
 @pytest.mark.parametrize("test_dir", test_data_multiple_candidates)
@@ -150,16 +150,18 @@ def launch_and_compare_lp_with_reference_output(install_dir, master_mode, test_d
     then(lp_dir, old_path, reference_lp_dir, returned_l)
 
 
-
-def launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_dir):
+def launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_dir, unnamed_problems=True):
     old_path = os.getcwd()
     reference_lp_dir = test_dir / "reference_lp"
     lp_dir = test_dir.parent / (test_dir.stem + "-Xpansion") / "lp"
     lp_namer_exe = Path(install_dir) / "lp_namer"
     zip_path = (test_dir.parent / MPS_ZIP).resolve()
     os.chdir(test_dir.parent.parent)
+
     launch_command = [str(lp_namer_exe), "-a", str(zip_path),
-                      "-e", "contraintes.txt", "-f", master_mode, "--unnamed-problems"]
+                      "-e", "contraintes.txt", "-f", master_mode]
+    if unnamed_problems:
+        launch_command.append("--unnamed-problems")
     # when
     returned_l = subprocess.run(launch_command, shell=False)
     # then
