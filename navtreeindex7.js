@@ -1,5 +1,6 @@
 var NAVTREEINDEX7 =
 {
+"structEmptyLogger.html":[26,0,71],
 "structEmptyLogger.html#a69cb84c65248af6f19ec4518a44c02ae":[26,0,71,0],
 "structExternalLoopOptions.html":[26,0,72],
 "structFileBuffer.html":[26,0,74],

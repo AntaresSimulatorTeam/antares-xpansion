@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"md_docs_2developer-guide_2xpansion__steps_21-antares-solver-problem.html#autotoc_md116":[12,1,2],
 "md_docs_2developer-guide_2xpansion__steps_21-antares-solver-problem.html#autotoc_md117":[12,1,3],
 "md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html":[13],
 "md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md119":[13,0],
@@ -141,7 +142,7 @@ var NAVTREEINDEX6 =
 "namespacemembers_func.html":[25,1,1],
 "namespaces.html":[25,0],
 "pages.html":[],
-"solver__utils_8h_source.html":[27,0,0,0,2,0,0,0,10],
+"solver__utils_8h_source.html":[27,0,0,0,2,0,0,0,9],
 "structAdditionalConstraintsReader.html":[26,0,21],
 "structAdditionalConstraintsReader.html#a13bb619592df9587a2d0bf6bffbbf870":[26,0,21,1],
 "structAdditionalConstraintsReader.html#a39a522c1d724b360215ec54ed15ee6cd":[26,0,21,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX6 =
 "structCatch__global__namespace__dummy.html":[26,0,60],
 "structColumnToChange.html":[26,0,66],
 "structCriteriaCurrentIterationData.html":[26,0,68],
-"structCurrentIterationData.html":[26,0,69],
-"structEmptyLogger.html":[26,0,71]
+"structCurrentIterationData.html":[26,0,69]
 };
