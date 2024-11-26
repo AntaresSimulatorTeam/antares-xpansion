@@ -254,9 +254,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>GetBendersRunNumber</b
 <tr class="memitem:af9a5ed5a1bc0ed04c32a39fb3e1806df" id="r_af9a5ed5a1bc0ed04c32a39fb3e1806df"><td class="memItemLeft" align="right" valign="top"><a id="af9a5ed5a1bc0ed04c32a39fb3e1806df" name="af9a5ed5a1bc0ed04c32a39fb3e1806df"></a>
 <a class="el" href="structCurrentIterationData.html">CurrentIterationData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetCurrentIterationData</b> () const</td></tr>
 <tr class="separator:af9a5ed5a1bc0ed04c32a39fb3e1806df"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1c251293f24591f95e855de56176ef74" id="r_a1c251293f24591f95e855de56176ef74"><td class="memItemLeft" align="right" valign="top"><a id="a1c251293f24591f95e855de56176ef74" name="a1c251293f24591f95e855de56176ef74"></a>
-<a class="el" href="structOuterLoopCurrentIterationData.html">OuterLoopCurrentIterationData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetOuterLoopData</b> () const</td></tr>
-<tr class="separator:a1c251293f24591f95e855de56176ef74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e141dbe45eff5033e111ca8424646c4" id="r_a9e141dbe45eff5033e111ca8424646c4"><td class="memItemLeft" align="right" valign="top"><a id="a9e141dbe45eff5033e111ca8424646c4" name="a9e141dbe45eff5033e111ca8424646c4"></a>
+<a class="el" href="structCriteriaCurrentIterationData.html">CriteriaCurrentIterationData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>GetOuterLoopData</b> () const</td></tr>
+<tr class="separator:a9e141dbe45eff5033e111ca8424646c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a919c6f64f842a3d98fe60bd15965959d" id="r_a919c6f64f842a3d98fe60bd15965959d"><td class="memItemLeft" align="right" valign="top"><a id="a919c6f64f842a3d98fe60bd15965959d" name="a919c6f64f842a3d98fe60bd15965959d"></a>
 std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>GetOuterLoopCriterionAtBestBenders</b> () const</td></tr>
 <tr class="separator:a919c6f64f842a3d98fe60bd15965959d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -284,15 +284,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateOuterLoopSoluti
 <tr class="memitem:accdf5da57618fe748bea6ecf2b819401" id="r_accdf5da57618fe748bea6ecf2b819401"><td class="memItemLeft" align="right" valign="top"><a id="accdf5da57618fe748bea6ecf2b819401" name="accdf5da57618fe748bea6ecf2b819401"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>isExceptionRaised</b> () const</td></tr>
 <tr class="separator:accdf5da57618fe748bea6ecf2b819401"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5c9927050f6436b081f5ea30ce4082db" id="r_a5c9927050f6436b081f5ea30ce4082db"><td class="memItemLeft" align="right" valign="top"><a id="a5c9927050f6436b081f5ea30ce4082db" name="a5c9927050f6436b081f5ea30ce4082db"></a>
-std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>OuterloopOptionsFile</b> () const</td></tr>
-<tr class="separator:a5c9927050f6436b081f5ea30ce4082db"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab1dc32430cc9897fd4a6ce15643c4c69" id="r_ab1dc32430cc9897fd4a6ce15643c4c69"><td class="memItemLeft" align="right" valign="top"><a id="ab1dc32430cc9897fd4a6ce15643c4c69" name="ab1dc32430cc9897fd4a6ce15643c4c69"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>UpdateOverallCosts</b> ()</td></tr>
 <tr class="separator:ab1dc32430cc9897fd4a6ce15643c4c69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2f6728302575647f0506c64bb329e770" id="r_a2f6728302575647f0506c64bb329e770"><td class="memItemLeft" align="right" valign="top"><a id="a2f6728302575647f0506c64bb329e770" name="a2f6728302575647f0506c64bb329e770"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>setCriterionsComputation</b> (std::shared_ptr&lt; <a class="el" href="classBenders_1_1Criterion_1_1CriterionComputation.html">Benders::Criterion::CriterionComputation</a> &gt; criterionsComputation)</td></tr>
-<tr class="separator:a2f6728302575647f0506c64bb329e770"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fe8f9f915e343f93d1e8a03bf31a6f4" id="r_a4fe8f9f915e343f93d1e8a03bf31a6f4"><td class="memItemLeft" align="right" valign="top"><a id="a4fe8f9f915e343f93d1e8a03bf31a6f4" name="a4fe8f9f915e343f93d1e8a03bf31a6f4"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>setCriterionComputationInputs</b> (const <a class="el" href="classBenders_1_1Criterion_1_1CriterionInputData.html">Benders::Criterion::CriterionInputData</a> &amp;criterion_input_data)</td></tr>
+<tr class="separator:a4fe8f9f915e343f93d1e8a03bf31a6f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -570,9 +567,9 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>init_problems_</b> = 
 <tr class="memitem:af473bb0ee2a96ec72ba74d8d475e0ef9" id="r_af473bb0ee2a96ec72ba74d8d475e0ef9"><td class="memItemLeft" align="right" valign="top"><a id="af473bb0ee2a96ec72ba74d8d475e0ef9" name="af473bb0ee2a96ec72ba74d8d475e0ef9"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>free_problems_</b> = true</td></tr>
 <tr class="separator:af473bb0ee2a96ec72ba74d8d475e0ef9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0952566f6aef10287fb94cc4d0b0a753" id="r_a0952566f6aef10287fb94cc4d0b0a753"><td class="memItemLeft" align="right" valign="top"><a id="a0952566f6aef10287fb94cc4d0b0a753" name="a0952566f6aef10287fb94cc4d0b0a753"></a>
-std::vector&lt; std::vector&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>outer_loop_criterion_</b></td></tr>
-<tr class="separator:a0952566f6aef10287fb94cc4d0b0a753"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afbb118d7037db77c34a62eb0297d47b5" id="r_afbb118d7037db77c34a62eb0297d47b5"><td class="memItemLeft" align="right" valign="top"><a id="afbb118d7037db77c34a62eb0297d47b5" name="afbb118d7037db77c34a62eb0297d47b5"></a>
+std::vector&lt; std::vector&lt; double &gt; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>criteria_vector_for_each_iteration_</b></td></tr>
+<tr class="separator:afbb118d7037db77c34a62eb0297d47b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a20f3b8b6ec92c7b839f0a8d8f0b3e2c2" id="r_a20f3b8b6ec92c7b839f0a8d8f0b3e2c2"><td class="memItemLeft" align="right" valign="top"><a id="a20f3b8b6ec92c7b839f0a8d8f0b3e2c2" name="a20f3b8b6ec92c7b839f0a8d8f0b3e2c2"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_bilevel_check_all_</b> = false</td></tr>
 <tr class="separator:a20f3b8b6ec92c7b839f0a8d8f0b3e2c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -582,9 +579,9 @@ SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subprobl
 <tr class="memitem:a897cc03471332c177b24423cfc292e66" id="r_a897cc03471332c177b24423cfc292e66"><td class="memItemLeft" align="right" valign="top"><a id="a897cc03471332c177b24423cfc292e66" name="a897cc03471332c177b24423cfc292e66"></a>
 <a class="el" href="classSolverLogManager.html">SolverLogManager</a>&#160;</td><td class="memItemRight" valign="bottom"><b>solver_log_manager_</b></td></tr>
 <tr class="separator:a897cc03471332c177b24423cfc292e66"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad60587284ef0d59592478efb1f7f18d8" id="r_ad60587284ef0d59592478efb1f7f18d8"><td class="memItemLeft" align="right" valign="top"><a id="ad60587284ef0d59592478efb1f7f18d8" name="ad60587284ef0d59592478efb1f7f18d8"></a>
-std::shared_ptr&lt; <a class="el" href="classBenders_1_1Criterion_1_1CriterionComputation.html">Benders::Criterion::CriterionComputation</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>criterions_computation_</b></td></tr>
-<tr class="separator:ad60587284ef0d59592478efb1f7f18d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab526ca7ac6b2ac2bacf9ed7e7f0e4a74" id="r_ab526ca7ac6b2ac2bacf9ed7e7f0e4a74"><td class="memItemLeft" align="right" valign="top"><a id="ab526ca7ac6b2ac2bacf9ed7e7f0e4a74" name="ab526ca7ac6b2ac2bacf9ed7e7f0e4a74"></a>
+<a class="el" href="classBenders_1_1Criterion_1_1CriterionComputation.html">Benders::Criterion::CriterionComputation</a>&#160;</td><td class="memItemRight" valign="bottom"><b>criterion_computation_</b></td></tr>
+<tr class="separator:ab526ca7ac6b2ac2bacf9ed7e7f0e4a74"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a0fa4c04cc9815d16d43cd4a73d89f895" name="a0fa4c04cc9815d16d43cd4a73d89f895"></a>

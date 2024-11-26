@@ -59,10 +59,17 @@ var hierarchy =
     [ "antares_xpansion.config_file_parser.ConfigFileParser", "classantares__xpansion_1_1config__file__parser_1_1ConfigFileParser.html", null ],
     [ "antares_xpansion.config_loader.ConfigLoader", "classantares__xpansion_1_1config__loader_1_1ConfigLoader.html", null ],
     [ "antares_xpansion.xpansionConfig.ConfigParameters", "classantares__xpansion_1_1xpansionConfig_1_1ConfigParameters.html", null ],
-    [ "YAML::convert< OuterLoopInputData >", "structYAML_1_1convert_3_01OuterLoopInputData_01_4.html", null ],
-    [ "YAML::convert< OuterLoopSingleInputData >", "structYAML_1_1convert_3_01OuterLoopSingleInputData_01_4.html", null ],
+    [ "YAML::convert< CriterionSingleInputData >", "classYAML_1_1convert_3_01CriterionSingleInputData_01_4.html", null ],
+    [ "YAML::convert< OuterLoopCriterionInputData >", "classYAML_1_1convert_3_01OuterLoopCriterionInputData_01_4.html", null ],
     [ "Catch::Counts", "structCatch_1_1Counts.html", null ],
+    [ "CouplingMapGenerator", "classCouplingMapGenerator.html", null ],
+    [ "CriteriaCurrentIterationData", "structCriteriaCurrentIterationData.html", null ],
     [ "Benders::Criterion::CriterionComputation", "classBenders_1_1Criterion_1_1CriterionComputation.html", null ],
+    [ "Benders::Criterion::CriterionInputData", "classBenders_1_1Criterion_1_1CriterionInputData.html", [
+      [ "Benders::Criterion::OuterLoopCriterionInputData", "classBenders_1_1Criterion_1_1OuterLoopCriterionInputData.html", null ]
+    ] ],
+    [ "Benders::Criterion::CriterionPattern", "classBenders_1_1Criterion_1_1CriterionPattern.html", null ],
+    [ "Benders::Criterion::CriterionSingleInputData", "classBenders_1_1Criterion_1_1CriterionSingleInputData.html", null ],
     [ "CurrentIterationData", "structCurrentIterationData.html", null ],
     [ "Catch::Decomposer", "structCatch_1_1Decomposer.html", null ],
     [ "DirectAccessScenarioToChronicleProvider", "classDirectAccessScenarioToChronicleProvider.html", null ],
@@ -214,6 +221,9 @@ var hierarchy =
     [ "Catch::IContext", "structCatch_1_1IContext.html", [
       [ "Catch::IMutableContext", "structCatch_1_1IMutableContext.html", null ]
     ] ],
+    [ "Benders::Criterion::ICriterionInputDataReader", "classBenders_1_1Criterion_1_1ICriterionInputDataReader.html", [
+      [ "Benders::Criterion::CriterionInputFromYaml", "classBenders_1_1Criterion_1_1CriterionInputFromYaml.html", null ]
+    ] ],
     [ "Outerloop::ICutsManager", "classOuterloop_1_1ICutsManager.html", [
       [ "Outerloop::CutsManagerRunTime", "classOuterloop_1_1CutsManagerRunTime.html", null ]
     ] ],
@@ -267,9 +277,6 @@ var hierarchy =
       [ "LogUtils::XpansionError< std::invalid_argument >", "classLogUtils_1_1XpansionError.html", [
         [ "LinkProfile::InvalidHourForProfile", "classLinkProfile_1_1InvalidHourForProfile.html", null ]
       ] ]
-    ] ],
-    [ "Benders::Criterion::IOuterLoopInputDataReader", "classBenders_1_1Criterion_1_1IOuterLoopInputDataReader.html", [
-      [ "Benders::Criterion::OuterLoopInputFromYaml", "classBenders_1_1Criterion_1_1OuterLoopInputFromYaml.html", null ]
     ] ],
     [ "IProblemProviderPort", "classIProblemProviderPort.html", [
       [ "FileProblemProviderAdapter", "classFileProblemProviderAdapter.html", null ],
@@ -397,10 +404,6 @@ var hierarchy =
       [ "Outerloop::OuterLoopBenders", "classOuterloop_1_1OuterLoopBenders.html", null ]
     ] ],
     [ "Outerloop::OuterLoopBiLevel", "classOuterloop_1_1OuterLoopBiLevel.html", null ],
-    [ "OuterLoopCurrentIterationData", "structOuterLoopCurrentIterationData.html", null ],
-    [ "Benders::Criterion::OuterLoopInputData", "classBenders_1_1Criterion_1_1OuterLoopInputData.html", null ],
-    [ "Benders::Criterion::OuterLoopPattern", "classBenders_1_1Criterion_1_1OuterLoopPattern.html", null ],
-    [ "Benders::Criterion::OuterLoopSingleInputData", "classBenders_1_1Criterion_1_1OuterLoopSingleInputData.html", null ],
     [ "tests.end_to_end.utils_functions.Outputs", "classtests_1_1end__to__end_1_1utils__functions_1_1Outputs.html", null ],
     [ "Output::OutputWriter", "classOutput_1_1OutputWriter.html", [
       [ "Output::JsonWriter", "classOutput_1_1JsonWriter.html", null ],
@@ -440,12 +443,12 @@ var hierarchy =
         [ "ActiveLinksBuilder::MultipleAlreadyInstalledProfileDetectedForLink", "classActiveLinksBuilder_1_1MultipleAlreadyInstalledProfileDetectedForLink.html", null ],
         [ "ActiveLinksBuilder::MultipleLinkIddetectedForLink", "classActiveLinksBuilder_1_1MultipleLinkIddetectedForLink.html", null ],
         [ "ActiveLinksBuilder::ThereIsNoLinkProfileAssociatedWithThisProfile", "classActiveLinksBuilder_1_1ThereIsNoLinkProfileAssociatedWithThisProfile.html", null ],
-        [ "Benders::Criterion::OuterLoopCouldNotReadAreaField", "classBenders_1_1Criterion_1_1OuterLoopCouldNotReadAreaField.html", null ],
-        [ "Benders::Criterion::OuterLoopCouldNotReadCriterionField", "classBenders_1_1Criterion_1_1OuterLoopCouldNotReadCriterionField.html", null ],
-        [ "Benders::Criterion::OuterLoopInputFileError", "classBenders_1_1Criterion_1_1OuterLoopInputFileError.html", null ],
-        [ "Benders::Criterion::OuterLoopInputFileIsEmpty", "classBenders_1_1Criterion_1_1OuterLoopInputFileIsEmpty.html", null ],
-        [ "Benders::Criterion::OuterLoopInputFileNoPatternFound", "classBenders_1_1Criterion_1_1OuterLoopInputFileNoPatternFound.html", null ],
-        [ "Benders::Criterion::OuterLoopInputPatternsShouldBeArray", "classBenders_1_1Criterion_1_1OuterLoopInputPatternsShouldBeArray.html", null ],
+        [ "Benders::Criterion::CouldNotReadAreaField", "classBenders_1_1Criterion_1_1CouldNotReadAreaField.html", null ],
+        [ "Benders::Criterion::CouldNotReadCriterionField", "classBenders_1_1Criterion_1_1CouldNotReadCriterionField.html", null ],
+        [ "Benders::Criterion::CriterionInputFileError", "classBenders_1_1Criterion_1_1CriterionInputFileError.html", null ],
+        [ "Benders::Criterion::CriterionInputFileIsEmpty", "classBenders_1_1Criterion_1_1CriterionInputFileIsEmpty.html", null ],
+        [ "Benders::Criterion::CriterionInputFileNoPatternFound", "classBenders_1_1Criterion_1_1CriterionInputFileNoPatternFound.html", null ],
+        [ "Benders::Criterion::CriterionInputPatternsShouldBeArray", "classBenders_1_1Criterion_1_1CriterionInputPatternsShouldBeArray.html", null ],
         [ "CandidatesINIReader::InvalidIntercoFile", "classCandidatesINIReader_1_1InvalidIntercoFile.html", null ],
         [ "InvalidBoundTypeException", "classInvalidBoundTypeException.html", null ],
         [ "InvalidColSizeException", "classInvalidColSizeException.html", null ],

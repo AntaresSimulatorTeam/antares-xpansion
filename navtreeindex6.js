@@ -1,5 +1,9 @@
 var NAVTREEINDEX6 =
 {
+"md_docs_2developer-guide_2xpansion__steps_21-antares-solver-problem.html#autotoc_md117":[12,1,3],
+"md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html":[13],
+"md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md119":[13,0],
+"md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md120":[13,1],
 "md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md121":[13,1,0],
 "md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md122":[13,1,1],
 "md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md123":[13,1,1,0],
@@ -243,11 +247,7 @@ var NAVTREEINDEX6 =
 "structCatch_1_1true__given.html":[26,0,3,85],
 "structCatch__global__namespace__dummy.html":[26,0,60],
 "structColumnToChange.html":[26,0,66],
-"structCurrentIterationData.html":[26,0,67],
-"structEmptyLogger.html":[26,0,69],
-"structEmptyLogger.html#a69cb84c65248af6f19ec4518a44c02ae":[26,0,69,0],
-"structExternalLoopOptions.html":[26,0,70],
-"structFileBuffer.html":[26,0,72],
-"structHeadersManager.html":[26,0,85],
-"structHeadersManagerExternalLoop.html":[26,0,86]
+"structCriteriaCurrentIterationData.html":[26,0,68],
+"structCurrentIterationData.html":[26,0,69],
+"structEmptyLogger.html":[26,0,71]
 };

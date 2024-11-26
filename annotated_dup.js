@@ -129,18 +129,19 @@ var annotated_dup =
     ] ],
     [ "Benders", null, [
       [ "Criterion", null, [
+        [ "CouldNotReadAreaField", "classBenders_1_1Criterion_1_1CouldNotReadAreaField.html", null ],
+        [ "CouldNotReadCriterionField", "classBenders_1_1Criterion_1_1CouldNotReadCriterionField.html", null ],
         [ "CriterionComputation", "classBenders_1_1Criterion_1_1CriterionComputation.html", "classBenders_1_1Criterion_1_1CriterionComputation" ],
-        [ "IOuterLoopInputDataReader", "classBenders_1_1Criterion_1_1IOuterLoopInputDataReader.html", null ],
-        [ "OuterLoopCouldNotReadAreaField", "classBenders_1_1Criterion_1_1OuterLoopCouldNotReadAreaField.html", null ],
-        [ "OuterLoopCouldNotReadCriterionField", "classBenders_1_1Criterion_1_1OuterLoopCouldNotReadCriterionField.html", null ],
-        [ "OuterLoopInputData", "classBenders_1_1Criterion_1_1OuterLoopInputData.html", null ],
-        [ "OuterLoopInputFileError", "classBenders_1_1Criterion_1_1OuterLoopInputFileError.html", null ],
-        [ "OuterLoopInputFileIsEmpty", "classBenders_1_1Criterion_1_1OuterLoopInputFileIsEmpty.html", null ],
-        [ "OuterLoopInputFileNoPatternFound", "classBenders_1_1Criterion_1_1OuterLoopInputFileNoPatternFound.html", null ],
-        [ "OuterLoopInputFromYaml", "classBenders_1_1Criterion_1_1OuterLoopInputFromYaml.html", null ],
-        [ "OuterLoopInputPatternsShouldBeArray", "classBenders_1_1Criterion_1_1OuterLoopInputPatternsShouldBeArray.html", null ],
-        [ "OuterLoopPattern", "classBenders_1_1Criterion_1_1OuterLoopPattern.html", "classBenders_1_1Criterion_1_1OuterLoopPattern" ],
-        [ "OuterLoopSingleInputData", "classBenders_1_1Criterion_1_1OuterLoopSingleInputData.html", "classBenders_1_1Criterion_1_1OuterLoopSingleInputData" ],
+        [ "CriterionInputData", "classBenders_1_1Criterion_1_1CriterionInputData.html", null ],
+        [ "CriterionInputFileError", "classBenders_1_1Criterion_1_1CriterionInputFileError.html", null ],
+        [ "CriterionInputFileIsEmpty", "classBenders_1_1Criterion_1_1CriterionInputFileIsEmpty.html", null ],
+        [ "CriterionInputFileNoPatternFound", "classBenders_1_1Criterion_1_1CriterionInputFileNoPatternFound.html", null ],
+        [ "CriterionInputFromYaml", "classBenders_1_1Criterion_1_1CriterionInputFromYaml.html", null ],
+        [ "CriterionInputPatternsShouldBeArray", "classBenders_1_1Criterion_1_1CriterionInputPatternsShouldBeArray.html", null ],
+        [ "CriterionPattern", "classBenders_1_1Criterion_1_1CriterionPattern.html", "classBenders_1_1Criterion_1_1CriterionPattern" ],
+        [ "CriterionSingleInputData", "classBenders_1_1Criterion_1_1CriterionSingleInputData.html", "classBenders_1_1Criterion_1_1CriterionSingleInputData" ],
+        [ "ICriterionInputDataReader", "classBenders_1_1Criterion_1_1ICriterionInputDataReader.html", null ],
+        [ "OuterLoopCriterionInputData", "classBenders_1_1Criterion_1_1OuterLoopCriterionInputData.html", null ],
         [ "VariablesGroup", "classBenders_1_1Criterion_1_1VariablesGroup.html", null ]
       ] ],
       [ "StartUp", "classBenders_1_1StartUp.html", null ]
@@ -418,8 +419,8 @@ var annotated_dup =
       ] ]
     ] ],
     [ "YAML", null, [
-      [ "convert< OuterLoopInputData >", "structYAML_1_1convert_3_01OuterLoopInputData_01_4.html", null ],
-      [ "convert< OuterLoopSingleInputData >", "structYAML_1_1convert_3_01OuterLoopSingleInputData_01_4.html", null ]
+      [ "convert< CriterionSingleInputData >", "classYAML_1_1convert_3_01CriterionSingleInputData_01_4.html", null ],
+      [ "convert< OuterLoopCriterionInputData >", "classYAML_1_1convert_3_01OuterLoopCriterionInputData_01_4.html", null ]
     ] ],
     [ "act", "classact.html", null ],
     [ "ActiveLink", "classActiveLink.html", null ],
@@ -472,6 +473,8 @@ var annotated_dup =
     [ "Clock", "classClock.html", null ],
     [ "ClockMock", "classClockMock.html", null ],
     [ "ColumnToChange", "structColumnToChange.html", null ],
+    [ "CouplingMapGenerator", "classCouplingMapGenerator.html", null ],
+    [ "CriteriaCurrentIterationData", "structCriteriaCurrentIterationData.html", null ],
     [ "CurrentIterationData", "structCurrentIterationData.html", null ],
     [ "DirectAccessScenarioToChronicleProvider", "classDirectAccessScenarioToChronicleProvider.html", null ],
     [ "EmptyLogger", "structEmptyLogger.html", "structEmptyLogger" ],
@@ -560,7 +563,6 @@ var annotated_dup =
     [ "OptionsParser", "classOptionsParser.html", "classOptionsParser" ],
     [ "OptionsParserTest", "classOptionsParserTest.html", null ],
     [ "OuterLoopBiLevelTest", "classOuterLoopBiLevelTest.html", null ],
-    [ "OuterLoopCurrentIterationData", "structOuterLoopCurrentIterationData.html", null ],
     [ "OuterLoopInputFromYamlTest", "classOuterLoopInputFromYamlTest.html", null ],
     [ "OuterLoopPatternTest", "classOuterLoopPatternTest.html", null ],
     [ "Predicate", "structPredicate.html", null ],

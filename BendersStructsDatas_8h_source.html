@@ -147,16 +147,16 @@ $(document).ready(function(){initNavTree('BendersStructsDatas_8h_source.html',''
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;common.h&quot;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
 <div class="foldopen" id="foldopen00008" data-start="{" data-end="};">
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="structOuterLoopCurrentIterationData.html">    8</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structOuterLoopCurrentIterationData.html">OuterLoopCurrentIterationData</a>{</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="structCriteriaCurrentIterationData.html">    8</a></span><span class="keyword">struct </span><a class="code hl_struct" href="structCriteriaCurrentIterationData.html">CriteriaCurrentIterationData</a> {</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>  <span class="keywordtype">int</span> benders_num_run = 0;</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  std::vector&lt;double&gt; outer_loop_criterion = {};</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  std::vector&lt;double&gt; outer_loop_patterns_values = {};</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  std::vector&lt;double&gt; criteria = {};</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  std::vector&lt;double&gt; patterns_values = {};</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  <span class="keywordtype">double</span> max_criterion = 0.;</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  <span class="keywordtype">double</span> max_criterion_best_it = 0.;</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  <span class="keywordtype">double</span> outer_loop_bilevel_best_ub = +1e20;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <span class="keywordtype">double</span> external_loop_lambda = 0.;</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <span class="keywordtype">double</span> external_loop_lambda_min = 0.;</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keywordtype">double</span> external_loop_lambda_max = 0.;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <span class="keywordtype">double</span> lambda = 0.;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <span class="keywordtype">double</span> lambda_min = 0.;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keywordtype">double</span> lambda_max = 0.;</div>
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  std::string max_criterion_area = <span class="stringliteral">&quot;N/A&quot;</span>;</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  std::string max_criterion_area_best_it = <span class="stringliteral">&quot;N/A&quot;</span>;</div>
 <div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>};</div>
@@ -194,7 +194,7 @@ $(document).ready(function(){initNavTree('BendersStructsDatas_8h_source.html',''
 <div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  <span class="keywordtype">int</span> min_simplexiter;</div>
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keywordtype">int</span> max_simplexiter;</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="comment">// ugly</span></div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> <a class="code hl_struct" href="structOuterLoopCurrentIterationData.html">OuterLoopCurrentIterationData</a> outer_loop_current_iteration_data;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <a class="code hl_struct" href="structCriteriaCurrentIterationData.html">CriteriaCurrentIterationData</a> criteria_current_iteration_data;</div>
 <div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>};</div>
 </div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
@@ -244,8 +244,8 @@ $(document).ready(function(){initNavTree('BendersStructsDatas_8h_source.html',''
 <div class="ttc" id="aclassWorkerMasterData_html"><div class="ttname"><a href="classWorkerMasterData.html">WorkerMasterData</a></div><div class="ttdoc">Class use to store trace information during the algorithm run.</div><div class="ttdef"><b>Definition</b> BendersStructsDatas.h:72</div></div>
 <div class="ttc" id="aclassWorkerMasterData_html_ab607ad86ef5badf22f0ed51e097aad77"><div class="ttname"><a href="classWorkerMasterData.html#ab607ad86ef5badf22f0ed51e097aad77">WorkerMasterData::get_x_cut</a></div><div class="ttdeci">Point get_x_cut() const</div><div class="ttdoc">Get point.</div><div class="ttdef"><b>Definition</b> BendersStructsDatas.cpp:6</div></div>
 <div class="ttc" id="astructBendersRelevantIterationsData_html"><div class="ttname"><a href="structBendersRelevantIterationsData.html">BendersRelevantIterationsData</a></div><div class="ttdef"><b>Definition</b> BendersStructsDatas.h:97</div></div>
+<div class="ttc" id="astructCriteriaCurrentIterationData_html"><div class="ttname"><a href="structCriteriaCurrentIterationData.html">CriteriaCurrentIterationData</a></div><div class="ttdef"><b>Definition</b> BendersStructsDatas.h:8</div></div>
 <div class="ttc" id="astructCurrentIterationData_html"><div class="ttname"><a href="structCurrentIterationData.html">CurrentIterationData</a></div><div class="ttdef"><b>Definition</b> BendersStructsDatas.h:24</div></div>
-<div class="ttc" id="astructOuterLoopCurrentIterationData_html"><div class="ttname"><a href="structOuterLoopCurrentIterationData.html">OuterLoopCurrentIterationData</a></div><div class="ttdef"><b>Definition</b> BendersStructsDatas.h:8</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

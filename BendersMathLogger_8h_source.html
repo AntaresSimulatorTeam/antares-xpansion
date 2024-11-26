@@ -294,7 +294,7 @@ $(document).ready(function(){initNavTree('BendersMathLogger_8h_source.html','');
 <div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>  <span class="keyword">explicit</span> <a class="code hl_struct" href="structMathLoggerExternalLoopSpecific.html">MathLoggerExternalLoopSpecific</a>(</div>
 <div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span>      <span class="keyword">const</span> std::filesystem::path&amp; file_path,</div>
 <div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span>      <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; headers,</div>
-<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>      T <a class="code hl_struct" href="structOuterLoopCurrentIterationData.html">OuterLoopCurrentIterationData</a>::*ptr)</div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span>      T <a class="code hl_struct" href="structCriteriaCurrentIterationData.html">CriteriaCurrentIterationData</a>::*ptr)</div>
 <div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span>      : <a class="code hl_struct" href="structMathLogger.html">MathLogger</a>(file_path), ptr_(ptr) {</div>
 <div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>    headers_.push_back(<span class="stringliteral">&quot;Outer loop&quot;</span>);</div>
 <div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    headers_.push_back(<span class="stringliteral">&quot;Ite&quot;</span>);</div>
@@ -310,7 +310,7 @@ $(document).ready(function(){initNavTree('BendersMathLogger_8h_source.html','');
 <div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span> </div>
 <div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> <span class="keyword">private</span>:</div>
 <div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>  std::vector&lt;std::string&gt; headers_;</div>
-<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  T <a class="code hl_struct" href="structOuterLoopCurrentIterationData.html">OuterLoopCurrentIterationData</a>::*ptr_;</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>  T <a class="code hl_struct" href="structCriteriaCurrentIterationData.html">CriteriaCurrentIterationData</a>::*ptr_;</div>
 <div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>};</div>
 </div>
 <div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span> </div>
@@ -357,7 +357,7 @@ $(document).ready(function(){initNavTree('BendersMathLogger_8h_source.html','');
 <div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>  <span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
 <div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span>  <span class="keywordtype">void</span> add_logger(<span class="keyword">const</span> std::filesystem::path&amp; file_path,</div>
 <div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span>                  <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; headers,</div>
-<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>                  T <a class="code hl_struct" href="structOuterLoopCurrentIterationData.html">OuterLoopCurrentIterationData</a>::*t);</div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span>                  T <a class="code hl_struct" href="structCriteriaCurrentIterationData.html">CriteriaCurrentIterationData</a>::*t);</div>
 <div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span>  <span class="keywordtype">void</span> Print(<span class="keyword">const</span> <a class="code hl_struct" href="structCurrentIterationData.html">CurrentIterationData</a>&amp; data);</div>
 <div class="line"><a id="l00198" name="l00198"></a><span class="lineno">  198</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> PrintIterationSeparatorBegin() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> PrintIterationSeparatorEnd() <span class="keyword">override</span>;</div>
@@ -371,7 +371,7 @@ $(document).ready(function(){initNavTree('BendersMathLogger_8h_source.html','');
 <div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="keyword">template</span> &lt;<span class="keyword">class</span> T&gt;</div>
 <div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span><span class="keywordtype">void</span> MathLoggerDriver::add_logger(<span class="keyword">const</span> std::filesystem::path&amp; file_path,</div>
 <div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>                                  <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; headers,</div>
-<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>                                  T <a class="code hl_struct" href="structOuterLoopCurrentIterationData.html">OuterLoopCurrentIterationData</a>::*t) {</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>                                  T <a class="code hl_struct" href="structCriteriaCurrentIterationData.html">CriteriaCurrentIterationData</a>::*t) {</div>
 <div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>  <span class="keyword">auto</span> impl = std::make_shared&lt;MathLoggerExternalLoopSpecific&lt;T&gt;&gt;(file_path,</div>
 <div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>                                                                  headers, t);</div>
 <div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>  add_logger(std::make_shared&lt;MathLoggerImplementation&gt;(impl));</div>
@@ -385,11 +385,11 @@ $(document).ready(function(){initNavTree('BendersMathLogger_8h_source.html','');
 <div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span><span class="keywordtype">void</span> <a class="code hl_struct" href="structMathLoggerExternalLoopSpecific.html">MathLoggerExternalLoopSpecific&lt;T&gt;::Print</a>(</div>
 <div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>    <span class="keyword">const</span> <a class="code hl_struct" href="structCurrentIterationData.html">CurrentIterationData</a>&amp; data) {</div>
 <div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>  LogsDestination().InsertDelimiter();</div>
-<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>  LogsDestination() &lt;&lt; data.outer_loop_current_iteration_data.benders_num_run;</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>  LogsDestination() &lt;&lt; data.criteria_current_iteration_data.benders_num_run;</div>
 <div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>  LogsDestination().InsertDelimiter();</div>
 <div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>  LogsDestination() &lt;&lt; data.it;</div>
 <div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>  LogsDestination().InsertDelimiter();</div>
-<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; t : data.outer_loop_current_iteration_data.*ptr_) {</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>  <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span>&amp; t : data.criteria_current_iteration_data.*ptr_) {</div>
 <div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>    LogsDestination() &lt;&lt; std::scientific &lt;&lt; std::setprecision(10) &lt;&lt; t;</div>
 <div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>    LogsDestination().InsertDelimiter();</div>
 <div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>  }</div>
@@ -415,6 +415,7 @@ $(document).ready(function(){initNavTree('BendersMathLogger_8h_source.html','');
 <div class="ttc" id="aclassMathLoggerDriver_html_a60e641c493e45981f66178843098a19f"><div class="ttname"><a href="classMathLoggerDriver.html#a60e641c493e45981f66178843098a19f">MathLoggerDriver::display_message</a></div><div class="ttdeci">void display_message(const std::string &amp;str) override</div><div class="ttdoc">pure virtual method to display a std::string message</div><div class="ttdef"><b>Definition</b> BendersMathLogger.cpp:291</div></div>
 <div class="ttc" id="aclassMathLoggerImplementation_html"><div class="ttname"><a href="classMathLoggerImplementation.html">MathLoggerImplementation</a></div><div class="ttdef"><b>Definition</b> BendersMathLogger.h:156</div></div>
 <div class="ttc" id="aclassMathLoggerImplementation_html_a433bd4d646c45306a225e310f681493d"><div class="ttname"><a href="classMathLoggerImplementation.html#a433bd4d646c45306a225e310f681493d">MathLoggerImplementation::display_message</a></div><div class="ttdeci">void display_message(const std::string &amp;str) override</div><div class="ttdoc">pure virtual method to display a std::string message</div><div class="ttdef"><b>Definition</b> BendersMathLogger.cpp:371</div></div>
+<div class="ttc" id="astructCriteriaCurrentIterationData_html"><div class="ttname"><a href="structCriteriaCurrentIterationData.html">CriteriaCurrentIterationData</a></div><div class="ttdef"><b>Definition</b> BendersStructsDatas.h:8</div></div>
 <div class="ttc" id="astructCurrentIterationData_html"><div class="ttname"><a href="structCurrentIterationData.html">CurrentIterationData</a></div><div class="ttdef"><b>Definition</b> BendersStructsDatas.h:24</div></div>
 <div class="ttc" id="astructHeadersManagerExternalLoop_html"><div class="ttname"><a href="structHeadersManagerExternalLoop.html">HeadersManagerExternalLoop</a></div><div class="ttdef"><b>Definition</b> BendersMathLogger.h:22</div></div>
 <div class="ttc" id="astructHeadersManager_html"><div class="ttname"><a href="structHeadersManager.html">HeadersManager</a></div><div class="ttdef"><b>Definition</b> BendersMathLogger.h:14</div></div>
@@ -428,7 +429,6 @@ $(document).ready(function(){initNavTree('BendersMathLogger_8h_source.html','');
 <div class="ttc" id="astructMathLoggerExternalLoopSpecific_html_a8a9621b528cb90afd087a4e9b1d5ae5f"><div class="ttname"><a href="structMathLoggerExternalLoopSpecific.html#a8a9621b528cb90afd087a4e9b1d5ae5f">MathLoggerExternalLoopSpecific::display_message</a></div><div class="ttdeci">void display_message(const std::string &amp;msg) override</div><div class="ttdoc">pure virtual method to display a std::string message</div><div class="ttdef"><b>Definition</b> BendersMathLogger.h:235</div></div>
 <div class="ttc" id="astructMathLogger_html"><div class="ttname"><a href="structMathLogger.html">MathLogger</a></div><div class="ttdef"><b>Definition</b> BendersMathLogger.h:77</div></div>
 <div class="ttc" id="astructMathLogger_html_a80aab68d65d4ea91c5151d8b3d575209"><div class="ttname"><a href="structMathLogger.html#a80aab68d65d4ea91c5151d8b3d575209">MathLogger::display_message</a></div><div class="ttdeci">void display_message(const std::string &amp;str) override</div><div class="ttdoc">pure virtual method to display a std::string message</div><div class="ttdef"><b>Definition</b> BendersMathLogger.cpp:118</div></div>
-<div class="ttc" id="astructOuterLoopCurrentIterationData_html"><div class="ttname"><a href="structOuterLoopCurrentIterationData.html">OuterLoopCurrentIterationData</a></div><div class="ttdef"><b>Definition</b> BendersStructsDatas.h:8</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
