@@ -1,5 +1,9 @@
 var NAVTREEINDEX7 =
 {
+"structILoggerXpansion.html":[26,0,88],
+"structILoggerXpansion.html#a5d5ef0a1321f54372ecba334a7ae1acd":[26,0,88,1],
+"structILoggerXpansion.html#ac29cdc7dc59c2dde6ce45201c91e770e":[26,0,88,0],
+"structIntercoFileData.html":[26,0,93],
 "structInvalidStructureFile.html":[26,0,103],
 "structLinkdataRecord.html":[26,0,118],
 "structLinkdataRecord.html#a12279383606cfad20c9c61b23947c04a":[26,0,118,5],
@@ -39,13 +43,13 @@ var NAVTREEINDEX7 =
 "structProblemVariables.html":[26,0,175],
 "structRawPbData.html":[26,0,181],
 "structSensitivityInputData.html":[26,0,186],
-"structSinglePbData.html":[26,0,203],
-"structSolverData.html":[26,0,207],
-"structVariableFileLine.html":[26,0,224],
-"structVariableFileReadNameConfiguration.html":[26,0,227],
-"structVariableNameComposition.html":[26,0,228],
-"structVersion.html":[26,0,230],
+"structSinglePbData.html":[26,0,204],
+"structSolverData.html":[26,0,208],
+"structVariableFileLine.html":[26,0,225],
+"structVariableFileReadNameConfiguration.html":[26,0,228],
+"structVariableNameComposition.html":[26,0,229],
+"structVersion.html":[26,0,231],
 "structYAML_1_1convert_3_01OuterLoopInputData_01_4.html":[26,0,15,0],
 "structYAML_1_1convert_3_01OuterLoopSingleInputData_01_4.html":[26,0,15,1],
-"structto.html":[26,0,221]
+"structto.html":[26,0,222]
 };

@@ -1,5 +1,7 @@
 var NAVTREEINDEX1 =
 {
+"classBenders_1_1StartUp.html":[26,0,2,1],
+"classCandidate.html":[26,0,56],
 "classCandidatesINIReader.html":[26,0,58],
 "classCandidatesINIReaderTest.html":[26,0,59],
 "classCandidatesINIReader_1_1InvalidIntercoFile.html":[26,0,58,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX1 =
 "classProblem.html#a4bc726350bcf61005c30cc61e6018b4e":[26,0,159,3],
 "classProblem.html#a4c2bc9d5b720e92404bfb9179a0b0194":[26,0,159,50],
 "classProblem.html#a678f5f40e1102d81f5dcb95a575e041a":[26,0,159,45],
-"classProblem.html#a6ce71bda1dfbb47ad3ab18e80698cde6":[26,0,159,36],
-"classProblem.html#a708234655849d976c5698615cd67c65c":[26,0,159,53],
-"classProblem.html#a7415aee60e1b8a3b83f9b4e2a989a827":[26,0,159,12]
+"classProblem.html#a6ce71bda1dfbb47ad3ab18e80698cde6":[26,0,159,36]
 };

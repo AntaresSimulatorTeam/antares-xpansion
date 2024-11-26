@@ -502,6 +502,7 @@ var hierarchy =
     ] ],
     [ "SensitivityStudy", "classSensitivityStudy.html", null ],
     [ "SensitivityWriter", "classSensitivityWriter.html", null ],
+    [ "SettingsReader", "classSettingsReader.html", null ],
     [ "Catch::SimplePcg32", "classCatch_1_1SimplePcg32.html", null ],
     [ "SimulationOptions", "classSimulationOptions.html", null ],
     [ "SinglePbData", "structSinglePbData.html", null ],

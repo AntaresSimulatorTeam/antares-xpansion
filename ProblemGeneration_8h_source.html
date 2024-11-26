@@ -191,12 +191,16 @@ $(document).ready(function(){initNavTree('ProblemGeneration_8h_source.html','');
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>      <span class="keyword">const</span> std::vector&lt;ProblemData&gt;&amp; mpsList, std::filesystem::path&amp; lpDir_,</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>      std::shared_ptr&lt;ArchiveReader&gt; reader,</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>      <span class="keyword">const</span> Antares::Solver::LpsFromAntares&amp; lps);</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  Antares::Solver::LpsFromAntares lps_;</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>  std::optional&lt;SimulationInputMode&gt; mode_;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  <span class="keyword">virtual</span> std::filesystem::path performAntaresSimulation();</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  std::filesystem::path simulation_dir_;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>};</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keyword">virtual</span> <span class="keywordtype">void</span> set_solver(std::filesystem::path study_dir, <a class="code hl_class" href="classProblemGenerationLog_1_1ProblemGenerationLogger.html">ProblemGenerationLog::ProblemGenerationLogger</a>* logger);</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  Antares::Solver::LpsFromAntares lps_;</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  std::optional&lt;SimulationInputMode&gt; mode_;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  <span class="keyword">virtual</span> std::filesystem::path performAntaresSimulation();</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  std::filesystem::path simulation_dir_;</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>  std::string solver_name_;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>};</div>
 </div>
+<div class="ttc" id="aclassProblemGenerationLog_1_1ProblemGenerationLogger_html"><div class="ttname"><a href="classProblemGenerationLog_1_1ProblemGenerationLogger.html">ProblemGenerationLog::ProblemGenerationLogger</a></div><div class="ttdef"><b>Definition</b> ProblemGenerationLogger.h:77</div></div>
 <div class="ttc" id="aclassProblemGenerationOptions_html"><div class="ttname"><a href="classProblemGenerationOptions.html">ProblemGenerationOptions</a></div><div class="ttdef"><b>Definition</b> ProblemGenerationOptions.h:10</div></div>
 <div class="ttc" id="aclassProblemGeneration_html"><div class="ttname"><a href="classProblemGeneration.html">ProblemGeneration</a></div><div class="ttdef"><b>Definition</b> ProblemGeneration.h:22</div></div>
 <div class="ttc" id="aclassSolverLogManager_html"><div class="ttname"><a href="classSolverLogManager.html">SolverLogManager</a></div><div class="ttdef"><b>Definition</b> SolverAbstract.h:16</div></div>

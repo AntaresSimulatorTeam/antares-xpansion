@@ -606,6 +606,7 @@ var annotated_dup =
     [ "SensitivityUserLoggerTest", "classSensitivityUserLoggerTest.html", null ],
     [ "SensitivityWriter", "classSensitivityWriter.html", null ],
     [ "SensitivityWriterTest", "classSensitivityWriterTest.html", null ],
+    [ "SettingsReader", "classSettingsReader.html", "classSettingsReader" ],
     [ "SimpleLoggerMock", "classSimpleLoggerMock.html", "classSimpleLoggerMock" ],
     [ "SimulationOptions", "classSimulationOptions.html", "classSimulationOptions" ],
     [ "SinglePbData", "structSinglePbData.html", null ],
