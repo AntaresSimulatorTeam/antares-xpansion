@@ -26,7 +26,7 @@ def study_path_is(context, string):
 def set_solver(context, string):
     context.solver = string
     match = False
-    with fileinput.FileInput(str(context.tmp_study / "user/expansion/settings.ini"), inplace=True) as file:
+    with fileinput.FileInput(str(context.tmp_study / "user" / "expansion" / "settings.ini"), inplace=True) as file:
         for line in file:
             match = match or re.search(r'solver\s*=.*', line)
             print(re.sub(r'solver\s*=.*', f'solver= {string}', line), end='')

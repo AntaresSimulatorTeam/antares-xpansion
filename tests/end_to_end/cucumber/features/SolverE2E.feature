@@ -5,7 +5,7 @@ Feature:
 
     @short @full-launch @xpress
     Scenario:
-        Given the study path is "examples/SmallTestFiveCandidatesWithWeights"
+        Given the study path is "data_test/examples/dummy-3areas-3candidates-3links"
         And solver is "Xpress"
         When I run antares-xpansion with the benders method and 1 proc(s)
         Then the simulation succeeds
@@ -14,7 +14,7 @@ Feature:
 
     @short @full-launch
     Scenario:
-        Given the study path is "examples/SmallTestFiveCandidatesWithWeights"
+        Given the study path is "data_test/examples/dummy-3areas-3candidates-3links"
         And solver is "Cbc"
         When I run antares-xpansion with the benders method and 1 proc(s)
         Then the simulation succeeds
