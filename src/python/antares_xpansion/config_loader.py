@@ -377,7 +377,7 @@ class ConfigLoader:
         if "solver" not in self.options:
             default_solver = self._config.settings_default["solver"]
             self.logger.info(
-                f"No solver defined in user/expansion/settings.ini. {default_solver} used"
+                f"No solver defined in user/expansion/settings.ini. Sirius will be used for Antares Simulator and {default_solver} for Xpansion."
             )
             self.options["solver"] = default_solver
         else:
