@@ -35,5 +35,11 @@
       ]
     },
     "tbb"
+  ],
+  "overrides": [
+    {
+      "name": "tbb",
+      "version-string": "2020_U3"
+    }
   ]
 }
