@@ -6,6 +6,8 @@
 # Targets
 # ===========================================================================
 
+find_package(TBB REQUIRED CONFIG)
+
 add_library(benders_core)
 target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/BendersBase.cpp
@@ -63,9 +65,7 @@ target_link_libraries(benders_core
         antaresXpansion::outer_loop_lib
 )
 
-if (TBB_FOUND)
-    target_link_libraries(benders_core PRIVATE tbb)
-endif ()
+target_link_libraries(benders_core PRIVATE tbb)
 
 install(DIRECTORY include/antares-xpansion
         DESTINATION "include"
