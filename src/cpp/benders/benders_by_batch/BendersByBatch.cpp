@@ -296,8 +296,9 @@ void BendersByBatch::GetSubproblemCut(
       worker->get_subgradient(
           subproblem_data.var_name_and_subgradient);  // dual pi_s
       auto subpb_cost_under_approx = GetAlpha_i()[ProblemToId(name)];
-      *batch_subproblems_costs_contribution_in_gap_per_proc += std::max(
-          subproblem_data.subproblem_cost - subpb_cost_under_approx, 0.0);
+      // Tbb includes min max define of windows std::numeric_limits<int>::max();
+      *batch_subproblems_costs_contribution_in_gap_per_proc += (std::max)(
+        subproblem_data.subproblem_cost - subpb_cost_under_approx, 0.0);
       double cut_value_at_x_cut = subproblem_data.subproblem_cost;
       for (const auto &[candidate_name, x_cut_candidate_value] : _data.x_cut) {
         auto subgradient_at_name =
@@ -325,7 +326,8 @@ double BendersByBatch::Gap() const {
   if (_data.is_in_initial_relaxation) {
     return RelaxedGap() * _data.lb;
   } else {
-    return std::max(AbsoluteGap(), RelativeGap() * _data.lb);
+    // Tbb 2020 includes Windows min max defines
+    return (std::max)(AbsoluteGap(), RelativeGap() * _data.lb);
   }
 }
 /*!

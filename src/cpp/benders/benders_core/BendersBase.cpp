@@ -843,7 +843,8 @@ void BendersBase::BoundSimplexIterations(int subproblem_iterations){
 void BendersBase::ResetSimplexIterationsBounds()
 {
 	_data.max_simplexiter = 0;
-	_data.min_simplexiter = std::numeric_limits<int>::max();
+  // Tbb 2020 includes Windows min max defines that's why we don't write std::numeric_limits<int>::max();
+  _data.min_simplexiter = (std::numeric_limits<int>::max)();
 }
 bool BendersBase::IsResumeMode() const { return _options.RESUME; }
 
