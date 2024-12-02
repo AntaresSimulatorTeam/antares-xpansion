@@ -6,7 +6,6 @@
 # Targets
 # ===========================================================================
 
-find_package(TBB REQUIRED CONFIG)
 add_library(lp_namer_problem_modifier)
 target_sources(lp_namer_problem_modifier PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/AdditionalConstraints.cpp
