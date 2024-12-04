@@ -18,7 +18,7 @@ RUN \
   yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils &&\
   yum install -y devtoolset-11-gcc* environment-modules rpm-build zlib-devel &&\
   yum install -y doxygen graphviz &&\
-  yum install -y install python3-devel
+  yum install -y install python3-devel jq
 
 RUN \
     yum -y install https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm &&\
@@ -35,7 +35,8 @@ RUN \
 RUN \
     rm -f Miniconda3-py38_23.5.1-0-Linux-x86_64.sh
 
-
+RUN export PATH=/root/miniconda3/condabin:$PATH && \
+    conda install -c fico-xpress "xpress>=9.2,<9.3"
 #create user
 RUN useradd user
 # USER user
