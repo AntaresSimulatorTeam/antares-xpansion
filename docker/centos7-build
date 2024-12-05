@@ -118,7 +118,7 @@ RUN  XPANSION_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | j
      pushd _build && \
      export FILE_NAME="antaresXpansion-$XPANSION_VERSION-CentOS-7.9.2009" && \
      cpack -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME && \
-     popd
+     popd && \
      mv _build/$FILE_NAME archive/
 
 

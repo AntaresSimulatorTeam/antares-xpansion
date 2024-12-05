@@ -93,8 +93,6 @@ jobs:
         run: |
           ls -latr .ccache/
           echo "-------------"
-          cat ${{ env.DOCKERFILE }}
-          echo "-------------"
           docker build \
           -t antaresxpansion:centos7  \
           --build-arg="BRANCH=${{ env.REF }}" \
