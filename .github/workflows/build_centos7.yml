@@ -95,7 +95,7 @@ jobs:
           echo "-------------"
           docker build \
           -t antaresxpansion:centos7  \
-          --build-arg="BRANCH=${{ env.REF }}" \
+          --build-arg="BRANCH=${{ github.ref_name }}" \
           --build-arg="NPROC=$(nproc)" \
           --build-arg="VCPKG_CACHE_DIR=./vcpkg_cache" \
           --build-arg CCACHE_DIR=./.ccache \
