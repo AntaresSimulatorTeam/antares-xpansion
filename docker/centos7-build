@@ -36,7 +36,8 @@ RUN ORTOOLS_TAG=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '
 RUN ANTARES_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."antares_version"' ) && \
     echo "ANTARES_VERSION=$ANTARES_VERSION" && \
     mkdir -p deps && \
-    URL_ORTOOLS=https:https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v$ANTARES_VERSION/antares-${ANTARES_VERSION}-CentOS-7.9.2009.tar.gz && \
+    URL_ANTARES=https:https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v$ANTARES_VERSION/antares-${ANTARES_VERSION}-CentOS-7.9.2009.tar.gz && \
+    wget $URL_ANTARES && \
     tar -xvf antares-${ANTARES_VERSION}-CentOS-7.9.2009.tar.gz -C deps --strip-components=1 &&\
     rm -rf antares-${ANTARES_VERSION}-CentOS-7.9.2009.tar.gz
 
