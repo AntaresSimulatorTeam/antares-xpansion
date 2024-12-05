@@ -37,6 +37,11 @@ RUN \
 
 RUN export PATH=/root/miniconda3/condabin:$PATH && \
     conda install -c fico-xpress "xpress>=9.2,<9.3"
+
+
+# Install CMake
+RUN pip3 install cmake==3.28.4
+
 #create user
 RUN useradd user
 # USER user
