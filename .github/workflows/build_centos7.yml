@@ -91,7 +91,10 @@ jobs:
 
       - name: Build the image and Antares-Xpansion
         run: |
-          ls -latr .ccache/ && \
+          ls -latr .ccache/
+          echo "-------------"
+          cat ${{ env.DOCKERFILE }}
+          echo "-------------"
           docker build \
           -t antaresxpansion:centos7  \
           --build-arg="BRANCH=${{ env.REF }}" \
