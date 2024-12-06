@@ -16,7 +16,7 @@ RUN           sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.r
 
 RUN \
   yum install -y wget rh-git227-git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils &&\
-  yum install -y devtoolset-11-gcc* environment-modules rpm-build zlib-devel &&\
+  yum install -y devtoolset-11-gcc* environment-modules rpm-build zlib-devel ccache &&\
   yum install -y install python3-pip  jq &&  python3 -m pip install --upgrade pip
 
 
