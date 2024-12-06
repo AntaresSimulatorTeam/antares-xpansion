@@ -119,7 +119,7 @@ jobs:
           path: ${{ github.workspace }}/vcpkg_cache
           key: vcpkg-cache-centos7-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
 
-      #######################
+      ######################
   userguide:
     if: github.event_name == 'release' && github.event.action == 'created'
     runs-on: ubuntu-latest
