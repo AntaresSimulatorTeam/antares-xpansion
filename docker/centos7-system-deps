@@ -15,14 +15,10 @@ RUN           sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.r
               sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
 
 RUN \
-  yum install -y wget git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils &&\
+  yum install -y wget rh-git227-git epel-release redhat-lsb-core gcc gcc-c++ make centos-release-scl scl-utils &&\
   yum install -y devtoolset-11-gcc* environment-modules rpm-build zlib-devel &&\
-  yum install -y doxygen graphviz &&\
   yum install -y install python3-pip  jq &&  python3 -m pip install --upgrade pip
 
-RUN \
-    yum -y install https://packages.endpointdev.com/rhel/7/os/x86_64/endpoint-repo.x86_64.rpm &&\
-    yum install -y git
 
 # The default python version (3.6) is too old to download xpress with pip
 # This version of miniconda embeds python3.8
