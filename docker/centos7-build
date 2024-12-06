@@ -67,6 +67,8 @@ RUN  source /opt/rh/devtoolset-11/enable && \
      export VCPKG_BINARY_SOURCES="clear;files,/workspace/vcpkg_cache,readwrite" && \
      cmake -B _build -S . \
       -DBUILD_TESTING=ON \
+      -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+      -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
       -DCMAKE_PREFIX_PATH="/deps;/ortools/install" \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_INSTALL_PREFIX=_install \
