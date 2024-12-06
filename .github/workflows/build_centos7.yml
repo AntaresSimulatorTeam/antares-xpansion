@@ -119,6 +119,10 @@ jobs:
           path: ${{ github.workspace }}/vcpkg_cache
           key: vcpkg-cache-centos7-${{ hashFiles('vcpkg.json', '.git/modules/vcpkg/HEAD') }}
 
+      - name: Upload .tar.gz
+        uses: actions/upload-artifact@v4
+        with:
+          path: archive/*.tar.gz
       ######################
   userguide:
     if: github.event_name == 'release' && github.event.action == 'created'
