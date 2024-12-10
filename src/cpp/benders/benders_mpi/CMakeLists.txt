@@ -13,9 +13,9 @@ message("MPI_C_LIBRARIES ${MPI_C_LIBRARIES}")
 
 find_package(MPI REQUIRED)
 
-if (UNIX)
-    set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
-endif ()
+#if (UNIX)
+#    set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
+#endif ()
 
 add_library(benders_mpi_core)
 

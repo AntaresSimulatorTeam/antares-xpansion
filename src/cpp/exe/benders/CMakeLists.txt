@@ -15,9 +15,9 @@ add_executable (benders
 )
 
 find_package(MPI REQUIRED)
-if(UNIX)
-set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
-endif()
+#if(UNIX)
+#set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
+#endif()
 
 #IF (WIN32)
 #	target_link_libraries (benders
