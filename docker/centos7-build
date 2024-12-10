@@ -114,14 +114,15 @@ RUN   XPANSION_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | 
       cd .. &&\
       ARCHIVE_NAME=antaresXpansion-$XPANSION_VERSION-$LSB_RELEASE_ID_SHORT-$LSB_RELEASE_VERSION_SHORT-single-file.tar.gz && \
       tar -czf $ARCHIVE_NAME -C _install . && \
-      mkdir archive && \
-      mv $ARCHIVE_NAME archive/
+      mkdir -p archive/single-binary && \
+      mv $ARCHIVE_NAME archive/single
 
 RUN  XPANSION_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."antares_xpansion_version"' ) && \
      cd _build && \
      export FILE_NAME="antaresXpansion-$XPANSION_VERSION-CentOS-7.9.2009" && \
      cpack -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME && \
      cd .. && \
-     mv _build/${FILE_NAME}.tar.gz archive/
+     mkdir -p archive/multiple \
+     mv _build/${FILE_NAME}.tar.gz archive/multiple
 
 

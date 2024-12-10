@@ -122,7 +122,12 @@ jobs:
       - name: Upload .tar.gz
         uses: actions/upload-artifact@v4
         with:
-          path: archive/*.tar.gz
+          path: archive/single/*.tar.gz
+
+      - name: Upload .tar.gz
+        uses: actions/upload-artifact@v4
+        with:
+          path: archive/multiple/*.tar.gz
       #####################
   userguide:
     if: github.event_name == 'release' && github.event.action == 'created'
