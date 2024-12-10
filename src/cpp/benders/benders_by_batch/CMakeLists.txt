@@ -12,9 +12,9 @@ message("MPI_C_INCLUDE_DIRS ${MPI_C_INCLUDE_DIRS}")
 message("MPI_C_LIBRARIES ${MPI_C_LIBRARIES}")
 
 
-#if (UNIX)
-#    set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
-#endif ()
+if (UNIX)
+    set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
+endif ()
 add_library(benders_by_batch_core)
 target_sources(benders_by_batch_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/BatchCollection.cpp

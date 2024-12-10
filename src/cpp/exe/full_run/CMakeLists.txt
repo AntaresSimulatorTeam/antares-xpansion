@@ -16,9 +16,9 @@ add_executable(full_run
 
 find_package(MPI REQUIRED)
 
-#if (UNIX)
-#    set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
-#endif ()
+if (UNIX)
+    set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
+endif ()
 
 target_link_libraries(full_run
         PRIVATE
