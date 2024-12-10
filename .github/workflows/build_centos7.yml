@@ -123,12 +123,14 @@ jobs:
       - name: Upload .tar.gz
         uses: actions/upload-artifact@v4
         with:
-          path: archive/single/*.tar.gz
+          path: archive/single
+          name: ${{ steps.get-archives.outputs.SINGLE_FILE_NAME }}
 
       - name: Upload .tar.gz
         uses: actions/upload-artifact@v4
         with:
-          path: archive/multiple/*.tar.gz
+          path: archive/multiple
+          name: ${{ steps.get-archives.outputs.TGZ_NAME }}
 
 
       #####################
