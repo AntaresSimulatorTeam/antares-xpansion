@@ -33,10 +33,8 @@ void MergeMPS::launch() {
 
     if (kvp.first != _options.MASTER_NAME) {
       solver_l->read_prob_mps(problem_name);
-      // std::filesystem::remove(problem_name);
       int mps_ncols(solver_l->get_ncols());
 
-      // -------- Change sub pb objective to take weights into account -------
       DblVector o(mps_ncols);
       IntVector sequence(mps_ncols);
       for (int i(0); i < mps_ncols; ++i) {
@@ -48,10 +46,8 @@ void MergeMPS::launch() {
         c *= weigth;
       }
       solver_l->chg_obj(sequence, o);
-      // -------- End change sub pb objective to take weights into account -----
 
-      
-    } else {
+        } else {
       solver_l->read_prob_mps(problem_name);
     }
     StandardLp lpData(*solver_l);
