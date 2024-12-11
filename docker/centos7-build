@@ -18,7 +18,7 @@ COPY $VCPKG_CACHE_DIR /workspace/
 ARG BRANCH=develop
 RUN cd /workspace && \
     source /opt/rh/rh-git227/enable && \
-    git clone https://github.com/AntaresSimulatorTeam/antares-xpansion.git --branch $BRANCH && \
+    git clone https://github.com/AntaresSimulatorTeam/antares-xpansion.git --depth=1 --single-branch --branch $BRANCH && \
     cd antares-xpansion && \
     git submodule update --init vcpkg && ./vcpkg/bootstrap-vcpkg.sh -disableMetrics && \
     export VCPKG_ROOT=/workspace/antares-xpansion/vcpkg
