@@ -216,29 +216,29 @@ void PrintExternalLoopData(LogDestination& log_destination,
                            const HEADERSTYPE& type,
                            const BENDERSMETHOD& method) {
   log_destination.InsertDelimiter();
-  log_destination << data.outer_loop_current_iteration_data.benders_num_run;
+  log_destination << data.criteria_current_iteration_data.benders_num_run;
   log_destination.InsertDelimiter();
   log_destination << std::scientific << std::setprecision(10)
-                  << data.outer_loop_current_iteration_data.max_criterion;
+                  << data.criteria_current_iteration_data.max_criterion;
   log_destination.InsertDelimiter();
-  log_destination << data.outer_loop_current_iteration_data.max_criterion_area;
+  log_destination << data.criteria_current_iteration_data.max_criterion_area;
   log_destination.InsertDelimiter();
 
   log_destination
       << std::scientific << std::setprecision(10)
-      << data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub;
+      << data.criteria_current_iteration_data.outer_loop_bilevel_best_ub;
   log_destination.InsertDelimiter();
   log_destination
       << std::scientific << std::setprecision(10)
-      << data.outer_loop_current_iteration_data.external_loop_lambda;
+      << data.criteria_current_iteration_data.lambda;
   log_destination.InsertDelimiter();
   log_destination
       << std::scientific << std::setprecision(10)
-      << data.outer_loop_current_iteration_data.external_loop_lambda_min;
+      << data.criteria_current_iteration_data.lambda_min;
   log_destination.InsertDelimiter();
   log_destination
       << std::scientific << std::setprecision(10)
-      << data.outer_loop_current_iteration_data.external_loop_lambda_max;
+      << data.criteria_current_iteration_data.lambda_max;
   PrintBendersData(log_destination, data, type, method);
 }
 void MathLoggerBaseExternalLoop::Print(const CurrentIterationData& data) {

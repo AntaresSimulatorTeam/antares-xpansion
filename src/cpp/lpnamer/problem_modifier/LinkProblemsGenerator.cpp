@@ -1,7 +1,9 @@
+#include <execution>
+#include <tbb/tbb.h>
+
 #include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 
 #include <algorithm>
-#include <execution>
 #include <utility>
 
 #include "antares-xpansion/lpnamer/problem_modifier/IProblemProviderPort.h"
@@ -59,9 +61,9 @@ void LinkProblemsGenerator::treat(
       }
     }
   }
-  auto const lp_mps_name = lpDir_ / problem->_name;
+  auto const lp_mps_name = lpDir_ / problem_name;
   problem->_name = lp_mps_name.string();
-  writer->Write_problem(problem);
+  writer->Write_problem(problem, lp_mps_name);
 }
 
 void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,

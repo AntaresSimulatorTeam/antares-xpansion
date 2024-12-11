@@ -2,7 +2,7 @@
 namespace Outerloop {
 
 OuterLoopBenders::OuterLoopBenders(
-    const std::vector<Benders::Criterion::OuterLoopSingleInputData>&
+    const std::vector<Benders::Criterion::CriterionSingleInputData>&
         outer_loop_data,
     std::shared_ptr<IMasterUpdate> master_updater,
     std::shared_ptr<ICutsManager> cuts_manager, pBendersBase benders,
@@ -115,7 +115,7 @@ void OuterLoopBenders::OuterLoopBilevelChecks() {
     const auto& x_cut = benders_->GetCurrentIterationData().x_cut;
     const auto& external_loop_lambda =
         benders_->GetCurrentIterationData()
-            .outer_loop_current_iteration_data.external_loop_lambda;
+            .criteria_current_iteration_data.lambda;
     if (outer_loop_biLevel_.Update_bilevel_data_if_feasible(
             x_cut, benders_->GetOuterLoopCriterionAtBestBenders() /*/!\ must
        be at best it*/

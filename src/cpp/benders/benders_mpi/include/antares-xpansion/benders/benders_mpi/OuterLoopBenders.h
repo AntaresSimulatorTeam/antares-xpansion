@@ -17,7 +17,7 @@ class CriterionCouldNotBeSatisfied
 class OuterLoopBenders : public OuterLoop {
  public:
   explicit OuterLoopBenders(
-      const std::vector<Benders::Criterion::OuterLoopSingleInputData>&
+      const std::vector<Benders::Criterion::CriterionSingleInputData>&
           outer_loop_data,
       std::shared_ptr<IMasterUpdate> master_updater,
       std::shared_ptr<ICutsManager> cuts_manager, pBendersBase benders,

@@ -50,7 +50,7 @@ void BendersMpi::BroadCastVariablesIndices() {
   if (_world.rank() == rank_0) {
     SetSubproblemsVariablesIndices();
   }
-  BroadCast(criterions_computation_->getVarIndices(), rank_0);
+  BroadCast(criterion_computation_.getVarIndices(), rank_0);
 }
 
 void BendersMpi::BuildMasterProblem() {
@@ -159,10 +159,10 @@ void BendersMpi::GatherCuts(const SubProblemDataMap &subproblem_data_map,
   // only rank_0 receive non-emtpy gathered_subproblem_map
   master_build_cuts(gathered_subproblem_map);
 
-  ComputeSubproblemsContributionToOuterLoopCriterion(subproblem_data_map);
+  ComputeSubproblemsContributionToCriteria(subproblem_data_map);
   if (_world.rank() == rank_0) {
-    outer_loop_criterion_.push_back(
-        _data.outer_loop_current_iteration_data.outer_loop_criterion);
+    criteria_vector_for_each_iteration_.push_back(
+      _data.criteria_current_iteration_data.criteria);
     UpdateMaxCriterionArea();
   }
 }
@@ -176,54 +176,54 @@ void BendersMpi::SolveSubproblem(
 
   std::vector<double> solution;
   worker->get_solution(solution);
-  criterions_computation_->ComputeOuterLoopCriterion(
-      SubproblemWeight(_data.nsubproblem, name), solution,
-      subproblem_data.outer_loop_criterions,
-      subproblem_data.outer_loop_patterns_values);
+  criterion_computation_.ComputeCriterion(
+    SubproblemWeight(_data.nsubproblem, name), solution,
+    subproblem_data.criteria,
+    subproblem_data.patterns_values);
 }
 
 void BendersMpi::UpdateMaxCriterionArea() {
-  auto criterions_begin =
-      _data.outer_loop_current_iteration_data.outer_loop_criterion.cbegin();
-  auto criterions_end =
-      _data.outer_loop_current_iteration_data.outer_loop_criterion.cend();
-  auto max_criterion_it = std::max_element(criterions_begin, criterions_end);
-  if (max_criterion_it != criterions_end) {
-    _data.outer_loop_current_iteration_data.max_criterion = *max_criterion_it;
+  auto criteria_begin =
+      _data.criteria_current_iteration_data.criteria.cbegin();
+  auto criteria_end =
+      _data.criteria_current_iteration_data.criteria.cend();
+  auto max_criterion_it = std::max_element(criteria_begin, criteria_end);
+  if (max_criterion_it != criteria_end) {
+    _data.criteria_current_iteration_data.max_criterion = *max_criterion_it;
     auto max_criterion_index =
-        std::distance(criterions_begin, max_criterion_it);
-    _data.outer_loop_current_iteration_data.max_criterion_area =
-        criterions_computation_->getOuterLoopInputData()
-            .OuterLoopData()[max_criterion_index]
-            .Pattern()
-            .GetBody();
+        std::distance(criteria_begin, max_criterion_it);
+    _data.criteria_current_iteration_data.max_criterion_area =
+        criterion_computation_.getCriterionInputData()
+        .Criteria()[max_criterion_index]
+        .Pattern()
+        .GetBody();
   }
 }
 
-void BendersMpi::ComputeSubproblemsContributionToOuterLoopCriterion(
-    const SubProblemDataMap &subproblem_data_map) {
-  const auto vars_size = criterions_computation_->getVarIndices().size();
-  std::vector<double> outer_loop_criterion_per_sub_problem_per_pattern(
-      vars_size, {});
-  _data.outer_loop_current_iteration_data.outer_loop_criterion.resize(vars_size,
-                                                                      0.);
-  std::vector<double> outer_loop_patterns_values_per_sub_problem_per_pattern(
-      vars_size, {});
-  _data.outer_loop_current_iteration_data.outer_loop_patterns_values.resize(
-      vars_size, 0.);
+void BendersMpi::ComputeSubproblemsContributionToCriteria(
+  const SubProblemDataMap &subproblem_data_map) {
+  const auto vars_size = criterion_computation_.getVarIndices().size();
+  std::vector<double> criteria_per_sub_problem_per_pattern(
+    vars_size, {});
+  _data.criteria_current_iteration_data.criteria.resize(vars_size,
+                                                        0.);
+  std::vector<double> patterns_values_per_sub_problem_per_pattern(
+    vars_size, {});
+  _data.criteria_current_iteration_data.patterns_values.resize(
+    vars_size, 0.);
 
   for (const auto &[subproblem_name, subproblem_data] : subproblem_data_map) {
-    AddVectors<double>(outer_loop_criterion_per_sub_problem_per_pattern,
-                       subproblem_data.outer_loop_criterions);
-    AddVectors<double>(outer_loop_patterns_values_per_sub_problem_per_pattern,
-                       subproblem_data.outer_loop_patterns_values);
+    AddVectors<double>(criteria_per_sub_problem_per_pattern,
+                       subproblem_data.criteria);
+    AddVectors<double>(patterns_values_per_sub_problem_per_pattern,
+                       subproblem_data.patterns_values);
   }
 
-  Reduce(outer_loop_criterion_per_sub_problem_per_pattern,
-         _data.outer_loop_current_iteration_data.outer_loop_criterion,
+  Reduce(criteria_per_sub_problem_per_pattern,
+         _data.criteria_current_iteration_data.criteria,
          std::plus<double>(), rank_0);
-  Reduce(outer_loop_patterns_values_per_sub_problem_per_pattern,
-         _data.outer_loop_current_iteration_data.outer_loop_patterns_values,
+  Reduce(patterns_values_per_sub_problem_per_pattern,
+         _data.criteria_current_iteration_data.patterns_values,
          std::plus<double>(), rank_0);
 }
 

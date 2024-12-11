@@ -1,7 +1,0 @@
-<RCC>
-    <qresource prefix="">
-        <file>images/loading.gif</file>
-        <file>images/play-48.png</file>
-        <file>images/stop-48.png</file>
-    </qresource>
-</RCC>

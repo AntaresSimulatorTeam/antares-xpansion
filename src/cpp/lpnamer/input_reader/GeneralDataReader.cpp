@@ -9,9 +9,10 @@
 #include <stdexcept>
 #include <vector>
 
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
+#include "antares-xpansion/lpnamer/input_reader/Exceptions.h"
 #include "antares-xpansion/lpnamer/input_reader/INIReader.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
-#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
 class IniReaderUtils {
  public:

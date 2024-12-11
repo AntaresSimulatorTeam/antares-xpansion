@@ -14,6 +14,8 @@ DATA_TEST_INTEGER = DATA_TEST / "tests_lpnamer" / "tests_integer"
 DATA_TEST_RELAXED = DATA_TEST / "tests_lpnamer" / "tests_relaxed"
 TEST_LP_INTEGER_01 = DATA_TEST_INTEGER / \
     "test_lpnamer_01" / "output" / "economy"
+TEST_LP_INTEGER_XPRESS = DATA_TEST_INTEGER / \
+                         "test_lpnamer_Xpress" / "output" / "economy"
 TEST_LP_INTEGER_02 = DATA_TEST_INTEGER / \
     "test_one_link_one_candidate_1week" / "output" / "economy/"
 TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB = DATA_TEST_INTEGER / "test_one_link_two_candidates_simple_prob" \
@@ -35,6 +37,10 @@ test_data = [
     (TEST_LP_INTEGER_02, "integer"),
     (TEST_LP_RELAXED_01, "relaxed"),
     (TEST_LP_RELAXED_02, "relaxed")
+]
+
+test_data_xpress = [
+    (TEST_LP_INTEGER_XPRESS, "integer")
 ]
 
 class OptionType(Enum):
@@ -106,6 +112,11 @@ def test_lp_directory_files(install_dir, test_dir, master_mode, option_mode, set
         launch_and_compare_lp_with_reference_output(install_dir, master_mode, setup_lp_directory)
 
 
+@pytest.mark.parametrize("test_dir, master_mode", test_data_xpress)
+def test_lp_directory_files(install_dir, test_dir, master_mode, setup_lp_directory, tmp_path):
+    launch_and_compare_lp_with_reference_archive(install_dir, master_mode, setup_lp_directory, False)
+
+
 @pytest.mark.parametrize("test_dir", test_data_multiple_candidates)
 @pytest.mark.parametrize("master_mode", ["integer"])
 @pytest.mark.parametrize("option_mode", [OptionType.ARCHIVE, OptionType.OUTPUT])
@@ -139,16 +150,18 @@ def launch_and_compare_lp_with_reference_output(install_dir, master_mode, test_d
     then(lp_dir, old_path, reference_lp_dir, returned_l)
 
 
-
-def launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_dir):
+def launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_dir, unnamed_problems=True):
     old_path = os.getcwd()
     reference_lp_dir = test_dir / "reference_lp"
     lp_dir = test_dir.parent / (test_dir.stem + "-Xpansion") / "lp"
     lp_namer_exe = Path(install_dir) / "lp_namer"
     zip_path = (test_dir.parent / MPS_ZIP).resolve()
     os.chdir(test_dir.parent.parent)
+
     launch_command = [str(lp_namer_exe), "-a", str(zip_path),
-                      "-e", "contraintes.txt", "-f", master_mode, "--unnamed-problems"]
+                      "-e", "contraintes.txt", "-f", master_mode]
+    if unnamed_problems:
+        launch_command.append("--unnamed-problems")
     # when
     returned_l = subprocess.run(launch_command, shell=False)
     # then

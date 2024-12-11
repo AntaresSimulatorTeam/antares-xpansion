@@ -1,5 +1,5 @@
 #pragma once
-#include "antares-xpansion/benders/benders_core/OuterLoopInputDataReader.h"
+#include "antares-xpansion/benders/benders_core/CriterionInputDataReader.h"
 
 // TODO
 typedef std::map<std::string, double> Point;
@@ -9,7 +9,7 @@ namespace Outerloop {
 class OuterLoopBiLevel {
  public:
   explicit OuterLoopBiLevel(
-      const std::vector<Benders::Criterion::OuterLoopSingleInputData>
+      const std::vector<Benders::Criterion::CriterionSingleInputData>
           &outer_loop_input_data);
   bool Update_bilevel_data_if_feasible(
       const Point &x, const std::vector<double> &outer_loop_criterion,
@@ -40,7 +40,7 @@ class OuterLoopBiLevel {
   double lambda_max_ = 0.0;
   double lambda_min_ = 0.0;
   double lambda_ = 0.0;
-  const std::vector<Benders::Criterion::OuterLoopSingleInputData>
+  const std::vector<Benders::Criterion::CriterionSingleInputData>
       &outer_loop_input_data_;
 };
 }  // namespace Outerloop

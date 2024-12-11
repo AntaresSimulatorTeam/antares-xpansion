@@ -13,11 +13,6 @@
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
-class IniFileNotFound : public std::runtime_error {
- public:
-  explicit IniFileNotFound(const std::string& msg) : std::runtime_error(msg) {}
-};
-
 class GeneralDataIniReader {
  private:
   ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;

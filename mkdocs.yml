@@ -53,8 +53,8 @@ nav:
       - 'Dependencies install': 'developer-guide/install_from_sources/2-Dependencies-install.md'
       - 'Build': 'developer-guide/install_from_sources/3-Build.md'
       - 'Tests': 'developer-guide/install_from_sources/4-Tests.md'
-      - 'UI creation': 'developer-guide/install_from_sources/5-ui-creation.md'
-      - 'Installer creation': 'developer-guide/install_from_sources/6-Installer-creation.md'
+      - 'Installer creation': 'developer-guide/install_from_sources/5-Installer-creation.md'
+      - 'Xpress': 'developer-guide/install_from_sources/6-Xpress.md'
     - 'Antares-Xpansion simulation procedure' : 
       - 'Overview' : 'developer-guide/xpansion_steps/0-overview.md'
       - 'Antares optimization problem retrieval' : 'developer-guide/xpansion_steps/1-antares-solver-problem.md'

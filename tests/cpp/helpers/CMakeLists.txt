@@ -1,5 +1,4 @@
 add_executable (helpers_test
-		JsonXpansionReaderTest.cc
 		AntaresVersionProviderTest.cpp
 		OptionsParserTest.cpp)
 
@@ -18,7 +17,6 @@ target_link_libraries (helpers_test PRIVATE
 		antaresXpansion::lp_namer_model
 		antaresXpansion::lp_namer_input_reader
 		antaresXpansion::lp_namer_problem_modifier
-		${JSONCPP_LIB}
 		${PROJECT_NAME}::benders_sequential_core
 		)
 

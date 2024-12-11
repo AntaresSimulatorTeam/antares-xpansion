@@ -29,44 +29,8 @@ void usage(int argc) {
   }
 }
 
-/*!
- *  \brief Build the input from the structure file
- *
- *	Function to build the map linking each problem name to its variables and
- *their id
- *
- *  \param root : root of the structure file
- *
- *  \param summary_name : name of the structure file
- *
- *  \param coupling_map : empty map to increment
- *
- *  \note The id in the coupling_map is that of the variable in the solver
- *responsible for the creation of the structure file.
- */
-CouplingMap build_input(const std::filesystem::path &structure_path) {
-  CouplingMap coupling_map;
-  std::ifstream summary(structure_path, std::ios::in);
-  if (!summary) {
-    std::cout << "Cannot open structure file " << structure_path << std::endl;
-    return coupling_map;
-  }
-  std::string line;
 
-  while (std::getline(summary, line)) {
-    std::stringstream buffer(line);
-    std::string problem_name;
-    std::string variable_name;
-    int variable_id;
-    buffer >> problem_name;
-    buffer >> variable_name;
-    buffer >> variable_id;
-    coupling_map[problem_name][variable_name] = variable_id;
-  }
 
-  summary.close();
-  return coupling_map;
-}
 Json::Value get_json_file_content(const std::filesystem::path &json_file) {
   std::ifstream input_file_l(json_file, std::ifstream::binary);
 

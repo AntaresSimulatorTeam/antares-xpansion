@@ -6,7 +6,7 @@ inputs:
     required: false
     default: 'features'
   tags:
-    description: 'Tags to run (default skips tests marked @flaky)'
+    description: 'Tags to run (default skips tests marked @flaky or @xpress)'
     required: false
     default: '~@flaky'
   mpi_path:
@@ -21,4 +21,4 @@ runs:
       run: |
         export PATH="${{ inputs.mpi_path }}:$PATH"
         cd tests/end_to_end
-        behave --tags ${{ inputs.tags }} cucumber/${{ inputs.feature }} --no-capture --no-capture-stderr --format pretty
+        behave --tags ${{ inputs.tags }}  cucumber/${{ inputs.feature }} --no-capture --no-capture-stderr --format pretty

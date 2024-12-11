@@ -191,5 +191,4 @@ struct BendersBaseOptions : public BaseOptions {
 };
 
 void usage(int argc);
-CouplingMap build_input(const std::filesystem::path &structure_path);
 Json::Value get_json_file_content(const std::filesystem::path &json_file);

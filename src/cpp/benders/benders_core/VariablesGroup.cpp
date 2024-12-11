@@ -14,8 +14,8 @@ using namespace Benders::Criterion;
 
 VariablesGroup::VariablesGroup(
     const std::vector<std::string>& all_variables,
-    const std::vector<OuterLoopSingleInputData>& outer_loop_single_input_data)
-    : all_variables_(all_variables), outer_loop_single_input_data_(outer_loop_single_input_data) {
+    const std::vector<CriterionSingleInputData>& criterion_single_input_data)
+    : all_variables_(all_variables), criterion_single_input_data_(criterion_single_input_data) {
   Search();
 }
 
@@ -24,11 +24,11 @@ std::vector<std::vector<int>> VariablesGroup::Indices() const {
 }
 
 void VariablesGroup::Search() {
-  indices_.assign(outer_loop_single_input_data_.size(), {});
+  indices_.assign(criterion_single_input_data_.size(), {});
   int var_index(0);
   for (const auto& variable : all_variables_) {
     int pattern_index(0);
-    for (const auto& single_input_data : outer_loop_single_input_data_) {
+    for (const auto& single_input_data : criterion_single_input_data_) {
       if (std::regex_search(variable, single_input_data.Pattern().MakeRegex())) {
         indices_[pattern_index].push_back(var_index);
       }

@@ -39,7 +39,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements-tests.txt
-          pip install -r requirements-ui.txt
 
       - name: Pre-requisites
         shell: cmd
@@ -75,7 +74,7 @@ jobs:
       - name: Configure
         run: |
           $pwd=Get-Location
-          cmake -B _build -S . -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="vcpkg/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install -DBUILD_UI=ON
+          cmake -B _build -S . -DBUILD_TESTING=ON -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE="vcpkg/scripts/buildsystems/vcpkg.cmake" -DVCPKG_TARGET_TRIPLET=${{ matrix.triplet }} -DCMAKE_INSTALL_PREFIX=_install
 
       - name: Cache vcpkg binary dir
         if: always()

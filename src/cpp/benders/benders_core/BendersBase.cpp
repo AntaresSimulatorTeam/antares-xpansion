@@ -22,11 +22,6 @@ BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
       mathLoggerDriver_(std::move(mathLoggerDriver)) {
 }
 
-std::filesystem::path BendersBase::OuterloopOptionsFile() const {
-  return std::filesystem::path(_options.INPUTROOT) /
-         _options.EXTERNAL_LOOP_OPTIONS.OUTER_LOOP_OPTION_FILE;
-}
-
 /*!
  *  \brief Initialize set of data used in the loop
  */
@@ -47,7 +42,7 @@ void BendersBase::init_data() {
   _data.iteration_time = 0;
   _data.timer_master = 0;
   _data.subproblems_walltime = 0;
-  outer_loop_criterion_.clear();
+  criteria_vector_for_each_iteration_.clear();
 }
 
 void BendersBase::OpenCsvFile() {
@@ -173,10 +168,10 @@ void BendersBase::update_best_ub() {
     _data.best_ub = _data.ub;
     _data.best_it = _data.it;
     FillWorkerMasterData(relevantIterationData_.best);
-    _data.outer_loop_current_iteration_data.max_criterion_best_it =
-        _data.outer_loop_current_iteration_data.max_criterion;
-    _data.outer_loop_current_iteration_data.max_criterion_area_best_it =
-        _data.outer_loop_current_iteration_data.max_criterion_area;
+    _data.criteria_current_iteration_data.max_criterion_best_it =
+        _data.criteria_current_iteration_data.max_criterion;
+    _data.criteria_current_iteration_data.max_criterion_area_best_it =
+        _data.criteria_current_iteration_data.max_criterion_area;
     relevantIterationData_.best._cut_trace = relevantIterationData_.last._cut_trace;
     best_iteration_data = bendersDataToLogData(_data);
   }
@@ -205,7 +200,7 @@ void BendersBase::UpdateStoppingCriterion() {
   else if (_data.lb + _options.ABSOLUTE_GAP >= _data.best_ub)
     _data.stopping_criterion = StoppingCriterion::absolute_gap;
   else if (((_data.best_ub - _data.lb) /
-            std::max(std::abs(_data.best_ub), std::abs(_data.lb))) <=
+            (std::max)(std::abs(_data.best_ub), std::abs(_data.lb))) <=
            _options.RELATIVE_GAP)
     _data.stopping_criterion = StoppingCriterion::relative_gap;
 }
@@ -417,7 +412,7 @@ void BendersBase::SetSubproblemsVariablesIndices() {
   if (!subproblem_map.empty()) {
     auto subproblem = subproblem_map.begin();
 
-    criterions_computation_->SearchVariables(
+    criterion_computation_.SearchVariables(
         subproblem->second->_solver->get_col_names());
   }
 }
@@ -539,7 +534,7 @@ void BendersBase::SaveCurrentOuterLoopIterationInOutputFile() const {
   if (LastWorkerMasterData._valid) {
     _writer->write_iteration(
         iteration(LastWorkerMasterData),
-        _data.outer_loop_current_iteration_data.benders_num_run);
+        _data.criteria_current_iteration_data.benders_num_run);
     _writer->dump();
   }
 }
@@ -599,7 +594,7 @@ Output::SolutionData BendersBase::solution() const {
 void BendersBase::UpdateOuterLoopSolution() {
   outer_loop_solution_data_ = BendersSolution();
   outer_loop_solution_data_.best_it =
-      _data.outer_loop_current_iteration_data.benders_num_run;
+      _data.criteria_current_iteration_data.benders_num_run;
 }
 
 Output::SolutionData BendersBase::GetOuterLoopSolution() const {
@@ -848,7 +843,8 @@ void BendersBase::BoundSimplexIterations(int subproblem_iterations){
 void BendersBase::ResetSimplexIterationsBounds()
 {
 	_data.max_simplexiter = 0;
-	_data.min_simplexiter = std::numeric_limits<int>::max();
+  // Tbb 2020 includes Windows min max defines that's why we don't write std::numeric_limits<int>::max();
+  _data.min_simplexiter = (std::numeric_limits<int>::max)();
 }
 bool BendersBase::IsResumeMode() const { return _options.RESUME; }
 
@@ -1000,13 +996,13 @@ WorkerMasterData BendersBase::BestIterationWorkerMaster() const {
 CurrentIterationData BendersBase::GetCurrentIterationData() const {
   return _data;
 }
-OuterLoopCurrentIterationData BendersBase::GetOuterLoopData() const {
-  return _data.outer_loop_current_iteration_data;
+CriteriaCurrentIterationData BendersBase::GetOuterLoopData() const {
+  return _data.criteria_current_iteration_data;
 }
 std::vector<double> BendersBase::GetOuterLoopCriterionAtBestBenders() const {
-  return ((outer_loop_criterion_.empty())
+  return ((criteria_vector_for_each_iteration_.empty())
               ? std::vector<double>()
-              : outer_loop_criterion_[_data.best_it - 1]);
+              : criteria_vector_for_each_iteration_[_data.best_it - 1]);
 }
 
 void BendersBase::init_data(double external_loop_lambda,
@@ -1014,25 +1010,26 @@ void BendersBase::init_data(double external_loop_lambda,
                             double external_loop_lambda_max) {
   benders_timer.restart();
   auto benders_num_run =
-      _data.outer_loop_current_iteration_data.benders_num_run;
+      _data.criteria_current_iteration_data.benders_num_run;
   auto outer_loop_bilevel_best_ub =
-      _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub;
+      _data.criteria_current_iteration_data.outer_loop_bilevel_best_ub;
   init_data();
-  _data.outer_loop_current_iteration_data.outer_loop_criterion.clear();
-  _data.outer_loop_current_iteration_data.benders_num_run = benders_num_run;
-  _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub =
+  _data.criteria_current_iteration_data.criteria.clear();
+  _data.criteria_current_iteration_data.benders_num_run = benders_num_run;
+  _data.criteria_current_iteration_data.outer_loop_bilevel_best_ub =
       outer_loop_bilevel_best_ub;
-  _data.outer_loop_current_iteration_data.external_loop_lambda =
+  _data.criteria_current_iteration_data.lambda =
       external_loop_lambda;
-  _data.outer_loop_current_iteration_data.external_loop_lambda_min =
+  _data.criteria_current_iteration_data.lambda_min =
       external_loop_lambda_min;
-  _data.outer_loop_current_iteration_data.external_loop_lambda_max =
+  _data.criteria_current_iteration_data.lambda_max =
       external_loop_lambda_max;
 }
 
 
 
 bool BendersBase::isExceptionRaised() const { return exception_raised_; }
+
 /*
  * after the 1st loop of the outer loop, we must  re-build the objective
  * function and costs
@@ -1046,12 +1043,14 @@ void BendersBase::UpdateOverallCosts() {
 
   relevantIterationData_.best._invest_cost = _data.invest_cost;
 }
+
 void BendersBase::SetBilevelBestub(double bilevel_best_ub) {
-  _data.outer_loop_current_iteration_data.outer_loop_bilevel_best_ub =
+  _data.criteria_current_iteration_data.outer_loop_bilevel_best_ub =
       bilevel_best_ub;
 }
-void BendersBase::setCriterionsComputation(
-    std::shared_ptr<Benders::Criterion::CriterionComputation>
-        criterionsComputation) {
-  criterions_computation_ = criterionsComputation;
+
+void BendersBase::setCriterionComputationInputs(
+    const Benders::Criterion::CriterionInputData &criterion_input_data) {
+  criterion_computation_ =
+      Benders::Criterion::CriterionComputation(criterion_input_data);
 }

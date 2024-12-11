@@ -1,6 +1,7 @@
 
+#include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
+#include "antares-xpansion/benders/benders_core/CriterionInputDataReader.h"
 #include "antares-xpansion/benders/benders_core/MasterUpdate.h"
-#include "antares-xpansion/benders/benders_core/OuterLoopInputDataReader.h"
 #include "antares-xpansion/benders/benders_core/VariablesGroup.h"
 #include "antares-xpansion/benders/benders_mpi/OuterLoopBenders.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
@@ -101,9 +102,10 @@ void CheckMinInvestmentConstraint(const VariableMap& master_variables,
 
 TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   BendersBaseOptions bendersoptions = BuildBendersOptions();
-  CouplingMap coupling_map =
-      build_input(std::filesystem::path(bendersoptions.INPUTROOT) /
-                  bendersoptions.STRUCTURE_FILE);
+  CouplingMap coupling_map = CouplingMapGenerator::BuildInput(
+      std::filesystem::path(bendersoptions.INPUTROOT) /
+          bendersoptions.STRUCTURE_FILE,
+      logger, ::testing::UnitTest::GetInstance()->current_test_info()->name());
   // override solver
   bendersoptions.SOLVER_NAME = GetParam();
   bendersoptions.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = true;
@@ -114,19 +116,16 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI) {
   benders->set_input_map(coupling_map);
 
   auto outer_loop_input_data =
-      Benders::Criterion::OuterLoopInputFromYaml().Read(
+      Benders::Criterion::CriterionInputFromYaml().Read(
           std::filesystem::path(bendersoptions.INPUTROOT) / OUTER_OPTIONS_FILE);
-  auto criterion_computation =
-      std::make_shared<Benders::Criterion::CriterionComputation>(
-          outer_loop_input_data);
-  benders->setCriterionsComputation(criterion_computation);
+
+  benders->setCriterionComputationInputs(outer_loop_input_data);
 
   auto master_updater = std::make_shared<MasterUpdateBase>(
       benders, 0.5, outer_loop_input_data.StoppingThreshold());
   auto cut_manager = std::make_shared<Outerloop::CutsManagerRunTime>();
-  Outerloop::OuterLoopBenders out_loop(
-      criterion_computation->getOuterLoopInputData().OuterLoopData(),
-      master_updater, cut_manager, benders, *pworld);
+  Outerloop::OuterLoopBenders out_loop(outer_loop_input_data.Criteria(),
+                                       master_updater, cut_manager, benders, *pworld);
   out_loop.OuterLoopCheckFeasibility();
 
   auto num_constraints_master_before = benders->MasterGetnrows();
@@ -180,7 +179,7 @@ class OuterLoopPatternTest : public ::testing::Test {};
 TEST_F(OuterLoopPatternTest, RegexGivenPrefixAndBody) {
   const std::string prefix = "prefix";
   const std::string body = "body";
-  OuterLoopPattern o(prefix, body);
+  CriterionPattern o(prefix, body);
 
   auto ret_regex = o.MakeRegex();
 
@@ -203,9 +202,9 @@ TEST_F(OuterLoopInputFromYamlTest, YamlFileDoesNotExist) {
   expected_msg << "Could not read outer loop input file: " << empty << "\n"
                << "bad file: " << empty.string();
   try {
-    OuterLoopInputFromYaml parser;
+    CriterionInputFromYaml parser;
     parser.Read(empty);
-  } catch (const OuterLoopInputFileError& e) {
+  } catch (const CriterionInputFileError& e) {
     ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
   }
 }
@@ -219,9 +218,9 @@ TEST_F(OuterLoopInputFromYamlTest, YamlFileIsEmpty) {
   std::ostringstream expected_msg;
   expected_msg << "outer loop input file is empty: " << empty << "\n";
   try {
-    OuterLoopInputFromYaml parser;
+    CriterionInputFromYaml parser;
     parser.Read(empty);
-  } catch (const OuterLoopInputFileIsEmpty& e) {
+  } catch (const CriterionInputFileIsEmpty& e) {
     ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
   }
 }
@@ -237,9 +236,9 @@ TEST_F(OuterLoopInputFromYamlTest, YamlFileShouldContainsAtLeast1Pattern) {
   expected_msg << "outer loop input file must contains at least one pattern."
                << "\n";
   try {
-    OuterLoopInputFromYaml parser;
+    CriterionInputFromYaml parser;
     parser.Read(empty_patterns);
-  } catch (const OuterLoopInputFileNoPatternFound& e) {
+  } catch (const CriterionInputFileNoPatternFound& e) {
     ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
   }
 }
@@ -256,9 +255,9 @@ TEST_F(OuterLoopInputFromYamlTest, YamlFilePatternsShouldBeAnArray) {
   expected_msg << "In outer loop input file 'patterns' should be an array."
                << "\n";
   try {
-    OuterLoopInputFromYaml parser;
+    CriterionInputFromYaml parser;
     parser.Read(patterns_not_array);
-  } catch (const OuterLoopInputPatternsShouldBeArray& e) {
+  } catch (const CriterionInputPatternsShouldBeArray& e) {
     ASSERT_EQ(expected_msg.str(), e.ErrorMessage());
   }
 }
@@ -282,12 +281,12 @@ patterns:
     criterion: 1)";
   of << my_yaml;
   of.close();
-  auto data = OuterLoopInputFromYaml().Read(valid_file);
+  auto data = CriterionInputFromYaml().Read(valid_file);
 
   ASSERT_EQ(data.StoppingThreshold(), 1e-4);
   ASSERT_EQ(data.CriterionCountThreshold(), 1e-1);
 
-  auto patterns = data.OuterLoopData();
+  auto patterns = data.Criteria();
   ASSERT_EQ(patterns.size(), 4);
   auto pattern1 = patterns[0];
   ASSERT_EQ(pattern1.Criterion(), 185.0);
@@ -298,7 +297,7 @@ class VariablesGroupTest : public ::testing::Test {};
 
 TEST_F(VariablesGroupTest, EmptyVariablesListGivesEmptyIndices) {
   std::vector<std::string> variables;
-  std::vector<Benders::Criterion::OuterLoopSingleInputData> data;
+  std::vector<Benders::Criterion::CriterionSingleInputData> data;
 
   Benders::Criterion::VariablesGroup var_grp(variables, data);
   ASSERT_TRUE(var_grp.Indices().empty());
@@ -307,7 +306,7 @@ TEST_F(VariablesGroupTest, EmptyVariablesListGivesEmptyIndices) {
 TEST_F(VariablesGroupTest, EmptyPatternsListGivesEmptyIndices) {
   std::vector<std::string> variables{
       "PositiveUnsuppliedEnergy::area<test>::hour<125>"};
-  std::vector<Benders::Criterion::OuterLoopSingleInputData> data;
+  std::vector<Benders::Criterion::CriterionSingleInputData> data;
 
   Benders::Criterion::VariablesGroup var_grp(variables, data);
   ASSERT_TRUE(var_grp.Indices().empty());
@@ -316,8 +315,8 @@ TEST_F(VariablesGroupTest, EmptyPatternsListGivesEmptyIndices) {
 TEST_F(VariablesGroupTest, SingleDataWithInvalidPrefixAndBody) {
   std::vector<std::string> variables{
       "PositiveUnsuppliedEnergy::area<test>::hour<125>"};
-  std::vector<Benders::Criterion::OuterLoopSingleInputData> data{
-      Benders::Criterion::OuterLoopSingleInputData("Pref", "Body", 1534.0)};
+  std::vector<Benders::Criterion::CriterionSingleInputData> data{
+      Benders::Criterion::CriterionSingleInputData("Pref", "Body", 1534.0)};
 
   Benders::Criterion::VariablesGroup var_grp(variables, data);
   const auto& vect_indices = var_grp.Indices();
@@ -328,8 +327,8 @@ TEST_F(VariablesGroupTest, SingleDataWithInvalidPrefixAndBody) {
 TEST_F(VariablesGroupTest, SingleDataWithUnMatchedPrefix) {
   std::vector<std::string> variables{
       "PositiveUnsuppliedEnergy::area<test>::hour<125>"};
-  std::vector<Benders::Criterion::OuterLoopSingleInputData> data{
-      Benders::Criterion::OuterLoopSingleInputData("UnsuppliedEnergy::", "test",
+  std::vector<Benders::Criterion::CriterionSingleInputData> data{
+      Benders::Criterion::CriterionSingleInputData("UnsuppliedEnergy::", "test",
                                                    1534.0)};
 
   Benders::Criterion::VariablesGroup var_grp(variables, data);
@@ -341,8 +340,8 @@ TEST_F(VariablesGroupTest, SingleDataWithUnMatchedPrefix) {
 TEST_F(VariablesGroupTest, SingleDataWithUnMatchedBody) {
   std::vector<std::string> variables{
       "PositiveUnsuppliedEnergy::area<test>::hour<125>"};
-  std::vector<Benders::Criterion::OuterLoopSingleInputData> data{
-      Benders::Criterion::OuterLoopSingleInputData(
+  std::vector<Benders::Criterion::CriterionSingleInputData> data{
+      Benders::Criterion::CriterionSingleInputData(
           "PositiveUnsuppliedEnergy::", "Body", 1534.0)};
 
   Benders::Criterion::VariablesGroup var_grp(variables, data);
@@ -351,7 +350,7 @@ TEST_F(VariablesGroupTest, SingleDataWithUnMatchedBody) {
   ASSERT_TRUE(vect_indices[0].empty());
 }
 
-static const std::vector<Benders::Criterion::OuterLoopSingleInputData> data{
+static const std::vector<Benders::Criterion::CriterionSingleInputData> data{
     {"Blue::", "Earth", 1534.0}, {"Red::", "Mars", 65.0}};
 
 TEST_F(VariablesGroupTest, With2ValidPatterns) {
@@ -381,24 +380,28 @@ TEST_F(OuterLoopBiLevelTest, BiLevelBestUbInitialization) {
   ASSERT_EQ(outerLoopBiLevel.BilevelBestub(), 1e20);
 }
 
-TEST_F(OuterLoopBiLevelTest, Unfeasibility_With_High_Criterions) {
+TEST_F(OuterLoopBiLevelTest, Unfeasibility_With_High_Criteria) {
   Outerloop::OuterLoopBiLevel outerLoopBiLevel(data);
-  const std::vector<double> criterions = {data[0].Criterion() + 12,
-                                          data[1].Criterion() + 2024};
+  const std::vector<double> criteria = {
+    data[0].Criterion() + 12,
+    data[1].Criterion() + 2024
+  };
   const auto lambda = 1205;
   ASSERT_FALSE(outerLoopBiLevel.Update_bilevel_data_if_feasible(
-      {}, criterions, 0., 0., lambda));
+    {}, criteria, 0., 0., lambda));
   ASSERT_EQ(outerLoopBiLevel.LambdaMin(), lambda);
 }
 
 TEST_F(OuterLoopBiLevelTest, UnfeasibilityWithInfiniteOverAllCosts) {
   Outerloop::OuterLoopBiLevel outerLoopBiLevel(data);
-  const std::vector<double> criterions = {data[0].Criterion() - 12,
-                                          data[1].Criterion() - 24};
+  const std::vector<double> criteria = {
+    data[0].Criterion() - 12,
+    data[1].Criterion() - 24
+  };
   const auto lambda = 1205;
   const auto overall_cost = 1e20;
   ASSERT_FALSE(outerLoopBiLevel.Update_bilevel_data_if_feasible(
-      {}, criterions, overall_cost, 0., lambda));
+    {}, criteria, overall_cost, 0., lambda));
   ASSERT_EQ(outerLoopBiLevel.LambdaMin(), lambda);
 }
 
@@ -412,12 +415,14 @@ TEST_F(OuterLoopBiLevelTest, FeasibleScenario) {
   const auto cand_coeff = 2.0;
   outerLoopBiLevel.Init({cand_coeff}, max_x, {{cand, 0}});
   ASSERT_EQ(outerLoopBiLevel.LambdaMax(), cand_coeff * max_x.at(cand));
-  const std::vector<double> criterions = {data[0].Criterion() - 12,
-                                          data[1].Criterion() - 24};
+  const std::vector<double> criteria = {
+    data[0].Criterion() - 12,
+    data[1].Criterion() - 24
+  };
   const Point x = {{cand, max_x.at(cand) / 2}};
 
   ASSERT_TRUE(outerLoopBiLevel.Update_bilevel_data_if_feasible(
-      x, criterions, overall_cost, invest_cost_at_x, lambda));
+    x, criteria, overall_cost, invest_cost_at_x, lambda));
   ASSERT_EQ(outerLoopBiLevel.LambdaMin(), 0.);
   ASSERT_EQ(outerLoopBiLevel.LambdaMax(), invest_cost_at_x);
   ASSERT_EQ(outerLoopBiLevel.BilevelBestub(), overall_cost);
@@ -437,12 +442,14 @@ TEST_F(OuterLoopBiLevelTest,
   // higher than lambda_max initial value
   const auto invest_cost_at_x = initial_lambda_max * 30;
   ASSERT_EQ(outerLoopBiLevel.LambdaMax(), initial_lambda_max);
-  const std::vector<double> criterions = {data[0].Criterion() - 12,
-                                          data[1].Criterion() - 24};
+  const std::vector<double> criteria = {
+    data[0].Criterion() - 12,
+    data[1].Criterion() - 24
+  };
   const Point x = {{cand, max_x.at(cand) / 2}};
 
   ASSERT_TRUE(outerLoopBiLevel.Update_bilevel_data_if_feasible(
-      x, criterions, overall_cost, invest_cost_at_x, lambda));
+    x, criteria, overall_cost, invest_cost_at_x, lambda));
   ASSERT_EQ(outerLoopBiLevel.LambdaMin(), 0.);
   ASSERT_EQ(outerLoopBiLevel.LambdaMax(), initial_lambda_max);
   ASSERT_EQ(outerLoopBiLevel.BilevelBestub(), overall_cost);

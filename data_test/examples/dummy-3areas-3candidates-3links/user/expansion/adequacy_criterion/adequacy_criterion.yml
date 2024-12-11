@@ -1,0 +1,13 @@
+# critère d'arrêt de l'algo
+stopping_threshold: 1e-4
+# seuil
+criterion_count_threshold: 1
+patterns:
+  - area: "area1"
+    criterion: 1000
+  - area: "area2"
+    criterion: 1000
+  - area: "semibase"
+    criterion: 1000
+  - area: "peak"
+    criterion: 1000

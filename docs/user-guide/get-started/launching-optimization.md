@@ -94,10 +94,6 @@ Show the Antares-Xpansion version.
 
 Show the Antares-Simulator version (used in the `antares` step).
 
-## Graphical user interface
-
-Since v0.6.0, Antares-Xpansion comes with a GUI. The GUI can be launched by running `antares-xpansion-ui.exe`. For now, this GUI is in the experimental phase. 
-
 ![](../../assets/media/ui.png)
 
 ## Output of Antares-Xpansion

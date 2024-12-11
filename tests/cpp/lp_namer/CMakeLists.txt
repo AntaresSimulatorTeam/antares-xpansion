@@ -15,31 +15,32 @@ find_package (GTest REQUIRED)
 # unit tests
 # --------------------------------------------------------------------------
 add_executable (lp_namer_tests
-        AdditionalConstraintsTest.cc
-        AdditionalConstraintsReaderTest.cc
-        LinkdataRecordTest.cc
-        StudyUpdateTest.cc
-        CandidatesINIReaderTest.cpp
         ActiveLinkTest.cpp
-        LinkProfileReaderTest.cpp
-        ProblemModifierTest.cpp
-        VariableFileReaderTest.cpp
-        MasterProblemBuilderTest.cpp
-        ChronicleMapReaderTest.cpp
+        AdditionalConstraintsReaderTest.cc
+        AdditionalConstraintsTest.cc
+        AntaresProblemToXpansionProblemTranslatorTest.cpp
+        CandidatesINIReaderTest.cpp
         ChronicleMapProviderTest.cpp
-        ProblemConstructionTest.cpp 
-        NOOPSolver.h
-        ProblemGenerationExeOptionsTest.cpp
-        LoggerBuilder.h
+        ChronicleMapReaderTest.cpp
+        GeneralDataReadetTests.cpp
+        LinkProfileReaderTest.cpp
+        LinkdataRecordTest.cc
         LoggerBuilder.cpp
+        LoggerBuilder.h
+        LpFilesExtractorTest.cpp
+        MasterProblemBuilderTest.cpp
+        MpsTxtWriterTest.cpp
+        NOOPSolver.h
+        ProblemConstructionTest.cpp
+        ProblemGenerationExeOptionsTest.cpp
         ProblemGenerationLoggerTest.cpp
+        ProblemModifierTest.cpp
+        ProblemVariablesFromProblemAdapterTest.cpp
+        SettingsReaderTest.cpp
+        StudyUpdateTest.cc
+        VariableFileReaderTest.cpp
         WeightsFileReaderTest.cpp
         WeightsFileWriterTest.cpp
-        LpFilesExtractorTest.cpp
-        MpsTxtWriterTest.cpp
-        AntaresProblemToXpansionProblemTranslatorTest.cpp
-        GeneralDataReadetTests.cpp
-        ProblemVariablesFromProblemAdapterTest.cpp
 )
 
 target_link_libraries (lp_namer_tests PRIVATE
@@ -51,6 +52,7 @@ target_link_libraries (lp_namer_tests PRIVATE
         antaresXpansion::lp_namer_problem_modifier
         antaresXpansion::xpansion_study_updater_lib
         antaresXpansion::problem_generation_main
+        antaresXpansion::tests_utils
         )
 
 

@@ -49,8 +49,11 @@ class ProblemGeneration {
       const std::vector<ProblemData>& mpsList, std::filesystem::path& lpDir_,
       std::shared_ptr<ArchiveReader> reader,
       const Antares::Solver::LpsFromAntares& lps);
+  virtual void set_solver(std::filesystem::path study_dir, ProblemGenerationLog::ProblemGenerationLogger* logger);
+
   Antares::Solver::LpsFromAntares lps_;
   std::optional<SimulationInputMode> mode_;
   virtual std::filesystem::path performAntaresSimulation();
   std::filesystem::path simulation_dir_;
+  std::string solver_name_;
 };

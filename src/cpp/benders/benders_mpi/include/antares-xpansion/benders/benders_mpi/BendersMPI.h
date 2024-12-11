@@ -90,7 +90,7 @@ class BendersMpi : public BendersBase {
   virtual void GatherCuts(const SubProblemDataMap &subproblem_data_map,
                           const Timer &walltime);
   void BroadCastVariablesIndices();
-  virtual void ComputeSubproblemsContributionToOuterLoopCriterion(
+  virtual void ComputeSubproblemsContributionToCriteria(
       const SubProblemDataMap &subproblem_data_map);
   void SolveSubproblem(
       SubProblemDataMap &subproblem_data_map,

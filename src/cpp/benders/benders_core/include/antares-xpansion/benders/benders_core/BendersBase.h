@@ -1,6 +1,7 @@
 #pragma once
 
 #include <execution>
+#include <tbb/tbb.h>
 #include <filesystem>
 #include <optional>
 #include <regex>
@@ -82,9 +83,13 @@ class BendersBase {
   }
   BendersBaseOptions Options() const { return _options; }
   virtual void free() = 0;
-  int GetBendersRunNumber() const { return _data.outer_loop_current_iteration_data.benders_num_run; }
+
+  int GetBendersRunNumber() const { return _data.criteria_current_iteration_data.benders_num_run; }
+
   CurrentIterationData GetCurrentIterationData() const;
-  OuterLoopCurrentIterationData GetOuterLoopData() const;
+
+  CriteriaCurrentIterationData GetOuterLoopData() const;
+
   std::vector<double> GetOuterLoopCriterionAtBestBenders() const;
   virtual void init_data();
   void init_data(double external_loop_lambda, double external_loop_lambda_min, double external_loop_lambda_max);
@@ -95,14 +100,12 @@ class BendersBase {
   void UpdateOuterLoopSolution();
 
   bool isExceptionRaised() const;
-  [[nodiscard]] std::filesystem::path OuterloopOptionsFile() const;
   void UpdateOverallCosts();
   Logger _logger;
   Writer _writer;
   std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
-  void setCriterionsComputation(
-      std::shared_ptr<Benders::Criterion::CriterionComputation>
-          criterionsComputation);
+  void setCriterionComputationInputs(
+      const Benders::Criterion::CriterionInputData &criterion_input_data);
 
  protected:
   bool exception_raised_ = false;
@@ -118,7 +121,7 @@ class BendersBase {
   bool init_problems_ = true;
   bool free_problems_ = true;
 
-  std::vector<std::vector<double>> outer_loop_criterion_;
+  std::vector<std::vector<double> > criteria_vector_for_each_iteration_;
   bool is_bilevel_check_all_ = false;
 
   virtual void Run() = 0;
@@ -223,9 +226,8 @@ class BendersBase {
                                PlainData::SubProblemData &subproblem_data,
                                const std::string &name,
                                const std::shared_ptr<SubproblemWorker> &worker);
-  // TODO to be rethink
-  std::shared_ptr<Benders::Criterion::CriterionComputation>
-      criterions_computation_;
+
+  Benders::Criterion::CriterionComputation criterion_computation_;
   /**
    * for the nth variable name, Subproblems shares the same prefix , only the
    suffix is different

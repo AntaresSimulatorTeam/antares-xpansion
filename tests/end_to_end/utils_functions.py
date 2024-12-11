@@ -1,5 +1,6 @@
 import json
 import os
+import re
 import shutil
 import sys
 import zipfile
@@ -47,10 +48,12 @@ def remove_outputs(study_path):
 
 def get_filepath(output_dir, folder, filename):
     op = []
+    assert Path(output_dir).exists()
     for path in Path(output_dir).iterdir():
-        for jsonpath in Path(path / folder).rglob(filename):
+        assert Path(path / folder).exists()
+        for jsonpath in Path(path / folder).rglob( filename):
             op.append(jsonpath)
-    assert len(op) == 1
+        assert len(op) == 1
     return op[0]
 
 
@@ -58,7 +61,6 @@ def read_file(output_path):
     with open(output_path, 'r') as file:
         outputs = file.readlines()
     return outputs
-
 
 class FilesToRead:
     out_json: Path
@@ -73,6 +75,15 @@ class Outputs:
     lold: str
     positive_unsupplied_energy: str
 
+def find_in_simulator_log(output_dir, regex) -> bool:
+    reg = re.compile(f".*{regex}.*", re.IGNORECASE)
+    for path in Path(output_dir).iterdir():
+        if path.suffix == ".zip":
+            with zipfile.ZipFile(path, "r") as archive:
+                for line in archive.read(Path("simulation.log").as_posix()).decode('utf-8').splitlines():
+                    if re.search(reg, line):
+                        return True
+    return False
 
 def get_out_data(output_dir, files_to_read: FilesToRead) -> Outputs:
     for path in Path(output_dir).iterdir():
@@ -87,12 +98,11 @@ def get_out_data(output_dir, files_to_read: FilesToRead) -> Outputs:
                     out.positive_unsupplied_energy = archive.read(
                         files_to_read.positive_unsupplied_energy.as_posix()).decode(
                         'utf-8')
-
                 return out
     return None
 
 
-def read_outputs(output_path, use_archive=True, lold=False, positive_unsupplied_energy=False):
+def read_outputs(output_path, use_archive=True, lold=False, positive_unsupplied_energy=False) -> Outputs:
     files_to_read = FilesToRead()
     files_to_read.out_json = Path("expansion") / "out.json"
     files_to_read.options_json = Path("lp") / "options.json"

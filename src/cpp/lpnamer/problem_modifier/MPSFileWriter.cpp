@@ -6,9 +6,8 @@
 #include "antares-xpansion/lpnamer/problem_modifier/IProblemWriter.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 
-void MPSFileWriter::Write_problem(Problem *in_prblm) {
-  auto const lp_mps_name = lp_dir_ / in_prblm->_name;
-  in_prblm->write_prob_mps(lp_mps_name);
+void MPSFileWriter::Write_problem(Problem *in_prblm, const std::filesystem::path &output_file) {
+    in_prblm->write_prob_mps(output_file);
 }
 
 MPSFileWriter::MPSFileWriter(std::filesystem::path lp_dir)
