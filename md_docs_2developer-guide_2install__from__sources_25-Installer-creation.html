@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: User interface creation</title>
+<title>Antares Xpansion: Installer creation</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -105,7 +105,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('md_docs_2developer-guide_2install__from__sources_25-ui-creation.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('md_docs_2developer-guide_2install__from__sources_25-Installer-creation.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -131,20 +131,57 @@ $(document).ready(function(){initNavTree('md_docs_2developer-guide_2install__fro
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">User interface creation</div></div>
+  <div class="headertitle"><div class="title">Installer creation</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md89"></a>A PyQt5 user interface (UI) is available: <code>src\python\antares-xpansion-ui.py</code> To build the UI, the option <code>BUILD_UI</code> must be enabled at <a href="3-Build.md#configure">configure time</a>.</p>
-<h1><a class="anchor" id="autotoc_md90"></a>
-Install requirements</h1>
-<p>=== "Windows" <code> pip3 install -r requirements-ui.txt </code> === "Centos" <code> pip3 install -r requirements-ui.txt </code> === "Ubuntu" </p><pre class="fragment">```
-sudo apt install python3-pyqt5
+<div class="textblock"><p><a class="anchor" id="autotoc_md88"></a>CPack can be used to create the installer after the build phase :</p>
+<p>=== "Windows" <code> cd _build cpack -G ZIP </code> === "Centos" </p><pre class="fragment">### RHEL .rpm (Experimental)
 ```
-</pre> <h1><a class="anchor" id="autotoc_md91"></a>
-Force new generation for resource file</h1>
-<p>A <code>resource.py</code> python module is created when configuring CMake. To force the regeneration of this file if images are changed, use <code>pyrcc5</code>. </p><div class="fragment"><div class="line">cd src\python</div>
-<div class="line">pyrcc5 images.qrc &gt; resources.py</div>
-</div><!-- fragment --> </div></div><!-- contents -->
+cd _build
+cpack3 -G RPM .
+```
+!!! Note
+    `rpm-build` must be installed for RPM creation:  `sudo yum install rpm-build`
+
+### Linux .tar.gz
+```
+cd _build
+cpack3 -G TGZ
+```
+
+### Required system libraries
+There are still some system libraries that must be installed if you want to use Antares-Xpansion:
+
+```
+sudo yum install epel-release
+sudo yum install openmpi jsoncpp boost-openmpi
+```
+
+Before launching Antares-Xpansion with `mpi` for parallel launch (method `mpibenders`), you must load the `mpi` module :
+```
+scl enable devtoolset-7 bash
+module load mpi
+```
+
+!!! Note
+    `mpirun` can't be used as root on Centos7. Be sure to launch Antares-Xpansion without root user.
+</pre><p> === "Ubuntu" </p><pre class="fragment">### Ubuntu .deb (Experimental)
+```
+cd _build
+cpack -G DEB .
+```
+### Linux .tar.gz
+```
+cd _build
+cpack -G TGZ
+```
+
+### Required system libraries
+There are still some system libraries that must be installed if you want to use Antares-Xpansion:
+```
+sudo apt-get install libcurl4 libjsoncpp1 libboost-mpi-dev libboost-program-options-dev
+```
+</pre> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -1,8 +1,5 @@
 var annotated_dup =
 [
-    [ "antares-xpansion-ui", null, [
-      [ "MainWidget", "classantares-xpansion-ui_1_1MainWidget.html", null ]
-    ] ],
     [ "antares_xpansion", "namespaceantares__xpansion.html", [
       [ "antares_driver", "namespaceantares__xpansion_1_1antares__driver.html", [
         [ "AntaresDriver", "classantares__xpansion_1_1antares__driver_1_1AntaresDriver.html", "classantares__xpansion_1_1antares__driver_1_1AntaresDriver" ]

@@ -685,8 +685,5 @@ var hierarchy =
     [ "Enum", null, [
       [ "tests.end_to_end.examples.example_test.BendersMethod", "classtests_1_1end__to__end_1_1examples_1_1example__test_1_1BendersMethod.html", null ],
       [ "tests.end_to_end.lpnamer.test_lpnamerEndToEnd.OptionType", "classtests_1_1end__to__end_1_1lpnamer_1_1test__lpnamerEndToEnd_1_1OptionType.html", null ]
-    ] ],
-    [ "QWidget", null, [
-      [ "antares-xpansion-ui.MainWidget", "classantares-xpansion-ui_1_1MainWidget.html", null ]
     ] ]
 ];

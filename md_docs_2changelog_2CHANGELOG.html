@@ -134,79 +134,79 @@ $(document).ready(function(){initNavTree('md_docs_2changelog_2CHANGELOG.html',''
   <div class="headertitle"><div class="title">Antares-Xpansion changelog</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><h1><a class="anchor" id="autotoc_md11"></a>
+<div class="textblock"><h1><a class="anchor" id="autotoc_md10"></a>
 v1.3.2 (07/2024)</h1>
-<h2><a class="anchor" id="autotoc_md12"></a>
+<h2><a class="anchor" id="autotoc_md11"></a>
 Bug Fixes</h2>
 <ul>
 <li>Fix an issue where the application would crash if a user specified a value for "playlist_reset" in general_data.ini</li>
 <li>Fix an issue with "singleFiles" assets on Ubuntu not working due to mpi runtime library not being found</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md13"></a>
+<h1><a class="anchor" id="autotoc_md12"></a>
 v1.3.1 (07/2024)</h1>
-<h2><a class="anchor" id="autotoc_md14"></a>
+<h2><a class="anchor" id="autotoc_md13"></a>
 Features</h2>
 <ul>
 <li><b>outer_loop</b> option is renamed <b>adequacy_criterion</b></li>
 <li>New output file <b>criterions.txt</b> is added under <b>lp/</b> dir to store adequacy criterions for all valid patterns (area+criterion)</li>
 <li>New output file <b>PositiveUnsuppliedEnergy.txt</b> is added under <b>lp/</b> dir to store the amount of unsupplied energy for all valid patterns (area+criterion)</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md15"></a>
+<h2><a class="anchor" id="autotoc_md14"></a>
 Bug Fixes</h2>
 <ul>
 <li>Fix Mpi issues on single file assets</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md16"></a>
+<h2><a class="anchor" id="autotoc_md15"></a>
 Doc</h2>
 <ul>
 <li>The doc has been updated with a description of the adequacy criterion feature</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md17"></a>
+<h1><a class="anchor" id="autotoc_md16"></a>
 v1.3.0 (06/2024)</h1>
-<h2><a class="anchor" id="autotoc_md18"></a>
+<h2><a class="anchor" id="autotoc_md17"></a>
 ⚠️ Single-file versions in Ubuntu are known to have MPI-related issues. Please use the other ones.</h2>
-<h2><a class="anchor" id="autotoc_md19"></a>
+<h2><a class="anchor" id="autotoc_md18"></a>
 Features</h2>
 <ul>
 <li>Embedding Mpi in Windows</li>
 <li>Allow sensitivity study to run unzipped study</li>
 <li>Allow to specify a security criterion in number of hours of loss of load in the study. This feature is referred as outer_loop (renamed to adequacy_criterion in 1.3.1)</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md20"></a>
+<h2><a class="anchor" id="autotoc_md19"></a>
 Bug Fixes</h2>
 <ul>
 <li>Duplicate Xpress loading messages</li>
 <li>Remove whitespace from Xpress path on Windows</li>
 <li>Fix truncated xpress path on linux</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md21"></a>
+<h1><a class="anchor" id="autotoc_md20"></a>
 v1.2.2 (02/2024)</h1>
 <ul>
 <li>Update Antares simulator to 8.8.3</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md22"></a>
+<h1><a class="anchor" id="autotoc_md21"></a>
 v1.2 (10/2023)</h1>
-<h2><a class="anchor" id="autotoc_md23"></a>
+<h2><a class="anchor" id="autotoc_md22"></a>
 Features</h2>
 <ul>
 <li>Support "named mps" from Antares simulator</li>
 <li>Use Antares Simulator 8.8.0-rc2</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md24"></a>
+<h2><a class="anchor" id="autotoc_md23"></a>
 Bug fixes</h2>
 <ul>
 <li>Fix issue on windows with concurrent access to log files</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md25"></a>
+<h1><a class="anchor" id="autotoc_md24"></a>
 v1.1.1 (09/2023)</h1>
-<h2><a class="anchor" id="autotoc_md26"></a>
+<h2><a class="anchor" id="autotoc_md25"></a>
 Fix</h2>
 <ul>
 <li>Update performance graph in the documentation</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md27"></a>
+<h1><a class="anchor" id="autotoc_md26"></a>
 v1.1.0 (09/2023)</h1>
-<h2><a class="anchor" id="autotoc_md28"></a>
+<h2><a class="anchor" id="autotoc_md27"></a>
 Features</h2>
 <ul>
 <li>Implementation of the Benders by batch algorithm : performance improvements over the classical Benders algorithm</li>
@@ -217,40 +217,40 @@ Features</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md29"></a>
+<h2><a class="anchor" id="autotoc_md28"></a>
 For developers</h2>
 <ul>
 <li>MPI dependency is now mandatory as <code>benderssequential</code> and <code>bendersmpi</code> have been merged in a single <code>benders</code> executable</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md30"></a>
+<h1><a class="anchor" id="autotoc_md29"></a>
 v1.0.3 (02/2023)</h1>
-<h2><a class="anchor" id="autotoc_md31"></a>
+<h2><a class="anchor" id="autotoc_md30"></a>
 Features</h2>
 <ul>
 <li>Use Antares-Simulator 8.5.0</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md32"></a>
+<h2><a class="anchor" id="autotoc_md31"></a>
 Bug</h2>
 <ul>
 <li>Fix sensitivity not working with AntaresWeb</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md33"></a>
+<h1><a class="anchor" id="autotoc_md32"></a>
 v1.0.2 (01/2023)</h1>
-<h2><a class="anchor" id="autotoc_md34"></a>
+<h2><a class="anchor" id="autotoc_md33"></a>
 Bug fix</h2>
 <ul>
 <li>Fix missing performance graph from release</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md35"></a>
+<h1><a class="anchor" id="autotoc_md34"></a>
 v1.0.1 (01/2023)</h1>
-<h2><a class="anchor" id="autotoc_md36"></a>
+<h2><a class="anchor" id="autotoc_md35"></a>
 Features</h2>
 <ul>
 <li>Use Antares-Simulator 8.4.2</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md37"></a>
+<h1><a class="anchor" id="autotoc_md36"></a>
 v1.0.0 (12/2022)</h1>
-<h2><a class="anchor" id="autotoc_md38"></a>
+<h2><a class="anchor" id="autotoc_md37"></a>
 Features</h2>
 <ul>
 <li>Use Antares-Simulator 8.4.1</li>
@@ -262,14 +262,14 @@ Features</h2>
 <li>Performance improvement in disk space consumption : in full run mode i.e with option <code>--step full</code> (default behavior), Antares-Xpansion outputs are zipped within Antares study archive</li>
 <li>Change the default value of <code>relative_gap</code> from <code>1e-12</code> to <code>1e-6</code></li>
 </ul>
-<h2><a class="anchor" id="autotoc_md39"></a>
+<h2><a class="anchor" id="autotoc_md38"></a>
 Documentation</h2>
 <ul>
 <li>Add new page for <a href="../user-guide/performance-history/perf-graphs.ipynb">performance history</a></li>
 </ul>
-<h1><a class="anchor" id="autotoc_md40"></a>
+<h1><a class="anchor" id="autotoc_md39"></a>
 v0.8.0 (10/2022)</h1>
-<h2><a class="anchor" id="autotoc_md41"></a>
+<h2><a class="anchor" id="autotoc_md40"></a>
 Features</h2>
 <ul>
 <li>Use Antares-Simulator 8.2.2</li>
@@ -280,15 +280,15 @@ Features</h2>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md42"></a>
+<h2><a class="anchor" id="autotoc_md41"></a>
 Bug fixes</h2>
 <ul>
 <li>Allow the <code>capa</code> folder to be missing if unused</li>
 <li>The algorithm now properly stops after <code>max_iteration</code> instead of <code>max_iteration + 1</code> iterations</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md43"></a>
+<h1><a class="anchor" id="autotoc_md42"></a>
 v0.7.0 (06/2022)</h1>
-<h2><a class="anchor" id="autotoc_md44"></a>
+<h2><a class="anchor" id="autotoc_md43"></a>
 Features</h2>
 <ul>
 <li>Add the possibility to perform sensitivity studies on optimal investment solutions</li>
@@ -298,17 +298,17 @@ Features</h2>
 <li>Add <code>resume</code> step, to provide the possibility to resume an unfinished study</li>
 <li>Bump antares version used by Xpansion to 8.1.1 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md45"></a>
+<h2><a class="anchor" id="autotoc_md44"></a>
 Bug fixes</h2>
-<h2><a class="anchor" id="autotoc_md46"></a>
+<h2><a class="anchor" id="autotoc_md45"></a>
 For developers</h2>
 <ul>
 <li>Remove documentation generation with doxygen</li>
 <li>Use C++17</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md47"></a>
+<h1><a class="anchor" id="autotoc_md46"></a>
 v0.6.0 (12/2021)</h1>
-<h2><a class="anchor" id="autotoc_md48"></a>
+<h2><a class="anchor" id="autotoc_md47"></a>
 Features</h2>
 <ul>
 <li>Antares-Xpansion is now compatible with Antares v8.1 studies</li>
@@ -320,22 +320,22 @@ Features</h2>
 <li>Add <code>--installDir</code> option to be able to launch Antares-Xpansion from another directory than its own</li>
 <li>Set default value of <code>--simulationName</code> to <code>last</code> in order to use the last Antares simulation</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md49"></a>
+<h2><a class="anchor" id="autotoc_md48"></a>
 Bug fixes</h2>
 <ul>
 <li>Path to binaries directory was not found in some situations with python launcher and in python exclusive package</li>
 <li>Correct bug when there are too many zeros in a link-profile</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md50"></a>
+<h2><a class="anchor" id="autotoc_md49"></a>
 For developers</h2>
 <ul>
 <li>cpp <code>lpnamer</code> library is split into smaller and consistent libraries</li>
 <li>Each Antares-Xpansion step has its own driver (python class) instead of the all-in driver</li>
 <li>Upgrade to a new version of <code>antares-deps</code> (bug fix)</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md51"></a>
+<h1><a class="anchor" id="autotoc_md50"></a>
 v0.5.0 (10/2021)</h1>
-<h2><a class="anchor" id="autotoc_md52"></a>
+<h2><a class="anchor" id="autotoc_md51"></a>
 Features</h2>
 <ul>
 <li>In benders optimization, master problem .mps is written after each resolution</li>
@@ -343,7 +343,7 @@ Features</h2>
 </li>
 <li>Review of <code>candidates.ini</code> file content (remove <code>has-link-profile</code> and add <code>enable</code> feature)</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md53"></a>
+<h2><a class="anchor" id="autotoc_md52"></a>
 Bug fixes</h2>
 <ul>
 <li>Option <code>keepMps</code> was still removing some files needed for lp step</li>
@@ -351,7 +351,7 @@ Bug fixes</h2>
 <li>Correction of optimization if hurdles cost were used in Antares-Simulator</li>
 <li>Correction of optimization with binary additionnal constraint between investment candidates</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md54"></a>
+<h2><a class="anchor" id="autotoc_md53"></a>
 For developers</h2>
 <ul>
 <li>Fix mergemps optimization in debug mode</li>
@@ -363,9 +363,9 @@ For developers</h2>
 <li>Generation of pdf user guide from read-the-docs documentation</li>
 <li>Update Cmake to support Xpress on centos7</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md55"></a>
+<h1><a class="anchor" id="autotoc_md54"></a>
 v0.4.0 (07/2021)</h1>
-<h2><a class="anchor" id="autotoc_md56"></a>
+<h2><a class="anchor" id="autotoc_md55"></a>
 Features</h2>
 <ul>
 <li>A new multi solver interface is introduced, we no longer use OR-tools</li>
@@ -375,36 +375,36 @@ Features</h2>
 <li>Solver traces can be activated by specific option in benders/bendersmpi console applications</li>
 <li>Benders console information are now also printed on a specific file</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md57"></a>
+<h2><a class="anchor" id="autotoc_md56"></a>
 Bug fixes</h2>
 <ul>
 <li>Remove erroneus value from the <code>"problem_status"</code> entry of the output json file</li>
 <li>Fix display of overall cost of the best solutions</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md58"></a>
+<h1><a class="anchor" id="autotoc_md57"></a>
 v0.3.0 (05/2021)</h1>
-<h2><a class="anchor" id="autotoc_md59"></a>
+<h2><a class="anchor" id="autotoc_md58"></a>
 Features</h2>
 <ul>
 <li>Add <code>yearly-weights</code> file support to define a weight for each antares study MC years</li>
 <li>Clean of intermediate result file after each simulation step</li>
 <li>Creation of a Antares-Xpansion version with only one executable</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md60"></a>
+<h2><a class="anchor" id="autotoc_md59"></a>
 Bug fixes</h2>
 <ul>
 <li>Use study stored in mount network drive</li>
 <li><a class="el" href="classProblem.html" title="Decorator to the SolverAbstract class.">Problem</a> accepting capital letters in candidate areas</li>
 <li>Small alignment fix in output</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md61"></a>
+<h1><a class="anchor" id="autotoc_md60"></a>
 v0.2.0 (04/2021)</h1>
-<h2><a class="anchor" id="autotoc_md62"></a>
+<h2><a class="anchor" id="autotoc_md61"></a>
 Features</h2>
 <ul>
 <li>Add <code>update</code> step to update antares study links with calculated investments</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md63"></a>
+<h2><a class="anchor" id="autotoc_md62"></a>
 Bug fixes</h2>
 <ul>
 <li>Invalid best iteration display in logs</li>
@@ -413,7 +413,7 @@ Bug fixes</h2>
 <li>Windows: Add Microsoft Visual Studio needed redistribuable to installer</li>
 <li>Linux: wrong <code>antares-solver</code> executable permission and install directory</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md64"></a>
+<h1><a class="anchor" id="autotoc_md63"></a>
 v0.1.0 (03/2021)</h1>
 <p>We’re happy to announce the first open-source version v0.1.0 of Antares-Xpansion. Antares-Xpansion optimizes the installed capacities of an Antares study.</p>
 <p>The investment decisions are optimized by running Antares' simulations iteratively. At each iteration, the installed capacity of the investments are updated, and the simulations are repeated until the total costs have converged to a minimum. The total cost evaluated in this problem are the sum of the <b>expected operation cost during one year</b> and <b>the investment annuity</b>. The user defines investment candidates. <a class="el" href="classCandidate.html" title="Candidate class.">Candidate</a> capacities for investment are necessarily links from an Antares study. Investment candidates can be:</p><ul>
@@ -422,7 +422,7 @@ v0.1.0 (03/2021)</h1>
 <li>renewable generation capacity (located in a virtual node)</li>
 <li>or even flexibilities (located in virtual nodes)</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md65"></a>
+<h1><a class="anchor" id="autotoc_md64"></a>
 Notes</h1>
 <p>This version is only compatible with Antares v8.0 <a href="https://antares-simulator.org">Antares-Simulator</a>. The Antares binaries needed by Antares-Xpansion are available in the installation package of Antares-Xpansion.</p>
 <p>An annual cost, a potential, a link-profile or an already-installed-capacity can be defined for each candidate. Linear constraints between the invested capacities of investment candidates can also be imposed.</p>
