@@ -42,7 +42,6 @@ Here is a list of available CMake configure options:
 |`BUILD_not_system`|`ON`|Enable build of external librairies not available on system package manager.|
 |`BUILD_ALL`|`OFF`|Enable build of ALL external librairies.|
 |`BUILD_TESTING`|`OFF`|Enable test build.|
-|`BUILD_UI`|`OFF`|Enable UI build.|
 |`ALLOW_RUN_AS_ROOT`|`OFF`|allow mpi to run as root for centOs docker.|
 
 Additionnal vcpkg options:

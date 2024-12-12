@@ -96,11 +96,6 @@ where `x.y.z` is the version number.
     ```
 
 
-
-### Graphical user interface
-
-Antares-Xpansion comes with a GUI. The GUI can be launched by running `antares-xpansion-ui.exe`. For now, this GUI is in the experimental phase.
-
 ## Technologies
 Antares-Xpansion is developed mainly in **C++** and uses a **Python** runner
 to drive the execution of multiple executables.

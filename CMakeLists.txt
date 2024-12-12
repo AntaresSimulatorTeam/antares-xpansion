@@ -255,7 +255,6 @@ endif (COIN_OR)
 # ===========================================================================
 # Targets
 # ===========================================================================
-option(BUILD_UI "Build antares-xpansion ui" OFF)
 option(BUILD_TESTING "Activates unit tests building" OFF)
 
 if (WIN32)
