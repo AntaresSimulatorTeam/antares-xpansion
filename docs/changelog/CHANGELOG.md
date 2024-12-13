@@ -4,7 +4,7 @@ Antares-Xpansion changelog
 v1.4.0 (12/2024)
 --------------------------------------------------------
 ### Features
-* Update Antares Simulator to  9.2-RC5
+* Update Antares Simulator to  9.2-RC7
 * Output file **criterions.txt** is renamed **LOLD.txt** as it gathers the loss of load for each area at each iteration of the algorithm
 * End to end coherence of solvers : if Xpress is selected, it is also used for Antares step (does not work yet with memory mode), if coin is selected, sirius is used in Antares
 * Support for in memory problems between Antares and problem generation
