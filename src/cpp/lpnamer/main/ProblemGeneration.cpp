@@ -1,15 +1,13 @@
 
-#include <execution>
-#include <tbb/tbb.h>
-
 #include "antares-xpansion/lpnamer/main/ProblemGeneration.h"
 
 #include <antares/api/solver.h>
+#include <tbb/tbb.h>
 
+#include <execution>
 #include <iostream>
 #include <utility>
 
-#include "antares-xpansion/lpnamer/input_reader/SettingsReader.h"
 #include "Version.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
@@ -64,7 +62,9 @@ ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options)
 }
 
 std::filesystem::path ProblemGeneration::performAntaresSimulation() {
-  auto results = Antares::API::PerformSimulation(options_.StudyPath());
+  Antares::Solver::Optimization::OptimizationOptions optOptions;
+  auto results =
+      Antares::API::PerformSimulation(options_.StudyPath(), optOptions);
   // Add parallel
 
   // Handle errors
@@ -86,8 +86,9 @@ std::filesystem::path ProblemGeneration::updateProblems() {
   if (mode_ == SimulationInputMode::ARCHIVE) {
     xpansion_output_dir =
         options_.deduceXpansionDirIfEmpty(xpansion_output_dir, archive_path);
-    study_dir = std::filesystem::absolute(archive_path).parent_path().parent_path();
-    //Assume study/output/archive.zip
+    study_dir =
+        std::filesystem::absolute(archive_path).parent_path().parent_path();
+    // Assume study/output/archive.zip
   }
 
   if (mode_ == SimulationInputMode::ANTARES_API) {
@@ -99,7 +100,9 @@ std::filesystem::path ProblemGeneration::updateProblems() {
     simulation_dir_ = options_.XpansionOutputDir();  // Legacy naming.
     // options_.XpansionOutputDir() point in fact to a simulation output from
     // antares
-    study_dir = std::filesystem::absolute(simulation_dir_).parent_path().parent_path(); //Assume study/output/simulation
+    study_dir = std::filesystem::absolute(simulation_dir_)
+                    .parent_path()
+                    .parent_path();  // Assume study/output/simulation
   }
 
   if (mode_ == SimulationInputMode::ANTARES_API ||
@@ -338,9 +341,12 @@ void ProblemGeneration::RunProblemGeneration(
       << "Problem Generation ran in: "
       << format_time_str(problem_generation_timer.elapsed()) << std::endl;
 }
-void ProblemGeneration::set_solver(std::filesystem::path study_dir, ProblemGenerationLog::ProblemGenerationLogger* logger) {
-    SettingsReader settingsReader(study_dir / "user" / "expansion" / "settings.ini", logger);
-    solver_name_ = settingsReader.Solver();
+void ProblemGeneration::set_solver(
+    std::filesystem::path study_dir,
+    ProblemGenerationLog::ProblemGenerationLogger* logger) {
+  SettingsReader settingsReader(
+      study_dir / "user" / "expansion" / "settings.ini", logger);
+  solver_name_ = settingsReader.Solver();
 }
 
 std::shared_ptr<ArchiveReader> InstantiateZipReader(
