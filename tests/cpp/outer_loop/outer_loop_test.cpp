@@ -181,17 +181,17 @@ TEST_F(OuterLoopPatternTest, RegexGivenPrefixAndBody) {
   const std::string body = "body";
   CriterionPattern o(prefix, body);
 
-  auto ret_regex = o.MakeRegex();
+  auto ret_regex = o.Pattern();
 
-  ASSERT_EQ(std::regex_search(prefix + body, ret_regex), false);
-  ASSERT_EQ(std::regex_search(prefix + "::" + body + "::suffix", ret_regex),
+  ASSERT_EQ((prefix + body).find(ret_regex) != std::string::npos, false);
+  ASSERT_EQ((prefix + "::" + body + "::suffix").find(ret_regex) != std::string::npos,
             false);
-  ASSERT_EQ(std::regex_search(body + prefix, ret_regex), false);
-  ASSERT_EQ(std::regex_search(prefix + "::", ret_regex), false);
-  ASSERT_EQ(std::regex_search(body, ret_regex), false);
-  ASSERT_EQ(std::regex_search(prefix + "area<" + body + ">", ret_regex), true);
-  ASSERT_EQ(std::regex_search(prefix + "area<" + body + ">::suffix", ret_regex), true);
-  ASSERT_EQ(std::regex_search(prefix + "area<" + body + "_other_area>::suffix", ret_regex), false);
+  ASSERT_EQ((body + prefix).find(ret_regex) != std::string::npos , false);
+  ASSERT_EQ((prefix + "::").find(ret_regex) != std::string::npos, false);
+  ASSERT_EQ((body).find(ret_regex) != std::string::npos, false);
+  ASSERT_EQ((prefix + "area<" + body + ">").find(ret_regex) != std::string::npos, true);
+  ASSERT_EQ((prefix + "area<" + body + ">::suffix").find(ret_regex) != std::string::npos, true); //Match
+  ASSERT_EQ((prefix + "area<" + body + "_other_area>::suffix").find(ret_regex) != std::string::npos, false);
 }
 
 class OuterLoopInputFromYamlTest : public ::testing::Test {};

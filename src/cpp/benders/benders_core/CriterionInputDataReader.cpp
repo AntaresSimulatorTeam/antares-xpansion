@@ -13,14 +13,10 @@ using namespace Benders::Criterion;
 CriterionPattern::CriterionPattern(std::string prefix, std::string body)
     : prefix_(std::move(prefix)), body_(std::move(body)) {}
 
-/**
- * just do
- * just cat ;)
- */
-std::regex CriterionPattern::MakeRegex() const {
-  auto pattern = "(^" + prefix_ + "area<" + body_ + ">" + ")";
-  return std::regex(pattern);
+std::string CriterionPattern::Pattern() const {
+  return prefix_ + "area<" + body_ + ">";
 }
+
 const std::string &CriterionPattern::GetPrefix() const { return prefix_; }
 void CriterionPattern::SetPrefix(const std::string &prefix) {
   prefix_ = prefix;

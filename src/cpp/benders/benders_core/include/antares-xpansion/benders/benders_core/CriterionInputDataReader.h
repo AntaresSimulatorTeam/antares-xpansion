@@ -45,7 +45,7 @@ class CriterionPattern {
  public:
   explicit CriterionPattern(std::string prefix, std::string body);
   CriterionPattern() = default;
-  [[nodiscard]] std::regex MakeRegex() const;
+  [[nodiscard]] std::string Pattern() const;
   [[nodiscard]] const std::string &GetPrefix() const;
   void SetPrefix(const std::string &prefix);
   [[nodiscard]] const std::string &GetBody() const;
@@ -54,7 +54,6 @@ class CriterionPattern {
  private:
   std::string prefix_;
   std::string body_;
-
 };
 
 /// @brief holds the pattern and the criterion
