@@ -27,13 +27,13 @@ void VariablesGroup::Search() {
   indices_.assign(criterion_single_input_data_.size(), {});
   int pattern_index(0);
   for (const auto& single_input_data : criterion_single_input_data_) {
-    auto pattern = single_input_data.Pattern().GetPrefix() + "area<" + single_input_data.Pattern().GetBody() + ">";
+    auto pattern = single_input_data.Pattern().Value();
     int var_index(0);
     for (const auto& variable : all_variables_) {
-      if (variable.find(single_input_data.Pattern().GetPrefix()) != std::string::npos) {
+      if (variable.find(pattern) != std::string::npos) {
         indices_[pattern_index].push_back(var_index);
       }
-      var_index++;
+      ++var_index;
     }
     ++pattern_index;
   }

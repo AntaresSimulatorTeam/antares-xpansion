@@ -13,7 +13,7 @@ using namespace Benders::Criterion;
 CriterionPattern::CriterionPattern(std::string prefix, std::string body)
     : prefix_(std::move(prefix)), body_(std::move(body)) {}
 
-std::string CriterionPattern::Pattern() const {
+std::string CriterionPattern::Value() const {
   return prefix_ + "area<" + body_ + ">";
 }
 

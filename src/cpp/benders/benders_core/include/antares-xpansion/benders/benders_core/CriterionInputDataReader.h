@@ -45,7 +45,7 @@ class CriterionPattern {
  public:
   explicit CriterionPattern(std::string prefix, std::string body);
   CriterionPattern() = default;
-  [[nodiscard]] std::string Pattern() const;
+  [[nodiscard]] std::string Value() const;
   [[nodiscard]] const std::string &GetPrefix() const;
   void SetPrefix(const std::string &prefix);
   [[nodiscard]] const std::string &GetBody() const;

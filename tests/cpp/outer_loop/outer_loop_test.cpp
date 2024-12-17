@@ -181,7 +181,7 @@ TEST_F(OuterLoopPatternTest, RegexGivenPrefixAndBody) {
   const std::string body = "body";
   CriterionPattern o(prefix, body);
 
-  auto ret_regex = o.Pattern();
+  auto ret_regex = o.Value();
 
   ASSERT_EQ((prefix + body).find(ret_regex) != std::string::npos, false);
   ASSERT_EQ((prefix + "::" + body + "::suffix").find(ret_regex) != std::string::npos,
