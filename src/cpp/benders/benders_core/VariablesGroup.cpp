@@ -30,7 +30,7 @@ void VariablesGroup::Search() {
     auto pattern = single_input_data.Pattern().Value();
     int var_index(0);
     for (const auto& variable : all_variables_) {
-      if (variable.find(pattern) != std::string::npos) {
+      if (variable.starts_with(pattern)) {
         indices_[pattern_index].push_back(var_index);
       }
       ++var_index;
