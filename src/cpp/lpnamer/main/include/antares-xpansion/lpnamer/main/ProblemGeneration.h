@@ -24,7 +24,7 @@ class ProblemGeneration {
   explicit ProblemGeneration(ProblemGenerationOptions& options);
   virtual ~ProblemGeneration() = default;
   std::filesystem::path updateProblems();
-  ProblemGenerationOptions& options_;
+  const ProblemGenerationOptions& options_;
 
  private:
   virtual void RunProblemGeneration(

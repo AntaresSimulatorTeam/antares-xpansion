@@ -83,6 +83,8 @@ std::filesystem::path ProblemGeneration::updateProblems() {
   const auto archive_path = options_.ArchivePath();
   std::filesystem::path study_dir;
 
+  set_solver(study_dir, logger.get());
+
   if (mode_ == SimulationInputMode::ARCHIVE) {
     xpansion_output_dir =
         options_.deduceXpansionDirIfEmpty(xpansion_output_dir, archive_path);
@@ -122,8 +124,6 @@ std::filesystem::path ProblemGeneration::updateProblems() {
       options_.AdditionalConstraintsFilename();
   auto weights_file = options_.WeightsFile();
   auto unnamed_problems = options_.UnnamedProblems();
-
-  set_solver(study_dir, logger.get());
 
   RunProblemGeneration(xpansion_output_dir, master_formulation,
                        additionalConstraintFilename_l, archive_path, logger,
