@@ -198,7 +198,7 @@ $(document).ready(function(){initNavTree('CriterionInputDataReader_8h_source.htm
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> <span class="keyword">public</span>:</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionPattern.html">CriterionPattern</a>(std::string prefix, std::string body);</div>
 <div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>  <a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionPattern.html">CriterionPattern</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  [[nodiscard]] std::regex <a class="code hl_function" href="classBenders_1_1Criterion_1_1CriterionPattern.html#a46a777956f2cee6cf531ba1dfc7104d7">MakeRegex</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  [[nodiscard]] std::string Value() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>  [[nodiscard]] <span class="keyword">const</span> std::string &amp;GetPrefix() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>  <span class="keywordtype">void</span> SetPrefix(<span class="keyword">const</span> std::string &amp;prefix);</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>  [[nodiscard]] <span class="keyword">const</span> std::string &amp;GetBody() <span class="keyword">const</span>;</div>
@@ -207,95 +207,93 @@ $(document).ready(function(){initNavTree('CriterionInputDataReader_8h_source.htm
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span> <span class="keyword">private</span>:</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  std::string prefix_;</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  std::string body_;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>};</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>};</div>
 </div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
-<div class="foldopen" id="foldopen00061" data-start="{" data-end="};">
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="classBenders_1_1Criterion_1_1CriterionSingleInputData.html">   61</a></span><span class="keyword">class </span><a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionSingleInputData.html">CriterionSingleInputData</a> {</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  <a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionSingleInputData.html">CriterionSingleInputData</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>  <a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionSingleInputData.html">CriterionSingleInputData</a>(<span class="keyword">const</span> std::string &amp;prefix, <span class="keyword">const</span> std::string &amp;body,</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>                           <span class="keywordtype">double</span> criterion);</div>
-<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
-<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  [[nodiscard]] <a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionPattern.html">CriterionPattern</a> Pattern() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  [[nodiscard]] <span class="keywordtype">double</span> Criterion() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keywordtype">void</span> SetCriterion(<span class="keywordtype">double</span> criterion);</div>
-<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>  <span class="keywordtype">void</span> ResetPattern(<span class="keyword">const</span> std::string &amp;prefix, <span class="keyword">const</span> std::string &amp;body);</div>
-<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionPattern.html">CriterionPattern</a> pattern_;</div>
-<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>  <span class="keywordtype">double</span> criterion_ = 0;</div>
-<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>};</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span> </div>
+<div class="foldopen" id="foldopen00060" data-start="{" data-end="};">
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno"><a class="line" href="classBenders_1_1Criterion_1_1CriterionSingleInputData.html">   60</a></span><span class="keyword">class </span><a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionSingleInputData.html">CriterionSingleInputData</a> {</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>  <a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionSingleInputData.html">CriterionSingleInputData</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>  <a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionSingleInputData.html">CriterionSingleInputData</a>(<span class="keyword">const</span> std::string &amp;prefix, <span class="keyword">const</span> std::string &amp;body,</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>                           <span class="keywordtype">double</span> criterion);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>  [[nodiscard]] <a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionPattern.html">CriterionPattern</a> Pattern() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>  [[nodiscard]] <span class="keywordtype">double</span> Criterion() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>  <span class="keywordtype">void</span> SetCriterion(<span class="keywordtype">double</span> criterion);</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>  <span class="keywordtype">void</span> ResetPattern(<span class="keyword">const</span> std::string &amp;prefix, <span class="keyword">const</span> std::string &amp;body);</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>  <a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionPattern.html">CriterionPattern</a> pattern_;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>  <span class="keywordtype">double</span> criterion_ = 0;</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>};</div>
 </div>
-<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
-<div class="foldopen" id="foldopen00081" data-start="{" data-end="};">
-<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="classBenders_1_1Criterion_1_1CriterionInputData.html">   81</a></span><span class="keyword">class </span><a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionInputData.html">CriterionInputData</a> {</div>
-<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>  <a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionInputData.html">CriterionInputData</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span> </div>
-<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  [[nodiscard]] <span class="keyword">const</span> std::vector&lt;CriterionSingleInputData&gt; &amp;Criteria()</div>
-<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>  <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span> </div>
-<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  [[nodiscard]] std::vector&lt;std::string&gt; PatternBodies() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>  [[nodiscard]] std::string PatternsPrefix() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span> </div>
-<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  <span class="keywordtype">void</span> SetCriterionCountThreshold(<span class="keywordtype">double</span> count_threshold);</div>
-<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  [[nodiscard]] <span class="keywordtype">double</span> CriterionCountThreshold() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>  <span class="keywordtype">void</span> AddSingleData(<span class="keyword">const</span> <a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionSingleInputData.html">CriterionSingleInputData</a> &amp;data);</div>
-<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
-<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  std::vector&lt;CriterionSingleInputData&gt; criterion_vector_;</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>  <span class="keywordtype">double</span> count_threshold_ = 1;</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>};</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span> </div>
+<div class="foldopen" id="foldopen00080" data-start="{" data-end="};">
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno"><a class="line" href="classBenders_1_1Criterion_1_1CriterionInputData.html">   80</a></span><span class="keyword">class </span><a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionInputData.html">CriterionInputData</a> {</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>  <a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionInputData.html">CriterionInputData</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>  [[nodiscard]] <span class="keyword">const</span> std::vector&lt;CriterionSingleInputData&gt; &amp;Criteria()</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>  <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span> </div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>  [[nodiscard]] std::vector&lt;std::string&gt; PatternBodies() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>  [[nodiscard]] std::string PatternsPrefix() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>  <span class="keywordtype">void</span> SetCriterionCountThreshold(<span class="keywordtype">double</span> count_threshold);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>  [[nodiscard]] <span class="keywordtype">double</span> CriterionCountThreshold() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>  <span class="keywordtype">void</span> AddSingleData(<span class="keyword">const</span> <a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionSingleInputData.html">CriterionSingleInputData</a> &amp;data);</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>  std::vector&lt;CriterionSingleInputData&gt; criterion_vector_;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>  <span class="keywordtype">double</span> count_threshold_ = 1;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>};</div>
 </div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span> </div>
-<div class="foldopen" id="foldopen00101" data-start="{" data-end="};">
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno"><a class="line" href="classBenders_1_1Criterion_1_1OuterLoopCriterionInputData.html">  101</a></span><span class="keyword">class </span><a class="code hl_class" href="classBenders_1_1Criterion_1_1OuterLoopCriterionInputData.html">OuterLoopCriterionInputData</a> : <span class="keyword">public</span> <a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionInputData.html">CriterionInputData</a> {</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  <a class="code hl_class" href="classBenders_1_1Criterion_1_1OuterLoopCriterionInputData.html">OuterLoopCriterionInputData</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  [[nodiscard]] <span class="keywordtype">double</span> StoppingThreshold() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>  <span class="keywordtype">void</span> setStoppingThreshold(<span class="keywordtype">double</span> stoppingThreshold);</div>
-<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> </div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>  <span class="keywordtype">double</span> stopping_threshold_ = 1e-4;</div>
-<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>};</div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span> </div>
+<div class="foldopen" id="foldopen00100" data-start="{" data-end="};">
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno"><a class="line" href="classBenders_1_1Criterion_1_1OuterLoopCriterionInputData.html">  100</a></span><span class="keyword">class </span><a class="code hl_class" href="classBenders_1_1Criterion_1_1OuterLoopCriterionInputData.html">OuterLoopCriterionInputData</a> : <span class="keyword">public</span> <a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionInputData.html">CriterionInputData</a> {</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>  <a class="code hl_class" href="classBenders_1_1Criterion_1_1OuterLoopCriterionInputData.html">OuterLoopCriterionInputData</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>  [[nodiscard]] <span class="keywordtype">double</span> StoppingThreshold() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>  <span class="keywordtype">void</span> setStoppingThreshold(<span class="keywordtype">double</span> stoppingThreshold);</div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>  <span class="keywordtype">double</span> stopping_threshold_ = 1e-4;</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>};</div>
 </div>
-<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span> </div>
-<div class="foldopen" id="foldopen00112" data-start="{" data-end="};">
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno"><a class="line" href="classBenders_1_1Criterion_1_1ICriterionInputDataReader.html">  112</a></span><span class="keyword">class </span><a class="code hl_class" href="classBenders_1_1Criterion_1_1ICriterionInputDataReader.html">ICriterionInputDataReader</a> {</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classBenders_1_1Criterion_1_1OuterLoopCriterionInputData.html">OuterLoopCriterionInputData</a> Read(</div>
-<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>      <span class="keyword">const</span> std::filesystem::path &amp;input_file) = 0;</div>
-<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classBenders_1_1Criterion_1_1ICriterionInputDataReader.html">~ICriterionInputDataReader</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>};</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="foldopen" id="foldopen00111" data-start="{" data-end="};">
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno"><a class="line" href="classBenders_1_1Criterion_1_1ICriterionInputDataReader.html">  111</a></span><span class="keyword">class </span><a class="code hl_class" href="classBenders_1_1Criterion_1_1ICriterionInputDataReader.html">ICriterionInputDataReader</a> {</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classBenders_1_1Criterion_1_1OuterLoopCriterionInputData.html">OuterLoopCriterionInputData</a> Read(</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>      <span class="keyword">const</span> std::filesystem::path &amp;input_file) = 0;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>  <span class="keyword">virtual</span> <a class="code hl_class" href="classBenders_1_1Criterion_1_1ICriterionInputDataReader.html">~ICriterionInputDataReader</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>};</div>
 </div>
-<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span> </div>
-<div class="foldopen" id="foldopen00119" data-start="{" data-end="};">
-<div class="line"><a id="l00119" name="l00119"></a><span class="lineno"><a class="line" href="classBenders_1_1Criterion_1_1CriterionInputFromYaml.html">  119</a></span><span class="keyword">class </span><a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionInputFromYaml.html">CriterionInputFromYaml</a> : <span class="keyword">public</span> <a class="code hl_class" href="classBenders_1_1Criterion_1_1ICriterionInputDataReader.html">ICriterionInputDataReader</a> {</div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  <a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionInputFromYaml.html">CriterionInputFromYaml</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>  <a class="code hl_class" href="classBenders_1_1Criterion_1_1OuterLoopCriterionInputData.html">OuterLoopCriterionInputData</a> Read(</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>      <span class="keyword">const</span> std::filesystem::path &amp;input_file) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>  <a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionInputData.html">CriterionInputData</a> criterion_input_data_;</div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>};</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="foldopen" id="foldopen00118" data-start="{" data-end="};">
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno"><a class="line" href="classBenders_1_1Criterion_1_1CriterionInputFromYaml.html">  118</a></span><span class="keyword">class </span><a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionInputFromYaml.html">CriterionInputFromYaml</a> : <span class="keyword">public</span> <a class="code hl_class" href="classBenders_1_1Criterion_1_1ICriterionInputDataReader.html">ICriterionInputDataReader</a> {</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span> <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>  <a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionInputFromYaml.html">CriterionInputFromYaml</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>  <a class="code hl_class" href="classBenders_1_1Criterion_1_1OuterLoopCriterionInputData.html">OuterLoopCriterionInputData</a> Read(</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>      <span class="keyword">const</span> std::filesystem::path &amp;input_file) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>  <a class="code hl_class" href="classBenders_1_1Criterion_1_1CriterionInputData.html">CriterionInputData</a> criterion_input_data_;</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>};</div>
 </div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span> </div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>}  <span class="comment">// namespace Benders::Criterion</span></div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span> </div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>}  <span class="comment">// namespace Benders::Criterion</span></div>
 <div class="ttc" id="aclassBenders_1_1Criterion_1_1CouldNotReadAreaField_html"><div class="ttname"><a href="classBenders_1_1Criterion_1_1CouldNotReadAreaField.html">Benders::Criterion::CouldNotReadAreaField</a></div><div class="ttdef"><b>Definition</b> CriterionInputDataReader.h:34</div></div>
 <div class="ttc" id="aclassBenders_1_1Criterion_1_1CouldNotReadCriterionField_html"><div class="ttname"><a href="classBenders_1_1Criterion_1_1CouldNotReadCriterionField.html">Benders::Criterion::CouldNotReadCriterionField</a></div><div class="ttdef"><b>Definition</b> CriterionInputDataReader.h:39</div></div>
-<div class="ttc" id="aclassBenders_1_1Criterion_1_1CriterionInputData_html"><div class="ttname"><a href="classBenders_1_1Criterion_1_1CriterionInputData.html">Benders::Criterion::CriterionInputData</a></div><div class="ttdoc">this class contains all data read from user input file</div><div class="ttdef"><b>Definition</b> CriterionInputDataReader.h:81</div></div>
+<div class="ttc" id="aclassBenders_1_1Criterion_1_1CriterionInputData_html"><div class="ttname"><a href="classBenders_1_1Criterion_1_1CriterionInputData.html">Benders::Criterion::CriterionInputData</a></div><div class="ttdoc">this class contains all data read from user input file</div><div class="ttdef"><b>Definition</b> CriterionInputDataReader.h:80</div></div>
 <div class="ttc" id="aclassBenders_1_1Criterion_1_1CriterionInputFileError_html"><div class="ttname"><a href="classBenders_1_1Criterion_1_1CriterionInputFileError.html">Benders::Criterion::CriterionInputFileError</a></div><div class="ttdef"><b>Definition</b> CriterionInputDataReader.h:15</div></div>
 <div class="ttc" id="aclassBenders_1_1Criterion_1_1CriterionInputFileIsEmpty_html"><div class="ttname"><a href="classBenders_1_1Criterion_1_1CriterionInputFileIsEmpty.html">Benders::Criterion::CriterionInputFileIsEmpty</a></div><div class="ttdef"><b>Definition</b> CriterionInputDataReader.h:19</div></div>
 <div class="ttc" id="aclassBenders_1_1Criterion_1_1CriterionInputFileNoPatternFound_html"><div class="ttname"><a href="classBenders_1_1Criterion_1_1CriterionInputFileNoPatternFound.html">Benders::Criterion::CriterionInputFileNoPatternFound</a></div><div class="ttdef"><b>Definition</b> CriterionInputDataReader.h:24</div></div>
-<div class="ttc" id="aclassBenders_1_1Criterion_1_1CriterionInputFromYaml_html"><div class="ttname"><a href="classBenders_1_1Criterion_1_1CriterionInputFromYaml.html">Benders::Criterion::CriterionInputFromYaml</a></div><div class="ttdef"><b>Definition</b> CriterionInputDataReader.h:119</div></div>
+<div class="ttc" id="aclassBenders_1_1Criterion_1_1CriterionInputFromYaml_html"><div class="ttname"><a href="classBenders_1_1Criterion_1_1CriterionInputFromYaml.html">Benders::Criterion::CriterionInputFromYaml</a></div><div class="ttdef"><b>Definition</b> CriterionInputDataReader.h:118</div></div>
 <div class="ttc" id="aclassBenders_1_1Criterion_1_1CriterionInputPatternsShouldBeArray_html"><div class="ttname"><a href="classBenders_1_1Criterion_1_1CriterionInputPatternsShouldBeArray.html">Benders::Criterion::CriterionInputPatternsShouldBeArray</a></div><div class="ttdef"><b>Definition</b> CriterionInputDataReader.h:29</div></div>
 <div class="ttc" id="aclassBenders_1_1Criterion_1_1CriterionPattern_html"><div class="ttname"><a href="classBenders_1_1Criterion_1_1CriterionPattern.html">Benders::Criterion::CriterionPattern</a></div><div class="ttdoc">lovely class</div><div class="ttdef"><b>Definition</b> CriterionInputDataReader.h:44</div></div>
-<div class="ttc" id="aclassBenders_1_1Criterion_1_1CriterionPattern_html_a46a777956f2cee6cf531ba1dfc7104d7"><div class="ttname"><a href="classBenders_1_1Criterion_1_1CriterionPattern.html#a46a777956f2cee6cf531ba1dfc7104d7">Benders::Criterion::CriterionPattern::MakeRegex</a></div><div class="ttdeci">std::regex MakeRegex() const</div><div class="ttdef"><b>Definition</b> CriterionInputDataReader.cpp:20</div></div>
-<div class="ttc" id="aclassBenders_1_1Criterion_1_1CriterionSingleInputData_html"><div class="ttname"><a href="classBenders_1_1Criterion_1_1CriterionSingleInputData.html">Benders::Criterion::CriterionSingleInputData</a></div><div class="ttdoc">holds the pattern and the criterion</div><div class="ttdef"><b>Definition</b> CriterionInputDataReader.h:61</div></div>
-<div class="ttc" id="aclassBenders_1_1Criterion_1_1ICriterionInputDataReader_html"><div class="ttname"><a href="classBenders_1_1Criterion_1_1ICriterionInputDataReader.html">Benders::Criterion::ICriterionInputDataReader</a></div><div class="ttdoc">Abstract.</div><div class="ttdef"><b>Definition</b> CriterionInputDataReader.h:112</div></div>
-<div class="ttc" id="aclassBenders_1_1Criterion_1_1OuterLoopCriterionInputData_html"><div class="ttname"><a href="classBenders_1_1Criterion_1_1OuterLoopCriterionInputData.html">Benders::Criterion::OuterLoopCriterionInputData</a></div><div class="ttdoc">this class contains all data read from user input file</div><div class="ttdef"><b>Definition</b> CriterionInputDataReader.h:101</div></div>
+<div class="ttc" id="aclassBenders_1_1Criterion_1_1CriterionSingleInputData_html"><div class="ttname"><a href="classBenders_1_1Criterion_1_1CriterionSingleInputData.html">Benders::Criterion::CriterionSingleInputData</a></div><div class="ttdoc">holds the pattern and the criterion</div><div class="ttdef"><b>Definition</b> CriterionInputDataReader.h:60</div></div>
+<div class="ttc" id="aclassBenders_1_1Criterion_1_1ICriterionInputDataReader_html"><div class="ttname"><a href="classBenders_1_1Criterion_1_1ICriterionInputDataReader.html">Benders::Criterion::ICriterionInputDataReader</a></div><div class="ttdoc">Abstract.</div><div class="ttdef"><b>Definition</b> CriterionInputDataReader.h:111</div></div>
+<div class="ttc" id="aclassBenders_1_1Criterion_1_1OuterLoopCriterionInputData_html"><div class="ttname"><a href="classBenders_1_1Criterion_1_1OuterLoopCriterionInputData.html">Benders::Criterion::OuterLoopCriterionInputData</a></div><div class="ttdoc">this class contains all data read from user input file</div><div class="ttdef"><b>Definition</b> CriterionInputDataReader.h:100</div></div>
 <div class="ttc" id="aclassLogUtils_1_1XpansionError_html"><div class="ttname"><a href="classLogUtils_1_1XpansionError.html">LogUtils::XpansionError</a></div><div class="ttdef"><b>Definition</b> LogUtils.h:12</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

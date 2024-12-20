@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['xpressiscorrectlyinstalled_0',['XpressIsCorrectlyInstalled',['../classLoadXpress_1_1XpressLoader.html#a3b63466fe650798a2c3498c26220b943',1,'LoadXpress::XpressLoader']]],
-  ['xpressloader_1',['XpressLoader',['../classLoadXpress_1_1XpressLoader.html#a6756de139955720c1c7bf5ed6d4e6245',1,'LoadXpress::XpressLoader']]]
+  ['zero_5fstatus_5fcheck_0',['zero_status_check',['../classSolverAbstract.html#aff87b9285872f0012d0f2c183bbf395e',1,'SolverAbstract']]]
 ];

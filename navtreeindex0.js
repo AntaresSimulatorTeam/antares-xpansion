@@ -246,8 +246,8 @@ var NAVTREEINDEX0 =
 "classBenders_1_1Criterion_1_1CriterionInputFromYaml.html":[25,0,1,0,7],
 "classBenders_1_1Criterion_1_1CriterionInputPatternsShouldBeArray.html":[25,0,1,0,8],
 "classBenders_1_1Criterion_1_1CriterionPattern.html":[25,0,1,0,9],
-"classBenders_1_1Criterion_1_1CriterionPattern.html#a46a777956f2cee6cf531ba1dfc7104d7":[25,0,1,0,9,1],
 "classBenders_1_1Criterion_1_1CriterionPattern.html#a64c62a0464bb2508709063eb352da908":[25,0,1,0,9,0],
 "classBenders_1_1Criterion_1_1CriterionSingleInputData.html":[25,0,1,0,10],
-"classBenders_1_1Criterion_1_1CriterionSingleInputData.html#a676b2c8a9e865b6a3cb3610ee27765be":[25,0,1,0,10,0]
+"classBenders_1_1Criterion_1_1CriterionSingleInputData.html#a676b2c8a9e865b6a3cb3610ee27765be":[25,0,1,0,10,0],
+"classBenders_1_1Criterion_1_1ICriterionInputDataReader.html":[25,0,1,0,11]
 };
