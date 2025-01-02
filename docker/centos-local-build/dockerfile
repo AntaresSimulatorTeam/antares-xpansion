@@ -1,0 +1,12 @@
+FROM antaresrte/xpansion-centos7:1.1.1
+
+CMD ["/bin/bash"]
+
+RUN mkdir /workspace
+WORKDIR /workspace
+
+ADD build.sh /workspace
+RUN chmod +x /workspace/build.sh
+
+#Every container will run this
+ENTRYPOINT ["/workspace/build.sh"]
