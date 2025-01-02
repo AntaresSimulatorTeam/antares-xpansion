@@ -61,17 +61,17 @@ ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options)
   }
 }
 
-static std::string lowerCase(std::string data) {
-  std::transform(data.begin(), data.end(), data.begin(),
-                 [](unsigned char c) { return std::tolower(c); });
-  return data;
+static std::string solverXpansionToSimulator(const std::string& in) {
+  if (in == "Xpress") return "xpress";
+  if (in == "Cbc") return "coin";
+  throw std::invalid_argument("Invalid solver");
 }
 
 void ProblemGeneration::performAntaresSimulation(
     const std::filesystem::path& output) {
   Antares::Solver::Optimization::OptimizationOptions optOptions;
 
-  optOptions.ortoolsSolver = lowerCase(solver_name_);
+  optOptions.ortoolsSolver = solverXpansionToSimulator(solver_name_);
   auto results =
       Antares::API::PerformSimulation(options_.StudyPath(), output, optOptions);
   // Add parallel
