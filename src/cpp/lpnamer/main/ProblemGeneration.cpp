@@ -61,9 +61,19 @@ ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options)
   }
 }
 
+static std::string lowerCase(std::string data) {
+  std::transform(data.begin(), data.end(), data.begin(),
+                 [](unsigned char c) { return std::tolower(c); });
+  return data;
+}
+
 static std::string solverXpansionToSimulator(const std::string& in) {
-  if (in == "Xpress") return "xpress";
-  if (in == "Cbc") return "coin";
+  // in could be Cbc or CBC depending on whether it is defined or not in the
+  // settings file 
+  // Use lowerCase in any case to be robust to these subtleties
+  std::string lower_case_in = lowerCase(in);
+  if (lower_case_in == "xpress") return "xpress";
+  if (lower_case_in == "cbc" || lower_case_in == "coin") return "coin";
   throw std::invalid_argument("Invalid solver");
 }
 
