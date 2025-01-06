@@ -61,10 +61,29 @@ ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options)
   }
 }
 
-std::filesystem::path ProblemGeneration::performAntaresSimulation() {
+static std::string lowerCase(std::string data) {
+  std::transform(data.begin(), data.end(), data.begin(),
+                 [](unsigned char c) { return std::tolower(c); });
+  return data;
+}
+
+static std::string solverXpansionToSimulator(const std::string& in) {
+  // in could be Cbc or CBC depending on whether it is defined or not in the
+  // settings file 
+  // Use lowerCase in any case to be robust to these subtleties
+  std::string lower_case_in = lowerCase(in);
+  if (lower_case_in == "xpress") return "xpress";
+  if (lower_case_in == "cbc" || lower_case_in == "coin") return "coin";
+  throw std::invalid_argument("Invalid solver");
+}
+
+void ProblemGeneration::performAntaresSimulation(
+    const std::filesystem::path& output) {
   Antares::Solver::Optimization::OptimizationOptions optOptions;
+
+  optOptions.ortoolsSolver = solverXpansionToSimulator(solver_name_);
   auto results =
-      Antares::API::PerformSimulation(options_.StudyPath(), optOptions);
+      Antares::API::PerformSimulation(options_.StudyPath(), output, optOptions);
   // Add parallel
 
   // Handle errors
@@ -74,7 +93,32 @@ std::filesystem::path ProblemGeneration::performAntaresSimulation() {
   }
 
   lps_ = std::move(results.antares_problems);
-  return {results.simulationPath};
+}
+
+static std::string getCurrentTimestamp() {
+  // Get the current time point
+  auto now = std::chrono::system_clock::now();
+
+  // Convert to time_t for formatting
+  std::time_t now_time_t = std::chrono::system_clock::to_time_t(now);
+
+  // Convert to tm structure
+  std::tm now_tm;
+#ifdef _WIN32
+  localtime_s(&now_tm, &now_time_t);  // Windows-specific
+#else
+  localtime_r(&now_time_t, &now_tm);  // POSIX-specific
+#endif
+
+  // Format the timestamp
+  std::ostringstream oss;
+  oss << std::put_time(&now_tm, "%Y%m%d-%H%Meco");
+  return oss.str();
+}
+
+// Useful only for "API" mode
+std::filesystem::path generateOutputName(const std::filesystem::path& study) {
+  return study / "output" / getCurrentTimestamp();
 }
 
 std::filesystem::path ProblemGeneration::updateProblems() {
@@ -92,8 +136,8 @@ std::filesystem::path ProblemGeneration::updateProblems() {
   }
 
   if (mode_ == SimulationInputMode::ANTARES_API) {
-    simulation_dir_ = performAntaresSimulation();
     study_dir = options_.StudyPath();
+    simulation_dir_ = generateOutputName(study_dir);
   }
 
   if (mode_ == SimulationInputMode::FILE) {
@@ -117,13 +161,17 @@ std::filesystem::path ProblemGeneration::updateProblems() {
   auto logger = ProblemGenerationLog::BuildLogger(log_file_path, std::cout,
                                                   "Problem Generation"s);
 
+  set_solver(study_dir, logger.get());
+
+  if (mode_ == SimulationInputMode::ANTARES_API) {
+    performAntaresSimulation(simulation_dir_);
+  }
+
   auto master_formulation = options_.MasterFormulation();
   auto additionalConstraintFilename_l =
       options_.AdditionalConstraintsFilename();
   auto weights_file = options_.WeightsFile();
   auto unnamed_problems = options_.UnnamedProblems();
-
-  set_solver(study_dir, logger.get());
 
   RunProblemGeneration(xpansion_output_dir, master_formulation,
                        additionalConstraintFilename_l, archive_path, logger,
