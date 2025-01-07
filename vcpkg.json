@@ -1,6 +1,6 @@
 {
   "name": "antares-xpansion",
-  "version-string": "1.3.2",
+  "version-string": "1.4.0",
   "$comment 1": "libuuid by transitivity for Simulator-> yuni",
   "$comment 2": "sirius-solver by transitivity for Simulator",
   "dependencies": [

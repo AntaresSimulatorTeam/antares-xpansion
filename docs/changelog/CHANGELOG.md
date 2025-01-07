@@ -1,6 +1,30 @@
 Antares-Xpansion changelog
 =================
 
+v1.4.0 (12/2024)
+--------------------------------------------------------
+### Features
+* Update Antares Simulator to  9.2-RC7
+* Output file **criterions.txt** is renamed **LOLD.txt** as it gathers the loss of load for each area at each iteration of the algorithm
+* End to end coherence of solvers : if Xpress is selected, it is also used for Antares step (does not work yet with memory mode), if coin is selected, sirius is used in Antares
+* Support for in memory problems between Antares and problem generation
+* Remove local UI support [#972](https://github.com/AntaresSimulatorTeam/antares-xpansion/pull/972)
+* Properly handle Antares Simulator errors. Especially error -9 occurring when running out of memory where Xpansion tried to continue in an improper state.
+
+### For developers
+* Various improvement on dependency management through vcpkg.
+* Update and improve documentation
+* Use devtoolset 11 for CentOS and OL8
+* Add some tests using cucumber
+* Improve maintainability [#965](https://github.com/AntaresSimulatorTeam/antares-xpansion/pull/965)
+* Fix performance regression with missing TBB dependency [#970](https://github.com/AntaresSimulatorTeam/antares-xpansion/pull/970)
+* Add script to convert markdown docs for support in xwiki [#973](https://github.com/AntaresSimulatorTeam/antares-xpansion/pull/973)
+
+### New Contributors
+* @pet-mit made their first contribution in https://github.com/AntaresSimulatorTeam/antares-xpansion/pull/944
+
+**Full Changelog**: https://github.com/AntaresSimulatorTeam/antares-xpansion/compare/v1.3.2...v1.4.0-rc3
+
 v1.3.2 (07/2024)
 --------------------------------------------------------
 ### Bug Fixes
