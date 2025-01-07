@@ -134,8 +134,8 @@ $(document).ready(function(){initNavTree('md_docs_2developer-guide_2install__fro
   <div class="headertitle"><div class="title">Installing Xpress Solver and Loading it Dynamically</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md89"></a> This document explains how to install the Xpress solver in both default and non-default locations, as well as how Antares-Xpansion dynamically loads the Xpress library and license.</p>
-<h1><a class="anchor" id="autotoc_md90"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md93"></a> This document explains how to install the Xpress solver in both default and non-default locations, as well as how Antares-Xpansion dynamically loads the Xpress library and license.</p>
+<h1><a class="anchor" id="autotoc_md94"></a>
 Table of Contents</h1>
 <ol type="1">
 <li>Installing Xpress<ul>
@@ -151,9 +151,9 @@ Table of Contents</h1>
 </li>
 </ol>
 <hr  />
-<h1><a class="anchor" id="autotoc_md92"></a>
+<h1><a class="anchor" id="autotoc_md96"></a>
 Installing Xpress</h1>
-<h2><a class="anchor" id="autotoc_md93"></a>
+<h2><a class="anchor" id="autotoc_md97"></a>
 Default Installation</h2>
 <p>By default, the Xpress solver will be installed in system-wide directories depending on your operating system. The default installation paths are:</p>
 <ul>
@@ -162,20 +162,20 @@ Default Installation</h2>
 <li><b>Linux</b>: <code>/opt/xpressmp/lib/libxprs.so</code></li>
 </ul>
 <p>After installing the Xpress solver, the environment variable <code>XPRESSDIR</code> should point to the installation directory. This will help the system locate the required libraries.</p>
-<h2><a class="anchor" id="autotoc_md94"></a>
+<h2><a class="anchor" id="autotoc_md98"></a>
 Non-Default Installation</h2>
 <p>For non-default installations, you need to manually configure the <code>XPRESSDIR</code> environment variable to point to the custom installation path. For example:</p>
-<h3><a class="anchor" id="autotoc_md95"></a>
+<h3><a class="anchor" id="autotoc_md99"></a>
 Windows</h3>
 <div class="fragment"><div class="line">set XPRESSDIR=C:\custom\xpress\path</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md96"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md100"></a>
 Linux/macOS</h3>
 <div class="fragment"><div class="line">export XPRESSDIR=/home/user/custom/xpress/path</div>
 </div><!-- fragment --><p> Make sure that the dynamic libraries (e.g., xprs.dll, libxprs.dylib, or libxprs.so) are located in the appropriate subdirectories (bin or lib) under the directory specified by XPRESSDIR.</p>
-<h1><a class="anchor" id="autotoc_md97"></a>
+<h1><a class="anchor" id="autotoc_md101"></a>
 How the Code Loads Xpress</h1>
 <p>The C++ code dynamically loads the Xpress solver library and configures the licensing environment at runtime. Here's a step-by-step explanation of how it works:</p>
-<h2><a class="anchor" id="autotoc_md98"></a>
+<h2><a class="anchor" id="autotoc_md102"></a>
 Locating Xpress Libraries</h2>
 <ol type="1">
 <li><b>Check for <code>XPRESSDIR</code></b>: <br  />
@@ -196,7 +196,7 @@ Locating Xpress Libraries</h2>
 <li><b>Error Handling</b>: <br  />
  If the library cannot be found or loaded, an error message is displayed, providing troubleshooting suggestions for the user (e.g., checking <code>XPRESSDIR</code> or ensuring the file is in the correct path).</li>
 </ol>
-<h2><a class="anchor" id="autotoc_md99"></a>
+<h2><a class="anchor" id="autotoc_md103"></a>
 Loading License Information</h2>
 <ol type="1">
 <li><b>Locate License Directory</b>: <br  />
@@ -216,7 +216,7 @@ Loading License Information</h2>
 </li>
 </ol>
 <p>Using <code>XPAUTH</code> allows for better flexibility in license management, particularly in cloud or containerized environments, where environment variables are commonly used to configure paths dynamically.</p>
-<h2><a class="anchor" id="autotoc_md100"></a>
+<h2><a class="anchor" id="autotoc_md104"></a>
 Handling Different Platforms</h2>
 <p>To ensure cross-platform compatibility, the code contains specific logic to handle each operating system:</p>
 <ul>

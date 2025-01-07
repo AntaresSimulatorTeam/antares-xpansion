@@ -1,5 +1,9 @@
 var NAVTREEINDEX7 =
 {
+"structHeadersManagerExternalLoop.html":[25,0,87],
+"structILoggerXpansion.html":[25,0,89],
+"structILoggerXpansion.html#a5d5ef0a1321f54372ecba334a7ae1acd":[25,0,89,1],
+"structILoggerXpansion.html#ac29cdc7dc59c2dde6ce45201c91e770e":[25,0,89,0],
 "structIntercoFileData.html":[25,0,94],
 "structInvalidStructureFile.html":[25,0,104],
 "structLinkdataRecord.html":[25,0,119],
