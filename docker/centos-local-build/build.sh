@@ -1,4 +1,5 @@
 #!/bin/bash
+set -x
 #Define source directory
 xpansion_sources=$1
 ln -s $xpansion_sources /workspace/antares-xpansion
@@ -15,6 +16,10 @@ export CCACHE_DIR=$ccache_cache_dir/ccache/.ccache
 export CCACHE_BASEDIR=$ccache_cache_dir/ccache
 export CCACHE_COMPRESS=1
 export PATH="/usr/lib/ccache:$PATH"
+
+pip3 install --upgrade pip
+pip3 install wheel
+pip3 install -r /workspace/antares-xpansion/requirements-tests.txt
 
 export VCPKG_ROOT=/workspace/antares-xpansion/vcpkg
 ORTOOLS_TAG=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."or-tools-rte"' )
@@ -36,10 +41,6 @@ URL_ANTARES=https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/d
 wget $URL_ANTARES
 tar -xvf antares-${ANTARES_VERSION}-CentOS-7.9.2009.tar.gz -C deps --strip-components=1 &&\
 rm -rf antares-${ANTARES_VERSION}-CentOS-7.9.2009.tar.gz
-
-pip3 install --upgrade pip
-pip3 install wheel
-pip3 install -r /workspace/antares-xpansion/requirements-tests.txt
 
 source /opt/rh/devtoolset-11/enable
 source /opt/rh/rh-git227/enable
@@ -71,3 +72,4 @@ rm -rf dist
 rm -f *.spec
 cd ..
 tar -czf antares-xpansion-centos.tar.gz -C $install_dir . --exclude='examples'
+chmod 777 antares-xpansion-centos.tar.gz
