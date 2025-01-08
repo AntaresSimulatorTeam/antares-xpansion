@@ -46,8 +46,7 @@ void MergeMPS::launch() {
         c *= weigth;
       }
       solver_l->chg_obj(sequence, o);
-
-        } else {
+    } else {
       solver_l->read_prob_mps(problem_name);
     }
     StandardLp lpData(*solver_l);
