@@ -33,7 +33,6 @@ void MergeMPS::launch() {
 
     if (kvp.first != _options.MASTER_NAME) {
       solver_l->read_prob_mps(problem_name);
-      std::filesystem::remove(problem_name);
       int mps_ncols(solver_l->get_ncols());
 
       DblVector o(mps_ncols);
