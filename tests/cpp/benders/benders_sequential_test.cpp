@@ -2,6 +2,7 @@
 
 #include "LoggerStub.h"
 #include "RandomDirGenerator.h"
+#include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_sequential/BendersSequential.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
 #include "antares-xpansion/helpers/ArchiveWriter.h"
@@ -437,7 +438,9 @@ TEST_P(BendersSequentialTestBySolver, CreateProblemsProperly) {
   options.SOLVER_NAME = GetParam();
   BendersSequentialDouble benders(options.get_benders_options(), logger, writer,
                                   mathLoggerDriver);
-  auto coupling_map = build_input(options.get_benders_options().STRUCTURE_FILE);
+  auto coupling_map =
+      CouplingMapGenerator::BuildInput(
+        options.STRUCTURE_FILE, logger, "Benders");
   benders.set_input_map(coupling_map);
   benders.InitializeProblems();
   auto &&problems = benders.problems();
@@ -508,7 +511,8 @@ TEST_P(BendersSequentialTestBySolver, CreateProblemsProperlyWhenRestore) {
   options.SOLVER_NAME = GetParam();
   BendersSequentialDouble benders(options.get_benders_options(), logger, writer,
                                   mathLoggerDriver);
-  auto coupling_map = build_input(options.get_benders_options().STRUCTURE_FILE);
+  auto coupling_map = CouplingMapGenerator::BuildInput(
+    options.STRUCTURE_FILE, logger, "Benders");
   benders.set_input_map(coupling_map);
   benders.InitializeProblems();
   auto &&problems = benders.problems();
