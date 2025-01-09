@@ -39,7 +39,7 @@ BENDERS_OPTIONS_MACRO(SLAVE_WEIGHT_VALUE, double, 1, asDouble())
 BENDERS_OPTIONS_MACRO(MASTER_NAME, std::string, "master", asString())
 
 //Format of the problems
-BENDERS_OPTIONS_MACRO(PROBLEMS_FORMAT, ProblemsFormat, ProblemsFormat::SAVED_FILE, as<ProblemsFormat>())
+BENDERS_OPTIONS_MACRO(PROBLEMS_FORMAT, ProblemsFormat, ProblemsFormat::MPS_FILE, as<ProblemsFormat>())
 
 // Number of slaves to use to solve the problem
 BENDERS_OPTIONS_MACRO(STRUCTURE_FILE, std::string, "structure.txt", asString())
