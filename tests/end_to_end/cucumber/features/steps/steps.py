@@ -114,11 +114,11 @@ def run_command(study_path, memory, method, n_mpi, allow_run_as_root=False):
     print(f"Process finished with code: {process.returncode}")
     if process.returncode != 0:
         print("*********************** Begin stdout ***********************")
-        print(out)
+        print(out.replace(b'\r\n', b'\n').decode('utf-8'))
         print("*********************** End stdout ***********************")
 
         print("*********************** Begin stderr ***********************")
-        print(err)
+        print(err.replace(b'\r\n', b'\n').decode('utf-8'))
         print("*********************** End stderr ***********************")
 
     return process.returncode
