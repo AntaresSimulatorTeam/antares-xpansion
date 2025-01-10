@@ -61,19 +61,18 @@ ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options)
   }
 }
 
-static std::string lowerCase(std::string data) {
-  std::transform(data.begin(), data.end(), data.begin(),
-                 [](unsigned char c) { return std::tolower(c); });
-  return data;
+namespace {
+  bool islower(std::string_view str) {
+    return std::ranges::all_of(str, [](char c) { return std::islower(c); });
+  }
 }
-
-static std::string solverXpansionToSimulator(const std::string& in) {
+static std::string solverXpansionToSimulator(const SolverConfig& in) {
   // in could be Cbc or CBC depending on whether it is defined or not in the
   // settings file 
   // Use lowerCase in any case to be robust to these subtleties
-  std::string lower_case_in = lowerCase(in);
-  if (lower_case_in == "xpress") return "xpress";
-  if (lower_case_in == "cbc" || lower_case_in == "coin") return "coin";
+  assert(islower(in.name));
+  if (in.name == "xpress") return "xpress";
+  if (in.name == "cbc" || in.name == "coin") return "coin";
   throw std::invalid_argument("Invalid solver");
 }
 
@@ -81,7 +80,7 @@ void ProblemGeneration::performAntaresSimulation(
     const std::filesystem::path& output) {
   Antares::Solver::Optimization::OptimizationOptions optOptions;
 
-  optOptions.ortoolsSolver = solverXpansionToSimulator(solver_name_);
+  optOptions.ortoolsSolver = solverXpansionToSimulator(solver_config_);
   auto results =
       Antares::API::PerformSimulation(options_.StudyPath(), output, optOptions);
   // Add parallel
@@ -249,7 +248,7 @@ void validateMasterFormulation(
  * @return
  */
 std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
-    SolverLogManager& solver_log_manager, const std::string& solver_name,
+    SolverLogManager& solver_log_manager, SolverConfig solver_name,
     const std::vector<ProblemData>& mpsList, std::filesystem::path& lpDir_,
     std::shared_ptr<ArchiveReader> reader,
     const Antares::Solver::LpsFromAntares& lps = {}) {
@@ -260,16 +259,16 @@ std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
   switch (mode_.value()) {
     case SimulationInputMode::FILE: {
       FileProblemsProviderAdapter adapter(lpDir_, problem_names);
-      return adapter.provideProblems(solver_name, solver_log_manager);
+      return adapter.provideProblems(solver_config_.name, solver_log_manager);
     }
     case SimulationInputMode::ARCHIVE: {
       ZipProblemsProviderAdapter adapter(lpDir_, std::move(reader),
                                          problem_names);
-      return adapter.provideProblems(solver_name, solver_log_manager);
+      return adapter.provideProblems(solver_config_.name, solver_log_manager);
     }
     case SimulationInputMode::ANTARES_API: {
       XpansionProblemsFromAntaresProvider adapter(lps);
-      return adapter.provideProblems(solver_name, solver_log_manager);
+      return adapter.provideProblems(solver_config_.name, solver_log_manager);
     }
     default:
       throw LogUtils::XpansionError<std::runtime_error>(
@@ -319,14 +318,14 @@ void ProblemGeneration::RunProblemGeneration(
   auto solver_log_manager = SolverLogManager(log_file_path);
   Couplings couplings;
   LinkProblemsGenerator linkProblemsGenerator(
-      lpDir_, links, solver_name_, logger, solver_log_manager, rename_problems);
+      lpDir_, links, solver_config_, logger, solver_log_manager, rename_problems);
   std::shared_ptr<ArchiveReader> reader =
       antares_archive_path.empty() ? std::make_shared<ArchiveReader>()
                                    : InstantiateZipReader(antares_archive_path);
 
   /* Main stuff */
   std::vector<std::shared_ptr<Problem>> xpansion_problems = getXpansionProblems(
-      solver_log_manager, solver_name_, mpsList, lpDir_, reader, lps_);
+      solver_log_manager, solver_config_, mpsList, lpDir_, reader, lps_);
 
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
       problems_and_data;
@@ -384,7 +383,7 @@ void ProblemGeneration::RunProblemGeneration(
   }
   MasterGeneration master_generation(
       xpansion_output_dir, links, additionalConstraints, couplings,
-      master_formulation, solver_name_, logger, solver_log_manager);
+      master_formulation, solver_config_.name, logger, solver_log_manager);
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Problem Generation ran in: "
       << format_time_str(problem_generation_timer.elapsed()) << std::endl;
@@ -394,7 +393,7 @@ void ProblemGeneration::set_solver(
     ProblemGenerationLog::ProblemGenerationLogger* logger) {
   SettingsReader settingsReader(
       study_dir / "user" / "expansion" / "settings.ini", logger);
-  solver_name_ = settingsReader.Solver();
+  solver_config_ = settingsReader.Solver();
 }
 
 std::shared_ptr<ArchiveReader> InstantiateZipReader(

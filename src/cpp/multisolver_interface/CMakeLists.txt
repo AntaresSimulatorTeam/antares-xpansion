@@ -15,8 +15,10 @@
 # ---------------------------------------------------------------------------
 list(APPEND Solver_sources
         ${CMAKE_CURRENT_LIST_DIR}/SolverFactory.cpp
+        ${CMAKE_CURRENT_LIST_DIR}/SolverConfig.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/multisolver_interface/Solver.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/multisolver_interface/SolverAbstract.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/multisolver_interface/SolverConfig.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/multisolver_interface/SolverFactory.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/multisolver_interface/dynamic_library.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/multisolver_interface/environment.h

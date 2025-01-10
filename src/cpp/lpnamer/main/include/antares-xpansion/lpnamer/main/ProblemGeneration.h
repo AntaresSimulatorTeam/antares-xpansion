@@ -19,6 +19,7 @@
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "ProblemGenerationOptions.h"
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
+#include "antares-xpansion/multisolver_interface/SolverConfig.h"
 // clang-format on
 
 class ProblemGeneration {
@@ -47,7 +48,7 @@ class ProblemGeneration {
       const std::filesystem::path& xpansion_output_dir,
       ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
   std::vector<std::shared_ptr<Problem>> getXpansionProblems(
-      SolverLogManager& solver_log_manager, const std::string& solver_name,
+      SolverLogManager& solver_log_manager, SolverConfig solver_name,
       const std::vector<ProblemData>& mpsList, std::filesystem::path& lpDir_,
       std::shared_ptr<ArchiveReader> reader,
       const Antares::Solver::LpsFromAntares& lps);
@@ -59,5 +60,5 @@ class ProblemGeneration {
   std::optional<SimulationInputMode> mode_;
   virtual void performAntaresSimulation(const std::filesystem::path& output);
   std::filesystem::path simulation_dir_;
-  std::string solver_name_;
+  SolverConfig solver_config_{"Coin"};
 };

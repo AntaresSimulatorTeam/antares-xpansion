@@ -33,7 +33,7 @@ void LinkProblemsGenerator::treat(
     IProblemProviderPort *problem_provider,
     IProblemVariablesProviderPort *variable_provider, IProblemWriter *writer) {
   auto in_prblm =
-      problem_provider->provide_problem(_solver_name, solver_log_manager_);
+      problem_provider->provide_problem(solver_config_.name, solver_log_manager_);
 
   treat(problem_name, couplings, in_prblm.get(), variable_provider, writer);
 }
@@ -76,7 +76,7 @@ void LinkProblemsGenerator::treatloop(const std::filesystem::path &root,
         auto adapter = std::make_unique<MPSFileProblemProviderAdapter>(
             root, mps._problem_mps);
         auto problem =
-            adapter->provide_problem(_solver_name, solver_log_manager_);
+            adapter->provide_problem(solver_config_.name, solver_log_manager_);
         std::unique_ptr<IProblemVariablesProviderPort> variables_provider;
         if (rename_problems_) {
           variables_provider = std::make_unique<ProblemVariablesFileAdapter>(
