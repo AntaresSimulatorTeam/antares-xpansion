@@ -44,7 +44,7 @@ def launch_xpansion(install_dir, study_path, allow_run_as_root=False, nproc: int
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=None)
     output = process.communicate()
     if process.returncode != 0:
-        print(output)
+        [print(k.decode("utf-8")) for k in output if k is not None]
 
     # Check return value
     assert process.returncode == 0
