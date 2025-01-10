@@ -16,17 +16,17 @@ XpansionProblemsFromAntaresProvider::XpansionProblemsFromAntaresProvider(
 std::vector<std::shared_ptr<Problem>>
 XpansionProblemsFromAntaresProvider::provideProblems(
     const std::string& solver_name,
-    SolverLogManager& solver_log_manager) const
-{
+    SolverLogManager& solver_log_manager) const {
   std::vector<std::shared_ptr<Problem>> xpansion_problems;
-  xpansion_problems.reserve(
-      antares_hebdo_problems.weekCount());
+  xpansion_problems.reserve(antares_hebdo_problems.weekCount());
   for (const auto& [problem_id, hebdo_data] :
        antares_hebdo_problems.weeklyProblems) {
-    xpansion_problems.push_back(
+    auto&& problem =
         AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
-            antares_hebdo_problems,
-            problem_id.year, problem_id.week, solver_name, solver_log_manager));
+            antares_hebdo_problems, problem_id.year, problem_id.week,
+            solver_name, solver_log_manager);
+    problem->_name = std::filesystem::path(problem->_name).replace_extension(".svf");
+    xpansion_problems.push_back(problem);
   }
   return xpansion_problems;
 }
