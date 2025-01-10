@@ -31,7 +31,7 @@ class LinkProblemsGenerator {
   LinkProblemsGenerator(
       std::filesystem::path& lpDir, const std::vector<ActiveLink>& links,
       SolverConfig solver_config,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
+      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger,
       SolverLogManager& solver_log_manager, bool rename_problems)
       : _links(links),
         solver_config_(std::move(solver_config)),
