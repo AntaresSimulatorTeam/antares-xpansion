@@ -323,8 +323,8 @@ void ProblemGeneration::RunProblemGeneration(
   LinkProblemsGenerator linkProblemsGenerator(
       lpDir_, links, solver_config_, logger, solver_log_manager, rename_problems);
   std::shared_ptr<ArchiveReader> reader =
-      antares_archive_path.empty() ? std::make_shared<ArchiveReader>()
-                                   : InstantiateZipReader(antares_archive_path);
+      mode_ == SimulationInputMode::ARCHIVE ? InstantiateZipReader(antares_archive_path)
+                                   : std::make_shared<ArchiveReader>();
 
   /* Main stuff */
   std::vector<std::shared_ptr<Problem>> xpansion_problems = getXpansionProblems(
