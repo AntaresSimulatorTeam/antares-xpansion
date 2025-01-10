@@ -88,8 +88,12 @@ void SolverClp::write_basis(const std::filesystem::path &filename) {
 }
 
 void SolverClp::read_prob_mps(const std::filesystem::path &filename) {
-  int status = _clp.readMps(filename.string().c_str(), true, false);
-  zero_status_check(status, " Clp readMps "s + filename.string(), LOGLOCATION);
+  auto filename_to_use = filename;
+  if (filename_to_use.extension() != ".mps") {
+    filename_to_use.replace_extension(".mps");
+  }
+  int status = _clp.readMps(filename_to_use.string().c_str(), true, false);
+  zero_status_check(status, " Clp readMps "s + filename_to_use.string(), LOGLOCATION);
 }
 
 void SolverClp::read_prob_lp(const std::filesystem::path &filename) {

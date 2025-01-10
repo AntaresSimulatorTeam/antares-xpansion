@@ -25,7 +25,6 @@ XpansionProblemsFromAntaresProvider::provideProblems(
         AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
             antares_hebdo_problems, problem_id.year, problem_id.week,
             solver_name, solver_log_manager);
-    problem->_name = std::filesystem::path(problem->_name).replace_extension(".svf");
     xpansion_problems.push_back(problem);
   }
   return xpansion_problems;

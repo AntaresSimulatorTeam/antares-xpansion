@@ -51,10 +51,10 @@ void MasterGeneration::write_master_mps(
   master_problem._name = "master";
   switch (save_mode_) {
     case SaveMode::MPS:
-      master_problem.write_prob_mps(rootPath / "lp" / "master");
+      master_problem.write_prob_mps(rootPath / "lp" / "master.mps");
       break;
     case SaveMode::SAVE:
-      master_problem.save_prob(rootPath / "lp" / "master");
+      master_problem.save_prob(rootPath / "lp" / "master.svf");
       break;
     default:
         throw std::runtime_error("Unknown save mode " + std::to_string(static_cast<int>(save_mode_)));
