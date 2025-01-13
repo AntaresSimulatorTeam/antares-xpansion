@@ -20,7 +20,9 @@ MasterGeneration::MasterGeneration(
     const std::string &master_formulation, const std::string &solver_name,
     std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger,
     SolverLogManager &solver_log_manager)
-    : logger_(std::move(logger)) {
+    : logger_(std::move(logger))
+    , solver_name_(solver_name)
+{
   add_candidates(links);
   write_master_mps(rootPath, master_formulation, solver_name,
                    additionalConstraints_p, solver_log_manager);
@@ -68,7 +70,7 @@ void MasterGeneration::write_structure_file(
   std::ofstream coupling_file(rootPath / "lp" / STRUCTURE_FILE);
   for (auto const &[mps_file_path, candidates_name_and_colId] : structure) {
     for (auto const &[candidate_name, colId] : candidates_name_and_colId) {
-      coupling_file << std::setw(50) << mps_file_path;
+      coupling_file << std::setw(50) <<  SolverConfig::FileName(mps_file_path, solver_name_).string();
       coupling_file << std::setw(50) << candidate_name;
       coupling_file << std::setw(10) << colId;
       coupling_file << std::endl;

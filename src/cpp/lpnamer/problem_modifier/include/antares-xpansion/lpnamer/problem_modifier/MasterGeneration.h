@@ -40,5 +40,6 @@ class MasterGeneration {
  private: /*members*/
   std::vector<Candidate> candidates;
   std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
+  const std::string solver_name_;
 };
 #endif  //__MASTER_GENERATION__

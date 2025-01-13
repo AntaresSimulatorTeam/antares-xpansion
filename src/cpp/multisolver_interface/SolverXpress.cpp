@@ -604,7 +604,9 @@ void SolverXpress::set_simplex_iter(int iter) {
 }
 
 void SolverXpress::save_prob(const std::filesystem::path &filename) {
-  int status = XPRSsaveas(_xprs, filename.string().c_str());
+  std::filesystem::path filename_to_use{filename};
+  filename_to_use.replace_extension(".svf");
+  int status = XPRSsaveas(_xprs, filename_to_use.string().c_str());
   char errmsg[512];
   XPRSgetlasterror(_xprs,errmsg);
   std::cerr << errmsg << std::endl;
