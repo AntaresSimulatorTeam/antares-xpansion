@@ -61,11 +61,6 @@ class SolverFactory {
   SolverAbstract::Ptr create_solver(const std::string &solver_name,
                                     const SOLVER_TYPE solver_type,
                                     SolverLogManager &log_manager) const;
-  SolverAbstract::Ptr create_solver(const std::string &solver_name,
-                                    const SOLVER_TYPE solver_type) const;
-  SolverAbstract::Ptr create_solver(const std::string &solver_name,
-                                    const SOLVER_TYPE solver_type,
-                                    SolverLogManager &log_manager) const;
 
   /**
    * @brief Creates and returns to an object solver from the wanted

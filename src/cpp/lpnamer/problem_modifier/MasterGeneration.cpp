@@ -19,8 +19,8 @@ MasterGeneration::MasterGeneration(
     const AdditionalConstraints &additionalConstraints_p, Couplings &couplings,
     const std::string &master_formulation, const std::string &solver_name,
     std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger,
-    SolverLogManager &solver_log_manager, SaveMode mode = SaveMode::MPS)
-    : logger_(std::move(logger)), save_mode_(mode) {
+    SolverLogManager &solver_log_manager)
+    : logger_(std::move(logger)) {
   add_candidates(links);
   write_master_mps(rootPath, master_formulation, solver_name,
                    additionalConstraints_p, solver_log_manager);
@@ -49,16 +49,7 @@ void MasterGeneration::write_master_mps(
   treatAdditionalConstraints(master_l, additionalConstraints_p, logger_);
   Problem master_problem(master_l);
   master_problem._name = "master";
-  switch (save_mode_) {
-    case SaveMode::MPS:
-      master_problem.write_prob_mps(rootPath / "lp" / "master.mps");
-      break;
-    case SaveMode::SAVE:
-      master_problem.save_prob(rootPath / "lp" / "master.svf");
-      break;
-    default:
-        throw std::runtime_error("Unknown save mode " + std::to_string(static_cast<int>(save_mode_)));
-  }
+  master_problem.save_prob(rootPath / "lp" / "master");
 }
 
 void MasterGeneration::write_structure_file(

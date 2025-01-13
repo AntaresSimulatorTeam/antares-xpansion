@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <utility>
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 

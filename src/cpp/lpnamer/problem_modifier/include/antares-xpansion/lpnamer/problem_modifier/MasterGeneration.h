@@ -8,8 +8,6 @@
 #include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 class MasterGeneration {
  public:
-  enum class SaveMode { MPS, SAVE };
-
   /**
    * \fn  MasterGeneration constructor
    * \brief Generate the master ob the optimization problem
@@ -27,7 +25,7 @@ class MasterGeneration {
       Couplings& couplings, const std::string& master_formulation,
       const std::string& solver_name,
       std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger,
-      SolverLogManager& solver_log_manager, SaveMode mode);
+      SolverLogManager& solver_log_manager);
 
  private: /*methods*/
   void add_candidates(const std::vector<ActiveLink> &links);
@@ -42,6 +40,5 @@ class MasterGeneration {
  private: /*members*/
   std::vector<Candidate> candidates;
   std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
-  SaveMode save_mode_;
 };
 #endif  //__MASTER_GENERATION__

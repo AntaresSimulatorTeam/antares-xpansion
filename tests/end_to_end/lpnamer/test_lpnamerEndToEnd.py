@@ -157,6 +157,7 @@ def launch_and_compare_lp_with_reference_output(install_dir, master_mode, test_d
 
 def launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_dir, unnamed_problems=True):
     launch_command, lp_dir, old_path, reference_lp_dir = given(install_dir, master_mode, test_dir, unnamed_problems)
+    print(f"launch_command: '{' '.join(launch_command)}'")
     # when
     returned_l = subprocess.run(launch_command, shell=False)
     # then
