@@ -53,22 +53,6 @@ class BendersSequentialDouble : public BendersSequential {
   void free() override {};
   SubproblemsMapPtr problems() const { return GetSubProblemMap(); }
 
-  //  void InitializeProblems() override {
-  //    MatchProblemToId();
-  //
-  //    auto solver_log_manager = SolverLogManager(solver_log_file());
-  //    reset_master<WorkerMaster>(master_variable_map_, get_master_path(),
-  //                                  get_solver_name(), get_log_level(),
-  //                                  _data.nsubproblem, solver_log_manager,
-  //                                  IsResumeMode(), _logger);
-  //    for (const auto &problem : coupling_map_) {
-  //      const auto subProblemFilePath = GetSubproblemPath(problem.first);
-  //      AddSubproblem(problem);
-  //      AddSubproblemName(problem.first);
-  //      std::filesystem::remove(subProblemFilePath);
-  //    }
-  //  }
-  // No override as the base class function is const
   void DeactivateIntegrityConstraints() const override {
     _deactivateIntConstraintCall = true;
     BendersBase::DeactivateIntegrityConstraints();
