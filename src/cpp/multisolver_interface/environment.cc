@@ -438,7 +438,7 @@ bool XpressLoader::initXpressEnv(bool verbose, int xpress_oem_license_key) {
         msg.str("");
         msg << "Warning: "
             << "Optimizer version: " << version
-            << " (Antares-Xpansion was compiled with version " << XPVERSION
+            << " (Antares-Xpansion use Xpress interface version " << XPVERSION
             << ").\n";
         logger_->display_message(msg);
       }
