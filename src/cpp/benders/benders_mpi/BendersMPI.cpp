@@ -160,11 +160,12 @@ void BendersMpi::GatherCuts(const SubProblemDataMap &subproblem_data_map,
   master_build_cuts(gathered_subproblem_map);
   if (!criterion_computation_.IsEmpty()) {
     ComputeSubproblemsContributionToCriteria(subproblem_data_map);
-  }
-  if (_world.rank() == rank_0 && !criterion_computation_.IsEmpty()) {
-    criteria_vector_for_each_iteration_.push_back(
-      _data.criteria_current_iteration_data.criteria);
-    UpdateMaxCriterionArea();
+  
+      if (_world.rank() == rank_0) {
+        criteria_vector_for_each_iteration_.push_back(
+          _data.criteria_current_iteration_data.criteria);
+        UpdateMaxCriterionArea();
+      }
   }
 }
 
