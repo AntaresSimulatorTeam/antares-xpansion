@@ -5,8 +5,6 @@
 #include "antares-xpansion/lpnamer/problem_modifier/MPSFileProblemProviderAdapter.h"
 
 #include <utility>
-
-#include "antares-xpansion/multisolver_interface/SolverConfig.h"
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
 std::shared_ptr<Problem> MPSFileProblemProviderAdapter::provide_problem(
     const std::string& solver_name,

@@ -15,8 +15,6 @@ class SolverConfig {
   bool use_save_restore{false};
 
  public:
-
-  static std::filesystem::path FileName(const std::string& problemName, std::string solverName);
   explicit SolverConfig(std::string name);
   SolverConfig(SolverConfig&&) = default;
   SolverConfig(const SolverConfig&) = default;

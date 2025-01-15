@@ -5,7 +5,6 @@
 #pragma once
 
 #include "antares-xpansion/lpnamer/problem_modifier/IProblemProviderPort.h"
-#include "antares-xpansion/multisolver_interface/SolverConfig.h"
 class MPSFileProblemProviderAdapter : public IProblemProviderPort {
  public:
   MPSFileProblemProviderAdapter(std::filesystem::path root,
