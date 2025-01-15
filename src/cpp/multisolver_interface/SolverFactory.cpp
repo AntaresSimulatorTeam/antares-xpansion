@@ -36,23 +36,39 @@ SolverFactory::SolverFactory(std::shared_ptr<ILoggerXpansion> logger)
 
 SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name, const SOLVER_TYPE solver_type) const {
-  return create_solver(SolverConfig(solver_name), solver_type);
+  try {
+    return create_solver(SolverConfig(solver_name), solver_type);
+  } catch (LogUtils::XpansionError<std::invalid_argument> &ex) {
+    throw InvalidSolverNameException(solver_name, LOGLOCATION);
+  }
 }
 
 SolverAbstract::Ptr SolverFactory::create_solver(
     const std::string &solver_name, const SOLVER_TYPE solver_type,
     SolverLogManager &log_manager) const {
-  return create_solver(SolverConfig(solver_name), solver_type, log_manager);
+  try {
+    return create_solver(SolverConfig(solver_name), solver_type, log_manager);
+  } catch (LogUtils::XpansionError<std::invalid_argument> &ex) {
+    throw InvalidSolverNameException(solver_name, LOGLOCATION);
+  }
 }
 
 SolverAbstract::Ptr SolverFactory::create_solver(
-    std::string solver_name) const {
-  return create_solver(SolverConfig(std::move(solver_name)));
+    const std::string& solver_name) const {
+  try {
+    return create_solver(SolverConfig(solver_name));
+  } catch (LogUtils::XpansionError<std::invalid_argument> &ex) {
+    throw InvalidSolverNameException(solver_name, LOGLOCATION);
+  }
 }
 
 SolverAbstract::Ptr SolverFactory::create_solver(
-    std::string solver_name, SolverLogManager &log_manager) const {
-  return create_solver(SolverConfig(std::move(solver_name)), log_manager);
+    const std::string& solver_name, SolverLogManager &log_manager) const {
+  try {
+    return create_solver(SolverConfig(solver_name), log_manager);
+  } catch (LogUtils::XpansionError<std::invalid_argument> &ex) {
+    throw InvalidSolverNameException(solver_name, LOGLOCATION);
+  }
 }
 
 SolverAbstract::Ptr SolverFactory::create_solver(

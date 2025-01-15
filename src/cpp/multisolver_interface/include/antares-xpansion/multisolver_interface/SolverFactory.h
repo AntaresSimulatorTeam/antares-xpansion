@@ -49,8 +49,8 @@ class SolverFactory {
    * @param solver_type : Type of the solver {INTEGER, CONTINUOUS}
    * @param log_manager : A logger
    */
-  SolverAbstract::Ptr create_solver(std::string solver_name) const;
-  SolverAbstract::Ptr create_solver(std::string solver_name,
+  SolverAbstract::Ptr create_solver(const std::string& solver_name) const;
+  SolverAbstract::Ptr create_solver(const std::string& solver_name,
                                     SolverLogManager &log_manager) const;
   SolverAbstract::Ptr create_solver(const std::string &solver_name,
                                     const SOLVER_TYPE solver_type) const;
