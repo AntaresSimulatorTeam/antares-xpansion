@@ -54,6 +54,21 @@ void MasterGeneration::write_master_mps(
   master_problem.save_prob(rootPath / "lp" / "master");
 }
 
+std::filesystem::path FileNameForStructureFile(const std::string& problemName,
+                                             std::string solverName) {
+  const std::string save_ext = ".svf";
+  const std::string default_ext = ".mps";
+  if (problemName == "master") return {"master"};
+  SolverConfig solverConfig(std::move(solverName));
+  std::filesystem::path path{problemName};
+  if (solverConfig.use_save_restore) {
+    path.replace_extension(save_ext);
+  } else {
+    path.replace_extension(default_ext);
+  }
+  return path;
+}
+
 void MasterGeneration::write_structure_file(
     const std::filesystem::path &rootPath, const Couplings &couplings) const {
   Structure structure;
@@ -70,7 +85,7 @@ void MasterGeneration::write_structure_file(
   std::ofstream coupling_file(rootPath / "lp" / STRUCTURE_FILE);
   for (auto const &[mps_file_path, candidates_name_and_colId] : structure) {
     for (auto const &[candidate_name, colId] : candidates_name_and_colId) {
-      coupling_file << std::setw(50) <<  SolverConfig::FileName(mps_file_path, solver_name_).string();
+      coupling_file << std::setw(50) <<  FileNameForStructureFile(mps_file_path, solver_name_).string();
       coupling_file << std::setw(50) << candidate_name;
       coupling_file << std::setw(10) << colId;
       coupling_file << std::endl;
