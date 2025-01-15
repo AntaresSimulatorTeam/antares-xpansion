@@ -4,6 +4,19 @@
 
 #include "antares-xpansion/helpers/solver_utils.h"
 
+// Tolerance to which a value is considered zero or integral
+// TODO : Allow to parametrize this constant from the options file
+int INTTOL = 1e-6;
+static void roundingIfWithinTolerance(std::vector<double> &values,
+                                         double tolerance) {
+  std::transform(
+      values.begin(), values.end(), values.begin(), [tolerance](double value) {
+        double rounded = std::round(value);
+        // Check if the value is within the tolerance of the rounded value
+        return (std::abs(value - rounded) <= tolerance) ? rounded : value;
+      });
+}
+
 /*!
  *  \brief Constructor of a Worker Slave
  *
@@ -54,7 +67,7 @@ void SubproblemWorker::fix_to(Point const &x0) const {
     values[i] = x0.find(kvp.second)->second;
     ++i;
   }
-
+  roundingIfWithinTolerance(values, INTTOL);
   solver_chgbounds(_solver, indexes, bndtypes, values);
 }
 
