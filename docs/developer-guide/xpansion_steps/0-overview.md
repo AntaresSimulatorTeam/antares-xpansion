@@ -20,8 +20,7 @@ This stage is responsible for building the investment optimization problem, usin
 
 Using the data on investment candidates specified in the `user/expansion/candidates.ini` file,
 Antares-Xpansion modifies the `.mps` problems provided by
-Antares-Simulator in the previous step to add information on the candidates. These modified problems, still written
- as `.mps` files, are the so-called _satellite problems_. They correspond to the supply-demand problem to be solved once the investment has been fixed to a given value (that changes during the Antares-Xpansion optimization).
+Antares-Simulator in the previous step to add information on the candidates. These modified problems are the so-called _satellite problems_. They correspond to the supply-demand problem to be solved once the investment has been fixed to a given value (that changes during the Antares-Xpansion optimization)
 
 This stage is also responsible for building the initial _master problem_
 used for Benders decomposition. If there are additional constraints linking the investment candidates (defined in the `additional-constraints` field of the `user/expansion/settings.ini` file), then they are added to the _master problem_.

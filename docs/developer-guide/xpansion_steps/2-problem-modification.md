@@ -154,26 +154,26 @@ The _master problem_ is created from the list of candidates in the following way
     
 ### 5- Creation of a variable / column ID mapping file
 
-A file (`structure.txt`) is created, containing for each `.mps` file, the associated column ID for the candidates.
+A file (`structure.txt`) is created, containing for each satellite problem and the master, the associated column ID for the candidates.
 
 !!! Example
     ```
-                        master  battery                   0
-                        master  peak                      1
-                        master  pv                        2
-                        master  semibase                  3
-                        master  transmission_line         4
-    problem-1-1-20210713-163528  battery                5547
-    problem-1-1-20210713-163528  peak                   5545
-    problem-1-1-20210713-163528  pv                     5548
-    problem-1-1-20210713-163528  semibase               5546
-    problem-1-1-20210713-163528  transmission_line      5544
+                        master          battery                 0
+                        master          peak                    1
+                        master          pv                      2
+                        master          semibase                3
+                        master          transmission_line       4
+    problem-1-1-20210713-163528.mps     battery                 5547
+    problem-1-1-20210713-163528.mps     peak                    5545
+    problem-1-1-20210713-163528.mps     pv                      5548
+    problem-1-1-20210713-163528.mps     semibase                5546
+    problem-1-1-20210713-163528.mps     transmission_line       5544
     ```
 
     Here:
     
     - In `master.mps`, the candidate `battery` has column ID `0`,
-    - In `problem-1-1-20210713-163528`, the candidate `peak` has column ID `5545`.
+    - In `problem-1-1-20210713-163528` corresponding file `problem-1-1-20210713-163528.mps`, the candidate `peak` has column ID `5545`.
 
 !!! Note
     The column ID is no longer used by `benders`. This file must still be created so that `benders` knows the list of candidate for each problem.
