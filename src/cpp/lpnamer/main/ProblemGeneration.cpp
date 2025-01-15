@@ -70,9 +70,9 @@ static std::string solverXpansionToSimulator(const SolverConfig& in) {
   // in could be Cbc or CBC depending on whether it is defined or not in the
   // settings file 
   // Use lowerCase in any case to be robust to these subtleties
-  assert(islower(in.name));
-  if (in.name == "xpress") return "xpress";
-  if (in.name == "cbc" || in.name == "coin") return "coin";
+  assert(islower(in.Name()));
+  if (in.Name() == "xpress") return "xpress";
+  if (in.Name() == "cbc" || in.Name() == "coin") return "coin";
   throw std::invalid_argument("Invalid solver");
 }
 
@@ -259,16 +259,16 @@ std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
   switch (mode_.value()) {
     case SimulationInputMode::FILE: {
       FileProblemsProviderAdapter adapter(lpDir_, problem_names);
-      return adapter.provideProblems(solver_config_.name, solver_log_manager);
+      return adapter.provideProblems(solver_config_.Name(), solver_log_manager);
     }
     case SimulationInputMode::ARCHIVE: {
       ZipProblemsProviderAdapter adapter(lpDir_, std::move(reader),
                                          problem_names);
-      return adapter.provideProblems(solver_config_.name, solver_log_manager);
+      return adapter.provideProblems(solver_config_.Name(), solver_log_manager);
     }
     case SimulationInputMode::ANTARES_API: {
       XpansionProblemsFromAntaresProvider adapter(lps);
-      return adapter.provideProblems(solver_config_.name, solver_log_manager);
+      return adapter.provideProblems(solver_config_.Name(), solver_log_manager);
     }
     default:
       throw LogUtils::XpansionError<std::runtime_error>(
@@ -383,7 +383,7 @@ void ProblemGeneration::RunProblemGeneration(
   }
   MasterGeneration master_generation(
       xpansion_output_dir, links, additionalConstraints, couplings,
-      master_formulation, solver_config_.name, logger, solver_log_manager);
+      master_formulation, solver_config_.Name(), logger, solver_log_manager);
   (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Problem Generation ran in: "
       << format_time_str(problem_generation_timer.elapsed()) << std::endl;

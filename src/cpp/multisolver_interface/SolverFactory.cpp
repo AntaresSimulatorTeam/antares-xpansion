@@ -58,8 +58,8 @@ SolverAbstract::Ptr SolverFactory::create_solver(
 SolverAbstract::Ptr SolverFactory::create_solver(
     const SolverConfig &solver_config) const {
   SolverAbstract::Ptr ret;
-  if (solver_config.name.empty()) {
-    throw InvalidSolverNameException(solver_config.name, LOGLOCATION);
+  if (solver_config.Name().empty()) {
+    throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
   } else if (isXpress_available_ && solver_config == XPRESS_STR) {
     ret = std::make_shared<SolverXpress>();
   }
@@ -71,7 +71,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(
   }
 #endif
   else {
-    throw InvalidSolverNameException(solver_config.name, LOGLOCATION);
+    throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
   }
   ret->init();
   return ret;
@@ -80,8 +80,8 @@ SolverAbstract::Ptr SolverFactory::create_solver(
 SolverAbstract::Ptr SolverFactory::create_solver(
     const SolverConfig &solver_config, const SOLVER_TYPE solver_type) const {
   SolverAbstract::Ptr ret;
-  if (solver_config.name.empty()) {
-    throw InvalidSolverNameException(solver_config.name, LOGLOCATION);
+  if (solver_config.Name().empty()) {
+    throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
   } else if (isXpress_available_ && solver_config == XPRESS_STR) {
     ret = std::make_shared<SolverXpress>();
   }
@@ -93,7 +93,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(
   }
 #endif
   else {
-    throw InvalidSolverNameException(solver_config.name, LOGLOCATION);
+    throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
   }
   ret->init();
   return ret;
@@ -101,8 +101,8 @@ SolverAbstract::Ptr SolverFactory::create_solver(
 
 SolverAbstract::Ptr SolverFactory::create_solver(
     const SolverConfig &solver_config, SolverLogManager &log_manager) const {
-  if (solver_config.name.empty()) {
-    throw InvalidSolverNameException(solver_config.name, LOGLOCATION);
+  if (solver_config.Name().empty()) {
+    throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
   }
   SolverAbstract::Ptr ret;
   if (isXpress_available_ && solver_config == XPRESS_STR) {
@@ -116,7 +116,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(
   }
 #endif
   else {
-    throw InvalidSolverNameException(solver_config.name, LOGLOCATION);
+    throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
   }
   ret->init();
   return ret;
