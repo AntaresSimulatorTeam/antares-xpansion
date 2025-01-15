@@ -35,7 +35,9 @@ class WorkerMaster : public Worker {
 
   virtual void DeactivateIntegrityConstraints() const;
   virtual void ActivateIntegrityConstraints() const;
-  [[nodiscard]] virtual std::vector<int> get_id_nb_units() const { return _id_nb_units; };
+  [[nodiscard]] virtual std::vector<int> get_id_nb_units() const {
+    return _id_nb_units;
+  };
 
  private:
   std::vector<int> _id_nb_units;
@@ -59,4 +61,6 @@ class WorkerMaster : public Worker {
   void _set_upper_bounds() const;
   void _set_alpha_var();
   void _set_nb_units_var_ids();
+  void roundXVarIfWithinTolerance(std::vector<double> &values,
+                                  double tolerance);
 };
