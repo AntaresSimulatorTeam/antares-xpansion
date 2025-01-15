@@ -383,8 +383,8 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
               SolveSubproblem(subproblem_data_map, subproblem_data, name,
                               worker);
 
-              subproblem_data_map[name] = subproblem_data;
               std::lock_guard guard(m);
+              subproblem_data_map[name] = subproblem_data;
             });
       },
       shouldParallelize());
