@@ -76,6 +76,10 @@ class CriterionComputation {
    */
   const CriterionInputData &getCriterionInputData() const;
 
+  bool IsEmpty() const {
+      return criterion_input_data_.Criteria().empty();
+  }
+
 private:
   std::vector<std::vector<int>> var_indices_ = {};
   CriterionInputData criterion_input_data_;
