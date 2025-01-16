@@ -517,6 +517,7 @@ var hierarchy =
       [ "SolverClp", "classSolverClp.html", null ],
       [ "SolverXpress", "classSolverXpress.html", null ]
     ] ],
+    [ "SolverConfig", "classSolverConfig.html", null ],
     [ "SolverData", "structSolverData.html", null ],
     [ "SolverFactory", "classSolverFactory.html", null ],
     [ "SolverLoader", "classSolverLoader.html", null ],

@@ -612,6 +612,7 @@ var annotated_dup =
     [ "SolverAbstract", "classSolverAbstract.html", "classSolverAbstract" ],
     [ "SolverCbc", "classSolverCbc.html", "classSolverCbc" ],
     [ "SolverClp", "classSolverClp.html", "classSolverClp" ],
+    [ "SolverConfig", "classSolverConfig.html", null ],
     [ "SolverData", "structSolverData.html", null ],
     [ "SolverFactory", "classSolverFactory.html", "classSolverFactory" ],
     [ "SolverLoader", "classSolverLoader.html", null ],

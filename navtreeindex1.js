@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"classBenders_1_1Criterion_1_1ICriterionInputDataReader.html":[25,0,1,0,11],
 "classBenders_1_1Criterion_1_1OuterLoopCriterionInputData.html":[25,0,1,0,12],
 "classBenders_1_1Criterion_1_1VariablesGroup.html":[25,0,1,0,13],
 "classBenders_1_1StartUp.html":[25,0,1,1],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "classProblem.html#a3a3e618e559abc36fdea1be47ed8ffce":[25,0,159,19],
 "classProblem.html#a3d0e261b04e97d40eb25704b526d8625":[25,0,159,34],
 "classProblem.html#a41f4336459e6e32d6f2b98c5464bc1ac":[25,0,159,28],
-"classProblem.html#a427fd0532ce52ade20de068ce0e43ea5":[25,0,159,25],
-"classProblem.html#a4bc726350bcf61005c30cc61e6018b4e":[25,0,159,3]
+"classProblem.html#a427fd0532ce52ade20de068ce0e43ea5":[25,0,159,25]
 };

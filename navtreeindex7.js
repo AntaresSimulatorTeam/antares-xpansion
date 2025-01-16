@@ -1,5 +1,7 @@
 var NAVTREEINDEX7 =
 {
+"structFileBuffer.html":[25,0,73],
+"structHeadersManager.html":[25,0,86],
 "structHeadersManagerExternalLoop.html":[25,0,87],
 "structILoggerXpansion.html":[25,0,89],
 "structILoggerXpansion.html#a5d5ef0a1321f54372ecba334a7ae1acd":[25,0,89,1],
@@ -44,10 +46,10 @@ var NAVTREEINDEX7 =
 "structRawPbData.html":[25,0,181],
 "structSensitivityInputData.html":[25,0,186],
 "structSinglePbData.html":[25,0,204],
-"structSolverData.html":[25,0,208],
-"structVariableFileLine.html":[25,0,225],
-"structVariableFileReadNameConfiguration.html":[25,0,228],
-"structVariableNameComposition.html":[25,0,229],
-"structVersion.html":[25,0,231],
-"structto.html":[25,0,222]
+"structSolverData.html":[25,0,209],
+"structVariableFileLine.html":[25,0,226],
+"structVariableFileReadNameConfiguration.html":[25,0,229],
+"structVariableNameComposition.html":[25,0,230],
+"structVersion.html":[25,0,232],
+"structto.html":[25,0,223]
 };

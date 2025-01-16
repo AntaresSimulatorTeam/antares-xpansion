@@ -115,7 +115,8 @@ var NAVTREEINDEX0 =
 "SolverAbstract_8h_source.html":[26,0,0,0,4,0,0,0,3],
 "SolverCbc_8h_source.html":[26,0,0,0,4,1,1],
 "SolverClp_8h_source.html":[26,0,0,0,4,1,2],
-"SolverFactory_8h_source.html":[26,0,0,0,4,0,0,0,4],
+"SolverConfig_8h_source.html":[26,0,0,0,4,0,0,0,4],
+"SolverFactory_8h_source.html":[26,0,0,0,4,0,0,0,5],
 "SolverXpress_8h_source.html":[26,0,0,0,4,1,3],
 "Solver_8h_source.html":[26,0,0,0,4,0,0,0,2],
 "StartUp_8h_source.html":[26,0,0,0,0,1,0,0,0,0,15],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "classBenders_1_1Criterion_1_1CriterionPattern.html":[25,0,1,0,9],
 "classBenders_1_1Criterion_1_1CriterionPattern.html#a64c62a0464bb2508709063eb352da908":[25,0,1,0,9,0],
 "classBenders_1_1Criterion_1_1CriterionSingleInputData.html":[25,0,1,0,10],
-"classBenders_1_1Criterion_1_1CriterionSingleInputData.html#a676b2c8a9e865b6a3cb3610ee27765be":[25,0,1,0,10,0],
-"classBenders_1_1Criterion_1_1ICriterionInputDataReader.html":[25,0,1,0,11]
+"classBenders_1_1Criterion_1_1CriterionSingleInputData.html#a676b2c8a9e865b6a3cb3610ee27765be":[25,0,1,0,10,0]
 };
