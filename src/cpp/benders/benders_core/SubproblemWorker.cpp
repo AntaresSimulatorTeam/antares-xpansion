@@ -58,6 +58,15 @@ void SubproblemWorker::fix_to(Point const &x0) const {
   solver_chgbounds(_solver, indexes, bndtypes, values);
 }
 
+static double INTTOL = 1e-4;
+void SubproblemWorker::roundIfWithinTolerance(std::vector<double> &values,
+                                              double tolerance) const {
+  std::transform(values.begin(), values.end(), values.begin(),
+                 [tolerance](double value) -> double {
+                   return std::abs(value) < tolerance ? 0 : value;
+                 });
+}
+
 /*!
  *  \brief Get LP solution value of a problem
  *
@@ -67,6 +76,7 @@ void SubproblemWorker::get_subgradient(Point &s) const {
   s.clear();
   std::vector<double> ptr(_solver->get_ncols());
   solver_getlpreducedcost(_solver, ptr);
+  roundIfWithinTolerance(ptr, INTTOL);
   for (auto const &kvp : _id_to_name) {
     s[kvp.second] = +ptr[kvp.first];
   }

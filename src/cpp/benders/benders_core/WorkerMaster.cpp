@@ -36,7 +36,7 @@ WorkerMaster::WorkerMaster(VariableMap const &variable_map,
 
 // Tolerance to which a value is considered zero or integral
 // TODO : Allow to parametrize this constant from the options file
-int INTTOL = 1e-6;
+static double INTTOL = 1e-4;
 void WorkerMaster::roundXVarIfWithinTolerance(std::vector<double> &values,
                                               double tolerance) {
   int nb_candidates = _id_to_name.size();
@@ -61,10 +61,10 @@ void WorkerMaster::roundXVarIfWithinTolerance(std::vector<double> &values,
       values[kvp.first] = lb[kvp.first];
     }
     // Case integer variable
-    else if (col_type[kvp.first] == 'I') {
+    else if (col_type[kvp.first] == 'B' || col_type[kvp.first] == 'I') {
       int rounded = std::round(value);
       values[kvp.first] =
-          std::abs(value - std::round(value)) <= tolerance ? rounded : value;
+          std::abs(value - std::round(value)) < tolerance ? rounded : value;
     }
   };
 }

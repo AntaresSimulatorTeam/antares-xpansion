@@ -23,6 +23,8 @@ class SubproblemWorker : public Worker {
                    Logger logger, ProblemsFormat format);
   virtual ~SubproblemWorker() = default;
   void get_solution(std::vector<double> &solution) const;
+  void roundIfWithinTolerance(std::vector<double> &values,
+                              double tolerance) const;
 
  public:
   void fix_to(Point const &x0) const;
