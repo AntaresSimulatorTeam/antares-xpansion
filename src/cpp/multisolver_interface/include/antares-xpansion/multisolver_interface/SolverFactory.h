@@ -2,8 +2,9 @@
 
 #include <set>
 
-#include "antares-xpansion/xpansion_interfaces/ILogger.h"
+#include "SolverConfig.h"
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
 /**
  * \enum mapper::SOLVER_TYPE
@@ -45,21 +46,32 @@ class SolverFactory {
    * implementation
    *
    * @param solver_name : Name of the solver to use
+   * @param solver_type : Type of the solver {INTEGER, CONTINUOUS}
+   * @param log_manager : A logger
    */
-  SolverAbstract::Ptr create_solver(std::string solver_name) const;
-  SolverAbstract::Ptr create_solver(std::string solver_name,
+  SolverAbstract::Ptr create_solver(const std::string& solver_name) const;
+  SolverAbstract::Ptr create_solver(const std::string& solver_name,
+                                    SolverLogManager &log_manager) const;
+  SolverAbstract::Ptr create_solver(const std::string &solver_name,
+                                    const SOLVER_TYPE solver_type) const;
+  SolverAbstract::Ptr create_solver(const std::string &solver_name,
+                                    const SOLVER_TYPE solver_type,
                                     SolverLogManager &log_manager) const;
 
   /**
    * @brief Creates and returns to an object solver from the wanted
    * implementation
    *
-   * @param solver_name : Name of the solver to use
-   * @param solver_type : Name of the solver to use
+   * @param solver_config : A solver configuration
+   * @param solver_type : Type of the solver {INTEGER, CONTINUOUS}
+   * @param log_manager : A logger
    */
-  SolverAbstract::Ptr create_solver(const std::string &solver_name,
+  SolverAbstract::Ptr create_solver(const SolverConfig& solver_config) const;
+  SolverAbstract::Ptr create_solver(const SolverConfig& solver_config,
                                     const SOLVER_TYPE solver_type) const;
-  SolverAbstract::Ptr create_solver(const std::string &solver_name,
+  SolverAbstract::Ptr create_solver(const SolverConfig& solver_config,
+                                    SolverLogManager &log_manager) const;
+  SolverAbstract::Ptr create_solver(const SolverConfig& solver_config,
                                     const SOLVER_TYPE solver_type,
                                     SolverLogManager &log_manager) const;
 
@@ -69,7 +81,7 @@ class SolverFactory {
    *
    * @param to_copy : solver to copy
    */
-  SolverAbstract::Ptr copy_solver(SolverAbstract::Ptr to_copy);
+  SolverAbstract::Ptr copy_solver(SolverAbstract::Ptr to_copy) const;
   SolverAbstract::Ptr copy_solver(
       const std::shared_ptr<const SolverAbstract> &to_copy) const;
 
