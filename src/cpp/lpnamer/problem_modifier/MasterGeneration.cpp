@@ -59,14 +59,7 @@ std::filesystem::path FileNameForStructureFile(const std::string& problemName,
   const std::string save_ext = ".svf";
   const std::string default_ext = ".mps";
   if (problemName == "master") return {"master"};
-  SolverConfig solverConfig(std::move(solverName));
-  std::filesystem::path path{problemName};
-  if (solverConfig.use_save_restore) {
-    path.replace_extension(save_ext);
-  } else {
-    path.replace_extension(default_ext);
-  }
-  return path;
+  return SolverConfig::FileName(problemName, SolverConfig(std::move(solverName)));
 }
 
 void MasterGeneration::write_structure_file(

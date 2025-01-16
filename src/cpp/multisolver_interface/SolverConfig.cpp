@@ -30,3 +30,16 @@ void SolverConfig::init(std::string solver_name) {
   save_restore_supported = save_restore_support.at(name);
   use_save_restore = save_restore_supported;
 }
+
+std::filesystem::path SolverConfig::FileName(const std::string& problemName,
+                                             const SolverConfig& solverName) {
+  const std::string save_ext = ".svf";
+  const std::string default_ext = ".mps";
+  std::filesystem::path path{problemName};
+  if (solverName.use_save_restore) {
+    path.replace_extension(save_ext);
+  } else {
+    path.replace_extension(default_ext);
+  }
+  return path;
+}
