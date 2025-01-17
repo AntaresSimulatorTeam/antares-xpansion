@@ -56,6 +56,7 @@ target_include_directories(benders_core
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
 
+find_package(fmt REQUIRED)
 target_link_libraries(benders_core
         PUBLIC
         antaresXpansion::helpers
@@ -63,6 +64,7 @@ target_link_libraries(benders_core
         antaresXpansion::solvers
         ${JSONCPP_LIB}
         antaresXpansion::outer_loop_lib
+        fmt::fmt
 )
 
 target_link_libraries(benders_core PRIVATE TBB::tbb)
