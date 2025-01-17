@@ -18,7 +18,9 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/LastIterationReader.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/LastIterationWriter.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/MasterUpdateBase.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ProblemFormatStream.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SimulationOptions.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/SolverIO.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/StartUp.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SubproblemWorker.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/Worker.cpp
@@ -40,7 +42,9 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/LastIterationWriter.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/MasterUpdate.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/ProblemFormat.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/ProblemFormatStream.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SimulationOptions.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SolverIO.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/StartUp.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SubproblemWorker.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/VariablesGroup.h

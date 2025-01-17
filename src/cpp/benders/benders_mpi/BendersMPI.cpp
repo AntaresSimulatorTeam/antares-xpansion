@@ -58,7 +58,7 @@ void BendersMpi::BuildMasterProblem() {
     reset_master<WorkerMaster>(master_variable_map_, get_master_path(),
                                   get_solver_name(), get_log_level(),
                                   _data.nsubproblem, solver_log_manager_,
-                                  IsResumeMode(), _logger);
+                                  IsResumeMode(), _logger, Options().PROBLEMS_FORMAT);
   }
 }
 /*!

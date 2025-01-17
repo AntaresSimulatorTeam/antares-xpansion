@@ -2,12 +2,11 @@
 
 #include <filesystem>
 
+#include "SolverIO.h"
+#include "antares-xpansion/multisolver_interface/Solver.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "antares-xpansion/xpansion_interfaces/OutputWriter.h"
 #include "common.h"
-#include "antares-xpansion/multisolver_interface/Solver.h"
-class Worker;
-typedef std::shared_ptr<Worker> WorkerPtr;
 
 /*!
  * \class Worker
@@ -15,14 +14,12 @@ typedef std::shared_ptr<Worker> WorkerPtr;
  *
  *  This class opens and sets a problem from a mps and a mapping variable map
  */
-
 class Worker {
  public:
-  explicit Worker(Logger logger) : logger_(std::move(logger)) {}
-  void init(VariableMap const &variable_map,
-            const std::filesystem::path &path_to_mps,
-            std::string const &solver_name, int log_level,
-            SolverLogManager&solver_log_manager);
+  Worker(VariableMap variable_map, std::filesystem::path path_to_mps,
+         Logger logger);
+  void init(const std::string &solver_name, int log_level,
+            SolverLogManager &solver_log_manager, ProblemsFormat format);
   virtual ~Worker() = default;
 
   void get_value(double &lb) const;
@@ -31,7 +28,7 @@ class Worker {
 
   void free();
   void write_basis(const std::filesystem::path &filename) const;
-  virtual SolverAbstract::Ptr solver() const { return _solver; }
+  [[nodiscard]] virtual std::shared_ptr<SolverAbstract> solver() const;
 
  public:
   std::filesystem::path _path_to_mps;
@@ -65,7 +62,7 @@ class Worker {
   int Getncols() const;
 
  public:
-  SolverAbstract::Ptr _solver =
+  std::shared_ptr<SolverAbstract> _solver =
       nullptr; /*!< Problem stocked in the instance Worker*/
   bool _is_master = false;
 
@@ -74,4 +71,6 @@ class Worker {
  private:
   void read_prob(SolverAbstract * problem,
                  const std::filesystem::path &path) const;
+  SolverIO solver_io_;
+  void writeProb(const std::filesystem::path& out) const;
 };

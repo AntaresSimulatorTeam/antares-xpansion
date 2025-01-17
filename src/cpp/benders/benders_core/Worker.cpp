@@ -1,8 +1,9 @@
 #include "antares-xpansion/benders/benders_core/Worker.h"
 
-#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+#include <utility>
 
 #include "antares-xpansion/helpers/solver_utils.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 /*!
  *  \brief Free the problem
  */
@@ -34,11 +35,9 @@ void Worker::get_value(double &lb) const {
  *
  *  \param problem_name : name of the problem
  */
-void Worker::init(VariableMap const &variable_map,
-                  const std::filesystem::path &path_to_mps,
-                  std::string const &solver_name, int log_level,
-                  SolverLogManager&solver_log_manager) {
-  _path_to_mps = path_to_mps;
+void Worker::init(const std::string &solver_name, int log_level,
+                  SolverLogManager &solver_log_manager, ProblemsFormat format) {
+  solver_io_.configure(solver_name, format);
   SolverFactory factory(logger_);
 
   if (_is_master) {
@@ -51,11 +50,9 @@ void Worker::init(VariableMap const &variable_map,
 
   _solver->set_threads(1);
   _solver->set_output_log_level(log_level);
-  read_prob(_solver.get(), path_to_mps);
+  read_prob(_solver.get(), _path_to_mps);
 
-  _name_to_id = variable_map;
-
-  for (auto const &kvp : variable_map) {
+  for (auto const &kvp : _name_to_id) {
     _id_to_name[kvp.second] = kvp.first;
   }
 }
@@ -85,7 +82,7 @@ void Worker::solve(int &lp_status, const std::string &outputroot,
 
     msg << "written in " << error_file_path.string() << std::endl;
     logger_->display_message(msg.str());
-    _solver->write_prob_mps(error_file_path);
+    writeProb(error_file_path);
     Output::ProblemData data;
     data.name = _path_to_mps.filename().string();
     data.path = error_file_path;
@@ -100,8 +97,7 @@ void Worker::solve(int &lp_status, const std::string &outputroot,
   }
 
   if (_is_master) {
-    _solver->write_prob_mps(std::filesystem::path(outputroot) /
-                            output_master_mps_file_name);
+    writeProb(std::filesystem::path(outputroot) / output_master_mps_file_name);
   }
 }
 /*!
@@ -150,13 +146,18 @@ int Worker::Getncols() const { return _solver->get_ncols(); }
  * @param problem
  * @param path
  */
-void Worker::read_prob(SolverAbstract * problem,
+void Worker::read_prob(SolverAbstract *problem,
                        const std::filesystem::path &path) const {
-  if (path.extension() == ".mps") {
-    problem->read_prob_mps(path);
-  } else if (path.extension() == ".svf") {//Brittle
-    problem->restore_prob(path);
-  } else {
-    throw LogUtils::XpansionError<std::runtime_error>("Unknown file extension for problem file: " + path.string(), LOGLOCATION);
-  }
+  solver_io_.read(_solver.get(), path);
+}
+std::shared_ptr<SolverAbstract> Worker::solver() const { return _solver; }
+
+Worker::Worker(VariableMap variable_map, std::filesystem::path path_to_mps,
+               Logger logger)
+    : _path_to_mps{std::move(path_to_mps)},
+      _name_to_id{std::move(variable_map)},
+      logger_{std::move(logger)} {}
+
+void Worker::writeProb(const std::filesystem::path &out) const {
+  solver_io_.write(_solver.get(), out);
 }
