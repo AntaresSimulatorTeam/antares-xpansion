@@ -45,9 +45,9 @@ std::vector<std::string> SensitivityInputReader::get_projection() const {
   return projection;
 }
 
-SolverAbstract::Ptr SensitivityInputReader::get_last_master() const {
+std::shared_ptr<SolverAbstract> SensitivityInputReader::get_last_master() const {
   SolverFactory factory;
-  SolverAbstract::Ptr last_master;
+  std::shared_ptr<SolverAbstract> last_master;
 
   if (_benders_data[Output::OPTIONS_C]["SOLVER_NAME"].asString() == "COIN") {
     last_master = factory.create_solver("CBC");
@@ -64,7 +64,7 @@ SolverAbstract::Ptr SensitivityInputReader::get_last_master() const {
 
 std::map<std::string, std::pair<double, double>>
 SensitivityInputReader::get_candidates_bounds(
-    SolverAbstract::Ptr last_master,
+    SolverAbstract *last_master,
     const std::map<std::string, int> &name_to_id) const {
   std::map<std::string, std::pair<double, double>> candidates_bounds;
 
@@ -145,7 +145,7 @@ SensitivityInputData SensitivityInputReader::get_input_data() const {
   input_data.last_master = get_last_master();
   input_data.basis_file_path = _basis_file_path;
   input_data.candidates_bounds =
-      get_candidates_bounds(input_data.last_master, input_data.name_to_id);
+      get_candidates_bounds(input_data.last_master.get(), input_data.name_to_id);
   input_data.capex = _json_data[CAPEX_C].asBool();
   input_data.projection = get_projection();
   return input_data;

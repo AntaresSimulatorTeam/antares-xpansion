@@ -11,7 +11,7 @@ struct SensitivityInputData {
   double benders_capex;
   std::map<std::string, double> benders_solution;
   std::map<std::string, int> name_to_id;
-  SolverAbstract::Ptr last_master;
+  std::shared_ptr<SolverAbstract> last_master;
   std::filesystem::path basis_file_path;
   std::map<std::string, std::pair<double, double>> candidates_bounds;
   bool capex;
@@ -37,13 +37,13 @@ class SensitivityInputReader {
   std::filesystem::path _basis_file_path;
   std::filesystem::path _structure_file_path;
 
-  SolverAbstract::Ptr get_last_master() const;
+  std::shared_ptr<SolverAbstract> get_last_master() const;
   double get_best_ub() const;
   double get_benders_capex() const;
   std::map<std::string, double> get_benders_solution() const;
   std::map<std::string, int> get_name_to_id() const;
   std::vector<std::string> get_projection() const;
   std::map<std::string, std::pair<double, double>> get_candidates_bounds(
-      SolverAbstract::Ptr last_master,
+      SolverAbstract *last_master,
       const std::map<std::string, int> &name_to_id) const;
 };
