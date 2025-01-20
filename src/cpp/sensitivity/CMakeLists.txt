@@ -30,9 +30,12 @@ target_include_directories(sensitivity_core
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/private>
 )
 
+find_package(fmt REQUIRED)
 target_link_libraries(sensitivity_core
         PUBLIC
         antaresXpansion::logger_lib
+        PRIVATE
+        fmt::fmt
 )
 
 add_library(${PROJECT_NAME}::sensitivity_core ALIAS sensitivity_core)

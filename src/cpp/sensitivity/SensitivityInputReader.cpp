@@ -8,6 +8,7 @@
 #include "antares-xpansion/xpansion_interfaces/OutputWriter.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
+#include <fmt/format.h>
 
 const std::string EPSILON_C("epsilon");
 const std::string CAPEX_C("capex");
@@ -19,8 +20,8 @@ Json::Value read_json(const std::filesystem::path &json_file_path) {
   if (json_file.good()) {
     json_file >> json_data;
   } else {
-    throw std::runtime_error(LOGLOCATION +
-                             "unable to open : " + json_file_path.string());
+    throw std::runtime_error(fmt::format("{}: unable to open : {}",
+                                         LOGLOCATION, json_file_path.string()));
   }
   return json_data;
 }
