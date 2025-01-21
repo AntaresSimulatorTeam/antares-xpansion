@@ -16,7 +16,6 @@
 #include "WorkerMaster.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
-#include "antares-xpansion/xpansion_interfaces/OutputWriter.h"
 #include "common.h"
 /**
  * std execution policies don't share a base type so we can't just select

@@ -3,9 +3,9 @@
 #include <filesystem>
 
 #include "SolverIO.h"
+#include "antares-xpansion/benders/output/OutputWriter.h"
 #include "antares-xpansion/multisolver_interface/Solver.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
-#include "antares-xpansion/xpansion_interfaces/OutputWriter.h"
 #include "common.h"
 
 /*!

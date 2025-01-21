@@ -12,7 +12,6 @@ target_sources(xpansion_interfaces
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/xpansion_interfaces/ILogger.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/xpansion_interfaces/IWriterLogger.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/xpansion_interfaces/LogUtils.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/xpansion_interfaces/OutputWriter.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/xpansion_interfaces/StringManip.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/xpansion_interfaces/Clock.h
 )

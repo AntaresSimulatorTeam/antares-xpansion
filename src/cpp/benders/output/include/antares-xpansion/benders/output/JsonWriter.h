@@ -6,8 +6,8 @@
 #include <filesystem>
 #include <fstream>
 
+#include "antares-xpansion/benders/output/OutputWriter.h"
 #include "antares-xpansion/xpansion_interfaces/Clock.h"
-#include "antares-xpansion/xpansion_interfaces/OutputWriter.h"
 
 namespace Output {
 
@@ -79,5 +79,6 @@ class JsonWriter : public OutputWriter {
   void write_duration(const double duration) override;
   std::string solution_status() const override;
   void WriteProblem(const ProblemData &problem_data) override;
+  void WriteProblemFormat(const std::string format) override;
 };
 }  // namespace Output

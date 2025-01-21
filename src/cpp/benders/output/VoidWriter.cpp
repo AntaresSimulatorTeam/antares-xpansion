@@ -68,5 +68,6 @@ std::string VoidWriter::solution_status() const { return ""; }
 void VoidWriter::WriteProblem(const ProblemData &problem_data) {
   // keep this method empty
 }
+void VoidWriter::WriteProblemFormat(const std::string format) {}
 
 }  // namespace Output

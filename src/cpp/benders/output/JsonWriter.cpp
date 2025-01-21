@@ -170,4 +170,7 @@ void JsonWriter::WriteProblem(const ProblemData &problem_data) {
   _output[ERROR_C][PROBLEMPATH_C] = problem_data.path.string();
   _output[ERROR_C][PROBLEM_STATUS_C] = problem_data.status;
 }
+void JsonWriter::WriteProblemFormat(const std::string format) {
+  _output[OPTIONS_C][PROBLEM_FORMAT_C] = format;
+}
 }  // namespace Output
