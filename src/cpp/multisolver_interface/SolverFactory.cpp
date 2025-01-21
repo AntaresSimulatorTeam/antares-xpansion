@@ -54,6 +54,23 @@ std::vector<std::string> SolverLoader::GetSupportedSolvers() {
   return supported_solvers;
 }
 
+/**
+ * @brief Returns a list of supported solvers
+ * Supported doesn't mean available, for exemple if licence are not available
+ * @return
+ */
+std::vector<std::string> SolverLoader::GetSupportedSolvers() {
+  static std::vector<std::string> supported_solvers;
+  if (supported_solvers.empty()) {
+    supported_solvers.emplace_back(XPRESS_STR);
+#ifdef COIN_OR
+    supported_solvers.emplace_back(CLP_STR);
+    supported_solvers.emplace_back(CBC_STR);
+#endif
+  }
+  return supported_solvers;
+}
+
 SolverFactory::SolverFactory(std::shared_ptr<ILoggerXpansion> logger)
     : _available_solvers(SolverLoader::GetAvailableSolvers(logger)),
       logger_(std::move(logger)) {
