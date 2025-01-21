@@ -154,8 +154,8 @@ $(document).ready(function(){initNavTree('LinkProfile_8h_source.html',''); initR
 <div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classLinkProfile.html">   18</a></span><span class="keyword">class </span><a class="code hl_struct" href="classLinkProfile.html">LinkProfile</a> {</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> <span class="keyword">public</span>:</div>
 <div class="foldopen" id="foldopen00024" data-start="{" data-end="}">
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="classLinkProfile.html#a45e37effd10fcd998290621e48e2698a">   24</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="classLinkProfile.html#a45e37effd10fcd998290621e48e2698a">LinkProfile</a>(</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="classLinkProfile.html#a9967624837aba175ea61afcdfc5775f0">   24</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="classLinkProfile.html#a9967624837aba175ea61afcdfc5775f0">LinkProfile</a>(</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>      std::shared_ptr&lt;ProblemGenerationLog::ProblemGenerationLogger&gt; logger)</div>
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      : logger_(logger) {}</div>
 </div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
@@ -182,7 +182,7 @@ $(document).ready(function(){initNavTree('LinkProfile_8h_source.html',''); initR
 </div>
 <div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
 <div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  std::shared_ptr&lt;ProblemGenerationLog::ProblemGenerationLogger&gt; logger_;</div>
 <div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>};</div>
 </div>
 <div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
@@ -190,7 +190,7 @@ $(document).ready(function(){initNavTree('LinkProfile_8h_source.html',''); initR
 <div class="ttc" id="aclassLinkProfile_1_1InvalidHourForProfile_html"><div class="ttname"><a href="classLinkProfile_1_1InvalidHourForProfile.html">LinkProfile::InvalidHourForProfile</a></div><div class="ttdef"><b>Definition</b> LinkProfile.h:58</div></div>
 <div class="ttc" id="aclassLinkProfile_html"><div class="ttname"><a href="classLinkProfile.html">LinkProfile</a></div><div class="ttdoc">LinkProfile structure.</div><div class="ttdef"><b>Definition</b> LinkProfile.h:18</div></div>
 <div class="ttc" id="aclassLinkProfile_html_a30c74a7ab017b95f2c305c5ed2b5fe86"><div class="ttname"><a href="classLinkProfile.html#a30c74a7ab017b95f2c305c5ed2b5fe86">LinkProfile::getIndirectProfile</a></div><div class="ttdeci">double getIndirectProfile(size_t hour) const</div><div class="ttdoc">returns the value of a direct link profile</div><div class="ttdef"><b>Definition</b> LinkProfile.cpp:18</div></div>
-<div class="ttc" id="aclassLinkProfile_html_a45e37effd10fcd998290621e48e2698a"><div class="ttname"><a href="classLinkProfile.html#a45e37effd10fcd998290621e48e2698a">LinkProfile::LinkProfile</a></div><div class="ttdeci">LinkProfile(ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)</div><div class="ttdoc">LinkProfile default constructor.</div><div class="ttdef"><b>Definition</b> LinkProfile.h:24</div></div>
+<div class="ttc" id="aclassLinkProfile_html_a9967624837aba175ea61afcdfc5775f0"><div class="ttname"><a href="classLinkProfile.html#a9967624837aba175ea61afcdfc5775f0">LinkProfile::LinkProfile</a></div><div class="ttdeci">LinkProfile(std::shared_ptr&lt; ProblemGenerationLog::ProblemGenerationLogger &gt; logger)</div><div class="ttdoc">LinkProfile default constructor.</div><div class="ttdef"><b>Definition</b> LinkProfile.h:24</div></div>
 <div class="ttc" id="aclassLinkProfile_html_a9c35d623b9b5420b08e59ff9ad6c6565"><div class="ttname"><a href="classLinkProfile.html#a9c35d623b9b5420b08e59ff9ad6c6565">LinkProfile::direct_link_profile</a></div><div class="ttdeci">std::vector&lt; double &gt; direct_link_profile</div><div class="ttdoc">direct linkprofile values</div><div class="ttdef"><b>Definition</b> LinkProfile.h:46</div></div>
 <div class="ttc" id="aclassLinkProfile_html_ab19dbbb3f99b2f8877bc657c8776093a"><div class="ttname"><a href="classLinkProfile.html#ab19dbbb3f99b2f8877bc657c8776093a">LinkProfile::getDirectProfile</a></div><div class="ttdeci">double getDirectProfile(size_t hour) const</div><div class="ttdoc">returns the value of a direct link profile</div><div class="ttdef"><b>Definition</b> LinkProfile.cpp:7</div></div>
 <div class="ttc" id="aclassLinkProfile_html_adf7b5092f19ec8f5f63ce3b8fd69aba7"><div class="ttname"><a href="classLinkProfile.html#adf7b5092f19ec8f5f63ce3b8fd69aba7">LinkProfile::indirect_link_profile</a></div><div class="ttdeci">std::vector&lt; double &gt; indirect_link_profile</div><div class="ttdoc">indirect linkprofile values if different from direct linkprofile</div><div class="ttdef"><b>Definition</b> LinkProfile.h:49</div></div>

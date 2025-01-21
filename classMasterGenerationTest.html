@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: src/cpp/lpnamer/problem_modifier/include/antares-xpansion/lpnamer/problem_modifier/MPSFileWriter.h Source File</title>
+<title>Antares Xpansion: MasterGenerationTest Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -92,11 +92,6 @@ $(function() {
 /* @license-end */
 </script>
 <div id="main-nav"></div>
-<script type="text/javascript">
-/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function() { init_codefold(0); });
-/* @license-end */
-</script>
 </div><!-- top -->
 <div id="side-nav" class="ui-resizable side-nav-resizable">
   <div id="nav-tree">
@@ -110,7 +105,7 @@ $(document).ready(function() { init_codefold(0); });
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('MPSFileWriter_8h_source.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('classMasterGenerationTest.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -136,32 +131,60 @@ $(document).ready(function(){initNavTree('MPSFileWriter_8h_source.html',''); ini
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">MPSFileWriter.h</div></div>
+  <div class="summary">
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="classMasterGenerationTest-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">MasterGenerationTest Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;antares-xpansion/lpnamer/problem_modifier/IProblemWriter.h&quot;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h&quot;</span></div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="foldopen" id="foldopen00006" data-start="{" data-end="};">
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="classMPSFileWriter.html">    6</a></span><span class="keyword">class </span><a class="code hl_class" href="classMPSFileWriter.html">MPSFileWriter</a> : <span class="keyword">public</span> <a class="code hl_class" href="classIProblemWriter.html">IProblemWriter</a> {</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>  <span class="keywordtype">void</span> Write_problem(<a class="code hl_class" href="classProblem.html">Problem</a> *in_prblm, <span class="keyword">const</span> std::filesystem::path &amp;output_file) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  <a class="code hl_class" href="classMPSFileWriter.html">MPSFileWriter</a>(std::filesystem::path lp_dir);</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  std::filesystem::path lp_dir_;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>};</div>
-</div>
-<div class="ttc" id="aclassIProblemWriter_html"><div class="ttname"><a href="classIProblemWriter.html">IProblemWriter</a></div><div class="ttdef"><b>Definition</b> IProblemWriter.h:8</div></div>
-<div class="ttc" id="aclassMPSFileWriter_html"><div class="ttname"><a href="classMPSFileWriter.html">MPSFileWriter</a></div><div class="ttdef"><b>Definition</b> MPSFileWriter.h:6</div></div>
-<div class="ttc" id="aclassProblem_html"><div class="ttname"><a href="classProblem.html">Problem</a></div><div class="ttdoc">Decorator to the SolverAbstract class.</div><div class="ttdef"><b>Definition</b> Problem.h:15</div></div>
-</div><!-- fragment --></div><!-- contents -->
+<div class="dynheader">
+Inheritance diagram for MasterGenerationTest:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classMasterGenerationTest.png" usemap="#MasterGenerationTest_map" alt=""/>
+  <map id="MasterGenerationTest_map" name="MasterGenerationTest_map">
+<area href="classTestForSolverAndExpectation.html" alt="TestForSolverAndExpectation" shape="rect" coords="0,112,180,136"/>
+<area href="classTestForSolverAndMode.html" alt="TestForSolverAndMode" shape="rect" coords="190,112,370,136"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a4b7937f755b8f6d601a6d72273a0046e" id="r_a4b7937f755b8f6d601a6d72273a0046e"><td class="memItemLeft" align="right" valign="top"><a id="a4b7937f755b8f6d601a6d72273a0046e" name="a4b7937f755b8f6d601a6d72273a0046e"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>SetUp</b> () override</td></tr>
+<tr class="separator:a4b7937f755b8f6d601a6d72273a0046e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2bd4a10b4670cb5d2a4e331fb0c3a10d" id="r_a2bd4a10b4670cb5d2a4e331fb0c3a10d"><td class="memItemLeft" align="right" valign="top"><a id="a2bd4a10b4670cb5d2a4e331fb0c3a10d" name="a2bd4a10b4670cb5d2a4e331fb0c3a10d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AddCandidate</b> (std::string name)</td></tr>
+<tr class="separator:a2bd4a10b4670cb5d2a4e331fb0c3a10d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a02c63bd462a44d5b2cc4de8b4145c16c" id="r_a02c63bd462a44d5b2cc4de8b4145c16c"><td class="memItemLeft" align="right" valign="top"><a id="a02c63bd462a44d5b2cc4de8b4145c16c" name="a02c63bd462a44d5b2cc4de8b4145c16c"></a>
+std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>temp_test_dir</b></td></tr>
+<tr class="separator:a02c63bd462a44d5b2cc4de8b4145c16c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ecf7bb63945ff63b8bdd7114218e48b" id="r_a5ecf7bb63945ff63b8bdd7114218e48b"><td class="memItemLeft" align="right" valign="top"><a id="a5ecf7bb63945ff63b8bdd7114218e48b" name="a5ecf7bb63945ff63b8bdd7114218e48b"></a>
+<a class="el" href="classAdditionalConstraints.html">AdditionalConstraints</a>&#160;</td><td class="memItemRight" valign="bottom"><b>additionalConstraints_</b> {nullptr}</td></tr>
+<tr class="separator:a5ecf7bb63945ff63b8bdd7114218e48b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4f01e2d388bc39f92475369fc7f03feb" id="r_a4f01e2d388bc39f92475369fc7f03feb"><td class="memItemLeft" align="right" valign="top"><a id="a4f01e2d388bc39f92475369fc7f03feb" name="a4f01e2d388bc39f92475369fc7f03feb"></a>
+Couplings&#160;</td><td class="memItemRight" valign="bottom"><b>couplings_</b></td></tr>
+<tr class="separator:a4f01e2d388bc39f92475369fc7f03feb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aef350c78f165eb691dff2949d35c0fb2" id="r_aef350c78f165eb691dff2949d35c0fb2"><td class="memItemLeft" align="right" valign="top"><a id="aef350c78f165eb691dff2949d35c0fb2" name="aef350c78f165eb691dff2949d35c0fb2"></a>
+<a class="el" href="classSolverLogManager.html">SolverLogManager</a>&#160;</td><td class="memItemRight" valign="bottom"><b>solver_log_manager_</b></td></tr>
+<tr class="separator:aef350c78f165eb691dff2949d35c0fb2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63a8db315c215019b45b77e15ee293c6" id="r_a63a8db315c215019b45b77e15ee293c6"><td class="memItemLeft" align="right" valign="top"><a id="a63a8db315c215019b45b77e15ee293c6" name="a63a8db315c215019b45b77e15ee293c6"></a>
+std::vector&lt; <a class="el" href="classActiveLink.html">ActiveLink</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>active_links_</b></td></tr>
+<tr class="separator:a63a8db315c215019b45b77e15ee293c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>tests/cpp/lp_namer/<b>MasterGenerationTest.cpp</b></li>
+</ul>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_dfdbda394c3f7a3aa55229f33a559c41.html">cpp</a></li><li class="navelem"><a class="el" href="dir_e82b02a6724f3381c006d85ad5b9fc3b.html">lpnamer</a></li><li class="navelem"><a class="el" href="dir_e6f25a82ee20e4e8e60623c7da1f363f.html">problem_modifier</a></li><li class="navelem"><a class="el" href="dir_7428275c358f803a111cea397ed62bd7.html">include</a></li><li class="navelem"><a class="el" href="dir_5b6a104ba380976b60b70aaacaab9966.html">antares-xpansion</a></li><li class="navelem"><a class="el" href="dir_4f6847cc287769681663d5672b5e31ce.html">lpnamer</a></li><li class="navelem"><a class="el" href="dir_0ea1c8196201bfcc974b3c0ef332f54f.html">problem_modifier</a></li><li class="navelem"><b>MPSFileWriter.h</b></li>
+    <li class="navelem"><a class="el" href="classMasterGenerationTest.html">MasterGenerationTest</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

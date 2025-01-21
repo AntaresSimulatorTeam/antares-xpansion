@@ -59,7 +59,8 @@ var searchData=
   ['getsolutionpoint_56',['getSolutionPoint',['../classJsonXpansionReader.html#afea70320d04f6e0e52443cb1f8a362f1',1,'JsonXpansionReader']]],
   ['getsubproblemcut_57',['GetSubproblemCut',['../classBendersBase.html#a14511a50f100e5076dfe0f7e8ea08070',1,'BendersBase']]],
   ['getsubproblempath_58',['GetSubproblemPath',['../classBendersBase.html#a534370fd14cc3b3eaa99909557f6b63c',1,'BendersBase']]],
-  ['getvariablessection_59',['getVariablesSection',['../structAdditionalConstraintsReader.html#a8224a377cf48e9947ced7da5ef3be211',1,'AdditionalConstraintsReader']]],
-  ['getvariablestobinarise_60',['getVariablesToBinarise',['../classAdditionalConstraints.html#a86675d9f6129dd67df9ebfb883d4a8fc',1,'AdditionalConstraints']]],
-  ['getvarindices_61',['getVarIndices',['../classBenders_1_1Criterion_1_1CriterionComputation.html#adf80b3ed1467ee37074bec423ff7cbe6',1,'Benders::Criterion::CriterionComputation']]]
+  ['getsupportedsolvers_59',['GetSupportedSolvers',['../classSolverLoader.html#a00aa73e5181ec14a2082ea4bb1688aba',1,'SolverLoader']]],
+  ['getvariablessection_60',['getVariablesSection',['../structAdditionalConstraintsReader.html#a8224a377cf48e9947ced7da5ef3be211',1,'AdditionalConstraintsReader']]],
+  ['getvariablestobinarise_61',['getVariablesToBinarise',['../classAdditionalConstraints.html#a86675d9f6129dd67df9ebfb883d4a8fc',1,'AdditionalConstraints']]],
+  ['getvarindices_62',['getVarIndices',['../classBenders_1_1Criterion_1_1CriterionComputation.html#adf80b3ed1467ee37074bec423ff7cbe6',1,'Benders::Criterion::CriterionComputation']]]
 ];

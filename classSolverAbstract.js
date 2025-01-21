@@ -50,6 +50,8 @@ var classSolverAbstract =
     [ "read_basis", "classSolverAbstract.html#aae2dad546d291b6aaaf4d37cb20cfa34", null ],
     [ "read_prob_lp", "classSolverAbstract.html#a1032197acda5a92014067eaa8e7fbb21", null ],
     [ "read_prob_mps", "classSolverAbstract.html#aab6480151ee9629fc85f7214298f20d8", null ],
+    [ "restore_prob", "classSolverAbstract.html#a7028f73741560bc9a5ba54ac03e6c5a7", null ],
+    [ "save_prob", "classSolverAbstract.html#ad7b3e291bccfea92009f5cdd7bca5533", null ],
     [ "set_algorithm", "classSolverAbstract.html#a6147f2636bd52820a77ebc80e19905ee", null ],
     [ "set_obj", "classSolverAbstract.html#a68eaacdbe4ad1302c2e1ffbe69f92125", null ],
     [ "set_obj_to_zero", "classSolverAbstract.html#adbf78f11e71cc3347ed5f00ef83dafa4", null ],

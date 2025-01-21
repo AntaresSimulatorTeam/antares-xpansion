@@ -44,6 +44,8 @@ var classNOOPSolver =
     [ "read_basis", "classNOOPSolver.html#a137b784a33d443b24fc33c19e34c5093", null ],
     [ "read_prob_lp", "classNOOPSolver.html#a59b1e44b9cb7c12a9c44e05d80e1a5a5", null ],
     [ "read_prob_mps", "classNOOPSolver.html#aa9029d51d3f7146fda970f0fd08c5f6f", null ],
+    [ "restore_prob", "classNOOPSolver.html#a883c3e97cfdb5e35166c553990e0785f", null ],
+    [ "save_prob", "classNOOPSolver.html#ab528ae294c41634272e2fec3f86dcc90", null ],
     [ "set_algorithm", "classNOOPSolver.html#ada1e7111945f04571bcc645fe4f80e38", null ],
     [ "set_obj", "classNOOPSolver.html#a7f3f87a9c644c64845471b765fbcd7c9", null ],
     [ "set_obj_to_zero", "classNOOPSolver.html#a6e12a6093f67022a11de3f69152aef1f", null ],

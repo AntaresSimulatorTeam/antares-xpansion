@@ -184,6 +184,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2330c424351681a0502ee7035791e9d7" id="r_a2330c424351681a0502ee7035791e9d7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverClp.html#a2330c424351681a0502ee7035791e9d7">write_prob_lp</a> (const std::filesystem::path &amp;filename) override</td></tr>
 <tr class="memdesc:a2330c424351681a0502ee7035791e9d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes an optimization problem in a LP file  <br /></td></tr>
 <tr class="separator:a2330c424351681a0502ee7035791e9d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8ccab90b3c5b525a30f5941fc22e80a" id="r_ac8ccab90b3c5b525a30f5941fc22e80a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverClp.html#ac8ccab90b3c5b525a30f5941fc22e80a">save_prob</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="separator:ac8ccab90b3c5b525a30f5941fc22e80a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2948b221ccc7a267a9993d2d2b688d89" id="r_a2948b221ccc7a267a9993d2d2b688d89"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverClp.html#a2948b221ccc7a267a9993d2d2b688d89">write_basis</a> (const std::filesystem::path &amp;filename) override</td></tr>
 <tr class="memdesc:a2948b221ccc7a267a9993d2d2b688d89"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the current basis to a file for later input into the optimizer.  <br /></td></tr>
 <tr class="separator:a2948b221ccc7a267a9993d2d2b688d89"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -193,6 +195,8 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad355c9477b67b15b7a9d248237a09716" id="r_ad355c9477b67b15b7a9d248237a09716"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverClp.html#ad355c9477b67b15b7a9d248237a09716">read_prob_lp</a> (const std::filesystem::path &amp;filename) override</td></tr>
 <tr class="memdesc:ad355c9477b67b15b7a9d248237a09716"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads an optimization problem contained in a MPS file  <br /></td></tr>
 <tr class="separator:ad355c9477b67b15b7a9d248237a09716"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a0a3850f4a7c77ad12aaf1c19dd2098" id="r_a9a0a3850f4a7c77ad12aaf1c19dd2098"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverClp.html#a9a0a3850f4a7c77ad12aaf1c19dd2098">restore_prob</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="separator:a9a0a3850f4a7c77ad12aaf1c19dd2098"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a61acc5b14a98254ae9dacfc46b4508fb" id="r_a61acc5b14a98254ae9dacfc46b4508fb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverClp.html#a61acc5b14a98254ae9dacfc46b4508fb">read_basis</a> (const std::filesystem::path &amp;filename) override</td></tr>
 <tr class="memdesc:a61acc5b14a98254ae9dacfc46b4508fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instructs the optimizer to read in a previously saved basis from a file.  <br /></td></tr>
 <tr class="separator:a61acc5b14a98254ae9dacfc46b4508fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2422,6 +2426,74 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 
 <p>Implements <a class="el" href="classSolverAbstract.html#aab6480151ee9629fc85f7214298f20d8">SolverAbstract</a>.</p>
+
+</div>
+</div>
+<a id="a9a0a3850f4a7c77ad12aaf1c19dd2098" name="a9a0a3850f4a7c77ad12aaf1c19dd2098"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a0a3850f4a7c77ad12aaf1c19dd2098">&#9670;&#160;</a></span>restore_prob()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SolverClp::restore_prob </td>
+          <td>(</td>
+          <td class="paramtype">const std::filesystem::path &amp;&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>CLP default to read_prob_mps implementation </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classSolverAbstract.html#a7028f73741560bc9a5ba54ac03e6c5a7">SolverAbstract</a>.</p>
+
+</div>
+</div>
+<a id="ac8ccab90b3c5b525a30f5941fc22e80a" name="ac8ccab90b3c5b525a30f5941fc22e80a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8ccab90b3c5b525a30f5941fc22e80a">&#9670;&#160;</a></span>save_prob()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SolverClp::save_prob </td>
+          <td>(</td>
+          <td class="paramtype">const std::filesystem::path &amp;&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>CLP default to write_prob_mps implementation </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">filename</td><td></td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classSolverAbstract.html#ad7b3e291bccfea92009f5cdd7bca5533">SolverAbstract</a>.</p>
 
 </div>
 </div>

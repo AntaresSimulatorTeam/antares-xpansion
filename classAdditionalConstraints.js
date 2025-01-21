@@ -1,7 +1,7 @@
 var classAdditionalConstraints =
 [
-    [ "AdditionalConstraints", "classAdditionalConstraints.html#adb3cf7d561ce9b0c6a69b408505a3ee9", null ],
-    [ "AdditionalConstraints", "classAdditionalConstraints.html#aec74e09f6510d8f371a69b04afc0f877", null ],
+    [ "AdditionalConstraints", "classAdditionalConstraints.html#ae4db9128d7ae204014fcf3507b26aa10", null ],
+    [ "AdditionalConstraints", "classAdditionalConstraints.html#a5b4cda394b98570dabd1654f54d901b2", null ],
     [ "addVariablesToBinarise", "classAdditionalConstraints.html#ab36807d147de7e46f29574156262ab9a", null ],
     [ "addVariableToBinarise", "classAdditionalConstraints.html#adcd74c76f8273acaa05730110829537c", null ],
     [ "checkAndReturnConstraintName", "classAdditionalConstraints.html#a263e06560f6a90ccd6abd772d56033a5", null ],

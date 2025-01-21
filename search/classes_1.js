@@ -24,7 +24,9 @@ var searchData=
   ['benderssequential_21',['BendersSequential',['../classBendersSequential.html',1,'']]],
   ['benderssequentialdouble_22',['BendersSequentialDouble',['../classBendersSequentialDouble.html',1,'']]],
   ['benderssequentialtest_23',['BendersSequentialTest',['../classBendersSequentialTest.html',1,'']]],
-  ['benderssolvererror_24',['BendersSolverError',['../classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersSolverError.html',1,'antares_xpansion::benders_driver::BendersDriver']]],
-  ['bendersunsupportedplatform_25',['BendersUnsupportedPlatform',['../classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersUnsupportedPlatform.html',1,'antares_xpansion::benders_driver::BendersDriver']]],
-  ['binaryexpr_26',['BinaryExpr',['../classCatch_1_1BinaryExpr.html',1,'Catch']]]
+  ['benderssequentialtestbysolver_24',['BendersSequentialTestBySolver',['../classBendersSequentialTestBySolver.html',1,'']]],
+  ['benderssequentialtestsolverandformat_25',['BendersSequentialTestSolverAndFormat',['../classBendersSequentialTestSolverAndFormat.html',1,'']]],
+  ['benderssolvererror_26',['BendersSolverError',['../classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersSolverError.html',1,'antares_xpansion::benders_driver::BendersDriver']]],
+  ['bendersunsupportedplatform_27',['BendersUnsupportedPlatform',['../classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersUnsupportedPlatform.html',1,'antares_xpansion::benders_driver::BendersDriver']]],
+  ['binaryexpr_28',['BinaryExpr',['../classCatch_1_1BinaryExpr.html',1,'Catch']]]
 ];

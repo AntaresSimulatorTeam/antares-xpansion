@@ -187,6 +187,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a3ed1a373d758132913bbe7481c8224c6" id="r_a3ed1a373d758132913bbe7481c8224c6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverXpress.html#a3ed1a373d758132913bbe7481c8224c6">write_prob_lp</a> (const std::filesystem::path &amp;filename) override</td></tr>
 <tr class="memdesc:a3ed1a373d758132913bbe7481c8224c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes an optimization problem in a LP file  <br /></td></tr>
 <tr class="separator:a3ed1a373d758132913bbe7481c8224c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d990973ab6d440d1a32d3e2a9786d95" id="r_a4d990973ab6d440d1a32d3e2a9786d95"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverXpress.html#a4d990973ab6d440d1a32d3e2a9786d95">save_prob</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:a4d990973ab6d440d1a32d3e2a9786d95"><td class="mdescLeft">&#160;</td><td class="mdescRight">write an optimisation problem in a file  <br /></td></tr>
+<tr class="separator:a4d990973ab6d440d1a32d3e2a9786d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1cfa539487637bafe3f787d5d13fc5d9" id="r_a1cfa539487637bafe3f787d5d13fc5d9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverXpress.html#a1cfa539487637bafe3f787d5d13fc5d9">write_basis</a> (const std::filesystem::path &amp;filename) override</td></tr>
 <tr class="memdesc:a1cfa539487637bafe3f787d5d13fc5d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the current basis to a file for later input into the optimizer.  <br /></td></tr>
 <tr class="separator:a1cfa539487637bafe3f787d5d13fc5d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -196,6 +199,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a9ad6bd3f5ca70cbcee72f3bd56cce1ee" id="r_a9ad6bd3f5ca70cbcee72f3bd56cce1ee"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverXpress.html#a9ad6bd3f5ca70cbcee72f3bd56cce1ee">read_prob_lp</a> (const std::filesystem::path &amp;filename) override</td></tr>
 <tr class="memdesc:a9ad6bd3f5ca70cbcee72f3bd56cce1ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads an optimization problem contained in a MPS file  <br /></td></tr>
 <tr class="separator:a9ad6bd3f5ca70cbcee72f3bd56cce1ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a611102535da3de0436c79e9f9746b8e1" id="r_a611102535da3de0436c79e9f9746b8e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverXpress.html#a611102535da3de0436c79e9f9746b8e1">restore_prob</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:a611102535da3de0436c79e9f9746b8e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">read an optimisation problem from a file  <br /></td></tr>
+<tr class="separator:a611102535da3de0436c79e9f9746b8e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a94cf7d098019f59255712f50310f27ec" id="r_a94cf7d098019f59255712f50310f27ec"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverXpress.html#a94cf7d098019f59255712f50310f27ec">read_basis</a> (const std::filesystem::path &amp;filename) override</td></tr>
 <tr class="memdesc:a94cf7d098019f59255712f50310f27ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instructs the optimizer to read in a previously saved basis from a file.  <br /></td></tr>
 <tr class="separator:a94cf7d098019f59255712f50310f27ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2427,6 +2433,80 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 
 <p>Implements <a class="el" href="classSolverAbstract.html#aab6480151ee9629fc85f7214298f20d8">SolverAbstract</a>.</p>
+
+</div>
+</div>
+<a id="a611102535da3de0436c79e9f9746b8e1" name="a611102535da3de0436c79e9f9746b8e1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a611102535da3de0436c79e9f9746b8e1">&#9670;&#160;</a></span>restore_prob()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SolverXpress::restore_prob </td>
+          <td>(</td>
+          <td class="paramtype">const std::filesystem::path &amp;&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>read an optimisation problem from a file </p>
+<p>File format supposed to be the same used by save_prob</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>: name of the file to read </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classSolverAbstract.html#a7028f73741560bc9a5ba54ac03e6c5a7">SolverAbstract</a>.</p>
+
+</div>
+</div>
+<a id="a4d990973ab6d440d1a32d3e2a9786d95" name="a4d990973ab6d440d1a32d3e2a9786d95"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d990973ab6d440d1a32d3e2a9786d95">&#9670;&#160;</a></span>save_prob()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SolverXpress::save_prob </td>
+          <td>(</td>
+          <td class="paramtype">const std::filesystem::path &amp;&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>write an optimisation problem in a file </p>
+<p>File format is not garanteed and depend on implementation</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>: name of the file to read </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classSolverAbstract.html#ad7b3e291bccfea92009f5cdd7bca5533">SolverAbstract</a>.</p>
 
 </div>
 </div>

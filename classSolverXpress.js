@@ -46,6 +46,8 @@ var classSolverXpress =
     [ "read_basis", "classSolverXpress.html#a94cf7d098019f59255712f50310f27ec", null ],
     [ "read_prob_lp", "classSolverXpress.html#a9ad6bd3f5ca70cbcee72f3bd56cce1ee", null ],
     [ "read_prob_mps", "classSolverXpress.html#ad57923f00fd66a3c0ca985b076bd4c72", null ],
+    [ "restore_prob", "classSolverXpress.html#a611102535da3de0436c79e9f9746b8e1", null ],
+    [ "save_prob", "classSolverXpress.html#a4d990973ab6d440d1a32d3e2a9786d95", null ],
     [ "set_algorithm", "classSolverXpress.html#a5931eca5e7ccfb665819166a98ebfae9", null ],
     [ "set_obj", "classSolverXpress.html#adf6d887e5a1285f5264f664efdab0520", null ],
     [ "set_obj_to_zero", "classSolverXpress.html#ad16a6f4c1584aa3e3c647262332b34d9", null ],

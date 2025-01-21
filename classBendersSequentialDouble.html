@@ -184,8 +184,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a0218c119f2551224ded759b7e9c65548" id="r_a0218c119f2551224ded759b7e9c65548"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersSequentialDouble.html#a0218c119f2551224ded759b7e9c65548">free</a> () override</td></tr>
 <tr class="memdesc:a0218c119f2551224ded759b7e9c65548"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to free the memory used by each problem.  <br /></td></tr>
 <tr class="separator:a0218c119f2551224ded759b7e9c65548"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2be6f60b65bcc0767d2a21698f2124f7" id="r_a2be6f60b65bcc0767d2a21698f2124f7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersSequentialDouble.html#a2be6f60b65bcc0767d2a21698f2124f7">InitializeProblems</a> () override</td></tr>
-<tr class="separator:a2be6f60b65bcc0767d2a21698f2124f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0a3a620256d9a75d7e7164b5007075d0" id="r_a0a3a620256d9a75d7e7164b5007075d0"><td class="memItemLeft" align="right" valign="top"><a id="a0a3a620256d9a75d7e7164b5007075d0" name="a0a3a620256d9a75d7e7164b5007075d0"></a>
+SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>problems</b> () const</td></tr>
+<tr class="separator:a0a3a620256d9a75d7e7164b5007075d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a89a2e21f8b2dee98f93e8c3ba2d08372" id="r_a89a2e21f8b2dee98f93e8c3ba2d08372"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersSequentialDouble.html#a89a2e21f8b2dee98f93e8c3ba2d08372">DeactivateIntegrityConstraints</a> () const override</td></tr>
 <tr class="separator:a89a2e21f8b2dee98f93e8c3ba2d08372"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9a2e03521bfe1699b45f5a5614d2ebe3" id="r_a9a2e03521bfe1699b45f5a5614d2ebe3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersSequentialDouble.html#a9a2e03521bfe1699b45f5a5614d2ebe3">ActivateIntegrityConstraints</a> () const override</td></tr>
@@ -215,6 +216,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_it</b> (int it)</
 <tr class="separator:a7171ad8e67c5b70829190b3f82866092 inherit pub_methods_classBendersSequential"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8a7c4e400e403c3a3eb9a87305e6073f inherit pub_methods_classBendersSequential" id="r_a8a7c4e400e403c3a3eb9a87305e6073f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersSequential.html#a8a7c4e400e403c3a3eb9a87305e6073f">launch</a> ()</td></tr>
 <tr class="separator:a8a7c4e400e403c3a3eb9a87305e6073f inherit pub_methods_classBendersSequential"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafe5a5629d68ba15fddd5eff73221d49 inherit pub_methods_classBendersSequential" id="r_aafe5a5629d68ba15fddd5eff73221d49"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersSequential.html#aafe5a5629d68ba15fddd5eff73221d49">InitializeProblems</a> ()</td></tr>
+<tr class="separator:aafe5a5629d68ba15fddd5eff73221d49 inherit pub_methods_classBendersSequential"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a01a10246dc326b4c54b2ce9cc339349c inherit pub_methods_classBendersSequential" id="r_a01a10246dc326b4c54b2ce9cc339349c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classBendersSequential.html#a01a10246dc326b4c54b2ce9cc339349c">BendersName</a> () const</td></tr>
 <tr class="separator:a01a10246dc326b4c54b2ce9cc339349c inherit pub_methods_classBendersSequential"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classBendersBase"><td colspan="2" onclick="javascript:toggleInherit('pub_methods_classBendersBase')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classBendersBase.html">BendersBase</a></td></tr>
@@ -881,33 +884,6 @@ SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subprobl
 <p>Initialize set of data used in the loop. </p>
 
 <p>Reimplemented from <a class="el" href="classBendersBase.html#a62a819640d2a7530fce9418547f45d65">BendersBase</a>.</p>
-
-</div>
-</div>
-<a id="a2be6f60b65bcc0767d2a21698f2124f7" name="a2be6f60b65bcc0767d2a21698f2124f7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2be6f60b65bcc0767d2a21698f2124f7">&#9670;&#160;</a></span>InitializeProblems()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void BendersSequentialDouble::InitializeProblems </td>
-          <td>(</td>
-          <td class="paramname"></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Reimplemented from <a class="el" href="classBendersSequential.html">BendersSequential</a>.</p>
 
 </div>
 </div>

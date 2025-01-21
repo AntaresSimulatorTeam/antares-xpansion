@@ -151,13 +151,13 @@ Inheritance diagram for AdditionalConstraints:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:adb3cf7d561ce9b0c6a69b408505a3ee9" id="r_adb3cf7d561ce9b0c6a69b408505a3ee9"><td class="memItemLeft" align="right" valign="top"><a id="adb3cf7d561ce9b0c6a69b408505a3ee9" name="adb3cf7d561ce9b0c6a69b408505a3ee9"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>AdditionalConstraints</b> (ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)</td></tr>
-<tr class="memdesc:adb3cf7d561ce9b0c6a69b408505a3ee9"><td class="mdescLeft">&#160;</td><td class="mdescRight">default constructor for struct <a class="el" href="classAdditionalConstraints.html" title="candidate exclusion constraint structure">AdditionalConstraints</a> <br /></td></tr>
-<tr class="separator:adb3cf7d561ce9b0c6a69b408505a3ee9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aec74e09f6510d8f371a69b04afc0f877" id="r_aec74e09f6510d8f371a69b04afc0f877"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdditionalConstraints.html#aec74e09f6510d8f371a69b04afc0f877">AdditionalConstraints</a> (std::string constraints_file_path, ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)</td></tr>
-<tr class="memdesc:aec74e09f6510d8f371a69b04afc0f877"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classAdditionalConstraints.html" title="candidate exclusion constraint structure">AdditionalConstraints</a> constructor from an ini file path.  <br /></td></tr>
-<tr class="separator:aec74e09f6510d8f371a69b04afc0f877"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4db9128d7ae204014fcf3507b26aa10" id="r_ae4db9128d7ae204014fcf3507b26aa10"><td class="memItemLeft" align="right" valign="top"><a id="ae4db9128d7ae204014fcf3507b26aa10" name="ae4db9128d7ae204014fcf3507b26aa10"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>AdditionalConstraints</b> (std::shared_ptr&lt; <a class="el" href="classProblemGenerationLog_1_1ProblemGenerationLogger.html">ProblemGenerationLog::ProblemGenerationLogger</a> &gt; logger)</td></tr>
+<tr class="memdesc:ae4db9128d7ae204014fcf3507b26aa10"><td class="mdescLeft">&#160;</td><td class="mdescRight">default constructor for struct <a class="el" href="classAdditionalConstraints.html" title="candidate exclusion constraint structure">AdditionalConstraints</a> <br /></td></tr>
+<tr class="separator:ae4db9128d7ae204014fcf3507b26aa10"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b4cda394b98570dabd1654f54d901b2" id="r_a5b4cda394b98570dabd1654f54d901b2"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAdditionalConstraints.html#a5b4cda394b98570dabd1654f54d901b2">AdditionalConstraints</a> (std::string constraints_file_path, std::shared_ptr&lt; <a class="el" href="classProblemGenerationLog_1_1ProblemGenerationLogger.html">ProblemGenerationLog::ProblemGenerationLogger</a> &gt; logger)</td></tr>
+<tr class="memdesc:a5b4cda394b98570dabd1654f54d901b2"><td class="mdescLeft">&#160;</td><td class="mdescRight"><a class="el" href="classAdditionalConstraints.html" title="candidate exclusion constraint structure">AdditionalConstraints</a> constructor from an ini file path.  <br /></td></tr>
+<tr class="separator:a5b4cda394b98570dabd1654f54d901b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a38ee4532b4aee6a142861dace3ea248a" id="r_a38ee4532b4aee6a142861dace3ea248a"><td class="memItemLeft" align="right" valign="top"><a id="a38ee4532b4aee6a142861dace3ea248a" name="a38ee4532b4aee6a142861dace3ea248a"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetConstraintsFile</b> (std::string const &amp;constraints_file_path)</td></tr>
 <tr class="separator:a38ee4532b4aee6a142861dace3ea248a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -190,8 +190,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ReadConstraintsFile</
 <div class="textblock"><p>candidate exclusion constraint structure </p>
 <p>inherites from a map where keys are unique constraint names and values are the additional constraints </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aec74e09f6510d8f371a69b04afc0f877" name="aec74e09f6510d8f371a69b04afc0f877"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aec74e09f6510d8f371a69b04afc0f877">&#9670;&#160;</a></span>AdditionalConstraints()</h2>
+<a id="a5b4cda394b98570dabd1654f54d901b2" name="a5b4cda394b98570dabd1654f54d901b2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b4cda394b98570dabd1654f54d901b2">&#9670;&#160;</a></span>AdditionalConstraints()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -208,7 +208,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ReadConstraintsFile</
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ProblemGenerationLog::ProblemGenerationLoggerSharedPointer&#160;</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classProblemGenerationLog_1_1ProblemGenerationLogger.html">ProblemGenerationLog::ProblemGenerationLogger</a> &gt;&#160;</td>
           <td class="paramname"><em>logger</em>&#160;</td>
         </tr>
         <tr>

@@ -13,6 +13,7 @@ var dir_bc0f0c2c49f79414ffb0d87efed051ce =
     [ "LastIterationReader.h", "LastIterationReader_8h_source.html", null ],
     [ "LastIterationWriter.h", "LastIterationWriter_8h_source.html", null ],
     [ "MasterUpdate.h", "MasterUpdate_8h_source.html", null ],
+    [ "ProblemFormat.h", "ProblemFormat_8h_source.html", null ],
     [ "SimulationOptions.h", "SimulationOptions_8h_source.html", null ],
     [ "SimulationOptions.hxx", "SimulationOptions_8hxx_source.html", null ],
     [ "StartUp.h", "StartUp_8h_source.html", null ],

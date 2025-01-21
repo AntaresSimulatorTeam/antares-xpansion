@@ -46,6 +46,8 @@ var classSolverCbc =
     [ "read_basis", "classSolverCbc.html#a1fb1f88139dad2fbdaa5196521138ed1", null ],
     [ "read_prob_lp", "classSolverCbc.html#a125c3a4f3f0728190c30d16006efea04", null ],
     [ "read_prob_mps", "classSolverCbc.html#aa796dc288cd44d788f1f748645b68897", null ],
+    [ "restore_prob", "classSolverCbc.html#abd086f6abf03ea3de51a147ddcd0e8d7", null ],
+    [ "save_prob", "classSolverCbc.html#a8181dc22a8855c559e0182f2b9103068", null ],
     [ "set_algorithm", "classSolverCbc.html#a98c92cfc8b11be912fd43c82f0a65b51", null ],
     [ "set_obj", "classSolverCbc.html#ad4eb1d467b476f604d37d667efc17694", null ],
     [ "set_obj_to_zero", "classSolverCbc.html#a4d9abe0eb04423e798b1047df8c72655", null ],

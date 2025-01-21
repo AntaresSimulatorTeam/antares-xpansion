@@ -173,12 +173,12 @@ $(document).ready(function(){initNavTree('VariableFileReader_8h_source.html','')
 <div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>      <span class="keyword">const</span> std::filesystem::path&amp; fileName,</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>      <span class="keyword">const</span> std::vector&lt;ActiveLink&gt;&amp; links,</div>
 <div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>      <span class="keyword">const</span> <a class="code hl_struct" href="structVariableFileReadNameConfiguration.html">VariableFileReadNameConfiguration</a>&amp; variable_name_config,</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>      std::shared_ptr&lt;ProblemGenerationLog::ProblemGenerationLogger&gt; logger);</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>  <a class="code hl_class" href="classVariableFileReader.html">VariableFileReader</a>(</div>
 <div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>      std::istringstream&amp; fileInIStringStream,</div>
 <div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>      <span class="keyword">const</span> std::vector&lt;ActiveLink&gt;&amp; links,</div>
 <div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>      <span class="keyword">const</span> <a class="code hl_struct" href="structVariableFileReadNameConfiguration.html">VariableFileReadNameConfiguration</a>&amp; variable_name_config,</div>
-<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>      std::shared_ptr&lt;ProblemGenerationLog::ProblemGenerationLogger&gt; logger);</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  <span class="keywordtype">void</span> ReadVarsFromStream(</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>      std::istream&amp; stream, <span class="keyword">const</span> std::vector&lt;ActiveLink&gt;&amp; links,</div>
 <div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>      <span class="keyword">const</span> <a class="code hl_struct" href="structVariableFileReadNameConfiguration.html">VariableFileReadNameConfiguration</a>&amp; variable_name_config);</div>
@@ -200,7 +200,7 @@ $(document).ready(function(){initNavTree('VariableFileReader_8h_source.html','')
 <div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>  std::map&lt;linkId, ColumnsToChange&gt; _ntc_p_var_columns;</div>
 <div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  std::map&lt;linkId, ColumnsToChange&gt; _indirect_cost_p_var_columns;</div>
 <div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>  std::map&lt;linkId, ColumnsToChange&gt; _direct_cost_p_var_columns;</div>
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>  std::shared_ptr&lt;ProblemGenerationLog::ProblemGenerationLogger&gt; logger_;</div>
 <div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>};</div>
 </div>
 <div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>

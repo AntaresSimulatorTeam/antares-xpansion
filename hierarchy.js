@@ -260,7 +260,9 @@ var hierarchy =
         [ "ProblemGenerationLog::ProblemGenerationFileLogger", "classProblemGenerationLog_1_1ProblemGenerationFileLogger.html", null ],
         [ "ProblemGenerationLog::ProblemGenerationOstreamLogger", "classProblemGenerationLog_1_1ProblemGenerationOstreamLogger.html", null ]
       ] ],
-      [ "ProblemGenerationLog::ProblemGenerationLogger", "classProblemGenerationLog_1_1ProblemGenerationLogger.html", null ]
+      [ "ProblemGenerationLog::ProblemGenerationLogger", "classProblemGenerationLog_1_1ProblemGenerationLogger.html", [
+        [ "NoopProblemGenerationLogger", "classNoopProblemGenerationLogger.html", null ]
+      ] ]
     ] ],
     [ "Outerloop::IMasterUpdate", "classOuterloop_1_1IMasterUpdate.html", [
       [ "Outerloop::MasterUpdateBase", "classOuterloop_1_1MasterUpdateBase.html", null ]
@@ -289,7 +291,7 @@ var hierarchy =
       [ "ProblemVariablesZipAdapter", "classProblemVariablesZipAdapter.html", null ]
     ] ],
     [ "IProblemWriter", "classIProblemWriter.html", [
-      [ "MPSFileWriter", "classMPSFileWriter.html", null ]
+      [ "FileWriter", "classFileWriter.html", null ]
     ] ],
     [ "Catch::IResultCapture", "structCatch_1_1IResultCapture.html", null ],
     [ "Catch::is_callable< T >", "structCatch_1_1is__callable.html", null ],
@@ -580,7 +582,10 @@ var hierarchy =
       [ "ArchiveUpdaterTest", "classArchiveUpdaterTest.html", null ],
       [ "ArchiveWriterTest", "classArchiveWriterTest.html", null ],
       [ "BatchCollectionTest", "classBatchCollectionTest.html", null ],
-      [ "BendersSequentialTest", "classBendersSequentialTest.html", null ],
+      [ "BendersSequentialTest", "classBendersSequentialTest.html", [
+        [ "BendersSequentialTestBySolver", "classBendersSequentialTestBySolver.html", null ],
+        [ "BendersSequentialTestSolverAndFormat", "classBendersSequentialTestSolverAndFormat.html", null ]
+      ] ],
       [ "CandidatesINIReaderTest", "classCandidatesINIReaderTest.html", null ],
       [ "ChronicleProviderTest", "classChronicleProviderTest.html", null ],
       [ "ChronicleTest", "classChronicleTest.html", null ],
@@ -592,6 +597,10 @@ var hierarchy =
       [ "LinkProfileReaderTest", "classLinkProfileReaderTest.html", null ],
       [ "LinkdataRecordTest", "classLinkdataRecordTest.html", null ],
       [ "LpFilesExtractorTest", "classLpFilesExtractorTest.html", null ],
+      [ "MasterGenerationTest", "classMasterGenerationTest.html", [
+        [ "TestForSolverAndExpectation", "classTestForSolverAndExpectation.html", null ],
+        [ "TestForSolverAndMode", "classTestForSolverAndMode.html", null ]
+      ] ],
       [ "MasterLoggerTest", "classMasterLoggerTest.html", null ],
       [ "MpsTxtWriterTest", "classMpsTxtWriterTest.html", null ],
       [ "OptionsParserTest", "classOptionsParserTest.html", null ],
@@ -672,6 +681,12 @@ var hierarchy =
     [ "Version", "structVersion.html", null ],
     [ "Catch::detail::void_type<... >", "structCatch_1_1detail_1_1void__type.html", null ],
     [ "WeightsFileReader", "classWeightsFileReader.html", null ],
+    [ "testing::WithParamInterface", null, [
+      [ "BendersSequentialTestBySolver", "classBendersSequentialTestBySolver.html", null ],
+      [ "BendersSequentialTestSolverAndFormat", "classBendersSequentialTestSolverAndFormat.html", null ],
+      [ "TestForSolverAndExpectation", "classTestForSolverAndExpectation.html", null ],
+      [ "TestForSolverAndMode", "classTestForSolverAndMode.html", null ]
+    ] ],
     [ "Worker", "classWorker.html", [
       [ "SubproblemWorker", "classSubproblemWorker.html", null ],
       [ "WorkerMaster", "classWorkerMaster.html", null ]

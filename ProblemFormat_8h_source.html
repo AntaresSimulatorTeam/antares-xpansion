@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: MPSFileWriter Class Reference</title>
+<title>Antares Xpansion: src/cpp/benders/benders_core/include/antares-xpansion/benders/benders_core/ProblemFormat.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -92,6 +92,11 @@ $(function() {
 /* @license-end */
 </script>
 <div id="main-nav"></div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(document).ready(function() { init_codefold(0); });
+/* @license-end */
+</script>
 </div><!-- top -->
 <div id="side-nav" class="ui-resizable side-nav-resizable">
   <div id="nav-tree">
@@ -105,7 +110,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('classMPSFileWriter.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('ProblemFormat_8h_source.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -131,45 +136,44 @@ $(document).ready(function(){initNavTree('classMPSFileWriter.html',''); initResi
 </div>
 
 <div class="header">
-  <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="classMPSFileWriter-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">MPSFileWriter Class Reference</div></div>
+  <div class="headertitle"><div class="title">ProblemFormat.h</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="dynheader">
-Inheritance diagram for MPSFileWriter:</div>
-<div class="dyncontent">
- <div class="center">
-  <img src="classMPSFileWriter.png" usemap="#MPSFileWriter_map" alt=""/>
-  <map id="MPSFileWriter_map" name="MPSFileWriter_map">
-<area href="classIProblemWriter.html" alt="IProblemWriter" shape="rect" coords="0,0,95,24"/>
-  </map>
-</div></div>
-<table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:a561e30c4e2cd00369375e01bc43646d8" id="r_a561e30c4e2cd00369375e01bc43646d8"><td class="memItemLeft" align="right" valign="top"><a id="a561e30c4e2cd00369375e01bc43646d8" name="a561e30c4e2cd00369375e01bc43646d8"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>MPSFileWriter</b> (std::filesystem::path lp_dir)</td></tr>
-<tr class="separator:a561e30c4e2cd00369375e01bc43646d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a291796ab8e11872f19c8bfc3173cca4b" id="r_a291796ab8e11872f19c8bfc3173cca4b"><td class="memItemLeft" align="right" valign="top"><a id="a291796ab8e11872f19c8bfc3173cca4b" name="a291796ab8e11872f19c8bfc3173cca4b"></a>
-std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>lp_dir_</b></td></tr>
-<tr class="separator:a291796ab8e11872f19c8bfc3173cca4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table>
-<hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/cpp/lpnamer/problem_modifier/include/antares-xpansion/lpnamer/problem_modifier/<a class="el" href="MPSFileWriter_8h_source.html">MPSFileWriter.h</a></li>
-<li>src/cpp/lpnamer/problem_modifier/<b>MPSFileWriter.cpp</b></li>
-</ul>
-</div><!-- contents -->
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;stdexcept&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">enum class</span> ProblemsFormat { MPS_FILE, SAVED_FILE };</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">inline</span> ProblemsFormat problemsFormatFromString(<span class="keyword">const</span> std::string &amp;str) {</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>  <span class="keywordflow">if</span> (str == <span class="stringliteral">&quot;MPS&quot;</span>) {</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <span class="keywordflow">return</span> ProblemsFormat::MPS_FILE;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  } <span class="keywordflow">else</span> <span class="keywordflow">if</span> (str == <span class="stringliteral">&quot;SAVED&quot;</span>) {</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="keywordflow">return</span> ProblemsFormat::SAVED_FILE;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keywordflow">throw</span> std::runtime_error(<span class="stringliteral">&quot;Unknown ProblemsFormat: &quot;</span> + str);</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  }</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>}</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">inline</span> std::ostream &amp;operator&lt;&lt;(std::ostream &amp;stream, ProblemsFormat <span class="keyword">const</span> &amp;rhs) {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="keywordflow">switch</span> (rhs) {</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keywordflow">case</span> ProblemsFormat::MPS_FILE:</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>      stream &lt;&lt; <span class="stringliteral">&quot;MPS_FILE&quot;</span>;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    <span class="keywordflow">case</span> ProblemsFormat::SAVED_FILE:</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>      stream &lt;&lt; <span class="stringliteral">&quot;SAVED_FILE&quot;</span>;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>      <span class="keywordflow">break</span>;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keywordflow">default</span>:</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      stream &lt;&lt; <span class="stringliteral">&quot;Unknown&quot;</span>;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  }</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>  <span class="keywordflow">return</span> stream;</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>}</div>
+</div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="classMPSFileWriter.html">MPSFileWriter</a></li>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_dfdbda394c3f7a3aa55229f33a559c41.html">cpp</a></li><li class="navelem"><a class="el" href="dir_ae16667f9fc0e5d86966b2c65475a56a.html">benders</a></li><li class="navelem"><a class="el" href="dir_b53e5bf8429ba9c17c53c8a945f0f679.html">benders_core</a></li><li class="navelem"><a class="el" href="dir_729c7454ac508d5ff85a80bc7bc4bc9a.html">include</a></li><li class="navelem"><a class="el" href="dir_5193f23a4e7e662c8447483db21d0cae.html">antares-xpansion</a></li><li class="navelem"><a class="el" href="dir_65d90d6a2bd106d71c05f593d54b14f6.html">benders</a></li><li class="navelem"><a class="el" href="dir_bc0f0c2c49f79414ffb0d87efed051ce.html">benders_core</a></li><li class="navelem"><b>ProblemFormat.h</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.9.8 </li>
   </ul>
 </div>

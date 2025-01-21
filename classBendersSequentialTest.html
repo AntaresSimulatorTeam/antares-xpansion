@@ -134,6 +134,7 @@ $(document).ready(function(){initNavTree('classBendersSequentialTest.html',''); 
   <div class="summary">
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
 <a href="classBendersSequentialTest-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">BendersSequentialTest Class Reference</div></div>
 </div><!--header-->
@@ -142,8 +143,12 @@ $(document).ready(function(){initNavTree('classBendersSequentialTest.html',''); 
 Inheritance diagram for BendersSequentialTest:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="classBendersSequentialTest.png" alt=""/>
- </div></div>
+  <img src="classBendersSequentialTest.png" usemap="#BendersSequentialTest_map" alt=""/>
+  <map id="BendersSequentialTest_map" name="BendersSequentialTest_map">
+<area href="classBendersSequentialTestBySolver.html" alt="BendersSequentialTestBySolver" shape="rect" coords="0,112,239,136"/>
+<area href="classBendersSequentialTestSolverAndFormat.html" alt="BendersSequentialTestSolverAndFormat" shape="rect" coords="249,112,488,136"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -171,21 +176,33 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:aa490578caeb660023a625282ebf46ffb" id="r_aa490578caeb660023a625282ebf46ffb"><td class="memItemLeft" align="right" valign="top"><a id="aa490578caeb660023a625282ebf46ffb" name="aa490578caeb660023a625282ebf46ffb"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>SetUp</b> () override</td></tr>
 <tr class="separator:aa490578caeb660023a625282ebf46ffb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67eb97983b1ae65667565147c3476b6d" id="r_a67eb97983b1ae65667565147c3476b6d"><td class="memItemLeft" align="right" valign="top"><a id="a67eb97983b1ae65667565147c3476b6d" name="a67eb97983b1ae65667565147c3476b6d"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>TearDown</b> () override</td></tr>
+<tr class="separator:a67eb97983b1ae65667565147c3476b6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af8bafe45b39afd2b48156d7317d6f410" id="r_af8bafe45b39afd2b48156d7317d6f410"><td class="memItemLeft" align="right" valign="top"><a id="af8bafe45b39afd2b48156d7317d6f410" name="af8bafe45b39afd2b48156d7317d6f410"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>copyMasterMps</b> ()</td></tr>
 <tr class="separator:af8bafe45b39afd2b48156d7317d6f410"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac6c8b7fb55cf3e0535f4d78c63ee951f" id="r_ac6c8b7fb55cf3e0535f4d78c63ee951f"><td class="memItemLeft" align="right" valign="top"><a id="ac6c8b7fb55cf3e0535f4d78c63ee951f" name="ac6c8b7fb55cf3e0535f4d78c63ee951f"></a>
-<a class="el" href="structBaseOptions.html">BaseOptions</a>&#160;</td><td class="memItemRight" valign="bottom"><b>init_base_options</b> () const</td></tr>
-<tr class="separator:ac6c8b7fb55cf3e0535f4d78c63ee951f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2b51a92d96ac5e29b601d1d91c1e5657" id="r_a2b51a92d96ac5e29b601d1d91c1e5657"><td class="memItemLeft" align="right" valign="top"><a id="a2b51a92d96ac5e29b601d1d91c1e5657" name="a2b51a92d96ac5e29b601d1d91c1e5657"></a>
-<a class="el" href="structBendersBaseOptions.html">BendersBaseOptions</a>&#160;</td><td class="memItemRight" valign="bottom"><b>init_benders_options</b> (MasterFormulation master_formulation, int max_iter, double relaxed_gap, double sep_param) const</td></tr>
-<tr class="separator:a2b51a92d96ac5e29b601d1d91c1e5657"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89ce48a3c9d125d381a0c3f7aa671ce2" id="r_a89ce48a3c9d125d381a0c3f7aa671ce2"><td class="memItemLeft" align="right" valign="top"><a id="a89ce48a3c9d125d381a0c3f7aa671ce2" name="a89ce48a3c9d125d381a0c3f7aa671ce2"></a>
-<a class="el" href="classBendersSequentialDouble.html">BendersSequentialDouble</a>&#160;</td><td class="memItemRight" valign="bottom"><b>init_benders_sequential</b> (MasterFormulation master_formulation, int max_iter, double relaxed_gap, double sep_param)</td></tr>
-<tr class="separator:a89ce48a3c9d125d381a0c3f7aa671ce2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac33e2b1e0ab251de4f994294bb71f76c" id="r_ac33e2b1e0ab251de4f994294bb71f76c"><td class="memItemLeft" align="right" valign="top"><a id="ac33e2b1e0ab251de4f994294bb71f76c" name="ac33e2b1e0ab251de4f994294bb71f76c"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>copyData</b> ()</td></tr>
+<tr class="separator:ac33e2b1e0ab251de4f994294bb71f76c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7dac120764c816763205bba680b40e30" id="r_a7dac120764c816763205bba680b40e30"><td class="memItemLeft" align="right" valign="top"><a id="a7dac120764c816763205bba680b40e30" name="a7dac120764c816763205bba680b40e30"></a>
+<a class="el" href="structBaseOptions.html">BaseOptions</a>&#160;</td><td class="memItemRight" valign="bottom"><b>init_base_options</b> (const std::string &amp;solver=&quot;COIN&quot;) const</td></tr>
+<tr class="separator:a7dac120764c816763205bba680b40e30"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a540accb7c8f077a33e6fec5c0fc6d04e" id="r_a540accb7c8f077a33e6fec5c0fc6d04e"><td class="memItemLeft" align="right" valign="top"><a id="a540accb7c8f077a33e6fec5c0fc6d04e" name="a540accb7c8f077a33e6fec5c0fc6d04e"></a>
+<a class="el" href="structBendersBaseOptions.html">BendersBaseOptions</a>&#160;</td><td class="memItemRight" valign="bottom"><b>init_benders_options</b> (MasterFormulation master_formulation, int max_iter, double relaxed_gap, double sep_param, const std::string &amp;solver=&quot;COIN&quot;) const</td></tr>
+<tr class="separator:a540accb7c8f077a33e6fec5c0fc6d04e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1b7d31871991f454c630c1d3e2c70ed5" id="r_a1b7d31871991f454c630c1d3e2c70ed5"><td class="memItemLeft" align="right" valign="top"><a id="a1b7d31871991f454c630c1d3e2c70ed5" name="a1b7d31871991f454c630c1d3e2c70ed5"></a>
+<a class="el" href="classBendersSequentialDouble.html">BendersSequentialDouble</a>&#160;</td><td class="memItemRight" valign="bottom"><b>init_benders_sequential</b> (MasterFormulation master_formulation, int max_iter, double relaxed_gap, double sep_param, const std::string &amp;solver=&quot;COIN&quot;, ProblemsFormat format=ProblemsFormat::MPS_FILE)</td></tr>
+<tr class="separator:a1b7d31871991f454c630c1d3e2c70ed5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4b431654857c534f55beba117e8c1efc" id="r_a4b431654857c534f55beba117e8c1efc"><td class="memItemLeft" align="right" valign="top"><a id="a4b431654857c534f55beba117e8c1efc" name="a4b431654857c534f55beba117e8c1efc"></a>
 std::vector&lt; char &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>get_nb_units_col_types</b> (const <a class="el" href="classBendersSequentialDouble.html">BendersSequentialDouble</a> &amp;benders) const</td></tr>
 <tr class="separator:a4b431654857c534f55beba117e8c1efc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a5bb683624edc654e43dec96745050158" id="r_a5bb683624edc654e43dec96745050158"><td class="memItemLeft" align="right" valign="top"><a id="a5bb683624edc654e43dec96745050158" name="a5bb683624edc654e43dec96745050158"></a>
+std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>original_dir</b></td></tr>
+<tr class="separator:a5bb683624edc654e43dec96745050158"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following file:<ul>
 <li>tests/cpp/benders/<b>benders_sequential_test.cpp</b></li>

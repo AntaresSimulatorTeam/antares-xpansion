@@ -44,6 +44,8 @@ var classProblem =
     [ "read_basis", "classProblem.html#aee558629ab44c44cd971eeb41bde4088", null ],
     [ "read_prob_lp", "classProblem.html#a92a36d2387ec170cc78cad032b521a75", null ],
     [ "read_prob_mps", "classProblem.html#abf009aaf0c40ed6a462dced353f2b7f0", null ],
+    [ "restore_prob", "classProblem.html#a89c2613e4954f6d0b01c730ce231c971", null ],
+    [ "save_prob", "classProblem.html#ab385b74ab52084f8be1482ffc31578e5", null ],
     [ "set_algorithm", "classProblem.html#a006aad13911c36e8d753f172c10f5465", null ],
     [ "set_obj", "classProblem.html#a678f5f40e1102d81f5dcb95a575e041a", null ],
     [ "set_obj_to_zero", "classProblem.html#a3209a8750961478ed949a75b5cef261c", null ],

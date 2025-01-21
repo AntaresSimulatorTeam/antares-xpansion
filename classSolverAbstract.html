@@ -202,6 +202,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_fp</b> (FILE *fp)
 <tr class="memitem:afc8bb82a34495de9bb4ab186746dfe04" id="r_afc8bb82a34495de9bb4ab186746dfe04"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#afc8bb82a34495de9bb4ab186746dfe04">write_prob_lp</a> (const std::filesystem::path &amp;filename)=0</td></tr>
 <tr class="memdesc:afc8bb82a34495de9bb4ab186746dfe04"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes an optimization problem in a LP file  <br /></td></tr>
 <tr class="separator:afc8bb82a34495de9bb4ab186746dfe04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad7b3e291bccfea92009f5cdd7bca5533" id="r_ad7b3e291bccfea92009f5cdd7bca5533"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#ad7b3e291bccfea92009f5cdd7bca5533">save_prob</a> (const std::filesystem::path &amp;filename)=0</td></tr>
+<tr class="memdesc:ad7b3e291bccfea92009f5cdd7bca5533"><td class="mdescLeft">&#160;</td><td class="mdescRight">write an optimisation problem in a file  <br /></td></tr>
+<tr class="separator:ad7b3e291bccfea92009f5cdd7bca5533"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a662f2e2fe8c61d8f61f4cd9e6a45330a" id="r_a662f2e2fe8c61d8f61f4cd9e6a45330a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#a662f2e2fe8c61d8f61f4cd9e6a45330a">write_basis</a> (const std::filesystem::path &amp;filename)=0</td></tr>
 <tr class="memdesc:a662f2e2fe8c61d8f61f4cd9e6a45330a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the current basis to a file for later input into the optimizer.  <br /></td></tr>
 <tr class="separator:a662f2e2fe8c61d8f61f4cd9e6a45330a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -211,6 +214,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_fp</b> (FILE *fp)
 <tr class="memitem:a1032197acda5a92014067eaa8e7fbb21" id="r_a1032197acda5a92014067eaa8e7fbb21"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#a1032197acda5a92014067eaa8e7fbb21">read_prob_lp</a> (const std::filesystem::path &amp;filename)=0</td></tr>
 <tr class="memdesc:a1032197acda5a92014067eaa8e7fbb21"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads an optimization problem contained in a MPS file  <br /></td></tr>
 <tr class="separator:a1032197acda5a92014067eaa8e7fbb21"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7028f73741560bc9a5ba54ac03e6c5a7" id="r_a7028f73741560bc9a5ba54ac03e6c5a7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#a7028f73741560bc9a5ba54ac03e6c5a7">restore_prob</a> (const std::filesystem::path &amp;filename)=0</td></tr>
+<tr class="memdesc:a7028f73741560bc9a5ba54ac03e6c5a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">read an optimisation problem from a file  <br /></td></tr>
+<tr class="separator:a7028f73741560bc9a5ba54ac03e6c5a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aae2dad546d291b6aaaf4d37cb20cfa34" id="r_aae2dad546d291b6aaaf4d37cb20cfa34"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#aae2dad546d291b6aaaf4d37cb20cfa34">read_basis</a> (const std::filesystem::path &amp;filename)=0</td></tr>
 <tr class="memdesc:aae2dad546d291b6aaaf4d37cb20cfa34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instructs the optimizer to read in a previously saved basis from a file.  <br /></td></tr>
 <tr class="separator:aae2dad546d291b6aaaf4d37cb20cfa34"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2414,6 +2420,80 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 </dl>
 
 <p>Implemented in <a class="el" href="classProblem.html#abf009aaf0c40ed6a462dced353f2b7f0">Problem</a>, <a class="el" href="classSolverCbc.html#aa796dc288cd44d788f1f748645b68897">SolverCbc</a>, <a class="el" href="classSolverClp.html#ab2d5620fbcde8ce22eafa875e0f6c10f">SolverClp</a>, <a class="el" href="classSolverXpress.html#ad57923f00fd66a3c0ca985b076bd4c72">SolverXpress</a>, and <a class="el" href="classNOOPSolver.html#aa9029d51d3f7146fda970f0fd08c5f6f">NOOPSolver</a>.</p>
+
+</div>
+</div>
+<a id="a7028f73741560bc9a5ba54ac03e6c5a7" name="a7028f73741560bc9a5ba54ac03e6c5a7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7028f73741560bc9a5ba54ac03e6c5a7">&#9670;&#160;</a></span>restore_prob()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void SolverAbstract::restore_prob </td>
+          <td>(</td>
+          <td class="paramtype">const std::filesystem::path &amp;&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>read an optimisation problem from a file </p>
+<p>File format supposed to be the same used by save_prob</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>: name of the file to read </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="classProblem.html#a89c2613e4954f6d0b01c730ce231c971">Problem</a>, <a class="el" href="classSolverCbc.html#abd086f6abf03ea3de51a147ddcd0e8d7">SolverCbc</a>, <a class="el" href="classSolverClp.html#a9a0a3850f4a7c77ad12aaf1c19dd2098">SolverClp</a>, <a class="el" href="classSolverXpress.html#a611102535da3de0436c79e9f9746b8e1">SolverXpress</a>, and <a class="el" href="classNOOPSolver.html#a883c3e97cfdb5e35166c553990e0785f">NOOPSolver</a>.</p>
+
+</div>
+</div>
+<a id="ad7b3e291bccfea92009f5cdd7bca5533" name="ad7b3e291bccfea92009f5cdd7bca5533"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad7b3e291bccfea92009f5cdd7bca5533">&#9670;&#160;</a></span>save_prob()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void SolverAbstract::save_prob </td>
+          <td>(</td>
+          <td class="paramtype">const std::filesystem::path &amp;&#160;</td>
+          <td class="paramname"><em>filename</em></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>write an optimisation problem in a file </p>
+<p>File format is not garanteed and depend on implementation</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">name</td><td>: name of the file to read </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="classProblem.html#ab385b74ab52084f8be1482ffc31578e5">Problem</a>, <a class="el" href="classSolverCbc.html#a8181dc22a8855c559e0182f2b9103068">SolverCbc</a>, <a class="el" href="classSolverClp.html#ac8ccab90b3c5b525a30f5941fc22e80a">SolverClp</a>, <a class="el" href="classSolverXpress.html#a4d990973ab6d440d1a32d3e2a9786d95">SolverXpress</a>, and <a class="el" href="classNOOPSolver.html#ab528ae294c41634272e2fec3f86dcc90">NOOPSolver</a>.</p>
 
 </div>
 </div>
