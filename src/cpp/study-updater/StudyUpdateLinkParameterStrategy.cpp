@@ -12,7 +12,7 @@ int StudyUpdateLinkParameterStrategy::Update(
 
 StudyUpdateLinkParameterStrategy::StudyUpdateLinkParameterStrategy(
     const std::filesystem::path& link_path,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
     : StudyUpdateStrategy(link_path, logger) {}
 
 std::filesystem::path StudyUpdateLinkParameterStrategy::getLinkdataFilepath(

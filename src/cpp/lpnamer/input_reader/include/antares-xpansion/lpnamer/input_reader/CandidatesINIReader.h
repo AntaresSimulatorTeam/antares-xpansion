@@ -23,9 +23,9 @@ class CandidatesINIReader {
   CandidatesINIReader(
       const std::filesystem::path& antaresIntercoFile,
       const std::filesystem::path& areaFile,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
   explicit CandidatesINIReader(
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
       : logger_(logger) {}
   std::vector<IntercoFileData> ReadAntaresIntercoFile(
       const std::filesystem::path& antaresIntercoFile) const;
@@ -52,7 +52,7 @@ class CandidatesINIReader {
   std::map<std::string, int> _intercoIndexMap;
   std::vector<IntercoFileData> _intercoFileData;
   std::vector<std::string> _areaNames;
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
   void ProcessAreaFile(const std::filesystem::path& areaFile);
 };
 

@@ -15,6 +15,6 @@ Feature: outer loop tests
   Scenario: a non outer loop study e.g with non-consistent adequacy_criterion file and with un-formatted mps (unnamed mps)
     Given the study path is "data_test/mini_instance_MIP"
     When I run outer loop with 1 proc(s) and "options_default.json" as option file
-    Then the simulation takes less than 5 seconds
-    And the simulation succeeds
+    Then the simulation succeeds
+    And the simulation takes less than 5 seconds
     And LOLD.txt and PositiveUnsuppliedEnergy.txt files are full of zeros

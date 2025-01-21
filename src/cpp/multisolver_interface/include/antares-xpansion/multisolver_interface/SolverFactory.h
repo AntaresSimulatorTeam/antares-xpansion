@@ -11,8 +11,6 @@
  * \brief algo type
  */
 enum class SOLVER_TYPE { INTEGER, CONTINUOUS };
-const std::string UNKNOWN_STR("UNKNOWN"), COIN_STR("COIN"), CBC_STR("CBC"),
-    CLP_STR("CLP"), XPRESS_STR("XPRESS");
 
 /*!
  * \class class SolverLoader
@@ -22,6 +20,12 @@ class SolverLoader {
  public:
   static std::vector<std::string> GetAvailableSolvers(
       std::shared_ptr<ILoggerXpansion> logger);
+
+  /**
+   * @brief Returns a list of supported solvers
+   * Supported doesn't mean available, for exemple if licence are not available
+   */
+  static std::vector<std::string> GetSupportedSolvers();
 };
 
 /*!

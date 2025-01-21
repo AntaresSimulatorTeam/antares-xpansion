@@ -22,7 +22,7 @@ void updateStudy(
     const std::filesystem::path &rootPath_p,
     const std::vector<ActiveLink> &links_p,
     const std::filesystem::path &jsonPath_l,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger) {
   auto linksPath_l = rootPath_p / ".." / "..";
 
   StudyUpdater studyUpdater(linksPath_l, AntaresVersionProvider(), logger);

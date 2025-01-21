@@ -19,13 +19,13 @@ class MasterGeneration {
    * between optim variable and antares variable
    */
   explicit MasterGeneration(
-      const std::filesystem::path &rootPath,
-      const std::vector<ActiveLink> &links,
-      const AdditionalConstraints &additionalConstraints_p,
-      Couplings &couplings, std::string const &master_formulation,
-      std::string const &solver_name,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
-      SolverLogManager&solver_log_manager);
+      const std::filesystem::path& rootPath,
+      const std::vector<ActiveLink>& links,
+      const AdditionalConstraints& additionalConstraints_p,
+      Couplings& couplings, const std::string& master_formulation,
+      const std::string& solver_name,
+      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger,
+      SolverLogManager& solver_log_manager);
 
  private: /*methods*/
   void add_candidates(const std::vector<ActiveLink> &links);
@@ -39,6 +39,7 @@ class MasterGeneration {
 
  private: /*members*/
   std::vector<Candidate> candidates;
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
+  const std::string solver_name_;
 };
 #endif  //__MASTER_GENERATION__

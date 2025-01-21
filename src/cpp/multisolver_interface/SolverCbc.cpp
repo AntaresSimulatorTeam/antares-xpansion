@@ -139,8 +139,12 @@ void SolverCbc::write_prob_mps(const std::filesystem::path &filename) {
   _clp_inner_solver.getDblParam(OsiObjOffset, objOffset);
   writer.setObjectiveOffset(objOffset);
 
-  writer.writeMps(filename.string().c_str(), 0 /*gzip it*/, 1, 1, nullptr, 0,
-                  nullptr);
+  auto filename_to_use = filename;
+  if (filename_to_use.extension() != ".mps") {
+    filename_to_use.replace_extension(".mps");
+  }
+  writer.writeMps(filename_to_use.string().c_str(), 0 /*gzip it*/, 1, 1,
+                  nullptr, 0, nullptr);
 }
 
 void SolverCbc::write_prob_lp(const std::filesystem::path &filename) {
@@ -182,8 +186,14 @@ void SolverCbc::setClpSimplexRowNamesFromInnerSolver(ClpSimplex *clps) const {
 }
 
 void SolverCbc::read_prob_mps(const std::filesystem::path &prob_name) {
-  int status = _clp_inner_solver.readMps(prob_name.string().c_str());
-  zero_status_check(status, " read problem "s + prob_name.string(),
+  auto filename_to_use = prob_name;
+  if (filename_to_use.extension() != ".mps") {
+    filename_to_use.replace_extension(".mps");
+  }
+  int status = _clp_inner_solver.readMps(filename_to_use.string().c_str());
+  zero_status_check(status,
+                    " read problem "s + prob_name.string() + " , filename : "s +
+                        filename_to_use.string(),
                     LOGLOCATION);
   defineCbcModelFromInnerSolver();
 }
@@ -687,4 +697,20 @@ void SolverCbc::set_optimality_gap(double gap) {
 void SolverCbc::set_simplex_iter(int iter) {
   throw InvalidSolverOptionException(
       "set_simplex_iter : " + std::to_string(iter), LOGLOCATION);
+}
+
+/**
+ * CBC default to write_prob_mps implementation
+ * @param filename
+ */
+void SolverCbc::save_prob(const std::filesystem::path &filename) {
+  write_prob_mps(filename);
+}
+
+/**
+ * CBC default to read_prob_mps implementation
+ * @param filename
+ */
+void SolverCbc::restore_prob(const std::filesystem::path &filename) {
+  read_prob_mps(filename);
 }

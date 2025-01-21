@@ -15,7 +15,7 @@
 
 class GeneralDataIniReader {
  private:
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
   INIReader reader_;
   int mc_years_;
   bool user_playlist_;
@@ -37,7 +37,7 @@ class GeneralDataIniReader {
  public:
   explicit GeneralDataIniReader(
       const std::filesystem::path& file_path,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
 
   int GetNbYears() const { return mc_years_; }
 

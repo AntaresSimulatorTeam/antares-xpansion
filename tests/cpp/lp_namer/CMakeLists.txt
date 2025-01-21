@@ -28,6 +28,7 @@ add_executable (lp_namer_tests
         LoggerBuilder.cpp
         LoggerBuilder.h
         LpFilesExtractorTest.cpp
+        MasterGenerationTest.cpp
         MasterProblemBuilderTest.cpp
         MpsTxtWriterTest.cpp
         NOOPSolver.h
@@ -53,6 +54,7 @@ target_link_libraries (lp_namer_tests PRIVATE
         antaresXpansion::xpansion_study_updater_lib
         antaresXpansion::problem_generation_main
         antaresXpansion::tests_utils
+        antaresXpansion::solvers
         )
 
 

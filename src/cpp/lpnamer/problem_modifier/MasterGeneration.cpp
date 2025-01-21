@@ -2,18 +2,27 @@
 
 #include <algorithm>
 #include <filesystem>
+#include <utility>
 
+#include "antares-xpansion/lpnamer/problem_modifier/FileWriter.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LauncherHelpers.h"
 #include "antares-xpansion/lpnamer/problem_modifier/MasterProblemBuilder.h"
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
+namespace {
+  using ProblemName = std::string;
+  using CandidateName = std::string;
+  using Structure = std::map<ProblemName, std::map<CandidateName, ColId>>;
+}
 MasterGeneration::MasterGeneration(
     const std::filesystem::path &rootPath, const std::vector<ActiveLink> &links,
     const AdditionalConstraints &additionalConstraints_p, Couplings &couplings,
-    std::string const &master_formulation, std::string const &solver_name,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
-    SolverLogManager&solver_log_manager)
-    : logger_(logger) {
+    const std::string &master_formulation, const std::string &solver_name,
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger,
+    SolverLogManager &solver_log_manager)
+    : logger_(std::move(logger))
+    , solver_name_(solver_name)
+{
   add_candidates(links);
   write_master_mps(rootPath, master_formulation, solver_name,
                    additionalConstraints_p, solver_log_manager);
@@ -36,32 +45,38 @@ void MasterGeneration::write_master_mps(
     const std::filesystem::path &rootPath,
     std::string const &master_formulation, std::string const &solver_name,
     const AdditionalConstraints &additionalConstraints_p,
-    SolverLogManager&solver_log_manager) const {
+    SolverLogManager &solver_log_manager) const {
   auto master_l = MasterProblemBuilder(master_formulation)
-          .build(solver_name, candidates, solver_log_manager);
+                      .build(solver_name, candidates, solver_log_manager);
   treatAdditionalConstraints(master_l, additionalConstraints_p, logger_);
+  Problem master_problem(master_l);
+  master_problem._name = "master";
+  master_problem.save_prob(rootPath / "lp" / "master");
+}
 
-  std::string const &lp_name = "master";
-  master_l->write_prob_mps(rootPath / "lp" / (lp_name + ".mps"));
+std::filesystem::path FileNameForStructureFile(const std::string& problemName,
+                                             std::string solverName) {
+  if (problemName == "master") return {"master"};
+  return SolverConfig::FileName(problemName, SolverConfig(std::move(solverName)));
 }
 
 void MasterGeneration::write_structure_file(
     const std::filesystem::path &rootPath, const Couplings &couplings) const {
-  std::map<std::string, std::map<std::string, unsigned int>> output;
+  Structure structure;
   for (const auto &[candidate_name_and_mps_filePath, colId] : couplings) {
-    output[candidate_name_and_mps_filePath.second]
+    structure[candidate_name_and_mps_filePath.second]
           [candidate_name_and_mps_filePath.first] = colId;
   }
   unsigned int i = 0;
   for (auto const &candidate : candidates) {
-    output["master"][candidate.get_name()] = i;
+    structure["master"][candidate.get_name()] = i;
     ++i;
   }
 
   std::ofstream coupling_file(rootPath / "lp" / STRUCTURE_FILE);
-  for (auto const &[mps_file_path, candidates_name_and_colId] : output) {
+  for (auto const &[mps_file_path, candidates_name_and_colId] : structure) {
     for (auto const &[candidate_name, colId] : candidates_name_and_colId) {
-      coupling_file << std::setw(50) << mps_file_path;
+      coupling_file << std::setw(50) <<  FileNameForStructureFile(mps_file_path, solver_name_).string();
       coupling_file << std::setw(50) << candidate_name;
       coupling_file << std::setw(10) << colId;
       coupling_file << std::endl;

@@ -22,34 +22,33 @@ struct CriteriaCurrentIterationData {
  * struct that hold current Benders iteration
   */
 struct CurrentIterationData {
-  double subproblems_walltime;
-  double subproblems_cputime;
-  double subproblems_cumulative_cputime;
-  double timer_master;
-  double lb;
-  double ub;
-  double best_ub;
-  int deletedcut;
-  int it;
-  double iteration_time;
-  bool stop;
-  double overall_subpb_cost_under_approx;
+  double subproblems_walltime = 0;
+  double subproblems_cputime = 0;
+  double subproblems_cumulative_cputime = 0;
+  double timer_master = 0;
+  double lb = -1e20;
+  double ub = +1e20;
+  double best_ub = +1e20;
+  int it = 0;
+  double iteration_time = 0;
+  bool stop = false;
+  double overall_subpb_cost_under_approx = 0;
   std::vector<double> single_subpb_costs_under_approx;
   double subproblem_cost;
   double invest_cost;
-  int best_it;
+  int best_it = 0;
   Point x_in;
   Point x_out;
   Point x_cut;
   Point min_invest;
   Point max_invest;
-  int nsubproblem;
-  int master_status;
-  double benders_time;
-  StoppingCriterion stopping_criterion;
-  bool is_in_initial_relaxation;
-  int number_of_subproblem_solved;
-  int cumulative_number_of_subproblem_solved;
+  int nsubproblem = 0;
+  int master_status = SOLVER_STATUS::UNKNOWN;
+  double benders_time = 0;
+  StoppingCriterion stopping_criterion = StoppingCriterion::empty;
+  bool is_in_initial_relaxation = false;
+  int number_of_subproblem_solved = 0;
+  int cumulative_number_of_subproblem_solved = 0;
   int min_simplexiter;
   int max_simplexiter;
   // ugly

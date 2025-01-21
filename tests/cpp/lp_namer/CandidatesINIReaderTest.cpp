@@ -90,7 +90,7 @@ class CandidatesINIReaderTest : public ::testing::Test {
   }
 
  public:
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer emptyLogger_ =
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> emptyLogger_ =
       emptyLogger();
 };
 

@@ -63,7 +63,11 @@ void SolverClp::free() {
 -------------------------------
 *************************************************************************************************/
 void SolverClp::write_prob_mps(const std::filesystem::path &filename) {
-  _clp.writeMps(filename.string().c_str(), 1);
+  auto filename_to_use = filename;
+  if (filename_to_use.extension() != ".mps") {
+    filename_to_use.replace_extension(".mps");
+  }
+  _clp.writeMps(filename_to_use.string().c_str(), 1);
 }
 
 void SolverClp::write_prob_lp(const std::filesystem::path &filename) {
@@ -84,8 +88,12 @@ void SolverClp::write_basis(const std::filesystem::path &filename) {
 }
 
 void SolverClp::read_prob_mps(const std::filesystem::path &filename) {
-  int status = _clp.readMps(filename.string().c_str(), true, false);
-  zero_status_check(status, " Clp readMps "s + filename.string(), LOGLOCATION);
+  auto filename_to_use = filename;
+  if (filename_to_use.extension() != ".mps") {
+    filename_to_use.replace_extension(".mps");
+  }
+  int status = _clp.readMps(filename_to_use.string().c_str(), true, false);
+  zero_status_check(status, " Clp readMps "s + filename_to_use.string(), LOGLOCATION);
 }
 
 void SolverClp::read_prob_lp(const std::filesystem::path &filename) {
@@ -542,3 +550,19 @@ void SolverClp::set_optimality_gap(double gap) {
 }
 
 void SolverClp::set_simplex_iter(int iter) { _clp.setMaximumIterations(iter); }
+
+/**
+ * CLP default to write_prob_mps implementation
+ * @param filename
+ */
+void SolverClp::save_prob(const std::filesystem::path &filename) {
+  write_prob_mps(filename);
+}
+
+/**
+ * CLP default to read_prob_mps implementation
+ * @param filename
+ */
+void SolverClp::restore_prob(const std::filesystem::path &filename) {
+  read_prob_mps(filename);
+}

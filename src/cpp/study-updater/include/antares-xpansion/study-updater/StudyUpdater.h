@@ -18,7 +18,7 @@ class StudyUpdater {
   std::filesystem::path studyPath_;
   // antares version
   int antaresVersion_;
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
 
  public:
   /*!
@@ -29,7 +29,7 @@ class StudyUpdater {
   explicit StudyUpdater(
       std::filesystem::path studyPath_p,
       const AntaresVersionProvider& antares_version_provider,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
 
   /*!
    * \brief default destructor of calass StudyUpdater

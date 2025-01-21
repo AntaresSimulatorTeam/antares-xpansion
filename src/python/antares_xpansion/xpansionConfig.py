@@ -167,6 +167,7 @@ class XpansionConfig:
             "log_level": "0",
             "separation_parameter": "0.5",
             "batch_size": "0",
+            "problems_format": "SAVED",
         }
 
     def _set_default_options(self):
@@ -181,6 +182,7 @@ class XpansionConfig:
             OptimisationKeys.slave_weight_key(): self.slave_weight_default_value(),
             OptimisationKeys.slave_weight_value_key(): self.slave_weight_value_default_value(),
             OptimisationKeys.master_name_key(): self.master_name_default_value(),
+            OptimisationKeys.problems_format_key(): self.problems_format_default_value(),
             OptimisationKeys.structure_file_key(): self.structure_file_default_value(),
             OptimisationKeys.input_root_key(): self.input_root_default_value(),
             OptimisationKeys.csv_name_key(): self.csv_name_default_value(),
@@ -203,6 +205,9 @@ class XpansionConfig:
 
     def master_name_default_value(self):
         return "master"
+
+    def problems_format_default_value(self):
+        return "SAVED"
 
     def slave_weight_value_default_value(self):
         return "1"

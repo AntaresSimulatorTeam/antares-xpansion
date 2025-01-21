@@ -33,7 +33,7 @@ class ProblemModifierTest : public ::testing::Test {
   std::vector<int> col_indexes;
   std::vector<int> start_indexes;
   std::vector<std::basic_string<char>> col_names;
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger =
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger =
       emptyLogger();
 
  protected:

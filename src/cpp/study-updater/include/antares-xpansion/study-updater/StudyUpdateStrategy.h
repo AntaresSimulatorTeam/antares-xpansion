@@ -14,7 +14,7 @@ class StudyUpdateStrategy {
       const ActiveLink& link, const std::map<std::string, double>& map) = 0;
   explicit StudyUpdateStrategy(
       const std::filesystem::path& study_path,
-      ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
   virtual ~StudyUpdateStrategy() = default;
   class NoInvestmentComputedForTheCandidate
       : public LogUtils::XpansionError<std::runtime_error> {
@@ -29,5 +29,5 @@ class StudyUpdateStrategy {
 
   const std::filesystem::path antares_link_folder_path;
 
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
 };

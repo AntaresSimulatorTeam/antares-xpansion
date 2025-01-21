@@ -27,5 +27,5 @@ void updateStudy(
     const std::filesystem::path &rootPath_p,
     const std::vector<ActiveLink> &links_p,
     const std::filesystem::path &jsonPath_l,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
 #endif  // ANTARES_XPANSION_SRC_CPP_STUDY_UPDATER_STUDYUPDATERUNNER_H

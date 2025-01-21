@@ -20,7 +20,7 @@ void updateMapColumn(const std::vector<ActiveLink>& links, int link_id,
 VariableFileReader::VariableFileReader(
     const std::filesystem::path& fileName, const std::vector<ActiveLink>& links,
     const VariableFileReadNameConfiguration& variable_name_config,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
     : logger_(logger) {
   std::string line;
   std::ifstream file(fileName.c_str());
@@ -38,7 +38,7 @@ VariableFileReader::VariableFileReader(
     std::istringstream& fileInIStringStream,
     const std::vector<ActiveLink>& links,
     const VariableFileReadNameConfiguration& variable_name_config,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
     : logger_(logger) {
   ReadVarsFromStream(fileInIStringStream, links, variable_name_config);
 }

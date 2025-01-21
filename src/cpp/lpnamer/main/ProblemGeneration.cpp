@@ -22,7 +22,7 @@
 #include "antares-xpansion/lpnamer/problem_modifier/FileProblemsProviderAdapter.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LauncherHelpers.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
-#include "antares-xpansion/lpnamer/problem_modifier/MPSFileWriter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/FileWriter.h"
 #include "antares-xpansion/lpnamer/problem_modifier/MasterGeneration.h"
 #include "antares-xpansion/lpnamer/problem_modifier/MasterProblemBuilder.h"
 #include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesFileAdapter.h"
@@ -68,7 +68,7 @@ namespace {
 }
 static std::string solverXpansionToSimulator(const SolverConfig& in) {
   // in could be Cbc or CBC depending on whether it is defined or not in the
-  // settings file 
+  // settings file
   // Use lowerCase in any case to be robust to these subtleties
   assert(islower(in.Name()));
   if (in.Name() == "xpress") return "xpress";
@@ -132,6 +132,9 @@ std::filesystem::path ProblemGeneration::updateProblems() {
     study_dir =
         std::filesystem::absolute(archive_path).parent_path().parent_path();
     // Assume study/output/archive.zip
+    //If doesn't work
+    //study_dir = xpansion_output_dir.parent_path().parent_path(); //Assume study/output/archive.zip
+
   }
 
   if (mode_ == SimulationInputMode::ANTARES_API) {
@@ -183,7 +186,7 @@ std::shared_ptr<ArchiveReader> InstantiateZipReader(
 void ProblemGeneration::ProcessWeights(
     const std::filesystem::path& xpansion_output_dir,
     const std::filesystem::path& weights_file,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger) {
   const auto settings_dir = xpansion_output_dir / ".." / ".." / "settings";
   const auto general_data_file = settings_dir / "generaldata.ini";
   auto genera_data_reader = GeneralDataIniReader(general_data_file, logger);
@@ -201,7 +204,7 @@ void ProblemGeneration::ProcessWeights(
 void ProblemGeneration::ExtractUtilsFiles(
     const std::filesystem::path& antares_archive_path,
     const std::filesystem::path& xpansion_output_dir,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger) {
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger) {
   auto utils_files_extractor =
       LpFilesExtractor(antares_archive_path, xpansion_output_dir,
                        std::move(logger), mode_.value(), simulation_dir_);
@@ -210,7 +213,7 @@ void ProblemGeneration::ExtractUtilsFiles(
 
 std::vector<ActiveLink> getLinks(
     const std::filesystem::path& xpansion_output_dir,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger) {
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger>& logger) {
   ActiveLinksBuilder linkBuilder =
       get_link_builders(xpansion_output_dir, logger);
   std::vector<ActiveLink> links = linkBuilder.getLinks();
@@ -224,7 +227,7 @@ std::vector<ActiveLink> getLinks(
  */
 void validateMasterFormulation(
     const std::string& master_formulation,
-    const ProblemGenerationLog::ProblemGenerationLoggerSharedPointer& logger) {
+    const std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger) {
   if ((master_formulation != "relaxed") && (master_formulation != "integer")) {
     (*logger)(LogUtils::LOGLEVEL::FATAL)
         << LOGLOCATION
@@ -281,7 +284,7 @@ void ProblemGeneration::RunProblemGeneration(
     const std::string& master_formulation,
     const std::string& additionalConstraintFilename_l,
     const std::filesystem::path& antares_archive_path,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger,
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger,
     const std::filesystem::path& log_file_path,
     const std::filesystem::path& weights_file, bool unnamed_problems) {
   (*logger)(LogUtils::LOGLEVEL::INFO)
@@ -320,8 +323,8 @@ void ProblemGeneration::RunProblemGeneration(
   LinkProblemsGenerator linkProblemsGenerator(
       lpDir_, links, solver_config_, logger, solver_log_manager, rename_problems);
   std::shared_ptr<ArchiveReader> reader =
-      antares_archive_path.empty() ? std::make_shared<ArchiveReader>()
-                                   : InstantiateZipReader(antares_archive_path);
+      mode_ == SimulationInputMode::ARCHIVE ? InstantiateZipReader(antares_archive_path)
+                                   : std::make_shared<ArchiveReader>();
 
   /* Main stuff */
   std::vector<std::shared_ptr<Problem>> xpansion_problems = getXpansionProblems(
@@ -338,7 +341,7 @@ void ProblemGeneration::RunProblemGeneration(
       problems_and_data.emplace_back(xpansion_problems.at(i), mpsList.at(i));
     }
   }
-  auto mps_file_writer = std::make_shared<MPSFileWriter>(lpDir_);
+  auto mps_file_writer = std::make_shared<FileWriter>(lpDir_);
   std::for_each(
       std::execution::par, problems_and_data.begin(), problems_and_data.end(),
       [&](const auto& problem_and_data) {

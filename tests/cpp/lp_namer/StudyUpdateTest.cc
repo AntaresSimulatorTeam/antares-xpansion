@@ -347,7 +347,7 @@ class AntaresVersionProviderStub : public AntaresVersionProvider {
   int version_;
 };
 using namespace ProblemGenerationLog;
-ProblemGenerationLoggerSharedPointer Getlog(
+std::shared_ptr<ProblemGenerationLogger> Getlog(
     const fs::path& tmp_directory_path_) {
   /**/
   auto logFile = std::make_shared<ProblemGenerationFileLogger>(
@@ -376,7 +376,7 @@ class UpdateCapacitiesTest : public ::testing::Test {
   fs::path tmp_directory_path_;
   fs::path ntc_path_;
 
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger;
   StudyUpdater study_updater_{fs::path("."), AntaresVersionProviderStub(800),
                               logger};
   AntaresLinkDataReader antares_link_data_reader_;

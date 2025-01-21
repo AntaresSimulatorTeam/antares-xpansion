@@ -59,5 +59,5 @@ StudyUpdateLinkCapacitiesStrategy::computeNewCapacitiesAllChronicles(
 }
 StudyUpdateLinkCapacitiesStrategy::StudyUpdateLinkCapacitiesStrategy(
     const std::filesystem::path& link_path,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
     : StudyUpdateStrategy(link_path, logger) {}

@@ -70,4 +70,8 @@ class Worker {
   bool _is_master = false;
 
   Logger logger_;
+
+ private:
+  void read_prob(SolverAbstract * problem,
+                 const std::filesystem::path &path) const;
 };

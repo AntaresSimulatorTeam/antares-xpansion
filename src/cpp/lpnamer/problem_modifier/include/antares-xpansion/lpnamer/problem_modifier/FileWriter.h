@@ -3,10 +3,10 @@
 #include "antares-xpansion/lpnamer/problem_modifier/IProblemWriter.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 
-class MPSFileWriter : public IProblemWriter {
-  void Write_problem(Problem *in_prblm, const std::filesystem::path &output_file) override;
-
+class FileWriter : public IProblemWriter {
  public:
-  MPSFileWriter(std::filesystem::path lp_dir);
+
+  void Write_problem(Problem *in_prblm, const std::filesystem::path &output_file) override;
+  FileWriter(std::filesystem::path lp_dir);
   std::filesystem::path lp_dir_;
 };

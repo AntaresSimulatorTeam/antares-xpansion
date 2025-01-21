@@ -60,6 +60,10 @@ class OptimisationKeys:
         return "MASTER_NAME"
 
     @staticmethod
+    def problems_format_key():
+        return "PROBLEMS_FORMAT"
+
+    @staticmethod
     def last_mps_master_name_key():
         return "LAST_MASTER_MPS"
 

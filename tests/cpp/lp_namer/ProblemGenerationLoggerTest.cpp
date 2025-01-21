@@ -6,7 +6,7 @@ using namespace ProblemGenerationLog;
 class ProblemGenerationLoggerTest : public ::testing::Test {
  public:
   std::filesystem::path temp_file_;
-  ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger_;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
 
 };
 

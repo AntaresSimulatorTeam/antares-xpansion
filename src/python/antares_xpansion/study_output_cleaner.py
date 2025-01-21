@@ -52,6 +52,7 @@ class StudyOutputCleaner:
         rename_master(last_master_path, tmp_last_master_path)
         rename_master(master_path, tmp_master_path)
         remove_files_containing_str_from_dir('.mps', lp_dir)
+        remove_files_containing_str_from_dir('.svf', lp_dir)
         rename_master(tmp_master_path, master_path)
         rename_master(tmp_last_master_path, last_master_path)
 

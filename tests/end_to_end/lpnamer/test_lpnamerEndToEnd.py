@@ -113,8 +113,13 @@ def test_lp_directory_files(install_dir, test_dir, master_mode, option_mode, set
 
 
 @pytest.mark.parametrize("test_dir, master_mode", test_data_xpress)
-def test_lp_directory_files(install_dir, test_dir, master_mode, setup_lp_directory, tmp_path):
-    launch_and_compare_lp_with_reference_archive(install_dir, master_mode, setup_lp_directory, False)
+def test_xpress(install_dir, test_dir, master_mode, setup_lp_directory, tmp_path):
+    launch_command, lp_dir, old_path, reference_lp_dir = given(install_dir, master_mode, setup_lp_directory, False)
+    returned_l = subprocess.run(launch_command, shell=False)
+    os.chdir(old_path)
+    files_to_find = os.listdir(reference_lp_dir)
+    files_to_compare = os.listdir(lp_dir)
+    assert set(files_to_find) <= set(files_to_compare)
 
 
 @pytest.mark.parametrize("test_dir", test_data_multiple_candidates)
@@ -151,21 +156,26 @@ def launch_and_compare_lp_with_reference_output(install_dir, master_mode, test_d
 
 
 def launch_and_compare_lp_with_reference_archive(install_dir, master_mode, test_dir, unnamed_problems=True):
+    launch_command, lp_dir, old_path, reference_lp_dir = given(install_dir, master_mode, test_dir, unnamed_problems)
+    print(f"launch_command: '{' '.join(launch_command)}'")
+    # when
+    returned_l = subprocess.run(launch_command, shell=False)
+    # then
+    then(lp_dir, old_path, reference_lp_dir, returned_l)
+
+
+def given(install_dir, master_mode, test_dir, unnamed_problems):
     old_path = os.getcwd()
     reference_lp_dir = test_dir / "reference_lp"
     lp_dir = test_dir.parent / (test_dir.stem + "-Xpansion") / "lp"
     lp_namer_exe = Path(install_dir) / "lp_namer"
     zip_path = (test_dir.parent / MPS_ZIP).resolve()
     os.chdir(test_dir.parent.parent)
-
     launch_command = [str(lp_namer_exe), "-a", str(zip_path),
                       "-e", "contraintes.txt", "-f", master_mode]
     if unnamed_problems:
         launch_command.append("--unnamed-problems")
-    # when
-    returned_l = subprocess.run(launch_command, shell=False)
-    # then
-    then(lp_dir, old_path, reference_lp_dir, returned_l)
+    return launch_command, lp_dir, old_path, reference_lp_dir
 
 
 def get_lp_dir(study_dir):

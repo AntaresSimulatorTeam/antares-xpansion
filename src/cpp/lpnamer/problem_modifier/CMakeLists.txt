@@ -16,7 +16,7 @@ target_sources(lp_namer_problem_modifier PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/LinkProblemsGenerator.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/LinkdataRecord.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/MPSFileProblemProviderAdapter.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/MPSFileWriter.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/FileWriter.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/MasterGeneration.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/MasterProblemBuilder.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ProblemModifier.cpp
@@ -38,7 +38,7 @@ target_sources(lp_namer_problem_modifier PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/LinkdataRecord.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/MPSFileProblemProviderAdapter.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/MPSFileWriter.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/FileWriter.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/MasterGeneration.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/MasterProblemBuilder.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/ProblemModifier.h

@@ -20,7 +20,7 @@ ActiveLinksBuilder::ActiveLinksBuilder(
     std::vector<CandidateData> candidateList,
     std::map<std::string, std::vector<LinkProfile>> profile_map,
     DirectAccessScenarioToChronicleProvider scenario_to_chronicle_provider,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
     : _candidateDatas(std::move(candidateList)),
       _profile_map(std::move(profile_map)),
       scenario_to_chronicle_provider_(
@@ -33,7 +33,7 @@ ActiveLinksBuilder::ActiveLinksBuilder(
 ActiveLinksBuilder::ActiveLinksBuilder(
     const std::vector<CandidateData>& candidateList,
     const std::map<std::string, std::vector<LinkProfile>>& profile_map,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
     : ActiveLinksBuilder(candidateList, profile_map,
                          DirectAccessScenarioToChronicleProvider("", logger),
                          logger) {}
@@ -174,7 +174,7 @@ ActiveLink::ActiveLink(
     int idLink, std::string linkName, std::string linkor, std::string linkex,
     const double& already_installed_capacity,
     std::map<unsigned int, unsigned int> mc_year_to_chronicle,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
     : mc_year_to_chronicle_(std::move(mc_year_to_chronicle)),
       _idLink(idLink),
       _name(std::move(linkName)),
@@ -188,7 +188,7 @@ ActiveLink::ActiveLink(
 ActiveLink::ActiveLink(
     int idLink, const std::string& linkName, const std::string& linkor,
     const std::string& linkex, const double& already_installed_capacity,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
     : ActiveLink(idLink, linkName, linkor, linkex, already_installed_capacity,
                  {}, logger) {}
 

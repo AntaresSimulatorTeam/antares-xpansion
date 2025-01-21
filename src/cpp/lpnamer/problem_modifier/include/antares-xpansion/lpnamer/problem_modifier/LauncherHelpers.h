@@ -16,11 +16,11 @@
 void treatAdditionalConstraints(
     SolverAbstract::Ptr master_p,
     const AdditionalConstraints& additionalConstraints_p,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
 
 char getConstraintSenseSymbol(
     const AdditionalConstraint& additionalConstraint_p,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
 
 /**
  * \brief adds an additional constraint to an existent solver
@@ -30,7 +30,7 @@ char getConstraintSenseSymbol(
  */
 void addAdditionalConstraint(
     SolverAbstract::Ptr master_p, const AdditionalConstraint& additionalConstraint_p,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
 
 /**
  * \brief creates a binary variable and its corresponding linking constraint
@@ -47,7 +47,7 @@ void addAdditionalConstraint(
 void addBinaryVariables(
     SolverAbstract::Ptr master_p,
     std::map<std::string, std::string> const& variablesToBinarise_p,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
 
 /**
  * \brief return Active Links Builder
@@ -56,4 +56,4 @@ void addBinaryVariables(
  */
 ActiveLinksBuilder get_link_builders(
     const std::filesystem::path& xpansion_output_dir,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger);
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);

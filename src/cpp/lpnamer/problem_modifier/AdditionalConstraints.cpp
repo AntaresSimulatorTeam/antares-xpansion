@@ -9,7 +9,7 @@
 
 AdditionalConstraints::AdditionalConstraints(
     std::string constraints_file_path,
-    ProblemGenerationLog::ProblemGenerationLoggerSharedPointer logger)
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
     : constraintsFilePath_(std::move(constraints_file_path)),
       logger_(std::move(logger)) {
   ReadConstraintsFile();
