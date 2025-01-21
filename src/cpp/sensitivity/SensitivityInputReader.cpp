@@ -6,6 +6,8 @@
 #include <fstream>
 #include <utility>
 
+#include "antares-xpansion/benders/benders_core/ProblemFormat.h"
+#include "antares-xpansion/benders/benders_core/ProblemFormatStream.h"
 #include "antares-xpansion/benders/output/OutputWriter.h"
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
@@ -59,7 +61,18 @@ std::shared_ptr<SolverAbstract> SensitivityInputReader::get_last_master() const 
   last_master->set_threads(1);
   last_master->set_output_log_level(
       _benders_data[Output::OPTIONS_C]["LOG_LEVEL"].asInt());
-  last_master->read_prob_mps(_last_master_path);
+  auto format =  problemsFormatFromString(_benders_data[Output::OPTIONS_C]["PROBLEMS_FORMAT"].asString());
+  switch (format) {
+    case ProblemsFormat::MPS_FILE:
+      last_master->read_prob_mps(_last_master_path);
+      break;
+    case ProblemsFormat::SAVED_FILE:
+      last_master->restore_prob(_last_master_path);
+      break;
+    default:
+      throw std::runtime_error(fmt::format("{}: unsupported format : {}",
+                                           LOGLOCATION, format));
+  }
   return last_master;
 }
 
