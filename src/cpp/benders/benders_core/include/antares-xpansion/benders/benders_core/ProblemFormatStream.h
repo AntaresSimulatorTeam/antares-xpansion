@@ -10,10 +10,10 @@ inline std::ostream &operator<<(std::ostream &stream,
                                 ProblemsFormat const &rhs) {
   switch (rhs) {
     case ProblemsFormat::MPS_FILE:
-      stream << "MPS_FILE";
+      stream << "MPS";
       break;
     case ProblemsFormat::SAVED_FILE:
-      stream << "SAVED_FILE";
+      stream << "SAVED";
       break;
     default:
       stream << "Unknown";
