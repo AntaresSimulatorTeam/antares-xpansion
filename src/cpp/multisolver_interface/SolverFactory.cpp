@@ -42,17 +42,6 @@ std::vector<std::string> SolverLoader::GetAvailableSolvers(
   std::call_once(solver_flag, GetAvailableSolversInternal, logger);
   return available_solvers;
 }
-std::vector<std::string> SolverLoader::GetSupportedSolvers() {
-  static std::vector<std::string> supported_solvers;
-  if (supported_solvers.empty()) {
-    supported_solvers.emplace_back(XPRESS_STR);
-#ifdef COIN_OR
-    supported_solvers.emplace_back(CLP_STR);
-    supported_solvers.emplace_back(CBC_STR);
-#endif
-  }
-  return supported_solvers;
-}
 
 /**
  * @brief Returns a list of supported solvers
