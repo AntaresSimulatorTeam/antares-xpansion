@@ -61,7 +61,8 @@ std::shared_ptr<SolverAbstract> SensitivityInputReader::get_last_master() const 
   last_master->set_threads(1);
   last_master->set_output_log_level(
       _benders_data[Output::OPTIONS_C]["LOG_LEVEL"].asInt());
-  auto format =  problemsFormatFromString(_benders_data[Output::OPTIONS_C]["PROBLEMS_FORMAT"].asString());
+  auto problem_format = _benders_data[Output::OPTIONS_C]["PROBLEMS_FORMAT"].asString();
+  auto format = problem_format.empty() ? ProblemsFormat::MPS_FILE : problemsFormatFromString(_benders_data[Output::OPTIONS_C]["PROBLEMS_FORMAT"].asString());
   switch (format) {
     case ProblemsFormat::MPS_FILE:
       last_master->read_prob_mps(_last_master_path);
