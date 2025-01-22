@@ -15,7 +15,7 @@ var searchData=
   ['_5fname_5fto_5fid_12',['_name_to_id',['../classWorker.html#a1a9104c18381ba2210d0220dc18310a3',1,'Worker']]],
   ['_5fset_5flast_5fsimulation_5fname_13',['_set_last_simulation_name',['../classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a0fa29f1cdbb872c4cc1e15df7fd49b63',1,'antares_xpansion::config_loader::ConfigLoader']]],
   ['_5fset_5foptions_5ffor_5fbenders_5fsolver_14',['_set_options_for_benders_solver',['../classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a81feb79c377246560b940beb57f80924',1,'antares_xpansion::config_loader::ConfigLoader']]],
-  ['_5fsolver_15',['_solver',['../classWorker.html#ae4f99518ecd3bbf4a7aacc6bb2e78871',1,'Worker']]],
+  ['_5fsolver_15',['_solver',['../classWorker.html#a08567d41cc2e77b6c122543d64e904e4',1,'Worker']]],
   ['_5fstreams_16',['_streams',['../classSolverAbstract.html#a1cfe15a9c337170d61fc66e89c941f9a',1,'SolverAbstract']]],
   ['_5fxprs_17',['_xprs',['../classSolverXpress.html#a7da48ea838c3c1dc8d91ce09a6f4999d',1,'SolverXpress']]]
 ];

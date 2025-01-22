@@ -156,12 +156,12 @@ Inheritance diagram for Worker:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a7e5d0da167f851776416b786e9d154ee" id="r_a7e5d0da167f851776416b786e9d154ee"><td class="memItemLeft" align="right" valign="top"><a id="a7e5d0da167f851776416b786e9d154ee" name="a7e5d0da167f851776416b786e9d154ee"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Worker</b> (Logger logger)</td></tr>
-<tr class="separator:a7e5d0da167f851776416b786e9d154ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3db6724c271b0f26a44cfea0f3228a85" id="r_a3db6724c271b0f26a44cfea0f3228a85"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorker.html#a3db6724c271b0f26a44cfea0f3228a85">init</a> (VariableMap const &amp;variable_map, const std::filesystem::path &amp;path_to_mps, std::string const &amp;solver_name, int log_level, <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;solver_log_manager)</td></tr>
-<tr class="memdesc:a3db6724c271b0f26a44cfea0f3228a85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization of a problem.  <br /></td></tr>
-<tr class="separator:a3db6724c271b0f26a44cfea0f3228a85"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a99e2515abc23ec6bb1d84b19ca6a8e9f" id="r_a99e2515abc23ec6bb1d84b19ca6a8e9f"><td class="memItemLeft" align="right" valign="top"><a id="a99e2515abc23ec6bb1d84b19ca6a8e9f" name="a99e2515abc23ec6bb1d84b19ca6a8e9f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Worker</b> (VariableMap variable_map, std::filesystem::path path_to_mps, Logger logger)</td></tr>
+<tr class="separator:a99e2515abc23ec6bb1d84b19ca6a8e9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85328967d4e91eb3c1eef016db6f30a3" id="r_a85328967d4e91eb3c1eef016db6f30a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorker.html#a85328967d4e91eb3c1eef016db6f30a3">init</a> (const std::string &amp;solver_name, int log_level, <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;solver_log_manager, ProblemsFormat format)</td></tr>
+<tr class="memdesc:a85328967d4e91eb3c1eef016db6f30a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization of a problem.  <br /></td></tr>
+<tr class="separator:a85328967d4e91eb3c1eef016db6f30a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad144d280cf5f7bc86c80728f41f356fc" id="r_ad144d280cf5f7bc86c80728f41f356fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorker.html#ad144d280cf5f7bc86c80728f41f356fc">get_value</a> (double &amp;lb) const</td></tr>
 <tr class="memdesc:ad144d280cf5f7bc86c80728f41f356fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the optimal value of a problem.  <br /></td></tr>
 <tr class="separator:ad144d280cf5f7bc86c80728f41f356fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -175,9 +175,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>free</b> ()</td></tr>
 <tr class="memitem:aeb49dba2c0d9e872e2745ea59ed84c6b" id="r_aeb49dba2c0d9e872e2745ea59ed84c6b"><td class="memItemLeft" align="right" valign="top"><a id="aeb49dba2c0d9e872e2745ea59ed84c6b" name="aeb49dba2c0d9e872e2745ea59ed84c6b"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>write_basis</b> (const std::filesystem::path &amp;filename) const</td></tr>
 <tr class="separator:aeb49dba2c0d9e872e2745ea59ed84c6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8014252220175c5eddca6f50d5a62ec5" id="r_a8014252220175c5eddca6f50d5a62ec5"><td class="memItemLeft" align="right" valign="top"><a id="a8014252220175c5eddca6f50d5a62ec5" name="a8014252220175c5eddca6f50d5a62ec5"></a>
-virtual <a class="el" href="classSolverAbstract.html#a8f77d6d39341f89c763b912d95254c30">SolverAbstract::Ptr</a>&#160;</td><td class="memItemRight" valign="bottom"><b>solver</b> () const</td></tr>
-<tr class="separator:a8014252220175c5eddca6f50d5a62ec5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac34205c795912f8a7b845701d25c80b2" id="r_ac34205c795912f8a7b845701d25c80b2"><td class="memItemLeft" align="right" valign="top"><a id="ac34205c795912f8a7b845701d25c80b2" name="ac34205c795912f8a7b845701d25c80b2"></a>
+virtual std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>solver</b> () const</td></tr>
+<tr class="separator:ac34205c795912f8a7b845701d25c80b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aff510b82436f7d54fe4a124d0ae43fd6" id="r_aff510b82436f7d54fe4a124d0ae43fd6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorker.html#aff510b82436f7d54fe4a124d0ae43fd6">solve</a> (int &amp;lp_status, const std::string &amp;outputroot, const std::string &amp;output_master_mps_file_name, Writer writer) const</td></tr>
 <tr class="memdesc:aff510b82436f7d54fe4a124d0ae43fd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to solve a problem.  <br /></td></tr>
 <tr class="separator:aff510b82436f7d54fe4a124d0ae43fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -209,8 +209,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_pat
 <tr class="separator:a1a9104c18381ba2210d0220dc18310a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdb60808816e1a3409a63fe0c2dd98b5" id="r_abdb60808816e1a3409a63fe0c2dd98b5"><td class="memItemLeft" align="right" valign="top">Int2Str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorker.html#abdb60808816e1a3409a63fe0c2dd98b5">_id_to_name</a></td></tr>
 <tr class="separator:abdb60808816e1a3409a63fe0c2dd98b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4f99518ecd3bbf4a7aacc6bb2e78871" id="r_ae4f99518ecd3bbf4a7aacc6bb2e78871"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverAbstract.html#a8f77d6d39341f89c763b912d95254c30">SolverAbstract::Ptr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorker.html#ae4f99518ecd3bbf4a7aacc6bb2e78871">_solver</a></td></tr>
-<tr class="separator:ae4f99518ecd3bbf4a7aacc6bb2e78871"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a08567d41cc2e77b6c122543d64e904e4" id="r_a08567d41cc2e77b6c122543d64e904e4"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorker.html#a08567d41cc2e77b6c122543d64e904e4">_solver</a></td></tr>
+<tr class="separator:a08567d41cc2e77b6c122543d64e904e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a329a38f8119d9cf8c6c36166d563be53" id="r_a329a38f8119d9cf8c6c36166d563be53"><td class="memItemLeft" align="right" valign="top"><a id="a329a38f8119d9cf8c6c36166d563be53" name="a329a38f8119d9cf8c6c36166d563be53"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>_is_master</b> = false</td></tr>
 <tr class="separator:a329a38f8119d9cf8c6c36166d563be53"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -299,8 +299,8 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
 
 </div>
 </div>
-<a id="a3db6724c271b0f26a44cfea0f3228a85" name="a3db6724c271b0f26a44cfea0f3228a85"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3db6724c271b0f26a44cfea0f3228a85">&#9670;&#160;</a></span>init()</h2>
+<a id="a85328967d4e91eb3c1eef016db6f30a3" name="a85328967d4e91eb3c1eef016db6f30a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a85328967d4e91eb3c1eef016db6f30a3">&#9670;&#160;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -308,19 +308,7 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
         <tr>
           <td class="memname">void Worker::init </td>
           <td>(</td>
-          <td class="paramtype">VariableMap const &amp;&#160;</td>
-          <td class="paramname"><em>variable_map</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const std::filesystem::path &amp;&#160;</td>
-          <td class="paramname"><em>path_to_mps</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">std::string const &amp;&#160;</td>
+          <td class="paramtype">const std::string &amp;&#160;</td>
           <td class="paramname"><em>solver_name</em>, </td>
         </tr>
         <tr>
@@ -333,7 +321,13 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
           <td class="paramkey"></td>
           <td></td>
           <td class="paramtype"><a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;&#160;</td>
-          <td class="paramname"><em>solver_log_manager</em>&#160;</td>
+          <td class="paramname"><em>solver_log_manager</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">ProblemsFormat&#160;</td>
+          <td class="paramname"><em>format</em>&#160;</td>
         </tr>
         <tr>
           <td></td>
@@ -433,14 +427,14 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
 
 </div>
 </div>
-<a id="ae4f99518ecd3bbf4a7aacc6bb2e78871" name="ae4f99518ecd3bbf4a7aacc6bb2e78871"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae4f99518ecd3bbf4a7aacc6bb2e78871">&#9670;&#160;</a></span>_solver</h2>
+<a id="a08567d41cc2e77b6c122543d64e904e4" name="a08567d41cc2e77b6c122543d64e904e4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a08567d41cc2e77b6c122543d64e904e4">&#9670;&#160;</a></span>_solver</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"><a class="el" href="classSolverAbstract.html#a8f77d6d39341f89c763b912d95254c30">SolverAbstract::Ptr</a> Worker::_solver</td>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classSolverAbstract.html">SolverAbstract</a>&gt; Worker::_solver</td>
         </tr>
       </table>
 </div><div class="memdoc">

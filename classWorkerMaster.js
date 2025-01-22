@@ -1,6 +1,6 @@
 var classWorkerMaster =
 [
-    [ "WorkerMaster", "classWorkerMaster.html#a40f47d23d1738b642236e710d7042cb9", null ],
+    [ "WorkerMaster", "classWorkerMaster.html#a2317e43fb5cfeb645d1154e62450fc8b", null ],
     [ "add_cut", "classWorkerMaster.html#a1278325052f29d3a4b145052a23761ad", null ],
     [ "add_cut_by_iter", "classWorkerMaster.html#a8762f8cb421031c5333c2e024044238c", null ],
     [ "add_dynamic_cut", "classWorkerMaster.html#ad82d7509516e2ddb7ed5d43e9b246f3e", null ],

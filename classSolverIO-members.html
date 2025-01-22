@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: Class Members</title>
+<title>Antares Xpansion: Member List</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -105,7 +105,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(document).ready(function(){initNavTree('functions_w.html',''); initResizable(); });
+$(document).ready(function(){initNavTree('classSolverIO.html',''); initResizable(); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -130,20 +130,17 @@ $(document).ready(function(){initNavTree('functions_w.html',''); initResizable()
 </div>
 </div>
 
+<div class="header">
+  <div class="headertitle"><div class="title">SolverIO Member List</div></div>
+</div><!--header-->
 <div class="contents">
-<div class="textblock">Here is a list of all documented class members with links to the class documentation for each member:</div>
 
-<h3><a id="index_w" name="index_w"></a>- w -</h3><ul>
-<li>weights_file_path()&#160;:&#160;<a class="el" href="classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#acaa771a745e0c4328f7852bdd10dae2d">antares_xpansion.config_loader.ConfigLoader</a></li>
-<li>WorkerMaster()&#160;:&#160;<a class="el" href="classWorkerMaster.html#a2317e43fb5cfeb645d1154e62450fc8b">WorkerMaster</a></li>
-<li>write_basis()&#160;:&#160;<a class="el" href="classNOOPSolver.html#ae1e066dab57c28fe75d5b93864f5275e">NOOPSolver</a>, <a class="el" href="classProblem.html#a708234655849d976c5698615cd67c65c">Problem</a>, <a class="el" href="classSolverAbstract.html#a662f2e2fe8c61d8f61f4cd9e6a45330a">SolverAbstract</a>, <a class="el" href="classSolverCbc.html#ad8b73e371de8a2a0a28e3bd268357921">SolverCbc</a>, <a class="el" href="classSolverClp.html#a2948b221ccc7a267a9993d2d2b688d89">SolverClp</a>, <a class="el" href="classSolverXpress.html#a1cfa539487637bafe3f787d5d13fc5d9">SolverXpress</a></li>
-<li>write_default()&#160;:&#160;<a class="el" href="classSimulationOptions.html#ab1572096e9ea6d3cc6272124578b2c49">SimulationOptions</a></li>
-<li>write_failure()&#160;:&#160;<a class="el" href="classOutput_1_1VoidWriter.html#a21221b9d6724421aeeb2583f2aeca139">Output::VoidWriter</a></li>
-<li>write_iterations()&#160;:&#160;<a class="el" href="classOutput_1_1VoidWriter.html#ac7e6c83ce5444e8b3dc7f38d56ad4858">Output::VoidWriter</a></li>
-<li>write_prob_lp()&#160;:&#160;<a class="el" href="classNOOPSolver.html#aee897540f5372739dd10f999e3a30565">NOOPSolver</a>, <a class="el" href="classProblem.html#aac88c91784c4407dd335ccae289abe4b">Problem</a>, <a class="el" href="classSolverAbstract.html#afc8bb82a34495de9bb4ab186746dfe04">SolverAbstract</a>, <a class="el" href="classSolverCbc.html#a2931bfa90cf40f72e8ea16357715ba2a">SolverCbc</a>, <a class="el" href="classSolverClp.html#a2330c424351681a0502ee7035791e9d7">SolverClp</a>, <a class="el" href="classSolverXpress.html#a3ed1a373d758132913bbe7481c8224c6">SolverXpress</a></li>
-<li>write_prob_mps()&#160;:&#160;<a class="el" href="classNOOPSolver.html#ae1e9da630ba61c8b1a7cc28eeccdae89">NOOPSolver</a>, <a class="el" href="classProblem.html#a2c16f8388dbfb7f75c6bb58bec93504a">Problem</a>, <a class="el" href="classSolverAbstract.html#a6531e6705a781023aa14806bb08c1736">SolverAbstract</a>, <a class="el" href="classSolverCbc.html#a904bf8363f7c8a0a630d782349299731">SolverCbc</a>, <a class="el" href="classSolverClp.html#a248b7fe0ac3be96618ab827f5203438e">SolverClp</a>, <a class="el" href="classSolverXpress.html#a082b03566517838ef82b6074df5c6b22">SolverXpress</a></li>
-</ul>
-</div><!-- contents -->
+<p>This is the complete list of members for <a class="el" href="classSolverIO.html">SolverIO</a>, including all inherited members.</p>
+<table class="directory">
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>configure</b>(const std::string &amp;solver_name, ProblemsFormat format) (defined in <a class="el" href="classSolverIO.html">SolverIO</a>)</td><td class="entry"><a class="el" href="classSolverIO.html">SolverIO</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>read</b>(SolverAbstract *solver, const std::filesystem::path &amp;path) const (defined in <a class="el" href="classSolverIO.html">SolverIO</a>)</td><td class="entry"><a class="el" href="classSolverIO.html">SolverIO</a></td><td class="entry"></td></tr>
+  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>write</b>(SolverAbstract *solver, const std::filesystem::path &amp;path) const (defined in <a class="el" href="classSolverIO.html">SolverIO</a>)</td><td class="entry"><a class="el" href="classSolverIO.html">SolverIO</a></td><td class="entry"></td></tr>
+</table></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->

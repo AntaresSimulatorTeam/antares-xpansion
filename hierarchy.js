@@ -192,6 +192,9 @@ var hierarchy =
     [ "FileInBuffer", "classFileInBuffer.html", null ],
     [ "FilesMapper", "classFilesMapper.html", null ],
     [ "tests.end_to_end.utils_functions.FilesToRead", "classtests_1_1end__to__end_1_1utils__functions_1_1FilesToRead.html", null ],
+    [ "formatter", null, [
+      [ "fmt::formatter< ProblemsFormat >", "structfmt_1_1formatter_3_01ProblemsFormat_01_4.html", null ]
+    ] ],
     [ "antares_xpansion.full_run_driver.FullRunDriver", "classantares__xpansion_1_1full__run__driver_1_1FullRunDriver.html", null ],
     [ "antares_xpansion.general_data_processor.GeneralDataFileExceptions", "classantares__xpansion_1_1general__data__processor_1_1GeneralDataFileExceptions.html", null ],
     [ "antares_xpansion.general_data_reader.GeneralDataIniReader", "classantares__xpansion_1_1general__data__reader_1_1GeneralDataIniReader.html", null ],
@@ -522,6 +525,7 @@ var hierarchy =
     [ "SolverConfig", "classSolverConfig.html", null ],
     [ "SolverData", "structSolverData.html", null ],
     [ "SolverFactory", "classSolverFactory.html", null ],
+    [ "SolverIO", "classSolverIO.html", null ],
     [ "SolverLoader", "classSolverLoader.html", null ],
     [ "SolverLogManager", "classSolverLogManager.html", null ],
     [ "antares_xpansion.benders_driver.SolversExe", "classantares__xpansion_1_1benders__driver_1_1SolversExe.html", null ],

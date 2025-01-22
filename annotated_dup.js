@@ -279,6 +279,9 @@ var annotated_dup =
       [ "true_given", "structCatch_1_1true__given.html", null ],
       [ "UnaryExpr", "classCatch_1_1UnaryExpr.html", null ]
     ] ],
+    [ "fmt", null, [
+      [ "formatter< ProblemsFormat >", "structfmt_1_1formatter_3_01ProblemsFormat_01_4.html", null ]
+    ] ],
     [ "LoadXpress", null, [
       [ "XpressLoader", "classLoadXpress_1_1XpressLoader.html", "classLoadXpress_1_1XpressLoader" ]
     ] ],
@@ -619,6 +622,7 @@ var annotated_dup =
     [ "SolverConfig", "classSolverConfig.html", null ],
     [ "SolverData", "structSolverData.html", null ],
     [ "SolverFactory", "classSolverFactory.html", "classSolverFactory" ],
+    [ "SolverIO", "classSolverIO.html", null ],
     [ "SolverLoader", "classSolverLoader.html", null ],
     [ "SolverLogManager", "classSolverLogManager.html", null ],
     [ "SolverXpress", "classSolverXpress.html", "classSolverXpress" ],
