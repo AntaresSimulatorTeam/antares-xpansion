@@ -42,6 +42,12 @@ std::vector<std::string> SolverLoader::GetAvailableSolvers(
   std::call_once(solver_flag, GetAvailableSolversInternal, logger);
   return available_solvers;
 }
+
+/**
+ * @brief Returns a list of supported solvers
+ * Supported doesn't mean available, for exemple if licence are not available
+ * @return
+ */
 std::vector<std::string> SolverLoader::GetSupportedSolvers() {
   static std::vector<std::string> supported_solvers;
   if (supported_solvers.empty()) {

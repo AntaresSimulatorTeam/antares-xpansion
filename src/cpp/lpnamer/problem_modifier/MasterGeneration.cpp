@@ -56,8 +56,6 @@ void MasterGeneration::write_master_mps(
 
 std::filesystem::path FileNameForStructureFile(const std::string& problemName,
                                              std::string solverName) {
-  const std::string save_ext = ".svf";
-  const std::string default_ext = ".mps";
   if (problemName == "master") return {"master"};
   return SolverConfig::FileName(problemName, SolverConfig(std::move(solverName)));
 }
