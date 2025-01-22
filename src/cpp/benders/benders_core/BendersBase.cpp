@@ -774,7 +774,7 @@ void BendersBase::AddSubproblem(
   subproblem_map[kvp.first] = std::make_shared<SubproblemWorker>(
       kvp.second, GetSubproblemPath(kvp.first),
       SubproblemWeight(_data.nsubproblem, kvp.first), _options.SOLVER_NAME,
-      _options.LOG_LEVEL, solver_log_manager_, _logger);
+      _options.LOG_LEVEL, solver_log_manager_, _logger, _options.PROBLEMS_FORMAT);
 }
 
 void BendersBase::free_subproblems() {
@@ -953,7 +953,7 @@ void BendersBase::ResetMasterFromLastIteration() {
   reset_master<WorkerMaster>(master_variable_map_, LastMasterPath(),
                                 get_solver_name(), get_log_level(),
                                 _data.nsubproblem, solver_log_manager_,
-                                IsResumeMode(), _logger);
+                                IsResumeMode(), _logger, Options().PROBLEMS_FORMAT);
 }
 bool BendersBase::MasterIsEmpty() const { return master_is_empty_; }
 

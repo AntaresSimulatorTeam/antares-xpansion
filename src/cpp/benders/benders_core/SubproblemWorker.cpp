@@ -1,5 +1,7 @@
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
 
+#include <utility>
+
 #include "antares-xpansion/helpers/solver_utils.h"
 
 /*!
@@ -10,12 +12,15 @@
  *  \param problem_name : Name of the problem
  *
  */
-SubproblemWorker::SubproblemWorker(
-    VariableMap const &variable_map, const std::filesystem::path &path_to_mps,
-    double const &slave_weight, const std::string &solver_name,
-    const int log_level, SolverLogManager &solver_log_manager, Logger logger)
-    : Worker(std::move(logger)) {
-  init(variable_map, path_to_mps, solver_name, log_level, solver_log_manager);
+SubproblemWorker::SubproblemWorker(VariableMap const &variable_map,
+                                   const std::filesystem::path &path_to_mps,
+                                   double const &slave_weight,
+                                   const std::string &solver_name,
+                                   const int log_level,
+                                   SolverLogManager &solver_log_manager,
+                                   Logger logger, ProblemsFormat format)
+    : Worker(variable_map, path_to_mps, std::move(logger)) {
+  init(solver_name, log_level, solver_log_manager, format);
 
   int mps_ncols(_solver->get_ncols());
   DblVector obj_func_coeffs(mps_ncols);

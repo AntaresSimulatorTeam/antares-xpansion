@@ -34,7 +34,8 @@
         "zlib"
       ]
     },
-    "tbb"
+    "tbb",
+    "fmt"
   ],
   "overrides": [
     {

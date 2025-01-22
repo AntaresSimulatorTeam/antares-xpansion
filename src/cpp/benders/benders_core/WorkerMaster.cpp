@@ -1,11 +1,6 @@
 #include "antares-xpansion/benders/benders_core/WorkerMaster.h"
 
-
 #include "antares-xpansion/helpers/solver_utils.h"
-
-WorkerMaster::WorkerMaster(Logger logger) : Worker(logger) {
-  _is_master = true;
-}
 
 /*!
  *  \brief Constructor of a Master Problem
@@ -19,17 +14,19 @@ WorkerMaster::WorkerMaster(Logger logger) : Worker(logger) {
  *  \param log_level : solver log level
  *  \param subproblems_count : number of subproblems
  */
-WorkerMaster::WorkerMaster(
-    VariableMap const &variable_map, const std::filesystem::path &path_to_mps,
-    const std::string &solver_name, const int log_level, int subproblems_count,
-    SolverLogManager&solver_log_manager,
-    const bool mps_has_alpha, Logger logger)
-    : Worker(std::move(logger)),
-      subproblems_count(subproblems_count),
-      _mps_has_alpha(mps_has_alpha) {
+WorkerMaster::WorkerMaster(VariableMap const &variable_map,
+                           const std::filesystem::path &path_to_mps,
+                           const std::string &solver_name, const int log_level,
+                           int subproblems_count,
+                           SolverLogManager &solver_log_manager,
+                           const bool mps_has_alpha, Logger logger, ProblemsFormat format)
+    : Worker(variable_map, path_to_mps, std::move(logger)),
+      subproblems_count{subproblems_count},
+      _mps_has_alpha{mps_has_alpha}
+{
   _is_master = true;
 
-  init(variable_map, path_to_mps, solver_name, log_level, solver_log_manager);
+  init(solver_name, log_level, solver_log_manager, format);
   if (!_mps_has_alpha) {
     _set_upper_bounds();
   }

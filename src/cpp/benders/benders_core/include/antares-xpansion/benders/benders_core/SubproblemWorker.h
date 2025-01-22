@@ -14,13 +14,13 @@ typedef std::map<std::string, SubproblemWorkerPtr> SubproblemsMapPtr;
 
 class SubproblemWorker : public Worker {
  public:
-  explicit SubproblemWorker(Logger logger) : Worker(logger) {}
+  using Worker::Worker;
   SubproblemWorker(VariableMap const &variable_map,
                    const std::filesystem::path &path_to_mps,
                    double const &slave_weight, const std::string &solver_name,
                    const int log_level,
                    SolverLogManager&solver_log_manager,
-                   Logger logger);
+                   Logger logger, ProblemsFormat format);
   virtual ~SubproblemWorker() = default;
   void get_solution(std::vector<double> &solution) const;
 
