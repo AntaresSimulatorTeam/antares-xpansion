@@ -93,7 +93,6 @@ class BendersMpi : public BendersBase {
   virtual void ComputeSubproblemsContributionToCriteria(
       const SubProblemDataMap &subproblem_data_map);
   void SolveSubproblem(
-      SubProblemDataMap &subproblem_data_map,
       PlainData::SubProblemData &subproblem_data, const std::string &name,
       const std::shared_ptr<SubproblemWorker> &worker) override;
   void UpdateMaxCriterionArea();

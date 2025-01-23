@@ -382,8 +382,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
                 const std::pair<std::string, SubproblemWorkerPtr> &kvp) {
               PlainData::SubProblemData subproblem_data;
               const auto &[name, worker] = kvp;
-              SolveSubproblem(subproblem_data_map, subproblem_data, name,
-                              worker);
+              SolveSubproblem(subproblem_data, name, worker);
 
               std::lock_guard guard(m);
               subproblem_data_map[name] = subproblem_data;
@@ -393,7 +392,6 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap &subproblem_data_map) {
 }
 
 void BendersBase::SolveSubproblem(
-    SubProblemDataMap &subproblem_data_map,
     PlainData::SubProblemData &subproblem_data, const std::string &name,
     const std::shared_ptr<SubproblemWorker> &worker) {
   Timer subproblem_timer;

@@ -170,11 +170,9 @@ void BendersMpi::GatherCuts(const SubProblemDataMap &subproblem_data_map,
 }
 
 void BendersMpi::SolveSubproblem(
-    SubProblemDataMap &subproblem_data_map,
     PlainData::SubProblemData &subproblem_data, const std::string &name,
     const std::shared_ptr<SubproblemWorker> &worker) {
-  BendersBase::SolveSubproblem(subproblem_data_map, subproblem_data, name,
-                               worker);
+  BendersBase::SolveSubproblem(subproblem_data, name, worker);
 
   std::vector<double> solution;
   worker->get_solution(solution);

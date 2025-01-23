@@ -213,8 +213,7 @@ class BendersBase {
   SubproblemsMapPtr subproblem_map;
   SolverLogManager solver_log_manager_;
 
-  virtual void SolveSubproblem(SubProblemDataMap &subproblem_data_map,
-                               PlainData::SubProblemData &subproblem_data,
+  virtual void SolveSubproblem(PlainData::SubProblemData &subproblem_data,
                                const std::string &name,
                                const std::shared_ptr<SubproblemWorker> &worker);
 
