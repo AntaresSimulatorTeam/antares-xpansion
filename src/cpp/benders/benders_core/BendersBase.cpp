@@ -16,13 +16,12 @@
 BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
                          std::shared_ptr<Output::OutputWriter> writer,
                          std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
-    : _options(std::move(options)),
-      _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) /
-                     (_options.CSV_NAME + ".csv")),
-      _logger(std::move(logger)),
+    : _logger(std::move(logger)),
       _writer(std::move(writer)),
-      mathLoggerDriver_(std::move(mathLoggerDriver)) {
-}
+      mathLoggerDriver_(std::move(mathLoggerDriver)),
+      _options(std::move(options)),
+      _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) /
+                     (_options.CSV_NAME + ".csv")) {}
 
 /*!
  *  \brief Initialize set of data used in the loop
