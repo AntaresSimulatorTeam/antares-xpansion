@@ -1,7 +1,5 @@
 #include "antares-xpansion/benders/benders_by_batch/BendersByBatch.h"
 
-#include <algorithm>
-#include <functional>
 #include <mutex>
 #include <numeric>
 
