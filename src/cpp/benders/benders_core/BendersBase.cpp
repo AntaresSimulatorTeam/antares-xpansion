@@ -12,7 +12,7 @@
 #include "antares-xpansion/helpers/solver_utils.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
-BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
+BendersBase::BendersBase(BendersBaseOptions options, Logger logger,
                          std::shared_ptr<Output::OutputWriter> writer,
                          std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
     : _logger(std::move(logger)),
