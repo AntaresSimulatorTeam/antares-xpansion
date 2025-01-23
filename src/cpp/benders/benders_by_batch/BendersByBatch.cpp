@@ -9,12 +9,6 @@
 #include "antares-xpansion/benders/benders_core/CustomVector.h"
 #include "antares-xpansion/benders/benders_by_batch/RandomBatchShuffler.h"
 
-BendersByBatch::BendersByBatch(
-    BendersBaseOptions const &options, Logger logger, std::shared_ptr<Output::OutputWriter> writer,
-    mpi::environment &env, mpi::communicator &world,
-    std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
-    : BendersMpi(options, logger, writer, env, world, mathLoggerDriver) {}
-
 void BendersByBatch::InitializeProblems() {
   MatchProblemToId();
 
