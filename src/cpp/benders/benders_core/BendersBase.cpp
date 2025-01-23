@@ -14,7 +14,7 @@
 #include "antares-xpansion/helpers/solver_utils.h"
 
 BendersBase::BendersBase(const BendersBaseOptions &options, Logger logger,
-                         Writer writer,
+                         std::shared_ptr<Output::OutputWriter> writer,
                          std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
     : _options(std::move(options)),
       _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) /

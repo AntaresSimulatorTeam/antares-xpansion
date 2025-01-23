@@ -32,7 +32,7 @@ auto selectPolicy(lambda f, bool shouldParallelize) {
 class BendersBase {
  public:
   virtual ~BendersBase() = default;
-  BendersBase(const BendersBaseOptions &options, Logger logger, Writer writer,
+  BendersBase(const BendersBaseOptions &options, Logger logger, std::shared_ptr<Output::OutputWriter> writer,
               std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
   virtual void launch() = 0;
   void set_solver_log_file(const std::filesystem::path &log_file);
@@ -101,7 +101,7 @@ class BendersBase {
   bool isExceptionRaised() const;
   void UpdateOverallCosts();
   Logger _logger;
-  Writer _writer;
+  std::shared_ptr<Output::OutputWriter> _writer;
   std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
   void setCriterionComputationInputs(
       const Benders::Criterion::CriterionInputData &criterion_input_data);

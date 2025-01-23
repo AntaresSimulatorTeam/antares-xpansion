@@ -9,7 +9,7 @@ class BendersByBatch : public BendersMpi {
 
  public:
   BendersByBatch(BendersBaseOptions const &options, Logger logger,
-                 Writer writer, mpi::environment &env, mpi::communicator &world,
+                 std::shared_ptr<Output::OutputWriter> writer, mpi::environment &env, mpi::communicator &world,
                  std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
   ~BendersByBatch() override = default;
   void Run() override;

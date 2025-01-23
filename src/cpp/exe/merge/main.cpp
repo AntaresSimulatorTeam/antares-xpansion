@@ -25,7 +25,7 @@ int main(int argc, char **argv) {
 
   logger->display_message("starting merge_mps");
 
-  Writer writer =
+  std::shared_ptr<Output::OutputWriter> writer =
       build_json_writer(std::filesystem::path(options.JSON_FILE), false);
   try {
     MergeMPS merge_mps(options.get_base_options(), logger, writer);

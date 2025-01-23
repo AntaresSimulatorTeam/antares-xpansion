@@ -12,7 +12,7 @@
 class BendersSequential : public BendersBase {
  public:
   explicit BendersSequential(
-      BendersBaseOptions const &options, Logger logger, Writer writer,
+      BendersBaseOptions const &options, Logger logger, std::shared_ptr<Output::OutputWriter> writer,
       std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
   virtual ~BendersSequential() = default;
   virtual void launch();

@@ -19,7 +19,7 @@
 class BendersMpi : public BendersBase {
  public:
   ~BendersMpi() override = default;
-  BendersMpi(BendersBaseOptions const &options, Logger logger, Writer writer,
+  BendersMpi(BendersBaseOptions const &options, Logger logger, std::shared_ptr<Output::OutputWriter> writer,
              mpi::environment &env, mpi::communicator &world,
              std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
 

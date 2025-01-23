@@ -39,7 +39,7 @@ class MasterUpdateBaseTest : public ::testing::TestWithParam<std::string> {
   pBendersBase benders;
   std::shared_ptr<MathLoggerDriver> math_log_driver;
   Logger logger;
-  Writer writer;
+  std::shared_ptr<Output::OutputWriter> writer;
 
   void SetUp() override {
     // Save the current working directory

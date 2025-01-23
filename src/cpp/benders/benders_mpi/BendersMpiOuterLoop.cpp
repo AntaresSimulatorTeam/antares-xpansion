@@ -4,7 +4,7 @@
 namespace Outerloop {
 
 BendersMpiOuterLoop::BendersMpiOuterLoop(
-    const BendersBaseOptions& options, Logger logger, Writer writer,
+    const BendersBaseOptions& options, Logger logger, std::shared_ptr<Output::OutputWriter> writer,
     mpi::environment& env, mpi::communicator& world,
     std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
     : BendersMpi(options, logger, writer, env, world, mathLoggerDriver) {}

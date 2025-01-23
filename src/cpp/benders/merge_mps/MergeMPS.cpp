@@ -6,7 +6,7 @@
 #include "antares-xpansion/helpers/Timer.h"
 
 MergeMPS::MergeMPS(const MergeMPSOptions &options, Logger &logger,
-                   Writer writer)
+                   std::shared_ptr<Output::OutputWriter> writer)
     : _options(options), _logger(logger), _writer(writer) {}
 
 void MergeMPS::launch() {
