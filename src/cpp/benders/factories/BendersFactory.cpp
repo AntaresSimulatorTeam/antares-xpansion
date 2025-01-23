@@ -1,12 +1,15 @@
 
 #include "antares-xpansion/benders/factories/BendersFactory.h"
 
+#include <fmt/format.h>
+
 #include <filesystem>
 
 #include "antares-xpansion/benders/benders_by_batch/BendersByBatch.h"
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_core/MasterUpdate.h"
 #include "antares-xpansion/benders/benders_core/StartUp.h"
+#include "antares-xpansion/benders/benders_core/ProblemFormatStream.h"
 #include "antares-xpansion/benders/benders_mpi/BendersMpiOuterLoop.h"
 #include "antares-xpansion/benders/benders_mpi/OuterLoopBenders.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
@@ -121,6 +124,7 @@ void BendersMainFactory::SetupLoggerAndOutputWriter(
   writer_->write_log_level(options_.LOG_LEVEL);
   writer_->write_master_name(options_.MASTER_NAME);
   writer_->write_solver_name(options_.SOLVER_NAME);
+  writer_->WriteProblemFormat(fmt::format("{}", options_.PROBLEMS_FORMAT));
 }
 
 bool BendersMainFactory::isCriterionListEmpty() const {

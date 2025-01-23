@@ -1,13 +1,16 @@
 #include "antares-xpansion/sensitivity/SensitivityInputReader.h"
 
+#include <fmt/format.h>
+
 #include <boost/algorithm/string/trim.hpp>
 #include <fstream>
 #include <utility>
 
-#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
-#include "antares-xpansion/xpansion_interfaces/OutputWriter.h"
-#include "antares-xpansion/benders/benders_core/common.h"
+#include "antares-xpansion/benders/benders_core/ProblemFormat.h"
+#include "antares-xpansion/benders/benders_core/ProblemFormatStream.h"
+#include "antares-xpansion/benders/output/OutputWriter.h"
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
+#include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 const std::string EPSILON_C("epsilon");
 const std::string CAPEX_C("capex");
@@ -19,8 +22,8 @@ Json::Value read_json(const std::filesystem::path &json_file_path) {
   if (json_file.good()) {
     json_file >> json_data;
   } else {
-    throw std::runtime_error(LOGLOCATION +
-                             "unable to open : " + json_file_path.string());
+    throw std::runtime_error(fmt::format("{}: unable to open : {}",
+                                         LOGLOCATION, json_file_path.string()));
   }
   return json_data;
 }
@@ -45,9 +48,9 @@ std::vector<std::string> SensitivityInputReader::get_projection() const {
   return projection;
 }
 
-SolverAbstract::Ptr SensitivityInputReader::get_last_master() const {
+std::shared_ptr<SolverAbstract> SensitivityInputReader::get_last_master() const {
   SolverFactory factory;
-  SolverAbstract::Ptr last_master;
+  std::shared_ptr<SolverAbstract> last_master;
 
   if (_benders_data[Output::OPTIONS_C]["SOLVER_NAME"].asString() == "COIN") {
     last_master = factory.create_solver("CBC");
@@ -58,13 +61,25 @@ SolverAbstract::Ptr SensitivityInputReader::get_last_master() const {
   last_master->set_threads(1);
   last_master->set_output_log_level(
       _benders_data[Output::OPTIONS_C]["LOG_LEVEL"].asInt());
-  last_master->read_prob_mps(_last_master_path);
+  auto problem_format = _benders_data[Output::OPTIONS_C][Output::PROBLEM_FORMAT_C].asString();
+  auto format = problem_format.empty() ? ProblemsFormat::MPS_FILE : problemsFormatFromString(problem_format);
+  switch (format) {
+    case ProblemsFormat::MPS_FILE:
+      last_master->read_prob_mps(_last_master_path);
+      break;
+    case ProblemsFormat::SAVED_FILE:
+      last_master->restore_prob(_last_master_path);
+      break;
+    default:
+      throw std::runtime_error(fmt::format("{}: unsupported format : {}",
+                                           LOGLOCATION, format));
+  }
   return last_master;
 }
 
 std::map<std::string, std::pair<double, double>>
 SensitivityInputReader::get_candidates_bounds(
-    SolverAbstract::Ptr last_master,
+    SolverAbstract *last_master,
     const std::map<std::string, int> &name_to_id) const {
   std::map<std::string, std::pair<double, double>> candidates_bounds;
 
@@ -145,7 +160,7 @@ SensitivityInputData SensitivityInputReader::get_input_data() const {
   input_data.last_master = get_last_master();
   input_data.basis_file_path = _basis_file_path;
   input_data.candidates_bounds =
-      get_candidates_bounds(input_data.last_master, input_data.name_to_id);
+      get_candidates_bounds(input_data.last_master.get(), input_data.name_to_id);
   input_data.capex = _json_data[CAPEX_C].asBool();
   input_data.projection = get_projection();
   return input_data;

@@ -694,11 +694,16 @@ class ConfigLoader:
 
     def last_master_file_path(self):
         # The 'last_iteration' literal is only hard-coded in Worker.cpp, should we introduce a new variable in _config.options_default ?
-        return os.path.join(
+        use_xpress = str(self.options["solver"]).upper() == "XPRESS"
+        base_path = os.path.join(
             self.simulation_lp_path(),
             self._config.options_default["MASTER_NAME"] +
-            "_last_iteration.mps",
-        )
+            "_last_iteration")
+        if use_xpress:
+            base_path += ".svf"
+        else:
+            base_path += ".mps"
+        return base_path
 
     def last_master_basis_path(self):
         return os.path.join(

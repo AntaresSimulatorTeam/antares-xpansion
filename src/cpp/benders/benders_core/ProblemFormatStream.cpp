@@ -6,10 +6,10 @@ auto fmt::formatter<ProblemsFormat>::format(ProblemsFormat problems_format,
   string_view result = "Unknown";
   switch (problems_format) {
     case ProblemsFormat::MPS_FILE:
-      result = "MPS_FILE";
+      result = "MPS";
       break;
     case ProblemsFormat::SAVED_FILE:
-      result = "SAVED_FILE";
+      result = "SAVED";
       break;
     default:
       result = "Unknown";

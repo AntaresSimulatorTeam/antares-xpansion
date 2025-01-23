@@ -1,4 +1,5 @@
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
+#include <fmt/format.h>
 
 #include <memory>
 #include <mutex>
@@ -8,6 +9,7 @@
 #include "antares-xpansion/benders/benders_core/LastIterationPrinter.h"
 #include "antares-xpansion/benders/benders_core/LastIterationReader.h"
 #include "antares-xpansion/benders/benders_core/LastIterationWriter.h"
+#include "antares-xpansion/benders/benders_core/ProblemFormatStream.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 

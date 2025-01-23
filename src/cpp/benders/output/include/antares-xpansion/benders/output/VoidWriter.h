@@ -1,8 +1,7 @@
 
 #pragma once
 
-#include "antares-xpansion/xpansion_interfaces/OutputWriter.h"
-
+#include "antares-xpansion/benders/output/OutputWriter.h"
 namespace Output {
 /*!
  * \class VoidWriter
@@ -71,5 +70,6 @@ class VoidWriter : public OutputWriter {
   void write_duration(const double duration) override;
   std::string solution_status() const override;
   void WriteProblem(const ProblemData &problem_data) override;
+  void WriteProblemFormat(const std::string format) override;
 };
 }  // namespace Output

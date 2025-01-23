@@ -3,7 +3,6 @@
 //
 
 #pragma once
-#include "antares-xpansion/xpansion_interfaces/OutputWriter.h"
 
 class WriterNOOPStub : public Output::OutputWriter {
  public:
@@ -24,4 +23,5 @@ class WriterNOOPStub : public Output::OutputWriter {
   void write_duration(const double duration) override {}
   std::string solution_status() const override { return std::string(); }
   void WriteProblem(const Output::ProblemData& problem_data) override {}
+  void WriteProblemFormat(const std::string format) override {}
 };

@@ -13,6 +13,7 @@ target_sources(output_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/JsonWriter.cpp
         include/antares-xpansion/benders/output/VoidWriter.h
         include/antares-xpansion/benders/output/JsonWriter.h
+        include/antares-xpansion/benders/output/OutputWriter.h
 )
 
 target_include_directories(output_core

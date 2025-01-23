@@ -26,7 +26,9 @@ const std::string ANTARES_C("antares"), VERSION_C("version"),
     SOLVER_NAME_C("SOLVER_NAME"), PROBLEMNAME_C("problem_name"),
     PROBLEMPATH_C("problem_path"),
     CUMULATIVE_NUMBER_OF_SUBPROBLEM_RESOLVED_C(
-        "cumulative_number_of_subproblem_resolutions");
+        "cumulative_number_of_subproblem_resolutions"),
+    PROBLEM_FORMAT_C{"PROBLEM_FORMAT"}
+;
 struct CandidateData {
   std::string name;
   double invest;
@@ -126,6 +128,7 @@ class OutputWriter {
   virtual void write_duration(const double duration) = 0;
   virtual std::string solution_status() const = 0;
   virtual void WriteProblem(const ProblemData &problem_data) = 0;
+  virtual void WriteProblemFormat(const std::string format) = 0;
 };
 }  // namespace Output
 using Writer = std::shared_ptr<Output::OutputWriter>;
