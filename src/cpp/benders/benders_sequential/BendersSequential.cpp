@@ -64,7 +64,7 @@ void BendersSequential::BuildCut() {
     SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
   }
 
-  SetSubproblemsWalltime(timer.elapsed());
+  _data.subproblems_walltime = timer.elapsed();
   _data.ub = 0;
   BuildCutFull(subproblem_data_map);
 }
@@ -100,14 +100,14 @@ void BendersSequential::Run() {
     _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
     _logger->display_message("\tSolving master...");
     get_master_value();
-    _logger->log_master_solving_duration(get_timer_master());
+    _logger->log_master_solving_duration(_data.timer_master);
 
     ComputeXCut();
     _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
     _logger->display_message("\tSolving subproblems...");
     BuildCut();
-    _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
+    _logger->LogSubproblemsSolvingWalltime(_data.subproblems_walltime);
 
     compute_ub();
     update_best_ub();
@@ -116,7 +116,7 @@ void BendersSequential::Run() {
 
     UpdateTrace();
 
-    set_timer_master(timer_master.elapsed());
+    _data.timer_master = timer_master.elapsed();
     _data.iteration_time = -_data.benders_time;
     _data.benders_time = GetBendersTime();
     _data.iteration_time += _data.benders_time;

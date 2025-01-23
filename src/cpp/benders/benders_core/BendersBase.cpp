@@ -807,28 +807,7 @@ Point BendersBase::get_x_cut() const { return _data.x_cut; }
 void BendersBase::set_x_cut(const Point &x_cut) { _data.x_cut = x_cut; }
 Point BendersBase::get_x_out() const { return _data.x_out; }
 void BendersBase::set_x_out(const Point &x_out) { _data.x_out = x_out; }
-double BendersBase::get_timer_master() const { return _data.timer_master; }
-void BendersBase::set_timer_master(const double &timer_master) {
-  _data.timer_master = timer_master;
-}
-double BendersBase::GetSubproblemsWalltime() const {
-  return _data.subproblems_walltime;
-}
-void BendersBase::SetSubproblemsWalltime(const double &duration) {
-  _data.subproblems_walltime = duration;
-}
-double BendersBase::GetSubproblemsCpuTime() const {
-  return _data.subproblems_cputime;
-}
-void BendersBase::SetSubproblemsCpuTime(const double &duration) {
-  _data.subproblems_cputime = duration;
-}
-double BendersBase::GetSubproblemsCumulativeCpuTime() const {
-  return _data.subproblems_cumulative_cputime;
-}
-void BendersBase::SetSubproblemsCumulativeCpuTime(const double &duration) {
-  _data.subproblems_cumulative_cputime = duration;
-}
+
 double BendersBase::GetSubproblemCost() const { return _data.subproblem_cost; }
 void BendersBase::SetSubproblemCost(const double &subproblem_cost) {
   _data.subproblem_cost = subproblem_cost;

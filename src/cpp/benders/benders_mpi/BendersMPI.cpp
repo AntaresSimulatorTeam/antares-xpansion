@@ -103,7 +103,7 @@ void BendersMpi::solve_master_and_create_trace() {
   _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
   _logger->display_message("\tSolving master...");
   get_master_value();
-  _logger->log_master_solving_duration(get_timer_master());
+  _logger->log_master_solving_duration(_data.timer_master);
 
   ComputeXCut();
   _logger->log_iteration_candidates(bendersDataToLogData(_data));
@@ -124,7 +124,7 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts() {
   Timer subproblems_timer_per_proc;
   try {
     subproblem_data_map = get_subproblem_cut_package();
-    SetSubproblemsCpuTime(subproblems_timer_per_proc.elapsed());
+    _data.subproblems_cputime = subproblems_timer_per_proc.elapsed();
 
   } catch (std::exception const &ex) {
     success = 0;
@@ -150,11 +150,11 @@ void BendersMpi::GatherCuts(const SubProblemDataMap &subproblem_data_map,
                             const Timer &walltime) {
   std::vector<SubProblemDataMap> gathered_subproblem_map;
   mpi::gather(_world, subproblem_data_map, gathered_subproblem_map, rank_0);
-  SetSubproblemsWalltime(walltime.elapsed());
+  _data.subproblems_walltime = walltime.elapsed();
   double cumulative_subproblems_timer_per_iter(0);
-  Reduce(GetSubproblemsCpuTime(), cumulative_subproblems_timer_per_iter,
+  Reduce(_data.subproblems_cputime, cumulative_subproblems_timer_per_iter,
          std::plus<double>(), rank_0);
-  SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter);
+  _data.subproblems_cumulative_cputime = cumulative_subproblems_timer_per_iter;
 
   // only rank_0 receive non-emtpy gathered_subproblem_map
   master_build_cuts(gathered_subproblem_map);
@@ -256,8 +256,8 @@ void BendersMpi::master_build_cuts(
   }
 
   _logger->LogSubproblemsSolvingCumulativeCpuTime(
-      GetSubproblemsCumulativeCpuTime());
-  _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
+      _data.subproblems_cumulative_cputime);
+  _logger->LogSubproblemsSolvingWalltime(_data.subproblems_walltime);
 }
 
 /*!
