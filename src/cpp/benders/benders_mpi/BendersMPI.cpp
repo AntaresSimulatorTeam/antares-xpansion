@@ -174,8 +174,7 @@ void BendersMpi::SolveSubproblem(
     const std::shared_ptr<SubproblemWorker> &worker) {
   BendersBase::SolveSubproblem(subproblem_data, name, worker);
 
-  std::vector<double> solution;
-  worker->get_solution(solution);
+  std::vector<double> solution = worker->get_solution();
   criterion_computation_.ComputeCriterion(
     SubproblemWeight(_data.nsubproblem, name), solution,
     subproblem_data.criteria,

@@ -985,7 +985,7 @@ CriteriaCurrentIterationData BendersBase::GetOuterLoopData() const {
 }
 std::vector<double> BendersBase::GetOuterLoopCriterionAtBestBenders() const {
   return ((criteria_vector_for_each_iteration_.empty())
-              ? std::vector<double>()
+              ? std::vector<double>()  // Unnamed RVO
               : criteria_vector_for_each_iteration_[_data.best_it - 1]);
 }
 
