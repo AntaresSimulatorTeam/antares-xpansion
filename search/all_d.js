@@ -36,7 +36,7 @@ var searchData=
   ['documentation_33',['documentation',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md42',1,'Documentation'],['../md_docs_2how__to.html#autotoc_md129',1,'Online documentation']]],
   ['documention_20generation_20guidelines_34',['Documention generation guidelines',['../md_docs_2how__to.html',1,'']]],
   ['download_20antares_20xpansion_35',['Download Antares-Xpansion',['../md_docs_2user-guide_2get-started_2installation.html#autotoc_md157',1,'']]],
-  ['dump_36',['dump',['../classOutput_1_1JsonWriter.html#a6ad7bb14475e566bc2584dcc4911095d',1,'Output::JsonWriter::dump()'],['../classOutput_1_1VoidWriter.html#aa91f6182476c0a67dad018f58e0a6a70',1,'Output::VoidWriter::dump()'],['../classOutput_1_1OutputWriter.html#abe45b40cf82f15fa815d4c56d062efca',1,'Output::OutputWriter::dump()'],['../classWriterNOOPStub.html#a1f2e13c67176b49374cda6142c4e3b24',1,'WriterNOOPStub::dump()']]],
+  ['dump_36',['dump',['../classOutput_1_1JsonWriter.html#a6ad7bb14475e566bc2584dcc4911095d',1,'Output::JsonWriter::dump()'],['../classOutput_1_1OutputWriter.html#abe45b40cf82f15fa815d4c56d062efca',1,'Output::OutputWriter::dump()'],['../classOutput_1_1VoidWriter.html#aa91f6182476c0a67dad018f58e0a6a70',1,'Output::VoidWriter::dump()'],['../classWriterNOOPStub.html#a1f2e13c67176b49374cda6142c4e3b24',1,'WriterNOOPStub::dump()']]],
   ['dynamically_37',['Installing Xpress Solver and Loading it Dynamically',['../md_docs_2developer-guide_2install__from__sources_26-Xpress.html',1,'']]],
   ['dynamiclibrary_38',['DynamicLibrary',['../classSolver_1_1DynamicLibrary.html',1,'Solver']]]
 ];

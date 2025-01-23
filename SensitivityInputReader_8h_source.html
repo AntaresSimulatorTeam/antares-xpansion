@@ -153,7 +153,7 @@ $(document).ready(function(){initNavTree('SensitivityInputReader_8h_source.html'
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  <span class="keywordtype">double</span> benders_capex;</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  std::map&lt;std::string, double&gt; benders_solution;</div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  std::map&lt;std::string, int&gt; name_to_id;</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  <a class="code hl_typedef" href="classSolverAbstract.html#a8f77d6d39341f89c763b912d95254c30">SolverAbstract::Ptr</a> last_master;</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  std::shared_ptr&lt;SolverAbstract&gt; last_master;</div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  std::filesystem::path basis_file_path;</div>
 <div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  std::map&lt;std::string, std::pair&lt;double, double&gt;&gt; candidates_bounds;</div>
 <div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keywordtype">bool</span> capex;</div>
@@ -181,19 +181,19 @@ $(document).ready(function(){initNavTree('SensitivityInputReader_8h_source.html'
 <div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>  std::filesystem::path _basis_file_path;</div>
 <div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>  std::filesystem::path _structure_file_path;</div>
 <div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span> </div>
-<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  <a class="code hl_typedef" href="classSolverAbstract.html#a8f77d6d39341f89c763b912d95254c30">SolverAbstract::Ptr</a> get_last_master() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span>  std::shared_ptr&lt;SolverAbstract&gt; get_last_master() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordtype">double</span> get_best_ub() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordtype">double</span> get_benders_capex() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>  std::map&lt;std::string, double&gt; get_benders_solution() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>  std::map&lt;std::string, int&gt; get_name_to_id() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  std::vector&lt;std::string&gt; get_projection() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>  std::map&lt;std::string, std::pair&lt;double, double&gt;&gt; get_candidates_bounds(</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      <a class="code hl_typedef" href="classSolverAbstract.html#a8f77d6d39341f89c763b912d95254c30">SolverAbstract::Ptr</a> last_master,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      <a class="code hl_class" href="classSolverAbstract.html">SolverAbstract</a> *last_master,</div>
 <div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>      <span class="keyword">const</span> std::map&lt;std::string, int&gt; &amp;name_to_id) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>};</div>
 </div>
 <div class="ttc" id="aclassSensitivityInputReader_html"><div class="ttname"><a href="classSensitivityInputReader.html">SensitivityInputReader</a></div><div class="ttdef"><b>Definition</b> SensitivityInputReader.h:21</div></div>
-<div class="ttc" id="aclassSolverAbstract_html_a8f77d6d39341f89c763b912d95254c30"><div class="ttname"><a href="classSolverAbstract.html#a8f77d6d39341f89c763b912d95254c30">SolverAbstract::Ptr</a></div><div class="ttdeci">std::shared_ptr&lt; SolverAbstract &gt; Ptr</div><div class="ttdef"><b>Definition</b> SolverAbstract.h:181</div></div>
+<div class="ttc" id="aclassSolverAbstract_html"><div class="ttname"><a href="classSolverAbstract.html">SolverAbstract</a></div><div class="ttdef"><b>Definition</b> SolverAbstract.h:170</div></div>
 <div class="ttc" id="astructSensitivityInputData_html"><div class="ttname"><a href="structSensitivityInputData.html">SensitivityInputData</a></div><div class="ttdef"><b>Definition</b> SensitivityInputReader.h:8</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
