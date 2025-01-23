@@ -25,7 +25,7 @@ class BendersMpi : public BendersBase {
 
   void launch() override;
   std::string BendersName() const override { return "Benders mpi"; }
-  const unsigned int rank_0 = 0;
+  const int rank_0 = 0;
 
  protected:
   void free() override;

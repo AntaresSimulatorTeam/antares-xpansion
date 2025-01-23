@@ -36,7 +36,7 @@ void BendersByBatch::InitializeProblems() {
         AddSubproblem({problem_name, coupling_map_[problem_name]});
         AddSubproblemName(problem_name);
       }
-      problem_count++;
+      ++problem_count;
     }
   }
 

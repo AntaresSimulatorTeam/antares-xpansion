@@ -173,7 +173,7 @@ class BendersBase {
   std::filesystem::path LastIterationFile() const {
     return std::filesystem::path(_options.LAST_ITERATION_JSON_FILE);
   }
-  void UpdateMaxNumberIterationResumeMode(const unsigned nb_iteration_done);
+  void UpdateMaxNumberIterationResumeMode(int nb_iteration_done);
   void SaveCurrentIterationInOutputFile() const;
   void SaveSolutionInOutputFile() const;
   void PrintCurrentIterationCsv();
@@ -252,7 +252,7 @@ class BendersBase {
   void FillWorkerMasterData(WorkerMasterData &workerMasterData);
   bool master_is_empty_ = true;
   BendersBaseOptions _options;
-  unsigned int _totalNbProblems = 0;
+  int _totalNbProblems = 0;
   std::filesystem::path solver_log_file_ = "";
   WorkerMasterPtr _master;
   VariableMap _problem_to_id;

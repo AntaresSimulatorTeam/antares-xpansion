@@ -200,7 +200,7 @@ void BendersBase::UpdateStoppingCriterion() {
   else if (_data.lb + _options.ABSOLUTE_GAP >= _data.best_ub)
     _data.stopping_criterion = StoppingCriterion::absolute_gap;
   else if (((_data.best_ub - _data.lb) /
-            (std::max)(std::abs(_data.best_ub), std::abs(_data.lb))) <=
+            std::max(std::abs(_data.best_ub), std::abs(_data.lb))) <=
            _options.RELATIVE_GAP)
     _data.stopping_criterion = StoppingCriterion::relative_gap;
 }
@@ -341,7 +341,6 @@ void BendersBase::ComputeXCut() {
 void BendersBase::ComputeInvestCost() {
   _data.invest_cost = 0;
 
-  int ncols = _master->_solver->get_ncols();
   std::vector<double> obj(MasterObjectiveFunctionCoeffs());
 
   for (const auto &[col_name, value] : _data.x_cut) {
@@ -628,7 +627,9 @@ Output::SolutionData BendersBase::BendersSolution() const {
         best_iteration_data.invest_cost,
         best_iteration_data.subproblem_cost,
         best_iteration_data.invest_cost + best_iteration_data.subproblem_cost,
-        candidates_vec};
+        candidates_vec,
+        0
+    };
 
   } else {
     const auto &best_iteration_worker_master_data = relevantIterationData_.best;
@@ -693,20 +694,6 @@ std::filesystem::path BendersBase::get_master_path() const {
            (_options.MASTER_NAME + MPS_SUFFIX);
   }
 }
-/*!
- *  \brief Get path to last mps file of master problem
- */
-std::filesystem::path BendersBase::LastMasterPath() const {
-  return std::filesystem::path(_options.OUTPUTROOT) /
-         (_options.LAST_MASTER_MPS + MPS_SUFFIX);
-}
-
-/*!
- *  \brief Get path to structure txt file from options
- */
-std::filesystem::path BendersBase::get_structure_path() const {
-  return std::filesystem::path(_options.INPUTROOT) / _options.STRUCTURE_FILE;
-}
 
 LogData BendersBase::bendersDataToLogData(
     const CurrentIterationData &data) const {
@@ -744,7 +731,7 @@ void BendersBase::set_solver_log_file(const std::filesystem::path &log_file) {
  */
 void BendersBase::set_input_map(const CouplingMap &coupling_map) {
   coupling_map_ = coupling_map;
-  _totalNbProblems = coupling_map_.size();
+  _totalNbProblems = static_cast<int>(coupling_map_.size());
   _writer->write_nbweeks(_totalNbProblems);
   _data.nsubproblem = _totalNbProblems - 1;
   master_variable_map_ = get_master_variable_map(coupling_map_);
@@ -833,8 +820,7 @@ void BendersBase::ResetSimplexIterationsBounds() {
 }
 bool BendersBase::IsResumeMode() const { return _options.RESUME; }
 
-void BendersBase::UpdateMaxNumberIterationResumeMode(
-    const unsigned nb_iteration_done) {
+void BendersBase::UpdateMaxNumberIterationResumeMode(int nb_iteration_done) {
   if (_options.MAX_ITERATIONS == -1) {
     return;
   } else if (_options.MAX_ITERATIONS - nb_iteration_done <= 0) {
@@ -846,9 +832,6 @@ void BendersBase::UpdateMaxNumberIterationResumeMode(
 }
 
 double BendersBase::execution_time() const { return _data.benders_time; }
-LogData BendersBase::GetBestIterationData() const {
-  return best_iteration_data;
-}
 
 void BendersBase::ChecksResumeMode() {
   benders_timer = Timer();
@@ -905,14 +888,6 @@ void BendersBase::write_basis() const {
   _master->write_basis(filename);
 }
 
-WorkerMasterDataVect BendersBase::AllCuts() const {
-  return workerMasterDataVect_;
-}
-
-int BendersBase::MasterRowIndex(const std::string &row_name) const {
-  return _master->RowIndex(row_name);
-}
-
 void BendersBase::MasterChangeRhs(int id_row, double val) const {
   _master->ChangeRhs(id_row, val);
 }
@@ -929,12 +904,7 @@ void BendersBase::MasterAddRows(
   _master->AddRows(qrtype_p, rhs_p, range_p, mstart_p, mclind_p, dmatval_p,
                    row_names);
 }
-void BendersBase::ResetMasterFromLastIteration() {
-  reset_master<WorkerMaster>(
-      master_variable_map_, LastMasterPath(), get_solver_name(),
-      get_log_level(), _data.nsubproblem, solver_log_manager_, IsResumeMode(),
-      _logger, Options().PROBLEMS_FORMAT);
-}
+
 bool BendersBase::MasterIsEmpty() const { return master_is_empty_; }
 
 std::vector<double> BendersBase::MasterObjectiveFunctionCoeffs() const {
@@ -959,11 +929,12 @@ void BendersBase::SetMasterObjectiveFunctionCoeffsToZeros() const {
   // assuming that master var id are in [0, size-1]
   auto master_vars_size = master_variable_map_.size();
   std::vector<double> zeros(master_vars_size, 0.0);
-  SetMasterObjectiveFunction(zeros.data(), 0, master_vars_size - 1);
+  SetMasterObjectiveFunction(zeros.data(), 0, static_cast<int>(master_vars_size) - 1);
 }
 
 void BendersBase::SetMasterObjectiveFunction(const double *coeffs, int first,
                                              int last) const {
+  assert(last >= first);
   _master->_solver->set_obj(coeffs, first, last);
 }
 
