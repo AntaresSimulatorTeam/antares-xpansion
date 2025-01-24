@@ -14,8 +14,7 @@ class WorkerMaster : public Worker {
   WorkerMaster(VariableMap const &variable_map,
                const std::filesystem::path &path_to_mps,
                const std::string &solver_name, int log_level,
-               int subproblems_count,
-               SolverLogManager&solver_log_manager,
+               int subproblems_count, SolverLogManager &solver_log_manager,
                bool mps_has_alpha, Logger logger, ProblemsFormat format);
   ~WorkerMaster() override = default;
 
@@ -63,4 +62,5 @@ class WorkerMaster : public Worker {
   void _set_nb_units_var_ids();
   void roundXVarIfWithinTolerance(std::vector<double> &values,
                                   double tolerance);
+  void roundIfWithinTolerance(std::vector<double> &values, double tolerance) const;
 };

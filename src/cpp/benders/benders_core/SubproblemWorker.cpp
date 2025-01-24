@@ -58,7 +58,7 @@ void SubproblemWorker::fix_to(Point const &x0) const {
   solver_chgbounds(_solver, indexes, bndtypes, values);
 }
 
-static double INTTOL = 1e-4;
+static double INTTOL = 5e-3;
 void SubproblemWorker::roundIfWithinTolerance(std::vector<double> &values,
                                               double tolerance) const {
   std::transform(values.begin(), values.end(), values.begin(),

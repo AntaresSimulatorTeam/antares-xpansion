@@ -19,11 +19,11 @@ WorkerMaster::WorkerMaster(VariableMap const &variable_map,
                            const std::string &solver_name, const int log_level,
                            int subproblems_count,
                            SolverLogManager &solver_log_manager,
-                           const bool mps_has_alpha, Logger logger, ProblemsFormat format)
+                           const bool mps_has_alpha, Logger logger,
+                           ProblemsFormat format)
     : Worker(variable_map, path_to_mps, std::move(logger)),
       subproblems_count{subproblems_count},
-      _mps_has_alpha{mps_has_alpha}
-{
+      _mps_has_alpha{mps_has_alpha} {
   _is_master = true;
 
   init(solver_name, log_level, solver_log_manager, format);
@@ -237,6 +237,15 @@ void WorkerMaster::define_matval_mclind_for_index(
   matval.back() = -1;
 }
 
+static double ISZEROTOL = 5e-3;
+void WorkerMaster::roundIfWithinTolerance(std::vector<double> &values,
+                                          double tolerance) const {
+  std::transform(values.begin(), values.end(), values.begin(),
+                 [tolerance](double value) -> double {
+                   return std::abs(value) < tolerance ? 0 : value;
+                 });
+}
+
 /*!
  *  \brief Add one benders cut to a problem
  *
@@ -259,6 +268,8 @@ void WorkerMaster::addSubproblemCut(int i, Point const &s, Point const &x_cut,
 
   DefineRhsWithMasterVariable(s, x_cut, rhs, rowrhs);
   define_matval_mclind_for_index(i, s, matval, mclind);
+
+  roundIfWithinTolerance(rowrhs, ISZEROTOL);
 
   solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
