@@ -107,7 +107,7 @@ class AntaresDriver:
     def _get_antares_cmd(self):
         cmd = [str(self.antares_exe_path), self.data_dir, self.ANTARES_N_CPU_OPTION, str(self.antares_n_cpu), self.zip_option]
         if self.use_xpress:
-            cmd.extend(["--solver=xpress"])
+            cmd.extend(["--solver=sirius"])
         else:
             cmd.extend(["--solver=sirius"])
         simulator_version = version.parse(__antares_simulator_version__)
