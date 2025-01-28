@@ -1,17 +1,24 @@
 #ifndef SRC_CPP_LPNAMER_INPUTREADER_YEARLYWEIGHTSWRITER_H
 #define SRC_CPP_LPNAMER_INPUTREADER_YEARLYWEIGHTSWRITER_H
+#include <antares-xpansion/lpnamer/model/Problem.h>
+
 #include <filesystem>
 #include <map>
 #include <vector>
+
+#include "MpsTxtWriter.h"
 
 class YearlyWeightsWriter {
  public:
   explicit YearlyWeightsWriter(const std::filesystem::path& xpansion_output_dir,
                                const std::vector<double>& weights_vector,
                                const std::filesystem::path& output_file,
-                               const std::vector<int>& active_years);
+                               const std::vector<int>& active_years,
+                               const std::string& solver_name);
 
-  void CreateWeightFile();
+  void CreateWeightFile(
+      const std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>&
+          problems_and_data);
 
  private:
   std::filesystem::path xpansion_output_dir_;
@@ -22,7 +29,10 @@ class YearlyWeightsWriter {
   std::vector<double> weights_vector_;
   std::filesystem::path output_file_;
   std::vector<int> active_years_;
-  void FillMpsWeightsMap();
+  std::string solver_name_;
+  void FillMpsWeightsMap(
+      const std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>&
+          problems_and_data);
   int GetYearFromMpsName(const std::string& file_name) const;
   void DumpMpsWeightsToFile() const;
 };

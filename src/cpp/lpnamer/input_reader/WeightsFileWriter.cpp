@@ -1,5 +1,7 @@
 #include "antares-xpansion/lpnamer/input_reader/WeightsFileWriter.h"
 
+#include <antares-xpansion/multisolver_interface/SolverConfig.h>
+
 #include <fstream>
 #include <numeric>
 #include <ranges>
@@ -11,34 +13,35 @@ YearlyWeightsWriter::YearlyWeightsWriter(
     const std::filesystem::path& xpansion_output_dir,
     const std::vector<double>& weights_vector,
     const std::filesystem::path& output_file,
-    const std::vector<int>& active_years)
+    const std::vector<int>& active_years, const std::string& solver_name)
     : xpansion_output_dir_(xpansion_output_dir),
       weights_vector_(weights_vector),
       output_file_(output_file),
-      active_years_(active_years) {
+      active_years_(active_years),
+      solver_name_(solver_name) {
   xpansion_lp_dir_ = xpansion_output_dir / LP_DIR;
   if (!std::filesystem::is_directory(xpansion_lp_dir_)) {
     std::filesystem::create_directory(xpansion_lp_dir_);
   }
 }
 
-void YearlyWeightsWriter::CreateWeightFile() {
-  FillMpsWeightsMap();
+void YearlyWeightsWriter::CreateWeightFile(
+    const std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>&
+        problems_and_data) {
+  FillMpsWeightsMap(problems_and_data);
   DumpMpsWeightsToFile();
 }
 
-void YearlyWeightsWriter::FillMpsWeightsMap() {
+void YearlyWeightsWriter::FillMpsWeightsMap(
+    const std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>&
+        problems_and_data) {
   mps_weights_.clear();
-  auto it = std::filesystem::directory_iterator(xpansion_lp_dir_);
-  auto mps_list = it | std::views::filter([](const auto& p) {
-                    return p.path().extension() == ".mps";
-                  });
-  for (auto& mps_file : mps_list ) {
-    auto year = GetYearFromMpsName(mps_file.path().filename().string());
-    auto year_index =
-        std::find(active_years_.begin(), active_years_.end(), year) -
-        active_years_.begin();
-    mps_weights_[mps_file.path().filename()] = weights_vector_[year_index];
+
+  for (const auto& [problem, data] : problems_and_data) {
+    auto year_index = std::find(active_years_.begin(), active_years_.end(),
+                                problem->mc_year) -
+                      active_years_.begin();
+    mps_weights_[data._problem_mps] = weights_vector_[year_index];
   }
 }
 
@@ -54,7 +57,10 @@ void YearlyWeightsWriter::DumpMpsWeightsToFile() const {
   mps_weights_file.open(file);
 
   for (const auto& [mps_name, weight] : mps_weights_) {
-    mps_weights_file << mps_name.string() << " " << weight << std::endl;
+    mps_weights_file << SolverConfig::FileName(
+                            mps_name, SolverConfig(std::move(solver_name_)))
+                            .string()
+                     << " " << weight << std::endl;
   }
   mps_weights_file << "WEIGHT_SUM "
                    << std::reduce(weights_vector_.begin(),
