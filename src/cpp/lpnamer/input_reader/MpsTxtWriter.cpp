@@ -26,6 +26,7 @@ auto FileWithExtension(std::string_view ext,
 
 void FilesMapper::FillMapFiles() {
   year_week_and_files_dict_.clear();
+  // For now, Antares can only write .mps files
   FillMapWithMpsFiles(FileWithExtension(".mps"s, simulation_dir_));
   std::vector<std::filesystem::path> variables_files;
   std::vector<std::filesystem::path> constraints_files;
@@ -57,6 +58,7 @@ void FilesMapper::FillMapZip() {
   zip_reader.Open();
   zip_reader.LoadEntriesPath();
   year_week_and_files_dict_.clear();
+  // For now, Antares can only write .mps files
   FillMapWithMpsFiles(zip_reader.GetEntriesPathWithExtension(".mps"s));
   std::vector<std::filesystem::path> variables_files;
   std::vector<std::filesystem::path> constraints_files;
