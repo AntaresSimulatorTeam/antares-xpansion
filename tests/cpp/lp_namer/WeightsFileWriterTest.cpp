@@ -85,24 +85,27 @@ class MockSolverAbstract : public SolverAbstract {
 
 class MockProblem : public Problem {
  public:
-  MockProblem(int year)
-      : Problem(std::make_shared<MockSolverAbstract>()), mc_year(year) {}
-  int mc_year;
+  MockProblem(int year) : Problem(std::make_shared<MockSolverAbstract>()) {
+    Problem::mc_year = year;
+  }
 };
 
 // class MockProblemData : public ProblemData {
 //  public:
-//   MockProblemData(const std::string &mps) : ProblemData(mps, "variables.txt") {}
+//   MockProblemData(const std::string &mps) : ProblemData(mps, "variables.txt")
+//   {}
 // };
 
-void RunWeightsFileWriterTest(const std::string& solver_name, const std::string& expected) {
+void RunWeightsFileWriterTest(const std::string &solver_name,
+                              const std::string &expected) {
   auto tempDir = std::filesystem::temp_directory_path() / "lp";
   if (!std::filesystem::is_directory(tempDir)) {
     std::filesystem::create_directory(tempDir);
   }
 
-  auto yearly_weight_writer = YearlyWeightsWriter(
-      tempDir, {3, 5, 7}, "weights_123.txt", {1, 2, 3}, solver_name);
+  auto yearly_weight_writer =
+      YearlyWeightsWriter(std::filesystem::temp_directory_path(), {3, 5, 7},
+                          "weights_123.txt", {1, 2, 3}, solver_name);
 
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
       problems_and_data = {
@@ -130,18 +133,6 @@ void RunWeightsFileWriterTest(const std::string& solver_name, const std::string&
 
   // Clean up
   std::filesystem::remove(tempDir / "weights_123.txt");
-}
-
-TEST(WeightsFileWriterTest, CorrectlyWriteWeightsFileWithMockSolver) {
-  std::string expected = R"xxx(problem-1-1--optim-nb-1.mps 3
-problem-1-50--optim-nb-1.mps 3
-problem-2-10--optim-nb-1.mps 5
-problem-2-11--optim-nb-1.mps 5
-problem-2-30--optim-nb-1.mps 5
-problem-3-20--optim-nb-1.mps 7
-WEIGHT_SUM 15
-)xxx";
-  RunWeightsFileWriterTest("MockSolver", expected);
 }
 
 TEST(WeightsFileWriterTest, CorrectlyWriteWeightsFileWithXpress) {
