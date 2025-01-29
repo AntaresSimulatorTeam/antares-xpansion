@@ -17,7 +17,7 @@ std::shared_ptr<Problem> FileProblemProviderAdapter::provide_problem(
   const std::filesystem::path problem_path =
       lp_dir_.parent_path() / problem_name_;
   in_prblm->read_prob_mps(problem_path);
-  std::remove(problem_path.c_str());
+  std::filesystem::remove(problem_path);
   return in_prblm;
 }
 FileProblemProviderAdapter::FileProblemProviderAdapter(

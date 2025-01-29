@@ -26,7 +26,7 @@ std::shared_ptr<Problem> ZipProblemProviderAdapter::provide_problem(
       factory.create_solver(solver_name, solver_log_manager));
 
   in_prblm->read_prob_mps(lp_mps_name);
-  std::remove(lp_mps_name.c_str());
+  std::filesystem::remove(lp_mps_name);
   return in_prblm;
 }
 
