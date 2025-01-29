@@ -6,9 +6,9 @@
 
 #include <utility>
 
+#include "antares-xpansion/helpers/solver_utils.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
-#include "antares-xpansion/helpers/solver_utils.h"
 void ZipProblemProviderAdapter::reader_extract_file(
     const std::string& problem_name, ArchiveReader& reader,
     const std::filesystem::path& lpDir) const {
@@ -26,6 +26,7 @@ std::shared_ptr<Problem> ZipProblemProviderAdapter::provide_problem(
       factory.create_solver(solver_name, solver_log_manager));
 
   in_prblm->read_prob_mps(lp_mps_name);
+  std::filesystem::remove(lp_mps_name);
   return in_prblm;
 }
 
