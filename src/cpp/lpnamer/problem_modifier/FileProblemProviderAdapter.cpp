@@ -14,7 +14,10 @@ std::shared_ptr<Problem> FileProblemProviderAdapter::provide_problem(
   auto in_prblm = std::make_shared<Problem>(
       factory.create_solver(solver_name, solver_log_manager));
 
-  in_prblm->read_prob_mps(lp_dir_.parent_path() / problem_name_);
+  const std::filesystem::path problem_path =
+      lp_dir_.parent_path() / problem_name_;
+  in_prblm->read_prob_mps(problem_path);
+  std::remove(problem_path.c_str());
   return in_prblm;
 }
 FileProblemProviderAdapter::FileProblemProviderAdapter(
