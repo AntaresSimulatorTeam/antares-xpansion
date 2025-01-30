@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['ptr_0',['Ptr',['../classSolverAbstract.html#a8f77d6d39341f89c763b912d95254c30',1,'SolverAbstract']]]
+  ['ptr_0',['Ptr',['../classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076',1,'SolverAbstract']]]
 ];

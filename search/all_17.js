@@ -1,7 +1,7 @@
 var searchData=
 [
-  ['n_20cpu_20tt_0',['&lt;tt&gt;--antares-n-cpu&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md169',1,'']]],
-  ['n_20np_20tt_1',['&lt;tt&gt;-n, --np&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md168',1,'']]],
+  ['n_20cpu_20tt_0',['&lt;tt&gt;--antares-n-cpu&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md170',1,'']]],
+  ['n_20np_20tt_1',['&lt;tt&gt;-n, --np&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md169',1,'']]],
   ['name_20tt_2',['&lt;tt&gt;name&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md142',1,'']]],
   ['nameandtags_3',['NameAndTags',['../structCatch_1_1NameAndTags.html',1,'Catch']]],
   ['new_20contributors_4',['New Contributors',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md13',1,'']]],
@@ -18,7 +18,7 @@ var searchData=
   ['nothandledoption_15',['NotHandledOption',['../classantares__xpansion_1_1input__checker_1_1NotHandledOption.html',1,'antares_xpansion::input_checker']]],
   ['nothandledvalue_16',['NotHandledValue',['../classantares__xpansion_1_1input__checker_1_1NotHandledValue.html',1,'antares_xpansion::input_checker']]],
   ['notimplementedfeaturesolverexception_17',['NotImplementedFeatureSolverException',['../classNotImplementedFeatureSolverException.html',1,'']]],
-  ['np_20tt_18',['&lt;tt&gt;-n, --np&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md168',1,'']]],
+  ['np_20tt_18',['&lt;tt&gt;-n, --np&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md169',1,'']]],
   ['ntc_5fand_5fcandidate_5fmismatch_19',['NTC_And_Candidate_Mismatch',['../classantares__xpansion_1_1chronicles__checker_1_1NTC__And__Candidate__Mismatch.html',1,'antares_xpansion::chronicles_checker']]],
   ['ntccolumnconstrainterror_20',['NTCColumnConstraintError',['../classantares__xpansion_1_1config__loader_1_1NTCColumnConstraintError.html',1,'antares_xpansion::config_loader']]],
   ['ntccolumnmismatch_21',['NTCColumnMismatch',['../classantares__xpansion_1_1chronicles__checker_1_1NTCColumnMismatch.html',1,'antares_xpansion::chronicles_checker']]],

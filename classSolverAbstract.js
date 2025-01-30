@@ -1,6 +1,6 @@
 var classSolverAbstract =
 [
-    [ "Ptr", "classSolverAbstract.html#a8f77d6d39341f89c763b912d95254c30", null ],
+    [ "Ptr", "classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076", null ],
     [ "SolverAbstract", "classSolverAbstract.html#a765549330512481765387972db04ee43", null ],
     [ "SolverAbstract", "classSolverAbstract.html#a365b9e1c1813590b5b3f1be5103041c7", null ],
     [ "~SolverAbstract", "classSolverAbstract.html#a779bb6533ebb23c5887433d9fe295498", null ],

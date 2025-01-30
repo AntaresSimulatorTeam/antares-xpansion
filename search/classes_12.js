@@ -33,7 +33,7 @@ var searchData=
   ['teststudyupdater_30',['TestStudyUpdater',['../classtests_1_1python_1_1test__study__updater_1_1TestStudyUpdater.html',1,'tests::python::test_study_updater']]],
   ['thereisnolinkprofileassociatedwiththisprofile_31',['ThereIsNoLinkProfileAssociatedWithThisProfile',['../classActiveLinksBuilder_1_1ThereIsNoLinkProfileAssociatedWithThisProfile.html',1,'ActiveLinksBuilder']]],
   ['timelimitvalueerror_32',['TimelimitValueError',['../classantares__xpansion_1_1input__checker_1_1TimelimitValueError.html',1,'antares_xpansion::input_checker']]],
-  ['timer_33',['timer',['../classCatch_1_1Timer.html',1,'Catch::Timer'],['../classTimer.html',1,'Timer']]],
+  ['timer_33',['Timer',['../classCatch_1_1Timer.html',1,'Catch::Timer'],['../classTimer.html',1,'Timer']]],
   ['to_34',['to',['../structto.html',1,'']]],
   ['totals_35',['Totals',['../structCatch_1_1Totals.html',1,'Catch']]],
   ['true_5fgiven_36',['true_given',['../structCatch_1_1true__given.html',1,'Catch']]]
