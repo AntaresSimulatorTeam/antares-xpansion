@@ -57,7 +57,7 @@ void MasterGeneration::write_master_mps(
 std::filesystem::path FileNameForStructureFile(const std::string& problemName,
                                              std::string solverName) {
   if (problemName == "master") return {"master"};
-  return SolverConfig::FileName(problemName, SolverConfig(std::move(solverName)));
+  return SolverConfig(std::move(solverName)).FileName(problemName);
 }
 
 void MasterGeneration::write_structure_file(

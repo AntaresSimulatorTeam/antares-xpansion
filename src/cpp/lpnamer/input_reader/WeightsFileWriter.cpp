@@ -35,13 +35,14 @@ void YearlyWeightsWriter::CreateWeightFile(
 void YearlyWeightsWriter::FillMpsWeightsMap(
     const std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>&
         problems_and_data) {
-  mps_weights_.clear();
+  problem_filename_to_weight_.clear();
 
   for (const auto& [problem, data] : problems_and_data) {
     auto year_index = std::find(active_years_.begin(), active_years_.end(),
                                 problem->mc_year) -
                       active_years_.begin();
-    mps_weights_[data._problem_mps] = weights_vector_[year_index];
+    problem_filename_to_weight_[data._problem_filename] =
+        weights_vector_[year_index];
   }
 }
 
@@ -56,10 +57,8 @@ void YearlyWeightsWriter::DumpMpsWeightsToFile() const {
   std::ofstream mps_weights_file;
   mps_weights_file.open(file);
 
-  for (const auto& [mps_name, weight] : mps_weights_) {
-    mps_weights_file << SolverConfig::FileName(
-                            mps_name, SolverConfig(std::move(solver_name_)))
-                            .string()
+  for (const auto& [mps_name, weight] : problem_filename_to_weight_) {
+    mps_weights_file << SolverConfig(solver_name_).FileName(mps_name).string()
                      << " " << weight << std::endl;
   }
   mps_weights_file << "WEIGHT_SUM "

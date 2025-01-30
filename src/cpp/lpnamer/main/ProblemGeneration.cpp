@@ -261,7 +261,7 @@ std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
   std::vector<std::string> problem_names;
   std::transform(mpsList.begin(), mpsList.end(),
                  std::back_inserter(problem_names),
-                 [](ProblemData const& data) { return data._problem_mps; });
+                 [](ProblemData const& data) { return data._problem_filename; });
   switch (mode_.value()) {
     case SimulationInputMode::FILE: {
       FileProblemsProviderAdapter adapter(lpDir_, problem_names);
@@ -342,7 +342,7 @@ void ProblemGeneration::RunProblemGeneration(
       ProblemData data{xpansion_problems.at(i)->_name, {}};
       problems_and_data.emplace_back(xpansion_problems.at(i), data);
     } else {
-      xpansion_problems.at(i)->_name = mpsList.at(i)._problem_mps;
+      xpansion_problems.at(i)->_name = mpsList.at(i)._problem_filename;
       problems_and_data.emplace_back(xpansion_problems.at(i), mpsList.at(i));
     }
   }
@@ -376,7 +376,7 @@ void ProblemGeneration::RunProblemGeneration(
             (*logger)(LogUtils::LOGLEVEL::ERR) << "Undefined mode";
             break;
         }
-        linkProblemsGenerator.treat(data._problem_mps, couplings, problem.get(),
+        linkProblemsGenerator.treat(data._problem_filename, couplings, problem.get(),
                                     variables_provider.get(),
                                     mps_file_writer.get());
       });
