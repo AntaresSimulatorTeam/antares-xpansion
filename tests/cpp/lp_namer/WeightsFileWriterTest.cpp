@@ -120,7 +120,7 @@ class WeightsFileWriterTest : public ::testing::Test {
   void RunWeightsFileWriterTest(const std::string &solver_name,
                                 const std::string &expected) {
     auto yearly_weight_writer = YearlyWeightsWriter(
-        tempDir, {3, 5, 7}, "weights_123.txt", {1, 2, 3}, solver_name, logger);
+        std::filesystem::temp_directory_path(), {3, 5, 7}, "weights_123.txt", {1, 2, 3}, solver_name, logger);
 
     yearly_weight_writer.CreateWeightFile(problems_and_data);
 
