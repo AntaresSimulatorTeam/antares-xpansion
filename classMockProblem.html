@@ -1,0 +1,413 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.12.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Antares Xpansion" />
+<meta property="og:image" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/blob/develop/docs/assets/logo.png" />
+<meta property="og:description" content="Investment simulations for Antares studies." />
+<meta property="og:url" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/blob/develop/docs/assets/logo.png" />
+<meta name="twitter:title" content="Antares Xpansion" />
+<meta name="twitter:description" content="Investment simulations for Antares studies." />
+<!-- END twitter metadata -->
+<title>Antares Xpansion: MockProblem Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://github.com/AntaresSimulatorTeam/antares-xpansion/ -->
+<a href="https://github.com/AntaresSimulatorTeam/antares-xpansion" class="github-corner" title="View source on GitHub" target="_blank">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Antares Xpansion
+   </div>
+   <div id="projectbrief">Investment simulations for Antares studies</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.12.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('classMockProblem.html',''); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="classMockProblem-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">MockProblem Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="dynheader">
+Inheritance diagram for MockProblem:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classMockProblem.png" usemap="#MockProblem_map" alt=""/>
+  <map id="MockProblem_map" name="MockProblem_map">
+<area href="classProblem.html" title="Decorator to the SolverAbstract class." alt="Problem" shape="rect" coords="0,56,96,80"/>
+<area href="classSolverAbstract.html" alt="SolverAbstract" shape="rect" coords="0,0,96,24"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a1d465a31be231818c7db6b1f52b98654" id="r_a1d465a31be231818c7db6b1f52b98654"><td class="memItemLeft" align="right" valign="top"><a id="a1d465a31be231818c7db6b1f52b98654" name="a1d465a31be231818c7db6b1f52b98654"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MockProblem</b> (int year)</td></tr>
+<tr class="separator:a1d465a31be231818c7db6b1f52b98654"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classProblem"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classProblem')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classProblem.html">Problem</a></td></tr>
+<tr class="memitem:a9937fe0e6f9bc630e7c613c6ad2da899 inherit pub_methods_classProblem" id="r_a9937fe0e6f9bc630e7c613c6ad2da899"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>Problem</b> (<a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> solver_abstract)</td></tr>
+<tr class="separator:a9937fe0e6f9bc630e7c613c6ad2da899 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae8f8585f3b5a06399328104e109a7445 inherit pub_methods_classProblem" id="r_ae8f8585f3b5a06399328104e109a7445"><td class="memItemLeft" align="right" valign="top">
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>McYear</b> () const</td></tr>
+<tr class="separator:ae8f8585f3b5a06399328104e109a7445 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac90e5f7e05690f35b587bb90739869fa inherit pub_methods_classProblem" id="r_ac90e5f7e05690f35b587bb90739869fa"><td class="memItemLeft" align="right" valign="top">
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>Week</b> () const</td></tr>
+<tr class="separator:ac90e5f7e05690f35b587bb90739869fa inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41f4336459e6e32d6f2b98c5464bc1ac inherit pub_methods_classProblem" id="r_a41f4336459e6e32d6f2b98c5464bc1ac"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a41f4336459e6e32d6f2b98c5464bc1ac">get_number_of_instances</a> () override</td></tr>
+<tr class="memdesc:a41f4336459e6e32d6f2b98c5464bc1ac inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns number of instances of solver currently in memory.  <br /></td></tr>
+<tr class="separator:a41f4336459e6e32d6f2b98c5464bc1ac inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a90e26954f958338a7b452efc468cd60d inherit pub_methods_classProblem" id="r_a90e26954f958338a7b452efc468cd60d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a90e26954f958338a7b452efc468cd60d">get_solver_name</a> () const override</td></tr>
+<tr class="memdesc:a90e26954f958338a7b452efc468cd60d inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the solver used.  <br /></td></tr>
+<tr class="separator:a90e26954f958338a7b452efc468cd60d inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a075abb3bc479adb0de6c2326fe03ac17 inherit pub_methods_classProblem" id="r_a075abb3bc479adb0de6c2326fe03ac17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a075abb3bc479adb0de6c2326fe03ac17">init</a> () override</td></tr>
+<tr class="memdesc:a075abb3bc479adb0de6c2326fe03ac17 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a problem.  <br /></td></tr>
+<tr class="separator:a075abb3bc479adb0de6c2326fe03ac17 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf2a0c3fb337ca9fe6931a96f8a902f5 inherit pub_methods_classProblem" id="r_acf2a0c3fb337ca9fe6931a96f8a902f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#acf2a0c3fb337ca9fe6931a96f8a902f5">free</a> () override</td></tr>
+<tr class="memdesc:acf2a0c3fb337ca9fe6931a96f8a902f5 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees all the datas contained in the Solver environment.  <br /></td></tr>
+<tr class="separator:acf2a0c3fb337ca9fe6931a96f8a902f5 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c16f8388dbfb7f75c6bb58bec93504a inherit pub_methods_classProblem" id="r_a2c16f8388dbfb7f75c6bb58bec93504a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a2c16f8388dbfb7f75c6bb58bec93504a">write_prob_mps</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:a2c16f8388dbfb7f75c6bb58bec93504a inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes an optimization problem in a MPS file  <br /></td></tr>
+<tr class="separator:a2c16f8388dbfb7f75c6bb58bec93504a inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aac88c91784c4407dd335ccae289abe4b inherit pub_methods_classProblem" id="r_aac88c91784c4407dd335ccae289abe4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#aac88c91784c4407dd335ccae289abe4b">write_prob_lp</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:aac88c91784c4407dd335ccae289abe4b inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes an optimization problem in a LP file  <br /></td></tr>
+<tr class="separator:aac88c91784c4407dd335ccae289abe4b inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf009aaf0c40ed6a462dced353f2b7f0 inherit pub_methods_classProblem" id="r_abf009aaf0c40ed6a462dced353f2b7f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#abf009aaf0c40ed6a462dced353f2b7f0">read_prob_mps</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:abf009aaf0c40ed6a462dced353f2b7f0 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads an optimization problem contained in a MPS file  <br /></td></tr>
+<tr class="separator:abf009aaf0c40ed6a462dced353f2b7f0 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a92a36d2387ec170cc78cad032b521a75 inherit pub_methods_classProblem" id="r_a92a36d2387ec170cc78cad032b521a75"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a92a36d2387ec170cc78cad032b521a75">read_prob_lp</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:a92a36d2387ec170cc78cad032b521a75 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads an optimization problem contained in a MPS file  <br /></td></tr>
+<tr class="separator:a92a36d2387ec170cc78cad032b521a75 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a995719eb062c198744fcf9637ae165f3 inherit pub_methods_classProblem" id="r_a995719eb062c198744fcf9637ae165f3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a995719eb062c198744fcf9637ae165f3">copy_prob</a> (<a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">Ptr</a> fictif_solv) override</td></tr>
+<tr class="memdesc:a995719eb062c198744fcf9637ae165f3 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">copy an existing problem  <br /></td></tr>
+<tr class="separator:a995719eb062c198744fcf9637ae165f3 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a427fd0532ce52ade20de068ce0e43ea5 inherit pub_methods_classProblem" id="r_a427fd0532ce52ade20de068ce0e43ea5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a427fd0532ce52ade20de068ce0e43ea5">get_ncols</a> () const override</td></tr>
+<tr class="memdesc:a427fd0532ce52ade20de068ce0e43ea5 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of columns of the problem  <br /></td></tr>
+<tr class="separator:a427fd0532ce52ade20de068ce0e43ea5 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae4da213115a135d9771d95cb1e28854d inherit pub_methods_classProblem" id="r_ae4da213115a135d9771d95cb1e28854d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#ae4da213115a135d9771d95cb1e28854d">get_nrows</a> () const override</td></tr>
+<tr class="memdesc:ae4da213115a135d9771d95cb1e28854d inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of rows of the problem  <br /></td></tr>
+<tr class="separator:ae4da213115a135d9771d95cb1e28854d inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8d9a6786990858df20e7fa1fdfb25ddc inherit pub_methods_classProblem" id="r_a8d9a6786990858df20e7fa1fdfb25ddc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a8d9a6786990858df20e7fa1fdfb25ddc">get_nelems</a> () const override</td></tr>
+<tr class="memdesc:a8d9a6786990858df20e7fa1fdfb25ddc inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of non zeros elements in the matrix, excluding objective  <br /></td></tr>
+<tr class="separator:a8d9a6786990858df20e7fa1fdfb25ddc inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb61c5e3c7fe9a8452d1f9c0288a2991 inherit pub_methods_classProblem" id="r_acb61c5e3c7fe9a8452d1f9c0288a2991"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#acb61c5e3c7fe9a8452d1f9c0288a2991">get_n_integer_vars</a> () const override</td></tr>
+<tr class="memdesc:acb61c5e3c7fe9a8452d1f9c0288a2991 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of integer variables in the problem  <br /></td></tr>
+<tr class="separator:acb61c5e3c7fe9a8452d1f9c0288a2991 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82dd5531409fba5131d8db8ae201f73d inherit pub_methods_classProblem" id="r_a82dd5531409fba5131d8db8ae201f73d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a82dd5531409fba5131d8db8ae201f73d">get_obj</a> (double *obj, int first, int last) const override</td></tr>
+<tr class="memdesc:a82dd5531409fba5131d8db8ae201f73d inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the objective function coefficients for the columns in a given range  <br /></td></tr>
+<tr class="separator:a82dd5531409fba5131d8db8ae201f73d inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3209a8750961478ed949a75b5cef261c inherit pub_methods_classProblem" id="r_a3209a8750961478ed949a75b5cef261c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a3209a8750961478ed949a75b5cef261c">set_obj_to_zero</a> () override</td></tr>
+<tr class="memdesc:a3209a8750961478ed949a75b5cef261c inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the objective function coefficients to zero.  <br /></td></tr>
+<tr class="separator:a3209a8750961478ed949a75b5cef261c inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a678f5f40e1102d81f5dcb95a575e041a inherit pub_methods_classProblem" id="r_a678f5f40e1102d81f5dcb95a575e041a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a678f5f40e1102d81f5dcb95a575e041a">set_obj</a> (const double *obj, int first, int last) override</td></tr>
+<tr class="memdesc:a678f5f40e1102d81f5dcb95a575e041a inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the objective function coefficients for the columns in a given range.  <br /></td></tr>
+<tr class="separator:a678f5f40e1102d81f5dcb95a575e041a inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ce71bda1dfbb47ad3ab18e80698cde6 inherit pub_methods_classProblem" id="r_a6ce71bda1dfbb47ad3ab18e80698cde6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a6ce71bda1dfbb47ad3ab18e80698cde6">get_rows</a> (int *mstart, int *mclind, double *dmatval, int size, int *nels, int first, int last) const override</td></tr>
+<tr class="memdesc:a6ce71bda1dfbb47ad3ab18e80698cde6 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">get coefficients of rows from index first to last  <br /></td></tr>
+<tr class="separator:a6ce71bda1dfbb47ad3ab18e80698cde6 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e72a237efb49b4788c6131dc414e06b inherit pub_methods_classProblem" id="r_a0e72a237efb49b4788c6131dc414e06b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a0e72a237efb49b4788c6131dc414e06b">get_row_type</a> (char *qrtype, int first, int last) const override</td></tr>
+<tr class="memdesc:a0e72a237efb49b4788c6131dc414e06b inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the row types for the rows in a given range.  <br /></td></tr>
+<tr class="separator:a0e72a237efb49b4788c6131dc414e06b inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3532b55c76fcaccc3fe8d686193c9dd5 inherit pub_methods_classProblem" id="r_a3532b55c76fcaccc3fe8d686193c9dd5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a3532b55c76fcaccc3fe8d686193c9dd5">get_rhs</a> (double *rhs, int first, int last) const override</td></tr>
+<tr class="memdesc:a3532b55c76fcaccc3fe8d686193c9dd5 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the right-hand sides of the rows in a given range.  <br /></td></tr>
+<tr class="separator:a3532b55c76fcaccc3fe8d686193c9dd5 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa34e941ed834b66bb6a2ee4211073454 inherit pub_methods_classProblem" id="r_aa34e941ed834b66bb6a2ee4211073454"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#aa34e941ed834b66bb6a2ee4211073454">get_rhs_range</a> (double *range, int first, int last) const override</td></tr>
+<tr class="memdesc:aa34e941ed834b66bb6a2ee4211073454 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the right hand side range values for the rows in a given range.  <br /></td></tr>
+<tr class="separator:aa34e941ed834b66bb6a2ee4211073454 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9b1add4a9bff8ab15a533c81818214fc inherit pub_methods_classProblem" id="r_a9b1add4a9bff8ab15a533c81818214fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a9b1add4a9bff8ab15a533c81818214fc">get_col_type</a> (char *coltype, int first, int last) const override</td></tr>
+<tr class="memdesc:a9b1add4a9bff8ab15a533c81818214fc inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the column types for the columns in a given range.  <br /></td></tr>
+<tr class="separator:a9b1add4a9bff8ab15a533c81818214fc inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a3e618e559abc36fdea1be47ed8ffce inherit pub_methods_classProblem" id="r_a3a3e618e559abc36fdea1be47ed8ffce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a3a3e618e559abc36fdea1be47ed8ffce">get_lb</a> (double *lb, int fisrt, int last) const override</td></tr>
+<tr class="memdesc:a3a3e618e559abc36fdea1be47ed8ffce inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the lower bounds for variables in a given range.  <br /></td></tr>
+<tr class="separator:a3a3e618e559abc36fdea1be47ed8ffce inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9214a4e8ef6a9144cf8e9b0e20199ef6 inherit pub_methods_classProblem" id="r_a9214a4e8ef6a9144cf8e9b0e20199ef6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a9214a4e8ef6a9144cf8e9b0e20199ef6">get_ub</a> (double *ub, int fisrt, int last) const override</td></tr>
+<tr class="memdesc:a9214a4e8ef6a9144cf8e9b0e20199ef6 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the upper bounds for variables in a given range.  <br /></td></tr>
+<tr class="separator:a9214a4e8ef6a9144cf8e9b0e20199ef6 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2b453dd51e7ce6a18656399647d8060 inherit pub_methods_classProblem" id="r_ab2b453dd51e7ce6a18656399647d8060"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#ab2b453dd51e7ce6a18656399647d8060">get_row_index</a> (const std::string &amp;name) override</td></tr>
+<tr class="memdesc:ab2b453dd51e7ce6a18656399647d8060 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index of row named "name".  <br /></td></tr>
+<tr class="separator:ab2b453dd51e7ce6a18656399647d8060 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a85ca8269e2cf23554d80a22101371792 inherit pub_methods_classProblem" id="r_a85ca8269e2cf23554d80a22101371792"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a85ca8269e2cf23554d80a22101371792">get_col_index</a> (const std::string &amp;name) override</td></tr>
+<tr class="memdesc:a85ca8269e2cf23554d80a22101371792 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index of column named "name".  <br /></td></tr>
+<tr class="separator:a85ca8269e2cf23554d80a22101371792 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d0e261b04e97d40eb25704b526d8625 inherit pub_methods_classProblem" id="r_a3d0e261b04e97d40eb25704b526d8625"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a3d0e261b04e97d40eb25704b526d8625">get_row_names</a> (int first, int last) override</td></tr>
+<tr class="memdesc:a3d0e261b04e97d40eb25704b526d8625 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of row from index first to last cannot be declared as const because of some solver methods.  <br /></td></tr>
+<tr class="separator:a3d0e261b04e97d40eb25704b526d8625 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aaa7977b515a6117cf5e2d804dccaa6f4 inherit pub_methods_classProblem" id="r_aaa7977b515a6117cf5e2d804dccaa6f4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#aaa7977b515a6117cf5e2d804dccaa6f4">get_row_names</a> () override</td></tr>
+<tr class="memdesc:aaa7977b515a6117cf5e2d804dccaa6f4 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of rows.  <br /></td></tr>
+<tr class="separator:aaa7977b515a6117cf5e2d804dccaa6f4 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af46a63f1eaa7094e39baefa3a8384ea9 inherit pub_methods_classProblem" id="r_af46a63f1eaa7094e39baefa3a8384ea9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#af46a63f1eaa7094e39baefa3a8384ea9">get_col_names</a> (int first, int last) override</td></tr>
+<tr class="memdesc:af46a63f1eaa7094e39baefa3a8384ea9 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of columns from index first to last cannot be declared as const because of some solver methods.  <br /></td></tr>
+<tr class="separator:af46a63f1eaa7094e39baefa3a8384ea9 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35b311b81fee750e32b640f07ee7ea27 inherit pub_methods_classProblem" id="r_a35b311b81fee750e32b640f07ee7ea27"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a35b311b81fee750e32b640f07ee7ea27">get_col_names</a> () override</td></tr>
+<tr class="memdesc:a35b311b81fee750e32b640f07ee7ea27 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of columns.  <br /></td></tr>
+<tr class="separator:a35b311b81fee750e32b640f07ee7ea27 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7415aee60e1b8a3b83f9b4e2a989a827 inherit pub_methods_classProblem" id="r_a7415aee60e1b8a3b83f9b4e2a989a827"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a7415aee60e1b8a3b83f9b4e2a989a827">del_rows</a> (int first, int last) override</td></tr>
+<tr class="memdesc:a7415aee60e1b8a3b83f9b4e2a989a827 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes rows between index first and last.  <br /></td></tr>
+<tr class="separator:a7415aee60e1b8a3b83f9b4e2a989a827 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8fb8c92a38162a74023e798e9e824c80 inherit pub_methods_classProblem" id="r_a8fb8c92a38162a74023e798e9e824c80"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a8fb8c92a38162a74023e798e9e824c80">add_rows</a> (int newrows, int newnz, const char *qrtype, const double *rhs, const double *range, const int *mstart, const int *mclind, const double *dmatval, const std::vector&lt; std::string &gt; &amp;names={}) override</td></tr>
+<tr class="memdesc:a8fb8c92a38162a74023e798e9e824c80 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds rows to the problem.  <br /></td></tr>
+<tr class="separator:a8fb8c92a38162a74023e798e9e824c80 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3a39dd85d31f7a5fe895fe8d119a7e69 inherit pub_methods_classProblem" id="r_a3a39dd85d31f7a5fe895fe8d119a7e69"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a3a39dd85d31f7a5fe895fe8d119a7e69">add_cols</a> (int newcol, int newnz, const double *objx, const int *mstart, const int *mrwind, const double *dmatval, const double *bdl, const double *bdu) override</td></tr>
+<tr class="memdesc:a3a39dd85d31f7a5fe895fe8d119a7e69 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds new columns to the problem.  <br /></td></tr>
+<tr class="separator:a3a39dd85d31f7a5fe895fe8d119a7e69 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2fd6e04f639afc967adf2f1a3d3d4b85 inherit pub_methods_classProblem" id="r_a2fd6e04f639afc967adf2f1a3d3d4b85"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a2fd6e04f639afc967adf2f1a3d3d4b85">add_name</a> (int type, const char *cnames, int indice) override</td></tr>
+<tr class="memdesc:a2fd6e04f639afc967adf2f1a3d3d4b85 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a name to a row or a column.  <br /></td></tr>
+<tr class="separator:a2fd6e04f639afc967adf2f1a3d3d4b85 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72d7e2d4e518b54bd437009aea0bd9a3 inherit pub_methods_classProblem" id="r_a72d7e2d4e518b54bd437009aea0bd9a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a72d7e2d4e518b54bd437009aea0bd9a3">add_names</a> (int type, const std::vector&lt; std::string &gt; &amp;cnames, int first, int end) override</td></tr>
+<tr class="separator:a72d7e2d4e518b54bd437009aea0bd9a3 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a824fa83671eb0273279277b1867b6909 inherit pub_methods_classProblem" id="r_a824fa83671eb0273279277b1867b6909"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a824fa83671eb0273279277b1867b6909">chg_obj</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; double &gt; &amp;obj) override</td></tr>
+<tr class="memdesc:a824fa83671eb0273279277b1867b6909 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change coefficients in objective function.  <br /></td></tr>
+<tr class="separator:a824fa83671eb0273279277b1867b6909 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0340e6b71a6b4ee444c8638a868f63e inherit pub_methods_classProblem" id="r_ae0340e6b71a6b4ee444c8638a868f63e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#ae0340e6b71a6b4ee444c8638a868f63e">chg_obj_direction</a> (const bool minimize) override</td></tr>
+<tr class="memdesc:ae0340e6b71a6b4ee444c8638a868f63e inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the problem's objective function sense to minimize or maximize.  <br /></td></tr>
+<tr class="separator:ae0340e6b71a6b4ee444c8638a868f63e inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4bc726350bcf61005c30cc61e6018b4e inherit pub_methods_classProblem" id="r_a4bc726350bcf61005c30cc61e6018b4e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a4bc726350bcf61005c30cc61e6018b4e">chg_bounds</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; char &gt; &amp;qbtype, const std::vector&lt; double &gt; &amp;bnd) override</td></tr>
+<tr class="memdesc:a4bc726350bcf61005c30cc61e6018b4e inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change bounds of some variables.  <br /></td></tr>
+<tr class="separator:a4bc726350bcf61005c30cc61e6018b4e inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acd23d7ef0eabbfeaca4b371d48538d8e inherit pub_methods_classProblem" id="r_acd23d7ef0eabbfeaca4b371d48538d8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#acd23d7ef0eabbfeaca4b371d48538d8e">chg_col_type</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; char &gt; &amp;qctype) override</td></tr>
+<tr class="memdesc:acd23d7ef0eabbfeaca4b371d48538d8e inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change type of some columns.  <br /></td></tr>
+<tr class="separator:acd23d7ef0eabbfeaca4b371d48538d8e inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7f85cacdc241722dad22e570957890aa inherit pub_methods_classProblem" id="r_a7f85cacdc241722dad22e570957890aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a7f85cacdc241722dad22e570957890aa">chg_rhs</a> (int id_row, double val) override</td></tr>
+<tr class="memdesc:a7f85cacdc241722dad22e570957890aa inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change rhs of a row.  <br /></td></tr>
+<tr class="separator:a7f85cacdc241722dad22e570957890aa inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad0ee54139145f03b9f188d40cb7a0856 inherit pub_methods_classProblem" id="r_ad0ee54139145f03b9f188d40cb7a0856"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#ad0ee54139145f03b9f188d40cb7a0856">chg_coef</a> (int id_row, int id_col, double val) override</td></tr>
+<tr class="memdesc:ad0ee54139145f03b9f188d40cb7a0856 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change a coefficient in the matrix.  <br /></td></tr>
+<tr class="separator:ad0ee54139145f03b9f188d40cb7a0856 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13f183f9af6db636f61e0e919ad8f834 inherit pub_methods_classProblem" id="r_a13f183f9af6db636f61e0e919ad8f834"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a13f183f9af6db636f61e0e919ad8f834">chg_row_name</a> (int id_row, const std::string &amp;name) override</td></tr>
+<tr class="memdesc:a13f183f9af6db636f61e0e919ad8f834 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a constraint.  <br /></td></tr>
+<tr class="separator:a13f183f9af6db636f61e0e919ad8f834 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4b08904684db423cee3a8f8c58ff800 inherit pub_methods_classProblem" id="r_af4b08904684db423cee3a8f8c58ff800"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#af4b08904684db423cee3a8f8c58ff800">chg_col_name</a> (int id_col, const std::string &amp;name) override</td></tr>
+<tr class="memdesc:af4b08904684db423cee3a8f8c58ff800 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a variable.  <br /></td></tr>
+<tr class="separator:af4b08904684db423cee3a8f8c58ff800 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3359581e9eafa676be9fbd7e0b8446c2 inherit pub_methods_classProblem" id="r_a3359581e9eafa676be9fbd7e0b8446c2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a3359581e9eafa676be9fbd7e0b8446c2">solve_lp</a> () override</td></tr>
+<tr class="memdesc:a3359581e9eafa676be9fbd7e0b8446c2 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves a problem as LP.  <br /></td></tr>
+<tr class="separator:a3359581e9eafa676be9fbd7e0b8446c2 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32a6e746e160966776a64864631c3211 inherit pub_methods_classProblem" id="r_a32a6e746e160966776a64864631c3211"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a32a6e746e160966776a64864631c3211">solve_mip</a> () override</td></tr>
+<tr class="memdesc:a32a6e746e160966776a64864631c3211 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves a problem as MIP.  <br /></td></tr>
+<tr class="separator:a32a6e746e160966776a64864631c3211 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a23a581969905f7727611d2f7dd537af8 inherit pub_methods_classProblem" id="r_a23a581969905f7727611d2f7dd537af8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a23a581969905f7727611d2f7dd537af8">get_basis</a> (int *rstatus, int *cstatus) const override</td></tr>
+<tr class="memdesc:a23a581969905f7727611d2f7dd537af8 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current basis into the user’s data arrays.  <br /></td></tr>
+<tr class="separator:a23a581969905f7727611d2f7dd537af8 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afe80be61b65b3d0779d3343be8c653fb inherit pub_methods_classProblem" id="r_afe80be61b65b3d0779d3343be8c653fb"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#afe80be61b65b3d0779d3343be8c653fb">get_mip_value</a> () const override</td></tr>
+<tr class="memdesc:afe80be61b65b3d0779d3343be8c653fb inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the optimal value of a MIP problem (available after method "solve_mip")  <br /></td></tr>
+<tr class="separator:afe80be61b65b3d0779d3343be8c653fb inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a13cd39837de937554ccd6b91bb9ce011 inherit pub_methods_classProblem" id="r_a13cd39837de937554ccd6b91bb9ce011"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a13cd39837de937554ccd6b91bb9ce011">get_lp_value</a> () const override</td></tr>
+<tr class="memdesc:a13cd39837de937554ccd6b91bb9ce011 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the optimal value of a LP problem (available after method "solve_lp" )  <br /></td></tr>
+<tr class="separator:a13cd39837de937554ccd6b91bb9ce011 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a280b880061bcb76c43b7dfb1718390 inherit pub_methods_classProblem" id="r_a9a280b880061bcb76c43b7dfb1718390"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a9a280b880061bcb76c43b7dfb1718390">get_splex_num_of_ite_last</a> () const override</td></tr>
+<tr class="memdesc:a9a280b880061bcb76c43b7dfb1718390 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of simplex iterations done in the last resolution of the problem.  <br /></td></tr>
+<tr class="separator:a9a280b880061bcb76c43b7dfb1718390 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e474653329aab445b1da2082689a114 inherit pub_methods_classProblem" id="r_a8e474653329aab445b1da2082689a114"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a8e474653329aab445b1da2082689a114">get_lp_sol</a> (double *primals, double *duals, double *reduced_costs) override</td></tr>
+<tr class="memdesc:a8e474653329aab445b1da2082689a114 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get LP solution of a problem (available after method "solve_lp")  <br /></td></tr>
+<tr class="separator:a8e474653329aab445b1da2082689a114 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2dbc34e5b51f9a51b236dfb84d72a597 inherit pub_methods_classProblem" id="r_a2dbc34e5b51f9a51b236dfb84d72a597"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a2dbc34e5b51f9a51b236dfb84d72a597">get_mip_sol</a> (double *primals) override</td></tr>
+<tr class="memdesc:a2dbc34e5b51f9a51b236dfb84d72a597 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get MIP solution of a problem (available after method "solve_mip")  <br /></td></tr>
+<tr class="separator:a2dbc34e5b51f9a51b236dfb84d72a597 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a87378fed8a194cb4cbb6904eacbed94a inherit pub_methods_classProblem" id="r_a87378fed8a194cb4cbb6904eacbed94a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a87378fed8a194cb4cbb6904eacbed94a">set_output_log_level</a> (int loglevel) override</td></tr>
+<tr class="memdesc:a87378fed8a194cb4cbb6904eacbed94a inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets log level of the solver.  <br /></td></tr>
+<tr class="separator:a87378fed8a194cb4cbb6904eacbed94a inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a006aad13911c36e8d753f172c10f5465 inherit pub_methods_classProblem" id="r_a006aad13911c36e8d753f172c10f5465"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a006aad13911c36e8d753f172c10f5465">set_algorithm</a> (const std::string &amp;algo) override</td></tr>
+<tr class="memdesc:a006aad13911c36e8d753f172c10f5465 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets algorithm used by solver to solve LP's.  <br /></td></tr>
+<tr class="separator:a006aad13911c36e8d753f172c10f5465 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c2bc9d5b720e92404bfb9179a0b0194 inherit pub_methods_classProblem" id="r_a4c2bc9d5b720e92404bfb9179a0b0194"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a4c2bc9d5b720e92404bfb9179a0b0194">set_threads</a> (int n_threads) override</td></tr>
+<tr class="memdesc:a4c2bc9d5b720e92404bfb9179a0b0194 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the maximum number of threads used to perform optimization.  <br /></td></tr>
+<tr class="separator:a4c2bc9d5b720e92404bfb9179a0b0194 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad35f966751547d5c8a27feb707df11a5 inherit pub_methods_classProblem" id="r_ad35f966751547d5c8a27feb707df11a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#ad35f966751547d5c8a27feb707df11a5">set_optimality_gap</a> (double gap) override</td></tr>
+<tr class="memdesc:ad35f966751547d5c8a27feb707df11a5 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the optimality gap.  <br /></td></tr>
+<tr class="separator:ad35f966751547d5c8a27feb707df11a5 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae9ba517850933fd58e17a3577a1d5e47 inherit pub_methods_classProblem" id="r_ae9ba517850933fd58e17a3577a1d5e47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#ae9ba517850933fd58e17a3577a1d5e47">set_simplex_iter</a> (int iter) override</td></tr>
+<tr class="memdesc:ae9ba517850933fd58e17a3577a1d5e47 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the maximum number of simplex iterations the solver can perform.  <br /></td></tr>
+<tr class="separator:ae9ba517850933fd58e17a3577a1d5e47 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a708234655849d976c5698615cd67c65c inherit pub_methods_classProblem" id="r_a708234655849d976c5698615cd67c65c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a708234655849d976c5698615cd67c65c">write_basis</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:a708234655849d976c5698615cd67c65c inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the current basis to a file for later input into the optimizer.  <br /></td></tr>
+<tr class="separator:a708234655849d976c5698615cd67c65c inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee558629ab44c44cd971eeb41bde4088 inherit pub_methods_classProblem" id="r_aee558629ab44c44cd971eeb41bde4088"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#aee558629ab44c44cd971eeb41bde4088">read_basis</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:aee558629ab44c44cd971eeb41bde4088 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instructs the optimizer to read in a previously saved basis from a file.  <br /></td></tr>
+<tr class="separator:aee558629ab44c44cd971eeb41bde4088 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab385b74ab52084f8be1482ffc31578e5 inherit pub_methods_classProblem" id="r_ab385b74ab52084f8be1482ffc31578e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#ab385b74ab52084f8be1482ffc31578e5">save_prob</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:ab385b74ab52084f8be1482ffc31578e5 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">write an optimisation problem in a file  <br /></td></tr>
+<tr class="separator:ab385b74ab52084f8be1482ffc31578e5 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89c2613e4954f6d0b01c730ce231c971 inherit pub_methods_classProblem" id="r_a89c2613e4954f6d0b01c730ce231c971"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classProblem.html#a89c2613e4954f6d0b01c730ce231c971">restore_prob</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:a89c2613e4954f6d0b01c730ce231c971 inherit pub_methods_classProblem"><td class="mdescLeft">&#160;</td><td class="mdescRight">read an optimisation problem from a file  <br /></td></tr>
+<tr class="separator:a89c2613e4954f6d0b01c730ce231c971 inherit pub_methods_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classSolverAbstract"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classSolverAbstract')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSolverAbstract.html">SolverAbstract</a></td></tr>
+<tr class="memitem:a765549330512481765387972db04ee43 inherit pub_methods_classSolverAbstract" id="r_a765549330512481765387972db04ee43"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>SolverAbstract</b> ()</td></tr>
+<tr class="memdesc:a765549330512481765387972db04ee43 inherit pub_methods_classSolverAbstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructor of <a class="el" href="classSolverAbstract.html">SolverAbstract</a> class : does nothing <br /></td></tr>
+<tr class="separator:a765549330512481765387972db04ee43 inherit pub_methods_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a365b9e1c1813590b5b3f1be5103041c7 inherit pub_methods_classSolverAbstract" id="r_a365b9e1c1813590b5b3f1be5103041c7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#a365b9e1c1813590b5b3f1be5103041c7">SolverAbstract</a> (const std::string &amp;name, const <a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> toCopy)</td></tr>
+<tr class="memdesc:a365b9e1c1813590b5b3f1be5103041c7 inherit pub_methods_classSolverAbstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor, copy the problem "toCopy" in memory and name it "name" if possible.  <br /></td></tr>
+<tr class="separator:a365b9e1c1813590b5b3f1be5103041c7 inherit pub_methods_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a779bb6533ebb23c5887433d9fe295498 inherit pub_methods_classSolverAbstract" id="r_a779bb6533ebb23c5887433d9fe295498"><td class="memItemLeft" align="right" valign="top">
+virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~SolverAbstract</b> ()</td></tr>
+<tr class="memdesc:a779bb6533ebb23c5887433d9fe295498 inherit pub_methods_classSolverAbstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">destructor of <a class="el" href="classSolverAbstract.html">SolverAbstract</a> class : does nothing <br /></td></tr>
+<tr class="separator:a779bb6533ebb23c5887433d9fe295498 inherit pub_methods_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a00d78be7a6aff581e0974440f41cf9ed inherit pub_methods_classSolverAbstract" id="r_a00d78be7a6aff581e0974440f41cf9ed"><td class="memItemLeft" align="right" valign="top">
+std::list&lt; std::ostream * &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_stream</b> ()</td></tr>
+<tr class="memdesc:a00d78be7a6aff581e0974440f41cf9ed inherit pub_methods_classSolverAbstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the list of streams used by the solver instance <br /></td></tr>
+<tr class="separator:a00d78be7a6aff581e0974440f41cf9ed inherit pub_methods_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b0cf85b1d8d2b63c3bc8ef62ed036d9 inherit pub_methods_classSolverAbstract" id="r_a4b0cf85b1d8d2b63c3bc8ef62ed036d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#a4b0cf85b1d8d2b63c3bc8ef62ed036d9">add_stream</a> (std::ostream &amp;stream)</td></tr>
+<tr class="memdesc:a4b0cf85b1d8d2b63c3bc8ef62ed036d9 inherit pub_methods_classSolverAbstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">add a stream to the list of streams used by the solver instance  <br /></td></tr>
+<tr class="separator:a4b0cf85b1d8d2b63c3bc8ef62ed036d9 inherit pub_methods_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35e301320a0b44a10c84c2bdd03316fe inherit pub_methods_classSolverAbstract" id="r_a35e301320a0b44a10c84c2bdd03316fe"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>set_fp</b> (FILE *fp)</td></tr>
+<tr class="separator:a35e301320a0b44a10c84c2bdd03316fe inherit pub_methods_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aff87b9285872f0012d0f2c183bbf395e inherit pub_methods_classSolverAbstract" id="r_aff87b9285872f0012d0f2c183bbf395e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#aff87b9285872f0012d0f2c183bbf395e">zero_status_check</a> (int status, const std::string &amp;action_failed, const std::string &amp;log_location) const</td></tr>
+<tr class="memdesc:aff87b9285872f0012d0f2c183bbf395e inherit pub_methods_classSolverAbstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a status code is different to 0, throw <a class="el" href="classInvalidStatusException.html">InvalidStatusException</a> if it occurs.  <br /></td></tr>
+<tr class="separator:aff87b9285872f0012d0f2c183bbf395e inherit pub_methods_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_classSolverAbstract"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_classSolverAbstract')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSolverAbstract.html">SolverAbstract</a></td></tr>
+<tr class="memitem:aa8908e36c1d938344751665a8fa63076 inherit pub_types_classSolverAbstract" id="r_aa8908e36c1d938344751665a8fa63076"><td class="memItemLeft" align="right" valign="top">typedef std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">Ptr</a></td></tr>
+<tr class="separator:aa8908e36c1d938344751665a8fa63076 inherit pub_types_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_attribs_classProblem"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_attribs_classProblem')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classProblem.html">Problem</a></td></tr>
+<tr class="memitem:a69671e1096ba0798c1c7a00636fb8710 inherit pub_attribs_classProblem" id="r_a69671e1096ba0798c1c7a00636fb8710"><td class="memItemLeft" align="right" valign="top">
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>mc_year</b> = 0</td></tr>
+<tr class="separator:a69671e1096ba0798c1c7a00636fb8710 inherit pub_attribs_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7dc0dea05374133703f82f363dd19030 inherit pub_attribs_classProblem" id="r_a7dc0dea05374133703f82f363dd19030"><td class="memItemLeft" align="right" valign="top">
+unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>week</b> = 0</td></tr>
+<tr class="separator:a7dc0dea05374133703f82f363dd19030 inherit pub_attribs_classProblem"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_attribs_classSolverAbstract"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_attribs_classSolverAbstract')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classSolverAbstract.html">SolverAbstract</a></td></tr>
+<tr class="memitem:a4e3d537c3f7a52d47e1064b6255c8354 inherit pub_attribs_classSolverAbstract" id="r_a4e3d537c3f7a52d47e1064b6255c8354"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#a4e3d537c3f7a52d47e1064b6255c8354">SOLVER_STRING_STATUS</a></td></tr>
+<tr class="separator:a4e3d537c3f7a52d47e1064b6255c8354 inherit pub_attribs_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a52ca317dd7d394001148e348cecff0f2 inherit pub_attribs_classSolverAbstract" id="r_a52ca317dd7d394001148e348cecff0f2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#a52ca317dd7d394001148e348cecff0f2">_name</a></td></tr>
+<tr class="separator:a52ca317dd7d394001148e348cecff0f2 inherit pub_attribs_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1cfe15a9c337170d61fc66e89c941f9a inherit pub_attribs_classSolverAbstract" id="r_a1cfe15a9c337170d61fc66e89c941f9a"><td class="memItemLeft" align="right" valign="top">std::list&lt; std::ostream * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#a1cfe15a9c337170d61fc66e89c941f9a">_streams</a></td></tr>
+<tr class="separator:a1cfe15a9c337170d61fc66e89c941f9a inherit pub_attribs_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a691b1cb603e5d8db286d4be67bc2abd1 inherit pub_attribs_classSolverAbstract" id="r_a691b1cb603e5d8db286d4be67bc2abd1"><td class="memItemLeft" align="right" valign="top">
+FILE *&#160;</td><td class="memItemRight" valign="bottom"><b>_fp</b> = nullptr</td></tr>
+<tr class="separator:a691b1cb603e5d8db286d4be67bc2abd1 inherit pub_attribs_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c8ac674eab2b1add320c98eafd310fb inherit pub_attribs_classSolverAbstract" id="r_a4c8ac674eab2b1add320c98eafd310fb"><td class="memItemLeft" align="right" valign="top">
+std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log_file</b> = &quot;&quot;</td></tr>
+<tr class="separator:a4c8ac674eab2b1add320c98eafd310fb inherit pub_attribs_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>tests/cpp/lp_namer/<b>WeightsFileWriterTest.cpp</b></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="classMockProblem.html">MockProblem</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
+  </ul>
+</div>
+</body>
+</html>

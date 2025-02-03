@@ -420,6 +420,7 @@ var hierarchy =
       [ "Catch::Matchers::Impl::MatcherBase< T >", "structCatch_1_1Matchers_1_1Impl_1_1MatcherBase.html", null ]
     ] ],
     [ "MathLoggerFactory", "classMathLoggerFactory.html", null ],
+    [ "YearlyWeightsWriter::McYearNotInActiveYearsListError", "classYearlyWeightsWriter_1_1McYearNotInActiveYearsListError.html", null ],
     [ "MergeMPS", "classMergeMPS.html", null ],
     [ "Catch::MessageInfo", "structCatch_1_1MessageInfo.html", null ],
     [ "Catch::MessageStream", "structCatch_1_1MessageStream.html", [
@@ -519,8 +520,11 @@ var hierarchy =
     [ "SinglePbData", "structSinglePbData.html", null ],
     [ "Output::SolutionData", "structOutput_1_1SolutionData.html", null ],
     [ "SolverAbstract", "classSolverAbstract.html", [
+      [ "MockSolverAbstract", "classMockSolverAbstract.html", null ],
       [ "NOOPSolver", "classNOOPSolver.html", null ],
-      [ "Problem", "classProblem.html", null ],
+      [ "Problem", "classProblem.html", [
+        [ "MockProblem", "classMockProblem.html", null ]
+      ] ],
       [ "SolverCbc", "classSolverCbc.html", null ],
       [ "SolverClp", "classSolverClp.html", null ],
       [ "SolverXpress", "classSolverXpress.html", null ]
@@ -630,7 +634,8 @@ var hierarchy =
       [ "UserLoggerTest", "classUserLoggerTest.html", null ],
       [ "VariableFileReaderTest", "classVariableFileReaderTest.html", null ],
       [ "VariablesGroupTest", "classVariablesGroupTest.html", null ],
-      [ "WeightsFileReaderTest", "classWeightsFileReaderTest.html", null ]
+      [ "WeightsFileReaderTest", "classWeightsFileReaderTest.html", null ],
+      [ "WeightsFileWriterTest", "classWeightsFileWriterTest.html", null ]
     ] ],
     [ "tests.python.test_antares_driver.TestAntaresDriver", "classtests_1_1python_1_1test__antares__driver_1_1TestAntaresDriver.html", null ],
     [ "tests.python.test_benders_driver.TestBendersDriver", "classtests_1_1python_1_1test__benders__driver_1_1TestBendersDriver.html", null ],

@@ -138,20 +138,26 @@ $(function(){initNavTree('classYearlyWeightsWriter.html',''); initResizable(true
 
 <div class="header">
   <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="classYearlyWeightsWriter-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">YearlyWeightsWriter Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classYearlyWeightsWriter_1_1McYearNotInActiveYearsListError.html">McYearNotInActiveYearsListError</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:ade1d80bc6c2a9d5b9332738d7493cef8" id="r_ade1d80bc6c2a9d5b9332738d7493cef8"><td class="memItemLeft" align="right" valign="top"><a id="ade1d80bc6c2a9d5b9332738d7493cef8" name="ade1d80bc6c2a9d5b9332738d7493cef8"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>YearlyWeightsWriter</b> (const std::filesystem::path &amp;xpansion_output_dir, const std::vector&lt; double &gt; &amp;weights_vector, const std::filesystem::path &amp;output_file, const std::vector&lt; int &gt; &amp;active_years)</td></tr>
-<tr class="separator:ade1d80bc6c2a9d5b9332738d7493cef8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a37f61b824c84bee4a8646015cffd65dd" id="r_a37f61b824c84bee4a8646015cffd65dd"><td class="memItemLeft" align="right" valign="top"><a id="a37f61b824c84bee4a8646015cffd65dd" name="a37f61b824c84bee4a8646015cffd65dd"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>CreateWeightFile</b> ()</td></tr>
-<tr class="separator:a37f61b824c84bee4a8646015cffd65dd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf682a985919f10e934d096847001db8" id="r_abf682a985919f10e934d096847001db8"><td class="memItemLeft" align="right" valign="top"><a id="abf682a985919f10e934d096847001db8" name="abf682a985919f10e934d096847001db8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>YearlyWeightsWriter</b> (const std::filesystem::path &amp;xpansion_output_dir, const std::vector&lt; double &gt; &amp;weights_vector, const std::filesystem::path &amp;output_file, const std::vector&lt; int &gt; &amp;active_years, const std::string &amp;solver_name, std::shared_ptr&lt; <a class="el" href="classProblemGenerationLog_1_1ProblemGenerationLogger.html">ProblemGenerationLog::ProblemGenerationLogger</a> &gt; logger)</td></tr>
+<tr class="separator:abf682a985919f10e934d096847001db8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6a44c92775b5db198b90fc108d6f2443" id="r_a6a44c92775b5db198b90fc108d6f2443"><td class="memItemLeft" align="right" valign="top"><a id="a6a44c92775b5db198b90fc108d6f2443" name="a6a44c92775b5db198b90fc108d6f2443"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>CreateWeightFile</b> (const std::vector&lt; std::pair&lt; std::shared_ptr&lt; <a class="el" href="classProblem.html">Problem</a> &gt;, <a class="el" href="structProblemData.html">ProblemData</a> &gt; &gt; &amp;problems_and_data)</td></tr>
+<tr class="separator:a6a44c92775b5db198b90fc108d6f2443"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/cpp/lpnamer/input_reader/include/antares-xpansion/lpnamer/input_reader/<a class="el" href="WeightsFileWriter_8h_source.html">WeightsFileWriter.h</a></li>

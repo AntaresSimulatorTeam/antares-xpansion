@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: Problem Class Reference</title>
+<title>Antares Xpansion: MockSolverAbstract Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -111,7 +111,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('classProblem.html',''); initResizable(true); });
+$(function(){initNavTree('classMockSolverAbstract.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -139,214 +139,198 @@ $(function(){initNavTree('classProblem.html',''); initResizable(true); });
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
-<a href="classProblem-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">Problem Class Reference</div></div>
+<a href="classMockSolverAbstract-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">MockSolverAbstract Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>Decorator to the <a class="el" href="classSolverAbstract.html">SolverAbstract</a> class.  
- <a href="#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="Problem_8h_source.html">Problem.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for Problem:</div>
+Inheritance diagram for MockSolverAbstract:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="classProblem.png" usemap="#Problem_map" alt=""/>
-  <map id="Problem_map" name="Problem_map">
-<area href="classSolverAbstract.html" alt="SolverAbstract" shape="rect" coords="0,0,96,24"/>
-<area href="classMockProblem.html" alt="MockProblem" shape="rect" coords="0,112,96,136"/>
+  <img src="classMockSolverAbstract.png" usemap="#MockSolverAbstract_map" alt=""/>
+  <map id="MockSolverAbstract_map" name="MockSolverAbstract_map">
+<area href="classSolverAbstract.html" alt="SolverAbstract" shape="rect" coords="0,0,127,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a9937fe0e6f9bc630e7c613c6ad2da899" id="r_a9937fe0e6f9bc630e7c613c6ad2da899"><td class="memItemLeft" align="right" valign="top"><a id="a9937fe0e6f9bc630e7c613c6ad2da899" name="a9937fe0e6f9bc630e7c613c6ad2da899"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Problem</b> (<a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> solver_abstract)</td></tr>
-<tr class="separator:a9937fe0e6f9bc630e7c613c6ad2da899"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae8f8585f3b5a06399328104e109a7445" id="r_ae8f8585f3b5a06399328104e109a7445"><td class="memItemLeft" align="right" valign="top"><a id="ae8f8585f3b5a06399328104e109a7445" name="ae8f8585f3b5a06399328104e109a7445"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>McYear</b> () const</td></tr>
-<tr class="separator:ae8f8585f3b5a06399328104e109a7445"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac90e5f7e05690f35b587bb90739869fa" id="r_ac90e5f7e05690f35b587bb90739869fa"><td class="memItemLeft" align="right" valign="top"><a id="ac90e5f7e05690f35b587bb90739869fa" name="ac90e5f7e05690f35b587bb90739869fa"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>Week</b> () const</td></tr>
-<tr class="separator:ac90e5f7e05690f35b587bb90739869fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a41f4336459e6e32d6f2b98c5464bc1ac" id="r_a41f4336459e6e32d6f2b98c5464bc1ac"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a41f4336459e6e32d6f2b98c5464bc1ac">get_number_of_instances</a> () override</td></tr>
-<tr class="memdesc:a41f4336459e6e32d6f2b98c5464bc1ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns number of instances of solver currently in memory.  <br /></td></tr>
-<tr class="separator:a41f4336459e6e32d6f2b98c5464bc1ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90e26954f958338a7b452efc468cd60d" id="r_a90e26954f958338a7b452efc468cd60d"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a90e26954f958338a7b452efc468cd60d">get_solver_name</a> () const override</td></tr>
-<tr class="memdesc:a90e26954f958338a7b452efc468cd60d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the solver used.  <br /></td></tr>
-<tr class="separator:a90e26954f958338a7b452efc468cd60d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a075abb3bc479adb0de6c2326fe03ac17" id="r_a075abb3bc479adb0de6c2326fe03ac17"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a075abb3bc479adb0de6c2326fe03ac17">init</a> () override</td></tr>
-<tr class="memdesc:a075abb3bc479adb0de6c2326fe03ac17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a problem.  <br /></td></tr>
-<tr class="separator:a075abb3bc479adb0de6c2326fe03ac17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acf2a0c3fb337ca9fe6931a96f8a902f5" id="r_acf2a0c3fb337ca9fe6931a96f8a902f5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acf2a0c3fb337ca9fe6931a96f8a902f5">free</a> () override</td></tr>
-<tr class="memdesc:acf2a0c3fb337ca9fe6931a96f8a902f5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees all the datas contained in the Solver environment.  <br /></td></tr>
-<tr class="separator:acf2a0c3fb337ca9fe6931a96f8a902f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2c16f8388dbfb7f75c6bb58bec93504a" id="r_a2c16f8388dbfb7f75c6bb58bec93504a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c16f8388dbfb7f75c6bb58bec93504a">write_prob_mps</a> (const std::filesystem::path &amp;filename) override</td></tr>
-<tr class="memdesc:a2c16f8388dbfb7f75c6bb58bec93504a"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes an optimization problem in a MPS file  <br /></td></tr>
-<tr class="separator:a2c16f8388dbfb7f75c6bb58bec93504a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac88c91784c4407dd335ccae289abe4b" id="r_aac88c91784c4407dd335ccae289abe4b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aac88c91784c4407dd335ccae289abe4b">write_prob_lp</a> (const std::filesystem::path &amp;filename) override</td></tr>
-<tr class="memdesc:aac88c91784c4407dd335ccae289abe4b"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes an optimization problem in a LP file  <br /></td></tr>
-<tr class="separator:aac88c91784c4407dd335ccae289abe4b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abf009aaf0c40ed6a462dced353f2b7f0" id="r_abf009aaf0c40ed6a462dced353f2b7f0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abf009aaf0c40ed6a462dced353f2b7f0">read_prob_mps</a> (const std::filesystem::path &amp;filename) override</td></tr>
-<tr class="memdesc:abf009aaf0c40ed6a462dced353f2b7f0"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads an optimization problem contained in a MPS file  <br /></td></tr>
-<tr class="separator:abf009aaf0c40ed6a462dced353f2b7f0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92a36d2387ec170cc78cad032b521a75" id="r_a92a36d2387ec170cc78cad032b521a75"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a92a36d2387ec170cc78cad032b521a75">read_prob_lp</a> (const std::filesystem::path &amp;filename) override</td></tr>
-<tr class="memdesc:a92a36d2387ec170cc78cad032b521a75"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads an optimization problem contained in a MPS file  <br /></td></tr>
-<tr class="separator:a92a36d2387ec170cc78cad032b521a75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a995719eb062c198744fcf9637ae165f3" id="r_a995719eb062c198744fcf9637ae165f3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a995719eb062c198744fcf9637ae165f3">copy_prob</a> (<a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">Ptr</a> fictif_solv) override</td></tr>
-<tr class="memdesc:a995719eb062c198744fcf9637ae165f3"><td class="mdescLeft">&#160;</td><td class="mdescRight">copy an existing problem  <br /></td></tr>
-<tr class="separator:a995719eb062c198744fcf9637ae165f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a427fd0532ce52ade20de068ce0e43ea5" id="r_a427fd0532ce52ade20de068ce0e43ea5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a427fd0532ce52ade20de068ce0e43ea5">get_ncols</a> () const override</td></tr>
-<tr class="memdesc:a427fd0532ce52ade20de068ce0e43ea5"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of columns of the problem  <br /></td></tr>
-<tr class="separator:a427fd0532ce52ade20de068ce0e43ea5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae4da213115a135d9771d95cb1e28854d" id="r_ae4da213115a135d9771d95cb1e28854d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae4da213115a135d9771d95cb1e28854d">get_nrows</a> () const override</td></tr>
-<tr class="memdesc:ae4da213115a135d9771d95cb1e28854d"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of rows of the problem  <br /></td></tr>
-<tr class="separator:ae4da213115a135d9771d95cb1e28854d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d9a6786990858df20e7fa1fdfb25ddc" id="r_a8d9a6786990858df20e7fa1fdfb25ddc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8d9a6786990858df20e7fa1fdfb25ddc">get_nelems</a> () const override</td></tr>
-<tr class="memdesc:a8d9a6786990858df20e7fa1fdfb25ddc"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of non zeros elements in the matrix, excluding objective  <br /></td></tr>
-<tr class="separator:a8d9a6786990858df20e7fa1fdfb25ddc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acb61c5e3c7fe9a8452d1f9c0288a2991" id="r_acb61c5e3c7fe9a8452d1f9c0288a2991"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acb61c5e3c7fe9a8452d1f9c0288a2991">get_n_integer_vars</a> () const override</td></tr>
-<tr class="memdesc:acb61c5e3c7fe9a8452d1f9c0288a2991"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of integer variables in the problem  <br /></td></tr>
-<tr class="separator:acb61c5e3c7fe9a8452d1f9c0288a2991"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a82dd5531409fba5131d8db8ae201f73d" id="r_a82dd5531409fba5131d8db8ae201f73d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a82dd5531409fba5131d8db8ae201f73d">get_obj</a> (double *obj, int first, int last) const override</td></tr>
-<tr class="memdesc:a82dd5531409fba5131d8db8ae201f73d"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the objective function coefficients for the columns in a given range  <br /></td></tr>
-<tr class="separator:a82dd5531409fba5131d8db8ae201f73d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3209a8750961478ed949a75b5cef261c" id="r_a3209a8750961478ed949a75b5cef261c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3209a8750961478ed949a75b5cef261c">set_obj_to_zero</a> () override</td></tr>
-<tr class="memdesc:a3209a8750961478ed949a75b5cef261c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the objective function coefficients to zero.  <br /></td></tr>
-<tr class="separator:a3209a8750961478ed949a75b5cef261c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a678f5f40e1102d81f5dcb95a575e041a" id="r_a678f5f40e1102d81f5dcb95a575e041a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a678f5f40e1102d81f5dcb95a575e041a">set_obj</a> (const double *obj, int first, int last) override</td></tr>
-<tr class="memdesc:a678f5f40e1102d81f5dcb95a575e041a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the objective function coefficients for the columns in a given range.  <br /></td></tr>
-<tr class="separator:a678f5f40e1102d81f5dcb95a575e041a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ce71bda1dfbb47ad3ab18e80698cde6" id="r_a6ce71bda1dfbb47ad3ab18e80698cde6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ce71bda1dfbb47ad3ab18e80698cde6">get_rows</a> (int *mstart, int *mclind, double *dmatval, int size, int *nels, int first, int last) const override</td></tr>
-<tr class="memdesc:a6ce71bda1dfbb47ad3ab18e80698cde6"><td class="mdescLeft">&#160;</td><td class="mdescRight">get coefficients of rows from index first to last  <br /></td></tr>
-<tr class="separator:a6ce71bda1dfbb47ad3ab18e80698cde6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0e72a237efb49b4788c6131dc414e06b" id="r_a0e72a237efb49b4788c6131dc414e06b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0e72a237efb49b4788c6131dc414e06b">get_row_type</a> (char *qrtype, int first, int last) const override</td></tr>
-<tr class="memdesc:a0e72a237efb49b4788c6131dc414e06b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the row types for the rows in a given range.  <br /></td></tr>
-<tr class="separator:a0e72a237efb49b4788c6131dc414e06b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3532b55c76fcaccc3fe8d686193c9dd5" id="r_a3532b55c76fcaccc3fe8d686193c9dd5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3532b55c76fcaccc3fe8d686193c9dd5">get_rhs</a> (double *rhs, int first, int last) const override</td></tr>
-<tr class="memdesc:a3532b55c76fcaccc3fe8d686193c9dd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the right-hand sides of the rows in a given range.  <br /></td></tr>
-<tr class="separator:a3532b55c76fcaccc3fe8d686193c9dd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa34e941ed834b66bb6a2ee4211073454" id="r_aa34e941ed834b66bb6a2ee4211073454"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa34e941ed834b66bb6a2ee4211073454">get_rhs_range</a> (double *range, int first, int last) const override</td></tr>
-<tr class="memdesc:aa34e941ed834b66bb6a2ee4211073454"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the right hand side range values for the rows in a given range.  <br /></td></tr>
-<tr class="separator:aa34e941ed834b66bb6a2ee4211073454"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9b1add4a9bff8ab15a533c81818214fc" id="r_a9b1add4a9bff8ab15a533c81818214fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9b1add4a9bff8ab15a533c81818214fc">get_col_type</a> (char *coltype, int first, int last) const override</td></tr>
-<tr class="memdesc:a9b1add4a9bff8ab15a533c81818214fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the column types for the columns in a given range.  <br /></td></tr>
-<tr class="separator:a9b1add4a9bff8ab15a533c81818214fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a3e618e559abc36fdea1be47ed8ffce" id="r_a3a3e618e559abc36fdea1be47ed8ffce"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a3e618e559abc36fdea1be47ed8ffce">get_lb</a> (double *lb, int fisrt, int last) const override</td></tr>
-<tr class="memdesc:a3a3e618e559abc36fdea1be47ed8ffce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the lower bounds for variables in a given range.  <br /></td></tr>
-<tr class="separator:a3a3e618e559abc36fdea1be47ed8ffce"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9214a4e8ef6a9144cf8e9b0e20199ef6" id="r_a9214a4e8ef6a9144cf8e9b0e20199ef6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9214a4e8ef6a9144cf8e9b0e20199ef6">get_ub</a> (double *ub, int fisrt, int last) const override</td></tr>
-<tr class="memdesc:a9214a4e8ef6a9144cf8e9b0e20199ef6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the upper bounds for variables in a given range.  <br /></td></tr>
-<tr class="separator:a9214a4e8ef6a9144cf8e9b0e20199ef6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab2b453dd51e7ce6a18656399647d8060" id="r_ab2b453dd51e7ce6a18656399647d8060"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab2b453dd51e7ce6a18656399647d8060">get_row_index</a> (const std::string &amp;name) override</td></tr>
-<tr class="memdesc:ab2b453dd51e7ce6a18656399647d8060"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index of row named "name".  <br /></td></tr>
-<tr class="separator:ab2b453dd51e7ce6a18656399647d8060"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a85ca8269e2cf23554d80a22101371792" id="r_a85ca8269e2cf23554d80a22101371792"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a85ca8269e2cf23554d80a22101371792">get_col_index</a> (const std::string &amp;name) override</td></tr>
-<tr class="memdesc:a85ca8269e2cf23554d80a22101371792"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index of column named "name".  <br /></td></tr>
-<tr class="separator:a85ca8269e2cf23554d80a22101371792"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d0e261b04e97d40eb25704b526d8625" id="r_a3d0e261b04e97d40eb25704b526d8625"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d0e261b04e97d40eb25704b526d8625">get_row_names</a> (int first, int last) override</td></tr>
-<tr class="memdesc:a3d0e261b04e97d40eb25704b526d8625"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of row from index first to last cannot be declared as const because of some solver methods.  <br /></td></tr>
-<tr class="separator:a3d0e261b04e97d40eb25704b526d8625"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aaa7977b515a6117cf5e2d804dccaa6f4" id="r_aaa7977b515a6117cf5e2d804dccaa6f4"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aaa7977b515a6117cf5e2d804dccaa6f4">get_row_names</a> () override</td></tr>
-<tr class="memdesc:aaa7977b515a6117cf5e2d804dccaa6f4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of rows.  <br /></td></tr>
-<tr class="separator:aaa7977b515a6117cf5e2d804dccaa6f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af46a63f1eaa7094e39baefa3a8384ea9" id="r_af46a63f1eaa7094e39baefa3a8384ea9"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af46a63f1eaa7094e39baefa3a8384ea9">get_col_names</a> (int first, int last) override</td></tr>
-<tr class="memdesc:af46a63f1eaa7094e39baefa3a8384ea9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of columns from index first to last cannot be declared as const because of some solver methods.  <br /></td></tr>
-<tr class="separator:af46a63f1eaa7094e39baefa3a8384ea9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a35b311b81fee750e32b640f07ee7ea27" id="r_a35b311b81fee750e32b640f07ee7ea27"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a35b311b81fee750e32b640f07ee7ea27">get_col_names</a> () override</td></tr>
-<tr class="memdesc:a35b311b81fee750e32b640f07ee7ea27"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of columns.  <br /></td></tr>
-<tr class="separator:a35b311b81fee750e32b640f07ee7ea27"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7415aee60e1b8a3b83f9b4e2a989a827" id="r_a7415aee60e1b8a3b83f9b4e2a989a827"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7415aee60e1b8a3b83f9b4e2a989a827">del_rows</a> (int first, int last) override</td></tr>
-<tr class="memdesc:a7415aee60e1b8a3b83f9b4e2a989a827"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes rows between index first and last.  <br /></td></tr>
-<tr class="separator:a7415aee60e1b8a3b83f9b4e2a989a827"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8fb8c92a38162a74023e798e9e824c80" id="r_a8fb8c92a38162a74023e798e9e824c80"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8fb8c92a38162a74023e798e9e824c80">add_rows</a> (int newrows, int newnz, const char *qrtype, const double *rhs, const double *range, const int *mstart, const int *mclind, const double *dmatval, const std::vector&lt; std::string &gt; &amp;names={}) override</td></tr>
-<tr class="memdesc:a8fb8c92a38162a74023e798e9e824c80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds rows to the problem.  <br /></td></tr>
-<tr class="separator:a8fb8c92a38162a74023e798e9e824c80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a39dd85d31f7a5fe895fe8d119a7e69" id="r_a3a39dd85d31f7a5fe895fe8d119a7e69"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a39dd85d31f7a5fe895fe8d119a7e69">add_cols</a> (int newcol, int newnz, const double *objx, const int *mstart, const int *mrwind, const double *dmatval, const double *bdl, const double *bdu) override</td></tr>
-<tr class="memdesc:a3a39dd85d31f7a5fe895fe8d119a7e69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds new columns to the problem.  <br /></td></tr>
-<tr class="separator:a3a39dd85d31f7a5fe895fe8d119a7e69"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fd6e04f639afc967adf2f1a3d3d4b85" id="r_a2fd6e04f639afc967adf2f1a3d3d4b85"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2fd6e04f639afc967adf2f1a3d3d4b85">add_name</a> (int type, const char *cnames, int indice) override</td></tr>
-<tr class="memdesc:a2fd6e04f639afc967adf2f1a3d3d4b85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a name to a row or a column.  <br /></td></tr>
-<tr class="separator:a2fd6e04f639afc967adf2f1a3d3d4b85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a72d7e2d4e518b54bd437009aea0bd9a3" id="r_a72d7e2d4e518b54bd437009aea0bd9a3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a72d7e2d4e518b54bd437009aea0bd9a3">add_names</a> (int type, const std::vector&lt; std::string &gt; &amp;cnames, int first, int end) override</td></tr>
-<tr class="separator:a72d7e2d4e518b54bd437009aea0bd9a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a824fa83671eb0273279277b1867b6909" id="r_a824fa83671eb0273279277b1867b6909"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a824fa83671eb0273279277b1867b6909">chg_obj</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; double &gt; &amp;obj) override</td></tr>
-<tr class="memdesc:a824fa83671eb0273279277b1867b6909"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change coefficients in objective function.  <br /></td></tr>
-<tr class="separator:a824fa83671eb0273279277b1867b6909"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0340e6b71a6b4ee444c8638a868f63e" id="r_ae0340e6b71a6b4ee444c8638a868f63e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae0340e6b71a6b4ee444c8638a868f63e">chg_obj_direction</a> (const bool minimize) override</td></tr>
-<tr class="memdesc:ae0340e6b71a6b4ee444c8638a868f63e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the problem's objective function sense to minimize or maximize.  <br /></td></tr>
-<tr class="separator:ae0340e6b71a6b4ee444c8638a868f63e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4bc726350bcf61005c30cc61e6018b4e" id="r_a4bc726350bcf61005c30cc61e6018b4e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4bc726350bcf61005c30cc61e6018b4e">chg_bounds</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; char &gt; &amp;qbtype, const std::vector&lt; double &gt; &amp;bnd) override</td></tr>
-<tr class="memdesc:a4bc726350bcf61005c30cc61e6018b4e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change bounds of some variables.  <br /></td></tr>
-<tr class="separator:a4bc726350bcf61005c30cc61e6018b4e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd23d7ef0eabbfeaca4b371d48538d8e" id="r_acd23d7ef0eabbfeaca4b371d48538d8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acd23d7ef0eabbfeaca4b371d48538d8e">chg_col_type</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; char &gt; &amp;qctype) override</td></tr>
-<tr class="memdesc:acd23d7ef0eabbfeaca4b371d48538d8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change type of some columns.  <br /></td></tr>
-<tr class="separator:acd23d7ef0eabbfeaca4b371d48538d8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f85cacdc241722dad22e570957890aa" id="r_a7f85cacdc241722dad22e570957890aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7f85cacdc241722dad22e570957890aa">chg_rhs</a> (int id_row, double val) override</td></tr>
-<tr class="memdesc:a7f85cacdc241722dad22e570957890aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change rhs of a row.  <br /></td></tr>
-<tr class="separator:a7f85cacdc241722dad22e570957890aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad0ee54139145f03b9f188d40cb7a0856" id="r_ad0ee54139145f03b9f188d40cb7a0856"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad0ee54139145f03b9f188d40cb7a0856">chg_coef</a> (int id_row, int id_col, double val) override</td></tr>
-<tr class="memdesc:ad0ee54139145f03b9f188d40cb7a0856"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change a coefficient in the matrix.  <br /></td></tr>
-<tr class="separator:ad0ee54139145f03b9f188d40cb7a0856"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13f183f9af6db636f61e0e919ad8f834" id="r_a13f183f9af6db636f61e0e919ad8f834"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a13f183f9af6db636f61e0e919ad8f834">chg_row_name</a> (int id_row, const std::string &amp;name) override</td></tr>
-<tr class="memdesc:a13f183f9af6db636f61e0e919ad8f834"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a constraint.  <br /></td></tr>
-<tr class="separator:a13f183f9af6db636f61e0e919ad8f834"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af4b08904684db423cee3a8f8c58ff800" id="r_af4b08904684db423cee3a8f8c58ff800"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af4b08904684db423cee3a8f8c58ff800">chg_col_name</a> (int id_col, const std::string &amp;name) override</td></tr>
-<tr class="memdesc:af4b08904684db423cee3a8f8c58ff800"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a variable.  <br /></td></tr>
-<tr class="separator:af4b08904684db423cee3a8f8c58ff800"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3359581e9eafa676be9fbd7e0b8446c2" id="r_a3359581e9eafa676be9fbd7e0b8446c2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3359581e9eafa676be9fbd7e0b8446c2">solve_lp</a> () override</td></tr>
-<tr class="memdesc:a3359581e9eafa676be9fbd7e0b8446c2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves a problem as LP.  <br /></td></tr>
-<tr class="separator:a3359581e9eafa676be9fbd7e0b8446c2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a32a6e746e160966776a64864631c3211" id="r_a32a6e746e160966776a64864631c3211"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a32a6e746e160966776a64864631c3211">solve_mip</a> () override</td></tr>
-<tr class="memdesc:a32a6e746e160966776a64864631c3211"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves a problem as MIP.  <br /></td></tr>
-<tr class="separator:a32a6e746e160966776a64864631c3211"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a23a581969905f7727611d2f7dd537af8" id="r_a23a581969905f7727611d2f7dd537af8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a23a581969905f7727611d2f7dd537af8">get_basis</a> (int *rstatus, int *cstatus) const override</td></tr>
-<tr class="memdesc:a23a581969905f7727611d2f7dd537af8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current basis into the user’s data arrays.  <br /></td></tr>
-<tr class="separator:a23a581969905f7727611d2f7dd537af8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afe80be61b65b3d0779d3343be8c653fb" id="r_afe80be61b65b3d0779d3343be8c653fb"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afe80be61b65b3d0779d3343be8c653fb">get_mip_value</a> () const override</td></tr>
-<tr class="memdesc:afe80be61b65b3d0779d3343be8c653fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the optimal value of a MIP problem (available after method "solve_mip")  <br /></td></tr>
-<tr class="separator:afe80be61b65b3d0779d3343be8c653fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13cd39837de937554ccd6b91bb9ce011" id="r_a13cd39837de937554ccd6b91bb9ce011"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a13cd39837de937554ccd6b91bb9ce011">get_lp_value</a> () const override</td></tr>
-<tr class="memdesc:a13cd39837de937554ccd6b91bb9ce011"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the optimal value of a LP problem (available after method "solve_lp" )  <br /></td></tr>
-<tr class="separator:a13cd39837de937554ccd6b91bb9ce011"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a280b880061bcb76c43b7dfb1718390" id="r_a9a280b880061bcb76c43b7dfb1718390"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9a280b880061bcb76c43b7dfb1718390">get_splex_num_of_ite_last</a> () const override</td></tr>
-<tr class="memdesc:a9a280b880061bcb76c43b7dfb1718390"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of simplex iterations done in the last resolution of the problem.  <br /></td></tr>
-<tr class="separator:a9a280b880061bcb76c43b7dfb1718390"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e474653329aab445b1da2082689a114" id="r_a8e474653329aab445b1da2082689a114"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8e474653329aab445b1da2082689a114">get_lp_sol</a> (double *primals, double *duals, double *reduced_costs) override</td></tr>
-<tr class="memdesc:a8e474653329aab445b1da2082689a114"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get LP solution of a problem (available after method "solve_lp")  <br /></td></tr>
-<tr class="separator:a8e474653329aab445b1da2082689a114"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2dbc34e5b51f9a51b236dfb84d72a597" id="r_a2dbc34e5b51f9a51b236dfb84d72a597"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2dbc34e5b51f9a51b236dfb84d72a597">get_mip_sol</a> (double *primals) override</td></tr>
-<tr class="memdesc:a2dbc34e5b51f9a51b236dfb84d72a597"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get MIP solution of a problem (available after method "solve_mip")  <br /></td></tr>
-<tr class="separator:a2dbc34e5b51f9a51b236dfb84d72a597"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87378fed8a194cb4cbb6904eacbed94a" id="r_a87378fed8a194cb4cbb6904eacbed94a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a87378fed8a194cb4cbb6904eacbed94a">set_output_log_level</a> (int loglevel) override</td></tr>
-<tr class="memdesc:a87378fed8a194cb4cbb6904eacbed94a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets log level of the solver.  <br /></td></tr>
-<tr class="separator:a87378fed8a194cb4cbb6904eacbed94a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a006aad13911c36e8d753f172c10f5465" id="r_a006aad13911c36e8d753f172c10f5465"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a006aad13911c36e8d753f172c10f5465">set_algorithm</a> (const std::string &amp;algo) override</td></tr>
-<tr class="memdesc:a006aad13911c36e8d753f172c10f5465"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets algorithm used by solver to solve LP's.  <br /></td></tr>
-<tr class="separator:a006aad13911c36e8d753f172c10f5465"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c2bc9d5b720e92404bfb9179a0b0194" id="r_a4c2bc9d5b720e92404bfb9179a0b0194"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c2bc9d5b720e92404bfb9179a0b0194">set_threads</a> (int n_threads) override</td></tr>
-<tr class="memdesc:a4c2bc9d5b720e92404bfb9179a0b0194"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the maximum number of threads used to perform optimization.  <br /></td></tr>
-<tr class="separator:a4c2bc9d5b720e92404bfb9179a0b0194"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad35f966751547d5c8a27feb707df11a5" id="r_ad35f966751547d5c8a27feb707df11a5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad35f966751547d5c8a27feb707df11a5">set_optimality_gap</a> (double gap) override</td></tr>
-<tr class="memdesc:ad35f966751547d5c8a27feb707df11a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the optimality gap.  <br /></td></tr>
-<tr class="separator:ad35f966751547d5c8a27feb707df11a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae9ba517850933fd58e17a3577a1d5e47" id="r_ae9ba517850933fd58e17a3577a1d5e47"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae9ba517850933fd58e17a3577a1d5e47">set_simplex_iter</a> (int iter) override</td></tr>
-<tr class="memdesc:ae9ba517850933fd58e17a3577a1d5e47"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the maximum number of simplex iterations the solver can perform.  <br /></td></tr>
-<tr class="separator:ae9ba517850933fd58e17a3577a1d5e47"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a708234655849d976c5698615cd67c65c" id="r_a708234655849d976c5698615cd67c65c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a708234655849d976c5698615cd67c65c">write_basis</a> (const std::filesystem::path &amp;filename) override</td></tr>
-<tr class="memdesc:a708234655849d976c5698615cd67c65c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the current basis to a file for later input into the optimizer.  <br /></td></tr>
-<tr class="separator:a708234655849d976c5698615cd67c65c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee558629ab44c44cd971eeb41bde4088" id="r_aee558629ab44c44cd971eeb41bde4088"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aee558629ab44c44cd971eeb41bde4088">read_basis</a> (const std::filesystem::path &amp;filename) override</td></tr>
-<tr class="memdesc:aee558629ab44c44cd971eeb41bde4088"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instructs the optimizer to read in a previously saved basis from a file.  <br /></td></tr>
-<tr class="separator:aee558629ab44c44cd971eeb41bde4088"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab385b74ab52084f8be1482ffc31578e5" id="r_ab385b74ab52084f8be1482ffc31578e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab385b74ab52084f8be1482ffc31578e5">save_prob</a> (const std::filesystem::path &amp;filename) override</td></tr>
-<tr class="memdesc:ab385b74ab52084f8be1482ffc31578e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">write an optimisation problem in a file  <br /></td></tr>
-<tr class="separator:ab385b74ab52084f8be1482ffc31578e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a89c2613e4954f6d0b01c730ce231c971" id="r_a89c2613e4954f6d0b01c730ce231c971"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a89c2613e4954f6d0b01c730ce231c971">restore_prob</a> (const std::filesystem::path &amp;filename) override</td></tr>
-<tr class="memdesc:a89c2613e4954f6d0b01c730ce231c971"><td class="mdescLeft">&#160;</td><td class="mdescRight">read an optimisation problem from a file  <br /></td></tr>
-<tr class="separator:a89c2613e4954f6d0b01c730ce231c971"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6e23d90160fdc83739439ee6dd5177c1" id="r_a6e23d90160fdc83739439ee6dd5177c1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6e23d90160fdc83739439ee6dd5177c1">get_number_of_instances</a> () override</td></tr>
+<tr class="memdesc:a6e23d90160fdc83739439ee6dd5177c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns number of instances of solver currently in memory.  <br /></td></tr>
+<tr class="separator:a6e23d90160fdc83739439ee6dd5177c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a04b3b7d4da79bd83070b9a288d3c936c" id="r_a04b3b7d4da79bd83070b9a288d3c936c"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a04b3b7d4da79bd83070b9a288d3c936c">get_solver_name</a> () const override</td></tr>
+<tr class="memdesc:a04b3b7d4da79bd83070b9a288d3c936c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the solver used.  <br /></td></tr>
+<tr class="separator:a04b3b7d4da79bd83070b9a288d3c936c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8f04f6330952232d4d81e7f54d5e85f1" id="r_a8f04f6330952232d4d81e7f54d5e85f1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8f04f6330952232d4d81e7f54d5e85f1">init</a> () override</td></tr>
+<tr class="memdesc:a8f04f6330952232d4d81e7f54d5e85f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a problem.  <br /></td></tr>
+<tr class="separator:a8f04f6330952232d4d81e7f54d5e85f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a792bc19cccce8d5e5d21ab5903a603ab" id="r_a792bc19cccce8d5e5d21ab5903a603ab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a792bc19cccce8d5e5d21ab5903a603ab">free</a> () override</td></tr>
+<tr class="memdesc:a792bc19cccce8d5e5d21ab5903a603ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees all the datas contained in the Solver environment.  <br /></td></tr>
+<tr class="separator:a792bc19cccce8d5e5d21ab5903a603ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa63f249eca85959207c09ee64fee61e0" id="r_aa63f249eca85959207c09ee64fee61e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa63f249eca85959207c09ee64fee61e0">write_prob_mps</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:aa63f249eca85959207c09ee64fee61e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes an optimization problem in a MPS file  <br /></td></tr>
+<tr class="separator:aa63f249eca85959207c09ee64fee61e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad8d3e8ac98aee89693f195c5490d6553" id="r_ad8d3e8ac98aee89693f195c5490d6553"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad8d3e8ac98aee89693f195c5490d6553">write_prob_lp</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:ad8d3e8ac98aee89693f195c5490d6553"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes an optimization problem in a LP file  <br /></td></tr>
+<tr class="separator:ad8d3e8ac98aee89693f195c5490d6553"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93574fe7141305f2dc3842b31768bb74" id="r_a93574fe7141305f2dc3842b31768bb74"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a93574fe7141305f2dc3842b31768bb74">read_prob_mps</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:a93574fe7141305f2dc3842b31768bb74"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads an optimization problem contained in a MPS file  <br /></td></tr>
+<tr class="separator:a93574fe7141305f2dc3842b31768bb74"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abe88c2d1e6070f42211cd9e395220c05" id="r_abe88c2d1e6070f42211cd9e395220c05"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abe88c2d1e6070f42211cd9e395220c05">read_prob_lp</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:abe88c2d1e6070f42211cd9e395220c05"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads an optimization problem contained in a MPS file  <br /></td></tr>
+<tr class="separator:abe88c2d1e6070f42211cd9e395220c05"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46e03b0a605da5ea26d4f84c018a422b" id="r_a46e03b0a605da5ea26d4f84c018a422b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a46e03b0a605da5ea26d4f84c018a422b">copy_prob</a> (<a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">Ptr</a> fictif_solv) override</td></tr>
+<tr class="memdesc:a46e03b0a605da5ea26d4f84c018a422b"><td class="mdescLeft">&#160;</td><td class="mdescRight">copy an existing problem  <br /></td></tr>
+<tr class="separator:a46e03b0a605da5ea26d4f84c018a422b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a07d2993cf13d4526c4d8b12b39290b50" id="r_a07d2993cf13d4526c4d8b12b39290b50"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a07d2993cf13d4526c4d8b12b39290b50">get_ncols</a> () const override</td></tr>
+<tr class="memdesc:a07d2993cf13d4526c4d8b12b39290b50"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of columns of the problem  <br /></td></tr>
+<tr class="separator:a07d2993cf13d4526c4d8b12b39290b50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad2d1063e5e52f19f53b176ff4f4da477" id="r_ad2d1063e5e52f19f53b176ff4f4da477"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad2d1063e5e52f19f53b176ff4f4da477">get_nrows</a> () const override</td></tr>
+<tr class="memdesc:ad2d1063e5e52f19f53b176ff4f4da477"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of rows of the problem  <br /></td></tr>
+<tr class="separator:ad2d1063e5e52f19f53b176ff4f4da477"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2ed53692d6d27259920ee9966f583fe4" id="r_a2ed53692d6d27259920ee9966f583fe4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2ed53692d6d27259920ee9966f583fe4">get_nelems</a> () const override</td></tr>
+<tr class="memdesc:a2ed53692d6d27259920ee9966f583fe4"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of non zeros elements in the matrix, excluding objective  <br /></td></tr>
+<tr class="separator:a2ed53692d6d27259920ee9966f583fe4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7658b702b07bafe0b3babe38acac86e2" id="r_a7658b702b07bafe0b3babe38acac86e2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7658b702b07bafe0b3babe38acac86e2">get_n_integer_vars</a> () const override</td></tr>
+<tr class="memdesc:a7658b702b07bafe0b3babe38acac86e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of integer variables in the problem  <br /></td></tr>
+<tr class="separator:a7658b702b07bafe0b3babe38acac86e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57adfb9bde4b799c6e11b562e95b31cd" id="r_a57adfb9bde4b799c6e11b562e95b31cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a57adfb9bde4b799c6e11b562e95b31cd">get_obj</a> (double *obj, int first, int last) const override</td></tr>
+<tr class="memdesc:a57adfb9bde4b799c6e11b562e95b31cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the objective function coefficients for the columns in a given range  <br /></td></tr>
+<tr class="separator:a57adfb9bde4b799c6e11b562e95b31cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d77888d8fd4a7ff50614b4d32725425" id="r_a1d77888d8fd4a7ff50614b4d32725425"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1d77888d8fd4a7ff50614b4d32725425">set_obj_to_zero</a> () override</td></tr>
+<tr class="memdesc:a1d77888d8fd4a7ff50614b4d32725425"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the objective function coefficients to zero.  <br /></td></tr>
+<tr class="separator:a1d77888d8fd4a7ff50614b4d32725425"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5ffaafb4edeebabaa75692e42380fa79" id="r_a5ffaafb4edeebabaa75692e42380fa79"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5ffaafb4edeebabaa75692e42380fa79">set_obj</a> (const double *obj, int first, int last) override</td></tr>
+<tr class="memdesc:a5ffaafb4edeebabaa75692e42380fa79"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the objective function coefficients for the columns in a given range.  <br /></td></tr>
+<tr class="separator:a5ffaafb4edeebabaa75692e42380fa79"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30eeafb23a33faa94d6efba4dbaabe53" id="r_a30eeafb23a33faa94d6efba4dbaabe53"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a30eeafb23a33faa94d6efba4dbaabe53">get_rows</a> (int *mstart, int *mclind, double *dmatval, int size, int *nels, int first, int last) const override</td></tr>
+<tr class="memdesc:a30eeafb23a33faa94d6efba4dbaabe53"><td class="mdescLeft">&#160;</td><td class="mdescRight">get coefficients of rows from index first to last  <br /></td></tr>
+<tr class="separator:a30eeafb23a33faa94d6efba4dbaabe53"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1d560f1cdae42ebc4b2e17bda7ae10a2" id="r_a1d560f1cdae42ebc4b2e17bda7ae10a2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1d560f1cdae42ebc4b2e17bda7ae10a2">get_row_type</a> (char *qrtype, int first, int last) const override</td></tr>
+<tr class="memdesc:a1d560f1cdae42ebc4b2e17bda7ae10a2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the row types for the rows in a given range.  <br /></td></tr>
+<tr class="separator:a1d560f1cdae42ebc4b2e17bda7ae10a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a66eddd2c9d3f4ce99f09ef3c09c2d2" id="r_a8a66eddd2c9d3f4ce99f09ef3c09c2d2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8a66eddd2c9d3f4ce99f09ef3c09c2d2">get_rhs</a> (double *rhs, int first, int last) const override</td></tr>
+<tr class="memdesc:a8a66eddd2c9d3f4ce99f09ef3c09c2d2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the right-hand sides of the rows in a given range.  <br /></td></tr>
+<tr class="separator:a8a66eddd2c9d3f4ce99f09ef3c09c2d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e507c36c6062ea4cc0fc835bc2aed39" id="r_a9e507c36c6062ea4cc0fc835bc2aed39"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9e507c36c6062ea4cc0fc835bc2aed39">get_rhs_range</a> (double *range, int first, int last) const override</td></tr>
+<tr class="memdesc:a9e507c36c6062ea4cc0fc835bc2aed39"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the right hand side range values for the rows in a given range.  <br /></td></tr>
+<tr class="separator:a9e507c36c6062ea4cc0fc835bc2aed39"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8092cfcf27c7314150991cf5e9862aa3" id="r_a8092cfcf27c7314150991cf5e9862aa3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8092cfcf27c7314150991cf5e9862aa3">get_col_type</a> (char *coltype, int first, int last) const override</td></tr>
+<tr class="memdesc:a8092cfcf27c7314150991cf5e9862aa3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the column types for the columns in a given range.  <br /></td></tr>
+<tr class="separator:a8092cfcf27c7314150991cf5e9862aa3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a311879e2b51b9d9881aa9be86b215d41" id="r_a311879e2b51b9d9881aa9be86b215d41"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a311879e2b51b9d9881aa9be86b215d41">get_lb</a> (double *lb, int first, int last) const override</td></tr>
+<tr class="memdesc:a311879e2b51b9d9881aa9be86b215d41"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the lower bounds for variables in a given range.  <br /></td></tr>
+<tr class="separator:a311879e2b51b9d9881aa9be86b215d41"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6f8e45af85c3296c46a2e4896de37de7" id="r_a6f8e45af85c3296c46a2e4896de37de7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6f8e45af85c3296c46a2e4896de37de7">get_ub</a> (double *ub, int first, int last) const override</td></tr>
+<tr class="memdesc:a6f8e45af85c3296c46a2e4896de37de7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the upper bounds for variables in a given range.  <br /></td></tr>
+<tr class="separator:a6f8e45af85c3296c46a2e4896de37de7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af3335f283ebe357930af2de71ee2c3f7" id="r_af3335f283ebe357930af2de71ee2c3f7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af3335f283ebe357930af2de71ee2c3f7">get_row_index</a> (const std::string &amp;name) override</td></tr>
+<tr class="memdesc:af3335f283ebe357930af2de71ee2c3f7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index of row named "name".  <br /></td></tr>
+<tr class="separator:af3335f283ebe357930af2de71ee2c3f7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4454b6299858861765e42468627e20d3" id="r_a4454b6299858861765e42468627e20d3"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4454b6299858861765e42468627e20d3">get_col_index</a> (const std::string &amp;name) override</td></tr>
+<tr class="memdesc:a4454b6299858861765e42468627e20d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index of column named "name".  <br /></td></tr>
+<tr class="separator:a4454b6299858861765e42468627e20d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af73c4e482b7ea0c6ca2a629d7af792ca" id="r_af73c4e482b7ea0c6ca2a629d7af792ca"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af73c4e482b7ea0c6ca2a629d7af792ca">get_row_names</a> (int first, int last) override</td></tr>
+<tr class="memdesc:af73c4e482b7ea0c6ca2a629d7af792ca"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of row from index first to last cannot be declared as const because of some solver methods.  <br /></td></tr>
+<tr class="separator:af73c4e482b7ea0c6ca2a629d7af792ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa48439eb8f77fba9076dd1cdc4f17e43" id="r_aa48439eb8f77fba9076dd1cdc4f17e43"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa48439eb8f77fba9076dd1cdc4f17e43">get_row_names</a> () override</td></tr>
+<tr class="memdesc:aa48439eb8f77fba9076dd1cdc4f17e43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of rows.  <br /></td></tr>
+<tr class="separator:aa48439eb8f77fba9076dd1cdc4f17e43"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a78e131d41080ed8229aa4b09679cf7a3" id="r_a78e131d41080ed8229aa4b09679cf7a3"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a78e131d41080ed8229aa4b09679cf7a3">get_col_names</a> (int first, int last) override</td></tr>
+<tr class="memdesc:a78e131d41080ed8229aa4b09679cf7a3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of columns from index first to last cannot be declared as const because of some solver methods.  <br /></td></tr>
+<tr class="separator:a78e131d41080ed8229aa4b09679cf7a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86c8300d44da5e6078f7d69fcf468eb7" id="r_a86c8300d44da5e6078f7d69fcf468eb7"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a86c8300d44da5e6078f7d69fcf468eb7">get_col_names</a> () override</td></tr>
+<tr class="memdesc:a86c8300d44da5e6078f7d69fcf468eb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of columns.  <br /></td></tr>
+<tr class="separator:a86c8300d44da5e6078f7d69fcf468eb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a091cbc707b1966fbd7ef98a77ba035c3" id="r_a091cbc707b1966fbd7ef98a77ba035c3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a091cbc707b1966fbd7ef98a77ba035c3">del_rows</a> (int first, int last) override</td></tr>
+<tr class="memdesc:a091cbc707b1966fbd7ef98a77ba035c3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes rows between index first and last.  <br /></td></tr>
+<tr class="separator:a091cbc707b1966fbd7ef98a77ba035c3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a71a7b6a060c2acc38a73114578349afd" id="r_a71a7b6a060c2acc38a73114578349afd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a71a7b6a060c2acc38a73114578349afd">add_rows</a> (int newrows, int newnz, const char *qrtype, const double *rhs, const double *range, const int *mstart, const int *mclind, const double *dmatval, const std::vector&lt; std::string &gt; &amp;names={}) override</td></tr>
+<tr class="memdesc:a71a7b6a060c2acc38a73114578349afd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds rows to the problem.  <br /></td></tr>
+<tr class="separator:a71a7b6a060c2acc38a73114578349afd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a05e93f1040ef8d8f4fcaa4640d4033ff" id="r_a05e93f1040ef8d8f4fcaa4640d4033ff"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05e93f1040ef8d8f4fcaa4640d4033ff">add_cols</a> (int newcol, int newnz, const double *objx, const int *mstart, const int *mrwind, const double *dmatval, const double *bdl, const double *bdu) override</td></tr>
+<tr class="memdesc:a05e93f1040ef8d8f4fcaa4640d4033ff"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds new columns to the problem.  <br /></td></tr>
+<tr class="separator:a05e93f1040ef8d8f4fcaa4640d4033ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a088972287cf3d19d87f81ab3737f70d1" id="r_a088972287cf3d19d87f81ab3737f70d1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a088972287cf3d19d87f81ab3737f70d1">add_name</a> (int type, const char *cnames, int indice) override</td></tr>
+<tr class="memdesc:a088972287cf3d19d87f81ab3737f70d1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a name to a row or a column.  <br /></td></tr>
+<tr class="separator:a088972287cf3d19d87f81ab3737f70d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1d12193387fd070a32df3b67c73c3b9" id="r_ae1d12193387fd070a32df3b67c73c3b9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae1d12193387fd070a32df3b67c73c3b9">add_names</a> (int type, const std::vector&lt; std::string &gt; &amp;cnames, int first, int end) override</td></tr>
+<tr class="separator:ae1d12193387fd070a32df3b67c73c3b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a89704b790b00b9ca5e1b90441d87a75a" id="r_a89704b790b00b9ca5e1b90441d87a75a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a89704b790b00b9ca5e1b90441d87a75a">chg_obj</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; double &gt; &amp;obj) override</td></tr>
+<tr class="memdesc:a89704b790b00b9ca5e1b90441d87a75a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change coefficients in objective function.  <br /></td></tr>
+<tr class="separator:a89704b790b00b9ca5e1b90441d87a75a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a052015033446611352b0631ff8035ef7" id="r_a052015033446611352b0631ff8035ef7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a052015033446611352b0631ff8035ef7">chg_obj_direction</a> (const bool minimize) override</td></tr>
+<tr class="memdesc:a052015033446611352b0631ff8035ef7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the problem's objective function sense to minimize or maximize.  <br /></td></tr>
+<tr class="separator:a052015033446611352b0631ff8035ef7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a718171d3c7a4737ad87748a32231034e" id="r_a718171d3c7a4737ad87748a32231034e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a718171d3c7a4737ad87748a32231034e">chg_bounds</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; char &gt; &amp;qbtype, const std::vector&lt; double &gt; &amp;bnd) override</td></tr>
+<tr class="memdesc:a718171d3c7a4737ad87748a32231034e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change bounds of some variables.  <br /></td></tr>
+<tr class="separator:a718171d3c7a4737ad87748a32231034e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4dd0d2d03c01aaa4920cbc798242daf6" id="r_a4dd0d2d03c01aaa4920cbc798242daf6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4dd0d2d03c01aaa4920cbc798242daf6">chg_col_type</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; char &gt; &amp;qctype) override</td></tr>
+<tr class="memdesc:a4dd0d2d03c01aaa4920cbc798242daf6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change type of some columns.  <br /></td></tr>
+<tr class="separator:a4dd0d2d03c01aaa4920cbc798242daf6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd1c3526322c0d4cc240770741fc91d5" id="r_abd1c3526322c0d4cc240770741fc91d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd1c3526322c0d4cc240770741fc91d5">chg_rhs</a> (int id_row, double val) override</td></tr>
+<tr class="memdesc:abd1c3526322c0d4cc240770741fc91d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change rhs of a row.  <br /></td></tr>
+<tr class="separator:abd1c3526322c0d4cc240770741fc91d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f436f59e4cf62bd0d3acdb1b832857b" id="r_a0f436f59e4cf62bd0d3acdb1b832857b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0f436f59e4cf62bd0d3acdb1b832857b">chg_coef</a> (int id_row, int id_col, double val) override</td></tr>
+<tr class="memdesc:a0f436f59e4cf62bd0d3acdb1b832857b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change a coefficient in the matrix.  <br /></td></tr>
+<tr class="separator:a0f436f59e4cf62bd0d3acdb1b832857b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a28e524c8b9bb02bf6ed3e9ebbdab4237" id="r_a28e524c8b9bb02bf6ed3e9ebbdab4237"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a28e524c8b9bb02bf6ed3e9ebbdab4237">chg_row_name</a> (int id_row, const std::string &amp;name) override</td></tr>
+<tr class="memdesc:a28e524c8b9bb02bf6ed3e9ebbdab4237"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a constraint.  <br /></td></tr>
+<tr class="separator:a28e524c8b9bb02bf6ed3e9ebbdab4237"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5fb86d8ef7930fb667f3bd66ea7dc03" id="r_ad5fb86d8ef7930fb667f3bd66ea7dc03"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad5fb86d8ef7930fb667f3bd66ea7dc03">chg_col_name</a> (int id_col, const std::string &amp;name) override</td></tr>
+<tr class="memdesc:ad5fb86d8ef7930fb667f3bd66ea7dc03"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a variable.  <br /></td></tr>
+<tr class="separator:ad5fb86d8ef7930fb667f3bd66ea7dc03"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abdba2bb5dd044e654bd167bb82138b09" id="r_abdba2bb5dd044e654bd167bb82138b09"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abdba2bb5dd044e654bd167bb82138b09">solve_lp</a> () override</td></tr>
+<tr class="memdesc:abdba2bb5dd044e654bd167bb82138b09"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves a problem as LP.  <br /></td></tr>
+<tr class="separator:abdba2bb5dd044e654bd167bb82138b09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adbc40d252022006f6e37db795dba57c1" id="r_adbc40d252022006f6e37db795dba57c1"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adbc40d252022006f6e37db795dba57c1">solve_mip</a> () override</td></tr>
+<tr class="memdesc:adbc40d252022006f6e37db795dba57c1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves a problem as MIP.  <br /></td></tr>
+<tr class="separator:adbc40d252022006f6e37db795dba57c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abcea236e76916cacb7ed6145ba075889" id="r_abcea236e76916cacb7ed6145ba075889"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abcea236e76916cacb7ed6145ba075889">get_basis</a> (int *rstatus, int *cstatus) const override</td></tr>
+<tr class="memdesc:abcea236e76916cacb7ed6145ba075889"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current basis into the user’s data arrays.  <br /></td></tr>
+<tr class="separator:abcea236e76916cacb7ed6145ba075889"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e8ccb6407aa52ba004b8830b1d9add5" id="r_a7e8ccb6407aa52ba004b8830b1d9add5"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7e8ccb6407aa52ba004b8830b1d9add5">get_mip_value</a> () const override</td></tr>
+<tr class="memdesc:a7e8ccb6407aa52ba004b8830b1d9add5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the optimal value of a MIP problem (available after method "solve_mip")  <br /></td></tr>
+<tr class="separator:a7e8ccb6407aa52ba004b8830b1d9add5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a311e3dd22b54d4bd9adb71be256efa" id="r_a7a311e3dd22b54d4bd9adb71be256efa"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7a311e3dd22b54d4bd9adb71be256efa">get_lp_value</a> () const override</td></tr>
+<tr class="memdesc:a7a311e3dd22b54d4bd9adb71be256efa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the optimal value of a LP problem (available after method "solve_lp" )  <br /></td></tr>
+<tr class="separator:a7a311e3dd22b54d4bd9adb71be256efa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd5c941f10725a7d3b660baffcc46d49" id="r_abd5c941f10725a7d3b660baffcc46d49"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd5c941f10725a7d3b660baffcc46d49">get_splex_num_of_ite_last</a> () const override</td></tr>
+<tr class="memdesc:abd5c941f10725a7d3b660baffcc46d49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of simplex iterations done in the last resolution of the problem.  <br /></td></tr>
+<tr class="separator:abd5c941f10725a7d3b660baffcc46d49"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a64a39f16faf52bea350675386e758017" id="r_a64a39f16faf52bea350675386e758017"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a64a39f16faf52bea350675386e758017">get_lp_sol</a> (double *primals, double *duals, double *reduced_costs) override</td></tr>
+<tr class="memdesc:a64a39f16faf52bea350675386e758017"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get LP solution of a problem (available after method "solve_lp")  <br /></td></tr>
+<tr class="separator:a64a39f16faf52bea350675386e758017"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fdf3d0e00616b1562e2df5de9edd82f" id="r_a6fdf3d0e00616b1562e2df5de9edd82f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6fdf3d0e00616b1562e2df5de9edd82f">get_mip_sol</a> (double *primals) override</td></tr>
+<tr class="memdesc:a6fdf3d0e00616b1562e2df5de9edd82f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get MIP solution of a problem (available after method "solve_mip")  <br /></td></tr>
+<tr class="separator:a6fdf3d0e00616b1562e2df5de9edd82f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8d55f684c1e8e1b26a7855e6b411e86" id="r_ac8d55f684c1e8e1b26a7855e6b411e86"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac8d55f684c1e8e1b26a7855e6b411e86">set_output_log_level</a> (int loglevel) override</td></tr>
+<tr class="memdesc:ac8d55f684c1e8e1b26a7855e6b411e86"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets log level of the solver.  <br /></td></tr>
+<tr class="separator:ac8d55f684c1e8e1b26a7855e6b411e86"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b8f0691496578a4df50c5b7bc3fa10b" id="r_a0b8f0691496578a4df50c5b7bc3fa10b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b8f0691496578a4df50c5b7bc3fa10b">set_algorithm</a> (const std::string &amp;algo) override</td></tr>
+<tr class="memdesc:a0b8f0691496578a4df50c5b7bc3fa10b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets algorithm used by solver to solve LP's.  <br /></td></tr>
+<tr class="separator:a0b8f0691496578a4df50c5b7bc3fa10b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a46bfafaee095d03c67781d800215564f" id="r_a46bfafaee095d03c67781d800215564f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a46bfafaee095d03c67781d800215564f">set_threads</a> (int n_threads) override</td></tr>
+<tr class="memdesc:a46bfafaee095d03c67781d800215564f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the maximum number of threads used to perform optimization.  <br /></td></tr>
+<tr class="separator:a46bfafaee095d03c67781d800215564f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1ad9569b492e4a04d00b4d9b7cbb6d59" id="r_a1ad9569b492e4a04d00b4d9b7cbb6d59"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1ad9569b492e4a04d00b4d9b7cbb6d59">set_optimality_gap</a> (double gap) override</td></tr>
+<tr class="memdesc:a1ad9569b492e4a04d00b4d9b7cbb6d59"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the optimality gap.  <br /></td></tr>
+<tr class="separator:a1ad9569b492e4a04d00b4d9b7cbb6d59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6fd7748f8b32836f292b07894fe2e4ef" id="r_a6fd7748f8b32836f292b07894fe2e4ef"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6fd7748f8b32836f292b07894fe2e4ef">set_simplex_iter</a> (int iter) override</td></tr>
+<tr class="memdesc:a6fd7748f8b32836f292b07894fe2e4ef"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the maximum number of simplex iterations the solver can perform.  <br /></td></tr>
+<tr class="separator:a6fd7748f8b32836f292b07894fe2e4ef"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7afe5dc0081cd029861725b9259d54d4" id="r_a7afe5dc0081cd029861725b9259d54d4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7afe5dc0081cd029861725b9259d54d4">write_basis</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:a7afe5dc0081cd029861725b9259d54d4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the current basis to a file for later input into the optimizer.  <br /></td></tr>
+<tr class="separator:a7afe5dc0081cd029861725b9259d54d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa0ade4ebb4215bafa85b5312e66d5bc0" id="r_aa0ade4ebb4215bafa85b5312e66d5bc0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa0ade4ebb4215bafa85b5312e66d5bc0">read_basis</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:aa0ade4ebb4215bafa85b5312e66d5bc0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instructs the optimizer to read in a previously saved basis from a file.  <br /></td></tr>
+<tr class="separator:aa0ade4ebb4215bafa85b5312e66d5bc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d1e11aa5d0ef8571beba3a16e26fbac" id="r_a4d1e11aa5d0ef8571beba3a16e26fbac"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4d1e11aa5d0ef8571beba3a16e26fbac">save_prob</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:a4d1e11aa5d0ef8571beba3a16e26fbac"><td class="mdescLeft">&#160;</td><td class="mdescRight">write an optimisation problem in a file  <br /></td></tr>
+<tr class="separator:a4d1e11aa5d0ef8571beba3a16e26fbac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9593826193e7a89496f7d26748f5388e" id="r_a9593826193e7a89496f7d26748f5388e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9593826193e7a89496f7d26748f5388e">restore_prob</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:a9593826193e7a89496f7d26748f5388e"><td class="mdescLeft">&#160;</td><td class="mdescRight">read an optimisation problem from a file  <br /></td></tr>
+<tr class="separator:a9593826193e7a89496f7d26748f5388e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classSolverAbstract"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classSolverAbstract')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSolverAbstract.html">SolverAbstract</a></td></tr>
 <tr class="memitem:a765549330512481765387972db04ee43 inherit pub_methods_classSolverAbstract" id="r_a765549330512481765387972db04ee43"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>SolverAbstract</b> ()</td></tr>
@@ -373,14 +357,11 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_fp</b> (FILE *fp)
 <tr class="memdesc:aff87b9285872f0012d0f2c183bbf395e inherit pub_methods_classSolverAbstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a status code is different to 0, throw <a class="el" href="classInvalidStatusException.html">InvalidStatusException</a> if it occurs.  <br /></td></tr>
 <tr class="separator:aff87b9285872f0012d0f2c183bbf395e inherit pub_methods_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:a69671e1096ba0798c1c7a00636fb8710" id="r_a69671e1096ba0798c1c7a00636fb8710"><td class="memItemLeft" align="right" valign="top"><a id="a69671e1096ba0798c1c7a00636fb8710" name="a69671e1096ba0798c1c7a00636fb8710"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>mc_year</b> = 0</td></tr>
-<tr class="separator:a69671e1096ba0798c1c7a00636fb8710"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7dc0dea05374133703f82f363dd19030" id="r_a7dc0dea05374133703f82f363dd19030"><td class="memItemLeft" align="right" valign="top"><a id="a7dc0dea05374133703f82f363dd19030" name="a7dc0dea05374133703f82f363dd19030"></a>
-unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>week</b> = 0</td></tr>
-<tr class="separator:a7dc0dea05374133703f82f363dd19030"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
+<tr class="inherit_header pub_types_classSolverAbstract"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_classSolverAbstract')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSolverAbstract.html">SolverAbstract</a></td></tr>
+<tr class="memitem:aa8908e36c1d938344751665a8fa63076 inherit pub_types_classSolverAbstract" id="r_aa8908e36c1d938344751665a8fa63076"><td class="memItemLeft" align="right" valign="top">typedef std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">Ptr</a></td></tr>
+<tr class="separator:aa8908e36c1d938344751665a8fa63076 inherit pub_types_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_attribs_classSolverAbstract"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_attribs_classSolverAbstract')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classSolverAbstract.html">SolverAbstract</a></td></tr>
 <tr class="memitem:a4e3d537c3f7a52d47e1064b6255c8354 inherit pub_attribs_classSolverAbstract" id="r_a4e3d537c3f7a52d47e1064b6255c8354"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#a4e3d537c3f7a52d47e1064b6255c8354">SOLVER_STRING_STATUS</a></td></tr>
 <tr class="separator:a4e3d537c3f7a52d47e1064b6255c8354 inherit pub_attribs_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -394,18 +375,10 @@ FILE *&#160;</td><td class="memItemRight" valign="bottom"><b>_fp</b> = nullptr</
 <tr class="memitem:a4c8ac674eab2b1add320c98eafd310fb inherit pub_attribs_classSolverAbstract" id="r_a4c8ac674eab2b1add320c98eafd310fb"><td class="memItemLeft" align="right" valign="top">
 std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log_file</b> = &quot;&quot;</td></tr>
 <tr class="separator:a4c8ac674eab2b1add320c98eafd310fb inherit pub_attribs_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
-Additional Inherited Members</h2></td></tr>
-<tr class="inherit_header pub_types_classSolverAbstract"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_types_classSolverAbstract')"><img src="closed.png" alt="-"/>&#160;Public Types inherited from <a class="el" href="classSolverAbstract.html">SolverAbstract</a></td></tr>
-<tr class="memitem:aa8908e36c1d938344751665a8fa63076 inherit pub_types_classSolverAbstract" id="r_aa8908e36c1d938344751665a8fa63076"><td class="memItemLeft" align="right" valign="top">typedef std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">Ptr</a></td></tr>
-<tr class="separator:aa8908e36c1d938344751665a8fa63076 inherit pub_types_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Decorator to the <a class="el" href="classSolverAbstract.html">SolverAbstract</a> class. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3a39dd85d31f7a5fe895fe8d119a7e69" name="a3a39dd85d31f7a5fe895fe8d119a7e69"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a39dd85d31f7a5fe895fe8d119a7e69">&#9670;&#160;</a></span>add_cols()</h2>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a05e93f1040ef8d8f4fcaa4640d4033ff" name="a05e93f1040ef8d8f4fcaa4640d4033ff"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a05e93f1040ef8d8f4fcaa4640d4033ff">&#9670;&#160;</a></span>add_cols()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -414,7 +387,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::add_cols </td>
+          <td class="memname">void MockSolverAbstract::add_cols </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>newcol</em></span>, </td>
         </tr>
@@ -480,8 +453,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a2fd6e04f639afc967adf2f1a3d3d4b85" name="a2fd6e04f639afc967adf2f1a3d3d4b85"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2fd6e04f639afc967adf2f1a3d3d4b85">&#9670;&#160;</a></span>add_name()</h2>
+<a id="a088972287cf3d19d87f81ab3737f70d1" name="a088972287cf3d19d87f81ab3737f70d1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a088972287cf3d19d87f81ab3737f70d1">&#9670;&#160;</a></span>add_name()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -490,7 +463,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::add_name </td>
+          <td class="memname">void MockSolverAbstract::add_name </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>type</em></span>, </td>
         </tr>
@@ -526,8 +499,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a72d7e2d4e518b54bd437009aea0bd9a3" name="a72d7e2d4e518b54bd437009aea0bd9a3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a72d7e2d4e518b54bd437009aea0bd9a3">&#9670;&#160;</a></span>add_names()</h2>
+<a id="ae1d12193387fd070a32df3b67c73c3b9" name="ae1d12193387fd070a32df3b67c73c3b9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1d12193387fd070a32df3b67c73c3b9">&#9670;&#160;</a></span>add_names()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -536,7 +509,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::add_names </td>
+          <td class="memname">void MockSolverAbstract::add_names </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>type</em></span>, </td>
         </tr>
@@ -567,8 +540,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a8fb8c92a38162a74023e798e9e824c80" name="a8fb8c92a38162a74023e798e9e824c80"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8fb8c92a38162a74023e798e9e824c80">&#9670;&#160;</a></span>add_rows()</h2>
+<a id="a71a7b6a060c2acc38a73114578349afd" name="a71a7b6a060c2acc38a73114578349afd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71a7b6a060c2acc38a73114578349afd">&#9670;&#160;</a></span>add_rows()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -577,7 +550,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::add_rows </td>
+          <td class="memname">void MockSolverAbstract::add_rows </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>newrows</em></span>, </td>
         </tr>
@@ -648,8 +621,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a4bc726350bcf61005c30cc61e6018b4e" name="a4bc726350bcf61005c30cc61e6018b4e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4bc726350bcf61005c30cc61e6018b4e">&#9670;&#160;</a></span>chg_bounds()</h2>
+<a id="a718171d3c7a4737ad87748a32231034e" name="a718171d3c7a4737ad87748a32231034e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a718171d3c7a4737ad87748a32231034e">&#9670;&#160;</a></span>chg_bounds()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -658,7 +631,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::chg_bounds </td>
+          <td class="memname">void MockSolverAbstract::chg_bounds </td>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; int &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>mindex</em></span>, </td>
         </tr>
@@ -695,8 +668,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="ad0ee54139145f03b9f188d40cb7a0856" name="ad0ee54139145f03b9f188d40cb7a0856"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad0ee54139145f03b9f188d40cb7a0856">&#9670;&#160;</a></span>chg_coef()</h2>
+<a id="a0f436f59e4cf62bd0d3acdb1b832857b" name="a0f436f59e4cf62bd0d3acdb1b832857b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f436f59e4cf62bd0d3acdb1b832857b">&#9670;&#160;</a></span>chg_coef()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -705,7 +678,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::chg_coef </td>
+          <td class="memname">void MockSolverAbstract::chg_coef </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>id_row</em></span>, </td>
         </tr>
@@ -741,8 +714,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="af4b08904684db423cee3a8f8c58ff800" name="af4b08904684db423cee3a8f8c58ff800"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af4b08904684db423cee3a8f8c58ff800">&#9670;&#160;</a></span>chg_col_name()</h2>
+<a id="ad5fb86d8ef7930fb667f3bd66ea7dc03" name="ad5fb86d8ef7930fb667f3bd66ea7dc03"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5fb86d8ef7930fb667f3bd66ea7dc03">&#9670;&#160;</a></span>chg_col_name()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -751,7 +724,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::chg_col_name </td>
+          <td class="memname">void MockSolverAbstract::chg_col_name </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>id_col</em></span>, </td>
         </tr>
@@ -781,8 +754,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="acd23d7ef0eabbfeaca4b371d48538d8e" name="acd23d7ef0eabbfeaca4b371d48538d8e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd23d7ef0eabbfeaca4b371d48538d8e">&#9670;&#160;</a></span>chg_col_type()</h2>
+<a id="a4dd0d2d03c01aaa4920cbc798242daf6" name="a4dd0d2d03c01aaa4920cbc798242daf6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4dd0d2d03c01aaa4920cbc798242daf6">&#9670;&#160;</a></span>chg_col_type()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -791,7 +764,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::chg_col_type </td>
+          <td class="memname">void MockSolverAbstract::chg_col_type </td>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; int &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>mindex</em></span>, </td>
         </tr>
@@ -822,8 +795,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a824fa83671eb0273279277b1867b6909" name="a824fa83671eb0273279277b1867b6909"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a824fa83671eb0273279277b1867b6909">&#9670;&#160;</a></span>chg_obj()</h2>
+<a id="a89704b790b00b9ca5e1b90441d87a75a" name="a89704b790b00b9ca5e1b90441d87a75a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a89704b790b00b9ca5e1b90441d87a75a">&#9670;&#160;</a></span>chg_obj()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -832,7 +805,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::chg_obj </td>
+          <td class="memname">void MockSolverAbstract::chg_obj </td>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; int &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>mindex</em></span>, </td>
         </tr>
@@ -862,8 +835,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="ae0340e6b71a6b4ee444c8638a868f63e" name="ae0340e6b71a6b4ee444c8638a868f63e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae0340e6b71a6b4ee444c8638a868f63e">&#9670;&#160;</a></span>chg_obj_direction()</h2>
+<a id="a052015033446611352b0631ff8035ef7" name="a052015033446611352b0631ff8035ef7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a052015033446611352b0631ff8035ef7">&#9670;&#160;</a></span>chg_obj_direction()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -872,7 +845,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::chg_obj_direction </td>
+          <td class="memname">void MockSolverAbstract::chg_obj_direction </td>
           <td>(</td>
           <td class="paramtype">const bool</td>          <td class="paramname"><span class="paramname"><em>minimize</em></span></td><td>)</td>
           <td></td>
@@ -897,8 +870,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a7f85cacdc241722dad22e570957890aa" name="a7f85cacdc241722dad22e570957890aa"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7f85cacdc241722dad22e570957890aa">&#9670;&#160;</a></span>chg_rhs()</h2>
+<a id="abd1c3526322c0d4cc240770741fc91d5" name="abd1c3526322c0d4cc240770741fc91d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd1c3526322c0d4cc240770741fc91d5">&#9670;&#160;</a></span>chg_rhs()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -907,7 +880,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::chg_rhs </td>
+          <td class="memname">void MockSolverAbstract::chg_rhs </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>id_row</em></span>, </td>
         </tr>
@@ -937,8 +910,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a13f183f9af6db636f61e0e919ad8f834" name="a13f183f9af6db636f61e0e919ad8f834"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13f183f9af6db636f61e0e919ad8f834">&#9670;&#160;</a></span>chg_row_name()</h2>
+<a id="a28e524c8b9bb02bf6ed3e9ebbdab4237" name="a28e524c8b9bb02bf6ed3e9ebbdab4237"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a28e524c8b9bb02bf6ed3e9ebbdab4237">&#9670;&#160;</a></span>chg_row_name()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -947,7 +920,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::chg_row_name </td>
+          <td class="memname">void MockSolverAbstract::chg_row_name </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>id_row</em></span>, </td>
         </tr>
@@ -977,8 +950,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a995719eb062c198744fcf9637ae165f3" name="a995719eb062c198744fcf9637ae165f3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a995719eb062c198744fcf9637ae165f3">&#9670;&#160;</a></span>copy_prob()</h2>
+<a id="a46e03b0a605da5ea26d4f84c018a422b" name="a46e03b0a605da5ea26d4f84c018a422b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46e03b0a605da5ea26d4f84c018a422b">&#9670;&#160;</a></span>copy_prob()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -987,7 +960,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::copy_prob </td>
+          <td class="memname">void MockSolverAbstract::copy_prob </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">Ptr</a></td>          <td class="paramname"><span class="paramname"><em>fictif_solv</em></span></td><td>)</td>
           <td></td>
@@ -1012,8 +985,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a7415aee60e1b8a3b83f9b4e2a989a827" name="a7415aee60e1b8a3b83f9b4e2a989a827"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7415aee60e1b8a3b83f9b4e2a989a827">&#9670;&#160;</a></span>del_rows()</h2>
+<a id="a091cbc707b1966fbd7ef98a77ba035c3" name="a091cbc707b1966fbd7ef98a77ba035c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a091cbc707b1966fbd7ef98a77ba035c3">&#9670;&#160;</a></span>del_rows()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1022,7 +995,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::del_rows </td>
+          <td class="memname">void MockSolverAbstract::del_rows </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>first</em></span>, </td>
         </tr>
@@ -1052,8 +1025,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="acf2a0c3fb337ca9fe6931a96f8a902f5" name="acf2a0c3fb337ca9fe6931a96f8a902f5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acf2a0c3fb337ca9fe6931a96f8a902f5">&#9670;&#160;</a></span>free()</h2>
+<a id="a792bc19cccce8d5e5d21ab5903a603ab" name="a792bc19cccce8d5e5d21ab5903a603ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a792bc19cccce8d5e5d21ab5903a603ab">&#9670;&#160;</a></span>free()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1062,7 +1035,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::free </td>
+          <td class="memname">void MockSolverAbstract::free </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -1081,8 +1054,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a23a581969905f7727611d2f7dd537af8" name="a23a581969905f7727611d2f7dd537af8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a23a581969905f7727611d2f7dd537af8">&#9670;&#160;</a></span>get_basis()</h2>
+<a id="abcea236e76916cacb7ed6145ba075889" name="abcea236e76916cacb7ed6145ba075889"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abcea236e76916cacb7ed6145ba075889">&#9670;&#160;</a></span>get_basis()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1091,7 +1064,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::get_basis </td>
+          <td class="memname">void MockSolverAbstract::get_basis </td>
           <td>(</td>
           <td class="paramtype">int *</td>          <td class="paramname"><span class="paramname"><em>rstatus</em></span>, </td>
         </tr>
@@ -1121,8 +1094,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a85ca8269e2cf23554d80a22101371792" name="a85ca8269e2cf23554d80a22101371792"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a85ca8269e2cf23554d80a22101371792">&#9670;&#160;</a></span>get_col_index()</h2>
+<a id="a4454b6299858861765e42468627e20d3" name="a4454b6299858861765e42468627e20d3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4454b6299858861765e42468627e20d3">&#9670;&#160;</a></span>get_col_index()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1131,7 +1104,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Problem::get_col_index </td>
+          <td class="memname">int MockSolverAbstract::get_col_index </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
           <td></td>
@@ -1139,7 +1112,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1156,8 +1129,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a35b311b81fee750e32b640f07ee7ea27" name="a35b311b81fee750e32b640f07ee7ea27"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a35b311b81fee750e32b640f07ee7ea27">&#9670;&#160;</a></span>get_col_names() <span class="overload">[1/2]</span></h2>
+<a id="a86c8300d44da5e6078f7d69fcf468eb7" name="a86c8300d44da5e6078f7d69fcf468eb7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86c8300d44da5e6078f7d69fcf468eb7">&#9670;&#160;</a></span>get_col_names() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1166,7 +1139,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; std::string &gt; Problem::get_col_names </td>
+          <td class="memname">std::vector&lt; std::string &gt; MockSolverAbstract::get_col_names </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -1186,8 +1159,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="af46a63f1eaa7094e39baefa3a8384ea9" name="af46a63f1eaa7094e39baefa3a8384ea9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af46a63f1eaa7094e39baefa3a8384ea9">&#9670;&#160;</a></span>get_col_names() <span class="overload">[2/2]</span></h2>
+<a id="a78e131d41080ed8229aa4b09679cf7a3" name="a78e131d41080ed8229aa4b09679cf7a3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78e131d41080ed8229aa4b09679cf7a3">&#9670;&#160;</a></span>get_col_names() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1196,7 +1169,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; std::string &gt; Problem::get_col_names </td>
+          <td class="memname">std::vector&lt; std::string &gt; MockSolverAbstract::get_col_names </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>first</em></span>, </td>
         </tr>
@@ -1227,8 +1200,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a9b1add4a9bff8ab15a533c81818214fc" name="a9b1add4a9bff8ab15a533c81818214fc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9b1add4a9bff8ab15a533c81818214fc">&#9670;&#160;</a></span>get_col_type()</h2>
+<a id="a8092cfcf27c7314150991cf5e9862aa3" name="a8092cfcf27c7314150991cf5e9862aa3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8092cfcf27c7314150991cf5e9862aa3">&#9670;&#160;</a></span>get_col_type()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1237,7 +1210,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::get_col_type </td>
+          <td class="memname">void MockSolverAbstract::get_col_type </td>
           <td>(</td>
           <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>coltype</em></span>, </td>
         </tr>
@@ -1273,8 +1246,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a3a3e618e559abc36fdea1be47ed8ffce" name="a3a3e618e559abc36fdea1be47ed8ffce"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a3e618e559abc36fdea1be47ed8ffce">&#9670;&#160;</a></span>get_lb()</h2>
+<a id="a311879e2b51b9d9881aa9be86b215d41" name="a311879e2b51b9d9881aa9be86b215d41"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a311879e2b51b9d9881aa9be86b215d41">&#9670;&#160;</a></span>get_lb()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1283,7 +1256,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::get_lb </td>
+          <td class="memname">void MockSolverAbstract::get_lb </td>
           <td>(</td>
           <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>lb</em></span>, </td>
         </tr>
@@ -1319,8 +1292,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a8e474653329aab445b1da2082689a114" name="a8e474653329aab445b1da2082689a114"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e474653329aab445b1da2082689a114">&#9670;&#160;</a></span>get_lp_sol()</h2>
+<a id="a64a39f16faf52bea350675386e758017" name="a64a39f16faf52bea350675386e758017"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a64a39f16faf52bea350675386e758017">&#9670;&#160;</a></span>get_lp_sol()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1329,7 +1302,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::get_lp_sol </td>
+          <td class="memname">void MockSolverAbstract::get_lp_sol </td>
           <td>(</td>
           <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>primals</em></span>, </td>
         </tr>
@@ -1365,8 +1338,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a13cd39837de937554ccd6b91bb9ce011" name="a13cd39837de937554ccd6b91bb9ce011"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a13cd39837de937554ccd6b91bb9ce011">&#9670;&#160;</a></span>get_lp_value()</h2>
+<a id="a7a311e3dd22b54d4bd9adb71be256efa" name="a7a311e3dd22b54d4bd9adb71be256efa"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7a311e3dd22b54d4bd9adb71be256efa">&#9670;&#160;</a></span>get_lp_value()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1375,7 +1348,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double Problem::get_lp_value </td>
+          <td class="memname">double MockSolverAbstract::get_lp_value </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -1383,7 +1356,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1395,8 +1368,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a2dbc34e5b51f9a51b236dfb84d72a597" name="a2dbc34e5b51f9a51b236dfb84d72a597"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2dbc34e5b51f9a51b236dfb84d72a597">&#9670;&#160;</a></span>get_mip_sol()</h2>
+<a id="a6fdf3d0e00616b1562e2df5de9edd82f" name="a6fdf3d0e00616b1562e2df5de9edd82f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fdf3d0e00616b1562e2df5de9edd82f">&#9670;&#160;</a></span>get_mip_sol()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1405,7 +1378,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::get_mip_sol </td>
+          <td class="memname">void MockSolverAbstract::get_mip_sol </td>
           <td>(</td>
           <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>primals</em></span></td><td>)</td>
           <td></td>
@@ -1430,8 +1403,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="afe80be61b65b3d0779d3343be8c653fb" name="afe80be61b65b3d0779d3343be8c653fb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afe80be61b65b3d0779d3343be8c653fb">&#9670;&#160;</a></span>get_mip_value()</h2>
+<a id="a7e8ccb6407aa52ba004b8830b1d9add5" name="a7e8ccb6407aa52ba004b8830b1d9add5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e8ccb6407aa52ba004b8830b1d9add5">&#9670;&#160;</a></span>get_mip_value()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1440,7 +1413,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">double Problem::get_mip_value </td>
+          <td class="memname">double MockSolverAbstract::get_mip_value </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -1448,7 +1421,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1460,8 +1433,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="acb61c5e3c7fe9a8452d1f9c0288a2991" name="acb61c5e3c7fe9a8452d1f9c0288a2991"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acb61c5e3c7fe9a8452d1f9c0288a2991">&#9670;&#160;</a></span>get_n_integer_vars()</h2>
+<a id="a7658b702b07bafe0b3babe38acac86e2" name="a7658b702b07bafe0b3babe38acac86e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7658b702b07bafe0b3babe38acac86e2">&#9670;&#160;</a></span>get_n_integer_vars()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1470,7 +1443,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Problem::get_n_integer_vars </td>
+          <td class="memname">int MockSolverAbstract::get_n_integer_vars </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -1478,7 +1451,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1489,8 +1462,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a427fd0532ce52ade20de068ce0e43ea5" name="a427fd0532ce52ade20de068ce0e43ea5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a427fd0532ce52ade20de068ce0e43ea5">&#9670;&#160;</a></span>get_ncols()</h2>
+<a id="a07d2993cf13d4526c4d8b12b39290b50" name="a07d2993cf13d4526c4d8b12b39290b50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a07d2993cf13d4526c4d8b12b39290b50">&#9670;&#160;</a></span>get_ncols()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1499,7 +1472,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Problem::get_ncols </td>
+          <td class="memname">int MockSolverAbstract::get_ncols </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -1507,7 +1480,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1518,8 +1491,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a8d9a6786990858df20e7fa1fdfb25ddc" name="a8d9a6786990858df20e7fa1fdfb25ddc"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8d9a6786990858df20e7fa1fdfb25ddc">&#9670;&#160;</a></span>get_nelems()</h2>
+<a id="a2ed53692d6d27259920ee9966f583fe4" name="a2ed53692d6d27259920ee9966f583fe4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2ed53692d6d27259920ee9966f583fe4">&#9670;&#160;</a></span>get_nelems()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1528,7 +1501,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Problem::get_nelems </td>
+          <td class="memname">int MockSolverAbstract::get_nelems </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -1536,7 +1509,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1547,8 +1520,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="ae4da213115a135d9771d95cb1e28854d" name="ae4da213115a135d9771d95cb1e28854d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae4da213115a135d9771d95cb1e28854d">&#9670;&#160;</a></span>get_nrows()</h2>
+<a id="ad2d1063e5e52f19f53b176ff4f4da477" name="ad2d1063e5e52f19f53b176ff4f4da477"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2d1063e5e52f19f53b176ff4f4da477">&#9670;&#160;</a></span>get_nrows()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1557,7 +1530,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Problem::get_nrows </td>
+          <td class="memname">int MockSolverAbstract::get_nrows </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -1565,7 +1538,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1576,8 +1549,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a41f4336459e6e32d6f2b98c5464bc1ac" name="a41f4336459e6e32d6f2b98c5464bc1ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a41f4336459e6e32d6f2b98c5464bc1ac">&#9670;&#160;</a></span>get_number_of_instances()</h2>
+<a id="a6e23d90160fdc83739439ee6dd5177c1" name="a6e23d90160fdc83739439ee6dd5177c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6e23d90160fdc83739439ee6dd5177c1">&#9670;&#160;</a></span>get_number_of_instances()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1586,7 +1559,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Problem::get_number_of_instances </td>
+          <td class="memname">int MockSolverAbstract::get_number_of_instances </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -1605,8 +1578,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a82dd5531409fba5131d8db8ae201f73d" name="a82dd5531409fba5131d8db8ae201f73d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a82dd5531409fba5131d8db8ae201f73d">&#9670;&#160;</a></span>get_obj()</h2>
+<a id="a57adfb9bde4b799c6e11b562e95b31cd" name="a57adfb9bde4b799c6e11b562e95b31cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57adfb9bde4b799c6e11b562e95b31cd">&#9670;&#160;</a></span>get_obj()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1615,7 +1588,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::get_obj </td>
+          <td class="memname">void MockSolverAbstract::get_obj </td>
           <td>(</td>
           <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>obj</em></span>, </td>
         </tr>
@@ -1643,8 +1616,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a3532b55c76fcaccc3fe8d686193c9dd5" name="a3532b55c76fcaccc3fe8d686193c9dd5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3532b55c76fcaccc3fe8d686193c9dd5">&#9670;&#160;</a></span>get_rhs()</h2>
+<a id="a8a66eddd2c9d3f4ce99f09ef3c09c2d2" name="a8a66eddd2c9d3f4ce99f09ef3c09c2d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a66eddd2c9d3f4ce99f09ef3c09c2d2">&#9670;&#160;</a></span>get_rhs()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1653,7 +1626,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::get_rhs </td>
+          <td class="memname">void MockSolverAbstract::get_rhs </td>
           <td>(</td>
           <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>rhs</em></span>, </td>
         </tr>
@@ -1689,8 +1662,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="aa34e941ed834b66bb6a2ee4211073454" name="aa34e941ed834b66bb6a2ee4211073454"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa34e941ed834b66bb6a2ee4211073454">&#9670;&#160;</a></span>get_rhs_range()</h2>
+<a id="a9e507c36c6062ea4cc0fc835bc2aed39" name="a9e507c36c6062ea4cc0fc835bc2aed39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e507c36c6062ea4cc0fc835bc2aed39">&#9670;&#160;</a></span>get_rhs_range()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1699,7 +1672,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::get_rhs_range </td>
+          <td class="memname">void MockSolverAbstract::get_rhs_range </td>
           <td>(</td>
           <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>range</em></span>, </td>
         </tr>
@@ -1735,8 +1708,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="ab2b453dd51e7ce6a18656399647d8060" name="ab2b453dd51e7ce6a18656399647d8060"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab2b453dd51e7ce6a18656399647d8060">&#9670;&#160;</a></span>get_row_index()</h2>
+<a id="af3335f283ebe357930af2de71ee2c3f7" name="af3335f283ebe357930af2de71ee2c3f7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af3335f283ebe357930af2de71ee2c3f7">&#9670;&#160;</a></span>get_row_index()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1745,7 +1718,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Problem::get_row_index </td>
+          <td class="memname">int MockSolverAbstract::get_row_index </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
           <td></td>
@@ -1753,7 +1726,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1770,8 +1743,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="aaa7977b515a6117cf5e2d804dccaa6f4" name="aaa7977b515a6117cf5e2d804dccaa6f4"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aaa7977b515a6117cf5e2d804dccaa6f4">&#9670;&#160;</a></span>get_row_names() <span class="overload">[1/2]</span></h2>
+<a id="aa48439eb8f77fba9076dd1cdc4f17e43" name="aa48439eb8f77fba9076dd1cdc4f17e43"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa48439eb8f77fba9076dd1cdc4f17e43">&#9670;&#160;</a></span>get_row_names() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1780,7 +1753,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; std::string &gt; Problem::get_row_names </td>
+          <td class="memname">std::vector&lt; std::string &gt; MockSolverAbstract::get_row_names </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -1800,8 +1773,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a3d0e261b04e97d40eb25704b526d8625" name="a3d0e261b04e97d40eb25704b526d8625"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3d0e261b04e97d40eb25704b526d8625">&#9670;&#160;</a></span>get_row_names() <span class="overload">[2/2]</span></h2>
+<a id="af73c4e482b7ea0c6ca2a629d7af792ca" name="af73c4e482b7ea0c6ca2a629d7af792ca"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af73c4e482b7ea0c6ca2a629d7af792ca">&#9670;&#160;</a></span>get_row_names() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1810,7 +1783,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::vector&lt; std::string &gt; Problem::get_row_names </td>
+          <td class="memname">std::vector&lt; std::string &gt; MockSolverAbstract::get_row_names </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>first</em></span>, </td>
         </tr>
@@ -1841,8 +1814,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a0e72a237efb49b4788c6131dc414e06b" name="a0e72a237efb49b4788c6131dc414e06b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0e72a237efb49b4788c6131dc414e06b">&#9670;&#160;</a></span>get_row_type()</h2>
+<a id="a1d560f1cdae42ebc4b2e17bda7ae10a2" name="a1d560f1cdae42ebc4b2e17bda7ae10a2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d560f1cdae42ebc4b2e17bda7ae10a2">&#9670;&#160;</a></span>get_row_type()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1851,7 +1824,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::get_row_type </td>
+          <td class="memname">void MockSolverAbstract::get_row_type </td>
           <td>(</td>
           <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>qrtype</em></span>, </td>
         </tr>
@@ -1887,8 +1860,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a6ce71bda1dfbb47ad3ab18e80698cde6" name="a6ce71bda1dfbb47ad3ab18e80698cde6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ce71bda1dfbb47ad3ab18e80698cde6">&#9670;&#160;</a></span>get_rows()</h2>
+<a id="a30eeafb23a33faa94d6efba4dbaabe53" name="a30eeafb23a33faa94d6efba4dbaabe53"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30eeafb23a33faa94d6efba4dbaabe53">&#9670;&#160;</a></span>get_rows()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1897,7 +1870,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::get_rows </td>
+          <td class="memname">void MockSolverAbstract::get_rows </td>
           <td>(</td>
           <td class="paramtype">int *</td>          <td class="paramname"><span class="paramname"><em>mstart</em></span>, </td>
         </tr>
@@ -1957,8 +1930,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a90e26954f958338a7b452efc468cd60d" name="a90e26954f958338a7b452efc468cd60d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90e26954f958338a7b452efc468cd60d">&#9670;&#160;</a></span>get_solver_name()</h2>
+<a id="a04b3b7d4da79bd83070b9a288d3c936c" name="a04b3b7d4da79bd83070b9a288d3c936c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a04b3b7d4da79bd83070b9a288d3c936c">&#9670;&#160;</a></span>get_solver_name()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1967,7 +1940,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">std::string Problem::get_solver_name </td>
+          <td class="memname">std::string MockSolverAbstract::get_solver_name </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -1975,7 +1948,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -1986,8 +1959,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a9a280b880061bcb76c43b7dfb1718390" name="a9a280b880061bcb76c43b7dfb1718390"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a280b880061bcb76c43b7dfb1718390">&#9670;&#160;</a></span>get_splex_num_of_ite_last()</h2>
+<a id="abd5c941f10725a7d3b660baffcc46d49" name="abd5c941f10725a7d3b660baffcc46d49"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd5c941f10725a7d3b660baffcc46d49">&#9670;&#160;</a></span>get_splex_num_of_ite_last()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1996,7 +1969,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Problem::get_splex_num_of_ite_last </td>
+          <td class="memname">int MockSolverAbstract::get_splex_num_of_ite_last </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -2004,7 +1977,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">nodiscard</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -2016,8 +1989,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a9214a4e8ef6a9144cf8e9b0e20199ef6" name="a9214a4e8ef6a9144cf8e9b0e20199ef6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9214a4e8ef6a9144cf8e9b0e20199ef6">&#9670;&#160;</a></span>get_ub()</h2>
+<a id="a6f8e45af85c3296c46a2e4896de37de7" name="a6f8e45af85c3296c46a2e4896de37de7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6f8e45af85c3296c46a2e4896de37de7">&#9670;&#160;</a></span>get_ub()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2026,7 +1999,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::get_ub </td>
+          <td class="memname">void MockSolverAbstract::get_ub </td>
           <td>(</td>
           <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>ub</em></span>, </td>
         </tr>
@@ -2062,8 +2035,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a075abb3bc479adb0de6c2326fe03ac17" name="a075abb3bc479adb0de6c2326fe03ac17"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a075abb3bc479adb0de6c2326fe03ac17">&#9670;&#160;</a></span>init()</h2>
+<a id="a8f04f6330952232d4d81e7f54d5e85f1" name="a8f04f6330952232d4d81e7f54d5e85f1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8f04f6330952232d4d81e7f54d5e85f1">&#9670;&#160;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2072,7 +2045,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::init </td>
+          <td class="memname">void MockSolverAbstract::init </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -2091,8 +2064,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="aee558629ab44c44cd971eeb41bde4088" name="aee558629ab44c44cd971eeb41bde4088"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee558629ab44c44cd971eeb41bde4088">&#9670;&#160;</a></span>read_basis()</h2>
+<a id="aa0ade4ebb4215bafa85b5312e66d5bc0" name="aa0ade4ebb4215bafa85b5312e66d5bc0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa0ade4ebb4215bafa85b5312e66d5bc0">&#9670;&#160;</a></span>read_basis()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2101,7 +2074,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::read_basis </td>
+          <td class="memname">void MockSolverAbstract::read_basis </td>
           <td>(</td>
           <td class="paramtype">const std::filesystem::path &amp;</td>          <td class="paramname"><span class="paramname"><em>filename</em></span></td><td>)</td>
           <td></td>
@@ -2126,8 +2099,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a92a36d2387ec170cc78cad032b521a75" name="a92a36d2387ec170cc78cad032b521a75"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a92a36d2387ec170cc78cad032b521a75">&#9670;&#160;</a></span>read_prob_lp()</h2>
+<a id="abe88c2d1e6070f42211cd9e395220c05" name="abe88c2d1e6070f42211cd9e395220c05"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abe88c2d1e6070f42211cd9e395220c05">&#9670;&#160;</a></span>read_prob_lp()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2136,7 +2109,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::read_prob_lp </td>
+          <td class="memname">void MockSolverAbstract::read_prob_lp </td>
           <td>(</td>
           <td class="paramtype">const std::filesystem::path &amp;</td>          <td class="paramname"><span class="paramname"><em>filename</em></span></td><td>)</td>
           <td></td>
@@ -2161,8 +2134,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="abf009aaf0c40ed6a462dced353f2b7f0" name="abf009aaf0c40ed6a462dced353f2b7f0"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#abf009aaf0c40ed6a462dced353f2b7f0">&#9670;&#160;</a></span>read_prob_mps()</h2>
+<a id="a93574fe7141305f2dc3842b31768bb74" name="a93574fe7141305f2dc3842b31768bb74"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93574fe7141305f2dc3842b31768bb74">&#9670;&#160;</a></span>read_prob_mps()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2171,7 +2144,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::read_prob_mps </td>
+          <td class="memname">void MockSolverAbstract::read_prob_mps </td>
           <td>(</td>
           <td class="paramtype">const std::filesystem::path &amp;</td>          <td class="paramname"><span class="paramname"><em>filename</em></span></td><td>)</td>
           <td></td>
@@ -2179,7 +2152,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -2196,8 +2169,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a89c2613e4954f6d0b01c730ce231c971" name="a89c2613e4954f6d0b01c730ce231c971"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a89c2613e4954f6d0b01c730ce231c971">&#9670;&#160;</a></span>restore_prob()</h2>
+<a id="a9593826193e7a89496f7d26748f5388e" name="a9593826193e7a89496f7d26748f5388e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9593826193e7a89496f7d26748f5388e">&#9670;&#160;</a></span>restore_prob()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2206,7 +2179,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::restore_prob </td>
+          <td class="memname">void MockSolverAbstract::restore_prob </td>
           <td>(</td>
           <td class="paramtype">const std::filesystem::path &amp;</td>          <td class="paramname"><span class="paramname"><em>filename</em></span></td><td>)</td>
           <td></td>
@@ -2214,7 +2187,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -2232,8 +2205,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="ab385b74ab52084f8be1482ffc31578e5" name="ab385b74ab52084f8be1482ffc31578e5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab385b74ab52084f8be1482ffc31578e5">&#9670;&#160;</a></span>save_prob()</h2>
+<a id="a4d1e11aa5d0ef8571beba3a16e26fbac" name="a4d1e11aa5d0ef8571beba3a16e26fbac"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d1e11aa5d0ef8571beba3a16e26fbac">&#9670;&#160;</a></span>save_prob()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2242,7 +2215,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::save_prob </td>
+          <td class="memname">void MockSolverAbstract::save_prob </td>
           <td>(</td>
           <td class="paramtype">const std::filesystem::path &amp;</td>          <td class="paramname"><span class="paramname"><em>filename</em></span></td><td>)</td>
           <td></td>
@@ -2250,7 +2223,7 @@ Additional Inherited Members</h2></td></tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -2268,8 +2241,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a006aad13911c36e8d753f172c10f5465" name="a006aad13911c36e8d753f172c10f5465"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a006aad13911c36e8d753f172c10f5465">&#9670;&#160;</a></span>set_algorithm()</h2>
+<a id="a0b8f0691496578a4df50c5b7bc3fa10b" name="a0b8f0691496578a4df50c5b7bc3fa10b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0b8f0691496578a4df50c5b7bc3fa10b">&#9670;&#160;</a></span>set_algorithm()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2278,7 +2251,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::set_algorithm </td>
+          <td class="memname">void MockSolverAbstract::set_algorithm </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>algo</em></span></td><td>)</td>
           <td></td>
@@ -2303,8 +2276,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a678f5f40e1102d81f5dcb95a575e041a" name="a678f5f40e1102d81f5dcb95a575e041a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a678f5f40e1102d81f5dcb95a575e041a">&#9670;&#160;</a></span>set_obj()</h2>
+<a id="a5ffaafb4edeebabaa75692e42380fa79" name="a5ffaafb4edeebabaa75692e42380fa79"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5ffaafb4edeebabaa75692e42380fa79">&#9670;&#160;</a></span>set_obj()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2313,7 +2286,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::set_obj </td>
+          <td class="memname">void MockSolverAbstract::set_obj </td>
           <td>(</td>
           <td class="paramtype">const double *</td>          <td class="paramname"><span class="paramname"><em>obj</em></span>, </td>
         </tr>
@@ -2341,8 +2314,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a3209a8750961478ed949a75b5cef261c" name="a3209a8750961478ed949a75b5cef261c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3209a8750961478ed949a75b5cef261c">&#9670;&#160;</a></span>set_obj_to_zero()</h2>
+<a id="a1d77888d8fd4a7ff50614b4d32725425" name="a1d77888d8fd4a7ff50614b4d32725425"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1d77888d8fd4a7ff50614b4d32725425">&#9670;&#160;</a></span>set_obj_to_zero()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2351,7 +2324,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::set_obj_to_zero </td>
+          <td class="memname">void MockSolverAbstract::set_obj_to_zero </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -2370,8 +2343,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="ad35f966751547d5c8a27feb707df11a5" name="ad35f966751547d5c8a27feb707df11a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad35f966751547d5c8a27feb707df11a5">&#9670;&#160;</a></span>set_optimality_gap()</h2>
+<a id="a1ad9569b492e4a04d00b4d9b7cbb6d59" name="a1ad9569b492e4a04d00b4d9b7cbb6d59"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1ad9569b492e4a04d00b4d9b7cbb6d59">&#9670;&#160;</a></span>set_optimality_gap()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2380,7 +2353,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::set_optimality_gap </td>
+          <td class="memname">void MockSolverAbstract::set_optimality_gap </td>
           <td>(</td>
           <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>gap</em></span></td><td>)</td>
           <td></td>
@@ -2405,8 +2378,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a87378fed8a194cb4cbb6904eacbed94a" name="a87378fed8a194cb4cbb6904eacbed94a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a87378fed8a194cb4cbb6904eacbed94a">&#9670;&#160;</a></span>set_output_log_level()</h2>
+<a id="ac8d55f684c1e8e1b26a7855e6b411e86" name="ac8d55f684c1e8e1b26a7855e6b411e86"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8d55f684c1e8e1b26a7855e6b411e86">&#9670;&#160;</a></span>set_output_log_level()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2415,7 +2388,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::set_output_log_level </td>
+          <td class="memname">void MockSolverAbstract::set_output_log_level </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>loglevel</em></span></td><td>)</td>
           <td></td>
@@ -2440,8 +2413,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="ae9ba517850933fd58e17a3577a1d5e47" name="ae9ba517850933fd58e17a3577a1d5e47"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae9ba517850933fd58e17a3577a1d5e47">&#9670;&#160;</a></span>set_simplex_iter()</h2>
+<a id="a6fd7748f8b32836f292b07894fe2e4ef" name="a6fd7748f8b32836f292b07894fe2e4ef"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6fd7748f8b32836f292b07894fe2e4ef">&#9670;&#160;</a></span>set_simplex_iter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2450,7 +2423,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::set_simplex_iter </td>
+          <td class="memname">void MockSolverAbstract::set_simplex_iter </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>iter</em></span></td><td>)</td>
           <td></td>
@@ -2475,8 +2448,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a4c2bc9d5b720e92404bfb9179a0b0194" name="a4c2bc9d5b720e92404bfb9179a0b0194"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4c2bc9d5b720e92404bfb9179a0b0194">&#9670;&#160;</a></span>set_threads()</h2>
+<a id="a46bfafaee095d03c67781d800215564f" name="a46bfafaee095d03c67781d800215564f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a46bfafaee095d03c67781d800215564f">&#9670;&#160;</a></span>set_threads()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2485,7 +2458,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::set_threads </td>
+          <td class="memname">void MockSolverAbstract::set_threads </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>n_threads</em></span></td><td>)</td>
           <td></td>
@@ -2510,8 +2483,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a3359581e9eafa676be9fbd7e0b8446c2" name="a3359581e9eafa676be9fbd7e0b8446c2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3359581e9eafa676be9fbd7e0b8446c2">&#9670;&#160;</a></span>solve_lp()</h2>
+<a id="abdba2bb5dd044e654bd167bb82138b09" name="abdba2bb5dd044e654bd167bb82138b09"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abdba2bb5dd044e654bd167bb82138b09">&#9670;&#160;</a></span>solve_lp()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2520,7 +2493,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Problem::solve_lp </td>
+          <td class="memname">int MockSolverAbstract::solve_lp </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -2540,8 +2513,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a32a6e746e160966776a64864631c3211" name="a32a6e746e160966776a64864631c3211"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a32a6e746e160966776a64864631c3211">&#9670;&#160;</a></span>solve_mip()</h2>
+<a id="adbc40d252022006f6e37db795dba57c1" name="adbc40d252022006f6e37db795dba57c1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#adbc40d252022006f6e37db795dba57c1">&#9670;&#160;</a></span>solve_mip()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2550,7 +2523,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">int Problem::solve_mip </td>
+          <td class="memname">int MockSolverAbstract::solve_mip </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -2570,8 +2543,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a708234655849d976c5698615cd67c65c" name="a708234655849d976c5698615cd67c65c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a708234655849d976c5698615cd67c65c">&#9670;&#160;</a></span>write_basis()</h2>
+<a id="a7afe5dc0081cd029861725b9259d54d4" name="a7afe5dc0081cd029861725b9259d54d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7afe5dc0081cd029861725b9259d54d4">&#9670;&#160;</a></span>write_basis()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2580,7 +2553,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::write_basis </td>
+          <td class="memname">void MockSolverAbstract::write_basis </td>
           <td>(</td>
           <td class="paramtype">const std::filesystem::path &amp;</td>          <td class="paramname"><span class="paramname"><em>filename</em></span></td><td>)</td>
           <td></td>
@@ -2605,8 +2578,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="aac88c91784c4407dd335ccae289abe4b" name="aac88c91784c4407dd335ccae289abe4b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aac88c91784c4407dd335ccae289abe4b">&#9670;&#160;</a></span>write_prob_lp()</h2>
+<a id="ad8d3e8ac98aee89693f195c5490d6553" name="ad8d3e8ac98aee89693f195c5490d6553"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad8d3e8ac98aee89693f195c5490d6553">&#9670;&#160;</a></span>write_prob_lp()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2615,7 +2588,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::write_prob_lp </td>
+          <td class="memname">void MockSolverAbstract::write_prob_lp </td>
           <td>(</td>
           <td class="paramtype">const std::filesystem::path &amp;</td>          <td class="paramname"><span class="paramname"><em>filename</em></span></td><td>)</td>
           <td></td>
@@ -2640,8 +2613,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a2c16f8388dbfb7f75c6bb58bec93504a" name="a2c16f8388dbfb7f75c6bb58bec93504a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2c16f8388dbfb7f75c6bb58bec93504a">&#9670;&#160;</a></span>write_prob_mps()</h2>
+<a id="aa63f249eca85959207c09ee64fee61e0" name="aa63f249eca85959207c09ee64fee61e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa63f249eca85959207c09ee64fee61e0">&#9670;&#160;</a></span>write_prob_mps()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2650,7 +2623,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void Problem::write_prob_mps </td>
+          <td class="memname">void MockSolverAbstract::write_prob_mps </td>
           <td>(</td>
           <td class="paramtype">const std::filesystem::path &amp;</td>          <td class="paramname"><span class="paramname"><em>filename</em></span></td><td>)</td>
           <td></td>
@@ -2675,16 +2648,15 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following files:<ul>
-<li>src/cpp/lpnamer/model/include/antares-xpansion/lpnamer/model/<a class="el" href="Problem_8h_source.html">Problem.h</a></li>
-<li>src/cpp/lpnamer/model/<b>Problem.cpp</b></li>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>tests/cpp/lp_namer/<b>WeightsFileWriterTest.cpp</b></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="classProblem.html">Problem</a></li>
+    <li class="navelem"><a class="el" href="classMockSolverAbstract.html">MockSolverAbstract</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
   </ul>
 </div>
