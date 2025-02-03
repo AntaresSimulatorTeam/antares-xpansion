@@ -90,50 +90,57 @@ class MockProblem : public Problem {
   }
 };
 
-void RunWeightsFileWriterTest(const std::string &solver_name,
-                              const std::string &expected) {
-  auto tempDir = std::filesystem::temp_directory_path() / "lp";
-  if (!std::filesystem::is_directory(tempDir)) {
-    std::filesystem::create_directory(tempDir);
+class WeightsFileWriterTest : public ::testing::Test {
+ protected:
+  void SetUp() override {
+    tempDir = std::filesystem::temp_directory_path() / "lp";
+    if (!std::filesystem::is_directory(tempDir)) {
+      std::filesystem::create_directory(tempDir);
+    }
+
+    logger = std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
+        LogUtils::LOGLEVEL::NONE);
+
+    problems_and_data = {
+        {std::make_shared<MockProblem>(1),
+         ProblemData("problem-1-1--optim-nb-1.mps", "variables.txt")},
+        {std::make_shared<MockProblem>(1),
+         ProblemData("problem-1-50--optim-nb-1.mps", "variables.txt")},
+        {std::make_shared<MockProblem>(2),
+         ProblemData("problem-2-10--optim-nb-1.mps", "variables.txt")},
+        {std::make_shared<MockProblem>(2),
+         ProblemData("problem-2-11--optim-nb-1.mps", "variables.txt")},
+        {std::make_shared<MockProblem>(2),
+         ProblemData("problem-2-30--optim-nb-1.mps", "variables.txt")},
+        {std::make_shared<MockProblem>(3),
+         ProblemData("problem-3-20--optim-nb-1.mps", "variables.txt")},
+    };
   }
 
-  auto logger =
-      std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
-          LogUtils::LOGLEVEL::NONE);
+  void RunWeightsFileWriterTest(const std::string &solver_name,
+                                const std::string &expected) {
+    auto yearly_weight_writer = YearlyWeightsWriter(
+        tempDir, {3, 5, 7}, "weights_123.txt", {1, 2, 3}, solver_name, logger);
 
-  auto yearly_weight_writer =
-      YearlyWeightsWriter(std::filesystem::temp_directory_path(), {3, 5, 7},
-                          "weights_123.txt", {1, 2, 3}, solver_name, logger);
+    yearly_weight_writer.CreateWeightFile(problems_and_data);
 
+    std::ifstream reader(tempDir / "weights_123.txt");
+    std::string actual((std::istreambuf_iterator<char>(reader)),
+                       std::istreambuf_iterator<char>());
+
+    EXPECT_EQ(expected, actual);
+
+    // Clean up
+    std::filesystem::remove(tempDir / "weights_123.txt");
+  }
+
+  std::filesystem::path tempDir;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger;
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
-      problems_and_data = {
-          {std::make_shared<MockProblem>(1),
-           ProblemData("problem-1-1--optim-nb-1.mps", "variables.txt")},
-          {std::make_shared<MockProblem>(1),
-           ProblemData("problem-1-50--optim-nb-1.mps", "variables.txt")},
-          {std::make_shared<MockProblem>(2),
-           ProblemData("problem-2-10--optim-nb-1.mps", "variables.txt")},
-          {std::make_shared<MockProblem>(2),
-           ProblemData("problem-2-11--optim-nb-1.mps", "variables.txt")},
-          {std::make_shared<MockProblem>(2),
-           ProblemData("problem-2-30--optim-nb-1.mps", "variables.txt")},
-          {std::make_shared<MockProblem>(3),
-           ProblemData("problem-3-20--optim-nb-1.mps", "variables.txt")},
-      };
+      problems_and_data;
+};
 
-  yearly_weight_writer.CreateWeightFile(problems_and_data);
-
-  std::ifstream reader(tempDir / "weights_123.txt");
-  std::string actual((std::istreambuf_iterator<char>(reader)),
-                     std::istreambuf_iterator<char>());
-
-  EXPECT_EQ(expected, actual);
-
-  // Clean up
-  std::filesystem::remove(tempDir / "weights_123.txt");
-}
-
-TEST(WeightsFileWriterTest, CorrectlyWriteWeightsFileWithXpress) {
+TEST_F(WeightsFileWriterTest, CorrectlyWriteWeightsFileWithXpress) {
   std::string expected = R"xxx(problem-1-1--optim-nb-1.svf 3
 problem-1-50--optim-nb-1.svf 3
 problem-2-10--optim-nb-1.svf 5
@@ -145,7 +152,7 @@ WEIGHT_SUM 15
   RunWeightsFileWriterTest("xpress", expected);
 }
 
-TEST(WeightsFileWriterTest, CorrectlyWriteWeightsFileWithCoin) {
+TEST_F(WeightsFileWriterTest, CorrectlyWriteWeightsFileWithCoin) {
   std::string expected = R"xxx(problem-1-1--optim-nb-1.mps 3
 problem-1-50--optim-nb-1.mps 3
 problem-2-10--optim-nb-1.mps 5
