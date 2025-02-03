@@ -1,3 +1,5 @@
+#include <RandomDirGenerator.h>
+
 #include <fstream>
 #include <memory>
 
@@ -93,7 +95,7 @@ class MockProblem : public Problem {
 class WeightsFileWriterTest : public ::testing::Test {
  protected:
   void SetUp() override {
-    tempDir = std::filesystem::temp_directory_path();
+    tempDir = CreateRandomSubDir(std::filesystem::temp_directory_path());
     tempDirLp = tempDir / "lp";
     if (!std::filesystem::is_directory(tempDirLp)) {
       std::filesystem::create_directory(tempDirLp);
