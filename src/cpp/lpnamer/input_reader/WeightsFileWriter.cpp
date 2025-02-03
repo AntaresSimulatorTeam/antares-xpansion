@@ -39,17 +39,13 @@ void YearlyWeightsWriter::FillMpsWeightsMap(
   problem_filename_to_weight_.clear();
 
   for (const auto& [problem, data] : problems_and_data) {
-    if (std::find(active_years_.begin(), active_years_.end(),
-                  problem->mc_year) != active_years_.end()) {
-      auto year_index = std::find(active_years_.begin(), active_years_.end(),
-                                  problem->mc_year) -
-                        active_years_.begin();
-      problem_filename_to_weight_[data._problem_filename] =
-          weights_vector_[year_index];
+    auto it = std::find(active_years_.begin(), active_years_.end(), problem->mc_year);
+    if (it != active_years_.end()) {
+      auto year_index = std::distance(active_years_.begin(), it);
+      problem_filename_to_weight_[data._problem_filename] = weights_vector_[year_index];
     } else {
       std::ostringstream msg;
-      msg << "Mc year" << problem->mc_year
-        << " not found in the list of active years." << std::endl;
+      msg << "Mc year " << problem->mc_year << " not found in the list of active years." << std::endl;
       (*logger_)(LogUtils::LOGLEVEL::FATAL) << LOGLOCATION << msg.str();
       throw McYearNotInActiveYearsListError(msg.str(), LOGLOCATION);
     }
