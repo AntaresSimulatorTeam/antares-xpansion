@@ -93,9 +93,10 @@ class MockProblem : public Problem {
 class WeightsFileWriterTest : public ::testing::Test {
  protected:
   void SetUp() override {
-    tempDir = std::filesystem::temp_directory_path() / "lp";
-    if (!std::filesystem::is_directory(tempDir)) {
-      std::filesystem::create_directory(tempDir);
+    tempDir = std::filesystem::temp_directory_path();
+    tempDirLp = tempDir / "lp";
+    if (!std::filesystem::is_directory(tempDirLp)) {
+      std::filesystem::create_directory(tempDirLp);
     }
 
     logger = std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
@@ -120,21 +121,22 @@ class WeightsFileWriterTest : public ::testing::Test {
   void RunWeightsFileWriterTest(const std::string &solver_name,
                                 const std::string &expected) {
     auto yearly_weight_writer = YearlyWeightsWriter(
-        std::filesystem::temp_directory_path(), {3, 5, 7}, "weights_123.txt", {1, 2, 3}, solver_name, logger);
+        tempDir, {3, 5, 7}, "weights_123.txt", {1, 2, 3}, solver_name, logger);
 
     yearly_weight_writer.CreateWeightFile(problems_and_data);
 
-    std::ifstream reader(tempDir / "weights_123.txt");
+    std::ifstream reader(tempDirLp / "weights_123.txt");
     std::string actual((std::istreambuf_iterator<char>(reader)),
                        std::istreambuf_iterator<char>());
 
     EXPECT_EQ(expected, actual);
 
     // Clean up
-    std::filesystem::remove(tempDir / "weights_123.txt");
+    std::filesystem::remove(tempDirLp / "weights_123.txt");
   }
 
   std::filesystem::path tempDir;
+  std::filesystem::path tempDirLp;
   std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger;
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
       problems_and_data;
