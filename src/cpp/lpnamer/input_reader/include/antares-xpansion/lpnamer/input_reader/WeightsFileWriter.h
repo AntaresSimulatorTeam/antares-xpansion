@@ -7,18 +7,24 @@
 #include <vector>
 
 #include "MpsTxtWriter.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 
 class YearlyWeightsWriter {
  public:
-  explicit YearlyWeightsWriter(const std::filesystem::path& xpansion_output_dir,
-                               const std::vector<double>& weights_vector,
-                               const std::filesystem::path& output_file,
-                               const std::vector<int>& active_years,
-                               const std::string& solver_name);
+  explicit YearlyWeightsWriter(
+      const std::filesystem::path& xpansion_output_dir,
+      const std::vector<double>& weights_vector,
+      const std::filesystem::path& output_file,
+      const std::vector<int>& active_years, const std::string& solver_name,
+      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
 
   void CreateWeightFile(
       const std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>&
           problems_and_data);
+  class McYearNotInActiveYearsListError
+      : public LogUtils::XpansionError<std::runtime_error> {
+    using LogUtils::XpansionError<std::runtime_error>::XpansionError;
+  };
 
  private:
   std::filesystem::path xpansion_output_dir_;
@@ -30,6 +36,7 @@ class YearlyWeightsWriter {
   std::filesystem::path output_file_;
   std::vector<int> active_years_;
   std::string solver_name_;
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
   void FillMpsWeightsMap(
       const std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>&
           problems_and_data);

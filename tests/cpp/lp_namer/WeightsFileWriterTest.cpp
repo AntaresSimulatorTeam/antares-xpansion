@@ -90,12 +90,6 @@ class MockProblem : public Problem {
   }
 };
 
-// class MockProblemData : public ProblemData {
-//  public:
-//   MockProblemData(const std::string &mps) : ProblemData(mps, "variables.txt")
-//   {}
-// };
-
 void RunWeightsFileWriterTest(const std::string &solver_name,
                               const std::string &expected) {
   auto tempDir = std::filesystem::temp_directory_path() / "lp";
@@ -103,9 +97,13 @@ void RunWeightsFileWriterTest(const std::string &solver_name,
     std::filesystem::create_directory(tempDir);
   }
 
+  auto logger =
+      std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
+          LogUtils::LOGLEVEL::NONE);
+
   auto yearly_weight_writer =
       YearlyWeightsWriter(std::filesystem::temp_directory_path(), {3, 5, 7},
-                          "weights_123.txt", {1, 2, 3}, solver_name);
+                          "weights_123.txt", {1, 2, 3}, solver_name, logger);
 
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
       problems_and_data = {

@@ -197,9 +197,9 @@ void ProblemGeneration::ProcessWeights(
                                         logger);
   weights_file_reader.CheckWeightsFile();
   auto weights_vector = weights_file_reader.WeightsList();
-  auto yearly_weight_writer =
-      YearlyWeightsWriter(xpansion_output_dir, weights_vector,
-                          weights_file.filename(), active_years, solver_name);
+  auto yearly_weight_writer = YearlyWeightsWriter(
+      xpansion_output_dir, weights_vector, weights_file.filename(),
+      active_years, solver_name, logger);
   yearly_weight_writer.CreateWeightFile(problems_and_data);
 }
 
@@ -259,9 +259,9 @@ std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
     std::shared_ptr<ArchiveReader> reader,
     const Antares::Solver::LpsFromAntares& lps = {}) {
   std::vector<std::string> problem_names;
-  std::transform(mpsList.begin(), mpsList.end(),
-                 std::back_inserter(problem_names),
-                 [](ProblemData const& data) { return data._problem_filename; });
+  std::transform(
+      mpsList.begin(), mpsList.end(), std::back_inserter(problem_names),
+      [](ProblemData const& data) { return data._problem_filename; });
   switch (mode_.value()) {
     case SimulationInputMode::FILE: {
       FileProblemsProviderAdapter adapter(lpDir_, problem_names);
@@ -376,8 +376,8 @@ void ProblemGeneration::RunProblemGeneration(
             (*logger)(LogUtils::LOGLEVEL::ERR) << "Undefined mode";
             break;
         }
-        linkProblemsGenerator.treat(data._problem_filename, couplings, problem.get(),
-                                    variables_provider.get(),
+        linkProblemsGenerator.treat(data._problem_filename, couplings,
+                                    problem.get(), variables_provider.get(),
                                     mps_file_writer.get());
       });
 
