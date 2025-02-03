@@ -20,9 +20,9 @@ using MpsVariableConstraintsFiles =
 using YearWeekAndFilesDict = std::map<YearAndWeek, MpsVariableConstraintsFiles>;
 
 struct ProblemData {
-  ProblemData(const std::string& problem_mps, const std::string& variables_txt)
-      : _problem_mps(problem_mps), _variables_txt(variables_txt) {}
-  std::string _problem_mps;
+  ProblemData(const std::string& problem_filename, const std::string& variables_txt)
+      : _problem_filename(problem_filename), _variables_txt(variables_txt) {}
+  std::string _problem_filename;
   std::string _variables_txt;
 };
 

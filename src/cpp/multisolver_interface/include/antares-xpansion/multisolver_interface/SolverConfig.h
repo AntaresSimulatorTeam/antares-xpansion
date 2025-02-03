@@ -25,6 +25,5 @@ class SolverConfig {
   ~SolverConfig() = default;
   bool operator==(const std::string& rhs) const;
   SolverConfig& operator=(const std::string& rhs);
-  static std::filesystem::path FileName(const std::string& problemName,
-                                        const SolverConfig& solverName);
+  std::filesystem::path FileName(const std::string& problemName);
 };
