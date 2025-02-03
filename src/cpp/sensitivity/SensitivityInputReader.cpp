@@ -72,7 +72,7 @@ std::shared_ptr<SolverAbstract> SensitivityInputReader::get_last_master() const 
       throw std::runtime_error(fmt::format("{}: unsupported format : {}",
                                            LOGLOCATION, format));
   }
-  // Always set solver parameters after reading problems, as restore also comes with parameters of the solver and we do not want them to override our preferences
+  // Always set solver parameters after reading problems, as restore (used by Xpress writing .svf files) also comes with parameters of the solver and we do not want them to override our preferences
   last_master->set_threads(1);
   last_master->set_output_log_level(
       _benders_data[Output::OPTIONS_C]["LOG_LEVEL"].asInt());

@@ -49,7 +49,7 @@ void Worker::init(const std::string &solver_name, int log_level,
   }
 
   read_prob(_solver.get(), _path_to_mps);
-  // Always set solver parameters after reading problems, as restore also comes with parameters of the solver and we do not want them to override our preferences
+  // Always set solver parameters after reading problems, as restore (used by Xpress writing .svf files) also comes with parameters of the solver and we do not want them to override our preferences
   _solver->set_threads(1);
   _solver->set_output_log_level(log_level);
 
