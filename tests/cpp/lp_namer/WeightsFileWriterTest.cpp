@@ -133,9 +133,6 @@ class WeightsFileWriterTest : public ::testing::Test {
                        std::istreambuf_iterator<char>());
 
     EXPECT_EQ(expected, actual);
-
-    // Clean up
-    std::filesystem::remove(tempDirLp / "weights_123.txt");
   }
 
   std::filesystem::path tempDir;
