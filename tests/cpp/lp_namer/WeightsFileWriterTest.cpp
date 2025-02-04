@@ -1,5 +1,3 @@
-#include <RandomDirGenerator.h>
-
 #include <fstream>
 #include <memory>
 
@@ -95,10 +93,13 @@ class MockProblem : public Problem {
 class WeightsFileWriterTest : public ::testing::Test {
  protected:
   void SetUp() override {
-    tempDir = CreateRandomSubDir(std::filesystem::temp_directory_path());
+    const ::testing::TestInfo *test_info =
+        ::testing::UnitTest::GetInstance()->current_test_info();
+
+    tempDir = std::filesystem::temp_directory_path() / test_info->name();
     tempDirLp = tempDir / "lp";
     if (!std::filesystem::is_directory(tempDirLp)) {
-      std::filesystem::create_directory(tempDirLp);
+      std::filesystem::create_directories(tempDirLp);
     }
 
     logger = std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
