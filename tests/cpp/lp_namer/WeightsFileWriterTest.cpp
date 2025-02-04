@@ -95,6 +95,12 @@ class MockProblem : public Problem {
 class WeightsFileWriterTest : public ::testing::Test {
  protected:
   void SetUp() override {
+    tempDir = CreateRandomSubDir(std::filesystem::temp_directory_path());
+    tempDirLp = tempDir / "lp";
+    if (!std::filesystem::is_directory(tempDirLp)) {
+      std::filesystem::create_directory(tempDirLp);
+    }
+
     logger = std::make_shared<ProblemGenerationLog::ProblemGenerationLogger>(
         LogUtils::LOGLEVEL::NONE);
 
@@ -116,11 +122,6 @@ class WeightsFileWriterTest : public ::testing::Test {
 
   void RunWeightsFileWriterTest(const std::string &solver_name,
                                 const std::string &expected) {
-    auto tempDir = CreateRandomSubDir(std::filesystem::temp_directory_path());
-    auto tempDirLp = tempDir / "lp";
-    if (!std::filesystem::is_directory(tempDirLp)) {
-      std::filesystem::create_directory(tempDirLp);
-    }
     auto yearly_weight_writer = YearlyWeightsWriter(
         tempDir, {3, 5, 7}, "weights_123.txt", {1, 2, 3}, solver_name, logger);
 
@@ -136,6 +137,8 @@ class WeightsFileWriterTest : public ::testing::Test {
     std::filesystem::remove(tempDirLp / "weights_123.txt");
   }
 
+  std::filesystem::path tempDir;
+  std::filesystem::path tempDirLp;
   std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger;
   std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
       problems_and_data;
