@@ -13,7 +13,8 @@ YearlyWeightsWriter::YearlyWeightsWriter(
     const std::filesystem::path& xpansion_output_dir,
     const std::vector<double>& weights_vector,
     const std::filesystem::path& output_file,
-    const std::vector<int>& active_years, const std::string& solver_name, std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
+    const std::vector<int>& active_years, const std::string& solver_name,
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
     : xpansion_output_dir_(xpansion_output_dir),
       weights_vector_(weights_vector),
       output_file_(output_file),
@@ -39,13 +40,16 @@ void YearlyWeightsWriter::FillMpsWeightsMap(
   problem_filename_to_weight_.clear();
 
   for (const auto& [problem, data] : problems_and_data) {
-    auto it = std::find(active_years_.begin(), active_years_.end(), problem->mc_year);
-    if (it != active_years_.end()) {
+    if (auto it = std::find(active_years_.begin(), active_years_.end(),
+                            problem->mc_year);
+        it != active_years_.end()) {
       auto year_index = std::distance(active_years_.begin(), it);
-      problem_filename_to_weight_[data._problem_filename] = weights_vector_[year_index];
+      problem_filename_to_weight_[data._problem_filename] =
+          weights_vector_[year_index];
     } else {
       std::ostringstream msg;
-      msg << "Mc year " << problem->mc_year << " not found in the list of active years." << std::endl;
+      msg << "Mc year " << problem->mc_year
+          << " not found in the list of active years." << std::endl;
       (*logger_)(LogUtils::LOGLEVEL::FATAL) << LOGLOCATION << msg.str();
       throw McYearNotInActiveYearsListError(msg.str(), LOGLOCATION);
     }
@@ -64,8 +68,9 @@ void YearlyWeightsWriter::DumpMpsWeightsToFile() const {
   mps_weights_file.open(file);
 
   for (const auto& [mps_name, weight] : problem_filename_to_weight_) {
-    mps_weights_file << SolverConfig(solver_name_).FileName(mps_name.string()).string()
-                     << " " << weight << std::endl;
+    mps_weights_file
+        << SolverConfig(solver_name_).FileName(mps_name.string()).string()
+        << " " << weight << std::endl;
   }
   mps_weights_file << "WEIGHT_SUM "
                    << std::reduce(weights_vector_.begin(),
