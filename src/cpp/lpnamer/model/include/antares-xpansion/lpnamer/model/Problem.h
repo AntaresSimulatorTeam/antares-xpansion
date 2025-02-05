@@ -122,9 +122,10 @@ class Problem : public SolverAbstract {
   }
   void add_cols(int newcol, int newnz, const double *objx, const int *mstart,
                 const int *mrwind, const double *dmatval, const double *bdl,
-                const double *bdu) override {
+                const double *bdu,
+                const std::vector<std::string> &names = {}) override {
     solver_abstract_->add_cols(newcol, newnz, objx, mstart, mrwind, dmatval,
-                               bdl, bdu);
+                               bdl, bdu, names);
   }
   void add_name(int type, const char *cnames, int indice) override {
     solver_abstract_->add_name(type, cnames, indice);

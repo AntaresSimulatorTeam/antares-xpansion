@@ -379,10 +379,16 @@ void SolverXpress::add_rows(int newrows, int newnz, const char *qrtype,
 void SolverXpress::add_cols(int newcol, int newnz, const double *objx,
                             const int *mstart, const int *mrwind,
                             const double *dmatval, const double *bdl,
-                            const double *bdu) {
+                            const double *bdu,
+                            const std::vector<std::string> &col_names) {
+  int ncolInit = get_ncols();
   int status = XPRSaddcols(_xprs, newcol, newnz, objx, mstart, mrwind, dmatval,
                            bdl, bdu);
   zero_status_check(status, "add columns", LOGLOCATION);
+  if (col_names.size() > 0) {
+    int ncolFinal = get_ncols();
+    add_names(2, col_names, ncolInit, ncolFinal - 1);
+  }
 }
 
 void SolverXpress::add_name(int type, const char *cnames, int indice) {
@@ -392,12 +398,12 @@ void SolverXpress::add_name(int type, const char *cnames, int indice) {
 
 void SolverXpress::add_names(int type, const std::vector<std::string> &cnames,
                              int first, int end) {
-  std::vector<char> row_names_charp;
+  std::vector<char> names_charp;
   for (auto name : cnames) {
     name += '\0';
-    row_names_charp.insert(row_names_charp.end(), name.begin(), name.end());
+    names_charp.insert(names_charp.end(), name.begin(), name.end());
   }
-  int status = XPRSaddnames(_xprs, type, row_names_charp.data(), first, end);
+  int status = XPRSaddnames(_xprs, type, names_charp.data(), first, end);
   zero_status_check(status, "add names", LOGLOCATION);
 }
 
@@ -608,13 +614,13 @@ void SolverXpress::save_prob(const std::filesystem::path &filename) {
   filename_to_use.replace_extension(".svf");
   int status = XPRSsaveas(_xprs, filename_to_use.string().c_str());
   char errmsg[512];
-  XPRSgetlasterror(_xprs,errmsg);
+  XPRSgetlasterror(_xprs, errmsg);
   std::cerr << errmsg << std::endl;
   zero_status_check(status, "save problem", LOGLOCATION);
 }
 void SolverXpress::restore_prob(const std::filesystem::path &filename) {
-    int status = XPRSrestore(_xprs, filename.string().c_str(), "");
-    zero_status_check(status, "restore problem", LOGLOCATION);
+  int status = XPRSrestore(_xprs, filename.string().c_str(), "");
+  zero_status_check(status, "restore problem", LOGLOCATION);
 }
 
 void XPRS_CC optimizermsg(XPRSprob prob, void *strPtr, const char *sMsg,

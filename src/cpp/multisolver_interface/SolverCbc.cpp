@@ -429,15 +429,23 @@ void SolverCbc::add_rows(int newrows, int newnz, const char *qrtype,
 void SolverCbc::add_cols(int newcol, int newnz, const double *objx,
                          const int *mstart, const int *mrwind,
                          const double *dmatval, const double *bdl,
-                         const double *bdu) {
+                         const double *bdu,
+                         const std::vector<std::string> &col_names) {
   std::vector<int> colStart(newcol + 1);
   for (int i(0); i < newcol; i++) {
     colStart[i] = mstart[i];
   }
   colStart[newcol] = newnz;
+  int ncolInit = get_ncols();
 
   _clp_inner_solver.addCols(newcol, colStart.data(), mrwind, dmatval, bdl, bdu,
                             objx);
+  if (col_names.size() > 0) {
+    int ncolFinal = get_ncols();
+    for (int i = ncolInit; i < ncolFinal; i++) {
+      chg_col_name(i, col_names[i - ncolInit]);
+    }
+  }
 }
 
 void SolverCbc::add_name(int type, const char *cnames, int indice) {

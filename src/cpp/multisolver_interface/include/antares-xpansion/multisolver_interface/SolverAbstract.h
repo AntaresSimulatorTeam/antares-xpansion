@@ -190,7 +190,7 @@ class SolverAbstract {
   /**
    * @brief constructor of SolverAbstract class : does nothing
    */
-  SolverAbstract(){};
+  SolverAbstract() {};
 
   /**
    * @brief Copy constructor, copy the problem "toCopy" in memory and name it
@@ -200,12 +200,12 @@ class SolverAbstract {
    * @param toCopy : Pointer to an AbstractSolver object, containing a solver
    * object to copy
    */
-  SolverAbstract(const std::string &name, const SolverAbstract::Ptr toCopy){};
+  SolverAbstract(const std::string &name, const SolverAbstract::Ptr toCopy) {};
 
   /**
    * @brief destructor of SolverAbstract class : does nothing
    */
-  virtual ~SolverAbstract(){};
+  virtual ~SolverAbstract() {};
 
   /**
    * @brief Returns number of instances of solver currently in memory
@@ -539,12 +539,14 @@ class SolverAbstract {
   (contiguous) column indices for the elements in each row.
   * @param dmatval    : Double array of length newnz containing the (contiguous)
   element values.
+  * @param row_names  : String vector of length newrow containing the names of
+  the rows.
   */
   virtual void add_rows(int newrows, int newnz, const char *qrtype,
                         const double *rhs, const double *range,
                         const int *mstart, const int *mclind,
                         const double *dmatval,
-                        const std::vector<std::string> &names = {}) = 0;
+                        const std::vector<std::string> &row_names = {}) = 0;
 
   /**
   * @brief Adds new columns to the problem
@@ -563,11 +565,14 @@ class SolverAbstract {
   bounds on the added columns.
   * @param bdu        : Double array of length newcol containing the upper
   bounds on the added columns.
+  * @param col_names  : String vector of length newcol containing the names of
+  the columns.
   */
   virtual void add_cols(int newcol, int newnz, const double *objx,
                         const int *mstart, const int *mrwind,
                         const double *dmatval, const double *bdl,
-                        const double *bdu) = 0;
+                        const double *bdu,
+                        const std::vector<std::string> &col_names = {}) = 0;
 
   /**
    * @brief Adds a name to a row or a column
