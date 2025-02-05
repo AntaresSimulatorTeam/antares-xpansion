@@ -1,8 +1,8 @@
 #include <iostream>
 
+#include "antares-xpansion/multisolver_interface/Solver.h"
 #include "catch2.hpp"
 #include "define_datas.hpp"
-#include "antares-xpansion/multisolver_interface/Solver.h"
 
 TEST_CASE("Modification: deleting rows", "[modif][del-rows]") {
   AllDatas datas;
@@ -79,7 +79,7 @@ TEST_CASE("Modification: add rows", "[modif][add-rows]") {
         //========================================================================================
         // Add the row to solver
         solver->add_rows(newRows, newElems, ntype.data(), rhs.data(), NULL,
-                         mstart.data(), mind.data(), matval.data());
+                         mstart.data(), mind.data(), matval.data(), {});
 
         //========================================================================================
         // Check new constraint matrix
@@ -307,7 +307,8 @@ TEST_CASE("Modification: add columns", "[modif][add-cols]") {
         std::vector<double> ubs(newcol, 6.0);
 
         solver->add_cols(newcol, nnz, newobj.data(), nmstart.data(),
-                         nmind.data(), nmatval.data(), lbs.data(), ubs.data());
+                         nmind.data(), nmatval.data(), lbs.data(), ubs.data(),
+                         {});
 
         //========================================================================================
         // Check objective and rows
@@ -457,7 +458,7 @@ TEST_CASE("Modification: add cols and a row associated to those columns",
       std::vector<double> lb(1, 0.0);
       std::vector<double> ub(1, 100.0);
       solver->add_cols(1, 0, obj.data(), matstart.data(), matind.data(),
-                       matval.data(), lb.data(), ub.data());
+                       matval.data(), lb.data(), ub.data(), {});
 
       // 3 Colunms with no obj
       matstart.resize(3);
@@ -469,7 +470,7 @@ TEST_CASE("Modification: add cols and a row associated to those columns",
       ub.resize(3);
       ub = std::vector<double>(3, 100.0);
       solver->add_cols(3, 0, obj.data(), matstart.data(), matind.data(),
-                       matval.data(), lb.data(), ub.data());
+                       matval.data(), lb.data(), ub.data(), {});
 
       REQUIRE(solver->get_ncols() == datas[inst]._ncols + 4);
       REQUIRE(solver->get_nrows() == datas[inst]._nrows);
@@ -494,7 +495,8 @@ TEST_CASE("Modification: add cols and a row associated to those columns",
       rowmatval[0] = 1.0;
 
       solver->add_rows(newrows, newnz, rowType.data(), rhs.data(), NULL,
-                       rowmatstart.data(), rowmatind.data(), rowmatval.data());
+                       rowmatstart.data(), rowmatind.data(), rowmatval.data(),
+                       {});
 
       REQUIRE(solver->get_nrows() == datas[inst]._nrows + newrows);
       REQUIRE(solver->get_nelems() == datas[inst]._nelems + newnz);

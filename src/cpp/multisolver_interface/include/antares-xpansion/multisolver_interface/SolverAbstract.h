@@ -546,7 +546,7 @@ class SolverAbstract {
                         const double *rhs, const double *range,
                         const int *mstart, const int *mclind,
                         const double *dmatval,
-                        const std::vector<std::string> &row_names = {}) = 0;
+                        const std::vector<std::string> &row_names) = 0;
 
   /**
   * @brief Adds new columns to the problem
@@ -572,7 +572,7 @@ class SolverAbstract {
                         const int *mstart, const int *mrwind,
                         const double *dmatval, const double *bdl,
                         const double *bdu,
-                        const std::vector<std::string> &col_names = {}) = 0;
+                        const std::vector<std::string> &col_names) = 0;
 
   /**
    * @brief Adds a name to a row or a column
