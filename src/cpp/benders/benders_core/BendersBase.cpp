@@ -199,8 +199,9 @@ void BendersBase::UpdateStoppingCriterion() {
     _data.stopping_criterion = StoppingCriterion::max_iteration;
   else if (_data.lb + _options.ABSOLUTE_GAP >= _data.best_ub)
     _data.stopping_criterion = StoppingCriterion::absolute_gap;
+  // keep parentheses around (std::max) to prevent build failure on windows
   else if (((_data.best_ub - _data.lb) /
-            std::max(std::abs(_data.best_ub), std::abs(_data.lb))) <=
+            (std::max)(std::abs(_data.best_ub), std::abs(_data.lb))) <=
            _options.RELATIVE_GAP)
     _data.stopping_criterion = StoppingCriterion::relative_gap;
 }
