@@ -1,6 +1,6 @@
+#include "antares-xpansion/multisolver_interface/Solver.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "catch2.hpp"
-#include "antares-xpansion/multisolver_interface/Solver.h"
 
 TEST_CASE("InvalidStatusException", "[exceptions][invalid_status]") {
   SolverFactory factory;
@@ -61,7 +61,7 @@ SolverAbstract::Ptr createSimpleProblem(const std::string& solver_name) {
   std::vector<double> lb = std::vector<double>(2, 0.0);
   std::vector<double> ub = std::vector<double>(2, 100.0);
   solver->add_cols(2, 0, obj.data(), matstart.data(), matind.data(),
-                   matval.data(), lb.data(), ub.data());
+                   matval.data(), lb.data(), ub.data(), {});
   //========================================================================================
   // Add a row to problem : creating row structure
   int newRows = 2;
@@ -74,7 +74,7 @@ SolverAbstract::Ptr createSimpleProblem(const std::string& solver_name) {
   //========================================================================================
   // Add rows to solver
   solver->add_rows(newRows, newElems, ntype.data(), rhs.data(), NULL,
-                   mstart.data(), mind.data(), matvalRow.data());
+                   mstart.data(), mind.data(), matvalRow.data(), {});
 
   return solver;
 }

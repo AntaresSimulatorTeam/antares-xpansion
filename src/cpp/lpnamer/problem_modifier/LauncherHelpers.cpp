@@ -4,10 +4,10 @@
 
 #include <filesystem>
 
-#include "antares-xpansion/lpnamer/model/Candidate.h"
 #include "antares-xpansion/lpnamer/input_reader/CandidatesINIReader.h"
-#include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 #include "antares-xpansion/lpnamer/input_reader/LinkProfileReader.h"
+#include "antares-xpansion/lpnamer/model/Candidate.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 void treatAdditionalConstraints(
@@ -75,7 +75,7 @@ void addAdditionalConstraint(
   }
 
   master_p->add_rows(1, newnz, rtype.data(), rhs.data(), nullptr,
-                     matstart.data(), mindex.data(), matval.data());
+                     matstart.data(), mindex.data(), matval.data(), {});
 }
 
 void addBinaryVariables(
@@ -95,7 +95,8 @@ void addBinaryVariables(
     master_p->add_cols(
         1, 0, std::vector<double>(1, 0.0).data(), std::vector<int>(2, 0).data(),
         std::vector<int>(0).data(), std::vector<double>(0).data(),
-        std::vector<double>(1, 0).data(), std::vector<double>(1, 1e20).data());
+        std::vector<double>(1, 0).data(), std::vector<double>(1, 1e20).data(),
+        {});
 
     // Changing column type to binary
     master_p->chg_col_type(std::vector<int>(1, master_p->get_ncols() - 1),
@@ -122,7 +123,7 @@ void addBinaryVariables(
 
     master_p->add_rows(1, 2, std::vector<char>(1, 'L').data(),
                        std::vector<double>(1, 0.0).data(), nullptr,
-                       matstart.data(), matind.data(), matval.data());
+                       matstart.data(), matind.data(), matval.data(), {});
     master_p->chg_row_name(
         master_p->get_nrows() - 1,
         "link_" + pairOldNewVarnames.first + "_" + pairOldNewVarnames.second);

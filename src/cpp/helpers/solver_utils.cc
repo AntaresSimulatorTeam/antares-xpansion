@@ -34,7 +34,7 @@ void solver_addcols(SolverAbstract &solver_p, std::vector<double> const &objx_p,
     int newnnz = static_cast<int>(dmatval_p.size());
 
     solver_p.add_cols(newCols, newnnz, objx_p.data(), mstart_p.data(),
-                      mrwind_p.data(), dmatval_p.data(), bdl_p.data(), bdu_p.data());
+                      mrwind_p.data(), dmatval_p.data(), bdl_p.data(), bdu_p.data(), {});
 
     std::vector<int> newIndex(newCols);
     for (int i = 0; i < newCols; i++)

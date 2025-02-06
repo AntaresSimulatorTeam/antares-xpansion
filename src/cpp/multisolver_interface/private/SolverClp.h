@@ -128,11 +128,12 @@ class SolverClp : public SolverAbstract {
                         const double *rhs, const double *range,
                         const int *mstart, const int *mclind,
                         const double *dmatval,
-                        const std::vector<std::string> &names = {}) override;
+                        const std::vector<std::string> &row_names) override;
   virtual void add_cols(int newcol, int newnz, const double *objx,
                         const int *mstart, const int *mrwind,
                         const double *dmatval, const double *bdl,
-                        const double *bdu) override;
+                        const double *bdu,
+                        const std::vector<std::string> &col_names) override;
   virtual void add_name(int type, const char *cnames, int indice) override;
   virtual void add_names(int type, const std::vector<std::string> &cnames,
                          int first, int end) override;

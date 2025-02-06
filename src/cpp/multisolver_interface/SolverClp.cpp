@@ -93,7 +93,8 @@ void SolverClp::read_prob_mps(const std::filesystem::path &filename) {
     filename_to_use.replace_extension(".mps");
   }
   int status = _clp.readMps(filename_to_use.string().c_str(), true, false);
-  zero_status_check(status, " Clp readMps "s + filename_to_use.string(), LOGLOCATION);
+  zero_status_check(status, " Clp readMps "s + filename_to_use.string(),
+                    LOGLOCATION);
 }
 
 void SolverClp::read_prob_lp(const std::filesystem::path &filename) {
@@ -302,14 +303,22 @@ void SolverClp::add_rows(int newrows, int newnz, const char *qrtype,
 void SolverClp::add_cols(int newcol, int newnz, const double *objx,
                          const int *mstart, const int *mrwind,
                          const double *dmatval, const double *bdl,
-                         const double *bdu) {
+                         const double *bdu,
+                         const std::vector<std::string> &col_names) {
   std::vector<int> colStart(newcol + 1);
   for (int i(0); i < newcol; i++) {
     colStart[i] = mstart[i];
   }
   colStart[newcol] = newnz;
+  int ncolInit = get_ncols();
 
   _clp.addColumns(newcol, bdl, bdu, objx, colStart.data(), mrwind, dmatval);
+  if (col_names.size() > 0) {
+    int ncolFinal = get_ncols();
+    for (int i = ncolInit; i < ncolFinal; i++) {
+      chg_col_name(i, col_names[i - ncolInit]);
+    }
+  }
 }
 
 void SolverClp::add_name(int type, const char *cnames, int indice) {
