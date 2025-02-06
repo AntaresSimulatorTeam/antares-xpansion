@@ -7,6 +7,7 @@
 #include <antares-xpansion/xpansion_interfaces/LogUtils.h>
 #include <filesystem>
 #include <vector>
+#include <antares-xpansion/xpansion_interfaces/LogUtils.h>
 
 class ProblemGenerationOptions
 {
