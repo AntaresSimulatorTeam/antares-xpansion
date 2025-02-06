@@ -13,8 +13,8 @@
 #include "antares-xpansion/lpnamer/problem_modifier/AntaresProblemToXpansionProblemTranslator.h"
 
 XpansionProblemsFromAntaresProvider::XpansionProblemsFromAntaresProvider(
-  Antares::Solver::LpsFromAntares lps):
-    antares_hebdo_problems(std::move(lps))
+  const Antares::Solver::LpsFromAntares& lps):
+    antares_hebdo_problems{lps}
 {
 }
 
