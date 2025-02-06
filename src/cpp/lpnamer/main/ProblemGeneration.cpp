@@ -292,7 +292,6 @@ void validateMasterFormulation(
  */
 std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
   SolverLogManager& solver_log_manager,
-  SolverConfig solver_name,
   const std::vector<ProblemData>& mpsList,
   std::filesystem::path& lpDir_,
   std::shared_ptr<ArchiveReader> reader,
@@ -377,13 +376,7 @@ void ProblemGeneration::RunProblemGeneration(
                                               : std::make_shared<ArchiveReader>();
 
     /* Main stuff */
-    std::vector<std::shared_ptr<Problem>> xpansion_problems = getXpansionProblems(
-      solver_log_manager,
-      solver_config_,
-      mpsList,
-      lpDir_,
-      reader,
-      lps_);
+    std::vector<std::shared_ptr<Problem>> xpansion_problems = getXpansionProblems(solver_log_manager, mpsList, lpDir_, reader, lps_);
 
     std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>> problems_and_data;
     for (int i = 0; i < xpansion_problems.size(); ++i)
