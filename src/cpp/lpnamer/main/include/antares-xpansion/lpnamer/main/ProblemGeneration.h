@@ -52,7 +52,6 @@ private:
                            std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
     std::vector<std::shared_ptr<Problem>> getXpansionProblems(
       SolverLogManager& solver_log_manager,
-      SolverConfig solver_name,
       const std::vector<ProblemData>& mpsList,
       std::filesystem::path& lpDir_,
       std::shared_ptr<ArchiveReader> reader,
