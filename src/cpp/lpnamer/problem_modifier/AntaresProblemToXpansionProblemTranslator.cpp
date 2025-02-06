@@ -25,7 +25,7 @@ std::shared_ptr<Problem> AntaresProblemToXpansionProblemTranslator::translateToX
     SolverFactory factory;
     auto problem = std::make_shared<Problem>(
       factory.create_solver(solver_name, solver_log_manager));
-    auto constant = lps.constantProblemData;
+    const auto& constant = lps.constantProblemData;
     auto hebdo = lps.weeklyProblems.at({year, week});
     problem->_name = hebdo.name;
     problem->mc_year = year;
