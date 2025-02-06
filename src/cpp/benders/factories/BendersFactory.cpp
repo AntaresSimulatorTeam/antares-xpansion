@@ -53,7 +53,7 @@ void BendersMainFactory::PrepareForExecution(bool outer_loop) {
 
   if (pworld_->rank() == 0) {
     if (Benders::StartUp startup;
-        startup.StudyAlreadyAchievedCriterion(options_, writer_, logger_)) {
+        startup.StudyAlreadyAchievedCriterion(options_, writer_.get(), logger_)) {
       return;
     }
     if (!isCriterionListEmpty()) {

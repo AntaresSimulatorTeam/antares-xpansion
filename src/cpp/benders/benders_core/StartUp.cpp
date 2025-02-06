@@ -7,7 +7,7 @@
 namespace Benders {
 
 bool StartUp::StudyAlreadyAchievedCriterion(const SimulationOptions& options,
-                                            const std::shared_ptr<Output::OutputWriter>& writer,
+                                            Output::OutputWriter* writer,
                                             const Logger& logger) const {
   if (!options.RESUME) return false;
   if (writer->solution_status() == Output::OPTIMAL_C) {
