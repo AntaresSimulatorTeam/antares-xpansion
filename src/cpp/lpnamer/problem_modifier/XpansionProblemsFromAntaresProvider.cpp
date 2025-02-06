@@ -24,7 +24,7 @@ std::vector<std::shared_ptr<Problem>> XpansionProblemsFromAntaresProvider::provi
 {
     std::vector<std::shared_ptr<Problem>> xpansion_problems;
     xpansion_problems.reserve(antares_hebdo_problems.weekCount());
-    std::vector<std::pair<Antares::Solver::WeeklyProblemId, Antares::Solver::WeeklyDataFromAntares>> weekly_problems_vector;
+    std::vector<std::pair<const Antares::Solver::WeeklyProblemId&, const Antares::Solver::WeeklyDataFromAntares&>> weekly_problems_vector;
     weekly_problems_vector.reserve(antares_hebdo_problems.weeklyProblems.size());
     for (const auto& [problem_id, hebdo_data] : antares_hebdo_problems.weeklyProblems) {
         weekly_problems_vector.emplace_back(problem_id, hebdo_data);
