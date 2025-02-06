@@ -341,12 +341,12 @@ var NAVTREEINDEX =
 [
 "ActiveLinks_8h_source.html",
 "classBenders_1_1Criterion_1_1CriterionInputPatternsShouldBeArray.html",
-"classNOOPSolver.html#acd0bd853e6714e2bc5251eb146a66a14",
-"classSolverCbc.html#a1e82f5f0a1547884ec9a5cf32d1d7028",
-"classWriterNOOPStub.html",
-"classantares__xpansion_1_1study__updater__driver_1_1StudyUpdaterDriver_1_1StudyUpdaterJsonFilePath.html",
-"md_docs_2changelog_2CHANGELOG.html#autotoc_md26",
-"structCatch_1_1AssertionInfo.html"
+"classProblem.html#a075abb3bc479adb0de6c2326fe03ac17",
+"classSolverClp.html#a2330c424351681a0502ee7035791e9d7",
+"classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a18ac312fdfc2181c7ad8dad85ba359d7",
+"classxpansion_1_1logger_1_1UserFile.html",
+"md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html#autotoc_md85",
+"structCatch_1_1StringMaker_3_01R_00_01typename_01std_1_1enable__if_3_01is__range_3_01R_01_4_1_1ve8233c20b54b69b4771fbd413409d181.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

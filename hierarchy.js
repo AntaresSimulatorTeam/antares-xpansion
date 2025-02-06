@@ -520,7 +520,6 @@ var hierarchy =
     [ "SinglePbData", "structSinglePbData.html", null ],
     [ "Output::SolutionData", "structOutput_1_1SolutionData.html", null ],
     [ "SolverAbstract", "classSolverAbstract.html", [
-      [ "MockSolverAbstract", "classMockSolverAbstract.html", null ],
       [ "NOOPSolver", "classNOOPSolver.html", null ],
       [ "Problem", "classProblem.html", [
         [ "MockProblem", "classMockProblem.html", null ]
