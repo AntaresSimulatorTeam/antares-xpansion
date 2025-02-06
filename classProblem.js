@@ -1,8 +1,8 @@
 var classProblem =
 [
-    [ "add_cols", "classProblem.html#a3a39dd85d31f7a5fe895fe8d119a7e69", null ],
+    [ "add_cols", "classProblem.html#ab2ffd3458a5a0e2d3b01e1efd983d793", null ],
     [ "add_name", "classProblem.html#a2fd6e04f639afc967adf2f1a3d3d4b85", null ],
-    [ "add_rows", "classProblem.html#a8fb8c92a38162a74023e798e9e824c80", null ],
+    [ "add_rows", "classProblem.html#a1588fefaa606b250a55c39a69dbcebdd", null ],
     [ "chg_bounds", "classProblem.html#a4bc726350bcf61005c30cc61e6018b4e", null ],
     [ "chg_coef", "classProblem.html#ad0ee54139145f03b9f188d40cb7a0856", null ],
     [ "chg_col_name", "classProblem.html#af4b08904684db423cee3a8f8c58ff800", null ],

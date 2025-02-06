@@ -261,12 +261,12 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>Week</b> () c
 <tr class="memitem:a7415aee60e1b8a3b83f9b4e2a989a827" id="r_a7415aee60e1b8a3b83f9b4e2a989a827"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7415aee60e1b8a3b83f9b4e2a989a827">del_rows</a> (int first, int last) override</td></tr>
 <tr class="memdesc:a7415aee60e1b8a3b83f9b4e2a989a827"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes rows between index first and last.  <br /></td></tr>
 <tr class="separator:a7415aee60e1b8a3b83f9b4e2a989a827"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8fb8c92a38162a74023e798e9e824c80" id="r_a8fb8c92a38162a74023e798e9e824c80"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8fb8c92a38162a74023e798e9e824c80">add_rows</a> (int newrows, int newnz, const char *qrtype, const double *rhs, const double *range, const int *mstart, const int *mclind, const double *dmatval, const std::vector&lt; std::string &gt; &amp;names={}) override</td></tr>
-<tr class="memdesc:a8fb8c92a38162a74023e798e9e824c80"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds rows to the problem.  <br /></td></tr>
-<tr class="separator:a8fb8c92a38162a74023e798e9e824c80"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3a39dd85d31f7a5fe895fe8d119a7e69" id="r_a3a39dd85d31f7a5fe895fe8d119a7e69"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3a39dd85d31f7a5fe895fe8d119a7e69">add_cols</a> (int newcol, int newnz, const double *objx, const int *mstart, const int *mrwind, const double *dmatval, const double *bdl, const double *bdu) override</td></tr>
-<tr class="memdesc:a3a39dd85d31f7a5fe895fe8d119a7e69"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds new columns to the problem.  <br /></td></tr>
-<tr class="separator:a3a39dd85d31f7a5fe895fe8d119a7e69"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1588fefaa606b250a55c39a69dbcebdd" id="r_a1588fefaa606b250a55c39a69dbcebdd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1588fefaa606b250a55c39a69dbcebdd">add_rows</a> (int newrows, int newnz, const char *qrtype, const double *rhs, const double *range, const int *mstart, const int *mclind, const double *dmatval, const std::vector&lt; std::string &gt; &amp;names) override</td></tr>
+<tr class="memdesc:a1588fefaa606b250a55c39a69dbcebdd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds rows to the problem.  <br /></td></tr>
+<tr class="separator:a1588fefaa606b250a55c39a69dbcebdd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab2ffd3458a5a0e2d3b01e1efd983d793" id="r_ab2ffd3458a5a0e2d3b01e1efd983d793"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab2ffd3458a5a0e2d3b01e1efd983d793">add_cols</a> (int newcol, int newnz, const double *objx, const int *mstart, const int *mrwind, const double *dmatval, const double *bdl, const double *bdu, const std::vector&lt; std::string &gt; &amp;names) override</td></tr>
+<tr class="memdesc:ab2ffd3458a5a0e2d3b01e1efd983d793"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds new columns to the problem.  <br /></td></tr>
+<tr class="separator:ab2ffd3458a5a0e2d3b01e1efd983d793"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2fd6e04f639afc967adf2f1a3d3d4b85" id="r_a2fd6e04f639afc967adf2f1a3d3d4b85"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2fd6e04f639afc967adf2f1a3d3d4b85">add_name</a> (int type, const char *cnames, int indice) override</td></tr>
 <tr class="memdesc:a2fd6e04f639afc967adf2f1a3d3d4b85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a name to a row or a column.  <br /></td></tr>
 <tr class="separator:a2fd6e04f639afc967adf2f1a3d3d4b85"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -404,8 +404,8 @@ Additional Inherited Members</h2></td></tr>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Decorator to the <a class="el" href="classSolverAbstract.html">SolverAbstract</a> class. </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="a3a39dd85d31f7a5fe895fe8d119a7e69" name="a3a39dd85d31f7a5fe895fe8d119a7e69"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a3a39dd85d31f7a5fe895fe8d119a7e69">&#9670;&#160;</a></span>add_cols()</h2>
+<a id="ab2ffd3458a5a0e2d3b01e1efd983d793" name="ab2ffd3458a5a0e2d3b01e1efd983d793"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab2ffd3458a5a0e2d3b01e1efd983d793">&#9670;&#160;</a></span>add_cols()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -451,7 +451,12 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const double *</td>          <td class="paramname"><span class="paramname"><em>bdu</em></span>&#160;)</td>
+          <td class="paramtype">const double *</td>          <td class="paramname"><span class="paramname"><em>bdu</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>col_names</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -472,11 +477,12 @@ Additional Inherited Members</h2></td></tr>
     <tr><td class="paramname">dmatval</td><td>: Double array of length newnz containing the element values. </td></tr>
     <tr><td class="paramname">bdl</td><td>: Double array of length newcol containing the lower bounds on the added columns. </td></tr>
     <tr><td class="paramname">bdu</td><td>: Double array of length newcol containing the upper bounds on the added columns. </td></tr>
+    <tr><td class="paramname">col_names</td><td>: String vector of length newcol containing the names of the columns. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classSolverAbstract.html#a4a4dacaf5af0d774302be7487f194f42">SolverAbstract</a>.</p>
+<p>Implements <a class="el" href="classSolverAbstract.html#a9da85a4911037a41b9dfdbe3dd52b5b3">SolverAbstract</a>.</p>
 
 </div>
 </div>
@@ -567,8 +573,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a8fb8c92a38162a74023e798e9e824c80" name="a8fb8c92a38162a74023e798e9e824c80"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8fb8c92a38162a74023e798e9e824c80">&#9670;&#160;</a></span>add_rows()</h2>
+<a id="a1588fefaa606b250a55c39a69dbcebdd" name="a1588fefaa606b250a55c39a69dbcebdd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1588fefaa606b250a55c39a69dbcebdd">&#9670;&#160;</a></span>add_rows()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -619,7 +625,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>names</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>&#160;)</td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>row_names</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -640,11 +646,12 @@ Additional Inherited Members</h2></td></tr>
     <tr><td class="paramname">mstart</td><td>: Integer array of length newrow + 1 containing the offsets in the mclind and dmatval arrays of the start of the elements for each row. </td></tr>
     <tr><td class="paramname">mclind</td><td>: Integer array of length newnz containing the (contiguous) column indices for the elements in each row. </td></tr>
     <tr><td class="paramname">dmatval</td><td>: Double array of length newnz containing the (contiguous) element values. </td></tr>
+    <tr><td class="paramname">row_names</td><td>: String vector of length newrow containing the names of the rows. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classSolverAbstract.html#a7cfec83d515d78f875e45c4743668be2">SolverAbstract</a>.</p>
+<p>Implements <a class="el" href="classSolverAbstract.html#ab7c030732bb69ca245909a497521837a">SolverAbstract</a>.</p>
 
 </div>
 </div>

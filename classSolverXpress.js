@@ -2,9 +2,9 @@ var classSolverXpress =
 [
     [ "SolverXpress", "classSolverXpress.html#a3fa04264091ce029e091b1c3eac8c560", null ],
     [ "SolverXpress", "classSolverXpress.html#aa2c353455282b7595fac4d3ff31adb85", null ],
-    [ "add_cols", "classSolverXpress.html#a8e031ade7772323f466f16f3d9e45952", null ],
+    [ "add_cols", "classSolverXpress.html#a6853d16704d40630fe13d25b480a1069", null ],
     [ "add_name", "classSolverXpress.html#a3d66403a0b9cad3c4988c5f943fcfc57", null ],
-    [ "add_rows", "classSolverXpress.html#aa3387353e9219c23e22297b2943657dc", null ],
+    [ "add_rows", "classSolverXpress.html#a91269b74f5f1c6c19234165f614a2898", null ],
     [ "chg_bounds", "classSolverXpress.html#ae13bac444a57274195b6fef413fbff75", null ],
     [ "chg_coef", "classSolverXpress.html#a036c80d5dc830651349d5d32c8822a0b", null ],
     [ "chg_col_name", "classSolverXpress.html#af88a846c83f9b2d91c791d968fc1df49", null ],

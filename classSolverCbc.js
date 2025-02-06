@@ -2,9 +2,9 @@ var classSolverCbc =
 [
     [ "SolverCbc", "classSolverCbc.html#a6aa4a44407cb816965a0ac21ff8e101e", null ],
     [ "SolverCbc", "classSolverCbc.html#a21a7dfd94c6bd1ac0e32a35a866d98fb", null ],
-    [ "add_cols", "classSolverCbc.html#a4d0812f1777b1a4e43a71ed0d0e8c3f3", null ],
+    [ "add_cols", "classSolverCbc.html#a588f24beee5d4d19e68c6a757723a165", null ],
     [ "add_name", "classSolverCbc.html#a0990733602db4b38284455ef0aa0349a", null ],
-    [ "add_rows", "classSolverCbc.html#af74f4f01aef4f5bf99971d91e2000a10", null ],
+    [ "add_rows", "classSolverCbc.html#abd6277ebc56de430f38c8851866ca1bd", null ],
     [ "chg_bounds", "classSolverCbc.html#acb9778e4fad177b77a72e178a6728093", null ],
     [ "chg_coef", "classSolverCbc.html#adb09607d1ed3545e47bb822a99f0afea", null ],
     [ "chg_col_name", "classSolverCbc.html#a0b4970eea7643c72c70a9737e4d3547c", null ],

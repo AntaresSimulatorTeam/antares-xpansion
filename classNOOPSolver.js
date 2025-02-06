@@ -1,8 +1,8 @@
 var classNOOPSolver =
 [
-    [ "add_cols", "classNOOPSolver.html#a1580de6c19d2196a778ed146cf85d96d", null ],
+    [ "add_cols", "classNOOPSolver.html#a9e33b9bf580180642a218be2f11eff78", null ],
     [ "add_name", "classNOOPSolver.html#ae32c377fdb30d6d8969dc26f955d358e", null ],
-    [ "add_rows", "classNOOPSolver.html#a8e091428888e75fcba2e8feb5a127054", null ],
+    [ "add_rows", "classNOOPSolver.html#a9a46d030e8dc1293add1f5eb34203b73", null ],
     [ "chg_bounds", "classNOOPSolver.html#a92fd94c7364309d7e7de8c2ec159ece7", null ],
     [ "chg_coef", "classNOOPSolver.html#a677a0f4d6e5e327e024dfc80bb44181c", null ],
     [ "chg_col_name", "classNOOPSolver.html#ae7f7da4b76355003f40673ce25459f0c", null ],

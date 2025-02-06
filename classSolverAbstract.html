@@ -293,12 +293,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_fp</b> (FILE *fp)
 <tr class="memitem:a29e5ecfb7a74099bcd3873cf2a0a8558" id="r_a29e5ecfb7a74099bcd3873cf2a0a8558"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29e5ecfb7a74099bcd3873cf2a0a8558">del_rows</a> (int first, int last)=0</td></tr>
 <tr class="memdesc:a29e5ecfb7a74099bcd3873cf2a0a8558"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes rows between index first and last.  <br /></td></tr>
 <tr class="separator:a29e5ecfb7a74099bcd3873cf2a0a8558"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7cfec83d515d78f875e45c4743668be2" id="r_a7cfec83d515d78f875e45c4743668be2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7cfec83d515d78f875e45c4743668be2">add_rows</a> (int newrows, int newnz, const char *qrtype, const double *rhs, const double *range, const int *mstart, const int *mclind, const double *dmatval, const std::vector&lt; std::string &gt; &amp;names={})=0</td></tr>
-<tr class="memdesc:a7cfec83d515d78f875e45c4743668be2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds rows to the problem.  <br /></td></tr>
-<tr class="separator:a7cfec83d515d78f875e45c4743668be2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a4dacaf5af0d774302be7487f194f42" id="r_a4a4dacaf5af0d774302be7487f194f42"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a4dacaf5af0d774302be7487f194f42">add_cols</a> (int newcol, int newnz, const double *objx, const int *mstart, const int *mrwind, const double *dmatval, const double *bdl, const double *bdu)=0</td></tr>
-<tr class="memdesc:a4a4dacaf5af0d774302be7487f194f42"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds new columns to the problem.  <br /></td></tr>
-<tr class="separator:a4a4dacaf5af0d774302be7487f194f42"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab7c030732bb69ca245909a497521837a" id="r_ab7c030732bb69ca245909a497521837a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab7c030732bb69ca245909a497521837a">add_rows</a> (int newrows, int newnz, const char *qrtype, const double *rhs, const double *range, const int *mstart, const int *mclind, const double *dmatval, const std::vector&lt; std::string &gt; &amp;row_names)=0</td></tr>
+<tr class="memdesc:ab7c030732bb69ca245909a497521837a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds rows to the problem.  <br /></td></tr>
+<tr class="separator:ab7c030732bb69ca245909a497521837a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9da85a4911037a41b9dfdbe3dd52b5b3" id="r_a9da85a4911037a41b9dfdbe3dd52b5b3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9da85a4911037a41b9dfdbe3dd52b5b3">add_cols</a> (int newcol, int newnz, const double *objx, const int *mstart, const int *mrwind, const double *dmatval, const double *bdl, const double *bdu, const std::vector&lt; std::string &gt; &amp;col_names)=0</td></tr>
+<tr class="memdesc:a9da85a4911037a41b9dfdbe3dd52b5b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds new columns to the problem.  <br /></td></tr>
+<tr class="separator:a9da85a4911037a41b9dfdbe3dd52b5b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:afc4ceb13f60ec7f53cdc166dd70baee6" id="r_afc4ceb13f60ec7f53cdc166dd70baee6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc4ceb13f60ec7f53cdc166dd70baee6">add_name</a> (int type, const char *cnames, int indice)=0</td></tr>
 <tr class="memdesc:afc4ceb13f60ec7f53cdc166dd70baee6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a name to a row or a column.  <br /></td></tr>
 <tr class="separator:afc4ceb13f60ec7f53cdc166dd70baee6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -440,8 +440,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a4a4dacaf5af0d774302be7487f194f42" name="a4a4dacaf5af0d774302be7487f194f42"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4a4dacaf5af0d774302be7487f194f42">&#9670;&#160;</a></span>add_cols()</h2>
+<a id="a9da85a4911037a41b9dfdbe3dd52b5b3" name="a9da85a4911037a41b9dfdbe3dd52b5b3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9da85a4911037a41b9dfdbe3dd52b5b3">&#9670;&#160;</a></span>add_cols()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -487,7 +487,12 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const double *</td>          <td class="paramname"><span class="paramname"><em>bdu</em></span>&#160;)</td>
+          <td class="paramtype">const double *</td>          <td class="paramname"><span class="paramname"><em>bdu</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>col_names</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -508,11 +513,12 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
     <tr><td class="paramname">dmatval</td><td>: Double array of length newnz containing the element values. </td></tr>
     <tr><td class="paramname">bdl</td><td>: Double array of length newcol containing the lower bounds on the added columns. </td></tr>
     <tr><td class="paramname">bdu</td><td>: Double array of length newcol containing the upper bounds on the added columns. </td></tr>
+    <tr><td class="paramname">col_names</td><td>: String vector of length newcol containing the names of the columns. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classNOOPSolver.html#a1580de6c19d2196a778ed146cf85d96d">NOOPSolver</a>, <a class="el" href="classProblem.html#a3a39dd85d31f7a5fe895fe8d119a7e69">Problem</a>, <a class="el" href="classSolverCbc.html#a4d0812f1777b1a4e43a71ed0d0e8c3f3">SolverCbc</a>, <a class="el" href="classSolverClp.html#ab95a20cf2acc6d7a365a63d7e0923f49">SolverClp</a>, and <a class="el" href="classSolverXpress.html#a8e031ade7772323f466f16f3d9e45952">SolverXpress</a>.</p>
+<p>Implemented in <a class="el" href="classNOOPSolver.html#a9e33b9bf580180642a218be2f11eff78">NOOPSolver</a>, <a class="el" href="classProblem.html#ab2ffd3458a5a0e2d3b01e1efd983d793">Problem</a>, <a class="el" href="classSolverCbc.html#a588f24beee5d4d19e68c6a757723a165">SolverCbc</a>, <a class="el" href="classSolverClp.html#a548d003be047e30c6172a147ca4622a6">SolverClp</a>, and <a class="el" href="classSolverXpress.html#a6853d16704d40630fe13d25b480a1069">SolverXpress</a>.</p>
 
 </div>
 </div>
@@ -562,8 +568,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a7cfec83d515d78f875e45c4743668be2" name="a7cfec83d515d78f875e45c4743668be2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7cfec83d515d78f875e45c4743668be2">&#9670;&#160;</a></span>add_rows()</h2>
+<a id="ab7c030732bb69ca245909a497521837a" name="ab7c030732bb69ca245909a497521837a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab7c030732bb69ca245909a497521837a">&#9670;&#160;</a></span>add_rows()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -614,7 +620,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>names</em></span><span class="paramdefsep"> = </span><span class="paramdefval">{}</span>&#160;)</td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>row_names</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -635,11 +641,12 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
     <tr><td class="paramname">mstart</td><td>: Integer array of length newrow + 1 containing the offsets in the mclind and dmatval arrays of the start of the elements for each row. </td></tr>
     <tr><td class="paramname">mclind</td><td>: Integer array of length newnz containing the (contiguous) column indices for the elements in each row. </td></tr>
     <tr><td class="paramname">dmatval</td><td>: Double array of length newnz containing the (contiguous) element values. </td></tr>
+    <tr><td class="paramname">row_names</td><td>: String vector of length newrow containing the names of the rows. </td></tr>
   </table>
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classNOOPSolver.html#a8e091428888e75fcba2e8feb5a127054">NOOPSolver</a>, <a class="el" href="classProblem.html#a8fb8c92a38162a74023e798e9e824c80">Problem</a>, <a class="el" href="classSolverCbc.html#af74f4f01aef4f5bf99971d91e2000a10">SolverCbc</a>, <a class="el" href="classSolverClp.html#a94232131fe77df5b58b539e6fd0b10a9">SolverClp</a>, and <a class="el" href="classSolverXpress.html#aa3387353e9219c23e22297b2943657dc">SolverXpress</a>.</p>
+<p>Implemented in <a class="el" href="classNOOPSolver.html#a9a46d030e8dc1293add1f5eb34203b73">NOOPSolver</a>, <a class="el" href="classProblem.html#a1588fefaa606b250a55c39a69dbcebdd">Problem</a>, <a class="el" href="classSolverCbc.html#abd6277ebc56de430f38c8851866ca1bd">SolverCbc</a>, <a class="el" href="classSolverClp.html#afb509e7e7ee57c0b2d24f38c7bfd4ce3">SolverClp</a>, and <a class="el" href="classSolverXpress.html#a91269b74f5f1c6c19234165f614a2898">SolverXpress</a>.</p>
 
 </div>
 </div>
