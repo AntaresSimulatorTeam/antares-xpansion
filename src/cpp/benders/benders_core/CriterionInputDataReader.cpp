@@ -163,8 +163,7 @@ public:
         {
             std::ostringstream err_msg;
             err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
-                    << "Error could not read 'area' field in outer loop input file"
-                    << "\n";
+                    << "Error could not read 'area' field in outer loop input file" << "\n";
             throw CouldNotReadAreaField(err_msg.str(), LOGLOCATION);
         }
         const auto criterion = pattern["criterion"];
@@ -173,8 +172,7 @@ public:
         {
             std::ostringstream err_msg;
             err_msg << PrefixMessage(LogUtils::LOGLEVEL::FATAL, "Outer Loop")
-                    << "Error could not read 'criterion' field in outer loop input file"
-                    << "\n";
+                    << "Error could not read 'criterion' field in outer loop input file" << "\n";
             throw CouldNotReadCriterionField(err_msg.str(), LOGLOCATION);
         }
 
@@ -193,8 +191,7 @@ public:
         if (!patterns.IsSequence())
         {
             std::ostringstream err_msg;
-            err_msg << "In outer loop input file 'patterns' should be an array."
-                    << "\n";
+            err_msg << "In outer loop input file 'patterns' should be an array." << "\n";
             throw CriterionInputPatternsShouldBeArray(PrefixMessage(LogUtils::LOGLEVEL::FATAL,
                                                                     "Outer Loop"),
                                                       err_msg.str(),
@@ -221,8 +218,7 @@ public:
         else
         {
             std::ostringstream err_msg;
-            err_msg << "outer loop input file must contains at least one pattern."
-                    << "\n";
+            err_msg << "outer loop input file must contains at least one pattern." << "\n";
             throw CriterionInputFileNoPatternFound(PrefixMessage(LogUtils::LOGLEVEL::FATAL,
                                                                  "Outer Loop"),
                                                    err_msg.str(),

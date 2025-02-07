@@ -114,8 +114,8 @@ void SensitivityLogger::log_summary(const SensitivityInputData& input_data,
                                     const std::vector<SinglePbData>& pbs_data)
 {
     _stream << std::endl
-            << "--- Sensitivity analysis summary "
-            << "(epsilon = " << input_data.epsilon << EUROS << ") ---" << std::endl
+            << "--- Sensitivity analysis summary " << "(epsilon = " << input_data.epsilon << EUROS
+            << ") ---" << std::endl
             << std::endl;
     std::vector<SinglePbData> projection_data = {};
     std::vector<SinglePbData> capex_data = {};

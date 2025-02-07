@@ -109,8 +109,8 @@ void AdditionalConstraintsReader::processEntryLine()
             {
                 (*logger_)(LogUtils::LOGLEVEL::FATAL)
                   << LOGLOCATION << "additional constraints file:  line " << _lineNb
-                  << " : Illegal sign value : " << value_l << "! supported values are: "
-                  << "greater_or_equal, less_or_equal and equal.\n";
+                  << " : Illegal sign value : " << value_l
+                  << "! supported values are: " << "greater_or_equal, less_or_equal and equal.\n";
                 std::exit(1);
             }
         }
