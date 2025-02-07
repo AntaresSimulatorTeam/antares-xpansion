@@ -31,6 +31,7 @@ v1.4.0 (12/2024)
   xwiki [#973](https://github.com/AntaresSimulatorTeam/antares-xpansion/pull/973)
 * Add script based on docker to generate centOS7 assets
 * Update project organisation. Mainly move headers file in dedicated include directory.
+* Update and apply clang-format
 
 ### New Contributors
 
