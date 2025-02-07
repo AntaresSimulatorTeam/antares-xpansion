@@ -12,7 +12,7 @@ namespace Benders {
 class StartUp {
  public:
   bool StudyAlreadyAchievedCriterion(const SimulationOptions& options,
-                                     const Writer& writer,
+                                     Output::OutputWriter* writer,
                                      const Logger& logger) const;
 };
 

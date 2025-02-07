@@ -231,11 +231,11 @@ class StandardLp {
 
 class MergeMPS {
  public:
-  MergeMPS(const MergeMPSOptions &options, Logger &logger, Writer writer);
+  MergeMPS(const MergeMPSOptions &options, Logger &logger, std::shared_ptr<Output::OutputWriter> writer);
   void launch();
   double slave_weight(int nslaves, std::string const &name) const;
 
   MergeMPSOptions _options;
   Logger _logger;
-  Writer _writer;
+  std::shared_ptr<Output::OutputWriter> _writer;
 };

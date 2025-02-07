@@ -19,13 +19,13 @@
 class BendersMpi : public BendersBase {
  public:
   ~BendersMpi() override = default;
-  BendersMpi(BendersBaseOptions const &options, Logger logger, Writer writer,
+  BendersMpi(BendersBaseOptions const &options, Logger logger, std::shared_ptr<Output::OutputWriter> writer,
              mpi::environment &env, mpi::communicator &world,
              std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
 
   void launch() override;
   std::string BendersName() const override { return "Benders mpi"; }
-  const unsigned int rank_0 = 0;
+  const int rank_0 = 0;
 
  protected:
   void free() override;
@@ -93,7 +93,6 @@ class BendersMpi : public BendersBase {
   virtual void ComputeSubproblemsContributionToCriteria(
       const SubProblemDataMap &subproblem_data_map);
   void SolveSubproblem(
-      SubProblemDataMap &subproblem_data_map,
       PlainData::SubProblemData &subproblem_data, const std::string &name,
       const std::shared_ptr<SubproblemWorker> &worker) override;
   void UpdateMaxCriterionArea();

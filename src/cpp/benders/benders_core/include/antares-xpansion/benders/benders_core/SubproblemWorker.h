@@ -22,7 +22,7 @@ class SubproblemWorker : public Worker {
                    SolverLogManager&solver_log_manager,
                    Logger logger, ProblemsFormat format);
   virtual ~SubproblemWorker() = default;
-  void get_solution(std::vector<double> &solution) const;
+  std::vector<double> get_solution() const;
 
  public:
   void fix_to(Point const &x0) const;

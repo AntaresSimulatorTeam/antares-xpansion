@@ -7,7 +7,7 @@ class BendersMpiOuterLoop : public BendersMpi {
  public:
   ~BendersMpiOuterLoop() override = default;
   BendersMpiOuterLoop(BendersBaseOptions const &options, Logger logger,
-                      Writer writer, mpi::environment &env,
+                      std::shared_ptr<Output::OutputWriter> writer, mpi::environment &env,
                       mpi::communicator &world,
                       std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
 

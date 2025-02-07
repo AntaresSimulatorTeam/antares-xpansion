@@ -1,19 +1,11 @@
 #include "antares-xpansion/benders/benders_by_batch/BendersByBatch.h"
 
-#include <algorithm>
-#include <functional>
 #include <mutex>
 #include <numeric>
 
 #include "antares-xpansion/benders/benders_by_batch/BatchCollection.h"
 #include "antares-xpansion/benders/benders_core/CustomVector.h"
 #include "antares-xpansion/benders/benders_by_batch/RandomBatchShuffler.h"
-
-BendersByBatch::BendersByBatch(
-    BendersBaseOptions const &options, Logger logger, Writer writer,
-    mpi::environment &env, mpi::communicator &world,
-    std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
-    : BendersMpi(options, logger, writer, env, world, mathLoggerDriver) {}
 
 void BendersByBatch::InitializeProblems() {
   MatchProblemToId();
@@ -44,7 +36,7 @@ void BendersByBatch::InitializeProblems() {
         AddSubproblem({problem_name, coupling_map_[problem_name]});
         AddSubproblemName(problem_name);
       }
-      problem_count++;
+      ++problem_count;
     }
   }
 
@@ -107,7 +99,7 @@ void BendersByBatch::MasterLoop() {
 
       _logger->display_message("\tSolving master...");
       get_master_value();
-      _logger->log_master_solving_duration(get_timer_master());
+      _logger->log_master_solving_duration(_data.timer_master);
 
       random_batch_permutation_ = RandomBatchShuffler(number_of_batch_)
                                       .GetCyclicBatchOrder(current_batch_id_);
@@ -125,13 +117,13 @@ void BendersByBatch::MasterLoop() {
     }
     BroadCast(_data.stop, rank_0);
     BroadCast(batch_counter_, rank_0);
-    SetSubproblemsCumulativeCpuTime(cumulative_subproblems_timer_per_iter_);
+    _data.subproblems_cumulative_cputime = cumulative_subproblems_timer_per_iter_;
     _logger->cumulative_number_of_sub_problem_solved(
         _data.cumulative_number_of_subproblem_solved +
         GetNumOfSubProblemsSolvedBeforeResume());
     _logger->LogSubproblemsSolvingCumulativeCpuTime(
-        GetSubproblemsCumulativeCpuTime());
-    _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
+        _data.subproblems_cumulative_cputime);
+    _logger->LogSubproblemsSolvingWalltime(_data.subproblems_walltime);
     _logger->PrintIterationSeparatorEnd();
     mathLoggerDriver_->Print(_data);
   }
@@ -207,7 +199,7 @@ void BendersByBatch::SolveBatches() {
     Reduce(batch_subproblems_costs_contribution_in_gap_per_proc,
            batch_subproblems_costs_contribution_in_gap, std::plus<double>(),
            rank_0);
-    Reduce(GetSubproblemsCpuTime(), cumulative_subproblems_timer_per_iter_,
+    Reduce(_data.subproblems_cputime, cumulative_subproblems_timer_per_iter_,
            std::plus<double>(), rank_0);
     if (Rank() == rank_0) {
       _data.number_of_subproblem_solved += batch_sub_problems.size();
@@ -239,13 +231,13 @@ void BendersByBatch::BuildCut(
   GetSubproblemCut(subproblem_data_map, batch_sub_problems,
                    batch_subproblems_costs_contribution_in_gap_per_proc);
 
-  SetSubproblemsCpuTime(subproblems_timer_per_proc.elapsed());
+  _data.subproblems_cputime = subproblems_timer_per_proc.elapsed();
   std::vector<SubProblemDataMap> gathered_subproblem_map;
   bool global_misprice = misprice_;
   AllReduce(misprice_, global_misprice, std::logical_and<bool>());
   misprice_ = global_misprice;
   Gather(subproblem_data_map, gathered_subproblem_map, rank_0);
-  SetSubproblemsWalltime(subproblems_timer_per_proc.elapsed());
+  _data.subproblems_walltime = subproblems_timer_per_proc.elapsed();
   // if (Options().EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP) {
   //   external_loop_criterion_current_batch =
   //       ComputeSubproblemsContributionToOuterLoopCriterion(subproblem_data_map);

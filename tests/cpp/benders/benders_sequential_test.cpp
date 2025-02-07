@@ -24,7 +24,7 @@ class BendersSequentialDouble : public BendersSequential {
   bool _setDataPostRelaxationCall = false;
 
   explicit BendersSequentialDouble(
-      BendersBaseOptions const &options, Logger &logger, Writer writer,
+      BendersBaseOptions const &options, Logger &logger, std::shared_ptr<Output::OutputWriter> writer,
       std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
       : BendersSequential(options, logger, writer, mathLoggerDriver) {};
 
@@ -94,7 +94,7 @@ class BendersSequentialTest : public ::testing::Test {
  public:
   Logger logger;
   std::shared_ptr<MathLoggerDriver> mathLoggerDriver;
-  Writer writer;
+  std::shared_ptr<Output::OutputWriter> writer;
   const std::filesystem::path data_test_dir = "data_test";
   const std::filesystem::path mps_dir = data_test_dir / "mps";
   std::filesystem::path tmpDir;

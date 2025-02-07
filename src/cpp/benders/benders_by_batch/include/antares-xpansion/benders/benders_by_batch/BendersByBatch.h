@@ -8,9 +8,7 @@ class BendersByBatch : public BendersMpi {
   std::vector<unsigned> random_batch_permutation_;
 
  public:
-  BendersByBatch(BendersBaseOptions const &options, Logger logger,
-                 Writer writer, mpi::environment &env, mpi::communicator &world,
-                 std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
+  using BendersMpi::BendersMpi;
   ~BendersByBatch() override = default;
   void Run() override;
   void BuildCut(const std::vector<std::string> &batch_sub_problems, double *sum,

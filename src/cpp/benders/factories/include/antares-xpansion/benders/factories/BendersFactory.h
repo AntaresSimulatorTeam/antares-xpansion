@@ -19,7 +19,7 @@ class BendersMainFactory {
       criterion_input_holder_;
   pBendersBase benders_ = nullptr;
   Logger logger_ = nullptr;
-  Writer writer_ = nullptr;
+  std::shared_ptr<Output::OutputWriter> writer_ = nullptr;
   std::shared_ptr<MathLoggerDriver> math_log_driver_;
   BENDERSMETHOD method_ = BENDERSMETHOD::BENDERS;
   std::string context_ = bendersmethod_to_string(BENDERSMETHOD::BENDERS);

@@ -7,9 +7,9 @@
 
 #include "antares-xpansion/benders/output/OutputWriter.h"
 
-Writer build_void_writer();
+std::shared_ptr<Output::OutputWriter> build_void_writer();
 
-Writer build_json_writer(const std::filesystem::path &json_file_name,
-                         const bool restart);
+std::shared_ptr<Output::OutputWriter> build_json_writer(const std::filesystem::path &json_file_name,
+                         bool restart);
 
 #endif  // ANTARESXPANSION_WRITERFACTORIES_H

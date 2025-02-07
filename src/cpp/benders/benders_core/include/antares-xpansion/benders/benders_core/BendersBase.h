@@ -32,7 +32,7 @@ auto selectPolicy(lambda f, bool shouldParallelize) {
 class BendersBase {
  public:
   virtual ~BendersBase() = default;
-  BendersBase(const BendersBaseOptions &options, Logger logger, Writer writer,
+  BendersBase(BendersBaseOptions options, Logger logger, std::shared_ptr<Output::OutputWriter> writer,
               std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
   virtual void launch() = 0;
   void set_solver_log_file(const std::filesystem::path &log_file);
@@ -101,7 +101,7 @@ class BendersBase {
   bool isExceptionRaised() const;
   void UpdateOverallCosts();
   Logger _logger;
-  Writer _writer;
+  std::shared_ptr<Output::OutputWriter> _writer;
   std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
   void setCriterionComputationInputs(
       const Benders::Criterion::CriterionInputData &criterion_input_data);
@@ -167,21 +167,13 @@ class BendersBase {
   void set_x_cut(const Point &x0);
   [[nodiscard]] Point get_x_out() const;
   void set_x_out(const Point &x0);
-  [[nodiscard]] double get_timer_master() const;
-  void set_timer_master(const double &timer_master);
-  [[nodiscard]] double GetSubproblemsWalltime() const;
-  void SetSubproblemsWalltime(const double &duration);
-  [[nodiscard]] double GetSubproblemsCpuTime() const;
-  void SetSubproblemsCpuTime(const double &duration);
-  [[nodiscard]] double GetSubproblemsCumulativeCpuTime() const;
-  void SetSubproblemsCumulativeCpuTime(const double &duration);
   [[nodiscard]] double GetSubproblemCost() const;
   void SetSubproblemCost(const double &subproblem_cost);
   bool IsResumeMode() const;
   std::filesystem::path LastIterationFile() const {
     return std::filesystem::path(_options.LAST_ITERATION_JSON_FILE);
   }
-  void UpdateMaxNumberIterationResumeMode(const unsigned nb_iteration_done);
+  void UpdateMaxNumberIterationResumeMode(int nb_iteration_done);
   void SaveCurrentIterationInOutputFile() const;
   void SaveSolutionInOutputFile() const;
   void PrintCurrentIterationCsv();
@@ -221,8 +213,7 @@ class BendersBase {
   SubproblemsMapPtr subproblem_map;
   SolverLogManager solver_log_manager_;
 
-  virtual void SolveSubproblem(SubProblemDataMap &subproblem_data_map,
-                               PlainData::SubProblemData &subproblem_data,
+  virtual void SolveSubproblem(PlainData::SubProblemData &subproblem_data,
                                const std::string &name,
                                const std::shared_ptr<SubproblemWorker> &worker);
 
@@ -261,7 +252,7 @@ class BendersBase {
   void FillWorkerMasterData(WorkerMasterData &workerMasterData);
   bool master_is_empty_ = true;
   BendersBaseOptions _options;
-  unsigned int _totalNbProblems = 0;
+  int _totalNbProblems = 0;
   std::filesystem::path solver_log_file_ = "";
   WorkerMasterPtr _master;
   VariableMap _problem_to_id;

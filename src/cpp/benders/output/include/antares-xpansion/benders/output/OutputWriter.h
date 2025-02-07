@@ -131,4 +131,3 @@ class OutputWriter {
   virtual void WriteProblemFormat(const std::string format) = 0;
 };
 }  // namespace Output
-using Writer = std::shared_ptr<Output::OutputWriter>;

@@ -65,7 +65,7 @@ void Worker::init(const std::string &solver_name, int log_level,
  */
 void Worker::solve(int &lp_status, const std::string &outputroot,
                    const std::string &output_master_mps_file_name,
-                   Writer writer) const {
+                   std::shared_ptr<Output::OutputWriter> writer) const {
   if (_is_master && _solver->get_n_integer_vars() > 0) {
     lp_status = _solver->solve_mip();
   } else {

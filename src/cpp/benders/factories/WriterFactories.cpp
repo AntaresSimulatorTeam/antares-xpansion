@@ -6,11 +6,11 @@
 #include "antares-xpansion/benders/output/VoidWriter.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 
-Writer build_void_writer() { return std::make_shared<Output::VoidWriter>(); }
+std::shared_ptr<Output::OutputWriter> build_void_writer() { return std::make_shared<Output::VoidWriter>(); }
 
-Writer build_json_writer(const std::filesystem::path &json_file_name,
+std::shared_ptr<Output::OutputWriter> build_json_writer(const std::filesystem::path &json_file_name,
                          const bool restart) {
-  Writer writer;
+  std::shared_ptr<Output::OutputWriter> writer;
   if (restart) {
     auto out_json_content = get_json_file_content(json_file_name);
     writer =
