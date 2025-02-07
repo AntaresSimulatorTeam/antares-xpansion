@@ -142,42 +142,43 @@ $(function(){initNavTree('JsonXpansionReader_8h_source.html',''); initResizable(
 <div class="contents">
 <div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;json/reader.h&gt;</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;filesystem&gt;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;filesystem&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;json/reader.h&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
 <div class="foldopen" id="foldopen00012" data-start="{" data-end="};">
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classJsonXpansionReader.html">   12</a></span><span class="keyword">class </span><a class="code hl_class" href="classJsonXpansionReader.html">JsonXpansionReader</a> {</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  <span class="keyword">typedef</span> std::map&lt;std::string, double&gt; Point;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="comment">// number of the last iteration</span></div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="keywordtype">int</span> _lastIterNb;</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="comment">// json file content</span></div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  Json::Value _input;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span> </div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  <a class="code hl_function" href="classJsonXpansionReader.html#a20a444a0537dddce96305ccc71034ddb">JsonXpansionReader</a>();</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="classJsonXpansionReader.html#a81df58f72d11ae9c67a1b24720ff5d15">   32</a></span>  <span class="keyword">virtual</span> <a class="code hl_function" href="classJsonXpansionReader.html#a81df58f72d11ae9c67a1b24720ff5d15">~JsonXpansionReader</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classJsonXpansionReader.html#af2fa7a08f86b76966f13ff5cdccb690b">read</a>(<span class="keyword">const</span> std::filesystem::path&amp; filename_p);</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>  <span class="keywordtype">int</span> <a class="code hl_function" href="classJsonXpansionReader.html#a1a1188ab2ccef59b556d14dab8c14dd8">getBestIteration</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  <span class="keywordtype">int</span> <a class="code hl_function" href="classJsonXpansionReader.html#adc10f5f3e7f4cee57bd3ea292dc42077">getLastIteration</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>  Point <a class="code hl_function" href="classJsonXpansionReader.html#afea70320d04f6e0e52443cb1f8a362f1">getSolutionPoint</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>};</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="classJsonXpansionReader.html">   12</a></span><span class="keyword">class </span><a class="code hl_class" href="classJsonXpansionReader.html">JsonXpansionReader</a></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>{</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keyword">typedef</span> std::map&lt;std::string, double&gt; Point;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span> </div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="comment">// number of the last iteration</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keywordtype">int</span> _lastIterNb;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="comment">// json file content</span></div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    Json::Value _input;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <a class="code hl_function" href="classJsonXpansionReader.html#a20a444a0537dddce96305ccc71034ddb">JsonXpansionReader</a>();</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="classJsonXpansionReader.html#a81df58f72d11ae9c67a1b24720ff5d15">   33</a></span>    <span class="keyword">virtual</span> <a class="code hl_function" href="classJsonXpansionReader.html#a81df58f72d11ae9c67a1b24720ff5d15">~JsonXpansionReader</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classJsonXpansionReader.html#af2fa7a08f86b76966f13ff5cdccb690b">read</a>(<span class="keyword">const</span> std::filesystem::path&amp; filename_p);</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="classJsonXpansionReader.html#a1a1188ab2ccef59b556d14dab8c14dd8">getBestIteration</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    <span class="keywordtype">int</span> <a class="code hl_function" href="classJsonXpansionReader.html#adc10f5f3e7f4cee57bd3ea292dc42077">getLastIteration</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    Point <a class="code hl_function" href="classJsonXpansionReader.html#afea70320d04f6e0e52443cb1f8a362f1">getSolutionPoint</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>};</div>
 </div>
-<div class="ttc" id="aclassJsonXpansionReader_html"><div class="ttname"><a href="classJsonXpansionReader.html">JsonXpansionReader</a></div><div class="ttdoc">Class that reads a json file describing an antares-xpansion solution.</div><div class="ttdef"><b>Definition</b> JsonXpansionReader.h:12</div></div>
-<div class="ttc" id="aclassJsonXpansionReader_html_a1a1188ab2ccef59b556d14dab8c14dd8"><div class="ttname"><a href="classJsonXpansionReader.html#a1a1188ab2ccef59b556d14dab8c14dd8">JsonXpansionReader::getBestIteration</a></div><div class="ttdeci">int getBestIteration() const</div><div class="ttdoc">returns the index of the best iteration indicated in the json output file</div><div class="ttdef"><b>Definition</b> JsonXpansionReader.cpp:27</div></div>
-<div class="ttc" id="aclassJsonXpansionReader_html_a20a444a0537dddce96305ccc71034ddb"><div class="ttname"><a href="classJsonXpansionReader.html#a20a444a0537dddce96305ccc71034ddb">JsonXpansionReader::JsonXpansionReader</a></div><div class="ttdeci">JsonXpansionReader()</div><div class="ttdoc">JsonXpansionReader default constructor.</div><div class="ttdef"><b>Definition</b> JsonXpansionReader.cpp:8</div></div>
+<div class="ttc" id="aclassJsonXpansionReader_html"><div class="ttname"><a href="classJsonXpansionReader.html">JsonXpansionReader</a></div><div class="ttdoc">Class that reads a json file describing an antares-xpansion solution.</div><div class="ttdef"><b>Definition</b> JsonXpansionReader.h:13</div></div>
+<div class="ttc" id="aclassJsonXpansionReader_html_a1a1188ab2ccef59b556d14dab8c14dd8"><div class="ttname"><a href="classJsonXpansionReader.html#a1a1188ab2ccef59b556d14dab8c14dd8">JsonXpansionReader::getBestIteration</a></div><div class="ttdeci">int getBestIteration() const</div><div class="ttdoc">returns the index of the best iteration indicated in the json output file</div><div class="ttdef"><b>Definition</b> JsonXpansionReader.cpp:32</div></div>
+<div class="ttc" id="aclassJsonXpansionReader_html_a20a444a0537dddce96305ccc71034ddb"><div class="ttname"><a href="classJsonXpansionReader.html#a20a444a0537dddce96305ccc71034ddb">JsonXpansionReader::JsonXpansionReader</a></div><div class="ttdeci">JsonXpansionReader()</div><div class="ttdoc">JsonXpansionReader default constructor.</div><div class="ttdef"><b>Definition</b> JsonXpansionReader.cpp:7</div></div>
 <div class="ttc" id="aclassJsonXpansionReader_html_a81df58f72d11ae9c67a1b24720ff5d15"><div class="ttname"><a href="classJsonXpansionReader.html#a81df58f72d11ae9c67a1b24720ff5d15">JsonXpansionReader::~JsonXpansionReader</a></div><div class="ttdeci">virtual ~JsonXpansionReader()=default</div><div class="ttdoc">JsonWriter default destructor.</div></div>
-<div class="ttc" id="aclassJsonXpansionReader_html_adc10f5f3e7f4cee57bd3ea292dc42077"><div class="ttname"><a href="classJsonXpansionReader.html#adc10f5f3e7f4cee57bd3ea292dc42077">JsonXpansionReader::getLastIteration</a></div><div class="ttdeci">int getLastIteration() const</div><div class="ttdoc">returns the index of the last iteration indicated in the json output file</div><div class="ttdef"><b>Definition</b> JsonXpansionReader.cpp:31</div></div>
-<div class="ttc" id="aclassJsonXpansionReader_html_af2fa7a08f86b76966f13ff5cdccb690b"><div class="ttname"><a href="classJsonXpansionReader.html#af2fa7a08f86b76966f13ff5cdccb690b">JsonXpansionReader::read</a></div><div class="ttdeci">void read(const std::filesystem::path &amp;filename_p)</div><div class="ttdoc">reads a json file describing the execution of an antares xpansion optimisation and populates the json...</div><div class="ttdef"><b>Definition</b> JsonXpansionReader.cpp:10</div></div>
-<div class="ttc" id="aclassJsonXpansionReader_html_afea70320d04f6e0e52443cb1f8a362f1"><div class="ttname"><a href="classJsonXpansionReader.html#afea70320d04f6e0e52443cb1f8a362f1">JsonXpansionReader::getSolutionPoint</a></div><div class="ttdeci">Point getSolutionPoint() const</div><div class="ttdoc">returns the solution to the xpansion problem indicated in the json output file</div><div class="ttdef"><b>Definition</b> JsonXpansionReader.cpp:33</div></div>
+<div class="ttc" id="aclassJsonXpansionReader_html_adc10f5f3e7f4cee57bd3ea292dc42077"><div class="ttname"><a href="classJsonXpansionReader.html#adc10f5f3e7f4cee57bd3ea292dc42077">JsonXpansionReader::getLastIteration</a></div><div class="ttdeci">int getLastIteration() const</div><div class="ttdoc">returns the index of the last iteration indicated in the json output file</div><div class="ttdef"><b>Definition</b> JsonXpansionReader.cpp:37</div></div>
+<div class="ttc" id="aclassJsonXpansionReader_html_af2fa7a08f86b76966f13ff5cdccb690b"><div class="ttname"><a href="classJsonXpansionReader.html#af2fa7a08f86b76966f13ff5cdccb690b">JsonXpansionReader::read</a></div><div class="ttdeci">void read(const std::filesystem::path &amp;filename_p)</div><div class="ttdoc">reads a json file describing the execution of an antares xpansion optimisation and populates the json...</div><div class="ttdef"><b>Definition</b> JsonXpansionReader.cpp:12</div></div>
+<div class="ttc" id="aclassJsonXpansionReader_html_afea70320d04f6e0e52443cb1f8a362f1"><div class="ttname"><a href="classJsonXpansionReader.html#afea70320d04f6e0e52443cb1f8a362f1">JsonXpansionReader::getSolutionPoint</a></div><div class="ttdeci">Point getSolutionPoint() const</div><div class="ttdoc">returns the solution to the xpansion problem indicated in the json output file</div><div class="ttdef"><b>Definition</b> JsonXpansionReader.cpp:42</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

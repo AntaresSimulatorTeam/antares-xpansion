@@ -196,9 +196,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ChangeRhs</b> (int id
 <tr class="memitem:a1e2034fda58d534b6340ad6a3630f1e1" id="r_a1e2034fda58d534b6340ad6a3630f1e1"><td class="memItemLeft" align="right" valign="top"><a id="a1e2034fda58d534b6340ad6a3630f1e1" name="a1e2034fda58d534b6340ad6a3630f1e1"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>GetRhs</b> (double *val, int id_row) const</td></tr>
 <tr class="separator:a1e2034fda58d534b6340ad6a3630f1e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fb3983b7e81996ceec7047d60098fc0" id="r_a2fb3983b7e81996ceec7047d60098fc0"><td class="memItemLeft" align="right" valign="top"><a id="a2fb3983b7e81996ceec7047d60098fc0" name="a2fb3983b7e81996ceec7047d60098fc0"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>AddRows</b> (std::vector&lt; char &gt; const &amp;qrtype_p, std::vector&lt; double &gt; const &amp;rhs_p, std::vector&lt; double &gt; const &amp;range_p, std::vector&lt; int &gt; const &amp;mstart_p, std::vector&lt; int &gt; const &amp;mclind_p, std::vector&lt; double &gt; const &amp;dmatval_p, const std::vector&lt; std::string &gt; &amp;row_names) const</td></tr>
-<tr class="separator:a2fb3983b7e81996ceec7047d60098fc0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a978018d72e3f96f52c67163918935cdc" id="r_a978018d72e3f96f52c67163918935cdc"><td class="memItemLeft" align="right" valign="top"><a id="a978018d72e3f96f52c67163918935cdc" name="a978018d72e3f96f52c67163918935cdc"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AddRows</b> (const std::vector&lt; char &gt; &amp;qrtype_p, const std::vector&lt; double &gt; &amp;rhs_p, const std::vector&lt; double &gt; &amp;range_p, const std::vector&lt; int &gt; &amp;mstart_p, const std::vector&lt; int &gt; &amp;mclind_p, const std::vector&lt; double &gt; &amp;dmatval_p, const std::vector&lt; std::string &gt; &amp;row_names) const</td></tr>
+<tr class="separator:a978018d72e3f96f52c67163918935cdc"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd83ae773438dcd743a263ba27ee8e2f" id="r_acd83ae773438dcd743a263ba27ee8e2f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acd83ae773438dcd743a263ba27ee8e2f">Getnrows</a> () const</td></tr>
 <tr class="memdesc:acd83ae773438dcd743a263ba27ee8e2f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of rows (constraints)  <br /></td></tr>
 <tr class="separator:acd83ae773438dcd743a263ba27ee8e2f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -215,7 +215,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_pat
 <tr class="separator:a1a9104c18381ba2210d0220dc18310a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdb60808816e1a3409a63fe0c2dd98b5" id="r_abdb60808816e1a3409a63fe0c2dd98b5"><td class="memItemLeft" align="right" valign="top">Int2Str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abdb60808816e1a3409a63fe0c2dd98b5">_id_to_name</a></td></tr>
 <tr class="separator:abdb60808816e1a3409a63fe0c2dd98b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08567d41cc2e77b6c122543d64e904e4" id="r_a08567d41cc2e77b6c122543d64e904e4"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a08567d41cc2e77b6c122543d64e904e4">_solver</a></td></tr>
+<tr class="memitem:a08567d41cc2e77b6c122543d64e904e4" id="r_a08567d41cc2e77b6c122543d64e904e4"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a08567d41cc2e77b6c122543d64e904e4">_solver</a> = nullptr</td></tr>
 <tr class="separator:a08567d41cc2e77b6c122543d64e904e4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a329a38f8119d9cf8c6c36166d563be53" id="r_a329a38f8119d9cf8c6c36166d563be53"><td class="memItemLeft" align="right" valign="top"><a id="a329a38f8119d9cf8c6c36166d563be53" name="a329a38f8119d9cf8c6c36166d563be53"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>_is_master</b> = false</td></tr>
@@ -420,13 +420,11 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="classSolverAbstract.html">SolverAbstract</a>&gt; Worker::_solver</td>
+          <td class="memname">std::shared_ptr&lt;<a class="el" href="classSolverAbstract.html">SolverAbstract</a>&gt; Worker::_solver = nullptr</td>
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=</div>
-<div class="line">      <span class="keyword">nullptr</span></div>
-</div><!-- fragment --><p><a class="el" href="classProblem.html" title="Decorator to the SolverAbstract class.">Problem</a> stocked in the instance <a class="el" href="classWorker.html" title="Mother-class Worker.">Worker</a> </p>
+<p><a class="el" href="classProblem.html" title="Decorator to the SolverAbstract class.">Problem</a> stocked in the instance <a class="el" href="classWorker.html" title="Mother-class Worker.">Worker</a> </p>
 
 </div>
 </div>

@@ -161,12 +161,12 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~StudyUpdater</b> 
 <tr class="memitem:a9db49727f1ceb8bb7c871dcdb99a099f" id="r_a9db49727f1ceb8bb7c871dcdb99a099f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9db49727f1ceb8bb7c871dcdb99a099f">updateLinkdataFile</a> (const <a class="el" href="classActiveLink.html">ActiveLink</a> &amp;link_p, const std::map&lt; std::string, double &gt; &amp;investments_p) const</td></tr>
 <tr class="memdesc:a9db49727f1ceb8bb7c871dcdb99a099f"><td class="mdescLeft">&#160;</td><td class="mdescRight">updates the linkdata file for a given link according to the investments of its candidates  <br /></td></tr>
 <tr class="separator:a9db49727f1ceb8bb7c871dcdb99a099f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af95e41a8e247eee0f5d7a9d43311d49f" id="r_af95e41a8e247eee0f5d7a9d43311d49f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af95e41a8e247eee0f5d7a9d43311d49f">update</a> (std::vector&lt; <a class="el" href="classActiveLink.html">ActiveLink</a> &gt; const &amp;links_p, const std::map&lt; std::string, double &gt; &amp;investments_p)</td></tr>
-<tr class="memdesc:af95e41a8e247eee0f5d7a9d43311d49f"><td class="mdescLeft">&#160;</td><td class="mdescRight">updates the linkdata files for multiple candidates from a solution Point  <br /></td></tr>
-<tr class="separator:af95e41a8e247eee0f5d7a9d43311d49f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad503724ff0a29b75fed9f602fdde3c09" id="r_ad503724ff0a29b75fed9f602fdde3c09"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad503724ff0a29b75fed9f602fdde3c09">update</a> (std::vector&lt; <a class="el" href="classActiveLink.html">ActiveLink</a> &gt; const &amp;links_p, const std::filesystem::path &amp;jsonPath_p)</td></tr>
-<tr class="memdesc:ad503724ff0a29b75fed9f602fdde3c09"><td class="mdescLeft">&#160;</td><td class="mdescRight">updates the linkdata files for multiple candidates from a json file  <br /></td></tr>
-<tr class="separator:ad503724ff0a29b75fed9f602fdde3c09"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addee402bd81476fc801f1e4dc12d7a72" id="r_addee402bd81476fc801f1e4dc12d7a72"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#addee402bd81476fc801f1e4dc12d7a72">update</a> (const std::vector&lt; <a class="el" href="classActiveLink.html">ActiveLink</a> &gt; &amp;links_p, const std::map&lt; std::string, double &gt; &amp;investments_p)</td></tr>
+<tr class="memdesc:addee402bd81476fc801f1e4dc12d7a72"><td class="mdescLeft">&#160;</td><td class="mdescRight">updates the linkdata files for multiple candidates from a solution Point  <br /></td></tr>
+<tr class="separator:addee402bd81476fc801f1e4dc12d7a72"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad276097a955839dfc8ab779c9fb58dae" id="r_ad276097a955839dfc8ab779c9fb58dae"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad276097a955839dfc8ab779c9fb58dae">update</a> (const std::vector&lt; <a class="el" href="classActiveLink.html">ActiveLink</a> &gt; &amp;links_p, const std::filesystem::path &amp;jsonPath_p)</td></tr>
+<tr class="memdesc:ad276097a955839dfc8ab779c9fb58dae"><td class="mdescLeft">&#160;</td><td class="mdescRight">updates the linkdata files for multiple candidates from a json file  <br /></td></tr>
+<tr class="separator:ad276097a955839dfc8ab779c9fb58dae"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Class that updates an antares study after an antares-xpansion execution. </p>
@@ -214,8 +214,8 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~StudyUpdater</b> 
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="ad503724ff0a29b75fed9f602fdde3c09" name="ad503724ff0a29b75fed9f602fdde3c09"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad503724ff0a29b75fed9f602fdde3c09">&#9670;&#160;</a></span>update() <span class="overload">[1/2]</span></h2>
+<a id="ad276097a955839dfc8ab779c9fb58dae" name="ad276097a955839dfc8ab779c9fb58dae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad276097a955839dfc8ab779c9fb58dae">&#9670;&#160;</a></span>update() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -223,7 +223,7 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~StudyUpdater</b> 
         <tr>
           <td class="memname">int StudyUpdater::update </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="classActiveLink.html">ActiveLink</a> &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>links_p</em></span>, </td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classActiveLink.html">ActiveLink</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>links_p</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -245,8 +245,8 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~StudyUpdater</b> 
 
 </div>
 </div>
-<a id="af95e41a8e247eee0f5d7a9d43311d49f" name="af95e41a8e247eee0f5d7a9d43311d49f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af95e41a8e247eee0f5d7a9d43311d49f">&#9670;&#160;</a></span>update() <span class="overload">[2/2]</span></h2>
+<a id="addee402bd81476fc801f1e4dc12d7a72" name="addee402bd81476fc801f1e4dc12d7a72"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#addee402bd81476fc801f1e4dc12d7a72">&#9670;&#160;</a></span>update() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -257,7 +257,7 @@ virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~StudyUpdater</b> 
         <tr>
           <td class="memname">int StudyUpdater::update </td>
           <td>(</td>
-          <td class="paramtype">std::vector&lt; <a class="el" href="classActiveLink.html">ActiveLink</a> &gt; const &amp;</td>          <td class="paramname"><span class="paramname"><em>links_p</em></span>, </td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="classActiveLink.html">ActiveLink</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>links_p</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>

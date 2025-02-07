@@ -33,7 +33,7 @@ var searchData=
   ['bendersoptionsfileerror_30',['BendersOptionsFileError',['../classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersOptionsFileError.html',1,'antares_xpansion::benders_driver::BendersDriver']]],
   ['bendersoutputpatherror_31',['BendersOutputPathError',['../classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersOutputPathError.html',1,'antares_xpansion::benders_driver::BendersDriver']]],
   ['bendersrelevantiterationsdata_32',['BendersRelevantIterationsData',['../structBendersRelevantIterationsData.html',1,'']]],
-  ['benderssequential_33',['BendersSequential',['../classBendersSequential.html',1,'BendersSequential'],['../classBendersSequential.html#aa8075a605d682ce80524909d79481616',1,'BendersSequential::BendersSequential()']]],
+  ['benderssequential_33',['BendersSequential',['../classBendersSequential.html',1,'BendersSequential'],['../classBendersSequential.html#aa2338195752fecc65c1e5f3b9f6d36c1',1,'BendersSequential::BendersSequential()']]],
   ['benderssequentialdouble_34',['BendersSequentialDouble',['../classBendersSequentialDouble.html',1,'']]],
   ['benderssequentialtest_35',['BendersSequentialTest',['../classBendersSequentialTest.html',1,'']]],
   ['benderssequentialtestbysolver_36',['BendersSequentialTestBySolver',['../classBendersSequentialTestBySolver.html',1,'']]],

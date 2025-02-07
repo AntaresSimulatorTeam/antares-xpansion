@@ -160,15 +160,15 @@ Inheritance diagram for SubproblemWorker:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:afb1ac6c2d16fbf1bcc8337e3459d8a78" id="r_afb1ac6c2d16fbf1bcc8337e3459d8a78"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb1ac6c2d16fbf1bcc8337e3459d8a78">SubproblemWorker</a> (VariableMap const &amp;variable_map, const std::filesystem::path &amp;path_to_mps, double const &amp;slave_weight, const std::string &amp;solver_name, const int log_level, <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;solver_log_manager, Logger logger, ProblemsFormat format)</td></tr>
-<tr class="memdesc:afb1ac6c2d16fbf1bcc8337e3459d8a78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor of a <a class="el" href="classWorker.html" title="Mother-class Worker.">Worker</a> Slave.  <br /></td></tr>
-<tr class="separator:afb1ac6c2d16fbf1bcc8337e3459d8a78"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93b2d068ae048662aab3b9b8375ada34" id="r_a93b2d068ae048662aab3b9b8375ada34"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a93b2d068ae048662aab3b9b8375ada34">SubproblemWorker</a> (const VariableMap &amp;variable_map, const std::filesystem::path &amp;path_to_mps, const double &amp;slave_weight, const std::string &amp;solver_name, const int log_level, <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;solver_log_manager, Logger logger, ProblemsFormat format)</td></tr>
+<tr class="memdesc:a93b2d068ae048662aab3b9b8375ada34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor of a <a class="el" href="classWorker.html" title="Mother-class Worker.">Worker</a> Slave.  <br /></td></tr>
+<tr class="separator:a93b2d068ae048662aab3b9b8375ada34"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af1c505070e046e61bf4c46fa015907fa" id="r_af1c505070e046e61bf4c46fa015907fa"><td class="memItemLeft" align="right" valign="top">std::vector&lt; double &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1c505070e046e61bf4c46fa015907fa">get_solution</a> () const</td></tr>
 <tr class="memdesc:af1c505070e046e61bf4c46fa015907fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the solutions values of a problem.  <br /></td></tr>
 <tr class="separator:af1c505070e046e61bf4c46fa015907fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52c6826b4e5d1d21709969acea35ffd6" id="r_a52c6826b4e5d1d21709969acea35ffd6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a52c6826b4e5d1d21709969acea35ffd6">fix_to</a> (Point const &amp;x0) const</td></tr>
-<tr class="memdesc:a52c6826b4e5d1d21709969acea35ffd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fix a set of variables to constant in a problem.  <br /></td></tr>
-<tr class="separator:a52c6826b4e5d1d21709969acea35ffd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9032b50b5b2e7ed630cbb106f487a1ec" id="r_a9032b50b5b2e7ed630cbb106f487a1ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9032b50b5b2e7ed630cbb106f487a1ec">fix_to</a> (const Point &amp;x0) const</td></tr>
+<tr class="memdesc:a9032b50b5b2e7ed630cbb106f487a1ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fix a set of variables to constant in a problem.  <br /></td></tr>
+<tr class="separator:a9032b50b5b2e7ed630cbb106f487a1ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a685f6fdf771213aadaf6cd61b19ea311" id="r_a685f6fdf771213aadaf6cd61b19ea311"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a685f6fdf771213aadaf6cd61b19ea311">get_subgradient</a> (Point &amp;s) const</td></tr>
 <tr class="memdesc:a685f6fdf771213aadaf6cd61b19ea311"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get LP solution value of a problem.  <br /></td></tr>
 <tr class="separator:a685f6fdf771213aadaf6cd61b19ea311"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -210,9 +210,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ChangeRhs</b> (int id
 <tr class="memitem:a1e2034fda58d534b6340ad6a3630f1e1 inherit pub_methods_classWorker" id="r_a1e2034fda58d534b6340ad6a3630f1e1"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>GetRhs</b> (double *val, int id_row) const</td></tr>
 <tr class="separator:a1e2034fda58d534b6340ad6a3630f1e1 inherit pub_methods_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fb3983b7e81996ceec7047d60098fc0 inherit pub_methods_classWorker" id="r_a2fb3983b7e81996ceec7047d60098fc0"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>AddRows</b> (std::vector&lt; char &gt; const &amp;qrtype_p, std::vector&lt; double &gt; const &amp;rhs_p, std::vector&lt; double &gt; const &amp;range_p, std::vector&lt; int &gt; const &amp;mstart_p, std::vector&lt; int &gt; const &amp;mclind_p, std::vector&lt; double &gt; const &amp;dmatval_p, const std::vector&lt; std::string &gt; &amp;row_names) const</td></tr>
-<tr class="separator:a2fb3983b7e81996ceec7047d60098fc0 inherit pub_methods_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a978018d72e3f96f52c67163918935cdc inherit pub_methods_classWorker" id="r_a978018d72e3f96f52c67163918935cdc"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AddRows</b> (const std::vector&lt; char &gt; &amp;qrtype_p, const std::vector&lt; double &gt; &amp;rhs_p, const std::vector&lt; double &gt; &amp;range_p, const std::vector&lt; int &gt; &amp;mstart_p, const std::vector&lt; int &gt; &amp;mclind_p, const std::vector&lt; double &gt; &amp;dmatval_p, const std::vector&lt; std::string &gt; &amp;row_names) const</td></tr>
+<tr class="separator:a978018d72e3f96f52c67163918935cdc inherit pub_methods_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd83ae773438dcd743a263ba27ee8e2f inherit pub_methods_classWorker" id="r_acd83ae773438dcd743a263ba27ee8e2f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorker.html#acd83ae773438dcd743a263ba27ee8e2f">Getnrows</a> () const</td></tr>
 <tr class="memdesc:acd83ae773438dcd743a263ba27ee8e2f inherit pub_methods_classWorker"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of rows (constraints)  <br /></td></tr>
 <tr class="separator:acd83ae773438dcd743a263ba27ee8e2f inherit pub_methods_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -230,7 +230,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_pat
 <tr class="separator:a1a9104c18381ba2210d0220dc18310a3 inherit pub_attribs_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdb60808816e1a3409a63fe0c2dd98b5 inherit pub_attribs_classWorker" id="r_abdb60808816e1a3409a63fe0c2dd98b5"><td class="memItemLeft" align="right" valign="top">Int2Str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorker.html#abdb60808816e1a3409a63fe0c2dd98b5">_id_to_name</a></td></tr>
 <tr class="separator:abdb60808816e1a3409a63fe0c2dd98b5 inherit pub_attribs_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08567d41cc2e77b6c122543d64e904e4 inherit pub_attribs_classWorker" id="r_a08567d41cc2e77b6c122543d64e904e4"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorker.html#a08567d41cc2e77b6c122543d64e904e4">_solver</a></td></tr>
+<tr class="memitem:a08567d41cc2e77b6c122543d64e904e4 inherit pub_attribs_classWorker" id="r_a08567d41cc2e77b6c122543d64e904e4"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorker.html#a08567d41cc2e77b6c122543d64e904e4">_solver</a> = nullptr</td></tr>
 <tr class="separator:a08567d41cc2e77b6c122543d64e904e4 inherit pub_attribs_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a329a38f8119d9cf8c6c36166d563be53 inherit pub_attribs_classWorker" id="r_a329a38f8119d9cf8c6c36166d563be53"><td class="memItemLeft" align="right" valign="top">
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>_is_master</b> = false</td></tr>
@@ -243,8 +243,8 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
 <div class="textblock"><p>Class daughter of <a class="el" href="classWorker.html" title="Mother-class Worker.">Worker</a> Class, build and manage a subproblem. </p>
 <p>Class daughter of <a class="el" href="classWorker.html" title="Mother-class Worker.">Worker</a> Class, build and manage a master problem. </p>
 </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="afb1ac6c2d16fbf1bcc8337e3459d8a78" name="afb1ac6c2d16fbf1bcc8337e3459d8a78"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afb1ac6c2d16fbf1bcc8337e3459d8a78">&#9670;&#160;</a></span>SubproblemWorker()</h2>
+<a id="a93b2d068ae048662aab3b9b8375ada34" name="a93b2d068ae048662aab3b9b8375ada34"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93b2d068ae048662aab3b9b8375ada34">&#9670;&#160;</a></span>SubproblemWorker()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -252,7 +252,7 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
         <tr>
           <td class="memname">SubproblemWorker::SubproblemWorker </td>
           <td>(</td>
-          <td class="paramtype">VariableMap const &amp;</td>          <td class="paramname"><span class="paramname"><em>variable_map</em></span>, </td>
+          <td class="paramtype">const VariableMap &amp;</td>          <td class="paramname"><span class="paramname"><em>variable_map</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -262,7 +262,7 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double const &amp;</td>          <td class="paramname"><span class="paramname"><em>slave_weight</em></span>, </td>
+          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>slave_weight</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -304,8 +304,8 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a52c6826b4e5d1d21709969acea35ffd6" name="a52c6826b4e5d1d21709969acea35ffd6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a52c6826b4e5d1d21709969acea35ffd6">&#9670;&#160;</a></span>fix_to()</h2>
+<a id="a9032b50b5b2e7ed630cbb106f487a1ec" name="a9032b50b5b2e7ed630cbb106f487a1ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9032b50b5b2e7ed630cbb106f487a1ec">&#9670;&#160;</a></span>fix_to()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -313,7 +313,7 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
         <tr>
           <td class="memname">void SubproblemWorker::fix_to </td>
           <td>(</td>
-          <td class="paramtype">Point const &amp;</td>          <td class="paramname"><span class="paramname"><em>x0</em></span></td><td>)</td>
+          <td class="paramtype">const Point &amp;</td>          <td class="paramname"><span class="paramname"><em>x0</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>

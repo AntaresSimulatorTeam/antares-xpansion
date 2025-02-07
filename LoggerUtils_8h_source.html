@@ -144,10 +144,10 @@ $(function(){initNavTree('LoggerUtils_8h_source.html',''); initResizable(true); 
 <div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;antares-xpansion/xpansion_interfaces/Clock.h&quot;</span></div>
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;antares-xpansion/xpansion_interfaces/LogUtils.h&quot;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">inline</span> std::string PrefixMessage(<span class="keyword">const</span> LogUtils::LOGLEVEL &amp;log_level,</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>                                 <span class="keyword">const</span> std::string &amp;context) {</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>  <span class="keywordflow">return</span> <span class="stringliteral">&quot;[&quot;</span> + context + <span class="stringliteral">&quot;][&quot;</span> + LogUtils::LogLevelToStr(log_level) + <span class="stringliteral">&quot; &quot;</span> +</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>         clock_utils::timeToStr(std::time(<span class="keyword">nullptr</span>)) + <span class="stringliteral">&quot;] &quot;</span>;</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="keyword">inline</span> std::string PrefixMessage(<span class="keyword">const</span> LogUtils::LOGLEVEL&amp; log_level, <span class="keyword">const</span> std::string&amp; context)</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>{</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    <span class="keywordflow">return</span> <span class="stringliteral">&quot;[&quot;</span> + context + <span class="stringliteral">&quot;][&quot;</span> + LogUtils::LogLevelToStr(log_level) + <span class="stringliteral">&quot; &quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>           + clock_utils::timeToStr(std::time(<span class="keyword">nullptr</span>)) + <span class="stringliteral">&quot;] &quot;</span>;</div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>}</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->

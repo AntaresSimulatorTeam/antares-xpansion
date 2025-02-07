@@ -148,27 +148,29 @@ $(function(){initNavTree('ZipProblemProviderAdapter_8h_source.html',''); initRes
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;antares-xpansion/lpnamer/problem_modifier/IProblemProviderPort.h&quot;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h&quot;</span></div>
-<div class="foldopen" id="foldopen00009" data-start="{" data-end="};">
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classZipProblemProviderAdapter.html">    9</a></span><span class="keyword">class </span><a class="code hl_class" href="classZipProblemProviderAdapter.html">ZipProblemProviderAdapter</a> : <span class="keyword">public</span> <a class="code hl_class" href="classIProblemProviderPort.html">IProblemProviderPort</a> {</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  <span class="keyword">explicit</span> <a class="code hl_class" href="classZipProblemProviderAdapter.html">ZipProblemProviderAdapter</a>(std::filesystem::path lp_dir,</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>                                     std::string problem_name,</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>                                     std::shared_ptr&lt;ArchiveReader&gt; ptr);</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  <span class="keywordtype">void</span> reader_extract_file(<span class="keyword">const</span> std::string&amp; problem_name,</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                           <a class="code hl_class" href="classArchiveReader.html">ArchiveReader</a>&amp; reader,</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>                           <span class="keyword">const</span> std::filesystem::path&amp; lpDir) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keyword">const</span> std::filesystem::path lp_dir_;</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="keyword">const</span> std::string problem_name_;</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  [[nodiscard]] std::shared_ptr&lt;Problem&gt; provide_problem(</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>      <span class="keyword">const</span> std::string&amp; solver_name,</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>      <a class="code hl_class" href="classSolverLogManager.html">SolverLogManager</a>&amp; solver_log_manager) <span class="keyword">const override</span>;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  std::shared_ptr&lt;ArchiveReader&gt; archive_reader_;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>};</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="foldopen" id="foldopen00010" data-start="{" data-end="};">
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno"><a class="line" href="classZipProblemProviderAdapter.html">   10</a></span><span class="keyword">class </span><a class="code hl_class" href="classZipProblemProviderAdapter.html">ZipProblemProviderAdapter</a>: <span class="keyword">public</span> <a class="code hl_class" href="classIProblemProviderPort.html">IProblemProviderPort</a></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>{</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keyword">explicit</span> <a class="code hl_class" href="classZipProblemProviderAdapter.html">ZipProblemProviderAdapter</a>(std::filesystem::path lp_dir,</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>                                       std::string problem_name,</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                                       std::shared_ptr&lt;ArchiveReader&gt; ptr);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keywordtype">void</span> reader_extract_file(<span class="keyword">const</span> std::string&amp; problem_name,</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>                             <a class="code hl_class" href="classArchiveReader.html">ArchiveReader</a>&amp; reader,</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>                             <span class="keyword">const</span> std::filesystem::path&amp; lpDir) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <span class="keyword">const</span> std::filesystem::path lp_dir_;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    <span class="keyword">const</span> std::string problem_name_;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    [[nodiscard]] std::shared_ptr&lt;Problem&gt; provide_problem(</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>      <span class="keyword">const</span> std::string&amp; solver_name,</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>      <a class="code hl_class" href="classSolverLogManager.html">SolverLogManager</a>&amp; solver_log_manager) <span class="keyword">const override</span>;</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>    std::shared_ptr&lt;ArchiveReader&gt; archive_reader_;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>};</div>
 </div>
-<div class="ttc" id="aclassArchiveReader_html"><div class="ttname"><a href="classArchiveReader.html">ArchiveReader</a></div><div class="ttdef"><b>Definition</b> ArchiveReader.h:9</div></div>
-<div class="ttc" id="aclassIProblemProviderPort_html"><div class="ttname"><a href="classIProblemProviderPort.html">IProblemProviderPort</a></div><div class="ttdef"><b>Definition</b> IProblemProviderPort.h:9</div></div>
-<div class="ttc" id="aclassSolverLogManager_html"><div class="ttname"><a href="classSolverLogManager.html">SolverLogManager</a></div><div class="ttdef"><b>Definition</b> SolverAbstract.h:16</div></div>
-<div class="ttc" id="aclassZipProblemProviderAdapter_html"><div class="ttname"><a href="classZipProblemProviderAdapter.html">ZipProblemProviderAdapter</a></div><div class="ttdef"><b>Definition</b> ZipProblemProviderAdapter.h:9</div></div>
+<div class="ttc" id="aclassArchiveReader_html"><div class="ttname"><a href="classArchiveReader.html">ArchiveReader</a></div><div class="ttdef"><b>Definition</b> ArchiveReader.h:11</div></div>
+<div class="ttc" id="aclassIProblemProviderPort_html"><div class="ttname"><a href="classIProblemProviderPort.html">IProblemProviderPort</a></div><div class="ttdef"><b>Definition</b> IProblemProviderPort.h:10</div></div>
+<div class="ttc" id="aclassSolverLogManager_html"><div class="ttname"><a href="classSolverLogManager.html">SolverLogManager</a></div><div class="ttdef"><b>Definition</b> SolverAbstract.h:17</div></div>
+<div class="ttc" id="aclassZipProblemProviderAdapter_html"><div class="ttname"><a href="classZipProblemProviderAdapter.html">ZipProblemProviderAdapter</a></div><div class="ttdef"><b>Definition</b> ZipProblemProviderAdapter.h:11</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

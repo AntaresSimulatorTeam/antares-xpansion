@@ -155,9 +155,9 @@ Inheritance diagram for WorkerMaster:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a2317e43fb5cfeb645d1154e62450fc8b" id="r_a2317e43fb5cfeb645d1154e62450fc8b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2317e43fb5cfeb645d1154e62450fc8b">WorkerMaster</a> (VariableMap const &amp;variable_map, const std::filesystem::path &amp;path_to_mps, const std::string &amp;solver_name, int log_level, int subproblems_count, <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;solver_log_manager, bool mps_has_alpha, Logger logger, ProblemsFormat format)</td></tr>
-<tr class="memdesc:a2317e43fb5cfeb645d1154e62450fc8b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor of a Master <a class="el" href="classProblem.html" title="Decorator to the SolverAbstract class.">Problem</a>.  <br /></td></tr>
-<tr class="separator:a2317e43fb5cfeb645d1154e62450fc8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a726a561c540d6c9f90ff984f169eab" id="r_a9a726a561c540d6c9f90ff984f169eab"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9a726a561c540d6c9f90ff984f169eab">WorkerMaster</a> (const VariableMap &amp;variable_map, const std::filesystem::path &amp;path_to_mps, const std::string &amp;solver_name, int log_level, int subproblems_count, <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;solver_log_manager, bool mps_has_alpha, Logger logger, ProblemsFormat format)</td></tr>
+<tr class="memdesc:a9a726a561c540d6c9f90ff984f169eab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Constructor of a Master <a class="el" href="classProblem.html" title="Decorator to the SolverAbstract class.">Problem</a>.  <br /></td></tr>
+<tr class="separator:a9a726a561c540d6c9f90ff984f169eab"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:accfd98c6107377016c56d00a242c5ec5" id="r_accfd98c6107377016c56d00a242c5ec5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#accfd98c6107377016c56d00a242c5ec5">get</a> (Point &amp;x0, double &amp;overall_subpb_cost_under_approx, DblVector &amp;single_subpb_costs_under_approx)</td></tr>
 <tr class="memdesc:accfd98c6107377016c56d00a242c5ec5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return optimal variables of a problem.  <br /></td></tr>
 <tr class="separator:accfd98c6107377016c56d00a242c5ec5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -168,21 +168,21 @@ Public Member Functions</h2></td></tr>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>get_number_constraint</b> () const</td></tr>
 <tr class="memdesc:aba45491d5e583afcf336e9516d373827"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return number of constraint in a problem. <br /></td></tr>
 <tr class="separator:aba45491d5e583afcf336e9516d373827"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1278325052f29d3a4b145052a23761ad" id="r_a1278325052f29d3a4b145052a23761ad"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1278325052f29d3a4b145052a23761ad">add_cut</a> (Point const &amp;s, Point const &amp;x0, double const &amp;rhs) const</td></tr>
-<tr class="memdesc:a1278325052f29d3a4b145052a23761ad"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add benders cut to a problem.  <br /></td></tr>
-<tr class="separator:a1278325052f29d3a4b145052a23761ad"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8762f8cb421031c5333c2e024044238c" id="r_a8762f8cb421031c5333c2e024044238c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8762f8cb421031c5333c2e024044238c">add_cut_by_iter</a> (int i, Point const &amp;s, double const &amp;sx0, double const &amp;rhs) const</td></tr>
-<tr class="memdesc:a8762f8cb421031c5333c2e024044238c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add benders cut to a problem.  <br /></td></tr>
-<tr class="separator:a8762f8cb421031c5333c2e024044238c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad82d7509516e2ddb7ed5d43e9b246f3e" id="r_ad82d7509516e2ddb7ed5d43e9b246f3e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad82d7509516e2ddb7ed5d43e9b246f3e">add_dynamic_cut</a> (Point const &amp;s, double const &amp;sx0, double const &amp;rhs) const</td></tr>
-<tr class="memdesc:ad82d7509516e2ddb7ed5d43e9b246f3e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add benders cut to a problem.  <br /></td></tr>
-<tr class="separator:ad82d7509516e2ddb7ed5d43e9b246f3e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acc3f28ce6ae84fc72955e36bb1679fbf" id="r_acc3f28ce6ae84fc72955e36bb1679fbf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acc3f28ce6ae84fc72955e36bb1679fbf">addSubproblemCut</a> (int i, Point const &amp;s, Point const &amp;x0, double const &amp;rhs) const</td></tr>
-<tr class="memdesc:acc3f28ce6ae84fc72955e36bb1679fbf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add one benders cut to a problem.  <br /></td></tr>
-<tr class="separator:acc3f28ce6ae84fc72955e36bb1679fbf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab10c0abe3009ddba6ca4dd75b308230f" id="r_ab10c0abe3009ddba6ca4dd75b308230f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab10c0abe3009ddba6ca4dd75b308230f">fix_alpha</a> (double const &amp;bestUB) const</td></tr>
-<tr class="memdesc:ab10c0abe3009ddba6ca4dd75b308230f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fix an upper bound and the variable overall_subpb_cost_under_approx of a problem.  <br /></td></tr>
-<tr class="separator:ab10c0abe3009ddba6ca4dd75b308230f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4c531a222024ba4631e4e0c5f5e24dcb" id="r_a4c531a222024ba4631e4e0c5f5e24dcb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c531a222024ba4631e4e0c5f5e24dcb">add_cut</a> (const Point &amp;s, const Point &amp;x0, const double &amp;rhs) const</td></tr>
+<tr class="memdesc:a4c531a222024ba4631e4e0c5f5e24dcb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add benders cut to a problem.  <br /></td></tr>
+<tr class="separator:a4c531a222024ba4631e4e0c5f5e24dcb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a285f6b1d30ae96ee72eb52e1cb7b5910" id="r_a285f6b1d30ae96ee72eb52e1cb7b5910"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a285f6b1d30ae96ee72eb52e1cb7b5910">add_cut_by_iter</a> (int i, const Point &amp;s, const double &amp;sx0, const double &amp;rhs) const</td></tr>
+<tr class="memdesc:a285f6b1d30ae96ee72eb52e1cb7b5910"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add benders cut to a problem.  <br /></td></tr>
+<tr class="separator:a285f6b1d30ae96ee72eb52e1cb7b5910"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4e0985f5db67b527c238d9c78456347c" id="r_a4e0985f5db67b527c238d9c78456347c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4e0985f5db67b527c238d9c78456347c">add_dynamic_cut</a> (const Point &amp;s, const double &amp;sx0, const double &amp;rhs) const</td></tr>
+<tr class="memdesc:a4e0985f5db67b527c238d9c78456347c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add benders cut to a problem.  <br /></td></tr>
+<tr class="separator:a4e0985f5db67b527c238d9c78456347c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3cfc0ba0e91b1eb6a41369ea11ed871" id="r_ac3cfc0ba0e91b1eb6a41369ea11ed871"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3cfc0ba0e91b1eb6a41369ea11ed871">addSubproblemCut</a> (int i, const Point &amp;s, const Point &amp;x0, const double &amp;rhs) const</td></tr>
+<tr class="memdesc:ac3cfc0ba0e91b1eb6a41369ea11ed871"><td class="mdescLeft">&#160;</td><td class="mdescRight">Add one benders cut to a problem.  <br /></td></tr>
+<tr class="separator:ac3cfc0ba0e91b1eb6a41369ea11ed871"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae76c047e796f3243fab131b12bdec4d5" id="r_ae76c047e796f3243fab131b12bdec4d5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae76c047e796f3243fab131b12bdec4d5">fix_alpha</a> (const double &amp;bestUB) const</td></tr>
+<tr class="memdesc:ae76c047e796f3243fab131b12bdec4d5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Fix an upper bound and the variable overall_subpb_cost_under_approx of a problem.  <br /></td></tr>
+<tr class="separator:ae76c047e796f3243fab131b12bdec4d5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac660c4b1f7d1c80bfe716933e8446ec6" id="r_ac660c4b1f7d1c80bfe716933e8446ec6"><td class="memItemLeft" align="right" valign="top"><a id="ac660c4b1f7d1c80bfe716933e8446ec6" name="ac660c4b1f7d1c80bfe716933e8446ec6"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>DeactivateIntegrityConstraints</b> () const</td></tr>
 <tr class="separator:ac660c4b1f7d1c80bfe716933e8446ec6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -227,9 +227,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>ChangeRhs</b> (int id
 <tr class="memitem:a1e2034fda58d534b6340ad6a3630f1e1 inherit pub_methods_classWorker" id="r_a1e2034fda58d534b6340ad6a3630f1e1"><td class="memItemLeft" align="right" valign="top">
 void&#160;</td><td class="memItemRight" valign="bottom"><b>GetRhs</b> (double *val, int id_row) const</td></tr>
 <tr class="separator:a1e2034fda58d534b6340ad6a3630f1e1 inherit pub_methods_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fb3983b7e81996ceec7047d60098fc0 inherit pub_methods_classWorker" id="r_a2fb3983b7e81996ceec7047d60098fc0"><td class="memItemLeft" align="right" valign="top">
-void&#160;</td><td class="memItemRight" valign="bottom"><b>AddRows</b> (std::vector&lt; char &gt; const &amp;qrtype_p, std::vector&lt; double &gt; const &amp;rhs_p, std::vector&lt; double &gt; const &amp;range_p, std::vector&lt; int &gt; const &amp;mstart_p, std::vector&lt; int &gt; const &amp;mclind_p, std::vector&lt; double &gt; const &amp;dmatval_p, const std::vector&lt; std::string &gt; &amp;row_names) const</td></tr>
-<tr class="separator:a2fb3983b7e81996ceec7047d60098fc0 inherit pub_methods_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a978018d72e3f96f52c67163918935cdc inherit pub_methods_classWorker" id="r_a978018d72e3f96f52c67163918935cdc"><td class="memItemLeft" align="right" valign="top">
+void&#160;</td><td class="memItemRight" valign="bottom"><b>AddRows</b> (const std::vector&lt; char &gt; &amp;qrtype_p, const std::vector&lt; double &gt; &amp;rhs_p, const std::vector&lt; double &gt; &amp;range_p, const std::vector&lt; int &gt; &amp;mstart_p, const std::vector&lt; int &gt; &amp;mclind_p, const std::vector&lt; double &gt; &amp;dmatval_p, const std::vector&lt; std::string &gt; &amp;row_names) const</td></tr>
+<tr class="separator:a978018d72e3f96f52c67163918935cdc inherit pub_methods_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:acd83ae773438dcd743a263ba27ee8e2f inherit pub_methods_classWorker" id="r_acd83ae773438dcd743a263ba27ee8e2f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorker.html#acd83ae773438dcd743a263ba27ee8e2f">Getnrows</a> () const</td></tr>
 <tr class="memdesc:acd83ae773438dcd743a263ba27ee8e2f inherit pub_methods_classWorker"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the number of rows (constraints)  <br /></td></tr>
 <tr class="separator:acd83ae773438dcd743a263ba27ee8e2f inherit pub_methods_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -247,7 +247,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_pat
 <tr class="separator:a1a9104c18381ba2210d0220dc18310a3 inherit pub_attribs_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdb60808816e1a3409a63fe0c2dd98b5 inherit pub_attribs_classWorker" id="r_abdb60808816e1a3409a63fe0c2dd98b5"><td class="memItemLeft" align="right" valign="top">Int2Str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorker.html#abdb60808816e1a3409a63fe0c2dd98b5">_id_to_name</a></td></tr>
 <tr class="separator:abdb60808816e1a3409a63fe0c2dd98b5 inherit pub_attribs_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08567d41cc2e77b6c122543d64e904e4 inherit pub_attribs_classWorker" id="r_a08567d41cc2e77b6c122543d64e904e4"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorker.html#a08567d41cc2e77b6c122543d64e904e4">_solver</a></td></tr>
+<tr class="memitem:a08567d41cc2e77b6c122543d64e904e4 inherit pub_attribs_classWorker" id="r_a08567d41cc2e77b6c122543d64e904e4"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classWorker.html#a08567d41cc2e77b6c122543d64e904e4">_solver</a> = nullptr</td></tr>
 <tr class="separator:a08567d41cc2e77b6c122543d64e904e4 inherit pub_attribs_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a329a38f8119d9cf8c6c36166d563be53 inherit pub_attribs_classWorker" id="r_a329a38f8119d9cf8c6c36166d563be53"><td class="memItemLeft" align="right" valign="top">
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>_is_master</b> = false</td></tr>
@@ -257,8 +257,8 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
 <tr class="separator:a4283154ad0c0e9066b62187960931a70 inherit pub_attribs_classWorker"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a2317e43fb5cfeb645d1154e62450fc8b" name="a2317e43fb5cfeb645d1154e62450fc8b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2317e43fb5cfeb645d1154e62450fc8b">&#9670;&#160;</a></span>WorkerMaster()</h2>
+<a id="a9a726a561c540d6c9f90ff984f169eab" name="a9a726a561c540d6c9f90ff984f169eab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9a726a561c540d6c9f90ff984f169eab">&#9670;&#160;</a></span>WorkerMaster()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -266,7 +266,7 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
         <tr>
           <td class="memname">WorkerMaster::WorkerMaster </td>
           <td>(</td>
-          <td class="paramtype">VariableMap const &amp;</td>          <td class="paramname"><span class="paramname"><em>variable_map</em></span>, </td>
+          <td class="paramtype">const VariableMap &amp;</td>          <td class="paramname"><span class="paramname"><em>variable_map</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
@@ -327,8 +327,8 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
 </div>
 </div>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a1278325052f29d3a4b145052a23761ad" name="a1278325052f29d3a4b145052a23761ad"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1278325052f29d3a4b145052a23761ad">&#9670;&#160;</a></span>add_cut()</h2>
+<a id="a4c531a222024ba4631e4e0c5f5e24dcb" name="a4c531a222024ba4631e4e0c5f5e24dcb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4c531a222024ba4631e4e0c5f5e24dcb">&#9670;&#160;</a></span>add_cut()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -336,17 +336,17 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
         <tr>
           <td class="memname">void WorkerMaster::add_cut </td>
           <td>(</td>
-          <td class="paramtype">Point const &amp;</td>          <td class="paramname"><span class="paramname"><em>s</em></span>, </td>
+          <td class="paramtype">const Point &amp;</td>          <td class="paramname"><span class="paramname"><em>s</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Point const &amp;</td>          <td class="paramname"><span class="paramname"><em>x_cut</em></span>, </td>
+          <td class="paramtype">const Point &amp;</td>          <td class="paramname"><span class="paramname"><em>x_cut</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double const &amp;</td>          <td class="paramname"><span class="paramname"><em>rhs</em></span>&#160;) const</td>
+          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>rhs</em></span>&#160;) const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -363,8 +363,8 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
 
 </div>
 </div>
-<a id="a8762f8cb421031c5333c2e024044238c" name="a8762f8cb421031c5333c2e024044238c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8762f8cb421031c5333c2e024044238c">&#9670;&#160;</a></span>add_cut_by_iter()</h2>
+<a id="a285f6b1d30ae96ee72eb52e1cb7b5910" name="a285f6b1d30ae96ee72eb52e1cb7b5910"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a285f6b1d30ae96ee72eb52e1cb7b5910">&#9670;&#160;</a></span>add_cut_by_iter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -377,17 +377,17 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Point const &amp;</td>          <td class="paramname"><span class="paramname"><em>s</em></span>, </td>
+          <td class="paramtype">const Point &amp;</td>          <td class="paramname"><span class="paramname"><em>s</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double const &amp;</td>          <td class="paramname"><span class="paramname"><em>sx0</em></span>, </td>
+          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>sx0</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double const &amp;</td>          <td class="paramname"><span class="paramname"><em>rhs</em></span>&#160;) const</td>
+          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>rhs</em></span>&#160;) const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -405,8 +405,8 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
 
 </div>
 </div>
-<a id="ad82d7509516e2ddb7ed5d43e9b246f3e" name="ad82d7509516e2ddb7ed5d43e9b246f3e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad82d7509516e2ddb7ed5d43e9b246f3e">&#9670;&#160;</a></span>add_dynamic_cut()</h2>
+<a id="a4e0985f5db67b527c238d9c78456347c" name="a4e0985f5db67b527c238d9c78456347c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4e0985f5db67b527c238d9c78456347c">&#9670;&#160;</a></span>add_dynamic_cut()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -414,17 +414,17 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
         <tr>
           <td class="memname">void WorkerMaster::add_dynamic_cut </td>
           <td>(</td>
-          <td class="paramtype">Point const &amp;</td>          <td class="paramname"><span class="paramname"><em>s</em></span>, </td>
+          <td class="paramtype">const Point &amp;</td>          <td class="paramname"><span class="paramname"><em>s</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double const &amp;</td>          <td class="paramname"><span class="paramname"><em>sx0</em></span>, </td>
+          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>sx0</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double const &amp;</td>          <td class="paramname"><span class="paramname"><em>rhs</em></span>&#160;) const</td>
+          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>rhs</em></span>&#160;) const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -441,8 +441,8 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
 
 </div>
 </div>
-<a id="acc3f28ce6ae84fc72955e36bb1679fbf" name="acc3f28ce6ae84fc72955e36bb1679fbf"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acc3f28ce6ae84fc72955e36bb1679fbf">&#9670;&#160;</a></span>addSubproblemCut()</h2>
+<a id="ac3cfc0ba0e91b1eb6a41369ea11ed871" name="ac3cfc0ba0e91b1eb6a41369ea11ed871"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3cfc0ba0e91b1eb6a41369ea11ed871">&#9670;&#160;</a></span>addSubproblemCut()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -455,17 +455,17 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Point const &amp;</td>          <td class="paramname"><span class="paramname"><em>s</em></span>, </td>
+          <td class="paramtype">const Point &amp;</td>          <td class="paramname"><span class="paramname"><em>s</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Point const &amp;</td>          <td class="paramname"><span class="paramname"><em>x_cut</em></span>, </td>
+          <td class="paramtype">const Point &amp;</td>          <td class="paramname"><span class="paramname"><em>x_cut</em></span>, </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double const &amp;</td>          <td class="paramname"><span class="paramname"><em>rhs</em></span>&#160;) const</td>
+          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>rhs</em></span>&#160;) const</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -483,8 +483,8 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
 
 </div>
 </div>
-<a id="ab10c0abe3009ddba6ca4dd75b308230f" name="ab10c0abe3009ddba6ca4dd75b308230f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab10c0abe3009ddba6ca4dd75b308230f">&#9670;&#160;</a></span>fix_alpha()</h2>
+<a id="ae76c047e796f3243fab131b12bdec4d5" name="ae76c047e796f3243fab131b12bdec4d5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae76c047e796f3243fab131b12bdec4d5">&#9670;&#160;</a></span>fix_alpha()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -492,7 +492,7 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
         <tr>
           <td class="memname">void WorkerMaster::fix_alpha </td>
           <td>(</td>
-          <td class="paramtype">double const &amp;</td>          <td class="paramname"><span class="paramname"><em>bestUB</em></span></td><td>)</td>
+          <td class="paramtype">const double &amp;</td>          <td class="paramname"><span class="paramname"><em>bestUB</em></span></td><td>)</td>
           <td> const</td>
         </tr>
       </table>

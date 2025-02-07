@@ -210,9 +210,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>MasterRowsCoeffs</b> 
 <tr class="memitem:a7afc5bda2dc939966942949eb1ff59a3" id="r_a7afc5bda2dc939966942949eb1ff59a3"><td class="memItemLeft" align="right" valign="top"><a id="a7afc5bda2dc939966942949eb1ff59a3" name="a7afc5bda2dc939966942949eb1ff59a3"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>MasterGetNElems</b> () const</td></tr>
 <tr class="separator:a7afc5bda2dc939966942949eb1ff59a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9179e190be79f74e6eb6b6bb32ee87a6" id="r_a9179e190be79f74e6eb6b6bb32ee87a6"><td class="memItemLeft" align="right" valign="top"><a id="a9179e190be79f74e6eb6b6bb32ee87a6" name="a9179e190be79f74e6eb6b6bb32ee87a6"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>MasterAddRows</b> (std::vector&lt; char &gt; const &amp;qrtype_p, std::vector&lt; double &gt; const &amp;rhs_p, std::vector&lt; double &gt; const &amp;range_p, std::vector&lt; int &gt; const &amp;mstart_p, std::vector&lt; int &gt; const &amp;mclind_p, std::vector&lt; double &gt; const &amp;dmatval_p, const std::vector&lt; std::string &gt; &amp;row_names={}) const</td></tr>
-<tr class="separator:a9179e190be79f74e6eb6b6bb32ee87a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3b549386fd8010527bdd9a213d92d91a" id="r_a3b549386fd8010527bdd9a213d92d91a"><td class="memItemLeft" align="right" valign="top"><a id="a3b549386fd8010527bdd9a213d92d91a" name="a3b549386fd8010527bdd9a213d92d91a"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>MasterAddRows</b> (const std::vector&lt; char &gt; &amp;qrtype_p, const std::vector&lt; double &gt; &amp;rhs_p, const std::vector&lt; double &gt; &amp;range_p, const std::vector&lt; int &gt; &amp;mstart_p, const std::vector&lt; int &gt; &amp;mclind_p, const std::vector&lt; double &gt; &amp;dmatval_p, const std::vector&lt; std::string &gt; &amp;row_names={}) const</td></tr>
+<tr class="separator:a3b549386fd8010527bdd9a213d92d91a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4c00bfa48bc2ecb7b45a21b6c894d3d1" id="r_a4c00bfa48bc2ecb7b45a21b6c894d3d1"><td class="memItemLeft" align="right" valign="top"><a id="a4c00bfa48bc2ecb7b45a21b6c894d3d1" name="a4c00bfa48bc2ecb7b45a21b6c894d3d1"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>MasterGetRowType</b> (std::vector&lt; char &gt; &amp;qrtype, int first, int last) const</td></tr>
 <tr class="separator:a4c00bfa48bc2ecb7b45a21b6c894d3d1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -360,13 +360,13 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>SetDataPreRel
 <tr class="memitem:aa3adcc8ceb023a885a3203e2d0e4b022" id="r_aa3adcc8ceb023a885a3203e2d0e4b022"><td class="memItemLeft" align="right" valign="top"><a id="aa3adcc8ceb023a885a3203e2d0e4b022" name="aa3adcc8ceb023a885a3203e2d0e4b022"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ResetDataPostRelaxation</b> ()</td></tr>
 <tr class="separator:aa3adcc8ceb023a885a3203e2d0e4b022"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a534370fd14cc3b3eaa99909557f6b63c" id="r_a534370fd14cc3b3eaa99909557f6b63c"><td class="memItemLeft" align="right" valign="top"><a id="a534370fd14cc3b3eaa99909557f6b63c" name="a534370fd14cc3b3eaa99909557f6b63c"></a>
-std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>GetSubproblemPath</b> (std::string const &amp;subproblem_name) const</td></tr>
-<tr class="memdesc:a534370fd14cc3b3eaa99909557f6b63c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get path to subproblem mps file from options. <br /></td></tr>
-<tr class="separator:a534370fd14cc3b3eaa99909557f6b63c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af1ed0d083a39816fcecdd2bf1b100f8f" id="r_af1ed0d083a39816fcecdd2bf1b100f8f"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1ed0d083a39816fcecdd2bf1b100f8f">SubproblemWeight</a> (int subproblem_count, std::string const &amp;name) const</td></tr>
-<tr class="memdesc:af1ed0d083a39816fcecdd2bf1b100f8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return subproblem weight value.  <br /></td></tr>
-<tr class="separator:af1ed0d083a39816fcecdd2bf1b100f8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a037b186f9ac884cc1224f91c13b6ff3d" id="r_a037b186f9ac884cc1224f91c13b6ff3d"><td class="memItemLeft" align="right" valign="top"><a id="a037b186f9ac884cc1224f91c13b6ff3d" name="a037b186f9ac884cc1224f91c13b6ff3d"></a>
+std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>GetSubproblemPath</b> (const std::string &amp;subproblem_name) const</td></tr>
+<tr class="memdesc:a037b186f9ac884cc1224f91c13b6ff3d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get path to subproblem mps file from options. <br /></td></tr>
+<tr class="separator:a037b186f9ac884cc1224f91c13b6ff3d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab979fd9e6fd791c6b01d244da33ba849" id="r_ab979fd9e6fd791c6b01d244da33ba849"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab979fd9e6fd791c6b01d244da33ba849">SubproblemWeight</a> (int subproblem_count, const std::string &amp;name) const</td></tr>
+<tr class="memdesc:ab979fd9e6fd791c6b01d244da33ba849"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return subproblem weight value.  <br /></td></tr>
+<tr class="separator:ab979fd9e6fd791c6b01d244da33ba849"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6f53da7e8fd87c0e244368b0dedb4e1e" id="r_a6f53da7e8fd87c0e244368b0dedb4e1e"><td class="memItemLeft" align="right" valign="top"><a id="a6f53da7e8fd87c0e244368b0dedb4e1e" name="a6f53da7e8fd87c0e244368b0dedb4e1e"></a>
 std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>get_master_path</b> () const</td></tr>
 <tr class="memdesc:a6f53da7e8fd87c0e244368b0dedb4e1e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get path to master problem mps file from options. <br /></td></tr>
@@ -377,10 +377,10 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>get_
 <tr class="memitem:a9936a17b0dd7c359c41f331ccf7d30cf" id="r_a9936a17b0dd7c359c41f331ccf7d30cf"><td class="memItemLeft" align="right" valign="top"><a id="a9936a17b0dd7c359c41f331ccf7d30cf" name="a9936a17b0dd7c359c41f331ccf7d30cf"></a>
 <a class="el" href="structLogData.html">LogData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>bendersDataToLogData</b> (const <a class="el" href="structCurrentIterationData.html">CurrentIterationData</a> &amp;data) const</td></tr>
 <tr class="separator:a9936a17b0dd7c359c41f331ccf7d30cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a02aaf07400f86a9934ae2ea336350cde" id="r_a02aaf07400f86a9934ae2ea336350cde"><td class="memTemplParams" colspan="2"><a id="a02aaf07400f86a9934ae2ea336350cde" name="a02aaf07400f86a9934ae2ea336350cde"></a>
+<tr class="memitem:af718ce8b5dd065f6408eb5d9774a87a9" id="r_af718ce8b5dd065f6408eb5d9774a87a9"><td class="memTemplParams" colspan="2"><a id="af718ce8b5dd065f6408eb5d9774a87a9" name="af718ce8b5dd065f6408eb5d9774a87a9"></a>
 template&lt;typename T , typename... Args&gt; </td></tr>
-<tr class="memitem:a02aaf07400f86a9934ae2ea336350cde"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>reset_master</b> (Args &amp;&amp;...args)</td></tr>
-<tr class="separator:a02aaf07400f86a9934ae2ea336350cde"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af718ce8b5dd065f6408eb5d9774a87a9"><td class="memTemplItemLeft" align="right" valign="top">void&#160;</td><td class="memTemplItemRight" valign="bottom"><b>reset_master</b> (Args &amp;&amp;... args)</td></tr>
+<tr class="separator:af718ce8b5dd065f6408eb5d9774a87a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a85dac29b78144c35660e7382e81e887d" id="r_a85dac29b78144c35660e7382e81e887d"><td class="memItemLeft" align="right" valign="top"><a id="a85dac29b78144c35660e7382e81e887d" name="a85dac29b78144c35660e7382e81e887d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>free_master</b> ()</td></tr>
 <tr class="separator:a85dac29b78144c35660e7382e81e887d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -535,7 +535,8 @@ VariableMap&#160;</td><td class="memItemRight" valign="bottom"><b>master_variabl
 <tr class="memitem:abecce65445c68127a10574ddd8b7e92f" id="r_abecce65445c68127a10574ddd8b7e92f"><td class="memItemLeft" align="right" valign="top"><a id="abecce65445c68127a10574ddd8b7e92f" name="abecce65445c68127a10574ddd8b7e92f"></a>
 CouplingMap&#160;</td><td class="memItemRight" valign="bottom"><b>coupling_map_</b></td></tr>
 <tr class="separator:abecce65445c68127a10574ddd8b7e92f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad1a67361ef2f93f2dcc1783f05c62f50" id="r_ad1a67361ef2f93f2dcc1783f05c62f50"><td class="memItemLeft" align="right" valign="top"><a class="el" href="structBendersRelevantIterationsData.html">BendersRelevantIterationsData</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad1a67361ef2f93f2dcc1783f05c62f50">relevantIterationData_</a></td></tr>
+<tr class="memitem:ad1a67361ef2f93f2dcc1783f05c62f50" id="r_ad1a67361ef2f93f2dcc1783f05c62f50"><td class="memItemLeft" align="right" valign="top"><a id="ad1a67361ef2f93f2dcc1783f05c62f50" name="ad1a67361ef2f93f2dcc1783f05c62f50"></a>
+<a class="el" href="structBendersRelevantIterationsData.html">BendersRelevantIterationsData</a>&#160;</td><td class="memItemRight" valign="bottom"><b>relevantIterationData_</b> = {<a class="el" href="classWorkerMasterData.html">WorkerMasterData</a>(), <a class="el" href="classWorkerMasterData.html">WorkerMasterData</a>()}</td></tr>
 <tr class="separator:ad1a67361ef2f93f2dcc1783f05c62f50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6d08dc380a98609faaafca8891b0cb78" id="r_a6d08dc380a98609faaafca8891b0cb78"><td class="memItemLeft" align="right" valign="top"><a id="a6d08dc380a98609faaafca8891b0cb78" name="a6d08dc380a98609faaafca8891b0cb78"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>init_data_</b> = true</td></tr>
@@ -881,8 +882,8 @@ SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subprobl
 
 </div>
 </div>
-<a id="af1ed0d083a39816fcecdd2bf1b100f8f" name="af1ed0d083a39816fcecdd2bf1b100f8f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af1ed0d083a39816fcecdd2bf1b100f8f">&#9670;&#160;</a></span>SubproblemWeight()</h2>
+<a id="ab979fd9e6fd791c6b01d244da33ba849" name="ab979fd9e6fd791c6b01d244da33ba849"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab979fd9e6fd791c6b01d244da33ba849">&#9670;&#160;</a></span>SubproblemWeight()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -898,7 +899,7 @@ SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subprobl
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::string const &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span>&#160;) const</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span>&#160;) const</td>
         </tr>
       </table>
   </td>
@@ -1005,32 +1006,6 @@ SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subprobl
 
 <p>Reimplemented in <a class="el" href="classBendersSequentialDouble.html#a01aa233cda314c1882c9c5ef216d1ea3">BendersSequentialDouble</a>.</p>
 
-</div>
-</div>
-<h2 class="groupheader">Member Data Documentation</h2>
-<a id="ad1a67361ef2f93f2dcc1783f05c62f50" name="ad1a67361ef2f93f2dcc1783f05c62f50"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad1a67361ef2f93f2dcc1783f05c62f50">&#9670;&#160;</a></span>relevantIterationData_</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="structBendersRelevantIterationsData.html">BendersRelevantIterationsData</a> BendersBase::relevantIterationData_</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {<a class="code hl_class" href="classWorkerMasterData.html">WorkerMasterData</a>(),</div>
-<div class="line">                                                          <a class="code hl_class" href="classWorkerMasterData.html">WorkerMasterData</a>()}</div>
-<div class="ttc" id="aclassWorkerMasterData_html"><div class="ttname"><a href="classWorkerMasterData.html">WorkerMasterData</a></div><div class="ttdoc">Class use to store trace information during the algorithm run.</div><div class="ttdef"><b>Definition</b> BendersStructsDatas.h:71</div></div>
-</div><!-- fragment -->
 </div>
 </div>
 <hr/>The documentation for this class was generated from the following files:<ul>

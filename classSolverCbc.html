@@ -251,12 +251,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a09a3e2707278ac26d628463177522948" id="r_a09a3e2707278ac26d628463177522948"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a09a3e2707278ac26d628463177522948">get_ub</a> (double *ub, int fisrt, int last) const override</td></tr>
 <tr class="memdesc:a09a3e2707278ac26d628463177522948"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the upper bounds for variables in a given range.  <br /></td></tr>
 <tr class="separator:a09a3e2707278ac26d628463177522948"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac3d2cb49eea124033cfb112b7ad93e3f" id="r_ac3d2cb49eea124033cfb112b7ad93e3f"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3d2cb49eea124033cfb112b7ad93e3f">get_row_index</a> (std::string const &amp;name) override</td></tr>
-<tr class="memdesc:ac3d2cb49eea124033cfb112b7ad93e3f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index of row named "name".  <br /></td></tr>
-<tr class="separator:ac3d2cb49eea124033cfb112b7ad93e3f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52f1134c653bd6c8577e0911f2ca3519" id="r_a52f1134c653bd6c8577e0911f2ca3519"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a52f1134c653bd6c8577e0911f2ca3519">get_col_index</a> (std::string const &amp;name) override</td></tr>
-<tr class="memdesc:a52f1134c653bd6c8577e0911f2ca3519"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index of column named "name".  <br /></td></tr>
-<tr class="separator:a52f1134c653bd6c8577e0911f2ca3519"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f648445c9ed838d9b7d8659e4bad524" id="r_a0f648445c9ed838d9b7d8659e4bad524"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0f648445c9ed838d9b7d8659e4bad524">get_row_index</a> (const std::string &amp;name) override</td></tr>
+<tr class="memdesc:a0f648445c9ed838d9b7d8659e4bad524"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index of row named "name".  <br /></td></tr>
+<tr class="separator:a0f648445c9ed838d9b7d8659e4bad524"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab7ba381ec42739bb961fe1460c67b7a" id="r_aab7ba381ec42739bb961fe1460c67b7a"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aab7ba381ec42739bb961fe1460c67b7a">get_col_index</a> (const std::string &amp;name) override</td></tr>
+<tr class="memdesc:aab7ba381ec42739bb961fe1460c67b7a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index of column named "name".  <br /></td></tr>
+<tr class="separator:aab7ba381ec42739bb961fe1460c67b7a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a074725d2442929fcbc3987d66a82fa34" id="r_a074725d2442929fcbc3987d66a82fa34"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a074725d2442929fcbc3987d66a82fa34">get_row_names</a> (int first, int last) override</td></tr>
 <tr class="memdesc:a074725d2442929fcbc3987d66a82fa34"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of row from index first to last cannot be declared as const because of some solver methods.  <br /></td></tr>
 <tr class="separator:a074725d2442929fcbc3987d66a82fa34"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -301,12 +301,12 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adb09607d1ed3545e47bb822a99f0afea" id="r_adb09607d1ed3545e47bb822a99f0afea"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adb09607d1ed3545e47bb822a99f0afea">chg_coef</a> (int id_row, int id_col, double val) override</td></tr>
 <tr class="memdesc:adb09607d1ed3545e47bb822a99f0afea"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change a coefficient in the matrix.  <br /></td></tr>
 <tr class="separator:adb09607d1ed3545e47bb822a99f0afea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a942d1fb579e5ec0a7503a8dddbdcc8f8" id="r_a942d1fb579e5ec0a7503a8dddbdcc8f8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a942d1fb579e5ec0a7503a8dddbdcc8f8">chg_row_name</a> (int id_row, std::string const &amp;name) override</td></tr>
-<tr class="memdesc:a942d1fb579e5ec0a7503a8dddbdcc8f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a constraint.  <br /></td></tr>
-<tr class="separator:a942d1fb579e5ec0a7503a8dddbdcc8f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0b4970eea7643c72c70a9737e4d3547c" id="r_a0b4970eea7643c72c70a9737e4d3547c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0b4970eea7643c72c70a9737e4d3547c">chg_col_name</a> (int id_col, std::string const &amp;name) override</td></tr>
-<tr class="memdesc:a0b4970eea7643c72c70a9737e4d3547c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a variable.  <br /></td></tr>
-<tr class="separator:a0b4970eea7643c72c70a9737e4d3547c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a91961aef6dbf88d420c029eed8a948ab" id="r_a91961aef6dbf88d420c029eed8a948ab"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a91961aef6dbf88d420c029eed8a948ab">chg_row_name</a> (int id_row, const std::string &amp;name) override</td></tr>
+<tr class="memdesc:a91961aef6dbf88d420c029eed8a948ab"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a constraint.  <br /></td></tr>
+<tr class="separator:a91961aef6dbf88d420c029eed8a948ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a37c19e7a8d7df5fa0ee9550fb106713b" id="r_a37c19e7a8d7df5fa0ee9550fb106713b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a37c19e7a8d7df5fa0ee9550fb106713b">chg_col_name</a> (int id_col, const std::string &amp;name) override</td></tr>
+<tr class="memdesc:a37c19e7a8d7df5fa0ee9550fb106713b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a variable.  <br /></td></tr>
+<tr class="separator:a37c19e7a8d7df5fa0ee9550fb106713b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1ea1a0ec698466c29e217dba2a6b6eb7" id="r_a1ea1a0ec698466c29e217dba2a6b6eb7"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1ea1a0ec698466c29e217dba2a6b6eb7">solve_lp</a> () override</td></tr>
 <tr class="memdesc:a1ea1a0ec698466c29e217dba2a6b6eb7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves a problem as LP.  <br /></td></tr>
 <tr class="separator:a1ea1a0ec698466c29e217dba2a6b6eb7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -334,9 +334,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a78dbb14988a311b4cdd65591519ee58a" id="r_a78dbb14988a311b4cdd65591519ee58a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a78dbb14988a311b4cdd65591519ee58a">set_output_log_level</a> (int loglevel) final</td></tr>
 <tr class="memdesc:a78dbb14988a311b4cdd65591519ee58a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets log level of the solver.  <br /></td></tr>
 <tr class="separator:a78dbb14988a311b4cdd65591519ee58a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a98c92cfc8b11be912fd43c82f0a65b51" id="r_a98c92cfc8b11be912fd43c82f0a65b51"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a98c92cfc8b11be912fd43c82f0a65b51">set_algorithm</a> (std::string const &amp;algo) override</td></tr>
-<tr class="memdesc:a98c92cfc8b11be912fd43c82f0a65b51"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets algorithm used by solver to solve LP's.  <br /></td></tr>
-<tr class="separator:a98c92cfc8b11be912fd43c82f0a65b51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae36d37003c0ab6b03c0f1a13190f5bbb" id="r_ae36d37003c0ab6b03c0f1a13190f5bbb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae36d37003c0ab6b03c0f1a13190f5bbb">set_algorithm</a> (const std::string &amp;algo) override</td></tr>
+<tr class="memdesc:ae36d37003c0ab6b03c0f1a13190f5bbb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets algorithm used by solver to solve LP's.  <br /></td></tr>
+<tr class="separator:ae36d37003c0ab6b03c0f1a13190f5bbb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae74eff3a7eec1b18176540899f972776" id="r_ae74eff3a7eec1b18176540899f972776"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae74eff3a7eec1b18176540899f972776">set_threads</a> (int n_threads) override</td></tr>
 <tr class="memdesc:ae74eff3a7eec1b18176540899f972776"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the maximum number of threads used to perform optimization.  <br /></td></tr>
 <tr class="separator:ae74eff3a7eec1b18176540899f972776"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -391,8 +391,8 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>_current_log_level</b>
 <tr class="separator:a4e3d537c3f7a52d47e1064b6255c8354 inherit pub_attribs_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52ca317dd7d394001148e348cecff0f2 inherit pub_attribs_classSolverAbstract" id="r_a52ca317dd7d394001148e348cecff0f2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#a52ca317dd7d394001148e348cecff0f2">_name</a></td></tr>
 <tr class="separator:a52ca317dd7d394001148e348cecff0f2 inherit pub_attribs_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1cfe15a9c337170d61fc66e89c941f9a inherit pub_attribs_classSolverAbstract" id="r_a1cfe15a9c337170d61fc66e89c941f9a"><td class="memItemLeft" align="right" valign="top">std::list&lt; std::ostream * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#a1cfe15a9c337170d61fc66e89c941f9a">_streams</a></td></tr>
-<tr class="separator:a1cfe15a9c337170d61fc66e89c941f9a inherit pub_attribs_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53c0792aef472db99977b8adef0b7dce inherit pub_attribs_classSolverAbstract" id="r_a53c0792aef472db99977b8adef0b7dce"><td class="memItemLeft" align="right" valign="top">std::list&lt; std::ostream * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#a53c0792aef472db99977b8adef0b7dce">_streams</a></td></tr>
+<tr class="separator:a53c0792aef472db99977b8adef0b7dce inherit pub_attribs_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a691b1cb603e5d8db286d4be67bc2abd1 inherit pub_attribs_classSolverAbstract" id="r_a691b1cb603e5d8db286d4be67bc2abd1"><td class="memItemLeft" align="right" valign="top">
 FILE *&#160;</td><td class="memItemRight" valign="bottom"><b>_fp</b> = nullptr</td></tr>
 <tr class="separator:a691b1cb603e5d8db286d4be67bc2abd1 inherit pub_attribs_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -785,8 +785,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a0b4970eea7643c72c70a9737e4d3547c" name="a0b4970eea7643c72c70a9737e4d3547c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0b4970eea7643c72c70a9737e4d3547c">&#9670;&#160;</a></span>chg_col_name()</h2>
+<a id="a37c19e7a8d7df5fa0ee9550fb106713b" name="a37c19e7a8d7df5fa0ee9550fb106713b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a37c19e7a8d7df5fa0ee9550fb106713b">&#9670;&#160;</a></span>chg_col_name()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -802,7 +802,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::string const &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span>&#160;)</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -821,7 +821,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classSolverAbstract.html#a40d282e9941744a13c17b931ac3efb94">SolverAbstract</a>.</p>
+<p>Implements <a class="el" href="classSolverAbstract.html#aa164e8aa26670bb0e15a6f0c554a9a0d">SolverAbstract</a>.</p>
 
 </div>
 </div>
@@ -981,8 +981,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a942d1fb579e5ec0a7503a8dddbdcc8f8" name="a942d1fb579e5ec0a7503a8dddbdcc8f8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a942d1fb579e5ec0a7503a8dddbdcc8f8">&#9670;&#160;</a></span>chg_row_name()</h2>
+<a id="a91961aef6dbf88d420c029eed8a948ab" name="a91961aef6dbf88d420c029eed8a948ab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a91961aef6dbf88d420c029eed8a948ab">&#9670;&#160;</a></span>chg_row_name()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -998,7 +998,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::string const &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span>&#160;)</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1017,7 +1017,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classSolverAbstract.html#aeaa5c026c2958977404250bc689141d8">SolverAbstract</a>.</p>
+<p>Implements <a class="el" href="classSolverAbstract.html#ad992af8d12855a30f1d0c45daf988753">SolverAbstract</a>.</p>
 
 </div>
 </div>
@@ -1165,8 +1165,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a52f1134c653bd6c8577e0911f2ca3519" name="a52f1134c653bd6c8577e0911f2ca3519"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a52f1134c653bd6c8577e0911f2ca3519">&#9670;&#160;</a></span>get_col_index()</h2>
+<a id="aab7ba381ec42739bb961fe1460c67b7a" name="aab7ba381ec42739bb961fe1460c67b7a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aab7ba381ec42739bb961fe1460c67b7a">&#9670;&#160;</a></span>get_col_index()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1177,7 +1177,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">int SolverCbc::get_col_index </td>
           <td>(</td>
-          <td class="paramtype">std::string const &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1196,7 +1196,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classSolverAbstract.html#a19ce4d702e9b9c3d21b157a13fb8a84d">SolverAbstract</a>.</p>
+<p>Implements <a class="el" href="classSolverAbstract.html#a481087b045ce82f6caf4c2294ba587ce">SolverAbstract</a>.</p>
 
 </div>
 </div>
@@ -1779,8 +1779,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="ac3d2cb49eea124033cfb112b7ad93e3f" name="ac3d2cb49eea124033cfb112b7ad93e3f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac3d2cb49eea124033cfb112b7ad93e3f">&#9670;&#160;</a></span>get_row_index()</h2>
+<a id="a0f648445c9ed838d9b7d8659e4bad524" name="a0f648445c9ed838d9b7d8659e4bad524"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0f648445c9ed838d9b7d8659e4bad524">&#9670;&#160;</a></span>get_row_index()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1791,7 +1791,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">int SolverCbc::get_row_index </td>
           <td>(</td>
-          <td class="paramtype">std::string const &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1810,7 +1810,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classSolverAbstract.html#a0ce6cfc070d43e277646557d62c8bf26">SolverAbstract</a>.</p>
+<p>Implements <a class="el" href="classSolverAbstract.html#a02d179a5446ad46d376eb6a23d0233fb">SolverAbstract</a>.</p>
 
 </div>
 </div>
@@ -2306,8 +2306,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a98c92cfc8b11be912fd43c82f0a65b51" name="a98c92cfc8b11be912fd43c82f0a65b51"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a98c92cfc8b11be912fd43c82f0a65b51">&#9670;&#160;</a></span>set_algorithm()</h2>
+<a id="ae36d37003c0ab6b03c0f1a13190f5bbb" name="ae36d37003c0ab6b03c0f1a13190f5bbb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae36d37003c0ab6b03c0f1a13190f5bbb">&#9670;&#160;</a></span>set_algorithm()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2318,7 +2318,7 @@ Additional Inherited Members</h2></td></tr>
         <tr>
           <td class="memname">void SolverCbc::set_algorithm </td>
           <td>(</td>
-          <td class="paramtype">std::string const &amp;</td>          <td class="paramname"><span class="paramname"><em>algo</em></span></td><td>)</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>algo</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -2337,7 +2337,7 @@ Additional Inherited Members</h2></td></tr>
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classSolverAbstract.html#a6147f2636bd52820a77ebc80e19905ee">SolverAbstract</a>.</p>
+<p>Implements <a class="el" href="classSolverAbstract.html#a2017c2d79a795514c5de14ad42bf779b">SolverAbstract</a>.</p>
 
 </div>
 </div>

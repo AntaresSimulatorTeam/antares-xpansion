@@ -39,7 +39,7 @@ var searchData=
   ['separation_5fparameter_20tt_36',['&lt;tt&gt;separation_parameter&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md211',1,'']]],
   ['separationparametervalueerror_37',['SeparationParameterValueError',['../classantares__xpansion_1_1input__checker_1_1SeparationParameterValueError.html',1,'antares_xpansion::input_checker']]],
   ['set_20up_20an_20antares_20xpansion_20study_38',['Set up an Antares-Xpansion study',['../md_docs_2user-guide_2get-started_2prepare-a-simulation.html',1,'']]],
-  ['set_5falgorithm_39',['set_algorithm',['../classProblem.html#a006aad13911c36e8d753f172c10f5465',1,'Problem::set_algorithm()'],['../classSolverAbstract.html#a6147f2636bd52820a77ebc80e19905ee',1,'SolverAbstract::set_algorithm()'],['../classSolverCbc.html#a98c92cfc8b11be912fd43c82f0a65b51',1,'SolverCbc::set_algorithm()'],['../classSolverClp.html#a11a3d195c39a244e70486b20399d127f',1,'SolverClp::set_algorithm()'],['../classSolverXpress.html#a5931eca5e7ccfb665819166a98ebfae9',1,'SolverXpress::set_algorithm()'],['../classNOOPSolver.html#ada1e7111945f04571bcc645fe4f80e38',1,'NOOPSolver::set_algorithm()']]],
+  ['set_5falgorithm_39',['set_algorithm',['../classProblem.html#a006aad13911c36e8d753f172c10f5465',1,'Problem::set_algorithm()'],['../classSolverAbstract.html#a2017c2d79a795514c5de14ad42bf779b',1,'SolverAbstract::set_algorithm()'],['../classSolverCbc.html#ae36d37003c0ab6b03c0f1a13190f5bbb',1,'SolverCbc::set_algorithm()'],['../classSolverClp.html#a1e2d73e41bd984fdb447795b8cfe1ca0',1,'SolverClp::set_algorithm()'],['../classSolverXpress.html#a52225201bf75879e35239dc675c4c742',1,'SolverXpress::set_algorithm()'],['../classNOOPSolver.html#ada1e7111945f04571bcc645fe4f80e38',1,'NOOPSolver::set_algorithm()']]],
   ['set_5finput_5fmap_40',['set_input_map',['../classBendersBase.html#a762f7724ccf0b5bed0176744f578d8c2',1,'BendersBase']]],
   ['set_5fobj_41',['set_obj',['../classProblem.html#a678f5f40e1102d81f5dcb95a575e041a',1,'Problem::set_obj()'],['../classSolverAbstract.html#a68eaacdbe4ad1302c2e1ffbe69f92125',1,'SolverAbstract::set_obj()'],['../classSolverCbc.html#ad4eb1d467b476f604d37d667efc17694',1,'SolverCbc::set_obj()'],['../classSolverClp.html#ab9e5e72ac17787d8631df2f87d100b87',1,'SolverClp::set_obj()'],['../classSolverXpress.html#adf6d887e5a1285f5264f664efdab0520',1,'SolverXpress::set_obj()'],['../classNOOPSolver.html#a7f3f87a9c644c64845471b765fbcd7c9',1,'NOOPSolver::set_obj()']]],
   ['set_5fobj_5fto_5fzero_42',['set_obj_to_zero',['../classProblem.html#a3209a8750961478ed949a75b5cef261c',1,'Problem::set_obj_to_zero()'],['../classSolverAbstract.html#adbf78f11e71cc3347ed5f00ef83dafa4',1,'SolverAbstract::set_obj_to_zero()'],['../classSolverCbc.html#a4d9abe0eb04423e798b1047df8c72655',1,'SolverCbc::set_obj_to_zero()'],['../classSolverClp.html#aa56c91704b234c01d954a734095bc499',1,'SolverClp::set_obj_to_zero()'],['../classSolverXpress.html#ad16a6f4c1584aa3e3c647262332b34d9',1,'SolverXpress::set_obj_to_zero()'],['../classNOOPSolver.html#a6e12a6093f67022a11de3f69152aef1f',1,'NOOPSolver::set_obj_to_zero()']]],
@@ -69,7 +69,7 @@ var searchData=
   ['singlepbdata_66',['SinglePbData',['../structSinglePbData.html',1,'']]],
   ['singlevaluegenerator_67',['SingleValueGenerator',['../classCatch_1_1Generators_1_1SingleValueGenerator.html',1,'Catch::Generators']]],
   ['size_20tt_68',['&lt;tt&gt;unit-size&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md146',1,'']]],
-  ['slave_5fweight_69',['slave_weight',['../classMergeMPS.html#acd398042c0722955189023227edea72a',1,'MergeMPS']]],
+  ['slave_5fweight_69',['slave_weight',['../classMergeMPS.html#ae60ba4a5dddd2a94d171f0799b07c9d4',1,'MergeMPS']]],
   ['solution_20of_20an_20antares_20simulation_70',['The operating cost as the solution of an Antares simulation',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md223',1,'']]],
   ['solutiondata_71',['SolutionData',['../structOutput_1_1SolutionData.html',1,'Output']]],
   ['solve_72',['solve',['../classWorker.html#a415adaf758b96a5372a7468670b2476a',1,'Worker']]],
@@ -151,7 +151,7 @@ var searchData=
   ['studyupdatestrategy_148',['StudyUpdateStrategy',['../classStudyUpdateStrategy.html',1,'']]],
   ['studyupdatetest_149',['StudyUpdateTest',['../classStudyUpdateTest.html',1,'']]],
   ['subproblemdata_150',['SubProblemData',['../structPlainData_1_1SubProblemData.html',1,'PlainData']]],
-  ['subproblemweight_151',['SubproblemWeight',['../classBendersBase.html#af1ed0d083a39816fcecdd2bf1b100f8f',1,'BendersBase']]],
-  ['subproblemworker_152',['SubproblemWorker',['../classSubproblemWorker.html',1,'SubproblemWorker'],['../classSubproblemWorker.html#afb1ac6c2d16fbf1bcc8337e3459d8a78',1,'SubproblemWorker::SubproblemWorker()']]],
+  ['subproblemweight_151',['SubproblemWeight',['../classBendersBase.html#ab979fd9e6fd791c6b01d244da33ba849',1,'BendersBase']]],
+  ['subproblemworker_152',['SubproblemWorker',['../classSubproblemWorker.html',1,'SubproblemWorker'],['../classSubproblemWorker.html#a93b2d068ae048662aab3b9b8375ada34',1,'SubproblemWorker::SubproblemWorker()']]],
   ['summary_20of_20the_20costs_153',['Summary of the costs',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md225',1,'']]]
 ];

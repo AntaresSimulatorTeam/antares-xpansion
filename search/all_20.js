@@ -25,7 +25,7 @@ var searchData=
   ['withinrelmatcher_22',['WithinRelMatcher',['../structCatch_1_1Matchers_1_1Floating_1_1WithinRelMatcher.html',1,'Catch::Matchers::Floating']]],
   ['withinulpsmatcher_23',['WithinUlpsMatcher',['../structCatch_1_1Matchers_1_1Floating_1_1WithinUlpsMatcher.html',1,'Catch::Matchers::Floating']]],
   ['worker_24',['Worker',['../classWorker.html',1,'']]],
-  ['workermaster_25',['WorkerMaster',['../classWorkerMaster.html',1,'WorkerMaster'],['../classWorkerMaster.html#a2317e43fb5cfeb645d1154e62450fc8b',1,'WorkerMaster::WorkerMaster()']]],
+  ['workermaster_25',['WorkerMaster',['../classWorkerMaster.html',1,'WorkerMaster'],['../classWorkerMaster.html#a9a726a561c540d6c9f90ff984f169eab',1,'WorkerMaster::WorkerMaster()']]],
   ['workermasterdata_26',['WorkerMasterData',['../classWorkerMasterData.html',1,'']]],
   ['write_5fbasis_27',['write_basis',['../classProblem.html#a708234655849d976c5698615cd67c65c',1,'Problem::write_basis()'],['../classSolverAbstract.html#a662f2e2fe8c61d8f61f4cd9e6a45330a',1,'SolverAbstract::write_basis()'],['../classSolverCbc.html#ad8b73e371de8a2a0a28e3bd268357921',1,'SolverCbc::write_basis()'],['../classSolverClp.html#a2948b221ccc7a267a9993d2d2b688d89',1,'SolverClp::write_basis()'],['../classSolverXpress.html#a1cfa539487637bafe3f787d5d13fc5d9',1,'SolverXpress::write_basis()'],['../classNOOPSolver.html#ae1e066dab57c28fe75d5b93864f5275e',1,'NOOPSolver::write_basis()']]],
   ['write_5fdefault_28',['write_default',['../classSimulationOptions.html#ab1572096e9ea6d3cc6272124578b2c49',1,'SimulationOptions']]],

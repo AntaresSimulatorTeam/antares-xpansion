@@ -145,73 +145,90 @@ $(function(){initNavTree('solver__utils_8h_source.html',''); initResizable(true)
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;cassert&gt;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;sstream&gt;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;antares-xpansion/xpansion_interfaces/LogUtils.h&quot;</span></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;antares-xpansion/multisolver_interface/Solver.h&quot;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;antares-xpansion/multisolver_interface/Solver.h&quot;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &quot;antares-xpansion/xpansion_interfaces/LogUtils.h&quot;</span></div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
 <div class="foldopen" id="foldopen00009" data-start="{" data-end="};">
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classInvalidSolverStatusException.html">    9</a></span><span class="keyword">class </span><a class="code hl_class" href="classInvalidSolverStatusException.html">InvalidSolverStatusException</a></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    : <span class="keyword">public</span> LogUtils::XpansionError&lt;std::runtime_error&gt; {</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  <span class="keyword">using </span>LogUtils::XpansionError&lt;std::runtime_error&gt;::XpansionError;</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno"><a class="line" href="classInvalidSolverStatusException.html">    9</a></span><span class="keyword">class </span><a class="code hl_class" href="classInvalidSolverStatusException.html">InvalidSolverStatusException</a>: <span class="keyword">public</span> LogUtils::XpansionError&lt;std::runtime_error&gt;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>{</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="keyword">using </span>LogUtils::XpansionError&lt;std::runtime_error&gt;::XpansionError;</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>};</div>
 </div>
 <div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keywordtype">void</span> solver_getrows(<span class="keyword">const</span> <a class="code hl_class" href="classSolverAbstract.html">SolverAbstract</a> &amp;solver_p, std::vector&lt;int&gt; &amp;mstart_p, std::vector&lt;int&gt; &amp;mclind_p,</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                    std::vector&lt;double&gt; &amp;dmatval_p, <span class="keywordtype">int</span> first_p, <span class="keywordtype">int</span> last_p);</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span> </div>
-<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="keywordtype">void</span> solver_get_obj_func_coeffs(<span class="keyword">const</span> <a class="code hl_class" href="classSolverAbstract.html">SolverAbstract</a> &amp;solver_p,</div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>                                std::vector&lt;double&gt; &amp;obj_p, <span class="keywordtype">int</span> first_p, <span class="keywordtype">int</span> last_p);</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span><span class="keywordtype">void</span> solver_addcols(<a class="code hl_class" href="classSolverAbstract.html">SolverAbstract</a> &amp;solver_p, std::vector&lt;double&gt; <span class="keyword">const</span> &amp;objx_p,</div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>                    std::vector&lt;int&gt; <span class="keyword">const</span> &amp;mstart_p, std::vector&lt;int&gt; <span class="keyword">const</span> &amp;mrwind_p,</div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    std::vector&lt;double&gt; <span class="keyword">const</span> &amp;dmatval_p, std::vector&lt;double&gt; <span class="keyword">const</span> &amp;bdl_p,</div>
-<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>    std::vector&lt;double&gt; <span class="keyword">const</span> &amp;bdu_p, std::vector&lt;char&gt; <span class="keyword">const</span> &amp;colTypes_p,</div>
-<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>    std::vector&lt;std::string&gt; <span class="keyword">const</span> &amp;colNames_p);</div>
-<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span> </div>
-<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span><span class="keywordtype">void</span> solver_addrows(<a class="code hl_class" href="classSolverAbstract.html">SolverAbstract</a> &amp;solver_p, std::vector&lt;char&gt; <span class="keyword">const</span> &amp;qrtype_p,</div>
-<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>                    std::vector&lt;double&gt; <span class="keyword">const</span> &amp;rhs_p,</div>
-<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>                    std::vector&lt;double&gt; <span class="keyword">const</span> &amp;range_p,</div>
-<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>                    std::vector&lt;int&gt; <span class="keyword">const</span> &amp;mstart_p,</div>
-<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                    std::vector&lt;int&gt; <span class="keyword">const</span> &amp;mclind_p,</div>
-<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                    std::vector&lt;double&gt; <span class="keyword">const</span> &amp;dmatval_p,</div>
-<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                    std::vector&lt;std::string&gt; <span class="keyword">const</span> &amp;names = {});</div>
-<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
-<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span><span class="keywordtype">void</span> solver_getlpsolution(<a class="code hl_typedef" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> <span class="keyword">const</span> solver_p,</div>
-<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                          std::vector&lt;double&gt; &amp;x_p);</div>
-<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span> </div>
-<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span><span class="keywordtype">void</span> solver_getlpdual(<a class="code hl_typedef" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> <span class="keyword">const</span> solver_p,</div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>                      std::vector&lt;double&gt; &amp;dual_p);</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span> </div>
-<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span><span class="keywordtype">void</span> solver_getlpreducedcost(<a class="code hl_typedef" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> <span class="keyword">const</span> solver_p,</div>
-<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>                             std::vector&lt;double&gt; &amp;dj_p);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span><span class="keywordtype">void</span> solver_getrows(<span class="keyword">const</span> <a class="code hl_class" href="classSolverAbstract.html">SolverAbstract</a>&amp; solver_p,</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>                    std::vector&lt;int&gt;&amp; mstart_p,</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>                    std::vector&lt;int&gt;&amp; mclind_p,</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>                    std::vector&lt;double&gt;&amp; dmatval_p,</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>                    <span class="keywordtype">int</span> first_p,</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>                    <span class="keywordtype">int</span> last_p);</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="keywordtype">void</span> solver_get_obj_func_coeffs(<span class="keyword">const</span> <a class="code hl_class" href="classSolverAbstract.html">SolverAbstract</a>&amp; solver_p,</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>                                std::vector&lt;double&gt;&amp; obj_p,</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>                                <span class="keywordtype">int</span> first_p,</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>                                <span class="keywordtype">int</span> last_p);</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span> </div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span><span class="keywordtype">void</span> solver_addcols(<a class="code hl_class" href="classSolverAbstract.html">SolverAbstract</a>&amp; solver_p,</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                    <span class="keyword">const</span> std::vector&lt;double&gt;&amp; objx_p,</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                    <span class="keyword">const</span> std::vector&lt;int&gt;&amp; mstart_p,</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                    <span class="keyword">const</span> std::vector&lt;int&gt;&amp; mrwind_p,</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                    <span class="keyword">const</span> std::vector&lt;double&gt;&amp; dmatval_p,</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>                    <span class="keyword">const</span> std::vector&lt;double&gt;&amp; bdl_p,</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>                    <span class="keyword">const</span> std::vector&lt;double&gt;&amp; bdu_p,</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>                    <span class="keyword">const</span> std::vector&lt;char&gt;&amp; colTypes_p,</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>                    <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; colNames_p);</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span> </div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="keywordtype">void</span> solver_addrows(<a class="code hl_class" href="classSolverAbstract.html">SolverAbstract</a>&amp; solver_p,</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                    <span class="keyword">const</span> std::vector&lt;char&gt;&amp; qrtype_p,</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                    <span class="keyword">const</span> std::vector&lt;double&gt;&amp; rhs_p,</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>                    <span class="keyword">const</span> std::vector&lt;double&gt;&amp; range_p,</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>                    <span class="keyword">const</span> std::vector&lt;int&gt;&amp; mstart_p,</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>                    <span class="keyword">const</span> std::vector&lt;int&gt;&amp; mclind_p,</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                    <span class="keyword">const</span> std::vector&lt;double&gt;&amp; dmatval_p,</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>                    <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; names = {});</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span> </div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span><span class="keywordtype">void</span> solver_getlpsolution(<span class="keyword">const</span> <a class="code hl_typedef" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> solver_p, std::vector&lt;double&gt;&amp; x_p);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span> </div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span><span class="keywordtype">void</span> solver_getlpdual(<span class="keyword">const</span> <a class="code hl_typedef" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> solver_p, std::vector&lt;double&gt;&amp; dual_p);</div>
 <div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span> </div>
-<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span><span class="keywordtype">void</span> solver_getrowtype(<span class="keyword">const</span> <a class="code hl_class" href="classSolverAbstract.html">SolverAbstract</a> &amp;solver_p,</div>
-<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>                       std::vector&lt;char&gt; &amp;qrtype_p, <span class="keywordtype">int</span> first_p, <span class="keywordtype">int</span> last_p);</div>
-<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span> </div>
-<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span><span class="keywordtype">void</span> solver_getrhs(<span class="keyword">const</span> <a class="code hl_class" href="classSolverAbstract.html">SolverAbstract</a> &amp;solver_p, std::vector&lt;double&gt; &amp;rhs_p, <span class="keywordtype">int</span> first_p, <span class="keywordtype">int</span> last_p);</div>
-<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span> </div>
-<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span><span class="keywordtype">void</span> solver_getrhsrange(<a class="code hl_typedef" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> <span class="keyword">const</span> solver_p,</div>
-<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>                        std::vector&lt;double&gt; &amp;range_p, <span class="keywordtype">int</span> first_p, <span class="keywordtype">int</span> last_p);</div>
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno">  138</span><span class="keywordtype">void</span> solver_getlpreducedcost(<span class="keyword">const</span> <a class="code hl_typedef" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> solver_p, std::vector&lt;double&gt;&amp; dj_p);</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span> </div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span><span class="keywordtype">void</span> solver_getrowtype(<span class="keyword">const</span> <a class="code hl_class" href="classSolverAbstract.html">SolverAbstract</a>&amp; solver_p,</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>                       std::vector&lt;char&gt;&amp; qrtype_p,</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>                       <span class="keywordtype">int</span> first_p,</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>                       <span class="keywordtype">int</span> last_p);</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span> </div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span><span class="keywordtype">void</span> solver_getrhs(<span class="keyword">const</span> <a class="code hl_class" href="classSolverAbstract.html">SolverAbstract</a>&amp; solver_p,</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>                   std::vector&lt;double&gt;&amp; rhs_p,</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>                   <span class="keywordtype">int</span> first_p,</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>                   <span class="keywordtype">int</span> last_p);</div>
 <div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
-<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span><span class="keywordtype">void</span> solver_getcolinfo(<span class="keyword">const</span> <a class="code hl_class" href="classSolverAbstract.html">SolverAbstract</a> &amp;solver_p,</div>
-<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>                       std::vector&lt;char&gt; &amp;coltype_p, std::vector&lt;double&gt; &amp;bdl_p,</div>
-<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span>                       std::vector&lt;double&gt; &amp;bdu_p, <span class="keywordtype">int</span> first_p, <span class="keywordtype">int</span> last_p);</div>
-<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span> </div>
-<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span><span class="keywordtype">void</span> solver_deactivaterows(<a class="code hl_typedef" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> solver_p,</div>
-<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>                           std::vector&lt;int&gt; <span class="keyword">const</span> &amp;mindex);</div>
-<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span> </div>
-<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span><span class="keywordtype">void</span> solver_getbasis(<a class="code hl_typedef" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> solver_p, std::vector&lt;int&gt; &amp;rstatus_p,</div>
-<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span>                     std::vector&lt;int&gt; &amp;cstatus_p);</div>
-<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span> </div>
-<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span><span class="keywordtype">void</span> solver_chgbounds(<a class="code hl_typedef" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> solver_p,</div>
-<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>                      std::vector&lt;int&gt; <span class="keyword">const</span> &amp;mindex_p,</div>
-<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span>                      std::vector&lt;char&gt; <span class="keyword">const</span> &amp;qbtype_p,</div>
-<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span>                      std::vector&lt;double&gt; <span class="keyword">const</span> &amp;bnd_p);</div>
-<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span> </div>
-<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span><span class="keywordtype">void</span> solver_rename_vars(<a class="code hl_class" href="classSolverAbstract.html">SolverAbstract</a> *outSolver_p,</div>
-<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>                        <span class="keyword">const</span> std::vector&lt;std::string&gt; &amp;names_p);</div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span><span class="keywordtype">void</span> solver_getrhsrange(<span class="keyword">const</span> <a class="code hl_typedef" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> solver_p,</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>                        std::vector&lt;double&gt;&amp; range_p,</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>                        <span class="keywordtype">int</span> first_p,</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>                        <span class="keywordtype">int</span> last_p);</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span> </div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span><span class="keywordtype">void</span> solver_getcolinfo(<span class="keyword">const</span> <a class="code hl_class" href="classSolverAbstract.html">SolverAbstract</a>&amp; solver_p,</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>                       std::vector&lt;char&gt;&amp; coltype_p,</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span>                       std::vector&lt;double&gt;&amp; bdl_p,</div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>                       std::vector&lt;double&gt;&amp; bdu_p,</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>                       <span class="keywordtype">int</span> first_p,</div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>                       <span class="keywordtype">int</span> last_p);</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span> </div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span><span class="keywordtype">void</span> solver_deactivaterows(<a class="code hl_typedef" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> solver_p, <span class="keyword">const</span> std::vector&lt;int&gt;&amp; mindex);</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span> </div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span><span class="keywordtype">void</span> solver_getbasis(<a class="code hl_typedef" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> solver_p,</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span>                     std::vector&lt;int&gt;&amp; rstatus_p,</div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>                     std::vector&lt;int&gt;&amp; cstatus_p);</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span> </div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span><span class="keywordtype">void</span> solver_chgbounds(<a class="code hl_typedef" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> solver_p,</div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>                      <span class="keyword">const</span> std::vector&lt;int&gt;&amp; mindex_p,</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>                      <span class="keyword">const</span> std::vector&lt;char&gt;&amp; qbtype_p,</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span>                      <span class="keyword">const</span> std::vector&lt;double&gt;&amp; bnd_p);</div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span> </div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span><span class="keywordtype">void</span> solver_rename_vars(<a class="code hl_class" href="classSolverAbstract.html">SolverAbstract</a>* outSolver_p, <span class="keyword">const</span> std::vector&lt;std::string&gt;&amp; names_p);</div>
 <div class="ttc" id="aclassInvalidSolverStatusException_html"><div class="ttname"><a href="classInvalidSolverStatusException.html">InvalidSolverStatusException</a></div><div class="ttdef"><b>Definition</b> solver_utils.h:10</div></div>
-<div class="ttc" id="aclassSolverAbstract_html"><div class="ttname"><a href="classSolverAbstract.html">SolverAbstract</a></div><div class="ttdef"><b>Definition</b> SolverAbstract.h:170</div></div>
-<div class="ttc" id="aclassSolverAbstract_html_aa8908e36c1d938344751665a8fa63076"><div class="ttname"><a href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a></div><div class="ttdeci">std::shared_ptr&lt; SolverAbstract &gt; Ptr</div><div class="ttdef"><b>Definition</b> SolverAbstract.h:181</div></div>
+<div class="ttc" id="aclassSolverAbstract_html"><div class="ttname"><a href="classSolverAbstract.html">SolverAbstract</a></div><div class="ttdef"><b>Definition</b> SolverAbstract.h:200</div></div>
+<div class="ttc" id="aclassSolverAbstract_html_aa8908e36c1d938344751665a8fa63076"><div class="ttname"><a href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a></div><div class="ttdeci">std::shared_ptr&lt; SolverAbstract &gt; Ptr</div><div class="ttdef"><b>Definition</b> SolverAbstract.h:215</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

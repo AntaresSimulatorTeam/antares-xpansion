@@ -146,29 +146,28 @@ $(function(){initNavTree('ProblemVariablesFromProblemAdapter_8h_source.html','')
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h&quot;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
 <div class="foldopen" id="foldopen00006" data-start="{" data-end="};">
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="classProblemVariablesFromProblemAdapter.html">    6</a></span><span class="keyword">class </span><a class="code hl_class" href="classProblemVariablesFromProblemAdapter.html">ProblemVariablesFromProblemAdapter</a></div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    : <span class="keyword">public</span> <a class="code hl_class" href="classIProblemVariablesProviderPort.html">IProblemVariablesProviderPort</a> {</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>  <a class="code hl_class" href="classProblemVariablesFromProblemAdapter.html">ProblemVariablesFromProblemAdapter</a>(</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>      std::shared_ptr&lt;Problem&gt; problem, std::vector&lt;ActiveLink&gt; vector_1,</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>      std::shared_ptr&lt;ProblemGenerationLog::ProblemGenerationLogger&gt;</div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>          shared_ptr_1);</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  <a class="code hl_struct" href="structProblemVariables.html">ProblemVariables</a> Provide() <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="classProblemVariablesFromProblemAdapter.html">    6</a></span><span class="keyword">class </span><a class="code hl_class" href="classProblemVariablesFromProblemAdapter.html">ProblemVariablesFromProblemAdapter</a>: <span class="keyword">public</span> <a class="code hl_class" href="classIProblemVariablesProviderPort.html">IProblemVariablesProviderPort</a></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>{</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <a class="code hl_class" href="classProblemVariablesFromProblemAdapter.html">ProblemVariablesFromProblemAdapter</a>(</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>      std::shared_ptr&lt;Problem&gt; problem,</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>      std::vector&lt;ActiveLink&gt; vector_1,</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>      std::shared_ptr&lt;ProblemGenerationLog::ProblemGenerationLogger&gt; shared_ptr_1);</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <a class="code hl_struct" href="structProblemVariables.html">ProblemVariables</a> Provide() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <span class="keywordtype">void</span> extract_variables(</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>      std::map&lt;colId, ColumnsToChange&gt;&amp; p_ntc_columns,</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>      std::map&lt;colId, ColumnsToChange&gt;&amp; p_direct_cost_columns,</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>      std::map&lt;colId, ColumnsToChange&gt;&amp; p_indirect_cost_columns) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  std::shared_ptr&lt;Problem&gt; problem_;</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="keyword">const</span> std::vector&lt;ActiveLink&gt; active_links_;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  std::shared_ptr&lt;ProblemGenerationLog::ProblemGenerationLogger&gt; logger_;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>};</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keywordtype">void</span> extract_variables(std::map&lt;colId, ColumnsToChange&gt;&amp; p_ntc_columns,</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>                           std::map&lt;colId, ColumnsToChange&gt;&amp; p_direct_cost_columns,</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>                           std::map&lt;colId, ColumnsToChange&gt;&amp; p_indirect_cost_columns) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>    std::shared_ptr&lt;Problem&gt; problem_;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keyword">const</span> std::vector&lt;ActiveLink&gt; active_links_;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    std::shared_ptr&lt;ProblemGenerationLog::ProblemGenerationLogger&gt; logger_;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>};</div>
 </div>
-<div class="ttc" id="aclassIProblemVariablesProviderPort_html"><div class="ttname"><a href="classIProblemVariablesProviderPort.html">IProblemVariablesProviderPort</a></div><div class="ttdef"><b>Definition</b> IProblemVariablesProviderPort.h:19</div></div>
+<div class="ttc" id="aclassIProblemVariablesProviderPort_html"><div class="ttname"><a href="classIProblemVariablesProviderPort.html">IProblemVariablesProviderPort</a></div><div class="ttdef"><b>Definition</b> IProblemVariablesProviderPort.h:21</div></div>
 <div class="ttc" id="aclassProblemVariablesFromProblemAdapter_html"><div class="ttname"><a href="classProblemVariablesFromProblemAdapter.html">ProblemVariablesFromProblemAdapter</a></div><div class="ttdef"><b>Definition</b> ProblemVariablesFromProblemAdapter.h:7</div></div>
-<div class="ttc" id="astructProblemVariables_html"><div class="ttname"><a href="structProblemVariables.html">ProblemVariables</a></div><div class="ttdef"><b>Definition</b> IProblemVariablesProviderPort.h:12</div></div>
+<div class="ttc" id="astructProblemVariables_html"><div class="ttname"><a href="structProblemVariables.html">ProblemVariables</a></div><div class="ttdef"><b>Definition</b> IProblemVariablesProviderPort.h:13</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -146,17 +146,17 @@ $(function(){initNavTree('FileWriter_8h_source.html',''); initResizable(true); }
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &quot;antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h&quot;</span></div>
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span> </div>
 <div class="foldopen" id="foldopen00006" data-start="{" data-end="};">
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="classFileWriter.html">    6</a></span><span class="keyword">class </span><a class="code hl_class" href="classFileWriter.html">FileWriter</a> : <span class="keyword">public</span> <a class="code hl_class" href="classIProblemWriter.html">IProblemWriter</a> {</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>  <span class="keywordtype">void</span> Write_problem(<a class="code hl_class" href="classProblem.html">Problem</a> *in_prblm, <span class="keyword">const</span> std::filesystem::path &amp;output_file) <span class="keyword">override</span>;</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  <a class="code hl_class" href="classFileWriter.html">FileWriter</a>(std::filesystem::path lp_dir);</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>  std::filesystem::path lp_dir_;</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno"><a class="line" href="classFileWriter.html">    6</a></span><span class="keyword">class </span><a class="code hl_class" href="classFileWriter.html">FileWriter</a>: <span class="keyword">public</span> <a class="code hl_class" href="classIProblemWriter.html">IProblemWriter</a></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>{</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>    <span class="keywordtype">void</span> Write_problem(<a class="code hl_class" href="classProblem.html">Problem</a>* in_prblm, <span class="keyword">const</span> std::filesystem::path&amp; output_file) <span class="keyword">override</span>;</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>    <a class="code hl_class" href="classFileWriter.html">FileWriter</a>(std::filesystem::path lp_dir);</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    std::filesystem::path lp_dir_;</div>
 <div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>};</div>
 </div>
-<div class="ttc" id="aclassFileWriter_html"><div class="ttname"><a href="classFileWriter.html">FileWriter</a></div><div class="ttdef"><b>Definition</b> FileWriter.h:6</div></div>
-<div class="ttc" id="aclassIProblemWriter_html"><div class="ttname"><a href="classIProblemWriter.html">IProblemWriter</a></div><div class="ttdef"><b>Definition</b> IProblemWriter.h:8</div></div>
-<div class="ttc" id="aclassProblem_html"><div class="ttname"><a href="classProblem.html">Problem</a></div><div class="ttdoc">Decorator to the SolverAbstract class.</div><div class="ttdef"><b>Definition</b> Problem.h:15</div></div>
+<div class="ttc" id="aclassFileWriter_html"><div class="ttname"><a href="classFileWriter.html">FileWriter</a></div><div class="ttdef"><b>Definition</b> FileWriter.h:7</div></div>
+<div class="ttc" id="aclassIProblemWriter_html"><div class="ttname"><a href="classIProblemWriter.html">IProblemWriter</a></div><div class="ttdef"><b>Definition</b> IProblemWriter.h:10</div></div>
+<div class="ttc" id="aclassProblem_html"><div class="ttname"><a href="classProblem.html">Problem</a></div><div class="ttdoc">Decorator to the SolverAbstract class.</div><div class="ttdef"><b>Definition</b> Problem.h:16</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

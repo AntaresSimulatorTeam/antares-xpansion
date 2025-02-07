@@ -145,44 +145,44 @@ $(function(){initNavTree('SimulationOptions_8h_source.html',''); initResizable(t
 <div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &quot;common.h&quot;</span></div>
 <div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
 <div class="foldopen" id="foldopen00005" data-start="{" data-end="};">
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="classSimulationOptions.html">    5</a></span><span class="keyword">class </span><a class="code hl_class" href="classSimulationOptions.html">SimulationOptions</a> {</div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#define BENDERS_OPTIONS_MACRO(name__, type__, default__, \</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">                              deserialization_method__)  \</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">  type__ name__;</span></div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;SimulationOptions.hxx&quot;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#undef BENDERS_OPTIONS_MACRO</span></div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>  <a class="code hl_function" href="classSimulationOptions.html#a584e1994f1a99cb253a4f5bb514f0bd9">SimulationOptions</a>();</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>  <span class="keyword">explicit</span> <a class="code hl_function" href="classSimulationOptions.html#a584e1994f1a99cb253a4f5bb514f0bd9">SimulationOptions</a>(<span class="keyword">const</span> std::filesystem::path &amp;options_filename);</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classSimulationOptions.html#ae54424a28d9548d14640a68a60c3547e">read</a>(<span class="keyword">const</span> std::filesystem::path &amp;file_name);</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classSimulationOptions.html#a9f76fa0b9615eac54d0e6394bbe50df8">print</a>(std::ostream &amp;stream) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <a class="code hl_struct" href="structBendersBaseOptions.html">BendersBaseOptions</a> get_benders_options() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <a class="code hl_struct" href="structBaseOptions.html">BaseOptions</a> get_base_options() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <a class="code hl_struct" href="structExternalLoopOptions.html">ExternalLoopOptions</a> GetExternalLoopOptions() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="keywordtype">void</span> <a class="code hl_function" href="classSimulationOptions.html#ab1572096e9ea6d3cc6272124578b2c49">write_default</a>() <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  Str2Dbl _weights;</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span> </div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>  <span class="keywordtype">void</span> set_weights();</div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>  Json::Value get_value_from_json(<span class="keyword">const</span> std::filesystem::path &amp;file_name);</div>
-<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span> </div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>  <span class="keyword">class </span>InvalidOptionFileException : <span class="keyword">public</span> std::runtime_error {</div>
-<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>   <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="keyword">explicit</span> InvalidOptionFileException(<span class="keyword">const</span> std::string &amp;arg);</div>
-<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>  };</div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno"><a class="line" href="classSimulationOptions.html">    5</a></span><span class="keyword">class </span><a class="code hl_class" href="classSimulationOptions.html">SimulationOptions</a></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span>{</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#define BENDERS_OPTIONS_MACRO(name__, type__, default__, deserialization_method__) type__ name__;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;SimulationOptions.hxx&quot;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#undef BENDERS_OPTIONS_MACRO</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>    <a class="code hl_function" href="classSimulationOptions.html#a584e1994f1a99cb253a4f5bb514f0bd9">SimulationOptions</a>();</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classSimulationOptions.html#a584e1994f1a99cb253a4f5bb514f0bd9">SimulationOptions</a>(<span class="keyword">const</span> std::filesystem::path&amp; options_filename);</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classSimulationOptions.html#ae54424a28d9548d14640a68a60c3547e">read</a>(<span class="keyword">const</span> std::filesystem::path&amp; file_name);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classSimulationOptions.html#a9f76fa0b9615eac54d0e6394bbe50df8">print</a>(std::ostream&amp; stream) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    <a class="code hl_struct" href="structBendersBaseOptions.html">BendersBaseOptions</a> get_benders_options() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <a class="code hl_struct" href="structBaseOptions.html">BaseOptions</a> get_base_options() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>    <a class="code hl_struct" href="structExternalLoopOptions.html">ExternalLoopOptions</a> GetExternalLoopOptions() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span> </div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classSimulationOptions.html#ab1572096e9ea6d3cc6272124578b2c49">write_default</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>    Str2Dbl _weights;</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span> </div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>    <span class="keywordtype">void</span> set_weights();</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    Json::Value get_value_from_json(<span class="keyword">const</span> std::filesystem::path&amp; file_name);</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    <span class="keyword">class </span>InvalidOptionFileException: <span class="keyword">public</span> std::runtime_error</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    {</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>        <span class="keyword">explicit</span> InvalidOptionFileException(<span class="keyword">const</span> std::string&amp; arg);</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    };</div>
 <div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>};</div>
 </div>
-<div class="ttc" id="aclassSimulationOptions_html"><div class="ttname"><a href="classSimulationOptions.html">SimulationOptions</a></div><div class="ttdef"><b>Definition</b> SimulationOptions.h:5</div></div>
-<div class="ttc" id="aclassSimulationOptions_html_a584e1994f1a99cb253a4f5bb514f0bd9"><div class="ttname"><a href="classSimulationOptions.html#a584e1994f1a99cb253a4f5bb514f0bd9">SimulationOptions::SimulationOptions</a></div><div class="ttdeci">SimulationOptions(const std::filesystem::path &amp;options_filename)</div><div class="ttdoc">Constructor of Benders Options.</div><div class="ttdef"><b>Definition</b> SimulationOptions.cpp:30</div></div>
-<div class="ttc" id="aclassSimulationOptions_html_a9f76fa0b9615eac54d0e6394bbe50df8"><div class="ttname"><a href="classSimulationOptions.html#a9f76fa0b9615eac54d0e6394bbe50df8">SimulationOptions::print</a></div><div class="ttdeci">void print(std::ostream &amp;stream) const</div><div class="ttdoc">Print all Benders options.</div><div class="ttdef"><b>Definition</b> SimulationOptions.cpp:119</div></div>
-<div class="ttc" id="aclassSimulationOptions_html_ab1572096e9ea6d3cc6272124578b2c49"><div class="ttname"><a href="classSimulationOptions.html#ab1572096e9ea6d3cc6272124578b2c49">SimulationOptions::write_default</a></div><div class="ttdeci">void write_default() const</div><div class="ttdoc">Write default options in &quot;options_default&quot; txt file.</div><div class="ttdef"><b>Definition</b> SimulationOptions.cpp:53</div></div>
-<div class="ttc" id="aclassSimulationOptions_html_ae54424a28d9548d14640a68a60c3547e"><div class="ttname"><a href="classSimulationOptions.html#ae54424a28d9548d14640a68a60c3547e">SimulationOptions::read</a></div><div class="ttdeci">void read(const std::filesystem::path &amp;file_name)</div><div class="ttdoc">Read Benders options from file path.</div><div class="ttdef"><b>Definition</b> SimulationOptions.cpp:64</div></div>
-<div class="ttc" id="astructBaseOptions_html"><div class="ttname"><a href="structBaseOptions.html">BaseOptions</a></div><div class="ttdef"><b>Definition</b> common.h:146</div></div>
-<div class="ttc" id="astructBendersBaseOptions_html"><div class="ttname"><a href="structBendersBaseOptions.html">BendersBaseOptions</a></div><div class="ttdef"><b>Definition</b> common.h:171</div></div>
-<div class="ttc" id="astructExternalLoopOptions_html"><div class="ttname"><a href="structExternalLoopOptions.html">ExternalLoopOptions</a></div><div class="ttdef"><b>Definition</b> common.h:166</div></div>
+<div class="ttc" id="aclassSimulationOptions_html"><div class="ttname"><a href="classSimulationOptions.html">SimulationOptions</a></div><div class="ttdef"><b>Definition</b> SimulationOptions.h:6</div></div>
+<div class="ttc" id="aclassSimulationOptions_html_a584e1994f1a99cb253a4f5bb514f0bd9"><div class="ttname"><a href="classSimulationOptions.html#a584e1994f1a99cb253a4f5bb514f0bd9">SimulationOptions::SimulationOptions</a></div><div class="ttdeci">SimulationOptions(const std::filesystem::path &amp;options_filename)</div><div class="ttdoc">Constructor of Benders Options.</div><div class="ttdef"><b>Definition</b> SimulationOptions.cpp:34</div></div>
+<div class="ttc" id="aclassSimulationOptions_html_a9f76fa0b9615eac54d0e6394bbe50df8"><div class="ttname"><a href="classSimulationOptions.html#a9f76fa0b9615eac54d0e6394bbe50df8">SimulationOptions::print</a></div><div class="ttdeci">void print(std::ostream &amp;stream) const</div><div class="ttdoc">Print all Benders options.</div><div class="ttdef"><b>Definition</b> SimulationOptions.cpp:134</div></div>
+<div class="ttc" id="aclassSimulationOptions_html_ab1572096e9ea6d3cc6272124578b2c49"><div class="ttname"><a href="classSimulationOptions.html#ab1572096e9ea6d3cc6272124578b2c49">SimulationOptions::write_default</a></div><div class="ttdeci">void write_default() const</div><div class="ttdoc">Write default options in &quot;options_default&quot; txt file.</div><div class="ttdef"><b>Definition</b> SimulationOptions.cpp:56</div></div>
+<div class="ttc" id="aclassSimulationOptions_html_ae54424a28d9548d14640a68a60c3547e"><div class="ttname"><a href="classSimulationOptions.html#ae54424a28d9548d14640a68a60c3547e">SimulationOptions::read</a></div><div class="ttdeci">void read(const std::filesystem::path &amp;file_name)</div><div class="ttdoc">Read Benders options from file path.</div><div class="ttdef"><b>Definition</b> SimulationOptions.cpp:68</div></div>
+<div class="ttc" id="astructBaseOptions_html"><div class="ttname"><a href="structBaseOptions.html">BaseOptions</a></div><div class="ttdef"><b>Definition</b> common.h:179</div></div>
+<div class="ttc" id="astructBendersBaseOptions_html"><div class="ttname"><a href="structBendersBaseOptions.html">BendersBaseOptions</a></div><div class="ttdef"><b>Definition</b> common.h:207</div></div>
+<div class="ttc" id="astructExternalLoopOptions_html"><div class="ttname"><a href="structExternalLoopOptions.html">ExternalLoopOptions</a></div><div class="ttdef"><b>Definition</b> common.h:201</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

@@ -147,54 +147,55 @@ $(function(){initNavTree('LinkProfile_8h_source.html',''); initResizable(true); 
 <div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;array&gt;</span></div>
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;exception&gt;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;antares-xpansion/xpansion_interfaces/LogUtils.h&quot;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h&quot;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h&quot;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &quot;antares-xpansion/xpansion_interfaces/LogUtils.h&quot;</span></div>
 <div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &quot;antares-xpansion/xpansion_interfaces/StringManip.h&quot;</span></div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
 <div class="foldopen" id="foldopen00018" data-start="{" data-end="};">
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classLinkProfile.html">   18</a></span><span class="keyword">class </span><a class="code hl_struct" href="classLinkProfile.html">LinkProfile</a> {</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> <span class="keyword">public</span>:</div>
-<div class="foldopen" id="foldopen00024" data-start="{" data-end="}">
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="classLinkProfile.html#a9967624837aba175ea61afcdfc5775f0">   24</a></span>  <span class="keyword">explicit</span> <a class="code hl_function" href="classLinkProfile.html#a9967624837aba175ea61afcdfc5775f0">LinkProfile</a>(</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>      std::shared_ptr&lt;ProblemGenerationLog::ProblemGenerationLogger&gt; logger)</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>      : logger_(logger) {}</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="classLinkProfile.html">   18</a></span><span class="keyword">class </span><a class="code hl_struct" href="classLinkProfile.html">LinkProfile</a></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>{</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">public</span>:</div>
+<div class="foldopen" id="foldopen00025" data-start="{" data-end="}">
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="classLinkProfile.html#a9967624837aba175ea61afcdfc5775f0">   25</a></span>    <span class="keyword">explicit</span> <a class="code hl_function" href="classLinkProfile.html#a9967624837aba175ea61afcdfc5775f0">LinkProfile</a>(std::shared_ptr&lt;ProblemGenerationLog::ProblemGenerationLogger&gt; logger):</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>        logger_(logger)</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    {</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    }</div>
 </div>
-<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span> </div>
-<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="classLinkProfile.html#ab19dbbb3f99b2f8877bc657c8776093a">getDirectProfile</a>(<span class="keywordtype">size_t</span> hour) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span> </div>
-<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span>  <span class="keywordtype">double</span> <a class="code hl_function" href="classLinkProfile.html#a30c74a7ab017b95f2c305c5ed2b5fe86">getIndirectProfile</a>(<span class="keywordtype">size_t</span> hour) <span class="keyword">const</span>;</div>
-<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span> </div>
-<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>  <span class="comment">// ADR</span></div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="classLinkProfile.html#a9c35d623b9b5420b08e59ff9ad6c6565">   46</a></span>  std::vector&lt;double&gt; <a class="code hl_variable" href="classLinkProfile.html#a9c35d623b9b5420b08e59ff9ad6c6565">direct_link_profile</a> =</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>      std::vector&lt;double&gt;(NUMBER_OF_HOUR_PER_YEAR, 1);</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="classLinkProfile.html#adf7b5092f19ec8f5f63ce3b8fd69aba7">   49</a></span>  std::vector&lt;double&gt; <a class="code hl_variable" href="classLinkProfile.html#adf7b5092f19ec8f5f63ce3b8fd69aba7">indirect_link_profile</a> =</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>      std::vector&lt;double&gt;(NUMBER_OF_HOUR_PER_YEAR, 1);</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classLinkProfile.html#ab19dbbb3f99b2f8877bc657c8776093a">getDirectProfile</a>(<span class="keywordtype">size_t</span> hour) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span> </div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordtype">double</span> <a class="code hl_function" href="classLinkProfile.html#a30c74a7ab017b95f2c305c5ed2b5fe86">getIndirectProfile</a>(<span class="keywordtype">size_t</span> hour) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span> </div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="comment">// ADR</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="classLinkProfile.html#a9c35d623b9b5420b08e59ff9ad6c6565">   48</a></span>    std::vector&lt;double&gt; <a class="code hl_variable" href="classLinkProfile.html#a9c35d623b9b5420b08e59ff9ad6c6565">direct_link_profile</a> = std::vector&lt;double&gt;(NUMBER_OF_HOUR_PER_YEAR, 1);</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="classLinkProfile.html#adf7b5092f19ec8f5f63ce3b8fd69aba7">   50</a></span>    std::vector&lt;double&gt; <a class="code hl_variable" href="classLinkProfile.html#adf7b5092f19ec8f5f63ce3b8fd69aba7">indirect_link_profile</a> = std::vector&lt;double&gt;(NUMBER_OF_HOUR_PER_YEAR, 1);</div>
 <div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>  <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> <a class="code hl_struct" href="classLinkProfile.html">LinkProfile</a>&amp; rhs)<span class="keyword"> const </span>{</div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    <span class="keywordflow">return</span> <a class="code hl_variable" href="classLinkProfile.html#a9c35d623b9b5420b08e59ff9ad6c6565">direct_link_profile</a> == rhs.<a class="code hl_variable" href="classLinkProfile.html#a9c35d623b9b5420b08e59ff9ad6c6565">direct_link_profile</a> &amp;&amp;</div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>           <a class="code hl_variable" href="classLinkProfile.html#adf7b5092f19ec8f5f63ce3b8fd69aba7">indirect_link_profile</a> == rhs.<a class="code hl_variable" href="classLinkProfile.html#adf7b5092f19ec8f5f63ce3b8fd69aba7">indirect_link_profile</a>;</div>
-<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>  }</div>
-<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span> </div>
-<div class="foldopen" id="foldopen00057" data-start="{" data-end="};">
-<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="classLinkProfile_1_1InvalidHourForProfile.html">   57</a></span>  <span class="keyword">class </span><a class="code hl_class" href="classLinkProfile_1_1InvalidHourForProfile.html">InvalidHourForProfile</a></div>
-<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>      : <span class="keyword">public</span> LogUtils::XpansionError&lt;std::invalid_argument&gt; {</div>
-<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    <span class="keyword">using </span>LogUtils::XpansionError&lt;std::invalid_argument&gt;::XpansionError;</div>
-<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>  };</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>    <span class="keywordtype">bool</span> operator==(<span class="keyword">const</span> <a class="code hl_struct" href="classLinkProfile.html">LinkProfile</a>&amp; rhs)<span class="keyword"> const</span></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="keyword">    </span>{</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>        <span class="keywordflow">return</span> <a class="code hl_variable" href="classLinkProfile.html#a9c35d623b9b5420b08e59ff9ad6c6565">direct_link_profile</a> == rhs.<a class="code hl_variable" href="classLinkProfile.html#a9c35d623b9b5420b08e59ff9ad6c6565">direct_link_profile</a></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>               &amp;&amp; <a class="code hl_variable" href="classLinkProfile.html#adf7b5092f19ec8f5f63ce3b8fd69aba7">indirect_link_profile</a> == rhs.<a class="code hl_variable" href="classLinkProfile.html#adf7b5092f19ec8f5f63ce3b8fd69aba7">indirect_link_profile</a>;</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>    }</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span> </div>
+<div class="foldopen" id="foldopen00058" data-start="{" data-end="};">
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno"><a class="line" href="classLinkProfile_1_1InvalidHourForProfile.html">   58</a></span>    <span class="keyword">class </span><a class="code hl_class" href="classLinkProfile_1_1InvalidHourForProfile.html">InvalidHourForProfile</a>: <span class="keyword">public</span> LogUtils::XpansionError&lt;std::invalid_argument&gt;</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <span class="keyword">using </span>LogUtils::XpansionError&lt;std::invalid_argument&gt;::XpansionError;</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    };</div>
 </div>
-<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span> </div>
-<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> <span class="keyword">private</span>:</div>
-<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>  std::shared_ptr&lt;ProblemGenerationLog::ProblemGenerationLogger&gt; logger_;</div>
-<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>};</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span> </div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span>    std::shared_ptr&lt;ProblemGenerationLog::ProblemGenerationLogger&gt; logger_;</div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>};</div>
 </div>
-<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span> </div>
-<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="preprocessor">#endif  </span><span class="comment">// ANTARESXPANSION_LINKPROFILE_H</span></div>
-<div class="ttc" id="aclassLinkProfile_1_1InvalidHourForProfile_html"><div class="ttname"><a href="classLinkProfile_1_1InvalidHourForProfile.html">LinkProfile::InvalidHourForProfile</a></div><div class="ttdef"><b>Definition</b> LinkProfile.h:58</div></div>
-<div class="ttc" id="aclassLinkProfile_html"><div class="ttname"><a href="classLinkProfile.html">LinkProfile</a></div><div class="ttdoc">LinkProfile structure.</div><div class="ttdef"><b>Definition</b> LinkProfile.h:18</div></div>
-<div class="ttc" id="aclassLinkProfile_html_a30c74a7ab017b95f2c305c5ed2b5fe86"><div class="ttname"><a href="classLinkProfile.html#a30c74a7ab017b95f2c305c5ed2b5fe86">LinkProfile::getIndirectProfile</a></div><div class="ttdeci">double getIndirectProfile(size_t hour) const</div><div class="ttdoc">returns the value of a direct link profile</div><div class="ttdef"><b>Definition</b> LinkProfile.cpp:18</div></div>
-<div class="ttc" id="aclassLinkProfile_html_a9967624837aba175ea61afcdfc5775f0"><div class="ttname"><a href="classLinkProfile.html#a9967624837aba175ea61afcdfc5775f0">LinkProfile::LinkProfile</a></div><div class="ttdeci">LinkProfile(std::shared_ptr&lt; ProblemGenerationLog::ProblemGenerationLogger &gt; logger)</div><div class="ttdoc">LinkProfile default constructor.</div><div class="ttdef"><b>Definition</b> LinkProfile.h:24</div></div>
-<div class="ttc" id="aclassLinkProfile_html_a9c35d623b9b5420b08e59ff9ad6c6565"><div class="ttname"><a href="classLinkProfile.html#a9c35d623b9b5420b08e59ff9ad6c6565">LinkProfile::direct_link_profile</a></div><div class="ttdeci">std::vector&lt; double &gt; direct_link_profile</div><div class="ttdoc">direct linkprofile values</div><div class="ttdef"><b>Definition</b> LinkProfile.h:46</div></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="preprocessor">#endif </span><span class="comment">// ANTARESXPANSION_LINKPROFILE_H</span></div>
+<div class="ttc" id="aclassLinkProfile_1_1InvalidHourForProfile_html"><div class="ttname"><a href="classLinkProfile_1_1InvalidHourForProfile.html">LinkProfile::InvalidHourForProfile</a></div><div class="ttdef"><b>Definition</b> LinkProfile.h:59</div></div>
+<div class="ttc" id="aclassLinkProfile_html"><div class="ttname"><a href="classLinkProfile.html">LinkProfile</a></div><div class="ttdoc">LinkProfile structure.</div><div class="ttdef"><b>Definition</b> LinkProfile.h:19</div></div>
+<div class="ttc" id="aclassLinkProfile_html_a30c74a7ab017b95f2c305c5ed2b5fe86"><div class="ttname"><a href="classLinkProfile.html#a30c74a7ab017b95f2c305c5ed2b5fe86">LinkProfile::getIndirectProfile</a></div><div class="ttdeci">double getIndirectProfile(size_t hour) const</div><div class="ttdoc">returns the value of a direct link profile</div><div class="ttdef"><b>Definition</b> LinkProfile.cpp:20</div></div>
+<div class="ttc" id="aclassLinkProfile_html_a9967624837aba175ea61afcdfc5775f0"><div class="ttname"><a href="classLinkProfile.html#a9967624837aba175ea61afcdfc5775f0">LinkProfile::LinkProfile</a></div><div class="ttdeci">LinkProfile(std::shared_ptr&lt; ProblemGenerationLog::ProblemGenerationLogger &gt; logger)</div><div class="ttdoc">LinkProfile default constructor.</div><div class="ttdef"><b>Definition</b> LinkProfile.h:25</div></div>
+<div class="ttc" id="aclassLinkProfile_html_a9c35d623b9b5420b08e59ff9ad6c6565"><div class="ttname"><a href="classLinkProfile.html#a9c35d623b9b5420b08e59ff9ad6c6565">LinkProfile::direct_link_profile</a></div><div class="ttdeci">std::vector&lt; double &gt; direct_link_profile</div><div class="ttdoc">direct linkprofile values</div><div class="ttdef"><b>Definition</b> LinkProfile.h:48</div></div>
 <div class="ttc" id="aclassLinkProfile_html_ab19dbbb3f99b2f8877bc657c8776093a"><div class="ttname"><a href="classLinkProfile.html#ab19dbbb3f99b2f8877bc657c8776093a">LinkProfile::getDirectProfile</a></div><div class="ttdeci">double getDirectProfile(size_t hour) const</div><div class="ttdoc">returns the value of a direct link profile</div><div class="ttdef"><b>Definition</b> LinkProfile.cpp:7</div></div>
-<div class="ttc" id="aclassLinkProfile_html_adf7b5092f19ec8f5f63ce3b8fd69aba7"><div class="ttname"><a href="classLinkProfile.html#adf7b5092f19ec8f5f63ce3b8fd69aba7">LinkProfile::indirect_link_profile</a></div><div class="ttdeci">std::vector&lt; double &gt; indirect_link_profile</div><div class="ttdoc">indirect linkprofile values if different from direct linkprofile</div><div class="ttdef"><b>Definition</b> LinkProfile.h:49</div></div>
+<div class="ttc" id="aclassLinkProfile_html_adf7b5092f19ec8f5f63ce3b8fd69aba7"><div class="ttname"><a href="classLinkProfile.html#adf7b5092f19ec8f5f63ce3b8fd69aba7">LinkProfile::indirect_link_profile</a></div><div class="ttdeci">std::vector&lt; double &gt; indirect_link_profile</div><div class="ttdoc">indirect linkprofile values if different from direct linkprofile</div><div class="ttdef"><b>Definition</b> LinkProfile.h:50</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

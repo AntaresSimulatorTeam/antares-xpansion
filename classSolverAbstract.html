@@ -272,12 +272,12 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_fp</b> (FILE *fp)
 <tr class="memitem:a11fb330d9915541ab2ccf6f7038a80d6" id="r_a11fb330d9915541ab2ccf6f7038a80d6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a11fb330d9915541ab2ccf6f7038a80d6">get_ub</a> (double *ub, int fisrt, int last) const =0</td></tr>
 <tr class="memdesc:a11fb330d9915541ab2ccf6f7038a80d6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the upper bounds for variables in a given range.  <br /></td></tr>
 <tr class="separator:a11fb330d9915541ab2ccf6f7038a80d6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a0ce6cfc070d43e277646557d62c8bf26" id="r_a0ce6cfc070d43e277646557d62c8bf26"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ce6cfc070d43e277646557d62c8bf26">get_row_index</a> (std::string const &amp;name)=0</td></tr>
-<tr class="memdesc:a0ce6cfc070d43e277646557d62c8bf26"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index of row named "name".  <br /></td></tr>
-<tr class="separator:a0ce6cfc070d43e277646557d62c8bf26"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a19ce4d702e9b9c3d21b157a13fb8a84d" id="r_a19ce4d702e9b9c3d21b157a13fb8a84d"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a19ce4d702e9b9c3d21b157a13fb8a84d">get_col_index</a> (std::string const &amp;name)=0</td></tr>
-<tr class="memdesc:a19ce4d702e9b9c3d21b157a13fb8a84d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index of column named "name".  <br /></td></tr>
-<tr class="separator:a19ce4d702e9b9c3d21b157a13fb8a84d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02d179a5446ad46d376eb6a23d0233fb" id="r_a02d179a5446ad46d376eb6a23d0233fb"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a02d179a5446ad46d376eb6a23d0233fb">get_row_index</a> (const std::string &amp;name)=0</td></tr>
+<tr class="memdesc:a02d179a5446ad46d376eb6a23d0233fb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index of row named "name".  <br /></td></tr>
+<tr class="separator:a02d179a5446ad46d376eb6a23d0233fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a481087b045ce82f6caf4c2294ba587ce" id="r_a481087b045ce82f6caf4c2294ba587ce"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a481087b045ce82f6caf4c2294ba587ce">get_col_index</a> (const std::string &amp;name)=0</td></tr>
+<tr class="memdesc:a481087b045ce82f6caf4c2294ba587ce"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index of column named "name".  <br /></td></tr>
+<tr class="separator:a481087b045ce82f6caf4c2294ba587ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4332be65358eb079e02793a5bf073cac" id="r_a4332be65358eb079e02793a5bf073cac"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4332be65358eb079e02793a5bf073cac">get_row_names</a> (int first, int last)=0</td></tr>
 <tr class="memdesc:a4332be65358eb079e02793a5bf073cac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of row from index first to last cannot be declared as const because of some solver methods.  <br /></td></tr>
 <tr class="separator:a4332be65358eb079e02793a5bf073cac"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -323,12 +323,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>add_names</b>
 <tr class="memitem:ad82a76bf5cc2419cae4aa0bb72216289" id="r_ad82a76bf5cc2419cae4aa0bb72216289"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad82a76bf5cc2419cae4aa0bb72216289">chg_coef</a> (int id_row, int id_col, double val)=0</td></tr>
 <tr class="memdesc:ad82a76bf5cc2419cae4aa0bb72216289"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change a coefficient in the matrix.  <br /></td></tr>
 <tr class="separator:ad82a76bf5cc2419cae4aa0bb72216289"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeaa5c026c2958977404250bc689141d8" id="r_aeaa5c026c2958977404250bc689141d8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeaa5c026c2958977404250bc689141d8">chg_row_name</a> (int id_row, std::string const &amp;name)=0</td></tr>
-<tr class="memdesc:aeaa5c026c2958977404250bc689141d8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a constraint.  <br /></td></tr>
-<tr class="separator:aeaa5c026c2958977404250bc689141d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a40d282e9941744a13c17b931ac3efb94" id="r_a40d282e9941744a13c17b931ac3efb94"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a40d282e9941744a13c17b931ac3efb94">chg_col_name</a> (int id_col, std::string const &amp;name)=0</td></tr>
-<tr class="memdesc:a40d282e9941744a13c17b931ac3efb94"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a variable.  <br /></td></tr>
-<tr class="separator:a40d282e9941744a13c17b931ac3efb94"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad992af8d12855a30f1d0c45daf988753" id="r_ad992af8d12855a30f1d0c45daf988753"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad992af8d12855a30f1d0c45daf988753">chg_row_name</a> (int id_row, const std::string &amp;name)=0</td></tr>
+<tr class="memdesc:ad992af8d12855a30f1d0c45daf988753"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a constraint.  <br /></td></tr>
+<tr class="separator:ad992af8d12855a30f1d0c45daf988753"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa164e8aa26670bb0e15a6f0c554a9a0d" id="r_aa164e8aa26670bb0e15a6f0c554a9a0d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa164e8aa26670bb0e15a6f0c554a9a0d">chg_col_name</a> (int id_col, const std::string &amp;name)=0</td></tr>
+<tr class="memdesc:aa164e8aa26670bb0e15a6f0c554a9a0d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a variable.  <br /></td></tr>
+<tr class="separator:aa164e8aa26670bb0e15a6f0c554a9a0d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2141dc9124a84300fd0c9a767aa909f8" id="r_a2141dc9124a84300fd0c9a767aa909f8"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2141dc9124a84300fd0c9a767aa909f8">solve_lp</a> ()=0</td></tr>
 <tr class="memdesc:a2141dc9124a84300fd0c9a767aa909f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves a problem as LP.  <br /></td></tr>
 <tr class="separator:a2141dc9124a84300fd0c9a767aa909f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -356,9 +356,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>add_names</b>
 <tr class="memitem:a27373f91f9fe0224e52a860c1747272b" id="r_a27373f91f9fe0224e52a860c1747272b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a27373f91f9fe0224e52a860c1747272b">set_output_log_level</a> (int loglevel)=0</td></tr>
 <tr class="memdesc:a27373f91f9fe0224e52a860c1747272b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets log level of the solver.  <br /></td></tr>
 <tr class="separator:a27373f91f9fe0224e52a860c1747272b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6147f2636bd52820a77ebc80e19905ee" id="r_a6147f2636bd52820a77ebc80e19905ee"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6147f2636bd52820a77ebc80e19905ee">set_algorithm</a> (std::string const &amp;algo)=0</td></tr>
-<tr class="memdesc:a6147f2636bd52820a77ebc80e19905ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets algorithm used by solver to solve LP's.  <br /></td></tr>
-<tr class="separator:a6147f2636bd52820a77ebc80e19905ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2017c2d79a795514c5de14ad42bf779b" id="r_a2017c2d79a795514c5de14ad42bf779b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2017c2d79a795514c5de14ad42bf779b">set_algorithm</a> (const std::string &amp;algo)=0</td></tr>
+<tr class="memdesc:a2017c2d79a795514c5de14ad42bf779b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets algorithm used by solver to solve LP's.  <br /></td></tr>
+<tr class="separator:a2017c2d79a795514c5de14ad42bf779b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa674498f3551a95f52709836164eb08d" id="r_aa674498f3551a95f52709836164eb08d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa674498f3551a95f52709836164eb08d">set_threads</a> (int n_threads)=0</td></tr>
 <tr class="memdesc:aa674498f3551a95f52709836164eb08d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the maximum number of threads used to perform optimization.  <br /></td></tr>
 <tr class="separator:aa674498f3551a95f52709836164eb08d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -375,8 +375,8 @@ Public Attributes</h2></td></tr>
 <tr class="separator:a4e3d537c3f7a52d47e1064b6255c8354"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a52ca317dd7d394001148e348cecff0f2" id="r_a52ca317dd7d394001148e348cecff0f2"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a52ca317dd7d394001148e348cecff0f2">_name</a></td></tr>
 <tr class="separator:a52ca317dd7d394001148e348cecff0f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1cfe15a9c337170d61fc66e89c941f9a" id="r_a1cfe15a9c337170d61fc66e89c941f9a"><td class="memItemLeft" align="right" valign="top">std::list&lt; std::ostream * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1cfe15a9c337170d61fc66e89c941f9a">_streams</a></td></tr>
-<tr class="separator:a1cfe15a9c337170d61fc66e89c941f9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a53c0792aef472db99977b8adef0b7dce" id="r_a53c0792aef472db99977b8adef0b7dce"><td class="memItemLeft" align="right" valign="top">std::list&lt; std::ostream * &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a53c0792aef472db99977b8adef0b7dce">_streams</a></td></tr>
+<tr class="separator:a53c0792aef472db99977b8adef0b7dce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a691b1cb603e5d8db286d4be67bc2abd1" id="r_a691b1cb603e5d8db286d4be67bc2abd1"><td class="memItemLeft" align="right" valign="top"><a id="a691b1cb603e5d8db286d4be67bc2abd1" name="a691b1cb603e5d8db286d4be67bc2abd1"></a>
 FILE *&#160;</td><td class="memItemRight" valign="bottom"><b>_fp</b> = nullptr</td></tr>
 <tr class="separator:a691b1cb603e5d8db286d4be67bc2abd1"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -776,8 +776,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a40d282e9941744a13c17b931ac3efb94" name="a40d282e9941744a13c17b931ac3efb94"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a40d282e9941744a13c17b931ac3efb94">&#9670;&#160;</a></span>chg_col_name()</h2>
+<a id="aa164e8aa26670bb0e15a6f0c554a9a0d" name="aa164e8aa26670bb0e15a6f0c554a9a0d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa164e8aa26670bb0e15a6f0c554a9a0d">&#9670;&#160;</a></span>chg_col_name()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -793,7 +793,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::string const &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span>&#160;)</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -812,7 +812,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classNOOPSolver.html#ae7f7da4b76355003f40673ce25459f0c">NOOPSolver</a>, <a class="el" href="classProblem.html#af4b08904684db423cee3a8f8c58ff800">Problem</a>, <a class="el" href="classSolverCbc.html#a0b4970eea7643c72c70a9737e4d3547c">SolverCbc</a>, <a class="el" href="classSolverClp.html#aee7b14bdba18165c7aecfe8da5f4b0e1">SolverClp</a>, and <a class="el" href="classSolverXpress.html#af88a846c83f9b2d91c791d968fc1df49">SolverXpress</a>.</p>
+<p>Implemented in <a class="el" href="classNOOPSolver.html#ae7f7da4b76355003f40673ce25459f0c">NOOPSolver</a>, <a class="el" href="classProblem.html#af4b08904684db423cee3a8f8c58ff800">Problem</a>, <a class="el" href="classSolverCbc.html#a37c19e7a8d7df5fa0ee9550fb106713b">SolverCbc</a>, <a class="el" href="classSolverClp.html#ac4b757e0d5d890cecc37f2852dddb12c">SolverClp</a>, and <a class="el" href="classSolverXpress.html#aeff0db8ee002795490782b17cd4be857">SolverXpress</a>.</p>
 
 </div>
 </div>
@@ -972,8 +972,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="aeaa5c026c2958977404250bc689141d8" name="aeaa5c026c2958977404250bc689141d8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aeaa5c026c2958977404250bc689141d8">&#9670;&#160;</a></span>chg_row_name()</h2>
+<a id="ad992af8d12855a30f1d0c45daf988753" name="ad992af8d12855a30f1d0c45daf988753"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad992af8d12855a30f1d0c45daf988753">&#9670;&#160;</a></span>chg_row_name()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -989,7 +989,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">std::string const &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span>&#160;)</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
@@ -1008,7 +1008,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classNOOPSolver.html#a8820c9116d03f9b26eb29eda013a9c6d">NOOPSolver</a>, <a class="el" href="classProblem.html#a13f183f9af6db636f61e0e919ad8f834">Problem</a>, <a class="el" href="classSolverCbc.html#a942d1fb579e5ec0a7503a8dddbdcc8f8">SolverCbc</a>, <a class="el" href="classSolverClp.html#af367f24a27ea4e7d4ddccb185e0c7bff">SolverClp</a>, and <a class="el" href="classSolverXpress.html#a9ac878e3ac13cd83bcebc331dafeb172">SolverXpress</a>.</p>
+<p>Implemented in <a class="el" href="classNOOPSolver.html#a8820c9116d03f9b26eb29eda013a9c6d">NOOPSolver</a>, <a class="el" href="classProblem.html#a13f183f9af6db636f61e0e919ad8f834">Problem</a>, <a class="el" href="classSolverCbc.html#a91961aef6dbf88d420c029eed8a948ab">SolverCbc</a>, <a class="el" href="classSolverClp.html#aa059147184d5df7e754b5ba829034961">SolverClp</a>, and <a class="el" href="classSolverXpress.html#a9e3d875088b872c4b8153c2067b8fed4">SolverXpress</a>.</p>
 
 </div>
 </div>
@@ -1156,8 +1156,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a19ce4d702e9b9c3d21b157a13fb8a84d" name="a19ce4d702e9b9c3d21b157a13fb8a84d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a19ce4d702e9b9c3d21b157a13fb8a84d">&#9670;&#160;</a></span>get_col_index()</h2>
+<a id="a481087b045ce82f6caf4c2294ba587ce" name="a481087b045ce82f6caf4c2294ba587ce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a481087b045ce82f6caf4c2294ba587ce">&#9670;&#160;</a></span>get_col_index()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1168,7 +1168,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
         <tr>
           <td class="memname">virtual int SolverAbstract::get_col_index </td>
           <td>(</td>
-          <td class="paramtype">std::string const &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1187,7 +1187,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classNOOPSolver.html#ada9516ae93936082225b13090291acbd">NOOPSolver</a>, <a class="el" href="classProblem.html#a85ca8269e2cf23554d80a22101371792">Problem</a>, <a class="el" href="classSolverCbc.html#a52f1134c653bd6c8577e0911f2ca3519">SolverCbc</a>, <a class="el" href="classSolverClp.html#ae96c5835395eb318a622e1de73cae4be">SolverClp</a>, and <a class="el" href="classSolverXpress.html#ae7f16cc487cf59655f2623b1e3470a36">SolverXpress</a>.</p>
+<p>Implemented in <a class="el" href="classNOOPSolver.html#ada9516ae93936082225b13090291acbd">NOOPSolver</a>, <a class="el" href="classProblem.html#a85ca8269e2cf23554d80a22101371792">Problem</a>, <a class="el" href="classSolverCbc.html#aab7ba381ec42739bb961fe1460c67b7a">SolverCbc</a>, <a class="el" href="classSolverClp.html#ab3f0eb9a1852343c50f2ccb8285e61d7">SolverClp</a>, and <a class="el" href="classSolverXpress.html#afd0d05f90ba53013ad31e6e303c2c98a">SolverXpress</a>.</p>
 
 </div>
 </div>
@@ -1770,8 +1770,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a0ce6cfc070d43e277646557d62c8bf26" name="a0ce6cfc070d43e277646557d62c8bf26"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a0ce6cfc070d43e277646557d62c8bf26">&#9670;&#160;</a></span>get_row_index()</h2>
+<a id="a02d179a5446ad46d376eb6a23d0233fb" name="a02d179a5446ad46d376eb6a23d0233fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a02d179a5446ad46d376eb6a23d0233fb">&#9670;&#160;</a></span>get_row_index()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1782,7 +1782,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
         <tr>
           <td class="memname">virtual int SolverAbstract::get_row_index </td>
           <td>(</td>
-          <td class="paramtype">std::string const &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -1801,7 +1801,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classNOOPSolver.html#a9c509db934bb85e082c0db70d8c64b0e">NOOPSolver</a>, <a class="el" href="classProblem.html#ab2b453dd51e7ce6a18656399647d8060">Problem</a>, <a class="el" href="classSolverCbc.html#ac3d2cb49eea124033cfb112b7ad93e3f">SolverCbc</a>, <a class="el" href="classSolverClp.html#a1591623caa777f06a0573d8997d10731">SolverClp</a>, and <a class="el" href="classSolverXpress.html#ad151aa9391c8db730812474decc12d69">SolverXpress</a>.</p>
+<p>Implemented in <a class="el" href="classNOOPSolver.html#a9c509db934bb85e082c0db70d8c64b0e">NOOPSolver</a>, <a class="el" href="classProblem.html#ab2b453dd51e7ce6a18656399647d8060">Problem</a>, <a class="el" href="classSolverCbc.html#a0f648445c9ed838d9b7d8659e4bad524">SolverCbc</a>, <a class="el" href="classSolverClp.html#acc1db535f491ce1da83a8eacdf8958e9">SolverClp</a>, and <a class="el" href="classSolverXpress.html#a155d04192871acfbf532d81aa132729b">SolverXpress</a>.</p>
 
 </div>
 </div>
@@ -2303,8 +2303,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a6147f2636bd52820a77ebc80e19905ee" name="a6147f2636bd52820a77ebc80e19905ee"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6147f2636bd52820a77ebc80e19905ee">&#9670;&#160;</a></span>set_algorithm()</h2>
+<a id="a2017c2d79a795514c5de14ad42bf779b" name="a2017c2d79a795514c5de14ad42bf779b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2017c2d79a795514c5de14ad42bf779b">&#9670;&#160;</a></span>set_algorithm()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2315,7 +2315,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
         <tr>
           <td class="memname">virtual void SolverAbstract::set_algorithm </td>
           <td>(</td>
-          <td class="paramtype">std::string const &amp;</td>          <td class="paramname"><span class="paramname"><em>algo</em></span></td><td>)</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>algo</em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
@@ -2334,7 +2334,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classNOOPSolver.html#ada1e7111945f04571bcc645fe4f80e38">NOOPSolver</a>, <a class="el" href="classProblem.html#a006aad13911c36e8d753f172c10f5465">Problem</a>, <a class="el" href="classSolverCbc.html#a98c92cfc8b11be912fd43c82f0a65b51">SolverCbc</a>, <a class="el" href="classSolverClp.html#a11a3d195c39a244e70486b20399d127f">SolverClp</a>, and <a class="el" href="classSolverXpress.html#a5931eca5e7ccfb665819166a98ebfae9">SolverXpress</a>.</p>
+<p>Implemented in <a class="el" href="classNOOPSolver.html#ada1e7111945f04571bcc645fe4f80e38">NOOPSolver</a>, <a class="el" href="classProblem.html#a006aad13911c36e8d753f172c10f5465">Problem</a>, <a class="el" href="classSolverCbc.html#ae36d37003c0ab6b03c0f1a13190f5bbb">SolverCbc</a>, <a class="el" href="classSolverClp.html#a1e2d73e41bd984fdb447795b8cfe1ca0">SolverClp</a>, and <a class="el" href="classSolverXpress.html#a52225201bf75879e35239dc675c4c742">SolverXpress</a>.</p>
 
 </div>
 </div>
@@ -2769,14 +2769,14 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a1cfe15a9c337170d61fc66e89c941f9a" name="a1cfe15a9c337170d61fc66e89c941f9a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1cfe15a9c337170d61fc66e89c941f9a">&#9670;&#160;</a></span>_streams</h2>
+<a id="a53c0792aef472db99977b8adef0b7dce" name="a53c0792aef472db99977b8adef0b7dce"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a53c0792aef472db99977b8adef0b7dce">&#9670;&#160;</a></span>_streams</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">std::list&lt;std::ostream *&gt; SolverAbstract::_streams</td>
+          <td class="memname">std::list&lt;std::ostream*&gt; SolverAbstract::_streams</td>
         </tr>
       </table>
 </div><div class="memdoc">
@@ -2795,8 +2795,11 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">= {</div>
-<div class="line">      <span class="stringliteral">&quot;OPTIMAL&quot;</span>, <span class="stringliteral">&quot;INFEASIBLE&quot;</span>, <span class="stringliteral">&quot;UNBOUNDED&quot;</span>, <span class="stringliteral">&quot;INForUNBOUND&quot;</span>, <span class="stringliteral">&quot;UNKNOWN&quot;</span>}</div>
+<b>Initial value:</b><div class="fragment"><div class="line">= {<span class="stringliteral">&quot;OPTIMAL&quot;</span>,</div>
+<div class="line">                                                     <span class="stringliteral">&quot;INFEASIBLE&quot;</span>,</div>
+<div class="line">                                                     <span class="stringliteral">&quot;UNBOUNDED&quot;</span>,</div>
+<div class="line">                                                     <span class="stringliteral">&quot;INForUNBOUND&quot;</span>,</div>
+<div class="line">                                                     <span class="stringliteral">&quot;UNKNOWN&quot;</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

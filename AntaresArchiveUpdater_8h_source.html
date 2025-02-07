@@ -148,22 +148,22 @@ $(function(){initNavTree('AntaresArchiveUpdater_8h_source.html',''); initResizab
 <div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;ArchiveWriter.h&quot;</span></div>
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
 <div class="foldopen" id="foldopen00008" data-start="{" data-end="};">
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classAntaresArchiveUpdater.html">    8</a></span><span class="keyword">class </span><a class="code hl_class" href="classAntaresArchiveUpdater.html">AntaresArchiveUpdater</a> {</div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> <span class="keyword">public</span>:</div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>  <a class="code hl_class" href="classAntaresArchiveUpdater.html">AntaresArchiveUpdater</a>() = <span class="keywordflow">default</span>;</div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> Update(<a class="code hl_class" href="classArchiveWriter.html">ArchiveWriter</a>&amp; writer,</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>                     <span class="keyword">const</span> std::filesystem::path&amp; path_to_add,</div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>                     <span class="keyword">const</span> <span class="keywordtype">bool</span> delete_path);</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>  <span class="keyword">static</span> <span class="keywordtype">void</span> CleanAntaresArchive(</div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>      <span class="keyword">const</span> std::filesystem::path&amp; src_archive,</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>      <span class="keyword">const</span> std::filesystem::path&amp; target_archive = <span class="stringliteral">&quot;&quot;</span>);</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>  <span class="keyword">static</span> int32_t MinizipErase(<span class="keywordtype">void</span>* reader, <span class="keywordtype">void</span>* writer);</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="classAntaresArchiveUpdater.html">    8</a></span><span class="keyword">class </span><a class="code hl_class" href="classAntaresArchiveUpdater.html">AntaresArchiveUpdater</a></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>{</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <a class="code hl_class" href="classAntaresArchiveUpdater.html">AntaresArchiveUpdater</a>() = <span class="keywordflow">default</span>;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    <span class="keyword">static</span> <span class="keywordtype">void</span> Update(<a class="code hl_class" href="classArchiveWriter.html">ArchiveWriter</a>&amp; writer,</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>                       <span class="keyword">const</span> std::filesystem::path&amp; path_to_add,</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                       <span class="keyword">const</span> <span class="keywordtype">bool</span> delete_path);</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    <span class="keyword">static</span> <span class="keywordtype">void</span> CleanAntaresArchive(<span class="keyword">const</span> std::filesystem::path&amp; src_archive,</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>                                    <span class="keyword">const</span> std::filesystem::path&amp; target_archive = <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    <span class="keyword">static</span> int32_t MinizipErase(<span class="keywordtype">void</span>* reader, <span class="keywordtype">void</span>* writer);</div>
 <div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>};</div>
 </div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#endif  </span><span class="comment">// ANTARESXPANSION_SRC_CPP_HELPERS_ANTARESARCHIVEUPDATER_H_</span></div>
-<div class="ttc" id="aclassAntaresArchiveUpdater_html"><div class="ttname"><a href="classAntaresArchiveUpdater.html">AntaresArchiveUpdater</a></div><div class="ttdef"><b>Definition</b> AntaresArchiveUpdater.h:8</div></div>
-<div class="ttc" id="aclassArchiveWriter_html"><div class="ttname"><a href="classArchiveWriter.html">ArchiveWriter</a></div><div class="ttdef"><b>Definition</b> ArchiveWriter.h:8</div></div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="preprocessor">#endif </span><span class="comment">// ANTARESXPANSION_SRC_CPP_HELPERS_ANTARESARCHIVEUPDATER_H_</span></div>
+<div class="ttc" id="aclassAntaresArchiveUpdater_html"><div class="ttname"><a href="classAntaresArchiveUpdater.html">AntaresArchiveUpdater</a></div><div class="ttdef"><b>Definition</b> AntaresArchiveUpdater.h:9</div></div>
+<div class="ttc" id="aclassArchiveWriter_html"><div class="ttname"><a href="classArchiveWriter.html">ArchiveWriter</a></div><div class="ttdef"><b>Definition</b> ArchiveWriter.h:9</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
