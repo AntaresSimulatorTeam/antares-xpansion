@@ -38,8 +38,11 @@ BENDERS_OPTIONS_MACRO(SLAVE_WEIGHT_VALUE, double, 1, asDouble())
 // Name of the master problem file, if different from 'master'
 BENDERS_OPTIONS_MACRO(MASTER_NAME, std::string, "master", asString())
 
-//Format of the problems
-BENDERS_OPTIONS_MACRO(PROBLEMS_FORMAT, ProblemsFormat, ProblemsFormat::MPS_FILE, as<ProblemsFormat>())
+// Format of the problems
+BENDERS_OPTIONS_MACRO(PROBLEMS_FORMAT,
+                      ProblemsFormat,
+                      ProblemsFormat::MPS_FILE,
+                      as<ProblemsFormat>())
 
 // Number of slaves to use to solve the problem
 BENDERS_OPTIONS_MACRO(STRUCTURE_FILE, std::string, "structure.txt", asString())
@@ -64,14 +67,12 @@ BENDERS_OPTIONS_MACRO(LAST_ITERATION_JSON_FILE, std::string, ".", asString())
 // TIME_LIMIT
 BENDERS_OPTIONS_MACRO(TIME_LIMIT, double, 1e12, asDouble())
 // LAST_MASTER_MPS
-BENDERS_OPTIONS_MACRO(LAST_MASTER_MPS, std::string, "master_last_iteration",
-                      asString())
+BENDERS_OPTIONS_MACRO(LAST_MASTER_MPS, std::string, "master_last_iteration", asString())
 // Resume last benders
 BENDERS_OPTIONS_MACRO(RESUME, bool, false, asBool())
 
 // Name of the last master basis file
-BENDERS_OPTIONS_MACRO(LAST_MASTER_BASIS, std::string, "master_last_basis",
-                      asString())
+BENDERS_OPTIONS_MACRO(LAST_MASTER_BASIS, std::string, "master_last_basis", asString())
 
 // BATCH SIZE (Benders by batch)
 BENDERS_OPTIONS_MACRO(BATCH_SIZE, size_t, 0, asUInt())
@@ -80,7 +81,6 @@ BENDERS_OPTIONS_MACRO(BATCH_SIZE, size_t, 0, asUInt())
 BENDERS_OPTIONS_MACRO(DO_OUTER_LOOP, bool, false, asBool())
 
 // Outer Loop Options file
-BENDERS_OPTIONS_MACRO(OUTER_LOOP_OPTION_FILE, std::string,
-                      "adequacy_criterion.yml", asString())
+BENDERS_OPTIONS_MACRO(OUTER_LOOP_OPTION_FILE, std::string, "adequacy_criterion.yml", asString())
 // area file
 BENDERS_OPTIONS_MACRO(AREA_FILE, std::string, "area.txt", asString())

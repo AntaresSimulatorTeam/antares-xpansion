@@ -4,8 +4,9 @@
 
 #pragma once
 
-enum class SimulationInputMode {
-  ANTARES_API,
-  FILE,
-  ARCHIVE,
+enum class SimulationInputMode
+{
+    ANTARES_API,
+    FILE,
+    ARCHIVE,
 };

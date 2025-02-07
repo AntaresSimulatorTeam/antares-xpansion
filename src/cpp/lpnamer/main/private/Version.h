@@ -5,18 +5,19 @@
 #pragma once
 #include <string_view>
 
-struct Version {
-  explicit Version(std::string_view version);
+struct Version
+{
+    explicit Version(std::string_view version);
 
-  bool operator<(const Version& another) const;
+    bool operator<(const Version& another) const;
 
-  bool operator>(const Version& another) const;
+    bool operator>(const Version& another) const;
 
-  bool operator==(const Version& another) const;
-  bool operator<=(const Version& another) const;
-  bool operator>=(const Version& another) const;
+    bool operator==(const Version& another) const;
+    bool operator<=(const Version& another) const;
+    bool operator>=(const Version& another) const;
 
- private:
-  int major;
-  int minor;
+private:
+    int major;
+    int minor;
 };

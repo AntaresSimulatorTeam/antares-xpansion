@@ -10,11 +10,12 @@
 
 constexpr int DEFAULT_ANTARES_VERSION = 710;
 
-class AntaresVersionProvider {
- public:
-  AntaresVersionProvider() = default;
-  virtual ~AntaresVersionProvider() = default;
-  [[nodiscard]] virtual int getAntaresVersion(const std::filesystem::path& study_path) const;
+class AntaresVersionProvider
+{
+public:
+    AntaresVersionProvider() = default;
+    virtual ~AntaresVersionProvider() = default;
+    [[nodiscard]] virtual int getAntaresVersion(const std::filesystem::path& study_path) const;
 };
 
-#endif  // ANTARESXPANSION_SRC_CPP_HELPERS_ANTARESVERSIONPROVIDER_H_
+#endif // ANTARESXPANSION_SRC_CPP_HELPERS_ANTARESVERSIONPROVIDER_H_

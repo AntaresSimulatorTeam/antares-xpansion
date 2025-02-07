@@ -18,36 +18,39 @@
 
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "dynamic_library.h"
-extern "C" {
+extern "C"
+{
 typedef struct xo_prob_struct* XPRSprob;
 }
 
-namespace LoadXpress {
+namespace LoadXpress
+{
 
 /**
  * \class XpressLoader
  * @brief This class is the entry point to load xpress in runtime
  */
-class XpressLoader {
- public:
-  /**
-   * constructor, it must take default logger for legacy code
-   */
-  explicit XpressLoader(std::shared_ptr<ILoggerXpansion> logger =
-                            std::make_shared<EmptyLogger>());
-  /**
-   * \brief intialiaze xpress env : load libs and check the licence
-   */
-  bool initXpressEnv(bool verbose = false, int xpress_oem_license_key = 0);
+class XpressLoader
+{
+public:
+    /**
+     * constructor, it must take default logger for legacy code
+     */
+    explicit XpressLoader(
+      std::shared_ptr<ILoggerXpansion> logger = std::make_shared<EmptyLogger>());
+    /**
+     * \brief intialiaze xpress env : load libs and check the licence
+     */
+    bool initXpressEnv(bool verbose = false, int xpress_oem_license_key = 0);
 
-  /**
-   * \brief return true is Xpress is correctly installed (libs and licence
-   * found)
-   */
-  bool XpressIsCorrectlyInstalled(bool verbose = false);
+    /**
+     * \brief return true is Xpress is correctly installed (libs and licence
+     * found)
+     */
+    bool XpressIsCorrectlyInstalled(bool verbose = false);
 
- private:
-  // clang-format off
+private:
+    // clang-format off
 // Force the loading of the xpress dynamic library. It returns true if the
 // library was successfully loaded. This method can only be called once.
 // Successive calls are no-op.

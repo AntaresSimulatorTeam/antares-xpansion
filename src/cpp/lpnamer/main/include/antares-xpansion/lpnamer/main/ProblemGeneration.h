@@ -4,11 +4,11 @@
 
 #pragma once
 
-#include <antares/solver/lps/LpsFromAntares.h>
-
 #include <filesystem>
 #include <optional>
 #include <string>
+
+#include <antares/solver/lps/LpsFromAntares.h>
 
 // clang-format off
 #include "antares-xpansion/lpnamer/input_reader/MpsTxtWriter.h"
@@ -22,45 +22,47 @@
 #include "antares-xpansion/multisolver_interface/SolverConfig.h"
 // clang-format on
 
-class ProblemGeneration {
- public:
-  explicit ProblemGeneration(ProblemGenerationOptions& options);
-  virtual ~ProblemGeneration() = default;
-  std::filesystem::path updateProblems();
-  const ProblemGenerationOptions& options_;
+class ProblemGeneration
+{
+public:
+    explicit ProblemGeneration(ProblemGenerationOptions& options);
+    virtual ~ProblemGeneration() = default;
+    std::filesystem::path updateProblems();
+    const ProblemGenerationOptions& options_;
 
- private:
-  virtual void RunProblemGeneration(
+private:
+    virtual void RunProblemGeneration(
       const std::filesystem::path& xpansion_output_dir,
       const std::string& master_formulation,
       const std::string& additionalConstraintFilename_l,
       const std::filesystem::path& archive_path,
       std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger,
       const std::filesystem::path& log_file_path,
-      const std::filesystem::path& weights_file, bool unnamed_problems);
+      const std::filesystem::path& weights_file,
+      bool unnamed_problems);
 
-  void ProcessWeights(
-      const std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>&
-          problems_and_data,
+    void ProcessWeights(
+      const std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>& problems_and_data,
       const std::filesystem::path& xpansion_output_dir,
-      const std::filesystem::path& weights_file, const std::string& solver_name,
+      const std::filesystem::path& weights_file,
+      const std::string& solver_name,
       std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
-  void ExtractUtilsFiles(
-      const std::filesystem::path& antares_archive_path,
-      const std::filesystem::path& xpansion_output_dir,
-      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
-  std::vector<std::shared_ptr<Problem>> getXpansionProblems(
-      SolverLogManager& solver_log_manager, SolverConfig solver_name,
-      const std::vector<ProblemData>& mpsList, std::filesystem::path& lpDir_,
+    void ExtractUtilsFiles(const std::filesystem::path& antares_archive_path,
+                           const std::filesystem::path& xpansion_output_dir,
+                           std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
+    std::vector<std::shared_ptr<Problem>> getXpansionProblems(
+      SolverLogManager& solver_log_manager,
+      SolverConfig solver_name,
+      const std::vector<ProblemData>& mpsList,
+      std::filesystem::path& lpDir_,
       std::shared_ptr<ArchiveReader> reader,
       const Antares::Solver::LpsFromAntares& lps);
-  virtual void set_solver(
-      std::filesystem::path study_dir,
-      ProblemGenerationLog::ProblemGenerationLogger* logger);
+    virtual void set_solver(std::filesystem::path study_dir,
+                            ProblemGenerationLog::ProblemGenerationLogger* logger);
 
-  Antares::Solver::LpsFromAntares lps_;
-  std::optional<SimulationInputMode> mode_;
-  virtual void performAntaresSimulation(const std::filesystem::path& output);
-  std::filesystem::path simulation_dir_;
-  SolverConfig solver_config_{"Coin"};
+    Antares::Solver::LpsFromAntares lps_;
+    std::optional<SimulationInputMode> mode_;
+    virtual void performAntaresSimulation(const std::filesystem::path& output);
+    std::filesystem::path simulation_dir_;
+    SolverConfig solver_config_{"Coin"};
 };

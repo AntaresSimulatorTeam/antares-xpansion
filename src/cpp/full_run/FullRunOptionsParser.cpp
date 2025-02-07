@@ -3,18 +3,25 @@
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 namespace po = boost::program_options;
 
-FullRunOptionsParser::FullRunOptionsParser() : ProblemGenerationExeOptions() {
-  AddOptions()(
-      "benders_options,b",
-      po::value<std::filesystem::path>(&benders_options_file_)->required(),
-      "benders options file")(
+FullRunOptionsParser::FullRunOptionsParser():
+    ProblemGenerationExeOptions()
+{
+    AddOptions()("benders_options,b",
+                 po::value<std::filesystem::path>(&benders_options_file_)->required(),
+                 "benders options file")(
       "solution,s",
       po::value<std::filesystem::path>(&solutionFile_)->required(),
-      "path to json solution file")(
-      "solver", po::value<std::string>(&solver_)->default_value("benders"),
-      "solver (benders, outer_loop, ");  // Add mergeMps?
+      "path to json solution file")("solver",
+                                    po::value<std::string>(&solver_)->default_value("benders"),
+                                    "solver (benders, outer_loop, "); // Add mergeMps?
 }
-void FullRunOptionsParser::Parse(unsigned int argc, const char* const* argv) {
-  ProblemGenerationExeOptions::Parse(argc, argv);
+
+void FullRunOptionsParser::Parse(unsigned int argc, const char* const* argv)
+{
+    ProblemGenerationExeOptions::Parse(argc, argv);
 }
-std::string FullRunOptionsParser::Solver() const { return solver_; }
+
+std::string FullRunOptionsParser::Solver() const
+{
+    return solver_;
+}
