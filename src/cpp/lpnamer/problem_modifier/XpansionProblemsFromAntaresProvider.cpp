@@ -47,7 +47,7 @@ std::vector<std::shared_ptr<Problem>> XpansionProblemsFromAntaresProvider::provi
             solver_name,
             solver_log_manager);
           std::lock_guard guard(mutex);
-          xpansion_problems.emplace_back(problem);
+          xpansion_problems.push_back(problem);
       });
     return xpansion_problems;
 }
