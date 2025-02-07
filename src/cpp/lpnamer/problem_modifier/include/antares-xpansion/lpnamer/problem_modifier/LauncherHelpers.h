@@ -3,10 +3,10 @@
 #include <filesystem>
 #include <map>
 
+#include "antares-xpansion/helpers/solver_utils.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 #include "antares-xpansion/lpnamer/problem_modifier/AdditionalConstraints.h"
-#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
-#include "antares-xpansion/helpers/solver_utils.h"
 /**
  * \brief adds binary variables and additional constraints to an existent solver
  *
@@ -14,13 +14,13 @@
  * \param additionalConstraints_p the additional constraints to add
  */
 void treatAdditionalConstraints(
-    SolverAbstract::Ptr master_p,
-    const AdditionalConstraints& additionalConstraints_p,
-    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
+  SolverAbstract::Ptr master_p,
+  const AdditionalConstraints& additionalConstraints_p,
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
 
 char getConstraintSenseSymbol(
-    const AdditionalConstraint& additionalConstraint_p,
-    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
+  const AdditionalConstraint& additionalConstraint_p,
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
 
 /**
  * \brief adds an additional constraint to an existent solver
@@ -28,9 +28,9 @@ char getConstraintSenseSymbol(
  * \param master_p solver to which the constraint will be added
  * \param additionalConstraint_p the additional constraint to add
  */
-void addAdditionalConstraint(
-    SolverAbstract::Ptr master_p, const AdditionalConstraint& additionalConstraint_p,
-    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
+void addAdditionalConstraint(SolverAbstract::Ptr master_p,
+                             const AdditionalConstraint& additionalConstraint_p,
+                             std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
 
 /**
  * \brief creates a binary variable and its corresponding linking constraint
@@ -44,10 +44,9 @@ void addAdditionalConstraint(
  *          adds the linking constraint link_BinVar_CorrespondingVar :
  * CorrespondingVar  <= UB(CorrespondingVar) * BinVar
  */
-void addBinaryVariables(
-    SolverAbstract::Ptr master_p,
-    std::map<std::string, std::string> const& variablesToBinarise_p,
-    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
+void addBinaryVariables(SolverAbstract::Ptr master_p,
+                        const std::map<std::string, std::string>& variablesToBinarise_p,
+                        std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
 
 /**
  * \brief return Active Links Builder
@@ -55,5 +54,5 @@ void addBinaryVariables(
  * directory containing the lp directory \return ActiveLinksBuilder object
  */
 ActiveLinksBuilder get_link_builders(
-    const std::filesystem::path& xpansion_output_dir,
-    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
+  const std::filesystem::path& xpansion_output_dir,
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);

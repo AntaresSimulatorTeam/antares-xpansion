@@ -20,98 +20,117 @@
 #include <vector>
 
 #if defined(_MSC_VER)
-#define WIN32_LEAN_AND_MEAN  // disables several conflicting macros
+#define WIN32_LEAN_AND_MEAN // disables several conflicting macros
 #include <windows.h>
 #elif defined(__GNUC__)
 #include <dlfcn.h>
 #endif
 
-namespace Solver {
-class DynamicLibrary {
-  static constexpr size_t kMaxFunctionsNotFound = 10;
+namespace Solver
+{
+class DynamicLibrary
+{
+    static constexpr size_t kMaxFunctionsNotFound = 10;
 
- public:
-  DynamicLibrary() : library_handle_(nullptr) {}
-
-  ~DynamicLibrary() {
-    if (library_handle_ == nullptr) {
-      return;
+public:
+    DynamicLibrary():
+        library_handle_(nullptr)
+    {
     }
 
+    ~DynamicLibrary()
+    {
+        if (library_handle_ == nullptr)
+        {
+            return;
+        }
+
 #if defined(_MSC_VER)
-    FreeLibrary(static_cast<HINSTANCE>(library_handle_));
+        FreeLibrary(static_cast<HINSTANCE>(library_handle_));
 #elif defined(__GNUC__)
-    dlclose(library_handle_);
+        dlclose(library_handle_);
 #endif
-  }
+    }
 
-  bool TryToLoad(const std::string& library_name) {
-    library_name_ = std::string(library_name);
+    bool TryToLoad(const std::string& library_name)
+    {
+        library_name_ = std::string(library_name);
 #if defined(_MSC_VER)
-    library_handle_ = static_cast<void*>(LoadLibraryA(library_name.c_str()));
+        library_handle_ = static_cast<void*>(LoadLibraryA(library_name.c_str()));
 #elif defined(__GNUC__)
-    library_handle_ = dlopen(library_name.c_str(), RTLD_NOW);
+        library_handle_ = dlopen(library_name.c_str(), RTLD_NOW);
 #endif
-    return library_handle_ != nullptr;
-  }
+        return library_handle_ != nullptr;
+    }
 
-  bool LibraryIsLoaded() const { return library_handle_ != nullptr; }
+    bool LibraryIsLoaded() const
+    {
+        return library_handle_ != nullptr;
+    }
 
-  const std::vector<std::string>& FunctionsNotFound() const {
-    return functions_not_found_;
-  }
+    const std::vector<std::string>& FunctionsNotFound() const
+    {
+        return functions_not_found_;
+    }
 
-  template <typename T>
-  std::function<T> GetFunction(const char* function_name) {
-    const void* function_address =
+    template<typename T>
+    std::function<T> GetFunction(const char* function_name)
+    {
+        const void* function_address =
 #if defined(_MSC_VER)
-        static_cast<void*>(GetProcAddress(
-            static_cast<HINSTANCE>(library_handle_), function_name));
+          static_cast<void*>(
+            GetProcAddress(static_cast<HINSTANCE>(library_handle_), function_name));
 #else
-        dlsym(library_handle_, function_name);
+          dlsym(library_handle_, function_name);
 #endif
-    // We don't really need the full list of missing functions,
-    // just a few are enough.
-    if (!function_address &&
-        functions_not_found_.size() < kMaxFunctionsNotFound)
-      functions_not_found_.push_back(function_name);
+        // We don't really need the full list of missing functions,
+        // just a few are enough.
+        if (!function_address && functions_not_found_.size() < kMaxFunctionsNotFound)
+        {
+            functions_not_found_.push_back(function_name);
+        }
 
-    return TypeParser<T>::CreateFunction(function_address);
-  }
-
-  template <typename T>
-  std::function<T> GetFunction(const std::string& function_name) {
-    return GetFunction<T>(function_name.c_str());
-  }
-
-  template <typename T>
-  void GetFunction(std::function<T>* function, const char* function_name) {
-    *function = GetFunction<T>(function_name);
-  }
-
-  template <typename T>
-  void GetFunction(std::function<T>* function,
-                   const std::string function_name) {
-    GetFunction<T>(function, function_name.c_str());
-  }
-
- private:
-  void* library_handle_ = nullptr;
-  std::string library_name_;
-  std::vector<std::string> functions_not_found_;
-
-  template <typename T>
-  struct TypeParser {};
-
-  template <typename Ret, typename... Args>
-  struct TypeParser<Ret(Args...)> {
-    static std::function<Ret(Args...)> CreateFunction(
-        const void* function_address) {
-      return std::function<Ret(Args...)>(reinterpret_cast<Ret (*)(Args...)>(
-          const_cast<void*>(function_address)));
+        return TypeParser<T>::CreateFunction(function_address);
     }
-  };
-};
-}
 
-#endif  // OR_TOOLS_BASE_DYNAMIC_LIBRARY_H_
+    template<typename T>
+    std::function<T> GetFunction(const std::string& function_name)
+    {
+        return GetFunction<T>(function_name.c_str());
+    }
+
+    template<typename T>
+    void GetFunction(std::function<T>* function, const char* function_name)
+    {
+        *function = GetFunction<T>(function_name);
+    }
+
+    template<typename T>
+    void GetFunction(std::function<T>* function, const std::string function_name)
+    {
+        GetFunction<T>(function, function_name.c_str());
+    }
+
+private:
+    void* library_handle_ = nullptr;
+    std::string library_name_;
+    std::vector<std::string> functions_not_found_;
+
+    template<typename T>
+    struct TypeParser
+    {
+    };
+
+    template<typename Ret, typename... Args>
+    struct TypeParser<Ret(Args...)>
+    {
+        static std::function<Ret(Args...)> CreateFunction(const void* function_address)
+        {
+            return std::function<Ret(Args...)>(
+              reinterpret_cast<Ret (*)(Args...)>(const_cast<void*>(function_address)));
+        }
+    };
+};
+} // namespace Solver
+
+#endif // OR_TOOLS_BASE_DYNAMIC_LIBRARY_H_

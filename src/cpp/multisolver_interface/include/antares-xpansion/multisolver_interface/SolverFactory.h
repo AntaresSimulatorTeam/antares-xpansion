@@ -10,22 +10,26 @@
  * \enum mapper::SOLVER_TYPE
  * \brief algo type
  */
-enum class SOLVER_TYPE { INTEGER, CONTINUOUS };
+enum class SOLVER_TYPE
+{
+    INTEGER,
+    CONTINUOUS
+};
 
 /*!
  * \class class SolverLoader
  * \brief Class to check if supported solvers are available
  */
-class SolverLoader {
- public:
-  static std::vector<std::string> GetAvailableSolvers(
-      std::shared_ptr<ILoggerXpansion> logger);
+class SolverLoader
+{
+public:
+    static std::vector<std::string> GetAvailableSolvers(std::shared_ptr<ILoggerXpansion> logger);
 
-  /**
-   * @brief Returns a list of supported solvers
-   * Supported doesn't mean available, for exemple if licence are not available
-   */
-  static std::vector<std::string> GetSupportedSolvers();
+    /**
+     * @brief Returns a list of supported solvers
+     * Supported doesn't mean available, for exemple if licence are not available
+     */
+    static std::vector<std::string> GetSupportedSolvers();
 };
 
 /*!
@@ -33,68 +37,68 @@ class SolverLoader {
  * \brief Class to manage the creation of solvers from the different
  * implementations
  */
-class SolverFactory {
- private:
-  std::vector<std::string> _available_solvers;
+class SolverFactory
+{
+private:
+    std::vector<std::string> _available_solvers;
 
- public:
-  /**
-   * @brief Constructor of SolverFactory, fills the list of available solvers
-   */
-  explicit SolverFactory(std::shared_ptr<ILoggerXpansion> logger =
-                             std::make_shared<EmptyLogger>());
+public:
+    /**
+     * @brief Constructor of SolverFactory, fills the list of available solvers
+     */
+    explicit SolverFactory(
+      std::shared_ptr<ILoggerXpansion> logger = std::make_shared<EmptyLogger>());
 
- public:
-  /**
-   * @brief Creates and returns to an object solver from the wanted
-   * implementation
-   *
-   * @param solver_name : Name of the solver to use
-   * @param solver_type : Type of the solver {INTEGER, CONTINUOUS}
-   * @param log_manager : A logger
-   */
-  SolverAbstract::Ptr create_solver(const std::string& solver_name) const;
-  SolverAbstract::Ptr create_solver(const std::string& solver_name,
-                                    SolverLogManager &log_manager) const;
-  SolverAbstract::Ptr create_solver(const std::string &solver_name,
-                                    const SOLVER_TYPE solver_type) const;
-  SolverAbstract::Ptr create_solver(const std::string &solver_name,
-                                    const SOLVER_TYPE solver_type,
-                                    SolverLogManager &log_manager) const;
+public:
+    /**
+     * @brief Creates and returns to an object solver from the wanted
+     * implementation
+     *
+     * @param solver_name : Name of the solver to use
+     * @param solver_type : Type of the solver {INTEGER, CONTINUOUS}
+     * @param log_manager : A logger
+     */
+    SolverAbstract::Ptr create_solver(const std::string& solver_name) const;
+    SolverAbstract::Ptr create_solver(const std::string& solver_name,
+                                      SolverLogManager& log_manager) const;
+    SolverAbstract::Ptr create_solver(const std::string& solver_name,
+                                      const SOLVER_TYPE solver_type) const;
+    SolverAbstract::Ptr create_solver(const std::string& solver_name,
+                                      const SOLVER_TYPE solver_type,
+                                      SolverLogManager& log_manager) const;
 
-  /**
-   * @brief Creates and returns to an object solver from the wanted
-   * implementation
-   *
-   * @param solver_config : A solver configuration
-   * @param solver_type : Type of the solver {INTEGER, CONTINUOUS}
-   * @param log_manager : A logger
-   */
-  SolverAbstract::Ptr create_solver(const SolverConfig& solver_config) const;
-  SolverAbstract::Ptr create_solver(const SolverConfig& solver_config,
-                                    const SOLVER_TYPE solver_type) const;
-  SolverAbstract::Ptr create_solver(const SolverConfig& solver_config,
-                                    SolverLogManager &log_manager) const;
-  SolverAbstract::Ptr create_solver(const SolverConfig& solver_config,
-                                    const SOLVER_TYPE solver_type,
-                                    SolverLogManager &log_manager) const;
+    /**
+     * @brief Creates and returns to an object solver from the wanted
+     * implementation
+     *
+     * @param solver_config : A solver configuration
+     * @param solver_type : Type of the solver {INTEGER, CONTINUOUS}
+     * @param log_manager : A logger
+     */
+    SolverAbstract::Ptr create_solver(const SolverConfig& solver_config) const;
+    SolverAbstract::Ptr create_solver(const SolverConfig& solver_config,
+                                      const SOLVER_TYPE solver_type) const;
+    SolverAbstract::Ptr create_solver(const SolverConfig& solver_config,
+                                      SolverLogManager& log_manager) const;
+    SolverAbstract::Ptr create_solver(const SolverConfig& solver_config,
+                                      const SOLVER_TYPE solver_type,
+                                      SolverLogManager& log_manager) const;
 
-  /**
-   * @brief Copy constructor : Creates and returns to an object solver from the
-   * wanted implementation by copying datas from same solver implementation
-   *
-   * @param to_copy : solver to copy
-   */
-  SolverAbstract::Ptr copy_solver(SolverAbstract::Ptr to_copy) const;
-  SolverAbstract::Ptr copy_solver(
-      const std::shared_ptr<const SolverAbstract> &to_copy) const;
+    /**
+     * @brief Copy constructor : Creates and returns to an object solver from the
+     * wanted implementation by copying datas from same solver implementation
+     *
+     * @param to_copy : solver to copy
+     */
+    SolverAbstract::Ptr copy_solver(SolverAbstract::Ptr to_copy) const;
+    SolverAbstract::Ptr copy_solver(const std::shared_ptr<const SolverAbstract>& to_copy) const;
 
-  /**
-   * @brief Returns a reference to the list of available solvers
-   */
-  const std::vector<std::string> &get_solvers_list() const;
+    /**
+     * @brief Returns a reference to the list of available solvers
+     */
+    const std::vector<std::string>& get_solvers_list() const;
 
-  bool isXpress_available_ = false;
+    bool isXpress_available_ = false;
 
-  std::shared_ptr<ILoggerXpansion> logger_;
+    std::shared_ptr<ILoggerXpansion> logger_;
 };

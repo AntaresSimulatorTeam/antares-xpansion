@@ -1,30 +1,31 @@
 #pragma once
 
 #include <fmt/format.h>
-
 #include <ostream>
 
 #include "ProblemFormat.h"
 
-inline std::ostream &operator<<(std::ostream &stream,
-                                ProblemsFormat const &rhs) {
-  switch (rhs) {
+inline std::ostream& operator<<(std::ostream& stream, const ProblemsFormat& rhs)
+{
+    switch (rhs)
+    {
     case ProblemsFormat::MPS_FILE:
-      stream << "MPS";
-      break;
+        stream << "MPS";
+        break;
     case ProblemsFormat::SAVED_FILE:
-      stream << "SAVED";
-      break;
+        stream << "SAVED";
+        break;
     default:
-      stream << "Unknown";
-  }
-  return stream;
+        stream << "Unknown";
+    }
+    return stream;
 }
 
-template <>
-struct fmt::formatter<ProblemsFormat> : formatter<string_view> {
-  // parse is inherited from formatter<string_view>.
+template<>
+struct fmt::formatter<ProblemsFormat>: formatter<string_view>
+{
+    // parse is inherited from formatter<string_view>.
 
-  auto format(ProblemsFormat problems_format,
-              format_context &ctx) const -> format_context::iterator;
+    auto format(ProblemsFormat problems_format,
+                format_context& ctx) const -> format_context::iterator;
 };

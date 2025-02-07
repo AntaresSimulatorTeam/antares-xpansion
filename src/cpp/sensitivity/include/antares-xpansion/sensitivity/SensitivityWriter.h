@@ -1,8 +1,7 @@
 #pragma once
 
-#include <json/writer.h>
-
 #include <filesystem>
+#include <json/writer.h>
 
 #include "antares-xpansion/sensitivity/SensitivityInputReader.h"
 #include "antares-xpansion/sensitivity/SensitivityOutputData.h"
@@ -25,15 +24,16 @@ const std::string LB_C("lower bound");
 const std::string UB_C("upper bound");
 const std::string BOUNDS_C("candidates bounds");
 
-class SensitivityWriter {
- private:
-  const std::filesystem::path _filename;
+class SensitivityWriter
+{
+private:
+    const std::filesystem::path _filename;
 
- public:
-  SensitivityWriter() = delete;
-  explicit SensitivityWriter(std::filesystem::path json_filename);
-  ~SensitivityWriter() = default;
+public:
+    SensitivityWriter() = delete;
+    explicit SensitivityWriter(std::filesystem::path json_filename);
+    ~SensitivityWriter() = default;
 
-  void end_writing(const SensitivityInputData& input_data,
-                   const std::vector<SinglePbData>& pbs_data) const;
+    void end_writing(const SensitivityInputData& input_data,
+                     const std::vector<SinglePbData>& pbs_data) const;
 };

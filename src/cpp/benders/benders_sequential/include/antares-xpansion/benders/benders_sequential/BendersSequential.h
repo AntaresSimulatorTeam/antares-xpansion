@@ -1,31 +1,40 @@
 #pragma once
 
-#include "antares-xpansion/helpers/ArchiveReader.h"
 #include "antares-xpansion/benders/benders_core/BendersBase.h"
-#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "antares-xpansion/benders/benders_core/common.h"
+#include "antares-xpansion/helpers/ArchiveReader.h"
+#include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
 /*!
  * \class BendersSequential
  * \brief Class use run the benders algorithm in sequential
  */
-class BendersSequential : public BendersBase {
- public:
-  explicit BendersSequential(
-      BendersBaseOptions const &options, Logger logger, std::shared_ptr<Output::OutputWriter> writer,
-      std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
-  virtual ~BendersSequential() = default;
-  virtual void launch();
-  virtual void BuildCut();
-  virtual void InitializeProblems();
-  std::string BendersName() const { return "Sequential"; }
+class BendersSequential: public BendersBase
+{
+public:
+    explicit BendersSequential(const BendersBaseOptions& options,
+                               Logger logger,
+                               std::shared_ptr<Output::OutputWriter> writer,
+                               std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
+    virtual ~BendersSequential() = default;
+    virtual void launch();
+    virtual void BuildCut();
+    virtual void InitializeProblems();
 
+    std::string BendersName() const
+    {
+        return "Sequential";
+    }
 
- protected:
-  virtual void free();
-  virtual void Run();
-  [[nodiscard]] bool shouldParallelize() const final { return true; }
+protected:
+    virtual void free();
+    virtual void Run();
 
- private:
-  ArchiveReader reader_;
+    [[nodiscard]] bool shouldParallelize() const final
+    {
+        return true;
+    }
+
+private:
+    ArchiveReader reader_;
 };

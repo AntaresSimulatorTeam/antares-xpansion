@@ -7,19 +7,19 @@
 #include <map>
 #include <sstream>
 
-class ScenarioToChronicleReader {
- private:
-  mutable std::map<unsigned, unsigned > chronicle_map;
+class ScenarioToChronicleReader
+{
+private:
+    mutable std::map<unsigned, unsigned> chronicle_map;
 
-  void ignoreFirstLine(std::istream& ss) const;
+    void ignoreFirstLine(std::istream& ss) const;
 
-  void AssignChronicleValueToMCYear(std::istream& ss,
-                                    unsigned int montecarlo_year) const;
-  void AssignChronicleValuesToMCYears(std::istream& ss) const;
+    void AssignChronicleValueToMCYear(std::istream& ss, unsigned int montecarlo_year) const;
+    void AssignChronicleValuesToMCYears(std::istream& ss) const;
 
- public:
-  [[nodiscard]] std::map<unsigned int, unsigned int> read(std::string const& input) const;
+public:
+    [[nodiscard]] std::map<unsigned int, unsigned int> read(const std::string& input) const;
 
-  [[nodiscard]] std::map<unsigned int, unsigned int> read(std::istream& input) const;
+    [[nodiscard]] std::map<unsigned int, unsigned int> read(std::istream& input) const;
 };
-#endif  // ANTARESXPANSION_TESTS_CPP_LP_NAMER_CHRONICLEMAPREADERTEST_CPP_CHRONICLEMAPREADER_H_
+#endif // ANTARESXPANSION_TESTS_CPP_LP_NAMER_CHRONICLEMAPREADERTEST_CPP_CHRONICLEMAPREADER_H_

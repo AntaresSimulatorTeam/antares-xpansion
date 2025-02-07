@@ -4,9 +4,10 @@
 
 #pragma once
 
-enum class Mode {
-  ANTARES_API,
-  FILE,
-  ARCHIVE,
-  UNKOWN,
+enum class Mode
+{
+    ANTARES_API,
+    FILE,
+    ARCHIVE,
+    UNKOWN,
 };
