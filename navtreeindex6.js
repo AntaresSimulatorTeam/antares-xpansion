@@ -1,7 +1,5 @@
 var NAVTREEINDEX6 =
 {
-"md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html#autotoc_md85":[5,1,1],
-"md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html#autotoc_md86":[5,2],
 "md_docs_2developer-guide_2install__from__sources_23-Build.html":[6],
 "md_docs_2developer-guide_2install__from__sources_23-Build.html#autotoc_md88":[6,0],
 "md_docs_2developer-guide_2install__from__sources_23-Build.html#autotoc_md89":[6,1],
@@ -249,5 +247,7 @@ var NAVTREEINDEX6 =
 "structCatch_1_1SourceLineInfo.html":[25,0,2,56],
 "structCatch_1_1StreamEndStop.html":[25,0,2,57],
 "structCatch_1_1StringMaker.html":[25,0,2,58],
-"structCatch_1_1StringMaker_3_01Catch_1_1Detail_1_1Approx_01_4.html":[25,0,2,60]
+"structCatch_1_1StringMaker_3_01Catch_1_1Detail_1_1Approx_01_4.html":[25,0,2,60],
+"structCatch_1_1StringMaker_3_01R_00_01typename_01std_1_1enable__if_3_01is__range_3_01R_01_4_1_1ve8233c20b54b69b4771fbd413409d181.html":[25,0,2,71],
+"structCatch_1_1StringMaker_3_01R_01C_1_1_5_01_4.html":[25,0,2,70]
 };

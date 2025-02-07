@@ -184,9 +184,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>write_basis</b> (cons
 <tr class="memitem:ac34205c795912f8a7b845701d25c80b2" id="r_ac34205c795912f8a7b845701d25c80b2"><td class="memItemLeft" align="right" valign="top"><a id="ac34205c795912f8a7b845701d25c80b2" name="ac34205c795912f8a7b845701d25c80b2"></a>
 virtual std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>solver</b> () const</td></tr>
 <tr class="separator:ac34205c795912f8a7b845701d25c80b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff510b82436f7d54fe4a124d0ae43fd6" id="r_aff510b82436f7d54fe4a124d0ae43fd6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aff510b82436f7d54fe4a124d0ae43fd6">solve</a> (int &amp;lp_status, const std::string &amp;outputroot, const std::string &amp;output_master_mps_file_name, Writer writer) const</td></tr>
-<tr class="memdesc:aff510b82436f7d54fe4a124d0ae43fd6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to solve a problem.  <br /></td></tr>
-<tr class="separator:aff510b82436f7d54fe4a124d0ae43fd6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a415adaf758b96a5372a7468670b2476a" id="r_a415adaf758b96a5372a7468670b2476a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a415adaf758b96a5372a7468670b2476a">solve</a> (int &amp;lp_status, const std::string &amp;outputroot, const std::string &amp;output_master_mps_file_name, std::shared_ptr&lt; <a class="el" href="classOutput_1_1OutputWriter.html">Output::OutputWriter</a> &gt; writer) const</td></tr>
+<tr class="memdesc:a415adaf758b96a5372a7468670b2476a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Method to solve a problem.  <br /></td></tr>
+<tr class="separator:a415adaf758b96a5372a7468670b2476a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae42dd6a1d5a666c424b0b6fab43fae21" id="r_ae42dd6a1d5a666c424b0b6fab43fae21"><td class="memItemLeft" align="right" valign="top"><a id="ae42dd6a1d5a666c424b0b6fab43fae21" name="ae42dd6a1d5a666c424b0b6fab43fae21"></a>
 int&#160;</td><td class="memItemRight" valign="bottom"><b>RowIndex</b> (const std::string &amp;row_name) const</td></tr>
 <tr class="separator:ae42dd6a1d5a666c424b0b6fab43fae21"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -343,8 +343,8 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
 
 </div>
 </div>
-<a id="aff510b82436f7d54fe4a124d0ae43fd6" name="aff510b82436f7d54fe4a124d0ae43fd6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff510b82436f7d54fe4a124d0ae43fd6">&#9670;&#160;</a></span>solve()</h2>
+<a id="a415adaf758b96a5372a7468670b2476a" name="a415adaf758b96a5372a7468670b2476a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a415adaf758b96a5372a7468670b2476a">&#9670;&#160;</a></span>solve()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -367,7 +367,7 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">Writer</td>          <td class="paramname"><span class="paramname"><em>writer</em></span>&#160;) const</td>
+          <td class="paramtype">std::shared_ptr&lt; <a class="el" href="classOutput_1_1OutputWriter.html">Output::OutputWriter</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>writer</em></span>&#160;) const</td>
         </tr>
       </table>
 </div><div class="memdoc">

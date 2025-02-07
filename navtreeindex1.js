@@ -1,7 +1,5 @@
 var NAVTREEINDEX1 =
 {
-"classBenders_1_1Criterion_1_1CriterionInputPatternsShouldBeArray.html":[25,0,1,0,8],
-"classBenders_1_1Criterion_1_1CriterionPattern.html":[25,0,1,0,9],
 "classBenders_1_1Criterion_1_1CriterionPattern.html#a64c62a0464bb2508709063eb352da908":[25,0,1,0,9,0],
 "classBenders_1_1Criterion_1_1CriterionSingleInputData.html":[25,0,1,0,10],
 "classBenders_1_1Criterion_1_1CriterionSingleInputData.html#a676b2c8a9e865b6a3cb3610ee27765be":[25,0,1,0,10,0],
@@ -249,5 +247,7 @@ var NAVTREEINDEX1 =
 "classOutput_1_1VoidWriter.html#ac7e6c83ce5444e8b3dc7f38d56ad4858":[25,0,7,7,6],
 "classOutput_1_1VoidWriter.html#ad6904d7f602e37270c000a9dbe564cde":[25,0,7,7,3],
 "classProblem.html":[25,0,165],
-"classProblem.html#a006aad13911c36e8d753f172c10f5465":[25,0,165,46]
+"classProblem.html#a006aad13911c36e8d753f172c10f5465":[25,0,165,46],
+"classProblem.html#a075abb3bc479adb0de6c2326fe03ac17":[25,0,165,40],
+"classProblem.html#a0e72a237efb49b4788c6131dc414e06b":[25,0,165,35]
 };

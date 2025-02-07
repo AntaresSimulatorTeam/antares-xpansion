@@ -149,10 +149,10 @@ $(function(){initNavTree('WriterFactories_8h_source.html',''); initResizable(tru
 <div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
 <div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &quot;antares-xpansion/benders/output/OutputWriter.h&quot;</span></div>
 <div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>Writer build_void_writer();</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>std::shared_ptr&lt;Output::OutputWriter&gt; build_void_writer();</div>
 <div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>Writer build_json_writer(<span class="keyword">const</span> std::filesystem::path &amp;json_file_name,</div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>                         <span class="keyword">const</span> <span class="keywordtype">bool</span> restart);</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span>std::shared_ptr&lt;Output::OutputWriter&gt; build_json_writer(<span class="keyword">const</span> std::filesystem::path &amp;json_file_name,</div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>                         <span class="keywordtype">bool</span> restart);</div>
 <div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span> </div>
 <div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#endif  </span><span class="comment">// ANTARESXPANSION_WRITERFACTORIES_H</span></div>
 </div><!-- fragment --></div><!-- contents -->

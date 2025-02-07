@@ -1,7 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a18ac312fdfc2181c7ad8dad85ba359d7":[25,0,0,5,0,26],
-"classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a267de5478c27b566118f8dfefa000f06":[24,0,0,2,0,25],
 "classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a267de5478c27b566118f8dfefa000f06":[25,0,0,5,0,25],
 "classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a2d69cced84114b716a8b06830836f34e":[24,0,0,2,0,15],
 "classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a2d69cced84114b716a8b06830836f34e":[25,0,0,5,0,15],
@@ -249,5 +247,7 @@ var NAVTREEINDEX4 =
 "classxpansion_1_1logger_1_1Master.html":[25,0,14,0,2],
 "classxpansion_1_1logger_1_1Master.html#aedc1d1015a2efc90153fbc02a83bd397":[25,0,14,0,2,0],
 "classxpansion_1_1logger_1_1User.html":[25,0,14,0,3],
-"classxpansion_1_1logger_1_1User.html#a7d02e013cf851b057661d0718c13f58a":[25,0,14,0,3,0]
+"classxpansion_1_1logger_1_1User.html#a7d02e013cf851b057661d0718c13f58a":[25,0,14,0,3,0],
+"classxpansion_1_1logger_1_1UserFile.html":[25,0,14,0,4],
+"classxpansion_1_1logger_1_1UserFile.html#a20209f11f5576c3ea4f74a999fdda486":[25,0,14,0,4,0]
 };

@@ -1,7 +1,5 @@
 var NAVTREEINDEX7 =
 {
-"structCatch_1_1StringMaker_3_01R_00_01typename_01std_1_1enable__if_3_01is__range_3_01R_01_4_1_1ve8233c20b54b69b4771fbd413409d181.html":[25,0,2,71],
-"structCatch_1_1StringMaker_3_01R_01C_1_1_5_01_4.html":[25,0,2,70],
 "structCatch_1_1StringMaker_3_01T_01_5_01_4.html":[25,0,2,77],
 "structCatch_1_1StringMaker_3_01T_0fSZ_0e_4.html":[25,0,2,78],
 "structCatch_1_1StringMaker_3_01bool_01_4.html":[25,0,2,59],
