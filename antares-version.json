@@ -1,7 +1,7 @@
 {
   "antares_version": "9.2.0-rc10",
   "antares_version_executable": "9.2",
-  "antares_xpansion_version": "1.4.0-rc4",
+  "antares_xpansion_version": "1.4.0-rc6",
   "minizip_ng_version": "3.0.6",
   "or-tools-rte": "9.11-rte1.1"
 }
