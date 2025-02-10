@@ -10,17 +10,15 @@
 
 #include <antares/solver/lps/LpsFromAntares.h>
 
-// clang-format off
+#include "ProblemGenerationOptions.h"
+#include "antares-xpansion/helpers/ArchiveReader.h"
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "antares-xpansion/lpnamer/input_reader/MpsTxtWriter.h"
+#include "antares-xpansion/lpnamer/main/ProblemGenerationExeOptions.h"
 #include "antares-xpansion/lpnamer/model/Problem.h"
 #include "antares-xpansion/lpnamer/model/SimulationInputMode.h"
-#include "antares-xpansion/helpers/ArchiveReader.h"
-#include "antares-xpansion/lpnamer/main/ProblemGenerationExeOptions.h"
-#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
-#include "ProblemGenerationOptions.h"
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 #include "antares-xpansion/multisolver_interface/SolverConfig.h"
-// clang-format on
 
 class ProblemGeneration
 {
@@ -52,7 +50,6 @@ private:
                            std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
     std::vector<std::shared_ptr<Problem>> getXpansionProblems(
       SolverLogManager& solver_log_manager,
-      SolverConfig solver_name,
       const std::vector<ProblemData>& mpsList,
       std::filesystem::path& lpDir_,
       std::shared_ptr<ArchiveReader> reader,
