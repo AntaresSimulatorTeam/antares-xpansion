@@ -102,6 +102,11 @@ class GeneralDataProcessor:
             (general_section, "year-by-year"): "false",
             (output_section, "synthesis"): "false",
             ("input", "import"): "",
+            # the following parameters are deprecated in Simulator 9.2
+            # we disable them manually to avoid simulation failure
+            ("adequacy patch", "enable-first-step"): "",
+            ("adequacy patch", "set-to-null-ntc-between-physical-out-for-first-step"): "",
+            ("other preferences", "initial-reservoir-levels"): ""
         }
 
     def backup_data(self):
