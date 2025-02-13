@@ -104,7 +104,7 @@ jobs:
         id: get-archives
         run: |
           container_id=$(docker create antaresxpansion:centos7)
-          docker cp $container_id:/workspace/antares-xpansion/archive archive    
+          docker cp $container_id:/workspace/antares-xpansion-generic/archive archive    
           echo "TGZ_NAME=$(basename "$(ls ./archive/multiple/*.tar.gz)")" >> $GITHUB_OUTPUT
           echo "SINGLE_FILE_NAME=$(basename "$(ls ./archive/single/*.tar.gz)")" >> $GITHUB_OUTPUT
           docker cp $container_id:/workspace/vcpkg_cache ${{ env.VCPKG_CACHE_DIR }}
