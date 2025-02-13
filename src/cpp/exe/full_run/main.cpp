@@ -12,6 +12,7 @@ namespace po = boost::program_options;
 
 int main(int argc, char** argv)
 {
+    // Work incoming to decoouple Benders from the rest of the code
     mpi::environment env(argc, argv);
     mpi::communicator world;
     auto options_parser = FullRunOptionsParser();
