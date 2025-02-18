@@ -32,8 +32,8 @@ jobs:
           fetch-depth: 0
 
       - id: sonar-install
-        name: Install sonar-scanner and build-wrapper
-        uses: SonarSource/sonarcloud-github-c-cpp@v3
+        name: Install Build Wrapper
+        uses: SonarSource/sonarqube-scan-action/install-build-wrapper@v5
 
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
@@ -172,7 +172,9 @@ jobs:
           cmake --build $GITHUB_WORKSPACE/_build --target code-coverage
 
       - name: Run sonar-scanner
+        uses: SonarSource/sonarqube-scan-action
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_2022 }}
-        run: sonar-scanner --define sonar.host.url="${{ env.SONAR_HOST_URL }}"
+        with:
+          args: --define sonar.host.url="${{ env.SONAR_HOST_URL }}"
