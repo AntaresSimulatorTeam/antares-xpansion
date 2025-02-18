@@ -142,7 +142,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
 
     add_test(
             NAME BDD
-            COMMAND Python3::Interpreter -m behave cucumber/features --installDir=${XPANSION_INSTALL_DIR}
+            COMMAND Python3::Interpreter -m behave cucumber/features
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/
     )
     set_property(TEST BDD PROPERTY LABELS end_to_end bdd)
