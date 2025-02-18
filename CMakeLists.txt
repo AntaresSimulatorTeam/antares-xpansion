@@ -306,10 +306,25 @@ FILE(COPY ${ANTARES_SOLVER_DIR}/../bin/
         USE_SOURCE_PERMISSIONS
         FILES_MATCHING PATTERN "*.so")
 
+#Install requirements
+find_package(
+        Python
+        REQUIRED
+        COMPONENTS Interpreter
+)
+execute_process(
+        COMMAND ${Python_EXECUTABLE} -m pip install -r ${CMAKE_CURRENT_SOURCE_DIR}/requirements.txt
+        RESULT_VARIABLE EXIT_CODE
+)
+
 add_subdirectory("${PROJECT_SOURCE_DIR}/src")
 
 if (BUILD_TESTING)
     enable_testing()
+    execute_process(
+            COMMAND ${Python_EXECUTABLE} -m pip install -r ${CMAKE_CURRENT_SOURCE_DIR}/requirements-tests.txt
+            RESULT_VARIABLE EXIT_CODE
+    )
     add_subdirectory("${PROJECT_SOURCE_DIR}/tests")
 endif ()
 
