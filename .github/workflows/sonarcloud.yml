@@ -172,7 +172,7 @@ jobs:
           cmake --build $GITHUB_WORKSPACE/_build --target code-coverage
 
       - name: Run sonar-scanner
-        uses: SonarSource/sonarqube-scan-action
+        uses: SonarSource/sonarqube-scan-action@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_2022 }}
