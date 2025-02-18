@@ -157,6 +157,7 @@ jobs:
       - name: Test and generate coverage
         continue-on-error: true
         run: |
+          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH
           cd $GITHUB_WORKSPACE/_build
           ctest -C Release --output-on-failure -L "unit|short"
 
