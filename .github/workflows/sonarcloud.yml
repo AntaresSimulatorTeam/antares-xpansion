@@ -159,13 +159,7 @@ jobs:
         run: |
           export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH
           cd $GITHUB_WORKSPACE/_build
-          ctest -C Release --output-on-failure -L "unit|short"
-
-      - name: Tests with Cucumber
-        uses: ./.github/workflows/cucumber-tests
-        with:
-          #          feature: "features/outer_loop_tests.feature"
-          mpi_path: ${{ github.workspace }}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin
+          ctest -C Release --output-on-failure -L "unit|short|bdd"
 
       - name: Compile coverage reports
         run: |
