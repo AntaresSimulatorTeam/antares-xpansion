@@ -11,6 +11,7 @@ on:
       - release/*
       - doc/*
       - dependabot/*
+  pull_request:
 
 jobs:
   sonarcloud:
@@ -24,15 +25,12 @@ jobs:
       VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
       ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
       ORTOOLS_URL: "https://github.com/rte-france/or-tools-rte/releases/download/v9.11-rte1.1/ortools_cxx_ubuntu-20.04_static_sirius.zip"
+      PYTHON_VERSION: 3.8
 
     steps:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-
-      - id: sonar-install
-        name: Install sonar-scanner and build-wrapper
-        uses: SonarSource/sonarcloud-github-c-cpp@v3
 
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2
@@ -41,8 +39,10 @@ jobs:
 
       - name: Set up Python
         uses: actions/setup-python@v5
+        id: python-setup
         with:
-          python-version: 3.8
+          cache: 'pip'
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install gcovr
         run: sudo pip install gcovr==5.0 #5.1 generate issues with sonarcloud report parsing
@@ -50,7 +50,18 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip3 install -r requirements-tests.txt
+          python -m pip install -r requirements-tests.txt
+
+      - name: Set-up Xpress with pip for Ubuntu
+        shell: bash
+        run: |
+          python -m pip install "xpress>=9.2,<9.3"
+          echo ${{ env.pythonLocation }}
+          XPRESS_DIR=${{ env.pythonLocation }}/lib/python${{ env.PYTHON_VERSION }}/site-packages/xpress
+          echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
+          echo "XPAUTH_PATH=$XPRESS_DIR/license/community-xpauth.xpr" >> $GITHUB_ENV
+          echo "Create symbolic link for XPRESS library file because it is missing in the Python installation"
+          ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so
 
       - name: Install libraries
         run: |
@@ -66,7 +77,7 @@ jobs:
           sudo update-alternatives --set cc /usr/bin/gcc
           sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30
           sudo update-alternatives --set c++ /usr/bin/g++ 
-      
+
       - name: Read antares-solver version
         id: antares-version
         uses: ./.github/actions/read-json-value
@@ -143,15 +154,16 @@ jobs:
       - name: Test and generate coverage
         continue-on-error: true
         run: |
+          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH
           cd $GITHUB_WORKSPACE/_build
-          ctest -C Release --output-on-failure -L "unit|short"
+          ctest -C Release --output-on-failure -L "unit|short|bdd"
 
       - name: Compile coverage reports
         run: |
           cmake --build $GITHUB_WORKSPACE/_build --target code-coverage
 
       - name: Run sonar-scanner
+        uses: SonarSource/sonarqube-scan-action@v5
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN_2022 }}
-        run: sonar-scanner --define sonar.host.url="${{ env.SONAR_HOST_URL }}"
