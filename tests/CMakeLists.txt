@@ -136,7 +136,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     add_test(
             NAME lpnamer_end_to_end
             COMMAND Python3::Interpreter -m pytest --installDir=${XPANSION_INSTALL_DIR} test_lpnamerEndToEnd.py
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/lpnamer
     )
     set_property(TEST lpnamer_end_to_end PROPERTY LABELS lpnamer end_to_end)
 
