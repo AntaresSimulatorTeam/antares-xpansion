@@ -1,8 +1,6 @@
 name: SonarCloud
 
 on:
-  schedule:
-    - cron: '0 0 * * *' # minuit for long tests
   push:
     branches:
       - branch-coverage
@@ -159,15 +157,7 @@ jobs:
         run: |
           export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH
           cd $GITHUB_WORKSPACE/_build
-          ctest -C Release --output-on-failure -L "unit|short|bdd"
-
-      - name: Run long test on schedule
-        continue-on-error: true
-        if: github.event_name == 'schedule'
-        run: |
-          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH
-          cd $GITHUB_WORKSPACE/_build
-          ctest -C Release --output-on-failure -L "long | medium"
+          ctest -C Release --output-on-failure
 
       - name: Compile coverage reports
         run: |
