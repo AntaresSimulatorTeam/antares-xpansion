@@ -11,6 +11,7 @@ on:
       - release/*
       - doc/*
       - dependabot/*
+  pull_request:
 
 jobs:
   sonarcloud:
