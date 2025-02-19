@@ -3,6 +3,7 @@ name: SonarCloud
 on:
   push:
     branches:
+      - branch-coverage
       - develop
       - feature/*
       - features/*
