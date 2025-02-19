@@ -7,9 +7,7 @@
       "binaryDir": "${sourceDir}/build",
       "cacheVariables": {
         "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake",
-        "VCPKG_TARGET_TRIPLET": "x64-linux",
-        "CMAKE_CXX_FLAGS": "-stdlib=libstdc++"
-        //Clang libc++ doesn't support std::execution
+        "VCPKG_TARGET_TRIPLET": "x64-linux"
       }
     }
   ]
