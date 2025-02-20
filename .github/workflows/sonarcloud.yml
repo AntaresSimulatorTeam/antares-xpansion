@@ -157,14 +157,6 @@ jobs:
           cd $GITHUB_WORKSPACE/_build
           ctest -C Release --output-on-failure
 
-      - name: Run long test on develop
-        continue-on-error: true
-        if: github.branch == 'develop'
-        run: |
-          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH
-          cd $GITHUB_WORKSPACE/_build
-          ctest -C Release --output-on-failure -L "long|medium"
-
       - name: Compile coverage reports
         run: |
           cmake --build $GITHUB_WORKSPACE/_build --target code-coverage
