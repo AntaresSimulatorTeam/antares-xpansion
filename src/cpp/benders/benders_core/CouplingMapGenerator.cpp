@@ -1,8 +1,7 @@
 #include <antares-xpansion/benders/benders_core/CouplingMapGenerator.h>
 #include <antares-xpansion/xpansion_interfaces/LoggerUtils.h>
 
-struct InvalidStructureFile: LogUtils::XpansionError<std::runtime_error>
-{
+struct InvalidStructureFile : LogUtils::XpansionError<std::runtime_error> {
     using LogUtils::XpansionError<std::runtime_error>::XpansionError;
 };
 
@@ -21,14 +20,12 @@ struct InvalidStructureFile: LogUtils::XpansionError<std::runtime_error>
  *  \note The id in the coupling_map is that of the variable in the solver
  *responsible for the creation of the structure file.
  */
-CouplingMap CouplingMapGenerator::BuildInput(const std::filesystem::path& structure_path,
-                                             std::shared_ptr<ILoggerXpansion> logger,
-                                             const std::string& context)
-{
+CouplingMap CouplingMapGenerator::BuildInput(const std::filesystem::path &structure_path,
+                                             ILoggerXpansion *logger,
+                                             const std::string &context) {
     CouplingMap coupling_map;
     std::ifstream summary(structure_path, std::ios::in);
-    if (!summary)
-    {
+    if (!summary) {
         auto log_location = LOGLOCATION;
         std::ostringstream msg;
         msg << "Cannot open structure file " << structure_path << std::endl;
@@ -39,8 +36,7 @@ CouplingMap CouplingMapGenerator::BuildInput(const std::filesystem::path& struct
     }
     std::string line;
 
-    while (std::getline(summary, line))
-    {
+    while (std::getline(summary, line)) {
         std::stringstream buffer(line);
         std::string problem_name;
         std::string variable_name;

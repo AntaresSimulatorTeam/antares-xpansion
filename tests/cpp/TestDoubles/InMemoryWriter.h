@@ -7,9 +7,12 @@
 #include "antares-xpansion/benders/output/OutputWriter.h"
 
 namespace Xpansion::Test {
-    class WriterNOOPStub : public Output::OutputWriter {
+    class InMemoryWriter : public Output::OutputWriter {
     public:
+        Output::SolutionData solution_data_;
+
         void update_solution(const Output::SolutionData &solution_data) override {
+            solution_data_ = solution_data;
         }
 
         void dump() override {

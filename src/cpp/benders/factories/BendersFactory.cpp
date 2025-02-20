@@ -17,42 +17,30 @@
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
-BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size, bool outer_loop)
-{
-    if (batch_size == 0 || batch_size == coupling_map_size - 1)
-    {
-        if (outer_loop)
-        {
+BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size, bool outer_loop) {
+    if (batch_size == 0 || batch_size == coupling_map_size - 1) {
+        if (outer_loop) {
             return BENDERSMETHOD::BENDERS_OUTERLOOP;
-        }
-        else
-        {
+        } else {
             return BENDERSMETHOD::BENDERS;
         }
-    }
-    else
-    {
-        if (outer_loop)
-        {
+    } else {
+        if (outer_loop) {
             return BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP;
-        }
-        else
-        {
+        } else {
             return BENDERSMETHOD::BENDERS_BY_BATCH;
         }
     }
 }
 
-void BendersMainFactory::PrepareForExecution(bool outer_loop)
-{
+void BendersMainFactory::PrepareForExecution(bool outer_loop) {
     BendersBaseOptions benders_options(options_.get_benders_options());
     benders_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = outer_loop;
 
     SetupLoggerAndOutputWriter(benders_options);
 
     const auto coupling_map = CouplingMapGenerator::BuildInput(benders_options.STRUCTURE_FILE,
-                                                               std::make_shared<BendersLoggerBase>(
-                                                                 benders_loggers_),
+                                                               &benders_loggers_,
                                                                "Benders");
 
     method_ = DeduceBendersMethod(coupling_map.size(), options_.BATCH_SIZE, outer_loop);
@@ -60,15 +48,12 @@ void BendersMainFactory::PrepareForExecution(bool outer_loop)
 
     criterion_input_holder_ = ProcessCriterionInput();
 
-    if (pworld_->rank() == 0)
-    {
+    if (pworld_->rank() == 0) {
         if (Benders::StartUp startup;
-            startup.StudyAlreadyAchievedCriterion(options_, writer_.get(), logger_))
-        {
+            startup.StudyAlreadyAchievedCriterion(options_, writer_.get(), logger_)) {
             return;
         }
-        if (!isCriterionListEmpty())
-        {
+        if (!isCriterionListEmpty()) {
             AddCriterionOutputs();
         }
     }
@@ -77,10 +62,8 @@ void BendersMainFactory::PrepareForExecution(bool outer_loop)
     ConfigureSolverLog();
 }
 
-void BendersMainFactory::ConfigureSolverLog()
-{
-    if (options_.LOG_LEVEL > 1)
-    {
+void BendersMainFactory::ConfigureSolverLog() {
+    if (options_.LOG_LEVEL > 1) {
         auto solver_log = std::filesystem::path(options_.OUTPUTROOT)
                           / (std::string("solver_log_proc_") + std::to_string(pworld_->rank())
                              + ".txt");
@@ -89,57 +72,50 @@ void BendersMainFactory::ConfigureSolverLog()
     }
 }
 
-void BendersMainFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
-                                          const CouplingMap& coupling_map)
-{
-    switch (method_)
-    {
-    case BENDERSMETHOD::BENDERS:
-        benders_ = std::make_shared<BendersMpi>(benders_options,
-                                                logger_,
-                                                writer_,
-                                                *penv_,
-                                                *pworld_,
-                                                math_log_driver_);
-        break;
-    case BENDERSMETHOD::BENDERS_OUTERLOOP:
-        benders_ = std::make_shared<Outerloop::BendersMpiOuterLoop>(benders_options,
-                                                                    logger_,
-                                                                    writer_,
-                                                                    *penv_,
-                                                                    *pworld_,
-                                                                    math_log_driver_);
-        break;
-    case BENDERSMETHOD::BENDERS_BY_BATCH:
-    case BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP:
-        benders_ = std::make_shared<BendersByBatch>(benders_options,
+void BendersMainFactory::ConfigureBenders(const BendersBaseOptions &benders_options,
+                                          const CouplingMap &coupling_map) {
+    switch (method_) {
+        case BENDERSMETHOD::BENDERS:
+            benders_ = std::make_shared<BendersMpi>(benders_options,
                                                     logger_,
                                                     writer_,
                                                     *penv_,
                                                     *pworld_,
                                                     math_log_driver_);
-        break;
+            break;
+        case BENDERSMETHOD::BENDERS_OUTERLOOP:
+            benders_ = std::make_shared<Outerloop::BendersMpiOuterLoop>(benders_options,
+                                                                        logger_,
+                                                                        writer_,
+                                                                        *penv_,
+                                                                        *pworld_,
+                                                                        math_log_driver_);
+            break;
+        case BENDERSMETHOD::BENDERS_BY_BATCH:
+        case BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP:
+            benders_ = std::make_shared<BendersByBatch>(benders_options,
+                                                        logger_,
+                                                        writer_,
+                                                        *penv_,
+                                                        *pworld_,
+                                                        math_log_driver_);
+            break;
     }
 
     benders_->set_input_map(coupling_map);
     benders_->setCriterionComputationInputs(
-      std::visit([](auto&& the_variant)
-                 { return static_cast<Benders::Criterion::CriterionInputData>(the_variant); },
-                 criterion_input_holder_));
+        std::visit([](auto &&the_variant) { return static_cast<Benders::Criterion::CriterionInputData>(the_variant); },
+                   criterion_input_holder_));
 }
 
-void BendersMainFactory::SetupLoggerAndOutputWriter(const BendersBaseOptions& benders_options)
-{
+void BendersMainFactory::SetupLoggerAndOutputWriter(const BendersBaseOptions &benders_options) {
     auto benders_log_console = benders_options.LOG_LEVEL > 0;
-    if (pworld_->rank() == 0)
-    {
+    if (pworld_->rank() == 0) {
         auto logger_factory = FileAndStdoutLoggerFactory(LogReportsName(), benders_log_console);
         logger_ = logger_factory.get_logger();
         math_log_driver_ = BuildMathLogger(benders_log_console);
         writer_ = build_json_writer(options_.JSON_FILE, options_.RESUME);
-    }
-    else
-    {
+    } else {
         logger_ = build_void_logger();
         writer_ = build_void_writer();
         math_log_driver_ = MathLoggerFactory::get_void_logger();
@@ -152,15 +128,13 @@ void BendersMainFactory::SetupLoggerAndOutputWriter(const BendersBaseOptions& be
     writer_->WriteProblemFormat(fmt::format("{}", options_.PROBLEMS_FORMAT));
 }
 
-bool BendersMainFactory::isCriterionListEmpty() const
-{
-    return std::visit([](auto&& the_variant) { return the_variant.Criteria().empty(); },
+bool BendersMainFactory::isCriterionListEmpty() const {
+    return std::visit([](auto &&the_variant) { return the_variant.Criteria().empty(); },
                       criterion_input_holder_);
 }
 
 std::shared_ptr<MathLoggerDriver> BendersMainFactory::BuildMathLogger(
-  bool benders_log_console) const
-{
+    bool benders_log_console) const {
     const std::filesystem::path output_root(options_.OUTPUTROOT);
     auto math_logs_file = output_root / "benders_solver.log";
 
@@ -171,45 +145,37 @@ std::shared_ptr<MathLoggerDriver> BendersMainFactory::BuildMathLogger(
     return math_log_driver;
 }
 
-void BendersMainFactory::AddCriterionOutputs()
-{
+void BendersMainFactory::AddCriterionOutputs() {
     const std::filesystem::path output_root(options_.OUTPUTROOT);
 
-    const auto& headers = std::visit([](auto&& the_variant) { return the_variant.PatternBodies(); },
+    const auto &headers = std::visit([](auto &&the_variant) { return the_variant.PatternBodies(); },
                                      criterion_input_holder_);
     math_log_driver_->add_logger(output_root / LOLD_FILE,
                                  headers,
                                  &CriteriaCurrentIterationData::criteria);
 
-    positive_unsupplied_file_ = std::visit([](auto&& the_variant)
-                                           { return the_variant.PatternsPrefix() + ".txt"; },
+    positive_unsupplied_file_ = std::visit([](auto &&the_variant) { return the_variant.PatternsPrefix() + ".txt"; },
                                            criterion_input_holder_);
     math_log_driver_->add_logger(output_root / positive_unsupplied_file_,
                                  headers,
                                  &CriteriaCurrentIterationData::patterns_values);
 }
 
-int BendersMainFactory::RunBenders()
-{
-    try
-    {
+int BendersMainFactory::RunBenders() {
+    try {
         PrepareForExecution(false);
-        if (benders_)
-        {
+        if (benders_) {
             StartMessage();
             benders_->launch();
             EndMessage(benders_->execution_time());
         }
-    }
-    catch (std::exception& e)
-    {
+    } catch (std::exception &e) {
         std::ostringstream msg;
         msg << "error: " << e.what() << std::endl;
         benders_loggers_.display_message(msg.str());
         mpi::environment::abort(1);
     }
-    catch (...)
-    {
+    catch (...) {
         std::ostringstream msg;
         msg << "Exception of unknown type!" << std::endl;
         benders_loggers_.display_message(msg.str());
@@ -218,8 +184,7 @@ int BendersMainFactory::RunBenders()
     return 0;
 }
 
-void BendersMainFactory::StartMessage()
-{
+void BendersMainFactory::StartMessage() {
     std::ostringstream oss_l;
     oss_l << "Starting " << context_ << std::endl;
     options_.print(oss_l);
@@ -227,8 +192,7 @@ void BendersMainFactory::StartMessage()
     benders_loggers_.display_message(oss_l.str());
 }
 
-void BendersMainFactory::EndMessage(const double execution_time)
-{
+void BendersMainFactory::EndMessage(const double execution_time) {
     std::ostringstream str;
     str << "Optimization results available in : " << options_.JSON_FILE << std::endl;
     benders_loggers_.display_message(str.str(), LogUtils::LOGLEVEL::INFO, context_);
@@ -240,51 +204,44 @@ void BendersMainFactory::EndMessage(const double execution_time)
 }
 
 std::variant<Benders::Criterion::CriterionInputData,
-             Benders::Criterion::OuterLoopCriterionInputData>
-BendersMainFactory::ProcessCriterionInput()
-{
+    Benders::Criterion::OuterLoopCriterionInputData>
+BendersMainFactory::ProcessCriterionInput() {
     const auto fpath = std::filesystem::path(options_.INPUTROOT) / options_.OUTER_LOOP_OPTION_FILE;
     // if adequacy_criterion.yml is provided read it
     if ((method_ == BENDERSMETHOD::BENDERS_OUTERLOOP
          || method_ == BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP)
-        && std::filesystem::exists(fpath))
-    {
+        && std::filesystem::exists(fpath)) {
         return Benders::Criterion::CriterionInputFromYaml().Read(fpath);
     }
     // else compute criterion for all areas!
-    else
-    {
+    else {
         return BuildPatternsUsingAreaFile();
     }
 }
 
-Benders::Criterion::CriterionInputData BendersMainFactory::BuildPatternsUsingAreaFile()
-{
+Benders::Criterion::CriterionInputData BendersMainFactory::BuildPatternsUsingAreaFile() {
     std::set<std::string> unique_areas = ReadAreaFile();
     Benders::Criterion::CriterionInputData ret;
     ret.SetCriterionCountThreshold(1);
 
-    for (const auto& area: unique_areas)
-    {
+    for (const auto &area: unique_areas) {
         Benders::Criterion::CriterionSingleInputData
-          singleInputData(Benders::Criterion::PositiveUnsuppliedEnergy, area, 1);
+                singleInputData(Benders::Criterion::PositiveUnsuppliedEnergy, area, 1);
         ret.AddSingleData(singleInputData);
     }
 
     return ret;
 }
 
-std::set<std::string> BendersMainFactory::ReadAreaFile()
-{
+std::set<std::string> BendersMainFactory::ReadAreaFile() {
     std::set<std::string> unique_areas;
     const auto area_file = std::filesystem::path(options_.INPUTROOT) / options_.AREA_FILE;
     const auto area_file_data = AreaParser::ReadAreaFile(area_file);
-    if (const auto& msg = area_file_data.error_message; !msg.empty())
-    {
+    if (const auto &msg = area_file_data.error_message; !msg.empty()) {
         benders_loggers_.display_message(msg, LogUtils::LOGLEVEL::WARNING, context_);
         std::ostringstream ms;
         ms << " Consequently, " << LOLD_FILE
-           << " and other criterion based files will not be produced!";
+                << " and other criterion based files will not be produced!";
 
         benders_loggers_.display_message(ms.str(), LogUtils::LOGLEVEL::WARNING, context_);
         return {};
@@ -292,18 +249,16 @@ std::set<std::string> BendersMainFactory::ReadAreaFile()
     return {area_file_data.areas.begin(), area_file_data.areas.end()};
 }
 
-int BendersMainFactory::RunExternalLoop()
-{
-    try
-    {
+int BendersMainFactory::RunExternalLoop() {
+    try {
         PrepareForExecution(true);
         double tau = 0.5;
-        const auto& outer_loop_inputs = std::get<Benders::Criterion::OuterLoopCriterionInputData>(
-          criterion_input_holder_);
+        const auto &outer_loop_inputs = std::get<Benders::Criterion::OuterLoopCriterionInputData>(
+            criterion_input_holder_);
         std::shared_ptr<Outerloop::IMasterUpdate> master_updater = std::make_shared<
-          Outerloop::MasterUpdateBase>(benders_, tau, outer_loop_inputs.StoppingThreshold());
+            Outerloop::MasterUpdateBase>(benders_, tau, outer_loop_inputs.StoppingThreshold());
         std::shared_ptr<Outerloop::ICutsManager>
-          cuts_manager = std::make_shared<Outerloop::CutsManagerRunTime>();
+                cuts_manager = std::make_shared<Outerloop::CutsManagerRunTime>();
 
         Outerloop::OuterLoopBenders ext_loop(outer_loop_inputs.Criteria(),
                                              master_updater,
@@ -313,16 +268,13 @@ int BendersMainFactory::RunExternalLoop()
         StartMessage();
         ext_loop.Run();
         EndMessage(ext_loop.Runtime());
-    }
-    catch (std::exception& e)
-    {
+    } catch (std::exception &e) {
         std::ostringstream msg;
         msg << "error: " << e.what() << std::endl;
         benders_loggers_.display_message(msg.str());
         mpi::environment::abort(1);
     }
-    catch (...)
-    {
+    catch (...) {
         std::ostringstream msg;
         msg << "Exception of unknown type!" << std::endl;
         benders_loggers_.display_message(msg.str());
@@ -332,18 +284,15 @@ int BendersMainFactory::RunExternalLoop()
 }
 
 BendersMainFactory::BendersMainFactory(int argc,
-                                       char** argv,
-                                       mpi::environment& env,
-                                       mpi::communicator& world,
-                                       const SOLVER& solver):
-    argv_(argv),
-    penv_(&env),
-    pworld_(&world),
-    solver_(solver)
-{
+                                       char **argv,
+                                       mpi::environment &env,
+                                       mpi::communicator &world,
+                                       const SOLVER &solver): argv_(argv),
+                                                              penv_(&env),
+                                                              pworld_(&world),
+                                                              solver_(solver) {
     // First check usage (options are given)
-    if (world.rank() == 0)
-    {
+    if (world.rank() == 0) {
         usage(argc);
     }
 
@@ -351,37 +300,29 @@ BendersMainFactory::BendersMainFactory(int argc,
 }
 
 BendersMainFactory::BendersMainFactory(int argc,
-                                       char** argv,
-                                       const std::filesystem::path& options_file,
-                                       mpi::environment& env,
-                                       mpi::communicator& world,
-                                       const SOLVER& solver):
-    argv_(argv),
-    penv_(&env),
-    pworld_(&world),
-    solver_(solver),
-    options_(options_file)
-{
+                                       char **argv,
+                                       const std::filesystem::path &options_file,
+                                       mpi::environment &env,
+                                       mpi::communicator &world,
+                                       const SOLVER &solver): argv_(argv),
+                                                              penv_(&env),
+                                                              pworld_(&world),
+                                                              solver_(solver),
+                                                              options_(options_file) {
     // First check usage (options are given)
-    if (world.rank() == 0)
-    {
+    if (world.rank() == 0) {
         usage(argc);
     }
 }
 
-std::filesystem::path BendersMainFactory::LogReportsName() const
-{
+std::filesystem::path BendersMainFactory::LogReportsName() const {
     return std::filesystem::path(options_.OUTPUTROOT) / "reportbenders.txt";
 }
 
-int BendersMainFactory::Run()
-{
-    if (solver_ == SOLVER::BENDERS)
-    {
+int BendersMainFactory::Run() {
+    if (solver_ == SOLVER::BENDERS) {
         return RunBenders();
-    }
-    else
-    {
+    } else {
         return RunExternalLoop();
     }
 }

@@ -2,11 +2,9 @@
 
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
-#include "antares-xpansion/benders/logger/User.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 
-enum Attribute
-{
+enum Attribute {
     INT_VALUE,
     INT_VECTOR,
     CHAR_VECTOR,
@@ -14,30 +12,26 @@ enum Attribute
     MAX_ATTRIBUTE
 };
 
-enum IntAttribute
-{
+enum IntAttribute {
     NROWS,
     NCOLS,
     NELES,
     MAX_INT_ATTRIBUTE
 };
 
-enum IntVectorAttribute
-{
+enum IntVectorAttribute {
     MSTART,
     MINDEX,
     MAX_INT_VECTOR_ATTRIBUTE,
 };
 
-enum CharVectorAttribute
-{
+enum CharVectorAttribute {
     ROWTYPE,
     COLTYPE,
     MAX_CHAR_VECTOR_ATTRIBUTE
 };
 
-enum DblVectorAttribute
-{
+enum DblVectorAttribute {
     MVALUE,
     RHS,
     RANGE,
@@ -47,12 +41,10 @@ enum DblVectorAttribute
     MAX_DBL_VECTOR_ATTRIBUTE
 };
 
-typedef std::
-  tuple<IntVector, std::vector<IntVector>, std::vector<CharVector>, std::vector<DblVector>>
-    raw_standard_lp_data;
+using raw_standard_lp_data = std::tuple<IntVector, std::vector<IntVector>, std::vector<CharVector>, std::vector<
+    DblVector> >;
 
-class StandardLp
-{
+class StandardLp {
 private:
     std::vector<std::string> _colNames;
 
@@ -62,16 +54,14 @@ public:
     static size_t appendCNT;
 
 public:
-    void init()
-    {
+    void init() {
         initialise_int_values_with_zeros();
         initialise_int_vectors();
         initialise_char_vectors();
         initialise_dbl_vectors();
     }
 
-    explicit StandardLp(SolverAbstract& solver_p)
-    {
+    explicit StandardLp(SolverAbstract &solver_p) {
         init();
 
         int ncols = solver_p.get_ncols();
@@ -145,33 +135,31 @@ public:
                                    std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS] - 1);
 
         assert(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MSTART].size()
-               == 1 + std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
+            == 1 + std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
 
         assert(std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE].size()
-               == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]);
+            == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]);
         assert(std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE].size()
-               == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
+            == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
 
         assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::MVALUE].size()
-               == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NELES]);
+            == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NELES]);
         assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS].size()
-               == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
+            == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NROWS]);
 
         assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ].size()
-               == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]);
+            == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]);
         assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::LB].size()
-               == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]);
+            == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]);
         assert(std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::UB].size()
-               == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]);
+            == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]);
     }
 
-    int append_in(SolverAbstract::Ptr containingSolver_p, const std::string& prefix_p = "") const
-    {
+    int append_in(SolverAbstract::Ptr containingSolver_p, const std::string &prefix_p = "") const {
         // simply increment the columns indices
         IntVector newmindex(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX]);
         int nbExistingCols(containingSolver_p->get_ncols());
-        for (auto& i: newmindex)
-        {
+        for (auto &i: newmindex) {
             i += nbExistingCols;
         }
 
@@ -182,8 +170,7 @@ public:
         std::transform(_colNames.begin(),
                        _colNames.end(),
                        newNames.begin(),
-                       [&prefix_l](std::string varName_p) -> std::string
-                       { return prefix_l + varName_p; });
+                       [&prefix_l](std::string varName_p) -> std::string { return prefix_l + varName_p; });
 
         std::vector<int> mstart(std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS], 0);
         solver_addcols(*containingSolver_p,
@@ -210,38 +197,35 @@ public:
     }
 
 private:
-    void initialise_int_values_with_zeros()
-    {
+    void initialise_int_values_with_zeros() {
         std::get<Attribute::INT_VALUE>(_data).assign(IntAttribute::MAX_INT_ATTRIBUTE, 0);
     }
 
-    void initialise_int_vectors()
-    {
+    void initialise_int_vectors() {
         std::get<Attribute::INT_VECTOR>(_data).assign(IntVectorAttribute::MAX_INT_VECTOR_ATTRIBUTE,
                                                       IntVector());
     }
 
-    void initialise_char_vectors()
-    {
+    void initialise_char_vectors() {
         std::get<Attribute::CHAR_VECTOR>(_data)
-          .assign(CharVectorAttribute::MAX_CHAR_VECTOR_ATTRIBUTE, CharVector());
+                .assign(CharVectorAttribute::MAX_CHAR_VECTOR_ATTRIBUTE, CharVector());
     }
 
-    void initialise_dbl_vectors()
-    {
+    void initialise_dbl_vectors() {
         std::get<Attribute::DBL_VECTOR>(_data).assign(DblVectorAttribute::MAX_DBL_VECTOR_ATTRIBUTE,
                                                       DblVector());
     }
 };
 
-class MergeMPS
-{
+class MergeMPS {
 public:
-    MergeMPS(const MergeMPSOptions& options,
-             Logger& logger,
+    MergeMPS(MergeMPSOptions options,
+             Logger logger,
              std::shared_ptr<Output::OutputWriter> writer);
+
     void launch();
-    double slave_weight(int nslaves, const std::string& name) const;
+
+    double slave_weight(int nslaves, const std::string &name) const;
 
     MergeMPSOptions _options;
     Logger _logger;

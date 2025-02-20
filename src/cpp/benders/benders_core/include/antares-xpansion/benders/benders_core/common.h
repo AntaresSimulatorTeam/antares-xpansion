@@ -24,13 +24,12 @@
 
 #include "ProblemFormat.h"
 
-enum class MasterFormulation
-{
+enum class MasterFormulation {
     INTEGER,
     RELAXED
 };
-enum class SOLVER
-{
+
+enum class SOLVER {
     BENDERS,
     OUTER_LOOP,
     MERGE_MPS
@@ -43,89 +42,73 @@ typedef std::shared_ptr<Point> PointPtr;
 
 const double EPSILON_PREDICATE = 1e-8;
 
-typedef std::set<std::string> problem_names;
-typedef std::map<std::string, int> VariableMap;
-typedef std::map<int, std::string> Int2Str;
-typedef std::map<std::string, double> Str2Dbl;
-typedef std::vector<int> IntVector;
-typedef std::vector<char> CharVector;
-typedef std::vector<double> DblVector;
-typedef std::vector<std::string> StrVector;
-typedef std::map<std::string, VariableMap> CouplingMap;
+using problem_names = std::set<std::string>;
+using VariableMap = std::map<std::string, int>;
+using Int2Str = std::map<int, std::string>;
+using Str2Dbl = std::map<std::string, double>;
+using IntVector = std::vector<int>;
+using CharVector = std::vector<char>;
+using DblVector = std::vector<double>;
+using StrVector = std::vector<std::string>;
+using CouplingMap = std::map<std::string, VariableMap>;
 
-typedef std::map<std::string, IntVector> SlaveCutId;
-typedef std::tuple<int, std::string, int, bool> ActiveCut;
-typedef std::vector<ActiveCut> ActiveCutStorage;
+using SlaveCutId = std::map<std::string, IntVector>;
+using ActiveCut = std::tuple<int, std::string, int, bool>;
+using ActiveCutStorage = std::vector<ActiveCut>;
 
-typedef std::pair<std::string, std::string> mps_coupling;
-typedef std::list<mps_coupling> mps_coupling_list;
+using mps_coupling = std::pair<std::string, std::string>;
+using mps_coupling_list = std::list<mps_coupling>;
 
-enum class BENDERSMETHOD
-{
+enum class BENDERSMETHOD {
     BENDERS,
     BENDERS_BY_BATCH,
     BENDERS_OUTERLOOP,
     BENDERS_BY_BATCH_OUTERLOOP
 };
 
-inline std::string bendersmethod_to_string(BENDERSMETHOD method)
-{
-    switch (method)
-    {
-    case BENDERSMETHOD::BENDERS:
-        return "Benders";
-    case BENDERSMETHOD::BENDERS_BY_BATCH:
-        return "Benders by batch";
-    case BENDERSMETHOD::BENDERS_OUTERLOOP:
-        return "Outerloop around Benders";
-    case BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP:
-        return "Outerloop around Benders by batch";
-    default:
-        return "Unknown";
+inline std::string bendersmethod_to_string(BENDERSMETHOD method) {
+    switch (method) {
+        case BENDERSMETHOD::BENDERS:
+            return "Benders";
+        case BENDERSMETHOD::BENDERS_BY_BATCH:
+            return "Benders by batch";
+        case BENDERSMETHOD::BENDERS_OUTERLOOP:
+            return "Outerloop around Benders";
+        case BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP:
+            return "Outerloop around Benders by batch";
+        default:
+            return "Unknown";
     }
 }
 
-struct Predicate
-{
-    bool operator()(const PointPtr& lhs, const PointPtr& rhs) const
-    {
+struct Predicate {
+    bool operator()(const PointPtr &lhs, const PointPtr &rhs) const {
         return *lhs < *rhs;
     }
 
-    bool operator()(const Point& lhs, const Point& rhs) const
-    {
+    bool operator()(const Point &lhs, const Point &rhs) const {
         Point::const_iterator it1(lhs.begin());
         Point::const_iterator it2(rhs.begin());
 
         Point::const_iterator end1(lhs.end());
         Point::const_iterator end2(rhs.end());
 
-        while (it1 != end1 && it2 != end2)
-        {
-            if (it1->first != it2->first)
-            {
+        while (it1 != end1 && it2 != end2) {
+            if (it1->first != it2->first) {
                 return it1->first < it2->first;
-            }
-            else
-            {
-                if (std::fabs(it1->second - it2->second) < EPSILON_PREDICATE)
-                {
+            } else {
+                if (std::fabs(it1->second - it2->second) < EPSILON_PREDICATE) {
                     ++it1;
                     ++it2;
-                }
-                else
-                {
+                } else {
                     return it1->second < it2->second;
                 }
             }
         }
 
-        if (it1 == end1 && it2 == end2)
-        {
+        if (it1 == end1 && it2 == end2) {
             return false;
-        }
-        else
-        {
+        } else {
             return (it1 == end1);
         }
     }
@@ -138,26 +121,18 @@ struct Predicate
  *
  *  \param rhs : point
  */
-inline std::ostream& operator<<(std::ostream& stream, const Point& rhs)
-{
-    for (const auto& kvp: rhs)
-    {
-        if (kvp.second > 0)
-        {
-            if (kvp.second == 1)
-            {
+inline std::ostream &operator<<(std::ostream &stream, const Point &rhs) {
+    for (const auto &kvp: rhs) {
+        if (kvp.second > 0) {
+            if (kvp.second == 1) {
                 stream << "+";
                 stream << kvp.first;
-            }
-            else
-            {
+            } else {
                 stream << "+";
                 stream << kvp.second;
                 stream << kvp.first;
             }
-        }
-        else if (kvp.second < 0)
-        {
+        } else if (kvp.second < 0) {
             stream << kvp.second;
             stream << kvp.first;
         }
@@ -165,9 +140,9 @@ inline std::ostream& operator<<(std::ostream& stream, const Point& rhs)
     return stream;
 }
 
-double norm_point(const Point& x0, const Point& x1);
+double norm_point(const Point &x0, const Point &x1);
 
-std::ostream& operator<<(std::ostream& stream, const std::vector<IntVector>& rhs);
+std::ostream &operator<<(std::ostream &stream, const std::vector<IntVector> &rhs);
 
 const std::string SUBPROBLEM_WEIGHT_CST_STR("CONSTANT");
 const std::string SUBPROBLEM_WEIGHT_UNIFORM_CST_STR("UNIFORM");
@@ -175,8 +150,7 @@ const std::string WEIGHT_SUM_CST_STR("WEIGHT_SUM");
 const std::string MPS_SUFFIX = ".mps";
 const std::string SAVE_SUFFIX = ".svf";
 
-struct BaseOptions
-{
+struct BaseOptions {
     std::string OUTPUTROOT;
     std::string INPUTROOT;
     std::string STRUCTURE_FILE;
@@ -197,17 +171,13 @@ struct BaseOptions
 
 typedef BaseOptions MergeMPSOptions;
 
-struct ExternalLoopOptions
-{
+struct ExternalLoopOptions {
     bool DO_OUTER_LOOP = false;
     std::string OUTER_LOOP_OPTION_FILE;
 };
 
-struct BendersBaseOptions: public BaseOptions
-{
-    explicit BendersBaseOptions(const BaseOptions& base_to_copy):
-        BaseOptions(base_to_copy)
-    {
+struct BendersBaseOptions : public BaseOptions {
+    explicit BendersBaseOptions(const BaseOptions &base_to_copy): BaseOptions(base_to_copy) {
     }
 
     int MAX_ITERATIONS = -1;
@@ -233,4 +203,5 @@ struct BendersBaseOptions: public BaseOptions
 };
 
 void usage(int argc);
-Json::Value get_json_file_content(const std::filesystem::path& json_file);
+
+Json::Value get_json_file_content(const std::filesystem::path &json_file);
