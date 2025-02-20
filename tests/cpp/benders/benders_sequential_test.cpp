@@ -446,7 +446,7 @@ TEST_P(BendersSequentialTestBySolver, CreateProblemsProperly) {
   BendersSequentialDouble benders(options.get_benders_options(), logger, writer,
                                   mathLoggerDriver);
   auto coupling_map = CouplingMapGenerator::BuildInput(options.STRUCTURE_FILE,
-                                                       logger, "Benders");
+                                                       logger.get(), "Benders");
   benders.set_input_map(coupling_map);
   benders.InitializeProblems();
   auto &&problems = benders.problems();
@@ -519,7 +519,7 @@ TEST_P(BendersSequentialTestBySolver, CreateProblemsProperlyWhenRestore) {
   BendersSequentialDouble benders(options.get_benders_options(), logger, writer,
                                   mathLoggerDriver);
   auto coupling_map = CouplingMapGenerator::BuildInput(options.STRUCTURE_FILE,
-                                                       logger, "Benders");
+                                                       logger.get(), "Benders");
   benders.set_input_map(coupling_map);
   benders.InitializeProblems();
   auto &&problems = benders.problems();
