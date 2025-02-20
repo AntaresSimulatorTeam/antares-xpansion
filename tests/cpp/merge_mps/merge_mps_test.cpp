@@ -111,3 +111,78 @@ TEST_F(MergeMPSTest, one_master_Problem_ok) {
         EXPECT_DOUBLE_EQ(sol_merged[i], sol_master[i]);
     }
 }
+
+//TEst with 2 problems the result is a problem with variables from both problems
+TEST_F(MergeMPSTest, two_problems_ok) {
+    createMasterProblem();
+    createStructureFile({
+        {"master.mps", "X1", 0}, {"master.mps", "X2", 1},
+        {"slave1.mps", "Y1", 0}, {"slave1.mps", "Y2", 1}
+    });
+    std::ofstream slave1(tmp_dir_ / "slave1.mps");
+    slave1 << R"(NAME          SLAVE1  FREE
+ROWS
+    N  OBJROW
+    L  C10
+    G  C20
+COLUMNS
+    Y1        OBJROW    1.0
+    Y1        C10       1.0
+    Y1        C20       1.0
+    Y2        OBJROW    1.0
+    Y2        C10        1.0
+    Y2        C20        2.0
+RHS
+    RHS      C10        100.0
+    RHS      C20        50.0
+BOUNDS
+    UP BOUND      Y1        50.0
+    UP BOUND      Y2        50.0
+ENDATA)";
+    slave1.close();
+    options_.weights[tmp_dir_ / "slave1.mps"] = 1;
+    MergeMPS mergeMPS(options_, logger_, writer_);
+    mergeMPS.launch();
+    auto lastSolution = writer_->solution_data_;
+    EXPECT_EQ(lastSolution.problem_status, "OPTIMAL");
+    //log_merged_mps exists
+    EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.mps"));
+    EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.lp"));
+    SolverFactory factory;
+    auto merged = factory.create_solver("CBC");
+    merged->read_prob_mps(tmp_dir_ / "log_merged.mps");
+    auto master = factory.create_solver("CBC");
+    master->read_prob_mps(tmp_dir_ / "master.mps");
+    auto slave = factory.create_solver("CBC");
+    slave->read_prob_mps(tmp_dir_ / "slave1.mps");
+    //Merged has master + slave number of constraints
+    EXPECT_EQ(merged->get_nrows(), master->get_nrows() + slave->get_nrows());
+    //Merged has master + slave number of variables
+    EXPECT_EQ(merged->get_ncols(), master->get_ncols() + slave->get_ncols());
+    //Merged obj is the combination of master and slave
+    DblVector obj_merged(merged->get_ncols());
+    DblVector obj_master(master->get_ncols());
+    DblVector obj_slave(slave->get_ncols());
+    merged->get_obj(obj_merged.data(), 0, merged->get_ncols() - 1);
+    master->get_obj(obj_master.data(), 0, master->get_ncols() - 1);
+    slave->get_obj(obj_slave.data(), 0, slave->get_ncols() - 1);
+    for (int i = 0; i < master->get_ncols(); ++i) {
+        EXPECT_DOUBLE_EQ(obj_merged[i], obj_master[i]);
+    }
+    for (int i = 0; i < slave->get_ncols(); ++i) {
+        EXPECT_DOUBLE_EQ(obj_merged[i + master->get_ncols()], obj_slave[i]);
+    }
+    //Merged has the same solution as master and slave
+    DblVector sol_merged(merged->get_ncols());
+    DblVector sol_master(master->get_ncols());
+    DblVector sol_slave(slave->get_ncols());
+    merged->get_lp_sol(sol_merged.data(), nullptr, nullptr);
+    master->get_lp_sol(sol_master.data(), nullptr, nullptr);
+    slave->get_lp_sol(sol_slave.data(), nullptr, nullptr);
+    for (int i = 0; i < master->get_ncols(); ++i) {
+        EXPECT_DOUBLE_EQ(sol_merged[i], sol_master[i]);
+    }
+    for (int i = 0; i < slave->get_ncols(); ++i) {
+        EXPECT_DOUBLE_EQ(sol_merged[i + master->get_ncols()], sol_slave[i]);
+    }
+}
