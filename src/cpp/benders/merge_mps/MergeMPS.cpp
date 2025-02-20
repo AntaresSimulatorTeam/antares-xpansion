@@ -213,6 +213,11 @@ double MergeMPS::slave_weight(int nslaves, const std::string &name) const {
         const double weight(_options.SLAVE_WEIGHT_VALUE);
         return 1 / weight;
     } else {
+        if (_options.weights.find(name) == _options.weights.end()) {
+            _logger->display_message(
+                "No weight found for " + name + ". Problem will not contribute to objective function",
+                LogUtils::LOGLEVEL::WARNING, "MergeMPS");
+        }
         return _options.weights.find(name)->second;
     }
 }
