@@ -16,7 +16,7 @@ protected:
         writer_ = std::make_shared<Xpansion::Test::InMemoryWriter>();
 
         options_.SOLVER_NAME = "COIN";
-        options_.STRUCTURE_FILE = tmp_dir_ / "structure_file.txt";
+        options_.STRUCTURE_FILE = (tmp_dir_ / "structure_file.txt").string();
         options_.OUTPUTROOT = tmp_dir_.string();
     }
 
@@ -43,7 +43,7 @@ BOUNDS
  UP BOUND      X2        4.0
 ENDATA)";
         master_problem.close();
-        options_.MASTER_NAME = tmp_dir_ / "master.mps";
+        options_.MASTER_NAME = (tmp_dir_ / "master.mps").string();
     }
 
     void createStructureFile(const std::vector<std::tuple<std::string, std::string, int> > &entries) {
@@ -66,7 +66,7 @@ TEST(MergeMPS, empty_input_ok) {
 
     MergeMPSOptions options;
     options.SOLVER_NAME = "COIN";
-    options.STRUCTURE_FILE = tmpDir / "structure_file.txt";
+    options.STRUCTURE_FILE = (tmpDir / "structure_file.txt").string();
     auto logger = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
     auto writer = std::make_shared<Xpansion::Test::InMemoryWriter>();
     MergeMPS mergeMPS(options, logger, writer);
@@ -140,7 +140,7 @@ BOUNDS
     UP BOUND      Y2        50.0
 ENDATA)";
     slave1.close();
-    options_.weights[tmp_dir_ / "slave1.mps"] = 1;
+    options_.weights[(tmp_dir_ / "slave1.mps").string()] = 1;
     MergeMPS mergeMPS(options_, logger_, writer_);
     mergeMPS.launch();
     auto lastSolution = writer_->solution_data_;
