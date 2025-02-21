@@ -1,0 +1,10 @@
+{
+    "investment_cost": 220499999.9999981,
+    "operational_cost": 13501512886.702877,
+    "overall_cost": 13722012886.702875,
+    "battery": 885,
+    "peak": 1800,
+    "pv": 1000.0,
+    "semibase": 0.0,
+    "transmission_line": 400.0
+}
