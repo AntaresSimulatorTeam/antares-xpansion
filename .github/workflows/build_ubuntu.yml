@@ -64,6 +64,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-tests.txt
 
+      #Fix version to 9.2.7.
+      #In 9.2.12 and above, directory structure has changed.
       - name: Set-up Xpress with pip for Ubuntu
         shell: bash
         run: |
