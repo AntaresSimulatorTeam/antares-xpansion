@@ -87,6 +87,13 @@ TEST_F(MergeMPSTest, one_master_Problem_ok) {
     //log_merged_mps exists
     EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.mps"s));
     EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
+    //Print the merged problem
+    std::ifstream merged_mps(tmp_dir_ / "log_merged.mps"s);
+    std::string line;
+    while (std::getline(merged_mps, line)) {
+        std::cout << line << std::endl;
+    }
+    merged_mps.close();
     SolverFactory factory;
     auto merged = factory.create_solver("CBC");
     merged->read_prob_lp(tmp_dir_ / "log_merged.lp"s);
