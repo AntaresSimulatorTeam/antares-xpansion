@@ -65,7 +65,8 @@ enum class BENDERSMETHOD
     BENDERS,
     BENDERS_BY_BATCH,
     BENDERS_OUTERLOOP,
-    BENDERS_BY_BATCH_OUTERLOOP
+    BENDERS_BY_BATCH_OUTERLOOP,
+    GRIDSEARCH
 };
 
 inline std::string bendersmethod_to_string(BENDERSMETHOD method)
@@ -80,6 +81,8 @@ inline std::string bendersmethod_to_string(BENDERSMETHOD method)
         return "Outerloop around Benders";
     case BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP:
         return "Outerloop around Benders by batch";
+    case BENDERSMETHOD::GRIDSEARCH:
+        return "Gridsearch";
     default:
         return "Unknown";
     }

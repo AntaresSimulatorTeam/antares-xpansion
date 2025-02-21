@@ -19,6 +19,7 @@
 
 BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size, bool outer_loop)
 {
+    return BENDERSMETHOD::GRIDSEARCH;
     if (batch_size == 0 || batch_size == coupling_map_size - 1)
     {
         if (outer_loop)
@@ -118,6 +119,12 @@ void BendersMainFactory::ConfigureBenders(const BendersBaseOptions& benders_opti
                                                     *penv_,
                                                     *pworld_,
                                                     math_log_driver_);
+        break;
+    case BENDERSMETHOD::GRIDSEARCH:
+        benders_ = std::make_shared<GridSearch>(benders_options,
+                                                logger_,
+                                                writer_,
+                                                math_log_driver_);
         break;
     }
 

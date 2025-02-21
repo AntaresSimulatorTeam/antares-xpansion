@@ -8,6 +8,7 @@ add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/outer_loop")
 
 
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/benders_mpi")
+add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/grid_search")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/factories")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/output")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/merge_mps")

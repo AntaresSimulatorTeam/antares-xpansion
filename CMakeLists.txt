@@ -386,7 +386,7 @@ endif (XPRESS)
 
 
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "RTE")
-set(CPACK_DEBIAN_PACKAGE_NAME "antares-xpansion")
+set(CPACK_DEBIAN_PACKAGE_NAME "antares-xpansion-generic")
 set(CPACK_DEBIAN_PACKAGE_DEPENDS "libcurl4,libjsoncpp1,libboost-mpi-dev")
 set(CPACK_RPM_PACKAGE_REQUIRES "openmpi,jsoncpp,boost-openmpi")
 set(CPACK_RPM_PACKAGE_AUTOREQPROV "0")
