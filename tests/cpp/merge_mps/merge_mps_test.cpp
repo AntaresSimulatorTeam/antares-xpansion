@@ -8,6 +8,8 @@
 
 size_t StandardLp::appendCNT = 0;
 
+using namespace std::string_literals;
+
 class MergeMPSTest : public ::testing::Test {
 protected:
     void SetUp() override {
@@ -24,7 +26,7 @@ protected:
     }
 
     void createMasterProblem() {
-        std::ofstream master_problem(tmp_dir_ / "master.mps");
+        std::ofstream master_problem(tmp_dir_ / "master.mps"s);
         master_problem << R"(NAME          MASTER  FREE
 ROWS
  N  OBJROW
@@ -43,7 +45,7 @@ BOUNDS
  UP BOUND      X2        4.0
 ENDATA)";
         master_problem.close();
-        options_.MASTER_NAME = (tmp_dir_ / "master.mps").string();
+        options_.MASTER_NAME = (tmp_dir_ / "master.mps"s).string();
     }
 
     void createStructureFile(const std::vector<std::tuple<std::string, std::string, int> > &entries) {
@@ -62,11 +64,11 @@ ENDATA)";
 
 TEST(MergeMPS, empty_input_ok) {
     auto tmpDir = CreateRandomSubDir(std::filesystem::temp_directory_path());
-    std::ofstream structure_file(tmpDir / "structure_file.txt");
+    std::ofstream structure_file(tmpDir / "structure_file.txt"s);
 
     MergeMPSOptions options;
     options.SOLVER_NAME = "COIN";
-    options.STRUCTURE_FILE = (tmpDir / "structure_file.txt").string();
+    options.STRUCTURE_FILE = (tmpDir / "structure_file.txt"s).string();
     auto logger = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
     auto writer = std::make_shared<Xpansion::Test::InMemoryWriter>();
     MergeMPS mergeMPS(options, logger, writer);
@@ -83,13 +85,13 @@ TEST_F(MergeMPSTest, one_master_Problem_ok) {
     auto lastSolution = writer_->solution_data_;
     EXPECT_EQ(lastSolution.problem_status, "OPTIMAL");
     //log_merged_mps exists
-    EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.mps"));
-    EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.lp"));
+    EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.mps"s));
+    EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
     SolverFactory factory;
     auto merged = factory.create_solver("CBC");
-    merged->read_prob_mps(tmp_dir_ / "log_merged.mps");
+    merged->read_prob_lp(tmp_dir_ / "log_merged.lp"s);
     auto master = factory.create_solver("CBC");
-    master->read_prob_mps(tmp_dir_ / "master.mps");
+    master->read_prob_mps(tmp_dir_ / "master.mps"s);
     //Merged and master problems are identical
     EXPECT_EQ(merged->get_ncols(), master->get_ncols());
     EXPECT_EQ(merged->get_nrows(), master->get_nrows());
@@ -146,15 +148,15 @@ ENDATA)";
     auto lastSolution = writer_->solution_data_;
     EXPECT_EQ(lastSolution.problem_status, "OPTIMAL");
     //log_merged_mps exists
-    EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.mps"));
-    EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.lp"));
+    EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.mps"s));
+    EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
     SolverFactory factory;
     auto merged = factory.create_solver("CBC");
-    merged->read_prob_mps(tmp_dir_ / "log_merged.mps");
+    merged->read_prob_mps(tmp_dir_ / "log_merged.lp"s);
     auto master = factory.create_solver("CBC");
-    master->read_prob_mps(tmp_dir_ / "master.mps");
+    master->read_prob_mps(tmp_dir_ / "master.mps"s);
     auto slave = factory.create_solver("CBC");
-    slave->read_prob_mps(tmp_dir_ / "slave1.mps");
+    slave->read_prob_mps(tmp_dir_ / "slave1.mps"s);
     //Merged has master + slave number of constraints
     EXPECT_EQ(merged->get_nrows(), master->get_nrows() + slave->get_nrows());
     //Merged has master + slave number of variables
