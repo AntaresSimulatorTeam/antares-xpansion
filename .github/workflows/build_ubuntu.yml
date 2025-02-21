@@ -75,7 +75,7 @@ jobs:
           echo "XPAUTH_PATH=$XPRESS_DIR/license/community-xpauth.xpr" >> $GITHUB_ENV
           echo "Create symbolic link for XPRESS_LIBS library file because it is missing in the Python installation"
           mkdir -p $XPRESS/lib
-          ln -s $XPRESS_LIBS/lib/libxprs.so.42 XPRESS_DIR/lib/libxprs.so
+          ln -s $XPRESS_LIBS/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so
 
       - name: Update alternatives
         #mpicxx  uses "g++" so we need g++ to be symbolic link to g++-10
