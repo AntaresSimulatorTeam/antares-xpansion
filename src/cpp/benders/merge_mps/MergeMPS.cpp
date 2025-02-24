@@ -18,7 +18,8 @@ MergeMPS::MergeMPS(MergeMPSOptions options,
 /**
  * Limitation: on windows may not support master problem with full path as name
  */
-void MergeMPS::launch() {
+void MergeMPS::launch()
+{
     const auto inputRootDir = std::filesystem::path(_options.INPUTROOT);
     auto structure_path(inputRootDir / _options.STRUCTURE_FILE);
     CouplingMap input = CouplingMapGenerator::BuildInput(structure_path,
