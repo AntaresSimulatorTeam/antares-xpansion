@@ -11,7 +11,6 @@ on:
       - release/*
       - doc/*
       - dependabot/*
-  pull_request:
 
 jobs:
   sonarcloud:
@@ -156,7 +155,7 @@ jobs:
         run: |
           export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH
           cd $GITHUB_WORKSPACE/_build
-          ctest -C Release --output-on-failure -L "unit|short|bdd"
+          ctest -C Release --output-on-failure
 
       - name: Compile coverage reports
         run: |
