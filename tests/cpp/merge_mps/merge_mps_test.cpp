@@ -45,13 +45,13 @@ BOUNDS
  UP BOUND      X2        4.0
 ENDATA)";
         master_problem.close();
-        options_.MASTER_NAME = (tmp_dir_ / "master.mps"s).string();
+        options_.MASTER_NAME = "master.mps";
     }
 
     void createStructureFile(const std::vector<std::tuple<std::string, std::string, int> > &entries) {
         std::ofstream structure_file(options_.STRUCTURE_FILE);
         for (const auto &[mps, var, idx]: entries) {
-            structure_file << fmt::format("{3}/{0} {1} {2}\n", mps, var, idx, tmp_dir_.string());
+            structure_file << fmt::format("{0} {1} {2}\n", mps, var, idx);
         }
         structure_file.close();
     }
@@ -71,6 +71,7 @@ TEST(MergeMPS, empty_input_ok) {
     options.STRUCTURE_FILE = (tmpDir / "structure_file.txt"s).string();
     auto logger = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
     auto writer = std::make_shared<Xpansion::Test::InMemoryWriter>();
+    std::filesystem::current_path(tmpDir);
     MergeMPS mergeMPS(options, logger, writer);
     mergeMPS.launch();
     auto lastSolution = writer->solution_data_;
@@ -80,11 +81,13 @@ TEST(MergeMPS, empty_input_ok) {
 TEST_F(MergeMPSTest, one_master_Problem_ok) {
     createMasterProblem();
     createStructureFile({{"master.mps", "X1", 0}, {"master.mps", "X2", 1}});
+    std::filesystem::current_path(tmp_dir_);
     MergeMPS mergeMPS(options_, logger_, writer_);
     mergeMPS.launch();
     auto lastSolution = writer_->solution_data_;
     EXPECT_EQ(lastSolution.problem_status, "OPTIMAL");
     //log_merged_mps exists
+    std::cout << tmp_dir_ / "log_merged.mps" << std::endl;
     EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.mps"s));
     EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
     //Print the merged problem
@@ -150,6 +153,7 @@ BOUNDS
 ENDATA)";
     slave1.close();
     options_.weights[(tmp_dir_ / "slave1.mps").string()] = 1;
+    std::filesystem::current_path(tmp_dir_);
     MergeMPS mergeMPS(options_, logger_, writer_);
     mergeMPS.launch();
     auto lastSolution = writer_->solution_data_;
