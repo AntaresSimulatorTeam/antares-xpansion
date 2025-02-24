@@ -152,7 +152,7 @@ BOUNDS
     UP BOUND      Y2        50.0
 ENDATA)";
     slave1.close();
-    options_.weights[(tmp_dir_ / "slave1.mps").string()] = 1;
+    options_.weights["slave1.mps"] = 1;
     std::filesystem::current_path(tmp_dir_);
     MergeMPS mergeMPS(options_, logger_, writer_);
     mergeMPS.launch();
