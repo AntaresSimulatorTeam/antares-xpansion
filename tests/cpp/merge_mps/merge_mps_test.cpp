@@ -156,6 +156,18 @@ ENDATA)";
     std::filesystem::current_path(tmp_dir_);
     MergeMPS mergeMPS(options_, logger_, writer_);
     mergeMPS.launch();
+    //Print the merged problem
+    std::ifstream merged_mps(tmp_dir_ / "log_merged.mps"s);
+    std::string line;
+    while (std::getline(merged_mps, line)) {
+        std::cout << line << std::endl;
+    }
+    std::cout << "-------\n";
+    std::ifstream merged_lp(tmp_dir_ / "log_merged.lp"s);
+    std::string line2;
+    while (std::getline(merged_lp, line2)) {
+        std::cout << line2 << std::endl;
+    }
     auto lastSolution = writer_->solution_data_;
     EXPECT_EQ(lastSolution.problem_status, "OPTIMAL");
     //log_merged_mps exists
