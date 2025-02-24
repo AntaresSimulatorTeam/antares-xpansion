@@ -19,7 +19,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
       matrix:
-        os: [ ubuntu-20.04 ]
+        os: [ ubuntu-22.04 ]
     env:
       VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
       ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
@@ -65,17 +65,7 @@ jobs:
       - name: Install libraries
         run: |
           sudo apt-get update --fix-missing
-          sudo apt-get install g++-10 gcc-10
-
-      - name: Update alternatives
-        #mpicxx  uses "g++" so we need g++ to be symbolic link to g++-10
-        run: |
-          sudo update-alternatives --install /usr/bin/gcc gcc /usr/bin/gcc-10 10
-          sudo update-alternatives --install /usr/bin/g++ g++ /usr/bin/g++-10 10
-          sudo update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 30
-          sudo update-alternatives --set cc /usr/bin/gcc
-          sudo update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 30
-          sudo update-alternatives --set c++ /usr/bin/g++ 
+          sudo apt-get install -y g++
 
       - name: Read antares-solver version
         id: antares-version
@@ -96,7 +86,7 @@ jobs:
         with:
           antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
-          os-full-name: Ubuntu-20.04
+          os-full-name: Ubuntu-22.04
           ortools-url: ${{env.ORTOOLS_URL}}
           ortools-dir: ${{env.ORTOOLS_DIR}}
 
@@ -123,9 +113,9 @@ jobs:
         run: |
           cmake -B _build -S . \
           -DCMAKE_C_COMPILER_LAUNCHER=ccache \
-          -DCMAKE_C_COMPILER=/usr/bin/gcc-10 \
+          -DCMAKE_C_COMPILER=/usr/bin/gcc \
           -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-          -DCMAKE_CXX_COMPILER=/usr/bin/g++-10 \
+          -DCMAKE_CXX_COMPILER=/usr/bin/g++ \
           -DCODE_COVERAGE=ON \
           -DBUILD_TESTING=ON \
           -DBUILD_antares_solver=OFF \
