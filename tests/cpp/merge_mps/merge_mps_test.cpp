@@ -77,12 +77,11 @@ TEST_F(MergeMPSTest, empty_input_ok) {
     MergeMPSOptions options;
     options.SOLVER_NAME = "COIN";
     options.STRUCTURE_FILE = (tmp_dir_ / "structure_file.txt"s).string();
-    auto logger = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
-    auto writer = std::make_shared<Xpansion::Test::InMemoryWriter>();
+
     std::filesystem::current_path(tmp_dir_);
-    MergeMPS mergeMPS(options, logger, writer);
+    MergeMPS mergeMPS(options, logger_, writer_);
     mergeMPS.launch();
-    const auto &lastSolution = writer->solution_data_;
+    const auto &lastSolution = writer_->solution_data_;
     EXPECT_EQ(lastSolution.problem_status, "ERROR");
 }
 
