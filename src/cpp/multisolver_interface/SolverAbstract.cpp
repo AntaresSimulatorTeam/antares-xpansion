@@ -142,10 +142,10 @@ bool SolverAbstract::operator==(const SolverAbstract &other) const {
     bool is_equal = true;
     is_equal = is_equal && verifyProblemDimensions(this, &other);
     is_equal = is_equal && verifyObjectiveFunction(this, &other);
-    is_equal = is_equal && verifySolution(this, &other);
     is_equal = is_equal && verifyConstraints(this, &other);
     is_equal = is_equal && verifyRHS(this, &other);
     is_equal = is_equal && verifyRowTypes(this, &other);
     is_equal = is_equal && verifyBounds(this, &other);
+    is_equal = is_equal && verifySolution(this, &other);
     return is_equal;
 }

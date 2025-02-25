@@ -92,23 +92,24 @@ TEST_F(MergeMPSTest, one_master_Problem_ok) {
     std::filesystem::current_path(tmp_dir_);
     MergeMPS mergeMPS(options_, logger_, writer_);
     mergeMPS.launch();
+
     auto lastSolution = writer_->solution_data_;
     EXPECT_EQ(lastSolution.problem_status, "OPTIMAL");
-    //log_merged_mps exists
-    std::cout << tmp_dir_ / "log_merged.mps" << std::endl;
+
     EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.mps"s));
     EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
+
     SolverFactory factory;
     auto merged = factory.create_solver("CBC");
-    merged->read_prob_lp(tmp_dir_ / "log_merged.lp"s);
+    merged->read_prob_mps(tmp_dir_ / "log_merged.mps"s);
     auto master = factory.create_solver("CBC");
     master->read_prob_mps(tmp_dir_ / "master.mps"s);
 
-    EXPECT_TRUE(*(merged.get()) == *(master.get()));
+    EXPECT_TRUE(*merged.get() == *master.get());
 }
 
-//TEst with 2 problems the result is a problem with variables from both problems
-TEST_F(MergeMPSTest, two_problems_ok) {
+//Test with 2 problems not sharing variables
+TEST_F(MergeMPSTest, two_disconected_problems_ok) {
     createMasterProblem();
     createStructureFile({
         {"master.mps", "X1", 0}, {"master.mps", "X2", 1},
@@ -135,22 +136,30 @@ BOUNDS
     UP BOUND      Y2        50.0
 ENDATA)";
     satellite1.close();
+
+    //Required to avoid missing contribution to Obj
     options_.weights["satellite1.mps"] = 1;
+
     std::filesystem::current_path(tmp_dir_);
     MergeMPS mergeMPS(options_, logger_, writer_);
     mergeMPS.launch();
+
     auto lastSolution = writer_->solution_data_;
     EXPECT_EQ(lastSolution.problem_status, "OPTIMAL");
-    //log_merged_mps exists
+
     EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.mps"s));
     EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
+
     SolverFactory factory;
     auto merged = factory.create_solver("CBC");
-    merged->read_prob_mps(tmp_dir_ / "log_merged.lp"s);
+    merged->read_prob_mps(tmp_dir_ / "log_merged.mps"s);
+
     auto master = factory.create_solver("CBC");
     master->read_prob_mps(tmp_dir_ / "master.mps"s);
+
     auto satellite = factory.create_solver("CBC");
     satellite->read_prob_mps(tmp_dir_ / "satellite1.mps"s);
+
     //Merged has master + satellite number of constraints
     EXPECT_EQ(merged->get_nrows(), master->get_nrows() + satellite->get_nrows());
     //Merged has master + satellite number of variables
