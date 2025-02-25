@@ -108,6 +108,18 @@ TEST_F(MergeMPSTest, one_master_Problem_ok) {
     EXPECT_EQ(*merged, *master);
 }
 
+auto get_rows(const SolverAbstract *solver) {
+    std::vector<int> mstart_merged(solver->get_nrows() + 1);
+    std::vector<int> mclind_merged(solver->get_nelems());
+    std::vector<double> dmatval_merged(solver->get_nelems());
+    int merge_ret = 0;
+    solver->get_rows(mstart_merged.data(), mclind_merged.data(), dmatval_merged.data(), solver->get_nelems(),
+                     &merge_ret,
+                     0,
+                     solver->get_nrows() - 1);
+    return std::tuple{mstart_merged, mclind_merged, dmatval_merged, merge_ret};
+}
+
 //Test with 2 problems not sharing variables
 TEST_F(MergeMPSTest, two_disconected_problems_ok) {
     createMasterProblem();
@@ -160,11 +172,12 @@ ENDATA)";
     auto satellite = factory.create_solver("CBC");
     satellite->read_prob_mps(tmp_dir_ / "satellite1.mps"s);
 
-    //Merged has master + satellite number of constraints
+    //Verify dimensions
     EXPECT_EQ(merged->get_nrows(), master->get_nrows() + satellite->get_nrows());
-    //Merged has master + satellite number of variables
     EXPECT_EQ(merged->get_ncols(), master->get_ncols() + satellite->get_ncols());
-    //Merged obj is the combination of master and satellite
+    EXPECT_EQ(merged->get_nelems(), master->get_nelems() + satellite->get_nelems());
+
+    //Verify objective
     DblVector obj_merged(merged->get_ncols());
     DblVector obj_master(master->get_ncols());
     DblVector obj_satellite(satellite->get_ncols());
@@ -177,17 +190,71 @@ ENDATA)";
     for (int i = 0; i < satellite->get_ncols(); ++i) {
         EXPECT_DOUBLE_EQ(obj_merged[i + master->get_ncols()], obj_satellite[i]);
     }
-    //Merged has the same solution as master and satellite
-    DblVector sol_merged(merged->get_ncols());
-    DblVector sol_master(master->get_ncols());
-    DblVector sol_satellite(satellite->get_ncols());
-    merged->get_lp_sol(sol_merged.data(), nullptr, nullptr);
-    master->get_lp_sol(sol_master.data(), nullptr, nullptr);
-    satellite->get_lp_sol(sol_satellite.data(), nullptr, nullptr);
+
+    //Verify lb
+    DblVector lb_merged(merged->get_ncols());
+    DblVector lb_master(master->get_ncols());
+    DblVector lb_satellite(satellite->get_ncols());
+    merged->get_lb(lb_merged.data(), 0, merged->get_ncols() - 1);
+    master->get_lb(lb_master.data(), 0, master->get_ncols() - 1);
+    satellite->get_lb(lb_satellite.data(), 0, satellite->get_ncols() - 1);
     for (int i = 0; i < master->get_ncols(); ++i) {
-        EXPECT_DOUBLE_EQ(sol_merged[i], sol_master[i]);
+        EXPECT_DOUBLE_EQ(lb_merged[i], lb_master[i]);
     }
     for (int i = 0; i < satellite->get_ncols(); ++i) {
-        EXPECT_DOUBLE_EQ(sol_merged[i + master->get_ncols()], sol_satellite[i]);
+        EXPECT_DOUBLE_EQ(lb_merged[i + master->get_ncols()], lb_satellite[i]);
+    }
+
+    //verify ub
+    DblVector ub_merged(merged->get_ncols());
+    DblVector ub_master(master->get_ncols());
+    DblVector ub_satellite(satellite->get_ncols());
+    merged->get_ub(ub_merged.data(), 0, merged->get_ncols() - 1);
+    master->get_ub(ub_master.data(), 0, master->get_ncols() - 1);
+    satellite->get_ub(ub_satellite.data(), 0, satellite->get_ncols() - 1);
+    for (int i = 0; i < master->get_ncols(); ++i) {
+        EXPECT_DOUBLE_EQ(ub_merged[i], ub_master[i]);
+    }
+    for (int i = 0; i < satellite->get_ncols(); ++i) {
+        EXPECT_DOUBLE_EQ(ub_merged[i + master->get_ncols()], ub_satellite[i]);
+    }
+
+    //Verify RHS
+    DblVector rhs_merged(merged->get_nrows());
+    DblVector rhs_master(master->get_nrows());
+    DblVector rhs_satellite(satellite->get_nrows());
+    merged->get_rhs(rhs_merged.data(), 0, merged->get_nrows() - 1);
+    master->get_rhs(rhs_master.data(), 0, master->get_nrows() - 1);
+    satellite->get_rhs(rhs_satellite.data(), 0, satellite->get_nrows() - 1);
+    for (int i = 0; i < master->get_nrows(); ++i) {
+        EXPECT_DOUBLE_EQ(rhs_merged[i], rhs_master[i]);
+    }
+    for (int i = 0; i < satellite->get_nrows(); ++i) {
+        EXPECT_DOUBLE_EQ(rhs_merged[i + master->get_nrows()], rhs_satellite[i]);
+    }
+
+    //Verify row (LHS)
+    auto [mstart_merged, mclind_merged, dmatval_merged, merge_ret] = get_rows(merged.get());
+    auto [mstart_master, mclind_master, dmatval_master, master_ret] = get_rows(master.get());
+    auto [mstart_satellite, mclind_satellite, dmatval_satellite, satellite_ret] = get_rows(satellite.get());
+    for (int i = 0; i < master->get_nelems(); ++i) {
+        EXPECT_DOUBLE_EQ(dmatval_merged[i], dmatval_master[i]);
+    }
+    for (int i = 0; i < satellite->get_nelems(); ++i) {
+        EXPECT_DOUBLE_EQ(dmatval_merged[i + master->get_nelems()], dmatval_satellite[i]);
+    }
+
+    //RHS type
+    std::vector<char> order_merged(merged->get_nrows());
+    std::vector<char> order_master(master->get_nrows());
+    std::vector<char> order_satellite(satellite->get_nrows());
+    merged->get_row_type(order_merged.data(), 0, merged->get_nrows() - 1);
+    master->get_row_type(order_master.data(), 0, master->get_nrows() - 1);
+    satellite->get_row_type(order_satellite.data(), 0, satellite->get_nrows() - 1);
+    for (int i = 0; i < master->get_nrows(); ++i) {
+        EXPECT_EQ(order_merged[i], order_master[i]);
+    }
+    for (int i = 0; i < satellite->get_nrows(); ++i) {
+        EXPECT_EQ(order_merged[i + master->get_nrows()], order_satellite[i]);
     }
 }

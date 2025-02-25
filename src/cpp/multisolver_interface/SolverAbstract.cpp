@@ -47,14 +47,14 @@ namespace {
     }
 
     bool verifyConstraints(const SolverAbstract *merged, const SolverAbstract *master) {
-        std::vector<int> mstart(merged->get_ncols() + 1);
+        std::vector<int> mstart(merged->get_nrows() + 1);
         std::vector<int> cindex(merged->get_nelems());
         std::vector<double> matval_merged(merged->get_nelems());
         int n_merged = 0;
         merged->get_rows(mstart.data(), cindex.data(), matval_merged.data(), merged->get_nelems(), &n_merged, 0,
                          merged->get_nrows() - 1);
 
-        std::vector<int> mstart_master(master->get_ncols() + 1);
+        std::vector<int> mstart_master(master->get_nrows() + 1);
         std::vector<int> cindex_master(master->get_nelems());
         std::vector<double> matval_master(master->get_nelems());
         int n_master = 0;
@@ -95,13 +95,13 @@ namespace {
     }
 
     bool verifyRowTypes(const SolverAbstract *merged, const SolverAbstract *master) {
-        std::vector<char> sense_merged(merged->get_nrows());
-        std::vector<char> sense_master(master->get_nrows());
-        merged->get_row_type(sense_merged.data(), 0, merged->get_nrows() - 1);
-        master->get_row_type(sense_master.data(), 0, master->get_nrows() - 1);
+        std::vector<char> order_merged(merged->get_nrows());
+        std::vector<char> order_master(master->get_nrows());
+        merged->get_row_type(order_merged.data(), 0, merged->get_nrows() - 1);
+        master->get_row_type(order_master.data(), 0, master->get_nrows() - 1);
 
         for (int i = 0; i < merged->get_nrows(); ++i) {
-            if (sense_merged[i] != sense_master[i]) {
+            if (order_merged[i] != order_master[i]) {
                 return false;
             }
         }
