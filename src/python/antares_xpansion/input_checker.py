@@ -127,7 +127,7 @@ def _check_candidate_option_type(option, value):
         if option_type is None:
             logger.error(
                 f"check_candidate_option_type: {option} option not recognized in candidates file.\n" +
-                "Authorized options are: %s" + '\n'.join(
+                "Valid options are: %s" + '\n'.join(
                     candidate_options_type.keys()))
             raise UnrecognizedCandidateOptionType
         if option_type == "string":
