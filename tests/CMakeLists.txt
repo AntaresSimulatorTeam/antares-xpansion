@@ -20,10 +20,10 @@ if (ALLOW_RUN_AS_ROOT)
 endif ()
 
 if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
-        set(xpress_available "")
-        if(${XPRESS})
-	        set(xpress_available "--xpress")
-        endif() 
+    set(xpress_available "")
+    if (${XPRESS})
+        set(xpress_available "--xpress")
+    endif ()
     # Python unit test
     add_test(
             NAME unit_launcher
@@ -40,14 +40,14 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     )
     set_property(TEST examples_short_sequential PROPERTY LABELS short short_sequential end_to_end)
 
-        add_test(
-                NAME examples_short_memory
-                COMMAND Python3::Interpreter -m pytest -m short_memory ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-        )
-        set_property(TEST examples_short_memory PROPERTY LABELS short short_memory end_to_end)
+    add_test(
+            NAME examples_short_memory
+            COMMAND Python3::Interpreter -m pytest -m short_memory ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
+    )
+    set_property(TEST examples_short_memory PROPERTY LABELS short short_memory end_to_end)
 
-        add_test(
+    add_test(
             NAME examples_short_mpi
             COMMAND Python3::Interpreter -m pytest -m short_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
@@ -55,9 +55,9 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     set_property(TEST examples_short_mpi PROPERTY LABELS short short_mpi end_to_end)
 
     add_test(
-        NAME examples_short_benders_by_batch_mpi
+            NAME examples_short_benders_by_batch_mpi
             COMMAND Python3::Interpreter -m pytest -m short_benders_by_batch_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
     set_property(TEST examples_short_benders_by_batch_mpi PROPERTY LABELS short short_mpi end_to_end)
 
@@ -74,13 +74,13 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
     set_property(TEST examples_medium_mpi PROPERTY LABELS medium medium_mpi end_to_end)
-   
+
     add_test(
             NAME example_medium_benders_by_batch_mpi
             COMMAND Python3::Interpreter -m pytest -m medium_benders_by_batch_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
-    set_property(TEST example_medium_benders_by_batch_mpi PROPERTY LABELS medium medium_mpi end_to_end )
+    set_property(TEST example_medium_benders_by_batch_mpi PROPERTY LABELS medium medium_mpi end_to_end)
 
     add_test(
             NAME examples_long_sequential
@@ -96,11 +96,11 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     )
     set_property(TEST examples_long_mpi PROPERTY LABELS long long_mpi end_to_end)
     add_test(
-        NAME examples_long_benders_by_batch_mpi
+            NAME examples_long_benders_by_batch_mpi
             COMMAND Python3::Interpreter -m pytest -m long_benders_by_batch_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-        WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
-    set_property(TEST examples_long_benders_by_batch_mpi PROPERTY LABELS long long_mpi end_to_end )
+    set_property(TEST examples_long_benders_by_batch_mpi PROPERTY LABELS long long_mpi end_to_end)
     # benders end to end tests
     add_test(
             NAME sequential
@@ -139,6 +139,13 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/lpnamer
     )
     set_property(TEST lpnamer_end_to_end PROPERTY LABELS lpnamer end_to_end)
+
+    add_test(
+            NAME BDD
+            COMMAND Python3::Interpreter -m behave cucumber/features
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/
+    )
+    set_property(TEST BDD PROPERTY LABELS end_to_end bdd)
 
 else ()
     message(FATAL_ERROR "Module pytest or numpy not installed : can't run python scripts for end to end tests")

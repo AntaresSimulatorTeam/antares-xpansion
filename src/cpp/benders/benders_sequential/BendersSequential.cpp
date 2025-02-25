@@ -5,7 +5,6 @@
 #include <utility>
 
 #include "antares-xpansion/helpers/Timer.h"
-
 #include "antares-xpansion/helpers/solver_utils.h"
 
 /*!
@@ -17,35 +16,46 @@
  *  \param options : set of options fixed by the user
  */
 
-BendersSequential::BendersSequential(
-    BendersBaseOptions const &options, Logger logger, Writer writer,
-    std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
-    : BendersBase(options, std::move(logger), std::move(writer),
-                  mathLoggerDriver) {}
+BendersSequential::BendersSequential(const BendersBaseOptions& options,
+                                     Logger logger,
+                                     std::shared_ptr<Output::OutputWriter> writer,
+                                     std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
+    BendersBase(options, std::move(logger), std::move(writer), mathLoggerDriver)
+{
+}
 
-void BendersSequential::InitializeProblems() {
-  MatchProblemToId();
+void BendersSequential::InitializeProblems()
+{
+    MatchProblemToId();
 
-  reset_master<WorkerMaster>(master_variable_map_, get_master_path(),
-                                get_solver_name(), get_log_level(),
-                                _data.nsubproblem, solver_log_manager_,
-                                IsResumeMode(), _logger, Options().PROBLEMS_FORMAT);
-  for (const auto &problem : coupling_map_) {
-    const auto subProblemFilePath = GetSubproblemPath(problem.first);
+    reset_master<WorkerMaster>(master_variable_map_,
+                               get_master_path(),
+                               get_solver_name(),
+                               get_log_level(),
+                               _data.nsubproblem,
+                               solver_log_manager_,
+                               IsResumeMode(),
+                               _logger,
+                               Options().PROBLEMS_FORMAT);
+    for (const auto& problem: coupling_map_)
+    {
+        const auto subProblemFilePath = GetSubproblemPath(problem.first);
 
-    AddSubproblem(problem);
-    AddSubproblemName(problem.first);
-  }
+        AddSubproblem(problem);
+        AddSubproblemName(problem.first);
+    }
 }
 
 /*!
  *  \brief Method to free the memory used by each problem
  */
-void BendersSequential::free() {
-  if (get_master()) {
-    free_master();
-  }
-  free_subproblems();
+void BendersSequential::free()
+{
+    if (get_master())
+    {
+        free_master();
+    }
+    free_subproblems();
 }
 
 /*!
@@ -55,18 +65,20 @@ void BendersSequential::free() {
  * and add them to the Master problem
  *
  */
-void BendersSequential::BuildCut() {
-  SubProblemDataMap subproblem_data_map;
-  Timer timer;
-  GetSubproblemCut(subproblem_data_map);
-  SetSubproblemCost(0);
-  for (const auto &[_, subproblem_data] : subproblem_data_map) {
-    SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
-  }
+void BendersSequential::BuildCut()
+{
+    SubProblemDataMap subproblem_data_map;
+    Timer timer;
+    GetSubproblemCut(subproblem_data_map);
+    SetSubproblemCost(0);
+    for (const auto& [_, subproblem_data]: subproblem_data_map)
+    {
+        SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
+    }
 
-  SetSubproblemsWalltime(timer.elapsed());
-  _data.ub = 0;
-  BuildCutFull(subproblem_data_map);
+    _data.subproblems_walltime = timer.elapsed();
+    _data.ub = 0;
+    BuildCutFull(subproblem_data_map);
 }
 
 /*!
@@ -74,74 +86,83 @@ void BendersSequential::BuildCut() {
  *
  *  Method to run BendersSequential algorithm
  */
-void BendersSequential::Run() {
-  init_data();
-  ChecksResumeMode();
-  if (is_trace()) {
-    OpenCsvFile();
-  }
-
-  if (is_initial_relaxation_requested()) {
-    _logger->LogAtInitialRelaxation();
-    DeactivateIntegrityConstraints();
-    SetDataPreRelaxation();
-  }
-
-  while (!_data.stop) {
-    Timer timer_master;
-    ++_data.it;
-
-    if (SwitchToIntegerMaster(_data.is_in_initial_relaxation)) {
-      _logger->LogAtSwitchToInteger();
-      ActivateIntegrityConstraints();
-      ResetDataPostRelaxation();
+void BendersSequential::Run()
+{
+    init_data();
+    ChecksResumeMode();
+    if (is_trace())
+    {
+        OpenCsvFile();
     }
 
-    _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
-    _logger->display_message("\tSolving master...");
-    get_master_value();
-    _logger->log_master_solving_duration(get_timer_master());
+    if (is_initial_relaxation_requested())
+    {
+        _logger->LogAtInitialRelaxation();
+        DeactivateIntegrityConstraints();
+        SetDataPreRelaxation();
+    }
 
-    ComputeXCut();
-    _logger->log_iteration_candidates(bendersDataToLogData(_data));
+    while (!_data.stop)
+    {
+        Timer timer_master;
+        ++_data.it;
 
-    _logger->display_message("\tSolving subproblems...");
-    BuildCut();
-    _logger->LogSubproblemsSolvingWalltime(GetSubproblemsWalltime());
+        if (SwitchToIntegerMaster(_data.is_in_initial_relaxation))
+        {
+            _logger->LogAtSwitchToInteger();
+            ActivateIntegrityConstraints();
+            ResetDataPostRelaxation();
+        }
 
-    compute_ub();
-    update_best_ub();
+        _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
+        _logger->display_message("\tSolving master...");
+        get_master_value();
+        _logger->log_master_solving_duration(_data.timer_master);
 
-    _logger->log_at_iteration_end(bendersDataToLogData(_data));
+        ComputeXCut();
+        _logger->log_iteration_candidates(bendersDataToLogData(_data));
 
-    UpdateTrace();
+        _logger->display_message("\tSolving subproblems...");
+        BuildCut();
+        _logger->LogSubproblemsSolvingWalltime(_data.subproblems_walltime);
 
-    set_timer_master(timer_master.elapsed());
-    _data.iteration_time = -_data.benders_time;
-    _data.benders_time = GetBendersTime();
-    _data.iteration_time += _data.benders_time;
-    _data.stop = ShouldBendersStop();
-    SaveCurrentBendersData();
-  }
-  CloseCsvFile();
-  EndWritingInOutputFile();
-  write_basis();
+        compute_ub();
+        update_best_ub();
+
+        _logger->log_at_iteration_end(bendersDataToLogData(_data));
+
+        UpdateTrace();
+
+        _data.timer_master = timer_master.elapsed();
+        _data.iteration_time = -_data.benders_time;
+        _data.benders_time = GetBendersTime();
+        _data.iteration_time += _data.benders_time;
+        _data.stop = ShouldBendersStop();
+        SaveCurrentBendersData();
+    }
+    CloseCsvFile();
+    EndWritingInOutputFile();
+    write_basis();
 }
 
-void BendersSequential::launch() {
-  _logger->display_message("Building input");
-  _logger->display_message("Constructing workers...");
+void BendersSequential::launch()
+{
+    _logger->display_message("Building input");
+    _logger->display_message("Constructing workers...");
 
-  InitializeProblems();
-  _logger->display_message("Running solver...");
-  try {
-    Run();
-    _logger->display_message(BendersName() + " solver terminated.");
-  } catch (std::exception const &ex) {
-    std::string error = "Exception raised : " + std::string(ex.what());
-    _logger->display_message(error);
-  }
+    InitializeProblems();
+    _logger->display_message("Running solver...");
+    try
+    {
+        Run();
+        _logger->display_message(BendersName() + " solver terminated.");
+    }
+    catch (const std::exception& ex)
+    {
+        std::string error = "Exception raised : " + std::string(ex.what());
+        _logger->display_message(error);
+    }
 
-  post_run_actions();
-  free();
+    post_run_actions();
+    free();
 }

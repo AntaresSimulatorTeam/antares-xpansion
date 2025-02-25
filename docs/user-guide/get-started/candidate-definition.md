@@ -188,8 +188,6 @@ year. More details are given in [this section](#link-between-invested-capacity-a
 The parameters `link-profile`, `already-installed-capacity` and
 `already-installed-link-profile` are used to define the link between the capacity installed by Antares-Xpansion, the already installed capacity and the truly available capacity in the Antares study, hour by hour and in both directions of the link, following the relationship presented in **Figure 6**.
 
-These parameters are only useful if the candidates are grid reinforcement.
-
 ![](../../assets/media/image13.png)
 
 **Figure 6** – Link between the capacity invested by

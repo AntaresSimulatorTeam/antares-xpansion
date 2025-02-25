@@ -24,9 +24,9 @@ class BendersSequentialDouble : public BendersSequential {
   bool _setDataPostRelaxationCall = false;
 
   explicit BendersSequentialDouble(
-      BendersBaseOptions const &options, Logger &logger, Writer writer,
+      BendersBaseOptions const &options, Logger &logger, std::shared_ptr<Output::OutputWriter> writer,
       std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
-      : BendersSequential(options, logger, writer, mathLoggerDriver){};
+      : BendersSequential(options, logger, writer, mathLoggerDriver) {};
 
   void init_data() override {
     BendersBase::init_data();
@@ -94,7 +94,7 @@ class BendersSequentialTest : public ::testing::Test {
  public:
   Logger logger;
   std::shared_ptr<MathLoggerDriver> mathLoggerDriver;
-  Writer writer;
+  std::shared_ptr<Output::OutputWriter> writer;
   const std::filesystem::path data_test_dir = "data_test";
   const std::filesystem::path mps_dir = data_test_dir / "mps";
   std::filesystem::path tmpDir;
@@ -122,7 +122,8 @@ class BendersSequentialTest : public ::testing::Test {
     tmpDir = CreateRandomSubDir(std::filesystem::temp_directory_path());
 
     std::filesystem::copy(data_dir, tmpDir,
-                          std::filesystem::copy_options::recursive);
+                          std::filesystem::copy_options::recursive |
+                              std::filesystem::copy_options::update_existing);
   }
 
   BaseOptions init_base_options(const std::string &solver = "COIN") const {
@@ -422,9 +423,8 @@ TEST_P(BendersSequentialTestBySolver, CreateProblemsProperly) {
   options.SOLVER_NAME = GetParam();
   BendersSequentialDouble benders(options.get_benders_options(), logger, writer,
                                   mathLoggerDriver);
-  auto coupling_map =
-      CouplingMapGenerator::BuildInput(
-        options.STRUCTURE_FILE, logger, "Benders");
+  auto coupling_map = CouplingMapGenerator::BuildInput(options.STRUCTURE_FILE,
+                                                       logger, "Benders");
   benders.set_input_map(coupling_map);
   benders.InitializeProblems();
   auto &&problems = benders.problems();
@@ -485,7 +485,7 @@ TEST_P(BendersSequentialTestBySolver, CreateProblemsProperlyWhenRestore) {
   SolverFactory factory;
   auto &&solver =
       factory.create_solver(GetParam() == "COIN" ? "CBC" : GetParam());
-  for (std::string problem: {"SP1", "SP2"}) {
+  for (std::string problem : {"SP1", "SP2"}) {
     solver->read_prob_mps(tmpDir / (problem + ".mps"));
     std::filesystem::remove(tmpDir / (problem + ".mps"));
     solver->save_prob(tmpDir / problem);
@@ -495,8 +495,8 @@ TEST_P(BendersSequentialTestBySolver, CreateProblemsProperlyWhenRestore) {
   options.SOLVER_NAME = GetParam();
   BendersSequentialDouble benders(options.get_benders_options(), logger, writer,
                                   mathLoggerDriver);
-  auto coupling_map = CouplingMapGenerator::BuildInput(
-    options.STRUCTURE_FILE, logger, "Benders");
+  auto coupling_map = CouplingMapGenerator::BuildInput(options.STRUCTURE_FILE,
+                                                       logger, "Benders");
   benders.set_input_map(coupling_map);
   benders.InitializeProblems();
   auto &&problems = benders.problems();
