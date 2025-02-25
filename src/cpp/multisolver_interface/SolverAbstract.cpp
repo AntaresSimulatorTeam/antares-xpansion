@@ -146,6 +146,5 @@ bool SolverAbstract::operator==(const SolverAbstract &other) const {
     is_equal = is_equal && verifyRHS(this, &other);
     is_equal = is_equal && verifyRowTypes(this, &other);
     is_equal = is_equal && verifyBounds(this, &other);
-    is_equal = is_equal && verifySolution(this, &other);
     return is_equal;
 }

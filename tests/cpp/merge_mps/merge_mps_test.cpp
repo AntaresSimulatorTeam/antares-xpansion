@@ -105,7 +105,7 @@ TEST_F(MergeMPSTest, one_master_Problem_ok) {
     auto master = factory.create_solver("CBC");
     master->read_prob_mps(tmp_dir_ / "master.mps"s);
 
-    EXPECT_TRUE(*merged.get() == *master.get());
+    EXPECT_EQ(*merged, *master);
 }
 
 //Test with 2 problems not sharing variables
