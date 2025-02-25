@@ -25,6 +25,15 @@ protected:
     void TearDown() override {
     }
 
+    /**
+     * Create the following problem :
+     * Minimize
+     * Obj: 3X1 + 4X2
+     * 2x1 + x2 <= 8
+     * x1 + 2x2 >= 3
+     * 0 <=X1 <= 4
+     * 0 <=X2 <= 4
+     */
     void createMasterProblem() {
         std::ofstream master_problem(tmp_dir_ / "master.mps"s);
         master_problem << R"(NAME          MASTER  FREE
@@ -62,16 +71,15 @@ ENDATA)";
     std::shared_ptr<Xpansion::Test::InMemoryWriter> writer_;
 };
 
-TEST(MergeMPS, empty_input_ok) {
-    auto tmpDir = CreateRandomSubDir(std::filesystem::temp_directory_path());
-    std::ofstream structure_file(tmpDir / "structure_file.txt"s);
+TEST_F(MergeMPSTest, empty_input_ok) {
+    std::ofstream structure_file(tmp_dir_ / "structure_file.txt"s);
 
     MergeMPSOptions options;
     options.SOLVER_NAME = "COIN";
-    options.STRUCTURE_FILE = (tmpDir / "structure_file.txt"s).string();
+    options.STRUCTURE_FILE = (tmp_dir_ / "structure_file.txt"s).string();
     auto logger = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
     auto writer = std::make_shared<Xpansion::Test::InMemoryWriter>();
-    std::filesystem::current_path(tmpDir);
+    std::filesystem::current_path(tmp_dir_);
     MergeMPS mergeMPS(options, logger, writer);
     mergeMPS.launch();
     auto lastSolution = writer->solution_data_;
@@ -90,13 +98,6 @@ TEST_F(MergeMPSTest, one_master_Problem_ok) {
     std::cout << tmp_dir_ / "log_merged.mps" << std::endl;
     EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.mps"s));
     EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
-    //Print the merged problem
-    std::ifstream merged_mps(tmp_dir_ / "log_merged.mps"s);
-    std::string line;
-    while (std::getline(merged_mps, line)) {
-        std::cout << line << std::endl;
-    }
-    merged_mps.close();
     SolverFactory factory;
     auto merged = factory.create_solver("CBC");
     merged->read_prob_lp(tmp_dir_ / "log_merged.lp"s);
@@ -122,6 +123,58 @@ TEST_F(MergeMPSTest, one_master_Problem_ok) {
     for (int i = 0; i < merged->get_ncols(); ++i) {
         EXPECT_DOUBLE_EQ(sol_merged[i], sol_master[i]);
     }
+    //Rows are the same
+    std::vector<int> mstart(merged->get_ncols() + 1);
+    std::vector<int> cindex(merged->get_nelems());
+    std::vector<double> matval_merged(merged->get_nelems());
+    int n_merged = 0;
+    merged->get_rows(mstart.data(), cindex.data(), matval_merged.data(), merged->get_nelems(), &n_merged, 0,
+                     merged->get_nrows() - 1);
+    std::vector<int> mstart_master(master->get_ncols() + 1);
+    std::vector<int> cindex_master(master->get_nelems());
+    std::vector<double> matval_master(master->get_nelems());
+    int n_master = 0;
+    master->get_rows(mstart_master.data(), cindex_master.data(), matval_master.data(), master->get_nelems(), &n_master,
+                     0,
+                     master->get_nrows() - 1);
+    EXPECT_EQ(merged->get_nrows(), master->get_nrows());
+    EXPECT_EQ(n_merged, n_master);
+    for (int i = 0; i < n_merged; ++i) {
+        EXPECT_EQ(mstart[i], mstart_master[i]);
+        EXPECT_EQ(cindex[i], cindex_master[i]);
+        EXPECT_DOUBLE_EQ(matval_merged[i], matval_master[i]);
+    }
+    // RHS are the same
+    DblVector rhs_merged(merged->get_nrows());
+    DblVector rhs_master(master->get_nrows());
+    merged->get_rhs(rhs_merged.data(), 0, merged->get_nrows() - 1);
+    master->get_rhs(rhs_master.data(), 0, master->get_nrows() - 1);
+    for (int i = 0; i < merged->get_nrows(); ++i) {
+        EXPECT_DOUBLE_EQ(rhs_merged[i], rhs_master[i]);
+    }
+    //Row type are the same
+    CharVector sense_merged(merged->get_nrows());
+    CharVector sense_master(master->get_nrows());
+    merged->get_row_type(sense_merged.data(), 0, merged->get_nrows() - 1);
+    master->get_row_type(sense_master.data(), 0, master->get_nrows() - 1);
+    for (int i = 0; i < merged->get_nrows(); ++i) {
+        EXPECT_EQ(sense_merged[i], sense_master[i]);
+    }
+    //Bounds are the same
+    DblVector lb_merged(merged->get_ncols());
+    DblVector lb_master(master->get_ncols());
+    merged->get_lb(lb_merged.data(), 0, merged->get_ncols() - 1);
+    master->get_lb(lb_master.data(), 0, master->get_ncols() - 1);
+    for (int i = 0; i < merged->get_ncols(); ++i) {
+        EXPECT_DOUBLE_EQ(lb_merged[i], lb_master[i]);
+    }
+    DblVector ub_merged(merged->get_ncols());
+    DblVector ub_master(master->get_ncols());
+    merged->get_ub(ub_merged.data(), 0, merged->get_ncols() - 1);
+    master->get_ub(ub_master.data(), 0, master->get_ncols() - 1);
+    for (int i = 0; i < merged->get_ncols(); ++i) {
+        EXPECT_DOUBLE_EQ(ub_merged[i], ub_master[i]);
+    }
 }
 
 //TEst with 2 problems the result is a problem with variables from both problems
@@ -129,10 +182,10 @@ TEST_F(MergeMPSTest, two_problems_ok) {
     createMasterProblem();
     createStructureFile({
         {"master.mps", "X1", 0}, {"master.mps", "X2", 1},
-        {"slave1.mps", "Y1", 0}, {"slave1.mps", "Y2", 1}
+        {"satellite1.mps", "Y1", 0}, {"satellite1.mps", "Y2", 1}
     });
-    std::ofstream slave1(tmp_dir_ / "slave1.mps");
-    slave1 << R"(NAME          SLAVE1  FREE
+    std::ofstream satellite1(tmp_dir_ / "satellite1.mps");
+    satellite1 << R"(NAME          satellite1  FREE
 ROWS
     N  OBJROW
     L  C10
@@ -151,23 +204,11 @@ BOUNDS
     UP BOUND      Y1        50.0
     UP BOUND      Y2        50.0
 ENDATA)";
-    slave1.close();
-    options_.weights["slave1.mps"] = 1;
+    satellite1.close();
+    options_.weights["satellite1.mps"] = 1;
     std::filesystem::current_path(tmp_dir_);
     MergeMPS mergeMPS(options_, logger_, writer_);
     mergeMPS.launch();
-    //Print the merged problem
-    std::ifstream merged_mps(tmp_dir_ / "log_merged.mps"s);
-    std::string line;
-    while (std::getline(merged_mps, line)) {
-        std::cout << line << std::endl;
-    }
-    std::cout << "-------\n";
-    std::ifstream merged_lp(tmp_dir_ / "log_merged.lp"s);
-    std::string line2;
-    while (std::getline(merged_lp, line2)) {
-        std::cout << line2 << std::endl;
-    }
     auto lastSolution = writer_->solution_data_;
     EXPECT_EQ(lastSolution.problem_status, "OPTIMAL");
     //log_merged_mps exists
@@ -178,36 +219,36 @@ ENDATA)";
     merged->read_prob_mps(tmp_dir_ / "log_merged.lp"s);
     auto master = factory.create_solver("CBC");
     master->read_prob_mps(tmp_dir_ / "master.mps"s);
-    auto slave = factory.create_solver("CBC");
-    slave->read_prob_mps(tmp_dir_ / "slave1.mps"s);
-    //Merged has master + slave number of constraints
-    EXPECT_EQ(merged->get_nrows(), master->get_nrows() + slave->get_nrows());
-    //Merged has master + slave number of variables
-    EXPECT_EQ(merged->get_ncols(), master->get_ncols() + slave->get_ncols());
-    //Merged obj is the combination of master and slave
+    auto satellite = factory.create_solver("CBC");
+    satellite->read_prob_mps(tmp_dir_ / "satellite1.mps"s);
+    //Merged has master + satellite number of constraints
+    EXPECT_EQ(merged->get_nrows(), master->get_nrows() + satellite->get_nrows());
+    //Merged has master + satellite number of variables
+    EXPECT_EQ(merged->get_ncols(), master->get_ncols() + satellite->get_ncols());
+    //Merged obj is the combination of master and satellite
     DblVector obj_merged(merged->get_ncols());
     DblVector obj_master(master->get_ncols());
-    DblVector obj_slave(slave->get_ncols());
+    DblVector obj_satellite(satellite->get_ncols());
     merged->get_obj(obj_merged.data(), 0, merged->get_ncols() - 1);
     master->get_obj(obj_master.data(), 0, master->get_ncols() - 1);
-    slave->get_obj(obj_slave.data(), 0, slave->get_ncols() - 1);
+    satellite->get_obj(obj_satellite.data(), 0, satellite->get_ncols() - 1);
     for (int i = 0; i < master->get_ncols(); ++i) {
         EXPECT_DOUBLE_EQ(obj_merged[i], obj_master[i]);
     }
-    for (int i = 0; i < slave->get_ncols(); ++i) {
-        EXPECT_DOUBLE_EQ(obj_merged[i + master->get_ncols()], obj_slave[i]);
+    for (int i = 0; i < satellite->get_ncols(); ++i) {
+        EXPECT_DOUBLE_EQ(obj_merged[i + master->get_ncols()], obj_satellite[i]);
     }
-    //Merged has the same solution as master and slave
+    //Merged has the same solution as master and satellite
     DblVector sol_merged(merged->get_ncols());
     DblVector sol_master(master->get_ncols());
-    DblVector sol_slave(slave->get_ncols());
+    DblVector sol_satellite(satellite->get_ncols());
     merged->get_lp_sol(sol_merged.data(), nullptr, nullptr);
     master->get_lp_sol(sol_master.data(), nullptr, nullptr);
-    slave->get_lp_sol(sol_slave.data(), nullptr, nullptr);
+    satellite->get_lp_sol(sol_satellite.data(), nullptr, nullptr);
     for (int i = 0; i < master->get_ncols(); ++i) {
         EXPECT_DOUBLE_EQ(sol_merged[i], sol_master[i]);
     }
-    for (int i = 0; i < slave->get_ncols(); ++i) {
-        EXPECT_DOUBLE_EQ(sol_merged[i + master->get_ncols()], sol_slave[i]);
+    for (int i = 0; i < satellite->get_ncols(); ++i) {
+        EXPECT_DOUBLE_EQ(sol_merged[i + master->get_ncols()], sol_satellite[i]);
     }
 }
