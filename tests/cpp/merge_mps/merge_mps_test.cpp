@@ -82,7 +82,7 @@ TEST_F(MergeMPSTest, empty_input_ok) {
     std::filesystem::current_path(tmp_dir_);
     MergeMPS mergeMPS(options, logger, writer);
     mergeMPS.launch();
-    auto lastSolution = writer->solution_data_;
+    const auto &lastSolution = writer->solution_data_;
     EXPECT_EQ(lastSolution.problem_status, "ERROR");
 }
 
