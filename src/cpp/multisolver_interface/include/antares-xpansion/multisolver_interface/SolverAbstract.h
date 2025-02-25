@@ -13,19 +13,26 @@
 
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
-class SolverLogManager {
+class SolverLogManager
+{
 public:
     explicit SolverLogManager() = default;
 
-    explicit SolverLogManager(const SolverLogManager &other): SolverLogManager(other.log_file_path) {
+    explicit SolverLogManager(const SolverLogManager& other):
+        SolverLogManager(other.log_file_path)
+    {
     }
 
-    explicit SolverLogManager(const std::filesystem::path &log_file): log_file_path(log_file) {
+    explicit SolverLogManager(const std::filesystem::path& log_file):
+        log_file_path(log_file)
+    {
         init();
     }
 
-    SolverLogManager &operator=(const SolverLogManager &other) {
-        if (this == &other) {
+    SolverLogManager& operator=(const SolverLogManager& other)
+    {
+        if (this == &other)
+        {
             return *this;
         }
         log_file_path = other.log_file_path;
@@ -33,7 +40,8 @@ public:
         return *this;
     }
 
-    void init() {
+    void init()
+    {
 #ifdef __linux__
         if (log_file_path.empty()
             || (log_file_ptr = fopen(log_file_path.string().c_str(), "a+")) == nullptr)
@@ -44,113 +52,139 @@ public:
 #endif
         {
             std::cout << "Invalid log file name passed as parameter: "
-                    << std::quoted(log_file_path.string()) << std::endl;
-        } else {
+                      << std::quoted(log_file_path.string()) << std::endl;
+        }
+        else
+        {
             setvbuf(log_file_ptr, nullptr, _IONBF, 0);
         }
     }
 
-    ~SolverLogManager() {
-        if (log_file_ptr) {
+    ~SolverLogManager()
+    {
+        if (log_file_ptr)
+        {
             fclose(log_file_ptr);
             log_file_ptr = nullptr;
         }
     }
 
-    FILE *log_file_ptr = nullptr;
+    FILE* log_file_ptr = nullptr;
     std::filesystem::path log_file_path = "";
 };
 
-class InvalidStatusException : public LogUtils::XpansionError<std::runtime_error> {
+class InvalidStatusException: public LogUtils::XpansionError<std::runtime_error>
+{
 public:
-    InvalidStatusException(int status, const std::string &action,
-                           const std::string &log_message): LogUtils::XpansionError<std::runtime_error>(
-        "Failed to " + action + ": invalid status "
-        + std::to_string(status) + " (0 expected)",
-        log_message) {
+    InvalidStatusException(int status, const std::string& action, const std::string& log_message):
+        LogUtils::XpansionError<std::runtime_error>("Failed to " + action + ": invalid status "
+                                                      + std::to_string(status) + " (0 expected)",
+                                                    log_message)
+    {
     }
 };
 
-class InvalidRowSizeException : public LogUtils::XpansionError<std::runtime_error> {
+class InvalidRowSizeException: public LogUtils::XpansionError<std::runtime_error>
+{
 public:
-    InvalidRowSizeException(int expected_size, int actual_size,
-                            const std::string &log_location): LogUtils::XpansionError<std::runtime_error>(
-        "Invalid row size for solver. " + std::to_string(actual_size) + " rows available ("
-        + std::to_string(expected_size) + " expected)",
-        log_location) {
+    InvalidRowSizeException(int expected_size, int actual_size, const std::string& log_location):
+        LogUtils::XpansionError<std::runtime_error>(
+          "Invalid row size for solver. " + std::to_string(actual_size) + " rows available ("
+            + std::to_string(expected_size) + " expected)",
+          log_location)
+    {
     }
 };
 
-class InvalidColSizeException : public LogUtils::XpansionError<std::runtime_error> {
+class InvalidColSizeException: public LogUtils::XpansionError<std::runtime_error>
+{
 public:
-    InvalidColSizeException(int expected_size, int actual_size,
-                            const std::string &log_location): LogUtils::XpansionError<std::runtime_error>(
-        "Invalid col size for solver. " + std::to_string(actual_size) + " cols available ("
-        + std::to_string(expected_size) + " expected)",
-        log_location) {
+    InvalidColSizeException(int expected_size, int actual_size, const std::string& log_location):
+        LogUtils::XpansionError<std::runtime_error>(
+          "Invalid col size for solver. " + std::to_string(actual_size) + " cols available ("
+            + std::to_string(expected_size) + " expected)",
+          log_location)
+    {
     }
 };
 
-class InvalidBoundTypeException : public LogUtils::XpansionError<std::runtime_error> {
+class InvalidBoundTypeException: public LogUtils::XpansionError<std::runtime_error>
+{
 public:
-    InvalidBoundTypeException(char qbtype, const std::string &log_location): LogUtils::XpansionError<
-        std::runtime_error>(std::string("Invalid bound type ") + qbtype
-                            + " for solver.",
-                            log_location) {
+    InvalidBoundTypeException(char qbtype, const std::string& log_location):
+        LogUtils::XpansionError<std::runtime_error>(std::string("Invalid bound type ") + qbtype
+                                                      + " for solver.",
+                                                    log_location)
+    {
     }
 };
 
-class InvalidColTypeException : public LogUtils::XpansionError<std::runtime_error> {
+class InvalidColTypeException: public LogUtils::XpansionError<std::runtime_error>
+{
 public:
-    InvalidColTypeException(char qctype, const std::string &log_location): LogUtils::XpansionError<std::runtime_error>(
-        std::string("Invalid col type ") + qctype
-        + " for solver.",
-        log_location) {
+    InvalidColTypeException(char qctype, const std::string& log_location):
+        LogUtils::XpansionError<std::runtime_error>(std::string("Invalid col type ") + qctype
+                                                      + " for solver.",
+                                                    log_location)
+    {
     }
 };
 
-class InvalidSolverOptionException : public LogUtils::XpansionError<std::runtime_error> {
+class InvalidSolverOptionException: public LogUtils::XpansionError<std::runtime_error>
+{
 public:
-    InvalidSolverOptionException(const std::string &option, const std::string &log_location): LogUtils::XpansionError<
-        std::runtime_error>(std::string("Invalid option '") + option
-                            + "' for solver.",
-                            log_location) {
+    InvalidSolverOptionException(const std::string& option, const std::string& log_location):
+        LogUtils::XpansionError<std::runtime_error>(std::string("Invalid option '") + option
+                                                      + "' for solver.",
+                                                    log_location)
+    {
     }
 };
 
-class InvalidSolverForCopyException : public LogUtils::XpansionError<std::runtime_error> {
+class InvalidSolverForCopyException: public LogUtils::XpansionError<std::runtime_error>
+{
 public:
-    InvalidSolverForCopyException(const std::string &from_solver,
-                                  const std::string &to_solver,
-                                  const std::string &log_location): LogUtils::XpansionError<std::runtime_error>(
-        "Can't copy " + from_solver + "solver from "
-        + to_solver,
-        log_location) {
+    InvalidSolverForCopyException(const std::string& from_solver,
+                                  const std::string& to_solver,
+                                  const std::string& log_location):
+        LogUtils::XpansionError<std::runtime_error>("Can't copy " + from_solver + "solver from "
+                                                      + to_solver,
+                                                    log_location)
+    {
     }
 };
 
-class InvalidSolverNameException : public LogUtils::XpansionError<std::runtime_error> {
+class InvalidSolverNameException: public LogUtils::XpansionError<std::runtime_error>
+{
 public:
-    InvalidSolverNameException(const std::string &solver_name, const std::string &log_location): LogUtils::XpansionError
-        <std::runtime_error>("Solver '" + solver_name + "' not supported",
-                             log_location) {
+    InvalidSolverNameException(const std::string& solver_name, const std::string& log_location):
+        LogUtils::XpansionError<std::runtime_error>("Solver '" + solver_name + "' not supported",
+                                                    log_location)
+    {
     }
 };
 
-class GenericSolverException : public std::runtime_error {
+class GenericSolverException: public std::runtime_error
+{
 public:
-    GenericSolverException(const std::string &message): std::runtime_error(message) {
+    GenericSolverException(const std::string& message):
+        std::runtime_error(message)
+    {
     }
 };
 
-class NotImplementedFeatureSolverException : public std::runtime_error {
+class NotImplementedFeatureSolverException: public std::runtime_error
+{
 public:
-    NotImplementedFeatureSolverException(const std::string &message): std::runtime_error(message) {
+    NotImplementedFeatureSolverException(const std::string& message):
+        std::runtime_error(message)
+    {
     }
 };
 
 // Definition of optimality codes
-enum SOLVER_STATUS {
+enum SOLVER_STATUS
+{
     OPTIMAL,
     INFEASIBLE,
     UNBOUNDED,
@@ -162,15 +196,14 @@ enum SOLVER_STATUS {
  * \class class SolverAbstract
  * \brief Virtual class to implement solvers methods
  */
-class SolverAbstract {
+class SolverAbstract
+{
 public:
-    std::vector<std::string> SOLVER_STRING_STATUS = {
-        "OPTIMAL",
-        "INFEASIBLE",
-        "UNBOUNDED",
-        "INForUNBOUND",
-        "UNKNOWN"
-    };
+    std::vector<std::string> SOLVER_STRING_STATUS = {"OPTIMAL",
+                                                     "INFEASIBLE",
+                                                     "UNBOUNDED",
+                                                     "INForUNBOUND",
+                                                     "UNKNOWN"};
 
     /*************************************************************************************************
     ----------------------------------------    ATTRIBUTES
@@ -178,10 +211,10 @@ public:
     *************************************************************************************************/
 
 public:
-    std::string _name; /*!< Name of the problem */
+    std::string _name;                           /*!< Name of the problem */
     typedef std::shared_ptr<SolverAbstract> Ptr; /*!< Ptr to the solver */
-    std::list<std::ostream *>
-    _streams; /*!< List of streams to print the output (default std::cout) */
+    std::list<std::ostream*>
+      _streams; /*!< List of streams to print the output (default std::cout) */
 
     /*************************************************************************************************
     -----------------------------------    Constructor/Desctructor
@@ -192,8 +225,7 @@ public:
     /**
      * @brief constructor of SolverAbstract class : does nothing
      */
-    SolverAbstract() {
-    };
+    SolverAbstract(){};
 
     /**
      * @brief Copy constructor, copy the problem "toCopy" in memory and name it
@@ -203,14 +235,12 @@ public:
      * @param toCopy : Pointer to an AbstractSolver object, containing a solver
      * object to copy
      */
-    SolverAbstract(const std::string &name, const SolverAbstract::Ptr toCopy) {
-    };
+    SolverAbstract(const std::string& name, const SolverAbstract::Ptr toCopy){};
 
     /**
      * @brief destructor of SolverAbstract class : does nothing
      */
-    virtual ~SolverAbstract() {
-    };
+    virtual ~SolverAbstract(){};
 
     /**
      * @brief Returns number of instances of solver currently in memory
@@ -231,11 +261,12 @@ public:
     /**
      * @brief returns the list of streams used by the solver instance
      */
-    std::list<std::ostream *> &get_stream() {
+    std::list<std::ostream*>& get_stream()
+    {
         return _streams;
     }
 
-    FILE *_fp = nullptr;
+    FILE* _fp = nullptr;
     std::filesystem::path _log_file = "";
 
     /**
@@ -243,11 +274,13 @@ public:
      *
      * @param stream  : reference to a std::ostream object
      */
-    void add_stream(std::ostream &stream) {
+    void add_stream(std::ostream& stream)
+    {
         get_stream().push_back(&stream);
     }
 
-    void set_fp(FILE *fp) {
+    void set_fp(FILE* fp)
+    {
         _fp = fp;
     }
 
@@ -260,9 +293,11 @@ public:
                             used to print the error message.
     */
     void zero_status_check(int status,
-                           const std::string &action_failed,
-                           const std::string &log_location) const {
-        if (status != 0) {
+                           const std::string& action_failed,
+                           const std::string& log_location) const
+    {
+        if (status != 0)
+        {
             throw InvalidStatusException(status, action_failed, log_location);
         }
     }
@@ -294,14 +329,14 @@ public:
      *
      * @param name   : name of the file to write
      */
-    virtual void write_prob_mps(const std::filesystem::path &filename) = 0;
+    virtual void write_prob_mps(const std::filesystem::path& filename) = 0;
 
     /**
      * @brief writes an optimization problem in a LP file
      *
      * @param name   : name of the file to write
      */
-    virtual void write_prob_lp(const std::filesystem::path &filename) = 0;
+    virtual void write_prob_lp(const std::filesystem::path& filename) = 0;
 
     /**
      * @brief write an optimisation problem in a file
@@ -310,7 +345,7 @@ public:
      *
      * @param name   : name of the file to read
      */
-    virtual void save_prob(const std::filesystem::path &filename) = 0;
+    virtual void save_prob(const std::filesystem::path& filename) = 0;
 
     /**
      * @brief Writes the current basis to a file for later input into the
@@ -318,21 +353,21 @@ public:
      *
      * @param filename    : file name where the basis is written
      */
-    virtual void write_basis(const std::filesystem::path &filename) = 0;
+    virtual void write_basis(const std::filesystem::path& filename) = 0;
 
     /**
      * @brief reads an optimization problem contained in a MPS file
      *
      * @param name   : name of the file to read
      */
-    virtual void read_prob_mps(const std::filesystem::path &filename) = 0;
+    virtual void read_prob_mps(const std::filesystem::path& filename) = 0;
 
     /**
      * @brief reads an optimization problem contained in a MPS file
      *
      * @param name   : name of the file to read
      */
-    virtual void read_prob_lp(const std::filesystem::path &filename) = 0;
+    virtual void read_prob_lp(const std::filesystem::path& filename) = 0;
 
     /**
      * @brief read an optimisation problem from a file
@@ -341,7 +376,7 @@ public:
      *
      * @param name   : name of the file to read
      */
-    virtual void restore_prob(const std::filesystem::path &filename) = 0;
+    virtual void restore_prob(const std::filesystem::path& filename) = 0;
 
     /**
      * @brief Instructs the optimizer to read in a previously saved basis from a
@@ -349,7 +384,7 @@ public:
      *
      * @param filename: File name where the basis is to be read
      */
-    virtual void read_basis(const std::filesystem::path &filename) = 0;
+    virtual void read_basis(const std::filesystem::path& filename) = 0;
 
     /**
      * @brief copy an existing problem
@@ -389,7 +424,7 @@ public:
      * @brief returns the objective function coefficients for the columns in a
      * given range
      */
-    virtual void get_obj(double *obj, int first, int last) const = 0;
+    virtual void get_obj(double* obj, int first, int last) const = 0;
 
     /**
      * @brief Set the objective function coefficients to zero
@@ -400,7 +435,7 @@ public:
      * @brief Set the objective function coefficients for the columns in a
      * given range
      */
-    virtual void set_obj(const double *obj, int first, int last) = 0;
+    virtual void set_obj(const double* obj, int first, int last) = 0;
 
     /**
     * @brief get coefficients of rows from index first to last
@@ -417,14 +452,14 @@ public:
     * @param first      : first index of row to get
     * @param last       : last index of row to get
     */
-    virtual void get_rows(int *mstart,
-                          int *mclind,
-                          double *dmatval,
+    virtual void get_rows(int* mstart,
+                          int* mclind,
+                          double* dmatval,
                           int size,
-                          int *nels,
+                          int* nels,
                           int first,
                           int last) const
-    = 0;
+      = 0;
 
     /**
     * @brief Returns the row types for the rows in a given range.
@@ -434,7 +469,7 @@ public:
     * @param first  : first index of row to get
     * @param last   : last index of row to get
     */
-    virtual void get_row_type(char *qrtype, int first, int last) const = 0;
+    virtual void get_row_type(char* qrtype, int first, int last) const = 0;
 
     /**
      * @brief Returns the right-hand sides of the rows in a given range.
@@ -444,7 +479,7 @@ public:
      * @param first  : first index of row to get
      * @param last   : last index of row to get
      */
-    virtual void get_rhs(double *rhs, int first, int last) const = 0;
+    virtual void get_rhs(double* rhs, int first, int last) const = 0;
 
     /**
     * @brief Returns the right hand side range values for the rows in a given
@@ -455,7 +490,7 @@ public:
     * @param first  : first index of row to get
     * @param last   : last index of row to get
     */
-    virtual void get_rhs_range(double *range, int first, int last) const = 0;
+    virtual void get_rhs_range(double* range, int first, int last) const = 0;
 
     /**
     * @brief Returns the column types for the columns in a given range.
@@ -466,7 +501,7 @@ public:
     * @param first      : first index of row to get
     * @param last       : last index of row to get
     */
-    virtual void get_col_type(char *coltype, int first, int last) const = 0;
+    virtual void get_col_type(char* coltype, int first, int last) const = 0;
 
     /**
      * @brief Returns the lower bounds for variables in a given range.
@@ -476,7 +511,7 @@ public:
      * @param first  : First column in the range.
      * @param last   : Last column in the range.
      */
-    virtual void get_lb(double *lb, int fisrt, int last) const = 0;
+    virtual void get_lb(double* lb, int fisrt, int last) const = 0;
 
     /**
      * @brief Returns the upper bounds for variables in a given range.
@@ -486,21 +521,21 @@ public:
      * @param first  : First column in the range.
      * @param last   : Last column in the range.
      */
-    virtual void get_ub(double *ub, int fisrt, int last) const = 0;
+    virtual void get_ub(double* ub, int fisrt, int last) const = 0;
 
     /**
      * @brief Returns the index of row named "name"
      *
      * @param name : name of row to get the index
      */
-    virtual int get_row_index(const std::string &name) = 0;
+    virtual int get_row_index(const std::string& name) = 0;
 
     /**
      * @brief Returns the index of column named "name"
      *
      * @param name : name of column to get the index
      */
-    virtual int get_col_index(const std::string &name) = 0;
+    virtual int get_col_index(const std::string& name) = 0;
 
     /**
      * @brief Returns the names of row from index first to last
@@ -571,14 +606,14 @@ public:
     */
     virtual void add_rows(int newrows,
                           int newnz,
-                          const char *qrtype,
-                          const double *rhs,
-                          const double *range,
-                          const int *mstart,
-                          const int *mclind,
-                          const double *dmatval,
-                          const std::vector<std::string> &row_names)
-    = 0;
+                          const char* qrtype,
+                          const double* rhs,
+                          const double* range,
+                          const int* mstart,
+                          const int* mclind,
+                          const double* dmatval,
+                          const std::vector<std::string>& row_names)
+      = 0;
 
     /**
     * @brief Adds new columns to the problem
@@ -602,14 +637,14 @@ public:
     */
     virtual void add_cols(int newcol,
                           int newnz,
-                          const double *objx,
-                          const int *mstart,
-                          const int *mrwind,
-                          const double *dmatval,
-                          const double *bdl,
-                          const double *bdu,
-                          const std::vector<std::string> &col_names)
-    = 0;
+                          const double* objx,
+                          const int* mstart,
+                          const int* mrwind,
+                          const double* dmatval,
+                          const double* bdl,
+                          const double* bdu,
+                          const std::vector<std::string>& col_names)
+      = 0;
 
     /**
      * @brief Adds a name to a row or a column
@@ -619,10 +654,10 @@ public:
      * names.
      * @param indice : index of the row or of the column.
      */
-    virtual void add_name(int type, const char *cnames, int indice) = 0;
+    virtual void add_name(int type, const char* cnames, int indice) = 0;
 
-    virtual void add_names(int type, const std::vector<std::string> &cnames, int first, int end)
-    = 0;
+    virtual void add_names(int type, const std::vector<std::string>& cnames, int first, int end)
+      = 0;
 
     /**
      * @brief Change coefficients in objective function
@@ -630,7 +665,7 @@ public:
      * @param mindex : indices of columns to modify
      * @param obj    : Values to set in objective function
      */
-    virtual void chg_obj(const std::vector<int> &mindex, const std::vector<double> &obj) = 0;
+    virtual void chg_obj(const std::vector<int>& mindex, const std::vector<double>& obj) = 0;
 
     /**
      * @brief Change the problem's objective function sense to minimize or
@@ -649,10 +684,10 @@ public:
      * both)
      * @param bnd    : new values for the bounds
      */
-    virtual void chg_bounds(const std::vector<int> &mindex,
-                            const std::vector<char> &qbtype,
-                            const std::vector<double> &bnd)
-    = 0;
+    virtual void chg_bounds(const std::vector<int>& mindex,
+                            const std::vector<char>& qbtype,
+                            const std::vector<double>& bnd)
+      = 0;
 
     /**
      * @brief Change type of some columns
@@ -661,7 +696,7 @@ public:
      * @param mindex : indices of columns to modify
      * @param qctype : New types of columns
      */
-    virtual void chg_col_type(const std::vector<int> &mindex, const std::vector<char> &qctype) = 0;
+    virtual void chg_col_type(const std::vector<int>& mindex, const std::vector<char>& qctype) = 0;
 
     /**
      * @brief Change rhs of a row
@@ -686,7 +721,7 @@ public:
      * @param id_row : index of the row
      * @param name   : new name of the row
      */
-    virtual void chg_row_name(int id_row, const std::string &name) = 0;
+    virtual void chg_row_name(int id_row, const std::string& name) = 0;
 
     /**
      * @brief Change the name of a variable
@@ -694,7 +729,7 @@ public:
      * @param id_col : index of the column
      * @param name   : new name of the column
      */
-    virtual void chg_col_name(int id_col, const std::string &name) = 0;
+    virtual void chg_col_name(int id_col, const std::string& name) = 0;
 
     /*************************************************************************************************
     -----------------------------    Methods to solve the problem
@@ -733,7 +768,7 @@ public:
     the columns in the constraint matrix. The values depend on the solver used.May
     be NULL if not required.
     */
-    virtual void get_basis(int *rstatus, int *cstatus) const = 0;
+    virtual void get_basis(int* rstatus, int* cstatus) const = 0;
 
     /**
      * @brief Get the optimal value of a MIP problem (available after method
@@ -767,14 +802,14 @@ public:
      * @param duals      : values of dual variables
      * @param reduced_cost: reduced_cost in an optimal basis
      */
-    virtual void get_lp_sol(double *primals, double *duals, double *reduced_costs) const = 0;
+    virtual void get_lp_sol(double* primals, double* duals, double* reduced_costs) const = 0;
 
     /**
      * @brief Get MIP solution of a problem (available after method "solve_mip")
      *
      * @param primals    : values of primal variables
      */
-    virtual void get_mip_sol(double *primals) = 0;
+    virtual void get_mip_sol(double* primals) = 0;
 
     /*************************************************************************************************
     ------------------------    Methods to set algorithm or logs levels
@@ -794,7 +829,7 @@ public:
      *
      * @param algo : string of the name of the algorithm
      */
-    virtual void set_algorithm(const std::string &algo) = 0;
+    virtual void set_algorithm(const std::string& algo) = 0;
 
     /**
      * @brief Sets the maximum number of threads used to perform optimization
@@ -817,5 +852,5 @@ public:
      */
     virtual void set_simplex_iter(int iter) = 0;
 
-    bool operator==(const SolverAbstract &) const;
+    bool operator==(const SolverAbstract&) const;
 };

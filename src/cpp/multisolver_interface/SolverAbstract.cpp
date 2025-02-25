@@ -1,113 +1,133 @@
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
-namespace {
-    bool verifyProblemDimensions(const SolverAbstract *merged, const SolverAbstract *master) {
-        return (merged->get_ncols() == master->get_ncols())
-               && (merged->get_nrows() == master->get_nrows())
-               && (merged->get_nelems() == master->get_nelems());
+namespace
+{
+bool verifyProblemDimensions(const SolverAbstract* merged, const SolverAbstract* master)
+{
+    return (merged->get_ncols() == master->get_ncols())
+           && (merged->get_nrows() == master->get_nrows())
+           && (merged->get_nelems() == master->get_nelems());
+}
+
+bool verifyObjectiveFunction(const SolverAbstract* merged, const SolverAbstract* master)
+{
+    std::vector<double> obj_merged(merged->get_ncols());
+    std::vector<double> obj_master(master->get_ncols());
+    merged->get_obj(obj_merged.data(), 0, merged->get_ncols() - 1);
+    master->get_obj(obj_master.data(), 0, master->get_ncols() - 1);
+
+    return std::ranges::equal(obj_merged, obj_master);
+}
+
+bool verifySolution(const SolverAbstract* merged, const SolverAbstract* master)
+{
+    std::vector<double> sol_merged(merged->get_ncols());
+    std::vector<double> sol_master(master->get_ncols());
+    merged->get_lp_sol(sol_merged.data(), nullptr, nullptr);
+    master->get_lp_sol(sol_master.data(), nullptr, nullptr);
+
+    return std::ranges::equal(sol_merged, sol_master);
+}
+
+template<typename T>
+
+bool IsEqual(const T& lhs, const T& rhs, const T& epsilon = std::numeric_limits<T>::epsilon())
+{
+    if constexpr (std::is_floating_point_v<T>)
+    {
+        return std::abs(lhs - rhs) <= epsilon * std::max(std::abs(lhs), std::abs(rhs));
     }
-
-    bool verifyObjectiveFunction(const SolverAbstract *merged, const SolverAbstract *master) {
-        std::vector<double> obj_merged(merged->get_ncols());
-        std::vector<double> obj_master(master->get_ncols());
-        merged->get_obj(obj_merged.data(), 0, merged->get_ncols() - 1);
-        master->get_obj(obj_master.data(), 0, master->get_ncols() - 1);
-
-        return std::ranges::equal(obj_merged, obj_master);
-    }
-
-    bool verifySolution(const SolverAbstract *merged, const SolverAbstract *master) {
-        std::vector<double> sol_merged(merged->get_ncols());
-        std::vector<double> sol_master(master->get_ncols());
-        merged->get_lp_sol(sol_merged.data(), nullptr, nullptr);
-        master->get_lp_sol(sol_master.data(), nullptr, nullptr);
-
-        return std::ranges::equal(sol_merged, sol_master);
-    }
-
-    template<typename T>
-
-    bool IsEqual(const T &lhs, const T &rhs, const T &epsilon = std::numeric_limits<T>::epsilon()) {
-        if constexpr (std::is_floating_point_v<T>) {
-            return std::abs(lhs - rhs) <= epsilon * std::max(std::abs(lhs), std::abs(rhs));
-        } else return (lhs == rhs);
-    }
-
-    bool verifyConstraints(const SolverAbstract *merged, const SolverAbstract *master) {
-        std::vector<int> mstart(merged->get_nrows() + 1);
-        std::vector<int> cindex(merged->get_nelems());
-        std::vector<double> matval_merged(merged->get_nelems());
-        int n_merged = 0;
-        merged->get_rows(mstart.data(), cindex.data(), matval_merged.data(), merged->get_nelems(), &n_merged, 0,
-                         merged->get_nrows() - 1);
-
-        std::vector<int> mstart_master(master->get_nrows() + 1);
-        std::vector<int> cindex_master(master->get_nelems());
-        std::vector<double> matval_master(master->get_nelems());
-        int n_master = 0;
-        master->get_rows(mstart_master.data(), cindex_master.data(), matval_master.data(), master->get_nelems(),
-                         &n_master,
-                         0,
-                         master->get_nrows() - 1);
-
-        if (n_merged != n_master) {
-            return false;
-        }
-        return std::ranges::equal(mstart, mstart_master)
-               && std::ranges::equal(cindex, cindex_master)
-               && std::ranges::equal(matval_merged, matval_master, [](auto l, auto r) {
-                   return IsEqual(l, r);
-               });
-    }
-
-    bool verifyRHS(const SolverAbstract *merged, const SolverAbstract *master) {
-        std::vector<double> rhs_merged(merged->get_nrows());
-        std::vector<double> rhs_master(master->get_nrows());
-        merged->get_rhs(rhs_merged.data(), 0, merged->get_nrows() - 1);
-        master->get_rhs(rhs_master.data(), 0, master->get_nrows() - 1);
-
-        return std::ranges::equal(rhs_merged, rhs_master, [](auto l, auto r) {
-            return IsEqual(l, r);
-        });
-    }
-
-    bool verifyRowTypes(const SolverAbstract *merged, const SolverAbstract *master) {
-        std::vector<char> order_merged(merged->get_nrows());
-        std::vector<char> order_master(master->get_nrows());
-        merged->get_row_type(order_merged.data(), 0, merged->get_nrows() - 1);
-        master->get_row_type(order_master.data(), 0, master->get_nrows() - 1);
-
-        return std::ranges::equal(order_merged, order_master);
-    }
-
-    bool verifyBounds(const SolverAbstract *merged, const SolverAbstract *master) {
-        std::vector<double> lb_merged(merged->get_ncols());
-        std::vector<double> lb_master(master->get_ncols());
-        merged->get_lb(lb_merged.data(), 0, merged->get_ncols() - 1);
-        master->get_lb(lb_master.data(), 0, master->get_ncols() - 1);
-
-        if (!std::ranges::equal(lb_merged, lb_master, [](auto l, auto r) {
-            return IsEqual(l, r);
-        })) {
-            return false;
-        }
-
-        std::vector<double> ub_merged(merged->get_ncols());
-        std::vector<double> ub_master(master->get_ncols());
-        merged->get_ub(ub_merged.data(), 0, merged->get_ncols() - 1);
-        master->get_ub(ub_master.data(), 0, master->get_ncols() - 1);
-
-        if (!std::ranges::equal(ub_merged, ub_master, [](auto l, auto r) {
-            return IsEqual(l, r);
-        })) {
-            return false;
-        }
-        return true;
+    else
+    {
+        return (lhs == rhs);
     }
 }
 
-bool SolverAbstract::operator==(const SolverAbstract &other) const {
-    if (this == &other) {
+bool verifyConstraints(const SolverAbstract* merged, const SolverAbstract* master)
+{
+    std::vector<int> mstart(merged->get_nrows() + 1);
+    std::vector<int> cindex(merged->get_nelems());
+    std::vector<double> matval_merged(merged->get_nelems());
+    int n_merged = 0;
+    merged->get_rows(mstart.data(),
+                     cindex.data(),
+                     matval_merged.data(),
+                     merged->get_nelems(),
+                     &n_merged,
+                     0,
+                     merged->get_nrows() - 1);
+
+    std::vector<int> mstart_master(master->get_nrows() + 1);
+    std::vector<int> cindex_master(master->get_nelems());
+    std::vector<double> matval_master(master->get_nelems());
+    int n_master = 0;
+    master->get_rows(mstart_master.data(),
+                     cindex_master.data(),
+                     matval_master.data(),
+                     master->get_nelems(),
+                     &n_master,
+                     0,
+                     master->get_nrows() - 1);
+
+    if (n_merged != n_master)
+    {
+        return false;
+    }
+    return std::ranges::equal(mstart, mstart_master) && std::ranges::equal(cindex, cindex_master)
+           && std::ranges::equal(matval_merged,
+                                 matval_master,
+                                 [](auto l, auto r) { return IsEqual(l, r); });
+}
+
+bool verifyRHS(const SolverAbstract* merged, const SolverAbstract* master)
+{
+    std::vector<double> rhs_merged(merged->get_nrows());
+    std::vector<double> rhs_master(master->get_nrows());
+    merged->get_rhs(rhs_merged.data(), 0, merged->get_nrows() - 1);
+    master->get_rhs(rhs_master.data(), 0, master->get_nrows() - 1);
+
+    return std::ranges::equal(rhs_merged, rhs_master, [](auto l, auto r) { return IsEqual(l, r); });
+}
+
+bool verifyRowTypes(const SolverAbstract* merged, const SolverAbstract* master)
+{
+    std::vector<char> order_merged(merged->get_nrows());
+    std::vector<char> order_master(master->get_nrows());
+    merged->get_row_type(order_merged.data(), 0, merged->get_nrows() - 1);
+    master->get_row_type(order_master.data(), 0, master->get_nrows() - 1);
+
+    return std::ranges::equal(order_merged, order_master);
+}
+
+bool verifyBounds(const SolverAbstract* merged, const SolverAbstract* master)
+{
+    std::vector<double> lb_merged(merged->get_ncols());
+    std::vector<double> lb_master(master->get_ncols());
+    merged->get_lb(lb_merged.data(), 0, merged->get_ncols() - 1);
+    master->get_lb(lb_master.data(), 0, master->get_ncols() - 1);
+
+    if (!std::ranges::equal(lb_merged, lb_master, [](auto l, auto r) { return IsEqual(l, r); }))
+    {
+        return false;
+    }
+
+    std::vector<double> ub_merged(merged->get_ncols());
+    std::vector<double> ub_master(master->get_ncols());
+    merged->get_ub(ub_merged.data(), 0, merged->get_ncols() - 1);
+    master->get_ub(ub_master.data(), 0, master->get_ncols() - 1);
+
+    if (!std::ranges::equal(ub_merged, ub_master, [](auto l, auto r) { return IsEqual(l, r); }))
+    {
+        return false;
+    }
+    return true;
+}
+} // namespace
+
+bool SolverAbstract::operator==(const SolverAbstract& other) const
+{
+    if (this == &other)
+    {
         return true;
     }
     bool is_equal = true;
