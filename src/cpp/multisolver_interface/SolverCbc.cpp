@@ -791,8 +791,7 @@ int SolverCbc::get_splex_num_of_ite_last() const
     return _cbc.solver()->getIterationCount();
 }
 
-void SolverCbc::get_lp_sol(double* primals, double* duals, double* reduced_costs)
-{
+void SolverCbc::get_lp_sol(double* primals, double* duals, double* reduced_costs) const {
     if (primals != nullptr)
     {
         const double* primalSol = _cbc.solver()->getColSolution();

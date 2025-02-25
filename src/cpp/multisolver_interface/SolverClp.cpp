@@ -642,8 +642,7 @@ int SolverClp::get_splex_num_of_ite_last() const
     return _clp.numberIterations();
 }
 
-void SolverClp::get_lp_sol(double* primals, double* duals, double* reduced_costs)
-{
+void SolverClp::get_lp_sol(double* primals, double* duals, double* reduced_costs) const {
     if (primals != NULL)
     {
         double* primalSol = _clp.primalColumnSolution();
