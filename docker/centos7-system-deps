@@ -32,7 +32,7 @@ RUN \
     rm -f Miniconda3-py38_23.5.1-0-Linux-x86_64.sh
 
 RUN export PATH=/root/miniconda3/condabin:$PATH && \
-    conda install -c fico-xpress "xpress>=9.2,<9.3"
+    conda install -c fico-xpress "xpress==9.2.7"
 
 
 # Install CMake

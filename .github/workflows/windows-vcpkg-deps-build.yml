@@ -43,7 +43,7 @@ jobs:
       - name: Set-up Xpress with pip
         shell: bash
         run: |
-          python -m pip install --no-cache-dir "xpress>=9.2,<9.3"
+          python -m pip install --no-cache-dir "xpress==9.2.7"
           XPRESS_DIR="${{ env.pythonLocation }}\Lib\site-packages\xpress"
           cp -r $XPRESS_DIR/lib $XPRESS_DIR/bin
           cp $XPRESS_DIR/license/community-xpauth.xpr $XPRESS_DIR/bin/xpauth.xpr
