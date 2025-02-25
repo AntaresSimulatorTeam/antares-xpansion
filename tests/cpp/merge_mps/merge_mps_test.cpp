@@ -10,100 +10,6 @@ size_t StandardLp::appendCNT = 0;
 
 using namespace std::string_literals;
 
-void verifyProblemDimensions(const SolverAbstract *merged, const SolverAbstract *master) {
-    EXPECT_EQ(merged->get_ncols(), master->get_ncols());
-    EXPECT_EQ(merged->get_nrows(), master->get_nrows());
-    EXPECT_EQ(merged->get_nelems(), master->get_nelems());
-}
-
-void verifyObjectiveFunction(const SolverAbstract *merged, const SolverAbstract *master) {
-    DblVector obj_merged(merged->get_ncols());
-    DblVector obj_master(master->get_ncols());
-    merged->get_obj(obj_merged.data(), 0, merged->get_ncols() - 1);
-    master->get_obj(obj_master.data(), 0, master->get_ncols() - 1);
-
-    for (int i = 0; i < merged->get_ncols(); ++i) {
-        EXPECT_DOUBLE_EQ(obj_merged[i], obj_master[i]);
-    }
-}
-
-void verifySolution(const SolverAbstract *merged, const SolverAbstract *master) {
-    DblVector sol_merged(merged->get_ncols());
-    DblVector sol_master(master->get_ncols());
-    merged->get_lp_sol(sol_merged.data(), nullptr, nullptr);
-    master->get_lp_sol(sol_master.data(), nullptr, nullptr);
-
-    for (int i = 0; i < merged->get_ncols(); ++i) {
-        EXPECT_DOUBLE_EQ(sol_merged[i], sol_master[i]);
-    }
-}
-
-void verifyConstraints(const SolverAbstract *merged, const SolverAbstract *master) {
-    std::vector<int> mstart(merged->get_ncols() + 1);
-    std::vector<int> cindex(merged->get_nelems());
-    std::vector<double> matval_merged(merged->get_nelems());
-    int n_merged = 0;
-    merged->get_rows(mstart.data(), cindex.data(), matval_merged.data(), merged->get_nelems(), &n_merged, 0,
-                     merged->get_nrows() - 1);
-
-    std::vector<int> mstart_master(master->get_ncols() + 1);
-    std::vector<int> cindex_master(master->get_nelems());
-    std::vector<double> matval_master(master->get_nelems());
-    int n_master = 0;
-    master->get_rows(mstart_master.data(), cindex_master.data(), matval_master.data(), master->get_nelems(), &n_master,
-                     0,
-                     master->get_nrows() - 1);
-
-    EXPECT_EQ(n_merged, n_master);
-    for (int i = 0; i < n_merged; ++i) {
-        EXPECT_EQ(mstart[i], mstart_master[i]);
-        EXPECT_EQ(cindex[i], cindex_master[i]);
-        EXPECT_DOUBLE_EQ(matval_merged[i], matval_master[i]);
-    }
-}
-
-void verifyRHS(const SolverAbstract *merged, const SolverAbstract *master) {
-    DblVector rhs_merged(merged->get_nrows());
-    DblVector rhs_master(master->get_nrows());
-    merged->get_rhs(rhs_merged.data(), 0, merged->get_nrows() - 1);
-    master->get_rhs(rhs_master.data(), 0, master->get_nrows() - 1);
-
-    for (int i = 0; i < merged->get_nrows(); ++i) {
-        EXPECT_DOUBLE_EQ(rhs_merged[i], rhs_master[i]);
-    }
-}
-
-void verifyRowTypes(const SolverAbstract *merged, const SolverAbstract *master) {
-    CharVector sense_merged(merged->get_nrows());
-    CharVector sense_master(master->get_nrows());
-    merged->get_row_type(sense_merged.data(), 0, merged->get_nrows() - 1);
-    master->get_row_type(sense_master.data(), 0, master->get_nrows() - 1);
-
-    for (int i = 0; i < merged->get_nrows(); ++i) {
-        EXPECT_EQ(sense_merged[i], sense_master[i]);
-    }
-}
-
-void verifyBounds(const SolverAbstract *merged, const SolverAbstract *master) {
-    DblVector lb_merged(merged->get_ncols());
-    DblVector lb_master(master->get_ncols());
-    merged->get_lb(lb_merged.data(), 0, merged->get_ncols() - 1);
-    master->get_lb(lb_master.data(), 0, master->get_ncols() - 1);
-
-    for (int i = 0; i < merged->get_ncols(); ++i) {
-        EXPECT_DOUBLE_EQ(lb_merged[i], lb_master[i]);
-    }
-
-    DblVector ub_merged(merged->get_ncols());
-    DblVector ub_master(master->get_ncols());
-    merged->get_ub(ub_merged.data(), 0, merged->get_ncols() - 1);
-    master->get_ub(ub_master.data(), 0, master->get_ncols() - 1);
-
-    for (int i = 0; i < merged->get_ncols(); ++i) {
-        EXPECT_DOUBLE_EQ(ub_merged[i], ub_master[i]);
-    }
-}
-
 class MergeMPSTest : public ::testing::Test {
 protected:
     void SetUp() override {
@@ -198,13 +104,7 @@ TEST_F(MergeMPSTest, one_master_Problem_ok) {
     auto master = factory.create_solver("CBC");
     master->read_prob_mps(tmp_dir_ / "master.mps"s);
 
-    verifyProblemDimensions(merged.get(), master.get());
-    verifyObjectiveFunction(merged.get(), master.get());
-    verifySolution(merged.get(), master.get());
-    verifyConstraints(merged.get(), master.get());
-    verifyRHS(merged.get(), master.get());
-    verifyRowTypes(merged.get(), master.get());
-    verifyBounds(merged.get(), master.get());
+    EXPECT_TRUE(*(merged.get()) == *(master.get()));
 }
 
 //TEst with 2 problems the result is a problem with variables from both problems

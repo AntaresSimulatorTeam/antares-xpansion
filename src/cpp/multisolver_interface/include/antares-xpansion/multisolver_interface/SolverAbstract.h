@@ -816,4 +816,6 @@ public:
      * @param iter: maximum number of simplex iterations
      */
     virtual void set_simplex_iter(int iter) = 0;
+
+    bool operator==(const SolverAbstract &) const;
 };
