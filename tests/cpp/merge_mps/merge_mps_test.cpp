@@ -86,7 +86,10 @@ TEST_F(MergeMPSTest, empty_input_ok) {
     EXPECT_EQ(lastSolution.problem_status, "ERROR");
 }
 
-TEST_F(MergeMPSTest, one_master_Problem_ok) {
+/**
+ * Result and master should be identical
+ */
+TEST_F(MergeMPSTest, only_master_identical_to_merged) {
     createMasterProblem();
     createStructureFile({{"master.mps", "X1", 0}, {"master.mps", "X2", 1}});
     std::filesystem::current_path(tmp_dir_);
@@ -121,12 +124,39 @@ auto get_rows(const SolverAbstract *solver) {
 }
 
 //Test with 2 problems not sharing variables
-TEST_F(MergeMPSTest, two_disconected_problems_ok) {
+/**
+ * Expectation :
+\Problem name: ClpDefaultName
+
+Minimize
+obj: 3 x0 + 4 x1 + x2 + x3
+Subject To
+cons0:  2 x0 + x1 <= 8
+cons1:  x0 + 2 x1 >= 3
+cons2:  x2 + x3 <= 100
+cons3:  x2 + 2 x3 >= 50
+Bounds
+0 <= x0 <= 4
+0 <= x1 <= 4
+0 <= x2 <= 50
+0 <= x3 <= 50
+End
+*/
+TEST_F(MergeMPSTest, two_disconected_problems_merged_is_concatenation_of_both) {
     createMasterProblem();
     createStructureFile({
         {"master.mps", "X1", 0}, {"master.mps", "X2", 1},
         {"satellite1.mps", "Y1", 0}, {"satellite1.mps", "Y2", 1}
     });
+    /* Satellite :
+     * Minimize Y1 + Y2
+     * Subject To
+     * C10: Y1 <= 100
+     * C20: Y2 <= 50
+     * Bounds
+     * 0 <= Y1 <= 50
+     * 0 <= Y2 <= 50
+     */
     std::ofstream satellite1(tmp_dir_ / "satellite1.mps");
     satellite1 << R"(NAME          satellite1  FREE
 ROWS
