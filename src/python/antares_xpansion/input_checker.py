@@ -552,11 +552,7 @@ def _check_setting_option_value(option, value):
     ):
         return True
 
-    if (
-            (option == "optimality_gap")
-            or (option == "relative_gap")
-            or (option == "relaxed_optimality_gap")
-    ):
+    if option in ("optimality_gap", "relative_gap", "relaxed_optimality_gap"):
         if float(value) >= 0:
             return True
         else:
