@@ -2,31 +2,21 @@
 
 namespace
 {
-bool verifyProblemDimensions(const SolverAbstract* merged, const SolverAbstract* master)
+bool areProblemDimensionsEquals(const SolverAbstract* one, const SolverAbstract* other)
 {
-    return (merged->get_ncols() == master->get_ncols())
-           && (merged->get_nrows() == master->get_nrows())
-           && (merged->get_nelems() == master->get_nelems());
+    return (one->get_ncols() == other->get_ncols())
+           && (one->get_nrows() == other->get_nrows())
+           && (one->get_nelems() == other->get_nelems());
 }
 
-bool verifyObjectiveFunction(const SolverAbstract* merged, const SolverAbstract* master)
+bool areObjectiveFunctionEquals(const SolverAbstract* one, const SolverAbstract* other)
 {
-    std::vector<double> obj_merged(merged->get_ncols());
-    std::vector<double> obj_master(master->get_ncols());
-    merged->get_obj(obj_merged.data(), 0, merged->get_ncols() - 1);
-    master->get_obj(obj_master.data(), 0, master->get_ncols() - 1);
+    std::vector<double> obj_one(one->get_ncols());
+    std::vector<double> obj_other(other->get_ncols());
+    one->get_obj(obj_one.data(), 0, one->get_ncols() - 1);
+    other->get_obj(obj_other.data(), 0, other->get_ncols() - 1);
 
-    return std::ranges::equal(obj_merged, obj_master);
-}
-
-bool verifySolution(const SolverAbstract* merged, const SolverAbstract* master)
-{
-    std::vector<double> sol_merged(merged->get_ncols());
-    std::vector<double> sol_master(master->get_ncols());
-    merged->get_lp_sol(sol_merged.data(), nullptr, nullptr);
-    master->get_lp_sol(sol_master.data(), nullptr, nullptr);
-
-    return std::ranges::equal(sol_merged, sol_master);
+    return std::ranges::equal(obj_one, obj_other);
 }
 
 template<typename T>
@@ -43,80 +33,80 @@ bool IsEqual(const T& lhs, const T& rhs, const T& epsilon = std::numeric_limits<
     }
 }
 
-bool verifyConstraints(const SolverAbstract* merged, const SolverAbstract* master)
+bool areConstraintsEquals(const SolverAbstract* one, const SolverAbstract* other)
 {
-    std::vector<int> mstart(merged->get_nrows() + 1);
-    std::vector<int> cindex(merged->get_nelems());
-    std::vector<double> matval_merged(merged->get_nelems());
-    int n_merged = 0;
-    merged->get_rows(mstart.data(),
+    std::vector<int> mstart(one->get_nrows() + 1);
+    std::vector<int> cindex(one->get_nelems());
+    std::vector<double> matval_one(one->get_nelems());
+    int n_one = 0;
+    one->get_rows(mstart.data(),
                      cindex.data(),
-                     matval_merged.data(),
-                     merged->get_nelems(),
-                     &n_merged,
+                     matval_one.data(),
+                     one->get_nelems(),
+                     &n_one,
                      0,
-                     merged->get_nrows() - 1);
+                     one->get_nrows() - 1);
 
-    std::vector<int> mstart_master(master->get_nrows() + 1);
-    std::vector<int> cindex_master(master->get_nelems());
-    std::vector<double> matval_master(master->get_nelems());
-    int n_master = 0;
-    master->get_rows(mstart_master.data(),
-                     cindex_master.data(),
-                     matval_master.data(),
-                     master->get_nelems(),
-                     &n_master,
+    std::vector<int> mstart_other(other->get_nrows() + 1);
+    std::vector<int> cindex_other(other->get_nelems());
+    std::vector<double> matval_other(other->get_nelems());
+    int n_other = 0;
+    other->get_rows(mstart_other.data(),
+                     cindex_other.data(),
+                     matval_other.data(),
+                     other->get_nelems(),
+                     &n_other,
                      0,
-                     master->get_nrows() - 1);
+                     other->get_nrows() - 1);
 
-    if (n_merged != n_master)
+    if (n_one != n_other)
     {
         return false;
     }
-    return std::ranges::equal(mstart, mstart_master) && std::ranges::equal(cindex, cindex_master)
-           && std::ranges::equal(matval_merged,
-                                 matval_master,
+    return std::ranges::equal(mstart, mstart_other) && std::ranges::equal(cindex, cindex_other)
+           && std::ranges::equal(matval_one,
+                                 matval_other,
                                  [](auto l, auto r) { return IsEqual(l, r); });
 }
 
-bool verifyRHS(const SolverAbstract* merged, const SolverAbstract* master)
+bool areRHSEquals(const SolverAbstract* one, const SolverAbstract* other)
 {
-    std::vector<double> rhs_merged(merged->get_nrows());
-    std::vector<double> rhs_master(master->get_nrows());
-    merged->get_rhs(rhs_merged.data(), 0, merged->get_nrows() - 1);
-    master->get_rhs(rhs_master.data(), 0, master->get_nrows() - 1);
+    std::vector<double> rhs_one(one->get_nrows());
+    std::vector<double> rhs_other(other->get_nrows());
+    one->get_rhs(rhs_one.data(), 0, one->get_nrows() - 1);
+    other->get_rhs(rhs_other.data(), 0, other->get_nrows() - 1);
 
-    return std::ranges::equal(rhs_merged, rhs_master, [](auto l, auto r) { return IsEqual(l, r); });
+    return std::ranges::equal(rhs_one, rhs_other, [](auto l, auto r) { return IsEqual(l, r); });
 }
 
-bool verifyRowTypes(const SolverAbstract* merged, const SolverAbstract* master)
+bool areRowTypesEquals(const SolverAbstract* one, const SolverAbstract* other)
 {
-    std::vector<char> order_merged(merged->get_nrows());
-    std::vector<char> order_master(master->get_nrows());
-    merged->get_row_type(order_merged.data(), 0, merged->get_nrows() - 1);
-    master->get_row_type(order_master.data(), 0, master->get_nrows() - 1);
+    std::vector<char> order_one(one->get_nrows());
+    std::vector<char> order_other(other->get_nrows());
+    one->get_row_type(order_one.data(), 0, one->get_nrows() - 1);
+    other->get_row_type(order_other.data(), 0, other->get_nrows() - 1);
 
-    return std::ranges::equal(order_merged, order_master);
+    return std::ranges::equal(order_one, order_other);
 }
 
-bool verifyBounds(const SolverAbstract* merged, const SolverAbstract* master)
+bool areBoundsEquals(const SolverAbstract* one, const SolverAbstract* other)
 {
-    std::vector<double> lb_merged(merged->get_ncols());
-    std::vector<double> lb_master(master->get_ncols());
-    merged->get_lb(lb_merged.data(), 0, merged->get_ncols() - 1);
-    master->get_lb(lb_master.data(), 0, master->get_ncols() - 1);
+    std::vector<double> lb_one(one->get_ncols());
+    std::vector<double> lb_other(other->get_ncols());
+    one->get_lb(lb_one.data(), 0, one->get_ncols() - 1);
+    other->get_lb(lb_other.data(), 0, other->get_ncols() - 1);
 
-    if (!std::ranges::equal(lb_merged, lb_master, [](auto l, auto r) { return IsEqual(l, r); }))
+    if (!std::ranges::equal(lb_one, lb_other, [](auto l, auto r) { return IsEqual(l, r); }))
     {
         return false;
     }
 
-    std::vector<double> ub_merged(merged->get_ncols());
-    std::vector<double> ub_master(master->get_ncols());
-    merged->get_ub(ub_merged.data(), 0, merged->get_ncols() - 1);
-    master->get_ub(ub_master.data(), 0, master->get_ncols() - 1);
+    std::vector<double> ub_one(one->get_ncols());
+    std::vector<double> ub_other(other->get_ncols());
+    one->get_ub(ub_one.data(), 0, one->get_ncols() - 1);
+    other->get_ub(ub_other.data(), 0, other->get_ncols() - 1);
 
-    if (!std::ranges::equal(ub_merged, ub_master, [](auto l, auto r) { return IsEqual(l, r); }))
+    if (!std::ranges::equal(ub_one, ub_other, [](auto l, auto r) { return IsEqual(l, r); }))
     {
         return false;
     }
@@ -131,11 +121,11 @@ bool SolverAbstract::operator==(const SolverAbstract& other) const
         return true;
     }
     bool is_equal = true;
-    is_equal = is_equal && verifyProblemDimensions(this, &other);
-    is_equal = is_equal && verifyObjectiveFunction(this, &other);
-    is_equal = is_equal && verifyConstraints(this, &other);
-    is_equal = is_equal && verifyRHS(this, &other);
-    is_equal = is_equal && verifyRowTypes(this, &other);
-    is_equal = is_equal && verifyBounds(this, &other);
+    is_equal = is_equal && areProblemDimensionsEquals(this, &other);
+    is_equal = is_equal && areObjectiveFunctionEquals(this, &other);
+    is_equal = is_equal && areConstraintsEquals(this, &other);
+    is_equal = is_equal && areRHSEquals(this, &other);
+    is_equal = is_equal && areRowTypesEquals(this, &other);
+    is_equal = is_equal && areBoundsEquals(this, &other);
     return is_equal;
 }
