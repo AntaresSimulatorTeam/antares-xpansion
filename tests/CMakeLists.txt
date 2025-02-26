@@ -75,9 +75,9 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
 
     add_test(
             NAME examples_medium_sequential
-            COMMAND Python3::Interpreter -m
+            COMMAND Python3::Interpreter -m pytest
             "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-medium_seq.xml>"
-            pytest -m medium_sequential ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
+            -m medium_sequential ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
     set_property(TEST examples_medium_sequential PROPERTY LABELS medium medium_sequential end_to_end)
