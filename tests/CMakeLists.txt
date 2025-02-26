@@ -130,10 +130,11 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
             NAME sequential
             COMMAND Python3::Interpreter -m pytest
             "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-benders.xml>"
-            --installDir=${XPANSION_INSTALL_DIR} ${xpress_available} test_bendersSequentialEndToEnd.py
+            ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} ${xpress_available} test_bendersSequentialEndToEnd.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
     )
     set_property(TEST sequential PROPERTY LABELS benders benders-sequential end_to_end)
+
     add_test(
             NAME sequential_restart
             COMMAND Python3::Interpreter -m pytest
@@ -158,11 +159,12 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/restart
     )
     set_property(TEST mpibenders_restart PROPERTY LABELS benders benders-mpi end_to_end restart)
+
     add_test(
             NAME merge_mps
             COMMAND Python3::Interpreter -m pytest
             "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-merge_mps.xml>"
-            --installDir=${XPANSION_INSTALL_DIR} test_bendersMergeMpsEndToEnd.py
+            ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} test_bendersMergeMpsEndToEnd.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
     )
     set_property(TEST merge_mps PROPERTY LABELS benders merge-mps end_to_end)
