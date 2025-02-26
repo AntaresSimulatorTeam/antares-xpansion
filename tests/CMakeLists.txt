@@ -27,7 +27,8 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     # Python unit test
     add_test(
             NAME unit_launcher
-            COMMAND Python3::Interpreter -m pytest --cov=antares_xpansion --cov-report xml:coverage-reports/coverage-antares_xpansion.xml
+            COMMAND Python3::Interpreter -m pytest
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-antares_xpansion.xml>"
             WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/python"
     )
     set_property(TEST unit_launcher PROPERTY LABELS unit)
@@ -36,17 +37,19 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     add_test(
             NAME examples_short_sequential
             COMMAND Python3::Interpreter -m pytest
-            $<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-short_seq.xml>
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-short_seq.xml>"
             -m short_sequential ${allow_run_as_root_option}
             --installDir=${XPANSION_INSTALL_DIR} example_test.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
     set_property(TEST examples_short_sequential PROPERTY LABELS short short_sequential end_to_end)
 
+    message("$<$<BOOL:ON>:--val --val2>")
+    message("$<$<BOOL:OFF>:--val --val2>")
     add_test(
             NAME examples_short_memory
             COMMAND Python3::Interpreter -m pytest
-            $<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-short_memory.xml>
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-short_memory.xml>"
             -m short_memory ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
@@ -55,7 +58,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     add_test(
             NAME examples_short_mpi
             COMMAND Python3::Interpreter -m pytest
-            $<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-short_mpi.xml>
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-short_mpi.xml>"
             -m short_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
@@ -64,7 +67,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     add_test(
             NAME examples_short_benders_by_batch_mpi
             COMMAND Python3::Interpreter -m pytest
-            $<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-short_batch_mpi.xml>
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-short_batch_mpi.xml>"
             -m short_benders_by_batch_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
@@ -73,7 +76,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     add_test(
             NAME examples_medium_sequential
             COMMAND Python3::Interpreter -m
-            $<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-medium_seq.xml>
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-medium_seq.xml>"
             pytest -m medium_sequential ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
@@ -82,7 +85,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     add_test(
             NAME examples_medium_mpi
             COMMAND Python3::Interpreter -m pytest
-            $<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-medium_mpi.xml>
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-medium_mpi.xml>"
             -m medium_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
@@ -91,7 +94,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     add_test(
             NAME example_medium_benders_by_batch_mpi
             COMMAND Python3::Interpreter -m pytest
-            $<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-medium_batch_mpi.xml>
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-medium_batch_mpi.xml>"
             -m medium_benders_by_batch_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
@@ -100,7 +103,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     add_test(
             NAME examples_long_sequential
             COMMAND Python3::Interpreter -m pytest
-            $<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-long_seq.xml>
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-long_seq.xml>"
             -m long_sequential ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
@@ -109,7 +112,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     add_test(
             NAME examples_long_mpi
             COMMAND Python3::Interpreter -m pytest
-            $<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-long_mpi.xml>
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-long_mpi.xml>"
             -m long_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
@@ -117,7 +120,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     add_test(
             NAME examples_long_benders_by_batch_mpi
             COMMAND Python3::Interpreter -m pytest
-            $<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-long_batch_mpi.xml>
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-long_batch_mpi.xml>"
             -m long_benders_by_batch_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
     )
@@ -126,7 +129,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     add_test(
             NAME sequential
             COMMAND Python3::Interpreter -m pytest
-            $<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-benders.xml>
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-benders.xml>"
             --installDir=${XPANSION_INSTALL_DIR} ${xpress_available} test_bendersSequentialEndToEnd.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
     )
@@ -134,7 +137,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     add_test(
             NAME sequential_restart
             COMMAND Python3::Interpreter -m pytest
-            $<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-restart.xml>
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-restart.xml>"
             ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} test_restartBendersSequentialEndToEnd.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/restart
     )
@@ -142,7 +145,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     add_test(
             NAME mpibenders
             COMMAND Python3::Interpreter -m pytest
-            $<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-benders_mpi.xml>
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-benders_mpi.xml>"
             ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} ${xpress_available} test_bendersmpibendersEndToEnd.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
     )
@@ -150,7 +153,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     add_test(
             NAME mpibenders_restart
             COMMAND Python3::Interpreter -m pytest
-            $<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-restart_mpi.xml>
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-restart_mpi.xml>"
             ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} test_restartBendersmpibendersEndToEnd.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/restart
     )
@@ -158,7 +161,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     add_test(
             NAME merge_mps
             COMMAND Python3::Interpreter -m pytest
-            $<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-merge_mps.xml>
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-merge_mps.xml>"
             --installDir=${XPANSION_INSTALL_DIR} test_bendersMergeMpsEndToEnd.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
     )
@@ -167,7 +170,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     add_test(
             NAME lpnamer_end_to_end
             COMMAND Python3::Interpreter -m pytest
-            $<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-lpnamer.xml>
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion --cov-report xml:coverage-reports/coverage-lpnamer.xml>"
             --installDir=${XPANSION_INSTALL_DIR} test_lpnamerEndToEnd.py
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/lpnamer
     )
@@ -175,7 +178,9 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
 
     add_test(
             NAME BDD
-            COMMAND Python3::Interpreter -m behave cucumber/features
+            COMMAND Python3::Interpreter
+            "$<$<BOOL:${CODE_COVERAGE}>:" -m coverage run --source='.'">"
+            -m behave cucumber/features
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/
     )
     set_property(TEST BDD PROPERTY LABELS end_to_end bdd)
