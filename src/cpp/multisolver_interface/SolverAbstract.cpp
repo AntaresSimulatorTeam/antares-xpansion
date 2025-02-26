@@ -4,8 +4,7 @@ namespace
 {
 bool areProblemDimensionsEquals(const SolverAbstract* one, const SolverAbstract* other)
 {
-    return (one->get_ncols() == other->get_ncols())
-           && (one->get_nrows() == other->get_nrows())
+    return (one->get_ncols() == other->get_ncols()) && (one->get_nrows() == other->get_nrows())
            && (one->get_nelems() == other->get_nelems());
 }
 
@@ -40,24 +39,24 @@ bool areConstraintsEquals(const SolverAbstract* one, const SolverAbstract* other
     std::vector<double> matval_one(one->get_nelems());
     int n_one = 0;
     one->get_rows(mstart.data(),
-                     cindex.data(),
-                     matval_one.data(),
-                     one->get_nelems(),
-                     &n_one,
-                     0,
-                     one->get_nrows() - 1);
+                  cindex.data(),
+                  matval_one.data(),
+                  one->get_nelems(),
+                  &n_one,
+                  0,
+                  one->get_nrows() - 1);
 
     std::vector<int> mstart_other(other->get_nrows() + 1);
     std::vector<int> cindex_other(other->get_nelems());
     std::vector<double> matval_other(other->get_nelems());
     int n_other = 0;
     other->get_rows(mstart_other.data(),
-                     cindex_other.data(),
-                     matval_other.data(),
-                     other->get_nelems(),
-                     &n_other,
-                     0,
-                     other->get_nrows() - 1);
+                    cindex_other.data(),
+                    matval_other.data(),
+                    other->get_nelems(),
+                    &n_other,
+                    0,
+                    other->get_nrows() - 1);
 
     if (n_one != n_other)
     {
