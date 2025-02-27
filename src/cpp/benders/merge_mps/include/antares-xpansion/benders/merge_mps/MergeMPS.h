@@ -2,7 +2,6 @@
 
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
-#include "antares-xpansion/benders/logger/User.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 
 enum Attribute
@@ -47,9 +46,8 @@ enum DblVectorAttribute
     MAX_DBL_VECTOR_ATTRIBUTE
 };
 
-typedef std::
-  tuple<IntVector, std::vector<IntVector>, std::vector<CharVector>, std::vector<DblVector>>
-    raw_standard_lp_data;
+using raw_standard_lp_data = std::
+  tuple<IntVector, std::vector<IntVector>, std::vector<CharVector>, std::vector<DblVector>>;
 
 class StandardLp
 {
@@ -237,10 +235,10 @@ private:
 class MergeMPS
 {
 public:
-    MergeMPS(const MergeMPSOptions& options,
-             Logger& logger,
-             std::shared_ptr<Output::OutputWriter> writer);
+    MergeMPS(MergeMPSOptions options, Logger logger, std::shared_ptr<Output::OutputWriter> writer);
+
     void launch();
+
     double slave_weight(int nslaves, const std::string& name) const;
 
     MergeMPSOptions _options;

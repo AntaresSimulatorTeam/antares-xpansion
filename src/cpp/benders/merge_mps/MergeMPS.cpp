@@ -1,24 +1,30 @@
 #include "antares-xpansion/benders/merge_mps/MergeMPS.h"
 
 #include <filesystem>
+#include <utility>
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/helpers/Timer.h"
 
-MergeMPS::MergeMPS(const MergeMPSOptions& options,
-                   Logger& logger,
+MergeMPS::MergeMPS(MergeMPSOptions options,
+                   Logger logger,
                    std::shared_ptr<Output::OutputWriter> writer):
-    _options(options),
-    _logger(logger),
-    _writer(writer)
+    _options(std::move(options)),
+    _logger(std::move(logger)),
+    _writer(std::move(writer))
 {
 }
 
+/**
+ * Limitation: on windows may not support master problem with full path as name
+ */
 void MergeMPS::launch()
 {
     const auto inputRootDir = std::filesystem::path(_options.INPUTROOT);
     auto structure_path(inputRootDir / _options.STRUCTURE_FILE);
-    CouplingMap input = CouplingMapGenerator::BuildInput(structure_path, _logger, "Merge mps");
+    CouplingMap input = CouplingMapGenerator::BuildInput(structure_path,
+                                                         _logger.get(),
+                                                         "Merge mps");
 
     SolverFactory factory;
     std::string solver_to_use = (_options.SOLVER_NAME == "COIN") ? "CBC" : _options.SOLVER_NAME;
@@ -251,6 +257,13 @@ double MergeMPS::slave_weight(int nslaves, const std::string& name) const
     }
     else
     {
+        if (_options.weights.find(name) == _options.weights.end())
+        {
+            _logger->display_message("No weight found for " + name
+                                       + ". Problem will not contribute to objective function",
+                                     LogUtils::LOGLEVEL::WARNING,
+                                     "MergeMPS");
+        }
         return _options.weights.find(name)->second;
     }
 }
