@@ -22,7 +22,7 @@ var classSolverXpress =
     [ "get_col_names", "classSolverXpress.html#af7d89f1f23d6081b415210f4b3c21f32", null ],
     [ "get_col_type", "classSolverXpress.html#a13482a18ef605e5bcf9dcc165d9b3695", null ],
     [ "get_lb", "classSolverXpress.html#ac59e14478024918c3a7d2388194765b3", null ],
-    [ "get_lp_sol", "classSolverXpress.html#add1a52b1cd6a90f7dcc95d7d1e716419", null ],
+    [ "get_lp_sol", "classSolverXpress.html#a92801ba2b8f010a854d436bbc5994473", null ],
     [ "get_lp_value", "classSolverXpress.html#aeb649da555b2ecdc8fae87789a1d0401", null ],
     [ "get_mip_sol", "classSolverXpress.html#af0190fc1d357501a3d91f0e660e2b602", null ],
     [ "get_mip_value", "classSolverXpress.html#a7f4b3f01f46c05fc6a59bfeb33eefab0", null ],

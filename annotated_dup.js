@@ -434,6 +434,13 @@ var annotated_dup =
         ] ]
       ] ]
     ] ],
+    [ "Xpansion", null, [
+      [ "Test", null, [
+        [ "InMemoryWriter", "classXpansion_1_1Test_1_1InMemoryWriter.html", "classXpansion_1_1Test_1_1InMemoryWriter" ],
+        [ "LoggerNOOPStub", "classXpansion_1_1Test_1_1LoggerNOOPStub.html", "classXpansion_1_1Test_1_1LoggerNOOPStub" ],
+        [ "WriterNOOPStub", "classXpansion_1_1Test_1_1WriterNOOPStub.html", "classXpansion_1_1Test_1_1WriterNOOPStub" ]
+      ] ]
+    ] ],
     [ "xpansion", null, [
       [ "logger", null, [
         [ "CandidateLog", "classxpansion_1_1logger_1_1CandidateLog.html", null ],
@@ -563,7 +570,6 @@ var annotated_dup =
     [ "LinkProfileReaderTest", "classLinkProfileReaderTest.html", null ],
     [ "LogData", "structLogData.html", null ],
     [ "LogDestination", "classLogDestination.html", null ],
-    [ "LoggerNOOPStub", "classLoggerNOOPStub.html", "classLoggerNOOPStub" ],
     [ "LpFilesExtractor", "classLpFilesExtractor.html", "classLpFilesExtractor" ],
     [ "LpFilesExtractorTest", "classLpFilesExtractorTest.html", null ],
     [ "MasterGeneration", "classMasterGeneration.html", null ],
@@ -584,6 +590,7 @@ var annotated_dup =
     [ "MathLoggerImplementation", "classMathLoggerImplementation.html", "classMathLoggerImplementation" ],
     [ "MathLoggerOstream", "classMathLoggerOstream.html", null ],
     [ "MergeMPS", "classMergeMPS.html", "classMergeMPS" ],
+    [ "MergeMPSTest", "classMergeMPSTest.html", "classMergeMPSTest" ],
     [ "MockProblem", "classMockProblem.html", null ],
     [ "MPSFileProblemProviderAdapter", "classMPSFileProblemProviderAdapter.html", null ],
     [ "MpsTxtWriterTest", "classMpsTxtWriterTest.html", null ],
@@ -680,7 +687,6 @@ var annotated_dup =
     [ "WorkerMaster", "classWorkerMaster.html", "classWorkerMaster" ],
     [ "WorkerMasterData", "classWorkerMasterData.html", "classWorkerMasterData" ],
     [ "WriterMockStatus", "classWriterMockStatus.html", null ],
-    [ "WriterNOOPStub", "classWriterNOOPStub.html", "classWriterNOOPStub" ],
     [ "XpansionProblemsFromAntaresProvider", "classXpansionProblemsFromAntaresProvider.html", null ],
     [ "YearlyWeightsWriter", "classYearlyWeightsWriter.html", "classYearlyWeightsWriter" ],
     [ "ZipProblemProviderAdapter", "classZipProblemProviderAdapter.html", null ],

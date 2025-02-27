@@ -25,7 +25,7 @@ var classSolverAbstract =
     [ "get_col_names", "classSolverAbstract.html#a13262b52770909a6edf6aeff83fe4e44", null ],
     [ "get_col_type", "classSolverAbstract.html#aa5406209c85c2095241af0637251fc09", null ],
     [ "get_lb", "classSolverAbstract.html#a81e225fed285ec9a4cc9b7eb50e62e58", null ],
-    [ "get_lp_sol", "classSolverAbstract.html#afbd713490c7e1f164f13cf8bb73a41e3", null ],
+    [ "get_lp_sol", "classSolverAbstract.html#a30be072480be208492a62fde86ff4f2b", null ],
     [ "get_lp_value", "classSolverAbstract.html#a521720a41f51811be326a9dbe953656a", null ],
     [ "get_mip_sol", "classSolverAbstract.html#ae6b49267ab12ca3dacc6441612225bd2", null ],
     [ "get_mip_value", "classSolverAbstract.html#a980b94bddf816fce593c2dee85000ab7", null ],

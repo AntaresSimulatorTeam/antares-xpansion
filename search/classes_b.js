@@ -21,7 +21,7 @@ var searchData=
   ['locked_18',['Locked',['../classantares__xpansion_1_1study__locker_1_1StudyLocker_1_1Locked.html',1,'antares_xpansion::study_locker::StudyLocker']]],
   ['logdata_19',['LogData',['../structLogData.html',1,'']]],
   ['logdestination_20',['LogDestination',['../classLogDestination.html',1,'']]],
-  ['loggernoopstub_21',['LoggerNOOPStub',['../classLoggerNOOPStub.html',1,'']]],
+  ['loggernoopstub_21',['LoggerNOOPStub',['../classXpansion_1_1Test_1_1LoggerNOOPStub.html',1,'Xpansion::Test']]],
   ['loglevelvalueerror_22',['LogLevelValueError',['../classantares__xpansion_1_1input__checker_1_1LogLevelValueError.html',1,'antares_xpansion::input_checker']]],
   ['logutils_23',['LogUtils',['../classantares__xpansion_1_1log__utils_1_1LogUtils.html',1,'antares_xpansion::log_utils']]],
   ['lpfilesextractor_24',['LpFilesExtractor',['../classLpFilesExtractor.html',1,'']]],

@@ -1,5 +1,13 @@
 var NAVTREEINDEX4 =
 {
+"classantares__xpansion_1_1config__loader_1_1ConfigLoader.html":[25,0,0,5,0],
+"classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a0c3fa0cf225d9b7bb06864a8aa7f1b45":[24,0,0,2,0,23],
+"classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a0c3fa0cf225d9b7bb06864a8aa7f1b45":[25,0,0,5,0,23],
+"classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a0fa29f1cdbb872c4cc1e15df7fd49b63":[24,0,0,2,0,7],
+"classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a0fa29f1cdbb872c4cc1e15df7fd49b63":[25,0,0,5,0,7],
+"classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a18ac312fdfc2181c7ad8dad85ba359d7":[24,0,0,2,0,26],
+"classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a18ac312fdfc2181c7ad8dad85ba359d7":[25,0,0,5,0,26],
+"classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a267de5478c27b566118f8dfefa000f06":[24,0,0,2,0,25],
 "classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a267de5478c27b566118f8dfefa000f06":[25,0,0,5,0,25],
 "classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a2d69cced84114b716a8b06830836f34e":[24,0,0,2,0,15],
 "classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a2d69cced84114b716a8b06830836f34e":[25,0,0,5,0,15],
@@ -209,7 +217,7 @@ var NAVTREEINDEX4 =
 "classantares__xpansion_1_1xpansion__study__reader_1_1XpansionStudyReader_1_1OnlyNullYearsWeightValue.html":[25,0,0,24,0,5],
 "classantares__xpansion_1_1xpansion__study__reader_1_1XpansionStudyReader_1_1SolverNotAvailable.html":[25,0,0,24,0,6],
 "classantares__xpansion_1_1yearly__weight__writer_1_1YearlyWeightWriter.html":[25,0,0,26,0],
-"classclass.html":[25,0,65],
+"classclass.html":[25,0,66],
 "classes.html":[25,1],
 "classperformance_1_1JsonFileProcessor.html":[25,0,8,0],
 "classperformance_1_1PerfPlotsGenerator.html":[25,0,8,1],
@@ -241,13 +249,5 @@ var NAVTREEINDEX4 =
 "classtests_1_1python_1_1test__split__link__profile_1_1TestSplitLinkProfile.html":[25,0,13,1,12,0],
 "classtests_1_1python_1_1test__study__locker_1_1TestStudyLocker.html":[25,0,13,1,13,0],
 "classtests_1_1python_1_1test__study__output__cleaner_1_1TestStudyOutputCleaner.html":[25,0,13,1,14,0],
-"classtests_1_1python_1_1test__study__updater_1_1TestStudyUpdater.html":[25,0,13,1,15,0],
-"classxpansion_1_1logger_1_1CandidateLog.html":[25,0,14,0,0],
-"classxpansion_1_1logger_1_1IterationResultLog.html":[25,0,14,0,1],
-"classxpansion_1_1logger_1_1Master.html":[25,0,14,0,2],
-"classxpansion_1_1logger_1_1Master.html#aedc1d1015a2efc90153fbc02a83bd397":[25,0,14,0,2,0],
-"classxpansion_1_1logger_1_1User.html":[25,0,14,0,3],
-"classxpansion_1_1logger_1_1User.html#a7d02e013cf851b057661d0718c13f58a":[25,0,14,0,3,0],
-"classxpansion_1_1logger_1_1UserFile.html":[25,0,14,0,4],
-"classxpansion_1_1logger_1_1UserFile.html#a20209f11f5576c3ea4f74a999fdda486":[25,0,14,0,4,0]
+"classtests_1_1python_1_1test__study__updater_1_1TestStudyUpdater.html":[25,0,13,1,15,0]
 };

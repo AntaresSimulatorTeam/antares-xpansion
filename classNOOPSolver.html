@@ -298,9 +298,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ad3cd6572038247e983ef5212a56d6b49" id="r_ad3cd6572038247e983ef5212a56d6b49"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad3cd6572038247e983ef5212a56d6b49">get_splex_num_of_ite_last</a> () const override</td></tr>
 <tr class="memdesc:ad3cd6572038247e983ef5212a56d6b49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of simplex iterations done in the last resolution of the problem.  <br /></td></tr>
 <tr class="separator:ad3cd6572038247e983ef5212a56d6b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aba0601ee39804e116498cac9f27ba761" id="r_aba0601ee39804e116498cac9f27ba761"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aba0601ee39804e116498cac9f27ba761">get_lp_sol</a> (double *primals, double *duals, double *reduced_costs) override</td></tr>
-<tr class="memdesc:aba0601ee39804e116498cac9f27ba761"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get LP solution of a problem (available after method "solve_lp")  <br /></td></tr>
-<tr class="separator:aba0601ee39804e116498cac9f27ba761"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34a92cc79035a94edd28e5125860ba9a" id="r_a34a92cc79035a94edd28e5125860ba9a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a34a92cc79035a94edd28e5125860ba9a">get_lp_sol</a> (double *primals, double *duals, double *reduced_costs) const override</td></tr>
+<tr class="memdesc:a34a92cc79035a94edd28e5125860ba9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get LP solution of a problem (available after method "solve_lp")  <br /></td></tr>
+<tr class="separator:a34a92cc79035a94edd28e5125860ba9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae1fe90024eacde39761a0dbcdaae7bc8" id="r_ae1fe90024eacde39761a0dbcdaae7bc8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae1fe90024eacde39761a0dbcdaae7bc8">get_mip_sol</a> (double *primals) override</td></tr>
 <tr class="memdesc:ae1fe90024eacde39761a0dbcdaae7bc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get MIP solution of a problem (available after method "solve_mip")  <br /></td></tr>
 <tr class="separator:ae1fe90024eacde39761a0dbcdaae7bc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -356,6 +356,9 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_fp</b> (FILE *fp)
 <tr class="memitem:aff87b9285872f0012d0f2c183bbf395e inherit pub_methods_classSolverAbstract" id="r_aff87b9285872f0012d0f2c183bbf395e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#aff87b9285872f0012d0f2c183bbf395e">zero_status_check</a> (int status, const std::string &amp;action_failed, const std::string &amp;log_location) const</td></tr>
 <tr class="memdesc:aff87b9285872f0012d0f2c183bbf395e inherit pub_methods_classSolverAbstract"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a status code is different to 0, throw <a class="el" href="classInvalidStatusException.html">InvalidStatusException</a> if it occurs.  <br /></td></tr>
 <tr class="separator:aff87b9285872f0012d0f2c183bbf395e inherit pub_methods_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ab3aa3dbde02a1d26db51a3c19da59b inherit pub_methods_classSolverAbstract" id="r_a0ab3aa3dbde02a1d26db51a3c19da59b"><td class="memItemLeft" align="right" valign="top">
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &amp;) const</td></tr>
+<tr class="separator:a0ab3aa3dbde02a1d26db51a3c19da59b inherit pub_methods_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
 Additional Inherited Members</h2></td></tr>
@@ -1299,8 +1302,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="aba0601ee39804e116498cac9f27ba761" name="aba0601ee39804e116498cac9f27ba761"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aba0601ee39804e116498cac9f27ba761">&#9670;&#160;</a></span>get_lp_sol()</h2>
+<a id="a34a92cc79035a94edd28e5125860ba9a" name="a34a92cc79035a94edd28e5125860ba9a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34a92cc79035a94edd28e5125860ba9a">&#9670;&#160;</a></span>get_lp_sol()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1321,7 +1324,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>reduced_costs</em></span>&#160;)</td>
+          <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>reduced_costs</em></span>&#160;) const</td>
         </tr>
       </table>
   </td>
@@ -1341,7 +1344,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   </dd>
 </dl>
 
-<p>Implements <a class="el" href="classSolverAbstract.html#afbd713490c7e1f164f13cf8bb73a41e3">SolverAbstract</a>.</p>
+<p>Implements <a class="el" href="classSolverAbstract.html#a30be072480be208492a62fde86ff4f2b">SolverAbstract</a>.</p>
 
 </div>
 </div>

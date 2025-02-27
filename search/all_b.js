@@ -55,6 +55,6 @@ var searchData=
   ['build_20with_20cmake_52',['Configure build with CMake',['../md_docs_2developer-guide_2install__from__sources_23-Build.html#autotoc_md89',1,'']]],
   ['buildcut_53',['BuildCut',['../classBendersByBatch.html#a3a055a28f871d97cba325ece39c9c41c',1,'BendersByBatch::BuildCut()'],['../classBendersSequential.html#a2d1b29260a6ab2204f7ef276204951d7',1,'BendersSequential::BuildCut()'],['../classBendersSequentialDouble.html#a51acd36960e970d6b70621db819e5b42',1,'BendersSequentialDouble::BuildCut()']]],
   ['buildcutfull_54',['BuildCutFull',['../classBendersBase.html#affc499db6586868162f6bd7efa8898ea',1,'BendersBase']]],
-  ['buildinput_55',['BuildInput',['../classCouplingMapGenerator.html#a958468908b228fb3ec466e2c885ae8fc',1,'CouplingMapGenerator']]],
+  ['buildinput_55',['BuildInput',['../classCouplingMapGenerator.html#a0f33d1f8d32c6ba960fcff00860a9214',1,'CouplingMapGenerator']]],
   ['by_20batch_20algorithm_56',['The Benders by batch algorithm',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md231',1,'']]]
 ];

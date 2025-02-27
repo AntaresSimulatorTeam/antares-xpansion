@@ -22,7 +22,7 @@ var classSolverCbc =
     [ "get_col_names", "classSolverCbc.html#a5be71afd2ba393af429ae72018a2399e", null ],
     [ "get_col_type", "classSolverCbc.html#a21eca2a1adf0d46c08294fa5e5564871", null ],
     [ "get_lb", "classSolverCbc.html#a180bfdfab583c87ad2261a8a6de681b2", null ],
-    [ "get_lp_sol", "classSolverCbc.html#aa1349b9f863ab05790a948bed57ed7ff", null ],
+    [ "get_lp_sol", "classSolverCbc.html#a77ab0d50ea5bb798252e29e6e062314b", null ],
     [ "get_lp_value", "classSolverCbc.html#a96ca23915e64d82081f78d1069db00ff", null ],
     [ "get_mip_sol", "classSolverCbc.html#a33e87572a8da001d4f728d0772fff27a", null ],
     [ "get_mip_value", "classSolverCbc.html#acba345aae289418ac159eaa2386f570d", null ],

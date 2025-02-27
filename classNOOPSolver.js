@@ -20,7 +20,7 @@ var classNOOPSolver =
     [ "get_col_names", "classNOOPSolver.html#a984eab747c8b442c597e4a3a62c3dc93", null ],
     [ "get_col_type", "classNOOPSolver.html#a91bb48c7b6ef893815d2f1aca0c4966f", null ],
     [ "get_lb", "classNOOPSolver.html#a75266a7437ddd40a011e006e4dc1dd5a", null ],
-    [ "get_lp_sol", "classNOOPSolver.html#aba0601ee39804e116498cac9f27ba761", null ],
+    [ "get_lp_sol", "classNOOPSolver.html#a34a92cc79035a94edd28e5125860ba9a", null ],
     [ "get_lp_value", "classNOOPSolver.html#a78cde6237d0a689fe91361b6afbdcea7", null ],
     [ "get_mip_sol", "classNOOPSolver.html#ae1fe90024eacde39761a0dbcdaae7bc8", null ],
     [ "get_mip_value", "classNOOPSolver.html#afbe0abbce84d5b82d5c6d06221a361db", null ],

@@ -22,7 +22,7 @@ var classSolverClp =
     [ "get_col_names", "classSolverClp.html#ad7727728c67fb67d2cde154942f9fe91", null ],
     [ "get_col_type", "classSolverClp.html#a49c92ac8aa85d3056db84995a2819a1b", null ],
     [ "get_lb", "classSolverClp.html#a78c1dcec30c055cdb2e8ba8d5e92b532", null ],
-    [ "get_lp_sol", "classSolverClp.html#a834f41e9412b1eb0c4b9a28a0775c392", null ],
+    [ "get_lp_sol", "classSolverClp.html#af69ea09c72bf413a880aafa002c94847", null ],
     [ "get_lp_value", "classSolverClp.html#a6f0c03f013fd1ca03265ff34fd970af1", null ],
     [ "get_mip_sol", "classSolverClp.html#a665994e3a5f75eb9ea87104152014aef", null ],
     [ "get_mip_value", "classSolverClp.html#ab9346e1b8f81c91ac2e522bf2501e48e", null ],

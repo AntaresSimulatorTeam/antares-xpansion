@@ -20,7 +20,7 @@ var classProblem =
     [ "get_col_names", "classProblem.html#af46a63f1eaa7094e39baefa3a8384ea9", null ],
     [ "get_col_type", "classProblem.html#a9b1add4a9bff8ab15a533c81818214fc", null ],
     [ "get_lb", "classProblem.html#a3a3e618e559abc36fdea1be47ed8ffce", null ],
-    [ "get_lp_sol", "classProblem.html#a8e474653329aab445b1da2082689a114", null ],
+    [ "get_lp_sol", "classProblem.html#a8c987e3df2c5be6f6131f5fe560b7118", null ],
     [ "get_lp_value", "classProblem.html#a13cd39837de937554ccd6b91bb9ce011", null ],
     [ "get_mip_sol", "classProblem.html#a2dbc34e5b51f9a51b236dfb84d72a597", null ],
     [ "get_mip_value", "classProblem.html#afe80be61b65b3d0779d3343be8c653fb", null ],

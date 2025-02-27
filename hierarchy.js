@@ -251,8 +251,8 @@ var hierarchy =
       [ "BendersLoggerBase", "structBendersLoggerBase.html", null ],
       [ "EmptyLogger", "structEmptyLogger.html", null ],
       [ "ILogger", "classILogger.html", [
-        [ "LoggerNOOPStub", "classLoggerNOOPStub.html", null ],
         [ "SimpleLoggerMock", "classSimpleLoggerMock.html", null ],
+        [ "Xpansion::Test::LoggerNOOPStub", "classXpansion_1_1Test_1_1LoggerNOOPStub.html", null ],
         [ "xpansion::logger::Master", "classxpansion_1_1logger_1_1Master.html", null ],
         [ "xpansion::logger::User", "classxpansion_1_1logger_1_1User.html", null ],
         [ "xpansion::logger::UserFile", "classxpansion_1_1logger_1_1UserFile.html", null ]
@@ -457,7 +457,8 @@ var hierarchy =
     [ "Output::OutputWriter", "classOutput_1_1OutputWriter.html", [
       [ "Output::JsonWriter", "classOutput_1_1JsonWriter.html", null ],
       [ "Output::VoidWriter", "classOutput_1_1VoidWriter.html", null ],
-      [ "WriterNOOPStub", "classWriterNOOPStub.html", [
+      [ "Xpansion::Test::InMemoryWriter", "classXpansion_1_1Test_1_1InMemoryWriter.html", null ],
+      [ "Xpansion::Test::WriterNOOPStub", "classXpansion_1_1Test_1_1WriterNOOPStub.html", [
         [ "WriterMockStatus", "classWriterMockStatus.html", null ]
       ] ]
     ] ],
@@ -610,6 +611,7 @@ var hierarchy =
         [ "TestForSolverAndMode", "classTestForSolverAndMode.html", null ]
       ] ],
       [ "MasterLoggerTest", "classMasterLoggerTest.html", null ],
+      [ "MergeMPSTest", "classMergeMPSTest.html", null ],
       [ "MpsTxtWriterTest", "classMpsTxtWriterTest.html", null ],
       [ "OptionsParserTest", "classOptionsParserTest.html", null ],
       [ "OuterLoopBiLevelTest", "classOuterLoopBiLevelTest.html", null ],

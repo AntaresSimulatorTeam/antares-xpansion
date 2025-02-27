@@ -15,5 +15,5 @@ var searchData=
   ['workermaster_12',['WorkerMaster',['../classWorkerMaster.html',1,'']]],
   ['workermasterdata_13',['WorkerMasterData',['../classWorkerMasterData.html',1,'']]],
   ['writermockstatus_14',['WriterMockStatus',['../classWriterMockStatus.html',1,'']]],
-  ['writernoopstub_15',['WriterNOOPStub',['../classWriterNOOPStub.html',1,'']]]
+  ['writernoopstub_15',['WriterNOOPStub',['../classXpansion_1_1Test_1_1WriterNOOPStub.html',1,'Xpansion::Test']]]
 ];

@@ -347,9 +347,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>add_names</b>
 <tr class="memitem:af016cedc28880fda4dae393a2d9244fa" id="r_af016cedc28880fda4dae393a2d9244fa"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af016cedc28880fda4dae393a2d9244fa">get_splex_num_of_ite_last</a> () const =0</td></tr>
 <tr class="memdesc:af016cedc28880fda4dae393a2d9244fa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of simplex iterations done in the last resolution of the problem.  <br /></td></tr>
 <tr class="separator:af016cedc28880fda4dae393a2d9244fa"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbd713490c7e1f164f13cf8bb73a41e3" id="r_afbd713490c7e1f164f13cf8bb73a41e3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afbd713490c7e1f164f13cf8bb73a41e3">get_lp_sol</a> (double *primals, double *duals, double *reduced_costs)=0</td></tr>
-<tr class="memdesc:afbd713490c7e1f164f13cf8bb73a41e3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get LP solution of a problem (available after method "solve_lp")  <br /></td></tr>
-<tr class="separator:afbd713490c7e1f164f13cf8bb73a41e3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30be072480be208492a62fde86ff4f2b" id="r_a30be072480be208492a62fde86ff4f2b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a30be072480be208492a62fde86ff4f2b">get_lp_sol</a> (double *primals, double *duals, double *reduced_costs) const =0</td></tr>
+<tr class="memdesc:a30be072480be208492a62fde86ff4f2b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get LP solution of a problem (available after method "solve_lp")  <br /></td></tr>
+<tr class="separator:a30be072480be208492a62fde86ff4f2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae6b49267ab12ca3dacc6441612225bd2" id="r_ae6b49267ab12ca3dacc6441612225bd2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae6b49267ab12ca3dacc6441612225bd2">get_mip_sol</a> (double *primals)=0</td></tr>
 <tr class="memdesc:ae6b49267ab12ca3dacc6441612225bd2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get MIP solution of a problem (available after method "solve_mip")  <br /></td></tr>
 <tr class="separator:ae6b49267ab12ca3dacc6441612225bd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -368,6 +368,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>add_names</b>
 <tr class="memitem:a97f44df1f487cf071dc02da3c61c18c6" id="r_a97f44df1f487cf071dc02da3c61c18c6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a97f44df1f487cf071dc02da3c61c18c6">set_simplex_iter</a> (int iter)=0</td></tr>
 <tr class="memdesc:a97f44df1f487cf071dc02da3c61c18c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the maximum number of simplex iterations the solver can perform.  <br /></td></tr>
 <tr class="separator:a97f44df1f487cf071dc02da3c61c18c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0ab3aa3dbde02a1d26db51a3c19da59b" id="r_a0ab3aa3dbde02a1d26db51a3c19da59b"><td class="memItemLeft" align="right" valign="top"><a id="a0ab3aa3dbde02a1d26db51a3c19da59b" name="a0ab3aa3dbde02a1d26db51a3c19da59b"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &amp;) const</td></tr>
+<tr class="separator:a0ab3aa3dbde02a1d26db51a3c19da59b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -1354,8 +1357,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="afbd713490c7e1f164f13cf8bb73a41e3" name="afbd713490c7e1f164f13cf8bb73a41e3"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afbd713490c7e1f164f13cf8bb73a41e3">&#9670;&#160;</a></span>get_lp_sol()</h2>
+<a id="a30be072480be208492a62fde86ff4f2b" name="a30be072480be208492a62fde86ff4f2b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a30be072480be208492a62fde86ff4f2b">&#9670;&#160;</a></span>get_lp_sol()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1376,7 +1379,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>reduced_costs</em></span>&#160;)</td>
+          <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>reduced_costs</em></span>&#160;) const</td>
         </tr>
       </table>
   </td>
@@ -1396,7 +1399,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="classNOOPSolver.html#aba0601ee39804e116498cac9f27ba761">NOOPSolver</a>, <a class="el" href="classProblem.html#a8e474653329aab445b1da2082689a114">Problem</a>, <a class="el" href="classSolverCbc.html#aa1349b9f863ab05790a948bed57ed7ff">SolverCbc</a>, <a class="el" href="classSolverClp.html#a834f41e9412b1eb0c4b9a28a0775c392">SolverClp</a>, and <a class="el" href="classSolverXpress.html#add1a52b1cd6a90f7dcc95d7d1e716419">SolverXpress</a>.</p>
+<p>Implemented in <a class="el" href="classNOOPSolver.html#a34a92cc79035a94edd28e5125860ba9a">NOOPSolver</a>, <a class="el" href="classProblem.html#a8c987e3df2c5be6f6131f5fe560b7118">Problem</a>, <a class="el" href="classSolverCbc.html#a77ab0d50ea5bb798252e29e6e062314b">SolverCbc</a>, <a class="el" href="classSolverClp.html#af69ea09c72bf413a880aafa002c94847">SolverClp</a>, and <a class="el" href="classSolverXpress.html#a92801ba2b8f010a854d436bbc5994473">SolverXpress</a>.</p>
 
 </div>
 </div>
@@ -2803,8 +2806,9 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 </div><!-- fragment -->
 </div>
 </div>
-<hr/>The documentation for this class was generated from the following file:<ul>
+<hr/>The documentation for this class was generated from the following files:<ul>
 <li>src/cpp/multisolver_interface/include/antares-xpansion/multisolver_interface/<a class="el" href="SolverAbstract_8h_source.html">SolverAbstract.h</a></li>
+<li>src/cpp/multisolver_interface/<b>SolverAbstract.cpp</b></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->

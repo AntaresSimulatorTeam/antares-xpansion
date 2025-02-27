@@ -1,5 +1,13 @@
 var NAVTREEINDEX5 =
 {
+"classxpansion_1_1logger_1_1CandidateLog.html":[25,0,15,0,0],
+"classxpansion_1_1logger_1_1IterationResultLog.html":[25,0,15,0,1],
+"classxpansion_1_1logger_1_1Master.html":[25,0,15,0,2],
+"classxpansion_1_1logger_1_1Master.html#aedc1d1015a2efc90153fbc02a83bd397":[25,0,15,0,2,0],
+"classxpansion_1_1logger_1_1User.html":[25,0,15,0,3],
+"classxpansion_1_1logger_1_1User.html#a7d02e013cf851b057661d0718c13f58a":[25,0,15,0,3,0],
+"classxpansion_1_1logger_1_1UserFile.html":[25,0,15,0,4],
+"classxpansion_1_1logger_1_1UserFile.html#a20209f11f5576c3ea4f74a999fdda486":[25,0,15,0,4,0],
 "common_8h_source.html":[26,0,0,0,0,1,0,0,0,0,3],
 "common__mpi_8h_source.html":[26,0,0,0,0,2,0,0,0,0,2],
 "define__datas_8hpp_source.html":[26,0,1,0,1,1],
@@ -241,13 +249,5 @@ var NAVTREEINDEX5 =
 "md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html#autotoc_md75":[4,1],
 "md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html#autotoc_md76":[4,2],
 "md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html#autotoc_md77":[4,3],
-"md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html":[5],
-"md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html#autotoc_md79":[5,0],
-"md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html#autotoc_md80":[5,0,0],
-"md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html#autotoc_md81":[5,0,1],
-"md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html#autotoc_md82":[5,0,1,0],
-"md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html#autotoc_md83":[5,1],
-"md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html#autotoc_md84":[5,1,0],
-"md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html#autotoc_md85":[5,1,1],
-"md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html#autotoc_md86":[5,2]
+"md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html":[5]
 };
