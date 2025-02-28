@@ -181,7 +181,7 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     add_test(
             NAME BDD
             COMMAND Python3::Interpreter
-            "$<$<BOOL:${CODE_COVERAGE}>:" -m coverage run --source='.'">"
+            "$<$<BOOL:${CODE_COVERAGE}>:-m coverage run --source='.'>"
             -m behave cucumber/features
             WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/
     )
