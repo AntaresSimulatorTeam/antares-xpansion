@@ -44,8 +44,6 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     )
     set_property(TEST examples_short_sequential PROPERTY LABELS short short_sequential end_to_end)
 
-    message("$<$<BOOL:ON>:--val --val2>")
-    message("$<$<BOOL:OFF>:--val --val2>")
     add_test(
             NAME examples_short_memory
             COMMAND Python3::Interpreter -m pytest
