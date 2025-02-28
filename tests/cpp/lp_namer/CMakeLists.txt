@@ -5,7 +5,7 @@
 # ===========================================================================
 # External requirements
 # ===========================================================================
-find_package (GTest REQUIRED)
+find_package(GTest REQUIRED)
 
 # ===========================================================================
 # Targets
@@ -14,7 +14,7 @@ find_package (GTest REQUIRED)
 # --------------------------------------------------------------------------
 # unit tests
 # --------------------------------------------------------------------------
-add_executable (lp_namer_tests
+add_executable(lp_namer_tests
         ActiveLinkTest.cpp
         AdditionalConstraintsReaderTest.cc
         AdditionalConstraintsTest.cc
@@ -29,6 +29,7 @@ add_executable (lp_namer_tests
         LoggerBuilder.h
         LpFilesExtractorTest.cpp
         MasterGenerationTest.cpp
+        MPSFileProblemProviderAdapterTest.cpp
         MasterProblemBuilderTest.cpp
         MpsTxtWriterTest.cpp
         NOOPSolver.h
@@ -44,7 +45,7 @@ add_executable (lp_namer_tests
         WeightsFileWriterTest.cpp
 )
 
-target_link_libraries (lp_namer_tests PRIVATE
+target_link_libraries(lp_namer_tests PRIVATE
         GTest::Main
         antaresXpansion::helpers
         antaresXpansion::lp_namer_helper
@@ -55,14 +56,14 @@ target_link_libraries (lp_namer_tests PRIVATE
         antaresXpansion::problem_generation_main
         antaresXpansion::tests_utils
         antaresXpansion::solvers
-        )
+)
 
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    target_compile_options (unit_tests PUBLIC -Wno-global-constructors)
-    target_compile_options (unit_tests PUBLIC -Wno-exit-time-destructors)
-    target_compile_options (unit_tests PUBLIC -Wno-weak-vtables)
-    target_compile_options (unit_tests PUBLIC -Wno-covered-switch-default)
+    target_compile_options(unit_tests PUBLIC -Wno-global-constructors)
+    target_compile_options(unit_tests PUBLIC -Wno-exit-time-destructors)
+    target_compile_options(unit_tests PUBLIC -Wno-weak-vtables)
+    target_compile_options(unit_tests PUBLIC -Wno-covered-switch-default)
 endif ()
 
 add_test(NAME unit_lpnamer COMMAND lp_namer_tests WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
