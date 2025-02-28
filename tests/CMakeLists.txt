@@ -176,13 +176,20 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     )
     set_property(TEST lpnamer_end_to_end PROPERTY LABELS lpnamer end_to_end)
 
-    add_test(
-            NAME BDD
-            COMMAND Python3::Interpreter
-            "$<$<BOOL:${CODE_COVERAGE}>:-m coverage run --source='.'>"
-            -m behave cucumber/features
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/
-    )
+    if (CODE_COVERAGE)
+        add_test(
+                NAME BDD
+                COMMAND Python3::Interpreter -m coverage run --source=${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/
+                -m behave cucumber/features
+                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/
+        )
+    else ()
+        add_test(
+                NAME BDD
+                COMMAND Python3::Interpreter -m behave cucumber/features
+                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/
+        )
+    endif ()
     set_property(TEST BDD PROPERTY LABELS end_to_end bdd)
 
 else ()
