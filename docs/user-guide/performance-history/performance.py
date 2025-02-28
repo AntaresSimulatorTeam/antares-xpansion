@@ -1,10 +1,11 @@
-from typing import List
-
 import json
+from typing import List, Optional
+
 import pandas as pd
-from matplotlib.figure import Figure
+from matplotlib import pyplot as plt
+from matplotlib import rc, rcParams, style
 from matplotlib.axes import Axes
-from matplotlib import pyplot as plt, rc, rcParams, style
+from matplotlib.figure import Figure
 
 ANTARES_STEP = "antares"
 PROBLEM_GENERATION_STEP = "problem_generation"
@@ -56,7 +57,7 @@ class JsonFileProcessor:
             "resolution.stopping_criterion.type",
             "resolution.stopping_criterion.value",
         ]
-        stylized_data = self.processed_data.loc[(slice(None), 1.0), columns_to_display]
+        stylized_data = self.processed_data.loc[(slice(None), 1.1), columns_to_display]
         stylized_data.index = stylized_data.index.droplevel(1)
         return stylized_data
 
@@ -72,12 +73,20 @@ class PerfPlotsGenerator:
         rc("font", **{"family": "serif"})
         rcParams.update({"font.size": 16})
 
-    def _xpansion_versions(self) -> List[float]:
-        return self.perf_data.index.unique(level="version").tolist()
+    def _xpansion_versions(self, xpansion_verions: Optional[List[str]]) -> List[float]:
+        valid_versions = self.perf_data.index.unique(level="version").tolist()
+        if xpansion_verions is None:
+            return valid_versions
+        else:
+            return_versions = []
+            for version in xpansion_verions:
+                if version in valid_versions:
+                    return_versions.append(version)
+            return return_versions
 
-    def _create_fig(self) -> None:
+    def _create_fig(self, xpansion_versions: Optional[List[str]]) -> None:
 
-        nb_versions = len(self._xpansion_versions())
+        nb_versions = len(self._xpansion_versions(xpansion_versions))
         fig, ax = plt.subplots(
             1, nb_versions, sharey=True, figsize=(5 * nb_versions, 8)
         )
@@ -130,11 +139,84 @@ class PerfPlotsGenerator:
         )
         self.ax[version_count].set_title(f"Version {xpansion_version}")
 
-    def run(self) -> None:
+    def _plot_single_study(self, xpansion_versions: Optional[List[str]] = None) -> None:
+        nb_versions = len(self._xpansion_versions(xpansion_versions))
+        fig, ax = plt.subplots(1, 1, figsize=(8, 3 * nb_versions))
 
-        self._create_fig()
+        self.fig = fig
+        self.ax = ax
+        self.ax.invert_yaxis()
+        height = 0.7 / nb_versions
+        epsilon = 0.03
+        actual_height = (1 - epsilon) * height
+        alpha_decrease_rate = 0.2
 
-        for version_count, xpansion_version in enumerate(self._xpansion_versions()):
+        for count, study in enumerate(self._display_names()):
+            for version_cnt, xpansion_version in enumerate(
+                self._xpansion_versions(xpansion_versions)
+            ):
+                antares_step_times = self.perf_data.loc[
+                    (study, xpansion_version), ANTARES_STEP
+                ]
+                problem_generation_step_times = self.perf_data.loc[
+                    (study, xpansion_version), PROBLEM_GENERATION_STEP
+                ]
+                benders_step_times = self.perf_data.loc[
+                    (study, xpansion_version), BENDERS_STEP
+                ]
+
+                antares_line = self.ax.barh(
+                    count + height * (version_cnt - nb_versions / 2),
+                    antares_step_times,
+                    height=actual_height,
+                    color="C0",
+                    align="edge",
+                    alpha=1 - alpha_decrease_rate * version_cnt,
+                )
+                pb_gen_line = self.ax.barh(
+                    count + height * (version_cnt - nb_versions / 2),
+                    problem_generation_step_times,
+                    height=actual_height,
+                    left=antares_step_times,
+                    color="C1",
+                    align="edge",
+                    alpha=1 - alpha_decrease_rate * version_cnt,
+                )
+                benders_line = self.ax.barh(
+                    count + height * (version_cnt - nb_versions / 2),
+                    benders_step_times,
+                    left=problem_generation_step_times + antares_step_times,
+                    height=actual_height,
+                    color="C2",
+                    align="edge",
+                    alpha=1 - alpha_decrease_rate * version_cnt,
+                )
+                ax.bar_label(
+                    benders_line,
+                    [f"v{xpansion_version}"],
+                    label_type="center",
+                    fontsize=12,
+                )
+                if version_cnt == 0 and count == 0:
+                    antares_line.set_label(ANTARES_STEP)
+                    pb_gen_line.set_label(PROBLEM_GENERATION_STEP)
+                    benders_line.set_label(BENDERS_STEP)
+
+        self.ax.set_yticks(
+            list(range(len(self._display_names()))),
+            [study for study in self._display_names()],
+        )
+        self.ax.set_ylim(ax.get_ylim()[0], 1.5 * ax.get_ylim()[1])
+        self.ax.legend(loc="upper center", ncol=3, fontsize=12)
+        self.fig.tight_layout()
+        # self.ax.set_title(f"Version {xpansion_version}")
+
+    def run(self, xpansion_versions: Optional[List[str]] = None) -> None:
+        self._create_fig(xpansion_versions)
+
+        for version_count, xpansion_version in enumerate(
+            self._xpansion_versions(xpansion_versions)
+        ):
             self._plot_single_version(version_count, xpansion_version)
 
         self._beautify_fig()
