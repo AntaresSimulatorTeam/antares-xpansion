@@ -146,7 +146,7 @@ class PerfPlotsGenerator:
         self.fig = fig
         self.ax = ax
         self.ax.invert_yaxis()
-        height = 0.7 / nb_versions
+        height = 0.8 / nb_versions
         epsilon = 0.03
         actual_height = (1 - epsilon) * height
         alpha_decrease_rate = 0.2
@@ -208,8 +208,10 @@ class PerfPlotsGenerator:
         )
         self.ax.set_ylim(ax.get_ylim()[0], 1.5 * ax.get_ylim()[1])
         self.ax.legend(loc="upper center", ncol=3, fontsize=12)
+        self.ax.set_title("Xpansion performance evolution")
+
+        self.ax.set_xlabel("Execution time (s)")
         self.fig.tight_layout()
-        # self.ax.set_title(f"Version {xpansion_version}")
 
     def run(self, xpansion_versions: Optional[List[str]] = None) -> None:
         self._create_fig(xpansion_versions)
