@@ -165,8 +165,8 @@ class PerfPlotsGenerator:
                 )
                 self.ax.bar_label(
                     benders_line,
-                    [f"v{xpansion_version}"],
-                    label_type="center",
+                    [f"v{xpansion_version}: {antares_time + pb_gen_time + benders_time}s"],
+                    label_type="edge",
                     fontsize=12,
                 )
                 if version_cnt == 0 and count == 0:
