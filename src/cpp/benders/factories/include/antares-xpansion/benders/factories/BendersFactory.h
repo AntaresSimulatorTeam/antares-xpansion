@@ -5,7 +5,6 @@
 #include "antares-xpansion/benders/benders_core/CriterionComputation.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
-#include "antares-xpansion/benders/grid_search/GridSearch.h"
 
 class BendersMainFactory
 {
@@ -23,7 +22,7 @@ private:
     Logger logger_ = nullptr;
     std::shared_ptr<Output::OutputWriter> writer_ = nullptr;
     std::shared_ptr<MathLoggerDriver> math_log_driver_;
-    BENDERSMETHOD method_ = BENDERSMETHOD::GRIDSEARCH;
+    BENDERSMETHOD method_ = BENDERSMETHOD::BENDERS;
     std::string context_ = bendersmethod_to_string(BENDERSMETHOD::BENDERS);
     std::string positive_unsupplied_file_;
     static constexpr const char* const LOLD_FILE = "LOLD.txt";
