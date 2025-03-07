@@ -301,7 +301,7 @@ public:
         return solver_abstract_->get_splex_num_of_ite_last();
     }
 
-    void get_lp_sol(double* primals, double* duals, double* reduced_costs) override
+    void get_lp_sol(double* primals, double* duals, double* reduced_costs) const override
     {
         solver_abstract_->get_lp_sol(primals, duals, reduced_costs);
     }

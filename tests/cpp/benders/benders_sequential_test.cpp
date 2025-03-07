@@ -10,7 +10,7 @@
 #include "gtest/gtest.h"
 
 class BendersSequentialDouble : public BendersSequential {
- public:
+public:
   bool parametrized_stop = false;
   int parametrized_it = 0;
   int parametrized_nsubproblem = 0;
@@ -24,9 +24,10 @@ class BendersSequentialDouble : public BendersSequential {
   bool _setDataPostRelaxationCall = false;
 
   explicit BendersSequentialDouble(
-      BendersBaseOptions const &options, Logger &logger, std::shared_ptr<Output::OutputWriter> writer,
-      std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
-      : BendersSequential(options, logger, writer, mathLoggerDriver) {};
+    BendersBaseOptions const &options, Logger &logger, std::shared_ptr<Output::OutputWriter> writer,
+    std::shared_ptr<MathLoggerDriver> mathLoggerDriver)
+    : BendersSequential(options, logger, writer, mathLoggerDriver) {
+  };
 
   void init_data() override {
     BendersBase::init_data();
@@ -41,16 +42,31 @@ class BendersSequentialDouble : public BendersSequential {
     return BendersSequential::get_master();
   };
 
-  void get_master_value() override {};
-  void BuildCut() override {};
+  void get_master_value() override {
+  };
+
+  void BuildCut() override {
+  };
   void compute_ub() override { _data.ub = parametrized_ub; };
   CurrentIterationData get_data() const { return _data; }
-  void write_basis() const override {};
-  void EndWritingInOutputFile() const override {};
-  void UpdateTrace() override {};
-  void post_run_actions() const override {};
-  void SaveCurrentBendersData() override {};
-  void free() override {};
+
+  void write_basis() const override {
+  };
+
+  void EndWritingInOutputFile() const override {
+  };
+
+  void UpdateTrace() override {
+  };
+
+  void post_run_actions() const override {
+  };
+
+  void SaveCurrentBendersData() override {
+  };
+
+  void free() override {
+  };
   SubproblemsMapPtr problems() const { return GetSubProblemMap(); }
 
   void DeactivateIntegrityConstraints() const override {
@@ -68,6 +84,7 @@ class BendersSequentialDouble : public BendersSequential {
     _setDataPreRelaxationCall = true;
     BendersBase::SetDataPreRelaxation();
   }
+
   void ResetDataPostRelaxation() override {
     _setDataPostRelaxationCall = true;
     BendersBase::ResetDataPostRelaxation();
@@ -78,20 +95,23 @@ class BendersSequentialDouble : public BendersSequential {
     parametrized_nsubproblem = nsubproblem;
     _data.nsubproblem = nsubproblem;
   }
+
   void set_bounds(double lb, double best_ub) {
     parametrized_lb = lb;
     parametrized_best_ub = best_ub;
   }
+
   void set_bestx(Point x_out, Point x_in) {
     _data.x_out = x_out;
     _data.x_in = x_in;
   }
+
   void set_ub(double ub) { parametrized_ub = ub; }
   void set_it(int it) { parametrized_it = it; }
 };
 
 class BendersSequentialTest : public ::testing::Test {
- public:
+public:
   Logger logger;
   std::shared_ptr<MathLoggerDriver> mathLoggerDriver;
   std::shared_ptr<Output::OutputWriter> writer;
@@ -99,9 +119,9 @@ class BendersSequentialTest : public ::testing::Test {
   const std::filesystem::path mps_dir = data_test_dir / "mps";
   std::filesystem::path tmpDir;
 
- protected:
+protected:
   void SetUp() override {
-    logger = std::make_shared<LoggerNOOPStub>();
+    logger = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
     writer = std::make_shared<Output::JsonWriter>(std::make_shared<Clock>(),
                                                   std::tmpnam(nullptr));
     original_dir = std::filesystem::current_path();
@@ -123,7 +143,7 @@ class BendersSequentialTest : public ::testing::Test {
 
     std::filesystem::copy(data_dir, tmpDir,
                           std::filesystem::copy_options::recursive |
-                              std::filesystem::copy_options::update_existing);
+                          std::filesystem::copy_options::update_existing);
   }
 
   BaseOptions init_base_options(const std::string &solver = "COIN") const {
@@ -144,8 +164,8 @@ class BendersSequentialTest : public ::testing::Test {
   }
 
   BendersBaseOptions init_benders_options(
-      MasterFormulation master_formulation, int max_iter, double relaxed_gap,
-      double sep_param, const std::string &solver = "COIN") const {
+    MasterFormulation master_formulation, int max_iter, double relaxed_gap,
+    double sep_param, const std::string &solver = "COIN") const {
     BaseOptions base_options(init_base_options(solver));
     BendersBaseOptions options(base_options);
 
@@ -170,25 +190,26 @@ class BendersSequentialTest : public ::testing::Test {
   }
 
   BendersSequentialDouble init_benders_sequential(
-      MasterFormulation master_formulation, int max_iter, double relaxed_gap,
-      double sep_param, const std::string &solver = "COIN",
-      ProblemsFormat format = ProblemsFormat::MPS_FILE) {
+    MasterFormulation master_formulation, int max_iter, double relaxed_gap,
+    double sep_param, const std::string &solver = "COIN",
+    ProblemsFormat format = ProblemsFormat::MPS_FILE) {
     BendersBaseOptions options = init_benders_options(
-        master_formulation, max_iter, relaxed_gap, sep_param, solver);
+      master_formulation, max_iter, relaxed_gap, sep_param, solver);
     options.PROBLEMS_FORMAT = format;
     return BendersSequentialDouble(options, logger, writer, mathLoggerDriver);
   }
 
   std::vector<char> get_nb_units_col_types(
-      const BendersSequentialDouble &benders) const {
+    const BendersSequentialDouble &benders) const {
     char col_type;
     std::vector<char> nb_units_col_types;
-    for (auto col_id : benders.get_master()->get_id_nb_units()) {
+    for (auto col_id: benders.get_master()->get_id_nb_units()) {
       benders.get_master()->solver()->get_col_type(&col_type, col_id, col_id);
       nb_units_col_types.push_back(col_type);
     }
     return nb_units_col_types;
   }
+
   std::filesystem::path original_dir;
 };
 
@@ -199,7 +220,7 @@ TEST_F(BendersSequentialTest, MasterNotRelaxedWhenSepSetToOne) {
   double relaxed_gap = 1e-2;
   double sep_param = 1;
   BendersSequentialDouble benders = init_benders_sequential(
-      master_formulation, max_iter, relaxed_gap, sep_param);
+    master_formulation, max_iter, relaxed_gap, sep_param);
 
   benders.set_data(true, 0);
 
@@ -219,7 +240,7 @@ TEST_F(BendersSequentialTest, MasterRelaxedWhenSepLowerThanOne) {
   double relaxed_gap = 1e-2;
   double sep_param = 0.7;
   BendersSequentialDouble benders = init_benders_sequential(
-      master_formulation, max_iter, relaxed_gap, sep_param);
+    master_formulation, max_iter, relaxed_gap, sep_param);
 
   benders.set_data(true, 0);
   benders.launch();
@@ -239,7 +260,7 @@ TEST_F(BendersSequentialTest, ReactivateIntConstraintAfterRelaxedGapReached) {
   double relaxed_gap = 1e-2;
   double sep_param = 0.7;
   BendersSequentialDouble benders = init_benders_sequential(
-      master_formulation, max_iter, relaxed_gap, sep_param);
+    master_formulation, max_iter, relaxed_gap, sep_param);
 
   benders.set_data(false, 0);
   benders.set_bounds(1000, 1001);
@@ -261,7 +282,7 @@ TEST_F(BendersSequentialTest,
   double relaxed_gap = 1e-5;
   double sep_param = 0.7;
   BendersSequentialDouble benders = init_benders_sequential(
-      master_formulation, max_iter, relaxed_gap, sep_param);
+    master_formulation, max_iter, relaxed_gap, sep_param);
 
   int expec_benders_run_it = 2;
 
@@ -286,7 +307,7 @@ TEST_F(BendersSequentialTest, CheckDataPostRelaxation) {
   double relaxed_gap = 1e-2;
   double sep_param = 0.7;
   BendersSequentialDouble benders = init_benders_sequential(
-      master_formulation, max_iter, relaxed_gap, sep_param);
+    master_formulation, max_iter, relaxed_gap, sep_param);
 
   benders.set_data(false, 0);
   benders.set_bounds(1000, 1001);
@@ -317,7 +338,7 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhithoutImprovement) {
   Point x_in = {{"x1", 3}, {"x2", 6}};
 
   BendersSequentialDouble benders = init_benders_sequential(
-      master_formulation, max_iter, relaxed_gap, sep_param);
+    master_formulation, max_iter, relaxed_gap, sep_param);
 
   benders.set_data(false, 0);
   benders.set_bounds(init_lb, init_ub);
@@ -326,7 +347,7 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhithoutImprovement) {
   benders.set_ub(current_ub);
 
   Point expec_x_cut;
-  for (const auto &[coord, val] : x_out) {
+  for (const auto &[coord, val]: x_out) {
     expec_x_cut[coord] =
         sep_param * x_out[coord] + (1 - sep_param) * x_in[coord];
   }
@@ -361,7 +382,7 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhenImprovement) {
   Point x_in = {{"x1", 3}, {"x2", 6}};
 
   BendersSequentialDouble benders = init_benders_sequential(
-      master_formulation, max_iter, relaxed_gap, sep_param);
+    master_formulation, max_iter, relaxed_gap, sep_param);
 
   benders.set_data(false, 0);
   benders.set_bounds(init_lb, init_ub);
@@ -370,7 +391,7 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhenImprovement) {
   benders.set_ub(current_ub);
 
   Point expec_x_cut;
-  for (const auto &[coord, val] : x_out) {
+  for (const auto &[coord, val]: x_out) {
     expec_x_cut[coord] =
         sep_param * x_out[coord] + (1 - sep_param) * x_in[coord];
   }
@@ -393,7 +414,7 @@ auto solvers() {
   std::vector<std::string> solvers_name;
   solvers_name.push_back("COIN");
   if (LoadXpress::XpressLoader xpressLoader;
-      xpressLoader.XpressIsCorrectlyInstalled()) {
+    xpressLoader.XpressIsCorrectlyInstalled()) {
     solvers_name.push_back("XPRESS");
   }
   return solvers_name;
@@ -401,12 +422,13 @@ auto solvers() {
 
 class BendersSequentialTestBySolver
     : public BendersSequentialTest,
-      public ::testing::WithParamInterface<std::string> {};
+      public ::testing::WithParamInterface<std::string> {
+};
 
 TEST_P(BendersSequentialTestBySolver, CreateMasterProblemProperly) {
   copyMasterMps();
   BendersSequentialDouble benders = init_benders_sequential(
-      MasterFormulation::RELAXED, 100, 1e-4, 1e-6, GetParam());
+    MasterFormulation::RELAXED, 100, 1e-4, 1e-6, GetParam());
   benders.InitializeProblems();
 
   // Assert that the master problem has been created properly
@@ -424,7 +446,7 @@ TEST_P(BendersSequentialTestBySolver, CreateProblemsProperly) {
   BendersSequentialDouble benders(options.get_benders_options(), logger, writer,
                                   mathLoggerDriver);
   auto coupling_map = CouplingMapGenerator::BuildInput(options.STRUCTURE_FILE,
-                                                       logger, "Benders");
+                                                       logger.get(), "Benders");
   benders.set_input_map(coupling_map);
   benders.InitializeProblems();
   auto &&problems = benders.problems();
@@ -436,7 +458,8 @@ TEST_P(BendersSequentialTestBySolver, CreateProblemsProperly) {
 class BendersSequentialTestSolverAndFormat
     : public BendersSequentialTest,
       public ::testing::WithParamInterface<
-          std::tuple<std::string, ProblemsFormat>> {};
+        std::tuple<std::string, ProblemsFormat> > {
+};
 
 // Master svf
 TEST_P(BendersSequentialTestBySolver, CreateMasterProblemProperlyWhenRestore) {
@@ -485,7 +508,7 @@ TEST_P(BendersSequentialTestBySolver, CreateProblemsProperlyWhenRestore) {
   SolverFactory factory;
   auto &&solver =
       factory.create_solver(GetParam() == "COIN" ? "CBC" : GetParam());
-  for (std::string problem : {"SP1", "SP2"}) {
+  for (std::string problem: {"SP1", "SP2"}) {
     solver->read_prob_mps(tmpDir / (problem + ".mps"));
     std::filesystem::remove(tmpDir / (problem + ".mps"));
     solver->save_prob(tmpDir / problem);
@@ -496,7 +519,7 @@ TEST_P(BendersSequentialTestBySolver, CreateProblemsProperlyWhenRestore) {
   BendersSequentialDouble benders(options.get_benders_options(), logger, writer,
                                   mathLoggerDriver);
   auto coupling_map = CouplingMapGenerator::BuildInput(options.STRUCTURE_FILE,
-                                                       logger, "Benders");
+                                                       logger.get(), "Benders");
   benders.set_input_map(coupling_map);
   benders.InitializeProblems();
   auto &&problems = benders.problems();

@@ -127,7 +127,7 @@ def _check_candidate_option_type(option, value):
         if option_type is None:
             logger.error(
                 f"check_candidate_option_type: {option} option not recognized in candidates file.\n" +
-                "Authorized options are: %s"+'\n'.join(
+                "Valid options are: %s" + '\n'.join(
                     candidate_options_type.keys()))
             raise UnrecognizedCandidateOptionType
         if option_type == "string":
@@ -221,9 +221,9 @@ def _check_candidate_attributes(ini_file):
         for (option, value) in ini_file.items(each_section):
             if not _check_candidate_option_type(option, value):
                 err_msg += f"value {value} for option {option} has the wrong type, it has to be {candidate_options_type[option]}\n"
-    
-    if(err_msg!=""):
-        logger.error(err_msg)                
+
+    if (err_msg != ""):
+        logger.error(err_msg)
         raise CandidateFileWrongTypeValue
 
 
@@ -344,23 +344,19 @@ class NotHandledOption(Exception):
 class NotHandledValue(Exception):
     pass
 
+
 # return ->tuple[is_a_bool: bool, result: bool]
 
 
 # -> tuple[bool, bool]: not working with python <3.9
-def str_to_bool(my_str: str):
-    if my_str in ["true", "True", "TRUE", "1"]:
-        return (True, True)
-    elif my_str in ["false", "False", "False", "0"]:
-        return (True, False)
-    else:
-        return (False, False)
+def is_bool(my_str: str):
+    return my_str.lower() in ("true", "false", "1", "0")
+
 
 type_str = str
 type_int = int
 type_float = float
 type_bool = bool
-
 
 # "option": (type, legal_value(s))
 options_types_and_legal_values = {
@@ -422,7 +418,7 @@ def _check_setting_option_type(option, value):
                     'check_setting_option_type: Illegal %s option in type, integer is expected .' % option)
                 return False
     elif option_type == type_bool:
-        [is_a_bool, ret] = str_to_bool(value)
+        is_a_bool = is_bool(value)
         if is_a_bool:
             return True
         else:
@@ -523,8 +519,6 @@ def _check_batch_size(value) -> bool:
         raise BatchSizeValueError
 
 
-
-
 def _check_separation(value) -> bool:
     if 0 <= float(value) <= 1:
         return True
@@ -554,15 +548,11 @@ def _check_setting_option_value(option, value):
     skip_verif = ["yearly-weights", "additional-constraints", "solver"]
 
     if ((legal_values is not None) and (value in legal_values)) or (
-        option in skip_verif
+            option in skip_verif
     ):
         return True
 
-    if (
-        (option == "optimality_gap")
-        or (option == "relative_gap")
-        or (option == "relaxed_optimality_gap")
-    ):
+    if option in ("optimality_gap", "relative_gap", "relaxed_optimality_gap"):
         if float(value) >= 0:
             return True
         else:
