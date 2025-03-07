@@ -96,9 +96,9 @@
                 {
                     "version": 1.4,
                     "batch_size": 96,
-                    "antares": 360,
-                    "problem_generation": 345,
-                    "benders": 957
+                    "antares": 390,
+                    "problem_generation": 344,
+                    "benders": 961
                 }
             ]
         },
@@ -147,9 +147,9 @@
                 {
                     "version": 1.4,
                     "batch_size": 96,
-                    "antares": 384,
-                    "problem_generation": 350,
-                    "benders": 1107
+                    "antares": 333,
+                    "problem_generation": 362,
+                    "benders": 972
                 }
             ]
         },
