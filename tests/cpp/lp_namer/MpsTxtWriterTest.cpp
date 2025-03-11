@@ -19,7 +19,6 @@ auto const empty_files_archive = std::filesystem::path("data_test") /
 class MpsTxtWriterTest : public ::testing::Test {};
 
 TEST_F(MpsTxtWriterTest, CheckMpsTxtContent) {
-    std::cout << std::filesystem::current_path() << std::endl;
   auto files_mapper = FilesMapper(empty_files_archive);
   auto year_week_files = files_mapper.FilesMap();
   std::vector<MpsVariableConstraintsFiles> files_map;
