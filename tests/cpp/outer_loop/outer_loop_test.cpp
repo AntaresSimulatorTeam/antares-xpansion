@@ -1,4 +1,5 @@
 
+#include <antares-xpansion/benders/benders_core/SimulationOptions.h>
 #include <antares-xpansion/benders/benders_mpi/BendersMPI.h>
 
 

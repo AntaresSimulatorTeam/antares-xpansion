@@ -6,6 +6,8 @@
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
 
+#include <antares-xpansion/benders/benders_core/SimulationOptions.h>
+
 class BendersApp
 {
     boost::mpi::communicator* pworld_ = nullptr;
