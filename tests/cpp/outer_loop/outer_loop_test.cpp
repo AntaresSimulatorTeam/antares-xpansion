@@ -1,4 +1,7 @@
 
+#include <antares-xpansion/benders/benders_mpi/BendersMPI.h>
+
+
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_core/CriterionInputDataReader.h"
 #include "antares-xpansion/benders/benders_core/MasterUpdate.h"
