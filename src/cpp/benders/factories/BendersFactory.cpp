@@ -343,8 +343,5 @@ int BendersMainFactory::Run()
     {
         return RunBenders();
     }
-    else
-    {
-        return RunExternalLoop();
-    }
+    return RunExternalLoop();
 }
