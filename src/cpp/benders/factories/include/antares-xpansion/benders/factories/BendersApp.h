@@ -6,7 +6,7 @@
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
 
-class BendersMainFactory
+class BendersApp
 {
     boost::mpi::environment* penv_ = nullptr;
     boost::mpi::communicator* pworld_ = nullptr;
@@ -45,7 +45,7 @@ class BendersMainFactory
     void ConfigureSolverLog();
 
 public:
-    explicit BendersMainFactory(const std::filesystem::path& options_file,
+    explicit BendersApp(const std::filesystem::path& options_file,
                                 boost::mpi::environment& env,
                                 boost::mpi::communicator& world,
                                 const SOLVER& solver);

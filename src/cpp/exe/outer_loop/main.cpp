@@ -10,6 +10,6 @@ int main(int argc, char** argv)
     {
         usage(argc);
     }
-    auto benders_factory = BendersMainFactory(argv[1], env, world, SOLVER::OUTER_LOOP);
+    auto benders_factory = BendersApp(argv[1], env, world, SOLVER::OUTER_LOOP);
     return benders_factory.Run();
 }
