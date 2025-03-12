@@ -832,8 +832,7 @@ LogData BendersBase::bendersDataToLogData(const CurrentIterationData& data) cons
 
 void BendersBase::set_solver_log_file(const std::filesystem::path& log_file)
 {
-    solver_log_file_ = log_file;
-    solver_log_manager_ = SolverLogManager(solver_log_file_);
+    solver_log_manager_ = SolverLogManager(log_file);
 }
 
 /*!

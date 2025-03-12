@@ -47,11 +47,6 @@ public:
     virtual void launch() = 0;
     void set_solver_log_file(const std::filesystem::path& log_file);
 
-    [[nodiscard]] std::filesystem::path solver_log_file() const
-    {
-        return solver_log_file_;
-    }
-
     double execution_time() const;
     virtual std::string BendersName() const = 0;
     // TODO rename to be consistent with data that it hold
@@ -330,7 +325,6 @@ private:
     bool master_is_empty_ = true;
     BendersBaseOptions _options;
     int _totalNbProblems = 0;
-    std::filesystem::path solver_log_file_ = "";
     WorkerMasterPtr _master;
     VariableMap _problem_to_id;
     StrVector subproblems;
