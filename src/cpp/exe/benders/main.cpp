@@ -5,6 +5,11 @@ int main(int argc, char** argv)
 {
     mpi::environment env(argc, argv);
     mpi::communicator world;
-    auto benders_factory = BendersMainFactory(argc, argv, world, SOLVER::BENDERS);
+    // First check usage (options are given)
+    if (world.rank() == 0)
+    {
+        usage(argc);
+    }
+    auto benders_factory = BendersMainFactory(argv, env, world, SOLVER::BENDERS);
     return benders_factory.Run();
 }

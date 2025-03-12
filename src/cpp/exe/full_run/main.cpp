@@ -38,14 +38,12 @@ int main(int argc, char** argv)
         }
     }
     world.barrier();
-    int argc_ = 2;
     const auto options_file = options_parser.BendersOptionsFile();
 
     auto solver = options_parser.Solver();
     if (solver == "benders")
     {
-        auto benders_factory = BendersMainFactory(argc_,
-                                                  argv,
+        auto benders_factory = BendersMainFactory(argv,
                                                   options_file,
                                                   world,
                                                   SOLVER::BENDERS);
@@ -53,8 +51,7 @@ int main(int argc, char** argv)
     }
     if (solver == "adequacy_criterion")
     {
-        auto benders_factory = BendersMainFactory(argc_,
-                                                  argv,
+        auto benders_factory = BendersMainFactory(argv,
                                                   options_file,
                                                   world,
                                                   SOLVER::OUTER_LOOP);
