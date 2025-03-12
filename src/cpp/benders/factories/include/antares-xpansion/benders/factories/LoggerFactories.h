@@ -4,7 +4,7 @@
 
 #include <filesystem>
 
-#include "BendersFactory.h"
+#include "BendersApp.h"
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
 #include "antares-xpansion/benders/logger/Master.h"
 #include "antares-xpansion/benders/logger/MathLogger.h"
