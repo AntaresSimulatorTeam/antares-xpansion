@@ -161,7 +161,7 @@ TEST(Resume, ShouldNotResumeIfCriterionOk)
 
     auto writer = std::make_shared<WriterMockStatus>();
     auto logger = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
-    ASSERT_EQ(start_up.StudyAlreadyAchievedCriterion(options, writer.get(), logger), true);
+    ASSERT_EQ(start_up.StudyAlreadyAchievedCriterion(options, writer.get(), logger.get()), true);
 }
 
 TEST(Resume, DontResumeIfOptionOff)
@@ -176,7 +176,7 @@ TEST(Resume, DontResumeIfOptionOff)
 
     auto writer = std::make_shared<WriterMockStatus>();
     auto logger = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
-    ASSERT_EQ(start_up.StudyAlreadyAchievedCriterion(options, writer.get(), logger), false);
+    ASSERT_EQ(start_up.StudyAlreadyAchievedCriterion(options, writer.get(), logger.get()), false);
 }
 
 TEST(Resume, ContinueIfCreterionNotMatch)
@@ -192,5 +192,5 @@ TEST(Resume, ContinueIfCreterionNotMatch)
     auto writer = std::make_shared<WriterMockStatus>();
     writer->status = "NotOptimal";
     auto logger = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
-    ASSERT_EQ(start_up.StudyAlreadyAchievedCriterion(options, writer.get(), logger), false);
+    ASSERT_EQ(start_up.StudyAlreadyAchievedCriterion(options, writer.get(), logger.get()), false);
 }
