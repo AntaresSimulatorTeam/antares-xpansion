@@ -1,5 +1,6 @@
 #!/bin/bash
 set -x
+eval $( fixuid )
 #Define source directory
 xpansion_sources=$1
 ln -s $xpansion_sources /workspace/antares-xpansion
