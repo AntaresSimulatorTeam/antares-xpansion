@@ -14,7 +14,6 @@
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 #include "antares-xpansion/helpers/AreaParser.h"
-#include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size, bool outer_loop)
@@ -25,22 +24,13 @@ BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size, b
         {
             return BENDERSMETHOD::BENDERS_OUTERLOOP;
         }
-        else
-        {
-            return BENDERSMETHOD::BENDERS;
-        }
+        return BENDERSMETHOD::BENDERS;
     }
-    else
+    if (outer_loop)
     {
-        if (outer_loop)
-        {
-            return BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP;
-        }
-        else
-        {
-            return BENDERSMETHOD::BENDERS_BY_BATCH;
-        }
+        return BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP;
     }
+    return BENDERSMETHOD::BENDERS_BY_BATCH;
 }
 
 void BendersMainFactory::PrepareForExecution(bool outer_loop)
