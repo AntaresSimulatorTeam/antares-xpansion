@@ -61,31 +61,6 @@ using ActiveCutStorage = std::vector<ActiveCut>;
 using mps_coupling = std::pair<std::string, std::string>;
 using mps_coupling_list = std::list<mps_coupling>;
 
-enum class BENDERSMETHOD
-{
-    BENDERS,
-    BENDERS_BY_BATCH,
-    BENDERS_OUTERLOOP,
-    BENDERS_BY_BATCH_OUTERLOOP
-};
-
-inline std::string bendersmethod_to_string(BENDERSMETHOD method)
-{
-    switch (method)
-    {
-    case BENDERSMETHOD::BENDERS:
-        return "Benders";
-    case BENDERSMETHOD::BENDERS_BY_BATCH:
-        return "Benders by batch";
-    case BENDERSMETHOD::BENDERS_OUTERLOOP:
-        return "Outerloop around Benders";
-    case BENDERSMETHOD::BENDERS_BY_BATCH_OUTERLOOP:
-        return "Outerloop around Benders by batch";
-    default:
-        return "Unknown";
-    }
-}
-
 struct Predicate
 {
     bool operator()(const PointPtr& lhs, const PointPtr& rhs) const

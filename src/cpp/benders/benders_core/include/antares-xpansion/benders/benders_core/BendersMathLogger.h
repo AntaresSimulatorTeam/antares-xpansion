@@ -1,13 +1,12 @@
 #pragma once
 
 #include <fstream>
-#include <iostream>
-#include <list>
 #include <memory>
 
+#include "antares-xpansion/benders/benders_core/BendersMethod.h"
 #include "BendersStructsDatas.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
-#include "common.h"
+
 const std::string MATHLOGGERCONTEXT = "Benders";
 
 enum class HEADERSTYPE

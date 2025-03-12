@@ -1,4 +1,5 @@
 #include <utility>
+#include <antares-xpansion/benders/benders_core/BendersMethod.h>
 
 #include "antares-xpansion/full_run/FullRunOptionsParser.h"
 #include "gtest/gtest.h"
