@@ -8,7 +8,6 @@
 
 class BendersMainFactory
 {
-private:
     char** argv_;
     boost::mpi::environment* penv_ = nullptr;
     boost::mpi::communicator* pworld_ = nullptr;
@@ -47,13 +46,11 @@ private:
     void ConfigureSolverLog();
 
 public:
-    explicit BendersMainFactory(int argc,
-                                char** argv,
+    explicit BendersMainFactory(char** argv,
                                 boost::mpi::environment& env,
                                 boost::mpi::communicator& world,
                                 const SOLVER& solver);
-    explicit BendersMainFactory(int argc,
-                                char** argv,
+    explicit BendersMainFactory(char** argv,
                                 const std::filesystem::path& options_file,
                                 boost::mpi::environment& env,
                                 boost::mpi::communicator& world,

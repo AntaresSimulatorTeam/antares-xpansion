@@ -330,8 +330,7 @@ int BendersMainFactory::RunExternalLoop()
     return 0;
 }
 
-BendersMainFactory::BendersMainFactory(int argc,
-                                       char** argv,
+BendersMainFactory::BendersMainFactory(char** argv,
                                        mpi::environment& env,
                                        mpi::communicator& world,
                                        const SOLVER& solver):
@@ -340,17 +339,10 @@ BendersMainFactory::BendersMainFactory(int argc,
     pworld_(&world),
     solver_(solver)
 {
-    // First check usage (options are given)
-    if (world.rank() == 0)
-    {
-        usage(argc);
-    }
-
     options_.read(std::filesystem::path(argv_[1]));
 }
 
-BendersMainFactory::BendersMainFactory(int argc,
-                                       char** argv,
+BendersMainFactory::BendersMainFactory(char** argv,
                                        const std::filesystem::path& options_file,
                                        mpi::environment& env,
                                        mpi::communicator& world,
@@ -361,11 +353,7 @@ BendersMainFactory::BendersMainFactory(int argc,
     solver_(solver),
     options_(options_file)
 {
-    // First check usage (options are given)
-    if (world.rank() == 0)
-    {
-        usage(argc);
-    }
+
 }
 
 std::filesystem::path BendersMainFactory::LogReportsName() const
