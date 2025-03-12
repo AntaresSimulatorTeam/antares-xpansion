@@ -327,21 +327,9 @@ int BendersMainFactory::RunExternalLoop()
     return 0;
 }
 
-BendersMainFactory::BendersMainFactory(char** argv,
+BendersMainFactory::BendersMainFactory(const std::filesystem::path& options_file,
                                        mpi::communicator& world,
                                        const SOLVER& solver):
-    argv_(argv),
-    pworld_(&world),
-    solver_(solver)
-{
-    options_.read(std::filesystem::path(argv_[1]));
-}
-
-BendersMainFactory::BendersMainFactory(char** argv,
-                                       const std::filesystem::path& options_file,
-                                       mpi::communicator& world,
-                                       const SOLVER& solver):
-    argv_(argv),
     pworld_(&world),
     solver_(solver),
     options_(options_file)

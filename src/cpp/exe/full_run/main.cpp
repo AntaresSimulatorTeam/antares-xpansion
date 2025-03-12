@@ -43,16 +43,14 @@ int main(int argc, char** argv)
     auto solver = options_parser.Solver();
     if (solver == "benders")
     {
-        auto benders_factory = BendersMainFactory(argv,
-                                                  options_file,
+        auto benders_factory = BendersMainFactory(options_file,
                                                   world,
                                                   SOLVER::BENDERS);
         benders_factory.Run();
     }
     if (solver == "adequacy_criterion")
     {
-        auto benders_factory = BendersMainFactory(argv,
-                                                  options_file,
+        auto benders_factory = BendersMainFactory(options_file,
                                                   world,
                                                   SOLVER::OUTER_LOOP);
         benders_factory.Run();
