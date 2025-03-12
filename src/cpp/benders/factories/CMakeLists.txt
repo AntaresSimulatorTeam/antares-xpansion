@@ -1,9 +1,9 @@
 add_library(factories)
 target_sources(factories PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/factories/BendersFactory.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/factories/BendersApp.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/factories/LoggerFactories.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/factories/WriterFactories.h
-        BendersFactory.cpp
+        BendersApp.cpp
         LoggerFactories.cpp
         WriterFactories.cpp
 )

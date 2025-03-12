@@ -1,5 +1,5 @@
 
-#include "antares-xpansion/benders/factories/BendersFactory.h"
+#include "antares-xpansion/benders/factories/BendersApp.h"
 
 #include <filesystem>
 #include <fmt/format.h>
