@@ -1,8 +1,6 @@
 #ifndef ANTARES_XPANSION_SRC_CPP_FULL_RUN_FULLRUNOPTIONSPARSER_H
 #define ANTARES_XPANSION_SRC_CPP_FULL_RUN_FULLRUNOPTIONSPARSER_H
-#include <stdexcept>
 
-#include "antares-xpansion/benders/factories/BendersApp.h"
 #include "antares-xpansion/lpnamer/main/ProblemGenerationExeOptions.h"
 
 class FullRunOptionsParser: public ProblemGenerationExeOptions

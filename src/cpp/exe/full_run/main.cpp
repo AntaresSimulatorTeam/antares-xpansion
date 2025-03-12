@@ -1,5 +1,6 @@
 #include <exception>
 #include <iostream>
+#include <antares-xpansion/benders/factories/BendersApp.h>
 
 #include <boost/program_options.hpp>
 
