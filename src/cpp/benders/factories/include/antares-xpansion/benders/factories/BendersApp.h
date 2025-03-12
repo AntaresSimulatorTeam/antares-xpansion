@@ -1,12 +1,11 @@
 #ifndef ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
 #define ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
+#include <antares-xpansion/benders/benders_core/SimulationOptions.h>
 #include <variant>
 
 #include "antares-xpansion/benders/benders_core/CriterionComputation.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
-
-#include <antares-xpansion/benders/benders_core/SimulationOptions.h>
 
 class BendersApp
 {
@@ -18,7 +17,7 @@ class BendersApp
     std::variant<Benders::Criterion::CriterionInputData,
                  Benders::Criterion::OuterLoopCriterionInputData>
       criterion_input_holder_;
-    pBendersBase benders_ = nullptr;
+    std::shared_ptr<BendersBase> benders_ = nullptr;
     Logger logger_ = nullptr;
     std::shared_ptr<Output::OutputWriter> writer_ = nullptr;
     std::shared_ptr<MathLoggerDriver> math_log_driver_;
@@ -30,27 +29,17 @@ class BendersApp
     [[nodiscard]] int RunExternalLoop();
     [[nodiscard]] int RunBenders();
     [[nodiscard]] std::shared_ptr<MathLoggerDriver> BuildMathLogger(bool benders_log_console) const;
-    void PrepareForExecution(bool outer_loop);
-    [[nodiscard]] std::variant<Benders::Criterion::CriterionInputData,
-                               Benders::Criterion::OuterLoopCriterionInputData>
-    ProcessCriterionInput();
-
-    Benders::Criterion::CriterionInputData BuildPatternsUsingAreaFile();
-    std::set<std::string> ReadAreaFile();
     void StartMessage();
     void EndMessage(const double execution_time);
     void AddCriterionOutputs();
     bool isCriterionListEmpty() const;
     void SetupLoggerAndOutputWriter(const BendersBaseOptions& benders_options);
-    void ConfigureBenders(const BendersBaseOptions& benders_options,
-                          const CouplingMap& coupling_map);
-    void ConfigureSolverLog();
 
 public:
     explicit BendersApp(const std::filesystem::path& options_file,
-                                boost::mpi::environment& env,
-                                boost::mpi::communicator& world,
-                                const SOLVER& solver);
+                        boost::mpi::environment& env,
+                        boost::mpi::communicator& world,
+                        const SOLVER& solver);
     int Run();
     std::filesystem::path LogReportsName() const;
 };
