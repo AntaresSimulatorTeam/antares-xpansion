@@ -2,14 +2,12 @@
 
 #include <execution>
 #include <filesystem>
-#include <optional>
 #include <regex>
 #include <tbb/tbb.h>
 
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
 #include "CriterionComputation.h"
-#include "SimulationOptions.h"
 #include "SubproblemCut.h"
 #include "SubproblemWorker.h"
 #include "Worker.h"

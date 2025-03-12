@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <antares-xpansion/benders/benders_core/SimulationOptions.h>
 
 #include "LoggerStub.h"
 #include "RandomDirGenerator.h"
