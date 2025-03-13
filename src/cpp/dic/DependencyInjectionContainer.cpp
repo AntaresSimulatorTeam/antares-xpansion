@@ -1,5 +1,6 @@
 
 #include "antares-xpansion/dic/DependencyInjectionContainer.h"
 
-namespace Xpansion {
-} // Xpansion
+namespace Xpansion
+{
+} // namespace Xpansion
