@@ -49,26 +49,33 @@ public:
      * @tparam T Type of the dependency
      * @param key Unique identifier for the dependency
      * @param value Dependency value to move
+     * @throws std::invalid_argument If key already exists
      */
     template<class T>
     void Register(const std::string& key, const T& value)
     {
+        if (container.find(key) != container.end())
+        {
+            throw std::invalid_argument("Dependency already exists");
+        }
         container[key] = value;
     }
 
     /**
-     * Register a dependency
-     * Useful for owning objects like std::unique_ptr
-     * @tparam T any type even non-copyable or non-movable
-     * @param key name of the dependency
-     * @param value dependency
+     * @brief Create and register a new dependency instance
+     *
+     * @tparam T Type to construct
+     * @tparam Args Constructor argument types
+     * @param key Unique identifier for the dependency
+     * @param args Arguments forwarded to T's constructor
+     * @throws std::invalid_argument If key already exists
      */
     template<class T>
     void Register(const std::string& key, T&& value)
     {
         if (container.find(key) != container.end())
         {
-            throw std::invalid_argument("Key already exists");
+            throw std::invalid_argument("Dependency already exists");
         }
         container.insert({key, std::forward<T>(value)});
     }
@@ -85,21 +92,28 @@ public:
     {
         if (container.find(key) != container.end())
         {
-            throw std::invalid_argument("Key already exists");
+            throw std::invalid_argument("Dependency already exists");
         }
         auto tmp = std::make_unique<T>(std::forward<Args>(args)...);
         container.insert({key, std::move(tmp)});
     }
 
     /**
+     * @brief Retrieve a registered dependency
      *
-     * @tparam T Dependency type
-     * @param key name of a dependency
-     * @return Reference to a depenbdency
+     * @tparam T Expected dependency type
+     * @param key Dependency identifier
+     * @return T& Reference to the dependency
+     * @throws boost::bad_any_cast If requested type doesn't match stored type
+     * @throws std::out_of_range If key doesn't exist
      */
     template<class T>
     auto get(const std::string& key) -> T&
     {
+        if (container.find(key) == container.end())
+        {
+            throw std::out_of_range("Dependency not found");
+        }
         return boost::any_cast<T&>(container[key]);
     }
 
