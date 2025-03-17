@@ -14,6 +14,8 @@ class MergeMPSTest : public ::testing::Test {
 protected:
     void SetUp() override {
         tmp_dir_ = CreateRandomSubDir(std::filesystem::temp_directory_path());
+        previous_path = std::filesystem::current_path();
+        std::filesystem::current_path(tmp_dir_);
         logger_ = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
         writer_ = std::make_shared<Xpansion::Test::InMemoryWriter>();
 
@@ -23,6 +25,7 @@ protected:
     }
 
     void TearDown() override {
+        std::filesystem::current_path(previous_path);
     }
 
     /**
@@ -65,6 +68,7 @@ ENDATA)";
         structure_file.close();
     }
 
+    std::filesystem::path previous_path;
     std::filesystem::path tmp_dir_;
     MergeMPSOptions options_;
     std::shared_ptr<Xpansion::Test::LoggerNOOPStub> logger_;
@@ -78,7 +82,6 @@ TEST_F(MergeMPSTest, empty_input_ok) {
     options.SOLVER_NAME = "COIN";
     options.STRUCTURE_FILE = (tmp_dir_ / "structure_file.txt"s).string();
 
-    std::filesystem::current_path(tmp_dir_);
     MergeMPS mergeMPS(options, logger_, writer_);
     mergeMPS.launch();
     const auto &lastSolution = writer_->solution_data_;
@@ -91,7 +94,6 @@ TEST_F(MergeMPSTest, empty_input_ok) {
 TEST_F(MergeMPSTest, only_master_identical_to_merged) {
     createMasterProblem();
     createStructureFile({{"master.mps", "X1", 0}, {"master.mps", "X2", 1}});
-    std::filesystem::current_path(tmp_dir_);
     MergeMPS mergeMPS(options_, logger_, writer_);
     mergeMPS.launch();
 
@@ -181,7 +183,6 @@ ENDATA)";
     //Required to avoid missing contribution to Obj
     options_.weights["satellite1.mps"] = 1;
 
-    std::filesystem::current_path(tmp_dir_);
     MergeMPS mergeMPS(options_, logger_, writer_);
     mergeMPS.launch();
 
