@@ -26,16 +26,22 @@ jobs:
       - uses: actions/checkout@master
         with:
           fetch-depth: 0
-      - name: Get changed files
-        id: changed-files
-        uses: tj-actions/changed-files@v45
-        with:
-          files: |
-            docker/centos7-system-deps
+      - name: Dockerfile has changed
+        run: |
+          if ${{ github.event_name == 'pull_request' }}; then
+            changed_files=$(git diff --name-only -r HEAD^1 HEAD | xargs)
+          else
+            changed_files=$(git diff --name-only ${{ github.event.before }} ${{ github.event.after }} | xargs)
+          fi
+          if [[ $changed_files == *"docker/centos7-system-deps"* ]]; then
+              echo "has_changed=true" >> $GITHUB_OUTPUT
+          else
+              echo "has_changed=false" >> $GITHUB_OUTPUT
+          fi
 
       - name: Docker file push
         id: docker_push
-        if: steps.changed-files.outputs.any_changed == 'true'
+        if: steps.changed-files.outputs.has_changed == 'true'
         uses: elgohr/Publish-Docker-Github-Action@main
         with:
           name: antaresrte/xpansion-centos7
