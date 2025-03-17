@@ -14,6 +14,7 @@
 # Conditionnal settings of solver source files
 # ---------------------------------------------------------------------------
 list(APPEND Solver_sources
+        ${CMAKE_CURRENT_LIST_DIR}/SolverAbstract.cpp
         ${CMAKE_CURRENT_LIST_DIR}/SolverFactory.cpp
         ${CMAKE_CURRENT_LIST_DIR}/SolverConfig.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/multisolver_interface/Solver.h

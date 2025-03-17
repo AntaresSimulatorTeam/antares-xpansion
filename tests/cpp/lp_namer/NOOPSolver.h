@@ -82,7 +82,7 @@ class NOOPSolver : public SolverAbstract {
   virtual double get_lp_value() const override { return 0; }
   virtual int get_splex_num_of_ite_last() const override { return 0; }
   virtual void get_lp_sol(double *primals, double *duals,
-                          double *reduced_costs) override {}
+                          double *reduced_costs) const override {}
   virtual void get_mip_sol(double *primals) override {}
   virtual void set_output_log_level(int loglevel) override {}
   virtual void set_algorithm(const std::string &algo) override {}
