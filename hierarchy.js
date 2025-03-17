@@ -599,6 +599,7 @@ var hierarchy =
       [ "ChronicleProviderTest", "classChronicleProviderTest.html", null ],
       [ "ChronicleTest", "classChronicleTest.html", null ],
       [ "FileLoggerTest", "classFileLoggerTest.html", null ],
+      [ "FixtureMPSFileProblemProviderAdapter", "classFixtureMPSFileProblemProviderAdapter.html", null ],
       [ "JsonWriterTest", "classJsonWriterTest.html", null ],
       [ "JsonXpansionReaderTest", "classJsonXpansionReaderTest.html", null ],
       [ "LastIterationReaderTest", "classLastIterationReaderTest.html", null ],
