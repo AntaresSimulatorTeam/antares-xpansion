@@ -95,8 +95,8 @@ void SolverCbc::free()
 void SolverCbc::write_prob_mps(const std::filesystem::path& filename)
 {
     const int numcols = get_ncols();
-    std::shared_ptr<char[]> shared_integrality(new char[numcols]);
-    char* integrality = shared_integrality.get();
+    std::vector<char> shared_integrality(numcols);
+    char* integrality = shared_integrality.data();
     CoinCopyN(_clp_inner_solver.getColType(false), numcols, integrality);
 
     bool hasInteger = false;
