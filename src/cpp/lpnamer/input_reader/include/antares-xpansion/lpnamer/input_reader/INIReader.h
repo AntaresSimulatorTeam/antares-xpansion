@@ -195,7 +195,7 @@ inline int ini_parse_stream(void* stream, ini_handler handler, void* user)
 #endif
 
     /* Scan through stream line by line */
-    while (fgets(line, INI_MAX_LINE, stream) != NULL)
+    while (fgets(line, INI_MAX_LINE, (FILE*)stream) != NULL)
     {
         lineno++;
 
