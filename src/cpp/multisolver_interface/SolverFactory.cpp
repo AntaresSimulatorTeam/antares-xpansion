@@ -92,7 +92,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(const std::string& solver_name,
 
 SolverAbstract::Ptr SolverFactory::create_solver(const std::string& solver_name,
                                                  const SOLVER_TYPE solver_type,
-                                                 SolverLogManager& log_manager) const
+                                                 const SolverLogManager& log_manager) const
 {
     try
     {
@@ -117,7 +117,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(const std::string& solver_name)
 }
 
 SolverAbstract::Ptr SolverFactory::create_solver(const std::string& solver_name,
-                                                 SolverLogManager& log_manager) const
+                                                 const SolverLogManager& log_manager) const
 {
     try
     {
@@ -189,7 +189,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(const SolverConfig& solver_conf
 }
 
 SolverAbstract::Ptr SolverFactory::create_solver(const SolverConfig& solver_config,
-                                                 SolverLogManager& log_manager) const
+                                                 const SolverLogManager& log_manager) const
 {
     if (solver_config.Name().empty())
     {
@@ -220,7 +220,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(const SolverConfig& solver_conf
 
 SolverAbstract::Ptr SolverFactory::create_solver(const SolverConfig& solver_config,
                                                  const SOLVER_TYPE solver_type,
-                                                 SolverLogManager& log_manager) const
+                                                 const SolverLogManager& log_manager) const
 {
 #ifdef COIN_OR
     if (solver_config == COIN_STR && solver_type == SOLVER_TYPE::CONTINUOUS)

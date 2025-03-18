@@ -9,7 +9,7 @@ using namespace std::literals;
 *************************************************************************************************/
 int SolverCbc::_NumberOfProblems = 0;
 
-SolverCbc::SolverCbc(SolverLogManager& log_manager):
+SolverCbc::SolverCbc(const SolverLogManager& log_manager):
     SolverCbc()
 {
     _fp = log_manager.log_file_ptr;
@@ -250,6 +250,11 @@ void SolverCbc::read_basis(const std::filesystem::path& filename)
     // readBasis returns 1 if successful
     zero_status_check(status - 1, "read basis", LOGLOCATION);
     defineCbcModelFromInnerSolver();
+}
+
+void SolverCbc::set_basis(std::vector<int> rstatus, std::vector<int> cstatus)
+{
+    _cbc.solver()->setBasisStatus(rstatus.data(), cstatus.data());
 }
 
 void SolverCbc::copy_prob(const SolverAbstract::Ptr fictif_solv)

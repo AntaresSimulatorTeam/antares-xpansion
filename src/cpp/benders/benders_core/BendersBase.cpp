@@ -427,6 +427,18 @@ void BendersBase::compute_ub()
  */
 void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
 {
+    if (Options().CACHE_PROBLEMS)
+    {
+        GetSubproblemCutCache(subproblem_data_map);
+    }
+    else
+    {
+        GetSubproblemCutFast(subproblem_data_map);
+    }
+}
+
+void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
+{
     // With gcc9 there was no parallelisation when iterating on the map directly
     // so with project it in a vector
     std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
@@ -451,6 +463,83 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
 
                             std::lock_guard guard(m);
                             subproblem_data_map[name] = subproblem_data;
+                        });
+      },
+      shouldParallelize());
+}
+
+namespace
+{
+template<class T>
+std::vector<std::pair<std::string, T>> FlattenMap(std::map<std::string, T> map_to_flatten)
+{
+    std::vector<std::pair<std::string, T>> flatten_result;
+    flatten_result.reserve(map_to_flatten.size());
+    for (const auto& [name, value]: map_to_flatten)
+    {
+        flatten_result.emplace_back(name, value);
+    }
+    return flatten_result;
+}
+} // namespace
+
+std::pair<std::vector<int>, std::vector<int>> BendersBase::GetProblemBasis(
+  const std::shared_ptr<SubproblemWorker>& worker) const
+{
+    int row_number = worker->_solver->get_nrows();
+    int col_number = worker->_solver->get_ncols();
+    auto rstatus = std::vector<int>(row_number);
+    auto cstatus = std::vector<int>(col_number);
+    worker->_solver->get_basis(rstatus.data(), cstatus.data());
+    return {rstatus, cstatus};
+}
+
+std::shared_ptr<SubproblemWorker> BendersBase::BuildProblem(
+  const std::pair<std::string, VariableMap>& kvp,
+  const std::string& name)
+{
+    auto worker = makeSubproblemWorker(kvp);
+    if (auto it_map_basis = basiss_.find(name); it_map_basis != basiss_.end())
+    {
+        worker->_solver->set_basis(it_map_basis->second.first, it_map_basis->second.second);
+    }
+    return worker;
+}
+
+std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
+  const std::pair<std::string, VariableMap>& kvp) const
+{
+    return std::make_shared<SubproblemWorker>(kvp.second,
+                                              GetSubproblemPath(kvp.first),
+                                              SubproblemWeight(_data.nsubproblem, kvp.first),
+                                              Options().SOLVER_NAME,
+                                              Options().LOG_LEVEL,
+                                              solver_log_manager_,
+                                              _logger,
+                                              _options.PROBLEMS_FORMAT);
+}
+
+void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
+{
+    auto nameAndVariableMap = FlattenMap(coupling_map_);
+    std::mutex m;
+    selectPolicy(
+      [this, &nameAndVariableMap, &m, &subproblem_data_map](auto& policy)
+      {
+          std::for_each(policy,
+                        nameAndVariableMap.begin(),
+                        nameAndVariableMap.end(),
+                        [this, &m, &subproblem_data_map](
+                          const std::pair<std::string, VariableMap>& kvp)
+                        {
+                            const auto& [name, variables] = kvp;
+                            std::shared_ptr<SubproblemWorker> worker = BuildProblem(kvp, name);
+                            PlainData::SubProblemData subproblem_data;
+                            SolveSubproblem(subproblem_data, name, worker);
+                            auto [rstatus, cstatus] = GetProblemBasis(worker);
+                            std::lock_guard guard(m);
+                            subproblem_data_map[name] = subproblem_data;
+                            basiss_[name] = std::make_pair(rstatus, cstatus);
                         });
       },
       shouldParallelize());

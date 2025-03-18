@@ -346,6 +346,11 @@ public:
         solver_abstract_->read_basis(filename);
     }
 
+    void set_basis(std::vector<int> rstatus, std::vector<int> cstatus) override
+    {
+        solver_abstract_->set_basis(rstatus, cstatus);
+    }
+
     void save_prob(const std::filesystem::path& filename) override;
     void restore_prob(const std::filesystem::path& filename) override;
 };

@@ -386,6 +386,8 @@ public:
      */
     virtual void read_basis(const std::filesystem::path& filename) = 0;
 
+    virtual void set_basis(std::vector<int> rstatus, std::vector<int> cstatus) = 0;
+
     /**
      * @brief copy an existing problem
      *
