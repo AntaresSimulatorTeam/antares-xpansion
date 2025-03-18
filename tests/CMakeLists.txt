@@ -24,276 +24,180 @@ if (PYTHON_MODULE_pytest_FOUND AND PYTHON_MODULE_numpy_FOUND)
     if (${XPRESS})
         set(xpress_available "--xpress")
     endif ()
-    # Python unit test
 
-    if (${CODE_COVERAGE})
-        add_test(
-                NAME unit_launcher
-                COMMAND Python3::Interpreter -m coverage run -a -m pytest && Python3::Interpreter -m coverage xml -o "coverage-reports/coverage-antares_xpansion.xml"
-                WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/python"
-        )
+    # Explanation:
+    # $<BOOL:<variable> is a generator expression that evaluates to 1 if the variable is true, 0 otherwise. Necessary for $<boolean:value> to work.
+    # $<boolean:string> is a generator expression that evaluates to string if boolean is true, empty otherwise.
+    # Warning: $<boolean:param1 param2> evaluate to "param1 param2" and is thus treated as one string parameter instead of two
+    # hence ";" between cli parameters
+    add_test(
+            NAME unit_launcher
+            COMMAND Python3::Interpreter -m pytest
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion;--cov-report;xml:coverage-reports/coverage-antares_xpansion.xml>"
+            WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/python"
+            COMMAND_EXPAND_LISTS
+    )
+    set_property(TEST unit_launcher PROPERTY LABELS unit)
 
-        # Examples tests
-        add_test(
-                NAME examples_short_sequential
-                COMMAND Python3::Interpreter -m coverage run -a -m pytest
-                -m short_sequential ${allow_run_as_root_option}
-                --installDir=${XPANSION_INSTALL_DIR} example_test.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-        )
+    # Examples tests
+    add_test(
+            NAME examples_short_sequential
+            COMMAND Python3::Interpreter -m pytest
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion;--cov-report;xml:coverage-reports/coverage-short_seq.xml>"
+            -m short_sequential ${allow_run_as_root_option}
+            --installDir=${XPANSION_INSTALL_DIR} example_test.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
+    )
+    set_property(TEST examples_short_sequential PROPERTY LABELS short short_sequential end_to_end)
 
+    add_test(
+            NAME examples_short_memory
+            COMMAND Python3::Interpreter -m pytest
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion,--cov-report,xml:coverage-reports/coverage-short_memory.xml>"
+            -m short_memory ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
+    )
+    set_property(TEST examples_short_memory PROPERTY LABELS short short_memory end_to_end)
 
-        add_test(
-                NAME examples_short_memory
-                COMMAND Python3::Interpreter -m coverage run -a -m pytest
-                -m short_memory ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-        )
+    add_test(
+            NAME examples_short_mpi
+            COMMAND Python3::Interpreter -m pytest
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion,--cov-report,xml:coverage-reports/coverage-short_mpi.xml>"
+            -m short_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
+    )
+    set_property(TEST examples_short_mpi PROPERTY LABELS short short_mpi end_to_end)
 
+    add_test(
+            NAME examples_short_benders_by_batch_mpi
+            COMMAND Python3::Interpreter -m pytest
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion,--cov-report,xml:coverage-reports/coverage-short_batch_mpi.xml>"
+            -m short_benders_by_batch_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
+    )
+    set_property(TEST examples_short_benders_by_batch_mpi PROPERTY LABELS short short_mpi end_to_end)
 
-        add_test(
-                NAME examples_short_mpi
-                COMMAND Python3::Interpreter -m coverage run -a -m pytest
-                -m short_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-        )
+    add_test(
+            NAME examples_medium_sequential
+            COMMAND Python3::Interpreter -m pytest
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion,--cov-report,xml:coverage-reports/coverage-medium_seq.xml>"
+            -m medium_sequential ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
+    )
+    set_property(TEST examples_medium_sequential PROPERTY LABELS medium medium_sequential end_to_end)
 
+    add_test(
+            NAME examples_medium_mpi
+            COMMAND Python3::Interpreter -m pytest
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion,--cov-report,xml:coverage-reports/coverage-medium_mpi.xml>"
+            -m medium_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
+    )
+    set_property(TEST examples_medium_mpi PROPERTY LABELS medium medium_mpi end_to_end)
 
-        add_test(
-                NAME examples_short_benders_by_batch_mpi
-                COMMAND Python3::Interpreter -m coverage run -a -m pytest
-                -m short_benders_by_batch_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-        )
+    add_test(
+            NAME example_medium_benders_by_batch_mpi
+            COMMAND Python3::Interpreter -m pytest
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion,--cov-report,xml:coverage-reports/coverage-medium_batch_mpi.xml>"
+            -m medium_benders_by_batch_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
+    )
+    set_property(TEST example_medium_benders_by_batch_mpi PROPERTY LABELS medium medium_mpi end_to_end)
 
-        add_test(
-                NAME examples_medium_sequential
-                COMMAND Python3::Interpreter -m coverage run -a -m pytest
-                -m medium_sequential ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-        )
-        add_test(
-                NAME examples_medium_mpi
-                COMMAND Python3::Interpreter -m coverage run -a -m pytest
-                -m medium_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-        )
+    add_test(
+            NAME examples_long_sequential
+            COMMAND Python3::Interpreter -m pytest
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion,--cov-report,xml:coverage-reports/coverage-long_seq.xml>"
+            -m long_sequential ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
+    )
+    set_property(TEST examples_long_sequential PROPERTY LABELS long long_sequential end_to_end)
 
-        add_test(
-                NAME example_medium_benders_by_batch_mpi
-                COMMAND Python3::Interpreter -m coverage run -a -m pytest
-                -m medium_benders_by_batch_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-        )
+    add_test(
+            NAME examples_long_mpi
+            COMMAND Python3::Interpreter -m pytest
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion,--cov-report,xml:coverage-reports/coverage-long_mpi.xml>"
+            -m long_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
+    )
+    set_property(TEST examples_long_mpi PROPERTY LABELS long long_mpi end_to_end)
+    add_test(
+            NAME examples_long_benders_by_batch_mpi
+            COMMAND Python3::Interpreter -m pytest
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion,--cov-report,xml:coverage-reports/coverage-long_batch_mpi.xml>"
+            -m long_benders_by_batch_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
+    )
+    set_property(TEST examples_long_benders_by_batch_mpi PROPERTY LABELS long long_mpi end_to_end)
+    # benders end to end tests
+    add_test(
+            NAME sequential
+            COMMAND Python3::Interpreter -m pytest
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion,--cov-report,xml:coverage-reports/coverage-benders.xml>"
+            ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} ${xpress_available} test_bendersSequentialEndToEnd.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
+    )
+    set_property(TEST sequential PROPERTY LABELS benders benders-sequential end_to_end)
 
-        add_test(
-                NAME examples_long_sequential
-                COMMAND Python3::Interpreter -m coverage run -a -m pytest
-                -m long_sequential ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-        )
+    add_test(
+            NAME sequential_restart
+            COMMAND Python3::Interpreter -m pytest
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion,--cov-report,xml:coverage-reports/coverage-restart.xml>"
+            ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} test_restartBendersSequentialEndToEnd.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/restart
+    )
+    set_property(TEST sequential_restart PROPERTY LABELS benders benders-sequential end_to_end restart)
+    add_test(
+            NAME mpibenders
+            COMMAND Python3::Interpreter -m pytest
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion,--cov-report,xml:coverage-reports/coverage-benders_mpi.xml>"
+            ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} ${xpress_available} test_bendersmpibendersEndToEnd.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
+    )
+    set_property(TEST mpibenders PROPERTY LABELS benders benders-mpi end_to_end)
+    add_test(
+            NAME mpibenders_restart
+            COMMAND Python3::Interpreter -m pytest
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion,--cov-report,xml:coverage-reports/coverage-restart_mpi.xml>"
+            ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} test_restartBendersmpibendersEndToEnd.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/restart
+    )
+    set_property(TEST mpibenders_restart PROPERTY LABELS benders benders-mpi end_to_end restart)
 
-        add_test(
-                NAME examples_long_mpi
-                COMMAND Python3::Interpreter -m coverage run -a -m pytest
-                -m long_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-        )
+    add_test(
+            NAME merge_mps
+            COMMAND Python3::Interpreter -m pytest
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion,--cov-report,xml:coverage-reports/coverage-merge_mps.xml>"
+            ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} test_bendersMergeMpsEndToEnd.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
+    )
+    set_property(TEST merge_mps PROPERTY LABELS benders merge-mps end_to_end)
 
-        add_test(
-                NAME examples_long_benders_by_batch_mpi
-                COMMAND Python3::Interpreter -m coverage run -a -m pytest
-                -m long_benders_by_batch_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-        )
-        # benders end to end tests
-        add_test(
-                NAME sequential
-                COMMAND Python3::Interpreter -m coverage run -a -m pytest
-                ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} ${xpress_available} test_bendersSequentialEndToEnd.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
-        )
+    add_test(
+            NAME lpnamer_end_to_end
+            COMMAND Python3::Interpreter -m pytest
+            "$<$<BOOL:${CODE_COVERAGE}>:--cov=antares_xpansion,--cov-report,xml:coverage-reports/coverage-lpnamer.xml>"
+            --installDir=${XPANSION_INSTALL_DIR} test_lpnamerEndToEnd.py
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/lpnamer
+    )
+    set_property(TEST lpnamer_end_to_end PROPERTY LABELS lpnamer end_to_end)
 
-        add_test(
-                NAME sequential_restart
-                COMMAND Python3::Interpreter -m coverage run -a -m pytest
-                ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} test_restartBendersSequentialEndToEnd.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/restart
-        )
-        add_test(
-                NAME mpibenders
-                COMMAND Python3::Interpreter -m coverage run -a -m pytest
-                ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} ${xpress_available} test_bendersmpibendersEndToEnd.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
-        )
-        add_test(
-                NAME mpibenders_restart
-                COMMAND Python3::Interpreter -m coverage run -a -m pytest
-                ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} test_restartBendersmpibendersEndToEnd.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/restart
-        )
-
-        add_test(
-                NAME merge_mps
-                COMMAND Python3::Interpreter -m coverage run -a -m pytest
-                ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} test_bendersMergeMpsEndToEnd.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
-        )
-
-        add_test(
-                NAME lpnamer_end_to_end
-                COMMAND Python3::Interpreter -m coverage run -a -m pytest
-                --installDir=${XPANSION_INSTALL_DIR} test_lpnamerEndToEnd.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/lpnamer
-        )
-
+    if (CODE_COVERAGE)
         add_test(
                 NAME BDD
-                COMMAND Python3::Interpreter -m coverage run -a --source=${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/
+                COMMAND Python3::Interpreter -m coverage run --source=${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/
                 -m behave cucumber/features
                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/
         )
     else ()
-
-        # Examples tests
-        add_test(
-                NAME examples_short_sequential
-                COMMAND Python3::Interpreter -m pytest
-                -m short_sequential ${allow_run_as_root_option}
-                --installDir=${XPANSION_INSTALL_DIR} example_test.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-        )
-
-
-        add_test(
-                NAME examples_short_memory
-                COMMAND Python3::Interpreter -m pytest
-                -m short_memory ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-        )
-
-
-        add_test(
-                NAME examples_short_mpi
-                COMMAND Python3::Interpreter -m pytest
-                -m short_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-        )
-
-
-        add_test(
-                NAME examples_short_benders_by_batch_mpi
-                COMMAND Python3::Interpreter -m pytest
-                -m short_benders_by_batch_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-        )
-
-        add_test(
-                NAME examples_medium_sequential
-                COMMAND Python3::Interpreter -m pytest
-                -m medium_sequential ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-        )
-        add_test(
-                NAME examples_medium_mpi
-                COMMAND Python3::Interpreter -m pytest
-                -m medium_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-        )
-
-        add_test(
-                NAME example_medium_benders_by_batch_mpi
-                COMMAND Python3::Interpreter -m pytest
-                -m medium_benders_by_batch_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-        )
-
-        add_test(
-                NAME examples_long_sequential
-                COMMAND Python3::Interpreter -m pytest
-                -m long_sequential ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-        )
-
-        add_test(
-                NAME examples_long_mpi
-                COMMAND Python3::Interpreter -m pytest
-                -m long_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-        )
-
-        add_test(
-                NAME examples_long_benders_by_batch_mpi
-                COMMAND Python3::Interpreter -m pytest
-                -m long_benders_by_batch_mpi ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} example_test.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/examples
-        )
-        # benders end to end tests
-        add_test(
-                NAME sequential
-                COMMAND Python3::Interpreter -m pytest
-                ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} ${xpress_available} test_bendersSequentialEndToEnd.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
-        )
-
-        add_test(
-                NAME sequential_restart
-                COMMAND Python3::Interpreter -m pytest
-                ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} test_restartBendersSequentialEndToEnd.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/restart
-        )
-        add_test(
-                NAME mpibenders
-                COMMAND Python3::Interpreter -m pytest
-                ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} ${xpress_available} test_bendersmpibendersEndToEnd.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
-        )
-        add_test(
-                NAME mpibenders_restart
-                COMMAND Python3::Interpreter -m pytest
-                ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} test_restartBendersmpibendersEndToEnd.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/restart
-        )
-
-        add_test(
-                NAME merge_mps
-                COMMAND Python3::Interpreter -m pytest
-                ${allow_run_as_root_option} --installDir=${XPANSION_INSTALL_DIR} test_bendersMergeMpsEndToEnd.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/benders
-        )
-
-        add_test(
-                NAME lpnamer_end_to_end
-                COMMAND Python3::Interpreter -m pytest
-                --installDir=${XPANSION_INSTALL_DIR} test_lpnamerEndToEnd.py
-                WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/lpnamer
-        )
-
         add_test(
                 NAME BDD
                 COMMAND Python3::Interpreter -m behave cucumber/features
                 WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/end_to_end/
         )
     endif ()
-
-    set_property(TEST examples_short_benders_by_batch_mpi PROPERTY LABELS short short_mpi end_to_end)
-    set_property(TEST examples_medium_sequential PROPERTY LABELS medium medium_sequential end_to_end)
-    set_property(TEST examples_medium_mpi PROPERTY LABELS medium medium_mpi end_to_end)
-    set_property(TEST example_medium_benders_by_batch_mpi PROPERTY LABELS medium medium_mpi end_to_end)
-    set_property(TEST examples_long_sequential PROPERTY LABELS long long_sequential end_to_end)
-    set_property(TEST examples_long_mpi PROPERTY LABELS long long_mpi end_to_end)
-    set_property(TEST examples_long_benders_by_batch_mpi PROPERTY LABELS long long_mpi end_to_end)
-    set_property(TEST sequential PROPERTY LABELS benders benders-sequential end_to_end)
-    set_property(TEST sequential_restart PROPERTY LABELS benders benders-sequential end_to_end restart)
-    set_property(TEST mpibenders PROPERTY LABELS benders benders-mpi end_to_end)
-    set_property(TEST mpibenders_restart PROPERTY LABELS benders benders-mpi end_to_end restart)
-    set_property(TEST merge_mps PROPERTY LABELS benders merge-mps end_to_end)
-    set_property(TEST lpnamer_end_to_end PROPERTY LABELS lpnamer end_to_end)
-    set_property(TEST unit_launcher PROPERTY LABELS unit)
-    set_property(TEST examples_short_sequential PROPERTY LABELS short short_sequential end_to_end)
-    set_property(TEST examples_short_memory PROPERTY LABELS short short_memory end_to_end)
-    set_property(TEST examples_short_mpi PROPERTY LABELS short short_mpi end_to_end)
     set_property(TEST BDD PROPERTY LABELS end_to_end bdd)
+
 else ()
     message(FATAL_ERROR "Module pytest or numpy not installed : can't run python scripts for end to end tests")
 endif ()
