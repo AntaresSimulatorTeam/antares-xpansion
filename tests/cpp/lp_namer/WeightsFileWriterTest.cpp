@@ -28,17 +28,17 @@ class WeightsFileWriterTest : public ::testing::Test {
         LogUtils::LOGLEVEL::NONE);
 
     problems_and_data = {
-        {std::make_shared<MockProblem>(1),
+        {1,
          ProblemData("problem-1-1--optim-nb-1.mps", "variables.txt")},
-        {std::make_shared<MockProblem>(1),
+        {1,
          ProblemData("problem-1-50--optim-nb-1.mps", "variables.txt")},
-        {std::make_shared<MockProblem>(2),
+        {2,
          ProblemData("problem-2-10--optim-nb-1.mps", "variables.txt")},
-        {std::make_shared<MockProblem>(2),
+        {2,
          ProblemData("problem-2-11--optim-nb-1.mps", "variables.txt")},
-        {std::make_shared<MockProblem>(2),
+        {2,
          ProblemData("problem-2-30--optim-nb-1.mps", "variables.txt")},
-        {std::make_shared<MockProblem>(3),
+        {3,
          ProblemData("problem-3-20--optim-nb-1.mps", "variables.txt")},
     };
   }
@@ -60,8 +60,7 @@ class WeightsFileWriterTest : public ::testing::Test {
   std::filesystem::path tempDir;
   std::filesystem::path tempDirLp;
   std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger;
-  std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>
-      problems_and_data;
+  std::vector<std::pair<int, ProblemData>>      problems_and_data;
 };
 
 TEST_F(WeightsFileWriterTest, CorrectlyWriteWeightsFileWithXpress) {

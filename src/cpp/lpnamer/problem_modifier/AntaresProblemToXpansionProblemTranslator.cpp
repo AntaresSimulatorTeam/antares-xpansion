@@ -60,7 +60,8 @@ std::shared_ptr<Problem> AntaresProblemToXpansionProblemTranslator::translateToX
     return problem;
 }
 
-std::vector<char> AntaresProblemToXpansionProblemTranslator::convertSignToLEG(std::span<const char> data)
+std::vector<char> AntaresProblemToXpansionProblemTranslator::convertSignToLEG(
+  std::span<const char> data)
 {
     std::vector<char> LEG_vector;
     // Exclude final '\0' character

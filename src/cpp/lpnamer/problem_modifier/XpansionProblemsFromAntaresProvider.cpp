@@ -1,12 +1,9 @@
-//
-// Created by marechaljas on 18/11/22.
-//
-
 #include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
 
 #include <execution>
 #include <memory>
 #include <mutex>
+#include <ranges>
 #include <utility>
 
 #include "antares-xpansion/lpnamer/model/Problem.h"
@@ -40,7 +37,7 @@ std::vector<std::shared_ptr<Problem>> XpansionProblemsFromAntaresProvider::provi
     xpansion_problems.reserve(antares_hebdo_problems.weekCount());
     std::vector<Antares::Solver::WeeklyProblemId> problem_ids;
     problem_ids.reserve(antares_hebdo_problems.weeklyProblems.size());
-    for (const auto& [problem_id, _]: antares_hebdo_problems.weeklyProblems)
+    for (const auto& problem_id: antares_hebdo_problems.weeklyProblems | std::views::keys)
     {
         problem_ids.emplace_back(problem_id);
     }
