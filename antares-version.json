@@ -1,6 +1,6 @@
 {
   "antares_version": "9.2.0",
   "antares_version_executable": "9.2",
-  "antares_xpansion_version": "1.4.0-rc6",
+  "antares_xpansion_version": "1.4.0-rc5",
   "or-tools-rte": "9.11-rte1.1"
 }
