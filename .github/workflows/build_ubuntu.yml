@@ -102,7 +102,7 @@ jobs:
         with:
           antares-version: ${{steps.antares-version.outputs.result}}
           os: ${{matrix.os}}
-          os-full-name: Ubuntu-20.04
+          os-full-name: Ubuntu-22.04
           ortools-url: ${{env.ORTOOLS_URL}}
           ortools-dir: ${{env.ORTOOLS_DIR}}
 
