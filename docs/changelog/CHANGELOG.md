@@ -4,6 +4,11 @@ Antares-Xpansion changelog
 v1.4.0 (12/2024)
 --------------------------------------------------------
 
+### Important
+
+* Remove support for Ubuntu 20.04
+* Support Ubuntu 22.04
+
 ### Features
 
 * Update Antares Simulator to 9.2
