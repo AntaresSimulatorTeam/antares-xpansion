@@ -18,36 +18,41 @@ XpansionProblemsFromAntaresProvider::XpansionProblemsFromAntaresProvider(
 {
 }
 
+auto XpansionProblemsFromAntaresProvider::provideProblem(
+  const std::string& solver_name,
+  SolverLogManager& solver_log_manager,
+  const Antares::Solver::WeeklyProblemId& problem_id) const -> std::shared_ptr<Problem>
+{
+    auto problem = AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
+      antares_hebdo_problems,
+      problem_id.year,
+      problem_id.week,
+      solver_name,
+      solver_log_manager);
+    return problem;
+}
+
 std::vector<std::shared_ptr<Problem>> XpansionProblemsFromAntaresProvider::provideProblems(
   const std::string& solver_name,
   SolverLogManager& solver_log_manager) const
 {
     std::vector<std::shared_ptr<Problem>> xpansion_problems;
     xpansion_problems.reserve(antares_hebdo_problems.weekCount());
-    std::vector<std::pair<const Antares::Solver::WeeklyProblemId&,
-                          const Antares::Solver::WeeklyDataFromAntares&>>
-      weekly_problems_vector;
-    weekly_problems_vector.reserve(antares_hebdo_problems.weeklyProblems.size());
-    for (const auto& [problem_id, hebdo_data]: antares_hebdo_problems.weeklyProblems)
+    std::vector<Antares::Solver::WeeklyProblemId> problem_ids;
+    problem_ids.reserve(antares_hebdo_problems.weeklyProblems.size());
+    for (const auto& [problem_id, _]: antares_hebdo_problems.weeklyProblems)
     {
-        weekly_problems_vector.emplace_back(problem_id, hebdo_data);
+        problem_ids.emplace_back(problem_id);
     }
     std::mutex mutex;
-    std::for_each(
-      std::execution::par,
-      weekly_problems_vector.begin(),
-      weekly_problems_vector.end(),
-      [&](const auto& pair)
-      {
-          const auto& [problem_id, hebdo_data] = pair;
-          auto problem = AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
-            antares_hebdo_problems,
-            problem_id.year,
-            problem_id.week,
-            solver_name,
-            solver_log_manager);
-          std::lock_guard guard(mutex);
-          xpansion_problems.push_back(problem);
-      });
+    std::for_each(std::execution::par,
+                  problem_ids.begin(),
+                  problem_ids.end(),
+                  [&](const auto& id)
+                  {
+                      auto problem = provideProblem(solver_name, solver_log_manager, id);
+                      std::lock_guard guard(mutex);
+                      xpansion_problems.push_back(problem);
+                  });
     return xpansion_problems;
 }
