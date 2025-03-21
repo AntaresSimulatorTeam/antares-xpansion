@@ -5,6 +5,7 @@
 #include <fstream>
 #include <iomanip>
 #include <iostream>
+#include <ranges>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -32,6 +33,22 @@ public:
 };
 
 using IsNotSpace = IsNot<std::ctype_base::space>;
+
+/**
+ * @brief Trim a string by modifying it
+ *
+ * @param original : string to trim
+ * @return std::string& : reference to the trimmed string
+ */
+inline std::string& trim_in_place(std::string& original)
+{
+    // Start with the end to avoid memory displacement modifying begin
+    original.erase(
+      std::ranges::find_if(original | std::ranges::views::reverse, IsNotSpace()).base(),
+      original.end());
+    original.erase(original.begin(), std::ranges::find_if(original, IsNotSpace()));
+    return original;
+}
 
 inline std::string trim(std::string_view original)
 {

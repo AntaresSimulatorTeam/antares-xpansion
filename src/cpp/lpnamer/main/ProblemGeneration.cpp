@@ -426,8 +426,6 @@ void ProblemGeneration::RunProblemGeneration(
                         logger);
                   }
                   break;
-              case SimulationInputMode::ANTARES_API:
-              [[fallthrough]]
               default:
                   (*logger)(LogUtils::LOGLEVEL::ERR) << "Undefined mode";
                   break;
@@ -456,12 +454,18 @@ void ProblemGeneration::RunProblemGeneration(
     {
         auto mps_file_writer = std::make_shared<FileWriter>(lpDir_);
         std::vector<std::pair<int, ProblemData>> year_and_data;
+        std::vector<
+          std::pair<Antares::Solver::WeeklyProblemId, Antares::Solver::WeeklyDataFromAntares&>>
+          weekly_data;
+        std::ranges::for_each(lps_.weeklyProblems,
+                              [&weekly_data](auto& pair)
+                              { weekly_data.emplace_back(pair.first, pair.second); });
         year_and_data.reserve(lps_.weeklyProblems.size());
         std::mutex year_and_data_mutex;
         std::for_each(
           std::execution::par,
-          lps_.weeklyProblems.begin(),
-          lps_.weeklyProblems.end(),
+          weekly_data.begin(),
+          weekly_data.end(),
           [&](const auto& weeklyDataByYearWeek)
           {
               auto&& [year_week, data] = weeklyDataByYearWeek;
@@ -469,11 +473,12 @@ void ProblemGeneration::RunProblemGeneration(
               auto problem = adapter.provideProblem(solver_config_.Name(),
                                                     solver_log_manager,
                                                     year_week);
-              lps_.weeklyProblems.at(year_week) = {}; //Clear data to save memory
               {
                   std::lock_guard guard(year_and_data_mutex);
+                  lps_.weeklyProblems.erase(year_week); // Clear data to save memory
                   year_and_data.emplace_back(problem->mc_year, ProblemData{problem->_name, {}});
-                  //Need to be done before treat because it will update problem name with the full path
+                  // Need to be done before treat because it will update problem name with the full
+                  // path
               }
               std::shared_ptr<IProblemVariablesProviderPort>
                 variables_provider = std::make_shared<ProblemVariablesFromProblemAdapter>(problem,
