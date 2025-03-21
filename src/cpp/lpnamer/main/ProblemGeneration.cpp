@@ -485,6 +485,8 @@ void ProblemGeneration::RunProblemGeneration(
                                           problem.get(),
                                           variables_provider.get(),
                                           mps_file_writer.get());
+              std::lock_guard guard(year_and_data_mutex);
+              year_and_data.emplace_back(problem->mc_year, ProblemData{problem->_name, {}});
           });
         if (!weights_file.empty())
         {
