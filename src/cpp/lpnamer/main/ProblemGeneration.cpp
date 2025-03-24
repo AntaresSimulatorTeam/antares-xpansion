@@ -453,15 +453,19 @@ void ProblemGeneration::RunProblemGeneration(
     else // API
     {
         auto mps_file_writer = std::make_shared<FileWriter>(lpDir_);
-        std::vector<std::pair<int, ProblemData>> year_and_data;
+
+        // vector of pair for parralellisation
+        // ref to WeeklyDataFromAntares to avoid copies
         std::vector<
           std::pair<Antares::Solver::WeeklyProblemId, Antares::Solver::WeeklyDataFromAntares&>>
           weekly_data;
         std::ranges::for_each(lps_.weeklyProblems,
                               [&weekly_data](auto& pair)
                               { weekly_data.emplace_back(pair.first, pair.second); });
+
+        std::vector<std::pair<int, ProblemData>> year_and_data;
         year_and_data.reserve(lps_.weeklyProblems.size());
-        std::mutex year_and_data_mutex;
+        std::mutex mutex;
         std::for_each(
           std::execution::par,
           weekly_data.begin(),
@@ -474,7 +478,7 @@ void ProblemGeneration::RunProblemGeneration(
                                                     solver_log_manager,
                                                     year_week);
               {
-                  std::lock_guard guard(year_and_data_mutex);
+                  std::lock_guard guard(mutex);
                   lps_.weeklyProblems.erase(year_week); // Clear data to save memory
                   year_and_data.emplace_back(problem->mc_year, ProblemData{problem->_name, {}});
                   // Need to be done before treat because it will update problem name with the full
@@ -490,8 +494,6 @@ void ProblemGeneration::RunProblemGeneration(
                                           problem.get(),
                                           variables_provider.get(),
                                           mps_file_writer.get());
-              std::lock_guard guard(year_and_data_mutex);
-              year_and_data.emplace_back(problem->mc_year, ProblemData{problem->_name, {}});
           });
         if (!weights_file.empty())
         {
