@@ -252,7 +252,7 @@ void SolverCbc::read_basis(const std::filesystem::path& filename)
     defineCbcModelFromInnerSolver();
 }
 
-void SolverCbc::set_basis(std::vector<int> rstatus, std::vector<int> cstatus)
+void SolverCbc::set_basis(std::span<int> rstatus, std::span<int> cstatus)
 {
     _cbc.solver()->setBasisStatus(rstatus.data(), cstatus.data());
 }

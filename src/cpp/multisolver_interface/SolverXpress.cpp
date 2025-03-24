@@ -231,7 +231,7 @@ void SolverXpress::read_basis(const std::filesystem::path& filename)
     zero_status_check(status, "read basis", LOGLOCATION);
 }
 
-void SolverXpress::set_basis(std::vector<int> rstatus, std::vector<int> cstatus)
+void SolverXpress::set_basis(std::span<int> rstatus, std::span<int> cstatus)
 {
     int status = XPRSloadbasis(_xprs, rstatus.data(), cstatus.data());
     zero_status_check(status, "set basis", LOGLOCATION);

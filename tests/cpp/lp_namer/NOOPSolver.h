@@ -91,7 +91,7 @@ class NOOPSolver : public SolverAbstract {
   void set_simplex_iter(int iter) override {}
   void write_basis(const std::filesystem::path &filename) override {}
   void read_basis(const std::filesystem::path &filename) override {}
-  void set_basis(std::vector<int> rstatus, std::vector<int> cstatus) override {};
+  void set_basis(std::span<int> rstatus, std::span<int> cstatus) override {};
   void save_prob(const std::filesystem::path &filename) override {}
   void restore_prob(const std::filesystem::path &filename) override {}
 };

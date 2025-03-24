@@ -349,7 +349,7 @@ private:
     int cumulative_number_of_subproblem_resolved_before_resume = 0;
     Timer benders_timer;
     Output::SolutionData outer_loop_solution_data_;
-    std::map<std::string, std::pair<std::vector<int>, std::vector<int>>> basiss_;
+    std::unordered_map<std::string, std::pair<std::vector<int>, std::vector<int>>> basiss_;
 };
 
 using pBendersBase = std::shared_ptr<BendersBase>;

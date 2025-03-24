@@ -129,7 +129,7 @@ void SolverClp::read_basis(const std::filesystem::path& filename)
     _clp.readBasis(filename.string().c_str());
 }
 
-void SolverClp::set_basis(std::vector<int> rstatus, std::vector<int> cstatus)
+void SolverClp::set_basis(std::span<int> rstatus, std::span<int> cstatus)
 {
     for (int i = 0; i < rstatus.size(); ++i)
     {

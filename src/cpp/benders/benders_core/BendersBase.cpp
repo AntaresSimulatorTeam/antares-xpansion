@@ -471,7 +471,7 @@ void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
 namespace
 {
 template<class T>
-std::vector<std::pair<std::string, T&>> FlattenMap(std::map<std::string, T> map_to_flatten)
+std::vector<std::pair<std::string, T&>> mapAsVectorOfPair(std::map<std::string, T> map_to_flatten)
 {
     std::vector<std::pair<std::string, T>> flatten_result;
     flatten_result.reserve(map_to_flatten.size());
@@ -493,14 +493,23 @@ std::pair<std::vector<int>, std::vector<int>> BendersBase::GetProblemBasis(
     return {rstatus, cstatus};
 }
 
+/**
+ * Create a worker on a problem and reuse the basis to speed up solving
+ *
+ * @param kvp Problem data
+ * @param name Name of the problem
+ * @return Worker on the problem
+ *
+ */
 std::shared_ptr<SubproblemWorker> BendersBase::BuildProblem(
   const std::pair<std::string, VariableMap>& kvp,
   const std::string& name)
 {
     auto worker = makeSubproblemWorker(kvp);
-    if (auto it_map_basis = basiss_.find(name); it_map_basis != basiss_.end())
+    if (basiss_.contains(name))
     {
-        worker->_solver->set_basis(it_map_basis->second.first, it_map_basis->second.second);
+        const auto& [rstatus, cstatus] = basiss_[name];
+        worker->_solver->set_basis(rstatus, cstatus);
     }
     return worker;
 }
@@ -520,7 +529,7 @@ std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
 
 void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
 {
-    auto&& nameAndVariableMap = FlattenMap(coupling_map_);
+    auto&& nameAndVariableMap = mapAsVectorOfPair(coupling_map_);
     std::mutex m;
     selectPolicy(
       [this, &nameAndVariableMap, &m, &subproblem_data_map](auto& policy)
