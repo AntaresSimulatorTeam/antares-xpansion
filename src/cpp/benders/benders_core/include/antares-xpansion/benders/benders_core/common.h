@@ -29,6 +29,7 @@ enum class MasterFormulation
     INTEGER,
     RELAXED
 };
+
 enum class SOLVER
 {
     BENDERS,
@@ -43,22 +44,22 @@ typedef std::shared_ptr<Point> PointPtr;
 
 const double EPSILON_PREDICATE = 1e-8;
 
-typedef std::set<std::string> problem_names;
-typedef std::map<std::string, int> VariableMap;
-typedef std::map<int, std::string> Int2Str;
-typedef std::map<std::string, double> Str2Dbl;
-typedef std::vector<int> IntVector;
-typedef std::vector<char> CharVector;
-typedef std::vector<double> DblVector;
-typedef std::vector<std::string> StrVector;
-typedef std::map<std::string, VariableMap> CouplingMap;
+using problem_names = std::set<std::string>;
+using VariableMap = std::map<std::string, int>;
+using Int2Str = std::map<int, std::string>;
+using Str2Dbl = std::map<std::string, double>;
+using IntVector = std::vector<int>;
+using CharVector = std::vector<char>;
+using DblVector = std::vector<double>;
+using StrVector = std::vector<std::string>;
+using CouplingMap = std::map<std::string, VariableMap>;
 
-typedef std::map<std::string, IntVector> SlaveCutId;
-typedef std::tuple<int, std::string, int, bool> ActiveCut;
-typedef std::vector<ActiveCut> ActiveCutStorage;
+using SlaveCutId = std::map<std::string, IntVector>;
+using ActiveCut = std::tuple<int, std::string, int, bool>;
+using ActiveCutStorage = std::vector<ActiveCut>;
 
-typedef std::pair<std::string, std::string> mps_coupling;
-typedef std::list<mps_coupling> mps_coupling_list;
+using mps_coupling = std::pair<std::string, std::string>;
+using mps_coupling_list = std::list<mps_coupling>;
 
 enum class BENDERSMETHOD
 {
@@ -233,4 +234,5 @@ struct BendersBaseOptions: public BaseOptions
 };
 
 void usage(int argc);
+
 Json::Value get_json_file_content(const std::filesystem::path& json_file);

@@ -61,19 +61,19 @@ function(code_coverage)
     endforeach ()
 
     add_custom_target(${Coverage_NAME}
-        # Cleaning previous results
-        COMMAND ${CMAKE_COMMAND} -E remove_directory ${Coverage_OUTPUT_DIR}
+            # Cleaning previous results
+            COMMAND ${CMAKE_COMMAND} -E remove_directory ${Coverage_OUTPUT_DIR}
 
-        # Generating report
-        COMMAND ${CMAKE_COMMAND} -E make_directory ${Coverage_OUTPUT_DIR}/reports
-        COMMAND ${GCOVR_CMD} ${CMAKE_CURRENT_BINARY_DIR}
-        --gcov-executable "${GCOV_CMD}"
-        --root ${CMAKE_SOURCE_DIR}
-        --keep --object-directory ${Coverage_OUTPUT_DIR}/reports
-        --html --html-details --output ${Coverage_OUTPUT_DIR}/index.html --sonarqube ${Coverage_OUTPUT_DIR}/coverage.xml
-        ${GCOVR_OPTIONS}
+            # Generating report
+            COMMAND ${CMAKE_COMMAND} -E make_directory ${Coverage_OUTPUT_DIR}/reports
+            COMMAND ${GCOVR_CMD} ${CMAKE_CURRENT_BINARY_DIR}
+            --gcov-executable "${GCOV_CMD}"
+            --root ${CMAKE_SOURCE_DIR}
+            --keep --object-directory ${Coverage_OUTPUT_DIR}/reports
+            --html --html-details --output ${Coverage_OUTPUT_DIR}/index.html --sonarqube ${Coverage_OUTPUT_DIR}/coverage.xml
+            ${GCOVR_OPTIONS}
 
-        WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
+            WORKING_DIRECTORY ${PROJECT_BINARY_DIR}
     )
 
 endfunction()
