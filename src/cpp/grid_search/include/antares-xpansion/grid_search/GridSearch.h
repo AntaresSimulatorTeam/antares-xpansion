@@ -13,8 +13,20 @@ class GridSearch
 {
 public:
     GridSearch(Logger logger, std::shared_ptr<Output::OutputWriter> writer);
+    GridSearch(Logger logger, std::shared_ptr<Output::OutputWriter> writer, std::filesystem::path path_to_data);
 
     void launch();
+
+    struct GridPointData
+    {
+        double investment_cost;
+        double operational_cost;
+        double overall_cost;
+        Point point;
+        std::vector<std::vector<double>> solution;
+    };
+
+    std::vector<GridPointData> gridPointData;
 
 protected:
     void Run();
@@ -40,17 +52,6 @@ protected:
     StrVector subproblems;
     Point current_point_;
     std::map<std::string, double> investCostPerMwPerYear;
-
-    struct GridPointData
-    {
-        double investment_cost;
-        double operational_cost;
-        double overall_cost;
-        Point point;
-        std::vector<std::vector<double>> solution;
-    };
-
-    std::vector<GridPointData> gridPointData;
 
     SolverLogManager solver_log_manager_;
     Logger _logger;

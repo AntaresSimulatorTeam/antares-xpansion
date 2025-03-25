@@ -17,6 +17,14 @@ GridSearch::GridSearch(Logger logger, std::shared_ptr<Output::OutputWriter> writ
     _logger = std::move(logger);
     _writer = std::move(writer);
 }
+
+GridSearch::GridSearch(Logger logger, std::shared_ptr<Output::OutputWriter> writer, std::filesystem::path path_to_data)
+{
+    _logger = std::move(logger);
+    _writer = std::move(writer);
+    xpansionFolderPath = std::move(path_to_data);
+}
+
 /*!
  *  \brief Method to load each problem in a thread
  *
@@ -43,7 +51,7 @@ void GridSearch::InitializeProblems()
 
 void GridSearch::InitCouplingMap()
 {
-    std::filesystem::path structure_path("./structure.txt");
+    std::filesystem::path structure_path = xpansionFolderPath / "structure.txt";
     std::ifstream summary(structure_path, std::ios::in);
     if (!summary)
     {
@@ -88,19 +96,19 @@ void GridSearch::MatchProblemToId()
 
 std::filesystem::path GridSearch::GetSubproblemPath(const std::string& slave_name) const
 {
-    return std::filesystem::path(".") / slave_name;
+    return xpansionFolderPath / slave_name;
 }
 
 std::filesystem::path GridSearch::GetMasterProblemPath() const
 {
-    return std::filesystem::path(".") / "master.mps";
+    return xpansionFolderPath / "master.mps";
 }
 
 void GridSearch::AddSubproblem(const std::pair<std::string, VariableMap>& kvp)
 {
     subproblem_map[kvp.first] = std::make_shared<SubproblemWorker>(kvp.second,
                                                                    GetSubproblemPath(kvp.first),
-                                                                   1,
+                                                                   1, // This has to be changed with the subproblem's weight
                                                                    "COIN",
                                                                    0,
                                                                    solver_log_manager_,
@@ -138,7 +146,7 @@ void GridSearch::SetInvestmentCostPerMwPerYear(const std::filesystem::path& path
         std::string OBJROW;
         double value;
         ss >> variableName >> OBJROW >> value;
-        if (OBJROW == "OBJ")
+        if (OBJROW == "OBJ" || OBJROW == "OBJROW")
         {
             investCostPerMwPerYear[variableName] = value;
         }
