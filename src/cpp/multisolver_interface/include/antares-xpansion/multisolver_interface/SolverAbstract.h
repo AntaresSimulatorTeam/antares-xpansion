@@ -655,6 +655,7 @@ public:
      * @param indice : index of the row or of the column.
      */
     virtual void add_name(int type, const char* cnames, int indice) = 0;
+
     virtual void add_names(int type, const std::vector<std::string>& cnames, int first, int end)
       = 0;
 
@@ -801,7 +802,7 @@ public:
      * @param duals      : values of dual variables
      * @param reduced_cost: reduced_cost in an optimal basis
      */
-    virtual void get_lp_sol(double* primals, double* duals, double* reduced_costs) = 0;
+    virtual void get_lp_sol(double* primals, double* duals, double* reduced_costs) const = 0;
 
     /**
      * @brief Get MIP solution of a problem (available after method "solve_mip")
@@ -850,4 +851,6 @@ public:
      * @param iter: maximum number of simplex iterations
      */
     virtual void set_simplex_iter(int iter) = 0;
+
+    bool operator==(const SolverAbstract&) const;
 };
