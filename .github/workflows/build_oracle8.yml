@@ -65,6 +65,9 @@ jobs:
       - run: |
           dnf module install -y nodejs:20/common
 
+      - run: |
+          dnf install -y cmake
+
       - uses: actions/checkout@v4
         with:
           submodules: true
