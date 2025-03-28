@@ -65,10 +65,8 @@ jobs:
       - run: |
           dnf module install -y nodejs:20/common
 
-      - uses: lukka/get-cmake@latest
-        with:
-          useLocalCache: false
-          useCloudCache: true
+      - run: |
+          dnf install -y cmake
 
       - uses: actions/checkout@v4
         with:
