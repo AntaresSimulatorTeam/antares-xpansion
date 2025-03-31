@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: ILoggerXpansion Interface Reference</title>
+<title>Antares Xpansion: ILoggerMock Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -111,7 +111,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('structILoggerXpansion.html',''); initResizable(true); });
+$(function(){initNavTree('structILoggerMock.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -139,54 +139,38 @@ $(function(){initNavTree('structILoggerXpansion.html',''); initResizable(true); 
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="structILoggerXpansion-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">ILoggerXpansion Interface Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
+<a href="structILoggerMock-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">ILoggerMock Struct Reference<span class="mlabels"><span class="mlabel">final</span></span></div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>Xpansion Unique log Interface.  
- <a href="#details">More...</a></p>
-
-<p><code>#include &lt;<a class="el" href="ILogger_8h_source.html">ILogger.h</a>&gt;</code></p>
 <div class="dynheader">
-Inheritance diagram for ILoggerXpansion:</div>
+Inheritance diagram for ILoggerMock:</div>
 <div class="dyncontent">
  <div class="center">
-  <img src="structILoggerXpansion.png" usemap="#ILoggerXpansion_map" alt=""/>
-  <map id="ILoggerXpansion_map" name="ILoggerXpansion_map">
-<area href="structBendersLoggerBase.html" alt="BendersLoggerBase" shape="rect" coords="308,56,606,80"/>
-<area href="structEmptyLogger.html" alt="EmptyLogger" shape="rect" coords="308,112,606,136"/>
-<area href="classILogger.html" title="abstract class for operational logs" alt="ILogger" shape="rect" coords="308,168,606,192"/>
-<area href="structILoggerMock.html" alt="ILoggerMock" shape="rect" coords="308,224,606,248"/>
-<area href="structMathLoggerBehaviour.html" alt="MathLoggerBehaviour" shape="rect" coords="308,280,606,304"/>
-<area href="classMathLoggerDriver.html" alt="MathLoggerDriver" shape="rect" coords="308,336,606,360"/>
-<area href="classProblemGenerationLog_1_1ProblemGenerationILogger.html" alt="ProblemGenerationLog::ProblemGenerationILogger" shape="rect" coords="308,392,606,416"/>
-<area href="classProblemGenerationLog_1_1ProblemGenerationLogger.html" alt="ProblemGenerationLog::ProblemGenerationLogger" shape="rect" coords="308,448,606,472"/>
+  <img src="structILoggerMock.png" usemap="#ILoggerMock_map" alt=""/>
+  <map id="ILoggerMock_map" name="ILoggerMock_map">
+<area href="structILoggerXpansion.html" title="Xpansion Unique log Interface." alt="ILoggerXpansion" shape="rect" coords="0,0,108,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a5d5ef0a1321f54372ecba334a7ae1acd" id="r_a5d5ef0a1321f54372ecba334a7ae1acd"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5d5ef0a1321f54372ecba334a7ae1acd">display_message</a> (const std::string &amp;str)=0</td></tr>
-<tr class="memdesc:a5d5ef0a1321f54372ecba334a7ae1acd"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method to display a std::string message  <br /></td></tr>
-<tr class="separator:a5d5ef0a1321f54372ecba334a7ae1acd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac29cdc7dc59c2dde6ce45201c91e770e" id="r_ac29cdc7dc59c2dde6ce45201c91e770e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac29cdc7dc59c2dde6ce45201c91e770e">display_message</a> (const std::ostringstream &amp;msg)</td></tr>
-<tr class="separator:ac29cdc7dc59c2dde6ce45201c91e770e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a60a676578b39dfbc359ff6c2e494ff" id="r_a6a60a676578b39dfbc359ff6c2e494ff"><td class="memItemLeft" align="right" valign="top"><a id="a6a60a676578b39dfbc359ff6c2e494ff" name="a6a60a676578b39dfbc359ff6c2e494ff"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>display_message</b> (const std::string &amp;msg, LogUtils::LOGLEVEL level, const std::string &amp;context)=0</td></tr>
-<tr class="separator:a6a60a676578b39dfbc359ff6c2e494ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a84a1518b16ae160c5d5581ef5a8f88a1" id="r_a84a1518b16ae160c5d5581ef5a8f88a1"><td class="memItemLeft" align="right" valign="top"><a id="a84a1518b16ae160c5d5581ef5a8f88a1" name="a84a1518b16ae160c5d5581ef5a8f88a1"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintIterationSeparatorBegin</b> ()=0</td></tr>
-<tr class="separator:a84a1518b16ae160c5d5581ef5a8f88a1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae0b39d5c01cf0d620e517186e66f99af" id="r_ae0b39d5c01cf0d620e517186e66f99af"><td class="memItemLeft" align="right" valign="top"><a id="ae0b39d5c01cf0d620e517186e66f99af" name="ae0b39d5c01cf0d620e517186e66f99af"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintIterationSeparatorEnd</b> ()=0</td></tr>
-<tr class="separator:ae0b39d5c01cf0d620e517186e66f99af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a497d3772376f2bf29b5d9530a926a208" id="r_a497d3772376f2bf29b5d9530a926a208"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a497d3772376f2bf29b5d9530a926a208">display_message</a> (const std::string &amp;str) override</td></tr>
+<tr class="memdesc:a497d3772376f2bf29b5d9530a926a208"><td class="mdescLeft">&#160;</td><td class="mdescRight">pure virtual method to display a std::string message  <br /></td></tr>
+<tr class="separator:a497d3772376f2bf29b5d9530a926a208"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a86f6a7403cdc09c828640be2c2219cd2" id="r_a86f6a7403cdc09c828640be2c2219cd2"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a86f6a7403cdc09c828640be2c2219cd2">display_message</a> (const std::string &amp;msg, LogUtils::LOGLEVEL level, const std::string &amp;context) override</td></tr>
+<tr class="separator:a86f6a7403cdc09c828640be2c2219cd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af55e508742c6fa1d56ad2ac3b29b3fab" id="r_af55e508742c6fa1d56ad2ac3b29b3fab"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af55e508742c6fa1d56ad2ac3b29b3fab">PrintIterationSeparatorBegin</a> () override</td></tr>
+<tr class="separator:af55e508742c6fa1d56ad2ac3b29b3fab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a63a666adddee3d274aad868bca3f770f" id="r_a63a666adddee3d274aad868bca3f770f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a63a666adddee3d274aad868bca3f770f">PrintIterationSeparatorEnd</a> () override</td></tr>
+<tr class="separator:a63a666adddee3d274aad868bca3f770f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_structILoggerXpansion"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_structILoggerXpansion')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="structILoggerXpansion.html">ILoggerXpansion</a></td></tr>
+<tr class="memitem:ac29cdc7dc59c2dde6ce45201c91e770e inherit pub_methods_structILoggerXpansion" id="r_ac29cdc7dc59c2dde6ce45201c91e770e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="structILoggerXpansion.html#ac29cdc7dc59c2dde6ce45201c91e770e">display_message</a> (const std::ostringstream &amp;msg)</td></tr>
+<tr class="separator:ac29cdc7dc59c2dde6ce45201c91e770e inherit pub_methods_structILoggerXpansion"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Xpansion Unique log Interface. </p>
-</div><h2 class="groupheader">Member Function Documentation</h2>
-<a id="ac29cdc7dc59c2dde6ce45201c91e770e" name="ac29cdc7dc59c2dde6ce45201c91e770e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac29cdc7dc59c2dde6ce45201c91e770e">&#9670;&#160;</a></span>display_message() <span class="overload">[1/2]</span></h2>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a86f6a7403cdc09c828640be2c2219cd2" name="a86f6a7403cdc09c828640be2c2219cd2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a86f6a7403cdc09c828640be2c2219cd2">&#9670;&#160;</a></span>display_message() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -195,29 +179,34 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintIteratio
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void ILoggerXpansion::display_message </td>
+          <td class="memname">void ILoggerMock::display_message </td>
           <td>(</td>
-          <td class="paramtype">const std::ostringstream &amp;</td>          <td class="paramname"><span class="paramname"><em>msg</em></span></td><td>)</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>msg</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">LogUtils::LOGLEVEL</td>          <td class="paramname"><span class="paramname"><em>level</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>context</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
-<p>display the underlying std::string in std::ostringstream </p><dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">str</td><td>the message to be displayed </td></tr>
-  </table>
-  </dd>
-</dl>
+
+<p>Implements <a class="el" href="structILoggerXpansion.html">ILoggerXpansion</a>.</p>
 
 </div>
 </div>
-<a id="a5d5ef0a1321f54372ecba334a7ae1acd" name="a5d5ef0a1321f54372ecba334a7ae1acd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a5d5ef0a1321f54372ecba334a7ae1acd">&#9670;&#160;</a></span>display_message() <span class="overload">[2/2]</span></h2>
+<a id="a497d3772376f2bf29b5d9530a926a208" name="a497d3772376f2bf29b5d9530a926a208"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a497d3772376f2bf29b5d9530a926a208">&#9670;&#160;</a></span>display_message() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -226,7 +215,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintIteratio
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void ILoggerXpansion::display_message </td>
+          <td class="memname">void ILoggerMock::display_message </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>str</em></span></td><td>)</td>
           <td></td>
@@ -234,7 +223,7 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintIteratio
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -247,19 +236,73 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>PrintIteratio
   </dd>
 </dl>
 
-<p>Implemented in <a class="el" href="structBendersLoggerBase.html#a2107f7c283403f51b5c48d73fa969fa1">BendersLoggerBase</a>, <a class="el" href="structEmptyLogger.html#a69cb84c65248af6f19ec4518a44c02ae">EmptyLogger</a>, <a class="el" href="classILogger.html#a1326996d4147821e1dad10103a0dc2e8">ILogger</a>, <a class="el" href="structILoggerMock.html#a497d3772376f2bf29b5d9530a926a208">ILoggerMock</a>, <a class="el" href="structMathLogger.html#a80aab68d65d4ea91c5151d8b3d575209">MathLogger</a>, <a class="el" href="classMathLoggerDriver.html#a60e641c493e45981f66178843098a19f">MathLoggerDriver</a>, <a class="el" href="structMathLoggerExternalLoopSpecific.html#a8a9621b528cb90afd087a4e9b1d5ae5f">MathLoggerExternalLoopSpecific&lt; T &gt;</a>, <a class="el" href="classMathLoggerFile.html#a23ff89b503fdd2aa217c40d5c65b507d">MathLoggerFile</a>, <a class="el" href="classMathLoggerImplementation.html#a433bd4d646c45306a225e310f681493d">MathLoggerImplementation</a>, <a class="el" href="classNoopProblemGenerationLogger.html#aa4612edb9350a4e9265e28b171f0c3bb">NoopProblemGenerationLogger</a>, <a class="el" href="classProblemGenerationLog_1_1ProblemGenerationFileLogger.html#a04c480d1c20542a7aa7d8445ff86f906">ProblemGenerationLog::ProblemGenerationFileLogger</a>, <a class="el" href="classProblemGenerationLog_1_1ProblemGenerationILogger.html#ade69bbe369ecbfb6888ecc6e0f82e517">ProblemGenerationLog::ProblemGenerationILogger</a>, <a class="el" href="classProblemGenerationLog_1_1ProblemGenerationLogger.html#a48179fac6a558d55a0ea68c76d209295">ProblemGenerationLog::ProblemGenerationLogger</a>, <a class="el" href="classProblemGenerationLog_1_1ProblemGenerationOstreamLogger.html#aa49af64c3b66de97221aacf6e59d64de">ProblemGenerationLog::ProblemGenerationOstreamLogger</a>, <a class="el" href="classSimpleLoggerMock.html#a4d6fb0377ff9865b580a0a82216ce28b">SimpleLoggerMock</a>, <a class="el" href="classxpansion_1_1logger_1_1Master.html#aedc1d1015a2efc90153fbc02a83bd397">xpansion::logger::Master</a>, <a class="el" href="classxpansion_1_1logger_1_1User.html#a7d02e013cf851b057661d0718c13f58a">xpansion::logger::User</a>, <a class="el" href="classxpansion_1_1logger_1_1UserFile.html#a20209f11f5576c3ea4f74a999fdda486">xpansion::logger::UserFile</a>, and <a class="el" href="classXpansion_1_1Test_1_1LoggerNOOPStub.html#a78551de804e829cf89a6d4a84590170c">Xpansion::Test::LoggerNOOPStub</a>.</p>
+<p>Implements <a class="el" href="structILoggerXpansion.html#a5d5ef0a1321f54372ecba334a7ae1acd">ILoggerXpansion</a>.</p>
 
 </div>
 </div>
-<hr/>The documentation for this interface was generated from the following file:<ul>
-<li>src/cpp/xpansion_interfaces/include/antares-xpansion/xpansion_interfaces/<a class="el" href="ILogger_8h_source.html">ILogger.h</a></li>
+<a id="af55e508742c6fa1d56ad2ac3b29b3fab" name="af55e508742c6fa1d56ad2ac3b29b3fab"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af55e508742c6fa1d56ad2ac3b29b3fab">&#9670;&#160;</a></span>PrintIterationSeparatorBegin()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ILoggerMock::PrintIterationSeparatorBegin </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="structILoggerXpansion.html">ILoggerXpansion</a>.</p>
+
+</div>
+</div>
+<a id="a63a666adddee3d274aad868bca3f770f" name="a63a666adddee3d274aad868bca3f770f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a63a666adddee3d274aad868bca3f770f">&#9670;&#160;</a></span>PrintIterationSeparatorEnd()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void ILoggerMock::PrintIterationSeparatorEnd </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="structILoggerXpansion.html">ILoggerXpansion</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this struct was generated from the following file:<ul>
+<li>tests/cpp/multisolver_interface/<b>test_multisolver.cpp</b></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="structILoggerXpansion.html">ILoggerXpansion</a></li>
+    <li class="navelem"><a class="el" href="structILoggerMock.html">ILoggerMock</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
   </ul>
 </div>

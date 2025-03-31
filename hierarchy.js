@@ -257,6 +257,7 @@ var hierarchy =
         [ "xpansion::logger::User", "classxpansion_1_1logger_1_1User.html", null ],
         [ "xpansion::logger::UserFile", "classxpansion_1_1logger_1_1UserFile.html", null ]
       ] ],
+      [ "ILoggerMock", "structILoggerMock.html", null ],
       [ "MathLoggerBehaviour", "structMathLoggerBehaviour.html", [
         [ "MathLogger", "structMathLogger.html", [
           [ "MathLoggerBase", "structMathLoggerBase.html", [
@@ -668,6 +669,7 @@ var hierarchy =
     [ "tests.python.test_study_output_cleaner.TestStudyOutputCleaner", "classtests_1_1python_1_1test__study__output__cleaner_1_1TestStudyOutputCleaner.html", null ],
     [ "tests.python.test_study_updater.TestStudyUpdater", "classtests_1_1python_1_1test__study__updater_1_1TestStudyUpdater.html", null ],
     [ "testing::TestWithParam", null, [
+      [ "CreateFixture", "classCreateFixture.html", null ],
       [ "FullRunOptionsParserTest", "classFullRunOptionsParserTest.html", [
         [ "FullRunOptionsParserTestFullPath", "classFullRunOptionsParserTestFullPath.html", null ]
       ] ],
