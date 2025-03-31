@@ -508,7 +508,7 @@ std::shared_ptr<SubproblemWorker> BendersBase::BuildProblem(
     auto worker = makeSubproblemWorker(kvp);
     if (basiss_.contains(name))
     {
-        const auto& [rstatus, cstatus] = basiss_[name];
+        auto& [rstatus, cstatus] = basiss_[name];
         worker->_solver->set_basis(rstatus, cstatus);
     }
     return worker;
