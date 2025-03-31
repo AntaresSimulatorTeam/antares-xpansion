@@ -10,6 +10,7 @@
 
 #include <antares/solver/lps/LpsFromAntares.h>
 
+#include "ConfigurationManager.h"
 #include "ProblemGenerationOptions.h"
 #include "antares-xpansion/helpers/ArchiveReader.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
@@ -61,4 +62,5 @@ private:
     virtual void performAntaresSimulation(const std::filesystem::path& output);
     std::filesystem::path simulation_dir_;
     SolverConfig solver_config_{"Coin"};
+    ConfigurationManager configuration_manager_;
 };
