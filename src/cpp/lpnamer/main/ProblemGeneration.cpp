@@ -211,21 +211,6 @@ std::filesystem::path ProblemGeneration::updateProblems()
 std::shared_ptr<ArchiveReader> InstantiateZipReader(
   const std::filesystem::path& antares_archive_path);
 
-void ProblemGeneration::ProcessWeights(
-  const std::vector<std::pair<int, ProblemData>>& problems_and_data,
-  const std::filesystem::path& xpansion_output_dir,
-  const std::filesystem::path& weights_file,
-  const std::string& solver_name,
-  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
-{
-    WeightFileProcessor weights_file_processor;
-    weights_file_processor.ProcessWeights(problems_and_data,
-                                          xpansion_output_dir,
-                                          weights_file,
-                                          solver_name,
-                                          logger);
-}
-
 void ProblemGeneration::ExtractUtilsFiles(
   const std::filesystem::path& antares_archive_path,
   const std::filesystem::path& xpansion_output_dir,
