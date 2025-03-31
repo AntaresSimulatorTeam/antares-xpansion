@@ -78,11 +78,6 @@ jobs:
           echo "Create symbolic link for XPRESS library file because it is missing in the Python installation"
           ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so
 
-      - uses: lukka/get-cmake@latest
-        with:
-          useLocalCache: false
-          useCloudCache: true
-
       - name: Read antares-solver version
         id: antares-version
         uses: ./.github/actions/read-json-value
