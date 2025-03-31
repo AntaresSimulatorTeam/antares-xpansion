@@ -53,11 +53,6 @@ jobs:
           sudo apt-get update --fix-missing
           sudo apt-get install -y g++
 
-      - uses: lukka/get-cmake@latest
-        with:
-          useLocalCache: false
-          useCloudCache: true
-
       - name: Read antares-xpansion version
         id: antares-xpansion-version
         uses: ./.github/actions/read-json-value
