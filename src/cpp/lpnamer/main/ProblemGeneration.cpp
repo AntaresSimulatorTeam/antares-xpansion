@@ -136,21 +136,6 @@ std::filesystem::path ProblemGeneration::updateProblems()
 std::shared_ptr<ArchiveReader> InstantiateZipReader(
   const std::filesystem::path& antares_archive_path);
 
-void ProblemGeneration::ProcessWeights(
-  const std::vector<std::pair<int, ProblemData>>& problems_and_data,
-  const std::filesystem::path& xpansion_output_dir,
-  const std::filesystem::path& weights_file,
-  const std::string& solver_name,
-  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
-{
-    WeightFileProcessor weights_file_processor;
-    weights_file_processor.ProcessWeights(problems_and_data,
-                                          xpansion_output_dir,
-                                          weights_file,
-                                          solver_name,
-                                          logger);
-}
-
 void ProblemGeneration::ExtractUtilsFiles(
   const std::filesystem::path& antares_archive_path,
   const std::filesystem::path& xpansion_output_dir,
@@ -350,19 +335,12 @@ void ProblemGeneration::RunProblemGeneration(
                                           variables_provider.get(),
                                           mps_file_writer.get());
           });
-        if (!weights_file.empty())
-        {
-            std::vector<std::pair<int, ProblemData>> year_and_data;
-            std::ranges::transform(problems_and_data,
-                                   std::back_inserter(year_and_data),
-                                   [](const std::pair<std::shared_ptr<Problem>, ProblemData>& pair)
-                                   { return std::pair{pair.first->mc_year, pair.second}; });
-            ProcessWeights(year_and_data,
-                           xpansion_output_dir,
-                           weights_file,
-                           solver_config_.Name(),
-                           logger);
-        }
+        WeightFileProcessor weights_file_processor;
+        weights_file_processor.ProcessWeights(problems_and_data,
+                                              xpansion_output_dir,
+                                              weights_file,
+                                              solver_config_.Name(),
+                                              logger);
     }
     else // API
     {
@@ -409,14 +387,12 @@ void ProblemGeneration::RunProblemGeneration(
                                           variables_provider.get(),
                                           mps_file_writer.get());
           });
-        if (!weights_file.empty())
-        {
-            ProcessWeights(year_and_data,
-                           xpansion_output_dir,
-                           weights_file,
-                           solver_config_.Name(),
-                           logger);
-        }
+        WeightFileProcessor weights_file_processor;
+        weights_file_processor.ProcessWeights(year_and_data,
+                                              xpansion_output_dir,
+                                              weights_file,
+                                              solver_config_.Name(),
+                                              logger);
     }
 
     if (mode_ == SimulationInputMode::ARCHIVE)

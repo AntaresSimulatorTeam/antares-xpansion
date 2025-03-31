@@ -13,6 +13,10 @@ void WeightFileProcessor::ProcessWeights(
   const std::string& solver_name,
   const std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
 {
+    if (weights_file.empty())
+    {
+        return;
+    }
     const auto settings_dir = xpansion_output_dir / ".." / ".." / "settings";
     const auto general_data_file = settings_dir / "generaldata.ini";
     auto genera_data_reader = GeneralDataIniReader(general_data_file, logger);
@@ -27,4 +31,23 @@ void WeightFileProcessor::ProcessWeights(
                                                     solver_name,
                                                     logger);
     yearly_weight_writer.CreateWeightFile(problems_and_data);
+}
+
+void WeightFileProcessor::ProcessWeights(
+  const std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>& problems_and_data,
+  const std::filesystem::path& xpansion_output_dir,
+  const std::filesystem::path& weights_file,
+  const std::string& solver_name,
+  const std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
+{
+    if (weights_file.empty())
+    {
+        return;
+    }
+    std::vector<std::pair<int, ProblemData>> year_and_data;
+    std::ranges::transform(problems_and_data,
+                           std::back_inserter(year_and_data),
+                           [](const std::pair<std::shared_ptr<Problem>, ProblemData>& pair)
+                           { return std::pair{pair.first->mc_year, pair.second}; });
+    ProcessWeights(year_and_data, xpansion_output_dir, weights_file, solver_name, logger);
 }
