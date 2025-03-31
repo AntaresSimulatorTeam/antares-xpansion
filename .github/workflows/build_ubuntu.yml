@@ -78,11 +78,6 @@ jobs:
           echo "Create symbolic link for XPRESS library file because it is missing in the Python installation"
           ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so
 
-      - uses: lukka/get-cmake@latest
-        with:
-          useLocalCache: false
-          useCloudCache: true
-
       - name: Read antares-solver version
         id: antares-version
         uses: ./.github/actions/read-json-value
@@ -296,14 +291,10 @@ jobs:
           name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
           path: .
 
-      - name: Get release
-        id: get_release
-        uses: bruceadams/get-release@main
-
       - name: Upload Release Asset
         env:
           GH_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} _build/${{needs.build.outputs.TGZ_NAME}}
-          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} ${{needs.build.outputs.SINGLE_FILE_NAME}}
+          gh release upload --repo ${{env.GH_REPO}} ${{ github.event.release.tag_name }} _build/${{needs.build.outputs.TGZ_NAME}}
+          gh release upload --repo ${{env.GH_REPO}} ${{ github.event.release.tag_name }} ${{needs.build.outputs.SINGLE_FILE_NAME}}
