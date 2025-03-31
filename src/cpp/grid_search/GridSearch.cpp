@@ -1,6 +1,7 @@
 
 #include "antares-xpansion/grid_search/GridSearch.h"
 
+#include <regex>
 #include <utility>
 
 #include "antares-xpansion/benders/benders_core/WorkerMaster.h"
@@ -12,13 +13,9 @@ struct InvalidStructureFile: LogUtils::XpansionError<std::runtime_error>
     using LogUtils::XpansionError<std::runtime_error>::XpansionError;
 };
 
-GridSearch::GridSearch(Logger logger, std::shared_ptr<Output::OutputWriter> writer)
-{
-    _logger = std::move(logger);
-    _writer = std::move(writer);
-}
-
-GridSearch::GridSearch(Logger logger, std::shared_ptr<Output::OutputWriter> writer, std::filesystem::path path_to_data)
+GridSearch::GridSearch(Logger logger,
+                       std::shared_ptr<Output::JsonWriter> writer,
+                       std::filesystem::path path_to_data)
 {
     _logger = std::move(logger);
     _writer = std::move(writer);
@@ -38,14 +35,12 @@ void GridSearch::InitializeProblems()
 
     InitCouplingMap();
     MatchProblemToId();
+    ComputeWeights();
 
-    int current_problem_id = 0;
-    // Dispatch subproblems to process
     for (const auto& problem: coupling_map)
     {
         const auto subProblemFilePath = GetSubproblemPath(problem.first);
         AddSubproblem(problem);
-        current_problem_id++;
     }
 }
 
@@ -66,6 +61,7 @@ void GridSearch::InitCouplingMap()
     }
     std::string line;
 
+    std::set<int> monteCarloYearIDs;
     while (std::getline(summary, line))
     {
         // If problem name is master, skip
@@ -81,7 +77,16 @@ void GridSearch::InitCouplingMap()
         buffer >> variable_name;
         buffer >> variable_id;
         coupling_map[problem_name][variable_name] = variable_id;
+        // Set Monte Carlo iterations number using the problem's name using regex
+        std::regex regex("problem-([0-9]+)-([0-9]+)--optim-nb-([0-9]+)\\.mps");
+        std::smatch match;
+        if (std::regex_match(problem_name, match, regex))
+        {
+            monteCarloYearIDs.insert(std::stoi(match[1].str()));
+        }
     }
+    nbMonteCarloIterations = monteCarloYearIDs.size();
+    summary.close();
 }
 
 void GridSearch::MatchProblemToId()
@@ -108,13 +113,65 @@ void GridSearch::AddSubproblem(const std::pair<std::string, VariableMap>& kvp)
 {
     subproblem_map[kvp.first] = std::make_shared<SubproblemWorker>(kvp.second,
                                                                    GetSubproblemPath(kvp.first),
-                                                                   1, // This has to be changed with the subproblem's weight
+                                                                   weights[kvp.first],
                                                                    "COIN",
                                                                    0,
                                                                    solver_log_manager_,
                                                                    _logger,
                                                                    ProblemsFormat::SAVED_FILE);
     subproblems.push_back(kvp.first);
+}
+
+void GridSearch::ComputeWeights()
+{
+    std::string line;
+    auto filename(xpansionFolderPath / "weights.txt");
+    std::ifstream file(filename);
+
+    if (!file)
+    {
+        std::cout << "Set uniform weight " << std::endl;
+        for (const auto& kvp: coupling_map)
+        {
+            weights[kvp.first] = 1.0 / nbMonteCarloIterations;
+            // std::cout << "Weight for " << kvp.first << " : " << weights[kvp.first] << std::endl;
+        }
+    }
+    else
+    {
+        double weights_sum = -1;
+        while (std::getline(file, line))
+        {
+            std::stringstream buffer(line);
+            std::string problem_name;
+
+            buffer >> problem_name;
+            if (problem_name == WEIGHT_SUM_CST_STR)
+            {
+                buffer >> weights_sum;
+            }
+            else
+            {
+                buffer >> weights[problem_name];
+            }
+        }
+
+        if (weights_sum == -1)
+        {
+            std::cerr << LOGLOCATION
+                      << "ERROR : Invalid weight file format : Key WEIGHT_SUM not found."
+                      << std::endl;
+            std::exit(1);
+        }
+        else
+        {
+            for (const auto& kvp: weights)
+            {
+                weights[kvp.first] /= weights_sum;
+                // std::cout << "Weight for " << kvp.first << " : " << weights[kvp.first] << std::endl;
+            }
+        }
+    }
 }
 
 void GridSearch::SetInvestmentCostPerMwPerYear(const std::filesystem::path& path_to_mps)
@@ -166,8 +223,22 @@ void GridSearch::SetGridPoints()
     std::string line;
     bool isFirstLine = true;
 
+    int lineCount = 0;
+    for (std::string line; std::getline(grid_file, line); lineCount++)
+    {
+    }
+    gridPoints.resize(lineCount - 1);
+
+    grid_file.clear();
+    grid_file.seekg(0, std::ios::beg);
     while (std::getline(grid_file, line))
     {
+        // remove \r and \n from line if present to avoid issues with different line endings
+        line.erase(std::remove_if(line.begin(),
+                                  line.end(),
+                                  [](char c) { return c == '\r' || c == '\n'; }),
+                   line.end());
+
         std::istringstream ss(line);
         std::string token;
 
@@ -185,56 +256,57 @@ void GridSearch::SetGridPoints()
         else // Next lines are the grid points
         {
             Point point;
-            int index = -1;
+            int pointIndex = 0;
+            if (std::getline(ss, token, ','))
+            {
+                pointIndex = std::stoi(token) - 1;
+            }
+            int index = 0;
             while (std::getline(ss, token, ','))
             {
-                if (index != -1) // Skip the first column (index)
-                {
-                    point[header[index]] = std::stod(token);
-                }
-                ++index;
+                point[header[index++]] = std::stod(token);
             }
-            gridPoints.push_back(point);
+            gridPoints[pointIndex] = point;
         }
     }
     grid_file.close();
-    gridPointData.resize(gridPoints.size());
+    gridPointsData.resize(gridPoints.size());
 }
 
 void GridSearch::Run()
 {
-    for (int i = 0; i < gridPoints.size(); ++i)
+    for (int i = 0; i < gridPointsData.size(); ++i)
     {
         current_point_ = gridPoints[i];
-        gridPointData[i].point = current_point_;
+        gridPointsData[i].point = current_point_;
         for (bool isFirst = true; const auto& [subproblem_name, worker]: subproblem_map)
         {
             if (isFirst) // Compute investment cost only once
             {
                 isFirst = false;
 
-                gridPointData[i].investment_cost = 0.0;
+                gridPointsData[i].investment_cost = 0.0;
                 for (const auto& [varName, value]: current_point_)
                 {
-                    gridPointData[i].investment_cost += investCostPerMwPerYear[varName] * value;
+                    gridPointsData[i].investment_cost += investCostPerMwPerYear[varName] * value;
                 }
             }
 
             PlainData::SubProblemData subproblem_data;
             auto solution = SolveSubproblem(subproblem_data, subproblem_name, worker);
-            gridPointData[i].solution.push_back(solution);
+            gridPointsData[i].solution.push_back(solution);
 
             std::cout << "Subproblem: " << subproblem_name
                       << " Cost: " << subproblem_data.subproblem_cost << std::endl;
 
-            gridPointData[i].operational_cost += subproblem_data.subproblem_cost;
+            gridPointsData[i].operational_cost += subproblem_data.subproblem_cost;
         }
 
-        gridPointData[i].overall_cost = gridPointData[i].investment_cost
-                                        + gridPointData[i].operational_cost;
+        gridPointsData[i].overall_cost = gridPointsData[i].investment_cost
+                                         + gridPointsData[i].operational_cost;
     }
 
-    for (const auto& data: gridPointData)
+    for (const auto& data: gridPointsData)
     {
         std::cout << "Point: ";
         for (const auto& [key, value]: data.point)
@@ -246,6 +318,10 @@ void GridSearch::Run()
                   << " | Operational Cost: " << data.operational_cost << std::endl
                   << " | Overall Cost: " << data.overall_cost << std::endl;
     }
+
+    // Save the results to a file
+    _writer->write_grid_points(gridPointsData);
+    _writer->dump();
 }
 
 std::vector<double> GridSearch::SolveSubproblem(PlainData::SubProblemData& subproblem_data,

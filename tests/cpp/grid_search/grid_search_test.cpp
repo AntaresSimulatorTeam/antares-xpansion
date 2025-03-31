@@ -13,7 +13,7 @@ class GridSearchTest: public ::testing::Test
 public:
     Logger logger;
     std::shared_ptr<MathLoggerDriver> mathLoggerDriver;
-    std::shared_ptr<Output::OutputWriter> writer;
+    std::shared_ptr<Output::JsonWriter> writer;
     const std::filesystem::path data_test_dir = "data_test";
     const std::filesystem::path mps_dir = data_test_dir / "mps";
     std::filesystem::path tmpDir;
@@ -73,9 +73,9 @@ TEST_F(GridSearchTest, MiniInstanceLP)
     grid_search.launch();
 
     auto output_costs = getOutputCosts();
-    for (size_t i = 0; i < grid_search.gridPointData.size(); i++)
+    for (size_t i = 0; i < grid_search.gridPointsData.size(); i++)
     {
-        EXPECT_NEAR(grid_search.gridPointData[i].overall_cost, output_costs[i], 1e-6);
+        EXPECT_NEAR(grid_search.gridPointsData[i].overall_cost, output_costs[i], 1e-6);
     }
 }
 

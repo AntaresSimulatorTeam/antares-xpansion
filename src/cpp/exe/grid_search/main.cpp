@@ -5,16 +5,21 @@
 
 int main(int argc, char** argv)
 {
-    auto path_to_log = std::filesystem::path("./");
+    auto path_to_data = std::filesystem::current_path();
+    if (argc > 1)
+    {
+       path_to_data = std::filesystem::path(argv[1]);
+    }
+    
     std::ofstream loggerFile("report.txt");
     loggerFile.close();
-    auto logger_factory = FileAndStdoutLoggerFactory(path_to_log / "report.txt", false);
+    auto logger_factory = FileAndStdoutLoggerFactory(path_to_data / "report.txt", false);
     Logger logger = logger_factory.get_logger();
-    auto json_file_name = path_to_log / "output.json";
-    std::shared_ptr<Output::OutputWriter> writer = std::make_shared<Output::JsonWriter>(
+    auto json_file_name = path_to_data / "output.json";
+    std::shared_ptr<Output::JsonWriter> writer = std::make_shared<Output::JsonWriter>(
       std::make_shared<Clock>(),
       json_file_name);
       
-    auto grid_search = GridSearch(logger, writer);
+    auto grid_search = GridSearch(logger, writer, path_to_data);
     grid_search.launch();
 }

@@ -16,6 +16,7 @@ target_sources(grid_search_lib PRIVATE
 target_link_libraries(grid_search_lib
         PUBLIC
         antaresXpansion::benders_core
+        antaresXpansion::output_core
 )
 
 target_include_directories(grid_search_lib
