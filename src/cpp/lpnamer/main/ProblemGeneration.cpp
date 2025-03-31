@@ -477,14 +477,12 @@ void ProblemGeneration::RunProblemGeneration(
                                           variables_provider.get(),
                                           mps_file_writer.get());
           });
-        if (!weights_file.empty())
-        {
-            ProcessWeights(year_and_data,
-                           xpansion_output_dir,
-                           weights_file,
-                           solver_config_.Name(),
-                           logger);
-        }
+        WeightFileProcessor weights_file_processor;
+        weights_file_processor.ProcessWeights(year_and_data,
+                                              xpansion_output_dir,
+                                              weights_file,
+                                              solver_config_.Name(),
+                                              logger);
     }
 
     if (mode_ == SimulationInputMode::ARCHIVE)

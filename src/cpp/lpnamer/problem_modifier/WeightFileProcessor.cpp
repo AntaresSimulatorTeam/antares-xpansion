@@ -13,6 +13,10 @@ void WeightFileProcessor::ProcessWeights(
   const std::string& solver_name,
   const std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
 {
+    if (weights_file.empty())
+    {
+        return;
+    }
     const auto settings_dir = xpansion_output_dir / ".." / ".." / "settings";
     const auto general_data_file = settings_dir / "generaldata.ini";
     auto genera_data_reader = GeneralDataIniReader(general_data_file, logger);
