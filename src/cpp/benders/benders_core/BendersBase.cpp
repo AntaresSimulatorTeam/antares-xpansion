@@ -471,13 +471,13 @@ void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
 namespace
 {
 template<class T>
-std::vector<std::pair<std::string, T&>> mapAsVectorOfPair(std::map<std::string, T> map_to_flatten)
+std::vector<std::pair<std::string, T&>> mapAsVectorOfPair(std::map<std::string, T>& map_to_flatten)
 {
-    std::vector<std::pair<std::string, T>> flatten_result;
+    std::vector<std::pair<std::string, T&>> flatten_result;
     flatten_result.reserve(map_to_flatten.size());
     std::ranges::for_each(map_to_flatten,
                           [&flatten_result](auto& pair)
-                          { flatten_result.emplace_back({pair.first, pair.second}); });
+                          { flatten_result.emplace_back(pair.first, pair.second); });
     return flatten_result;
 }
 } // namespace
