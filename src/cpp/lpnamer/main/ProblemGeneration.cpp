@@ -13,10 +13,7 @@
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "antares-xpansion/lpnamer/input_reader/GeneralDataReader.h"
 #include "antares-xpansion/lpnamer/input_reader/LpFilesExtractor.h"
-#include "antares-xpansion/lpnamer/input_reader/MpsTxtWriter.h"
 #include "antares-xpansion/lpnamer/input_reader/SettingsReader.h"
-#include "antares-xpansion/lpnamer/input_reader/WeightsFileReader.h"
-#include "antares-xpansion/lpnamer/input_reader/WeightsFileWriter.h"
 #include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 #include "antares-xpansion/lpnamer/problem_modifier/AdditionalConstraints.h"
 #include "antares-xpansion/lpnamer/problem_modifier/FileProblemsProviderAdapter.h"
@@ -24,10 +21,10 @@
 #include "antares-xpansion/lpnamer/problem_modifier/LauncherHelpers.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 #include "antares-xpansion/lpnamer/problem_modifier/MasterGeneration.h"
-#include "antares-xpansion/lpnamer/problem_modifier/MasterProblemBuilder.h"
 #include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesFileAdapter.h"
 #include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesFromProblemAdapter.h"
 #include "antares-xpansion/lpnamer/problem_modifier/ProblemVariablesZipAdapter.h"
+#include "antares-xpansion/lpnamer/problem_modifier/WeightFileProcessor.h"
 #include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
 #include "antares-xpansion/lpnamer/problem_modifier/ZipProblemsProviderAdapter.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
@@ -221,20 +218,12 @@ void ProblemGeneration::ProcessWeights(
   const std::string& solver_name,
   std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
 {
-    const auto settings_dir = xpansion_output_dir / ".." / ".." / "settings";
-    const auto general_data_file = settings_dir / "generaldata.ini";
-    auto genera_data_reader = GeneralDataIniReader(general_data_file, logger);
-    auto active_years = genera_data_reader.GetActiveYears();
-    WeightsFileReader weights_file_reader(weights_file, active_years.size(), logger);
-    weights_file_reader.CheckWeightsFile();
-    auto weights_vector = weights_file_reader.WeightsList();
-    auto yearly_weight_writer = YearlyWeightsWriter(xpansion_output_dir,
-                                                    weights_vector,
-                                                    weights_file.filename(),
-                                                    active_years,
-                                                    solver_name,
-                                                    logger);
-    yearly_weight_writer.CreateWeightFile(problems_and_data);
+    WeightFileProcessor weights_file_processor;
+    weights_file_processor.ProcessWeights(problems_and_data,
+                                          xpansion_output_dir,
+                                          weights_file,
+                                          solver_name,
+                                          logger);
 }
 
 void ProblemGeneration::ExtractUtilsFiles(
