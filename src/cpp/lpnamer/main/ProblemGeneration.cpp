@@ -112,7 +112,9 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& ou
      *program It is nescasssry to avoid allocating Xpansion memory on top of the unavailable memory
      *from simulator
      **/
+#ifndef _WIN32
     malloc_trim(0);
+#endif
 
     // Handle errors
     if (results.error)
