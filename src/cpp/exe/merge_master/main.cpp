@@ -8,6 +8,7 @@
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 #include "antares-xpansion/benders/logger/User.h"
 #include "antares-xpansion/benders/merge_master_mps/MergeMasterMPS.h"
+#include "antares-xpansion/benders/merge_master_mps/StandardLp.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 
@@ -17,21 +18,31 @@ size_t StandardLp::appendCNT = 0;
 
 int main(int argc, char** argv)
 {
-    usage(argc);
-    SimulationOptions options(argv[1]);
-    options.print(std::cout);
+    // usage(argc);
+    // SimulationOptions options(argv[1]);
+    // options.print(std::cout);
+
+    MergeMasterMPSOptions options {
+        .INPUTROOT = "/home/bessinnic/Documents/antares-xpansion/merge_master_test",
+        .OUTPUTROOT = "/home/bessinnic/Documents/antares-xpansion/merge_master_test/output",
+        .STRUCTURE_FILE = "master_structure.json",
+        .SOLVER_TO_USE = "CBC",
+        .LOG_LEVEL = 1,
+    };
+
+    std::string output_file = options.OUTPUTROOT + "/output.json";
 
     Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
 
     logger->display_message("starting merge_mps");
 
     std::shared_ptr<Output::OutputWriter> writer = build_json_writer(std::filesystem::path(
-                                                                       options.JSON_FILE),
+                                                                       output_file),
                                                                      false);
     try
     {
-        MergeMPS merge_mps(options.get_base_options(), logger, writer);
-        merge_mps.launch();
+        MergeMasterMPS merge_master_mps(options, logger, writer);
+        merge_master_mps.launch();
     }
     catch (std::exception& ex)
     {
