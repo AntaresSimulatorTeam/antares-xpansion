@@ -92,10 +92,10 @@ jobs:
         run: |
           export PATH=/root/miniconda3/condabin:$PATH
           conda install -c fico-xpress "xpress==9.2.12"
-          SITE_PACKAGE=/root/miniconda3/lib/python3.8/site-packages/
+          SITE_PACKAGE=/root/miniconda3/lib/python3.8/site-packages
           XPRESS_DIR=$SITE_PACKAGE/xpresslibs
-          ls $XPRESS_DIR
           ls $SITE_SITE_PACKAGE
+          ls $XPRESS_DIR
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
           echo "XPAUTH_PATH=$SITE_PACKAGE/xpress/license/community-xpauth.xpr" >> $GITHUB_ENV
           echo "Create symbolic link for XPRESS library file because it is missing in the Python installation"
