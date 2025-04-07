@@ -113,9 +113,9 @@ jobs:
           ortools-dir: ${{env.ORTOOLS_DIR}}
 
       - name: run antares
-        shell: bash
+        shell: cmd
         run: >
-          ./${{github.workspace}}/rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits/rte-antares-9.2.0-installer-64bits.exe  examples/SmallTestFiveCandidates --solver=xpress
+          ${{github.workspace}}\rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits\rte-antares-9.2.0-installer-64bits.exe  examples\SmallTestFiveCandidates --solver=xpress
 
       - name: Configure
         shell: bash
