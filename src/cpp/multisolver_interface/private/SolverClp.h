@@ -206,7 +206,7 @@ public:
     virtual double get_mip_value() const override;
     virtual double get_lp_value() const override;
     virtual int get_splex_num_of_ite_last() const override;
-    virtual void get_lp_sol(double* primals, double* duals, double* reduced_costs) override;
+    virtual void get_lp_sol(double* primals, double* duals, double* reduced_costs) const override;
     virtual void get_mip_sol(double* primals) override;
 
     /*************************************************************************************************

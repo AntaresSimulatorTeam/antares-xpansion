@@ -51,8 +51,7 @@ void BendersMainFactory::PrepareForExecution(bool outer_loop)
     SetupLoggerAndOutputWriter(benders_options);
 
     const auto coupling_map = CouplingMapGenerator::BuildInput(benders_options.STRUCTURE_FILE,
-                                                               std::make_shared<BendersLoggerBase>(
-                                                                 benders_loggers_),
+                                                               &benders_loggers_,
                                                                "Benders");
 
     method_ = DeduceBendersMethod(coupling_map.size(), options_.BATCH_SIZE, outer_loop);

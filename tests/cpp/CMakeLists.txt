@@ -5,14 +5,14 @@
 # ===========================================================================
 # External requirements
 # ===========================================================================
-find_package (GTest REQUIRED)
+find_package(GTest REQUIRED)
 
-message ("Gtest found here: " ${GTEST_INCLUDE_DIRS})
+message("Gtest found here: " ${GTEST_INCLUDE_DIRS})
 find_package(MPI REQUIRED)
 
-if(UNIX)
-set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
-endif()
+if (UNIX)
+    set(CMAKE_CXX_COMPILER ${MPI_CXX_COMPILER})
+endif ()
 # ===========================================================================
 # Targets
 # ===========================================================================
@@ -21,11 +21,13 @@ endif()
 # unit tests
 # --------------------------------------------------------------------------
 add_subdirectory(benders)
+add_subdirectory(grid_search)
 add_subdirectory(full_run)
 add_subdirectory(helpers)
 add_subdirectory(json_output_writer)
 add_subdirectory(logger)
 add_subdirectory(lp_namer)
+add_subdirectory(merge_mps)
 add_subdirectory(outer_loop)
 add_subdirectory(restart_benders)
 add_subdirectory(sensitivity)

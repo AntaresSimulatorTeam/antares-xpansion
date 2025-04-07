@@ -661,7 +661,7 @@ int SolverXpress::get_splex_num_of_ite_last() const
     return result;
 }
 
-void SolverXpress::get_lp_sol(double* primals, double* duals, double* reduced_costs)
+void SolverXpress::get_lp_sol(double* primals, double* duals, double* reduced_costs) const
 {
     int status = XPRSgetlpsol(_xprs, primals, NULL, duals, reduced_costs);
     zero_status_check(status, "get LP sol", LOGLOCATION);

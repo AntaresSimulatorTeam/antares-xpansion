@@ -41,7 +41,6 @@ class TestCheckProfileFile:
         except ProfileFileWrongNumberOfcolumns:
             pytest.fail("ProfileFileWrongNumberOfcolumns raised improperly")
 
-
     def test_negative_values_in_profile_file(self, tmp_path):
         profile_file = TestCheckProfileFile.get_empty_file(tmp_path)
         line = "-0.5 10.02"
@@ -69,28 +68,24 @@ class TestCheckCandidateOptionType:
             _check_candidate_option_type(option, value)
 
     def test_fail_if_max_units_value_is_negative(self):
-
         option = "max-units"
         value = -1545
 
         assert _check_candidate_option_type(option, value) == False
 
     def test_fail_if_max_units_value_is_str(self):
-
         option = "max-units"
         value = "str"
 
         assert _check_candidate_option_type(option, value) == False
 
     def test_true_for_obsolete_value(self):
-
         option = "has-link-profile"
         value = "str"
 
         assert _check_candidate_option_type(option, value) == True
 
     def test_true_for_string_option_type(self):
-
         option = "link"
         value = "0-1"
 
@@ -100,12 +95,10 @@ class TestCheckCandidateOptionType:
 class TestCheckCandidateName:
 
     def test_empty_candidate_name(self):
-
         with pytest.raises(EmptyCandidateName):
             _check_candidate_name("", "section1236")
 
     def test_illegal_chars_in_candidate_name(self):
-
         with pytest.raises(IllegalCharsInCandidateName):
             _check_candidate_name("newline\n123", "section1236")
 
@@ -128,12 +121,10 @@ class TestCheckCandidateName:
 class TestCheckCandidateLink:
 
     def test_empty_link(self):
-
         with pytest.raises(EmptyCandidateLink):
             _check_candidate_link("", "section0")
 
     def test_fail_if_link_doesnt_contains_separator(self):
-
         with pytest.raises(CandidateLinkWithoutSeparator):
             _check_candidate_link("atob", "section")
         with pytest.raises(CandidateLinkWithoutSeparator):
@@ -147,7 +138,6 @@ class TestCheckCandidateLink:
 class TestCheckCandidatesFile:
 
     def test_wrong_option_type_ini_file(self, tmp_path):
-
         option = "max-units"
         value = -1545
 
@@ -162,7 +152,6 @@ class TestCheckCandidatesFile:
             check_candidates_file(ini_file, capa_dir)
 
     def test_duplicated_candidate_name_ini_file(self, tmp_path):
-
         option = "max-units"
         value = 1545
 
@@ -185,7 +174,6 @@ class TestCheckCandidatesFile:
             check_candidates_file(ini_file, capa_dir)
 
     def test_non_null_max_units_and_max_investment_simultaneaously(self, tmp_path):
-
         ini_file = tmp_path / "a.ini"
         ini_file.touch()
         ini_file.write_text(f"""[5] \n
@@ -201,7 +189,6 @@ class TestCheckCandidatesFile:
             check_candidates_file(ini_file, capa_dir)
 
     def test_null_max_units_and_max_investment_simultaneaously(self, tmp_path):
-
         ini_file = tmp_path / "a.ini"
         ini_file.touch()
         ini_file.write_text(f"""[5] \n
@@ -217,7 +204,6 @@ class TestCheckCandidatesFile:
             check_candidates_file(ini_file, capa_dir)
 
     def test_profile_file_existence(self, tmp_path):
-
         ini_file = tmp_path / "a.ini"
 
         ini_file.touch()
@@ -252,22 +238,20 @@ class TestCheckCandidatesFile:
             ini_file, capa_dir)
         assert _check_attribute_profile_values(profile.config, capa_dir) == False
 
+
 class TestCheckSettingOptionType:
 
     def test_check_setting_option_type(self):
-
         with pytest.raises(NotHandledOption):
             _check_setting_option_type("unknown option", "value")
 
     def test_str_options(self):
-
         assert _check_setting_option_type(
             "uc_type", "expansion_accurate") == True
         assert _check_setting_option_type("uc_type", 123) == False
         assert _check_setting_option_type("master", "a string") == True
 
     def test_int_options(self):
-
         assert _check_setting_option_type("timelimit", 1) == True
         assert _check_setting_option_type("timelimit", "str") == False
         assert _check_setting_option_type("timelimit", -1) == True
@@ -276,7 +260,6 @@ class TestCheckSettingOptionType:
         assert _check_setting_option_type("timelimit", 12.2) == False
 
     def test_double_options(self):
-
         assert _check_setting_option_type("relative_gap", 1.) == True
         assert _check_setting_option_type("relative_gap", -1.) == True
         assert _check_setting_option_type("relative_gap", "str") == False
@@ -289,38 +272,52 @@ class TestCheckSettingOptionValue:
             _check_setting_option_value("optimality_gap", -123)
 
     def test_optimality_gap_str_value(self):
-
         with pytest.raises(OptionTypeError):
             _check_setting_option_value("optimality_gap", "defe")
 
     def test_optimality_gap_negative_float(self):
-
         with pytest.raises(GapValueError):
             _check_setting_option_value("optimality_gap", -1.2)
 
     def test_float_max_iteration(self):
-
         with pytest.raises(OptionTypeError):
             _check_setting_option_value("max_iteration", -1.2)
 
     def test_negative_max_iteration(self):
-
         with pytest.raises(MaxIterValueError):
             _check_setting_option_value("max_iteration", -2)
 
     def test_wrong_time_limit(self):
-
         with pytest.raises(TimelimitValueError):
             _check_setting_option_value("timelimit", -30)
 
     def test_log_level(self):
-
         with pytest.raises(LogLevelValueError):
             _check_setting_option_value("log_level", -30)
 
     def test_separation_parameter_illegal_value(self):
         with pytest.raises(SeparationParameterValueError):
             _check_setting_option_value("separation_parameter", -1)
-    
+
     def test_separation_parameter_legal_value(self):
         assert _check_setting_option_value("separation_parameter", 0.39) == True
+
+    def test_is_bool_true_values(self):
+        assert is_bool("true")
+        assert is_bool("True")
+        assert is_bool("TRUE")
+        assert is_bool("1")
+
+    def test_is_bool_false_values(self):
+        assert is_bool("false")
+        assert is_bool("False")
+        assert is_bool("FALSE")
+        assert is_bool("0")
+
+    def test_is_bool_invalid_values(self):
+        assert not is_bool("oui")
+        assert not is_bool("non")
+        assert not is_bool("2")
+        assert not is_bool("")
+        assert not is_bool("vrai")
+        assert not is_bool("faux")

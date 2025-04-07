@@ -95,9 +95,8 @@ void SolverCbc::free()
 void SolverCbc::write_prob_mps(const std::filesystem::path& filename)
 {
     const int numcols = get_ncols();
-    std::shared_ptr<char[]> shared_integrality(new char[numcols]);
-    char* integrality = shared_integrality.get();
-    CoinCopyN(_clp_inner_solver.getColType(false), numcols, integrality);
+    std::vector<char> integrality(static_cast<std::size_t>(numcols));
+    CoinCopyN(_clp_inner_solver.getColType(false), numcols, integrality.data());
 
     bool hasInteger = false;
     for (int i = 0; i < numcols; ++i)
@@ -156,7 +155,7 @@ void SolverCbc::write_prob_mps(const std::filesystem::path& filename)
                           _clp_inner_solver.getColLower(),
                           _clp_inner_solver.getColUpper(),
                           _clp_inner_solver.getObjCoefficients(),
-                          hasInteger ? integrality : nullptr,
+                          hasInteger ? integrality.data() : nullptr,
                           _clp_inner_solver.getRowLower(),
                           _clp_inner_solver.getRowUpper(),
                           colNames,
@@ -791,7 +790,7 @@ int SolverCbc::get_splex_num_of_ite_last() const
     return _cbc.solver()->getIterationCount();
 }
 
-void SolverCbc::get_lp_sol(double* primals, double* duals, double* reduced_costs)
+void SolverCbc::get_lp_sol(double* primals, double* duals, double* reduced_costs) const
 {
     if (primals != nullptr)
     {

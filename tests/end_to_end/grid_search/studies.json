@@ -1,0 +1,44 @@
+{
+    "additionnal-constraints": {
+        "path": "../../../data_test/examples/additionnal-constraints"
+    },
+    "additionnal-constraints-binary": {
+        "path": "../../../data_test/examples/additionnal-constraints-binary"
+    },
+    "different_NTCs": {
+        "path": "../../../data_test/examples/different_NTCs"
+    },
+    "empty-link-profile": {
+        "path": "../../../data_test/examples/empty-link-profile"
+    },
+    "hurdles-cost-profile-value-over-one": {
+        "path": "../../../data_test/examples/hurdles-cost-profile-value-over-one"
+    },
+    "link-profile-with-empty-week": {
+        "path": "../../../data_test/examples/link-profile-with-empty-week"
+    },
+    "xpansion-test-01": {
+        "path": "../../../data_test/examples/xpansion-test-01"
+    },
+    "xpansion-test-01-hurdles-cost": {
+        "path": "../../../data_test/examples/xpansion-test-01-hurdles-cost"
+    },
+    "xpansion-test-01-weights": {
+        "path": "../../../data_test/examples/xpansion-test-01-weights"
+    },
+    "xpansion-test-02": {
+        "path": "../../../data_test/examples/xpansion-test-02"
+    },
+    "xpansion-test-02-new": {
+        "path": "../../../data_test/examples/xpansion-test-02-new"
+    },
+    "xpansion-test-03": {
+        "path": "../../../data_test/examples/xpansion-test-03"
+    },
+    "xpansion-test-04-mps-rounding": {
+        "path": "../../../data_test/examples/xpansion-test-04-mps-rounding"
+    },
+    "xpansion-test-one-link-two-candidates": {
+        "path": "../../../data_test/examples/xpansion-test-one-link-two-candidates"
+    }
+}

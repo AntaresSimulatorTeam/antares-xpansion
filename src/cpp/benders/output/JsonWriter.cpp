@@ -66,6 +66,14 @@ void JsonWriter::write_iterations(const IterationsData& iterations_data)
     write_solution(iterations_data.solution_data);
 }
 
+void JsonWriter::write_grid_points(const GridPointsData& grid_points_data)
+{
+    for (const auto& grid_point_data: grid_points_data)
+    {
+        write_grid_point(grid_point_data);
+    }
+}
+
 void JsonWriter::write_nbweeks(const int nb_weeks)
 {
     _output[NBWEEKS_C] = nb_weeks;
@@ -104,6 +112,20 @@ void JsonWriter::write_iteration(const Iteration& iter, const size_t iteration_n
         vectCandidates_l.append(candidate_l);
     }
     _output[ITERATIONS_C][strIterCnt_l][CANDIDATES_C] = vectCandidates_l;
+}
+
+void JsonWriter::write_grid_point(const GridPointData& grid_point_data)
+{
+    static int grid_point_cnt = 1;
+    std::string strGridPointCnt_l = std::to_string(grid_point_cnt++);
+
+    for (const auto& [name, value]: grid_point_data.point)
+    {
+        _output[GRID_POINTS_C][strGridPointCnt_l][GRID_POINT_C][name] = value;
+    }
+    _output[GRID_POINTS_C][strGridPointCnt_l][INVESTMENT_COST_C] = grid_point_data.investment_cost;
+    _output[GRID_POINTS_C][strGridPointCnt_l][OPERATIONAL_COST_C] = grid_point_data.operational_cost;
+    _output[GRID_POINTS_C][strGridPointCnt_l][OVERALL_COST_C] = grid_point_data.overall_cost;
 }
 
 void JsonWriter::write_solution(const SolutionData& solution)

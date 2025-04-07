@@ -1,12 +1,13 @@
-add_subdirectory (cpp)
+add_subdirectory(cpp)
 
-set(BENDERS $<TARGET_FILE_NAME:benders>)    
+set(BENDERS $<TARGET_FILE_NAME:benders>)
+set(GRID_SEARCH $<TARGET_FILE_NAME:grid_search_exe>)
 
 if (COIN_OR)
     SET(AVAILABLE_SOLVER_YML_LIST "${AVAILABLE_SOLVER_YML_LIST}- Cbc\n")
     SET(AVAILABLE_SOLVER_YML_LIST "${AVAILABLE_SOLVER_YML_LIST}- Coin\n")
-endif()
-    SET(AVAILABLE_SOLVER_YML_LIST "${AVAILABLE_SOLVER_YML_LIST}- Xpress\n")
+endif ()
+SET(AVAILABLE_SOLVER_YML_LIST "${AVAILABLE_SOLVER_YML_LIST}- Xpress\n")
 
 
 #configure file to define antares-solver executable
@@ -21,21 +22,21 @@ find_program(PYINSTALLER "pyinstaller")
 if (PYINSTALLER)
 
     if (MSVC)
-        install(CODE "execute_process(COMMAND ${PYINSTALLER} -F ${CMAKE_CURRENT_SOURCE_DIR}/python/launch.py -n antares-xpansion-launcher --add-data \"${CMAKE_CURRENT_SOURCE_DIR}/python/config.yaml;.\")" )
-    else()
-        install(CODE "execute_process(COMMAND ${PYINSTALLER} -F ${CMAKE_CURRENT_SOURCE_DIR}/python/launch.py -n antares-xpansion-launcher --add-data \"${CMAKE_CURRENT_SOURCE_DIR}/python/config.yaml:.\")" )
-    endif()
+        install(CODE "execute_process(COMMAND ${PYINSTALLER} --exclude-module _bootlocale -F ${CMAKE_CURRENT_SOURCE_DIR}/python/launch.py -n antares-xpansion-launcher --add-data \"${CMAKE_CURRENT_SOURCE_DIR}/python/config.yaml;.\")")
+    else ()
+        install(CODE "execute_process(COMMAND ${PYINSTALLER} --exclude-module _bootlocale -F ${CMAKE_CURRENT_SOURCE_DIR}/python/launch.py -n antares-xpansion-launcher --add-data \"${CMAKE_CURRENT_SOURCE_DIR}/python/config.yaml:.\")")
+    endif ()
 
     #code is executed in CMAKE_BINARY_DIR
     install(DIRECTORY ${CMAKE_BINARY_DIR}/dist/
             DESTINATION .
             USE_SOURCE_PERMISSIONS)
 else ()
-    
-    message(STATUS "PyInstaller was not found : python scripts are use for install target")
-    
-    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/python/"
-    	    DESTINATION xpansion-launcher
-    	    USE_SOURCE_PERMISSIONS)
 
-endif()
+    message(STATUS "PyInstaller was not found : python scripts are use for install target")
+
+    install(DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/python/"
+            DESTINATION xpansion-launcher
+            USE_SOURCE_PERMISSIONS)
+
+endif ()

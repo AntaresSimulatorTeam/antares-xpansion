@@ -28,7 +28,7 @@ jobs:
           fetch-depth: 0
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v45
+        uses: tj-actions/changed-files@v46
         with:
           files: |
             docker/centos7-system-deps
@@ -104,7 +104,7 @@ jobs:
         id: get-archives
         run: |
           container_id=$(docker create antaresxpansion:centos7)
-          docker cp $container_id:/workspace/antares-xpansion/archive archive    
+          docker cp $container_id:/workspace/antares-xpansion-generic/archive archive    
           echo "TGZ_NAME=$(basename "$(ls ./archive/multiple/*.tar.gz)")" >> $GITHUB_OUTPUT
           echo "SINGLE_FILE_NAME=$(basename "$(ls ./archive/single/*.tar.gz)")" >> $GITHUB_OUTPUT
           docker cp $container_id:/workspace/vcpkg_cache ${{ env.VCPKG_CACHE_DIR }}
@@ -299,14 +299,10 @@ jobs:
           name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
           path: .
 
-      - name: Get release
-        id: get_release
-        uses: bruceadams/get-release@main
-
       - name: Upload Release Asset
         env:
           GH_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} _build/${{needs.build.outputs.TGZ_NAME}}
-          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} ${{needs.build.outputs.SINGLE_FILE_NAME}}
+          gh release upload --repo ${{env.GH_REPO}} ${{ github.event.release.tag_name }} _build/${{needs.build.outputs.TGZ_NAME}}
+          gh release upload --repo ${{env.GH_REPO}} ${{ github.event.release.tag_name }} ${{needs.build.outputs.SINGLE_FILE_NAME}}
