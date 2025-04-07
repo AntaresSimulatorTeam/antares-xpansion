@@ -23,11 +23,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Get release
-        if: github.event_name == 'release' && github.event.action == 'created'
-        id: get_release
-        uses: bruceadams/get-release@main
-
       - name: Read antares-xpansion version
         id: antares-xpansion-version
         uses: ./.github/actions/read-json-value
@@ -49,11 +44,8 @@ jobs:
 
       - name: publish guide upload
         if: github.event_name == 'release' && github.event.action == 'created'
-        uses: actions/upload-release-asset@v1.0.2
-        with:
-          upload_url: ${{ steps.get_release.outputs.upload_url }}
-          asset_path: ${{ steps.create-user-guide.outputs.pdf-path }}
-          asset_name: ${{ steps.create-user-guide.outputs.pdf-name }}
-          asset_content_type: application/pdf
-
-
+        env:
+          GH_REPO: ${{ github.repository }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release upload --repo ${{env.GH_REPO}} ${{ github.event.release.tag_name }} ${{ steps.create-user-guide.outputs.pdf-path }}

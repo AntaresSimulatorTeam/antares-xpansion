@@ -273,9 +273,6 @@ jobs:
       ZIP_NAME: ${{needs.build.outputs.zip_name}}
       SINGLEFILE_NAME: ${{needs.build.outputs.singlefile_name}}
     steps:
-      - name: Get release
-        id: get_release
-        uses: bruceadams/get-release@main
 
       - name: Download Artifact
         uses: actions/download-artifact@v4
@@ -294,7 +291,7 @@ jobs:
           GH_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} ${{env.ZIP_NAME}}
-          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} ${{env.SINGLEFILE_NAME}}
+          gh release upload --repo ${{env.GH_REPO}} ${{ github.event.release.tag_name }} ${{env.ZIP_NAME}}
+          gh release upload --repo ${{env.GH_REPO}} ${{ github.event.release.tag_name }} ${{env.SINGLEFILE_NAME}}
 
       ########################
