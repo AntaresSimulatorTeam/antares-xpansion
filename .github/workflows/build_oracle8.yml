@@ -91,10 +91,10 @@ jobs:
         shell: bash
         run: |
           export PATH=/root/miniconda3/condabin:$PATH
-          conda install -c fico-xpress "xpress==9.2.12"
+          conda install -c fico-xpress "xpress==9.2.12" "xpresslibs==9.2.12"
           conda info --all
           SITE_PACKAGE=/root/miniconda3/lib/python3.8/site-packages
-          XPRESS_DIR=$SITE_PACKAGE/xpress
+          XPRESS_DIR=$SITE_PACKAGE/xpresslibs
           echo "---"
           ls $SITE_PACKAGE
           echo "---"
