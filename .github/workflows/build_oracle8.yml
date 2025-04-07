@@ -94,7 +94,7 @@ jobs:
           conda install -c fico-xpress "xpress==9.2.12"
           conda info --all
           SITE_PACKAGE=/root/miniconda3/lib/python3.8/site-packages
-          XPRESS_DIR=$SITE_PACKAGE/xpresslibs
+          XPRESS_DIR=$SITE_PACKAGE/xpress
           echo "---"
           ls $SITE_PACKAGE
           echo "---"
