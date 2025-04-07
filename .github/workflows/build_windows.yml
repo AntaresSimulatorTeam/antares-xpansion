@@ -57,9 +57,12 @@ jobs:
         shell: bash
         run: |
           python -m pip install --no-cache-dir "xpress==9.2.12"
-          XPRESS_DIR="${{ env.pythonLocation }}\Lib\site-packages\xpresslibs"
-          cp -r $XPRESS_DIR/lib ${{ env.pythonLocation }}/lib/python${{ env.PYTHON_VERSION }}/site-packages/xpress/bin
-          cp ${{ env.pythonLocation }}/lib/python${{ env.PYTHON_VERSION }}/site-packages/xpress/license/community-xpauth.xpr ${{ env.pythonLocation }}/lib/python${{ env.PYTHON_VERSION }}/site-packages/xpress/bin/xpauth.xpr
+          SITE_PACKAGE="${{ env.pythonLocation }}\Lib\site-packages"
+          XPRESS_DIR="$SITE_PACKAGE\xpresslibs"
+          ls $SITE_PACKAGE/xpress
+          ls $XPRESS_DIR
+          cp -r $XPRESS_DIR/lib $SITE_PACKAGE/xpress/bin
+          cp $SITE_PACKAGE/xpress/license/community-xpauth.xpr $SITE_PACKAGE/xpress/bin/xpauth.xpr
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
           echo "$XPRESS_DIR/bin" >> $GITHUB_PATH
 
