@@ -76,7 +76,7 @@ jobs:
           echo "XPRESS_DIR=$XPRESS_DIR"
           echo "XPRESSDIR=$XPRESSDIR"
           ls -l $XPRESS_DIR/lib
-          ls -l $XPRAUTH_PATH
+          ls -l XPAUTH_PATH
           ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so
 
       - name: Read antares-solver version
