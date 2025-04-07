@@ -7,7 +7,7 @@
 #include "antares-xpansion/lpnamer/input_reader/WeightsFileWriter.h"
 
 void WeightFileProcessor::ProcessWeights(
-  const std::vector<std::pair<int, ProblemData>>& problems_and_data,
+  const std::vector<std::pair<int, ProblemData>>& year_and_data,
   const std::filesystem::path& xpansion_output_dir,
   const std::filesystem::path& weights_file,
   const std::string& solver_name,
@@ -30,7 +30,7 @@ void WeightFileProcessor::ProcessWeights(
                                                     active_years,
                                                     solver_name,
                                                     logger);
-    yearly_weight_writer.CreateWeightFile(problems_and_data);
+    yearly_weight_writer.CreateWeightFile(year_and_data);
 }
 
 void WeightFileProcessor::ProcessWeights(
