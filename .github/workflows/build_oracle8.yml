@@ -96,7 +96,7 @@ jobs:
           SITE_PACKAGE=/root/miniconda3/lib/python3.8/site-packages
           XPRESS_DIR=$SITE_PACKAGE/xpresslibs
           echo "---"
-          ls $SITE_SITE_PACKAGE
+          ls $SITE_PACKAGE
           echo "---"
           ls $XPRESS_DIR
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
