@@ -4,7 +4,7 @@
 
 ## Context
 
-Benders build all problems. Workers are assigned problems to work on. On a single machine or node and for large studies
+Benders builds all problems. Workers are assigned problems to work on. On a single machine or node and for large studies
 with lots of problems we can hit memory limitation.
 We propose a mode "cache" where problems are not pre-loaded but loaded on demand.
 
