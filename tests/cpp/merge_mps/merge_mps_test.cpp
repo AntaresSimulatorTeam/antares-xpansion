@@ -5,6 +5,7 @@
 #include "RandomDirGenerator.h"
 #include "InMemoryWriter.h"
 #include "antares-xpansion/benders/merge_mps/MergeMPS.h"
+#include "antares-xpansion/benders/merge_mps/StandardLp.h"
 
 size_t StandardLp::appendCNT = 0;
 
