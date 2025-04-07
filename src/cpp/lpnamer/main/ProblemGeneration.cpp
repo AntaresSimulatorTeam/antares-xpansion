@@ -454,7 +454,7 @@ void ProblemGeneration::RunProblemGeneration(
     {
         auto mps_file_writer = std::make_shared<FileWriter>(lpDir_);
 
-        // vector of pair for parralellisation
+        // vector of pair for parallelization
         // ref to WeeklyDataFromAntares to avoid copies
         std::vector<
           std::pair<Antares::Solver::WeeklyProblemId, Antares::Solver::WeeklyDataFromAntares&>>
