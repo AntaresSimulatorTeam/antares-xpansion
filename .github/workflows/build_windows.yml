@@ -112,6 +112,11 @@ jobs:
           ortools-url: ${{env.ORTOOLS_URL}}
           ortools-dir: ${{env.ORTOOLS_DIR}}
 
+      - name: run antares
+        shell: bash
+        run: >
+          ./${{github.workspace}}/rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits/antares-solver.exe examples/SmallTestFiveCandidates --solver=xpress
+
       - name: Configure
         shell: bash
         run: >
@@ -190,7 +195,7 @@ jobs:
           echo "singlefile_name=${{steps.create-single-file.outputs.archive-name}}" >> "$GITHUB_OUTPUT"
   
   
-
+  
   userguide:
     runs-on: ubuntu-latest
     if: github.event_name == 'release' && github.event.action == 'created'
