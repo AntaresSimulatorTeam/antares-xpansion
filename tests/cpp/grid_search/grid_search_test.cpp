@@ -34,8 +34,7 @@ protected:
 
     void copyData()
     {
-        std::filesystem::path data_test_dir = "data_test";
-        std::filesystem::path data_dir = data_test_dir / "mini_instance_LP";
+        std::filesystem::path data_dir = "data_test/mini_instance_LP";
         tmpDir = CreateRandomSubDir(std::filesystem::temp_directory_path());
 
         std::filesystem::copy(data_dir,

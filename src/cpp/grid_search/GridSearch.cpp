@@ -85,7 +85,7 @@ void GridSearch::InitCouplingMap()
             monteCarloYearIDs.insert(std::stoi(match[1].str()));
         }
     }
-    nbMonteCarloIterations = monteCarloYearIDs.size();
+    nbMonteCarloIterations = monteCarloYearIDs.size() ? monteCarloYearIDs.size() : 1;
     summary.close();
 }
 
