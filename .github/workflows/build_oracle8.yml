@@ -95,6 +95,7 @@ jobs:
           conda info --all
           SITE_PACKAGE=/root/miniconda3/lib/python3.8/site-packages
           XPRESS_DIR=$SITE_PACKAGE/xpress
+          ls /root/miniconda3/lib/**
           echo "---"
           ls $SITE_PACKAGE
           echo "---"
