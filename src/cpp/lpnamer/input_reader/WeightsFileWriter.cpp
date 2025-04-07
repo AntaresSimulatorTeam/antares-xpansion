@@ -30,18 +30,18 @@ YearlyWeightsWriter::YearlyWeightsWriter(
 }
 
 void YearlyWeightsWriter::CreateWeightFile(
-  const std::vector<std::pair<int, ProblemData>>& problems_and_data)
+  const std::vector<std::pair<int, ProblemData>>& year_and_data)
 {
-    FillMpsWeightsMap(problems_and_data);
+    FillMpsWeightsMap(year_and_data);
     DumpMpsWeightsToFile();
 }
 
 void YearlyWeightsWriter::FillMpsWeightsMap(
-  const std::vector<std::pair<int, ProblemData>>& problems_and_data)
+  const std::vector<std::pair<int, ProblemData>>& year_and_data)
 {
     problem_filename_to_weight_.clear();
 
-    for (const auto& [mc_year, data]: problems_and_data)
+    for (const auto& [mc_year, data]: year_and_data)
     {
         if (auto it = std::find(active_years_.begin(), active_years_.end(), mc_year);
             it != active_years_.end())
