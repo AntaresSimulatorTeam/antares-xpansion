@@ -1,0 +1,2 @@
+grid_id,problem_name,type,name,area,min,max,step,min_cst,max_cst,min_efficiency
+0,all,constraint,HydroPower,area,0,1,0.05,MaxPumping,MaxHydroPower,0.8
