@@ -115,7 +115,7 @@ jobs:
       - name: run antares
         shell: bash
         run: |
-          cd ${{github.workspace}}/rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits/bin
+          cd rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits/bin
           ./rte-antares-9.2.0-installer-64bits.exe"  ${{github.workspace}}/examples/SmallTestFiveCandidates --solver=xpress
 
       - name: Configure
