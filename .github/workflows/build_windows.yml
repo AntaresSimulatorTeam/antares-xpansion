@@ -64,7 +64,7 @@ jobs:
           ls $XPRESS_DIR
             echo "----"
           ls $XPRESS_DIR/lib
-          cp -r $XPRESS_DIR/lib $SITE_PACKAGE/xpress/bin
+          cp -r $XPRESS_DIR/lib $XPRESS_DIR/bin
           cp $SITE_PACKAGE/xpress/license/community-xpauth.xpr $SITE_PACKAGE/xpress/bin/xpauth.xpr
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
           echo "$XPRESS_DIR/bin" >> $GITHUB_PATH
