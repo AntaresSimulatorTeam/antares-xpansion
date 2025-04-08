@@ -59,11 +59,6 @@ jobs:
           python -m pip install --no-cache-dir "xpress==9.2.12"
           SITE_PACKAGE="${{ env.pythonLocation }}\Lib\site-packages"
           XPRESS_DIR="$SITE_PACKAGE\xpresslibs"
-          ls $SITE_PACKAGE/xpress
-          echo "----"
-          ls $XPRESS_DIR
-            echo "----"
-          ls $XPRESS_DIR/lib
           cp -r $XPRESS_DIR/lib $XPRESS_DIR/bin
           mkdir -p $SITE_PACKAGE/xpress/bin
           cp $SITE_PACKAGE/xpress/license/community-xpauth.xpr $XPRESS_DIR/bin/xpauth.xpr
@@ -115,13 +110,6 @@ jobs:
           os: ${{matrix.os}}
           ortools-url: ${{env.ORTOOLS_URL}}
           ortools-dir: ${{env.ORTOOLS_DIR}}
-
-      - name: run antares
-        shell: bash
-        run: |
-          cd rte-antares-${{steps.antares-version.outputs.result}}-installer-64bits/bin
-          ls
-          ./antares-solver.exe ${{github.workspace}}/examples/SmallTestFiveCandidates --solver=xpress
 
       - name: Configure
         shell: bash
