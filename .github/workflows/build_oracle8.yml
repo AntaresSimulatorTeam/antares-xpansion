@@ -75,9 +75,10 @@ jobs:
       - name: Set up Python
         run: |
           dnf update -y
-          dnf install -y python3 python3-pip
+          dnf install -y python3 python3-pip python3-dev
           pip3 install wheel #Too late to install in requirements.txt
           pip3 install -r requirements-tests.txt
+          pip3 install cmake==3.28
 
       # the default python version (3.6) is too old to download xpress with pip
       # this version of miniconda embeds python3.8
@@ -94,11 +95,11 @@ jobs:
           conda install -c fico-xpress "xpress==9.2.12" "xpresslibs==9.2.12"
           conda info --all
           SITE_PACKAGE=/root/miniconda3/lib/python3.8/site-packages
-          XPRESS_DIR=/root/miniconda3/lib
+          XPRESS_DIR=/root/miniconda3
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
           echo "XPAUTH_PATH=$SITE_PACKAGE/xpress/license/community-xpauth.xpr" >> $GITHUB_ENV
           echo "Create symbolic link for XPRESS library file because it is missing in the Python installation"
-          ln -s $XPRESS_DIR/libxprs.so.42 $XPRESS_DIR/libxprs.so   
+          ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
@@ -114,7 +115,6 @@ jobs:
           git config --global safe.directory '*'
           git submodule update --remote --init vcpkg
           pushd vcpkg
-          git fetch --unshallow
           ./bootstrap-vcpkg.sh -disableMetrics
           echo "VCPKG_ROOT=$GITHUB_WORKSPACE/vcpkg" >> $GITHUB_ENV
           echo "VCPKG_CACHE_DIR=$GITHUB_WORKSPACE/vcpkg_cache" >> $GITHUB_ENV
