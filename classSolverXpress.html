@@ -160,9 +160,9 @@ Public Member Functions</h2></td></tr>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SolverXpress</b> ()</td></tr>
 <tr class="memdesc:a3fa04264091ce029e091b1c3eac8c560"><td class="mdescLeft">&#160;</td><td class="mdescRight">Default constructor of a XPRESS solver. <br /></td></tr>
 <tr class="separator:a3fa04264091ce029e091b1c3eac8c560"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a38c6323609fe66bcb9755cf967e6cab4" id="r_a38c6323609fe66bcb9755cf967e6cab4"><td class="memItemLeft" align="right" valign="top"><a id="a38c6323609fe66bcb9755cf967e6cab4" name="a38c6323609fe66bcb9755cf967e6cab4"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SolverXpress</b> (<a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;log_manager)</td></tr>
-<tr class="separator:a38c6323609fe66bcb9755cf967e6cab4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0305296901a4ded6cc491685e22a77e" id="r_ae0305296901a4ded6cc491685e22a77e"><td class="memItemLeft" align="right" valign="top"><a id="ae0305296901a4ded6cc491685e22a77e" name="ae0305296901a4ded6cc491685e22a77e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SolverXpress</b> (const <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;log_manager)</td></tr>
+<tr class="separator:ae0305296901a4ded6cc491685e22a77e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa2c353455282b7595fac4d3ff31adb85" id="r_aa2c353455282b7595fac4d3ff31adb85"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa2c353455282b7595fac4d3ff31adb85">SolverXpress</a> (const <a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> toCopy)</td></tr>
 <tr class="memdesc:aa2c353455282b7595fac4d3ff31adb85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor of XPRESS, copy the problem toCopy in memory and name it "name".  <br /></td></tr>
 <tr class="separator:aa2c353455282b7595fac4d3ff31adb85"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -175,58 +175,60 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab8d567dfeb00506a0904664c5f0f082f" id="r_ab8d567dfeb00506a0904664c5f0f082f"><td class="memItemLeft" align="right" valign="top"><a id="ab8d567dfeb00506a0904664c5f0f082f" name="ab8d567dfeb00506a0904664c5f0f082f"></a>
 <a class="el" href="classSolverXpress.html">SolverXpress</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>operator=</b> (const <a class="el" href="classSolverXpress.html">SolverXpress</a> &amp;other)=delete</td></tr>
 <tr class="separator:ab8d567dfeb00506a0904664c5f0f082f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a911f863a76807093f7b5e9ed2e128fcc" id="r_a911f863a76807093f7b5e9ed2e128fcc"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a911f863a76807093f7b5e9ed2e128fcc">get_number_of_instances</a> () override</td></tr>
+<tr class="memitem:a911f863a76807093f7b5e9ed2e128fcc" id="r_a911f863a76807093f7b5e9ed2e128fcc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a911f863a76807093f7b5e9ed2e128fcc">get_number_of_instances</a> () override</td></tr>
 <tr class="memdesc:a911f863a76807093f7b5e9ed2e128fcc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns number of instances of solver currently in memory.  <br /></td></tr>
 <tr class="separator:a911f863a76807093f7b5e9ed2e128fcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2ba0696e0acbd93d06a0beaa556a0a44" id="r_a2ba0696e0acbd93d06a0beaa556a0a44"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2ba0696e0acbd93d06a0beaa556a0a44">get_solver_name</a> () const override</td></tr>
-<tr class="memdesc:a2ba0696e0acbd93d06a0beaa556a0a44"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the solver used.  <br /></td></tr>
-<tr class="separator:a2ba0696e0acbd93d06a0beaa556a0a44"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a30b56a03a4c060bbabf2bb6fc1faa4d3" id="r_a30b56a03a4c060bbabf2bb6fc1faa4d3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a30b56a03a4c060bbabf2bb6fc1faa4d3">init</a> () override</td></tr>
+<tr class="memitem:a3eda0b0971e5ea3b412952f296fd9d04" id="r_a3eda0b0971e5ea3b412952f296fd9d04"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3eda0b0971e5ea3b412952f296fd9d04">get_solver_name</a> () const override</td></tr>
+<tr class="memdesc:a3eda0b0971e5ea3b412952f296fd9d04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the solver used.  <br /></td></tr>
+<tr class="separator:a3eda0b0971e5ea3b412952f296fd9d04"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a30b56a03a4c060bbabf2bb6fc1faa4d3" id="r_a30b56a03a4c060bbabf2bb6fc1faa4d3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a30b56a03a4c060bbabf2bb6fc1faa4d3">init</a> () override</td></tr>
 <tr class="memdesc:a30b56a03a4c060bbabf2bb6fc1faa4d3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a problem.  <br /></td></tr>
 <tr class="separator:a30b56a03a4c060bbabf2bb6fc1faa4d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af84b47270bfca3e50736d0d7bf369762" id="r_af84b47270bfca3e50736d0d7bf369762"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af84b47270bfca3e50736d0d7bf369762">free</a> () override</td></tr>
+<tr class="memitem:af84b47270bfca3e50736d0d7bf369762" id="r_af84b47270bfca3e50736d0d7bf369762"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af84b47270bfca3e50736d0d7bf369762">free</a> () override</td></tr>
 <tr class="memdesc:af84b47270bfca3e50736d0d7bf369762"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees all the datas contained in the Solver environment.  <br /></td></tr>
 <tr class="separator:af84b47270bfca3e50736d0d7bf369762"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a082b03566517838ef82b6074df5c6b22" id="r_a082b03566517838ef82b6074df5c6b22"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a082b03566517838ef82b6074df5c6b22">write_prob_mps</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memitem:a082b03566517838ef82b6074df5c6b22" id="r_a082b03566517838ef82b6074df5c6b22"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a082b03566517838ef82b6074df5c6b22">write_prob_mps</a> (const std::filesystem::path &amp;filename) override</td></tr>
 <tr class="memdesc:a082b03566517838ef82b6074df5c6b22"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes an optimization problem in a MPS file  <br /></td></tr>
 <tr class="separator:a082b03566517838ef82b6074df5c6b22"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3ed1a373d758132913bbe7481c8224c6" id="r_a3ed1a373d758132913bbe7481c8224c6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ed1a373d758132913bbe7481c8224c6">write_prob_lp</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memitem:a3ed1a373d758132913bbe7481c8224c6" id="r_a3ed1a373d758132913bbe7481c8224c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ed1a373d758132913bbe7481c8224c6">write_prob_lp</a> (const std::filesystem::path &amp;filename) override</td></tr>
 <tr class="memdesc:a3ed1a373d758132913bbe7481c8224c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes an optimization problem in a LP file  <br /></td></tr>
 <tr class="separator:a3ed1a373d758132913bbe7481c8224c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4d990973ab6d440d1a32d3e2a9786d95" id="r_a4d990973ab6d440d1a32d3e2a9786d95"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4d990973ab6d440d1a32d3e2a9786d95">save_prob</a> (const std::filesystem::path &amp;filename) override</td></tr>
 <tr class="memdesc:a4d990973ab6d440d1a32d3e2a9786d95"><td class="mdescLeft">&#160;</td><td class="mdescRight">write an optimisation problem in a file  <br /></td></tr>
 <tr class="separator:a4d990973ab6d440d1a32d3e2a9786d95"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1cfa539487637bafe3f787d5d13fc5d9" id="r_a1cfa539487637bafe3f787d5d13fc5d9"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1cfa539487637bafe3f787d5d13fc5d9">write_basis</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memitem:a1cfa539487637bafe3f787d5d13fc5d9" id="r_a1cfa539487637bafe3f787d5d13fc5d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1cfa539487637bafe3f787d5d13fc5d9">write_basis</a> (const std::filesystem::path &amp;filename) override</td></tr>
 <tr class="memdesc:a1cfa539487637bafe3f787d5d13fc5d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the current basis to a file for later input into the optimizer.  <br /></td></tr>
 <tr class="separator:a1cfa539487637bafe3f787d5d13fc5d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad57923f00fd66a3c0ca985b076bd4c72" id="r_ad57923f00fd66a3c0ca985b076bd4c72"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad57923f00fd66a3c0ca985b076bd4c72">read_prob_mps</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memitem:ad57923f00fd66a3c0ca985b076bd4c72" id="r_ad57923f00fd66a3c0ca985b076bd4c72"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad57923f00fd66a3c0ca985b076bd4c72">read_prob_mps</a> (const std::filesystem::path &amp;filename) override</td></tr>
 <tr class="memdesc:ad57923f00fd66a3c0ca985b076bd4c72"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads an optimization problem contained in a MPS file  <br /></td></tr>
 <tr class="separator:ad57923f00fd66a3c0ca985b076bd4c72"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9ad6bd3f5ca70cbcee72f3bd56cce1ee" id="r_a9ad6bd3f5ca70cbcee72f3bd56cce1ee"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9ad6bd3f5ca70cbcee72f3bd56cce1ee">read_prob_lp</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memitem:a9ad6bd3f5ca70cbcee72f3bd56cce1ee" id="r_a9ad6bd3f5ca70cbcee72f3bd56cce1ee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9ad6bd3f5ca70cbcee72f3bd56cce1ee">read_prob_lp</a> (const std::filesystem::path &amp;filename) override</td></tr>
 <tr class="memdesc:a9ad6bd3f5ca70cbcee72f3bd56cce1ee"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads an optimization problem contained in a MPS file  <br /></td></tr>
 <tr class="separator:a9ad6bd3f5ca70cbcee72f3bd56cce1ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a611102535da3de0436c79e9f9746b8e1" id="r_a611102535da3de0436c79e9f9746b8e1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a611102535da3de0436c79e9f9746b8e1">restore_prob</a> (const std::filesystem::path &amp;filename) override</td></tr>
 <tr class="memdesc:a611102535da3de0436c79e9f9746b8e1"><td class="mdescLeft">&#160;</td><td class="mdescRight">read an optimisation problem from a file  <br /></td></tr>
 <tr class="separator:a611102535da3de0436c79e9f9746b8e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a94cf7d098019f59255712f50310f27ec" id="r_a94cf7d098019f59255712f50310f27ec"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a94cf7d098019f59255712f50310f27ec">read_basis</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memitem:a94cf7d098019f59255712f50310f27ec" id="r_a94cf7d098019f59255712f50310f27ec"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a94cf7d098019f59255712f50310f27ec">read_basis</a> (const std::filesystem::path &amp;filename) override</td></tr>
 <tr class="memdesc:a94cf7d098019f59255712f50310f27ec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instructs the optimizer to read in a previously saved basis from a file.  <br /></td></tr>
 <tr class="separator:a94cf7d098019f59255712f50310f27ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a900f8ba728b3cae5c413e6af48b8469a" id="r_a900f8ba728b3cae5c413e6af48b8469a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a900f8ba728b3cae5c413e6af48b8469a">copy_prob</a> (const <a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> fictif_solv) override</td></tr>
+<tr class="memitem:a0805fe88bd7cf1b80ae00126820899f4" id="r_a0805fe88bd7cf1b80ae00126820899f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0805fe88bd7cf1b80ae00126820899f4">set_basis</a> (std::span&lt; int &gt; rstatus, std::span&lt; int &gt; cstatus) override</td></tr>
+<tr class="separator:a0805fe88bd7cf1b80ae00126820899f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a900f8ba728b3cae5c413e6af48b8469a" id="r_a900f8ba728b3cae5c413e6af48b8469a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a900f8ba728b3cae5c413e6af48b8469a">copy_prob</a> (const <a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> fictif_solv) override</td></tr>
 <tr class="memdesc:a900f8ba728b3cae5c413e6af48b8469a"><td class="mdescLeft">&#160;</td><td class="mdescRight">copy an existing problem  <br /></td></tr>
 <tr class="separator:a900f8ba728b3cae5c413e6af48b8469a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60e26e2a342599a079f66001918a8db7" id="r_a60e26e2a342599a079f66001918a8db7"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60e26e2a342599a079f66001918a8db7">get_ncols</a> () const override</td></tr>
+<tr class="memitem:a60e26e2a342599a079f66001918a8db7" id="r_a60e26e2a342599a079f66001918a8db7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60e26e2a342599a079f66001918a8db7">get_ncols</a> () const override</td></tr>
 <tr class="memdesc:a60e26e2a342599a079f66001918a8db7"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of columns of the problem  <br /></td></tr>
 <tr class="separator:a60e26e2a342599a079f66001918a8db7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a70874c831c16e3f4aa1cadb56b20542b" id="r_a70874c831c16e3f4aa1cadb56b20542b"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a70874c831c16e3f4aa1cadb56b20542b">get_nrows</a> () const override</td></tr>
+<tr class="memitem:a70874c831c16e3f4aa1cadb56b20542b" id="r_a70874c831c16e3f4aa1cadb56b20542b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a70874c831c16e3f4aa1cadb56b20542b">get_nrows</a> () const override</td></tr>
 <tr class="memdesc:a70874c831c16e3f4aa1cadb56b20542b"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of rows of the problem  <br /></td></tr>
 <tr class="separator:a70874c831c16e3f4aa1cadb56b20542b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4a0236ed82ba65d8819f057a305555dc" id="r_a4a0236ed82ba65d8819f057a305555dc"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a0236ed82ba65d8819f057a305555dc">get_nelems</a> () const override</td></tr>
+<tr class="memitem:a4a0236ed82ba65d8819f057a305555dc" id="r_a4a0236ed82ba65d8819f057a305555dc"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4a0236ed82ba65d8819f057a305555dc">get_nelems</a> () const override</td></tr>
 <tr class="memdesc:a4a0236ed82ba65d8819f057a305555dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of non zeros elements in the matrix, excluding objective  <br /></td></tr>
 <tr class="separator:a4a0236ed82ba65d8819f057a305555dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2d07cf11919794579134af3599a80dd5" id="r_a2d07cf11919794579134af3599a80dd5"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d07cf11919794579134af3599a80dd5">get_n_integer_vars</a> () const override</td></tr>
+<tr class="memitem:a2d07cf11919794579134af3599a80dd5" id="r_a2d07cf11919794579134af3599a80dd5"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d07cf11919794579134af3599a80dd5">get_n_integer_vars</a> () const override</td></tr>
 <tr class="memdesc:a2d07cf11919794579134af3599a80dd5"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of integer variables in the problem  <br /></td></tr>
 <tr class="separator:a2d07cf11919794579134af3599a80dd5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3bceada323c347824539cf47cc7dd5c6" id="r_a3bceada323c347824539cf47cc7dd5c6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3bceada323c347824539cf47cc7dd5c6">get_obj</a> (double *obj, int first, int last) const override</td></tr>
+<tr class="memitem:a3bceada323c347824539cf47cc7dd5c6" id="r_a3bceada323c347824539cf47cc7dd5c6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3bceada323c347824539cf47cc7dd5c6">get_obj</a> (double *obj, int first, int last) const override</td></tr>
 <tr class="memdesc:a3bceada323c347824539cf47cc7dd5c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the objective function coefficients for the columns in a given range  <br /></td></tr>
 <tr class="separator:a3bceada323c347824539cf47cc7dd5c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad16a6f4c1584aa3e3c647262332b34d9" id="r_ad16a6f4c1584aa3e3c647262332b34d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad16a6f4c1584aa3e3c647262332b34d9">set_obj_to_zero</a> () override</td></tr>
@@ -235,120 +237,120 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:adf6d887e5a1285f5264f664efdab0520" id="r_adf6d887e5a1285f5264f664efdab0520"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf6d887e5a1285f5264f664efdab0520">set_obj</a> (const double *obj, int first, int last) override</td></tr>
 <tr class="memdesc:adf6d887e5a1285f5264f664efdab0520"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the objective function coefficients for the columns in a given range.  <br /></td></tr>
 <tr class="separator:adf6d887e5a1285f5264f664efdab0520"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac72568f5c35f2801559201a308cac212" id="r_ac72568f5c35f2801559201a308cac212"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac72568f5c35f2801559201a308cac212">get_rows</a> (int *mstart, int *mclind, double *dmatval, int size, int *nels, int first, int last) const override</td></tr>
+<tr class="memitem:ac72568f5c35f2801559201a308cac212" id="r_ac72568f5c35f2801559201a308cac212"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac72568f5c35f2801559201a308cac212">get_rows</a> (int *mstart, int *mclind, double *dmatval, int size, int *nels, int first, int last) const override</td></tr>
 <tr class="memdesc:ac72568f5c35f2801559201a308cac212"><td class="mdescLeft">&#160;</td><td class="mdescRight">get coefficients of rows from index first to last  <br /></td></tr>
 <tr class="separator:ac72568f5c35f2801559201a308cac212"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aabe27e41a29e2c523f7669cddec87a43" id="r_aabe27e41a29e2c523f7669cddec87a43"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aabe27e41a29e2c523f7669cddec87a43">get_row_type</a> (char *qrtype, int first, int last) const override</td></tr>
+<tr class="memitem:aabe27e41a29e2c523f7669cddec87a43" id="r_aabe27e41a29e2c523f7669cddec87a43"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aabe27e41a29e2c523f7669cddec87a43">get_row_type</a> (char *qrtype, int first, int last) const override</td></tr>
 <tr class="memdesc:aabe27e41a29e2c523f7669cddec87a43"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the row types for the rows in a given range.  <br /></td></tr>
 <tr class="separator:aabe27e41a29e2c523f7669cddec87a43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad9c228655869bc90ede3bb872cba7e7" id="r_aad9c228655869bc90ede3bb872cba7e7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aad9c228655869bc90ede3bb872cba7e7">get_rhs</a> (double *rhs, int first, int last) const override</td></tr>
+<tr class="memitem:aad9c228655869bc90ede3bb872cba7e7" id="r_aad9c228655869bc90ede3bb872cba7e7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aad9c228655869bc90ede3bb872cba7e7">get_rhs</a> (double *rhs, int first, int last) const override</td></tr>
 <tr class="memdesc:aad9c228655869bc90ede3bb872cba7e7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the right-hand sides of the rows in a given range.  <br /></td></tr>
 <tr class="separator:aad9c228655869bc90ede3bb872cba7e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a845077444be6eb1ea5e4297fbb23a31b" id="r_a845077444be6eb1ea5e4297fbb23a31b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a845077444be6eb1ea5e4297fbb23a31b">get_rhs_range</a> (double *range, int first, int last) const override</td></tr>
+<tr class="memitem:a845077444be6eb1ea5e4297fbb23a31b" id="r_a845077444be6eb1ea5e4297fbb23a31b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a845077444be6eb1ea5e4297fbb23a31b">get_rhs_range</a> (double *range, int first, int last) const override</td></tr>
 <tr class="memdesc:a845077444be6eb1ea5e4297fbb23a31b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the right hand side range values for the rows in a given range.  <br /></td></tr>
 <tr class="separator:a845077444be6eb1ea5e4297fbb23a31b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a13482a18ef605e5bcf9dcc165d9b3695" id="r_a13482a18ef605e5bcf9dcc165d9b3695"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a13482a18ef605e5bcf9dcc165d9b3695">get_col_type</a> (char *coltype, int first, int last) const override</td></tr>
+<tr class="memitem:a13482a18ef605e5bcf9dcc165d9b3695" id="r_a13482a18ef605e5bcf9dcc165d9b3695"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a13482a18ef605e5bcf9dcc165d9b3695">get_col_type</a> (char *coltype, int first, int last) const override</td></tr>
 <tr class="memdesc:a13482a18ef605e5bcf9dcc165d9b3695"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the column types for the columns in a given range.  <br /></td></tr>
 <tr class="separator:a13482a18ef605e5bcf9dcc165d9b3695"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac59e14478024918c3a7d2388194765b3" id="r_ac59e14478024918c3a7d2388194765b3"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac59e14478024918c3a7d2388194765b3">get_lb</a> (double *lb, int fisrt, int last) const override</td></tr>
+<tr class="memitem:ac59e14478024918c3a7d2388194765b3" id="r_ac59e14478024918c3a7d2388194765b3"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac59e14478024918c3a7d2388194765b3">get_lb</a> (double *lb, int fisrt, int last) const override</td></tr>
 <tr class="memdesc:ac59e14478024918c3a7d2388194765b3"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the lower bounds for variables in a given range.  <br /></td></tr>
 <tr class="separator:ac59e14478024918c3a7d2388194765b3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb3025316e178fcdde78eb35ff6f2999" id="r_adb3025316e178fcdde78eb35ff6f2999"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adb3025316e178fcdde78eb35ff6f2999">get_ub</a> (double *ub, int fisrt, int last) const override</td></tr>
+<tr class="memitem:adb3025316e178fcdde78eb35ff6f2999" id="r_adb3025316e178fcdde78eb35ff6f2999"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adb3025316e178fcdde78eb35ff6f2999">get_ub</a> (double *ub, int fisrt, int last) const override</td></tr>
 <tr class="memdesc:adb3025316e178fcdde78eb35ff6f2999"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the upper bounds for variables in a given range.  <br /></td></tr>
 <tr class="separator:adb3025316e178fcdde78eb35ff6f2999"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a155d04192871acfbf532d81aa132729b" id="r_a155d04192871acfbf532d81aa132729b"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a155d04192871acfbf532d81aa132729b">get_row_index</a> (const std::string &amp;name) override</td></tr>
+<tr class="memitem:a155d04192871acfbf532d81aa132729b" id="r_a155d04192871acfbf532d81aa132729b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a155d04192871acfbf532d81aa132729b">get_row_index</a> (const std::string &amp;name) override</td></tr>
 <tr class="memdesc:a155d04192871acfbf532d81aa132729b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index of row named "name".  <br /></td></tr>
 <tr class="separator:a155d04192871acfbf532d81aa132729b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afd0d05f90ba53013ad31e6e303c2c98a" id="r_afd0d05f90ba53013ad31e6e303c2c98a"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd0d05f90ba53013ad31e6e303c2c98a">get_col_index</a> (const std::string &amp;name) override</td></tr>
+<tr class="memitem:afd0d05f90ba53013ad31e6e303c2c98a" id="r_afd0d05f90ba53013ad31e6e303c2c98a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afd0d05f90ba53013ad31e6e303c2c98a">get_col_index</a> (const std::string &amp;name) override</td></tr>
 <tr class="memdesc:afd0d05f90ba53013ad31e6e303c2c98a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index of column named "name".  <br /></td></tr>
 <tr class="separator:afd0d05f90ba53013ad31e6e303c2c98a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a504401abc8f6a838c1e8d4d02eaf39c6" id="r_a504401abc8f6a838c1e8d4d02eaf39c6"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a504401abc8f6a838c1e8d4d02eaf39c6">get_row_names</a> (int first, int last) override</td></tr>
+<tr class="memitem:a504401abc8f6a838c1e8d4d02eaf39c6" id="r_a504401abc8f6a838c1e8d4d02eaf39c6"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a504401abc8f6a838c1e8d4d02eaf39c6">get_row_names</a> (int first, int last) override</td></tr>
 <tr class="memdesc:a504401abc8f6a838c1e8d4d02eaf39c6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of row from index first to last cannot be declared as const because of some solver methods.  <br /></td></tr>
 <tr class="separator:a504401abc8f6a838c1e8d4d02eaf39c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4e2fc8ba03aa47012407f3a1835203f8" id="r_a4e2fc8ba03aa47012407f3a1835203f8"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4e2fc8ba03aa47012407f3a1835203f8">get_row_names</a> () override</td></tr>
+<tr class="memitem:a4e2fc8ba03aa47012407f3a1835203f8" id="r_a4e2fc8ba03aa47012407f3a1835203f8"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4e2fc8ba03aa47012407f3a1835203f8">get_row_names</a> () override</td></tr>
 <tr class="memdesc:a4e2fc8ba03aa47012407f3a1835203f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of rows.  <br /></td></tr>
 <tr class="separator:a4e2fc8ba03aa47012407f3a1835203f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af7d89f1f23d6081b415210f4b3c21f32" id="r_af7d89f1f23d6081b415210f4b3c21f32"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af7d89f1f23d6081b415210f4b3c21f32">get_col_names</a> (int first, int last) override</td></tr>
+<tr class="memitem:af7d89f1f23d6081b415210f4b3c21f32" id="r_af7d89f1f23d6081b415210f4b3c21f32"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af7d89f1f23d6081b415210f4b3c21f32">get_col_names</a> (int first, int last) override</td></tr>
 <tr class="memdesc:af7d89f1f23d6081b415210f4b3c21f32"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of columns from index first to last cannot be declared as const because of some solver methods.  <br /></td></tr>
 <tr class="separator:af7d89f1f23d6081b415210f4b3c21f32"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a225c0f0832d22c6ca8b1dcdd152ba3dc" id="r_a225c0f0832d22c6ca8b1dcdd152ba3dc"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a225c0f0832d22c6ca8b1dcdd152ba3dc">get_col_names</a> () override</td></tr>
+<tr class="memitem:a225c0f0832d22c6ca8b1dcdd152ba3dc" id="r_a225c0f0832d22c6ca8b1dcdd152ba3dc"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a225c0f0832d22c6ca8b1dcdd152ba3dc">get_col_names</a> () override</td></tr>
 <tr class="memdesc:a225c0f0832d22c6ca8b1dcdd152ba3dc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of columns.  <br /></td></tr>
 <tr class="separator:a225c0f0832d22c6ca8b1dcdd152ba3dc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d7e555228a8b6404a00a89754e35ab1" id="r_a6d7e555228a8b6404a00a89754e35ab1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6d7e555228a8b6404a00a89754e35ab1">del_rows</a> (int first, int last) override</td></tr>
+<tr class="memitem:a6d7e555228a8b6404a00a89754e35ab1" id="r_a6d7e555228a8b6404a00a89754e35ab1"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6d7e555228a8b6404a00a89754e35ab1">del_rows</a> (int first, int last) override</td></tr>
 <tr class="memdesc:a6d7e555228a8b6404a00a89754e35ab1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes rows between index first and last.  <br /></td></tr>
 <tr class="separator:a6d7e555228a8b6404a00a89754e35ab1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91269b74f5f1c6c19234165f614a2898" id="r_a91269b74f5f1c6c19234165f614a2898"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a91269b74f5f1c6c19234165f614a2898">add_rows</a> (int newrows, int newnz, const char *qrtype, const double *rhs, const double *range, const int *mstart, const int *mclind, const double *dmatval, const std::vector&lt; std::string &gt; &amp;row_names) override</td></tr>
+<tr class="memitem:a91269b74f5f1c6c19234165f614a2898" id="r_a91269b74f5f1c6c19234165f614a2898"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a91269b74f5f1c6c19234165f614a2898">add_rows</a> (int newrows, int newnz, const char *qrtype, const double *rhs, const double *range, const int *mstart, const int *mclind, const double *dmatval, const std::vector&lt; std::string &gt; &amp;row_names) override</td></tr>
 <tr class="memdesc:a91269b74f5f1c6c19234165f614a2898"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds rows to the problem.  <br /></td></tr>
 <tr class="separator:a91269b74f5f1c6c19234165f614a2898"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6853d16704d40630fe13d25b480a1069" id="r_a6853d16704d40630fe13d25b480a1069"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6853d16704d40630fe13d25b480a1069">add_cols</a> (int newcol, int newnz, const double *objx, const int *mstart, const int *mrwind, const double *dmatval, const double *bdl, const double *bdu, const std::vector&lt; std::string &gt; &amp;col_names) override</td></tr>
+<tr class="memitem:a6853d16704d40630fe13d25b480a1069" id="r_a6853d16704d40630fe13d25b480a1069"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6853d16704d40630fe13d25b480a1069">add_cols</a> (int newcol, int newnz, const double *objx, const int *mstart, const int *mrwind, const double *dmatval, const double *bdl, const double *bdu, const std::vector&lt; std::string &gt; &amp;col_names) override</td></tr>
 <tr class="memdesc:a6853d16704d40630fe13d25b480a1069"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds new columns to the problem.  <br /></td></tr>
 <tr class="separator:a6853d16704d40630fe13d25b480a1069"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a3d66403a0b9cad3c4988c5f943fcfc57" id="r_a3d66403a0b9cad3c4988c5f943fcfc57"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d66403a0b9cad3c4988c5f943fcfc57">add_name</a> (int type, const char *cnames, int indice) override</td></tr>
+<tr class="memitem:a3d66403a0b9cad3c4988c5f943fcfc57" id="r_a3d66403a0b9cad3c4988c5f943fcfc57"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3d66403a0b9cad3c4988c5f943fcfc57">add_name</a> (int type, const char *cnames, int indice) override</td></tr>
 <tr class="memdesc:a3d66403a0b9cad3c4988c5f943fcfc57"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a name to a row or a column.  <br /></td></tr>
 <tr class="separator:a3d66403a0b9cad3c4988c5f943fcfc57"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a05399566fe065a08fa41bf8e705be739" id="r_a05399566fe065a08fa41bf8e705be739"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05399566fe065a08fa41bf8e705be739">add_names</a> (int type, const std::vector&lt; std::string &gt; &amp;cnames, int first, int end) override</td></tr>
+<tr class="memitem:a05399566fe065a08fa41bf8e705be739" id="r_a05399566fe065a08fa41bf8e705be739"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a05399566fe065a08fa41bf8e705be739">add_names</a> (int type, const std::vector&lt; std::string &gt; &amp;cnames, int first, int end) override</td></tr>
 <tr class="separator:a05399566fe065a08fa41bf8e705be739"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9d20d096f5eba5bd073e0b2d7554428b" id="r_a9d20d096f5eba5bd073e0b2d7554428b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9d20d096f5eba5bd073e0b2d7554428b">chg_obj</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; double &gt; &amp;obj) override</td></tr>
+<tr class="memitem:a9d20d096f5eba5bd073e0b2d7554428b" id="r_a9d20d096f5eba5bd073e0b2d7554428b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9d20d096f5eba5bd073e0b2d7554428b">chg_obj</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; double &gt; &amp;obj) override</td></tr>
 <tr class="memdesc:a9d20d096f5eba5bd073e0b2d7554428b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change coefficients in objective function.  <br /></td></tr>
 <tr class="separator:a9d20d096f5eba5bd073e0b2d7554428b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a07bf0db4f570f71740af10c1943c5027" id="r_a07bf0db4f570f71740af10c1943c5027"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a07bf0db4f570f71740af10c1943c5027">chg_obj_direction</a> (const bool minimize) override</td></tr>
+<tr class="memitem:a07bf0db4f570f71740af10c1943c5027" id="r_a07bf0db4f570f71740af10c1943c5027"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a07bf0db4f570f71740af10c1943c5027">chg_obj_direction</a> (const bool minimize) override</td></tr>
 <tr class="memdesc:a07bf0db4f570f71740af10c1943c5027"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the problem's objective function sense to minimize or maximize.  <br /></td></tr>
 <tr class="separator:a07bf0db4f570f71740af10c1943c5027"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae13bac444a57274195b6fef413fbff75" id="r_ae13bac444a57274195b6fef413fbff75"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae13bac444a57274195b6fef413fbff75">chg_bounds</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; char &gt; &amp;qbtype, const std::vector&lt; double &gt; &amp;bnd) override</td></tr>
+<tr class="memitem:ae13bac444a57274195b6fef413fbff75" id="r_ae13bac444a57274195b6fef413fbff75"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae13bac444a57274195b6fef413fbff75">chg_bounds</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; char &gt; &amp;qbtype, const std::vector&lt; double &gt; &amp;bnd) override</td></tr>
 <tr class="memdesc:ae13bac444a57274195b6fef413fbff75"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change bounds of some variables.  <br /></td></tr>
 <tr class="separator:ae13bac444a57274195b6fef413fbff75"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad640fc6e5e2bfa1d8fc88b444fe21b7e" id="r_ad640fc6e5e2bfa1d8fc88b444fe21b7e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad640fc6e5e2bfa1d8fc88b444fe21b7e">chg_col_type</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; char &gt; &amp;qctype) override</td></tr>
+<tr class="memitem:ad640fc6e5e2bfa1d8fc88b444fe21b7e" id="r_ad640fc6e5e2bfa1d8fc88b444fe21b7e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad640fc6e5e2bfa1d8fc88b444fe21b7e">chg_col_type</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; char &gt; &amp;qctype) override</td></tr>
 <tr class="memdesc:ad640fc6e5e2bfa1d8fc88b444fe21b7e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change type of some columns.  <br /></td></tr>
 <tr class="separator:ad640fc6e5e2bfa1d8fc88b444fe21b7e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aea4b1d26fe9cadc968305c6c2fe3b442" id="r_aea4b1d26fe9cadc968305c6c2fe3b442"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea4b1d26fe9cadc968305c6c2fe3b442">chg_rhs</a> (int id_row, double val) override</td></tr>
+<tr class="memitem:aea4b1d26fe9cadc968305c6c2fe3b442" id="r_aea4b1d26fe9cadc968305c6c2fe3b442"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aea4b1d26fe9cadc968305c6c2fe3b442">chg_rhs</a> (int id_row, double val) override</td></tr>
 <tr class="memdesc:aea4b1d26fe9cadc968305c6c2fe3b442"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change rhs of a row.  <br /></td></tr>
 <tr class="separator:aea4b1d26fe9cadc968305c6c2fe3b442"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a036c80d5dc830651349d5d32c8822a0b" id="r_a036c80d5dc830651349d5d32c8822a0b"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a036c80d5dc830651349d5d32c8822a0b">chg_coef</a> (int id_row, int id_col, double val) override</td></tr>
+<tr class="memitem:a036c80d5dc830651349d5d32c8822a0b" id="r_a036c80d5dc830651349d5d32c8822a0b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a036c80d5dc830651349d5d32c8822a0b">chg_coef</a> (int id_row, int id_col, double val) override</td></tr>
 <tr class="memdesc:a036c80d5dc830651349d5d32c8822a0b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change a coefficient in the matrix.  <br /></td></tr>
 <tr class="separator:a036c80d5dc830651349d5d32c8822a0b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e3d875088b872c4b8153c2067b8fed4" id="r_a9e3d875088b872c4b8153c2067b8fed4"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9e3d875088b872c4b8153c2067b8fed4">chg_row_name</a> (int id_row, const std::string &amp;name) override</td></tr>
+<tr class="memitem:a9e3d875088b872c4b8153c2067b8fed4" id="r_a9e3d875088b872c4b8153c2067b8fed4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9e3d875088b872c4b8153c2067b8fed4">chg_row_name</a> (int id_row, const std::string &amp;name) override</td></tr>
 <tr class="memdesc:a9e3d875088b872c4b8153c2067b8fed4"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a constraint.  <br /></td></tr>
 <tr class="separator:a9e3d875088b872c4b8153c2067b8fed4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeff0db8ee002795490782b17cd4be857" id="r_aeff0db8ee002795490782b17cd4be857"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeff0db8ee002795490782b17cd4be857">chg_col_name</a> (int id_col, const std::string &amp;name) override</td></tr>
+<tr class="memitem:aeff0db8ee002795490782b17cd4be857" id="r_aeff0db8ee002795490782b17cd4be857"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeff0db8ee002795490782b17cd4be857">chg_col_name</a> (int id_col, const std::string &amp;name) override</td></tr>
 <tr class="memdesc:aeff0db8ee002795490782b17cd4be857"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a variable.  <br /></td></tr>
 <tr class="separator:aeff0db8ee002795490782b17cd4be857"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a12ef1cde8c6b872124f5e2a9f312da17" id="r_a12ef1cde8c6b872124f5e2a9f312da17"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a12ef1cde8c6b872124f5e2a9f312da17">solve_lp</a> () override</td></tr>
+<tr class="memitem:a12ef1cde8c6b872124f5e2a9f312da17" id="r_a12ef1cde8c6b872124f5e2a9f312da17"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a12ef1cde8c6b872124f5e2a9f312da17">solve_lp</a> () override</td></tr>
 <tr class="memdesc:a12ef1cde8c6b872124f5e2a9f312da17"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves a problem as LP.  <br /></td></tr>
 <tr class="separator:a12ef1cde8c6b872124f5e2a9f312da17"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa7bf8f27561d533fbf0c158cd951e261" id="r_aa7bf8f27561d533fbf0c158cd951e261"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa7bf8f27561d533fbf0c158cd951e261">solve_mip</a> () override</td></tr>
+<tr class="memitem:aa7bf8f27561d533fbf0c158cd951e261" id="r_aa7bf8f27561d533fbf0c158cd951e261"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa7bf8f27561d533fbf0c158cd951e261">solve_mip</a> () override</td></tr>
 <tr class="memdesc:aa7bf8f27561d533fbf0c158cd951e261"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves a problem as MIP.  <br /></td></tr>
 <tr class="separator:aa7bf8f27561d533fbf0c158cd951e261"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a517b84459c391dcbe6f94fcf81d97bee" id="r_a517b84459c391dcbe6f94fcf81d97bee"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a517b84459c391dcbe6f94fcf81d97bee">get_basis</a> (int *rstatus, int *cstatus) const override</td></tr>
+<tr class="memitem:a517b84459c391dcbe6f94fcf81d97bee" id="r_a517b84459c391dcbe6f94fcf81d97bee"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a517b84459c391dcbe6f94fcf81d97bee">get_basis</a> (int *rstatus, int *cstatus) const override</td></tr>
 <tr class="memdesc:a517b84459c391dcbe6f94fcf81d97bee"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current basis into the user’s data arrays.  <br /></td></tr>
 <tr class="separator:a517b84459c391dcbe6f94fcf81d97bee"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7f4b3f01f46c05fc6a59bfeb33eefab0" id="r_a7f4b3f01f46c05fc6a59bfeb33eefab0"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7f4b3f01f46c05fc6a59bfeb33eefab0">get_mip_value</a> () const override</td></tr>
+<tr class="memitem:a7f4b3f01f46c05fc6a59bfeb33eefab0" id="r_a7f4b3f01f46c05fc6a59bfeb33eefab0"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7f4b3f01f46c05fc6a59bfeb33eefab0">get_mip_value</a> () const override</td></tr>
 <tr class="memdesc:a7f4b3f01f46c05fc6a59bfeb33eefab0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the optimal value of a MIP problem (available after method "solve_mip")  <br /></td></tr>
 <tr class="separator:a7f4b3f01f46c05fc6a59bfeb33eefab0"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aeb649da555b2ecdc8fae87789a1d0401" id="r_aeb649da555b2ecdc8fae87789a1d0401"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeb649da555b2ecdc8fae87789a1d0401">get_lp_value</a> () const override</td></tr>
+<tr class="memitem:aeb649da555b2ecdc8fae87789a1d0401" id="r_aeb649da555b2ecdc8fae87789a1d0401"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aeb649da555b2ecdc8fae87789a1d0401">get_lp_value</a> () const override</td></tr>
 <tr class="memdesc:aeb649da555b2ecdc8fae87789a1d0401"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the optimal value of a LP problem (available after method "solve_lp" )  <br /></td></tr>
 <tr class="separator:aeb649da555b2ecdc8fae87789a1d0401"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab1e1124ca62d77ec554705f60b47ba8f" id="r_ab1e1124ca62d77ec554705f60b47ba8f"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab1e1124ca62d77ec554705f60b47ba8f">get_splex_num_of_ite_last</a> () const override</td></tr>
+<tr class="memitem:ab1e1124ca62d77ec554705f60b47ba8f" id="r_ab1e1124ca62d77ec554705f60b47ba8f"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab1e1124ca62d77ec554705f60b47ba8f">get_splex_num_of_ite_last</a> () const override</td></tr>
 <tr class="memdesc:ab1e1124ca62d77ec554705f60b47ba8f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of simplex iterations done in the last resolution of the problem.  <br /></td></tr>
 <tr class="separator:ab1e1124ca62d77ec554705f60b47ba8f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92801ba2b8f010a854d436bbc5994473" id="r_a92801ba2b8f010a854d436bbc5994473"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a92801ba2b8f010a854d436bbc5994473">get_lp_sol</a> (double *primals, double *duals, double *reduced_costs) const override</td></tr>
+<tr class="memitem:a92801ba2b8f010a854d436bbc5994473" id="r_a92801ba2b8f010a854d436bbc5994473"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a92801ba2b8f010a854d436bbc5994473">get_lp_sol</a> (double *primals, double *duals, double *reduced_costs) const override</td></tr>
 <tr class="memdesc:a92801ba2b8f010a854d436bbc5994473"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get LP solution of a problem (available after method "solve_lp")  <br /></td></tr>
 <tr class="separator:a92801ba2b8f010a854d436bbc5994473"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af0190fc1d357501a3d91f0e660e2b602" id="r_af0190fc1d357501a3d91f0e660e2b602"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0190fc1d357501a3d91f0e660e2b602">get_mip_sol</a> (double *primals) override</td></tr>
+<tr class="memitem:af0190fc1d357501a3d91f0e660e2b602" id="r_af0190fc1d357501a3d91f0e660e2b602"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af0190fc1d357501a3d91f0e660e2b602">get_mip_sol</a> (double *primals) override</td></tr>
 <tr class="memdesc:af0190fc1d357501a3d91f0e660e2b602"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get MIP solution of a problem (available after method "solve_mip")  <br /></td></tr>
 <tr class="separator:af0190fc1d357501a3d91f0e660e2b602"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6c98dc192547923d80e504c784f5e5bc" id="r_a6c98dc192547923d80e504c784f5e5bc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6c98dc192547923d80e504c784f5e5bc">set_output_log_level</a> (int loglevel) final</td></tr>
 <tr class="memdesc:a6c98dc192547923d80e504c784f5e5bc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets log level of the solver.  <br /></td></tr>
 <tr class="separator:a6c98dc192547923d80e504c784f5e5bc"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a52225201bf75879e35239dc675c4c742" id="r_a52225201bf75879e35239dc675c4c742"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a52225201bf75879e35239dc675c4c742">set_algorithm</a> (const std::string &amp;algo) override</td></tr>
+<tr class="memitem:a52225201bf75879e35239dc675c4c742" id="r_a52225201bf75879e35239dc675c4c742"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a52225201bf75879e35239dc675c4c742">set_algorithm</a> (const std::string &amp;algo) override</td></tr>
 <tr class="memdesc:a52225201bf75879e35239dc675c4c742"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets algorithm used by solver to solve LP's.  <br /></td></tr>
 <tr class="separator:a52225201bf75879e35239dc675c4c742"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af52039f789a9248de6577e8df8c3d221" id="r_af52039f789a9248de6577e8df8c3d221"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af52039f789a9248de6577e8df8c3d221">set_threads</a> (int n_threads) override</td></tr>
+<tr class="memitem:af52039f789a9248de6577e8df8c3d221" id="r_af52039f789a9248de6577e8df8c3d221"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af52039f789a9248de6577e8df8c3d221">set_threads</a> (int n_threads) override</td></tr>
 <tr class="memdesc:af52039f789a9248de6577e8df8c3d221"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the maximum number of threads used to perform optimization.  <br /></td></tr>
 <tr class="separator:af52039f789a9248de6577e8df8c3d221"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4c42cba908e74b545238e6f326713360" id="r_a4c42cba908e74b545238e6f326713360"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c42cba908e74b545238e6f326713360">set_optimality_gap</a> (double gap) override</td></tr>
+<tr class="memitem:a4c42cba908e74b545238e6f326713360" id="r_a4c42cba908e74b545238e6f326713360"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4c42cba908e74b545238e6f326713360">set_optimality_gap</a> (double gap) override</td></tr>
 <tr class="memdesc:a4c42cba908e74b545238e6f326713360"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the optimality gap.  <br /></td></tr>
 <tr class="separator:a4c42cba908e74b545238e6f326713360"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae05ef3b1c62d0c167b42c6a705a123a7" id="r_ae05ef3b1c62d0c167b42c6a705a123a7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae05ef3b1c62d0c167b42c6a705a123a7">set_simplex_iter</a> (int iter) override</td></tr>
+<tr class="memitem:ae05ef3b1c62d0c167b42c6a705a123a7" id="r_ae05ef3b1c62d0c167b42c6a705a123a7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae05ef3b1c62d0c167b42c6a705a123a7">set_simplex_iter</a> (int iter) override</td></tr>
 <tr class="memdesc:ae05ef3b1c62d0c167b42c6a705a123a7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the maximum number of simplex iterations the solver can perform.  <br /></td></tr>
 <tr class="separator:ae05ef3b1c62d0c167b42c6a705a123a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classSolverAbstract"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classSolverAbstract')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classSolverAbstract.html">SolverAbstract</a></td></tr>
@@ -2005,8 +2007,8 @@ Additional Inherited Members</h2></td></tr>
 
 </div>
 </div>
-<a id="a2ba0696e0acbd93d06a0beaa556a0a44" name="a2ba0696e0acbd93d06a0beaa556a0a44"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2ba0696e0acbd93d06a0beaa556a0a44">&#9670;&#160;</a></span>get_solver_name()</h2>
+<a id="a3eda0b0971e5ea3b412952f296fd9d04" name="a3eda0b0971e5ea3b412952f296fd9d04"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3eda0b0971e5ea3b412952f296fd9d04">&#9670;&#160;</a></span>get_solver_name()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2015,7 +2017,7 @@ Additional Inherited Members</h2></td></tr>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual std::string SolverXpress::get_solver_name </td>
+          <td class="memname">std::string SolverXpress::get_solver_name </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -2348,6 +2350,37 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 
 <p>Implements <a class="el" href="classSolverAbstract.html#a2017c2d79a795514c5de14ad42bf779b">SolverAbstract</a>.</p>
+
+</div>
+</div>
+<a id="a0805fe88bd7cf1b80ae00126820899f4" name="a0805fe88bd7cf1b80ae00126820899f4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0805fe88bd7cf1b80ae00126820899f4">&#9670;&#160;</a></span>set_basis()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SolverXpress::set_basis </td>
+          <td>(</td>
+          <td class="paramtype">std::span&lt; int &gt;</td>          <td class="paramname"><span class="paramname"><em>rstatus</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::span&lt; int &gt;</td>          <td class="paramname"><span class="paramname"><em>cstatus</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classSolverAbstract.html">SolverAbstract</a>.</p>
 
 </div>
 </div>

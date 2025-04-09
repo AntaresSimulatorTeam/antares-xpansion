@@ -340,6 +340,8 @@ unsigned int&#160;</td><td class="memItemRight" valign="bottom"><b>Week</b> () c
 <tr class="memitem:aee558629ab44c44cd971eeb41bde4088" id="r_aee558629ab44c44cd971eeb41bde4088"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aee558629ab44c44cd971eeb41bde4088">read_basis</a> (const std::filesystem::path &amp;filename) override</td></tr>
 <tr class="memdesc:aee558629ab44c44cd971eeb41bde4088"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instructs the optimizer to read in a previously saved basis from a file.  <br /></td></tr>
 <tr class="separator:aee558629ab44c44cd971eeb41bde4088"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3c2123dcdb94ccc7dad0046116d03e0" id="r_ac3c2123dcdb94ccc7dad0046116d03e0"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3c2123dcdb94ccc7dad0046116d03e0">set_basis</a> (std::span&lt; int &gt; rstatus, std::span&lt; int &gt; cstatus) override</td></tr>
+<tr class="separator:ac3c2123dcdb94ccc7dad0046116d03e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab385b74ab52084f8be1482ffc31578e5" id="r_ab385b74ab52084f8be1482ffc31578e5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab385b74ab52084f8be1482ffc31578e5">save_prob</a> (const std::filesystem::path &amp;filename) override</td></tr>
 <tr class="memdesc:ab385b74ab52084f8be1482ffc31578e5"><td class="mdescLeft">&#160;</td><td class="mdescRight">write an optimisation problem in a file  <br /></td></tr>
 <tr class="separator:ab385b74ab52084f8be1482ffc31578e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -2309,6 +2311,37 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 
 <p>Implements <a class="el" href="classSolverAbstract.html#a2017c2d79a795514c5de14ad42bf779b">SolverAbstract</a>.</p>
+
+</div>
+</div>
+<a id="ac3c2123dcdb94ccc7dad0046116d03e0" name="ac3c2123dcdb94ccc7dad0046116d03e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3c2123dcdb94ccc7dad0046116d03e0">&#9670;&#160;</a></span>set_basis()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void Problem::set_basis </td>
+          <td>(</td>
+          <td class="paramtype">std::span&lt; int &gt;</td>          <td class="paramname"><span class="paramname"><em>rstatus</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::span&lt; int &gt;</td>          <td class="paramname"><span class="paramname"><em>cstatus</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classSolverAbstract.html">SolverAbstract</a>.</p>
 
 </div>
 </div>

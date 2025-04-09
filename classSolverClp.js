@@ -39,7 +39,7 @@ var classSolverClp =
     [ "get_row_names", "classSolverClp.html#ac6cfe954de517d7a9636c36fb55aa376", null ],
     [ "get_row_type", "classSolverClp.html#a4becafff455960cb666cb122cc00526a", null ],
     [ "get_rows", "classSolverClp.html#a1a5f8d5db3112996fe66d73d5a0acd7b", null ],
-    [ "get_solver_name", "classSolverClp.html#a8777183c6735ef37f4b3ca7ebeed1ba3", null ],
+    [ "get_solver_name", "classSolverClp.html#ad5eb02f427fcdcc790661d6f8e76e5ca", null ],
     [ "get_splex_num_of_ite_last", "classSolverClp.html#a77a6527841469b914e5f59840e11b1ce", null ],
     [ "get_ub", "classSolverClp.html#a43ebbd5db3d5e9744707457231e39010", null ],
     [ "init", "classSolverClp.html#a8a7c0625768b415c59c59bcdaaf6b6a9", null ],

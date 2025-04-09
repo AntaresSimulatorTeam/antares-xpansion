@@ -1,7 +1,7 @@
 var searchData=
 [
   ['ubuntu_20are_20known_20to_20have_20mpi_20related_20issues_20please_20use_20the_20other_20ones_0',['⚠️ Single-file versions in Ubuntu are known to have MPI-related issues. Please use the other ones.',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md21',1,'']]],
-  ['uc_5ftype_20tt_1',['&lt;tt&gt;uc_type&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md205',1,'']]],
+  ['uc_5ftype_20tt_1',['&lt;tt&gt;uc_type&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md206',1,'']]],
   ['unaryexpr_2',['UnaryExpr',['../classCatch_1_1UnaryExpr.html',1,'Catch']]],
   ['unit_20size_20tt_3',['&lt;tt&gt;unit-size&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md146',1,'']]],
   ['units_20tt_4',['&lt;tt&gt;max-units&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md147',1,'']]],
@@ -19,7 +19,7 @@ var searchData=
   ['updateendtime_16',['updateEndTime',['../classOutput_1_1JsonWriter.html#a4dacd7f08c2264f7aaf8b436ee9b8975',1,'Output::JsonWriter']]],
   ['updatelinkdatafile_17',['updateLinkdataFile',['../classStudyUpdater.html#a9db49727f1ceb8bb7c871dcdb99a099f',1,'StudyUpdater']]],
   ['updaterexecutionerror_18',['UpdaterExecutionError',['../classantares__xpansion_1_1study__updater__driver_1_1StudyUpdaterDriver_1_1UpdaterExecutionError.html',1,'antares_xpansion::study_updater_driver::StudyUpdaterDriver']]],
-  ['updates_20of_20candidate_20links_19',['Updates of candidate links',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md176',1,'']]],
+  ['updates_20of_20candidate_20links_19',['Updates of candidate links',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md177',1,'']]],
   ['updatestoppingcriterion_20',['UpdateStoppingCriterion',['../classBendersByBatch.html#abc79d5e65838ad7a27b352ecfeb0dfa0',1,'BendersByBatch::UpdateStoppingCriterion()'],['../classBendersBase.html#a12e1da335571d21dc124f5d1b2de41e0',1,'BendersBase::UpdateStoppingCriterion()']]],
   ['updatetrace_21',['UpdateTrace',['../classBendersBase.html#adb953cbbd95d83ed70de4244f975d436',1,'BendersBase::UpdateTrace()'],['../classBendersSequentialDouble.html#a01aa233cda314c1882c9c5ef216d1ea3',1,'BendersSequentialDouble::UpdateTrace()']]],
   ['usage_22',['usage',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md161',1,'Command line usage'],['../index.html#autotoc_md7',1,'Command-line usage']]],

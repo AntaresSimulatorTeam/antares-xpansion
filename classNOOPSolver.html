@@ -155,176 +155,178 @@ Inheritance diagram for NOOPSolver:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a81d5e04fb2f60de31572ff4f25333207" id="r_a81d5e04fb2f60de31572ff4f25333207"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a81d5e04fb2f60de31572ff4f25333207">get_number_of_instances</a> () override</td></tr>
-<tr class="memdesc:a81d5e04fb2f60de31572ff4f25333207"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns number of instances of solver currently in memory.  <br /></td></tr>
-<tr class="separator:a81d5e04fb2f60de31572ff4f25333207"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb5994ac49ccd8ec78f19a188ff02518" id="r_adb5994ac49ccd8ec78f19a188ff02518"><td class="memItemLeft" align="right" valign="top">virtual std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adb5994ac49ccd8ec78f19a188ff02518">get_solver_name</a> () const override</td></tr>
-<tr class="memdesc:adb5994ac49ccd8ec78f19a188ff02518"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the solver used.  <br /></td></tr>
-<tr class="separator:adb5994ac49ccd8ec78f19a188ff02518"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4de8c579b665ad71ac391cdfbbfcadb1" id="r_a4de8c579b665ad71ac391cdfbbfcadb1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4de8c579b665ad71ac391cdfbbfcadb1">init</a> () override</td></tr>
-<tr class="memdesc:a4de8c579b665ad71ac391cdfbbfcadb1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a problem.  <br /></td></tr>
-<tr class="separator:a4de8c579b665ad71ac391cdfbbfcadb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6a466a8a3006d5debce210acd6394c3a" id="r_a6a466a8a3006d5debce210acd6394c3a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6a466a8a3006d5debce210acd6394c3a">free</a> () override</td></tr>
-<tr class="memdesc:a6a466a8a3006d5debce210acd6394c3a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees all the datas contained in the Solver environment.  <br /></td></tr>
-<tr class="separator:a6a466a8a3006d5debce210acd6394c3a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1e9da630ba61c8b1a7cc28eeccdae89" id="r_ae1e9da630ba61c8b1a7cc28eeccdae89"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae1e9da630ba61c8b1a7cc28eeccdae89">write_prob_mps</a> (const std::filesystem::path &amp;filename) override</td></tr>
-<tr class="memdesc:ae1e9da630ba61c8b1a7cc28eeccdae89"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes an optimization problem in a MPS file  <br /></td></tr>
-<tr class="separator:ae1e9da630ba61c8b1a7cc28eeccdae89"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aee897540f5372739dd10f999e3a30565" id="r_aee897540f5372739dd10f999e3a30565"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aee897540f5372739dd10f999e3a30565">write_prob_lp</a> (const std::filesystem::path &amp;filename) override</td></tr>
-<tr class="memdesc:aee897540f5372739dd10f999e3a30565"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes an optimization problem in a LP file  <br /></td></tr>
-<tr class="separator:aee897540f5372739dd10f999e3a30565"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa9029d51d3f7146fda970f0fd08c5f6f" id="r_aa9029d51d3f7146fda970f0fd08c5f6f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa9029d51d3f7146fda970f0fd08c5f6f">read_prob_mps</a> (const std::filesystem::path &amp;filename) override</td></tr>
-<tr class="memdesc:aa9029d51d3f7146fda970f0fd08c5f6f"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads an optimization problem contained in a MPS file  <br /></td></tr>
-<tr class="separator:aa9029d51d3f7146fda970f0fd08c5f6f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a59b1e44b9cb7c12a9c44e05d80e1a5a5" id="r_a59b1e44b9cb7c12a9c44e05d80e1a5a5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a59b1e44b9cb7c12a9c44e05d80e1a5a5">read_prob_lp</a> (const std::filesystem::path &amp;filename) override</td></tr>
-<tr class="memdesc:a59b1e44b9cb7c12a9c44e05d80e1a5a5"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads an optimization problem contained in a MPS file  <br /></td></tr>
-<tr class="separator:a59b1e44b9cb7c12a9c44e05d80e1a5a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acec9bd61c37fa5485836b1b49034e493" id="r_acec9bd61c37fa5485836b1b49034e493"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acec9bd61c37fa5485836b1b49034e493">copy_prob</a> (<a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">Ptr</a> fictif_solv) override</td></tr>
-<tr class="memdesc:acec9bd61c37fa5485836b1b49034e493"><td class="mdescLeft">&#160;</td><td class="mdescRight">copy an existing problem  <br /></td></tr>
-<tr class="separator:acec9bd61c37fa5485836b1b49034e493"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9efc3310fdea0f1487fee2465b73f07a" id="r_a9efc3310fdea0f1487fee2465b73f07a"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9efc3310fdea0f1487fee2465b73f07a">get_ncols</a> () const override</td></tr>
-<tr class="memdesc:a9efc3310fdea0f1487fee2465b73f07a"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of columns of the problem  <br /></td></tr>
-<tr class="separator:a9efc3310fdea0f1487fee2465b73f07a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4ba5838e08e43ac3f6214e690de7538e" id="r_a4ba5838e08e43ac3f6214e690de7538e"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4ba5838e08e43ac3f6214e690de7538e">get_nrows</a> () const override</td></tr>
-<tr class="memdesc:a4ba5838e08e43ac3f6214e690de7538e"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of rows of the problem  <br /></td></tr>
-<tr class="separator:a4ba5838e08e43ac3f6214e690de7538e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a442b479f8a9440771a5167be475ac4b2" id="r_a442b479f8a9440771a5167be475ac4b2"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a442b479f8a9440771a5167be475ac4b2">get_nelems</a> () const override</td></tr>
-<tr class="memdesc:a442b479f8a9440771a5167be475ac4b2"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of non zeros elements in the matrix, excluding objective  <br /></td></tr>
-<tr class="separator:a442b479f8a9440771a5167be475ac4b2"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a570bcd2d4b8b867e58afa688989ba399" id="r_a570bcd2d4b8b867e58afa688989ba399"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a570bcd2d4b8b867e58afa688989ba399">get_n_integer_vars</a> () const override</td></tr>
-<tr class="memdesc:a570bcd2d4b8b867e58afa688989ba399"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of integer variables in the problem  <br /></td></tr>
-<tr class="separator:a570bcd2d4b8b867e58afa688989ba399"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8e9ef46d0991162a28a460c8c7deadf5" id="r_a8e9ef46d0991162a28a460c8c7deadf5"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8e9ef46d0991162a28a460c8c7deadf5">get_obj</a> (double *obj, int first, int last) const override</td></tr>
-<tr class="memdesc:a8e9ef46d0991162a28a460c8c7deadf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the objective function coefficients for the columns in a given range  <br /></td></tr>
-<tr class="separator:a8e9ef46d0991162a28a460c8c7deadf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d66062624f2982177da09cc16bc44e8" id="r_a4d66062624f2982177da09cc16bc44e8"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4d66062624f2982177da09cc16bc44e8">get_number_of_instances</a> () override</td></tr>
+<tr class="memdesc:a4d66062624f2982177da09cc16bc44e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns number of instances of solver currently in memory.  <br /></td></tr>
+<tr class="separator:a4d66062624f2982177da09cc16bc44e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7752f8f4f44eab22b9e4e000342c8acc" id="r_a7752f8f4f44eab22b9e4e000342c8acc"><td class="memItemLeft" align="right" valign="top">std::string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7752f8f4f44eab22b9e4e000342c8acc">get_solver_name</a> () const override</td></tr>
+<tr class="memdesc:a7752f8f4f44eab22b9e4e000342c8acc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the solver used.  <br /></td></tr>
+<tr class="separator:a7752f8f4f44eab22b9e4e000342c8acc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4fdde5f69713afe397c251704c2de051" id="r_a4fdde5f69713afe397c251704c2de051"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4fdde5f69713afe397c251704c2de051">init</a> () override</td></tr>
+<tr class="memdesc:a4fdde5f69713afe397c251704c2de051"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a problem.  <br /></td></tr>
+<tr class="separator:a4fdde5f69713afe397c251704c2de051"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6b5f77cdb55e81596bbc18d93f6e840" id="r_af6b5f77cdb55e81596bbc18d93f6e840"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af6b5f77cdb55e81596bbc18d93f6e840">free</a> () override</td></tr>
+<tr class="memdesc:af6b5f77cdb55e81596bbc18d93f6e840"><td class="mdescLeft">&#160;</td><td class="mdescRight">Frees all the datas contained in the Solver environment.  <br /></td></tr>
+<tr class="separator:af6b5f77cdb55e81596bbc18d93f6e840"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac46c7596ac06b8218aae990b4850fed9" id="r_ac46c7596ac06b8218aae990b4850fed9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac46c7596ac06b8218aae990b4850fed9">write_prob_mps</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:ac46c7596ac06b8218aae990b4850fed9"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes an optimization problem in a MPS file  <br /></td></tr>
+<tr class="separator:ac46c7596ac06b8218aae990b4850fed9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acc11223d087b6ab411e06af9d7c9ea8a" id="r_acc11223d087b6ab411e06af9d7c9ea8a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acc11223d087b6ab411e06af9d7c9ea8a">write_prob_lp</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:acc11223d087b6ab411e06af9d7c9ea8a"><td class="mdescLeft">&#160;</td><td class="mdescRight">writes an optimization problem in a LP file  <br /></td></tr>
+<tr class="separator:acc11223d087b6ab411e06af9d7c9ea8a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3fccad5b73fa8fea5062afb10b27a89c" id="r_a3fccad5b73fa8fea5062afb10b27a89c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3fccad5b73fa8fea5062afb10b27a89c">read_prob_mps</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:a3fccad5b73fa8fea5062afb10b27a89c"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads an optimization problem contained in a MPS file  <br /></td></tr>
+<tr class="separator:a3fccad5b73fa8fea5062afb10b27a89c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9979a7a8352b98ea7d94836d818aa374" id="r_a9979a7a8352b98ea7d94836d818aa374"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9979a7a8352b98ea7d94836d818aa374">read_prob_lp</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:a9979a7a8352b98ea7d94836d818aa374"><td class="mdescLeft">&#160;</td><td class="mdescRight">reads an optimization problem contained in a MPS file  <br /></td></tr>
+<tr class="separator:a9979a7a8352b98ea7d94836d818aa374"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae1755428c2f8bc38d8c90c335082d6cd" id="r_ae1755428c2f8bc38d8c90c335082d6cd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae1755428c2f8bc38d8c90c335082d6cd">copy_prob</a> (<a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">Ptr</a> fictif_solv) override</td></tr>
+<tr class="memdesc:ae1755428c2f8bc38d8c90c335082d6cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">copy an existing problem  <br /></td></tr>
+<tr class="separator:ae1755428c2f8bc38d8c90c335082d6cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3ada3aef5c3be70b26d40038fd0077c0" id="r_a3ada3aef5c3be70b26d40038fd0077c0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3ada3aef5c3be70b26d40038fd0077c0">get_ncols</a> () const override</td></tr>
+<tr class="memdesc:a3ada3aef5c3be70b26d40038fd0077c0"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of columns of the problem  <br /></td></tr>
+<tr class="separator:a3ada3aef5c3be70b26d40038fd0077c0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acb0a9d41a5a63bfe8426c86f10314f0a" id="r_acb0a9d41a5a63bfe8426c86f10314f0a"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acb0a9d41a5a63bfe8426c86f10314f0a">get_nrows</a> () const override</td></tr>
+<tr class="memdesc:acb0a9d41a5a63bfe8426c86f10314f0a"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of rows of the problem  <br /></td></tr>
+<tr class="separator:acb0a9d41a5a63bfe8426c86f10314f0a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34149b7a7ff314216db8ba009fdce9e2" id="r_a34149b7a7ff314216db8ba009fdce9e2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a34149b7a7ff314216db8ba009fdce9e2">get_nelems</a> () const override</td></tr>
+<tr class="memdesc:a34149b7a7ff314216db8ba009fdce9e2"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of non zeros elements in the matrix, excluding objective  <br /></td></tr>
+<tr class="separator:a34149b7a7ff314216db8ba009fdce9e2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e7afd6395945f7202a212635a7497af" id="r_a7e7afd6395945f7202a212635a7497af"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7e7afd6395945f7202a212635a7497af">get_n_integer_vars</a> () const override</td></tr>
+<tr class="memdesc:a7e7afd6395945f7202a212635a7497af"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of integer variables in the problem  <br /></td></tr>
+<tr class="separator:a7e7afd6395945f7202a212635a7497af"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab41089b0f9b83d24977f4eb362f58b5d" id="r_ab41089b0f9b83d24977f4eb362f58b5d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab41089b0f9b83d24977f4eb362f58b5d">get_obj</a> (double *obj, int first, int last) const override</td></tr>
+<tr class="memdesc:ab41089b0f9b83d24977f4eb362f58b5d"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns the objective function coefficients for the columns in a given range  <br /></td></tr>
+<tr class="separator:ab41089b0f9b83d24977f4eb362f58b5d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a6e12a6093f67022a11de3f69152aef1f" id="r_a6e12a6093f67022a11de3f69152aef1f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6e12a6093f67022a11de3f69152aef1f">set_obj_to_zero</a> () override</td></tr>
 <tr class="memdesc:a6e12a6093f67022a11de3f69152aef1f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the objective function coefficients to zero.  <br /></td></tr>
 <tr class="separator:a6e12a6093f67022a11de3f69152aef1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7f3f87a9c644c64845471b765fbcd7c9" id="r_a7f3f87a9c644c64845471b765fbcd7c9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7f3f87a9c644c64845471b765fbcd7c9">set_obj</a> (const double *obj, int first, int last) override</td></tr>
 <tr class="memdesc:a7f3f87a9c644c64845471b765fbcd7c9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Set the objective function coefficients for the columns in a given range.  <br /></td></tr>
 <tr class="separator:a7f3f87a9c644c64845471b765fbcd7c9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a60d43a6785bbb4309de970b71972d6eb" id="r_a60d43a6785bbb4309de970b71972d6eb"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60d43a6785bbb4309de970b71972d6eb">get_rows</a> (int *mstart, int *mclind, double *dmatval, int size, int *nels, int first, int last) const override</td></tr>
-<tr class="memdesc:a60d43a6785bbb4309de970b71972d6eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">get coefficients of rows from index first to last  <br /></td></tr>
-<tr class="separator:a60d43a6785bbb4309de970b71972d6eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2fac8050e233953278cf5ac7b79381ac" id="r_a2fac8050e233953278cf5ac7b79381ac"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2fac8050e233953278cf5ac7b79381ac">get_row_type</a> (char *qrtype, int first, int last) const override</td></tr>
-<tr class="memdesc:a2fac8050e233953278cf5ac7b79381ac"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the row types for the rows in a given range.  <br /></td></tr>
-<tr class="separator:a2fac8050e233953278cf5ac7b79381ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa4c107758a8256bb489bc4e4fad4ffec" id="r_aa4c107758a8256bb489bc4e4fad4ffec"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa4c107758a8256bb489bc4e4fad4ffec">get_rhs</a> (double *rhs, int first, int last) const override</td></tr>
-<tr class="memdesc:aa4c107758a8256bb489bc4e4fad4ffec"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the right-hand sides of the rows in a given range.  <br /></td></tr>
-<tr class="separator:aa4c107758a8256bb489bc4e4fad4ffec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1114e741e24fa1ff2d7e80487330cd33" id="r_a1114e741e24fa1ff2d7e80487330cd33"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1114e741e24fa1ff2d7e80487330cd33">get_rhs_range</a> (double *range, int first, int last) const override</td></tr>
-<tr class="memdesc:a1114e741e24fa1ff2d7e80487330cd33"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the right hand side range values for the rows in a given range.  <br /></td></tr>
-<tr class="separator:a1114e741e24fa1ff2d7e80487330cd33"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a91bb48c7b6ef893815d2f1aca0c4966f" id="r_a91bb48c7b6ef893815d2f1aca0c4966f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a91bb48c7b6ef893815d2f1aca0c4966f">get_col_type</a> (char *coltype, int first, int last) const override</td></tr>
-<tr class="memdesc:a91bb48c7b6ef893815d2f1aca0c4966f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the column types for the columns in a given range.  <br /></td></tr>
-<tr class="separator:a91bb48c7b6ef893815d2f1aca0c4966f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a75266a7437ddd40a011e006e4dc1dd5a" id="r_a75266a7437ddd40a011e006e4dc1dd5a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a75266a7437ddd40a011e006e4dc1dd5a">get_lb</a> (double *lb, int fisrt, int last) const override</td></tr>
-<tr class="memdesc:a75266a7437ddd40a011e006e4dc1dd5a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the lower bounds for variables in a given range.  <br /></td></tr>
-<tr class="separator:a75266a7437ddd40a011e006e4dc1dd5a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af838a2e52d333770b888c0fcfd258a04" id="r_af838a2e52d333770b888c0fcfd258a04"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af838a2e52d333770b888c0fcfd258a04">get_ub</a> (double *ub, int fisrt, int last) const override</td></tr>
-<tr class="memdesc:af838a2e52d333770b888c0fcfd258a04"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the upper bounds for variables in a given range.  <br /></td></tr>
-<tr class="separator:af838a2e52d333770b888c0fcfd258a04"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9c509db934bb85e082c0db70d8c64b0e" id="r_a9c509db934bb85e082c0db70d8c64b0e"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9c509db934bb85e082c0db70d8c64b0e">get_row_index</a> (const std::string &amp;name) override</td></tr>
-<tr class="memdesc:a9c509db934bb85e082c0db70d8c64b0e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index of row named "name".  <br /></td></tr>
-<tr class="separator:a9c509db934bb85e082c0db70d8c64b0e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada9516ae93936082225b13090291acbd" id="r_ada9516ae93936082225b13090291acbd"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada9516ae93936082225b13090291acbd">get_col_index</a> (const std::string &amp;name) override</td></tr>
-<tr class="memdesc:ada9516ae93936082225b13090291acbd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index of column named "name".  <br /></td></tr>
-<tr class="separator:ada9516ae93936082225b13090291acbd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:acd0bd853e6714e2bc5251eb146a66a14" id="r_acd0bd853e6714e2bc5251eb146a66a14"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#acd0bd853e6714e2bc5251eb146a66a14">get_row_names</a> (int first, int last) override</td></tr>
-<tr class="memdesc:acd0bd853e6714e2bc5251eb146a66a14"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of row from index first to last cannot be declared as const because of some solver methods.  <br /></td></tr>
-<tr class="separator:acd0bd853e6714e2bc5251eb146a66a14"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afc9f16bc8d29d13d5430c10297e4b3eb" id="r_afc9f16bc8d29d13d5430c10297e4b3eb"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afc9f16bc8d29d13d5430c10297e4b3eb">get_row_names</a> () override</td></tr>
-<tr class="memdesc:afc9f16bc8d29d13d5430c10297e4b3eb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of rows.  <br /></td></tr>
-<tr class="separator:afc9f16bc8d29d13d5430c10297e4b3eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a984eab747c8b442c597e4a3a62c3dc93" id="r_a984eab747c8b442c597e4a3a62c3dc93"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a984eab747c8b442c597e4a3a62c3dc93">get_col_names</a> (int first, int last) override</td></tr>
-<tr class="memdesc:a984eab747c8b442c597e4a3a62c3dc93"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of columns from index first to last cannot be declared as const because of some solver methods.  <br /></td></tr>
-<tr class="separator:a984eab747c8b442c597e4a3a62c3dc93"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a759d8872ea7c693ee2a7f0b61121437b" id="r_a759d8872ea7c693ee2a7f0b61121437b"><td class="memItemLeft" align="right" valign="top">virtual std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a759d8872ea7c693ee2a7f0b61121437b">get_col_names</a> () override</td></tr>
-<tr class="memdesc:a759d8872ea7c693ee2a7f0b61121437b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of columns.  <br /></td></tr>
-<tr class="separator:a759d8872ea7c693ee2a7f0b61121437b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad8e0d9ffaec715fc0fd6411deb795f2c" id="r_ad8e0d9ffaec715fc0fd6411deb795f2c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad8e0d9ffaec715fc0fd6411deb795f2c">del_rows</a> (int first, int last) override</td></tr>
-<tr class="memdesc:ad8e0d9ffaec715fc0fd6411deb795f2c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes rows between index first and last.  <br /></td></tr>
-<tr class="separator:ad8e0d9ffaec715fc0fd6411deb795f2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9a46d030e8dc1293add1f5eb34203b73" id="r_a9a46d030e8dc1293add1f5eb34203b73"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9a46d030e8dc1293add1f5eb34203b73">add_rows</a> (int newrows, int newnz, const char *qrtype, const double *rhs, const double *range, const int *mstart, const int *mclind, const double *dmatval, const std::vector&lt; std::string &gt; &amp;row_names) override</td></tr>
-<tr class="memdesc:a9a46d030e8dc1293add1f5eb34203b73"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds rows to the problem.  <br /></td></tr>
-<tr class="separator:a9a46d030e8dc1293add1f5eb34203b73"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a9e33b9bf580180642a218be2f11eff78" id="r_a9e33b9bf580180642a218be2f11eff78"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9e33b9bf580180642a218be2f11eff78">add_cols</a> (int newcol, int newnz, const double *objx, const int *mstart, const int *mrwind, const double *dmatval, const double *bdl, const double *bdu, const std::vector&lt; std::string &gt; &amp;col_names) override</td></tr>
-<tr class="memdesc:a9e33b9bf580180642a218be2f11eff78"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds new columns to the problem.  <br /></td></tr>
-<tr class="separator:a9e33b9bf580180642a218be2f11eff78"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae32c377fdb30d6d8969dc26f955d358e" id="r_ae32c377fdb30d6d8969dc26f955d358e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae32c377fdb30d6d8969dc26f955d358e">add_name</a> (int type, const char *cnames, int indice) override</td></tr>
-<tr class="memdesc:ae32c377fdb30d6d8969dc26f955d358e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a name to a row or a column.  <br /></td></tr>
-<tr class="separator:ae32c377fdb30d6d8969dc26f955d358e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adb9b307503f0b07017c1257d9615784d" id="r_adb9b307503f0b07017c1257d9615784d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adb9b307503f0b07017c1257d9615784d">add_names</a> (int type, const std::vector&lt; std::string &gt; &amp;cnames, int first, int end) override</td></tr>
-<tr class="separator:adb9b307503f0b07017c1257d9615784d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:adf8a267cf4f2369b4905e319bf20b091" id="r_adf8a267cf4f2369b4905e319bf20b091"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#adf8a267cf4f2369b4905e319bf20b091">chg_obj</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; double &gt; &amp;obj) override</td></tr>
-<tr class="memdesc:adf8a267cf4f2369b4905e319bf20b091"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change coefficients in objective function.  <br /></td></tr>
-<tr class="separator:adf8a267cf4f2369b4905e319bf20b091"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6d73224bea4c6a7b251dc0a49322ca18" id="r_a6d73224bea4c6a7b251dc0a49322ca18"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6d73224bea4c6a7b251dc0a49322ca18">chg_obj_direction</a> (const bool minimize) override</td></tr>
-<tr class="memdesc:a6d73224bea4c6a7b251dc0a49322ca18"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the problem's objective function sense to minimize or maximize.  <br /></td></tr>
-<tr class="separator:a6d73224bea4c6a7b251dc0a49322ca18"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a92fd94c7364309d7e7de8c2ec159ece7" id="r_a92fd94c7364309d7e7de8c2ec159ece7"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a92fd94c7364309d7e7de8c2ec159ece7">chg_bounds</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; char &gt; &amp;qbtype, const std::vector&lt; double &gt; &amp;bnd) override</td></tr>
-<tr class="memdesc:a92fd94c7364309d7e7de8c2ec159ece7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change bounds of some variables.  <br /></td></tr>
-<tr class="separator:a92fd94c7364309d7e7de8c2ec159ece7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa00270d6413366c3122fe0552802adda" id="r_aa00270d6413366c3122fe0552802adda"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa00270d6413366c3122fe0552802adda">chg_col_type</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; char &gt; &amp;qctype) override</td></tr>
-<tr class="memdesc:aa00270d6413366c3122fe0552802adda"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change type of some columns.  <br /></td></tr>
-<tr class="separator:aa00270d6413366c3122fe0552802adda"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7318b7af59e18bab9f5f32003b9056f1" id="r_a7318b7af59e18bab9f5f32003b9056f1"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7318b7af59e18bab9f5f32003b9056f1">chg_rhs</a> (int id_row, double val) override</td></tr>
-<tr class="memdesc:a7318b7af59e18bab9f5f32003b9056f1"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change rhs of a row.  <br /></td></tr>
-<tr class="separator:a7318b7af59e18bab9f5f32003b9056f1"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a677a0f4d6e5e327e024dfc80bb44181c" id="r_a677a0f4d6e5e327e024dfc80bb44181c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a677a0f4d6e5e327e024dfc80bb44181c">chg_coef</a> (int id_row, int id_col, double val) override</td></tr>
-<tr class="memdesc:a677a0f4d6e5e327e024dfc80bb44181c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change a coefficient in the matrix.  <br /></td></tr>
-<tr class="separator:a677a0f4d6e5e327e024dfc80bb44181c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8820c9116d03f9b26eb29eda013a9c6d" id="r_a8820c9116d03f9b26eb29eda013a9c6d"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8820c9116d03f9b26eb29eda013a9c6d">chg_row_name</a> (int id_row, const std::string &amp;name) override</td></tr>
-<tr class="memdesc:a8820c9116d03f9b26eb29eda013a9c6d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a constraint.  <br /></td></tr>
-<tr class="separator:a8820c9116d03f9b26eb29eda013a9c6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae7f7da4b76355003f40673ce25459f0c" id="r_ae7f7da4b76355003f40673ce25459f0c"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae7f7da4b76355003f40673ce25459f0c">chg_col_name</a> (int id_col, const std::string &amp;name) override</td></tr>
-<tr class="memdesc:ae7f7da4b76355003f40673ce25459f0c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a variable.  <br /></td></tr>
-<tr class="separator:ae7f7da4b76355003f40673ce25459f0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a298f43619ddcc5c68810fdfa5b023bfd" id="r_a298f43619ddcc5c68810fdfa5b023bfd"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a298f43619ddcc5c68810fdfa5b023bfd">solve_lp</a> () override</td></tr>
-<tr class="memdesc:a298f43619ddcc5c68810fdfa5b023bfd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves a problem as LP.  <br /></td></tr>
-<tr class="separator:a298f43619ddcc5c68810fdfa5b023bfd"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a90382b2edaabf8689db9faac83e9d074" id="r_a90382b2edaabf8689db9faac83e9d074"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a90382b2edaabf8689db9faac83e9d074">solve_mip</a> () override</td></tr>
-<tr class="memdesc:a90382b2edaabf8689db9faac83e9d074"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves a problem as MIP.  <br /></td></tr>
-<tr class="separator:a90382b2edaabf8689db9faac83e9d074"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a2894dd7d8ffa944d81d2404015317a88" id="r_a2894dd7d8ffa944d81d2404015317a88"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2894dd7d8ffa944d81d2404015317a88">get_basis</a> (int *rstatus, int *cstatus) const override</td></tr>
-<tr class="memdesc:a2894dd7d8ffa944d81d2404015317a88"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current basis into the user’s data arrays.  <br /></td></tr>
-<tr class="separator:a2894dd7d8ffa944d81d2404015317a88"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afbe0abbce84d5b82d5c6d06221a361db" id="r_afbe0abbce84d5b82d5c6d06221a361db"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afbe0abbce84d5b82d5c6d06221a361db">get_mip_value</a> () const override</td></tr>
-<tr class="memdesc:afbe0abbce84d5b82d5c6d06221a361db"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the optimal value of a MIP problem (available after method "solve_mip")  <br /></td></tr>
-<tr class="separator:afbe0abbce84d5b82d5c6d06221a361db"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a78cde6237d0a689fe91361b6afbdcea7" id="r_a78cde6237d0a689fe91361b6afbdcea7"><td class="memItemLeft" align="right" valign="top">virtual double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a78cde6237d0a689fe91361b6afbdcea7">get_lp_value</a> () const override</td></tr>
-<tr class="memdesc:a78cde6237d0a689fe91361b6afbdcea7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the optimal value of a LP problem (available after method "solve_lp" )  <br /></td></tr>
-<tr class="separator:a78cde6237d0a689fe91361b6afbdcea7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ad3cd6572038247e983ef5212a56d6b49" id="r_ad3cd6572038247e983ef5212a56d6b49"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad3cd6572038247e983ef5212a56d6b49">get_splex_num_of_ite_last</a> () const override</td></tr>
-<tr class="memdesc:ad3cd6572038247e983ef5212a56d6b49"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of simplex iterations done in the last resolution of the problem.  <br /></td></tr>
-<tr class="separator:ad3cd6572038247e983ef5212a56d6b49"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a34a92cc79035a94edd28e5125860ba9a" id="r_a34a92cc79035a94edd28e5125860ba9a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a34a92cc79035a94edd28e5125860ba9a">get_lp_sol</a> (double *primals, double *duals, double *reduced_costs) const override</td></tr>
-<tr class="memdesc:a34a92cc79035a94edd28e5125860ba9a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get LP solution of a problem (available after method "solve_lp")  <br /></td></tr>
-<tr class="separator:a34a92cc79035a94edd28e5125860ba9a"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1fe90024eacde39761a0dbcdaae7bc8" id="r_ae1fe90024eacde39761a0dbcdaae7bc8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae1fe90024eacde39761a0dbcdaae7bc8">get_mip_sol</a> (double *primals) override</td></tr>
-<tr class="memdesc:ae1fe90024eacde39761a0dbcdaae7bc8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get MIP solution of a problem (available after method "solve_mip")  <br /></td></tr>
-<tr class="separator:ae1fe90024eacde39761a0dbcdaae7bc8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a67518a1df5255c05e8c1df9eabb184f6" id="r_a67518a1df5255c05e8c1df9eabb184f6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a67518a1df5255c05e8c1df9eabb184f6">set_output_log_level</a> (int loglevel) override</td></tr>
-<tr class="memdesc:a67518a1df5255c05e8c1df9eabb184f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets log level of the solver.  <br /></td></tr>
-<tr class="separator:a67518a1df5255c05e8c1df9eabb184f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ada1e7111945f04571bcc645fe4f80e38" id="r_ada1e7111945f04571bcc645fe4f80e38"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ada1e7111945f04571bcc645fe4f80e38">set_algorithm</a> (const std::string &amp;algo) override</td></tr>
-<tr class="memdesc:ada1e7111945f04571bcc645fe4f80e38"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets algorithm used by solver to solve LP's.  <br /></td></tr>
-<tr class="separator:ada1e7111945f04571bcc645fe4f80e38"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a475430f4752038392a48f1d83802f14e" id="r_a475430f4752038392a48f1d83802f14e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a475430f4752038392a48f1d83802f14e">set_threads</a> (int n_threads) override</td></tr>
-<tr class="memdesc:a475430f4752038392a48f1d83802f14e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the maximum number of threads used to perform optimization.  <br /></td></tr>
-<tr class="separator:a475430f4752038392a48f1d83802f14e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8707e8a651836631222055329cb7fae6" id="r_a8707e8a651836631222055329cb7fae6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8707e8a651836631222055329cb7fae6">set_optimality_gap</a> (double gap) override</td></tr>
-<tr class="memdesc:a8707e8a651836631222055329cb7fae6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the optimality gap.  <br /></td></tr>
-<tr class="separator:a8707e8a651836631222055329cb7fae6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8dbb97c24a7a7b5b1415c21a0c8d81a8" id="r_a8dbb97c24a7a7b5b1415c21a0c8d81a8"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8dbb97c24a7a7b5b1415c21a0c8d81a8">set_simplex_iter</a> (int iter) override</td></tr>
-<tr class="memdesc:a8dbb97c24a7a7b5b1415c21a0c8d81a8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the maximum number of simplex iterations the solver can perform.  <br /></td></tr>
-<tr class="separator:a8dbb97c24a7a7b5b1415c21a0c8d81a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ae1e066dab57c28fe75d5b93864f5275e" id="r_ae1e066dab57c28fe75d5b93864f5275e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae1e066dab57c28fe75d5b93864f5275e">write_basis</a> (const std::filesystem::path &amp;filename) override</td></tr>
-<tr class="memdesc:ae1e066dab57c28fe75d5b93864f5275e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the current basis to a file for later input into the optimizer.  <br /></td></tr>
-<tr class="separator:ae1e066dab57c28fe75d5b93864f5275e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a137b784a33d443b24fc33c19e34c5093" id="r_a137b784a33d443b24fc33c19e34c5093"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a137b784a33d443b24fc33c19e34c5093">read_basis</a> (const std::filesystem::path &amp;filename) override</td></tr>
-<tr class="memdesc:a137b784a33d443b24fc33c19e34c5093"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instructs the optimizer to read in a previously saved basis from a file.  <br /></td></tr>
-<tr class="separator:a137b784a33d443b24fc33c19e34c5093"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3c6a2a87da108e871d58c445c12245bd" id="r_a3c6a2a87da108e871d58c445c12245bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3c6a2a87da108e871d58c445c12245bd">get_rows</a> (int *mstart, int *mclind, double *dmatval, int size, int *nels, int first, int last) const override</td></tr>
+<tr class="memdesc:a3c6a2a87da108e871d58c445c12245bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">get coefficients of rows from index first to last  <br /></td></tr>
+<tr class="separator:a3c6a2a87da108e871d58c445c12245bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7b0cc73b02f0e902ee8e5bbf39ce94f6" id="r_a7b0cc73b02f0e902ee8e5bbf39ce94f6"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b0cc73b02f0e902ee8e5bbf39ce94f6">get_row_type</a> (char *qrtype, int first, int last) const override</td></tr>
+<tr class="memdesc:a7b0cc73b02f0e902ee8e5bbf39ce94f6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the row types for the rows in a given range.  <br /></td></tr>
+<tr class="separator:a7b0cc73b02f0e902ee8e5bbf39ce94f6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a961aebc1405d11e738938d189cb88477" id="r_a961aebc1405d11e738938d189cb88477"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a961aebc1405d11e738938d189cb88477">get_rhs</a> (double *rhs, int first, int last) const override</td></tr>
+<tr class="memdesc:a961aebc1405d11e738938d189cb88477"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the right-hand sides of the rows in a given range.  <br /></td></tr>
+<tr class="separator:a961aebc1405d11e738938d189cb88477"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a143d0746577998755824bb134dfde0d9" id="r_a143d0746577998755824bb134dfde0d9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a143d0746577998755824bb134dfde0d9">get_rhs_range</a> (double *range, int first, int last) const override</td></tr>
+<tr class="memdesc:a143d0746577998755824bb134dfde0d9"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the right hand side range values for the rows in a given range.  <br /></td></tr>
+<tr class="separator:a143d0746577998755824bb134dfde0d9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af77c9492c35ba96a159a45d53c90b797" id="r_af77c9492c35ba96a159a45d53c90b797"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af77c9492c35ba96a159a45d53c90b797">get_col_type</a> (char *coltype, int first, int last) const override</td></tr>
+<tr class="memdesc:af77c9492c35ba96a159a45d53c90b797"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the column types for the columns in a given range.  <br /></td></tr>
+<tr class="separator:af77c9492c35ba96a159a45d53c90b797"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7854decce3aeb7722baefb8d60f3e361" id="r_a7854decce3aeb7722baefb8d60f3e361"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7854decce3aeb7722baefb8d60f3e361">get_lb</a> (double *lb, int fisrt, int last) const override</td></tr>
+<tr class="memdesc:a7854decce3aeb7722baefb8d60f3e361"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the lower bounds for variables in a given range.  <br /></td></tr>
+<tr class="separator:a7854decce3aeb7722baefb8d60f3e361"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5bbb9786ae767e0fd467c23d1d5d336b" id="r_a5bbb9786ae767e0fd467c23d1d5d336b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5bbb9786ae767e0fd467c23d1d5d336b">get_ub</a> (double *ub, int fisrt, int last) const override</td></tr>
+<tr class="memdesc:a5bbb9786ae767e0fd467c23d1d5d336b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the upper bounds for variables in a given range.  <br /></td></tr>
+<tr class="separator:a5bbb9786ae767e0fd467c23d1d5d336b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2479f92e85cf3ed466def2b23215b646" id="r_a2479f92e85cf3ed466def2b23215b646"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2479f92e85cf3ed466def2b23215b646">get_row_index</a> (const std::string &amp;name) override</td></tr>
+<tr class="memdesc:a2479f92e85cf3ed466def2b23215b646"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index of row named "name".  <br /></td></tr>
+<tr class="separator:a2479f92e85cf3ed466def2b23215b646"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a927845bcc9dc40e78b3182842fd172a6" id="r_a927845bcc9dc40e78b3182842fd172a6"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a927845bcc9dc40e78b3182842fd172a6">get_col_index</a> (const std::string &amp;name) override</td></tr>
+<tr class="memdesc:a927845bcc9dc40e78b3182842fd172a6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the index of column named "name".  <br /></td></tr>
+<tr class="separator:a927845bcc9dc40e78b3182842fd172a6"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8afd7437082c5bc2aa69b5c35e9e971" id="r_af8afd7437082c5bc2aa69b5c35e9e971"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af8afd7437082c5bc2aa69b5c35e9e971">get_row_names</a> (int first, int last) override</td></tr>
+<tr class="memdesc:af8afd7437082c5bc2aa69b5c35e9e971"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of row from index first to last cannot be declared as const because of some solver methods.  <br /></td></tr>
+<tr class="separator:af8afd7437082c5bc2aa69b5c35e9e971"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9e90df3e1565a06315aeec74e6adfafb" id="r_a9e90df3e1565a06315aeec74e6adfafb"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9e90df3e1565a06315aeec74e6adfafb">get_row_names</a> () override</td></tr>
+<tr class="memdesc:a9e90df3e1565a06315aeec74e6adfafb"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of rows.  <br /></td></tr>
+<tr class="separator:a9e90df3e1565a06315aeec74e6adfafb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae0aceadda101a3be22653a24300fe77a" id="r_ae0aceadda101a3be22653a24300fe77a"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae0aceadda101a3be22653a24300fe77a">get_col_names</a> (int first, int last) override</td></tr>
+<tr class="memdesc:ae0aceadda101a3be22653a24300fe77a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of columns from index first to last cannot be declared as const because of some solver methods.  <br /></td></tr>
+<tr class="separator:ae0aceadda101a3be22653a24300fe77a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac3576fca5a8327ba50a0b3f7543292e0" id="r_ac3576fca5a8327ba50a0b3f7543292e0"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac3576fca5a8327ba50a0b3f7543292e0">get_col_names</a> () override</td></tr>
+<tr class="memdesc:ac3576fca5a8327ba50a0b3f7543292e0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the names of columns.  <br /></td></tr>
+<tr class="separator:ac3576fca5a8327ba50a0b3f7543292e0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aed70d410464aaa5f3d8924dca84bdaf5" id="r_aed70d410464aaa5f3d8924dca84bdaf5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aed70d410464aaa5f3d8924dca84bdaf5">del_rows</a> (int first, int last) override</td></tr>
+<tr class="memdesc:aed70d410464aaa5f3d8924dca84bdaf5"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes rows between index first and last.  <br /></td></tr>
+<tr class="separator:aed70d410464aaa5f3d8924dca84bdaf5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afb75420deaaa64a1edbabeddb2096f1b" id="r_afb75420deaaa64a1edbabeddb2096f1b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afb75420deaaa64a1edbabeddb2096f1b">add_rows</a> (int newrows, int newnz, const char *qrtype, const double *rhs, const double *range, const int *mstart, const int *mclind, const double *dmatval, const std::vector&lt; std::string &gt; &amp;row_names) override</td></tr>
+<tr class="memdesc:afb75420deaaa64a1edbabeddb2096f1b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds rows to the problem.  <br /></td></tr>
+<tr class="separator:afb75420deaaa64a1edbabeddb2096f1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac4980b2e4bb5e19246ac73ec9022fcfc" id="r_ac4980b2e4bb5e19246ac73ec9022fcfc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac4980b2e4bb5e19246ac73ec9022fcfc">add_cols</a> (int newcol, int newnz, const double *objx, const int *mstart, const int *mrwind, const double *dmatval, const double *bdl, const double *bdu, const std::vector&lt; std::string &gt; &amp;col_names) override</td></tr>
+<tr class="memdesc:ac4980b2e4bb5e19246ac73ec9022fcfc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds new columns to the problem.  <br /></td></tr>
+<tr class="separator:ac4980b2e4bb5e19246ac73ec9022fcfc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3aabaeb34e38dbfd1659457541495165" id="r_a3aabaeb34e38dbfd1659457541495165"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3aabaeb34e38dbfd1659457541495165">add_name</a> (int type, const char *cnames, int indice) override</td></tr>
+<tr class="memdesc:a3aabaeb34e38dbfd1659457541495165"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds a name to a row or a column.  <br /></td></tr>
+<tr class="separator:a3aabaeb34e38dbfd1659457541495165"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af1d4c916105f3e723b90a4fd5e57af4c" id="r_af1d4c916105f3e723b90a4fd5e57af4c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af1d4c916105f3e723b90a4fd5e57af4c">add_names</a> (int type, const std::vector&lt; std::string &gt; &amp;cnames, int first, int end) override</td></tr>
+<tr class="separator:af1d4c916105f3e723b90a4fd5e57af4c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a56d05faae50c866e5f6155e9ec8923e8" id="r_a56d05faae50c866e5f6155e9ec8923e8"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a56d05faae50c866e5f6155e9ec8923e8">chg_obj</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; double &gt; &amp;obj) override</td></tr>
+<tr class="memdesc:a56d05faae50c866e5f6155e9ec8923e8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change coefficients in objective function.  <br /></td></tr>
+<tr class="separator:a56d05faae50c866e5f6155e9ec8923e8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac86018eac1d6e75a9ff5ae94eccab32a" id="r_ac86018eac1d6e75a9ff5ae94eccab32a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac86018eac1d6e75a9ff5ae94eccab32a">chg_obj_direction</a> (const bool minimize) override</td></tr>
+<tr class="memdesc:ac86018eac1d6e75a9ff5ae94eccab32a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the problem's objective function sense to minimize or maximize.  <br /></td></tr>
+<tr class="separator:ac86018eac1d6e75a9ff5ae94eccab32a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a32d5dffe3a65fcf81fb9db31f7c94a8e" id="r_a32d5dffe3a65fcf81fb9db31f7c94a8e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a32d5dffe3a65fcf81fb9db31f7c94a8e">chg_bounds</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; char &gt; &amp;qbtype, const std::vector&lt; double &gt; &amp;bnd) override</td></tr>
+<tr class="memdesc:a32d5dffe3a65fcf81fb9db31f7c94a8e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change bounds of some variables.  <br /></td></tr>
+<tr class="separator:a32d5dffe3a65fcf81fb9db31f7c94a8e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a066d705a508b9dcbdffc75ebcc9bef29" id="r_a066d705a508b9dcbdffc75ebcc9bef29"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a066d705a508b9dcbdffc75ebcc9bef29">chg_col_type</a> (const std::vector&lt; int &gt; &amp;mindex, const std::vector&lt; char &gt; &amp;qctype) override</td></tr>
+<tr class="memdesc:a066d705a508b9dcbdffc75ebcc9bef29"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change type of some columns.  <br /></td></tr>
+<tr class="separator:a066d705a508b9dcbdffc75ebcc9bef29"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a548d8819117967d3de06a280a60b399d" id="r_a548d8819117967d3de06a280a60b399d"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a548d8819117967d3de06a280a60b399d">chg_rhs</a> (int id_row, double val) override</td></tr>
+<tr class="memdesc:a548d8819117967d3de06a280a60b399d"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change rhs of a row.  <br /></td></tr>
+<tr class="separator:a548d8819117967d3de06a280a60b399d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac5cbd694fe01554c2fdb75a895e04551" id="r_ac5cbd694fe01554c2fdb75a895e04551"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac5cbd694fe01554c2fdb75a895e04551">chg_coef</a> (int id_row, int id_col, double val) override</td></tr>
+<tr class="memdesc:ac5cbd694fe01554c2fdb75a895e04551"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change a coefficient in the matrix.  <br /></td></tr>
+<tr class="separator:ac5cbd694fe01554c2fdb75a895e04551"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5f8d90f146d65b8c4f4e1a3bf62fab5b" id="r_a5f8d90f146d65b8c4f4e1a3bf62fab5b"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5f8d90f146d65b8c4f4e1a3bf62fab5b">chg_row_name</a> (int id_row, const std::string &amp;name) override</td></tr>
+<tr class="memdesc:a5f8d90f146d65b8c4f4e1a3bf62fab5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a constraint.  <br /></td></tr>
+<tr class="separator:a5f8d90f146d65b8c4f4e1a3bf62fab5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57e04da723bc11414198b3963ebc3a36" id="r_a57e04da723bc11414198b3963ebc3a36"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a57e04da723bc11414198b3963ebc3a36">chg_col_name</a> (int id_col, const std::string &amp;name) override</td></tr>
+<tr class="memdesc:a57e04da723bc11414198b3963ebc3a36"><td class="mdescLeft">&#160;</td><td class="mdescRight">Change the name of a variable.  <br /></td></tr>
+<tr class="separator:a57e04da723bc11414198b3963ebc3a36"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7644ef8416995a485fea557e874cca6b" id="r_a7644ef8416995a485fea557e874cca6b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7644ef8416995a485fea557e874cca6b">solve_lp</a> () override</td></tr>
+<tr class="memdesc:a7644ef8416995a485fea557e874cca6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves a problem as LP.  <br /></td></tr>
+<tr class="separator:a7644ef8416995a485fea557e874cca6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac0a574c1221d0f2b74cdb44b070b45cd" id="r_ac0a574c1221d0f2b74cdb44b070b45cd"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac0a574c1221d0f2b74cdb44b070b45cd">solve_mip</a> () override</td></tr>
+<tr class="memdesc:ac0a574c1221d0f2b74cdb44b070b45cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solves a problem as MIP.  <br /></td></tr>
+<tr class="separator:ac0a574c1221d0f2b74cdb44b070b45cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb2e5b5f3009476f4bc6bb988fae6f6c" id="r_abb2e5b5f3009476f4bc6bb988fae6f6c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abb2e5b5f3009476f4bc6bb988fae6f6c">get_basis</a> (int *rstatus, int *cstatus) const override</td></tr>
+<tr class="memdesc:abb2e5b5f3009476f4bc6bb988fae6f6c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns the current basis into the user’s data arrays.  <br /></td></tr>
+<tr class="separator:abb2e5b5f3009476f4bc6bb988fae6f6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8a3dc73cd5d24189104f6f730423c659" id="r_a8a3dc73cd5d24189104f6f730423c659"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8a3dc73cd5d24189104f6f730423c659">get_mip_value</a> () const override</td></tr>
+<tr class="memdesc:a8a3dc73cd5d24189104f6f730423c659"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the optimal value of a MIP problem (available after method "solve_mip")  <br /></td></tr>
+<tr class="separator:a8a3dc73cd5d24189104f6f730423c659"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a630917e3d04c07f8a275d7a47f3f7d3b" id="r_a630917e3d04c07f8a275d7a47f3f7d3b"><td class="memItemLeft" align="right" valign="top">double&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a630917e3d04c07f8a275d7a47f3f7d3b">get_lp_value</a> () const override</td></tr>
+<tr class="memdesc:a630917e3d04c07f8a275d7a47f3f7d3b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the optimal value of a LP problem (available after method "solve_lp" )  <br /></td></tr>
+<tr class="separator:a630917e3d04c07f8a275d7a47f3f7d3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae2bef6b97da4a6cdf038a228930ec166" id="r_ae2bef6b97da4a6cdf038a228930ec166"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae2bef6b97da4a6cdf038a228930ec166">get_splex_num_of_ite_last</a> () const override</td></tr>
+<tr class="memdesc:ae2bef6b97da4a6cdf038a228930ec166"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get the number of simplex iterations done in the last resolution of the problem.  <br /></td></tr>
+<tr class="separator:ae2bef6b97da4a6cdf038a228930ec166"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67149b9cfa6dc225eac9223d8a83350c" id="r_a67149b9cfa6dc225eac9223d8a83350c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a67149b9cfa6dc225eac9223d8a83350c">get_lp_sol</a> (double *primals, double *duals, double *reduced_costs) const override</td></tr>
+<tr class="memdesc:a67149b9cfa6dc225eac9223d8a83350c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get LP solution of a problem (available after method "solve_lp")  <br /></td></tr>
+<tr class="separator:a67149b9cfa6dc225eac9223d8a83350c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7ccd705a602a0c3ff064d7c1e03cc015" id="r_a7ccd705a602a0c3ff064d7c1e03cc015"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7ccd705a602a0c3ff064d7c1e03cc015">get_mip_sol</a> (double *primals) override</td></tr>
+<tr class="memdesc:a7ccd705a602a0c3ff064d7c1e03cc015"><td class="mdescLeft">&#160;</td><td class="mdescRight">Get MIP solution of a problem (available after method "solve_mip")  <br /></td></tr>
+<tr class="separator:a7ccd705a602a0c3ff064d7c1e03cc015"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abd2c460480542fb4ed22855f2c984971" id="r_abd2c460480542fb4ed22855f2c984971"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd2c460480542fb4ed22855f2c984971">set_output_log_level</a> (int loglevel) override</td></tr>
+<tr class="memdesc:abd2c460480542fb4ed22855f2c984971"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets log level of the solver.  <br /></td></tr>
+<tr class="separator:abd2c460480542fb4ed22855f2c984971"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a43b866e529e7daa59d8bce836b7e5ecf" id="r_a43b866e529e7daa59d8bce836b7e5ecf"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a43b866e529e7daa59d8bce836b7e5ecf">set_algorithm</a> (const std::string &amp;algo) override</td></tr>
+<tr class="memdesc:a43b866e529e7daa59d8bce836b7e5ecf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets algorithm used by solver to solve LP's.  <br /></td></tr>
+<tr class="separator:a43b866e529e7daa59d8bce836b7e5ecf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a18a6262adb840a58647b7c41c4fdfbc7" id="r_a18a6262adb840a58647b7c41c4fdfbc7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a18a6262adb840a58647b7c41c4fdfbc7">set_threads</a> (int n_threads) override</td></tr>
+<tr class="memdesc:a18a6262adb840a58647b7c41c4fdfbc7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the maximum number of threads used to perform optimization.  <br /></td></tr>
+<tr class="separator:a18a6262adb840a58647b7c41c4fdfbc7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7e0eaaced91f7942e23fcade8efef272" id="r_a7e0eaaced91f7942e23fcade8efef272"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7e0eaaced91f7942e23fcade8efef272">set_optimality_gap</a> (double gap) override</td></tr>
+<tr class="memdesc:a7e0eaaced91f7942e23fcade8efef272"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the optimality gap.  <br /></td></tr>
+<tr class="separator:a7e0eaaced91f7942e23fcade8efef272"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2d05cd75df0d79c7efa58bdfefb65c20" id="r_a2d05cd75df0d79c7efa58bdfefb65c20"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2d05cd75df0d79c7efa58bdfefb65c20">set_simplex_iter</a> (int iter) override</td></tr>
+<tr class="memdesc:a2d05cd75df0d79c7efa58bdfefb65c20"><td class="mdescLeft">&#160;</td><td class="mdescRight">Sets the maximum number of simplex iterations the solver can perform.  <br /></td></tr>
+<tr class="separator:a2d05cd75df0d79c7efa58bdfefb65c20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa12ed23ef5b92fdc5bba589428735cfe" id="r_aa12ed23ef5b92fdc5bba589428735cfe"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa12ed23ef5b92fdc5bba589428735cfe">write_basis</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:aa12ed23ef5b92fdc5bba589428735cfe"><td class="mdescLeft">&#160;</td><td class="mdescRight">Writes the current basis to a file for later input into the optimizer.  <br /></td></tr>
+<tr class="separator:aa12ed23ef5b92fdc5bba589428735cfe"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a369bea2ba042568c70b307a9cb4abe64" id="r_a369bea2ba042568c70b307a9cb4abe64"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a369bea2ba042568c70b307a9cb4abe64">read_basis</a> (const std::filesystem::path &amp;filename) override</td></tr>
+<tr class="memdesc:a369bea2ba042568c70b307a9cb4abe64"><td class="mdescLeft">&#160;</td><td class="mdescRight">Instructs the optimizer to read in a previously saved basis from a file.  <br /></td></tr>
+<tr class="separator:a369bea2ba042568c70b307a9cb4abe64"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a34dc3994d790725f263bf996b703f066" id="r_a34dc3994d790725f263bf996b703f066"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a34dc3994d790725f263bf996b703f066">set_basis</a> (std::span&lt; int &gt; rstatus, std::span&lt; int &gt; cstatus) override</td></tr>
+<tr class="separator:a34dc3994d790725f263bf996b703f066"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab528ae294c41634272e2fec3f86dcc90" id="r_ab528ae294c41634272e2fec3f86dcc90"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab528ae294c41634272e2fec3f86dcc90">save_prob</a> (const std::filesystem::path &amp;filename) override</td></tr>
 <tr class="memdesc:ab528ae294c41634272e2fec3f86dcc90"><td class="mdescLeft">&#160;</td><td class="mdescRight">write an optimisation problem in a file  <br /></td></tr>
 <tr class="separator:ab528ae294c41634272e2fec3f86dcc90"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -380,8 +382,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 <tr class="separator:a4c8ac674eab2b1add320c98eafd310fb inherit pub_attribs_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a9e33b9bf580180642a218be2f11eff78" name="a9e33b9bf580180642a218be2f11eff78"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9e33b9bf580180642a218be2f11eff78">&#9670;&#160;</a></span>add_cols()</h2>
+<a id="ac4980b2e4bb5e19246ac73ec9022fcfc" name="ac4980b2e4bb5e19246ac73ec9022fcfc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac4980b2e4bb5e19246ac73ec9022fcfc">&#9670;&#160;</a></span>add_cols()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -390,7 +392,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::add_cols </td>
+          <td class="memname">void NOOPSolver::add_cols </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>newcol</em></span>, </td>
         </tr>
@@ -462,8 +464,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="ae32c377fdb30d6d8969dc26f955d358e" name="ae32c377fdb30d6d8969dc26f955d358e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae32c377fdb30d6d8969dc26f955d358e">&#9670;&#160;</a></span>add_name()</h2>
+<a id="a3aabaeb34e38dbfd1659457541495165" name="a3aabaeb34e38dbfd1659457541495165"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3aabaeb34e38dbfd1659457541495165">&#9670;&#160;</a></span>add_name()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -472,7 +474,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::add_name </td>
+          <td class="memname">void NOOPSolver::add_name </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>type</em></span>, </td>
         </tr>
@@ -508,8 +510,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="adb9b307503f0b07017c1257d9615784d" name="adb9b307503f0b07017c1257d9615784d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb9b307503f0b07017c1257d9615784d">&#9670;&#160;</a></span>add_names()</h2>
+<a id="af1d4c916105f3e723b90a4fd5e57af4c" name="af1d4c916105f3e723b90a4fd5e57af4c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af1d4c916105f3e723b90a4fd5e57af4c">&#9670;&#160;</a></span>add_names()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -518,7 +520,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::add_names </td>
+          <td class="memname">void NOOPSolver::add_names </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>type</em></span>, </td>
         </tr>
@@ -549,8 +551,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a9a46d030e8dc1293add1f5eb34203b73" name="a9a46d030e8dc1293add1f5eb34203b73"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9a46d030e8dc1293add1f5eb34203b73">&#9670;&#160;</a></span>add_rows()</h2>
+<a id="afb75420deaaa64a1edbabeddb2096f1b" name="afb75420deaaa64a1edbabeddb2096f1b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afb75420deaaa64a1edbabeddb2096f1b">&#9670;&#160;</a></span>add_rows()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -559,7 +561,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::add_rows </td>
+          <td class="memname">void NOOPSolver::add_rows </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>newrows</em></span>, </td>
         </tr>
@@ -631,8 +633,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a92fd94c7364309d7e7de8c2ec159ece7" name="a92fd94c7364309d7e7de8c2ec159ece7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a92fd94c7364309d7e7de8c2ec159ece7">&#9670;&#160;</a></span>chg_bounds()</h2>
+<a id="a32d5dffe3a65fcf81fb9db31f7c94a8e" name="a32d5dffe3a65fcf81fb9db31f7c94a8e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a32d5dffe3a65fcf81fb9db31f7c94a8e">&#9670;&#160;</a></span>chg_bounds()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -641,7 +643,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::chg_bounds </td>
+          <td class="memname">void NOOPSolver::chg_bounds </td>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; int &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>mindex</em></span>, </td>
         </tr>
@@ -678,8 +680,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a677a0f4d6e5e327e024dfc80bb44181c" name="a677a0f4d6e5e327e024dfc80bb44181c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a677a0f4d6e5e327e024dfc80bb44181c">&#9670;&#160;</a></span>chg_coef()</h2>
+<a id="ac5cbd694fe01554c2fdb75a895e04551" name="ac5cbd694fe01554c2fdb75a895e04551"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac5cbd694fe01554c2fdb75a895e04551">&#9670;&#160;</a></span>chg_coef()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -688,7 +690,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::chg_coef </td>
+          <td class="memname">void NOOPSolver::chg_coef </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>id_row</em></span>, </td>
         </tr>
@@ -724,8 +726,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="ae7f7da4b76355003f40673ce25459f0c" name="ae7f7da4b76355003f40673ce25459f0c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae7f7da4b76355003f40673ce25459f0c">&#9670;&#160;</a></span>chg_col_name()</h2>
+<a id="a57e04da723bc11414198b3963ebc3a36" name="a57e04da723bc11414198b3963ebc3a36"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a57e04da723bc11414198b3963ebc3a36">&#9670;&#160;</a></span>chg_col_name()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -734,7 +736,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::chg_col_name </td>
+          <td class="memname">void NOOPSolver::chg_col_name </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>id_col</em></span>, </td>
         </tr>
@@ -764,8 +766,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="aa00270d6413366c3122fe0552802adda" name="aa00270d6413366c3122fe0552802adda"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa00270d6413366c3122fe0552802adda">&#9670;&#160;</a></span>chg_col_type()</h2>
+<a id="a066d705a508b9dcbdffc75ebcc9bef29" name="a066d705a508b9dcbdffc75ebcc9bef29"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a066d705a508b9dcbdffc75ebcc9bef29">&#9670;&#160;</a></span>chg_col_type()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -774,7 +776,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::chg_col_type </td>
+          <td class="memname">void NOOPSolver::chg_col_type </td>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; int &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>mindex</em></span>, </td>
         </tr>
@@ -805,8 +807,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="adf8a267cf4f2369b4905e319bf20b091" name="adf8a267cf4f2369b4905e319bf20b091"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adf8a267cf4f2369b4905e319bf20b091">&#9670;&#160;</a></span>chg_obj()</h2>
+<a id="a56d05faae50c866e5f6155e9ec8923e8" name="a56d05faae50c866e5f6155e9ec8923e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a56d05faae50c866e5f6155e9ec8923e8">&#9670;&#160;</a></span>chg_obj()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -815,7 +817,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::chg_obj </td>
+          <td class="memname">void NOOPSolver::chg_obj </td>
           <td>(</td>
           <td class="paramtype">const std::vector&lt; int &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>mindex</em></span>, </td>
         </tr>
@@ -845,8 +847,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a6d73224bea4c6a7b251dc0a49322ca18" name="a6d73224bea4c6a7b251dc0a49322ca18"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6d73224bea4c6a7b251dc0a49322ca18">&#9670;&#160;</a></span>chg_obj_direction()</h2>
+<a id="ac86018eac1d6e75a9ff5ae94eccab32a" name="ac86018eac1d6e75a9ff5ae94eccab32a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac86018eac1d6e75a9ff5ae94eccab32a">&#9670;&#160;</a></span>chg_obj_direction()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -855,7 +857,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::chg_obj_direction </td>
+          <td class="memname">void NOOPSolver::chg_obj_direction </td>
           <td>(</td>
           <td class="paramtype">const bool</td>          <td class="paramname"><span class="paramname"><em>minimize</em></span></td><td>)</td>
           <td></td>
@@ -880,8 +882,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a7318b7af59e18bab9f5f32003b9056f1" name="a7318b7af59e18bab9f5f32003b9056f1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7318b7af59e18bab9f5f32003b9056f1">&#9670;&#160;</a></span>chg_rhs()</h2>
+<a id="a548d8819117967d3de06a280a60b399d" name="a548d8819117967d3de06a280a60b399d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a548d8819117967d3de06a280a60b399d">&#9670;&#160;</a></span>chg_rhs()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -890,7 +892,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::chg_rhs </td>
+          <td class="memname">void NOOPSolver::chg_rhs </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>id_row</em></span>, </td>
         </tr>
@@ -920,8 +922,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a8820c9116d03f9b26eb29eda013a9c6d" name="a8820c9116d03f9b26eb29eda013a9c6d"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8820c9116d03f9b26eb29eda013a9c6d">&#9670;&#160;</a></span>chg_row_name()</h2>
+<a id="a5f8d90f146d65b8c4f4e1a3bf62fab5b" name="a5f8d90f146d65b8c4f4e1a3bf62fab5b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5f8d90f146d65b8c4f4e1a3bf62fab5b">&#9670;&#160;</a></span>chg_row_name()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -930,7 +932,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::chg_row_name </td>
+          <td class="memname">void NOOPSolver::chg_row_name </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>id_row</em></span>, </td>
         </tr>
@@ -960,8 +962,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="acec9bd61c37fa5485836b1b49034e493" name="acec9bd61c37fa5485836b1b49034e493"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acec9bd61c37fa5485836b1b49034e493">&#9670;&#160;</a></span>copy_prob()</h2>
+<a id="ae1755428c2f8bc38d8c90c335082d6cd" name="ae1755428c2f8bc38d8c90c335082d6cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae1755428c2f8bc38d8c90c335082d6cd">&#9670;&#160;</a></span>copy_prob()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -970,7 +972,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::copy_prob </td>
+          <td class="memname">void NOOPSolver::copy_prob </td>
           <td>(</td>
           <td class="paramtype"><a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">Ptr</a></td>          <td class="paramname"><span class="paramname"><em>fictif_solv</em></span></td><td>)</td>
           <td></td>
@@ -995,8 +997,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="ad8e0d9ffaec715fc0fd6411deb795f2c" name="ad8e0d9ffaec715fc0fd6411deb795f2c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad8e0d9ffaec715fc0fd6411deb795f2c">&#9670;&#160;</a></span>del_rows()</h2>
+<a id="aed70d410464aaa5f3d8924dca84bdaf5" name="aed70d410464aaa5f3d8924dca84bdaf5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aed70d410464aaa5f3d8924dca84bdaf5">&#9670;&#160;</a></span>del_rows()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1005,7 +1007,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::del_rows </td>
+          <td class="memname">void NOOPSolver::del_rows </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>first</em></span>, </td>
         </tr>
@@ -1035,8 +1037,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a6a466a8a3006d5debce210acd6394c3a" name="a6a466a8a3006d5debce210acd6394c3a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6a466a8a3006d5debce210acd6394c3a">&#9670;&#160;</a></span>free()</h2>
+<a id="af6b5f77cdb55e81596bbc18d93f6e840" name="af6b5f77cdb55e81596bbc18d93f6e840"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6b5f77cdb55e81596bbc18d93f6e840">&#9670;&#160;</a></span>free()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1045,7 +1047,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::free </td>
+          <td class="memname">void NOOPSolver::free </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -1064,8 +1066,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a2894dd7d8ffa944d81d2404015317a88" name="a2894dd7d8ffa944d81d2404015317a88"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2894dd7d8ffa944d81d2404015317a88">&#9670;&#160;</a></span>get_basis()</h2>
+<a id="abb2e5b5f3009476f4bc6bb988fae6f6c" name="abb2e5b5f3009476f4bc6bb988fae6f6c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb2e5b5f3009476f4bc6bb988fae6f6c">&#9670;&#160;</a></span>get_basis()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1074,7 +1076,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::get_basis </td>
+          <td class="memname">void NOOPSolver::get_basis </td>
           <td>(</td>
           <td class="paramtype">int *</td>          <td class="paramname"><span class="paramname"><em>rstatus</em></span>, </td>
         </tr>
@@ -1104,8 +1106,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="ada9516ae93936082225b13090291acbd" name="ada9516ae93936082225b13090291acbd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada9516ae93936082225b13090291acbd">&#9670;&#160;</a></span>get_col_index()</h2>
+<a id="a927845bcc9dc40e78b3182842fd172a6" name="a927845bcc9dc40e78b3182842fd172a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a927845bcc9dc40e78b3182842fd172a6">&#9670;&#160;</a></span>get_col_index()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1114,7 +1116,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual int NOOPSolver::get_col_index </td>
+          <td class="memname">int NOOPSolver::get_col_index </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
           <td></td>
@@ -1139,8 +1141,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a759d8872ea7c693ee2a7f0b61121437b" name="a759d8872ea7c693ee2a7f0b61121437b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a759d8872ea7c693ee2a7f0b61121437b">&#9670;&#160;</a></span>get_col_names() <span class="overload">[1/2]</span></h2>
+<a id="ac3576fca5a8327ba50a0b3f7543292e0" name="ac3576fca5a8327ba50a0b3f7543292e0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac3576fca5a8327ba50a0b3f7543292e0">&#9670;&#160;</a></span>get_col_names() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1149,7 +1151,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual std::vector&lt; std::string &gt; NOOPSolver::get_col_names </td>
+          <td class="memname">std::vector&lt; std::string &gt; NOOPSolver::get_col_names </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -1169,8 +1171,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a984eab747c8b442c597e4a3a62c3dc93" name="a984eab747c8b442c597e4a3a62c3dc93"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a984eab747c8b442c597e4a3a62c3dc93">&#9670;&#160;</a></span>get_col_names() <span class="overload">[2/2]</span></h2>
+<a id="ae0aceadda101a3be22653a24300fe77a" name="ae0aceadda101a3be22653a24300fe77a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae0aceadda101a3be22653a24300fe77a">&#9670;&#160;</a></span>get_col_names() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1179,7 +1181,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual std::vector&lt; std::string &gt; NOOPSolver::get_col_names </td>
+          <td class="memname">std::vector&lt; std::string &gt; NOOPSolver::get_col_names </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>first</em></span>, </td>
         </tr>
@@ -1210,8 +1212,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a91bb48c7b6ef893815d2f1aca0c4966f" name="a91bb48c7b6ef893815d2f1aca0c4966f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a91bb48c7b6ef893815d2f1aca0c4966f">&#9670;&#160;</a></span>get_col_type()</h2>
+<a id="af77c9492c35ba96a159a45d53c90b797" name="af77c9492c35ba96a159a45d53c90b797"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af77c9492c35ba96a159a45d53c90b797">&#9670;&#160;</a></span>get_col_type()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1220,7 +1222,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::get_col_type </td>
+          <td class="memname">void NOOPSolver::get_col_type </td>
           <td>(</td>
           <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>coltype</em></span>, </td>
         </tr>
@@ -1256,8 +1258,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a75266a7437ddd40a011e006e4dc1dd5a" name="a75266a7437ddd40a011e006e4dc1dd5a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a75266a7437ddd40a011e006e4dc1dd5a">&#9670;&#160;</a></span>get_lb()</h2>
+<a id="a7854decce3aeb7722baefb8d60f3e361" name="a7854decce3aeb7722baefb8d60f3e361"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7854decce3aeb7722baefb8d60f3e361">&#9670;&#160;</a></span>get_lb()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1266,7 +1268,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::get_lb </td>
+          <td class="memname">void NOOPSolver::get_lb </td>
           <td>(</td>
           <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>lb</em></span>, </td>
         </tr>
@@ -1302,8 +1304,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a34a92cc79035a94edd28e5125860ba9a" name="a34a92cc79035a94edd28e5125860ba9a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a34a92cc79035a94edd28e5125860ba9a">&#9670;&#160;</a></span>get_lp_sol()</h2>
+<a id="a67149b9cfa6dc225eac9223d8a83350c" name="a67149b9cfa6dc225eac9223d8a83350c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a67149b9cfa6dc225eac9223d8a83350c">&#9670;&#160;</a></span>get_lp_sol()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1312,7 +1314,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::get_lp_sol </td>
+          <td class="memname">void NOOPSolver::get_lp_sol </td>
           <td>(</td>
           <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>primals</em></span>, </td>
         </tr>
@@ -1348,8 +1350,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a78cde6237d0a689fe91361b6afbdcea7" name="a78cde6237d0a689fe91361b6afbdcea7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a78cde6237d0a689fe91361b6afbdcea7">&#9670;&#160;</a></span>get_lp_value()</h2>
+<a id="a630917e3d04c07f8a275d7a47f3f7d3b" name="a630917e3d04c07f8a275d7a47f3f7d3b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a630917e3d04c07f8a275d7a47f3f7d3b">&#9670;&#160;</a></span>get_lp_value()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1358,7 +1360,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual double NOOPSolver::get_lp_value </td>
+          <td class="memname">double NOOPSolver::get_lp_value </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -1378,8 +1380,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="ae1fe90024eacde39761a0dbcdaae7bc8" name="ae1fe90024eacde39761a0dbcdaae7bc8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1fe90024eacde39761a0dbcdaae7bc8">&#9670;&#160;</a></span>get_mip_sol()</h2>
+<a id="a7ccd705a602a0c3ff064d7c1e03cc015" name="a7ccd705a602a0c3ff064d7c1e03cc015"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7ccd705a602a0c3ff064d7c1e03cc015">&#9670;&#160;</a></span>get_mip_sol()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1388,7 +1390,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::get_mip_sol </td>
+          <td class="memname">void NOOPSolver::get_mip_sol </td>
           <td>(</td>
           <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>primals</em></span></td><td>)</td>
           <td></td>
@@ -1413,8 +1415,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="afbe0abbce84d5b82d5c6d06221a361db" name="afbe0abbce84d5b82d5c6d06221a361db"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afbe0abbce84d5b82d5c6d06221a361db">&#9670;&#160;</a></span>get_mip_value()</h2>
+<a id="a8a3dc73cd5d24189104f6f730423c659" name="a8a3dc73cd5d24189104f6f730423c659"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a3dc73cd5d24189104f6f730423c659">&#9670;&#160;</a></span>get_mip_value()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1423,7 +1425,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual double NOOPSolver::get_mip_value </td>
+          <td class="memname">double NOOPSolver::get_mip_value </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -1443,8 +1445,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a570bcd2d4b8b867e58afa688989ba399" name="a570bcd2d4b8b867e58afa688989ba399"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a570bcd2d4b8b867e58afa688989ba399">&#9670;&#160;</a></span>get_n_integer_vars()</h2>
+<a id="a7e7afd6395945f7202a212635a7497af" name="a7e7afd6395945f7202a212635a7497af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e7afd6395945f7202a212635a7497af">&#9670;&#160;</a></span>get_n_integer_vars()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1453,7 +1455,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual int NOOPSolver::get_n_integer_vars </td>
+          <td class="memname">int NOOPSolver::get_n_integer_vars </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -1472,8 +1474,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a9efc3310fdea0f1487fee2465b73f07a" name="a9efc3310fdea0f1487fee2465b73f07a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9efc3310fdea0f1487fee2465b73f07a">&#9670;&#160;</a></span>get_ncols()</h2>
+<a id="a3ada3aef5c3be70b26d40038fd0077c0" name="a3ada3aef5c3be70b26d40038fd0077c0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3ada3aef5c3be70b26d40038fd0077c0">&#9670;&#160;</a></span>get_ncols()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1482,7 +1484,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual int NOOPSolver::get_ncols </td>
+          <td class="memname">int NOOPSolver::get_ncols </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -1501,8 +1503,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a442b479f8a9440771a5167be475ac4b2" name="a442b479f8a9440771a5167be475ac4b2"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a442b479f8a9440771a5167be475ac4b2">&#9670;&#160;</a></span>get_nelems()</h2>
+<a id="a34149b7a7ff314216db8ba009fdce9e2" name="a34149b7a7ff314216db8ba009fdce9e2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34149b7a7ff314216db8ba009fdce9e2">&#9670;&#160;</a></span>get_nelems()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1511,7 +1513,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual int NOOPSolver::get_nelems </td>
+          <td class="memname">int NOOPSolver::get_nelems </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -1530,8 +1532,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a4ba5838e08e43ac3f6214e690de7538e" name="a4ba5838e08e43ac3f6214e690de7538e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4ba5838e08e43ac3f6214e690de7538e">&#9670;&#160;</a></span>get_nrows()</h2>
+<a id="acb0a9d41a5a63bfe8426c86f10314f0a" name="acb0a9d41a5a63bfe8426c86f10314f0a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acb0a9d41a5a63bfe8426c86f10314f0a">&#9670;&#160;</a></span>get_nrows()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1540,7 +1542,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual int NOOPSolver::get_nrows </td>
+          <td class="memname">int NOOPSolver::get_nrows </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -1559,8 +1561,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a81d5e04fb2f60de31572ff4f25333207" name="a81d5e04fb2f60de31572ff4f25333207"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a81d5e04fb2f60de31572ff4f25333207">&#9670;&#160;</a></span>get_number_of_instances()</h2>
+<a id="a4d66062624f2982177da09cc16bc44e8" name="a4d66062624f2982177da09cc16bc44e8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d66062624f2982177da09cc16bc44e8">&#9670;&#160;</a></span>get_number_of_instances()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1569,7 +1571,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual int NOOPSolver::get_number_of_instances </td>
+          <td class="memname">int NOOPSolver::get_number_of_instances </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -1588,8 +1590,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a8e9ef46d0991162a28a460c8c7deadf5" name="a8e9ef46d0991162a28a460c8c7deadf5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8e9ef46d0991162a28a460c8c7deadf5">&#9670;&#160;</a></span>get_obj()</h2>
+<a id="ab41089b0f9b83d24977f4eb362f58b5d" name="ab41089b0f9b83d24977f4eb362f58b5d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab41089b0f9b83d24977f4eb362f58b5d">&#9670;&#160;</a></span>get_obj()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1598,7 +1600,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::get_obj </td>
+          <td class="memname">void NOOPSolver::get_obj </td>
           <td>(</td>
           <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>obj</em></span>, </td>
         </tr>
@@ -1626,8 +1628,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="aa4c107758a8256bb489bc4e4fad4ffec" name="aa4c107758a8256bb489bc4e4fad4ffec"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa4c107758a8256bb489bc4e4fad4ffec">&#9670;&#160;</a></span>get_rhs()</h2>
+<a id="a961aebc1405d11e738938d189cb88477" name="a961aebc1405d11e738938d189cb88477"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a961aebc1405d11e738938d189cb88477">&#9670;&#160;</a></span>get_rhs()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1636,7 +1638,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::get_rhs </td>
+          <td class="memname">void NOOPSolver::get_rhs </td>
           <td>(</td>
           <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>rhs</em></span>, </td>
         </tr>
@@ -1672,8 +1674,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a1114e741e24fa1ff2d7e80487330cd33" name="a1114e741e24fa1ff2d7e80487330cd33"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1114e741e24fa1ff2d7e80487330cd33">&#9670;&#160;</a></span>get_rhs_range()</h2>
+<a id="a143d0746577998755824bb134dfde0d9" name="a143d0746577998755824bb134dfde0d9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a143d0746577998755824bb134dfde0d9">&#9670;&#160;</a></span>get_rhs_range()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1682,7 +1684,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::get_rhs_range </td>
+          <td class="memname">void NOOPSolver::get_rhs_range </td>
           <td>(</td>
           <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>range</em></span>, </td>
         </tr>
@@ -1718,8 +1720,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a9c509db934bb85e082c0db70d8c64b0e" name="a9c509db934bb85e082c0db70d8c64b0e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a9c509db934bb85e082c0db70d8c64b0e">&#9670;&#160;</a></span>get_row_index()</h2>
+<a id="a2479f92e85cf3ed466def2b23215b646" name="a2479f92e85cf3ed466def2b23215b646"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2479f92e85cf3ed466def2b23215b646">&#9670;&#160;</a></span>get_row_index()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1728,7 +1730,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual int NOOPSolver::get_row_index </td>
+          <td class="memname">int NOOPSolver::get_row_index </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span></td><td>)</td>
           <td></td>
@@ -1753,8 +1755,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="afc9f16bc8d29d13d5430c10297e4b3eb" name="afc9f16bc8d29d13d5430c10297e4b3eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc9f16bc8d29d13d5430c10297e4b3eb">&#9670;&#160;</a></span>get_row_names() <span class="overload">[1/2]</span></h2>
+<a id="a9e90df3e1565a06315aeec74e6adfafb" name="a9e90df3e1565a06315aeec74e6adfafb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e90df3e1565a06315aeec74e6adfafb">&#9670;&#160;</a></span>get_row_names() <span class="overload">[1/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1763,7 +1765,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual std::vector&lt; std::string &gt; NOOPSolver::get_row_names </td>
+          <td class="memname">std::vector&lt; std::string &gt; NOOPSolver::get_row_names </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -1783,8 +1785,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="acd0bd853e6714e2bc5251eb146a66a14" name="acd0bd853e6714e2bc5251eb146a66a14"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#acd0bd853e6714e2bc5251eb146a66a14">&#9670;&#160;</a></span>get_row_names() <span class="overload">[2/2]</span></h2>
+<a id="af8afd7437082c5bc2aa69b5c35e9e971" name="af8afd7437082c5bc2aa69b5c35e9e971"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af8afd7437082c5bc2aa69b5c35e9e971">&#9670;&#160;</a></span>get_row_names() <span class="overload">[2/2]</span></h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1793,7 +1795,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual std::vector&lt; std::string &gt; NOOPSolver::get_row_names </td>
+          <td class="memname">std::vector&lt; std::string &gt; NOOPSolver::get_row_names </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>first</em></span>, </td>
         </tr>
@@ -1824,8 +1826,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a2fac8050e233953278cf5ac7b79381ac" name="a2fac8050e233953278cf5ac7b79381ac"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a2fac8050e233953278cf5ac7b79381ac">&#9670;&#160;</a></span>get_row_type()</h2>
+<a id="a7b0cc73b02f0e902ee8e5bbf39ce94f6" name="a7b0cc73b02f0e902ee8e5bbf39ce94f6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7b0cc73b02f0e902ee8e5bbf39ce94f6">&#9670;&#160;</a></span>get_row_type()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1834,7 +1836,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::get_row_type </td>
+          <td class="memname">void NOOPSolver::get_row_type </td>
           <td>(</td>
           <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>qrtype</em></span>, </td>
         </tr>
@@ -1870,8 +1872,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a60d43a6785bbb4309de970b71972d6eb" name="a60d43a6785bbb4309de970b71972d6eb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a60d43a6785bbb4309de970b71972d6eb">&#9670;&#160;</a></span>get_rows()</h2>
+<a id="a3c6a2a87da108e871d58c445c12245bd" name="a3c6a2a87da108e871d58c445c12245bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3c6a2a87da108e871d58c445c12245bd">&#9670;&#160;</a></span>get_rows()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1880,7 +1882,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::get_rows </td>
+          <td class="memname">void NOOPSolver::get_rows </td>
           <td>(</td>
           <td class="paramtype">int *</td>          <td class="paramname"><span class="paramname"><em>mstart</em></span>, </td>
         </tr>
@@ -1940,8 +1942,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="adb5994ac49ccd8ec78f19a188ff02518" name="adb5994ac49ccd8ec78f19a188ff02518"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#adb5994ac49ccd8ec78f19a188ff02518">&#9670;&#160;</a></span>get_solver_name()</h2>
+<a id="a7752f8f4f44eab22b9e4e000342c8acc" name="a7752f8f4f44eab22b9e4e000342c8acc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7752f8f4f44eab22b9e4e000342c8acc">&#9670;&#160;</a></span>get_solver_name()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1950,7 +1952,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual std::string NOOPSolver::get_solver_name </td>
+          <td class="memname">std::string NOOPSolver::get_solver_name </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -1969,8 +1971,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="ad3cd6572038247e983ef5212a56d6b49" name="ad3cd6572038247e983ef5212a56d6b49"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ad3cd6572038247e983ef5212a56d6b49">&#9670;&#160;</a></span>get_splex_num_of_ite_last()</h2>
+<a id="ae2bef6b97da4a6cdf038a228930ec166" name="ae2bef6b97da4a6cdf038a228930ec166"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2bef6b97da4a6cdf038a228930ec166">&#9670;&#160;</a></span>get_splex_num_of_ite_last()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1979,7 +1981,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual int NOOPSolver::get_splex_num_of_ite_last </td>
+          <td class="memname">int NOOPSolver::get_splex_num_of_ite_last </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td> const</td>
@@ -1999,8 +2001,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="af838a2e52d333770b888c0fcfd258a04" name="af838a2e52d333770b888c0fcfd258a04"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#af838a2e52d333770b888c0fcfd258a04">&#9670;&#160;</a></span>get_ub()</h2>
+<a id="a5bbb9786ae767e0fd467c23d1d5d336b" name="a5bbb9786ae767e0fd467c23d1d5d336b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bbb9786ae767e0fd467c23d1d5d336b">&#9670;&#160;</a></span>get_ub()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2009,7 +2011,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::get_ub </td>
+          <td class="memname">void NOOPSolver::get_ub </td>
           <td>(</td>
           <td class="paramtype">double *</td>          <td class="paramname"><span class="paramname"><em>ub</em></span>, </td>
         </tr>
@@ -2045,8 +2047,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a4de8c579b665ad71ac391cdfbbfcadb1" name="a4de8c579b665ad71ac391cdfbbfcadb1"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4de8c579b665ad71ac391cdfbbfcadb1">&#9670;&#160;</a></span>init()</h2>
+<a id="a4fdde5f69713afe397c251704c2de051" name="a4fdde5f69713afe397c251704c2de051"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4fdde5f69713afe397c251704c2de051">&#9670;&#160;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2055,7 +2057,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::init </td>
+          <td class="memname">void NOOPSolver::init </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -2074,8 +2076,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a137b784a33d443b24fc33c19e34c5093" name="a137b784a33d443b24fc33c19e34c5093"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a137b784a33d443b24fc33c19e34c5093">&#9670;&#160;</a></span>read_basis()</h2>
+<a id="a369bea2ba042568c70b307a9cb4abe64" name="a369bea2ba042568c70b307a9cb4abe64"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a369bea2ba042568c70b307a9cb4abe64">&#9670;&#160;</a></span>read_basis()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2084,7 +2086,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::read_basis </td>
+          <td class="memname">void NOOPSolver::read_basis </td>
           <td>(</td>
           <td class="paramtype">const std::filesystem::path &amp;</td>          <td class="paramname"><span class="paramname"><em>filename</em></span></td><td>)</td>
           <td></td>
@@ -2109,8 +2111,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a59b1e44b9cb7c12a9c44e05d80e1a5a5" name="a59b1e44b9cb7c12a9c44e05d80e1a5a5"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a59b1e44b9cb7c12a9c44e05d80e1a5a5">&#9670;&#160;</a></span>read_prob_lp()</h2>
+<a id="a9979a7a8352b98ea7d94836d818aa374" name="a9979a7a8352b98ea7d94836d818aa374"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9979a7a8352b98ea7d94836d818aa374">&#9670;&#160;</a></span>read_prob_lp()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2119,7 +2121,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::read_prob_lp </td>
+          <td class="memname">void NOOPSolver::read_prob_lp </td>
           <td>(</td>
           <td class="paramtype">const std::filesystem::path &amp;</td>          <td class="paramname"><span class="paramname"><em>filename</em></span></td><td>)</td>
           <td></td>
@@ -2144,8 +2146,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="aa9029d51d3f7146fda970f0fd08c5f6f" name="aa9029d51d3f7146fda970f0fd08c5f6f"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa9029d51d3f7146fda970f0fd08c5f6f">&#9670;&#160;</a></span>read_prob_mps()</h2>
+<a id="a3fccad5b73fa8fea5062afb10b27a89c" name="a3fccad5b73fa8fea5062afb10b27a89c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3fccad5b73fa8fea5062afb10b27a89c">&#9670;&#160;</a></span>read_prob_mps()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2154,7 +2156,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::read_prob_mps </td>
+          <td class="memname">void NOOPSolver::read_prob_mps </td>
           <td>(</td>
           <td class="paramtype">const std::filesystem::path &amp;</td>          <td class="paramname"><span class="paramname"><em>filename</em></span></td><td>)</td>
           <td></td>
@@ -2251,8 +2253,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="ada1e7111945f04571bcc645fe4f80e38" name="ada1e7111945f04571bcc645fe4f80e38"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ada1e7111945f04571bcc645fe4f80e38">&#9670;&#160;</a></span>set_algorithm()</h2>
+<a id="a43b866e529e7daa59d8bce836b7e5ecf" name="a43b866e529e7daa59d8bce836b7e5ecf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a43b866e529e7daa59d8bce836b7e5ecf">&#9670;&#160;</a></span>set_algorithm()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2261,7 +2263,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::set_algorithm </td>
+          <td class="memname">void NOOPSolver::set_algorithm </td>
           <td>(</td>
           <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>algo</em></span></td><td>)</td>
           <td></td>
@@ -2283,6 +2285,37 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 </dl>
 
 <p>Implements <a class="el" href="classSolverAbstract.html#a2017c2d79a795514c5de14ad42bf779b">SolverAbstract</a>.</p>
+
+</div>
+</div>
+<a id="a34dc3994d790725f263bf996b703f066" name="a34dc3994d790725f263bf996b703f066"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a34dc3994d790725f263bf996b703f066">&#9670;&#160;</a></span>set_basis()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void NOOPSolver::set_basis </td>
+          <td>(</td>
+          <td class="paramtype">std::span&lt; int &gt;</td>          <td class="paramname"><span class="paramname"><em>rstatus</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::span&lt; int &gt;</td>          <td class="paramname"><span class="paramname"><em>cstatus</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Implements <a class="el" href="classSolverAbstract.html">SolverAbstract</a>.</p>
 
 </div>
 </div>
@@ -2353,8 +2386,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a8707e8a651836631222055329cb7fae6" name="a8707e8a651836631222055329cb7fae6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8707e8a651836631222055329cb7fae6">&#9670;&#160;</a></span>set_optimality_gap()</h2>
+<a id="a7e0eaaced91f7942e23fcade8efef272" name="a7e0eaaced91f7942e23fcade8efef272"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7e0eaaced91f7942e23fcade8efef272">&#9670;&#160;</a></span>set_optimality_gap()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2363,7 +2396,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::set_optimality_gap </td>
+          <td class="memname">void NOOPSolver::set_optimality_gap </td>
           <td>(</td>
           <td class="paramtype">double</td>          <td class="paramname"><span class="paramname"><em>gap</em></span></td><td>)</td>
           <td></td>
@@ -2388,8 +2421,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a67518a1df5255c05e8c1df9eabb184f6" name="a67518a1df5255c05e8c1df9eabb184f6"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a67518a1df5255c05e8c1df9eabb184f6">&#9670;&#160;</a></span>set_output_log_level()</h2>
+<a id="abd2c460480542fb4ed22855f2c984971" name="abd2c460480542fb4ed22855f2c984971"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abd2c460480542fb4ed22855f2c984971">&#9670;&#160;</a></span>set_output_log_level()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2398,7 +2431,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::set_output_log_level </td>
+          <td class="memname">void NOOPSolver::set_output_log_level </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>loglevel</em></span></td><td>)</td>
           <td></td>
@@ -2423,8 +2456,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a8dbb97c24a7a7b5b1415c21a0c8d81a8" name="a8dbb97c24a7a7b5b1415c21a0c8d81a8"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8dbb97c24a7a7b5b1415c21a0c8d81a8">&#9670;&#160;</a></span>set_simplex_iter()</h2>
+<a id="a2d05cd75df0d79c7efa58bdfefb65c20" name="a2d05cd75df0d79c7efa58bdfefb65c20"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2d05cd75df0d79c7efa58bdfefb65c20">&#9670;&#160;</a></span>set_simplex_iter()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2433,7 +2466,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::set_simplex_iter </td>
+          <td class="memname">void NOOPSolver::set_simplex_iter </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>iter</em></span></td><td>)</td>
           <td></td>
@@ -2458,8 +2491,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a475430f4752038392a48f1d83802f14e" name="a475430f4752038392a48f1d83802f14e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a475430f4752038392a48f1d83802f14e">&#9670;&#160;</a></span>set_threads()</h2>
+<a id="a18a6262adb840a58647b7c41c4fdfbc7" name="a18a6262adb840a58647b7c41c4fdfbc7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a18a6262adb840a58647b7c41c4fdfbc7">&#9670;&#160;</a></span>set_threads()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2468,7 +2501,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::set_threads </td>
+          <td class="memname">void NOOPSolver::set_threads </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>n_threads</em></span></td><td>)</td>
           <td></td>
@@ -2493,8 +2526,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a298f43619ddcc5c68810fdfa5b023bfd" name="a298f43619ddcc5c68810fdfa5b023bfd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a298f43619ddcc5c68810fdfa5b023bfd">&#9670;&#160;</a></span>solve_lp()</h2>
+<a id="a7644ef8416995a485fea557e874cca6b" name="a7644ef8416995a485fea557e874cca6b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7644ef8416995a485fea557e874cca6b">&#9670;&#160;</a></span>solve_lp()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2503,7 +2536,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual int NOOPSolver::solve_lp </td>
+          <td class="memname">int NOOPSolver::solve_lp </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -2523,8 +2556,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="a90382b2edaabf8689db9faac83e9d074" name="a90382b2edaabf8689db9faac83e9d074"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a90382b2edaabf8689db9faac83e9d074">&#9670;&#160;</a></span>solve_mip()</h2>
+<a id="ac0a574c1221d0f2b74cdb44b070b45cd" name="ac0a574c1221d0f2b74cdb44b070b45cd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac0a574c1221d0f2b74cdb44b070b45cd">&#9670;&#160;</a></span>solve_mip()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2533,7 +2566,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual int NOOPSolver::solve_mip </td>
+          <td class="memname">int NOOPSolver::solve_mip </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -2553,8 +2586,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="ae1e066dab57c28fe75d5b93864f5275e" name="ae1e066dab57c28fe75d5b93864f5275e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1e066dab57c28fe75d5b93864f5275e">&#9670;&#160;</a></span>write_basis()</h2>
+<a id="aa12ed23ef5b92fdc5bba589428735cfe" name="aa12ed23ef5b92fdc5bba589428735cfe"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa12ed23ef5b92fdc5bba589428735cfe">&#9670;&#160;</a></span>write_basis()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2563,7 +2596,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::write_basis </td>
+          <td class="memname">void NOOPSolver::write_basis </td>
           <td>(</td>
           <td class="paramtype">const std::filesystem::path &amp;</td>          <td class="paramname"><span class="paramname"><em>filename</em></span></td><td>)</td>
           <td></td>
@@ -2588,8 +2621,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="aee897540f5372739dd10f999e3a30565" name="aee897540f5372739dd10f999e3a30565"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aee897540f5372739dd10f999e3a30565">&#9670;&#160;</a></span>write_prob_lp()</h2>
+<a id="acc11223d087b6ab411e06af9d7c9ea8a" name="acc11223d087b6ab411e06af9d7c9ea8a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#acc11223d087b6ab411e06af9d7c9ea8a">&#9670;&#160;</a></span>write_prob_lp()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2598,7 +2631,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::write_prob_lp </td>
+          <td class="memname">void NOOPSolver::write_prob_lp </td>
           <td>(</td>
           <td class="paramtype">const std::filesystem::path &amp;</td>          <td class="paramname"><span class="paramname"><em>filename</em></span></td><td>)</td>
           <td></td>
@@ -2623,8 +2656,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="ae1e9da630ba61c8b1a7cc28eeccdae89" name="ae1e9da630ba61c8b1a7cc28eeccdae89"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ae1e9da630ba61c8b1a7cc28eeccdae89">&#9670;&#160;</a></span>write_prob_mps()</h2>
+<a id="ac46c7596ac06b8218aae990b4850fed9" name="ac46c7596ac06b8218aae990b4850fed9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac46c7596ac06b8218aae990b4850fed9">&#9670;&#160;</a></span>write_prob_mps()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2633,7 +2666,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void NOOPSolver::write_prob_mps </td>
+          <td class="memname">void NOOPSolver::write_prob_mps </td>
           <td>(</td>
           <td class="paramtype">const std::filesystem::path &amp;</td>          <td class="paramname"><span class="paramname"><em>filename</em></span></td><td>)</td>
           <td></td>

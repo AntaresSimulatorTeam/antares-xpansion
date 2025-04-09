@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"classProblem.html":[25,0,168],
 "classProblem.html#a006aad13911c36e8d753f172c10f5465":[25,0,168,46],
 "classProblem.html#a075abb3bc479adb0de6c2326fe03ac17":[25,0,168,40],
 "classProblem.html#a0e72a237efb49b4788c6131dc414e06b":[25,0,168,35],
@@ -219,8 +220,8 @@ var NAVTREEINDEX2 =
 "classSolverCbc.html#a78dbb14988a311b4cdd65591519ee58a":[25,0,215,52],
 "classSolverCbc.html#a8181dc22a8855c559e0182f2b9103068":[25,0,215,47],
 "classSolverCbc.html#a83466723b10760ee1b6500b3badd236f":[25,0,215,29],
+"classSolverCbc.html#a857665ad2f3b4a6a281dccca032eabde":[25,0,215,39],
 "classSolverCbc.html#a86ceda2f93815c8e027bd739aedd81e0":[25,0,215,9],
-"classSolverCbc.html#a86f06f8a53793f10ad63d41ea362a00c":[25,0,215,39],
 "classSolverCbc.html#a8fa0d0e8fab67cd8f07930d8337549a4":[25,0,215,11],
 "classSolverCbc.html#a904bf8363f7c8a0a630d782349299731":[25,0,215,59],
 "classSolverCbc.html#a91961aef6dbf88d420c029eed8a948ab":[25,0,215,12],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "classSolverClp.html#a014b8e12d2ec5afb0acd45f0b87ec0a2":[25,0,216,54],
 "classSolverClp.html#a1a5f8d5db3112996fe66d73d5a0acd7b":[25,0,216,38],
 "classSolverClp.html#a1c30177ed7a4b32963c75a093863d9bd":[25,0,216,18],
-"classSolverClp.html#a1e2d73e41bd984fdb447795b8cfe1ca0":[25,0,216,48],
-"classSolverClp.html#a2187e8b150f471557445330c9942424d":[25,0,216,0]
+"classSolverClp.html#a1e2d73e41bd984fdb447795b8cfe1ca0":[25,0,216,48]
 };
