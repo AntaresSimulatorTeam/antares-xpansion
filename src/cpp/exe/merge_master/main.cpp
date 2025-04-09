@@ -25,7 +25,7 @@ int main(int argc, char** argv)
     MergeMasterMPSOptions options {
         .INPUTROOT = "/home/bessinnic/Documents/antares-xpansion/merge_master_test",
         .OUTPUTROOT = "/home/bessinnic/Documents/antares-xpansion/merge_master_test/output",
-        .STRUCTURE_FILE = "master_structure.json",
+        .STRUCTURE_FILE = "master_structure_minimal.json",
         .SOLVER_TO_USE = "CBC",
         .LOG_LEVEL = 1,
     };
