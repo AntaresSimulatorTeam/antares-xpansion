@@ -17,7 +17,7 @@ int SolverXpress::_NumberOfProblems = 0;
 std::mutex SolverXpress::license_guard;
 const std::map<int, std::string> TYPETONAME = {{1, "rows"}, {2, "columns"}};
 
-SolverXpress::SolverXpress(SolverLogManager& log_manager):
+SolverXpress::SolverXpress(const SolverLogManager& log_manager):
     SolverXpress()
 {
     if (log_manager.log_file_path != "")
@@ -229,6 +229,12 @@ void SolverXpress::read_basis(const std::filesystem::path& filename)
 {
     int status = XPRSreadbasis(_xprs, filename.string().c_str(), "");
     zero_status_check(status, "read basis", LOGLOCATION);
+}
+
+void SolverXpress::set_basis(std::span<int> rstatus, std::span<int> cstatus)
+{
+    int status = XPRSloadbasis(_xprs, rstatus.data(), cstatus.data());
+    zero_status_check(status, "set basis", LOGLOCATION);
 }
 
 void SolverXpress::copy_prob(const SolverAbstract::Ptr fictif_solv)

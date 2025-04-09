@@ -35,6 +35,7 @@ SimulationOptions::SimulationOptions():
 #define BENDERS_OPTIONS_MACRO(name__, type__, default__, deserialization_method__) \
     name__(default__),
 #include "antares-xpansion/benders/benders_core/SimulationOptions.hxx"
+
 #undef BENDERS_OPTIONS_MACRO
     _weights()
 {
@@ -74,6 +75,7 @@ void SimulationOptions::read(const std::filesystem::path& file_name)
     if (#var__ == var_name)                                                       \
         var__ = options_values[var_name].deserialization_method__;
 #include "antares-xpansion/benders/benders_core/SimulationOptions.hxx"
+
 #undef BENDERS_OPTIONS_MACRO
     }
     set_weights();
@@ -136,6 +138,7 @@ void SimulationOptions::print(std::ostream& stream) const
 #define BENDERS_OPTIONS_MACRO(name__, type__, default__, deserialization_method__) \
     stream << std::setw(30) << #name__ << std::setw(50) << std::boolalpha << name__ << std::endl;
 #include "antares-xpansion/benders/benders_core/SimulationOptions.hxx"
+
 #undef BENDERS_OPTIONS_MACRO
     stream << std::endl;
 }
@@ -189,7 +192,6 @@ BendersBaseOptions SimulationOptions::get_benders_options() const
                   << std::endl;
         std::exit(1);
     }
-
     result.AGGREGATION = AGGREGATION;
     result.TRACE = TRACE;
     result.BOUND_ALPHA = BOUND_ALPHA;
@@ -199,6 +201,7 @@ BendersBaseOptions SimulationOptions::get_benders_options() const
     result.LAST_MASTER_BASIS = LAST_MASTER_BASIS;
     result.BATCH_SIZE = BATCH_SIZE;
     result.EXTERNAL_LOOP_OPTIONS = GetExternalLoopOptions();
+    result.CACHE_PROBLEMS = CACHE_PROBLEMS;
     return result;
 }
 
