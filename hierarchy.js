@@ -697,6 +697,7 @@ var hierarchy =
     [ "Catch::detail::void_type<... >", "structCatch_1_1detail_1_1void__type.html", null ],
     [ "Catch::WaitForKeypress", "structCatch_1_1WaitForKeypress.html", null ],
     [ "Catch::WarnAbout", "structCatch_1_1WarnAbout.html", null ],
+    [ "WeightFileProcessor", "classWeightFileProcessor.html", null ],
     [ "WeightsFileReader::WeightsFileError", "classWeightsFileReader_1_1WeightsFileError.html", [
       [ "WeightsFileReader::InvalidYearsWeightNumber", "classWeightsFileReader_1_1InvalidYearsWeightNumber.html", null ],
       [ "WeightsFileReader::InvalidYearsWeightValue", "classWeightsFileReader_1_1InvalidYearsWeightValue.html", null ],

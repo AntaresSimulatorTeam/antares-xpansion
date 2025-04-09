@@ -1,5 +1,6 @@
 var NAVTREEINDEX2 =
 {
+"classOutput_1_1VoidWriter.html#ad6904d7f602e37270c000a9dbe564cde":[25,0,7,7,3],
 "classProblem.html":[25,0,168],
 "classProblem.html#a006aad13911c36e8d753f172c10f5465":[25,0,168,46],
 "classProblem.html#a075abb3bc479adb0de6c2326fe03ac17":[25,0,168,40],
@@ -248,6 +249,5 @@ var NAVTREEINDEX2 =
 "classSolverClp.html":[25,0,216],
 "classSolverClp.html#a014b8e12d2ec5afb0acd45f0b87ec0a2":[25,0,216,54],
 "classSolverClp.html#a1a5f8d5db3112996fe66d73d5a0acd7b":[25,0,216,38],
-"classSolverClp.html#a1c30177ed7a4b32963c75a093863d9bd":[25,0,216,18],
-"classSolverClp.html#a1e2d73e41bd984fdb447795b8cfe1ca0":[25,0,216,48]
+"classSolverClp.html#a1c30177ed7a4b32963c75a093863d9bd":[25,0,216,18]
 };

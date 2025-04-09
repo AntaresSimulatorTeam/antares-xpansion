@@ -1,5 +1,7 @@
 var NAVTREEINDEX5 =
 {
+"classtests_1_1python_1_1test__split__link__profile_1_1TestSplitLinkProfile.html":[25,0,13,1,12,0],
+"classtests_1_1python_1_1test__study__locker_1_1TestStudyLocker.html":[25,0,13,1,13,0],
 "classtests_1_1python_1_1test__study__output__cleaner_1_1TestStudyOutputCleaner.html":[25,0,13,1,14,0],
 "classtests_1_1python_1_1test__study__updater_1_1TestStudyUpdater.html":[25,0,13,1,15,0],
 "classxpansion_1_1logger_1_1CandidateLog.html":[25,0,15,0,0],
@@ -247,7 +249,5 @@ var NAVTREEINDEX5 =
 "md_docs_2developer-guide_2install__from__sources_20-INSTALL.html":[3],
 "md_docs_2developer-guide_2install__from__sources_20-INSTALL.html#autotoc_md72":[3,0],
 "md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html":[4],
-"md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html#autotoc_md74":[4,0],
-"md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html#autotoc_md75":[4,1],
-"md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html#autotoc_md76":[4,2]
+"md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html#autotoc_md74":[4,0]
 };

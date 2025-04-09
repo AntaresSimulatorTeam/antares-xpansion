@@ -140,15 +140,16 @@ var NAVTREEINDEX0 =
 "VariablesGroup_8h_source.html":[26,0,0,0,0,1,0,0,0,0,21],
 "Version_8h_source.html":[26,0,0,0,3,2,1,0],
 "VoidWriter_8h_source.html":[26,0,0,0,0,8,0,0,0,0,2],
+"WeightFileProcessor_8h_source.html":[26,0,0,0,3,4,0,0,0,0,19],
 "WeightsFileReader_8h_source.html":[26,0,0,0,3,1,0,0,0,0,10],
 "WeightsFileWriter_8h_source.html":[26,0,0,0,3,1,0,0,0,0,11],
 "WorkerMaster_8h_source.html":[26,0,0,0,0,1,0,0,0,0,23],
 "Worker_8h_source.html":[26,0,0,0,0,1,0,0,0,0,22],
 "WriterFactories_8h_source.html":[26,0,0,0,0,4,0,0,0,0,2],
 "WriterStub_8h_source.html":[26,0,1,0,2,2],
-"XpansionProblemsFromAntaresProvider_8h_source.html":[26,0,0,0,3,4,0,0,0,0,19],
-"ZipProblemProviderAdapter_8h_source.html":[26,0,0,0,3,4,0,0,0,0,20],
-"ZipProblemsProviderAdapter_8h_source.html":[26,0,0,0,3,4,0,0,0,0,21],
+"XpansionProblemsFromAntaresProvider_8h_source.html":[26,0,0,0,3,4,0,0,0,0,20],
+"ZipProblemProviderAdapter_8h_source.html":[26,0,0,0,3,4,0,0,0,0,21],
+"ZipProblemsProviderAdapter_8h_source.html":[26,0,0,0,3,4,0,0,0,0,22],
 "annotated.html":[25,0],
 "catch2_8hpp_source.html":[26,0,1,0,1,0],
 "classActiveLink.html":[25,0,18],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "classBenders_1_1Criterion_1_1CriterionInputData.html":[25,0,1,0,3],
 "classBenders_1_1Criterion_1_1CriterionInputFileError.html":[25,0,1,0,4],
 "classBenders_1_1Criterion_1_1CriterionInputFileIsEmpty.html":[25,0,1,0,5],
-"classBenders_1_1Criterion_1_1CriterionInputFileNoPatternFound.html":[25,0,1,0,6],
-"classBenders_1_1Criterion_1_1CriterionInputFromYaml.html":[25,0,1,0,7]
+"classBenders_1_1Criterion_1_1CriterionInputFileNoPatternFound.html":[25,0,1,0,6]
 };

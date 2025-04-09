@@ -682,6 +682,7 @@ var annotated_dup =
     [ "VariableNameComposition", "structVariableNameComposition.html", null ],
     [ "VariablesGroupTest", "classVariablesGroupTest.html", null ],
     [ "Version", "structVersion.html", null ],
+    [ "WeightFileProcessor", "classWeightFileProcessor.html", null ],
     [ "WeightsFileReader", "classWeightsFileReader.html", "classWeightsFileReader" ],
     [ "WeightsFileReaderTest", "classWeightsFileReaderTest.html", null ],
     [ "WeightsFileWriterTest", "classWeightsFileWriterTest.html", null ],
