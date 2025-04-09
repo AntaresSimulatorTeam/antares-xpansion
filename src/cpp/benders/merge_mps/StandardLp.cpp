@@ -137,11 +137,11 @@ StandardLp::StandardLp(SolverAbstract& solver_p)
            == std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS]);
 }
 
-int StandardLp::append_in(SolverAbstract::Ptr containingSolver_p, const std::string& prefix_p) const
+int StandardLp::append_in(SolverAbstract& containingSolver_p, const std::string& prefix_p) const
 {
     // simply increment the columns indices
     IntVector newmindex(std::get<Attribute::INT_VECTOR>(_data)[IntVectorAttribute::MINDEX]);
-    int nbExistingCols(containingSolver_p->get_ncols());
+    int nbExistingCols(containingSolver_p.get_ncols());
     for (auto& i: newmindex)
     {
         i += nbExistingCols;
@@ -158,7 +158,7 @@ int StandardLp::append_in(SolverAbstract::Ptr containingSolver_p, const std::str
                    { return prefix_l + varName_p; });
 
     std::vector<int> mstart(std::get<Attribute::INT_VALUE>(_data)[IntAttribute::NCOLS], 0);
-    solver_addcols(*containingSolver_p,
+    solver_addcols(containingSolver_p,
                    std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::OBJ],
                    mstart,
                    IntVector(0, 0),
@@ -168,7 +168,7 @@ int StandardLp::append_in(SolverAbstract::Ptr containingSolver_p, const std::str
                    std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::COLTYPE],
                    newNames);
 
-    solver_addrows(*containingSolver_p,
+    solver_addrows(containingSolver_p,
                    std::get<Attribute::CHAR_VECTOR>(_data)[CharVectorAttribute::ROWTYPE],
                    std::get<Attribute::DBL_VECTOR>(_data)[DblVectorAttribute::RHS],
                    {},

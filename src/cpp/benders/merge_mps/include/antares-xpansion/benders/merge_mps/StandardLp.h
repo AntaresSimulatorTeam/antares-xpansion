@@ -19,7 +19,7 @@ public:
 public:
     explicit StandardLp(SolverAbstract& solver_p);
 
-    int append_in(SolverAbstract::Ptr containingSolver_p, const std::string& prefix_p = "") const;
+    int append_in(SolverAbstract& containingSolver_p, const std::string& prefix_p = "") const;
 
 private:
     void init();

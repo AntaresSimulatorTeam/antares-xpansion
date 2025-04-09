@@ -19,7 +19,7 @@ private:
     CouplingMap get_candidates(const std::filesystem::path& root_dir,
                                const CouplingMap& structure,
                                const std::string& solver_to_use,
-                               SolverAbstract::Ptr& ptr_merged_solver);
+                               SolverAbstract& ptr_merged_solver);
 
     double get_subproblem_weight(const int nb_subproblems, const std::string& name) const;
     void add_coupling_constraints(SolverAbstract& merged_solver, const CouplingMap& candidates);

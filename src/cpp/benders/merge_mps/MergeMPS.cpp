@@ -39,7 +39,7 @@ void MergeMPS::launch()
     const CouplingMap candidates = get_candidates(input_root_dir,
                                                   input,
                                                   solver_to_use,
-                                                  ptr_merged_solver);
+                                                  *ptr_merged_solver);
 
     add_coupling_constraints(*ptr_merged_solver, candidates);
 
@@ -64,12 +64,12 @@ void MergeMPS::launch()
  *
  * \param solver_to_use : Solver name that will be used in back-end
  *
- * \param ptr_merged_solver : Pointer to merged solver
+ * \param merged_solver : Ref to merged solver
  */
 CouplingMap MergeMPS::get_candidates(const std::filesystem::path& root_dir,
                                      const CouplingMap& structure,
                                      const std::string& solver_to_use,
-                                     SolverAbstract::Ptr& ptr_merged_solver)
+                                     SolverAbstract& merged_solver)
 {
     CouplingMap candidates;
 
@@ -114,19 +114,19 @@ CouplingMap MergeMPS::get_candidates(const std::filesystem::path& root_dir,
 
         // Prefix the name of the problem (Master and slaves alike)
         // along with the counting
-        lpData.append_in(ptr_merged_solver, var_prefix);
+        lpData.append_in(merged_solver, var_prefix);
 
         for (const auto& [var_name, _]: var_map)
         {
-            const int col_index = ptr_merged_solver->get_col_index(var_prefix + var_name);
+            const int col_index = merged_solver.get_col_index(var_prefix + var_name);
             if (col_index == -1)
             {
                 std::cerr << LOGLOCATION << "missing variable " << var_name << " in " << filename
                           << " supposedly renamed to " << var_prefix + var_name << ".";
-                ptr_merged_solver->write_prob_lp(std::filesystem::path(_options.OUTPUTROOT)
-                                             / "mergeError.lp");
-                ptr_merged_solver->write_prob_mps(std::filesystem::path(_options.OUTPUTROOT)
-                                              / ("mergeError" + MPS_SUFFIX));
+                merged_solver.write_prob_lp(std::filesystem::path(_options.OUTPUTROOT)
+                                            / "mergeError.lp");
+                merged_solver.write_prob_mps(std::filesystem::path(_options.OUTPUTROOT)
+                                             / ("mergeError" + MPS_SUFFIX));
                 std::exit(1);
             }
             else
