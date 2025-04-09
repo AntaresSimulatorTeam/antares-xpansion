@@ -17,6 +17,12 @@ public:
         std::runtime_error(arg) {}
 };
 
+struct CandidateConstraintData
+{
+    double max_investment;
+    double min_investment;
+};
+
 
 struct TrajectoryNodeData {
     int investment_date;
@@ -25,6 +31,7 @@ struct TrajectoryNodeData {
     std::string structure_file;
     std::string parent = "root";
     double weight_factor = 1.0;
+    std::map<std::string, CandidateConstraintData> candidate_constraints;
 };
 
 
@@ -34,6 +41,10 @@ typedef std::map<std::string, TrajectoryNodeData> MasterCouplingMap;
 class MasterCouplingMapGenerator
 {
 public:
+    static CandidateConstraintData CandidateConstraintDataParser(
+        const Json::Value& json_node,
+        ILoggerXpansion* logger
+    );
     static TrajectoryNodeData TrajectoryNodeDataParser(
         const Json::Value& json_node,
         ILoggerXpansion* logger

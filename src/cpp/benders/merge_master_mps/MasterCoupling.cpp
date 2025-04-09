@@ -20,6 +20,17 @@ Json::Value parse_json_file(const std::filesystem::path& file_name, ILoggerXpans
     return _input;
 }
 
+CandidateConstraintData MasterCouplingMapGenerator::CandidateConstraintDataParser(
+    const Json::Value& json_node,
+    ILoggerXpansion* logger
+){
+    CandidateConstraintData candidate_data;
+    candidate_data.max_investment = json_node["max_investment"].asDouble();
+    candidate_data.min_investment = json_node["min_investment"].asDouble();
+
+    return candidate_data;
+};
+
 
 TrajectoryNodeData MasterCouplingMapGenerator::TrajectoryNodeDataParser(
     const Json::Value& json_node,
@@ -32,6 +43,14 @@ TrajectoryNodeData MasterCouplingMapGenerator::TrajectoryNodeDataParser(
     node_data.structure_file = json_node["structure_file"].asString();
     node_data.parent = json_node["parent"].asString();
     node_data.weight_factor = json_node["weight_factor"].asDouble();
+
+    const auto& candidates_constraints = json_node["constraints"];
+    for (const auto& candidate_name : candidates_constraints.getMemberNames())
+    {
+        const auto& candidate_data = candidates_constraints[candidate_name];
+        CandidateConstraintData candidate_constraint_data = CandidateConstraintDataParser(candidate_data, logger);
+        node_data.candidate_constraints[candidate_name] = candidate_constraint_data;
+    }
 
     return node_data;
 };
