@@ -594,7 +594,6 @@ var annotated_dup =
     [ "MathLoggerOstream", "classMathLoggerOstream.html", null ],
     [ "MergeMPS", "classMergeMPS.html", "classMergeMPS" ],
     [ "MergeMPSTest", "classMergeMPSTest.html", "classMergeMPSTest" ],
-    [ "MockProblem", "classMockProblem.html", null ],
     [ "MPSFileProblemProviderAdapter", "classMPSFileProblemProviderAdapter.html", null ],
     [ "MpsTxtWriterTest", "classMpsTxtWriterTest.html", null ],
     [ "NoopProblemGenerationLogger", "classNoopProblemGenerationLogger.html", "classNoopProblemGenerationLogger" ],

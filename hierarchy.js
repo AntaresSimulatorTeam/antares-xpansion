@@ -523,9 +523,7 @@ var hierarchy =
     [ "Output::SolutionData", "structOutput_1_1SolutionData.html", null ],
     [ "SolverAbstract", "classSolverAbstract.html", [
       [ "NOOPSolver", "classNOOPSolver.html", null ],
-      [ "Problem", "classProblem.html", [
-        [ "MockProblem", "classMockProblem.html", null ]
-      ] ],
+      [ "Problem", "classProblem.html", null ],
       [ "SolverCbc", "classSolverCbc.html", null ],
       [ "SolverClp", "classSolverClp.html", null ],
       [ "SolverXpress", "classSolverXpress.html", null ]
