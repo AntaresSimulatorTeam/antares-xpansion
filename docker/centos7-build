@@ -82,7 +82,7 @@ RUN  source /opt/rh/devtoolset-11/enable && \
      cmake --build _build --config Release -j${NPROC} &&\
      ccache -s
 # tests
-RUN export PATH=/root/miniconda3/condabin:$PATH && \                                                                                                                                                                                                                               \
+RUN export PATH=/root/miniconda3/condabin:$PATH && \
               SITE_PACKAGE=/root/miniconda3/lib/python3.8/site-packages && \
               XPRESS_DIR=/root/miniconda3 && \
               export XPRESSDIR=$XPRESS_DIR && \
