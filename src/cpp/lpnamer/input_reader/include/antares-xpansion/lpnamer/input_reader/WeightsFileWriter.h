@@ -19,7 +19,7 @@ public:
       const std::string& solver_name,
       std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
 
-    void CreateWeightFile(const std::vector<std::pair<int, ProblemData>>& problems_and_data);
+    void CreateWeightFile(const std::vector<std::pair<int, ProblemData>>& year_and_data);
 
     class McYearNotInActiveYearsListError: public LogUtils::XpansionError<std::runtime_error>
     {
