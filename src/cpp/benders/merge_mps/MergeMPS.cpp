@@ -71,6 +71,11 @@ CouplingMap MergeMPS::get_candidates(const std::filesystem::path& root_dir,
                                      const std::string& solver_to_use,
                                      SolverAbstract& merged_solver)
 {
+    if (structure.empty())
+    {
+        return {};
+    }
+
     CouplingMap candidates;
 
     const int nb_sub_problems = structure.size() - 1;
@@ -185,6 +190,13 @@ double MergeMPS::get_subproblem_weight(const int nb_subproblems, const std::stri
 void MergeMPS::add_coupling_constraints(SolverAbstract& merged_solver,
                                         const CouplingMap& candidates)
 {
+    // TODO Investigate why following check
+    // TODO creates a segfault when structure.txt is empty
+    // if (candidates.empty())
+    // {
+    //     return;
+    // }
+
     size_t nb_elem_reserve{0}; // 2-permutation of variables
 
     for (const auto& [_, file_mapping]: candidates)
@@ -303,11 +315,19 @@ void MergeMPS::output_solution(SolverAbstract& merged_solver,
     merged_solver.get_obj(obj_coeff.data(), 0, merged_solver.get_ncols() - 1);
 
     std::map<std::string, double> investments;
-    for (const auto& [var_name, _]: structure.at(_options.MASTER_NAME))
+    if (const auto master = structure.find(_options.MASTER_NAME); master != structure.end())
     {
-        const int var_idx_in_merged = candidates.at(var_name).at(_options.MASTER_NAME);
-        investments[var_name] = solution[var_idx_in_merged];
-        investment_cost += investments[var_name] * obj_coeff[var_idx_in_merged];
+        for (const auto& [var_name, _]: master->second)
+        {
+            const int var_idx_in_merged = candidates.at(var_name).at(_options.MASTER_NAME);
+            investments[var_name] = solution[var_idx_in_merged];
+            investment_cost += investments[var_name] * obj_coeff[var_idx_in_merged];
+        }
+    }
+    else
+    {
+        std::cerr << LOGLOCATION << "Could not find '" << _options.MASTER_NAME
+                  << "' in structure\n";
     }
 
     operational_cost = overall_cost - investment_cost;
