@@ -39,11 +39,6 @@ private:
       const std::filesystem::path& weights_file,
       bool unnamed_problems);
 
-    void ProcessWeights(const std::vector<std::pair<int, ProblemData>>& problems_and_data,
-                        const std::filesystem::path& xpansion_output_dir,
-                        const std::filesystem::path& weights_file,
-                        const std::string& solver_name,
-                        std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
     void ExtractUtilsFiles(const std::filesystem::path& antares_archive_path,
                            const std::filesystem::path& xpansion_output_dir,
                            std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
