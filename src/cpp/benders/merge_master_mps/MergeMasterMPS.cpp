@@ -66,6 +66,11 @@ void MergeMasterMPS::launch()
     CouplingMap capacity_variable_coupling;
     // int cntProblems_l(0);
 
+    // We also need to need to generate a merged_structure.txt file
+    // For the master problem : all the renamed variables and their index in the merged problem
+    // For each of the node's subproblems : the renamed variables and their index in the respective subproblem files
+    CouplingMap merged_structure;
+
     _logger->display_message("Merging master problems...");
 
     for (const auto& [node_name, node_data] : master_coupling)
@@ -100,13 +105,15 @@ void MergeMasterMPS::launch()
 
         // First step : get the candidate's position in the merged problem
         // The coupling map must contain the key "master"
+        // TODO : replace the "master" hardcoded string with a constant, perhaps given in the options ?
         for (const auto& [candidate_name, _] : node_coupling_map["master"])
         {
-            int new_index = mergedSolver_l->get_col_index(varPrefix_l + candidate_name);
+            std::string candidate_name_prefixed = varPrefix_l + candidate_name;
+            int new_index = mergedSolver_l->get_col_index(candidate_name_prefixed);
             if (new_index == -1)
             {
                 std::cerr << LOGLOCATION << "missing variable " << candidate_name << " in " << node_name
-                          << " supposedly renamed to " << varPrefix_l + candidate_name << ".";
+                          << " supposedly renamed to " << candidate_name_prefixed << ".";
                 mergedSolver_l->write_prob_lp(std::filesystem::path(_options.OUTPUTROOT)
                                               / "mergeError.lp");
                 mergedSolver_l->write_prob_mps(std::filesystem::path(_options.OUTPUTROOT)
@@ -114,17 +121,33 @@ void MergeMasterMPS::launch()
                 std::exit(1);
             }
             capacity_variable_coupling[candidate_name][node_name] = new_index;
+            merged_structure["master"][candidate_name_prefixed] = new_index;
         }
 
-        // Second step : rename the variables in the subproblems (probably not necessary)
-        // Do stuff
+        // Second step : add the subproblem coupling to the merged structure
+        for (const auto& [subproblem, positions] : node_coupling_map)
+        {
+            if (subproblem == "master")
+                continue;
+            std::string subproblem_prefixed = varPrefix_l + subproblem;
+            for (const auto& [candidate_name, position] : positions)
+            {
+                std::string candidate_name_prefixed = varPrefix_l + candidate_name;
+                merged_structure[subproblem_prefixed][candidate_name_prefixed] = position;
+            }
+        }
     }
     // Next : add the trajectory constraints linking the nodes
     // TODO : determine the input format for those constraints
     // Do stuff
 
     // Finally, write the new structure file to the output directory
-    // Do stuff
+    std::string output_structure_file = _options.OUTPUTROOT + "/structure.txt";
+    CouplingMapGenerator::WriteCouplingMap(
+        merged_structure,
+        std::filesystem::path(output_structure_file),
+        _logger.get()
+    );
 
     _logger->display_message("Problems merged.");
     _logger->display_message("Writing mps file");

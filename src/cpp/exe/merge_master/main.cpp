@@ -22,6 +22,7 @@ int main(int argc, char** argv)
     // SimulationOptions options(argv[1]);
     // options.print(std::cout);
 
+    // This is temporary
     MergeMasterMPSOptions options {
         .INPUTROOT = "/home/bessinnic/Documents/antares-xpansion/merge_master_test",
         .OUTPUTROOT = "/home/bessinnic/Documents/antares-xpansion/merge_master_test/output",
