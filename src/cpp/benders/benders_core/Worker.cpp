@@ -198,6 +198,12 @@ Worker::Worker(VariableMap variable_map, std::filesystem::path path_to_mps, Logg
 {
 }
 
+Worker::Worker(std::filesystem::path path_to_mps, Logger logger):
+    _path_to_mps{std::move(path_to_mps)},
+    logger_{std::move(logger)}
+{
+}
+
 void Worker::writeProb(const std::filesystem::path& out) const
 {
     solver_io_.write(_solver.get(), out);

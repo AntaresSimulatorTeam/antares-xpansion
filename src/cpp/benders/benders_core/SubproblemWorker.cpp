@@ -39,6 +39,32 @@ SubproblemWorker::SubproblemWorker(const VariableMap& variable_map,
     _solver->chg_obj(sequence, obj_func_coeffs);
 }
 
+SubproblemWorker::SubproblemWorker(const std::filesystem::path& path_to_mps,
+                                   const double& slave_weight,
+                                   const std::string& solver_name,
+                                   const int log_level,
+                                   SolverLogManager& solver_log_manager,
+                                   Logger logger,
+                                   ProblemsFormat format):
+    Worker(path_to_mps, std::move(logger))
+{
+    init(solver_name, log_level, solver_log_manager, format);
+
+    int mps_ncols(_solver->get_ncols());
+    DblVector obj_func_coeffs(mps_ncols);
+    IntVector sequence(mps_ncols);
+    for (int i = 0; i < mps_ncols; ++i)
+    {
+        sequence[i] = i;
+    }
+    solver_get_obj_func_coeffs(*_solver, obj_func_coeffs, 0, mps_ncols - 1);
+    for (auto& c: obj_func_coeffs)
+    {
+        c *= slave_weight;
+    }
+    _solver->chg_obj(sequence, obj_func_coeffs);
+}
+
 /*!
  *  \brief Fix a set of variables to constant in a problem
  *
@@ -62,6 +88,28 @@ void SubproblemWorker::fix_to(const Point& x0) const
     }
 
     solver_chgbounds(_solver, indexes, bndtypes, values);
+}
+
+/*!
+ *  \brief Fix the rhs of a constraint to a constant in a problem
+ *
+ *  Method to set the rhs of a constraint in a problem by fixing their bounds
+ *
+ *  \param name : name of the constraint
+ *  \param value : value to fix
+ */
+void SubproblemWorker::fix_rhs_to(const std::string& name, const double& value) const
+{
+    int index = _solver->get_row_index(name);
+    solver_chg_rhs(_solver, index, value);
+}
+
+double SubproblemWorker::get_rhs_value_from_name(const std::string& constraint_name) const
+{
+    double res;
+    int index = _solver->get_row_index(constraint_name);
+    _solver->get_rhs(&res, index, index);
+    return res;
 }
 
 /*!
