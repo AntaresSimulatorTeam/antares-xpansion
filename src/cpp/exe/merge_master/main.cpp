@@ -7,8 +7,8 @@
 #include "antares-xpansion/benders/benders_core/Worker.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 #include "antares-xpansion/benders/logger/User.h"
+#include "antares-xpansion/benders/merge_mps/StandardLp.h"
 #include "antares-xpansion/benders/merge_master_mps/MergeMasterMPS.h"
-#include "antares-xpansion/benders/merge_master_mps/StandardLp.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 
