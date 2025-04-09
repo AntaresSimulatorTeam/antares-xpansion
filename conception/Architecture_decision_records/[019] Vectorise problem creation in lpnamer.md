@@ -5,7 +5,7 @@
 ## Context
 
 LPNamer build all problems before processing them. When there are a lot of problems to process we can hit the limit of
-memory. This is the same kind of issue encounter during Benders.
+memory. This is the same kind of issue encountered during Benders.
 To avoid this issue we must not build all problems at once but only when necessary.
 
 ## Decision
