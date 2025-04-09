@@ -139,7 +139,15 @@ void MergeMasterMPS::launch()
     }
     // Next : add the trajectory constraints linking the nodes
     // TODO : determine the input format for those constraints
-    // Do stuff
+    // Now that we have a merged master problem, we add the trajectory constraints
+    for (const auto& [node_name, node_data] : master_coupling)
+    {
+        const auto& candidates_constraints = node_data.candidate_constraints;
+        for (const auto& [candidate, constraint_data] : candidates_constraints)
+        {
+            
+        }
+    }
 
     // Finally, write the new structure file to the output directory
     std::string output_structure_file = _options.OUTPUTROOT + "/structure.txt";
