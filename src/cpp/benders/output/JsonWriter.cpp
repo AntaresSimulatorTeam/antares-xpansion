@@ -124,8 +124,36 @@ void JsonWriter::write_grid_point(const GridPointData& grid_point_data)
         _output[GRID_POINTS_C][strGridPointCnt_l][GRID_POINT_C][name] = value;
     }
     _output[GRID_POINTS_C][strGridPointCnt_l][INVESTMENT_COST_C] = grid_point_data.investment_cost;
-    _output[GRID_POINTS_C][strGridPointCnt_l][OPERATIONAL_COST_C] = grid_point_data.operational_cost;
+    _output[GRID_POINTS_C][strGridPointCnt_l][OPERATIONAL_COST_C] = grid_point_data
+                                                                      .operational_cost;
     _output[GRID_POINTS_C][strGridPointCnt_l][OVERALL_COST_C] = grid_point_data.overall_cost;
+}
+
+void JsonWriter::write_ValeursUsage(const ValeursUsageData& valeurs_usage)
+{
+    // Map to store a vector of ValeursUsage for each scenario and week pair
+    std::map<std::pair<int, int>, Json::Value> scenario_week_map;
+    for (const auto& [key, cost]: valeurs_usage)
+    {
+        if (scenario_week_map.find({key.scenario, key.week}) == scenario_week_map.end())
+        {
+            scenario_week_map[{key.scenario, key.week}] = Json::Value(Json::arrayValue);
+        }
+
+        Json::Value valeursUsage;
+        valeursUsage[OPERATIONAL_COST_C] = cost;
+        for (const auto& [cst, val]: key.rhsValues)
+        {
+            valeursUsage["RHS"][cst] = val;
+        }
+        scenario_week_map[{key.scenario, key.week}].append(valeursUsage);
+    }
+    for (const auto& [key, vectValeursUsage]: scenario_week_map)
+    {
+        _output["Scenario"][std::to_string(key.first)]["Week"][std::to_string(key.second)]
+               ["ValeursUsage"]
+          = vectValeursUsage;
+    }
 }
 
 void JsonWriter::write_solution(const SolutionData& solution)

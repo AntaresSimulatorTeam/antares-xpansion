@@ -101,6 +101,28 @@ struct GridPointData
 
 typedef std::vector<GridPointData> GridPointsData;
 
+struct ValeursUsageKey
+{
+    int scenario;
+    int week;
+    Point rhsValues;
+
+    bool operator<(const ValeursUsageKey& other) const
+    {
+        if (scenario != other.scenario)
+        {
+            return scenario < other.scenario;
+        }
+        if (week != other.week)
+        {
+            return week < other.week;
+        }
+        return rhsValues < other.rhsValues;
+    }
+};
+
+typedef std::map<ValeursUsageKey, double> ValeursUsageData;
+
 struct ProblemData
 {
     std::string name;

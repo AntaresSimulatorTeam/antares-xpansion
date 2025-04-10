@@ -11,6 +11,12 @@ using ConstraintMap = std::map<std::string /*constraint name*/, std::vector<doub
 using AreaConstraintMaps = std::map<std::string /*area name*/, ConstraintMap>;
 using SubPbConstraintMaps = std::map<std::string /*subPb name*/, AreaConstraintMaps>;
 
+struct ScenarioAndWeek
+{
+    int scenario;
+    int week;
+};
+
 /*!
  * \class ValeursUsage
  * \brief Class use run the Valeurs d'usage use case
@@ -34,26 +40,28 @@ protected:
                                  const std::map<std::string, double>& rhsValues);
     std::filesystem::path GetSubproblemPath(const std::string& subPbName) const;
     void AddSubproblem(const std::string& problem_name);
-    std::vector<double> SolveSubproblem(const std::string& subPbName);
-    std::string getConstraintName(const std::string& subPbName,
+    double SolveSubproblem(const std::string& subPbName);
+    std::string GetConstraintName(const std::string& subPbName,
                                   const std::string& area,
                                   const std::string& constraint) const;
-    int getWeekFromPbName(const std::string& pbName) const;
-    void generateConstraintProduct(
+    ScenarioAndWeek GetPbInfo(const std::string& pbName) const;
+    void GenerateConstraintProduct(
       const ConstraintMap& constraints,
       std::map<std::string, double>& current,
       ConstraintMap::const_iterator it,
       const std::function<void(const std::map<std::string, double>&)>& func);
-    void generateAreaProduct(const std::string subPbName,
+    void GenerateAreaProduct(const std::string subPbName,
                              const AreaConstraintMaps& areas,
                              std::map<std::string, double>& current,
                              AreaConstraintMaps::const_iterator it,
                              const std::function<void(const std::map<std::string, double>&)>& func);
+    void WriteOutput();
 
 protected:
     std::filesystem::path xpansionFolderPath;
     SubPbConstraintMaps subPbAreaConstraintsMaps;
     SubproblemsMapPtr subProblems;
+    Output::ValeursUsageData valeursUsageData;
 
     SolverLogManager solver_log_manager_;
     Logger _logger;

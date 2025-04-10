@@ -18,7 +18,7 @@ ValeursUsage::ValeursUsage(Logger logger,
 }
 
 // Recursive Cartesian product over constraint sets
-void ValeursUsage::generateConstraintProduct(
+void ValeursUsage::GenerateConstraintProduct(
   const ConstraintMap& constraints,
   std::map<std::string, double>& current,
   ConstraintMap::const_iterator it,
@@ -36,12 +36,12 @@ void ValeursUsage::generateConstraintProduct(
     for (double val: values)
     {
         current[key] = val;
-        generateConstraintProduct(constraints, current, std::next(it), func);
+        GenerateConstraintProduct(constraints, current, std::next(it), func);
     }
 }
 
 // Recursive Cartesian product over areas
-void ValeursUsage::generateAreaProduct(
+void ValeursUsage::GenerateAreaProduct(
   const std::string subPbName,
   const AreaConstraintMaps& areas,
   std::map<std::string, double>& current,
@@ -58,7 +58,7 @@ void ValeursUsage::generateAreaProduct(
     const auto& constraints = it->second;
 
     std::map<std::string, double> areaCombination;
-    generateConstraintProduct(
+    GenerateConstraintProduct(
       constraints,
       areaCombination,
       constraints.begin(),
@@ -67,32 +67,29 @@ void ValeursUsage::generateAreaProduct(
           // Merge area combination into current with area prefix
           for (const auto& [cst, val]: localCombo)
           {
-              current[getConstraintName(subPbName, areaName, cst)] = val;
+              current[GetConstraintName(subPbName, areaName, cst)] = val;
           }
 
-          generateAreaProduct(subPbName, areas, current, std::next(it), func);
+          GenerateAreaProduct(subPbName, areas, current, std::next(it), func);
 
           // Clean up for next iteration
           for (const auto& [cst, _]: localCombo)
           {
-              current.erase(getConstraintName(subPbName, areaName, cst));
+              current.erase(GetConstraintName(subPbName, areaName, cst));
           }
       });
 }
 
 std::filesystem::path ValeursUsage::GetSubproblemPath(const std::string& subPbName) const
 {
-    return xpansionFolderPath / "mps" / subPbName;
+    return xpansionFolderPath / "mps_mini" / subPbName;
 }
 
-std::string ValeursUsage::getConstraintName(const std::string& subPbName,
+std::string ValeursUsage::GetConstraintName(const std::string& subPbName,
                                             const std::string& area,
                                             const std::string& constraint) const
 {
-    return fmt::format("{}::area<{}>::week<{}>",
-                       constraint,
-                       area,
-                       getWeekFromPbName(subPbName) - 1);
+    return fmt::format("{}::area<{}>::week<{}>", constraint, area, GetPbInfo(subPbName).week - 1);
 }
 
 void ValeursUsage::AddSubproblem(const std::string& pbName)
@@ -109,7 +106,7 @@ void ValeursUsage::AddSubproblem(const std::string& pbName)
 void ValeursUsage::InitSubProblems()
 {
     // Add all subproblems mps files to the subproblem map
-    for (const auto& entry: std::filesystem::directory_iterator(xpansionFolderPath / "mps"))
+    for (const auto& entry: std::filesystem::directory_iterator(xpansionFolderPath / "mps_mini"))
     {
         if (entry.path().extension() == ".mps")
         {
@@ -131,12 +128,12 @@ void ValeursUsage::GenerateRHSGridValues()
                               double min_efficiency)
     {
         double min_cst = -subProblems[pbName]->get_rhs_value_from_name(
-                           getConstraintName(pbName, area, min_cst_name))
+                           GetConstraintName(pbName, area, min_cst_name))
                          * min_efficiency;
         double max_cst = subProblems[pbName]->get_rhs_value_from_name(
-          getConstraintName(pbName, area, max_cst_name));
+          GetConstraintName(pbName, area, max_cst_name));
 
-        int steps = static_cast<int>(std::round((max - min) / step));
+        int steps = static_cast<int>((max - min) / step);
         std::vector<double> values;
         values.reserve(steps + 1);
 
@@ -208,13 +205,13 @@ void ValeursUsage::GenerateRHSGridValues()
     }
 }
 
-int ValeursUsage::getWeekFromPbName(const std::string& pbName) const
+ScenarioAndWeek ValeursUsage::GetPbInfo(const std::string& pbName) const
 {
-    std::regex re("problem-\\d+-(\\d+)--optim-nb-\\d+");
+    std::regex re("problem-(\\d+)-(\\d+)--optim-nb-\\d+");
     std::smatch match;
     if (std::regex_search(pbName, match, re))
     {
-        return std::stoi(match[1]);
+        return {std::stoi(match[1]), std::stoi(match[2])};
     }
     else
     {
@@ -236,7 +233,7 @@ void ValeursUsage::SetConstraintsRHSValuesAndSolvePb()
     for (const auto& [subPbName, areasConstraints]: subPbAreaConstraintsMaps)
     {
         std::map<std::string, double> current;
-        generateAreaProduct(subPbName,
+        GenerateAreaProduct(subPbName,
                             areasConstraints,
                             current,
                             areasConstraints.begin(),
@@ -249,12 +246,16 @@ void ValeursUsage::SetConstraintsRHSValuesAndSolvePb()
                                 {
                                     std::cout << constraintName << " = " << value << std::endl;
                                 }
-                                SolveSubproblem(subPbName);
+                                double cost = SolveSubproblem(subPbName);
+                                valeursUsageData[{GetPbInfo(subPbName).scenario,
+                                                  GetPbInfo(subPbName).week,
+                                                  fullCombination}]
+                                  = cost;
                             });
     }
 }
 
-std::vector<double> ValeursUsage::SolveSubproblem(const std::string& subPbName)
+double ValeursUsage::SolveSubproblem(const std::string& subPbName)
 {
     PlainData::SubProblemData subproblem_data;
     auto worker = subProblems[subPbName];
@@ -264,7 +265,13 @@ std::vector<double> ValeursUsage::SolveSubproblem(const std::string& subPbName)
 
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 
-    return worker->get_solution();
+    return subproblem_data.subproblem_cost;
+}
+
+void ValeursUsage::WriteOutput()
+{
+    _writer->write_ValeursUsage(valeursUsageData);
+    _writer->dump();
 }
 
 void ValeursUsage::launch()
@@ -273,4 +280,5 @@ void ValeursUsage::launch()
 
     InitSubProblems();
     SetConstraintsRHSValuesAndSolvePb();
+    WriteOutput();
 }
