@@ -4,7 +4,7 @@
 #include <vector>
 #include <map>
 
-#include <antares-xpansion/benders/merge_master_mps/MasterCoupling.hxx>
+#include <antares-xpansion/benders/merge_master_mps/MasterCouplingConstants.h>
 
 #include <antares-xpansion/xpansion_interfaces/ILogger.h>
 #include <antares-xpansion/benders/benders_core/common.h>
