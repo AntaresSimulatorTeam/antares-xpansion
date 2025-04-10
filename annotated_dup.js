@@ -507,6 +507,7 @@ var annotated_dup =
     [ "Clock", "classClock.html", null ],
     [ "ClockMock", "classClockMock.html", null ],
     [ "ColumnToChange", "structColumnToChange.html", null ],
+    [ "ConfigurationManager", "classConfigurationManager.html", "classConfigurationManager" ],
     [ "CouplingMapGenerator", "classCouplingMapGenerator.html", null ],
     [ "CreateFixture", "classCreateFixture.html", null ],
     [ "CriteriaCurrentIterationData", "structCriteriaCurrentIterationData.html", null ],

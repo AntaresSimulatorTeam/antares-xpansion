@@ -30,6 +30,7 @@ var NAVTREEINDEX0 =
 "Clock_8h_source.html":[26,0,0,0,7,0,0,0,0],
 "ColumnToChange_8h_source.html":[26,0,0,0,3,0,0,0,0,0,0],
 "Commons_8h_source.html":[26,0,0,0,0,5,0,0,0,0,1],
+"ConfigurationManager_8h_source.html":[26,0,0,0,3,2,0,0,0,0,0],
 "CouplingMapGenerator_8h_source.html":[26,0,0,0,0,1,0,0,0,0,4],
 "CriterionComputation_8h_source.html":[26,0,0,0,0,1,0,0,0,0,5],
 "CriterionInputDataReader_8h_source.html":[26,0,0,0,0,1,0,0,0,0,6],
@@ -88,10 +89,10 @@ var NAVTREEINDEX0 =
 "OutputWriter_8h_source.html":[26,0,0,0,0,8,0,0,0,0,1],
 "ProblemFormatStream_8h_source.html":[26,0,0,0,0,1,0,0,0,0,14],
 "ProblemFormat_8h_source.html":[26,0,0,0,0,1,0,0,0,0,13],
-"ProblemGenerationExeOptions_8h_source.html":[26,0,0,0,3,2,0,0,0,0,1],
+"ProblemGenerationExeOptions_8h_source.html":[26,0,0,0,3,2,0,0,0,0,2],
 "ProblemGenerationLogger_8h_source.html":[26,0,0,0,3,0,0,0,0,0,1],
-"ProblemGenerationOptions_8h_source.html":[26,0,0,0,3,2,0,0,0,0,2],
-"ProblemGeneration_8h_source.html":[26,0,0,0,3,2,0,0,0,0,0],
+"ProblemGenerationOptions_8h_source.html":[26,0,0,0,3,2,0,0,0,0,3],
+"ProblemGeneration_8h_source.html":[26,0,0,0,3,2,0,0,0,0,1],
 "ProblemModifierCapex_8h_source.html":[26,0,0,0,5,0,0,0,0],
 "ProblemModifierProjection_8h_source.html":[26,0,0,0,5,0,0,0,1],
 "ProblemModifier_8h_source.html":[26,0,0,0,3,4,0,0,0,0,15],
@@ -248,6 +249,5 @@ var NAVTREEINDEX0 =
 "classBenders_1_1Criterion_1_1CriterionComputation.html#afdadb405893c73eeb131b5a730bf1e2f":[25,0,1,0,2,5],
 "classBenders_1_1Criterion_1_1CriterionInputData.html":[25,0,1,0,3],
 "classBenders_1_1Criterion_1_1CriterionInputFileError.html":[25,0,1,0,4],
-"classBenders_1_1Criterion_1_1CriterionInputFileIsEmpty.html":[25,0,1,0,5],
-"classBenders_1_1Criterion_1_1CriterionInputFileNoPatternFound.html":[25,0,1,0,6]
+"classBenders_1_1Criterion_1_1CriterionInputFileIsEmpty.html":[25,0,1,0,5]
 };
