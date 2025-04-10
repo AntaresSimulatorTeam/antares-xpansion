@@ -117,7 +117,7 @@ void MergeMasterMPS::launch()
         // First step : verification of the candidates
         // Note : this is inneficient as we do a lot of copies, perhaps we could make it better ?
         std::set<std::string> node_candidate_set;
-        for (const auto& [candidate_name, _] : node_coupling_map["master"])
+        for (const auto& [candidate_name, _] : node_coupling_map[node_data.master_name])
         {
             node_candidate_set.insert(candidate_name);
         }
@@ -214,7 +214,7 @@ void MergeMasterMPS::launch()
         const auto& candidates_constraints = node_data.candidate_constraints;
         for (const auto& [candidate, constraint_data] : candidates_constraints)
         {
-            if (parent_node_name == "root") {
+            if (parent_node_name == master_structure::ROOT_NAME) {
                 // The constraint is :
                 // current::candidate <= max_investment + initial_value
                 // Get the initial value if available, use the default value otherwise
@@ -226,7 +226,7 @@ void MergeMasterMPS::launch()
                 }
                 else
                 {
-                    initial_value = trajectory_data.initial_capacities.at("default");
+                    initial_value = trajectory_data.initial_capacities.at(master_structure::KEY_DEFAULT);
                 }
                 _logger->display_message("Initial value for candidate " + candidate + " : " + std::to_string(initial_value));
                 // Max investment

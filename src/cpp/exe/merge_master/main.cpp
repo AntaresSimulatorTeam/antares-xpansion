@@ -25,8 +25,8 @@ int main(int argc, char** argv)
     // This is temporary
     std::string test_set = "simple_tree";
     MergeMasterMPSOptions options {
-        .INPUTROOT = "/home/bessinnic/Documents/antares-xpansion/merge_master_test/" + test_set + "/",
-        .OUTPUTROOT = "/home/bessinnic/Documents/antares-xpansion/merge_master_test/" + test_set + "/output/",
+        .INPUTROOT = "/home/bessinnic/Documents/antares-xpansion/merge_master_test/" + test_set,
+        .OUTPUTROOT = "/home/bessinnic/Documents/antares-xpansion/merge_master_test/" + test_set + "/output",
         .STRUCTURE_FILE = "master_structure_minimal.json",
         .SOLVER_TO_USE = "CBC",
         .LOG_LEVEL = 1,
