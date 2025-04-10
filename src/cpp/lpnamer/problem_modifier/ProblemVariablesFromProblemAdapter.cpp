@@ -92,7 +92,7 @@ void ProblemVariablesFromProblemAdapter::extract_variables(
     variable_name_config.cost_origin_variable_name = "IntercoDirectCost";
     variable_name_config.cost_extremite_variable_name = "IntercoIndirectCost";
 
-    const auto& var_names = problem_->get_col_names();
+    auto&& var_names = problem_->get_col_names();
     std::string origin;
     std::string destination;
     for (size_t var_index = 0; var_index < var_names.size(); var_index++)

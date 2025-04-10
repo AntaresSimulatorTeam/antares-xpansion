@@ -85,7 +85,8 @@ class XpansionDriver:
                                         self.config_loader.keep_mps(),
                                         self.config_loader.n_mpi(),
                                         self.config_loader.oversubscribe(),
-                                        self.config_loader.allow_run_as_root())
+                                        self.config_loader.allow_run_as_root()
+                                        )
             self.clean_step()
 
         elif self.config_loader.step() == "full" and self.config_loader.memory():
@@ -104,7 +105,8 @@ class XpansionDriver:
 
         elif self.config_loader.step() == "study_update":
             self.study_update_driver.launch(
-                self.config_loader.xpansion_simulation_output(), self.config_loader.json_file_path(), self.config_loader.keep_mps())
+                self.config_loader.xpansion_simulation_output(), self.config_loader.json_file_path(),
+                self.config_loader.keep_mps())
 
         elif self.config_loader.step() == "benders":
             self.launch_benders_step()
@@ -121,8 +123,10 @@ class XpansionDriver:
 
     def clean_step(self):
         ret = subprocess.run(
-            [str(self.config_loader.antares_archive_updater_exe()), "-a", str(self.config_loader.simulation_output_path()),
-             "-p", self.config_loader.simulation_lp_path(), self.config_loader.expansion_dir(), "-d"], shell=False, stdout=sys.stdout, stderr=sys.stderr,
+            [str(self.config_loader.antares_archive_updater_exe()), "-a",
+             str(self.config_loader.simulation_output_path()),
+             "-p", self.config_loader.simulation_lp_path(), self.config_loader.expansion_dir(), "-d"], shell=False,
+            stdout=sys.stdout, stderr=sys.stderr,
             encoding='utf-8')
         if ret.returncode != 0:
             raise XpansionDriver.AntaresArchiveUpdaterExeError(

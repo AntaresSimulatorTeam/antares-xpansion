@@ -30,22 +30,41 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
 void BendersMpi::InitializeProblems()
 {
     MatchProblemToId();
-
     BuildMasterProblem();
-    int current_problem_id = 0;
-    // Dispatch subproblems to process
-    for (const auto& problem: coupling_map_)
+    if (_options.CACHE_PROBLEMS)
     {
-        // In case there are more subproblems than process
-        if (auto process_to_feed = current_problem_id % _world.size();
-            process_to_feed == _world.rank())
-        { // Assign  [problemNumber % processCount] to processID
-
-            const auto subProblemFilePath = GetSubproblemPath(problem.first);
-            AddSubproblem(problem);
-            AddSubproblemName(problem.first);
+        int current_problem_id = 0;
+        for (auto it = coupling_map_.begin(); it != coupling_map_.end();)
+        {
+            auto process_to_feed = current_problem_id % _world.size();
+            if (process_to_feed != _world.rank())
+            {
+                it = coupling_map_.erase(it);
+            }
+            else
+            {
+                ++it;
+            }
+            current_problem_id++;
         }
-        current_problem_id++;
+    }
+    else
+    {
+        int current_problem_id = 0;
+        // Dispatch subproblems to process
+        for (const auto& problem: coupling_map_)
+        {
+            // In case there are more subproblems than process
+            if (auto process_to_feed = current_problem_id % _world.size();
+                process_to_feed == _world.rank())
+            { // Assign  [problemNumber % processCount] to processID
+
+                const auto subProblemFilePath = GetSubproblemPath(problem.first);
+                AddSubproblem(problem);
+                AddSubproblemName(problem.first);
+            }
+            current_problem_id++;
+        }
     }
     BroadCastVariablesIndices();
     init_problems_ = false;
