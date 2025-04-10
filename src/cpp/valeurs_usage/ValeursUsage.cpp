@@ -8,6 +8,10 @@
 #include "antares-xpansion/benders/benders_core/WorkerMaster.h"
 #include "antares-xpansion/helpers/Timer.h"
 
+/// @brief Constructor
+/// @param logger Logger
+/// @param writer JsonWriter
+/// @param path_to_data Path to the data folder
 ValeursUsage::ValeursUsage(Logger logger,
                            std::shared_ptr<Output::JsonWriter> writer,
                            std::filesystem::path path_to_data)
@@ -17,7 +21,12 @@ ValeursUsage::ValeursUsage(Logger logger,
     xpansionFolderPath = std::move(path_to_data);
 }
 
-// Recursive Cartesian product over constraint sets
+/// @brief Recursive Cartesian product over constraint sets
+/// @details This function is used to generate all possible combinations of constraint values
+/// @param constraints map of constraints
+/// @param current current combination of constraint values
+/// @param it iterator over the constraints map
+/// @param func function to call with current
 void ValeursUsage::GenerateConstraintProduct(
   const ConstraintMap& constraints,
   std::map<std::string, double>& current,
@@ -40,7 +49,13 @@ void ValeursUsage::GenerateConstraintProduct(
     }
 }
 
-// Recursive Cartesian product over areas
+/// @brief Recursive Cartesian product over area sets
+/// @details This function is used to generate all possible combinations of area constraints values
+/// @param subPbName name of the subproblem
+/// @param areas map of area names to constraints maps
+/// @param current current map of area names to constraints values
+/// @param it iterator over the area map
+/// @param func function to call with current
 void ValeursUsage::GenerateAreaProduct(
   const std::string subPbName,
   const AreaConstraintMaps& areas,
@@ -80,11 +95,19 @@ void ValeursUsage::GenerateAreaProduct(
       });
 }
 
+/// @brief Get the path to the subproblem mps file
+/// @param subPbName The name of the subproblem
+/// @return The path to the subproblem mps file
 std::filesystem::path ValeursUsage::GetSubproblemPath(const std::string& subPbName) const
 {
     return xpansionFolderPath / "mps" / subPbName;
 }
 
+/// @brief Get the name of the constraint in the mps file
+/// @param subPbName The name of the subproblem
+/// @param area The name of the area
+/// @param constraint The name of the constraint
+/// @return The name of the constraint in the mps file
 std::string ValeursUsage::GetConstraintName(const std::string& subPbName,
                                             const std::string& area,
                                             const std::string& constraint) const
@@ -92,6 +115,9 @@ std::string ValeursUsage::GetConstraintName(const std::string& subPbName,
     return fmt::format("{}::area<{}>::week<{}>", constraint, area, GetPbInfo(subPbName).week - 1);
 }
 
+/// @brief Add a subproblem to the subproblem map and initialize it with the mps file
+///        The solver is initialized here
+/// @param pbName The name of the subproblem
 void ValeursUsage::AddSubproblem(const std::string& pbName)
 {
     subProblems[pbName] = std::make_shared<SubproblemWorker>(GetSubproblemPath(pbName),
@@ -103,6 +129,8 @@ void ValeursUsage::AddSubproblem(const std::string& pbName)
                                                              ProblemsFormat::MPS_FILE);
 }
 
+/// @brief Initialize the subproblems from the mps files in the mps folder
+///       and generate the RHS grid values for each subproblem
 void ValeursUsage::InitSubProblems()
 {
     // Add all subproblems mps files to the subproblem map
@@ -116,8 +144,11 @@ void ValeursUsage::InitSubProblems()
     GenerateRHSGridValues();
 }
 
+/// @brief Generate the RHS grid values for each subproblem
+///        The RHS grid values are generated for each area and each constraint
 void ValeursUsage::GenerateRHSGridValues()
 {
+    // Compute the grid values using the min and max values of the constraints
     auto generateValues = [&](std::string pbName,
                               std::string area,
                               double min,
@@ -178,6 +209,7 @@ void ValeursUsage::GenerateRHSGridValues()
 
         if (pbName == "all")
         {
+            // Generate values for all subproblems
             for (const auto& [subPbName, _]: subProblems)
             {
                 subPbAreaConstraintsMaps[subPbName][areaName][cstName] = generateValues(
@@ -205,6 +237,9 @@ void ValeursUsage::GenerateRHSGridValues()
     }
 }
 
+/// @brief Get the problem info from the problem name
+/// @param pbName The problem name
+/// @return The scenario and week of the problem
 ScenarioAndWeek ValeursUsage::GetPbInfo(const std::string& pbName) const
 {
     std::regex re("problem-(\\d+)-(\\d+)--optim-nb-\\d+");
@@ -219,6 +254,9 @@ ScenarioAndWeek ValeursUsage::GetPbInfo(const std::string& pbName) const
     }
 }
 
+/// @brief Set the constraints RHS values for a given subproblem
+/// @param pbName The subproblem name
+/// @param rhsValues The RHS values to set
 void ValeursUsage::SetConstraintsRHSValues(const std::string& pbName,
                                            const std::map<std::string, double>& rhsValues)
 {
@@ -228,6 +266,10 @@ void ValeursUsage::SetConstraintsRHSValues(const std::string& pbName,
     }
 }
 
+/// @brief Set the constraints RHS values and solve the problem
+/// @details This function will generate all the possible combinations of RHS values for the
+/// constraints and solve the problem for each combination. The results are stored in the
+/// `valeursUsageData` member.
 void ValeursUsage::SetConstraintsRHSValuesAndSolvePb()
 {
     for (const auto& [subPbName, areasConstraints]: subPbAreaConstraintsMaps)
@@ -240,12 +282,6 @@ void ValeursUsage::SetConstraintsRHSValuesAndSolvePb()
                             [&](const std::map<std::string, double>& fullCombination)
                             {
                                 SetConstraintsRHSValues(subPbName, fullCombination);
-                                std::cout << "Solving subproblem " << subPbName << std::endl;
-                                std::cout << "With constraints values: " << std::endl;
-                                for (const auto& [constraintName, value]: fullCombination)
-                                {
-                                    std::cout << constraintName << " = " << value << std::endl;
-                                }
                                 double cost = SolveSubproblem(subPbName);
                                 valeursUsageData[{GetPbInfo(subPbName).scenario,
                                                   GetPbInfo(subPbName).week,
@@ -255,6 +291,9 @@ void ValeursUsage::SetConstraintsRHSValuesAndSolvePb()
     }
 }
 
+/// @brief Solve the subproblem and return the cost
+/// @param subPbName The name of the subproblem to solve
+/// @return The cost of the subproblem
 double ValeursUsage::SolveSubproblem(const std::string& subPbName)
 {
     PlainData::SubProblemData subproblem_data;
@@ -268,12 +307,14 @@ double ValeursUsage::SolveSubproblem(const std::string& subPbName)
     return subproblem_data.subproblem_cost;
 }
 
+/// @brief Write the output to the json file
 void ValeursUsage::WriteOutput()
 {
     _writer->write_ValeursUsage(valeursUsageData);
     _writer->dump();
 }
 
+/// @brief Launch the valeurs d'usage computation
 void ValeursUsage::launch()
 {
     std::cout << "Launching valeurs d'usage" << std::endl;

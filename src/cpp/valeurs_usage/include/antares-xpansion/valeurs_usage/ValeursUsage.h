@@ -6,7 +6,6 @@
 #include "antares-xpansion/benders/output/JsonWriter.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
-// Define type for the map of constraints
 using ConstraintMap = std::map<std::string /*constraint name*/, std::vector<double> /*rhs values*/>;
 using AreaConstraintMaps = std::map<std::string /*area name*/, ConstraintMap>;
 using SubPbConstraintMaps = std::map<std::string /*subPb name*/, AreaConstraintMaps>;
@@ -22,10 +21,7 @@ struct ScenarioAndWeek
     }
 };
 
-/*!
- * \class ValeursUsage
- * \brief Class use run the Valeurs d'usage use case
- */
+/// @brief Class to compute the valeurs d'usage
 class ValeursUsage
 {
 public:
@@ -34,7 +30,7 @@ public:
                  std::filesystem::path path_to_data);
     void launch();
 
-    Output::ValeursUsageData valeursUsageData;
+    Output::ValeursUsageData valeursUsageData; //!< Data to write in the output file
 
 protected:
     void InitSubProblems();
@@ -62,9 +58,9 @@ protected:
     void WriteOutput();
 
 protected:
-    std::filesystem::path xpansionFolderPath;
-    SubPbConstraintMaps subPbAreaConstraintsMaps;
-    SubproblemsMapPtr subProblems;
+    std::filesystem::path xpansionFolderPath;     ///< Path to the xpansion folder
+    SubPbConstraintMaps subPbAreaConstraintsMaps; ///< Map of subproblems and their constraints
+    SubproblemsMapPtr subProblems;                ///< Map of subproblems workers
 
     SolverLogManager solver_log_manager_;
     Logger _logger;
