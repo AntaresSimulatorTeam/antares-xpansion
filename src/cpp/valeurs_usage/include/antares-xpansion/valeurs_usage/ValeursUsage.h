@@ -27,24 +27,22 @@ public:
     Output::GridPointsData gridPointsData;
 
 protected:
-    void Run();
     void InitSubProblems();
-    void SetConstraintsRHSValues();
+    void SetConstraintsRHSValuesAndSolvePb();
     void GenerateRHSGridValues();
-    void SetConstraintsRHSValuesForPb(const std::string& pbName,
-                                      const std::map<std::string, double>& rhsValues);
-    std::filesystem::path GetSubproblemPath(const std::string& slave_name) const;
+    void SetConstraintsRHSValues(const std::string& pbName,
+                                 const std::map<std::string, double>& rhsValues);
+    std::filesystem::path GetSubproblemPath(const std::string& subPbName) const;
     void AddSubproblem(const std::string& problem_name);
-    std::vector<double> SolveSubproblem(PlainData::SubProblemData& subproblem_data,
-        const std::string& subPbName);
+    std::vector<double> SolveSubproblem(const std::string& subPbName);
     std::string getConstraintName(const std::string& subPbName,
                                   const std::string& area,
                                   const std::string& constraint) const;
     int getWeekFromPbName(const std::string& pbName) const;
     void generateConstraintProduct(
-      const std::map<std::string, std::vector<double>>& constraints,
+      const ConstraintMap& constraints,
       std::map<std::string, double>& current,
-      std::map<std::string, std::vector<double>>::const_iterator it,
+      ConstraintMap::const_iterator it,
       const std::function<void(const std::map<std::string, double>&)>& func);
     void generateAreaProduct(const std::string subPbName,
                              const AreaConstraintMaps& areas,
@@ -54,9 +52,8 @@ protected:
 
 protected:
     std::filesystem::path xpansionFolderPath;
-    std::map<std::string /*subproblem name*/, AreaConstraintMaps> subPbAreaConstraintsMaps;
-    SubproblemsMapPtr subproblem_map;
-    StrVector subproblems;
+    SubPbConstraintMaps subPbAreaConstraintsMaps;
+    SubproblemsMapPtr subProblems;
 
     SolverLogManager solver_log_manager_;
     Logger _logger;
