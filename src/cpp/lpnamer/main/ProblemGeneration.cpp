@@ -83,7 +83,8 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& ou
 {
     Antares::Solver::Optimization::OptimizationOptions optOptions;
 
-    optOptions.ortoolsSolver = solverXpansionToSimulator(solver_config_);
+    optOptions.linearSolver = solverXpansionToSimulator(solver_config_);
+    optOptions.quadraticSolver = solverXpansionToSimulator(solver_config_);
     auto results = Antares::API::PerformSimulation(options_.StudyPath(), output, optOptions);
 
     /**
