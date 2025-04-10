@@ -6,6 +6,8 @@
 #include <utility>
 
 
+// TODO : a lot of work to eliminate explicit usage of keys and replace by constants
+
 Json::Value parse_json_file(const std::filesystem::path& file_name, ILoggerXpansion* logger) {
     Json::Value _input;
     std::ifstream input_file_l(file_name, std::ifstream::binary);
@@ -55,16 +57,33 @@ TrajectoryNodeData MasterCouplingMapGenerator::TrajectoryNodeDataParser(
     return node_data;
 };
 
-MasterCouplingMap MasterCouplingMapGenerator::BuildInput(
+TrajectoryData MasterCouplingMapGenerator::TrajectoryDataParser(
+    const Json::Value& json_node,
+    ILoggerXpansion* logger
+){
+    TrajectoryData trajectory_data;
+    const auto& initial_capacities = json_node["initial_capacities"];
+    // Set a default default value
+    trajectory_data.initial_capacities["default"] = 0;
+    for (const auto& candidate_name : initial_capacities.getMemberNames())
+    {
+        trajectory_data.initial_capacities[candidate_name] = initial_capacities[candidate_name].asDouble();
+    }
+    return trajectory_data;
+};
+
+std::pair<TrajectoryData, MasterCouplingMap> MasterCouplingMapGenerator::BuildInput(
     const std::filesystem::path& structure_path,
     ILoggerXpansion* logger  
 ){
     MasterCouplingMap coupling_map;
     const auto input = parse_json_file(structure_path, logger);
 
+    const std::string DATA_KEY = "data";
+
     for (const auto& node_name : input.getMemberNames())
     {
-        if (node_name == "general_data")
+        if (node_name == DATA_KEY)
             continue;
         const auto& node_data = input[node_name];
         TrajectoryNodeData trajectory_node_data = TrajectoryNodeDataParser(node_data, logger);
@@ -74,5 +93,8 @@ MasterCouplingMap MasterCouplingMapGenerator::BuildInput(
     logger->display_message("Master coupling map generated successfully.");
     logger->display_message("Number of nodes: " + std::to_string(coupling_map.size()));
 
-    return coupling_map;
+    const auto& general_data = input[DATA_KEY];
+    TrajectoryData trajectory_data = TrajectoryDataParser(general_data, logger);
+    
+    return std::make_pair(trajectory_data, coupling_map);
 }

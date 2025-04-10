@@ -23,6 +23,10 @@ struct CandidateConstraintData
     double min_investment;
 };
 
+struct TrajectoryData
+{
+    std::map<std::string, double> initial_capacities;
+};
 
 struct TrajectoryNodeData {
     int investment_date;
@@ -41,15 +45,23 @@ typedef std::map<std::string, TrajectoryNodeData> MasterCouplingMap;
 class MasterCouplingMapGenerator
 {
 public:
+
     static CandidateConstraintData CandidateConstraintDataParser(
         const Json::Value& json_node,
         ILoggerXpansion* logger
     );
+
     static TrajectoryNodeData TrajectoryNodeDataParser(
         const Json::Value& json_node,
         ILoggerXpansion* logger
     );
-    static MasterCouplingMap BuildInput(
+
+    static TrajectoryData TrajectoryDataParser(
+        const Json::Value& json_node,
+        ILoggerXpansion* logger
+    );
+
+    static std::pair<TrajectoryData, MasterCouplingMap> BuildInput(
         const std::filesystem::path& structure_path,
         ILoggerXpansion* logger
     );
