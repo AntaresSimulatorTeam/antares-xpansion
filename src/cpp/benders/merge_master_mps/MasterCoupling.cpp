@@ -26,9 +26,11 @@ CandidateConstraintData MasterCouplingMapGenerator::CandidateConstraintDataParse
     const Json::Value& json_node,
     ILoggerXpansion* logger
 ){
+    using namespace master_structure;
+
     CandidateConstraintData candidate_data;
-    candidate_data.max_investment = json_node["max_investment"].asDouble();
-    candidate_data.min_investment = json_node["min_investment"].asDouble();
+    candidate_data.max_investment = json_node[KEY_MAX_INVESTMENT].asDouble();
+    candidate_data.min_investment = json_node[KEY_MIN_INVESTMENT].asDouble();
 
     return candidate_data;
 };
@@ -38,15 +40,23 @@ TrajectoryNodeData MasterCouplingMapGenerator::TrajectoryNodeDataParser(
     const Json::Value& json_node,
     ILoggerXpansion* logger
 ){
-    TrajectoryNodeData node_data;
-    node_data.investment_date = json_node["investment_data"].asInt();
-    node_data.lp_folder = json_node["lp_folder"].asString();
-    node_data.master_mps_file = json_node["master_mps_file"].asString();
-    node_data.structure_file = json_node["structure_file"].asString();
-    node_data.parent = json_node["parent"].asString();
-    node_data.weight_factor = json_node["weight_factor"].asDouble();
+    using namespace master_structure;
 
-    const auto& candidates_constraints = json_node["constraints"];
+    TrajectoryNodeData node_data;
+    node_data.investment_date = json_node[KEY_INVESTMENT_DATE].asInt();
+    node_data.lp_folder = json_node[KEY_LP_FOLDER].asString();
+    node_data.master_mps_file = json_node[KEY_MASTER_MPS_FILE].asString();
+    node_data.structure_file = json_node[KEY_STRUCTURE_FILE].asString();
+    node_data.parent = json_node[KEY_PARENT].asString();
+    node_data.weight_factor = json_node[KEY_WEIGHT_FACTOR].asDouble();
+    
+    // If a MASTER_NAME is given, set it (used when accesing the structure file)
+    if (json_node.isMember(KEY_MASTER_NAME))
+    {
+        node_data.master_name = json_node[KEY_MASTER_NAME].asString();
+    }
+
+    const auto& candidates_constraints = json_node[KEY_CONSTRAINTS];
     for (const auto& candidate_name : candidates_constraints.getMemberNames())
     {
         const auto& candidate_data = candidates_constraints[candidate_name];
@@ -57,14 +67,16 @@ TrajectoryNodeData MasterCouplingMapGenerator::TrajectoryNodeDataParser(
     return node_data;
 };
 
-TrajectoryData MasterCouplingMapGenerator::TrajectoryDataParser(
+TrajectoryGlobalData MasterCouplingMapGenerator::TrajectoryGlobalDataParser(
     const Json::Value& json_node,
     ILoggerXpansion* logger
 ){
-    TrajectoryData trajectory_data;
-    const auto& initial_capacities = json_node["initial_capacities"];
+    using namespace master_structure;
+
+    TrajectoryGlobalData trajectory_data;
+    const auto& initial_capacities = json_node[KEY_INITIAL_CAPACITIES];
     // Set a default default value
-    trajectory_data.initial_capacities["default"] = 0;
+    trajectory_data.initial_capacities[KEY_DEFAULT] = 0;
     for (const auto& candidate_name : initial_capacities.getMemberNames())
     {
         trajectory_data.initial_capacities[candidate_name] = initial_capacities[candidate_name].asDouble();
@@ -72,18 +84,18 @@ TrajectoryData MasterCouplingMapGenerator::TrajectoryDataParser(
     return trajectory_data;
 };
 
-std::pair<TrajectoryData, MasterCouplingMap> MasterCouplingMapGenerator::BuildInput(
+std::pair<TrajectoryGlobalData, MasterCouplingMap> MasterCouplingMapGenerator::BuildInput(
     const std::filesystem::path& structure_path,
     ILoggerXpansion* logger  
 ){
+    using namespace master_structure;
+    
     MasterCouplingMap coupling_map;
     const auto input = parse_json_file(structure_path, logger);
 
-    const std::string DATA_KEY = "data";
-
     for (const auto& node_name : input.getMemberNames())
     {
-        if (node_name == DATA_KEY)
+        if (node_name == KEY_DATA)
             continue;
         const auto& node_data = input[node_name];
         TrajectoryNodeData trajectory_node_data = TrajectoryNodeDataParser(node_data, logger);
@@ -93,8 +105,8 @@ std::pair<TrajectoryData, MasterCouplingMap> MasterCouplingMapGenerator::BuildIn
     logger->display_message("Master coupling map generated successfully.");
     logger->display_message("Number of nodes: " + std::to_string(coupling_map.size()));
 
-    const auto& general_data = input[DATA_KEY];
-    TrajectoryData trajectory_data = TrajectoryDataParser(general_data, logger);
+    const auto& general_data = input[KEY_DATA];
+    TrajectoryGlobalData trajectory_data = TrajectoryGlobalDataParser(general_data, logger);
     
     return std::make_pair(trajectory_data, coupling_map);
 }
