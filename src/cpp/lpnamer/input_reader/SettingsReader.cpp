@@ -38,7 +38,8 @@ void SettingsReader::parse_file(const std::filesystem::path& file_path)
             (*this->logger_)(LogUtils::LOGLEVEL::FATAL) << msg.str();
             throw LogUtils::XpansionError<std::runtime_error>(msg.str(), LOGLOCATION);
         }
-        this->settings_[StringManip::trim(values[0])] = StringManip::trim(values[1]);
+        this->settings_[StringManip::trim_in_place(values[0])] = StringManip::trim_in_place(
+          values[1]);
     }
 }
 

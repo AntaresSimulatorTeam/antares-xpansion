@@ -60,12 +60,12 @@ public:
      */
     SolverAbstract::Ptr create_solver(const std::string& solver_name) const;
     SolverAbstract::Ptr create_solver(const std::string& solver_name,
-                                      SolverLogManager& log_manager) const;
+                                      const SolverLogManager& log_manager) const;
     SolverAbstract::Ptr create_solver(const std::string& solver_name,
-                                      const SOLVER_TYPE solver_type) const;
+                                      SOLVER_TYPE solver_type) const;
     SolverAbstract::Ptr create_solver(const std::string& solver_name,
-                                      const SOLVER_TYPE solver_type,
-                                      SolverLogManager& log_manager) const;
+                                      SOLVER_TYPE solver_type,
+                                      const SolverLogManager& log_manager) const;
 
     /**
      * @brief Creates and returns to an object solver from the wanted
@@ -77,12 +77,12 @@ public:
      */
     SolverAbstract::Ptr create_solver(const SolverConfig& solver_config) const;
     SolverAbstract::Ptr create_solver(const SolverConfig& solver_config,
-                                      const SOLVER_TYPE solver_type) const;
+                                      SOLVER_TYPE solver_type) const;
     SolverAbstract::Ptr create_solver(const SolverConfig& solver_config,
-                                      SolverLogManager& log_manager) const;
+                                      const SolverLogManager& log_manager) const;
     SolverAbstract::Ptr create_solver(const SolverConfig& solver_config,
-                                      const SOLVER_TYPE solver_type,
-                                      SolverLogManager& log_manager) const;
+                                      SOLVER_TYPE solver_type,
+                                      const SolverLogManager& log_manager) const;
 
     /**
      * @brief Copy constructor : Creates and returns to an object solver from the

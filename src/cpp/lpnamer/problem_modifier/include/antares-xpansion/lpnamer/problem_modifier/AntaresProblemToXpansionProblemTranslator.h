@@ -19,5 +19,5 @@ public:
       unsigned int week,
       const std::string& solver_name,
       SolverLogManager& solver_log_manager);
-    static std::vector<char> convertSignToLEG(std::span<char> data);
+    static std::vector<char> convertSignToLEG(std::span<const char> data);
 };

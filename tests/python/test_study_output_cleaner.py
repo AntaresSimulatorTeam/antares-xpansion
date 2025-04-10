@@ -5,6 +5,7 @@ from antares_xpansion.study_output_cleaner import rename_master, remove_files_co
     StudyOutputCleaner
 
 from file_creation import _create_empty_file_from_list
+from src.python.antares_xpansion.study_output_cleaner import get_last_master_path, get_master_path, get_tmp_master_path
 
 
 def _check_result(tmp_path: Path, removed_files, keep_files):
@@ -17,11 +18,10 @@ def _check_result(tmp_path: Path, removed_files, keep_files):
 
 class TestStudyOutputCleaner:
     def test_rename_master(self, tmp_path):
-        
         old_path = Path(tmp_path / "old_path")
         new_path = Path(tmp_path / "new_path")
         old_path.touch()
-        
+
         rename_master(old_path, new_path)
 
         assert not old_path.is_file()
@@ -83,3 +83,15 @@ class TestStudyOutputCleaner:
         StudyOutputCleaner.clean_study_update_step(tmp_path)
 
         _check_result(tmp_path, remove_files_root, keep_files_root)
+
+    def test_get_last_master_path(self, tmp_path):
+        assert get_last_master_path(Path("dummy")) == (Path("dummy") / "lp" / "master_last_iteration.mps")
+
+    def test_get_master_path(self, tmp_path):
+        assert get_master_path(Path("dummy")) == (Path("dummy") / "lp" / "master.mps")
+
+    def test_get_tmp_master_path_mps(self, tmp_path):
+        assert get_tmp_master_path(Path("path/to/dummy.mps")) == Path("path/to/dummy.tmp")
+
+    def test_get_tmp_master_path_other(self, tmp_path):
+        assert get_tmp_master_path(Path("path/to/dummy.ext")) == Path("path/to/dummy.stmp")

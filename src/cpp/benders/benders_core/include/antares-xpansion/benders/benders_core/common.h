@@ -206,6 +206,7 @@ struct BendersBaseOptions: public BaseOptions
 
     size_t BATCH_SIZE;
     ExternalLoopOptions EXTERNAL_LOOP_OPTIONS;
+    bool CACHE_PROBLEMS{false};
 };
 
 void usage(int argc);

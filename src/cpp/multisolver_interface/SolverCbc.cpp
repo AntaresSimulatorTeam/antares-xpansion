@@ -9,7 +9,7 @@ using namespace std::literals;
 *************************************************************************************************/
 int SolverCbc::_NumberOfProblems = 0;
 
-SolverCbc::SolverCbc(SolverLogManager& log_manager):
+SolverCbc::SolverCbc(const SolverLogManager& log_manager):
     SolverCbc()
 {
     _fp = log_manager.log_file_ptr;
@@ -95,9 +95,8 @@ void SolverCbc::free()
 void SolverCbc::write_prob_mps(const std::filesystem::path& filename)
 {
     const int numcols = get_ncols();
-    std::shared_ptr<char[]> shared_integrality(new char[numcols]);
-    char* integrality = shared_integrality.get();
-    CoinCopyN(_clp_inner_solver.getColType(false), numcols, integrality);
+    std::vector<char> integrality(static_cast<std::size_t>(numcols));
+    CoinCopyN(_clp_inner_solver.getColType(false), numcols, integrality.data());
 
     bool hasInteger = false;
     for (int i = 0; i < numcols; ++i)
@@ -156,7 +155,7 @@ void SolverCbc::write_prob_mps(const std::filesystem::path& filename)
                           _clp_inner_solver.getColLower(),
                           _clp_inner_solver.getColUpper(),
                           _clp_inner_solver.getObjCoefficients(),
-                          hasInteger ? integrality : nullptr,
+                          hasInteger ? integrality.data() : nullptr,
                           _clp_inner_solver.getRowLower(),
                           _clp_inner_solver.getRowUpper(),
                           colNames,
@@ -250,6 +249,11 @@ void SolverCbc::read_basis(const std::filesystem::path& filename)
     // readBasis returns 1 if successful
     zero_status_check(status - 1, "read basis", LOGLOCATION);
     defineCbcModelFromInnerSolver();
+}
+
+void SolverCbc::set_basis(std::span<int> rstatus, std::span<int> cstatus)
+{
+    _cbc.solver()->setBasisStatus(rstatus.data(), cstatus.data());
 }
 
 void SolverCbc::copy_prob(const SolverAbstract::Ptr fictif_solv)

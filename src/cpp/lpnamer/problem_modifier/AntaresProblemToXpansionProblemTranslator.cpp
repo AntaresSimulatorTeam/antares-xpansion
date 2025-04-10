@@ -26,7 +26,7 @@ std::shared_ptr<Problem> AntaresProblemToXpansionProblemTranslator::translateToX
     auto problem = std::make_shared<Problem>(
       factory.create_solver(solver_name, solver_log_manager));
     const auto& constant = lps.constantProblemData;
-    auto hebdo = lps.weeklyProblems.at({year, week});
+    auto&& hebdo = lps.weeklyProblems.at({year, week});
     problem->_name = hebdo.name;
     problem->mc_year = year;
     problem->week = week;
@@ -44,8 +44,7 @@ std::shared_ptr<Problem> AntaresProblemToXpansionProblemTranslator::translateToX
                       hebdo.Xmax.data(),
                       hebdo.variables);
 
-    std::span<char> signs(hebdo.Direction.data(), hebdo.Direction.size());
-    auto LEG_vector = convertSignToLEG(signs);
+    std::span signs(hebdo.Direction.data(), hebdo.Direction.size());
     problem->add_rows(constant.ConstraintesCount,
                       constant.CoeffCount,
                       convertSignToLEG(signs).data(),
@@ -61,7 +60,8 @@ std::shared_ptr<Problem> AntaresProblemToXpansionProblemTranslator::translateToX
     return problem;
 }
 
-std::vector<char> AntaresProblemToXpansionProblemTranslator::convertSignToLEG(std::span<char> data)
+std::vector<char> AntaresProblemToXpansionProblemTranslator::convertSignToLEG(
+  std::span<const char> data)
 {
     std::vector<char> LEG_vector;
     // Exclude final '\0' character

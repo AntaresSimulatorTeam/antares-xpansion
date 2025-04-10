@@ -28,7 +28,7 @@ jobs:
           fetch-depth: 0
       - name: Get changed files
         id: changed-files
-        uses: tj-actions/changed-files@v45
+        uses: tj-actions/changed-files@v46
         with:
           files: |
             docker/centos7-system-deps
@@ -44,7 +44,7 @@ jobs:
           workdir: docker
           dockerfile: centos7-system-deps
           cache: false
-          tags: 1.1.1
+          tags: 1.1.2
 
   build:
     runs-on: ubuntu-latest
@@ -299,14 +299,10 @@ jobs:
           name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
           path: .
 
-      - name: Get release
-        id: get_release
-        uses: bruceadams/get-release@main
-
       - name: Upload Release Asset
         env:
           GH_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} _build/${{needs.build.outputs.TGZ_NAME}}
-          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} ${{needs.build.outputs.SINGLE_FILE_NAME}}
+          gh release upload --repo ${{env.GH_REPO}} ${{ github.event.release.tag_name }} _build/${{needs.build.outputs.TGZ_NAME}}
+          gh release upload --repo ${{env.GH_REPO}} ${{ github.event.release.tag_name }} ${{needs.build.outputs.SINGLE_FILE_NAME}}

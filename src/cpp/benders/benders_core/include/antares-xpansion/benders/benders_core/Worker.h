@@ -20,7 +20,7 @@ public:
     Worker(VariableMap variable_map, std::filesystem::path path_to_mps, Logger logger);
     void init(const std::string& solver_name,
               int log_level,
-              SolverLogManager& solver_log_manager,
+              const SolverLogManager& solver_log_manager,
               ProblemsFormat format);
     virtual ~Worker() = default;
 
