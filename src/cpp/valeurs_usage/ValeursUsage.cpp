@@ -82,7 +82,7 @@ void ValeursUsage::GenerateAreaProduct(
 
 std::filesystem::path ValeursUsage::GetSubproblemPath(const std::string& subPbName) const
 {
-    return xpansionFolderPath / "mps_mini" / subPbName;
+    return xpansionFolderPath / "mps" / subPbName;
 }
 
 std::string ValeursUsage::GetConstraintName(const std::string& subPbName,
@@ -106,7 +106,7 @@ void ValeursUsage::AddSubproblem(const std::string& pbName)
 void ValeursUsage::InitSubProblems()
 {
     // Add all subproblems mps files to the subproblem map
-    for (const auto& entry: std::filesystem::directory_iterator(xpansionFolderPath / "mps_mini"))
+    for (const auto& entry: std::filesystem::directory_iterator(xpansionFolderPath / "mps"))
     {
         if (entry.path().extension() == ".mps")
         {

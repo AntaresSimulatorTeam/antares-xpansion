@@ -15,6 +15,11 @@ struct ScenarioAndWeek
 {
     int scenario;
     int week;
+
+    bool operator<(const ScenarioAndWeek& other) const
+    {
+        return std::tie(scenario, week) < std::tie(other.scenario, other.week);
+    }
 };
 
 /*!
@@ -27,10 +32,9 @@ public:
     ValeursUsage(Logger logger,
                  std::shared_ptr<Output::JsonWriter> writer,
                  std::filesystem::path path_to_data);
-
     void launch();
 
-    Output::GridPointsData gridPointsData;
+    Output::ValeursUsageData valeursUsageData;
 
 protected:
     void InitSubProblems();
@@ -61,7 +65,6 @@ protected:
     std::filesystem::path xpansionFolderPath;
     SubPbConstraintMaps subPbAreaConstraintsMaps;
     SubproblemsMapPtr subProblems;
-    Output::ValeursUsageData valeursUsageData;
 
     SolverLogManager solver_log_manager_;
     Logger _logger;
