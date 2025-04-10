@@ -112,21 +112,21 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& ou
 std::filesystem::path ProblemGeneration::updateProblems()
 {
     using namespace std::string_literals;
-    const auto [xpansion_output_dir, study_dir, simulation_dir, archive_path]
-      = configuration_manager_.Directories();
+    directories_ = configuration_manager_.Directories();
 
-    const auto log_file_path = xpansion_output_dir / "lp"s / "ProblemGenerationLog.txt"s;
+    const auto log_file_path = directories_.xpansion_output_dir / "lp"s
+                               / "ProblemGenerationLog.txt"s;
 
-    CreateDirectories(xpansion_output_dir);
+    CreateDirectories(directories_.xpansion_output_dir);
     auto logger = ProblemGenerationLog::BuildLogger(log_file_path,
                                                     std::cout,
                                                     "Problem Generation"s);
 
-    set_solver(study_dir, logger.get());
+    set_solver(directories_.study_dir, logger.get());
 
     if (mode_ == SimulationInputMode::ANTARES_API)
     {
-        performAntaresSimulation(simulation_dir_);
+        performAntaresSimulation(directories_.simulation_dir);
     }
 
     auto master_formulation = options_.MasterFormulation();
@@ -134,15 +134,15 @@ std::filesystem::path ProblemGeneration::updateProblems()
     auto weights_file = options_.WeightsFile();
     auto unnamed_problems = options_.UnnamedProblems();
 
-    RunProblemGeneration(xpansion_output_dir,
+    RunProblemGeneration(directories_.xpansion_output_dir,
                          master_formulation,
                          additionalConstraintFilename_l,
-                         archive_path,
+                         directories_.archive_path,
                          logger,
                          log_file_path,
                          weights_file,
                          unnamed_problems);
-    return xpansion_output_dir;
+    return directories_.xpansion_output_dir;
 }
 
 std::shared_ptr<ArchiveReader> InstantiateZipReader(
@@ -157,7 +157,7 @@ void ProblemGeneration::ExtractUtilsFiles(
                                                   xpansion_output_dir,
                                                   std::move(logger),
                                                   mode_.value(),
-                                                  simulation_dir_);
+                                                  directories_.simulation_dir);
     utils_files_extractor.ExtractFiles();
 }
 
