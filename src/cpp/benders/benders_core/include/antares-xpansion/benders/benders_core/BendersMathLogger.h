@@ -103,10 +103,10 @@ struct MathLogger: public MathLoggerBehaviour
     void display_message(const std::string& str,
                          LogUtils::LOGLEVEL level,
                          const std::string& context) override;
-    virtual void Print(const CurrentIterationData& data) = 0;
+    void Print(const CurrentIterationData& data) override = 0;
     std::vector<std::string> Headers() const override;
     LogDestination& LogsDestination() override;
-    virtual void setHeadersList() = 0;
+    void setHeadersList() override = 0;
     HEADERSTYPE HeadersType() const;
     virtual ~MathLogger() = default;
 
