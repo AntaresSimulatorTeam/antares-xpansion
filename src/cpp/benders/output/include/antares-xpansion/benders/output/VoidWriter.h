@@ -47,7 +47,7 @@ public:
      *  \param solution_p : point giving the solution and the candidates
      *  \param optimality_p : indicates if optimality was reached
      */
-    virtual void update_solution(const SolutionData& solution_data);
+    void update_solution(const SolutionData& solution_data) override;
 
     /*!
      *  \brief write an a priori errored json output, overwritten if optimization
@@ -58,9 +58,9 @@ public:
     /*!
      *  \brief write the json data into a file
      */
-    virtual void dump();
-    virtual void initialize();
-    virtual void end_writing(const IterationsData& iterations_data);
+    void dump() override;
+    void initialize() override;
+    void end_writing(const IterationsData& iterations_data) override;
     void write_solver_name(const std::string& solver_name) override;
     void write_master_name(const std::string& master_name) override;
     void write_log_level(const int log_level) override;

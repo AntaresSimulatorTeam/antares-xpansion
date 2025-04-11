@@ -64,8 +64,6 @@ private:
 
     void check_if_some_proc_had_a_failure(int success);
 
-    mpi::environment& _env;
-
 protected:
     [[nodiscard]] bool shouldParallelize() const final
     {
