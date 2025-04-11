@@ -163,7 +163,7 @@ public:
     void chg_obj_direction(const bool minimize) override;
     void chg_bounds(const std::vector<int>& mindex,
                     const std::vector<char>& qbtype,
-                    const std::vector<double>& bnd);
+                    const std::vector<double>& bnd) override;
     void chg_col_type(const std::vector<int>& mindex, const std::vector<char>& qctype) override;
     void chg_rhs(int id_row, double val) override;
     void chg_coef(int id_row, int id_col, double val) override;

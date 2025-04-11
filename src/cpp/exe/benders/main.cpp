@@ -5,6 +5,6 @@ int main(int argc, char** argv)
 {
     mpi::environment env(argc, argv);
     mpi::communicator world;
-    auto benders_factory = BendersMainFactory(argc, argv, env, world, SOLVER::BENDERS);
+    auto benders_factory = BendersMainFactory(argc, argv, world, SOLVER::BENDERS);
     return benders_factory.Run();
 }

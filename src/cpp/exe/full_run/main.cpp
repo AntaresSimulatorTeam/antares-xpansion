@@ -47,7 +47,6 @@ int main(int argc, char** argv)
         auto benders_factory = BendersMainFactory(argc_,
                                                   argv,
                                                   options_file,
-                                                  env,
                                                   world,
                                                   SOLVER::BENDERS);
         benders_factory.Run();
@@ -57,7 +56,6 @@ int main(int argc, char** argv)
         auto benders_factory = BendersMainFactory(argc_,
                                                   argv,
                                                   options_file,
-                                                  env,
                                                   world,
                                                   SOLVER::OUTER_LOOP);
         benders_factory.Run();
