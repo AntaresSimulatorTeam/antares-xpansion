@@ -169,11 +169,22 @@ void MergeMasterMPS::addTrajectoryConstraints(
 void MergeMasterMPS::launch()
 {
     _logger->display_message("Inside MergeMasterMPS::launch()");
+
     const auto inputRootDir = std::filesystem::path(_options.INPUTROOT);
     auto structure_path(inputRootDir / _options.STRUCTURE_FILE);
     _logger->display_message("Trying to parse strucutre file at " + std::string(structure_path));
+
     const auto& [trajectory_data, master_coupling] = 
         MasterCouplingMapGenerator::BuildInput(structure_path, _logger.get());
+
+    // Check that the problem format is compatible with the solver
+    if(_options.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE
+        && _options.SOLVER_NAME != "Xpress")
+    {
+        std::cerr << LOGLOCATION <<
+            "Invalid solver used with the saved file format" << _options.SOLVER_NAME << "\n" <<
+            "Can only use Xpress with this option" << std::endl;
+    }
 
     SolverFactory factory;
     SolverAbstract::Ptr mergedSolver_l = factory.create_solver(_options.SOLVER_NAME);
@@ -210,7 +221,17 @@ void MergeMasterMPS::launch()
 
         // Read the problem
         _logger->display_message("Reading problem " + problem_file.string());
-        solver_l->read_prob_mps(problem_file);
+
+        if(_options.PROBLEMS_FORMAT == ProblemsFormat::MPS_FILE)
+        {
+            _logger->display_message("Reading under the MPS format");
+            solver_l->read_prob_mps(problem_file);
+        } 
+        else if (_options.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE)
+        {
+            _logger->display_message("Reading a saved file format");
+            solver_l->restore_prob(problem_file);
+        }    
 
         // Multiply the objective function by the weight factor
         double weight_factor = node_data.weight_factor;
