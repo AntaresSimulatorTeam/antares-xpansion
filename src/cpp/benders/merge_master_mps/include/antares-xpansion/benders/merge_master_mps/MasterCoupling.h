@@ -53,8 +53,8 @@ struct TrajectoryNodeData {
     std::string lp_folder;
     std::string master_mps_file;
     std::string structure_file;
-    std::string parent = master_structure::ROOT_NAME;
-    std::string master_name = master_structure::DEFAULT_MASTER_NAME;
+    std::string parent = MasterCouplingConstants::ROOT_NAME;
+    std::string master_name = MasterCouplingConstants::DEFAULT_MASTER_NAME;
     double weight_factor = 1.0;
     std::map<std::string, CandidateConstraintData> candidate_constraints;
 };

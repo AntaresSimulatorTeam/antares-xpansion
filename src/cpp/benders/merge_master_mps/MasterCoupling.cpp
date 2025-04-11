@@ -26,7 +26,7 @@ CandidateConstraintData MasterCouplingMapGenerator::CandidateConstraintDataParse
     const Json::Value& json_node,
     ILoggerXpansion* logger
 ){
-    using namespace master_structure;
+    using namespace MasterCouplingConstants;
 
     CandidateConstraintData candidate_data;
     candidate_data.max_investment = json_node[KEY_MAX_INVESTMENT].asDouble();
@@ -40,7 +40,7 @@ TrajectoryNodeData MasterCouplingMapGenerator::TrajectoryNodeDataParser(
     const Json::Value& json_node,
     ILoggerXpansion* logger
 ){
-    using namespace master_structure;
+    using namespace MasterCouplingConstants;
 
     TrajectoryNodeData node_data;
     node_data.investment_date = json_node[KEY_INVESTMENT_DATE].asInt();
@@ -71,7 +71,7 @@ TrajectoryGlobalData MasterCouplingMapGenerator::TrajectoryGlobalDataParser(
     const Json::Value& json_node,
     ILoggerXpansion* logger
 ){
-    using namespace master_structure;
+    using namespace MasterCouplingConstants;
 
     TrajectoryGlobalData trajectory_data;
     const auto& initial_capacities = json_node[KEY_INITIAL_CAPACITIES];
@@ -88,7 +88,7 @@ std::pair<TrajectoryGlobalData, MasterCouplingMap> MasterCouplingMapGenerator::B
     const std::filesystem::path& structure_path,
     ILoggerXpansion* logger  
 ){
-    using namespace master_structure;
+    using namespace MasterCouplingConstants;
     
     MasterCouplingMap coupling_map;
     const auto input = parse_json_file(structure_path, logger);

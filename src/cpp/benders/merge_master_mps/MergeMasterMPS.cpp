@@ -54,11 +54,12 @@ void MergeMasterMPS::launch()
     _logger->display_message("Inside MergeMasterMPS::launch()");
     const auto inputRootDir = std::filesystem::path(_options.INPUTROOT);
     auto structure_path(inputRootDir / _options.STRUCTURE_FILE);
+    _logger->display_message("Trying to parse strucutre file at " + std::string(structure_path));
     const auto& [trajectory_data, master_coupling] = 
         MasterCouplingMapGenerator::BuildInput(structure_path, _logger.get());
 
     SolverFactory factory;
-    SolverAbstract::Ptr mergedSolver_l = factory.create_solver(_options.SOLVER_TO_USE);
+    SolverAbstract::Ptr mergedSolver_l = factory.create_solver(_options.SOLVER_NAME);
     mergedSolver_l->set_output_log_level(_options.LOG_LEVEL);
 
     // We want to verify the studies as we go along : we check that the candidates are the same at every node
@@ -87,7 +88,7 @@ void MergeMasterMPS::launch()
     {
 
         auto problem_file = std::filesystem::path(_options.INPUTROOT) / node_data.lp_folder / node_data.master_mps_file;
-        SolverAbstract::Ptr solver_l = factory.create_solver(_options.SOLVER_TO_USE);
+        SolverAbstract::Ptr solver_l = factory.create_solver(_options.SOLVER_NAME);
         solver_l->set_output_log_level(_options.LOG_LEVEL);
 
         // Read the problem
@@ -214,7 +215,7 @@ void MergeMasterMPS::launch()
         const auto& candidates_constraints = node_data.candidate_constraints;
         for (const auto& [candidate, constraint_data] : candidates_constraints)
         {
-            if (parent_node_name == master_structure::ROOT_NAME) {
+            if (parent_node_name == MasterCouplingConstants::ROOT_NAME) {
                 // The constraint is :
                 // current::candidate <= max_investment + initial_value
                 // Get the initial value if available, use the default value otherwise
@@ -226,7 +227,7 @@ void MergeMasterMPS::launch()
                 }
                 else
                 {
-                    initial_value = trajectory_data.initial_capacities.at(master_structure::KEY_DEFAULT);
+                    initial_value = trajectory_data.initial_capacities.at(MasterCouplingConstants::KEY_DEFAULT);
                 }
                 _logger->display_message("Initial value for candidate " + candidate + " : " + std::to_string(initial_value));
                 // Max investment
@@ -247,9 +248,6 @@ void MergeMasterMPS::launch()
                 // current::candidate - parent::candidate >= min_investment
                 int parent_candidate_index = capacity_variable_coupling[candidate][parent_node_name];
                 int current_candidate_index = capacity_variable_coupling[candidate][node_name];
-                _logger->display_message("Currently at node " + node_name + " with parent " + parent_node_name);
-                _logger->display_message("Current candidate index : " + std::to_string(current_candidate_index));
-                _logger->display_message("Parent candidate index : " + std::to_string(parent_candidate_index));
                 
                 // Max investment 
                 var_offsets.push_back(var_indices.size());

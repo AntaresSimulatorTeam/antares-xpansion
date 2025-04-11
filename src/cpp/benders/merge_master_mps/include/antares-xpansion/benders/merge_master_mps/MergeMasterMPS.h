@@ -5,14 +5,7 @@
 #include "antares-xpansion/helpers/solver_utils.h"
 
 
-struct MergeMasterMPSOptions
-{
-    std::string INPUTROOT;
-    std::string OUTPUTROOT;
-    std::string STRUCTURE_FILE;
-    std::string SOLVER_TO_USE = "CBC";
-    int LOG_LEVEL = 1;
-};
+typedef BaseOptions MergeMasterMPSOptions;
 
 
 

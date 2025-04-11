@@ -1,7 +1,7 @@
 #pragma once
 
 
-namespace master_structure 
+namespace MasterCouplingConstants 
 {
 
 // General data for the tree
@@ -24,6 +24,7 @@ constexpr char KEY_DATA[] = "data";
 
 // Forbidden name for a node :
 constexpr char ROOT_NAME[] = "root";
+
 // Default name of the master problem for each node
 // Used when accessing the structure file (CouplingMap)
 constexpr char DEFAULT_MASTER_NAME[] = "master";
