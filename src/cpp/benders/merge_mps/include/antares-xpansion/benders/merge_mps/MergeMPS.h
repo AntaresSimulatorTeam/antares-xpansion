@@ -4,10 +4,14 @@
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 
-class MergeMPS
+class AbstractMergeMPS
 {
 public:
-    MergeMPS(MergeMPSOptions options, Logger logger, std::shared_ptr<Output::OutputWriter> writer);
+    AbstractMergeMPS(MergeMPSOptions options,
+                     Logger logger,
+                     std::shared_ptr<Output::OutputWriter> writer);
+
+    virtual ~AbstractMergeMPS() = default;
 
     void launch();
 
@@ -15,17 +19,30 @@ public:
     Logger _logger;
     std::shared_ptr<Output::OutputWriter> _writer;
 
-private:
-    CouplingMap get_candidates(const std::filesystem::path& root_dir,
-                               const CouplingMap& structure,
-                               const std::string& solver_to_use,
-                               SolverAbstract& ptr_merged_solver);
+    SolverAbstract::Ptr _ptr_merged_solver;
 
-    double get_subproblem_weight(const int nb_subproblems, const std::string& name) const;
-    void add_coupling_constraints(SolverAbstract& merged_solver, const CouplingMap& candidates);
-    bool solve(SolverAbstract& merged_solver, const int nb_threads = 16);
-    void output_solution(SolverAbstract& merged_solver,
-                         const CouplingMap& structure,
+protected:
+    virtual double get_objective_weight(const int nb_subproblems, const std::string& name) const = 0;
+    virtual void add_coupling_constraints(const CouplingMap& candidates) = 0;
+
+    CouplingMap get_candidates(const CouplingMap& structure);
+    void export_problem();
+    bool solve(const int nb_threads = 16);
+    void output_solution(const CouplingMap& structure,
                          const CouplingMap& candidates,
                          const bool is_sol_optimal);
 };
+
+class MergeMasterSubproblemMPS: public AbstractMergeMPS
+{
+public:
+    MergeMasterSubproblemMPS(MergeMPSOptions options,
+                             Logger logger,
+                             std::shared_ptr<Output::OutputWriter> writer);
+
+private:
+    double get_objective_weight(const int nb_subproblems, const std::string& name) const override;
+    void add_coupling_constraints(const CouplingMap& candidates) override;
+};
+
+using MergeMPS = MergeMasterSubproblemMPS;
