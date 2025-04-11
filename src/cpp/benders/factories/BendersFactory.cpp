@@ -97,7 +97,6 @@ void BendersMainFactory::ConfigureBenders(const BendersBaseOptions& benders_opti
         benders_ = std::make_shared<BendersMpi>(benders_options,
                                                 logger_,
                                                 writer_,
-                                                *penv_,
                                                 *pworld_,
                                                 math_log_driver_);
         break;
@@ -105,7 +104,6 @@ void BendersMainFactory::ConfigureBenders(const BendersBaseOptions& benders_opti
         benders_ = std::make_shared<Outerloop::BendersMpiOuterLoop>(benders_options,
                                                                     logger_,
                                                                     writer_,
-                                                                    *penv_,
                                                                     *pworld_,
                                                                     math_log_driver_);
         break;
@@ -114,7 +112,6 @@ void BendersMainFactory::ConfigureBenders(const BendersBaseOptions& benders_opti
         benders_ = std::make_shared<BendersByBatch>(benders_options,
                                                     logger_,
                                                     writer_,
-                                                    *penv_,
                                                     *pworld_,
                                                     math_log_driver_);
         break;
@@ -332,11 +329,9 @@ int BendersMainFactory::RunExternalLoop()
 
 BendersMainFactory::BendersMainFactory(int argc,
                                        char** argv,
-                                       mpi::environment& env,
                                        mpi::communicator& world,
                                        const SOLVER& solver):
     argv_(argv),
-    penv_(&env),
     pworld_(&world),
     solver_(solver)
 {
@@ -352,11 +347,9 @@ BendersMainFactory::BendersMainFactory(int argc,
 BendersMainFactory::BendersMainFactory(int argc,
                                        char** argv,
                                        const std::filesystem::path& options_file,
-                                       mpi::environment& env,
                                        mpi::communicator& world,
                                        const SOLVER& solver):
     argv_(argv),
-    penv_(&env),
     pworld_(&world),
     solver_(solver),
     options_(options_file)
