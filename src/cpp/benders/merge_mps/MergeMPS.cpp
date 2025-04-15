@@ -71,13 +71,13 @@ CouplingMap AbstractMergeMPS::get_candidates(const CouplingMap& structure)
 
     const int nb_sub_problems = structure.size() - 1;
     const auto root_dir = std::filesystem::path(options_.INPUTROOT);
-    SolverFactory factory;
 
     logger_->display_message("Merging problems...");
 
     int current_prob_id{0};
     for (const auto& [filename, var_map]: structure)
     {
+        SolverFactory factory;
         SolverAbstract::Ptr ptr_solver = factory.create_solver(options_.SOLVER_NAME);
 
         ptr_solver->set_output_log_level(options_.LOG_LEVEL);
@@ -113,7 +113,7 @@ CouplingMap AbstractMergeMPS::get_candidates(const CouplingMap& structure)
         // along with the counting
         lpData.append_in(*ptr_merged_solver_, var_prefix);
 
-        for (const auto& [var_name, _]: var_map)
+        for (const auto& var_name: var_map | std::views::keys)
         {
             const int col_index = ptr_merged_solver_->get_col_index(var_prefix + var_name);
             if (col_index == -1)
@@ -125,14 +125,11 @@ CouplingMap AbstractMergeMPS::get_candidates(const CouplingMap& structure)
                 ptr_merged_solver_->write_prob_mps(output_root / ("mergeError" + MPS_SUFFIX));
                 std::exit(1);
             }
-            else
-            {
-                // All this part serves to fill this map
-                // that aggregates all variables into the
-                // merged problem
-                // [variable][subproblem] = col
-                candidates[var_name][filename] = col_index;
-            }
+            // All this part serves to fill this map
+            // that aggregates all variables into the
+            // merged problem
+            // [variable][subproblem] = col
+            candidates[var_name][filename] = col_index;
         }
     }
 
@@ -213,7 +210,7 @@ void AbstractMergeMPS::output_solution(const CouplingMap& structure,
     std::map<std::string, double> investments;
     if (const auto master = structure.find(options_.MASTER_NAME); master != structure.end())
     {
-        for (const auto& [var_name, _]: master->second)
+        for (const auto& var_name: master->second | std::views::keys)
         {
             const int var_idx_in_merged = candidates.at(var_name).at(options_.MASTER_NAME);
             investments[var_name] = solution[var_idx_in_merged];
@@ -266,23 +263,20 @@ double MergeMasterSubproblemMPS::get_objective_weight(int nb_subproblems,
     {
         return 1.0 / nb_subproblems;
     }
-    else if (options_.SLAVE_WEIGHT == SUBPROBLEM_WEIGHT_CST_STR)
+    if (options_.SLAVE_WEIGHT == SUBPROBLEM_WEIGHT_CST_STR)
     {
         return 1.0 / options_.SLAVE_WEIGHT_VALUE;
     }
-    else
+    const auto found = options_.weights.find(name);
+    if (found == options_.weights.end())
     {
-        const auto found = options_.weights.find(name);
-        if (found == options_.weights.end())
-        {
-            logger_->display_message("No weight found for " + name
-                                       + ". Problem will not contribute to objective function",
-                                     LogUtils::LOGLEVEL::WARNING,
-                                     "MergeMPS");
-            return 0.;
-        }
-        return found->second;
+        logger_->display_message("No weight found for " + name
+                                   + ". Problem will not contribute to objective function",
+                                 LogUtils::LOGLEVEL::WARNING,
+                                 "MergeMPS");
+        return 0.;
     }
+    return found->second;
 }
 
 /**
@@ -300,10 +294,14 @@ void MergeMasterSubproblemMPS::add_coupling_constraints(const CouplingMap& candi
     // }
 
     size_t nb_elem_reserve{0}; // 2-permutation of variables
-    for (const auto& [_, file_mapping]: candidates)
-    {
-        nb_elem_reserve += file_mapping.size() * (file_mapping.size() - 1);
-    }
+    nb_elem_reserve = std::accumulate(candidates.begin(),
+                                      candidates.end(),
+                                      size_t{0},
+                                      [](size_t acc, const auto& pair)
+                                      {
+                                          const auto& file_map = pair.second;
+                                          return acc + file_map.size() * (file_map.size() - 1);
+                                      });
 
     const size_t nb_rows_reserve = nb_elem_reserve / 2; // choose-2-combination of variables
 
