@@ -197,17 +197,17 @@ void StandardLp::initialise_int_values_with_zeros()
 void StandardLp::initialise_int_vectors()
 {
     std::get<Attribute::INT_VECTOR>(data).assign(IntVectorAttribute::MAX_INT_VECTOR_ATTRIBUTE,
-                                                  IntVector());
+                                                 IntVector());
 }
 
 void StandardLp::initialise_char_vectors()
 {
     std::get<Attribute::CHAR_VECTOR>(data).assign(CharVectorAttribute::MAX_CHAR_VECTOR_ATTRIBUTE,
-                                                   CharVector());
+                                                  CharVector());
 }
 
 void StandardLp::initialise_dbl_vectors()
 {
     std::get<Attribute::DBL_VECTOR>(data).assign(DblVectorAttribute::MAX_DBL_VECTOR_ATTRIBUTE,
-                                                  DblVector());
+                                                 DblVector());
 }
