@@ -12,7 +12,6 @@
 #include "antares-xpansion/benders/output/JsonWriter.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 
-//@suggest: create and move to standardlp.cpp
 // Initialize static member
 size_t StandardLp::appendCNT = 0;
 

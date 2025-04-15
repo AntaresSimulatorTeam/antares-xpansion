@@ -31,52 +31,41 @@ AbstractMergeMPS::AbstractMergeMPS(MergeMPSOptions options,
  */
 void AbstractMergeMPS::launch()
 {
-    const auto input_root_dir = std::filesystem::path(_options.INPUTROOT);
-    const auto structure_path(input_root_dir / _options.STRUCTURE_FILE);
-
-    const CouplingMap input = CouplingMapGenerator::BuildInput(structure_path,
-                                                               _logger.get(),
-                                                               "Merge mps");
-
-    const CouplingMap candidates = get_candidates(input);
-
-    add_coupling_constraints(candidates);
+    build_problem();
 
     export_problem();
 
     const bool is_optimal = solve();
 
-    output_solution(input, candidates, is_optimal);
+    output_solution(is_optimal);
 }
 
 /**
- * \brief Return a mapping of investment candidates
- *
- * \param root_dir : Path to root directory where files are
- *
- * \param structure : Mapping of files and investments candidates
- *
- * \param solver_to_use : Solver name that will be used in back-end
- *
- * \param merged_solver : Ref to merged solver
+ * \brief Build merged problem
  */
-CouplingMap AbstractMergeMPS::get_candidates(const CouplingMap& structure)
+void AbstractMergeMPS::build_problem()
 {
-    if (structure.empty())
-    {
-        return {};
-    }
+    const auto input_root_dir = std::filesystem::path(_options.INPUTROOT);
+    const auto structure_path(input_root_dir / _options.STRUCTURE_FILE);
 
-    CouplingMap candidates;
+    _structure = CouplingMapGenerator::BuildInput(structure_path, _logger.get(), "Merge mps");
 
-    const int nb_sub_problems = structure.size() - 1;
+    // TODO Investigate why following check
+    // TODO creates a segfault when structure.txt is empty
+    // if (_structure.empty())
+    // {
+    //     _logger->display_message("Nothing to merge. Returning empty problem.");
+    //     return;
+    // }
+
+    const int nb_sub_problems = _structure.size() - 1;
     const auto root_dir = std::filesystem::path(_options.INPUTROOT);
     SolverFactory factory;
 
     _logger->display_message("Merging problems...");
 
     int current_prob_id{0};
-    for (const auto& [filename, var_map]: structure)
+    for (auto& [filename, var_map]: _structure)
     {
         SolverAbstract::Ptr ptr_solver = factory.create_solver(_options.SOLVER_NAME);
 
@@ -85,7 +74,7 @@ CouplingMap AbstractMergeMPS::get_candidates(const CouplingMap& structure)
         ptr_solver->read_prob_mps(root_dir / filename);
 
         // Separate Master and Subproblems by a specific name ID
-        // given at the beginning of the program
+        // given in the options file
         if (filename != _options.MASTER_NAME)
         {
             const int nb_cols{ptr_solver->get_ncols()};
@@ -113,10 +102,10 @@ CouplingMap AbstractMergeMPS::get_candidates(const CouplingMap& structure)
         // along with the counting
         lpData.append_in(*_ptr_merged_solver, var_prefix);
 
-        for (const auto& [var_name, _]: var_map)
+        for (auto& [var_name, var_idx]: var_map)
         {
-            const int col_index = _ptr_merged_solver->get_col_index(var_prefix + var_name);
-            if (col_index == -1)
+            const int merged_col_index = _ptr_merged_solver->get_col_index(var_prefix + var_name);
+            if (merged_col_index == -1)
             {
                 const auto output_root = std::filesystem::path(_options.OUTPUTROOT);
                 std::cerr << LOGLOCATION << "missing variable " << var_name << " in " << filename
@@ -125,20 +114,18 @@ CouplingMap AbstractMergeMPS::get_candidates(const CouplingMap& structure)
                 _ptr_merged_solver->write_prob_mps(output_root / ("mergeError" + MPS_SUFFIX));
                 std::exit(1);
             }
-            else
-            {
-                // All this part serves to fill this map
-                // that aggregates all variables into the
-                // merged problem
-                // [variable][subproblem] = col
-                candidates[var_name][filename] = col_index;
-            }
+            // TODO Not yet happy with this part
+            // TODO Think of a better data struct maybe?
+            var_idx = merged_col_index;
         }
     }
 
-    return candidates;
+    add_coupling_constraints();
 }
 
+/**
+ * \brief Export problem into mps and lp files
+ */
 void AbstractMergeMPS::export_problem()
 {
     const auto output_root = std::filesystem::path(_options.OUTPUTROOT);
@@ -190,9 +177,7 @@ bool AbstractMergeMPS::solve(const int nb_threads)
  *
  * \param is_sol_optimal : Flag true if solution is optimal, false otherwise
  */
-void AbstractMergeMPS::output_solution(const CouplingMap& structure,
-                                       const CouplingMap& candidates,
-                                       const bool is_sol_optimal)
+void AbstractMergeMPS::output_solution(const bool is_sol_optimal)
 {
     double overall_cost{0}, investment_cost{0}, operational_cost{0};
     DblVector solution(_ptr_merged_solver->get_ncols()), obj_coeff(_ptr_merged_solver->get_ncols());
@@ -211,16 +196,12 @@ void AbstractMergeMPS::output_solution(const CouplingMap& structure,
     _ptr_merged_solver->get_obj(obj_coeff.data(), 0, _ptr_merged_solver->get_ncols() - 1);
 
     std::map<std::string, double> investments;
-    if (const auto master = structure.find(_options.MASTER_NAME); master != structure.end())
+    for (const auto& [var_name, var_idx]: _structure[_options.MASTER_NAME])
     {
-        for (const auto& [var_name, _]: master->second)
-        {
-            const int var_idx_in_merged = candidates.at(var_name).at(_options.MASTER_NAME);
-            investments[var_name] = solution[var_idx_in_merged];
-            investment_cost += investments[var_name] * obj_coeff[var_idx_in_merged];
-        }
+        investments[var_name] = solution[var_idx];
+        investment_cost += investments[var_name] * obj_coeff[var_idx];
     }
-    else
+    if (investments.empty())
     {
         std::cerr << LOGLOCATION << "Could not find '" << _options.MASTER_NAME
                   << "' in structure\n";
@@ -229,7 +210,7 @@ void AbstractMergeMPS::output_solution(const CouplingMap& structure,
     operational_cost = overall_cost - investment_cost;
 
     Output::SolutionData sol_infos;
-    sol_infos.nbWeeks_p = static_cast<int>(structure.size());
+    sol_infos.nbWeeks_p = static_cast<int>(_structure.size());
 
     sol_infos.solution.lb = overall_cost;
     sol_infos.solution.ub = overall_cost;
@@ -294,17 +275,15 @@ double MergeMasterSubproblemMPS::get_objective_weight(const int nb_subproblems,
 
 /**
  * \brief Add coupling equality constraints between subproblems
- *
- * \param candidates : Mapping of investment candidates
  */
-void MergeMasterSubproblemMPS::add_coupling_constraints(const CouplingMap& candidates)
+void MergeMasterSubproblemMPS::add_coupling_constraints()
 {
-    // TODO Investigate why following check
-    // TODO creates a segfault when structure.txt is empty
-    // if (candidates.empty())
-    // {
-    //     return;
-    // }
+    std::map<std::string, std::map<std::string, int> > candidates;
+    for (const auto& [filename, variables] : _structure) {
+        for (const auto& [var_name, var_idx] : variables) {
+            candidates[var_name][filename] = var_idx;
+        }
+    }
 
     size_t nb_elem_reserve{0}; // 2-permutation of variables
     for (const auto& [_, file_mapping]: candidates)
@@ -338,7 +317,7 @@ void MergeMasterSubproblemMPS::add_coupling_constraints(const CouplingMap& candi
         // 1 * ref - 1 * second = 0
         for (std::advance(it, 1); it != file_map.cend(); ++it)
         {
-            const auto& [filename, var_idx] = *it;
+            const auto& [_, var_idx] = *it;
 
             var_offsets.push_back(nb_elem);
 
