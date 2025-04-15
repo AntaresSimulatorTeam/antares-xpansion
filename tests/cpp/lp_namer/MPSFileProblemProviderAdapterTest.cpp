@@ -1,12 +1,10 @@
-#include <fstream>
 #include <RandomDirGenerator.h>
-
-
-#include "gtest/gtest.h"
+#include <fstream>
 
 #include "antares-xpansion/lpnamer/problem_modifier/MPSFileProblemProviderAdapter.h"
+#include "gtest/gtest.h"
 
-class FixtureMPSFileProblemProviderAdapter : public ::testing::Test
+class FixtureMPSFileProblemProviderAdapter: public ::testing::Test
 {
     void SetUp() override
     {
@@ -21,12 +19,14 @@ class FixtureMPSFileProblemProviderAdapter : public ::testing::Test
     }
 
     std::filesystem::path previous_path;
+
 public:
     std::filesystem::path tmp_dir;
 };
 
-TEST_F(FixtureMPSFileProblemProviderAdapter, ProvideProblemProperly) {
-        std::ofstream file(tmp_dir / "problem_1_1.mps");
+TEST_F(FixtureMPSFileProblemProviderAdapter, ProvideProblemProperly)
+{
+    std::ofstream file(tmp_dir / "problem_1_1.mps");
     file << R"(NAME          MASTER  FREE
 ROWS
  N  OBJROW
@@ -41,13 +41,14 @@ ENDATA)";
     file.close();
     SolverLogManager solver_log_manager_;
     MPSFileProblemProviderAdapter adapter(tmp_dir, "problem_1_1.mps");
-  auto problem = adapter.provide_problem("cbc", solver_log_manager_);
-  ASSERT_TRUE(problem != nullptr);
+    auto problem = adapter.provide_problem("cbc", solver_log_manager_);
+    ASSERT_TRUE(problem != nullptr);
 }
 
 TEST_F(FixtureMPSFileProblemProviderAdapter, ProvideProblemFail)
 {
     SolverLogManager solver_log_manager_;
     MPSFileProblemProviderAdapter adapter(tmp_dir, "problem_1_1.mps");
-    ASSERT_THROW(adapter.provide_problem("Invalid", solver_log_manager_), InvalidSolverNameException);
+    ASSERT_THROW((void)adapter.provide_problem("Invalid", solver_log_manager_),
+                 InvalidSolverNameException);
 }
