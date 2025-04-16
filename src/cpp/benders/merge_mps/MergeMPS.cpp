@@ -303,12 +303,13 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
     _logger->display_message("About to add " + std::to_string(nb_rows_reserve)
                              + " coupling constraints");
 
-    IntVector var_offsets;
-    IntVector var_indices;
-    DblVector var_values;
-    var_values.reserve(nb_elem_reserve);
-    var_indices.reserve(nb_elem_reserve);
-    var_offsets.reserve(nb_rows_reserve + 1);
+    IntVector mstart;  // Constraints' offsets
+    mstart.reserve(nb_rows_reserve + 1);
+
+    IntVector mclind;  // Variables' indices
+    DblVector dmatval; // Variables' values
+    dmatval.reserve(nb_elem_reserve);
+    mclind.reserve(nb_elem_reserve);
 
     int nb_rows{0};
     int nb_elem{0};
@@ -324,29 +325,23 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
         // 1 * ref - 1 * second = 0
         for (int var_idx: indices | std::views::drop(1))
         {
-            var_offsets.push_back(nb_elem);
+            mstart.push_back(nb_elem);
 
-            var_indices.push_back(ref_var_idx);
-            var_values.push_back(1);
+            mclind.push_back(ref_var_idx);
+            dmatval.push_back(1);
             ++nb_elem;
 
-            var_indices.push_back(var_idx);
-            var_values.push_back(-1);
+            mclind.push_back(var_idx);
+            dmatval.push_back(-1);
             ++nb_elem;
 
             ++nb_rows;
         }
     }
-    var_offsets.push_back(nb_elem);
+    mstart.push_back(nb_elem);
 
-    DblVector rhs(nb_rows, 0);
-    CharVector constraint_type(nb_rows, 'E');
+    DblVector rhs(nb_rows, 0);       // Constraints' rhs
+    CharVector qrtype(nb_rows, 'E'); // Constraints' types
 
-    solver_addrows(*_ptr_merged_solver,
-                   constraint_type,
-                   rhs,
-                   {},
-                   var_offsets,
-                   var_indices,
-                   var_values);
+    solver_addrows(*_ptr_merged_solver, qrtype, rhs, {}, mstart, mclind, dmatval);
 }
