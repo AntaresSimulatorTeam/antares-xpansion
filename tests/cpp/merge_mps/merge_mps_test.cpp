@@ -1,9 +1,9 @@
 #include <fmt/format.h>
 #include <gtest/gtest.h>
 
+#include "InMemoryWriter.h"
 #include "LoggerStub.h"
 #include "RandomDirGenerator.h"
-#include "InMemoryWriter.h"
 #include "antares-xpansion/benders/merge_mps/MergeMPS.h"
 #include "antares-xpansion/benders/merge_mps/StandardLp.h"
 
@@ -11,9 +11,11 @@ size_t StandardLp::appendCNT = 0;
 
 using namespace std::string_literals;
 
-class MergeMPSTest : public ::testing::Test {
+class MergeMPSTest: public ::testing::Test
+{
 protected:
-    void SetUp() override {
+    void SetUp() override
+    {
         tmp_dir_ = CreateRandomSubDir(std::filesystem::temp_directory_path());
         previous_path = std::filesystem::current_path();
         std::filesystem::current_path(tmp_dir_);
@@ -25,7 +27,8 @@ protected:
         options_.OUTPUTROOT = tmp_dir_.string();
     }
 
-    void TearDown() override {
+    void TearDown() override
+    {
         std::filesystem::current_path(previous_path);
     }
 
@@ -39,7 +42,8 @@ protected:
      * 0 <= X1 <= 4
      * 0 <= X2 <= 4
      */
-    void createMasterProblem() {
+    void createMasterProblem()
+    {
         std::ofstream master_problem(tmp_dir_ / "master.mps"s);
         master_problem << R"(NAME          MASTER  FREE
 ROWS
@@ -74,7 +78,8 @@ ENDATA)";
      * 0 <= Y1 <= 10
      * 0 <= X1 <= 10
      */
-    void createSatelliteProblem() {
+    void createSatelliteProblem()
+    {
         std::ofstream satellite_problem(tmp_dir_ / "satellite.mps"s);
         satellite_problem << R"(NAME       SATELLITE  FREE
 ROWS
@@ -95,13 +100,15 @@ BOUNDS
  UP BOUND      X1        10.0
 ENDATA)";
         satellite_problem.close();
-        //Required to avoid missing contribution to Obj
+        // Required to avoid missing contribution to Obj
         options_.weights["satellite.mps"] = 1;
     }
 
-    void createStructureFile(const std::vector<std::tuple<std::string, std::string, int> > &entries) {
+    void createStructureFile(const std::vector<std::tuple<std::string, std::string, int>>& entries)
+    {
         std::ofstream structure_file(options_.STRUCTURE_FILE);
-        for (const auto &[mps, var, idx]: entries) {
+        for (const auto& [mps, var, idx]: entries)
+        {
             structure_file << fmt::format("{0} {1} {2}\n", mps, var, idx);
         }
         structure_file.close();
@@ -114,19 +121,24 @@ ENDATA)";
     std::shared_ptr<Xpansion::Test::InMemoryWriter> writer_;
 };
 
-auto get_rows(const SolverAbstract *solver) {
+auto get_rows(const SolverAbstract* solver)
+{
     std::vector<int> mstart_merged(solver->get_nrows() + 1);
     std::vector<int> mclind_merged(solver->get_nelems());
     std::vector<double> dmatval_merged(solver->get_nelems());
     int merge_ret = 0;
-    solver->get_rows(mstart_merged.data(), mclind_merged.data(), dmatval_merged.data(), solver->get_nelems(),
+    solver->get_rows(mstart_merged.data(),
+                     mclind_merged.data(),
+                     dmatval_merged.data(),
+                     solver->get_nelems(),
                      &merge_ret,
                      0,
                      solver->get_nrows() - 1);
     return std::tuple{mstart_merged, mclind_merged, dmatval_merged, merge_ret};
 }
 
-TEST_F(MergeMPSTest, empty_input_ok) {
+TEST_F(MergeMPSTest, empty_input_ok)
+{
     std::ofstream structure_file(tmp_dir_ / "structure_file.txt"s);
 
     MergeMPSOptions options;
@@ -135,14 +147,15 @@ TEST_F(MergeMPSTest, empty_input_ok) {
 
     MergeMPS mergeMPS(options, logger_, writer_);
     mergeMPS.launch();
-    const auto &lastSolution = writer_->solution_data_;
+    const auto& lastSolution = writer_->solution_data_;
     EXPECT_EQ(lastSolution.problem_status, "ERROR");
 }
 
 /**
  * Result and master should be identical
  */
-TEST_F(MergeMPSTest, only_master_identical_to_merged) {
+TEST_F(MergeMPSTest, only_master_identical_to_merged)
+{
     createMasterProblem();
     createStructureFile({{"master.mps", "X1", 0}, {"master.mps", "X2", 1}});
     MergeMPS mergeMPS(options_, logger_, writer_);
@@ -163,7 +176,7 @@ TEST_F(MergeMPSTest, only_master_identical_to_merged) {
     EXPECT_EQ(*merged, *master);
 }
 
-//Test with 2 problems not sharing variables
+// Test with 2 problems not sharing variables
 /**
  * Expectation :
 \Problem name: ClpDefaultName
@@ -182,12 +195,13 @@ Bounds
 0 <= Y2 <= 50
 End
 */
-TEST_F(MergeMPSTest, two_disconnected_problems_merged_is_concatenation_of_both) {
+TEST_F(MergeMPSTest, two_disconnected_problems_merged_is_concatenation_of_both)
+{
     createMasterProblem();
-    createStructureFile({
-        {"master.mps", "X1", 0}, {"master.mps", "X2", 1},
-        {"disconnected.mps", "Y1", 0}, {"disconnected.mps", "Y2", 1}
-    });
+    createStructureFile({{"master.mps", "X1", 0},
+                         {"master.mps", "X2", 1},
+                         {"disconnected.mps", "Y1", 0},
+                         {"disconnected.mps", "Y2", 1}});
     /**
      * Disconnected:
      * Minimize Y1 + Y2
@@ -220,7 +234,7 @@ BOUNDS
 ENDATA)";
     disconnected.close();
 
-    //Required to avoid missing contribution to Obj
+    // Required to avoid missing contribution to Obj
     options_.weights["disconnected.mps"] = 1;
 
     MergeMPS mergeMPS(options_, logger_, writer_);
@@ -268,12 +282,12 @@ Bounds
 0 <= X1' <= 10
 End
 */
-TEST_F(MergeMPSTest, merged_problems_adds_one_coupling_constraint) {
+TEST_F(MergeMPSTest, merged_problems_adds_one_coupling_constraint)
+{
     createMasterProblem();
     createSatelliteProblem();
-    createStructureFile({
-        {"master.mps", "X1", 0}, {"master.mps", "X2", 1}, {"satellite.mps", "X1", 1}
-    });
+    createStructureFile(
+      {{"master.mps", "X1", 0}, {"master.mps", "X2", 1}, {"satellite.mps", "X1", 1}});
 
     MergeMPS mergeMPS(options_, logger_, writer_);
     mergeMPS.launch();
@@ -295,17 +309,21 @@ TEST_F(MergeMPSTest, merged_problems_adds_one_coupling_constraint) {
     satellite->read_prob_mps(tmp_dir_ / "satellite.mps"s);
 
     // Verify dimensions
-    EXPECT_EQ(merged->get_nrows(), master->get_nrows() + satellite->get_nrows() + 1); // One additional constraint
-    EXPECT_EQ(merged->get_ncols(), master->get_ncols() + satellite->get_ncols()); // Same number of columns
-    EXPECT_EQ(merged->get_nelems(), master->get_nelems() + satellite->get_nelems() + 2); // 2 additional elems in this constraint
+    EXPECT_EQ(merged->get_nrows(),
+              master->get_nrows() + satellite->get_nrows() + 1); // One additional constraint
+    EXPECT_EQ(merged->get_ncols(),
+              master->get_ncols() + satellite->get_ncols()); // Same number of columns
+    EXPECT_EQ(merged->get_nelems(),
+              master->get_nelems() + satellite->get_nelems()
+                + 2); // 2 additional elems in this constraint
 }
 
-TEST_F(MergeMPSTest, merged_problems_lhs_does_not_change) {
+TEST_F(MergeMPSTest, merged_problems_lhs_does_not_change)
+{
     createMasterProblem();
     createSatelliteProblem();
-    createStructureFile({
-        {"master.mps", "X1", 0}, {"master.mps", "X2", 1}, {"satellite.mps", "X1", 1}
-    });
+    createStructureFile(
+      {{"master.mps", "X1", 0}, {"master.mps", "X2", 1}, {"satellite.mps", "X1", 1}});
 
     MergeMPS mergeMPS(options_, logger_, writer_);
     mergeMPS.launch();
@@ -329,22 +347,25 @@ TEST_F(MergeMPSTest, merged_problems_lhs_does_not_change) {
     // Verify LHS (matrix)
     auto [mstart_merged, mclind_merged, dmatval_merged, merge_ret] = get_rows(merged.get());
     auto [mstart_master, mclind_master, dmatval_master, master_ret] = get_rows(master.get());
-    auto [mstart_satellite, mclind_satellite, dmatval_satellite, satellite_ret] = get_rows(satellite.get());
+    auto [mstart_satellite, mclind_satellite, dmatval_satellite, satellite_ret] = get_rows(
+      satellite.get());
 
-    for (int i = 0; i < master->get_nelems(); ++i) {
+    for (int i = 0; i < master->get_nelems(); ++i)
+    {
         EXPECT_DOUBLE_EQ(dmatval_merged[i], dmatval_master[i]);
     }
-    for (int i = 0; i < satellite->get_nelems(); ++i) {
+    for (int i = 0; i < satellite->get_nelems(); ++i)
+    {
         EXPECT_DOUBLE_EQ(dmatval_merged[i + master->get_nelems()], dmatval_satellite[i]);
     }
 }
 
-TEST_F(MergeMPSTest, merged_problems_objective_coeff_are_multiplied_by_factor) {
+TEST_F(MergeMPSTest, merged_problems_objective_coeff_are_multiplied_by_factor)
+{
     createMasterProblem();
     createSatelliteProblem();
-    createStructureFile({
-        {"master.mps", "X1", 0}, {"master.mps", "X2", 1}, {"satellite.mps", "X1", 1}
-    });
+    createStructureFile(
+      {{"master.mps", "X1", 0}, {"master.mps", "X2", 1}, {"satellite.mps", "X1", 1}});
 
     const double factor = 3.;
     options_.weights["satellite.mps"] = factor;
@@ -376,22 +397,24 @@ TEST_F(MergeMPSTest, merged_problems_objective_coeff_are_multiplied_by_factor) {
     master->get_obj(obj_master.data(), 0, master->get_ncols() - 1);
     satellite->get_obj(obj_satellite.data(), 0, satellite->get_ncols() - 1);
 
-    for (int i = 0; i < master->get_ncols(); ++i) {
+    for (int i = 0; i < master->get_ncols(); ++i)
+    {
         // Master's obj coefficients do not change
         EXPECT_DOUBLE_EQ(obj_merged[i], obj_master[i]);
     }
-    for (int i = 0; i < satellite->get_ncols(); ++i) {
+    for (int i = 0; i < satellite->get_ncols(); ++i)
+    {
         // Satellite's obj coefficients change by the factor
         EXPECT_DOUBLE_EQ(obj_merged[i + master->get_ncols()], factor * obj_satellite[i]);
     }
 }
 
-TEST_F(MergeMPSTest, merged_problems_lb_does_not_change) {
+TEST_F(MergeMPSTest, merged_problems_lb_does_not_change)
+{
     createMasterProblem();
     createSatelliteProblem();
-    createStructureFile({
-        {"master.mps", "X1", 0}, {"master.mps", "X2", 1}, {"satellite.mps", "X1", 1}
-    });
+    createStructureFile(
+      {{"master.mps", "X1", 0}, {"master.mps", "X2", 1}, {"satellite.mps", "X1", 1}});
 
     MergeMPS mergeMPS(options_, logger_, writer_);
     mergeMPS.launch();
@@ -420,20 +443,22 @@ TEST_F(MergeMPSTest, merged_problems_lb_does_not_change) {
     master->get_lb(lb_master.data(), 0, master->get_ncols() - 1);
     satellite->get_lb(lb_satellite.data(), 0, satellite->get_ncols() - 1);
 
-    for (int i = 0; i < master->get_ncols(); ++i) {
+    for (int i = 0; i < master->get_ncols(); ++i)
+    {
         EXPECT_DOUBLE_EQ(lb_merged[i], lb_master[i]);
     }
-    for (int i = 0; i < satellite->get_ncols(); ++i) {
+    for (int i = 0; i < satellite->get_ncols(); ++i)
+    {
         EXPECT_DOUBLE_EQ(lb_merged[i + master->get_ncols()], lb_satellite[i]);
     }
 }
 
-TEST_F(MergeMPSTest, merged_problems_ub_does_not_change) {
+TEST_F(MergeMPSTest, merged_problems_ub_does_not_change)
+{
     createMasterProblem();
     createSatelliteProblem();
-    createStructureFile({
-        {"master.mps", "X1", 0}, {"master.mps", "X2", 1}, {"satellite.mps", "X1", 1}
-    });
+    createStructureFile(
+      {{"master.mps", "X1", 0}, {"master.mps", "X2", 1}, {"satellite.mps", "X1", 1}});
 
     MergeMPS mergeMPS(options_, logger_, writer_);
     mergeMPS.launch();
@@ -462,20 +487,22 @@ TEST_F(MergeMPSTest, merged_problems_ub_does_not_change) {
     master->get_ub(ub_master.data(), 0, master->get_ncols() - 1);
     satellite->get_ub(ub_satellite.data(), 0, satellite->get_ncols() - 1);
 
-    for (int i = 0; i < master->get_ncols(); ++i) {
+    for (int i = 0; i < master->get_ncols(); ++i)
+    {
         EXPECT_DOUBLE_EQ(ub_merged[i], ub_master[i]);
     }
-    for (int i = 0; i < satellite->get_ncols(); ++i) {
+    for (int i = 0; i < satellite->get_ncols(); ++i)
+    {
         EXPECT_DOUBLE_EQ(ub_merged[i + master->get_ncols()], ub_satellite[i]);
     }
 }
 
-TEST_F(MergeMPSTest, merged_problems_rhs_values_does_not_change) {
+TEST_F(MergeMPSTest, merged_problems_rhs_values_does_not_change)
+{
     createMasterProblem();
     createSatelliteProblem();
-    createStructureFile({
-        {"master.mps", "X1", 0}, {"master.mps", "X2", 1}, {"satellite.mps", "X1", 1}
-    });
+    createStructureFile(
+      {{"master.mps", "X1", 0}, {"master.mps", "X2", 1}, {"satellite.mps", "X1", 1}});
 
     MergeMPS mergeMPS(options_, logger_, writer_);
     mergeMPS.launch();
@@ -504,20 +531,22 @@ TEST_F(MergeMPSTest, merged_problems_rhs_values_does_not_change) {
     master->get_rhs(rhs_master.data(), 0, master->get_nrows() - 1);
     satellite->get_rhs(rhs_satellite.data(), 0, satellite->get_nrows() - 1);
 
-    for (int i = 0; i < master->get_nrows(); ++i) {
+    for (int i = 0; i < master->get_nrows(); ++i)
+    {
         EXPECT_DOUBLE_EQ(rhs_merged[i], rhs_master[i]);
     }
-    for (int i = 0; i < satellite->get_nrows(); ++i) {
+    for (int i = 0; i < satellite->get_nrows(); ++i)
+    {
         EXPECT_DOUBLE_EQ(rhs_merged[i + master->get_nrows()], rhs_satellite[i]);
     }
 }
 
-TEST_F(MergeMPSTest, merged_problems_rhs_types_does_not_change) {
+TEST_F(MergeMPSTest, merged_problems_rhs_types_does_not_change)
+{
     createMasterProblem();
     createSatelliteProblem();
-    createStructureFile({
-        {"master.mps", "X1", 0}, {"master.mps", "X2", 1}, {"satellite.mps", "X1", 1}
-    });
+    createStructureFile(
+      {{"master.mps", "X1", 0}, {"master.mps", "X2", 1}, {"satellite.mps", "X1", 1}});
 
     MergeMPS mergeMPS(options_, logger_, writer_);
     mergeMPS.launch();
@@ -546,20 +575,22 @@ TEST_F(MergeMPSTest, merged_problems_rhs_types_does_not_change) {
     master->get_row_type(order_master.data(), 0, master->get_nrows() - 1);
     satellite->get_row_type(order_satellite.data(), 0, satellite->get_nrows() - 1);
 
-    for (int i = 0; i < master->get_nrows(); ++i) {
+    for (int i = 0; i < master->get_nrows(); ++i)
+    {
         EXPECT_EQ(order_merged[i], order_master[i]);
     }
-    for (int i = 0; i < satellite->get_nrows(); ++i) {
+    for (int i = 0; i < satellite->get_nrows(); ++i)
+    {
         EXPECT_EQ(order_merged[i + master->get_nrows()], order_satellite[i]);
     }
 }
 
-TEST_F(MergeMPSTest, merged_problems_result) {
+TEST_F(MergeMPSTest, merged_problems_result)
+{
     createMasterProblem();
     createSatelliteProblem();
-    createStructureFile({
-        {"master.mps", "X1", 0}, {"master.mps", "X2", 1}, {"satellite.mps", "X1", 1}
-    });
+    createStructureFile(
+      {{"master.mps", "X1", 0}, {"master.mps", "X2", 1}, {"satellite.mps", "X1", 1}});
 
     MergeMPS mergeMPS(options_, logger_, writer_);
     mergeMPS.launch();
@@ -568,9 +599,9 @@ TEST_F(MergeMPSTest, merged_problems_result) {
     EXPECT_EQ(lastSolution.problem_status, "OPTIMAL");
 
     EXPECT_DOUBLE_EQ(lastSolution.solution.investment_cost, 6.);
-    EXPECT_DOUBLE_EQ(lastSolution.solution.operational_cost, 5./9);
-    EXPECT_DOUBLE_EQ(lastSolution.solution.overall_cost, 6. + 5./9);
+    EXPECT_DOUBLE_EQ(lastSolution.solution.operational_cost, 5. / 9);
+    EXPECT_DOUBLE_EQ(lastSolution.solution.overall_cost, 6. + 5. / 9);
 
     EXPECT_DOUBLE_EQ(lastSolution.solution.candidates[0].invest, 0.0);
-    EXPECT_DOUBLE_EQ(lastSolution.solution.candidates[1].invest, 3./2);
+    EXPECT_DOUBLE_EQ(lastSolution.solution.candidates[1].invest, 3. / 2);
 }
