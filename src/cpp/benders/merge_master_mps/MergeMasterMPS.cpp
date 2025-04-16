@@ -300,11 +300,12 @@ void MergeMasterMPS::launch()
         {
             if (subproblem == node_data.master_name)
                 continue;
-            std::string subproblem_prefixed = varPrefix_l + subproblem;
+            std::string subproblem_path = std::filesystem::path(node_data.lp_folder)
+                / subproblem;
             for (const auto& [candidate_name, position] : positions)
             {
                 std::string candidate_name_prefixed = varPrefix_l + candidate_name;
-                merged_structure[subproblem_prefixed][candidate_name_prefixed] = position;
+                merged_structure[subproblem_path][candidate_name_prefixed] = position;
             }
         }
     }
