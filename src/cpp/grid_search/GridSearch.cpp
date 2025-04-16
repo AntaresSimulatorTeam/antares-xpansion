@@ -85,7 +85,7 @@ void GridSearch::InitCouplingMap()
             monteCarloYearIDs.insert(std::stoi(match[1].str()));
         }
     }
-    nbMonteCarloIterations = monteCarloYearIDs.size() ? monteCarloYearIDs.size() : 1;
+    nbMonteCarloYears = monteCarloYearIDs.size() ? monteCarloYearIDs.size() : 1;
     summary.close();
 }
 
@@ -133,7 +133,7 @@ void GridSearch::ComputeWeights()
         std::cout << "Set uniform weight " << std::endl;
         for (const auto& kvp: coupling_map)
         {
-            weights[kvp.first] = 1.0 / nbMonteCarloIterations;
+            weights[kvp.first] = 1.0 / nbMonteCarloYears;
             // std::cout << "Weight for " << kvp.first << " : " << weights[kvp.first] << std::endl;
         }
     }
@@ -168,7 +168,8 @@ void GridSearch::ComputeWeights()
             for (const auto& kvp: weights)
             {
                 weights[kvp.first] /= weights_sum;
-                // std::cout << "Weight for " << kvp.first << " : " << weights[kvp.first] << std::endl;
+                // std::cout << "Weight for " << kvp.first << " : " << weights[kvp.first] <<
+                // std::endl;
             }
         }
     }
