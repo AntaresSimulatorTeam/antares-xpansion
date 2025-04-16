@@ -181,8 +181,10 @@ bool AbstractMergeMPS::solve(const int nb_threads)
 void AbstractMergeMPS::output_solution(const bool is_sol_optimal)
 {
     double overall_cost{0}, investment_cost{0}, operational_cost{0};
+
     std::vector<double> solution(_ptr_merged_solver->get_ncols()),
-      obj_coeff(_ptr_merged_solver->get_ncols());
+      obj_coeff(_ptr_merged_solver->get_ncols()), lb_values(_ptr_merged_solver->get_ncols()),
+      ub_values(_ptr_merged_solver->get_ncols());
 
     if (_ptr_merged_solver->get_n_integer_vars() > 0)
     {
@@ -196,14 +198,19 @@ void AbstractMergeMPS::output_solution(const bool is_sol_optimal)
     }
 
     _ptr_merged_solver->get_obj(obj_coeff.data(), 0, _ptr_merged_solver->get_ncols() - 1);
+    _ptr_merged_solver->get_lb(lb_values.data(), 0, _ptr_merged_solver->get_ncols() - 1);
+    _ptr_merged_solver->get_ub(ub_values.data(), 0, _ptr_merged_solver->get_ncols() - 1);
 
-    std::map<std::string, double> investments;
+    std::vector<Output::CandidateData> candidates;
     for (const auto& [var_name, var_idx]: _structure[_options.MASTER_NAME])
     {
-        investments[var_name] = solution[var_idx];
-        investment_cost += investments[var_name] * obj_coeff[var_idx];
+        const auto& candidate = candidates.emplace_back(var_name,
+                                                        solution[var_idx],
+                                                        lb_values[var_idx],
+                                                        ub_values[var_idx]);
+        investment_cost += candidate.invest * obj_coeff[var_idx];
     }
-    if (investments.empty())
+    if (candidates.empty())
     {
         std::cerr << LOGLOCATION << "Could not find '" << _options.MASTER_NAME
                   << "' in structure\n";
@@ -221,13 +228,10 @@ void AbstractMergeMPS::output_solution(const bool is_sol_optimal)
     sol_infos.solution.overall_cost = overall_cost;
 
     sol_infos.solution.candidates.clear();
-    sol_infos.solution.candidates.reserve(investments.size());
-
-    for (const auto& [var_name, var_value]: investments)
-    {
-        const Output::CandidateData candidate_data{var_name, var_value, -1, -1};
-        sol_infos.solution.candidates.push_back(candidate_data);
-    }
+    sol_infos.solution.candidates.insert(sol_infos.solution.candidates.end(),
+                                         std::make_move_iterator(candidates.begin()),
+                                         std::make_move_iterator(candidates.end()));
+    candidates.clear();
 
     sol_infos.problem_status = is_sol_optimal ? "OPTIMAL" : "ERROR";
 
