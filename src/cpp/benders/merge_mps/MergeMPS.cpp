@@ -2,6 +2,7 @@
 
 #include <filesystem>
 #include <numeric>
+#include <ranges>
 #include <utility>
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
@@ -278,20 +279,26 @@ double MergeMasterSubproblemMPS::get_objective_weight(const int nb_subproblems,
  */
 void MergeMasterSubproblemMPS::add_coupling_constraints()
 {
-    std::map<std::string, std::map<std::string, int> > candidates;
-    for (const auto& [filename, variables] : _structure) {
-        for (const auto& [var_name, var_idx] : variables) {
-            candidates[var_name][filename] = var_idx;
+    std::map<std::string, std::vector<int>> variables;
+    for (const auto& [_, var_map]: _structure)
+    {
+        for (const auto& [var_name, var_idx]: var_map)
+        {
+            variables[var_name].push_back(var_idx);
         }
     }
 
-    size_t nb_elem_reserve{0}; // 2-permutation of variables
-    for (const auto& [_, file_mapping]: candidates)
-    {
-        nb_elem_reserve += file_mapping.size() * (file_mapping.size() - 1);
-    }
-
-    const size_t nb_rows_reserve = nb_elem_reserve / 2; // choose-2-combination of variables
+    // Add n-1 new constraints per variable where n is
+    // the number of columns representing this variable
+    const size_t nb_rows_reserve = std::accumulate(variables.cbegin(),
+                                                   variables.cend(),
+                                                   size_t{0},
+                                                   [](size_t acc, const auto& pair)
+                                                   {
+                                                       const auto& indices = pair.second;
+                                                       return acc + indices.size() - 1;
+                                                   });
+    const size_t nb_elem_reserve = 2 * nb_rows_reserve;
 
     _logger->display_message("About to add " + std::to_string(nb_rows_reserve)
                              + " coupling constraints");
@@ -305,20 +312,18 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
 
     int nb_rows{0};
     int nb_elem{0};
-    for (const auto& [var_name, file_map]: candidates)
+    for (const auto& [var_name, indices]: variables)
     {
-        _logger->display_message(var_name);
+        _logger->display_message(var_name + " : " + std::to_string(indices.size() - 1)
+                                 + " coupling constraints added");
 
-        auto it = file_map.cbegin();
-        const int ref_var_idx = it->second;
+        const int ref_var_idx = indices[0];
 
         // Starting from second element onwards
         // Add one equality constraint per pair of variables:
         // 1 * ref - 1 * second = 0
-        for (std::advance(it, 1); it != file_map.cend(); ++it)
+        for (int var_idx: indices | std::views::drop(1))
         {
-            const auto& [_, var_idx] = *it;
-
             var_offsets.push_back(nb_elem);
 
             var_indices.push_back(ref_var_idx);
