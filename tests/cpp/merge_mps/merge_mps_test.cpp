@@ -390,9 +390,9 @@ TEST_F(MergeMPSTest, merged_problems_objective_coeff_are_multiplied_by_factor)
     satellite->read_prob_mps(tmp_dir_ / "satellite.mps"s);
 
     // Verify objective
-    DblVector obj_merged(merged->get_ncols());
-    DblVector obj_master(master->get_ncols());
-    DblVector obj_satellite(satellite->get_ncols());
+    std::vector<double> obj_merged(merged->get_ncols());
+    std::vector<double> obj_master(master->get_ncols());
+    std::vector<double> obj_satellite(satellite->get_ncols());
     merged->get_obj(obj_merged.data(), 0, merged->get_ncols() - 1);
     master->get_obj(obj_master.data(), 0, master->get_ncols() - 1);
     satellite->get_obj(obj_satellite.data(), 0, satellite->get_ncols() - 1);
@@ -436,9 +436,9 @@ TEST_F(MergeMPSTest, merged_problems_lb_does_not_change)
     satellite->read_prob_mps(tmp_dir_ / "satellite.mps"s);
 
     // Verify lb
-    DblVector lb_merged(merged->get_ncols());
-    DblVector lb_master(master->get_ncols());
-    DblVector lb_satellite(satellite->get_ncols());
+    std::vector<double> lb_merged(merged->get_ncols());
+    std::vector<double> lb_master(master->get_ncols());
+    std::vector<double> lb_satellite(satellite->get_ncols());
     merged->get_lb(lb_merged.data(), 0, merged->get_ncols() - 1);
     master->get_lb(lb_master.data(), 0, master->get_ncols() - 1);
     satellite->get_lb(lb_satellite.data(), 0, satellite->get_ncols() - 1);
@@ -480,9 +480,9 @@ TEST_F(MergeMPSTest, merged_problems_ub_does_not_change)
     satellite->read_prob_mps(tmp_dir_ / "satellite.mps"s);
 
     // Verify ub
-    DblVector ub_merged(merged->get_ncols());
-    DblVector ub_master(master->get_ncols());
-    DblVector ub_satellite(satellite->get_ncols());
+    std::vector<double> ub_merged(merged->get_ncols());
+    std::vector<double> ub_master(master->get_ncols());
+    std::vector<double> ub_satellite(satellite->get_ncols());
     merged->get_ub(ub_merged.data(), 0, merged->get_ncols() - 1);
     master->get_ub(ub_master.data(), 0, master->get_ncols() - 1);
     satellite->get_ub(ub_satellite.data(), 0, satellite->get_ncols() - 1);
@@ -524,9 +524,9 @@ TEST_F(MergeMPSTest, merged_problems_rhs_values_does_not_change)
     satellite->read_prob_mps(tmp_dir_ / "satellite.mps"s);
 
     // Verify RHS values
-    DblVector rhs_merged(merged->get_nrows());
-    DblVector rhs_master(master->get_nrows());
-    DblVector rhs_satellite(satellite->get_nrows());
+    std::vector<double> rhs_merged(merged->get_nrows());
+    std::vector<double> rhs_master(master->get_nrows());
+    std::vector<double> rhs_satellite(satellite->get_nrows());
     merged->get_rhs(rhs_merged.data(), 0, merged->get_nrows() - 1);
     master->get_rhs(rhs_master.data(), 0, master->get_nrows() - 1);
     satellite->get_rhs(rhs_satellite.data(), 0, satellite->get_nrows() - 1);

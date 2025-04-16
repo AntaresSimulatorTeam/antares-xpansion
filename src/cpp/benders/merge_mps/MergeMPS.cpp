@@ -80,10 +80,10 @@ void AbstractMergeMPS::build_problem()
         {
             const int nb_cols{ptr_solver->get_ncols()};
 
-            IntVector indices(nb_cols);
+            std::vector<int> indices(nb_cols);
             std::iota(indices.begin(), indices.end(), 0);
 
-            DblVector obj_coeff(nb_cols);
+            std::vector<double> obj_coeff(nb_cols);
             solver_get_obj_func_coeffs(*ptr_solver, obj_coeff, 0, nb_cols - 1);
 
             // Change the weight of coeff in the objective function
@@ -181,7 +181,8 @@ bool AbstractMergeMPS::solve(const int nb_threads)
 void AbstractMergeMPS::output_solution(const bool is_sol_optimal)
 {
     double overall_cost{0}, investment_cost{0}, operational_cost{0};
-    DblVector solution(_ptr_merged_solver->get_ncols()), obj_coeff(_ptr_merged_solver->get_ncols());
+    std::vector<double> solution(_ptr_merged_solver->get_ncols()),
+      obj_coeff(_ptr_merged_solver->get_ncols());
 
     if (_ptr_merged_solver->get_n_integer_vars() > 0)
     {
@@ -303,11 +304,11 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
     _logger->display_message("About to add " + std::to_string(nb_rows_reserve)
                              + " coupling constraints");
 
-    IntVector mstart;  // Constraints' offsets
+    std::vector<int> mstart; // Constraints' offsets
     mstart.reserve(nb_rows_reserve + 1);
 
-    IntVector mclind;  // Variables' indices
-    DblVector dmatval; // Variables' values
+    std::vector<int> mclind;     // Variables' indices
+    std::vector<double> dmatval; // Variables' values
     dmatval.reserve(nb_elem_reserve);
     mclind.reserve(nb_elem_reserve);
 
@@ -340,8 +341,8 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
     }
     mstart.push_back(nb_elem);
 
-    DblVector rhs(nb_rows, 0);       // Constraints' rhs
-    CharVector qrtype(nb_rows, 'E'); // Constraints' types
+    std::vector<double> rhs(nb_rows, 0);    // Constraints' rhs
+    std::vector<char> qrtype(nb_rows, 'E'); // Constraints' types
 
     solver_addrows(*_ptr_merged_solver, qrtype, rhs, {}, mstart, mclind, dmatval);
 }
