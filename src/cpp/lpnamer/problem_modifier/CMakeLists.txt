@@ -23,6 +23,7 @@ target_sources(lp_namer_problem_modifier PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesFileAdapter.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesFromProblemAdapter.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesZipAdapter.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/WeightFileProcessor.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/XpansionProblemsFromAntaresProvider.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ZipProblemProviderAdapter.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ZipProblemsProviderAdapter.cpp
@@ -45,6 +46,7 @@ target_sources(lp_namer_problem_modifier PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/ProblemVariablesFileAdapter.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/ProblemVariablesFromProblemAdapter.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/ProblemVariablesZipAdapter.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/WeightFileProcessor.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/ZipProblemProviderAdapter.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/ZipProblemsProviderAdapter.h

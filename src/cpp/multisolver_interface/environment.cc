@@ -56,6 +56,7 @@ std::function<int(XPRSprob prob, const char* filename)> XPRSgetlasterror = nullp
 std::function<int(XPRSprob prob, const char* filename)> XPRSsaveas = nullptr;
 std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSrestore = nullptr;
 std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSreadbasis = nullptr;
+std::function<int(XPRSprob prob, int rstatus[], int cstatus[])> XPRSloadbasis = nullptr;
 std::function<int(XPRSprob prob,
                   int start[],
                   int colind[],
@@ -172,6 +173,7 @@ bool XpressLoader::LoadXpressFunctions(Solver::DynamicLibrary* xpress_dynamic_li
     xpress_dynamic_library->GetFunction(&XPRSsaveas, "XPRSsaveas");
     xpress_dynamic_library->GetFunction(&XPRSrestore, "XPRSrestore");
     xpress_dynamic_library->GetFunction(&XPRSreadbasis, "XPRSreadbasis");
+    xpress_dynamic_library->GetFunction(&XPRSloadbasis, "XPRSloadbasis");
     xpress_dynamic_library->GetFunction(&XPRSloadsecurevecs, "XPRSloadsecurevecs");
     xpress_dynamic_library->GetFunction(&XPRSgetrows, "XPRSgetrows");
     xpress_dynamic_library->GetFunction(&XPRSgetindex, "XPRSgetindex");
