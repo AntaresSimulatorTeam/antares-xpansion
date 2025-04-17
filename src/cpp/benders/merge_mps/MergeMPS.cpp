@@ -346,7 +346,7 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
         }
 
         logger_->display_message(var_name + " : " + std::to_string(indices.size() - 1)
-                                 + " coupling constraints added");
+                                 + " coupling constraints built");
     }
     mstart.push_back(nb_elem);
 
