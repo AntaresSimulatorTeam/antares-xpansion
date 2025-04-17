@@ -8,15 +8,11 @@ using raw_standard_lp_data = std::
 
 class StandardLp
 {
-private:
-    std::vector<std::string> _colNames;
-
 public:
     // to be used in boost serialization for mpi transfer
-    raw_standard_lp_data _data;
+    raw_standard_lp_data data;
     static size_t appendCNT;
 
-public:
     explicit StandardLp(SolverAbstract& solver_p);
 
     int append_in(SolverAbstract& containingSolver_p, const std::string& prefix_p = "") const;
@@ -27,4 +23,6 @@ private:
     void initialise_int_vectors();
     void initialise_char_vectors();
     void initialise_dbl_vectors();
+
+    std::vector<std::string> col_names_;
 };

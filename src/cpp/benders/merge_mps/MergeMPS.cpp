@@ -12,19 +12,19 @@
 AbstractMergeMPS::AbstractMergeMPS(MergeMPSOptions options,
                                    Logger logger,
                                    std::shared_ptr<Output::OutputWriter> writer):
-    _options(std::move(options)),
-    _logger(std::move(logger)),
-    _writer(std::move(writer))
+    writer_(std::move(writer)),
+    options_(std::move(options)),
+    logger_(std::move(logger))
 {
-    if (_options.SOLVER_NAME == "COIN")
+    if (options_.SOLVER_NAME == "COIN")
     {
-        _options.SOLVER_NAME = "CBC";
+        options_.SOLVER_NAME = "CBC";
     }
 
     SolverFactory factory;
-    _ptr_merged_solver = factory.create_solver(_options.SOLVER_NAME);
+    ptr_merged_solver_ = factory.create_solver(options_.SOLVER_NAME);
 
-    _ptr_merged_solver->set_output_log_level(_options.LOG_LEVEL);
+    ptr_merged_solver_->set_output_log_level(options_.LOG_LEVEL);
 }
 
 /**
@@ -46,37 +46,37 @@ void AbstractMergeMPS::launch()
  */
 void AbstractMergeMPS::build_problem()
 {
-    const auto input_root_dir = std::filesystem::path(_options.INPUTROOT);
-    const auto structure_path(input_root_dir / _options.STRUCTURE_FILE);
+    const auto input_root_dir = std::filesystem::path(options_.INPUTROOT);
+    const auto structure_path(input_root_dir / options_.STRUCTURE_FILE);
 
-    _structure = CouplingMapGenerator::BuildInput(structure_path, _logger.get(), "Merge mps");
+    structure_ = CouplingMapGenerator::BuildInput(structure_path, logger_.get(), "Merge mps");
 
     // TODO Investigate why following check
     // TODO creates a segfault when structure.txt is empty
-    // if (_structure.empty())
+    // if (structure_.empty())
     // {
-    //     _logger->display_message("Nothing to merge. Returning empty problem.");
+    //     logger_->display_message("Nothing to merge. Returning empty problem.");
     //     return;
     // }
 
-    const int nb_sub_problems = _structure.size() - 1;
-    const auto root_dir = std::filesystem::path(_options.INPUTROOT);
+    const int nb_sub_problems = structure_.size() - 1;
+    const auto root_dir = std::filesystem::path(options_.INPUTROOT);
     SolverFactory factory;
 
-    _logger->display_message("Merging problems...");
+    logger_->display_message("Merging problems...");
 
     int current_prob_id{0};
-    for (auto& [filename, var_map]: _structure)
+    for (auto& [filename, var_map]: structure_)
     {
-        SolverAbstract::Ptr ptr_solver = factory.create_solver(_options.SOLVER_NAME);
+        SolverAbstract::Ptr ptr_solver = factory.create_solver(options_.SOLVER_NAME);
 
-        ptr_solver->set_output_log_level(_options.LOG_LEVEL);
+        ptr_solver->set_output_log_level(options_.LOG_LEVEL);
 
         ptr_solver->read_prob_mps(root_dir / filename);
 
         // Separate Master and Subproblems by a specific name ID
         // given in the options file
-        if (filename != _options.MASTER_NAME)
+        if (filename != options_.MASTER_NAME)
         {
             // Change the weight of coeff in the objective function
             // The strategy is defined in the input options
@@ -89,18 +89,18 @@ void AbstractMergeMPS::build_problem()
 
         // Prefix the name of the problem (Master and slaves alike)
         // along with the counting
-        lpData.append_in(*_ptr_merged_solver, var_prefix);
+        lpData.append_in(*ptr_merged_solver_, var_prefix);
 
         for (auto& [var_name, var_idx]: var_map)
         {
-            const int merged_col_index = _ptr_merged_solver->get_col_index(var_prefix + var_name);
+            const int merged_col_index = ptr_merged_solver_->get_col_index(var_prefix + var_name);
             if (merged_col_index == -1)
             {
-                const auto output_root = std::filesystem::path(_options.OUTPUTROOT);
+                const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
                 std::cerr << LOGLOCATION << "missing variable " << var_name << " in " << filename
                           << " supposedly renamed to " << var_prefix + var_name << ".";
-                _ptr_merged_solver->write_prob_lp(output_root / "mergeError.lp");
-                _ptr_merged_solver->write_prob_mps(output_root / ("mergeError" + MPS_SUFFIX));
+                ptr_merged_solver_->write_prob_lp(output_root / "mergeError.lp");
+                ptr_merged_solver_->write_prob_mps(output_root / ("mergeError" + MPS_SUFFIX));
                 std::exit(1);
             }
             // TODO Not yet happy with this part
@@ -142,12 +142,12 @@ void AbstractMergeMPS::multiply_obj_by_weight_factor(SolverAbstract& local_solve
  */
 void AbstractMergeMPS::export_problem()
 {
-    const auto output_root = std::filesystem::path(_options.OUTPUTROOT);
-    _logger->display_message("Problems merged.");
-    _logger->display_message("Writing mps file");
-    _ptr_merged_solver->write_prob_mps(output_root / ("log_merged" + MPS_SUFFIX));
-    _logger->display_message("Writing lp file");
-    _ptr_merged_solver->write_prob_lp(output_root / "log_merged.lp");
+    const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
+    logger_->display_message("Problems merged.");
+    logger_->display_message("Writing mps file");
+    ptr_merged_solver_->write_prob_mps(output_root / ("log_merged" + MPS_SUFFIX));
+    logger_->display_message("Writing lp file");
+    ptr_merged_solver_->write_prob_lp(output_root / "log_merged.lp");
 }
 
 /**
@@ -157,25 +157,25 @@ void AbstractMergeMPS::export_problem()
  *
  * \param nb_threads : Number of threads to use
  */
-bool AbstractMergeMPS::solve(const int nb_threads)
+bool AbstractMergeMPS::solve(int nb_threads)
 {
-    _ptr_merged_solver->set_threads(nb_threads);
+    ptr_merged_solver_->set_threads(nb_threads);
 
-    _logger->display_message("Solving...");
+    logger_->display_message("Solving...");
 
     Timer timer;
     int status{0};
 
-    if (_ptr_merged_solver->get_n_integer_vars() > 0)
+    if (ptr_merged_solver_->get_n_integer_vars() > 0)
     {
-        status = _ptr_merged_solver->solve_mip();
+        status = ptr_merged_solver_->solve_mip();
     }
     else
     {
-        status = _ptr_merged_solver->solve_lp();
+        status = ptr_merged_solver_->solve_lp();
     }
 
-    _logger->log_total_duration(timer.elapsed());
+    logger_->log_total_duration(timer.elapsed());
 
     return status == SOLVER_STATUS::OPTIMAL;
 }
@@ -191,31 +191,31 @@ bool AbstractMergeMPS::solve(const int nb_threads)
  *
  * \param is_sol_optimal : Flag true if solution is optimal, false otherwise
  */
-void AbstractMergeMPS::output_solution(const bool is_sol_optimal)
+void AbstractMergeMPS::output_solution(bool is_sol_optimal)
 {
     double overall_cost{0}, investment_cost{0}, operational_cost{0};
 
-    std::vector<double> solution(_ptr_merged_solver->get_ncols()),
-      obj_coeff(_ptr_merged_solver->get_ncols()), lb_values(_ptr_merged_solver->get_ncols()),
-      ub_values(_ptr_merged_solver->get_ncols());
+    std::vector<double> solution(ptr_merged_solver_->get_ncols()),
+      obj_coeff(ptr_merged_solver_->get_ncols()), lb_values(ptr_merged_solver_->get_ncols()),
+      ub_values(ptr_merged_solver_->get_ncols());
 
-    if (_ptr_merged_solver->get_n_integer_vars() > 0)
+    if (ptr_merged_solver_->get_n_integer_vars() > 0)
     {
-        overall_cost = _ptr_merged_solver->get_mip_value();
-        _ptr_merged_solver->get_mip_sol(solution.data());
+        overall_cost = ptr_merged_solver_->get_mip_value();
+        ptr_merged_solver_->get_mip_sol(solution.data());
     }
     else
     {
-        overall_cost = _ptr_merged_solver->get_lp_value();
-        _ptr_merged_solver->get_lp_sol(solution.data(), nullptr, nullptr);
+        overall_cost = ptr_merged_solver_->get_lp_value();
+        ptr_merged_solver_->get_lp_sol(solution.data(), nullptr, nullptr);
     }
 
-    _ptr_merged_solver->get_obj(obj_coeff.data(), 0, _ptr_merged_solver->get_ncols() - 1);
-    _ptr_merged_solver->get_lb(lb_values.data(), 0, _ptr_merged_solver->get_ncols() - 1);
-    _ptr_merged_solver->get_ub(ub_values.data(), 0, _ptr_merged_solver->get_ncols() - 1);
+    ptr_merged_solver_->get_obj(obj_coeff.data(), 0, ptr_merged_solver_->get_ncols() - 1);
+    ptr_merged_solver_->get_lb(lb_values.data(), 0, ptr_merged_solver_->get_ncols() - 1);
+    ptr_merged_solver_->get_ub(ub_values.data(), 0, ptr_merged_solver_->get_ncols() - 1);
 
     std::vector<Output::CandidateData> candidates;
-    for (const auto& [var_name, var_idx]: _structure[_options.MASTER_NAME])
+    for (const auto& [var_name, var_idx]: structure_[options_.MASTER_NAME])
     {
         const auto& candidate = candidates.emplace_back(var_name,
                                                         solution[var_idx],
@@ -225,14 +225,14 @@ void AbstractMergeMPS::output_solution(const bool is_sol_optimal)
     }
     if (candidates.empty())
     {
-        std::cerr << LOGLOCATION << "Could not find '" << _options.MASTER_NAME
+        std::cerr << LOGLOCATION << "Could not find '" << options_.MASTER_NAME
                   << "' in structure\n";
     }
 
     operational_cost = overall_cost - investment_cost;
 
     Output::SolutionData sol_infos;
-    sol_infos.nbWeeks_p = static_cast<int>(_structure.size());
+    sol_infos.nbWeeks_p = static_cast<int>(structure_.size());
 
     sol_infos.solution.lb = overall_cost;
     sol_infos.solution.ub = overall_cost;
@@ -248,15 +248,8 @@ void AbstractMergeMPS::output_solution(const bool is_sol_optimal)
 
     sol_infos.problem_status = is_sol_optimal ? "OPTIMAL" : "ERROR";
 
-    _writer->update_solution(sol_infos);
-    _writer->dump();
-}
-
-MergeMasterSubproblemMPS::MergeMasterSubproblemMPS(MergeMPSOptions options,
-                                                   Logger logger,
-                                                   std::shared_ptr<Output::OutputWriter> writer):
-    AbstractMergeMPS(options, logger, writer)
-{
+    writer_->update_solution(sol_infos);
+    writer_->dump();
 }
 
 /*!
@@ -266,30 +259,27 @@ MergeMasterSubproblemMPS::MergeMasterSubproblemMPS(MergeMPSOptions options,
  *
  *  \param name : subproblem name
  */
-double MergeMasterSubproblemMPS::get_objective_weight(const int nb_subproblems,
+double MergeMasterSubproblemMPS::get_objective_weight(int nb_subproblems,
                                                       const std::string& name) const
 {
-    if (_options.SLAVE_WEIGHT == SUBPROBLEM_WEIGHT_UNIFORM_CST_STR)
+    if (options_.SLAVE_WEIGHT == SUBPROBLEM_WEIGHT_UNIFORM_CST_STR)
     {
         return 1.0 / nb_subproblems;
     }
-    else if (_options.SLAVE_WEIGHT == SUBPROBLEM_WEIGHT_CST_STR)
+    if (options_.SLAVE_WEIGHT == SUBPROBLEM_WEIGHT_CST_STR)
     {
-        return 1.0 / _options.SLAVE_WEIGHT_VALUE;
+        return 1.0 / options_.SLAVE_WEIGHT_VALUE;
     }
-    else
+    const auto found = options_.weights.find(name);
+    if (found == options_.weights.end())
     {
-        const auto found = _options.weights.find(name);
-        if (found == _options.weights.end())
-        {
-            _logger->display_message("No weight found for " + name
-                                       + ". Problem will not contribute to objective function",
-                                     LogUtils::LOGLEVEL::WARNING,
-                                     "MergeMPS");
-            return 0.;
-        }
-        return found->second;
+        logger_->display_message("No weight found for " + name
+                                   + ". Problem will not contribute to objective function",
+                                 LogUtils::LOGLEVEL::WARNING,
+                                 "MergeMPS");
+        return 0.;
     }
+    return found->second;
 }
 
 /**
@@ -298,7 +288,7 @@ double MergeMasterSubproblemMPS::get_objective_weight(const int nb_subproblems,
 void MergeMasterSubproblemMPS::add_coupling_constraints()
 {
     std::map<std::string, std::vector<int>> variables;
-    for (const auto& [_, var_map]: _structure)
+    for (const auto& [_, var_map]: structure_)
     {
         for (const auto& [var_name, var_idx]: var_map)
         {
@@ -320,7 +310,7 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
                                                    });
     const size_t nb_elem_reserve = 2 * nb_rows_reserve;
 
-    _logger->display_message("About to add " + std::to_string(nb_rows_reserve)
+    logger_->display_message("About to add " + std::to_string(nb_rows_reserve)
                              + " coupling constraints");
 
     std::vector<int> mstart; // Constraints' offsets
@@ -355,7 +345,7 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
             ++nb_rows;
         }
 
-        _logger->display_message(var_name + " : " + std::to_string(indices.size() - 1)
+        logger_->display_message(var_name + " : " + std::to_string(indices.size() - 1)
                                  + " coupling constraints added");
     }
     mstart.push_back(nb_elem);
@@ -363,5 +353,5 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
     std::vector<double> rhs(nb_rows, 0);    // Constraints' rhs
     std::vector<char> qrtype(nb_rows, 'E'); // Constraints' types
 
-    solver_addrows(*_ptr_merged_solver, qrtype, rhs, {}, mstart, mclind, dmatval);
+    solver_addrows(*ptr_merged_solver_, qrtype, rhs, {}, mstart, mclind, dmatval);
 }
