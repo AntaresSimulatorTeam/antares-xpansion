@@ -24,11 +24,15 @@ protected:
       = 0;
     virtual void add_coupling_constraints() = 0;
 
+private:
     void build_problem();
     void export_problem();
     bool solve(const int nb_threads = 16);
     void output_solution(const bool is_sol_optimal);
 
+    void multiply_obj_by_weight_factor(SolverAbstract& local_solver, double weight) const;
+
+protected:
     SolverAbstract::Ptr _ptr_merged_solver;
     CouplingMap _structure;
 };

@@ -78,22 +78,10 @@ void AbstractMergeMPS::build_problem()
         // given in the options file
         if (filename != _options.MASTER_NAME)
         {
-            const int nb_cols{ptr_solver->get_ncols()};
-
-            std::vector<int> indices(nb_cols);
-            std::iota(indices.begin(), indices.end(), 0);
-
-            std::vector<double> obj_coeff(nb_cols);
-            solver_get_obj_func_coeffs(*ptr_solver, obj_coeff, 0, nb_cols - 1);
-
             // Change the weight of coeff in the objective function
-            // according to an options' rule
+            // The strategy is defined in the input options
             const double weight = get_objective_weight(nb_sub_problems, filename);
-            std::for_each(obj_coeff.begin(),
-                          obj_coeff.end(),
-                          [weight](double& coeff) { return coeff *= weight; });
-
-            ptr_solver->chg_obj(indices, obj_coeff);
+            multiply_obj_by_weight_factor(*ptr_solver, weight);
         }
 
         StandardLp lpData(*ptr_solver);
@@ -122,6 +110,31 @@ void AbstractMergeMPS::build_problem()
     }
 
     add_coupling_constraints();
+}
+
+/**
+ * \brief Weights local solver's objective function by a given value
+ *
+ * \param local_solver : Subproblem solver that will be modified
+ *
+ * \param weight : Factor to apply
+ */
+void AbstractMergeMPS::multiply_obj_by_weight_factor(SolverAbstract& local_solver,
+                                                     double weight) const
+{
+    const int nb_cols{local_solver.get_ncols()};
+
+    std::vector<int> indices(nb_cols);
+    std::iota(indices.begin(), indices.end(), 0);
+
+    std::vector<double> obj_coeff(nb_cols);
+    solver_get_obj_func_coeffs(local_solver, obj_coeff, 0, nb_cols - 1);
+
+    std::for_each(obj_coeff.begin(),
+                  obj_coeff.end(),
+                  [weight](double& coeff) { return coeff *= weight; });
+
+    local_solver.chg_obj(indices, obj_coeff);
 }
 
 /**
