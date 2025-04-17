@@ -8,6 +8,11 @@
 #include "antares-xpansion/valeurs_usage/ValeursUsage.h"
 #include "gtest/gtest.h"
 
+#define EXPECT_NEAR_REL(val1, val2, rel_tol)                                                       \
+    EXPECT_TRUE(std::abs((val1) - (val2)) <= (rel_tol) * std::abs(val2))                           \
+      << "Expected: " << (val2) << ", Actual: " << (val1) << ", Relative tolerance: " << (rel_tol) \
+      << ", Relative error: " << std::abs((val1) - (val2)) / std::abs(val2)
+
 class GridSearchTest: public ::testing::Test
 {
 public:
@@ -70,7 +75,7 @@ protected:
     std::filesystem::path original_dir;
 };
 
-TEST_F(GridSearchTest, MiniInstanceLP)
+TEST_F(GridSearchTest, MPSUseCaseValeursUsage)
 {
     copyData();
 
@@ -81,8 +86,17 @@ TEST_F(GridSearchTest, MiniInstanceLP)
     auto output_costs = getOutputCosts();
     for (const auto& [key, cost]: valeurs_usage.valeursUsageData)
     {
-        std::cout << key.scenario << " " << key.week << " " << cost << std::endl;
-        std::cout << output_costs[{key.scenario, key.week}].size() << " "
-                  << output_costs[{key.scenario, key.week}][0] << std::endl;
+        ScenarioAndWeek keyStruct{key.scenario, key.week};
+
+        if (output_costs.count(keyStruct) > 0 && !output_costs[keyStruct].empty())
+        {
+            EXPECT_NEAR_REL(output_costs[keyStruct][0], cost, 1e-6);
+            output_costs[keyStruct].erase(output_costs[keyStruct].begin());
+        }
+        else
+        {
+            FAIL() << "Missing or empty entry for key: " << keyStruct.scenario << ", "
+                   << keyStruct.week;
+        }
     }
 }
