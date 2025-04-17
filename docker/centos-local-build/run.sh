@@ -6,6 +6,5 @@ docker build -t xpansion/centos7 .
 docker run \
 --mount type=bind,src=$1,dst=/mnt/sources \
 --mount type=bind,src=$2,dst=/mnt/caches \
--u $(id -u):$(id -g) \
 xpansion/centos7 \
 /mnt/sources /mnt/caches
