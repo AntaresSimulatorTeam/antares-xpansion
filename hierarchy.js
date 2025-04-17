@@ -1,5 +1,8 @@
 var hierarchy =
 [
+    [ "AbstractMergeMPS", "classAbstractMergeMPS.html", [
+      [ "MergeMasterSubproblemMPS", "classMergeMasterSubproblemMPS.html", null ]
+    ] ],
     [ "act", "classact.html", null ],
     [ "ActiveLink", "classActiveLink.html", null ],
     [ "ActiveLinksBuilder", "classActiveLinksBuilder.html", null ],
@@ -424,7 +427,6 @@ var hierarchy =
     ] ],
     [ "MathLoggerFactory", "classMathLoggerFactory.html", null ],
     [ "YearlyWeightsWriter::McYearNotInActiveYearsListError", "classYearlyWeightsWriter_1_1McYearNotInActiveYearsListError.html", null ],
-    [ "MergeMPS", "classMergeMPS.html", null ],
     [ "Catch::MessageInfo", "structCatch_1_1MessageInfo.html", null ],
     [ "Catch::MessageStream", "structCatch_1_1MessageStream.html", [
       [ "Catch::MessageBuilder", "structCatch_1_1MessageBuilder.html", null ]

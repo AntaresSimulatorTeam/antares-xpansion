@@ -11,6 +11,8 @@ var functions_dup =
     [ "i", "functions_i.html", null ],
     [ "j", "functions_j.html", null ],
     [ "l", "functions_l.html", null ],
+    [ "m", "functions_m.html", null ],
+    [ "o", "functions_o.html", null ],
     [ "p", "functions_p.html", null ],
     [ "r", "functions_r.html", null ],
     [ "s", "functions_s.html", null ],

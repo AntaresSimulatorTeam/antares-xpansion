@@ -55,7 +55,7 @@ var searchData=
   ['maxunitsandmaxinvestmentarenullsimultaneously_52',['MaxUnitsAndMaxInvestmentAreNullSimultaneously',['../classantares__xpansion_1_1input__checker_1_1MaxUnitsAndMaxInvestmentAreNullSimultaneously.html',1,'antares_xpansion::input_checker']]],
   ['maxunitsandmaxinvestmentnonnullsimultaneously_53',['MaxUnitsAndMaxInvestmentNonNullSimultaneously',['../classantares__xpansion_1_1input__checker_1_1MaxUnitsAndMaxInvestmentNonNullSimultaneously.html',1,'antares_xpansion::input_checker']]],
   ['mcyearnotinactiveyearslisterror_54',['McYearNotInActiveYearsListError',['../classYearlyWeightsWriter_1_1McYearNotInActiveYearsListError.html',1,'YearlyWeightsWriter']]],
-  ['mergemps_55',['MergeMPS',['../classMergeMPS.html',1,'']]],
+  ['mergemastersubproblemmps_55',['MergeMasterSubproblemMPS',['../classMergeMasterSubproblemMPS.html',1,'']]],
   ['mergemps_20adequacy_5fcriterion_20tt_56',['&lt;tt&gt;-m, --method {benders, mergeMPS, adequacy_criterion}&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md168',1,'']]],
   ['mergempstest_57',['MergeMPSTest',['../classMergeMPSTest.html',1,'']]],
   ['messagebuilder_58',['MessageBuilder',['../structCatch_1_1MessageBuilder.html',1,'Catch']]],
@@ -88,5 +88,6 @@ var searchData=
   ['multiplealreadyinstalledcapacitydetectedforlink_85',['MultipleAlreadyInstalledCapacityDetectedForLink',['../classActiveLinksBuilder_1_1MultipleAlreadyInstalledCapacityDetectedForLink.html',1,'ActiveLinksBuilder']]],
   ['multiplealreadyinstalledprofiledetectedforlink_86',['MultipleAlreadyInstalledProfileDetectedForLink',['../classActiveLinksBuilder_1_1MultipleAlreadyInstalledProfileDetectedForLink.html',1,'ActiveLinksBuilder']]],
   ['multiplelinkiddetectedforlink_87',['MultipleLinkIddetectedForLink',['../classActiveLinksBuilder_1_1MultipleLinkIddetectedForLink.html',1,'ActiveLinksBuilder']]],
-  ['mw_20tt_88',['&lt;tt&gt;annual-cost-per-mw&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md144',1,'']]]
+  ['multiply_5fobj_5fby_5fweight_5ffactor_88',['multiply_obj_by_weight_factor',['../classAbstractMergeMPS.html#a3564177205bdc0a9231ce4fef65c31aa',1,'AbstractMergeMPS']]],
+  ['mw_20tt_89',['&lt;tt&gt;annual-cost-per-mw&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md144',1,'']]]
 ];

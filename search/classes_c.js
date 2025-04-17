@@ -43,7 +43,7 @@ var searchData=
   ['maxunitsandmaxinvestmentarenullsimultaneously_40',['MaxUnitsAndMaxInvestmentAreNullSimultaneously',['../classantares__xpansion_1_1input__checker_1_1MaxUnitsAndMaxInvestmentAreNullSimultaneously.html',1,'antares_xpansion::input_checker']]],
   ['maxunitsandmaxinvestmentnonnullsimultaneously_41',['MaxUnitsAndMaxInvestmentNonNullSimultaneously',['../classantares__xpansion_1_1input__checker_1_1MaxUnitsAndMaxInvestmentNonNullSimultaneously.html',1,'antares_xpansion::input_checker']]],
   ['mcyearnotinactiveyearslisterror_42',['McYearNotInActiveYearsListError',['../classYearlyWeightsWriter_1_1McYearNotInActiveYearsListError.html',1,'YearlyWeightsWriter']]],
-  ['mergemps_43',['MergeMPS',['../classMergeMPS.html',1,'']]],
+  ['mergemastersubproblemmps_43',['MergeMasterSubproblemMPS',['../classMergeMasterSubproblemMPS.html',1,'']]],
   ['mergempstest_44',['MergeMPSTest',['../classMergeMPSTest.html',1,'']]],
   ['messagebuilder_45',['MessageBuilder',['../structCatch_1_1MessageBuilder.html',1,'Catch']]],
   ['messageinfo_46',['MessageInfo',['../structCatch_1_1MessageInfo.html',1,'Catch']]],

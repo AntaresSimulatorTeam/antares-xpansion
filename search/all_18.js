@@ -57,10 +57,11 @@ var searchData=
   ['output_20files_54',['Output files',['../md_docs_2developer-guide_2xpansion__steps_21-antares-solver-problem.html#autotoc_md113',1,'']]],
   ['output_20of_20antares_20xpansion_55',['Output of Antares-Xpansion',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md175',1,'']]],
   ['output_20of_20the_20sensitivity_20analysis_56',['Output of the sensitivity analysis',['../md_docs_2user-guide_2get-started_2sensitivity-analysis.html#autotoc_md198',1,'']]],
-  ['outputpatherror_57',['OutputPathError',['../classantares__xpansion_1_1problem__generator__driver_1_1ProblemGeneratorDriver_1_1OutputPathError.html',1,'antares_xpansion::problem_generator_driver::ProblemGeneratorDriver']]],
-  ['outputs_58',['Outputs',['../classtests_1_1end__to__end_1_1utils__functions_1_1Outputs.html',1,'tests.end_to_end.utils_functions.Outputs'],['../md_docs_2user-guide_2get-started_2adequacy-criterion.html#autotoc_md137',1,'Outputs']]],
-  ['outputwriter_59',['OutputWriter',['../classOutput_1_1OutputWriter.html',1,'Output']]],
-  ['overview_60',['Overview',['../md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md181',1,'']]],
-  ['overview_20of_20the_20tt_20candidates_20ini_20tt_20file_61',['Overview of the &lt;tt&gt;candidates.ini&lt;/tt&gt; file',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md140',1,'']]],
-  ['overview_20of_20the_20tt_20settings_20ini_20tt_20file_62',['Overview of the &lt;tt&gt;settings.ini&lt;/tt&gt; file',['../md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md200',1,'']]]
+  ['output_5fsolution_57',['output_solution',['../classAbstractMergeMPS.html#a39ab44b303acd72ddfd30cc29b7ec52c',1,'AbstractMergeMPS']]],
+  ['outputpatherror_58',['OutputPathError',['../classantares__xpansion_1_1problem__generator__driver_1_1ProblemGeneratorDriver_1_1OutputPathError.html',1,'antares_xpansion::problem_generator_driver::ProblemGeneratorDriver']]],
+  ['outputs_59',['Outputs',['../classtests_1_1end__to__end_1_1utils__functions_1_1Outputs.html',1,'tests.end_to_end.utils_functions.Outputs'],['../md_docs_2user-guide_2get-started_2adequacy-criterion.html#autotoc_md137',1,'Outputs']]],
+  ['outputwriter_60',['OutputWriter',['../classOutput_1_1OutputWriter.html',1,'Output']]],
+  ['overview_61',['Overview',['../md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md181',1,'']]],
+  ['overview_20of_20the_20tt_20candidates_20ini_20tt_20file_62',['Overview of the &lt;tt&gt;candidates.ini&lt;/tt&gt; file',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md140',1,'']]],
+  ['overview_20of_20the_20tt_20settings_20ini_20tt_20file_63',['Overview of the &lt;tt&gt;settings.ini&lt;/tt&gt; file',['../md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md200',1,'']]]
 ];

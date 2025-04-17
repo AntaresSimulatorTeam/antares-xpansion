@@ -454,6 +454,7 @@ var annotated_dup =
       [ "convert< CriterionSingleInputData >", "classYAML_1_1convert_3_01CriterionSingleInputData_01_4.html", null ],
       [ "convert< OuterLoopCriterionInputData >", "classYAML_1_1convert_3_01OuterLoopCriterionInputData_01_4.html", null ]
     ] ],
+    [ "AbstractMergeMPS", "classAbstractMergeMPS.html", "classAbstractMergeMPS" ],
     [ "act", "classact.html", null ],
     [ "ActiveLink", "classActiveLink.html", null ],
     [ "ActiveLinksBuilder", "classActiveLinksBuilder.html", "classActiveLinksBuilder" ],
@@ -593,7 +594,7 @@ var annotated_dup =
     [ "MathLoggerFile", "classMathLoggerFile.html", "classMathLoggerFile" ],
     [ "MathLoggerImplementation", "classMathLoggerImplementation.html", "classMathLoggerImplementation" ],
     [ "MathLoggerOstream", "classMathLoggerOstream.html", null ],
-    [ "MergeMPS", "classMergeMPS.html", "classMergeMPS" ],
+    [ "MergeMasterSubproblemMPS", "classMergeMasterSubproblemMPS.html", null ],
     [ "MergeMPSTest", "classMergeMPSTest.html", "classMergeMPSTest" ],
     [ "MPSFileProblemProviderAdapter", "classMPSFileProblemProviderAdapter.html", null ],
     [ "MpsTxtWriterTest", "classMpsTxtWriterTest.html", null ],

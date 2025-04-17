@@ -1,5 +1,12 @@
 var NAVTREEINDEX4 =
 {
+"classantares__xpansion_1_1candidates__reader_1_1CandidateNotFound.html":[25,0,0,2,0],
+"classantares__xpansion_1_1candidates__reader_1_1CandidatesReader.html":[25,0,0,2,1],
+"classantares__xpansion_1_1candidates__reader_1_1IniFileNotFound.html":[25,0,0,2,2],
+"classantares__xpansion_1_1candidates__reader_1_1ProfilesOfDifferentDimensions.html":[25,0,0,2,3],
+"classantares__xpansion_1_1candidates__reader_1_1ProfilesValueError.html":[25,0,0,2,4],
+"classantares__xpansion_1_1chronicles__checker_1_1CandidateInstalledProfileColumnNumberMismatch.html":[25,0,0,3,0],
+"classantares__xpansion_1_1chronicles__checker_1_1CandidateInstalledProfileColumnNumberMismatchWithProfile.html":[25,0,0,3,1],
 "classantares__xpansion_1_1chronicles__checker_1_1CandidateProfileColumnNumberMismatch.html":[25,0,0,3,2],
 "classantares__xpansion_1_1chronicles__checker_1_1ChronicleChecker.html":[25,0,0,3,3],
 "classantares__xpansion_1_1chronicles__checker_1_1NTCColumnMismatch.html":[25,0,0,3,5],
@@ -223,7 +230,7 @@ var NAVTREEINDEX4 =
 "classantares__xpansion_1_1xpansion__study__reader_1_1XpansionStudyReader_1_1OnlyNullYearsWeightValue.html":[25,0,0,24,0,5],
 "classantares__xpansion_1_1xpansion__study__reader_1_1XpansionStudyReader_1_1SolverNotAvailable.html":[25,0,0,24,0,6],
 "classantares__xpansion_1_1yearly__weight__writer_1_1YearlyWeightWriter.html":[25,0,0,26,0],
-"classclass.html":[25,0,66],
+"classclass.html":[25,0,67],
 "classes.html":[25,1],
 "classperformance_1_1JsonFileProcessor.html":[25,0,8,0],
 "classperformance_1_1PerfPlotsGenerator.html":[25,0,8,1],
@@ -242,12 +249,5 @@ var NAVTREEINDEX4 =
 "classtests_1_1python_1_1test__ini__reader_1_1TestGetNbActivatedYear.html":[25,0,13,1,5,0],
 "classtests_1_1python_1_1test__input__checker_1_1TestCheckCandidateLink.html":[25,0,13,1,6,0],
 "classtests_1_1python_1_1test__input__checker_1_1TestCheckCandidateName.html":[25,0,13,1,6,1],
-"classtests_1_1python_1_1test__input__checker_1_1TestCheckCandidateOptionType.html":[25,0,13,1,6,2],
-"classtests_1_1python_1_1test__input__checker_1_1TestCheckCandidatesFile.html":[25,0,13,1,6,3],
-"classtests_1_1python_1_1test__input__checker_1_1TestCheckProfileFile.html":[25,0,13,1,6,4],
-"classtests_1_1python_1_1test__input__checker_1_1TestCheckSettingOptionType.html":[25,0,13,1,6,5],
-"classtests_1_1python_1_1test__input__checker_1_1TestCheckSettingOptionValue.html":[25,0,13,1,6,6],
-"classtests_1_1python_1_1test__input__parser_1_1TestInputParser.html":[25,0,13,1,7,0],
-"classtests_1_1python_1_1test__problem__generator__driver_1_1TestProblemGeneratorDriver.html":[25,0,13,1,8,0],
-"classtests_1_1python_1_1test__profile__link__checker_1_1TestProfileLinkChecker.html":[25,0,13,1,9,0]
+"classtests_1_1python_1_1test__input__checker_1_1TestCheckCandidateOptionType.html":[25,0,13,1,6,2]
 };

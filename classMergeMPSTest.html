@@ -161,6 +161,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>TearDown</b> () overr
 <tr class="separator:a5dc9ed0c3ca0979ff46dfc4070b832aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a073cb28c5dee7dfe4eb64305b6e046b9" id="r_a073cb28c5dee7dfe4eb64305b6e046b9"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a073cb28c5dee7dfe4eb64305b6e046b9">createMasterProblem</a> ()</td></tr>
 <tr class="separator:a073cb28c5dee7dfe4eb64305b6e046b9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5987f5784590b6c016bcbad5b019fabd" id="r_a5987f5784590b6c016bcbad5b019fabd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5987f5784590b6c016bcbad5b019fabd">createSatelliteProblem</a> ()</td></tr>
+<tr class="separator:a5987f5784590b6c016bcbad5b019fabd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a46f3621ee2c88c81be04cc6e9f131af6" id="r_a46f3621ee2c88c81be04cc6e9f131af6"><td class="memItemLeft" align="right" valign="top"><a id="a46f3621ee2c88c81be04cc6e9f131af6" name="a46f3621ee2c88c81be04cc6e9f131af6"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>createStructureFile</b> (const std::vector&lt; std::tuple&lt; std::string, std::string, int &gt; &gt; &amp;entries)</td></tr>
 <tr class="separator:a46f3621ee2c88c81be04cc6e9f131af6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -206,7 +208,33 @@ std::shared_ptr&lt; <a class="el" href="classXpansion_1_1Test_1_1InMemoryWriter.
   </tr>
 </table>
 </div><div class="memdoc">
-<p>Create the following problem : Minimize Obj: 3X1 + 4X2 2x1 + x2 &lt;= 8 x1 + 2x2 &gt;= 3 0 &lt;=X1 &lt;= 4 0 &lt;=X2 &lt;= 4 </p>
+<p>Create the following problem : Minimize Obj: 3X1 + 4X2 s.t. 2X1 + 1X2 &lt;= 8 1X1 + 2X2 &gt;= 3 0 &lt;= X1 &lt;= 4 0 &lt;= X2 &lt;= 4 </p>
+
+</div>
+</div>
+<a id="a5987f5784590b6c016bcbad5b019fabd" name="a5987f5784590b6c016bcbad5b019fabd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5987f5784590b6c016bcbad5b019fabd">&#9670;&#160;</a></span>createSatelliteProblem()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void MergeMPSTest::createSatelliteProblem </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<p>Create the following satellite problem : Minimize Obj: 1Y1 s.t. 3Y1 + 2X1 &lt;= 7 9Y1 + 3X1 &gt;= 5 0 &lt;= Y1 &lt;= 10 0 &lt;= X1 &lt;= 10 </p>
 
 </div>
 </div>
