@@ -21,78 +21,73 @@ ValeursUsage::ValeursUsage(Logger logger,
     xpansionFolderPath = std::move(path_to_data);
 }
 
-/// @brief Recursive Cartesian product over constraint sets
-/// @details This function is used to generate all possible combinations of constraint values
-/// @param constraints map of constraints
-/// @param current current combination of constraint values
-/// @param it iterator over the constraints map
-/// @param func function to call with current
-void ValeursUsage::GenerateConstraintProduct(
-  const ConstraintMap& constraints,
-  std::map<std::string, double>& current,
-  ConstraintMap::const_iterator it,
-  const std::function<void(const std::map<std::string, double>&)>& func)
+/// @brief Generates all combinations of constraint values (Cartesian product).
+/// @details This function takes a map of constraints, where each constraint is associated
+///          with a list of possible values, and produces all possible combinations
+///          of those values across the entire set of constraints.
+/// @param constraints Map from constraint names to lists of values.
+/// @return A vector of maps, where each map is one possible combination of constraint values.
+ConstraintCombos ValeursUsage::GenerateConstraintProduct(const ConstraintMap& constraints)
 {
-    if (it == constraints.end())
+    ConstraintCombos areaCombos = {{}};
+
+    for (const auto& [key, values]: constraints)
     {
-        func(current);
-        return;
+        ConstraintCombos areaCombo;
+
+        for (const auto& combo: areaCombos)
+        {
+            for (double val: values)
+            {
+                std::map<std::string, double> extended = combo;
+                extended[key] = val;
+                areaCombo.push_back(std::move(extended));
+            }
+        }
+
+        areaCombos = std::move(areaCombo);
     }
 
-    const std::string& key = it->first;
-    const std::vector<double>& values = it->second;
-
-    for (double val: values)
-    {
-        current[key] = val;
-        GenerateConstraintProduct(constraints, current, std::next(it), func);
-    }
+    return areaCombos;
 }
 
-/// @brief Recursive Cartesian product over area sets
-/// @details This function is used to generate all possible combinations of area constraints values
-/// @param subPbName name of the subproblem
-/// @param areas map of area names to constraints maps
-/// @param current current map of area names to constraints values
-/// @param it iterator over the area map
-/// @param func function to call with current
-void ValeursUsage::GenerateAreaProduct(
-  const std::string subPbName,
-  const AreaConstraintMaps& areas,
-  std::map<std::string, double>& current,
-  AreaConstraintMaps::const_iterator it,
-  const std::function<void(const std::map<std::string, double>&)>& func)
+/// @brief Generates all combinations of constraint values for all areas in a subproblem.
+/// @details This function iterates over each area in the subproblem, generates local combinations
+///          of constraint values using GenerateConstraintProduct, and merges them with
+///          area-specific names into a complete list of subproblem-level combinations.
+/// @param subPbName Name of the subproblem (used to prefix constraint names).
+/// @param areas Map from area names to their constraint maps.
+/// @return A vector of maps, where each map is a full combination of all constraints
+///         (with area-prefixed keys) for the subproblem.
+ConstraintCombos ValeursUsage::GenerateSubPbCombos(const std::string& subPbName,
+                                                   const AreaConstraintMaps& areas)
 {
-    if (it == areas.end())
+    ConstraintCombos subPbCombos;
+    ConstraintCombos currentCombos = {{}};
+
+    for (const auto& [areaName, constraints]: areas)
     {
-        func(current);
-        return;
+        ConstraintCombos newCombos;
+        ConstraintCombos localCombos = GenerateConstraintProduct(constraints);
+
+        for (const auto& combo: currentCombos)
+        {
+            for (const auto& local: localCombos)
+            {
+                std::map<std::string, double> merged = combo;
+                for (const auto& [cst, val]: local)
+                {
+                    merged[GetConstraintName(subPbName, areaName, cst)] = val;
+                }
+                newCombos.push_back(merged);
+            }
+        }
+
+        currentCombos = std::move(newCombos);
     }
 
-    const std::string& areaName = it->first;
-    const auto& constraints = it->second;
-
-    std::map<std::string, double> areaCombination;
-    GenerateConstraintProduct(
-      constraints,
-      areaCombination,
-      constraints.begin(),
-      [&](const std::map<std::string, double>& localCombo)
-      {
-          // Merge area combination into current with area prefix
-          for (const auto& [cst, val]: localCombo)
-          {
-              current[GetConstraintName(subPbName, areaName, cst)] = val;
-          }
-
-          GenerateAreaProduct(subPbName, areas, current, std::next(it), func);
-
-          // Clean up for next iteration
-          for (const auto& [cst, _]: localCombo)
-          {
-              current.erase(GetConstraintName(subPbName, areaName, cst));
-          }
-      });
+    subPbCombos = std::move(currentCombos);
+    return subPbCombos;
 }
 
 /// @brief Get the path to the subproblem mps file
@@ -266,28 +261,27 @@ void ValeursUsage::SetConstraintsRHSValues(const std::string& pbName,
     }
 }
 
-/// @brief Set the constraints RHS values and solve the problem
-/// @details This function will generate all the possible combinations of RHS values for the
-/// constraints and solve the problem for each combination. The results are stored in the
-/// `valeursUsageData` member.
-void ValeursUsage::SetConstraintsRHSValuesAndSolvePb()
+/// @brief Runs the evaluation over all subproblems and their constraint combinations.
+/// @details For each subproblem defined in `subPbAreaConstraintsMaps`, this function generates
+///          all possible combinations of right-hand side (RHS) constraint values using
+///          `GenerateSubPbCombos`, applies them to the model via `SetConstraintsRHSValues`,
+///          solves the subproblem using `SolveSubproblem`, and stores the resulting cost
+///          in the `valeursUsageData` map indexed by scenario, week, and constraint values.
+void ValeursUsage::Run()
 {
     for (const auto& [subPbName, areasConstraints]: subPbAreaConstraintsMaps)
     {
-        std::map<std::string, double> current;
-        GenerateAreaProduct(subPbName,
-                            areasConstraints,
-                            current,
-                            areasConstraints.begin(),
-                            [&](const std::map<std::string, double>& fullCombination)
-                            {
-                                SetConstraintsRHSValues(subPbName, fullCombination);
-                                double cost = SolveSubproblem(subPbName);
-                                valeursUsageData[{GetPbInfo(subPbName).scenario,
-                                                  GetPbInfo(subPbName).week,
-                                                  fullCombination}]
-                                  = cost;
-                            });
+        ConstraintCombos subPbCombos = GenerateSubPbCombos(subPbName, areasConstraints);
+
+        for (const auto& subPbCombo: subPbCombos)
+        {
+            // Each areaCombo is a std::map<std::string, double> with full variable names
+            SetConstraintsRHSValues(subPbName, subPbCombo);
+            double cost = SolveSubproblem(subPbName);
+
+            valeursUsageData[{GetPbInfo(subPbName).scenario, GetPbInfo(subPbName).week, subPbCombo}]
+              = cost;
+        }
     }
 }
 
@@ -320,6 +314,6 @@ void ValeursUsage::launch()
     std::cout << "Launching valeurs d'usage" << std::endl;
 
     InitSubProblems();
-    SetConstraintsRHSValuesAndSolvePb();
+    Run();
     WriteOutput();
 }

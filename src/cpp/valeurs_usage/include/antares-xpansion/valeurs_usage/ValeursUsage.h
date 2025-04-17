@@ -9,6 +9,8 @@
 using ConstraintMap = std::map<std::string /*constraint name*/, std::vector<double> /*rhs values*/>;
 using AreaConstraintMaps = std::map<std::string /*area name*/, ConstraintMap>;
 using SubPbConstraintMaps = std::map<std::string /*subPb name*/, AreaConstraintMaps>;
+using ConstraintCombos = std::vector<
+  std::map<std::string /*constraint name*/, double /*rhs value*/>>;
 
 struct ScenarioAndWeek
 {
@@ -34,7 +36,7 @@ public:
 
 protected:
     void InitSubProblems();
-    void SetConstraintsRHSValuesAndSolvePb();
+    void Run();
     void GenerateRHSGridValues();
     void SetConstraintsRHSValues(const std::string& pbName,
                                  const std::map<std::string, double>& rhsValues);
@@ -45,16 +47,9 @@ protected:
                                   const std::string& area,
                                   const std::string& constraint) const;
     ScenarioAndWeek GetPbInfo(const std::string& pbName) const;
-    void GenerateConstraintProduct(
-      const ConstraintMap& constraints,
-      std::map<std::string, double>& current,
-      ConstraintMap::const_iterator it,
-      const std::function<void(const std::map<std::string, double>&)>& func);
-    void GenerateAreaProduct(const std::string subPbName,
-                             const AreaConstraintMaps& areas,
-                             std::map<std::string, double>& current,
-                             AreaConstraintMaps::const_iterator it,
-                             const std::function<void(const std::map<std::string, double>&)>& func);
+    ConstraintCombos GenerateConstraintProduct(const ConstraintMap& constraints);
+    ConstraintCombos GenerateSubPbCombos(const std::string& subPbName,
+                                         const AreaConstraintMaps& areas);
     void WriteOutput();
 
 protected:
