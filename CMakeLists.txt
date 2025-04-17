@@ -33,9 +33,9 @@ endif ()
 
 # for centos docker to run MPI tests as root
 if (ALLOW_RUN_AS_ROOT)
-	set(ALLOW_RUN_AS_ROOT "true")
+    set(ALLOW_RUN_AS_ROOT "true")
 else ()
-	set(ALLOW_RUN_AS_ROOT "false")
+    set(ALLOW_RUN_AS_ROOT "false")
 endif ()
 
 # Set solvers to use
@@ -45,8 +45,8 @@ option(XPRESS "Use solver FICO XPRESS" OFF)
 if (COIN_OR)
     message("Coin-OR Solvers Clp and Cbc used. Solvers version are those present in orTools release linked to project.")
 else ()
-	message(FATAL_ERROR "COIN_OR has to be true, it is required in lpnamer module of Antares Xpansion.")
-endif()
+    message(FATAL_ERROR "COIN_OR has to be true, it is required in lpnamer module of Antares Xpansion.")
+endif ()
 
 
 # ===========================================================================
@@ -119,7 +119,6 @@ sbeParseJson(antares_version jsonContent)
 #need to know antares solver version because antares-solver targets still refers to antares version
 SET(ANTARES_VERSION ${antares_version.antares_version_executable})
 SET(ANTARES_VERSION_TAG ${antares_version.antares_version})
-SET(MINIZIP_TAG ${antares_version.minizip_ng_version})
 
 sbeClearJson(antares_version)
 
@@ -386,7 +385,7 @@ endif (XPRESS)
 
 
 set(CPACK_DEBIAN_PACKAGE_MAINTAINER "RTE")
-set(CPACK_DEBIAN_PACKAGE_NAME "antares-xpansion-generic")
+set(CPACK_DEBIAN_PACKAGE_NAME "antares-xpansion")
 set(CPACK_DEBIAN_PACKAGE_DEPENDS "libcurl4,libjsoncpp1,libboost-mpi-dev")
 set(CPACK_RPM_PACKAGE_REQUIRES "openmpi,jsoncpp,boost-openmpi")
 set(CPACK_RPM_PACKAGE_AUTOREQPROV "0")
@@ -396,12 +395,12 @@ if (ANTARES_XPANSION_RC)
 endif ()
 
 # Get the latest abbreviated commit hash of the working branch
-    execute_process(
+execute_process(
         COMMAND git log -1 --format=%h
         WORKING_DIRECTORY ${CMAKE_CURRENT_LIST_DIR}
         OUTPUT_VARIABLE GIT_HASH
         OUTPUT_STRIP_TRAILING_WHITESPACE
-        )
+)
 
 #version file to define Xpansion and Antares-simulator versions
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/python/antares_xpansion/__version__.py.in ${CMAKE_CURRENT_SOURCE_DIR}/src/python/antares_xpansion/__version__.py)

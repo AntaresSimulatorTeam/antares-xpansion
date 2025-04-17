@@ -18,15 +18,15 @@ COPY $VCPKG_CACHE_DIR /workspace/
 ARG BRANCH=develop
 RUN cd /workspace && \
     source /opt/rh/rh-git227/enable && \
-    git clone https://github.com/h-fournier/antares-xpansion-generic.git --depth=1 --single-branch --branch $BRANCH && \
-    cd antares-xpansion-generic && \
+    git clone https://github.com/h-fournier/antares-xpansion.git --depth=1 --single-branch --branch $BRANCH && \
+    cd antares-xpansion && \
     git submodule update --init vcpkg && ./vcpkg/bootstrap-vcpkg.sh -disableMetrics && \
-    export VCPKG_ROOT=/workspace/antares-xpansion-generic/vcpkg
+    export VCPKG_ROOT=/workspace/antares-xpansion/vcpkg
 
 
 
 
-RUN ORTOOLS_TAG=$(cat /workspace/antares-xpansion-generic/antares-version.json | jq -r '."or-tools-rte"' ) && \
+RUN ORTOOLS_TAG=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."or-tools-rte"' ) && \
     echo "ORTOOLS_TAG=$ORTOOLS_TAG" && \
     URL_ORTOOLS=https://github.com/rte-france/or-tools-rte/releases/download/v$ORTOOLS_TAG/ortools_cxx_centos7_static_sirius.zip && \
     mkdir -p ortools && cd ortools && \
@@ -34,7 +34,7 @@ RUN ORTOOLS_TAG=$(cat /workspace/antares-xpansion-generic/antares-version.json |
             unzip -q ortools.zip && \
             rm ortools.zip
 
-RUN ANTARES_VERSION=$(cat /workspace/antares-xpansion-generic/antares-version.json | jq -r '."antares_version"' ) && \
+RUN ANTARES_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."antares_version"' ) && \
     echo "ANTARES_VERSION=$ANTARES_VERSION" && \
     mkdir -p deps && \
     URL_ANTARES=https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v$ANTARES_VERSION/antares-${ANTARES_VERSION}-CentOS-7.9.2009.tar.gz && \
@@ -42,7 +42,7 @@ RUN ANTARES_VERSION=$(cat /workspace/antares-xpansion-generic/antares-version.js
     tar -xvf antares-${ANTARES_VERSION}-CentOS-7.9.2009.tar.gz -C deps --strip-components=1 &&\
     rm -rf antares-${ANTARES_VERSION}-CentOS-7.9.2009.tar.gz
 
-WORKDIR /workspace/antares-xpansion-generic
+WORKDIR /workspace/antares-xpansion
 
 RUN pip3 install --upgrade pip && \
     pip3 install wheel && \
@@ -88,7 +88,7 @@ RUN export PATH=/root/miniconda3/condabin:$PATH && \
               export XPAUTH_PATH=$XPRESS_DIR/license/community-xpauth.xpr && \
               echo "Create symbolic link for XPRESS library file because it is missing in the Python installation" && \
               ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so && \
-              export PATH="/workspace/antares-xpansion-generic/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH" && \
+              export PATH="/workspace/antares-xpansion/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH" && \
               pushd tests/end_to_end && \
               behave --tags ~@flaky  cucumber/features --no-capture --no-capture-stderr --format pretty && \
               popd && \
@@ -98,7 +98,7 @@ RUN export PATH=/root/miniconda3/condabin:$PATH && \
 RUN cd _build && \
     cmake --install .
 
-RUN   XPANSION_VERSION=$(cat /workspace/antares-xpansion-generic/antares-version.json | jq -r '."antares_xpansion_version"' ) && \
+RUN   XPANSION_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."antares_xpansion_version"' ) && \
       LSB_RELEASE_ID_SHORT=$(lsb_release --short --id) && \
       LSB_RELEASE_VERSION_SHORT=$(lsb_release --short --release) && \
        cd _install && \
@@ -115,7 +115,7 @@ RUN   XPANSION_VERSION=$(cat /workspace/antares-xpansion-generic/antares-version
       mkdir -p archive/single && \
       mv $ARCHIVE_NAME archive/single
 
-RUN  XPANSION_VERSION=$(cat /workspace/antares-xpansion-generic/antares-version.json | jq -r '."antares_xpansion_version"' ) && \
+RUN  XPANSION_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."antares_xpansion_version"' ) && \
      cd _build && \
      export FILE_NAME="antaresXpansion-$XPANSION_VERSION-CentOS-7.9.2009" && \
      cpack -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME && \

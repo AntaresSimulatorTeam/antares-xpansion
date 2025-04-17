@@ -13,7 +13,9 @@
 class GridSearch
 {
 public:
-    GridSearch(Logger logger, std::shared_ptr<Output::JsonWriter> writer, std::filesystem::path path_to_data);
+    GridSearch(Logger logger,
+               std::shared_ptr<Output::JsonWriter> writer,
+               std::filesystem::path path_to_data);
 
     void launch();
 
@@ -40,10 +42,10 @@ protected:
     VariableMap _problem_to_id;
     CouplingMap coupling_map;
     SubproblemsMapPtr subproblem_map;
-    StrVector subproblems;
+    std::vector<std::string> subproblems;
     Point current_point_;
     std::map<std::string, double> investCostPerMwPerYear;
-    int nbMonteCarloIterations = 1;
+    int nbMonteCarloYears = 1;
     std::map<std::string, double> weights;
 
     SolverLogManager solver_log_manager_;
