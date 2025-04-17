@@ -294,7 +294,9 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
     }
 
     // Add n-1 new constraints per variable where n is
-    // the number of columns representing this variable
+    // the number of problems where this variable appears
+    // i.e. the number of columns in the merged problem
+    // representing this variable
     const size_t nb_rows_reserve = std::accumulate(variables.cbegin(),
                                                    variables.cend(),
                                                    size_t{0},
@@ -320,9 +322,6 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
     int nb_elem{0};
     for (const auto& [var_name, indices]: variables)
     {
-        _logger->display_message(var_name + " : " + std::to_string(indices.size() - 1)
-                                 + " coupling constraints added");
-
         const int ref_var_idx = indices[0];
 
         // Starting from second element onwards
@@ -342,6 +341,9 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
 
             ++nb_rows;
         }
+
+        _logger->display_message(var_name + " : " + std::to_string(indices.size() - 1)
+                                 + " coupling constraints added");
     }
     mstart.push_back(nb_elem);
 
