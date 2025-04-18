@@ -84,6 +84,7 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& ou
     Antares::Solver::Optimization::OptimizationOptions optOptions;
 
     optOptions.linearSolver = solverXpansionToSimulator(solver_config_);
+    optOptions.linearSolverParameters = "FEASTOL 1e-6 OPTIMALITYTOL 1e-6";
     auto results = Antares::API::PerformSimulation(options_.StudyPath(), output, optOptions);
 
     /**
