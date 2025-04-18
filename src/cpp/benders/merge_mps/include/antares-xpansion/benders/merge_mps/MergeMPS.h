@@ -19,6 +19,7 @@ private:
     std::shared_ptr<Output::OutputWriter> writer_;
 
 protected:
+    [[nodiscard]] virtual CouplingMap build_coupling_map() const = 0;
     [[nodiscard]] virtual double get_objective_weight(int nb_subproblems,
                                                       const std::string& name) const
       = 0;
@@ -44,6 +45,7 @@ public:
     using AbstractMergeMPS::AbstractMergeMPS;
 
 private:
+    [[nodiscard]] CouplingMap build_coupling_map() const override;
     [[nodiscard]] double get_objective_weight(int nb_subproblems,
                                               const std::string& name) const override;
     void add_coupling_constraints() override;
