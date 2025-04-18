@@ -71,15 +71,9 @@ void AbstractMergeMPS::build_problem()
 
         ptr_solver->read_prob_mps(root_dir / filename);
 
-        // Separate Master and Subproblems by a specific name ID
-        // given in the options file
-        if (filename != options_.MASTER_NAME)
-        {
-            // Change the weight of coeff in the objective function
-            // The strategy is defined in the input options
-            const double weight = get_objective_weight(nb_sub_problems, filename);
-            multiply_obj_by_weight_factor(*ptr_solver, weight);
-        }
+        // Change the weight of coeff in the objective function
+        const double weight = get_objective_weight(nb_sub_problems, filename);
+        multiply_obj_by_weight_factor(*ptr_solver, weight);
 
         StandardLp lpData(*ptr_solver);
         const std::string var_prefix = "prob" + std::to_string(current_prob_id++) + "_";
@@ -119,6 +113,12 @@ void AbstractMergeMPS::build_problem()
 void AbstractMergeMPS::multiply_obj_by_weight_factor(SolverAbstract& local_solver,
                                                      double weight) const
 {
+    // Avoid unnecessary computation if weight is 1
+    if (std::fabs(weight - 1.) <= 1.e-6)
+    {
+        return;
+    }
+
     const int nb_cols{local_solver.get_ncols()};
 
     std::vector<int> indices(nb_cols);
@@ -269,6 +269,10 @@ CouplingMap MergeMasterSubproblemMPS::build_coupling_map() const
 double MergeMasterSubproblemMPS::get_objective_weight(int nb_subproblems,
                                                       const std::string& name) const
 {
+    if (options_.MASTER_NAME == name)
+    {
+        return 1.0;
+    }
     if (options_.SLAVE_WEIGHT == SUBPROBLEM_WEIGHT_UNIFORM_CST_STR)
     {
         return 1.0 / nb_subproblems;
