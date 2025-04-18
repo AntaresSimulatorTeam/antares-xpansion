@@ -366,3 +366,174 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
 
     solver_addrows(*ptr_merged_solver_, qrtype, rhs, {}, mstart, mclind, dmatval);
 }
+
+MergeMasterMasterMPS::PathwayNode::PathwayNode(const std::string&& node, const Json::Value& data):
+    name(node)
+{
+    // TODO improve parsing of json file
+    path = std::filesystem::path(data["path"].asString());
+
+    if (data.isMember("parent"))
+    {
+        parent = data["parent"].asString();
+    }
+
+    weight = data["weight"].asDouble();
+
+    for (const auto& var_name: data["constraints"].getMemberNames())
+    {
+        const auto& variable = data["constraints"][var_name];
+
+        variables[var_name].min_investment = variable["min_investment"].asDouble();
+        variables[var_name].max_investment = variable["max_investment"].asDouble();
+        variables[var_name].min_decommissioning = variable["min_decommissioning"].asDouble();
+        variables[var_name].max_decommissioning = variable["max_decommissioning"].asDouble();
+    }
+}
+
+MergeMasterMasterMPS::MergeMasterMasterMPS(MergeMPSOptions options,
+                                           Logger logger,
+                                           std::shared_ptr<Output::OutputWriter> writer,
+                                           const std::filesystem::path& tree_filename):
+    AbstractMergeMPS(options, logger, writer)
+{
+    const auto tree_json = get_json_file_content(tree_filename);
+    for (Json::String tree_node: tree_json.getMemberNames())
+    {
+        const Json::Value& data = tree_json[tree_node];
+        tree_.emplace_back(std::move(tree_node), data);
+    }
+}
+
+/*!
+ *  \brief Reads problem's structure and creates its coupling map
+ */
+CouplingMap MergeMasterMasterMPS::build_coupling_map() const
+{
+    CouplingMap res;
+
+    const auto input_root_dir{std::filesystem::path(options_.INPUTROOT)};
+    for (const auto& tree_node: tree_)
+    {
+        const auto structure_path{input_root_dir / tree_node.path / options_.STRUCTURE_FILE};
+        const CouplingMap structure = CouplingMapGenerator::BuildInput(structure_path,
+                                                                       logger_.get(),
+                                                                       "Merge Master mps");
+
+        // Merge into global structure changing prefixing
+        // its name by the current tree node's name
+        for (const auto& [filename, var_map]: structure)
+        {
+            res[tree_node.name + delimiter_ + filename] = var_map;
+        }
+    }
+    return res;
+}
+
+/*!
+ *  \brief Return subproblem weight value
+ *
+ *  \param nb_subproblems : total number of subproblems
+ *
+ *  \param name : subproblem name
+ */
+double MergeMasterMasterMPS::get_objective_weight(const int nb_subproblems,
+                                                  const std::string& name) const
+{
+    const auto it = std::find_if(tree_.begin(),
+                                 tree_.end(),
+                                 [&name, this](const PathwayNode& tree_node)
+                                 { return add_suffix(tree_node.name) == name; });
+    return it != tree_.end() ? it->weight : 0.0;
+}
+
+/**
+ * \brief Add coupling equality constraints between master problems
+ */
+void MergeMasterMasterMPS::add_coupling_constraints()
+{
+    // For each node, 2 constraints per variable
+    // For each constraint, 2 columns
+    const size_t nb_rows_reserve = 2 * tree_.size() * tree_[0].variables.size();
+    const size_t nb_elem_reserve = 2 * nb_rows_reserve;
+
+    std::vector<int> mclind;     // Variables' indices
+    std::vector<double> dmatval; // Variables' values
+    dmatval.reserve(nb_elem_reserve);
+    mclind.reserve(nb_elem_reserve);
+
+    std::vector<int> mstart;  // Constraints' offsets
+    std::vector<double> rhs;  // Constraints' rhs
+    std::vector<char> qrtype; // Constraints' types
+    mstart.reserve(nb_rows_reserve + 1);
+    rhs.reserve(nb_rows_reserve);
+    qrtype.reserve(nb_rows_reserve);
+
+    int nb_elem{0};
+    for (const auto& tree_node: tree_)
+    {
+        const auto found = structure_.find(add_suffix(tree_node.name));
+        if (found == structure_.end())
+        {
+            std::cerr << LOGLOCATION << "Error finding node " << add_suffix(tree_node.name)
+                      << std::endl;
+            continue;
+        }
+
+        const auto& var_map = found->second;
+        const auto& parent = tree_node.parent;
+
+        for (const auto& [var_name, variable]: tree_node.variables)
+        {
+            const int curr_var_idx = var_map.at(var_name);
+            const int prev_var_idx = parent.has_value()
+                                       ? structure_.at(add_suffix(parent.value())).at(var_name)
+                                       : -1;
+
+            // Max investment
+            mstart.push_back(nb_elem);
+
+            mclind.push_back(curr_var_idx);
+            dmatval.push_back(1);
+            ++nb_elem;
+
+            rhs.push_back(variable.max_investment);
+            qrtype.push_back('L');
+
+            if (prev_var_idx >= 0) [[likely]]
+            {
+                mclind.push_back(prev_var_idx);
+                dmatval.push_back(-1);
+                ++nb_elem;
+            }
+
+            // Min investment
+            mstart.push_back(nb_elem);
+
+            mclind.push_back(curr_var_idx);
+            dmatval.push_back(1);
+            ++nb_elem;
+
+            rhs.push_back(variable.min_investment);
+            qrtype.push_back('G');
+
+            if (prev_var_idx >= 0) [[likely]]
+            {
+                mclind.push_back(prev_var_idx);
+                dmatval.push_back(-1);
+                ++nb_elem;
+            }
+
+            logger_->display_message(tree_node.name + delimiter_ + var_name
+                                     + " : pathway coupling constraint built");
+        }
+    }
+    mstart.push_back(nb_elem);
+
+    solver_addrows(*ptr_merged_solver_, qrtype, rhs, {}, mstart, mclind, dmatval);
+}
+
+std::string MergeMasterMasterMPS::add_suffix(const std::string& s) const
+{
+    return s + delimiter_ + options_.MASTER_NAME;
+}
