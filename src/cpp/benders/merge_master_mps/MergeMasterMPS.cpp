@@ -49,33 +49,118 @@ void multiply_objective_by_weight_factor(
 }
 
 
-void MergeMasterMPS::addTrajectoryConstraints(
+std::string make_prefix_from_node(
+    std::string node_name
+)
+{
+    return "node_" + node_name + "__";
+}
+
+double get_candidate_initial_value(
+    const std::string& candidate,
+    const TrajectoryGlobalData& trajectory_data
+)
+{
+    double initial_value = 0;
+    auto it = trajectory_data.initial_capacities.find(candidate);
+    if (it != trajectory_data.initial_capacities.end())
+    {
+        initial_value = it->second;
+    }
+    else
+    {
+        initial_value = trajectory_data.initial_capacities.at(MasterCouplingConstants::KEY_DEFAULT);
+    }
+
+    return initial_value;
+}
+
+
+void MergeMasterMPS::addDeltaVariables(
+    SolverAbstract& merged_solver,
+    const MasterCouplingMap& master_coupling,
+    CandidatesCouplingMap& candidates_coupling,
+    const CandidatesNames& candidates_names
+)
+{
+    // We want to add them efficiently : prepare vectors with all the information needed to modify the solver
+    // We want to add two variables per candidate per node
+    int delta_variables_count = 2 * candidates_names.size() * master_coupling.size();
+
+    // Prepare the vectors
+    std::vector<double> objective_coefs;
+    std::vector<double> lower_bounds;
+    std::vector<double> upper_bounds;
+    std::vector<char> col_types;
+    std::vector<std::string> col_names;
+
+    // Reserve space
+    objective_coefs.reserve(delta_variables_count);
+    lower_bounds.reserve(delta_variables_count);
+    upper_bounds.reserve(delta_variables_count);
+    col_types.reserve(delta_variables_count);
+    col_names.reserve(delta_variables_count); // Not very pertinent for a dynamic type like string ?
+
+    std::vector<int> mstart_p(delta_variables_count);
+    std::iota(mstart_p.begin(), mstart_p.end(), 0);
+
+    int n_var_previous = merged_solver.get_ncols();
+
+    // First part : adding the variables themselves
+    for (const auto& [node_name, _] : master_coupling)
+    {
+        std::string node_prefix = make_prefix_from_node(node_name);
+        for (const auto& candidate : candidates_names)
+        {   
+            std::string var_name_prefix = node_prefix + candidate;
+            // dx_plus
+            objective_coefs.push_back(0.0);
+            lower_bounds.push_back(0);
+            upper_bounds.push_back(1e20);
+            col_types.push_back('C');
+            col_names.push_back(var_name_prefix + "_dx_plus");
+            int dx_plus_position = n_var_previous + objective_coefs.size() - 1;
+            // dx_minus
+            objective_coefs.push_back(0.0);
+            lower_bounds.push_back(0);
+            upper_bounds.push_back(1e20);
+            col_types.push_back('C');
+            col_names.push_back(var_name_prefix + "_dx_minus");
+            int dx_minus_position = dx_plus_position + 1;
+
+            candidates_coupling[candidate][node_name].dx_plus = dx_plus_position;
+            candidates_coupling[candidate][node_name].dx_minus = dx_minus_position;
+        }
+    }
+
+    // Add to the solver
+    solver_addcols(
+        merged_solver,
+        objective_coefs,
+        mstart_p,
+        std::vector<int>(0,0),
+        std::vector<double>(0, 0.),
+        lower_bounds,
+        upper_bounds,
+        col_types,
+        col_names
+    );
+
+    return;
+}
+
+void MergeMasterMPS::addDeltaVariablesConstraints(
     SolverAbstract& merged_solver,
     const MasterCouplingMap& master_coupling,
     const TrajectoryGlobalData& trajectory_data,
-    const CouplingMap& candidates_coupling
+    const CandidatesCouplingMap& candidates_coupling,
+    const CandidatesNames& candidates_names
 )
 {
-    // First step is counting the number of constraints we want to add
-    // and the number of values we will add to the sparse matrix
-    size_t n_constraints_reserve = 0;
-    size_t n_values_reserve = 0;
-    for (const auto& [node_name, node_data] : master_coupling)
-    {
-        const auto& candidates_constraints = node_data.candidate_constraints;
-        // We add two constraints per candidate (min and max investment at this node)
-        // This is hardcoded for now :(
-        if (node_data.parent != MasterCouplingConstants::ROOT_NAME)
-        {
-            n_constraints_reserve += 2 * candidates_constraints.size();
-            n_values_reserve += 2 * 2 * candidates_constraints.size();
-        } else {
-            // We add one constraint per candidate (max investment at the first date),
-            // and it only has one value per candidate (only one variable involved)
-            n_constraints_reserve += candidates_constraints.size();
-            n_values_reserve += candidates_constraints.size();
-        }
-    }
+    // We will be adding one constraint per candidate per node
+    // Each constraint has 4 values in the matrix (welllll not realy but 4 is an upper bound)
+    int n_constraints_reserve = candidates_names.size() * master_coupling.size();
+    int n_values_reserve = 4 * (n_constraints_reserve);
 
     std::vector<int> var_offsets;
     std::vector<int> var_indices;
@@ -89,71 +174,57 @@ void MergeMasterMPS::addTrajectoryConstraints(
     constraint_type.reserve(n_constraints_reserve);
     var_offsets.reserve(n_constraints_reserve + 1);
 
-    // Second step : now that we have a merged master problem, we add the trajectory constraints
+    // Second part : add the constraints that define the dx variables.
+
     for (const auto& [node_name, node_data] : master_coupling)
     {
         std::string parent_node_name = node_data.parent;
 
-        const auto& candidates_constraints = node_data.candidate_constraints;
-        for (const auto& [candidate, constraint_data] : candidates_constraints)
+        for (const auto& candidate : candidates_names)
         {
             if (parent_node_name == MasterCouplingConstants::ROOT_NAME) {
                 // The constraint is :
-                // current::candidate <= max_investment + initial_value
+                // current::candidate - dx_plus + dx_minus = initial_value
                 // Get the initial value if available, use the default value otherwise
-                double initial_value = 0;
-                auto it = trajectory_data.initial_capacities.find(candidate);
-                if (it != trajectory_data.initial_capacities.end())
-                {
-                    initial_value = it->second;
-                }
-                else
-                {
-                    initial_value = trajectory_data.initial_capacities.at(MasterCouplingConstants::KEY_DEFAULT);
-                }
-                _logger->display_message("Initial value for candidate " + candidate + " : " + std::to_string(initial_value));
-                // Max investment
-                int current_candidate_index = candidates_coupling.at(candidate).at(node_name);
+                double initial_value = get_candidate_initial_value(
+                    candidate,
+                    trajectory_data
+                );
+                const auto& current_candidate_indexes = candidates_coupling.at(candidate).at(node_name);
 
                 var_offsets.push_back(var_indices.size());
-                var_indices.push_back(current_candidate_index);
+                
+                var_indices.push_back(current_candidate_indexes.capacity);
+                var_values.push_back(1);
+                var_indices.push_back(current_candidate_indexes.dx_plus);
+                var_values.push_back(-1);
+                var_indices.push_back(current_candidate_indexes.dx_minus);
                 var_values.push_back(1);
 
-                rhs.push_back(constraint_data.max_investment + initial_value);
-                constraint_type.push_back('L');
+                rhs.push_back(initial_value);
+                constraint_type.push_back('E');
 
             }
             else
             {
-                // The constraints are :
-                // current::candidate - parent::candidate <= max_investment
-                // current::candidate - parent::candidate >= min_investment
-                int parent_candidate_index = candidates_coupling.at(candidate).at(parent_node_name);
-                int current_candidate_index = candidates_coupling.at(candidate).at(node_name);
+                // The constraint is :
+                // current::candidate - parent::candidate - dx_plus + dx_minus = 0
+                int parent_candidate_index = candidates_coupling.at(candidate).at(parent_node_name).capacity;
+                const auto& current_candidate_indexes = candidates_coupling.at(candidate).at(node_name);
                 
-                // Max investment 
                 var_offsets.push_back(var_indices.size());
 
-                var_indices.push_back(current_candidate_index);
+                var_indices.push_back(current_candidate_indexes.capacity);
                 var_values.push_back(1);
-
+                var_indices.push_back(current_candidate_indexes.dx_plus);
+                var_values.push_back(-1);
+                var_indices.push_back(current_candidate_indexes.dx_minus);
+                var_values.push_back(1);
                 var_indices.push_back(parent_candidate_index);
                 var_values.push_back(-1);
 
-                rhs.push_back(constraint_data.max_investment);
-                constraint_type.push_back('L');
-
-                // Min investment
-                var_offsets.push_back(var_indices.size());
-
-                var_indices.push_back(current_candidate_index);
-                var_values.push_back(1);
-
-                var_indices.push_back(parent_candidate_index);
-                var_values.push_back(-1);
-
-                rhs.push_back(constraint_data.min_investment);
-                constraint_type.push_back('G');
+                rhs.push_back(0);
+                constraint_type.push_back('E');
             }
         }
     }
@@ -164,7 +235,7 @@ void MergeMasterMPS::addTrajectoryConstraints(
 
     return;
 }
-    
+
 
 void MergeMasterMPS::launch()
 {
@@ -202,7 +273,7 @@ void MergeMasterMPS::launch()
     // This coupling map contains, for each candidate, for each node it appears in,
     // where the candidate is located in the merged master problem
     // For this to work, the name of the candidates have to be the same in all problems
-    CouplingMap capacity_variable_coupling;
+    CandidatesCouplingMap capacity_variable_coupling;
     // int cntProblems_l(0);
 
     // We also need to need to generate a merged_structure.txt file
@@ -239,7 +310,7 @@ void MergeMasterMPS::launch()
         multiply_objective_by_weight_factor(solver_l, weight_factor);
 
         StandardLp lpData(*solver_l);
-        std::string varPrefix_l = "node_" + node_name + "__";
+        std::string varPrefix_l = make_prefix_from_node(node_name);
 
         lpData.append_in(mergedSolver_l, varPrefix_l);
 
@@ -291,7 +362,10 @@ void MergeMasterMPS::launch()
                                                / ("mergeError" + MPS_SUFFIX));
                 std::exit(1);
             }
-            capacity_variable_coupling[candidate_name][node_name] = new_index;
+            capacity_variable_coupling[candidate_name][node_name] = 
+                VariablePositions{
+                    .capacity = new_index
+                };
             merged_structure[MasterCouplingConstants::DEFAULT_MASTER_NAME][candidate_name_prefixed] = new_index;
         }
 
@@ -310,14 +384,22 @@ void MergeMasterMPS::launch()
         }
     }
 
-    // Next : add the trajectory constraints linking the nodes
+    // Add the delta variables and the constraints that define them
+    addDeltaVariables(
+        *mergedSolver_l,
+        master_coupling,
+        capacity_variable_coupling,
+        candidate_set
+    );
 
-    addTrajectoryConstraints(
+    addDeltaVariablesConstraints(
         *mergedSolver_l,
         master_coupling,
         trajectory_data,
-        capacity_variable_coupling
+        capacity_variable_coupling,
+        candidate_set
     );
+
 
     // Finally, write the new structure file to the output directory
     std::string output_structure_file = _options.OUTPUTROOT + "/structure.txt";
