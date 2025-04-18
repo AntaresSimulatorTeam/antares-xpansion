@@ -43,8 +43,8 @@ int main(int argc, char** argv)
                                                                      false);
     try
     {
-        MergeMasterMPS merge_master_mps(options.get_base_options(), logger, writer);
-        merge_master_mps.launch();
+        MergeMasterTrajectoryMPS merge_master_mps(options.get_base_options(), logger, writer);
+        merge_master_mps.launch(true); // We hardcode the behaviour for now, no change from previously
     }
     catch (std::exception& ex)
     {

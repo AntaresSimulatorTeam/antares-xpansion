@@ -30,86 +30,18 @@ AbstractMergeMPS::AbstractMergeMPS(MergeMPSOptions options,
 /**
  * Limitation: on windows may not support master problem with full path as name
  */
-void AbstractMergeMPS::launch()
+void AbstractMergeMPS::launch(bool export_pb, bool solve_pb)
 {
     build_problem();
 
-    export_problem();
-
-    const bool is_optimal = solve();
-
-    output_solution(is_optimal);
-}
-
-/**
- * \brief Build merged problem
- */
-void AbstractMergeMPS::build_problem()
-{
-    const auto input_root_dir = std::filesystem::path(options_.INPUTROOT);
-    const auto structure_path(input_root_dir / options_.STRUCTURE_FILE);
-
-    structure_ = CouplingMapGenerator::BuildInput(structure_path, logger_.get(), "Merge mps");
-
-    // TODO Investigate why following check
-    // TODO creates a segfault when structure.txt is empty
-    // if (structure_.empty())
-    // {
-    //     logger_->display_message("Nothing to merge. Returning empty problem.");
-    //     return;
-    // }
-
-    const int nb_sub_problems = structure_.size() - 1;
-    const auto root_dir = std::filesystem::path(options_.INPUTROOT);
-    SolverFactory factory;
-
-    logger_->display_message("Merging problems...");
-
-    int current_prob_id{0};
-    for (auto& [filename, var_map]: structure_)
-    {
-        SolverAbstract::Ptr ptr_solver = factory.create_solver(options_.SOLVER_NAME);
-
-        ptr_solver->set_output_log_level(options_.LOG_LEVEL);
-
-        ptr_solver->read_prob_mps(root_dir / filename);
-
-        // Separate Master and Subproblems by a specific name ID
-        // given in the options file
-        if (filename != options_.MASTER_NAME)
-        {
-            // Change the weight of coeff in the objective function
-            // The strategy is defined in the input options
-            const double weight = get_objective_weight(nb_sub_problems, filename);
-            multiply_obj_by_weight_factor(*ptr_solver, weight);
-        }
-
-        StandardLp lpData(*ptr_solver);
-        const std::string var_prefix = "prob" + std::to_string(current_prob_id++) + "_";
-
-        // Prefix the name of the problem (Master and slaves alike)
-        // along with the counting
-        lpData.append_in(*ptr_merged_solver_, var_prefix);
-
-        for (auto& [var_name, var_idx]: var_map)
-        {
-            const int merged_col_index = ptr_merged_solver_->get_col_index(var_prefix + var_name);
-            if (merged_col_index == -1)
-            {
-                const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
-                std::cerr << LOGLOCATION << "missing variable " << var_name << " in " << filename
-                          << " supposedly renamed to " << var_prefix + var_name << ".";
-                ptr_merged_solver_->write_prob_lp(output_root / "mergeError.lp");
-                ptr_merged_solver_->write_prob_mps(output_root / ("mergeError" + MPS_SUFFIX));
-                std::exit(1);
-            }
-            // TODO Not yet happy with this part
-            // TODO Think of a better data struct maybe?
-            var_idx = merged_col_index;
-        }
+    if (export_pb){
+        export_problem();
     }
+    if (solve_pb){
+        const bool is_optimal = solve();
 
-    add_coupling_constraints();
+        output_solution(is_optimal);
+    }
 }
 
 /**
@@ -281,6 +213,79 @@ double MergeMasterSubproblemMPS::get_objective_weight(int nb_subproblems,
     }
     return found->second;
 }
+
+
+/**
+ * \brief Build merged problem
+ */
+void MergeMasterSubproblemMPS::build_problem()
+{
+    const auto input_root_dir = std::filesystem::path(options_.INPUTROOT);
+    const auto structure_path(input_root_dir / options_.STRUCTURE_FILE);
+
+    structure_ = CouplingMapGenerator::BuildInput(structure_path, logger_.get(), "Merge mps");
+
+    // TODO Investigate why following check
+    // TODO creates a segfault when structure.txt is empty
+    // if (structure_.empty())
+    // {
+    //     logger_->display_message("Nothing to merge. Returning empty problem.");
+    //     return;
+    // }
+
+    const int nb_sub_problems = structure_.size() - 1;
+    const auto root_dir = std::filesystem::path(options_.INPUTROOT);
+    SolverFactory factory;
+
+    logger_->display_message("Merging problems...");
+
+    int current_prob_id{0};
+    for (auto& [filename, var_map]: structure_)
+    {
+        SolverAbstract::Ptr ptr_solver = factory.create_solver(options_.SOLVER_NAME);
+
+        ptr_solver->set_output_log_level(options_.LOG_LEVEL);
+
+        ptr_solver->read_prob_mps(root_dir / filename);
+
+        // Separate Master and Subproblems by a specific name ID
+        // given in the options file
+        if (filename != options_.MASTER_NAME)
+        {
+            // Change the weight of coeff in the objective function
+            // The strategy is defined in the input options
+            const double weight = get_objective_weight(nb_sub_problems, filename);
+            multiply_obj_by_weight_factor(*ptr_solver, weight);
+        }
+
+        StandardLp lpData(*ptr_solver);
+        const std::string var_prefix = "prob" + std::to_string(current_prob_id++) + "_";
+
+        // Prefix the name of the problem (Master and slaves alike)
+        // along with the counting
+        lpData.append_in(*ptr_merged_solver_, var_prefix);
+
+        for (auto& [var_name, var_idx]: var_map)
+        {
+            const int merged_col_index = ptr_merged_solver_->get_col_index(var_prefix + var_name);
+            if (merged_col_index == -1)
+            {
+                const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
+                std::cerr << LOGLOCATION << "missing variable " << var_name << " in " << filename
+                          << " supposedly renamed to " << var_prefix + var_name << ".";
+                ptr_merged_solver_->write_prob_lp(output_root / "mergeError.lp");
+                ptr_merged_solver_->write_prob_mps(output_root / ("mergeError" + MPS_SUFFIX));
+                std::exit(1);
+            }
+            // TODO Not yet happy with this part
+            // TODO Think of a better data struct maybe?
+            var_idx = merged_col_index;
+        }
+    }
+
+    add_coupling_constraints();
+}
+
 
 /**
  * \brief Add coupling equality constraints between subproblems

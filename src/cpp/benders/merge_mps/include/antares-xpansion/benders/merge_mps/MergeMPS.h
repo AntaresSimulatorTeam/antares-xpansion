@@ -13,18 +13,19 @@ public:
 
     virtual ~AbstractMergeMPS() = default;
 
-    void launch();
+    void launch(bool export_pb = false, bool solve_pb = false);
 
 private:
     std::shared_ptr<Output::OutputWriter> writer_;
 
 protected:
-    [[nodiscard]] virtual double get_objective_weight(int nb_subproblems,
-                                                      const std::string& name) const
-      = 0;
+    // [[nodiscard]] virtual double get_objective_weight(int nb_subproblems,
+    //                                                   const std::string& name) const
+    //   = 0;
+    
     virtual void add_coupling_constraints() = 0;
+    virtual void build_problem() = 0;
 
-    void build_problem();
     void export_problem();
     bool solve(int nb_threads = 16);
     void output_solution(bool is_sol_optimal);
@@ -45,7 +46,9 @@ public:
 
 private:
     [[nodiscard]] double get_objective_weight(int nb_subproblems,
-                                              const std::string& name) const override;
+                                              const std::string& name) const;
+
+    void build_problem() override;
     void add_coupling_constraints() override;
 };
 
