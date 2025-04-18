@@ -36,9 +36,9 @@ void AbstractMergeMPS::launch()
 
     export_problem();
 
-    const bool is_optimal = solve();
+    // const bool is_optimal = solve();
 
-    output_solution(is_optimal);
+    // output_solution(is_optimal);
 }
 
 /**
@@ -46,10 +46,7 @@ void AbstractMergeMPS::launch()
  */
 void AbstractMergeMPS::build_problem()
 {
-    const auto input_root_dir = std::filesystem::path(options_.INPUTROOT);
-    const auto structure_path(input_root_dir / options_.STRUCTURE_FILE);
-
-    structure_ = CouplingMapGenerator::BuildInput(structure_path, logger_.get(), "Merge mps");
+    structure_ = build_coupling_map();
 
     // TODO Investigate why following check
     // TODO creates a segfault when structure.txt is empty
@@ -250,6 +247,16 @@ void AbstractMergeMPS::output_solution(bool is_sol_optimal)
 
     writer_->update_solution(sol_infos);
     writer_->dump();
+}
+
+/*!
+ *  \brief Reads problem's structure and creates its coupling map
+ */
+CouplingMap MergeMasterSubproblemMPS::build_coupling_map() const
+{
+    const auto input_root_dir{std::filesystem::path(options_.INPUTROOT)};
+    const auto structure_path{input_root_dir / options_.STRUCTURE_FILE};
+    return CouplingMapGenerator::BuildInput(structure_path, logger_.get(), "Merge mps");
 }
 
 /*!
