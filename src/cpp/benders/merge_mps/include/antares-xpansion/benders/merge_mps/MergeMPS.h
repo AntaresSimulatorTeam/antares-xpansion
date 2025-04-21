@@ -15,30 +15,24 @@ public:
 
     virtual ~AbstractMergeMPS() = default;
 
-    void launch();
-
-private:
-    std::shared_ptr<Output::OutputWriter> writer_;
+    virtual void launch() = 0;
 
 protected:
-    [[nodiscard]] virtual CouplingMap build_coupling_map() const = 0;
-    [[nodiscard]] virtual double get_objective_weight(int nb_subproblems,
-                                                      const std::string& name) const
-      = 0;
-    virtual void add_coupling_constraints() = 0;
-
-    void build_problem();
     void export_problem();
-    bool solve(int nb_threads = 16);
-    void output_solution(bool is_sol_optimal);
 
+    [[nodiscard]] SolverAbstract::Ptr get_local_solver(const SolverFactory& factory,
+                                                       const std::filesystem::path& root_dir,
+                                                       const std::string& filename) const;
     void multiply_obj_by_weight_factor(SolverAbstract& local_solver, double weight) const;
+    VariableMap merge_local_solver(SolverAbstract& local_solver,
+                                   const std::string& local_prefix,
+                                   const VariableMap& local_var_map,
+                                   const std::string& filename);
 
+    std::shared_ptr<Output::OutputWriter> writer_;
     MergeMPSOptions options_;
     Logger logger_;
-
     SolverAbstract::Ptr ptr_merged_solver_;
-    CouplingMap structure_;
 };
 
 class MergeMasterSubproblemMPS: public AbstractMergeMPS
@@ -46,14 +40,18 @@ class MergeMasterSubproblemMPS: public AbstractMergeMPS
 public:
     using AbstractMergeMPS::AbstractMergeMPS;
 
-private:
-    [[nodiscard]] CouplingMap build_coupling_map() const override;
-    [[nodiscard]] double get_objective_weight(int nb_subproblems,
-                                              const std::string& name) const override;
-    void add_coupling_constraints() override;
-};
+    void launch() override;
 
-using MergeMPS = MergeMasterSubproblemMPS;
+private:
+    void build_problem();
+    bool solve(int nb_threads = 16);
+    void output_solution(bool is_sol_optimal);
+
+    [[nodiscard]] double get_problem_obj_weight(int nb_subproblems, const std::string& name) const;
+    void add_coupling_constraints();
+
+    CouplingMap structure_;
+};
 
 class MergeMasterMasterMPS: public AbstractMergeMPS
 {
@@ -76,6 +74,7 @@ public:
 
         std::optional<std::string> parent{std::nullopt};
         double weight{1.};
+        VariableMap structure{};
 
         std::map<std::string, PathwayConstraints> variables{};
     };
@@ -87,18 +86,14 @@ public:
                          std::shared_ptr<Output::OutputWriter> writer,
                          const std::filesystem::path& tree_filename);
 
+    void launch() override;
+
 private:
-    [[nodiscard]] CouplingMap build_coupling_map() const override;
-    [[nodiscard]] double get_objective_weight(const int nb_subproblems,
-                                              const std::string& name) const override;
-    void add_coupling_constraints() override;
+    void build_problem();
+    void add_coupling_constraints();
 
     PathwayTree tree_;
-
-    // TODO All this part : find better option
-    // TODO find a way of static init
-    std::string add_suffix(const std::string& s) const;
-    const std::string delimiter_{"/"};
 };
 
+using MergeMPS = MergeMasterSubproblemMPS;
 using MergePathwayMPS = MergeMasterMasterMPS;

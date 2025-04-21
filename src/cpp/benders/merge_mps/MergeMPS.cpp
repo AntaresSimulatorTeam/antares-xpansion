@@ -21,86 +21,33 @@ AbstractMergeMPS::AbstractMergeMPS(MergeMPSOptions options,
         options_.SOLVER_NAME = "CBC";
     }
 
-    SolverFactory factory;
+    // TODO use factory as an attribute so it is initialised only once!
+    const SolverFactory factory;
     ptr_merged_solver_ = factory.create_solver(options_.SOLVER_NAME);
 
     ptr_merged_solver_->set_output_log_level(options_.LOG_LEVEL);
 }
 
 /**
- * Limitation: on windows may not support master problem with full path as name
+ * \brief Creates a local solver from a MPS file
+ *
+ * \param factory : Factory pattern to create solver
+ *
+ * \param root_dir : Directory of MPS file
+ *
+ * \param filename : MPS file name
  */
-void AbstractMergeMPS::launch()
+SolverAbstract::Ptr AbstractMergeMPS::get_local_solver(const SolverFactory& factory,
+                                                       const std::filesystem::path& root_dir,
+                                                       const std::string& filename) const
 {
-    build_problem();
-
-    export_problem();
-
-    // const bool is_optimal = solve();
-
-    // output_solution(is_optimal);
-}
-
-/**
- * \brief Build merged problem
- */
-void AbstractMergeMPS::build_problem()
-{
-    structure_ = build_coupling_map();
-
-    // TODO Investigate why following check
-    // TODO creates a segfault when structure.txt is empty
-    // if (structure_.empty())
-    // {
-    //     logger_->display_message("Nothing to merge. Returning empty problem.");
-    //     return;
-    // }
-
-    const int nb_sub_problems = structure_.size() - 1;
-    const auto root_dir = std::filesystem::path(options_.INPUTROOT);
-    SolverFactory factory;
-
-    logger_->display_message("Merging problems...");
-
-    int current_prob_id{0};
-    for (auto& [filename, var_map]: structure_)
-    {
-        SolverAbstract::Ptr ptr_solver = factory.create_solver(options_.SOLVER_NAME);
-
-        ptr_solver->set_output_log_level(options_.LOG_LEVEL);
-
-        ptr_solver->read_prob_mps(root_dir / filename);
-
-        // Change the weight of coeff in the objective function
-        const double weight = get_objective_weight(nb_sub_problems, filename);
-        multiply_obj_by_weight_factor(*ptr_solver, weight);
-
-        StandardLp lpData(*ptr_solver);
-        const std::string var_prefix = "prob" + std::to_string(current_prob_id++) + "_";
-
-        // Prefix the name of the problem (Master and slaves alike)
-        // along with the counting
-        lpData.append_in(*ptr_merged_solver_, var_prefix);
-
-        for (auto& [var_name, var_idx]: var_map)
-        {
-            const int merged_col_index = ptr_merged_solver_->get_col_index(var_prefix + var_name);
-            if (merged_col_index == -1)
-            {
-                const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
-                std::cerr << LOGLOCATION << "missing variable " << var_name << " in " << filename
-                          << " supposedly renamed to " << var_prefix + var_name << ".";
-                ptr_merged_solver_->write_prob_lp(output_root / "mergeError.lp");
-                ptr_merged_solver_->write_prob_mps(output_root / ("mergeError" + MPS_SUFFIX));
-                std::exit(1);
-            }
-            // TODO Not yet happy with this part
-            // TODO Think of a better data struct maybe?
-            var_idx = merged_col_index;
-        }
-    }
-
-    add_coupling_constraints();
+    /**
+     * Limitation: on windows may not support master problem with full path as name
+     */
+    SolverAbstract::Ptr ptr_solver = factory.create_solver(options_.SOLVER_NAME);
+    ptr_solver->set_output_log_level(options_.LOG_LEVEL);
+    ptr_solver->read_prob_mps(root_dir / filename);
+    return ptr_solver;
 }
 
 /**
@@ -135,6 +82,49 @@ void AbstractMergeMPS::multiply_obj_by_weight_factor(SolverAbstract& local_solve
 }
 
 /**
+ * \brief Merges local to global solver
+ *
+ * \param local_solver : Local solver
+ *
+ * \param local_prefix : Local solver's prefix
+ *
+ * \param local_var_map : Local solver's variable mapping
+ *
+ * \param filename : MPS file name
+ */
+VariableMap AbstractMergeMPS::merge_local_solver(SolverAbstract& local_solver,
+                                                 const std::string& local_prefix,
+                                                 const VariableMap& local_var_map,
+                                                 const std::string& filename)
+{
+    VariableMap merged_var_map;
+    StandardLp lpData(local_solver);
+
+    // Prefix the name of the problem (Master and slaves alike)
+    // along with the counting
+    lpData.append_in(*ptr_merged_solver_, local_prefix);
+
+    for (const auto& [var_name, var_idx]: local_var_map)
+    {
+        const int merged_col_index = ptr_merged_solver_->get_col_index(local_prefix + var_name);
+        if (merged_col_index == -1)
+        {
+            const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
+            std::cerr << LOGLOCATION << "missing variable " << var_name << " in " << filename
+                      << " supposedly renamed to " << local_prefix + var_name << ".";
+
+            ptr_merged_solver_->write_prob_lp(output_root / "mergeError.lp");
+            ptr_merged_solver_->write_prob_mps(output_root / ("mergeError" + MPS_SUFFIX));
+
+            std::exit(1);
+        }
+        merged_var_map[var_name] = merged_col_index;
+    }
+
+    return merged_var_map;
+}
+
+/**
  * \brief Export problem into mps and lp files
  */
 void AbstractMergeMPS::export_problem()
@@ -148,13 +138,68 @@ void AbstractMergeMPS::export_problem()
 }
 
 /**
+ * \brief Merge and solve master and subproblems
+ */
+void MergeMasterSubproblemMPS::launch()
+{
+    build_problem();
+
+    export_problem();
+
+    const bool is_optimal = solve();
+
+    output_solution(is_optimal);
+}
+
+/**
+ * \brief Build merged problem
+ */
+void MergeMasterSubproblemMPS::build_problem()
+{
+    const SolverFactory factory;
+    const auto root_dir = std::filesystem::path(options_.INPUTROOT);
+
+    logger_->display_message("Merging master and subproblems...");
+
+    const CouplingMap local_structure = CouplingMapGenerator::BuildInput(
+      root_dir / options_.STRUCTURE_FILE,
+      logger_.get(),
+      "Merge mps");
+
+    // TODO Investigate why following check
+    // TODO creates a segfault when structure.txt is empty
+    // if (local_structure.empty())
+    // {
+    //     logger_->display_message("Nothing to merge. Returning empty problem.");
+    //     return;
+    // }
+
+    const int nb_sub_problems = local_structure.size() - 1;
+
+    int current_prob_id{0};
+    for (const auto& [filename, var_map]: local_structure)
+    {
+        SolverAbstract::Ptr ptr_solver = get_local_solver(factory, root_dir, filename);
+
+        // Change the weight of coeff in the objective function
+        const double weight = get_problem_obj_weight(nb_sub_problems, filename);
+        multiply_obj_by_weight_factor(*ptr_solver, weight);
+
+        const std::string local_prefix = "prob" + std::to_string(current_prob_id++) + "_";
+        structure_[filename] = merge_local_solver(*ptr_solver, local_prefix, var_map, filename);
+    }
+
+    add_coupling_constraints();
+}
+
+/**
  * \brief Solve merged problem
  *
  * \param merged_solver : Ref to merged solver
  *
  * \param nb_threads : Number of threads to use
  */
-bool AbstractMergeMPS::solve(int nb_threads)
+bool MergeMasterSubproblemMPS::solve(int nb_threads)
 {
     ptr_merged_solver_->set_threads(nb_threads);
 
@@ -188,7 +233,7 @@ bool AbstractMergeMPS::solve(int nb_threads)
  *
  * \param is_sol_optimal : Flag true if solution is optimal, false otherwise
  */
-void AbstractMergeMPS::output_solution(bool is_sol_optimal)
+void MergeMasterSubproblemMPS::output_solution(bool is_sol_optimal)
 {
     double overall_cost{0}, investment_cost{0}, operational_cost{0};
 
@@ -250,24 +295,14 @@ void AbstractMergeMPS::output_solution(bool is_sol_optimal)
 }
 
 /*!
- *  \brief Reads problem's structure and creates its coupling map
- */
-CouplingMap MergeMasterSubproblemMPS::build_coupling_map() const
-{
-    const auto input_root_dir{std::filesystem::path(options_.INPUTROOT)};
-    const auto structure_path{input_root_dir / options_.STRUCTURE_FILE};
-    return CouplingMapGenerator::BuildInput(structure_path, logger_.get(), "Merge mps");
-}
-
-/*!
  *  \brief Return subproblem weight value
  *
  *  \param nb_subproblems : total number of subproblems
  *
  *  \param name : subproblem name
  */
-double MergeMasterSubproblemMPS::get_objective_weight(int nb_subproblems,
-                                                      const std::string& name) const
+double MergeMasterSubproblemMPS::get_problem_obj_weight(int nb_subproblems,
+                                                        const std::string& name) const
 {
     if (options_.MASTER_NAME == name)
     {
@@ -405,46 +440,50 @@ MergeMasterMasterMPS::MergeMasterMasterMPS(MergeMPSOptions options,
     }
 }
 
-/*!
- *  \brief Reads problem's structure and creates its coupling map
+/**
+ * \brief Merge and master problems
  */
-CouplingMap MergeMasterMasterMPS::build_coupling_map() const
+void MergeMasterMasterMPS::launch()
 {
-    CouplingMap res;
-
-    const auto input_root_dir{std::filesystem::path(options_.INPUTROOT)};
-    for (const auto& tree_node: tree_)
-    {
-        const auto structure_path{input_root_dir / tree_node.path / options_.STRUCTURE_FILE};
-        const CouplingMap structure = CouplingMapGenerator::BuildInput(structure_path,
-                                                                       logger_.get(),
-                                                                       "Merge Master mps");
-
-        // Merge into global structure changing prefixing
-        // its name by the current tree node's name
-        for (const auto& [filename, var_map]: structure)
-        {
-            res[tree_node.name + delimiter_ + filename] = var_map;
-        }
-    }
-    return res;
+    build_problem();
+    export_problem();
 }
 
-/*!
- *  \brief Return subproblem weight value
- *
- *  \param nb_subproblems : total number of subproblems
- *
- *  \param name : subproblem name
+/**
+ * \brief Build merged problem
  */
-double MergeMasterMasterMPS::get_objective_weight(const int nb_subproblems,
-                                                  const std::string& name) const
+void MergeMasterMasterMPS::build_problem()
 {
-    const auto it = std::find_if(tree_.begin(),
-                                 tree_.end(),
-                                 [&name, this](const PathwayNode& tree_node)
-                                 { return add_suffix(tree_node.name) == name; });
-    return it != tree_.end() ? it->weight : 0.0;
+    const SolverFactory factory;
+    const auto root_dir{std::filesystem::path(options_.INPUTROOT)};
+
+    logger_->display_message("Merging master problems...");
+
+    int current_prob_id{0};
+    for (auto& tree_node: tree_)
+    {
+        const auto node_path{root_dir / tree_node.path};
+
+        const CouplingMap local_structure = CouplingMapGenerator::BuildInput(
+          node_path / options_.STRUCTURE_FILE,
+          logger_.get(),
+          "Merge Master mps");
+
+        for (const auto& [filename, var_map]: local_structure)
+        {
+            // TODO filter out subproblems in structure.txt
+
+            SolverAbstract::Ptr ptr_solver = get_local_solver(factory, node_path, filename);
+
+            // Change the weight of coeff in the objective function
+            multiply_obj_by_weight_factor(*ptr_solver, tree_node.weight);
+
+            const std::string local_prefix = "prob" + std::to_string(current_prob_id++) + "_";
+            tree_node.structure = merge_local_solver(*ptr_solver, local_prefix, var_map, filename);
+        }
+    }
+
+    add_coupling_constraints();
 }
 
 /**
@@ -472,23 +511,14 @@ void MergeMasterMasterMPS::add_coupling_constraints()
     int nb_elem{0};
     for (const auto& tree_node: tree_)
     {
-        const auto found = structure_.find(add_suffix(tree_node.name));
-        if (found == structure_.end())
-        {
-            std::cerr << LOGLOCATION << "Error finding node " << add_suffix(tree_node.name)
-                      << std::endl;
-            continue;
-        }
-
-        const auto& var_map = found->second;
+        const auto& var_map = tree_node.structure;
         const auto& parent = tree_node.parent;
 
         for (const auto& [var_name, variable]: tree_node.variables)
         {
             const int curr_var_idx = var_map.at(var_name);
-            const int prev_var_idx = parent.has_value()
-                                       ? structure_.at(add_suffix(parent.value())).at(var_name)
-                                       : -1;
+            // TODO find parent and retrieve its indices
+            const int prev_var_idx = -1;
 
             // Max investment
             mstart.push_back(nb_elem);
@@ -524,16 +554,11 @@ void MergeMasterMasterMPS::add_coupling_constraints()
                 ++nb_elem;
             }
 
-            logger_->display_message(tree_node.name + delimiter_ + var_name
+            logger_->display_message(tree_node.name + "__" + var_name
                                      + " : pathway coupling constraint built");
         }
     }
     mstart.push_back(nb_elem);
 
     solver_addrows(*ptr_merged_solver_, qrtype, rhs, {}, mstart, mclind, dmatval);
-}
-
-std::string MergeMasterMasterMPS::add_suffix(const std::string& s) const
-{
-    return s + delimiter_ + options_.MASTER_NAME;
 }
