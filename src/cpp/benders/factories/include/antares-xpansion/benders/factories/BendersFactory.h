@@ -1,9 +1,9 @@
 #pragma once
+#include <antares-xpansion/benders/benders_core/BendersMethod.h>
+#include <antares-xpansion/benders/benders_core/CriterionInputDataReader.h>
+#include <antares-xpansion/benders/benders_core/common.h>
 #include <memory>
 #include <variant>
-#include <antares-xpansion/benders/benders_core/CriterionInputDataReader.h>
-#include <antares-xpansion/benders/benders_core/BendersMethod.h>
-#include <antares-xpansion/benders/benders_core/common.h>
 
 struct BendersLoggerBase;
 class MathLoggerDriver;
@@ -26,14 +26,15 @@ class BendersBaseOptions;
 class BendersFactory
 {
 public:
-  struct BendersEnvironment
-  {
-    std::unique_ptr<BendersBase> benders{nullptr};
+    struct BendersEnvironment
+    {
+        std::unique_ptr<BendersBase> benders{nullptr};
         std::variant<Benders::Criterion::CriterionInputData,
-                         Benders::Criterion::OuterLoopCriterionInputData>
+                     Benders::Criterion::OuterLoopCriterionInputData>
           criterion_input_data;
-    BENDERSMETHOD method{BENDERSMETHOD::BENDERS};
-  };
+        BENDERSMETHOD method{BENDERSMETHOD::BENDERS};
+    };
+
     BendersFactory(const SimulationOptions& options,
                    std::shared_ptr<ILogger> logger,
                    std::shared_ptr<Output::OutputWriter> writer,
@@ -42,11 +43,11 @@ public:
                    boost::mpi::environment* env,
                    boost::mpi::communicator* world,
                    BendersLoggerBase& benders_loggers);
-  auto PrepareForExecution(bool outer_loop) -> std::optional<BendersEnvironment>;
+    auto PrepareForExecution(bool outer_loop) -> std::optional<BendersEnvironment>;
 
 private:
     auto ConfigureBenders(const BendersBaseOptions& benders_options,
-    const CouplingMap& coupling_map) -> BendersEnvironment;
+                          const CouplingMap& coupling_map) -> BendersEnvironment;
     [[nodiscard]] std::variant<Benders::Criterion::CriterionInputData,
                                Benders::Criterion::OuterLoopCriterionInputData>
     ProcessCriterionInput();

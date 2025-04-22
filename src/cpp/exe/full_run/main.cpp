@@ -1,6 +1,6 @@
+#include <antares-xpansion/benders/factories/BendersApp.h>
 #include <exception>
 #include <iostream>
-#include <antares-xpansion/benders/factories/BendersApp.h>
 
 #include <boost/program_options.hpp>
 
@@ -44,18 +44,12 @@ int main(int argc, char** argv)
     auto solver = options_parser.Solver();
     if (solver == "benders")
     {
-        auto benders_factory = BendersApp(options_file,
-                                                  env,
-                                                  world,
-                                                  SOLVER::BENDERS);
+        auto benders_factory = BendersApp(options_file, env, world, SOLVER::BENDERS);
         benders_factory.Run();
     }
     if (solver == "adequacy_criterion")
     {
-        auto benders_factory = BendersApp(options_file,
-                                                  env,
-                                                  world,
-                                                  SOLVER::OUTER_LOOP);
+        auto benders_factory = BendersApp(options_file, env, world, SOLVER::OUTER_LOOP);
         benders_factory.Run();
     }
     else

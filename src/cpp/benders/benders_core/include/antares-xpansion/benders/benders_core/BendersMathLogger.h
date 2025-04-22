@@ -3,8 +3,8 @@
 #include <fstream>
 #include <memory>
 
-#include "antares-xpansion/benders/benders_core/BendersMethod.h"
 #include "BendersStructsDatas.h"
+#include "antares-xpansion/benders/benders_core/BendersMethod.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
 const std::string MATHLOGGERCONTEXT = "Benders";
