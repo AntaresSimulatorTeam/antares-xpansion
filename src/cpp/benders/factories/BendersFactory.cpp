@@ -16,7 +16,6 @@ BendersFactory::BendersFactory(const SimulationOptions& options,
                                std::shared_ptr<Output::OutputWriter> writer,
                                std::shared_ptr<MathLoggerDriver> math_log_driver_,
                                int rank,
-                               boost::mpi::environment* env,
                                boost::mpi::communicator* world,
                                BendersLoggerBase& benders_loggers):
     options_{options},
@@ -24,7 +23,6 @@ BendersFactory::BendersFactory(const SimulationOptions& options,
     writer_{std::move(writer)},
     math_log_driver_{std::move(math_log_driver_)},
     rank{rank},
-    env_{env},
     world_{world},
     benders_loggers_{benders_loggers}
 {
@@ -110,7 +108,6 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
         benders = std::make_unique<BendersMpi>(benders_options,
                                                logger_,
                                                writer_,
-                                               *env_,
                                                *world_,
                                                math_log_driver_);
         break;
@@ -118,7 +115,6 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
         benders = std::make_unique<Outerloop::BendersMpiOuterLoop>(benders_options,
                                                                    logger_,
                                                                    writer_,
-                                                                   *env_,
                                                                    *world_,
                                                                    math_log_driver_);
         break;
@@ -127,7 +123,6 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
         benders = std::make_unique<BendersByBatch>(benders_options,
                                                    logger_,
                                                    writer_,
-                                                   *env_,
                                                    *world_,
                                                    math_log_driver_);
         break;

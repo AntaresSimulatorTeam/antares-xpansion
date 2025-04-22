@@ -85,7 +85,6 @@ int BendersApp::RunBenders()
                                writer_,
                                math_log_driver_,
                                pworld_->rank(),
-                               penv_,
                                pworld_,
                                benders_loggers_);
         auto env = factory.PrepareForExecution(false);
@@ -160,7 +159,6 @@ int BendersApp::RunExternalLoop()
                                writer_,
                                math_log_driver_,
                                pworld_->rank(),
-                               penv_,
                                pworld_,
                                benders_loggers_);
         auto env = factory.PrepareForExecution(true);
@@ -210,7 +208,6 @@ int BendersApp::RunExternalLoop()
 BendersApp::BendersApp(const std::filesystem::path& options_file,
                        mpi::communicator& world,
                        const SOLVER& solver):
-                                       const SOLVER& solver):
     pworld_(&world),
     solver_(solver),
     options_(options_file)

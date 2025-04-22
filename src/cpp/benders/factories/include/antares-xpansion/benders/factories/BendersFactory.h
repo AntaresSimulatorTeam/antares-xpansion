@@ -3,8 +3,8 @@
 #include <antares-xpansion/benders/benders_core/CriterionInputDataReader.h>
 #include <antares-xpansion/benders/benders_core/common.h>
 #include <memory>
-#include <variant>
 #include <optional>
+#include <variant>
 
 struct BendersLoggerBase;
 class MathLoggerDriver;
@@ -22,7 +22,7 @@ class OutputWriter;
 class ILogger;
 class BendersBase;
 class SimulationOptions;
-class BendersBaseOptions;
+struct BendersBaseOptions;
 
 class BendersFactory
 {
@@ -41,7 +41,6 @@ public:
                    std::shared_ptr<Output::OutputWriter> writer,
                    std::shared_ptr<MathLoggerDriver> math_log_driver_,
                    int rank,
-                   boost::mpi::environment* env,
                    boost::mpi::communicator* world,
                    BendersLoggerBase& benders_loggers);
     auto PrepareForExecution(bool outer_loop) -> std::optional<BendersEnvironment>;
@@ -60,7 +59,6 @@ private:
     std::shared_ptr<ILogger> logger_;
     std::shared_ptr<Output::OutputWriter> writer_;
     std::shared_ptr<MathLoggerDriver> math_log_driver_;
-    boost::mpi::environment* env_ = nullptr;
     boost::mpi::communicator* world_ = nullptr;
     int rank = 0;
     BENDERSMETHOD method_;
