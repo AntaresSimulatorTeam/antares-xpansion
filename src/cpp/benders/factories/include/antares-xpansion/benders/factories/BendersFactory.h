@@ -4,6 +4,7 @@
 #include <antares-xpansion/benders/benders_core/common.h>
 #include <memory>
 #include <variant>
+#include <optional>
 
 struct BendersLoggerBase;
 class MathLoggerDriver;
