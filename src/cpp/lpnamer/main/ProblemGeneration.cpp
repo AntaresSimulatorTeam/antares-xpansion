@@ -48,25 +48,10 @@ void CreateDirectories(const std::filesystem::path& output_path)
 }
 
 ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options):
-    options_(options)
+    options_(options),
+    configuration_manager_{options}
 {
-    if (!options_.StudyPath().empty())
-    {
-        mode_ = SimulationInputMode::ANTARES_API;
-    }
-    else if (!options_.XpansionOutputDir().empty())
-    {
-        mode_ = SimulationInputMode::FILE;
-    }
-    else if (!options_.ArchivePath().empty())
-    {
-        mode_ = SimulationInputMode::ARCHIVE;
-    }
-    if (!mode_)
-    {
-        throw LogUtils::XpansionError<std::runtime_error>("SimulationInputMode is unknown",
-                                                          LOGLOCATION);
-    }
+    mode_ = configuration_manager_.Mode();
 }
 
 namespace
@@ -124,84 +109,24 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& ou
     lps_ = std::move(results.antares_problems);
 }
 
-static std::string getCurrentTimestamp()
-{
-    // Get the current time point
-    auto now = std::chrono::system_clock::now();
-
-    // Convert to time_t for formatting
-    std::time_t now_time_t = std::chrono::system_clock::to_time_t(now);
-
-    // Convert to tm structure
-    std::tm now_tm;
-#ifdef _WIN32
-    localtime_s(&now_tm, &now_time_t); // Windows-specific
-#else
-    localtime_r(&now_time_t, &now_tm); // POSIX-specific
-#endif
-
-    // Format the timestamp
-    std::ostringstream oss;
-    oss << std::put_time(&now_tm, "%Y%m%d-%H%Meco");
-    return oss.str();
-}
-
-// Useful only for "API" mode
-std::filesystem::path generateOutputName(const std::filesystem::path& study)
-{
-    return study / "output" / getCurrentTimestamp();
-}
-
 std::filesystem::path ProblemGeneration::updateProblems()
 {
     using namespace std::string_literals;
-    std::filesystem::path xpansion_output_dir;
-    const auto archive_path = options_.ArchivePath();
-    std::filesystem::path study_dir;
+    directories_ = configuration_manager_.Directories();
 
-    if (mode_ == SimulationInputMode::ARCHIVE)
-    {
-        xpansion_output_dir = options_.deduceXpansionDirIfEmpty(xpansion_output_dir, archive_path);
-        study_dir = std::filesystem::absolute(archive_path).parent_path().parent_path();
-        // Assume study/output/archive.zip
-        // If doesn't work
-        // study_dir = xpansion_output_dir.parent_path().parent_path(); //Assume
-        // study/output/archive.zip
-    }
+    const auto log_file_path = directories_.xpansion_output_dir / "lp"s
+                               / "ProblemGenerationLog.txt"s;
 
-    if (mode_ == SimulationInputMode::ANTARES_API)
-    {
-        study_dir = options_.StudyPath();
-        simulation_dir_ = generateOutputName(study_dir);
-    }
-
-    if (mode_ == SimulationInputMode::FILE)
-    {
-        simulation_dir_ = options_.XpansionOutputDir(); // Legacy naming.
-        // options_.XpansionOutputDir() point in fact to a simulation output from
-        // antares
-        study_dir = std::filesystem::absolute(simulation_dir_)
-                      .parent_path()
-                      .parent_path(); // Assume study/output/simulation
-    }
-
-    if (mode_ == SimulationInputMode::ANTARES_API || mode_ == SimulationInputMode::FILE)
-    {
-        xpansion_output_dir = simulation_dir_;
-    }
-
-    const auto log_file_path = xpansion_output_dir / "lp"s / "ProblemGenerationLog.txt"s;
-
-    CreateDirectories(xpansion_output_dir); // Ca ou -Xpansion ?
+    CreateDirectories(directories_.xpansion_output_dir);
     auto logger = ProblemGenerationLog::BuildLogger(log_file_path,
                                                     std::cout,
                                                     "Problem Generation"s);
 
-    set_solver(study_dir, logger.get());
+    set_solver(directories_.study_dir, logger.get());
 
     if (mode_ == SimulationInputMode::ANTARES_API)
     {
-        performAntaresSimulation(simulation_dir_);
+        performAntaresSimulation(directories_.simulation_dir);
     }
 
     auto master_formulation = options_.MasterFormulation();
@@ -209,15 +134,15 @@ std::filesystem::path ProblemGeneration::updateProblems()
     auto weights_file = options_.WeightsFile();
     auto unnamed_problems = options_.UnnamedProblems();
 
-    RunProblemGeneration(xpansion_output_dir,
+    RunProblemGeneration(directories_.xpansion_output_dir,
                          master_formulation,
                          additionalConstraintFilename_l,
-                         archive_path,
+                         directories_.archive_path,
                          logger,
                          log_file_path,
                          weights_file,
                          unnamed_problems);
-    return xpansion_output_dir;
+    return directories_.xpansion_output_dir;
 }
 
 std::shared_ptr<ArchiveReader> InstantiateZipReader(
@@ -232,7 +157,7 @@ void ProblemGeneration::ExtractUtilsFiles(
                                                   xpansion_output_dir,
                                                   std::move(logger),
                                                   mode_.value(),
-                                                  simulation_dir_);
+                                                  directories_.simulation_dir);
     utils_files_extractor.ExtractFiles();
 }
 
