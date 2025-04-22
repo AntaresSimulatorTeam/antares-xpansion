@@ -463,10 +463,11 @@ void MergeMasterMasterMPS::build_problem()
           logger_.get(),
           "Merge Master mps");
 
-        for (const auto& [filename, var_map]: local_structure)
+        for (const auto& [filename, var_map]:
+             local_structure
+               | std::views::filter([this](const auto& pair)
+                                    { return pair.first == options_.MASTER_NAME; }))
         {
-            // TODO filter out subproblems in structure.txt
-
             SolverAbstract::Ptr ptr_solver = get_local_solver(node_path, filename);
 
             // Change the weight of coeff in the objective function
