@@ -60,10 +60,10 @@ target_link_libraries(lp_namer_tests PRIVATE
 
 
 if (CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
-    target_compile_options(unit_tests PUBLIC -Wno-global-constructors)
-    target_compile_options(unit_tests PUBLIC -Wno-exit-time-destructors)
-    target_compile_options(unit_tests PUBLIC -Wno-weak-vtables)
-    target_compile_options(unit_tests PUBLIC -Wno-covered-switch-default)
+    target_compile_options(lp_namer_tests PUBLIC -Wno-global-constructors)
+    target_compile_options(lp_namer_tests PUBLIC -Wno-exit-time-destructors)
+    target_compile_options(lp_namer_tests PUBLIC -Wno-weak-vtables)
+    target_compile_options(lp_namer_tests PUBLIC -Wno-covered-switch-default)
 endif ()
 
 add_test(NAME unit_lpnamer COMMAND lp_namer_tests WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
