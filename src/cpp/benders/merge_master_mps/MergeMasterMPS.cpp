@@ -11,12 +11,12 @@
 #include "antares-xpansion/helpers/Timer.h"
 
 
-std::string MergeMasterTrajectoryMPS::make_prefix_from_node(const std::string& node_name)
+std::string MergeMasterTrajectoryMPS::make_prefix_from_node(const std::string& node_name) const
 {
     return "node_" + node_name + "__";
 }
 
-double MergeMasterTrajectoryMPS::get_candidate_initial_value(const std::string& candidate)
+double MergeMasterTrajectoryMPS::get_candidate_initial_value(const std::string& candidate) const
 {
     double initial_value = 0;
     auto it = trajectory_data_.initial_capacities.find(candidate);
@@ -39,11 +39,11 @@ void MergeMasterTrajectoryMPS::build_problem()
     // Loading the data, could be seperated into a load() function
     const auto inputRootDir = std::filesystem::path(options_.INPUTROOT);
     auto structure_path(inputRootDir / options_.STRUCTURE_FILE);
-    logger_->display_message("Trying to parse strucutre file at " + std::string(structure_path));
+    logger_->display_message("Trying to parse structure file at " + std::string(structure_path));
 
     const auto& data_pair = 
         MasterCouplingMapGenerator::BuildInput(structure_path, logger_.get());
-
+    // Unecessary copy ?
     trajectory_data_ = data_pair.first;
     master_coupling_ = data_pair.second;
 
@@ -177,7 +177,7 @@ void MergeMasterTrajectoryMPS::add_delta_variables()
     for (const auto& [node_name, _] : master_coupling_)
     {
         std::string node_prefix = make_prefix_from_node(node_name);
-        for (const auto& [candidate, _] : candidates_coupling_)
+        for (auto& [candidate, candidate_data] : candidates_coupling_)
         {   
             std::string var_name_prefix = node_prefix + candidate;
             // dx_plus
@@ -195,8 +195,8 @@ void MergeMasterTrajectoryMPS::add_delta_variables()
             col_names.push_back(var_name_prefix + "_dx_minus");
             int dx_minus_position = dx_plus_position + 1;
 
-            candidates_coupling_[candidate][node_name].dx_plus = dx_plus_position;
-            candidates_coupling_[candidate][node_name].dx_minus = dx_minus_position;
+            candidate_data[node_name].dx_plus = dx_plus_position;
+            candidate_data[node_name].dx_minus = dx_minus_position;
         }
     }
 

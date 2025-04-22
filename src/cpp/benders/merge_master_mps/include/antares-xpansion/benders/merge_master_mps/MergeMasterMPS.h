@@ -33,8 +33,8 @@ private:
     // Methods specific to this derived class
     void add_delta_variables();
     void add_delta_variables_constraints();
-    std::string make_prefix_from_node(const std::string& node_name);
-    double get_candidate_initial_value(const std::string& candidate);
+    std::string make_prefix_from_node(const std::string& node_name) const;
+    double get_candidate_initial_value(const std::string& candidate) const;
 
     // Overrides
     void build_problem() override;

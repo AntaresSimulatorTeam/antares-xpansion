@@ -6,8 +6,6 @@
 #include <utility>
 
 
-// TODO : a lot of work to eliminate explicit usage of keys and replace by constants
-
 Json::Value parse_json_file(const std::filesystem::path& file_name, ILoggerXpansion* logger) {
     Json::Value _input;
     std::ifstream input_file_l(file_name, std::ifstream::binary);
