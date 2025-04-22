@@ -22,8 +22,8 @@ BendersFactory::BendersFactory(const SimulationOptions& options,
     logger_{std::move(logger)},
     writer_{std::move(writer)},
     math_log_driver_{std::move(math_log_driver_)},
-    rank{rank},
     world_{world},
+    rank{rank},
     benders_loggers_{benders_loggers}
 {
 }
