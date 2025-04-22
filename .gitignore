@@ -49,7 +49,6 @@ build_config.yaml
 # Tests
 .coverage
 coverage-reports
-merge_master_test
 
 # Doc pdf file
 antaresxpansionuserguide.pdf
