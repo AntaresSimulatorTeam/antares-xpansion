@@ -414,10 +414,10 @@ MergeMasterMasterMPS::PathwayNode::PathwayNode(const std::string&& node, const J
     {
         const auto& variable = data["constraints"][var_name];
 
-        variables[var_name].min_investment = variable["min_investment"].asDouble();
-        variables[var_name].max_investment = variable["max_investment"].asDouble();
-        variables[var_name].min_decommissioning = variable["min_decommissioning"].asDouble();
-        variables[var_name].max_decommissioning = variable["max_decommissioning"].asDouble();
+        constraints[var_name].min_investment = variable["min_investment"].asDouble();
+        constraints[var_name].max_investment = variable["max_investment"].asDouble();
+        constraints[var_name].min_decommissioning = variable["min_decommissioning"].asDouble();
+        constraints[var_name].max_decommissioning = variable["max_decommissioning"].asDouble();
     }
 }
 
@@ -433,6 +433,8 @@ MergeMasterMasterMPS::MergeMasterMasterMPS(MergeMPSOptions options,
         const Json::Value& data = tree_json[tree_node];
         tree_.emplace_back(std::move(tree_node), data);
     }
+
+    // TODO Add coherence check for parents?
 }
 
 /**
@@ -474,7 +476,7 @@ void MergeMasterMasterMPS::build_problem()
             multiply_obj_by_weight_factor(*ptr_solver, tree_node.weight);
 
             const std::string local_prefix = "prob" + std::to_string(current_prob_id++) + "_";
-            tree_node.structure = merge_local_solver(*ptr_solver, local_prefix, var_map, filename);
+            tree_node.variables = merge_local_solver(*ptr_solver, local_prefix, var_map, filename);
         }
     }
 
@@ -506,14 +508,16 @@ void MergeMasterMasterMPS::add_coupling_constraints()
     int nb_elem{0};
     for (const auto& tree_node: tree_)
     {
-        const auto& var_map = tree_node.structure;
-        const auto& parent = tree_node.parent;
+        const auto parent = tree_node.parent.has_value()
+                              ? std::ranges::find(tree_,
+                                                  tree_node.parent.value(),
+                                                  &PathwayNode::name)
+                              : tree_.end();
 
-        for (const auto& [var_name, variable]: tree_node.variables)
+        for (const auto& [var_name, variable]: tree_node.constraints)
         {
-            const int curr_var_idx = var_map.at(var_name);
-            // TODO find parent and retrieve its indices
-            const int prev_var_idx = -1;
+            const int curr_var_idx = tree_node.variables.at(var_name);
+            const int prev_var_idx = (parent != tree_.end()) ? parent->variables.at(var_name) : -1;
 
             // Max investment
             mstart.push_back(nb_elem);

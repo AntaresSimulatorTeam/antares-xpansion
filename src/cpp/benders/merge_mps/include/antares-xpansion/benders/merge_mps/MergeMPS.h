@@ -75,9 +75,9 @@ public:
 
         std::optional<std::string> parent{std::nullopt};
         double weight{1.};
-        VariableMap structure{};
 
-        std::map<std::string, PathwayConstraints> variables{};
+        VariableMap variables{};
+        std::map<std::string, PathwayConstraints> constraints{};
     };
 
     using PathwayTree = std::vector<PathwayNode>;
