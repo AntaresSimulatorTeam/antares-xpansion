@@ -40,7 +40,7 @@ public:
 
 class MathLoggerFactory
 {
-MathLoggerDriver math_logger_driver;
+    MathLoggerDriver math_logger_driver;
 
 public:
     explicit MathLoggerFactory(const BENDERSMETHOD& method,
