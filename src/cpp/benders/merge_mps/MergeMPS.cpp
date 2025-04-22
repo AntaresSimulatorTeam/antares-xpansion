@@ -14,16 +14,15 @@ AbstractMergeMPS::AbstractMergeMPS(MergeMPSOptions options,
                                    std::shared_ptr<Output::OutputWriter> writer):
     writer_(std::move(writer)),
     options_(std::move(options)),
-    logger_(std::move(logger))
+    logger_(std::move(logger)),
+    factory_()
 {
     if (options_.SOLVER_NAME == "COIN")
     {
         options_.SOLVER_NAME = "CBC";
     }
 
-    // TODO use factory as an attribute so it is initialised only once!
-    const SolverFactory factory;
-    ptr_merged_solver_ = factory.create_solver(options_.SOLVER_NAME);
+    ptr_merged_solver_ = factory_.create_solver(options_.SOLVER_NAME);
 
     ptr_merged_solver_->set_output_log_level(options_.LOG_LEVEL);
 }
@@ -31,20 +30,17 @@ AbstractMergeMPS::AbstractMergeMPS(MergeMPSOptions options,
 /**
  * \brief Creates a local solver from a MPS file
  *
- * \param factory : Factory pattern to create solver
- *
  * \param root_dir : Directory of MPS file
  *
  * \param filename : MPS file name
  */
-SolverAbstract::Ptr AbstractMergeMPS::get_local_solver(const SolverFactory& factory,
-                                                       const std::filesystem::path& root_dir,
+SolverAbstract::Ptr AbstractMergeMPS::get_local_solver(const std::filesystem::path& root_dir,
                                                        const std::string& filename) const
 {
     /**
      * Limitation: on windows may not support master problem with full path as name
      */
-    SolverAbstract::Ptr ptr_solver = factory.create_solver(options_.SOLVER_NAME);
+    SolverAbstract::Ptr ptr_solver = factory_.create_solver(options_.SOLVER_NAME);
     ptr_solver->set_output_log_level(options_.LOG_LEVEL);
     ptr_solver->read_prob_mps(root_dir / filename);
     return ptr_solver;
@@ -156,7 +152,6 @@ void MergeMasterSubproblemMPS::launch()
  */
 void MergeMasterSubproblemMPS::build_problem()
 {
-    const SolverFactory factory;
     const auto root_dir = std::filesystem::path(options_.INPUTROOT);
 
     logger_->display_message("Merging master and subproblems...");
@@ -179,7 +174,7 @@ void MergeMasterSubproblemMPS::build_problem()
     int current_prob_id{0};
     for (const auto& [filename, var_map]: local_structure)
     {
-        SolverAbstract::Ptr ptr_solver = get_local_solver(factory, root_dir, filename);
+        SolverAbstract::Ptr ptr_solver = get_local_solver(root_dir, filename);
 
         // Change the weight of coeff in the objective function
         const double weight = get_problem_obj_weight(nb_sub_problems, filename);
@@ -454,7 +449,6 @@ void MergeMasterMasterMPS::launch()
  */
 void MergeMasterMasterMPS::build_problem()
 {
-    const SolverFactory factory;
     const auto root_dir{std::filesystem::path(options_.INPUTROOT)};
 
     logger_->display_message("Merging master problems...");
@@ -473,7 +467,7 @@ void MergeMasterMasterMPS::build_problem()
         {
             // TODO filter out subproblems in structure.txt
 
-            SolverAbstract::Ptr ptr_solver = get_local_solver(factory, node_path, filename);
+            SolverAbstract::Ptr ptr_solver = get_local_solver(node_path, filename);
 
             // Change the weight of coeff in the objective function
             multiply_obj_by_weight_factor(*ptr_solver, tree_node.weight);

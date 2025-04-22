@@ -20,8 +20,7 @@ public:
 protected:
     void export_problem();
 
-    [[nodiscard]] SolverAbstract::Ptr get_local_solver(const SolverFactory& factory,
-                                                       const std::filesystem::path& root_dir,
+    [[nodiscard]] SolverAbstract::Ptr get_local_solver(const std::filesystem::path& root_dir,
                                                        const std::string& filename) const;
     void multiply_obj_by_weight_factor(SolverAbstract& local_solver, double weight) const;
     VariableMap merge_local_solver(SolverAbstract& local_solver,
@@ -32,6 +31,8 @@ protected:
     std::shared_ptr<Output::OutputWriter> writer_;
     MergeMPSOptions options_;
     Logger logger_;
+
+    const SolverFactory factory_;
     SolverAbstract::Ptr ptr_merged_solver_;
 };
 
