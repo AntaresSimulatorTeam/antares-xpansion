@@ -11,6 +11,7 @@ from antares_xpansion.general_data_processor import (
     GeneralDataProcessor,
 )
 from antares_xpansion.general_data_reader import GeneralDataIniReader, IniReader
+from packaging import version
 
 from tests.build_config_reader import get_antares_solver_path
 
@@ -207,7 +208,7 @@ class TestGeneralDataProcessor:
         )
 
     def verify_that_general_data_contains_expected_vals(
-            self, general_data_ini_file, expected_val
+        self, general_data_ini_file, expected_val
     ):
         actual_config = configparser.ConfigParser()
         actual_config.read(general_data_ini_file)
@@ -255,7 +256,7 @@ class TestAntaresDriver:
                 "--force-parallel",
                 "1",
                 "-z",
-                "--linear-solver=sirius",
+                "--solver=sirius",
             ]
             if self.nammed_problems:
                 expected_cmd.append("--named-mps-problems")
@@ -278,7 +279,7 @@ class TestAntaresDriver:
                 "--force-parallel",
                 str(n_cpu),
                 "-z",
-                "--linear-solver=sirius",
+                "--solver=sirius",
             ]
             if self.nammed_problems:
                 expected_cmd.append("--named-mps-problems")
@@ -300,7 +301,7 @@ class TestAntaresDriver:
                 "--force-parallel",
                 str(expected_n_cpu),
                 "-z",
-                "--linear-solver=sirius",
+                "--solver=sirius",
             ]
             if self.nammed_problems:
                 expected_cmd.append("--named-mps-problems")
@@ -323,7 +324,7 @@ class TestAntaresDriver:
                 "--force-parallel",
                 str(n_cpu),
                 "-z",
-                "--linear-solver=sirius",
+                "--solver=sirius",
             ]
             if self.nammed_problems:
                 expected_cmd.append("--named-mps-problems")
@@ -392,7 +393,7 @@ class TestAntaresDriver:
                 "--force-parallel",
                 str(n_cpu),
                 "-z",
-                "--linear-solver=sirius",
+                "--solver=sirius",
             ]
             if self.nammed_problems:
                 expected_cmd.append("--named-mps-problems")
@@ -423,7 +424,7 @@ class TestAntaresDriver:
                 "--force-parallel",
                 str(n_cpu),
                 "-z",
-                "--linear-solver=sirius",
+                "--solver=sirius",
             ]
             if self.nammed_problems:
                 expected_cmd.append("--named-mps-problems")
