@@ -27,22 +27,26 @@ AbstractMergeMPS::AbstractMergeMPS(MergeMPSOptions options,
     ptr_merged_solver_->set_output_log_level(options_.LOG_LEVEL);
 }
 
+
 /**
- * Limitation: on windows may not support master problem with full path as name
- */
-void AbstractMergeMPS::launch(bool export_pb, bool solve_pb)
+* \brief Creates a local solver from a MPS file
+*
+* \param root_dir : Directory of MPS file
+*
+* \param filename : MPS file name
+*/
+SolverAbstract::Ptr AbstractMergeMPS::get_local_solver(const std::filesystem::path& root_dir,
+                                                      const std::string& filename) const
 {
-    build_problem();
-
-    if (export_pb){
-        export_problem();
-    }
-    if (solve_pb){
-        const bool is_optimal = solve();
-
-        output_solution(is_optimal);
-    }
+   /**
+    * Limitation: on windows may not support master problem with full path as name
+    */
+   SolverAbstract::Ptr ptr_solver = factory_.create_solver(options_.SOLVER_NAME);
+   ptr_solver->set_output_log_level(options_.LOG_LEVEL);
+   ptr_solver->read_prob_mps(root_dir / filename);
+   return ptr_solver;
 }
+
 
 /**
  * \brief Weights local solver's objective function by a given value
@@ -82,137 +86,7 @@ void AbstractMergeMPS::export_problem()
     ptr_merged_solver_->write_prob_lp(output_root / "log_merged.lp");
 }
 
-/**
- * \brief Solve merged problem
- *
- * \param merged_solver : Ref to merged solver
- *
- * \param nb_threads : Number of threads to use
- */
-bool AbstractMergeMPS::solve(int nb_threads)
-{
-    ptr_merged_solver_->set_threads(nb_threads);
 
-    logger_->display_message("Solving...");
-
-    Timer timer;
-    int status{0};
-
-    if (ptr_merged_solver_->get_n_integer_vars() > 0)
-    {
-        status = ptr_merged_solver_->solve_mip();
-    }
-    else
-    {
-        status = ptr_merged_solver_->solve_lp();
-    }
-
-    logger_->log_total_duration(timer.elapsed());
-
-    return status == SOLVER_STATUS::OPTIMAL;
-}
-
-/**
- * \brief Post-process and output solution
- *
- * \param merged_solver : Ref to merged solver
- *
- * \param structure : Mapping of files and investments candidates
- *
- * \param candidates : Mapping of investments candidates
- *
- * \param is_sol_optimal : Flag true if solution is optimal, false otherwise
- */
-void AbstractMergeMPS::output_solution(bool is_sol_optimal)
-{
-    double overall_cost{0}, investment_cost{0}, operational_cost{0};
-
-    std::vector<double> solution(ptr_merged_solver_->get_ncols()),
-      obj_coeff(ptr_merged_solver_->get_ncols()), lb_values(ptr_merged_solver_->get_ncols()),
-      ub_values(ptr_merged_solver_->get_ncols());
-
-    if (ptr_merged_solver_->get_n_integer_vars() > 0)
-    {
-        overall_cost = ptr_merged_solver_->get_mip_value();
-        ptr_merged_solver_->get_mip_sol(solution.data());
-    }
-    else
-    {
-        overall_cost = ptr_merged_solver_->get_lp_value();
-        ptr_merged_solver_->get_lp_sol(solution.data(), nullptr, nullptr);
-    }
-
-    ptr_merged_solver_->get_obj(obj_coeff.data(), 0, ptr_merged_solver_->get_ncols() - 1);
-    ptr_merged_solver_->get_lb(lb_values.data(), 0, ptr_merged_solver_->get_ncols() - 1);
-    ptr_merged_solver_->get_ub(ub_values.data(), 0, ptr_merged_solver_->get_ncols() - 1);
-
-    std::vector<Output::CandidateData> candidates;
-    for (const auto& [var_name, var_idx]: structure_[options_.MASTER_NAME])
-    {
-        const auto& candidate = candidates.emplace_back(var_name,
-                                                        solution[var_idx],
-                                                        lb_values[var_idx],
-                                                        ub_values[var_idx]);
-        investment_cost += candidate.invest * obj_coeff[var_idx];
-    }
-    if (candidates.empty())
-    {
-        std::cerr << LOGLOCATION << "Could not find '" << options_.MASTER_NAME
-                  << "' in structure\n";
-    }
-
-    operational_cost = overall_cost - investment_cost;
-
-    Output::SolutionData sol_infos;
-    sol_infos.nbWeeks_p = static_cast<int>(structure_.size());
-
-    sol_infos.solution.lb = overall_cost;
-    sol_infos.solution.ub = overall_cost;
-    sol_infos.solution.investment_cost = investment_cost;
-    sol_infos.solution.operational_cost = operational_cost;
-    sol_infos.solution.overall_cost = overall_cost;
-
-    sol_infos.solution.candidates.clear();
-    sol_infos.solution.candidates.insert(sol_infos.solution.candidates.end(),
-                                         std::make_move_iterator(candidates.begin()),
-                                         std::make_move_iterator(candidates.end()));
-    candidates.clear();
-
-    sol_infos.problem_status = is_sol_optimal ? "OPTIMAL" : "ERROR";
-
-    writer_->update_solution(sol_infos);
-    writer_->dump();
-}
-
-/*!
- *  \brief Return subproblem weight value
- *
- *  \param nb_subproblems : total number of subproblems
- *
- *  \param name : subproblem name
- */
-double MergeMasterSubproblemMPS::get_objective_weight(int nb_subproblems,
-                                                      const std::string& name) const
-{
-    if (options_.SLAVE_WEIGHT == SUBPROBLEM_WEIGHT_UNIFORM_CST_STR)
-    {
-        return 1.0 / nb_subproblems;
-    }
-    if (options_.SLAVE_WEIGHT == SUBPROBLEM_WEIGHT_CST_STR)
-    {
-        return 1.0 / options_.SLAVE_WEIGHT_VALUE;
-    }
-    const auto found = options_.weights.find(name);
-    if (found == options_.weights.end())
-    {
-        logger_->display_message("No weight found for " + name
-                                   + ". Problem will not contribute to objective function",
-                                 LogUtils::LOGLEVEL::WARNING,
-                                 "MergeMPS");
-        return 0.;
-    }
-    return found->second;
-}
 
 
 /**
@@ -254,7 +128,7 @@ void MergeMasterSubproblemMPS::build_problem()
         {
             // Change the weight of coeff in the objective function
             // The strategy is defined in the input options
-            const double weight = get_objective_weight(nb_sub_problems, filename);
+            const double weight = get_problem_obj_weight(nb_sub_problems, filename);
             multiply_obj_by_weight_factor(*ptr_solver, weight);
         }
 

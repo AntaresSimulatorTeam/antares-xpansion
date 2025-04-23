@@ -44,7 +44,7 @@ int main(int argc, char** argv)
     try
     {
         MergeMasterTrajectoryMPS merge_master_mps(options.get_base_options(), logger, writer);
-        merge_master_mps.launch(true); // We hardcode the behaviour for now, no change from previously
+        merge_master_mps.launch(); // We hardcode the behaviour for now, no change from previously
     }
     catch (std::exception& ex)
     {
