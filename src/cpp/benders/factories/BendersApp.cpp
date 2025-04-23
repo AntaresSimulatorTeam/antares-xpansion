@@ -82,7 +82,6 @@ int BendersApp::RunBenders()
         SetupLoggerAndOutputWriter(options_.get_benders_options());
         BendersFactory factory(
           options_,
-          pworld_->rank(),
           pworld_,
           BendersFactory::Dependencies{logger_, writer_, math_log_driver_, benders_loggers_});
         auto env = factory.PrepareForExecution(false);
@@ -154,7 +153,6 @@ int BendersApp::RunExternalLoop()
         SetupLoggerAndOutputWriter(options_.get_benders_options());
         BendersFactory factory(
           options_,
-          pworld_->rank(),
           pworld_,
           BendersFactory::Dependencies{logger_, writer_, math_log_driver_, benders_loggers_});
         auto env = factory.PrepareForExecution(true);

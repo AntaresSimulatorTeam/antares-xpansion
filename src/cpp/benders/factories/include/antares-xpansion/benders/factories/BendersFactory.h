@@ -45,7 +45,6 @@ public:
     };
 
     BendersFactory(const SimulationOptions& options,
-                   int rank,
                    boost::mpi::communicator* world,
                    Dependencies dependencies);
     auto PrepareForExecution(bool outer_loop) -> std::optional<BendersEnvironment>;

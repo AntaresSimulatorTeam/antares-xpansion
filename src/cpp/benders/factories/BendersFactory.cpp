@@ -12,12 +12,11 @@
 #include <variant>
 
 BendersFactory::BendersFactory(const SimulationOptions& options,
-                               int rank,
                                boost::mpi::communicator* world,
                                Dependencies dependencies):
     options_{options},
     world_{world},
-    rank{rank},
+    rank{world->rank()},
     dependencies_{dependencies}
 {
 }
