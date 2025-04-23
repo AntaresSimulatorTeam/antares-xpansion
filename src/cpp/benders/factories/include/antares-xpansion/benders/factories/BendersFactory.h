@@ -1,4 +1,5 @@
 #pragma once
+#include <antares-xpansion/benders/benders_core/BendersBase.h>
 #include <antares-xpansion/benders/benders_core/BendersMethod.h>
 #include <antares-xpansion/benders/benders_core/CriterionInputDataReader.h>
 #include <antares-xpansion/benders/benders_core/common.h>
@@ -20,7 +21,6 @@ namespace Output
 class OutputWriter;
 }
 class ILogger;
-class BendersBase;
 class SimulationOptions;
 struct BendersBaseOptions;
 
@@ -36,13 +36,18 @@ public:
         BENDERSMETHOD method{BENDERSMETHOD::BENDERS};
     };
 
+    struct Dependencies
+    {
+        std::shared_ptr<ILogger> logger;
+        std::shared_ptr<Output::OutputWriter> writer;
+        std::shared_ptr<MathLoggerDriver> math_log_driver;
+        BendersLoggerBase& benders_loggers;
+    };
+
     BendersFactory(const SimulationOptions& options,
-                   std::shared_ptr<ILogger> logger,
-                   std::shared_ptr<Output::OutputWriter> writer,
-                   std::shared_ptr<MathLoggerDriver> math_log_driver_,
                    int rank,
                    boost::mpi::communicator* world,
-                   BendersLoggerBase& benders_loggers);
+                   Dependencies dependencies);
     auto PrepareForExecution(bool outer_loop) -> std::optional<BendersEnvironment>;
 
 private:
@@ -56,13 +61,10 @@ private:
     void ConfigureSolverLog(BendersBase* benders);
 
     const SimulationOptions& options_;
-    std::shared_ptr<ILogger> logger_;
-    std::shared_ptr<Output::OutputWriter> writer_;
-    std::shared_ptr<MathLoggerDriver> math_log_driver_;
+    Dependencies dependencies_;
     boost::mpi::communicator* world_ = nullptr;
     int rank = 0;
     BENDERSMETHOD method_;
-    BendersLoggerBase& benders_loggers_;
     std::string context_ = bendersmethod_to_string(BENDERSMETHOD::BENDERS);
     static constexpr const char* const LOLD_FILE = "LOLD.txt";
 };
