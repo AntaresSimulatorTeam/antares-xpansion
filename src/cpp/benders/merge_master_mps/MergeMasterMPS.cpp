@@ -1,5 +1,5 @@
 #include "antares-xpansion/benders/merge_master_mps/MergeMasterMPS.h"
-#include "antares-xpansion/benders/merge_master_mps/MasterCoupling.h"
+#include "antares-xpansion/benders/merge_master_mps/MasterCouplingConstants.h"
 
 
 #include <filesystem>
@@ -10,6 +10,93 @@
 #include "antares-xpansion/benders/merge_mps/StandardLp.h"
 #include "antares-xpansion/helpers/Timer.h"
 
+// Anonymous namespace for a local function
+namespace
+{
+Json::Value parse_json_file(const std::filesystem::path& file_name) {
+    Json::Value _input;
+    std::ifstream input_file_l(file_name, std::ifstream::binary);
+    Json::CharReaderBuilder builder_l;
+    std::string errs;
+    if (!parseFromStream(builder_l, input_file_l, &_input, &errs))
+    {
+        using namespace std::string_literals;
+        auto message = LOGLOCATION + "Invalid options file: "s + file_name.string() + "\n" + errs;
+        throw InvalidMasterStructureFileException(message);
+    }
+    return _input;
+}
+}
+
+MergeMasterTrajectoryMPS::TrajectoryGlobalData::TrajectoryGlobalData(const Json::Value& data)
+{
+    using namespace MasterCouplingConstants;
+
+    const auto& initial_capacities_data = data[KEY_INITIAL_CAPACITIES];
+    // Set a default default value
+    initial_capacities[KEY_DEFAULT] = 0;
+    for (const auto& candidate_name : initial_capacities_data.getMemberNames())
+    {
+        initial_capacities[candidate_name] = initial_capacities_data[candidate_name].asDouble();
+    }
+}
+
+MergeMasterTrajectoryMPS::TrajectoryNode::TrajectoryNode(const std::string& node, const Json::Value& data) :
+    name{node}
+{
+    using namespace MasterCouplingConstants;
+
+    path = data[KEY_LP_FOLDER].asString();
+    master_mps_file = data[KEY_MASTER_MPS_FILE].asString();
+    structure_file = data[KEY_STRUCTURE_FILE].asString();
+    if (data.isMember(KEY_PARENT))
+    {
+        parent = data[KEY_PARENT].asString();
+
+        // Compatibility for root given as hardcoded name
+        if (parent == ROOT_NAME)
+        {
+            parent = std::nullopt;
+        }
+    }
+    weight = data[KEY_WEIGHT_FACTOR].asDouble();
+    
+    // If a MASTER_NAME is given, set it (used when accesing the structure file)
+    if (data.isMember(KEY_MASTER_NAME))
+    {
+        master_name = data[KEY_MASTER_NAME].asString();
+    }
+
+    // Constraints TBA
+}
+
+void MergeMasterTrajectoryMPS::read_master_structure(const std::filesystem::path& path) 
+{
+    using namespace MasterCouplingConstants;
+    
+    const auto input = parse_json_file(path);
+
+    // Read the node by node data
+    for (const auto& node_name : input.getMemberNames())
+    {
+        if (node_name == KEY_DATA)
+            continue;
+
+        const auto& node_data = input[node_name];
+        master_coupling_.emplace(std::make_pair(
+            node_name,
+            TrajectoryNode(node_name, node_data)
+        ));
+    }
+
+    logger_->display_message("Master coupling map generated successfully.");
+    logger_->display_message("Number of nodes: " + std::to_string(master_coupling_.size()));
+
+    // Read the global trajectory data
+    const auto& general_data = input[KEY_DATA];
+    trajectory_data_ = TrajectoryGlobalData(general_data);
+}
+
 
 std::string MergeMasterTrajectoryMPS::make_prefix_from_node(const std::string& node_name) const
 {
@@ -18,6 +105,8 @@ std::string MergeMasterTrajectoryMPS::make_prefix_from_node(const std::string& n
 
 double MergeMasterTrajectoryMPS::get_candidate_initial_value(const std::string& candidate) const
 {
+    using namespace MasterCouplingConstants;
+
     double initial_value = 0;
     auto it = trajectory_data_.initial_capacities.find(candidate);
     if (it != trajectory_data_.initial_capacities.end())
@@ -26,7 +115,8 @@ double MergeMasterTrajectoryMPS::get_candidate_initial_value(const std::string& 
     }
     else
     {
-        initial_value = trajectory_data_.initial_capacities.at(MasterCouplingConstants::KEY_DEFAULT);
+        logger_->display_message("Did not find candidate " + candidate + " 's initial value, looking up key" + KEY_DEFAULT);
+        initial_value = trajectory_data_.initial_capacities.at(KEY_DEFAULT);
     }
 
     return initial_value;
@@ -41,11 +131,7 @@ void MergeMasterTrajectoryMPS::build_problem()
     auto structure_path(inputRootDir / options_.STRUCTURE_FILE);
     logger_->display_message("Trying to parse structure file at " + std::string(structure_path));
 
-    const auto& data_pair = 
-        MasterCouplingMapGenerator::BuildInput(structure_path, logger_.get());
-    // Unecessary copy ?
-    trajectory_data_ = data_pair.first;
-    master_coupling_ = data_pair.second;
+    read_master_structure(structure_path);
 
     // Check that the problem format is compatible with the solver
     if(options_.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE
@@ -63,26 +149,14 @@ void MergeMasterTrajectoryMPS::build_problem()
     for (const auto& [node_name, node_data] : master_coupling_)
     {
 
-        auto problem_file = std::filesystem::path(options_.INPUTROOT) / node_data.lp_folder / node_data.master_mps_file;
-        SolverAbstract::Ptr solver_local = factory.create_solver(options_.SOLVER_NAME);
+        SolverAbstract::Ptr solver_local = get_local_solver(options_.INPUTROOT / node_data.path, node_data.master_mps_file);
         solver_local->set_output_log_level(options_.LOG_LEVEL);
 
         // Read the problem
-        logger_->display_message("Reading problem " + problem_file.string());
-
-        if(options_.PROBLEMS_FORMAT == ProblemsFormat::MPS_FILE)
-        {
-            logger_->display_message("Reading under the MPS format");
-            solver_local->read_prob_mps(problem_file);
-        } 
-        else if (options_.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE)
-        {
-            logger_->display_message("Reading a saved file format");
-            solver_local->restore_prob(problem_file);
-        }    
+        logger_->display_message("Reading problem " + (options_.INPUTROOT / node_data.path / node_data.master_mps_file).string());
 
         // Multiply the objective function by the weight factor
-        double weight_factor = node_data.weight_factor;
+        double weight_factor = node_data.weight;
         logger_->display_message("Weight factor for node " + node_name + " : " + std::to_string(weight_factor));
         AbstractMergeMPS::multiply_obj_by_weight_factor(*solver_local, weight_factor);
 
@@ -94,13 +168,13 @@ void MergeMasterTrajectoryMPS::build_problem()
         // Load the coupling map (structure file) for this node
         // It will be used to iterate through the investment candidates in the node and get their position in the merged problem
         CouplingMap node_coupling_map = CouplingMapGenerator::BuildInput(
-            std::filesystem::path(options_.INPUTROOT) / node_data.lp_folder / node_data.structure_file,
+            std::filesystem::path(options_.INPUTROOT) / node_data.path / node_data.structure_file,
             logger_.get()
         );
 
         // Second step : get the candidate's position in the merged problem
-        // The coupling map must contain the key given in the master_name of the node's data
-        // By default if not given, we assume the name to be "master"
+        // Perhaps we could think of a way to include / use AbstractMergeMPS::merge_local_solver
+        // But it does not do exactly what we do here for now
         for (const auto& [candidate_name, _] : node_coupling_map[node_data.master_name])
         {
             std::string candidate_name_prefixed = varPrefix_local + candidate_name;
@@ -127,8 +201,7 @@ void MergeMasterTrajectoryMPS::build_problem()
         {
             if (subproblem == node_data.master_name)
                 continue;
-            std::string subproblem_path = std::filesystem::path(node_data.lp_folder)
-                / subproblem;
+            std::string subproblem_path = node_data.path / subproblem;
             for (const auto& [candidate_name, position] : positions)
             {
                 std::string candidate_name_prefixed = varPrefix_local + candidate_name;
@@ -142,8 +215,10 @@ void MergeMasterTrajectoryMPS::build_problem()
 
     // Add the delta variables and the constraints that define them
     add_delta_variables();
+    logger_->display_message("Delta Variables added successfully");
 
     add_delta_variables_constraints();
+    logger_->display_message("Delta variables constraints added successfully");
 
     logger_->display_message("Problems merged.");
 }
@@ -240,15 +315,18 @@ void MergeMasterTrajectoryMPS::add_delta_variables_constraints(
 
     for (const auto& [node_name, node_data] : master_coupling_)
     {
-        std::string parent_node_name = node_data.parent;
-
-        for (const auto& [candidate, _] : candidates_coupling_)
+        
+        if (node_data.parent == std::nullopt)
         {
-            if (parent_node_name == MasterCouplingConstants::ROOT_NAME) {
+            for (const auto& [candidate, _] : candidates_coupling_)
+            {
                 // The constraint is :
                 // current::candidate - dx_plus + dx_minus = initial_value
                 // Get the initial value if available, use the default value otherwise
                 double initial_value = get_candidate_initial_value(candidate);
+                logger_->display_message(
+                    "Looking up positions for candidate : " + candidate + " -- at node : " + node_name
+                );
                 const auto& current_candidate_indexes = candidates_coupling_.at(candidate).at(node_name);
 
                 var_offsets.push_back(var_indices.size());
@@ -264,10 +342,22 @@ void MergeMasterTrajectoryMPS::add_delta_variables_constraints(
                 constraint_type.push_back('E');
 
             }
-            else
+        }
+        else
+        {
+            const std::string& parent_node_name = node_data.parent.value();
+
+            for (const auto& [candidate, _] : candidates_coupling_)
             {
                 // The constraint is :
                 // current::candidate - parent::candidate - dx_plus + dx_minus = 0
+
+                logger_->display_message(
+                    "Looking up positions for candidate : " + candidate + " -- at node : " + node_name
+                );
+                logger_->display_message(
+                    "Looking up positions for candidate : " + candidate + " -- at parent node : " + parent_node_name
+                );
                 int parent_candidate_index = candidates_coupling_.at(candidate).at(parent_node_name).capacity;
                 const auto& current_candidate_indexes = candidates_coupling_.at(candidate).at(node_name);
                 
@@ -298,5 +388,18 @@ void MergeMasterTrajectoryMPS::add_delta_variables_constraints(
 void MergeMasterTrajectoryMPS::add_coupling_constraints()
 {
     // TODO : add the trajectory constraints
+    // We need to define them first
     return;
 }
+
+
+/**
+ * \brief Merge and solve master and subproblems
+ */
+void MergeMasterTrajectoryMPS::launch()
+{
+    build_problem();
+
+    export_problem();
+}
+

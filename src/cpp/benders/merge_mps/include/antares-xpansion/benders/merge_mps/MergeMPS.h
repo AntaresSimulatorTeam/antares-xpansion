@@ -15,10 +15,7 @@ public:
 
     virtual ~AbstractMergeMPS() = default;
 
-    virtual void launch(bool export_pb = false, bool solve_pb = false) = 0;
-
-private:
-    std::shared_ptr<Output::OutputWriter> writer_;
+    virtual void launch() = 0;
 
 protected:
     // [[nodiscard]] virtual double get_objective_weight(int nb_subproblems,
@@ -33,6 +30,8 @@ protected:
     [[nodiscard]] SolverAbstract::Ptr get_local_solver(const std::filesystem::path& root_dir,
                                                        const std::string& filename) const;
     void multiply_obj_by_weight_factor(SolverAbstract& local_solver, double weight) const;
+
+    // Problem : The implementation is not adapted to what we want to do in the MasterTrajectoryMerge
     VariableMap merge_local_solver(SolverAbstract& local_solver,
                                    const std::string& local_prefix,
                                    const VariableMap& local_var_map,
@@ -64,48 +63,48 @@ private:
     CouplingMap structure_;
 };
 
-class MergeMasterMasterMPS: public AbstractMergeMPS
-{
-public:
-    struct PathwayConstraints
-    {
-        double min_investment;
-        double max_investment;
+// Moved to a new file, to be removed
+// class MergeMasterMasterMPS: public AbstractMergeMPS
+// {
+// public:
+//     struct PathwayConstraints
+//     {
+//         double min_investment;
+//         double max_investment;
 
-        double min_decommissioning;
-        double max_decommissioning;
-    };
+//         double min_decommissioning;
+//         double max_decommissioning;
+//     };
 
-    struct PathwayNode
-    {
-        PathwayNode(const std::string&& node, const Json::Value& data);
+//     struct PathwayNode
+//     {
+//         PathwayNode(const std::string&& node, const Json::Value& data);
 
-        std::string name;
-        std::filesystem::path path{};
+//         std::string name;
+//         std::filesystem::path path{};
 
-        std::optional<std::string> parent{std::nullopt};
-        double weight{1.};
+//         std::optional<std::string> parent{std::nullopt};
+//         double weight{1.};
 
-        VariableMap variables{};
-        std::map<std::string, PathwayConstraints> constraints{};
-    };
+//         VariableMap variables{};
+//         std::map<std::string, PathwayConstraints> constraints{};
+//     };
 
-    using PathwayTree = std::vector<PathwayNode>;
+//     using PathwayTree = std::map<std::string, PathwayNode>;
 
-    MergeMasterMasterMPS(MergeMPSOptions options,
-                         Logger logger,
-                         std::shared_ptr<Output::OutputWriter> writer,
-                         const std::filesystem::path& tree_filename);
+//     MergeMasterMasterMPS(MergeMPSOptions options,
+//                          Logger logger,
+//                          std::shared_ptr<Output::OutputWriter> writer,
+//                          const std::filesystem::path& tree_filename);
 
-    void launch() override;
+//     void launch() override;
 
-private:
-    [[nodiscard]] double get_objective_weight(int nb_subproblems,
-                                              const std::string& name) const;
+// private:
+//     double get_objective_weight(const std::string& name) const;
 
-    void build_problem() override;
-    void add_coupling_constraints() override;
-};
+//     void build_problem() override;
+//     void add_coupling_constraints() override;
+// };
 
 using MergeMPS = MergeMasterSubproblemMPS;
-using MergePathwayMPS = MergeMasterMasterMPS;
+//using MergePathwayMPS = MergeMasterMasterMPS;

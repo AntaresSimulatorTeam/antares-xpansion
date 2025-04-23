@@ -16,6 +16,3 @@ add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/antares_archive_updater")
 
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/benders")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/outer_loop")
-
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/merge_master")
-
