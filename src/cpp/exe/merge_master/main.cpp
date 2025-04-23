@@ -21,17 +21,6 @@ int main(int argc, char** argv)
     usage(argc);
     SimulationOptions options(argv[1]);
     options.print(std::cout);
-
-    // // This is temporary
-    // std::string test_set = "simple_tree";
-    // MergeMasterMPSOptions options {
-    //     .INPUTROOT = "/home/bessinnic/Documents/antares-xpansion/merge_master_test/" + test_set,
-    //     .OUTPUTROOT = "/home/bessinnic/Documents/antares-xpansion/merge_master_test/" + test_set + "/output",
-    //     .STRUCTURE_FILE = "master_structure_minimal.json",
-    //     .SOLVER_TO_USE = "CBC",
-    //     .LOG_LEVEL = 1,
-    // };
-
     std::string output_file = options.OUTPUTROOT + "/output.json";
 
     Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
@@ -44,7 +33,7 @@ int main(int argc, char** argv)
     try
     {
         MergeMasterTrajectoryMPS merge_master_mps(options.get_base_options(), logger, writer);
-        merge_master_mps.launch(); // We hardcode the behaviour for now, no change from previously
+        merge_master_mps.launch();
     }
     catch (std::exception& ex)
     {

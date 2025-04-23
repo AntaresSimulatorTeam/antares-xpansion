@@ -25,7 +25,7 @@ int main(int argc, char** argv)
     try
     {
         MergeMPS merge_mps(options.get_base_options(), logger, writer);
-        merge_mps.launch(); // We hardcode the behaviour for now, no changes from previously
+        merge_mps.launch();
     }
     catch (std::exception& ex)
     {
