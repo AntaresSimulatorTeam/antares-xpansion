@@ -37,11 +37,14 @@ public:
 protected:
     void InitSubProblems();
     void Run();
-    void GenerateRHSGridValues(std::string subPbName);
-    void SetConstraintsRHSValues(const std::map<std::string, double>& rhsValues);
+    void ProcessSubproblem(const std::string& subPbName);
+    std::map<int, AreaConstraintMaps> GenerateRHSGridValues(std::string subPbName,
+                                                            SubproblemWorkerPtr subPbWorker);
+    void SetConstraintsRHSValues(const std::map<std::string, double>& rhsValues,
+                                 SubproblemWorkerPtr subPbWorker);
     std::filesystem::path GetSubproblemPath(const std::string& subPbName) const;
-    void AddSubproblem(const std::string& subPbName);
-    double SolveSubproblem();
+    SubproblemWorkerPtr AddSubproblem(const std::string& subPbName);
+    double SolveSubproblem(SubproblemWorkerPtr subPbWorker);
     std::string GetConstraintName(const std::string& subPbName,
                                   const std::string& area,
                                   const std::string& constraint) const;
@@ -53,10 +56,7 @@ protected:
 
 protected:
     std::filesystem::path xpansionFolderPath; ///< Path to the xpansion folder
-    std::map<int /*gridID*/, AreaConstraintMaps>
-      currentSubPbAreaConstraints;                  ///< Current area constraints to solve
-    std::unique_ptr<SubproblemWorker> currentSubPb; ///< Current subproblem to solve
-    std::vector<std::string> subPbNames;            ///< List of subproblems names
+    std::vector<std::string> subPbNames;      ///< List of subproblems names
 
     SolverLogManager solver_log_manager_;
     Logger _logger;

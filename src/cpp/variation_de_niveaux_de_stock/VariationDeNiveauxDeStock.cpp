@@ -1,6 +1,8 @@
 
 #include "antares-xpansion/variation_de_niveaux_de_stock/VariationDeNiveauxDeStock.h"
 
+#include <algorithm>
+#include <execution>
 #include <fmt/core.h>
 #include <regex>
 #include <utility>
@@ -113,15 +115,17 @@ std::string ValeursUsage::GetConstraintName(const std::string& subPbName,
 /// @brief Add a subproblem to the subproblem map and initialize it with the mps file
 ///        The solver is initialized here
 /// @param pbName The name of the subproblem
-void ValeursUsage::AddSubproblem(const std::string& pbName)
+/// @return The subproblem worker
+SubproblemWorkerPtr ValeursUsage::AddSubproblem(const std::string& pbName)
 {
-    currentSubPb = std::make_unique<SubproblemWorker>(GetSubproblemPath(pbName),
-                                                      1,
-                                                      "XPRESS",
-                                                      0,
-                                                      solver_log_manager_,
-                                                      _logger,
-                                                      ProblemsFormat::MPS_FILE);
+    auto subPbWorker = std::make_shared<SubproblemWorker>(GetSubproblemPath(pbName),
+                                                          1,
+                                                          "XPRESS",
+                                                          0,
+                                                          solver_log_manager_,
+                                                          _logger,
+                                                          ProblemsFormat::MPS_FILE);
+    return subPbWorker;
 }
 
 /// @brief Initialize the subproblems from the mps files in the mps folder
@@ -140,8 +144,14 @@ void ValeursUsage::InitSubProblems()
 
 /// @brief Generate the RHS grid values for each subproblem
 ///        The RHS grid values are generated for each area and each constraint
-void ValeursUsage::GenerateRHSGridValues(std::string subPbName)
+/// @param subPbName The name of the subproblem
+/// @param subPbWorker The subproblem worker
+/// @return The RHS grid values for each subproblem
+std::map<int, AreaConstraintMaps> ValeursUsage::GenerateRHSGridValues(
+  std::string subPbName,
+  SubproblemWorkerPtr subPbWorker)
 {
+    std::map<int, AreaConstraintMaps> gridValues;
     // Compute the grid values using the min and max values of the constraints
     auto generateValues = [&](std::string area,
                               double min,
@@ -162,10 +172,10 @@ void ValeursUsage::GenerateRHSGridValues(std::string subPbName)
             max -= epsilon;
         }
 
-        double min_cst = -currentSubPb->get_rhs_value_from_name(
+        double min_cst = -subPbWorker->get_rhs_value_from_name(
                            GetConstraintName(subPbName, area, min_cst_name))
                          * min_efficiency;
-        double max_cst = currentSubPb->get_rhs_value_from_name(
+        double max_cst = subPbWorker->get_rhs_value_from_name(
           GetConstraintName(subPbName, area, max_cst_name));
 
         int steps = static_cast<int>((max - min) / step);
@@ -177,6 +187,8 @@ void ValeursUsage::GenerateRHSGridValues(std::string subPbName)
             double normalized = min + i * step;
             double value = min_cst + (max_cst - min_cst) * normalized;
             values.push_back(value);
+            // insert in front of the vector
+            // values.insert(values.begin(), value);
         }
 
         return values;
@@ -215,15 +227,16 @@ void ValeursUsage::GenerateRHSGridValues(std::string subPbName)
         if (pbName == "all" || pbName == subPbName)
         {
             // Generate values for the subproblem
-            currentSubPbAreaConstraints[gridID][areaName][cstName] = generateValues(areaName,
-                                                                                    min,
-                                                                                    max,
-                                                                                    step,
-                                                                                    minCst,
-                                                                                    maxCst,
-                                                                                    minEfficiency);
+            gridValues[gridID][areaName][cstName] = generateValues(areaName,
+                                                                   min,
+                                                                   max,
+                                                                   step,
+                                                                   minCst,
+                                                                   maxCst,
+                                                                   minEfficiency);
         }
     }
+    return gridValues;
 }
 
 /// @brief Get the problem info from the problem name
@@ -245,58 +258,70 @@ ScenarioAndWeek ValeursUsage::GetPbInfo(const std::string& pbName) const
 
 /// @brief Set the constraints RHS values for a given subproblem
 /// @param rhsValues The RHS values to set
-void ValeursUsage::SetConstraintsRHSValues(const std::map<std::string, double>& rhsValues)
+/// @param subPbWorker The subproblem worker
+void ValeursUsage::SetConstraintsRHSValues(const std::map<std::string, double>& rhsValues,
+                                           SubproblemWorkerPtr subPbWorker)
 {
     for (const auto& [constraintName, value]: rhsValues)
     {
-        currentSubPb->fix_rhs_to(constraintName, value);
+        subPbWorker->fix_rhs_to(constraintName, value);
     }
 }
 
-/// @brief Runs the evaluation over all subproblems and their constraint combinations.
-/// @details For each subproblem defined in `subPbAreaConstraintsMaps`, this function generates
-///          all possible combinations of right-hand side (RHS) constraint values using
-///          `GenerateSubPbCombos`, applies them to the model via `SetConstraintsRHSValues`,
-///          solves the subproblem using `SolveSubproblem`, and stores the resulting cost
-///          in the `variationDeNiveauxDeStockData` map indexed by scenario, week, and constraint
-///          values.
+/// @brief Runs the ProcessSubproblem method in parallel for each subproblem
 void ValeursUsage::Run()
 {
     // sort subPbNames to ensure consistent order
     std::sort(subPbNames.begin(), subPbNames.end());
-    for (const auto& subPbName: subPbNames)
+    // Use parallel execution for the outer loop using std::for_each
+    std::for_each(std::execution::par,
+                  subPbNames.begin(),
+                  subPbNames.end(),
+                  [&](const std::string& subPbName) { ProcessSubproblem(subPbName); });
+}
+
+/// @brief Process a single subproblem
+/// @details this function generates all possible combinations of right-hand side (RHS) constraint
+///          values using `GenerateSubPbCombos`, applies them to the model via
+///          `SetConstraintsRHSValues`, solves the subproblem using `SolveSubproblem`, and stores
+///          the resulting cost in the `variationDeNiveauxDeStockData` map indexed by scenario,
+///          week, and constraint values.
+/// @param subPbName The name of the subproblem
+void ValeursUsage::ProcessSubproblem(const std::string& subPbName)
+{
+    auto subPbWorker = AddSubproblem(subPbName);
+    auto currentSubPbAreaConstraints = GenerateRHSGridValues(subPbName, subPbWorker);
+
+    for (const auto& [gridID, subPbAreaConstraints]: currentSubPbAreaConstraints)
     {
-        AddSubproblem(subPbName);
-        currentSubPbAreaConstraints.clear();
-        GenerateRHSGridValues(subPbName);
-        for (const auto& [gridID, subPbAreaConstraints]: currentSubPbAreaConstraints)
+        ConstraintCombos subPbCombos = GenerateSubPbCombos(subPbName, subPbAreaConstraints);
+
+        for (const auto& subPbCombo: subPbCombos)
         {
-            ConstraintCombos subPbCombos = GenerateSubPbCombos(subPbName, subPbAreaConstraints);
+            // Each areaCombo is a std::map<std::string, double> with full variable names
+            SetConstraintsRHSValues(subPbCombo, subPbWorker);
+            double cost = SolveSubproblem(subPbWorker);
 
-            for (const auto& subPbCombo: subPbCombos)
-            {
-                // Each areaCombo is a std::map<std::string, double> with full variable names
-                SetConstraintsRHSValues(subPbCombo);
-                double cost = SolveSubproblem();
-
-                variationDeNiveauxDeStockData[{GetPbInfo(subPbName).scenario,
-                                               GetPbInfo(subPbName).week,
-                                               subPbCombo}]
-                  = cost;
-            }
+            // No mutex needed if each thread writes to a unique key
+            variationDeNiveauxDeStockData[{GetPbInfo(subPbName).scenario,
+                                           GetPbInfo(subPbName).week,
+                                           subPbCombo}]
+              = cost;
         }
     }
+    std::cout << "Scenario " << GetPbInfo(subPbName).scenario << " week "
+              << GetPbInfo(subPbName).week << std::endl;
 }
 
 /// @brief Solve the subproblem and return the cost
 /// @param subPbName The name of the subproblem to solve
 /// @return The cost of the subproblem
-double ValeursUsage::SolveSubproblem()
+double ValeursUsage::SolveSubproblem(SubproblemWorkerPtr subPbWorker)
 {
     PlainData::SubProblemData subproblem_data;
     Timer subproblem_timer;
-    currentSubPb->solve(subproblem_data.lpstatus, ".", "", _writer);
-    currentSubPb->get_value(subproblem_data.subproblem_cost);
+    subPbWorker->solve(subproblem_data.lpstatus, ".", "", _writer);
+    subPbWorker->get_value(subproblem_data.subproblem_cost);
 
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 
@@ -316,6 +341,10 @@ void ValeursUsage::launch()
     std::cout << "Launching Stock level variation" << std::endl;
 
     InitSubProblems();
+    // Time the Run time
+    Timer run_timer;
     Run();
+    auto run_time = run_timer.elapsed();
+    std::cout << "Stock level variation done in " << run_time << " seconds" << std::endl;
     WriteOutput();
 }
