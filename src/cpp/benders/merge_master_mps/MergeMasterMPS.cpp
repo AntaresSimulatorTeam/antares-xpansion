@@ -52,11 +52,11 @@ MergeMasterTrajectoryMPS::TrajectoryNode::TrajectoryNode(const std::string& node
     // Constraints TBA
 }
 
-void MergeMasterTrajectoryMPS::read_master_structure(const std::filesystem::path& path) 
+void MergeMasterTrajectoryMPS::read_tree_structure_file() 
 {
     using namespace MasterCouplingConstants;
     
-    const auto input = get_json_file_content(path);
+    const auto input = get_json_file_content(tree_path_);
 
     // Read the node by node data
     for (const auto& node_name : input.getMemberNames())
@@ -106,7 +106,7 @@ void MergeMasterTrajectoryMPS::build_problem()
     logger_->display_message("Inside MergeMasterTrajectoryMPS::build_problem()");
     logger_->display_message("Trying to parse structure file at " + std::string(tree_path_));
 
-    read_master_structure(tree_path_);
+    read_tree_structure_file();
 
     // Check that the problem format is compatible with the solver
     if(options_.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE

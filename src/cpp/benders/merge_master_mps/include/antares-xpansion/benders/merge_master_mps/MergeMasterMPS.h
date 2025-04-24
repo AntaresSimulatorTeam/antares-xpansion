@@ -80,7 +80,7 @@ public:
 
 private:
     // Initilization : reading the master structure file
-    void read_master_structure(const std::filesystem::path& path);
+    void read_tree_structure_file();
     // Methods specific to this derived class
     void add_delta_variables();
     void add_delta_variables_constraints();
