@@ -101,13 +101,13 @@ struct GridPointData
 
 typedef std::vector<GridPointData> GridPointsData;
 
-struct ValeursUsageKey
+struct VariationDeNiveauxDeStockKey
 {
     int scenario;
     int week;
     Point rhsValues;
 
-    bool operator<(const ValeursUsageKey& other) const
+    bool operator<(const VariationDeNiveauxDeStockKey& other) const
     {
         if (scenario != other.scenario)
         {
@@ -121,7 +121,7 @@ struct ValeursUsageKey
     }
 };
 
-typedef std::map<ValeursUsageKey, double> ValeursUsageData;
+typedef std::map<VariationDeNiveauxDeStockKey, double> VariationDeNiveauxDeStockData;
 
 struct ProblemData
 {

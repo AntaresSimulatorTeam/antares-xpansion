@@ -27,6 +27,6 @@ add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/sensitivity")
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/full_run")
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/study-updater")
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/grid_search")
-add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/valeurs_usage")
+add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/variation_de_niveaux_de_stock")
 
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/exe")

@@ -22,7 +22,7 @@ endif ()
 # --------------------------------------------------------------------------
 add_subdirectory(benders)
 add_subdirectory(grid_search)
-add_subdirectory(valeurs_usage)
+add_subdirectory(variation_de_niveaux_de_stock)
 add_subdirectory(full_run)
 add_subdirectory(helpers)
 add_subdirectory(json_output_writer)

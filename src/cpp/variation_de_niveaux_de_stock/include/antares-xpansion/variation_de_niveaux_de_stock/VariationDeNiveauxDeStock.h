@@ -8,7 +8,6 @@
 
 using ConstraintMap = std::map<std::string /*constraint name*/, std::vector<double> /*rhs values*/>;
 using AreaConstraintMaps = std::map<std::string /*area name*/, ConstraintMap>;
-using SubPbConstraintMaps = std::map<std::string /*subPb name*/, AreaConstraintMaps>;
 using ConstraintCombos = std::vector<
   std::map<std::string /*constraint name*/, double /*rhs value*/>>;
 
@@ -23,7 +22,7 @@ struct ScenarioAndWeek
     }
 };
 
-/// @brief Class to compute the valeurs d'usage
+/// @brief Class to compute  Stock levels variation
 class ValeursUsage
 {
 public:
@@ -32,17 +31,17 @@ public:
                  std::filesystem::path path_to_data);
     void launch();
 
-    Output::ValeursUsageData valeursUsageData; //!< Data to write in the output file
+    Output::VariationDeNiveauxDeStockData
+      variationDeNiveauxDeStockData; //!< Data to write in the output file
 
 protected:
     void InitSubProblems();
     void Run();
-    void GenerateRHSGridValues();
-    void SetConstraintsRHSValues(const std::string& pbName,
-                                 const std::map<std::string, double>& rhsValues);
+    void GenerateRHSGridValues(std::string subPbName);
+    void SetConstraintsRHSValues(const std::map<std::string, double>& rhsValues);
     std::filesystem::path GetSubproblemPath(const std::string& subPbName) const;
-    void AddSubproblem(const std::string& problem_name);
-    double SolveSubproblem(const std::string& subPbName);
+    void AddSubproblem(const std::string& subPbName);
+    double SolveSubproblem();
     std::string GetConstraintName(const std::string& subPbName,
                                   const std::string& area,
                                   const std::string& constraint) const;
@@ -53,9 +52,11 @@ protected:
     void WriteOutput();
 
 protected:
-    std::filesystem::path xpansionFolderPath;     ///< Path to the xpansion folder
-    SubPbConstraintMaps subPbAreaConstraintsMaps; ///< Map of subproblems and their constraints
-    SubproblemsMapPtr subProblems;                ///< Map of subproblems workers
+    std::filesystem::path xpansionFolderPath; ///< Path to the xpansion folder
+    std::map<int /*gridID*/, AreaConstraintMaps>
+      currentSubPbAreaConstraints;                  ///< Current area constraints to solve
+    std::unique_ptr<SubproblemWorker> currentSubPb; ///< Current subproblem to solve
+    std::vector<std::string> subPbNames;            ///< List of subproblems names
 
     SolverLogManager solver_log_manager_;
     Logger _logger;

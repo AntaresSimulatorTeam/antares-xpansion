@@ -1,5 +1,5 @@
 
-#include "antares-xpansion/valeurs_usage/ValeursUsage.h"
+#include "antares-xpansion/variation_de_niveaux_de_stock/VariationDeNiveauxDeStock.h"
 
 #include <fmt/core.h>
 #include <regex>
@@ -115,13 +115,13 @@ std::string ValeursUsage::GetConstraintName(const std::string& subPbName,
 /// @param pbName The name of the subproblem
 void ValeursUsage::AddSubproblem(const std::string& pbName)
 {
-    subProblems[pbName] = std::make_shared<SubproblemWorker>(GetSubproblemPath(pbName),
-                                                             1,
-                                                             "XPRESS",
-                                                             0,
-                                                             solver_log_manager_,
-                                                             _logger,
-                                                             ProblemsFormat::MPS_FILE);
+    currentSubPb = std::make_unique<SubproblemWorker>(GetSubproblemPath(pbName),
+                                                      1,
+                                                      "XPRESS",
+                                                      0,
+                                                      solver_log_manager_,
+                                                      _logger,
+                                                      ProblemsFormat::MPS_FILE);
 }
 
 /// @brief Initialize the subproblems from the mps files in the mps folder
@@ -133,19 +133,17 @@ void ValeursUsage::InitSubProblems()
     {
         if (entry.path().extension() == ".mps")
         {
-            AddSubproblem(entry.path().stem().string());
+            subPbNames.push_back(entry.path().stem().string() + ".mps");
         }
     }
-    GenerateRHSGridValues();
 }
 
 /// @brief Generate the RHS grid values for each subproblem
 ///        The RHS grid values are generated for each area and each constraint
-void ValeursUsage::GenerateRHSGridValues()
+void ValeursUsage::GenerateRHSGridValues(std::string subPbName)
 {
     // Compute the grid values using the min and max values of the constraints
-    auto generateValues = [&](std::string pbName,
-                              std::string area,
+    auto generateValues = [&](std::string area,
                               double min,
                               double max,
                               double step,
@@ -153,11 +151,22 @@ void ValeursUsage::GenerateRHSGridValues()
                               std::string max_cst_name,
                               double min_efficiency)
     {
-        double min_cst = -subProblems[pbName]->get_rhs_value_from_name(
-                           GetConstraintName(pbName, area, min_cst_name))
+        constexpr double epsilon = 1e-1;
+
+        if (min == 0.0)
+        {
+            min += epsilon;
+        }
+        if (max == 1.0)
+        {
+            max -= epsilon;
+        }
+
+        double min_cst = -currentSubPb->get_rhs_value_from_name(
+                           GetConstraintName(subPbName, area, min_cst_name))
                          * min_efficiency;
-        double max_cst = subProblems[pbName]->get_rhs_value_from_name(
-          GetConstraintName(pbName, area, max_cst_name));
+        double max_cst = currentSubPb->get_rhs_value_from_name(
+          GetConstraintName(subPbName, area, max_cst_name));
 
         int steps = static_cast<int>((max - min) / step);
         std::vector<double> values;
@@ -190,6 +199,7 @@ void ValeursUsage::GenerateRHSGridValues()
             tokens[i++] = token;
         }
 
+        int gridID = std::stoi(tokens[0]);
         std::string pbName = tokens[1];
         std::string areaName = tokens[4];
         std::string cstName = tokens[3];
@@ -202,32 +212,16 @@ void ValeursUsage::GenerateRHSGridValues()
         std::string maxCst = tokens[9];
         double minEfficiency = std::stod(tokens[10]);
 
-        if (pbName == "all")
+        if (pbName == "all" || pbName == subPbName)
         {
-            // Generate values for all subproblems
-            for (const auto& [subPbName, _]: subProblems)
-            {
-                subPbAreaConstraintsMaps[subPbName][areaName][cstName] = generateValues(
-                  subPbName,
-                  areaName,
-                  min,
-                  max,
-                  step,
-                  minCst,
-                  maxCst,
-                  minEfficiency);
-            }
-        }
-        else
-        {
-            subPbAreaConstraintsMaps[pbName][areaName][cstName] = generateValues(pbName,
-                                                                                 areaName,
-                                                                                 min,
-                                                                                 max,
-                                                                                 step,
-                                                                                 minCst,
-                                                                                 maxCst,
-                                                                                 minEfficiency);
+            // Generate values for the subproblem
+            currentSubPbAreaConstraints[gridID][areaName][cstName] = generateValues(areaName,
+                                                                                    min,
+                                                                                    max,
+                                                                                    step,
+                                                                                    minCst,
+                                                                                    maxCst,
+                                                                                    minEfficiency);
         }
     }
 }
@@ -250,14 +244,12 @@ ScenarioAndWeek ValeursUsage::GetPbInfo(const std::string& pbName) const
 }
 
 /// @brief Set the constraints RHS values for a given subproblem
-/// @param pbName The subproblem name
 /// @param rhsValues The RHS values to set
-void ValeursUsage::SetConstraintsRHSValues(const std::string& pbName,
-                                           const std::map<std::string, double>& rhsValues)
+void ValeursUsage::SetConstraintsRHSValues(const std::map<std::string, double>& rhsValues)
 {
     for (const auto& [constraintName, value]: rhsValues)
     {
-        subProblems[pbName]->fix_rhs_to(constraintName, value);
+        currentSubPb->fix_rhs_to(constraintName, value);
     }
 }
 
@@ -266,21 +258,32 @@ void ValeursUsage::SetConstraintsRHSValues(const std::string& pbName,
 ///          all possible combinations of right-hand side (RHS) constraint values using
 ///          `GenerateSubPbCombos`, applies them to the model via `SetConstraintsRHSValues`,
 ///          solves the subproblem using `SolveSubproblem`, and stores the resulting cost
-///          in the `valeursUsageData` map indexed by scenario, week, and constraint values.
+///          in the `variationDeNiveauxDeStockData` map indexed by scenario, week, and constraint
+///          values.
 void ValeursUsage::Run()
 {
-    for (const auto& [subPbName, areasConstraints]: subPbAreaConstraintsMaps)
+    // sort subPbNames to ensure consistent order
+    std::sort(subPbNames.begin(), subPbNames.end());
+    for (const auto& subPbName: subPbNames)
     {
-        ConstraintCombos subPbCombos = GenerateSubPbCombos(subPbName, areasConstraints);
-
-        for (const auto& subPbCombo: subPbCombos)
+        AddSubproblem(subPbName);
+        currentSubPbAreaConstraints.clear();
+        GenerateRHSGridValues(subPbName);
+        for (const auto& [gridID, subPbAreaConstraints]: currentSubPbAreaConstraints)
         {
-            // Each areaCombo is a std::map<std::string, double> with full variable names
-            SetConstraintsRHSValues(subPbName, subPbCombo);
-            double cost = SolveSubproblem(subPbName);
+            ConstraintCombos subPbCombos = GenerateSubPbCombos(subPbName, subPbAreaConstraints);
 
-            valeursUsageData[{GetPbInfo(subPbName).scenario, GetPbInfo(subPbName).week, subPbCombo}]
-              = cost;
+            for (const auto& subPbCombo: subPbCombos)
+            {
+                // Each areaCombo is a std::map<std::string, double> with full variable names
+                SetConstraintsRHSValues(subPbCombo);
+                double cost = SolveSubproblem();
+
+                variationDeNiveauxDeStockData[{GetPbInfo(subPbName).scenario,
+                                               GetPbInfo(subPbName).week,
+                                               subPbCombo}]
+                  = cost;
+            }
         }
     }
 }
@@ -288,13 +291,12 @@ void ValeursUsage::Run()
 /// @brief Solve the subproblem and return the cost
 /// @param subPbName The name of the subproblem to solve
 /// @return The cost of the subproblem
-double ValeursUsage::SolveSubproblem(const std::string& subPbName)
+double ValeursUsage::SolveSubproblem()
 {
     PlainData::SubProblemData subproblem_data;
-    auto worker = subProblems[subPbName];
     Timer subproblem_timer;
-    worker->solve(subproblem_data.lpstatus, ".", "", _writer);
-    worker->get_value(subproblem_data.subproblem_cost);
+    currentSubPb->solve(subproblem_data.lpstatus, ".", "", _writer);
+    currentSubPb->get_value(subproblem_data.subproblem_cost);
 
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 
@@ -304,14 +306,14 @@ double ValeursUsage::SolveSubproblem(const std::string& subPbName)
 /// @brief Write the output to the json file
 void ValeursUsage::WriteOutput()
 {
-    _writer->write_ValeursUsage(valeursUsageData);
+    _writer->write_VariationDeNiveauxDeStock(variationDeNiveauxDeStockData);
     _writer->dump();
 }
 
-/// @brief Launch the valeurs d'usage computation
+/// @brief Launch the Stock level variation computation
 void ValeursUsage::launch()
 {
-    std::cout << "Launching valeurs d'usage" << std::endl;
+    std::cout << "Launching Stock level variation" << std::endl;
 
     InitSubProblems();
     Run();

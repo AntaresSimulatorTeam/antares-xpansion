@@ -1,7 +1,7 @@
 
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
-#include "antares-xpansion/valeurs_usage/ValeursUsage.h"
+#include "antares-xpansion/variation_de_niveaux_de_stock/VariationDeNiveauxDeStock.h"
 
 int main(int argc, char** argv)
 {

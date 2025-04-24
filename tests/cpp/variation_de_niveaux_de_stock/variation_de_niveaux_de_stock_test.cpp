@@ -5,7 +5,7 @@
 #include "antares-xpansion/benders/benders_core/BendersMathLogger.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
-#include "antares-xpansion/valeurs_usage/ValeursUsage.h"
+#include "antares-xpansion/variation_de_niveaux_de_stock/VariationDeNiveauxDeStock.h"
 #include "gtest/gtest.h"
 
 #define EXPECT_NEAR_REL(val1, val2, rel_tol)                                                       \
@@ -84,7 +84,7 @@ TEST_F(GridSearchTest, MPSUseCaseValeursUsage)
     valeurs_usage.launch();
 
     auto output_costs = getOutputCosts();
-    for (const auto& [key, cost]: valeurs_usage.valeursUsageData)
+    for (const auto& [key, cost]: valeurs_usage.variationDeNiveauxDeStockData)
     {
         ScenarioAndWeek keyStruct{key.scenario, key.week};
 

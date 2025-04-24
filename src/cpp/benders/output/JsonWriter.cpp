@@ -129,7 +129,7 @@ void JsonWriter::write_grid_point(const GridPointData& grid_point_data)
     _output[GRID_POINTS_C][strGridPointCnt_l][OVERALL_COST_C] = grid_point_data.overall_cost;
 }
 
-void JsonWriter::write_ValeursUsage(const ValeursUsageData& valeurs_usage)
+void JsonWriter::write_VariationDeNiveauxDeStock(const VariationDeNiveauxDeStockData& valeurs_usage)
 {
     // Map to store a vector of ValeursUsage for each scenario and week pair
     std::map<std::pair<int, int>, Json::Value> scenario_week_map;
@@ -140,19 +140,19 @@ void JsonWriter::write_ValeursUsage(const ValeursUsageData& valeurs_usage)
             scenario_week_map[{key.scenario, key.week}] = Json::Value(Json::arrayValue);
         }
 
-        Json::Value valeursUsage;
-        valeursUsage[OPERATIONAL_COST_C] = cost;
+        Json::Value variationDeNiveauxDeStock;
+        variationDeNiveauxDeStock[OPERATIONAL_COST_C] = cost;
         for (const auto& [cst, val]: key.rhsValues)
         {
-            valeursUsage["RHS"][cst] = val;
+            variationDeNiveauxDeStock["RHS"][cst] = val;
         }
-        scenario_week_map[{key.scenario, key.week}].append(valeursUsage);
+        scenario_week_map[{key.scenario, key.week}].append(variationDeNiveauxDeStock);
     }
-    for (const auto& [key, vectValeursUsage]: scenario_week_map)
+    for (const auto& [key, vectVariationDeNiveauxDeStock]: scenario_week_map)
     {
         _output["Scenario"][std::to_string(key.first)]["Week"][std::to_string(key.second)]
-               ["ValeursUsage"]
-          = vectValeursUsage;
+               ["VariationDeNiveauxDeStock"]
+          = vectVariationDeNiveauxDeStock;
     }
 }
 
