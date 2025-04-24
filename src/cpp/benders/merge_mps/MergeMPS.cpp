@@ -397,167 +397,167 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
     solver_addrows(*ptr_merged_solver_, qrtype, rhs, {}, mstart, mclind, dmatval);
 }
 
-MergeMasterMasterMPS::PathwayNode::PathwayNode(const std::string&& node, const Json::Value& data):
-    name(node)
-{
-    // TODO improve parsing of json file
-    path = std::filesystem::path(data["path"].asString());
+// MergeMasterMasterMPS::PathwayNode::PathwayNode(const std::string&& node, const Json::Value& data):
+//     name(node)
+// {
+//     // TODO improve parsing of json file
+//     path = std::filesystem::path(data["path"].asString());
 
-    if (data.isMember("parent"))
-    {
-        parent = data["parent"].asString();
-    }
+//     if (data.isMember("parent"))
+//     {
+//         parent = data["parent"].asString();
+//     }
 
-    weight = data["weight"].asDouble();
+//     weight = data["weight"].asDouble();
 
-    for (const auto& var_name: data["constraints"].getMemberNames())
-    {
-        const auto& variable = data["constraints"][var_name];
+//     for (const auto& var_name: data["constraints"].getMemberNames())
+//     {
+//         const auto& variable = data["constraints"][var_name];
 
-        constraints[var_name].min_investment = variable["min_investment"].asDouble();
-        constraints[var_name].max_investment = variable["max_investment"].asDouble();
-        constraints[var_name].min_decommissioning = variable["min_decommissioning"].asDouble();
-        constraints[var_name].max_decommissioning = variable["max_decommissioning"].asDouble();
-    }
-}
+//         constraints[var_name].min_investment = variable["min_investment"].asDouble();
+//         constraints[var_name].max_investment = variable["max_investment"].asDouble();
+//         constraints[var_name].min_decommissioning = variable["min_decommissioning"].asDouble();
+//         constraints[var_name].max_decommissioning = variable["max_decommissioning"].asDouble();
+//     }
+// }
 
-MergeMasterMasterMPS::MergeMasterMasterMPS(MergeMPSOptions options,
-                                           Logger logger,
-                                           std::shared_ptr<Output::OutputWriter> writer,
-                                           const std::filesystem::path& tree_filename):
-    AbstractMergeMPS(options, logger, writer)
-{
-    const auto tree_json = get_json_file_content(tree_filename);
-    for (Json::String tree_node: tree_json.getMemberNames())
-    {
-        const Json::Value& data = tree_json[tree_node];
-        tree_.emplace_back(std::move(tree_node), data);
-    }
+// MergeMasterMasterMPS::MergeMasterMasterMPS(MergeMPSOptions options,
+//                                            Logger logger,
+//                                            std::shared_ptr<Output::OutputWriter> writer,
+//                                            const std::filesystem::path& tree_filename):
+//     AbstractMergeMPS(options, logger, writer)
+// {
+//     const auto tree_json = get_json_file_content(tree_filename);
+//     for (Json::String tree_node: tree_json.getMemberNames())
+//     {
+//         const Json::Value& data = tree_json[tree_node];
+//         tree_.emplace_back(std::move(tree_node), data);
+//     }
 
-    // TODO Add coherence check for parents?
-}
+//     // TODO Add coherence check for parents?
+// }
 
-/**
- * \brief Merge and master problems
- */
-void MergeMasterMasterMPS::launch()
-{
-    build_problem();
-    export_problem();
-}
+// /**
+//  * \brief Merge and master problems
+//  */
+// void MergeMasterMasterMPS::launch()
+// {
+//     build_problem();
+//     export_problem();
+// }
 
-/**
- * \brief Build merged problem
- */
-void MergeMasterMasterMPS::build_problem()
-{
-    const auto root_dir{std::filesystem::path(options_.INPUTROOT)};
+// /**
+//  * \brief Build merged problem
+//  */
+// void MergeMasterMasterMPS::build_problem()
+// {
+//     const auto root_dir{std::filesystem::path(options_.INPUTROOT)};
 
-    logger_->display_message("Merging master problems...");
+//     logger_->display_message("Merging master problems...");
 
-    int current_prob_id{0};
-    for (auto& tree_node: tree_)
-    {
-        const auto node_path{root_dir / tree_node.path};
+//     int current_prob_id{0};
+//     for (auto& tree_node: tree_)
+//     {
+//         const auto node_path{root_dir / tree_node.path};
 
-        const CouplingMap local_structure = CouplingMapGenerator::BuildInput(
-          node_path / options_.STRUCTURE_FILE,
-          logger_.get(),
-          "Merge Master mps");
+//         const CouplingMap local_structure = CouplingMapGenerator::BuildInput(
+//           node_path / options_.STRUCTURE_FILE,
+//           logger_.get(),
+//           "Merge Master mps");
 
-        for (const auto& [filename, var_map]:
-             local_structure
-               | std::views::filter([this](const auto& pair)
-                                    { return pair.first == options_.MASTER_NAME; }))
-        {
-            SolverAbstract::Ptr ptr_solver = get_local_solver(node_path, filename);
+//         for (const auto& [filename, var_map]:
+//              local_structure
+//                | std::views::filter([this](const auto& pair)
+//                                     { return pair.first == options_.MASTER_NAME; }))
+//         {
+//             SolverAbstract::Ptr ptr_solver = get_local_solver(node_path, filename);
 
-            // Change the weight of coeff in the objective function
-            multiply_obj_by_weight_factor(*ptr_solver, tree_node.weight);
+//             // Change the weight of coeff in the objective function
+//             multiply_obj_by_weight_factor(*ptr_solver, tree_node.weight);
 
-            const std::string local_prefix = "prob" + std::to_string(current_prob_id++) + "_";
-            tree_node.variables = merge_local_solver(*ptr_solver, local_prefix, var_map, filename);
-        }
-    }
+//             const std::string local_prefix = "prob" + std::to_string(current_prob_id++) + "_";
+//             tree_node.variables = merge_local_solver(*ptr_solver, local_prefix, var_map, filename);
+//         }
+//     }
 
-    add_coupling_constraints();
-}
+//     add_coupling_constraints();
+// }
 
-/**
- * \brief Add coupling equality constraints between master problems
- */
-void MergeMasterMasterMPS::add_coupling_constraints()
-{
-    // For each node, 2 constraints per variable
-    // For each constraint, 2 columns
-    const size_t nb_rows_reserve = 2 * tree_.size() * tree_[0].variables.size();
-    const size_t nb_elem_reserve = 2 * nb_rows_reserve;
+// /**
+//  * \brief Add coupling equality constraints between master problems
+//  */
+// void MergeMasterMasterMPS::add_coupling_constraints()
+// {
+//     // For each node, 2 constraints per variable
+//     // For each constraint, 2 columns
+//     const size_t nb_rows_reserve = 2 * tree_.size() * tree_[0].variables.size();
+//     const size_t nb_elem_reserve = 2 * nb_rows_reserve;
 
-    std::vector<int> mclind;     // Variables' indices
-    std::vector<double> dmatval; // Variables' values
-    dmatval.reserve(nb_elem_reserve);
-    mclind.reserve(nb_elem_reserve);
+//     std::vector<int> mclind;     // Variables' indices
+//     std::vector<double> dmatval; // Variables' values
+//     dmatval.reserve(nb_elem_reserve);
+//     mclind.reserve(nb_elem_reserve);
 
-    std::vector<int> mstart;  // Constraints' offsets
-    std::vector<double> rhs;  // Constraints' rhs
-    std::vector<char> qrtype; // Constraints' types
-    mstart.reserve(nb_rows_reserve + 1);
-    rhs.reserve(nb_rows_reserve);
-    qrtype.reserve(nb_rows_reserve);
+//     std::vector<int> mstart;  // Constraints' offsets
+//     std::vector<double> rhs;  // Constraints' rhs
+//     std::vector<char> qrtype; // Constraints' types
+//     mstart.reserve(nb_rows_reserve + 1);
+//     rhs.reserve(nb_rows_reserve);
+//     qrtype.reserve(nb_rows_reserve);
 
-    int nb_elem{0};
-    for (const auto& tree_node: tree_)
-    {
-        const auto parent = tree_node.parent.has_value()
-                              ? std::ranges::find(tree_,
-                                                  tree_node.parent.value(),
-                                                  &PathwayNode::name)
-                              : tree_.end();
+//     int nb_elem{0};
+//     for (const auto& tree_node: tree_)
+//     {
+//         const auto parent = tree_node.parent.has_value()
+//                               ? std::ranges::find(tree_,
+//                                                   tree_node.parent.value(),
+//                                                   &PathwayNode::name)
+//                               : tree_.end();
 
-        for (const auto& [var_name, variable]: tree_node.constraints)
-        {
-            const int curr_var_idx = tree_node.variables.at(var_name);
-            const int prev_var_idx = (parent != tree_.end()) ? parent->variables.at(var_name) : -1;
+//         for (const auto& [var_name, variable]: tree_node.constraints)
+//         {
+//             const int curr_var_idx = tree_node.variables.at(var_name);
+//             const int prev_var_idx = (parent != tree_.end()) ? parent->variables.at(var_name) : -1;
 
-            // Max investment
-            mstart.push_back(nb_elem);
+//             // Max investment
+//             mstart.push_back(nb_elem);
 
-            mclind.push_back(curr_var_idx);
-            dmatval.push_back(1);
-            ++nb_elem;
+//             mclind.push_back(curr_var_idx);
+//             dmatval.push_back(1);
+//             ++nb_elem;
 
-            rhs.push_back(variable.max_investment);
-            qrtype.push_back('L');
+//             rhs.push_back(variable.max_investment);
+//             qrtype.push_back('L');
 
-            if (prev_var_idx >= 0) [[likely]]
-            {
-                mclind.push_back(prev_var_idx);
-                dmatval.push_back(-1);
-                ++nb_elem;
-            }
+//             if (prev_var_idx >= 0) [[likely]]
+//             {
+//                 mclind.push_back(prev_var_idx);
+//                 dmatval.push_back(-1);
+//                 ++nb_elem;
+//             }
 
-            // Min investment
-            mstart.push_back(nb_elem);
+//             // Min investment
+//             mstart.push_back(nb_elem);
 
-            mclind.push_back(curr_var_idx);
-            dmatval.push_back(1);
-            ++nb_elem;
+//             mclind.push_back(curr_var_idx);
+//             dmatval.push_back(1);
+//             ++nb_elem;
 
-            rhs.push_back(variable.min_investment);
-            qrtype.push_back('G');
+//             rhs.push_back(variable.min_investment);
+//             qrtype.push_back('G');
 
-            if (prev_var_idx >= 0) [[likely]]
-            {
-                mclind.push_back(prev_var_idx);
-                dmatval.push_back(-1);
-                ++nb_elem;
-            }
+//             if (prev_var_idx >= 0) [[likely]]
+//             {
+//                 mclind.push_back(prev_var_idx);
+//                 dmatval.push_back(-1);
+//                 ++nb_elem;
+//             }
 
-            logger_->display_message(tree_node.name + "__" + var_name
-                                     + " : pathway coupling constraint built");
-        }
-    }
-    mstart.push_back(nb_elem);
+//             logger_->display_message(tree_node.name + "__" + var_name
+//                                      + " : pathway coupling constraint built");
+//         }
+//     }
+//     mstart.push_back(nb_elem);
 
-    solver_addrows(*ptr_merged_solver_, qrtype, rhs, {}, mstart, mclind, dmatval);
-}
+//     solver_addrows(*ptr_merged_solver_, qrtype, rhs, {}, mstart, mclind, dmatval);
+// }

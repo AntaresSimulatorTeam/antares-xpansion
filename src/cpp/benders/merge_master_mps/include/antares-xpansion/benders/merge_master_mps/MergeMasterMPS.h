@@ -11,31 +11,25 @@ public:
         std::runtime_error(arg) {}
 };
 
-// This structure contains the position of the variables in the merged problem
-// Its capacity, corresponding dx_plus and dx_minus
-struct VariablePositions{
-    int capacity = -1;
-    int dx_plus = -1;
-    int dx_minus = -1;
-};
-
-// candidate_name -> node_name -> variable_positions
-typedef std::map<std::string, std::map<std::string, VariablePositions>> CandidatesCouplingMap;
-
-// Contains the names of the candidates, should be sufficient as we want them to be the same everywhere.
-typedef std::set<std::string> CandidatesNames;
-
-
 class MergeMasterTrajectoryMPS : public AbstractMergeMPS
 {
-
 public:
-    // Data
-    using AbstractMergeMPS::AbstractMergeMPS;
+    // Data structures
+
+    // This structure contains the position of the variables in the merged problem
+    // Its capacity, corresponding dx_plus and dx_minus
+    struct VariablePositions{
+        int capacity = -1;
+        int dx_plus = -1;
+        int dx_minus = -1;
+    };
+
+    // candidate_name -> node_name -> variable_positions
+    // This one we need to store as a map to avoid linear time lookup of parent's position
+    typedef std::map<std::string, std::map<std::string, VariablePositions>> CandidatesCouplingMap;
 
     struct TrajectoryGlobalData
     {
-        // I need to define this because I don't like reading the data during the object's construction
         TrajectoryGlobalData() {}; 
         TrajectoryGlobalData(const Json::Value& data);
         
@@ -70,9 +64,16 @@ public:
         //std::map<std::string, TrajectoryConstraints> constraints{};
     };
 
-    using TrajectoryTree = std::map<std::string, TrajectoryNode>;
+    using TrajectoryTree = std::vector<TrajectoryNode>;
 
 public:
+    MergeMasterTrajectoryMPS(MergeMPSOptions options,
+                            Logger logger,
+                            std::shared_ptr<Output::OutputWriter> writer,
+                            const std::filesystem::path& tree_filename) :
+        AbstractMergeMPS(options, logger, writer),
+        tree_path_(tree_filename) {};
+
     // Method
     void launch() override;
 
@@ -87,13 +88,14 @@ private:
     double get_candidate_initial_value(const std::string& candidate) const;
 
     // Overrides
-    void build_problem() override;
-    void add_coupling_constraints() override;
+    void build_problem();
+    void add_coupling_constraints();
 
 
 private : 
-    // Attributes
-    TrajectoryTree master_coupling_; // Contains each node's information
+    // Attribute
+    std::filesystem::path tree_path_;
+    TrajectoryTree tree_; // Contains each node's information
     TrajectoryGlobalData trajectory_data_; // Contains the global trajectory data
     CandidatesCouplingMap candidates_coupling_; // Links the same candidates in different nodes
     CouplingMap structure_;

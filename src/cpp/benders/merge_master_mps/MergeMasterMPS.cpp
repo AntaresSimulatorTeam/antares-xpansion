@@ -10,24 +10,6 @@
 #include "antares-xpansion/benders/merge_mps/StandardLp.h"
 #include "antares-xpansion/helpers/Timer.h"
 
-// Anonymous namespace for a local function
-namespace
-{
-Json::Value parse_json_file(const std::filesystem::path& file_name) {
-    Json::Value _input;
-    std::ifstream input_file_l(file_name, std::ifstream::binary);
-    Json::CharReaderBuilder builder_l;
-    std::string errs;
-    if (!parseFromStream(builder_l, input_file_l, &_input, &errs))
-    {
-        using namespace std::string_literals;
-        auto message = LOGLOCATION + "Invalid options file: "s + file_name.string() + "\n" + errs;
-        throw InvalidMasterStructureFileException(message);
-    }
-    return _input;
-}
-}
-
 MergeMasterTrajectoryMPS::TrajectoryGlobalData::TrajectoryGlobalData(const Json::Value& data)
 {
     using namespace MasterCouplingConstants;
@@ -74,7 +56,7 @@ void MergeMasterTrajectoryMPS::read_master_structure(const std::filesystem::path
 {
     using namespace MasterCouplingConstants;
     
-    const auto input = parse_json_file(path);
+    const auto input = get_json_file_content(path);
 
     // Read the node by node data
     for (const auto& node_name : input.getMemberNames())
@@ -83,14 +65,11 @@ void MergeMasterTrajectoryMPS::read_master_structure(const std::filesystem::path
             continue;
 
         const auto& node_data = input[node_name];
-        master_coupling_.emplace(std::make_pair(
-            node_name,
-            TrajectoryNode(node_name, node_data)
-        ));
+        tree_.emplace_back(TrajectoryNode(node_name, node_data));
     }
 
     logger_->display_message("Master coupling map generated successfully.");
-    logger_->display_message("Number of nodes: " + std::to_string(master_coupling_.size()));
+    logger_->display_message("Number of nodes: " + std::to_string(tree_.size()));
 
     // Read the global trajectory data
     const auto& general_data = input[KEY_DATA];
@@ -124,14 +103,10 @@ double MergeMasterTrajectoryMPS::get_candidate_initial_value(const std::string& 
 
 void MergeMasterTrajectoryMPS::build_problem()
 {
-    logger_->display_message("Inside MergeMasterTrajectoryMPS::build()");
+    logger_->display_message("Inside MergeMasterTrajectoryMPS::build_problem()");
+    logger_->display_message("Trying to parse structure file at " + std::string(tree_path_));
 
-    // Loading the data, could be seperated into a load() function
-    const auto inputRootDir = std::filesystem::path(options_.INPUTROOT);
-    auto structure_path(inputRootDir / options_.STRUCTURE_FILE);
-    logger_->display_message("Trying to parse structure file at " + std::string(structure_path));
-
-    read_master_structure(structure_path);
+    read_master_structure(tree_path_);
 
     // Check that the problem format is compatible with the solver
     if(options_.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE
@@ -142,12 +117,11 @@ void MergeMasterTrajectoryMPS::build_problem()
             "Can only use Xpress with this option" << std::endl;
     }
 
-    SolverFactory factory;
-
     logger_->display_message("Merging master problems...");
 
-    for (const auto& [node_name, node_data] : master_coupling_)
+    for (const auto& node_data : tree_)
     {
+        const std::string& node_name = node_data.name;
 
         SolverAbstract::Ptr solver_local = get_local_solver(options_.INPUTROOT / node_data.path, node_data.master_mps_file);
         solver_local->set_output_log_level(options_.LOG_LEVEL);
@@ -163,6 +137,11 @@ void MergeMasterTrajectoryMPS::build_problem()
         StandardLp lpData(*solver_local);
         std::string varPrefix_local = make_prefix_from_node(node_name);
 
+        // Perhaps we could think of a way to include / use AbstractMergeMPS::merge_local_solver
+        // But it does not do exactly what we do here for now, particularily when building the new structure file
+        // It returns a map : old_var_name -> new_position
+        // Where as we are building : master -> prefixed_var_name -> new_position
+        // And : subproblem -> prefixed_var_name -> unchanged_position
         lpData.append_in(*ptr_merged_solver_, varPrefix_local);
 
         // Load the coupling map (structure file) for this node
@@ -173,8 +152,6 @@ void MergeMasterTrajectoryMPS::build_problem()
         );
 
         // Second step : get the candidate's position in the merged problem
-        // Perhaps we could think of a way to include / use AbstractMergeMPS::merge_local_solver
-        // But it does not do exactly what we do here for now
         for (const auto& [candidate_name, _] : node_coupling_map[node_data.master_name])
         {
             std::string candidate_name_prefixed = varPrefix_local + candidate_name;
@@ -210,9 +187,6 @@ void MergeMasterTrajectoryMPS::build_problem()
         }
     }
 
-    logger_->display_message("After inital merging : master_coupling_ has size : " + std::to_string(master_coupling_.size()));
-    logger_->display_message("candidates_coupling has size : " + std::to_string(candidates_coupling_.size()));
-
     // Add the delta variables and the constraints that define them
     add_delta_variables();
     logger_->display_message("Delta Variables added successfully");
@@ -227,30 +201,31 @@ void MergeMasterTrajectoryMPS::add_delta_variables()
 {
     // We want to add them efficiently : prepare vectors with all the information needed to modify the solver
     // We want to add two variables per candidate per node
-    int delta_variables_count = 2 * candidates_coupling_.size() * master_coupling_.size();
+    int delta_variables_count = 2 * candidates_coupling_.size() * tree_.size();
 
-    // Prepare the vectors
+    // Prepare the vectors & reserve space
     std::vector<double> objective_coefs;
     std::vector<double> lower_bounds;
     std::vector<double> upper_bounds;
     std::vector<char> col_types;
     std::vector<std::string> col_names;
 
-    // Reserve space
     objective_coefs.reserve(delta_variables_count);
     lower_bounds.reserve(delta_variables_count);
     upper_bounds.reserve(delta_variables_count);
     col_types.reserve(delta_variables_count);
-    col_names.reserve(delta_variables_count); // Not very pertinent for a dynamic type like string ?
+    col_names.reserve(delta_variables_count); // Not very useful for a dynamic type like string ?
 
     std::vector<int> mstart_p(delta_variables_count);
     std::iota(mstart_p.begin(), mstart_p.end(), 0);
 
     int n_var_previous = ptr_merged_solver_->get_ncols();
 
-    // First part : adding the variables themselves
-    for (const auto& [node_name, _] : master_coupling_)
+    // Adding the variables themselves
+    for (const auto& node_data : tree_)
     {
+        const std::string& node_name = node_data.name;
+
         std::string node_prefix = make_prefix_from_node(node_name);
         for (auto& [candidate, candidate_data] : candidates_coupling_)
         {   
@@ -296,7 +271,7 @@ void MergeMasterTrajectoryMPS::add_delta_variables_constraints(
 {
     // We will be adding one constraint per candidate per node
     // Each constraint has 4 values in the matrix (welllll not realy but 4 is an upper bound)
-    int n_constraints_reserve = candidates_coupling_.size() * master_coupling_.size();
+    int n_constraints_reserve = candidates_coupling_.size() * tree_.size();
     int n_values_reserve = 4 * (n_constraints_reserve);
 
     std::vector<int> var_offsets;
@@ -311,11 +286,11 @@ void MergeMasterTrajectoryMPS::add_delta_variables_constraints(
     constraint_type.reserve(n_constraints_reserve);
     var_offsets.reserve(n_constraints_reserve + 1);
 
-    // Second part : add the constraints that define the dx variables.
-
-    for (const auto& [node_name, node_data] : master_coupling_)
+    // Add the constraints that define the dx variables.
+    for (const auto& node_data : tree_)
     {
-        
+        const std::string& node_name = node_data.name;
+
         if (node_data.parent == std::nullopt)
         {
             for (const auto& [candidate, _] : candidates_coupling_)
@@ -340,7 +315,6 @@ void MergeMasterTrajectoryMPS::add_delta_variables_constraints(
 
                 rhs.push_back(initial_value);
                 constraint_type.push_back('E');
-
             }
         }
         else

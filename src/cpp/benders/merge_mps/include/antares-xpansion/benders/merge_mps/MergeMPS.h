@@ -54,47 +54,50 @@ private:
     CouplingMap structure_;
 };
 
-class MergeMasterMasterMPS: public AbstractMergeMPS
-{
-public:
-    struct PathwayConstraints
-    {
-        double min_investment;
-        double max_investment;
-
-        double min_decommissioning;
-        double max_decommissioning;
-    };
-
-    struct PathwayNode
-    {
-        PathwayNode(const std::string&& node, const Json::Value& data);
-
-        std::string name;
-        std::filesystem::path path{};
-
-        std::optional<std::string> parent{std::nullopt};
-        double weight{1.};
-
-        VariableMap variables{};
-        std::map<std::string, PathwayConstraints> constraints{};
-    };
-
-    using PathwayTree = std::vector<PathwayNode>;
-
-    MergeMasterMasterMPS(MergeMPSOptions options,
-                         Logger logger,
-                         std::shared_ptr<Output::OutputWriter> writer,
-                         const std::filesystem::path& tree_filename);
-
-    void launch() override;
-
-private:
-    void build_problem();
-    void add_coupling_constraints();
-
-    PathwayTree tree_;
-};
-
 using MergeMPS = MergeMasterSubproblemMPS;
-using MergePathwayMPS = MergeMasterMasterMPS;
+
+// MOVED TO A NEW FILE, TO BE REMOVED 
+
+// class MergeMasterMasterMPS: public AbstractMergeMPS
+// {
+// public:
+//     struct PathwayConstraints
+//     {
+//         double min_investment;
+//         double max_investment;
+
+//         double min_decommissioning;
+//         double max_decommissioning;
+//     };
+
+//     struct PathwayNode
+//     {
+//         PathwayNode(const std::string&& node, const Json::Value& data);
+
+//         std::string name;
+//         std::filesystem::path path{};
+
+//         std::optional<std::string> parent{std::nullopt};
+//         double weight{1.};
+
+//         VariableMap variables{};
+//         std::map<std::string, PathwayConstraints> constraints{};
+//     };
+
+//     using PathwayTree = std::vector<PathwayNode>;
+
+//     MergeMasterMasterMPS(MergeMPSOptions options,
+//                          Logger logger,
+//                          std::shared_ptr<Output::OutputWriter> writer,
+//                          const std::filesystem::path& tree_filename);
+
+//     void launch() override;
+
+// private:
+//     void build_problem();
+//     void add_coupling_constraints();
+
+//     PathwayTree tree_;
+// };
+
+// using MergePathwayMPS = MergeMasterMasterMPS;

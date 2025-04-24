@@ -1,18 +1,11 @@
-// projet_benders.cpp : définit le point d'entrée pour l'application console.
-//
-
 #include <filesystem>
 
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
-#include "antares-xpansion/benders/benders_core/Worker.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 #include "antares-xpansion/benders/logger/User.h"
-#include "antares-xpansion/benders/merge_mps/StandardLp.h"
 #include "antares-xpansion/benders/merge_master_mps/MergeMasterMPS.h"
-#include "antares-xpansion/benders/output/JsonWriter.h"
-#include "antares-xpansion/helpers/solver_utils.h"
+#include "antares-xpansion/benders/merge_mps/StandardLp.h"
 
-//@suggest: create and move to standardlp.cpp
 // Initialize static member
 size_t StandardLp::appendCNT = 0;
 
@@ -21,19 +14,19 @@ int main(int argc, char** argv)
     usage(argc);
     SimulationOptions options(argv[1]);
     options.print(std::cout);
-    std::string output_file = options.OUTPUTROOT + "/output.json";
 
     Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
 
-    logger->display_message("starting merge_mps");
+    logger->display_message("starting merge_master_mps");
 
     std::shared_ptr<Output::OutputWriter> writer = build_json_writer(std::filesystem::path(
-                                                                       output_file),
+                                                                       options.JSON_FILE),
                                                                      false);
     try
     {
-        MergeMasterTrajectoryMPS merge_master_mps(options.get_base_options(), logger, writer);
-        merge_master_mps.launch();
+        logger->display_message("Given tree path is : " + std::string(argv[2]));
+        MergeMasterTrajectoryMPS merge_mps(options.get_base_options(), logger, writer, argv[2]);
+        merge_mps.launch();
     }
     catch (std::exception& ex)
     {
