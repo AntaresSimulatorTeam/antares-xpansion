@@ -28,12 +28,23 @@ public:
     // This one we need to store as a map to avoid linear time lookup of parent's position
     typedef std::map<std::string, std::map<std::string, VariablePositions>> CandidatesCouplingMap;
 
+    // Containts the cost data of a candidates
+    // (we make the hypothesis that they do not vary in the tree, perhaps this could be elaborated on)
+    struct CandidateCosts{
+        CandidateCosts(const Json::Value& data);
+
+        double operation_maintenace = 0.0;
+        double investment = 0.0;
+        double retirement = 0.0;
+    };
+
     struct TrajectoryGlobalData
     {
         TrajectoryGlobalData() {}; 
         TrajectoryGlobalData(const Json::Value& data);
         
         std::map<std::string, double> initial_capacities;
+        std::map<std::string, CandidateCosts> candidates_costs;
     };
 
     // Will be changed
@@ -60,6 +71,11 @@ public:
         std::optional<std::string> parent{std::nullopt};
         double weight{1.};
 
+        // Points from each candidate to the specific costs types associated
+        // e.g : "semibase_fr00" -> "ocgt_new_generic"
+        // Perhaps could be a map of references to CandidatesCosts objects stored in the global data ?
+        std::map<std::string, std::string> candidates_costs_types;
+
         // To be changed, it heavily depends on how we define the trajectory constraints
         //std::map<std::string, TrajectoryConstraints> constraints{};
     };
@@ -84,6 +100,9 @@ private:
     // Methods specific to this derived class
     void add_delta_variables();
     void add_delta_variables_constraints();
+    void set_objective_from_data();
+    // Getters & utils
+    const CandidateCosts& get_candidates_costs(const TrajectoryNode& node, const std::string& candidate) const;
     std::string make_prefix_from_node(const std::string& node_name) const;
     double get_candidate_initial_value(const std::string& candidate) const;
 

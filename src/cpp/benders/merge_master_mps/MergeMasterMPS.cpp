@@ -10,16 +10,35 @@
 #include "antares-xpansion/benders/merge_mps/StandardLp.h"
 #include "antares-xpansion/helpers/Timer.h"
 
+
+MergeMasterTrajectoryMPS::CandidateCosts::CandidateCosts(const Json::Value& data)
+{
+    using namespace MasterCouplingConstants;
+    operation_maintenace = data[KEY_OPERATION_COST].asDouble();
+    investment = data[KEY_INVESTMENT_COST].asDouble();
+    retirement = data[KEY_RETIREMENT_COST].asDouble();
+}
+
 MergeMasterTrajectoryMPS::TrajectoryGlobalData::TrajectoryGlobalData(const Json::Value& data)
 {
     using namespace MasterCouplingConstants;
 
+    // Read the initial capacities
     const auto& initial_capacities_data = data[KEY_INITIAL_CAPACITIES];
     // Set a default default value
     initial_capacities[KEY_DEFAULT] = 0;
     for (const auto& candidate_name : initial_capacities_data.getMemberNames())
     {
         initial_capacities[candidate_name] = initial_capacities_data[candidate_name].asDouble();
+    }
+
+    // Read the candidates' costs
+    const auto& candidates_costs_data = data[KEY_CANDIDATES_TYPES];
+    for (const auto& candidate_type : candidates_costs_data.getMemberNames())
+    {
+        candidates_costs.emplace(
+            std::make_pair(candidate_type, CandidateCosts(candidates_costs_data[candidate_type]))
+        );
     }
 }
 
@@ -49,22 +68,26 @@ MergeMasterTrajectoryMPS::TrajectoryNode::TrajectoryNode(const std::string& node
         master_name = data[KEY_MASTER_NAME].asString();
     }
 
-    // Constraints TBA
+    // Pointing each candidate to its associated costs structure
+    for (const auto& candidate_name : data[KEY_CANDIDATES].getMemberNames())
+    {
+        candidates_costs_types.emplace(
+            std::make_pair(candidate_name, data[KEY_CANDIDATES][candidate_name].asString())
+        );
+    }
 }
 
 void MergeMasterTrajectoryMPS::read_tree_structure_file() 
 {
     using namespace MasterCouplingConstants;
     
-    const auto input = get_json_file_content(tree_path_);
+    const auto raw_input = get_json_file_content(tree_path_);
+    const auto& tree_data = raw_input[KEY_TREE];
 
     // Read the node by node data
-    for (const auto& node_name : input.getMemberNames())
+    for (const auto& node_name : tree_data.getMemberNames())
     {
-        if (node_name == KEY_DATA)
-            continue;
-
-        const auto& node_data = input[node_name];
+        const auto& node_data = tree_data[node_name];
         tree_.emplace_back(TrajectoryNode(node_name, node_data));
     }
 
@@ -72,8 +95,7 @@ void MergeMasterTrajectoryMPS::read_tree_structure_file()
     logger_->display_message("Number of nodes: " + std::to_string(tree_.size()));
 
     // Read the global trajectory data
-    const auto& general_data = input[KEY_DATA];
-    trajectory_data_ = TrajectoryGlobalData(general_data);
+    trajectory_data_ = TrajectoryGlobalData(raw_input);
 }
 
 
@@ -94,11 +116,19 @@ double MergeMasterTrajectoryMPS::get_candidate_initial_value(const std::string& 
     }
     else
     {
-        logger_->display_message("Did not find candidate " + candidate + " 's initial value, looking up key" + KEY_DEFAULT);
+        logger_->display_message("Did not find candidate " + candidate + " 's initial value, looking up key : '" + KEY_DEFAULT + "'");
         initial_value = trajectory_data_.initial_capacities.at(KEY_DEFAULT);
     }
 
     return initial_value;
+}
+
+const MergeMasterTrajectoryMPS::CandidateCosts& MergeMasterTrajectoryMPS::get_candidates_costs(
+    const TrajectoryNode& node, const std::string& candidate_name
+) const
+{
+    // Implemented in a getter in case we want to change the underlying data storage
+    return trajectory_data_.candidates_costs.at(node.candidates_costs_types.at(candidate_name));
 }
 
 void MergeMasterTrajectoryMPS::build_problem()
@@ -131,7 +161,7 @@ void MergeMasterTrajectoryMPS::build_problem()
 
         // Multiply the objective function by the weight factor
         double weight_factor = node_data.weight;
-        logger_->display_message("Weight factor for node " + node_name + " : " + std::to_string(weight_factor));
+        //logger_->display_message("Weight factor for node " + node_name + " : " + std::to_string(weight_factor));
         AbstractMergeMPS::multiply_obj_by_weight_factor(*solver_local, weight_factor);
 
         StandardLp lpData(*solver_local);
@@ -194,7 +224,9 @@ void MergeMasterTrajectoryMPS::build_problem()
     add_delta_variables_constraints();
     logger_->display_message("Delta variables constraints added successfully");
 
-    logger_->display_message("Problems merged.");
+    set_objective_from_data();
+    logger_->display_message("Successfully set the objective according to the data");
+
 }
 
 void MergeMasterTrajectoryMPS::add_delta_variables()
@@ -299,9 +331,6 @@ void MergeMasterTrajectoryMPS::add_delta_variables_constraints(
                 // current::candidate - dx_plus + dx_minus = initial_value
                 // Get the initial value if available, use the default value otherwise
                 double initial_value = get_candidate_initial_value(candidate);
-                logger_->display_message(
-                    "Looking up positions for candidate : " + candidate + " -- at node : " + node_name
-                );
                 const auto& current_candidate_indexes = candidates_coupling_.at(candidate).at(node_name);
 
                 var_offsets.push_back(var_indices.size());
@@ -317,7 +346,7 @@ void MergeMasterTrajectoryMPS::add_delta_variables_constraints(
                 constraint_type.push_back('E');
             }
         }
-        else
+        else [[likely]]
         {
             const std::string& parent_node_name = node_data.parent.value();
 
@@ -325,13 +354,6 @@ void MergeMasterTrajectoryMPS::add_delta_variables_constraints(
             {
                 // The constraint is :
                 // current::candidate - parent::candidate - dx_plus + dx_minus = 0
-
-                logger_->display_message(
-                    "Looking up positions for candidate : " + candidate + " -- at node : " + node_name
-                );
-                logger_->display_message(
-                    "Looking up positions for candidate : " + candidate + " -- at parent node : " + parent_node_name
-                );
                 int parent_candidate_index = candidates_coupling_.at(candidate).at(parent_node_name).capacity;
                 const auto& current_candidate_indexes = candidates_coupling_.at(candidate).at(node_name);
                 
@@ -357,6 +379,35 @@ void MergeMasterTrajectoryMPS::add_delta_variables_constraints(
     solver_addrows(*ptr_merged_solver_, constraint_type, rhs, {}, var_offsets, var_indices, var_values);
 
     return;
+}
+
+void MergeMasterTrajectoryMPS::set_objective_from_data()
+{
+    std::vector<int> indexes;
+    std::vector<double> coefficients;
+    // Pre reserve the size : 3 variables per node per candidate
+    int nb_coefficients_reserve = 3 * tree_.size() * candidates_coupling_.size();
+    indexes.reserve(nb_coefficients_reserve);
+    coefficients.reserve(nb_coefficients_reserve);
+
+    for (const auto& node : tree_)
+    {
+        for (const auto& [candidate, positions_per_node] : candidates_coupling_)
+        {
+            const auto& costs = get_candidates_costs(node, candidate);
+            const auto& positions = positions_per_node.at(node.name);
+
+            // To be discussed : node weights & discounting
+            indexes.push_back(positions.capacity);
+            coefficients.push_back(costs.operation_maintenace * node.weight);
+            indexes.push_back(positions.dx_plus);
+            coefficients.push_back(costs.investment);
+            indexes.push_back(positions.dx_minus);
+            coefficients.push_back(costs.retirement);
+        }
+    }
+
+    ptr_merged_solver_->chg_obj(indexes, coefficients);
 }
 
 void MergeMasterTrajectoryMPS::add_coupling_constraints()
