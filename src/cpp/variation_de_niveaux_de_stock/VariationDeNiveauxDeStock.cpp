@@ -5,6 +5,8 @@
 #include <execution>
 #include <fmt/core.h>
 #include <regex>
+#include <tbb/global_control.h>
+#include <tbb/parallel_for_each.h>
 #include <utility>
 
 #include "antares-xpansion/benders/benders_core/WorkerMaster.h"
@@ -121,7 +123,7 @@ SubproblemWorkerPtr ValeursUsage::AddSubproblem(const std::string& pbName)
     auto subPbWorker = std::make_shared<SubproblemWorker>(GetSubproblemPath(pbName),
                                                           1,
                                                           "XPRESS",
-                                                          0,
+                                                          2,
                                                           solver_log_manager_,
                                                           _logger,
                                                           ProblemsFormat::MPS_FILE);
@@ -161,7 +163,8 @@ std::map<int, AreaConstraintMaps> ValeursUsage::GenerateRHSGridValues(
                               std::string max_cst_name,
                               double min_efficiency)
     {
-        constexpr double epsilon = 1e-1;
+        constexpr double epsilon = 0;
+        // constexpr double epsilon = 1e-1;
 
         if (min == 0.0)
         {
@@ -187,8 +190,6 @@ std::map<int, AreaConstraintMaps> ValeursUsage::GenerateRHSGridValues(
             double normalized = min + i * step;
             double value = min_cst + (max_cst - min_cst) * normalized;
             values.push_back(value);
-            // insert in front of the vector
-            // values.insert(values.begin(), value);
         }
 
         return values;
@@ -273,11 +274,7 @@ void ValeursUsage::Run()
 {
     // sort subPbNames to ensure consistent order
     std::sort(subPbNames.begin(), subPbNames.end());
-    // Use parallel execution for the outer loop using std::for_each
-    std::for_each(std::execution::par,
-                  subPbNames.begin(),
-                  subPbNames.end(),
-                  [&](const std::string& subPbName) { ProcessSubproblem(subPbName); });
+    ProcessSubproblemsWithPhysicalCores(subPbNames);
 }
 
 /// @brief Process a single subproblem
@@ -311,6 +308,24 @@ void ValeursUsage::ProcessSubproblem(const std::string& subPbName)
     }
     std::cout << "Scenario " << GetPbInfo(subPbName).scenario << " week "
               << GetPbInfo(subPbName).week << std::endl;
+}
+
+int get_physical_core_count()
+{
+    return std::thread::hardware_concurrency() / 2;
+}
+
+void ValeursUsage::ProcessSubproblemsWithPhysicalCores(const std::vector<std::string>& subPbNames)
+{
+    int numPhysicalCores = get_physical_core_count();
+
+    // Limiter TBB au nombre de cœurs physiques
+    tbb::global_control limit(tbb::global_control::max_allowed_parallelism, numPhysicalCores);
+
+    // Maintenant utiliser tbb::parallel_for_each
+    tbb::parallel_for_each(subPbNames.begin(),
+                           subPbNames.end(),
+                           [&](const std::string& subPbName) { ProcessSubproblem(subPbName); });
 }
 
 /// @brief Solve the subproblem and return the cost

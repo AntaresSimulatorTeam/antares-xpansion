@@ -38,6 +38,7 @@ protected:
     void InitSubProblems();
     void Run();
     void ProcessSubproblem(const std::string& subPbName);
+    void ProcessSubproblemsWithPhysicalCores(const std::vector<std::string>& subPbNames);
     std::map<int, AreaConstraintMaps> GenerateRHSGridValues(std::string subPbName,
                                                             SubproblemWorkerPtr subPbWorker);
     void SetConstraintsRHSValues(const std::map<std::string, double>& rhsValues,
