@@ -61,3 +61,4 @@ xwiki_source
 # Local env
 .venv
 vcpkg_installed
+CMakeUserPresets.json
