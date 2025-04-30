@@ -24,6 +24,7 @@ int main(int argc, char** argv)
                                                                      false);
     try
     {
+        logger->display_message("Given tree path is : " + std::string(argv[2]));
         MergePathwayMPS merge_mps(options.get_base_options(), logger, writer, argv[2]);
         merge_mps.launch();
     }

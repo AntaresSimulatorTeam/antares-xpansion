@@ -57,13 +57,27 @@ private:
 class MergeMasterMasterMPS: public AbstractMergeMPS
 {
 public:
-    struct PathwayConstraints
+    struct PathwayIncrementalVariable
     {
-        double min_investment;
-        double max_investment;
+        double obj{0.}; // Objective coeff
+        double bdl{0.}; // Lower bound
+        double bdu{0.}; // Upper bound
+    };
 
-        double min_decommissioning;
-        double max_decommissioning;
+    struct PathwayCandidateProfile
+    {
+        PathwayCandidateProfile(const Json::Value& data);
+
+        PathwayIncrementalVariable investment;
+        PathwayIncrementalVariable decommissioning;
+    };
+
+    struct PathwayCandidate
+    {
+        int index {-1};
+        int dx_plus_index {-1};
+        int dx_minus_index {-1};
+        std::string profile {};
     };
 
     struct PathwayNode
@@ -76,8 +90,9 @@ public:
         std::optional<std::string> parent{std::nullopt};
         double weight{1.};
 
-        VariableMap variables{};
-        std::map<std::string, PathwayConstraints> constraints{};
+        std::map<std::string, PathwayCandidate> candidates;
+
+        std::string get_candidate_full_name(const std::string& var_name) const;
     };
 
     using PathwayTree = std::vector<PathwayNode>;
@@ -91,8 +106,12 @@ public:
 
 private:
     void build_problem();
+
+    void add_incremental_variables();
     void add_coupling_constraints();
 
+    std::map<std::string, double> initial_capacities_;
+    std::map<std::string, PathwayCandidateProfile> candidate_profiles_;
     PathwayTree tree_;
 };
 

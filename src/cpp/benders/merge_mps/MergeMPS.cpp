@@ -6,6 +6,7 @@
 #include <utility>
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
+#include "antares-xpansion/benders/merge_mps/JsonKeysConstants.h"
 #include "antares-xpansion/benders/merge_mps/StandardLp.h"
 #include "antares-xpansion/helpers/Timer.h"
 
@@ -397,28 +398,43 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
     solver_addrows(*ptr_merged_solver_, qrtype, rhs, {}, mstart, mclind, dmatval);
 }
 
+MergeMasterMasterMPS::PathwayCandidateProfile::PathwayCandidateProfile(const Json::Value& data)
+{
+    const auto& investment_data = data[JSON_KEY_INVESTMENT];
+    investment = {investment_data[0].asDouble(),
+                  investment_data[1].asDouble(),
+                  investment_data[2].asDouble()};
+
+    const auto& decommissioning_data = data[JSON_KEY_DECOMMISSIONING];
+    decommissioning = {decommissioning_data[0].asDouble(),
+                       decommissioning_data[1].asDouble(),
+                       decommissioning_data[2].asDouble()};
+}
+
 MergeMasterMasterMPS::PathwayNode::PathwayNode(const std::string&& node, const Json::Value& data):
     name(node)
 {
     // TODO improve parsing of json file
-    path = std::filesystem::path(data["path"].asString());
+    path = std::filesystem::path(data[JSON_KEY_PATH].asString());
 
-    if (data.isMember("parent"))
+    if (data.isMember(JSON_KEY_PARENT))
     {
-        parent = data["parent"].asString();
+        parent = data[JSON_KEY_PARENT].asString();
     }
 
-    weight = data["weight"].asDouble();
+    weight = data[JSON_KEY_WEIGHT].asDouble();
 
-    for (const auto& var_name: data["constraints"].getMemberNames())
+    const auto& candidates_data = data[JSON_KEY_CANDIDATES];
+    for (const auto& var_name: candidates_data.getMemberNames())
     {
-        const auto& variable = data["constraints"][var_name];
-
-        constraints[var_name].min_investment = variable["min_investment"].asDouble();
-        constraints[var_name].max_investment = variable["max_investment"].asDouble();
-        constraints[var_name].min_decommissioning = variable["min_decommissioning"].asDouble();
-        constraints[var_name].max_decommissioning = variable["max_decommissioning"].asDouble();
+        candidates[var_name].profile = candidates_data[var_name].asString();
     }
+}
+
+std::string MergeMasterMasterMPS::PathwayNode::get_candidate_full_name(
+  const std::string& var_name) const
+{
+    return this->name + "." + var_name;
 }
 
 MergeMasterMasterMPS::MergeMasterMasterMPS(MergeMPSOptions options,
@@ -427,10 +443,25 @@ MergeMasterMasterMPS::MergeMasterMasterMPS(MergeMPSOptions options,
                                            const std::filesystem::path& tree_filename):
     AbstractMergeMPS(options, logger, writer)
 {
-    const auto tree_json = get_json_file_content(tree_filename);
-    for (Json::String tree_node: tree_json.getMemberNames())
+    const auto raw_input = get_json_file_content(tree_filename);
+
+    const auto& initial_capacities_data = raw_input[JSON_KEY_INITIAL_CAPACITIES];
+    for (Json::String candidate_name: initial_capacities_data.getMemberNames())
     {
-        const Json::Value& data = tree_json[tree_node];
+        initial_capacities_[candidate_name] = initial_capacities_data[candidate_name].asDouble();
+    }
+
+    const auto& candidate_profiles_data = raw_input[JSON_KEY_CANDIDATES_PROFILES];
+    for (Json::String profile_name: candidate_profiles_data.getMemberNames())
+    {
+        const Json::Value& data = candidate_profiles_data[profile_name];
+        candidate_profiles_[profile_name] = PathwayCandidateProfile(data);
+    }
+
+    const auto& tree_data = raw_input[JSON_KEY_TREE];
+    for (Json::String tree_node: tree_data.getMemberNames())
+    {
+        const Json::Value& data = tree_data[tree_node];
         tree_.emplace_back(std::move(tree_node), data);
     }
 
@@ -472,15 +503,73 @@ void MergeMasterMasterMPS::build_problem()
         {
             SolverAbstract::Ptr ptr_solver = get_local_solver(node_path, filename);
 
-            // Change the weight of coeff in the objective function
-            multiply_obj_by_weight_factor(*ptr_solver, tree_node.weight);
+            // Zero out objective coefficients so only the incremental
+            // variables can affect the final cost
+            multiply_obj_by_weight_factor(*ptr_solver, 0.0);
 
             const std::string local_prefix = "prob" + std::to_string(current_prob_id++) + "_";
-            tree_node.variables = merge_local_solver(*ptr_solver, local_prefix, var_map, filename);
+            for (const auto& [var_name, var_idx]:
+                 merge_local_solver(*ptr_solver, local_prefix, var_map, filename))
+            {
+                tree_node.candidates[var_name].index = var_idx;
+            }
         }
     }
 
+    add_incremental_variables();
     add_coupling_constraints();
+}
+
+/**
+ * \brief Add investment delta variables to merged master problem
+ */
+void MergeMasterMasterMPS::add_incremental_variables()
+{
+    // For each node, 2 variables per candidate
+    const int nb_new_var_reserve = 2 * tree_.size() * tree_[0].candidates.size();
+
+    std::vector<double> objx,          // Objective coefficients
+      bdl,                             // Lower bounds
+      bdu;                             // Upper bounds
+    std::vector<char> colTypes;        // Type
+    std::vector<std::string> colNames; // Names
+
+    objx.reserve(nb_new_var_reserve);
+    bdl.reserve(nb_new_var_reserve);
+    bdu.reserve(nb_new_var_reserve);
+    colTypes.reserve(nb_new_var_reserve);
+    colNames.reserve(nb_new_var_reserve);
+
+    int nb_vars = ptr_merged_solver_->get_ncols();
+    for (auto& tree_node: tree_)
+    {
+        for (auto& [var_name, candidate]: tree_node.candidates)
+        {
+            const std::string var_full_name = tree_node.get_candidate_full_name(var_name);
+            const PathwayCandidateProfile& profile = candidate_profiles_[candidate.profile];
+
+            // dx_plus
+            objx.push_back(profile.investment.obj * tree_node.weight);
+            bdl.push_back(profile.investment.bdl);
+            bdu.push_back(profile.investment.bdu);
+            colTypes.push_back('C');
+            colNames.push_back(var_full_name + "_dx_plus");
+            candidate.dx_plus_index = ++nb_vars;
+
+            // dx_minus
+            objx.push_back(profile.decommissioning.obj * tree_node.weight);
+            bdl.push_back(profile.decommissioning.bdl);
+            bdu.push_back(profile.decommissioning.bdu);
+            colTypes.push_back('C');
+            colNames.push_back(var_full_name + "_dx_minus");
+            candidate.dx_minus_index = ++nb_vars;
+        }
+    }
+
+    std::vector<int> mstart(nb_new_var_reserve); // Offsets
+    std::iota(mstart.begin(), mstart.end(), 0);
+
+    solver_addcols(*ptr_merged_solver_, objx, mstart, {}, {}, bdl, bdu, colTypes, colNames);
 }
 
 /**
@@ -488,10 +577,10 @@ void MergeMasterMasterMPS::build_problem()
  */
 void MergeMasterMasterMPS::add_coupling_constraints()
 {
-    // For each node, 2 constraints per variable
-    // For each constraint, 2 columns
-    const size_t nb_rows_reserve = 2 * tree_.size() * tree_[0].variables.size();
-    const size_t nb_elem_reserve = 2 * nb_rows_reserve;
+    // For each node, 1 constraint per candidate
+    // For each constraint, 4 columns
+    const size_t nb_rows_reserve = tree_.size() * tree_[0].candidates.size();
+    const size_t nb_elem_reserve = 4 * nb_rows_reserve;
 
     std::vector<int> mclind;     // Variables' indices
     std::vector<double> dmatval; // Variables' values
@@ -514,47 +603,40 @@ void MergeMasterMasterMPS::add_coupling_constraints()
                                                   &PathwayNode::name)
                               : tree_.end();
 
-        for (const auto& [var_name, variable]: tree_node.constraints)
+        for (const auto& [var_name, candidate]: tree_node.candidates)
         {
-            const int curr_var_idx = tree_node.variables.at(var_name);
-            const int prev_var_idx = (parent != tree_.end()) ? parent->variables.at(var_name) : -1;
+            const std::string var_full_name = tree_node.get_candidate_full_name(var_name);
+            const PathwayCandidate& candidate = tree_node.candidates.at(var_name);
+            const int parent_index = (parent != tree_.end()) ? parent->candidates.at(var_name).index
+                                                             : -1;
 
-            // Max investment
             mstart.push_back(nb_elem);
 
-            mclind.push_back(curr_var_idx);
+            mclind.push_back(candidate.index);
             dmatval.push_back(1);
             ++nb_elem;
 
-            rhs.push_back(variable.max_investment);
-            qrtype.push_back('L');
+            mclind.push_back(candidate.dx_plus_index);
+            dmatval.push_back(-1);
+            ++nb_elem;
 
-            if (prev_var_idx >= 0) [[likely]]
-            {
-                mclind.push_back(prev_var_idx);
-                dmatval.push_back(-1);
-                ++nb_elem;
-            }
-
-            // Min investment
-            mstart.push_back(nb_elem);
-
-            mclind.push_back(curr_var_idx);
+            mclind.push_back(candidate.dx_minus_index);
             dmatval.push_back(1);
             ++nb_elem;
 
-            rhs.push_back(variable.min_investment);
-            qrtype.push_back('G');
-
-            if (prev_var_idx >= 0) [[likely]]
+            if (parent_index >= 0) [[likely]]
             {
-                mclind.push_back(prev_var_idx);
+                mclind.push_back(parent_index);
                 dmatval.push_back(-1);
+                rhs.push_back(initial_capacities_[var_name]); // If not found, defaults to 0
                 ++nb_elem;
             }
+            else
+            {
+                rhs.push_back(0.0);
+            }
 
-            logger_->display_message(tree_node.name + "__" + var_name
-                                     + " : pathway coupling constraint built");
+            qrtype.push_back('E');
         }
     }
     mstart.push_back(nb_elem);
