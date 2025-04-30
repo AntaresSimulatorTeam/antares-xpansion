@@ -169,7 +169,7 @@ protected:
         }
 
         for (auto candidate_it = left.begin(), expec_candidate_it = right.begin();
-             candidate_it != left.end(), expec_candidate_it != right.end();
+             candidate_it != left.end() || expec_candidate_it != right.end();
              candidate_it++, expec_candidate_it++)
         {
             if (candidate_it->first != expec_candidate_it->first)
@@ -200,7 +200,7 @@ protected:
     void verify_output_data(const std::vector<SinglePbData>& pbs_data,
                             std::vector<SinglePbData> expec_pbs_data)
     {
-        // ASSERT_EQ(pbs_data.size(), expec_pbs_data.size());
+        ASSERT_EQ(pbs_data.size(), expec_pbs_data.size());
 
         for (auto leftMatch: pbs_data)
         {
@@ -234,7 +234,7 @@ protected:
         ASSERT_EQ(candidates.size(), expec_candidates.size());
 
         for (auto candidate_it = candidates.begin(), expec_candidate_it = expec_candidates.begin();
-             candidate_it != candidates.end(), expec_candidate_it != expec_candidates.end();
+             candidate_it != candidates.end() || expec_candidate_it != expec_candidates.end();
              candidate_it++, expec_candidate_it++)
         {
             EXPECT_EQ(candidate_it->first, expec_candidate_it->first);
@@ -279,11 +279,247 @@ public:
     }
 };
 
+TEST_F(SensitivityStudyTest, EmptyStudy)
+{
+    input_data.capex = false;
+    input_data.projection = {};
+    auto _logger = std::make_shared<SensitivityLogMock>();
+    auto sensitivity_study = SensitivityStudy(input_data, _logger, writer);
+    sensitivity_study.launch();
+
+    std::string message = "Study is empty. No capex or projection provided.";
+    EXPECT_TRUE(_logger->display_message_called);
+    EXPECT_EQ(_logger->displayed_message, message);
+}
+
+TEST_F(SensitivityStudyTest, CandidateIgnored)
+{
+    prepare_toy_sensitivity_pb();
+
+    std::string cand_name = "i_am_not_in_the_list";
+    input_data.projection = {cand_name};
+    input_data.capex = false;
+
+    auto _logger = std::make_shared<SensitivityLogMock>();
+    auto sensitivity_study = SensitivityStudy(input_data, _logger, writer);
+    sensitivity_study.launch();
+
+    std::string message = "Warning: " + cand_name
+                          + " ignored as it has not been found in the list "
+                            "of investment candidates";
+    EXPECT_TRUE(_logger->display_message_called);
+    EXPECT_EQ(_logger->displayed_message, message);
+}
+
+TEST_F(SensitivityStudyTest, BasisNonExistent)
+{
+    std::string mps_path = prepare_toy_sensitivity_pb();
+    init_solver(coin_name, mps_path);
+    input_data.last_master = math_problem;
+
+    std::string mock_basis_path = "wrong_path.something";
+    input_data.basis_file_path = mock_basis_path;
+
+    auto _logger = std::make_shared<SensitivityLogMock>();
+    auto sensitivity_study = SensitivityStudy(input_data, _logger, writer);
+    sensitivity_study.launch();
+
+    std::string message = "Warning: Basis file " + mock_basis_path + " could not be read.";
+    EXPECT_TRUE(_logger->display_message_called);
+    EXPECT_EQ(_logger->displayed_message, message);
+}
+
+TEST_F(SensitivityStudyTest, OutputDataInit)
+{
+    std::string mps_path = prepare_toy_sensitivity_pb();
+    init_solver(coin_name, mps_path);
+
+    auto sensitivity_study = SensitivityStudy(input_data, logger, writer);
+    std::vector<SinglePbData> expec_output_data = {};
+    auto output_data = sensitivity_study.get_output_data();
+
+    verify_output_data(output_data, expec_output_data);
+}
+
+TEST_F(SensitivityStudyTest, GetCapexSolutions)
+{
+    std::string mps_path = prepare_toy_sensitivity_pb(true, {});
+
+    // In this capex test, the cuts do not constrain too much the overall system
+    // cost, which induces differences between solvers.
+    auto capex_min_data = SinglePbData(SensitivityPbType::CAPEX,
+                                       CAPEX_C,
+                                       "",
+                                       MIN_C,
+                                       1040,
+                                       1390,
+                                       {{peak_name, 14}, {semibase_name, 10}},
+                                       SOLVER_STATUS::OPTIMAL);
+
+    auto capex_max_data = SinglePbData(SensitivityPbType::CAPEX,
+                                       CAPEX_C,
+                                       "",
+                                       MAX_C,
+                                       1224.745762711,
+                                       1490,
+                                       {{peak_name, 17.22033898}, {semibase_name, 11.69491525}},
+                                       SOLVER_STATUS::OPTIMAL);
+
+    std::vector<SinglePbData> pbs_data = {capex_min_data, capex_max_data};
+
+    std::map<std::string, std::vector<SinglePbData>> expec_output_data_map = {{coin_name, pbs_data},
+                                                                              {xpress_name,
+                                                                               pbs_data}};
+
+    launch_tests(mps_path, expec_output_data_map);
+}
+
+TEST_F(SensitivityStudyTest, GetCandidatesProjection)
+{
+    std::string mps_path = prepare_toy_sensitivity_pb(false, {peak_name, semibase_name});
+
+    auto projection_min_peak = SinglePbData(SensitivityPbType::PROJECTION,
+                                            PROJECTION_C,
+                                            peak_name,
+                                            MIN_C,
+                                            13.83050847,
+                                            1490,
+                                            {{peak_name, 13.83050847},
+                                             {semibase_name, 11.694915254}},
+                                            SOLVER_STATUS::OPTIMAL);
+
+    auto projection_max_peak = SinglePbData(SensitivityPbType::PROJECTION,
+                                            PROJECTION_C,
+                                            peak_name,
+                                            MAX_C,
+                                            24,
+                                            1490,
+                                            {{peak_name, 24}, {semibase_name, 10}},
+                                            SOLVER_STATUS::OPTIMAL);
+
+    auto projection_min_semibase = SinglePbData(SensitivityPbType::PROJECTION,
+                                                PROJECTION_C,
+                                                semibase_name,
+                                                MIN_C,
+                                                10,
+                                                1390,
+                                                {{peak_name, 14}, {semibase_name, 10}},
+                                                SOLVER_STATUS::OPTIMAL);
+
+    auto projection_max_semibase_cbc = SinglePbData(SensitivityPbType::PROJECTION,
+                                                    PROJECTION_C,
+                                                    semibase_name,
+                                                    MAX_C,
+                                                    11.694915254,
+                                                    1490,
+                                                    {{peak_name, 13.83050847},
+                                                     {semibase_name, 11.694915254}},
+                                                    SOLVER_STATUS::OPTIMAL);
+
+    auto projection_max_semibase_xpress = projection_max_semibase_cbc;
+    projection_max_semibase_xpress.candidates[peak_name] = 17.22033898;
+
+    std::vector<SinglePbData> pbs_data_cbc = {projection_min_peak,
+                                              projection_max_peak,
+                                              projection_min_semibase,
+                                              projection_max_semibase_cbc};
+
+    std::vector<SinglePbData> pbs_data_xpress = {projection_min_peak,
+                                                 projection_max_peak,
+                                                 projection_min_semibase,
+                                                 projection_max_semibase_xpress};
+
+    std::map<std::string, std::vector<SinglePbData>> expec_output_data_map = {{coin_name,
+                                                                               pbs_data_cbc},
+                                                                              {xpress_name,
+                                                                               pbs_data_xpress}};
+
+    launch_tests(mps_path, expec_output_data_map);
+}
+
 TEST_F(SensitivityStudyTest, FullSensitivityTest)
 {
     std::string mps_path = prepare_real_sensitivity_pb(
       true,
       {semibase_name, peak_name, pv_name, battery_name, transmission_name});
+
+    auto capex_min_data = SinglePbData(SensitivityPbType::CAPEX,
+                                       CAPEX_C,
+                                       "",
+                                       MIN_C,
+                                       299860860.094227,
+                                       1440693382.53768253,
+                                       {{battery_name, 511.01433490373716},
+                                        {peak_name, 1500},
+                                        {pv_name, 0},
+                                        {semibase_name, 1200},
+                                        {transmission_name, 2800}},
+                                       SOLVER_STATUS::OPTIMAL);
+
+    auto capex_max_data = SinglePbData(SensitivityPbType::CAPEX,
+                                       CAPEX_C,
+                                       "",
+                                       MAX_C,
+                                       300394980.4731960,
+                                       1440693382.53768134,
+                                       {{battery_name, 519.91634122019002},
+                                        {peak_name, 1500},
+                                        {pv_name, 0},
+                                        {semibase_name, 1200},
+                                        {transmission_name, 2800}},
+                                       SOLVER_STATUS::OPTIMAL);
+
+    auto projection_min_semibase = SinglePbData(SensitivityPbType::PROJECTION,
+                                                PROJECTION_C,
+                                                semibase_name,
+                                                MIN_C,
+                                                1200,
+                                                1440693382.5376825,
+                                                {{battery_name, 519.91634122019059},
+                                                 {peak_name, 1500},
+                                                 {pv_name, 0},
+                                                 {semibase_name, 1200},
+                                                 {transmission_name, 2800}},
+                                                SOLVER_STATUS::OPTIMAL);
+
+    auto projection_max_semibase = SinglePbData(SensitivityPbType::PROJECTION,
+                                                PROJECTION_C,
+                                                semibase_name,
+                                                MAX_C,
+                                                1200,
+                                                1440693382.5376825,
+                                                {{battery_name, 519.91634122015228},
+                                                 {peak_name, 1500},
+                                                 {pv_name, 0},
+                                                 {semibase_name, 1200},
+                                                 {transmission_name, 2800}},
+                                                SOLVER_STATUS::OPTIMAL);
+
+    auto projection_min_peak = SinglePbData(SensitivityPbType::PROJECTION,
+                                            PROJECTION_C,
+                                            peak_name,
+                                            MIN_C,
+                                            1500,
+                                            1440693382.5376825,
+                                            {{battery_name, 511.01433490344891},
+                                             {peak_name, 1500},
+                                             {pv_name, 0},
+                                             {semibase_name, 1200},
+                                             {transmission_name, 2800}},
+                                            SOLVER_STATUS::OPTIMAL);
+
+    auto projection_max_peak = SinglePbData(SensitivityPbType::PROJECTION,
+                                            PROJECTION_C,
+                                            peak_name,
+                                            MAX_C,
+                                            1500,
+                                            1440693382.5376825,
+                                            {{battery_name, 519.91634122015932},
+                                             {peak_name, 1500},
+                                             {pv_name, 0},
+                                             {semibase_name, 1200},
+                                             {transmission_name, 2800}},
+                                            SOLVER_STATUS::OPTIMAL);
 
     auto projection_min_pv = SinglePbData(SensitivityPbType::PROJECTION,
                                           PROJECTION_C,
@@ -298,8 +534,134 @@ TEST_F(SensitivityStudyTest, FullSensitivityTest)
                                            {transmission_name, 2800}},
                                           SOLVER_STATUS::OPTIMAL);
 
-    std::vector<SinglePbData> pbs_data_cbc = {projection_min_pv};
-    std::vector<SinglePbData> pbs_data_xpress = {projection_min_pv};
+    auto projection_max_pv = SinglePbData(SensitivityPbType::PROJECTION,
+                                          PROJECTION_C,
+                                          pv_name,
+                                          MAX_C,
+                                          1.2427901705828661,
+                                          1440693382.5376825,
+                                          {{battery_name, 518},
+                                           {peak_name, 1500},
+                                           {pv_name, 1.2427901706122959},
+                                           {semibase_name, 1200},
+                                           {transmission_name, 2800}},
+                                          SOLVER_STATUS::OPTIMAL);
+
+    auto projection_min_battery = SinglePbData(SensitivityPbType::PROJECTION,
+                                               PROJECTION_C,
+                                               battery_name,
+                                               MIN_C,
+                                               511.01433490365577,
+                                               1440693382.5376825,
+                                               {{battery_name, 511.01433490365577},
+                                                {peak_name, 1500},
+                                                {pv_name, 0},
+                                                {semibase_name, 1200},
+                                                {transmission_name, 2800}},
+                                               SOLVER_STATUS::OPTIMAL);
+
+    auto projection_min_battery_cbc = SinglePbData(SensitivityPbType::PROJECTION,
+                                                   PROJECTION_C,
+                                                   battery_name,
+                                                   MIN_C,
+                                                   511.01433490356368,
+                                                   1440693382.5376825,
+                                                   {{battery_name, 511.01433490356368},
+                                                    {peak_name, 1500},
+                                                    {pv_name, 0},
+                                                    {semibase_name, 1200},
+                                                    {transmission_name, 2800}},
+                                                   SOLVER_STATUS::OPTIMAL);
+
+    auto projection_max_battery = SinglePbData(SensitivityPbType::PROJECTION,
+                                               PROJECTION_C,
+                                               battery_name,
+                                               MAX_C,
+                                               519.91634122001938,
+                                               1440693382.5376825,
+                                               {{battery_name, 519.91634122001938},
+                                                {peak_name, 1500},
+                                                {pv_name, 0},
+                                                {semibase_name, 1200},
+                                                {transmission_name, 2800}},
+                                               SOLVER_STATUS::OPTIMAL);
+
+    auto projection_max_battery_cbc = SinglePbData(SensitivityPbType::PROJECTION,
+                                                   PROJECTION_C,
+                                                   battery_name,
+                                                   MAX_C,
+                                                   519.91634122009395,
+                                                   1440693382.5376825,
+                                                   {{battery_name, 519.91634122009395},
+                                                    {peak_name, 1500},
+                                                    {pv_name, 0},
+                                                    {semibase_name, 1200},
+                                                    {transmission_name, 2800}},
+                                                   SOLVER_STATUS::OPTIMAL);
+
+    auto projection_min_transmission = SinglePbData(SensitivityPbType::PROJECTION,
+                                                    PROJECTION_C,
+                                                    transmission_name,
+                                                    MIN_C,
+                                                    2800,
+                                                    1440693382.5376825,
+                                                    {{battery_name, 519.91634122015114},
+                                                     {peak_name, 1500},
+                                                     {pv_name, 0},
+                                                     {semibase_name, 1200},
+                                                     {transmission_name, 2800}},
+                                                    SOLVER_STATUS::OPTIMAL);
+
+    auto projection_max_transmission = SinglePbData(SensitivityPbType::PROJECTION,
+                                                    PROJECTION_C,
+                                                    transmission_name,
+                                                    MAX_C,
+                                                    2800,
+                                                    1440693382.5376825,
+                                                    {{battery_name, 519.91634122015114},
+                                                     {peak_name, 1500},
+                                                     {pv_name, 0},
+                                                     {semibase_name, 1200},
+                                                     {transmission_name, 2800}},
+                                                    SOLVER_STATUS::OPTIMAL);
+
+    auto projection_max_transmission_cbc = SinglePbData(SensitivityPbType::PROJECTION,
+                                                        PROJECTION_C,
+                                                        transmission_name,
+                                                        MAX_C,
+                                                        2800,
+                                                        1440683382.5376825,
+                                                        {{battery_name, 517.99999999999739},
+                                                         {peak_name, 1500},
+                                                         {pv_name, 0},
+                                                         {semibase_name, 1200},
+                                                         {transmission_name, 2800}},
+                                                        SOLVER_STATUS::OPTIMAL);
+
+    std::vector<SinglePbData> pbs_data_cbc = {capex_min_data,
+                                              capex_max_data,
+                                              projection_min_semibase,
+                                              projection_max_semibase,
+                                              projection_min_peak,
+                                              projection_max_peak,
+                                              projection_min_pv,
+                                              projection_max_pv,
+                                              projection_min_battery_cbc,
+                                              projection_max_battery_cbc,
+                                              projection_min_transmission,
+                                              projection_max_transmission_cbc};
+    std::vector<SinglePbData> pbs_data_xpress = {capex_min_data,
+                                                 capex_max_data,
+                                                 projection_min_semibase,
+                                                 projection_max_semibase,
+                                                 projection_min_peak,
+                                                 projection_max_peak,
+                                                 projection_min_pv,
+                                                 projection_max_pv,
+                                                 projection_min_battery,
+                                                 projection_max_battery,
+                                                 projection_min_transmission,
+                                                 projection_max_transmission};
 
     std::map<std::string, std::vector<SinglePbData>> expec_output_data_map = {{coin_name,
                                                                                pbs_data_cbc},
