@@ -169,7 +169,7 @@ protected:
         }
 
         for (auto candidate_it = left.begin(), expec_candidate_it = right.begin();
-             candidate_it != left.end() || expec_candidate_it != right.end();
+             candidate_it != left.end(), expec_candidate_it != right.end();
              candidate_it++, expec_candidate_it++)
         {
             if (candidate_it->first != expec_candidate_it->first)
@@ -234,7 +234,7 @@ protected:
         ASSERT_EQ(candidates.size(), expec_candidates.size());
 
         for (auto candidate_it = candidates.begin(), expec_candidate_it = expec_candidates.begin();
-             candidate_it != candidates.end() || expec_candidate_it != expec_candidates.end();
+             candidate_it != candidates.end(), expec_candidate_it != expec_candidates.end();
              candidate_it++, expec_candidate_it++)
         {
             EXPECT_EQ(candidate_it->first, expec_candidate_it->first);
