@@ -16,26 +16,35 @@ class MergeMasterTrajectoryMPS : public AbstractMergeMPS
 public:
     // Data structures
 
+    enum CandidateVariableType{
+        CAPA,
+        DX_PLUS,
+        DX_MINUS
+    };
+
     // This structure contains the position of the variables in the merged problem
     // Its capacity, corresponding dx_plus and dx_minus
     struct VariablePositions{
         int capacity = -1;
         int dx_plus = -1;
         int dx_minus = -1;
+
+        int get(CandidateVariableType t) const;
+        void set(CandidateVariableType t, int i);
     };
 
     // candidate_name -> node_name -> variable_positions
     // This one we need to store as a map to avoid linear time lookup of parent's position
     typedef std::map<std::string, std::map<std::string, VariablePositions>> CandidatesCouplingMap;
 
-    // Containts the cost data of a candidates
-    // (we make the hypothesis that they do not vary in the tree, perhaps this could be elaborated on)
-    struct CandidateCosts{
-        CandidateCosts(const Json::Value& data);
-
+    // Contains the cost data of a candidates type
+    struct CandidateTypeCosts{
+        CandidateTypeCosts(const Json::Value& data);
         double operation_maintenace = 0.0;
         double investment = 0.0;
         double retirement = 0.0;
+        // Get the cost associated with one of the types of variable
+        double get(CandidateVariableType t) const;
     };
 
     struct TrajectoryGlobalData
@@ -44,7 +53,7 @@ public:
         TrajectoryGlobalData(const Json::Value& data);
         
         std::map<std::string, double> initial_capacities;
-        std::map<std::string, CandidateCosts> candidates_costs;
+        std::map<std::string, CandidateTypeCosts> candidates_types_costs;
     };
 
     // Will be changed
@@ -76,8 +85,6 @@ public:
         // Perhaps could be a map of references to CandidatesCosts objects stored in the global data ?
         std::map<std::string, std::string> candidates_costs_types;
 
-        // To be changed, it heavily depends on how we define the trajectory constraints
-        //std::map<std::string, TrajectoryConstraints> constraints{};
     };
 
     using TrajectoryTree = std::vector<TrajectoryNode>;
@@ -102,7 +109,7 @@ private:
     void add_delta_variables_constraints();
     void set_objective_from_data();
     // Getters & utils
-    const CandidateCosts& get_candidates_costs(const TrajectoryNode& node, const std::string& candidate) const;
+    const CandidateTypeCosts& get_candidates_costs(const TrajectoryNode& node, const std::string& candidate) const;
     std::string make_prefix_from_node(const std::string& node_name) const;
     double get_candidate_initial_value(const std::string& candidate) const;
 

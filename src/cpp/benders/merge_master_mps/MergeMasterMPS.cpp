@@ -11,7 +11,7 @@
 #include "antares-xpansion/helpers/Timer.h"
 
 
-MergeMasterTrajectoryMPS::CandidateCosts::CandidateCosts(const Json::Value& data)
+MergeMasterTrajectoryMPS::CandidateTypeCosts::CandidateTypeCosts(const Json::Value& data)
 {
     using namespace MasterCouplingConstants;
     operation_maintenace = data[KEY_OPERATION_COST].asDouble();
@@ -36,8 +36,8 @@ MergeMasterTrajectoryMPS::TrajectoryGlobalData::TrajectoryGlobalData(const Json:
     const auto& candidates_costs_data = data[KEY_CANDIDATES_TYPES];
     for (const auto& candidate_type : candidates_costs_data.getMemberNames())
     {
-        candidates_costs.emplace(
-            std::make_pair(candidate_type, CandidateCosts(candidates_costs_data[candidate_type]))
+        candidates_types_costs.emplace(
+            std::make_pair(candidate_type, CandidateTypeCosts(candidates_costs_data[candidate_type]))
         );
     }
 }
@@ -76,6 +76,66 @@ MergeMasterTrajectoryMPS::TrajectoryNode::TrajectoryNode(const std::string& node
         );
     }
 }
+
+int MergeMasterTrajectoryMPS::VariablePositions::get(
+    CandidateVariableType t
+) const
+{
+    switch (t)
+    {
+    case CandidateVariableType::CAPA :
+        return capacity;
+    case CandidateVariableType::DX_PLUS :
+        return dx_plus;
+    case CandidateVariableType::DX_MINUS :
+        return dx_minus;
+    default:
+        // Perhaps throw an error ?
+        return -1;
+    }
+}
+
+void MergeMasterTrajectoryMPS::VariablePositions::set(
+    CandidateVariableType t,
+    int i
+)
+{
+    switch (t)
+    {
+    case CandidateVariableType::CAPA :
+        capacity = i;
+        break;
+    case CandidateVariableType::DX_PLUS :
+        dx_plus = i;
+        break;
+    case CandidateVariableType::DX_MINUS :
+        dx_minus = i;
+        break;
+    default:
+        // Perhaps throw an error ?
+        return;
+    }
+    return;
+}
+
+double MergeMasterTrajectoryMPS::CandidateTypeCosts::get(
+    CandidateVariableType t
+) const
+{
+    switch (t)
+    {
+    case CandidateVariableType::CAPA :
+        return operation_maintenace;
+    case CandidateVariableType::DX_PLUS :
+        return investment;
+    case CandidateVariableType::DX_MINUS :
+        return retirement;
+    default:
+        // Perhaps throw an error ?
+        return 0.0;
+    }
+}
+
 
 void MergeMasterTrajectoryMPS::read_tree_structure_file() 
 {
@@ -123,12 +183,12 @@ double MergeMasterTrajectoryMPS::get_candidate_initial_value(const std::string& 
     return initial_value;
 }
 
-const MergeMasterTrajectoryMPS::CandidateCosts& MergeMasterTrajectoryMPS::get_candidates_costs(
+const MergeMasterTrajectoryMPS::CandidateTypeCosts& MergeMasterTrajectoryMPS::get_candidates_costs(
     const TrajectoryNode& node, const std::string& candidate_name
 ) const
 {
     // Implemented in a getter in case we want to change the underlying data storage
-    return trajectory_data_.candidates_costs.at(node.candidates_costs_types.at(candidate_name));
+    return trajectory_data_.candidates_types_costs.at(node.candidates_costs_types.at(candidate_name));
 }
 
 void MergeMasterTrajectoryMPS::build_problem()
@@ -196,10 +256,8 @@ void MergeMasterTrajectoryMPS::build_problem()
                                                / ("mergeError" + MPS_SUFFIX));
                 std::exit(1);
             }
-            candidates_coupling_[candidate_name][node_name] = 
-                VariablePositions{
-                    .capacity = new_index
-                };
+            // Create the VariablePositions entry for this candidate
+            candidates_coupling_[candidate_name][node_name].set(CAPA, new_index);
             structure_[MasterCouplingConstants::DEFAULT_MASTER_NAME][candidate_name_prefixed] = new_index;
         }
 
@@ -277,8 +335,8 @@ void MergeMasterTrajectoryMPS::add_delta_variables()
             col_names.push_back(var_name_prefix + "_dx_minus");
             int dx_minus_position = dx_plus_position + 1;
 
-            candidate_data[node_name].dx_plus = dx_plus_position;
-            candidate_data[node_name].dx_minus = dx_minus_position;
+            candidate_data[node_name].set(DX_PLUS, dx_plus_position);
+            candidate_data[node_name].set(DX_MINUS, dx_minus_position);
         }
     }
 
@@ -335,11 +393,11 @@ void MergeMasterTrajectoryMPS::add_delta_variables_constraints(
 
                 var_offsets.push_back(var_indices.size());
                 
-                var_indices.push_back(current_candidate_indexes.capacity);
+                var_indices.push_back(current_candidate_indexes.get(CAPA));
                 var_values.push_back(1);
-                var_indices.push_back(current_candidate_indexes.dx_plus);
+                var_indices.push_back(current_candidate_indexes.get(DX_PLUS));
                 var_values.push_back(-1);
-                var_indices.push_back(current_candidate_indexes.dx_minus);
+                var_indices.push_back(current_candidate_indexes.get(DX_MINUS));
                 var_values.push_back(1);
 
                 rhs.push_back(initial_value);
@@ -354,18 +412,18 @@ void MergeMasterTrajectoryMPS::add_delta_variables_constraints(
             {
                 // The constraint is :
                 // current::candidate - parent::candidate - dx_plus + dx_minus = 0
-                int parent_candidate_index = candidates_coupling_.at(candidate).at(parent_node_name).capacity;
+                const auto& parent_candidate_indexes = candidates_coupling_.at(candidate).at(parent_node_name);
                 const auto& current_candidate_indexes = candidates_coupling_.at(candidate).at(node_name);
                 
                 var_offsets.push_back(var_indices.size());
 
-                var_indices.push_back(current_candidate_indexes.capacity);
+                var_indices.push_back(current_candidate_indexes.get(CAPA));
                 var_values.push_back(1);
-                var_indices.push_back(current_candidate_indexes.dx_plus);
+                var_indices.push_back(current_candidate_indexes.get(DX_PLUS));
                 var_values.push_back(-1);
-                var_indices.push_back(current_candidate_indexes.dx_minus);
+                var_indices.push_back(current_candidate_indexes.get(DX_MINUS));
                 var_values.push_back(1);
-                var_indices.push_back(parent_candidate_index);
+                var_indices.push_back(parent_candidate_indexes.get(CAPA));
                 var_values.push_back(-1);
 
                 rhs.push_back(0);
@@ -398,12 +456,12 @@ void MergeMasterTrajectoryMPS::set_objective_from_data()
             const auto& positions = positions_per_node.at(node.name);
 
             // To be discussed : node weights & discounting
-            indexes.push_back(positions.capacity);
-            coefficients.push_back(costs.operation_maintenace * node.weight);
-            indexes.push_back(positions.dx_plus);
-            coefficients.push_back(costs.investment);
-            indexes.push_back(positions.dx_minus);
-            coefficients.push_back(costs.retirement);
+            indexes.push_back(positions.get(CAPA));
+            coefficients.push_back(costs.get(CAPA) * node.weight);
+            indexes.push_back(positions.get(DX_PLUS));
+            coefficients.push_back(costs.get(DX_PLUS));
+            indexes.push_back(positions.get(DX_MINUS));
+            coefficients.push_back(costs.get(DX_MINUS));
         }
     }
 
