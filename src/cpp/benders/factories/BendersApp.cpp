@@ -89,6 +89,10 @@ int BendersApp::RunBenders()
         // method =
         if (env)
         {
+            auto&& environment = env.value();
+            benders_ = std::move(environment.benders);
+            criterion_input_holder_ = environment.criterion_input_data;
+            method_ = environment.method;
             if (pworld_->rank() == 0)
             {
                 if (!isCriterionListEmpty())
@@ -96,10 +100,6 @@ int BendersApp::RunBenders()
                     AddCriterionOutputs();
                 }
             }
-            auto&& environment = env.value();
-            benders_ = std::move(environment.benders);
-            criterion_input_holder_ = environment.criterion_input_data;
-            method_ = environment.method;
             if (benders_)
             {
                 StartMessage();
@@ -165,6 +165,13 @@ int BendersApp::RunExternalLoop()
         benders_ = std::move(environment.benders);
         criterion_input_holder_ = environment.criterion_input_data;
         method_ = environment.method;
+        if (pworld_->rank() == 0)
+        {
+            if (!isCriterionListEmpty())
+            {
+                AddCriterionOutputs();
+            }
+        }
         double tau = 0.5;
         const auto& outer_loop_inputs = std::get<Benders::Criterion::OuterLoopCriterionInputData>(
           criterion_input_holder_);
