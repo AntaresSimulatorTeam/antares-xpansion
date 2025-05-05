@@ -3,8 +3,8 @@
 #include <antares-xpansion/benders/benders_core/CriterionInputDataReader.h>
 #include <antares-xpansion/benders/benders_core/common.h>
 #include <memory>
-#include <variant>
 #include <optional>
+#include <variant>
 
 struct BendersLoggerBase;
 class MathLoggerDriver;
