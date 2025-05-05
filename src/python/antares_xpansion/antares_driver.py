@@ -73,7 +73,7 @@ class AntaresDriver:
         self.logger.info(
             f'Antares simulation duration : {end_time - start_time}')
 
-        if returned_l.returncode == 1:
+        if returned_l.returncode == 1 or returned_l.returncode == 127:
             raise AntaresDriver.AntaresExecutionError(
                 f"Error: exited antares with status {returned_l.returncode}")
         elif returned_l.returncode == -9:
