@@ -16,7 +16,7 @@ class StartUp
 public:
     bool StudyAlreadyAchievedCriterion(const SimulationOptions& options,
                                        Output::OutputWriter* writer,
-                                       const Logger& logger) const;
+                                       ILogger* logger) const;
 };
 
 } // namespace Benders
