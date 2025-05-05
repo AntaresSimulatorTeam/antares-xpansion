@@ -10,72 +10,29 @@
 #include "antares-xpansion/benders/merge_mps/StandardLp.h"
 #include "antares-xpansion/helpers/Timer.h"
 
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
-MergeMasterTrajectoryMPS::CandidateTypeCosts::CandidateTypeCosts(const Json::Value& data)
+
+MergeMasterTrajectoryMPS::CandidateVariableType MergeMasterTrajectoryMPS::parse_variable_type(
+    const std::string& s
+)
 {
     using namespace MasterCouplingConstants;
-    operation_maintenace = data[KEY_OPERATION_COST].asDouble();
-    investment = data[KEY_INVESTMENT_COST].asDouble();
-    retirement = data[KEY_RETIREMENT_COST].asDouble();
-}
-
-MergeMasterTrajectoryMPS::TrajectoryGlobalData::TrajectoryGlobalData(const Json::Value& data)
-{
-    using namespace MasterCouplingConstants;
-
-    // Read the initial capacities
-    const auto& initial_capacities_data = data[KEY_INITIAL_CAPACITIES];
-    // Set a default default value
-    initial_capacities[KEY_DEFAULT] = 0;
-    for (const auto& candidate_name : initial_capacities_data.getMemberNames())
-    {
-        initial_capacities[candidate_name] = initial_capacities_data[candidate_name].asDouble();
-    }
-
-    // Read the candidates' costs
-    const auto& candidates_costs_data = data[KEY_CANDIDATES_TYPES];
-    for (const auto& candidate_type : candidates_costs_data.getMemberNames())
-    {
-        candidates_types_costs.emplace(
-            std::make_pair(candidate_type, CandidateTypeCosts(candidates_costs_data[candidate_type]))
-        );
+    if (s == VARIABLE_X)
+        return CandidateVariableType::CAPA;
+    else if (s == VARIABLE_DXPLUS)
+        return CandidateVariableType::DX_PLUS;
+    else if (s == VARIABLE_DXMINUS)
+        return CandidateVariableType::DX_MINUS;
+    else
+    { 
+        std::cerr << LOGLOCATION << "Candidate variable type should be : "
+                << VARIABLE_X << " or " << VARIABLE_DXPLUS << " or " << VARIABLE_DXMINUS
+                << std::endl;
+        std::exit(1);
     }
 }
 
-MergeMasterTrajectoryMPS::TrajectoryNode::TrajectoryNode(const std::string& node, const Json::Value& data) :
-    name{node}
-{
-    using namespace MasterCouplingConstants;
-
-    path = data[KEY_LP_FOLDER].asString();
-    master_mps_file = data[KEY_MASTER_MPS_FILE].asString();
-    structure_file = data[KEY_STRUCTURE_FILE].asString();
-    if (data.isMember(KEY_PARENT))
-    {
-        parent = data[KEY_PARENT].asString();
-
-        // Compatibility for root given as hardcoded name
-        if (parent == ROOT_NAME)
-        {
-            parent = std::nullopt;
-        }
-    }
-    weight = data[KEY_WEIGHT_FACTOR].asDouble();
-    
-    // If a MASTER_NAME is given, set it (used when accesing the structure file)
-    if (data.isMember(KEY_MASTER_NAME))
-    {
-        master_name = data[KEY_MASTER_NAME].asString();
-    }
-
-    // Pointing each candidate to its associated costs structure
-    for (const auto& candidate_name : data[KEY_CANDIDATES].getMemberNames())
-    {
-        candidates_costs_types.emplace(
-            std::make_pair(candidate_name, data[KEY_CANDIDATES][candidate_name].asString())
-        );
-    }
-}
 
 int MergeMasterTrajectoryMPS::VariablePositions::get(
     CandidateVariableType t
@@ -118,6 +75,16 @@ void MergeMasterTrajectoryMPS::VariablePositions::set(
     return;
 }
 
+
+MergeMasterTrajectoryMPS::CandidateTypeCosts::CandidateTypeCosts(const Json::Value& data)
+{
+    using namespace MasterCouplingConstants;
+    operation_maintenace = data[KEY_OPERATION_COST].asDouble();
+    investment = data[KEY_INVESTMENT_COST].asDouble();
+    retirement = data[KEY_RETIREMENT_COST].asDouble();
+}
+
+
 double MergeMasterTrajectoryMPS::CandidateTypeCosts::get(
     CandidateVariableType t
 ) const
@@ -133,6 +100,97 @@ double MergeMasterTrajectoryMPS::CandidateTypeCosts::get(
     default:
         // Perhaps throw an error ?
         return 0.0;
+    }
+}
+
+MergeMasterTrajectoryMPS::TrajectoryConstraint::TrajectoryConstraint(const Json::Value& data)
+{
+    using namespace MasterCouplingConstants;
+    // Parse the coefficients
+    const auto& coefs_data = data[KEY_COEFFICIENTS];
+    for (const auto& candidate_reference : coefs_data.getMemberNames())
+    {
+        // The name should be a string of format : 
+        // "node_name::candidate_name::variable_type"
+        const auto& split = StringManip::split(candidate_reference, "::");
+        if (!(split.size() == 3)){
+            std::cerr << "Unable to parse the variable reference : "
+                      << candidate_reference << "\n"
+                      << "Expected format is : node_name::candidate_name::variable_type"
+                      << std::endl;
+            std::exit(1);
+        }
+        const auto t = parse_variable_type(split[2]);
+        coefficients_map[std::make_tuple(split[0], split[1], t)] 
+            = coefs_data[candidate_reference].asDouble();
+    }
+
+    rhs = data[KEY_RHS].asDouble();
+}
+
+MergeMasterTrajectoryMPS::TrajectoryGlobalData::TrajectoryGlobalData(const Json::Value& data)
+{
+    using namespace MasterCouplingConstants;
+
+    // Read the initial capacities
+    const auto& initial_capacities_data = data[KEY_INITIAL_CAPACITIES];
+    // Set a default default value
+    initial_capacities[KEY_DEFAULT] = 0;
+    for (const auto& candidate_name : initial_capacities_data.getMemberNames())
+    {
+        initial_capacities[candidate_name] = initial_capacities_data[candidate_name].asDouble();
+    }
+
+    // Read the candidates' costs
+    const auto& candidates_costs_data = data[KEY_CANDIDATES_TYPES];
+    for (const auto& candidate_type : candidates_costs_data.getMemberNames())
+    {
+        candidates_types_costs.emplace(
+            std::make_pair(candidate_type, CandidateTypeCosts(candidates_costs_data[candidate_type]))
+        );
+    }
+
+    // Read the constraints
+    const auto& constraints_data = data[KEY_CONSTRAINTS];
+    for (const auto& data : constraints_data)
+    {
+        trajectory_constraints.emplace_back(TrajectoryConstraint(data));
+    }
+}
+
+
+MergeMasterTrajectoryMPS::TrajectoryNode::TrajectoryNode(const std::string& node, const Json::Value& data) :
+    name{node}
+{
+    using namespace MasterCouplingConstants;
+
+    path = data[KEY_LP_FOLDER].asString();
+    master_mps_file = data[KEY_MASTER_MPS_FILE].asString();
+    structure_file = data[KEY_STRUCTURE_FILE].asString();
+    if (data.isMember(KEY_PARENT))
+    {
+        parent = data[KEY_PARENT].asString();
+
+        // Compatibility for root given as hardcoded name
+        if (parent == ROOT_NAME)
+        {
+            parent = std::nullopt;
+        }
+    }
+    weight = data[KEY_WEIGHT_FACTOR].asDouble();
+    
+    // If a MASTER_NAME is given, set it (used when accesing the structure file)
+    if (data.isMember(KEY_MASTER_NAME))
+    {
+        master_name = data[KEY_MASTER_NAME].asString();
+    }
+
+    // Pointing each candidate to its associated costs structure
+    for (const auto& candidate_name : data[KEY_CANDIDATES].getMemberNames())
+    {
+        candidates_costs_types.emplace(
+            std::make_pair(candidate_name, data[KEY_CANDIDATES][candidate_name].asString())
+        );
     }
 }
 
@@ -205,6 +263,7 @@ void MergeMasterTrajectoryMPS::build_problem()
         std::cerr << LOGLOCATION <<
             "Invalid solver used with the saved file format" << options_.SOLVER_NAME << "\n" <<
             "Can only use Xpress with this option" << std::endl;
+        std::exit(1);
     }
 
     logger_->display_message("Merging master problems...");
@@ -284,6 +343,9 @@ void MergeMasterTrajectoryMPS::build_problem()
 
     set_objective_from_data();
     logger_->display_message("Successfully set the objective according to the data");
+
+    add_coupling_constraints();
+    logger_->display_message("Succesfully added the trajectory constraints");
 
 }
 
@@ -470,8 +532,51 @@ void MergeMasterTrajectoryMPS::set_objective_from_data()
 
 void MergeMasterTrajectoryMPS::add_coupling_constraints()
 {
-    // TODO : add the trajectory constraints
-    // We need to define them first
+    // Prepare the vectors & reserve the adequate size.
+    const auto& constraints = trajectory_data_.trajectory_constraints;
+
+    int n_constraints_reserve = constraints.size();
+    int n_values_reserve(0);
+    for (const auto& cons : constraints)
+    {
+        n_values_reserve += cons.coefficients_map.size();
+    }
+
+    std::vector<int> var_offsets;
+    std::vector<int> var_indices;
+    std::vector<double> var_values;
+    std::vector<double> rhs;
+    std::vector<char> constraint_type;
+
+    var_indices.reserve(n_values_reserve);
+    var_values.reserve(n_values_reserve);
+    rhs.reserve(n_constraints_reserve);
+    constraint_type.reserve(n_constraints_reserve);
+    var_offsets.reserve(n_constraints_reserve + 1);
+
+    for (const auto& cons : constraints)
+    {
+        var_offsets.push_back(var_indices.size());
+
+        for (const auto& [var_ref, val] : cons.coefficients_map)
+        {
+            const std::string& node_name = std::get<0>(var_ref);
+            const std::string& candidate = std::get<1>(var_ref);
+            const CandidateVariableType& var_type = std::get<2>(var_ref);
+            int index = candidates_coupling_.at(candidate).at(node_name).get(var_type);
+
+            var_indices.push_back(index);
+            var_values.push_back(val);
+        }
+
+        rhs.push_back(cons.rhs);
+        constraint_type.push_back('L');
+    }
+
+    var_offsets.push_back(var_indices.size());
+
+    solver_addrows(*ptr_merged_solver_, constraint_type, rhs, {}, var_offsets, var_indices, var_values);
+    
     return;
 }
 

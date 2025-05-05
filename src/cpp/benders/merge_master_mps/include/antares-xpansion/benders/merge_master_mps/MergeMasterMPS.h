@@ -22,29 +22,41 @@ public:
         DX_MINUS
     };
 
+    static CandidateVariableType parse_variable_type(const std::string& s);
+
     // This structure contains the position of the variables in the merged problem
     // Its capacity, corresponding dx_plus and dx_minus
     struct VariablePositions{
-        int capacity = -1;
-        int dx_plus = -1;
-        int dx_minus = -1;
+        int capacity{-1};
+        int dx_plus{-1};
+        int dx_minus{-1};
 
         int get(CandidateVariableType t) const;
         void set(CandidateVariableType t, int i);
     };
 
     // candidate_name -> node_name -> variable_positions
-    // This one we need to store as a map to avoid linear time lookup of parent's position
     typedef std::map<std::string, std::map<std::string, VariablePositions>> CandidatesCouplingMap;
 
     // Contains the cost data of a candidates type
     struct CandidateTypeCosts{
         CandidateTypeCosts(const Json::Value& data);
-        double operation_maintenace = 0.0;
-        double investment = 0.0;
-        double retirement = 0.0;
+        double operation_maintenace{0.};
+        double investment{0.};
+        double retirement{0.};
         // Get the cost associated with one of the types of variable
         double get(CandidateVariableType t) const;
+    };
+
+    // Reference to a candidate
+    typedef std::tuple<std::string, std::string, CandidateVariableType> VariableRef;
+    // Trajectory constraints
+    struct TrajectoryConstraint
+    {
+        TrajectoryConstraint(const Json::Value& data);
+        
+        std::map<VariableRef, double> coefficients_map;
+        double rhs{0.};
     };
 
     struct TrajectoryGlobalData
@@ -53,18 +65,10 @@ public:
         TrajectoryGlobalData(const Json::Value& data);
         
         std::map<std::string, double> initial_capacities;
+
         std::map<std::string, CandidateTypeCosts> candidates_types_costs;
+        std::vector<TrajectoryConstraint> trajectory_constraints;
     };
-
-    // Will be changed
-    // struct TrajectoryConstraints
-    // {
-    //     double min_investment;
-    //     double max_investment;
-
-    //     double min_decommissioning;
-    //     double max_decommissioning;
-    // };
 
     struct TrajectoryNode
     {
