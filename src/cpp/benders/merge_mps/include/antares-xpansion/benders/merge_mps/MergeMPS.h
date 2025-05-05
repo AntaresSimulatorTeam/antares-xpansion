@@ -90,6 +90,7 @@ public:
         std::optional<std::string> parent{std::nullopt};
         double weight{1.};
 
+        CouplingMap structure;
         std::map<std::string, PathwayCandidate> candidates;
 
         std::string get_candidate_full_name(const std::string& var_name) const;
@@ -106,9 +107,10 @@ public:
 
 private:
     void build_problem();
-
     void add_incremental_variables();
     void add_coupling_constraints();
+
+    void write_structure_file() const;
 
     std::map<std::string, double> initial_capacities_;
     std::map<std::string, PathwayCandidateProfile> candidate_profiles_;

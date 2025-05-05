@@ -455,7 +455,7 @@ MergeMasterMasterMPS::MergeMasterMasterMPS(MergeMPSOptions options,
     for (Json::String profile_name: candidate_profiles_data.getMemberNames())
     {
         const Json::Value& data = candidate_profiles_data[profile_name];
-        candidate_profiles_[profile_name] = PathwayCandidateProfile(data);
+        candidate_profiles_.emplace(profile_name, data);
     }
 
     const auto& tree_data = raw_input[JSON_KEY_TREE];
@@ -491,28 +491,23 @@ void MergeMasterMasterMPS::build_problem()
     {
         const auto node_path{root_dir / tree_node.path};
 
-        const CouplingMap local_structure = CouplingMapGenerator::BuildInput(
-          node_path / options_.STRUCTURE_FILE,
-          logger_.get(),
-          "Merge Master mps");
+        tree_node.structure = CouplingMapGenerator::BuildInput(node_path / options_.STRUCTURE_FILE,
+                                                               logger_.get(),
+                                                               "Merge Master mps");
 
-        for (const auto& [filename, var_map]:
-             local_structure
-               | std::views::filter([this](const auto& pair)
-                                    { return pair.first == options_.MASTER_NAME; }))
+        const VariableMap& var_map = tree_node.structure.at(options_.MASTER_NAME);
+        SolverAbstract::Ptr ptr_solver = get_local_solver(node_path, options_.MASTER_NAME);
+
+        // Zero out objective coefficients so only the incremental
+        // variables can affect the final cost
+        multiply_obj_by_weight_factor(*ptr_solver, 0.0);
+
+        const std::string local_prefix = "prob" + std::to_string(current_prob_id++) + "_";
+        for (const auto& [var_name, var_idx]:
+             merge_local_solver(*ptr_solver, local_prefix, var_map, options_.MASTER_NAME))
         {
-            SolverAbstract::Ptr ptr_solver = get_local_solver(node_path, filename);
-
-            // Zero out objective coefficients so only the incremental
-            // variables can affect the final cost
-            multiply_obj_by_weight_factor(*ptr_solver, 0.0);
-
-            const std::string local_prefix = "prob" + std::to_string(current_prob_id++) + "_";
-            for (const auto& [var_name, var_idx]:
-                 merge_local_solver(*ptr_solver, local_prefix, var_map, filename))
-            {
-                tree_node.candidates[var_name].index = var_idx;
-            }
+            tree_node.candidates[var_name].index = var_idx;
+            tree_node.structure[options_.MASTER_NAME][var_name] = var_idx;
         }
     }
 
@@ -546,7 +541,7 @@ void MergeMasterMasterMPS::add_incremental_variables()
         for (auto& [var_name, candidate]: tree_node.candidates)
         {
             const std::string var_full_name = tree_node.get_candidate_full_name(var_name);
-            const PathwayCandidateProfile& profile = candidate_profiles_[candidate.profile];
+            const PathwayCandidateProfile& profile = candidate_profiles_.at(candidate.profile);
 
             // dx_plus
             objx.push_back(profile.investment.obj * tree_node.weight);
@@ -606,7 +601,6 @@ void MergeMasterMasterMPS::add_coupling_constraints()
         for (const auto& [var_name, candidate]: tree_node.candidates)
         {
             const std::string var_full_name = tree_node.get_candidate_full_name(var_name);
-            const PathwayCandidate& candidate = tree_node.candidates.at(var_name);
             const int parent_index = (parent != tree_.end()) ? parent->candidates.at(var_name).index
                                                              : -1;
 
@@ -642,4 +636,27 @@ void MergeMasterMasterMPS::add_coupling_constraints()
     mstart.push_back(nb_elem);
 
     solver_addrows(*ptr_merged_solver_, qrtype, rhs, {}, mstart, mclind, dmatval);
+}
+
+void MergeMasterMasterMPS::write_structure_file() const
+{
+    CouplingMap global_structure;
+
+    for (auto& tree_node: tree_)
+    {
+        for (const auto& [filename, var_map]: tree_node.structure)
+        {
+            const std::string mps_file_path = (filename != options_.MASTER_NAME)
+                                                ? (tree_node.path / filename).string()
+                                                : options_.MASTER_NAME;
+            for (const auto& [var_name, var_idx]: var_map)
+            {
+                const std::string candidate_name = tree_node.get_candidate_full_name(var_name);
+                global_structure[mps_file_path][candidate_name] = var_idx;
+            }
+        }
+    }
+
+    const auto output_path = std::filesystem::path(options_.OUTPUTROOT) / options_.STRUCTURE_FILE;
+    export_structure_file(output_path, global_structure);
 }
