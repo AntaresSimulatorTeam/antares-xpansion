@@ -79,12 +79,20 @@ static std::string solverXpansionToSimulator(const SolverConfig& in)
     throw std::invalid_argument("Invalid solver");
 }
 
+void onNewLP(Antares::Solver::LpsFromAntares& lps)
+{
+    std::cout << "New LP received" << std::endl;
+}
+
 void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& output)
 {
-    Antares::Solver::Optimization::OptimizationOptions optOptions;
+    Antares::Solver::Optimization::CmdLineOptimOptions optOptions;
 
     optOptions.linearSolver = solverXpansionToSimulator(solver_config_);
-    auto results = Antares::API::PerformSimulation(options_.StudyPath(), output, optOptions);
+    auto results = Antares::API::PerformSimulation(options_.StudyPath(),
+                                                   output,
+                                                   optOptions,
+                                                   onNewLP);
 
     /**
      * Antares simulator allocate a lot of memory
@@ -123,11 +131,6 @@ std::filesystem::path ProblemGeneration::updateProblems()
                                                     "Problem Generation"s);
 
     set_solver(directories_.study_dir, logger.get());
-
-    if (mode_ == SimulationInputMode::ANTARES_API)
-    {
-        performAntaresSimulation(directories_.simulation_dir);
-    }
 
     auto master_formulation = options_.MasterFormulation();
     auto additionalConstraintFilename_l = options_.AdditionalConstraintsFilename();
