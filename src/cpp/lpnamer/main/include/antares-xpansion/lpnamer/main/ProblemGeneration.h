@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include <antares-xpansion/lpnamer/model/ActiveLinks.h>
 #include <filesystem>
 #include <optional>
 #include <string>
@@ -13,11 +14,13 @@
 #include "ConfigurationManager.h"
 #include "ProblemGenerationOptions.h"
 #include "antares-xpansion/helpers/ArchiveReader.h"
+#include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "antares-xpansion/lpnamer/input_reader/MpsTxtWriter.h"
 #include "antares-xpansion/lpnamer/main/ProblemGenerationExeOptions.h"
 #include "antares-xpansion/lpnamer/model/Problem.h"
 #include "antares-xpansion/lpnamer/model/SimulationInputMode.h"
+#include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 #include "antares-xpansion/multisolver_interface/SolverConfig.h"
 
@@ -59,4 +62,12 @@ private:
     SolverConfig solver_config_{"Coin"};
     ConfigurationManager configuration_manager_;
     ConfigurationManager::ConfigDirectories directories_;
+    std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
+    bool once{false};
+    std::vector<ActiveLink> links_;
+    std::unique_ptr<SolverLogManager> solver_log_manager_;
+    Timer problem_generation_timer;
+    Couplings couplings;
+    std::vector<std::pair<int, ProblemData>> year_and_data;
+    std::unique_ptr<LinkProblemsGenerator> linkProblemsGenerator;
 };
