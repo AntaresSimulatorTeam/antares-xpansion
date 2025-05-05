@@ -1,5 +1,8 @@
 var NAVTREEINDEX6 =
 {
+"md_docs_2changelog_2CHANGELOG.html#autotoc_md59":[1,16,0],
+"md_docs_2changelog_2CHANGELOG.html#autotoc_md60":[1,16,1],
+"md_docs_2changelog_2CHANGELOG.html#autotoc_md61":[1,17],
 "md_docs_2changelog_2CHANGELOG.html#autotoc_md62":[1,17,0],
 "md_docs_2changelog_2CHANGELOG.html#autotoc_md63":[1,17,1],
 "md_docs_2changelog_2CHANGELOG.html#autotoc_md64":[1,18],
@@ -210,11 +213,12 @@ var NAVTREEINDEX6 =
 "structAreaParser.html":[25,0,43],
 "structBaseOptions.html":[25,0,44],
 "structBatch.html":[25,0,45],
-"structBendersBaseOptions.html":[25,0,49],
-"structBendersLoggerBase.html":[25,0,51],
-"structBendersLoggerBase.html#a2107f7c283403f51b5c48d73fa969fa1":[25,0,51,0],
-"structBendersRelevantIterationsData.html":[25,0,54],
-"structCandidateData.html":[25,0,61],
+"structBendersBaseOptions.html":[25,0,50],
+"structBendersFactory_1_1BendersEnvironment.html":[25,0,52,0],
+"structBendersLoggerBase.html":[25,0,53],
+"structBendersLoggerBase.html#a2107f7c283403f51b5c48d73fa969fa1":[25,0,53,0],
+"structBendersRelevantIterationsData.html":[25,0,55],
+"structCandidateData.html":[25,0,62],
 "structCatch_1_1AssertionInfo.html":[25,0,2,6],
 "structCatch_1_1AssertionReaction.html":[25,0,2,7],
 "structCatch_1_1AutoReg.html":[25,0,2,8],
@@ -245,9 +249,5 @@ var NAVTREEINDEX6 =
 "structCatch_1_1Matchers_1_1Impl_1_1MatchAllOf.html":[25,0,2,3,3,0],
 "structCatch_1_1Matchers_1_1Impl_1_1MatchAnyOf.html":[25,0,2,3,3,1],
 "structCatch_1_1Matchers_1_1Impl_1_1MatchNotOf.html":[25,0,2,3,3,5],
-"structCatch_1_1Matchers_1_1Impl_1_1MatcherBase.html":[25,0,2,3,3,2],
-"structCatch_1_1Matchers_1_1Impl_1_1MatcherMethod.html":[25,0,2,3,3,3],
-"structCatch_1_1Matchers_1_1StdString_1_1CasedString.html":[25,0,2,3,4,0],
-"structCatch_1_1Matchers_1_1StdString_1_1ContainsMatcher.html":[25,0,2,3,4,1],
-"structCatch_1_1Matchers_1_1StdString_1_1EndsWithMatcher.html":[25,0,2,3,4,2]
+"structCatch_1_1Matchers_1_1Impl_1_1MatcherBase.html":[25,0,2,3,3,2]
 };

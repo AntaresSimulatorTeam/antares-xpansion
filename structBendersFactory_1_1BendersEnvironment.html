@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: BendersMainFactory Class Reference</title>
+<title>Antares Xpansion: BendersFactory::BendersEnvironment Struct Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -111,7 +111,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('classBendersMainFactory.html',''); initResizable(true); });
+$(function(){initNavTree('structBendersFactory_1_1BendersEnvironment.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -138,37 +138,33 @@ $(function(){initNavTree('classBendersMainFactory.html',''); initResizable(true)
 
 <div class="header">
   <div class="summary">
-<a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="classBendersMainFactory-members.html">List of all members</a>  </div>
-  <div class="headertitle"><div class="title">BendersMainFactory Class Reference</div></div>
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="structBendersFactory_1_1BendersEnvironment-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">BendersFactory::BendersEnvironment Struct Reference</div></div>
 </div><!--header-->
 <div class="contents">
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
-Public Member Functions</h2></td></tr>
-<tr class="memitem:ab1cdf1c275b968fdcc26f2cbf1bc2051" id="r_ab1cdf1c275b968fdcc26f2cbf1bc2051"><td class="memItemLeft" align="right" valign="top"><a id="ab1cdf1c275b968fdcc26f2cbf1bc2051" name="ab1cdf1c275b968fdcc26f2cbf1bc2051"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BendersMainFactory</b> (int argc, char **argv, boost::mpi::environment &amp;env, boost::mpi::communicator &amp;world, const SOLVER &amp;solver)</td></tr>
-<tr class="separator:ab1cdf1c275b968fdcc26f2cbf1bc2051"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aac56aab4a03cc7269733616b613e0359" id="r_aac56aab4a03cc7269733616b613e0359"><td class="memItemLeft" align="right" valign="top"><a id="aac56aab4a03cc7269733616b613e0359" name="aac56aab4a03cc7269733616b613e0359"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BendersMainFactory</b> (int argc, char **argv, const std::filesystem::path &amp;options_file, boost::mpi::environment &amp;env, boost::mpi::communicator &amp;world, const SOLVER &amp;solver)</td></tr>
-<tr class="separator:aac56aab4a03cc7269733616b613e0359"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afa05391ee0e3047d5e606faf76ae18c6" id="r_afa05391ee0e3047d5e606faf76ae18c6"><td class="memItemLeft" align="right" valign="top"><a id="afa05391ee0e3047d5e606faf76ae18c6" name="afa05391ee0e3047d5e606faf76ae18c6"></a>
-int&#160;</td><td class="memItemRight" valign="bottom"><b>Run</b> ()</td></tr>
-<tr class="separator:afa05391ee0e3047d5e606faf76ae18c6"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af40abc0c543154243ba4e63055fd3990" id="r_af40abc0c543154243ba4e63055fd3990"><td class="memItemLeft" align="right" valign="top"><a id="af40abc0c543154243ba4e63055fd3990" name="af40abc0c543154243ba4e63055fd3990"></a>
-std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>LogReportsName</b> () const</td></tr>
-<tr class="separator:af40abc0c543154243ba4e63055fd3990"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a1fcd92d26f3f112b0eafccf658dc2825" id="r_a1fcd92d26f3f112b0eafccf658dc2825"><td class="memItemLeft" align="right" valign="top"><a id="a1fcd92d26f3f112b0eafccf658dc2825" name="a1fcd92d26f3f112b0eafccf658dc2825"></a>
+std::unique_ptr&lt; <a class="el" href="classBendersBase.html">BendersBase</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>benders</b> {nullptr}</td></tr>
+<tr class="separator:a1fcd92d26f3f112b0eafccf658dc2825"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adffc00dbc301f22099b8d76f254eb7ca" id="r_adffc00dbc301f22099b8d76f254eb7ca"><td class="memItemLeft" align="right" valign="top"><a id="adffc00dbc301f22099b8d76f254eb7ca" name="adffc00dbc301f22099b8d76f254eb7ca"></a>
+std::variant&lt; <a class="el" href="classBenders_1_1Criterion_1_1CriterionInputData.html">Benders::Criterion::CriterionInputData</a>, <a class="el" href="classBenders_1_1Criterion_1_1OuterLoopCriterionInputData.html">Benders::Criterion::OuterLoopCriterionInputData</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>criterion_input_data</b></td></tr>
+<tr class="separator:adffc00dbc301f22099b8d76f254eb7ca"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5fab253f230fdf78b703f4e850f1ea10" id="r_a5fab253f230fdf78b703f4e850f1ea10"><td class="memItemLeft" align="right" valign="top"><a id="a5fab253f230fdf78b703f4e850f1ea10" name="a5fab253f230fdf78b703f4e850f1ea10"></a>
+BENDERSMETHOD&#160;</td><td class="memItemRight" valign="bottom"><b>method</b> {BENDERSMETHOD::BENDERS}</td></tr>
+<tr class="separator:a5fab253f230fdf78b703f4e850f1ea10"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<hr/>The documentation for this class was generated from the following files:<ul>
+<hr/>The documentation for this struct was generated from the following file:<ul>
 <li>src/cpp/benders/factories/include/antares-xpansion/benders/factories/<a class="el" href="BendersFactory_8h_source.html">BendersFactory.h</a></li>
-<li>src/cpp/benders/factories/<b>BendersFactory.cpp</b></li>
 </ul>
 </div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="classBendersMainFactory.html">BendersMainFactory</a></li>
+    <li class="navelem"><a class="el" href="classBendersFactory.html">BendersFactory</a></li><li class="navelem"><a class="el" href="structBendersFactory_1_1BendersEnvironment.html">BendersEnvironment</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
   </ul>
 </div>

@@ -2,6 +2,7 @@ var dir_bc0f0c2c49f79414ffb0d87efed051ce =
 [
     [ "BendersBase.h", "BendersBase_8h_source.html", null ],
     [ "BendersMathLogger.h", "BendersMathLogger_8h_source.html", null ],
+    [ "BendersMethod.h", "BendersMethod_8h_source.html", null ],
     [ "BendersStructsDatas.h", "BendersStructsDatas_8h_source.html", null ],
     [ "common.h", "common_8h_source.html", null ],
     [ "CouplingMapGenerator.h", "CouplingMapGenerator_8h_source.html", null ],

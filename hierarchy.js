@@ -32,6 +32,7 @@ var hierarchy =
     ] ],
     [ "Batch", "structBatch.html", null ],
     [ "BatchCollection", "classBatchCollection.html", null ],
+    [ "BendersApp", "classBendersApp.html", null ],
     [ "BendersBase", "classBendersBase.html", [
       [ "BendersMpi", "classBendersMpi.html", [
         [ "BendersByBatch", "classBendersByBatch.html", null ],
@@ -42,7 +43,8 @@ var hierarchy =
       ] ]
     ] ],
     [ "antares_xpansion.benders_driver.BendersDriver", "classantares__xpansion_1_1benders__driver_1_1BendersDriver.html", null ],
-    [ "BendersMainFactory", "classBendersMainFactory.html", null ],
+    [ "BendersFactory::BendersEnvironment", "structBendersFactory_1_1BendersEnvironment.html", null ],
+    [ "BendersFactory", "classBendersFactory.html", null ],
     [ "BendersRelevantIterationsData", "structBendersRelevantIterationsData.html", null ],
     [ "Candidate", "classCandidate.html", null ],
     [ "CandidateData", "structCandidateData.html", null ],

@@ -1,5 +1,8 @@
 var NAVTREEINDEX4 =
 {
+"classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersUnsupportedPlatform.html":[25,0,0,1,0,5],
+"classantares__xpansion_1_1benders__driver_1_1SolversExe.html":[24,0,0,1,1],
+"classantares__xpansion_1_1benders__driver_1_1SolversExe.html":[25,0,0,1,1],
 "classantares__xpansion_1_1candidates__reader_1_1CandidateNotFound.html":[25,0,0,2,0],
 "classantares__xpansion_1_1candidates__reader_1_1CandidatesReader.html":[25,0,0,2,1],
 "classantares__xpansion_1_1candidates__reader_1_1IniFileNotFound.html":[25,0,0,2,2],
@@ -230,7 +233,7 @@ var NAVTREEINDEX4 =
 "classantares__xpansion_1_1xpansion__study__reader_1_1XpansionStudyReader_1_1OnlyNullYearsWeightValue.html":[25,0,0,24,0,5],
 "classantares__xpansion_1_1xpansion__study__reader_1_1XpansionStudyReader_1_1SolverNotAvailable.html":[25,0,0,24,0,6],
 "classantares__xpansion_1_1yearly__weight__writer_1_1YearlyWeightWriter.html":[25,0,0,26,0],
-"classclass.html":[25,0,67],
+"classclass.html":[25,0,68],
 "classes.html":[25,1],
 "classperformance_1_1JsonFileProcessor.html":[25,0,8,0],
 "classperformance_1_1PerfPlotsGenerator.html":[25,0,8,1],
@@ -246,8 +249,5 @@ var NAVTREEINDEX4 =
 "classtests_1_1python_1_1test__chronicles__checker_1_1TestChroniclesChecker.html":[25,0,13,1,2,0],
 "classtests_1_1python_1_1test__config__file__parser_1_1TestConfigFileParser.html":[25,0,13,1,3,0],
 "classtests_1_1python_1_1test__full__run__driver_1_1TestFullRunDriver.html":[25,0,13,1,4,0],
-"classtests_1_1python_1_1test__ini__reader_1_1TestGetNbActivatedYear.html":[25,0,13,1,5,0],
-"classtests_1_1python_1_1test__input__checker_1_1TestCheckCandidateLink.html":[25,0,13,1,6,0],
-"classtests_1_1python_1_1test__input__checker_1_1TestCheckCandidateName.html":[25,0,13,1,6,1],
-"classtests_1_1python_1_1test__input__checker_1_1TestCheckCandidateOptionType.html":[25,0,13,1,6,2]
+"classtests_1_1python_1_1test__ini__reader_1_1TestGetNbActivatedYear.html":[25,0,13,1,5,0]
 };
