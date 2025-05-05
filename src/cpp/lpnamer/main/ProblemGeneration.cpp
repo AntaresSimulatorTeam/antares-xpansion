@@ -79,9 +79,10 @@ static std::string solverXpansionToSimulator(const SolverConfig& in)
     throw std::invalid_argument("Invalid solver");
 }
 
-void onNewLP(Antares::Solver::LpsFromAntares& lps)
+void ProblemGeneration::onNewLP(Antares::Solver::LpsFromAntares& lps)
 {
     std::cout << "New LP received" << std::endl;
+    new_lps_ = lps;
 }
 
 void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& output)
@@ -89,10 +90,11 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& ou
     Antares::Solver::Optimization::CmdLineOptimOptions optOptions;
 
     optOptions.linearSolver = solverXpansionToSimulator(solver_config_);
+    auto callback = [this](Antares::Solver::LpsFromAntares& lps) { this->onNewLP(lps); };
     auto results = Antares::API::PerformSimulation(options_.StudyPath(),
                                                    output,
                                                    optOptions,
-                                                   onNewLP);
+                                                   callback);
 
     /**
      * Antares simulator allocate a lot of memory
@@ -113,8 +115,6 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& ou
                                                             + results.error->reason,
                                                           LOGLOCATION);
     }
-
-    lps_ = std::move(results.antares_problems);
 }
 
 std::filesystem::path ProblemGeneration::updateProblems()
@@ -285,79 +285,8 @@ void ProblemGeneration::RunProblemGeneration(
                                                 logger,
                                                 solver_log_manager,
                                                 rename_problems);
-    std::shared_ptr<ArchiveReader> reader = mode_ == SimulationInputMode::ARCHIVE
-                                              ? InstantiateZipReader(antares_archive_path)
-                                              : std::make_shared<ArchiveReader>();
 
     /* Main stuff */
-    if (mode_ == SimulationInputMode::FILE or mode_ == SimulationInputMode::ARCHIVE)
-    {
-        (*logger)(LogUtils::LOGLEVEL::INFO) << "Collecting problems...";
-        std::vector<std::shared_ptr<Problem>> xpansion_problems = getXpansionProblems(
-          solver_log_manager,
-          mpsList,
-          lpDir_,
-          reader,
-          lps_);
-        (*logger)(LogUtils::LOGLEVEL::INFO) << " Done.\n";
-
-        std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>> problems_and_data;
-        for (int i = 0; i < xpansion_problems.size(); ++i)
-        {
-            xpansion_problems.at(i)->_name = mpsList.at(i)._problem_filename;
-            problems_and_data.emplace_back(xpansion_problems.at(i), mpsList.at(i));
-        }
-        auto mps_file_writer = std::make_shared<FileWriter>(lpDir_);
-        std::for_each(
-          std::execution::par,
-          problems_and_data.begin(),
-          problems_and_data.end(),
-          [&](const auto& problem_and_data)
-          {
-              const auto& [problem, data] = problem_and_data;
-              std::shared_ptr<IProblemVariablesProviderPort> variables_provider;
-              switch (mode_.value())
-              {
-              case SimulationInputMode::FILE:
-                  variables_provider = std::make_shared<ProblemVariablesFileAdapter>(data,
-                                                                                     links,
-                                                                                     logger,
-                                                                                     lpDir_);
-                  break;
-              case SimulationInputMode::ARCHIVE:
-                  if (rename_problems)
-                  {
-                      variables_provider = std::make_shared<ProblemVariablesZipAdapter>(reader,
-                                                                                        data,
-                                                                                        links,
-                                                                                        logger);
-                  }
-                  else
-                  {
-                      variables_provider = std::make_shared<ProblemVariablesFromProblemAdapter>(
-                        problem,
-                        links,
-                        logger);
-                  }
-                  break;
-              default:
-                  (*logger)(LogUtils::LOGLEVEL::ERR) << "Undefined mode";
-                  break;
-              }
-              linkProblemsGenerator.treat(data._problem_filename,
-                                          couplings,
-                                          problem.get(),
-                                          variables_provider.get(),
-                                          mps_file_writer.get());
-          });
-        WeightFileProcessor weights_file_processor;
-        weights_file_processor.ProcessWeights(problems_and_data,
-                                              xpansion_output_dir,
-                                              weights_file,
-                                              solver_config_.Name(),
-                                              logger);
-    }
-    else // API
     {
         auto mps_file_writer = std::make_shared<FileWriter>(lpDir_);
 
@@ -366,12 +295,12 @@ void ProblemGeneration::RunProblemGeneration(
         std::vector<
           std::pair<Antares::Solver::WeeklyProblemId, Antares::Solver::WeeklyDataFromAntares&>>
           weekly_data;
-        std::ranges::for_each(lps_.weeklyProblems,
+        std::ranges::for_each(new_lps_.weeklyProblems,
                               [&weekly_data](auto& pair)
                               { weekly_data.emplace_back(pair.first, pair.second); });
 
         std::vector<std::pair<int, ProblemData>> year_and_data;
-        year_and_data.reserve(lps_.weeklyProblems.size());
+        year_and_data.reserve(new_lps_.weeklyProblems.size());
         std::mutex mutex;
         std::for_each(
           std::execution::par,
@@ -380,13 +309,13 @@ void ProblemGeneration::RunProblemGeneration(
           [&](const auto& weeklyDataByYearWeek)
           {
               auto&& [year_week, data] = weeklyDataByYearWeek;
-              XpansionProblemsFromAntaresProvider adapter(lps_);
+              XpansionProblemsFromAntaresProvider adapter(new_lps_);
               auto problem = adapter.provideProblem(solver_config_.Name(),
                                                     solver_log_manager,
                                                     year_week);
               {
                   std::lock_guard guard(mutex);
-                  lps_.weeklyProblems.erase(year_week); // Clear data to save memory
+                  new_lps_.weeklyProblems.erase(year_week); // Clear data to save memory
                   year_and_data.emplace_back(problem->mc_year, ProblemData{problem->_name, {}});
                   // Need to be done before treat because it will update problem name with the full
                   // path
@@ -410,11 +339,6 @@ void ProblemGeneration::RunProblemGeneration(
                                               logger);
     }
 
-    if (mode_ == SimulationInputMode::ARCHIVE)
-    {
-        reader->Close();
-        reader->Delete();
-    }
     MasterGeneration master_generation(xpansion_output_dir,
                                        links,
                                        additionalConstraints,

@@ -52,8 +52,9 @@ private:
     virtual void set_solver(std::filesystem::path study_dir,
                             ProblemGenerationLog::ProblemGenerationLogger* logger);
 
-    Antares::Solver::LpsFromAntares lps_;
+    Antares::Solver::LpsFromAntares new_lps_;
     std::optional<SimulationInputMode> mode_;
+    void onNewLP(Antares::Solver::LpsFromAntares& lps);
     virtual void performAntaresSimulation(const std::filesystem::path& output);
     SolverConfig solver_config_{"Coin"};
     ConfigurationManager configuration_manager_;
