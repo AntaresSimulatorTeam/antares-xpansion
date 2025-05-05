@@ -74,10 +74,10 @@ public:
 
     struct PathwayCandidate
     {
-        int index {-1};
-        int dx_plus_index {-1};
-        int dx_minus_index {-1};
-        std::string profile {};
+        int index{-1};
+        int dx_plus_index{-1};
+        int dx_minus_index{-1};
+        std::string profile{};
     };
 
     struct PathwayNode

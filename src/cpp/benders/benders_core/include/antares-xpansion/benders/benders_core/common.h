@@ -238,15 +238,14 @@ void usage(int argc);
 
 Json::Value get_json_file_content(const std::filesystem::path& json_file);
 
-template <typename T>
+template<typename T>
 concept OStreamable = requires(std::ostream& os, T obj) {
     { os << obj } -> std::same_as<std::ostream&>;
 };
 
 template<OStreamable MPSPath, OStreamable CandidateName, OStreamable ColId>
-void export_structure_file(
-  const std::filesystem::path& output_path,
-  const std::map<MPSPath, std::map<CandidateName, ColId>>& structure)
+void export_structure_file(const std::filesystem::path& output_path,
+                           const std::map<MPSPath, std::map<CandidateName, ColId>>& structure)
 {
     std::ofstream structure_file{output_path};
     for (const auto& [mps_file_path, candidates_name_and_colId]: structure)
