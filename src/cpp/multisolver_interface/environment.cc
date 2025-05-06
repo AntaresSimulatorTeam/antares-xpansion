@@ -71,6 +71,7 @@ std::function<int(XPRSprob prob, int type, char names[], int first, int last)>
   XPRSgetnames = nullptr;
 std::function<int(XPRSprob prob, int type, const char names[], int first, int last)>
   XPRSaddnames = nullptr;
+std::function<int(XPRSprob prob, int rowmap[], int colmap[])> XPRSgetpresolvemap = nullptr;
 std::function<int(XPRSprob prob, const char* flags)> XPRSlpoptimize = nullptr;
 std::function<int(XPRSprob prob, const char* flags)> XPRSmipoptimize = nullptr;
 std::function<int(void)> XPRSfree = nullptr;
@@ -145,6 +146,11 @@ std::function<int(
   void(XPRS_CC* f_message)(XPRSprob cbprob, void* cbdata, const char* msg, int msglen, int msgtype),
   void* p)>
   XPRSsetcbmessage = nullptr;
+std::function<int(
+  XPRSprob prob,
+  void(XPRS_CC* f_message)(XPRSprob cbprob, void* cbdata, const char* msg, int msglen, int msgtype),
+  void* p, int priority)>
+  XPRSaddcbmessage = nullptr;
 std::function<int(XPRSprob prob, int control, int value)> XPRSsetintcontrol = nullptr;
 std::function<int(XPRSprob prob, int control, double value)> XPRSsetdblcontrol = nullptr;
 std::function<int(char* banner)> XPRSgetbanner = nullptr;
@@ -180,6 +186,7 @@ bool XpressLoader::LoadXpressFunctions(Solver::DynamicLibrary* xpress_dynamic_li
     xpress_dynamic_library->GetFunction(&XPRSgetnames, "XPRSgetnames");
     xpress_dynamic_library->GetFunction(&XPRSaddnames, "XPRSaddnames");
     xpress_dynamic_library->GetFunction(&XPRSlpoptimize, "XPRSlpoptimize");
+    xpress_dynamic_library->GetFunction(&XPRSgetpresolvemap, "XPRSgetpresolvemap");
     xpress_dynamic_library->GetFunction(&XPRSmipoptimize, "XPRSmipoptimize");
     xpress_dynamic_library->GetFunction(&XPRSfree, "XPRSfree");
     xpress_dynamic_library->GetFunction(&XPRSloadlp, "XPRSloadlp");
@@ -209,6 +216,7 @@ bool XpressLoader::LoadXpressFunctions(Solver::DynamicLibrary* xpress_dynamic_li
     xpress_dynamic_library->GetFunction(&XPRSgetdblattrib, "XPRSgetdblattrib");
     xpress_dynamic_library->GetFunction(&XPRSgetmipsol, "XPRSgetmipsol");
     xpress_dynamic_library->GetFunction(&XPRSsetcbmessage, "XPRSsetcbmessage");
+    xpress_dynamic_library->GetFunction(&XPRSaddcbmessage, "XPRSaddcbmessage");
     xpress_dynamic_library->GetFunction(&XPRSsetintcontrol, "XPRSsetintcontrol");
     xpress_dynamic_library->GetFunction(&XPRSsetdblcontrol, "XPRSsetdblcontrol");
     xpress_dynamic_library->GetFunction(&XPRSgetbanner, "XPRSgetbanner");
