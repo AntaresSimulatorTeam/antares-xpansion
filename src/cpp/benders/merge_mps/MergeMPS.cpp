@@ -459,7 +459,8 @@ void MergeMasterMasterMPS::parse_json_file(const std::filesystem::path& tree_fil
         initial_capacities_[candidate_name] = initial_capacities_data[candidate_name].asDouble();
     }
 
-    if (initial_capacities_.empty()) {
+    if (initial_capacities_.empty())
+    {
         logger_->display_message("No initial capacities found.");
     }
 
@@ -470,7 +471,8 @@ void MergeMasterMasterMPS::parse_json_file(const std::filesystem::path& tree_fil
         candidate_profiles_.emplace(profile_name, data);
     }
 
-    if (candidate_profiles_.empty()) {
+    if (candidate_profiles_.empty())
+    {
         logger_->display_message("No candidate profiles found.");
         // TODO Should be an error -> exit as well?
     }
