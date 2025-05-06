@@ -11,7 +11,7 @@ class StandardLp
 public:
     // to be used in boost serialization for mpi transfer
     raw_standard_lp_data data;
-    static size_t appendCNT;
+    static inline size_t appendCNT{0};
 
     explicit StandardLp(SolverAbstract& solver_p);
 

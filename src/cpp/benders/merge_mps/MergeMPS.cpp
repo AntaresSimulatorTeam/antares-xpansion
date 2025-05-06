@@ -443,12 +443,24 @@ MergeMasterMasterMPS::MergeMasterMasterMPS(MergeMPSOptions options,
                                            const std::filesystem::path& tree_filename):
     AbstractMergeMPS(options, logger, writer)
 {
+    parse_json_file(tree_filename);
+}
+
+/**
+ * \brief Parse given json file with tree
+ */
+void MergeMasterMasterMPS::parse_json_file(const std::filesystem::path& tree_filename)
+{
     const auto raw_input = get_json_file_content(tree_filename);
 
     const auto& initial_capacities_data = raw_input[JSON_KEY_INITIAL_CAPACITIES];
     for (Json::String candidate_name: initial_capacities_data.getMemberNames())
     {
         initial_capacities_[candidate_name] = initial_capacities_data[candidate_name].asDouble();
+    }
+
+    if (initial_capacities_.empty()) {
+        logger_->display_message("No initial capacities found.");
     }
 
     const auto& candidate_profiles_data = raw_input[JSON_KEY_CANDIDATES_PROFILES];
@@ -458,11 +470,22 @@ MergeMasterMasterMPS::MergeMasterMasterMPS(MergeMPSOptions options,
         candidate_profiles_.emplace(profile_name, data);
     }
 
+    if (candidate_profiles_.empty()) {
+        logger_->display_message("No candidate profiles found.");
+        // TODO Should be an error -> exit as well?
+    }
+
     const auto& tree_data = raw_input[JSON_KEY_TREE];
     for (Json::String tree_node: tree_data.getMemberNames())
     {
         const Json::Value& data = tree_data[tree_node];
         tree_.emplace_back(std::move(tree_node), data);
+    }
+
+    if (tree_.empty())
+    {
+        std::cerr << LOGLOCATION << "Tree is empty. Exiting program" << std::endl;
+        std::exit(1);
     }
 
     // TODO Add coherence check for parents?

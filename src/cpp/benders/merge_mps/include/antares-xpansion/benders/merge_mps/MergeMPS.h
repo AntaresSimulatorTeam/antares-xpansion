@@ -112,9 +112,11 @@ private:
 
     void write_structure_file() const;
 
-    std::map<std::string, double> initial_capacities_;
-    std::map<std::string, PathwayCandidateProfile> candidate_profiles_;
-    PathwayTree tree_;
+    void parse_json_file(const std::filesystem::path& tree_filename);
+
+    std::map<std::string, double> initial_capacities_{};
+    std::map<std::string, PathwayCandidateProfile> candidate_profiles_{};
+    PathwayTree tree_{};
 };
 
 using MergeMPS = MergeMasterSubproblemMPS;

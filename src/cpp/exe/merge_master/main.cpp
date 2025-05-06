@@ -6,9 +6,6 @@
 #include "antares-xpansion/benders/merge_mps/MergeMPS.h"
 #include "antares-xpansion/benders/merge_mps/StandardLp.h"
 
-// Initialize static member
-size_t StandardLp::appendCNT = 0;
-
 int main(int argc, char** argv)
 {
     usage(argc);

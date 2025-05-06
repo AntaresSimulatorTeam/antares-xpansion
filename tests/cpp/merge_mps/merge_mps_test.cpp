@@ -7,8 +7,6 @@
 #include "antares-xpansion/benders/merge_mps/MergeMPS.h"
 #include "antares-xpansion/benders/merge_mps/StandardLp.h"
 
-size_t StandardLp::appendCNT = 0;
-
 using namespace std::string_literals;
 
 class MergeMPSTest: public ::testing::Test
@@ -140,12 +138,9 @@ auto get_rows(const SolverAbstract* solver)
 TEST_F(MergeMPSTest, empty_input_ok)
 {
     std::ofstream structure_file(tmp_dir_ / "structure_file.txt"s);
+    structure_file.close();
 
-    MergeMPSOptions options;
-    options.SOLVER_NAME = "COIN";
-    options.STRUCTURE_FILE = (tmp_dir_ / "structure_file.txt"s).string();
-
-    MergeMPS mergeMPS(options, logger_, writer_);
+    MergeMPS mergeMPS(options_, logger_, writer_);
     mergeMPS.launch();
     const auto& lastSolution = writer_->solution_data_;
     EXPECT_EQ(lastSolution.problem_status, "ERROR");
