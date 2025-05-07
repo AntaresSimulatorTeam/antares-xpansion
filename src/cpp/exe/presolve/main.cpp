@@ -148,20 +148,7 @@ int main(int argc, char** argv)
     logger->display_message("Presolve finished");
 
     // Write structure for reduced problem
-    std::ofstream coupling_file(input_root_dir / options.STRUCTURE_FILE);
-
-    for (const auto& [filename, indicesNameAndColId]: reduced_couplings)
-    {
-        for (const auto& [candidateName, reducedColId]: indicesNameAndColId)
-        {
-            coupling_file << std::setw(50) << filename;
-            coupling_file << std::setw(50) << candidateName;
-            coupling_file << std::setw(10) << reducedColId;
-            coupling_file << std::endl;
-        }
-    }
-    coupling_file.close();
-
+    export_structure_file(input_root_dir / options.STRUCTURE_FILE, reduced_couplings);
     logger->display_message("Reduced " + options.STRUCTURE_FILE + "written");
 
     return 0;
