@@ -1,8 +1,9 @@
+#include <algorithm>
 #include <filesystem>
-#include <typeinfo>
-#include <unordered_set>
+#include <unordered_map>
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
+#include "antares-xpansion/benders/benders_core/SimulationOptions.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/logger/User.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
@@ -11,10 +12,13 @@ void XPRS_CC Message(XPRSprob my_prob, void* object, const char* msg, int len, i
 {
     switch (msgtype)
     {
-    case 4: /* error */
-    case 3: /* warning */
-    case 2: /* not used */
-    case 1: /* information */
+    case 4:
+        [[fallthrough]]; /* error */
+    case 3:
+        [[fallthrough]]; /* warning */
+    case 2:
+        [[fallthrough]]; /* not used */
+    case 1:              /* information */
         printf("%s\n", msg);
         break;
     default: /* exiting - buffers need flushing */
@@ -25,119 +29,138 @@ void XPRS_CC Message(XPRSprob my_prob, void* object, const char* msg, int len, i
 
 int main(int argc, char** argv)
 {
+    usage(argc);
+    BaseOptions options{SimulationOptions(argv[1]).get_base_options()};
     Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
 
-    // Initialize Xpress;
+    logger->display_message("Starting presolve");
+
+    if (options.SOLVER_NAME != "Xpress")
+    {
+        std::cerr << "Error: Invalid solver used. Only Xpress is accepted " << std::endl;
+        std::exit(1);
+    }
+    // else if (/* if XPRESS is not available */)
+    // {
+    //     std::cerr << "Error: Xpress not available" << std::endl;
+    //     std::exit(1);
+    // }
+
+    // Initialize Xpress
     LoadXpress::XpressLoader xpressLoader;
     xpressLoader.initXpressEnv();
     XPRSprob xprsProb;
     LoadXpress::XPRSinit(NULL);
-    LoadXpress::XPRScreateprob(&xprsProb);
     LoadXpress::XPRSaddcbmessage(xprsProb, Message, NULL, 0);
     LoadXpress::XPRSsetintcontrol(xprsProb, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
 
-    // Read full problem MPS
-    std::filesystem::path lpDir(argv[1]);
+    // Create Problem
+    LoadXpress::XPRScreateprob(&xprsProb);
 
-    // Parse structure and get candidates id
-    std::filesystem::path structureFilePath = lpDir / "structure.txt";
-    CouplingMap couplings = CouplingMapGenerator::BuildInput(structureFilePath,
-                                                             logger.get(),
-                                                             "Presolve");
-    std::map<std::string, std::vector<int>> pbNameTocandidatesId;
-    for (const auto& [pbName, varNameAndCandidateId]: couplings)
+    // Parse structure and get candidates' indices
+    const auto input_root_dir = std::filesystem::path(options.INPUTROOT);
+    auto structure_path(input_root_dir / options.STRUCTURE_FILE);
+
+    CouplingMap full_couplings = CouplingMapGenerator::BuildInput(structure_path,
+                                                                  logger.get(),
+                                                                  "Presolve");
+
+    // Rename STRUCTURE_FILE to STRUCTURE_FILE-full,
+    const auto ext = structure_path.extension();
+    structure_path.replace_filename(structure_path.stem().string() + "-full")
+      .replace_extension(ext);
+
+    logger->display_message(structure_path.string() + " created");
+
+    // Copy full_couplings for master
+    CouplingMap reduced_couplings = full_couplings;
+
+    const std::string reduced_prefix = "reduced-";
+    for (const auto& [filename, var_map]: full_couplings)
     {
-        for (const auto& [varName, id]: varNameAndCandidateId)
+        if (filename == "master")
         {
-            pbNameTocandidatesId[pbName].emplace_back(id);
+            continue;
         }
-    }
-    // Rename structure, so that structure with presolved pbs can be named
-    // structure.txt and benders can run without modification
-    std::filesystem::rename(structureFilePath,
-                            structureFilePath.parent_path()
-                              / (structureFilePath.stem().string() + "-full"
-                                 + structureFilePath.extension().string()));
 
-    CouplingMap presolvedCouplings;
-    std::string presolvedPrefix = "presolved-";
-    // Configure presolve and solve with 0 iteration
-    for (const auto& [pbName, candidates]: pbNameTocandidatesId)
-    {
-        if (pbName == "master")
+        std::vector<int> indices(var_map.size());
+        std::transform(var_map.cbegin(),
+                       var_map.cend(),
+                       indices.begin(),
+                       [](const auto kv) { return kv.second; });
+
+        // Read full problem MPS
+        const std::filesystem::path full_mps_path = input_root_dir / filename;
+        LoadXpress::XPRSreadprob(xprsProb, full_mps_path.c_str(), "");
+
+        // Keep the solver from removing these indices from subproblems
+        LoadXpress::XPRSloadsecurevecs(xprsProb, 0, indices.size(), nullptr, indices.data());
+
+        // Configure presolve to 0 iteration
+        LoadXpress::XPRSsetintcontrol(xprsProb, XPRS_LPITERLIMIT, 0);
+
+        // Do the actual presolve work for subproblems
+        LoadXpress::XPRSlpoptimize(xprsProb, "");
+
+        // Write reduced problem MPS
+        const std::filesystem::path reduced_mps_path = input_root_dir / (reduced_prefix + filename);
+        LoadXpress::XPRSwriteprob(xprsProb, reduced_mps_path.c_str(), "");
+
+        logger->display_message(reduced_mps_path.string() + " written");
+
+        // Get indices in reduced problem
+        int nbCols(0);
+        int nbRows(0);
+        LoadXpress::XPRSgetintattrib(xprsProb, XPRS_COLS, &nbCols);
+        LoadXpress::XPRSgetintattrib(xprsProb, XPRS_ROWS, &nbRows);
+
+        std::vector<int> col_map(nbCols);
+        std::vector<int> row_map(nbRows);
+        LoadXpress::XPRSgetpresolvemap(xprsProb, row_map.data(), col_map.data());
+
+        // Create a map [full_idx] -> reduced_idx
+        std::unordered_map<int, int> full2reduced;
+        std::sort(indices.begin(), indices.end());
+
+        for (int reduced_idx = 0; reduced_idx < col_map.size(); ++reduced_idx)
         {
-            // Copy couplings for master
-            for (auto& [varName, id]: couplings[pbName])
+            const int full_idx = col_map[reduced_idx];
+            if (std::binary_search(indices.cbegin(), indices.cend(), full_idx))
             {
-                presolvedCouplings[pbName][varName] = id;
-            }
-        }
-        else
-        {
-            // Do the actual presolve work for subproblems
-            std::filesystem::path fullMpsPath = lpDir / pbName;
-            LoadXpress::XPRSreadprob(xprsProb, fullMpsPath.c_str(), "");
-            LoadXpress::XPRSloadsecurevecs(xprsProb,
-                                           0,
-                                           candidates.size(),
-                                           nullptr,
-                                           candidates.data());
-            LoadXpress::XPRSsetintcontrol(xprsProb, XPRS_LPITERLIMIT, 0);
-            LoadXpress::XPRSlpoptimize(xprsProb, "");
+                full2reduced.insert({full_idx, reduced_idx});
 
-            // Write presolved problem MPS
-            std::filesystem::path presolvedFilename = presolvedPrefix
-                                                      + fullMpsPath.filename().string();
-            std::filesystem::path presolvedPath = fullMpsPath.parent_path() / presolvedFilename;
-            LoadXpress::XPRSwriteprob(xprsProb, presolvedPath.c_str(), "");
-
-            // Get candidates id in presolved problem
-            int nbCols(0);
-            int nbRows(0);
-            LoadXpress::XPRSgetintattrib(xprsProb, XPRS_COLS, &nbCols);
-            LoadXpress::XPRSgetintattrib(xprsProb, XPRS_ROWS, &nbRows);
-            std::vector<int> colMap(nbCols);
-            std::vector<int> rowMap(nbRows);
-            LoadXpress::XPRSgetpresolvemap(xprsProb, rowMap.data(), colMap.data());
-
-            std::unordered_set<int> initCandidatesIdSet(pbNameTocandidatesId[pbName].begin(),
-                                                        pbNameTocandidatesId[pbName].end());
-            // Use an unordered_map to store the indices of found values
-            std::unordered_map<int, int> initIdToPresolvedId;
-
-            for (int i = 0; i < colMap.size(); ++i)
-            {
-                if (initCandidatesIdSet.find(colMap[i]) != initCandidatesIdSet.end())
+                if (full2reduced.size() == indices.size())
                 {
-                    initIdToPresolvedId[colMap[i]] = i;
-                    initCandidatesIdSet.erase(colMap[i]);
-                    if (initCandidatesIdSet.empty())
-                    {
-                        break;
-                    }
+                    // Found all indices
+                    break;
                 }
             }
-            for (auto& [varName, id]: couplings[pbName])
-            {
-                presolvedCouplings[presolvedFilename.string()][varName] = initIdToPresolvedId[id];
-            }
+        }
+
+        for (const auto& [var_name, idx]: var_map)
+        {
+            reduced_couplings[filename][var_name] = full2reduced[idx];
         }
     }
 
-    // Write structure for presolved problem
-    std::ofstream coupling_file(structureFilePath);
+    logger->display_message("Presolve finished");
 
-    for (const auto& [pbName, candidatesNameAndColId]: presolvedCouplings)
+    // Write structure for reduced problem
+    std::ofstream coupling_file(input_root_dir / options.STRUCTURE_FILE);
+
+    for (const auto& [filename, indicesNameAndColId]: reduced_couplings)
     {
-        for (const auto& [candidateName, presolvedColId]: candidatesNameAndColId)
+        for (const auto& [candidateName, reducedColId]: indicesNameAndColId)
         {
-            coupling_file << std::setw(50) << pbName;
+            coupling_file << std::setw(50) << filename;
             coupling_file << std::setw(50) << candidateName;
-            coupling_file << std::setw(10) << presolvedColId;
+            coupling_file << std::setw(10) << reducedColId;
             coupling_file << std::endl;
         }
     }
     coupling_file.close();
+
+    logger->display_message("Reduced " + options.STRUCTURE_FILE + "written");
 
     return 0;
 }
