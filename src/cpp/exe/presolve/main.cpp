@@ -40,11 +40,12 @@ int main(int argc, char** argv)
         std::cerr << "Error: Invalid solver used. Only Xpress is accepted " << std::endl;
         std::exit(1);
     }
-    // else if (/* if XPRESS is not available */)
-    // {
-    //     std::cerr << "Error: Xpress not available" << std::endl;
-    //     std::exit(1);
-    // }
+
+    if (!LoadXpress::XpressLoader(logger).XpressIsCorrectlyInstalled(true))
+    {
+        std::cerr << "Error: Xpress not available" << std::endl;
+        std::exit(1);
+    }
 
     // Initialize Xpress
     LoadXpress::XpressLoader xpressLoader;
