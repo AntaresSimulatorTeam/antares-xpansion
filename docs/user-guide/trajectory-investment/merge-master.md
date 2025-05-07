@@ -1,13 +1,39 @@
 # Merging the master problems of annual Xpansion studies
 
-## MergeMasterMPS structure file
-### Note : Perhaps move to developer guide, as this should not be relevant to the end user.
+
+## Note : Perhaps move to developer guide, as this should not be relevant to the end user.
+
+## Usage of the master merger executable
 
 **All examples below are based on the tree example given in the [trajectory problem](./trajectory-problem.md) section**
 
-The underlying C++ code responsible for merging previously generated Xpansion studies master files needs an input  structure file that links together the different annual master problems. The programm expects a ```json``` file with the following structure :
+The underlying C++ code responsible for merging previously generated Xpansion studies master files needs 
 
-**master_structure.json** : Example of a simple ```MergeMasterTrajectoryMPS``` input file
+- An [option file](#options-file) to give the general parameters
+- A [master structure file](#master-structure-file) that links together the different annual master problems.
+- [Access](#input-files-from-each-annual-study) to the ```structure.txt``̀  and ```master.mps``` files previously generated using ```antares -i <study> --step problem_generation```.
+
+Usage is :
+```path/to/exectubale <options_file>.json <master_structure_file>.json```
+
+
+## Options file
+Only few of the ```BendersOptions``` from the ```<options_file>.json``` are truly necessary. An option file for the master merger can be : 
+
+```json
+{
+    "OUTPUTROOT": "<path/to/ouput/folder>",
+    "INPUTROOT": "<path/to/input/root>",
+    "JSON_FILE": "<path/to/metadata/json/ouput/file>",
+    "SOLVER_NAME": "Xpress",
+    "PROBLEMS_FORMAT": "MPS"
+}
+```
+
+## Master structure file
+The programm expects a ```<master_structure_file>.json``` to have the following structure :
+
+**master_structure.json** : Example of a master structure file :
 
 ```js
 {
@@ -101,10 +127,14 @@ We give a short description of the data expected in each field :
 - ```initial_capacities``` contains, for each candidate, the capacity installed at before the first investment time point.
 - ```constraints``` contains user-given trajectory constraints on the different investment variables. See the [Trajectory constraints section](#trajectory-constraints) for more details.
 - ```candidates_types``` contains investment, operation and maintenance and retirement costs for a given candidate type. This allows sharing cost properties among similar candidates in different zones.
-- ```tree``` contains the trajectory tree itself, and the data pertaining to each of its nodes.
+- ```tree``` contains the trajectory tree itself, and the data pertaining to each of its nodes. Each of the nodes contains the following data:
+    - ```lp_folder``` points to a folder containing both the ```master_mps_file``` and the ```structure_file``` of this annual study.
+    - ```parent``` is the name of the node's parent in the tree.
+    - ```weight_factor``` is the node's weight $w(n)$ in the objective function.
+    - ```candidates``` points each of the node's candidate to its type and thus its costs.
 
-## MergeMasterMPS Input files from each annual study
-We give below what the folder given as ```INPUTROOT``` in the options file should look like :
+## Input files from each annual study
+We give below what the folder given as ```INPUTROOT``` in the options file should look like in the present example :
 ```
 ├── master_structure.json
 ├── node_2030__lp
