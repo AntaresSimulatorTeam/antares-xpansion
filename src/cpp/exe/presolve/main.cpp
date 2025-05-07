@@ -37,26 +37,28 @@ int main(int argc, char** argv)
 
     if (options.SOLVER_NAME != "Xpress")
     {
-        std::cerr << "Error: Invalid solver used. Only Xpress is accepted " << std::endl;
-        std::exit(1);
-    }
-
-    if (!LoadXpress::XpressLoader(logger).XpressIsCorrectlyInstalled(true))
-    {
-        std::cerr << "Error: Xpress not available" << std::endl;
+        std::cerr << "Error: Invalid solver '" << options.SOLVER_NAME
+                  << "' used. Only Xpress is accepted " << std::endl;
         std::exit(1);
     }
 
     // Initialize Xpress
-    LoadXpress::XpressLoader xpressLoader;
+    LoadXpress::XpressLoader xpressLoader(logger);
+
+    if (!xpressLoader.XpressIsCorrectlyInstalled(true))
+    {
+        std::cerr << "Error: Xpress not available" << std::endl;
+        std::exit(1);
+    }
     xpressLoader.initXpressEnv();
-    XPRSprob xprsProb;
-    LoadXpress::XPRSinit(NULL);
-    LoadXpress::XPRSaddcbmessage(xprsProb, Message, NULL, 0);
-    LoadXpress::XPRSsetintcontrol(xprsProb, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
 
     // Create Problem
+    XPRSprob xprsProb;
     LoadXpress::XPRScreateprob(&xprsProb);
+
+    LoadXpress::XPRSinit(NULL);
+    LoadXpress::XPRSaddcbmessage(xprsProb, Message, NULL, 0);   // TODO Check this callback
+    LoadXpress::XPRSsetintcontrol(xprsProb, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
 
     // Parse structure and get candidates' indices
     const auto input_root_dir = std::filesystem::path(options.INPUTROOT);
@@ -73,15 +75,17 @@ int main(int argc, char** argv)
 
     logger->display_message(structure_path.string() + " created");
 
-    CouplingMap reduced_couplings = full_couplings;
+    // ** Main part : creates coupling map for reduced problems **
+    CouplingMap reduced_couplings;
 
     const std::string reduced_prefix = "reduced-";
     for (const auto& [filename, var_map]: full_couplings)
     {
-        if (filename == "master")
+        if (filename == options.MASTER_NAME) [[unlikely]]
         {
             // Keep master indices untouched
             // and only try to reduce the subproblems
+            reduced_couplings[options.MASTER_NAME] = var_map;
             continue;
         }
 
@@ -105,7 +109,8 @@ int main(int argc, char** argv)
         LoadXpress::XPRSlpoptimize(xprsProb, "");
 
         // Write reduced problem MPS
-        const std::filesystem::path reduced_mps_path = input_root_dir / (reduced_prefix + filename);
+        const std::string reduced_filename{reduced_prefix + filename};
+        const std::filesystem::path reduced_mps_path = input_root_dir / reduced_filename;
         LoadXpress::XPRSwriteprob(xprsProb, reduced_mps_path.c_str(), "");
 
         logger->display_message(reduced_mps_path.string() + " written");
@@ -120,7 +125,7 @@ int main(int argc, char** argv)
         std::vector<int> row_map(nbRows);
         LoadXpress::XPRSgetpresolvemap(xprsProb, row_map.data(), col_map.data());
 
-        // Create a map [full_idx] -> reduced_idx
+        // Create a map [full_idx] -> reduced_idx for candidate indices
         std::unordered_map<int, int> full2reduced;
         std::sort(indices.begin(), indices.end());
 
@@ -133,7 +138,7 @@ int main(int argc, char** argv)
 
                 if (full2reduced.size() == indices.size())
                 {
-                    // Found all indices
+                    // Found all candidates' indices
                     break;
                 }
             }
@@ -141,7 +146,7 @@ int main(int argc, char** argv)
 
         for (const auto& [var_name, idx]: var_map)
         {
-            reduced_couplings[filename][var_name] = full2reduced[idx];
+            reduced_couplings[reduced_filename][var_name] = full2reduced[idx];
         }
     }
 
@@ -149,7 +154,7 @@ int main(int argc, char** argv)
 
     // Write structure for reduced problem
     export_structure_file(input_root_dir / options.STRUCTURE_FILE, reduced_couplings);
-    logger->display_message("Reduced " + options.STRUCTURE_FILE + "written");
+    logger->display_message("Reduced " + options.STRUCTURE_FILE + " written");
 
     return 0;
 }
