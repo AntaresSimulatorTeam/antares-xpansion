@@ -1,5 +1,6 @@
 #include <algorithm>
 #include <filesystem>
+#include <fmt/format.h>
 #include <unordered_map>
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
@@ -37,9 +38,12 @@ int main(int argc, char** argv)
 
     if (options.SOLVER_NAME != "Xpress")
     {
-        std::cerr << "Error: Invalid solver '" << options.SOLVER_NAME
-                  << "' used. Only Xpress is accepted " << std::endl;
-        std::exit(1);
+        // TODO if options.json is empty (since the orchestrator doesn't create it)
+        // TODO create one using Xpress as the solver by default
+        std::cerr << "Invalid solver '" << options.SOLVER_NAME
+                  << "'. Will try to use Xpress instead." << std::endl;
+        // std::exit(1);
+        options.SOLVER_NAME = "Xpress";
     }
 
     // Initialize Xpress
@@ -57,35 +61,41 @@ int main(int argc, char** argv)
     LoadXpress::XPRScreateprob(&xprsProb);
 
     LoadXpress::XPRSinit(NULL);
-    LoadXpress::XPRSaddcbmessage(xprsProb, Message, NULL, 0);   // TODO Check this callback
+    LoadXpress::XPRSaddcbmessage(xprsProb, Message, NULL, 0); // TODO Check this callback
     LoadXpress::XPRSsetintcontrol(xprsProb, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
 
     // Parse structure and get candidates' indices
     const auto input_root_dir = std::filesystem::path(options.INPUTROOT);
-    auto structure_path(input_root_dir / options.STRUCTURE_FILE);
+    const auto structure_path(input_root_dir / options.STRUCTURE_FILE);
 
     const CouplingMap full_couplings = CouplingMapGenerator::BuildInput(structure_path,
                                                                         logger.get(),
                                                                         "Presolve");
 
-    // Rename STRUCTURE_FILE to STRUCTURE_FILE_full,
-    const auto ext = structure_path.extension();
-    structure_path.replace_filename(structure_path.stem().string() + "_full")
-      .replace_extension(ext);
+    logger->display_message(structure_path.string() + " read");
 
-    logger->display_message(structure_path.string() + " created");
+    // TODO Move this part into its own function
+    // Creates new folder to move full problems
+    const std::string full_prefix{"full"};
+    const auto full_dir = std::filesystem::path(options.OUTPUTROOT) / full_prefix;
+    if (!std::filesystem::exists(full_dir) && !std::filesystem::create_directories(full_dir))
+    {
+        std::cerr << "Could not create " << full_dir << "folder" << std::endl;
+    }
+
+    // Move full structure to 'full' folder
+    std::filesystem::rename(structure_path, full_dir / options.STRUCTURE_FILE);
 
     // ** Main part : creates coupling map for reduced problems **
-    CouplingMap reduced_couplings;
+    CouplingMap reduced_couplings = full_couplings;
 
-    const std::string reduced_prefix = "reduced-";
-    for (const auto& [filename, var_map]: full_couplings)
+    const size_t nb_prob_total{full_couplings.size() - 1};
+    for (int nb_prob{0}; const auto& [filename, var_map]: full_couplings)
     {
         if (filename == options.MASTER_NAME) [[unlikely]]
         {
             // Keep master indices untouched
             // and only try to reduce the subproblems
-            reduced_couplings[options.MASTER_NAME] = var_map;
             continue;
         }
 
@@ -96,8 +106,8 @@ int main(int argc, char** argv)
                        [](const auto pair) { return pair.second; });
 
         // Read full problem MPS
-        const std::filesystem::path full_mps_path = input_root_dir / filename;
-        LoadXpress::XPRSreadprob(xprsProb, full_mps_path.c_str(), "");
+        const std::filesystem::path subproblem_path = input_root_dir / filename;
+        LoadXpress::XPRSreadprob(xprsProb, subproblem_path.c_str(), "");
 
         // Keep the solver from removing these indices from subproblem
         LoadXpress::XPRSloadsecurevecs(xprsProb, 0, indices.size(), nullptr, indices.data());
@@ -108,12 +118,16 @@ int main(int argc, char** argv)
         // Run solver
         LoadXpress::XPRSlpoptimize(xprsProb, "");
 
-        // Write reduced problem MPS
-        const std::string reduced_filename{reduced_prefix + filename};
-        const std::filesystem::path reduced_mps_path = input_root_dir / reduced_filename;
-        LoadXpress::XPRSwriteprob(xprsProb, reduced_mps_path.c_str(), "");
+        // Move full subproblem to 'full' folder
+        // TODO Add option to keep or discard the full versions
+        // TODO All filesystem operations can be done in a separated part I guess
+        std::filesystem::rename(subproblem_path, full_dir / filename);
 
-        logger->display_message(reduced_mps_path.string() + " written");
+        logger->display_message(
+          fmt::format("Subproblem '{}' reduced: {} / {}", filename, ++nb_prob, nb_prob_total));
+
+        // Write reduced problem MPS
+        LoadXpress::XPRSwriteprob(xprsProb, subproblem_path.c_str(), "");
 
         // Get indices in reduced problem
         int nbCols(0);
@@ -146,15 +160,15 @@ int main(int argc, char** argv)
 
         for (const auto& [var_name, idx]: var_map)
         {
-            reduced_couplings[reduced_filename][var_name] = full2reduced[idx];
+            reduced_couplings.at(filename).at(var_name) = full2reduced.at(idx);
         }
     }
 
-    logger->display_message("Presolve finished");
-
     // Write structure for reduced problem
-    export_structure_file(input_root_dir / options.STRUCTURE_FILE, reduced_couplings);
+    export_structure_file(structure_path, reduced_couplings);
     logger->display_message("Reduced " + options.STRUCTURE_FILE + " written");
+
+    logger->display_message("Presolve finished");
 
     return 0;
 }
