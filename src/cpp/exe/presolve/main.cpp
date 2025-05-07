@@ -62,18 +62,17 @@ int main(int argc, char** argv)
     const auto input_root_dir = std::filesystem::path(options.INPUTROOT);
     auto structure_path(input_root_dir / options.STRUCTURE_FILE);
 
-    CouplingMap full_couplings = CouplingMapGenerator::BuildInput(structure_path,
-                                                                  logger.get(),
-                                                                  "Presolve");
+    const CouplingMap full_couplings = CouplingMapGenerator::BuildInput(structure_path,
+                                                                        logger.get(),
+                                                                        "Presolve");
 
-    // Rename STRUCTURE_FILE to STRUCTURE_FILE-full,
+    // Rename STRUCTURE_FILE to STRUCTURE_FILE_full,
     const auto ext = structure_path.extension();
-    structure_path.replace_filename(structure_path.stem().string() + "-full")
+    structure_path.replace_filename(structure_path.stem().string() + "_full")
       .replace_extension(ext);
 
     logger->display_message(structure_path.string() + " created");
 
-    // Copy full_couplings for master
     CouplingMap reduced_couplings = full_couplings;
 
     const std::string reduced_prefix = "reduced-";
@@ -81,6 +80,8 @@ int main(int argc, char** argv)
     {
         if (filename == "master")
         {
+            // Keep master indices untouched
+            // and only try to reduce the subproblems
             continue;
         }
 
@@ -88,19 +89,19 @@ int main(int argc, char** argv)
         std::transform(var_map.cbegin(),
                        var_map.cend(),
                        indices.begin(),
-                       [](const auto kv) { return kv.second; });
+                       [](const auto pair) { return pair.second; });
 
         // Read full problem MPS
         const std::filesystem::path full_mps_path = input_root_dir / filename;
         LoadXpress::XPRSreadprob(xprsProb, full_mps_path.c_str(), "");
 
-        // Keep the solver from removing these indices from subproblems
+        // Keep the solver from removing these indices from subproblem
         LoadXpress::XPRSloadsecurevecs(xprsProb, 0, indices.size(), nullptr, indices.data());
 
-        // Configure presolve to 0 iteration
+        // Presolve only: Set max iteration to 0
         LoadXpress::XPRSsetintcontrol(xprsProb, XPRS_LPITERLIMIT, 0);
 
-        // Do the actual presolve work for subproblems
+        // Run solver
         LoadXpress::XPRSlpoptimize(xprsProb, "");
 
         // Write reduced problem MPS
