@@ -21,11 +21,25 @@ We want to switch to a pluriannual vision and optimise the investments over seve
 
 The optimisation problem we now want to solve is, denoting by $n \in \mathcal{T}$ a node in the tree:
 
+Alternative 1
+
 $$
 \begin{aligned}
     \min_{x, dx^+, dx^-} \quad & \sum_{n \in \mathcal{T}} IC_n^T dx_n^+ + DC_n^T dx_n^- + w(n) \times (OC_{n}^Tx_{n} + ANTARES_n(x_n))\\\\
-    \text{s.t.} \quad & \forall i,a \quad  x_{i,n} = x_{i, \text{parent}(n)} + dx^+_{i,n}
+    \text{s.t.} \quad & \forall i,n \quad  x_{i,n} = x_{i, \text{parent}(n)} + dx^+_{i,n}
     - dx^-_{i,n} \\\\
+    & \forall i,n \quad dx^+_{i,n} \geq 0, \quad dx^-_{i,n} \geq 0 \\\\
+    & \forall i,n \quad 0 \leq x_{i,n} \leq X_{i,n}^{max} \\
+\end{aligned}
+$$
+
+Alternative 2
+
+$$
+\begin{aligned}
+    \min_{x, dx^+, dx^-} \quad & \sum_{n \in \mathcal{T}} IC_n^T dx_n^+ + DC_n^T dx_n^- + w(n) \times (OC_{n}^Tx_{n} + ANTARES_n(x_n))\\\\
+    \text{s.t.} \quad & \forall i,n \quad  x_{i,n} = x_{i, \text{parent}(n)} + dx^+_{i,\text{parent}(n)}
+    - dx^-_{i,\text{parent}(n)} \\\\
     & \forall i,n \quad dx^+_{i,n} \geq 0, \quad dx^-_{i,n} \geq 0 \\\\
     & \forall i,n \quad 0 \leq x_{i,n} \leq X_{i,n}^{max} \\
 \end{aligned}

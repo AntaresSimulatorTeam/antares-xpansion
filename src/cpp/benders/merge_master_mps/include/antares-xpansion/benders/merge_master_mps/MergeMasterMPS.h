@@ -1,6 +1,6 @@
 #pragma once
 
-#include <antares-xpansion/benders/merge_master_mps/MasterCouplingConstants.h>
+#include <antares-xpansion/benders/merge_master_mps/MasterStructureKeys.h>
 #include <antares-xpansion/benders/merge_mps/MergeMPS.h>
 
 // Probably needs to be changed
@@ -26,7 +26,8 @@ public:
     };
 
     static CandidateVariableType parse_variable_type(const std::string& s);
-
+    static char parse_constraint_type(const std::string& s);
+    
     // This structure contains the position of the variables in the merged problem
     // Its capacity, corresponding dx_plus and dx_minus
     struct VariablePositions
@@ -63,6 +64,7 @@ public:
 
         std::map<VariableRef, double> coefficients_map;
         double rhs{0.};
+        char constraint_type;
     };
 
     struct TrajectoryGlobalData
@@ -92,7 +94,7 @@ public:
         std::string master_mps_file;
         std::string structure_file;
 
-        std::string master_name = MasterCouplingConstants::DEFAULT_MASTER_NAME;
+        std::string master_name = MasterStructureKeys::DEFAULT_MASTER_NAME;
         std::optional<std::string> parent{std::nullopt};
         double weight{1.};
 

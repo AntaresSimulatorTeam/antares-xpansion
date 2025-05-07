@@ -5,7 +5,7 @@
 #include <utility>
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
-#include "antares-xpansion/benders/merge_master_mps/MasterCouplingConstants.h"
+#include "antares-xpansion/benders/merge_master_mps/MasterStructureKeys.h"
 #include "antares-xpansion/benders/merge_mps/StandardLp.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
@@ -13,7 +13,7 @@
 MergeMasterTrajectoryMPS::CandidateVariableType MergeMasterTrajectoryMPS::parse_variable_type(
   const std::string& s)
 {
-    using namespace MasterCouplingConstants;
+    using namespace MasterStructureKeys;
     if (s == VARIABLE_X)
     {
         return CandidateVariableType::CAPA;
@@ -30,6 +30,29 @@ MergeMasterTrajectoryMPS::CandidateVariableType MergeMasterTrajectoryMPS::parse_
     {
         std::cerr << LOGLOCATION << "Candidate variable type should be : " << VARIABLE_X << " or "
                   << VARIABLE_DXPLUS << " or " << VARIABLE_DXMINUS << std::endl;
+        std::exit(1);
+    }
+}
+
+char MergeMasterTrajectoryMPS::parse_constraint_type(const std::string& s)
+{
+    using namespace MasterStructureKeys;
+    if (s == CONSTRAINT_EQUALS)
+    {
+        return 'E';
+    } 
+    else if (s == CONSTRAINT_GEQ)
+    {
+        return 'G';
+    }
+    else if (s == CONSTRAINT_LEQ)
+    {
+        return 'L';
+    }
+    else
+    {
+        std::cerr << LOGLOCATION << "Constraint type should be : " << CONSTRAINT_EQUALS << " or "
+                  << CONSTRAINT_GEQ << " or " << CONSTRAINT_LEQ << std::endl;
         std::exit(1);
     }
 }
@@ -72,7 +95,7 @@ void MergeMasterTrajectoryMPS::VariablePositions::set(CandidateVariableType t, i
 
 MergeMasterTrajectoryMPS::CandidateTypeCosts::CandidateTypeCosts(const Json::Value& data)
 {
-    using namespace MasterCouplingConstants;
+    using namespace MasterStructureKeys;
     operation_maintenace = data[KEY_OPERATION_COST].asDouble();
     investment = data[KEY_INVESTMENT_COST].asDouble();
     retirement = data[KEY_RETIREMENT_COST].asDouble();
@@ -96,7 +119,7 @@ double MergeMasterTrajectoryMPS::CandidateTypeCosts::get(CandidateVariableType t
 
 MergeMasterTrajectoryMPS::TrajectoryConstraint::TrajectoryConstraint(const Json::Value& data)
 {
-    using namespace MasterCouplingConstants;
+    using namespace MasterStructureKeys;
     // Parse the coefficients
     const auto& coefs_data = data[KEY_COEFFICIENTS];
     for (const auto& candidate_reference: coefs_data.getMemberNames())
@@ -117,11 +140,12 @@ MergeMasterTrajectoryMPS::TrajectoryConstraint::TrajectoryConstraint(const Json:
     }
 
     rhs = data[KEY_RHS].asDouble();
+    constraint_type = parse_constraint_type(data[KEY_OPERATOR].asString());
 }
 
 MergeMasterTrajectoryMPS::TrajectoryGlobalData::TrajectoryGlobalData(const Json::Value& data)
 {
-    using namespace MasterCouplingConstants;
+    using namespace MasterStructureKeys;
 
     // Read the initial capacities
     const auto& initial_capacities_data = data[KEY_INITIAL_CAPACITIES];
@@ -153,7 +177,7 @@ MergeMasterTrajectoryMPS::TrajectoryNode::TrajectoryNode(const std::string& node
                                                          const Json::Value& data):
     name{node}
 {
-    using namespace MasterCouplingConstants;
+    using namespace MasterStructureKeys;
 
     path = data[KEY_LP_FOLDER].asString();
     master_mps_file = data[KEY_MASTER_MPS_FILE].asString();
@@ -186,7 +210,7 @@ MergeMasterTrajectoryMPS::TrajectoryNode::TrajectoryNode(const std::string& node
 
 void MergeMasterTrajectoryMPS::read_tree_structure_file()
 {
-    using namespace MasterCouplingConstants;
+    using namespace MasterStructureKeys;
 
     const auto raw_input = get_json_file_content(tree_path_);
     const auto& tree_data = raw_input[KEY_TREE];
@@ -212,7 +236,7 @@ std::string MergeMasterTrajectoryMPS::make_prefix_from_node(const std::string& n
 
 double MergeMasterTrajectoryMPS::get_candidate_initial_value(const std::string& candidate) const
 {
-    using namespace MasterCouplingConstants;
+    using namespace MasterStructureKeys;
 
     double initial_value = 0;
     auto it = trajectory_data_.initial_capacities.find(candidate);
@@ -311,7 +335,7 @@ void MergeMasterTrajectoryMPS::build_problem()
             }
             // Create the VariablePositions entry for this candidate
             candidates_coupling_[candidate_name][node_name].set(CAPA, new_index);
-            structure_[MasterCouplingConstants::DEFAULT_MASTER_NAME][candidate_name_prefixed]
+            structure_[MasterStructureKeys::DEFAULT_MASTER_NAME][candidate_name_prefixed]
               = new_index;
         }
 
@@ -572,7 +596,7 @@ void MergeMasterTrajectoryMPS::add_coupling_constraints()
         }
 
         rhs.push_back(cons.rhs);
-        constraint_type.push_back('L');
+        constraint_type.push_back(cons.constraint_type);
     }
 
     var_offsets.push_back(var_indices.size());

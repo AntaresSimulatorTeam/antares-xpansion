@@ -21,14 +21,16 @@ The underlying C++ code responsible for merging previously generated Xpansion st
                 "2030::semibase::dx_plus" : 1,
                 "2030::peak::dx_plus" : 1
             },
-            "rhs" : 1000
+            "rhs" : 1000,
+            "operator" : "<"
         },
         {
             "coeffs" : {
                 "2040::semibase::x" : 1,
                 "2030::peak::dx_minus" : 1
             },
-            "rhs" : 0
+            "rhs" : 0,
+            "operator" : "="
         }
     ],
     "candidates_types" : {
@@ -71,7 +73,7 @@ The underlying C++ code responsible for merging previously generated Xpansion st
             "master_mps_file" : "node_2030_A__master.mps",
             "structure_file" : "node_2030_A__structure.txt",
             "parent" : "2040",
-            "weight_factor" : 7.0,
+            "weight_factor" : 8.0,
             "candidates" : {
                 "semibase" : "semibase_type",
                 "peak" : "peak_type"
@@ -83,7 +85,7 @@ The underlying C++ code responsible for merging previously generated Xpansion st
             "master_mps_file" : "node_2030_B__master.mps",
             "structure_file" : "node_2030_B__structure.txt",
             "parent" : "2040",
-            "weight_factor" : 3.0,
+            "weight_factor" : 2.0,
             "candidates" : {
                 "semibase" : "semibase_type",
                 "peak" : "peak_type"
@@ -97,7 +99,7 @@ The underlying C++ code responsible for merging previously generated Xpansion st
 We give a short description of the data expected in each field :
 
 - ```initial_capacities``` contains, for each candidate, the capacity installed at before the first investment time point.
-- ```constraints``` contains user-given trajectory constraints on the different investment variables. See the [Trajectory constraints section](./trajectory-constraints.md) for more details.
+- ```constraints``` contains user-given trajectory constraints on the different investment variables. See the [Trajectory constraints section](#trajectory-constraints) for more details.
 - ```candidates_types``` contains investment, operation and maintenance and retirement costs for a given candidate type. This allows sharing cost properties among similar candidates in different zones.
 - ```tree``` contains the trajectory tree itself, and the data pertaining to each of its nodes.
 
@@ -135,9 +137,12 @@ We give below what the folder given as ```INPUTROOT``` in the options file shoul
 │   ├── node_2050_B__problem-2-2--optim-nb-1.mps
 │   └── node_2050_B__structure.txt
 ```
-
+Each of the subfolder is the ouput of of ```antares -i <study> --step problem_generation```.  
 For example, the structure file of a given node should be found at : 
 ```<INPUTROOT>/<lp_folder>/<structure_file>```
+
+Note that the subfolders as presented in this example do not have to be immediately contained in the ```<INPUTROOT>``` folder, and could be kept in the ```output``` folders of each annual study (and thus ````<INPUTROOT>``` would then contain each of the full Antares studies, and each ```lp_folder``` would point to : ```<study_folder>/ouput/<date>-Xpansion/lp```)
+
 
 ## Trajectory constraints
 
@@ -148,4 +153,8 @@ In the ```constraints``` section of the ```master_structure.json``` file, we exp
     - ```dx_plus``` when referencing the $dx_{n,i}^+$ variable.
     - ```dx_minus``` when referencing the $dx_{n,i}^⁻$ variable.
 - ```rhs``` contains the right-hand side of the constraint expression. (Note that all constraints are formulated as a $\leq$ constraint for now)
+- ```operator``` defines the type of constraint we want to set and expects one of three values :
+    - ```<``` for constraints of type : $expression \leq rhs$
+    - ```=``` for constraints of type : $expression = rhs$
+    - ```>``` for constraints of type : $expression \geq rhs$
 
