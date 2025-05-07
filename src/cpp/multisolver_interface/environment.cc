@@ -149,7 +149,8 @@ std::function<int(
 std::function<int(
   XPRSprob prob,
   void(XPRS_CC* f_message)(XPRSprob cbprob, void* cbdata, const char* msg, int msglen, int msgtype),
-  void* p, int priority)>
+  void* p,
+  int priority)>
   XPRSaddcbmessage = nullptr;
 std::function<int(XPRSprob prob, int control, int value)> XPRSsetintcontrol = nullptr;
 std::function<int(XPRSprob prob, int control, double value)> XPRSsetdblcontrol = nullptr;
