@@ -644,6 +644,9 @@ class ConfigLoader:
     def merge_mps_exe(self):
         return self.exe_path(self._config.MERGE_MPS)
 
+    def presolve_exe(self):
+        return self.exe_path(self._config.PRESOLVE)
+
     def study_update_exe(self):
         return self.exe_path(self._config.STUDY_UPDATER)
 

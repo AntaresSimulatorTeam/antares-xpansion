@@ -10,6 +10,7 @@ class ConfigFileParser:
         self.default_install_dir = ""
         self.ANTARES_DEFAULT = "antares-solver"
         self.MERGE_MPS_DEFAULT = "merge_mps"
+        self.PRESOLVE_DEFAULT = "presolve"
         self.BENDERS_DEFAULT = "benders"
         self.LP_NAMER_DEFAULT = "lp_namer"
         self.STUDY_UPDATER_DEFAULT = "study_updater"
@@ -32,6 +33,7 @@ class ConfigFileParser:
                 ),
                 ANTARES=content.get("ANTARES", self.ANTARES_DEFAULT),
                 MERGE_MPS=content.get("MERGE_MPS", self.MERGE_MPS_DEFAULT),
+                PRESOLVE=content.get("PRESOLVE", self.PRESOLVE_DEFAULT),
                 BENDERS=content.get("BENDERS", self.BENDERS_DEFAULT),
                 LP_NAMER=content.get("LP_NAMER", self.LP_NAMER_DEFAULT),
                 STUDY_UPDATER=content.get("STUDY_UPDATER", self.STUDY_UPDATER_DEFAULT),

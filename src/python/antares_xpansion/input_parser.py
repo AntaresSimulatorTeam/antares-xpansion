@@ -38,7 +38,7 @@ class InputParser:
             "--method",
             dest=LauncherOptionsKeys.method_key(),
             type=str,
-            choices=["benders", "mergeMPS", "adequacy_criterion"],
+            choices=["benders", "mergeMPS", "presolve", "adequacy_criterion"],
             help="Choose the optimization method",
             default=LauncherOptionsDefaultValues.DEFAULT_VALUE(),
         )

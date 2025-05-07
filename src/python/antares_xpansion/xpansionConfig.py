@@ -15,6 +15,7 @@ class ConfigParameters:
     default_install_dir: str
     ANTARES: str
     MERGE_MPS: str
+    PRESOLVE: str
     BENDERS: str
     LP_NAMER: str
     STUDY_UPDATER: str
@@ -58,6 +59,7 @@ class XpansionConfig:
         self.config_parameters = config_parameters
         self.ANTARES: str = ""
         self.MERGE_MPS: str = ""
+        self.PRESOLVE: str = ""
         self.BENDERS: str = ""
         self.LP_NAMER: str = ""
         self.STUDY_UPDATER: str = ""
@@ -256,6 +258,7 @@ class XpansionConfig:
         self.default_install_dir = self.config_parameters.default_install_dir
         self.ANTARES = self.config_parameters.ANTARES
         self.MERGE_MPS = self.config_parameters.MERGE_MPS
+        self.PRESOLVE = self.config_parameters.PRESOLVE
         self.BENDERS = self.config_parameters.BENDERS
         self.LP_NAMER = self.config_parameters.LP_NAMER
         self.STUDY_UPDATER = self.config_parameters.STUDY_UPDATER
