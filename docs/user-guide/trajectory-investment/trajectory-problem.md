@@ -19,16 +19,21 @@ We want to switch to a pluriannual vision and optimise the investments over seve
 
 **Figure 1** - Trajectory tree made up of annual Xpansion studies
 
-The optimisation problem we now want to solve is, denoting by \\( \mathbb{n} \in \mathcal{T} \\) a node in the tree:
+The optimisation problem we now want to solve is, denoting by $n \in \mathcal{T}$ a node in the tree:
 
 $$
 \begin{aligned}
-    \min_{x, dx^+, dx^-} \quad & \sum_{\mathbb{n} \in \mathcal{T}} IC_n^T dx_n^+ + DC_n^T dx_n^- + w(\mathbb{n}) \times (OC_{\mathbb{n}}^Tx_{\mathbb{n}} + ANTARES_n(x_n))\\\\
-    \text{s.t.} \quad & \forall i,a \quad  x_{i,\mathbb{n}} = x_{i, \text{parent}(\mathbb{n})} + dx^+_{i,\mathbb{n}}
-    - dx^-_{i,\mathbb{n}} \\\\
-    & \forall i,\mathbb{n} \quad dx^+_{i,\mathbb{n}} \geq 0, \quad dx^-_{i,\mathbb{n}} \geq 0 \\\\
-    & \forall i,\mathbb{n} \quad 0 \leq x_{i,\mathbb{n}} \leq X_{i,\mathbb{n}}^{max} \\
+    \min_{x, dx^+, dx^-} \quad & \sum_{n \in \mathcal{T}} IC_n^T dx_n^+ + DC_n^T dx_n^- + w(n) \times (OC_{n}^Tx_{n} + ANTARES_n(x_n))\\\\
+    \text{s.t.} \quad & \forall i,a \quad  x_{i,n} = x_{i, \text{parent}(n)} + dx^+_{i,n}
+    - dx^-_{i,n} \\\\
+    & \forall i,n \quad dx^+_{i,n} \geq 0, \quad dx^-_{i,n} \geq 0 \\\\
+    & \forall i,n \quad 0 \leq x_{i,n} \leq X_{i,n}^{max} \\
 \end{aligned}
 $$
 
-TBA
+- $IC_n$ contains the one-time payment investment costs per MW.
+- $DC_n$ contains the one-time payment retirement costs per MW.
+- $OC_n$ contains the annual operation and maintenance fixed costs.
+- $w(n) = P(n) \times \times \sum_{y = y_n}^{y = y_n + d_n - 1} \frac{1}{(1+r)^{y - y_0}}$.
+- $P(n)$ is the probability of realisation of node $n$ : $P(n) = P_{\text{parent}(n)}(n) \times P(\text{parent}(n))$.
+- $P(root) = 1$.

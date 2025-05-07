@@ -49,7 +49,6 @@ nav:
       - 'Trajectory investment': 
         - 'Trajectory investment problem' : 'user-guide/trajectory-investment/trajectory-problem.md'
         - 'Merging annual problems' : 'user-guide/trajectory-investment/merge-master.md'
-        - 'Trajectory constraints' : 'user-guide/trajectory-investment/trajectory-constraints.md'
   - 'Developer guide': 
     - 'Install from sources':
       - 'Introduction': 'developer-guide/install_from_sources/0-INSTALL.md'
