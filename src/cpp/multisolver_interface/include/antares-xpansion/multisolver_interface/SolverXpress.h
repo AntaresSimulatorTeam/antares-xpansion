@@ -166,12 +166,16 @@ public:
     void chg_row_name(int id_row, const std::string& name) override;
     void chg_col_name(int id_col, const std::string& name) override;
 
+    void keep_presolve_from_removing(int nrows, int ncols, int* rowind, int* colind);
+
     /*************************************************************************************************
     -----------------------------    Methods to solve the problem
     ---------------------------------
     *************************************************************************************************/
 
 public:
+    void presolve_only();
+
     int solve_lp() override;
     int solve_mip() override;
 
@@ -203,6 +207,8 @@ public:
     int get_splex_num_of_ite_last() const override;
     void get_lp_sol(double* primals, double* duals, double* reduced_costs) const override;
     void get_mip_sol(double* primals) override;
+
+    void get_presolve_map(int* rowmap, int* colmap) const;
 
     /*************************************************************************************************
     ------------------------    Methods to set algorithm or logs levels

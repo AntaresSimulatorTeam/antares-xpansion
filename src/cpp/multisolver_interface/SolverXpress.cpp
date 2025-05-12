@@ -565,10 +565,29 @@ void SolverXpress::chg_col_name(int id_col, const std::string& name)
     zero_status_check(status, "Set col name", LOGLOCATION);
 }
 
+void SolverXpress::keep_presolve_from_removing(int nrows, int ncols, int* rowind, int* colind)
+{
+    // From FICO Xpress API page
+    // Allows the user to mark rows and columns in order to prevent the presolve removing these rows
+    // and columns from the matrix
+    int status = XPRSloadsecurevecs(_xprs, nrows, ncols, rowind, colind);
+    zero_status_check(status, "keep presolve from removing rows and columns", LOGLOCATION);
+}
+
 /*************************************************************************************************
 -----------------------------    Methods to solve the problem
 ---------------------------------
 *************************************************************************************************/
+void SolverXpress::presolve_only()
+{
+    set_simplex_iter(0);
+
+    int status = XPRSlpoptimize(_xprs, "");
+    zero_status_check(status, "presolve problem as LP", LOGLOCATION);
+
+    // TODO Return a status as well?
+}
+
 int SolverXpress::solve_lp()
 {
     int lp_status;
@@ -680,6 +699,12 @@ void SolverXpress::get_mip_sol(double* primals)
     zero_status_check(status, "get MIP sol", LOGLOCATION);
 }
 
+void SolverXpress::get_presolve_map(int* rowmap, int* colmap) const
+{
+    int status = XPRSgetpresolvemap(_xprs, rowmap, colmap);
+    zero_status_check(status, "get presolve map", LOGLOCATION);
+}
+
 /*************************************************************************************************
 ------------------------    Methods to set algorithm or logs levels
 ---------------------------
@@ -740,10 +765,10 @@ void SolverXpress::set_optimality_gap(double gap)
 
 void SolverXpress::set_simplex_iter(int iter)
 {
-    int status = XPRSsetdblcontrol(_xprs, XPRS_BARITERLIMIT, iter);
+    int status = XPRSsetintcontrol(_xprs, XPRS_BARITERLIMIT, iter);
     zero_status_check(status, "set barrier max iter", LOGLOCATION);
 
-    status = XPRSsetdblcontrol(_xprs, XPRS_LPITERLIMIT, iter);
+    status = XPRSsetintcontrol(_xprs, XPRS_LPITERLIMIT, iter);
     zero_status_check(status, "set simplex max iter", LOGLOCATION);
 }
 
