@@ -7,7 +7,7 @@
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/logger/User.h"
-#include "antares-xpansion/multisolver_interface/environment.h"
+#include "antares-xpansion/multisolver_interface/SolverXpress.h"
 
 void zero_status_check(int status,
                        const std::string& failed_action,

@@ -1,4 +1,4 @@
-#include "SolverXpress.h"
+#include "antares-xpansion/multisolver_interface/SolverXpress.h"
 
 #include <cassert>
 #include <cstring>

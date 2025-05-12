@@ -1,7 +1,6 @@
 
 #include <utility>
 
-#include "SolverXpress.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
 
 #ifdef COIN_OR
@@ -10,6 +9,7 @@
 #endif
 #include "antares-xpansion/multisolver_interface/SolverConfig.h"
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
+#include "antares-xpansion/multisolver_interface/SolverXpress.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 namespace
