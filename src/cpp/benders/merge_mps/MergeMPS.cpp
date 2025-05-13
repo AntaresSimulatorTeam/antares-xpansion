@@ -123,14 +123,17 @@ VariableMap AbstractMergeMPS::merge_local_solver(SolverAbstract& local_solver,
 /**
  * \brief Export problem into mps and lp files
  */
-void AbstractMergeMPS::export_problem()
+void AbstractMergeMPS::export_problem(std::string filename, bool export_lp)
 {
     const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
     logger_->display_message("Problems merged.");
     logger_->display_message("Writing mps file");
-    ptr_merged_solver_->write_prob_mps(output_root / ("log_merged" + MPS_SUFFIX));
-    logger_->display_message("Writing lp file");
-    ptr_merged_solver_->write_prob_lp(output_root / "log_merged.lp");
+    ptr_merged_solver_->write_prob_mps(output_root / (filename + MPS_SUFFIX));
+    
+    if (export_lp){
+        logger_->display_message("Writing lp file");
+        ptr_merged_solver_->write_prob_lp(output_root / (filename + ".lp"));
+    }
 }
 
 /**

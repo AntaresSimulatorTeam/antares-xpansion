@@ -18,7 +18,8 @@ public:
     virtual void launch() = 0;
 
 protected:
-    void export_problem();
+    // Exports the problem to OUTPUTROOT/filename.mps, and optionaly writes the lp variant
+    void export_problem(std::string filename = "log_merged", bool export_lp = false);
 
     [[nodiscard]] SolverAbstract::Ptr get_local_solver(const std::filesystem::path& root_dir,
                                                        const std::string& filename) const;

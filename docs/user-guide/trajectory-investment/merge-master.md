@@ -130,8 +130,9 @@ We give a short description of the data expected in each field :
 - ```tree``` contains the trajectory tree itself, and the data pertaining to each of its nodes. Each of the nodes contains the following data:
     - ```lp_folder``` points to a folder containing both the ```master_mps_file``` and the ```structure_file``` of this annual study.
     - ```parent``` is the name of the node's parent in the tree.
-    - ```weight_factor``` is the node's weight $w(n)$ in the objective function.
+    - ```weight_factor``` is the node's weight $w(n)$ in the objective function. Note that in  this example, we used a discounting rate of $0$ to get an aggregated weight of $10$ on each investment time point.
     - ```candidates``` points each of the node's candidate to its type and thus its costs.
+
 
 ## Input files from each annual study
 We give below what the folder given as ```INPUTROOT``` in the options file should look like in the present example :
