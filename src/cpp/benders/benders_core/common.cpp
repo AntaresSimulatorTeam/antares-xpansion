@@ -51,7 +51,8 @@ Json::Value get_json_file_content(const std::filesystem::path& json_file)
 
 bool mkdir(const std::filesystem::path& path_to_folder)
 {
-    if (!std::filesystem::exists(path_to_folder) && !std::filesystem::create_directories(path_to_folder))
+    if (!std::filesystem::exists(path_to_folder)
+        && !std::filesystem::create_directories(path_to_folder))
     {
         std::cerr << "Could not create '" << path_to_folder << "' folder" << std::endl;
         return false;

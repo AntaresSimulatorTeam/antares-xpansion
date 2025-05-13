@@ -215,7 +215,7 @@ Json::Value get_json_file_content(const std::filesystem::path& json_file);
 
 bool mkdir(const std::filesystem::path& path_to_folder);
 
-template <typename T>
+template<typename T>
 concept OStreamable = requires(std::ostream& os, T obj) {
     { os << obj } -> std::same_as<std::ostream&>;
 };
