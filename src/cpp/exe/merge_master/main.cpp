@@ -11,7 +11,12 @@ size_t StandardLp::appendCNT = 0;
 
 int main(int argc, char** argv)
 {
-    usage(argc);
+    if (argc < 3)
+    {
+        std::cerr << "Error: usage is : <exe> <option_file> <master_structure_file>" << std::endl;
+        std::exit(1);
+    }
+    
     SimulationOptions options(argv[1]);
     options.print(std::cout);
 
