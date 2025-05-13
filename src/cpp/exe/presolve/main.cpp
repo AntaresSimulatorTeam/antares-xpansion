@@ -36,13 +36,16 @@ XPRSPtr init_solver(BaseOptions& options, Logger logger)
     XPRSPtr solver_ptr = std::static_pointer_cast<SolverXpress>(
       factory.create_solver(options.SOLVER_NAME));
 
-    // TODO Default is 0. Should keep it ?
-    // solver.set_output_log_level(1);
+    if (options.LOG_LEVEL > 0)
+    {
+        solver_ptr->set_output_log_level(options.LOG_LEVEL);
+    }
 
     return solver_ptr;
 }
 
-std::unordered_map<int, int> get_presolve_map(SolverXpress& solver, const std::vector<int>& colind)
+std::unordered_map<int, int> get_candidates_presolve_map(SolverXpress& solver,
+                                                         std::vector<int>& candidatesId)
 {
     // Get indices in reduced problem
     std::unordered_map<int, int> full2reduced;
@@ -54,14 +57,24 @@ std::unordered_map<int, int> get_presolve_map(SolverXpress& solver, const std::v
 
     solver.get_presolve_map(rowmap.data(), colmap.data());
 
-    for (int reduced_idx = 0; reduced_idx < colmap.size(); ++reduced_idx)
+    // Since candidatesId is much smaller than colmap, sorting (mostly)
+    // and searching the former is theoretically more efficient than
+    // doing the opposite.
+    std::sort(candidatesId.begin(), candidatesId.end());
+
+    // Considering that candidates are added as the last columns of the
+    // the problem, it can be more efficient to search backwards from colmap.
+    // Note from Xpress API page: it is possible that the presolver will introduce
+    // new rows or columns. For any added row or column the corresponding entry
+    // returned will be -1
+    for (int reduced_idx = colmap.size() - 1; reduced_idx >= 0; --reduced_idx)
     {
         const int full_idx = colmap[reduced_idx];
-        if (std::binary_search(colind.cbegin(), colind.cend(), full_idx))
+        if (std::binary_search(candidatesId.cbegin(), candidatesId.cend(), full_idx))
         {
             full2reduced.insert({full_idx, reduced_idx});
 
-            if (full2reduced.size() == colind.size())
+            if (full2reduced.size() == candidatesId.size())
             {
                 // Found all candidates' indices
                 break;
@@ -72,7 +85,7 @@ std::unordered_map<int, int> get_presolve_map(SolverXpress& solver, const std::v
     return full2reduced;
 }
 
-CouplingMap reduce_problems(SolverXpress& solver, const BaseOptions& options, Logger logger)
+void reduce_problems(SolverXpress& solver, const BaseOptions& options, Logger logger)
 {
     const auto input_root_dir = std::filesystem::path(options.INPUTROOT);
     const auto structure_path = input_root_dir / options.STRUCTURE_FILE;
@@ -97,6 +110,7 @@ CouplingMap reduce_problems(SolverXpress& solver, const BaseOptions& options, Lo
     CouplingMap reduced_couplings = full_couplings;
 
     const size_t nb_prob_total{full_couplings.size() - 1};
+    // TODO Can be done in parallel ?
     for (int nb_prob{0}; const auto& [filename, var_map]: full_couplings)
     {
         if (filename == options.MASTER_NAME) [[unlikely]]
@@ -107,12 +121,11 @@ CouplingMap reduce_problems(SolverXpress& solver, const BaseOptions& options, Lo
         }
 
         // Get all candidate indices in a sorted array
-        std::vector<int> colind(var_map.size());
+        std::vector<int> candidatesId(var_map.size());
         std::transform(var_map.cbegin(),
                        var_map.cend(),
-                       colind.begin(),
+                       candidatesId.begin(),
                        [](const auto pair) { return pair.second; });
-        std::sort(colind.begin(), colind.end());
 
         // Read full problem
         const std::filesystem::path subproblem_path = input_root_dir / filename;
@@ -121,7 +134,7 @@ CouplingMap reduce_problems(SolverXpress& solver, const BaseOptions& options, Lo
         solver.read_prob_mps(subproblem_path);
 
         // Keep the solver from removing candidate indices from subproblem
-        solver.mark_indices_to_keep_presolve(0, colind.size(), nullptr, colind.data());
+        solver.mark_indices_to_keep_presolve(0, candidatesId.size(), nullptr, candidatesId.data());
 
         solver.presolve_only();
 
@@ -137,22 +150,13 @@ CouplingMap reduce_problems(SolverXpress& solver, const BaseOptions& options, Lo
         solver.write_prob_mps(subproblem_path);
 
         // Create a map [full_idx] -> reduced_idx for candidate indices
-        const auto full2reduced = get_presolve_map(solver, colind);
+        const auto full2reduced = get_candidates_presolve_map(solver, candidatesId);
 
         for (const auto& [var_name, idx]: var_map)
         {
             reduced_couplings.at(filename).at(var_name) = full2reduced.at(idx);
         }
     }
-
-    return reduced_couplings;
-}
-
-void write_reduced_problems(const CouplingMap& reduced_couplings,
-                            const BaseOptions& options,
-                            Logger logger)
-{
-    const auto structure_path{std::filesystem::path(options.INPUTROOT) / options.STRUCTURE_FILE};
 
     // Write structure for reduced problem
     export_structure_file(structure_path, reduced_couplings);
@@ -169,9 +173,7 @@ int main(int argc, char** argv)
 
     XPRSPtr solver_ptr = init_solver(options, logger);
 
-    const CouplingMap reduced_couplings = reduce_problems(*solver_ptr, options, logger);
-
-    write_reduced_problems(reduced_couplings, options, logger);
+    reduce_problems(*solver_ptr, options, logger);
 
     logger->display_message("Presolve finished");
 
