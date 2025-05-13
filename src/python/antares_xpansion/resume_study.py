@@ -17,6 +17,7 @@ class ResumeStudyData:
     benders_options_file: str
     benders_exe: str
     merge_mps_exe: str
+    # TODO Add something to ResumeStudy as well
 
 
 class ResumeStudy:
@@ -108,7 +109,7 @@ class ResumeStudy:
             json.dump(options, options_json, indent=4)
 
         benders_driver = BendersDriver(
-            SolversExe(self.benders_exe, self.merge_mps_exe, ""),
+            SolversExe(self.benders_exe, self.merge_mps_exe, "", ""),
             self.benders_options_file
         )
         benders_driver.launch(self._simulation_output_path.parent, self.method,

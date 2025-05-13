@@ -34,6 +34,7 @@ class TestConfigFileParser:
         content = "DEFAULT_INSTALL_DIR             : Path/to/install\n"\
             "ANTARES             : antares-8.0-solver.exe\n"\
             "MERGE_MPS           : merge_mps.exe\n"\
+            "PRESOLVE            : presolve.exe\n"\
             "BENDERS             : bendersmpi.exe\n"\
             "LP_NAMER            : lp_namer.exe\n"\
             "STUDY_UPDATER       : xpansion-study-updater.exe\n"\
