@@ -189,3 +189,9 @@ In the ```constraints``` section of the ```master_structure.json``` file, we exp
     - ```=``` for constraints of type : $expression = rhs$
     - ```>``` for constraints of type : $expression \geq rhs$
 
+
+## Weights
+
+The weights given by the user in the ```master_structure_file``` are only applied to the merged master problem's objective. This means that the user must take care to also specify the correct corresponding yearly weights to each subproblem for each annual Xpansion study using the ```yearly_weights``` parameter when solving the merged master problem.  
+Thus, if the Monte Carlo years of node $n \in G$ had respective weights $(\omega_{i,n})_{\forall i \in [|1, N|]}$, we must set the new weights of each subproblem of the merged master problem as : $(\omega^{merged}_{i,n} = w(n) \times \omega_{i,n})_{\forall n \in G, \forall i \in [|1, N|]}$.  
+Note that this means that the weights given to the subproblems do not add up to $1$, as they are now reflective of the duration represented by the assiociated node, its probability of occurence and the probability of occurence of each specific Monte-Carlo year inside a specific node - whereas in the annual version, the weight of the node was 1 (the node represented one year and was the only possible scenario) and thus the weights of subproblems was simply the probability of occurence of each Monte-Carlo year.

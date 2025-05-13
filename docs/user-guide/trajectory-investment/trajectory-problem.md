@@ -21,8 +21,6 @@ We want to switch to a pluriannual vision and optimise the investments over seve
 
 The optimisation problem we now want to solve is, denoting by $n \in \mathcal{T}$ a node in the tree:
 
-Alternative 1
-
 $$
 \begin{aligned}
     \min_{x, dx^+, dx^-} \quad & \sum_{n \in \mathcal{T}} IC_n^T dx_n^+ + DC_n^T dx_n^- + w(n) \times (OC_{n}^Tx_{n} + ANTARES_n(x_n))\\\\
