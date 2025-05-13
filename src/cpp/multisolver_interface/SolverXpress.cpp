@@ -565,7 +565,7 @@ void SolverXpress::chg_col_name(int id_col, const std::string& name)
     zero_status_check(status, "Set col name", LOGLOCATION);
 }
 
-void SolverXpress::keep_presolve_from_removing(int nrows, int ncols, int* rowind, int* colind)
+void SolverXpress::mark_indices_to_keep_presolve(int nrows, int ncols, int* rowind, int* colind)
 {
     // From FICO Xpress API page
     // Allows the user to mark rows and columns in order to prevent the presolve removing these rows

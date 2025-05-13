@@ -7,40 +7,12 @@
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/logger/User.h"
+#include "antares-xpansion/multisolver_interface/SolverFactory.h"
 #include "antares-xpansion/multisolver_interface/SolverXpress.h"
 
-void zero_status_check(int status,
-                       const std::string& failed_action,
-                       const std::string& log_location)
-{
-    if (status != 0)
-    {
-        throw LogUtils::XpansionError<std::runtime_error>(
-          fmt::format("Failed to {}: invalid status {} (expected 0).", failed_action, status),
-          log_location);
-    }
-}
+using XPRSPtr = std::shared_ptr<SolverXpress>;
 
-void XPRS_CC xpressMessageCb(XPRSprob my_prob, void* object, const char* msg, int len, int msgtype)
-{
-    switch (msgtype)
-    {
-    case 4:
-        [[fallthrough]]; /* error */
-    case 3:
-        [[fallthrough]]; /* warning */
-    case 2:
-        [[fallthrough]]; /* not used */
-    case 1:              /* information */
-        printf("%s\n", msg);
-        break;
-    default: /* exiting - buffers need flushing */
-        fflush(stdout);
-        break;
-    }
-}
-
-XPRSprob init_xpress(BaseOptions& options, Logger logger)
+XPRSPtr init_solver(BaseOptions& options, Logger logger)
 {
     if (options.SOLVER_NAME != "Xpress")
     {
@@ -52,72 +24,44 @@ XPRSprob init_xpress(BaseOptions& options, Logger logger)
         options.SOLVER_NAME = "Xpress";
     }
 
-    LoadXpress::XpressLoader xpressLoader(logger);
-    if (!xpressLoader.XpressIsCorrectlyInstalled(true))
+    SolverFactory factory(logger);
+
+    // TODO Shouldn't this flag be private in SolverFactory?
+    if (!factory.isXpress_available_)
     {
         std::cerr << "Error: Xpress not available" << std::endl;
         std::exit(1);
     }
 
-    xpressLoader.initXpressEnv();
-    int status = LoadXpress::XPRSinit(NULL);
-    zero_status_check(status, "initialize XPRESS environment", LOGLOCATION);
+    XPRSPtr solver_ptr = std::static_pointer_cast<SolverXpress>(
+      factory.create_solver(options.SOLVER_NAME));
 
-    XPRSprob xprsProb;
+    // TODO Default is 0. Should keep it ?
+    // solver.set_output_log_level(1);
 
-    status = LoadXpress::XPRScreateprob(&xprsProb);
-    zero_status_check(status, "create XPRESS problem", LOGLOCATION);
-
-    // TODO Probably should use 'XPRSsetcbmessage' as in SolverXpress.cpp
-    status = LoadXpress::XPRSaddcbmessage(xprsProb, xpressMessageCb, NULL, 0);
-    zero_status_check(status, "add message callback to solver", LOGLOCATION);
-
-    status = LoadXpress::XPRSsetintcontrol(xprsProb, XPRS_OUTPUTLOG, XPRS_OUTPUTLOG_FULL_OUTPUT);
-    zero_status_check(status, "set log level", LOGLOCATION);
-
-    return xprsProb;
+    return solver_ptr;
 }
 
-CouplingMap get_full_coupling(const BaseOptions& options, Logger logger)
-{
-    // Parse structure and get candidates' indices
-    const auto structure_path{std::filesystem::path(options.INPUTROOT) / options.STRUCTURE_FILE};
-
-    const CouplingMap full_coupling = CouplingMapGenerator::BuildInput(structure_path,
-                                                                       logger.get(),
-                                                                       "Presolve");
-
-    logger->display_message(structure_path.string() + " read");
-
-    return full_coupling;
-}
-
-std::unordered_map<int, int> get_presolve_map(XPRSprob xprsProb, const std::vector<int>& indices)
+std::unordered_map<int, int> get_presolve_map(SolverXpress& solver, const std::vector<int>& colind)
 {
     // Get indices in reduced problem
     std::unordered_map<int, int> full2reduced;
 
-    int nbCols(0), nbRows(0);
+    const int nbRows = solver.get_nrows();
+    const int nbCols = solver.get_ncols();
 
-    int status = LoadXpress::XPRSgetintattrib(xprsProb, XPRS_COLS, &nbCols);
-    zero_status_check(status, "get number of columns", LOGLOCATION);
+    std::vector<int> rowmap(nbRows), colmap(nbCols);
 
-    status = LoadXpress::XPRSgetintattrib(xprsProb, XPRS_ROWS, &nbRows);
-    zero_status_check(status, "get number of rows", LOGLOCATION);
+    solver.get_presolve_map(rowmap.data(), colmap.data());
 
-    std::vector<int> col_map(nbCols), row_map(nbRows);
-
-    status = LoadXpress::XPRSgetpresolvemap(xprsProb, row_map.data(), col_map.data());
-    zero_status_check(status, "get presolve map", LOGLOCATION);
-
-    for (int reduced_idx = 0; reduced_idx < col_map.size(); ++reduced_idx)
+    for (int reduced_idx = 0; reduced_idx < colmap.size(); ++reduced_idx)
     {
-        const int full_idx = col_map[reduced_idx];
-        if (std::binary_search(indices.cbegin(), indices.cend(), full_idx))
+        const int full_idx = colmap[reduced_idx];
+        if (std::binary_search(colind.cbegin(), colind.cend(), full_idx))
         {
             full2reduced.insert({full_idx, reduced_idx});
 
-            if (full2reduced.size() == indices.size())
+            if (full2reduced.size() == colind.size())
             {
                 // Found all candidates' indices
                 break;
@@ -128,13 +72,26 @@ std::unordered_map<int, int> get_presolve_map(XPRSprob xprsProb, const std::vect
     return full2reduced;
 }
 
-CouplingMap get_reduced_coupling(XPRSprob xprsProb,
-                                 const CouplingMap& full_couplings,
-                                 const BaseOptions& options,
-                                 Logger logger)
+CouplingMap reduce_problems(SolverXpress& solver, const BaseOptions& options, Logger logger)
 {
     const auto input_root_dir = std::filesystem::path(options.INPUTROOT);
+    const auto structure_path = input_root_dir / options.STRUCTURE_FILE;
     const auto full_dir = std::filesystem::path(options.OUTPUTROOT) / "full";
+
+    // Parse structure and get candidates' indices
+    logger->display_message("Reading " + structure_path.string());
+    const CouplingMap full_couplings = CouplingMapGenerator::BuildInput(structure_path,
+                                                                        logger.get(),
+                                                                        "Presolve");
+
+    // TODO Add option to keep or discard the full versions
+    // TODO All filesystem operations can be done in a separated part I guess
+    // Creates new folder to move full problems
+    logger->display_message("Creating " + full_dir.string());
+    mkdir(full_dir);
+
+    // Move full structure to 'full' folder
+    std::filesystem::rename(structure_path, full_dir / options.STRUCTURE_FILE);
 
     // ** Main part : creates coupling map for reduced problems **
     CouplingMap reduced_couplings = full_couplings;
@@ -150,34 +107,23 @@ CouplingMap get_reduced_coupling(XPRSprob xprsProb,
         }
 
         // Get all candidate indices in a sorted array
-        std::vector<int> indices(var_map.size());
+        std::vector<int> colind(var_map.size());
         std::transform(var_map.cbegin(),
                        var_map.cend(),
-                       indices.begin(),
+                       colind.begin(),
                        [](const auto pair) { return pair.second; });
-        std::sort(indices.begin(), indices.end());
+        std::sort(colind.begin(), colind.end());
 
         // Read full problem
         const std::filesystem::path subproblem_path = input_root_dir / filename;
 
-        int status = LoadXpress::XPRSreadprob(xprsProb, subproblem_path.c_str(), "");
-        zero_status_check(status, "read subproblem " + filename, LOGLOCATION);
+        // TODO See about the keeprows thing
+        solver.read_prob_mps(subproblem_path);
 
-        // Keep the solver from removing these indices from subproblem
-        status = LoadXpress::XPRSloadsecurevecs(xprsProb,
-                                                0,
-                                                indices.size(),
-                                                nullptr,
-                                                indices.data());
-        zero_status_check(status, "fix variables from subproblem", LOGLOCATION);
+        // Keep the solver from removing candidate indices from subproblem
+        solver.mark_indices_to_keep_presolve(0, colind.size(), nullptr, colind.data());
 
-        // Presolve only: Set max iteration to 0
-        status = LoadXpress::XPRSsetintcontrol(xprsProb, XPRS_LPITERLIMIT, 0);
-        zero_status_check(status, "set solver to only run presolve", LOGLOCATION);
-
-        // Run solver
-        status = LoadXpress::XPRSlpoptimize(xprsProb, "");
-        zero_status_check(status, "run presolve", LOGLOCATION);
+        solver.presolve_only();
 
         // Move full subproblem to 'full' folder
         // TODO Add option to keep or discard the full versions
@@ -188,11 +134,10 @@ CouplingMap get_reduced_coupling(XPRSprob xprsProb,
           fmt::format("Subproblem '{}' reduced: {} / {}", filename, ++nb_prob, nb_prob_total));
 
         // Write reduced problem MPS
-        status = LoadXpress::XPRSwriteprob(xprsProb, subproblem_path.c_str(), "");
-        zero_status_check(status, "write subproblem " + filename, LOGLOCATION);
+        solver.write_prob_mps(subproblem_path);
 
         // Create a map [full_idx] -> reduced_idx for candidate indices
-        std::unordered_map<int, int> full2reduced = get_presolve_map(xprsProb, indices);
+        const auto full2reduced = get_presolve_map(solver, colind);
 
         for (const auto& [var_name, idx]: var_map)
         {
@@ -201,18 +146,6 @@ CouplingMap get_reduced_coupling(XPRSprob xprsProb,
     }
 
     return reduced_couplings;
-}
-
-void create_full_problems_dir(const BaseOptions& options, Logger logger)
-{
-    const auto structure_path{std::filesystem::path(options.INPUTROOT) / options.STRUCTURE_FILE};
-
-    // Creates new folder to move full problems
-    const auto full_dir = std::filesystem::path(options.OUTPUTROOT) / "full";
-    mkdir(full_dir);
-
-    // Move full structure to 'full' folder
-    std::filesystem::rename(structure_path, full_dir / options.STRUCTURE_FILE);
 }
 
 void write_reduced_problems(const CouplingMap& reduced_couplings,
@@ -226,18 +159,6 @@ void write_reduced_problems(const CouplingMap& reduced_couplings,
     logger->display_message("Reduced " + options.STRUCTURE_FILE + " written");
 }
 
-void free_xpress(XPRSprob xprsProb, const BaseOptions& options, Logger logger)
-{
-    const int status = LoadXpress::XPRSdestroyprob(xprsProb);
-    xprsProb = nullptr;
-
-    if (status)
-    {
-        std::cerr << "Failed to destroy XPRESS problem with status: " << status << " "
-                  << LOGLOCATION << std::endl;
-    }
-}
-
 int main(int argc, char** argv)
 {
     usage(argc);
@@ -246,20 +167,11 @@ int main(int argc, char** argv)
 
     logger->display_message("Starting presolve");
 
-    XPRSprob xprsProb = init_xpress(options, logger);
+    XPRSPtr solver_ptr = init_solver(options, logger);
 
-    const CouplingMap full_coupling = get_full_coupling(options, logger);
+    const CouplingMap reduced_couplings = reduce_problems(*solver_ptr, options, logger);
 
-    create_full_problems_dir(options, logger);
-
-    const CouplingMap reduced_coupling = get_reduced_coupling(xprsProb,
-                                                              full_coupling,
-                                                              options,
-                                                              logger);
-
-    write_reduced_problems(reduced_coupling, options, logger);
-
-    free_xpress(xprsProb, options, logger);
+    write_reduced_problems(reduced_couplings, options, logger);
 
     logger->display_message("Presolve finished");
 

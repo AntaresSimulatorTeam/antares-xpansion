@@ -166,7 +166,7 @@ public:
     void chg_row_name(int id_row, const std::string& name) override;
     void chg_col_name(int id_col, const std::string& name) override;
 
-    void keep_presolve_from_removing(int nrows, int ncols, int* rowind, int* colind);
+    void mark_indices_to_keep_presolve(int nrows, int ncols, int* rowind, int* colind);
 
     /*************************************************************************************************
     -----------------------------    Methods to solve the problem
