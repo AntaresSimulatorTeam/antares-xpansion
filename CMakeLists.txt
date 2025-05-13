@@ -278,33 +278,43 @@ FILE(COPY ${ANTARES_SOLVER_PATH}
         DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
         USE_SOURCE_PERMISSIONS)
 
-#Copy associated .so and .dll to build directory
-FILE(COPY ${ANTARES_SOLVER_DIR}/
-        DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
-        USE_SOURCE_PERMISSIONS
-        FILES_MATCHING PATTERN "*.dll*")
+function(copy_so_files SRC_DIR DEST_DIR)
+    file(GLOB_RECURSE SO_FILES "${SRC_DIR}/*.so*")
+    file(COPY ${SO_FILES}
+            DESTINATION ${DEST_DIR}
+            USE_SOURCE_PERMISSIONS)
+endfunction()
 
-FILE(COPY ${ANTARES_SOLVER_DIR}/
-        DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
-        USE_SOURCE_PERMISSIONS
-        FILES_MATCHING PATTERN "*.so*")
+add_custom_target(copy_shared_libs ALL
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
+        COMMENT "Copying shared libraries to build directory..."
+)
+
+if (WIN32)
+    file(GLOB WIN_DLLS "${ANTARES_SOLVER_DIR}/*.dll*")
+    add_custom_command(TARGET copy_shared_libs POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${WIN_DLLS}
+            ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
+    )
+else ()
+    file(GLOB SO_FILES
+            "${ANTARES_SOLVER_DIR}/*.so*"
+            "${ANTARES_SOLVER_DIR}/../lib/*.so*"
+            "${ANTARES_SOLVER_DIR}/../bin/*.so*"
+    )
+    add_custom_command(TARGET copy_shared_libs POST_BUILD
+            COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${SO_FILES}
+            ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
+    )
+endif ()
 
 #Glob *.so files in antares_solver_dir
 file(GLOB_RECURSE ANTARES_SOLVER_LIBS ${ANTARES_SOLVER_DIR}/*.so*)
 INSTALL(FILES ${ANTARES_SOLVER_LIBS} DESTINATION bin)
 file(GLOB_RECURSE ANTARES_SOLVER_LIBS ${ANTARES_SOLVER_DIR}/*.dll*)
 INSTALL(FILES ${ANTARES_SOLVER_LIBS} DESTINATION bin)
-
-
-FILE(COPY ${ANTARES_SOLVER_DIR}/../lib/
-        DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
-        USE_SOURCE_PERMISSIONS
-        FILES_MATCHING PATTERN "*.so*")
-
-FILE(COPY ${ANTARES_SOLVER_DIR}/../bin/
-        DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
-        USE_SOURCE_PERMISSIONS
-        FILES_MATCHING PATTERN "*.so*")
 
 add_subdirectory("${PROJECT_SOURCE_DIR}/src")
 
