@@ -40,7 +40,7 @@ char MergeMasterTrajectoryMPS::parse_constraint_type(const std::string& s)
     if (s == CONSTRAINT_EQUALS)
     {
         return 'E';
-    } 
+    }
     else if (s == CONSTRAINT_GEQ)
     {
         return 'G';

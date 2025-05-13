@@ -13,7 +13,6 @@ constexpr char CONSTRAINT_EQUALS[] = "=";
 constexpr char CONSTRAINT_LEQ[] = "<";
 constexpr char CONSTRAINT_GEQ[] = ">";
 
-
 // General data for the tree
 constexpr char KEY_INITIAL_CAPACITIES[] = "initial_capacities";
 constexpr char KEY_DEFAULT[] = "default";

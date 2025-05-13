@@ -27,7 +27,7 @@ public:
 
     static CandidateVariableType parse_variable_type(const std::string& s);
     static char parse_constraint_type(const std::string& s);
-    
+
     // This structure contains the position of the variables in the merged problem
     // Its capacity, corresponding dx_plus and dx_minus
     struct VariablePositions
