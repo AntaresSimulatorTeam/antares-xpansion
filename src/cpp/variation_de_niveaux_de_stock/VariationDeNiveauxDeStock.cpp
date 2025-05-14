@@ -130,16 +130,26 @@ SubproblemWorkerPtr ValeursUsage::AddSubproblem(const std::string& pbName)
     return subPbWorker;
 }
 
+bool ValeursUsage::IsSubproblemUsed(const std::string& subPbName) const
+{
+    // Check if the subproblem is used in the grid.csv file
+    std::ifstream f(xpansionFolderPath / "grid.csv");
+    std::ostringstream ss;
+    ss << f.rdbuf();
+    return ss.str().find("all") != std::string::npos
+           || ss.str().find(subPbName) != std::string::npos;
+}
+
 /// @brief Initialize the subproblems from the mps files in the mps folder
 ///       and generate the RHS grid values for each subproblem
 void ValeursUsage::InitSubProblems()
 {
-    // Add all subproblems mps files to the subproblem map
+    // Add all subproblems mps files to the subproblem map if they are used in the grid.csv file
     for (const auto& entry: std::filesystem::directory_iterator(xpansionFolderPath / "mps"))
     {
-        if (entry.path().extension() == ".mps")
+        if (entry.path().extension() == ".mps" && IsSubproblemUsed(entry.path().stem().string()))
         {
-            subPbNames.push_back(entry.path().stem().string() + ".mps");
+            subPbNames.push_back(entry.path().stem().string());
         }
     }
 }
@@ -286,9 +296,17 @@ void ValeursUsage::Run()
 /// @param subPbName The name of the subproblem
 void ValeursUsage::ProcessSubproblem(const std::string& subPbName)
 {
+    // Print loading time
+    auto start = std::chrono::high_resolution_clock::now();
     auto subPbWorker = AddSubproblem(subPbName);
+    auto end = std::chrono::high_resolution_clock::now();
+    std::cout << "Loading time: "
+              << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms"
+              << std::endl;
     auto currentSubPbAreaConstraints = GenerateRHSGridValues(subPbName, subPbWorker);
 
+    std::cout << "Processing subproblem : scenario " << GetPbInfo(subPbName).scenario << " week "
+              << GetPbInfo(subPbName).week << std::endl;
     for (const auto& [gridID, subPbAreaConstraints]: currentSubPbAreaConstraints)
     {
         ConstraintCombos subPbCombos = GenerateSubPbCombos(subPbName, subPbAreaConstraints);
@@ -297,17 +315,18 @@ void ValeursUsage::ProcessSubproblem(const std::string& subPbName)
         {
             // Each areaCombo is a std::map<std::string, double> with full variable names
             SetConstraintsRHSValues(subPbCombo, subPbWorker);
+            for (const auto& [constraintName, value]: subPbCombo)
+            {
+                std::cout << constraintName << " " << value << std::endl;
+            }
             double cost = SolveSubproblem(subPbWorker);
 
-            // No mutex needed if each thread writes to a unique key
             variationDeNiveauxDeStockData[{GetPbInfo(subPbName).scenario,
                                            GetPbInfo(subPbName).week,
                                            subPbCombo}]
               = cost;
         }
     }
-    std::cout << "Scenario " << GetPbInfo(subPbName).scenario << " week "
-              << GetPbInfo(subPbName).week << std::endl;
 }
 
 int get_physical_core_count()
@@ -320,7 +339,7 @@ void ValeursUsage::ProcessSubproblemsWithPhysicalCores(const std::vector<std::st
     int numPhysicalCores = get_physical_core_count();
 
     // Limiter TBB au nombre de cœurs physiques
-    tbb::global_control limit(tbb::global_control::max_allowed_parallelism, numPhysicalCores);
+    tbb::global_control limit(tbb::global_control::max_allowed_parallelism, 1);
 
     // Maintenant utiliser tbb::parallel_for_each
     tbb::parallel_for_each(subPbNames.begin(),
@@ -337,6 +356,10 @@ double ValeursUsage::SolveSubproblem(SubproblemWorkerPtr subPbWorker)
     Timer subproblem_timer;
     subPbWorker->solve(subproblem_data.lpstatus, ".", "", _writer);
     subPbWorker->get_value(subproblem_data.subproblem_cost);
+
+    int nbSimplexIter;
+    subPbWorker->get_splex_num_of_ite_last(nbSimplexIter);
+    std::cout << "nb simplex : " << nbSimplexIter << std::endl;
 
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 

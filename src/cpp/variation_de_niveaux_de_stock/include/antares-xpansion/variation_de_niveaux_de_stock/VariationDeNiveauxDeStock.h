@@ -36,6 +36,7 @@ public:
 
 protected:
     void InitSubProblems();
+    bool IsSubproblemUsed(const std::string& subPbName) const;
     void Run();
     void ProcessSubproblem(const std::string& subPbName);
     void ProcessSubproblemsWithPhysicalCores(const std::vector<std::string>& subPbNames);
