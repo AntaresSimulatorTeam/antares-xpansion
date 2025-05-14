@@ -14,8 +14,9 @@ public:
 
     void read(const std::filesystem::path& file_name);
     void print(std::ostream& stream) const;
-    BendersBaseOptions get_benders_options() const;
     BaseOptions get_base_options() const;
+    SolverBaseOptions get_decomposition_options() const;
+    BendersBaseOptions get_benders_options() const;
     ExternalLoopOptions GetExternalLoopOptions() const;
 
     void write_default() const;
