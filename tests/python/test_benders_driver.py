@@ -25,24 +25,24 @@ class TestBendersDriver:
     def test_lp_path(self, tmp_path):
         lp_path = tmp_path / "lp"
         os.mkdir(lp_path)
-        benders_driver = BendersDriver(SolversExe("", "", "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER)
+        benders_driver = BendersDriver(SolversExe("", "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER)
         benders_driver.set_simulation_output_path(tmp_path)
         assert benders_driver.get_lp_path() == lp_path
 
     def test_non_existing_output_path(self, tmp_path):
-        benders_driver = BendersDriver(SolversExe("", "", "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER)
+        benders_driver = BendersDriver(SolversExe("", "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER)
         with pytest.raises(BendersDriver.BendersOutputPathError):
             benders_driver.launch(tmp_path / "i_dont_exist", "test", False, 13)
 
     def test_empty_output_path(self, tmp_path):
-        benders_driver = BendersDriver(SolversExe("", "", "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER)
+        benders_driver = BendersDriver(SolversExe("", "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER)
         with pytest.raises(BendersDriver.BendersLpPathError):
             benders_driver.launch(tmp_path, "")
 
     def test_illegal_method(self, tmp_path):
         lp_path = tmp_path / "lp"
         os.mkdir(lp_path)
-        benders_driver = BendersDriver(SolversExe("", "", "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER)
+        benders_driver = BendersDriver(SolversExe("", "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER)
         with pytest.raises(BendersDriver.BendersSolverError):
             benders_driver.launch(tmp_path, "test")
 
@@ -54,7 +54,7 @@ class TestBendersDriver:
             os.path.join(my_install_dir, my_benders_mpi))
 
         benders_driver = BendersDriver(
-            SolversExe(exe_path, "", "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER
+            SolversExe(exe_path, "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER
         )
 
         simulation_output_path = tmp_path
@@ -80,7 +80,7 @@ class TestBendersDriver:
                 os.path.join(my_install_dir, my_benders_mpi))
 
             benders_driver = BendersDriver(
-                SolversExe(exe_path, "", "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER
+                SolversExe(exe_path, "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER
             )
 
             simulation_output_path = tmp_path
@@ -104,7 +104,7 @@ class TestBendersDriver:
             os.path.join(my_install_dir, my_sequential))
 
         benders_driver = BendersDriver(
-            SolversExe(exe_path, "", "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER
+            SolversExe(exe_path, "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER
         )
 
         simulation_output_path = tmp_path
@@ -126,7 +126,7 @@ class TestBendersDriver:
             os.path.join(my_install_dir, my_merges_mps))
 
         benders_driver = BendersDriver(
-            SolversExe("", exe_path, "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER
+            SolversExe("", exe_path, ""), self.OPTIONS_JSON, self.MPI_LAUNCHER
         )
 
         simulation_output_path = tmp_path
@@ -141,28 +141,6 @@ class TestBendersDriver:
             args, _ = run_function.call_args_list[0]
             assert args[0] == expected_cmd
 
-    def test_benders_cmd_presolve(self, tmp_path):
-        my_presolve = "something"
-        my_install_dir = Path("Path/to/")
-        exe_path = os.path.normpath(
-            os.path.join(my_install_dir, my_presolve))
-
-        benders_driver = BendersDriver(
-            SolversExe("", "", exe_path, ""), self.OPTIONS_JSON, self.MPI_LAUNCHER
-        )
-
-        simulation_output_path = tmp_path
-        lp_path = Path(os.path.normpath(
-            os.path.join(simulation_output_path, 'lp')))
-        lp_path.mkdir()
-        os.chdir(lp_path)
-        with patch(MOCK_SUBPROCESS_RUN, autospec=True) as run_function:
-            expected_cmd = [exe_path, self.OPTIONS_JSON]
-            run_function.return_value.returncode = 0
-            benders_driver.launch(simulation_output_path, "presolve", True)
-            args, _ = run_function.call_args_list[0]
-            assert args[0] == expected_cmd
-
     def test_benders_cmd_outer_loop(self, tmp_path):
         my_outer_loop = "something"
         my_install_dir = Path("Path/to/")
@@ -170,7 +148,7 @@ class TestBendersDriver:
             os.path.join(my_install_dir, my_outer_loop))
 
         benders_driver = BendersDriver(
-            SolversExe("", "", "", exe_path), self.OPTIONS_JSON, self.MPI_LAUNCHER
+            SolversExe("", "", exe_path), self.OPTIONS_JSON, self.MPI_LAUNCHER
         )
 
         simulation_output_path = tmp_path
@@ -194,7 +172,7 @@ class TestBendersDriver:
             os.path.join(my_install_dir, my_benders_mpi))
 
         benders_driver = BendersDriver(
-            SolversExe(exe_path, "", "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER
+            SolversExe(exe_path, "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER
         )
 
         simulation_output_path = tmp_path
@@ -215,7 +193,7 @@ class TestBendersDriver:
         exe_path = os.path.normpath(
             os.path.join(my_install_dir, my_benders_mpi))
         benders_driver = BendersDriver(
-            SolversExe(exe_path, "", "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER
+            SolversExe(exe_path, "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER
         )
 
         simulation_output_path = tmp_path
@@ -246,7 +224,7 @@ class TestBendersDriver:
         with patch(MOCK_SYS, autospec=True) as sys_:
             sys_.platform = "exotic_platform"
             with pytest.raises(BendersDriver.BendersUnsupportedPlatform):
-                BendersDriver(SolversExe("", "", "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER)
+                BendersDriver(SolversExe("", "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER)
 
     def test_clean_benders_step_if_not_keep_mps(self, tmp_path):
         my_benders_mpi = "something"
@@ -256,7 +234,7 @@ class TestBendersDriver:
         keep_mps = False
 
         benders_driver = BendersDriver(
-            SolversExe(exe_path, "", "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER
+            SolversExe(exe_path, "", ""), self.OPTIONS_JSON, self.MPI_LAUNCHER
         )
 
         simulation_output_path = tmp_path
@@ -290,7 +268,7 @@ class TestBendersDriver:
     def test_invalid_options_file(self):
 
         with pytest.raises(BendersDriver.BendersOptionsFileError):
-            BendersDriver(SolversExe("", "", "", ""), "")
+            BendersDriver(SolversExe("", "", ""), "")
 
     def _create_empty_file(self, tmp_path: Path, fname: str):
         file = tmp_path / fname

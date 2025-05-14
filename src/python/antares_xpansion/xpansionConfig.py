@@ -15,9 +15,9 @@ class ConfigParameters:
     default_install_dir: str
     ANTARES: str
     MERGE_MPS: str
-    PRESOLVE: str
     BENDERS: str
     LP_NAMER: str
+    PRESOLVE: str
     STUDY_UPDATER: str
     SENSITIVITY_EXE: str
     FULL_RUN: str
@@ -59,9 +59,9 @@ class XpansionConfig:
         self.config_parameters = config_parameters
         self.ANTARES: str = ""
         self.MERGE_MPS: str = ""
-        self.PRESOLVE: str = ""
         self.BENDERS: str = ""
         self.LP_NAMER: str = ""
+        self.PRESOLVE: str = ""
         self.STUDY_UPDATER: str = ""
         self.SENSITIVITY_EXE: str = ""
         self.FULL_RUN: str = ""
@@ -258,9 +258,9 @@ class XpansionConfig:
         self.default_install_dir = self.config_parameters.default_install_dir
         self.ANTARES = self.config_parameters.ANTARES
         self.MERGE_MPS = self.config_parameters.MERGE_MPS
-        self.PRESOLVE = self.config_parameters.PRESOLVE
         self.BENDERS = self.config_parameters.BENDERS
         self.LP_NAMER = self.config_parameters.LP_NAMER
+        self.PRESOLVE = self.config_parameters.PRESOLVE
         self.STUDY_UPDATER = self.config_parameters.STUDY_UPDATER
         self.FULL_RUN = self.config_parameters.FULL_RUN
         self.OUTER_LOOP = self.config_parameters.OUTER_LOOP

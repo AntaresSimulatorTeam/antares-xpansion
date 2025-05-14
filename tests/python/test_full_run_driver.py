@@ -39,7 +39,7 @@ class TestFullRunDriver:
         problem_generation.set_output_path(output_path)
         problem_generation.create_lp_dir()
         benders_driver = BendersDriver(
-            SolversExe("benders.exe", "", "", ""), self.benders_driver_options_file)
+            SolversExe("benders.exe", "", ""), self.benders_driver_options_file)
         full_run_driver = FullRunDriver(self.full_run_exe,
                                         problem_generation, benders_driver)
         benders_method = "benders"
@@ -75,7 +75,7 @@ class TestFullRunDriver:
         problem_generation.create_lp_dir()
 
         benders_driver = BendersDriver(
-            SolversExe("benders.exe", "", "", ""), self.benders_driver_options_file)
+            SolversExe("benders.exe", "", ""), self.benders_driver_options_file)
         full_run_driver = FullRunDriver(self.full_run_exe,
                                         problem_generation, benders_driver)
         benders_method = "benders"

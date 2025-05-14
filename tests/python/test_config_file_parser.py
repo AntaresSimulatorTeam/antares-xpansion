@@ -21,9 +21,9 @@ class TestConfigFileParser:
         assert config_param.default_install_dir == ""
         assert config_param.ANTARES == "antares-solver"
         assert config_param.MERGE_MPS == "merge_mps"
-        assert config_param.PRESOLVE == "presolve"
         assert config_param.BENDERS == "benders"
         assert config_param.LP_NAMER == "lp_namer"
+        assert config_param.PRESOLVE == "presolve"
         assert config_param.STUDY_UPDATER == "study_updater"
         assert config_param.SENSITIVITY_EXE == "sensitivity"
         assert config_param.AVAILABLE_SOLVERS == []
@@ -34,9 +34,9 @@ class TestConfigFileParser:
         content = "DEFAULT_INSTALL_DIR             : Path/to/install\n"\
             "ANTARES             : antares-8.0-solver.exe\n"\
             "MERGE_MPS           : merge_mps.exe\n"\
-            "PRESOLVE            : presolve.exe\n"\
             "BENDERS             : bendersmpi.exe\n"\
             "LP_NAMER            : lp_namer.exe\n"\
+            "PRESOLVE            : presolve.exe\n"\
             "STUDY_UPDATER       : xpansion-study-updater.exe\n"\
             "SENSITIVITY         : sensitivity.exe\n"\
             "AVAILABLE_SOLVER    :\n"\
@@ -48,9 +48,9 @@ class TestConfigFileParser:
         assert config_param.default_install_dir == "Path/to/install"
         assert config_param.ANTARES == "antares-8.0-solver.exe"
         assert config_param.MERGE_MPS == "merge_mps.exe"
-        assert config_param.PRESOLVE == "presolve.exe"
         assert config_param.BENDERS == "bendersmpi.exe"
         assert config_param.LP_NAMER == "lp_namer.exe"
+        assert config_param.PRESOLVE == "presolve.exe"
         assert config_param.STUDY_UPDATER == "xpansion-study-updater.exe"
         assert config_param.SENSITIVITY_EXE == "sensitivity.exe"
         assert config_param.AVAILABLE_SOLVERS == ["Cbc"]

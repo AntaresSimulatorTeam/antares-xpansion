@@ -14,14 +14,12 @@ using XPRSPtr = std::shared_ptr<SolverXpress>;
 
 XPRSPtr init_solver(BaseOptions& options, Logger logger)
 {
-    if (options.SOLVER_NAME != "Xpress")
+    // TODO tolower or upper
+    if (options.SOLVER_NAME != "XPRESS" && options.SOLVER_NAME != "Xpress")
     {
-        // TODO if options.json is empty (since the orchestrator doesn't create it)
-        // TODO create one using Xpress as the solver by default
-        std::cerr << "Invalid solver '" << options.SOLVER_NAME
-                  << "'. Will try to use Xpress instead." << std::endl;
-        // std::exit(1);
-        options.SOLVER_NAME = "Xpress";
+        std::cerr << "Invalid solver '" << options.SOLVER_NAME << "'. Presolve is available only with Xpress."
+                  << std::endl;
+        std::exit(1);
     }
 
     SolverFactory factory(logger);

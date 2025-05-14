@@ -17,7 +17,6 @@ from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 class SolversExe:
     benders: Path
     merge_mps: Path
-    presolve: Path
     outer_loop: Path
 
 
@@ -29,7 +28,6 @@ class BendersDriver:
         self.allow_run_as_root = False
         self.benders = solvers_exe.benders
         self.merge_mps = solvers_exe.merge_mps
-        self.presolve = solvers_exe.presolve
         self.outer_loop = solvers_exe.outer_loop
         self.mpiexec = mpiexec
         self.method = "benders"
@@ -110,8 +108,6 @@ class BendersDriver:
             self.solver = self.outer_loop
         elif self.method == "mergeMPS":
             self.solver = self.merge_mps
-        elif self.method == "presolve":
-            self.solver = self.presolve
         else:
             self.logger.error("Illegal optim method")
             raise BendersDriver.BendersSolverError(
