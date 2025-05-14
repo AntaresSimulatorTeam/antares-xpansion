@@ -160,7 +160,7 @@ BaseOptions SimulationOptions::get_base_options() const
     return result;
 }
 
-SolverBaseOptions SimulationOptions::get_decomposition_options() const
+SolverBaseOptions SimulationOptions::get_solver_options() const
 {
     SolverBaseOptions result(get_base_options());
 
@@ -173,7 +173,7 @@ SolverBaseOptions SimulationOptions::get_decomposition_options() const
 
 BendersBaseOptions SimulationOptions::get_benders_options() const
 {
-    BendersBaseOptions result(get_decomposition_options());
+    BendersBaseOptions result(get_solver_options());
 
     result.MAX_ITERATIONS = MAX_ITERATIONS;
 

@@ -30,7 +30,7 @@ int main(int argc, char** argv)
                                                                      false);
     try
     {
-        MergeMPS merge_mps(options.get_decomposition_options(), logger, writer);
+        MergeMPS merge_mps(options.get_solver_options(), logger, writer);
         merge_mps.launch();
     }
     catch (std::exception& ex)
