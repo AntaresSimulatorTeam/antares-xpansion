@@ -153,25 +153,32 @@ const std::string SAVE_SUFFIX = ".svf";
 
 struct BaseOptions
 {
-    std::string OUTPUTROOT;
-    std::string INPUTROOT;
-    std::string STRUCTURE_FILE;
-    std::string LAST_ITERATION_JSON_FILE;
-    std::string MASTER_NAME;
-    ProblemsFormat PROBLEMS_FORMAT = ProblemsFormat::MPS_FILE;
-    std::string SOLVER_NAME;
-    std::string SLAVE_WEIGHT;
-    std::string AREA_FILE;
-
     int LOG_LEVEL = 0;
 
-    double SLAVE_WEIGHT_VALUE = 0;
-    bool RESUME = false;
+    std::string INPUTROOT;
+    std::string OUTPUTROOT;
+    std::string STRUCTURE_FILE;
+    std::string MASTER_NAME;
+    std::string SOLVER_NAME;
 
+    ProblemsFormat PROBLEMS_FORMAT = ProblemsFormat::MPS_FILE;
+};
+
+struct SolverBaseOptions: public BaseOptions
+{
+    SolverBaseOptions() = default;
+
+    explicit SolverBaseOptions(const BaseOptions& other):
+        BaseOptions(other)
+    {
+    }
+
+    std::string SLAVE_WEIGHT;
+    double SLAVE_WEIGHT_VALUE = 0;
     Str2Dbl weights;
 };
 
-typedef BaseOptions MergeMPSOptions;
+typedef SolverBaseOptions MergeMPSOptions;
 
 struct ExternalLoopOptions
 {
@@ -179,10 +186,10 @@ struct ExternalLoopOptions
     std::string OUTER_LOOP_OPTION_FILE;
 };
 
-struct BendersBaseOptions: public BaseOptions
+struct BendersBaseOptions: public SolverBaseOptions
 {
-    explicit BendersBaseOptions(const BaseOptions& base_to_copy):
-        BaseOptions(base_to_copy)
+    explicit BendersBaseOptions(const SolverBaseOptions& other):
+        SolverBaseOptions(other)
     {
     }
 
@@ -194,19 +201,23 @@ struct BendersBaseOptions: public BaseOptions
     double TIME_LIMIT = 0;
     double SEPARATION_PARAM = 1;
 
+    bool RESUME = false;
     bool AGGREGATION = false;
     bool TRACE = false;
     bool BOUND_ALPHA = false;
+    bool CACHE_PROBLEMS = false;
 
     MasterFormulation MASTER_FORMULATION;
 
+    std::string AREA_FILE;
     std::string CSV_NAME;
     std::string LAST_MASTER_MPS;
     std::string LAST_MASTER_BASIS;
+    std::string LAST_ITERATION_JSON_FILE;
 
     size_t BATCH_SIZE;
+
     ExternalLoopOptions EXTERNAL_LOOP_OPTIONS;
-    bool CACHE_PROBLEMS{false};
 };
 
 void usage(int argc);
