@@ -11,7 +11,7 @@ The underlying C++ code responsible for merging previously generated Xpansion st
 
 - An [option file](#options-file) to give the general parameters
 - A [master structure file](#master-structure-file) that links together the different annual master problems.
-- [Access](#input-files-from-each-annual-study) to the ```structure.txt``̀  and ```master.mps``` files previously generated using ```antares -i <study> --step problem_generation```.
+- [Access](#input-files-from-each-annual-study) to the ```structure.txt``` and ```master.mps``` files previously generated using ```antares -i <study> --step problem_generation```.
 
 Usage is :
 ```path/to/exectubale <options_file>.json <master_structure_file>.json```
@@ -31,7 +31,7 @@ Only few of the ```BendersOptions``` from the ```<options_file>.json``` are trul
 ```
 
 ## Master structure file
-The programm expects a ```<master_structure_file>.json``` to have the following structure :
+The program expects ```<master_structure_file>.json``` to have the following structure :
 
 **master_structure.json** : Example of a master structure file :
 
@@ -59,28 +59,23 @@ The programm expects a ```<master_structure_file>.json``` to have the following 
             "operator" : "="
         }
     ],
-    "candidates_types" : {
-        "semibase_type" : {
-            "investment" : 5000,
-            "operation_maintenance" : 100,
-            "retirement" : 0
-        },
-        "peak_type" : {
-            "investment" : 3500,
-            "operation_maintenance" : 100,
-            "retirement" : 0
-        }
-    },
     "tree" : {
         "2030" : {
             "lp_folder" : "node_2030__lp",
             "master_mps_file" : "node_2030__master.mps",
             "structure_file" : "node_2030__structure.txt",
             "parent" : "root",
-            "weight_factor" : 10.0,
-            "candidates" : {
-                "semibase" : "semibase_type",
-                "peak" : "peak_type"
+            "candidates_costs" : {
+                "semibase" : {
+                    "investment" : 5000,
+                    "operation_maintenance" : 1000,
+                    "retirement" : 0
+                },
+                "peak" : {
+                    "investment" : 3500,
+                    "operation_maintenance" : 1000,
+                    "retirement" : 0
+                }
             }
         },
         "2040" : {
@@ -88,33 +83,54 @@ The programm expects a ```<master_structure_file>.json``` to have the following 
             "master_mps_file" : "node_2040__master.mps",
             "structure_file" : "node_2040__structure.txt",
             "parent" : "2030",
-            "weight_factor" : 10.0,
-            "candidates" : {
-                "semibase" : "semibase_type",
-                "peak" : "peak_type"
+            "candidates_costs" : {
+                "semibase" : {
+                    "investment" : 5000,
+                    "operation_maintenance" : 1000,
+                    "retirement" : 0
+                },
+                "peak" : {
+                    "investment" : 3500,
+                    "operation_maintenance" : 1000,
+                    "retirement" : 0
+                }
             }
         },
         "2050_A" : {
-            "lp_folder" : "node_2030_A__lp",
-            "master_mps_file" : "node_2030_A__master.mps",
-            "structure_file" : "node_2030_A__structure.txt",
+            "lp_folder" : "node_2050_A__lp",
+            "master_mps_file" : "node_2050_A__master.mps",
+            "structure_file" : "node_2050_A__structure.txt",
             "parent" : "2040",
-            "weight_factor" : 8.0,
-            "candidates" : {
-                "semibase" : "semibase_type",
-                "peak" : "peak_type"
+            "candidates_costs" : {
+                "semibase" : {
+                    "investment" : 4000,
+                    "operation_maintenance" : 800,
+                    "retirement" : 0
+                },
+                "peak" : {
+                    "investment" : 2800,
+                    "operation_maintenance" : 8000,
+                    "retirement" : 0
+                }
             }
             
         },
         "2050_B" : {
-            "lp_folder" : "node_2030_B__lp",
-            "master_mps_file" : "node_2030_B__master.mps",
-            "structure_file" : "node_2030_B__structure.txt",
+            "lp_folder" : "node_2050_B__lp",
+            "master_mps_file" : "node_2050_B__master.mps",
+            "structure_file" : "node_2050_B__structure.txt",
             "parent" : "2040",
-            "weight_factor" : 2.0,
-            "candidates" : {
-                "semibase" : "semibase_type",
-                "peak" : "peak_type"
+            "candidates_costs" : {
+                "semibase" : {
+                    "investment" : 1000,
+                    "operation_maintenance" : 200,
+                    "retirement" : 0
+                },
+                "peak" : {
+                    "investment" : 700,
+                    "operation_maintenance" : 200,
+                    "retirement" : 0
+                }
             }
             
         }
@@ -126,12 +142,11 @@ We give a short description of the data expected in each field :
 
 - ```initial_capacities``` contains, for each candidate, the capacity installed at before the first investment time point.
 - ```constraints``` contains user-given trajectory constraints on the different investment variables. See the [Trajectory constraints section](#trajectory-constraints) for more details.
-- ```candidates_types``` contains investment, operation and maintenance and retirement costs for a given candidate type. This allows sharing cost properties among similar candidates in different zones.
 - ```tree``` contains the trajectory tree itself, and the data pertaining to each of its nodes. Each of the nodes contains the following data:
     - ```lp_folder``` points to a folder containing both the ```master_mps_file``` and the ```structure_file``` of this annual study.
     - ```parent``` is the name of the node's parent in the tree.
     - ```weight_factor``` is the node's weight $w(n)$ in the objective function. Note that in  this example, we used a discounting rate of $0$ to get an aggregated weight of $10$ on each investment time point.
-    - ```candidates``` points each of the node's candidate to its type and thus its costs.
+    - ```candidates_costs``` contains the coefficients of the corresponding variables in the final objective. Each of those costs already incorporates the probability of the node appearing, the node's represented duration and the discounting.The coefficient was pre-computed using the python orchestrator.
 
 
 ## Input files from each annual study

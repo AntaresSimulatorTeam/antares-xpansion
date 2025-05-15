@@ -93,7 +93,7 @@ void MergeMasterTrajectoryMPS::VariablePositions::set(CandidateVariableType t, i
     return;
 }
 
-MergeMasterTrajectoryMPS::CandidateTypeCosts::CandidateTypeCosts(const Json::Value& data)
+MergeMasterTrajectoryMPS::CandidateCosts::CandidateCosts(const Json::Value& data)
 {
     using namespace MasterStructureKeys;
     operation_maintenace = data[KEY_OPERATION_COST].asDouble();
@@ -101,7 +101,7 @@ MergeMasterTrajectoryMPS::CandidateTypeCosts::CandidateTypeCosts(const Json::Val
     retirement = data[KEY_RETIREMENT_COST].asDouble();
 }
 
-double MergeMasterTrajectoryMPS::CandidateTypeCosts::get(CandidateVariableType t) const
+double MergeMasterTrajectoryMPS::CandidateCosts::get(CandidateVariableType t) const
 {
     switch (t)
     {
@@ -156,15 +156,6 @@ MergeMasterTrajectoryMPS::TrajectoryGlobalData::TrajectoryGlobalData(const Json:
         initial_capacities[candidate_name] = initial_capacities_data[candidate_name].asDouble();
     }
 
-    // Read the candidates' costs
-    const auto& candidates_costs_data = data[KEY_CANDIDATES_TYPES];
-    for (const auto& candidate_type: candidates_costs_data.getMemberNames())
-    {
-        candidates_types_costs.emplace(
-          std::make_pair(candidate_type,
-                         CandidateTypeCosts(candidates_costs_data[candidate_type])));
-    }
-
     // Read the constraints
     const auto& constraints_data = data[KEY_CONSTRAINTS];
     for (const auto& data: constraints_data)
@@ -192,7 +183,6 @@ MergeMasterTrajectoryMPS::TrajectoryNode::TrajectoryNode(const std::string& node
             parent = std::nullopt;
         }
     }
-    weight = data[KEY_WEIGHT_FACTOR].asDouble();
 
     // If a MASTER_NAME is given, set it (used when accesing the structure file)
     if (data.isMember(KEY_MASTER_NAME))
@@ -203,8 +193,9 @@ MergeMasterTrajectoryMPS::TrajectoryNode::TrajectoryNode(const std::string& node
     // Pointing each candidate to its associated costs structure
     for (const auto& candidate_name: data[KEY_CANDIDATES].getMemberNames())
     {
-        candidates_costs_types.emplace(
-          std::make_pair(candidate_name, data[KEY_CANDIDATES][candidate_name].asString()));
+        candidates_costs.emplace(
+          std::make_pair(candidate_name, CandidateCosts(data[KEY_CANDIDATES][candidate_name]))
+        );
     }
 }
 
@@ -254,14 +245,6 @@ double MergeMasterTrajectoryMPS::get_candidate_initial_value(const std::string& 
     return initial_value;
 }
 
-const MergeMasterTrajectoryMPS::CandidateTypeCosts& MergeMasterTrajectoryMPS::get_candidates_costs(
-  const TrajectoryNode& node,
-  const std::string& candidate_name) const
-{
-    // Implemented in a getter in case we want to change the underlying data storage
-    return trajectory_data_.candidates_types_costs.at(
-      node.candidates_costs_types.at(candidate_name));
-}
 
 void MergeMasterTrajectoryMPS::build_problem()
 {
@@ -293,12 +276,6 @@ void MergeMasterTrajectoryMPS::build_problem()
         logger_->display_message(
           "Reading problem "
           + (options_.INPUTROOT / node_data.path / node_data.master_mps_file).string());
-
-        // Multiply the objective function by the weight factor
-        double weight_factor = node_data.weight;
-        // logger_->display_message("Weight factor for node " + node_name + " : " +
-        // std::to_string(weight_factor));
-        AbstractMergeMPS::multiply_obj_by_weight_factor(*solver_local, weight_factor);
 
         StandardLp lpData(*solver_local);
         std::string varPrefix_local = make_prefix_from_node(node_name);
@@ -540,12 +517,12 @@ void MergeMasterTrajectoryMPS::set_objective_from_data()
     {
         for (const auto& [candidate, positions_per_node]: candidates_coupling_)
         {
-            const auto& costs = get_candidates_costs(node, candidate);
+            const auto& costs = node.candidates_costs.at(candidate);
             const auto& positions = positions_per_node.at(node.name);
 
             // To be discussed : node weights & discounting
             indexes.push_back(positions.get(CAPA));
-            coefficients.push_back(costs.get(CAPA) * node.weight);
+            coefficients.push_back(costs.get(CAPA));
             indexes.push_back(positions.get(DX_PLUS));
             coefficients.push_back(costs.get(DX_PLUS));
             indexes.push_back(positions.get(DX_MINUS));
@@ -618,6 +595,6 @@ void MergeMasterTrajectoryMPS::add_coupling_constraints()
 void MergeMasterTrajectoryMPS::launch()
 {
     build_problem();
-
-    export_problem();
+    // To be changed
+    export_problem("log_merged", true);
 }

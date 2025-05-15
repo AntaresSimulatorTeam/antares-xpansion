@@ -43,10 +43,10 @@ public:
     // candidate_name -> node_name -> variable_positions
     typedef std::map<std::string, std::map<std::string, VariablePositions>> CandidatesCouplingMap;
 
-    // Contains the cost data of a candidates type
-    struct CandidateTypeCosts
+    // Contains the cost data of a candidate
+    struct CandidateCosts
     {
-        CandidateTypeCosts(const Json::Value& data);
+        CandidateCosts(const Json::Value& data);
         double operation_maintenace{0.};
         double investment{0.};
         double retirement{0.};
@@ -77,7 +77,6 @@ public:
 
         std::map<std::string, double> initial_capacities;
 
-        std::map<std::string, CandidateTypeCosts> candidates_types_costs;
         std::vector<TrajectoryConstraint> trajectory_constraints;
     };
 
@@ -96,13 +95,9 @@ public:
 
         std::string master_name = MasterStructureKeys::DEFAULT_MASTER_NAME;
         std::optional<std::string> parent{std::nullopt};
-        double weight{1.};
 
-        // Points from each candidate to the specific costs types associated
-        // e.g : "semibase_fr00" -> "ocgt_new_generic"
-        // Perhaps could be a map of references to CandidatesCosts objects stored in the global data
-        // ?
-        std::map<std::string, std::string> candidates_costs_types;
+        // Stores the costs of each candidates' three associated variable at this node.
+        std::map<std::string, CandidateCosts> candidates_costs;
     };
 
     using TrajectoryTree = std::vector<TrajectoryNode>;
@@ -128,8 +123,6 @@ private:
     void add_delta_variables_constraints();
     void set_objective_from_data();
     // Getters & utils
-    const CandidateTypeCosts& get_candidates_costs(const TrajectoryNode& node,
-                                                   const std::string& candidate) const;
     std::string make_prefix_from_node(const std::string& node_name) const;
     double get_candidate_initial_value(const std::string& candidate) const;
 

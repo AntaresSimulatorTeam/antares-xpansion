@@ -23,7 +23,7 @@ The optimisation problem we now want to solve is, denoting by $n \in \mathcal{T}
 
 $$
 \begin{aligned}
-    \min_{x, dx^+, dx^-} \quad & \sum_{n \in \mathcal{T}} IC_n^T dx_n^+ + DC_n^T dx_n^- + w(n) \times (OC_{n}^Tx_{n} + ANTARES_n(x_n))\\\\
+    \min_{x, dx^+, dx^-} \quad & \sum_{n \in \mathcal{T}} dis(n) \times (IC_n^T dx_n^+ + DC_n^T dx_n^-) + w(n) \times (OC_{n}^Tx_{n} + ANTARES_n(x_n))\\\\
     \text{s.t.} \quad & \forall i,n \quad  x_{i,n} = x_{i, \text{parent}(n)} + dx^+_{i,n}
     - dx^-_{i,n} \\\\
     & \forall i,n \quad dx^+_{i,n} \geq 0, \quad dx^-_{i,n} \geq 0 \\\\
@@ -34,12 +34,16 @@ $$
 - $IC_n$ contains the one-time payment investment costs per MW.
 - $DC_n$ contains the one-time payment retirement costs per MW.
 - $OC_n$ contains the annual operation and maintenance fixed costs.
-- $w(n) = P(n) \times \times \sum_{y = y_n}^{y = y_n + d_n - 1} \frac{1}{(1+r)^{y - y_0}}$.
+- $w(n) = P(n) \times \sum_{y = y_n}^{y = y_n + d_n - 1} \frac{1}{(1+r)^{y - y_0}}$.
 - $P(n)$ is the probability of realisation of node $n$ : $P(n) = P_{\text{parent}(n)}(n) \times P(\text{parent}(n))$.
 - $P(root) = 1$.
+- $dis(n)$ is the discount we want to apply to the one-shot investment and retirement costs corresponding to node $n$.
+    - Note that (see [the next section](#on-the-dx--variables)) since the decisions are taken during the previous period, we could have something like : $dis(n) = (1+r)^{(y_0 - y_{\text{parent}(n)})}$
 
-**Note** : In our model, $x_{i,n}$ is the capacity available during period $n$, and this means the decisions $dx_{i,n}^{+/-}$ represent the variation of capacity during the period between $\text{parent}(n)$ and $n$ (i.e. the capacity being built or decommisionned during this period, with effective entry into service at the beginning of $n$).
 
-We can impose the decisions to be the same in all children of a given node (see [trajectory constraints](./merge-master.md#trajectory-constraints)) if we want the investment decision that take effect for a certain period to be the same regardless of all scenarios for this investment period.  
+## On the $dx^{+/-}$ variables
+**Note** : In our model, $x_{i,n}$ is the capacity available during the period represented by $n$, and this means the decisions $dx_{i,n}^{+/-}$ represent the variation of capacity during the period between $\text{parent}(n)$ and $n$ (i.e. the capacity being built or decommisionned during the period represented by $\text{parent}(n)$, with effective entry into service at the beginning of $n$).
 
-- In the example from **Figure 1**, this would mean that the capacity we install in the period [2040, 2050] is independent on wether ```2050_A``` or ```2050_B``` will be realised.
+We can impose the decisions to be the same in all children of a given node (see [trajectory constraints](./merge-master.md#trajectory-constraints)) if we want the investment decision of a given period to be independant of what scenario will materialize in the next period when the new capacities enter into service.
+
+- In the example from **Figure 1**, this would mean that the capacity we install in the period [2040, 2050] is independent of wether ```2050_A``` or ```2050_B``` will be realised.

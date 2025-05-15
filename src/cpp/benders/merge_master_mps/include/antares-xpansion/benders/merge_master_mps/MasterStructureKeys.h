@@ -29,8 +29,8 @@ constexpr char KEY_COEFFICIENTS[] = "coeffs";
 constexpr char KEY_RHS[] = "rhs";
 constexpr char KEY_OPERATOR[] = "operator";
 
-// Keys found inside each node's data :
 constexpr char KEY_TREE[] = "tree";
+// Keys found inside each node's data :
 constexpr char KEY_INVESTMENT_DATE[] = "investment_date";
 constexpr char KEY_LP_FOLDER[] = "lp_folder";
 constexpr char KEY_MASTER_MPS_FILE[] = "master_mps_file";
@@ -38,7 +38,7 @@ constexpr char KEY_STRUCTURE_FILE[] = "structure_file";
 constexpr char KEY_MASTER_NAME[] = "master_name";
 constexpr char KEY_PARENT[] = "parent";
 constexpr char KEY_WEIGHT_FACTOR[] = "weight_factor";
-constexpr char KEY_CANDIDATES[] = "candidates";
+constexpr char KEY_CANDIDATES[] = "candidates_costs";
 
 // Forbidden name for a node :
 constexpr char ROOT_NAME[] = "root";
