@@ -321,6 +321,7 @@ var NAVTREE =
         [ "Functions", "namespacemembers_func.html", null ]
       ] ]
     ] ],
+    [ "Concepts", "concepts.html", "concepts" ],
     [ "Classes", "annotated.html", [
       [ "Class List", "annotated.html", "annotated_dup" ],
       [ "Class Index", "classes.html", null ],
@@ -346,8 +347,8 @@ var NAVTREEINDEX =
 "classSolverCbc.html#acba345aae289418ac159eaa2386f570d",
 "classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersUnsupportedPlatform.html",
 "classtests_1_1python_1_1test__input__checker_1_1TestCheckCandidateLink.html",
-"md_docs_2changelog_2CHANGELOG.html#autotoc_md59",
-"structCatch_1_1Matchers_1_1Impl_1_1MatcherMethod.html"
+"md_docs_2changelog_2CHANGELOG.html#autotoc_md56",
+"structCatch_1_1Matchers_1_1Impl_1_1MatchAnyOf.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

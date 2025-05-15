@@ -28,7 +28,9 @@ var hierarchy =
     [ "Catch::AssertionInfo", "structCatch_1_1AssertionInfo.html", null ],
     [ "Catch::AssertionReaction", "structCatch_1_1AssertionReaction.html", null ],
     [ "BaseOptions", "structBaseOptions.html", [
-      [ "BendersBaseOptions", "structBendersBaseOptions.html", null ]
+      [ "SolverBaseOptions", "structSolverBaseOptions.html", [
+        [ "BendersBaseOptions", "structBendersBaseOptions.html", null ]
+      ] ]
     ] ],
     [ "Batch", "structBatch.html", null ],
     [ "BatchCollection", "classBatchCollection.html", null ],

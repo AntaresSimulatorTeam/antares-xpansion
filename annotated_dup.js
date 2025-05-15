@@ -655,6 +655,7 @@ var annotated_dup =
     [ "SimulationOptions", "classSimulationOptions.html", "classSimulationOptions" ],
     [ "SinglePbData", "structSinglePbData.html", null ],
     [ "SolverAbstract", "classSolverAbstract.html", "classSolverAbstract" ],
+    [ "SolverBaseOptions", "structSolverBaseOptions.html", null ],
     [ "SolverCbc", "classSolverCbc.html", "classSolverCbc" ],
     [ "SolverClp", "classSolverClp.html", "classSolverClp" ],
     [ "SolverConfig", "classSolverConfig.html", null ],
