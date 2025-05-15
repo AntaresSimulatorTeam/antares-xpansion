@@ -5,8 +5,10 @@ Class to control the Problem Generation
 import os
 import subprocess
 import sys
+
 from dataclasses import dataclass
 from pathlib import Path
+from typing import List
 
 from antares_xpansion.logger import step_logger
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
@@ -80,5 +82,5 @@ class PresolveDriver:
                 f"Error in lp path: {self.lp_path} not found"
             )
 
-    def get_presolve_cmd(self) -> list[Path]:
+    def get_presolve_cmd(self) -> List[Path]:
         return [self.exec_path, self.options_file]

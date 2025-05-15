@@ -195,7 +195,8 @@ class XpansionDriver:
 
     def launch_presolve_step(self):
         # TODO Problem Generation enforces Xpress differently
-        if (given_solver := self.config_loader.options["solver"]) != "Xpress":
+        given_solver = self.config_loader.options["solver"]
+        if given_solver != "Xpress":
             raise XpansionDriver.SolverXpressRequirementError(
                 f"Invalid given solver {given_solver}. Step only available with Xpress"
             )
