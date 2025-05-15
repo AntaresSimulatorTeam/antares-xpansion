@@ -147,28 +147,27 @@ protected:
                           std::filesystem::copy_options::update_existing);
   }
 
-  BaseOptions init_base_options(const std::string &solver = "COIN") const {
-    BaseOptions base_options;
+  SolverBaseOptions init_base_options(const std::string &solver = "COIN") const {
+    SolverBaseOptions solver_options;
 
-    base_options.LOG_LEVEL = 0;
-    base_options.SLAVE_WEIGHT_VALUE = 1;
-    base_options.OUTPUTROOT = "my_output";
-    base_options.SLAVE_WEIGHT = "CONSTANT";
-    base_options.MASTER_NAME = "mip_toy_prob";
-    base_options.STRUCTURE_FILE = "my_structure.txt";
-    base_options.INPUTROOT = tmpDir.string();
-    base_options.SOLVER_NAME = solver;
-    base_options.weights = {};
-    base_options.RESUME = false;
+    solver_options.LOG_LEVEL = 0;
+    solver_options.SLAVE_WEIGHT_VALUE = 1;
+    solver_options.OUTPUTROOT = "my_output";
+    solver_options.SLAVE_WEIGHT = "CONSTANT";
+    solver_options.MASTER_NAME = "mip_toy_prob";
+    solver_options.STRUCTURE_FILE = "my_structure.txt";
+    solver_options.INPUTROOT = tmpDir.string();
+    solver_options.SOLVER_NAME = solver;
+    solver_options.weights = {};
 
-    return base_options;
+    return solver_options;
   }
 
   BendersBaseOptions init_benders_options(
     MasterFormulation master_formulation, int max_iter, double relaxed_gap,
     double sep_param, const std::string &solver = "COIN") const {
-    BaseOptions base_options(init_base_options(solver));
-    BendersBaseOptions options(base_options);
+    SolverBaseOptions solver_options(init_base_options(solver));
+    BendersBaseOptions options(solver_options);
 
     options.MAX_ITERATIONS = max_iter;
     options.ABSOLUTE_GAP = 1e-4;
@@ -179,6 +178,7 @@ protected:
 
     options.MASTER_FORMULATION = master_formulation;
 
+    options.RESUME = false;
     options.AGGREGATION = false;
     options.TRACE = false;
     options.BOUND_ALPHA = true;
