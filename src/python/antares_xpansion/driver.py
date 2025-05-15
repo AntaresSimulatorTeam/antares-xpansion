@@ -200,6 +200,7 @@ class XpansionDriver:
                 f"Invalid given solver {given_solver}. Step only available with Xpress"
             )
         # TODO Maybe overkill for presolve? Needed to write options.json file
+        # TODO Still must read the flag to keep or not the full problem
         self.config_loader.benders_pre_actions()
         self.presolve_driver.launch(self.config_loader.xpansion_simulation_output())
 

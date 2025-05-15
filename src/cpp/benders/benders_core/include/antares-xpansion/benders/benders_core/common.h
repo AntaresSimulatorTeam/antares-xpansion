@@ -164,6 +164,19 @@ struct BaseOptions
     ProblemsFormat PROBLEMS_FORMAT = ProblemsFormat::MPS_FILE;
 };
 
+struct PresolveOptions: public BaseOptions
+{
+    PresolveOptions() = default;
+
+    explicit PresolveOptions(const BaseOptions& other):
+        BaseOptions(other)
+    {
+    }
+
+    bool KEEP_FULL;
+    std::string FULL_DIR;
+};
+
 struct SolverBaseOptions: public BaseOptions
 {
     SolverBaseOptions() = default;

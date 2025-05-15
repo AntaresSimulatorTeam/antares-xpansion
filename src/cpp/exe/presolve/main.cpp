@@ -13,7 +13,7 @@
 
 using XPRSPtr = std::shared_ptr<SolverXpress>;
 
-XPRSPtr init_solver(BaseOptions& options, Logger logger)
+XPRSPtr init_solver(const PresolveOptions& options, Logger logger)
 {
     SolverConfig config(options.SOLVER_NAME);
 
@@ -81,14 +81,15 @@ std::unordered_map<int, int> get_candidates_presolve_map(SolverXpress& solver,
         }
     }
 
+    // TODO Should throw if full2reduced.size < candidatesId.size?
     return full2reduced;
 }
 
-void reduce_problems(SolverXpress& solver, const BaseOptions& options, Logger logger)
+void reduce_problems(SolverXpress& solver, const PresolveOptions& options, Logger logger)
 {
     const auto input_root_dir = std::filesystem::path(options.INPUTROOT);
     const auto structure_path = input_root_dir / options.STRUCTURE_FILE;
-    const auto full_dir = std::filesystem::path(options.OUTPUTROOT) / "full";
+    const auto full_dir = std::filesystem::path(options.OUTPUTROOT) / options.FULL_DIR;
 
     // Parse structure and get candidates' indices
     logger->display_message("Reading " + structure_path.string());
@@ -96,14 +97,15 @@ void reduce_problems(SolverXpress& solver, const BaseOptions& options, Logger lo
                                                                         logger.get(),
                                                                         "Presolve");
 
-    // TODO Add option to keep or discard the full versions
-    // TODO All filesystem operations can be done in a separated part I guess
-    // Creates new folder to move full problems
-    logger->display_message("Creating " + full_dir.string());
-    mkdir(full_dir);
+    if (options.KEEP_FULL)
+    {
+        // Creates new folder to move full problems
+        logger->display_message("Creating " + full_dir.string());
+        mkdir(full_dir);
 
-    // Move full structure to 'full' folder
-    std::filesystem::rename(structure_path, full_dir / options.STRUCTURE_FILE);
+        // Move full structure to 'full' folder
+        std::filesystem::rename(structure_path, full_dir / options.STRUCTURE_FILE);
+    }
 
     // ** Main part : creates coupling map for reduced problems **
     CouplingMap reduced_couplings = full_couplings;
@@ -112,9 +114,10 @@ void reduce_problems(SolverXpress& solver, const BaseOptions& options, Logger lo
     solver_io.configure(options.SOLVER_NAME, options.PROBLEMS_FORMAT);
 
     const size_t nb_prob_total{full_couplings.size() - 1};
-    // TODO Can be done in parallel ?
     for (int nb_prob{0}; const auto& [filename, var_map]: full_couplings)
     {
+        // TODO Can be done in parallel ?
+
         if (filename == options.MASTER_NAME) [[unlikely]]
         {
             // Keep master indices untouched
@@ -139,10 +142,11 @@ void reduce_problems(SolverXpress& solver, const BaseOptions& options, Logger lo
 
         solver.presolve_only();
 
-        // Move full subproblem to 'full' folder
-        // TODO Add option to keep or discard the full versions
-        // TODO All filesystem operations can be done in a separated part I guess
-        std::filesystem::rename(subproblem_path, full_dir / filename);
+        if (options.KEEP_FULL)
+        {
+            // Move full subproblem to 'full' folder
+            std::filesystem::rename(subproblem_path, full_dir / filename);
+        }
 
         logger->display_message(
           fmt::format("Subproblem '{}' reduced: {} / {}", filename, ++nb_prob, nb_prob_total));
@@ -167,7 +171,7 @@ void reduce_problems(SolverXpress& solver, const BaseOptions& options, Logger lo
 int main(int argc, char** argv)
 {
     usage(argc);
-    BaseOptions options{SimulationOptions(argv[1]).get_base_options()};
+    PresolveOptions options{SimulationOptions(argv[1]).get_presolve_options()};
     Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
 
     logger->display_message("Starting presolve");

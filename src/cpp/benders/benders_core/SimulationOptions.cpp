@@ -160,6 +160,16 @@ BaseOptions SimulationOptions::get_base_options() const
     return result;
 }
 
+PresolveOptions SimulationOptions::get_presolve_options() const
+{
+    PresolveOptions result(get_base_options());
+
+    result.KEEP_FULL = KEEP_FULL;
+    result.FULL_DIR = FULL_DIR;
+
+    return result;
+}
+
 SolverBaseOptions SimulationOptions::get_solver_options() const
 {
     SolverBaseOptions result(get_base_options());
