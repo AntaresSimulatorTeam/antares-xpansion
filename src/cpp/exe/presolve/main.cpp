@@ -5,6 +5,7 @@
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
+#include "antares-xpansion/benders/benders_core/SolverIO.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/logger/User.h"
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
@@ -14,11 +15,12 @@ using XPRSPtr = std::shared_ptr<SolverXpress>;
 
 XPRSPtr init_solver(BaseOptions& options, Logger logger)
 {
-    // TODO tolower or upper
-    if (options.SOLVER_NAME != "XPRESS" && options.SOLVER_NAME != "Xpress")
+    SolverConfig config(options.SOLVER_NAME);
+
+    if (!(config == "Xpress"))
     {
-        std::cerr << "Invalid solver '" << options.SOLVER_NAME << "'. Presolve is available only with Xpress."
-                  << std::endl;
+        std::cerr << "Invalid solver '" << config.Name()
+                  << "'. Presolve is available only with Xpress." << std::endl;
         std::exit(1);
     }
 
@@ -31,8 +33,7 @@ XPRSPtr init_solver(BaseOptions& options, Logger logger)
         std::exit(1);
     }
 
-    XPRSPtr solver_ptr = std::static_pointer_cast<SolverXpress>(
-      factory.create_solver(options.SOLVER_NAME));
+    XPRSPtr solver_ptr = std::static_pointer_cast<SolverXpress>(factory.create_solver(config));
 
     if (options.LOG_LEVEL > 0)
     {
@@ -107,6 +108,9 @@ void reduce_problems(SolverXpress& solver, const BaseOptions& options, Logger lo
     // ** Main part : creates coupling map for reduced problems **
     CouplingMap reduced_couplings = full_couplings;
 
+    SolverIO solver_io;
+    solver_io.configure(options.SOLVER_NAME, options.PROBLEMS_FORMAT);
+
     const size_t nb_prob_total{full_couplings.size() - 1};
     // TODO Can be done in parallel ?
     for (int nb_prob{0}; const auto& [filename, var_map]: full_couplings)
@@ -128,8 +132,7 @@ void reduce_problems(SolverXpress& solver, const BaseOptions& options, Logger lo
         // Read full problem
         const std::filesystem::path subproblem_path = input_root_dir / filename;
 
-        // TODO See about the keeprows thing
-        solver.read_prob_mps(subproblem_path);
+        solver_io.read(&solver, subproblem_path);
 
         // Keep the solver from removing candidate indices from subproblem
         solver.mark_indices_to_keep_presolve(0, candidatesId.size(), nullptr, candidatesId.data());
@@ -145,7 +148,7 @@ void reduce_problems(SolverXpress& solver, const BaseOptions& options, Logger lo
           fmt::format("Subproblem '{}' reduced: {} / {}", filename, ++nb_prob, nb_prob_total));
 
         // Write reduced problem MPS
-        solver.write_prob_mps(subproblem_path);
+        solver_io.write(&solver, subproblem_path);
 
         // Create a map [full_idx] -> reduced_idx for candidate indices
         const auto full2reduced = get_candidates_presolve_map(solver, candidatesId);
