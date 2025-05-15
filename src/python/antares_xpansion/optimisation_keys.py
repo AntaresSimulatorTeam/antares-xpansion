@@ -118,3 +118,11 @@ class OptimisationKeys:
     @staticmethod
     def cache_problems_keys():
         return "CACHE_PROBLEMS"
+
+    @staticmethod
+    def keep_full_keys():
+        return "KEEP_FULL"
+
+    @staticmethod
+    def full_dir_keys():
+        return "FULL_DIR"

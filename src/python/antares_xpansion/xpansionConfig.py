@@ -194,6 +194,8 @@ class XpansionConfig:
             OptimisationKeys.separation_key(): self.separation_default_value(),
             OptimisationKeys.batch_size_key(): self.batch_size_default_value(),
             OptimisationKeys.cache_problems_keys(): self.cache_problems_default_value(),
+            OptimisationKeys.keep_full_keys(): self.keep_full_default_value(),
+            OptimisationKeys.full_dir_keys() : self.full_dir_default_value(),
         }
 
     def bound_alpha_default_value(self):
@@ -252,6 +254,12 @@ class XpansionConfig:
 
     def cache_problems_default_value(self):
         return False
+
+    def keep_full_default_value(self):
+        return True
+
+    def full_dir_default_value(self):
+        return "full"
 
     def _get_config_values(self):
 

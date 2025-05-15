@@ -73,7 +73,6 @@ class XpansionDriver:
             self.config_loader.options_file_name(),
             self.config_loader.mpi_exe(),
         )
-        # TODO options.json is empty at this stage. How to force the solver to be Xpress?
 
         self.study_update_driver = StudyUpdaterDriver(
             self.config_loader.study_update_exe())
@@ -201,7 +200,6 @@ class XpansionDriver:
                 f"Invalid given solver {given_solver}. Step only available with Xpress"
             )
         # TODO Maybe overkill for presolve? Needed to write options.json file
-        # TODO Still must read the flag to keep or not the full problem
         self.config_loader.benders_pre_actions()
         self.presolve_driver.launch(self.config_loader.xpansion_simulation_output())
 
