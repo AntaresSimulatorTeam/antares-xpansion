@@ -68,7 +68,7 @@ class PresolveDriver:
             )
 
         elif not self.keep_full_mps:
-            StudyOutputCleaner.clean_benders_step(self.lp_path / "full")
+            StudyOutputCleaner.clean_presolve_step(self.lp_path / "full")
 
         os.chdir(old_cwd)
 
