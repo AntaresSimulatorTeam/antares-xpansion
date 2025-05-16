@@ -1,3 +1,4 @@
+#include <antares-xpansion/benders/factories/BendersApp.h>
 #include <exception>
 #include <iostream>
 
@@ -38,28 +39,17 @@ int main(int argc, char** argv)
         }
     }
     world.barrier();
-    int argc_ = 2;
     const auto options_file = options_parser.BendersOptionsFile();
 
     auto solver = options_parser.Solver();
     if (solver == "benders")
     {
-        auto benders_factory = BendersMainFactory(argc_,
-                                                  argv,
-                                                  options_file,
-                                                  env,
-                                                  world,
-                                                  SOLVER::BENDERS);
+        auto benders_factory = BendersApp(options_file, env, world, SOLVER::BENDERS);
         benders_factory.Run();
     }
     if (solver == "adequacy_criterion")
     {
-        auto benders_factory = BendersMainFactory(argc_,
-                                                  argv,
-                                                  options_file,
-                                                  env,
-                                                  world,
-                                                  SOLVER::OUTER_LOOP);
+        auto benders_factory = BendersApp(options_file, env, world, SOLVER::OUTER_LOOP);
         benders_factory.Run();
     }
     else
