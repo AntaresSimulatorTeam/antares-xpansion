@@ -67,8 +67,10 @@ class PresolveDriver:
                 f"ERROR: exited presolve with status {ret.returncode}"
             )
 
-        elif not self.keep_full_mps:
-            StudyOutputCleaner.clean_presolve_step(self.lp_path / "full")
+        # TODO For now, when launching in Python, it will never
+        # TODO write the full directory so no need for clean up
+        # elif not self.keep_full_mps:
+        #     StudyOutputCleaner.clean_presolve_step(self.lp_path / "full")
 
         os.chdir(old_cwd)
 

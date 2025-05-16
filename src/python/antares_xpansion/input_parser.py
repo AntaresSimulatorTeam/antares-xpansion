@@ -85,6 +85,11 @@ class InputParser:
                                  default=False,
                                  action='store_true',
                                  help="Work in memory, don't write file if possible")
+        self.parser.add_argument("--presolve",
+                                 dest=LauncherOptionsKeys.presolve_key(),
+                                 default=False,
+                                 action='store_true',
+                                 help="Runs presolve step before Benders methods (Xpress only)")
         self.parser.add_argument("--cache_problems",
                                  dest=LauncherOptionsKeys.cache_problems_key(),
                                  default=False,
@@ -109,6 +114,7 @@ class InputParser:
             oversubscribe=params.oversubscribe,
             allow_run_as_root=params.allow_run_as_root,
             memory=params.memory,
+            run_presolve=params.run_presolve,
             cache_problems=params.cache_problems,
         )
         return my_parameters

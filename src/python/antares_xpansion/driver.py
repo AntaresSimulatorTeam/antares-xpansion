@@ -132,6 +132,8 @@ class XpansionDriver:
                 self.config_loader.keep_mps())
 
         elif self.config_loader.step() == "benders":
+            if self.config_loader.run_presolve():
+                self.launch_presolve_step()
             self.launch_benders_step()
 
         elif self.config_loader.step() == "sensitivity":
@@ -199,8 +201,7 @@ class XpansionDriver:
             raise XpansionDriver.SolverXpressRequirementError(
                 f"Invalid given solver {given_solver}. Step only available with Xpress"
             )
-        # TODO Maybe overkill for presolve? Needed to write options.json file
-        self.config_loader.benders_pre_actions()
+        self.config_loader.presolve_pre_actions()
         self.presolve_driver.launch(self.config_loader.xpansion_simulation_output())
 
     def launch_benders_step(self):

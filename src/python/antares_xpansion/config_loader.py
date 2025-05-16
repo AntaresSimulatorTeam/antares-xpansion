@@ -352,6 +352,9 @@ class ConfigLoader:
     def memory(self):
         return self._config.memory
 
+    def run_presolve(self):
+        return self._config.run_presolve
+
     def simulation_lp_path(self):
         return self._simulation_lp_path()
 
@@ -395,6 +398,11 @@ class ConfigLoader:
             self._set_last_simulation_name()
 
         return self._last_study
+
+    def presolve_pre_actions(self):
+        # TODO Overkill but options_default writes values
+        # TODO as strings instead of float, int and etc when it's needed
+        self._set_options_for_benders_solver()
 
     def benders_pre_actions(self):
         self.copy_area_file_to_lpdir()
