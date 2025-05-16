@@ -113,6 +113,11 @@ class TrajectoryOuputKeys:
     Keys used in the `master_structure.json` file passed to the C++ executable.
     """
 
+    # Initial capacities
+    @staticmethod
+    def initial_capacities_key():
+        return "initial_capacities"
+
     # Constraints
     @staticmethod
     def constraint_key():
