@@ -90,7 +90,7 @@ BENDERS_OPTIONS_MACRO(AREA_FILE, std::string, "area.txt", asString())
 BENDERS_OPTIONS_MACRO(CACHE_PROBLEMS, bool, false, asBool())
 
 // Flag to store full problems after presolve
-BENDERS_OPTIONS_MACRO(KEEP_FULL, bool, true, asBool())
+BENDERS_OPTIONS_MACRO(KEEP_FULL, bool, false, asBool())
 
 // Full problems directory name
 BENDERS_OPTIONS_MACRO(FULL_DIR, std::string, "full", asString())

@@ -256,7 +256,7 @@ class XpansionConfig:
         return False
 
     def keep_full_default_value(self):
-        return True
+        return False
 
     def full_dir_default_value(self):
         return "full"
