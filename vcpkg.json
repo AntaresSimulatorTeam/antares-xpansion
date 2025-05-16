@@ -43,6 +43,10 @@
     {
       "name": "tbb",
       "version-string": "2020_U3"
+    },
+    {
+      "name": "coin-or-cbc",
+      "version": "2.10.7"
     }
   ]
 }
