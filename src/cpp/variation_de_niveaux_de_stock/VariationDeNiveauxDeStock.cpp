@@ -12,6 +12,8 @@
 #include "antares-xpansion/benders/benders_core/WorkerMaster.h"
 #include "antares-xpansion/helpers/Timer.h"
 
+int totalSimplexIter = 0;
+
 /// @brief Constructor
 /// @param logger Logger
 /// @param writer JsonWriter
@@ -92,6 +94,79 @@ ConstraintCombos ValeursUsage::GenerateSubPbCombos(const std::string& subPbName,
 
     subPbCombos = std::move(currentCombos);
     return subPbCombos;
+}
+
+int flattenIndex(const std::vector<int>& coord, const std::vector<int>& dims)
+{
+    int index = 0;
+    int stride = 1;
+    for (int i = dims.size() - 1; i >= 0; --i)
+    {
+        index += coord[i] * stride;
+        stride *= dims[i];
+    }
+    return index;
+}
+
+// Generate ND zigzag order based on parity of upper dimensions
+std::vector<size_t> generateZigzagOrder(const std::vector<int>& dims)
+{
+    const int ndims = dims.size();
+    std::vector<int> current(ndims, 0);
+    std::vector<size_t> linearOrder;
+
+    std::function<void(int)> recurse = [&](int level)
+    {
+        if (level == ndims)
+        {
+            linearOrder.push_back(flattenIndex(current, dims));
+            return;
+        }
+
+        bool reverse = false;
+        for (int i = 0; i < level; ++i)
+        {
+            if (current[i] % 2 == 1)
+            {
+                reverse = !reverse;
+            }
+        }
+
+        if (!reverse)
+        {
+            for (int i = 0; i < dims[level]; ++i)
+            {
+                current[level] = i;
+                recurse(level + 1);
+            }
+        }
+        else
+        {
+            for (int i = dims[level] - 1; i >= 0; --i)
+            {
+                current[level] = i;
+                recurse(level + 1);
+            }
+        }
+    };
+
+    recurse(0);
+    return linearOrder;
+}
+
+// Reorder the vector of Points according to the ND zigzag pattern
+std::vector<Point> reorderZigzagND(const std::vector<int>& dims, const std::vector<Point>& points)
+{
+    std::vector<size_t> order = generateZigzagOrder(dims);
+    std::vector<Point> reordered;
+    reordered.reserve(order.size());
+
+    for (size_t idx: order)
+    {
+        reordered.push_back(points[idx]);
+    }
+
+    return reordered;
 }
 
 /// @brief Get the path to the subproblem mps file
@@ -282,8 +357,6 @@ void ValeursUsage::SetConstraintsRHSValues(const std::map<std::string, double>& 
 /// @brief Runs the ProcessSubproblem method in parallel for each subproblem
 void ValeursUsage::Run()
 {
-    // sort subPbNames to ensure consistent order
-    std::sort(subPbNames.begin(), subPbNames.end());
     ProcessSubproblemsWithPhysicalCores(subPbNames);
 }
 
@@ -309,10 +382,25 @@ void ValeursUsage::ProcessSubproblem(const std::string& subPbName)
               << GetPbInfo(subPbName).week << std::endl;
     for (const auto& [gridID, subPbAreaConstraints]: currentSubPbAreaConstraints)
     {
-        ConstraintCombos subPbCombos = GenerateSubPbCombos(subPbName, subPbAreaConstraints);
+        std::vector<int> dims;
 
+        for (const auto& [_, constraints]: subPbAreaConstraints)
+        {
+            std::transform(constraints.begin(),
+                           constraints.end(),
+                           std::back_inserter(dims),
+                           [](const auto& constraints) { return constraints.second.size(); });
+        }
+
+        ConstraintCombos subPbCombos = GenerateSubPbCombos(subPbName, subPbAreaConstraints);
+        subPbCombos = reorderZigzagND(dims, subPbCombos);
+
+        int size = subPbCombos.size();
+        int i = 0;
         for (const auto& subPbCombo: subPbCombos)
         {
+            i++;
+            std::cout << "Processing subproblem " << i << "/" << size << std::endl;
             // Each areaCombo is a std::map<std::string, double> with full variable names
             SetConstraintsRHSValues(subPbCombo, subPbWorker);
             for (const auto& [constraintName, value]: subPbCombo)
@@ -341,7 +429,6 @@ void ValeursUsage::ProcessSubproblemsWithPhysicalCores(const std::vector<std::st
     // Limiter TBB au nombre de cœurs physiques
     tbb::global_control limit(tbb::global_control::max_allowed_parallelism, 1);
 
-    // Maintenant utiliser tbb::parallel_for_each
     tbb::parallel_for_each(subPbNames.begin(),
                            subPbNames.end(),
                            [&](const std::string& subPbName) { ProcessSubproblem(subPbName); });
@@ -360,6 +447,7 @@ double ValeursUsage::SolveSubproblem(SubproblemWorkerPtr subPbWorker)
     int nbSimplexIter;
     subPbWorker->get_splex_num_of_ite_last(nbSimplexIter);
     std::cout << "nb simplex : " << nbSimplexIter << std::endl;
+    totalSimplexIter += nbSimplexIter;
 
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 
@@ -383,6 +471,7 @@ void ValeursUsage::launch()
     Timer run_timer;
     Run();
     auto run_time = run_timer.elapsed();
-    std::cout << "Stock level variation done in " << run_time << " seconds" << std::endl;
+    std::cout << "Stock level variation done in " << run_time << " seconds and " << totalSimplexIter
+              << " simplex iterations" << std::endl;
     WriteOutput();
 }
