@@ -16,7 +16,7 @@ class TrajectoryInputKeys:
         return "discount_rate"
 
     @staticmethod
-    def first_investment_year_key():
+    def first_investment_date_key():
         return "first_investment_year"
 
     @staticmethod
@@ -62,8 +62,8 @@ class TrajectoryInputKeys:
         return "duration"
 
     @staticmethod
-    def candidates_costs_key():
-        return "candidates_costs"
+    def candidate_to_type_costs():
+        return "candidate_to_type"
 
     # Candidates costs types
     @staticmethod
@@ -87,6 +87,10 @@ class TrajectoryInputKeys:
     def constraints_key():
         return "constraints"
 
+    @staticmethod 
+    def constraint_name_key():
+        return "name"
+        
     @staticmethod
     def constraints_nodes_key():
         return "nodes"
@@ -113,7 +117,7 @@ class TrajectoryOuputKeys:
     Keys used in the `master_structure.json` file passed to the C++ executable.
     """
 
-    # Initial capacities
+    # Initial capacities
     @staticmethod
     def initial_capacities_key():
         return "initial_capacities"
@@ -122,6 +126,7 @@ class TrajectoryOuputKeys:
     @staticmethod
     def constraint_key():
         return "constraints"
+
     @staticmethod
     def constraint_coeffs_key():
         return "coeffs"
@@ -133,6 +138,44 @@ class TrajectoryOuputKeys:
     @staticmethod
     def constraint_operator_key():
         return "operator"
+    
+    # Tree
+    @staticmethod
+    def tree_key():
+        return "tree"
+    
+    @staticmethod
+    def lp_folder_key():
+        return "lp_folder"
+    
+    @staticmethod
+    def master_mps_key():
+        return "master_mps_file"
+    
+    @staticmethod
+    def structure_file_key():
+        return "structure_file"
+    
+    @staticmethod
+    def parent_key():
+        return "parent"
+    
+    # Node's candidates costs
+    @staticmethod
+    def candidate_costs():
+        return "candidates_costs"
+    
+    @staticmethod
+    def investment_cost_key():
+        return "investment"
+
+    @staticmethod
+    def oandm_cost_key():
+        return "operation_maintenance"
+
+    @staticmethod
+    def retirement_cost_key():
+        return "retirement"
 
 
 class ConstraintType(Enum):
@@ -145,6 +188,7 @@ class InvestmentVariableType(Enum):
     DX_PLUS = "dx_plus"
     X = "x"
     DX_MINUS = "dx_minus"
+
 
 class ConstraintOperator(Enum):
     LEQ = "<"
