@@ -62,7 +62,7 @@ class TrajectoryInputKeys:
         return "duration"
 
     @staticmethod
-    def candidate_to_type_costs():
+    def candidates_to_types_key():
         return "candidate_to_type"
 
     # Candidates costs types
@@ -178,19 +178,19 @@ class TrajectoryOuputKeys:
         return "retirement"
 
 
-class ConstraintType(Enum):
+class ConstraintTypeEnum(Enum):
     MAX_INDIVIDUAL_INVESTMENT = "max_individual_investment"
     MAX_CUMULATIVE_INVESTMENT = "max_cumulative_investment"
     MAX_INDIVIDUAL_RETIREMENT = "max_individual_retirement"
 
 
-class InvestmentVariableType(Enum):
+class InvestmentVariableTypeEnum(Enum):
     DX_PLUS = "dx_plus"
     X = "x"
     DX_MINUS = "dx_minus"
 
 
-class ConstraintOperator(Enum):
+class ConstraintOperatorEnum(Enum):
     LEQ = "<"
     EQ = "="
     GEQ = ">"
