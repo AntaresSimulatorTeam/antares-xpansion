@@ -13,6 +13,8 @@
 
 using XPRSPtr = std::shared_ptr<SolverXpress>;
 
+const std::string CONTEXT{"Presolve"};
+
 XPRSPtr init_solver(const PresolveOptions& options, Logger logger)
 {
     SolverConfig config(options.SOLVER_NAME);
@@ -92,15 +94,17 @@ void reduce_problems(SolverXpress& solver, const PresolveOptions& options, Logge
     const auto full_dir = std::filesystem::path(options.OUTPUTROOT) / options.FULL_DIR;
 
     // Parse structure and get candidates' indices
-    logger->display_message("Reading " + structure_path.string());
+    logger->display_message("Reading " + structure_path.string(),
+                            LogUtils::LOGLEVEL::INFO,
+                            CONTEXT);
     const CouplingMap full_couplings = CouplingMapGenerator::BuildInput(structure_path,
                                                                         logger.get(),
-                                                                        "Presolve");
+                                                                        CONTEXT);
 
     if (options.KEEP_FULL)
     {
         // Creates new folder to move full problems
-        logger->display_message("Creating " + full_dir.string());
+        logger->display_message("Creating " + full_dir.string(), LogUtils::LOGLEVEL::INFO, CONTEXT);
         mkdir(full_dir);
 
         // Move full structure to 'full' folder
@@ -148,9 +152,37 @@ void reduce_problems(SolverXpress& solver, const PresolveOptions& options, Logge
             std::filesystem::rename(subproblem_path, full_dir / filename);
         }
 
+        // TODO Too verbose. Should only output if LOGLVL is set to DEBUG ?
         logger->display_message(
-          fmt::format("Subproblem '{}' reduced: {} / {}", filename, ++nb_prob, nb_prob_total));
+          fmt::format("Subproblem '{}' reduced: {} / {}.", filename, ++nb_prob, nb_prob_total),
+          LogUtils::LOGLEVEL::DEBUG,
+          CONTEXT);
 
+        if (options.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE)
+        {
+            /*
+            TODO Won't be able to solve later with Benders
+            When we force presolve_only, we interrupt the problem leaving it in a
+            'presolved' state to be restored. Since .svf files are restored as they are,
+            this 'presolved' state would pass to Benders.
+            According to XPRESS API, it prevents any modification to the
+            underlying matrix, blocking us to chg_obj in Benders for instance.
+
+            One possible solution would be to export the problem as MPS,
+            reload it and then export it again as .svf, but it's quite a hack
+            It would work because the MPS format doesn't record the 'presolved' state
+
+            A cleaner solution could be creating a new XPRSProb from the current
+            matrix, i.e., XPRSprob(obj, mclind, mstart, dmatval, etc) and then
+            export it, removing artificially the 'presolved' state.
+            That would require some modifications to SolverXpress
+            */
+            logger->display_message("Export format won't allow benders to solve the problem",
+                                    LogUtils::LOGLEVEL::WARNING,
+                                    CONTEXT);
+        }
+
+        // TODO Why does it add a line break?
         // Write reduced problem MPS
         solver_io.write(&solver, subproblem_path);
 
@@ -165,7 +197,9 @@ void reduce_problems(SolverXpress& solver, const PresolveOptions& options, Logge
 
     // Write structure for reduced problem
     export_structure_file(structure_path, reduced_couplings);
-    logger->display_message("Reduced " + options.STRUCTURE_FILE + " written");
+    logger->display_message("Reduced " + options.STRUCTURE_FILE + " written",
+                            LogUtils::LOGLEVEL::INFO,
+                            CONTEXT);
 }
 
 int main(int argc, char** argv)
@@ -174,13 +208,13 @@ int main(int argc, char** argv)
     PresolveOptions options{SimulationOptions(argv[1]).get_presolve_options()};
     Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
 
-    logger->display_message("Starting presolve");
+    logger->display_message("Starting presolve", LogUtils::LOGLEVEL::INFO, CONTEXT);
 
     XPRSPtr solver_ptr = init_solver(options, logger);
 
     reduce_problems(*solver_ptr, options, logger);
 
-    logger->display_message("Presolve finished");
+    logger->display_message("Presolve finished", LogUtils::LOGLEVEL::INFO, CONTEXT);
 
     return 0;
 }
