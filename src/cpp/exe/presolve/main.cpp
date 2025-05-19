@@ -13,7 +13,7 @@
 
 using XPRSPtr = std::shared_ptr<SolverXpress>;
 
-const std::string CONTEXT{"Presolve"};
+const std::string PRESOLVE_CONTEXT{"Presolve"};
 
 XPRSPtr init_solver(const PresolveOptions& options, Logger logger)
 {
@@ -96,15 +96,17 @@ void reduce_problems(SolverXpress& solver, const PresolveOptions& options, Logge
     // Parse structure and get candidates' indices
     logger->display_message("Reading " + structure_path.string(),
                             LogUtils::LOGLEVEL::INFO,
-                            CONTEXT);
+                            PRESOLVE_CONTEXT);
     const CouplingMap full_couplings = CouplingMapGenerator::BuildInput(structure_path,
                                                                         logger.get(),
-                                                                        CONTEXT);
+                                                                        PRESOLVE_CONTEXT);
 
     if (options.KEEP_FULL)
     {
         // Creates new folder to move full problems
-        logger->display_message("Creating " + full_dir.string(), LogUtils::LOGLEVEL::INFO, CONTEXT);
+        logger->display_message("Creating " + full_dir.string(),
+                                LogUtils::LOGLEVEL::INFO,
+                                PRESOLVE_CONTEXT);
         mkdir(full_dir);
 
         // Move full structure to 'full' folder
@@ -156,7 +158,7 @@ void reduce_problems(SolverXpress& solver, const PresolveOptions& options, Logge
         logger->display_message(
           fmt::format("Subproblem '{}' reduced: {} / {}.", filename, ++nb_prob, nb_prob_total),
           LogUtils::LOGLEVEL::DEBUG,
-          CONTEXT);
+          PRESOLVE_CONTEXT);
 
         if (options.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE)
         {
@@ -179,7 +181,7 @@ void reduce_problems(SolverXpress& solver, const PresolveOptions& options, Logge
             */
             logger->display_message("Export format won't allow benders to solve the problem",
                                     LogUtils::LOGLEVEL::WARNING,
-                                    CONTEXT);
+                                    PRESOLVE_CONTEXT);
         }
 
         // TODO Why does it add a line break?
@@ -199,7 +201,7 @@ void reduce_problems(SolverXpress& solver, const PresolveOptions& options, Logge
     export_structure_file(structure_path, reduced_couplings);
     logger->display_message("Reduced " + options.STRUCTURE_FILE + " written",
                             LogUtils::LOGLEVEL::INFO,
-                            CONTEXT);
+                            PRESOLVE_CONTEXT);
 }
 
 int main(int argc, char** argv)
@@ -208,13 +210,13 @@ int main(int argc, char** argv)
     PresolveOptions options{SimulationOptions(argv[1]).get_presolve_options()};
     Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
 
-    logger->display_message("Starting presolve", LogUtils::LOGLEVEL::INFO, CONTEXT);
+    logger->display_message("Starting presolve", LogUtils::LOGLEVEL::INFO, PRESOLVE_CONTEXT);
 
     XPRSPtr solver_ptr = init_solver(options, logger);
 
     reduce_problems(*solver_ptr, options, logger);
 
-    logger->display_message("Presolve finished", LogUtils::LOGLEVEL::INFO, CONTEXT);
+    logger->display_message("Presolve finished", LogUtils::LOGLEVEL::INFO, PRESOLVE_CONTEXT);
 
     return 0;
 }
