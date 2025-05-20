@@ -11,9 +11,9 @@ size_t StandardLp::appendCNT = 0;
 
 int main(int argc, char** argv)
 {
-    if (argc < 3)
+    if (argc < 4)
     {
-        std::cerr << "Error: usage is : <exe> <option_file> <master_structure_file>" << std::endl;
+        std::cerr << "Error: usage is : <exe> <option_file> <master_structure_file> <nodal_lp_folder_file>" << std::endl;
         std::exit(1);
     }
     
@@ -30,7 +30,7 @@ int main(int argc, char** argv)
     try
     {
         logger->display_message("Given tree path is : " + std::string(argv[2]));
-        MergeMasterTrajectoryMPS merge_mps(options.get_base_options(), logger, writer, argv[2]);
+        MergeMasterTrajectoryMPS merge_mps(options.get_base_options(), logger, writer, argv[2], argv[3]);
         merge_mps.launch();
     }
     catch (std::exception& ex)

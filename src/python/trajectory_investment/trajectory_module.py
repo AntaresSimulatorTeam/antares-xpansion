@@ -5,22 +5,11 @@ from trajectory_keys import TrajectoryInputKeys as InKeys
 from trajectory_keys import TrajectoryOuputKeys as OutKeys
 from pydantic import BaseModel, Field, PositiveInt, NonNegativeFloat, NonNegativeInt
 from typing import Literal
-from dataclasses import dataclass
 from enum import Enum
 import datetime
 
 import yaml
 import json
-
-
-@dataclass
-class NodeDataDataMerger:
-    """Merger expected node data that is not directly in the input file."""
-
-    lp_folder: str = ""
-    master_mps_file: str = ""
-    structure_file: str = ""
-
 
 # Enums
 class ConstraintTypeEnum(Enum):
@@ -219,14 +208,10 @@ class TrajectoryModule:
 
         def to_merger_json(
             self,
-            file_data: NodeDataDataMerger,
             global_data: TrajectoryModule.GlobalData,
             candidates_types: dict[str, TrajectoryModule.CandidateType],
         ):
             output = dict[str, any]()
-            output[OutKeys.lp_folder_key()] = file_data.lp_folder
-            output[OutKeys.master_mps_key()] = file_data.master_mps_file
-            output[OutKeys.structure_file_key()] = file_data.structure_file
             output[OutKeys.parent_key()] = self.parent
 
             candidates_costs: dict[str, dict[str, float]] = {}
@@ -487,13 +472,8 @@ class TrajectoryModule:
         # Tree
         nodes_output_dict = {}
         for name, data in self.nodes.items():
-            file_data: NodeDataDataMerger = NodeDataDataMerger(
-                "placeholder/folder/for/now",
-                "placeholder_master.mps",
-                "placeholder_structure.txt",
-            )
             nodes_output_dict[name] = data.to_merger_json(
-                file_data, self.global_data, self.candidates_types_costs
+                self.global_data, self.candidates_types_costs
             )
         output[OutKeys.tree_key()] = nodes_output_dict
 

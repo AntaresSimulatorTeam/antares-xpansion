@@ -18,6 +18,17 @@ class MergeMasterTrajectoryMPS: public AbstractMergeMPS
 public:
     // Data structures
 
+    struct NodeLpDataLocation
+    {
+        NodeLpDataLocation(const Json::Value& data);
+
+        std::filesystem::path lp_folder;
+        std::string master;
+        std::string structure;
+    };
+
+    typedef std::map<std::string, NodeLpDataLocation> NodesLpPathesMap;
+
     enum CandidateVariableType
     {
         CAPA,
@@ -89,9 +100,6 @@ public:
         TrajectoryNode(const std::string& node, const Json::Value& data);
 
         std::string name;
-        std::filesystem::path path{};
-        std::string master_mps_file;
-        std::string structure_file;
 
         std::string master_name = MasterStructureKeys::DEFAULT_MASTER_NAME;
         std::optional<std::string> parent{std::nullopt};
@@ -106,9 +114,11 @@ public:
     MergeMasterTrajectoryMPS(MergeMPSOptions options,
                              Logger logger,
                              std::shared_ptr<Output::OutputWriter> writer,
-                             const std::filesystem::path& tree_filename):
+                             const std::filesystem::path& tree_filename,
+                             const std::filesystem::path& annual_lp_filename):
         AbstractMergeMPS(options, logger, writer),
-        tree_path_(tree_filename)
+        tree_path_(tree_filename),
+        lp_reference_file_filepath(annual_lp_filename)
     {
     }
 
@@ -118,6 +128,9 @@ public:
 private:
     // Initilization : reading the master structure file
     void read_tree_structure_file();
+    void read_node_lp_pathes();
+    // Every node in the tree must have an associated lp_folder in nodes_lp_pathes_
+    void check_nodes_has_lp_folder();
     // Methods specific to this derived class
     void add_delta_variables();
     void add_delta_variables_constraints();
@@ -133,8 +146,10 @@ private:
 private:
     // Attribute
     std::filesystem::path tree_path_;
+    std::filesystem::path lp_reference_file_filepath;
     TrajectoryTree tree_;                       // Contains each node's information
     TrajectoryGlobalData trajectory_data_;      // Contains the global trajectory data
     CandidatesCouplingMap candidates_coupling_; // Links the same candidates in different nodes
+    NodesLpPathesMap nodes_lp_pathes_; // Contains the path to the lp folder & relevant files for each node
     CouplingMap structure_;
 };

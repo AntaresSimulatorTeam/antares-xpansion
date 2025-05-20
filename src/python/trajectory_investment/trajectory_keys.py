@@ -142,18 +142,6 @@ class TrajectoryOuputKeys:
         return "tree"
 
     @staticmethod
-    def lp_folder_key():
-        return "lp_folder"
-
-    @staticmethod
-    def master_mps_key():
-        return "master_mps_file"
-
-    @staticmethod
-    def structure_file_key():
-        return "structure_file"
-
-    @staticmethod
     def parent_key():
         return "parent"
 
