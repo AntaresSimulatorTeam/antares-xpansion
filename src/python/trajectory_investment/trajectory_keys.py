@@ -1,6 +1,3 @@
-from enum import Enum
-
-
 class TrajectoryInputKeys:
     """
     Keys used in the `user_input_XpansionTrajectory.yaml` file
@@ -87,10 +84,10 @@ class TrajectoryInputKeys:
     def constraints_key():
         return "constraints"
 
-    @staticmethod 
+    @staticmethod
     def constraint_name_key():
         return "name"
-        
+
     @staticmethod
     def constraints_nodes_key():
         return "nodes"
@@ -138,33 +135,33 @@ class TrajectoryOuputKeys:
     @staticmethod
     def constraint_operator_key():
         return "operator"
-    
+
     # Tree
     @staticmethod
     def tree_key():
         return "tree"
-    
+
     @staticmethod
     def lp_folder_key():
         return "lp_folder"
-    
+
     @staticmethod
     def master_mps_key():
         return "master_mps_file"
-    
+
     @staticmethod
     def structure_file_key():
         return "structure_file"
-    
+
     @staticmethod
     def parent_key():
         return "parent"
-    
+
     # Node's candidates costs
     @staticmethod
     def candidate_costs():
         return "candidates_costs"
-    
+
     @staticmethod
     def investment_cost_key():
         return "investment"
@@ -176,21 +173,9 @@ class TrajectoryOuputKeys:
     @staticmethod
     def retirement_cost_key():
         return "retirement"
+    
+    # Metadata
+    @staticmethod
+    def metadata_key():
+        return "metadata"
 
-
-class ConstraintTypeEnum(Enum):
-    MAX_INDIVIDUAL_INVESTMENT = "max_individual_investment"
-    MAX_CUMULATIVE_INVESTMENT = "max_cumulative_investment"
-    MAX_INDIVIDUAL_RETIREMENT = "max_individual_retirement"
-
-
-class InvestmentVariableTypeEnum(Enum):
-    DX_PLUS = "dx_plus"
-    X = "x"
-    DX_MINUS = "dx_minus"
-
-
-class ConstraintOperatorEnum(Enum):
-    LEQ = "<"
-    EQ = "="
-    GEQ = ">"

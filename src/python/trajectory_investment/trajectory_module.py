@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 from pathlib import Path
-from trajectory_input_keys import TrajectoryInputKeys, TrajectoryOuputKeys
-from trajectory_input_keys import ConstraintTypeEnum, ConstraintOperatorEnum, InvestmentVariableTypeEnum
+from trajectory_keys import TrajectoryInputKeys as InKeys
+from trajectory_keys import TrajectoryOuputKeys as OutKeys
 from pydantic import BaseModel, Field, PositiveInt, NonNegativeFloat, NonNegativeInt
 from typing import Literal
 from dataclasses import dataclass
+from enum import Enum
+import datetime
 
 import yaml
 import json
@@ -13,11 +15,30 @@ import json
 
 @dataclass
 class NodeDataDataMerger:
-    """NodeData's data for the merger that is not directly in the input file."""
-    lp_folder : str = ""
-    master_mps_file : str = ""
-    structure_file : str = ""
+    """Merger expected node data that is not directly in the input file."""
 
+    lp_folder: str = ""
+    master_mps_file: str = ""
+    structure_file: str = ""
+
+
+# Enums
+class ConstraintTypeEnum(Enum):
+    MAX_INDIVIDUAL_INVESTMENT = "max_individual_investment"
+    MAX_CUMULATIVE_INVESTMENT = "max_cumulative_investment"
+    MAX_INDIVIDUAL_RETIREMENT = "max_individual_retirement"
+
+
+class InvestmentVariableTypeEnum(Enum):
+    DX_PLUS = "dx_plus"
+    X = "x"
+    DX_MINUS = "dx_minus"
+
+
+class ConstraintOperatorEnum(Enum):
+    LEQ = "<"
+    EQ = "="
+    GEQ = ">"
 
 
 class TrajectoryModule:
@@ -27,33 +48,32 @@ class TrajectoryModule:
 
     def __init__(self, input_file: Path):
         self.input_file = input_file
-        self.all_candidates : set[str] = {}
-        self.all_nodes : set[str] = {}
-        self.tree : TrajectoryModule.Tree = None
-        self.nodes : dict[str, TrajectoryModule.NodeData] = None
-        self.global_data : TrajectoryModule.GlobalData = None
-        self.candidates_types_costs : dict[str, TrajectoryModule.CandidateType] = None
-        self.constraints : list[TrajectoryModule.TrajectoryConstraint] = None
-        self.initial_capacities : list[str, float] = None
+        self.all_candidates: set[str] = {}
+        self.all_nodes: set[str] = {}
+        self.tree: TrajectoryModule.Tree = None
+        self.nodes: dict[str, TrajectoryModule.NodeData] = None
+        self.global_data: TrajectoryModule.GlobalData = None
+        self.candidates_types_costs: dict[str, TrajectoryModule.CandidateType] = None
+        self.constraints: list[TrajectoryModule.TrajectoryConstraint] = None
+        self.initial_capacities: list[str, float] = None
 
     # Errors
-    class InvalidInputFile(Exception):
-        pass
-
     class InvalidTreeStructure(Exception):
         pass
 
     class InvalidCandidates(Exception):
         pass
-    
+
     class InvalidTrajectoryConstraint(Exception):
         pass
-    
+
     # Data storage
     class GlobalData(BaseModel):
-        discount_rate : NonNegativeFloat = Field(alias= TrajectoryInputKeys.discount_rate_key())
-        first_investment_date : NonNegativeInt = Field(alias= TrajectoryInputKeys.first_investment_date_key())
-        studies : dict[str, str] = Field(alias= TrajectoryInputKeys.studies_key())
+        discount_rate: NonNegativeFloat = Field(alias=InKeys.discount_rate_key())
+        first_investment_date: NonNegativeInt = Field(
+            alias=InKeys.first_investment_date_key()
+        )
+        studies: dict[str, str] = Field(alias=InKeys.studies_key())
 
         def print(self):
             print("Global trajectory data : ")
@@ -62,14 +82,11 @@ class TrajectoryModule:
             print(f" - Study pathes : {self.studies}")
 
     class Tree(BaseModel):
-        node_name : str = Field(alias= TrajectoryInputKeys.node_key())
-        probability_from_parent : float = Field(
-            1.0,
-            alias= TrajectoryInputKeys.probability_key(),
-            ge= 0.0,
-            le= 1.0
+        node_name: str = Field(alias=InKeys.node_key())
+        probability_from_parent: float = Field(
+            1.0, alias=InKeys.probability_key(), ge=0.0, le=1.0
         )
-        children : list[TrajectoryModule.Tree] = Field([], alias= TrajectoryInputKeys.children_key())
+        children: list[TrajectoryModule.Tree] = Field([], alias=InKeys.children_key())
 
         def print(self, prefix=""):
             print(prefix + f"├─{self.probability_from_parent}─{self.node_name}")
@@ -78,11 +95,13 @@ class TrajectoryModule:
                 child.print(prefix + "|" + prefix_length * " ")
 
     class TrajectoryConstraint(BaseModel):
-        name : str = Field(alias= TrajectoryInputKeys.constraint_name_key())
-        nodes : Literal['all'] | list[str] = Field(alias= TrajectoryInputKeys.constraints_nodes_key())
-        candidates : Literal['all'] | list[str] = Field(alias= TrajectoryInputKeys.constraints_candidates_key())
-        cons_type : ConstraintTypeEnum = Field(alias= TrajectoryInputKeys.constraint_type_key())
-        rhs : float = Field(alias= TrajectoryInputKeys.constraint_rhs_key())
+        name: str = Field(alias=InKeys.constraint_name_key())
+        nodes: Literal["all"] | list[str] = Field(alias=InKeys.constraints_nodes_key())
+        candidates: Literal["all"] | list[str] = Field(
+            alias=InKeys.constraints_candidates_key()
+        )
+        cons_type: ConstraintTypeEnum = Field(alias=InKeys.constraint_type_key())
+        rhs: float = Field(alias=InKeys.constraint_rhs_key())
 
         @staticmethod
         def build_variable_reference(
@@ -96,13 +115,13 @@ class TrajectoryModule:
             for node in self.nodes:
                 for candidate in self.candidates:
                     constraint = {}
-                    constraint[TrajectoryOuputKeys.constraint_coeffs_key()] = {
+                    constraint[OutKeys.constraint_coeffs_key()] = {
                         self.build_variable_reference(
                             node, candidate, InvestmentVariableTypeEnum.DX_PLUS
                         ): 1
                     }
-                    constraint[TrajectoryOuputKeys.constraint_rhs_key()] = self.rhs
-                    constraint[TrajectoryOuputKeys.constraint_operator_key()] = (
+                    constraint[OutKeys.constraint_rhs_key()] = self.rhs
+                    constraint[OutKeys.constraint_operator_key()] = (
                         ConstraintOperatorEnum.LEQ.value
                     )
                     output.append(constraint)
@@ -114,13 +133,13 @@ class TrajectoryModule:
             for node in self.nodes:
                 for candidate in self.candidates:
                     constraint = {}
-                    constraint[TrajectoryOuputKeys.constraint_coeffs_key()] = {
+                    constraint[OutKeys.constraint_coeffs_key()] = {
                         self.build_variable_reference(
                             node, candidate, InvestmentVariableTypeEnum.DX_MINUS
                         ): 1
                     }
-                    constraint[TrajectoryOuputKeys.constraint_rhs_key()] = self.rhs
-                    constraint[TrajectoryOuputKeys.constraint_operator_key()] = (
+                    constraint[OutKeys.constraint_rhs_key()] = self.rhs
+                    constraint[OutKeys.constraint_operator_key()] = (
                         ConstraintOperatorEnum.LEQ.value
                     )
                     output.append(constraint)
@@ -131,16 +150,16 @@ class TrajectoryModule:
             output = list[dict[str, any]]()
             for node in self.nodes:
                 constraint = {}
-                constraint[TrajectoryOuputKeys.constraint_coeffs_key()] = {}
-                constraint[TrajectoryOuputKeys.constraint_rhs_key()] = self.rhs
-                constraint[TrajectoryOuputKeys.constraint_operator_key()] = (
+                constraint[OutKeys.constraint_coeffs_key()] = {}
+                constraint[OutKeys.constraint_rhs_key()] = self.rhs
+                constraint[OutKeys.constraint_operator_key()] = (
                     ConstraintOperatorEnum.LEQ.value
                 )
                 for candidate in self.candidates:
                     ref = self.build_variable_reference(
                         node, candidate, InvestmentVariableTypeEnum.DX_PLUS
                     )
-                    constraint[TrajectoryOuputKeys.constraint_coeffs_key()][ref] = 1
+                    constraint[OutKeys.constraint_coeffs_key()][ref] = 1
                 output.append(constraint)
             return output
 
@@ -155,14 +174,16 @@ class TrajectoryModule:
             elif self.cons_type == ConstraintTypeEnum.MAX_CUMULATIVE_INVESTMENT:
                 return self.to_cumulative_max_investment()
 
-
     class NodeData(BaseModel):
-        name : str = Field("")
-        investment_date : NonNegativeInt = Field(alias= TrajectoryInputKeys.investment_date_key())
-        duration : PositiveInt = Field(alias= TrajectoryInputKeys.duration_key())
-        candidate_to_type : dict[str, str] = Field(alias= TrajectoryInputKeys.candidates_to_types_key())
-        path : Path = Field(Path(""))
-        parent : str = Field("")
+        name: str = Field("")
+        investment_date: NonNegativeInt = Field(alias=InKeys.investment_date_key())
+        duration: PositiveInt = Field(alias=InKeys.duration_key())
+        candidate_to_type: dict[str, str] = Field(
+            alias=InKeys.candidates_to_types_key()
+        )
+        path: Path = Field(Path(""))
+        parent: str = Field("")
+        full_probability: float = Field(1.0, ge= 0.0, le= 1.0)
 
         def print(self):
             print(f"NodeData {self.name}")
@@ -170,66 +191,92 @@ class TrajectoryModule:
             print(f"Duration represented : {self.duration}")
             print(f"Study path : {self.path}")
             print(f"Parent : {self.parent}")
+            print(f"Computed full probability : {self.full_probability}")
 
-        def compute_investment_discounting(self, global_data : TrajectoryModule.GlobalData):
-            return (1 + global_data.discount_rate) ** (global_data.first_investment_date - self.investment_date)
-            
-        def compute_retirement_discounting(self, global_data : TrajectoryModule.GlobalData):
-            return (1 + global_data.discount_rate) ** (global_data.first_investment_date - self.investment_date)
-        
-        def compute_oam_discounting(self, global_data : TrajectoryModule.GlobalData):
+        def compute_investment_discounting(
+            self, global_data: TrajectoryModule.GlobalData
+        ):
+            return (1 + global_data.discount_rate) ** (
+                global_data.first_investment_date - self.investment_date
+            )
+
+        def compute_retirement_discounting(
+            self, global_data: TrajectoryModule.GlobalData
+        ):
+            return (1 + global_data.discount_rate) ** (
+                global_data.first_investment_date - self.investment_date
+            )
+
+        def compute_oam_discounting(self, global_data: TrajectoryModule.GlobalData):
             factor = 0.0
-            for year in range(self.investment_date, self.investment_date + self.duration):
-                factor += (1 + global_data.discount_rate) ** (global_data.first_investment_date - year)
+            for year in range(
+                self.investment_date, self.investment_date + self.duration
+            ):
+                factor += (1 + global_data.discount_rate) ** (
+                    global_data.first_investment_date - year
+                )
             return factor
-        
-        def to_merger_json(self,
-                        file_data : NodeDataDataMerger, 
-                        global_data : TrajectoryModule.GlobalData,
-                        candidates_types : dict[str, TrajectoryModule.CandidateType]):
-            output = dict[str, any]()
-            output[TrajectoryOuputKeys.lp_folder_key()] = file_data.lp_folder
-            output[TrajectoryOuputKeys.master_mps_key()] = file_data.master_mps_file
-            output[TrajectoryOuputKeys.structure_file_key()] = file_data.structure_file
-            output[TrajectoryOuputKeys.parent_key()] = self.parent
 
-            candidates_costs : dict[str, dict[str, float]] = {}
+        def to_merger_json(
+            self,
+            file_data: NodeDataDataMerger,
+            global_data: TrajectoryModule.GlobalData,
+            candidates_types: dict[str, TrajectoryModule.CandidateType],
+        ):
+            output = dict[str, any]()
+            output[OutKeys.lp_folder_key()] = file_data.lp_folder
+            output[OutKeys.master_mps_key()] = file_data.master_mps_file
+            output[OutKeys.structure_file_key()] = file_data.structure_file
+            output[OutKeys.parent_key()] = self.parent
+
+            candidates_costs: dict[str, dict[str, float]] = {}
             weight_ic = self.compute_investment_discounting(global_data)
             weight_rc = self.compute_retirement_discounting(global_data)
             weight_omc = self.compute_oam_discounting(global_data)
-
-            for (candidate, type_name) in self.candidate_to_type.items():
+            
+            for candidate, type_name in self.candidate_to_type.items():
                 costs_data = candidates_types[type_name]
-                candidate_costs : dict[str, float] = {}
-                candidate_costs[TrajectoryOuputKeys.investment_cost_key()] = weight_ic * costs_data.investment_cost
-                candidate_costs[TrajectoryOuputKeys.retirement_cost_key()] = weight_rc * costs_data.retirement_cost
-                candidate_costs[TrajectoryOuputKeys.oandm_cost_key()] = weight_omc * costs_data.oam_cost
+                candidate_costs: dict[str, float] = {}
+                candidate_costs[OutKeys.investment_cost_key()] = (
+                    weight_ic * costs_data.investment_cost * self.full_probability
+                )
+                candidate_costs[OutKeys.retirement_cost_key()] = (
+                    weight_rc * costs_data.retirement_cost * self.full_probability
+                )
+                candidate_costs[OutKeys.oandm_cost_key()] =  (
+                    weight_omc * costs_data.oam_cost * self.full_probability
+                )
                 candidates_costs[candidate] = candidate_costs
 
-            output[TrajectoryOuputKeys.candidate_costs()] = candidates_costs
+            output[OutKeys.candidate_costs()] = candidates_costs
 
             return output
 
     class CandidateType(BaseModel):
-        investment_cost : NonNegativeFloat = Field(alias= TrajectoryInputKeys.investment_cost_key())
-        retirement_cost : NonNegativeFloat = Field(alias= TrajectoryInputKeys.retirement_cost_key())
-        oam_cost : NonNegativeFloat = Field(alias= TrajectoryInputKeys.oandm_cost_key())
-
+        investment_cost: NonNegativeFloat = Field(alias=InKeys.investment_cost_key())
+        retirement_cost: NonNegativeFloat = Field(alias=InKeys.retirement_cost_key())
+        oam_cost: NonNegativeFloat = Field(alias=InKeys.oandm_cost_key())
 
     class TrajectoryInputFile(BaseModel):
-        global_data : TrajectoryModule.GlobalData = Field(alias= TrajectoryInputKeys.global_key())
-        tree : TrajectoryModule.Tree = Field(alias= TrajectoryInputKeys.tree_key())
-        constraints : list[TrajectoryModule.TrajectoryConstraint] = Field(alias= TrajectoryInputKeys.constraints_key())
-        nodes : dict[str, TrajectoryModule.NodeData] = Field(alias= TrajectoryInputKeys.nodes_key())
-        candidates_types : dict[str, TrajectoryModule.CandidateType] = Field(alias= TrajectoryInputKeys.candidates_types_key())
-        initial_capacities : dict[str, NonNegativeInt]
+        global_data: TrajectoryModule.GlobalData = Field(alias=InKeys.global_key())
+        tree: TrajectoryModule.Tree = Field(alias=InKeys.tree_key())
+        constraints: list[TrajectoryModule.TrajectoryConstraint] = Field(
+            alias=InKeys.constraints_key()
+        )
+        nodes: dict[str, TrajectoryModule.NodeData] = Field(alias=InKeys.nodes_key())
+        candidates_types: dict[str, TrajectoryModule.CandidateType] = Field(
+            alias=InKeys.candidates_types_key()
+        )
+        initial_capacities: dict[str, NonNegativeInt]
 
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
             # Insert the default key in the initial capacities if not present
-            if TrajectoryInputKeys.default_initial_capacity_key() not in self.initial_capacities:
-                print(f"Inserted key '{TrajectoryInputKeys.default_initial_capacity_key()}' with value '0.0' into the initial capacities")
-                self.initial_capacities[TrajectoryInputKeys.default_initial_capacity_key()] = 0.0
+            if InKeys.default_initial_capacity_key() not in self.initial_capacities:
+                print(
+                    f"Inserted key '{InKeys.default_initial_capacity_key()}' with value '0.0' into the initial capacities"
+                )
+                self.initial_capacities[InKeys.default_initial_capacity_key()] = 0.0
 
     # Verifications
     def verify_tree_probabilities(self):
@@ -263,7 +310,7 @@ class TrajectoryModule:
             if subtree.node_name not in self.nodes:
                 raise TrajectoryModule.InvalidTreeStructure(
                     f"Tree refers to node {subtree.node_name} which was not found in the"
-                    f" '{TrajectoryInputKeys.nodes_key()}' section of the input file"
+                    f" '{InKeys.nodes_key()}' section of the input file"
                 )
             node_data = self.nodes[subtree.node_name]
             # Check investment_year is the same across all nodes at a given depth
@@ -298,28 +345,28 @@ class TrajectoryModule:
         for name, data in self.nodes.items():
             for candidate, candidate_type in data.candidate_to_type.items():
                 if candidate_type not in self.candidates_types_costs:
-                    raise TrajectoryModule.InvalidInputFile(
+                    raise TrajectoryModule.InvalidCandidates(
                         f"NodeData '{name}''s candidate '{candidate}' has type '{candidate_type}'"
-                        f" which is not found in the {TrajectoryInputKeys.candidates_types_key()} section."
+                        f" which is not found in the {InKeys.candidates_types_key()} section."
                     )
 
     def verify_constraint_variable_reference(self):
-        """ Verifies the the constraints reference existing variable."""
+        """Verifies the the constraints reference existing variable."""
         for constraint in self.constraints:
             # NodeDatas
             for node in constraint.nodes:
                 if node not in self.all_nodes:
                     raise self.InvalidTrajectoryConstraint(
-                        f"TrajectoryConstraint '{constraint.name}' references node '{node}'" \
+                        f"TrajectoryConstraint '{constraint.name}' references node '{node}'"
                         " which does not exist in the study"
                     )
             # Candidates
             for candidate in constraint.candidates:
                 if candidate not in self.all_candidates:
                     raise self.InvalidTrajectoryConstraint(
-                        f"TrajectoryConstraint '{constraint.name}' references candidate '{candidate}'" \
+                        f"TrajectoryConstraint '{constraint.name}' references candidate '{candidate}'"
                         " which does not exist in the study"
-                    )       
+                    )
 
     def verify_nodes_candidates_match_with_study(self):
         pass
@@ -331,38 +378,53 @@ class TrajectoryModule:
                 diff_exceed = node_candidates - self.all_candidates
                 diff_missing = self.all_candidates - node_candidates
                 raise self.InvalidCandidates(
-                    "All nodes must have the same exact candidates." \
-                    f" At node '{name}', missing candidates : {diff_missing}" \
+                    "All nodes must have the same exact candidates."
+                    f" At node '{name}', missing candidates : {diff_missing}"
                     f", candidates not present elsewhere : {diff_exceed}"
                 )
             else:
                 pass
-            
+
     # Method
     def set_nodes_names_study_pathes(self):
         """After parsing the raw node data, 'copy' the node's name and study path to its data for ease of access"""
         assert self.nodes is not None
-        for (name, data) in self.nodes.items():
+        for name, data in self.nodes.items():
             data.name = name
             data.path = self.global_data.studies[name]
-        
+
     def set_nodes_parents_names(self):
         """After parsing the tree and the nodes, go through the tree to write each node's parent in its data"""
         assert self.tree is not None and self.nodes is not None
-        def aux(subtree : TrajectoryModule.Tree, parent = "root"):
+
+        def aux_set_parent(subtree: TrajectoryModule.Tree, parent="root"):
             self.nodes[subtree.node_name].parent = parent
             for child in subtree.children:
-                aux(child, subtree.node_name)
-        aux(self.tree, "root")
-        return 
-    
+                aux_set_parent(child, subtree.node_name)
+
+        aux_set_parent(self.tree, "root")
+        return
+
+    def compute_node_full_probability(self):
+        """After parsing the tree and the node's, add the node's full probability to its data"""
+        assert self.tree is not None and self.nodes is not None
+
+        def aux_compute_full_proba(subtree : TrajectoryModule.Tree, parent_proba = 1.0):
+            full_proba = parent_proba * subtree.probability_from_parent
+            self.nodes[subtree.node_name].full_probability = full_proba
+            for child in subtree.children:
+                aux_compute_full_proba(child, full_proba)
+        
+        aux_compute_full_proba(self.tree)
+        return
+
     def expand_all_keyword_in_constraints(self):
         for constraint in self.constraints:
-            if constraint.candidates == TrajectoryInputKeys.constraint_all_keyword():
+            if constraint.candidates == InKeys.constraint_all_keyword():
                 constraint.candidates = self.all_candidates
-            if constraint.nodes == TrajectoryInputKeys.constraint_all_keyword():
+            if constraint.nodes == InKeys.constraint_all_keyword():
                 constraint.nodes = self.all_nodes
-        
+
     def parse_trajectory_user_file(self):
         """
         Parse the data contained in the user's input file
@@ -382,9 +444,12 @@ class TrajectoryModule:
             # Complete the node's data
             self.set_nodes_names_study_pathes()
             self.set_nodes_parents_names()
+            self.compute_node_full_probability()
 
             # Set of all candidates names (should be the same in all nodes, verified later)
-            self.all_candidates = set(self.nodes[self.tree.node_name].candidate_to_type.keys())
+            self.all_candidates = set(
+                self.nodes[self.tree.node_name].candidate_to_type.keys()
+            )
             self.all_nodes = self.nodes.keys()
 
             # Constraint explicit list of nodes and candidates
@@ -405,29 +470,32 @@ class TrajectoryModule:
     def write_merger_json(self, output_file: Path):
         output = {}
 
+        # Metadata
+        output[OutKeys.metadata_key()] = {
+            "written": datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
+        }
+
         # Initial capacities
-        output[TrajectoryOuputKeys.initial_capacities_key()] = self.initial_capacities
+        output[OutKeys.initial_capacities_key()] = self.initial_capacities
 
         # TrajectoryConstraints
         constraints_list = []
         for constraint in self.constraints:
             constraints_list.extend(constraint.to_merger_json())
-        output[TrajectoryOuputKeys.constraint_key()] = constraints_list
+        output[OutKeys.constraint_key()] = constraints_list
 
         # Tree
         nodes_output_dict = {}
-        for (name, data) in self.nodes.items():
-            file_data : NodeDataDataMerger = NodeDataDataMerger(
+        for name, data in self.nodes.items():
+            file_data: NodeDataDataMerger = NodeDataDataMerger(
                 "placeholder/folder/for/now",
-                "master.mps",
-                "structure.txt"
+                "placeholder_master.mps",
+                "placeholder_structure.txt",
             )
             nodes_output_dict[name] = data.to_merger_json(
-                file_data,
-                self.global_data,
-                self.candidates_types_costs
+                file_data, self.global_data, self.candidates_types_costs
             )
-        output[TrajectoryOuputKeys.tree_key()] = nodes_output_dict
+        output[OutKeys.tree_key()] = nodes_output_dict
 
         with open(output_file, "w") as file:
             json.dump(output, file, indent=4)
