@@ -1,6 +1,7 @@
 """
-    Class to control the execution of the trajectory investment
+Class to control the execution of the trajectory investment
 """
+
 
 class TrajectoryInvestmentDriver:
     """

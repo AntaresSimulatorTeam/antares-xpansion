@@ -178,4 +178,3 @@ class TrajectoryOuputKeys:
     @staticmethod
     def metadata_key():
         return "metadata"
-
