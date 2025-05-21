@@ -23,7 +23,7 @@ The optimisation problem we now want to solve is, denoting by $n \in \mathcal{T}
 
 $$
 \begin{aligned}
-    \min_{x, dx^+, dx^-} \quad & \sum_{n \in \mathcal{T}} dis(n) \times (IC_n^T dx_n^+ + DC_n^T dx_n^-) + w(n) \times (OC_{n}^Tx_{n} + ANTARES_n(x_n))\\\\
+    \min_{x, dx^+, dx^-} \quad & \sum_{n \in \mathcal{T}} wIC_n^T dx_n^+ + wDC_n^T dx_n^- + wOC_{n}^Tx_{n} + w_{n} \times ANTARES_n(x_n)\\\\
     \text{s.t.} \quad & \forall i,n \quad  x_{i,n} = x_{i, \text{parent}(n)} + dx^+_{i,n}
     - dx^-_{i,n} \\\\
     & \forall i,n \quad dx^+_{i,n} \geq 0, \quad dx^-_{i,n} \geq 0 \\\\
@@ -31,9 +31,9 @@ $$
 \end{aligned}
 $$
 
-- $IC_n$ contains the one-time payment investment costs per MW.
-- $DC_n$ contains the one-time payment retirement costs per MW.
-- $OC_n$ contains the annual operation and maintenance fixed costs.
+- $wIC_n$ contains the already weighted (for probability) and discounted one-time payment investment costs per MW.
+- $wDC_n$ contains the already weighted (for probability) and discounted one-time payment retirement costs per MW.
+- $wOC_n$ contains the already weighted (for represented duration & probability) and discounted annual operation and maintenance fixed costs.
 - $w(n) = P(n) \times \sum_{y = y_n}^{y = y_n + d_n - 1} \frac{1}{(1+r)^{y - y_0}}$.
 - $P(n)$ is the probability of realisation of node $n$ : $P(n) = P_{\text{parent}(n)}(n) \times P(\text{parent}(n))$.
 - $P(root) = 1$.

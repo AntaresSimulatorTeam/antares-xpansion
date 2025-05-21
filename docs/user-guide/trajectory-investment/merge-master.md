@@ -61,9 +61,6 @@ The program expects ```<master_structure_file>.json``` to have the following str
     ],
     "tree" : {
         "2030" : {
-            "lp_folder" : "node_2030__lp",
-            "master_mps_file" : "node_2030__master.mps",
-            "structure_file" : "node_2030__structure.txt",
             "parent" : "root",
             "candidates_costs" : {
                 "semibase" : {
@@ -79,9 +76,6 @@ The program expects ```<master_structure_file>.json``` to have the following str
             }
         },
         "2040" : {
-            "lp_folder" : "node_2040__lp",
-            "master_mps_file" : "node_2040__master.mps",
-            "structure_file" : "node_2040__structure.txt",
             "parent" : "2030",
             "candidates_costs" : {
                 "semibase" : {
@@ -97,9 +91,6 @@ The program expects ```<master_structure_file>.json``` to have the following str
             }
         },
         "2050_A" : {
-            "lp_folder" : "node_2050_A__lp",
-            "master_mps_file" : "node_2050_A__master.mps",
-            "structure_file" : "node_2050_A__structure.txt",
             "parent" : "2040",
             "candidates_costs" : {
                 "semibase" : {
@@ -116,9 +107,6 @@ The program expects ```<master_structure_file>.json``` to have the following str
             
         },
         "2050_B" : {
-            "lp_folder" : "node_2050_B__lp",
-            "master_mps_file" : "node_2050_B__master.mps",
-            "structure_file" : "node_2050_B__structure.txt",
             "parent" : "2040",
             "candidates_costs" : {
                 "semibase" : {
@@ -148,6 +136,33 @@ We give a short description of the data expected in each field :
     - ```weight_factor``` is the node's weight $w(n)$ in the objective function. Note that in  this example, we used a discounting rate of $0$ to get an aggregated weight of $10$ on each investment time point.
     - ```candidates_costs``` contains the coefficients of the corresponding variables in the final objective. Each of those costs already incorporates the probability of the node appearing, the node's represented duration and the discounting.The coefficient was pre-computed using the python orchestrator.
 
+## LpPathes file
+We give an example of a corresponding ```lp_pathes.json```
+
+```
+{
+    "2030" : {
+            "lp_folder" : "node_2030__lp",
+            "master_mps_file" : "node_2030__master.mps",
+            "structure_file" : "node_2030__structure.txt"
+    },
+    "2040" : {
+            "lp_folder" : "node_2040__lp",
+            "master_mps_file" : "node_2040__master.mps",
+            "structure_file" : "node_2040__structure.txt"
+    },
+    "2050_A" : {
+            "lp_folder" : "node_2050_A__lp",
+            "master_mps_file" : "node_2050_A__master.mps",
+            "structure_file" : "node_2050_A__structure.txt"
+    },
+    "2050_B" : {
+            "lp_folder" : "node_2050_B__lp",
+            "master_mps_file" : "node_2050_B__master.mps",
+            "structure_file" : "node_2050_B__structure.txt"
+    }
+}
+```
 
 ## Input files from each annual study
 We give below what the folder given as ```INPUTROOT``` in the options file should look like in the present example :

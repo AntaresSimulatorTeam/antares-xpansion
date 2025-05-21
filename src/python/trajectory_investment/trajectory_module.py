@@ -11,11 +11,12 @@ import datetime
 import yaml
 import json
 
+
 # Enums
 class ConstraintTypeEnum(Enum):
-    MAX_INDIVIDUAL_INVESTMENT = "max_individual_investment"
-    MAX_CUMULATIVE_INVESTMENT = "max_cumulative_investment"
-    MAX_INDIVIDUAL_RETIREMENT = "max_individual_retirement"
+    MAX_INDIVIDUAL_INVESTMENT = "max_investment_per_node_per_candidate"
+    MAX_CUMULATIVE_INVESTMENT = "max_cumulative_investment_per_node"
+    MAX_INDIVIDUAL_RETIREMENT = "max_retirement_per_node_per_candidate"
 
 
 class InvestmentVariableTypeEnum(Enum):
@@ -62,12 +63,15 @@ class TrajectoryModule:
         first_investment_date: NonNegativeInt = Field(
             alias=InKeys.first_investment_date_key()
         )
+        end_of_horizon: NonNegativeInt = Field(alias=InKeys.end_of_horizon_key())
         studies: dict[str, str] = Field(alias=InKeys.studies_key())
+        # forbid_retirement: bool = Field(alias=InKeys.forbid_retirement_key())
 
         def print(self):
             print("Global trajectory data : ")
             print(f" - Discount rate : {self.discount_rate}")
             print(f" - First investment year : {self.first_investment_date}")
+            print(f" - End of horizon : {self.end_of_horizon}")
             print(f" - Study pathes : {self.studies}")
 
     class Tree(BaseModel):
@@ -166,13 +170,13 @@ class TrajectoryModule:
     class NodeData(BaseModel):
         name: str = Field("")
         investment_date: NonNegativeInt = Field(alias=InKeys.investment_date_key())
-        duration: PositiveInt = Field(alias=InKeys.duration_key())
+        duration: PositiveInt = Field(1, alias=InKeys.duration_key())
         candidate_to_type: dict[str, str] = Field(
             alias=InKeys.candidates_to_types_key()
         )
         path: Path = Field(Path(""))
         parent: str = Field("")
-        full_probability: float = Field(1.0, ge= 0.0, le= 1.0)
+        full_probability: float = Field(1.0, ge=0.0, le=1.0)
 
         def print(self):
             print(f"NodeData {self.name}")
@@ -196,7 +200,9 @@ class TrajectoryModule:
                 global_data.first_investment_date - self.investment_date
             )
 
-        def compute_oam_discounting(self, global_data: TrajectoryModule.GlobalData):
+        def compute_operational_discounting(
+            self, global_data: TrajectoryModule.GlobalData
+        ):
             factor = 0.0
             for year in range(
                 self.investment_date, self.investment_date + self.duration
@@ -217,8 +223,10 @@ class TrajectoryModule:
             candidates_costs: dict[str, dict[str, float]] = {}
             weight_ic = self.compute_investment_discounting(global_data)
             weight_rc = self.compute_retirement_discounting(global_data)
-            weight_omc = self.compute_oam_discounting(global_data)
-            
+            weight_omc = self.compute_operational_discounting(global_data)
+
+            output[OutKeys.node_weight_key()] = self.full_probability * weight_omc
+
             for candidate, type_name in self.candidate_to_type.items():
                 costs_data = candidates_types[type_name]
                 candidate_costs: dict[str, float] = {}
@@ -228,7 +236,7 @@ class TrajectoryModule:
                 candidate_costs[OutKeys.retirement_cost_key()] = (
                     weight_rc * costs_data.retirement_cost * self.full_probability
                 )
-                candidate_costs[OutKeys.oandm_cost_key()] =  (
+                candidate_costs[OutKeys.oandm_cost_key()] = (
                     weight_omc * costs_data.oam_cost * self.full_probability
                 )
                 candidates_costs[candidate] = candidate_costs
@@ -307,17 +315,6 @@ class TrajectoryModule:
                     f"Invalid tree at depth {depth}"
                     " : every node at the same depth must have the same investment date."
                 )
-            # Check that the previous node has a correct duration
-            if (
-                previous_date is not None
-                and previous_duration is not None
-                and previous_date + previous_duration != node_data.investment_date
-            ):
-                raise TrajectoryModule.InvalidTreeStructure(
-                    f"At node {subtree.node_name} : parent duration does not match."
-                    f" Parent investment date : {previous_date}, parent duration : {previous_duration}"
-                    f", child investment date : {node_data.investment_date}"
-                )
             # Recursively check children
             for child in subtree.children:
                 aux(child, depth + 1, node_data.investment_date, node_data.duration)
@@ -394,13 +391,45 @@ class TrajectoryModule:
         """After parsing the tree and the node's, add the node's full probability to its data"""
         assert self.tree is not None and self.nodes is not None
 
-        def aux_compute_full_proba(subtree : TrajectoryModule.Tree, parent_proba = 1.0):
+        def aux_compute_full_proba(subtree: TrajectoryModule.Tree, parent_proba=1.0):
             full_proba = parent_proba * subtree.probability_from_parent
             self.nodes[subtree.node_name].full_probability = full_proba
             for child in subtree.children:
                 aux_compute_full_proba(child, full_proba)
-        
+
         aux_compute_full_proba(self.tree)
+        return
+
+    def compute_node_duration(self):
+        """After parsing the nodes and tree, compute the node's duration
+        from the next investment date / end of horizon date"""
+        assert self.tree is not None and self.nodes is not None
+
+        def aux_compute_node_represented_duration(subtree: TrajectoryModule.Tree):
+            next_date: int = 0
+            if subtree.children:
+                child_investment_dates = [
+                    self.nodes[child.node_name].investment_date
+                    for child in subtree.children
+                ]
+                next_date = child_investment_dates[0]
+                if not (all(x == next_date for x in child_investment_dates)):
+                    raise TrajectoryModule.InvalidTreeStructure(
+                        f"Invalid tree : children of node '{subtree.node_name}' do not all have the same investment date"
+                    )
+            else:
+                next_date = self.global_data.end_of_horizon
+            duration = next_date - self.nodes[subtree.node_name].investment_date
+            if not (duration > 0):
+                raise TrajectoryModule.InvalidTreeStructure(
+                    f"Invalid tree : node '{subtree.node_name}' has duration {duration} which should be > 0"
+                )
+            self.nodes[subtree.node_name].duration = duration
+
+            for child in subtree.children:
+                aux_compute_node_represented_duration(child)
+
+        aux_compute_node_represented_duration(self.tree)
         return
 
     def expand_all_keyword_in_constraints(self):
@@ -430,6 +459,7 @@ class TrajectoryModule:
             self.set_nodes_names_study_pathes()
             self.set_nodes_parents_names()
             self.compute_node_full_probability()
+            self.compute_node_duration()
 
             # Set of all candidates names (should be the same in all nodes, verified later)
             self.all_candidates = set(
