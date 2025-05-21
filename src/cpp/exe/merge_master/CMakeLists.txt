@@ -15,7 +15,7 @@ add_executable (merge_master_mps
 )
 target_link_libraries (merge_master_mps
 	PUBLIC
-		${PROJECT_NAME}::merge_mps_core
+		${PROJECT_NAME}::merge_master_mps_core
 		${PROJECT_NAME}::factories
 		${PROJECT_NAME}::output_core
 		antaresXpansion::helpers

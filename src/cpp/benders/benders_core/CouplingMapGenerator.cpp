@@ -54,3 +54,43 @@ CouplingMap CouplingMapGenerator::BuildInput(const std::filesystem::path& struct
     summary.close();
     return coupling_map;
 }
+
+
+void CouplingMapGenerator::WriteCouplingMap(
+    const CouplingMap& coupling_map,
+    const std::filesystem::path& output_path,
+    ILoggerXpansion* logger,
+    const std::string& context
+)
+{
+    // The structure file is a simple text file with the following format :
+    // problem_name variable_name position_of_variable_in_problem
+    std::ofstream file(output_path, std::ios::out);
+    if (!file)
+    {
+        auto log_location = LOGLOCATION;
+        std::ostringstream msg;
+        msg << "Cannot open output structure file " << output_path << std::endl;
+        logger->display_message(msg.str(), LogUtils::LOGLEVEL::FATAL, log_location);
+        throw InvalidStructureFile(PrefixMessage(LogUtils::LOGLEVEL::FATAL, context),
+                                   msg.str(),
+                                   log_location);
+    }
+
+    for (const auto& [problem_name, variables] : coupling_map)
+    {
+        for (const auto& [variable_name, variable_id] : variables)
+        {
+            file << std::setw(50) << problem_name;
+            file << std::setw(50) << variable_name;
+            file << std::setw(10) << variable_id;
+            file << std::endl;
+        }
+    }
+
+    file.close();
+
+    logger->display_message("Coupling map written to " + output_path.string());
+
+    return;
+}

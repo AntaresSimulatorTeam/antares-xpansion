@@ -46,6 +46,9 @@ nav:
       - 'Launch the optimization': 'user-guide/get-started/launching-optimization.md'
       - 'Adequacy criterion': 'user-guide/get-started/adequacy-criterion.md'
       - 'Sensitivity analysis': 'user-guide/get-started/sensitivity-analysis.md'
+      - 'Trajectory investment':
+        - 'Trajectory investment problem' : 'user-guide/trajectory-investment/trajectory-problem.md'
+        - 'Merging annual problems' : 'user-guide/trajectory-investment/merge-master.md'
   - 'Developer guide': 
     - 'Install from sources':
       - 'Introduction': 'developer-guide/install_from_sources/0-INSTALL.md'
@@ -80,6 +83,7 @@ extra_javascript:
   - https://polyfill.io/v3/polyfill.min.js?features=es6
   - https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML
 
+
 markdown_extensions:
   - attr_list
   - toc:
@@ -93,5 +97,7 @@ markdown_extensions:
   - pymdownx.superfences
   - pymdownx.tabbed
   - footnotes
+  - pymdownx.arithmatex:
+      generic: true
 
 copyright: Copyright &copy; 2007 - 2024 RTE

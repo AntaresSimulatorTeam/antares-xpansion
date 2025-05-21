@@ -18,7 +18,8 @@ public:
     virtual void launch() = 0;
 
 protected:
-    void export_problem();
+    // Exports the problem to OUTPUTROOT/filename.mps, and optionaly writes the lp variant
+    void export_problem(std::string filename = "log_merged", bool export_lp = false);
 
     [[nodiscard]] SolverAbstract::Ptr get_local_solver(const std::filesystem::path& root_dir,
                                                        const std::string& filename) const;
@@ -54,70 +55,4 @@ private:
     CouplingMap structure_;
 };
 
-class MergeMasterMasterMPS: public AbstractMergeMPS
-{
-public:
-    struct PathwayIncrementalVariable
-    {
-        double obj{0.}; // Objective coeff
-        double bdl{0.}; // Lower bound
-        double bdu{0.}; // Upper bound
-    };
-
-    struct PathwayCandidateProfile
-    {
-        PathwayCandidateProfile(const Json::Value& data);
-
-        PathwayIncrementalVariable investment;
-        PathwayIncrementalVariable decommissioning;
-    };
-
-    struct PathwayCandidate
-    {
-        int index{-1};
-        int dx_plus_index{-1};
-        int dx_minus_index{-1};
-        std::string profile{};
-    };
-
-    struct PathwayNode
-    {
-        PathwayNode(const std::string&& node, const Json::Value& data);
-
-        std::string name;
-        std::filesystem::path path{};
-
-        std::optional<std::string> parent{std::nullopt};
-        double weight{1.};
-
-        CouplingMap structure;
-        std::map<std::string, PathwayCandidate> candidates;
-
-        std::string get_candidate_full_name(const std::string& var_name) const;
-    };
-
-    using PathwayTree = std::vector<PathwayNode>;
-
-    MergeMasterMasterMPS(MergeMPSOptions options,
-                         Logger logger,
-                         std::shared_ptr<Output::OutputWriter> writer,
-                         const std::filesystem::path& tree_filename);
-
-    void launch() override;
-
-private:
-    void build_problem();
-    void add_incremental_variables();
-    void add_coupling_constraints();
-
-    void write_structure_file() const;
-
-    void parse_json_file(const std::filesystem::path& tree_filename);
-
-    std::map<std::string, double> initial_capacities_{};
-    std::map<std::string, PathwayCandidateProfile> candidate_profiles_{};
-    PathwayTree tree_{};
-};
-
 using MergeMPS = MergeMasterSubproblemMPS;
-using MergePathwayMPS = MergeMasterMasterMPS;
