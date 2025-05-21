@@ -295,14 +295,25 @@ void MergeMasterTrajectoryMPS::build_problem()
         const std::string& node_name = node_data.name;
         const auto& nodal_lp = nodes_lp_pathes_.at(node_name);
 
+        // The master file should not contain the extension, add what it should be based on the mode
+        std::string master_file;
+        if (options_.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE)
+        {
+            master_file = nodal_lp.master + SAVE_SUFFIX;
+        }
+        if (options_.PROBLEMS_FORMAT == ProblemsFormat::MPS_FILE)
+        {
+            master_file = nodal_lp.master + MPS_SUFFIX;
+        }
+
         SolverAbstract::Ptr solver_local = get_local_solver(options_.INPUTROOT / nodal_lp.lp_folder,
-                                                            nodal_lp.master);
+                                                            master_file);
         solver_local->set_output_log_level(options_.LOG_LEVEL);
 
         // Read the problem
         logger_->display_message(
           "Reading problem "
-          + (options_.INPUTROOT / nodal_lp.lp_folder / nodal_lp.master).string());
+          + (options_.INPUTROOT / nodal_lp.lp_folder / master_file).string());
 
         StandardLp lpData(*solver_local);
         std::string varPrefix_local = make_prefix_from_node(node_name);
