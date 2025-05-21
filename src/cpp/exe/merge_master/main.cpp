@@ -21,14 +21,18 @@ int main(int argc, char** argv)
 
     Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
 
-    logger->display_message("starting merge_master_mps");
+    logger->display_message("Starting MergeMasterTrajectoryMPS",
+                            LogUtils::LOGLEVEL::INFO,
+                            TRAJECTORY_LOGGER_CONTEXT);
 
     std::shared_ptr<Output::OutputWriter> writer = build_json_writer(std::filesystem::path(
                                                                        options.JSON_FILE),
                                                                      false);
     try
     {
-        logger->display_message("Given tree path is : " + std::string(argv[2]));
+        logger->display_message("Given tree path is : " + std::string(argv[2]),
+                                LogUtils::LOGLEVEL::INFO,
+                                TRAJECTORY_LOGGER_CONTEXT);
         MergeMasterTrajectoryMPS merge_mps(options.get_base_options(),
                                            logger,
                                            writer,
@@ -39,7 +43,7 @@ int main(int argc, char** argv)
     catch (std::exception& ex)
     {
         std::string error = "Exception raised and program stopped : " + std::string(ex.what());
-        logger->display_message(error);
+        logger->display_message(error, LogUtils::LOGLEVEL::FATAL, TRAJECTORY_LOGGER_CONTEXT);
         exit(1);
     }
 

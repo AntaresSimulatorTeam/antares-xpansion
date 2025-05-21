@@ -5,8 +5,8 @@ namespace MasterStructureKeys
 
 // Types of candidates variables
 constexpr char VARIABLE_X[] = "x";
-constexpr char VARIABLE_DXPLUS[] = "dx_plus";
-constexpr char VARIABLE_DXMINUS[] = "dx_minus";
+constexpr char VARIABLE_DX_PLUS[] = "dx_plus";
+constexpr char VARIABLE_DX_MINUS[] = "dx_minus";
 
 // Types of constraints
 constexpr char CONSTRAINT_EQUALS[] = "=";
