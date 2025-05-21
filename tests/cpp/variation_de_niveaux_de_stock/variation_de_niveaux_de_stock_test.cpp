@@ -79,7 +79,7 @@ TEST_F(GridSearchTest, MPSUseCaseValeursUsage)
 {
     copyData();
 
-    auto valeurs_usage = ValeursUsage(logger, writer, tmpDir);
+    auto valeurs_usage = ValeursUsage(logger, writer, tmpDir, ProblemsFormat::MPS_FILE);
 
     valeurs_usage.launch();
 

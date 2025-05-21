@@ -3,12 +3,81 @@
 #include "antares-xpansion/benders/output/JsonWriter.h"
 #include "antares-xpansion/variation_de_niveaux_de_stock/VariationDeNiveauxDeStock.h"
 
+std::optional<ProblemsFormat> parseFormat(const std::string& format)
+{
+    if (format == "MPS")
+    {
+        return ProblemsFormat::MPS_FILE;
+    }
+    else if (format == "SAVED")
+    {
+        return ProblemsFormat::SAVED_FILE;
+    }
+    return std::nullopt;
+}
+
 int main(int argc, char** argv)
 {
-    auto path_to_data = std::filesystem::current_path();
-    if (argc > 1)
+    // Vérifier si le nombre d'arguments est suffisant pour le chemin obligatoire
+    if (argc < 2)
     {
-        path_to_data = std::filesystem::path(argv[1]);
+        std::cerr << "Usage: " << argv[0] << " <path_to_data> [--pb_format <format>]" << std::endl;
+        return 1;
+    }
+
+    // Récupérer le chemin à partir du premier argument
+    std::filesystem::path path_to_data = argv[1];
+    std::optional<ProblemsFormat> pb_format;
+    int num_threads = 1;
+
+    // Parcourir les arguments
+    for (int i = 2; i < argc; ++i)
+    {
+        std::string arg = argv[i];
+        if (arg == "--pb_format")
+        {
+            if (i + 1 < argc)
+            {
+                pb_format = parseFormat(argv[i + 1]);
+                if (!pb_format)
+                {
+                    std::cerr << "Erreur: Format non reconnu. Utilisez MPS ou SAVED." << std::endl;
+                    return 1;
+                }
+                ++i; // Sauter l'argument suivant
+            }
+            else
+            {
+                std::cerr << "Erreur: --pb_format nécessite un argument." << std::endl;
+                return 1;
+            }
+        }
+        else if (arg == "--threads")
+        {
+            if (i + 1 < argc)
+            {
+                try
+                {
+                    num_threads = std::stoi(argv[i + 1]);
+                    if (num_threads <= 0)
+                    {
+                        throw std::invalid_argument("Number of threads must be positive.");
+                    }
+                }
+                catch (const std::exception& e)
+                {
+                    std::cerr << "Erreur: --threads nécessite un nombre valide. " << e.what()
+                              << std::endl;
+                    return 1;
+                }
+                ++i; // Sauter l'argument suivant
+            }
+            else
+            {
+                std::cerr << "Erreur: --threads nécessite un argument." << std::endl;
+                return 1;
+            }
+        }
     }
 
     std::ofstream loggerFile("report.txt");
@@ -20,6 +89,11 @@ int main(int argc, char** argv)
       std::make_shared<Clock>(),
       json_file_name);
 
-    auto valeurs_usage = ValeursUsage(logger, writer, path_to_data);
+    auto valeurs_usage = ValeursUsage(logger,
+                                      writer,
+                                      path_to_data,
+                                      pb_format.value_or(ProblemsFormat::MPS_FILE));
+
+    valeurs_usage.setThreads(num_threads);
     valeurs_usage.launch();
 }

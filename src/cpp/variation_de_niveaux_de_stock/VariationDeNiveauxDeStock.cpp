@@ -13,6 +13,8 @@
 #include "antares-xpansion/helpers/Timer.h"
 
 int totalSimplexIter = 0;
+double totalSubPbTimer = 0;
+double totalPbModifTimer = 0;
 
 /// @brief Constructor
 /// @param logger Logger
@@ -20,11 +22,18 @@ int totalSimplexIter = 0;
 /// @param path_to_data Path to the data folder
 ValeursUsage::ValeursUsage(Logger logger,
                            std::shared_ptr<Output::JsonWriter> writer,
-                           std::filesystem::path path_to_data)
+                           std::filesystem::path path_to_data,
+                           ProblemsFormat data_format)
 {
     _logger = std::move(logger);
     _writer = std::move(writer);
     xpansionFolderPath = std::move(path_to_data);
+    problemsFormat = data_format;
+}
+
+void ValeursUsage::setThreads(int nbThreads)
+{
+    this->nbThreads = nbThreads;
 }
 
 /// @brief Generates all combinations of constraint values (Cartesian product).
@@ -174,7 +183,8 @@ std::vector<Point> reorderZigzagND(const std::vector<int>& dims, const std::vect
 /// @return The path to the subproblem mps file
 std::filesystem::path ValeursUsage::GetSubproblemPath(const std::string& subPbName) const
 {
-    return xpansionFolderPath / "mps" / subPbName;
+    std::string folder = problemsFormat == ProblemsFormat::MPS_FILE ? "mps" : "mps_bin";
+    return xpansionFolderPath / folder / subPbName;
 }
 
 /// @brief Get the name of the constraint in the mps file
@@ -201,7 +211,7 @@ SubproblemWorkerPtr ValeursUsage::AddSubproblem(const std::string& pbName)
                                                           2,
                                                           solver_log_manager_,
                                                           _logger,
-                                                          ProblemsFormat::MPS_FILE);
+                                                          problemsFormat);
     return subPbWorker;
 }
 
@@ -220,9 +230,11 @@ bool ValeursUsage::IsSubproblemUsed(const std::string& subPbName) const
 void ValeursUsage::InitSubProblems()
 {
     // Add all subproblems mps files to the subproblem map if they are used in the grid.csv file
-    for (const auto& entry: std::filesystem::directory_iterator(xpansionFolderPath / "mps"))
+    std::string extension = problemsFormat == ProblemsFormat::MPS_FILE ? ".mps" : ".svf";
+    std::string mpsFolder = problemsFormat == ProblemsFormat::MPS_FILE ? "mps" : "mps_bin";
+    for (const auto& entry: std::filesystem::directory_iterator(xpansionFolderPath / mpsFolder))
     {
-        if (entry.path().extension() == ".mps" && IsSubproblemUsed(entry.path().stem().string()))
+        if (entry.path().extension() == extension && IsSubproblemUsed(entry.path().stem().string()))
         {
             subPbNames.push_back(entry.path().stem().string());
         }
@@ -372,6 +384,7 @@ void ValeursUsage::ProcessSubproblem(const std::string& subPbName)
     // Print loading time
     auto start = std::chrono::high_resolution_clock::now();
     auto subPbWorker = AddSubproblem(subPbName);
+    std::cout << "Loading subproblem : " << subPbName << std::endl;
     auto end = std::chrono::high_resolution_clock::now();
     std::cout << "Loading time: "
               << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms"
@@ -400,19 +413,20 @@ void ValeursUsage::ProcessSubproblem(const std::string& subPbName)
         for (const auto& subPbCombo: subPbCombos)
         {
             i++;
-            std::cout << "Processing subproblem " << i << "/" << size << std::endl;
+            std::cout << "Processing gridPoint " << i << "/" << size << std::endl;
             // Each areaCombo is a std::map<std::string, double> with full variable names
+            Timer timer;
             SetConstraintsRHSValues(subPbCombo, subPbWorker);
+            totalPbModifTimer += timer.elapsed();
             for (const auto& [constraintName, value]: subPbCombo)
             {
                 std::cout << constraintName << " " << value << std::endl;
             }
             double cost = SolveSubproblem(subPbWorker);
 
-            variationDeNiveauxDeStockData[{GetPbInfo(subPbName).scenario,
-                                           GetPbInfo(subPbName).week,
-                                           subPbCombo}]
-              = cost;
+            variationDeNiveauxDeStockData
+              .insert({GetPbInfo(subPbName).scenario, GetPbInfo(subPbName).week, subPbCombo}, cost);
+            std::cout << "Cost: " << cost << std::endl;
         }
     }
 }
@@ -424,10 +438,8 @@ int get_physical_core_count()
 
 void ValeursUsage::ProcessSubproblemsWithPhysicalCores(const std::vector<std::string>& subPbNames)
 {
-    int numPhysicalCores = get_physical_core_count();
-
     // Limiter TBB au nombre de cœurs physiques
-    tbb::global_control limit(tbb::global_control::max_allowed_parallelism, 1);
+    tbb::global_control limit(tbb::global_control::max_allowed_parallelism, nbThreads);
 
     tbb::parallel_for_each(subPbNames.begin(),
                            subPbNames.end(),
@@ -443,13 +455,14 @@ double ValeursUsage::SolveSubproblem(SubproblemWorkerPtr subPbWorker)
     Timer subproblem_timer;
     subPbWorker->solve(subproblem_data.lpstatus, ".", "", _writer);
     subPbWorker->get_value(subproblem_data.subproblem_cost);
+    subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 
     int nbSimplexIter;
     subPbWorker->get_splex_num_of_ite_last(nbSimplexIter);
-    std::cout << "nb simplex : " << nbSimplexIter << std::endl;
+    std::cout << "nb simplex : " << nbSimplexIter << " / in " << subproblem_data.subproblem_timer
+              << " seconds" << std::endl;
     totalSimplexIter += nbSimplexIter;
-
-    subproblem_data.subproblem_timer = subproblem_timer.elapsed();
+    totalSubPbTimer += subproblem_data.subproblem_timer;
 
     return subproblem_data.subproblem_cost;
 }
@@ -473,5 +486,6 @@ void ValeursUsage::launch()
     auto run_time = run_timer.elapsed();
     std::cout << "Stock level variation done in " << run_time << " seconds and " << totalSimplexIter
               << " simplex iterations" << std::endl;
+    std::cout << "Time solving subproblems : " << totalSubPbTimer << " seconds" << std::endl;
     WriteOutput();
 }

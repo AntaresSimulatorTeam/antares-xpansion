@@ -3,8 +3,9 @@
 #include <filesystem>
 #include <map>
 #include <memory>
+#include <mutex>
+#include <optional>
 #include <string>
-#include <tbb/concurrent_unordered_map.h>
 #include <vector>
 
 namespace Output
@@ -127,47 +128,31 @@ struct VariationDeNiveauxDeStockKey
     }
 };
 
-// Hasher pour std::map<std::string, double>
-struct MapStringDoubleHasher {
-    size_t operator()(const std::map<std::string, double>& m) const {
-        size_t seed = 0;
-        for (const auto& pair : m) {
-            // Combine les hash de clé et valeur
-            seed ^= std::hash<std::string>()(pair.first) + 
-                    std::hash<double>()(pair.second) + 
-                    0x9e3779b9 + (seed << 6) + (seed >> 2);
-        }
-        return seed;
+// Safe concurrent insertion
+struct VariationDeNiveauxDeStockData
+{
+private:
+    std::map<VariationDeNiveauxDeStockKey, double> map;
+    mutable std::mutex mutex;
+
+public:
+    // Insert a key-value pair into the map
+    void insert(const VariationDeNiveauxDeStockKey& key, const double& value)
+    {
+        std::lock_guard<std::mutex> lock(mutex);
+        map[key] = value;
+    }
+
+    auto begin() const
+    {
+        return map.begin();
+    }
+
+    auto end() const
+    {
+        return map.end();
     }
 };
-
-// Hasher pour VariationDeNiveauxDeStockKey
-struct VariationDeNiveauxDeStockKeyHasher {
-    size_t operator()(const VariationDeNiveauxDeStockKey& key) const {
-        size_t h1 = std::hash<int>()(key.scenario);
-        size_t h2 = std::hash<int>()(key.week);
-        
-        // Utiliser le hasher personnalisé pour map<string, double>
-        size_t h3 = MapStringDoubleHasher()(key.rhsValues);
-        
-        return h1 ^ (h2 << 1) ^ h3;
-    }
-};
-
-// Opérateur d'égalité (déjà défini avec operator== dans votre classe)
-struct VariationDeNiveauxDeStockKeyEqual {
-    bool operator()(const VariationDeNiveauxDeStockKey& k1, const VariationDeNiveauxDeStockKey& k2) const {
-        return k1 == k2;
-    }
-};
-
-// Définition du type concurrent_unordered_map
-typedef tbb::concurrent_unordered_map <
-    VariationDeNiveauxDeStockKey, 
-    double, 
-    VariationDeNiveauxDeStockKeyHasher,
-    VariationDeNiveauxDeStockKeyEqual
-> VariationDeNiveauxDeStockData;
 
 struct ProblemData
 {

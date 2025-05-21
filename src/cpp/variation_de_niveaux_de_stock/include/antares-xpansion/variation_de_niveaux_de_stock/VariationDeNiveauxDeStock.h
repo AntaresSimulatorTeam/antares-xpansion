@@ -28,8 +28,10 @@ class ValeursUsage
 public:
     ValeursUsage(Logger logger,
                  std::shared_ptr<Output::JsonWriter> writer,
-                 std::filesystem::path path_to_data);
+                 std::filesystem::path path_to_data,
+                 ProblemsFormat data_format);
     void launch();
+    void setThreads(int nbThreads);
 
     Output::VariationDeNiveauxDeStockData
       variationDeNiveauxDeStockData; //!< Data to write in the output file
@@ -59,6 +61,9 @@ protected:
 protected:
     std::filesystem::path xpansionFolderPath; ///< Path to the xpansion folder
     std::vector<std::string> subPbNames;      ///< List of subproblems names
+
+    ProblemsFormat problemsFormat; ///< Format of the problems
+    int nbThreads = 1;             ///< Number of threads to use
 
     SolverLogManager solver_log_manager_;
     Logger _logger;
