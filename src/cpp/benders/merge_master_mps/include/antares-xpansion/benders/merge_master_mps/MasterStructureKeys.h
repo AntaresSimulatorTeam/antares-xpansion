@@ -46,5 +46,6 @@ constexpr char ROOT_NAME[] = "root";
 // Default name of the master problem for each node
 // Used when accessing the structure file (CouplingMap)
 constexpr char DEFAULT_MASTER_NAME[] = "master";
+constexpr char DEFAULT_STRUCTURE_FILE[] = "structure.txt";
 
 } // namespace MasterStructureKeys
