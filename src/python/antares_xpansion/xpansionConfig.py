@@ -39,6 +39,7 @@ class InputParameters:
     oversubscribe: bool
     allow_run_as_root: bool
     memory: bool
+    cache_problems: bool
 
 
 class XpansionConfig:
@@ -50,7 +51,7 @@ class XpansionConfig:
     # pylint: disable=too-few-public-methods
 
     def __init__(
-        self, input_parameters: InputParameters, config_parameters: ConfigParameters
+            self, input_parameters: InputParameters, config_parameters: ConfigParameters
     ):
 
         self.input_parameters = input_parameters
@@ -87,6 +88,7 @@ class XpansionConfig:
         self.keep_mps = self.input_parameters.keep_mps
         self.oversubscribe = self.input_parameters.oversubscribe
         self.allow_run_as_root = self.input_parameters.allow_run_as_root
+        self.cache_problems = self.input_parameters.cache_problems
         self.memory = self.input_parameters.memory
 
     def _get_install_dir(self, install_dir):
@@ -106,7 +108,7 @@ class XpansionConfig:
 
         if getattr(sys, "frozen", False):
             install_dir_inside_package = (
-                Path(os.path.abspath(__file__)).parent.parent / "bin"
+                    Path(os.path.abspath(__file__)).parent.parent / "bin"
             )
             install_dir_next_to_package = Path(sys.executable).parent / "bin"
             if Path.is_dir(install_dir_inside_package):
@@ -189,6 +191,7 @@ class XpansionConfig:
             OptimisationKeys.bound_alpha_key(): self.bound_alpha_default_value(),
             OptimisationKeys.separation_key(): self.separation_default_value(),
             OptimisationKeys.batch_size_key(): self.batch_size_default_value(),
+            OptimisationKeys.cache_problems_keys(): self.cache_problems_default_value(),
         }
 
     def bound_alpha_default_value(self):
@@ -244,6 +247,9 @@ class XpansionConfig:
 
     def batch_size_default_value(self):
         return "0"
+
+    def cache_problems_default_value(self):
+        return False
 
     def _get_config_values(self):
 

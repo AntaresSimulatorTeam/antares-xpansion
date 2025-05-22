@@ -84,7 +84,7 @@ class ConfigLoader:
 
         else:
             tmp_path = Path(self.antares_output()) / \
-                self._config.simulation_name
+                       self._config.simulation_name
             if self.is_antares_study_output(tmp_path):
                 self._last_study = tmp_path
                 self._set_xpansion_simulation_name()
@@ -206,7 +206,8 @@ class ConfigLoader:
         return self._get_path_from_file_in_xpansion_dir(os.path.normpath(os.path.join(self._config.WEIGHTS, filename)))
 
     def _get_constraints_file_path_in_constraints_dir(self, filename):
-        return self._get_path_from_file_in_xpansion_dir(os.path.normpath(os.path.join(self._config.CONSTRAINTS, filename)))
+        return self._get_path_from_file_in_xpansion_dir(
+            os.path.normpath(os.path.join(self._config.CONSTRAINTS, filename)))
 
     def capacity_file(self, filename):
         """
@@ -415,7 +416,7 @@ class ConfigLoader:
         options[LauncherOptionsKeys.keep_mps_key()] = self.keep_mps()
         options[LauncherOptionsKeys.oversubscribe_key()] = self.oversubscribe()
         options[LauncherOptionsKeys.allow_run_as_root_key()
-                ] = self.allow_run_as_root()
+        ] = self.allow_run_as_root()
 
         with open(self.launcher_options_file_path(), "w") as launcher_options:
             json.dump(options, launcher_options, indent=4)
@@ -457,7 +458,7 @@ class ConfigLoader:
             self.active_years
         )
         options_values[OptimisationKeys.json_file_key()
-                       ] = self.json_file_path()
+        ] = self.json_file_path()
         options_values[
             OptimisationKeys.last_iteration_json_file_key()
         ] = self.last_iteration_json_file_path()
@@ -474,7 +475,7 @@ class ConfigLoader:
             OptimisationKeys.master_formulation_key()
         ] = self.get_master_formulation()
         options_values[OptimisationKeys.separation_key()
-                       ] = self.get_separation()
+        ] = self.get_separation()
         options_values[
             OptimisationKeys.max_iterations_key()
         ] = self.get_max_iterations()
@@ -496,7 +497,7 @@ class ConfigLoader:
         options_values[OptimisationKeys.last_master_basis_key()] = self._config.LAST_MASTER_BASIS
         options_values[OptimisationKeys.batch_size_key()] = self.get_batch_size()
         options_values[OptimisationKeys.do_outer_loop_key()] = (
-            self._config.method == "adequacy_criterion"
+                self._config.method == "adequacy_criterion"
         )
         options_values[OptimisationKeys.outer_loop_option_file_key()] = (
             self._config.OUTER_LOOP_FILE
@@ -506,6 +507,7 @@ class ConfigLoader:
         )
         if os.path.exists(self.outer_loop_options_path()):
             shutil.copy(self.outer_loop_options_path(), self._simulation_lp_path())
+        options_values[OptimisationKeys.cache_problems_keys()] = self.cache_problems()
 
         # generate options file for the solver
         with open(self.options_file_path(), "w") as options_file:
@@ -526,14 +528,15 @@ class ConfigLoader:
         self._last_study = self.last_modified_study(Path(self.antares_output()))
 
         self._set_xpansion_simulation_name()
+
     class NotAnXpansionOutputDir(Exception):
         pass
 
     def _set_xpansion_simulation_name(self):
-        xpansion_dir_suffix ="-Xpansion"
+        xpansion_dir_suffix = "-Xpansion"
         self._xpansion_simulation_name = self._last_study
 
-        if self.step() in ["resume", "sensitivity"] :
+        if self.step() in ["resume", "sensitivity"]:
             self._xpansion_simulation_name = self._last_study
             if self.is_zip(self._last_study):
                 self._xpansion_simulation_name = self._last_study.parent / self._last_study.stem
@@ -547,8 +550,9 @@ class ConfigLoader:
 
         elif self.step() == "problem_generation":
             if not self.is_zip(self._last_study):
-                if(not self._last_study.name.endswith(xpansion_dir_suffix)):
-                    raise ConfigLoader.NotAnXpansionOutputDir(f"Error! {self._last_study} is not an Xpansion output directory")
+                if (not self._last_study.name.endswith(xpansion_dir_suffix)):
+                    raise ConfigLoader.NotAnXpansionOutputDir(
+                        f"Error! {self._last_study} is not an Xpansion output directory")
                 else:
                     self._xpansion_simulation_name = self._last_study
                     self._last_study = self._last_study.parent / (
@@ -558,17 +562,17 @@ class ConfigLoader:
             self._xpansion_simulation_name = self._last_study
         else:
             self._xpansion_simulation_name = self._last_study.parent / \
-                (self._last_study.stem+"-Xpansion")
+                                             (self._last_study.stem + "-Xpansion")
 
     def is_zip(self, study):
         _, ext = os.path.splitext(study)
-        return ext == ".zip" 
+        return ext == ".zip"
 
     def update_last_study_with_sensitivity_results(self):
         if self.is_zip(self._last_study):
             os.remove(self._last_study)
-            shutil.make_archive(self._last_study.parent / self._last_study.stem, 'zip', self._xpansion_simulation_name)  
-            if(os.path.exists(self._xpansion_simulation_name)):
+            shutil.make_archive(self._last_study.parent / self._last_study.stem, 'zip', self._xpansion_simulation_name)
+            if (os.path.exists(self._xpansion_simulation_name)):
                 shutil.rmtree(self._xpansion_simulation_name)
 
     def is_antares_study_output(self, study: Path):
@@ -578,7 +582,7 @@ class ConfigLoader:
         else:
             return ext == ".zip" or os.path.isdir(study)
 
-    def last_modified_study(self, root_dir:Path)-> Path: 
+    def last_modified_study(self, root_dir: Path) -> Path:
         list_dir = os.listdir(root_dir)
         list_of_studies = filter(
             lambda x: self.is_antares_study_output(root_dir / x), list_dir
@@ -716,6 +720,9 @@ class ConfigLoader:
 
     def allow_run_as_root(self):
         return self._config.allow_run_as_root
+
+    def cache_problems(self):
+        return self._config.cache_problems
 
     def timelimit(self):
         """

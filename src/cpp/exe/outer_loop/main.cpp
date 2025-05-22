@@ -1,10 +1,15 @@
 #include "antares-xpansion/benders/benders_mpi/common_mpi.h"
-#include "antares-xpansion/benders/factories/BendersFactory.h"
+#include "antares-xpansion/benders/factories/BendersApp.h"
 
 int main(int argc, char** argv)
 {
     mpi::environment env(argc, argv);
     mpi::communicator world;
-    auto benders_factory = BendersMainFactory(argc, argv, env, world, SOLVER::OUTER_LOOP);
+    // First check usage (options are given)
+    if (world.rank() == 0)
+    {
+        usage(argc);
+    }
+    auto benders_factory = BendersApp(argv[1], env, world, SOLVER::OUTER_LOOP);
     return benders_factory.Run();
 }

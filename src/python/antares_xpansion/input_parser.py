@@ -85,6 +85,11 @@ class InputParser:
                                  default=False,
                                  action='store_true',
                                  help="Work in memory, don't write file if possible")
+        self.parser.add_argument("--cache_problems",
+                                 dest=LauncherOptionsKeys.cache_problems_key(),
+                                 default=False,
+                                 action='store_true',
+                                 help="Cache problems on disque during benders")
 
     def parse_args(self, args: List[str] = None) -> InputParameters:
         params = self.parser.parse_args(args)
@@ -104,6 +109,7 @@ class InputParser:
             oversubscribe=params.oversubscribe,
             allow_run_as_root=params.allow_run_as_root,
             memory=params.memory,
+            cache_problems=params.cache_problems,
         )
         return my_parameters
 

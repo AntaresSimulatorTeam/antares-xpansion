@@ -2,14 +2,12 @@
 
 #include <execution>
 #include <filesystem>
-#include <optional>
 #include <regex>
 #include <tbb/tbb.h>
 
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
 #include "CriterionComputation.h"
-#include "SimulationOptions.h"
 #include "SubproblemCut.h"
 #include "SubproblemWorker.h"
 #include "Worker.h"
@@ -46,11 +44,6 @@ public:
                 std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
     virtual void launch() = 0;
     void set_solver_log_file(const std::filesystem::path& log_file);
-
-    [[nodiscard]] std::filesystem::path solver_log_file() const
-    {
-        return solver_log_file_;
-    }
 
     double execution_time() const;
     virtual std::string BendersName() const = 0;
@@ -156,6 +149,7 @@ protected:
     bool init_data_ = true;
     bool init_problems_ = true;
     bool free_problems_ = true;
+    BendersBaseOptions _options;
 
     std::vector<std::vector<double>> criteria_vector_for_each_iteration_;
     bool is_bilevel_check_all_ = false;
@@ -171,6 +165,14 @@ protected:
     virtual void compute_ub();
     virtual void get_master_value();
     void GetSubproblemCut(SubProblemDataMap& subproblem_data_map);
+    void GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map);
+    std::pair<std::vector<int>, std::vector<int>> GetProblemBasis(
+      const std::shared_ptr<SubproblemWorker>& worker) const;
+    std::shared_ptr<SubproblemWorker> BuildProblem(const std::pair<std::string, VariableMap>& kvp,
+                                                   const std::string& name);
+    std::shared_ptr<SubproblemWorker> makeSubproblemWorker(
+      const std::pair<std::string, VariableMap>& kvp) const;
+    void GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map);
     virtual void post_run_actions() const;
     void BuildCutFull(const SubProblemDataMap& subproblem_data_map);
     virtual void DeactivateIntegrityConstraints() const;
@@ -328,9 +330,7 @@ private:
     LogData FinalLogData() const;
     void FillWorkerMasterData(WorkerMasterData& workerMasterData);
     bool master_is_empty_ = true;
-    BendersBaseOptions _options;
     int _totalNbProblems = 0;
-    std::filesystem::path solver_log_file_ = "";
     WorkerMasterPtr _master;
     VariableMap _problem_to_id;
     StrVector subproblems;
@@ -341,6 +341,7 @@ private:
     int cumulative_number_of_subproblem_resolved_before_resume = 0;
     Timer benders_timer;
     Output::SolutionData outer_loop_solution_data_;
+    std::unordered_map<std::string, std::pair<std::vector<int>, std::vector<int>>> basiss_;
 };
 
 using pBendersBase = std::shared_ptr<BendersBase>;

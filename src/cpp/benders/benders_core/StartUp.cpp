@@ -9,7 +9,7 @@ namespace Benders
 
 bool StartUp::StudyAlreadyAchievedCriterion(const SimulationOptions& options,
                                             Output::OutputWriter* writer,
-                                            const Logger& logger) const
+                                            ILogger* logger) const
 {
     if (!options.RESUME)
     {

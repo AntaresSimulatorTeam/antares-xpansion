@@ -1,64 +1,70 @@
-#ifndef ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
-#define ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H
+#pragma once
+#include <antares-xpansion/benders/benders_core/BendersMethod.h>
+#include <antares-xpansion/benders/benders_core/CriterionInputDataReader.h>
+#include <antares-xpansion/benders/benders_core/common.h>
+#include <memory>
+#include <optional>
 #include <variant>
 
-#include "antares-xpansion/benders/benders_core/CriterionComputation.h"
-#include "antares-xpansion/benders/benders_core/common.h"
-#include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
+struct BendersLoggerBase;
+class MathLoggerDriver;
 
-class BendersMainFactory
+namespace boost::mpi
 {
-private:
-    char** argv_;
-    boost::mpi::environment* penv_ = nullptr;
-    boost::mpi::communicator* pworld_ = nullptr;
-    SOLVER solver_ = SOLVER::BENDERS;
-    SimulationOptions options_;
-    BendersLoggerBase benders_loggers_;
-    std::variant<Benders::Criterion::CriterionInputData,
-                 Benders::Criterion::OuterLoopCriterionInputData>
-      criterion_input_holder_;
-    pBendersBase benders_ = nullptr;
-    Logger logger_ = nullptr;
-    std::shared_ptr<Output::OutputWriter> writer_ = nullptr;
-    std::shared_ptr<MathLoggerDriver> math_log_driver_;
-    BENDERSMETHOD method_ = BENDERSMETHOD::BENDERS;
-    std::string context_ = bendersmethod_to_string(BENDERSMETHOD::BENDERS);
-    std::string positive_unsupplied_file_;
-    static constexpr const char* const LOLD_FILE = "LOLD.txt";
+class communicator;
+class environment;
+} // namespace boost::mpi
 
-    [[nodiscard]] int RunExternalLoop();
-    [[nodiscard]] int RunBenders();
-    [[nodiscard]] std::shared_ptr<MathLoggerDriver> BuildMathLogger(bool benders_log_console) const;
-    void PrepareForExecution(bool outer_loop);
+namespace Output
+{
+class OutputWriter;
+}
+class ILogger;
+class BendersBase;
+class SimulationOptions;
+class BendersBaseOptions;
+
+class BendersFactory
+{
+public:
+    struct BendersEnvironment
+    {
+        std::unique_ptr<BendersBase> benders{nullptr};
+        std::variant<Benders::Criterion::CriterionInputData,
+                     Benders::Criterion::OuterLoopCriterionInputData>
+          criterion_input_data;
+        BENDERSMETHOD method{BENDERSMETHOD::BENDERS};
+    };
+
+    BendersFactory(const SimulationOptions& options,
+                   std::shared_ptr<ILogger> logger,
+                   std::shared_ptr<Output::OutputWriter> writer,
+                   std::shared_ptr<MathLoggerDriver> math_log_driver_,
+                   int rank,
+                   boost::mpi::environment* env,
+                   boost::mpi::communicator* world,
+                   BendersLoggerBase& benders_loggers);
+    auto PrepareForExecution(bool outer_loop) -> std::optional<BendersEnvironment>;
+
+private:
+    auto ConfigureBenders(const BendersBaseOptions& benders_options,
+                          const CouplingMap& coupling_map) -> BendersEnvironment;
     [[nodiscard]] std::variant<Benders::Criterion::CriterionInputData,
                                Benders::Criterion::OuterLoopCriterionInputData>
     ProcessCriterionInput();
-
     Benders::Criterion::CriterionInputData BuildPatternsUsingAreaFile();
     std::set<std::string> ReadAreaFile();
-    void StartMessage();
-    void EndMessage(const double execution_time);
-    void AddCriterionOutputs();
-    bool isCriterionListEmpty() const;
-    void SetupLoggerAndOutputWriter(const BendersBaseOptions& benders_options);
-    void ConfigureBenders(const BendersBaseOptions& benders_options,
-                          const CouplingMap& coupling_map);
-    void ConfigureSolverLog();
+    void ConfigureSolverLog(BendersBase* benders);
 
-public:
-    explicit BendersMainFactory(int argc,
-                                char** argv,
-                                boost::mpi::environment& env,
-                                boost::mpi::communicator& world,
-                                const SOLVER& solver);
-    explicit BendersMainFactory(int argc,
-                                char** argv,
-                                const std::filesystem::path& options_file,
-                                boost::mpi::environment& env,
-                                boost::mpi::communicator& world,
-                                const SOLVER& solver);
-    int Run();
-    std::filesystem::path LogReportsName() const;
+    const SimulationOptions& options_;
+    std::shared_ptr<ILogger> logger_;
+    std::shared_ptr<Output::OutputWriter> writer_;
+    std::shared_ptr<MathLoggerDriver> math_log_driver_;
+    boost::mpi::environment* env_ = nullptr;
+    boost::mpi::communicator* world_ = nullptr;
+    int rank = 0;
+    BENDERSMETHOD method_;
+    BendersLoggerBase& benders_loggers_;
+    std::string context_ = bendersmethod_to_string(BENDERSMETHOD::BENDERS);
+    static constexpr const char* const LOLD_FILE = "LOLD.txt";
 };
-#endif // ANTARES_XPANSION_SRC_CPP_BENDERS_FACTORIES_INCLUDE_BENDERSFACTORY_H

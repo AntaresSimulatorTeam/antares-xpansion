@@ -1,4 +1,4 @@
-FROM antaresrte/xpansion-centos7:1.1.1
+FROM antaresrte/xpansion-centos7:1.1.2
 
 
 
@@ -83,9 +83,10 @@ RUN  source /opt/rh/devtoolset-11/enable && \
      ccache -s
 # tests
 RUN export PATH=/root/miniconda3/condabin:$PATH && \
-              XPRESS_DIR=/root/miniconda3/lib/python3.8/site-packages/xpress && \
-              export XPRESSDIR=$XPRESS_DIR \
-              export XPAUTH_PATH=$XPRESS_DIR/license/community-xpauth.xpr && \
+              SITE_PACKAGE=/root/miniconda3/lib/python3.8/site-packages && \
+              XPRESS_DIR=/root/miniconda3 && \
+              export XPRESSDIR=$XPRESS_DIR && \
+              export XPAUTH_PATH=$SITE_PACKAGE/xpress/license/community-xpauth.xpr && \
               echo "Create symbolic link for XPRESS library file because it is missing in the Python installation" && \
               ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so && \
               export PATH="/workspace/antares-xpansion/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH" && \

@@ -44,7 +44,7 @@ jobs:
           workdir: docker
           dockerfile: centos7-system-deps
           cache: false
-          tags: 1.1.1
+          tags: 1.1.2
 
   build:
     runs-on: ubuntu-latest

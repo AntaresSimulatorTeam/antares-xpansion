@@ -18,10 +18,10 @@ public:
     using Worker::Worker;
     SubproblemWorker(const VariableMap& variable_map,
                      const std::filesystem::path& path_to_mps,
-                     const double& slave_weight,
+                     double slave_weight,
                      const std::string& solver_name,
-                     const int log_level,
-                     SolverLogManager& solver_log_manager,
+                     int log_level,
+                     const SolverLogManager& solver_log_manager,
                      Logger logger,
                      ProblemsFormat format);
     SubproblemWorker(const std::filesystem::path& path_to_mps,

@@ -10,6 +10,7 @@
 
 #include <antares/solver/lps/LpsFromAntares.h>
 
+#include "ConfigurationManager.h"
 #include "ProblemGenerationOptions.h"
 #include "antares-xpansion/helpers/ArchiveReader.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
@@ -39,12 +40,6 @@ private:
       const std::filesystem::path& weights_file,
       bool unnamed_problems);
 
-    void ProcessWeights(
-      const std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>>& problems_and_data,
-      const std::filesystem::path& xpansion_output_dir,
-      const std::filesystem::path& weights_file,
-      const std::string& solver_name,
-      std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
     void ExtractUtilsFiles(const std::filesystem::path& antares_archive_path,
                            const std::filesystem::path& xpansion_output_dir,
                            std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
@@ -60,6 +55,7 @@ private:
     Antares::Solver::LpsFromAntares lps_;
     std::optional<SimulationInputMode> mode_;
     virtual void performAntaresSimulation(const std::filesystem::path& output);
-    std::filesystem::path simulation_dir_;
     SolverConfig solver_config_{"Coin"};
+    ConfigurationManager configuration_manager_;
+    ConfigurationManager::ConfigDirectories directories_;
 };

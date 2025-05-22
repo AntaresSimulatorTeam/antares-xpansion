@@ -9,7 +9,7 @@ using namespace std::literals;
 *************************************************************************************************/
 int SolverClp::_NumberOfProblems = 0;
 
-SolverClp::SolverClp(SolverLogManager& log_manager):
+SolverClp::SolverClp(const SolverLogManager& log_manager):
     SolverClp()
 {
     _fp = log_manager.log_file_ptr;
@@ -127,6 +127,18 @@ void SolverClp::read_prob_lp(const std::filesystem::path& filename)
 void SolverClp::read_basis(const std::filesystem::path& filename)
 {
     _clp.readBasis(filename.string().c_str());
+}
+
+void SolverClp::set_basis(std::span<int> rstatus, std::span<int> cstatus)
+{
+    for (int i = 0; i < rstatus.size(); ++i)
+    {
+        _clp.setRowStatus(i, static_cast<ClpSimplex::Status>(rstatus[i]));
+    }
+    for (int i = 0; i < cstatus.size(); ++i)
+    {
+        _clp.setColumnStatus(i, static_cast<ClpSimplex::Status>(cstatus[i]));
+    }
 }
 
 void SolverClp::copy_prob(const SolverAbstract::Ptr fictif_solv)
