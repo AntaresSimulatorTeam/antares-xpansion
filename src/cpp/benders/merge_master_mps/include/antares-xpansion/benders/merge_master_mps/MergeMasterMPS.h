@@ -23,8 +23,8 @@ public:
         NodeLpDataLocation(const Json::Value& data);
 
         std::filesystem::path lp_folder;
-        std::string master;
-        std::string structure;
+        std::string master = MasterStructureKeys::DEFAULT_MASTER_NAME;
+        std::string structure = MasterStructureKeys::DEFAULT_STRUCTURE_FILE;
     };
 
     typedef std::map<std::string, NodeLpDataLocation> NodesLpPathesMap;

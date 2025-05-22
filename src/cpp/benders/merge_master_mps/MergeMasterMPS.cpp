@@ -123,8 +123,14 @@ MergeMasterTrajectoryMPS::NodeLpDataLocation::NodeLpDataLocation(
 {
     using namespace MasterStructureKeys;
     lp_folder = data[KEY_LP_FOLDER].asString();
-    master = data[KEY_MASTER_MPS_FILE].asString();
-    structure = data[KEY_STRUCTURE_FILE].asString();
+    if (data.isMember(KEY_MASTER_MPS_FILE))
+    {   
+        master = data[KEY_MASTER_MPS_FILE].asString();
+    }
+    if (data.isMember(KEY_STRUCTURE_FILE))
+    {    
+        structure = data[KEY_STRUCTURE_FILE].asString();
+    }
 }
 
 MergeMasterTrajectoryMPS::TrajectoryConstraint::TrajectoryConstraint(const Json::Value& data)
@@ -306,14 +312,11 @@ void MergeMasterTrajectoryMPS::build_problem()
             master_file = nodal_lp.master + MPS_SUFFIX;
         }
 
+        logger_->display_message("Trying to load problem at " + 
+            std::string(options_.INPUTROOT / nodal_lp.lp_folder / master_file));
         SolverAbstract::Ptr solver_local = get_local_solver(options_.INPUTROOT / nodal_lp.lp_folder,
                                                             master_file);
         solver_local->set_output_log_level(options_.LOG_LEVEL);
-
-        // Read the problem
-        logger_->display_message(
-          "Reading problem "
-          + (options_.INPUTROOT / nodal_lp.lp_folder / master_file).string());
 
         StandardLp lpData(*solver_local);
         std::string varPrefix_local = make_prefix_from_node(node_name);

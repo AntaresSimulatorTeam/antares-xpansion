@@ -513,7 +513,7 @@ class TrajectoryModule:
 
 
 parser = TrajectoryModule(
-    "merge_master_test/simple_tree/user_input_XpansionTrajectory.yaml"
+    "merge_master_test/simple_tree_from_studies/user_input_XpansionTrajectory.yaml"
 )
 parser.parse_trajectory_user_file()
 parser.print()
@@ -522,4 +522,4 @@ parser.verify_constraint_variable_reference()
 parser.verify_tree_investment_dates()
 parser.verify_tree_probabilities()
 parser.verify_nodes_candidates_types()
-parser.write_merger_json("merge_master_test/simple_tree/python_outputed_strucutre.json")
+parser.write_merger_json("merge_master_test/simple_tree_from_studies/output/master_structure_outputed.json")

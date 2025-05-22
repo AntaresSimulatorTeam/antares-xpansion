@@ -9,8 +9,8 @@
 add_library(merge_master_mps_core)
 target_sources(merge_master_mps_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/merge_master_mps/MergeMasterMPS.h
-
         ${CMAKE_CURRENT_SOURCE_DIR}/MergeMasterMPS.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/merge_master_mps/MasterStructureKeys.h
 )
 
 
