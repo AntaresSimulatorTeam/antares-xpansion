@@ -6,10 +6,12 @@
 #include "antares-xpansion/benders/output/JsonWriter.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
-using ConstraintMap = std::map<std::string /*constraint name*/, std::vector<double> /*rhs values*/>;
-using AreaConstraintMaps = std::map<std::string /*area name*/, ConstraintMap>;
-using ConstraintCombos = std::vector<
-  std::map<std::string /*constraint name*/, double /*rhs value*/>>;
+/// @brief key constraint name, value vector of rhs values
+using ConstraintMap = std::map<std::string, std::vector<double>>;
+/// @brief key area name, value constraint map
+using AreaConstraintMaps = std::map<std::string, ConstraintMap>;
+/// @brief vector of maps (key constraint name, value rhs value)
+using ConstraintCombos = std::vector<std::map<std::string, double>>;
 
 struct ScenarioAndWeek
 {
@@ -22,7 +24,7 @@ struct ScenarioAndWeek
     }
 };
 
-/// @brief Class to compute  Stock levels variation
+/// @brief Class to compute Stock levels variation
 class ValeursUsage
 {
 public:
@@ -41,7 +43,7 @@ protected:
     bool IsSubproblemUsed(const std::string& subPbName) const;
     void Run();
     void ProcessSubproblem(const std::string& subPbName);
-    void ProcessSubproblemsWithPhysicalCores(const std::vector<std::string>& subPbNames);
+    void ProcessSubproblemsParallel(const std::vector<std::string>& subPbNames, int nbThreads);
     std::map<int, AreaConstraintMaps> GenerateRHSGridValues(std::string subPbName,
                                                             SubproblemWorkerPtr subPbWorker);
     void SetConstraintsRHSValues(const std::map<std::string, double>& rhsValues,

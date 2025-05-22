@@ -12,9 +12,9 @@
 #include "antares-xpansion/benders/benders_core/WorkerMaster.h"
 #include "antares-xpansion/helpers/Timer.h"
 
-std::atomic<int> totalSimplexIter = 0;
-std::atomic<double> totalSubPbTimer = 0;
-std::atomic<double> totalPbModifTimer = 0;
+std::atomic<int> totalSimplexIter = 0;     ///< Total number of simplex iterations
+std::atomic<double> totalSubPbTimer = 0;   ///< Total time spent solving subproblems
+std::atomic<double> totalPbModifTimer = 0; ///< Total time spent modifying subproblems
 
 /// @brief Constructor
 /// @param logger Logger
@@ -31,6 +31,8 @@ ValeursUsage::ValeursUsage(Logger logger,
     problemsFormat = data_format;
 }
 
+/// @brief Set the number of threads to use
+/// @param nbThreads Number of threads
 void ValeursUsage::setThreads(int nbThreads)
 {
     this->nbThreads = nbThreads;
@@ -105,6 +107,10 @@ ConstraintCombos ValeursUsage::GenerateSubPbCombos(const std::string& subPbName,
     return subPbCombos;
 }
 
+/// @brief Flatten a multi-dimensional index to a 1D index
+/// @param coord The multi-dimensional index
+/// @param dims The dimensions of the array
+/// @return The 1D index
 int flattenIndex(const std::vector<int>& coord, const std::vector<int>& dims)
 {
     int index = 0;
@@ -117,7 +123,9 @@ int flattenIndex(const std::vector<int>& coord, const std::vector<int>& dims)
     return index;
 }
 
-// Generate ND zigzag order based on parity of upper dimensions
+/// @brief Generate ND zigzag order based on parity of upper dimensions
+/// @param dims The dimensions of the array
+/// @return The zigzag order
 std::vector<size_t> generateZigzagOrder(const std::vector<int>& dims)
 {
     const int ndims = dims.size();
@@ -163,7 +171,10 @@ std::vector<size_t> generateZigzagOrder(const std::vector<int>& dims)
     return linearOrder;
 }
 
-// Reorder the vector of Points according to the ND zigzag pattern
+/// @brief Reorder the vector of Points according to the ND zigzag pattern
+/// @param dims The dimensions of the array
+/// @param points The vector of Points to reorder
+/// @return The reordered vector of Points
 std::vector<Point> reorderZigzagND(const std::vector<int>& dims, const std::vector<Point>& points)
 {
     std::vector<size_t> order = generateZigzagOrder(dims);
@@ -215,6 +226,9 @@ SubproblemWorkerPtr ValeursUsage::AddSubproblem(const std::string& pbName)
     return subPbWorker;
 }
 
+/// @brief Check if the subproblem is used in the grid.csv file
+/// @param subPbName The name of the subproblem
+/// @return True if the subproblem is used, false otherwise
 bool ValeursUsage::IsSubproblemUsed(const std::string& subPbName) const
 {
     // Check if the subproblem is used in the grid.csv file
@@ -374,7 +388,7 @@ void ValeursUsage::SetConstraintsRHSValues(const std::map<std::string, double>& 
 /// @brief Runs the ProcessSubproblem method in parallel for each subproblem
 void ValeursUsage::Run()
 {
-    ProcessSubproblemsWithPhysicalCores(subPbNames);
+    ProcessSubproblemsParallel(subPbNames, nbThreads);
 }
 
 /// @brief Process a single subproblem
@@ -436,12 +450,11 @@ void ValeursUsage::ProcessSubproblem(const std::string& subPbName)
     }
 }
 
-int get_physical_core_count()
-{
-    return std::thread::hardware_concurrency() / 2;
-}
-
-void ValeursUsage::ProcessSubproblemsWithPhysicalCores(const std::vector<std::string>& subPbNames)
+/// @brief Process the subproblems in parallel using TBB over nbThreads
+/// @param subPbNames The list of subproblems names to process
+/// @param nbThreads The number of threads to use
+void ValeursUsage::ProcessSubproblemsParallel(const std::vector<std::string>& subPbNames,
+                                              int nbThreads)
 {
     // Limiter TBB au nombre de cœurs physiques
     tbb::global_control limit(tbb::global_control::max_allowed_parallelism, nbThreads);
@@ -452,7 +465,7 @@ void ValeursUsage::ProcessSubproblemsWithPhysicalCores(const std::vector<std::st
 }
 
 /// @brief Solve the subproblem and return the cost
-/// @param subPbName The name of the subproblem to solve
+/// @param subPbWorker The subproblem worker
 /// @return The cost of the subproblem
 double ValeursUsage::SolveSubproblem(SubproblemWorkerPtr subPbWorker)
 {
