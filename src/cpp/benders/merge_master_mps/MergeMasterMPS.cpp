@@ -122,11 +122,11 @@ MergeMasterTrajectoryMPS::NodeLpDataLocation::NodeLpDataLocation(const Json::Val
     using namespace MasterStructureKeys;
     lp_folder = data[KEY_LP_FOLDER].asString();
     if (data.isMember(KEY_MASTER_MPS_FILE))
-    {   
+    {
         master = data[KEY_MASTER_MPS_FILE].asString();
     }
     if (data.isMember(KEY_STRUCTURE_FILE))
-    {    
+    {
         structure = data[KEY_STRUCTURE_FILE].asString();
     }
 }
@@ -347,22 +347,14 @@ void MergeMasterTrajectoryMPS::build_problem()
         // Second step : get the candidate's position in the merged problem
         for (const auto& [candidate_name, _]: node_coupling_map[node_data.master_name])
         {
-            std::string candidate_name_prefixed = varPrefix_local + candidate_name;
             int new_index = ptr_merged_solver_->get_col_index(candidate_name_prefixed);
             if (new_index == -1)
             {
-                // TODO Split it to parent class
-                const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
-                std::cerr << LOGLOCATION << "missing variable " << candidate_name << " in "
-                          << node_name << " supposedly renamed to " << candidate_name_prefixed;
-
-                ptr_merged_solver_->write_prob_lp(output_root / "mergeError.lp");
-                ptr_merged_solver_->write_prob_mps(output_root / ("mergeError" + MPS_SUFFIX));
-
-                std::exit(1);
+                interrupt(candidate_name, node_name, varPrefix_local)
             }
             // Create the VariablePositions entry for this candidate
             candidates_coupling_[candidate_name][node_name].set(CAPACITY, new_index);
+            const std::string candidate_name_prefixed = varPrefix_local + candidate_name;
             structure_[MasterStructureKeys::DEFAULT_MASTER_NAME][candidate_name_prefixed]
               = new_index;
         }
@@ -378,14 +370,15 @@ void MergeMasterTrajectoryMPS::build_problem()
             std::string subproblem_path = nodal_lp.lp_folder / subproblem;
             for (const auto& [candidate_name, position]: positions)
             {
-                std::string candidate_name_prefixed = varPrefix_local + candidate_name;
+                const std::string candidate_name_prefixed = varPrefix_local + candidate_name;
                 structure_[subproblem_path][candidate_name_prefixed] = position;
             }
         }
     }
 
-    const std::filesystem::path structure_file = std::filesystem::path(options_.OUTPUTROOT) / "structure.txt";
-    CouplingMapGenerator::WriteCouplingMap(structure_, structure_file, logger_.get());
+    const std::filesystem::path structure_file = std::filesystem::path(options_.OUTPUTROOT)
+                                                 / "structure.txt";
+    export_structure_file(structure_file, structure_);
 
     // Add the delta variables and the constraints that define them
     add_delta_variables();

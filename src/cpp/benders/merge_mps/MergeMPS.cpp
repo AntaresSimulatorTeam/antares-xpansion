@@ -90,6 +90,29 @@ void AbstractMergeMPS::multiply_obj_by_weight_factor(SolverAbstract& local_solve
 }
 
 /**
+ * \brief Interrupt the program when a variable is not found in the local solver
+ *
+ * \param var_name : Variable name
+ *
+ * \param filename : File name
+ *
+ * \param local_prefix : Prefix added to variable name
+ */
+void AbstractMergeMPS::interrupt(const std::string& var_name,
+                                 const std::string& filename,
+                                 const std::string& local_prefix) const
+{
+    const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
+    std::cerr << LOGLOCATION << "missing variable " << var_name << " in " << filename
+              << " supposedly renamed to " << local_prefix + var_name << ".";
+
+    ptr_merged_solver_->write_prob_lp(output_root / "mergeError.lp");
+    ptr_merged_solver_->write_prob_mps(output_root / ("mergeError" + MPS_SUFFIX));
+
+    std::exit(1);
+}
+
+/**
  * \brief Merges local to global solver
  *
  * \param local_solver : Local solver
@@ -117,14 +140,7 @@ VariableMap AbstractMergeMPS::merge_local_solver(SolverAbstract& local_solver,
         const int merged_col_index = ptr_merged_solver_->get_col_index(local_prefix + var_name);
         if (merged_col_index == -1)
         {
-            const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
-            std::cerr << LOGLOCATION << "missing variable " << var_name << " in " << filename
-                      << " supposedly renamed to " << local_prefix + var_name << ".";
-
-            ptr_merged_solver_->write_prob_lp(output_root / "mergeError.lp");
-            ptr_merged_solver_->write_prob_mps(output_root / ("mergeError" + MPS_SUFFIX));
-
-            std::exit(1);
+            interrupt(var_name, filename, local_prefix);
         }
         merged_var_map[var_name] = merged_col_index;
     }
@@ -133,18 +149,24 @@ VariableMap AbstractMergeMPS::merge_local_solver(SolverAbstract& local_solver,
 }
 
 /**
- * \brief Export problem into mps and lp files
+ * \brief Export problem into OUTPUTROOT/filename and optionally writes the lp variant
  */
-void AbstractMergeMPS::export_problem(std::string filename, bool export_lp)
+void AbstractMergeMPS::export_problem(const std::string& filename, bool export_lp)
 {
     const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
-    logger_->display_message("Problems merged.");
-    logger_->display_message("Writing merged file");
+    logger_->display_message("Problems merged.",
+                             LogUtils::LOGLEVEL::INFO,
+                             MERGE_MPS_LOGGER_CONTEXT);
+    logger_->display_message("Writing merged file",
+                             LogUtils::LOGLEVEL::INFO,
+                             MERGE_MPS_LOGGER_CONTEXT);
     solver_io_.write(ptr_merged_solver_.get(), output_root / filename);
 
     if (export_lp)
     {
-        logger_->display_message("Writing lp file");
+        logger_->display_message("Writing lp file",
+                                 LogUtils::LOGLEVEL::INFO,
+                                 MERGE_MPS_LOGGER_CONTEXT);
         ptr_merged_solver_->write_prob_lp(output_root / (filename + ".lp"));
     }
 }
@@ -170,7 +192,9 @@ void MergeMasterSubproblemMPS::build_problem()
 {
     const auto root_dir = std::filesystem::path(options_.INPUTROOT);
 
-    logger_->display_message("Merging master and subproblems...");
+    logger_->display_message("Merging master and subproblems...",
+                             LogUtils::LOGLEVEL::INFO,
+                             MERGE_MPS_LOGGER_CONTEXT);
 
     const CouplingMap local_structure = CouplingMapGenerator::BuildInput(
       root_dir / options_.STRUCTURE_FILE,
@@ -181,8 +205,8 @@ void MergeMasterSubproblemMPS::build_problem()
     // TODO creates a segfault when structure.txt is empty
     // if (local_structure.empty())
     // {
-    //     logger_->display_message("Nothing to merge. Returning empty problem.");
-    //     return;
+    //     logger_->display_message("Nothing to merge. Returning empty problem.",
+    //     LogUtils::LOGLEVEL::INFO, MERGE_MPS_LOGGER_CONTEXT); return;
     // }
 
     const int nb_sub_problems = local_structure.size() - 1;
@@ -214,7 +238,7 @@ bool MergeMasterSubproblemMPS::solve(int nb_threads)
 {
     ptr_merged_solver_->set_threads(nb_threads);
 
-    logger_->display_message("Solving...");
+    logger_->display_message("Solving...", LogUtils::LOGLEVEL::INFO, MERGE_MPS_LOGGER_CONTEXT);
 
     Timer timer;
     int status{0};
@@ -333,7 +357,7 @@ double MergeMasterSubproblemMPS::get_problem_obj_weight(int nb_subproblems,
         logger_->display_message("No weight found for " + name
                                    + ". Problem will not contribute to objective function",
                                  LogUtils::LOGLEVEL::WARNING,
-                                 "MergeMPS");
+                                 MERGE_MPS_LOGGER_CONTEXT);
         return 0.;
     }
     return found->second;
@@ -368,7 +392,9 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
     const size_t nb_elem_reserve = 2 * nb_rows_reserve;
 
     logger_->display_message("About to add " + std::to_string(nb_rows_reserve)
-                             + " coupling constraints");
+                               + " coupling constraints",
+                             LogUtils::LOGLEVEL::INFO,
+                             MERGE_MPS_LOGGER_CONTEXT);
 
     std::vector<int> mstart; // Constraints' offsets
     mstart.reserve(nb_rows_reserve + 1);
@@ -403,7 +429,9 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
         }
 
         logger_->display_message(var_name + " : " + std::to_string(indices.size() - 1)
-                                 + " coupling constraints built");
+                                   + " coupling constraints built",
+                                 LogUtils::LOGLEVEL::INFO,
+                                 MERGE_MPS_LOGGER_CONTEXT);
     }
     mstart.push_back(nb_elem);
 
