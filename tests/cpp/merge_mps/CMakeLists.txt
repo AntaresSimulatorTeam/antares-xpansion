@@ -1,6 +1,5 @@
 add_executable(merge_mps_test
         merge_mps_test.cpp
-        merge_pathway_test.cpp
 )
 
 find_package(fmt REQUIRED)

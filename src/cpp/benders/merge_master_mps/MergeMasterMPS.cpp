@@ -347,14 +347,14 @@ void MergeMasterTrajectoryMPS::build_problem()
         // Second step : get the candidate's position in the merged problem
         for (const auto& [candidate_name, _]: node_coupling_map[node_data.master_name])
         {
+            const std::string candidate_name_prefixed = varPrefix_local + candidate_name;
             int new_index = ptr_merged_solver_->get_col_index(candidate_name_prefixed);
             if (new_index == -1)
             {
-                interrupt(candidate_name, node_name, varPrefix_local)
+                interrupt(candidate_name, node_name, varPrefix_local);
             }
             // Create the VariablePositions entry for this candidate
             candidates_coupling_[candidate_name][node_name].set(CAPACITY, new_index);
-            const std::string candidate_name_prefixed = varPrefix_local + candidate_name;
             structure_[MasterStructureKeys::DEFAULT_MASTER_NAME][candidate_name_prefixed]
               = new_index;
         }

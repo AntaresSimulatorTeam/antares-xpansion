@@ -33,7 +33,7 @@ int main(int argc, char** argv)
         logger->display_message("Given tree path is : " + std::string(argv[2]),
                                 LogUtils::LOGLEVEL::INFO,
                                 TRAJECTORY_LOGGER_CONTEXT);
-        MergeMasterTrajectoryMPS merge_mps(options.get_base_options(),
+        MergeMasterTrajectoryMPS merge_mps(options.get_solver_options(),
                                            logger,
                                            writer,
                                            argv[2],
