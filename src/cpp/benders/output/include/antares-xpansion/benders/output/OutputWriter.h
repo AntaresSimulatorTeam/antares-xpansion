@@ -27,7 +27,7 @@ const std::string ANTARES_C("antares"), VERSION_C("version"),
   LOG_LEVEL_C("LOG_LEVEL"), SOLVER_NAME_C("SOLVER_NAME"), PROBLEMNAME_C("problem_name"),
   PROBLEMPATH_C("problem_path"),
   CUMULATIVE_NUMBER_OF_SUBPROBLEM_RESOLVED_C("cumulative_number_of_subproblem_resolutions"),
-  PROBLEM_FORMAT_C{"PROBLEM_FORMAT"}, GRID_POINTS_C{"grid_points"}, GRID_POINT_C{"grid_point"};
+  PROBLEM_FORMAT_C("PROBLEM_FORMAT"), GRID_POINTS_C("grid_points"), GRID_POINT_C("grid_point");
 
 struct CandidateData
 {
@@ -129,15 +129,17 @@ struct VariationDeNiveauxDeStockKey
 };
 
 // Safe concurrent insertion
-struct VariationDeNiveauxDeStockData
+
+template<typename Key, typename Value>
+struct ConcurrentInsertionMap
 {
 private:
-    std::map<VariationDeNiveauxDeStockKey, double> map;
+    std::map<Key, Value> map;
     mutable std::mutex mutex;
 
 public:
     // Insert a key-value pair into the map
-    void insert(const VariationDeNiveauxDeStockKey& key, const double& value)
+    void insert(const Key& key, const Value& value)
     {
         std::lock_guard<std::mutex> lock(mutex);
         map[key] = value;
@@ -153,6 +155,8 @@ public:
         return map.end();
     }
 };
+
+typedef ConcurrentInsertionMap<VariationDeNiveauxDeStockKey, double> VariationDeNiveauxDeStockData;
 
 struct ProblemData
 {

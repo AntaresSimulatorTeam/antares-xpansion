@@ -12,9 +12,9 @@
 #include "antares-xpansion/benders/benders_core/WorkerMaster.h"
 #include "antares-xpansion/helpers/Timer.h"
 
-int totalSimplexIter = 0;
-double totalSubPbTimer = 0;
-double totalPbModifTimer = 0;
+std::atomic<int> totalSimplexIter = 0;
+std::atomic<double> totalSubPbTimer = 0;
+std::atomic<double> totalPbModifTimer = 0;
 
 /// @brief Constructor
 /// @param logger Logger
@@ -298,6 +298,11 @@ std::map<int, AreaConstraintMaps> ValeursUsage::GenerateRHSGridValues(
     std::getline(file, line); // Skip header
     while (std::getline(file, line))
     {
+        if (line.empty())
+        {
+            continue;
+        }
+
         std::stringstream ss(line);
         std::string token;
 
@@ -486,6 +491,7 @@ void ValeursUsage::launch()
     auto run_time = run_timer.elapsed();
     std::cout << "Stock level variation done in " << run_time << " seconds and " << totalSimplexIter
               << " simplex iterations" << std::endl;
-    std::cout << "Time solving subproblems : " << totalSubPbTimer << " seconds" << std::endl;
+    std::cout << "Time solving subproblems (accumulated by each thread) : " << totalSubPbTimer
+              << " seconds" << std::endl;
     WriteOutput();
 }

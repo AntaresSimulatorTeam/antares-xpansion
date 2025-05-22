@@ -80,7 +80,7 @@ TEST_F(GridSearchTest, MPSUseCaseValeursUsage)
     copyData();
 
     auto valeurs_usage = ValeursUsage(logger, writer, tmpDir, ProblemsFormat::MPS_FILE);
-
+    valeurs_usage.setThreads(8);
     valeurs_usage.launch();
 
     auto output_costs = getOutputCosts();
