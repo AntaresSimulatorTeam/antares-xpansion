@@ -117,22 +117,6 @@ double MergeMasterTrajectoryMPS::CandidateCosts::get(CandidateVariableType t) co
     }
 }
 
-MergeMasterTrajectoryMPS::NodeLpDataLocation::NodeLpDataLocation(
-    const Json::Value& data
-)
-{
-    using namespace MasterStructureKeys;
-    lp_folder = data[KEY_LP_FOLDER].asString();
-    if (data.isMember(KEY_MASTER_MPS_FILE))
-    {   
-        master = data[KEY_MASTER_MPS_FILE].asString();
-    }
-    if (data.isMember(KEY_STRUCTURE_FILE))
-    {    
-        structure = data[KEY_STRUCTURE_FILE].asString();
-    }
-}
-
 MergeMasterTrajectoryMPS::TrajectoryConstraint::TrajectoryConstraint(const Json::Value& data)
 {
     using namespace MasterStructureKeys;
@@ -641,9 +625,9 @@ void MergeMasterTrajectoryMPS::launch()
     logger_->display_message("Parsing structure file at " + std::string(tree_path_));
     read_tree_structure_file();
     logger_->display_message("Parsing nodal lp folder data at " + std::string(lp_reference_file_filepath));
-    read_node_lp_pathes();
+    nodes_lp_pathes_ = LpDataLocationLoader::parse_nodal_lp_location_file(lp_reference_file_filepath);
 
     build_problem();
-    // To be changed
+    // Name to be changed
     export_problem("log_merged", true);
 }

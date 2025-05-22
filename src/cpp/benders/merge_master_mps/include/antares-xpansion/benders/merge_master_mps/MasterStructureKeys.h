@@ -32,9 +32,6 @@ constexpr char KEY_OPERATOR[] = "operator";
 constexpr char KEY_TREE[] = "tree";
 // Keys found inside each node's data :
 constexpr char KEY_INVESTMENT_DATE[] = "investment_date";
-constexpr char KEY_LP_FOLDER[] = "lp_folder";
-constexpr char KEY_MASTER_MPS_FILE[] = "master_mps_file";
-constexpr char KEY_STRUCTURE_FILE[] = "structure_file";
 constexpr char KEY_MASTER_NAME[] = "master_name";
 constexpr char KEY_PARENT[] = "parent";
 constexpr char KEY_WEIGHT_FACTOR[] = "weight_factor";
@@ -43,8 +40,16 @@ constexpr char KEY_CANDIDATES[] = "candidates_costs";
 // Forbidden name for a node :
 constexpr char ROOT_NAME[] = "root";
 
+
+// NodeLpDataLocation keys 
+constexpr char KEY_LP_FOLDER[] = "lp_folder";
+constexpr char KEY_MASTER_MPS_FILE[] = "master_mps_file";
+constexpr char KEY_STRUCTURE_FILE[] = "structure_file";
+constexpr char KEY_WEIGHTS_FILE[] = "weights_file";
+
 // Default name of the master problem for each node
 // Used when accessing the structure file (CouplingMap)
 constexpr char DEFAULT_MASTER_NAME[] = "master";
 constexpr char DEFAULT_STRUCTURE_FILE[] = "structure.txt";
+constexpr char DEFAULT_WEIGHTS_FILE[] = "weights.txt";
 } // namespace MasterStructureKeys

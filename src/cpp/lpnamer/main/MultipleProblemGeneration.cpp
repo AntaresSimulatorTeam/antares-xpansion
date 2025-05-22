@@ -7,7 +7,7 @@ namespace
     void check_format(const std::vector<std::string>& split)
     {
         const std::string file_format_error{
-            "Pathes file should have two columns separated by ' ' : \n "
+            "paths file should have two columns separated by ' ' : \n "
             "node_study_name1 path/to/archive \n"
             "node_study_name2 or/path/to/output \n"
             "node_study_name3 or/path/to/study"
@@ -41,7 +41,7 @@ void MultipleProblemGeneration::load_input_pathes()
     }
     output_filepath_ = split[1];
 
-    // Nodal studies input pathes
+    // Nodal studies input paths
     while (std::getline(f, line))
     {
         // Quick and dirty, perhaps not very robust ?

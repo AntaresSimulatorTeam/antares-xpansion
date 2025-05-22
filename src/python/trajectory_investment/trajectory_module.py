@@ -72,7 +72,7 @@ class TrajectoryModule:
             print(f" - Discount rate : {self.discount_rate}")
             print(f" - First investment year : {self.first_investment_date}")
             print(f" - End of horizon : {self.end_of_horizon}")
-            print(f" - Study pathes : {self.studies}")
+            print(f" - Study paths : {self.studies}")
 
     class Tree(BaseModel):
         node_name: str = Field(alias=InKeys.node_key())

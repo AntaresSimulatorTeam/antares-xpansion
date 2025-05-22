@@ -11,7 +11,7 @@ public:
     */
     void run_generation();
     /*
-        Parse a list of pathes provided by the user in the form of a text file with two columns
+        Parse a list of paths provided by the user in the form of a text file with two columns
         output path/to/output/filename 
         node_name1 path/to/archive
         node_name2 or/path/to/output
@@ -22,7 +22,7 @@ public:
     */
     void load_input_pathes();
     /*
-        Writes the lp_folder pathes to a Json file
+        Writes the lp_folder paths to a Json file
     */
     void write_lp_pathes();
 
