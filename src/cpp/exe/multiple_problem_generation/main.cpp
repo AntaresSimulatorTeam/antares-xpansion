@@ -1,17 +1,6 @@
 #include <iostream>
 
 #include "antares-xpansion/lpnamer/main/MultipleProblemGeneration.h"
-#include "antares-xpansion/lpnamer/main/ProblemGenerationExeOptions.h"
-#include "antares-xpansion/xpansion_interfaces/StringManip.h"
-
-
-
-#include <json/writer.h>
-
-
-
-
-
 
 int main(int argc, char** argv)
 {

@@ -15,11 +15,11 @@ class TrajectoryInputKeys:
     @staticmethod
     def first_investment_date_key():
         return "first_investment_year"
-    
+
     @staticmethod
     def end_of_horizon_key():
         return "end_of_horizon"
-    
+
     @staticmethod
     def forbid_retirement_key():
         return "forbid_retirement"
@@ -152,7 +152,7 @@ class TrajectoryOuputKeys:
     @staticmethod
     def parent_key():
         return "parent"
-    
+
     @staticmethod
     def node_weight_key():
         return "node_weight"
@@ -173,9 +173,8 @@ class TrajectoryOuputKeys:
     @staticmethod
     def retirement_cost_key():
         return "retirement"
-    
+
     # Metadata
     @staticmethod
     def metadata_key():
         return "metadata"
-

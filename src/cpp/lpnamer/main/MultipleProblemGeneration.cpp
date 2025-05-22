@@ -51,6 +51,21 @@ void MultipleProblemGeneration::load_input_pathes()
     }
 }
 
+void MultipleProblemGeneration::run_generation()
+{
+    
+    for (const auto& [node, input_path] : node_to_input_path_)
+    {
+        auto individual_options = ProblemGenerationExeOptions(options_);
+        individual_options.setRelevantPath(input_path);
+        auto pbg = ProblemGeneration(individual_options);
+        std::filesystem::path output_folder = pbg.updateProblems();
+
+        node_to_lp_folder_[node] = output_folder / "lp/";
+        std::cout << "Successfully generated lp_folder and files for problem : " << node << std::endl;
+    }
+}
+
 void MultipleProblemGeneration::write_lp_pathes()
 {
     // Could be linked with the same constant defined in merge_master_mps/MasterStructureKeys.h
@@ -69,19 +84,4 @@ void MultipleProblemGeneration::write_lp_pathes()
     std::ofstream outputFileStream(output_filepath_);
     writer->write(output, &outputFileStream);
     std::cout << "Successfully written lp_pathes to file : " << std::string(output_filepath_) << std::endl;
-}
-
-void MultipleProblemGeneration::run_generation()
-{
-    
-    for (const auto& [node, input_path] : node_to_input_path_)
-    {
-        auto individual_options = ProblemGenerationExeOptions(options_);
-        individual_options.setRelevantPath(input_path);
-        auto pbg = ProblemGeneration(individual_options);
-        std::filesystem::path output_folder = pbg.updateProblems();
-
-        node_to_lp_folder_[node] = output_folder / "lp/";
-        std::cout << "Successfully generated lp_folder and files for problem : " << node << std::endl;
-    }
 }

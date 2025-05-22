@@ -373,6 +373,9 @@ void MergeMasterTrajectoryMPS::build_problem()
         }
     }
 
+    const std::filesystem::path structure_file = std::filesystem::path(options_.OUTPUTROOT) / "structure.txt";
+    CouplingMapGenerator::WriteCouplingMap(structure_, structure_file, logger_.get());
+
     // Add the delta variables and the constraints that define them
     add_delta_variables();
     logger_->display_message("Delta Variables added successfully");

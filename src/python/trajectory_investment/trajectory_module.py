@@ -474,11 +474,11 @@ class TrajectoryModule:
         """
         Prints a summary of the data in the console.
         """
-        parser.global_data.print()
+        self.global_data.print()
         print("--------")
-        parser.tree.print("")
+        self.tree.print("")
         print("--------")
-        for _, node in parser.nodes.items():
+        for _, node in self.nodes.items():
             node.print()
             print("---")
 
@@ -522,4 +522,6 @@ parser.verify_constraint_variable_reference()
 parser.verify_tree_investment_dates()
 parser.verify_tree_probabilities()
 parser.verify_nodes_candidates_types()
-parser.write_merger_json("merge_master_test/simple_tree_from_studies/output/master_structure_outputed.json")
+parser.write_merger_json(
+    "merge_master_test/simple_tree_from_studies/output/master_structure_outputed.json"
+)
