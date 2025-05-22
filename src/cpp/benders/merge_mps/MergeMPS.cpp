@@ -16,7 +16,8 @@ AbstractMergeMPS::AbstractMergeMPS(MergeMPSOptions options,
     writer_(std::move(writer)),
     options_(std::move(options)),
     logger_(std::move(logger)),
-    factory_()
+    factory_(),
+    solver_io_()
 {
     if (options_.SOLVER_NAME == "COIN")
     {
@@ -24,8 +25,9 @@ AbstractMergeMPS::AbstractMergeMPS(MergeMPSOptions options,
     }
 
     ptr_merged_solver_ = factory_.create_solver(options_.SOLVER_NAME);
-
     ptr_merged_solver_->set_output_log_level(options_.LOG_LEVEL);
+
+    solver_io_.configure(options_.SOLVER_NAME, options_.PROBLEMS_FORMAT);
 }
 
 /**
@@ -44,20 +46,15 @@ SolverAbstract::Ptr AbstractMergeMPS::get_local_solver(const std::filesystem::pa
     const auto filepath = root_dir / filename;
     if (!std::filesystem::exists(filepath))
     {
-        std::cerr << "Trying to load problem file '" << std::string(filepath) << "' which does not exist.";
+        std::cerr << "Could not find '" << std::string(filepath) << "'. Exiting program.";
         std::exit(1);
     }
+
     SolverAbstract::Ptr ptr_solver = factory_.create_solver(options_.SOLVER_NAME);
     ptr_solver->set_output_log_level(options_.LOG_LEVEL);
-    if (options_.PROBLEMS_FORMAT == ProblemsFormat::MPS_FILE)
-    {
-        ptr_solver->read_prob_mps(filepath);
-    }
-    if (options_.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE)
-    {
-        ptr_solver->restore_prob(filepath);
-    }
-    
+
+    solver_io_.read(ptr_solver.get(), filepath);
+
     return ptr_solver;
 }
 
@@ -142,8 +139,8 @@ void AbstractMergeMPS::export_problem(std::string filename, bool export_lp)
 {
     const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
     logger_->display_message("Problems merged.");
-    logger_->display_message("Writing mps file");
-    ptr_merged_solver_->write_prob_mps(output_root / (filename + MPS_SUFFIX));
+    logger_->display_message("Writing merged file");
+    solver_io_.write(ptr_merged_solver_.get(), output_root / filename);
 
     if (export_lp)
     {

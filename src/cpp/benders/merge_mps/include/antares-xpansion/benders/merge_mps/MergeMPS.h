@@ -2,6 +2,7 @@
 
 #include <optional>
 
+#include "antares-xpansion/benders/benders_core/SolverIO.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 #include "antares-xpansion/helpers/solver_utils.h"
@@ -34,6 +35,7 @@ protected:
     Logger logger_;
 
     const SolverFactory factory_;
+    SolverIO solver_io_;
     SolverAbstract::Ptr ptr_merged_solver_;
 };
 
