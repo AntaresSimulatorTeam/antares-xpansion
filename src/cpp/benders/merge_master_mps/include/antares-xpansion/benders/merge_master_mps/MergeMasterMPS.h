@@ -90,7 +90,6 @@ public:
 
         std::string name;
 
-        std::string master_name = MasterStructureKeys::DEFAULT_MASTER_NAME;
         std::optional<std::string> parent{std::nullopt};
 
         // Stores the costs of each candidates' three associated variable at this node.

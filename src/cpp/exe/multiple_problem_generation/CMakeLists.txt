@@ -16,9 +16,7 @@ add_executable (multiple_problem_generation
 
 target_link_libraries (multiple_problem_generation
 		PRIVATE
-		${PROJECT_NAME}::lp_namer_input_reader
-		${PROJECT_NAME}::problem_generation_main
-		${PROJECT_NAME}::lp_namer_helper
+		${PROJECT_NAME}::multiple_problem_generation_lib
 )
 
 install(TARGETS multiple_problem_generation DESTINATION bin)

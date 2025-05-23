@@ -4,10 +4,12 @@
 #include "antares-xpansion/benders/logger/User.h"
 
 constexpr char MERGE_WEIGHTS_CONTEXT[] = "Trajectory Merged Weights Generation";
+constexpr char WEIGHT_SUM_KEY[] = "WEIGHT_SUM";
 
 class MergeWeightsTrajectory
 {
-
+private:
+    typedef std::map<std::string, double> WeightsMap;
 public:
     MergeWeightsTrajectory(const std::filesystem::path& master_structure, 
                            const std::filesystem::path& nodal_file,
@@ -19,8 +21,10 @@ public:
         logger_(std::move(logger))
     {
     };
-
+    
+    void load_input_files();
     void generate_merged_weights_file();
+    void write_merged_weights_file() const ;
 
 private:
     std::filesystem::path master_structure_file_;
@@ -29,4 +33,7 @@ private:
 
     Logger logger_;
     NodesToLpDataLocationMap nodes_lp_paths_;
+    WeightsMap nodes_weights_;
+
+    WeightsMap merged_subproblem_weights_;
 };

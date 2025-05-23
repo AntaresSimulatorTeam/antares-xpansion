@@ -181,12 +181,6 @@ MergeMasterTrajectoryMPS::TrajectoryNode::TrajectoryNode(const std::string& node
         }
     }
 
-    // If a MASTER_NAME is given, set it (used when accesing the structure file)
-    if (data.isMember(KEY_MASTER_NAME))
-    {
-        master_name = data[KEY_MASTER_NAME].asString();
-    }
-
     // Pointing each candidate to its associated costs structure
     for (const auto& candidate_name: data[KEY_CANDIDATES].getMemberNames())
     {
@@ -320,7 +314,7 @@ void MergeMasterTrajectoryMPS::build_problem()
           logger_.get());
 
         // Second step : get the candidate's position in the merged problem
-        for (const auto& [candidate_name, _]: node_coupling_map[node_data.master_name])
+        for (const auto& [candidate_name, _]: node_coupling_map[MasterStructureKeys::DEFAULT_MASTER_NAME])
         {
             std::string candidate_name_prefixed = varPrefix_local + candidate_name;
             int new_index = ptr_merged_solver_->get_col_index(candidate_name_prefixed);
@@ -344,7 +338,7 @@ void MergeMasterTrajectoryMPS::build_problem()
         // Third step : add the subproblem coupling to the merged structure
         for (const auto& [subproblem, positions]: node_coupling_map)
         {
-            if (subproblem == node_data.master_name)
+            if (subproblem == MasterStructureKeys::DEFAULT_MASTER_NAME)
             {
                 continue;
             }
@@ -625,7 +619,7 @@ void MergeMasterTrajectoryMPS::launch()
     logger_->display_message("Parsing structure file at " + std::string(tree_path_));
     read_tree_structure_file();
     logger_->display_message("Parsing nodal lp folder data at " + std::string(lp_reference_file_filepath));
-    nodes_lp_pathes_ = LpDataLocationLoader::parse_nodal_lp_location_file(lp_reference_file_filepath);
+    nodes_lp_pathes_ = LpDataLocationManager::parse_nodal_lp_location_file(lp_reference_file_filepath);
 
     build_problem();
     // Name to be changed

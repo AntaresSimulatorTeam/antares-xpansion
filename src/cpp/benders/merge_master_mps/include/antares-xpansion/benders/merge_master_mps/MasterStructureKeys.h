@@ -2,6 +2,8 @@
 
 namespace MasterStructureKeys
 {
+// Metadata
+constexpr char KEY_METADATA[] = "metadata";
 
 // Types of candidates variables
 constexpr char VARIABLE_X[] = "x";
@@ -17,12 +19,6 @@ constexpr char CONSTRAINT_GEQ[] = ">";
 constexpr char KEY_INITIAL_CAPACITIES[] = "initial_capacities";
 constexpr char KEY_DEFAULT[] = "default";
 
-// Candidates costs
-constexpr char KEY_CANDIDATES_TYPES[] = "candidates_types";
-constexpr char KEY_OPERATION_COST[] = "operation_maintenance";
-constexpr char KEY_INVESTMENT_COST[] = "investment";
-constexpr char KEY_RETIREMENT_COST[] = "retirement";
-
 // Constraints
 constexpr char KEY_CONSTRAINTS[] = "constraints";
 constexpr char KEY_COEFFICIENTS[] = "coeffs";
@@ -32,10 +28,14 @@ constexpr char KEY_OPERATOR[] = "operator";
 constexpr char KEY_TREE[] = "tree";
 // Keys found inside each node's data :
 constexpr char KEY_INVESTMENT_DATE[] = "investment_date";
-constexpr char KEY_MASTER_NAME[] = "master_name";
+constexpr char KEY_NODE_WEIGHT[] = "node_weight";
 constexpr char KEY_PARENT[] = "parent";
 constexpr char KEY_WEIGHT_FACTOR[] = "weight_factor";
 constexpr char KEY_CANDIDATES[] = "candidates_costs";
+// Candidates costs
+constexpr char KEY_OPERATION_COST[] = "operation_maintenance";
+constexpr char KEY_INVESTMENT_COST[] = "investment";
+constexpr char KEY_RETIREMENT_COST[] = "retirement";
 
 // Forbidden name for a node :
 constexpr char ROOT_NAME[] = "root";

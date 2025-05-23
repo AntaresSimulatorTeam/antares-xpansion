@@ -71,5 +71,7 @@ public:
     std::filesystem::path getRelevantPath() const;
     // Sets the relevant path (should be the only non-empty one before changing the value)
     void setRelevantPath(const std::filesystem::path& path);
+
+    void setWeightsFilePath(const std::filesystem::path& path){weights_file_ = path;};
 };
 #endif // ANTARES_XPANSION_SRC_CPP_LPNAMER_MAIN_INCLUDE_PROBLEMGENERATIONEXEOPTIONS_H

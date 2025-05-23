@@ -21,7 +21,7 @@ int main(int argc, char** argv)
 
         Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
 
-        logger->display_message("Starting MergeWeightsTrajectory : generating a merged weight file",
+        logger->display_message("Starting MergeWeightsTrajectory : Generating a merged weight file",
                                 LogUtils::LOGLEVEL::INFO,
                                 MERGE_WEIGHTS_CONTEXT);
 
@@ -32,7 +32,9 @@ int main(int argc, char** argv)
             logger
         );
 
+        merged_weights_generator.load_input_files();
         merged_weights_generator.generate_merged_weights_file();
+        merged_weights_generator.write_merged_weights_file();
         
         return 0;
     }
