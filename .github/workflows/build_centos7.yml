@@ -2,6 +2,9 @@ name: Centos7 Build
 
 on:
   merge_group:
+  pull_request:
+    branches:
+      - dependabot/*
   push:
     branches:
       - develop
