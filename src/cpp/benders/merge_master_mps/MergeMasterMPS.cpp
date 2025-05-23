@@ -660,13 +660,13 @@ void MergeMasterTrajectoryMPS::add_coupling_constraints()
  */
 void MergeMasterTrajectoryMPS::launch()
 {
-    logger_->display_message("Parsing structure file at " + std::string(tree_path_),
+    logger_->display_message("Parsing structure file at " + tree_path_.string(),
                              LogUtils::LOGLEVEL::INFO,
                              TRAJECTORY_LOGGER_CONTEXT);
     read_tree_structure_file();
 
     logger_->display_message("Parsing nodal lp folder data at "
-                               + std::string(lp_reference_file_filepath_),
+                               + lp_reference_file_filepath_.string(),
                              LogUtils::LOGLEVEL::INFO,
                              TRAJECTORY_LOGGER_CONTEXT);
     read_node_lp_paths();

@@ -71,15 +71,17 @@ void MultipleProblemGeneration::write_lp_paths()
     Json::Value output;
     for (const auto& [name, lp_folder]: node_to_lp_folder_)
     {
-        output[name][KEY_LP_FOLDER] = std::string(lp_folder);
+        output[name][KEY_LP_FOLDER] = lp_folder.string();
     }
 
     Json::StreamWriterBuilder builder;
     builder["commentStyle"] = "None";
     builder["indentation"] = "   ";
     std::unique_ptr<Json::StreamWriter> writer(builder.newStreamWriter());
+
     std::ofstream outputFileStream(output_filepath_);
     writer->write(output, &outputFileStream);
-    std::cout << "Successfully written lp_paths to file : " << std::string(output_filepath_)
+    std::cout << "Successfully written lp_paths to file : " << output_filepath_.string()
               << std::endl;
+    outputFileStream.close();
 }

@@ -46,7 +46,7 @@ SolverAbstract::Ptr AbstractMergeMPS::get_local_solver(const std::filesystem::pa
     const auto filepath = root_dir / filename;
     if (!std::filesystem::exists(filepath))
     {
-        std::cerr << "Could not find '" << std::string(filepath) << "'. Exiting program.";
+        std::cerr << "Could not find '" << filepath.string() << "'. Exiting program.";
         std::exit(1);
     }
 
