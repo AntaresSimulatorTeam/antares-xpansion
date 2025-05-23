@@ -367,7 +367,7 @@ void MergeMasterTrajectoryMPS::build_problem()
                 continue;
             }
 
-            std::string subproblem_path = nodal_lp.lp_folder / subproblem;
+            const std::string subproblem_path = (nodal_lp.lp_folder / subproblem).string();
             for (const auto& [candidate_name, position]: positions)
             {
                 const std::string candidate_name_prefixed = varPrefix_local + candidate_name;

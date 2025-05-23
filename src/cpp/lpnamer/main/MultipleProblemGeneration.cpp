@@ -81,7 +81,6 @@ void MultipleProblemGeneration::write_lp_paths()
 
     std::ofstream outputFileStream(output_filepath_);
     writer->write(output, &outputFileStream);
-    std::cout << "Successfully written lp_paths to file : " << output_filepath_.string()
-              << std::endl;
+    std::cout << "Successfully written lp_paths to file : " << output_filepath_ << std::endl;
     outputFileStream.close();
 }
