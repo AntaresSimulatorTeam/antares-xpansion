@@ -43,17 +43,10 @@ SolverAbstract::Ptr AbstractMergeMPS::get_local_solver(const std::filesystem::pa
     /**
      * Limitation: on windows may not support master problem with full path as name
      */
-    const auto filepath = root_dir / filename;
-    if (!std::filesystem::exists(filepath))
-    {
-        std::cerr << "Could not find '" << filepath.string() << "'. Exiting program.";
-        std::exit(1);
-    }
-
     SolverAbstract::Ptr ptr_solver = factory_.create_solver(options_.SOLVER_NAME);
     ptr_solver->set_output_log_level(options_.LOG_LEVEL);
 
-    solver_io_.read(ptr_solver.get(), filepath);
+    solver_io_.read(ptr_solver.get(), root_dir / filename);
 
     return ptr_solver;
 }
