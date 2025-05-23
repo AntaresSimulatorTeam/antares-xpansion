@@ -1,7 +1,7 @@
 name: Ubuntu CI full build
 
 on:
-  pull_request:
+  repository_dispatch:
     branches:
       - dependabot/*
   push:

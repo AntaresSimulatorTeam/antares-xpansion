@@ -2,7 +2,7 @@ name: Windows build
 
 on:
   merge_group:
-  pull_request:
+  repository_dispatch:
     branches:
       - dependabot/*
   push:

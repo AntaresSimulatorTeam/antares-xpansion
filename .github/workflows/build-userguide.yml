@@ -1,13 +1,15 @@
 name: Build Userguide pdf
 
 on:
+  repository_dispatch:
+    branches:
+      - dependabot/*
   push:
     branches:
       - main
       - develop
       - doc
       - test
-      - dependabot/*
   release:
     types: [ created ]
 
