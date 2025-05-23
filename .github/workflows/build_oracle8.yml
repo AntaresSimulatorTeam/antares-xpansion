@@ -2,7 +2,7 @@ name: Oracle 8 Build
 
 on:
   merge_group:
-  pull_request:
+  repository_dispatch:
     branches:
       - dependabot/*
   push:
