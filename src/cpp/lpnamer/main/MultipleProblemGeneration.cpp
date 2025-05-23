@@ -58,6 +58,7 @@ void MultipleProblemGeneration::run_generation()
         std::filesystem::path output_folder = pbg.updateProblems();
 
         node_to_lp_folder_[node] = output_folder / "lp/";
+        // TODO Output to logger
         std::cout << "Successfully generated lp_folder and files for problem : " << node
                   << std::endl;
     }
@@ -81,6 +82,7 @@ void MultipleProblemGeneration::write_lp_paths()
 
     std::ofstream outputFileStream(output_filepath_);
     writer->write(output, &outputFileStream);
+    // TODO Output to logger
     std::cout << "Successfully written lp_paths to file : " << output_filepath_ << std::endl;
     outputFileStream.close();
 }

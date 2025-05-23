@@ -1,6 +1,7 @@
 #include "antares-xpansion/benders/merge_master_mps/MergeMasterMPS.h"
 
 #include <filesystem>
+#include <fmt/format.h>
 #include <numeric>
 #include <utility>
 
@@ -14,47 +15,50 @@ MergeMasterTrajectoryMPS::CandidateVariableType MergeMasterTrajectoryMPS::parse_
   const std::string& s)
 {
     using namespace MasterStructureKeys;
-    if (s == VARIABLE_X)
+
+    static const std::map<const char*, CandidateVariableType> look_up_table{
+      {VARIABLE_X, CandidateVariableType::CAPACITY},
+      {VARIABLE_DX_PLUS, CandidateVariableType::DX_PLUS},
+      {VARIABLE_DX_MINUS, CandidateVariableType::DX_MINUS},
+    };
+
+    const auto found = look_up_table.find(s.c_str());
+    if (found == look_up_table.end())
     {
-        return CandidateVariableType::CAPACITY;
-    }
-    else if (s == VARIABLE_DX_PLUS)
-    {
-        return CandidateVariableType::DX_PLUS;
-    }
-    else if (s == VARIABLE_DX_MINUS)
-    {
-        return CandidateVariableType::DX_MINUS;
-    }
-    else
-    {
-        std::cerr << LOGLOCATION << "Candidate variable type should be : " << VARIABLE_X << " or "
-                  << VARIABLE_DX_PLUS << " or " << VARIABLE_DX_MINUS << std::endl;
+        std::cerr << LOGLOCATION
+                  << fmt::format("Candidate variable type '{}' should be one of [", s);
+        for (const auto& key: look_up_table | std::views::keys)
+        {
+            std::cerr << key << ", ";
+        }
+        std::cerr << "]" << std::endl;
         std::exit(1);
     }
+    return found->second;
 }
 
 char MergeMasterTrajectoryMPS::parse_constraint_type(const std::string& s)
 {
     using namespace MasterStructureKeys;
-    if (s == CONSTRAINT_EQUALS)
+
+    static const std::map<const char*, char> look_up_table{
+      {CONSTRAINT_EQUALS, 'E'},
+      {CONSTRAINT_GEQ, 'G'},
+      {CONSTRAINT_LEQ, 'L'},
+    };
+
+    const auto found = look_up_table.find(s.c_str());
+    if (found == look_up_table.end())
     {
-        return 'E';
-    }
-    else if (s == CONSTRAINT_GEQ)
-    {
-        return 'G';
-    }
-    else if (s == CONSTRAINT_LEQ)
-    {
-        return 'L';
-    }
-    else
-    {
-        std::cerr << LOGLOCATION << "Constraint type should be : " << CONSTRAINT_EQUALS << " or "
-                  << CONSTRAINT_GEQ << " or " << CONSTRAINT_LEQ << std::endl;
+        std::cerr << LOGLOCATION << fmt::format("Constraint type '{}' should be one of [", s);
+        for (const auto& key: look_up_table | std::views::keys)
+        {
+            std::cerr << key << ", ";
+        }
+        std::cerr << "]" << std::endl;
         std::exit(1);
     }
+    return found->second;
 }
 
 int MergeMasterTrajectoryMPS::VariablePositions::get(CandidateVariableType t) const
@@ -103,18 +107,24 @@ MergeMasterTrajectoryMPS::CandidateCosts::CandidateCosts(const Json::Value& data
 
 double MergeMasterTrajectoryMPS::CandidateCosts::get(CandidateVariableType t) const
 {
+    double ret;
+
     switch (t)
     {
     case CandidateVariableType::CAPACITY:
-        return operation_maintenance;
+        ret = operation_maintenance;
+        break;
     case CandidateVariableType::DX_PLUS:
-        return investment;
+        ret = investment;
+        break;
     case CandidateVariableType::DX_MINUS:
-        return retirement;
+        ret = retirement;
+        break;
     default:
         // Perhaps throw an error ?
         return 0.0;
     }
+    return ret;
 }
 
 MergeMasterTrajectoryMPS::NodeLpDataLocation::NodeLpDataLocation(const Json::Value& data)
@@ -289,8 +299,10 @@ void MergeMasterTrajectoryMPS::build_problem()
     logger_->display_message("Inside MergeMasterTrajectoryMPS::build_problem()",
                              LogUtils::LOGLEVEL::INFO,
                              TRAJECTORY_LOGGER_CONTEXT);
+
     // Check that the problem format is compatible with the solver
-    if (options_.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE && options_.SOLVER_NAME != "Xpress")
+    if (options_.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE
+        && StringManip::StringUtils::ToLowercase(options_.SOLVER_NAME) != "xpress")
     {
         std::cerr << LOGLOCATION << "Invalid solver used with the saved file format"
                   << options_.SOLVER_NAME << "\n"
@@ -495,7 +507,7 @@ void MergeMasterTrajectoryMPS::add_delta_variables_constraints()
     {
         const std::string& node_name = node_data.name;
 
-        if (node_data.parent == std::nullopt)
+        if (!node_data.parent.has_value())
         {
             for (const auto& [candidate, _]: candidates_coupling_)
             {

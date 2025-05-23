@@ -1,3 +1,6 @@
+#pragma once
+
+#include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "antares-xpansion/lpnamer/main/ProblemGeneration.h"
 #include "antares-xpansion/lpnamer/main/ProblemGenerationExeOptions.h"
 
@@ -7,6 +10,10 @@ public:
     explicit MultipleProblemGeneration(ProblemGenerationExeOptions& options):
         options_(options)
     {
+        // TODO Add logger like in problem generation
+        // logger_ = ProblemGenerationLog::BuildLogger(log_file_path,
+        //                                             std::cout,
+        //                                             "Multi-Problem Generation"s);
     }
 
     virtual ~MultipleProblemGeneration() = default;
@@ -36,4 +43,5 @@ private:
     NodeToPathMap node_to_lp_folder_;
     std::filesystem::path output_filepath_;
     const ProblemGenerationExeOptions& options_;
+    // ProblemGenerationLog::ProblemGenerationLogger logger_;
 };
