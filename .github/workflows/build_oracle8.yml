@@ -75,20 +75,16 @@ jobs:
         with:
           submodules: true
 
-      - name: Set up Python
-        run: |
-          dnf update -y
-          dnf install -y python3 python3-pip
-          pip3 install wheel #Too late to install in requirements.txt
-          pip3 install -r requirements-tests.txt
-
-      # the default python version (3.6) is too old to download xpress with pip
-      # this version of miniconda embeds python3.8
-      - name: Set up conda
-        run: |
-          wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.5.1-0-Linux-x86_64.sh
-          bash Miniconda3-py38_23.5.1-0-Linux-x86_64.sh -b -p /root/miniconda3
-          rm -f Miniconda3-py38_23.5.1-0-Linux-x86_64.sh
+      - uses: actions/setup-python@v5.6.0
+        with:
+          python-version: 3.8
+          cache: 'pip'
+          cache-dependency-path: |
+            requirements*.txt
+      - run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install -r requirements-tests.txt
 
       - name: Set-up Xpress with pip for Oracle 8
         shell: bash
