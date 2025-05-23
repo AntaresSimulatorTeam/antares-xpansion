@@ -160,7 +160,7 @@ TEST_F(MergeMPSTest, only_master_identical_to_merged)
     EXPECT_EQ(lastSolution.problem_status, "OPTIMAL");
 
     EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.mps"s));
-    EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
+    EXPECT_TRUE(!std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
 
     SolverFactory factory;
     auto merged = factory.create_solver("CBC");
@@ -239,7 +239,7 @@ ENDATA)";
     EXPECT_EQ(lastSolution.problem_status, "OPTIMAL");
 
     EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.mps"s));
-    EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
+    EXPECT_TRUE(!std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
 
     SolverFactory factory;
     auto merged = factory.create_solver("CBC");
@@ -291,7 +291,7 @@ TEST_F(MergeMPSTest, merged_problems_adds_one_coupling_constraint)
     EXPECT_EQ(lastSolution.problem_status, "OPTIMAL");
 
     EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.mps"s));
-    EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
+    EXPECT_TRUE(!std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
 
     SolverFactory factory;
     auto merged = factory.create_solver("CBC");
@@ -327,7 +327,7 @@ TEST_F(MergeMPSTest, merged_problems_lhs_does_not_change)
     EXPECT_EQ(lastSolution.problem_status, "OPTIMAL");
 
     EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.mps"s));
-    EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
+    EXPECT_TRUE(!std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
 
     SolverFactory factory;
     auto merged = factory.create_solver("CBC");
@@ -372,7 +372,7 @@ TEST_F(MergeMPSTest, merged_problems_objective_coeff_are_multiplied_by_factor)
     EXPECT_EQ(lastSolution.problem_status, "OPTIMAL");
 
     EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.mps"s));
-    EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
+    EXPECT_TRUE(!std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
 
     SolverFactory factory;
     auto merged = factory.create_solver("CBC");
@@ -418,7 +418,7 @@ TEST_F(MergeMPSTest, merged_problems_lb_does_not_change)
     EXPECT_EQ(lastSolution.problem_status, "OPTIMAL");
 
     EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.mps"s));
-    EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
+    EXPECT_TRUE(!std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
 
     SolverFactory factory;
     auto merged = factory.create_solver("CBC");
@@ -462,7 +462,7 @@ TEST_F(MergeMPSTest, merged_problems_ub_does_not_change)
     EXPECT_EQ(lastSolution.problem_status, "OPTIMAL");
 
     EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.mps"s));
-    EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
+    EXPECT_TRUE(!std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
 
     SolverFactory factory;
     auto merged = factory.create_solver("CBC");
@@ -506,7 +506,7 @@ TEST_F(MergeMPSTest, merged_problems_rhs_values_does_not_change)
     EXPECT_EQ(lastSolution.problem_status, "OPTIMAL");
 
     EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.mps"s));
-    EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
+    EXPECT_TRUE(!std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
 
     SolverFactory factory;
     auto merged = factory.create_solver("CBC");
@@ -550,7 +550,7 @@ TEST_F(MergeMPSTest, merged_problems_rhs_types_does_not_change)
     EXPECT_EQ(lastSolution.problem_status, "OPTIMAL");
 
     EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.mps"s));
-    EXPECT_TRUE(std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
+    EXPECT_TRUE(!std::filesystem::exists(tmp_dir_ / "log_merged.lp"s));
 
     SolverFactory factory;
     auto merged = factory.create_solver("CBC");
