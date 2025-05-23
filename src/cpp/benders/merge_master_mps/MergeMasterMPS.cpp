@@ -15,20 +15,20 @@ MergeMasterTrajectoryMPS::CandidateVariableType MergeMasterTrajectoryMPS::parse_
     using namespace MasterStructureKeys;
     if (s == VARIABLE_X)
     {
-        return CandidateVariableType::CAPA;
+        return CandidateVariableType::CAPACITY;
     }
-    else if (s == VARIABLE_DXPLUS)
+    else if (s == VARIABLE_DX_PLUS)
     {
         return CandidateVariableType::DX_PLUS;
     }
-    else if (s == VARIABLE_DXMINUS)
+    else if (s == VARIABLE_DX_MINUS)
     {
         return CandidateVariableType::DX_MINUS;
     }
     else
     {
         std::cerr << LOGLOCATION << "Candidate variable type should be : " << VARIABLE_X << " or "
-                  << VARIABLE_DXPLUS << " or " << VARIABLE_DXMINUS << std::endl;
+                  << VARIABLE_DX_PLUS << " or " << VARIABLE_DX_MINUS << std::endl;
         std::exit(1);
     }
 }
@@ -60,7 +60,7 @@ int MergeMasterTrajectoryMPS::VariablePositions::get(CandidateVariableType t) co
 {
     switch (t)
     {
-    case CandidateVariableType::CAPA:
+    case CandidateVariableType::CAPACITY:
         return capacity;
     case CandidateVariableType::DX_PLUS:
         return dx_plus;
@@ -76,7 +76,7 @@ void MergeMasterTrajectoryMPS::VariablePositions::set(CandidateVariableType t, i
 {
     switch (t)
     {
-    case CandidateVariableType::CAPA:
+    case CandidateVariableType::CAPACITY:
         capacity = i;
         break;
     case CandidateVariableType::DX_PLUS:
@@ -95,7 +95,7 @@ void MergeMasterTrajectoryMPS::VariablePositions::set(CandidateVariableType t, i
 MergeMasterTrajectoryMPS::CandidateCosts::CandidateCosts(const Json::Value& data)
 {
     using namespace MasterStructureKeys;
-    operation_maintenace = data[KEY_OPERATION_COST].asDouble();
+    operation_maintenance = data[KEY_OPERATION_COST].asDouble();
     investment = data[KEY_INVESTMENT_COST].asDouble();
     retirement = data[KEY_RETIREMENT_COST].asDouble();
 }
@@ -104,8 +104,8 @@ double MergeMasterTrajectoryMPS::CandidateCosts::get(CandidateVariableType t) co
 {
     switch (t)
     {
-    case CandidateVariableType::CAPA:
-        return operation_maintenace;
+    case CandidateVariableType::CAPACITY:
+        return operation_maintenance;
     case CandidateVariableType::DX_PLUS:
         return investment;
     case CandidateVariableType::DX_MINUS:
@@ -202,28 +202,29 @@ void MergeMasterTrajectoryMPS::read_tree_structure_file()
         tree_.emplace_back(TrajectoryNode(node_name, node_data));
     }
 
-    logger_->display_message("Master coupling map generated successfully.");
-    logger_->display_message("Number of nodes: " + std::to_string(tree_.size()));
+    logger_->display_message("Master coupling map generated successfully.",
+                             LogUtils::LOGLEVEL::INFO,
+                             TRAJECTORY_LOGGER_CONTEXT);
+    logger_->display_message("Number of nodes: " + std::to_string(tree_.size()),
+                             LogUtils::LOGLEVEL::INFO,
+                             TRAJECTORY_LOGGER_CONTEXT);
 
     // Read the global trajectory data
     trajectory_data_ = TrajectoryGlobalData(raw_input);
 }
 
-void MergeMasterTrajectoryMPS::read_node_lp_pathes()
+void MergeMasterTrajectoryMPS::read_node_lp_paths()
 {
-    const auto raw_input = get_json_file_content(lp_reference_file_filepath);
-    for (const auto& node_name: raw_input.getMemberNames())
-    {
-        const auto& node_lp_path = raw_input[node_name];
-        nodes_lp_pathes_.emplace(std::make_pair(node_name, NodeLpDataLocation(node_lp_path)));
-    }
+    nodes_lp_info_ = LpDataLocationManager::parse_nodal_lp_location_file(
+      lp_reference_file_filepath_);
 }
 
-void MergeMasterTrajectoryMPS::check_nodes_has_lp_folder()
+void MergeMasterTrajectoryMPS::check_nodes_have_lp_folder()
 {
+    // Every node in the tree must have an associated lp_folder in nodes_lp_info_
     for (const auto& node: tree_)
     {
-        if (!nodes_lp_pathes_.contains(node.name))
+        if (!nodes_lp_info_.contains(node.name))
         {
             std::cerr << "Node '" << node.name
                       << "' must appear in in the list of nodal lp folder.";
@@ -249,7 +250,9 @@ double MergeMasterTrajectoryMPS::get_candidate_initial_value(const std::string& 
     else
     {
         logger_->display_message("Did not find candidate " + candidate
-                                 + " 's initial value, looking up key : '" + KEY_DEFAULT + "'");
+                                   + " 's initial value, looking up key : '" + KEY_DEFAULT + "'",
+                                 LogUtils::LOGLEVEL::INFO,
+                                 TRAJECTORY_LOGGER_CONTEXT);
         initial_value = trajectory_data_.initial_capacities.at(KEY_DEFAULT);
     }
 
@@ -258,7 +261,9 @@ double MergeMasterTrajectoryMPS::get_candidate_initial_value(const std::string& 
 
 void MergeMasterTrajectoryMPS::build_problem()
 {
-    logger_->display_message("Inside MergeMasterTrajectoryMPS::build_problem()");
+    logger_->display_message("Inside MergeMasterTrajectoryMPS::build_problem()",
+                             LogUtils::LOGLEVEL::INFO,
+                             TRAJECTORY_LOGGER_CONTEXT);
     // Check that the problem format is compatible with the solver
     if (options_.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE && options_.SOLVER_NAME != "Xpress")
     {
@@ -268,12 +273,15 @@ void MergeMasterTrajectoryMPS::build_problem()
         std::exit(1);
     }
 
-    logger_->display_message("Merging master problems...");
+    logger_->display_message("Merging master problems...",
+                             LogUtils::LOGLEVEL::INFO,
+                             TRAJECTORY_LOGGER_CONTEXT);
 
     for (const auto& node_data: tree_)
     {
         const std::string& node_name = node_data.name;
-        const auto& nodal_lp = nodes_lp_pathes_.at(node_name);
+        const auto& nodal_lp = nodes_lp_info_.at(node_name);
+        const auto lp_folder = std::filesystem::path(options_.INPUTROOT) / nodal_lp.lp_folder;
 
         // The master file should not contain the extension, add what it should be based on the mode
         std::string master_file;
@@ -281,14 +289,15 @@ void MergeMasterTrajectoryMPS::build_problem()
         {
             master_file = nodal_lp.master + SAVE_SUFFIX;
         }
-        if (options_.PROBLEMS_FORMAT == ProblemsFormat::MPS_FILE)
+        else if (options_.PROBLEMS_FORMAT == ProblemsFormat::MPS_FILE)
         {
             master_file = nodal_lp.master + MPS_SUFFIX;
         }
 
-        logger_->display_message(
-          "Trying to load problem at "
-          + std::string(options_.INPUTROOT / nodal_lp.lp_folder / master_file));
+        // Read the problem
+        logger_->display_message("Reading problem " + (lp_folder / nodal_lp.master).string(),
+                                 LogUtils::LOGLEVEL::INFO,
+                                 TRAJECTORY_LOGGER_CONTEXT);
         SolverAbstract::Ptr solver_local = get_local_solver(options_.INPUTROOT / nodal_lp.lp_folder,
                                                             master_file);
         solver_local->set_output_log_level(options_.LOG_LEVEL);
@@ -306,29 +315,22 @@ void MergeMasterTrajectoryMPS::build_problem()
         // Load the coupling map (structure file) for this node
         // It will be used to iterate through the investment candidates in the node and get their
         // position in the merged problem
-        CouplingMap node_coupling_map = CouplingMapGenerator::BuildInput(
-          std::filesystem::path(options_.INPUTROOT) / nodal_lp.lp_folder / nodal_lp.structure,
-          logger_.get());
+        CouplingMap node_coupling_map = CouplingMapGenerator::BuildInput(lp_folder
+                                                                           / nodal_lp.structure,
+                                                                         logger_.get());
 
         // Second step : get the candidate's position in the merged problem
         for (const auto& [candidate_name, _]:
              node_coupling_map[MasterStructureKeys::DEFAULT_MASTER_NAME])
         {
-            std::string candidate_name_prefixed = varPrefix_local + candidate_name;
+            const std::string candidate_name_prefixed = varPrefix_local + candidate_name;
             int new_index = ptr_merged_solver_->get_col_index(candidate_name_prefixed);
             if (new_index == -1)
             {
-                std::cerr << LOGLOCATION << "missing variable " << candidate_name << " in "
-                          << node_name << " supposedly renamed to " << candidate_name_prefixed
-                          << ".";
-                ptr_merged_solver_->write_prob_lp(std::filesystem::path(options_.OUTPUTROOT)
-                                                  / "mergeError.lp");
-                ptr_merged_solver_->write_prob_mps(std::filesystem::path(options_.OUTPUTROOT)
-                                                   / ("mergeError" + MPS_SUFFIX));
-                std::exit(1);
+                terminate_on_missing_variable(node_name, candidate_name, candidate_name_prefixed);
             }
             // Create the VariablePositions entry for this candidate
-            candidates_coupling_[candidate_name][node_name].set(CAPA, new_index);
+            candidates_coupling_[candidate_name][node_name].set(CAPACITY, new_index);
             structure_[MasterStructureKeys::DEFAULT_MASTER_NAME][candidate_name_prefixed]
               = new_index;
         }
@@ -340,10 +342,11 @@ void MergeMasterTrajectoryMPS::build_problem()
             {
                 continue;
             }
-            std::string subproblem_path = nodal_lp.lp_folder / subproblem;
+
+            const std::string subproblem_path = (nodal_lp.lp_folder / subproblem).string();
             for (const auto& [candidate_name, position]: positions)
             {
-                std::string candidate_name_prefixed = varPrefix_local + candidate_name;
+                const std::string candidate_name_prefixed = varPrefix_local + candidate_name;
                 structure_[subproblem_path][candidate_name_prefixed] = position;
             }
         }
@@ -351,20 +354,28 @@ void MergeMasterTrajectoryMPS::build_problem()
 
     const std::filesystem::path structure_file = std::filesystem::path(options_.OUTPUTROOT)
                                                  / "structure.txt";
-    CouplingMapGenerator::WriteCouplingMap(structure_, structure_file, logger_.get());
+    export_structure_file(structure_file, structure_);
 
     // Add the delta variables and the constraints that define them
     add_delta_variables();
-    logger_->display_message("Delta Variables added successfully");
+    logger_->display_message("Delta Variables added successfully",
+                             LogUtils::LOGLEVEL::INFO,
+                             TRAJECTORY_LOGGER_CONTEXT);
 
     add_delta_variables_constraints();
-    logger_->display_message("Delta variables constraints added successfully");
+    logger_->display_message("Delta variables constraints added successfully",
+                             LogUtils::LOGLEVEL::INFO,
+                             TRAJECTORY_LOGGER_CONTEXT);
 
     set_objective_from_data();
-    logger_->display_message("Successfully set the objective according to the data");
+    logger_->display_message("Successfully set the objective according to the data",
+                             LogUtils::LOGLEVEL::INFO,
+                             TRAJECTORY_LOGGER_CONTEXT);
 
     add_coupling_constraints();
-    logger_->display_message("Succesfully added the trajectory constraints");
+    logger_->display_message("Successfully added the trajectory constraints",
+                             LogUtils::LOGLEVEL::INFO,
+                             TRAJECTORY_LOGGER_CONTEXT);
 }
 
 void MergeMasterTrajectoryMPS::add_delta_variables()
@@ -400,17 +411,19 @@ void MergeMasterTrajectoryMPS::add_delta_variables()
         for (auto& [candidate, candidate_data]: candidates_coupling_)
         {
             std::string var_name_prefix = node_prefix + candidate;
+
             // dx_plus
             objective_coefs.push_back(0.0);
             lower_bounds.push_back(0);
-            upper_bounds.push_back(1e20);
+            upper_bounds.push_back(1e20); // TODO Unbound instead of hard coded
             col_types.push_back('C');
             col_names.push_back(var_name_prefix + "_dx_plus");
             int dx_plus_position = n_var_previous + objective_coefs.size() - 1;
+
             // dx_minus
             objective_coefs.push_back(0.0);
             lower_bounds.push_back(0);
-            upper_bounds.push_back(1e20);
+            upper_bounds.push_back(1e20); // TODO Unbound instead of hard coded
             col_types.push_back('C');
             col_names.push_back(var_name_prefix + "_dx_minus");
             int dx_minus_position = dx_plus_position + 1;
@@ -437,7 +450,7 @@ void MergeMasterTrajectoryMPS::add_delta_variables()
 void MergeMasterTrajectoryMPS::add_delta_variables_constraints()
 {
     // We will be adding one constraint per candidate per node
-    // Each constraint has 4 values in the matrix (welllll not realy but 4 is an upper bound)
+    // Each constraint has 4 values in the matrix (well not really but 4 is an upper bound)
     int n_constraints_reserve = candidates_coupling_.size() * tree_.size();
     int n_values_reserve = 4 * (n_constraints_reserve);
 
@@ -471,10 +484,12 @@ void MergeMasterTrajectoryMPS::add_delta_variables_constraints()
 
                 var_offsets.push_back(var_indices.size());
 
-                var_indices.push_back(current_candidate_indexes.get(CAPA));
+                var_indices.push_back(current_candidate_indexes.get(CAPACITY));
                 var_values.push_back(1);
+
                 var_indices.push_back(current_candidate_indexes.get(DX_PLUS));
                 var_values.push_back(-1);
+
                 var_indices.push_back(current_candidate_indexes.get(DX_MINUS));
                 var_values.push_back(1);
 
@@ -497,13 +512,16 @@ void MergeMasterTrajectoryMPS::add_delta_variables_constraints()
 
                 var_offsets.push_back(var_indices.size());
 
-                var_indices.push_back(current_candidate_indexes.get(CAPA));
+                var_indices.push_back(current_candidate_indexes.get(CAPACITY));
                 var_values.push_back(1);
+
                 var_indices.push_back(current_candidate_indexes.get(DX_PLUS));
                 var_values.push_back(-1);
+
                 var_indices.push_back(current_candidate_indexes.get(DX_MINUS));
                 var_values.push_back(1);
-                var_indices.push_back(parent_candidate_indexes.get(CAPA));
+
+                var_indices.push_back(parent_candidate_indexes.get(CAPACITY));
                 var_values.push_back(-1);
 
                 rhs.push_back(0);
@@ -529,6 +547,7 @@ void MergeMasterTrajectoryMPS::set_objective_from_data()
 {
     std::vector<int> indexes;
     std::vector<double> coefficients;
+
     // Pre reserve the size : 3 variables per node per candidate
     int nb_coefficients_reserve = 3 * tree_.size() * candidates_coupling_.size();
     indexes.reserve(nb_coefficients_reserve);
@@ -542,10 +561,12 @@ void MergeMasterTrajectoryMPS::set_objective_from_data()
             const auto& positions = positions_per_node.at(node.name);
 
             // To be discussed : node weights & discounting
-            indexes.push_back(positions.get(CAPA));
-            coefficients.push_back(costs.get(CAPA));
+            indexes.push_back(positions.get(CAPACITY));
+            coefficients.push_back(costs.get(CAPACITY));
+
             indexes.push_back(positions.get(DX_PLUS));
             coefficients.push_back(costs.get(DX_PLUS));
+
             indexes.push_back(positions.get(DX_MINUS));
             coefficients.push_back(costs.get(DX_MINUS));
         }
@@ -587,7 +608,7 @@ void MergeMasterTrajectoryMPS::add_coupling_constraints()
             const std::string& node_name = std::get<0>(var_ref);
             const std::string& candidate = std::get<1>(var_ref);
             const CandidateVariableType& var_type = std::get<2>(var_ref);
-            int index = candidates_coupling_.at(candidate).at(node_name).get(var_type);
+            const int index = candidates_coupling_.at(candidate).at(node_name).get(var_type);
 
             var_indices.push_back(index);
             var_values.push_back(val);
@@ -615,14 +636,18 @@ void MergeMasterTrajectoryMPS::add_coupling_constraints()
  */
 void MergeMasterTrajectoryMPS::launch()
 {
-    logger_->display_message("Parsing structure file at " + std::string(tree_path_));
+    logger_->display_message("Parsing structure file at " + tree_path_.string(),
+                             LogUtils::LOGLEVEL::INFO,
+                             TRAJECTORY_LOGGER_CONTEXT);
     read_tree_structure_file();
     logger_->display_message("Parsing nodal lp folder data at "
-                             + std::string(lp_reference_file_filepath));
-    nodes_lp_pathes_ = LpDataLocationManager::parse_nodal_lp_location_file(
-      lp_reference_file_filepath);
+                               + lp_reference_file_filepath_.string(),
+                             LogUtils::LOGLEVEL::INFO,
+                             TRAJECTORY_LOGGER_CONTEXT);
+    read_node_lp_paths();
 
     build_problem();
-    // Name to be changed
+
+    // TODO To be changed
     export_problem("log_merged", true);
 }

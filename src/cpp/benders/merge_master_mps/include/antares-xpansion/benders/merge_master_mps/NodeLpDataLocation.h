@@ -39,6 +39,7 @@ typedef std::map<std::string, NodeLpDataLocation> NodesToLpDataLocationMap;
 
 namespace LpDataLocationManager
 {
+// Load a nodal_lp_info file
 NodesToLpDataLocationMap parse_nodal_lp_location_file(const std::filesystem::path& file);
 
 void write_nodal_lp_location_file(const NodesToLpDataLocationMap& lp_info_map,

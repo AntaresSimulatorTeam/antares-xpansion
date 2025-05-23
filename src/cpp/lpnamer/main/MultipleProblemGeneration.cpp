@@ -41,7 +41,7 @@ void check_format(const std::vector<std::string>& split, const std::string& erro
 }
 } // namespace
 
-void MultipleProblemGeneration::load_input_pathes()
+void MultipleProblemGeneration::load_input_paths()
 {
     const std::string file_format_error{"paths file should have two columns separated by ' ' : \n "
                                         "node_study_name1 path/to/archive \n"
@@ -67,6 +67,7 @@ void MultipleProblemGeneration::load_input_weight_files()
       "Weights info file should have two columns separated by ' ' : \n "
       "node_study_name1 path/to/weight/file \n"
       "node_study_name2 path/to/weight/file \n"
+      "... \n"
       "If a node is absent, it will be assumed to have uniform weights"};
     const auto path = options_.WeightsFile();
     if (path.empty())
@@ -110,7 +111,7 @@ void MultipleProblemGeneration::run_generation()
     }
 }
 
-void MultipleProblemGeneration::write_lp_pathes()
+void MultipleProblemGeneration::write_lp_paths()
 {
     LpDataLocationManager::write_nodal_lp_location_file(node_to_lp_info_,
                                                         options_.NodalLpInfoPath());

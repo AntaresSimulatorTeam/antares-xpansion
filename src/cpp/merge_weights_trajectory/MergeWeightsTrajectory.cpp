@@ -64,12 +64,12 @@ void MergeWeightsTrajectory::load_input_files()
     }
 
     // Lp paths & relevant files data
-    nodes_lp_paths_ = LpDataLocationManager::parse_nodal_lp_location_file(nodal_lp_folder_file_);
+    nodes_lp_info_ = LpDataLocationManager::parse_nodal_lp_location_file(nodal_lp_folder_file_);
 }
 
 void MergeWeightsTrajectory::generate_merged_weights_file()
 {
-    for (const auto& [node, lp_info]: nodes_lp_paths_)
+    for (const auto& [node, lp_info]: nodes_lp_info_)
     {
         // If there are custom weights for this node
         auto potential_weights_file = lp_info.lp_folder / lp_info.weights;
@@ -111,6 +111,10 @@ void MergeWeightsTrajectory::generate_merged_weights_file()
 
             for (const auto& [subproblem, _]: node_structure)
             {
+                if (subproblem == lp_info.master)
+                {
+                    continue;
+                }
                 auto full_path = lp_info.lp_folder / subproblem;
                 // CAREFUL : Why 1 / n_subproblems and not 1 / n_mcyears ?
                 // We put it like this for now to duplicate the behaviour seen in MergeMPS & Benders

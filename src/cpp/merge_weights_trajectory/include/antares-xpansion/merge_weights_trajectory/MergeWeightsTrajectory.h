@@ -33,7 +33,7 @@ private:
     std::filesystem::path output_filepath_;
 
     Logger logger_;
-    NodesToLpDataLocationMap nodes_lp_paths_;
+    NodesToLpDataLocationMap nodes_lp_info_;
     WeightsMap nodes_weights_;
 
     WeightsMap merged_subproblem_weights_;

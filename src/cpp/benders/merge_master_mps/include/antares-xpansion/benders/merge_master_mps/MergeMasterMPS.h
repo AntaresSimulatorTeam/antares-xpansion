@@ -4,6 +4,8 @@
 #include "antares-xpansion/benders/merge_master_mps/NodeLpDataLocation.h"
 #include "antares-xpansion/benders/merge_mps/MergeMPS.h"
 
+constexpr char TRAJECTORY_LOGGER_CONTEXT[] = "MergeMasterTrajectoryMPS";
+
 // Probably needs to be changed
 class InvalidMasterStructureFileException: public std::runtime_error
 {
@@ -20,7 +22,7 @@ public:
     // Data structures
     enum CandidateVariableType
     {
-        CAPA,
+        CAPACITY,
         DX_PLUS,
         DX_MINUS
     };
@@ -41,21 +43,22 @@ public:
     };
 
     // candidate_name -> node_name -> variable_positions
-    typedef std::map<std::string, std::map<std::string, VariablePositions>> CandidatesCouplingMap;
+    using CandidatesCouplingMap = std::map<std::string, std::map<std::string, VariablePositions>>;
 
     // Contains the cost data of a candidate
     struct CandidateCosts
     {
         CandidateCosts(const Json::Value& data);
-        double operation_maintenace{0.};
+        double operation_maintenance{0.};
         double investment{0.};
         double retirement{0.};
+
         // Get the cost associated with one of the types of variable
         double get(CandidateVariableType t) const;
     };
 
     // Reference to a candidate
-    typedef std::tuple<std::string, std::string, CandidateVariableType> VariableRef;
+    using VariableRef = std::tuple<std::string, std::string, CandidateVariableType>;
 
     // Trajectory constraints
     struct TrajectoryConstraint
@@ -106,39 +109,33 @@ public:
                              const std::filesystem::path& annual_lp_filename):
         AbstractMergeMPS(options, logger, writer),
         tree_path_(tree_filename),
-        lp_reference_file_filepath(annual_lp_filename)
+        lp_reference_file_filepath_(annual_lp_filename)
     {
     }
 
-    // Method
     void launch() override;
 
 private:
-    // Initilization : reading the master structure file
     void read_tree_structure_file();
-    void read_node_lp_pathes();
-    // Every node in the tree must have an associated lp_folder in nodes_lp_pathes_
-    void check_nodes_has_lp_folder();
-    // Methods specific to this derived class
+    void read_node_lp_paths();
+
+    void check_nodes_have_lp_folder();
+
+    void build_problem();
+    void add_coupling_constraints();
     void add_delta_variables();
     void add_delta_variables_constraints();
     void set_objective_from_data();
-    // Getters & utils
+
     std::string make_prefix_from_node(const std::string& node_name) const;
     double get_candidate_initial_value(const std::string& candidate) const;
 
-    // Overrides
-    void build_problem();
-    void add_coupling_constraints();
-
 private:
-    // Attribute
     std::filesystem::path tree_path_;
-    std::filesystem::path lp_reference_file_filepath;
+    std::filesystem::path lp_reference_file_filepath_;
     TrajectoryTree tree_;                       // Contains each node's information
     TrajectoryGlobalData trajectory_data_;      // Contains the global trajectory data
     CandidatesCouplingMap candidates_coupling_; // Links the same candidates in different nodes
-    NodesToLpDataLocationMap
-      nodes_lp_pathes_; // Contains the path to the lp folder & relevant files for each node
+    NodesToLpDataLocationMap nodes_lp_info_;    // Info on the lp folder & files for each node
     CouplingMap structure_;
 };

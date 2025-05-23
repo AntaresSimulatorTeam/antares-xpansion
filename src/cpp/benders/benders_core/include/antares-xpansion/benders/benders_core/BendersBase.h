@@ -2,14 +2,12 @@
 
 #include <execution>
 #include <filesystem>
-#include <optional>
 #include <regex>
 #include <tbb/tbb.h>
 
 #include "BendersMathLogger.h"
 #include "BendersStructsDatas.h"
 #include "CriterionComputation.h"
-#include "SimulationOptions.h"
 #include "SubproblemCut.h"
 #include "SubproblemWorker.h"
 #include "Worker.h"
@@ -46,11 +44,6 @@ public:
                 std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
     virtual void launch() = 0;
     void set_solver_log_file(const std::filesystem::path& log_file);
-
-    [[nodiscard]] std::filesystem::path solver_log_file() const
-    {
-        return solver_log_file_;
-    }
 
     double execution_time() const;
     virtual std::string BendersName() const = 0;
@@ -338,7 +331,6 @@ private:
     void FillWorkerMasterData(WorkerMasterData& workerMasterData);
     bool master_is_empty_ = true;
     int _totalNbProblems = 0;
-    std::filesystem::path solver_log_file_ = "";
     WorkerMasterPtr _master;
     VariableMap _problem_to_id;
     StrVector subproblems;

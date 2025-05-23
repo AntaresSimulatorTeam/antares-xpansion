@@ -1,15 +1,14 @@
-from __future__ import annotations
-
-from pathlib import Path
-from trajectory_keys import TrajectoryInputKeys as InKeys
-from trajectory_keys import TrajectoryOuputKeys as OutKeys
-from pydantic import BaseModel, Field, PositiveInt, NonNegativeFloat, NonNegativeInt
-from typing import Literal
-from enum import Enum
 import datetime
+import json
+from enum import Enum
+from pathlib import Path
+from typing import Any, Dict, List, Literal, Optional, Set, Union
 
 import yaml
-import json
+from pydantic import BaseModel, Field, NonNegativeFloat, NonNegativeInt, PositiveInt
+
+from trajectory_keys import TrajectoryInputKeys as InKeys
+from trajectory_keys import TrajectoryOuputKeys as OutKeys
 
 
 # Enums
@@ -38,14 +37,15 @@ class TrajectoryModule:
 
     def __init__(self, input_file: Path):
         self.input_file = input_file
-        self.all_candidates: set[str] = {}
-        self.all_nodes: set[str] = {}
+        self.all_candidates: Set[str] = set()
+        self.all_nodes: Set[str] = set()
+        # TODO Add Optional
         self.tree: TrajectoryModule.Tree = None
-        self.nodes: dict[str, TrajectoryModule.NodeData] = None
+        self.nodes: Dict[str, TrajectoryModule.NodeData] = None
         self.global_data: TrajectoryModule.GlobalData = None
-        self.candidates_types_costs: dict[str, TrajectoryModule.CandidateType] = None
-        self.constraints: list[TrajectoryModule.TrajectoryConstraint] = None
-        self.initial_capacities: list[str, float] = None
+        self.candidates_types_costs: Dict[str, TrajectoryModule.CandidateType] = None
+        self.constraints: List[TrajectoryModule.TrajectoryConstraint] = None
+        self.initial_capacities: List[Union[str, float]] = None
 
     # Errors
     class InvalidTreeStructure(Exception):
@@ -64,7 +64,7 @@ class TrajectoryModule:
             alias=InKeys.first_investment_date_key()
         )
         end_of_horizon: NonNegativeInt = Field(alias=InKeys.end_of_horizon_key())
-        studies: dict[str, str] = Field(alias=InKeys.studies_key())
+        studies: Dict[str, str] = Field(alias=InKeys.studies_key())
         # forbid_retirement: bool = Field(alias=InKeys.forbid_retirement_key())
 
         def print(self):
@@ -79,7 +79,7 @@ class TrajectoryModule:
         probability_from_parent: float = Field(
             1.0, alias=InKeys.probability_key(), ge=0.0, le=1.0
         )
-        children: list[TrajectoryModule.Tree] = Field([], alias=InKeys.children_key())
+        children: List["TrajectoryModule.Tree"] = Field([], alias=InKeys.children_key())
 
         def print(self, prefix=""):
             print(prefix + f"├─{self.probability_from_parent}─{self.node_name}")
@@ -89,8 +89,8 @@ class TrajectoryModule:
 
     class TrajectoryConstraint(BaseModel):
         name: str = Field(alias=InKeys.constraint_name_key())
-        nodes: Literal["all"] | list[str] = Field(alias=InKeys.constraints_nodes_key())
-        candidates: Literal["all"] | list[str] = Field(
+        nodes: Literal["all"] | List[str] = Field(alias=InKeys.constraints_nodes_key())
+        candidates: Literal["all"] | List[str] = Field(
             alias=InKeys.constraints_candidates_key()
         )
         cons_type: ConstraintTypeEnum = Field(alias=InKeys.constraint_type_key())
@@ -102,9 +102,9 @@ class TrajectoryModule:
         ):
             return f"{node}::{candidate}::{variable_type.value}"
 
-        def to_individual_max_investment(self) -> list[dict[str, any]]:
+        def to_individual_max_investment(self) -> List[Dict[str, Any]]:
             assert self.cons_type == ConstraintTypeEnum.MAX_INDIVIDUAL_INVESTMENT
-            output = list[dict[str, any]]()
+            output: List[Dict[str, Any]] = []
             for node in self.nodes:
                 for candidate in self.candidates:
                     constraint = {}
@@ -120,9 +120,9 @@ class TrajectoryModule:
                     output.append(constraint)
             return output
 
-        def to_individual_max_retirement(self) -> list[dict[str, any]]:
+        def to_individual_max_retirement(self) -> List[Dict[str, Any]]:
             assert self.cons_type == ConstraintTypeEnum.MAX_INDIVIDUAL_RETIREMENT
-            output = list[dict[str, any]]()
+            output: List[Dict[str, Any]] = []
             for node in self.nodes:
                 for candidate in self.candidates:
                     constraint = {}
@@ -138,9 +138,9 @@ class TrajectoryModule:
                     output.append(constraint)
             return output
 
-        def to_cumulative_max_investment(self) -> list[dict[str, any]]:
+        def to_cumulative_max_investment(self) -> List[Dict[str, Any]]:
             assert self.cons_type == ConstraintTypeEnum.MAX_CUMULATIVE_INVESTMENT
-            output = list[dict[str, any]]()
+            output: List[Dict[str, Any]] = []
             for node in self.nodes:
                 constraint = {}
                 constraint[OutKeys.constraint_coeffs_key()] = {}
@@ -156,7 +156,7 @@ class TrajectoryModule:
                 output.append(constraint)
             return output
 
-        def to_merger_json(self) -> list[dict[str, any]]:
+        def to_merger_json(self) -> List[Dict[str, Any]]:
             """
             Converts an constraint in input format to a list of mathematical formulations for the C++ merger
             """
@@ -166,12 +166,15 @@ class TrajectoryModule:
                 return self.to_individual_max_retirement()
             elif self.cons_type == ConstraintTypeEnum.MAX_CUMULATIVE_INVESTMENT:
                 return self.to_cumulative_max_investment()
+            else:
+                # TODO What return here? Throw ?
+                return []
 
     class NodeData(BaseModel):
         name: str = Field("")
         investment_date: NonNegativeInt = Field(alias=InKeys.investment_date_key())
         duration: PositiveInt = Field(1, alias=InKeys.duration_key())
-        candidate_to_type: dict[str, str] = Field(
+        candidate_to_type: Dict[str, str] = Field(
             alias=InKeys.candidates_to_types_key()
         )
         path: Path = Field(Path(""))
@@ -187,21 +190,21 @@ class TrajectoryModule:
             print(f"Computed full probability : {self.full_probability}")
 
         def compute_investment_discounting(
-            self, global_data: TrajectoryModule.GlobalData
+            self, global_data: "TrajectoryModule.GlobalData"
         ):
             return (1 + global_data.discount_rate) ** (
                 global_data.first_investment_date - self.investment_date
             )
 
         def compute_retirement_discounting(
-            self, global_data: TrajectoryModule.GlobalData
+            self, global_data: "TrajectoryModule.GlobalData"
         ):
             return (1 + global_data.discount_rate) ** (
                 global_data.first_investment_date - self.investment_date
             )
 
         def compute_operational_discounting(
-            self, global_data: TrajectoryModule.GlobalData
+            self, global_data: "TrajectoryModule.GlobalData"
         ):
             factor = 0.0
             for year in range(
@@ -214,13 +217,13 @@ class TrajectoryModule:
 
         def to_merger_json(
             self,
-            global_data: TrajectoryModule.GlobalData,
-            candidates_types: dict[str, TrajectoryModule.CandidateType],
+            global_data: "TrajectoryModule.GlobalData",
+            candidates_types: Dict[str, "TrajectoryModule.CandidateType"],
         ):
-            output = dict[str, any]()
+            output: Dict[str, Any] = {}
             output[OutKeys.parent_key()] = self.parent
 
-            candidates_costs: dict[str, dict[str, float]] = {}
+            candidates_costs: Dict[str, Dict[str, float]] = {}
             weight_ic = self.compute_investment_discounting(global_data)
             weight_rc = self.compute_retirement_discounting(global_data)
             weight_omc = self.compute_operational_discounting(global_data)
@@ -229,7 +232,7 @@ class TrajectoryModule:
 
             for candidate, type_name in self.candidate_to_type.items():
                 costs_data = candidates_types[type_name]
-                candidate_costs: dict[str, float] = {}
+                candidate_costs: Dict[str, float] = {}
                 candidate_costs[OutKeys.investment_cost_key()] = (
                     weight_ic * costs_data.investment_cost * self.full_probability
                 )
@@ -251,29 +254,30 @@ class TrajectoryModule:
         oam_cost: NonNegativeFloat = Field(alias=InKeys.oandm_cost_key())
 
     class TrajectoryInputFile(BaseModel):
-        global_data: TrajectoryModule.GlobalData = Field(alias=InKeys.global_key())
-        tree: TrajectoryModule.Tree = Field(alias=InKeys.tree_key())
-        constraints: list[TrajectoryModule.TrajectoryConstraint] = Field(
+        global_data: "TrajectoryModule.GlobalData" = Field(alias=InKeys.global_key())
+        tree: "TrajectoryModule.Tree" = Field(alias=InKeys.tree_key())
+        constraints: List["TrajectoryModule.TrajectoryConstraint"] = Field(
             alias=InKeys.constraints_key()
         )
-        nodes: dict[str, TrajectoryModule.NodeData] = Field(alias=InKeys.nodes_key())
-        candidates_types: dict[str, TrajectoryModule.CandidateType] = Field(
+        nodes: Dict[str, "TrajectoryModule.NodeData"] = Field(alias=InKeys.nodes_key())
+        candidates_types: Dict[str, "TrajectoryModule.CandidateType"] = Field(
             alias=InKeys.candidates_types_key()
         )
-        initial_capacities: dict[str, NonNegativeInt]
+        initial_capacities: Dict[str, NonNegativeInt]
 
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
             # Insert the default key in the initial capacities if not present
             if InKeys.default_initial_capacity_key() not in self.initial_capacities:
                 print(
-                    f"Inserted key '{InKeys.default_initial_capacity_key()}' with value '0.0' into the initial capacities"
+                    f"Inserted key '{InKeys.default_initial_capacity_key()}' with value '0' into the initial capacities"
                 )
-                self.initial_capacities[InKeys.default_initial_capacity_key()] = 0.0
+                self.initial_capacities[InKeys.default_initial_capacity_key()] = 0
 
     # Verifications
     def verify_tree_probabilities(self):
-        def aux(subtree: TrajectoryModule.TreeNodeData):
+        # TODO What's TreeNodeData?
+        def aux(subtree: TrajectoryModule.Tree):
             if len(subtree.children) == 0:
                 return
             cumulative = 0.0
@@ -320,7 +324,7 @@ class TrajectoryModule:
                 aux(child, depth + 1, node_data.investment_date, node_data.duration)
             return
 
-        aux(self.tree)
+        aux(self.tree)  # TODO Typing
         return
 
     def verify_nodes_candidates_types(self):
@@ -368,12 +372,12 @@ class TrajectoryModule:
                 pass
 
     # Method
-    def set_nodes_names_study_pathes(self):
+    def set_nodes_names_study_paths(self):
         """After parsing the raw node data, 'copy' the node's name and study path to its data for ease of access"""
         assert self.nodes is not None
         for name, data in self.nodes.items():
             data.name = name
-            data.path = self.global_data.studies[name]
+            data.path = self.global_data.studies[name]  # TODO Typing
 
     def set_nodes_parents_names(self):
         """After parsing the tree and the nodes, go through the tree to write each node's parent in its data"""
@@ -435,9 +439,9 @@ class TrajectoryModule:
     def expand_all_keyword_in_constraints(self):
         for constraint in self.constraints:
             if constraint.candidates == InKeys.constraint_all_keyword():
-                constraint.candidates = self.all_candidates
+                constraint.candidates = self.all_candidates  # TODO Typing
             if constraint.nodes == InKeys.constraint_all_keyword():
-                constraint.nodes = self.all_nodes
+                constraint.nodes = self.all_nodes  # TODO Typing
 
     def parse_trajectory_user_file(self):
         """
@@ -453,10 +457,12 @@ class TrajectoryModule:
             self.nodes = validated_content.nodes
             self.constraints = validated_content.constraints
             self.candidates_types_costs = validated_content.candidates_types
-            self.initial_capacities = validated_content.initial_capacities
+            self.initial_capacities = (
+                validated_content.initial_capacities
+            )  # TODO Typing
 
             # Complete the node's data
-            self.set_nodes_names_study_pathes()
+            self.set_nodes_names_study_paths()
             self.set_nodes_parents_names()
             self.compute_node_full_probability()
             self.compute_node_duration()
@@ -465,7 +471,7 @@ class TrajectoryModule:
             self.all_candidates = set(
                 self.nodes[self.tree.node_name].candidate_to_type.keys()
             )
-            self.all_nodes = self.nodes.keys()
+            self.all_nodes = self.nodes.keys()  # TODO Typing
 
             # Constraint explicit list of nodes and candidates
             self.expand_all_keyword_in_constraints()
@@ -510,18 +516,3 @@ class TrajectoryModule:
         with open(output_file, "w") as file:
             json.dump(output, file, indent=4)
         pass
-
-
-parser = TrajectoryModule(
-    "merge_master_test/simple_tree_from_studies/user_input_XpansionTrajectory.yaml"
-)
-parser.parse_trajectory_user_file()
-parser.print()
-parser.verify_all_nodes_same_candidates()
-parser.verify_constraint_variable_reference()
-parser.verify_tree_investment_dates()
-parser.verify_tree_probabilities()
-parser.verify_nodes_candidates_types()
-parser.write_merger_json(
-    "merge_master_test/simple_tree_from_studies/output/master_structure_outputed.json"
-)

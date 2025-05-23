@@ -45,7 +45,7 @@ public:
         Wether the path corresponds to a study, Antares output or archive does not matter for this
         function
     */
-    void load_input_pathes();
+    void load_input_paths();
 
     /*
         Parse a list of weight files provided by the user in the form of a text file with two
@@ -57,7 +57,7 @@ public:
     /*
         Writes the lp_folder paths to a Json file
     */
-    void write_lp_pathes();
+    void write_lp_paths();
 
 private:
     typedef std::map<std::string, std::filesystem::path> NodeToPathMap;

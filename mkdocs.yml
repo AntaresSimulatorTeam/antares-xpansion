@@ -46,7 +46,7 @@ nav:
       - 'Launch the optimization': 'user-guide/get-started/launching-optimization.md'
       - 'Adequacy criterion': 'user-guide/get-started/adequacy-criterion.md'
       - 'Sensitivity analysis': 'user-guide/get-started/sensitivity-analysis.md'
-      - 'Trajectory investment': 
+      - 'Trajectory investment':
         - 'Trajectory investment problem' : 'user-guide/trajectory-investment/trajectory-problem.md'
         - 'Merging annual problems' : 'user-guide/trajectory-investment/merge-master.md'
   - 'Developer guide': 

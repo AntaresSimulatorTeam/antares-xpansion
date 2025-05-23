@@ -4,6 +4,7 @@
 #include <utility>
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
+#include "antares-xpansion/benders/merge_mps/JsonKeysConstants.h"
 #include "antares-xpansion/benders/merge_mps/MergeMPS.h"
 #include "antares-xpansion/benders/merge_mps/StandardLp.h"
 #include "antares-xpansion/helpers/Timer.h"
@@ -14,7 +15,8 @@ AbstractMergeMPS::AbstractMergeMPS(MergeMPSOptions options,
     writer_(std::move(writer)),
     options_(std::move(options)),
     logger_(std::move(logger)),
-    factory_()
+    factory_(),
+    solver_io_()
 {
     if (options_.SOLVER_NAME == "COIN")
     {
@@ -22,8 +24,9 @@ AbstractMergeMPS::AbstractMergeMPS(MergeMPSOptions options,
     }
 
     ptr_merged_solver_ = factory_.create_solver(options_.SOLVER_NAME);
-
     ptr_merged_solver_->set_output_log_level(options_.LOG_LEVEL);
+
+    solver_io_.configure(options_.SOLVER_NAME, options_.PROBLEMS_FORMAT);
 }
 
 /**
@@ -39,23 +42,10 @@ SolverAbstract::Ptr AbstractMergeMPS::get_local_solver(const std::filesystem::pa
     /**
      * Limitation: on windows may not support master problem with full path as name
      */
-    const auto filepath = root_dir / filename;
-    if (!std::filesystem::exists(filepath))
-    {
-        std::cerr << "Trying to load problem file '" << std::string(filepath)
-                  << "' which does not exist.";
-        std::exit(1);
-    }
     SolverAbstract::Ptr ptr_solver = factory_.create_solver(options_.SOLVER_NAME);
     ptr_solver->set_output_log_level(options_.LOG_LEVEL);
-    if (options_.PROBLEMS_FORMAT == ProblemsFormat::MPS_FILE)
-    {
-        ptr_solver->read_prob_mps(filepath);
-    }
-    if (options_.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE)
-    {
-        ptr_solver->restore_prob(filepath);
-    }
+
+    solver_io_.read(ptr_solver.get(), root_dir / filename);
 
     return ptr_solver;
 }
@@ -92,6 +82,29 @@ void AbstractMergeMPS::multiply_obj_by_weight_factor(SolverAbstract& local_solve
 }
 
 /**
+ * \brief Interrupt the program when a variable is not found in the local solver
+ *
+ * \param var_name : Variable name
+ *
+ * \param filename : File name
+ *
+ * \param local_prefix : Prefix added to variable name
+ */
+void AbstractMergeMPS::terminate_on_missing_variable(const std::string& filename,
+                                                     const std::string& old_var_name,
+                                                     const std::string& new_var_name) const
+{
+    const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
+    std::cerr << LOGLOCATION << "missing variable " << old_var_name << " in " << filename
+              << " supposedly renamed to " << new_var_name << ".";
+
+    ptr_merged_solver_->write_prob_lp(output_root / "mergeError.lp");
+    ptr_merged_solver_->write_prob_mps(output_root / ("mergeError" + MPS_SUFFIX));
+
+    std::exit(1);
+}
+
+/**
  * \brief Merges local to global solver
  *
  * \param local_solver : Local solver
@@ -116,17 +129,11 @@ VariableMap AbstractMergeMPS::merge_local_solver(SolverAbstract& local_solver,
 
     for (const auto& [var_name, var_idx]: local_var_map)
     {
-        const int merged_col_index = ptr_merged_solver_->get_col_index(local_prefix + var_name);
+        const std::string prefixed_var_name = local_prefix + var_name;
+        const int merged_col_index = ptr_merged_solver_->get_col_index(prefixed_var_name);
         if (merged_col_index == -1)
         {
-            const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
-            std::cerr << LOGLOCATION << "missing variable " << var_name << " in " << filename
-                      << " supposedly renamed to " << local_prefix + var_name << ".";
-
-            ptr_merged_solver_->write_prob_lp(output_root / "mergeError.lp");
-            ptr_merged_solver_->write_prob_mps(output_root / ("mergeError" + MPS_SUFFIX));
-
-            std::exit(1);
+            terminate_on_missing_variable(filename, var_name, prefixed_var_name);
         }
         merged_var_map[var_name] = merged_col_index;
     }
@@ -135,18 +142,24 @@ VariableMap AbstractMergeMPS::merge_local_solver(SolverAbstract& local_solver,
 }
 
 /**
- * \brief Export problem into mps and lp files
+ * \brief Export problem into OUTPUTROOT/filename and optionally writes the lp variant
  */
-void AbstractMergeMPS::export_problem(std::string filename, bool export_lp)
+void AbstractMergeMPS::export_problem(const std::string& filename, bool export_lp)
 {
     const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
-    logger_->display_message("Problems merged.");
-    logger_->display_message("Writing mps file");
-    ptr_merged_solver_->write_prob_mps(output_root / (filename + MPS_SUFFIX));
+    logger_->display_message("Problems merged.",
+                             LogUtils::LOGLEVEL::INFO,
+                             MERGE_MPS_LOGGER_CONTEXT);
+    logger_->display_message("Writing merged file",
+                             LogUtils::LOGLEVEL::INFO,
+                             MERGE_MPS_LOGGER_CONTEXT);
+    solver_io_.write(ptr_merged_solver_.get(), output_root / filename);
 
     if (export_lp)
     {
-        logger_->display_message("Writing lp file");
+        logger_->display_message("Writing lp file",
+                                 LogUtils::LOGLEVEL::INFO,
+                                 MERGE_MPS_LOGGER_CONTEXT);
         ptr_merged_solver_->write_prob_lp(output_root / (filename + ".lp"));
     }
 }
@@ -172,7 +185,9 @@ void MergeMasterSubproblemMPS::build_problem()
 {
     const auto root_dir = std::filesystem::path(options_.INPUTROOT);
 
-    logger_->display_message("Merging master and subproblems...");
+    logger_->display_message("Merging master and subproblems...",
+                             LogUtils::LOGLEVEL::INFO,
+                             MERGE_MPS_LOGGER_CONTEXT);
 
     const CouplingMap local_structure = CouplingMapGenerator::BuildInput(
       root_dir / options_.STRUCTURE_FILE,
@@ -183,8 +198,8 @@ void MergeMasterSubproblemMPS::build_problem()
     // TODO creates a segfault when structure.txt is empty
     // if (local_structure.empty())
     // {
-    //     logger_->display_message("Nothing to merge. Returning empty problem.");
-    //     return;
+    //     logger_->display_message("Nothing to merge. Returning empty problem.",
+    //     LogUtils::LOGLEVEL::INFO, MERGE_MPS_LOGGER_CONTEXT); return;
     // }
 
     const int nb_sub_problems = local_structure.size() - 1;
@@ -216,7 +231,7 @@ bool MergeMasterSubproblemMPS::solve(int nb_threads)
 {
     ptr_merged_solver_->set_threads(nb_threads);
 
-    logger_->display_message("Solving...");
+    logger_->display_message("Solving...", LogUtils::LOGLEVEL::INFO, MERGE_MPS_LOGGER_CONTEXT);
 
     Timer timer;
     int status{0};
@@ -335,7 +350,7 @@ double MergeMasterSubproblemMPS::get_problem_obj_weight(int nb_subproblems,
         logger_->display_message("No weight found for " + name
                                    + ". Problem will not contribute to objective function",
                                  LogUtils::LOGLEVEL::WARNING,
-                                 "MergeMPS");
+                                 MERGE_MPS_LOGGER_CONTEXT);
         return 0.;
     }
     return found->second;
@@ -370,7 +385,9 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
     const size_t nb_elem_reserve = 2 * nb_rows_reserve;
 
     logger_->display_message("About to add " + std::to_string(nb_rows_reserve)
-                             + " coupling constraints");
+                               + " coupling constraints",
+                             LogUtils::LOGLEVEL::INFO,
+                             MERGE_MPS_LOGGER_CONTEXT);
 
     std::vector<int> mstart; // Constraints' offsets
     mstart.reserve(nb_rows_reserve + 1);
@@ -405,7 +422,9 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
         }
 
         logger_->display_message(var_name + " : " + std::to_string(indices.size() - 1)
-                                 + " coupling constraints built");
+                                   + " coupling constraints built",
+                                 LogUtils::LOGLEVEL::INFO,
+                                 MERGE_MPS_LOGGER_CONTEXT);
     }
     mstart.push_back(nb_elem);
 
@@ -414,171 +433,3 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
 
     solver_addrows(*ptr_merged_solver_, qrtype, rhs, {}, mstart, mclind, dmatval);
 }
-
-// MergeMasterMasterMPS::PathwayNode::PathwayNode(const std::string&& node, const Json::Value&
-// data):
-//     name(node)
-// {
-//     // TODO improve parsing of json file
-//     path = std::filesystem::path(data["path"].asString());
-
-//     if (data.isMember("parent"))
-//     {
-//         parent = data["parent"].asString();
-//     }
-
-//     weight = data["weight"].asDouble();
-
-//     for (const auto& var_name: data["constraints"].getMemberNames())
-//     {
-//         const auto& variable = data["constraints"][var_name];
-
-//         constraints[var_name].min_investment = variable["min_investment"].asDouble();
-//         constraints[var_name].max_investment = variable["max_investment"].asDouble();
-//         constraints[var_name].min_decommissioning = variable["min_decommissioning"].asDouble();
-//         constraints[var_name].max_decommissioning = variable["max_decommissioning"].asDouble();
-//     }
-// }
-
-// MergeMasterMasterMPS::MergeMasterMasterMPS(MergeMPSOptions options,
-//                                            Logger logger,
-//                                            std::shared_ptr<Output::OutputWriter> writer,
-//                                            const std::filesystem::path& tree_filename):
-//     AbstractMergeMPS(options, logger, writer)
-// {
-//     const auto tree_json = get_json_file_content(tree_filename);
-//     for (Json::String tree_node: tree_json.getMemberNames())
-//     {
-//         const Json::Value& data = tree_json[tree_node];
-//         tree_.emplace_back(std::move(tree_node), data);
-//     }
-
-//     // TODO Add coherence check for parents?
-// }
-
-// /**
-//  * \brief Merge and master problems
-//  */
-// void MergeMasterMasterMPS::launch()
-// {
-//     build_problem();
-//     export_problem();
-// }
-
-// /**
-//  * \brief Build merged problem
-//  */
-// void MergeMasterMasterMPS::build_problem()
-// {
-//     const auto root_dir{std::filesystem::path(options_.INPUTROOT)};
-
-//     logger_->display_message("Merging master problems...");
-
-//     int current_prob_id{0};
-//     for (auto& tree_node: tree_)
-//     {
-//         const auto node_path{root_dir / tree_node.path};
-
-//         const CouplingMap local_structure = CouplingMapGenerator::BuildInput(
-//           node_path / options_.STRUCTURE_FILE,
-//           logger_.get(),
-//           "Merge Master mps");
-
-//         for (const auto& [filename, var_map]:
-//              local_structure
-//                | std::views::filter([this](const auto& pair)
-//                                     { return pair.first == options_.MASTER_NAME; }))
-//         {
-//             SolverAbstract::Ptr ptr_solver = get_local_solver(node_path, filename);
-
-//             // Change the weight of coeff in the objective function
-//             multiply_obj_by_weight_factor(*ptr_solver, tree_node.weight);
-
-//             const std::string local_prefix = "prob" + std::to_string(current_prob_id++) + "_";
-//             tree_node.variables = merge_local_solver(*ptr_solver, local_prefix, var_map,
-//             filename);
-//         }
-//     }
-
-//     add_coupling_constraints();
-// }
-
-// /**
-//  * \brief Add coupling equality constraints between master problems
-//  */
-// void MergeMasterMasterMPS::add_coupling_constraints()
-// {
-//     // For each node, 2 constraints per variable
-//     // For each constraint, 2 columns
-//     const size_t nb_rows_reserve = 2 * tree_.size() * tree_[0].variables.size();
-//     const size_t nb_elem_reserve = 2 * nb_rows_reserve;
-
-//     std::vector<int> mclind;     // Variables' indices
-//     std::vector<double> dmatval; // Variables' values
-//     dmatval.reserve(nb_elem_reserve);
-//     mclind.reserve(nb_elem_reserve);
-
-//     std::vector<int> mstart;  // Constraints' offsets
-//     std::vector<double> rhs;  // Constraints' rhs
-//     std::vector<char> qrtype; // Constraints' types
-//     mstart.reserve(nb_rows_reserve + 1);
-//     rhs.reserve(nb_rows_reserve);
-//     qrtype.reserve(nb_rows_reserve);
-
-//     int nb_elem{0};
-//     for (const auto& tree_node: tree_)
-//     {
-//         const auto parent = tree_node.parent.has_value()
-//                               ? std::ranges::find(tree_,
-//                                                   tree_node.parent.value(),
-//                                                   &PathwayNode::name)
-//                               : tree_.end();
-
-//         for (const auto& [var_name, variable]: tree_node.constraints)
-//         {
-//             const int curr_var_idx = tree_node.variables.at(var_name);
-//             const int prev_var_idx = (parent != tree_.end()) ? parent->variables.at(var_name) :
-//             -1;
-
-//             // Max investment
-//             mstart.push_back(nb_elem);
-
-//             mclind.push_back(curr_var_idx);
-//             dmatval.push_back(1);
-//             ++nb_elem;
-
-//             rhs.push_back(variable.max_investment);
-//             qrtype.push_back('L');
-
-//             if (prev_var_idx >= 0) [[likely]]
-//             {
-//                 mclind.push_back(prev_var_idx);
-//                 dmatval.push_back(-1);
-//                 ++nb_elem;
-//             }
-
-//             // Min investment
-//             mstart.push_back(nb_elem);
-
-//             mclind.push_back(curr_var_idx);
-//             dmatval.push_back(1);
-//             ++nb_elem;
-
-//             rhs.push_back(variable.min_investment);
-//             qrtype.push_back('G');
-
-//             if (prev_var_idx >= 0) [[likely]]
-//             {
-//                 mclind.push_back(prev_var_idx);
-//                 dmatval.push_back(-1);
-//                 ++nb_elem;
-//             }
-
-//             logger_->display_message(tree_node.name + "__" + var_name
-//                                      + " : pathway coupling constraint built");
-//         }
-//     }
-//     mstart.push_back(nb_elem);
-
-//     solver_addrows(*ptr_merged_solver_, qrtype, rhs, {}, mstart, mclind, dmatval);
-// }

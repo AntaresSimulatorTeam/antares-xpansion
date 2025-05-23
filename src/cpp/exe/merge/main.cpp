@@ -6,9 +6,6 @@
 #include "antares-xpansion/benders/merge_mps/MergeMPS.h"
 #include "antares-xpansion/benders/merge_mps/StandardLp.h"
 
-// Initialize static member
-size_t StandardLp::appendCNT = 0;
-
 int main(int argc, char** argv)
 {
     usage(argc);
@@ -17,20 +14,22 @@ int main(int argc, char** argv)
 
     Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
 
-    logger->display_message("starting merge_mps");
+    logger->display_message("starting merge_mps",
+                            LogUtils::LOGLEVEL::INFO,
+                            MERGE_MPS_LOGGER_CONTEXT);
 
     std::shared_ptr<Output::OutputWriter> writer = build_json_writer(std::filesystem::path(
                                                                        options.JSON_FILE),
                                                                      false);
     try
     {
-        MergeMPS merge_mps(options.get_base_options(), logger, writer);
+        MergeMPS merge_mps(options.get_solver_options(), logger, writer);
         merge_mps.launch();
     }
     catch (std::exception& ex)
     {
         std::string error = "Exception raised and program stopped : " + std::string(ex.what());
-        logger->display_message(error);
+        logger->display_message(error, LogUtils::LOGLEVEL::FATAL, MERGE_MPS_LOGGER_CONTEXT);
         exit(1);
     }
 
