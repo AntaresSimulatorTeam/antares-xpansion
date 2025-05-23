@@ -1,11 +1,10 @@
-#include "antares-xpansion/benders/merge_mps/MergeMPS.h"
-
 #include <filesystem>
 #include <numeric>
 #include <ranges>
 #include <utility>
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
+#include "antares-xpansion/benders/merge_mps/MergeMPS.h"
 #include "antares-xpansion/benders/merge_mps/StandardLp.h"
 #include "antares-xpansion/helpers/Timer.h"
 
@@ -43,7 +42,8 @@ SolverAbstract::Ptr AbstractMergeMPS::get_local_solver(const std::filesystem::pa
     const auto filepath = root_dir / filename;
     if (!std::filesystem::exists(filepath))
     {
-        std::cerr << "Trying to load problem file '" << std::string(filepath) << "' which does not exist.";
+        std::cerr << "Trying to load problem file '" << std::string(filepath)
+                  << "' which does not exist.";
         std::exit(1);
     }
     SolverAbstract::Ptr ptr_solver = factory_.create_solver(options_.SOLVER_NAME);
@@ -56,7 +56,7 @@ SolverAbstract::Ptr AbstractMergeMPS::get_local_solver(const std::filesystem::pa
     {
         ptr_solver->restore_prob(filepath);
     }
-    
+
     return ptr_solver;
 }
 
@@ -143,8 +143,9 @@ void AbstractMergeMPS::export_problem(std::string filename, bool export_lp)
     logger_->display_message("Problems merged.");
     logger_->display_message("Writing mps file");
     ptr_merged_solver_->write_prob_mps(output_root / (filename + MPS_SUFFIX));
-    
-    if (export_lp){
+
+    if (export_lp)
+    {
         logger_->display_message("Writing lp file");
         ptr_merged_solver_->write_prob_lp(output_root / (filename + ".lp"));
     }
@@ -414,7 +415,8 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
     solver_addrows(*ptr_merged_solver_, qrtype, rhs, {}, mstart, mclind, dmatval);
 }
 
-// MergeMasterMasterMPS::PathwayNode::PathwayNode(const std::string&& node, const Json::Value& data):
+// MergeMasterMasterMPS::PathwayNode::PathwayNode(const std::string&& node, const Json::Value&
+// data):
 //     name(node)
 // {
 //     // TODO improve parsing of json file
@@ -493,7 +495,8 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
 //             multiply_obj_by_weight_factor(*ptr_solver, tree_node.weight);
 
 //             const std::string local_prefix = "prob" + std::to_string(current_prob_id++) + "_";
-//             tree_node.variables = merge_local_solver(*ptr_solver, local_prefix, var_map, filename);
+//             tree_node.variables = merge_local_solver(*ptr_solver, local_prefix, var_map,
+//             filename);
 //         }
 //     }
 
@@ -534,7 +537,8 @@ void MergeMasterSubproblemMPS::add_coupling_constraints()
 //         for (const auto& [var_name, variable]: tree_node.constraints)
 //         {
 //             const int curr_var_idx = tree_node.variables.at(var_name);
-//             const int prev_var_idx = (parent != tree_.end()) ? parent->variables.at(var_name) : -1;
+//             const int prev_var_idx = (parent != tree_.end()) ? parent->variables.at(var_name) :
+//             -1;
 
 //             // Max investment
 //             mstart.push_back(nb_elem);

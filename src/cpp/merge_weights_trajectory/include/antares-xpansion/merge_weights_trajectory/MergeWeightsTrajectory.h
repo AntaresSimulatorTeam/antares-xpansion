@@ -1,7 +1,7 @@
 #pragma once
 
-#include "antares-xpansion/benders/merge_master_mps/NodeLpDataLocation.h"
 #include "antares-xpansion/benders/logger/User.h"
+#include "antares-xpansion/benders/merge_master_mps/NodeLpDataLocation.h"
 
 constexpr char MERGE_WEIGHTS_CONTEXT[] = "Trajectory Merged Weights Generation";
 constexpr char WEIGHT_SUM_KEY[] = "WEIGHT_SUM";
@@ -10,8 +10,9 @@ class MergeWeightsTrajectory
 {
 private:
     typedef std::map<std::string, double> WeightsMap;
+
 public:
-    MergeWeightsTrajectory(const std::filesystem::path& master_structure, 
+    MergeWeightsTrajectory(const std::filesystem::path& master_structure,
                            const std::filesystem::path& nodal_file,
                            const std::filesystem::path& output_file,
                            Logger logger):
@@ -20,11 +21,11 @@ public:
         output_filepath_(output_file),
         logger_(std::move(logger))
     {
-    };
-    
+    }
+
     void load_input_files();
     void generate_merged_weights_file();
-    void write_merged_weights_file() const ;
+    void write_merged_weights_file() const;
 
 private:
     std::filesystem::path master_structure_file_;

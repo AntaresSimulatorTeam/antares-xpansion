@@ -1,11 +1,10 @@
-#include "antares-xpansion/benders/merge_master_mps/MergeMasterMPS.h"
-
 #include <filesystem>
 #include <numeric>
 #include <utility>
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/merge_master_mps/MasterStructureKeys.h"
+#include "antares-xpansion/benders/merge_master_mps/MergeMasterMPS.h"
 #include "antares-xpansion/benders/merge_mps/StandardLp.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
@@ -185,8 +184,7 @@ MergeMasterTrajectoryMPS::TrajectoryNode::TrajectoryNode(const std::string& node
     for (const auto& candidate_name: data[KEY_CANDIDATES].getMemberNames())
     {
         candidates_costs.emplace(
-          std::make_pair(candidate_name, CandidateCosts(data[KEY_CANDIDATES][candidate_name]))
-        );
+          std::make_pair(candidate_name, CandidateCosts(data[KEY_CANDIDATES][candidate_name])));
     }
 }
 
@@ -217,19 +215,18 @@ void MergeMasterTrajectoryMPS::read_node_lp_pathes()
     for (const auto& node_name: raw_input.getMemberNames())
     {
         const auto& node_lp_path = raw_input[node_name];
-        nodes_lp_pathes_.emplace(
-            std::make_pair(node_name, NodeLpDataLocation(node_lp_path))
-        );
+        nodes_lp_pathes_.emplace(std::make_pair(node_name, NodeLpDataLocation(node_lp_path)));
     }
 }
 
 void MergeMasterTrajectoryMPS::check_nodes_has_lp_folder()
 {
-    for (const auto& node : tree_)
+    for (const auto& node: tree_)
     {
         if (!nodes_lp_pathes_.contains(node.name))
         {
-            std::cerr << "Node '" << node.name <<"' must appear in in the list of nodal lp folder.";
+            std::cerr << "Node '" << node.name
+                      << "' must appear in in the list of nodal lp folder.";
         }
     }
 }
@@ -258,7 +255,6 @@ double MergeMasterTrajectoryMPS::get_candidate_initial_value(const std::string& 
 
     return initial_value;
 }
-
 
 void MergeMasterTrajectoryMPS::build_problem()
 {
@@ -290,8 +286,9 @@ void MergeMasterTrajectoryMPS::build_problem()
             master_file = nodal_lp.master + MPS_SUFFIX;
         }
 
-        logger_->display_message("Trying to load problem at " + 
-            std::string(options_.INPUTROOT / nodal_lp.lp_folder / master_file));
+        logger_->display_message(
+          "Trying to load problem at "
+          + std::string(options_.INPUTROOT / nodal_lp.lp_folder / master_file));
         SolverAbstract::Ptr solver_local = get_local_solver(options_.INPUTROOT / nodal_lp.lp_folder,
                                                             master_file);
         solver_local->set_output_log_level(options_.LOG_LEVEL);
@@ -314,7 +311,8 @@ void MergeMasterTrajectoryMPS::build_problem()
           logger_.get());
 
         // Second step : get the candidate's position in the merged problem
-        for (const auto& [candidate_name, _]: node_coupling_map[MasterStructureKeys::DEFAULT_MASTER_NAME])
+        for (const auto& [candidate_name, _]:
+             node_coupling_map[MasterStructureKeys::DEFAULT_MASTER_NAME])
         {
             std::string candidate_name_prefixed = varPrefix_local + candidate_name;
             int new_index = ptr_merged_solver_->get_col_index(candidate_name_prefixed);
@@ -351,7 +349,8 @@ void MergeMasterTrajectoryMPS::build_problem()
         }
     }
 
-    const std::filesystem::path structure_file = std::filesystem::path(options_.OUTPUTROOT) / "structure.txt";
+    const std::filesystem::path structure_file = std::filesystem::path(options_.OUTPUTROOT)
+                                                 / "structure.txt";
     CouplingMapGenerator::WriteCouplingMap(structure_, structure_file, logger_.get());
 
     // Add the delta variables and the constraints that define them
@@ -618,8 +617,10 @@ void MergeMasterTrajectoryMPS::launch()
 {
     logger_->display_message("Parsing structure file at " + std::string(tree_path_));
     read_tree_structure_file();
-    logger_->display_message("Parsing nodal lp folder data at " + std::string(lp_reference_file_filepath));
-    nodes_lp_pathes_ = LpDataLocationManager::parse_nodal_lp_location_file(lp_reference_file_filepath);
+    logger_->display_message("Parsing nodal lp folder data at "
+                             + std::string(lp_reference_file_filepath));
+    nodes_lp_pathes_ = LpDataLocationManager::parse_nodal_lp_location_file(
+      lp_reference_file_filepath);
 
     build_problem();
     // Name to be changed

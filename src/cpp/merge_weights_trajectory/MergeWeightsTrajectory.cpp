@@ -1,60 +1,54 @@
-#include "antares-xpansion/merge_weights_trajectory/MergeWeightsTrajectory.h"
-
-#include "antares-xpansion/benders/benders_core/common.h"
-#include "antares-xpansion/benders/merge_master_mps/MasterStructureKeys.h"
+#include <fstream>
+#include <json/reader.h>
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
+#include "antares-xpansion/benders/benders_core/common.h"
+#include "antares-xpansion/benders/merge_master_mps/MasterStructureKeys.h"
+#include "antares-xpansion/merge_weights_trajectory/MergeWeightsTrajectory.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
-
-#include <json/reader.h>
-#include <fstream>
 
 namespace
 {
-    void check_format(const std::vector<std::string>& split)
+void check_format(const std::vector<std::string>& split)
+{
+    const std::string file_format_error{
+      "Weights file should have two columns separated by ' ' : \n "
+      "subproblem_file weight \n"
+      "subproblem_file2 weight"};
+    if (split.size() != 2)
     {
-        const std::string file_format_error{
-            "Weights file should have two columns separated by ' ' : \n "
-            "subproblem_file weight \n"
-            "subproblem_file2 weight"
-        };
-        if (split.size() != 2)
-        {
-            std::cerr << file_format_error
-                    << std::endl;
-            std::exit(1);
-        }
-    };
-
-    /*
-        File should be in two columns : 
-        subproblem_file weight
-        ...
-        WEIGHT_SUM sum
-        Where WEIGHT_SUM is the sum of weights over all MC years (but not over the weeks !)
-        Note that WEIGHT_SUM is thus a disallowed name for a subproblem file (should be ok !)
-        Returns a map : subproblem_file -> subproblem_weight 
-                        WEIGHT_SUM -> sum
-    */
-    std::map<std::string, double> load_weights_map(const std::filesystem::path& path)
-    {
-
-        std::ifstream f(path);
-        std::string line;
-        std::map<std::string, double> output;
-
-        // Nodal studies input paths
-        while (std::getline(f, line))
-        {
-            auto split = StringManip::split(line, " ");
-            check_format(split);
-            output[split[0]] = std::stod(split[1]);
-        }
-
-        return output;
+        std::cerr << file_format_error << std::endl;
+        std::exit(1);
     }
 }
 
+/*
+    File should be in two columns :
+    subproblem_file weight
+    ...
+    WEIGHT_SUM sum
+    Where WEIGHT_SUM is the sum of weights over all MC years (but not over the weeks !)
+    Note that WEIGHT_SUM is thus a disallowed name for a subproblem file (should be ok !)
+    Returns a map : subproblem_file -> subproblem_weight
+                    WEIGHT_SUM -> sum
+*/
+std::map<std::string, double> load_weights_map(const std::filesystem::path& path)
+{
+    std::ifstream f(path);
+    std::string line;
+    std::map<std::string, double> output;
+
+    // Nodal studies input paths
+    while (std::getline(f, line))
+    {
+        auto split = StringManip::split(line, " ");
+        check_format(split);
+        output[split[0]] = std::stod(split[1]);
+    }
+
+    return output;
+}
+} // namespace
 
 void MergeWeightsTrajectory::load_input_files()
 {
@@ -63,7 +57,7 @@ void MergeWeightsTrajectory::load_input_files()
     const auto master_structure_data = get_json_file_content(master_structure_file_);
     const auto& tree_data = master_structure_data[KEY_TREE];
 
-    for (const auto& node_name : tree_data.getMemberNames())
+    for (const auto& node_name: tree_data.getMemberNames())
     {
         double node_weight = tree_data[node_name][KEY_NODE_WEIGHT].asDouble();
         nodes_weights_[node_name] = node_weight;
@@ -75,26 +69,27 @@ void MergeWeightsTrajectory::load_input_files()
 
 void MergeWeightsTrajectory::generate_merged_weights_file()
 {
-    for (const auto& [node, lp_info] : nodes_lp_paths_)
+    for (const auto& [node, lp_info]: nodes_lp_paths_)
     {
         // If there are custom weights for this node
         auto potential_weights_file = lp_info.lp_folder / lp_info.weights;
         if (std::filesystem::exists(potential_weights_file))
         {
-            logger_->display_message(
-                "Node '" + node + "' has a custom weight file, parsing file : " + potential_weights_file.string(),
-                LogUtils::LOGLEVEL::INFO,
-                MERGE_WEIGHTS_CONTEXT);
+            logger_->display_message("Node '" + node + "' has a custom weight file, parsing file : "
+                                       + potential_weights_file.string(),
+                                     LogUtils::LOGLEVEL::INFO,
+                                     MERGE_WEIGHTS_CONTEXT);
 
             const auto nodal_weights = load_weights_map(potential_weights_file);
-            for (const auto& [subproblem, weight] : nodal_weights)
+            for (const auto& [subproblem, weight]: nodal_weights)
             {
                 if (subproblem == WEIGHT_SUM_KEY)
                 {
                     continue;
                 }
                 auto full_path = lp_info.lp_folder / subproblem;
-                auto merged_weight = (weight / nodal_weights.at(WEIGHT_SUM_KEY)) * nodes_weights_.at(node);
+                auto merged_weight = (weight / nodal_weights.at(WEIGHT_SUM_KEY))
+                                     * nodes_weights_.at(node);
                 merged_subproblem_weights_[full_path.string()] = merged_weight;
             }
         }
@@ -102,44 +97,42 @@ void MergeWeightsTrajectory::generate_merged_weights_file()
         else
         {
             auto structure_file = lp_info.lp_folder / lp_info.structure;
-            logger_->display_message(
-                "Node '" + node + "' has uniform weights, parsing structure file : " + structure_file.string(),
-                LogUtils::LOGLEVEL::INFO,
-                MERGE_WEIGHTS_CONTEXT);
+            logger_->display_message("Node '" + node
+                                       + "' has uniform weights, parsing structure file : "
+                                       + structure_file.string(),
+                                     LogUtils::LOGLEVEL::INFO,
+                                     MERGE_WEIGHTS_CONTEXT);
 
-            CouplingMap node_structure = CouplingMapGenerator::BuildInput(
-                structure_file,
-                logger_.get(),
-                MERGE_WEIGHTS_CONTEXT
-            );
+            CouplingMap node_structure = CouplingMapGenerator::BuildInput(structure_file,
+                                                                          logger_.get(),
+                                                                          MERGE_WEIGHTS_CONTEXT);
             // n_subproblems = n_mcyears * n_weeks
             int n_subproblems = node_structure.size() - 1;
 
-            for (const auto& [subproblem, _] : node_structure)
+            for (const auto& [subproblem, _]: node_structure)
             {
                 auto full_path = lp_info.lp_folder / subproblem;
                 // CAREFUL : Why 1 / n_subproblems and not 1 / n_mcyears ?
-                // We put it like this for now to duplicate the behaviour seen in MergeMPS & Benders for a single annual study.
-                auto merged_weight = (1 / static_cast<double>(n_subproblems)) * nodes_weights_[node];
+                // We put it like this for now to duplicate the behaviour seen in MergeMPS & Benders
+                // for a single annual study.
+                auto merged_weight = (1 / static_cast<double>(n_subproblems))
+                                     * nodes_weights_[node];
                 merged_subproblem_weights_[full_path.string()] = merged_weight;
             }
         }
     }
 }
 
-
 void MergeWeightsTrajectory::write_merged_weights_file() const
 {
     std::ofstream weight_file;
     weight_file.open(output_filepath_);
 
-    logger_->display_message(
-        "Writing merged weights to file : " + output_filepath_.string(),
-        LogUtils::LOGLEVEL::INFO,
-        MERGE_WEIGHTS_CONTEXT
-    );
+    logger_->display_message("Writing merged weights to file : " + output_filepath_.string(),
+                             LogUtils::LOGLEVEL::INFO,
+                             MERGE_WEIGHTS_CONTEXT);
 
-    for (const auto& [subproblem, weight] : merged_subproblem_weights_)
+    for (const auto& [subproblem, weight]: merged_subproblem_weights_)
     {
         weight_file << subproblem << " " << weight << std::endl;
     }

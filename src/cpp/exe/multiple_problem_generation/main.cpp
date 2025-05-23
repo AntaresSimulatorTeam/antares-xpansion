@@ -17,7 +17,7 @@ int main(int argc, char** argv)
         mpbg.load_input_weight_files();
         mpbg.run_generation();
         mpbg.write_lp_pathes();
-        
+
         return 0;
     }
     catch (std::exception& e)

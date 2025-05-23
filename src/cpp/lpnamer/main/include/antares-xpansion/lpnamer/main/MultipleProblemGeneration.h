@@ -1,13 +1,13 @@
+#include "antares-xpansion/benders/merge_master_mps/NodeLpDataLocation.h"
 #include "antares-xpansion/lpnamer/main/ProblemGeneration.h"
 #include "antares-xpansion/lpnamer/main/ProblemGenerationExeOptions.h"
 
-#include "antares-xpansion/benders/merge_master_mps/NodeLpDataLocation.h"
-
-class MultipleProblemGenerationExeOptions : public ProblemGenerationExeOptions
+class MultipleProblemGenerationExeOptions: public ProblemGenerationExeOptions
 {
 private:
     // Path to which we want to write the nodal_lp_info obtained after problem generation.
     std::filesystem::path nodal_lp_info_path_;
+
 public:
     MultipleProblemGenerationExeOptions();
 
@@ -21,21 +21,23 @@ public:
     {
         return nodal_lp_info_path_;
     }
-
 };
-
 
 class MultipleProblemGeneration
 {
 public:
-    explicit MultipleProblemGeneration(MultipleProblemGenerationExeOptions& options) : options_(options){};
+    explicit MultipleProblemGeneration(MultipleProblemGenerationExeOptions& options):
+        options_(options)
+    {
+    }
+
     virtual ~MultipleProblemGeneration() = default;
     /*
         Runs the problem generation for every node given in the input file
     */
     void run_generation();
     /*
-        Parse a list of paths provided by the user in the form of a text file with two columns : 
+        Parse a list of paths provided by the user in the form of a text file with two columns :
         node_name1 path/to/archive
         node_name2 or/path/to/output
         node_name3 or/path/to/study
@@ -46,13 +48,12 @@ public:
     void load_input_pathes();
 
     /*
-        Parse a list of weight files provided by the user in the form of a text file with two columns : 
-        node_name1 path/to/weight/file
-        node_name3 path/to/weight/file
+        Parse a list of weight files provided by the user in the form of a text file with two
+       columns : node_name1 path/to/weight/file node_name3 path/to/weight/file
         ...
         If a node is absent from this file, it will be assumed to have uniform weights.
     */
-   void load_input_weight_files();
+    void load_input_weight_files();
     /*
         Writes the lp_folder paths to a Json file
     */

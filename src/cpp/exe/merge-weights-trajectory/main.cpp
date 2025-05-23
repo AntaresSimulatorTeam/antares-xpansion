@@ -1,13 +1,14 @@
 #include <iostream>
 
-#include "antares-xpansion/merge_weights_trajectory/MergeWeightsTrajectory.h"
 #include "antares-xpansion/benders/logger/User.h"
+#include "antares-xpansion/merge_weights_trajectory/MergeWeightsTrajectory.h"
 
 /*
     We generate a merged weight file corresponding to a merged trajectory problem
-    The weight of a given subproblem is : 
-    (its weight in its nodal problem (MC probability)) times (its nodes weight in the trajectory horizon (probability + discounting))
-    If customs MC weights were defined during problem generation, we merge & amend those weights, and if not, we use uniform probability of MC years.
+    The weight of a given subproblem is :
+    (its weight in its nodal problem (MC probability)) times (its nodes weight in the trajectory
+   horizon (probability + discounting)) If customs MC weights were defined during problem
+   generation, we merge & amend those weights, and if not, we use uniform probability of MC years.
 */
 int main(int argc, char** argv)
 {
@@ -15,7 +16,9 @@ int main(int argc, char** argv)
     {
         if (argc < 4)
         {
-            std::cerr << "Error: usage is : <exe> <master_structure_file> <nodal_lp_folder_file> <output_file_path>" << std::endl;
+            std::cerr << "Error: usage is : <exe> <master_structure_file> <nodal_lp_folder_file> "
+                         "<output_file_path>"
+                      << std::endl;
             std::exit(1);
         }
 
@@ -25,17 +28,12 @@ int main(int argc, char** argv)
                                 LogUtils::LOGLEVEL::INFO,
                                 MERGE_WEIGHTS_CONTEXT);
 
-        MergeWeightsTrajectory merged_weights_generator(
-            argv[1],
-            argv[2],
-            argv[3],
-            logger
-        );
+        MergeWeightsTrajectory merged_weights_generator(argv[1], argv[2], argv[3], logger);
 
         merged_weights_generator.load_input_files();
         merged_weights_generator.generate_merged_weights_file();
         merged_weights_generator.write_merged_weights_file();
-        
+
         return 0;
     }
     catch (std::exception& e)

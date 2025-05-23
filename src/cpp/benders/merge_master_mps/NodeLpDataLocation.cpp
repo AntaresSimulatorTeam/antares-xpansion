@@ -1,24 +1,21 @@
-#include "antares-xpansion/benders/merge_master_mps/NodeLpDataLocation.h"
-
-#include "antares-xpansion/benders/benders_core/common.h"
-
-#include <json/writer.h>
-#include <iomanip>
 #include <ctime>
+#include <iomanip>
+#include <json/writer.h>
 #include <sstream>
 
-NodeLpDataLocation::NodeLpDataLocation(
-    const Json::Value& data
-)
+#include "antares-xpansion/benders/benders_core/common.h"
+#include "antares-xpansion/benders/merge_master_mps/NodeLpDataLocation.h"
+
+NodeLpDataLocation::NodeLpDataLocation(const Json::Value& data)
 {
     using namespace MasterStructureKeys;
     lp_folder = data[KEY_LP_FOLDER].asString();
     if (data.isMember(KEY_MASTER_MPS_FILE))
-    {   
+    {
         master = data[KEY_MASTER_MPS_FILE].asString();
     }
     if (data.isMember(KEY_STRUCTURE_FILE))
-    {    
+    {
         structure = data[KEY_STRUCTURE_FILE].asString();
     }
     if (data.isMember(KEY_WEIGHTS_FILE))
@@ -27,7 +24,8 @@ NodeLpDataLocation::NodeLpDataLocation(
     }
 }
 
-NodesToLpDataLocationMap LpDataLocationManager::parse_nodal_lp_location_file(const std::filesystem::path& file)
+NodesToLpDataLocationMap LpDataLocationManager::parse_nodal_lp_location_file(
+  const std::filesystem::path& file)
 {
     NodesToLpDataLocationMap output;
     const auto raw_input = get_json_file_content(file);
@@ -38,18 +36,15 @@ NodesToLpDataLocationMap LpDataLocationManager::parse_nodal_lp_location_file(con
             continue;
         }
         const auto& node_lp_path = raw_input[node_name];
-        output.emplace(
-            std::make_pair(node_name, NodeLpDataLocation(node_lp_path))
-        );
+        output.emplace(std::make_pair(node_name, NodeLpDataLocation(node_lp_path)));
     }
 
     return output;
 }
 
 void LpDataLocationManager::write_nodal_lp_location_file(
-    const NodesToLpDataLocationMap& lp_info_map,
-    const std::filesystem::path& filepath
-)
+  const NodesToLpDataLocationMap& lp_info_map,
+  const std::filesystem::path& filepath)
 {
     using namespace MasterStructureKeys;
     Json::Value output;
@@ -63,7 +58,7 @@ void LpDataLocationManager::write_nodal_lp_location_file(
 
     output[KEY_METADATA]["written"] = str;
 
-    for (const auto& [name, lp_info] : lp_info_map)
+    for (const auto& [name, lp_info]: lp_info_map)
     {
         output[name][KEY_LP_FOLDER] = lp_info.lp_folder.string();
         // Optionnal keys are:
@@ -71,7 +66,7 @@ void LpDataLocationManager::write_nodal_lp_location_file(
         output[name][KEY_STRUCTURE_FILE] = lp_info.structure;
         output[name][KEY_WEIGHTS_FILE] = lp_info.weights;
     }
-    
+
     Json::StreamWriterBuilder builder;
     builder["commentStyle"] = "None";
     builder["indentation"] = "   ";
