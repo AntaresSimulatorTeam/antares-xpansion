@@ -66,7 +66,7 @@ public:
     [[nodiscard]] std::filesystem::path StudyPath() const override;
     void checkMandatoryOptions(const std::string& log_location) const;
     [[nodiscard]] auto exclusiveMandatoryParameters() const;
-    
+
     // Returns the relevant path (should be the only non-empty one)
     std::filesystem::path getRelevantPath() const;
     // Sets the relevant path (should be the only non-empty one before changing the value)

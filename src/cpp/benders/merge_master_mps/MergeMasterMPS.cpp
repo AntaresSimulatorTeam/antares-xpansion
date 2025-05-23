@@ -351,7 +351,7 @@ void MergeMasterTrajectoryMPS::build_problem()
             int new_index = ptr_merged_solver_->get_col_index(candidate_name_prefixed);
             if (new_index == -1)
             {
-                interrupt(candidate_name, node_name, varPrefix_local);
+                terminate_on_missing_variable(node_name, candidate_name, candidate_name_prefixed);
             }
             // Create the VariablePositions entry for this candidate
             candidates_coupling_[candidate_name][node_name].set(CAPACITY, new_index);

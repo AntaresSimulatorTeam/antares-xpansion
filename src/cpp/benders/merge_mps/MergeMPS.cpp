@@ -98,13 +98,13 @@ void AbstractMergeMPS::multiply_obj_by_weight_factor(SolverAbstract& local_solve
  *
  * \param local_prefix : Prefix added to variable name
  */
-void AbstractMergeMPS::interrupt(const std::string& var_name,
-                                 const std::string& filename,
-                                 const std::string& local_prefix) const
+void AbstractMergeMPS::terminate_on_missing_variable(const std::string& filename,
+                                                     const std::string& old_var_name,
+                                                     const std::string& new_var_name) const
 {
     const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
-    std::cerr << LOGLOCATION << "missing variable " << var_name << " in " << filename
-              << " supposedly renamed to " << local_prefix + var_name << ".";
+    std::cerr << LOGLOCATION << "missing variable " << old_var_name << " in " << filename
+              << " supposedly renamed to " << new_var_name << ".";
 
     ptr_merged_solver_->write_prob_lp(output_root / "mergeError.lp");
     ptr_merged_solver_->write_prob_mps(output_root / ("mergeError" + MPS_SUFFIX));
@@ -137,10 +137,11 @@ VariableMap AbstractMergeMPS::merge_local_solver(SolverAbstract& local_solver,
 
     for (const auto& [var_name, var_idx]: local_var_map)
     {
-        const int merged_col_index = ptr_merged_solver_->get_col_index(local_prefix + var_name);
+        const std::string prefixed_var_name = local_prefix + var_name;
+        const int merged_col_index = ptr_merged_solver_->get_col_index(prefixed_var_name);
         if (merged_col_index == -1)
         {
-            interrupt(var_name, filename, local_prefix);
+            terminate_on_missing_variable(filename, var_name, prefixed_var_name);
         }
         merged_var_map[var_name] = merged_col_index;
     }

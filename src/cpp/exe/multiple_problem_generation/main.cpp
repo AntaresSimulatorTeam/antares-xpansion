@@ -13,10 +13,10 @@ int main(int argc, char** argv)
         options_parser.Parse(argc, argv);
 
         MultipleProblemGeneration mpbg(options_parser);
-        mpbg.load_input_pathes();
+        mpbg.load_input_paths();
         mpbg.run_generation();
-        mpbg.write_lp_pathes();
-        
+        mpbg.write_lp_paths();
+
         return 0;
     }
     catch (std::exception& e)

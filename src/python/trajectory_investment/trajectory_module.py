@@ -72,7 +72,7 @@ class TrajectoryModule:
             print(f" - Discount rate : {self.discount_rate}")
             print(f" - First investment year : {self.first_investment_date}")
             print(f" - End of horizon : {self.end_of_horizon}")
-            print(f" - Study pathes : {self.studies}")
+            print(f" - Study paths : {self.studies}")
 
     class Tree(BaseModel):
         node_name: str = Field(alias=InKeys.node_key())
@@ -372,7 +372,7 @@ class TrajectoryModule:
                 pass
 
     # Method
-    def set_nodes_names_study_pathes(self):
+    def set_nodes_names_study_paths(self):
         """After parsing the raw node data, 'copy' the node's name and study path to its data for ease of access"""
         assert self.nodes is not None
         for name, data in self.nodes.items():
@@ -462,7 +462,7 @@ class TrajectoryModule:
             )  # TODO Typing
 
             # Complete the node's data
-            self.set_nodes_names_study_pathes()
+            self.set_nodes_names_study_paths()
             self.set_nodes_parents_names()
             self.compute_node_full_probability()
             self.compute_node_duration()

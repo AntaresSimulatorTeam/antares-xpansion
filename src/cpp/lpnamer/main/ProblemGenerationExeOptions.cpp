@@ -86,7 +86,7 @@ std::filesystem::path ProblemGenerationExeOptions::getRelevantPath() const
     if (!study_path_.empty())
     {
         return study_path_;
-    } 
+    }
     else if (!archive_path_.empty())
     {
         return archive_path_;
@@ -94,10 +94,11 @@ std::filesystem::path ProblemGenerationExeOptions::getRelevantPath() const
     else if (!xpansion_output_dir_.empty())
     {
         return xpansion_output_dir_;
-    } else 
+    }
+    else
     {
         throw LogUtils::XpansionError<std::runtime_error>("SimulationInputMode is unknown",
-                                                  LOGLOCATION);
+                                                          LOGLOCATION);
     }
 }
 
@@ -106,7 +107,7 @@ void ProblemGenerationExeOptions::setRelevantPath(const std::filesystem::path& p
     if (!study_path_.empty())
     {
         study_path_ = path;
-    } 
+    }
     else if (!archive_path_.empty())
     {
         archive_path_ = path;
@@ -114,9 +115,10 @@ void ProblemGenerationExeOptions::setRelevantPath(const std::filesystem::path& p
     else if (!xpansion_output_dir_.empty())
     {
         xpansion_output_dir_ = path;
-    } else 
+    }
+    else
     {
         throw LogUtils::XpansionError<std::runtime_error>("SimulationInputMode is unknown",
-                                                  LOGLOCATION);
+                                                          LOGLOCATION);
     }
 }

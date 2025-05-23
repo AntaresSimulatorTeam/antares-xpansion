@@ -29,7 +29,7 @@ public:
         std::string structure = MasterStructureKeys::DEFAULT_STRUCTURE_FILE;
     };
 
-    using NodesLpPathesMap = std::map<std::string, NodeLpDataLocation>;
+    using NodesLpPathsMap = std::map<std::string, NodeLpDataLocation>;
 
     enum CandidateVariableType
     {
@@ -148,7 +148,7 @@ private:
     TrajectoryTree tree_;                       // Contains each node's information
     TrajectoryGlobalData trajectory_data_;      // Contains the global trajectory data
     CandidatesCouplingMap candidates_coupling_; // Links the same candidates in different nodes
-    NodesLpPathesMap
+    NodesLpPathsMap
       nodes_lp_paths_; // Contains the path to the lp folder & relevant files for each node
     CouplingMap structure_;
 };
