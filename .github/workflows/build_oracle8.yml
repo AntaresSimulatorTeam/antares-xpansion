@@ -84,7 +84,7 @@ jobs:
           rm -f Miniconda3-py38_23.5.1-0-Linux-x86_64.sh
           export PATH=/root/miniconda3/condabin:$PATH
           echo "export PATH=/root/miniconda3/condabin:$PATH" >> $GITHUB_ENV
-          conda install -r requirements-tests.txt
+          conda install --file requirements-tests.txt
 
       - name: Set-up Xpress with pip for Oracle 8
         shell: bash
