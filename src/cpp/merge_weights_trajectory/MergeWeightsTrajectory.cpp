@@ -4,6 +4,7 @@
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/merge_master_mps/MasterStructureKeys.h"
+#include "antares-xpansion/lpnamer/input_reader/GeneralDataReader.h"
 #include "antares-xpansion/merge_weights_trajectory/MergeWeightsTrajectory.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
@@ -98,7 +99,7 @@ void MergeWeightsTrajectory::generate_merged_weights_file()
         {
             auto structure_file = lp_info.lp_folder / lp_info.structure;
             logger_->display_message("Node '" + node
-                                       + "' has uniform weights, parsing structure file : "
+                                       + "' has no weights file, parsing structure file : "
                                        + structure_file.string(),
                                      LogUtils::LOGLEVEL::INFO,
                                      MERGE_WEIGHTS_CONTEXT);
@@ -106,8 +107,21 @@ void MergeWeightsTrajectory::generate_merged_weights_file()
             CouplingMap node_structure = CouplingMapGenerator::BuildInput(structure_file,
                                                                           logger_.get(),
                                                                           MERGE_WEIGHTS_CONTEXT);
-            // n_subproblems = n_mcyears * n_weeks
-            int n_subproblems = node_structure.size() - 1;
+
+            // Get the number of MC_YEARS
+            const auto settings_dir = lp_info.lp_folder / ".." / ".." / ".." / "settings";
+            const auto general_data_file = settings_dir / "generaldata.ini";
+            auto ini_reader_logger = std::make_shared<
+              ProblemGenerationLog::ProblemGenerationLogger>(LogUtils::LOGLEVEL::INFO);
+            auto genera_data_reader = GeneralDataIniReader(general_data_file, ini_reader_logger);
+            std::vector<int> active_years = genera_data_reader.GetActiveYears();
+            int nb_years = active_years.size();
+
+            logger_->display_message("After reading Antares settings, node '" + node
+                                       + "' was found to have " + std::to_string(nb_years)
+                                       + " MC years.",
+                                     LogUtils::LOGLEVEL::INFO,
+                                     MERGE_WEIGHTS_CONTEXT);
 
             for (const auto& [subproblem, _]: node_structure)
             {
@@ -116,11 +130,7 @@ void MergeWeightsTrajectory::generate_merged_weights_file()
                     continue;
                 }
                 auto full_path = lp_info.lp_folder / subproblem;
-                // CAREFUL : Why 1 / n_subproblems and not 1 / n_mcyears ?
-                // We put it like this for now to duplicate the behaviour seen in MergeMPS & Benders
-                // for a single annual study.
-                auto merged_weight = (1 / static_cast<double>(n_subproblems))
-                                     * nodes_weights_[node];
+                auto merged_weight = (1 / static_cast<double>(nb_years)) * nodes_weights_[node];
                 merged_subproblem_weights_[full_path.string()] = merged_weight;
             }
         }

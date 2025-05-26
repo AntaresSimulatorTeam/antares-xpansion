@@ -29,6 +29,7 @@ target_link_libraries(merge_weights_lib
         PUBLIC
         antaresXpansion::node_lp_data_location
         antaresXpansion::logger_lib
+        antaresXpansion::lp_namer_input_reader
 )
 
 install(DIRECTORY include/antares-xpansion
