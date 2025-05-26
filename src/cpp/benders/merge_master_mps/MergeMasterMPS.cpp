@@ -16,18 +16,19 @@ MergeMasterTrajectoryMPS::CandidateVariableType MergeMasterTrajectoryMPS::parse_
 {
     using namespace MasterStructureKeys;
 
-    static const std::map<const char*, CandidateVariableType> look_up_table{
-      {VARIABLE_X, CandidateVariableType::CAPACITY},
-      {VARIABLE_DX_PLUS, CandidateVariableType::DX_PLUS},
-      {VARIABLE_DX_MINUS, CandidateVariableType::DX_MINUS},
-    };
+    static const std::unordered_map<std::string_view, CandidateVariableType>
+      lookup_table{
+        {VARIABLE_X, CandidateVariableType::CAPACITY},
+        {VARIABLE_DX_PLUS, CandidateVariableType::DX_PLUS},
+        {VARIABLE_DX_MINUS, CandidateVariableType::DX_MINUS},
+      };
 
-    const auto found = look_up_table.find(s.c_str());
-    if (found == look_up_table.end())
+    const auto found = lookup_table.find(s.c_str());
+    if (found == lookup_table.end())
     {
         std::cerr << LOGLOCATION
                   << fmt::format("Candidate variable type '{}' should be one of [", s);
-        for (const auto& key: look_up_table | std::views::keys)
+        for (const auto& key: lookup_table | std::views::keys)
         {
             std::cerr << key << ", ";
         }
@@ -41,17 +42,17 @@ char MergeMasterTrajectoryMPS::parse_constraint_type(const std::string& s)
 {
     using namespace MasterStructureKeys;
 
-    static const std::map<const char*, char> look_up_table{
+    static const std::unordered_map<std::string_view, char> lookup_table{
       {CONSTRAINT_EQUALS, 'E'},
       {CONSTRAINT_GEQ, 'G'},
       {CONSTRAINT_LEQ, 'L'},
     };
 
-    const auto found = look_up_table.find(s.c_str());
-    if (found == look_up_table.end())
+    const auto found = lookup_table.find(s.c_str());
+    if (found == lookup_table.end())
     {
         std::cerr << LOGLOCATION << fmt::format("Constraint type '{}' should be one of [", s);
-        for (const auto& key: look_up_table | std::views::keys)
+        for (const auto& key: lookup_table | std::views::keys)
         {
             std::cerr << key << ", ";
         }
