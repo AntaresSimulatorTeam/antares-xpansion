@@ -89,11 +89,13 @@ jobs:
           wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.5.1-0-Linux-x86_64.sh
           bash Miniconda3-py38_23.5.1-0-Linux-x86_64.sh -b -p /root/miniconda3
           rm -f Miniconda3-py38_23.5.1-0-Linux-x86_64.sh
+          export PATH=/root/miniconda3/condabin:$PATH
+          echo "export PATH=/root/miniconda3/condabin:$PATH" >> $GITHUB_ENV
+          conda install -r requirements-tests.txt
 
       - name: Set-up Xpress with pip for Oracle 8
         shell: bash
         run: |
-          export PATH=/root/miniconda3/condabin:$PATH
           conda install -c fico-xpress "xpress==9.2.12" "xpresslibs==9.2.12"
           conda info --all
           SITE_PACKAGE=/root/miniconda3/lib/python3.8/site-packages
