@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <fmt/format.h>
 #include <numeric>
+#include <unordered_map>
 #include <utility>
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
@@ -16,12 +17,11 @@ MergeMasterTrajectoryMPS::CandidateVariableType MergeMasterTrajectoryMPS::parse_
 {
     using namespace MasterStructureKeys;
 
-    static const std::unordered_map<std::string_view, CandidateVariableType>
-      lookup_table{
-        {VARIABLE_X, CandidateVariableType::CAPACITY},
-        {VARIABLE_DX_PLUS, CandidateVariableType::DX_PLUS},
-        {VARIABLE_DX_MINUS, CandidateVariableType::DX_MINUS},
-      };
+    static const std::unordered_map<std::string_view, CandidateVariableType> lookup_table{
+      {VARIABLE_X, CandidateVariableType::CAPACITY},
+      {VARIABLE_DX_PLUS, CandidateVariableType::DX_PLUS},
+      {VARIABLE_DX_MINUS, CandidateVariableType::DX_MINUS},
+    };
 
     const auto found = lookup_table.find(s.c_str());
     if (found == lookup_table.end())
