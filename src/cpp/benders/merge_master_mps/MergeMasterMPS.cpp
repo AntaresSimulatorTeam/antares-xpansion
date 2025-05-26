@@ -1,3 +1,5 @@
+#include "antares-xpansion/benders/merge_master_mps/MergeMasterMPS.h"
+
 #include <filesystem>
 #include <fmt/format.h>
 #include <numeric>
@@ -6,7 +8,6 @@
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/merge_master_mps/MasterStructureKeys.h"
-#include "antares-xpansion/benders/merge_master_mps/MergeMasterMPS.h"
 #include "antares-xpansion/benders/merge_mps/StandardLp.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
@@ -340,7 +341,11 @@ void MergeMasterTrajectoryMPS::build_problem()
             int new_index = ptr_merged_solver_->get_col_index(candidate_name_prefixed);
             if (new_index == -1)
             {
-                terminate_on_missing_variable(node_name, candidate_name, candidate_name_prefixed);
+                terminate(LOGLOCATION,
+                          fmt::format("Missing variable '{}' in {} supposedly renamed to '{}'.",
+                                      candidate_name,
+                                      node_name,
+                                      candidate_name_prefixed));
             }
             // Create the VariablePositions entry for this candidate
             candidates_coupling_[candidate_name][node_name].set(CAPACITY, new_index);

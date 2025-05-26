@@ -1,11 +1,13 @@
+#include "antares-xpansion/benders/merge_mps/MergeMPS.h"
+
 #include <filesystem>
+#include <fmt/format.h>
 #include <numeric>
 #include <ranges>
 #include <utility>
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/merge_mps/JsonKeysConstants.h"
-#include "antares-xpansion/benders/merge_mps/MergeMPS.h"
 #include "antares-xpansion/benders/merge_mps/StandardLp.h"
 #include "antares-xpansion/helpers/Timer.h"
 
@@ -45,9 +47,6 @@ SolverAbstract::Ptr AbstractMergeMPS::get_local_solver(const std::filesystem::pa
     SolverAbstract::Ptr ptr_solver = factory_.create_solver(options_.SOLVER_NAME);
     ptr_solver->set_output_log_level(options_.LOG_LEVEL);
 
-    logger_->display_message("Trying to read or restore problem : "
-                             + (root_dir / filename).string());
-
     solver_io_.read(ptr_solver.get(), root_dir / filename);
 
     return ptr_solver;
@@ -85,41 +84,14 @@ void AbstractMergeMPS::multiply_obj_by_weight_factor(SolverAbstract& local_solve
 }
 
 /**
- * \brief Interrupt the program when a variable is not found in the local solver
+ * \brief Interrupt the program and output current merged .lp and .mps files
  *
- * \param var_name : Variable name
- *
- * \param filename : File name
- *
- * \param local_prefix : Prefix added to variable name
+ * \param message : Error message to be output
  */
-void AbstractMergeMPS::terminate_on_missing_variable(const std::string& filename,
-                                                     const std::string& old_var_name,
-                                                     const std::string& new_var_name) const
+void AbstractMergeMPS::terminate(const std::string& location, const std::string& message) const
 {
     const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
-    std::cerr << LOGLOCATION << "missing variable " << old_var_name << " in " << filename
-              << " supposedly renamed to " << new_var_name << ".";
-
-    ptr_merged_solver_->write_prob_lp(output_root / "mergeError.lp");
-    ptr_merged_solver_->write_prob_mps(output_root / ("mergeError" + MPS_SUFFIX));
-
-    std::exit(1);
-}
-
-/**
- * \brief Interrupt the program when unable to find the variable's local name in the subproblem.
- *
- * \param var_name : Variable name
- *
- * \param filename : File name
- */
-void AbstractMergeMPS::terminate_on_local_variable_name_not_found(const std::string& filename,
-                                                                  const std::string& var_name) const
-{
-    const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
-    std::cerr << LOGLOCATION << "Unable to find local name of variable '" << var_name << "' in "
-              << filename << "." << std::endl;
+    std::cerr << location << message << std::endl;
 
     ptr_merged_solver_->write_prob_lp(output_root / "mergeError.lp");
     ptr_merged_solver_->write_prob_mps(output_root / ("mergeError" + MPS_SUFFIX));
@@ -155,23 +127,28 @@ VariableMap AbstractMergeMPS::merge_local_solver(SolverAbstract& local_solver,
         // Local var name might not be the same as the var name in the CouplingMap
         // e.g. in the trajectory case, we add a prefix to var names in the master problem but
         // the subproblems are not modified
-        std::vector<std::string> var_name_local_vec = local_solver.get_col_names(var_idx, var_idx);
-        if (var_name_local_vec.size() != 1)
+        const std::vector<std::string> local_var_names = local_solver.get_col_names(var_idx,
+                                                                                    var_idx);
+        if (local_var_names.size() != 1)
         {
-            logger_->display_message("Found " + std::to_string(var_name_local_vec.size())
-                                       + " candidates for the local var name",
-                                     LogUtils::LOGLEVEL::WARNING,
-                                     MERGE_MPS_LOGGER_CONTEXT);
-            terminate_on_local_variable_name_not_found(filename, var_name);
+            terminate(LOGLOCATION,
+                      fmt::format("Found {} candidates for variable '{}' in {}.",
+                                  local_var_names.size(),
+                                  var_name,
+                                  filename));
         }
-        const std::string var_name_local = var_name_local_vec.at(0);
+        const std::string& local_var_name = local_var_names[0];
 
         // Find the variable in the merged solver.
-        const std::string prefixed_var_name = local_prefix + var_name_local;
+        const std::string prefixed_var_name = local_prefix + local_var_name;
         const int merged_col_index = ptr_merged_solver_->get_col_index(prefixed_var_name);
         if (merged_col_index == -1)
         {
-            terminate_on_missing_variable(filename, var_name, prefixed_var_name);
+            terminate(LOGLOCATION,
+                      fmt::format("Missing variable '{}' in {} supposedly renamed to '{}'.",
+                                  var_name,
+                                  filename,
+                                  prefixed_var_name));
         }
         merged_var_map[var_name] = merged_col_index;
     }
