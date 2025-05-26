@@ -105,7 +105,12 @@ void MultipleProblemGeneration::run_generation()
         std::filesystem::path output_folder = pbg.updateProblems();
 
         auto lp_folder = output_folder / "lp/";
-        node_to_lp_info_.emplace(std::make_pair(node, NodeLpDataLocation(lp_folder)));
+        auto node_lp_location = NodeLpDataLocation(lp_folder);
+        // The weight file outputted by ProblemGeneration
+        // has the same name as the user input weight file
+        node_lp_location.weights = node_to_weight_file_.at(node).filename();
+
+        node_to_lp_info_.emplace(std::make_pair(node, node_lp_location));
         std::cout << "Successfully generated lp_folder and files for problem : " << node
                   << std::endl;
     }

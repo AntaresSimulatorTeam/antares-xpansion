@@ -45,6 +45,9 @@ SolverAbstract::Ptr AbstractMergeMPS::get_local_solver(const std::filesystem::pa
     SolverAbstract::Ptr ptr_solver = factory_.create_solver(options_.SOLVER_NAME);
     ptr_solver->set_output_log_level(options_.LOG_LEVEL);
 
+    logger_->display_message("Trying to read or restore problem : "
+                             + (root_dir / filename).string());
+
     solver_io_.read(ptr_solver.get(), root_dir / filename);
 
     return ptr_solver;
@@ -105,6 +108,26 @@ void AbstractMergeMPS::terminate_on_missing_variable(const std::string& filename
 }
 
 /**
+ * \brief Interrupt the program when unable to find the variable's local name in the subproblem.
+ *
+ * \param var_name : Variable name
+ *
+ * \param filename : File name
+ */
+void AbstractMergeMPS::terminate_on_local_variable_name_not_found(const std::string& filename,
+                                                                  const std::string& var_name) const
+{
+    const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
+    std::cerr << LOGLOCATION << "Unable to find local name of variable '" << var_name << "' in "
+              << filename << "." << std::endl;
+
+    ptr_merged_solver_->write_prob_lp(output_root / "mergeError.lp");
+    ptr_merged_solver_->write_prob_mps(output_root / ("mergeError" + MPS_SUFFIX));
+
+    std::exit(1);
+}
+
+/**
  * \brief Merges local to global solver
  *
  * \param local_solver : Local solver
@@ -129,7 +152,22 @@ VariableMap AbstractMergeMPS::merge_local_solver(SolverAbstract& local_solver,
 
     for (const auto& [var_name, var_idx]: local_var_map)
     {
-        const std::string prefixed_var_name = local_prefix + var_name;
+        // Local var name might not be the same as the var name in the CouplingMap
+        // e.g. in the trajectory case, we add a prefix to var names in the master problem but
+        // the subproblems are not modified
+        std::vector<std::string> var_name_local_vec = local_solver.get_col_names(var_idx, var_idx);
+        if (var_name_local_vec.size() != 1)
+        {
+            logger_->display_message("Found " + std::to_string(var_name_local_vec.size())
+                                       + " candidates for the local var name",
+                                     LogUtils::LOGLEVEL::WARNING,
+                                     MERGE_MPS_LOGGER_CONTEXT);
+            terminate_on_local_variable_name_not_found(filename, var_name);
+        }
+        const std::string var_name_local = var_name_local_vec.at(0);
+
+        // Find the variable in the merged solver.
+        const std::string prefixed_var_name = local_prefix + var_name_local;
         const int merged_col_index = ptr_merged_solver_->get_col_index(prefixed_var_name);
         if (merged_col_index == -1)
         {

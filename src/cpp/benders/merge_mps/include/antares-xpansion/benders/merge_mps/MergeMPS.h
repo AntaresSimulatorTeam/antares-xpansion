@@ -24,6 +24,9 @@ protected:
     void terminate_on_missing_variable(const std::string& filename,
                                        const std::string& old_var_name,
                                        const std::string& new_var_name) const;
+    void terminate_on_local_variable_name_not_found(const std::string& filename,
+                                                    const std::string& var_name) const;
+
     void export_problem(const std::string& filename = "log_merged", bool export_lp = false);
 
     [[nodiscard]] SolverAbstract::Ptr get_local_solver(const std::filesystem::path& root_dir,
