@@ -31,7 +31,7 @@ Antares-Xpansion includes an experimental graphical interface but it is optimall
 
 Show a help message and exit.
 
-#### `--step {full, antares, problem_generation, benders, study_update, sensitivity, resume}`
+#### `--step {full, antares, problem_generation, benders, study_update, sensitivity, presolve, resume}`
 
 Default value: `full`.
 
@@ -40,12 +40,13 @@ The execution of Antares-Xpansion consists of several steps that can be run sepa
 
 | Step                 | Description                                                                                                                                         |
 |:---------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| `antares`            | Launch Antares-Simulator once to get the Antares problem.                                                                                           
+| `antares`            | Launch Antares-Simulator once to get the Antares problem.
 | `problem_generation` | Generate the full Antares-Xpansion problem using the user input and the output of the Antares-Simulator run.                                        |
 | `benders`            | Solve the investment optimization problem of Antares-Xpansion, using the [Benders decomposition](../optimization-principles/investment-problem.md). |
 | `study_update`       | Update the Antares study with the solution returned by the [Benders decomposition](../optimization-principles/investment-problem.md) algorithm.     |
 | `full`               | Launch all steps in order: `antares` \> `problem_generation` \> `benders` \> `study_update`                                                         |
 | `sensitivity`        | Launch sensitivity analysis, see [Sensitivity analysis](sensitivity-analysis.md).                                                                   |
+| `presolve`           | Launch a presolver on the decomposed problem (only available with Xpress solver). See [Calling the presolve](../optimization-principles/investment-problem.md#calling-the-presolve) |
 | `resume`             | resume benders step of a study in accordance with `--simulationName`, by default `last` study is resumed.                                           |
 
 #### `-i, --dataDir`
@@ -69,7 +70,7 @@ Sets the optimization method used by Antares-Xpansion.
 
 | Option               | Description                                                                                                                                            |
 |----------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `benders`            | Launch the classical Benders decomposition or the Benders by batch algorithm depending on `batch_size`.                                                
+| `benders`            | Launch the classical Benders decomposition or the Benders by batch algorithm depending on `batch_size`.
 | `mergeMPS`           | Launch a frontal resolution of the investment problem (i.e. without decomposition). This is much more time-consuming than using Benders decomposition. |
 | `adequacy_criterion` | Launch Antares-Xpansion with reliability constraints, see [Adequacy criterion](adequacy-criterion.md).                                                 |
 
@@ -93,6 +94,12 @@ Default value: `False`.
 If set to `True`, keeps `mps` files that encodes the problems solved by the optimizer. This option must be set to `True`
 if the user intends to launch the optimization several times on the same study (`--step benders`) without doing the
 other steps of Antares-Xpansion.
+
+#### `--presolve`
+
+Default value: `False`.
+
+If set to `True`, runs the `presolve` step before calling the `benders` step
 
 #### `-v, --version`
 
