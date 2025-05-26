@@ -1,3 +1,4 @@
+#include "antares-xpansion/lpnamer/main/ProblemGeneration.h"
 
 #include <execution>
 #include <iostream>
@@ -12,7 +13,6 @@
 #include "antares-xpansion/lpnamer/input_reader/GeneralDataReader.h"
 #include "antares-xpansion/lpnamer/input_reader/LpFilesExtractor.h"
 #include "antares-xpansion/lpnamer/input_reader/SettingsReader.h"
-#include "antares-xpansion/lpnamer/main/ProblemGeneration.h"
 #include "antares-xpansion/lpnamer/model/ActiveLinks.h"
 #include "antares-xpansion/lpnamer/problem_modifier/AdditionalConstraints.h"
 #include "antares-xpansion/lpnamer/problem_modifier/FileProblemsProviderAdapter.h"
