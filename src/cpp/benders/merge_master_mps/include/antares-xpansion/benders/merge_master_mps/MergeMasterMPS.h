@@ -1,6 +1,7 @@
 #pragma once
 
 #include "antares-xpansion/benders/merge_master_mps/MasterStructureKeys.h"
+#include "antares-xpansion/benders/merge_master_mps/NodeLpDataLocation.h"
 #include "antares-xpansion/benders/merge_mps/MergeMPS.h"
 
 constexpr char TRAJECTORY_LOGGER_CONTEXT[] = "MergeMasterTrajectoryMPS";
@@ -19,18 +20,6 @@ class MergeMasterTrajectoryMPS: public AbstractMergeMPS
 {
 public:
     // Data structures
-
-    struct NodeLpDataLocation
-    {
-        NodeLpDataLocation(const Json::Value& data);
-
-        std::filesystem::path lp_folder;
-        std::string master = MasterStructureKeys::DEFAULT_MASTER_NAME;
-        std::string structure = MasterStructureKeys::DEFAULT_STRUCTURE_FILE;
-    };
-
-    using NodesLpPathsMap = std::map<std::string, NodeLpDataLocation>;
-
     enum CandidateVariableType
     {
         CAPACITY,
@@ -104,7 +93,6 @@ public:
 
         std::string name;
 
-        std::string master_name = MasterStructureKeys::DEFAULT_MASTER_NAME;
         std::optional<std::string> parent{std::nullopt};
 
         // Stores the costs of each candidates' three associated variable at this node.
@@ -148,7 +136,6 @@ private:
     TrajectoryTree tree_;                       // Contains each node's information
     TrajectoryGlobalData trajectory_data_;      // Contains the global trajectory data
     CandidatesCouplingMap candidates_coupling_; // Links the same candidates in different nodes
-    NodesLpPathsMap
-      nodes_lp_paths_; // Contains the path to the lp folder & relevant files for each node
+    NodesToLpDataLocationMap nodes_lp_info_;    // Info on the lp folder & files for each node
     CouplingMap structure_;
 };

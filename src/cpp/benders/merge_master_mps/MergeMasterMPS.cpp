@@ -1,5 +1,3 @@
-#include "antares-xpansion/benders/merge_master_mps/MergeMasterMPS.h"
-
 #include <filesystem>
 #include <fmt/format.h>
 #include <numeric>
@@ -8,6 +6,7 @@
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/merge_master_mps/MasterStructureKeys.h"
+#include "antares-xpansion/benders/merge_master_mps/MergeMasterMPS.h"
 #include "antares-xpansion/benders/merge_mps/StandardLp.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
@@ -128,20 +127,6 @@ double MergeMasterTrajectoryMPS::CandidateCosts::get(CandidateVariableType t) co
     return ret;
 }
 
-MergeMasterTrajectoryMPS::NodeLpDataLocation::NodeLpDataLocation(const Json::Value& data)
-{
-    using namespace MasterStructureKeys;
-    lp_folder = data[KEY_LP_FOLDER].asString();
-    if (data.isMember(KEY_MASTER_MPS_FILE))
-    {
-        master = data[KEY_MASTER_MPS_FILE].asString();
-    }
-    if (data.isMember(KEY_STRUCTURE_FILE))
-    {
-        structure = data[KEY_STRUCTURE_FILE].asString();
-    }
-}
-
 MergeMasterTrajectoryMPS::TrajectoryConstraint::TrajectoryConstraint(const Json::Value& data)
 {
     using namespace MasterStructureKeys;
@@ -206,12 +191,6 @@ MergeMasterTrajectoryMPS::TrajectoryNode::TrajectoryNode(const std::string& node
         }
     }
 
-    // If a MASTER_NAME is given, set it (used when accessing the structure file)
-    if (data.isMember(KEY_MASTER_NAME))
-    {
-        master_name = data[KEY_MASTER_NAME].asString();
-    }
-
     // Pointing each candidate to its associated costs structure
     for (const auto& candidate_name: data[KEY_CANDIDATES].getMemberNames())
     {
@@ -247,20 +226,16 @@ void MergeMasterTrajectoryMPS::read_tree_structure_file()
 
 void MergeMasterTrajectoryMPS::read_node_lp_paths()
 {
-    const auto raw_input = get_json_file_content(lp_reference_file_filepath_);
-    for (const auto& node_name: raw_input.getMemberNames())
-    {
-        const auto& node_lp_path = raw_input[node_name];
-        nodes_lp_paths_.emplace(std::make_pair(node_name, NodeLpDataLocation(node_lp_path)));
-    }
+    nodes_lp_info_ = LpDataLocationManager::parse_nodal_lp_location_file(
+      lp_reference_file_filepath_);
 }
 
 void MergeMasterTrajectoryMPS::check_nodes_have_lp_folder()
 {
-    // Every node in the tree must have an associated lp_folder in nodes_lp_paths_
+    // Every node in the tree must have an associated lp_folder in nodes_lp_info_
     for (const auto& node: tree_)
     {
-        if (!nodes_lp_paths_.contains(node.name))
+        if (!nodes_lp_info_.contains(node.name))
         {
             std::cerr << "Node '" << node.name
                       << "' must appear in in the list of nodal lp folder.";
@@ -318,7 +293,7 @@ void MergeMasterTrajectoryMPS::build_problem()
     for (const auto& node_data: tree_)
     {
         const std::string& node_name = node_data.name;
-        const auto& nodal_lp = nodes_lp_paths_.at(node_name);
+        const auto& nodal_lp = nodes_lp_info_.at(node_name);
         const auto lp_folder = std::filesystem::path(options_.INPUTROOT) / nodal_lp.lp_folder;
 
         // The master file should not contain the extension, add what it should be based on the mode
@@ -336,8 +311,8 @@ void MergeMasterTrajectoryMPS::build_problem()
         logger_->display_message("Reading problem " + (lp_folder / nodal_lp.master).string(),
                                  LogUtils::LOGLEVEL::INFO,
                                  TRAJECTORY_LOGGER_CONTEXT);
-
-        SolverAbstract::Ptr solver_local = get_local_solver(lp_folder, master_file);
+        SolverAbstract::Ptr solver_local = get_local_solver(options_.INPUTROOT / nodal_lp.lp_folder,
+                                                            master_file);
         solver_local->set_output_log_level(options_.LOG_LEVEL);
 
         StandardLp lpData(*solver_local);
@@ -358,7 +333,8 @@ void MergeMasterTrajectoryMPS::build_problem()
                                                                          logger_.get());
 
         // Second step : get the candidate's position in the merged problem
-        for (const auto& [candidate_name, _]: node_coupling_map[node_data.master_name])
+        for (const auto& [candidate_name, _]:
+             node_coupling_map[MasterStructureKeys::DEFAULT_MASTER_NAME])
         {
             const std::string candidate_name_prefixed = varPrefix_local + candidate_name;
             int new_index = ptr_merged_solver_->get_col_index(candidate_name_prefixed);
@@ -375,7 +351,7 @@ void MergeMasterTrajectoryMPS::build_problem()
         // Third step : add the subproblem coupling to the merged structure
         for (const auto& [subproblem, positions]: node_coupling_map)
         {
-            if (subproblem == node_data.master_name)
+            if (subproblem == MasterStructureKeys::DEFAULT_MASTER_NAME)
             {
                 continue;
             }
@@ -677,7 +653,6 @@ void MergeMasterTrajectoryMPS::launch()
                              LogUtils::LOGLEVEL::INFO,
                              TRAJECTORY_LOGGER_CONTEXT);
     read_tree_structure_file();
-
     logger_->display_message("Parsing nodal lp folder data at "
                                + lp_reference_file_filepath_.string(),
                              LogUtils::LOGLEVEL::INFO,

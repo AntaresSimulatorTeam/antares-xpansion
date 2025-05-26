@@ -9,11 +9,12 @@ int main(int argc, char** argv)
         // We reuse the same options as the single executable
         // And interpret the path given in the options as a path to a file
         // which contains the real path (either archive or output or study) for each node
-        auto options_parser = ProblemGenerationExeOptions();
+        auto options_parser = MultipleProblemGenerationExeOptions();
         options_parser.Parse(argc, argv);
 
         MultipleProblemGeneration mpbg(options_parser);
         mpbg.load_input_paths();
+        mpbg.load_input_weight_files();
         mpbg.run_generation();
         mpbg.write_lp_paths();
 
