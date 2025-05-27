@@ -1,8 +1,13 @@
 #pragma once
 
+#include <optional>
+
+#include "antares-xpansion/benders/benders_core/SolverIO.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 #include "antares-xpansion/helpers/solver_utils.h"
+
+constexpr char MERGE_MPS_LOGGER_CONTEXT[] = "MergeMPS";
 
 class AbstractMergeMPS
 {
@@ -13,29 +18,28 @@ public:
 
     virtual ~AbstractMergeMPS() = default;
 
-    void launch();
-
-private:
-    std::shared_ptr<Output::OutputWriter> writer_;
+    virtual void launch() = 0;
 
 protected:
-    [[nodiscard]] virtual double get_objective_weight(int nb_subproblems,
-                                                      const std::string& name) const
-      = 0;
-    virtual void add_coupling_constraints() = 0;
+    void terminate(const std::string& location, const std::string& message) const;
 
-    void build_problem();
-    void export_problem();
-    bool solve(int nb_threads = 16);
-    void output_solution(bool is_sol_optimal);
+    void export_problem(const std::string& filename = "log_merged", bool export_lp = false);
 
+    [[nodiscard]] SolverAbstract::Ptr get_local_solver(const std::filesystem::path& root_dir,
+                                                       const std::string& filename) const;
     void multiply_obj_by_weight_factor(SolverAbstract& local_solver, double weight) const;
+    VariableMap merge_local_solver(SolverAbstract& local_solver,
+                                   const std::string& local_prefix,
+                                   const VariableMap& local_var_map,
+                                   const std::string& filename);
 
+    std::shared_ptr<Output::OutputWriter> writer_;
     MergeMPSOptions options_;
     Logger logger_;
 
+    const SolverFactory factory_;
+    SolverIO solver_io_;
     SolverAbstract::Ptr ptr_merged_solver_;
-    CouplingMap structure_;
 };
 
 class MergeMasterSubproblemMPS: public AbstractMergeMPS
@@ -43,10 +47,17 @@ class MergeMasterSubproblemMPS: public AbstractMergeMPS
 public:
     using AbstractMergeMPS::AbstractMergeMPS;
 
+    void launch() override;
+
 private:
-    [[nodiscard]] double get_objective_weight(int nb_subproblems,
-                                              const std::string& name) const override;
-    void add_coupling_constraints() override;
+    void build_problem();
+    bool solve(int nb_threads = 16);
+    void output_solution(bool is_sol_optimal);
+
+    [[nodiscard]] double get_problem_obj_weight(int nb_subproblems, const std::string& name) const;
+    void add_coupling_constraints();
+
+    CouplingMap structure_;
 };
 
 using MergeMPS = MergeMasterSubproblemMPS;
