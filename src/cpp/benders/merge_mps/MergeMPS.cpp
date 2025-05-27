@@ -180,25 +180,26 @@ VariableMap AbstractMergeMPS::merge_local_solver(SolverAbstract& local_solver,
 }
 
 /**
- * \brief Export problem into OUTPUTROOT/filename and optionally writes the lp variant
+ * \brief Export problem into INPUTROOT/filename and optionally writes the lp variant
+ *        We do it this way because we cannot read a master problem not at the input root.
  */
 void AbstractMergeMPS::export_problem(const std::string& filename, bool export_lp)
 {
-    const auto output_root = std::filesystem::path(options_.OUTPUTROOT);
+    const auto input_root = std::filesystem::path(options_.INPUTROOT);
     logger_->display_message("Problems merged.",
                              LogUtils::LOGLEVEL::INFO,
                              MERGE_MPS_LOGGER_CONTEXT);
     logger_->display_message("Writing merged file",
                              LogUtils::LOGLEVEL::INFO,
                              MERGE_MPS_LOGGER_CONTEXT);
-    solver_io_.write(ptr_merged_solver_.get(), output_root / filename);
+    solver_io_.write(ptr_merged_solver_.get(), input_root / filename);
 
     if (export_lp)
     {
         logger_->display_message("Writing lp file",
                                  LogUtils::LOGLEVEL::INFO,
                                  MERGE_MPS_LOGGER_CONTEXT);
-        ptr_merged_solver_->write_prob_lp(output_root / (filename + ".lp"));
+        ptr_merged_solver_->write_prob_lp(input_root / (filename + ".lp"));
     }
 }
 

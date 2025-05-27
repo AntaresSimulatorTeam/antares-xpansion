@@ -320,8 +320,7 @@ void MergeMasterTrajectoryMPS::build_problem()
                                                                          logger_.get());
 
         // Second step : get the candidate's position in the merged problem
-        for (const auto& [candidate_name, _]:
-             node_coupling_map[MasterStructureKeys::DEFAULT_MASTER_NAME])
+        for (const auto& [candidate_name, _]: node_coupling_map[nodal_lp.master])
         {
             const std::string candidate_name_prefixed = varPrefix_local + candidate_name;
             int new_index = ptr_merged_solver_->get_col_index(candidate_name_prefixed);
@@ -331,14 +330,14 @@ void MergeMasterTrajectoryMPS::build_problem()
             }
             // Create the VariablePositions entry for this candidate
             candidates_coupling_[candidate_name][node_name].set(CAPACITY, new_index);
-            structure_[MasterStructureKeys::DEFAULT_MASTER_NAME][candidate_name_prefixed]
-              = new_index;
+            // Build the merged structure file
+            structure_[options_.MASTER_NAME][candidate_name_prefixed] = new_index;
         }
 
         // Third step : add the subproblem coupling to the merged structure
         for (const auto& [subproblem, positions]: node_coupling_map)
         {
-            if (subproblem == MasterStructureKeys::DEFAULT_MASTER_NAME)
+            if (subproblem == nodal_lp.master)
             {
                 continue;
             }
@@ -352,8 +351,8 @@ void MergeMasterTrajectoryMPS::build_problem()
         }
     }
 
-    const std::filesystem::path structure_file = std::filesystem::path(options_.OUTPUTROOT)
-                                                 / "structure.txt";
+    const std::filesystem::path structure_file = std::filesystem::path(options_.INPUTROOT)
+                                                 / options_.STRUCTURE_FILE;
     export_structure_file(structure_file, structure_);
 
     // Add the delta variables and the constraints that define them
@@ -649,5 +648,5 @@ void MergeMasterTrajectoryMPS::launch()
     build_problem();
 
     // TODO To be changed
-    export_problem("log_merged", true);
+    export_problem(options_.MASTER_NAME, true);
 }
