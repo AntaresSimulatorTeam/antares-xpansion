@@ -29,9 +29,13 @@ struct NodeLpDataLocation
     {
     }
 
+    // Folder containing the generated data
     std::filesystem::path lp_folder;
+    // Name of the master problem for this node
     std::string master = MasterStructureKeys::DEFAULT_MASTER_NAME;
+    // Structure file of the node
     std::string structure = MasterStructureKeys::DEFAULT_STRUCTURE_FILE;
+    // Weights file of the node, might not exist
     std::string weights = MasterStructureKeys::DEFAULT_WEIGHTS_FILE;
 };
 
