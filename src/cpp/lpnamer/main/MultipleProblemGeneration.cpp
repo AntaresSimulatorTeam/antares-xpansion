@@ -86,6 +86,31 @@ void MultipleProblemGeneration::load_input_weight_files()
     }
 }
 
+void MultipleProblemGeneration::load_additional_constraints_files()
+{
+    const std::string file_format_error{
+      "Additional constraints info file should have two columns separated by ' ' : \n "
+      "node_study_name1 path/to/constraints/file \n"
+      "node_study_name2 path/to/constraints/file \n"
+      "... \n"
+      "If a node is absent, it will be assumed to have no additional constraints"};
+    const auto path = options_.AdditionalConstraintsFilename();
+    if (path.empty())
+    {
+        return;
+    }
+    std::ifstream f(path);
+    std::string line;
+
+    // Nodal weight files paths
+    while (std::getline(f, line))
+    {
+        auto split = StringManip::split(line, " ");
+        check_format(split, file_format_error);
+        node_to_additional_constraints_file_[split[0]] = split[1];
+    }
+}
+
 void MultipleProblemGeneration::run_generation()
 {
     for (const auto& [node, input_path]: node_to_input_path_)
@@ -100,6 +125,16 @@ void MultipleProblemGeneration::run_generation()
         else
         {
             individual_options.setWeightsFilePath(std::filesystem::path());
+        }
+        // Additional constraints file
+        if (node_to_additional_constraints_file_.contains(node))
+        {
+            individual_options.setAdditionalConstraintsFilePath(
+              node_to_additional_constraints_file_.at(node));
+        }
+        else
+        {
+            individual_options.setAdditionalConstraintsFilePath(std::filesystem::path());
         }
         auto pbg = ProblemGeneration(individual_options);
         std::filesystem::path output_folder = pbg.updateProblems();

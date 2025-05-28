@@ -76,5 +76,10 @@ public:
     {
         weights_file_ = path;
     }
+
+    void setAdditionalConstraintsFilePath(const std::filesystem::path& path)
+    {
+        additional_constraintFilename_l_ = path;
+    }
 };
 #endif // ANTARES_XPANSION_SRC_CPP_LPNAMER_MAIN_INCLUDE_PROBLEMGENERATIONEXEOPTIONS_H
