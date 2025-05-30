@@ -1,5 +1,3 @@
-#include "antares-xpansion/merge_weights_trajectory/MergeWeightsTrajectory.h"
-
 #include <fstream>
 #include <json/reader.h>
 
@@ -7,6 +5,7 @@
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/merge_master_mps/MasterStructureKeys.h"
 #include "antares-xpansion/lpnamer/input_reader/GeneralDataReader.h"
+#include "antares-xpansion/merge_weights_trajectory/MergeWeightsTrajectory.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
 namespace
@@ -67,6 +66,17 @@ void MergeWeightsTrajectory::load_input_files()
 
     // Lp paths & relevant files data
     nodes_lp_info_ = LpDataLocationManager::parse_nodal_lp_location_file(nodal_lp_folder_file_);
+
+    // Check that every key in nodes_weights appears in the nodes_lp_info
+    for (const auto& [node, _]: nodes_weights_)
+    {
+        if (!nodes_lp_info_.contains(node))
+        {
+            std::cerr << LOGLOCATION << "Node '" << node.name
+                      << "' must appear in in the list of nodal lp folder.";
+            std::exit(1);
+        }
+    }
 }
 
 void MergeWeightsTrajectory::generate_merged_weights_file()

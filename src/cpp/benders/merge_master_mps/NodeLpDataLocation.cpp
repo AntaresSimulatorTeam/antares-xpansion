@@ -1,19 +1,18 @@
-#include "antares-xpansion/benders/merge_master_mps/NodeLpDataLocation.h"
-
 #include <ctime>
 #include <iomanip>
 #include <json/writer.h>
 #include <sstream>
 
 #include "antares-xpansion/benders/benders_core/common.h"
+#include "antares-xpansion/benders/merge_master_mps/NodeLpDataLocation.h"
 
 NodeLpDataLocation::NodeLpDataLocation(const Json::Value& data)
 {
     using namespace MasterStructureKeys;
     lp_folder = data[KEY_LP_FOLDER].asString();
-    if (data.isMember(KEY_MASTER_MPS_FILE))
+    if (data.isMember(KEY_MASTER_FILE))
     {
-        master = data[KEY_MASTER_MPS_FILE].asString();
+        master = data[KEY_MASTER_FILE].asString();
     }
     if (data.isMember(KEY_STRUCTURE_FILE))
     {
@@ -22,6 +21,7 @@ NodeLpDataLocation::NodeLpDataLocation(const Json::Value& data)
     if (data.isMember(KEY_WEIGHTS_FILE))
     {
         weights = data[KEY_WEIGHTS_FILE].asString();
+        has_weights_file = true;
     }
 }
 
@@ -63,9 +63,12 @@ void LpDataLocationManager::write_nodal_lp_location_file(
     {
         output[name][KEY_LP_FOLDER] = lp_info.lp_folder.string();
         // Optionnal keys are:
-        output[name][KEY_MASTER_MPS_FILE] = lp_info.master;
+        output[name][KEY_MASTER_FILE] = lp_info.master;
         output[name][KEY_STRUCTURE_FILE] = lp_info.structure;
-        output[name][KEY_WEIGHTS_FILE] = lp_info.weights;
+        if (lp_info.has_weights_file)
+        {
+            output[name][KEY_WEIGHTS_FILE] = lp_info.weights;
+        }
     }
 
     Json::StreamWriterBuilder builder;

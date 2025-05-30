@@ -23,7 +23,7 @@ The optimisation problem we now want to solve is, denoting by $n \in \mathcal{T}
 
 $$
 \begin{aligned}
-    \min_{x, dx^+, dx^-} \quad & \sum_{n \in \mathcal{T}} wIC_n^T dx_n^+ + wDC_n^T dx_n^- + wOC_{n}^Tx_{n} + w_{n} \times ANTARES_n(x_n)\\\\
+    \min_{x, dx^+, dx^-} \quad & \sum_{n \in \mathcal{T}} wIC_n^T dx_n^+ + wDC_n^T dx_n^- + wOC_n^Tx_{n} + w_{n} \times ANTARES_n(x_n)\\\\
     \text{s.t.} \quad & \forall i,n \quad  x_{i,n} = x_{i, \text{parent}(n)} + dx^+_{i,n}
     - dx^-_{i,n} \\\\
     & \forall i,n \quad dx^+_{i,n} \geq 0, \quad dx^-_{i,n} \geq 0 \\\\
@@ -31,14 +31,12 @@ $$
 \end{aligned}
 $$
 
-- $wIC_n$ contains the already weighted (for probability) and discounted one-time payment investment costs per MW.
-- $wDC_n$ contains the already weighted (for probability) and discounted one-time payment retirement costs per MW.
-- $wOC_n$ contains the already weighted (for represented duration & probability) and discounted annual operation and maintenance fixed costs.
+- $wIC_n$ contains the already weighted (for probability of the node) and discounted one-time payment investment costs per MW.
+- $wDC_n$ contains the already weighted (for probability of the node) and discounted one-time payment retirement costs per MW.
+- $wOC_n$ contains the already weighted (for represented duration of the node & probability) and discounted annual operation and maintenance fixed costs.
 - $w(n) = P(n) \times \sum_{y = y_n}^{y = y_n + d_n - 1} \frac{1}{(1+r)^{y - y_0}}$.
 - $P(n)$ is the probability of realisation of node $n$ : $P(n) = P_{\text{parent}(n)}(n) \times P(\text{parent}(n))$.
 - $P(root) = 1$.
-- $dis(n)$ is the discount we want to apply to the one-shot investment and retirement costs corresponding to node $n$.
-    - Note that (see [the next section](#on-the-dx--variables)) since the decisions are taken during the previous period, we could have something like : $dis(n) = (1+r)^{(y_0 - y_{\text{parent}(n)})}$
 
 
 ## On the $dx^{+/-}$ variables

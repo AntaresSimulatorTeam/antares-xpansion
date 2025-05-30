@@ -143,7 +143,11 @@ void MultipleProblemGeneration::run_generation()
         auto node_lp_location = NodeLpDataLocation(lp_folder);
         // The weight file outputted by ProblemGeneration
         // has the same name as the user input weight file
-        node_lp_location.weights = node_to_weight_file_.at(node).filename().string();
+        if (node_to_weight_file_.contains(node))
+        {
+            node_lp_location.weights = node_to_weight_file_.at(node).filename().string();
+            node_lp_location.has_weights_file = true;
+        }
 
         node_to_lp_info_.emplace(std::make_pair(node, node_lp_location));
         // TODO Output to logger
