@@ -1,5 +1,7 @@
 # Trajectory investment workflow
 
+## Workflow
+
 ![](../../assets/media/trajectory/TrajectoryWorkflow.png)
 
 The complete workflow is composed of the following four "independent" steps : 
@@ -7,6 +9,7 @@ The first two steps are (order of execution does not matter) :
 
 - [User input parsing & formatting](./user-input.md) : Parses and checks the user input, computes the relevant data and format it for later step.
 - [Multiple problem generation](./multiple-problem-generation.md) : Runs the Xpansion problem generation for each study in the tree.
+    - Before running the multiple problem generation, generate the [MultipleProblemGeneration input files](./multiple-problem-generation.md#study-paths--archives-file).
 
 Intermediary files :
 

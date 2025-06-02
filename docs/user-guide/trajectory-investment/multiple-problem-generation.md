@@ -34,14 +34,14 @@ The first column contains the node's name, and the second the path to the custom
 2030 ./node_2030_study/user/expansion/weights/weights.txt
 ```
 
-If a node does not appear in this file, it will be assumed to have no custom weights file (resp. no additional constraints file).
-Note : 
+If a node does not appear in this file, it will be assumed to have no custom weights file (resp. no additional constraints file).  
+
 - [See this section](../get-started/settings-definition.md#yearly-weights) for information about each individual node's custom weight file
 - [See this section](../get-started/settings-definition.md#additional-constraints) for information about each individual node's additional constraints.
 
-In this example, for the nodes ```2030``` and ```2040```, the result will be the same as calling :  
-```<single_problem_gen_executable> --study ./node_2030_study --weights ./node_2030_study/user/expansion/weights/weights.txt```  
-and  
+In this example, for node ```2030```, the result will be the same as calling :  
+```<single_problem_gen_executable> --study ./node_2030_study --weights ./node_2030_study/user/expansion/weights/weights.txt```.  
+And for node ```2040```, the result will be the same as calling :   
 ```<single_problem_gen_executable> --study ./node_2040_study```
 
 

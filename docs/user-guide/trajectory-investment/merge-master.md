@@ -1,8 +1,5 @@
 # Merging the master problems of annual Xpansion studies
 
-
-## Note : Perhaps move to developer guide, as this should not be relevant to the end user.
-
 ## Usage of the master merger executable
 
 **All examples below are based on the tree example given in the [trajectory problem](./trajectory-problem.md) section**
@@ -336,7 +333,7 @@ In the ```constraints``` section of the ```master_structure.json``` file, we exp
     - ```x``` when referencing the $x_{n,i}$ variable.
     - ```dx_plus``` when referencing the $dx_{n,i}^+$ variable.
     - ```dx_minus``` when referencing the $dx_{n,i}^⁻$ variable.
-- ```rhs``` contains the right-hand side of the constraint expression. (Note that all constraints are formulated as a $\leq$ constraint for now)
+- ```rhs``` contains the right-hand side of the constraint expression.
 - ```operator``` defines the type of constraint we want to set and expects one of three values :
     - ```<``` for constraints of type : $expression \leq rhs$
     - ```=``` for constraints of type : $expression = rhs$

@@ -33,7 +33,7 @@ $$
 
 - $wIC_n$ contains the already weighted (for probability of the node) and discounted one-time payment investment costs per MW.
 - $wDC_n$ contains the already weighted (for probability of the node) and discounted one-time payment retirement costs per MW.
-- $wOC_n$ contains the already weighted (for represented duration of the node & probability) and discounted annual operation and maintenance fixed costs.
+- $wOC_n$ contains the already weighted (for represented duration of the node & probability) and discounted operation and maintenance fixed costs.
 - $w(n) = P(n) \times \sum_{y = y_n}^{y = y_n + d_n - 1} \frac{1}{(1+r)^{y - y_0}}$.
 - $P(n)$ is the probability of realisation of node $n$ : $P(n) = P_{\text{parent}(n)}(n) \times P(\text{parent}(n))$.
 - $P(root) = 1$.
