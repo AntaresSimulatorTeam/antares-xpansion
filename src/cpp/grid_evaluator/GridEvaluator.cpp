@@ -1,5 +1,5 @@
 
-#include "antares-xpansion/variation_de_niveaux_de_stock/VariationDeNiveauxDeStock.h"
+#include "antares-xpansion/grid_evaluator/GridEvaluator.h"
 
 #include <algorithm>
 #include <execution>
@@ -21,10 +21,10 @@ std::atomic<double> totalPbModifTimer = 0; ///< Total time spent modifying subpr
 /// @param logger Logger
 /// @param writer JsonWriter
 /// @param path_to_data Path to the data folder
-ValeursUsage::ValeursUsage(Logger logger,
-                           std::shared_ptr<Output::JsonWriter> writer,
-                           std::filesystem::path path_to_data,
-                           ProblemsFormat data_format)
+GridEvaluator::GridEvaluator(Logger logger,
+                             std::shared_ptr<Output::JsonWriter> writer,
+                             std::filesystem::path path_to_data,
+                             ProblemsFormat data_format)
 {
     _logger = std::move(logger);
     _writer = std::move(writer);
@@ -34,7 +34,7 @@ ValeursUsage::ValeursUsage(Logger logger,
 
 /// @brief Set the number of threads to use
 /// @param nbThreads Number of threads
-void ValeursUsage::setThreads(int nbThreads)
+void GridEvaluator::setThreads(int nbThreads)
 {
     this->nbThreads = nbThreads;
 }
@@ -45,7 +45,7 @@ void ValeursUsage::setThreads(int nbThreads)
 ///          of those values across the entire set of constraints.
 /// @param constraints Map from constraint names to lists of values.
 /// @return A vector of maps, where each map is one possible combination of constraint values.
-ConstraintCombos ValeursUsage::GenerateConstraintProduct(const ConstraintMap& constraints)
+ConstraintCombos GridEvaluator::GenerateConstraintProduct(const ConstraintMap& constraints)
 {
     ConstraintCombos areaCombos = {{}};
 
@@ -77,8 +77,8 @@ ConstraintCombos ValeursUsage::GenerateConstraintProduct(const ConstraintMap& co
 /// @param areas Map from area names to their constraint maps.
 /// @return A vector of maps, where each map is a full combination of all constraints
 ///         (with area-prefixed keys) for the subproblem.
-ConstraintCombos ValeursUsage::GenerateSubPbCombos(const std::string& subPbName,
-                                                   const AreaConstraintMaps& areas)
+ConstraintCombos GridEvaluator::GenerateSubPbCombos(const std::string& subPbName,
+                                                    const AreaConstraintMaps& areas)
 {
     ConstraintCombos subPbCombos;
     ConstraintCombos currentCombos = {{}};
@@ -193,7 +193,7 @@ std::vector<Point> reorderZigzagND(const std::vector<int>& dims, const std::vect
 /// @brief Get the path to the subproblem mps file
 /// @param subPbName The name of the subproblem
 /// @return The path to the subproblem mps file
-std::filesystem::path ValeursUsage::GetSubproblemPath(const std::string& subPbName) const
+std::filesystem::path GridEvaluator::GetSubproblemPath(const std::string& subPbName) const
 {
     std::string folder = problemsFormat == ProblemsFormat::MPS_FILE ? "mps" : "mps_bin";
     return xpansionFolderPath / folder / subPbName;
@@ -204,9 +204,9 @@ std::filesystem::path ValeursUsage::GetSubproblemPath(const std::string& subPbNa
 /// @param area The name of the area
 /// @param constraint The name of the constraint
 /// @return The name of the constraint in the mps file
-std::string ValeursUsage::GetConstraintName(const std::string& subPbName,
-                                            const std::string& area,
-                                            const std::string& constraint) const
+std::string GridEvaluator::GetConstraintName(const std::string& subPbName,
+                                             const std::string& area,
+                                             const std::string& constraint) const
 {
     return fmt::format("{}::area<{}>::week<{}>", constraint, area, GetPbInfo(subPbName).week - 1);
 }
@@ -215,7 +215,7 @@ std::string ValeursUsage::GetConstraintName(const std::string& subPbName,
 ///        The solver is initialized here
 /// @param pbName The name of the subproblem
 /// @return The subproblem worker
-SubproblemWorkerPtr ValeursUsage::AddSubproblem(const std::string& pbName)
+SubproblemWorkerPtr GridEvaluator::AddSubproblem(const std::string& pbName)
 {
     auto subPbWorker = std::make_shared<SubproblemWorker>(GetSubproblemPath(pbName),
                                                           1,
@@ -230,7 +230,7 @@ SubproblemWorkerPtr ValeursUsage::AddSubproblem(const std::string& pbName)
 /// @brief Check if the subproblem is used in the grid.csv file
 /// @param subPbName The name of the subproblem
 /// @return True if the subproblem is used, false otherwise
-bool ValeursUsage::IsSubproblemUsed(const std::string& subPbName) const
+bool GridEvaluator::IsSubproblemUsed(const std::string& subPbName) const
 {
     // Check if the subproblem is used in the grid.csv file
     std::ifstream f(xpansionFolderPath / "grid.csv");
@@ -242,7 +242,7 @@ bool ValeursUsage::IsSubproblemUsed(const std::string& subPbName) const
 
 /// @brief Initialize the subproblems from the mps files in the mps folder
 ///       and generate the RHS grid values for each subproblem
-void ValeursUsage::InitSubProblems()
+void GridEvaluator::InitSubProblems()
 {
     // Add all subproblems mps files to the subproblem map if they are used in the grid.csv file
     std::string extension = problemsFormat == ProblemsFormat::MPS_FILE ? ".mps" : ".svf";
@@ -261,7 +261,7 @@ void ValeursUsage::InitSubProblems()
 /// @param subPbName The name of the subproblem
 /// @param subPbWorker The subproblem worker
 /// @return The RHS grid values for each subproblem
-std::map<int, AreaConstraintMaps> ValeursUsage::GenerateRHSGridValues(
+std::map<int, AreaConstraintMaps> GridEvaluator::GenerateRHSGridValues(
   std::string subPbName,
   SubproblemWorkerPtr subPbWorker)
 {
@@ -360,7 +360,7 @@ std::map<int, AreaConstraintMaps> ValeursUsage::GenerateRHSGridValues(
 /// @brief Get the problem info from the problem name
 /// @param pbName The problem name
 /// @return The scenario and week of the problem
-ScenarioAndWeek ValeursUsage::GetPbInfo(const std::string& pbName) const
+ScenarioAndWeek GridEvaluator::GetPbInfo(const std::string& pbName) const
 {
     std::regex re("problem-(\\d+)-(\\d+)--optim-nb-\\d+");
     std::smatch match;
@@ -377,8 +377,8 @@ ScenarioAndWeek ValeursUsage::GetPbInfo(const std::string& pbName) const
 /// @brief Set the constraints RHS values for a given subproblem
 /// @param rhsValues The RHS values to set
 /// @param subPbWorker The subproblem worker
-void ValeursUsage::SetConstraintsRHSValues(const std::map<std::string, double>& rhsValues,
-                                           SubproblemWorkerPtr subPbWorker)
+void GridEvaluator::SetConstraintsRHSValues(const std::map<std::string, double>& rhsValues,
+                                            SubproblemWorkerPtr subPbWorker)
 {
     for (const auto& [constraintName, value]: rhsValues)
     {
@@ -387,7 +387,7 @@ void ValeursUsage::SetConstraintsRHSValues(const std::map<std::string, double>& 
 }
 
 /// @brief Runs the ProcessSubproblem method in parallel for each subproblem
-void ValeursUsage::Run()
+void GridEvaluator::Run()
 {
     ProcessSubproblemsParallel(subPbNames, nbThreads);
 }
@@ -399,7 +399,7 @@ void ValeursUsage::Run()
 ///          the resulting cost in the `variationDeNiveauxDeStockData` map indexed by scenario,
 ///          week, and constraint values.
 /// @param subPbName The name of the subproblem
-void ValeursUsage::ProcessSubproblem(const std::string& subPbName)
+void GridEvaluator::ProcessSubproblem(const std::string& subPbName)
 {
     // Print loading time
     auto start = std::chrono::high_resolution_clock::now();
@@ -454,8 +454,8 @@ void ValeursUsage::ProcessSubproblem(const std::string& subPbName)
 /// @brief Process the subproblems in parallel using TBB over nbThreads
 /// @param subPbNames The list of subproblems names to process
 /// @param nbThreads The number of threads to use
-void ValeursUsage::ProcessSubproblemsParallel(const std::vector<std::string>& subPbNames,
-                                              int nbThreads)
+void GridEvaluator::ProcessSubproblemsParallel(const std::vector<std::string>& subPbNames,
+                                               int nbThreads)
 {
     // Limiter TBB au nombre de cœurs physiques
     tbb::global_control limit(tbb::global_control::max_allowed_parallelism, nbThreads);
@@ -468,7 +468,7 @@ void ValeursUsage::ProcessSubproblemsParallel(const std::vector<std::string>& su
 /// @brief Solve the subproblem and return the cost
 /// @param subPbWorker The subproblem worker
 /// @return The cost of the subproblem
-double ValeursUsage::SolveSubproblem(SubproblemWorkerPtr subPbWorker)
+double GridEvaluator::SolveSubproblem(SubproblemWorkerPtr subPbWorker)
 {
     PlainData::SubProblemData subproblem_data;
     Timer subproblem_timer;
@@ -487,14 +487,14 @@ double ValeursUsage::SolveSubproblem(SubproblemWorkerPtr subPbWorker)
 }
 
 /// @brief Write the output to the json file
-void ValeursUsage::WriteOutput()
+void GridEvaluator::WriteOutput()
 {
     _writer->write_VariationDeNiveauxDeStock(variationDeNiveauxDeStockData);
     _writer->dump();
 }
 
 /// @brief Launch the Stock level variation computation
-void ValeursUsage::launch()
+void GridEvaluator::launch()
 {
     std::cout << "Launching Stock level variation" << std::endl;
 

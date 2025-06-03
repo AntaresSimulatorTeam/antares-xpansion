@@ -4,8 +4,8 @@
 #include "RandomDirGenerator.h"
 #include "antares-xpansion/benders/benders_core/BendersMathLogger.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
+#include "antares-xpansion/grid_evaluator/GridEvaluator.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
-#include "antares-xpansion/variation_de_niveaux_de_stock/VariationDeNiveauxDeStock.h"
 #include "gtest/gtest.h"
 
 #define EXPECT_NEAR_REL(val1, val2, rel_tol)                                                       \
@@ -79,7 +79,7 @@ TEST_F(GridSearchTest, MPSUseCaseValeursUsage)
 {
     copyData();
 
-    auto valeurs_usage = ValeursUsage(logger, writer, tmpDir, ProblemsFormat::MPS_FILE);
+    auto valeurs_usage = GridEvaluator(logger, writer, tmpDir, ProblemsFormat::MPS_FILE);
     valeurs_usage.setThreads(8);
     valeurs_usage.launch();
 

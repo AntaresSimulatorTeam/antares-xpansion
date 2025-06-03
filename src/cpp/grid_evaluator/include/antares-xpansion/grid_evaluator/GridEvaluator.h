@@ -25,13 +25,13 @@ struct ScenarioAndWeek
 };
 
 /// @brief Class to compute Stock levels variation
-class ValeursUsage
+class GridEvaluator
 {
 public:
-    ValeursUsage(Logger logger,
-                 std::shared_ptr<Output::JsonWriter> writer,
-                 std::filesystem::path path_to_data,
-                 ProblemsFormat data_format);
+    GridEvaluator(Logger logger,
+                  std::shared_ptr<Output::JsonWriter> writer,
+                  std::filesystem::path path_to_data,
+                  ProblemsFormat data_format);
     void launch();
     void setThreads(int nbThreads);
 

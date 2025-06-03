@@ -1,7 +1,7 @@
 
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
-#include "antares-xpansion/variation_de_niveaux_de_stock/VariationDeNiveauxDeStock.h"
+#include "antares-xpansion/grid_evaluator/GridEvaluator.h"
 
 std::optional<ProblemsFormat> parseFormat(const std::string& format)
 {
@@ -89,10 +89,10 @@ int main(int argc, char** argv)
       std::make_shared<Clock>(),
       json_file_name);
 
-    auto valeurs_usage = ValeursUsage(logger,
-                                      writer,
-                                      path_to_data,
-                                      pb_format.value_or(ProblemsFormat::MPS_FILE));
+    auto valeurs_usage = GridEvaluator(logger,
+                                       writer,
+                                       path_to_data,
+                                       pb_format.value_or(ProblemsFormat::MPS_FILE));
 
     valeurs_usage.setThreads(num_threads);
     valeurs_usage.launch();

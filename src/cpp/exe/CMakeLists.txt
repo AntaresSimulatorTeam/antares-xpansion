@@ -17,4 +17,4 @@ add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/benders")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/outer_loop")
 
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/grid_search")
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/variation_de_niveaux_de_stock")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/grid_evaluator")

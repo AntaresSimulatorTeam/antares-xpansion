@@ -6,26 +6,26 @@
 # Targets
 # ===========================================================================
 
-add_library(variation_de_niveaux_de_stock_lib STATIC)
+add_library(grid_evaluator_lib STATIC)
 
-target_sources(variation_de_niveaux_de_stock_lib PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/VariationDeNiveauxDeStock.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/variation_de_niveaux_de_stock/VariationDeNiveauxDeStock.h
+target_sources(grid_evaluator_lib PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/GridEvaluator.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/grid_evaluator/GridEvaluator.h
 )
 
-target_link_libraries(variation_de_niveaux_de_stock_lib
+target_link_libraries(grid_evaluator_lib
         PUBLIC
         antaresXpansion::benders_core
         antaresXpansion::output_core
 )
 
-target_include_directories(variation_de_niveaux_de_stock_lib
+target_include_directories(grid_evaluator_lib
         PUBLIC
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
         $<BUILD_INTERFACE:${CMAKE_SOURCE_DIR}/src/cpp/xpansion_interfaces/include>
 )
 
-add_library(${PROJECT_NAME}::variation_de_niveaux_de_stock_lib ALIAS variation_de_niveaux_de_stock_lib)
+add_library(${PROJECT_NAME}::grid_evaluator_lib ALIAS grid_evaluator_lib)
 install(DIRECTORY include/antares-xpansion
         DESTINATION "include"
 )
