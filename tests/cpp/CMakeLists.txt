@@ -22,6 +22,7 @@ endif ()
 # --------------------------------------------------------------------------
 add_subdirectory(benders)
 add_subdirectory(grid_search)
+add_subdirectory(grid_evaluator)
 add_subdirectory(full_run)
 add_subdirectory(helpers)
 add_subdirectory(json_output_writer)

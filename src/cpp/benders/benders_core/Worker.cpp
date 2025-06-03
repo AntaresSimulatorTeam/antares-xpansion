@@ -44,7 +44,7 @@ void Worker::get_value(double& lb) const
  */
 void Worker::init(const std::string& solver_name,
                   int log_level,
-                  SolverLogManager& solver_log_manager,
+                  const SolverLogManager& solver_log_manager,
                   ProblemsFormat format)
 {
     solver_io_.configure(solver_name, format);
@@ -194,6 +194,12 @@ std::shared_ptr<SolverAbstract> Worker::solver() const
 Worker::Worker(VariableMap variable_map, std::filesystem::path path_to_mps, Logger logger):
     _path_to_mps{std::move(path_to_mps)},
     _name_to_id{std::move(variable_map)},
+    logger_{std::move(logger)}
+{
+}
+
+Worker::Worker(std::filesystem::path path_to_mps, Logger logger):
+    _path_to_mps{std::move(path_to_mps)},
     logger_{std::move(logger)}
 {
 }

@@ -13,9 +13,11 @@
 find_package(Antares REQUIRED)
 add_library(problem_generation_main)
 target_sources(problem_generation_main PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/ConfigurationManager.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ProblemGeneration.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ProblemGenerationExeOptions.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/Version.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/main/ConfigurationManager.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/main/ProblemGeneration.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/main/ProblemGenerationOptions.h
         ${CMAKE_CURRENT_SOURCE_DIR}/private/Version.h

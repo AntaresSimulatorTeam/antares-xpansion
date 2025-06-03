@@ -114,3 +114,7 @@ class OptimisationKeys:
     @staticmethod
     def area_file_key():
         return "AREA_FILE"
+
+    @staticmethod
+    def cache_problems_keys():
+        return "CACHE_PROBLEMS"

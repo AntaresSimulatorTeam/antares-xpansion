@@ -184,6 +184,13 @@ void solver_chgbounds(SolverAbstract::Ptr solver_p,
     solver_p->chg_bounds(mindex_p, qbtype_p, bnd_p);
 }
 
+void solver_chg_rhs(SolverAbstract::Ptr solver_p, int id_row, double val)
+{
+    assert(id_row >= 0);
+    assert(id_row < solver_p->get_nrows());
+    solver_p->chg_rhs(id_row, val);
+}
+
 void solver_rename_vars(SolverAbstract* outSolver_p, const std::vector<std::string>& names_p)
 {
     if (const auto ncols = outSolver_p->get_ncols(); ncols == names_p.size())

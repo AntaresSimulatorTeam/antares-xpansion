@@ -22,6 +22,7 @@ def study_path_is(context, string):
     context.tmp_study = context.temp_dir / context.study_path.name
     shutil.copytree(context.study_path, context.tmp_study)
 
+
 @given('solver is "{string}"')
 def set_solver(context, string):
     context.solver = string
@@ -96,7 +97,7 @@ def run_antares_xpansion(context, method, memory=None, n: int = 1):
 
     context.return_code = run_command(context.tmp_study, memory=memory, method=method, n_mpi=n,
                                       allow_run_as_root=get_conf("allow_run_as_root"))
-    if context.return_code == 0: # If the simulation failed we're not sur outputs have been generated properly
+    if context.return_code == 0:  # If the simulation failed we're not sur outputs have been generated properly
         output_path = context.tmp_study / "output"
         outputs = read_outputs(output_path, use_archive=not memory, lold=True, positive_unsupplied_energy=True)
         context.outputs = outputs.out_json
@@ -202,6 +203,7 @@ def is_file_full_of_zeros(filename, abs_tol=1e-9):
 
     return True
 
+
 @then("LOLD.txt and PositiveUnsuppliedEnergy.txt files are full of zeros")
 def check_other_outputs(context):
     assert (is_file_full_of_zeros(context.loss_of_load_file))
@@ -237,10 +239,12 @@ def get_results_file_path_from_logs(logs: bytes) -> str:
             return line.split(b'Optimization results available in : ')[1].decode('ascii')
     raise LookupError("Could not find results file path in output logs")
 
+
 @then('Simulator has been launched with solver "{string}"')
 def check_simulator_solver(context, string):
-    string_to_find = f"solver {string} is used for problem resolution"
-    assert(find_in_simulator_log(context.tmp_study / "output", string_to_find))
+    string_to_find = f"solver {string} is used for linear problem resolution"
+    assert (find_in_simulator_log(context.tmp_study / "output", string_to_find))
+
 
 @then('Benders has been launched with solver "{string}"')
 def check_benders_solver(context, string):

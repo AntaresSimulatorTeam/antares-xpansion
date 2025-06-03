@@ -3,6 +3,8 @@
 #include <filesystem>
 #include <map>
 #include <memory>
+#include <mutex>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -25,7 +27,7 @@ const std::string ANTARES_C("antares"), VERSION_C("version"),
   LOG_LEVEL_C("LOG_LEVEL"), SOLVER_NAME_C("SOLVER_NAME"), PROBLEMNAME_C("problem_name"),
   PROBLEMPATH_C("problem_path"),
   CUMULATIVE_NUMBER_OF_SUBPROBLEM_RESOLVED_C("cumulative_number_of_subproblem_resolutions"),
-  PROBLEM_FORMAT_C{"PROBLEM_FORMAT"}, GRID_POINTS_C{"grid_points"}, GRID_POINT_C{"grid_point"};
+  PROBLEM_FORMAT_C("PROBLEM_FORMAT"), GRID_POINTS_C("grid_points"), GRID_POINT_C("grid_point");
 
 struct CandidateData
 {
@@ -100,6 +102,61 @@ struct GridPointData
 };
 
 typedef std::vector<GridPointData> GridPointsData;
+
+struct VariationDeNiveauxDeStockKey
+{
+    int scenario;
+    int week;
+    Point rhsValues;
+
+    bool operator<(const VariationDeNiveauxDeStockKey& other) const
+    {
+        if (scenario != other.scenario)
+        {
+            return scenario < other.scenario;
+        }
+        if (week != other.week)
+        {
+            return week < other.week;
+        }
+        return rhsValues < other.rhsValues;
+    }
+
+    bool operator==(const VariationDeNiveauxDeStockKey& other) const
+    {
+        return scenario == other.scenario && week == other.week && rhsValues == other.rhsValues;
+    }
+};
+
+// Safe concurrent insertion
+
+template<typename Key, typename Value>
+struct ConcurrentInsertionMap
+{
+private:
+    std::map<Key, Value> map;
+    mutable std::mutex mutex;
+
+public:
+    // Insert a key-value pair into the map
+    void insert(const Key& key, const Value& value)
+    {
+        std::lock_guard<std::mutex> lock(mutex);
+        map[key] = value;
+    }
+
+    auto begin() const
+    {
+        return map.begin();
+    }
+
+    auto end() const
+    {
+        return map.end();
+    }
+};
+
+typedef ConcurrentInsertionMap<VariationDeNiveauxDeStockKey, double> VariationDeNiveauxDeStockData;
 
 struct ProblemData
 {

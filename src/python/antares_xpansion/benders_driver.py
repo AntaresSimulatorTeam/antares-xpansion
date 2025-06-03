@@ -6,11 +6,11 @@ import glob
 import os
 import subprocess
 import sys
+from dataclasses import dataclass
 from pathlib import Path
 
 from antares_xpansion.logger import step_logger
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
-from dataclasses import dataclass
 
 
 @dataclass
@@ -18,6 +18,7 @@ class SolversExe:
     benders: Path
     merge_mps: Path
     outer_loop: Path
+
 
 class BendersDriver:
 
@@ -42,7 +43,8 @@ class BendersDriver:
         self.MPI_N = "-n"
         self._initialise_system_specific_mpi_vars()
 
-    def launch(self, simulation_output_path, method, keep_mps=False, n_mpi=1, oversubscribe=False, allow_run_as_root=False):
+    def launch(self, simulation_output_path, method, keep_mps=False, n_mpi=1, oversubscribe=False,
+               allow_run_as_root=False):
         """
         launch the optimization of the antaresXpansion problem using the specified solver
 
@@ -64,6 +66,7 @@ class BendersDriver:
         # delete execution logs
         self._clean_log_files()
 
+        print(self._get_solver_cmd())
         ret = subprocess.run(
             self._get_solver_cmd(), shell=False, stdout=sys.stdout, stderr=sys.stderr,
             encoding='utf-8')

@@ -8,10 +8,10 @@
 #include "antares-xpansion/benders/factories/WriterFactories.h"
 #include "antares-xpansion/benders/logger/User.h"
 #include "antares-xpansion/benders/merge_mps/MergeMPS.h"
+#include "antares-xpansion/benders/merge_mps/StandardLp.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 
-//@suggest: create and move to standardlp.cpp
 // Initialize static member
 size_t StandardLp::appendCNT = 0;
 
@@ -30,7 +30,7 @@ int main(int argc, char** argv)
                                                                      false);
     try
     {
-        MergeMPS merge_mps(options.get_base_options(), logger, writer);
+        MergeMPS merge_mps(options.get_solver_options(), logger, writer);
         merge_mps.launch();
     }
     catch (std::exception& ex)
