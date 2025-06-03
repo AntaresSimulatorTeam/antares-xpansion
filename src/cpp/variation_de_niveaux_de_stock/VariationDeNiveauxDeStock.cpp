@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <execution>
 #include <fmt/core.h>
+#include <functional>
 #include <regex>
 #include <tbb/global_control.h>
 #include <tbb/parallel_for_each.h>
