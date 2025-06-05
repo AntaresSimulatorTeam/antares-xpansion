@@ -72,7 +72,7 @@ void MergeWeightsTrajectory::load_input_files()
     {
         if (!nodes_lp_info_.contains(node))
         {
-            std::cerr << LOGLOCATION << "Node '" << node.name
+            std::cerr << LOGLOCATION << "Node '" << node
                       << "' must appear in in the list of nodal lp folder.";
             std::exit(1);
         }

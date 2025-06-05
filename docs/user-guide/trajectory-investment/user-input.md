@@ -122,11 +122,12 @@ Example :
     type: max_investment_per_node_per_candidate
     value: 1000
 ```
-This entry will result in 4 (4 = |```nodes```| $\times$ |```candidates```|) constraints in the merged problem :  
-    - $dx_{2030, semibase}^+ \leq 1000$,  
-    - $dx_{2040, semibase}^+ \leq 1000$,  
-    - $dx_{2050\_A, semibase}^+ \leq 1000$,  
-    - $dx_{2050\_B, semibase}^+ \leq 1000$
+This entry will result in 4 (4 = |```nodes```| $\times$ |```candidates```|) constraints in the merged problem :
+
+  - $dx_{2030, semibase}^+ \leq 1000$,  
+  - $dx_{2040, semibase}^+ \leq 1000$,  
+  - $dx_{2050\_A, semibase}^+ \leq 1000$,  
+  - $dx_{2050\_B, semibase}^+ \leq 1000$
 
 More generally, this type of input constraint entry translates to :
 $$
@@ -143,8 +144,9 @@ Example :
     value: 2000
 ```
 This entry will result in 2 (2 = |```nodes```|) constraints in the merged problem :
-    - $dx_{2030, semibase}^+ + dx_{2030, peak}^+ \leq 2000$
-    - $dx_{2040, semibase}^+ + dx_{2040, peak}^+ \leq 2000$
+
+  - $dx_{2030, semibase}^+ + dx_{2030, peak}^+ \leq 2000$,  
+  - $dx_{2040, semibase}^+ + dx_{2040, peak}^+ \leq 2000$
 
 More generally, this type of input constraint entry translates to :
 $$
@@ -160,13 +162,16 @@ Example :
     type: max_retirement_per_node_per_candidate
     value : 0
 ```
-This entry will result in 8 (8 = |```nodes```| $\times$ |```candidates```|) constraints in the merged problem :  
-    - $dx_{2030, semibase}^- \leq 0, \quad dx_{2030, peak}^- \leq 0$,  
-    - $dx_{2040, semibase}^- \leq 0, \quad dx_{2040, peak}^- \leq 0$,
-    - $dx_{2050\_A, semibase}^- \leq 0, \quad dx_{2050\_A, peak}^- \leq 0$,
-    - $dx_{2050\_B, semibase}^- \leq 0, \quad dx_{2050\_B, peak}^- \leq 0$
+This entry will result in 8 (8 = |```nodes```| $\times$ |```candidates```|) constraints in the merged problem :
+
+  - $dx_{2030, semibase}^- \leq 0, \quad dx_{2030, peak}^- \leq 0$,  
+  - $dx_{2040, semibase}^- \leq 0, \quad dx_{2040, peak}^- \leq 0$,
+  - $dx_{2050\_A, semibase}^- \leq 0, \quad dx_{2050\_A, peak}^- \leq 0$,
+  - $dx_{2050\_B, semibase}^- \leq 0, \quad dx_{2050\_B, peak}^- \leq 0$
 
 More generally, this type of input constraint entry translates to :
 $$
 \forall n \in \text{nodes}, \quad \forall c \in \text{candidates}, \quad dx_{n, c}^- \leq \text{value}
 $$
+
+**Note :** as we always have $\forall n \in T, \quad \forall c \in C, \quad dx^{+/-}_{n,c} \geq 0$, regardless of the trajectory constraints added by the user, this last example ends up forbidding any kind of retirement, thus its label.
