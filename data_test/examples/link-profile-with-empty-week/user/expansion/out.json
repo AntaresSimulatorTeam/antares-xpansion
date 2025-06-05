@@ -1,0 +1,811 @@
+{
+	"antares" : 
+	{
+		"version" : "9.2.0"
+	},
+	"antares_xpansion" : 
+	{
+		"version" : "1.4.0"
+	},
+	"begin" : "28-03-2025 15:36:27",
+	"end" : "28-03-2025 15:36:29",
+	"iterations" : 
+	{
+		"1" : 
+		{
+			"best_ub" : 9483774910845.6582,
+			"candidates" : 
+			[
+				{
+					"invest" : 0.0,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 52,
+			"investment_cost" : 0.0,
+			"lb" : -10000000000.0,
+			"master_duration" : 0.00056195300000000002,
+			"operational_cost" : 9483774910845.6582,
+			"optimality_gap" : 9493774910845.6582,
+			"overall_cost" : 9483774910845.6582,
+			"relative_gap" : 1.001054432448472,
+			"subproblem_duration" : 0.27146745300000003,
+			"ub" : 9483774910845.6582
+		},
+		"10" : 
+		{
+			"best_ub" : 44298308549.785637,
+			"candidates" : 
+			[
+				{
+					"invest" : 32203.479180299906,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 49902.34375,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 520,
+			"investment_cost" : 19095880215.149956,
+			"lb" : 10471967454.414234,
+			"master_duration" : 0.0035250250000000002,
+			"operational_cost" : 25202428334.635681,
+			"optimality_gap" : 33826341095.371403,
+			"overall_cost" : 44298308549.785637,
+			"relative_gap" : 0.76360344678521797,
+			"subproblem_duration" : 0.055069393000000001,
+			"ub" : 44298308549.785637
+		},
+		"11" : 
+		{
+			"best_ub" : 41480456899.769211,
+			"candidates" : 
+			[
+				{
+					"invest" : 35384.761020193822,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 49951.171875,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 7885.3148606474551,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 572,
+			"investment_cost" : 21265078807.424175,
+			"lb" : 13434277399.698402,
+			"master_duration" : 0.0036933840000000001,
+			"operational_cost" : 20215378092.345039,
+			"optimality_gap" : 28046179500.070808,
+			"overall_cost" : 41480456899.769211,
+			"relative_gap" : 0.67612995603784809,
+			"subproblem_duration" : 0.094071883999999995,
+			"ub" : 41480456899.769211
+		},
+		"12" : 
+		{
+			"best_ub" : 38654131828.381088,
+			"candidates" : 
+			[
+				{
+					"invest" : 54897.186312334095,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 29656.871041415448,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 3942.6574303237276,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 624,
+			"investment_cost" : 29515819411.065609,
+			"lb" : 27766560014.707039,
+			"master_duration" : 0.0041172159999999999,
+			"operational_cost" : 9138312417.3154774,
+			"optimality_gap" : 10887571813.674049,
+			"overall_cost" : 38654131828.381088,
+			"relative_gap" : 0.28166644285307813,
+			"subproblem_duration" : 0.101744141,
+			"ub" : 38654131828.381088
+		},
+		"13" : 
+		{
+			"best_ub" : 38316215692.64595,
+			"candidates" : 
+			[
+				{
+					"invest" : 51906.719548553847,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 32676.128976984692,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 1971.3287151618638,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 676,
+			"investment_cost" : 28057834509.102821,
+			"lb" : 37974941930.663582,
+			"master_duration" : 0.004195463,
+			"operational_cost" : 10258381183.543131,
+			"optimality_gap" : 341273761.98236847,
+			"overall_cost" : 38316215692.64595,
+			"relative_gap" : 0.0089067710840731416,
+			"subproblem_duration" : 0.068649043000000007,
+			"ub" : 38316215692.64595
+		},
+		"14" : 
+		{
+			"best_ub" : 38260797283.852631,
+			"candidates" : 
+			[
+				{
+					"invest" : 50259.179255644136,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 34385.4950073375,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 985.66435758093189,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 728,
+			"investment_cost" : 27264672826.365726,
+			"lb" : 38115600317.835838,
+			"master_duration" : 0.0047124810000000001,
+			"operational_cost" : 10996124457.486906,
+			"optimality_gap" : 145196966.0167923,
+			"overall_cost" : 38260797283.852631,
+			"relative_gap" : 0.0037949278719832218,
+			"subproblem_duration" : 0.066299821999999994,
+			"ub" : 38260797283.852631
+		},
+		"15" : 
+		{
+			"best_ub" : 38232893418.195831,
+			"candidates" : 
+			[
+				{
+					"invest" : 50779.683869709799,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 33895.903262110529,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 492.83217879046595,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 780,
+			"investment_cost" : 27459572879.633236,
+			"lb" : 38208330844.924606,
+			"master_duration" : 0.0052007850000000003,
+			"operational_cost" : 10773320538.562595,
+			"optimality_gap" : 24562573.271224976,
+			"overall_cost" : 38232893418.195831,
+			"relative_gap" : 0.00064244610007818908,
+			"subproblem_duration" : 0.056066783000000002,
+			"ub" : 38232893418.195831
+		},
+		"16" : 
+		{
+			"best_ub" : 38222194711.858833,
+			"candidates" : 
+			[
+				{
+					"invest" : 51054.033326154284,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 33637.010240085379,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 246.41608939523297,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 832,
+			"investment_cost" : 27563225652.008114,
+			"lb" : 38211213585.801682,
+			"master_duration" : 0.006415301,
+			"operational_cost" : 10658969059.850719,
+			"optimality_gap" : 10981126.057151794,
+			"overall_cost" : 38222194711.858833,
+			"relative_gap" : 0.00028729710943952639,
+			"subproblem_duration" : 0.061260523999999997,
+			"ub" : 38222194711.858833
+		},
+		"17" : 
+		{
+			"best_ub" : 38217429589.170189,
+			"candidates" : 
+			[
+				{
+					"invest" : 51160.519995774928,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 33548.00178791643,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 123.20804469761649,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 884,
+			"investment_cost" : 27602134292.425373,
+			"lb" : 38212479472.403648,
+			"master_duration" : 0.0073291980000000003,
+			"operational_cost" : 10615295296.744818,
+			"optimality_gap" : 4950116.7665405273,
+			"overall_cost" : 38217429589.170189,
+			"relative_gap" : 0.00012952510987142003,
+			"subproblem_duration" : 0.054493009000000002,
+			"ub" : 38217429589.170189
+		},
+		"18" : 
+		{
+			"best_ub" : 38215027584.37043,
+			"candidates" : 
+			[
+				{
+					"invest" : 51125.760128561553,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 33591.500763855656,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 61.604022348808243,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 936,
+			"investment_cost" : 27582867203.74358,
+			"lb" : 38212596194.657455,
+			"master_duration" : 0.006825495,
+			"operational_cost" : 10632160380.62685,
+			"optimality_gap" : 2431389.7129745483,
+			"overall_cost" : 38215027584.37043,
+			"relative_gap" : 6.3623916209574135e-05,
+			"subproblem_duration" : 0.046739720999999998,
+			"ub" : 38215027584.37043
+		},
+		"19" : 
+		{
+			"best_ub" : 38213849488.989365,
+			"candidates" : 
+			[
+				{
+					"invest" : 51108.380194954821,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 33613.25025182531,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 30.802011174404122,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 988,
+			"investment_cost" : 27573233659.40266,
+			"lb" : 38212658592.288765,
+			"master_duration" : 0.0070196119999999997,
+			"operational_cost" : 10640615829.586706,
+			"optimality_gap" : 1190896.7005996704,
+			"overall_cost" : 38213849488.989365,
+			"relative_gap" : 3.1164007722980277e-05,
+			"subproblem_duration" : 0.043890310000000002,
+			"ub" : 38213849488.989365
+		},
+		"2" : 
+		{
+			"best_ub" : 4013977654732.0581,
+			"candidates" : 
+			[
+				{
+					"invest" : 6475.7161134217113,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 25000.0,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 104,
+			"investment_cost" : 4737858056.7108555,
+			"lb" : -524283886.57828903,
+			"master_duration" : 0.001138123,
+			"operational_cost" : 4009239796675.3472,
+			"optimality_gap" : 4014501938618.6362,
+			"overall_cost" : 4013977654732.0581,
+			"relative_gap" : 1.0001306145503726,
+			"subproblem_duration" : 0.15364614200000001,
+			"ub" : 4013977654732.0581
+		},
+		"20" : 
+		{
+			"best_ub" : 38213258407.578323,
+			"candidates" : 
+			[
+				{
+					"invest" : 51119.190097476974,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 33604.625126484607,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 15.401005587202061,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 1040,
+			"investment_cost" : 27576996829.735432,
+			"lb" : 38212668956.74939,
+			"master_duration" : 0.0077058700000000001,
+			"operational_cost" : 10636261577.842892,
+			"optimality_gap" : 589450.82893371582,
+			"overall_cost" : 38213258407.578323,
+			"relative_gap" : 1.5425296179841549e-05,
+			"subproblem_duration" : 0.038482765000000002,
+			"ub" : 38213258407.578323
+		},
+		"21" : 
+		{
+			"best_ub" : 38212963784.947906,
+			"candidates" : 
+			[
+				{
+					"invest" : 51124.595048738047,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 33600.31256381431,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 7.7005027936010304,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 1092,
+			"investment_cost" : 27578878414.901814,
+			"lb" : 38212668956.776146,
+			"master_duration" : 0.0076171140000000003,
+			"operational_cost" : 10634085370.046095,
+			"optimality_gap" : 294828.17176055908,
+			"overall_cost" : 38212963784.947906,
+			"relative_gap" : 7.7153966235063919e-06,
+			"subproblem_duration" : 0.038135829000000003,
+			"ub" : 38212963784.947906
+		},
+		"22" : 
+		{
+			"best_ub" : 38214896636.069275,
+			"candidates" : 
+			[
+				{
+					"invest" : 51150.0,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 33500.0,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 1144,
+			"investment_cost" : 27585000000.0,
+			"lb" : 38214895233.02446,
+			"master_duration" : 0.048174480999999998,
+			"operational_cost" : 10629896636.069275,
+			"optimality_gap" : 1403.0448150634766,
+			"overall_cost" : 38214896636.069275,
+			"relative_gap" : 3.6714604475449699e-08,
+			"subproblem_duration" : 0.041024141,
+			"ub" : 38214896636.069275
+		},
+		"3" : 
+		{
+			"best_ub" : 1584247473282.9021,
+			"candidates" : 
+			[
+				{
+					"invest" : 9854.3816148773876,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 37500.0,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 156,
+			"investment_cost" : 7177190807.438694,
+			"lb" : -383476441.83346939,
+			"master_duration" : 0.0011348650000000001,
+			"operational_cost" : 1577070282475.4634,
+			"optimality_gap" : 1584630949724.7356,
+			"overall_cost" : 1584247473282.9021,
+			"relative_gap" : 1.0002420558961276,
+			"subproblem_duration" : 0.068380777000000004,
+			"ub" : 1584247473282.9021
+		},
+		"4" : 
+		{
+			"best_ub" : 854116754924.11963,
+			"candidates" : 
+			[
+				{
+					"invest" : 11948.141599413195,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 43750.0,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 208,
+			"investment_cost" : 8599070799.7065964,
+			"lb" : 20950791.974500656,
+			"master_duration" : 0.0015262850000000001,
+			"operational_cost" : 845517684124.41309,
+			"optimality_gap" : 854095804132.14514,
+			"overall_cost" : 854116754924.11963,
+			"relative_gap" : 0.99997547081022153,
+			"subproblem_duration" : 0.071904140000000005,
+			"ub" : 854116754924.11963
+		},
+		"5" : 
+		{
+			"best_ub" : 459179777246.97375,
+			"candidates" : 
+			[
+				{
+					"invest" : 15942.020432595407,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 46875.0,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 260,
+			"investment_cost" : 10783510216.297703,
+			"lb" : 2967949632.8888111,
+			"master_duration" : 0.0018709969999999999,
+			"operational_cost" : 448396267030.67603,
+			"optimality_gap" : 456211827614.08496,
+			"overall_cost" : 459179777246.97375,
+			"relative_gap" : 0.99353641039968432,
+			"subproblem_duration" : 0.066919461,
+			"ub" : 459179777246.97375
+		},
+		"6" : 
+		{
+			"best_ub" : 258674882076.10001,
+			"candidates" : 
+			[
+				{
+					"invest" : 19844.04356620866,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 48437.5,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 312,
+			"investment_cost" : 12828271783.10433,
+			"lb" : 4873033349.9109592,
+			"master_duration" : 0.0023948580000000001,
+			"operational_cost" : 245846610292.99567,
+			"optimality_gap" : 253801848726.18906,
+			"overall_cost" : 258674882076.10001,
+			"relative_gap" : 0.98116155186464005,
+			"subproblem_duration" : 0.054005866,
+			"ub" : 258674882076.10001
+		},
+		"7" : 
+		{
+			"best_ub" : 153409157952.90463,
+			"candidates" : 
+			[
+				{
+					"invest" : 23157.622715606034,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 49218.75,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 364,
+			"investment_cost" : 14531936357.803017,
+			"lb" : 6235600932.5017014,
+			"master_duration" : 0.0029357110000000001,
+			"operational_cost" : 138877221595.10162,
+			"optimality_gap" : 147173557020.40292,
+			"overall_cost" : 153409157952.90463,
+			"relative_gap" : 0.95935313761114582,
+			"subproblem_duration" : 0.051575633000000003,
+			"ub" : 153409157952.90463
+		},
+		"8" : 
+		{
+			"best_ub" : 97157317369.350693,
+			"candidates" : 
+			[
+				{
+					"invest" : 26148.235314299185,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 49609.375,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 416,
+			"investment_cost" : 16050680157.149593,
+			"lb" : 7569423956.49617,
+			"master_duration" : 0.0028254930000000001,
+			"operational_cost" : 81106637212.201096,
+			"optimality_gap" : 89587893412.854523,
+			"overall_cost" : 97157317369.350693,
+			"relative_gap" : 0.92209105642840627,
+			"subproblem_duration" : 0.047142599,
+			"ub" : 97157317369.350693
+		},
+		"9" : 
+		{
+			"best_ub" : 58345358771.571686,
+			"candidates" : 
+			[
+				{
+					"invest" : 29463.023451771347,
+					"max" : 165000.0,
+					"min" : 0.0,
+					"name" : "base"
+				},
+				{
+					"invest" : 49804.6875,
+					"max" : 50000.0,
+					"min" : 0.0,
+					"name" : "pointe"
+				},
+				{
+					"invest" : 0.0,
+					"max" : 80000.0,
+					"min" : 0.0,
+					"name" : "semibase_winter"
+				}
+			],
+			"cumulative_number_of_subproblem_resolutions" : 468,
+			"investment_cost" : 17719792975.885674,
+			"lb" : 9388905794.6217537,
+			"master_duration" : 0.0032772560000000001,
+			"operational_cost" : 40625565795.686012,
+			"optimality_gap" : 48956452976.949936,
+			"overall_cost" : 58345358771.571686,
+			"relative_gap" : 0.83908050284890145,
+			"subproblem_duration" : 0.051891519999999997,
+			"ub" : 58345358771.571686
+		}
+	},
+	"nbWeeks" : 53,
+	"options" : 
+	{
+		"LOG_LEVEL" : 0,
+		"MASTER_NAME" : "master",
+		"PROBLEM_FORMAT" : "SAVED",
+		"SOLVER_NAME" : "COIN"
+	},
+	"run_duration" : 1.795845702,
+	"solution" : 
+	{
+		"investment_cost" : 27585000000.0,
+		"iteration" : 22,
+		"operational_cost" : 10629896636.069275,
+		"optimality_gap" : 1403.0448150634766,
+		"overall_cost" : 38214896636.069275,
+		"problem_status" : "OPTIMAL",
+		"relative_gap" : 3.6714604475449699e-08,
+		"stopping_criterion" : "relative gap",
+		"values" : 
+		{
+			"base" : 51150.0,
+			"pointe" : 33500.0,
+			"semibase_winter" : 0.0
+		}
+	}
+}

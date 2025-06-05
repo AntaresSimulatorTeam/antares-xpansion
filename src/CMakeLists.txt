@@ -1,6 +1,7 @@
 add_subdirectory(cpp)
 
 set(BENDERS $<TARGET_FILE_NAME:benders>)
+set(GRID_SEARCH $<TARGET_FILE_NAME:grid_search_exe>)
 
 if (COIN_OR)
     SET(AVAILABLE_SOLVER_YML_LIST "${AVAILABLE_SOLVER_YML_LIST}- Cbc\n")
