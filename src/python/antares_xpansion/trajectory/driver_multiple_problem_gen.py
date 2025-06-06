@@ -13,11 +13,6 @@ class MultipleProblemGenerationData:
     memory: bool
 
 
-# Question : which component generates the 3 differents
-# study_input_file
-# weights_info_file
-# additional_constraints_info_file
-# that need to be passed to the C++ executable ?
 class MultipleProblemGenerationDriver:
     def __init__(self, data: MultipleProblemGenerationData):
         self.exe_path = data.exe_path
@@ -39,3 +34,10 @@ class MultipleProblemGenerationDriver:
 
         # Loop over the studies.
         # TBA : we need a ConfigLoader object, but to create one we need all the study / input / config parameters :(
+        # Separate the part of the ConfigLoader class that simply reads the study into a minimal base class ?
+
+    def _write_input_files(self):
+        pass
+
+    def launch(self):
+        pass

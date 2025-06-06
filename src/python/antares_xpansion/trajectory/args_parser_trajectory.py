@@ -15,6 +15,18 @@ class TrajectoryArgsParser:
     def _initialize_parser(self):
         # Minimal arguments for now
         self.parser.add_argument(
+            "--input-root",
+            dest=TrajectoryLauncherOptionsKeys.input_root_key(),
+            help="Input root, folder containing all the studies in the tree.",
+            required=True,
+        )
+        self.parser.add_argument(
+            "--input-file",
+            dest=TrajectoryLauncherOptionsKeys.input_file_key(),
+            help="User data input file",
+            required=True,
+        )
+        self.parser.add_argument(
             "--step",
             dest=TrajectoryLauncherOptionsKeys.step_key(),
             choices=[
@@ -26,18 +38,6 @@ class TrajectoryArgsParser:
                 "resolution",
             ],
             help='Step to execute ("full", "input_translation", "problem_generation", "merge_master", "merge_weights", "resolution")',
-            required=True,
-        )
-        self.parser.add_argument(
-            "--input-root",
-            dest=TrajectoryLauncherOptionsKeys.input_root_key(),
-            help="Input root, folder containing all the studies in the tree.",
-            required=True,
-        )
-        self.parser.add_argument(
-            "--input-file",
-            dest=TrajectoryLauncherOptionsKeys.input_file_key(),
-            help="User data input file",
             required=True,
         )
 

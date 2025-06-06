@@ -8,7 +8,7 @@ from antares_xpansion.trajectory.args_parser_trajectory import (
     TrajectoryArgsParser,
 )
 from antares_xpansion.config_file_parser import ConfigFileParser
-from antares_xpansion.trajectory.trajectory_driver import (
+from antares_xpansion.trajectory.driver_trajectory import (
     TrajectoryInvestmentDriver,
 )
 

@@ -30,9 +30,10 @@ class ConstraintOperatorEnum(Enum):
     GEQ = ">"
 
 
+# TODO change name ?
 class TrajectoryModule:
     """
-    Class containing the data of a tree of annual Xpansion studies.
+    Parsing, verification and translation of  the user input data.
     """
 
     def __init__(self, input_file: Path):
