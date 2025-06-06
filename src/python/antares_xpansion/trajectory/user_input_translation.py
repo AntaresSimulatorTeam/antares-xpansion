@@ -7,8 +7,8 @@ from typing import Any, Dict, List, Literal, Optional, Set, Union
 import yaml
 from pydantic import BaseModel, Field, NonNegativeFloat, NonNegativeInt, PositiveInt
 
-from trajectory_keys import TrajectoryInputKeys as InKeys
-from trajectory_keys import TrajectoryOuputKeys as OutKeys
+from antares_xpansion.trajectory.user_input_keys import TrajectoryInputKeys as InKeys
+from antares_xpansion.trajectory.user_input_keys import TrajectoryOuputKeys as OutKeys
 
 
 # Enums
@@ -41,11 +41,11 @@ class TrajectoryModule:
         self.all_nodes: Set[str] = set()
         # TODO Add Optional
         self.tree: TrajectoryModule.Tree = None
-        self.nodes: Dict[str, TrajectoryModule.NodeData] = None
+        self.nodes: Dict[str, TrajectoryModule.NodeData] = {}
         self.global_data: TrajectoryModule.GlobalData = None
-        self.candidates_types_costs: Dict[str, TrajectoryModule.CandidateType] = None
-        self.constraints: List[TrajectoryModule.TrajectoryConstraint] = None
-        self.initial_capacities: List[Union[str, float]] = None
+        self.candidates_types_costs: Dict[str, TrajectoryModule.CandidateType] = {}
+        self.constraints: List[TrajectoryModule.TrajectoryConstraint] = []
+        self.initial_capacities: Dict[str, NonNegativeInt] = {}
 
     # Errors
     class InvalidTreeStructure(Exception):
@@ -64,7 +64,7 @@ class TrajectoryModule:
             alias=InKeys.first_investment_date_key()
         )
         end_of_horizon: NonNegativeInt = Field(alias=InKeys.end_of_horizon_key())
-        studies: Dict[str, str] = Field(alias=InKeys.studies_key())
+        studies: Dict[str, Path] = Field(alias=InKeys.studies_key())
         # forbid_retirement: bool = Field(alias=InKeys.forbid_retirement_key())
 
         def print(self):
@@ -152,7 +152,7 @@ class TrajectoryModule:
                     ref = self.build_variable_reference(
                         node, candidate, InvestmentVariableTypeEnum.DX_PLUS
                     )
-                    constraint[OutKeys.constraint_coeffs_key()][ref] = 1
+                    constraint[OutKeys.constraint_coeffs_key()][ref] = 1.0
                 output.append(constraint)
             return output
 
@@ -167,8 +167,9 @@ class TrajectoryModule:
             elif self.cons_type == ConstraintTypeEnum.MAX_CUMULATIVE_INVESTMENT:
                 return self.to_cumulative_max_investment()
             else:
-                # TODO What return here? Throw ?
-                return []
+                raise TrajectoryModule.InvalidTrajectoryConstraint(
+                    f"Non implemented constraint type was encountered for constraint {self.name} with type {self.cons_type.value}"
+                )
 
     class NodeData(BaseModel):
         name: str = Field("")
@@ -276,7 +277,6 @@ class TrajectoryModule:
 
     # Verifications
     def verify_tree_probabilities(self):
-        # TODO What's TreeNodeData?
         def aux(subtree: TrajectoryModule.Tree):
             if len(subtree.children) == 0:
                 return
@@ -285,7 +285,7 @@ class TrajectoryModule:
                 cumulative += child.probability_from_parent
             if abs(cumulative - 1) > 1e-6:
                 raise TrajectoryModule.InvalidTreeStructure(
-                    f"Sum of transition probabilities to children for node {subtree.name} is not 1 : got {cumulative}"
+                    f"Sum of transition probabilities to children for node {subtree.node_name} is not 1 : got {cumulative}"
                 )
             for child in subtree.children:
                 aux(child)
@@ -295,14 +295,10 @@ class TrajectoryModule:
         return
 
     def verify_tree_investment_dates(self):
-        depth_to_investment_date = {}
+        assert self.tree is not None and self.nodes is not None
+        depth_to_investment_date: Dict[int, NonNegativeInt] = {}
 
-        def aux(
-            subtree: TrajectoryModule.Tree,
-            depth=0,
-            previous_date=None,
-            previous_duration=None,
-        ):
+        def aux(subtree: TrajectoryModule.Tree, depth=0):
             # Check node's existence
             if subtree.node_name not in self.nodes:
                 raise TrajectoryModule.InvalidTreeStructure(
@@ -321,10 +317,10 @@ class TrajectoryModule:
                 )
             # Recursively check children
             for child in subtree.children:
-                aux(child, depth + 1, node_data.investment_date, node_data.duration)
+                aux(child, depth + 1)
             return
 
-        aux(self.tree)  # TODO Typing
+        aux(self.tree, 0)  # TODO Typing
         return
 
     def verify_nodes_candidates_types(self):
@@ -355,6 +351,7 @@ class TrajectoryModule:
                     )
 
     def verify_nodes_candidates_match_with_study(self):
+        # TBA
         pass
 
     def verify_all_nodes_same_candidates(self):
@@ -370,6 +367,14 @@ class TrajectoryModule:
                 )
             else:
                 pass
+
+    def run_all_verification(self):
+        self.verify_tree_investment_dates()
+        self.verify_tree_probabilities()
+        self.verify_constraint_variable_reference()
+        self.verify_nodes_candidates_match_with_study()
+        self.verify_nodes_candidates_types()
+        self.verify_all_nodes_same_candidates()
 
     # Method
     def set_nodes_names_study_paths(self):
@@ -407,7 +412,11 @@ class TrajectoryModule:
     def compute_node_duration(self):
         """After parsing the nodes and tree, compute the node's duration
         from the next investment date / end of horizon date"""
-        assert self.tree is not None and self.nodes is not None
+        assert (
+            self.tree is not None
+            and self.nodes is not None
+            and self.global_data is not None
+        )
 
         def aux_compute_node_represented_duration(subtree: TrajectoryModule.Tree):
             next_date: int = 0
@@ -439,9 +448,9 @@ class TrajectoryModule:
     def expand_all_keyword_in_constraints(self):
         for constraint in self.constraints:
             if constraint.candidates == InKeys.constraint_all_keyword():
-                constraint.candidates = self.all_candidates  # TODO Typing
+                constraint.candidates = list(self.all_candidates)
             if constraint.nodes == InKeys.constraint_all_keyword():
-                constraint.nodes = self.all_nodes  # TODO Typing
+                constraint.nodes = list(self.all_nodes)
 
     def parse_trajectory_user_file(self):
         """
@@ -450,16 +459,14 @@ class TrajectoryModule:
         with open(self.input_file) as file:
             content = yaml.full_load(file)
             validated_content = self.TrajectoryInputFile.model_validate(content)
-            print(validated_content)
+            # print(validated_content)
 
             self.global_data = validated_content.global_data
             self.tree = validated_content.tree
             self.nodes = validated_content.nodes
             self.constraints = validated_content.constraints
             self.candidates_types_costs = validated_content.candidates_types
-            self.initial_capacities = (
-                validated_content.initial_capacities
-            )  # TODO Typing
+            self.initial_capacities = validated_content.initial_capacities
 
             # Complete the node's data
             self.set_nodes_names_study_paths()
@@ -471,7 +478,7 @@ class TrajectoryModule:
             self.all_candidates = set(
                 self.nodes[self.tree.node_name].candidate_to_type.keys()
             )
-            self.all_nodes = self.nodes.keys()  # TODO Typing
+            self.all_nodes = set(self.nodes.keys())
 
             # Constraint explicit list of nodes and candidates
             self.expand_all_keyword_in_constraints()
