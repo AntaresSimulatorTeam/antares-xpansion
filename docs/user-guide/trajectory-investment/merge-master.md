@@ -12,7 +12,7 @@ The underlying C++ code responsible for merging previously generated Xpansion st
 - [Access](#input-files-from-each-annual-study) to the ```structure.txt``` and ```master.mps``` files previously generated using ```antares-xpansion-launcher -i <study> --step problem_generation``` (or rather using the [Multiple Problem Generation](./multiple-problem-generation.md) step).
 
 Usage is :
-```path/to/exectubale <options_file>.json <master_structure_file>.json```
+```path/to/exectubale <options_file>.json <master_merger_info_file>.json```
 
 
 ## Options file
@@ -32,10 +32,10 @@ Only few of the ```BaseOptions``` from the ```<options_file>.json``` are used. A
 
 This means that the merged master file will be written to : ```<INPUT_ROOT>/<MASTER_NAME>.<mps|svf> ```, and the merged structure file to : ```<INPUT_ROOT>/<STRUCTURE_FILE>```.
 
-## Master structure file
-The program expects ```<master_structure_file>.json``` to have the following structure :
+## Master merger info file
+The program expects ```<master_merger_info>.json``` to have the following structure :
 
-**master_structure.json** : Example of a master structure file :
+**master_merger_info.json** : Example of a master structure file :
 
 ```json
 {
@@ -182,7 +182,7 @@ To access the ```lp``` data of each node, the executable expects to be passed th
 We give below what the folder given as ```INPUTROOT``` in the options file should look like in the present example :
 ```
 .
-├── master_structure.json
+├── master_merger_info.json
 ├── merge_master_options.json
 ├── nodal_lp_info.json
 ├── node_2030_study
@@ -327,7 +327,7 @@ Note that the subfolders as presented in this example do not have to be inside t
 
 ## Trajectory constraints
 
-In the ```constraints``` section of the ```master_structure.json``` file, we expect the constraints to be given in the following manner:
+In the ```constraints``` section of the ```master_merger_info.json``` file, we expect the constraints to be given in the following manner:
 
 - ```coeffs``` is a dict of investment variable reference to their coefficient in the present constraint. Each reference is built as : ```<node_name>::<candidate_name>::<variable_type>```, where variable type is either :
     - ```x``` when referencing the $x_{n,i}$ variable.

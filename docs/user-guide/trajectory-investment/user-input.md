@@ -105,7 +105,7 @@ usage : TBA
     - Node weight
     - Discounted investment, retirement and operational costs
 - Translates the constraints to their mathematical formulation (see  the [trajectory constraints section](./merge-master.md#trajectory-constraints) of the master merger.)
-- Formats and outputs the ```master_structure_file.json``` used as input in both the [merged master problem generator](./merge-master.md) and [merged weights file generator](./merge-weights.md).
+- Formats and outputs the ```master_merger_info_file.json``` used as input in both the [merged master problem generator](./merge-master.md) and [merged weights file generator](./merge-weights.md).
 
 
 ## Trajectory constraints translation

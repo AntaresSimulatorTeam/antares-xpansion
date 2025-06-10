@@ -13,7 +13,7 @@ The first two steps are (order of execution does not matter) :
 
 Intermediary files :
 
-- ```master_structure.json``` : See [this section](./merge-master.md#master-structure-file) for more details.
+- ```master_merger_info.json``` : See [this section](./merge-master.md#master-structure-file) for more details.
 - ```nodal_lp_info.json``` : See [this section](./multiple-problem-generation.md#output--nodal-lp-info-file) for more details.
 
 The other two steps have to be executed after the first two :
