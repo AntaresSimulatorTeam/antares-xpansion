@@ -47,9 +47,72 @@ class InputParameters:
     cache_problems: bool
 
 
-class XpansionConfig:
+class XpansionConfigConstants:
     """
-    Class defininf the parameters for an AntaresXpansion session
+    Class defining the constants and defaults values for Xpansion settings access.
+    """
+
+    def __init__(self):
+        # Initialization is done afterwards
+        pass
+
+    def _set_constants(self):
+        # TODO move self.SETTINGS, self.GENERAL_DATA_INI, self.OUTPUT into antares driver
+        self.SETTINGS = "settings"
+        self.GENERAL_DATA_INI = "generaldata.ini"
+        self.OUTPUT = "output"
+
+        self.USER = "user"
+        self.EXPANSION = "expansion"
+        self.SENSITIVITY_DIR = "sensitivity"
+        self.CAPADIR = "capa"
+        self.NB_YEARS = "nbyears"
+        self.SETTINGS_INI = "settings.ini"
+        self.CANDIDATES_INI = "candidates.ini"
+        self.UC_TYPE = "uc_type"
+        self.EXPANSION_ACCURATE = "expansion_accurate"
+        self.EXPANSION_FAST = "expansion_fast"
+        self.OPTIONS_JSON = "options.json"
+        self.LAUNCHER_OPTIONS_JSON = "launcher_options.json"
+        self.JSON_NAME = "out.json"
+        self.LAST_ITERATION_JSON_FILE_NAME = "last_iteration.json"
+        self.JSON_SENSITIVITY_IN = "sensitivity_in.json"
+        self.JSON_SENSITIVITY_OUT = "sensitivity_out.json"
+        self.SENSITIVITY_LOG_FILE = "sensitivity_log.txt"
+        self.LAST_MASTER_MPS = "master_last_iteration"
+        self.LAST_MASTER_BASIS = "master_last_basis.bss"
+        self.WEIGHTS = "weights"
+        self.CONSTRAINTS = "constraints"
+        self.OUTER_LOOP_FILE = "adequacy_criterion.yml"
+        self.OUTER_LOOP_DIR = "adequacy_criterion"
+        self.AREA_FILE = "area.txt"
+
+    def _set_default_settings(self):
+        self.settings_default = {
+            "uc_type": "expansion_fast",
+            "master": "integer",
+            "optimality_gap": "1",
+            "relative_gap": "1e-6",
+            "max_iteration": "+infini",
+            "relaxed_optimality_gap": "1e-5",
+            "solver": "Cbc",
+            "timelimit": "+infini",
+            "additional-constraints": "",
+            "yearly-weights": "",
+            "log_level": "0",
+            "separation_parameter": "0.5",
+            "batch_size": "0",
+            "problems_format": "SAVED",
+        }
+
+    def _initialize_default_values(self):
+        self._set_constants()
+        self._set_default_settings()
+
+
+class XpansionConfig(XpansionConfigConstants):
+    """
+    Class defining the parameters for an AntaresXpansion session
     """
 
     # pylint: disable=too-many-instance-attributes
@@ -121,58 +184,8 @@ class XpansionConfig:
             return self.default_install_dir
 
     def _initialize_default_values(self):
-        self._set_constants()
+        super()._initialize_default_values()
         self._set_default_options()
-        self._set_default_settings()
-
-    def _set_constants(self):
-        # TODO move self.SETTINGS, self.GENERAL_DATA_INI, self.OUTPUT into antares driver
-        self.SETTINGS = "settings"
-        self.GENERAL_DATA_INI = "generaldata.ini"
-        self.OUTPUT = "output"
-
-        self.USER = "user"
-        self.EXPANSION = "expansion"
-        self.SENSITIVITY_DIR = "sensitivity"
-        self.CAPADIR = "capa"
-        self.NB_YEARS = "nbyears"
-        self.SETTINGS_INI = "settings.ini"
-        self.CANDIDATES_INI = "candidates.ini"
-        self.UC_TYPE = "uc_type"
-        self.EXPANSION_ACCURATE = "expansion_accurate"
-        self.EXPANSION_FAST = "expansion_fast"
-        self.OPTIONS_JSON = "options.json"
-        self.LAUNCHER_OPTIONS_JSON = "launcher_options.json"
-        self.JSON_NAME = "out.json"
-        self.LAST_ITERATION_JSON_FILE_NAME = "last_iteration.json"
-        self.JSON_SENSITIVITY_IN = "sensitivity_in.json"
-        self.JSON_SENSITIVITY_OUT = "sensitivity_out.json"
-        self.SENSITIVITY_LOG_FILE = "sensitivity_log.txt"
-        self.LAST_MASTER_MPS = "master_last_iteration"
-        self.LAST_MASTER_BASIS = "master_last_basis.bss"
-        self.WEIGHTS = "weights"
-        self.CONSTRAINTS = "constraints"
-        self.OUTER_LOOP_FILE = "adequacy_criterion.yml"
-        self.OUTER_LOOP_DIR = "adequacy_criterion"
-        self.AREA_FILE = "area.txt"
-
-    def _set_default_settings(self):
-        self.settings_default = {
-            "uc_type": "expansion_fast",
-            "master": "integer",
-            "optimality_gap": "1",
-            "relative_gap": "1e-6",
-            "max_iteration": "+infini",
-            "relaxed_optimality_gap": "1e-5",
-            "solver": "Cbc",
-            "timelimit": "+infini",
-            "additional-constraints": "",
-            "yearly-weights": "",
-            "log_level": "0",
-            "separation_parameter": "0.5",
-            "batch_size": "0",
-            "problems_format": "SAVED",
-        }
 
     def _set_default_options(self):
         self.options_default = {
