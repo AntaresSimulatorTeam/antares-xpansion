@@ -8,6 +8,7 @@ from antares_xpansion.trajectory.driver_multiple_problem_gen import (
     MultipleProblemGenerationData,
     MultipleProblemGenerationDriver,
 )
+from antares_xpansion.trajectory.driver_input_translation import InputTranslationDriver
 from antares_xpansion.trajectory.trajectory_config import TrajectoryConfig
 
 from antares_xpansion.xpansionConfig import ConfigParameters
@@ -45,12 +46,19 @@ class TrajectoryInvestmentDriver:
         )
         self.mpg_driver = MultipleProblemGenerationDriver(data)
 
+        # Input translation driver
+        self.input_translation_driver = InputTranslationDriver(
+            self.config.input_file,
+            self.intermediary_folder_path / self.config.MASTER_MERGER_INFO_FILE,
+        )
+
     def launch(self):
         if self.config.step == "full":
             self.logger.info("Launching full procedure.")
 
         elif self.config.step == "input_translation":
             self.logger.info("Verifying and translating user input.")
+            self.input_translation_driver.launch()
 
         elif self.config.step == "problem_generation":
             self.logger.info("Running problem generation on the studies in the tree.")
