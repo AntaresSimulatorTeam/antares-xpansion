@@ -25,6 +25,7 @@ class TrajectoryConfigDefaults:
         # Intermediary files
         self.MASTER_MERGER_INFO_FILE = "master_merger_info.json"
         self.NODAL_LP_INFO_FILE = "nodal_lp_info.json"
+        self.MERGE_MASTER_OPTIONS_FILE = "options_merge_master.json"
         # Merge master output file
         self.MERGED_MASTER = "merged_master"
         self.MERGED_STRUCTURE = "merged_structure.txt"
