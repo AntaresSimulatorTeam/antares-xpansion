@@ -30,6 +30,12 @@ class ConstraintOperatorEnum(Enum):
     GEQ = ">"
 
 
+# Only used for checking the input, not strictly needed in this part of the workflow
+class FormulationEnum(Enum):
+    RELAXED = "relaxed"
+    INTEGER = "integer"
+
+
 # TODO change name ?
 class TrajectoryModule:
     """
@@ -60,12 +66,16 @@ class TrajectoryModule:
 
     # Data storage
     class GlobalData(BaseModel):
+        # Only used for checking the input, not strictly needed in this part of the workflow
+        formulation: FormulationEnum = Field(alias=InKeys.formulation_key())
+        studies: Dict[str, Path] = Field(alias=InKeys.studies_key())
+        # Other data entries are necessary.
         discount_rate: NonNegativeFloat = Field(alias=InKeys.discount_rate_key())
         first_investment_date: NonNegativeInt = Field(
             alias=InKeys.first_investment_date_key()
         )
         end_of_horizon: NonNegativeInt = Field(alias=InKeys.end_of_horizon_key())
-        studies: Dict[str, Path] = Field(alias=InKeys.studies_key())
+
         # forbid_retirement: bool = Field(alias=InKeys.forbid_retirement_key())
 
         def print(self):
@@ -187,7 +197,7 @@ class TrajectoryModule:
             print(f"NodeData {self.name}")
             print(f"Investment date : {self.investment_date}")
             print(f"Duration represented : {self.duration}")
-            print(f"Study path : {self.path}")
+            # print(f"Study path : {self.path}")
             print(f"Parent : {self.parent}")
             print(f"Computed full probability : {self.full_probability}")
 
@@ -378,12 +388,12 @@ class TrajectoryModule:
         self.verify_all_nodes_same_candidates()
 
     # Method
-    def set_nodes_names_study_paths(self):
-        """After parsing the raw node data, 'copy' the node's name and study path to its data for ease of access"""
-        assert self.nodes is not None
-        for name, data in self.nodes.items():
-            data.name = name
-            data.path = self.global_data.studies[name]  # TODO Typing
+    # def set_nodes_names_study_paths(self):
+    #     """After parsing the raw node data, 'copy' the node's name and study path to its data for ease of access"""
+    #     assert self.nodes is not None
+    #     for name, data in self.nodes.items():
+    #         data.name = name
+    #         data.path = self.global_data.studies[name]  # TODO Typing
 
     def set_nodes_parents_names(self):
         """After parsing the tree and the nodes, go through the tree to write each node's parent in its data"""
@@ -470,7 +480,7 @@ class TrajectoryModule:
             self.initial_capacities = validated_content.initial_capacities
 
             # Complete the node's data
-            self.set_nodes_names_study_paths()
+            # self.set_nodes_names_study_paths()
             self.set_nodes_parents_names()
             self.compute_node_full_probability()
             self.compute_node_duration()

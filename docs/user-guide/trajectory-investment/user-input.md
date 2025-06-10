@@ -8,6 +8,7 @@ We give here an example of a user input file corresponding with the illustration
 ```yaml
 # Global trajectory data
 global:
+  formulation: relaxed # If set to 'integer', capacity is built in steps of unit-size
   discount_rate: 0.064
   first_investment_year: 2030
   end_of_horizon: 2060

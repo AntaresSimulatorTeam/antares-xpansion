@@ -9,6 +9,10 @@ class TrajectoryInputKeys:
         return "global"
 
     @staticmethod
+    def formulation_key():
+        return "formulation"
+
+    @staticmethod
     def discount_rate_key():
         return "discount_rate"
 

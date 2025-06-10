@@ -1,9 +1,26 @@
 import argparse
 
-from antares_xpansion.trajectory.launcher_options_trajectory import (
-    TrajectoryLauncherOptionsKeys,
-)
 from antares_xpansion.trajectory.trajectory_config import TrajectoryInputParameters
+
+from pathlib import Path
+
+
+class TrajectoryLauncherOptionsKeys:
+    @staticmethod
+    def step_key():
+        return "step"
+
+    @staticmethod
+    def input_root_key():
+        return "root"
+
+    @staticmethod
+    def input_file_key():
+        return "input_file"
+
+    @staticmethod
+    def memory_key():
+        return "memory"
 
 
 class TrajectoryArgsParser:
@@ -40,12 +57,21 @@ class TrajectoryArgsParser:
             help='Step to execute ("full", "input_translation", "problem_generation", "merge_master", "merge_weights", "resolution")',
             required=True,
         )
+        self.parser.add_argument(
+            "--memory",
+            action="store_true",
+            dest=TrajectoryLauncherOptionsKeys.memory_key(),
+            help="Execute the problem generation in memory",
+        )
 
     def parse_args(self, args: list[str] = None) -> TrajectoryInputParameters:
         params = self.parser.parse_args(args)
 
         return TrajectoryInputParameters(
-            step=params.step, input_root=params.root, input_file=params.input_file
+            step=params.step,
+            input_root=Path(params.root),
+            input_file=Path(params.input_file),
+            memory=params.memory,
         )
 
     def _fill_default_values(self):

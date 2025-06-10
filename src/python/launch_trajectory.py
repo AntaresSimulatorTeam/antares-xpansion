@@ -11,16 +11,19 @@ from antares_xpansion.config_file_parser import ConfigFileParser
 from antares_xpansion.trajectory.driver_trajectory import (
     TrajectoryInvestmentDriver,
 )
+from antares_xpansion.trajectory.trajectory_config import TrajectoryConfig
 
 import os
 
 
 conf_file = Path(os.path.abspath(__file__)).parent / "config.yaml"
 config_parser = ConfigFileParser(conf_file)
-configuration_data = config_parser.get_config_parameters()
+install_data = config_parser.get_config_parameters()
 
 parser = TrajectoryArgsParser()
 input_parameters = parser.parse_args()
 
-driver = TrajectoryInvestmentDriver(input_parameters)
+config = TrajectoryConfig(input_parameters, install_data)
+
+driver = TrajectoryInvestmentDriver(config)
 driver.launch()
