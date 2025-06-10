@@ -12,6 +12,10 @@ from antares_xpansion.trajectory.driver_merge_master import (
     MergeMasterData,
     MergeMasterDriver,
 )
+from antares_xpansion.trajectory.driver_merge_weights import (
+    MergeWeightsData,
+    MergeWeightsDriver,
+)
 from antares_xpansion.trajectory.driver_input_translation import InputTranslationDriver
 from antares_xpansion.trajectory.trajectory_config import TrajectoryConfig
 
@@ -36,6 +40,14 @@ class TrajectoryInvestmentDriver:
         )
         if not self.intermediary_folder_path.is_dir():
             os.makedirs(self.intermediary_folder_path)
+        # Prepare intermediary file names
+        master_merger_info_file = (
+            self.intermediary_folder_path / self.config.MASTER_MERGER_INFO_FILE
+        )
+        nodal_lp_info_file = (
+            self.intermediary_folder_path / self.config.NODAL_LP_INFO_FILE
+        )
+        merged_weights_file = self.config.input_root / self.config.MERGED_WEIGHTS
 
         # We leave the default values for where to write intermediary files
         mpg_data = MultipleProblemGenerationData(
@@ -46,14 +58,14 @@ class TrajectoryInvestmentDriver:
             self.intermediary_folder_path / self.config.MPG_INPUT_FILE,
             self.intermediary_folder_path / self.config.MPG_WEIGHTS_FILE,
             self.intermediary_folder_path / self.config.MPG_CONSTRAINTS_FILE,
-            self.intermediary_folder_path / self.config.NODAL_LP_INFO_FILE,
+            nodal_lp_info_file,
         )
         self.mpg_driver = MultipleProblemGenerationDriver(mpg_data)
 
         # Input translation driver
         self.input_translation_driver = InputTranslationDriver(
             self.config.input_file,
-            self.intermediary_folder_path / self.config.MASTER_MERGER_INFO_FILE,
+            master_merger_info_file,
         )
 
         # We leave the default values for where to write intermediary files
@@ -68,8 +80,8 @@ class TrajectoryInvestmentDriver:
 
         mm_data = MergeMasterData(
             Path(self.config.default_install_dir) / self.config.MERGE_MASTER_MPS,
-            self.intermediary_folder_path / self.config.MASTER_MERGER_INFO_FILE,
-            self.intermediary_folder_path / self.config.NODAL_LP_INFO_FILE,
+            master_merger_info_file,
+            nodal_lp_info_file,
             self.intermediary_folder_path / self.config.MERGE_MASTER_OPTIONS_FILE,
             self.config.input_root,
             output_folder,
@@ -79,6 +91,15 @@ class TrajectoryInvestmentDriver:
             self.config.MERGED_STRUCTURE,
         )
         self.merge_master_driver = MergeMasterDriver(mm_data)
+
+        # We leave the default values for where to write intermediary files
+        mw_data = MergeWeightsData(
+            Path(self.config.default_install_dir) / self.config.MERGE_WEIGHTS,
+            master_merger_info_file,
+            nodal_lp_info_file,
+            merged_weights_file,
+        )
+        self.merge_weights_driver = MergeWeightsDriver(mw_data)
 
     def launch(self):
         if self.config.step == "full":
@@ -98,6 +119,7 @@ class TrajectoryInvestmentDriver:
 
         elif self.config.step == "merge_weights":
             self.logger.info("Generating a merged weights file.")
+            self.merge_weights_driver.launch()
 
         elif self.config.step == "resolution":
             self.logger.info("Launching the resolution")

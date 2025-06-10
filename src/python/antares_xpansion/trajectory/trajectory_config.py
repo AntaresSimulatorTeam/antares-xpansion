@@ -29,6 +29,8 @@ class TrajectoryConfigDefaults:
         # Merge master output file
         self.MERGED_MASTER = "merged_master"
         self.MERGED_STRUCTURE = "merged_structure.txt"
+        # Merge weights output file
+        self.MERGED_WEIGHTS = "merged_weights.txt"
 
 
 class TrajectoryConfig(TrajectoryConfigDefaults):
