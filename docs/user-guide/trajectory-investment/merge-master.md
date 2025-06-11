@@ -7,7 +7,7 @@
 The underlying C++ code responsible for merging previously generated Xpansion studies master files needs
 
 - An [option file](#options-file) to give the general parameters
-- A [master structure file](#master-structure-file) that links together the different annual master problems.
+- A [master merger info file](#master-merger-info-file) that links together the different annual master problems.
 - A [lp info file](#nodal-lp-info-file) that tells the programm where to find the ```lp``` folders and files of each node.
 - [Access](#input-files-from-each-annual-study) to the ```structure.txt``` and ```master.mps``` files previously generated using ```antares-xpansion-launcher -i <study> --step problem_generation``` (or rather using the [Multiple Problem Generation](./multiple-problem-generation.md) step).
 
@@ -182,9 +182,10 @@ To access the ```lp``` data of each node, the executable expects to be passed th
 We give below what the folder given as ```INPUTROOT``` in the options file should look like in the present example :
 ```
 .
-├── master_merger_info.json
-├── merge_master_options.json
-├── nodal_lp_info.json
+├── intermediary_files
+│   ├── master_merger_info.json
+│   ├── merge_master_options.json
+│   └── nodal_lp_info.json
 ├── node_2030_study
 │   ├── Desktop.ini
 │   ├── input ...
