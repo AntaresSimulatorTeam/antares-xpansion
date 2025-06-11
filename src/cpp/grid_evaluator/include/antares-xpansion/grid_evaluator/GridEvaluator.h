@@ -31,9 +31,9 @@ public:
     GridEvaluator(Logger logger,
                   std::shared_ptr<Output::JsonWriter> writer,
                   std::filesystem::path path_to_data,
-                  ProblemsFormat data_format);
+                  ProblemsFormat data_format,
+                  int nbThreads);
     void launch();
-    void setThreads(int nbThreads);
 
     Output::VariationDeNiveauxDeStockData
       variationDeNiveauxDeStockData; //!< Data to write in the output file
@@ -67,7 +67,7 @@ protected:
     ProblemsFormat problemsFormat; ///< Format of the problems
     int nbThreads = 1;             ///< Number of threads to use
 
-    SolverLogManager solver_log_manager_;
-    Logger _logger;
-    std::shared_ptr<Output::JsonWriter> _writer;
+    SolverLogManager solver_log_manager;
+    Logger logger;
+    std::shared_ptr<Output::JsonWriter> writer;
 };

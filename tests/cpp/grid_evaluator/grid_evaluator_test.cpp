@@ -79,11 +79,11 @@ TEST_F(GridSearchTest, MPSUseCaseValeursUsage)
 {
     copyData();
 
-    auto valeurs_usage = GridEvaluator(logger, writer, tmpDir, ProblemsFormat::MPS_FILE);
-    valeurs_usage.setThreads(8);
+    auto valeurs_usage = GridEvaluator(logger, writer, tmpDir, ProblemsFormat::MPS_FILE, 8);
     valeurs_usage.launch();
 
     auto output_costs = getOutputCosts();
+    EXPECT_EQ(output_costs.size(), 52 * 10);
     for (const auto& [key, cost]: valeurs_usage.variationDeNiveauxDeStockData)
     {
         ScenarioAndWeek keyStruct{key.scenario, key.week};

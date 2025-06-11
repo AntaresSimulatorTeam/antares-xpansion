@@ -21,21 +21,18 @@ std::atomic<double> totalPbModifTimer = 0; ///< Total time spent modifying subpr
 /// @param logger Logger
 /// @param writer JsonWriter
 /// @param path_to_data Path to the data folder
+/// @param data_format Format of the data (MPS or LP)
+/// @param nbThreads Number of threads to use
 GridEvaluator::GridEvaluator(Logger logger,
                              std::shared_ptr<Output::JsonWriter> writer,
                              std::filesystem::path path_to_data,
-                             ProblemsFormat data_format)
+                             ProblemsFormat data_format,
+                             int nbThreads = 1)
 {
-    _logger = std::move(logger);
-    _writer = std::move(writer);
-    xpansionFolderPath = std::move(path_to_data);
-    problemsFormat = data_format;
-}
-
-/// @brief Set the number of threads to use
-/// @param nbThreads Number of threads
-void GridEvaluator::setThreads(int nbThreads)
-{
+    this->logger = std::move(logger);
+    this->writer = std::move(writer);
+    this->xpansionFolderPath = std::move(path_to_data);
+    this->problemsFormat = data_format;
     this->nbThreads = nbThreads;
 }
 
@@ -221,8 +218,8 @@ SubproblemWorkerPtr GridEvaluator::AddSubproblem(const std::string& pbName)
                                                           1,
                                                           "XPRESS",
                                                           2,
-                                                          solver_log_manager_,
-                                                          _logger,
+                                                          solver_log_manager,
+                                                          logger,
                                                           problemsFormat);
     return subPbWorker;
 }
@@ -472,7 +469,7 @@ double GridEvaluator::SolveSubproblem(SubproblemWorkerPtr subPbWorker)
 {
     PlainData::SubProblemData subproblem_data;
     Timer subproblem_timer;
-    subPbWorker->solve(subproblem_data.lpstatus, ".", "", _writer);
+    subPbWorker->solve(subproblem_data.lpstatus, ".", "", writer);
     subPbWorker->get_value(subproblem_data.subproblem_cost);
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 
@@ -489,8 +486,8 @@ double GridEvaluator::SolveSubproblem(SubproblemWorkerPtr subPbWorker)
 /// @brief Write the output to the json file
 void GridEvaluator::WriteOutput()
 {
-    _writer->write_VariationDeNiveauxDeStock(variationDeNiveauxDeStockData);
-    _writer->dump();
+    writer->write_VariationDeNiveauxDeStock(variationDeNiveauxDeStockData);
+    writer->dump();
 }
 
 /// @brief Launch the Stock level variation computation
