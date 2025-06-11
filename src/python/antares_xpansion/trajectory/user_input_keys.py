@@ -123,7 +123,7 @@ class TrajectoryInputKeys:
 
 class TrajectoryOuputKeys:
     """
-    Keys used in the `master_structure.json` file passed to the C++ executable.
+    Keys used in the `master_merger_info.json` file passed to the C++ executable.
     """
 
     # Initial capacities

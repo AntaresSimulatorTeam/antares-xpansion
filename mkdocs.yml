@@ -49,6 +49,7 @@ nav:
       - "Trajectory investment":
           - "Trajectory investment problem": "user-guide/trajectory-investment/trajectory-problem.md"
           - "Full trajectory workflow": "user-guide/trajectory-investment/trajectory-workflow.md"
+          - "Launching the workflow": "user-guide/trajectory-investment/orchestration.md"
           - "User input file parsing": "user-guide/trajectory-investment/user-input.md"
           - "Multiple problem generation": "user-guide/trajectory-investment/multiple-problem-generation.md"
           - "Merged weights file generation ": "user-guide/trajectory-investment/merge-weights.md"

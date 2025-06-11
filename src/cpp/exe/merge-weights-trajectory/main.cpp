@@ -16,7 +16,7 @@ int main(int argc, char** argv)
     {
         if (argc < 4)
         {
-            std::cerr << "Error: usage is : <exe> <master_structure_file> <nodal_lp_folder_file> "
+            std::cerr << "Error: usage is : <exe> <master_merger_info_file> <nodal_lp_folder_file> "
                          "<output_file_path>"
                       << std::endl;
             std::exit(1);

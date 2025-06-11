@@ -2,7 +2,6 @@
 Class to control the execution of the trajectory investment
 """
 
-from antares_xpansion.trajectory.trajectory_config import TrajectoryInputParameters
 from antares_xpansion.logger import step_logger
 from antares_xpansion.trajectory.driver_multiple_problem_gen import (
     MultipleProblemGenerationData,
@@ -18,8 +17,6 @@ from antares_xpansion.trajectory.driver_merge_weights import (
 )
 from antares_xpansion.trajectory.driver_input_translation import InputTranslationDriver
 from antares_xpansion.trajectory.trajectory_config import TrajectoryConfig
-
-from antares_xpansion.xpansionConfig import ConfigParameters
 
 import os
 from pathlib import Path
