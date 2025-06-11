@@ -6,7 +6,7 @@ from pathlib import Path
 class InputTranslationDriver:
     """
     Drive the verification and translation of the user input file into
-    the ```master_structrure.json``` intermediary file.
+    the ```master_merger_info.json``` intermediary file.
     """
 
     def __init__(self, input_file: Path, output_file: Path):

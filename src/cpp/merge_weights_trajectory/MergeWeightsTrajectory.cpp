@@ -55,8 +55,8 @@ void MergeWeightsTrajectory::load_input_files()
 {
     using namespace MasterStructureKeys;
     // Read the master structure file and extract only the relevant information
-    const auto master_structure_data = get_json_file_content(master_structure_file_);
-    const auto& tree_data = master_structure_data[KEY_TREE];
+    const auto master_merger_info_data = get_json_file_content(master_merger_info_file_);
+    const auto& tree_data = master_merger_info_data[KEY_TREE];
 
     for (const auto& node_name: tree_data.getMemberNames())
     {

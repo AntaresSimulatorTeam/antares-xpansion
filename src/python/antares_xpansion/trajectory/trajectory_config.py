@@ -55,6 +55,7 @@ class TrajectoryConfig(TrajectoryConfigDefaults):
         self.memory = self.input_parameters.memory
 
     def _get_installation_parameters(self):
+        # Single xpansion components, perhaps all are not necesary in the trajectory execution.
         self.default_install_dir = self.config_parameters.default_install_dir
         self.ANTARES = self.config_parameters.ANTARES
         self.MERGE_MPS = self.config_parameters.MERGE_MPS

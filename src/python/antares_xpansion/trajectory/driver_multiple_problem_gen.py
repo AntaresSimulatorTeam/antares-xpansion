@@ -126,7 +126,7 @@ class MultipleProblemGenerationDriver:
                 self.node_to_add_constraints_file_file,
             )
 
-    def _get_mpg_options(self):
+    def _get_mpg_args(self):
         args: list[str] = []
         if self.memory:
             args.extend(["--study", self.input_file])
@@ -153,7 +153,7 @@ class MultipleProblemGenerationDriver:
                 f"MPG exe : {self.exe_path} not found"
             )
         command = [self.exe_path]
-        command.extend(self._get_mpg_options())
+        command.extend(self._get_mpg_args())
         return command
 
     def _launch_executable(self):
