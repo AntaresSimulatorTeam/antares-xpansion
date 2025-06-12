@@ -44,7 +44,7 @@ class TrajectoryResolutionDriver:
 
         self.benders_driver = BendersDriver(
             SolversExe(data.benders_exe, data.frontal_exe, data.outer_loop_exe),
-            data.benders_options_file,
+            data.benders_options_file.resolve(),
             data.mpi_exe,
         )
 
