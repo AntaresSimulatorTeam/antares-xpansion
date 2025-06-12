@@ -1,10 +1,12 @@
-#include <ctime>
+#include "antares-xpansion/benders/merge_master_mps/NodeLpDataLocation.h"
+
+#include <chrono>
 #include <iomanip>
 #include <json/writer.h>
 #include <sstream>
+#include <string>
 
 #include "antares-xpansion/benders/benders_core/common.h"
-#include "antares-xpansion/benders/merge_master_mps/NodeLpDataLocation.h"
 
 NodeLpDataLocation::NodeLpDataLocation(const Json::Value& data)
 {
@@ -50,11 +52,10 @@ void LpDataLocationManager::write_nodal_lp_location_file(
     using namespace MasterStructureKeys;
     Json::Value output;
 
-    auto t = std::time(nullptr);
-    auto tm = *std::localtime(&t);
-
+    auto time_point = std::chrono::system_clock::now();
+    auto time = std::chrono::system_clock::to_time_t(time_point);
     std::ostringstream oss;
-    oss << std::put_time(&tm, "%d-%m-%Y %H-%M-%S");
+    oss << std::put_time(std::localtime(&time), "%F %T");
     auto str = oss.str();
 
     output[KEY_METADATA]["written"] = str;
