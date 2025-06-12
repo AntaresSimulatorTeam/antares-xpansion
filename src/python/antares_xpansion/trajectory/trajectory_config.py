@@ -10,6 +10,11 @@ class TrajectoryInputParameters:
     input_root: Path
     input_file: Path
     memory: bool
+    # Relevant for resolution only
+    method: str
+    n_mpi: int
+    oversubscribe: bool
+    allow_run_as_root: bool
 
 
 class TrajectoryConfigDefaults:
@@ -18,6 +23,7 @@ class TrajectoryConfigDefaults:
 
     def _set_constants(self):
         self.INTERMEDIARY_FOLDER = "intermediary_files"
+        self.OUTPUT_FOLDER = "output"
         # Multiple problem generation input files
         self.MPG_INPUT_FILE = "mpg_input.txt"
         self.MPG_WEIGHTS_FILE = "mpg_weights.txt"
@@ -48,11 +54,20 @@ class TrajectoryConfig(TrajectoryConfigDefaults):
         self._get_input_parameters()
         self._get_installation_parameters()
 
+    def get_executable_path(self, exe_name: str):
+        assert hasattr(self, "default_install_dir")
+        return Path(self.default_install_dir) / exe_name
+
     def _get_input_parameters(self):
         self.step = self.input_parameters.step
         self.input_root = self.input_parameters.input_root
         self.input_file = self.input_parameters.input_file
         self.memory = self.input_parameters.memory
+        # Resolution args
+        self.method = self.input_parameters.method
+        self.n_mpi = self.input_parameters.n_mpi
+        self.oversubsribe = self.input_parameters.oversubscribe
+        self.allow_run_as_root = self.input_parameters.allow_run_as_root
 
     def _get_installation_parameters(self):
         # Single xpansion components, perhaps all are not necesary in the trajectory execution.

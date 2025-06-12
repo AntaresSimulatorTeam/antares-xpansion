@@ -9,14 +9,38 @@ class InputTranslationDriver:
     the ```master_merger_info.json``` intermediary file.
     """
 
+    class InvalidRootStudyPathError(Exception):
+        pass
+
     def __init__(self, input_file: Path, output_file: Path):
         self.input_file = input_file
         self.output_file = output_file
+        self.translator = TrajectoryModule(self.input_file)
+        # Only parse the input once
+        self.input_parsed = False
         pass
 
+    def _parse_input(self):
+        # Only parse the input once
+        if not self.input_parsed:
+            self.translator.parse_trajectory_user_file()
+            self.input_parsed = True
+
+    def get_root_study(self, input_root: Path) -> Path:
+        """
+        Returns the absolute path to the root study.
+        Takes in a path to the root folder containing all the studies.
+        """
+        self._parse_input()
+        path = input_root / self.translator.get_root_study()
+        if not path.is_dir():
+            raise self.InvalidRootStudyPathError(
+                f"The root study should be found at '{path.resolve().__str__()}', but this directory does not exist"
+            )
+        return path
+
     def launch(self):
-        translator = TrajectoryModule(self.input_file)
-        translator.parse_trajectory_user_file()
-        translator.run_all_verification()
-        translator.print()
-        translator.write_merger_json(self.output_file)
+        self._parse_input()
+        self.translator.run_all_verification()
+        self.translator.print()
+        self.translator.write_merger_json(self.output_file)

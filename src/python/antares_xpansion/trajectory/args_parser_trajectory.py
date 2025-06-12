@@ -2,7 +2,11 @@ import argparse
 
 from antares_xpansion.trajectory.trajectory_config import TrajectoryInputParameters
 
+from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
+from antares_xpansion.launcher_options_default_value import LauncherOptionsDefaultValues
+
 from pathlib import Path
+import warnings
 
 
 class TrajectoryLauncherOptionsKeys:
@@ -63,16 +67,82 @@ class TrajectoryArgsParser:
             dest=TrajectoryLauncherOptionsKeys.memory_key(),
             help="Execute the problem generation in memory",
         )
+        # Args for the resolution
+        self.parser.add_argument(
+            "-m",
+            "--method",
+            dest=LauncherOptionsKeys.method_key(),
+            type=str,
+            choices=["benders", "mergeMPS", "adequacy_criterion"],
+            help="Choose the optimization method",
+            default=LauncherOptionsDefaultValues.DEFAULT_VALUE(),
+        )
+        self.parser.add_argument(
+            "-n",
+            "--np",
+            dest=LauncherOptionsKeys.n_mpi_key(),
+            default=LauncherOptionsDefaultValues.DEFAULT_VALUE(),
+            type=int,
+            help="Number of MPI processes",
+        )
+        self.parser.add_argument(
+            "--oversubscribe",
+            dest=LauncherOptionsKeys.oversubscribe_key(),
+            default=LauncherOptionsDefaultValues.DEFAULT_VALUE(),
+            action="store_true",
+            help="enable mpi oversubscribe option (linux only)",
+        )
+        self.parser.add_argument(
+            "--allow-run-as-root",
+            dest=LauncherOptionsKeys.allow_run_as_root_key(),
+            default=LauncherOptionsDefaultValues.DEFAULT_VALUE(),
+            action="store_true",
+            help="allow-run-as-root option (linux only)",
+        )
+
+    def _warn_non_relevant_arg(self, step, arg):
+        warnings.warn(f"Argument {arg} is not relevant when step is {step}, ignoring")
+
+    def _show_args_warning(self, params):
+        step = params.step
+        if step not in ["resolution", "full"]:
+            if params.allow_run_as_root != LauncherOptionsDefaultValues.DEFAULT_VALUE():
+                self._warn_non_relevant_arg(step, "--allow-run-as-root")
+            if params.oversubscribe != LauncherOptionsDefaultValues.DEFAULT_VALUE():
+                self._warn_non_relevant_arg(step, "--oversubscribe")
+            if params.n_mpi != LauncherOptionsDefaultValues.DEFAULT_VALUE():
+                self._warn_non_relevant_arg(step, "-n / --np")
+            if params.method != LauncherOptionsDefaultValues.DEFAULT_VALUE():
+                self._warn_non_relevant_arg(step, "--method")
+        if step != "problem_generation" and params.memory is not None:
+            self._warn_non_relevant_arg(step, "--memory")
 
     def parse_args(self, args: list[str] = None) -> TrajectoryInputParameters:
         params = self.parser.parse_args(args)
-
+        self._show_args_warning(params)
+        self._fill_default_values(params)
         return TrajectoryInputParameters(
             step=params.step,
             input_root=Path(params.root),
             input_file=Path(params.input_file),
             memory=params.memory,
+            method=params.method,
+            n_mpi=params.n_mpi,
+            oversubscribe=params.oversubscribe,
+            allow_run_as_root=params.allow_run_as_root,
         )
 
-    def _fill_default_values(self):
-        pass
+    def _fill_default_values(self, params):
+        if params.method == LauncherOptionsDefaultValues.DEFAULT_VALUE():
+            params.method = LauncherOptionsDefaultValues.DEFAULT_METHOD()
+
+        if params.n_mpi == LauncherOptionsDefaultValues.DEFAULT_VALUE():
+            params.n_mpi = LauncherOptionsDefaultValues.DEFAULT_NP()
+
+        if params.oversubscribe == LauncherOptionsDefaultValues.DEFAULT_VALUE():
+            params.oversubscribe = LauncherOptionsDefaultValues.DEFAULT_OVERSUBSCRIBE()
+
+        if params.allow_run_as_root == LauncherOptionsDefaultValues.DEFAULT_VALUE():
+            params.allow_run_as_root = (
+                LauncherOptionsDefaultValues.DEFAULT_ALLOW_RUN_AS_ROOT()
+            )

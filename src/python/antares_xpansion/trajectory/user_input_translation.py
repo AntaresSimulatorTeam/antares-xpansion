@@ -534,3 +534,8 @@ class TrajectoryModule:
         with open(output_file, "w") as file:
             json.dump(output, file, indent=4)
         pass
+
+    def get_root_study(self):
+        assert self.tree is not None and self.global_data is not None
+        root_node = self.tree.node_name
+        return self.global_data.studies.get(root_node, Path(""))

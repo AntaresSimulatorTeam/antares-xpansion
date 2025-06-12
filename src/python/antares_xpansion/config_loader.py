@@ -302,6 +302,26 @@ class XpansionSettingsReader:
 
         return int(batch_size_str)
 
+    def timelimit(self):
+        """
+        returns the timelimit read from the settings file
+        :return: timelimit value or 0 if the gap is negative
+        """
+        timelimit_str = self.options.get(
+            "timelimit", self._config_defaults.settings_default["timelimit"]
+        )
+        return 1e12 if timelimit_str in ("+Inf", "+infini") else int(timelimit_str)
+
+    def log_level(self):
+        """
+        returns the log_level read from the settings file
+        :return: log_level value
+        """
+        log_level_str = self.options.get(
+            "log_level", self._config_defaults.settings_default["log_level"]
+        )
+        return int(log_level_str)
+
 
 class ConfigLoader(XpansionSettingsReader):
     """
@@ -748,26 +768,6 @@ class ConfigLoader(XpansionSettingsReader):
 
     def cache_problems(self):
         return self._config.cache_problems
-
-    def timelimit(self):
-        """
-        returns the timelimit read from the settings file
-        :return: timelimit value or 0 if the gap is negative
-        """
-        timelimit_str = self.options.get(
-            "timelimit", self._config.settings_default["timelimit"]
-        )
-        return 1e12 if timelimit_str in ("+Inf", "+infini") else int(timelimit_str)
-
-    def log_level(self):
-        """
-        returns the log_level read from the settings file
-        :return: log_level value
-        """
-        log_level_str = self.options.get(
-            "log_level", self._config.settings_default["log_level"]
-        )
-        return int(log_level_str)
 
     def sensitivity_log_file(self) -> Path:
         return Path(

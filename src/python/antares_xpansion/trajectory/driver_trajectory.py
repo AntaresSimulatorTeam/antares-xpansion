@@ -16,6 +16,11 @@ from antares_xpansion.trajectory.driver_merge_weights import (
     MergeWeightsDriver,
 )
 from antares_xpansion.trajectory.driver_input_translation import InputTranslationDriver
+from antares_xpansion.trajectory.driver_resolution import (
+    TrajectoryResolutionData,
+    TrajectoryResolutionDriver,
+)
+
 from antares_xpansion.trajectory.trajectory_config import TrajectoryConfig
 
 import os
@@ -32,43 +37,39 @@ class TrajectoryInvestmentDriver:
         self.logger = step_logger(__name__, __class__.__name__)
 
         # Create the intermediary folder
-        self.intermediary_folder_path = (
-            self.config.input_root / self.config.INTERMEDIARY_FOLDER
+        self.intermediary_folder_path = self.prepare_folder(
+            self.config.INTERMEDIARY_FOLDER
         )
-        if not self.intermediary_folder_path.is_dir():
-            os.makedirs(self.intermediary_folder_path)
         # Prepare intermediary file names
-        master_merger_info_file = (
+        self.master_merger_info_file = (
             self.intermediary_folder_path / self.config.MASTER_MERGER_INFO_FILE
         )
-        nodal_lp_info_file = (
+        self.nodal_lp_info_file = (
             self.intermediary_folder_path / self.config.NODAL_LP_INFO_FILE
         )
-        merged_weights_file = self.config.input_root / self.config.MERGED_WEIGHTS
+        self.merged_weights_file = self.config.input_root / self.config.MERGED_WEIGHTS
 
         # We leave the default values for where to write intermediary files
         mpg_data = MultipleProblemGenerationData(
-            Path(config.default_install_dir) / self.config.MULTIPLE_PROBLEM_GEN,
+            self.config.get_executable_path(self.config.MULTIPLE_PROBLEM_GEN),
             self.config.input_root,
             self.config.input_file,
             self.config.memory,
             self.intermediary_folder_path / self.config.MPG_INPUT_FILE,
             self.intermediary_folder_path / self.config.MPG_WEIGHTS_FILE,
             self.intermediary_folder_path / self.config.MPG_CONSTRAINTS_FILE,
-            nodal_lp_info_file,
+            self.nodal_lp_info_file,
         )
         self.mpg_driver = MultipleProblemGenerationDriver(mpg_data)
 
         # Input translation driver
         self.input_translation_driver = InputTranslationDriver(
             self.config.input_file,
-            master_merger_info_file,
+            self.master_merger_info_file,
         )
 
         # We leave the default values for where to write intermediary files
-        output_folder = self.config.input_root / "output"
-        if not output_folder.is_dir():
-            os.makedirs(output_folder)
+        self.output_folder = self.prepare_folder(self.config.OUTPUT_FOLDER)
         # TODO : hardcoded solver for now
         solver = "XPRESS"
         problems_format = "SAVED"
@@ -76,12 +77,12 @@ class TrajectoryInvestmentDriver:
             problems_format = "MPS"
 
         mm_data = MergeMasterData(
-            Path(self.config.default_install_dir) / self.config.MERGE_MASTER_MPS,
-            master_merger_info_file,
-            nodal_lp_info_file,
+            self.config.get_executable_path(self.config.MERGE_MASTER_MPS),
+            self.master_merger_info_file,
+            self.nodal_lp_info_file,
             self.intermediary_folder_path / self.config.MERGE_MASTER_OPTIONS_FILE,
             self.config.input_root,
-            output_folder,
+            self.output_folder,
             solver,
             problems_format,
             self.config.MERGED_MASTER,
@@ -91,16 +92,59 @@ class TrajectoryInvestmentDriver:
 
         # We leave the default values for where to write intermediary files
         mw_data = MergeWeightsData(
-            Path(self.config.default_install_dir) / self.config.MERGE_WEIGHTS,
-            master_merger_info_file,
-            nodal_lp_info_file,
-            merged_weights_file,
+            self.config.get_executable_path(self.config.MERGE_WEIGHTS),
+            self.master_merger_info_file,
+            self.nodal_lp_info_file,
+            self.merged_weights_file,
         )
         self.merge_weights_driver = MergeWeightsDriver(mw_data)
+
+        # Prepare a ConfigLoader object. Used for the resolution, when using the benders driver
+        benders_options_file = self.intermediary_folder_path / "options_benders.json"
+        benders_json_output = self.output_folder / "out_benders.json"
+        root_study = self.input_translation_driver.get_root_study(
+            self.config.input_root
+        )
+
+        res_data = TrajectoryResolutionData(
+            benders_exe=self.config.get_executable_path(self.config.BENDERS),
+            frontal_exe=self.config.get_executable_path(self.config.MERGE_MPS),
+            outer_loop_exe=self.config.get_executable_path(self.config.OUTER_LOOP),
+            mpi_exe=self.config.get_executable_path(self.config.MPIEXEC),
+            input_root=self.config.input_root,
+            root_study=root_study,
+            json_output_file=benders_json_output,
+            benders_options_file=benders_options_file,
+            merged_weights_file=self.merged_weights_file,
+            output_folder=self.output_folder,
+            master_name=self.config.MERGED_MASTER,
+            structure_file=self.config.MERGED_STRUCTURE,
+            solver=solver,
+            problems_format=problems_format,
+            method=self.config.method,
+            n_mpi=self.config.n_mpi,
+            oversubscribe=self.config.oversubsribe,
+            allow_run_as_root=self.config.allow_run_as_root,
+        )
+
+        self.resolution_driver = TrajectoryResolutionDriver(res_data)
+
+    def prepare_folder(self, name: str):
+        """Creates the folder at <input_root/name> and returns the full path"""
+        folder = self.config.input_root / name
+        if not folder.is_dir():
+            os.makedirs(folder)
+
+        return folder
 
     def launch(self):
         if self.config.step == "full":
             self.logger.info("Launching full procedure.")
+            self.input_translation_driver.launch()
+            self.mpg_driver.launch()
+            self.merge_master_driver.launch()
+            self.merge_weights_driver.launch()
+            self.resolution_driver.launch()
 
         elif self.config.step == "input_translation":
             self.logger.info("Verifying and translating user input.")
@@ -120,3 +164,4 @@ class TrajectoryInvestmentDriver:
 
         elif self.config.step == "resolution":
             self.logger.info("Launching the resolution")
+            self.resolution_driver.launch()
