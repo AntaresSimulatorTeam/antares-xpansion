@@ -1,0 +1,360 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.12.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Antares Xpansion" />
+<meta property="og:image" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/blob/develop/docs/assets/logo.png" />
+<meta property="og:description" content="Investment simulations for Antares studies." />
+<meta property="og:url" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/blob/develop/docs/assets/logo.png" />
+<meta name="twitter:title" content="Antares Xpansion" />
+<meta name="twitter:description" content="Investment simulations for Antares studies." />
+<!-- END twitter metadata -->
+<title>Antares Xpansion: Merging the master problems of annual Xpansion studies</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://github.com/AntaresSimulatorTeam/antares-xpansion/ -->
+<a href="https://github.com/AntaresSimulatorTeam/antares-xpansion" class="github-corner" title="View source on GitHub" target="_blank">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Antares Xpansion
+   </div>
+   <div id="projectbrief">Investment simulations for Antares studies</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.12.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('md_docs_2user-guide_2trajectory-investment_2merge-master.html',''); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div><div class="header">
+  <div class="headertitle"><div class="title">Merging the master problems of annual Xpansion studies</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><p><a class="anchor" id="autotoc_md234"></a></p>
+<h1><a class="anchor" id="autotoc_md235"></a>
+Note : Perhaps move to developer guide, as this should not be relevant to the end user.</h1>
+<h1><a class="anchor" id="autotoc_md236"></a>
+ Usage of the master merger executable</h1>
+<p><b>All examples below are based on the tree example given in the <a class="el" href="md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html">trajectory problem</a> section</b></p>
+<p>The underlying C++ code responsible for merging previously generated Xpansion studies master files needs</p>
+<ul>
+<li>An option file to give the general parameters</li>
+<li>A master structure file that links together the different annual master problems.</li>
+<li>Access to the <code>structure.txt</code> and <code>master.mps</code> files previously generated using <code>antares -i &lt;study&gt; --step problem_generation</code>.</li>
+</ul>
+<p>Usage is : </p><div class="fragment"><div class="line">/to/exectubale &lt;options_file&gt;.json &lt;master_structure_file&gt;.json</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md237"></a>
+ Options file</h1>
+<p>Only few of the <code>BendersOptions</code> from the <code>&lt;options_file&gt;.json</code> are truly necessary. An option file for the master merger can be :</p>
+<div class="fragment"><div class="line">{</div>
+<div class="line">    &quot;OUTPUTROOT&quot;: &quot;&lt;path/to/ouput/folder&gt;&quot;,</div>
+<div class="line">    &quot;INPUTROOT&quot;: &quot;&lt;path/to/input/root&gt;&quot;,</div>
+<div class="line">    &quot;JSON_FILE&quot;: &quot;&lt;path/to/metadata/json/ouput/file&gt;&quot;,</div>
+<div class="line">    &quot;SOLVER_NAME&quot;: &quot;Xpress&quot;,</div>
+<div class="line">    &quot;PROBLEMS_FORMAT&quot;: &quot;MPS&quot;</div>
+<div class="line">}</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md238"></a>
+Master structure file</h1>
+<p>The program expects <code>&lt;master_structure_file&gt;.json</code> to have the following structure :</p>
+<p><b>master_structure.json</b> : Example of a master structure file :</p>
+<div class="fragment"><div class="line">{</div>
+<div class="line">    &quot;initial_capacities&quot; : {</div>
+<div class="line">        &quot;default&quot; : 0,</div>
+<div class="line">        &quot;semibase&quot; : 250</div>
+<div class="line">    },</div>
+<div class="line">    &quot;constraints&quot; : [</div>
+<div class="line">        {</div>
+<div class="line">            &quot;coeffs&quot; : {</div>
+<div class="line">                &quot;2030::semibase::dx_plus&quot; : 1,</div>
+<div class="line">                &quot;2030::peak::dx_plus&quot; : 1</div>
+<div class="line">            },</div>
+<div class="line">            &quot;rhs&quot; : 1000,</div>
+<div class="line">            &quot;operator&quot; : &quot;&lt;&quot;</div>
+<div class="line">        },</div>
+<div class="line">        {</div>
+<div class="line">            &quot;coeffs&quot; : {</div>
+<div class="line">                &quot;2040::semibase::x&quot; : 1,</div>
+<div class="line">                &quot;2030::peak::dx_minus&quot; : 1</div>
+<div class="line">            },</div>
+<div class="line">            &quot;rhs&quot; : 0,</div>
+<div class="line">            &quot;operator&quot; : &quot;=&quot;</div>
+<div class="line">        }</div>
+<div class="line">    ],</div>
+<div class="line">    &quot;tree&quot; : {</div>
+<div class="line">        &quot;2030&quot; : {</div>
+<div class="line">            &quot;parent&quot; : &quot;root&quot;,</div>
+<div class="line">            &quot;candidates_costs&quot; : {</div>
+<div class="line">                &quot;semibase&quot; : {</div>
+<div class="line">                    &quot;investment&quot; : 5000,</div>
+<div class="line">                    &quot;operation_maintenance&quot; : 1000,</div>
+<div class="line">                    &quot;retirement&quot; : 0</div>
+<div class="line">                },</div>
+<div class="line">                &quot;peak&quot; : {</div>
+<div class="line">                    &quot;investment&quot; : 3500,</div>
+<div class="line">                    &quot;operation_maintenance&quot; : 1000,</div>
+<div class="line">                    &quot;retirement&quot; : 0</div>
+<div class="line">                }</div>
+<div class="line">            }</div>
+<div class="line">        },</div>
+<div class="line">        &quot;2040&quot; : {</div>
+<div class="line">            &quot;parent&quot; : &quot;2030&quot;,</div>
+<div class="line">            &quot;candidates_costs&quot; : {</div>
+<div class="line">                &quot;semibase&quot; : {</div>
+<div class="line">                    &quot;investment&quot; : 5000,</div>
+<div class="line">                    &quot;operation_maintenance&quot; : 1000,</div>
+<div class="line">                    &quot;retirement&quot; : 0</div>
+<div class="line">                },</div>
+<div class="line">                &quot;peak&quot; : {</div>
+<div class="line">                    &quot;investment&quot; : 3500,</div>
+<div class="line">                    &quot;operation_maintenance&quot; : 1000,</div>
+<div class="line">                    &quot;retirement&quot; : 0</div>
+<div class="line">                }</div>
+<div class="line">            }</div>
+<div class="line">        },</div>
+<div class="line">        &quot;2050_A&quot; : {</div>
+<div class="line">            &quot;parent&quot; : &quot;2040&quot;,</div>
+<div class="line">            &quot;candidates_costs&quot; : {</div>
+<div class="line">                &quot;semibase&quot; : {</div>
+<div class="line">                    &quot;investment&quot; : 4000,</div>
+<div class="line">                    &quot;operation_maintenance&quot; : 800,</div>
+<div class="line">                    &quot;retirement&quot; : 0</div>
+<div class="line">                },</div>
+<div class="line">                &quot;peak&quot; : {</div>
+<div class="line">                    &quot;investment&quot; : 2800,</div>
+<div class="line">                    &quot;operation_maintenance&quot; : 8000,</div>
+<div class="line">                    &quot;retirement&quot; : 0</div>
+<div class="line">                }</div>
+<div class="line">            }</div>
+<div class="line"> </div>
+<div class="line">        },</div>
+<div class="line">        &quot;2050_B&quot; : {</div>
+<div class="line">            &quot;parent&quot; : &quot;2040&quot;,</div>
+<div class="line">            &quot;candidates_costs&quot; : {</div>
+<div class="line">                &quot;semibase&quot; : {</div>
+<div class="line">                    &quot;investment&quot; : 1000,</div>
+<div class="line">                    &quot;operation_maintenance&quot; : 200,</div>
+<div class="line">                    &quot;retirement&quot; : 0</div>
+<div class="line">                },</div>
+<div class="line">                &quot;peak&quot; : {</div>
+<div class="line">                    &quot;investment&quot; : 700,</div>
+<div class="line">                    &quot;operation_maintenance&quot; : 200,</div>
+<div class="line">                    &quot;retirement&quot; : 0</div>
+<div class="line">                }</div>
+<div class="line">            }</div>
+<div class="line"> </div>
+<div class="line">        }</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+</div><!-- fragment --><p>We give a short description of the data expected in each field :</p>
+<ul>
+<li><code>initial_capacities</code> contains, for each candidate, the capacity installed at before the first investment time point.</li>
+<li><code>constraints</code> contains user-given trajectory constraints on the different investment variables. See the Trajectory constraints section for more details.</li>
+<li><code>tree</code> contains the trajectory tree itself, and the data pertaining to each of its nodes. Each of the nodes contains the following data:<ul>
+<li><code>lp_folder</code> points to a folder containing both the <code>master_mps_file</code> and the <code>structure_file</code> of this annual study.</li>
+<li><code>parent</code> is the name of the node's parent in the tree.</li>
+<li><code>weight_factor</code> is the node's weight $w(n)$ in the objective function. Note that in this example, we used a discounting rate of $0$ to get an aggregated weight of $10$ on each investment time point.</li>
+<li><code>candidates_costs</code> contains the coefficients of the corresponding variables in the final objective. Each of those costs already incorporates the probability of the node appearing, the node's represented duration and the discounting.The coefficient was pre-computed using the python orchestrator.</li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md239"></a>
+ LpPathes file</h1>
+<p>We give an example of a corresponding <code>lp_pathes.json</code></p>
+<div class="fragment"><div class="line">{</div>
+<div class="line">    &quot;2030&quot; : {</div>
+<div class="line">            &quot;lp_folder&quot; : &quot;node_2030__lp&quot;,</div>
+<div class="line">            &quot;master_mps_file&quot; : &quot;node_2030__master.mps&quot;,</div>
+<div class="line">            &quot;structure_file&quot; : &quot;node_2030__structure.txt&quot;</div>
+<div class="line">    },</div>
+<div class="line">    &quot;2040&quot; : {</div>
+<div class="line">            &quot;lp_folder&quot; : &quot;node_2040__lp&quot;,</div>
+<div class="line">            &quot;master_mps_file&quot; : &quot;node_2040__master.mps&quot;,</div>
+<div class="line">            &quot;structure_file&quot; : &quot;node_2040__structure.txt&quot;</div>
+<div class="line">    },</div>
+<div class="line">    &quot;2050_A&quot; : {</div>
+<div class="line">            &quot;lp_folder&quot; : &quot;node_2050_A__lp&quot;,</div>
+<div class="line">            &quot;master_mps_file&quot; : &quot;node_2050_A__master.mps&quot;,</div>
+<div class="line">            &quot;structure_file&quot; : &quot;node_2050_A__structure.txt&quot;</div>
+<div class="line">    },</div>
+<div class="line">    &quot;2050_B&quot; : {</div>
+<div class="line">            &quot;lp_folder&quot; : &quot;node_2050_B__lp&quot;,</div>
+<div class="line">            &quot;master_mps_file&quot; : &quot;node_2050_B__master.mps&quot;,</div>
+<div class="line">            &quot;structure_file&quot; : &quot;node_2050_B__structure.txt&quot;</div>
+<div class="line">    }</div>
+<div class="line">}</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md240"></a>
+Input files from each annual study</h1>
+<p>We give below what the folder given as <code>INPUTROOT</code> in the options file should look like in the present example : </p><div class="fragment"><div class="line">├── master_structure.json</div>
+<div class="line">├── node_2030__lp</div>
+<div class="line">│   ├── node_2030__master.mps</div>
+<div class="line">│   ├── node_2030__problem-1-1--optim-nb-1.mps</div>
+<div class="line">│   ├── node_2030__problem-1-2--optim-nb-1.mps</div>
+<div class="line">│   ├── node_2030__problem-2-1--optim-nb-1.mps</div>
+<div class="line">│   ├── node_2030__problem-2-2--optim-nb-1.mps</div>
+<div class="line">│   └── node_2030__structure.txt</div>
+<div class="line">├── node_2040__lp</div>
+<div class="line">│   ├── node_2040__master.mps</div>
+<div class="line">│   ├── node_2040__problem-1-1--optim-nb-1.mps</div>
+<div class="line">│   ├── node_2040__problem-1-2--optim-nb-1.mps</div>
+<div class="line">│   ├── node_2040__problem-2-1--optim-nb-1.mps</div>
+<div class="line">│   ├── node_2040__problem-2-2--optim-nb-1.mps</div>
+<div class="line">│   └── node_2040__structure.txt</div>
+<div class="line">├── node_2050_A__lp</div>
+<div class="line">│   ├── node_2050_A__master.mps</div>
+<div class="line">│   ├── node_2050_A__problem-1-1--optim-nb-1.mps</div>
+<div class="line">│   ├── node_2050_A__problem-1-2--optim-nb-1.mps</div>
+<div class="line">│   ├── node_2050_A__problem-2-1--optim-nb-1.mps</div>
+<div class="line">│   ├── node_2050_A__problem-2-2--optim-nb-1.mps</div>
+<div class="line">│   ├── node_2050_A__ProblemGenerationLog.txt</div>
+<div class="line">│   └── node_2050_A__structure.txt</div>
+<div class="line">├── node_2050_B__lp</div>
+<div class="line">│   ├── node_2050_B__master.mps</div>
+<div class="line">│   ├── node_2050_B__problem-1-1--optim-nb-1.mps</div>
+<div class="line">│   ├── node_2050_B__problem-1-2--optim-nb-1.mps</div>
+<div class="line">│   ├── node_2050_B__problem-2-1--optim-nb-1.mps</div>
+<div class="line">│   ├── node_2050_B__problem-2-2--optim-nb-1.mps</div>
+<div class="line">│   └── node_2050_B__structure.txt</div>
+</div><!-- fragment --><p> Each of the subfolder is the ouput of of <code>antares -i &lt;study&gt; --step problem_generation</code>. For example, the structure file of a given node should be found at : </p><div class="fragment"><div class="line">&lt;INPUTROOT&gt;/&lt;lp_folder&gt;/&lt;structure_file&gt;</div>
+</div><!-- fragment --><p>Note that the subfolders as presented in this example do not have to be immediately contained in the <code>&lt;INPUTROOT&gt;</code> folder, and could be kept in the <code>output</code> folders of each annual study (and thus `<code>&lt;INPUTROOT&gt;</code> would then contain each of the full Antares studies, and each <code>lp_folder</code> would point to : <code>&lt;study_folder&gt;/ouput/&lt;date&gt;-Xpansion/lp</code>)</p>
+<h1><a class="anchor" id="autotoc_md241"></a>
+Trajectory constraints</h1>
+<p>In the <code>constraints</code> section of the <code>master_structure.json</code> file, we expect the constraints to be given in the following manner:</p>
+<ul>
+<li><code>coeffs</code> is a dict of investment variable reference to their coefficient in the present constraint. Each reference is built as : <code>&lt;node_name&gt;::&lt;candidate_name&gt;::&lt;variable_type&gt;</code>, where variable type is either :<ul>
+<li><code>x</code> when referencing the $x_{n,i}$ variable.</li>
+<li><code>dx_plus</code> when referencing the $dx_{n,i}^+$ variable.</li>
+<li><code>dx_minus</code> when referencing the $dx_{n,i}^⁻$ variable.</li>
+</ul>
+</li>
+<li><code>rhs</code> contains the right-hand side of the constraint expression. (Note that all constraints are formulated as a $\leq$ constraint for now)</li>
+<li><code>operator</code> defines the type of constraint we want to set and expects one of three values :<ul>
+<li><code>&lt;</code> for constraints of type : $expression \leq rhs$</li>
+<li><code>=</code> for constraints of type : $expression = rhs$</li>
+<li><code>&gt;</code> for constraints of type : $expression \geq rhs$</li>
+</ul>
+</li>
+</ul>
+<h1><a class="anchor" id="autotoc_md242"></a>
+Weights</h1>
+<p>The weights given by the user in the <code>master_structure_file</code> are only applied to the merged master problem's objective. This means that the user must take care to also specify the correct corresponding yearly weights to each subproblem for each annual Xpansion study using the <code>yearly_weights</code> parameter when solving the merged master problem. Thus, if the Monte Carlo years of node $n \in G$ had respective weights $(\omega_{i,n})_{\forall i \in [|1, N|]}$, we must set the new weights of each subproblem of the merged master problem as : $(\omega^{merged}_{i,n} = w(n) \times \omega_{i,n})_{\forall n \in G, \forall i \in [|1, N|]}$. Note that this means that the weights given to the subproblems do not add up to $1$, as they are now reflective of the duration represented by the assiociated node, its probability of occurence and the probability of occurence of each specific Monte-Carlo year inside a specific node - whereas in the annual version, the weight of the node was 1 (the node represented one year and was the only possible scenario) and thus the weights of subproblems was simply the probability of occurence of each Monte-Carlo year. </p>
+</div></div><!-- contents -->
+</div><!-- PageDoc -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
+  </ul>
+</div>
+</body>
+</html>

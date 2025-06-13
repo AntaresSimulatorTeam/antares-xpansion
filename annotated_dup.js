@@ -434,6 +434,19 @@ var annotated_dup =
         ] ]
       ] ]
     ] ],
+    [ "trajectory_driver", "namespacetrajectory__driver.html", [
+      [ "TrajectoryInvestmentDriver", "classtrajectory__driver_1_1TrajectoryInvestmentDriver.html", null ]
+    ] ],
+    [ "trajectory_keys", null, [
+      [ "TrajectoryInputKeys", "classtrajectory__keys_1_1TrajectoryInputKeys.html", null ],
+      [ "TrajectoryOuputKeys", "classtrajectory__keys_1_1TrajectoryOuputKeys.html", null ]
+    ] ],
+    [ "trajectory_module", null, [
+      [ "ConstraintOperatorEnum", "classtrajectory__module_1_1ConstraintOperatorEnum.html", null ],
+      [ "ConstraintTypeEnum", "classtrajectory__module_1_1ConstraintTypeEnum.html", null ],
+      [ "InvestmentVariableTypeEnum", "classtrajectory__module_1_1InvestmentVariableTypeEnum.html", null ],
+      [ "TrajectoryModule", "classtrajectory__module_1_1TrajectoryModule.html", "classtrajectory__module_1_1TrajectoryModule" ]
+    ] ],
     [ "Xpansion", null, [
       [ "Test", null, [
         [ "InMemoryWriter", "classXpansion_1_1Test_1_1InMemoryWriter.html", "classXpansion_1_1Test_1_1InMemoryWriter" ],
@@ -599,8 +612,11 @@ var annotated_dup =
     [ "MergeMasterSubproblemMPS", "classMergeMasterSubproblemMPS.html", "classMergeMasterSubproblemMPS" ],
     [ "MergeMasterTrajectoryMPS", "classMergeMasterTrajectoryMPS.html", "classMergeMasterTrajectoryMPS" ],
     [ "MergeMPSTest", "classMergeMPSTest.html", "classMergeMPSTest" ],
+    [ "MergeWeightsTrajectory", "classMergeWeightsTrajectory.html", null ],
     [ "MPSFileProblemProviderAdapter", "classMPSFileProblemProviderAdapter.html", null ],
     [ "MpsTxtWriterTest", "classMpsTxtWriterTest.html", null ],
+    [ "MultipleProblemGeneration", "classMultipleProblemGeneration.html", null ],
+    [ "MultipleProblemGenerationExeOptions", "classMultipleProblemGenerationExeOptions.html", null ],
     [ "NodeLpDataLocation", "structNodeLpDataLocation.html", null ],
     [ "NoopProblemGenerationLogger", "classNoopProblemGenerationLogger.html", "classNoopProblemGenerationLogger" ],
     [ "NOOPSolver", "classNOOPSolver.html", "classNOOPSolver" ],

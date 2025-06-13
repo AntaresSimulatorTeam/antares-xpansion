@@ -1,4 +1,6 @@
 var searchData=
 [
-  ['⚠️_20single_20file_20versions_20in_20ubuntu_20are_20known_20to_20have_20mpi_20related_20issues_20please_20use_20the_20other_20ones_0',['⚠️ Single-file versions in Ubuntu are known to have MPI-related issues. Please use the other ones.',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md21',1,'']]]
+  ['zero_5fstatus_5fcheck_0',['zero_status_check',['../classSolverAbstract.html#aff87b9285872f0012d0f2c183bbf395e',1,'SolverAbstract']]],
+  ['zipproblemprovideradapter_1',['ZipProblemProviderAdapter',['../classZipProblemProviderAdapter.html',1,'']]],
+  ['zipproblemsprovideradapter_2',['ZipProblemsProviderAdapter',['../classZipProblemsProviderAdapter.html',1,'']]]
 ];

@@ -191,7 +191,10 @@ var hierarchy =
         [ "antares_xpansion.xpansion_study_reader.XpansionStudyReader.NoSolverValue", "classantares__xpansion_1_1xpansion__study__reader_1_1XpansionStudyReader_1_1NoSolverValue.html", null ],
         [ "antares_xpansion.xpansion_study_reader.XpansionStudyReader.OnlyNullYearsWeightValue", "classantares__xpansion_1_1xpansion__study__reader_1_1XpansionStudyReader_1_1OnlyNullYearsWeightValue.html", null ],
         [ "antares_xpansion.xpansion_study_reader.XpansionStudyReader.SolverNotAvailable", "classantares__xpansion_1_1xpansion__study__reader_1_1XpansionStudyReader_1_1SolverNotAvailable.html", null ]
-      ] ]
+      ] ],
+      [ "trajectory_module.TrajectoryModule.InvalidCandidates", "classtrajectory__module_1_1TrajectoryModule_1_1InvalidCandidates.html", null ],
+      [ "trajectory_module.TrajectoryModule.InvalidTrajectoryConstraint", "classtrajectory__module_1_1TrajectoryModule_1_1InvalidTrajectoryConstraint.html", null ],
+      [ "trajectory_module.TrajectoryModule.InvalidTreeStructure", "classtrajectory__module_1_1TrajectoryModule_1_1InvalidTreeStructure.html", null ]
     ] ],
     [ "std::exception", null, [
       [ "Catch::GeneratorException", "classCatch_1_1GeneratorException.html", null ]
@@ -433,6 +436,7 @@ var hierarchy =
     ] ],
     [ "MathLoggerFactory", "classMathLoggerFactory.html", null ],
     [ "YearlyWeightsWriter::McYearNotInActiveYearsListError", "classYearlyWeightsWriter_1_1McYearNotInActiveYearsListError.html", null ],
+    [ "MergeWeightsTrajectory", "classMergeWeightsTrajectory.html", null ],
     [ "Catch::MessageInfo", "structCatch_1_1MessageInfo.html", null ],
     [ "Catch::MessageStream", "structCatch_1_1MessageStream.html", [
       [ "Catch::MessageBuilder", "structCatch_1_1MessageBuilder.html", null ]
@@ -442,6 +446,7 @@ var hierarchy =
     [ "ActiveLinksBuilder::MultipleAlreadyInstalledCapacityDetectedForLink", "classActiveLinksBuilder_1_1MultipleAlreadyInstalledCapacityDetectedForLink.html", null ],
     [ "ActiveLinksBuilder::MultipleAlreadyInstalledProfileDetectedForLink", "classActiveLinksBuilder_1_1MultipleAlreadyInstalledProfileDetectedForLink.html", null ],
     [ "ActiveLinksBuilder::MultipleLinkIddetectedForLink", "classActiveLinksBuilder_1_1MultipleLinkIddetectedForLink.html", null ],
+    [ "MultipleProblemGeneration", "classMultipleProblemGeneration.html", null ],
     [ "Catch::NameAndTags", "structCatch_1_1NameAndTags.html", null ],
     [ "NodeLpDataLocation", "structNodeLpDataLocation.html", null ],
     [ "StudyUpdateStrategy::NoInvestmentComputedForTheCandidate", "classStudyUpdateStrategy_1_1NoInvestmentComputedForTheCandidate.html", null ],
@@ -457,7 +462,8 @@ var hierarchy =
     [ "OptionsParser", "classOptionsParser.html", [
       [ "AntaresArchiveUpdaterExeOptions", "classAntaresArchiveUpdaterExeOptions.html", null ],
       [ "ProblemGenerationExeOptions", "classProblemGenerationExeOptions.html", [
-        [ "FullRunOptionsParser", "classFullRunOptionsParser.html", null ]
+        [ "FullRunOptionsParser", "classFullRunOptionsParser.html", null ],
+        [ "MultipleProblemGenerationExeOptions", "classMultipleProblemGenerationExeOptions.html", null ]
       ] ],
       [ "StudyUpdaterExeOptions", "classStudyUpdaterExeOptions.html", null ]
     ] ],
@@ -696,7 +702,11 @@ var hierarchy =
     [ "Catch::Totals", "structCatch_1_1Totals.html", null ],
     [ "MergeMasterTrajectoryMPS::TrajectoryConstraint", "structMergeMasterTrajectoryMPS_1_1TrajectoryConstraint.html", null ],
     [ "MergeMasterTrajectoryMPS::TrajectoryGlobalData", "structMergeMasterTrajectoryMPS_1_1TrajectoryGlobalData.html", null ],
+    [ "trajectory_keys.TrajectoryInputKeys", "classtrajectory__keys_1_1TrajectoryInputKeys.html", null ],
+    [ "trajectory_driver.TrajectoryInvestmentDriver", "classtrajectory__driver_1_1TrajectoryInvestmentDriver.html", null ],
+    [ "trajectory_module.TrajectoryModule", "classtrajectory__module_1_1TrajectoryModule.html", null ],
     [ "MergeMasterTrajectoryMPS::TrajectoryNode", "structMergeMasterTrajectoryMPS_1_1TrajectoryNode.html", null ],
+    [ "trajectory_keys.TrajectoryOuputKeys", "classtrajectory__keys_1_1TrajectoryOuputKeys.html", null ],
     [ "std::true_type", null, [
       [ "Catch::detail::is_range_impl< T, typename void_type< decltype(begin(std::declval< T >()))>::type >", "structCatch_1_1detail_1_1is__range__impl_3_01T_00_01typename_01void__type_3_01decltype_07begin_0efe009a05f00a00c1e4e06989d122a22.html", null ],
       [ "Catch::true_given< typename >", "structCatch_1_1true__given.html", null ]
@@ -739,8 +749,19 @@ var hierarchy =
     [ "LoadXpress::XpressLoader", "classLoadXpress_1_1XpressLoader.html", null ],
     [ "YearlyWeightsWriter", "classYearlyWeightsWriter.html", null ],
     [ "antares_xpansion.yearly_weight_writer.YearlyWeightWriter", "classantares__xpansion_1_1yearly__weight__writer_1_1YearlyWeightWriter.html", null ],
+    [ "BaseModel", null, [
+      [ "trajectory_module.TrajectoryModule.CandidateType", "classtrajectory__module_1_1TrajectoryModule_1_1CandidateType.html", null ],
+      [ "trajectory_module.TrajectoryModule.GlobalData", "classtrajectory__module_1_1TrajectoryModule_1_1GlobalData.html", null ],
+      [ "trajectory_module.TrajectoryModule.NodeData", "classtrajectory__module_1_1TrajectoryModule_1_1NodeData.html", null ],
+      [ "trajectory_module.TrajectoryModule.TrajectoryConstraint", "classtrajectory__module_1_1TrajectoryModule_1_1TrajectoryConstraint.html", null ],
+      [ "trajectory_module.TrajectoryModule.TrajectoryInputFile", "classtrajectory__module_1_1TrajectoryModule_1_1TrajectoryInputFile.html", null ],
+      [ "trajectory_module.TrajectoryModule.Tree", "classtrajectory__module_1_1TrajectoryModule_1_1Tree.html", null ]
+    ] ],
     [ "Enum", null, [
       [ "tests.end_to_end.examples.example_test.BendersMethod", "classtests_1_1end__to__end_1_1examples_1_1example__test_1_1BendersMethod.html", null ],
-      [ "tests.end_to_end.lpnamer.test_lpnamerEndToEnd.OptionType", "classtests_1_1end__to__end_1_1lpnamer_1_1test__lpnamerEndToEnd_1_1OptionType.html", null ]
+      [ "tests.end_to_end.lpnamer.test_lpnamerEndToEnd.OptionType", "classtests_1_1end__to__end_1_1lpnamer_1_1test__lpnamerEndToEnd_1_1OptionType.html", null ],
+      [ "trajectory_module.ConstraintOperatorEnum", "classtrajectory__module_1_1ConstraintOperatorEnum.html", null ],
+      [ "trajectory_module.ConstraintTypeEnum", "classtrajectory__module_1_1ConstraintTypeEnum.html", null ],
+      [ "trajectory_module.InvestmentVariableTypeEnum", "classtrajectory__module_1_1InvestmentVariableTypeEnum.html", null ]
     ] ]
 ];

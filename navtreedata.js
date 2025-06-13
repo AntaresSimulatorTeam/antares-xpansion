@@ -314,6 +314,20 @@ var NAVTREE =
       ] ],
       [ "Reliability-constrained investment problem", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md233", null ]
     ] ],
+    [ "Merging the master problems of annual Xpansion studies", "md_docs_2user-guide_2trajectory-investment_2merge-master.html", [
+      [ "Note : Perhaps move to developer guide, as this should not be relevant to the end user.", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md235", null ],
+      [ " Usage of the master merger executable", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md236", null ],
+      [ " Options file", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md237", null ],
+      [ "Master structure file", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md238", null ],
+      [ " LpPathes file", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md239", null ],
+      [ "Input files from each annual study", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md240", null ],
+      [ "Trajectory constraints", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md241", null ],
+      [ "Weights", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md242", null ]
+    ] ],
+    [ "Trajectory investment problem", "md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html", [
+      [ "General description", "md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html#autotoc_md244", null ],
+      [ "On the $dx^{+/-}$ variables", "md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html#autotoc_md245", null ]
+    ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
       [ "Namespace Members", "namespacemembers.html", [
@@ -342,13 +356,13 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "ActiveLinks_8h_source.html",
-"classBendersSequentialTestBySolver.html",
-"classOutput_1_1JsonWriter.html#a0300065a09bc11d6dd32f6cbc03be9a2",
-"classSolverCbc.html#aafbf6280dc866850a566abe4eac5d139",
-"classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersOptionsFileError.html",
-"classtests_1_1python_1_1test__antares__driver_1_1TestAntaresDriver.html",
-"md_docs_2changelog_2CHANGELOG.html#autotoc_md46",
-"structCatch_1_1IResultCapture.html"
+"classBendersSequentialDouble.html#a731f23e8a9e2700f022f60ac04d6cbea",
+"classOuterloop_1_1MasterUpdateBase.html",
+"classSolverCbc.html#a96ca23915e64d82081f78d1069db00ff",
+"classantares__xpansion_1_1benders__driver_1_1BendersDriver.html#a6116a501ea678104d9f989803561e542",
+"classtests_1_1end__to__end_1_1examples_1_1test_1_1test__candidates__reader_1_1TestCandidateReader.html",
+"md_docs_2changelog_2CHANGELOG.html#autotoc_md12",
+"namespaceantares__xpansion_1_1xpansionConfig.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

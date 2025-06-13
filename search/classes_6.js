@@ -11,5 +11,6 @@ var searchData=
   ['generatoruntypedbase_8',['GeneratorUntypedBase',['../classCatch_1_1Generators_1_1GeneratorUntypedBase.html',1,'Catch::Generators']]],
   ['generatorwrapper_9',['GeneratorWrapper',['../classCatch_1_1Generators_1_1GeneratorWrapper.html',1,'Catch::Generators']]],
   ['generatorwrapper_3c_20u_20_3e_10',['GeneratorWrapper&lt; U &gt;',['../classCatch_1_1Generators_1_1GeneratorWrapper.html',1,'Catch::Generators']]],
-  ['genericsolverexception_11',['GenericSolverException',['../classGenericSolverException.html',1,'']]]
+  ['genericsolverexception_11',['GenericSolverException',['../classGenericSolverException.html',1,'']]],
+  ['globaldata_12',['GlobalData',['../classtrajectory__module_1_1TrajectoryModule_1_1GlobalData.html',1,'trajectory_module::TrajectoryModule']]]
 ];

@@ -1,15 +1,18 @@
 var searchData=
 [
-  ['2_200_2004_202021_0',['v0.2.0 (04/2021)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md64',1,'']]],
-  ['2_2001_202023_1',['v1.0.2 (01/2023)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md36',1,'']]],
-  ['2_2002_202024_2',['v1.2.2 (02/2024)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md24',1,'']]],
-  ['2_2007_202024_3',['v1.3.2 (07/2024)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md14',1,'']]],
-  ['2_2010_202023_4',['v1.2 (10/2023)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md25',1,'']]],
-  ['2_202_2002_202024_5',['v1.2.2 (02/2024)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md24',1,'']]],
-  ['2_20investment_20problem_20generation_3a_20tt_20problem_5fgeneration_20tt_6',['2- Investment problem generation: &lt;tt&gt;problem_generation&lt;/tt&gt;',['../md_docs_2developer-guide_2xpansion__steps_20-overview.html#autotoc_md107',1,'']]],
-  ['2_20modification_20of_20mps_20file_7',['2- Modification of .mps file',['../md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md122',1,'']]],
-  ['2021_8',['2021',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md67',1,'v0.1.0 (03/2021)'],['../md_docs_2changelog_2CHANGELOG.html#autotoc_md64',1,'v0.2.0 (04/2021)'],['../md_docs_2changelog_2CHANGELOG.html#autotoc_md61',1,'v0.3.0 (05/2021)'],['../md_docs_2changelog_2CHANGELOG.html#autotoc_md58',1,'v0.4.0 (07/2021)'],['../md_docs_2changelog_2CHANGELOG.html#autotoc_md54',1,'v0.5.0 (10/2021)'],['../md_docs_2changelog_2CHANGELOG.html#autotoc_md50',1,'v0.6.0 (12/2021)']]],
-  ['2022_9',['2022',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md46',1,'v0.7.0 (06/2022)'],['../md_docs_2changelog_2CHANGELOG.html#autotoc_md43',1,'v0.8.0 (10/2022)'],['../md_docs_2changelog_2CHANGELOG.html#autotoc_md40',1,'v1.0.0 (12/2022)']]],
-  ['2023_10',['2023',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md38',1,'v1.0.1 (01/2023)'],['../md_docs_2changelog_2CHANGELOG.html#autotoc_md36',1,'v1.0.2 (01/2023)'],['../md_docs_2changelog_2CHANGELOG.html#autotoc_md33',1,'v1.0.3 (02/2023)'],['../md_docs_2changelog_2CHANGELOG.html#autotoc_md30',1,'v1.1.0 (09/2023)'],['../md_docs_2changelog_2CHANGELOG.html#autotoc_md28',1,'v1.1.1 (09/2023)'],['../md_docs_2changelog_2CHANGELOG.html#autotoc_md25',1,'v1.2 (10/2023)']]],
-  ['2024_11',['2024',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md24',1,'v1.2.2 (02/2024)'],['../md_docs_2changelog_2CHANGELOG.html#autotoc_md20',1,'v1.3.0 (06/2024)'],['../md_docs_2changelog_2CHANGELOG.html#autotoc_md16',1,'v1.3.1 (07/2024)'],['../md_docs_2changelog_2CHANGELOG.html#autotoc_md14',1,'v1.3.2 (07/2024)'],['../md_docs_2changelog_2CHANGELOG.html#autotoc_md10',1,'v1.4.0 (12/2024)']]]
+  ['1_0',['v1.1',['../md_docs_2changelog_2format__changes.html#autotoc_md70',1,'']]],
+  ['1_200_2003_202021_1',['v0.1.0 (03/2021)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md67',1,'']]],
+  ['1_200_2009_202023_2',['v1.1.0 (09/2023)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md30',1,'']]],
+  ['1_2001_202023_3',['v1.0.1 (01/2023)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md38',1,'']]],
+  ['1_2007_202024_4',['v1.3.1 (07/2024)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md16',1,'']]],
+  ['1_2009_202023_5',['v1.1.1 (09/2023)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md28',1,'']]],
+  ['1_201_2009_202023_6',['v1.1.1 (09/2023)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md28',1,'']]],
+  ['1_20antares_20simulator_20optimization_20problems_20retrieval_3a_20tt_20antares_20tt_7',['1- Antares-Simulator optimization problems retrieval: &lt;tt&gt;antares&lt;/tt&gt;',['../md_docs_2developer-guide_2xpansion__steps_20-overview.html#autotoc_md106',1,'']]],
+  ['1_20read_20candidates_20and_20get_20link_20column_20id_8',['1- Read candidates and get link column ID',['../md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md121',1,'']]],
+  ['10_202021_9',['v0.5.0 (10/2021)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md54',1,'']]],
+  ['10_202022_10',['v0.8.0 (10/2022)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md43',1,'']]],
+  ['10_202023_11',['v1.2 (10/2023)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md25',1,'']]],
+  ['12_202021_12',['v0.6.0 (12/2021)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md50',1,'']]],
+  ['12_202022_13',['v1.0.0 (12/2022)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md40',1,'']]],
+  ['12_202024_14',['v1.4.0 (12/2024)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md10',1,'']]]
 ];
