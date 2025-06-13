@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include "antares-xpansion/benders/merge_master_mps/MasterStructureKeys.h"
 #include "antares-xpansion/benders/merge_master_mps/NodeLpDataLocation.h"
 #include "antares-xpansion/benders/merge_mps/MergeMPS.h"
