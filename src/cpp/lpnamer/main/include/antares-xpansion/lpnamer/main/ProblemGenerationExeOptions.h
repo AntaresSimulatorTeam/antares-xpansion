@@ -71,6 +71,11 @@ public:
     // Sets the relevant path (should be the only non-empty one before changing the value)
     void setRelevantPath(const std::filesystem::path& path);
 
+    void setAdditionalConstraintsFilePath(const std::filesystem::path& path)
+    {
+        additional_constraintFilename_l_ = path.string();
+    }
+
     void setWeightsFilePath(const std::filesystem::path& path)
     {
         weights_file_ = path;
