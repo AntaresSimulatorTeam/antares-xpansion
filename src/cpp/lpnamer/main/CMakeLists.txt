@@ -67,7 +67,6 @@ target_include_directories(multiple_problem_generation_lib
 add_library(${PROJECT_NAME}::multiple_problem_generation_lib ALIAS multiple_problem_generation_lib)
 
 
-
 install(DIRECTORY include/antares-xpansion
         DESTINATION "include"
 )

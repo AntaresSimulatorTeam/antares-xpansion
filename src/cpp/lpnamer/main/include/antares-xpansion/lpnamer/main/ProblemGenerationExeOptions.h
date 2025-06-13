@@ -8,7 +8,6 @@
 
 class ProblemGenerationExeOptions: public OptionsParser, public ProblemGenerationOptions
 {
-private:
     std::filesystem::path xpansion_output_dir_;
     std::string master_formulation_;
     std::string additional_constraintFilename_l_;
@@ -64,7 +63,7 @@ public:
       std::filesystem::path xpansion_output_dir,
       const std::filesystem::path& archive_path) const override;
     [[nodiscard]] std::filesystem::path StudyPath() const override;
-    void checkMandatoryOptions(const std::string& log_location) const;
+    virtual void checkMandatoryOptions(const std::string& log_location) const;
     [[nodiscard]] auto exclusiveMandatoryParameters() const;
 
     // Returns the relevant path (should be the only non-empty one)

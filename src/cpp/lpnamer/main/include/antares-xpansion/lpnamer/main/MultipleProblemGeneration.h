@@ -64,7 +64,7 @@ public:
     /*
         Writes the lp_folder paths to a Json file
     */
-    void write_lp_paths();
+    void write_lp_paths() const;
 
 private:
     typedef std::map<std::string, std::filesystem::path> NodeToPathMap;
