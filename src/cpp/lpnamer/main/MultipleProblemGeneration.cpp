@@ -2,8 +2,7 @@
 
 namespace po = boost::program_options;
 
-MultipleProblemGenerationExeOptions::MultipleProblemGenerationExeOptions():
-    ProblemGenerationExeOptions()
+MultipleProblemGenerationExeOptions::MultipleProblemGenerationExeOptions()
 {
     AddOptions()("nodal-file",
                  po::value<std::filesystem::path>(&nodal_lp_info_path_),
@@ -24,7 +23,8 @@ void MultipleProblemGenerationExeOptions::checkMandatoryOptions(
 
     if (nodal_lp_info_path_.empty())
     {
-        auto msg = "--nodal-file must be given.";
+        using namespace std::string_literals;
+        auto msg = "--nodal-file must be given."s;
         throw ProblemGenerationOptions::ConflictingParameters(msg, log_location);
     }
 }
@@ -156,7 +156,7 @@ void MultipleProblemGeneration::run_generation()
     }
 }
 
-void MultipleProblemGeneration::write_lp_paths()
+void MultipleProblemGeneration::write_lp_paths() const
 {
     LpDataLocationManager::write_nodal_lp_location_file(node_to_lp_info_,
                                                         options_.NodalLpInfoPath());
