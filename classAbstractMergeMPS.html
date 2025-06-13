@@ -152,6 +152,7 @@ Inheritance diagram for AbstractMergeMPS:</div>
   <img src="classAbstractMergeMPS.png" usemap="#AbstractMergeMPS_map" alt=""/>
   <map id="AbstractMergeMPS_map" name="AbstractMergeMPS_map">
 <area href="classMergeMasterSubproblemMPS.html" alt="MergeMasterSubproblemMPS" shape="rect" coords="0,56,182,80"/>
+<area href="classMergeMasterTrajectoryMPS.html" alt="MergeMasterTrajectoryMPS" shape="rect" coords="192,56,374,80"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -160,66 +161,163 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a884bbef5ac16fb6815a6cbe709e30273" id="r_a884bbef5ac16fb6815a6cbe709e30273"><td class="memItemLeft" align="right" valign="top"><a id="a884bbef5ac16fb6815a6cbe709e30273" name="a884bbef5ac16fb6815a6cbe709e30273"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>AbstractMergeMPS</b> (<a class="el" href="structSolverBaseOptions.html">MergeMPSOptions</a> options, Logger logger, std::shared_ptr&lt; <a class="el" href="classOutput_1_1OutputWriter.html">Output::OutputWriter</a> &gt; writer)</td></tr>
 <tr class="separator:a884bbef5ac16fb6815a6cbe709e30273"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a555fe01cf97475c1e77187c0557ce841" id="r_a555fe01cf97475c1e77187c0557ce841"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a555fe01cf97475c1e77187c0557ce841">launch</a> ()</td></tr>
-<tr class="separator:a555fe01cf97475c1e77187c0557ce841"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6ff8a595394ffcc5de3c8670026fe07f" id="r_a6ff8a595394ffcc5de3c8670026fe07f"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ff8a595394ffcc5de3c8670026fe07f">launch</a> ()=0</td></tr>
+<tr class="separator:a6ff8a595394ffcc5de3c8670026fe07f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
-<tr class="memitem:acbf58095e39f58dd0a6fe0c59162a532" id="r_acbf58095e39f58dd0a6fe0c59162a532"><td class="memItemLeft" align="right" valign="top"><a id="acbf58095e39f58dd0a6fe0c59162a532" name="acbf58095e39f58dd0a6fe0c59162a532"></a>
-virtual double&#160;</td><td class="memItemRight" valign="bottom"><b>get_objective_weight</b> (int nb_subproblems, const std::string &amp;name) const =0</td></tr>
-<tr class="separator:acbf58095e39f58dd0a6fe0c59162a532"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8d1db2fc0f1a045e3a7f6d9067fbb8d4" id="r_a8d1db2fc0f1a045e3a7f6d9067fbb8d4"><td class="memItemLeft" align="right" valign="top"><a id="a8d1db2fc0f1a045e3a7f6d9067fbb8d4" name="a8d1db2fc0f1a045e3a7f6d9067fbb8d4"></a>
-virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>add_coupling_constraints</b> ()=0</td></tr>
-<tr class="separator:a8d1db2fc0f1a045e3a7f6d9067fbb8d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:afb4f2e437ec567c29bbd9ce262ec63f8" id="r_afb4f2e437ec567c29bbd9ce262ec63f8"><td class="memItemLeft" align="right" valign="top"><a id="afb4f2e437ec567c29bbd9ce262ec63f8" name="afb4f2e437ec567c29bbd9ce262ec63f8"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>build_problem</b> ()</td></tr>
-<tr class="memdesc:afb4f2e437ec567c29bbd9ce262ec63f8"><td class="mdescLeft">&#160;</td><td class="mdescRight">Build merged problem. <br /></td></tr>
-<tr class="separator:afb4f2e437ec567c29bbd9ce262ec63f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a63321c8dcffbfcef3c2112f33218be83" id="r_a63321c8dcffbfcef3c2112f33218be83"><td class="memItemLeft" align="right" valign="top"><a id="a63321c8dcffbfcef3c2112f33218be83" name="a63321c8dcffbfcef3c2112f33218be83"></a>
-void&#160;</td><td class="memItemRight" valign="bottom"><b>export_problem</b> ()</td></tr>
-<tr class="memdesc:a63321c8dcffbfcef3c2112f33218be83"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export problem into mps and lp files. <br /></td></tr>
-<tr class="separator:a63321c8dcffbfcef3c2112f33218be83"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ac488a842207b4d789dc2a6878a7da250" id="r_ac488a842207b4d789dc2a6878a7da250"><td class="memItemLeft" align="right" valign="top">bool&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac488a842207b4d789dc2a6878a7da250">solve</a> (int nb_threads=16)</td></tr>
-<tr class="memdesc:ac488a842207b4d789dc2a6878a7da250"><td class="mdescLeft">&#160;</td><td class="mdescRight">Solve merged problem.  <br /></td></tr>
-<tr class="separator:ac488a842207b4d789dc2a6878a7da250"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a39ab44b303acd72ddfd30cc29b7ec52c" id="r_a39ab44b303acd72ddfd30cc29b7ec52c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a39ab44b303acd72ddfd30cc29b7ec52c">output_solution</a> (bool is_sol_optimal)</td></tr>
-<tr class="memdesc:a39ab44b303acd72ddfd30cc29b7ec52c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Post-process and output solution.  <br /></td></tr>
-<tr class="separator:a39ab44b303acd72ddfd30cc29b7ec52c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa89ea06566f78cc3ff651f4bb009a5d7" id="r_aa89ea06566f78cc3ff651f4bb009a5d7"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa89ea06566f78cc3ff651f4bb009a5d7">terminate</a> (const std::string &amp;location, const std::string &amp;message) const</td></tr>
+<tr class="memdesc:aa89ea06566f78cc3ff651f4bb009a5d7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Interrupt the program and output current merged .lp and .mps files.  <br /></td></tr>
+<tr class="separator:aa89ea06566f78cc3ff651f4bb009a5d7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44c25e6a5c9514ceff04b6fe9abb7730" id="r_a44c25e6a5c9514ceff04b6fe9abb7730"><td class="memItemLeft" align="right" valign="top"><a id="a44c25e6a5c9514ceff04b6fe9abb7730" name="a44c25e6a5c9514ceff04b6fe9abb7730"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>export_problem</b> (const std::string &amp;filename=&quot;log_merged&quot;, bool export_lp=false) const</td></tr>
+<tr class="memdesc:a44c25e6a5c9514ceff04b6fe9abb7730"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export problem into INPUTROOT/filename and optionally writes the lp variant We do it this way because we cannot read a master problem not at the input root. <br /></td></tr>
+<tr class="separator:a44c25e6a5c9514ceff04b6fe9abb7730"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a669f986e197c96005eb4e0386d2c4c7b" id="r_a669f986e197c96005eb4e0386d2c4c7b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a669f986e197c96005eb4e0386d2c4c7b">get_local_solver</a> (const std::filesystem::path &amp;root_dir, const std::string &amp;filename) const</td></tr>
+<tr class="memdesc:a669f986e197c96005eb4e0386d2c4c7b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a local solver from a MPS file.  <br /></td></tr>
+<tr class="separator:a669f986e197c96005eb4e0386d2c4c7b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3564177205bdc0a9231ce4fef65c31aa" id="r_a3564177205bdc0a9231ce4fef65c31aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3564177205bdc0a9231ce4fef65c31aa">multiply_obj_by_weight_factor</a> (<a class="el" href="classSolverAbstract.html">SolverAbstract</a> &amp;local_solver, double weight) const</td></tr>
 <tr class="memdesc:a3564177205bdc0a9231ce4fef65c31aa"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weights local solver's objective function by a given value.  <br /></td></tr>
 <tr class="separator:a3564177205bdc0a9231ce4fef65c31aa"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5b71702ecca3ab9b5147169a297658af" id="r_a5b71702ecca3ab9b5147169a297658af"><td class="memItemLeft" align="right" valign="top">VariableMap&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5b71702ecca3ab9b5147169a297658af">merge_local_solver</a> (<a class="el" href="classSolverAbstract.html">SolverAbstract</a> &amp;local_solver, const std::string &amp;local_prefix, const VariableMap &amp;local_var_map, const std::string &amp;filename) const</td></tr>
+<tr class="memdesc:a5b71702ecca3ab9b5147169a297658af"><td class="mdescLeft">&#160;</td><td class="mdescRight">Merges local to global solver.  <br /></td></tr>
+<tr class="separator:a5b71702ecca3ab9b5147169a297658af"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
 Protected Attributes</h2></td></tr>
+<tr class="memitem:adec7e61f5ff38a0922fc386c546923fd" id="r_adec7e61f5ff38a0922fc386c546923fd"><td class="memItemLeft" align="right" valign="top"><a id="adec7e61f5ff38a0922fc386c546923fd" name="adec7e61f5ff38a0922fc386c546923fd"></a>
+std::shared_ptr&lt; <a class="el" href="classOutput_1_1OutputWriter.html">Output::OutputWriter</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>writer_</b></td></tr>
+<tr class="separator:adec7e61f5ff38a0922fc386c546923fd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad57447cb18e7b2a5dd02ea3d555ac32e" id="r_ad57447cb18e7b2a5dd02ea3d555ac32e"><td class="memItemLeft" align="right" valign="top"><a id="ad57447cb18e7b2a5dd02ea3d555ac32e" name="ad57447cb18e7b2a5dd02ea3d555ac32e"></a>
 <a class="el" href="structSolverBaseOptions.html">MergeMPSOptions</a>&#160;</td><td class="memItemRight" valign="bottom"><b>options_</b></td></tr>
 <tr class="separator:ad57447cb18e7b2a5dd02ea3d555ac32e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a762e7f5b3002d7a9fdcdf614ca587c6c" id="r_a762e7f5b3002d7a9fdcdf614ca587c6c"><td class="memItemLeft" align="right" valign="top"><a id="a762e7f5b3002d7a9fdcdf614ca587c6c" name="a762e7f5b3002d7a9fdcdf614ca587c6c"></a>
 Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></tr>
 <tr class="separator:a762e7f5b3002d7a9fdcdf614ca587c6c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a02a42e998111af0d22769c3ab5eff94f" id="r_a02a42e998111af0d22769c3ab5eff94f"><td class="memItemLeft" align="right" valign="top"><a id="a02a42e998111af0d22769c3ab5eff94f" name="a02a42e998111af0d22769c3ab5eff94f"></a>
+const <a class="el" href="classSolverFactory.html">SolverFactory</a>&#160;</td><td class="memItemRight" valign="bottom"><b>factory_</b></td></tr>
+<tr class="separator:a02a42e998111af0d22769c3ab5eff94f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8c77d4323090d871cde203808abec821" id="r_a8c77d4323090d871cde203808abec821"><td class="memItemLeft" align="right" valign="top"><a id="a8c77d4323090d871cde203808abec821" name="a8c77d4323090d871cde203808abec821"></a>
+<a class="el" href="classSolverIO.html">SolverIO</a>&#160;</td><td class="memItemRight" valign="bottom"><b>solver_io_</b></td></tr>
+<tr class="separator:a8c77d4323090d871cde203808abec821"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a663bb196ee538c276db64342e9b4536d" id="r_a663bb196ee538c276db64342e9b4536d"><td class="memItemLeft" align="right" valign="top"><a id="a663bb196ee538c276db64342e9b4536d" name="a663bb196ee538c276db64342e9b4536d"></a>
 <a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ptr_merged_solver_</b></td></tr>
 <tr class="separator:a663bb196ee538c276db64342e9b4536d"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aed930173dfcd8a0d59fe48d0b1ae18c7" id="r_aed930173dfcd8a0d59fe48d0b1ae18c7"><td class="memItemLeft" align="right" valign="top"><a id="aed930173dfcd8a0d59fe48d0b1ae18c7" name="aed930173dfcd8a0d59fe48d0b1ae18c7"></a>
-CouplingMap&#160;</td><td class="memItemRight" valign="bottom"><b>structure_</b></td></tr>
-<tr class="separator:aed930173dfcd8a0d59fe48d0b1ae18c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a555fe01cf97475c1e77187c0557ce841" name="a555fe01cf97475c1e77187c0557ce841"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a555fe01cf97475c1e77187c0557ce841">&#9670;&#160;</a></span>launch()</h2>
+<a id="a669f986e197c96005eb4e0386d2c4c7b" name="a669f986e197c96005eb4e0386d2c4c7b"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a669f986e197c96005eb4e0386d2c4c7b">&#9670;&#160;</a></span>get_local_solver()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void AbstractMergeMPS::launch </td>
+          <td class="memname"><a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> AbstractMergeMPS::get_local_solver </td>
+          <td>(</td>
+          <td class="paramtype">const std::filesystem::path &amp;</td>          <td class="paramname"><span class="paramname"><em>root_dir</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>filename</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">nodiscard</span><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Creates a local solver from a MPS file. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">root_dir</td><td>: Directory of MPS file</td></tr>
+    <tr><td class="paramname">filename</td><td>: MPS file name </td></tr>
+  </table>
+  </dd>
+</dl>
+<p>Limitation: on windows may not support master problem with full path as name</p>
+
+</div>
+</div>
+<a id="a6ff8a595394ffcc5de3c8670026fe07f" name="a6ff8a595394ffcc5de3c8670026fe07f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6ff8a595394ffcc5de3c8670026fe07f">&#9670;&#160;</a></span>launch()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void AbstractMergeMPS::launch </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
-<p>Limitation: on windows may not support master problem with full path as name </p>
+
+<p>Implemented in <a class="el" href="classMergeMasterSubproblemMPS.html#ad35c24a9698ec8967d5212571503810e">MergeMasterSubproblemMPS</a>, and <a class="el" href="classMergeMasterTrajectoryMPS.html#a2dafa25b612ee7ae1859c96151164167">MergeMasterTrajectoryMPS</a>.</p>
+
+</div>
+</div>
+<a id="a5b71702ecca3ab9b5147169a297658af" name="a5b71702ecca3ab9b5147169a297658af"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5b71702ecca3ab9b5147169a297658af">&#9670;&#160;</a></span>merge_local_solver()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">VariableMap AbstractMergeMPS::merge_local_solver </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="classSolverAbstract.html">SolverAbstract</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>local_solver</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>local_prefix</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const VariableMap &amp;</td>          <td class="paramname"><span class="paramname"><em>local_var_map</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>filename</em></span>&#160;) const</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Merges local to global solver. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">local_solver</td><td>: Local solver</td></tr>
+    <tr><td class="paramname">local_prefix</td><td>: Local solver's prefix</td></tr>
+    <tr><td class="paramname">local_var_map</td><td>: Local solver's variable mapping</td></tr>
+    <tr><td class="paramname">filename</td><td>: MPS file name </td></tr>
+  </table>
+  </dd>
+</dl>
 
 </div>
 </div>
@@ -261,8 +359,8 @@ CouplingMap&#160;</td><td class="memItemRight" valign="bottom"><b>structure_</b>
 
 </div>
 </div>
-<a id="a39ab44b303acd72ddfd30cc29b7ec52c" name="a39ab44b303acd72ddfd30cc29b7ec52c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a39ab44b303acd72ddfd30cc29b7ec52c">&#9670;&#160;</a></span>output_solution()</h2>
+<a id="aa89ea06566f78cc3ff651f4bb009a5d7" name="aa89ea06566f78cc3ff651f4bb009a5d7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa89ea06566f78cc3ff651f4bb009a5d7">&#9670;&#160;</a></span>terminate()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -271,10 +369,14 @@ CouplingMap&#160;</td><td class="memItemRight" valign="bottom"><b>structure_</b>
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void AbstractMergeMPS::output_solution </td>
+          <td class="memname">void AbstractMergeMPS::terminate </td>
           <td>(</td>
-          <td class="paramtype">bool</td>          <td class="paramname"><span class="paramname"><em>is_sol_optimal</em></span></td><td>)</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>location</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
           <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>message</em></span>&#160;) const</td>
         </tr>
       </table>
   </td>
@@ -284,47 +386,10 @@ CouplingMap&#160;</td><td class="memItemRight" valign="bottom"><b>structure_</b>
 </table>
 </div><div class="memdoc">
 
-<p>Post-process and output solution. </p>
+<p>Interrupt the program and output current merged .lp and .mps files. </p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">merged_solver</td><td>: Ref to merged solver</td></tr>
-    <tr><td class="paramname">structure</td><td>: Mapping of files and investments candidates</td></tr>
-    <tr><td class="paramname">candidates</td><td>: Mapping of investments candidates</td></tr>
-    <tr><td class="paramname">is_sol_optimal</td><td>: Flag true if solution is optimal, false otherwise </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
-<a id="ac488a842207b4d789dc2a6878a7da250" name="ac488a842207b4d789dc2a6878a7da250"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ac488a842207b4d789dc2a6878a7da250">&#9670;&#160;</a></span>solve()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">bool AbstractMergeMPS::solve </td>
-          <td>(</td>
-          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>nb_threads</em></span><span class="paramdefsep"> = </span><span class="paramdefval">16</span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Solve merged problem. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">merged_solver</td><td>: Ref to merged solver</td></tr>
-    <tr><td class="paramname">nb_threads</td><td>: Number of threads to use </td></tr>
+    <tr><td class="paramname">message</td><td>: Error message to be output </td></tr>
   </table>
   </dd>
 </dl>

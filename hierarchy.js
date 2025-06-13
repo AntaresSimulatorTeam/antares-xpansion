@@ -1,7 +1,8 @@
 var hierarchy =
 [
     [ "AbstractMergeMPS", "classAbstractMergeMPS.html", [
-      [ "MergeMasterSubproblemMPS", "classMergeMasterSubproblemMPS.html", null ]
+      [ "MergeMasterSubproblemMPS", "classMergeMasterSubproblemMPS.html", null ],
+      [ "MergeMasterTrajectoryMPS", "classMergeMasterTrajectoryMPS.html", null ]
     ] ],
     [ "act", "classact.html", null ],
     [ "ActiveLink", "classActiveLink.html", null ],
@@ -49,6 +50,7 @@ var hierarchy =
     [ "BendersFactory", "classBendersFactory.html", null ],
     [ "BendersRelevantIterationsData", "structBendersRelevantIterationsData.html", null ],
     [ "Candidate", "classCandidate.html", null ],
+    [ "MergeMasterTrajectoryMPS::CandidateCosts", "structMergeMasterTrajectoryMPS_1_1CandidateCosts.html", null ],
     [ "CandidateData", "structCandidateData.html", null ],
     [ "Output::CandidateData", "structOutput_1_1CandidateData.html", null ],
     [ "ActiveLinksBuilder::CandidateDuplicationDetected", "classActiveLinksBuilder_1_1CandidateDuplicationDetected.html", null ],
@@ -441,6 +443,7 @@ var hierarchy =
     [ "ActiveLinksBuilder::MultipleAlreadyInstalledProfileDetectedForLink", "classActiveLinksBuilder_1_1MultipleAlreadyInstalledProfileDetectedForLink.html", null ],
     [ "ActiveLinksBuilder::MultipleLinkIddetectedForLink", "classActiveLinksBuilder_1_1MultipleLinkIddetectedForLink.html", null ],
     [ "Catch::NameAndTags", "structCatch_1_1NameAndTags.html", null ],
+    [ "NodeLpDataLocation", "structNodeLpDataLocation.html", null ],
     [ "StudyUpdateStrategy::NoInvestmentComputedForTheCandidate", "classStudyUpdateStrategy_1_1NoInvestmentComputedForTheCandidate.html", null ],
     [ "Catch::NonCopyable", "classCatch_1_1NonCopyable.html", [
       [ "Catch::AutoReg", "structCatch_1_1AutoReg.html", null ],
@@ -501,6 +504,7 @@ var hierarchy =
       [ "ArchiveIOSpecificException", "classArchiveIOSpecificException.html", null ],
       [ "GenericSolverException", "classGenericSolverException.html", null ],
       [ "IniFileNotFound", "classIniFileNotFound.html", null ],
+      [ "InvalidMasterStructureFileException", "classInvalidMasterStructureFileException.html", null ],
       [ "NotImplementedFeatureSolverException", "classNotImplementedFeatureSolverException.html", null ]
     ] ],
     [ "ScenarioToChronicleReader", "classScenarioToChronicleReader.html", null ],
@@ -690,6 +694,9 @@ var hierarchy =
     [ "Timer", "classTimer.html", null ],
     [ "to", "structto.html", null ],
     [ "Catch::Totals", "structCatch_1_1Totals.html", null ],
+    [ "MergeMasterTrajectoryMPS::TrajectoryConstraint", "structMergeMasterTrajectoryMPS_1_1TrajectoryConstraint.html", null ],
+    [ "MergeMasterTrajectoryMPS::TrajectoryGlobalData", "structMergeMasterTrajectoryMPS_1_1TrajectoryGlobalData.html", null ],
+    [ "MergeMasterTrajectoryMPS::TrajectoryNode", "structMergeMasterTrajectoryMPS_1_1TrajectoryNode.html", null ],
     [ "std::true_type", null, [
       [ "Catch::detail::is_range_impl< T, typename void_type< decltype(begin(std::declval< T >()))>::type >", "structCatch_1_1detail_1_1is__range__impl_3_01T_00_01typename_01void__type_3_01decltype_07begin_0efe009a05f00a00c1e4e06989d122a22.html", null ],
       [ "Catch::true_given< typename >", "structCatch_1_1true__given.html", null ]
@@ -699,6 +706,7 @@ var hierarchy =
     [ "VariableFileReader", "classVariableFileReader.html", null ],
     [ "VariableFileReadNameConfiguration", "structVariableFileReadNameConfiguration.html", null ],
     [ "VariableNameComposition", "structVariableNameComposition.html", null ],
+    [ "MergeMasterTrajectoryMPS::VariablePositions", "structMergeMasterTrajectoryMPS_1_1VariablePositions.html", null ],
     [ "Benders::Criterion::VariablesGroup", "classBenders_1_1Criterion_1_1VariablesGroup.html", null ],
     [ "VariableFileReader::VariablesNotFound", "classVariableFileReader_1_1VariablesNotFound.html", null ],
     [ "Version", "structVersion.html", null ],

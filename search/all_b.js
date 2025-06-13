@@ -55,10 +55,9 @@ var searchData=
   ['build_20and_20installation_20details_52',['Build and installation details',['../md_docs_2developer-guide_2install__from__sources_20-INSTALL.html#autotoc_md72',1,'']]],
   ['build_20dependency_53',['Using pre-build dependency',['../md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html#autotoc_md84',1,'']]],
   ['build_20with_20cmake_54',['Configure build with CMake',['../md_docs_2developer-guide_2install__from__sources_23-Build.html#autotoc_md89',1,'']]],
-  ['build_5fproblem_55',['build_problem',['../classAbstractMergeMPS.html#afb4f2e437ec567c29bbd9ce262ec63f8',1,'AbstractMergeMPS']]],
-  ['buildcut_56',['BuildCut',['../classBendersByBatch.html#a3a055a28f871d97cba325ece39c9c41c',1,'BendersByBatch::BuildCut()'],['../classBendersSequential.html#a2d1b29260a6ab2204f7ef276204951d7',1,'BendersSequential::BuildCut()'],['../classBendersSequentialDouble.html#a51acd36960e970d6b70621db819e5b42',1,'BendersSequentialDouble::BuildCut()']]],
-  ['buildcutfull_57',['BuildCutFull',['../classBendersBase.html#affc499db6586868162f6bd7efa8898ea',1,'BendersBase']]],
-  ['buildinput_58',['BuildInput',['../classCouplingMapGenerator.html#a0f33d1f8d32c6ba960fcff00860a9214',1,'CouplingMapGenerator']]],
-  ['buildproblem_59',['BuildProblem',['../classBendersBase.html#a2dee7d936018271da96b0cbd92ba11ec',1,'BendersBase']]],
-  ['by_20batch_20algorithm_60',['The Benders by batch algorithm',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md232',1,'']]]
+  ['buildcut_55',['BuildCut',['../classBendersByBatch.html#a3a055a28f871d97cba325ece39c9c41c',1,'BendersByBatch::BuildCut()'],['../classBendersSequential.html#a2d1b29260a6ab2204f7ef276204951d7',1,'BendersSequential::BuildCut()'],['../classBendersSequentialDouble.html#a51acd36960e970d6b70621db819e5b42',1,'BendersSequentialDouble::BuildCut()']]],
+  ['buildcutfull_56',['BuildCutFull',['../classBendersBase.html#affc499db6586868162f6bd7efa8898ea',1,'BendersBase']]],
+  ['buildinput_57',['BuildInput',['../classCouplingMapGenerator.html#a0f33d1f8d32c6ba960fcff00860a9214',1,'CouplingMapGenerator']]],
+  ['buildproblem_58',['BuildProblem',['../classBendersBase.html#a2dee7d936018271da96b0cbd92ba11ec',1,'BendersBase']]],
+  ['by_20batch_20algorithm_59',['The Benders by batch algorithm',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md232',1,'']]]
 ];

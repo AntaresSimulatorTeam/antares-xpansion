@@ -1,9 +1,8 @@
 var classAbstractMergeMPS =
 [
-    [ "build_problem", "classAbstractMergeMPS.html#afb4f2e437ec567c29bbd9ce262ec63f8", null ],
-    [ "export_problem", "classAbstractMergeMPS.html#a63321c8dcffbfcef3c2112f33218be83", null ],
-    [ "launch", "classAbstractMergeMPS.html#a555fe01cf97475c1e77187c0557ce841", null ],
+    [ "export_problem", "classAbstractMergeMPS.html#a44c25e6a5c9514ceff04b6fe9abb7730", null ],
+    [ "get_local_solver", "classAbstractMergeMPS.html#a669f986e197c96005eb4e0386d2c4c7b", null ],
+    [ "merge_local_solver", "classAbstractMergeMPS.html#a5b71702ecca3ab9b5147169a297658af", null ],
     [ "multiply_obj_by_weight_factor", "classAbstractMergeMPS.html#a3564177205bdc0a9231ce4fef65c31aa", null ],
-    [ "output_solution", "classAbstractMergeMPS.html#a39ab44b303acd72ddfd30cc29b7ec52c", null ],
-    [ "solve", "classAbstractMergeMPS.html#ac488a842207b4d789dc2a6878a7da250", null ]
+    [ "terminate", "classAbstractMergeMPS.html#aa89ea06566f78cc3ff651f4bb009a5d7", null ]
 ];

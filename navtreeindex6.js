@@ -1,5 +1,15 @@
 var NAVTREEINDEX6 =
 {
+"md_docs_2changelog_2CHANGELOG.html#autotoc_md46":[1,13],
+"md_docs_2changelog_2CHANGELOG.html#autotoc_md47":[1,13,0],
+"md_docs_2changelog_2CHANGELOG.html#autotoc_md48":[1,13,1],
+"md_docs_2changelog_2CHANGELOG.html#autotoc_md49":[1,13,2],
+"md_docs_2changelog_2CHANGELOG.html#autotoc_md50":[1,14],
+"md_docs_2changelog_2CHANGELOG.html#autotoc_md51":[1,14,0],
+"md_docs_2changelog_2CHANGELOG.html#autotoc_md52":[1,14,1],
+"md_docs_2changelog_2CHANGELOG.html#autotoc_md53":[1,14,2],
+"md_docs_2changelog_2CHANGELOG.html#autotoc_md54":[1,15],
+"md_docs_2changelog_2CHANGELOG.html#autotoc_md55":[1,15,0],
 "md_docs_2changelog_2CHANGELOG.html#autotoc_md56":[1,15,1],
 "md_docs_2changelog_2CHANGELOG.html#autotoc_md57":[1,15,2],
 "md_docs_2changelog_2CHANGELOG.html#autotoc_md58":[1,16],
@@ -239,15 +249,5 @@ var NAVTREEINDEX6 =
 "structCatch_1_1IMutableContext.html":[26,0,2,22],
 "structCatch_1_1IMutableEnumValuesRegistry.html":[26,0,2,23],
 "structCatch_1_1IMutableRegistryHub.html":[26,0,2,24],
-"structCatch_1_1IRegistryHub.html":[26,0,2,25],
-"structCatch_1_1IResultCapture.html":[26,0,2,26],
-"structCatch_1_1IRunner.html":[26,0,2,27],
-"structCatch_1_1IStream.html":[26,0,2,32],
-"structCatch_1_1ITestCaseRegistry.html":[26,0,2,33],
-"structCatch_1_1ITestInvoker.html":[26,0,2,34],
-"structCatch_1_1ITransientExpression.html":[26,0,2,35],
-"structCatch_1_1Matchers_1_1Floating_1_1WithinAbsMatcher.html":[26,0,2,3,1,0],
-"structCatch_1_1Matchers_1_1Floating_1_1WithinRelMatcher.html":[26,0,2,3,1,1],
-"structCatch_1_1Matchers_1_1Floating_1_1WithinUlpsMatcher.html":[26,0,2,3,1,2],
-"structCatch_1_1Matchers_1_1Impl_1_1MatchAllOf.html":[26,0,2,3,3,0]
+"structCatch_1_1IRegistryHub.html":[26,0,2,25]
 };

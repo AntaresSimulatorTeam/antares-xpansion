@@ -52,6 +52,10 @@
 <a href="MathLogger_8h_source.html"/>
 <a href="User_8h_source.html"/>
 <a href="UserFile_8h_source.html"/>
+<a href="MasterStructureKeys_8h_source.html"/>
+<a href="MergeMasterMPS_8h_source.html"/>
+<a href="NodeLpDataLocation_8h_source.html"/>
+<a href="JsonKeysConstants_8h_source.html"/>
 <a href="MergeMPS_8h_source.html"/>
 <a href="StandardLp_8h_source.html"/>
 <a href="IMasterUpdate_8h_source.html"/>
@@ -389,6 +393,8 @@
 <a href="classInvalidColSizeException-members.html"/>
 <a href="classInvalidColTypeException.html"/>
 <a href="classInvalidColTypeException-members.html"/>
+<a href="classInvalidMasterStructureFileException.html"/>
+<a href="classInvalidMasterStructureFileException-members.html"/>
 <a href="classInvalidRowSizeException.html"/>
 <a href="classInvalidRowSizeException-members.html"/>
 <a href="classInvalidSolverForCopyException.html"/>
@@ -497,11 +503,25 @@
 <a href="classMathLoggerOstream-members.html"/>
 <a href="classMergeMasterSubproblemMPS.html"/>
 <a href="classMergeMasterSubproblemMPS-members.html"/>
+<a href="classMergeMasterTrajectoryMPS.html"/>
+<a href="classMergeMasterTrajectoryMPS-members.html"/>
+<a href="structMergeMasterTrajectoryMPS_1_1CandidateCosts.html"/>
+<a href="structMergeMasterTrajectoryMPS_1_1CandidateCosts-members.html"/>
+<a href="structMergeMasterTrajectoryMPS_1_1TrajectoryConstraint.html"/>
+<a href="structMergeMasterTrajectoryMPS_1_1TrajectoryConstraint-members.html"/>
+<a href="structMergeMasterTrajectoryMPS_1_1TrajectoryGlobalData.html"/>
+<a href="structMergeMasterTrajectoryMPS_1_1TrajectoryGlobalData-members.html"/>
+<a href="structMergeMasterTrajectoryMPS_1_1TrajectoryNode.html"/>
+<a href="structMergeMasterTrajectoryMPS_1_1TrajectoryNode-members.html"/>
+<a href="structMergeMasterTrajectoryMPS_1_1VariablePositions.html"/>
+<a href="structMergeMasterTrajectoryMPS_1_1VariablePositions-members.html"/>
 <a href="classMergeMPSTest.html"/>
 <a href="classMergeMPSTest-members.html"/>
 <a href="classMPSFileProblemProviderAdapter.html"/>
 <a href="classMPSFileProblemProviderAdapter-members.html"/>
 <a href="classMpsTxtWriterTest.html"/>
+<a href="structNodeLpDataLocation.html"/>
+<a href="structNodeLpDataLocation-members.html"/>
 <a href="classNoopProblemGenerationLogger.html"/>
 <a href="classNoopProblemGenerationLogger-members.html"/>
 <a href="classNOOPSolver.html"/>
@@ -1330,6 +1350,7 @@
 <a href="dir_ef613d14ab819d49bbb36b6fc2a6fb6e.html"/>
 <a href="dir_d11149565431690e8c7d6493af59f182.html"/>
 <a href="dir_6224e145bf50aaab38157e34c3d78434.html"/>
+<a href="dir_7cced2eba011b807a8a981a07794d407.html"/>
 <a href="dir_2a73119e8e1451203507ab5cda72514c.html"/>
 <a href="dir_545a6c83a601beae7bade0e9966910e1.html"/>
 <a href="dir_eba6e5b7631899ed22e0ced64594114e.html"/>
@@ -1353,6 +1374,7 @@
 <a href="dir_f3d170f9068915727546749c6263b7bf.html"/>
 <a href="dir_92b4c74c00722c298a6eeb8c38266878.html"/>
 <a href="dir_82a53cff9a84985673d7074fb44c203c.html"/>
+<a href="dir_c7e2894b612f86e4558bccb07ec9f5a5.html"/>
 <a href="dir_4ab69f8d51b253af5f993e6848205035.html"/>
 <a href="dir_cb044fc867eacaf6ed3dab28204c440c.html"/>
 <a href="dir_afbe47d98b1a9bb782a8c2ba3fcf655a.html"/>
@@ -1397,6 +1419,7 @@
 <a href="dir_72ac92275e6e005bc103314b8d100e8a.html"/>
 <a href="dir_4680c48b2fa77456d32758d39cebe999.html"/>
 <a href="dir_2eb2799aff82807a06e125147fde3e0f.html"/>
+<a href="dir_426411105bddf094e647184d3c13854e.html"/>
 <a href="dir_4a82c8b285caf40b10bf8e28e40adb8a.html"/>
 <a href="dir_10ca32da59bbdee17edcca9d1d408127.html"/>
 <a href="dir_2b3c5f28896216c60166044a69024538.html"/>
@@ -1430,6 +1453,9 @@
 <a href="dir_e6845f9c61e772a2d98e7463bc8bde16.html"/>
 <a href="dir_e87e64b75f1b5d8a4773db9f0667f875.html"/>
 <a href="dir_e4ef9ea9bd60385c4c3aef4774a4268a.html"/>
+<a href="dir_94d7d433f9be072ee9496e34415525e7.html"/>
+<a href="dir_09070df9a7347cb5e56f3dd0c86e8d11.html"/>
+<a href="dir_fb5ebc82e27c2ad04bd19e01ab7a84aa.html"/>
 <a href="dir_36baed32578fbe5805d02554f43f3918.html"/>
 <a href="dir_75fb306ea023dece393d6a30591e3ea5.html"/>
 <a href="dir_3ec1535acfb9234b602ebcd34fc529f5.html"/>
@@ -1505,7 +1531,6 @@
 <a href="functions_j.html"/>
 <a href="functions_l.html"/>
 <a href="functions_m.html"/>
-<a href="functions_o.html"/>
 <a href="functions_p.html"/>
 <a href="functions_r.html"/>
 <a href="functions_s.html"/>
@@ -1528,7 +1553,6 @@
 <a href="functions_func_j.html"/>
 <a href="functions_func_l.html"/>
 <a href="functions_func_m.html"/>
-<a href="functions_func_o.html"/>
 <a href="functions_func_p.html"/>
 <a href="functions_func_r.html"/>
 <a href="functions_func_s.html"/>
@@ -1601,6 +1625,7 @@
 <a href="IXpansionProblemsProvider_8h_source.html"/>
 <a href="InMemoryWriter_8h_source.html"/>
 <a href="IterationResultLog_8h_source.html"/>
+<a href="JsonKeysConstants_8h_source.html"/>
 <a href="JsonWriter_8h_source.html"/>
 <a href="JsonXpansionReader_8h_source.html"/>
 <a href="LastIterationPrinter_8h_source.html"/>
@@ -1623,13 +1648,16 @@
 <a href="MPSFileProblemProviderAdapter_8h_source.html"/>
 <a href="MasterGeneration_8h_source.html"/>
 <a href="MasterProblemBuilder_8h_source.html"/>
+<a href="MasterStructureKeys_8h_source.html"/>
 <a href="MasterUpdate_8h_source.html"/>
 <a href="Master_8h_source.html"/>
 <a href="MathLogger_8h_source.html"/>
 <a href="MergeMPS_8h_source.html"/>
+<a href="MergeMasterMPS_8h_source.html"/>
 <a href="Mode_8h_source.html"/>
 <a href="MpsTxtWriter_8h_source.html"/>
 <a href="NOOPSolver_8h_source.html"/>
+<a href="NodeLpDataLocation_8h_source.html"/>
 <a href="OptionsParser_8h_source.html"/>
 <a href="OuterLoopBenders_8h_source.html"/>
 <a href="OuterLoopBiLevel_8h_source.html"/>
@@ -1704,11 +1732,10 @@
 <a href="catch2_8hpp_source.html"/>
 <a href="classAbstractMergeMPS.html"/>
 <a href="classAbstractMergeMPS.html#a3564177205bdc0a9231ce4fef65c31aa"/>
-<a href="classAbstractMergeMPS.html#a39ab44b303acd72ddfd30cc29b7ec52c"/>
-<a href="classAbstractMergeMPS.html#a555fe01cf97475c1e77187c0557ce841"/>
-<a href="classAbstractMergeMPS.html#a63321c8dcffbfcef3c2112f33218be83"/>
-<a href="classAbstractMergeMPS.html#ac488a842207b4d789dc2a6878a7da250"/>
-<a href="classAbstractMergeMPS.html#afb4f2e437ec567c29bbd9ce262ec63f8"/>
+<a href="classAbstractMergeMPS.html#a44c25e6a5c9514ceff04b6fe9abb7730"/>
+<a href="classAbstractMergeMPS.html#a5b71702ecca3ab9b5147169a297658af"/>
+<a href="classAbstractMergeMPS.html#a669f986e197c96005eb4e0386d2c4c7b"/>
+<a href="classAbstractMergeMPS.html#aa89ea06566f78cc3ff651f4bb009a5d7"/>
 <a href="classActiveLink.html"/>
 <a href="classActiveLinksBuilder.html"/>
 <a href="classActiveLinksBuilder_1_1CandidateDuplicationDetected.html"/>
@@ -1899,6 +1926,7 @@
 <a href="classInvalidBoundTypeException.html"/>
 <a href="classInvalidColSizeException.html"/>
 <a href="classInvalidColTypeException.html"/>
+<a href="classInvalidMasterStructureFileException.html"/>
 <a href="classInvalidRowSizeException.html"/>
 <a href="classInvalidSolverForCopyException.html"/>
 <a href="classInvalidSolverNameException.html"/>
@@ -1961,6 +1989,9 @@
 <a href="classMergeMPSTest.html#a073cb28c5dee7dfe4eb64305b6e046b9"/>
 <a href="classMergeMPSTest.html#a5987f5784590b6c016bcbad5b019fabd"/>
 <a href="classMergeMasterSubproblemMPS.html"/>
+<a href="classMergeMasterSubproblemMPS.html#ad35c24a9698ec8967d5212571503810e"/>
+<a href="classMergeMasterTrajectoryMPS.html"/>
+<a href="classMergeMasterTrajectoryMPS.html#a2dafa25b612ee7ae1859c96151164167"/>
 <a href="classMpsTxtWriterTest.html"/>
 <a href="classNOOPSolver.html"/>
 <a href="classNOOPSolver.html#a066d705a508b9dcbdffc75ebcc9bef29"/>
@@ -2732,6 +2763,7 @@
 <a href="concepts.html"/>
 <a href="define__datas_8hpp_source.html"/>
 <a href="dir_05b64151dcff5ac0ce5e95ac75282777.html"/>
+<a href="dir_09070df9a7347cb5e56f3dd0c86e8d11.html"/>
 <a href="dir_0ae9c184d7dde743ccad854b8efbca99.html"/>
 <a href="dir_0cbcfa77aed57b1f3ff31965a407af25.html"/>
 <a href="dir_0ea1c8196201bfcc974b3c0ef332f54f.html"/>
@@ -2756,6 +2788,7 @@
 <a href="dir_3d1858a0f4d80cd8366227f629283ea7.html"/>
 <a href="dir_3f4ca3d8d07baa5b6182f8f81be4bc25.html"/>
 <a href="dir_40a1ca19e625b2649195b81a07be504b.html"/>
+<a href="dir_426411105bddf094e647184d3c13854e.html"/>
 <a href="dir_44cbf8d36bbdfd1a9d4da3650b4f7484.html"/>
 <a href="dir_458d2f81968638cd1d75badbacd05b3b.html"/>
 <a href="dir_4680c48b2fa77456d32758d39cebe999.html"/>
@@ -2783,6 +2816,7 @@
 <a href="dir_75fb306ea023dece393d6a30591e3ea5.html"/>
 <a href="dir_76c80d903fc76077645ae6a10fd2a97a.html"/>
 <a href="dir_7cab8434d147d09ec87241237c321c29.html"/>
+<a href="dir_7cced2eba011b807a8a981a07794d407.html"/>
 <a href="dir_7ce9da0c9ec78b2f8174b2f1abf40f3e.html"/>
 <a href="dir_82a53cff9a84985673d7074fb44c203c.html"/>
 <a href="dir_8937f2415760ed5dcb3b74c0a31b943a.html"/>
@@ -2807,6 +2841,7 @@
 <a href="dir_c1a5ce4630691fa6e0d47550b3e417a2.html"/>
 <a href="dir_c1acda4bc7a37772f10d5ce08c98de0b.html"/>
 <a href="dir_c611f409f6146f9612a550156503178a.html"/>
+<a href="dir_c7e2894b612f86e4558bccb07ec9f5a5.html"/>
 <a href="dir_c8fad1715aea1f636405603d945b096c.html"/>
 <a href="dir_c92ea63a12b7d170a8c154e961d865ef.html"/>
 <a href="dir_c9c60946a81f10d8287f9fce9cf37b31.html"/>
@@ -2837,6 +2872,7 @@
 <a href="dir_f7f355fde164bcc71614372a2a21212b.html"/>
 <a href="dir_f9f6b70f75734e75e6e4b3806d757814.html"/>
 <a href="dir_faa1d96b2f25a770f3b4b59c3c248f9f.html"/>
+<a href="dir_fb5ebc82e27c2ad04bd19e01ab7a84aa.html"/>
 <a href="dir_fbf86ebd20f6f17731d5583a52a5d286.html"/>
 <a href="dir_ff002ffbc8548ea680d84f0d679a6ae9.html"/>
 <a href="dynamic__library_8h_source.html"/>
@@ -2861,7 +2897,6 @@
 <a href="functions_func_j.html"/>
 <a href="functions_func_l.html"/>
 <a href="functions_func_m.html"/>
-<a href="functions_func_o.html"/>
 <a href="functions_func_p.html"/>
 <a href="functions_func_r.html"/>
 <a href="functions_func_s.html"/>
@@ -2877,7 +2912,6 @@
 <a href="functions_j.html"/>
 <a href="functions_l.html"/>
 <a href="functions_m.html"/>
-<a href="functions_o.html"/>
 <a href="functions_p.html"/>
 <a href="functions_r.html"/>
 <a href="functions_s.html"/>
@@ -3314,6 +3348,12 @@
 <a href="structMathLoggerBendersByBatchExternalLoop.html"/>
 <a href="structMathLoggerExternalLoopSpecific.html"/>
 <a href="structMathLoggerExternalLoopSpecific.html#a8a9621b528cb90afd087a4e9b1d5ae5f"/>
+<a href="structMergeMasterTrajectoryMPS_1_1CandidateCosts.html"/>
+<a href="structMergeMasterTrajectoryMPS_1_1TrajectoryConstraint.html"/>
+<a href="structMergeMasterTrajectoryMPS_1_1TrajectoryGlobalData.html"/>
+<a href="structMergeMasterTrajectoryMPS_1_1TrajectoryNode.html"/>
+<a href="structMergeMasterTrajectoryMPS_1_1VariablePositions.html"/>
+<a href="structNodeLpDataLocation.html"/>
 <a href="structOutput_1_1CandidateData.html"/>
 <a href="structOutput_1_1Iteration.html"/>
 <a href="structOutput_1_1IterationsData.html"/>
