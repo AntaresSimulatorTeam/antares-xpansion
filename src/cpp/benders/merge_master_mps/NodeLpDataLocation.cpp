@@ -5,6 +5,7 @@
 #include <json/writer.h>
 #include <sstream>
 #include <string>
+#include <utility>
 
 #include "antares-xpansion/benders/benders_core/common.h"
 
@@ -25,6 +26,11 @@ NodeLpDataLocation::NodeLpDataLocation(const Json::Value& data)
         weights = data[KEY_WEIGHTS_FILE].asString();
         has_weights_file = true;
     }
+}
+
+NodeLpDataLocation::NodeLpDataLocation(std::filesystem::path path):
+    lp_folder(std::move(path))
+{
 }
 
 NodesToLpDataLocationMap LpDataLocationManager::parse_nodal_lp_location_file(

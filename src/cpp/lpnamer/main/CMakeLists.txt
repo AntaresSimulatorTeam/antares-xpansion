@@ -47,7 +47,7 @@ target_include_directories(problem_generation_main
 
 add_library(${PROJECT_NAME}::problem_generation_main ALIAS problem_generation_main)
 
-# Multiple problem generation lib
+#Multiple problem generation lib
 add_library(multiple_problem_generation_lib)
 target_sources(multiple_problem_generation_lib PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/main/MultipleProblemGeneration.h
