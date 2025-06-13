@@ -9,7 +9,6 @@
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/merge_master_mps/MasterStructureKeys.h"
 #include "antares-xpansion/benders/merge_mps/StandardLp.h"
-#include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
 MergeMasterTrajectoryMPS::CandidateVariableType MergeMasterTrajectoryMPS::parse_variable_type(
@@ -18,9 +17,9 @@ MergeMasterTrajectoryMPS::CandidateVariableType MergeMasterTrajectoryMPS::parse_
     using namespace MasterStructureKeys;
 
     static const std::unordered_map<std::string_view, CandidateVariableType> lookup_table{
-      {VARIABLE_X, CandidateVariableType::CAPACITY},
-      {VARIABLE_DX_PLUS, CandidateVariableType::DX_PLUS},
-      {VARIABLE_DX_MINUS, CandidateVariableType::DX_MINUS},
+      {VARIABLE_X, CAPACITY},
+      {VARIABLE_DX_PLUS, DX_PLUS},
+      {VARIABLE_DX_MINUS, DX_MINUS},
     };
 
     const auto found = lookup_table.find(s.c_str());
@@ -66,11 +65,11 @@ int MergeMasterTrajectoryMPS::VariablePositions::get(CandidateVariableType t) co
 {
     switch (t)
     {
-    case CandidateVariableType::CAPACITY:
+    case CAPACITY:
         return capacity;
-    case CandidateVariableType::DX_PLUS:
+    case DX_PLUS:
         return dx_plus;
-    case CandidateVariableType::DX_MINUS:
+    case DX_MINUS:
         return dx_minus;
     default:
         // Perhaps throw an error ?
@@ -82,20 +81,19 @@ void MergeMasterTrajectoryMPS::VariablePositions::set(CandidateVariableType t, i
 {
     switch (t)
     {
-    case CandidateVariableType::CAPACITY:
+    case CAPACITY:
         capacity = i;
         break;
-    case CandidateVariableType::DX_PLUS:
+    case DX_PLUS:
         dx_plus = i;
         break;
-    case CandidateVariableType::DX_MINUS:
+    case DX_MINUS:
         dx_minus = i;
         break;
     default:
         // Perhaps throw an error ?
         return;
     }
-    return;
 }
 
 MergeMasterTrajectoryMPS::CandidateCosts::CandidateCosts(const Json::Value& data)
@@ -112,13 +110,13 @@ double MergeMasterTrajectoryMPS::CandidateCosts::get(CandidateVariableType t) co
 
     switch (t)
     {
-    case CandidateVariableType::CAPACITY:
+    case CAPACITY:
         ret = operation_maintenance;
         break;
-    case CandidateVariableType::DX_PLUS:
+    case DX_PLUS:
         ret = investment;
         break;
-    case CandidateVariableType::DX_MINUS:
+    case DX_MINUS:
         ret = retirement;
         break;
     default:
@@ -171,13 +169,12 @@ MergeMasterTrajectoryMPS::TrajectoryGlobalData::TrajectoryGlobalData(const Json:
     const auto& constraints_data = data[KEY_CONSTRAINTS];
     for (const auto& data: constraints_data)
     {
-        trajectory_constraints.emplace_back(TrajectoryConstraint(data));
+        trajectory_constraints.emplace_back(data);
     }
 }
 
-MergeMasterTrajectoryMPS::TrajectoryNode::TrajectoryNode(const std::string& node,
-                                                         const Json::Value& data):
-    name{node}
+MergeMasterTrajectoryMPS::TrajectoryNode::TrajectoryNode(std::string node, const Json::Value& data):
+    name{std::move(node)}
 {
     using namespace MasterStructureKeys;
 
@@ -195,8 +192,8 @@ MergeMasterTrajectoryMPS::TrajectoryNode::TrajectoryNode(const std::string& node
     // Pointing each candidate to its associated costs structure
     for (const auto& candidate_name: data[KEY_CANDIDATES].getMemberNames())
     {
-        candidates_costs.emplace(
-          std::make_pair(candidate_name, CandidateCosts(data[KEY_CANDIDATES][candidate_name])));
+        candidates_costs.emplace(candidate_name,
+                                 CandidateCosts(data[KEY_CANDIDATES][candidate_name]));
     }
 }
 
@@ -211,7 +208,7 @@ void MergeMasterTrajectoryMPS::read_tree_structure_file()
     for (const auto& node_name: tree_data.getMemberNames())
     {
         const auto& node_data = tree_data[node_name];
-        tree_.emplace_back(TrajectoryNode(node_name, node_data));
+        tree_.emplace_back(node_name, node_data);
     }
 
     logger_->display_message("Master coupling map generated successfully.",
@@ -460,8 +457,6 @@ void MergeMasterTrajectoryMPS::add_delta_variables()
                    upper_bounds,
                    col_types,
                    col_names);
-
-    return;
 }
 
 void MergeMasterTrajectoryMPS::add_delta_variables_constraints()
@@ -518,7 +513,7 @@ void MergeMasterTrajectoryMPS::add_delta_variables_constraints()
         {
             const std::string& parent_node_name = node_data.parent.value();
 
-            for (const auto& [candidate, _]: candidates_coupling_)
+            for (const auto& candidate: candidates_coupling_ | std::views::keys)
             {
                 // The constraint is :
                 // current::candidate - parent::candidate - dx_plus + dx_minus = 0
@@ -556,8 +551,6 @@ void MergeMasterTrajectoryMPS::add_delta_variables_constraints()
                    var_offsets,
                    var_indices,
                    var_values);
-
-    return;
 }
 
 void MergeMasterTrajectoryMPS::set_objective_from_data()
@@ -644,8 +637,17 @@ void MergeMasterTrajectoryMPS::add_coupling_constraints()
                    var_offsets,
                    var_indices,
                    var_values);
+}
 
-    return;
+MergeMasterTrajectoryMPS::MergeMasterTrajectoryMPS(MergeMPSOptions options,
+                                                   Logger logger,
+                                                   std::shared_ptr<Output::OutputWriter> writer,
+                                                   std::filesystem::path tree_filename,
+                                                   std::filesystem::path annual_lp_filename):
+    AbstractMergeMPS(options, logger, writer),
+    tree_path_(std::move(tree_filename)),
+    lp_reference_file_filepath_(std::move(annual_lp_filename))
+{
 }
 
 /**
