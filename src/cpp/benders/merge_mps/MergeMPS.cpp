@@ -113,7 +113,7 @@ void AbstractMergeMPS::terminate(const std::string& location, const std::string&
 VariableMap AbstractMergeMPS::merge_local_solver(SolverAbstract& local_solver,
                                                  const std::string& local_prefix,
                                                  const VariableMap& local_var_map,
-                                                 const std::string& filename)
+                                                 const std::string& filename) const
 {
     VariableMap merged_var_map;
     StandardLp lpData(local_solver);
@@ -160,7 +160,7 @@ VariableMap AbstractMergeMPS::merge_local_solver(SolverAbstract& local_solver,
  * \brief Export problem into INPUTROOT/filename and optionally writes the lp variant
  *        We do it this way because we cannot read a master problem not at the input root.
  */
-void AbstractMergeMPS::export_problem(const std::string& filename, bool export_lp)
+void AbstractMergeMPS::export_problem(const std::string& filename, bool export_lp) const
 {
     const auto input_root = std::filesystem::path(options_.INPUTROOT);
     logger_->display_message("Problems merged.",
@@ -243,7 +243,7 @@ void MergeMasterSubproblemMPS::build_problem()
  *
  * \param nb_threads : Number of threads to use
  */
-bool MergeMasterSubproblemMPS::solve(int nb_threads)
+bool MergeMasterSubproblemMPS::solve(int nb_threads) const
 {
     ptr_merged_solver_->set_threads(nb_threads);
 
@@ -378,7 +378,7 @@ double MergeMasterSubproblemMPS::get_problem_obj_weight(int nb_subproblems,
 void MergeMasterSubproblemMPS::add_coupling_constraints()
 {
     std::map<std::string, std::vector<int>> variables;
-    for (const auto& [_, var_map]: structure_)
+    for (const auto& var_map: structure_ | std::views::values)
     {
         for (const auto& [var_name, var_idx]: var_map)
         {
