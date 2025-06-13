@@ -25,19 +25,23 @@ NodeLpDataLocation::NodeLpDataLocation(const Json::Value& data)
     }
 }
 
+NodeLpDataLocation::NodeLpDataLocation(std::filesystem::path path):
+    lp_folder(std::move(path))
+{
+}
+
 NodesToLpDataLocationMap LpDataLocationManager::parse_nodal_lp_location_file(
   const std::filesystem::path& file)
 {
     NodesToLpDataLocationMap output;
-    const auto raw_input = get_json_file_content(file);
-    for (const auto& node_name: raw_input.getMemberNames())
+    for (const auto raw_input = get_json_file_content(file);
+         const auto& node_name: raw_input.getMemberNames())
     {
-        if (node_name == MasterStructureKeys::KEY_METADATA)
+        if (node_name != MasterStructureKeys::KEY_METADATA)
         {
-            continue;
+            const auto& node_lp_path = raw_input[node_name];
+            output.emplace(std::make_pair(node_name, NodeLpDataLocation(node_lp_path)));
         }
-        const auto& node_lp_path = raw_input[node_name];
-        output.emplace(std::make_pair(node_name, NodeLpDataLocation(node_lp_path)));
     }
 
     return output;

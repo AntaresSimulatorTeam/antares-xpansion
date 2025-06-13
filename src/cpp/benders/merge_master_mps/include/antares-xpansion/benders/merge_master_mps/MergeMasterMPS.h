@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include "antares-xpansion/benders/merge_master_mps/MasterStructureKeys.h"
 #include "antares-xpansion/benders/merge_master_mps/NodeLpDataLocation.h"
 #include "antares-xpansion/benders/merge_mps/MergeMPS.h"
@@ -48,7 +50,7 @@ public:
     // Contains the cost data of a candidate
     struct CandidateCosts
     {
-        CandidateCosts(const Json::Value& data);
+        explicit CandidateCosts(const Json::Value& data);
         double operation_maintenance{0.};
         double investment{0.};
         double retirement{0.};
@@ -63,7 +65,7 @@ public:
     // Trajectory constraints
     struct TrajectoryConstraint
     {
-        TrajectoryConstraint(const Json::Value& data);
+        explicit TrajectoryConstraint(const Json::Value& data);
 
         std::map<VariableRef, double> coefficients_map;
         double rhs{0.};
@@ -72,11 +74,8 @@ public:
 
     struct TrajectoryGlobalData
     {
-        TrajectoryGlobalData()
-        {
-        }
-
-        TrajectoryGlobalData(const Json::Value& data);
+        TrajectoryGlobalData() = default;
+        explicit TrajectoryGlobalData(const Json::Value& data);
 
         std::map<std::string, double> initial_capacities;
 
@@ -85,11 +84,8 @@ public:
 
     struct TrajectoryNode
     {
-        TrajectoryNode()
-        {
-        }
-
-        TrajectoryNode(const std::string& node, const Json::Value& data);
+        TrajectoryNode() = default;
+        TrajectoryNode(std::string node, const Json::Value& data);
 
         std::string name;
 
@@ -101,17 +97,11 @@ public:
 
     using TrajectoryTree = std::vector<TrajectoryNode>;
 
-public:
     MergeMasterTrajectoryMPS(MergeMPSOptions options,
                              Logger logger,
                              std::shared_ptr<Output::OutputWriter> writer,
-                             const std::filesystem::path& tree_filename,
-                             const std::filesystem::path& annual_lp_filename):
-        AbstractMergeMPS(options, logger, writer),
-        tree_path_(tree_filename),
-        lp_reference_file_filepath_(annual_lp_filename)
-    {
-    }
+                             std::filesystem::path tree_filename,
+                             std::filesystem::path annual_lp_filename);
 
     void launch() override;
 
@@ -130,11 +120,10 @@ private:
     std::string make_prefix_from_node(const std::string& node_name) const;
     double get_candidate_initial_value(const std::string& candidate) const;
 
-private:
     std::filesystem::path tree_path_;
     std::filesystem::path lp_reference_file_filepath_;
     TrajectoryTree tree_;                       // Contains each node's information
-    TrajectoryGlobalData trajectory_data_;      // Contains the global trajectory data
+    TrajectoryGlobalData trajectory_data_{};    // Contains the global trajectory data
     CandidatesCouplingMap candidates_coupling_; // Links the same candidates in different nodes
     NodesToLpDataLocationMap nodes_lp_info_;    // Info on the lp folder & files for each node
     CouplingMap structure_;
