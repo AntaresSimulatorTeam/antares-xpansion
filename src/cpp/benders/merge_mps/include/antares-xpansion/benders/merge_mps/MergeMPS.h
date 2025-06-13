@@ -1,5 +1,7 @@
 #pragma once
 
+#include <optional>
+
 #include "antares-xpansion/benders/benders_core/SolverIO.h"
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/factories/WriterFactories.h"

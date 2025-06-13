@@ -4,7 +4,6 @@
 #include <iomanip>
 #include <json/writer.h>
 #include <sstream>
-#include <utility>
 
 #include "antares-xpansion/benders/benders_core/common.h"
 
