@@ -21,13 +21,10 @@
 struct NodeLpDataLocation
 {
     // Constructor for parsing from NodalLpInfo file
-    NodeLpDataLocation(const Json::Value& data);
+    explicit NodeLpDataLocation(const Json::Value& data);
 
     // Initializes a NodeLpDataLocation object with only lp_folder as non default valued
-    NodeLpDataLocation(const std::filesystem::path& path):
-        lp_folder(path)
-    {
-    }
+    explicit NodeLpDataLocation(std::filesystem::path path);
 
     // Folder containing the generated data
     std::filesystem::path lp_folder;
@@ -39,7 +36,7 @@ struct NodeLpDataLocation
     std::string weights = MasterStructureKeys::DEFAULT_WEIGHTS_FILE;
 };
 
-typedef std::map<std::string, NodeLpDataLocation> NodesToLpDataLocationMap;
+using NodesToLpDataLocationMap = std::map<std::string, NodeLpDataLocation>;
 
 namespace LpDataLocationManager
 {
