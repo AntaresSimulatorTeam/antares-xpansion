@@ -56,8 +56,8 @@ void MergeWeightsTrajectory::load_input_files()
 {
     using namespace MasterStructureKeys;
     // Read the master structure file and extract only the relevant information
-    const auto master_structure_data = get_json_file_content(master_structure_file_);
-    const auto& tree_data = master_structure_data[KEY_TREE];
+    const auto master_merger_info_data = get_json_file_content(master_merger_info_file_);
+    const auto& tree_data = master_merger_info_data[KEY_TREE];
 
     for (const auto& node_name: tree_data.getMemberNames())
     {
@@ -67,6 +67,17 @@ void MergeWeightsTrajectory::load_input_files()
 
     // Lp paths & relevant files data
     nodes_lp_info_ = LpDataLocationManager::parse_nodal_lp_location_file(nodal_lp_folder_file_);
+
+    // Check that every key in nodes_weights appears in the nodes_lp_info
+    for (const auto& [node, _]: nodes_weights_)
+    {
+        if (!nodes_lp_info_.contains(node))
+        {
+            std::cerr << LOGLOCATION << "Node '" << node
+                      << "' must appear in in the list of nodal lp folder.";
+            std::exit(1);
+        }
+    }
 }
 
 void MergeWeightsTrajectory::generate_merged_weights_file()

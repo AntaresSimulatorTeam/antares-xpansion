@@ -34,6 +34,7 @@ struct NodeLpDataLocation
     std::string structure = MasterStructureKeys::DEFAULT_STRUCTURE_FILE;
     // Weights file of the node, might not exist
     std::string weights = MasterStructureKeys::DEFAULT_WEIGHTS_FILE;
+    bool has_weights_file{false};
 };
 
 using NodesToLpDataLocationMap = std::map<std::string, NodeLpDataLocation>;

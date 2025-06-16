@@ -86,11 +86,36 @@ void MultipleProblemGeneration::load_input_weight_files()
     }
 }
 
+void MultipleProblemGeneration::load_additional_constraints_files()
+{
+    const std::string file_format_error{
+      "Additional constraints info file should have two columns separated by ' ' : \n "
+      "node_study_name1 path/to/constraints/file \n"
+      "node_study_name2 path/to/constraints/file \n"
+      "... \n"
+      "If a node is absent, it will be assumed to have no additional constraints"};
+    const auto path = options_.AdditionalConstraintsFilename();
+    if (path.empty())
+    {
+        return;
+    }
+    std::ifstream f(path);
+    std::string line;
+
+    // Nodal weight files paths
+    while (std::getline(f, line))
+    {
+        auto split = StringManip::split(line, " ");
+        check_format(split, file_format_error);
+        node_to_additional_constraints_file_[split[0]] = split[1];
+    }
+}
+
 void MultipleProblemGeneration::run_generation()
 {
     for (const auto& [node, input_path]: node_to_input_path_)
     {
-        auto individual_options = ProblemGenerationExeOptions{options_};
+        auto individual_options = ProblemGenerationExeOptions(options_);
         individual_options.setRelevantPath(input_path);
         // Weights file
         if (node_to_weight_file_.contains(node))
@@ -101,6 +126,16 @@ void MultipleProblemGeneration::run_generation()
         {
             individual_options.setWeightsFilePath(std::filesystem::path());
         }
+        // Additional constraints file
+        if (node_to_additional_constraints_file_.contains(node))
+        {
+            individual_options.setAdditionalConstraintsFilePath(
+              node_to_additional_constraints_file_.at(node));
+        }
+        else
+        {
+            individual_options.setAdditionalConstraintsFilePath(std::filesystem::path());
+        }
         auto pbg = ProblemGeneration(individual_options);
         std::filesystem::path output_folder = pbg.updateProblems();
 
@@ -108,7 +143,11 @@ void MultipleProblemGeneration::run_generation()
         auto node_lp_location = NodeLpDataLocation(lp_folder);
         // The weight file outputted by ProblemGeneration
         // has the same name as the user input weight file
-        node_lp_location.weights = node_to_weight_file_.at(node).filename().string();
+        if (node_to_weight_file_.contains(node))
+        {
+            node_lp_location.weights = node_to_weight_file_.at(node).filename().string();
+            node_lp_location.has_weights_file = true;
+        }
 
         node_to_lp_info_.emplace(std::make_pair(node, node_lp_location));
         // TODO Output to logger

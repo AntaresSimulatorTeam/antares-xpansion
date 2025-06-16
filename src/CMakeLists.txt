@@ -26,6 +26,12 @@ if (PYINSTALLER)
         install(CODE "execute_process(COMMAND ${PYINSTALLER} --exclude-module _bootlocale -F ${CMAKE_CURRENT_SOURCE_DIR}/python/launch.py -n antares-xpansion-launcher --add-data \"${CMAKE_CURRENT_SOURCE_DIR}/python/config.yaml:.\")")
     endif ()
 
+    if (MSVC)
+        install(CODE "execute_process(COMMAND ${PYINSTALLER} --exclude-module _bootlocale -F ${CMAKE_CURRENT_SOURCE_DIR}/python/launch_trajectory.py -n xpansion-trajectory-launcher --add-data \"${CMAKE_CURRENT_SOURCE_DIR}/python/config.yaml;.\")")
+    else ()
+        install(CODE "execute_process(COMMAND ${PYINSTALLER} --exclude-module _bootlocale -F ${CMAKE_CURRENT_SOURCE_DIR}/python/launch_trajectory.py -n xpansion-trajectory-launcher --add-data \"${CMAKE_CURRENT_SOURCE_DIR}/python/config.yaml:.\")")
+    endif ()
+
     #code is executed in CMAKE_BINARY_DIR
     install(DIRECTORY ${CMAKE_BINARY_DIR}/dist/
             DESTINATION .
