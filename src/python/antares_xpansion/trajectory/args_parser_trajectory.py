@@ -8,6 +8,8 @@ from antares_xpansion.launcher_options_default_value import LauncherOptionsDefau
 from pathlib import Path
 import warnings
 
+from typing import List
+
 
 class TrajectoryLauncherOptionsKeys:
     @staticmethod
@@ -117,7 +119,7 @@ class TrajectoryArgsParser:
         if step != "problem_generation" and params.memory is not None:
             self._warn_non_relevant_arg(step, "--memory")
 
-    def parse_args(self, args: list[str] = None) -> TrajectoryInputParameters:
+    def parse_args(self, args: List[str] = None) -> TrajectoryInputParameters:
         params = self.parser.parse_args(args)
         self._show_args_warning(params)
         self._fill_default_values(params)

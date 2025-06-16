@@ -24,7 +24,6 @@ from antares_xpansion.trajectory.driver_resolution import (
 from antares_xpansion.trajectory.trajectory_config import TrajectoryConfig
 
 import os
-from pathlib import Path
 
 
 class TrajectoryInvestmentDriver:
@@ -72,9 +71,7 @@ class TrajectoryInvestmentDriver:
         self.output_folder = self.prepare_folder(self.config.OUTPUT_FOLDER)
         # TODO : hardcoded solver for now
         solver = "XPRESS"
-        problems_format = "SAVED"
-        if solver != "XPRESS":
-            problems_format = "MPS"
+        problems_format = self.problems_format_from_solver(solver)
 
         mm_data = MergeMasterData(
             self.config.get_executable_path(self.config.MERGE_MASTER_MPS),
@@ -136,6 +133,13 @@ class TrajectoryInvestmentDriver:
             os.makedirs(folder)
 
         return folder
+
+    @staticmethod
+    def problems_format_from_solver(solver):
+        if solver == "XPRESS":
+            return "SAVED"
+        else:
+            return "MPS"
 
     def launch(self):
         if self.config.step == "full":

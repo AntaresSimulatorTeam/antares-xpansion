@@ -7,6 +7,8 @@ import json
 import subprocess
 import sys
 
+from typing import List
+
 
 @dataclass
 class MergeMasterData:
@@ -80,7 +82,7 @@ class MergeMasterDriver:
             json.dump(options, f, indent=4)
 
     def _get_master_merger_args(self):
-        args: list[str] = []
+        args: List[str] = []
         # Order is strict : <options_file> <master_merger_info.json> <nodal_lp_info.json>
         args.append(self.options_file)
         args.append(self.master_merger_info_file)

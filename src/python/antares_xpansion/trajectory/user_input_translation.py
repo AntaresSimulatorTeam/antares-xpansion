@@ -2,7 +2,7 @@ import datetime
 import json
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Optional, Set, Union
+from typing import Any, Dict, List, Literal, Set
 
 import yaml
 from pydantic import BaseModel, Field, NonNegativeFloat, NonNegativeInt, PositiveInt

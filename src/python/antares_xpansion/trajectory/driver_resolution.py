@@ -1,7 +1,6 @@
 from antares_xpansion.xpansionConfig import XpansionConfigConstants
 from antares_xpansion.config_loader import XpansionSettingsReader
 from antares_xpansion.optimisation_keys import OptimisationKeys
-from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 from antares_xpansion.benders_driver import BendersDriver, SolversExe
 
 from dataclasses import dataclass
