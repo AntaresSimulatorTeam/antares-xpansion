@@ -1,0 +1,635 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.12.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Antares Xpansion" />
+<meta property="og:image" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/blob/develop/docs/assets/logo.png" />
+<meta property="og:description" content="Investment simulations for Antares studies." />
+<meta property="og:url" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/blob/develop/docs/assets/logo.png" />
+<meta name="twitter:title" content="Antares Xpansion" />
+<meta name="twitter:description" content="Investment simulations for Antares studies." />
+<!-- END twitter metadata -->
+<title>Antares Xpansion: antares_xpansion.config_loader.XpansionSettingsReader Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://github.com/AntaresSimulatorTeam/antares-xpansion/ -->
+<a href="https://github.com/AntaresSimulatorTeam/antares-xpansion" class="github-corner" title="View source on GitHub" target="_blank">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Antares Xpansion
+   </div>
+   <div id="projectbrief">Investment simulations for Antares studies</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.12.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader.html',''); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-attribs">Protected Attributes</a> &#124;
+<a href="classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">antares_xpansion.config_loader.XpansionSettingsReader Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="dynheader">
+Inheritance diagram for antares_xpansion.config_loader.XpansionSettingsReader:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader.png" usemap="#antares_5Fxpansion.config_5Floader.XpansionSettingsReader_map" alt=""/>
+  <map id="antares_5Fxpansion.config_5Floader.XpansionSettingsReader_map" name="antares_5Fxpansion.config_5Floader.XpansionSettingsReader_map">
+<area href="classantares__xpansion_1_1config__loader_1_1ConfigLoader.html" alt="antares_xpansion.config_loader.ConfigLoader" shape="rect" coords="0,56,335,80"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a4df1896d3326a8a973e9f514b81077f3" id="r_a4df1896d3326a8a973e9f514b81077f3"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4df1896d3326a8a973e9f514b81077f3">__init__</a> (self, Path study_path, <a class="el" href="classantares__xpansion_1_1xpansionConfig_1_1XpansionConfigConstants.html">XpansionConfigConstants</a> xpansion_defaults)</td></tr>
+<tr class="separator:a4df1896d3326a8a973e9f514b81077f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af6ce53822a29870f8ea1bac5b1b9abb9" id="r_af6ce53822a29870f8ea1bac5b1b9abb9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af6ce53822a29870f8ea1bac5b1b9abb9">data_dir</a> (self)</td></tr>
+<tr class="separator:af6ce53822a29870f8ea1bac5b1b9abb9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f48455d4f11ca7cfd31877c89dc3af7" id="r_a2f48455d4f11ca7cfd31877c89dc3af7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2f48455d4f11ca7cfd31877c89dc3af7">antares_output</a> (self)</td></tr>
+<tr class="separator:a2f48455d4f11ca7cfd31877c89dc3af7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa4c937f9e3b57840f6f3335ded14c7cf" id="r_aa4c937f9e3b57840f6f3335ded14c7cf"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa4c937f9e3b57840f6f3335ded14c7cf">general_data</a> (self)</td></tr>
+<tr class="separator:aa4c937f9e3b57840f6f3335ded14c7cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a411fce38086a815b5914b99e1d6d5075" id="r_a411fce38086a815b5914b99e1d6d5075"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a411fce38086a815b5914b99e1d6d5075">candidates_ini_filepath</a> (self)</td></tr>
+<tr class="separator:a411fce38086a815b5914b99e1d6d5075"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6ea2c73cae1c756f74fa7fcaf33321d" id="r_ae6ea2c73cae1c756f74fa7fcaf33321d"><td class="memItemLeft" align="right" valign="top"><a id="ae6ea2c73cae1c756f74fa7fcaf33321d" name="ae6ea2c73cae1c756f74fa7fcaf33321d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>check_candidates_file_format</b> (self)</td></tr>
+<tr class="separator:ae6ea2c73cae1c756f74fa7fcaf33321d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:addf6428949422953809b027d18243660" id="r_addf6428949422953809b027d18243660"><td class="memItemLeft" align="right" valign="top"><a id="addf6428949422953809b027d18243660" name="addf6428949422953809b027d18243660"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>check_settings_file_format</b> (self)</td></tr>
+<tr class="separator:addf6428949422953809b027d18243660"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aded58cd8f34018e79c4f1f31848b078a" id="r_aded58cd8f34018e79c4f1f31848b078a"><td class="memItemLeft" align="right" valign="top"><a id="aded58cd8f34018e79c4f1f31848b078a" name="aded58cd8f34018e79c4f1f31848b078a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>weight_file_name</b> (self)</td></tr>
+<tr class="separator:aded58cd8f34018e79c4f1f31848b078a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa49472e2e3b652fe9bdbbb092f99c3a8" id="r_aa49472e2e3b652fe9bdbbb092f99c3a8"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa49472e2e3b652fe9bdbbb092f99c3a8">weights_file_path</a> (self)</td></tr>
+<tr class="separator:aa49472e2e3b652fe9bdbbb092f99c3a8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a734c86fa0787a3b5b390cfcdbb1ff4ee" id="r_a734c86fa0787a3b5b390cfcdbb1ff4ee"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a734c86fa0787a3b5b390cfcdbb1ff4ee">additional_constraints</a> (self)</td></tr>
+<tr class="separator:a734c86fa0787a3b5b390cfcdbb1ff4ee"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8bcb0071dd135f3c24e56506f56cb675" id="r_a8bcb0071dd135f3c24e56506f56cb675"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8bcb0071dd135f3c24e56506f56cb675">capacity_file</a> (self, filename)</td></tr>
+<tr class="separator:a8bcb0071dd135f3c24e56506f56cb675"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4b5577d5565426f6b644631867f6f9b0" id="r_a4b5577d5565426f6b644631867f6f9b0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4b5577d5565426f6b644631867f6f9b0">json_sensitivity_in_path</a> (self)</td></tr>
+<tr class="separator:a4b5577d5565426f6b644631867f6f9b0"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae6560070aadcc46f2d47a8e0a346d794" id="r_ae6560070aadcc46f2d47a8e0a346d794"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae6560070aadcc46f2d47a8e0a346d794">get_absolute_optimality_gap</a> (self)</td></tr>
+<tr class="separator:ae6560070aadcc46f2d47a8e0a346d794"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abb40624acb9ae7e76447eb45934a17d4" id="r_abb40624acb9ae7e76447eb45934a17d4"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abb40624acb9ae7e76447eb45934a17d4">get_relative_optimality_gap</a> (self)</td></tr>
+<tr class="separator:abb40624acb9ae7e76447eb45934a17d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad4c5f31521931e45bb4cf7cf756dda5f" id="r_ad4c5f31521931e45bb4cf7cf756dda5f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad4c5f31521931e45bb4cf7cf756dda5f">get_relaxed_optimality_gap</a> (self)</td></tr>
+<tr class="separator:ad4c5f31521931e45bb4cf7cf756dda5f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1dd1d6c2846183aba9aad219da47cd7" id="r_ab1dd1d6c2846183aba9aad219da47cd7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab1dd1d6c2846183aba9aad219da47cd7">get_max_iterations</a> (self)</td></tr>
+<tr class="separator:ab1dd1d6c2846183aba9aad219da47cd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afba26a6950cc50c05929ca8df4ca8121" id="r_afba26a6950cc50c05929ca8df4ca8121"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afba26a6950cc50c05929ca8df4ca8121">get_master_formulation</a> (self)</td></tr>
+<tr class="separator:afba26a6950cc50c05929ca8df4ca8121"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af001123292d729ff69442060057d2355" id="r_af001123292d729ff69442060057d2355"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#af001123292d729ff69442060057d2355">get_separation</a> (self)</td></tr>
+<tr class="separator:af001123292d729ff69442060057d2355"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa6de557ff989085a1077f320fcc9245d" id="r_aa6de557ff989085a1077f320fcc9245d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa6de557ff989085a1077f320fcc9245d">get_batch_size</a> (self)</td></tr>
+<tr class="separator:aa6de557ff989085a1077f320fcc9245d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4feaf574831d7d9780504b3424ce1bae" id="r_a4feaf574831d7d9780504b3424ce1bae"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4feaf574831d7d9780504b3424ce1bae">timelimit</a> (self)</td></tr>
+<tr class="separator:a4feaf574831d7d9780504b3424ce1bae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab13b97739c2580dcf1066d04ef23144f" id="r_ab13b97739c2580dcf1066d04ef23144f"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab13b97739c2580dcf1066d04ef23144f">log_level</a> (self)</td></tr>
+<tr class="separator:ab13b97739c2580dcf1066d04ef23144f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a40bb24b7a8f089c782af7034dad42728" id="r_a40bb24b7a8f089c782af7034dad42728"><td class="memItemLeft" align="right" valign="top"><a id="a40bb24b7a8f089c782af7034dad42728" name="a40bb24b7a8f089c782af7034dad42728"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>path</b> = study_path</td></tr>
+<tr class="separator:a40bb24b7a8f089c782af7034dad42728"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9a5572b5cd5f580888ee501ef1a64096" id="r_a9a5572b5cd5f580888ee501ef1a64096"><td class="memItemLeft" align="right" valign="top"><a id="a9a5572b5cd5f580888ee501ef1a64096" name="a9a5572b5cd5f580888ee501ef1a64096"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>options</b> = self._get_options_from_settings_inifile()</td></tr>
+<tr class="separator:a9a5572b5cd5f580888ee501ef1a64096"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a4ada9b952c745890020440d35aef69a7" id="r_a4ada9b952c745890020440d35aef69a7"><td class="memItemLeft" align="right" valign="top"><a id="a4ada9b952c745890020440d35aef69a7" name="a4ada9b952c745890020440d35aef69a7"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>_get_path_from_file_in_xpansion_dir</b> (self, filename)</td></tr>
+<tr class="separator:a4ada9b952c745890020440d35aef69a7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8b10ecfeea455e6764869fe120ea4152" id="r_a8b10ecfeea455e6764869fe120ea4152"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8b10ecfeea455e6764869fe120ea4152">_get_settings_ini_filepath</a> (self)</td></tr>
+<tr class="separator:a8b10ecfeea455e6764869fe120ea4152"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a54ba3090bbaeea656d9aabdea7e8f05a" id="r_a54ba3090bbaeea656d9aabdea7e8f05a"><td class="memItemLeft" align="right" valign="top"><a id="a54ba3090bbaeea656d9aabdea7e8f05a" name="a54ba3090bbaeea656d9aabdea7e8f05a"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>_verify_settings_ini_file_exists</b> (self)</td></tr>
+<tr class="separator:a54ba3090bbaeea656d9aabdea7e8f05a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae20382056cebdf729469f4c5292aed60" id="r_ae20382056cebdf729469f4c5292aed60"><td class="memItemLeft" align="right" valign="top"><a id="ae20382056cebdf729469f4c5292aed60" name="ae20382056cebdf729469f4c5292aed60"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>_get_options_from_settings_inifile</b> (self)</td></tr>
+<tr class="separator:ae20382056cebdf729469f4c5292aed60"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac11c24fc866239d800e3328096d83010" id="r_ac11c24fc866239d800e3328096d83010"><td class="memItemLeft" align="right" valign="top"><a id="ac11c24fc866239d800e3328096d83010" name="ac11c24fc866239d800e3328096d83010"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>_get_weight_file_path_in_weights_dir</b> (self, filename)</td></tr>
+<tr class="separator:ac11c24fc866239d800e3328096d83010"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a82d21be685778025f2e3649461842b7d" id="r_a82d21be685778025f2e3649461842b7d"><td class="memItemLeft" align="right" valign="top"><a id="a82d21be685778025f2e3649461842b7d" name="a82d21be685778025f2e3649461842b7d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>_get_constraints_file_path_in_constraints_dir</b> (self, filename)</td></tr>
+<tr class="separator:a82d21be685778025f2e3649461842b7d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a727f5131cd7823ca2f52e427a085bb50" id="r_a727f5131cd7823ca2f52e427a085bb50"><td class="memItemLeft" align="right" valign="top"><a id="a727f5131cd7823ca2f52e427a085bb50" name="a727f5131cd7823ca2f52e427a085bb50"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>_verify_additional_constraints_file</b> (self)</td></tr>
+<tr class="separator:a727f5131cd7823ca2f52e427a085bb50"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-attribs" name="pro-attribs"></a>
+Protected Attributes</h2></td></tr>
+<tr class="memitem:a2fda94de7841362636e4be84a0829e56" id="r_a2fda94de7841362636e4be84a0829e56"><td class="memItemLeft" align="right" valign="top"><a id="a2fda94de7841362636e4be84a0829e56" name="a2fda94de7841362636e4be84a0829e56"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>_config_defaults</b> = xpansion_defaults</td></tr>
+<tr class="separator:a2fda94de7841362636e4be84a0829e56"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><pre class="fragment">Minimal class to read data in a study's setting
+</pre> </div><h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a4df1896d3326a8a973e9f514b81077f3" name="a4df1896d3326a8a973e9f514b81077f3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4df1896d3326a8a973e9f514b81077f3">&#9670;&#160;</a></span>__init__()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.config_loader.XpansionSettingsReader.__init__ </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">Path</td>          <td class="paramname"><span class="paramname"><em>study_path</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classantares__xpansion_1_1xpansionConfig_1_1XpansionConfigConstants.html">XpansionConfigConstants</a></td>          <td class="paramname"><span class="paramname"><em>xpansion_defaults</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reimplemented in <a class="el" href="classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#ae88f5d4c959a824dda5174a3da40627a">antares_xpansion.config_loader.ConfigLoader</a>.</p>
+
+</div>
+</div>
+<h2 class="groupheader">Member Function Documentation</h2>
+<a id="a8b10ecfeea455e6764869fe120ea4152" name="a8b10ecfeea455e6764869fe120ea4152"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8b10ecfeea455e6764869fe120ea4152">&#9670;&#160;</a></span>_get_settings_ini_filepath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.config_loader.XpansionSettingsReader._get_settings_ini_filepath </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">returns path to setting ini file
+</pre> 
+</div>
+</div>
+<a id="a734c86fa0787a3b5b390cfcdbb1ff4ee" name="a734c86fa0787a3b5b390cfcdbb1ff4ee"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a734c86fa0787a3b5b390cfcdbb1ff4ee">&#9670;&#160;</a></span>additional_constraints()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.config_loader.XpansionSettingsReader.additional_constraints </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">returns path to additional constraints file
+</pre> 
+</div>
+</div>
+<a id="a2f48455d4f11ca7cfd31877c89dc3af7" name="a2f48455d4f11ca7cfd31877c89dc3af7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a2f48455d4f11ca7cfd31877c89dc3af7">&#9670;&#160;</a></span>antares_output()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.config_loader.XpansionSettingsReader.antares_output </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">returns path to antares output data directory
+</pre> 
+</div>
+</div>
+<a id="a411fce38086a815b5914b99e1d6d5075" name="a411fce38086a815b5914b99e1d6d5075"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a411fce38086a815b5914b99e1d6d5075">&#9670;&#160;</a></span>candidates_ini_filepath()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.config_loader.XpansionSettingsReader.candidates_ini_filepath </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">returns path to candidates ini file
+</pre> 
+</div>
+</div>
+<a id="a8bcb0071dd135f3c24e56506f56cb675" name="a8bcb0071dd135f3c24e56506f56cb675"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bcb0071dd135f3c24e56506f56cb675">&#9670;&#160;</a></span>capacity_file()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.config_loader.XpansionSettingsReader.capacity_file </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>filename</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">returns path to input capacity file
+</pre> 
+</div>
+</div>
+<a id="af6ce53822a29870f8ea1bac5b1b9abb9" name="af6ce53822a29870f8ea1bac5b1b9abb9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af6ce53822a29870f8ea1bac5b1b9abb9">&#9670;&#160;</a></span>data_dir()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.config_loader.XpansionSettingsReader.data_dir </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">returns path to the data directory
+</pre> 
+</div>
+</div>
+<a id="aa4c937f9e3b57840f6f3335ded14c7cf" name="aa4c937f9e3b57840f6f3335ded14c7cf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa4c937f9e3b57840f6f3335ded14c7cf">&#9670;&#160;</a></span>general_data()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.config_loader.XpansionSettingsReader.general_data </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">returns path to general data ini file
+</pre> 
+</div>
+</div>
+<a id="ae6560070aadcc46f2d47a8e0a346d794" name="ae6560070aadcc46f2d47a8e0a346d794"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae6560070aadcc46f2d47a8e0a346d794">&#9670;&#160;</a></span>get_absolute_optimality_gap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.config_loader.XpansionSettingsReader.get_absolute_optimality_gap </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">returns the absolute optimality gap read from the settings file
+:return: gap value or 0 if the gap is negative
+</pre> 
+</div>
+</div>
+<a id="aa6de557ff989085a1077f320fcc9245d" name="aa6de557ff989085a1077f320fcc9245d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa6de557ff989085a1077f320fcc9245d">&#9670;&#160;</a></span>get_batch_size()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.config_loader.XpansionSettingsReader.get_batch_size </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">return the batch_size read from the settings file
+</pre> 
+</div>
+</div>
+<a id="afba26a6950cc50c05929ca8df4ca8121" name="afba26a6950cc50c05929ca8df4ca8121"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afba26a6950cc50c05929ca8df4ca8121">&#9670;&#160;</a></span>get_master_formulation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.config_loader.XpansionSettingsReader.get_master_formulation </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">return master formulation read from the settings file
+</pre> 
+</div>
+</div>
+<a id="ab1dd1d6c2846183aba9aad219da47cd7" name="ab1dd1d6c2846183aba9aad219da47cd7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab1dd1d6c2846183aba9aad219da47cd7">&#9670;&#160;</a></span>get_max_iterations()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.config_loader.XpansionSettingsReader.get_max_iterations </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">prints and returns the maximum iterations read from the settings file
+
+:return: max iterations value or -1 if the parameter is set to +Inf or +infini
+</pre> 
+</div>
+</div>
+<a id="abb40624acb9ae7e76447eb45934a17d4" name="abb40624acb9ae7e76447eb45934a17d4"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#abb40624acb9ae7e76447eb45934a17d4">&#9670;&#160;</a></span>get_relative_optimality_gap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.config_loader.XpansionSettingsReader.get_relative_optimality_gap </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">returns the relative optimality gap read from the settings file
+:return: gap value or 1e-12 if the value is set to a lower value than 1e-12
+</pre> 
+</div>
+</div>
+<a id="ad4c5f31521931e45bb4cf7cf756dda5f" name="ad4c5f31521931e45bb4cf7cf756dda5f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad4c5f31521931e45bb4cf7cf756dda5f">&#9670;&#160;</a></span>get_relaxed_optimality_gap()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.config_loader.XpansionSettingsReader.get_relaxed_optimality_gap </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">returns the relaxed optimality gap read from the settings file
+:return: gap value or 1e-12 if the value is set to a lower value than 1e-12
+</pre> 
+</div>
+</div>
+<a id="af001123292d729ff69442060057d2355" name="af001123292d729ff69442060057d2355"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af001123292d729ff69442060057d2355">&#9670;&#160;</a></span>get_separation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.config_loader.XpansionSettingsReader.get_separation </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">return the separation parameter read from the settings file
+</pre> 
+</div>
+</div>
+<a id="a4b5577d5565426f6b644631867f6f9b0" name="a4b5577d5565426f6b644631867f6f9b0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4b5577d5565426f6b644631867f6f9b0">&#9670;&#160;</a></span>json_sensitivity_in_path()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.config_loader.XpansionSettingsReader.json_sensitivity_in_path </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">returns path to sensitivity input file
+</pre> 
+</div>
+</div>
+<a id="ab13b97739c2580dcf1066d04ef23144f" name="ab13b97739c2580dcf1066d04ef23144f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab13b97739c2580dcf1066d04ef23144f">&#9670;&#160;</a></span>log_level()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.config_loader.XpansionSettingsReader.log_level </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">returns the log_level read from the settings file
+:return: log_level value
+</pre> 
+</div>
+</div>
+<a id="a4feaf574831d7d9780504b3424ce1bae" name="a4feaf574831d7d9780504b3424ce1bae"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4feaf574831d7d9780504b3424ce1bae">&#9670;&#160;</a></span>timelimit()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.config_loader.XpansionSettingsReader.timelimit </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">returns the timelimit read from the settings file
+:return: timelimit value or 0 if the gap is negative
+</pre> 
+</div>
+</div>
+<a id="aa49472e2e3b652fe9bdbbb092f99c3a8" name="aa49472e2e3b652fe9bdbbb092f99c3a8"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa49472e2e3b652fe9bdbbb092f99c3a8">&#9670;&#160;</a></span>weights_file_path()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.config_loader.XpansionSettingsReader.weights_file_path </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">returns the path to a yearly-weights file
+
+:return: path to input yearly-weights file
+</pre> 
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>src/python/antares_xpansion/<b>config_loader.py</b></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a class="el" href="namespaceantares__xpansion.html">antares_xpansion</a></li><li class="navelem"><a class="el" href="namespaceantares__xpansion_1_1config__loader.html">config_loader</a></li><li class="navelem"><a class="el" href="classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader.html">XpansionSettingsReader</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
+  </ul>
+</div>
+</body>
+</html>

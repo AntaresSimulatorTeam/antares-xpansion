@@ -195,6 +195,15 @@ str&#160;</td><td class="memItemRight" valign="bottom"><b>MPIEXEC_DEFAULT</b> = 
 <tr class="memitem:a2df5521785e15e01f977da96fe779877" id="r_a2df5521785e15e01f977da96fe779877"><td class="memItemLeft" align="right" valign="top"><a id="a2df5521785e15e01f977da96fe779877" name="a2df5521785e15e01f977da96fe779877"></a>
 list&#160;</td><td class="memItemRight" valign="bottom"><b>AVAILABLE_SOLVERS_DEFAULT</b> = []</td></tr>
 <tr class="separator:a2df5521785e15e01f977da96fe779877"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a06fd5bf0c6b6264da5d2a46b06b6888a" id="r_a06fd5bf0c6b6264da5d2a46b06b6888a"><td class="memItemLeft" align="right" valign="top"><a id="a06fd5bf0c6b6264da5d2a46b06b6888a" name="a06fd5bf0c6b6264da5d2a46b06b6888a"></a>
+str&#160;</td><td class="memItemRight" valign="bottom"><b>MULTIPLE_PROBLEM_GEN_DEFAULT</b> = &quot;multiple_problem_generation&quot;</td></tr>
+<tr class="separator:a06fd5bf0c6b6264da5d2a46b06b6888a"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afee88ab1d94d66aaf8006bdfaabaf526" id="r_afee88ab1d94d66aaf8006bdfaabaf526"><td class="memItemLeft" align="right" valign="top"><a id="afee88ab1d94d66aaf8006bdfaabaf526" name="afee88ab1d94d66aaf8006bdfaabaf526"></a>
+str&#160;</td><td class="memItemRight" valign="bottom"><b>MERGE_MASTER_MPS_DEFAULT</b> = &quot;merge_master_mps&quot;</td></tr>
+<tr class="separator:afee88ab1d94d66aaf8006bdfaabaf526"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5aebfd1050961f1b1e7a9b2111f655f8" id="r_a5aebfd1050961f1b1e7a9b2111f655f8"><td class="memItemLeft" align="right" valign="top"><a id="a5aebfd1050961f1b1e7a9b2111f655f8" name="a5aebfd1050961f1b1e7a9b2111f655f8"></a>
+str&#160;</td><td class="memItemRight" valign="bottom"><b>MERGE_WEIGHTS_TRAJECTORY_DEFAULT</b> = &quot;merge_weights_trajectory&quot;</td></tr>
+<tr class="separator:a5aebfd1050961f1b1e7a9b2111f655f8"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac9905338f93a8061d8eee4be7b1288a9" id="r_ac9905338f93a8061d8eee4be7b1288a9"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ac9905338f93a8061d8eee4be7b1288a9">config</a></td></tr>
 <tr class="separator:ac9905338f93a8061d8eee4be7b1288a9"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
@@ -228,6 +237,15 @@ list&#160;</td><td class="memItemRight" valign="bottom"><b>AVAILABLE_SOLVERS_DEF
 <div class="line">                MPIEXEC=content.get(<span class="stringliteral">&quot;mpiexec&quot;</span>, self.MPIEXEC_DEFAULT),</div>
 <div class="line">                AVAILABLE_SOLVERS=content.get(</div>
 <div class="line">                    <span class="stringliteral">&quot;AVAILABLE_SOLVER&quot;</span>, self.AVAILABLE_SOLVERS_DEFAULT</div>
+<div class="line">                ),</div>
+<div class="line">                MULTIPLE_PROBLEM_GEN=content.get(</div>
+<div class="line">                    <span class="stringliteral">&quot;MULTIPLE_PROBLEM_GENERATION&quot;</span>, self.MULTIPLE_PROBLEM_GEN_DEFAULT</div>
+<div class="line">                ),</div>
+<div class="line">                MERGE_MASTER_MPS=content.get(</div>
+<div class="line">                    <span class="stringliteral">&quot;MERGE_MASTER_MPS&quot;</span>, self.MERGE_MASTER_MPS_DEFAULT</div>
+<div class="line">                ),</div>
+<div class="line">                MERGE_WEIGHTS_TRAJECTORY=content.get(</div>
+<div class="line">                    <span class="stringliteral">&quot;MERGE_WEIGHTS_TRAJECTORY&quot;</span>, self.MERGE_WEIGHTS_TRAJECTORY_DEFAULT</div>
 <div class="line">                ),</div>
 <div class="line">            )</div>
 </div><!-- fragment -->

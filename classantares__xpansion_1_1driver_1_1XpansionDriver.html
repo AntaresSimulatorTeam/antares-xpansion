@@ -193,7 +193,8 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ad4b6f81efe678ca71adfc69dc478ef58" id="r_ad4b6f81efe678ca71adfc69dc478ef58"><td class="memItemLeft" align="right" valign="top"><a id="ad4b6f81efe678ca71adfc69dc478ef58" name="ad4b6f81efe678ca71adfc69dc478ef58"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>logger</b> = step_logger(__name__, __class__.__name__)</td></tr>
 <tr class="separator:ad4b6f81efe678ca71adfc69dc478ef58"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a8ecd193ac0317817465c1ff996d86091" id="r_a8ecd193ac0317817465c1ff996d86091"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8ecd193ac0317817465c1ff996d86091">antares_driver</a></td></tr>
+<tr class="memitem:a8ecd193ac0317817465c1ff996d86091" id="r_a8ecd193ac0317817465c1ff996d86091"><td class="memItemLeft" align="right" valign="top"><a id="a8ecd193ac0317817465c1ff996d86091" name="a8ecd193ac0317817465c1ff996d86091"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>antares_driver</b> = <a class="el" href="classantares__xpansion_1_1antares__driver_1_1AntaresDriver.html">AntaresDriver</a>(self.config_loader.antares_exe())</td></tr>
 <tr class="separator:a8ecd193ac0317817465c1ff996d86091"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab85f533438a1144be5d657495bddffd2" id="r_ab85f533438a1144be5d657495bddffd2"><td class="memItemLeft" align="right" valign="top"><a id="ab85f533438a1144be5d657495bddffd2" name="ab85f533438a1144be5d657495bddffd2"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>problem_generator_driver</b> = <a class="el" href="classantares__xpansion_1_1problem__generator__driver_1_1ProblemGeneratorDriver.html">ProblemGeneratorDriver</a>(data)</td></tr>
@@ -207,7 +208,7 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a195b21250febe70cfb2a9daa7800b9d0" id="r_a195b21250febe70cfb2a9daa7800b9d0"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a195b21250febe70cfb2a9daa7800b9d0">full_run_driver</a></td></tr>
 <tr class="separator:a195b21250febe70cfb2a9daa7800b9d0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5a6f254e11ddcc0705116d8a4be9253b" id="r_a5a6f254e11ddcc0705116d8a4be9253b"><td class="memItemLeft" align="right" valign="top"><a id="a5a6f254e11ddcc0705116d8a4be9253b" name="a5a6f254e11ddcc0705116d8a4be9253b"></a>
-str&#160;</td><td class="memItemRight" valign="bottom"><b>settings</b> = 'settings'</td></tr>
+str&#160;</td><td class="memItemRight" valign="bottom"><b>settings</b> = &quot;settings&quot;</td></tr>
 <tr class="separator:a5a6f254e11ddcc0705116d8a4be9253b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0ee7b02f71d1f0ce1182474f730d8477" id="r_a0ee7b02f71d1f0ce1182474f730d8477"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0ee7b02f71d1f0ce1182474f730d8477">gen_data_proc</a></td></tr>
 <tr class="separator:a0ee7b02f71d1f0ce1182474f730d8477"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -278,23 +279,6 @@ the system platform and parses the arguments
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
-<a id="a8ecd193ac0317817465c1ff996d86091" name="a8ecd193ac0317817465c1ff996d86091"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a8ecd193ac0317817465c1ff996d86091">&#9670;&#160;</a></span>antares_driver</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">antares_xpansion.driver.XpansionDriver.antares_driver</td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=  AntaresDriver(</div>
-<div class="line">            self.config_loader.antares_exe()</div>
-<div class="line">        )</div>
-</div><!-- fragment -->
-</div>
-</div>
 <a id="a9022a41cffef61d60325befc4b5a7c50" name="a9022a41cffef61d60325befc4b5a7c50"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9022a41cffef61d60325befc4b5a7c50">&#9670;&#160;</a></span>benders_driver</h2>
 
@@ -310,7 +294,8 @@ the system platform and parses the arguments
 <div class="line">            SolversExe(</div>
 <div class="line">                self.config_loader.benders_exe(),</div>
 <div class="line">                self.config_loader.merge_mps_exe(),</div>
-<div class="line">                self.config_loader.outer_loop_exe()),</div>
+<div class="line">                self.config_loader.outer_loop_exe(),</div>
+<div class="line">            ),</div>
 <div class="line">            self.config_loader.options_file_name(),</div>
 <div class="line">            self.config_loader.mpi_exe(),</div>
 <div class="line">        )</div>
@@ -328,8 +313,11 @@ the system platform and parses the arguments
         </tr>
       </table>
 </div><div class="memdoc">
-<b>Initial value:</b><div class="fragment"><div class="line">=  FullRunDriver(self.config_loader.full_run_exe(</div>
-<div class="line">        ), self.problem_generator_driver, self.benders_driver)</div>
+<b>Initial value:</b><div class="fragment"><div class="line">=  FullRunDriver(</div>
+<div class="line">            self.config_loader.full_run_exe(),</div>
+<div class="line">            self.problem_generator_driver,</div>
+<div class="line">            self.benders_driver,</div>
+<div class="line">        )</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -362,7 +350,8 @@ the system platform and parses the arguments
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=  SensitivityDriver(</div>
-<div class="line">            self.config_loader.sensitivity_exe())</div>
+<div class="line">            self.config_loader.sensitivity_exe()</div>
+<div class="line">        )</div>
 </div><!-- fragment -->
 </div>
 </div>
@@ -378,7 +367,8 @@ the system platform and parses the arguments
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=  StudyUpdaterDriver(</div>
-<div class="line">            self.config_loader.study_update_exe())</div>
+<div class="line">            self.config_loader.study_update_exe()</div>
+<div class="line">        )</div>
 </div><!-- fragment -->
 </div>
 </div>

@@ -1,7 +1,9 @@
 var namespaces_dup =
 [
     [ "antares_xpansion", "namespaceantares__xpansion.html", "namespaceantares__xpansion" ],
+    [ "driver_trajectory", "namespacedriver__trajectory.html", "namespacedriver__trajectory" ],
     [ "launch", "namespacelaunch.html", null ],
+    [ "launch_trajectory", "namespacelaunch__trajectory.html", null ],
     [ "tests", null, [
       [ "end_to_end", null, [
         [ "examples", null, [

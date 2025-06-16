@@ -142,31 +142,33 @@ $(function(){initNavTree('md_docs_2user-guide_2trajectory-investment_2merge-mast
 <div class="contents">
 <div class="textblock"><p><a class="anchor" id="autotoc_md234"></a></p>
 <h1><a class="anchor" id="autotoc_md235"></a>
-Note : Perhaps move to developer guide, as this should not be relevant to the end user.</h1>
-<h1><a class="anchor" id="autotoc_md236"></a>
  Usage of the master merger executable</h1>
 <p><b>All examples below are based on the tree example given in the <a class="el" href="md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html">trajectory problem</a> section</b></p>
 <p>The underlying C++ code responsible for merging previously generated Xpansion studies master files needs</p>
 <ul>
 <li>An option file to give the general parameters</li>
-<li>A master structure file that links together the different annual master problems.</li>
-<li>Access to the <code>structure.txt</code> and <code>master.mps</code> files previously generated using <code>antares -i &lt;study&gt; --step problem_generation</code>.</li>
+<li>A master merger info file that links together the different annual master problems.</li>
+<li>A lp info file that tells the programm where to find the <code>lp</code> folders and files of each node.</li>
+<li>Access to the <code>structure.txt</code> and <code>master.mps</code> files previously generated using <code>antares-xpansion-launcher -i &lt;study&gt; --step problem_generation</code> (or rather using the <a class="el" href="md_docs_2user-guide_2trajectory-investment_2multiple-problem-generation.html">Multiple Problem Generation</a> step).</li>
 </ul>
-<p>Usage is : </p><div class="fragment"><div class="line">/to/exectubale &lt;options_file&gt;.json &lt;master_structure_file&gt;.json</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md237"></a>
+<p>Usage is : </p><div class="fragment"><div class="line">/to/exectubale &lt;options_file&gt;.json &lt;master_merger_info_file&gt;.json</div>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md236"></a>
  Options file</h1>
-<p>Only few of the <code>BendersOptions</code> from the <code>&lt;options_file&gt;.json</code> are truly necessary. An option file for the master merger can be :</p>
+<p>Only few of the <code><a class="el" href="structBaseOptions.html">BaseOptions</a></code> from the <code>&lt;options_file&gt;.json</code> are used. An option file for the master merger can be :</p>
 <div class="fragment"><div class="line">{</div>
 <div class="line">    &quot;OUTPUTROOT&quot;: &quot;&lt;path/to/ouput/folder&gt;&quot;,</div>
 <div class="line">    &quot;INPUTROOT&quot;: &quot;&lt;path/to/input/root&gt;&quot;,</div>
-<div class="line">    &quot;JSON_FILE&quot;: &quot;&lt;path/to/metadata/json/ouput/file&gt;&quot;,</div>
+<div class="line">    &quot;JSON_FILE&quot;: &quot;&lt;path/to/json/ouput/file&gt;&quot;,</div>
 <div class="line">    &quot;SOLVER_NAME&quot;: &quot;Xpress&quot;,</div>
-<div class="line">    &quot;PROBLEMS_FORMAT&quot;: &quot;MPS&quot;</div>
+<div class="line">    &quot;PROBLEMS_FORMAT&quot;: &quot;MPS&quot;,</div>
+<div class="line">    &quot;MASTER_NAME&quot; : &quot;name&quot;,</div>
+<div class="line">    &quot;STRUCTURE_FILE&quot; : &quot;&lt;relative/path/to/structure/file&gt;&quot;</div>
 <div class="line">}</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md238"></a>
-Master structure file</h1>
-<p>The program expects <code>&lt;master_structure_file&gt;.json</code> to have the following structure :</p>
-<p><b>master_structure.json</b> : Example of a master structure file :</p>
+</div><!-- fragment --><p>This means that the merged master file will be written to : <code>&lt;INPUT_ROOT&gt;/&lt;MASTER_NAME&gt;.&lt;mps|svf&gt;</code>, and the merged structure file to : <code>&lt;INPUT_ROOT&gt;/&lt;STRUCTURE_FILE&gt;</code>.</p>
+<h1><a class="anchor" id="autotoc_md237"></a>
+Master merger info file</h1>
+<p>The program expects <code>&lt;master_merger_info&gt;.json</code> to have the following structure :</p>
+<p><b>master_merger_info.json</b> : Example of a master structure file :</p>
 <div class="fragment"><div class="line">{</div>
 <div class="line">    &quot;initial_capacities&quot; : {</div>
 <div class="line">        &quot;default&quot; : 0,</div>
@@ -193,6 +195,7 @@ Master structure file</h1>
 <div class="line">    &quot;tree&quot; : {</div>
 <div class="line">        &quot;2030&quot; : {</div>
 <div class="line">            &quot;parent&quot; : &quot;root&quot;,</div>
+<div class="line">            &quot;node_weight&quot; : 10.0,</div>
 <div class="line">            &quot;candidates_costs&quot; : {</div>
 <div class="line">                &quot;semibase&quot; : {</div>
 <div class="line">                    &quot;investment&quot; : 5000,</div>
@@ -208,6 +211,7 @@ Master structure file</h1>
 <div class="line">        },</div>
 <div class="line">        &quot;2040&quot; : {</div>
 <div class="line">            &quot;parent&quot; : &quot;2030&quot;,</div>
+<div class="line">            &quot;node_weight&quot; : 10.0,</div>
 <div class="line">            &quot;candidates_costs&quot; : {</div>
 <div class="line">                &quot;semibase&quot; : {</div>
 <div class="line">                    &quot;investment&quot; : 5000,</div>
@@ -223,6 +227,7 @@ Master structure file</h1>
 <div class="line">        },</div>
 <div class="line">        &quot;2050_A&quot; : {</div>
 <div class="line">            &quot;parent&quot; : &quot;2040&quot;,</div>
+<div class="line">            &quot;node_weight&quot; : 8.0,</div>
 <div class="line">            &quot;candidates_costs&quot; : {</div>
 <div class="line">                &quot;semibase&quot; : {</div>
 <div class="line">                    &quot;investment&quot; : 4000,</div>
@@ -239,6 +244,7 @@ Master structure file</h1>
 <div class="line">        },</div>
 <div class="line">        &quot;2050_B&quot; : {</div>
 <div class="line">            &quot;parent&quot; : &quot;2040&quot;,</div>
+<div class="line">            &quot;node_weight&quot; : 2.0,</div>
 <div class="line">            &quot;candidates_costs&quot; : {</div>
 <div class="line">                &quot;semibase&quot; : {</div>
 <div class="line">                    &quot;investment&quot; : 1000,</div>
@@ -260,75 +266,190 @@ Master structure file</h1>
 <li><code>initial_capacities</code> contains, for each candidate, the capacity installed at before the first investment time point.</li>
 <li><code>constraints</code> contains user-given trajectory constraints on the different investment variables. See the Trajectory constraints section for more details.</li>
 <li><code>tree</code> contains the trajectory tree itself, and the data pertaining to each of its nodes. Each of the nodes contains the following data:<ul>
-<li><code>lp_folder</code> points to a folder containing both the <code>master_mps_file</code> and the <code>structure_file</code> of this annual study.</li>
+<li><code>lp_folder</code> points to a folder containing both the <code>master_file</code> and the <code>structure_file</code> of this annual study.</li>
 <li><code>parent</code> is the name of the node's parent in the tree.</li>
-<li><code>weight_factor</code> is the node's weight $w(n)$ in the objective function. Note that in this example, we used a discounting rate of $0$ to get an aggregated weight of $10$ on each investment time point.</li>
-<li><code>candidates_costs</code> contains the coefficients of the corresponding variables in the final objective. Each of those costs already incorporates the probability of the node appearing, the node's represented duration and the discounting.The coefficient was pre-computed using the python orchestrator.</li>
+<li><code>node_weight</code> is the node's weight $w(n)$ in the objective function. Note that in this example, we used a discounting rate of $0$ to get an aggregated weight of $10$ on each investment time point.</li>
+<li><code>candidates_costs</code> contains the coefficients of the corresponding variables in the final objective. Each of those costs already incorporates the probability of the node appearing, the node's represented duration and the discounting.The coefficient was pre-computed when parsing user input data.</li>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md239"></a>
- LpPathes file</h1>
-<p>We give an example of a corresponding <code>lp_pathes.json</code></p>
+<h1><a class="anchor" id="autotoc_md238"></a>
+ Nodal lp info file</h1>
+<p>To access the <code>lp</code> data of each node, the executable expects to be passed the <a href="./multiple-problem-generation.md#output--nodal-lp-info-file">nodal lp info file</a> that references the location &amp; filenames of the ouput of the <code>problem_generation</code> step for each node.</p>
 <div class="fragment"><div class="line">{</div>
-<div class="line">    &quot;2030&quot; : {</div>
-<div class="line">            &quot;lp_folder&quot; : &quot;node_2030__lp&quot;,</div>
-<div class="line">            &quot;master_mps_file&quot; : &quot;node_2030__master.mps&quot;,</div>
-<div class="line">            &quot;structure_file&quot; : &quot;node_2030__structure.txt&quot;</div>
-<div class="line">    },</div>
-<div class="line">    &quot;2040&quot; : {</div>
-<div class="line">            &quot;lp_folder&quot; : &quot;node_2040__lp&quot;,</div>
-<div class="line">            &quot;master_mps_file&quot; : &quot;node_2040__master.mps&quot;,</div>
-<div class="line">            &quot;structure_file&quot; : &quot;node_2040__structure.txt&quot;</div>
-<div class="line">    },</div>
-<div class="line">    &quot;2050_A&quot; : {</div>
-<div class="line">            &quot;lp_folder&quot; : &quot;node_2050_A__lp&quot;,</div>
-<div class="line">            &quot;master_mps_file&quot; : &quot;node_2050_A__master.mps&quot;,</div>
-<div class="line">            &quot;structure_file&quot; : &quot;node_2050_A__structure.txt&quot;</div>
-<div class="line">    },</div>
-<div class="line">    &quot;2050_B&quot; : {</div>
-<div class="line">            &quot;lp_folder&quot; : &quot;node_2050_B__lp&quot;,</div>
-<div class="line">            &quot;master_mps_file&quot; : &quot;node_2050_B__master.mps&quot;,</div>
-<div class="line">            &quot;structure_file&quot; : &quot;node_2050_B__structure.txt&quot;</div>
-<div class="line">    }</div>
+<div class="line">   &quot;2030&quot; : </div>
+<div class="line">   {</div>
+<div class="line">      &quot;lp_folder&quot; : &quot;./node_2030_study/output/20250526-1505eco/lp/&quot;,</div>
+<div class="line">      &quot;master_file&quot; : &quot;master&quot;,</div>
+<div class="line">      &quot;structure_file&quot; : &quot;structure.txt&quot;,</div>
+<div class="line">      &quot;weights_file&quot; : &quot;weights.txt&quot;</div>
+<div class="line">   },</div>
+<div class="line">   &quot;2040&quot; : </div>
+<div class="line">   {</div>
+<div class="line">      &quot;lp_folder&quot; : &quot;./node_2040_study/output/20250526-1505eco/lp/&quot;,</div>
+<div class="line">      &quot;master_file&quot; : &quot;master&quot;,</div>
+<div class="line">      &quot;structure_file&quot; : &quot;structure.txt&quot;,</div>
+<div class="line">      &quot;weights_file&quot; : &quot;weights.txt&quot;</div>
+<div class="line">   },</div>
+<div class="line">   &quot;2050_A&quot; : </div>
+<div class="line">   {</div>
+<div class="line">      &quot;lp_folder&quot; : &quot;./node_2050_A_study/output/20250526-1505eco/lp/&quot;,</div>
+<div class="line">      &quot;master_file&quot; : &quot;master&quot;,</div>
+<div class="line">      &quot;structure_file&quot; : &quot;structure.txt&quot;,</div>
+<div class="line">      &quot;weights_file&quot; : &quot;weights.txt&quot;</div>
+<div class="line">   },</div>
+<div class="line">   &quot;2050_B&quot; : </div>
+<div class="line">   {</div>
+<div class="line">      &quot;lp_folder&quot; : &quot;./node_2050_B_study/output/20250526-1505eco/lp/&quot;,</div>
+<div class="line">      &quot;master_file&quot; : &quot;master&quot;,</div>
+<div class="line">      &quot;structure_file&quot; : &quot;structure.txt&quot;,</div>
+<div class="line">      &quot;weights_file&quot; : &quot;weights.txt&quot;</div>
+<div class="line">   }</div>
 <div class="line">}</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md240"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md239"></a>
 Input files from each annual study</h1>
-<p>We give below what the folder given as <code>INPUTROOT</code> in the options file should look like in the present example : </p><div class="fragment"><div class="line">├── master_structure.json</div>
-<div class="line">├── node_2030__lp</div>
-<div class="line">│   ├── node_2030__master.mps</div>
-<div class="line">│   ├── node_2030__problem-1-1--optim-nb-1.mps</div>
-<div class="line">│   ├── node_2030__problem-1-2--optim-nb-1.mps</div>
-<div class="line">│   ├── node_2030__problem-2-1--optim-nb-1.mps</div>
-<div class="line">│   ├── node_2030__problem-2-2--optim-nb-1.mps</div>
-<div class="line">│   └── node_2030__structure.txt</div>
-<div class="line">├── node_2040__lp</div>
-<div class="line">│   ├── node_2040__master.mps</div>
-<div class="line">│   ├── node_2040__problem-1-1--optim-nb-1.mps</div>
-<div class="line">│   ├── node_2040__problem-1-2--optim-nb-1.mps</div>
-<div class="line">│   ├── node_2040__problem-2-1--optim-nb-1.mps</div>
-<div class="line">│   ├── node_2040__problem-2-2--optim-nb-1.mps</div>
-<div class="line">│   └── node_2040__structure.txt</div>
-<div class="line">├── node_2050_A__lp</div>
-<div class="line">│   ├── node_2050_A__master.mps</div>
-<div class="line">│   ├── node_2050_A__problem-1-1--optim-nb-1.mps</div>
-<div class="line">│   ├── node_2050_A__problem-1-2--optim-nb-1.mps</div>
-<div class="line">│   ├── node_2050_A__problem-2-1--optim-nb-1.mps</div>
-<div class="line">│   ├── node_2050_A__problem-2-2--optim-nb-1.mps</div>
-<div class="line">│   ├── node_2050_A__ProblemGenerationLog.txt</div>
-<div class="line">│   └── node_2050_A__structure.txt</div>
-<div class="line">├── node_2050_B__lp</div>
-<div class="line">│   ├── node_2050_B__master.mps</div>
-<div class="line">│   ├── node_2050_B__problem-1-1--optim-nb-1.mps</div>
-<div class="line">│   ├── node_2050_B__problem-1-2--optim-nb-1.mps</div>
-<div class="line">│   ├── node_2050_B__problem-2-1--optim-nb-1.mps</div>
-<div class="line">│   ├── node_2050_B__problem-2-2--optim-nb-1.mps</div>
-<div class="line">│   └── node_2050_B__structure.txt</div>
-</div><!-- fragment --><p> Each of the subfolder is the ouput of of <code>antares -i &lt;study&gt; --step problem_generation</code>. For example, the structure file of a given node should be found at : </p><div class="fragment"><div class="line">&lt;INPUTROOT&gt;/&lt;lp_folder&gt;/&lt;structure_file&gt;</div>
-</div><!-- fragment --><p>Note that the subfolders as presented in this example do not have to be immediately contained in the <code>&lt;INPUTROOT&gt;</code> folder, and could be kept in the <code>output</code> folders of each annual study (and thus `<code>&lt;INPUTROOT&gt;</code> would then contain each of the full Antares studies, and each <code>lp_folder</code> would point to : <code>&lt;study_folder&gt;/ouput/&lt;date&gt;-Xpansion/lp</code>)</p>
-<h1><a class="anchor" id="autotoc_md241"></a>
+<p>We give below what the folder given as <code>INPUTROOT</code> in the options file should look like in the present example : </p><div class="fragment"><div class="line">.</div>
+<div class="line">├── intermediary_files</div>
+<div class="line">│   ├── master_merger_info.json</div>
+<div class="line">│   ├── merge_master_options.json</div>
+<div class="line">│   └── nodal_lp_info.json</div>
+<div class="line">├── node_2030_study</div>
+<div class="line">│   ├── Desktop.ini</div>
+<div class="line">│   ├── input ...</div>
+<div class="line">│   ├── layers ...</div>
+<div class="line">│   ├── logs ...</div>
+<div class="line">│   ├── output</div>
+<div class="line">│   │   └── 20250526-1505eco</div>
+<div class="line">│   │       ├── &lt;various_files&gt;</div>
+<div class="line">│   │       ├── about-the-study ...</div>
+<div class="line">│   │       ├── economy ...</div>
+<div class="line">│   │       ├── lp</div>
+<div class="line">│   │       │   ├── master.mps</div>
+<div class="line">│   │       │   ├── problem-1-1--optim-nb-1.mps</div>
+<div class="line">│   │       │   ├── problem-1-2--optim-nb-1.mps</div>
+<div class="line">│   │       │   ├── problem-2-1--optim-nb-1.mps</div>
+<div class="line">│   │       │   ├── problem-2-2--optim-nb-1.mps</div>
+<div class="line">│   │       │   ├── ProblemGenerationLog.txt</div>
+<div class="line">│   │       │   ├── structure.txt</div>
+<div class="line">│   │       │   └── weights.txt</div>
+<div class="line">│   │       ├── optimization ...</div>
+<div class="line">│   │       └── ts-numbers ...</div>
+<div class="line">│   ├── settings ...</div>
+<div class="line">│   ├── study.antares</div>
+<div class="line">│   └── user</div>
+<div class="line">│       └── expansion</div>
+<div class="line">│           ├── candidates.ini</div>
+<div class="line">│           ├── capa ...</div>
+<div class="line">│           ├── constraints ...</div>
+<div class="line">│           ├── outer_loop ...</div>
+<div class="line">│           ├── sensitivity ...</div>
+<div class="line">│           ├── settings.ini</div>
+<div class="line">│           └── weights</div>
+<div class="line">│               └── weights.txt</div>
+<div class="line">├── node_2040_study</div>
+<div class="line">│   ├── Desktop.ini</div>
+<div class="line">│   ├── input ...</div>
+<div class="line">│   ├── layers ...</div>
+<div class="line">│   ├── logs ...</div>
+<div class="line">│   ├── output</div>
+<div class="line">│   │   └── 20250526-1505eco</div>
+<div class="line">│   │       ├── &lt;various_files&gt;</div>
+<div class="line">│   │       ├── about-the-study ...</div>
+<div class="line">│   │       ├── economy ...</div>
+<div class="line">│   │       ├── lp</div>
+<div class="line">│   │       │   ├── master.mps</div>
+<div class="line">│   │       │   ├── problem-1-1--optim-nb-1.mps</div>
+<div class="line">│   │       │   ├── problem-1-2--optim-nb-1.mps</div>
+<div class="line">│   │       │   ├── problem-2-1--optim-nb-1.mps</div>
+<div class="line">│   │       │   ├── problem-2-2--optim-nb-1.mps</div>
+<div class="line">│   │       │   ├── ProblemGenerationLog.txt</div>
+<div class="line">│   │       │   ├── structure.txt</div>
+<div class="line">│   │       │   └── weights.txt</div>
+<div class="line">│   │       ├── optimization ...</div>
+<div class="line">│   │       └── ts-numbers ...</div>
+<div class="line">│   ├── settings ...</div>
+<div class="line">│   ├── study.antares</div>
+<div class="line">│   └── user</div>
+<div class="line">│       └── expansion</div>
+<div class="line">│           ├── candidates.ini</div>
+<div class="line">│           ├── capa ...</div>
+<div class="line">│           ├── constraints ...</div>
+<div class="line">│           ├── outer_loop ...</div>
+<div class="line">│           ├── sensitivity ...</div>
+<div class="line">│           ├── settings.ini</div>
+<div class="line">│           └── weights</div>
+<div class="line">│               └── weights.txt</div>
+<div class="line">├── node_2050_A_study</div>
+<div class="line">│   ├── Desktop.ini</div>
+<div class="line">│   ├── input ...</div>
+<div class="line">│   ├── layers ...</div>
+<div class="line">│   ├── logs ...</div>
+<div class="line">│   ├── output</div>
+<div class="line">│   │   └── 20250526-1505eco</div>
+<div class="line">│   │       ├── &lt;various_files&gt;</div>
+<div class="line">│   │       ├── about-the-study ...</div>
+<div class="line">│   │       ├── economy ...</div>
+<div class="line">│   │       ├── lp</div>
+<div class="line">│   │       │   ├── master.mps</div>
+<div class="line">│   │       │   ├── problem-1-1--optim-nb-1.mps</div>
+<div class="line">│   │       │   ├── problem-1-2--optim-nb-1.mps</div>
+<div class="line">│   │       │   ├── problem-2-1--optim-nb-1.mps</div>
+<div class="line">│   │       │   ├── problem-2-2--optim-nb-1.mps</div>
+<div class="line">│   │       │   ├── ProblemGenerationLog.txt</div>
+<div class="line">│   │       │   ├── structure.txt</div>
+<div class="line">│   │       │   └── weights.txt</div>
+<div class="line">│   │       ├── optimization ...</div>
+<div class="line">│   │       └── ts-numbers ...</div>
+<div class="line">│   ├── settings ...</div>
+<div class="line">│   ├── study.antares</div>
+<div class="line">│   └── user</div>
+<div class="line">│       └── expansion</div>
+<div class="line">│           ├── candidates.ini</div>
+<div class="line">│           ├── capa ...</div>
+<div class="line">│           ├── constraints ...</div>
+<div class="line">│           ├── outer_loop ...</div>
+<div class="line">│           ├── sensitivity ...</div>
+<div class="line">│           ├── settings.ini</div>
+<div class="line">│           └── weights</div>
+<div class="line">│               └── weights.txt</div>
+<div class="line">└── node_2050_B_study</div>
+<div class="line">    ├── Desktop.ini</div>
+<div class="line">    ├── input ...</div>
+<div class="line">    ├── layers ...</div>
+<div class="line">    ├── logs ...</div>
+<div class="line">    ├── output</div>
+<div class="line">    │   └── 20250526-1505eco</div>
+<div class="line">    │       ├── &lt;various_files&gt;</div>
+<div class="line">    │       ├── about-the-study ...</div>
+<div class="line">    │       ├── economy ...</div>
+<div class="line">    │       ├── lp</div>
+<div class="line">    │       │   ├── master.mps</div>
+<div class="line">    │       │   ├── problem-1-1--optim-nb-1.mps</div>
+<div class="line">    │       │   ├── problem-1-2--optim-nb-1.mps</div>
+<div class="line">    │       │   ├── problem-2-1--optim-nb-1.mps</div>
+<div class="line">    │       │   ├── problem-2-2--optim-nb-1.mps</div>
+<div class="line">    │       │   ├── ProblemGenerationLog.txt</div>
+<div class="line">    │       │   ├── structure.txt</div>
+<div class="line">    │       │   └── weights.txt</div>
+<div class="line">    │       ├── optimization ...</div>
+<div class="line">    │       └── ts-numbers ...</div>
+<div class="line">    ├── settings ...</div>
+<div class="line">    ├── study.antares</div>
+<div class="line">    └── user</div>
+<div class="line">        └── expansion</div>
+<div class="line">            ├── candidates.ini</div>
+<div class="line">            ├── capa ...</div>
+<div class="line">            ├── constraints ...</div>
+<div class="line">            ├── outer_loop ...</div>
+<div class="line">            ├── sensitivity ...</div>
+<div class="line">            ├── settings.ini</div>
+<div class="line">            └── weights</div>
+<div class="line">                └── weights.txt</div>
+</div><!-- fragment --><p> Each of the subfolder is the output of <code>antares -i &lt;study&gt; --step problem_generation</code>. For example, the structure file of a given node should be found at : </p><div class="fragment"><div class="line">&lt;INPUTROOT&gt;/&lt;lp_folder&gt;/&lt;structure_file&gt;</div>
+</div><!-- fragment --><p>Note that the subfolders as presented in this example do not have to be inside the the full study structure and could have been generated and copied from elsewhere in the <code>&lt;INPUTROOT&gt;</code> folder.</p>
+<h1><a class="anchor" id="autotoc_md240"></a>
 Trajectory constraints</h1>
-<p>In the <code>constraints</code> section of the <code>master_structure.json</code> file, we expect the constraints to be given in the following manner:</p>
+<p>In the <code>constraints</code> section of the <code>master_merger_info.json</code> file, we expect the constraints to be given in the following manner:</p>
 <ul>
 <li><code>coeffs</code> is a dict of investment variable reference to their coefficient in the present constraint. Each reference is built as : <code>&lt;node_name&gt;::&lt;candidate_name&gt;::&lt;variable_type&gt;</code>, where variable type is either :<ul>
 <li><code>x</code> when referencing the $x_{n,i}$ variable.</li>
@@ -336,17 +457,14 @@ Trajectory constraints</h1>
 <li><code>dx_minus</code> when referencing the $dx_{n,i}^⁻$ variable.</li>
 </ul>
 </li>
-<li><code>rhs</code> contains the right-hand side of the constraint expression. (Note that all constraints are formulated as a $\leq$ constraint for now)</li>
+<li><code>rhs</code> contains the right-hand side of the constraint expression.</li>
 <li><code>operator</code> defines the type of constraint we want to set and expects one of three values :<ul>
 <li><code>&lt;</code> for constraints of type : $expression \leq rhs$</li>
 <li><code>=</code> for constraints of type : $expression = rhs$</li>
-<li><code>&gt;</code> for constraints of type : $expression \geq rhs$</li>
+<li><code>&gt;</code> for constraints of type : $expression \geq rhs$ </li>
 </ul>
 </li>
 </ul>
-<h1><a class="anchor" id="autotoc_md242"></a>
-Weights</h1>
-<p>The weights given by the user in the <code>master_structure_file</code> are only applied to the merged master problem's objective. This means that the user must take care to also specify the correct corresponding yearly weights to each subproblem for each annual Xpansion study using the <code>yearly_weights</code> parameter when solving the merged master problem. Thus, if the Monte Carlo years of node $n \in G$ had respective weights $(\omega_{i,n})_{\forall i \in [|1, N|]}$, we must set the new weights of each subproblem of the merged master problem as : $(\omega^{merged}_{i,n} = w(n) \times \omega_{i,n})_{\forall n \in G, \forall i \in [|1, N|]}$. Note that this means that the weights given to the subproblems do not add up to $1$, as they are now reflective of the duration represented by the assiociated node, its probability of occurence and the probability of occurence of each specific Monte-Carlo year inside a specific node - whereas in the annual version, the weight of the node was 1 (the node represented one year and was the only possible scenario) and thus the weights of subproblems was simply the probability of occurence of each Monte-Carlo year. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

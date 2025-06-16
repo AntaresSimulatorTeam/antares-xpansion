@@ -1,7 +1,7 @@
 var searchData=
 [
   ['nameandtags_0',['NameAndTags',['../structCatch_1_1NameAndTags.html',1,'Catch']]],
-  ['nodedata_1',['NodeData',['../classtrajectory__module_1_1TrajectoryModule_1_1NodeData.html',1,'trajectory_module::TrajectoryModule']]],
+  ['nodedata_1',['NodeData',['../classtrajectory__module_1_1TrajectoryModule_1_1NodeData.html',1,'trajectory_module.TrajectoryModule.NodeData'],['../classuser__input__translation_1_1TrajectoryModule_1_1NodeData.html',1,'user_input_translation.TrajectoryModule.NodeData']]],
   ['nodelpdatalocation_2',['NodeLpDataLocation',['../structNodeLpDataLocation.html',1,'']]],
   ['noinvestmentcomputedforthecandidate_3',['NoInvestmentComputedForTheCandidate',['../classStudyUpdateStrategy_1_1NoInvestmentComputedForTheCandidate.html',1,'StudyUpdateStrategy']]],
   ['noncopyable_4',['NonCopyable',['../classCatch_1_1NonCopyable.html',1,'Catch']]],

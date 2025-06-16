@@ -1,0 +1,273 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.12.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Antares Xpansion" />
+<meta property="og:image" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/blob/develop/docs/assets/logo.png" />
+<meta property="og:description" content="Investment simulations for Antares studies." />
+<meta property="og:url" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/blob/develop/docs/assets/logo.png" />
+<meta name="twitter:title" content="Antares Xpansion" />
+<meta name="twitter:description" content="Investment simulations for Antares studies." />
+<!-- END twitter metadata -->
+<title>Antares Xpansion: driver_multiple_problem_gen.MultipleProblemGenerationDriver Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://github.com/AntaresSimulatorTeam/antares-xpansion/ -->
+<a href="https://github.com/AntaresSimulatorTeam/antares-xpansion" class="github-corner" title="View source on GitHub" target="_blank">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Antares Xpansion
+   </div>
+   <div id="projectbrief">Investment simulations for Antares studies</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.12.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('classdriver__multiple__problem__gen_1_1MultipleProblemGenerationDriver.html',''); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#nested-classes">Classes</a> &#124;
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
+<a href="classdriver__multiple__problem__gen_1_1MultipleProblemGenerationDriver-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">driver_multiple_problem_gen.MultipleProblemGenerationDriver Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
+Classes</h2></td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdriver__multiple__problem__gen_1_1MultipleProblemGenerationDriver_1_1MultipleProblemGenerationExecutionError.html">MultipleProblemGenerationExecutionError</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classdriver__multiple__problem__gen_1_1MultipleProblemGenerationDriver_1_1MultipleProblemGenerationExeError.html">MultipleProblemGenerationExeError</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a9682853a9487ce1f08926841b35afffb" id="r_a9682853a9487ce1f08926841b35afffb"><td class="memItemLeft" align="right" valign="top"><a id="a9682853a9487ce1f08926841b35afffb" name="a9682853a9487ce1f08926841b35afffb"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b> (self, <a class="el" href="classdriver__multiple__problem__gen_1_1MultipleProblemGenerationData.html">MultipleProblemGenerationData</a> data)</td></tr>
+<tr class="separator:a9682853a9487ce1f08926841b35afffb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa9fed6b589e16c729882f094d73bde66" id="r_aa9fed6b589e16c729882f094d73bde66"><td class="memItemLeft" align="right" valign="top"><a id="aa9fed6b589e16c729882f094d73bde66" name="aa9fed6b589e16c729882f094d73bde66"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>launch</b> (self)</td></tr>
+<tr class="separator:aa9fed6b589e16c729882f094d73bde66"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a5ffa4abf916709c210fb0f2824f35a8b" id="r_a5ffa4abf916709c210fb0f2824f35a8b"><td class="memItemLeft" align="right" valign="top"><a id="a5ffa4abf916709c210fb0f2824f35a8b" name="a5ffa4abf916709c210fb0f2824f35a8b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>exe_path</b> = data.exe_path</td></tr>
+<tr class="separator:a5ffa4abf916709c210fb0f2824f35a8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a88d0ae3da246cbc68adde961cdf0d803" id="r_a88d0ae3da246cbc68adde961cdf0d803"><td class="memItemLeft" align="right" valign="top"><a id="a88d0ae3da246cbc68adde961cdf0d803" name="a88d0ae3da246cbc68adde961cdf0d803"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>input_root</b> = data.input_root</td></tr>
+<tr class="separator:a88d0ae3da246cbc68adde961cdf0d803"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3f2254cd20e2eb7e3ffbd286d7277395" id="r_a3f2254cd20e2eb7e3ffbd286d7277395"><td class="memItemLeft" align="right" valign="top"><a id="a3f2254cd20e2eb7e3ffbd286d7277395" name="a3f2254cd20e2eb7e3ffbd286d7277395"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>user_input_file</b> = data.user_input_file</td></tr>
+<tr class="separator:a3f2254cd20e2eb7e3ffbd286d7277395"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:acf2f98aa4c622f737865074d4ea28d35" id="r_acf2f98aa4c622f737865074d4ea28d35"><td class="memItemLeft" align="right" valign="top"><a id="acf2f98aa4c622f737865074d4ea28d35" name="acf2f98aa4c622f737865074d4ea28d35"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>memory</b> = data.memory</td></tr>
+<tr class="separator:acf2f98aa4c622f737865074d4ea28d35"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2060893f3ca7d305b8131b71fb1f51eb" id="r_a2060893f3ca7d305b8131b71fb1f51eb"><td class="memItemLeft" align="right" valign="top"><a id="a2060893f3ca7d305b8131b71fb1f51eb" name="a2060893f3ca7d305b8131b71fb1f51eb"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>input_file</b> = data.mpg_input</td></tr>
+<tr class="separator:a2060893f3ca7d305b8131b71fb1f51eb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad5b90ccdc1b199bb4c145d120e36fda7" id="r_ad5b90ccdc1b199bb4c145d120e36fda7"><td class="memItemLeft" align="right" valign="top"><a id="ad5b90ccdc1b199bb4c145d120e36fda7" name="ad5b90ccdc1b199bb4c145d120e36fda7"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>node_to_custom_weights_file_file</b> = data.mpg_weights</td></tr>
+<tr class="separator:ad5b90ccdc1b199bb4c145d120e36fda7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a128ad525c59feaf5a08b6a4aac81f645" id="r_a128ad525c59feaf5a08b6a4aac81f645"><td class="memItemLeft" align="right" valign="top"><a id="a128ad525c59feaf5a08b6a4aac81f645" name="a128ad525c59feaf5a08b6a4aac81f645"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>node_to_add_constraints_file_file</b> = data.mpg_constraints</td></tr>
+<tr class="separator:a128ad525c59feaf5a08b6a4aac81f645"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0b3014b0d0cc3bf447d5ec1f36aa84a4" id="r_a0b3014b0d0cc3bf447d5ec1f36aa84a4"><td class="memItemLeft" align="right" valign="top"><a id="a0b3014b0d0cc3bf447d5ec1f36aa84a4" name="a0b3014b0d0cc3bf447d5ec1f36aa84a4"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>nodal_lp_info_file</b> = data.mpg_nodal_lp_info_file</td></tr>
+<tr class="separator:a0b3014b0d0cc3bf447d5ec1f36aa84a4"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a72b945fefe43fa449e50afd29954311d" id="r_a72b945fefe43fa449e50afd29954311d"><td class="memItemLeft" align="right" valign="top"><a id="a72b945fefe43fa449e50afd29954311d" name="a72b945fefe43fa449e50afd29954311d"></a>
+dict&#160;</td><td class="memItemRight" valign="bottom"><b>node_to_studies</b> = {}</td></tr>
+<tr class="separator:a72b945fefe43fa449e50afd29954311d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7d00cc3d2eb3661e98a7083375cc3778" id="r_a7d00cc3d2eb3661e98a7083375cc3778"><td class="memItemLeft" align="right" valign="top"><a id="a7d00cc3d2eb3661e98a7083375cc3778" name="a7d00cc3d2eb3661e98a7083375cc3778"></a>
+dict&#160;</td><td class="memItemRight" valign="bottom"><b>node_to_weights_file</b> = {}</td></tr>
+<tr class="separator:a7d00cc3d2eb3661e98a7083375cc3778"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6700e528f18bd15bd4b348b8ed6844cf" id="r_a6700e528f18bd15bd4b348b8ed6844cf"><td class="memItemLeft" align="right" valign="top"><a id="a6700e528f18bd15bd4b348b8ed6844cf" name="a6700e528f18bd15bd4b348b8ed6844cf"></a>
+dict&#160;</td><td class="memItemRight" valign="bottom"><b>node_to_additional_constraints</b> = {}</td></tr>
+<tr class="separator:a6700e528f18bd15bd4b348b8ed6844cf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab03fde53f6148971bd97ba0730f7b966" id="r_ab03fde53f6148971bd97ba0730f7b966"><td class="memItemLeft" align="right" valign="top"><a id="ab03fde53f6148971bd97ba0730f7b966" name="ab03fde53f6148971bd97ba0730f7b966"></a>
+str&#160;</td><td class="memItemRight" valign="bottom"><b>formulation</b> = &quot;relaxed&quot;</td></tr>
+<tr class="separator:ab03fde53f6148971bd97ba0730f7b966"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a51791f3658d80c52a39eea431fd93cb1" id="r_a51791f3658d80c52a39eea431fd93cb1"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a51791f3658d80c52a39eea431fd93cb1">_read_data_and_prepare_input_files</a> (self)</td></tr>
+<tr class="separator:a51791f3658d80c52a39eea431fd93cb1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a57d36fd57ca4e0b8a69aa5842d6098c7" id="r_a57d36fd57ca4e0b8a69aa5842d6098c7"><td class="memItemLeft" align="right" valign="top"><a id="a57d36fd57ca4e0b8a69aa5842d6098c7" name="a57d36fd57ca4e0b8a69aa5842d6098c7"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>_write_input_files</b> (self)</td></tr>
+<tr class="separator:a57d36fd57ca4e0b8a69aa5842d6098c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2b46add9000baac54a13d0c293e9fd3b" id="r_a2b46add9000baac54a13d0c293e9fd3b"><td class="memItemLeft" align="right" valign="top"><a id="a2b46add9000baac54a13d0c293e9fd3b" name="a2b46add9000baac54a13d0c293e9fd3b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>_get_mpg_args</b> (self)</td></tr>
+<tr class="separator:a2b46add9000baac54a13d0c293e9fd3b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af39e6ff606d7d7f32c35d50ae4a4e456" id="r_af39e6ff606d7d7f32c35d50ae4a4e456"><td class="memItemLeft" align="right" valign="top"><a id="af39e6ff606d7d7f32c35d50ae4a4e456" name="af39e6ff606d7d7f32c35d50ae4a4e456"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>_get_mpg_command</b> (self)</td></tr>
+<tr class="separator:af39e6ff606d7d7f32c35d50ae4a4e456"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a745ce9b22acb36c7fb7176b72fe42a1b" id="r_a745ce9b22acb36c7fb7176b72fe42a1b"><td class="memItemLeft" align="right" valign="top"><a id="a745ce9b22acb36c7fb7176b72fe42a1b" name="a745ce9b22acb36c7fb7176b72fe42a1b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>_launch_executable</b> (self)</td></tr>
+<tr class="separator:a745ce9b22acb36c7fb7176b72fe42a1b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:a7e8c8ee317349540ec26c080acae3478" id="r_a7e8c8ee317349540ec26c080acae3478"><td class="memItemLeft" align="right" valign="top"><a id="a7e8c8ee317349540ec26c080acae3478" name="a7e8c8ee317349540ec26c080acae3478"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>_write_dict_to_file</b> (dict[str, Path] dict, Path filename)</td></tr>
+<tr class="separator:a7e8c8ee317349540ec26c080acae3478"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
+<div class="textblock"><pre class="fragment">ONLY MEMORY MODE IS IMPLEMENTED FOR NOW
+</pre> </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a51791f3658d80c52a39eea431fd93cb1" name="a51791f3658d80c52a39eea431fd93cb1"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a51791f3658d80c52a39eea431fd93cb1">&#9670;&#160;</a></span>_read_data_and_prepare_input_files()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">driver_multiple_problem_gen.MultipleProblemGenerationDriver._read_data_and_prepare_input_files </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">Load the user input file and load into memory the list of studies.
+Read the choice of formulation, either "relaxed" or "integer"
+Load each study to get the path of the possible weights (resp. additional constraints) file.
+</pre> 
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>src/python/antares_xpansion/trajectory/<b>driver_multiple_problem_gen.py</b></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><b>driver_multiple_problem_gen</b></li><li class="navelem"><a class="el" href="classdriver__multiple__problem__gen_1_1MultipleProblemGenerationDriver.html">MultipleProblemGenerationDriver</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
+  </ul>
+</div>
+</body>
+</html>

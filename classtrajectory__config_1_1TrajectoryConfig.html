@@ -1,0 +1,334 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=9"/>
+<meta name="generator" content="Doxygen 1.12.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<!-- BEGIN opengraph metadata -->
+<meta property="og:title" content="Antares Xpansion" />
+<meta property="og:image" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/blob/develop/docs/assets/logo.png" />
+<meta property="og:description" content="Investment simulations for Antares studies." />
+<meta property="og:url" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/" />
+<!-- END opengraph metadata -->
+<!-- BEGIN twitter metadata -->
+<meta name="twitter:image:src" content="https://github.com/AntaresSimulatorTeam/antares-xpansion/blob/develop/docs/assets/logo.png" />
+<meta name="twitter:title" content="Antares Xpansion" />
+<meta name="twitter:description" content="Investment simulations for Antares studies." />
+<!-- END twitter metadata -->
+<title>Antares Xpansion: trajectory_config.TrajectoryConfig Class Reference</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
+<script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="dynsections.js"></script>
+<script type="text/javascript" src="doxygen-awesome-darkmode-toggle.js"></script>
+<script type="text/javascript" src="doxygen-awesome-fragment-copy-button.js"></script>
+<script type="text/javascript" src="doxygen-awesome-paragraph-link.js"></script>
+<script type="text/javascript" src="doxygen-awesome-interactive-toc.js"></script>
+<script type="text/javascript" src="doxygen-awesome-tabs.js"></script>
+<script type="text/javascript" src="toggle-alternative-theme.js"></script>
+<script type="text/javascript">
+    DoxygenAwesomeFragmentCopyButton.init()
+    DoxygenAwesomeDarkModeToggle.init()
+    DoxygenAwesomeParagraphLink.init()
+    DoxygenAwesomeInteractiveToc.init()
+    DoxygenAwesomeTabs.init()
+</script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="resize.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+  extensions: ["tex2jax.js"],
+  jax: ["input/TeX","output/HTML-CSS"],
+});
+</script>
+<script type="text/javascript" async="async" src="https://cdn.jsdelivr.net/npm/mathjax@2/MathJax.js"></script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+<link href="doxygen-awesome.css" rel="stylesheet" type="text/css"/>
+<link href="custom.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only.css" rel="stylesheet" type="text/css"/>
+<link href="doxygen-awesome-sidebar-only-darkmode-toggle.css" rel="stylesheet" type="text/css"/>
+<link href="custom-alternative.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<!-- https://github.com/AntaresSimulatorTeam/antares-xpansion/ -->
+<a href="https://github.com/AntaresSimulatorTeam/antares-xpansion" class="github-corner" title="View source on GitHub" target="_blank">
+    <svg viewBox="0 0 250 250" width="40" height="40" style="position: absolute; top: 0; border: 0; right: 0; z-index: 99;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr style="height: 56px;">
+  <td id="projectalign" style="padding-left: 0.5em;">
+   <div id="projectname">Antares Xpansion
+   </div>
+   <div id="projectbrief">Investment simulations for Antares studies</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Generated by Doxygen 1.12.0 -->
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+var searchBox = new SearchBox("searchBox", "search/",'.html');
+/* @license-end */
+</script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() { codefold.init(0); });
+/* @license-end */
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function() {
+  initMenu('',true,false,'search.php','Search',true);
+  $(function() { init_search(); });
+});
+/* @license-end */
+</script>
+<div id="main-nav"></div>
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+/* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
+$(function(){initNavTree('classtrajectory__config_1_1TrajectoryConfig.html',''); initResizable(true); });
+/* @license-end */
+</script>
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Loading...</div>
+<div class="SRStatus" id="Searching">Searching...</div>
+<div class="SRStatus" id="NoMatches">No Matches</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="classtrajectory__config_1_1TrajectoryConfig-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">trajectory_config.TrajectoryConfig Class Reference</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="dynheader">
+Inheritance diagram for trajectory_config.TrajectoryConfig:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classtrajectory__config_1_1TrajectoryConfig.png" usemap="#trajectory_5Fconfig.TrajectoryConfig_map" alt=""/>
+  <map id="trajectory_5Fconfig.TrajectoryConfig_map" name="trajectory_5Fconfig.TrajectoryConfig_map">
+<area href="classtrajectory__config_1_1TrajectoryConfigDefaults.html" alt="trajectory_config.TrajectoryConfigDefaults" shape="rect" coords="0,0,253,24"/>
+  </map>
+</div></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:a98a769191227f70f65cc7ff3612c9fcc" id="r_a98a769191227f70f65cc7ff3612c9fcc"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a98a769191227f70f65cc7ff3612c9fcc">__init__</a> (self, <a class="el" href="classtrajectory__config_1_1TrajectoryInputParameters.html">TrajectoryInputParameters</a> input_parameters, <a class="el" href="classantares__xpansion_1_1xpansionConfig_1_1ConfigParameters.html">ConfigParameters</a> install_parameters)</td></tr>
+<tr class="separator:a98a769191227f70f65cc7ff3612c9fcc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a261c5c9e360b76cff660ca226223d579" id="r_a261c5c9e360b76cff660ca226223d579"><td class="memItemLeft" align="right" valign="top"><a id="a261c5c9e360b76cff660ca226223d579" name="a261c5c9e360b76cff660ca226223d579"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>get_executable_path</b> (self, str exe_name)</td></tr>
+<tr class="separator:a261c5c9e360b76cff660ca226223d579"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_methods_classtrajectory__config_1_1TrajectoryConfigDefaults"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classtrajectory__config_1_1TrajectoryConfigDefaults')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classtrajectory__config_1_1TrajectoryConfigDefaults.html">trajectory_config.TrajectoryConfigDefaults</a></td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Public Attributes</h2></td></tr>
+<tr class="memitem:a1d3b21c290e9a707ae3b93e65427db1f" id="r_a1d3b21c290e9a707ae3b93e65427db1f"><td class="memItemLeft" align="right" valign="top"><a id="a1d3b21c290e9a707ae3b93e65427db1f" name="a1d3b21c290e9a707ae3b93e65427db1f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>input_parameters</b> = input_parameters</td></tr>
+<tr class="separator:a1d3b21c290e9a707ae3b93e65427db1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac964b09303fbba39487cbf3427ceb1e5" id="r_ac964b09303fbba39487cbf3427ceb1e5"><td class="memItemLeft" align="right" valign="top"><a id="ac964b09303fbba39487cbf3427ceb1e5" name="ac964b09303fbba39487cbf3427ceb1e5"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>config_parameters</b> = install_parameters</td></tr>
+<tr class="separator:ac964b09303fbba39487cbf3427ceb1e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a217f1c6f14c8dd31d656c60f9cbff8b5" id="r_a217f1c6f14c8dd31d656c60f9cbff8b5"><td class="memItemLeft" align="right" valign="top"><a id="a217f1c6f14c8dd31d656c60f9cbff8b5" name="a217f1c6f14c8dd31d656c60f9cbff8b5"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>default_install_dir</b></td></tr>
+<tr class="separator:a217f1c6f14c8dd31d656c60f9cbff8b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada5678221c886d957c72c19ec84072d3" id="r_ada5678221c886d957c72c19ec84072d3"><td class="memItemLeft" align="right" valign="top"><a id="ada5678221c886d957c72c19ec84072d3" name="ada5678221c886d957c72c19ec84072d3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>step</b> = self.input_parameters.step</td></tr>
+<tr class="separator:ada5678221c886d957c72c19ec84072d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a537336b1dff2c9ee820287bfa721b2ff" id="r_a537336b1dff2c9ee820287bfa721b2ff"><td class="memItemLeft" align="right" valign="top"><a id="a537336b1dff2c9ee820287bfa721b2ff" name="a537336b1dff2c9ee820287bfa721b2ff"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>input_root</b> = self.input_parameters.input_root</td></tr>
+<tr class="separator:a537336b1dff2c9ee820287bfa721b2ff"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a39daa274e93320cab519cea3a031a9be" id="r_a39daa274e93320cab519cea3a031a9be"><td class="memItemLeft" align="right" valign="top"><a id="a39daa274e93320cab519cea3a031a9be" name="a39daa274e93320cab519cea3a031a9be"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>input_file</b> = self.input_parameters.input_file</td></tr>
+<tr class="separator:a39daa274e93320cab519cea3a031a9be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aab3a49593899c7e7510cebd2c3929d59" id="r_aab3a49593899c7e7510cebd2c3929d59"><td class="memItemLeft" align="right" valign="top"><a id="aab3a49593899c7e7510cebd2c3929d59" name="aab3a49593899c7e7510cebd2c3929d59"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>memory</b> = self.input_parameters.memory</td></tr>
+<tr class="separator:aab3a49593899c7e7510cebd2c3929d59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a33ad6865a14b1ea2ef631b136fecce51" id="r_a33ad6865a14b1ea2ef631b136fecce51"><td class="memItemLeft" align="right" valign="top"><a id="a33ad6865a14b1ea2ef631b136fecce51" name="a33ad6865a14b1ea2ef631b136fecce51"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>method</b> = self.input_parameters.method</td></tr>
+<tr class="separator:a33ad6865a14b1ea2ef631b136fecce51"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa78b3a6bb2fa8b8cfb6b2c2c32dc4482" id="r_aa78b3a6bb2fa8b8cfb6b2c2c32dc4482"><td class="memItemLeft" align="right" valign="top"><a id="aa78b3a6bb2fa8b8cfb6b2c2c32dc4482" name="aa78b3a6bb2fa8b8cfb6b2c2c32dc4482"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>n_mpi</b> = self.input_parameters.n_mpi</td></tr>
+<tr class="separator:aa78b3a6bb2fa8b8cfb6b2c2c32dc4482"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ad137b5212690626a800bb702a4d79529" id="r_ad137b5212690626a800bb702a4d79529"><td class="memItemLeft" align="right" valign="top"><a id="ad137b5212690626a800bb702a4d79529" name="ad137b5212690626a800bb702a4d79529"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>oversubsribe</b> = self.input_parameters.oversubscribe</td></tr>
+<tr class="separator:ad137b5212690626a800bb702a4d79529"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a403ac2fcd016eb4fa55082559245b355" id="r_a403ac2fcd016eb4fa55082559245b355"><td class="memItemLeft" align="right" valign="top"><a id="a403ac2fcd016eb4fa55082559245b355" name="a403ac2fcd016eb4fa55082559245b355"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>allow_run_as_root</b> = self.input_parameters.allow_run_as_root</td></tr>
+<tr class="separator:a403ac2fcd016eb4fa55082559245b355"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a44fc5ff4a84fbd189763384c2701d37d" id="r_a44fc5ff4a84fbd189763384c2701d37d"><td class="memItemLeft" align="right" valign="top"><a id="a44fc5ff4a84fbd189763384c2701d37d" name="a44fc5ff4a84fbd189763384c2701d37d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ANTARES</b> = self.config_parameters.ANTARES</td></tr>
+<tr class="separator:a44fc5ff4a84fbd189763384c2701d37d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af8b24fbe5c34e9585fce6a3232debef1" id="r_af8b24fbe5c34e9585fce6a3232debef1"><td class="memItemLeft" align="right" valign="top"><a id="af8b24fbe5c34e9585fce6a3232debef1" name="af8b24fbe5c34e9585fce6a3232debef1"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MERGE_MPS</b> = self.config_parameters.MERGE_MPS</td></tr>
+<tr class="separator:af8b24fbe5c34e9585fce6a3232debef1"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae385a37b06291dd49e70cdb480118c07" id="r_ae385a37b06291dd49e70cdb480118c07"><td class="memItemLeft" align="right" valign="top"><a id="ae385a37b06291dd49e70cdb480118c07" name="ae385a37b06291dd49e70cdb480118c07"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>BENDERS</b> = self.config_parameters.BENDERS</td></tr>
+<tr class="separator:ae385a37b06291dd49e70cdb480118c07"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4543ce113a359bfff34496b4ac5851ab" id="r_a4543ce113a359bfff34496b4ac5851ab"><td class="memItemLeft" align="right" valign="top"><a id="a4543ce113a359bfff34496b4ac5851ab" name="a4543ce113a359bfff34496b4ac5851ab"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>LP_NAMER</b> = self.config_parameters.LP_NAMER</td></tr>
+<tr class="separator:a4543ce113a359bfff34496b4ac5851ab"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a6b84f92720f3f6847e192c01d0c635d8" id="r_a6b84f92720f3f6847e192c01d0c635d8"><td class="memItemLeft" align="right" valign="top"><a id="a6b84f92720f3f6847e192c01d0c635d8" name="a6b84f92720f3f6847e192c01d0c635d8"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>STUDY_UPDATER</b> = self.config_parameters.STUDY_UPDATER</td></tr>
+<tr class="separator:a6b84f92720f3f6847e192c01d0c635d8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a09e6fbb5d4464e87600944a3c2cc0cec" id="r_a09e6fbb5d4464e87600944a3c2cc0cec"><td class="memItemLeft" align="right" valign="top"><a id="a09e6fbb5d4464e87600944a3c2cc0cec" name="a09e6fbb5d4464e87600944a3c2cc0cec"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>FULL_RUN</b> = self.config_parameters.FULL_RUN</td></tr>
+<tr class="separator:a09e6fbb5d4464e87600944a3c2cc0cec"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa7f99fa5d1a9a4df3f5ac1b6d19baf58" id="r_aa7f99fa5d1a9a4df3f5ac1b6d19baf58"><td class="memItemLeft" align="right" valign="top"><a id="aa7f99fa5d1a9a4df3f5ac1b6d19baf58" name="aa7f99fa5d1a9a4df3f5ac1b6d19baf58"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>OUTER_LOOP</b> = self.config_parameters.OUTER_LOOP</td></tr>
+<tr class="separator:aa7f99fa5d1a9a4df3f5ac1b6d19baf58"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a01b00dc8072fa51ed1f418ca2331cf20" id="r_a01b00dc8072fa51ed1f418ca2331cf20"><td class="memItemLeft" align="right" valign="top"><a id="a01b00dc8072fa51ed1f418ca2331cf20" name="a01b00dc8072fa51ed1f418ca2331cf20"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>ANTARES_ARCHIVE_UPDATER</b> = self.config_parameters.ANTARES_ARCHIVE_UPDATER</td></tr>
+<tr class="separator:a01b00dc8072fa51ed1f418ca2331cf20"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ca688b776e6925992e4fdc3e2a54dd7" id="r_a8ca688b776e6925992e4fdc3e2a54dd7"><td class="memItemLeft" align="right" valign="top"><a id="a8ca688b776e6925992e4fdc3e2a54dd7" name="a8ca688b776e6925992e4fdc3e2a54dd7"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SENSITIVITY_EXE</b> = self.config_parameters.SENSITIVITY_EXE</td></tr>
+<tr class="separator:a8ca688b776e6925992e4fdc3e2a54dd7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2c6dd58ff5b95f5a1c0798e9eb715642" id="r_a2c6dd58ff5b95f5a1c0798e9eb715642"><td class="memItemLeft" align="right" valign="top"><a id="a2c6dd58ff5b95f5a1c0798e9eb715642" name="a2c6dd58ff5b95f5a1c0798e9eb715642"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MPIEXEC</b> = self.config_parameters.MPIEXEC</td></tr>
+<tr class="separator:a2c6dd58ff5b95f5a1c0798e9eb715642"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa3db3b7f78923e6f790de018933c4bb" id="r_afa3db3b7f78923e6f790de018933c4bb"><td class="memItemLeft" align="right" valign="top"><a id="afa3db3b7f78923e6f790de018933c4bb" name="afa3db3b7f78923e6f790de018933c4bb"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>AVAILABLE_SOLVER</b> = self.config_parameters.AVAILABLE_SOLVERS</td></tr>
+<tr class="separator:afa3db3b7f78923e6f790de018933c4bb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab3c50fa284cc9c5800a0d860a9c8b41d" id="r_ab3c50fa284cc9c5800a0d860a9c8b41d"><td class="memItemLeft" align="right" valign="top"><a id="ab3c50fa284cc9c5800a0d860a9c8b41d" name="ab3c50fa284cc9c5800a0d860a9c8b41d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MULTIPLE_PROBLEM_GEN</b> = self.config_parameters.MULTIPLE_PROBLEM_GEN</td></tr>
+<tr class="separator:ab3c50fa284cc9c5800a0d860a9c8b41d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e2582c0a6b5a25c9c0237a744b4ede2" id="r_a0e2582c0a6b5a25c9c0237a744b4ede2"><td class="memItemLeft" align="right" valign="top"><a id="a0e2582c0a6b5a25c9c0237a744b4ede2" name="a0e2582c0a6b5a25c9c0237a744b4ede2"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MERGE_MASTER_MPS</b> = self.config_parameters.MERGE_MASTER_MPS</td></tr>
+<tr class="separator:a0e2582c0a6b5a25c9c0237a744b4ede2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a35c3296a035c42fcc32c3e051be8a8ed" id="r_a35c3296a035c42fcc32c3e051be8a8ed"><td class="memItemLeft" align="right" valign="top"><a id="a35c3296a035c42fcc32c3e051be8a8ed" name="a35c3296a035c42fcc32c3e051be8a8ed"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>MERGE_WEIGHTS</b> = self.config_parameters.MERGE_WEIGHTS_TRAJECTORY</td></tr>
+<tr class="separator:a35c3296a035c42fcc32c3e051be8a8ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classtrajectory__config_1_1TrajectoryConfigDefaults.html">trajectory_config.TrajectoryConfigDefaults</a></td></tr>
+<tr class="memitem:a74a77e5ad4efde937ef0bcbe9eef6414 inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults" id="r_a74a77e5ad4efde937ef0bcbe9eef6414"><td class="memItemLeft" align="right" valign="top">
+str&#160;</td><td class="memItemRight" valign="bottom"><b>INTERMEDIARY_FOLDER</b> = &quot;intermediary_files&quot;</td></tr>
+<tr class="separator:a74a77e5ad4efde937ef0bcbe9eef6414 inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5deae6f6b85d8119207f56b90cff4cd4 inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults" id="r_a5deae6f6b85d8119207f56b90cff4cd4"><td class="memItemLeft" align="right" valign="top">
+str&#160;</td><td class="memItemRight" valign="bottom"><b>OUTPUT_FOLDER</b> = &quot;output&quot;</td></tr>
+<tr class="separator:a5deae6f6b85d8119207f56b90cff4cd4 inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1a6079f7e48f5057744b7ae06e5ed1eb inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults" id="r_a1a6079f7e48f5057744b7ae06e5ed1eb"><td class="memItemLeft" align="right" valign="top">
+str&#160;</td><td class="memItemRight" valign="bottom"><b>MPG_INPUT_FILE</b> = &quot;mpg_input.txt&quot;</td></tr>
+<tr class="separator:a1a6079f7e48f5057744b7ae06e5ed1eb inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0e95853549999b9a087e634dbc0d8956 inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults" id="r_a0e95853549999b9a087e634dbc0d8956"><td class="memItemLeft" align="right" valign="top">
+str&#160;</td><td class="memItemRight" valign="bottom"><b>MPG_WEIGHTS_FILE</b> = &quot;mpg_weights.txt&quot;</td></tr>
+<tr class="separator:a0e95853549999b9a087e634dbc0d8956 inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a084381cf3014060378e2e87f218bdda2 inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults" id="r_a084381cf3014060378e2e87f218bdda2"><td class="memItemLeft" align="right" valign="top">
+str&#160;</td><td class="memItemRight" valign="bottom"><b>MPG_CONSTRAINTS_FILE</b> = &quot;mpg_additional_constraints.txt&quot;</td></tr>
+<tr class="separator:a084381cf3014060378e2e87f218bdda2 inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa24ac54d85011ea0deaa0e962265e699 inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults" id="r_aa24ac54d85011ea0deaa0e962265e699"><td class="memItemLeft" align="right" valign="top">
+str&#160;</td><td class="memItemRight" valign="bottom"><b>MASTER_MERGER_INFO_FILE</b> = &quot;master_merger_info.json&quot;</td></tr>
+<tr class="separator:aa24ac54d85011ea0deaa0e962265e699 inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a67766ce4b7026d621dea8f91ab5576b3 inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults" id="r_a67766ce4b7026d621dea8f91ab5576b3"><td class="memItemLeft" align="right" valign="top">
+str&#160;</td><td class="memItemRight" valign="bottom"><b>NODAL_LP_INFO_FILE</b> = &quot;nodal_lp_info.json&quot;</td></tr>
+<tr class="separator:a67766ce4b7026d621dea8f91ab5576b3 inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a220c2ee49c3561e5481da3e6dd7546f6 inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults" id="r_a220c2ee49c3561e5481da3e6dd7546f6"><td class="memItemLeft" align="right" valign="top">
+str&#160;</td><td class="memItemRight" valign="bottom"><b>MERGE_MASTER_OPTIONS_FILE</b> = &quot;options_merge_master.json&quot;</td></tr>
+<tr class="separator:a220c2ee49c3561e5481da3e6dd7546f6 inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aad8a20cfe50be4ac9328f02a5a1ca338 inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults" id="r_aad8a20cfe50be4ac9328f02a5a1ca338"><td class="memItemLeft" align="right" valign="top">
+str&#160;</td><td class="memItemRight" valign="bottom"><b>MERGED_MASTER</b> = &quot;merged_master&quot;</td></tr>
+<tr class="separator:aad8a20cfe50be4ac9328f02a5a1ca338 inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a16dc3054dc06326b425cc8fc3ab549ef inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults" id="r_a16dc3054dc06326b425cc8fc3ab549ef"><td class="memItemLeft" align="right" valign="top">
+str&#160;</td><td class="memItemRight" valign="bottom"><b>MERGED_STRUCTURE</b> = &quot;merged_structure.txt&quot;</td></tr>
+<tr class="separator:a16dc3054dc06326b425cc8fc3ab549ef inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3d571bb5fde79e8a77fe2ddc51890f11 inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults" id="r_a3d571bb5fde79e8a77fe2ddc51890f11"><td class="memItemLeft" align="right" valign="top">
+str&#160;</td><td class="memItemRight" valign="bottom"><b>MERGED_WEIGHTS</b> = &quot;merged_weights.txt&quot;</td></tr>
+<tr class="separator:a3d571bb5fde79e8a77fe2ddc51890f11 inherit pub_attribs_classtrajectory__config_1_1TrajectoryConfigDefaults"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a3bfbf942f8758c52e9ecf66d4d91e050" id="r_a3bfbf942f8758c52e9ecf66d4d91e050"><td class="memItemLeft" align="right" valign="top"><a id="a3bfbf942f8758c52e9ecf66d4d91e050" name="a3bfbf942f8758c52e9ecf66d4d91e050"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>_get_input_parameters</b> (self)</td></tr>
+<tr class="separator:a3bfbf942f8758c52e9ecf66d4d91e050"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a03e3a4af5055d6c1762d75390074bdf7" id="r_a03e3a4af5055d6c1762d75390074bdf7"><td class="memItemLeft" align="right" valign="top"><a id="a03e3a4af5055d6c1762d75390074bdf7" name="a03e3a4af5055d6c1762d75390074bdf7"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>_get_installation_parameters</b> (self)</td></tr>
+<tr class="separator:a03e3a4af5055d6c1762d75390074bdf7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_methods_classtrajectory__config_1_1TrajectoryConfigDefaults"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_methods_classtrajectory__config_1_1TrajectoryConfigDefaults')"><img src="closed.png" alt="-"/>&#160;Protected Member Functions inherited from <a class="el" href="classtrajectory__config_1_1TrajectoryConfigDefaults.html">trajectory_config.TrajectoryConfigDefaults</a></td></tr>
+<tr class="memitem:a94756691bf94c49c5e7b567ffcdcf960 inherit pro_methods_classtrajectory__config_1_1TrajectoryConfigDefaults" id="r_a94756691bf94c49c5e7b567ffcdcf960"><td class="memItemLeft" align="right" valign="top">
+&#160;</td><td class="memItemRight" valign="bottom"><b>_set_constants</b> (self)</td></tr>
+<tr class="separator:a94756691bf94c49c5e7b567ffcdcf960 inherit pro_methods_classtrajectory__config_1_1TrajectoryConfigDefaults"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
+<a id="a98a769191227f70f65cc7ff3612c9fcc" name="a98a769191227f70f65cc7ff3612c9fcc"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a98a769191227f70f65cc7ff3612c9fcc">&#9670;&#160;</a></span>__init__()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">trajectory_config.TrajectoryConfig.__init__ </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classtrajectory__config_1_1TrajectoryInputParameters.html">TrajectoryInputParameters</a></td>          <td class="paramname"><span class="paramname"><em>input_parameters</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classantares__xpansion_1_1xpansionConfig_1_1ConfigParameters.html">ConfigParameters</a></td>          <td class="paramname"><span class="paramname"><em>install_parameters</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classtrajectory__config_1_1TrajectoryConfigDefaults.html">trajectory_config.TrajectoryConfigDefaults</a>.</p>
+
+</div>
+</div>
+<hr/>The documentation for this class was generated from the following file:<ul>
+<li>src/python/antares_xpansion/trajectory/<b>trajectory_config.py</b></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><b>trajectory_config</b></li><li class="navelem"><a class="el" href="classtrajectory__config_1_1TrajectoryConfig.html">TrajectoryConfig</a></li>
+    <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
+  </ul>
+</div>
+</body>
+</html>

@@ -4,5 +4,5 @@ var searchData=
   ['launch_5fmemory_1',['launch_memory',['../classantares__xpansion_1_1problem__generator__driver_1_1ProblemGeneratorDriver.html#aaf34454184efdb771b32b6b04edeb88e',1,'antares_xpansion::problem_generator_driver::ProblemGeneratorDriver']]],
   ['linkdatarecord_2',['LinkdataRecord',['../structLinkdataRecord.html#ae9b0c3f12a949600310ea69db43425d4',1,'LinkdataRecord::LinkdataRecord()'],['../structLinkdataRecord.html#ac225589197f2bc3346b67b3a6ae9ef80',1,'LinkdataRecord::LinkdataRecord(const FileColumns &amp;afileColumns)']]],
   ['linkprofile_3',['LinkProfile',['../classLinkProfile.html#a9967624837aba175ea61afcdfc5775f0',1,'LinkProfile']]],
-  ['log_5flevel_4',['log_level',['../classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a18ac312fdfc2181c7ad8dad85ba359d7',1,'antares_xpansion::config_loader::ConfigLoader']]]
+  ['log_5flevel_4',['log_level',['../classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader.html#ab13b97739c2580dcf1066d04ef23144f',1,'antares_xpansion::config_loader::XpansionSettingsReader']]]
 ];

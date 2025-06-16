@@ -70,7 +70,6 @@ var hierarchy =
     [ "ColumnToChange", "structColumnToChange.html", null ],
     [ "ConfigurationManager::ConfigDirectories", "structConfigurationManager_1_1ConfigDirectories.html", null ],
     [ "antares_xpansion.config_file_parser.ConfigFileParser", "classantares__xpansion_1_1config__file__parser_1_1ConfigFileParser.html", null ],
-    [ "antares_xpansion.config_loader.ConfigLoader", "classantares__xpansion_1_1config__loader_1_1ConfigLoader.html", null ],
     [ "antares_xpansion.xpansionConfig.ConfigParameters", "classantares__xpansion_1_1xpansionConfig_1_1ConfigParameters.html", null ],
     [ "ConfigurationManager", "classConfigurationManager.html", null ],
     [ "ProblemGenerationOptions::ConflictingParameters", "classProblemGenerationOptions_1_1ConflictingParameters.html", null ],
@@ -192,9 +191,21 @@ var hierarchy =
         [ "antares_xpansion.xpansion_study_reader.XpansionStudyReader.OnlyNullYearsWeightValue", "classantares__xpansion_1_1xpansion__study__reader_1_1XpansionStudyReader_1_1OnlyNullYearsWeightValue.html", null ],
         [ "antares_xpansion.xpansion_study_reader.XpansionStudyReader.SolverNotAvailable", "classantares__xpansion_1_1xpansion__study__reader_1_1XpansionStudyReader_1_1SolverNotAvailable.html", null ]
       ] ],
+      [ "driver_input_translation.InputTranslationDriver.InvalidRootStudyPathError", "classdriver__input__translation_1_1InputTranslationDriver_1_1InvalidRootStudyPathError.html", null ],
+      [ "driver_merge_master.MergeMasterDriver.MergeMasterExeError", "classdriver__merge__master_1_1MergeMasterDriver_1_1MergeMasterExeError.html", null ],
+      [ "driver_merge_master.MergeMasterDriver.MergeMasterExecutionError", "classdriver__merge__master_1_1MergeMasterDriver_1_1MergeMasterExecutionError.html", null ],
+      [ "driver_merge_master.MergeMasterDriver.MergeMasterInputError", "classdriver__merge__master_1_1MergeMasterDriver_1_1MergeMasterInputError.html", null ],
+      [ "driver_merge_weights.MergeWeightsDriver.MergeWeightsExeError", "classdriver__merge__weights_1_1MergeWeightsDriver_1_1MergeWeightsExeError.html", null ],
+      [ "driver_merge_weights.MergeWeightsDriver.MergeWeightsExecutionError", "classdriver__merge__weights_1_1MergeWeightsDriver_1_1MergeWeightsExecutionError.html", null ],
+      [ "driver_merge_weights.MergeWeightsDriver.MergeWeightsInputError", "classdriver__merge__weights_1_1MergeWeightsDriver_1_1MergeWeightsInputError.html", null ],
+      [ "driver_multiple_problem_gen.MultipleProblemGenerationDriver.MultipleProblemGenerationExeError", "classdriver__multiple__problem__gen_1_1MultipleProblemGenerationDriver_1_1MultipleProblemGenerationExeError.html", null ],
+      [ "driver_multiple_problem_gen.MultipleProblemGenerationDriver.MultipleProblemGenerationExecutionError", "classdriver__multiple__problem__gen_1_1MultipleProblemGenerationDriver_1_1MultipleProblemGenerationExecutionError.html", null ],
       [ "trajectory_module.TrajectoryModule.InvalidCandidates", "classtrajectory__module_1_1TrajectoryModule_1_1InvalidCandidates.html", null ],
       [ "trajectory_module.TrajectoryModule.InvalidTrajectoryConstraint", "classtrajectory__module_1_1TrajectoryModule_1_1InvalidTrajectoryConstraint.html", null ],
-      [ "trajectory_module.TrajectoryModule.InvalidTreeStructure", "classtrajectory__module_1_1TrajectoryModule_1_1InvalidTreeStructure.html", null ]
+      [ "trajectory_module.TrajectoryModule.InvalidTreeStructure", "classtrajectory__module_1_1TrajectoryModule_1_1InvalidTreeStructure.html", null ],
+      [ "user_input_translation.TrajectoryModule.InvalidCandidates", "classuser__input__translation_1_1TrajectoryModule_1_1InvalidCandidates.html", null ],
+      [ "user_input_translation.TrajectoryModule.InvalidTrajectoryConstraint", "classuser__input__translation_1_1TrajectoryModule_1_1InvalidTrajectoryConstraint.html", null ],
+      [ "user_input_translation.TrajectoryModule.InvalidTreeStructure", "classuser__input__translation_1_1TrajectoryModule_1_1InvalidTreeStructure.html", null ]
     ] ],
     [ "std::exception", null, [
       [ "Catch::GeneratorException", "classCatch_1_1GeneratorException.html", null ]
@@ -306,6 +317,7 @@ var hierarchy =
     [ "IniReaderUtils", "classIniReaderUtils.html", null ],
     [ "antares_xpansion.xpansionConfig.InputParameters", "classantares__xpansion_1_1xpansionConfig_1_1InputParameters.html", null ],
     [ "antares_xpansion.input_parser.InputParser", "classantares__xpansion_1_1input__parser_1_1InputParser.html", null ],
+    [ "driver_input_translation.InputTranslationDriver", "classdriver__input__translation_1_1InputTranslationDriver.html", null ],
     [ "InstanceData", "classInstanceData.html", null ],
     [ "IntercoFileData", "structIntercoFileData.html", null ],
     [ "InvalidBoundTypeException", "classInvalidBoundTypeException.html", null ],
@@ -436,6 +448,10 @@ var hierarchy =
     ] ],
     [ "MathLoggerFactory", "classMathLoggerFactory.html", null ],
     [ "YearlyWeightsWriter::McYearNotInActiveYearsListError", "classYearlyWeightsWriter_1_1McYearNotInActiveYearsListError.html", null ],
+    [ "driver_merge_master.MergeMasterData", "classdriver__merge__master_1_1MergeMasterData.html", null ],
+    [ "driver_merge_master.MergeMasterDriver", "classdriver__merge__master_1_1MergeMasterDriver.html", null ],
+    [ "driver_merge_weights.MergeWeightsData", "classdriver__merge__weights_1_1MergeWeightsData.html", null ],
+    [ "driver_merge_weights.MergeWeightsDriver", "classdriver__merge__weights_1_1MergeWeightsDriver.html", null ],
     [ "MergeWeightsTrajectory", "classMergeWeightsTrajectory.html", null ],
     [ "Catch::MessageInfo", "structCatch_1_1MessageInfo.html", null ],
     [ "Catch::MessageStream", "structCatch_1_1MessageStream.html", [
@@ -447,6 +463,8 @@ var hierarchy =
     [ "ActiveLinksBuilder::MultipleAlreadyInstalledProfileDetectedForLink", "classActiveLinksBuilder_1_1MultipleAlreadyInstalledProfileDetectedForLink.html", null ],
     [ "ActiveLinksBuilder::MultipleLinkIddetectedForLink", "classActiveLinksBuilder_1_1MultipleLinkIddetectedForLink.html", null ],
     [ "MultipleProblemGeneration", "classMultipleProblemGeneration.html", null ],
+    [ "driver_multiple_problem_gen.MultipleProblemGenerationData", "classdriver__multiple__problem__gen_1_1MultipleProblemGenerationData.html", null ],
+    [ "driver_multiple_problem_gen.MultipleProblemGenerationDriver", "classdriver__multiple__problem__gen_1_1MultipleProblemGenerationDriver.html", null ],
     [ "Catch::NameAndTags", "structCatch_1_1NameAndTags.html", null ],
     [ "NodeLpDataLocation", "structNodeLpDataLocation.html", null ],
     [ "StudyUpdateStrategy::NoInvestmentComputedForTheCandidate", "classStudyUpdateStrategy_1_1NoInvestmentComputedForTheCandidate.html", null ],
@@ -700,13 +718,25 @@ var hierarchy =
     [ "Timer", "classTimer.html", null ],
     [ "to", "structto.html", null ],
     [ "Catch::Totals", "structCatch_1_1Totals.html", null ],
+    [ "args_parser_trajectory.TrajectoryArgsParser", "classargs__parser__trajectory_1_1TrajectoryArgsParser.html", null ],
+    [ "trajectory_config.TrajectoryConfigDefaults", "classtrajectory__config_1_1TrajectoryConfigDefaults.html", [
+      [ "trajectory_config.TrajectoryConfig", "classtrajectory__config_1_1TrajectoryConfig.html", null ]
+    ] ],
     [ "MergeMasterTrajectoryMPS::TrajectoryConstraint", "structMergeMasterTrajectoryMPS_1_1TrajectoryConstraint.html", null ],
     [ "MergeMasterTrajectoryMPS::TrajectoryGlobalData", "structMergeMasterTrajectoryMPS_1_1TrajectoryGlobalData.html", null ],
     [ "trajectory_keys.TrajectoryInputKeys", "classtrajectory__keys_1_1TrajectoryInputKeys.html", null ],
+    [ "user_input_keys.TrajectoryInputKeys", "classuser__input__keys_1_1TrajectoryInputKeys.html", null ],
+    [ "trajectory_config.TrajectoryInputParameters", "classtrajectory__config_1_1TrajectoryInputParameters.html", null ],
+    [ "driver_trajectory.TrajectoryInvestmentDriver", "classdriver__trajectory_1_1TrajectoryInvestmentDriver.html", null ],
     [ "trajectory_driver.TrajectoryInvestmentDriver", "classtrajectory__driver_1_1TrajectoryInvestmentDriver.html", null ],
+    [ "args_parser_trajectory.TrajectoryLauncherOptionsKeys", "classargs__parser__trajectory_1_1TrajectoryLauncherOptionsKeys.html", null ],
     [ "trajectory_module.TrajectoryModule", "classtrajectory__module_1_1TrajectoryModule.html", null ],
+    [ "user_input_translation.TrajectoryModule", "classuser__input__translation_1_1TrajectoryModule.html", null ],
     [ "MergeMasterTrajectoryMPS::TrajectoryNode", "structMergeMasterTrajectoryMPS_1_1TrajectoryNode.html", null ],
     [ "trajectory_keys.TrajectoryOuputKeys", "classtrajectory__keys_1_1TrajectoryOuputKeys.html", null ],
+    [ "user_input_keys.TrajectoryOuputKeys", "classuser__input__keys_1_1TrajectoryOuputKeys.html", null ],
+    [ "driver_resolution.TrajectoryResolutionData", "classdriver__resolution_1_1TrajectoryResolutionData.html", null ],
+    [ "driver_resolution.TrajectoryResolutionDriver", "classdriver__resolution_1_1TrajectoryResolutionDriver.html", null ],
     [ "std::true_type", null, [
       [ "Catch::detail::is_range_impl< T, typename void_type< decltype(begin(std::declval< T >()))>::type >", "structCatch_1_1detail_1_1is__range__impl_3_01T_00_01typename_01void__type_3_01decltype_07begin_0efe009a05f00a00c1e4e06989d122a22.html", null ],
       [ "Catch::true_given< typename >", "structCatch_1_1true__given.html", null ]
@@ -743,8 +773,13 @@ var hierarchy =
       [ "WorkerMaster", "classWorkerMaster.html", null ]
     ] ],
     [ "WorkerMasterData", "classWorkerMasterData.html", null ],
-    [ "antares_xpansion.xpansionConfig.XpansionConfig", "classantares__xpansion_1_1xpansionConfig_1_1XpansionConfig.html", null ],
+    [ "antares_xpansion.xpansionConfig.XpansionConfigConstants", "classantares__xpansion_1_1xpansionConfig_1_1XpansionConfigConstants.html", [
+      [ "antares_xpansion.xpansionConfig.XpansionConfig", "classantares__xpansion_1_1xpansionConfig_1_1XpansionConfig.html", null ]
+    ] ],
     [ "antares_xpansion.driver.XpansionDriver", "classantares__xpansion_1_1driver_1_1XpansionDriver.html", null ],
+    [ "antares_xpansion.config_loader.XpansionSettingsReader", "classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader.html", [
+      [ "antares_xpansion.config_loader.ConfigLoader", "classantares__xpansion_1_1config__loader_1_1ConfigLoader.html", null ]
+    ] ],
     [ "antares_xpansion.xpansion_study_reader.XpansionStudyReader", "classantares__xpansion_1_1xpansion__study__reader_1_1XpansionStudyReader.html", null ],
     [ "LoadXpress::XpressLoader", "classLoadXpress_1_1XpressLoader.html", null ],
     [ "YearlyWeightsWriter", "classYearlyWeightsWriter.html", null ],
@@ -755,13 +790,23 @@ var hierarchy =
       [ "trajectory_module.TrajectoryModule.NodeData", "classtrajectory__module_1_1TrajectoryModule_1_1NodeData.html", null ],
       [ "trajectory_module.TrajectoryModule.TrajectoryConstraint", "classtrajectory__module_1_1TrajectoryModule_1_1TrajectoryConstraint.html", null ],
       [ "trajectory_module.TrajectoryModule.TrajectoryInputFile", "classtrajectory__module_1_1TrajectoryModule_1_1TrajectoryInputFile.html", null ],
-      [ "trajectory_module.TrajectoryModule.Tree", "classtrajectory__module_1_1TrajectoryModule_1_1Tree.html", null ]
+      [ "trajectory_module.TrajectoryModule.Tree", "classtrajectory__module_1_1TrajectoryModule_1_1Tree.html", null ],
+      [ "user_input_translation.TrajectoryModule.CandidateType", "classuser__input__translation_1_1TrajectoryModule_1_1CandidateType.html", null ],
+      [ "user_input_translation.TrajectoryModule.GlobalData", "classuser__input__translation_1_1TrajectoryModule_1_1GlobalData.html", null ],
+      [ "user_input_translation.TrajectoryModule.NodeData", "classuser__input__translation_1_1TrajectoryModule_1_1NodeData.html", null ],
+      [ "user_input_translation.TrajectoryModule.TrajectoryConstraint", "classuser__input__translation_1_1TrajectoryModule_1_1TrajectoryConstraint.html", null ],
+      [ "user_input_translation.TrajectoryModule.TrajectoryInputFile", "classuser__input__translation_1_1TrajectoryModule_1_1TrajectoryInputFile.html", null ],
+      [ "user_input_translation.TrajectoryModule.Tree", "classuser__input__translation_1_1TrajectoryModule_1_1Tree.html", null ]
     ] ],
     [ "Enum", null, [
       [ "tests.end_to_end.examples.example_test.BendersMethod", "classtests_1_1end__to__end_1_1examples_1_1example__test_1_1BendersMethod.html", null ],
       [ "tests.end_to_end.lpnamer.test_lpnamerEndToEnd.OptionType", "classtests_1_1end__to__end_1_1lpnamer_1_1test__lpnamerEndToEnd_1_1OptionType.html", null ],
       [ "trajectory_module.ConstraintOperatorEnum", "classtrajectory__module_1_1ConstraintOperatorEnum.html", null ],
       [ "trajectory_module.ConstraintTypeEnum", "classtrajectory__module_1_1ConstraintTypeEnum.html", null ],
-      [ "trajectory_module.InvestmentVariableTypeEnum", "classtrajectory__module_1_1InvestmentVariableTypeEnum.html", null ]
+      [ "trajectory_module.InvestmentVariableTypeEnum", "classtrajectory__module_1_1InvestmentVariableTypeEnum.html", null ],
+      [ "user_input_translation.ConstraintOperatorEnum", "classuser__input__translation_1_1ConstraintOperatorEnum.html", null ],
+      [ "user_input_translation.ConstraintTypeEnum", "classuser__input__translation_1_1ConstraintTypeEnum.html", null ],
+      [ "user_input_translation.FormulationEnum", "classuser__input__translation_1_1FormulationEnum.html", null ],
+      [ "user_input_translation.InvestmentVariableTypeEnum", "classuser__input__translation_1_1InvestmentVariableTypeEnum.html", null ]
     ] ]
 ];

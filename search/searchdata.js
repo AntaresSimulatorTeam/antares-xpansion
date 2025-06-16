@@ -2,12 +2,12 @@ var indexSectionsWithContent =
 {
   0: "$012345678:_abcdefghijklmnopqrstuvwxyz~ ⚠",
   1: "abcdefghijklmnoprstuvwxyz",
-  2: "alt",
+  2: "adlt",
   3: "v",
   4: "_abcdefgijlmprstuvwxz~",
   5: "_dilp",
   6: "p",
-  7: "abcdfgilmoprstux",
+  7: "abcdfgilmoprstuwx",
   8: "o"
 };
 

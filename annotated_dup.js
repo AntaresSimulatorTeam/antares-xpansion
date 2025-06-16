@@ -28,7 +28,8 @@ var annotated_dup =
       ] ],
       [ "config_loader", "namespaceantares__xpansion_1_1config__loader.html", [
         [ "ConfigLoader", "classantares__xpansion_1_1config__loader_1_1ConfigLoader.html", "classantares__xpansion_1_1config__loader_1_1ConfigLoader" ],
-        [ "NTCColumnConstraintError", "classantares__xpansion_1_1config__loader_1_1NTCColumnConstraintError.html", null ]
+        [ "NTCColumnConstraintError", "classantares__xpansion_1_1config__loader_1_1NTCColumnConstraintError.html", null ],
+        [ "XpansionSettingsReader", "classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader.html", "classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader" ]
       ] ],
       [ "driver", "namespaceantares__xpansion_1_1driver.html", [
         [ "XpansionDriver", "classantares__xpansion_1_1driver_1_1XpansionDriver.html", "classantares__xpansion_1_1driver_1_1XpansionDriver" ]
@@ -118,11 +119,16 @@ var annotated_dup =
       [ "xpansionConfig", "namespaceantares__xpansion_1_1xpansionConfig.html", [
         [ "ConfigParameters", "classantares__xpansion_1_1xpansionConfig_1_1ConfigParameters.html", null ],
         [ "InputParameters", "classantares__xpansion_1_1xpansionConfig_1_1InputParameters.html", null ],
-        [ "XpansionConfig", "classantares__xpansion_1_1xpansionConfig_1_1XpansionConfig.html", null ]
+        [ "XpansionConfig", "classantares__xpansion_1_1xpansionConfig_1_1XpansionConfig.html", null ],
+        [ "XpansionConfigConstants", "classantares__xpansion_1_1xpansionConfig_1_1XpansionConfigConstants.html", null ]
       ] ],
       [ "yearly_weight_writer", null, [
         [ "YearlyWeightWriter", "classantares__xpansion_1_1yearly__weight__writer_1_1YearlyWeightWriter.html", null ]
       ] ]
+    ] ],
+    [ "args_parser_trajectory", null, [
+      [ "TrajectoryArgsParser", "classargs__parser__trajectory_1_1TrajectoryArgsParser.html", null ],
+      [ "TrajectoryLauncherOptionsKeys", "classargs__parser__trajectory_1_1TrajectoryLauncherOptionsKeys.html", null ]
     ] ],
     [ "Benders", null, [
       [ "Criterion", null, [
@@ -304,6 +310,28 @@ var annotated_dup =
       [ "WaitForKeypress", "structCatch_1_1WaitForKeypress.html", null ],
       [ "WarnAbout", "structCatch_1_1WarnAbout.html", null ]
     ] ],
+    [ "driver_input_translation", null, [
+      [ "InputTranslationDriver", "classdriver__input__translation_1_1InputTranslationDriver.html", "classdriver__input__translation_1_1InputTranslationDriver" ]
+    ] ],
+    [ "driver_merge_master", null, [
+      [ "MergeMasterData", "classdriver__merge__master_1_1MergeMasterData.html", null ],
+      [ "MergeMasterDriver", "classdriver__merge__master_1_1MergeMasterDriver.html", "classdriver__merge__master_1_1MergeMasterDriver" ]
+    ] ],
+    [ "driver_merge_weights", null, [
+      [ "MergeWeightsData", "classdriver__merge__weights_1_1MergeWeightsData.html", null ],
+      [ "MergeWeightsDriver", "classdriver__merge__weights_1_1MergeWeightsDriver.html", "classdriver__merge__weights_1_1MergeWeightsDriver" ]
+    ] ],
+    [ "driver_multiple_problem_gen", null, [
+      [ "MultipleProblemGenerationData", "classdriver__multiple__problem__gen_1_1MultipleProblemGenerationData.html", null ],
+      [ "MultipleProblemGenerationDriver", "classdriver__multiple__problem__gen_1_1MultipleProblemGenerationDriver.html", "classdriver__multiple__problem__gen_1_1MultipleProblemGenerationDriver" ]
+    ] ],
+    [ "driver_resolution", null, [
+      [ "TrajectoryResolutionData", "classdriver__resolution_1_1TrajectoryResolutionData.html", null ],
+      [ "TrajectoryResolutionDriver", "classdriver__resolution_1_1TrajectoryResolutionDriver.html", "classdriver__resolution_1_1TrajectoryResolutionDriver" ]
+    ] ],
+    [ "driver_trajectory", "namespacedriver__trajectory.html", [
+      [ "TrajectoryInvestmentDriver", "classdriver__trajectory_1_1TrajectoryInvestmentDriver.html", "classdriver__trajectory_1_1TrajectoryInvestmentDriver" ]
+    ] ],
     [ "fmt", null, [
       [ "formatter< ProblemsFormat >", "structfmt_1_1formatter_3_01ProblemsFormat_01_4.html", null ]
     ] ],
@@ -434,6 +462,11 @@ var annotated_dup =
         ] ]
       ] ]
     ] ],
+    [ "trajectory_config", null, [
+      [ "TrajectoryConfig", "classtrajectory__config_1_1TrajectoryConfig.html", null ],
+      [ "TrajectoryConfigDefaults", "classtrajectory__config_1_1TrajectoryConfigDefaults.html", null ],
+      [ "TrajectoryInputParameters", "classtrajectory__config_1_1TrajectoryInputParameters.html", null ]
+    ] ],
     [ "trajectory_driver", "namespacetrajectory__driver.html", [
       [ "TrajectoryInvestmentDriver", "classtrajectory__driver_1_1TrajectoryInvestmentDriver.html", null ]
     ] ],
@@ -446,6 +479,17 @@ var annotated_dup =
       [ "ConstraintTypeEnum", "classtrajectory__module_1_1ConstraintTypeEnum.html", null ],
       [ "InvestmentVariableTypeEnum", "classtrajectory__module_1_1InvestmentVariableTypeEnum.html", null ],
       [ "TrajectoryModule", "classtrajectory__module_1_1TrajectoryModule.html", "classtrajectory__module_1_1TrajectoryModule" ]
+    ] ],
+    [ "user_input_keys", null, [
+      [ "TrajectoryInputKeys", "classuser__input__keys_1_1TrajectoryInputKeys.html", null ],
+      [ "TrajectoryOuputKeys", "classuser__input__keys_1_1TrajectoryOuputKeys.html", null ]
+    ] ],
+    [ "user_input_translation", null, [
+      [ "ConstraintOperatorEnum", "classuser__input__translation_1_1ConstraintOperatorEnum.html", null ],
+      [ "ConstraintTypeEnum", "classuser__input__translation_1_1ConstraintTypeEnum.html", null ],
+      [ "FormulationEnum", "classuser__input__translation_1_1FormulationEnum.html", null ],
+      [ "InvestmentVariableTypeEnum", "classuser__input__translation_1_1InvestmentVariableTypeEnum.html", null ],
+      [ "TrajectoryModule", "classuser__input__translation_1_1TrajectoryModule.html", "classuser__input__translation_1_1TrajectoryModule" ]
     ] ],
     [ "Xpansion", null, [
       [ "Test", null, [

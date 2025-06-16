@@ -315,18 +315,38 @@ var NAVTREE =
       [ "Reliability-constrained investment problem", "md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md233", null ]
     ] ],
     [ "Merging the master problems of annual Xpansion studies", "md_docs_2user-guide_2trajectory-investment_2merge-master.html", [
-      [ "Note : Perhaps move to developer guide, as this should not be relevant to the end user.", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md235", null ],
-      [ " Usage of the master merger executable", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md236", null ],
-      [ " Options file", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md237", null ],
-      [ "Master structure file", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md238", null ],
-      [ " LpPathes file", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md239", null ],
-      [ "Input files from each annual study", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md240", null ],
-      [ "Trajectory constraints", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md241", null ],
-      [ "Weights", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md242", null ]
+      [ " Usage of the master merger executable", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md235", null ],
+      [ " Options file", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md236", null ],
+      [ "Master merger info file", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md237", null ],
+      [ " Nodal lp info file", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md238", null ],
+      [ "Input files from each annual study", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md239", null ],
+      [ "Trajectory constraints", "md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md240", null ]
     ] ],
+    [ "Weights", "md_docs_2user-guide_2trajectory-investment_2merge-weights.html", [
+      [ "Why we need custom weights", "md_docs_2user-guide_2trajectory-investment_2merge-weights.html#autotoc_md242", null ],
+      [ "Usage", "md_docs_2user-guide_2trajectory-investment_2merge-weights.html#autotoc_md243", null ],
+      [ " Output", "md_docs_2user-guide_2trajectory-investment_2merge-weights.html#autotoc_md244", null ]
+    ] ],
+    [ "Multiple problem generation", "md_docs_2user-guide_2trajectory-investment_2multiple-problem-generation.html", [
+      [ "Usage", "md_docs_2user-guide_2trajectory-investment_2multiple-problem-generation.html#autotoc_md246", null ],
+      [ "Study paths / archives file", "md_docs_2user-guide_2trajectory-investment_2multiple-problem-generation.html#autotoc_md247", null ],
+      [ " Weights and/or additional constraints reference file", "md_docs_2user-guide_2trajectory-investment_2multiple-problem-generation.html#autotoc_md248", null ],
+      [ "Output : Nodal Lp Info file", "md_docs_2user-guide_2trajectory-investment_2multiple-problem-generation.html#autotoc_md249", null ]
+    ] ],
+    [ "orchestration", "md_docs_2user-guide_2trajectory-investment_2orchestration.html", null ],
     [ "Trajectory investment problem", "md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html", [
-      [ "General description", "md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html#autotoc_md244", null ],
-      [ "On the $dx^{+/-}$ variables", "md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html#autotoc_md245", null ]
+      [ "General description", "md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html#autotoc_md251", null ],
+      [ "On the $dx^{+/-}$ variables", "md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html#autotoc_md252", null ]
+    ] ],
+    [ "trajectory-workflow", "md_docs_2user-guide_2trajectory-investment_2trajectory-workflow.html", null ],
+    [ "User input file parsing", "md_docs_2user-guide_2trajectory-investment_2user-input.html", [
+      [ "User input file", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md256", null ],
+      [ " Input file parser & translator", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md257", null ],
+      [ "Trajectory constraints translation", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md258", [
+        [ "type: max_investment_per_node_per_candidate", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md259", null ],
+        [ " type: max_cumulative_investment_per_node", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md260", null ],
+        [ "type: max_retirement_per_node_per_candidate", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md261", null ]
+      ] ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],
@@ -360,9 +380,10 @@ var NAVTREEINDEX =
 "classOuterloop_1_1MasterUpdateBase.html",
 "classSolverCbc.html#a96ca23915e64d82081f78d1069db00ff",
 "classantares__xpansion_1_1benders__driver_1_1BendersDriver.html#a6116a501ea678104d9f989803561e542",
-"classtests_1_1end__to__end_1_1examples_1_1test_1_1test__candidates__reader_1_1TestCandidateReader.html",
-"md_docs_2changelog_2CHANGELOG.html#autotoc_md12",
-"namespaceantares__xpansion_1_1xpansionConfig.html"
+"classargs__parser__trajectory_1_1TrajectoryLauncherOptionsKeys.html",
+"functions_e.html",
+"md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md205",
+"structMergeMasterTrajectoryMPS_1_1TrajectoryGlobalData.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
