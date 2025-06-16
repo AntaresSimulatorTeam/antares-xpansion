@@ -2,12 +2,17 @@ from antares_xpansion.trajectory.user_input_translation import TrajectoryModule
 
 from pathlib import Path
 
+import sys
+
 
 class InputTranslationDriver:
     """
     Drive the verification and translation of the user input file into
     the ```master_merger_info.json``` intermediary file.
     """
+
+    class InvalidPythonVersion(Exception):
+        pass
 
     class InvalidRootStudyPathError(Exception):
         pass
@@ -22,6 +27,11 @@ class InputTranslationDriver:
 
     def _parse_input(self):
         # Only parse the input once
+        if not sys.version_info >= (3, 7):
+            # Note that we did not check that it works with 3.7, we only know for sure that it doesn't under 3.6
+            raise self.InvalidPythonVersion(
+                "User input translation only works with Pydantic 2 and python 3.7 and above"
+            )
         if not self.input_parsed:
             self.translator.parse_trajectory_user_file()
             self.input_parsed = True
@@ -31,7 +41,7 @@ class InputTranslationDriver:
         Returns the absolute path to the root study.
         Takes in a path to the root folder containing all the studies.
         """
-        self._parse_input()
+        # self._parse_input()
         path = input_root / self.translator.get_root_study()
         if not path.is_dir():
             raise self.InvalidRootStudyPathError(

@@ -2,13 +2,17 @@ import datetime
 import json
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Literal, Set
+from typing import Any, Dict, List, Set, Optional, Union
+from typing_extensions import Literal
 
 import yaml
 from pydantic import BaseModel, Field, NonNegativeFloat, NonNegativeInt, PositiveInt
+from pydantic import __version__ as pydantic_version
 
 from antares_xpansion.trajectory.user_input_keys import TrajectoryInputKeys as InKeys
 from antares_xpansion.trajectory.user_input_keys import TrajectoryOuputKeys as OutKeys
+
+import sys
 
 
 # Enums
@@ -100,8 +104,10 @@ class TrajectoryModule:
 
     class TrajectoryConstraint(BaseModel):
         name: str = Field(alias=InKeys.constraint_name_key())
-        nodes: Literal["all"] | List[str] = Field(alias=InKeys.constraints_nodes_key())
-        candidates: Literal["all"] | List[str] = Field(
+        nodes: Union[Literal["all"], List[str]] = Field(
+            alias=InKeys.constraints_nodes_key()
+        )
+        candidates: Union[Literal["all"], List[str]] = Field(
             alias=InKeys.constraints_candidates_key()
         )
         cons_type: ConstraintTypeEnum = Field(alias=InKeys.constraint_type_key())
@@ -469,6 +475,7 @@ class TrajectoryModule:
         """
         with open(self.input_file) as file:
             content = yaml.full_load(file)
+            # DOES NOT WORK UNDER PYTHON 3.6 !!
             validated_content = self.TrajectoryInputFile.model_validate(content)
             # print(validated_content)
 
@@ -536,6 +543,14 @@ class TrajectoryModule:
         pass
 
     def get_root_study(self):
-        assert self.tree is not None and self.global_data is not None
-        root_node = self.tree.node_name
-        return self.global_data.studies.get(root_node, Path(""))
+        if sys.version_info >= (3, 7) and pydantic_version >= "2.0":
+            assert self.tree is not None and self.global_data is not None
+            root_node = self.tree.node_name
+            return self.global_data.studies.get(root_node, Path(""))
+
+        # Do not use the parser & validator : does not work with python 3.6
+        with open(self.input_file) as f:
+            raw_data = yaml.full_load(f)
+        root_node = raw_data[InKeys.tree_key()][InKeys.node_key()]
+        root_study = raw_data[InKeys.global_key()][InKeys.studies_key()][root_node]
+        return root_study
