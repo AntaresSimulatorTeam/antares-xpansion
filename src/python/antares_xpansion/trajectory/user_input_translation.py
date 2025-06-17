@@ -549,6 +549,10 @@ class TrajectoryModule:
         #     return self.global_data.studies.get(root_node, Path(""))
 
         # Do not use the parser & validator : does not work with python 3.6
+        # DEBUG
+        print(f"Python version is : {sys.version_info}")
+        print(f"PyYaml module version is {yaml.__version__}")
+        print(f"Default encoding mode is {sys.getdefaultencoding()}")
         with open(self.input_file, encoding="utf-8") as f:
             raw_data = yaml.full_load(f)
         root_node = raw_data[InKeys.tree_key()][InKeys.node_key()]
