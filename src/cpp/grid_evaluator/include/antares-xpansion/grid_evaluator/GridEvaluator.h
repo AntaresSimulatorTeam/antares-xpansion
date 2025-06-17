@@ -4,6 +4,7 @@
 #include "antares-xpansion/benders/benders_core/SubproblemCut.h"
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
+#include "antares-xpansion/grid_evaluator/GridCollection.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
 /// @brief key constraint name, value vector of rhs values
@@ -30,7 +31,8 @@ class GridEvaluator
 public:
     GridEvaluator(Logger logger,
                   std::shared_ptr<Output::JsonWriter> writer,
-                  std::filesystem::path path_to_data,
+                  std::filesystem::path path_to_mps,
+                  std::shared_ptr<GridCollection> grid_collection,
                   ProblemsFormat data_format,
                   int nbThreads);
     void launch();
@@ -39,13 +41,15 @@ public:
       variationDeNiveauxDeStockData; //!< Data to write in the output file
 
 protected:
-    void InitSubProblems();
-    bool IsSubproblemUsed(const std::string& subPbName) const;
-    void Run();
-    void ProcessSubproblem(const std::string& subPbName);
-    void ProcessSubproblemsParallel(const std::vector<std::string>& subPbNames, int nbThreads);
-    std::map<int, AreaConstraintMaps> GenerateRHSGridValues(std::string subPbName,
-                                                            SubproblemWorkerPtr subPbWorker);
+    std::vector<std::string> InitSubProblems(const GridDefinition& grid_definition);
+    void Run(const std::vector<std::string>& subPbNames, const GridDefinition& grid_definition);
+    void ProcessSubproblem(const std::string& subPbName, const GridDefinition& grid_definition);
+    void ProcessGridParallel(const std::vector<std::string>& subPbNames,
+                             const GridDefinition& grid_definition,
+                             int nbThreads);
+    AreaConstraintMaps GenerateRHSGridValues(std::string subPbName,
+                                             const GridDefinition& grid_definition,
+                                             SubproblemWorkerPtr subPbWorker);
     void SetConstraintsRHSValues(const std::map<std::string, double>& rhsValues,
                                  SubproblemWorkerPtr subPbWorker);
     std::filesystem::path GetSubproblemPath(const std::string& subPbName) const;
@@ -61,8 +65,8 @@ protected:
     void WriteOutput();
 
 protected:
-    std::filesystem::path xpansionFolderPath; ///< Path to the xpansion folder
-    std::vector<std::string> subPbNames;      ///< List of subproblems names
+    std::filesystem::path xpansionFolderPath;       ///< Path to the xpansion folder
+    std::shared_ptr<GridCollection> gridCollection; ///< Grid collection
 
     ProblemsFormat problemsFormat; ///< Format of the problems
     int nbThreads = 1;             ///< Number of threads to use

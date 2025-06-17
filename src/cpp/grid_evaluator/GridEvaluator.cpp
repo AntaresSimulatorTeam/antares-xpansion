@@ -25,13 +25,15 @@ std::atomic<double> totalPbModifTimer = 0; ///< Total time spent modifying subpr
 /// @param nbThreads Number of threads to use
 GridEvaluator::GridEvaluator(Logger logger,
                              std::shared_ptr<Output::JsonWriter> writer,
-                             std::filesystem::path path_to_data,
+                             std::filesystem::path path_to_mps,
+                             std::shared_ptr<GridCollection> grid_collection,
                              ProblemsFormat data_format,
                              int nbThreads = 1)
 {
+    this->gridCollection = grid_collection;
     this->logger = std::move(logger);
     this->writer = std::move(writer);
-    this->xpansionFolderPath = std::move(path_to_data);
+    this->xpansionFolderPath = std::move(path_to_mps);
     this->problemsFormat = data_format;
     this->nbThreads = nbThreads;
 }
@@ -224,33 +226,23 @@ SubproblemWorkerPtr GridEvaluator::AddSubproblem(const std::string& pbName)
     return subPbWorker;
 }
 
-/// @brief Check if the subproblem is used in the grid.csv file
-/// @param subPbName The name of the subproblem
-/// @return True if the subproblem is used, false otherwise
-bool GridEvaluator::IsSubproblemUsed(const std::string& subPbName) const
-{
-    // Check if the subproblem is used in the grid.csv file
-    std::ifstream f(xpansionFolderPath / "grid.csv");
-    std::ostringstream ss;
-    ss << f.rdbuf();
-    return ss.str().find("all") != std::string::npos
-           || ss.str().find(subPbName) != std::string::npos;
-}
-
 /// @brief Initialize the subproblems from the mps files in the mps folder
 ///       and generate the RHS grid values for each subproblem
-void GridEvaluator::InitSubProblems()
+std::vector<std::string> GridEvaluator::InitSubProblems(const GridDefinition& gridDefinition)
 {
     // Add all subproblems mps files to the subproblem map if they are used in the grid.csv file
     std::string extension = problemsFormat == ProblemsFormat::MPS_FILE ? ".mps" : ".svf";
     std::string mpsFolder = problemsFormat == ProblemsFormat::MPS_FILE ? "mps" : "mps_bin";
+    std::vector<std::string> subPbNames;
     for (const auto& entry: std::filesystem::directory_iterator(xpansionFolderPath / mpsFolder))
     {
-        if (entry.path().extension() == extension && IsSubproblemUsed(entry.path().stem().string()))
+        if (entry.path().extension() == extension
+            && gridDefinition.isSubproblemUsed(entry.path().stem().string()))
         {
             subPbNames.push_back(entry.path().stem().string());
         }
     }
+    return subPbNames;
 }
 
 /// @brief Generate the RHS grid values for each subproblem
@@ -258,11 +250,11 @@ void GridEvaluator::InitSubProblems()
 /// @param subPbName The name of the subproblem
 /// @param subPbWorker The subproblem worker
 /// @return The RHS grid values for each subproblem
-std::map<int, AreaConstraintMaps> GridEvaluator::GenerateRHSGridValues(
-  std::string subPbName,
-  SubproblemWorkerPtr subPbWorker)
+AreaConstraintMaps GridEvaluator::GenerateRHSGridValues(std::string subPbName,
+                                                        const GridDefinition& gridDefinition,
+                                                        SubproblemWorkerPtr subPbWorker)
 {
-    std::map<int, AreaConstraintMaps> gridValues;
+    AreaConstraintMaps gridValues;
     // Compute the grid values using the min and max values of the constraints
     auto generateValues = [&](std::string area,
                               double min,
@@ -304,51 +296,18 @@ std::map<int, AreaConstraintMaps> GridEvaluator::GenerateRHSGridValues(
         return values;
     };
 
-    // Read grid.csv file
-    std::ifstream file(xpansionFolderPath / "grid.csv");
-    std::string line;
-    std::getline(file, line); // Skip header
-    while (std::getline(file, line))
+    for (const auto& gridElement: gridDefinition.gridElements)
     {
-        if (line.empty())
+        if (gridElement.problemName == subPbName || gridElement.problemName == "all")
         {
-            continue;
-        }
-
-        std::stringstream ss(line);
-        std::string token;
-
-        std::string tokens[11]; // assuming at least 11 fields
-        int i = 0;
-
-        while (std::getline(ss, token, ',') && i < 11)
-        {
-            tokens[i++] = token;
-        }
-
-        int gridID = std::stoi(tokens[0]);
-        std::string pbName = tokens[1];
-        std::string areaName = tokens[4];
-        std::string cstName = tokens[3];
-
-        double min = std::stod(tokens[5]);
-        double max = std::stod(tokens[6]);
-        double step = std::stod(tokens[7]);
-
-        std::string minCst = tokens[8];
-        std::string maxCst = tokens[9];
-        double minEfficiency = std::stod(tokens[10]);
-
-        if (pbName == "all" || pbName == subPbName)
-        {
-            // Generate values for the subproblem
-            gridValues[gridID][areaName][cstName] = generateValues(areaName,
-                                                                   min,
-                                                                   max,
-                                                                   step,
-                                                                   minCst,
-                                                                   maxCst,
-                                                                   minEfficiency);
+            gridValues[gridElement.area][gridElement.name] = generateValues(
+              gridElement.area,
+              gridElement.min,
+              gridElement.max,
+              gridElement.step,
+              gridElement.min_cst,
+              gridElement.max_cst,
+              gridElement.min_efficiency);
         }
     }
     return gridValues;
@@ -384,19 +343,22 @@ void GridEvaluator::SetConstraintsRHSValues(const std::map<std::string, double>&
 }
 
 /// @brief Runs the ProcessSubproblem method in parallel for each subproblem
-void GridEvaluator::Run()
+void GridEvaluator::Run(const std::vector<std::string>& subPbNames,
+                        const GridDefinition& gridDefinition)
 {
-    ProcessSubproblemsParallel(subPbNames, nbThreads);
+    ProcessGridParallel(subPbNames, gridDefinition, nbThreads);
 }
 
 /// @brief Process a single subproblem
-/// @details this function generates all possible combinations of right-hand side (RHS) constraint
+/// @details this function generates all possible combinations of right-hand side (RHS)
+/// constraint
 ///          values using `GenerateSubPbCombos`, applies them to the model via
-///          `SetConstraintsRHSValues`, solves the subproblem using `SolveSubproblem`, and stores
-///          the resulting cost in the `variationDeNiveauxDeStockData` map indexed by scenario,
-///          week, and constraint values.
+///          `SetConstraintsRHSValues`, solves the subproblem using `SolveSubproblem`, and
+///          stores the resulting cost in the `variationDeNiveauxDeStockData` map indexed by
+///          scenario, week, and constraint values.
 /// @param subPbName The name of the subproblem
-void GridEvaluator::ProcessSubproblem(const std::string& subPbName)
+void GridEvaluator::ProcessSubproblem(const std::string& subPbName,
+                                      const GridDefinition& gridDefinition)
 {
     // Print loading time
     auto start = std::chrono::high_resolution_clock::now();
@@ -406,60 +368,60 @@ void GridEvaluator::ProcessSubproblem(const std::string& subPbName)
     std::cout << "Loading time: "
               << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms"
               << std::endl;
-    auto currentSubPbAreaConstraints = GenerateRHSGridValues(subPbName, subPbWorker);
+    auto subPbAreaConstraints = GenerateRHSGridValues(subPbName, gridDefinition, subPbWorker);
 
     std::cout << "Processing subproblem : scenario " << GetPbInfo(subPbName).scenario << " week "
               << GetPbInfo(subPbName).week << std::endl;
-    for (const auto& [gridID, subPbAreaConstraints]: currentSubPbAreaConstraints)
+
+    std::vector<int> dims;
+
+    for (const auto& [_, constraints]: subPbAreaConstraints)
     {
-        std::vector<int> dims;
+        std::transform(constraints.begin(),
+                       constraints.end(),
+                       std::back_inserter(dims),
+                       [](const auto& constraints) { return constraints.second.size(); });
+    }
 
-        for (const auto& [_, constraints]: subPbAreaConstraints)
+    ConstraintCombos subPbCombos = GenerateSubPbCombos(subPbName, subPbAreaConstraints);
+    subPbCombos = reorderZigzagND(dims, subPbCombos);
+
+    int size = subPbCombos.size();
+    int i = 0;
+    for (const auto& subPbCombo: subPbCombos)
+    {
+        i++;
+        std::cout << "Processing gridPoint " << i << "/" << size << std::endl;
+        // Each areaCombo is a std::map<std::string, double> with full variable names
+        Timer timer;
+        SetConstraintsRHSValues(subPbCombo, subPbWorker);
+        totalPbModifTimer += timer.elapsed();
+        for (const auto& [constraintName, value]: subPbCombo)
         {
-            std::transform(constraints.begin(),
-                           constraints.end(),
-                           std::back_inserter(dims),
-                           [](const auto& constraints) { return constraints.second.size(); });
+            std::cout << constraintName << " " << value << std::endl;
         }
+        double cost = SolveSubproblem(subPbWorker);
 
-        ConstraintCombos subPbCombos = GenerateSubPbCombos(subPbName, subPbAreaConstraints);
-        subPbCombos = reorderZigzagND(dims, subPbCombos);
-
-        int size = subPbCombos.size();
-        int i = 0;
-        for (const auto& subPbCombo: subPbCombos)
-        {
-            i++;
-            std::cout << "Processing gridPoint " << i << "/" << size << std::endl;
-            // Each areaCombo is a std::map<std::string, double> with full variable names
-            Timer timer;
-            SetConstraintsRHSValues(subPbCombo, subPbWorker);
-            totalPbModifTimer += timer.elapsed();
-            for (const auto& [constraintName, value]: subPbCombo)
-            {
-                std::cout << constraintName << " " << value << std::endl;
-            }
-            double cost = SolveSubproblem(subPbWorker);
-
-            variationDeNiveauxDeStockData
-              .insert({GetPbInfo(subPbName).scenario, GetPbInfo(subPbName).week, subPbCombo}, cost);
-            std::cout << "Cost: " << cost << std::endl;
-        }
+        variationDeNiveauxDeStockData[gridDefinition.gridID]
+          .insert({GetPbInfo(subPbName).scenario, GetPbInfo(subPbName).week, subPbCombo}, cost);
+        std::cout << "Cost: " << cost << std::endl;
     }
 }
 
 /// @brief Process the subproblems in parallel using TBB over nbThreads
 /// @param subPbNames The list of subproblems names to process
 /// @param nbThreads The number of threads to use
-void GridEvaluator::ProcessSubproblemsParallel(const std::vector<std::string>& subPbNames,
-                                               int nbThreads)
+void GridEvaluator::ProcessGridParallel(const std::vector<std::string>& subPbNames,
+                                        const GridDefinition& gridDefinition,
+                                        int nbThreads)
 {
     // Limiter TBB au nombre de cœurs physiques
     tbb::global_control limit(tbb::global_control::max_allowed_parallelism, nbThreads);
 
     tbb::parallel_for_each(subPbNames.begin(),
                            subPbNames.end(),
-                           [&](const std::string& subPbName) { ProcessSubproblem(subPbName); });
+                           [&gridDefinition, this](const std::string& subPbName)
+                           { ProcessSubproblem(subPbName, gridDefinition); });
 }
 
 /// @brief Solve the subproblem and return the cost
@@ -495,14 +457,18 @@ void GridEvaluator::launch()
 {
     std::cout << "Launching Stock level variation" << std::endl;
 
-    InitSubProblems();
     // Time the Run time
     Timer run_timer;
-    Run();
+    for (const auto& gridDefinition: gridCollection->gridDefinitions)
+    {
+        auto subPbNames = InitSubProblems(gridDefinition);
+        Run(subPbNames, gridDefinition);
+    }
     auto run_time = run_timer.elapsed();
     std::cout << "Stock level variation done in " << run_time << " seconds and " << totalSimplexIter
               << " simplex iterations" << std::endl;
     std::cout << "Time solving subproblems (accumulated by each thread) : " << totalSubPbTimer
               << " seconds" << std::endl;
+
     WriteOutput();
 }

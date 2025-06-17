@@ -4,6 +4,7 @@
 #include "RandomDirGenerator.h"
 #include "antares-xpansion/benders/benders_core/BendersMathLogger.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
+#include "antares-xpansion/grid_evaluator/GridCollection.h"
 #include "antares-xpansion/grid_evaluator/GridEvaluator.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
 #include "gtest/gtest.h"
@@ -78,25 +79,33 @@ protected:
 TEST_F(GridSearchTest, MPSUseCaseValeursUsage)
 {
     copyData();
-
-    auto valeurs_usage = GridEvaluator(logger, writer, tmpDir, ProblemsFormat::MPS_FILE, 8);
+    auto grid_collection = std::make_shared<GridCollection>(tmpDir / "grid.csv");
+    auto valeurs_usage = GridEvaluator(logger,
+                                       writer,
+                                       tmpDir,
+                                       grid_collection,
+                                       ProblemsFormat::MPS_FILE,
+                                       8);
     valeurs_usage.launch();
 
     auto output_costs = getOutputCosts();
     EXPECT_EQ(output_costs.size(), 52 * 10);
-    for (const auto& [key, cost]: valeurs_usage.variationDeNiveauxDeStockData)
+    for (const auto& [gridId, data]: valeurs_usage.variationDeNiveauxDeStockData)
     {
-        ScenarioAndWeek keyStruct{key.scenario, key.week};
+        for (const auto& [key, cost]: data)
+        {
+            ScenarioAndWeek keyStruct{key.scenario, key.week};
 
-        if (output_costs.count(keyStruct) > 0 && !output_costs[keyStruct].empty())
-        {
-            EXPECT_NEAR_REL(output_costs[keyStruct][0], cost, 1e-6);
-            output_costs[keyStruct].erase(output_costs[keyStruct].begin());
-        }
-        else
-        {
-            FAIL() << "Missing or empty entry for key: " << keyStruct.scenario << ", "
-                   << keyStruct.week;
+            if (output_costs.count(keyStruct) > 0 && !output_costs[keyStruct].empty())
+            {
+                EXPECT_NEAR_REL(output_costs[keyStruct][0], cost, 1e-6);
+                output_costs[keyStruct].erase(output_costs[keyStruct].begin());
+            }
+            else
+            {
+                FAIL() << "Missing or empty entry for key: " << keyStruct.scenario << ", "
+                       << keyStruct.week;
+            }
         }
     }
 }

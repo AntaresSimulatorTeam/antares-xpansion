@@ -131,28 +131,31 @@ void JsonWriter::write_grid_point(const GridPointData& grid_point_data)
 
 void JsonWriter::write_VariationDeNiveauxDeStock(const VariationDeNiveauxDeStockData& valeurs_usage)
 {
-    // Map to store a vector of ValeursUsage for each scenario and week pair
-    std::map<std::pair<int, int>, Json::Value> scenario_week_map;
-    for (const auto& [key, cost]: valeurs_usage)
+    for (auto& [gridID, data]: valeurs_usage)
     {
-        if (scenario_week_map.find({key.scenario, key.week}) == scenario_week_map.end())
+        // Map to store a vector of ValeursUsage for each scenario and week pair
+        std::map<std::pair<int, int>, Json::Value> scenario_week_map;
+        for (const auto& [key, cost]: data)
         {
-            scenario_week_map[{key.scenario, key.week}] = Json::Value(Json::arrayValue);
-        }
+            if (scenario_week_map.find({key.scenario, key.week}) == scenario_week_map.end())
+            {
+                scenario_week_map[{key.scenario, key.week}] = Json::Value(Json::arrayValue);
+            }
 
-        Json::Value variationDeNiveauxDeStock;
-        variationDeNiveauxDeStock[OPERATIONAL_COST_C] = cost;
-        for (const auto& [cst, val]: key.rhsValues)
-        {
-            variationDeNiveauxDeStock["RHS"][cst] = val;
+            Json::Value variationDeNiveauxDeStock;
+            variationDeNiveauxDeStock[OPERATIONAL_COST_C] = cost;
+            for (const auto& [cst, val]: key.rhsValues)
+            {
+                variationDeNiveauxDeStock["RHS"][cst] = val;
+            }
+            scenario_week_map[{key.scenario, key.week}].append(variationDeNiveauxDeStock);
         }
-        scenario_week_map[{key.scenario, key.week}].append(variationDeNiveauxDeStock);
-    }
-    for (const auto& [key, vectVariationDeNiveauxDeStock]: scenario_week_map)
-    {
-        _output["Scenario"][std::to_string(key.first)]["Week"][std::to_string(key.second)]
-               ["VariationDeNiveauxDeStock"]
-          = vectVariationDeNiveauxDeStock;
+        for (const auto& [key, vectVariationDeNiveauxDeStock]: scenario_week_map)
+        {
+            _output["GridID"][std::to_string(gridID)]["Scenario"][std::to_string(key.first)]["Week"]
+                   [std::to_string(key.second)]["VariationDeNiveauxDeStock"]
+              = vectVariationDeNiveauxDeStock;
+        }
     }
 }
 

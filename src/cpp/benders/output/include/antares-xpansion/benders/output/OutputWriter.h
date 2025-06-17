@@ -156,7 +156,8 @@ public:
     }
 };
 
-typedef ConcurrentInsertionMap<VariationDeNiveauxDeStockKey, double> VariationDeNiveauxDeStockData;
+typedef std::map<int /*grid id*/, ConcurrentInsertionMap<VariationDeNiveauxDeStockKey, double>>
+  VariationDeNiveauxDeStockData;
 
 struct ProblemData
 {
