@@ -67,6 +67,12 @@ class TrajectoryArgsParser:
             dest=TrajectoryLauncherOptionsKeys.memory_key(),
             help="Execute the problem generation in memory",
         )
+        self.parser.add_argument(
+            "--installDir",
+            dest=LauncherOptionsKeys.installDir_key(),
+            help="The directory where all binaries are located",
+            default=LauncherOptionsDefaultValues.DEFAULT_VALUE(),
+        )
         # Args for the resolution
         self.parser.add_argument(
             "-m",
@@ -126,6 +132,7 @@ class TrajectoryArgsParser:
             input_root=Path(params.root),
             input_file=Path(params.input_file),
             memory=params.memory,
+            install_dir=params.installDir,
             method=params.method,
             n_mpi=params.n_mpi,
             oversubscribe=params.oversubscribe,
