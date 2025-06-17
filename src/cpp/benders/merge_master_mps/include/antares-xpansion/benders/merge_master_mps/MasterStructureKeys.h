@@ -42,7 +42,7 @@ constexpr char ROOT_NAME[] = "root";
 
 // NodeLpDataLocation keys
 constexpr char KEY_LP_FOLDER[] = "lp_folder";
-constexpr char KEY_MASTER_MPS_FILE[] = "master_mps_file";
+constexpr char KEY_MASTER_FILE[] = "master_file";
 constexpr char KEY_STRUCTURE_FILE[] = "structure_file";
 constexpr char KEY_WEIGHTS_FILE[] = "weights_file";
 

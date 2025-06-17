@@ -13,8 +13,7 @@ int main(int argc, char** argv)
         options_parser.Parse(argc, argv);
 
         MultipleProblemGeneration mpbg(options_parser);
-        mpbg.load_input_paths();
-        mpbg.load_input_weight_files();
+        mpbg.load_data();
         mpbg.run_generation();
         mpbg.write_lp_paths();
 

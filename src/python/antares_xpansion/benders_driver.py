@@ -1,5 +1,5 @@
 """
-    Class to control the execution of Benders
+Class to control the execution of Benders
 """
 
 import glob
@@ -21,9 +21,7 @@ class SolversExe:
 
 
 class BendersDriver:
-
     def __init__(self, solvers_exe: SolversExe, options_file, mpiexec=None) -> None:
-
         self.oversubscribe = False
         self.allow_run_as_root = False
         self.benders = solvers_exe.benders
@@ -37,14 +35,27 @@ class BendersDriver:
         if options_file != "":
             self.options_file = options_file
         else:
-            raise BendersDriver.BendersOptionsFileError(
-                "Invalid Options File!")
+            raise BendersDriver.BendersOptionsFileError("Invalid Options File!")
 
         self.MPI_N = "-n"
         self._initialise_system_specific_mpi_vars()
 
-    def launch(self, simulation_output_path, method, keep_mps=False, n_mpi=1, oversubscribe=False,
-               allow_run_as_root=False):
+        # In the trajectory workflow, we want the working directory of the resolution to be the input root.
+        self.use_custom_working_dir = False
+
+    def set_custom_working_dir(self, dir: Path):
+        self.use_custom_working_dir = True
+        self.custom_working_dir = dir
+
+    def launch(
+        self,
+        simulation_output_path,
+        method,
+        keep_mps=False,
+        n_mpi=1,
+        oversubscribe=False,
+        allow_run_as_root=False,
+    ):
         """
         launch the optimization of the antaresXpansion problem using the specified solver
 
@@ -68,8 +79,12 @@ class BendersDriver:
 
         print(self._get_solver_cmd())
         ret = subprocess.run(
-            self._get_solver_cmd(), shell=False, stdout=sys.stdout, stderr=sys.stderr,
-            encoding='utf-8')
+            self._get_solver_cmd(),
+            shell=False,
+            stdout=sys.stdout,
+            stderr=sys.stderr,
+            encoding="utf-8",
+        )
 
         if ret.returncode != 0:
             raise BendersDriver.BendersExecutionError(
@@ -91,6 +106,11 @@ class BendersDriver:
         return self._simulation_output_path
 
     def get_lp_path(self):
+        # In trajectory mode, we work at the input root
+        if self.use_custom_working_dir:
+            lp_path = self.custom_working_dir
+            return lp_path
+        # Otherwise, we work in the lp folder.
         lp_path = Path(
             os.path.normpath(os.path.join(self.simulation_output_path, "lp"))
         )
@@ -138,7 +158,6 @@ class BendersDriver:
             return bare_solver_command
 
     def get_mpi_run_command_root(self):
-
         mpi_command = [self.MPI_LAUNCHER, self.MPI_N, str(self.n_mpi)]
         if sys.platform.startswith("linux"):
             if self.oversubscribe:

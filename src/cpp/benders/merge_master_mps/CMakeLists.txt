@@ -6,7 +6,7 @@
 # Targets
 # ===========================================================================
 
-# node_lp_data_location
+#node_lp_data_location
 add_library(node_lp_data_location)
 
 target_sources(node_lp_data_location PUBLIC

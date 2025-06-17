@@ -39,28 +39,53 @@ public:
     }
 
     virtual ~MultipleProblemGeneration() = default;
+
+private:
     /*
-        Runs the problem generation for every node given in the input file
-    */
-    void run_generation();
-    /*
-        Parse a list of paths provided by the user in the form of a text file with two columns :
-        node_name1 path/to/archive
-        node_name2 or/path/to/output
-        node_name3 or/path/to/study
-        ...
-        Wether the path corresponds to a study, Antares output or archive does not matter for this
-        function
-    */
+    Parse a list of paths provided by the user in the form of a text file with two columns :
+    node_name1 path/to/archive
+    node_name2 or/path/to/output
+    node_name3 or/path/to/study
+    ...
+    Wether the path corresponds to a study, Antares output or archive does not matter for this
+    function
+*/
     void load_input_paths();
 
     /*
         Parse a list of weight files provided by the user in the form of a text file with two
-       columns : node_name1 path/to/weight/file node_name3 path/to/weight/file
+       columns :
+       node_name1 path/to/weight/file
+       node_name2 path/to/weight/file
         ...
-        If a node is absent from this file, it will be assumed to have uniform weights.
+        If a node is absent from this file, it will be assumed to have no custom weights.
     */
     void load_input_weight_files();
+    /*
+        Parse a list of additional constraints files provided by the user in the form of a text file
+       with two columns : *
+       node_name1 path/to/constraints/file
+       node_name2 path/to/constraints/file
+        ...
+        If a node is absent from this file, it will be assumed to have additional constraints.
+    */
+    void load_additional_constraints_files();
+
+public:
+    /*
+        Load all the necessary data
+    */
+    void load_data()
+    {
+        load_input_paths();
+        load_input_weight_files();
+        load_additional_constraints_files();
+    }
+
+    /*
+        Runs the problem generation for every node given in the input file
+    */
+    void run_generation();
     /*
         Writes the lp_folder paths to a Json file
     */
@@ -73,6 +98,7 @@ private:
     // ProblemGenerationLog::ProblemGenerationLogger logger_;   //TODO Add Logger
     NodeToPathMap node_to_input_path_;
     NodeToPathMap node_to_weight_file_;
+    NodeToPathMap node_to_additional_constraints_file_;
     // Outputs
     NodesToLpDataLocationMap node_to_lp_info_;
 };

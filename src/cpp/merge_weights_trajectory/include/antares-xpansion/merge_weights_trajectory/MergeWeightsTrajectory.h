@@ -12,11 +12,11 @@ private:
     typedef std::map<std::string, double> WeightsMap;
 
 public:
-    MergeWeightsTrajectory(const std::filesystem::path& master_structure,
+    MergeWeightsTrajectory(const std::filesystem::path& master_merger_info,
                            const std::filesystem::path& nodal_file,
                            const std::filesystem::path& output_file,
                            Logger logger):
-        master_structure_file_(master_structure),
+        master_merger_info_file_(master_merger_info),
         nodal_lp_folder_file_(nodal_file),
         output_filepath_(output_file),
         logger_(std::move(logger))
@@ -28,7 +28,7 @@ public:
     void write_merged_weights_file() const;
 
 private:
-    std::filesystem::path master_structure_file_;
+    std::filesystem::path master_merger_info_file_;
     std::filesystem::path nodal_lp_folder_file_;
     std::filesystem::path output_filepath_;
 

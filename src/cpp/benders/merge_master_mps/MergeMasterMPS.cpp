@@ -236,8 +236,9 @@ void MergeMasterTrajectoryMPS::check_nodes_have_lp_folder()
     {
         if (!nodes_lp_info_.contains(node.name))
         {
-            std::cerr << "Node '" << node.name
+            std::cerr << LOGLOCATION << "Node '" << node.name
                       << "' must appear in in the list of nodal lp folder.";
+            std::exit(1);
         }
     }
 }
