@@ -50,6 +50,9 @@ class InputTranslationDriver:
         return path
 
     def launch(self):
+        raise self.InvalidPythonVersion(
+            "User input translation only works with Pydantic 2 and python 3.7 and above"
+        )
         self._parse_input()
         self.translator.run_all_verification()
         self.translator.print()
