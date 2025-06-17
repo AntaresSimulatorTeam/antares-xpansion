@@ -71,7 +71,7 @@ class MultipleProblemGenerationDriver:
         Read the choice of formulation, either "relaxed" or "integer"
         Load each study to get the path of the possible weights (resp. additional constraints) file.
         """
-        with open(self.user_input_file) as file:
+        with open(self.user_input_file, encoding="utf-8") as file:
             user_data = yaml.full_load(file)
             self.formulation = user_data[InKeys.global_key()][InKeys.formulation_key()]
             studies: Dict[str, str] = user_data[InKeys.global_key()][

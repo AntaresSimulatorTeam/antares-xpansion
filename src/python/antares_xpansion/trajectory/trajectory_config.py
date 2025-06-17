@@ -3,6 +3,9 @@ from pathlib import Path
 
 from antares_xpansion.xpansionConfig import ConfigParameters
 
+import sys
+import os
+
 
 @dataclass
 class TrajectoryInputParameters:
@@ -10,6 +13,7 @@ class TrajectoryInputParameters:
     input_root: Path
     input_file: Path
     memory: bool
+    install_dir: Path
     # Relevant for resolution only
     method: str
     n_mpi: int
@@ -51,18 +55,48 @@ class TrajectoryConfig(TrajectoryConfigDefaults):
         # Installation configuration
         self.config_parameters = install_parameters
 
-        self._get_input_parameters()
         self._get_installation_parameters()
+        self._get_input_parameters()
+
+    def _get_install_dir(self, install_dir):
+        if install_dir is None:
+            return self._initialize_install_dir_with_default_value()
+        else:
+            return self._initialize_install_dir_with_absolute_path(install_dir)
+
+    @staticmethod
+    def _initialize_install_dir_with_absolute_path(install_dir):
+        if not Path.is_absolute(Path(install_dir)):
+            return os.path.join(Path.cwd(), Path(install_dir))
+        else:
+            return install_dir
+
+    def _initialize_install_dir_with_default_value(self):
+        if getattr(sys, "frozen", False):
+            install_dir_inside_package = (
+                Path(os.path.abspath(__file__)).parent.parent / "bin"
+            )
+            install_dir_next_to_package = Path(sys.executable).parent / "bin"
+            if Path.is_dir(install_dir_inside_package):
+                return install_dir_inside_package
+            else:
+                return install_dir_next_to_package
+        elif __file__:
+            return self.default_install_dir
 
     def get_executable_path(self, exe_name: str):
-        assert hasattr(self, "default_install_dir")
-        return Path(self.default_install_dir) / exe_name
+        assert hasattr(self, "install_dir")
+        print(
+            f"Executable {exe_name} should be found in dir : {Path(self.install_dir).resolve().__str__()}"
+        )
+        return Path(self.install_dir) / exe_name
 
     def _get_input_parameters(self):
         self.step = self.input_parameters.step
         self.input_root = self.input_parameters.input_root
         self.input_file = self.input_parameters.input_file
         self.memory = self.input_parameters.memory
+        self.install_dir = self._get_install_dir(self.input_parameters.install_dir)
         # Resolution args
         self.method = self.input_parameters.method
         self.n_mpi = self.input_parameters.n_mpi
