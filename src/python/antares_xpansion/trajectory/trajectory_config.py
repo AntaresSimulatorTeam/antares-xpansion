@@ -89,7 +89,7 @@ class TrajectoryConfig(TrajectoryConfigDefaults):
         print(
             f"Executable {exe_name} should be found in dir : {Path(self.install_dir).resolve().__str__()}"
         )
-        return Path(self.install_dir) / exe_name
+        return (Path(self.install_dir) / exe_name).resolve()
 
     def _get_input_parameters(self):
         self.step = self.input_parameters.step

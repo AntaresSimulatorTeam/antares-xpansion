@@ -110,7 +110,7 @@ class TrajectoryInvestmentDriver:
             benders_exe=self.config.get_executable_path(self.config.BENDERS),
             frontal_exe=self.config.get_executable_path(self.config.MERGE_MPS),
             outer_loop_exe=self.config.get_executable_path(self.config.OUTER_LOOP),
-            mpi_exe=self.config.get_executable_path(self.config.MPIEXEC),
+            mpi_exe=self.config.get_executable_path(Path(self.config.MPIEXEC).name),
             input_root=self.config.input_root,
             root_study=root_study,
             json_output_file=benders_json_output,
