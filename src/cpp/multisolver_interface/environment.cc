@@ -197,7 +197,7 @@ bool XpressLoader::LoadXpressFunctions(Solver::DynamicLibrary* xpress_dynamic_li
     xpress_dynamic_library->GetFunction(&XPRSgetlb, "XPRSgetlb");
     xpress_dynamic_library->GetFunction(&XPRSgetub, "XPRSgetub");
     xpress_dynamic_library->GetFunction(&XPRSdelrows, "XPRSdelrows");
-    xpress_dynamic_library->GetFunction(&XPRSdelrows, "XPRSdelcols");
+    xpress_dynamic_library->GetFunction(&XPRSdelcols, "XPRSdelcols");
     xpress_dynamic_library->GetFunction(&XPRSaddrows, "XPRSaddrows");
     xpress_dynamic_library->GetFunction(&XPRSchgobj, "XPRSchgobj");
     xpress_dynamic_library->GetFunction(&XPRSaddcols, "XPRSaddcols");
