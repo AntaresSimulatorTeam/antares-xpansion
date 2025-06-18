@@ -1,4 +1,4 @@
-from antares_xpansion.trajectory.user_input_translation import TrajectoryModule
+from antares_xpansion.trajectory.user_input_translation import UserInputTranslator
 
 from pathlib import Path
 
@@ -15,7 +15,7 @@ class InputTranslationDriver:
     def __init__(self, input_file: Path, output_file: Path):
         self.input_file = input_file
         self.output_file = output_file
-        self.translator = TrajectoryModule(self.input_file)
+        self.translator = UserInputTranslator(self.input_file)
         # Only parse the input once
         self.input_parsed = False
         pass

@@ -44,7 +44,7 @@ class MergeWeightsDriver:
             )
 
     def _get_merge_weights_args(self):
-        args: list[str] = []
+        args: List[str] = []
         # Args are fixed order : <master_merger_info.json> <nodal_lp_info.json> <output_file>
         args.append(self.master_merger_info_file)
         args.append(self.nodal_lp_info_file)
