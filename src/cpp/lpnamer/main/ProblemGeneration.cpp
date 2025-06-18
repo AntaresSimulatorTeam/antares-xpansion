@@ -1,6 +1,7 @@
 #include "antares-xpansion/lpnamer/main/ProblemGeneration.h"
 
 #include <execution>
+#include <fmt/format.h>
 #include <iostream>
 #include <tbb/tbb.h>
 #include <utility>
@@ -355,6 +356,8 @@ void ProblemGeneration::RunProblemGeneration(
     }
     else // API
     {
+        Timer timer;
+        (*logger)(LogUtils::LOGLEVEL::INFO) << "Generating problems from Antares data...";
         auto mps_file_writer = std::make_shared<FileWriter>(lpDir_);
 
         // vector of pair for parallelization
@@ -368,6 +371,8 @@ void ProblemGeneration::RunProblemGeneration(
 
         std::vector<std::pair<int, ProblemData>> year_and_data;
         year_and_data.reserve(lps_.weeklyProblems.size());
+        (*logger)(LogUtils::LOGLEVEL::INFO)
+          << fmt::format("Entering main loop, time elapsed: {}", timer.elapsed_since_previous());
         std::mutex mutex;
         std::for_each(
           std::execution::par,
@@ -380,6 +385,9 @@ void ProblemGeneration::RunProblemGeneration(
               auto problem = adapter.provideProblem(solver_config_.Name(),
                                                     solver_log_manager,
                                                     year_week);
+              (*logger)(LogUtils::LOGLEVEL::INFO) << fmt::format("Problem {} provided in {}",
+                                                                 problem->_name,
+                                                                 timer.elapsed_since_previous());
               {
                   std::lock_guard guard(mutex);
                   lps_.weeklyProblems.erase(year_week); // Clear data to save memory
@@ -387,11 +395,17 @@ void ProblemGeneration::RunProblemGeneration(
                   // Need to be done before treat because it will update problem name with the full
                   // path
               }
+              (*logger)(LogUtils::LOGLEVEL::INFO) << fmt::format("Problem {} erased in {}",
+                                                                 problem->_name,
+                                                                 timer.elapsed_since_previous());
               std::shared_ptr<IProblemVariablesProviderPort>
                 variables_provider = std::make_shared<ProblemVariablesFromProblemAdapter>(problem,
                                                                                           links,
                                                                                           logger);
-
+              (*logger)(LogUtils::LOGLEVEL::INFO)
+                << fmt::format("Problem {} variables provided in {}",
+                               problem->_name,
+                               timer.elapsed_since_previous());
               linkProblemsGenerator.treat(problem->_name,
                                           couplings,
                                           problem.get(),
@@ -411,6 +425,7 @@ void ProblemGeneration::RunProblemGeneration(
         reader->Close();
         reader->Delete();
     }
+    (*logger)(LogUtils::LOGLEVEL::INFO) << fmt::format("Generating master");
     MasterGeneration master_generation(xpansion_output_dir,
                                        links,
                                        additionalConstraints,

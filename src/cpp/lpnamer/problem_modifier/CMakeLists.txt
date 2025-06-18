@@ -57,6 +57,7 @@ target_include_directories(lp_namer_problem_modifier
         $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 )
 
+find_package(fmt REQUIRED)
 target_link_libraries(lp_namer_problem_modifier
         PUBLIC
         antaresXpansion::lp_namer_model
@@ -65,6 +66,8 @@ target_link_libraries(lp_namer_problem_modifier
         antaresXpansion::helpers
         antaresXpansion::solvers
         Antares::antares-solver-simulation
+        PRIVATE
+        fmt::fmt
 )
 
 target_link_libraries(lp_namer_problem_modifier PRIVATE TBB::tbb)

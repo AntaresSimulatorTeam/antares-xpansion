@@ -14,11 +14,13 @@ public:
     virtual ~Timer() = default;
 
     double elapsed() const;
+    double elapsed_since_previous() const;
     void restart();
 
 private:
     TimePoint _start;
     double _begin_time = 0;
+    double previous{0};
 };
 
 inline Timer::Timer()
@@ -42,6 +44,11 @@ inline double Timer::elapsed() const
 {
     return std::chrono::duration<double>(std::chrono::system_clock::now() - _start).count()
            + _begin_time;
+}
+
+inline double Timer::elapsed_since_previous() const
+{
+    return elapsed() - previous;
 }
 
 inline std::string format_time_str(const long int time_in_seconds)

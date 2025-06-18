@@ -1,7 +1,9 @@
 #include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 
 #include <algorithm>
+#include <antares-xpansion/helpers/Timer.h>
 #include <execution>
+#include <fmt/format.h>
 #include <tbb/tbb.h>
 #include <utility>
 
@@ -44,6 +46,8 @@ void LinkProblemsGenerator::treat(const std::string& problem_name,
                                   IProblemVariablesProviderPort* variable_provider,
                                   IProblemWriter* writer)
 {
+    (*logger_)(LogUtils::LOGLEVEL::INFO) << fmt::format("Treating problem {}", problem_name);
+    Timer timer;
     ProblemVariables problem_variables = variable_provider->Provide();
 
     if (rename_problems_)
@@ -56,7 +60,9 @@ void LinkProblemsGenerator::treat(const std::string& problem_name,
                                    problem_variables.ntc_columns,
                                    problem_variables.direct_cost_columns,
                                    problem_variables.indirect_cost_columns);
-
+    (*logger_)(LogUtils::LOGLEVEL::INFO) << fmt::format("Problem {} change problem in {}",
+                                                        problem_name,
+                                                        timer.elapsed_since_previous());
     // couplings creation
     for (const ActiveLink& link: _links)
     {
@@ -73,7 +79,11 @@ void LinkProblemsGenerator::treat(const std::string& problem_name,
     }
     const auto lp_mps_name = lpDir_ / problem_name;
     problem->_name = lp_mps_name.string();
+    (*logger_)(LogUtils::LOGLEVEL::INFO)
+      << fmt::format("Problem {} treated in {}", problem_name, timer.elapsed_since_previous());
     writer->Write_problem(problem, lp_mps_name);
+    (*logger_)(LogUtils::LOGLEVEL::INFO)
+      << fmt::format("Problem {} written in {}", problem_name, timer.elapsed_since_previous());
 }
 
 void LinkProblemsGenerator::treatloop(const std::filesystem::path& root,
