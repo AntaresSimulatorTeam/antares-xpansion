@@ -1,6 +1,7 @@
 
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
+#include "antares-xpansion/grid_evaluator/GridCollection.h"
 #include "antares-xpansion/grid_evaluator/GridEvaluator.h"
 
 struct ParsedArgs
@@ -91,10 +92,17 @@ int main(int argc, char** argv)
     auto logger_factory = FileAndStdoutLoggerFactory(report_path, false);
     Logger logger = logger_factory.get_logger();
 
+    auto gridCollection = std::make_shared<GridCollection>(path_to_data / "grid.csv");
+
     auto writer = std::make_shared<Output::JsonWriter>(std::make_shared<Clock>(),
                                                        path_to_data / "output.json");
 
-    auto evaluator = GridEvaluator(logger, writer, path_to_data, pb_format, num_threads);
+    auto evaluator = GridEvaluator(logger,
+                                   writer,
+                                   path_to_data,
+                                   gridCollection,
+                                   pb_format,
+                                   num_threads);
 
     evaluator.launch();
 

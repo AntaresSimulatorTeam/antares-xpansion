@@ -10,7 +10,9 @@ add_library(grid_evaluator_lib STATIC)
 
 target_sources(grid_evaluator_lib PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/GridEvaluator.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/GridCollection.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/grid_evaluator/GridEvaluator.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/grid_evaluator/GridCollection.h
 )
 
 target_link_libraries(grid_evaluator_lib
