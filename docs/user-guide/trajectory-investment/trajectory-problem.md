@@ -12,10 +12,11 @@ over a set of investment variables specified by the user, where :
 - $C$ contains the fixed cost annuities of those candidates
 - $\text{ANTARES}(x)$ is the operating cost of the system for a given investment level.
 
+## Switching to a pluriannual vision
 
 We want to switch to a pluriannual vision and optimise the investments over several possible trajectories described on a diverging tree of scenarios
 
-![](../../assets/media/trajectory/trajectory.png)
+![Trajectory tree](../../assets/media/trajectory/trajectory.png){: .center}
 
 **Figure 1** - Trajectory tree made up of annual Xpansion studies
 

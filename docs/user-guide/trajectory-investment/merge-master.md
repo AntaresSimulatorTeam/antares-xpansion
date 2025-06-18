@@ -159,21 +159,18 @@ To access the ```lp``` data of each node, the executable expects to be passed th
       "lp_folder" : "./node_2040_study/output/20250526-1505eco/lp/",
       "master_file" : "master",
       "structure_file" : "structure.txt",
-      "weights_file" : "weights.txt"
    },
    "2050_A" : 
    {
       "lp_folder" : "./node_2050_A_study/output/20250526-1505eco/lp/",
       "master_file" : "master",
       "structure_file" : "structure.txt",
-      "weights_file" : "weights.txt"
    },
    "2050_B" : 
    {
       "lp_folder" : "./node_2050_B_study/output/20250526-1505eco/lp/",
       "master_file" : "master",
       "structure_file" : "structure.txt",
-      "weights_file" : "weights.txt"
    }
 }
 ```
@@ -184,7 +181,7 @@ We give below what the folder given as ```INPUTROOT``` in the options file shoul
 .
 ├── intermediary_files
 │   ├── master_merger_info.json
-│   ├── merge_master_options.json
+│   ├── options_merge_master.json
 │   └── nodal_lp_info.json
 ├── node_2030_study
 │   ├── Desktop.ini

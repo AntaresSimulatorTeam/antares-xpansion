@@ -3,7 +3,7 @@
 ## User input file
 
 We give here an example of a user input file corresponding with the illustration given in the problem presentation.  
-**user-input.yaml** :
+**user_input.yaml** :
 
 ```yaml
 # Global trajectory data
@@ -96,8 +96,6 @@ initial_capacities:
 ```
 
 ## Input file parser & translator
-
-usage : TBA
 
 - Parses the user input file and verifies that the data given in the file matches with the studies (To be implemented : check that every candidate is present in both the study and the node's info).
 - Computes the relevant data :

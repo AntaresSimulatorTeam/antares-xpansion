@@ -24,7 +24,7 @@ The first column contains the node's name, and the second the path to the releva
 ```
 The full input files & folders layout for this example is diplayed in [this section](./trajectory-workflow.md#file-structure) for more clarity.
 
-## Weights and/or additional constraints reference file
+## Weights / additional constraints reference file
 
 The weights (resp. additional constraints) reference file gives the ```MultipleProblemGeneration``` executable information about the potential custom weights file (resp. additional constraints file) given by the user.
 
