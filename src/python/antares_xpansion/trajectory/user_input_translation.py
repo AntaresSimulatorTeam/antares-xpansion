@@ -467,7 +467,7 @@ class TrajectoryModule:
         """
         Parse the data contained in the user's input file
         """
-        with open(self.input_file) as file:
+        with open(self.input_file, encoding="utf-8") as file:
             content = yaml.full_load(file)
             validated_content = self.TrajectoryInputFile.model_validate(content)
             # print(validated_content)
