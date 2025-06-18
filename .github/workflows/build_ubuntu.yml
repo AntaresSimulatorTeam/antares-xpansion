@@ -13,7 +13,7 @@ on:
       - doc/*
       - dependabot/*
   release:
-    types: [created]
+    types: [ created ]
 
 env:
   GITHUB_TOKEN: ${{ github.token }}
@@ -25,7 +25,7 @@ jobs:
     if: "!contains(github.event.head_commit.message, '[skip ci]')"
     strategy:
       matrix:
-        os: [ubuntu-22.04]
+        os: [ ubuntu-22.04 ]
     env:
       VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
       ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
@@ -47,6 +47,7 @@ jobs:
           sudo apt-get install -y ccache
           sudo apt-get install -y g++
 
+
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1.2.3
         with:
@@ -56,7 +57,7 @@ jobs:
         uses: actions/setup-python@v5
         id: python-setup
         with:
-          cache: "pip"
+          cache: 'pip'
           python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install dependencies
@@ -78,15 +79,15 @@ jobs:
         id: antares-version
         uses: ./.github/actions/read-json-value
         with:
-          path: "antares-version.json"
-          key: "antares_version"
+          path: 'antares-version.json'
+          key: 'antares_version'
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
         uses: ./.github/actions/read-json-value
         with:
-          path: "antares-version.json"
-          key: "antares_xpansion_version"
+          path: 'antares-version.json'
+          key: 'antares_xpansion_version'
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
@@ -138,11 +139,11 @@ jobs:
           #          feature: "features/outer_loop_tests.feature"
           mpi_path: ${{ github.workspace }}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin
 
-      # - name: Test
-      #   run: |
-      #     export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH
-      #     cd _build
-      #     ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
+      - name: Test
+        run: |
+          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH
+          cd _build
+          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
 
       - name: Cache vcpkg binary dir
         if: always()
@@ -205,8 +206,8 @@ jobs:
         id: antares-xpansion-version
         uses: ./.github/actions/read-json-value
         with:
-          path: "antares-version.json"
-          key: "antares_xpansion_version"
+          path: 'antares-version.json'
+          key: 'antares_xpansion_version'
 
       - id: create-user-guide
         name: user guide pdf creation
@@ -221,52 +222,52 @@ jobs:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
 
-  # test_assets:
-  #   runs-on: ubuntu-latest
-  #   needs: [ build ]
-  #   steps:
-  #     - name: Download build assets
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: ${{needs.build.outputs.TGZ_NAME}}
-  #     - name: setup
-  #       run: |
-  #         tar --strip-components=1 -xzf ${{needs.build.outputs.TGZ_NAME}}
-  #         sudo apt-get update -y
-  #         sudo apt-get install openmpi-bin -y
+  test_assets:
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    steps:
+      - name: Download build assets
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{needs.build.outputs.TGZ_NAME}}
+      - name: setup
+        run: |
+          tar --strip-components=1 -xzf ${{needs.build.outputs.TGZ_NAME}}
+          sudo apt-get update -y
+          sudo apt-get install openmpi-bin -y
 
-  #     - name: run launcher
-  #       run: |
-  #         ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
+      - name: run launcher
+        run: |
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
 
-  #     - name: run launcher parallel
-  #       run: |
-  #         ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
+      - name: run launcher parallel
+        run: |
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
 
-  # test_single_file_asset:
-  #   runs-on: ubuntu-latest
-  #   needs: [ build ]
-  #   steps:
-  #     - name: Download build assets
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
-  #     - name: setup
-  #       run: |
-  #         tar --strip-components=1 -xzf ${{needs.build.outputs.SINGLE_FILE_NAME}}
-  #         sudo apt-get update -y
-  #         sudo apt-get install openmpi-bin -y
+  test_single_file_asset:
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    steps:
+      - name: Download build assets
+        uses: actions/download-artifact@v4
+        with:
+          name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
+      - name: setup
+        run: |
+          tar --strip-components=1 -xzf ${{needs.build.outputs.SINGLE_FILE_NAME}}
+          sudo apt-get update -y
+          sudo apt-get install openmpi-bin -y
 
-  #     - name: run launcher
-  #       run: |
-  #         ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
-  #     - name: run launcher parallel
-  #       run: |
-  #         ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2
+      - name: run launcher
+        run: |
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates
+      - name: run launcher parallel
+        run: |
+          ./antares-xpansion-launcher -i examples/SmallTestFiveCandidates -n 2    
 
   release:
     runs-on: ubuntu-latest
-    needs: [build, userguide]
+    needs: [ build, userguide ]
     if: github.event_name == 'release' && github.event.action == 'created'
     steps:
       - name: Download userguide
