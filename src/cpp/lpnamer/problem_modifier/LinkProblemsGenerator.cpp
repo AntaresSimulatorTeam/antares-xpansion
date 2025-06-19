@@ -84,7 +84,8 @@ void LinkProblemsGenerator::treat(const std::string& problem_name,
     SolverFactory sf(logger_);
     auto p = sf.copy_solver(problem->solver_abstract_.get());
     Problem forWriting(p);
-    writer->Write_problem(&forWriting, lp_mps_name);
+    // writer->Write_problem(&forWriting, lp_mps_name);
+    forWriting.write_prob_mps(lp_mps_name);
     (*logger_)(LogUtils::LOGLEVEL::INFO)
       << fmt::format("Problem {} written in {}\n", problem_name, timer.elapsed_since_previous());
 }
