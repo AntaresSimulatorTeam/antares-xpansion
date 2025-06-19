@@ -93,7 +93,7 @@ public:
 
     void read_prob_mps(const std::filesystem::path& filename) override;
     void read_prob_lp(const std::filesystem::path& filename) override;
-    void restore_prob(const std::filesystem::path& filename) override;
+    void restore_prob(std::filesystem::path filename) override;
     void read_basis(const std::filesystem::path& filename) override;
     void set_basis(std::span<int> rstatus, std::span<int> cstatus) override;
 

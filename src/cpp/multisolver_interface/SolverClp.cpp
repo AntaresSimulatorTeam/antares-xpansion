@@ -759,7 +759,7 @@ void SolverClp::save_prob(const std::filesystem::path& filename)
  * CLP default to read_prob_mps implementation
  * @param filename
  */
-void SolverClp::restore_prob(const std::filesystem::path& filename)
+void SolverClp::restore_prob(std::filesystem::path filename)
 {
     read_prob_mps(filename);
 }

@@ -353,7 +353,7 @@ public:
     }
 
     void save_prob(const std::filesystem::path& filename) override;
-    void restore_prob(const std::filesystem::path& filename) override;
+    void restore_prob(std::filesystem::path filename) override;
 };
 
 #endif // ANTARESXPANSION_SRC_CPP_LPNAMER_MODEL_PROBLEM_H_

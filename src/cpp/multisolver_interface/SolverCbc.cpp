@@ -904,7 +904,7 @@ void SolverCbc::save_prob(const std::filesystem::path& filename)
  * CBC default to read_prob_mps implementation
  * @param filename
  */
-void SolverCbc::restore_prob(const std::filesystem::path& filename)
+void SolverCbc::restore_prob(std::filesystem::path filename)
 {
     read_prob_mps(filename);
 }

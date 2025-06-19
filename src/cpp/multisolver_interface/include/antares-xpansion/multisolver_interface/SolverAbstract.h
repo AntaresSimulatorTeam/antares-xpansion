@@ -377,7 +377,7 @@ public:
      *
      * @param name   : name of the file to read
      */
-    virtual void restore_prob(const std::filesystem::path& filename) = 0;
+    virtual void restore_prob(std::filesystem::path filename) = 0;
 
     /**
      * @brief Instructs the optimizer to read in a previously saved basis from a

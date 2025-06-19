@@ -760,7 +760,7 @@ void SolverXpress::save_prob(const std::filesystem::path& filename)
     zero_status_check(status, "save problem", LOGLOCATION);
 }
 
-void SolverXpress::restore_prob(const std::filesystem::path& filename)
+void SolverXpress::restore_prob(std::filesystem::path filename)
 {
     int status = XPRSrestore(_xprs, filename.string().c_str(), "");
     zero_status_check(status, "restore problem", LOGLOCATION);
