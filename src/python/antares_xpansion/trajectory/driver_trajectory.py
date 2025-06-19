@@ -36,6 +36,10 @@ class TrajectoryInvestmentDriver:
         self.config = config
         self.logger = step_logger(__name__, __class__.__name__)
 
+        # Change the working directory to the input root.
+        previous_dir = os.getcwd()
+        os.chdir(self.config.input_root)
+
         # Create the intermediary folder
         self.intermediary_folder_path = self.prepare_folder(
             self.config.INTERMEDIARY_FOLDER
@@ -64,6 +68,7 @@ class TrajectoryInvestmentDriver:
 
         # Input translation driver
         self.input_translation_driver = InputTranslationDriver(
+            self.config.input_root,
             self.config.input_file,
             self.master_merger_info_file,
         )
@@ -94,6 +99,7 @@ class TrajectoryInvestmentDriver:
         mw_data = MergeWeightsData(
             self.config.get_executable_path(self.config.MERGE_WEIGHTS),
             self.master_merger_info_file,
+            self.config.input_root,
             self.nodal_lp_info_file,
             self.merged_weights_file,
         )
@@ -129,9 +135,16 @@ class TrajectoryInvestmentDriver:
 
         self.resolution_driver = TrajectoryResolutionDriver(res_data)
 
+        # Change back the directory
+        os.chdir(previous_dir)
+
     def prepare_folder(self, name: str):
-        """Creates the folder at <input_root/name> and returns the full path"""
-        folder = self.config.input_root / name
+        """
+        Creates the folder at <./name> and returns the full path
+        This assumes we are working at the input root.
+        """
+        assert Path(os.getcwd()).resolve() == self.config.input_root.resolve()
+        folder = Path(f"./{name}")
         if not folder.is_dir():
             os.makedirs(folder)
 

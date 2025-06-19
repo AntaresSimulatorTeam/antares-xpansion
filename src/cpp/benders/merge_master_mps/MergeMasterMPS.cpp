@@ -1,5 +1,3 @@
-#include "antares-xpansion/benders/merge_master_mps/MergeMasterMPS.h"
-
 #include <filesystem>
 #include <fmt/format.h>
 #include <numeric>
@@ -8,6 +6,7 @@
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/merge_master_mps/MasterStructureKeys.h"
+#include "antares-xpansion/benders/merge_master_mps/MergeMasterMPS.h"
 #include "antares-xpansion/benders/merge_mps/StandardLp.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
@@ -294,7 +293,8 @@ void MergeMasterTrajectoryMPS::build_problem()
     {
         const std::string& node_name = node_data.name;
         const auto& nodal_lp = nodes_lp_info_.at(node_name);
-        const auto lp_folder = std::filesystem::path(options_.INPUTROOT) / nodal_lp.lp_folder;
+        const auto input_root = std::filesystem::path(options_.INPUTROOT);
+        const auto lp_folder = input_root / nodal_lp.lp_folder;
 
         // The master file should not contain the extension, add what it should be based on the mode
         std::string master_file;
@@ -318,11 +318,7 @@ void MergeMasterTrajectoryMPS::build_problem()
         StandardLp lpData(*solver_local);
         std::string varPrefix_local = make_prefix_from_node(node_name);
 
-        // Perhaps we could think of a way to include / use AbstractMergeMPS::merge_local_solver
-        // But it does not do exactly what we do here for now, particularily when building the new
-        // structure file It returns a map : old_var_name -> new_position Where as we are building :
-        // master -> prefixed_var_name -> new_position And : subproblem -> prefixed_var_name ->
-        // unchanged_position
+        // Add into the merged problem
         lpData.append_in(*ptr_merged_solver_, varPrefix_local);
 
         // Load the coupling map (structure file) for this node
@@ -359,7 +355,10 @@ void MergeMasterTrajectoryMPS::build_problem()
                 continue;
             }
 
-            const std::string subproblem_path = (nodal_lp.lp_folder / subproblem).string();
+            const auto abs_subproblem_path = lp_folder / subproblem;
+            const std::string subproblem_path = std::filesystem::relative(abs_subproblem_path,
+                                                                          input_root)
+                                                  .string();
             for (const auto& [candidate_name, position]: positions)
             {
                 const std::string candidate_name_prefixed = varPrefix_local + candidate_name;

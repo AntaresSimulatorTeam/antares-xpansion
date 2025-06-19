@@ -6,7 +6,9 @@ MultipleProblemGenerationExeOptions::MultipleProblemGenerationExeOptions()
 {
     AddOptions()("nodal-file",
                  po::value<std::filesystem::path>(&nodal_lp_info_path_),
-                 "nodal_lp_info output filepath");
+                 "nodal_lp_info output filepath")("input-root",
+                                                  po::value<std::filesystem::path>(&input_root_),
+                                                  "Input root containing all the studies.");
 }
 
 void MultipleProblemGenerationExeOptions::Parse(unsigned int argc, const char* const* argv)
@@ -27,6 +29,25 @@ void MultipleProblemGenerationExeOptions::checkMandatoryOptions(
         auto msg = "--nodal-file must be given."s;
         throw ProblemGenerationOptions::ConflictingParameters(msg, log_location);
     }
+    if (input_root_.empty())
+    {
+        using namespace std::string_literals;
+        auto msg = "--input-root must be given."s;
+        throw ProblemGenerationOptions::ConflictingParameters(msg, log_location);
+    }
+}
+
+MultipleProblemGeneration::MultipleProblemGeneration(MultipleProblemGenerationExeOptions& options):
+    options_(options)
+{
+    // TODO : add a logger
+    // const auto log_file_path = directories_.xpansion_output_dir / "lp"s
+    //                            / "MultipleProblemGenerationLog.txt"s;
+
+    // CreateDirectories(directories_.xpansion_output_dir);
+    // logger_ = ProblemGenerationLog::BuildLogger(log_file_path,
+    //                                             std::cout,
+    //                                             "Multiple Problem Generation"s);
 }
 
 namespace
@@ -65,8 +86,8 @@ void MultipleProblemGeneration::load_input_weight_files()
 {
     const std::string file_format_error{
       "Weights info file should have two columns separated by ' ' : \n "
-      "node_study_name1 path/to/weight/file \n"
-      "node_study_name2 path/to/weight/file \n"
+      "node_study_name1 ./relative/path/to/weight/file \n"
+      "node_study_name2 ./relative/path/to/weight/file \n"
       "... \n"
       "If a node is absent, it will be assumed to have uniform weights"};
     const auto path = options_.WeightsFile();
@@ -82,7 +103,7 @@ void MultipleProblemGeneration::load_input_weight_files()
     {
         auto split = StringManip::split(line, " ");
         check_format(split, file_format_error);
-        node_to_weight_file_[split[0]] = split[1];
+        node_to_weight_file_[split[0]] = options_.InputRootPath() / split[1];
     }
 }
 
@@ -90,8 +111,8 @@ void MultipleProblemGeneration::load_additional_constraints_files()
 {
     const std::string file_format_error{
       "Additional constraints info file should have two columns separated by ' ' : \n "
-      "node_study_name1 path/to/constraints/file \n"
-      "node_study_name2 path/to/constraints/file \n"
+      "node_study_name1 ./relative/path/to/constraints/file \n"
+      "node_study_name2 ./relative/path/to/constraints/file \n"
       "... \n"
       "If a node is absent, it will be assumed to have no additional constraints"};
     const auto path = options_.AdditionalConstraintsFilename();
@@ -107,8 +128,15 @@ void MultipleProblemGeneration::load_additional_constraints_files()
     {
         auto split = StringManip::split(line, " ");
         check_format(split, file_format_error);
-        node_to_additional_constraints_file_[split[0]] = split[1];
+        node_to_additional_constraints_file_[split[0]] = options_.InputRootPath() / split[1];
     }
+}
+
+void MultipleProblemGeneration::load_data()
+{
+    load_input_paths();
+    load_input_weight_files();
+    load_additional_constraints_files();
 }
 
 void MultipleProblemGeneration::run_generation()
@@ -158,6 +186,8 @@ void MultipleProblemGeneration::run_generation()
 
 void MultipleProblemGeneration::write_lp_paths() const
 {
+    // The input root is passed as a parameter
     LpDataLocationManager::write_nodal_lp_location_file(node_to_lp_info_,
-                                                        options_.NodalLpInfoPath());
+                                                        options_.NodalLpInfoPath(),
+                                                        options_.InputRootPath());
 }

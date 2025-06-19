@@ -4,6 +4,7 @@ from dataclasses import dataclass
 import yaml
 import subprocess
 import sys
+import os
 
 from antares_xpansion.trajectory.user_input_keys import TrajectoryInputKeys as InKeys
 from antares_xpansion.xpansionConfig import XpansionConfigConstants
@@ -77,14 +78,16 @@ class MultipleProblemGenerationDriver:
             ]
             for node, pathstr in studies.items():
                 path = Path(pathstr)
-                if path.is_absolute():
-                    self.node_to_studies[node] = path
-                else:
-                    self.node_to_studies[node] = self.input_root / path
+                # We write the paths relative to the input root.
+                self.node_to_studies[node] = path
 
         # Loop over the studies.
         config_defaults = XpansionConfigConstants()
         config_defaults._initialize_default_values()
+
+        # We have to work at the input root
+        previous_dir = os.getcwd()
+        os.chdir(self.input_root)
 
         for node, path in self.node_to_studies.items():
             reader = XpansionSettingsReader(path, config_defaults)
@@ -95,11 +98,13 @@ class MultipleProblemGenerationDriver:
             if constraints_file != "":
                 self.node_to_additional_constraints[node] = Path(constraints_file)
 
+        os.chdir(previous_dir)
+
     @staticmethod
     def _write_dict_to_file(dict: dict[str, Path], filename: Path):
         lines: list[str] = []
         for node, path in dict.items():
-            lines.append(f"{node} {str(path.resolve())}")
+            lines.append(f"{node} {str(path)}")
         with open(filename, "w") as f:
             f.write("\n".join(lines))
 
@@ -145,6 +150,9 @@ class MultipleProblemGenerationDriver:
         # Output file
         args.extend(["--nodal-file", self.nodal_lp_info_file])
 
+        # Input root
+        args.extend(["--input-root", self.input_root])
+
         return args
 
     def _get_mpg_command(self):
@@ -163,7 +171,6 @@ class MultipleProblemGenerationDriver:
             stdout=sys.stdout,
             stderr=sys.stderr,
         )
-
         if returned_l.returncode != 0:
             raise self.MultipleProblemGenerationExecutionError(
                 "ERROR: exited multiple_problem_generation with status %d"
@@ -171,7 +178,14 @@ class MultipleProblemGenerationDriver:
             )
 
     def launch(self):
+        # Change working directory to input root.
+        previous_dir = os.getcwd()
+        os.chdir(self.input_root)
+        # Run the driver
         self._read_data_and_prepare_input_files()
         self._write_input_files()
         self._launch_executable()
+
+        os.chdir(previous_dir)
+
         return

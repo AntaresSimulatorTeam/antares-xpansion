@@ -13,6 +13,8 @@ Usage is ```<merge_weights_executable> <master_merger_info.json> <nodal_lp_info.
 
 Note that in the ```<nodal_lp_info.json>``` file, if the ```weights_file``` parameter does not appear or points to a non existant file, the weights of this node are assumed to be uniform.
 
+**Note** : the C++ executable has to be launched at the ```--input-root```. (The python driver takes care of this, this should not be a concern to most users).
+
 ## Output
 
 The ouput ```weights_merged.txt``` file will be a file with two columns.  

@@ -6,6 +6,7 @@ from antares_xpansion.optimisation_keys import OptimisationKeys
 import json
 import subprocess
 import sys
+import os
 
 
 @dataclass
@@ -113,6 +114,12 @@ class MergeMasterDriver:
             )
 
     def launch(self):
+        # Run the driver from the input root
+        previous_dir = os.getcwd()
+        os.chdir(self.input_root)
+
         self._check_input_file_existence()
         self._generate_basic_merger_options_file()
         self._launch_merging()
+
+        os.chdir(previous_dir)
