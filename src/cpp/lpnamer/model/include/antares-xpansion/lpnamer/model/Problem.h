@@ -23,7 +23,7 @@ public:
     {
     }
 
-private:
+public:
     const SolverAbstract::Ptr solver_abstract_;
 
 public:

@@ -43,6 +43,7 @@ public:
      * @param toCopy : Pointer to an AbstractSolver object, containing an XPRESS
      * solver to copy
      */
+    explicit SolverXpress(const SolverAbstract* toCopy);
     explicit SolverXpress(const SolverAbstract::Ptr toCopy);
     explicit SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy);
 

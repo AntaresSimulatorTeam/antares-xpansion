@@ -46,7 +46,7 @@ void LinkProblemsGenerator::treat(const std::string& problem_name,
                                   IProblemVariablesProviderPort* variable_provider,
                                   IProblemWriter* writer)
 {
-    (*logger_)(LogUtils::LOGLEVEL::INFO) << fmt::format("Treating problem {}", problem_name);
+    (*logger_)(LogUtils::LOGLEVEL::INFO) << fmt::format("Treating problem {}\n", problem_name);
     Timer timer;
     ProblemVariables problem_variables = variable_provider->Provide();
 
@@ -60,7 +60,7 @@ void LinkProblemsGenerator::treat(const std::string& problem_name,
                                    problem_variables.ntc_columns,
                                    problem_variables.direct_cost_columns,
                                    problem_variables.indirect_cost_columns);
-    (*logger_)(LogUtils::LOGLEVEL::INFO) << fmt::format("Problem {} change problem in {}",
+    (*logger_)(LogUtils::LOGLEVEL::INFO) << fmt::format("Problem {} change problem in {}\n",
                                                         problem_name,
                                                         timer.elapsed_since_previous());
     // couplings creation
@@ -80,10 +80,13 @@ void LinkProblemsGenerator::treat(const std::string& problem_name,
     const auto lp_mps_name = lpDir_ / problem_name;
     problem->_name = lp_mps_name.string();
     (*logger_)(LogUtils::LOGLEVEL::INFO)
-      << fmt::format("Problem {} treated in {}", problem_name, timer.elapsed_since_previous());
-    writer->Write_problem(problem, lp_mps_name);
+      << fmt::format("Problem {} treated in {}\n", problem_name, timer.elapsed_since_previous());
+    SolverFactory sf(logger_);
+    auto p = sf.copy_solver(problem->solver_abstract_.get());
+    Problem forWriting(p);
+    writer->Write_problem(&forWriting, lp_mps_name);
     (*logger_)(LogUtils::LOGLEVEL::INFO)
-      << fmt::format("Problem {} written in {}", problem_name, timer.elapsed_since_previous());
+      << fmt::format("Problem {} written in {}\n", problem_name, timer.elapsed_since_previous());
 }
 
 void LinkProblemsGenerator::treatloop(const std::filesystem::path& root,

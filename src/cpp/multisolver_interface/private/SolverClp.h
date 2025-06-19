@@ -51,6 +51,7 @@ public:
      * @param toCopy : Pointer to an AbstractSolver object, containing a CLP
      * solver to copy
      */
+    explicit SolverClp(const SolverAbstract* toCopy);
     explicit SolverClp(const std::shared_ptr<const SolverAbstract> toCopy);
 
     /*SolverClp ctor accept only std::shared_ptr*/

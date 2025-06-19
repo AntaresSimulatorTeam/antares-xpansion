@@ -28,6 +28,32 @@ SolverXpress::SolverXpress(const SolverLogManager& log_manager):
     }
 }
 
+SolverXpress::SolverXpress(const SolverAbstract* toCopy):
+    SolverXpress()
+{
+    SolverXpress::init();
+    int status = 0;
+
+    // Try to cast the solver in fictif to a SolverXpress
+    if (const auto* xpSolv = dynamic_cast<const SolverXpress*>(toCopy))
+    {
+        status = XPRScopyprob(_xprs, xpSolv->_xprs, "");
+        _log_file = toCopy->_log_file;
+        if (_log_file != "")
+        {
+            _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
+            add_stream(_log_stream);
+        }
+        zero_status_check(status, "create problem", LOGLOCATION);
+    }
+    else
+    {
+        _NumberOfProblems -= 1;
+        SolverXpress::free();
+        throw InvalidSolverForCopyException(toCopy->get_solver_name(), name_, LOGLOCATION);
+    }
+}
+
 SolverXpress::SolverXpress()
 {
     std::lock_guard<std::mutex> guard(license_guard);
@@ -51,29 +77,8 @@ SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy):
 }
 
 SolverXpress::SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy):
-    SolverXpress()
+    SolverXpress(toCopy.get())
 {
-    SolverXpress::init();
-    int status = 0;
-
-    // Try to cast the solver in fictif to a SolverXpress
-    if (const SolverXpress* xpSolv = dynamic_cast<const SolverXpress*>(toCopy.get()))
-    {
-        status = XPRScopyprob(_xprs, xpSolv->_xprs, "");
-        _log_file = toCopy->_log_file;
-        if (_log_file != "")
-        {
-            _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
-            add_stream(_log_stream);
-        }
-        zero_status_check(status, "create problem", LOGLOCATION);
-    }
-    else
-    {
-        _NumberOfProblems -= 1;
-        SolverXpress::free();
-        throw InvalidSolverForCopyException(toCopy->get_solver_name(), name_, LOGLOCATION);
-    }
 }
 
 SolverXpress::~SolverXpress()
@@ -752,9 +757,6 @@ void SolverXpress::save_prob(const std::filesystem::path& filename)
     std::filesystem::path filename_to_use{filename};
     filename_to_use.replace_extension(".svf");
     int status = XPRSsaveas(_xprs, filename_to_use.string().c_str());
-    char errmsg[512];
-    XPRSgetlasterror(_xprs, errmsg);
-    std::cerr << errmsg << std::endl;
     zero_status_check(status, "save problem", LOGLOCATION);
 }
 

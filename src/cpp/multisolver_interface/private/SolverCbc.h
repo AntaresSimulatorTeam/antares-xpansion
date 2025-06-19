@@ -47,6 +47,7 @@ public:
      * @param toCopy : Pointer to an AbstractSolver object, containing a CBC
      * solver to copy
      */
+    explicit SolverCbc(const SolverAbstract* toCopy);
     explicit SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy);
 
     /*SolverCbc ctor accept only std::shared_ptr*/

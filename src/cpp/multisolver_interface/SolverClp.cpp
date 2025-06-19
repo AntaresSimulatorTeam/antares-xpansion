@@ -19,17 +19,11 @@ SolverClp::SolverClp(const SolverLogManager& log_manager):
     }
 }
 
-SolverClp::SolverClp()
-{
-    _NumberOfProblems += 1;
-    set_output_log_level(0);
-}
-
-SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy):
+SolverClp::SolverClp(const SolverAbstract* toCopy):
     SolverClp()
 {
     // Try to cast the solver in fictif to a SolverClp
-    if (const auto c = dynamic_cast<const SolverClp*>(toCopy.get()))
+    if (const auto c = dynamic_cast<const SolverClp*>(toCopy))
     {
         _clp = ClpSimplex(c->_clp);
         _fp = c->_fp;
@@ -43,6 +37,17 @@ SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy):
         _NumberOfProblems -= 1;
         throw InvalidSolverForCopyException(toCopy->get_solver_name(), name_, LOGLOCATION);
     }
+}
+
+SolverClp::SolverClp()
+{
+    _NumberOfProblems += 1;
+    set_output_log_level(0);
+}
+
+SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy):
+    SolverClp(toCopy.get())
+{
 }
 
 SolverClp::~SolverClp()
