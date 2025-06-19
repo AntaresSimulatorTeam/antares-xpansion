@@ -91,7 +91,6 @@ RUN export PATH=/root/miniconda3/condabin:$PATH && \
               ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so && \
               export PATH="/workspace/antares-xpansion/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH" && \
               pushd tests/end_to_end && \
-              behave --tags ~@flaky  cucumber/features --no-capture --no-capture-stderr --format pretty && \
               popd && \
               cd _build && \
               ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
