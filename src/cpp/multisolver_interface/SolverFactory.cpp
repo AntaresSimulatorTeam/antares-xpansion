@@ -235,7 +235,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(const SolverConfig& solver_conf
     return create_solver(solver_config, log_manager);
 }
 
-SolverAbstract::Ptr SolverFactory::copy_solver(SolverAbstract* to_copy) const
+SolverAbstract::Ptr SolverFactory::copy_solver(const SolverAbstract* to_copy) const
 {
     std::string solver_name = to_copy->get_solver_name();
     std::transform(solver_name.begin(), solver_name.end(), solver_name.begin(), ::toupper);
