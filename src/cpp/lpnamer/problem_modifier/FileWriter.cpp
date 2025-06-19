@@ -6,9 +6,18 @@
 #include "antares-xpansion/lpnamer/problem_modifier/IProblemWriter.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 
-void FileWriter::Write_problem(Problem* in_prblm, const std::filesystem::path& output_file)
+void FileWriter::Write_problem(Problem* in_prblm,
+                               const std::filesystem::path& output_file,
+                               bool asmps)
 {
-    in_prblm->save_prob(output_file);
+    if (asmps)
+    {
+        in_prblm->write_prob_mps(output_file);
+    }
+    else
+    {
+        in_prblm->save_prob(output_file);
+    }
 }
 
 FileWriter::FileWriter(std::filesystem::path lp_dir):

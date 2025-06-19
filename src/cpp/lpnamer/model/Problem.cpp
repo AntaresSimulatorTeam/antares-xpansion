@@ -20,7 +20,5 @@ void Problem::save_prob(const std::filesystem::path& filename)
 void Problem::restore_prob(std::filesystem::path filename)
 {
     std::tie(mc_year, week) = McYearAndWeek(filename);
-    filename.replace_extension(".mps");
-    solver_abstract_->read_prob_mps(filename);
-    // solver_abstract_->restore_prob(filename);
+    solver_abstract_->restore_prob(filename);
 }

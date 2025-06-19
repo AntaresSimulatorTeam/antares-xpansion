@@ -6,7 +6,7 @@
 class FileWriter: public IProblemWriter
 {
 public:
-    void Write_problem(Problem* in_prblm, const std::filesystem::path& output_file) override;
+    void Write_problem(Problem* in_prblm, const std::filesystem::path& output_file, bool) override;
     FileWriter(std::filesystem::path lp_dir);
     std::filesystem::path lp_dir_;
 };
