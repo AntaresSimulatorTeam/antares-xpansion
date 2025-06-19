@@ -81,6 +81,7 @@ static std::string solverXpansionToSimulator(const SolverConfig& in)
 
 void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& output)
 {
+    //__itt_pause();
     Antares::Solver::Optimization::OptimizationOptions optOptions;
 
     optOptions.firstOptimOptions.solverName = solverXpansionToSimulator(solver_config_);
@@ -107,6 +108,7 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& ou
     }
 
     lps_ = std::move(results.antares_problems);
+    //__itt_resume();
 }
 
 std::filesystem::path ProblemGeneration::updateProblems()
@@ -357,7 +359,7 @@ void ProblemGeneration::RunProblemGeneration(
     else // API
     {
         Timer timer;
-        (*logger)(LogUtils::LOGLEVEL::INFO) << "Generating problems from Antares data...";
+        (*logger)(LogUtils::LOGLEVEL::INFO) << "Generating problems from Antares data...\n";
         auto mps_file_writer = std::make_shared<FileWriter>(lpDir_);
 
         // vector of pair for parallelization
@@ -372,7 +374,7 @@ void ProblemGeneration::RunProblemGeneration(
         std::vector<std::pair<int, ProblemData>> year_and_data;
         year_and_data.reserve(lps_.weeklyProblems.size());
         (*logger)(LogUtils::LOGLEVEL::INFO)
-          << fmt::format("Entering main loop, time elapsed: {}", timer.elapsed_since_previous());
+          << fmt::format("Entering main loop, time elapsed: {}\n", timer.elapsed_since_previous());
         std::mutex mutex;
         std::for_each(
           std::execution::par,
@@ -385,17 +387,17 @@ void ProblemGeneration::RunProblemGeneration(
               auto problem = adapter.provideProblem(solver_config_.Name(),
                                                     solver_log_manager,
                                                     year_week);
-              (*logger)(LogUtils::LOGLEVEL::INFO) << fmt::format("Problem {} provided in {}",
+              (*logger)(LogUtils::LOGLEVEL::INFO) << fmt::format("Problem {} provided in {}\n",
                                                                  problem->_name,
                                                                  timer.elapsed_since_previous());
               {
                   std::lock_guard guard(mutex);
                   lps_.weeklyProblems.erase(year_week); // Clear data to save memory
                   year_and_data.emplace_back(problem->mc_year, ProblemData{problem->_name, {}});
-                  // Need to be done before treat because it will update problem name with the full
-                  // path
+                  // Need to be done before treat because it will update problem name with the
+                  // full path
               }
-              (*logger)(LogUtils::LOGLEVEL::INFO) << fmt::format("Problem {} erased in {}",
+              (*logger)(LogUtils::LOGLEVEL::INFO) << fmt::format("Problem {} erased in {}\n",
                                                                  problem->_name,
                                                                  timer.elapsed_since_previous());
               std::shared_ptr<IProblemVariablesProviderPort>
@@ -403,7 +405,7 @@ void ProblemGeneration::RunProblemGeneration(
                                                                                           links,
                                                                                           logger);
               (*logger)(LogUtils::LOGLEVEL::INFO)
-                << fmt::format("Problem {} variables provided in {}",
+                << fmt::format("Problem {} variables provided in {}\n",
                                problem->_name,
                                timer.elapsed_since_previous());
               linkProblemsGenerator.treat(problem->_name,
@@ -425,7 +427,7 @@ void ProblemGeneration::RunProblemGeneration(
         reader->Close();
         reader->Delete();
     }
-    (*logger)(LogUtils::LOGLEVEL::INFO) << fmt::format("Generating master");
+    (*logger)(LogUtils::LOGLEVEL::INFO) << fmt::format("Generating master\n");
     MasterGeneration master_generation(xpansion_output_dir,
                                        links,
                                        additionalConstraints,
