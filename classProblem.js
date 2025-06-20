@@ -12,6 +12,7 @@ var classProblem =
     [ "chg_rhs", "classProblem.html#a7f85cacdc241722dad22e570957890aa", null ],
     [ "chg_row_name", "classProblem.html#a13f183f9af6db636f61e0e919ad8f834", null ],
     [ "copy_prob", "classProblem.html#a995719eb062c198744fcf9637ae165f3", null ],
+    [ "del_cols", "classProblem.html#ad03609ceda389e60599b8fb66ab0adae", null ],
     [ "del_rows", "classProblem.html#a7415aee60e1b8a3b83f9b4e2a989a827", null ],
     [ "free", "classProblem.html#acf2a0c3fb337ca9fe6931a96f8a902f5", null ],
     [ "get_basis", "classProblem.html#a23a581969905f7727611d2f7dd537af8", null ],

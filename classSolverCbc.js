@@ -14,6 +14,7 @@ var classSolverCbc =
     [ "chg_rhs", "classSolverCbc.html#a8fa0d0e8fab67cd8f07930d8337549a4", null ],
     [ "chg_row_name", "classSolverCbc.html#a91961aef6dbf88d420c029eed8a948ab", null ],
     [ "copy_prob", "classSolverCbc.html#a448ab7379bbf8589512d1d73e9defad9", null ],
+    [ "del_cols", "classSolverCbc.html#a10378e3dc1f70ce69258507f76b5da45", null ],
     [ "del_rows", "classSolverCbc.html#a2c14ea49c71844eafcc50aa69e38b444", null ],
     [ "free", "classSolverCbc.html#acb2ab7b80624c4ed0f9c3a122407236a", null ],
     [ "get_basis", "classSolverCbc.html#a74563ffa68ebdced260332162f64abf3", null ],

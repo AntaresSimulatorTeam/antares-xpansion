@@ -1,5 +1,11 @@
 var NAVTREEINDEX7 =
 {
+"md_docs_2user-guide_2get-started_2settings-definition.html":[21],
+"md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md200":[21,0],
+"md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md201":[21,1],
+"md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md202":[21,1,0],
+"md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md203":[21,1,1],
+"md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md204":[21,1,2],
 "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md205":[21,1,3],
 "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md206":[21,1,4],
 "md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md207":[21,1,5],
@@ -243,11 +249,5 @@ var NAVTREEINDEX7 =
 "structMathLogger.html#a80aab68d65d4ea91c5151d8b3d575209":[33,0,160,0],
 "structMathLoggerBase.html":[33,0,161],
 "structMathLoggerBaseExternalLoop.html":[33,0,162],
-"structMathLoggerBehaviour.html":[33,0,163],
-"structMathLoggerBendersByBatch.html":[33,0,164],
-"structMathLoggerBendersByBatchExternalLoop.html":[33,0,165],
-"structMathLoggerExternalLoopSpecific.html":[33,0,167],
-"structMathLoggerExternalLoopSpecific.html#a8a9621b528cb90afd087a4e9b1d5ae5f":[33,0,167,0],
-"structMergeMasterTrajectoryMPS_1_1CandidateCosts.html":[33,0,173,0],
-"structMergeMasterTrajectoryMPS_1_1TrajectoryConstraint.html":[33,0,173,1]
+"structMathLoggerBehaviour.html":[33,0,163]
 };

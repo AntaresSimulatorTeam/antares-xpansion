@@ -17,6 +17,7 @@ var classSolverAbstract =
     [ "chg_rhs", "classSolverAbstract.html#ad258bd76e2f7d5c1103d05ffb79b4c59", null ],
     [ "chg_row_name", "classSolverAbstract.html#ad992af8d12855a30f1d0c45daf988753", null ],
     [ "copy_prob", "classSolverAbstract.html#a7c3811bcde70723fc245a9409873cc55", null ],
+    [ "del_cols", "classSolverAbstract.html#a9ea8cf7574de04dd068d651e082e09f2", null ],
     [ "del_rows", "classSolverAbstract.html#a29e5ecfb7a74099bcd3873cf2a0a8558", null ],
     [ "free", "classSolverAbstract.html#a26d9c6d9a6b8f542049d0195f6a775a6", null ],
     [ "get_basis", "classSolverAbstract.html#a9d75be3d99380299e2a0955b4849b2a0", null ],

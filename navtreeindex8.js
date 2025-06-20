@@ -1,5 +1,11 @@
 var NAVTREEINDEX8 =
 {
+"structMathLoggerBendersByBatch.html":[33,0,164],
+"structMathLoggerBendersByBatchExternalLoop.html":[33,0,165],
+"structMathLoggerExternalLoopSpecific.html":[33,0,167],
+"structMathLoggerExternalLoopSpecific.html#a8a9621b528cb90afd087a4e9b1d5ae5f":[33,0,167,0],
+"structMergeMasterTrajectoryMPS_1_1CandidateCosts.html":[33,0,173,0],
+"structMergeMasterTrajectoryMPS_1_1TrajectoryConstraint.html":[33,0,173,1],
 "structMergeMasterTrajectoryMPS_1_1TrajectoryGlobalData.html":[33,0,173,2],
 "structMergeMasterTrajectoryMPS_1_1TrajectoryNode.html":[33,0,173,3],
 "structMergeMasterTrajectoryMPS_1_1VariablePositions.html":[33,0,173,4],

@@ -295,6 +295,9 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>set_basis</b>
 <tr class="memitem:a29e5ecfb7a74099bcd3873cf2a0a8558" id="r_a29e5ecfb7a74099bcd3873cf2a0a8558"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a29e5ecfb7a74099bcd3873cf2a0a8558">del_rows</a> (int first, int last)=0</td></tr>
 <tr class="memdesc:a29e5ecfb7a74099bcd3873cf2a0a8558"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes rows between index first and last.  <br /></td></tr>
 <tr class="separator:a29e5ecfb7a74099bcd3873cf2a0a8558"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9ea8cf7574de04dd068d651e082e09f2" id="r_a9ea8cf7574de04dd068d651e082e09f2"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9ea8cf7574de04dd068d651e082e09f2">del_cols</a> (int first, int last)=0</td></tr>
+<tr class="memdesc:a9ea8cf7574de04dd068d651e082e09f2"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes col at index first and last.  <br /></td></tr>
+<tr class="separator:a9ea8cf7574de04dd068d651e082e09f2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab7c030732bb69ca245909a497521837a" id="r_ab7c030732bb69ca245909a497521837a"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab7c030732bb69ca245909a497521837a">add_rows</a> (int newrows, int newnz, const char *qrtype, const double *rhs, const double *range, const int *mstart, const int *mclind, const double *dmatval, const std::vector&lt; std::string &gt; &amp;row_names)=0</td></tr>
 <tr class="memdesc:ab7c030732bb69ca245909a497521837a"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds rows to the problem.  <br /></td></tr>
 <tr class="separator:ab7c030732bb69ca245909a497521837a"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1049,6 +1052,46 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 </dl>
 
 <p>Implemented in <a class="el" href="classNOOPSolver.html#ae1755428c2f8bc38d8c90c335082d6cd">NOOPSolver</a>, <a class="el" href="classProblem.html#a995719eb062c198744fcf9637ae165f3">Problem</a>, <a class="el" href="classSolverCbc.html#a448ab7379bbf8589512d1d73e9defad9">SolverCbc</a>, <a class="el" href="classSolverClp.html#ab4cfabf222f35f9e566d4c74e5021acb">SolverClp</a>, and <a class="el" href="classSolverXpress.html#a900f8ba728b3cae5c413e6af48b8469a">SolverXpress</a>.</p>
+
+</div>
+</div>
+<a id="a9ea8cf7574de04dd068d651e082e09f2" name="a9ea8cf7574de04dd068d651e082e09f2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9ea8cf7574de04dd068d651e082e09f2">&#9670;&#160;</a></span>del_cols()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">virtual void SolverAbstract::del_cols </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>first</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>last</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Deletes col at index first and last. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">first</td><td>: first col index to delete </td></tr>
+    <tr><td class="paramname">last</td><td>: last col index to delete </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implemented in <a class="el" href="classNOOPSolver.html#a81a596b2d6e522b04c4f8f411de9f443">NOOPSolver</a>, <a class="el" href="classProblem.html#ad03609ceda389e60599b8fb66ab0adae">Problem</a>, <a class="el" href="classSolverCbc.html#a10378e3dc1f70ce69258507f76b5da45">SolverCbc</a>, <a class="el" href="classSolverClp.html#a06e608de752dcbb8be37b644edb7b3e9">SolverClp</a>, and <a class="el" href="classSolverXpress.html#a1303ed4ad4f9737e75958358c9da2346">SolverXpress</a>.</p>
 
 </div>
 </div>

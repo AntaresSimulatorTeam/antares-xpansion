@@ -12,6 +12,7 @@ var classNOOPSolver =
     [ "chg_rhs", "classNOOPSolver.html#a548d8819117967d3de06a280a60b399d", null ],
     [ "chg_row_name", "classNOOPSolver.html#a5f8d90f146d65b8c4f4e1a3bf62fab5b", null ],
     [ "copy_prob", "classNOOPSolver.html#ae1755428c2f8bc38d8c90c335082d6cd", null ],
+    [ "del_cols", "classNOOPSolver.html#a81a596b2d6e522b04c4f8f411de9f443", null ],
     [ "del_rows", "classNOOPSolver.html#aed70d410464aaa5f3d8924dca84bdaf5", null ],
     [ "free", "classNOOPSolver.html#af6b5f77cdb55e81596bbc18d93f6e840", null ],
     [ "get_basis", "classNOOPSolver.html#abb2e5b5f3009476f4bc6bb988fae6f6c", null ],

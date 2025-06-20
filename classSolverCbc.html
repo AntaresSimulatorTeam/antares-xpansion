@@ -274,6 +274,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a2c14ea49c71844eafcc50aa69e38b444" id="r_a2c14ea49c71844eafcc50aa69e38b444"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a2c14ea49c71844eafcc50aa69e38b444">del_rows</a> (int first, int last) override</td></tr>
 <tr class="memdesc:a2c14ea49c71844eafcc50aa69e38b444"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes rows between index first and last.  <br /></td></tr>
 <tr class="separator:a2c14ea49c71844eafcc50aa69e38b444"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a10378e3dc1f70ce69258507f76b5da45" id="r_a10378e3dc1f70ce69258507f76b5da45"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a10378e3dc1f70ce69258507f76b5da45">del_cols</a> (int first, int last) override</td></tr>
+<tr class="memdesc:a10378e3dc1f70ce69258507f76b5da45"><td class="mdescLeft">&#160;</td><td class="mdescRight">Deletes col at index first and last.  <br /></td></tr>
+<tr class="separator:a10378e3dc1f70ce69258507f76b5da45"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abd6277ebc56de430f38c8851866ca1bd" id="r_abd6277ebc56de430f38c8851866ca1bd"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abd6277ebc56de430f38c8851866ca1bd">add_rows</a> (int newrows, int newnz, const char *qrtype, const double *rhs, const double *range, const int *mstart, const int *mclind, const double *dmatval, const std::vector&lt; std::string &gt; &amp;row_names) override</td></tr>
 <tr class="memdesc:abd6277ebc56de430f38c8851866ca1bd"><td class="mdescLeft">&#160;</td><td class="mdescRight">Adds rows to the problem.  <br /></td></tr>
 <tr class="separator:abd6277ebc56de430f38c8851866ca1bd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1058,6 +1061,46 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 
 <p>Implements <a class="el" href="classSolverAbstract.html#a7c3811bcde70723fc245a9409873cc55">SolverAbstract</a>.</p>
+
+</div>
+</div>
+<a id="a10378e3dc1f70ce69258507f76b5da45" name="a10378e3dc1f70ce69258507f76b5da45"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a10378e3dc1f70ce69258507f76b5da45">&#9670;&#160;</a></span>del_cols()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void SolverCbc::del_cols </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>first</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>last</em></span>&#160;)</td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Deletes col at index first and last. </p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">first</td><td>: first col index to delete </td></tr>
+    <tr><td class="paramname">last</td><td>: last col index to delete </td></tr>
+  </table>
+  </dd>
+</dl>
+
+<p>Implements <a class="el" href="classSolverAbstract.html#a9ea8cf7574de04dd068d651e082e09f2">SolverAbstract</a>.</p>
 
 </div>
 </div>

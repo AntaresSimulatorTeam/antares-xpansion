@@ -377,13 +377,13 @@ var NAVTREEINDEX =
 [
 "ActiveLinks_8h_source.html",
 "classBendersSequentialDouble.html#a731f23e8a9e2700f022f60ac04d6cbea",
-"classOuterloop_1_1MasterUpdateBase.html",
-"classSolverCbc.html#a96ca23915e64d82081f78d1069db00ff",
-"classantares__xpansion_1_1benders__driver_1_1BendersDriver.html#a6116a501ea678104d9f989803561e542",
-"classargs__parser__trajectory_1_1TrajectoryLauncherOptionsKeys.html",
-"functions_e.html",
-"md_docs_2user-guide_2get-started_2settings-definition.html#autotoc_md205",
-"structMergeMasterTrajectoryMPS_1_1TrajectoryGlobalData.html"
+"classOuterloop_1_1IMasterUpdate.html",
+"classSolverCbc.html#a86ceda2f93815c8e027bd739aedd81e0",
+"classantares__xpansion_1_1antares__driver_1_1AntaresDriver_1_1Error.html",
+"classantares__xpansion_1_1xpansion__study__reader_1_1XpansionStudyReader_1_1NoSimulationDirectory.html",
+"functions.html",
+"md_docs_2user-guide_2get-started_2settings-definition.html",
+"structMathLoggerBendersByBatch.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -14,6 +14,7 @@ var classSolverXpress =
     [ "chg_rhs", "classSolverXpress.html#aea4b1d26fe9cadc968305c6c2fe3b442", null ],
     [ "chg_row_name", "classSolverXpress.html#a9e3d875088b872c4b8153c2067b8fed4", null ],
     [ "copy_prob", "classSolverXpress.html#a900f8ba728b3cae5c413e6af48b8469a", null ],
+    [ "del_cols", "classSolverXpress.html#a1303ed4ad4f9737e75958358c9da2346", null ],
     [ "del_rows", "classSolverXpress.html#a6d7e555228a8b6404a00a89754e35ab1", null ],
     [ "free", "classSolverXpress.html#af84b47270bfca3e50736d0d7bf369762", null ],
     [ "get_basis", "classSolverXpress.html#a517b84459c391dcbe6f94fcf81d97bee", null ],
