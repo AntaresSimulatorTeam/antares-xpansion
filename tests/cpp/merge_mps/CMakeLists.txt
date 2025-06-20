@@ -1,4 +1,6 @@
-add_executable(merge_mps_test merge_mps_test.cpp)
+add_executable(merge_mps_test
+        merge_mps_test.cpp
+)
 
 find_package(fmt REQUIRED)
 target_link_libraries(merge_mps_test

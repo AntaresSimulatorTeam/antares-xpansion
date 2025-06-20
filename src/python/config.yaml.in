@@ -10,6 +10,10 @@ OUTER_LOOP                      : $<TARGET_FILE_NAME:outer_loop>
 SENSITIVITY                     : $<TARGET_FILE_NAME:sensitivity>
 ANTARES_ARCHIVE_UPDATER         : $<TARGET_FILE_NAME:antares_archive_updater>
 mpiexec                         : @MPIEXEC_EXECUTABLE@
+# Trajectory investment modules
+MULTIPLE_PROBLEM_GENERATION     : $<TARGET_FILE_NAME:multiple_problem_generation>
+MERGE_MASTER_MPS                : $<TARGET_FILE_NAME:merge_master_mps>
+MERGE_WEIGHTS_TRAJECOTRY        : $<TARGET_FILE_NAME:merge_weights_trajectory>
 #for test only
 allow_run_as_root               : ${ALLOW_RUN_AS_ROOT}
 AVAILABLE_SOLVER :

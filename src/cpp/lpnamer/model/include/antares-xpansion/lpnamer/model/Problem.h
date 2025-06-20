@@ -193,6 +193,11 @@ public:
         solver_abstract_->del_rows(first, last);
     }
 
+    void del_cols(int first, int last) override
+    {
+        solver_abstract_->del_cols(first, last);
+    }
+
     void add_rows(int newrows,
                   int newnz,
                   const char* qrtype,

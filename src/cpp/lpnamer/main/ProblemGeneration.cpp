@@ -1,4 +1,3 @@
-
 #include "antares-xpansion/lpnamer/main/ProblemGeneration.h"
 
 #include <execution>
