@@ -372,6 +372,16 @@ void SolverClp::del_rows(int first, int last)
     _clp.deleteRows(last - first + 1, mindex.data());
 }
 
+void SolverClp::del_cols(int first, int last)
+{
+    std::vector<int> mindex(last - first + 1);
+    for (int i = 0; i < last - first + 1; i++)
+    {
+        mindex[i] = first + i;
+    }
+    _clp.deleteColumns(last - first + 1, mindex.data());
+}
+
 void SolverClp::add_rows(int newrows,
                          int newnz,
                          const char* qrtype,

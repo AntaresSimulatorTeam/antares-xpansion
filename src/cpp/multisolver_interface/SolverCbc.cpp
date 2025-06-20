@@ -500,6 +500,16 @@ void SolverCbc::del_rows(int first, int last)
     _clp_inner_solver.deleteRows(last - first + 1, mindex.data());
 }
 
+void SolverCbc::del_cols(int first, int last)
+{
+    std::vector<int> mindex(last - first + 1);
+    for (int i = 0; i < last - first + 1; i++)
+    {
+        mindex[i] = first + i;
+    }
+    _clp_inner_solver.deleteCols(last - first + 1, mindex.data());
+}
+
 void SolverCbc::add_rows(int newrows,
                          int newnz,
                          const char* qrtype,

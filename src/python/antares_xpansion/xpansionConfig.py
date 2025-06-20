@@ -1,6 +1,7 @@
 """
-    parameters for an AntaresXpansion session
+parameters for an AntaresXpansion session
 """
+
 import os
 import sys
 from dataclasses import dataclass
@@ -24,6 +25,10 @@ class ConfigParameters:
     ANTARES_ARCHIVE_UPDATER: str
     MPIEXEC: str
     AVAILABLE_SOLVERS: List[str]
+    # Trajectory investment, maybe split to a TrajectoryConfigParameters class ?
+    MULTIPLE_PROBLEM_GEN: str
+    MERGE_MASTER_MPS: str
+    MERGE_WEIGHTS_TRAJECTORY: str
 
 
 @dataclass
@@ -42,86 +47,14 @@ class InputParameters:
     cache_problems: bool
 
 
-class XpansionConfig:
+class XpansionConfigConstants:
     """
-    Class defininf the parameters for an AntaresXpansion session
+    Class defining the constants and defaults values for Xpansion settings access.
     """
 
-    # pylint: disable=too-many-instance-attributes
-    # pylint: disable=too-few-public-methods
-
-    def __init__(
-            self, input_parameters: InputParameters, config_parameters: ConfigParameters
-    ):
-
-        self.input_parameters = input_parameters
-        self.config_parameters = config_parameters
-        self.ANTARES: str = ""
-        self.MERGE_MPS: str = ""
-        self.BENDERS: str = ""
-        self.LP_NAMER: str = ""
-        self.STUDY_UPDATER: str = ""
-        self.SENSITIVITY_EXE: str = ""
-        self.FULL_RUN: str = ""
-        self.OUTER_LOOP: str = ""
-        self.ANTARES_ARCHIVE_UPDATER: str = ""
-        self.MPI_LAUNCHER: str = ""
-        self.MPI_N: str = ""
-        self.MPIEXEC: str = ""
-        self.AVAILABLE_SOLVER: List[str]
-
-        self._get_config_values()
-
-        self._get_parameters_from_arguments()
-
-        self._initialize_default_values()
-
-    def _get_parameters_from_arguments(self):
-        self.step = self.input_parameters.step
-        self.simulation_name = self.input_parameters.simulation_name
-        self.data_dir = str(Path(self.input_parameters.data_dir).absolute())
-        self.install_dir = self._get_install_dir(
-            self.input_parameters.install_dir)
-        self.method = self.input_parameters.method
-        self.n_mpi = self.input_parameters.n_mpi
-        self.antares_n_cpu = self.input_parameters.antares_n_cpu
-        self.keep_mps = self.input_parameters.keep_mps
-        self.oversubscribe = self.input_parameters.oversubscribe
-        self.allow_run_as_root = self.input_parameters.allow_run_as_root
-        self.cache_problems = self.input_parameters.cache_problems
-        self.memory = self.input_parameters.memory
-
-    def _get_install_dir(self, install_dir):
-        if install_dir is None:
-            return self._initialize_install_dir_with_default_value()
-        else:
-            return self._initialize_install_dir_with_absolute_path(install_dir)
-
-    @staticmethod
-    def _initialize_install_dir_with_absolute_path(install_dir):
-        if not Path.is_absolute(Path(install_dir)):
-            return os.path.join(Path.cwd(), Path(install_dir))
-        else:
-            return install_dir
-
-    def _initialize_install_dir_with_default_value(self):
-
-        if getattr(sys, "frozen", False):
-            install_dir_inside_package = (
-                    Path(os.path.abspath(__file__)).parent.parent / "bin"
-            )
-            install_dir_next_to_package = Path(sys.executable).parent / "bin"
-            if Path.is_dir(install_dir_inside_package):
-                return install_dir_inside_package
-            else:
-                return install_dir_next_to_package
-        elif __file__:
-            return self.default_install_dir
-
-    def _initialize_default_values(self):
-        self._set_constants()
-        self._set_default_options()
-        self._set_default_settings()
+    def __init__(self):
+        # Initialization is done afterwards
+        pass
 
     def _set_constants(self):
         # TODO move self.SETTINGS, self.GENERAL_DATA_INI, self.OUTPUT into antares driver
@@ -251,8 +184,86 @@ class XpansionConfig:
     def cache_problems_default_value(self):
         return False
 
-    def _get_config_values(self):
+    def _initialize_default_values(self):
+        self._set_constants()
+        self._set_default_settings()
+        self._set_default_options()
 
+
+class XpansionConfig(XpansionConfigConstants):
+    """
+    Class defining the parameters for an AntaresXpansion session
+    """
+
+    # pylint: disable=too-many-instance-attributes
+    # pylint: disable=too-few-public-methods
+
+    def __init__(
+        self, input_parameters: InputParameters, config_parameters: ConfigParameters
+    ):
+        self.input_parameters = input_parameters
+        self.config_parameters = config_parameters
+        self.ANTARES: str = ""
+        self.MERGE_MPS: str = ""
+        self.BENDERS: str = ""
+        self.LP_NAMER: str = ""
+        self.STUDY_UPDATER: str = ""
+        self.SENSITIVITY_EXE: str = ""
+        self.FULL_RUN: str = ""
+        self.OUTER_LOOP: str = ""
+        self.ANTARES_ARCHIVE_UPDATER: str = ""
+        self.MPI_LAUNCHER: str = ""
+        self.MPI_N: str = ""
+        self.MPIEXEC: str = ""
+        self.AVAILABLE_SOLVER: List[str]
+
+        self._get_config_values()
+
+        self._get_parameters_from_arguments()
+
+        self._initialize_default_values()
+
+    def _get_parameters_from_arguments(self):
+        self.step = self.input_parameters.step
+        self.simulation_name = self.input_parameters.simulation_name
+        self.data_dir = str(Path(self.input_parameters.data_dir).absolute())
+        self.install_dir = self._get_install_dir(self.input_parameters.install_dir)
+        self.method = self.input_parameters.method
+        self.n_mpi = self.input_parameters.n_mpi
+        self.antares_n_cpu = self.input_parameters.antares_n_cpu
+        self.keep_mps = self.input_parameters.keep_mps
+        self.oversubscribe = self.input_parameters.oversubscribe
+        self.allow_run_as_root = self.input_parameters.allow_run_as_root
+        self.cache_problems = self.input_parameters.cache_problems
+        self.memory = self.input_parameters.memory
+
+    def _get_install_dir(self, install_dir):
+        if install_dir is None:
+            return self._initialize_install_dir_with_default_value()
+        else:
+            return self._initialize_install_dir_with_absolute_path(install_dir)
+
+    @staticmethod
+    def _initialize_install_dir_with_absolute_path(install_dir):
+        if not Path.is_absolute(Path(install_dir)):
+            return os.path.join(Path.cwd(), Path(install_dir))
+        else:
+            return install_dir
+
+    def _initialize_install_dir_with_default_value(self):
+        if getattr(sys, "frozen", False):
+            install_dir_inside_package = (
+                Path(os.path.abspath(__file__)).parent.parent / "bin"
+            )
+            install_dir_next_to_package = Path(sys.executable).parent / "bin"
+            if Path.is_dir(install_dir_inside_package):
+                return install_dir_inside_package
+            else:
+                return install_dir_next_to_package
+        elif __file__:
+            return self.default_install_dir
+
+    def _get_config_values(self):
         self.default_install_dir = self.config_parameters.default_install_dir
         self.ANTARES = self.config_parameters.ANTARES
         self.MERGE_MPS = self.config_parameters.MERGE_MPS
