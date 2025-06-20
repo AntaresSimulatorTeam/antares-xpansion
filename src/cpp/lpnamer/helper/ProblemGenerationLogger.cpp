@@ -80,7 +80,7 @@ std::ostream& ProblemGenerationOstreamLogger::GetOstreamObject()
     return stream_;
 }
 
-void ProblemGenerationLogger::AddLogger(const ProblemGenerationILoggerSharedPointer& logger)
+void ProblemGenerationLogger::AddLogger(ProblemGenerationILoggerSharedPointer logger)
 {
     loggers_.push_back(logger);
     try_to_add_logger_to_enabled_list(logger);
@@ -114,21 +114,25 @@ void ProblemGenerationLogger::PrintIterationSeparatorEnd()
 
 void ProblemGenerationLogger::setLogLevel(const LogUtils::LOGLEVEL log_level)
 {
-    log_level_ = log_level;
-    update_enabled_logger();
+    if (log_level != log_level_)
+    {
+        std::lock_guard guard(mutex_);
+        log_level_ = log_level;
+        update_enabled_logger();
+    }
 }
 
 void ProblemGenerationLogger::update_enabled_logger()
 {
     enabled_loggers_.clear();
-    for (const auto& logger: loggers_)
+    for (const auto logger: loggers_)
     {
         try_to_add_logger_to_enabled_list(logger);
     }
 }
 
 bool ProblemGenerationLogger::try_to_add_logger_to_enabled_list(
-  const ProblemGenerationILoggerSharedPointer& logger)
+  ProblemGenerationILoggerSharedPointer logger)
 {
     if ((logger->Type() == LogUtils::LOGGERTYPE::CONSOLE && log_level_ != LogUtils::LOGLEVEL::DEBUG
          && log_level_ != LogUtils::LOGLEVEL::TRACE)
@@ -143,7 +147,8 @@ bool ProblemGenerationLogger::try_to_add_logger_to_enabled_list(
 ProblemGenerationLogger& ProblemGenerationLogger::operator<<(const LogUtils::LOGLEVEL log_level)
 {
     setLogLevel(log_level);
-    for (const auto& subLogger: enabled_loggers_)
+    std::lock_guard guard(mutex_);
+    for (const auto subLogger: enabled_loggers_)
     {
         subLogger->GetOstreamObject() << PrefixMessage(log_level, context_);
     }
@@ -152,7 +157,8 @@ ProblemGenerationLogger& ProblemGenerationLogger::operator<<(const LogUtils::LOG
 
 ProblemGenerationLogger& ProblemGenerationLogger::operator<<(std::ostream& (*f)(std::ostream&))
 {
-    for (const auto& subLogger: enabled_loggers_)
+    std::lock_guard guard(mutex_);
+    for (const auto subLogger: enabled_loggers_)
     {
         subLogger->GetOstreamObject() << f;
     }

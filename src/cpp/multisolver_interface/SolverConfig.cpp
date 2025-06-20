@@ -55,3 +55,8 @@ std::filesystem::path SolverConfig::FileName(const std::string& problemName)
     }
     return path;
 }
+
+void SolverConfig::setUseSave(bool use_save)
+{
+    use_save_restore = use_save;
+}

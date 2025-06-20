@@ -10,6 +10,7 @@
 #include "antares-xpansion/helpers/FileInBuffer.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
 #include "antares-xpansion/lpnamer/input_reader/MpsTxtWriter.h"
+#include "antares-xpansion/lpnamer/input_reader/SettingsReader.h"
 #include "antares-xpansion/lpnamer/input_reader/VariableFileReader.h"
 #include "antares-xpansion/lpnamer/problem_modifier/IProblemProviderPort.h"
 #include "antares-xpansion/lpnamer/problem_modifier/IProblemVariablesProviderPort.h"
@@ -58,6 +59,7 @@ public:
                IProblemProviderPort* problem_provider,
                IProblemVariablesProviderPort* variable_provider,
                IProblemWriter* writer);
+    bool asmps{false};
 
 private:
     const std::vector<ActiveLink>& _links;

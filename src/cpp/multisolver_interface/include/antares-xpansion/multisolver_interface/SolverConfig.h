@@ -31,4 +31,5 @@ public:
     bool operator==(const std::string& rhs) const;
     SolverConfig& operator=(const std::string& rhs);
     std::filesystem::path FileName(const std::string& problemName);
+    void setUseSave(bool);
 };

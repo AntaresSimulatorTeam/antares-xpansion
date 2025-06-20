@@ -7,6 +7,7 @@
 #include <iostream>
 #include <list>
 #include <memory>
+#include <mutex>
 #include <ostream>
 #include <set>
 #include <string>
@@ -99,9 +100,7 @@ public:
     {
     }
 
-    ~ProblemGenerationLogger() = default;
-
-    void AddLogger(const ProblemGenerationILoggerSharedPointer& logger);
+    void AddLogger(ProblemGenerationILoggerSharedPointer logger);
     void display_message(const std::string& message) override;
     void display_message(const std::string& message,
                          const LogUtils::LOGLEVEL log_level,
@@ -143,7 +142,8 @@ private:
     std::list<ProblemGenerationILoggerSharedPointer> loggers_;
     std::set<ProblemGenerationILoggerSharedPointer> enabled_loggers_;
     void update_enabled_logger();
-    bool try_to_add_logger_to_enabled_list(const ProblemGenerationILoggerSharedPointer& logger);
+    bool try_to_add_logger_to_enabled_list(ProblemGenerationILoggerSharedPointer logger);
+    std::mutex mutex_;
 };
 
 template<typename T>

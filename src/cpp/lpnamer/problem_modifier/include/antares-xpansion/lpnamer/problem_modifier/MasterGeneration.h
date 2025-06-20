@@ -27,7 +27,8 @@ public:
                               const std::string& master_formulation,
                               const std::string& solver_name,
                               std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger,
-                              SolverLogManager& solver_log_manager);
+                              SolverLogManager& solver_log_manager,
+                              bool asmps = false);
 
 private: /*methods*/
     void add_candidates(const std::vector<ActiveLink>& links);
@@ -43,5 +44,6 @@ private: /*members*/
     std::vector<Candidate> candidates;
     std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
     const std::string solver_name_;
+    bool asmps{false};
 };
 #endif //__MASTER_GENERATION__

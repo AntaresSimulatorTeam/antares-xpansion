@@ -18,6 +18,7 @@ public:
                             ProblemGenerationLog::ProblemGenerationLogger* logger);
 
     std::string Solver();
+    bool asmps{false};
 
 private:
     ProblemGenerationLog::ProblemGenerationLogger* logger_;

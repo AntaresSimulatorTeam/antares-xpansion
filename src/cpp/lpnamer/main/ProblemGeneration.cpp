@@ -165,7 +165,7 @@ void ProblemGeneration::ExtractUtilsFiles(
 
 std::vector<ActiveLink> getLinks(
   const std::filesystem::path& xpansion_output_dir,
-  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger>& logger)
+  std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
 {
     ActiveLinksBuilder linkBuilder = get_link_builders(xpansion_output_dir, logger);
     std::vector<ActiveLink> links = linkBuilder.getLinks();
@@ -248,6 +248,10 @@ void ProblemGeneration::RunProblemGeneration(
   bool unnamed_problems)
 {
     (*logger)(LogUtils::LOGLEVEL::INFO) << "Launching Problem Generation" << std::endl;
+    SettingsReader settingsReader(configuration_manager_.Directories().study_dir / "user"
+                                    / "expansion" / "settings.ini",
+                                  logger.get());
+    solver_config_.setUseSave(!settingsReader.asmps);
     validateMasterFormulation(master_formulation, logger);
 
     SolverLoader::GetAvailableSolvers(logger); // Dirty fix to populate static
@@ -284,6 +288,7 @@ void ProblemGeneration::RunProblemGeneration(
                                                 logger,
                                                 solver_log_manager,
                                                 rename_problems);
+    linkProblemsGenerator.asmps = settingsReader.asmps;
     std::shared_ptr<ArchiveReader> reader = mode_ == SimulationInputMode::ARCHIVE
                                               ? InstantiateZipReader(antares_archive_path)
                                               : std::make_shared<ArchiveReader>();
@@ -435,7 +440,8 @@ void ProblemGeneration::RunProblemGeneration(
                                        master_formulation,
                                        solver_config_.Name(),
                                        logger,
-                                       solver_log_manager);
+                                       solver_log_manager,
+                                       settingsReader.asmps);
     (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Problem Generation ran in: " << format_time_str(problem_generation_timer.elapsed())
       << std::endl;

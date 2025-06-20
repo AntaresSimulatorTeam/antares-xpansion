@@ -13,6 +13,7 @@ SettingsReader::SettingsReader(const std::filesystem::path& file_path,
     parse_file(file_path);
     settings_.try_emplace("solver", "CBC");
     solver_name_ = settings_.at("solver");
+    asmps = (settings_["problems_format"] == "MPS");
 }
 
 void SettingsReader::parse_file(const std::filesystem::path& file_path)

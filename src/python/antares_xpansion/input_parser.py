@@ -90,6 +90,10 @@ class InputParser:
                                  default=False,
                                  action='store_true',
                                  help="Cache problems on disque during benders")
+        self.parser.add_argument("--problems_format",
+                                 dest=LauncherOptionsKeys.problems_format_key(),
+                                 default="SAVED",
+                                 help="[MPS|SAVED] use mps or compressed format")
 
     def parse_args(self, args: List[str] = None) -> InputParameters:
         params = self.parser.parse_args(args)
@@ -110,6 +114,7 @@ class InputParser:
             allow_run_as_root=params.allow_run_as_root,
             memory=params.memory,
             cache_problems=params.cache_problems,
+            problems_format=params.problems_format,
         )
         return my_parameters
 

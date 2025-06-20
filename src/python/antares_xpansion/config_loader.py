@@ -537,7 +537,7 @@ class ConfigLoader(XpansionSettingsReader):
         )
         options_values[OptimisationKeys.batch_size_key()] = self.get_batch_size()
         options_values[OptimisationKeys.do_outer_loop_key()] = (
-            self._config.method == "adequacy_criterion"
+                self._config.method == "adequacy_criterion"
         )
         options_values[OptimisationKeys.outer_loop_option_file_key()] = (
             self._config.OUTER_LOOP_FILE
@@ -546,6 +546,7 @@ class ConfigLoader(XpansionSettingsReader):
         if os.path.exists(self.outer_loop_options_path()):
             shutil.copy(self.outer_loop_options_path(), self._simulation_lp_path())
         options_values[OptimisationKeys.cache_problems_keys()] = self.cache_problems()
+        options_values[OptimisationKeys.problems_format_key()] = self.problem_format()
 
         # generate options file for the solver
         with open(self.options_file_path(), "w") as options_file:
@@ -578,7 +579,7 @@ class ConfigLoader(XpansionSettingsReader):
             self._xpansion_simulation_name = self._last_study
             if self.is_zip(self._last_study):
                 self._xpansion_simulation_name = (
-                    self._last_study.parent / self._last_study.stem
+                        self._last_study.parent / self._last_study.stem
                 )
                 with zipfile.ZipFile(self._last_study, "r") as output_zip:
                     output_zip.extractall(self._xpansion_simulation_name)
@@ -597,13 +598,13 @@ class ConfigLoader(XpansionSettingsReader):
                 else:
                     self._xpansion_simulation_name = self._last_study
                     self._last_study = self._last_study.parent / (
-                        self._last_study.stem[: -len(xpansion_dir_suffix)] + ".zip"
+                            self._last_study.stem[: -len(xpansion_dir_suffix)] + ".zip"
                     )
         elif self.step() == "full" and self.memory():
             self._xpansion_simulation_name = self._last_study
         else:
             self._xpansion_simulation_name = self._last_study.parent / (
-                self._last_study.stem + "-Xpansion"
+                    self._last_study.stem + "-Xpansion"
             )
 
     def is_zip(self, study):
@@ -624,7 +625,7 @@ class ConfigLoader(XpansionSettingsReader):
     def is_antares_study_output(self, study: Path):
         _, ext = os.path.splitext(study)
         if (
-            self.memory() and "-Xpansion" not in study.name
+                self.memory() and "-Xpansion" not in study.name
         ):  # memory mode we work with files essentially
             return os.path.isdir(study)
         else:
@@ -802,3 +803,6 @@ class ConfigLoader(XpansionSettingsReader):
                 self._config.OUTER_LOOP_DIR,
             )
         )
+
+    def problem_format(self):
+        return self._config.problems_format
