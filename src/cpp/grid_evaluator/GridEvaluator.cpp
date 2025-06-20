@@ -20,7 +20,8 @@ std::atomic<double> totalPbModifTimer = 0; ///< Total time spent modifying subpr
 /// @brief Constructor
 /// @param logger Logger
 /// @param writer JsonWriter
-/// @param path_to_data Path to the data folder
+/// @param path_to_mps Path to the data folder
+/// @param grid_collection GridCollection containing the grids to evaluate
 /// @param data_format Format of the data (MPS or LP)
 /// @param nbThreads Number of threads to use
 GridEvaluator::GridEvaluator(Logger logger,
@@ -226,8 +227,7 @@ SubproblemWorkerPtr GridEvaluator::AddSubproblem(const std::string& pbName)
     return subPbWorker;
 }
 
-/// @brief Initialize the subproblems from the mps files in the mps folder
-///       and generate the RHS grid values for each subproblem
+/// @brief Get the list of subproblems names to be used in the gridDefinition
 std::vector<std::string> GridEvaluator::InitSubProblems(const GridDefinition& gridDefinition)
 {
     // Add all subproblems mps files to the subproblem map if they are used in the grid.csv file
@@ -248,6 +248,7 @@ std::vector<std::string> GridEvaluator::InitSubProblems(const GridDefinition& gr
 /// @brief Generate the RHS grid values for each subproblem
 ///        The RHS grid values are generated for each area and each constraint
 /// @param subPbName The name of the subproblem
+/// @param gridDefinition The grid definition used to generate the RHS grid values
 /// @param subPbWorker The subproblem worker
 /// @return The RHS grid values for each subproblem
 AreaConstraintMaps GridEvaluator::GenerateRHSGridValues(std::string subPbName,
@@ -343,6 +344,8 @@ void GridEvaluator::SetConstraintsRHSValues(const std::map<std::string, double>&
 }
 
 /// @brief Runs the ProcessSubproblem method in parallel for each subproblem
+/// @param subPbNames The names of the subproblems to process
+/// @param gridDefinition The grid definition to use to generate the grid afterwards
 void GridEvaluator::Run(const std::vector<std::string>& subPbNames,
                         const GridDefinition& gridDefinition)
 {
@@ -357,6 +360,7 @@ void GridEvaluator::Run(const std::vector<std::string>& subPbNames,
 ///          stores the resulting cost in the `variationDeNiveauxDeStockData` map indexed by
 ///          scenario, week, and constraint values.
 /// @param subPbName The name of the subproblem
+/// @param gridDefinition The grid definition to use to generate the grid
 void GridEvaluator::ProcessSubproblem(const std::string& subPbName,
                                       const GridDefinition& gridDefinition)
 {
@@ -410,6 +414,7 @@ void GridEvaluator::ProcessSubproblem(const std::string& subPbName,
 
 /// @brief Process the subproblems in parallel using TBB over nbThreads
 /// @param subPbNames The list of subproblems names to process
+/// @param gridDefinition The grid definition to use
 /// @param nbThreads The number of threads to use
 void GridEvaluator::ProcessGridParallel(const std::vector<std::string>& subPbNames,
                                         const GridDefinition& gridDefinition,
