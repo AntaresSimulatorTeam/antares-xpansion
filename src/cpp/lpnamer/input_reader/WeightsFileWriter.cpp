@@ -73,8 +73,10 @@ void YearlyWeightsWriter::DumpMpsWeightsToFile() const
 
     for (const auto& [mps_name, weight]: problem_filename_to_weight_)
     {
-        mps_weights_file << SolverConfig(solver_name_).FileName(mps_name.string()).string() << " "
-                         << weight << std::endl;
+        SolverConfig solver_config(solver_name_);
+        solver_config.setUseSave(!asmps);
+        mps_weights_file << solver_config.FileName(mps_name.string()).string() << " " << weight
+                         << std::endl;
     }
     mps_weights_file << "WEIGHT_SUM " << std::reduce(weights_vector_.begin(), weights_vector_.end())
                      << std::endl;

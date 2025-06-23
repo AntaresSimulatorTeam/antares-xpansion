@@ -355,6 +355,7 @@ void ProblemGeneration::RunProblemGeneration(
                                           mps_file_writer.get());
           });
         WeightFileProcessor weights_file_processor;
+        weights_file_processor.asmps = settingsReader.asmps;
         weights_file_processor.ProcessWeights(problems_and_data,
                                               xpansion_output_dir,
                                               weights_file,
@@ -420,6 +421,7 @@ void ProblemGeneration::RunProblemGeneration(
                                           mps_file_writer.get());
           });
         WeightFileProcessor weights_file_processor;
+        weights_file_processor.asmps = settingsReader.asmps;
         weights_file_processor.ProcessWeights(year_and_data,
                                               xpansion_output_dir,
                                               weights_file,

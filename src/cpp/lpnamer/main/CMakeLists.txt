@@ -22,6 +22,7 @@ target_sources(problem_generation_main PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/main/ProblemGenerationOptions.h
         ${CMAKE_CURRENT_SOURCE_DIR}/private/Version.h
 )
+find_package(TBB REQUIRED)
 
 target_link_libraries(problem_generation_main
         PRIVATE
@@ -35,6 +36,7 @@ target_link_libraries(problem_generation_main
         ${PROJECT_NAME}::lp_namer_helper
         ${PROJECT_NAME}::lp_namer_input_reader
         Antares::antares-solver-simulation
+        TBB::tbb
 )
 
 target_include_directories(problem_generation_main

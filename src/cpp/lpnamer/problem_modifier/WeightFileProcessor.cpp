@@ -30,6 +30,7 @@ void WeightFileProcessor::ProcessWeights(
                                                     active_years,
                                                     solver_name,
                                                     logger);
+    yearly_weight_writer.asmps = asmps; // Set the asmps flag if needed
     yearly_weight_writer.CreateWeightFile(year_and_data);
 }
 

@@ -3,6 +3,8 @@
 #include <filesystem>
 #include <vector>
 
+#include "antares-xpansion/lpnamer/input_reader/SettingsReader.h"
+
 namespace ProblemGenerationLog
 {
 class ProblemGenerationLogger;
@@ -25,4 +27,5 @@ public:
       const std::filesystem::path& weights_file,
       const std::string& solver_name,
       std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
+    bool asmps{false}; // if true, the weights file is in MPS format
 };

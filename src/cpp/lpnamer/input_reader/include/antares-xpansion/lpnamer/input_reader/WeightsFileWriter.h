@@ -26,6 +26,8 @@ public:
         using LogUtils::XpansionError<std::runtime_error>::XpansionError;
     };
 
+    bool asmps;
+
 private:
     std::filesystem::path xpansion_output_dir_;
     std::filesystem::path xpansion_lp_dir_ = "";
