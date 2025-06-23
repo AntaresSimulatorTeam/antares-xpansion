@@ -26,17 +26,13 @@ static void CreateDirectories(const std::filesystem::path& output_path)
 }
 
 ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalculation(
-  ProblemGenerationOptions& options):
+  ProblemGenerationOptions& options,
+  const GridDefinition& gridDefinition):
     options_(options),
+    gridDefinition(gridDefinition),
     configuration_manager_{options}
 {
     mode_ = configuration_manager_.Mode();
-}
-
-void ProblemGenerationForWaterValueCalculation::setGridDefinition(
-  std::shared_ptr<GridDefinition> gridDefinition)
-{
-    this->gridDefinition = gridDefinition;
 }
 
 namespace
@@ -153,10 +149,10 @@ void ProblemGenerationForWaterValueCalculation::CleanProblemsForBellmanCalculati
 }
 
 void cleanProblemForBellmanCalculations(std::shared_ptr<Problem> problem,
-                                        std::shared_ptr<GridDefinition> gridDefinition,
+                                        const GridDefinition& gridDefinition,
                                         int week)
 {
-    for (const auto& gridElement: gridDefinition->gridElements)
+    for (const auto& gridElement: gridDefinition.gridElements)
     {
         for (int hour = (week - 1) * 168; hour < week * 168; ++hour)
         {

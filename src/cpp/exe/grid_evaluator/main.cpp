@@ -97,14 +97,20 @@ int main(int argc, char** argv)
     auto writer = std::make_shared<Output::JsonWriter>(std::make_shared<Clock>(),
                                                        path_to_data / "output.json");
 
-    auto evaluator = GridEvaluator(logger,
-                                   writer,
-                                   path_to_data,
-                                   gridCollection,
-                                   pb_format,
-                                   num_threads);
+    Output::VariationDeNiveauxDeStockData res;
+    for (auto& grid: gridCollection->gridDefinitions)
+    {
+        auto evaluator = GridEvaluator(logger,
+                                       writer,
+                                       path_to_data,
+                                       grid,
+                                       ProblemsFormat::MPS_FILE,
+                                       num_threads);
+        res[grid.gridID] = evaluator.launch();
+    }
 
-    evaluator.launch();
+    writer->write_VariationDeNiveauxDeStock(res);
+    writer->dump();
 
     return 0;
 }

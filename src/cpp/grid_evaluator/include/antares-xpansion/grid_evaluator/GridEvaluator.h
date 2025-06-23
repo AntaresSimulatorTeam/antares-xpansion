@@ -32,13 +32,14 @@ public:
     GridEvaluator(Logger logger,
                   std::shared_ptr<Output::JsonWriter> writer,
                   std::filesystem::path path_to_mps,
-                  std::shared_ptr<GridCollection> grid_collection,
+                  const GridDefinition& grid_definition,
                   ProblemsFormat data_format,
                   int nbThreads);
-    void launch();
+    std::map<Output::VariationDeNiveauxDeStockKey, double> launch();
 
-    Output::VariationDeNiveauxDeStockData
-      variationDeNiveauxDeStockData; //!< Data to write in the output file
+private:
+    Output::ConcurrentInsertionMap<Output::VariationDeNiveauxDeStockKey, double>
+      variationDeNiveauxDeStockData;
 
 protected:
     std::vector<std::string> InitSubProblems(const GridDefinition& grid_definition);
@@ -62,11 +63,10 @@ protected:
     ConstraintCombos GenerateConstraintProduct(const ConstraintMap& constraints);
     ConstraintCombos GenerateSubPbCombos(const std::string& subPbName,
                                          const AreaConstraintMaps& areas);
-    void WriteOutput();
 
 protected:
-    std::filesystem::path xpansionFolderPath;       ///< Path to the xpansion folder
-    std::shared_ptr<GridCollection> gridCollection; ///< Grid collection
+    std::filesystem::path xpansionFolderPath; ///< Path to the xpansion folder
+    const GridDefinition& gridDefinition;     ///< Grid definition
 
     ProblemsFormat problemsFormat; ///< Format of the problems
     int nbThreads = 1;             ///< Number of threads to use

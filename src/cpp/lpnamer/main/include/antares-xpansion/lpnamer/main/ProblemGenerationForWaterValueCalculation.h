@@ -25,8 +25,8 @@
 class ProblemGenerationForWaterValueCalculation
 {
 public:
-    explicit ProblemGenerationForWaterValueCalculation(ProblemGenerationOptions& options);
-    void setGridDefinition(std::shared_ptr<GridDefinition> gridDefinition);
+    explicit ProblemGenerationForWaterValueCalculation(ProblemGenerationOptions& options,
+                                                       const GridDefinition& gridDefinition);
     virtual ~ProblemGenerationForWaterValueCalculation() = default;
     std::filesystem::path updateProblems();
     const ProblemGenerationOptions& options_;
@@ -50,5 +50,5 @@ private:
     SolverConfig solver_config_{"Coin"};
     ConfigurationManager configuration_manager_;
     ConfigurationManager::ConfigDirectories directories_;
-    std::shared_ptr<GridDefinition> gridDefinition;
+    const GridDefinition& gridDefinition;
 };

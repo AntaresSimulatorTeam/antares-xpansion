@@ -17,27 +17,30 @@ int main(int argc, char** argv)
         auto gridCollection = std::make_shared<GridCollection>(options_parser.StudyPath()
                                                                / "grid.csv");
 
-        ProblemGenerationForWaterValueCalculation pbg(options_parser);
-        pbg.setGridDefinition(
-          std::make_shared<GridDefinition>(gridCollection.get()->gridDefinitions[0]));
-        auto mps_path = pbg.updateProblems();
-        // std::filesystem::path mps_path = "/home/temp/OneNodeBase_dev";
-
         auto path_to_data = options_parser.StudyPath();
         auto report_path = path_to_data / "report.txt";
         auto logger_factory = FileAndStdoutLoggerFactory(report_path, false);
         Logger logger = logger_factory.get_logger();
-
         auto writer = std::make_shared<Output::JsonWriter>(std::make_shared<Clock>(),
                                                            path_to_data / "output.json");
 
-        auto evaluator = GridEvaluator(logger,
-                                       writer,
-                                       mps_path,
-                                       gridCollection,
-                                       ProblemsFormat::MPS_FILE,
-                                       1);
-        evaluator.launch();
+        Output::VariationDeNiveauxDeStockData variationDeNiveauxDeStockData;
+        for (auto& grid: gridCollection->gridDefinitions)
+        {
+            ProblemGenerationForWaterValueCalculation pbg(options_parser, grid);
+            auto mps_path = pbg.updateProblems();
+
+            auto evaluator = GridEvaluator(logger,
+                                           writer,
+                                           mps_path,
+                                           grid,
+                                           ProblemsFormat::MPS_FILE,
+                                           1);
+            variationDeNiveauxDeStockData[grid.gridID] = evaluator.launch();
+        }
+
+        writer->write_VariationDeNiveauxDeStock(variationDeNiveauxDeStockData);
+        writer->dump();
 
         return 0;
     }

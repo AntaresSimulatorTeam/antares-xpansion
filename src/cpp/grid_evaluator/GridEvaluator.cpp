@@ -27,11 +27,11 @@ std::atomic<double> totalPbModifTimer = 0; ///< Total time spent modifying subpr
 GridEvaluator::GridEvaluator(Logger logger,
                              std::shared_ptr<Output::JsonWriter> writer,
                              std::filesystem::path path_to_mps,
-                             std::shared_ptr<GridCollection> grid_collection,
+                             const GridDefinition& gridDefinition,
                              ProblemsFormat data_format,
-                             int nbThreads = 1)
+                             int nbThreads = 1):
+    gridDefinition(gridDefinition)
 {
-    this->gridCollection = grid_collection;
     this->logger = std::move(logger);
     this->writer = std::move(writer);
     this->xpansionFolderPath = std::move(path_to_mps);
@@ -406,7 +406,7 @@ void GridEvaluator::ProcessSubproblem(const std::string& subPbName,
         }
         double cost = SolveSubproblem(subPbWorker);
 
-        variationDeNiveauxDeStockData[gridDefinition.gridID]
+        variationDeNiveauxDeStockData
           .insert({GetPbInfo(subPbName).scenario, GetPbInfo(subPbName).week, subPbCombo}, cost);
         std::cout << "Cost: " << cost << std::endl;
     }
@@ -450,30 +450,23 @@ double GridEvaluator::SolveSubproblem(SubproblemWorkerPtr subPbWorker)
     return subproblem_data.subproblem_cost;
 }
 
-/// @brief Write the output to the json file
-void GridEvaluator::WriteOutput()
-{
-    writer->write_VariationDeNiveauxDeStock(variationDeNiveauxDeStockData);
-    writer->dump();
-}
-
 /// @brief Launch the Stock level variation computation
-void GridEvaluator::launch()
+/// @return The stock level variation results
+std::map<Output::VariationDeNiveauxDeStockKey, double> GridEvaluator::launch()
 {
     std::cout << "Launching Stock level variation" << std::endl;
 
     // Time the Run time
     Timer run_timer;
-    for (const auto& gridDefinition: gridCollection->gridDefinitions)
-    {
-        auto subPbNames = InitSubProblems(gridDefinition);
-        Run(subPbNames, gridDefinition);
-    }
+
+    auto subPbNames = InitSubProblems(gridDefinition);
+    Run(subPbNames, gridDefinition);
+
     auto run_time = run_timer.elapsed();
     std::cout << "Stock level variation done in " << run_time << " seconds and " << totalSimplexIter
               << " simplex iterations" << std::endl;
     std::cout << "Time solving subproblems (accumulated by each thread) : " << totalSubPbTimer
               << " seconds" << std::endl;
 
-    WriteOutput();
+    return variationDeNiveauxDeStockData.get();
 }

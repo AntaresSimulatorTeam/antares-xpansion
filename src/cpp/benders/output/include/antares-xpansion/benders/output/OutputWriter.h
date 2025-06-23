@@ -154,9 +154,14 @@ public:
     {
         return map.end();
     }
+
+    auto get() const
+    {
+        return map;
+    }
 };
 
-typedef std::map<int /*grid id*/, ConcurrentInsertionMap<VariationDeNiveauxDeStockKey, double>>
+typedef std::map<int /*grid id*/, std::map<VariationDeNiveauxDeStockKey, double>>
   VariationDeNiveauxDeStockData;
 
 struct ProblemData

@@ -79,33 +79,31 @@ protected:
 TEST_F(GridSearchTest, MPSUseCaseValeursUsage)
 {
     copyData();
-    auto grid_collection = std::make_shared<GridCollection>(tmpDir / "grid.csv");
+    auto grid_collection = GridCollection(tmpDir / "grid.csv");
     auto valeurs_usage = GridEvaluator(logger,
                                        writer,
                                        tmpDir,
-                                       grid_collection,
+                                       grid_collection.gridDefinitions[0],
                                        ProblemsFormat::MPS_FILE,
                                        8);
-    valeurs_usage.launch();
+    auto res = valeurs_usage.launch();
 
     auto output_costs = getOutputCosts();
     EXPECT_EQ(output_costs.size(), 52 * 10);
-    for (const auto& [gridId, data]: valeurs_usage.variationDeNiveauxDeStockData)
-    {
-        for (const auto& [key, cost]: data)
-        {
-            ScenarioAndWeek keyStruct{key.scenario, key.week};
 
-            if (output_costs.count(keyStruct) > 0 && !output_costs[keyStruct].empty())
-            {
-                EXPECT_NEAR_REL(output_costs[keyStruct][0], cost, 1e-6);
-                output_costs[keyStruct].erase(output_costs[keyStruct].begin());
-            }
-            else
-            {
-                FAIL() << "Missing or empty entry for key: " << keyStruct.scenario << ", "
-                       << keyStruct.week;
-            }
+    for (const auto& [key, cost]: res)
+    {
+        ScenarioAndWeek keyStruct{key.scenario, key.week};
+
+        if (output_costs.count(keyStruct) > 0 && !output_costs[keyStruct].empty())
+        {
+            EXPECT_NEAR_REL(output_costs[keyStruct][0], cost, 1e-6);
+            output_costs[keyStruct].erase(output_costs[keyStruct].begin());
+        }
+        else
+        {
+            FAIL() << "Missing or empty entry for key: " << keyStruct.scenario << ", "
+                   << keyStruct.week;
         }
     }
 }
