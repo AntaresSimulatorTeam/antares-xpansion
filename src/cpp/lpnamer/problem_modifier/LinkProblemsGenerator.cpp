@@ -81,12 +81,11 @@ void LinkProblemsGenerator::treat(const std::string& problem_name,
     problem->_name = lp_mps_name.string();
     (*logger_)(LogUtils::LOGLEVEL::INFO)
       << fmt::format("Problem {} treated in {}\n", problem_name, timer.elapsed_since_previous());
-    SolverFactory sf;
-    auto p = sf.copy_solver(problem->solver_abstract_.get());
-    Problem forWriting(p);
-    writer->Write_problem(&forWriting, lp_mps_name, asmps);
+    Timer t;
+    writer->Write_problem(problem, lp_mps_name, asmps);
     (*logger_)(LogUtils::LOGLEVEL::INFO)
-      << fmt::format("Problem {} written in {}\n", problem_name, timer.elapsed_since_previous());
+      << fmt::format("Problem {} written in {}\n", problem_name, t.elapsed());
+    problem->write_prob_mps(lp_mps_name);
 }
 
 void LinkProblemsGenerator::treatloop(const std::filesystem::path& root,

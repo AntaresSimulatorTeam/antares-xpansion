@@ -20,7 +20,7 @@ public:
 private:
     TimePoint _start;
     double _begin_time = 0;
-    double previous{0};
+    mutable double previous{0};
 };
 
 inline Timer::Timer()
@@ -48,7 +48,10 @@ inline double Timer::elapsed() const
 
 inline double Timer::elapsed_since_previous() const
 {
-    return elapsed() - previous;
+    auto d = elapsed();
+    auto r = d - previous;
+    previous = d;
+    return r;
 }
 
 inline std::string format_time_str(const long int time_in_seconds)
