@@ -145,7 +145,7 @@ v1.4.0 (12/2024)</h1>
 <h2><a class="anchor" id="autotoc_md11"></a>
 Features</h2>
 <ul>
-<li>Update Antares Simulator to 9.2</li>
+<li>Update Antares Simulator to 9.2.1</li>
 <li>Output file <b>criterions.txt</b> is renamed <b>LOLD.txt</b> as it gathers the loss of load for each area at each iteration of the algorithm</li>
 <li>End to end coherence of solvers : if Xpress is selected, it is also used for Antares step (does not work yet with memory mode), if coin is selected, sirius is used in Antares</li>
 <li>Support for in memory problems between Antares and problem generation</li>
@@ -184,7 +184,7 @@ v1.3.1 (07/2024)</h1>
 Features</h2>
 <ul>
 <li><b>outer_loop</b> option is renamed <b>adequacy_criterion</b></li>
-<li>New output file <b>criterions.txt</b> is added under <b>lp/</b> dir to store adequacy criterions for all valid patterns (area+criterion)</li>
+<li>New output file <b>criterions.txt</b> is added under <b>lp/</b> dir to store adequacy criterions for all valid patterns ( area+criterion)</li>
 <li>New output file <b>PositiveUnsuppliedEnergy.txt</b> is added under <b>lp/</b> dir to store the amount of unsupplied energy for all valid patterns (area+criterion)</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md18"></a>
@@ -332,7 +332,7 @@ Features</h2>
 <li>Add <code>timelimit</code> option as a stopping criterion for the Antares-Xpansion algorithm</li>
 <li>Add <code>log_level</code> option to choose the verbosity level of the solver</li>
 <li>Add <code>resume</code> step, to provide the possibility to resume an unfinished study</li>
-<li>Bump antares version used by Xpansion to 8.1.1 </li>
+<li>Bump antares version used by Xpansion to 8.1.1</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md48"></a>
 Bug fixes</h2>
@@ -375,8 +375,7 @@ v0.5.0 (10/2021)</h1>
 Features</h2>
 <ul>
 <li>In benders optimization, master problem .mps is written after each resolution</li>
-<li>Several investment candidates on the same link <br  />
-</li>
+<li>Several investment candidates on the same link</li>
 <li>Review of <code>candidates.ini</code> file content (remove <code>has-link-profile</code> and add <code>enable</code> feature)</li>
 </ul>
 <h2><a class="anchor" id="autotoc_md56"></a>
@@ -452,7 +451,8 @@ Bug fixes</h2>
 <h1><a class="anchor" id="autotoc_md67"></a>
 v0.1.0 (03/2021)</h1>
 <p>We’re happy to announce the first open-source version v0.1.0 of Antares-Xpansion. Antares-Xpansion optimizes the installed capacities of an Antares study.</p>
-<p>The investment decisions are optimized by running Antares' simulations iteratively. At each iteration, the installed capacity of the investments are updated, and the simulations are repeated until the total costs have converged to a minimum. The total cost evaluated in this problem are the sum of the <b>expected operation cost during one year</b> and <b>the investment annuity</b>. The user defines investment candidates. <a class="el" href="classCandidate.html" title="Candidate class.">Candidate</a> capacities for investment are necessarily links from an Antares study. Investment candidates can be:</p><ul>
+<p>The investment decisions are optimized by running Antares' simulations iteratively. At each iteration, the installed capacity of the investments are updated, and the simulations are repeated until the total costs have converged to a minimum. The total cost evaluated in this problem are the sum of the <b>expected operation cost during one year</b> and * *the investment annuity**. The user defines investment candidates. <a class="el" href="classCandidate.html" title="Candidate class.">Candidate</a> capacities for investment are necessarily links from an Antares study. Investment candidates can be:</p>
+<ul>
 <li>transmission capacity between two areas</li>
 <li>thermal generation capacity (located in a virtual node)</li>
 <li>renewable generation capacity (located in a virtual node)</li>
