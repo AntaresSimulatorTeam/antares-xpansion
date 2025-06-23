@@ -4,4 +4,4 @@ pyinstaller>=4.5.1; platform_system=='Windows' #Issues with 4.5 on Windows. Prop
 pyyaml
 dataclasses
 psutil==5.8.0
-pydantic>=1.9.2 # Required for parsing & validating the user input file in trajectory mode
+pydantic>=1.9.2
