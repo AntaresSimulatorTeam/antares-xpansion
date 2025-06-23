@@ -123,6 +123,7 @@ class TrajectoryInvestmentDriver:
             n_mpi=self.config.n_mpi,
             oversubscribe=self.config.oversubsribe,
             allow_run_as_root=self.config.allow_run_as_root,
+            master_formulation=self.input_translation_driver.get_master_formulation()
         )
 
         self.resolution_driver = TrajectoryResolutionDriver(res_data)

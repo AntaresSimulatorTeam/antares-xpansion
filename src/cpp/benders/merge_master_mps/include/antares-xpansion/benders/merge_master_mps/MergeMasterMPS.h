@@ -118,6 +118,11 @@ private:
     std::string make_prefix_from_node(const std::string& node_name) const;
     double get_candidate_initial_value(const std::string& candidate) const;
 
+    bool variable_is_present_in_node(const TrajectoryNode& node,
+                                     const std::string& candidate) const;
+    bool variable_is_present_in_parent(const TrajectoryNode& node,
+                                       const std::string& candidate) const;
+
     std::filesystem::path tree_path_;
     std::filesystem::path lp_reference_file_filepath_;
     TrajectoryTree tree_;                       // Contains each node's information

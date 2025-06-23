@@ -96,11 +96,16 @@ class TrajectoryConstraint(BaseModel):
     ):
         return f"{node}::{candidate}::{variable_type.value}"
 
-    def to_individual_max_investment(self) -> List[Dict[str, Any]]:
+    def to_individual_max_investment(
+        self, candidate_appear_in_nodes: Dict[str, Set[str]]
+    ) -> List[Dict[str, Any]]:
         assert self.cons_type == ConstraintTypeEnum.MAX_INDIVIDUAL_INVESTMENT
         output: List[Dict[str, Any]] = []
         for node in self.nodes:
             for candidate in self.candidates:
+                # Skip if the candidate does not exist in this node
+                if node not in candidate_appear_in_nodes[candidate]:
+                    continue
                 constraint = {}
                 constraint[OutKeys.constraint_coeffs_key()] = {
                     self.build_variable_reference(
@@ -114,11 +119,16 @@ class TrajectoryConstraint(BaseModel):
                 output.append(constraint)
         return output
 
-    def to_individual_max_retirement(self) -> List[Dict[str, Any]]:
+    def to_individual_max_retirement(
+        self, candidate_appear_in_nodes: Dict[str, Set[str]]
+    ) -> List[Dict[str, Any]]:
         assert self.cons_type == ConstraintTypeEnum.MAX_INDIVIDUAL_RETIREMENT
         output: List[Dict[str, Any]] = []
         for node in self.nodes:
             for candidate in self.candidates:
+                # Skip if the candidate does not exist in this node
+                if node not in candidate_appear_in_nodes[candidate]:
+                    continue
                 constraint = {}
                 constraint[OutKeys.constraint_coeffs_key()] = {
                     self.build_variable_reference(
@@ -132,7 +142,9 @@ class TrajectoryConstraint(BaseModel):
                 output.append(constraint)
         return output
 
-    def to_cumulative_max_investment(self) -> List[Dict[str, Any]]:
+    def to_cumulative_max_investment(
+        self, candidate_appear_in_nodes: Dict[str, Set[str]]
+    ) -> List[Dict[str, Any]]:
         assert self.cons_type == ConstraintTypeEnum.MAX_CUMULATIVE_INVESTMENT
         output: List[Dict[str, Any]] = []
         for node in self.nodes:
@@ -143,6 +155,9 @@ class TrajectoryConstraint(BaseModel):
                 ConstraintOperatorEnum.LEQ.value
             )
             for candidate in self.candidates:
+                # Skip if the candidate does not exist in this node
+                if node not in candidate_appear_in_nodes[candidate]:
+                    continue
                 ref = self.build_variable_reference(
                     node, candidate, InvestmentVariableTypeEnum.DX_PLUS
                 )
@@ -150,18 +165,21 @@ class TrajectoryConstraint(BaseModel):
             output.append(constraint)
         return output
 
-    def to_merger_json(self) -> List[Dict[str, Any]]:
+    def to_merger_json(
+        self, candidate_appear_in_nodes: Dict[str, Set[str]]
+    ) -> List[Dict[str, Any]]:
         """
         Converts an constraint in input format to a list of mathematical formulations for the C++ merger
+        Skips the candidate when the candidate is not present in the node.
         """
         if self.cons_type == ConstraintTypeEnum.MAX_INDIVIDUAL_INVESTMENT:
-            return self.to_individual_max_investment()
+            return self.to_individual_max_investment(candidate_appear_in_nodes)
         elif self.cons_type == ConstraintTypeEnum.MAX_INDIVIDUAL_RETIREMENT:
-            return self.to_individual_max_retirement()
+            return self.to_individual_max_retirement(candidate_appear_in_nodes)
         elif self.cons_type == ConstraintTypeEnum.MAX_CUMULATIVE_INVESTMENT:
-            return self.to_cumulative_max_investment()
+            return self.to_cumulative_max_investment(candidate_appear_in_nodes)
         else:
-            raise UserInputTranslator.InvalidTrajectoryConsetraint(
+            raise UserInputTranslator.InvalidTrajectoryConstraint(
                 f"Non implemented constraint type was encountered for constraint {self.name} with type {self.cons_type.value}"
             )
 
@@ -257,8 +275,11 @@ class UserInputTranslator:
     def __init__(self, input_file: Path):
         self.input_file = input_file
         self.all_candidates: Set[str] = set()
+        # Which nodes does the candidate appear in ?
+        self.candidate_appears_in_nodes: Dict[str, Set[str]] = dict()
         self.all_nodes: Set[str] = set()
-        # TODO Add Optional
+
+        # User input file data.
         self.tree: Optional[Tree] = None
         self.nodes: Dict[str, NodeData] = {}
         self.global_data: Optional[GlobalData] = None
@@ -348,26 +369,57 @@ class UserInputTranslator:
                 if candidate not in self.all_candidates:
                     raise self.InvalidTrajectoryConstraint(
                         f"TrajectoryConstraint '{constraint.name}' references candidate '{candidate}'"
-                        " which does not exist in the study"
+                        " which does not exist at the root node of the study"
                     )
 
     def verify_nodes_candidates_match_with_study(self):
         # TBA
         pass
 
-    def verify_all_nodes_same_candidates(self):
-        for name, data in self.nodes.items():
-            node_candidates = set(data.candidate_to_type.keys())
-            if node_candidates != self.all_candidates:
-                diff_exceed = node_candidates - self.all_candidates
-                diff_missing = self.all_candidates - node_candidates
+    # def verify_all_nodes_same_candidates(self):
+    #     for name, data in self.nodes.items():
+    #         node_candidates = set(data.candidate_to_type.keys())
+    #         if node_candidates != self.all_candidates:
+    #             diff_exceed = node_candidates - self.all_candidates
+    #             diff_missing = self.all_candidates - node_candidates
+    #             raise self.InvalidCandidates(
+    #                 "All nodes must have the same exact candidates."
+    #                 f" At node '{name}', missing candidates : {diff_missing}"
+    #                 f", candidates not present elsewhere : {diff_exceed}"
+    #             )
+    #         else:
+    #             pass
+
+    def verify_candidates_span_continuous_subtree(self):
+        """
+        A candidate must appear in a continuous bit of the trajecotry tree : can only appear and eventually disappear once.
+        """
+        list_of_disappearing_candidates = []
+
+        def aux_candidate_only_appear(
+            subtree: Tree,
+            candidate: str,
+            is_in_parent: bool,
+            has_already_disappeared: bool,
+        ):
+            node = subtree.node_name
+            is_present = node in self.candidate_appears_in_nodes[candidate]
+            # Error if the candidate disappeared but is present in this node
+            if has_already_disappeared and is_present:
                 raise self.InvalidCandidates(
-                    "All nodes must have the same exact candidates."
-                    f" At node '{name}', missing candidates : {diff_missing}"
-                    f", candidates not present elsewhere : {diff_exceed}"
+                    f"Candidate {candidate} is present in nodes : {self.candidate_appears_in_nodes[candidate]}, \
+                      this does not represent a continuous subtree"
                 )
-            else:
-                pass
+            
+            disappeared = False
+            if is_in_parent and not is_present:
+                disappeared = True
+
+            for child in subtree.children:
+                aux_candidate_only_appear(child, candidate, is_present, disappeared)
+
+        for candidate in self.all_candidates:
+            aux_candidate_only_appear(self.tree, candidate, False, False)
 
     def run_all_verification(self):
         self.verify_tree_investment_dates()
@@ -375,7 +427,7 @@ class UserInputTranslator:
         self.verify_constraint_variable_reference()
         self.verify_nodes_candidates_match_with_study()
         self.verify_nodes_candidates_types()
-        self.verify_all_nodes_same_candidates()
+        self.verify_candidates_span_continuous_subtree()
 
     def set_nodes_parents_names(self):
         """After parsing the tree and the nodes, go through the tree to write each node's parent in its data"""
@@ -438,6 +490,17 @@ class UserInputTranslator:
         aux_compute_node_represented_duration(self.tree)
         return
 
+    def set_all_candidates(self):
+        """Sets all candidates dicts and list from the parsed data."""
+        for node in self.all_nodes:
+            candidates_this_node = self.nodes[node].candidate_to_type.keys()
+            self.all_candidates = self.all_candidates.union(candidates_this_node)
+
+            for candidate in candidates_this_node:
+                if candidate not in self.candidate_appears_in_nodes.keys():
+                    self.candidate_appears_in_nodes[candidate] = set()
+                self.candidate_appears_in_nodes[candidate].add(node)
+
     def expand_all_keyword_in_constraints(self):
         for constraint in self.constraints:
             if constraint.candidates == InKeys.constraint_all_keyword():
@@ -468,10 +531,8 @@ class UserInputTranslator:
             self.compute_node_duration()
 
             # Set of all candidates names (should be the same in all nodes, verified later)
-            self.all_candidates = set(
-                self.nodes[self.tree.node_name].candidate_to_type.keys()
-            )
             self.all_nodes = set(self.nodes.keys())
+            self.set_all_candidates()
 
             # Constraint explicit list of nodes and candidates
             self.expand_all_keyword_in_constraints()
@@ -502,7 +563,9 @@ class UserInputTranslator:
         # TrajectoryConstraints
         constraints_list = []
         for constraint in self.constraints:
-            constraints_list.extend(constraint.to_merger_json())
+            constraints_list.extend(
+                constraint.to_merger_json(self.candidate_appears_in_nodes)
+            )
         output[OutKeys.constraint_key()] = constraints_list
 
         # Tree

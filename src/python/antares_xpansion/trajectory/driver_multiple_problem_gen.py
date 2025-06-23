@@ -89,6 +89,7 @@ class MultipleProblemGenerationDriver:
         config_defaults._initialize_default_values()
 
         for node, path in self.node_to_studies.items():
+            print(f"Reading file {path.__str__()}")
             reader = XpansionSettingsReader(path, config_defaults)
             weights_file = reader.weights_file_path()
             if weights_file != "":

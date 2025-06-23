@@ -1,5 +1,3 @@
-#include "antares-xpansion/benders/merge_master_mps/MergeMasterMPS.h"
-
 #include <filesystem>
 #include <fmt/format.h>
 #include <numeric>
@@ -8,6 +6,7 @@
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/merge_master_mps/MasterStructureKeys.h"
+#include "antares-xpansion/benders/merge_master_mps/MergeMasterMPS.h"
 #include "antares-xpansion/benders/merge_mps/StandardLp.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
@@ -394,6 +393,30 @@ void MergeMasterTrajectoryMPS::build_problem()
                              TRAJECTORY_LOGGER_CONTEXT);
 }
 
+// Checks wether a variable is present in the current node
+bool MergeMasterTrajectoryMPS::variable_is_present_in_node(const TrajectoryNode& node,
+                                                           const std::string& candidate) const
+{
+    // Index of the variable in the merged problem
+    int index = ptr_merged_solver_->get_col_index(make_prefix_from_node(node.name) + candidate);
+    return index != -1;
+}
+
+// Checks wether a variable is present in the node's parent
+// If the node is the root node (i.e. if the parent optionnal is empty), will return false.
+bool MergeMasterTrajectoryMPS::variable_is_present_in_parent(const TrajectoryNode& node,
+                                                             const std::string& candidate) const
+{
+    if (!node.parent.has_value())
+    {
+        return false;
+    }
+    // Index of the parent's version of the variable in the merged problem
+    int parent_index = ptr_merged_solver_->get_col_index(make_prefix_from_node(node.parent.value())
+                                                         + candidate);
+    return parent_index != -1;
+}
+
 void MergeMasterTrajectoryMPS::add_delta_variables()
 {
     // We want to add them efficiently : prepare vectors with all the information needed to modify
@@ -413,9 +436,6 @@ void MergeMasterTrajectoryMPS::add_delta_variables()
     col_types.reserve(delta_variables_count);
     col_names.reserve(delta_variables_count); // Not very useful for a dynamic type like string ?
 
-    std::vector<int> mstart_p(delta_variables_count);
-    std::iota(mstart_p.begin(), mstart_p.end(), 0);
-
     int n_var_previous = ptr_merged_solver_->get_ncols();
 
     // Adding the variables themselves
@@ -424,9 +444,32 @@ void MergeMasterTrajectoryMPS::add_delta_variables()
         const std::string& node_name = node_data.name;
 
         std::string node_prefix = make_prefix_from_node(node_name);
+
         for (auto& [candidate, candidate_data]: candidates_coupling_)
         {
             std::string var_name_prefix = node_prefix + candidate;
+
+            // If the candidate does not yet exist in this node, skip it
+            // (It might only appear in later nodes.)
+            // However, if the candidates existed in the previous node, we add the delta variables
+            // and will hard constrain them to reach a final value (0 by default)
+            if (!variable_is_present_in_node(node_data, candidate))
+            {
+                if (!variable_is_present_in_parent(node_data, candidate))
+                {
+                    logger_->display_message("Not adding dx variables for variable : '" + candidate
+                                               + "' at node '" + node_name
+                                               + "' - variable yet not present.",
+                                             LogUtils::LOGLEVEL::INFO,
+                                             MERGE_MPS_LOGGER_CONTEXT);
+                    continue;
+                }
+                else
+                {
+                    // Create the entry in the candidates_coupling_, with default -1 values.
+                    candidate_data[node_name] = VariablePositions();
+                }
+            }
 
             // dx_plus
             objective_coefs.push_back(0.0);
@@ -448,6 +491,9 @@ void MergeMasterTrajectoryMPS::add_delta_variables()
             candidate_data[node_name].set(DX_MINUS, dx_minus_position);
         }
     }
+
+    std::vector<int> mstart_p(objective_coefs.size());
+    std::iota(mstart_p.begin(), mstart_p.end(), 0);
 
     // Add to the solver
     solver_addcols(*ptr_merged_solver_,
@@ -485,10 +531,31 @@ void MergeMasterTrajectoryMPS::add_delta_variables_constraints()
     {
         const std::string& node_name = node_data.name;
 
-        if (!node_data.parent.has_value())
+        for (const auto& candidate: candidates_coupling_ | std::views::keys)
         {
-            for (const auto& [candidate, _]: candidates_coupling_)
+            // Does the candidate exist in this node
+            bool candidate_in_node = variable_is_present_in_node(node_data, candidate);
+            // Does the candidate exist in the parent node ?
+            bool candidate_in_parent = variable_is_present_in_parent(node_data, candidate);
+
+            if (!candidate_in_parent)
             {
+                if (!candidate_in_node)
+                {
+                    logger_->display_message("Not adding dx variables constraints for variable : '"
+                                               + candidate + "' at node '" + node_name
+                                               + "' - candidate does not yet exist.",
+                                             LogUtils::LOGLEVEL::INFO,
+                                             MERGE_MPS_LOGGER_CONTEXT);
+                    continue;
+                }
+
+                logger_->display_message("First appearance of candidate '" + candidate
+                                           + "' at node '" + node_name
+                                           + "' - using initial value to define dx constraints",
+                                         LogUtils::LOGLEVEL::INFO,
+                                         MERGE_MPS_LOGGER_CONTEXT);
+
                 // The constraint is :
                 // current::candidate - dx_plus + dx_minus = initial_value
                 // Get the initial value if available, use the default value otherwise
@@ -510,36 +577,63 @@ void MergeMasterTrajectoryMPS::add_delta_variables_constraints()
                 rhs.push_back(initial_value);
                 constraint_type.push_back('E');
             }
-        }
-        else [[likely]]
-        {
-            const std::string& parent_node_name = node_data.parent.value();
-
-            for (const auto& candidate: candidates_coupling_ | std::views::keys)
+            else [[likely]]
             {
-                // The constraint is :
-                // current::candidate - parent::candidate - dx_plus + dx_minus = 0
+                const std::string& parent_node_name = node_data.parent.value();
                 const auto& parent_candidate_indexes = candidates_coupling_.at(candidate).at(
                   parent_node_name);
                 const auto& current_candidate_indexes = candidates_coupling_.at(candidate).at(
                   node_name);
 
-                var_offsets.push_back(var_indices.size());
+                // If the candidate disappeared (i.e. is not in this node but was in the previous
+                // one) :
+                if (!candidate_in_node)
+                {
+                    logger_->display_message("Candidate '" + candidate + "' disappeared at node '"
+                                               + node_name
+                                               + "' - IMPOSING INSTALLED CAPACITY TO BE ZERO at "
+                                                 "this node. This can lead to infeasabilities !",
+                                             LogUtils::LOGLEVEL::WARNING,
+                                             MERGE_MPS_LOGGER_CONTEXT);
+                    // The constraint is :
+                    // parent::candidate + dx_plus - dx_minus = final_value
 
-                var_indices.push_back(current_candidate_indexes.get(CAPACITY));
-                var_values.push_back(1);
+                    var_offsets.push_back(var_indices.size());
 
-                var_indices.push_back(current_candidate_indexes.get(DX_PLUS));
-                var_values.push_back(-1);
+                    var_indices.push_back(parent_candidate_indexes.get(CAPACITY));
+                    var_values.push_back(1);
 
-                var_indices.push_back(current_candidate_indexes.get(DX_MINUS));
-                var_values.push_back(1);
+                    var_indices.push_back(current_candidate_indexes.get(DX_PLUS));
+                    var_values.push_back(1);
 
-                var_indices.push_back(parent_candidate_indexes.get(CAPACITY));
-                var_values.push_back(-1);
+                    var_indices.push_back(current_candidate_indexes.get(DX_MINUS));
+                    var_values.push_back(-1);
 
-                rhs.push_back(0);
-                constraint_type.push_back('E');
+                    rhs.push_back(0); // Final value is 0
+                    constraint_type.push_back('E');
+                }
+                else
+                {
+                    // The constraint is :
+                    // current::candidate - parent::candidate - dx_plus + dx_minus = 0
+
+                    var_offsets.push_back(var_indices.size());
+
+                    var_indices.push_back(current_candidate_indexes.get(CAPACITY));
+                    var_values.push_back(1);
+
+                    var_indices.push_back(current_candidate_indexes.get(DX_PLUS));
+                    var_values.push_back(-1);
+
+                    var_indices.push_back(current_candidate_indexes.get(DX_MINUS));
+                    var_values.push_back(1);
+
+                    var_indices.push_back(parent_candidate_indexes.get(CAPACITY));
+                    var_values.push_back(-1);
+
+                    rhs.push_back(0);
+                    constraint_type.push_back('E');
+                }
             }
         }
     }
@@ -567,8 +661,22 @@ void MergeMasterTrajectoryMPS::set_objective_from_data()
 
     for (const auto& node: tree_)
     {
+        std::string node_name = node.name;
         for (const auto& [candidate, positions_per_node]: candidates_coupling_)
         {
+            // Does the candidate exist in this node
+            int candidate_index = ptr_merged_solver_->get_col_index(make_prefix_from_node(node_name)
+                                                                    + candidate);
+            if (candidate_index == -1)
+            {
+                logger_->display_message("Skipping setting objective values for variable : '"
+                                           + candidate + "' at node '" + node_name
+                                           + "' - variable not present.",
+                                         LogUtils::LOGLEVEL::INFO,
+                                         MERGE_MPS_LOGGER_CONTEXT);
+                continue;
+            }
+
             const auto& costs = node.candidates_costs.at(candidate);
             const auto& positions = positions_per_node.at(node.name);
 

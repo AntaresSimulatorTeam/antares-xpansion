@@ -107,6 +107,17 @@ initial_capacities:
 - Formats and outputs the ```master_merger_info_file.json``` used as input in both the [merged master problem generator](./merge-master.md) and [merged weights file generator](./merge-weights.md).
 
 
+## A note on candidates
+
+We recommand that each candidate is defined in all of the studies and adding the necessary constraint to restrict the investment / divestment behaviour for this candidate to the wanted feasible space.  
+However, it is still possible to have candidates not present in all of the nodes of the tree.
+A candidate can either :
+
+- Appear only in later studies, to represent a cluster that might only enter into service later. In this case, when the candidate $i$ first appear in node $n$, the constraint will be : $\text{initial_capacities}_i + dx_{i,n}^+ - dx_{i,n}^- = x_{i,n}$, regardless of wether $n$ is the root node. (Though as noted above, the recommanded modelisation would be to add the candidate in all the nodes and impose its installed capacity to be $0$ during the construction period)
+
+- Disappear in the final studies, to represent a cluster that is assuredly decommisioned at this point.
+In this case, when the candidate $i$ disappears at node $n$, the constraint will be : $x_{i, \text{parent}(n)} + dx_{i,n}^+ - dx_{i,n}^- = 0$.
+
 ## Trajectory constraints translation
 
 The trajectory constraints translator implements 3 types of constraints for now.  
