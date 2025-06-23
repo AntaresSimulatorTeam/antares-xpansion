@@ -32,6 +32,7 @@ class TrajectoryResolutionData:
     n_mpi: int
     oversubscribe: bool
     allow_run_as_root: bool
+    master_formulation: str
 
 
 class TrajectoryResolutionDriver:
@@ -59,61 +60,65 @@ class TrajectoryResolutionDriver:
         root_settings_reader = XpansionSettingsReader(root_study, config_defaults)
         options_values = config_defaults.options_default
 
-        options_values[
-            OptimisationKeys.input_root_key()
-        ] = self.data.input_root.resolve().__str__()
-        options_values[
-            OptimisationKeys.outpoutroot_key()
-        ] = self.data.output_folder.resolve().__str__()
+        options_values[OptimisationKeys.input_root_key()] = (
+            self.data.input_root.resolve().__str__()
+        )
+        options_values[OptimisationKeys.outpoutroot_key()] = (
+            self.data.output_folder.resolve().__str__()
+        )
 
         # Master name and structure file
         options_values[OptimisationKeys().master_name_key()] = self.data.master_name
-        options_values[
-            OptimisationKeys().structure_file_key()
-        ] = self.data.structure_file
+        options_values[OptimisationKeys().structure_file_key()] = (
+            self.data.structure_file
+        )
         # Weights file is mandatory
-        options_values[
-            OptimisationKeys.slave_weight_key()
-        ] = self.data.merged_weights_file.resolve().__str__()
+        options_values[OptimisationKeys.slave_weight_key()] = (
+            self.data.merged_weights_file.resolve().__str__()
+        )
         # Solver is overwritten by the global driver
         # to make sure we use same solver and problem format for all studies
         options_values[OptimisationKeys.solver_name_key()] = self.data.solver
-        options_values[
-            OptimisationKeys.problems_format_key()
-        ] = self.data.problems_format
+        options_values[OptimisationKeys.problems_format_key()] = (
+            self.data.problems_format
+        )
 
-        options_values[
-            OptimisationKeys.json_file_key()
-        ] = self.data.json_output_file.resolve().__str__()
+        options_values[OptimisationKeys.json_file_key()] = (
+            self.data.json_output_file.resolve().__str__()
+        )
 
         # Other values are read from the root study's settings.ini
-        options_values[
-            OptimisationKeys.absolute_gap_key()
-        ] = root_settings_reader.get_absolute_optimality_gap()
-        options_values[
-            OptimisationKeys.relative_gap_key()
-        ] = root_settings_reader.get_relative_optimality_gap()
-        options_values[
-            OptimisationKeys.relaxed_gap_key()
-        ] = root_settings_reader.get_relaxed_optimality_gap()
-        options_values[
-            OptimisationKeys.separation_key()
-        ] = root_settings_reader.get_separation()
-        options_values[
-            OptimisationKeys.max_iterations_key()
-        ] = root_settings_reader.get_max_iterations()
-        options_values[
-            OptimisationKeys.log_level_key()
-        ] = root_settings_reader.log_level()
-        options_values[
-            OptimisationKeys.batch_size_key()
-        ] = root_settings_reader.get_batch_size()
-        options_values[
-            OptimisationKeys.time_limit_key()
-        ] = root_settings_reader.timelimit()
+        options_values[OptimisationKeys.absolute_gap_key()] = (
+            root_settings_reader.get_absolute_optimality_gap()
+        )
+        options_values[OptimisationKeys.relative_gap_key()] = (
+            root_settings_reader.get_relative_optimality_gap()
+        )
+        options_values[OptimisationKeys.relaxed_gap_key()] = (
+            root_settings_reader.get_relaxed_optimality_gap()
+        )
+        options_values[OptimisationKeys.separation_key()] = (
+            root_settings_reader.get_separation()
+        )
+        options_values[OptimisationKeys.max_iterations_key()] = (
+            root_settings_reader.get_max_iterations()
+        )
+        options_values[OptimisationKeys.log_level_key()] = (
+            root_settings_reader.log_level()
+        )
+        options_values[OptimisationKeys.batch_size_key()] = (
+            root_settings_reader.get_batch_size()
+        )
+        options_values[OptimisationKeys.time_limit_key()] = (
+            root_settings_reader.timelimit()
+        )
         # Irrelevant in our case, but we need to set a value.
         options_values[OptimisationKeys.slave_weight_value_key()] = 1.0
 
+        # Master formulation
+        options_values[OptimisationKeys.master_formulation_key()] = (
+            self.data.master_formulation
+        )
         # options_values[OptimisationKeys.last_iteration_json_file_key()] = (
         #     self.last_iteration_json_file_path()
         # )

@@ -39,6 +39,15 @@ class InputTranslationDriver:
             )
         return path
 
+    def get_master_formulation(self):
+        """
+        Returns the formulation parameter entered by the user, has to be either 'integer' or 'relaxed'
+        """
+        self._parse_input()
+        formulation = self.translator.global_data.formulation.value
+
+        return formulation
+
     def launch(self):
         self._parse_input()
         self.translator.run_all_verification()

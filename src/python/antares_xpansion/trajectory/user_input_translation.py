@@ -49,6 +49,7 @@ class GlobalData(BaseModel):
         alias=InKeys.first_investment_date_key()
     )
     end_of_horizon: NonNegativeInt = Field(alias=InKeys.end_of_horizon_key())
+
     # forbid_retirement: bool = Field(alias=InKeys.forbid_retirement_key())
     def print(self):
         print("Global trajectory data : ")
@@ -107,9 +108,9 @@ class TrajectoryConstraint(BaseModel):
                     ): 1
                 }
                 constraint[OutKeys.constraint_rhs_key()] = self.rhs
-                constraint[
-                    OutKeys.constraint_operator_key()
-                ] = ConstraintOperatorEnum.LEQ.value
+                constraint[OutKeys.constraint_operator_key()] = (
+                    ConstraintOperatorEnum.LEQ.value
+                )
                 output.append(constraint)
         return output
 
@@ -125,9 +126,9 @@ class TrajectoryConstraint(BaseModel):
                     ): 1
                 }
                 constraint[OutKeys.constraint_rhs_key()] = self.rhs
-                constraint[
-                    OutKeys.constraint_operator_key()
-                ] = ConstraintOperatorEnum.LEQ.value
+                constraint[OutKeys.constraint_operator_key()] = (
+                    ConstraintOperatorEnum.LEQ.value
+                )
                 output.append(constraint)
         return output
 
@@ -138,9 +139,9 @@ class TrajectoryConstraint(BaseModel):
             constraint = {}
             constraint[OutKeys.constraint_coeffs_key()] = {}
             constraint[OutKeys.constraint_rhs_key()] = self.rhs
-            constraint[
-                OutKeys.constraint_operator_key()
-            ] = ConstraintOperatorEnum.LEQ.value
+            constraint[OutKeys.constraint_operator_key()] = (
+                ConstraintOperatorEnum.LEQ.value
+            )
             for candidate in self.candidates:
                 ref = self.build_variable_reference(
                     node, candidate, InvestmentVariableTypeEnum.DX_PLUS
