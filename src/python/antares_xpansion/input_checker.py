@@ -253,29 +253,28 @@ def _check_candidate_name_and_link(ini_file):
 
 def _check_candidate_exclusive_attributes(ini_file):
     # check exclusion between max-investment and (max-units, unit-size) attributes
-    # This still allows the maximum investment to be zero for a given candidate (needed in the trajectory workflow)
     for each_section in ini_file.sections():
         max_invest = (
             ini_file.getfloat(each_section, "max-investment")
             if ini_file.has_option(each_section, "max-investment")
-            else None
+            else 0
         )
         unit_size = (
             ini_file.getfloat(each_section, "unit-size")
             if ini_file.has_option(each_section, "unit-size")
-            else None
+            else 0
         )
         max_units = (
             ini_file.getfloat(each_section, "max-units")
             if ini_file.has_option(each_section, "max-units")
-            else None
+            else 0
         )
-        if max_invest is not None:
-            if max_units is not None or unit_size is not None:
+        if max_invest != 0:
+            if max_units != 0 or unit_size != 0:
                 logger.error(
                     f"Illegal values in section {each_section}: cannot assign non-null values simultaneously to max-investment and (unit-size or max_units)")
                 raise MaxUnitsAndMaxInvestmentNonNullSimultaneously
-        elif max_units is None or unit_size is None:
+        elif max_units == 0 or unit_size == 0:
             logger.error(
                 f"Illegal values in section {each_section}: need to assign non-null values to max-investment or (unit-size and max_units)")
             raise MaxUnitsAndMaxInvestmentAreNullSimultaneously
