@@ -5,6 +5,7 @@
 #include "antares-xpansion/lpnamer/problem_modifier/ZipProblemsProviderAdapter.h"
 
 #include <execution>
+#include <tbb/tbb.h>
 #include <utility>
 
 #include "antares-xpansion/helpers/ArchiveReader.h"
@@ -16,7 +17,7 @@ std::vector<std::shared_ptr<Problem>> ZipProblemsProviderAdapter::provideProblem
 {
     std::vector<std::shared_ptr<Problem>> problems(problem_names_.size());
     // Order is important. Problems need to be in the same order as names
-    std::transform(std::execution::seq,
+    std::transform(std::execution::par,
                    /*std::transform preserves order of element*/
                    problem_names_.begin(),
                    problem_names_.end(),
