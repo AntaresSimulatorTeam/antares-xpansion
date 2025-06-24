@@ -1,5 +1,3 @@
-#include "antares-xpansion/benders/merge_master_mps/NodeLpDataLocation.h"
-
 #include <chrono>
 #include <iomanip>
 #include <json/writer.h>
@@ -8,6 +6,7 @@
 #include <utility>
 
 #include "antares-xpansion/benders/benders_core/common.h"
+#include "antares-xpansion/benders/merge_master_mps/NodeLpDataLocation.h"
 
 NodeLpDataLocation::NodeLpDataLocation(const Json::Value& data)
 {
@@ -52,7 +51,8 @@ NodesToLpDataLocationMap LpDataLocationManager::parse_nodal_lp_location_file(
 
 void LpDataLocationManager::write_nodal_lp_location_file(
   const NodesToLpDataLocationMap& lp_info_map,
-  const std::filesystem::path& filepath)
+  const std::filesystem::path& filepath,
+  const std::filesystem::path& input_root)
 {
     using namespace MasterStructureKeys;
     Json::Value output;
@@ -65,9 +65,14 @@ void LpDataLocationManager::write_nodal_lp_location_file(
 
     output[KEY_METADATA]["written"] = str;
 
+    // We will write every paths as a relative path from the current working directory
+    // this means that the executable has to be launched at the input root by the python driver
+
     for (const auto& [name, lp_info]: lp_info_map)
     {
-        output[name][KEY_LP_FOLDER] = lp_info.lp_folder.string();
+        // Write the paths as relative from the input root
+        const auto relative = std::filesystem::relative(lp_info.lp_folder, input_root);
+        output[name][KEY_LP_FOLDER] = relative.string();
         // Optionnal keys are:
         output[name][KEY_MASTER_FILE] = lp_info.master;
         output[name][KEY_STRUCTURE_FILE] = lp_info.structure;

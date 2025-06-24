@@ -131,8 +131,8 @@ class TrajectoryArgsParser:
         self._fill_default_values(params)
         return TrajectoryInputParameters(
             step=params.step,
-            input_root=Path(params.root),
-            input_file=Path(params.input_file),
+            input_root=Path(params.root).resolve(),
+            input_file=Path(params.input_file).resolve(),
             memory=params.memory,
             install_dir=params.installDir,
             method=params.method,

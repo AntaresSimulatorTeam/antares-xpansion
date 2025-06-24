@@ -14,6 +14,8 @@ The underlying C++ code responsible for merging previously generated Xpansion st
 Usage is :
 ```path/to/exectubale <options_file>.json <master_merger_info_file>.json```
 
+**Note** : the C++ executable has to be launched at the ```--input-root```. (The python driver takes care of this, this should not be a concern to most users).
+
 
 ## Options file
 Only few of the ```BaseOptions``` from the ```<options_file>.json``` are used. An option file for the master merger can be :

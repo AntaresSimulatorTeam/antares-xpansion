@@ -7,6 +7,7 @@ from antares_xpansion.benders_driver import BendersDriver, SolversExe
 from dataclasses import dataclass
 from pathlib import Path
 import json
+import os
 
 
 @dataclass
@@ -142,11 +143,16 @@ class TrajectoryResolutionDriver:
         #     shutil.copy(self.outer_loop_options_path(), self._simulation_lp_path())
         # options_values[OptimisationKeys.cache_problems_keys()] = self.cache_problems()
 
+        assert Path(os.getcwd()).resolve() == self.data.input_root.resolve()
         # Write options file for the solver
         with open(self.data.benders_options_file, "w") as options_file:
             json.dump(options_values, options_file, indent=4)
 
     def launch(self):
+        # Run the driver from the input root
+        previous_dir = os.getcwd()
+        os.chdir(self.data.input_root)
+
         self.prepare_resolution_options_file()
         self.benders_driver.set_custom_working_dir(self.data.input_root.resolve())
         # The cleaning step is not adapted to trajecotry mode, do not run it.
@@ -159,3 +165,5 @@ class TrajectoryResolutionDriver:
             oversubscribe=self.data.oversubscribe,
             allow_run_as_root=self.data.allow_run_as_root,
         )
+
+        os.chdir(previous_dir)
