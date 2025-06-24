@@ -85,7 +85,6 @@ void LinkProblemsGenerator::treat(const std::string& problem_name,
     writer->Write_problem(problem, lp_mps_name, asmps);
     (*logger_)(LogUtils::LOGLEVEL::INFO)
       << fmt::format("Problem {} written in {}\n", problem_name, t.elapsed());
-    problem->write_prob_mps(lp_mps_name);
 }
 
 void LinkProblemsGenerator::treatloop(const std::filesystem::path& root,
