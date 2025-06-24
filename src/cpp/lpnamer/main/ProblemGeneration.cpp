@@ -30,7 +30,7 @@
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
 #include "config.h"
-#include "ittnotify.h"
+// #include "ittnotify.h"
 #include "malloc.h"
 
 static const std::string LP_DIRNAME = "lp";
@@ -82,7 +82,7 @@ static std::string solverXpansionToSimulator(const SolverConfig& in)
 
 void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& output)
 {
-    __itt_pause();
+    //__itt_pause();
     Antares::Solver::Optimization::OptimizationOptions optOptions;
 
     optOptions.firstOptimOptions.solverName = solverXpansionToSimulator(solver_config_);
@@ -109,7 +109,7 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& ou
     }
 
     lps_ = std::move(results.antares_problems);
-    __itt_resume();
+    //__itt_resume();
 }
 
 std::filesystem::path ProblemGeneration::updateProblems()
