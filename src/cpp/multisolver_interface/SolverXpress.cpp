@@ -1,10 +1,9 @@
-#include "SolverXpress.h"
-
 #include <cassert>
 #include <cstring>
 #include <map>
 #include <numeric>
 
+#include "SolverXpress.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
 using namespace LoadXpress;
@@ -761,7 +760,8 @@ void SolverXpress::save_prob(const std::filesystem::path& filename)
 void SolverXpress::restore_prob(const std::filesystem::path& filename)
 {
     int status = XPRSrestore(_xprs, filename.string().c_str(), "");
-    zero_status_check(status, "restore problem", LOGLOCATION);
+    std::string message = "restore problem at : " + filename.string();
+    zero_status_check(status, message, LOGLOCATION);
 }
 
 void XPRS_CC optimizermsg(XPRSprob prob, void* strPtr, const char* sMsg, int nLen, int nMsglvl)
