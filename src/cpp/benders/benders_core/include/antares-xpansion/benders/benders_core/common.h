@@ -243,9 +243,11 @@ void export_structure_file(const std::filesystem::path& output_path,
     {
         for (const auto& [candidate_name, colId]: candidates_name_and_colId)
         {
+            // Adding the space to make sure there is a demarkation even when the names might exceed
+            // 50 characters
             structure_file << std::setw(50) << mps_file_path;
-            structure_file << std::setw(50) << candidate_name;
-            structure_file << std::setw(10) << colId;
+            structure_file << " " << std::setw(50) << candidate_name;
+            structure_file << " " << std::setw(10) << colId;
             structure_file << std::endl;
         }
     }
