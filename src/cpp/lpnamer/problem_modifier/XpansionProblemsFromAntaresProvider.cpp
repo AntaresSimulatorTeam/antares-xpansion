@@ -42,7 +42,7 @@ std::vector<std::shared_ptr<Problem>> XpansionProblemsFromAntaresProvider::provi
         problem_ids.emplace_back(problem_id);
     }
     std::mutex mutex;
-    std::for_each(std::execution::par,
+    std::for_each(std::execution::seq,
                   problem_ids.begin(),
                   problem_ids.end(),
                   [&](const auto& id)

@@ -3,7 +3,6 @@
 #include <execution>
 #include <fmt/format.h>
 #include <iostream>
-#include <tbb/tbb.h>
 #include <utility>
 
 #include <antares/api/solver.h>
@@ -283,6 +282,7 @@ void ProblemGeneration::RunProblemGeneration(
 
     auto solver_log_manager = SolverLogManager(log_file_path);
     Couplings couplings;
+    std::mutex write_mutex;
     LinkProblemsGenerator linkProblemsGenerator(lpDir_,
                                                 links,
                                                 solver_config_,
@@ -314,7 +314,7 @@ void ProblemGeneration::RunProblemGeneration(
         }
         auto mps_file_writer = std::make_shared<FileWriter>(lpDir_);
         std::for_each(
-          std::execution::par,
+          std::execution::seq,
           problems_and_data.begin(),
           problems_and_data.end(),
           [&](const auto& problem_and_data)
@@ -384,7 +384,7 @@ void ProblemGeneration::RunProblemGeneration(
           << fmt::format("Entering main loop, time elapsed: {}\n", timer.elapsed_since_previous());
         std::mutex mutex;
         std::for_each(
-          std::execution::par,
+          std::execution::seq,
           weekly_data.begin(),
           weekly_data.end(),
           [&](const auto& weeklyDataByYearWeek)
