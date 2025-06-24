@@ -206,6 +206,9 @@ if (CMAKE_SYSTEM_NAME STREQUAL Linux)
 endif ()
 find_package(Threads REQUIRED)
 find_package(TBB COMPONENTS tbb)
+install(FILES
+        $<TARGET_FILE:TBB::tbb>
+        DESTINATION bin)
 find_package(ZLIB REQUIRED) #Required for CoinUtils
 
 set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
