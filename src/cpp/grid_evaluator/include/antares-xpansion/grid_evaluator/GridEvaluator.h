@@ -65,8 +65,8 @@ protected:
                                          const AreaConstraintMaps& areas);
 
 protected:
-    std::filesystem::path xpansionFolderPath; ///< Path to the xpansion folder
-    const GridDefinition& gridDefinition;     ///< Grid definition
+    std::filesystem::path mpsPath;        ///< Path to the xpansion folder
+    const GridDefinition& gridDefinition; ///< Grid definition
 
     ProblemsFormat problemsFormat; ///< Format of the problems
     int nbThreads = 1;             ///< Number of threads to use

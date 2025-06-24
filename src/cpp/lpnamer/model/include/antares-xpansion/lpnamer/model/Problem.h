@@ -18,6 +18,17 @@ class Problem: public SolverAbstract
 public:
     Problem() = delete;
 
+    Problem(const Problem& other):
+        SolverAbstract(),
+        solver_abstract_(other.solver_abstract_->clone())
+    {
+    }
+
+    SolverAbstract::Ptr clone() const override
+    {
+        return std::make_shared<Problem>(*this);
+    }
+
     explicit Problem(SolverAbstract::Ptr solver_abstract):
         solver_abstract_(std::move(solver_abstract))
     {

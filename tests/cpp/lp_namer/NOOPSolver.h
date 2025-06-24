@@ -8,6 +8,7 @@
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 class NOOPSolver : public SolverAbstract {
  public:
+  SolverAbstract::Ptr clone() const override { return nullptr; }
   int get_number_of_instances() override { return 0; }
   std::string get_solver_name() const override { return std::string(); }
   void init() override {}

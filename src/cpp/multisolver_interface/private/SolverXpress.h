@@ -46,6 +46,12 @@ public:
     explicit SolverXpress(const SolverAbstract::Ptr toCopy);
     explicit SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy);
 
+    SolverAbstract::Ptr clone() const override
+    {
+        return std::make_shared<SolverXpress>(
+          std::static_pointer_cast<const SolverXpress>(shared_from_this()));
+    }
+
     /*SolverXpress ctor accept only std::shared_ptr*/
     SolverXpress(const SolverXpress& other) = delete;
     SolverXpress& operator=(const SolverXpress& other) = delete;

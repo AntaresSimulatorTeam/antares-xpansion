@@ -34,7 +34,7 @@ GridEvaluator::GridEvaluator(Logger logger,
 {
     this->logger = std::move(logger);
     this->writer = std::move(writer);
-    this->xpansionFolderPath = std::move(path_to_mps);
+    this->mpsPath = std::move(path_to_mps);
     this->problemsFormat = data_format;
     this->nbThreads = nbThreads;
 }
@@ -195,8 +195,7 @@ std::vector<Point> reorderZigzagND(const std::vector<int>& dims, const std::vect
 /// @return The path to the subproblem mps file
 std::filesystem::path GridEvaluator::GetSubproblemPath(const std::string& subPbName) const
 {
-    std::string folder = problemsFormat == ProblemsFormat::MPS_FILE ? "mps" : "mps_bin";
-    return xpansionFolderPath / folder / subPbName;
+    return mpsPath / subPbName;
 }
 
 /// @brief Get the name of the constraint in the mps file
@@ -232,9 +231,8 @@ std::vector<std::string> GridEvaluator::InitSubProblems(const GridDefinition& gr
 {
     // Add all subproblems mps files to the subproblem map if they are used in the grid.csv file
     std::string extension = problemsFormat == ProblemsFormat::MPS_FILE ? ".mps" : ".svf";
-    std::string mpsFolder = problemsFormat == ProblemsFormat::MPS_FILE ? "mps" : "mps_bin";
     std::vector<std::string> subPbNames;
-    for (const auto& entry: std::filesystem::directory_iterator(xpansionFolderPath / mpsFolder))
+    for (const auto& entry: std::filesystem::directory_iterator(mpsPath))
     {
         if (entry.path().extension() == extension
             && gridDefinition.isSubproblemUsed(entry.path().stem().string()))

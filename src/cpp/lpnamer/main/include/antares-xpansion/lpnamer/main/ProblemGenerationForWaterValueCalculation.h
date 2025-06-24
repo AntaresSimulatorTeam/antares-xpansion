@@ -25,30 +25,21 @@
 class ProblemGenerationForWaterValueCalculation
 {
 public:
-    explicit ProblemGenerationForWaterValueCalculation(ProblemGenerationOptions& options,
-                                                       const GridDefinition& gridDefinition);
+    explicit ProblemGenerationForWaterValueCalculation(
+      ProblemGenerationOptions& options,
+      const std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> problems,
+      const GridDefinition& gridDefinition);
     virtual ~ProblemGenerationForWaterValueCalculation() = default;
     std::filesystem::path updateProblems();
     const ProblemGenerationOptions& options_;
 
 private:
-    void CleanProblemsForBellmanCalculations(const std::filesystem::path& xpansion_output_dir,
-                                             const std::filesystem::path& log_file_path);
-    void ExtractUtilsFiles(const std::filesystem::path& antares_archive_path,
-                           const std::filesystem::path& xpansion_output_dir,
-                           std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
-    std::vector<std::shared_ptr<Problem>> getXpansionProblems(
-      SolverLogManager& solver_log_manager,
-      const std::vector<ProblemData>& mpsList,
-      std::filesystem::path& lpDir_,
-      std::shared_ptr<ArchiveReader> reader,
-      const Antares::Solver::LpsFromAntares& lps);
+    std::filesystem::path CleanProblemsForBellmanCalculations(
+      const std::filesystem::path& xpansion_output_dir,
+      const std::filesystem::path& log_file_path);
 
-    Antares::Solver::LpsFromAntares lps_;
-    std::optional<SimulationInputMode> mode_;
-    virtual void performAntaresSimulation(const std::filesystem::path& output);
-    SolverConfig solver_config_{"Coin"};
     ConfigurationManager configuration_manager_;
     ConfigurationManager::ConfigDirectories directories_;
+    const std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> problems;
     const GridDefinition& gridDefinition;
 };

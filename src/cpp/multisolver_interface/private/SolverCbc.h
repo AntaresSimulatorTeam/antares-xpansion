@@ -49,6 +49,12 @@ public:
      */
     explicit SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy);
 
+    SolverAbstract::Ptr clone() const override
+    {
+        return std::make_shared<SolverCbc>(
+          std::static_pointer_cast<const SolverCbc>(shared_from_this()));
+    }
+
     /*SolverCbc ctor accept only std::shared_ptr*/
     SolverCbc(const SolverCbc& other) = delete;
     SolverCbc& operator=(const SolverCbc& other) = delete;

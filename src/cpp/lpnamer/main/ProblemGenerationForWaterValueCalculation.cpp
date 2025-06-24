@@ -12,6 +12,8 @@
 
 static const std::string LP_DIRNAME = "lp";
 
+/// @brief Create the output directory and the lp directory if they do not exist
+/// @param output_path The path to the output directory
 static void CreateDirectories(const std::filesystem::path& output_path)
 {
     if (!std::filesystem::exists(output_path))
@@ -25,72 +27,23 @@ static void CreateDirectories(const std::filesystem::path& output_path)
     }
 }
 
+/// @brief Constructor
+/// @param options The options for the problem generation
+/// @param problems The problems to be modified
+/// @param gridDefinition The grid definition
 ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalculation(
   ProblemGenerationOptions& options,
+  const std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> problems,
   const GridDefinition& gridDefinition):
     options_(options),
-    gridDefinition(gridDefinition),
-    configuration_manager_{options}
+    configuration_manager_(options),
+    problems(problems),
+    gridDefinition(gridDefinition)
 {
-    mode_ = configuration_manager_.Mode();
 }
 
-namespace
-{
-bool islower(std::string_view str)
-{
-    return std::ranges::all_of(str, [](char c) { return std::islower(c); });
-}
-} // namespace
-
-static std::string solverXpansionToSimulator(const SolverConfig& in)
-{
-    // in could be Cbc or CBC depending on whether it is defined or not in the
-    // settings file
-    // Use lowerCase in any case to be robust to these subtleties
-    assert(islower(in.Name()));
-    if (in.Name() == "xpress")
-    {
-        return "xpress";
-    }
-    if (in.Name() == "cbc" || in.Name() == "coin")
-    {
-        return "coin";
-    }
-    throw std::invalid_argument("Invalid solver");
-}
-
-void ProblemGenerationForWaterValueCalculation::performAntaresSimulation(
-  const std::filesystem::path& output)
-{
-    Antares::Solver::Optimization::OptimizationOptions optOptions;
-
-    optOptions.linearSolver = solverXpansionToSimulator(solver_config_);
-    auto results = Antares::API::PerformSimulation(options_.StudyPath(), output, optOptions);
-
-    /**
-     * Antares simulator allocate a lot of memory
-     * Even if there is no memory leak not all freed memory become available.
-     * Allocator or OS may cache some memory to reuse it
-     * With malloc_trim(0) we free all memory that is not used anymore to be reclaimed by the
-     *program It is nescasssry to avoid allocating Xpansion memory on top of the unavailable memory
-     *from simulator
-     **/
-#ifndef _WIN32
-    malloc_trim(0);
-#endif
-
-    // Handle errors
-    if (results.error)
-    {
-        throw LogUtils::XpansionError<std::runtime_error>("Antares simulation failed:\n\t"
-                                                            + results.error->reason,
-                                                          LOGLOCATION);
-    }
-
-    lps_ = std::move(results.antares_problems);
-}
-
+/// @brief Update the problems for the water value calculation
+/// @return The path to the output mps file
 std::filesystem::path ProblemGenerationForWaterValueCalculation::updateProblems()
 {
     using namespace std::string_literals;
@@ -104,50 +57,48 @@ std::filesystem::path ProblemGenerationForWaterValueCalculation::updateProblems(
                                                     std::cout,
                                                     "Problem Generation"s);
 
-    // set_solver(directories_.study_dir, logger.get());
+    auto outputMpsPath = CleanProblemsForBellmanCalculations(directories_.xpansion_output_dir,
+                                                             log_file_path);
 
-    if (mode_ == SimulationInputMode::ANTARES_API)
-    {
-        performAntaresSimulation(directories_.simulation_dir);
-    }
-
-    CleanProblemsForBellmanCalculations(directories_.xpansion_output_dir, log_file_path);
-
-    return directories_.xpansion_output_dir;
+    return outputMpsPath;
 }
 
-void ProblemGenerationForWaterValueCalculation::CleanProblemsForBellmanCalculations(
+/// @brief Clean the problems for the Bellman Values calculations
+/// @param xpansion_output_dir The output directory
+/// @param log_file_path The path to the log file
+/// @return The path to the output mps file
+std::filesystem::path
+ProblemGenerationForWaterValueCalculation::CleanProblemsForBellmanCalculations(
   const std::filesystem::path& xpansion_output_dir,
   const std::filesystem::path& log_file_path)
 {
     auto solver_log_manager = SolverLogManager(log_file_path);
 
-    // vector of pair for parallelization
-    // ref to WeeklyDataFromAntares to avoid copies
-    std::vector<
-      std::pair<Antares::Solver::WeeklyProblemId, Antares::Solver::WeeklyDataFromAntares&>>
-      weekly_data;
-    std::ranges::for_each(lps_.weeklyProblems,
-                          [&weekly_data, this](auto& pair)
-                          { weekly_data.emplace_back(pair.first, pair.second); });
     // Create directory for Bellman problems
-    std::filesystem::create_directory(xpansion_output_dir / "mps");
-    std::for_each(std::execution::seq,
-                  weekly_data.begin(),
-                  weekly_data.end(),
-                  [&](const auto& weeklyDataByYearWeek)
+    auto outputMpsPath = xpansion_output_dir / ("mps_" + std::to_string(gridDefinition.gridID));
+    std::filesystem::create_directory(outputMpsPath);
+    std::for_each(std::execution::par,
+                  problems.begin(),
+                  problems.end(),
+                  [&](auto& pb)
                   {
-                      auto&& [year_week, data] = weeklyDataByYearWeek;
-                      XpansionProblemsFromAntaresProvider adapter(lps_);
-                      auto problem = adapter.provideProblem("CBC", solver_log_manager, year_week);
-                      cleanProblemForBellmanCalculations(problem, gridDefinition, year_week.week);
-                      problem->write_prob_mps(xpansion_output_dir / "mps"
-                                              / ("problem-" + std::to_string(year_week.year) + "-"
-                                                 + std::to_string(year_week.week)
-                                                 + "--optim-nb-1.mps"));
+                      auto pbId = pb.first;
+                      auto problem = std::make_shared<Problem>(pb.second->clone());
+
+                      cleanProblemForBellmanCalculations(problem, gridDefinition, pbId.week);
+
+                      problem->write_prob_mps(outputMpsPath
+                                              / ("problem-" + std::to_string(pbId.year) + "-"
+                                                 + std::to_string(pbId.week) + "--optim-nb-1.mps"));
                   });
+
+    return outputMpsPath;
 }
 
+/// @brief Clean the problem for the Bellman Values calculations
+/// @param problem The problem to clean
+/// @param gridDefinition The grid definition
+/// @param week The week to clean
 void cleanProblemForBellmanCalculations(std::shared_ptr<Problem> problem,
                                         const GridDefinition& gridDefinition,
                                         int week)

@@ -17,6 +17,7 @@ add_executable (full_grid_evaluation_exe
 target_link_libraries (full_grid_evaluation_exe
 		PRIVATE
 		${PROJECT_NAME}::lp_namer_input_reader
+		${PROJECT_NAME}::lp_namer_problem_modifier
 		${PROJECT_NAME}::problem_generation_main
 		${PROJECT_NAME}::lp_namer_helper
 		${PROJECT_NAME}::grid_evaluator_lib

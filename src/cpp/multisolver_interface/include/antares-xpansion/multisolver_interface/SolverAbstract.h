@@ -197,7 +197,7 @@ enum SOLVER_STATUS
  * \class class SolverAbstract
  * \brief Virtual class to implement solvers methods
  */
-class SolverAbstract
+class SolverAbstract: public std::enable_shared_from_this<SolverAbstract>
 {
 public:
     std::vector<std::string> SOLVER_STRING_STATUS = {"OPTIMAL",
@@ -241,6 +241,8 @@ public:
     SolverAbstract(const std::string& name, const SolverAbstract::Ptr toCopy)
     {
     }
+
+    virtual Ptr clone() const = 0;
 
     /**
      * @brief destructor of SolverAbstract class : does nothing
