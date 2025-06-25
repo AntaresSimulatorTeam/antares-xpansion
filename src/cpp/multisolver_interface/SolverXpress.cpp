@@ -442,6 +442,17 @@ void SolverXpress::del_rows(int first, int last)
     zero_status_check(status, "delete rows", LOGLOCATION);
 }
 
+void SolverXpress::del_cols(int first, int last)
+{
+    std::vector<int> mindex(last - first + 1);
+    for (int i = 0; i < last - first + 1; i++)
+    {
+        mindex[i] = first + i;
+    }
+    int status = XPRSdelcols(_xprs, last - first + 1, mindex.data());
+    zero_status_check(status, "delete columns", LOGLOCATION);
+}
+
 void SolverXpress::add_rows(int newrows,
                             int newnz,
                             const char* qrtype,
