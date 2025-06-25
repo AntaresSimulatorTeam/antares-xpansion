@@ -11,7 +11,7 @@ v1.4.0 (12/2024)
 
 ### Features
 
-* Update Antares Simulator to 9.2
+* Update Antares Simulator to 9.2.1
 * Output file **criterions.txt** is renamed **LOLD.txt** as it gathers the loss of load for each area at each iteration
   of the algorithm
 * End to end coherence of solvers : if Xpress is selected, it is also used for Antares step (does not work yet with
