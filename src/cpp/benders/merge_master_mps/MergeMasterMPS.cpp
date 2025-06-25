@@ -1,3 +1,5 @@
+#include "antares-xpansion/benders/merge_master_mps/MergeMasterMPS.h"
+
 #include <filesystem>
 #include <fmt/format.h>
 #include <numeric>
@@ -6,7 +8,6 @@
 
 #include "antares-xpansion/benders/benders_core/CouplingMapGenerator.h"
 #include "antares-xpansion/benders/merge_master_mps/MasterStructureKeys.h"
-#include "antares-xpansion/benders/merge_master_mps/MergeMasterMPS.h"
 #include "antares-xpansion/benders/merge_mps/StandardLp.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"

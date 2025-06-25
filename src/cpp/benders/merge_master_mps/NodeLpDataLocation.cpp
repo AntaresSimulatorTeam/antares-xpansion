@@ -1,3 +1,5 @@
+#include "antares-xpansion/benders/merge_master_mps/NodeLpDataLocation.h"
+
 #include <chrono>
 #include <iomanip>
 #include <json/writer.h>
@@ -6,7 +8,6 @@
 #include <utility>
 
 #include "antares-xpansion/benders/benders_core/common.h"
-#include "antares-xpansion/benders/merge_master_mps/NodeLpDataLocation.h"
 
 NodeLpDataLocation::NodeLpDataLocation(const Json::Value& data)
 {

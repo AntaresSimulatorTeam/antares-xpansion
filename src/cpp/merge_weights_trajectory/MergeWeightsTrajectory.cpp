@@ -1,3 +1,5 @@
+#include "antares-xpansion/merge_weights_trajectory/MergeWeightsTrajectory.h"
+
 #include <fstream>
 #include <json/reader.h>
 
@@ -5,7 +7,6 @@
 #include "antares-xpansion/benders/benders_core/common.h"
 #include "antares-xpansion/benders/merge_master_mps/MasterStructureKeys.h"
 #include "antares-xpansion/lpnamer/input_reader/GeneralDataReader.h"
-#include "antares-xpansion/merge_weights_trajectory/MergeWeightsTrajectory.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
 namespace

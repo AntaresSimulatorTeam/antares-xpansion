@@ -1,9 +1,10 @@
+#include "SolverXpress.h"
+
 #include <cassert>
 #include <cstring>
 #include <map>
 #include <numeric>
 
-#include "SolverXpress.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
 using namespace LoadXpress;
