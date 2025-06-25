@@ -21,9 +21,13 @@ void fill_datas(AllDatas& datas) {
   miptoy._mind = {0, 1, 0, 1};
   miptoy._mstart = {0, 2, 4};
 
-  miptoy._matval_delete = {10.0, 6.0};
-  miptoy._mind_delete = {0, 1};
-  miptoy._mstart_delete = {0, 2};
+  miptoy._matval_delete_row = {10.0, 6.0};
+  miptoy._mind_delete_row = {0, 1};
+  miptoy._mstart_delete_row = {0, 2};
+
+  miptoy._matval_delete_col = {1.0, 6.0};
+  miptoy._mind_delete_col = {0, 0};
+  miptoy._mstart_delete_col = {0, 1, 2};
 
   miptoy._rhs = {5.0, 45.0};
   miptoy._lb = {0.0, 0.0};
@@ -58,9 +62,9 @@ void fill_datas(AllDatas& datas) {
   lptoy._mind = {0, 1, 0, 1};
   lptoy._mstart = {0, 2, 4};
 
-  lptoy._matval_delete = {10.0, 6.0};
-  lptoy._mind_delete = {0, 1};
-  lptoy._mstart_delete = {0, 2};
+  lptoy._matval_delete_row = {10.0, 6.0};
+  lptoy._mind_delete_row = {0, 1};
+  lptoy._mstart_delete_row = {0, 2};
 
   lptoy._rhs = {5.0, 45.0};
   lptoy._lb = {0.0, 0.0};
@@ -96,10 +100,13 @@ void fill_datas(AllDatas& datas) {
   multikp._mind = {0, 3, 6, 1, 4, 7, 2, 5, 8, 0, 1, 2, 3, 4, 5};
   multikp._mstart = {0, 3, 6, 9, 12, 15};
 
-  multikp._matval_delete = {1.0, 1.0, 1.0, 1.0, 1.0, 1.0,
-                            1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
-  multikp._mind_delete = {1, 4, 7, 2, 5, 8, 0, 1, 2, 3, 4, 5};
-  multikp._mstart_delete = {0, 3, 6, 9, 12};
+  multikp._matval_delete_row = {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
+  multikp._mind_delete_row = {1, 4, 7, 2, 5, 8, 0, 1, 2, 3, 4, 5};
+  multikp._mstart_delete_row = {0, 3, 6, 9, 12};
+
+  multikp._matval_delete_col = {1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
+  multikp._mind_delete_col = {2, 5, 0, 3, 6, 1, 4, 7, 0, 1, 2, 3, 4};
+  multikp._mstart_delete_col = {0, 2, 5, 8, 10, 13};
 
   multikp._rhs = {12.0, 7.1, 10.0, 5.5, 8.3};
   multikp._lb = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
@@ -135,9 +142,13 @@ void fill_datas(AllDatas& datas) {
   unbd._mind = {0, 1, 1};
   unbd._mstart = {0, 2, 3};
 
-  unbd._matval_delete = {-21.0};
-  unbd._mind_delete = {1};
-  unbd._mstart_delete = {0, 1};
+  unbd._matval_delete_row = {-21.0};
+  unbd._mind_delete_row = {1};
+  unbd._mstart_delete_row = {0, 1};
+
+  unbd._matval_delete_col = {64, -21.0};
+  unbd._mind_delete_col = {0, 0};
+  unbd._mstart_delete_col = {0, 1, 2};
 
   unbd._rhs = {12.0, -3.0};
   unbd._lb = {0.0, 0.0};
@@ -159,7 +170,7 @@ void fill_datas(AllDatas& datas) {
   datas.push_back(unbd);
 
   //==================================================================
-  // 3. unbounded
+  // 3. infeasible
   auto infeas = InstanceData();
   infeas._path = data_test_dir / "mps" / "infeas.mps";
   infeas._ncols = 2;
@@ -172,9 +183,13 @@ void fill_datas(AllDatas& datas) {
   infeas._mind = {0, 1, 0, 1};
   infeas._mstart = {0, 2, 4};
 
-  infeas._matval_delete = {1.0, 1.0};
-  infeas._mind_delete = {0, 1};
-  infeas._mstart_delete = {0, 2};
+  infeas._matval_delete_row = {1.0, 1.0};
+  infeas._mind_delete_row = {0, 1};
+  infeas._mstart_delete_row = {0, 2};
+
+  infeas._matval_delete_col = {1.0, 1.0};
+  infeas._mind_delete_col = {0, 0};
+  infeas._mstart_delete_col = {0, 1, 2};
 
   infeas._rhs = {2.0, 4.0};
   infeas._lb = {0.0, 0.0};

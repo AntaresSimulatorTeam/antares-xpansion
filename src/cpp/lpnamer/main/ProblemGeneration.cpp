@@ -1,4 +1,3 @@
-
 #include "antares-xpansion/lpnamer/main/ProblemGeneration.h"
 
 #include <execution>
@@ -83,7 +82,7 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& ou
 {
     Antares::Solver::Optimization::OptimizationOptions optOptions;
 
-    optOptions.linearSolver = solverXpansionToSimulator(solver_config_);
+    optOptions.firstOptimOptions.solverName = solverXpansionToSimulator(solver_config_);
     auto results = Antares::API::PerformSimulation(options_.StudyPath(), output, optOptions);
 
     /**

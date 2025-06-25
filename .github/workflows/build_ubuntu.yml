@@ -32,8 +32,7 @@ jobs:
     env:
       VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
       ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
-      #9.11 doesn't provide 22.04 assets
-      ORTOOLS_URL: "https://github.com/rte-france/or-tools-rte/releases/download/v9.11-rte1.1/ortools_cxx_ubuntu-20.04_static_sirius.zip"
+      ORTOOLS_URL: "https://github.com/rte-france/or-tools-rte/releases/download/v9.13-rte1.1/ortools_cxx_ubuntu-22.04_static_sirius.zip"
 
     outputs:
       TGZ_NAME: ${{ steps.export_output.outputs.TGZ_NAME }}
