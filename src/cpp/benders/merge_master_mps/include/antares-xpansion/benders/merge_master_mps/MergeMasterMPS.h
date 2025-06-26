@@ -104,7 +104,7 @@ public:
     void launch() override;
 
 private:
-    void read_tree_structure_file();
+    void read_master_merge_info_file();
     void read_node_lp_paths();
 
     void check_nodes_have_lp_folder();
@@ -130,4 +130,5 @@ private:
     CandidatesCouplingMap candidates_coupling_; // Links the same candidates in different nodes
     NodesToLpDataLocationMap nodes_lp_info_;    // Info on the lp folder & files for each node
     CouplingMap structure_;
+    double scaling_; // Scaling factor to divide the costs by.
 };

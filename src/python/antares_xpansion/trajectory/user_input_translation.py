@@ -2,7 +2,7 @@ import datetime
 import json
 from enum import Enum
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Set, Union
+from typing import Any, Dict, List, Optional, Set, Union, Tuple
 from typing_extensions import Literal
 
 import yaml
@@ -45,6 +45,7 @@ class GlobalData(BaseModel):
     studies: Dict[str, Path] = Field(alias=InKeys.studies_key())
     # Other data entries are necessary.
     discount_rate: NonNegativeFloat = Field(alias=InKeys.discount_rate_key())
+    scaling: NonNegativeFloat = Field(alias=InKeys.scaling_key())
     first_investment_date: NonNegativeInt = Field(
         alias=InKeys.first_investment_date_key()
     )
@@ -394,7 +395,6 @@ class UserInputTranslator:
         """
         A candidate must appear in a continuous bit of the trajecotry tree : can only appear and eventually disappear once.
         """
-        list_of_disappearing_candidates = []
 
         def aux_candidate_only_appear(
             subtree: Tree,
@@ -410,7 +410,7 @@ class UserInputTranslator:
                     f"Candidate {candidate} is present in nodes : {self.candidate_appears_in_nodes[candidate]}, \
                       this does not represent a continuous subtree"
                 )
-            
+
             disappeared = False
             if is_in_parent and not is_present:
                 disappeared = True
@@ -508,6 +508,71 @@ class UserInputTranslator:
             if constraint.nodes == InKeys.constraint_all_keyword():
                 constraint.nodes = list(self.all_nodes)
 
+    def detect_fully_decommed_candidates(self):
+        """
+        Returns a list of pairs (candidate, node_where_candidate_disappears)
+        When a candidate disappears, we consider it fully decommissioned
+        """
+        # Compute a list of pairs of (candidate, node_where_candidate_disappears)
+        disappear_cand_node: List[Tuple[str, str]] = []
+
+        def aux_get_disappearing_cand(subtree: Tree, candidate, is_present_in_parent):
+            node = subtree.node_name
+            is_present = node in self.candidate_appears_in_nodes[candidate]
+            if is_present_in_parent and not is_present:
+                disappear_cand_node.append((candidate, node))
+            else:
+                for child in subtree.children:
+                    aux_get_disappearing_cand(child, candidate, is_present)
+
+        assert self.all_candidates
+        for candidate in self.all_candidates:
+            aux_get_disappearing_cand(self.tree, candidate, False)
+
+        return disappear_cand_node
+
+    def add_delta_costs_fully_decommed_candidate(self, master_merger_info: dict):
+        """
+        Given an already generated output master_merger_info dict,
+        We need to manually add the costs of the delta variables for the node
+        where a candidate is fully decommissioned and disappears from the study.
+        """
+        fully_decommed_cand_node = self.detect_fully_decommed_candidates()
+
+        for cand, node in fully_decommed_cand_node:
+            # Get the costs from the parent
+            current_node_data = self.nodes.get(node)
+            parent_data = self.nodes.get(current_node_data.parent)
+            cand_type = parent_data.candidate_to_type.get(cand)
+            costs_data = self.candidates_types_costs.get(cand_type)
+            # Discouting
+            disc_dxplus = current_node_data.compute_investment_discounting(
+                self.global_data
+            )
+            disc_dxminus = current_node_data.compute_retirement_discounting(
+                self.global_data
+            )
+
+            dxplus_cost = (
+                disc_dxplus
+                * costs_data.investment_cost
+                * current_node_data.full_probability
+            )
+            dxminus_cost = (
+                disc_dxminus
+                * costs_data.retirement_cost
+                * current_node_data.full_probability
+            )
+
+            master_merger_info[OutKeys.tree_key()][node][OutKeys.candidate_costs()][
+                cand
+            ] = {
+                OutKeys.investment_cost_key(): dxplus_cost,
+                OutKeys.retirement_cost_key(): dxminus_cost,
+            }
+
+        return master_merger_info
+
     def parse_trajectory_user_file(self):
         """
         Parse the data contained in the user's input file
@@ -557,6 +622,9 @@ class UserInputTranslator:
             "written": datetime.datetime.now().strftime("%Y-%m-%d_%H:%M:%S")
         }
 
+        # Scaling is transferred as is (because it's needed both in MergeMasterMPS and MergeWeights)
+        output[OutKeys.scaling_key()] = self.global_data.scaling
+
         # Initial capacities
         output[OutKeys.initial_capacities_key()] = self.initial_capacities
 
@@ -575,6 +643,8 @@ class UserInputTranslator:
                 self.global_data, self.candidates_types_costs
             )
         output[OutKeys.tree_key()] = nodes_output_dict
+
+        output = self.add_delta_costs_fully_decommed_candidate(output)
 
         with open(output_file, "w") as file:
             json.dump(output, file, indent=4)

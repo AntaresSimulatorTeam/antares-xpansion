@@ -198,7 +198,7 @@ MergeMasterTrajectoryMPS::TrajectoryNode::TrajectoryNode(std::string node, const
     }
 }
 
-void MergeMasterTrajectoryMPS::read_tree_structure_file()
+void MergeMasterTrajectoryMPS::read_master_merge_info_file()
 {
     using namespace MasterStructureKeys;
 
@@ -221,6 +221,9 @@ void MergeMasterTrajectoryMPS::read_tree_structure_file()
 
     // Read the global trajectory data
     trajectory_data_ = TrajectoryGlobalData(raw_input);
+
+    // Get the scaling
+    scaling_ = raw_input[KEY_SCALING].asDouble();
 }
 
 void MergeMasterTrajectoryMPS::read_node_lp_paths()
@@ -663,37 +666,86 @@ void MergeMasterTrajectoryMPS::set_objective_from_data()
     for (const auto& node: tree_)
     {
         std::string node_name = node.name;
+
         for (const auto& [candidate, positions_per_node]: candidates_coupling_)
         {
-            // Does the candidate exist in this node
-            int candidate_index = ptr_merged_solver_->get_col_index(make_prefix_from_node(node_name)
-                                                                    + candidate);
-            if (candidate_index == -1)
+            // Apply the scaling during this step
+
+            bool present_in_current_node = variable_is_present_in_node(node, candidate);
+            bool present_in_parent = variable_is_present_in_parent(node, candidate);
+
+            if (!present_in_current_node && !present_in_parent)
             {
-                logger_->display_message("Skipping setting objective values for variable : '"
-                                           + candidate + "' at node '" + node_name
-                                           + "' - variable not present.",
-                                         LogUtils::LOGLEVEL::INFO,
-                                         MERGE_MPS_LOGGER_CONTEXT);
                 continue;
+            }
+
+            std::string keys;
+            for (const auto& [node, _]: positions_per_node)
+            {
+                keys += ", " + node;
             }
 
             const auto& costs = node.candidates_costs.at(candidate);
             const auto& positions = positions_per_node.at(node.name);
 
-            // To be discussed : node weights & discounting
-            indexes.push_back(positions.get(CAPACITY));
-            coefficients.push_back(costs.get(CAPACITY));
+            if (present_in_current_node)
+            {
+                indexes.push_back(positions.get(CAPACITY));
+                coefficients.push_back(costs.get(CAPACITY) / scaling_);
+            }
 
+            // Apply also when candidate itself is absent from the node
+            // The value of the candidate variable is replaced by a hardcoded value (0)
             indexes.push_back(positions.get(DX_PLUS));
-            coefficients.push_back(costs.get(DX_PLUS));
+            coefficients.push_back(costs.get(DX_PLUS) / scaling_);
 
             indexes.push_back(positions.get(DX_MINUS));
-            coefficients.push_back(costs.get(DX_MINUS));
+            coefficients.push_back(costs.get(DX_MINUS) / scaling_);
         }
     }
 
     ptr_merged_solver_->chg_obj(indexes, coefficients);
+
+    // indexes should contain all columns
+    if (indexes.size() != ptr_merged_solver_->get_ncols())
+    {
+        // Set all remaining coefs to zero to avoid issues of scaling not being applied
+        std::set<int> indexes_present(indexes.begin(), indexes.end());
+        std::vector<int> missing_indexes{};
+        for (int i = 0; i < ptr_merged_solver_->get_ncols(); ++i)
+        {
+            if (!indexes_present.contains(i))
+            {
+                missing_indexes.push_back(i);
+            }
+        }
+        std::vector<double> zeros(missing_indexes.size(), 0.0);
+        // ptr_merged_solver_->chg_obj(missing_indexes, zeros);
+
+        auto full_names = ptr_merged_solver_->get_col_names();
+
+        std::vector<std::string> names;
+        for (const int& id: missing_indexes)
+        {
+            names.push_back(full_names[id]);
+        }
+
+        std::string message;
+        for (const auto& var: names)
+        {
+            message += ", " + var;
+        }
+
+        logger_->display_message("Not all coefficients were replaced during the merging of the "
+                                 "master problems, replacing "
+                                   + std::to_string(missing_indexes.size())
+                                   + " objective coeffs with 0",
+                                 LogUtils::LOGLEVEL::WARNING,
+                                 MERGE_MPS_LOGGER_CONTEXT);
+        logger_->display_message("Candidates whose names were not replaced are : " + message,
+                                 LogUtils::LOGLEVEL::WARNING,
+                                 MERGE_MPS_LOGGER_CONTEXT);
+    }
 }
 
 void MergeMasterTrajectoryMPS::add_coupling_constraints()
@@ -769,7 +821,7 @@ void MergeMasterTrajectoryMPS::launch()
     logger_->display_message("Parsing structure file at " + tree_path_.string(),
                              LogUtils::LOGLEVEL::INFO,
                              TRAJECTORY_LOGGER_CONTEXT);
-    read_tree_structure_file();
+    read_master_merge_info_file();
     logger_->display_message("Parsing nodal lp folder data at "
                                + lp_reference_file_filepath_.string(),
                              LogUtils::LOGLEVEL::INFO,
