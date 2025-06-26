@@ -37,4 +37,8 @@ private:
     WeightsMap nodes_weights_;
 
     WeightsMap merged_subproblem_weights_;
+
+    // Scaling factor
+    // (will be transmited to the objective functions of the subproblems through the weights file)
+    double scaling_;
 };

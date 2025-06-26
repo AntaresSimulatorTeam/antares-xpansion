@@ -12,6 +12,7 @@ global:
   discount_rate: 0.064
   first_investment_year: 2030
   end_of_horizon: 2060
+  scaling: 1e3 # e.g. if 1e6, objective function will be expressed in M€
   #forbid_retirement: true
   studies:
     "2030": ./node_2030_study

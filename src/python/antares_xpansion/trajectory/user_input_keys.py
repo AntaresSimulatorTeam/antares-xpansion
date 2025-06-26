@@ -15,6 +15,10 @@ class TrajectoryInputKeys:
     @staticmethod
     def discount_rate_key():
         return "discount_rate"
+    
+    @staticmethod
+    def scaling_key():
+        return "scaling"
 
     @staticmethod
     def first_investment_date_key():
@@ -125,6 +129,11 @@ class TrajectoryOuputKeys:
     """
     Keys used in the `master_merger_info.json` file passed to the C++ executable.
     """
+
+    # Scaling is transfered as is to the workflows
+    @staticmethod
+    def scaling_key():
+        return "scaling"
 
     # Initial capacities
     @staticmethod
