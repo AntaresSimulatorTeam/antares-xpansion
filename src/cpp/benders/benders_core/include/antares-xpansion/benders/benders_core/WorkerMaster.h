@@ -58,6 +58,8 @@ private:
                                      const double& rhs,
                                      std::vector<double>& rowrhs) const;
 
+    void roundXVarIfWithinTolerance(std::vector<double>& values, double tolerance);
+    void roundIfWithinTolerance(std::vector<double>& values, double tolerance) const;
     void define_rhs_from_sx0(const double& sx0,
                              const double& rhs,
                              std::vector<double>& rowrhs) const;

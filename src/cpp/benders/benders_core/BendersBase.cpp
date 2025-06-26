@@ -626,8 +626,8 @@ void compute_cut_val(const Point& var_name_subgradient, const Point& x_cut, Poin
  *  Method to add aggregated cut from subproblems to Master Problem and store
  * it in a map linking each subproblem to its set of non-aggregated cut
  *
- *  \param all_package : vector storing all cuts information for each
- * subproblem problem
+ *  \param subproblem_data_map : map storing all cuts information for each
+ * subproblem
  */
 void BendersBase::compute_cut_aggregate(const SubProblemDataMap& subproblem_data_map)
 {
@@ -649,9 +649,7 @@ void BendersBase::compute_cut_aggregate(const SubProblemDataMap& subproblem_data
 /*!
  *  \brief Add cuts in master problem
  *
- *	Add cuts in master problem according to the selected option
- *
- *  \param all_package : storage of every subproblem information
+ *  \param subproblem_data_map : storage of every subproblem information
  */
 void BendersBase::BuildCutFull(const SubProblemDataMap& subproblem_data_map)
 {

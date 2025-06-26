@@ -38,6 +38,46 @@ WorkerMaster::WorkerMaster(const VariableMap& variable_map,
     _set_nb_units_var_ids();
 }
 
+// Tolerance to which a value is considered zero or integral
+// TODO : Allow to parametrize this constant from the options file
+static double INTTOL = 1e-4;
+
+void WorkerMaster::roundXVarIfWithinTolerance(std::vector<double>& values, double tolerance)
+{
+    int nb_candidates = _id_to_name.size();
+
+    std::vector<char> col_type(nb_candidates);
+    std::vector<double> lb(nb_candidates);
+    std::vector<double> ub(nb_candidates);
+    // Assumes that candidates are the first variables of the master
+    solver_getcolinfo(*_solver, col_type, lb, ub, 0, nb_candidates - 1);
+    for (const auto& kvp: _id_to_name)
+    {
+        double value = values[kvp.first];
+        // Case variable near 0
+        if (std::abs(value) < tolerance)
+        {
+            values[kvp.first] = 0;
+        }
+        // Case variable slighly above ub
+        else if (value > ub[kvp.first] && value < ub[kvp.first] + tolerance)
+        {
+            values[kvp.first] = ub[kvp.first];
+        }
+        // Case variable slighly lower than lb
+        else if (value < lb[kvp.first] && value > lb[kvp.first] - tolerance)
+        {
+            values[kvp.first] = lb[kvp.first];
+        }
+        // Case integer variable
+        else if (col_type[kvp.first] == 'B' || col_type[kvp.first] == 'I')
+        {
+            int rounded = std::round(value);
+            values[kvp.first] = std::abs(value - std::round(value)) < tolerance ? rounded : value;
+        }
+    };
+}
+
 /*!
  *  \brief Return optimal variables of a problem
  *
@@ -65,6 +105,7 @@ void WorkerMaster::get(Point& x_out,
         _solver->get_lp_sol(ptr.data(), nullptr, nullptr);
     }
     assert(id_single_subpb_costs_under_approx_.back() + 1 == ptr.size());
+    roundXVarIfWithinTolerance(ptr, INTTOL);
     for (const auto& kvp: _id_to_name)
     {
         x_out[kvp.second] = ptr[kvp.first];
@@ -227,6 +268,17 @@ void WorkerMaster::define_matval_mclind_for_index(const int i,
     matval.back() = -1;
 }
 
+static double ISZEROTOL = 5e-3;
+
+void WorkerMaster::roundIfWithinTolerance(std::vector<double>& values, double tolerance) const
+{
+    std::transform(values.begin(),
+                   values.end(),
+                   values.begin(),
+                   [tolerance](double value) -> double
+                   { return std::abs(value) < tolerance ? 0 : value; });
+}
+
 /*!
  *  \brief Add one benders cut to a problem
  *
@@ -252,6 +304,8 @@ void WorkerMaster::addSubproblemCut(int i,
 
     DefineRhsWithMasterVariable(s, x_cut, rhs, rowrhs);
     define_matval_mclind_for_index(i, s, matval, mclind);
+
+    roundIfWithinTolerance(rowrhs, ISZEROTOL);
 
     solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }

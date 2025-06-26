@@ -26,6 +26,7 @@ public:
                      ProblemsFormat format);
     virtual ~SubproblemWorker() = default;
     std::vector<double> get_solution() const;
+    void roundIfWithinTolerance(std::vector<double>& values, double tolerance) const;
 
 public:
     void fix_to(const Point& x0) const;
