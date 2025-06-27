@@ -13,9 +13,11 @@
 find_package(Antares REQUIRED)
 add_library(problem_generation_main)
 target_sources(problem_generation_main PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/ConfigurationManager.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ProblemGeneration.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ProblemGenerationExeOptions.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/Version.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/main/ConfigurationManager.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/main/ProblemGeneration.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/main/ProblemGenerationOptions.h
         ${CMAKE_CURRENT_SOURCE_DIR}/private/Version.h
@@ -44,6 +46,26 @@ target_include_directories(problem_generation_main
 
 
 add_library(${PROJECT_NAME}::problem_generation_main ALIAS problem_generation_main)
+
+#Multiple problem generation lib
+add_library(multiple_problem_generation_lib)
+target_sources(multiple_problem_generation_lib PRIVATE
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/main/MultipleProblemGeneration.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/MultipleProblemGeneration.cpp
+)
+
+target_link_libraries(multiple_problem_generation_lib PUBLIC
+        ${PROJECT_NAME}::problem_generation_main
+        ${PROJECT_NAME}::node_lp_data_location
+)
+
+target_include_directories(multiple_problem_generation_lib
+        PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+)
+
+add_library(${PROJECT_NAME}::multiple_problem_generation_lib ALIAS multiple_problem_generation_lib)
+
 
 install(DIRECTORY include/antares-xpansion
         DESTINATION "include"

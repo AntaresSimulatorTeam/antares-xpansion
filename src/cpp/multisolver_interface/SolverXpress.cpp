@@ -17,7 +17,7 @@ int SolverXpress::_NumberOfProblems = 0;
 std::mutex SolverXpress::license_guard;
 const std::map<int, std::string> TYPETONAME = {{1, "rows"}, {2, "columns"}};
 
-SolverXpress::SolverXpress(SolverLogManager& log_manager):
+SolverXpress::SolverXpress(const SolverLogManager& log_manager):
     SolverXpress()
 {
     if (log_manager.log_file_path != "")
@@ -231,6 +231,12 @@ void SolverXpress::read_basis(const std::filesystem::path& filename)
     zero_status_check(status, "read basis", LOGLOCATION);
 }
 
+void SolverXpress::set_basis(std::span<int> rstatus, std::span<int> cstatus)
+{
+    int status = XPRSloadbasis(_xprs, rstatus.data(), cstatus.data());
+    zero_status_check(status, "set basis", LOGLOCATION);
+}
+
 void SolverXpress::copy_prob(const SolverAbstract::Ptr fictif_solv)
 {
     auto error = LOGLOCATION + "Copy XPRESS problem : TO DO WHEN NEEDED";
@@ -373,8 +379,9 @@ std::vector<std::string> SolverXpress::get_names(int type, int n_elements)
     zero_status_check(XPRSgetnames(_xprs, type, names_in_one_string.data(), 0, n_elements - 1),
                       "get " + TYPETONAME.at(type) + " names.",
                       LOGLOCATION);
-
-    return StringManip::split(StringManip::trim(names_in_one_string), '\0');
+    names_in_one_string = StringManip::trim_in_place(names_in_one_string);
+    auto res = StringManip::split(names_in_one_string, '\0');
+    return res;
 }
 
 std::vector<std::string> SolverXpress::get_row_names(int first, int last)
@@ -433,6 +440,17 @@ void SolverXpress::del_rows(int first, int last)
     }
     int status = XPRSdelrows(_xprs, last - first + 1, mindex.data());
     zero_status_check(status, "delete rows", LOGLOCATION);
+}
+
+void SolverXpress::del_cols(int first, int last)
+{
+    std::vector<int> mindex(last - first + 1);
+    for (int i = 0; i < last - first + 1; i++)
+    {
+        mindex[i] = first + i;
+    }
+    int status = XPRSdelcols(_xprs, last - first + 1, mindex.data());
+    zero_status_check(status, "delete columns", LOGLOCATION);
 }
 
 void SolverXpress::add_rows(int newrows,

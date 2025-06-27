@@ -3,6 +3,8 @@
   "version-string": "1.4.0",
   "$comment 1": "libuuid by transitivity for Simulator-> yuni",
   "$comment 2": "sirius-solver by transitivity for Simulator",
+  "$comment 3": "antlr4 by transitivity for Simulator",
+  "$comment 4": "set coin version to avoid change in results for now",
   "dependencies": [
     "jsoncpp",
     "gtest",
@@ -26,6 +28,7 @@
       "version>=": "1.81.0"
     },
     "yaml-cpp",
+    "antlr4",
     {
       "name": "minizip-ng",
       "default-features": false,
@@ -41,6 +44,26 @@
     {
       "name": "tbb",
       "version-string": "2020_U3"
+    },
+    {
+      "name": "coin-or-cbc",
+      "version": "2.10.7"
+    },
+    {
+      "name": "coin-or-cgl",
+      "version": "0.60.5"
+    },
+    {
+      "name": "coin-or-clp",
+      "version": "1.17"
+    },
+    {
+      "name": "coin-or-osi",
+      "version": "0.108.7"
+    },
+    {
+      "name": "coinutils",
+      "version": "2.11.6"
     }
   ]
 }

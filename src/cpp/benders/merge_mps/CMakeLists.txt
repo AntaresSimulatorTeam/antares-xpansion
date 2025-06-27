@@ -9,7 +9,10 @@
 add_library(merge_mps_core)
 target_sources(merge_mps_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/MergeMPS.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/StandardLp.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/merge_mps/JsonKeysConstants.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/merge_mps/MergeMPS.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/merge_mps/StandardLp.h
 )
 
 

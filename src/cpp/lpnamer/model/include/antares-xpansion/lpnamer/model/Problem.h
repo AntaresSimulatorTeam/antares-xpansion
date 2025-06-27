@@ -5,6 +5,7 @@
 #ifndef ANTARESXPANSION_SRC_CPP_LPNAMER_MODEL_PROBLEM_H_
 #define ANTARESXPANSION_SRC_CPP_LPNAMER_MODEL_PROBLEM_H_
 
+#include <span>
 #include <utility>
 
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
@@ -192,6 +193,11 @@ public:
         solver_abstract_->del_rows(first, last);
     }
 
+    void del_cols(int first, int last) override
+    {
+        solver_abstract_->del_cols(first, last);
+    }
+
     void add_rows(int newrows,
                   int newnz,
                   const char* qrtype,
@@ -344,6 +350,11 @@ public:
     void read_basis(const std::filesystem::path& filename) override
     {
         solver_abstract_->read_basis(filename);
+    }
+
+    void set_basis(std::span<int> rstatus, std::span<int> cstatus) override
+    {
+        solver_abstract_->set_basis(rstatus, cstatus);
     }
 
     void save_prob(const std::filesystem::path& filename) override;

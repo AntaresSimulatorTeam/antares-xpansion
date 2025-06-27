@@ -35,6 +35,7 @@ SimulationOptions::SimulationOptions():
 #define BENDERS_OPTIONS_MACRO(name__, type__, default__, deserialization_method__) \
     name__(default__),
 #include "antares-xpansion/benders/benders_core/SimulationOptions.hxx"
+
 #undef BENDERS_OPTIONS_MACRO
     _weights()
 {
@@ -74,6 +75,7 @@ void SimulationOptions::read(const std::filesystem::path& file_name)
     if (#var__ == var_name)                                                       \
         var__ = options_values[var_name].deserialization_method__;
 #include "antares-xpansion/benders/benders_core/SimulationOptions.hxx"
+
 #undef BENDERS_OPTIONS_MACRO
     }
     set_weights();
@@ -136,6 +138,7 @@ void SimulationOptions::print(std::ostream& stream) const
 #define BENDERS_OPTIONS_MACRO(name__, type__, default__, deserialization_method__) \
     stream << std::setw(30) << #name__ << std::setw(50) << std::boolalpha << name__ << std::endl;
 #include "antares-xpansion/benders/benders_core/SimulationOptions.hxx"
+
 #undef BENDERS_OPTIONS_MACRO
     stream << std::endl;
 }
@@ -146,26 +149,31 @@ BaseOptions SimulationOptions::get_base_options() const
 
     result.LOG_LEVEL = LOG_LEVEL;
 
-    result.SLAVE_WEIGHT_VALUE = SLAVE_WEIGHT_VALUE;
-
-    result.OUTPUTROOT = OUTPUTROOT;
-    result.LAST_ITERATION_JSON_FILE = LAST_ITERATION_JSON_FILE;
-    result.SLAVE_WEIGHT = SLAVE_WEIGHT;
-    result.MASTER_NAME = MASTER_NAME;
-    result.STRUCTURE_FILE = STRUCTURE_FILE;
-    result.PROBLEMS_FORMAT = PROBLEMS_FORMAT;
     result.INPUTROOT = INPUTROOT;
+    result.OUTPUTROOT = OUTPUTROOT;
+    result.STRUCTURE_FILE = STRUCTURE_FILE;
+    result.MASTER_NAME = MASTER_NAME;
     result.SOLVER_NAME = SOLVER_NAME;
+
+    result.PROBLEMS_FORMAT = PROBLEMS_FORMAT;
+
+    return result;
+}
+
+SolverBaseOptions SimulationOptions::get_solver_options() const
+{
+    SolverBaseOptions result(get_base_options());
+
+    result.SLAVE_WEIGHT = SLAVE_WEIGHT;
+    result.SLAVE_WEIGHT_VALUE = SLAVE_WEIGHT_VALUE;
     result.weights = _weights;
-    result.RESUME = RESUME;
-    result.AREA_FILE = AREA_FILE;
 
     return result;
 }
 
 BendersBaseOptions SimulationOptions::get_benders_options() const
 {
-    BendersBaseOptions result(get_base_options());
+    BendersBaseOptions result(get_solver_options());
 
     result.MAX_ITERATIONS = MAX_ITERATIONS;
 
@@ -174,6 +182,12 @@ BendersBaseOptions SimulationOptions::get_benders_options() const
     result.RELAXED_GAP = RELAXED_GAP;
     result.TIME_LIMIT = TIME_LIMIT;
     result.SEPARATION_PARAM = SEPARATION_PARAM;
+
+    result.RESUME = RESUME;
+    result.AGGREGATION = AGGREGATION;
+    result.TRACE = TRACE;
+    result.BOUND_ALPHA = BOUND_ALPHA;
+    result.CACHE_PROBLEMS = CACHE_PROBLEMS;
 
     if (MASTER_FORMULATION == "integer")
     {
@@ -190,15 +204,16 @@ BendersBaseOptions SimulationOptions::get_benders_options() const
         std::exit(1);
     }
 
-    result.AGGREGATION = AGGREGATION;
-    result.TRACE = TRACE;
-    result.BOUND_ALPHA = BOUND_ALPHA;
-
+    result.AREA_FILE = AREA_FILE;
     result.CSV_NAME = CSV_NAME;
     result.LAST_MASTER_MPS = LAST_MASTER_MPS;
     result.LAST_MASTER_BASIS = LAST_MASTER_BASIS;
+    result.LAST_ITERATION_JSON_FILE = LAST_ITERATION_JSON_FILE;
+
     result.BATCH_SIZE = BATCH_SIZE;
+
     result.EXTERNAL_LOOP_OPTIONS = GetExternalLoopOptions();
+
     return result;
 }
 

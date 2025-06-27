@@ -29,8 +29,7 @@ jobs:
     env:
       VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
       ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
-      #9.11 doesn't provide 22.04 assets
-      ORTOOLS_URL: "https://github.com/rte-france/or-tools-rte/releases/download/v9.11-rte1.1/ortools_cxx_ubuntu-20.04_static_sirius.zip"
+      ORTOOLS_URL: "https://github.com/rte-france/or-tools-rte/releases/download/v9.13-rte1.1/ortools_cxx_ubuntu-22.04_static_sirius.zip"
 
     outputs:
       TGZ_NAME: ${{ steps.export_output.outputs.TGZ_NAME }}
@@ -65,23 +64,15 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements-tests.txt
 
-      #Fix version to 9.2.7.
-      #In 9.2.12 and above, directory structure has changed.
       - name: Set-up Xpress with pip for Ubuntu
         shell: bash
         run: |
-          python -m pip install "xpress==9.2.7"
-          echo ${{ env.pythonLocation }}
-          XPRESS_DIR=${{ env.pythonLocation }}/lib/python${{ env.PYTHON_VERSION }}/site-packages/xpress
+          python -m pip install "xpress==9.2.12"
+          XPRESS_DIR=${{ env.pythonLocation }}/lib/python${{ env.PYTHON_VERSION }}/site-packages/xpresslibs
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
-          echo "XPAUTH_PATH=$XPRESS_DIR/license/community-xpauth.xpr" >> $GITHUB_ENV
+          echo "XPAUTH_PATH=${{ env.pythonLocation }}/lib/python${{ env.PYTHON_VERSION }}/site-packages/xpress/license/community-xpauth.xpr" >> $GITHUB_ENV
           echo "Create symbolic link for XPRESS library file because it is missing in the Python installation"
           ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so
-
-      - uses: lukka/get-cmake@latest
-        with:
-          useLocalCache: false
-          useCloudCache: true
 
       - name: Read antares-solver version
         id: antares-version
@@ -296,14 +287,10 @@ jobs:
           name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
           path: .
 
-      - name: Get release
-        id: get_release
-        uses: bruceadams/get-release@main
-
       - name: Upload Release Asset
         env:
           GH_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} _build/${{needs.build.outputs.TGZ_NAME}}
-          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} ${{needs.build.outputs.SINGLE_FILE_NAME}}
+          gh release upload --repo ${{env.GH_REPO}} ${{ github.event.release.tag_name }} _build/${{needs.build.outputs.TGZ_NAME}}
+          gh release upload --repo ${{env.GH_REPO}} ${{ github.event.release.tag_name }} ${{needs.build.outputs.SINGLE_FILE_NAME}}

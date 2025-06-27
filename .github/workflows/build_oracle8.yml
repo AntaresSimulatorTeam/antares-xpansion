@@ -47,7 +47,7 @@ jobs:
     needs: [ versions ]
     env:
       ORTOOLS_DIR: $GITHUB_WORKSPACE/or-tools
-      ORTOOLS_URL: "https://github.com/rte-france/or-tools-rte/releases/download/v9.11-rte1.1/ortools_cxx_oraclelinux-8_static_sirius.zip"
+      ORTOOLS_URL: "https://github.com/rte-france/or-tools-rte/releases/download/v9.13-rte1.1/ortools_cxx_oraclelinux-8_static_sirius.zip"
 
     outputs:
       zip_name: ${{ steps.zip_name.outputs.zip_name }}
@@ -65,10 +65,8 @@ jobs:
       - run: |
           dnf module install -y nodejs:20/common
 
-      - uses: lukka/get-cmake@latest
-        with:
-          useLocalCache: false
-          useCloudCache: true
+      - run: |
+          dnf install -y cmake
 
       - uses: actions/checkout@v4
         with:
@@ -93,12 +91,14 @@ jobs:
         shell: bash
         run: |
           export PATH=/root/miniconda3/condabin:$PATH
-          conda install -c fico-xpress "xpress==9.2.7"
-          XPRESS_DIR=/root/miniconda3/lib/python3.8/site-packages/xpress
+          conda install -c fico-xpress "xpress==9.2.12" "xpresslibs==9.2.12"
+          conda info --all
+          SITE_PACKAGE=/root/miniconda3/lib/python3.8/site-packages
+          XPRESS_DIR=/root/miniconda3
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
-          echo "XPAUTH_PATH=$XPRESS_DIR/license/community-xpauth.xpr" >> $GITHUB_ENV
+          echo "XPAUTH_PATH=$SITE_PACKAGE/xpress/license/community-xpauth.xpr" >> $GITHUB_ENV
           echo "Create symbolic link for XPRESS library file because it is missing in the Python installation"
-          ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so   
+          ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so
 
       - name: Download pre-compiled librairies
         uses: ./.github/workflows/download-extract-precompiled-libraries-tgz
@@ -240,9 +240,6 @@ jobs:
       ZIP_NAME: ${{needs.build.outputs.zip_name}}
       SINGLEFILE_NAME: ${{needs.build.outputs.singlefile_name}}
     steps:
-      - name: Get release
-        id: get_release
-        uses: bruceadams/get-release@main
 
       - name: Download Artifact
         uses: actions/download-artifact@v4
@@ -261,7 +258,7 @@ jobs:
           GH_REPO: ${{ github.repository }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} ${{env.ZIP_NAME}}
-          gh release upload --repo ${{env.GH_REPO}} ${{ steps.get_release.outputs.tag_name }} ${{env.SINGLEFILE_NAME}}
+          gh release upload --repo ${{env.GH_REPO}} ${{ github.event.release.tag_name }} ${{env.ZIP_NAME}}
+          gh release upload --repo ${{env.GH_REPO}} ${{ github.event.release.tag_name }} ${{env.SINGLEFILE_NAME}}
 
       ########################

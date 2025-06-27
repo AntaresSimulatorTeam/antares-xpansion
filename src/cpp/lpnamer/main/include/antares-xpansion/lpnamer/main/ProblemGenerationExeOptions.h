@@ -8,7 +8,6 @@
 
 class ProblemGenerationExeOptions: public OptionsParser, public ProblemGenerationOptions
 {
-private:
     std::filesystem::path xpansion_output_dir_;
     std::string master_formulation_;
     std::string additional_constraintFilename_l_;
@@ -64,7 +63,22 @@ public:
       std::filesystem::path xpansion_output_dir,
       const std::filesystem::path& archive_path) const override;
     [[nodiscard]] std::filesystem::path StudyPath() const override;
-    void checkMandatoryOptions(const std::string& log_location) const;
+    virtual void checkMandatoryOptions(const std::string& log_location) const;
     [[nodiscard]] auto exclusiveMandatoryParameters() const;
+
+    // Returns the relevant path (should be the only non-empty one)
+    std::filesystem::path getRelevantPath() const;
+    // Sets the relevant path (should be the only non-empty one before changing the value)
+    void setRelevantPath(const std::filesystem::path& path);
+
+    void setAdditionalConstraintsFilePath(const std::filesystem::path& path)
+    {
+        additional_constraintFilename_l_ = path.string();
+    }
+
+    void setWeightsFilePath(const std::filesystem::path& path)
+    {
+        weights_file_ = path;
+    }
 };
 #endif // ANTARES_XPANSION_SRC_CPP_LPNAMER_MAIN_INCLUDE_PROBLEMGENERATIONEXEOPTIONS_H

@@ -56,6 +56,7 @@ std::function<int(XPRSprob prob, const char* filename)> XPRSgetlasterror = nullp
 std::function<int(XPRSprob prob, const char* filename)> XPRSsaveas = nullptr;
 std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSrestore = nullptr;
 std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSreadbasis = nullptr;
+std::function<int(XPRSprob prob, int rstatus[], int cstatus[])> XPRSloadbasis = nullptr;
 std::function<int(XPRSprob prob,
                   int start[],
                   int colind[],
@@ -101,6 +102,7 @@ std::function<int(XPRSprob prob, char coltype[], int first, int last)> XPRSgetco
 std::function<int(XPRSprob prob, double lb[], int first, int last)> XPRSgetlb = nullptr;
 std::function<int(XPRSprob prob, double ub[], int first, int last)> XPRSgetub = nullptr;
 std::function<int(XPRSprob prob, int nrows, const int rowind[])> XPRSdelrows = nullptr;
+std::function<int(XPRSprob prob, int ncols, const int colind[])> XPRSdelcols = nullptr;
 std::function<int(XPRSprob prob,
                   int nrows,
                   int ncoefs,
@@ -172,6 +174,7 @@ bool XpressLoader::LoadXpressFunctions(Solver::DynamicLibrary* xpress_dynamic_li
     xpress_dynamic_library->GetFunction(&XPRSsaveas, "XPRSsaveas");
     xpress_dynamic_library->GetFunction(&XPRSrestore, "XPRSrestore");
     xpress_dynamic_library->GetFunction(&XPRSreadbasis, "XPRSreadbasis");
+    xpress_dynamic_library->GetFunction(&XPRSloadbasis, "XPRSloadbasis");
     xpress_dynamic_library->GetFunction(&XPRSloadsecurevecs, "XPRSloadsecurevecs");
     xpress_dynamic_library->GetFunction(&XPRSgetrows, "XPRSgetrows");
     xpress_dynamic_library->GetFunction(&XPRSgetindex, "XPRSgetindex");
@@ -194,6 +197,7 @@ bool XpressLoader::LoadXpressFunctions(Solver::DynamicLibrary* xpress_dynamic_li
     xpress_dynamic_library->GetFunction(&XPRSgetlb, "XPRSgetlb");
     xpress_dynamic_library->GetFunction(&XPRSgetub, "XPRSgetub");
     xpress_dynamic_library->GetFunction(&XPRSdelrows, "XPRSdelrows");
+    xpress_dynamic_library->GetFunction(&XPRSdelcols, "XPRSdelcols");
     xpress_dynamic_library->GetFunction(&XPRSaddrows, "XPRSaddrows");
     xpress_dynamic_library->GetFunction(&XPRSchgobj, "XPRSchgobj");
     xpress_dynamic_library->GetFunction(&XPRSaddcols, "XPRSaddcols");

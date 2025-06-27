@@ -6,6 +6,7 @@
 #include <iostream>
 #include <list>
 #include <memory>
+#include <span>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -225,7 +226,9 @@ public:
     /**
      * @brief constructor of SolverAbstract class : does nothing
      */
-    SolverAbstract(){};
+    SolverAbstract()
+    {
+    }
 
     /**
      * @brief Copy constructor, copy the problem "toCopy" in memory and name it
@@ -235,12 +238,16 @@ public:
      * @param toCopy : Pointer to an AbstractSolver object, containing a solver
      * object to copy
      */
-    SolverAbstract(const std::string& name, const SolverAbstract::Ptr toCopy){};
+    SolverAbstract(const std::string& name, const SolverAbstract::Ptr toCopy)
+    {
+    }
 
     /**
      * @brief destructor of SolverAbstract class : does nothing
      */
-    virtual ~SolverAbstract(){};
+    virtual ~SolverAbstract()
+    {
+    }
 
     /**
      * @brief Returns number of instances of solver currently in memory
@@ -385,6 +392,8 @@ public:
      * @param filename: File name where the basis is to be read
      */
     virtual void read_basis(const std::filesystem::path& filename) = 0;
+
+    virtual void set_basis(std::span<int> rstatus, std::span<int> cstatus) = 0;
 
     /**
      * @brief copy an existing problem
@@ -582,6 +591,14 @@ public:
      * @param last   : last row index to delete
      */
     virtual void del_rows(int first, int last) = 0;
+
+    /**
+     * @brief Deletes col at index first and last
+     *
+     * @param first  : first col index to delete
+     * @param last   : last col index to delete
+     */
+    virtual void del_cols(int first, int last) = 0;
 
     /**
     * @brief Adds rows to the problem
