@@ -84,12 +84,14 @@ ProblemGenerationForWaterValueCalculation::CleanProblemsForBellmanCalculations(
                   {
                       auto pbId = pb.first;
                       auto problem = std::make_shared<Problem>(pb.second->clone());
+                      std::string pbName = "problem-" + std::to_string(pbId.year) + "-"
+                                           + std::to_string(pbId.week) + "--optim-nb-1";
+                      cleanProblemForBellmanCalculations(problem,
+                                                         pbName,
+                                                         gridDefinition,
+                                                         pbId.week);
 
-                      cleanProblemForBellmanCalculations(problem, gridDefinition, pbId.week);
-
-                      problem->write_prob_mps(outputMpsPath
-                                              / ("problem-" + std::to_string(pbId.year) + "-"
-                                                 + std::to_string(pbId.week) + "--optim-nb-1.mps"));
+                      problem->write_prob_mps(outputMpsPath / (pbName + ".mps"));
                   });
 
     return outputMpsPath;
@@ -100,26 +102,30 @@ ProblemGenerationForWaterValueCalculation::CleanProblemsForBellmanCalculations(
 /// @param gridDefinition The grid definition
 /// @param week The week to clean
 void cleanProblemForBellmanCalculations(std::shared_ptr<Problem> problem,
+                                        std::string& pbName,
                                         const GridDefinition& gridDefinition,
                                         int week)
 {
     for (const auto& gridElement: gridDefinition.gridElements)
     {
-        for (int hour = (week - 1) * 168; hour < week * 168; ++hour)
+        if (gridElement.problemName == "all" || gridElement.problemName == pbName)
         {
-            // Delete variables HydroLevel and Overflow
-            int idx = problem->get_col_index("HydroLevel::area<" + gridElement.area + ">::hour<"
+            for (int hour = (week - 1) * 168; hour < week * 168; ++hour)
+            {
+                // Delete variables HydroLevel and Overflow
+                int idx = problem->get_col_index("HydroLevel::area<" + gridElement.area + ">::hour<"
+                                                 + std::to_string(hour) + ">");
+                problem->del_cols(idx, idx);
+
+                idx = problem->get_col_index("Overflow::area<" + gridElement.area + ">::hour<"
                                              + std::to_string(hour) + ">");
-            problem->del_cols(idx, idx);
+                problem->del_cols(idx, idx);
 
-            idx = problem->get_col_index("Overflow::area<" + gridElement.area + ">::hour<"
-                                         + std::to_string(hour) + ">");
-            problem->del_cols(idx, idx);
-
-            // Delete constraints AreaHydroLevel
-            idx = problem->get_row_index("AreaHydroLevel::area<" + gridElement.area + ">::hour<"
-                                         + std::to_string(hour) + ">");
-            problem->del_rows(idx, idx);
+                // Delete constraints AreaHydroLevel
+                idx = problem->get_row_index("AreaHydroLevel::area<" + gridElement.area + ">::hour<"
+                                             + std::to_string(hour) + ">");
+                problem->del_rows(idx, idx);
+            }
         }
     }
 }

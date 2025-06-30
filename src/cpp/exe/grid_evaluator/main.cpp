@@ -94,6 +94,9 @@ int main(int argc, char** argv)
 
     auto gridCollection = std::make_shared<GridCollection>(path_to_data / "grid.csv");
 
+    Reservoir reservoir(path_to_data, "area");
+    ReservoirManagement reservoir_management(reservoir, true);
+
     auto writer = std::make_shared<Output::JsonWriter>(std::make_shared<Clock>(),
                                                        path_to_data / "output.json");
 
@@ -104,9 +107,10 @@ int main(int argc, char** argv)
                                        writer,
                                        path_to_data,
                                        grid,
+                                       reservoir_management,
                                        ProblemsFormat::MPS_FILE,
                                        num_threads);
-        res[grid.gridID] = evaluator.launch();
+        res[grid.gridID] = evaluator.ComputeRewards();
     }
 
     writer->write_VariationDeNiveauxDeStock(res);

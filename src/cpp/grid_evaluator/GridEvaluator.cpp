@@ -5,6 +5,7 @@
 #include <execution>
 #include <fmt/core.h>
 #include <functional>
+#include <ranges>
 #include <regex>
 #include <tbb/global_control.h>
 #include <tbb/parallel_for_each.h>
@@ -21,22 +22,25 @@ std::atomic<double> totalPbModifTimer = 0; ///< Total time spent modifying subpr
 /// @param logger Logger
 /// @param writer JsonWriter
 /// @param path_to_mps Path to the data folder
-/// @param grid_collection GridCollection containing the grids to evaluate
+/// @param gridDefinition GridCollection containing the grids to evaluate
+/// @param reservoirManagement Reservoir management
 /// @param data_format Format of the data (MPS or LP)
 /// @param nbThreads Number of threads to use
 GridEvaluator::GridEvaluator(Logger logger,
                              std::shared_ptr<Output::JsonWriter> writer,
                              std::filesystem::path path_to_mps,
-                             const GridDefinition& gridDefinition,
+                             GridDefinition& gridDefinition,
+                             const ReservoirManagement& reservoirManagement,
                              ProblemsFormat data_format,
                              int nbThreads = 1):
-    gridDefinition(gridDefinition)
+    gridDefinition(gridDefinition),
+    reservoirManagement(reservoirManagement),
+    problemsFormat(data_format),
+    nbThreads(nbThreads)
 {
     this->logger = std::move(logger);
     this->writer = std::move(writer);
     this->mpsPath = std::move(path_to_mps);
-    this->problemsFormat = data_format;
-    this->nbThreads = nbThreads;
 }
 
 /// @brief Generates all combinations of constraint values (Cartesian product).
@@ -237,7 +241,9 @@ std::vector<std::string> GridEvaluator::InitSubProblems(const GridDefinition& gr
         if (entry.path().extension() == extension
             && gridDefinition.isSubproblemUsed(entry.path().stem().string()))
         {
-            subPbNames.push_back(entry.path().stem().string());
+            std::string subPbName = entry.path().stem().string();
+            subPbNames.push_back(subPbName);
+            nbScenarios = std::max(nbScenarios, GetPbInfo(subPbName).scenario);
         }
     }
     return subPbNames;
@@ -250,63 +256,48 @@ std::vector<std::string> GridEvaluator::InitSubProblems(const GridDefinition& gr
 /// @param subPbWorker The subproblem worker
 /// @return The RHS grid values for each subproblem
 AreaConstraintMaps GridEvaluator::GenerateRHSGridValues(std::string subPbName,
-                                                        const GridDefinition& gridDefinition,
+                                                        GridDefinition& gridDefinition,
                                                         SubproblemWorkerPtr subPbWorker)
 {
     AreaConstraintMaps gridValues;
     // Compute the grid values using the min and max values of the constraints
-    auto generateValues = [&](std::string area,
-                              double min,
-                              double max,
-                              double step,
-                              std::string min_cst_name,
-                              std::string max_cst_name,
-                              double min_efficiency)
+    auto computeValues = [&](GridElement& gridElement)
     {
         constexpr double epsilon = 0;
-        // constexpr double epsilon = 1e-1;
+        // constexpr double epsilon = 1e-2;
 
-        if (min == 0.0)
+        if (gridElement.min == 0.0)
         {
-            min += epsilon;
+            gridElement.min += epsilon;
         }
-        if (max == 1.0)
+        if (gridElement.max == 1.0)
         {
-            max -= epsilon;
+            gridElement.max -= epsilon;
         }
 
         double min_cst = -subPbWorker->get_rhs_value_from_name(
-                           GetConstraintName(subPbName, area, min_cst_name))
-                         * min_efficiency;
+                           GetConstraintName(subPbName, gridElement.area, gridElement.min_cst))
+                         * gridElement.min_efficiency;
         double max_cst = subPbWorker->get_rhs_value_from_name(
-          GetConstraintName(subPbName, area, max_cst_name));
+          GetConstraintName(subPbName, gridElement.area, gridElement.max_cst));
 
-        int steps = static_cast<int>((max - min) / step);
-        std::vector<double> values;
-        values.reserve(steps + 1);
+        int steps = static_cast<int>((gridElement.max - gridElement.min) / gridElement.step);
 
         for (int i = 0; i <= steps; ++i)
         {
-            double normalized = min + i * step;
+            double normalized = gridElement.min + i * gridElement.step;
             double value = min_cst + (max_cst - min_cst) * normalized;
-            values.push_back(value);
+            gridElement.values[GetPbInfo(subPbName)].insert(value);
         }
 
-        return values;
+        return gridElement.values[GetPbInfo(subPbName)];
     };
 
-    for (const auto& gridElement: gridDefinition.gridElements)
+    for (auto& gridElement: gridDefinition.gridElements)
     {
         if (gridElement.problemName == subPbName || gridElement.problemName == "all")
         {
-            gridValues[gridElement.area][gridElement.name] = generateValues(
-              gridElement.area,
-              gridElement.min,
-              gridElement.max,
-              gridElement.step,
-              gridElement.min_cst,
-              gridElement.max_cst,
-              gridElement.min_efficiency);
+            gridValues[gridElement.area][gridElement.name] = computeValues(gridElement);
         }
     }
     return gridValues;
@@ -344,8 +335,7 @@ void GridEvaluator::SetConstraintsRHSValues(const std::map<std::string, double>&
 /// @brief Runs the ProcessSubproblem method in parallel for each subproblem
 /// @param subPbNames The names of the subproblems to process
 /// @param gridDefinition The grid definition to use to generate the grid afterwards
-void GridEvaluator::Run(const std::vector<std::string>& subPbNames,
-                        const GridDefinition& gridDefinition)
+void GridEvaluator::Run(const std::vector<std::string>& subPbNames, GridDefinition& gridDefinition)
 {
     ProcessGridParallel(subPbNames, gridDefinition, nbThreads);
 }
@@ -359,8 +349,7 @@ void GridEvaluator::Run(const std::vector<std::string>& subPbNames,
 ///          scenario, week, and constraint values.
 /// @param subPbName The name of the subproblem
 /// @param gridDefinition The grid definition to use to generate the grid
-void GridEvaluator::ProcessSubproblem(const std::string& subPbName,
-                                      const GridDefinition& gridDefinition)
+void GridEvaluator::ProcessSubproblem(const std::string& subPbName, GridDefinition& gridDefinition)
 {
     // Print loading time
     auto start = std::chrono::high_resolution_clock::now();
@@ -405,7 +394,7 @@ void GridEvaluator::ProcessSubproblem(const std::string& subPbName,
         double cost = SolveSubproblem(subPbWorker);
 
         variationDeNiveauxDeStockData
-          .insert({GetPbInfo(subPbName).scenario, GetPbInfo(subPbName).week, subPbCombo}, cost);
+          .insert({subPbCombo, GetPbInfo(subPbName).scenario, GetPbInfo(subPbName).week}, cost);
         std::cout << "Cost: " << cost << std::endl;
     }
 }
@@ -415,7 +404,7 @@ void GridEvaluator::ProcessSubproblem(const std::string& subPbName,
 /// @param gridDefinition The grid definition to use
 /// @param nbThreads The number of threads to use
 void GridEvaluator::ProcessGridParallel(const std::vector<std::string>& subPbNames,
-                                        const GridDefinition& gridDefinition,
+                                        GridDefinition& gridDefinition,
                                         int nbThreads)
 {
     // Limiter TBB au nombre de cœurs physiques
@@ -450,7 +439,7 @@ double GridEvaluator::SolveSubproblem(SubproblemWorkerPtr subPbWorker)
 
 /// @brief Launch the Stock level variation computation
 /// @return The stock level variation results
-std::map<Output::VariationDeNiveauxDeStockKey, double> GridEvaluator::launch()
+std::map<Output::PointWeekScenarioKey, double> GridEvaluator::ComputeRewards()
 {
     std::cout << "Launching Stock level variation" << std::endl;
 
@@ -467,4 +456,221 @@ std::map<Output::VariationDeNiveauxDeStockKey, double> GridEvaluator::launch()
               << " seconds" << std::endl;
 
     return variationDeNiveauxDeStockData.get();
+}
+
+/// @brief Get the index of the value in the set
+/// @param X the set
+/// @param x_query the value to look for
+/// @return the index of the value found in the set
+size_t rank_in_set(const std::set<double>& X, double x_query)
+{
+    auto it = X.find(x_query);
+    if (it == X.end())
+    {
+        throw std::invalid_argument("x_query not found in X");
+    };
+    return std::distance(X.begin(), it);
+}
+
+template<typename XContainer, typename YContainer>
+double interpolate(const XContainer& X, const YContainer& Y, double x_query)
+{
+    if (X.size() != Y.size() || X.empty())
+    {
+        throw std::invalid_argument("X and Y must have the same size and not be empty");
+    }
+
+    auto x_begin = X.begin();
+    auto x_end = X.end();
+
+    // Clamp below range
+    if (x_query <= *x_begin)
+    {
+        return *Y.begin();
+    }
+
+    // Clamp above range
+    auto last = std::prev(x_end);
+    if (x_query >= *last)
+    {
+        return *std::prev(Y.end());
+    }
+
+    // Find first element >= x_query
+    auto it_upper = std::lower_bound(x_begin, x_end, x_query);
+
+    if (it_upper != x_end && *it_upper == x_query)
+    {
+        // Exact match
+        auto y_it = Y.begin();
+        std::advance(y_it, std::distance(x_begin, it_upper));
+        return *y_it;
+    }
+
+    // Otherwise interpolate between previous and it_upper
+    auto it_lower = std::prev(it_upper);
+
+    double x0 = *it_lower;
+    double x1 = *it_upper;
+
+    auto y_it_lower = Y.begin();
+    std::advance(y_it_lower, std::distance(x_begin, it_lower));
+
+    auto y_it_upper = Y.begin();
+    std::advance(y_it_upper, std::distance(x_begin, it_upper));
+
+    double y0 = *y_it_lower;
+    double y1 = *y_it_upper;
+
+    return y0 + (y1 - y0) * (x_query - x0) / (x1 - x0);
+}
+
+auto linspace(double start, double end, int num)
+{
+    if (num <= 0)
+    {
+        return std::vector<double>{};
+    }
+    if (num == 1)
+    {
+        return std::vector<double>{start};
+    }
+
+    double step = (end - start) / (num - 1);
+
+    auto result = std::views::iota(0, num)
+                  | std::views::transform([=](int i) { return start + i * step; });
+
+    return std::vector<double>(result.begin(), result.end());
+}
+
+/// @brief Compute the Bellman values
+/// @return The bellman values for each week
+std::vector<std::vector<double>> GridEvaluator::ComputeBellmanValues()
+{
+    // auto X = gridDefinition.gridElements[0].values; // discretization of hydro level
+
+    auto X = linspace(0.0, reservoirManagement.reservoir.capacity, 21);
+    std::map<ScenarioAndWeek, std::vector<double>> V;
+    std::map<ScenarioAndWeek, std::vector<double>> rewards;
+
+    for (const auto& [key, reward]: variationDeNiveauxDeStockData.get())
+    {
+        rewards[{key.scenario, key.week}].push_back(reward);
+    }
+
+    for (int week = 1; week <= Reservoir::weeks_in_year; ++week)
+    {
+        for (int scenario = 1; scenario <= nbScenarios; ++scenario)
+        {
+            V[{scenario, week}] = std::vector<double>(X.size(), 0.0);
+        }
+    }
+
+    for (int week = Reservoir::weeks_in_year - 1; week >= 1; --week)
+    {
+        for (int scenario = 1; scenario <= nbScenarios; ++scenario)
+        {
+            auto V_fut = [&X, &V, &week, &scenario]()
+            {
+                auto& V_vec = V[{scenario, week + 1}];
+                return [&X, &V_vec, &week, &scenario](double x)
+                { return interpolate(X, V_vec, x); };
+            };
+
+            std::set<double> breaking_points = {
+              *gridDefinition.gridElements[0].values[{scenario, week}].begin(),
+              *gridDefinition.gridElements[0].values[{scenario, week}].rbegin()};
+            int i = 0;
+            for (const double& level: X)
+            {
+                double Vu = SolveWeeklyProblemWithReward(week,
+                                                         scenario,
+                                                         level,
+                                                         X,
+                                                         rewards[{scenario, week}],
+                                                         V_fut(),
+                                                         breaking_points);
+                V[{scenario, week}][i] += Vu;
+                ++i;
+            }
+        }
+
+        for (int i = 0; i < X.size(); ++i)
+        {
+            double sum = 0.0;
+            for (int scenario = 1; scenario <= nbScenarios; ++scenario)
+            {
+                sum += V[{scenario, week}][i];
+            }
+            for (int scenario = 1; scenario <= nbScenarios; ++scenario)
+            {
+                V[{scenario, week}][i] = sum / nbScenarios;
+            }
+        }
+    }
+
+    std::vector<std::vector<double>> V_final;
+    for (int week = 1; week <= Reservoir::weeks_in_year; ++week)
+    {
+        V_final.push_back(V[{1, week}]);
+    }
+
+    return V_final;
+}
+
+/// @brief Solve the weekly problem
+/// @param week
+/// @param scenario
+/// @param level the level of the reservoir
+/// @param X the discretization of the reservoir level
+/// @param rewards the rewards for each scenario and week
+/// @param V_fut the reward function for the next week
+/// @param breaking_points
+/// @return The Bellvalue for a given week and scenario and level of the reservoir
+double GridEvaluator::SolveWeeklyProblemWithReward(int week,
+                                                   int scenario,
+                                                   double level,
+                                                   const std::vector<double>& X,
+                                                   const std::vector<double>& rewards,
+                                                   const std::function<double(double)>& V_fut,
+                                                   std::set<double>& breaking_points)
+{
+    double Vu = std::numeric_limits<double>::lowest();
+    const Reservoir reservoir = reservoirManagement.reservoir;
+
+    for (double value_fut: X)
+    {
+        double u = value_fut + level + reservoir.inflow[week][scenario];
+        if (reservoir.max_pumping[week] * reservoir.efficiency < u
+            && (reservoirManagement.overflow || u <= reservoir.max_generating[week]))
+        {
+            u = std::min(u, reservoir.max_generating[week]);
+            breaking_points.insert(u);
+            double G = interpolate(gridDefinition.gridElements[0].values[{scenario, week}],
+                                   rewards,
+                                   u);
+            if (G + V_fut(value_fut) > Vu)
+            {
+                Vu = G + V_fut(value_fut);
+            }
+        }
+    }
+
+    for (double u: breaking_points)
+    {
+        double state_fut = level - u + reservoir.inflow[week][scenario];
+        if (0 <= state_fut && state_fut <= reservoir.capacity)
+        {
+            double G = interpolate(gridDefinition.gridElements[0].values[{scenario, week}],
+                                   rewards,
+                                   state_fut);
+            if (G + V_fut(state_fut) > Vu)
+            {
+                Vu = G + V_fut(state_fut);
+            }
+        }
+    }
+
+    return Vu;
 }

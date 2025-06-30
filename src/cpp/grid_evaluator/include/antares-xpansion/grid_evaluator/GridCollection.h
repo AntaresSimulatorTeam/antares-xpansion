@@ -1,8 +1,21 @@
 #pragma once
 
 #include <filesystem>
+#include <map>
+#include <set>
 #include <string>
 #include <vector>
+
+struct ScenarioAndWeek
+{
+    int scenario;
+    int week;
+
+    bool operator<(const ScenarioAndWeek& other) const
+    {
+        return std::tie(scenario, week) < std::tie(other.scenario, other.week);
+    }
+};
 
 struct GridElement
 {
@@ -16,6 +29,8 @@ struct GridElement
     std::string min_cst;
     std::string max_cst;
     double min_efficiency;
+
+    std::map<ScenarioAndWeek, std::set<double>> values;
 };
 
 struct GridDefinition

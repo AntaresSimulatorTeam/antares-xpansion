@@ -80,13 +80,16 @@ TEST_F(GridSearchTest, MPSUseCaseValeursUsage)
 {
     copyData();
     auto grid_collection = GridCollection(tmpDir / "grid.csv");
+    Reservoir reservoir(tmpDir, "area");
+    ReservoirManagement reservoir_management(reservoir, true);
     auto valeurs_usage = GridEvaluator(logger,
                                        writer,
                                        tmpDir,
                                        grid_collection.gridDefinitions[0],
+                                       reservoir_management,
                                        ProblemsFormat::MPS_FILE,
                                        8);
-    auto res = valeurs_usage.launch();
+    auto res = valeurs_usage.ComputeRewards();
 
     auto output_costs = getOutputCosts();
     EXPECT_EQ(output_costs.size(), 52 * 10);

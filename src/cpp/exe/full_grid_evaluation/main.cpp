@@ -6,6 +6,7 @@
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/grid_evaluator/GridCollection.h"
 #include "antares-xpansion/grid_evaluator/GridEvaluator.h"
+#include "antares-xpansion/grid_evaluator/ReservoirManagement.h"
 #include "antares-xpansion/lpnamer/main/ProblemGenerationExeOptions.h"
 #include "antares-xpansion/lpnamer/main/ProblemGenerationForWaterValueCalculation.h"
 #include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
@@ -54,6 +55,9 @@ int main(int argc, char** argv)
         auto gridCollection = std::make_shared<GridCollection>(options_parser.StudyPath()
                                                                / "grid.csv");
 
+        Reservoir reservoir(options_parser.StudyPath(), "area");
+        ReservoirManagement reservoir_management(reservoir, true);
+
         ConfigurationManager configuration_manager(options_parser);
         auto path_to_data = options_parser.StudyPath();
         auto report_path = path_to_data / "report.txt";
@@ -76,9 +80,12 @@ int main(int argc, char** argv)
                                            writer,
                                            mps_path,
                                            grid,
+                                           reservoir_management,
                                            ProblemsFormat::MPS_FILE,
                                            1);
-            variationDeNiveauxDeStockData[grid.gridID] = evaluator.launch();
+            variationDeNiveauxDeStockData[grid.gridID] = evaluator.ComputeRewards();
+
+            evaluator.ComputeBellmanValues();
         }
 
         writer->write_VariationDeNiveauxDeStock(variationDeNiveauxDeStockData);

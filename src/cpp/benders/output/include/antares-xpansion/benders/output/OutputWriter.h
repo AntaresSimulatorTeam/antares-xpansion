@@ -103,13 +103,13 @@ struct GridPointData
 
 typedef std::vector<GridPointData> GridPointsData;
 
-struct VariationDeNiveauxDeStockKey
+struct PointWeekScenarioKey
 {
+    Point rhsValues;
     int scenario;
     int week;
-    Point rhsValues;
 
-    bool operator<(const VariationDeNiveauxDeStockKey& other) const
+    bool operator<(const PointWeekScenarioKey& other) const
     {
         if (scenario != other.scenario)
         {
@@ -122,7 +122,7 @@ struct VariationDeNiveauxDeStockKey
         return rhsValues < other.rhsValues;
     }
 
-    bool operator==(const VariationDeNiveauxDeStockKey& other) const
+    bool operator==(const PointWeekScenarioKey& other) const
     {
         return scenario == other.scenario && week == other.week && rhsValues == other.rhsValues;
     }
@@ -161,7 +161,7 @@ public:
     }
 };
 
-typedef std::map<int /*grid id*/, std::map<VariationDeNiveauxDeStockKey, double>>
+typedef std::map<int /*grid id*/, std::map<PointWeekScenarioKey, double>>
   VariationDeNiveauxDeStockData;
 
 struct ProblemData
