@@ -3,6 +3,8 @@ from pathlib import Path
 
 from antares_xpansion.optimisation_keys import OptimisationKeys
 
+from typing import List
+
 import json
 import subprocess
 import sys

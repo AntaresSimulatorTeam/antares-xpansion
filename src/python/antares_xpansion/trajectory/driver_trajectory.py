@@ -75,9 +75,9 @@ class TrajectoryInvestmentDriver:
 
         # We leave the default values for where to write intermediary files
         self.output_folder = self.prepare_folder(self.config.OUTPUT_FOLDER)
-        # TODO : hardcoded solver for now
-        solver = "XPRESS"
-        problems_format = self.problems_format_from_solver(solver)
+        # The problems format and solver are expected as full upper case by the C++ executables
+        solver = self.config.solver.upper()
+        problems_format = self.config.problems_format.upper()
 
         mm_data = MergeMasterData(
             self.config.get_executable_path(self.config.MERGE_MASTER_MPS),
@@ -129,7 +129,7 @@ class TrajectoryInvestmentDriver:
             n_mpi=self.config.n_mpi,
             oversubscribe=self.config.oversubsribe,
             allow_run_as_root=self.config.allow_run_as_root,
-            master_formulation=self.input_translation_driver.get_master_formulation()
+            master_formulation=self.input_translation_driver.get_master_formulation(),
         )
 
         self.resolution_driver = TrajectoryResolutionDriver(res_data)
@@ -139,7 +139,7 @@ class TrajectoryInvestmentDriver:
 
     def prepare_folder(self, name: str):
         """
-        Creates the folder at <./name> and returns the full path
+        Creates the folder at './<name>' and returns the full path
         This assumes we are working at the input root.
         """
         assert Path(os.getcwd()).resolve() == self.config.input_root.resolve()
@@ -150,7 +150,7 @@ class TrajectoryInvestmentDriver:
         return folder
 
     @staticmethod
-    def problems_format_from_solver(solver):
+    def default_problems_format_from_solver(solver):
         if solver == "XPRESS":
             return "SAVED"
         else:
