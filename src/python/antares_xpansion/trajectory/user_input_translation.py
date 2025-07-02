@@ -204,6 +204,8 @@ class TrajectoryConstraint(BaseModel):
             return self.to_individual_max_retirement(candidate_appear_in_nodes)
         elif self.cons_type == ConstraintTypeEnum.MAX_CUMULATIVE_INVESTMENT:
             return self.to_cumulative_max_investment(candidate_appear_in_nodes)
+        elif self.cons_type == ConstraintTypeEnum.MAX_CUMULATIVE_RETIREMENT:
+            return self.to_cumulative_max_retirement(candidate_appear_in_nodes)
         else:
             raise UserInputTranslator.InvalidTrajectoryConstraint(
                 f"Non implemented constraint type was encountered for constraint {self.name} with type {self.cons_type.value}"
