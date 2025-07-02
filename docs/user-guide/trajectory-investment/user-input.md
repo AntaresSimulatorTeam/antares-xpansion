@@ -186,3 +186,22 @@ $$
 $$
 
 **Note :** as we always have $\forall n \in T, \quad \forall c \in C, \quad dx^{+/-}_{n,c} \geq 0$, regardless of the trajectory constraints added by the user, this last example ends up forbidding any kind of retirement, thus its label.
+
+### ```type: max_cumulative_retirement_per_node```  
+Example :
+```yaml
+  - name : decom_cum_2GW
+    nodes: ["2030", "2040"]
+    candidates: [peak, semibase]
+    type: max_cumulative_retirement_per_node
+    value: 2000
+```
+This entry would result in 2 (2 = |```nodes```|) constraints in the merged problem :
+
+  - $dx_{2030, semibase}^- + dx_{2030, peak}^- \leq 2000$,  
+  - $dx_{2040, semibase}^- + dx_{2040, peak}^- \leq 2000$
+
+More generally, this type of input constraint entry translates to :
+$$
+\forall n \in \text{nodes}, \quad \sum_{c \in \text{candidates}} dx_{n, c}^- \leq \text{value}
+$$
