@@ -54,6 +54,7 @@ class GlobalData(BaseModel):
     # forbid_retirement: bool = Field(alias=InKeys.forbid_retirement_key())
     def print(self):
         print("Global trajectory data : ")
+        print(f" - Scaling factor  : {self.scaling}")
         print(f" - Discount rate : {self.discount_rate}")
         print(f" - First investment year : {self.first_investment_date}")
         print(f" - End of horizon : {self.end_of_horizon}")

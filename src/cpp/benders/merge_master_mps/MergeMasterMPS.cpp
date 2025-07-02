@@ -546,11 +546,12 @@ void MergeMasterTrajectoryMPS::add_delta_variables_constraints()
             {
                 if (!candidate_in_node)
                 {
-                    logger_->display_message("Not adding dx variables constraints for variable : '"
-                                               + candidate + "' at node '" + node_name
-                                               + "' - candidate does not yet exist.",
-                                             LogUtils::LOGLEVEL::INFO,
-                                             MERGE_MPS_LOGGER_CONTEXT);
+                    logger_->display_message(
+                      "Not adding dx variables constraints for variable : '" + candidate
+                        + "' at node '" + node_name
+                        + "' - candidate does not yet exist or has already disappeared.",
+                      LogUtils::LOGLEVEL::INFO,
+                      MERGE_MPS_LOGGER_CONTEXT);
                     continue;
                 }
 
