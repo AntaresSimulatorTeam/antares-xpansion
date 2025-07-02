@@ -18,6 +18,7 @@ class ConstraintTypeEnum(Enum):
     MAX_INDIVIDUAL_INVESTMENT = "max_investment_per_node_per_candidate"
     MAX_CUMULATIVE_INVESTMENT = "max_cumulative_investment_per_node"
     MAX_INDIVIDUAL_RETIREMENT = "max_retirement_per_node_per_candidate"
+    MAX_CUMULATIVE_RETIREMENT = "max_cumulative_retirement_per_node"
 
 
 class InvestmentVariableTypeEnum(Enum):
@@ -162,6 +163,29 @@ class TrajectoryConstraint(BaseModel):
                     continue
                 ref = self.build_variable_reference(
                     node, candidate, InvestmentVariableTypeEnum.DX_PLUS
+                )
+                constraint[OutKeys.constraint_coeffs_key()][ref] = 1.0
+            output.append(constraint)
+        return output
+
+    def to_cumulative_max_retirement(
+        self, candidate_appear_in_nodes: Dict[str, Set[str]]
+    ) -> List[Dict[str, Any]]:
+        assert self.cons_type == ConstraintTypeEnum.MAX_CUMULATIVE_RETIREMENT
+        output: List[Dict[str, Any]] = []
+        for node in self.nodes:
+            constraint = {}
+            constraint[OutKeys.constraint_coeffs_key()] = {}
+            constraint[OutKeys.constraint_rhs_key()] = self.rhs
+            constraint[OutKeys.constraint_operator_key()] = (
+                ConstraintOperatorEnum.LEQ.value
+            )
+            for candidate in self.candidates:
+                # Skip if the candidate does not exist in this node
+                if node not in candidate_appear_in_nodes[candidate]:
+                    continue
+                ref = self.build_variable_reference(
+                    node, candidate, InvestmentVariableTypeEnum.DX_MINUS
                 )
                 constraint[OutKeys.constraint_coeffs_key()][ref] = 1.0
             output.append(constraint)
