@@ -30,6 +30,15 @@ Usage of the launcher is :
 
 - ```--np``` : See the eponymous [annual xpansion argument](../get-started/launching-optimization.md).
 
+- ```--problems-format``` : Tells the programm under what format the optimization problem files should be written an read. Can be either :
+    - ```mps``` : Problems are written and read under the ```.mps``` file format.
+    - ```saved``` : Problems are writtent and read using the proprietery Xpress file format. Only available with ```--solver xpress```
+
+- ```--solver``` : Tells the programm which solver to use when manipulating optimization problems in steps ```merge_master``` and ```resolution```
+
+Note that this does not apply to the step ```problem_generation```, where the solver and file format used in instead determined by the ```solver``` entry in ```<study>/user/expansion/setting.ini```.
+
+
 ## A note on intermediary files
 
 As of now, most intermediary files will be written using a hardcoded default name in a folder name ```intermediary_files``` situated at : ```<INPUT_ROOT>/intermediary_files```, and the drivers of the different step will only look at those hardcoded locations when looking for those files.  
