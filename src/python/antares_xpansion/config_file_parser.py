@@ -3,9 +3,7 @@ from antares_xpansion.xpansionConfig import ConfigParameters
 
 
 class ConfigFileParser:
-
     def __init__(self, config_file) -> None:
-
         self.config_file = config_file
         self.default_install_dir = ""
         self.ANTARES_DEFAULT = "antares-solver"
@@ -20,6 +18,10 @@ class ConfigFileParser:
         self.SENSITIVITY_DEFAULT = "sensitivity"
         self.MPIEXEC_DEFAULT = "mpiexec"
         self.AVAILABLE_SOLVERS_DEFAULT = []
+        # Trajectory investment C++ executables
+        self.MULTIPLE_PROBLEM_GEN_DEFAULT = "multiple_problem_generation"
+        self.MERGE_MASTER_MPS_DEFAULT = "merge_master_mps"
+        self.MERGE_WEIGHTS_TRAJECTORY_DEFAULT = "merge_weights_trajectory"
 
     def get_config_parameters(self) -> ConfigParameters:
         with open(self.config_file) as file:
@@ -46,6 +48,15 @@ class ConfigFileParser:
                 MPIEXEC=content.get("mpiexec", self.MPIEXEC_DEFAULT),
                 AVAILABLE_SOLVERS=content.get(
                     "AVAILABLE_SOLVER", self.AVAILABLE_SOLVERS_DEFAULT
+                ),
+                MULTIPLE_PROBLEM_GEN=content.get(
+                    "MULTIPLE_PROBLEM_GENERATION", self.MULTIPLE_PROBLEM_GEN_DEFAULT
+                ),
+                MERGE_MASTER_MPS=content.get(
+                    "MERGE_MASTER_MPS", self.MERGE_MASTER_MPS_DEFAULT
+                ),
+                MERGE_WEIGHTS_TRAJECTORY=content.get(
+                    "MERGE_WEIGHTS_TRAJECTORY", self.MERGE_WEIGHTS_TRAJECTORY_DEFAULT
                 ),
             )
         return self.config

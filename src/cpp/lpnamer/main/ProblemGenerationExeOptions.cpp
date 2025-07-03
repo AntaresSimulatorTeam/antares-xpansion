@@ -1,9 +1,10 @@
 #include "antares-xpansion/lpnamer/main/ProblemGenerationExeOptions.h"
+
 namespace po = boost::program_options;
 using namespace std::string_literals;
 
 ProblemGenerationExeOptions::ProblemGenerationExeOptions():
-    OptionsParser("Problem Generation exe")
+    OptionsParser("Problem Generation exe"s)
 {
     AddOptions()("help,h",
                  "produce help message")("output,o",
@@ -43,7 +44,7 @@ auto ProblemGenerationExeOptions::exclusiveMandatoryParameters() const
 
 namespace
 {
-auto notEmpty = [](auto k) { return !k.empty(); };
+auto notEmpty = [](const auto& k) { return !k.empty(); };
 } // namespace
 
 void ProblemGenerationExeOptions::checkMandatoryOptions(const std::string& log_location) const
@@ -79,4 +80,43 @@ std::filesystem::path ProblemGenerationExeOptions::deduceXpansionDirIfEmpty(
 std::filesystem::path ProblemGenerationExeOptions::StudyPath() const
 {
     return study_path_;
+}
+
+std::filesystem::path ProblemGenerationExeOptions::getRelevantPath() const
+{
+    if (!study_path_.empty())
+    {
+        return study_path_;
+    }
+    if (!archive_path_.empty())
+    {
+        return archive_path_;
+    }
+    if (!xpansion_output_dir_.empty())
+    {
+        return xpansion_output_dir_;
+    }
+    throw LogUtils::XpansionError<std::runtime_error>("SimulationInputMode is unknown",
+                                                      LOGLOCATION);
+}
+
+void ProblemGenerationExeOptions::setRelevantPath(const std::filesystem::path& path)
+{
+    if (!study_path_.empty())
+    {
+        study_path_ = path;
+    }
+    else if (!archive_path_.empty())
+    {
+        archive_path_ = path;
+    }
+    else if (!xpansion_output_dir_.empty())
+    {
+        xpansion_output_dir_ = path;
+    }
+    else
+    {
+        throw LogUtils::XpansionError<std::runtime_error>("SimulationInputMode is unknown",
+                                                          LOGLOCATION);
+    }
 }

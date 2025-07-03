@@ -1,5 +1,5 @@
 """
-    Class to work on config
+Class to work on config
 """
 
 import json
@@ -17,7 +17,7 @@ from antares_xpansion.launcher_options_default_value import LauncherOptionsDefau
 from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
 from antares_xpansion.logger import step_logger
 from antares_xpansion.optimisation_keys import OptimisationKeys
-from antares_xpansion.xpansionConfig import XpansionConfig
+from antares_xpansion.xpansionConfig import XpansionConfig, XpansionConfigConstants
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 
 
@@ -35,80 +35,38 @@ def read_antares_version(study_path):
     return 720
 
 
-class ConfigLoader:
+class XpansionSettingsReader:
     """
-    Class to control the execution of the optimization session
+    Minimal class to read data in a study's setting
     """
 
-    def __init__(self, config: XpansionConfig):
-        """
-        Initialise driver with a given antaresXpansion configuration,
-        the system platform and parses the arguments
-        :param config: configuration to use for the optimization
-        :type config: XpansionConfig object
-        """
-        self.platform = sys.platform
-        self.logger = step_logger(__name__, __class__.__name__)
+    def __init__(self, study_path: Path, xpansion_defaults: XpansionConfigConstants):
+        self.path = study_path
+        self._config_defaults = xpansion_defaults
 
-        self._config = config
-        self._last_study = None
-        if self._config.step == "resume":
-            self._config.simulation_name = (
-                LauncherOptionsDefaultValues.DEFAULT_SIMULATION_NAME()
-            )
-            self._xpansion_simulation_name = self._config.simulation_name
-            self._restore_launcher_options()
-        else:
-            self._set_simulation_name()
-
-        self.candidates_list = []
         self._verify_settings_ini_file_exists()
-
-        self.active_years = GeneralDataIniReader(
-            Path(self.general_data())
-        ).get_active_years()
-
         self.options = self._get_options_from_settings_inifile()
 
         self.check_candidates_file_format()
         self.check_settings_file_format()
-        antares_version = read_antares_version(self._config.data_dir)
-        self.check_NTC_column_constraints(antares_version)
 
-    def _set_simulation_name(self):
-        if not self._config.simulation_name:
-            raise ConfigLoader.MissingSimulationName(
-                "Missing argument simulationName")
-        elif self._config.simulation_name == "last":
-            self._xpansion_simulation_name = self._config.simulation_name
+    def _get_path_from_file_in_xpansion_dir(self, filename):
+        return os.path.normpath(
+            os.path.join(
+                self.data_dir(),
+                self._config_defaults.USER,
+                self._config_defaults.EXPANSION,
+                filename,
+            )
+        )
 
-        else:
-            tmp_path = Path(self.antares_output()) / \
-                       self._config.simulation_name
-            if self.is_antares_study_output(tmp_path):
-                self._last_study = tmp_path
-                self._set_xpansion_simulation_name()
-            else:
-                raise ConfigLoader.InvalidSimulationName(
-                    f"{tmp_path} is not a valid Antares output")
-
-    def _restore_launcher_options(self):
-        with open(self.launcher_options_file_path(), "r") as launcher_options:
-            options = json.load(launcher_options)
-
-        self._config.method = options[LauncherOptionsKeys.method_key()]
-        self._config.n_mpi = options[LauncherOptionsKeys.n_mpi_key()]
-        self._config.antares_n_cpu = options[LauncherOptionsKeys.antares_n_cpu_key(
-        )]
-        self._config.keep_mps = options[LauncherOptionsKeys.keep_mps_key()]
-        self._config.oversubscribe = options[LauncherOptionsKeys.oversubscribe_key(
-        )]
-        self._config.allow_run_as_root = options[
-            LauncherOptionsKeys.allow_run_as_root_key()
-        ]
-        self._config.memory = options[
-            LauncherOptionsKeys.memory_key()
-        ]
+    def _get_settings_ini_filepath(self):
+        """
+        returns path to setting ini file
+        """
+        return self._get_path_from_file_in_xpansion_dir(
+            self._config_defaults.SETTINGS_INI
+        )
 
     def _verify_settings_ini_file_exists(self):
         if not os.path.isfile(self._get_settings_ini_filepath()):
@@ -120,9 +78,7 @@ class ConfigLoader:
         with open(self._get_settings_ini_filepath(), "r") as file_l:
             options = dict(
                 {
-                    line.strip()
-                    .split("=")[0]
-                    .strip(): line.strip()
+                    line.strip().split("=")[0].strip(): line.strip()
                     .split("=")[1]
                     .strip()
                     for line in file_l.readlines()
@@ -130,6 +86,38 @@ class ConfigLoader:
                 }
             )
         return options
+
+    def data_dir(self):
+        """
+        returns path to the data directory
+        """
+        return self.path
+
+    def antares_output(self):
+        """
+        returns path to antares output data directory
+        """
+        return os.path.normpath(os.path.join(self.data_dir(), self._config.OUTPUT))
+
+    def general_data(self):
+        """
+        returns path to general data ini file
+        """
+        return os.path.normpath(
+            os.path.join(
+                self.data_dir(),
+                self._config_defaults.SETTINGS,
+                self._config_defaults.GENERAL_DATA_INI,
+            )
+        )
+
+    def candidates_ini_filepath(self):
+        """
+        returns path to candidates ini file
+        """
+        return self._get_path_from_file_in_xpansion_dir(
+            self._config_defaults.CANDIDATES_INI
+        )
 
     def check_candidates_file_format(self):
         if not os.path.isfile(self.candidates_ini_filepath()):
@@ -143,98 +131,11 @@ class ConfigLoader:
 
     def check_settings_file_format(self):
         check_options(self.options)
-        self._verify_solver()
         self._verify_additional_constraints_file()
-
-    def antares_output(self):
-        """
-        returns path to antares output data directory
-        """
-        return os.path.normpath(os.path.join(self.data_dir(), self._config.OUTPUT))
-
-    def exe_path(self, exe):
-        """
-        prefixes the input exe with the install directory containing the binaries
-
-        :param exe: executable name
-
-        :return: path to specified executable
-        """
-        return os.path.normpath(os.path.join(self._config.install_dir, exe))
-
-    def data_dir(self):
-        """
-        returns path to the data directory
-        """
-        return self._config.data_dir
 
     def weight_file_name(self):
         return self.options.get(
-            "yearly-weights", self._config.settings_default["yearly-weights"]
-        )
-
-    def general_data(self):
-        """
-        returns path to general data ini file
-        """
-        return os.path.normpath(
-            os.path.join(
-                self.data_dir(), self._config.SETTINGS, self._config.GENERAL_DATA_INI
-            )
-        )
-
-    def _get_settings_ini_filepath(self):
-        """
-        returns path to setting ini file
-        """
-        return self._get_path_from_file_in_xpansion_dir(self._config.SETTINGS_INI)
-
-    def candidates_ini_filepath(self):
-        """
-        returns path to candidates ini file
-        """
-        return self._get_path_from_file_in_xpansion_dir(self._config.CANDIDATES_INI)
-
-    def _get_path_from_file_in_xpansion_dir(self, filename):
-        return os.path.normpath(
-            os.path.join(
-                self.data_dir(), self._config.USER, self._config.EXPANSION, filename
-            )
-        )
-
-    def _get_weight_file_path_in_weights_dir(self, filename):
-        return self._get_path_from_file_in_xpansion_dir(os.path.normpath(os.path.join(self._config.WEIGHTS, filename)))
-
-    def _get_constraints_file_path_in_constraints_dir(self, filename):
-        return self._get_path_from_file_in_xpansion_dir(
-            os.path.normpath(os.path.join(self._config.CONSTRAINTS, filename)))
-
-    def capacity_file(self, filename):
-        """
-        returns path to input capacity file
-        """
-        return os.path.normpath(
-            os.path.join(
-                self.data_dir(),
-                self._config.USER,
-                self._config.EXPANSION,
-                self._config.CAPADIR,
-                filename,
-            )
-        )
-
-    def json_sensitivity_in_path(self):
-        """
-        returns path to sensitivity input file
-        """
-        return os.path.normpath(
-            os.path.join(
-                self.data_dir(),
-                self._config.USER,
-                self._config.EXPANSION,
-                self._config.SENSITIVITY_DIR,
-                self._config.JSON_SENSITIVITY_IN,
-            )
+            "yearly-weights", self._config_defaults.settings_default["yearly-weights"]
         )
 
     def weights_file_path(self):
@@ -250,6 +151,69 @@ class ConfigLoader:
         else:
             return ""
 
+    def _get_weight_file_path_in_weights_dir(self, filename):
+        return self._get_path_from_file_in_xpansion_dir(
+            os.path.normpath(os.path.join(self._config_defaults.WEIGHTS, filename))
+        )
+
+    def additional_constraints(self):
+        """
+        returns path to additional constraints file
+        """
+        additional_constraints_filename = self.options.get(
+            "additional-constraints",
+            self._config_defaults.settings_default["additional-constraints"],
+        )
+
+        if additional_constraints_filename == "":
+            return ""
+        return self._get_constraints_file_path_in_constraints_dir(
+            additional_constraints_filename
+        )
+
+    def _get_constraints_file_path_in_constraints_dir(self, filename):
+        return self._get_path_from_file_in_xpansion_dir(
+            os.path.normpath(os.path.join(self._config_defaults.CONSTRAINTS, filename))
+        )
+
+    def _verify_additional_constraints_file(self):
+        if self.options.get("additional-constraints", "") != "":
+            additional_constraints_path = self.additional_constraints()
+            if not os.path.isfile(additional_constraints_path):
+                self.logger.error(
+                    "Illegal value: %s is not an existent additional-constraints file"
+                    % additional_constraints_path
+                )
+                sys.exit(1)
+
+    def capacity_file(self, filename):
+        """
+        returns path to input capacity file
+        """
+        return os.path.normpath(
+            os.path.join(
+                self.data_dir(),
+                self._config_defaults.USER,
+                self._config_defaults.EXPANSION,
+                self._config_defaults.CAPADIR,
+                filename,
+            )
+        )
+
+    def json_sensitivity_in_path(self):
+        """
+        returns path to sensitivity input file
+        """
+        return os.path.normpath(
+            os.path.join(
+                self.data_dir(),
+                self._config_defaults.USER,
+                self._config_defaults.EXPANSION,
+                self._config_defaults.SENSITIVITY_DIR,
+                self._config_defaults.JSON_SENSITIVITY_IN,
+            )
+        )
+
     def get_absolute_optimality_gap(self):
         """
         returns the absolute optimality gap read from the settings file
@@ -260,7 +224,7 @@ class ConfigLoader:
                 f" optimality_gap not defined, default value = {self._config.settings_default['optimality_gap']} used"
             )
         abs_optimality_gap_str = self.options.get(
-            "optimality_gap", self._config.settings_default["optimality_gap"]
+            "optimality_gap", self._config_defaults.settings_default["optimality_gap"]
         )
 
         return float(abs_optimality_gap_str) if float(abs_optimality_gap_str) > 0 else 0
@@ -271,7 +235,7 @@ class ConfigLoader:
         :return: gap value or 1e-12 if the value is set to a lower value than 1e-12
         """
         rel_optimality_gap_str = self.options.get(
-            "relative_gap", self._config.settings_default["relative_gap"]
+            "relative_gap", self._config_defaults.settings_default["relative_gap"]
         )
 
         return (
@@ -287,7 +251,7 @@ class ConfigLoader:
         """
         relaxed_gap_str = self.options.get(
             "relaxed_optimality_gap",
-            self._config.settings_default["relaxed_optimality_gap"],
+            self._config_defaults.settings_default["relaxed_optimality_gap"],
         )
 
         return float(relaxed_gap_str) if float(relaxed_gap_str) > 1e-12 else 1e-12
@@ -299,7 +263,7 @@ class ConfigLoader:
         :return: max iterations value or -1 if the parameter is set to +Inf or +infini
         """
         max_iterations_str = self.options.get(
-            "max_iteration", self._config.settings_default["max_iteration"]
+            "max_iteration", self._config_defaults.settings_default["max_iteration"]
         )
 
         return (
@@ -312,7 +276,9 @@ class ConfigLoader:
         """
         return master formulation read from the settings file
         """
-        return self.options.get("master", self._config.settings_default["master"])
+        return self.options.get(
+            "master", self._config_defaults.settings_default["master"]
+        )
 
     def get_separation(self):
         """
@@ -320,7 +286,7 @@ class ConfigLoader:
         """
         separation_parameter_str = self.options.get(
             "separation_parameter",
-            self._config.settings_default["separation_parameter"],
+            self._config_defaults.settings_default["separation_parameter"],
         )
 
         return float(separation_parameter_str)
@@ -331,23 +297,110 @@ class ConfigLoader:
         """
         batch_size_str = self.options.get(
             "batch_size",
-            self._config.settings_default["batch_size"],
+            self._config_defaults.settings_default["batch_size"],
         )
 
         return int(batch_size_str)
 
-    def additional_constraints(self):
+    def timelimit(self):
         """
-        returns path to additional constraints file
+        returns the timelimit read from the settings file
+        :return: timelimit value or 0 if the gap is negative
         """
-        additional_constraints_filename = self.options.get(
-            "additional-constraints",
-            self._config.settings_default["additional-constraints"],
+        timelimit_str = self.options.get(
+            "timelimit", self._config_defaults.settings_default["timelimit"]
         )
+        return 1e12 if timelimit_str in ("+Inf", "+infini") else int(timelimit_str)
 
-        if additional_constraints_filename == "":
-            return ""
-        return self._get_constraints_file_path_in_constraints_dir(additional_constraints_filename)
+    def log_level(self):
+        """
+        returns the log_level read from the settings file
+        :return: log_level value
+        """
+        log_level_str = self.options.get(
+            "log_level", self._config_defaults.settings_default["log_level"]
+        )
+        return int(log_level_str)
+
+
+class ConfigLoader(XpansionSettingsReader):
+    """
+    Class to control the execution of the optimization session
+    """
+
+    def __init__(self, config: XpansionConfig):
+        """
+        Initialise driver with a given antaresXpansion configuration,
+        the system platform and parses the arguments
+        :param config: configuration to use for the optimization
+        :type config: XpansionConfig object
+        """
+        super().__init__(config.data_dir, config)
+        self.platform = sys.platform
+        self.logger = step_logger(__name__, __class__.__name__)
+
+        self._config = config
+        self._last_study = None
+        if self._config.step == "resume":
+            self._config.simulation_name = (
+                LauncherOptionsDefaultValues.DEFAULT_SIMULATION_NAME()
+            )
+            self._xpansion_simulation_name = self._config.simulation_name
+            self._restore_launcher_options()
+        else:
+            self._set_simulation_name()
+
+        self.candidates_list = []
+
+        self.active_years = GeneralDataIniReader(
+            Path(self.general_data())
+        ).get_active_years()
+
+        antares_version = read_antares_version(self._config.data_dir)
+        self.check_NTC_column_constraints(antares_version)
+
+        # Other settings already checked by parent class
+        self._verify_solver()
+
+    def _set_simulation_name(self):
+        if not self._config.simulation_name:
+            raise ConfigLoader.MissingSimulationName("Missing argument simulationName")
+        elif self._config.simulation_name == "last":
+            self._xpansion_simulation_name = self._config.simulation_name
+
+        else:
+            tmp_path = Path(self.antares_output()) / self._config.simulation_name
+            if self.is_antares_study_output(tmp_path):
+                self._last_study = tmp_path
+                self._set_xpansion_simulation_name()
+            else:
+                raise ConfigLoader.InvalidSimulationName(
+                    f"{tmp_path} is not a valid Antares output"
+                )
+
+    def _restore_launcher_options(self):
+        with open(self.launcher_options_file_path(), "r") as launcher_options:
+            options = json.load(launcher_options)
+
+        self._config.method = options[LauncherOptionsKeys.method_key()]
+        self._config.n_mpi = options[LauncherOptionsKeys.n_mpi_key()]
+        self._config.antares_n_cpu = options[LauncherOptionsKeys.antares_n_cpu_key()]
+        self._config.keep_mps = options[LauncherOptionsKeys.keep_mps_key()]
+        self._config.oversubscribe = options[LauncherOptionsKeys.oversubscribe_key()]
+        self._config.allow_run_as_root = options[
+            LauncherOptionsKeys.allow_run_as_root_key()
+        ]
+        self._config.memory = options[LauncherOptionsKeys.memory_key()]
+
+    def exe_path(self, exe):
+        """
+        prefixes the input exe with the install directory containing the binaries
+
+        :param exe: executable name
+
+        :return: path to specified executable
+        """
+        return os.path.normpath(os.path.join(self._config.install_dir, exe))
 
     def memory(self):
         return self._config.memory
@@ -366,18 +419,7 @@ class ConfigLoader:
             self._set_last_simulation_name()
         return self._xpansion_simulation_name
 
-    def _verify_additional_constraints_file(self):
-        if self.options.get("additional-constraints", "") != "":
-            additional_constraints_path = self.additional_constraints()
-            if not os.path.isfile(additional_constraints_path):
-                self.logger.error(
-                    "Illegal value: %s is not an existent additional-constraints file"
-                    % additional_constraints_path
-                )
-                sys.exit(1)
-
     def _verify_solver(self):
-
         if "solver" not in self.options:
             default_solver = self._config.settings_default["solver"]
             self.logger.info(
@@ -423,16 +465,14 @@ class ConfigLoader:
         options[LauncherOptionsKeys.antares_n_cpu_key()] = self.antares_n_cpu()
         options[LauncherOptionsKeys.keep_mps_key()] = self.keep_mps()
         options[LauncherOptionsKeys.oversubscribe_key()] = self.oversubscribe()
-        options[LauncherOptionsKeys.allow_run_as_root_key()
-        ] = self.allow_run_as_root()
+        options[LauncherOptionsKeys.allow_run_as_root_key()] = self.allow_run_as_root()
 
         with open(self.launcher_options_file_path(), "w") as launcher_options:
             json.dump(options, launcher_options, indent=4)
 
     def launcher_options_file_path(self):
         return os.path.normpath(
-            os.path.join(self._simulation_lp_path(),
-                         self._config.LAUNCHER_OPTIONS_JSON)
+            os.path.join(self._simulation_lp_path(), self._config.LAUNCHER_OPTIONS_JSON)
         )
 
     def create_expansion_dir(self):
@@ -465,54 +505,52 @@ class ConfigLoader:
         options_values[OptimisationKeys.slave_weight_value_key()] = len(
             self.active_years
         )
-        options_values[OptimisationKeys.json_file_key()
-        ] = self.json_file_path()
-        options_values[
-            OptimisationKeys.last_iteration_json_file_key()
-        ] = self.last_iteration_json_file_path()
-        options_values[
-            OptimisationKeys.absolute_gap_key()
-        ] = self.get_absolute_optimality_gap()
-        options_values[
-            OptimisationKeys.relative_gap_key()
-        ] = self.get_relative_optimality_gap()
-        options_values[
-            OptimisationKeys.relaxed_gap_key()
-        ] = self.get_relaxed_optimality_gap()
-        options_values[
-            OptimisationKeys.master_formulation_key()
-        ] = self.get_master_formulation()
-        options_values[OptimisationKeys.separation_key()
-        ] = self.get_separation()
-        options_values[
-            OptimisationKeys.max_iterations_key()
-        ] = self.get_max_iterations()
-        options_values[
-            OptimisationKeys.solver_name_key()
-        ] = XpansionStudyReader.convert_study_solver_to_option_solver(
-            self.options.get("solver", "Cbc")
+        options_values[OptimisationKeys.json_file_key()] = self.json_file_path()
+        options_values[OptimisationKeys.last_iteration_json_file_key()] = (
+            self.last_iteration_json_file_path()
+        )
+        options_values[OptimisationKeys.absolute_gap_key()] = (
+            self.get_absolute_optimality_gap()
+        )
+        options_values[OptimisationKeys.relative_gap_key()] = (
+            self.get_relative_optimality_gap()
+        )
+        options_values[OptimisationKeys.relaxed_gap_key()] = (
+            self.get_relaxed_optimality_gap()
+        )
+        options_values[OptimisationKeys.master_formulation_key()] = (
+            self.get_master_formulation()
+        )
+        options_values[OptimisationKeys.separation_key()] = self.get_separation()
+        options_values[OptimisationKeys.max_iterations_key()] = (
+            self.get_max_iterations()
+        )
+        options_values[OptimisationKeys.solver_name_key()] = (
+            XpansionStudyReader.convert_study_solver_to_option_solver(
+                self.options.get("solver", "Cbc")
+            )
         )
 
         if self.weight_file_name():
-            options_values[
-                OptimisationKeys.slave_weight_key()
-            ] = self.weight_file_name()
+            options_values[OptimisationKeys.slave_weight_key()] = (
+                self.weight_file_name()
+            )
         options_values[OptimisationKeys.time_limit_key()] = self.timelimit()
         options_values[OptimisationKeys.log_level_key()] = self.log_level()
-        options_values[
-            OptimisationKeys.last_mps_master_name_key()
-        ] = self._config.LAST_MASTER_MPS
-        options_values[OptimisationKeys.last_master_basis_key()] = self._config.LAST_MASTER_BASIS
+        options_values[OptimisationKeys.last_mps_master_name_key()] = (
+            self._config.LAST_MASTER_MPS
+        )
+        options_values[OptimisationKeys.last_master_basis_key()] = (
+            self._config.LAST_MASTER_BASIS
+        )
         options_values[OptimisationKeys.batch_size_key()] = self.get_batch_size()
         options_values[OptimisationKeys.do_outer_loop_key()] = (
-                self._config.method == "adequacy_criterion"
+            self._config.method == "adequacy_criterion"
         )
         options_values[OptimisationKeys.outer_loop_option_file_key()] = (
             self._config.OUTER_LOOP_FILE
         )
-        options_values[OptimisationKeys.area_file_key()] = (
-            self._config.AREA_FILE
-        )
+        options_values[OptimisationKeys.area_file_key()] = self._config.AREA_FILE
         if os.path.exists(self.outer_loop_options_path()):
             shutil.copy(self.outer_loop_options_path(), self._simulation_lp_path())
         options_values[OptimisationKeys.cache_problems_keys()] = self.cache_problems()
@@ -547,8 +585,10 @@ class ConfigLoader:
         if self.step() in ["resume", "sensitivity"]:
             self._xpansion_simulation_name = self._last_study
             if self.is_zip(self._last_study):
-                self._xpansion_simulation_name = self._last_study.parent / self._last_study.stem
-                with zipfile.ZipFile(self._last_study, 'r') as output_zip:
+                self._xpansion_simulation_name = (
+                    self._last_study.parent / self._last_study.stem
+                )
+                with zipfile.ZipFile(self._last_study, "r") as output_zip:
                     output_zip.extractall(self._xpansion_simulation_name)
         elif self.step() in ["presolve", "benders"]:
             if self.is_zip(self._last_study):
@@ -558,19 +598,21 @@ class ConfigLoader:
 
         elif self.step() == "problem_generation":
             if not self.is_zip(self._last_study):
-                if (not self._last_study.name.endswith(xpansion_dir_suffix)):
+                if not self._last_study.name.endswith(xpansion_dir_suffix):
                     raise ConfigLoader.NotAnXpansionOutputDir(
-                        f"Error! {self._last_study} is not an Xpansion output directory")
+                        f"Error! {self._last_study} is not an Xpansion output directory"
+                    )
                 else:
                     self._xpansion_simulation_name = self._last_study
                     self._last_study = self._last_study.parent / (
-                            self._last_study.stem[: -len(xpansion_dir_suffix)] + ".zip"
+                        self._last_study.stem[: -len(xpansion_dir_suffix)] + ".zip"
                     )
         elif self.step() == "full" and self.memory():
             self._xpansion_simulation_name = self._last_study
         else:
-            self._xpansion_simulation_name = self._last_study.parent / \
-                                             (self._last_study.stem + "-Xpansion")
+            self._xpansion_simulation_name = self._last_study.parent / (
+                self._last_study.stem + "-Xpansion"
+            )
 
     def is_zip(self, study):
         _, ext = os.path.splitext(study)
@@ -579,13 +621,19 @@ class ConfigLoader:
     def update_last_study_with_sensitivity_results(self):
         if self.is_zip(self._last_study):
             os.remove(self._last_study)
-            shutil.make_archive(self._last_study.parent / self._last_study.stem, 'zip', self._xpansion_simulation_name)
-            if (os.path.exists(self._xpansion_simulation_name)):
+            shutil.make_archive(
+                self._last_study.parent / self._last_study.stem,
+                "zip",
+                self._xpansion_simulation_name,
+            )
+            if os.path.exists(self._xpansion_simulation_name):
                 shutil.rmtree(self._xpansion_simulation_name)
 
     def is_antares_study_output(self, study: Path):
         _, ext = os.path.splitext(study)
-        if self.memory() and '-Xpansion' not in study.name:  # memory mode we work with files essentially
+        if (
+            self.memory() and "-Xpansion" not in study.name
+        ):  # memory mode we work with files essentially
             return os.path.isdir(study)
         else:
             return ext == ".zip" or os.path.isdir(study)
@@ -598,8 +646,7 @@ class ConfigLoader:
         # Sort list of files based on last modification time in ascending order
         sort_studies = sorted(
             list_of_studies,
-            key=lambda x: os.path.getmtime(
-                os.path.join(root_dir, x)),
+            key=lambda x: os.path.getmtime(os.path.join(root_dir, x)),
         )
         if len(sort_studies) == 0:
             raise ConfigLoader.MissingAntaresOutput("No Antares output is found")
@@ -618,8 +665,7 @@ class ConfigLoader:
         uc_type = self.options.get(
             self._config.UC_TYPE, self._config.settings_default[self._config.UC_TYPE]
         )
-        assert uc_type in [self._config.EXPANSION_ACCURATE,
-                           self._config.EXPANSION_FAST]
+        assert uc_type in [self._config.EXPANSION_ACCURATE, self._config.EXPANSION_FAST]
         return uc_type == self._config.EXPANSION_ACCURATE
 
     class MissingFile(Exception):
@@ -703,8 +749,7 @@ class ConfigLoader:
     def structure_file_path(self):
         # Assumes that structure file is always the default, ok for now as the user cannot set it, but could it be dangerous if later we wish for some reasons modify its name to a non-default one
         return os.path.join(
-            self.simulation_lp_path(
-            ), self._config.options_default["STRUCTURE_FILE"]
+            self.simulation_lp_path(), self._config.options_default["STRUCTURE_FILE"]
         )
 
     def last_master_file_path(self):
@@ -712,8 +757,8 @@ class ConfigLoader:
         use_xpress = str(self.options["solver"]).upper() == "XPRESS"
         base_path = os.path.join(
             self.simulation_lp_path(),
-            self._config.options_default["MASTER_NAME"] +
-            "_last_iteration")
+            self._config.options_default["MASTER_NAME"] + "_last_iteration",
+        )
         if use_xpress:
             base_path += ".svf"
         else:
@@ -735,30 +780,9 @@ class ConfigLoader:
     def cache_problems(self):
         return self._config.cache_problems
 
-    def timelimit(self):
-        """
-        returns the timelimit read from the settings file
-        :return: timelimit value or 0 if the gap is negative
-        """
-        timelimit_str = self.options.get(
-            "timelimit", self._config.settings_default["timelimit"]
-        )
-        return 1e12 if timelimit_str in ("+Inf", "+infini") else int(timelimit_str)
-
-    def log_level(self):
-        """
-        returns the log_level read from the settings file
-        :return: log_level value
-        """
-        log_level_str = self.options.get(
-            "log_level", self._config.settings_default["log_level"]
-        )
-        return int(log_level_str)
-
     def sensitivity_log_file(self) -> Path:
         return Path(
-            os.path.join(self._sensitivity_dir(),
-                         self._config.SENSITIVITY_LOG_FILE)
+            os.path.join(self._sensitivity_dir(), self._config.SENSITIVITY_LOG_FILE)
         )
 
     class MissingSimulationName(Exception):
@@ -781,8 +805,11 @@ class ConfigLoader:
         return os.path.join(self.outer_loop_dir(), self._config.OUTER_LOOP_FILE)
 
     def outer_loop_dir(self):
-        return os.path.normpath(os.path.join(
-            self.data_dir(),
-            self._config.USER,
-            self._config.EXPANSION,
-            self._config.OUTER_LOOP_DIR))
+        return os.path.normpath(
+            os.path.join(
+                self.data_dir(),
+                self._config.USER,
+                self._config.EXPANSION,
+                self._config.OUTER_LOOP_DIR,
+            )
+        )
