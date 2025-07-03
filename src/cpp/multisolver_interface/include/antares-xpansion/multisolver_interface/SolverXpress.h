@@ -187,7 +187,7 @@ public:
 
 public:
     /**
-    * @brief Returns the current basis into the user’s data arrays.
+    * @brief Returns the current basis into the user's data arrays.
     *
     * @param rstatus    : Integer array of length ROWS to the basis status of the
     slack, surplus or artifficial variable associated with each row. The status
@@ -228,6 +228,18 @@ public:
 
 private:
     std::vector<std::string> get_names(int type, int n_elements);
+
+public:
+    /**
+     * @brief Create a new SolverXpress object by copying the matrix, objective, bounds, column
+     * types, and names from the current problem. Does not use ranged rows or collen, but sets
+     * col_types and names.
+     * @return SolverAbstract::Ptr: new SolverXpress object as a shared_ptr<SolverAbstract>
+     */
+    SolverAbstract::Ptr clone_matrix_to_new_prob() const override;
+
+private:
+    explicit SolverXpress(XPRSprob prob);
 };
 
 /************************************************************************************\

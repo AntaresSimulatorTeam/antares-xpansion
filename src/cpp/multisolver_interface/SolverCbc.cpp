@@ -913,3 +913,9 @@ void SolverCbc::restore_prob(const std::filesystem::path& filename)
 {
     read_prob_mps(filename);
 }
+
+SolverAbstract::Ptr SolverCbc::clone_matrix_to_new_prob() const
+{
+    throw NotImplementedFeatureSolverException(
+      "clone_matrix_to_new_prob is only implemented for Xpress solvers.");
+}

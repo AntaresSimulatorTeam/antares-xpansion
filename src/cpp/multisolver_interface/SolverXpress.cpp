@@ -76,6 +76,17 @@ SolverXpress::SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy):
     }
 }
 
+SolverXpress::SolverXpress(XPRSprob prob):
+    SolverXpress()
+{
+    if (_xprs)
+    {
+        // Free any existing problem
+        SolverXpress::free();
+    }
+    _xprs = prob;
+}
+
 SolverXpress::~SolverXpress()
 {
     { // Scope guard
@@ -852,4 +863,100 @@ void errormsg(XPRSprob& _xprs, const char* sSubName, int nLineNo, int nErrCode)
     XPRSdestroyprob(_xprs);
     XPRSfree();
     exit(nErrCode);
+}
+
+SolverAbstract::Ptr SolverXpress::clone_matrix_to_new_prob() const
+{
+    int ncols = get_ncols();
+    int nrows = get_nrows();
+    int nelems = get_nelems();
+
+    // Allocate arrays for matrix data
+    std::vector<char> rowtype(nrows);
+    std::vector<double> rhs(nrows);
+    std::vector<double> objcoef(ncols);
+    std::vector<int> mstart(nrows + 1);
+    std::vector<int> mclind(nelems);
+    std::vector<double> dmatval(nelems);
+    std::vector<double> lb(ncols);
+    std::vector<double> ub(ncols);
+    std::vector<char> coltype(ncols);
+
+    // Fill arrays from the current solver
+    get_row_type(rowtype.data(), 0, nrows - 1);
+    get_rhs(rhs.data(), 0, nrows - 1);
+    get_obj(objcoef.data(), 0, ncols - 1);
+    int nels = 0;
+    get_rows(mstart.data(), mclind.data(), dmatval.data(), nelems, &nels, 0, nrows - 1);
+    get_lb(lb.data(), 0, ncols - 1);
+    get_ub(ub.data(), 0, ncols - 1);
+    get_col_type(coltype.data(), 0, ncols - 1);
+
+    // Get names (non-const interface)
+    auto* nonconst_this = const_cast<SolverXpress*>(this);
+    std::vector<std::string> row_names = nonconst_this->get_row_names(0, nrows - 1);
+    std::vector<std::string> col_names = nonconst_this->get_col_names(0, ncols - 1);
+
+    // Create new problem
+    XPRSprob new_prob = nullptr;
+    int status = XPRScreateprob(&new_prob);
+    zero_status_check(status, "create XPRESS problem (clone_matrix_to_new_prob)", LOGLOCATION);
+
+    // Load the matrix into the new problem
+    status = XPRSloadlp(new_prob,
+                        "cloned_prob", // name
+                        ncols,
+                        nrows,
+                        rowtype.data(),
+                        rhs.data(),
+                        nullptr, // rng (not used)
+                        objcoef.data(),
+                        mstart.data(),
+                        nullptr, // collen (not used)
+                        mclind.data(),
+                        dmatval.data(),
+                        lb.data(),
+                        ub.data());
+    zero_status_check(status,
+                      "load matrix into new XPRESS problem (clone_matrix_to_new_prob)",
+                      LOGLOCATION);
+
+    // Set column types
+    std::vector<int> col_indices(ncols);
+    std::iota(col_indices.begin(), col_indices.end(), 0);
+    status = XPRSchgcoltype(new_prob, ncols, col_indices.data(), coltype.data());
+    zero_status_check(status,
+                      "set column types in new XPRESS problem (clone_matrix_to_new_prob)",
+                      LOGLOCATION);
+
+    // Set row and column names
+    if (!row_names.empty())
+    {
+        std::vector<char> row_names_char;
+        for (const auto& name: row_names)
+        {
+            row_names_char.insert(row_names_char.end(), name.begin(), name.end());
+            row_names_char.push_back('\0');
+        }
+        status = XPRSaddnames(new_prob, 1, row_names_char.data(), 0, nrows - 1);
+        zero_status_check(status,
+                          "set row names in new XPRESS problem (clone_matrix_to_new_prob)",
+                          LOGLOCATION);
+    }
+    if (!col_names.empty())
+    {
+        std::vector<char> col_names_char;
+        for (const auto& name: col_names)
+        {
+            col_names_char.insert(col_names_char.end(), name.begin(), name.end());
+            col_names_char.push_back('\0');
+        }
+        status = XPRSaddnames(new_prob, 2, col_names_char.data(), 0, ncols - 1);
+        zero_status_check(status,
+                          "set column names in new XPRESS problem (clone_matrix_to_new_prob)",
+                          LOGLOCATION);
+    }
+
+    // Return as SolverAbstract::Ptr
+    return std::make_shared<SolverXpress>(new_prob);
 }

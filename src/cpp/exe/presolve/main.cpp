@@ -179,6 +179,7 @@ void reduce_problems(SolverXpress& solver, const PresolveOptions& options, Logge
             export it, removing artificially the 'presolved' state.
             That would require some modifications to SolverXpress
             */
+            SolverAbstract::Ptr new_solver = solver.clone_matrix_to_new_prob();
             logger->display_message("Export format won't allow benders to solve the problem",
                                     LogUtils::LOGLEVEL::WARNING,
                                     PRESOLVE_CONTEXT);

@@ -775,7 +775,7 @@ public:
 
 public:
     /**
-    * @brief Returns the current basis into the user’s data arrays.
+    * @brief Returns the current basis into the user's data arrays.
     *
     * @param rstatus    : Integer array of length ROWS to the basis status of the
     slack, surplus or artifficial variable associated with each row. The values
@@ -868,6 +868,17 @@ public:
      * @param iter: maximum number of simplex iterations
      */
     virtual void set_simplex_iter(int iter) = 0;
+
+    /**
+     * @brief Clone the matrix to a new solver object. Default: throws if not implemented.
+     *        Only Xpress implements this meaningfully.
+     * @return SolverAbstract::Ptr
+     */
+    virtual SolverAbstract::Ptr clone_matrix_to_new_prob() const
+    {
+        throw NotImplementedFeatureSolverException(
+          "clone_matrix_to_new_prob is only implemented for Xpress solvers.");
+    }
 
     bool operator==(const SolverAbstract&) const;
 };

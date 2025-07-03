@@ -187,7 +187,7 @@ public:
 
 public:
     /**
-    * @brief Returns the current basis into the user’s data arrays.
+    * @brief Returns the current basis into the user's data arrays.
     *
     * @param rstatus    : Integer array of length ROWS to the basis status of the
     slack, surplus or artifficial variable associated with each row. The status
@@ -218,4 +218,6 @@ public:
     void set_threads(int n_threads) override;
     void set_optimality_gap(double gap) override;
     void set_simplex_iter(int iter) override;
+
+    SolverAbstract::Ptr clone_matrix_to_new_prob() const override;
 };
