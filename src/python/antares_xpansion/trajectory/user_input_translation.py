@@ -19,6 +19,8 @@ class ConstraintTypeEnum(Enum):
     MAX_CUMULATIVE_INVESTMENT = "max_cumulative_investment_per_node"
     MAX_INDIVIDUAL_RETIREMENT = "max_retirement_per_node_per_candidate"
     MAX_CUMULATIVE_RETIREMENT = "max_cumulative_retirement_per_node"
+    MIN_INDIVIDUAL_INVESTMENT = "min_investment_per_node_per_candidate"
+    MIN_INDIVIDUAL_RETIREMENT = "min_retirement_per_node_per_candidate"
 
 
 class InvestmentVariableTypeEnum(Enum):
@@ -191,6 +193,50 @@ class TrajectoryConstraint(BaseModel):
             output.append(constraint)
         return output
 
+    def to_individual_min_investment(
+        self, candidate_appear_in_nodes: Dict[str, Set[str]]
+    ) -> List[Dict[str, Any]]:
+        assert self.cons_type == ConstraintTypeEnum.MIN_INDIVIDUAL_INVESTMENT
+        output: List[Dict[str, Any]] = []
+        for node in self.nodes:
+            for candidate in self.candidates:
+                # Skip if the candidate does not exist in this node
+                if node not in candidate_appear_in_nodes[candidate]:
+                    continue
+                constraint = {
+                    OutKeys.constraint_coeffs_key(): {
+                        self.build_variable_reference(
+                            node, candidate, InvestmentVariableTypeEnum.DX_PLUS
+                        ): 1
+                    },
+                    OutKeys.constraint_rhs_key(): self.rhs,
+                    OutKeys.constraint_operator_key(): ConstraintOperatorEnum.GEQ.value,
+                }
+                output.append(constraint)
+        return output
+
+    def to_individual_min_retirement(
+        self, candidate_appear_in_nodes: Dict[str, Set[str]]
+    ) -> List[Dict[str, Any]]:
+        assert self.cons_type == ConstraintTypeEnum.MIN_INDIVIDUAL_RETIREMENT
+        output: List[Dict[str, Any]] = []
+        for node in self.nodes:
+            for candidate in self.candidates:
+                # Skip if the candidate does not exist in this node
+                if node not in candidate_appear_in_nodes[candidate]:
+                    continue
+                constraint = {
+                    OutKeys.constraint_coeffs_key(): {
+                        self.build_variable_reference(
+                            node, candidate, InvestmentVariableTypeEnum.DX_MINUS
+                        ): 1
+                    },
+                    OutKeys.constraint_rhs_key(): self.rhs,
+                    OutKeys.constraint_operator_key(): ConstraintOperatorEnum.GEQ.value,
+                }
+                output.append(constraint)
+        return output
+
     def to_merger_json(
         self, candidate_appear_in_nodes: Dict[str, Set[str]]
     ) -> List[Dict[str, Any]]:
@@ -206,6 +252,10 @@ class TrajectoryConstraint(BaseModel):
             return self.to_cumulative_max_investment(candidate_appear_in_nodes)
         elif self.cons_type == ConstraintTypeEnum.MAX_CUMULATIVE_RETIREMENT:
             return self.to_cumulative_max_retirement(candidate_appear_in_nodes)
+        elif self.cons_type == ConstraintTypeEnum.MIN_INDIVIDUAL_INVESTMENT:
+            return self.to_individual_min_investment(candidate_appear_in_nodes)
+        elif self.cons_type == ConstraintTypeEnum.MIN_INDIVIDUAL_RETIREMENT:
+            return self.to_individual_min_retirement(candidate_appear_in_nodes)
         else:
             raise UserInputTranslator.InvalidTrajectoryConstraint(
                 f"Non implemented constraint type was encountered for constraint {self.name} with type {self.cons_type.value}"

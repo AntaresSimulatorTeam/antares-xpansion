@@ -205,3 +205,42 @@ More generally, this type of input constraint entry translates to :
 $$
 \forall n \in \text{nodes}, \quad \sum_{c \in \text{candidates}} dx_{n, c}^- \leq \text{value}
 $$
+
+### ```type: min_investment_per_candidate_per_node```  
+Example :
+```yaml
+  - name : min_invest_1_5GW
+    nodes: ["2030", "2040", "2050_A"]
+    candidates: [semibase]
+    type: min_retirement_per_candidate_per_node
+    value: 1500
+```
+This entry would result in 3 (3 = |```nodes```|) constraints in the merged problem :
+
+  - $dx_{2030, semibase}^+ \geq 1500$,  
+  - $dx_{2040, semibase}^+ \geq 1500$,
+  - $dx_{2040\_A, semibase}^+ \geq 1500$,
+
+More generally, this type of input constraint entry translates to :
+$$
+\forall n \in \text{nodes}, \quad \sum_{c \in \text{candidates}} dx_{n, c}^- \geq \text{value}
+$$
+
+### ```type: min_retirement_per_candidate_per_node```  
+Example :
+```yaml
+  - name : min_decom_1GW
+    nodes: ["2030", "2040"]
+    candidates: [peak]
+    type: min_retirement_per_candidate_per_node
+    value: 1000
+```
+This entry would result in 2 (2 = |```nodes```|) constraints in the merged problem :
+
+  - $dx_{2030, peak}^- \geq 1000$,  
+  - $dx_{2040, peak}^- \geq 1000$
+
+More generally, this type of input constraint entry translates to :
+$$
+\forall n \in \text{nodes}, \quad \sum_{c \in \text{candidates}} dx_{n, c}^- \geq \text{value}
+$$
