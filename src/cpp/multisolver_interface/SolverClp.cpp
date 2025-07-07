@@ -246,6 +246,18 @@ void SolverClp::get_rhs_range(double* range, int first, int last) const
     throw NotImplementedFeatureSolverException(error);
 }
 
+void SolverClp::get_cols(int* mstart,
+                         int* mrwind,
+                         double* dmatval,
+                         int size,
+                         int* nels,
+                         int first,
+                         int last) const
+{
+    auto error = LOGLOCATION + "ERROR : get_cols not implemented in the CLP interface.";
+    throw NotImplementedFeatureSolverException(error);
+}
+
 void SolverClp::get_col_type(char* coltype, int first, int last) const
 {
     const double* colLower = _clp.getColLower();
@@ -769,8 +781,18 @@ void SolverClp::restore_prob(const std::filesystem::path& filename)
     read_prob_mps(filename);
 }
 
-SolverAbstract::Ptr SolverClp::clone_matrix_to_new_prob() const
+void SolverClp::mark_indices_to_keep_presolve(int, int, int*, int*)
 {
     throw NotImplementedFeatureSolverException(
-      "clone_matrix_to_new_prob is only implemented for Xpress solvers.");
+      "mark_indices_to_keep_presolve is not supported for CLP solver");
+}
+
+void SolverClp::presolve_only()
+{
+    throw NotImplementedFeatureSolverException("presolve_only is not supported for CLP solver");
+}
+
+void SolverClp::get_presolve_map(int*, int*) const
+{
+    throw NotImplementedFeatureSolverException("get_presolve_map is not supported for CLP solver");
 }

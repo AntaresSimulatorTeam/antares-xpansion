@@ -59,7 +59,8 @@ SolverXpress::SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy):
     // Try to cast the solver in fictif to a SolverXpress
     if (const SolverXpress* xpSolv = dynamic_cast<const SolverXpress*>(toCopy.get()))
     {
-        status = XPRScopyprob(_xprs, xpSolv->_xprs, "");
+        // status = XPRScopyprob(_xprs, xpSolv->_xprs, "");
+        _xprs = xpSolv->clone_matrix_to_new_prob();
         _log_file = toCopy->_log_file;
         if (_log_file != "")
         {
@@ -74,17 +75,6 @@ SolverXpress::SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy):
         SolverXpress::free();
         throw InvalidSolverForCopyException(toCopy->get_solver_name(), name_, LOGLOCATION);
     }
-}
-
-SolverXpress::SolverXpress(XPRSprob prob):
-    SolverXpress()
-{
-    if (_xprs)
-    {
-        // Free any existing problem
-        SolverXpress::free();
-    }
-    _xprs = prob;
 }
 
 SolverXpress::~SolverXpress()
@@ -341,6 +331,18 @@ void SolverXpress::get_rhs_range(double* range, int first, int last) const
 {
     int status = XPRSgetrhsrange(_xprs, range, first, last);
     zero_status_check(status, "get RHS of range rows", LOGLOCATION);
+}
+
+void SolverXpress::get_cols(int* mstart,
+                            int* mrwind,
+                            double* dmatval,
+                            int size,
+                            int* nels,
+                            int first,
+                            int last) const
+{
+    int status = XPRSgetcols(_xprs, mstart, mrwind, dmatval, size, nels, first, last);
+    zero_status_check(status, "get cols", LOGLOCATION);
 }
 
 void SolverXpress::get_col_type(char* coltype, int first, int last) const
@@ -865,7 +867,7 @@ void errormsg(XPRSprob& _xprs, const char* sSubName, int nLineNo, int nErrCode)
     exit(nErrCode);
 }
 
-SolverAbstract::Ptr SolverXpress::clone_matrix_to_new_prob() const
+XPRSprob SolverXpress::clone_matrix_to_new_prob() const
 {
     int ncols = get_ncols();
     int nrows = get_nrows();
@@ -875,8 +877,8 @@ SolverAbstract::Ptr SolverXpress::clone_matrix_to_new_prob() const
     std::vector<char> rowtype(nrows);
     std::vector<double> rhs(nrows);
     std::vector<double> objcoef(ncols);
-    std::vector<int> mstart(nrows + 1);
-    std::vector<int> mclind(nelems);
+    std::vector<int> mstart(ncols + 1);
+    std::vector<int> mrwind(nelems);
     std::vector<double> dmatval(nelems);
     std::vector<double> lb(ncols);
     std::vector<double> ub(ncols);
@@ -887,7 +889,7 @@ SolverAbstract::Ptr SolverXpress::clone_matrix_to_new_prob() const
     get_rhs(rhs.data(), 0, nrows - 1);
     get_obj(objcoef.data(), 0, ncols - 1);
     int nels = 0;
-    get_rows(mstart.data(), mclind.data(), dmatval.data(), nelems, &nels, 0, nrows - 1);
+    get_cols(mstart.data(), mrwind.data(), dmatval.data(), nelems, &nels, 0, ncols - 1);
     get_lb(lb.data(), 0, ncols - 1);
     get_ub(ub.data(), 0, ncols - 1);
     get_col_type(coltype.data(), 0, ncols - 1);
@@ -903,6 +905,7 @@ SolverAbstract::Ptr SolverXpress::clone_matrix_to_new_prob() const
     zero_status_check(status, "create XPRESS problem (clone_matrix_to_new_prob)", LOGLOCATION);
 
     // Load the matrix into the new problem
+    // TODO: Either implement XPRSgetcols or use XPRSaddrows, XPRSchgobj, XPRschgrhs, ...
     status = XPRSloadlp(new_prob,
                         "cloned_prob", // name
                         ncols,
@@ -913,13 +916,16 @@ SolverAbstract::Ptr SolverXpress::clone_matrix_to_new_prob() const
                         objcoef.data(),
                         mstart.data(),
                         nullptr, // collen (not used)
-                        mclind.data(),
+                        mrwind.data(),
                         dmatval.data(),
                         lb.data(),
                         ub.data());
-    zero_status_check(status,
-                      "load matrix into new XPRESS problem (clone_matrix_to_new_prob)",
-                      LOGLOCATION);
+    // char errmsg[512];
+    // XPRSgetlasterror(new_prob, errmsg);
+    // printf("Function did not execute correctly: %s\n", errmsg);
+    // zero_status_check(status,
+    //                   "load matrix into new XPRESS problem (clone_matrix_to_new_prob)",
+    //                   LOGLOCATION);
 
     // Set column types
     std::vector<int> col_indices(ncols);
@@ -957,6 +963,5 @@ SolverAbstract::Ptr SolverXpress::clone_matrix_to_new_prob() const
                           LOGLOCATION);
     }
 
-    // Return as SolverAbstract::Ptr
-    return std::make_shared<SolverXpress>(new_prob);
+    return new_prob;
 }

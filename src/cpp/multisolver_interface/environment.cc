@@ -66,6 +66,15 @@ std::function<int(XPRSprob prob,
                   int first,
                   int last)>
   XPRSgetrows = nullptr;
+std::function<int(XPRSprob prob,
+                  int start[],
+                  int rowind[],
+                  double rowcoef[],
+                  int maxcoefs,
+                  int* p_ncoefs,
+                  int first,
+                  int last)>
+  XPRSgetcols = nullptr;
 std::function<int(XPRSprob prob, int type, const char* name, int* p_index)> XPRSgetindex = nullptr;
 std::function<int(XPRSprob prob, int type, char names[], int first, int last)>
   XPRSgetnames = nullptr;
@@ -178,6 +187,7 @@ bool XpressLoader::LoadXpressFunctions(Solver::DynamicLibrary* xpress_dynamic_li
     xpress_dynamic_library->GetFunction(&XPRSloadbasis, "XPRSloadbasis");
     xpress_dynamic_library->GetFunction(&XPRSloadsecurevecs, "XPRSloadsecurevecs");
     xpress_dynamic_library->GetFunction(&XPRSgetrows, "XPRSgetrows");
+    xpress_dynamic_library->GetFunction(&XPRSgetcols, "XPRSgetcols");
     xpress_dynamic_library->GetFunction(&XPRSgetindex, "XPRSgetindex");
     xpress_dynamic_library->GetFunction(&XPRSgetnames, "XPRSgetnames");
     xpress_dynamic_library->GetFunction(&XPRSaddnames, "XPRSaddnames");

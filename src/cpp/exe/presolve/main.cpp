@@ -11,11 +11,11 @@
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
 #include "antares-xpansion/multisolver_interface/SolverXpress.h"
 
-using XPRSPtr = std::shared_ptr<SolverXpress>;
+// using XPRSPtr = std::shared_ptr<SolverXpress>;
 
 const std::string PRESOLVE_CONTEXT{"Presolve"};
 
-XPRSPtr init_solver(const PresolveOptions& options, Logger logger)
+SolverAbstract::Ptr init_solver(const PresolveOptions& options, Logger logger)
 {
     SolverConfig config(options.SOLVER_NAME);
 
@@ -35,7 +35,7 @@ XPRSPtr init_solver(const PresolveOptions& options, Logger logger)
         std::exit(1);
     }
 
-    XPRSPtr solver_ptr = std::static_pointer_cast<SolverXpress>(factory.create_solver(config));
+    SolverAbstract::Ptr solver_ptr = factory.create_solver(config);
 
     if (options.LOG_LEVEL > 0)
     {
@@ -45,18 +45,18 @@ XPRSPtr init_solver(const PresolveOptions& options, Logger logger)
     return solver_ptr;
 }
 
-std::unordered_map<int, int> get_candidates_presolve_map(SolverXpress& solver,
+std::unordered_map<int, int> get_candidates_presolve_map(SolverAbstract* solver,
                                                          std::vector<int>& candidatesId)
 {
     // Get indices in reduced problem
     std::unordered_map<int, int> full2reduced;
 
-    const int nbRows = solver.get_nrows();
-    const int nbCols = solver.get_ncols();
+    const int nbRows = solver->get_nrows();
+    const int nbCols = solver->get_ncols();
 
     std::vector<int> rowmap(nbRows), colmap(nbCols);
 
-    solver.get_presolve_map(rowmap.data(), colmap.data());
+    solver->get_presolve_map(rowmap.data(), colmap.data());
 
     // Since candidatesId is much smaller than colmap, sorting (mostly)
     // and searching the former is theoretically more efficient than
@@ -87,7 +87,7 @@ std::unordered_map<int, int> get_candidates_presolve_map(SolverXpress& solver,
     return full2reduced;
 }
 
-void reduce_problems(SolverXpress& solver, const PresolveOptions& options, Logger logger)
+void reduce_problems(SolverAbstract::Ptr& solver, const PresolveOptions& options, Logger logger)
 {
     const auto input_root_dir = std::filesystem::path(options.INPUTROOT);
     const auto structure_path = input_root_dir / options.STRUCTURE_FILE;
@@ -137,16 +137,17 @@ void reduce_problems(SolverXpress& solver, const PresolveOptions& options, Logge
                        var_map.cend(),
                        candidatesId.begin(),
                        [](const auto pair) { return pair.second; });
+        std::sort(candidatesId.begin(), candidatesId.end());
 
         // Read full problem
         const std::filesystem::path subproblem_path = input_root_dir / filename;
 
-        solver_io.read(&solver, subproblem_path);
+        solver_io.read(solver.get(), subproblem_path);
 
         // Keep the solver from removing candidate indices from subproblem
-        solver.mark_indices_to_keep_presolve(0, candidatesId.size(), nullptr, candidatesId.data());
+        solver->mark_indices_to_keep_presolve(0, candidatesId.size(), nullptr, candidatesId.data());
 
-        solver.presolve_only();
+        solver->presolve_only();
 
         if (options.KEEP_FULL)
         {
@@ -159,7 +160,7 @@ void reduce_problems(SolverXpress& solver, const PresolveOptions& options, Logge
           fmt::format("Subproblem '{}' reduced: {} / {}.", filename, ++nb_prob, nb_prob_total),
           LogUtils::LOGLEVEL::DEBUG,
           PRESOLVE_CONTEXT);
-
+        SolverAbstract::Ptr solver_to_write = solver;
         if (options.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE)
         {
             /*
@@ -179,18 +180,19 @@ void reduce_problems(SolverXpress& solver, const PresolveOptions& options, Logge
             export it, removing artificially the 'presolved' state.
             That would require some modifications to SolverXpress
             */
-            SolverAbstract::Ptr new_solver = solver.clone_matrix_to_new_prob();
-            logger->display_message("Export format won't allow benders to solve the problem",
-                                    LogUtils::LOGLEVEL::WARNING,
-                                    PRESOLVE_CONTEXT);
+            SolverFactory factory(logger);
+            solver_to_write = factory.copy_solver(solver);
+            // logger->display_message("Export format won't allow benders to solve the problem",
+                                    // LogUtils::LOGLEVEL::WARNING,
+                                    // PRESOLVE_CONTEXT);
         }
 
         // TODO Why does it add a line break?
         // Write reduced problem MPS
-        solver_io.write(&solver, subproblem_path);
+        solver_io.write(solver_to_write.get(), subproblem_path);
 
         // Create a map [full_idx] -> reduced_idx for candidate indices
-        const auto full2reduced = get_candidates_presolve_map(solver, candidatesId);
+        const auto full2reduced = get_candidates_presolve_map(solver.get(), candidatesId);
 
         for (const auto& [var_name, idx]: var_map)
         {
@@ -213,9 +215,9 @@ int main(int argc, char** argv)
 
     logger->display_message("Starting presolve", LogUtils::LOGLEVEL::INFO, PRESOLVE_CONTEXT);
 
-    XPRSPtr solver_ptr = init_solver(options, logger);
+    SolverAbstract::Ptr solver_ptr = init_solver(options, logger);
 
-    reduce_problems(*solver_ptr, options, logger);
+    reduce_problems(solver_ptr, options, logger);
 
     logger->display_message("Presolve finished", LogUtils::LOGLEVEL::INFO, PRESOLVE_CONTEXT);
 

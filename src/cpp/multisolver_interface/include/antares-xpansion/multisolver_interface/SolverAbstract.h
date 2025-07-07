@@ -502,6 +502,30 @@ public:
     virtual void get_rhs_range(double* range, int first, int last) const = 0;
 
     /**
+    * @brief get coefficients of cols from index first to last
+    *
+    * @param mstart     : Integer array which will be filled with the indices
+    indicating the starting offsets in the mrwind and dmatval arrays for each
+    requested row.
+    * @param mrwind     : array containing the row indices of the elements
+    contained in dmatval
+    * @param dmatval    : array containing non zero elements of the rows
+    * @param size       : maximum number of elements to be retrieved
+    * @param nels       : array containing number of elements in dmatval and
+    mrwind
+    * @param first      : first index of col to get
+    * @param last       : last index of col to get
+    */
+    virtual void get_cols(int* mstart,
+                          int* mrwind,
+                          double* dmatval,
+                          int size,
+                          int* nels,
+                          int first,
+                          int last) const
+      = 0;
+
+    /**
     * @brief Returns the column types for the columns in a given range.
     *
     * @param coltype    : Character array of length last-first+1 where the column
@@ -870,15 +894,19 @@ public:
     virtual void set_simplex_iter(int iter) = 0;
 
     /**
-     * @brief Clone the matrix to a new solver object. Default: throws if not implemented.
-     *        Only Xpress implements this meaningfully.
-     * @return SolverAbstract::Ptr
+     * @brief Mark indices to keep during presolve (to be implemented by derived classes)
      */
-    virtual SolverAbstract::Ptr clone_matrix_to_new_prob() const
-    {
-        throw NotImplementedFeatureSolverException(
-          "clone_matrix_to_new_prob is only implemented for Xpress solvers.");
-    }
+    virtual void mark_indices_to_keep_presolve(int nrows, int ncols, int* rowind, int* colind) = 0;
+
+    /**
+     * @brief Presolve the problem (to be implemented by derived classes)
+     */
+    virtual void presolve_only() = 0;
+
+    /**
+     * @brief Get the presolve map (to be implemented by derived classes)
+     */
+    virtual void get_presolve_map(int* rowmap, int* colmap) const = 0;
 
     bool operator==(const SolverAbstract&) const;
 };

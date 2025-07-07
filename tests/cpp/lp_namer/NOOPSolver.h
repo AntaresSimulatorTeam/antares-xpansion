@@ -30,6 +30,8 @@ class NOOPSolver : public SolverAbstract {
   void get_rhs(double *rhs, int first, int last) const override {}
   void get_rhs_range(double *range, int first,
                              int last) const override {}
+  void get_cols(int *mstart, int *mrwind, double *dmatval, int size,
+                        int *nels, int first, int last) const override {}
   void get_col_type(char *coltype, int first, int last) const override {
 
   }
@@ -92,9 +94,12 @@ class NOOPSolver : public SolverAbstract {
   void set_simplex_iter(int iter) override {}
   void write_basis(const std::filesystem::path &filename) override {}
   void read_basis(const std::filesystem::path &filename) override {}
-  void set_basis(std::span<int> rstatus, std::span<int> cstatus) override {};
+  void set_basis(std::span<int> rstatus, std::span<int> cstatus) override {}
   void save_prob(const std::filesystem::path &filename) override {}
   void restore_prob(const std::filesystem::path &filename) override {}
+  void get_presolve_map(int* rowmap, int* colmap) const override {}
+  void presolve_only() override {}
+  void mark_indices_to_keep_presolve(int nrows, int ncols, int* rowind, int* colind) override {}
 };
 
 #endif  // ANTARESXPANSION_TESTS_CPP_LP_NAMER_NOOPSOLVER_H_

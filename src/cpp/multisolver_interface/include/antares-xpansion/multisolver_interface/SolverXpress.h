@@ -90,6 +90,13 @@ public:
     void set_basis(std::span<int> rstatus, std::span<int> cstatus) override;
 
     void copy_prob(const SolverAbstract::Ptr fictif_solv) override;
+    /**
+     * @brief Create a new XPRSprob object by copying the matrix, objective, bounds, column
+     * types, and names from the current problem. Does not use ranged rows or collen, but sets
+     * col_types and names.
+     * @return XPRSprob: new XPRSprob object
+     */
+    XPRSprob clone_matrix_to_new_prob() const;
 
 private:
     void read_prob(const char* prob_name, const char* flags);
@@ -117,6 +124,13 @@ public:
     void get_row_type(char* qrtype, int first, int last) const override;
     void get_rhs(double* rhs, int first, int last) const override;
     void get_rhs_range(double* range, int first, int last) const override;
+    void get_cols(int* mstart,
+                  int* mrwind,
+                  double* dmatval,
+                  int size,
+                  int* nels,
+                  int first,
+                  int last) const override;
     void get_col_type(char* coltype, int first, int last) const override;
     void get_lb(double* lb, int fisrt, int last) const override;
     void get_ub(double* ub, int fisrt, int last) const override;
@@ -228,18 +242,6 @@ public:
 
 private:
     std::vector<std::string> get_names(int type, int n_elements);
-
-public:
-    /**
-     * @brief Create a new SolverXpress object by copying the matrix, objective, bounds, column
-     * types, and names from the current problem. Does not use ranged rows or collen, but sets
-     * col_types and names.
-     * @return SolverAbstract::Ptr: new SolverXpress object as a shared_ptr<SolverAbstract>
-     */
-    SolverAbstract::Ptr clone_matrix_to_new_prob() const override;
-
-private:
-    explicit SolverXpress(XPRSprob prob);
 };
 
 /************************************************************************************\

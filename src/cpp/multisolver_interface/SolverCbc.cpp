@@ -360,6 +360,18 @@ void SolverCbc::get_rhs_range(double* range, int first, int last) const
     throw NotImplementedFeatureSolverException(buffer.str());
 }
 
+void SolverCbc::get_cols(int* mstart,
+                         int* mrwind,
+                         double* dmatval,
+                         int size,
+                         int* nels,
+                         int first,
+                         int last) const
+{
+    auto error = LOGLOCATION + "ERROR : get_cols not implemented in the CBC interface.";
+    throw NotImplementedFeatureSolverException(error);
+}
+
 void SolverCbc::get_col_type(char* coltype, int first, int last) const
 {
     const double* colLower = _clp_inner_solver.getColLower();
@@ -914,8 +926,18 @@ void SolverCbc::restore_prob(const std::filesystem::path& filename)
     read_prob_mps(filename);
 }
 
-SolverAbstract::Ptr SolverCbc::clone_matrix_to_new_prob() const
+void SolverCbc::mark_indices_to_keep_presolve(int, int, int*, int*)
 {
     throw NotImplementedFeatureSolverException(
-      "clone_matrix_to_new_prob is only implemented for Xpress solvers.");
+      "mark_indices_to_keep_presolve is not supported for CBC solver");
+}
+
+void SolverCbc::presolve_only()
+{
+    throw NotImplementedFeatureSolverException("presolve_only is not supported for CBC solver");
+}
+
+void SolverCbc::get_presolve_map(int*, int*) const
+{
+    throw NotImplementedFeatureSolverException("get_presolve_map is not supported for CBC solver");
 }

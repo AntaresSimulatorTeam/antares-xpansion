@@ -121,6 +121,13 @@ public:
     void get_row_type(char* qrtype, int first, int last) const override;
     void get_rhs(double* rhs, int first, int last) const override;
     void get_rhs_range(double* range, int first, int last) const override;
+    void get_cols(int* mstart,
+                  int* mrwind,
+                  double* dmatval,
+                  int size,
+                  int* nels,
+                  int first,
+                  int last) const override;
     void get_col_type(char* coltype, int first, int last) const override;
     void get_lb(double* lb, int fisrt, int last) const override;
     void get_ub(double* ub, int fisrt, int last) const override;
@@ -179,6 +186,7 @@ public:
 public:
     int solve_lp() override;
     int solve_mip() override;
+    void presolve_only() override;
 
     /*************************************************************************************************
     -------------------------    Methods to get solutions information
@@ -206,6 +214,7 @@ public:
     int get_splex_num_of_ite_last() const override;
     void get_lp_sol(double* primals, double* duals, double* reduced_costs) const override;
     void get_mip_sol(double* primals) override;
+    void get_presolve_map(int* rowmap, int* colmap) const override;
 
     /*************************************************************************************************
     ------------------------    Methods to set algorithm or logs levels
@@ -218,6 +227,5 @@ public:
     void set_threads(int n_threads) override;
     void set_optimality_gap(double gap) override;
     void set_simplex_iter(int iter) override;
-
-    SolverAbstract::Ptr clone_matrix_to_new_prob() const override;
+    void mark_indices_to_keep_presolve(int nrows, int ncols, int* rowind, int* colind) override;
 };
