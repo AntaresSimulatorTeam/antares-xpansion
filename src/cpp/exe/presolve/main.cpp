@@ -160,6 +160,15 @@ void reduce_problems(SolverAbstract::Ptr& solver, const PresolveOptions& options
           fmt::format("Subproblem '{}' reduced: {} / {}.", filename, ++nb_prob, nb_prob_total),
           LogUtils::LOGLEVEL::DEBUG,
           PRESOLVE_CONTEXT);
+
+        // Create a map [full_idx] -> reduced_idx for candidate indices
+        const auto full2reduced = get_candidates_presolve_map(solver.get(), candidatesId);
+
+        for (const auto& [var_name, idx]: var_map)
+        {
+            reduced_couplings.at(filename).at(var_name) = full2reduced.at(idx);
+        }
+
         SolverAbstract::Ptr solver_to_write = solver;
         if (options.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE)
         {
@@ -183,21 +192,13 @@ void reduce_problems(SolverAbstract::Ptr& solver, const PresolveOptions& options
             SolverFactory factory(logger);
             solver_to_write = factory.copy_solver(solver);
             // logger->display_message("Export format won't allow benders to solve the problem",
-                                    // LogUtils::LOGLEVEL::WARNING,
-                                    // PRESOLVE_CONTEXT);
+            // LogUtils::LOGLEVEL::WARNING,
+            // PRESOLVE_CONTEXT);
         }
 
         // TODO Why does it add a line break?
         // Write reduced problem MPS
         solver_io.write(solver_to_write.get(), subproblem_path);
-
-        // Create a map [full_idx] -> reduced_idx for candidate indices
-        const auto full2reduced = get_candidates_presolve_map(solver.get(), candidatesId);
-
-        for (const auto& [var_name, idx]: var_map)
-        {
-            reduced_couplings.at(filename).at(var_name) = full2reduced.at(idx);
-        }
     }
 
     // Write structure for reduced problem
