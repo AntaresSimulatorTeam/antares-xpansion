@@ -246,6 +246,7 @@ class XpansionConfig(XpansionConfigConstants):
         self.oversubscribe = self.input_parameters.oversubscribe
         self.allow_run_as_root = self.input_parameters.allow_run_as_root
         self.cache_problems = self.input_parameters.cache_problems
+        self.run_presolve = self.input_parameters.run_presolve
         self.memory = self.input_parameters.memory
 
     def _get_install_dir(self, install_dir):
