@@ -169,7 +169,6 @@ void reduce_problems(SolverAbstract::Ptr& solver, const PresolveOptions& options
             reduced_couplings.at(filename).at(var_name) = full2reduced.at(idx);
         }
 
-        SolverAbstract::Ptr solver_to_write = solver;
         if (options.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE)
         {
             /*
@@ -190,7 +189,7 @@ void reduce_problems(SolverAbstract::Ptr& solver, const PresolveOptions& options
             That would require some modifications to SolverXpress
             */
             SolverFactory factory(logger);
-            solver_to_write = factory.copy_solver(solver);
+            solver = factory.copy_solver(solver);
             // logger->display_message("Export format won't allow benders to solve the problem",
             // LogUtils::LOGLEVEL::WARNING,
             // PRESOLVE_CONTEXT);
@@ -198,7 +197,7 @@ void reduce_problems(SolverAbstract::Ptr& solver, const PresolveOptions& options
 
         // TODO Why does it add a line break?
         // Write reduced problem MPS
-        solver_io.write(solver_to_write.get(), subproblem_path);
+        solver_io.write(solver.get(), subproblem_path);
     }
 
     // Write structure for reduced problem
