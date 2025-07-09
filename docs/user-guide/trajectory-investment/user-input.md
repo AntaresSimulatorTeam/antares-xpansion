@@ -212,7 +212,7 @@ Example :
   - name : min_invest_1_5GW
     nodes: ["2030", "2040", "2050_A"]
     candidates: [semibase]
-    type: min_retirement_per_candidate_per_node
+    type: min_investment_per_candidate_per_node
     value: 1500
 ```
 This entry would result in 3 (3 = |```nodes```|) constraints in the merged problem :
@@ -223,7 +223,7 @@ This entry would result in 3 (3 = |```nodes```|) constraints in the merged probl
 
 More generally, this type of input constraint entry translates to :
 $$
-\forall n \in \text{nodes}, \quad \sum_{c \in \text{candidates}} dx_{n, c}^- \geq \text{value}
+\forall n \in \text{nodes}, \quad \forall{c \in \text{candidates}} \quad dx_{n, c}^+ \geq \text{value}
 $$
 
 ### ```type: min_retirement_per_candidate_per_node```  
@@ -242,5 +242,5 @@ This entry would result in 2 (2 = |```nodes```|) constraints in the merged probl
 
 More generally, this type of input constraint entry translates to :
 $$
-\forall n \in \text{nodes}, \quad \sum_{c \in \text{candidates}} dx_{n, c}^- \geq \text{value}
+\forall n \in \text{nodes}, \quad \forall{c \in \text{candidates}} \quad dx_{n, c}^- \geq \text{value}
 $$
