@@ -76,8 +76,8 @@ class TrajectoryInvestmentDriver:
         # We leave the default values for where to write intermediary files
         self.output_folder = self.prepare_folder(self.config.OUTPUT_FOLDER)
         # The problems format and solver are expected as full upper case by the C++ executables
-        solver = self.config.solver.upper()
-        problems_format = self.config.problems_format.upper()
+        solver = self.config.solver
+        problems_format = self.config.problems_format
 
         mm_data = MergeMasterData(
             self.config.get_executable_path(self.config.MERGE_MASTER_MPS),
@@ -148,13 +148,6 @@ class TrajectoryInvestmentDriver:
             os.makedirs(folder)
 
         return folder
-
-    @staticmethod
-    def default_problems_format_from_solver(solver):
-        if solver == "XPRESS":
-            return "SAVED"
-        else:
-            return "MPS"
 
     def launch(self):
         if self.config.step == "full":

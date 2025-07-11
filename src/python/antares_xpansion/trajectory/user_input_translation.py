@@ -451,22 +451,8 @@ class UserInputTranslator:
                     )
 
     def verify_nodes_candidates_match_with_study(self):
-        # TBA
+        # TBA : verify that the candidates that appear in the yaml input file are present in the studies
         pass
-
-    # def verify_all_nodes_same_candidates(self):
-    #     for name, data in self.nodes.items():
-    #         node_candidates = set(data.candidate_to_type.keys())
-    #         if node_candidates != self.all_candidates:
-    #             diff_exceed = node_candidates - self.all_candidates
-    #             diff_missing = self.all_candidates - node_candidates
-    #             raise self.InvalidCandidates(
-    #                 "All nodes must have the same exact candidates."
-    #                 f" At node '{name}', missing candidates : {diff_missing}"
-    #                 f", candidates not present elsewhere : {diff_exceed}"
-    #             )
-    #         else:
-    #             pass
 
     def verify_candidates_span_continuous_subtree(self):
         """

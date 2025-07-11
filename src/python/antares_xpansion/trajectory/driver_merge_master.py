@@ -2,7 +2,7 @@ from dataclasses import dataclass
 from pathlib import Path
 
 from antares_xpansion.optimisation_keys import OptimisationKeys
-
+from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 from typing import List
 
 import json
@@ -73,8 +73,10 @@ class MergeMasterDriver:
             OptimisationKeys.outpoutroot_key(): self.output_root.resolve().__str__(),
             OptimisationKeys.input_root_key(): self.input_root.resolve().__str__(),
             OptimisationKeys.json_file_key(): json_file.resolve().__str__(),
-            OptimisationKeys.solver_name_key(): self.solver,
-            OptimisationKeys.problems_format_key(): self.problems_format,
+            OptimisationKeys.solver_name_key(): XpansionStudyReader.convert_study_solver_to_option_solver(
+                self.solver
+            ),
+            OptimisationKeys.problems_format_key(): self.problems_format.upper(),
             OptimisationKeys.master_name_key(): self.merged_master_name,
             OptimisationKeys.structure_file_key(): self.merged_structure_file,
         }

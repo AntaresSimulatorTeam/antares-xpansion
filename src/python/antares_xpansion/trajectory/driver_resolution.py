@@ -79,9 +79,11 @@ class TrajectoryResolutionDriver:
         )
         # Solver is overwritten by the global driver
         # to make sure we use same solver and problem format for all studies
-        options_values[OptimisationKeys.solver_name_key()] = self.data.solver
+        options_values[OptimisationKeys.solver_name_key()] = (
+            XpansionStudyReader.convert_study_solver_to_option_solver(self.data.solver)
+        )
         options_values[OptimisationKeys.problems_format_key()] = (
-            self.data.problems_format
+            self.data.problems_format.upper()
         )
 
         options_values[OptimisationKeys.json_file_key()] = (
@@ -120,6 +122,7 @@ class TrajectoryResolutionDriver:
         options_values[OptimisationKeys.master_formulation_key()] = (
             self.data.master_formulation
         )
+        # NON IMPLEMENTED OPTIONS
         # options_values[OptimisationKeys.last_iteration_json_file_key()] = (
         #     self.last_iteration_json_file_path()
         # )

@@ -44,7 +44,7 @@ class TrajectroyLauncherOptionsDefaultValues:
 
     @staticmethod
     def solver_default():
-        return "xpress"
+        return "Xpress"
 
 
 class TrajectoryArgsParser:
@@ -112,7 +112,7 @@ class TrajectoryArgsParser:
             "--solver",
             dest=TrajectoryLauncherOptionsKeys.solver_key(),
             type=str,
-            choices=["xpress", "cbc", "coin"],
+            choices=["Xpress", "Cbc", "Coin"],
             help="Name of the solver used to perform problem merging and resolution - does not apply to problem generation.",
             default=TrajectroyLauncherOptionsDefaultValues.solver_default(),
         )
@@ -152,9 +152,9 @@ class TrajectoryArgsParser:
 
     def _assert_args_compatibility(self, params):
         """Checks that the given args are compatible with each other"""
-        if params.problems_format == "saved" and params.solver != "xpress":
+        if params.problems_format == "saved" and params.solver != "Xpress":
             raise self.XpansionTrajectoryInvalidArguments(
-                "Argument '--problems-format saved' is only compatible with '--solver xpress'"
+                "Argument '--problems-format saved' is only compatible with '--solver Xpress'"
             )
 
     def _warn_non_relevant_arg(self, step, arg):
