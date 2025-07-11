@@ -8,7 +8,7 @@ The underlying C++ code responsible for merging previously generated Xpansion st
 
 - An [option file](#options-file) to give the general parameters
 - A [master merger info file](#master-merger-info-file) that links together the different annual master problems.
-- A [lp info file](#nodal-lp-info-file) that tells the programm where to find the ```lp``` folders and files of each node.
+- A [lp info file](#nodal-lp-info-file) that tells the program where to find the ```lp``` folders and files of each node.
 - [Access](#input-files-from-each-annual-study) to the ```structure.txt``` and ```master.mps``` files previously generated using ```antares-xpansion-launcher -i <study> --step problem_generation``` (or rather using the [Multiple Problem Generation](./multiple-problem-generation.md) step).
 
 Usage is :

@@ -110,7 +110,7 @@ initial_capacities:
 
 ## A note on candidates
 
-We recommand that each candidate is defined in all of the studies and adding the necessary constraint to restrict the investment / divestment behaviour for this candidate to the wanted feasible space.  
+We recommand that each candidate is defined in all of the studies and adding the necessary constraints to restrict the investment / divestment behaviour for this candidate to the desired feasible space.  
 However, it is still possible to have candidates not present in all of the nodes of the tree.
 A candidate can either :
 
