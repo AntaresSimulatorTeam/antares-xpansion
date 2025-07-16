@@ -86,11 +86,16 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& ou
     optOptions.firstOptimOptions.solverName = solver_name;
     optOptions.firstOptimOptions.solverUsesBasis = true;
     optOptions.firstOptimOptions.solverExportsBasis = true;
-    optOptions.firstOptimOptions.solverParameters = "PRESOLVE 1";
+
     optOptions.secondOptimOptions.solverName = solver_name;
     optOptions.secondOptimOptions.solverUsesBasis = true;
     optOptions.secondOptimOptions.solverExportsBasis = false;
-    optOptions.secondOptimOptions.solverParameters = "PRESOLVE 1";
+
+    if (solver_name == SolverConfig("xpress"))
+    {
+        optOptions.firstOptimOptions.solverParameters = "PRESOLVE 1";
+        optOptions.secondOptimOptions.solverParameters = "PRESOLVE 1";
+    }
     auto results = Antares::API::PerformSimulation(options_.StudyPath(), output, optOptions);
 
     /**
