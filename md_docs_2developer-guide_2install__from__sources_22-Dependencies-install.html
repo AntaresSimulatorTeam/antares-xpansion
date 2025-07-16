@@ -140,7 +140,7 @@ $(function(){initNavTree('md_docs_2developer-guide_2install__from__sources_22-De
   <div class="headertitle"><div class="title">Dependencies install</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md78"></a></p>
+<div class="textblock"><p><a class="anchor" id="autotoc_md79"></a></p>
 <p>Antares-Xpansion depends on several mandatory libraries:</p>
 <ul>
 <li><a href="https://github.com/open-source-parsers/jsoncpp">JsonCpp</a>,</li>
@@ -155,17 +155,17 @@ $(function(){initNavTree('md_docs_2developer-guide_2install__from__sources_22-De
 <li>By using a package manager,</li>
 <li>By compiling the sources after cloning the official git repository.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md79"></a>
+<h1><a class="anchor" id="autotoc_md80"></a>
 Install with a VCPKG package manager</h1>
 <p>This is the preferred method for installing dependencies. Dependencies are described in the <code>vcpkg.json</code> file.</p>
-<h2><a class="anchor" id="autotoc_md80"></a>
+<h2><a class="anchor" id="autotoc_md81"></a>
 Configure VCPKG</h2>
 <div class="fragment"><div class="line">git submodule update --init vcpkg</div>
 <div class="line">cd vcpkg</div>
 <div class="line">./bootstrap-vcpkg.sh -disableMetrics</div>
 <div class="line"># Or for windows</div>
 <div class="line">.\bootstrap-vcpkg.bat -disableMetrics</div>
-</div><!-- fragment --><h2><a class="anchor" id="autotoc_md81"></a>
+</div><!-- fragment --><h2><a class="anchor" id="autotoc_md82"></a>
 Installing dependencies</h2>
 <p>Dependencies can be installed with the following command but is not the prefered method</p>
 <div class="fragment"><div class="line">#Repository root</div>
@@ -174,12 +174,12 @@ Installing dependencies</h2>
 <div class="fragment"><div class="line">#Repository root</div>
 <div class="line">cmake -B build -S . -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake</div>
 <div class="line">cmake --build build</div>
-</div><!-- fragment --><h3><a class="anchor" id="autotoc_md82"></a>
+</div><!-- fragment --><h3><a class="anchor" id="autotoc_md83"></a>
 Runtime dependency</h3>
 <p>When running Antares-Xpansion in parallel, mpirun is used. It is installed through VCPKG but needs to be added to the PATH.</p>
 <div class="fragment"><div class="line">export PATH=$PATH:&lt;path_to_vcpkg&gt;/installed/&lt;triplet&gt;/tools/openmpi/bin</div>
 </div><!-- fragment --><p>Alternatively you can install openmpi yourself</p>
-<h1><a class="anchor" id="autotoc_md83"></a>
+<h1><a class="anchor" id="autotoc_md84"></a>
 Other dependencies</h1>
 <ul>
 <li>Antares Simulator: either build it from source, download precompiled binaries or use the automatic build method</li>
@@ -188,17 +188,17 @@ Other dependencies</h1>
 </ul>
 </li>
 </ul>
-<h2><a class="anchor" id="autotoc_md84"></a>
+<h2><a class="anchor" id="autotoc_md85"></a>
 Using pre-build dependency</h2>
 <p>If using built from source or pre-built release of Simulator, Or-tools-rte or other dependency, you can specify the path to the dependency in the CMake configuration.</p>
 <div class="fragment"><div class="line">cmake -B build -S . -DCMAKE_PREFIX_PATH=&quot;&lt;path_to_simulator&gt;;&lt;path_to_or_tools&gt;&quot;</div>
-</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md85"></a>
+</div><!-- fragment --> <h2><a class="anchor" id="autotoc_md86"></a>
 Versions</h2>
 <ul>
 <li><a href="https://github.com/AntaresSimulatorTeam/Antares_Simulator">Antares Simulator</a>: usually <a href="https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/latest">the latest version</a> is recommended. You can check antares-version.json for the specific version tied to your code version.</li>
 <li><a href="https://github.com/rte-france/or-tools-rte">Or-tools-rte</a>: Or-tools-rte is not a direct dependency of Xpansion but one of Simulator, the version or or-tools-rte should match the version used by your version of Simulator. You can check antares-version.json for the specific version tied to your code version. Select the &lt;your-plateform&gt;_static_sirius.zip file. Other variants may work but are not tested.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md86"></a>
+<h1><a class="anchor" id="autotoc_md87"></a>
 Automatic Antares Simulator build</h1>
 <p>If Antares Simulator is not installed, it will be automatically downloaded and built by the build system. </p>
 </div></div><!-- contents -->
