@@ -84,9 +84,11 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& ou
 
     auto solver_name = solverXpansionToSimulator(solver_config_);
     optOptions.firstOptimOptions.solverName = solver_name;
+    optOptions.firstOptimOptions.solverUsesBasis = true;
     optOptions.firstOptimOptions.solverExportsBasis = true;
     optOptions.secondOptimOptions.solverName = solver_name;
     optOptions.secondOptimOptions.solverUsesBasis = true;
+    optOptions.secondOptimOptions.solverExportsBasis = true;
     auto results = Antares::API::PerformSimulation(options_.StudyPath(), output, optOptions);
 
     /**
