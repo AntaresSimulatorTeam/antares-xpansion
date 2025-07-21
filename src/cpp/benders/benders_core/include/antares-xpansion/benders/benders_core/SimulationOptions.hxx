@@ -88,3 +88,5 @@ BENDERS_OPTIONS_MACRO(AREA_FILE, std::string, "area.txt", asString())
 
 // cache problems
 BENDERS_OPTIONS_MACRO(CACHE_PROBLEMS, bool, false, asBool())
+
+BENDERS_OPTIONS_MACRO(MASTER_SOLUTION_TOLERANCE, double, 1e-4, asDouble())

@@ -396,6 +396,7 @@ void BendersBase::ComputeXCut()
                                 + (1 - _options.SEPARATION_PARAM) * _data.x_in[name];
         }
     }
+    roundXCut();
 }
 
 void BendersBase::ComputeInvestCost()
@@ -1321,4 +1322,31 @@ void BendersBase::setCriterionComputationInputs(
   const Benders::Criterion::CriterionInputData& criterion_input_data)
 {
     criterion_computation_ = Benders::Criterion::CriterionComputation(criterion_input_data);
+}
+
+void BendersBase::roundXCut()
+{
+    for (auto& kvp: _data.x_cut)
+    {
+        double value = kvp.second;
+        double lb = _data.min_invest.at(kvp.first);
+        double ub = _data.max_invest.at(kvp.first);
+        // Case variable near 0
+        if (std::abs(value) < _options.MASTER_SOLUTION_TOLERANCE)
+        {
+            kvp.second = 0;
+        }
+        // Case variable slightly above ub
+        else if (value > ub && value < ub + _options.MASTER_SOLUTION_TOLERANCE)
+        {
+            kvp.second = ub;
+        }
+        // Case variable slightly lower than lb
+        else if (value < lb && value > lb - _options.MASTER_SOLUTION_TOLERANCE)
+        {
+            kvp.second = lb;
+        }
+        // Case integer variable: not handled here, as we don't have col_type info
+        // (if needed, can be extended)
+    }
 }

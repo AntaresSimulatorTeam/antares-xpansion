@@ -190,6 +190,7 @@ void BendersByBatch::ComputeXCut()
                                 + (1 - Options().SEPARATION_PARAM) * _data.x_in[name];
         }
     }
+    roundXCut();
 }
 
 void BendersByBatch::UpdateRemainingEpsilon()

@@ -161,6 +161,7 @@ protected:
     bool SwitchToIntegerMaster(bool is_relaxed) const;
     virtual void UpdateTrace();
     virtual void ComputeXCut();
+    void roundXCut();
     void ComputeInvestCost();
     virtual void compute_ub();
     virtual void get_master_value();
