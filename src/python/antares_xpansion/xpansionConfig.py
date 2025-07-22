@@ -102,6 +102,8 @@ class XpansionConfigConstants:
             "log_level": "0",
             "separation_parameter": "0.5",
             "batch_size": "0",
+            "master_solution_tolerance": "1e-4",
+            "cut_coefficient_tolerance": "5e-3",
             "problems_format": "SAVED",
         }
 
