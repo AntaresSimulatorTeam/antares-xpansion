@@ -21,6 +21,8 @@ The following section lists the configurable parameters. If the user does not sp
 |[`separation_parameter`](#separation_parameter) | `0.5` | Step size for the in-out separation |
 |[`relaxed_optimality_gap`](#relaxed_optimality_gap) | `1e-5` | Threshold to switch from relaxed to integer master |
 |[`batch_size`](#batch_size) | `0` | Number of subproblems per batch |
+|[`master_solution_tolerance`](#master_solution_tolerance) | `1e-4` | Tolerance for rounding master solution variables |
+|[`cut_coefficient_tolerance`](#cut_coefficient_tolerance) | `5e-3` | Tolerance for rounding cut coefficients and rhs |
 
 The format is a standard `.ini` and should follow this template:
 ```ini
@@ -295,3 +297,15 @@ In the first iterations, the algorithm computes upper and lower bounds on the op
 Positive integer. Default value: `0`.
 
 This parameter specifies the number of subproblems per batch. If set to `0`, then all subproblems are in the same batch. In this case, the classical Benders is launched.
+
+### `master_solution_tolerance`
+
+Positive float. Default value: `1e-4`.
+
+The `master_solution_tolerance` parameter controls the tolerance used when rounding the solution variables of the master problem. It allows to restore feasibilities of master solutions (as the solver may return slightly infeasible values). Also in the stabilized version (i.e. when `separation_parameter < 1`), if `x_cut` is within this tolerance of a bound, it will be rounded to this bound before fixing the subproblems candidates values. This helps to avoid numerical artifacts.
+
+### `cut_coefficient_tolerance`
+
+Positive float. Default value: `5e-3`.
+
+The `cut_coefficient_tolerance` parameter defines the tolerance under which cuts coefficients and right-hand sides are considered to be zero. This allows to have "clean" cuts in the master problem, in order to avoid numerical issues.

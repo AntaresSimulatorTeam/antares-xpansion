@@ -1,5 +1,15 @@
 Antares-Xpansion changelog
 =================
+v1.5.0 (TBD)
+--------------------------------------------------------
+
+## Features
+
+* New parameter `master_solution_tolerance` in `settings.ini` to define the tolerance in master solution sent to the subproblems, more
+  details [here](../user-guide/get-started/settings-definition.md#master_solution_tolerance)
+* New parameter `cut_coefficient_tolerance` in `settings.ini` to define the tolerance in cuts coefficients and rhs, more
+  details [here](../user-guide/get-started/settings-definition.md#cut_coefficient_tolerance)
+  
 
 v1.4.0 (07/2025)
 --------------------------------------------------------
