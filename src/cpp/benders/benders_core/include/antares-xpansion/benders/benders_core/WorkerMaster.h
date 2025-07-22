@@ -20,7 +20,8 @@ public:
                  SolverLogManager& solver_log_manager,
                  bool mps_has_alpha,
                  Logger logger,
-                 ProblemsFormat format);
+                 ProblemsFormat format,
+                 double master_solution_tolerance);
     ~WorkerMaster() override = default;
 
     void get(Point& x0,
@@ -49,6 +50,7 @@ private:
     int _id_alpha = 0;
     int subproblems_count;
     bool _mps_has_alpha = false;
+    double _master_solution_tolerance;
     void define_matval_mclind(const Point& s,
                               std::vector<double>& matval,
                               std::vector<int>& mclind) const;
@@ -70,4 +72,5 @@ private:
     void _set_upper_bounds() const;
     void _set_alpha_var();
     void _set_nb_units_var_ids();
+    void restoreFeasibility(std::vector<double>& solution);
 };

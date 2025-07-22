@@ -22,10 +22,12 @@ WorkerMaster::WorkerMaster(const VariableMap& variable_map,
                            SolverLogManager& solver_log_manager,
                            const bool mps_has_alpha,
                            Logger logger,
-                           ProblemsFormat format):
+                           ProblemsFormat format,
+                           double master_solution_tolerance):
     Worker(variable_map, path_to_mps, std::move(logger)),
     subproblems_count{subproblems_count},
-    _mps_has_alpha{mps_has_alpha}
+    _mps_has_alpha{mps_has_alpha},
+    _master_solution_tolerance{master_solution_tolerance}
 {
     _is_master = true;
 
@@ -36,6 +38,48 @@ WorkerMaster::WorkerMaster(const VariableMap& variable_map,
     }
     _set_alpha_var();
     _set_nb_units_var_ids();
+}
+
+/*!
+ *  \brief Restores feasibility of the solution returned by master in case it is not due to the
+ * numerical tolerance of the solver. We do not have direct access of the feasibility tolerance of
+ * the solver, hence we use a user-defined tolerance (default to 1e-4) which may be greater than the
+ * default one of the solver (generally 1e-6). This is ok as we anyway want to round solutions that
+ * will be sent to the subproblems back to the bounds if we are close to it.
+ *
+ *  \param solution : solution vector of the master problem as returned by the solver
+ */
+void WorkerMaster::restoreFeasibility(std::vector<double>& solution)
+{
+    int nb_candidates = _id_to_name.size();
+
+    std::vector<char> col_type(nb_candidates);
+    std::vector<double> lb(nb_candidates);
+    std::vector<double> ub(nb_candidates);
+    // Assumes that candidates are the first variables of the master
+    solver_getcolinfo(*_solver, col_type, lb, ub, 0, nb_candidates - 1);
+    for (const auto& kvp: _id_to_name)
+    {
+        int var_id = kvp.first;
+        double value = solution[var_id];
+        // Case variable slighly above ub
+        if (value > ub[var_id] && value < ub[var_id] + _master_solution_tolerance)
+        {
+            solution[var_id] = ub[var_id];
+        }
+        // Case variable slighly lower than lb
+        else if (value < lb[var_id] && value > lb[var_id] - _master_solution_tolerance)
+        {
+            solution[var_id] = lb[var_id];
+        }
+        // Case integer variable
+        else if (col_type[var_id] == 'B' || col_type[var_id] == 'I')
+        {
+            int rounded = std::round(value);
+            solution[var_id] = std::abs(value - rounded) < _master_solution_tolerance ? rounded
+                                                                                      : value;
+        }
+    };
 }
 
 /*!
@@ -54,25 +98,26 @@ void WorkerMaster::get(Point& x_out,
                        DblVector& single_subpb_costs_under_approx)
 {
     x_out.clear();
-    std::vector<double> ptr(_solver->get_ncols());
+    std::vector<double> solution(_solver->get_ncols());
 
     if (_solver->get_n_integer_vars() > 0)
     {
-        _solver->get_mip_sol(ptr.data());
+        _solver->get_mip_sol(solution.data());
     }
     else
     {
-        _solver->get_lp_sol(ptr.data(), nullptr, nullptr);
+        _solver->get_lp_sol(solution.data(), nullptr, nullptr);
     }
-    assert(id_single_subpb_costs_under_approx_.back() + 1 == ptr.size());
+    assert(id_single_subpb_costs_under_approx_.back() + 1 == solution.size());
+    restoreFeasibility(solution);
     for (const auto& kvp: _id_to_name)
     {
-        x_out[kvp.second] = ptr[kvp.first];
+        x_out[kvp.second] = solution[kvp.first];
     }
-    overall_subpb_cost_under_approx = ptr[_id_alpha];
+    overall_subpb_cost_under_approx = solution[_id_alpha];
     for (int i(0); i < id_single_subpb_costs_under_approx_.size(); ++i)
     {
-        single_subpb_costs_under_approx[i] = ptr[id_single_subpb_costs_under_approx_[i]];
+        single_subpb_costs_under_approx[i] = solution[id_single_subpb_costs_under_approx_[i]];
     }
 }
 

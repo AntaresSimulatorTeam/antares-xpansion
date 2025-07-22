@@ -91,7 +91,8 @@ void BendersMpi::BuildMasterProblem()
                                    solver_log_manager_,
                                    IsResumeMode(),
                                    _logger,
-                                   Options().PROBLEMS_FORMAT);
+                                   Options().PROBLEMS_FORMAT,
+                                   Options().MASTER_SOLUTION_TOLERANCE);
     }
 }
 
