@@ -108,16 +108,16 @@ void WorkerMaster::get(Point& x_out,
     {
         _solver->get_lp_sol(solution.data(), nullptr, nullptr);
     }
-    assert(id_single_subpb_costs_under_approx_.back() + 1 == solution.size());
+    assert(_id_single_subpb_costs_under_approx.back() + 1 == solution.size());
     restoreFeasibility(solution);
     for (const auto& kvp: _id_to_name)
     {
         x_out[kvp.second] = solution[kvp.first];
     }
     overall_subpb_cost_under_approx = solution[_id_alpha];
-    for (int i(0); i < id_single_subpb_costs_under_approx_.size(); ++i)
+    for (int i(0); i < _id_single_subpb_costs_under_approx.size(); ++i)
     {
-        single_subpb_costs_under_approx[i] = solution[id_single_subpb_costs_under_approx_[i]];
+        single_subpb_costs_under_approx[i] = solution[_id_single_subpb_costs_under_approx[i]];
     }
 }
 
@@ -268,7 +268,7 @@ void WorkerMaster::define_matval_mclind_for_index(const int i,
             ++mclindCnt_l;
         }
     }
-    mclind.back() = id_single_subpb_costs_under_approx_[i];
+    mclind.back() = _id_single_subpb_costs_under_approx[i];
     matval.back() = -1;
 }
 
@@ -338,7 +338,7 @@ void WorkerMaster::_set_alpha_var()
     const auto it(_name_to_id.find(alpha_str));
     if (it == _name_to_id.end())
     {
-        id_single_subpb_costs_under_approx_.resize(subproblems_count, -1);
+        _id_single_subpb_costs_under_approx.resize(subproblems_count, -1);
 
         if (_mps_has_alpha)
         {
@@ -347,7 +347,7 @@ void WorkerMaster::_set_alpha_var()
             {
                 std::stringstream buffer;
                 buffer << "alpha_" << i;
-                id_single_subpb_costs_under_approx_[i] = _solver->get_col_index(buffer.str());
+                _id_single_subpb_costs_under_approx[i] = _solver->get_col_index(buffer.str());
             }
         }
         else
@@ -372,7 +372,7 @@ void WorkerMaster::_set_alpha_var()
             {
                 std::stringstream buffer;
                 buffer << "alpha_" << i;
-                id_single_subpb_costs_under_approx_[i] = _solver->get_ncols();
+                _id_single_subpb_costs_under_approx[i] = _solver->get_ncols();
                 solver_addcols(
                   *_solver,
                   DblVector(1, 0.0),
@@ -395,7 +395,7 @@ void WorkerMaster::_set_alpha_var()
             matval[0] = 1;
             for (int i(0); i < subproblems_count; ++i)
             {
-                mclind[i + 1] = id_single_subpb_costs_under_approx_[i];
+                mclind[i + 1] = _id_single_subpb_costs_under_approx[i];
                 matval[i + 1] = -1;
             }
 

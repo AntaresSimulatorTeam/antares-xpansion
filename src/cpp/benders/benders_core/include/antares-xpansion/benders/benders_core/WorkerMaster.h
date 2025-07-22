@@ -46,7 +46,7 @@ public:
 
 private:
     std::vector<int> _id_nb_units;
-    std::vector<int> id_single_subpb_costs_under_approx_;
+    std::vector<int> _id_single_subpb_costs_under_approx;
     int _id_alpha = 0;
     int subproblems_count;
     bool _mps_has_alpha = false;
@@ -73,4 +73,18 @@ private:
     void _set_alpha_var();
     void _set_nb_units_var_ids();
     void restoreFeasibility(std::vector<double>& solution);
+
+protected:
+    // Used only for testing purposes
+    void set_id_alpha(double id_alpha)
+    {
+        _id_alpha = id_alpha;
+    }
+
+    // Used only for testing purposes
+    void set_id_single_subpb_costs_under_approx(
+      std::vector<int> id_single_subpb_costs_under_approx)
+    {
+        _id_single_subpb_costs_under_approx = id_single_subpb_costs_under_approx;
+    }
 };

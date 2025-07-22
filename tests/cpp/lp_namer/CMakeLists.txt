@@ -32,7 +32,6 @@ add_executable(lp_namer_tests
         MPSFileProblemProviderAdapterTest.cpp
         MasterProblemBuilderTest.cpp
         MpsTxtWriterTest.cpp
-        NOOPSolver.h
         ProblemConstructionTest.cpp
         ProblemGenerationExeOptionsTest.cpp
         ProblemGenerationLoggerTest.cpp

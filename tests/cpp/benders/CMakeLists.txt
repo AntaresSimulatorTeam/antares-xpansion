@@ -1,6 +1,7 @@
 add_executable(benders_sequential_test 
         benders_sequential_test.cpp
-        BendersByBatchTest.cpp )
+        BendersByBatchTest.cpp
+        WorkerMasterTest.cpp )
 
 target_link_libraries(benders_sequential_test
         PRIVATE
@@ -10,8 +11,7 @@ target_link_libraries(benders_sequential_test
         antaresXpansion::output_core
         antaresXpansion::logger_lib
         tests_utils
-        GTest::Main
-        tests_utils)
+        GTest::Main)
 
 target_include_directories(benders_sequential_test
         PRIVATE
