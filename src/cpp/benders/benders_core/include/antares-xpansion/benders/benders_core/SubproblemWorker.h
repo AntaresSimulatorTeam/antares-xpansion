@@ -23,10 +23,10 @@ public:
                      int log_level,
                      const SolverLogManager& solver_log_manager,
                      Logger logger,
-                     ProblemsFormat format);
+                     ProblemsFormat format,
+                     double cut_coefficient_tolerance);
     virtual ~SubproblemWorker() = default;
     std::vector<double> get_solution() const;
-    void roundIfWithinTolerance(std::vector<double>& values, double tolerance) const;
 
 public:
     void fix_to(const Point& x0) const;

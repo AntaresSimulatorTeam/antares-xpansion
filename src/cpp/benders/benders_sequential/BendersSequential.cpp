@@ -37,7 +37,8 @@ void BendersSequential::InitializeProblems()
                                IsResumeMode(),
                                _logger,
                                Options().PROBLEMS_FORMAT,
-                               Options().MASTER_SOLUTION_TOLERANCE);
+                               Options().MASTER_SOLUTION_TOLERANCE,
+                               Options().CUT_COEFFICIENT_TOLERANCE);
     for (const auto& problem: coupling_map_)
     {
         const auto subProblemFilePath = GetSubproblemPath(problem.first);

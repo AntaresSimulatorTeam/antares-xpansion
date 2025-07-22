@@ -21,7 +21,8 @@ public:
                  bool mps_has_alpha,
                  Logger logger,
                  ProblemsFormat format,
-                 double master_solution_tolerance);
+                 double master_solution_tolerance,
+                 double cut_coefficient_tolerance);
     ~WorkerMaster() override = default;
 
     void get(Point& x0,
@@ -60,7 +61,6 @@ private:
                                      const double& rhs,
                                      std::vector<double>& rowrhs) const;
 
-    void roundIfWithinTolerance(std::vector<double>& values, double tolerance) const;
     void define_rhs_from_sx0(const double& sx0,
                              const double& rhs,
                              std::vector<double>& rowrhs) const;

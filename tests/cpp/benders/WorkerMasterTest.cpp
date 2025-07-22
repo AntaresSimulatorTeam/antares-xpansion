@@ -63,7 +63,7 @@ class NOOPWorker: public Worker
 {
 public:
     NOOPWorker():
-        Worker({}, "", Logger())
+        Worker({}, "", Logger(), 0.01)
     {
     }
 
@@ -92,6 +92,7 @@ public:
           false,
           Logger(),
           ProblemsFormat::MPS_FILE,
+          0.01,
           0.01),
         test_solver(std::make_shared<TestNOOPSolver>())
     {
@@ -111,7 +112,8 @@ public:
 
 protected:
     // Override Worker::init with NOOPWorker's implementation
-    // does not work as init is called from the WorkerMaster class inside WorkerMaster constructor..., so never call this init...
+    // does not work as init is called from the WorkerMaster class inside WorkerMaster
+    // constructor..., so never call this init...
     void init(const std::string& solver_name,
               int log_level,
               const SolverLogManager& solver_log_manager,

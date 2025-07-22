@@ -191,14 +191,27 @@ std::shared_ptr<SolverAbstract> Worker::solver() const
     return _solver;
 }
 
-Worker::Worker(VariableMap variable_map, std::filesystem::path path_to_mps, Logger logger):
+Worker::Worker(VariableMap variable_map,
+               std::filesystem::path path_to_mps,
+               Logger logger,
+               double cut_coefficient_tolerance):
     _path_to_mps{std::move(path_to_mps)},
     _name_to_id{std::move(variable_map)},
-    logger_{std::move(logger)}
+    logger_{std::move(logger)},
+    cut_coefficient_tolerance_{cut_coefficient_tolerance}
 {
 }
 
 void Worker::writeProb(const std::filesystem::path& out) const
 {
     solver_io_.write(_solver.get(), out);
+}
+
+void Worker::roundIfWithinTolerance(std::vector<double>& values) const
+{
+    std::transform(values.begin(),
+                   values.end(),
+                   values.begin(),
+                   [this](double value) -> double
+                   { return std::abs(value) < cut_coefficient_tolerance_ ? 0 : value; });
 }

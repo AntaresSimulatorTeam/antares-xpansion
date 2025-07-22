@@ -126,6 +126,7 @@ class XpansionConfigConstants:
             OptimisationKeys.batch_size_key(): self.batch_size_default_value(),
             OptimisationKeys.cache_problems_keys(): self.cache_problems_default_value(),
             OptimisationKeys.master_solution_tolerance_key(): self.master_solution_tolerance_default_value(),
+            OptimisationKeys.cut_coefficient_tolerance_key(): self.cut_coefficient_tolerance_default_value(),
         }
 
     def bound_alpha_default_value(self):
@@ -186,7 +187,10 @@ class XpansionConfigConstants:
         return False
 
     def master_solution_tolerance_default_value(self):
-        return 1e-4
+        return "1e-4"
+
+    def cut_coefficient_tolerance_default_value(self):
+        return "5e-3"
 
     def _initialize_default_values(self):
         self._set_constants()

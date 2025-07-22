@@ -19,8 +19,9 @@ SubproblemWorker::SubproblemWorker(const VariableMap& variable_map,
                                    int log_level,
                                    const SolverLogManager& solver_log_manager,
                                    Logger logger,
-                                   ProblemsFormat format):
-    Worker(variable_map, path_to_mps, std::move(logger))
+                                   ProblemsFormat format,
+                                   double cut_coefficient_tolerance):
+    Worker(variable_map, path_to_mps, std::move(logger), cut_coefficient_tolerance)
 {
     init(solver_name, log_level, solver_log_manager, format);
 
@@ -64,17 +65,6 @@ void SubproblemWorker::fix_to(const Point& x0) const
     solver_chgbounds(_solver, indexes, bndtypes, values);
 }
 
-static double INTTOL = 5e-3;
-
-void SubproblemWorker::roundIfWithinTolerance(std::vector<double>& values, double tolerance) const
-{
-    std::transform(values.begin(),
-                   values.end(),
-                   values.begin(),
-                   [tolerance](double value) -> double
-                   { return std::abs(value) < tolerance ? 0 : value; });
-}
-
 /*!
  *  \brief Get LP solution value of a problem
  *
@@ -85,7 +75,7 @@ void SubproblemWorker::get_subgradient(Point& s) const
     s.clear();
     std::vector<double> ptr(_solver->get_ncols());
     solver_getlpreducedcost(_solver, ptr);
-    roundIfWithinTolerance(ptr, INTTOL);
+    roundIfWithinTolerance(ptr);
     for (const auto& kvp: _id_to_name)
     {
         s[kvp.second] = +ptr[kvp.first];

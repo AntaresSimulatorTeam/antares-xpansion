@@ -92,7 +92,8 @@ void BendersMpi::BuildMasterProblem()
                                    IsResumeMode(),
                                    _logger,
                                    Options().PROBLEMS_FORMAT,
-                                   Options().MASTER_SOLUTION_TOLERANCE);
+                                   Options().MASTER_SOLUTION_TOLERANCE,
+                                   Options().CUT_COEFFICIENT_TOLERANCE);
     }
 }
 

@@ -525,7 +525,8 @@ std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
                                               Options().LOG_LEVEL,
                                               solver_log_manager_,
                                               _logger,
-                                              _options.PROBLEMS_FORMAT);
+                                              _options.PROBLEMS_FORMAT,
+                                              _options.CUT_COEFFICIENT_TOLERANCE);
 }
 
 void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
@@ -979,7 +980,8 @@ void BendersBase::AddSubproblem(const std::pair<std::string, VariableMap>& kvp)
       _options.LOG_LEVEL,
       solver_log_manager_,
       _logger,
-      _options.PROBLEMS_FORMAT);
+      _options.PROBLEMS_FORMAT,
+      _options.CUT_COEFFICIENT_TOLERANCE);
 }
 
 void BendersBase::free_subproblems()
@@ -1324,6 +1326,16 @@ void BendersBase::setCriterionComputationInputs(
     criterion_computation_ = Benders::Criterion::CriterionComputation(criterion_input_data);
 }
 
+/*!
+ *  \brief  _data.x_in is within the bounds thanks to restoreFeasibility called in
+WorkerMaster::get(...). This function helps to avoid x_cut getting inifinitely close to a bound due
+to the way it is updated using x_in:
+    - Suppose x_in = x_out = 1 in the first iteration
+    - Suppose x_out always 0 in the following iterations
+    - Then x_cut will be always divided by 2 (if separation_parameter = 0.5) each time, becoming
+inifinitely small. At some point we want to round it to the bound to avoid numerical issues. We
+reuse the setting MASTER_SOLUTION_TOLERANCE
+ */
 void BendersBase::roundXCut()
 {
     for (auto& kvp: _data.x_cut)
@@ -1331,22 +1343,14 @@ void BendersBase::roundXCut()
         double value = kvp.second;
         double lb = _data.min_invest.at(kvp.first);
         double ub = _data.max_invest.at(kvp.first);
-        // Case variable near 0
-        if (std::abs(value) < _options.MASTER_SOLUTION_TOLERANCE)
-        {
-            kvp.second = 0;
-        }
-        // Case variable slightly above ub
-        else if (value > ub && value < ub + _options.MASTER_SOLUTION_TOLERANCE)
-        {
-            kvp.second = ub;
-        }
-        // Case variable slightly lower than lb
-        else if (value < lb && value > lb - _options.MASTER_SOLUTION_TOLERANCE)
+
+        if (std::abs(value - lb) < _options.MASTER_SOLUTION_TOLERANCE)
         {
             kvp.second = lb;
         }
-        // Case integer variable: not handled here, as we don't have col_type info
-        // (if needed, can be extended)
+        else if (std::abs(value - ub) < _options.MASTER_SOLUTION_TOLERANCE)
+        {
+            kvp.second = ub;
+        }
     }
 }
