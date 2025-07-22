@@ -31,5 +31,5 @@ public:
 public:
     void fix_to(const Point& x0) const;
 
-    void get_subgradient(Point& s) const;
+    void get_subgradient(Point& subgradient) const;
 };

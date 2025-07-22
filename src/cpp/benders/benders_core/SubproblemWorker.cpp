@@ -70,15 +70,18 @@ void SubproblemWorker::fix_to(const Point& x0) const
  *
  *  \param s : Empty point which receives the solution
  */
-void SubproblemWorker::get_subgradient(Point& s) const
+void SubproblemWorker::get_subgradient(Point& subgradient) const
 {
-    s.clear();
+    subgradient.clear();
     std::vector<double> ptr(_solver->get_ncols());
     solver_getlpreducedcost(_solver, ptr);
+    
+    // If subgradients are numerically small, round to zero so that cuts generated later on are clean
     roundIfWithinTolerance(ptr);
+    
     for (const auto& kvp: _id_to_name)
     {
-        s[kvp.second] = +ptr[kvp.first];
+        subgradient[kvp.second] = +ptr[kvp.first];
     }
 }
 

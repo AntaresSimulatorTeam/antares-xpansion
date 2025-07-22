@@ -283,22 +283,24 @@ void WorkerMaster::define_matval_mclind_for_index(const int i,
  */
 // TODO : Refactor this with add_cut and define_matval_mclind(_for_index)
 void WorkerMaster::addSubproblemCut(int i,
-                                    const Point& s,
+                                    const Point& subgradient,
                                     const Point& x_cut,
                                     const double& rhs) const
 {
-    // cut is -theta_i + s.x <= -subproblem_cost + s.x_cut (in the solver)
-    // i.e. theta_i >= subproblem_cost + s.(x - x_cut) (human form)
-    int ncoeffs(1 + (int)s.size());
+    // cut is -theta_i + subgradient.x <= -subproblem_cost + subgradient.x_cut (in the solver)
+    // i.e. theta_i >= subproblem_cost + subgradient.(x - x_cut) (human form)
+    int ncoeffs(1 + (int)subgradient.size());
     std::vector<char> rowtype(1, 'L');
     std::vector<double> rowrhs(1, 0);
     std::vector<double> matval(ncoeffs, 1);
     std::vector<int> mstart = {0, ncoeffs};
     std::vector<int> mclind(ncoeffs);
 
-    DefineRhsWithMasterVariable(s, x_cut, rhs, rowrhs);
-    define_matval_mclind_for_index(i, s, matval, mclind);
+    DefineRhsWithMasterVariable(subgradient, x_cut, rhs, rowrhs);
+    define_matval_mclind_for_index(i, subgradient, matval, mclind);
 
+    // Round numerically small rhs to zero to get clean cuts and avoid numerical artifacts
+    // Cuts coefficients (obtained from subgradient) have already been rounded in SubproblemWorker::get_subgradient as it is best to round it as soon as possible (because subgradient information is also used as is to compute cut values : cf. compute_cut_val())
     roundIfWithinTolerance(rowrhs);
 
     solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
