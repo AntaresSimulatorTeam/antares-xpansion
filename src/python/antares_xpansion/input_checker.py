@@ -457,7 +457,7 @@ class OptionTypeError(Exception):
     pass
 
 
-class GapValueError(Exception):
+class PositiveFloatValueError(Exception):
     pass
 
 
@@ -597,7 +597,7 @@ def _check_setting_option_value(option, value):
                 "Illegal value %s for option %s : only positive values are allowed"
                 % (value, option)
             )
-            raise GapValueError
+            raise PositiveFloatValueError
 
     elif option == "max_iteration":
         return _check_max_iteration(value)
