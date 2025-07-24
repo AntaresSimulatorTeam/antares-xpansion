@@ -75,10 +75,11 @@ void SubproblemWorker::get_subgradient(Point& subgradient) const
     subgradient.clear();
     std::vector<double> ptr(_solver->get_ncols());
     solver_getlpreducedcost(_solver, ptr);
-    
-    // If subgradients are numerically small, round to zero so that cuts generated later on are clean
+
+    // If subgradients are numerically small, round to zero so that cuts generated later on are
+    // clean
     roundIfWithinTolerance(ptr);
-    
+
     for (const auto& kvp: _id_to_name)
     {
         subgradient[kvp.second] = +ptr[kvp.first];

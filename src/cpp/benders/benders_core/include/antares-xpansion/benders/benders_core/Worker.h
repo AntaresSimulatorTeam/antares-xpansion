@@ -17,11 +17,14 @@
 class Worker
 {
 public:
-    Worker(VariableMap variable_map, std::filesystem::path path_to_mps, Logger logger, double cut_coefficient_tolerance);
+    Worker(VariableMap variable_map,
+           std::filesystem::path path_to_mps,
+           Logger logger,
+           double cut_coefficient_tolerance);
     virtual void init(const std::string& solver_name,
-              int log_level,
-              const SolverLogManager& solver_log_manager,
-              ProblemsFormat format);
+                      int log_level,
+                      const SolverLogManager& solver_log_manager,
+                      ProblemsFormat format);
     virtual ~Worker() = default;
 
     void get_value(double& lb) const;

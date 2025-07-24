@@ -300,7 +300,9 @@ void WorkerMaster::addSubproblemCut(int i,
     define_matval_mclind_for_index(i, subgradient, matval, mclind);
 
     // Round numerically small rhs to zero to get clean cuts and avoid numerical artifacts
-    // Cuts coefficients (obtained from subgradient) have already been rounded in SubproblemWorker::get_subgradient as it is best to round it as soon as possible (because subgradient information is also used as is to compute cut values : cf. compute_cut_val())
+    // Cuts coefficients (obtained from subgradient) have already been rounded in
+    // SubproblemWorker::get_subgradient as it is best to round it as soon as possible (because
+    // subgradient information is also used as is to compute cut values : cf. compute_cut_val())
     roundIfWithinTolerance(rowrhs);
 
     solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
