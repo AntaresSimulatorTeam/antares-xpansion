@@ -6,6 +6,8 @@
 #include "antares-xpansion/benders/output/JsonWriter.h"
 #include "antares-xpansion/grid_evaluator/GridCollection.h"
 #include "antares-xpansion/grid_evaluator/GridEvaluator.h"
+#include "antares-xpansion/lpnamer/main/ConfigurationManager.h"
+#include "antares-xpansion/lpnamer/main/ProblemGenerationForWaterValueCalculation.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
 #include "gtest/gtest.h"
 
@@ -14,7 +16,7 @@
       << "Expected: " << (val2) << ", Actual: " << (val1) << ", Relative tolerance: " << (rel_tol) \
       << ", Relative error: " << std::abs((val1) - (val2)) / std::abs(val2)
 
-class GridSearchTest: public ::testing::Test
+class BellmanValuesComputeTest: public ::testing::Test
 {
 public:
     Logger logger;
@@ -38,7 +40,7 @@ protected:
 
     void copyData()
     {
-        std::filesystem::path data_dir = "data_test/mps_use_case_vu";
+        std::filesystem::path data_dir = "data_test/one_node_base";
         tmpDir = CreateRandomSubDir(std::filesystem::temp_directory_path());
 
         std::filesystem::copy(data_dir,
@@ -51,24 +53,20 @@ protected:
     {
         std::map<ScenarioAndWeek, std::vector<double>> costs;
 
-        std::ifstream file(tmpDir / "result.csv");
+        std::ifstream file(tmpDir / "result_bellman_values.csv");
         std::string line;
-        std::getline(file, line);
-
         while (std::getline(file, line))
         {
             std::stringstream ss(line);
             std::string token;
             std::vector<std::string> tokens;
+            int week = 1;
+            int scenario = 1;
             while (std::getline(ss, token, ','))
             {
-                tokens.push_back(token);
+                costs[{scenario, week}].push_back(std::stod(token));
+                week++;
             }
-            int scenario = std::stoi(tokens[4]);
-            int week = std::stoi(tokens[1]);
-            double cost = std::stod(tokens[5]);
-
-            costs[{scenario + 1, week + 1}].push_back(cost);
         }
         return costs;
     }
@@ -76,37 +74,45 @@ protected:
     std::filesystem::path original_dir;
 };
 
-TEST_F(GridSearchTest, MPSUseCaseValeursUsage)
+TEST_F(BellmanValuesComputeTest, OneNodeBaseCase)
 {
     copyData();
+    auto expected_costs = getOutputCosts();
+
     auto grid_collection = GridCollection(tmpDir / "grid.csv");
+    auto grid = grid_collection.gridDefinitions[0];
     Reservoir reservoir(tmpDir, "area");
     ReservoirManagement reservoir_management(reservoir, true);
+
+    auto options_parser = ProblemGenerationExeOptions();
+    auto config_manager = ConfigurationManager(options_parser);
+
+    ConfigurationManager::ConfigDirectories config_dirs{
+      .study_dir = tmpDir,
+      .simulation_dir = config_manager.generateOutputName(tmpDir),
+    };
+
+    ProblemGenerationForWaterValueCalculation pbg(config_dirs);
+    auto mps_path = pbg.updateProblems(grid);
+
     auto valeurs_usage = GridEvaluator(logger,
                                        writer,
-                                       tmpDir,
-                                       grid_collection.gridDefinitions[0],
+                                       mps_path,
+                                       grid,
                                        reservoir_management,
                                        ProblemsFormat::MPS_FILE,
                                        8);
-    auto res = valeurs_usage.ComputeRewards();
+    valeurs_usage.ComputeRewards();
+    auto res = valeurs_usage.ComputeBellmanValues();
 
-    auto output_costs = getOutputCosts();
-    EXPECT_EQ(output_costs.size(), 52 * 10);
-
-    for (const auto& [key, cost]: res)
+    for (int week = 1; week <= res.size(); week++)
     {
-        ScenarioAndWeek keyStruct{key.scenario, key.week};
-
-        if (output_costs.count(keyStruct) > 0 && !output_costs[keyStruct].empty())
+        for (int level_index = 0; level_index < res[week].size(); level_index++)
         {
-            EXPECT_NEAR_REL(output_costs[keyStruct][0], cost, 1e-6);
-            output_costs[keyStruct].erase(output_costs[keyStruct].begin());
-        }
-        else
-        {
-            FAIL() << "Missing or empty entry for key: " << keyStruct.scenario << ", "
-                   << keyStruct.week;
+            double cost = res[week - 1][level_index];
+            double expected_cost = expected_costs[{1, week}][0];
+            EXPECT_NEAR_REL(cost, expected_cost, 1e-6);
+            expected_costs[{1, week}].erase(expected_costs[{1, week}].begin());
         }
     }
 }

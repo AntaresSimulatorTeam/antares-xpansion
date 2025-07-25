@@ -1,0 +1,81 @@
+[Benders][INFO 13-06-2025 14:04:51] Warning: Environment variable XPRESSDIR undefined.
+
+[Benders][INFO 13-06-2025 14:04:51] Info: Found the Xpress library in /opt/xpressmp/lib/libxprs.so.
+
+[Benders][INFO 13-06-2025 14:04:51] Initialising xpress-MP with parameter /opt/xpressmp/lib
+
+[Benders][INFO 13-06-2025 14:04:51] Xpress banner :
+FICO Xpress Solver 64bit v9.4.0 Apr 16 2024
+(c) Copyright Fair Isaac Corporation 1983-2024. All rights reserved
+
+[Benders][INFO 13-06-2025 14:04:51] Warning: Optimizer version: 43.01.01 (Antares-Xpansion use Xpress interface version 41).
+
+[Benders][INFO 13-06-2025 14:04:51] lp_status is : INFEASIBLE
+written in ./problem-1-1--optim-nb-1_lp_status_INFEASIBLE.mps
+
+[Benders][INFO 13-06-2025 14:04:51] Logged from function 'solve' in file '/home/workspace/antares-xpansion-generic/src/cpp/benders/benders_core/Worker.cpp' at line 113.
+Invalid solver status INFEASIBLE optimality expected
+[Benders][INFO 13-06-2025 14:41:34] Warning: Environment variable XPRESSDIR undefined.
+
+[Benders][INFO 13-06-2025 14:41:34] Info: Found the Xpress library in /opt/xpressmp/lib/libxprs.so.
+
+[Benders][INFO 13-06-2025 14:41:34] Initialising xpress-MP with parameter /opt/xpressmp/lib
+
+[Benders][INFO 13-06-2025 14:41:34] Xpress banner :
+FICO Xpress Solver 64bit v9.4.0 Apr 16 2024
+(c) Copyright Fair Isaac Corporation 1983-2024. All rights reserved
+
+[Benders][INFO 13-06-2025 14:41:34] Warning: Optimizer version: 43.01.01 (Antares-Xpansion use Xpress interface version 41).
+
+[Benders][INFO 13-06-2025 15:46:08] Warning: Environment variable XPRESSDIR undefined.
+
+[Benders][INFO 13-06-2025 15:46:09] Info: Found the Xpress library in /opt/xpressmp/lib/libxprs.so.
+
+[Benders][INFO 13-06-2025 15:46:09] Initialising xpress-MP with parameter /opt/xpressmp/lib
+
+[Benders][INFO 13-06-2025 15:46:09] Xpress banner :
+FICO Xpress Solver 64bit v9.4.0 Apr 16 2024
+(c) Copyright Fair Isaac Corporation 1983-2024. All rights reserved
+
+[Benders][INFO 13-06-2025 15:46:09] Warning: Optimizer version: 43.01.01 (Antares-Xpansion use Xpress interface version 41).
+
+[Benders][INFO 26-06-2025 14:26:54] lp_status is : INFEASIBLE
+written in ./problem-1-2--optim-nb-1_lp_status_INFEASIBLE.mps
+
+[Benders][INFO 26-06-2025 14:26:54] Logged from function 'solve' in file '/home/workspace/antares-xpansion-generic/src/cpp/benders/benders_core/Worker.cpp' at line 113.
+Invalid solver status INFEASIBLE optimality expected
+[Benders][INFO 26-06-2025 14:28:20] lp_status is : INFEASIBLE
+written in ./problem-1-2--optim-nb-1_lp_status_INFEASIBLE.mps
+
+[Benders][INFO 26-06-2025 14:28:20] Logged from function 'solve' in file '/home/workspace/antares-xpansion-generic/src/cpp/benders/benders_core/Worker.cpp' at line 113.
+Invalid solver status INFEASIBLE optimality expected
+[Benders][INFO 26-06-2025 15:53:47] lp_status is : INFEASIBLE
+written in ./problem-1-1--optim-nb-1_lp_status_INFEASIBLE.mps
+
+[Benders][INFO 26-06-2025 15:53:47] Logged from function 'solve' in file '/home/workspace/antares-xpansion-generic/src/cpp/benders/benders_core/Worker.cpp' at line 113.
+Invalid solver status INFEASIBLE optimality expected
+[Benders][INFO 26-06-2025 15:54:13] lp_status is : INFEASIBLE
+written in ./problem-1-1--optim-nb-1_lp_status_INFEASIBLE.mps
+
+[Benders][INFO 26-06-2025 15:54:14] Logged from function 'solve' in file '/home/workspace/antares-xpansion-generic/src/cpp/benders/benders_core/Worker.cpp' at line 113.
+Invalid solver status INFEASIBLE optimality expected
+[Benders][INFO 27-06-2025 11:35:22] lp_status is : INFEASIBLE
+written in ./problem-1-2--optim-nb-1_lp_status_INFEASIBLE.mps
+
+[Benders][INFO 27-06-2025 11:35:22] Logged from function 'solve' in file '/home/workspace/antares-xpansion-generic/src/cpp/benders/benders_core/Worker.cpp' at line 113.
+Invalid solver status INFEASIBLE optimality expected
+[Benders][INFO 27-06-2025 11:40:16] lp_status is : INFEASIBLE
+written in ./problem-1-2--optim-nb-1_lp_status_INFEASIBLE.mps
+
+[Benders][INFO 27-06-2025 11:40:16] Logged from function 'solve' in file '/home/workspace/antares-xpansion-generic/src/cpp/benders/benders_core/Worker.cpp' at line 113.
+Invalid solver status INFEASIBLE optimality expected
+[Benders][INFO 27-06-2025 16:26:48] lp_status is : INFEASIBLE
+written in ./problem-1-2--optim-nb-1_lp_status_INFEASIBLE.mps
+
+[Benders][INFO 27-06-2025 16:26:48] Logged from function 'solve' in file '/home/workspace/antares-xpansion-generic/src/cpp/benders/benders_core/Worker.cpp' at line 113.
+Invalid solver status INFEASIBLE optimality expected
+[Benders][INFO 27-06-2025 16:44:30] lp_status is : INFEASIBLE
+written in ./problem-1-2--optim-nb-1_lp_status_INFEASIBLE.mps
+
+[Benders][INFO 27-06-2025 16:44:30] Logged from function 'solve' in file '/home/workspace/antares-xpansion-generic/src/cpp/benders/benders_core/Worker.cpp' at line 113.
+Invalid solver status INFEASIBLE optimality expected

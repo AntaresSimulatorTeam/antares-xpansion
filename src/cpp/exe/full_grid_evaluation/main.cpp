@@ -1,8 +1,6 @@
 
 #include <iostream>
 
-#include <antares/api/solver.h>
-
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/grid_evaluator/GridCollection.h"
 #include "antares-xpansion/grid_evaluator/GridEvaluator.h"
@@ -12,37 +10,27 @@
 #include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
 #include "malloc.h"
 
-std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> generateProblems(
-  std::filesystem::path studyPath,
-  std::filesystem::path outputPath)
+std::vector<double> interpolateVector(std::vector<double> values, int size)
 {
-    Output::ConcurrentInsertionMap<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
-      problems;
-    Antares::Solver::Optimization::OptimizationOptions optOptions;
-    optOptions.linearSolver = "coin";
+    std::vector<double> interpolatedValues(size);
+    return interpolatedValues;
+}
 
-    auto [results, error] = Antares::API::PerformSimulation(studyPath, outputPath, optOptions);
-
-#ifndef _WIN32
-    malloc_trim(0);
-#endif
-
-    // Handle errors
-    if (error)
+void saveBellmanValues(const std::filesystem::path& path,
+                       const std::vector<std::vector<double>> bellmanValues)
+{
+    std::ofstream file(path);
+    for (const auto& weekValues: bellmanValues)
     {
-        throw LogUtils::XpansionError<std::runtime_error>("Antares simulation failed:\n\t"
-                                                            + error->reason,
-                                                          LOGLOCATION);
+        // interpolate the bellman values of a week from n to 101
+        // using linear interpolation
+        auto interpolatedValues = interpolateVector(weekValues, 101);
+        for (const auto& value: interpolatedValues)
+        {
+            file << value << " ";
+        }
+        file << "\n";
     }
-
-    XpansionProblemsFromAntaresProvider adapter(results);
-    for (const auto& [pbId, _]: results.weeklyProblems)
-    {
-        auto solver_log_manager = SolverLogManager(outputPath / "solver.log");
-        auto problem = adapter.provideProblem("CBC", solver_log_manager, pbId);
-        problems.insert(pbId, problem);
-    }
-    return problems.get();
 }
 
 int main(int argc, char** argv)
@@ -51,30 +39,28 @@ int main(int argc, char** argv)
     {
         auto options_parser = ProblemGenerationExeOptions();
         options_parser.Parse(argc, argv);
+        auto path_to_data = options_parser.StudyPath();
 
-        auto gridCollection = std::make_shared<GridCollection>(options_parser.StudyPath()
-                                                               / "grid.csv");
+        auto gridCollection = std::make_shared<GridCollection>(path_to_data / "grid.csv");
 
-        Reservoir reservoir(options_parser.StudyPath(), "area");
+        Reservoir reservoir(path_to_data, "area");
         ReservoirManagement reservoir_management(reservoir, true);
 
         ConfigurationManager configuration_manager(options_parser);
-        auto path_to_data = options_parser.StudyPath();
         auto report_path = path_to_data / "report.txt";
         auto logger_factory = FileAndStdoutLoggerFactory(report_path, false);
         Logger logger = logger_factory.get_logger();
         auto writer = std::make_shared<Output::JsonWriter>(std::make_shared<Clock>(),
                                                            path_to_data / "output.json");
 
-        std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> problems;
-        problems = generateProblems(path_to_data,
-                                    configuration_manager.Directories().simulation_dir);
+        std::cout << "Generating problems" << std::endl;
+        ProblemGenerationForWaterValueCalculation pbg(configuration_manager.Directories());
+        std::cout << "Problems generated" << std::endl;
 
         Output::VariationDeNiveauxDeStockData variationDeNiveauxDeStockData;
         for (auto& grid: gridCollection->gridDefinitions)
         {
-            ProblemGenerationForWaterValueCalculation pbg(options_parser, problems, grid);
-            auto mps_path = pbg.updateProblems();
+            auto mps_path = pbg.updateProblems(grid);
 
             auto evaluator = GridEvaluator(logger,
                                            writer,
@@ -82,10 +68,11 @@ int main(int argc, char** argv)
                                            grid,
                                            reservoir_management,
                                            ProblemsFormat::MPS_FILE,
-                                           1);
+                                           8);
             variationDeNiveauxDeStockData[grid.gridID] = evaluator.ComputeRewards();
 
-            evaluator.ComputeBellmanValues();
+            auto bellmanValues = evaluator.ComputeBellmanValues();
+            saveBellmanValues(path_to_data / "bellman_values.csv", bellmanValues);
         }
 
         writer->write_VariationDeNiveauxDeStock(variationDeNiveauxDeStockData);

@@ -549,8 +549,7 @@ auto linspace(double start, double end, int num)
 std::vector<std::vector<double>> GridEvaluator::ComputeBellmanValues()
 {
     // auto X = gridDefinition.gridElements[0].values; // discretization of hydro level
-
-    auto X = linspace(0.0, reservoirManagement.reservoir.capacity, 21);
+    auto X = linspace(0.0, reservoirManagement.reservoir.capacity, 11);
     std::map<ScenarioAndWeek, std::vector<double>> V;
     std::map<ScenarioAndWeek, std::vector<double>> rewards;
 
@@ -581,18 +580,16 @@ std::vector<std::vector<double>> GridEvaluator::ComputeBellmanValues()
             std::set<double> breaking_points = {
               *gridDefinition.gridElements[0].values[{scenario, week}].begin(),
               *gridDefinition.gridElements[0].values[{scenario, week}].rbegin()};
-            int i = 0;
-            for (const double& level: X)
+            for (size_t i = 0; i < X.size(); ++i)
             {
                 double Vu = SolveWeeklyProblemWithReward(week,
                                                          scenario,
-                                                         level,
+                                                         X[i],
                                                          X,
                                                          rewards[{scenario, week}],
                                                          V_fut(),
                                                          breaking_points);
                 V[{scenario, week}][i] += Vu;
-                ++i;
             }
         }
 
@@ -636,36 +633,35 @@ double GridEvaluator::SolveWeeklyProblemWithReward(int week,
                                                    const std::function<double(double)>& V_fut,
                                                    std::set<double>& breaking_points)
 {
-    double Vu = std::numeric_limits<double>::lowest();
+    double Vu = std::numeric_limits<double>::max();
     const Reservoir reservoir = reservoirManagement.reservoir;
 
     for (double value_fut: X)
     {
-        double u = value_fut + level + reservoir.inflow[week][scenario];
-        if (reservoir.max_pumping[week] * reservoir.efficiency < u
-            && (reservoirManagement.overflow || u <= reservoir.max_generating[week]))
+        double u = -value_fut + level + reservoir.inflow[week - 1][scenario - 1];
+        if ((-reservoir.max_pumping[week - 1] * reservoir.efficiency <= u)
+            && (reservoirManagement.overflow || u <= reservoir.max_generating[week - 1]))
         {
-            u = std::min(u, reservoir.max_generating[week]);
-            breaking_points.insert(u);
+            u = std::min(u, reservoir.max_generating[week - 1]);
             double G = interpolate(gridDefinition.gridElements[0].values[{scenario, week}],
                                    rewards,
                                    u);
-            if (G + V_fut(value_fut) > Vu)
+            if (G + V_fut(value_fut) < Vu)
             {
                 Vu = G + V_fut(value_fut);
             }
         }
     }
 
-    for (double u: breaking_points)
+    for (double u: gridDefinition.gridElements[0].values[{scenario, week}])
     {
-        double state_fut = level - u + reservoir.inflow[week][scenario];
+        double state_fut = level - u + reservoir.inflow[week - 1][scenario - 1];
         if (0 <= state_fut && state_fut <= reservoir.capacity)
         {
             double G = interpolate(gridDefinition.gridElements[0].values[{scenario, week}],
                                    rewards,
-                                   state_fut);
-            if (G + V_fut(state_fut) > Vu)
+                                   u);
+            if (G + V_fut(state_fut) < Vu)
             {
                 Vu = G + V_fut(state_fut);
             }

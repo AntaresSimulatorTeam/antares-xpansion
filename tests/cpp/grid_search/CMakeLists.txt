@@ -6,7 +6,6 @@ target_link_libraries(grid_search_test
         antaresXpansion::grid_search_lib
         antaresXpansion::output_core
         antaresXpansion::logger_lib
-        tests_utils
         GTest::Main
         tests_utils)
 

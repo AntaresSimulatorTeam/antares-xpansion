@@ -51,7 +51,7 @@ GridCollection::GridCollection(const std::filesystem::path& path_to_file)
             gridDefinitions.push_back({gridID, {}});
         }
         gridDefinitions[gridID].gridElements.push_back(
-          {pbName, type, cstName, areaName, min, max, step, minCst, maxCst, minEfficiency});
+          {pbName, type, cstName, areaName, min, max, step, minCst, maxCst, minEfficiency, {}});
     }
 }
 

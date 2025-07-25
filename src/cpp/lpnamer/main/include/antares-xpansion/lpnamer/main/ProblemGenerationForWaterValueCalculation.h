@@ -26,20 +26,16 @@ class ProblemGenerationForWaterValueCalculation
 {
 public:
     explicit ProblemGenerationForWaterValueCalculation(
-      ProblemGenerationOptions& options,
-      const std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> problems,
-      const GridDefinition& gridDefinition);
+      ConfigurationManager::ConfigDirectories directories);
     virtual ~ProblemGenerationForWaterValueCalculation() = default;
-    std::filesystem::path updateProblems();
-    const ProblemGenerationOptions& options_;
+    std::filesystem::path updateProblems(const GridDefinition& gridDefinition);
 
 private:
     std::filesystem::path CleanProblemsForBellmanCalculations(
       const std::filesystem::path& xpansion_output_dir,
-      const std::filesystem::path& log_file_path);
+      const std::filesystem::path& log_file_path,
+      const GridDefinition& gridDefinition);
 
-    ConfigurationManager configuration_manager_;
-    ConfigurationManager::ConfigDirectories directories_;
-    const std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> problems;
-    const GridDefinition& gridDefinition;
+    ConfigurationManager::ConfigDirectories directories;
+    std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> problems;
 };

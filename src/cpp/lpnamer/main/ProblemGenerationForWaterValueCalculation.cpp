@@ -7,6 +7,7 @@
 
 #include <antares/api/solver.h>
 
+#include "antares-xpansion/benders/output/OutputWriter.h"
 #include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
 #include "malloc.h"
 
@@ -32,33 +33,54 @@ static void CreateDirectories(const std::filesystem::path& output_path)
 /// @param problems The problems to be modified
 /// @param gridDefinition The grid definition
 ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalculation(
-  ProblemGenerationOptions& options,
-  const std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> problems,
-  const GridDefinition& gridDefinition):
-    options_(options),
-    configuration_manager_(options),
-    problems(problems),
-    gridDefinition(gridDefinition)
+  ConfigurationManager::ConfigDirectories directories):
+    directories(directories)
 {
+    Antares::Solver::Optimization::OptimizationOptions optOptions;
+    optOptions.linearSolver = "coin";
+
+    auto [results, error] = Antares::API::PerformSimulation(directories.study_dir,
+                                                            directories.simulation_dir,
+                                                            optOptions);
+
+#ifndef _WIN32
+    malloc_trim(0);
+#endif
+
+    // Handle errors
+    if (error)
+    {
+        throw LogUtils::XpansionError<std::runtime_error>("Antares simulation failed:\n\t"
+                                                            + error->reason,
+                                                          LOGLOCATION);
+    }
+
+    XpansionProblemsFromAntaresProvider adapter(results);
+    for (const auto& [pbId, _]: results.weeklyProblems)
+    {
+        auto solver_log_manager = SolverLogManager(directories.simulation_dir / "solver.log");
+        auto problem = adapter.provideProblem("CBC", solver_log_manager, pbId);
+        problems[pbId] = problem;
+    }
 }
 
 /// @brief Update the problems for the water value calculation
 /// @return The path to the output mps file
-std::filesystem::path ProblemGenerationForWaterValueCalculation::updateProblems()
+std::filesystem::path ProblemGenerationForWaterValueCalculation::updateProblems(
+  const GridDefinition& gridDefinition)
 {
     using namespace std::string_literals;
-    directories_ = configuration_manager_.Directories();
 
-    const auto log_file_path = directories_.xpansion_output_dir / "lp"s
-                               / "ProblemGenerationLog.txt"s;
+    const auto log_file_path = directories.simulation_dir / "lp"s / "ProblemGenerationLog.txt"s;
 
-    CreateDirectories(directories_.xpansion_output_dir);
+    CreateDirectories(directories.simulation_dir);
     auto logger = ProblemGenerationLog::BuildLogger(log_file_path,
                                                     std::cout,
                                                     "Problem Generation"s);
 
-    auto outputMpsPath = CleanProblemsForBellmanCalculations(directories_.xpansion_output_dir,
-                                                             log_file_path);
+    auto outputMpsPath = CleanProblemsForBellmanCalculations(directories.simulation_dir,
+                                                             log_file_path,
+                                                             gridDefinition);
 
     return outputMpsPath;
 }
@@ -70,7 +92,8 @@ std::filesystem::path ProblemGenerationForWaterValueCalculation::updateProblems(
 std::filesystem::path
 ProblemGenerationForWaterValueCalculation::CleanProblemsForBellmanCalculations(
   const std::filesystem::path& xpansion_output_dir,
-  const std::filesystem::path& log_file_path)
+  const std::filesystem::path& log_file_path,
+  const GridDefinition& gridDefinition)
 {
     auto solver_log_manager = SolverLogManager(log_file_path);
 
