@@ -136,7 +136,6 @@ TEST_F(WorkerMasterTest, GetHandlesUpperBoundViolation)
 
 TEST_F(WorkerMasterTest, GetHandlesLowerBoundViolation)
 {
-    std::cout << "strat" << std::endl;
     std::vector<double> solution = {1.0, -0.001, 2.0, 100.0, 50.0};
     std::vector<char> col_types = {'C', 'C', 'C', 'C', 'C'};
     std::vector<double> lbs = {0.0, 0.0, 0.0, -1e20, -1e20};
@@ -147,9 +146,7 @@ TEST_F(WorkerMasterTest, GetHandlesLowerBoundViolation)
     auto master = init_worker_master(master_solution_tolerance, cut_coefficient_tolerance);
     std::dynamic_pointer_cast<TestNOOPSolver>(master->_solver)
       ->setSolverBehavior(solution, col_types, lbs, ubs);
-    std::cout << "set noop ok" << std::endl;
     master->get(x_out, overall_cost, single_costs);
-    std::cout << "get ok" << std::endl;
 
     EXPECT_DOUBLE_EQ(x_out["var1"], 1.0);    // Should remain unchanged
     EXPECT_DOUBLE_EQ(x_out["var2"], 0.0);    // Should be restored to LB
