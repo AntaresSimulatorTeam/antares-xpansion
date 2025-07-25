@@ -1,5 +1,3 @@
-
-
 from pathlib import Path
 
 from antares_xpansion.logger import step_logger
@@ -61,18 +59,18 @@ class SplitLinkProfile:
 
     def write_splited_profile(self, two_profiles, first_profile, indirect_profile):
         direct_file = self._link_profile_file.parent / \
-            (self.DIRECT_SUFFIX+self._link_profile_file.name)
+                      (self.DIRECT_SUFFIX + self._link_profile_file.name)
         indirect_file = self._link_profile_file.parent / \
-            (self.INDIRECT_SUFFIX +
-             self._link_profile_file.name) if two_profiles else direct_file
+                        (self.INDIRECT_SUFFIX +
+                         self._link_profile_file.name) if two_profiles else direct_file
 
-        self.logger.info(
+        self.logger.debug(
             f"Direct link profile: {direct_file.name} is created from link-profile file: {self._link_profile_file.name}")
         with open(direct_file, "w") as direct:
             direct.writelines(["%s\n" % item for item in first_profile])
 
         if (two_profiles):
-            self.logger.info(
+            self.logger.debug(
                 f"Indirect link profile: {indirect_file.name} is created from link-profile file: {self._link_profile_file.name}")
             with open(indirect_file, "w") as indirect:
                 indirect.writelines(["%s\n" % item for item in indirect_profile]
