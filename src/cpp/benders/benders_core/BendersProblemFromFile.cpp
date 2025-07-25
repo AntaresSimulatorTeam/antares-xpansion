@@ -5,7 +5,8 @@ BendersProblemFromFile::BendersProblemFromFile(const std::filesystem::path& prob
 {
 }
 
-void BendersProblemFromFile::provide_problem(const SolverIO& solver_io, std::shared_ptr<SolverAbstract> solver) const
+void BendersProblemFromFile::provide_problem(const SolverIO& solver_io,
+                                             std::shared_ptr<SolverAbstract> solver) const
 {
     solver_io.read(solver.get(), problem_file_path);
 }

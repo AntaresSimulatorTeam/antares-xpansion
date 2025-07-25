@@ -38,19 +38,19 @@ public:
         std::copy(solution.begin(), solution.end(), sol);
     }
 
-    void get_col_type(char* coltype, int start, int end) const override
+    void get_col_type(char* coltype, int, int) const override
     {
-        std::copy(col_types.begin() + start, col_types.end() + end, coltype);
+        std::copy(col_types.begin(), col_types.end(), coltype);
     }
 
-    void get_lb(double* lb, int start, int end) const override
+    void get_lb(double* lb, int, int) const override
     {
-        std::copy(lbs.begin() + start, lbs.end() + end + 1, lb);
+        std::copy(lbs.begin(), lbs.end(), lb);
     }
 
-    void get_ub(double* ub, int start, int end) const override
+    void get_ub(double* ub, int, int) const override
     {
-        std::copy(ubs.begin() + start, ubs.end() + end, ub);
+        std::copy(ubs.begin(), ubs.end(), ub);
     }
 
 private:
@@ -85,13 +85,13 @@ protected:
     double overall_cost;
     DblVector single_costs{0.0};
 
-    WorkerMaster init_worker_master(double master_solution_tolerance,
+    std::shared_ptr<WorkerMaster> init_worker_master(double master_solution_tolerance,
                                     double cut_coefficient_tolerance) const
     {
         auto test_solver = std::make_shared<TestNOOPSolver>();
         auto solver_log_manager = SolverLogManager();
         auto problem_provider = std::make_shared<NOOPBendersProblemProvider>();
-        auto master = WorkerMaster({},
+        auto master = std::shared_ptr<WorkerMaster> (new WorkerMaster({},
                                    "COIN",
                                    0,
                                    1,
@@ -101,11 +101,11 @@ protected:
                                    ProblemsFormat::MPS_FILE,
                                    problem_provider.get(),
                                    master_solution_tolerance,
-                                   cut_coefficient_tolerance);
-        master._solver = test_solver;
-        master._id_to_name = {{0, "var1"}, {1, "var2"}, {2, "var3"}};
-        master.set_id_alpha(3);
-        master.set_id_single_subpb_costs_under_approx({4});
+                                   cut_coefficient_tolerance));
+        master->_solver = test_solver;
+        master->_id_to_name = {{0, "var1"}, {1, "var2"}, {2, "var3"}};
+        master->set_id_alpha(3);
+        master->set_id_single_subpb_costs_under_approx({4});
         return master;
     }
 };
@@ -121,9 +121,9 @@ TEST_F(WorkerMasterTest, GetHandlesUpperBoundViolation)
     double master_solution_tolerance = 0.1;
     double cut_coefficient_tolerance = 0.1;
     auto master = init_worker_master(master_solution_tolerance, cut_coefficient_tolerance);
-    std::dynamic_pointer_cast<TestNOOPSolver>(master._solver)
+    std::dynamic_pointer_cast<TestNOOPSolver>(master->_solver)
       ->setSolverBehavior(solution, col_types, lbs, ubs);
-    master.get(x_out, overall_cost, single_costs);
+    master->get(x_out, overall_cost, single_costs);
 
     EXPECT_DOUBLE_EQ(
       x_out["var1"],
@@ -145,10 +145,10 @@ TEST_F(WorkerMasterTest, GetHandlesLowerBoundViolation)
     double master_solution_tolerance = 0.1;
     double cut_coefficient_tolerance = 0.1;
     auto master = init_worker_master(master_solution_tolerance, cut_coefficient_tolerance);
-    std::dynamic_pointer_cast<TestNOOPSolver>(master._solver)
+    std::dynamic_pointer_cast<TestNOOPSolver>(master->_solver)
       ->setSolverBehavior(solution, col_types, lbs, ubs);
     std::cout << "set noop ok" << std::endl;
-    master.get(x_out, overall_cost, single_costs);
+    master->get(x_out, overall_cost, single_costs);
     std::cout << "get ok" << std::endl;
 
     EXPECT_DOUBLE_EQ(x_out["var1"], 1.0);    // Should remain unchanged
@@ -168,9 +168,9 @@ TEST_F(WorkerMasterTest, GetHandlesIntegerVariables)
     double master_solution_tolerance = 0.1;
     double cut_coefficient_tolerance = 0.1;
     auto master = init_worker_master(master_solution_tolerance, cut_coefficient_tolerance);
-    std::dynamic_pointer_cast<TestNOOPSolver>(master._solver)
+    std::dynamic_pointer_cast<TestNOOPSolver>(master->_solver)
       ->setSolverBehavior(solution, col_types, lbs, ubs);
-    master.get(x_out, overall_cost, single_costs);
+    master->get(x_out, overall_cost, single_costs);
 
     EXPECT_DOUBLE_EQ(x_out["var1"], 1.0); // Continuous - should remain unchanged
     EXPECT_DOUBLE_EQ(x_out["var2"],

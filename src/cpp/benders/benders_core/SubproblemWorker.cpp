@@ -12,16 +12,15 @@
  *  \param problem_name : Name of the problem
  *
  */
-SubproblemWorker::SubproblemWorker(
-  const VariableMap& variable_map,
-  double slave_weight,
-  const std::string& solver_name,
-  int log_level,
-  const SolverLogManager& solver_log_manager,
-  Logger logger,
-  ProblemsFormat format,
-  IBendersProblemProvider* benders_problem_provider,
-  double cut_coefficient_tolerance):
+SubproblemWorker::SubproblemWorker(const VariableMap& variable_map,
+                                   double slave_weight,
+                                   const std::string& solver_name,
+                                   int log_level,
+                                   const SolverLogManager& solver_log_manager,
+                                   Logger logger,
+                                   ProblemsFormat format,
+                                   IBendersProblemProvider* benders_problem_provider,
+                                   double cut_coefficient_tolerance):
     Worker(variable_map, std::move(logger), cut_coefficient_tolerance)
 {
     init(solver_name, log_level, solver_log_manager, format, benders_problem_provider);
