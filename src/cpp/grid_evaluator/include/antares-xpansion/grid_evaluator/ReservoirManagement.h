@@ -12,7 +12,7 @@ using IniMap = std::unordered_map<std::string,
 class Reservoir
 {
 public:
-    static constexpr int weeks_in_year = 52;
+    static constexpr int weeks_in_year = 11;
     static constexpr int hours_in_week = 168;
     static constexpr int hours_in_day = 24;
     static constexpr int days_in_week = hours_in_week / hours_in_day;
