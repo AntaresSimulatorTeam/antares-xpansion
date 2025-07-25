@@ -15,7 +15,6 @@
  *  \param subproblems_count : number of subproblems
  */
 WorkerMaster::WorkerMaster(const VariableMap& variable_map,
-                           const std::filesystem::path& path_to_mps,
                            const std::string& solver_name,
                            const int log_level,
                            int subproblems_count,
@@ -23,16 +22,17 @@ WorkerMaster::WorkerMaster(const VariableMap& variable_map,
                            const bool mps_has_alpha,
                            Logger logger,
                            ProblemsFormat format,
+                           IBendersProblemProvider* benders_problem_provider,
                            double master_solution_tolerance,
                            double cut_coefficient_tolerance):
-    Worker(variable_map, path_to_mps, std::move(logger), cut_coefficient_tolerance),
+    Worker(variable_map, std::move(logger), cut_coefficient_tolerance),
     subproblems_count{subproblems_count},
     _mps_has_alpha{mps_has_alpha},
     _master_solution_tolerance{master_solution_tolerance}
 {
     _is_master = true;
 
-    init(solver_name, log_level, solver_log_manager, format);
+    init(solver_name, log_level, solver_log_manager, format, benders_problem_provider);
     if (!_mps_has_alpha)
     {
         _set_upper_bounds();

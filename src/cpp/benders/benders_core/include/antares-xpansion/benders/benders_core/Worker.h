@@ -2,6 +2,7 @@
 
 #include <filesystem>
 
+#include "IBendersProblemProvider.h"
 #include "SolverIO.h"
 #include "antares-xpansion/benders/output/OutputWriter.h"
 #include "antares-xpansion/multisolver_interface/Solver.h"
@@ -12,19 +13,17 @@
  * \class Worker
  * \brief Mother-class Worker
  *
- *  This class opens and sets a problem from a mps and a mapping variable map
+ *  This class opens and sets a problem using a BendersProblemProvider and a mapping variable map
  */
 class Worker
 {
 public:
-    Worker(VariableMap variable_map,
-           std::filesystem::path path_to_mps,
-           Logger logger,
-           double cut_coefficient_tolerance);
+    Worker(VariableMap variable_map, Logger logger, double cut_coefficient_tolerance);
     virtual void init(const std::string& solver_name,
                       int log_level,
                       const SolverLogManager& solver_log_manager,
-                      ProblemsFormat format);
+                      ProblemsFormat format,
+                      IBendersProblemProvider* benders_problem_provider);
     virtual ~Worker() = default;
 
     void get_value(double& lb) const;
@@ -36,7 +35,7 @@ public:
     [[nodiscard]] virtual std::shared_ptr<SolverAbstract> solver() const;
 
 public:
-    std::filesystem::path _path_to_mps;
+    std::filesystem::path _base_filename;
     VariableMap _name_to_id; /*!< Link between the variable name and its identifier */
     Int2Str _id_to_name;     /*!< Link between the identifier of a variable and its name*/
 
@@ -72,7 +71,6 @@ public:
     Logger logger_;
 
 private:
-    void read_prob(SolverAbstract* problem, const std::filesystem::path& path) const;
     SolverIO solver_io_;
     void writeProb(const std::filesystem::path& out) const;
     double cut_coefficient_tolerance_;

@@ -5,6 +5,7 @@
 #include <numeric>
 #include <utility>
 
+#include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
 #include "antares-xpansion/benders/benders_core/LastIterationPrinter.h"
 #include "antares-xpansion/benders/benders_core/LastIterationReader.h"
 #include "antares-xpansion/benders/benders_core/LastIterationWriter.h"
@@ -518,14 +519,17 @@ std::shared_ptr<SubproblemWorker> BendersBase::BuildProblem(
 std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
   const std::pair<std::string, VariableMap>& kvp) const
 {
+    std::shared_ptr<IBendersProblemProvider>
+      benders_problem_provider = std::make_shared<BendersProblemFromFile>(
+        GetSubproblemPath(kvp.first));
     return std::make_shared<SubproblemWorker>(kvp.second,
-                                              GetSubproblemPath(kvp.first),
                                               SubproblemWeight(_data.nsubproblem, kvp.first),
                                               Options().SOLVER_NAME,
                                               Options().LOG_LEVEL,
                                               solver_log_manager_,
                                               _logger,
                                               _options.PROBLEMS_FORMAT,
+                                              benders_problem_provider.get(),
                                               _options.CUT_COEFFICIENT_TOLERANCE);
 }
 
@@ -972,15 +976,18 @@ WorkerMasterPtr BendersBase::get_master() const
 
 void BendersBase::AddSubproblem(const std::pair<std::string, VariableMap>& kvp)
 {
+    std::shared_ptr<IBendersProblemProvider>
+      benders_problem_provider = std::make_shared<BendersProblemFromFile>(
+        GetSubproblemPath(kvp.first));
     subproblem_map[kvp.first] = std::make_shared<SubproblemWorker>(
       kvp.second,
-      GetSubproblemPath(kvp.first),
       SubproblemWeight(_data.nsubproblem, kvp.first),
       _options.SOLVER_NAME,
       _options.LOG_LEVEL,
       solver_log_manager_,
       _logger,
       _options.PROBLEMS_FORMAT,
+      benders_problem_provider.get(),
       _options.CUT_COEFFICIENT_TOLERANCE);
 }
 

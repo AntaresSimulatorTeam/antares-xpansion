@@ -45,7 +45,8 @@ void Worker::get_value(double& lb) const
 void Worker::init(const std::string& solver_name,
                   int log_level,
                   const SolverLogManager& solver_log_manager,
-                  ProblemsFormat format)
+                  ProblemsFormat format,
+                  IBendersProblemProvider* benders_problem_provider)
 {
     solver_io_.configure(solver_name, format);
     SolverFactory factory(logger_);
@@ -58,8 +59,9 @@ void Worker::init(const std::string& solver_name,
     {
         _solver = factory.create_solver(solver_name, SOLVER_TYPE::CONTINUOUS, solver_log_manager);
     }
+    benders_problem_provider->provide_problem(solver_io_, _solver);
+    _base_filename = benders_problem_provider->provide_file_path();
 
-    read_prob(_solver.get(), _path_to_mps);
     // Always set solver parameters after reading problems, as restore (used by Xpress writing .svf
     // files) also comes with parameters of the solver and we do not want them to override our
     // preferences
@@ -96,7 +98,7 @@ void Worker::solve(int& lp_status,
         std::filesystem::path error_file_path;
         auto problem_status = _solver->SOLVER_STRING_STATUS[lp_status];
         error_file_path = std::filesystem::path(outputroot)
-                          / (_path_to_mps.filename().string() + "_lp_status_" + problem_status
+                          / (_base_filename.filename().string() + "_lp_status_" + problem_status
                              + MPS_SUFFIX);
         std::ostringstream msg;
         msg << "lp_status is : " << problem_status << std::endl;
@@ -105,7 +107,7 @@ void Worker::solve(int& lp_status,
         logger_->display_message(msg.str());
         writeProb(error_file_path);
         Output::ProblemData data;
-        data.name = _path_to_mps.filename().string();
+        data.name = _base_filename.filename().string();
         data.path = error_file_path;
         data.status = problem_status;
         writer->WriteProblem(data);
@@ -174,28 +176,12 @@ int Worker::Getncols() const
     return _solver->get_ncols();
 }
 
-/**
- * Have `problem` read the problem problem data from `path`
- *
- * Used to hold logic to select between mps/save/etc.
- * @param problem
- * @param path
- */
-void Worker::read_prob(SolverAbstract* problem, const std::filesystem::path& path) const
-{
-    solver_io_.read(_solver.get(), path);
-}
-
 std::shared_ptr<SolverAbstract> Worker::solver() const
 {
     return _solver;
 }
 
-Worker::Worker(VariableMap variable_map,
-               std::filesystem::path path_to_mps,
-               Logger logger,
-               double cut_coefficient_tolerance):
-    _path_to_mps{std::move(path_to_mps)},
+Worker::Worker(VariableMap variable_map, Logger logger, double cut_coefficient_tolerance):
     _name_to_id{std::move(variable_map)},
     logger_{std::move(logger)},
     cut_coefficient_tolerance_{cut_coefficient_tolerance}

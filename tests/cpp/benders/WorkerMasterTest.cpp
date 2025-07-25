@@ -7,6 +7,7 @@
 
 #include "NOOPSolver.h"
 #include "antares-xpansion/benders/benders_core/WorkerMaster.h"
+#include "antares-xpansion/benders/logger/Master.h"
 
 class TestNOOPSolver: public NOOPSolver
 {
@@ -37,19 +38,19 @@ public:
         std::copy(solution.begin(), solution.end(), sol);
     }
 
-    void get_col_type(char* coltype, int, int) const override
+    void get_col_type(char* coltype, int start, int end) const override
     {
-        std::copy(col_types.begin(), col_types.end(), coltype);
+        std::copy(col_types.begin() + start, col_types.end() + end, coltype);
     }
 
-    void get_lb(double* lb, int, int) const override
+    void get_lb(double* lb, int start, int end) const override
     {
-        std::copy(lbs.begin(), lbs.end(), lb);
+        std::copy(lbs.begin() + start, lbs.end() + end + 1, lb);
     }
 
-    void get_ub(double* ub, int, int) const override
+    void get_ub(double* ub, int start, int end) const override
     {
-        std::copy(ubs.begin(), ubs.end(), ub);
+        std::copy(ubs.begin() + start, ubs.end() + end, ub);
     }
 
 private:
@@ -59,88 +60,54 @@ private:
     std::vector<double> ubs;
 };
 
-class NOOPWorker: public Worker
+class NOOPBendersProblemProvider: public IBendersProblemProvider
 {
 public:
-    NOOPWorker():
-        Worker({}, "", Logger(), 0.01)
+    NOOPBendersProblemProvider() = default;
+
+    void provide_problem(const SolverIO& solver_io,
+                         std::shared_ptr<SolverAbstract> solver) const override
     {
     }
 
-    void init(const std::string& solver_name,
-              int log_level,
-              const SolverLogManager& solver_log_manager,
-              ProblemsFormat format) override
+    std::filesystem::path provide_file_path() const
     {
-        // Do nothing - avoid actual solver/MPS initialization
+        return "";
     }
 };
-
-// Warning : Diamond problem as TestableWorkerMaster inherits from WorkerMaster and NOOPWorker, that
-// both inherit from Worker. But we want to override the Worker init method to ease testing...
-class TestableWorkerMaster: public WorkerMaster, private NOOPWorker
-{
-public:
-    TestableWorkerMaster():
-        WorkerMaster(
-          {},
-          "",
-          "",
-          0,
-          1,
-          solver_log_manager_, // Use the static instance automatically initialized beforehand
-          false,
-          Logger(),
-          ProblemsFormat::MPS_FILE,
-          0.01,
-          0.01),
-        test_solver(std::make_shared<TestNOOPSolver>())
-    {
-        WorkerMaster::_solver = test_solver;
-        WorkerMaster::_id_to_name = {{0, "var1"}, {1, "var2"}, {2, "var3"}};
-        set_id_alpha(3);
-        set_id_single_subpb_costs_under_approx({4});
-    }
-
-    void setNOOPSolverBehavior(const std::vector<double>& solution,
-                               const std::vector<char>& col_types,
-                               const std::vector<double>& lbs,
-                               const std::vector<double>& ubs)
-    {
-        test_solver->setSolverBehavior(solution, col_types, lbs, ubs);
-    }
-
-protected:
-    // Override Worker::init with NOOPWorker's implementation
-    // does not work as init is called from the WorkerMaster class inside WorkerMaster
-    // constructor..., so never call this init...
-    void init(const std::string& solver_name,
-              int log_level,
-              const SolverLogManager& solver_log_manager,
-              ProblemsFormat format) override
-    {
-        NOOPWorker::init(solver_name, log_level, solver_log_manager, format);
-    }
-
-private:
-    std::shared_ptr<TestNOOPSolver> test_solver;
-    static SolverLogManager solver_log_manager_; // Static so it's initialized before use
-};
-
-// Use a static member as in TEST_F we want to can only call the default constructor of
-// WorkerMasterTest. therefore we cannot pass solver_log_manager as argument to TestableWorkerMaster
-// constructor. using a non static attribute solver_log_manager will result in a -Wreoder warning
-// when building TestableWorkerMaster. As the static member is built before calling the constructor,
-// we do not have the warning anymore. there may be better designs though.
-SolverLogManager TestableWorkerMaster::solver_log_manager_;
 
 class WorkerMasterTest: public ::testing::Test
+
 {
 protected:
-    TestableWorkerMaster master;
+    // TestableWorkerMaster master;
     Point x_out;
     double overall_cost;
     DblVector single_costs{0.0};
+
+    WorkerMaster init_worker_master(double master_solution_tolerance,
+                                    double cut_coefficient_tolerance) const
+    {
+        auto test_solver = std::make_shared<TestNOOPSolver>();
+        auto solver_log_manager = SolverLogManager();
+        auto problem_provider = std::make_shared<NOOPBendersProblemProvider>();
+        auto master = WorkerMaster({},
+                                   "COIN",
+                                   0,
+                                   1,
+                                   solver_log_manager,
+                                   false,
+                                   std::make_shared<xpansion::logger::Master>(),
+                                   ProblemsFormat::MPS_FILE,
+                                   problem_provider.get(),
+                                   master_solution_tolerance,
+                                   cut_coefficient_tolerance);
+        master._solver = test_solver;
+        master._id_to_name = {{0, "var1"}, {1, "var2"}, {2, "var3"}};
+        master.set_id_alpha(3);
+        master.set_id_single_subpb_costs_under_approx({4});
+        return master;
+    }
 };
 
 TEST_F(WorkerMasterTest, GetHandlesUpperBoundViolation)
@@ -151,7 +118,11 @@ TEST_F(WorkerMasterTest, GetHandlesUpperBoundViolation)
     std::vector<double> lbs = {0.0, 0.0, 0.0, -1e20, -1e20};
     std::vector<double> ubs = {10.0, 10.0, 10.0, 1e20, 1e20};
 
-    master.setNOOPSolverBehavior(solution, col_types, lbs, ubs);
+    double master_solution_tolerance = 0.1;
+    double cut_coefficient_tolerance = 0.1;
+    auto master = init_worker_master(master_solution_tolerance, cut_coefficient_tolerance);
+    std::dynamic_pointer_cast<TestNOOPSolver>(master._solver)
+      ->setSolverBehavior(solution, col_types, lbs, ubs);
     master.get(x_out, overall_cost, single_costs);
 
     EXPECT_DOUBLE_EQ(
@@ -165,13 +136,20 @@ TEST_F(WorkerMasterTest, GetHandlesUpperBoundViolation)
 
 TEST_F(WorkerMasterTest, GetHandlesLowerBoundViolation)
 {
+    std::cout << "strat" << std::endl;
     std::vector<double> solution = {1.0, -0.001, 2.0, 100.0, 50.0};
     std::vector<char> col_types = {'C', 'C', 'C', 'C', 'C'};
     std::vector<double> lbs = {0.0, 0.0, 0.0, -1e20, -1e20};
     std::vector<double> ubs = {10.0, 10.0, 10.0, 1e20, 1e20};
 
-    master.setNOOPSolverBehavior(solution, col_types, lbs, ubs);
+    double master_solution_tolerance = 0.1;
+    double cut_coefficient_tolerance = 0.1;
+    auto master = init_worker_master(master_solution_tolerance, cut_coefficient_tolerance);
+    std::dynamic_pointer_cast<TestNOOPSolver>(master._solver)
+      ->setSolverBehavior(solution, col_types, lbs, ubs);
+    std::cout << "set noop ok" << std::endl;
     master.get(x_out, overall_cost, single_costs);
+    std::cout << "get ok" << std::endl;
 
     EXPECT_DOUBLE_EQ(x_out["var1"], 1.0);    // Should remain unchanged
     EXPECT_DOUBLE_EQ(x_out["var2"], 0.0);    // Should be restored to LB
@@ -187,7 +165,11 @@ TEST_F(WorkerMasterTest, GetHandlesIntegerVariables)
     std::vector<double> lbs = {0.0, 0.0, 0.0, -1e20, -1e20};
     std::vector<double> ubs = {10.0, 10.0, 10.0, 1e20, 1e20};
 
-    master.setNOOPSolverBehavior(solution, col_types, lbs, ubs);
+    double master_solution_tolerance = 0.1;
+    double cut_coefficient_tolerance = 0.1;
+    auto master = init_worker_master(master_solution_tolerance, cut_coefficient_tolerance);
+    std::dynamic_pointer_cast<TestNOOPSolver>(master._solver)
+      ->setSolverBehavior(solution, col_types, lbs, ubs);
     master.get(x_out, overall_cost, single_costs);
 
     EXPECT_DOUBLE_EQ(x_out["var1"], 1.0); // Continuous - should remain unchanged
