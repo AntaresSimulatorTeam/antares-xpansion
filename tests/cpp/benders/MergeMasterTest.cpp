@@ -18,7 +18,7 @@ TEST(MergeMasterMPS, ParseConstraintType)
     EXPECT_EQ(MergeMasterTrajectoryMPS::parse_constraint_type("<"), 'L');
 }
 
-TEST(MergeMasterMPS, VariablePositionsGet)
+TEST(MergeMasterMPS, VariablePositionsGetSet)
 {
     MergeMasterTrajectoryMPS::VariablePositions positions;
     positions.set(MergeMasterTrajectoryMPS::CAPACITY, 0);
@@ -28,18 +28,6 @@ TEST(MergeMasterMPS, VariablePositionsGet)
     EXPECT_EQ(positions.get(MergeMasterTrajectoryMPS::CAPACITY), 0);
     EXPECT_EQ(positions.get(MergeMasterTrajectoryMPS::DX_PLUS), 1);
     EXPECT_EQ(positions.get(MergeMasterTrajectoryMPS::DX_MINUS), 2);
-}
-
-TEST(MergeMasterMPS, VariablePositionsSet)
-{
-    MergeMasterTrajectoryMPS::VariablePositions positions;
-    positions.set(MergeMasterTrajectoryMPS::CAPACITY, 5);
-    positions.set(MergeMasterTrajectoryMPS::DX_PLUS, 10);
-    positions.set(MergeMasterTrajectoryMPS::DX_MINUS, 15);
-
-    EXPECT_EQ(positions.get(MergeMasterTrajectoryMPS::CAPACITY), 5);
-    EXPECT_EQ(positions.get(MergeMasterTrajectoryMPS::DX_PLUS), 10);
-    EXPECT_EQ(positions.get(MergeMasterTrajectoryMPS::DX_MINUS), 15);
 }
 
 TEST(MergeMasterMPS, CandidateCostsGet)
