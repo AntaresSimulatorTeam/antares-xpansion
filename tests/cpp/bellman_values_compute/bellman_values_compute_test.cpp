@@ -106,7 +106,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCase)
     valeurs_usage.ComputeRewards();
     auto res = valeurs_usage.ComputeBellmanValues();
 
-    for (int week = 1; week <= res.size(); week++)
+    for (int week = 1; week < res.size(); week++)
     {
         for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
         {
