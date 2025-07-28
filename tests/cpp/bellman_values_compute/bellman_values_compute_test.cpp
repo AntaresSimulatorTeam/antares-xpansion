@@ -23,6 +23,7 @@ public:
     std::shared_ptr<MathLoggerDriver> mathLoggerDriver;
     std::shared_ptr<Output::JsonWriter> writer;
     std::filesystem::path tmpDir;
+    std::filesystem::path data_test_dir = "data_test";
 
 protected:
     void SetUp() override
@@ -40,7 +41,7 @@ protected:
 
     void copyData()
     {
-        std::filesystem::path data_dir = "data_test/one_node_base";
+        std::filesystem::path data_dir = data_test_dir / "one_node_base";
         tmpDir = CreateRandomSubDir(std::filesystem::temp_directory_path());
 
         std::filesystem::copy(data_dir,
