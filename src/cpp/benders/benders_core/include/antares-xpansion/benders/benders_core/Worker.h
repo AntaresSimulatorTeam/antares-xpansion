@@ -76,5 +76,5 @@ private:
     double cut_coefficient_tolerance_;
 
 protected:
-    void roundIfWithinTolerance(std::vector<double>& values) const;
+    void roundIfWithinTolerance(std::vector<double>& values, int first, int last) const;
 };

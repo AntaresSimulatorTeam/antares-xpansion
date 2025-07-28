@@ -303,7 +303,7 @@ void WorkerMaster::addSubproblemCut(int i,
     // Cuts coefficients (obtained from subgradient) have already been rounded in
     // SubproblemWorker::get_subgradient as it is best to round it as soon as possible (because
     // subgradient information is also used as is to compute cut values : cf. compute_cut_val())
-    roundIfWithinTolerance(rowrhs);
+    roundIfWithinTolerance(rowrhs, 0, rowrhs.size());
 
     solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }

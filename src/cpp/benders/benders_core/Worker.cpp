@@ -193,11 +193,11 @@ void Worker::writeProb(const std::filesystem::path& out) const
     solver_io_.write(_solver.get(), out);
 }
 
-void Worker::roundIfWithinTolerance(std::vector<double>& values) const
+void Worker::roundIfWithinTolerance(std::vector<double>& values, int first, int last) const
 {
-    std::transform(values.begin(),
-                   values.end(),
-                   values.begin(),
+    std::transform(values.begin() + first,
+                   values.begin() + last,
+                   values.begin() + first,
                    [this](double value) -> double
                    { return std::abs(value) < cut_coefficient_tolerance_ ? 0 : value; });
 }

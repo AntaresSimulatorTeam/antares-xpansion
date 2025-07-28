@@ -78,7 +78,8 @@ void SubproblemWorker::get_subgradient(Point& subgradient) const
 
     // If subgradients are numerically small, round to zero so that cuts generated later on are
     // clean
-    roundIfWithinTolerance(ptr);
+    // We only round the values for the candidates. relies on the assumption that they have successive ids in the problem
+    roundIfWithinTolerance(ptr, _id_to_name.begin()->first, _id_to_name.begin()->first + _id_to_name.size());
 
     for (const auto& kvp: _id_to_name)
     {
