@@ -5,7 +5,6 @@ Class to control the Problem Generation
 import os
 import subprocess
 import sys
-
 from dataclasses import dataclass
 from pathlib import Path
 from typing import List
@@ -54,7 +53,7 @@ class PresolveDriver:
         os.chdir(self.lp_path)
         self.clear_old_log()
 
-        self.logger.info(f"Running {self.get_presolve_cmd()}")
+        self.logger.info(f"Running {' '.join(str(arg) for arg in self.get_presolve_cmd())}")
         ret = subprocess.run(
             self.get_presolve_cmd(),
             shell=False,

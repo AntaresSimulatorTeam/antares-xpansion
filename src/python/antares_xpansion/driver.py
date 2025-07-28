@@ -86,10 +86,19 @@ class XpansionDriver:
             self.config_loader.sensitivity_exe()
         )
 
+        self.presolve_driver = PresolveDriver(
+            PresolveData(
+                Path(self.config_loader.presolve_exe()),
+                self.config_loader.keep_mps()
+            ),
+            Path(self.config_loader.options_file_name()),
+        )
+
         self.full_run_driver = FullRunDriver(
             self.config_loader.full_run_exe(),
             self.problem_generator_driver,
             self.benders_driver,
+            self.presolve_driver
         )
         self.settings = "settings"
 
@@ -122,7 +131,10 @@ class XpansionDriver:
         elif self.config_loader.step() == "full" and self.config_loader.memory():
             self.update_study_settings(memory_mode=True)
             self.launch_problem_generation_step_memory()
-            # TODO Add presolve memory
+            self.config_loader._set_options_for_benders_solver()
+            self.presolve_driver.launch(
+                self.config_loader.xpansion_simulation_output()
+            )
             self.launch_benders_step()
             self.study_update_driver.launch(
                 self.config_loader.xpansion_simulation_output(),
