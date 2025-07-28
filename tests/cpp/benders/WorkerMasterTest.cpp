@@ -38,19 +38,19 @@ public:
         std::copy(solution.begin(), solution.end(), sol);
     }
 
-    void get_col_type(char* coltype, int, int) const override
+    void get_col_type(char* coltype, int begin, int end) const override
     {
-        std::copy(col_types.begin(), col_types.end(), coltype);
+        std::copy_n(col_types.begin(), end - begin + 1, coltype);
     }
 
-    void get_lb(double* lb, int, int) const override
+    void get_lb(double* lb, int begin, int end) const override
     {
-        std::copy(lbs.begin(), lbs.end(), lb);
+        std::copy_n(lbs.begin(), end - begin + 1, lb);
     }
 
-    void get_ub(double* ub, int, int) const override
+    void get_ub(double* ub, int begin, int end) const override
     {
-        std::copy(ubs.begin(), ubs.end(), ub);
+        std::copy_n(ubs.begin(), end - begin + 1, ub);
     }
 
 private:
@@ -76,32 +76,47 @@ public:
     }
 };
 
+class EmptyLogManager: public SolverLogManager
+{
+public:
+    SolverLogManager& operator=(const SolverLogManager& other) override
+    {
+        return *this;
+    }
+
+    void init() override {};
+    ~EmptyLogManager() override = default;
+};
+
 class WorkerMasterTest: public ::testing::Test
 
 {
+public:
+    WorkerMasterTest() = default;
+
 protected:
     // TestableWorkerMaster master;
     Point x_out;
-    double overall_cost;
+    double overall_cost{0.0};
     DblVector single_costs{0.0};
 
     std::shared_ptr<WorkerMaster> init_worker_master(double master_solution_tolerance,
-                                    double cut_coefficient_tolerance) const
+                                                     double cut_coefficient_tolerance) const
     {
         auto test_solver = std::make_shared<TestNOOPSolver>();
-        auto solver_log_manager = SolverLogManager();
+        EmptyLogManager solver_log_manager;
         auto problem_provider = std::make_shared<NOOPBendersProblemProvider>();
-        auto master = std::shared_ptr<WorkerMaster> (new WorkerMaster({},
-                                   "COIN",
-                                   0,
-                                   1,
-                                   solver_log_manager,
-                                   false,
-                                   std::make_shared<xpansion::logger::Master>(),
-                                   ProblemsFormat::MPS_FILE,
-                                   problem_provider.get(),
-                                   master_solution_tolerance,
-                                   cut_coefficient_tolerance));
+        auto master = std::make_shared<WorkerMaster>(VariableMap{},
+                                                     "COIN",
+                                                     0,
+                                                     1,
+                                                     solver_log_manager,
+                                                     false,
+                                                     std::make_shared<xpansion::logger::Master>(),
+                                                     ProblemsFormat::MPS_FILE,
+                                                     problem_provider.get(),
+                                                     master_solution_tolerance,
+                                                     cut_coefficient_tolerance);
         master->_solver = test_solver;
         master->_id_to_name = {{0, "var1"}, {1, "var2"}, {2, "var3"}};
         master->set_id_alpha(3);
