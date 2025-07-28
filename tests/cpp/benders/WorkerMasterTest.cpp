@@ -85,7 +85,7 @@ public:
     }
 
     void init() override {};
-    ~EmptyLogManager() override = default;
+    ~EmptyLogManager() = default;
 };
 
 class WorkerMasterTest: public ::testing::Test
