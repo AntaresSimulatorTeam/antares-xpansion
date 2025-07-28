@@ -2,7 +2,8 @@ add_executable(benders_sequential_test
         benders_sequential_test.cpp
         BendersBaseTest.cpp
         BendersByBatchTest.cpp
-        WorkerMasterTest.cpp)
+        WorkerMasterTest.cpp
+        SubproblemWorkerTest.cpp)
 
 target_link_libraries(benders_sequential_test
         PRIVATE

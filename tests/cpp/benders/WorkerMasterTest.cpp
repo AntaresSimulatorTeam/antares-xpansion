@@ -9,7 +9,7 @@
 #include "antares-xpansion/benders/benders_core/WorkerMaster.h"
 #include "antares-xpansion/benders/logger/Master.h"
 
-class TestNOOPSolver: public NOOPSolver
+class NOOPSolverForWorkerMaster: public NOOPSolverForWorker
 {
 public:
     void setSolverBehavior(const std::vector<double>& sol,
@@ -28,36 +28,13 @@ public:
         return solution.size();
     }
 
-    int get_n_integer_vars() const override
-    {
-        return 0;
-    }
-
     void get_lp_sol(double* sol, double*, double*) const override
     {
         std::copy(solution.begin(), solution.end(), sol);
     }
 
-    void get_col_type(char* coltype, int begin, int end) const override
-    {
-        std::copy_n(col_types.begin(), end - begin + 1, coltype);
-    }
-
-    void get_lb(double* lb, int begin, int end) const override
-    {
-        std::copy_n(lbs.begin(), end - begin + 1, lb);
-    }
-
-    void get_ub(double* ub, int begin, int end) const override
-    {
-        std::copy_n(ubs.begin(), end - begin + 1, ub);
-    }
-
 private:
     std::vector<double> solution;
-    std::vector<char> col_types;
-    std::vector<double> lbs;
-    std::vector<double> ubs;
 };
 
 class NOOPBendersProblemProvider: public IBendersProblemProvider
@@ -84,7 +61,10 @@ public:
         return *this;
     }
 
-    void init() override {};
+    void init() override
+    {
+    }
+
     ~EmptyLogManager() = default;
 };
 
@@ -95,7 +75,6 @@ public:
     WorkerMasterTest() = default;
 
 protected:
-    // TestableWorkerMaster master;
     Point x_out;
     double overall_cost{0.0};
     DblVector single_costs{0.0};
@@ -103,7 +82,7 @@ protected:
     std::shared_ptr<WorkerMaster> init_worker_master(double master_solution_tolerance,
                                                      double cut_coefficient_tolerance) const
     {
-        auto test_solver = std::make_shared<TestNOOPSolver>();
+        auto test_solver = std::make_shared<NOOPSolverForWorkerMaster>();
         EmptyLogManager solver_log_manager;
         auto problem_provider = std::make_shared<NOOPBendersProblemProvider>();
         auto master = std::make_shared<WorkerMaster>(VariableMap{},
@@ -136,7 +115,7 @@ TEST_F(WorkerMasterTest, GetHandlesUpperBoundViolation)
     double master_solution_tolerance = 0.1;
     double cut_coefficient_tolerance = 0.1;
     auto master = init_worker_master(master_solution_tolerance, cut_coefficient_tolerance);
-    std::dynamic_pointer_cast<TestNOOPSolver>(master->_solver)
+    std::dynamic_pointer_cast<NOOPSolverForWorkerMaster>(master->_solver)
       ->setSolverBehavior(solution, col_types, lbs, ubs);
     master->get(x_out, overall_cost, single_costs);
 
@@ -159,7 +138,7 @@ TEST_F(WorkerMasterTest, GetHandlesLowerBoundViolation)
     double master_solution_tolerance = 0.1;
     double cut_coefficient_tolerance = 0.1;
     auto master = init_worker_master(master_solution_tolerance, cut_coefficient_tolerance);
-    std::dynamic_pointer_cast<TestNOOPSolver>(master->_solver)
+    std::dynamic_pointer_cast<NOOPSolverForWorkerMaster>(master->_solver)
       ->setSolverBehavior(solution, col_types, lbs, ubs);
     master->get(x_out, overall_cost, single_costs);
 
@@ -180,7 +159,7 @@ TEST_F(WorkerMasterTest, GetHandlesIntegerVariables)
     double master_solution_tolerance = 0.1;
     double cut_coefficient_tolerance = 0.1;
     auto master = init_worker_master(master_solution_tolerance, cut_coefficient_tolerance);
-    std::dynamic_pointer_cast<TestNOOPSolver>(master->_solver)
+    std::dynamic_pointer_cast<NOOPSolverForWorkerMaster>(master->_solver)
       ->setSolverBehavior(solution, col_types, lbs, ubs);
     master->get(x_out, overall_cost, single_costs);
 
