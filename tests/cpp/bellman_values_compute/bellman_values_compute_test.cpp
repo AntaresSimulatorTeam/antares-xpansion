@@ -23,7 +23,7 @@ public:
     std::shared_ptr<MathLoggerDriver> mathLoggerDriver;
     std::shared_ptr<Output::JsonWriter> writer;
     std::filesystem::path tmpDir;
-    std::filesystem::path data_test_dir = "data_test";
+    const std::filesystem::path data_test_dir = "data_test";
 
 protected:
     void SetUp() override
@@ -108,7 +108,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCase)
 
     for (int week = 1; week <= res.size(); week++)
     {
-        for (int level_index = 0; level_index < res[week].size(); level_index++)
+        for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
         {
             double cost = res[week - 1][level_index];
             double expected_cost = expected_costs[{1, week}][0];
