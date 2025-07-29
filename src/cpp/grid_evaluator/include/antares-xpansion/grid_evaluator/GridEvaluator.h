@@ -29,7 +29,7 @@ public:
                   ProblemsFormat data_format,
                   int nbThreads);
     std::map<Output::PointWeekScenarioKey, double> ComputeRewards();
-    std::vector<std::vector<double>> ComputeBellmanValues();
+    std::vector<std::vector<double>> ComputeBellmanValues(int startWeek = 1, int endWeek = 52);
 
 private:
     Output::ConcurrentInsertionMap<Output::PointWeekScenarioKey, double>

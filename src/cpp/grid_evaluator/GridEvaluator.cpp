@@ -546,7 +546,7 @@ auto linspace(double start, double end, int num)
 
 /// @brief Compute the Bellman values
 /// @return The bellman values for each week
-std::vector<std::vector<double>> GridEvaluator::ComputeBellmanValues()
+std::vector<std::vector<double>> GridEvaluator::ComputeBellmanValues(int startWeek, int endWeek)
 {
     // auto X = gridDefinition.gridElements[0].values; // discretization of hydro level
     auto X = linspace(0.0, reservoirManagement.reservoir.capacity, 11);
@@ -558,7 +558,7 @@ std::vector<std::vector<double>> GridEvaluator::ComputeBellmanValues()
         rewards[{key.scenario, key.week}].push_back(reward);
     }
 
-    for (int week = 1; week <= Reservoir::weeks_in_year; ++week)
+    for (int week = startWeek; week <= endWeek + 1; ++week)
     {
         for (int scenario = 1; scenario <= nbScenarios; ++scenario)
         {
@@ -566,7 +566,7 @@ std::vector<std::vector<double>> GridEvaluator::ComputeBellmanValues()
         }
     }
 
-    for (int week = Reservoir::weeks_in_year - 1; week >= 1; --week)
+    for (int week = endWeek; week >= startWeek; --week)
     {
         for (int scenario = 1; scenario <= nbScenarios; ++scenario)
         {
@@ -608,7 +608,7 @@ std::vector<std::vector<double>> GridEvaluator::ComputeBellmanValues()
     }
 
     std::vector<std::vector<double>> V_final;
-    for (int week = 1; week <= Reservoir::weeks_in_year; ++week)
+    for (int week = startWeek; week <= endWeek; ++week)
     {
         V_final.push_back(V[{1, week}]);
     }
