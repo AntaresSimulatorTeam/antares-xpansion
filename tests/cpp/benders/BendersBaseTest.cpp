@@ -37,6 +37,7 @@ public:
 
     std::string BendersName() const override
     {
+        return "";
     }
 
     void InitializeProblems() override
