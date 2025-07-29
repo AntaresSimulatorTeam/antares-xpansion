@@ -6,15 +6,21 @@ from typing import List
 
 from antares_xpansion.benders_driver import BendersDriver
 from antares_xpansion.logger import step_logger
+from antares_xpansion.presolve_driver import (PresolveDriver, PresolveData)
 from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 
 
 class FullRunDriver:
-    def __init__(self, full_exe, problem_generation_driver: ProblemGeneratorDriver, benders_driver: BendersDriver) -> None:
+    def __init__(self,
+                 full_exe,
+                 problem_generation_driver: ProblemGeneratorDriver,
+                 benders_driver: BendersDriver,
+                 presolve_driver: PresolveDriver) -> None:
         self.full_exe = full_exe
         self.benders_driver = benders_driver
         self.problem_generation_driver = problem_generation_driver
+        self.presolve_driver = presolve_driver
         self.json_file_path = ""
         self.logger = step_logger(__name__, __class__.__name__)
 
@@ -46,7 +52,7 @@ class FullRunDriver:
 
         self.json_file_path = json_file_path
 
-    def launch(self,  output_path: Path,
+    def launch(self, output_path: Path,
                problem_generation_is_relaxed: bool,
                method: str,
                json_file_path,
@@ -65,6 +71,7 @@ class FullRunDriver:
         lp_path = self.benders_driver.get_lp_path()
 
         os.chdir(lp_path)
+
         self.logger.info(f"Current directory is now: {os.getcwd()}")
         self.logger.info(f"Command is {' '.join(self.full_command())}")
         ret = subprocess.run(
@@ -81,7 +88,7 @@ class FullRunDriver:
 
     def full_command(self) -> List:
         bare_solver_command = [
-            self.full_exe, "--benders_options", self.benders_driver.options_file,  "-s",
+            self.full_exe, "--benders_options", self.benders_driver.options_file, "-s",
             str(self.json_file_path), "--solver", self.benders_driver.method]
         bare_solver_command.extend(
             self.problem_generation_driver.lp_namer_options())
