@@ -21,6 +21,7 @@ target_link_libraries (full_grid_evaluation_exe
 		${PROJECT_NAME}::problem_generation_main
 		${PROJECT_NAME}::lp_namer_helper
 		${PROJECT_NAME}::grid_evaluator_lib
+		${PROJECT_NAME}::bellman_values_lib
 		${PROJECT_NAME}::factories
 		
 )

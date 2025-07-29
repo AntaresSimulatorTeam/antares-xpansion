@@ -2,10 +2,9 @@
 
 #include "LoggerStub.h"
 #include "RandomDirGenerator.h"
+#include "antares-xpansion/bellman_values/BellmanValues.h"
 #include "antares-xpansion/benders/benders_core/BendersMathLogger.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
-#include "antares-xpansion/grid_evaluator/GridCollection.h"
-#include "antares-xpansion/grid_evaluator/GridEvaluator.h"
 #include "antares-xpansion/lpnamer/main/ConfigurationManager.h"
 #include "antares-xpansion/lpnamer/main/ProblemGenerationForWaterValueCalculation.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
@@ -96,15 +95,8 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCase)
     ProblemGenerationForWaterValueCalculation pbg(config_dirs);
     auto mps_path = pbg.updateProblems(grid);
 
-    auto valeurs_usage = GridEvaluator(logger,
-                                       writer,
-                                       mps_path,
-                                       grid,
-                                       reservoir_management,
-                                       ProblemsFormat::MPS_FILE,
-                                       8);
-    valeurs_usage.ComputeRewards();
-    auto res = valeurs_usage.ComputeBellmanValues();
+    auto evaluator = GridEvaluator(logger, writer, mps_path, grid, ProblemsFormat::MPS_FILE, 8);
+    auto res = BellmanValues(evaluator, reservoir_management).compute();
 
     for (int week = 1; week < res.size(); week++)
     {

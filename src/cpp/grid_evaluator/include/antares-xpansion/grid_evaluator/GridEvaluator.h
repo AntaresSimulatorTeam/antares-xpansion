@@ -2,12 +2,9 @@
 
 #include <functional>
 
-#include "antares-xpansion/benders/benders_core/BendersMathLogger.h"
-#include "antares-xpansion/benders/benders_core/SubproblemCut.h"
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
 #include "antares-xpansion/grid_evaluator/GridCollection.h"
-#include "antares-xpansion/grid_evaluator/ReservoirManagement.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
 /// @brief key constraint name, value vector of rhs values
@@ -25,11 +22,9 @@ public:
                   std::shared_ptr<Output::JsonWriter> writer,
                   std::filesystem::path path_to_mps,
                   GridDefinition& grid_definition,
-                  const ReservoirManagement& reservoir_management,
                   ProblemsFormat data_format,
-                  int nbThreads);
+                  int nbThreads = 1);
     std::map<Output::PointWeekScenarioKey, double> ComputeRewards();
-    std::vector<std::vector<double>> ComputeBellmanValues(int startWeek = 1, int endWeek = 52);
 
 private:
     Output::ConcurrentInsertionMap<Output::PointWeekScenarioKey, double>
@@ -58,25 +53,18 @@ protected:
     ConstraintCombos GenerateSubPbCombos(const std::string& subPbName,
                                          const AreaConstraintMaps& areas);
 
-    double SolveWeeklyProblemWithReward(int week,
-                                        int scenario,
-                                        double level,
-                                        const std::vector<double>& X,
-                                        const std::vector<double>& rewards,
-                                        const std::function<double(double)>& V_fut,
-                                        std::set<double>& breaking_points);
-
 protected:
-    std::filesystem::path mpsPath;                  ///< Path to the xpansion folder
-    GridDefinition& gridDefinition;                 ///< Grid definition
-    const ReservoirManagement& reservoirManagement; ///< Reservoir management
+    std::filesystem::path mpsPath;  ///< Path to the xpansion folder
+    GridDefinition& gridDefinition; ///< Grid definition
 
     int nbScenarios = 0; ///< Number of scenarios
 
     ProblemsFormat problemsFormat; ///< Format of the problems
-    int nbThreads = 1;             ///< Number of threads to use
+    int nbThreads;                 ///< Number of threads to use
 
     SolverLogManager solver_log_manager;
     Logger logger;
     std::shared_ptr<Output::JsonWriter> writer;
+
+    friend class BellmanValues;
 };
