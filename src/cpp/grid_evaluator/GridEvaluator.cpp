@@ -28,14 +28,14 @@ GridEvaluator::GridEvaluator(Logger logger,
                              ProblemsFormat data_format,
                              std::string solverName,
                              int nbThreads):
+    logger(std::move(logger)),
+    writer(std::move(writer)),
+    mpsPath(path_to_mps),
     gridDefinition(gridDefinition),
     problemsFormat(data_format),
     solverName(solverName),
     nbThreads(nbThreads)
 {
-    this->logger = std::move(logger);
-    this->writer = std::move(writer);
-    this->mpsPath = std::move(path_to_mps);
 }
 
 /// @brief Generates all combinations of constraint values (Cartesian product).

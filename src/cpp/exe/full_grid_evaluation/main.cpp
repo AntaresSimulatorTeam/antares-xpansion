@@ -90,8 +90,8 @@ int main(int argc, char** argv)
         ReservoirManagement reservoirManagement(reservoir, true);
 
         ConfigurationManager::ConfigDirectories directories{
-            study_dir: studyPath,
-            simulation_dir: ConfigurationManager::generateOutputName(studyPath),
+          .study_dir = studyPath,
+          .simulation_dir = ConfigurationManager::generateOutputName(studyPath),
         };
 
         auto loggerFactory = FileAndStdoutLoggerFactory(directories.simulation_dir / "log.txt",
