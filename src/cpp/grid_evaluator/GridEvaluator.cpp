@@ -18,17 +18,19 @@ std::atomic<double> totalPbModifTimer = 0; ///< Total time spent modifying subpr
 /// @param writer JsonWriter
 /// @param path_to_mps Path to the data folder
 /// @param gridDefinition GridCollection containing the grids to evaluate
-/// @param reservoirManagement Reservoir management
 /// @param data_format Format of the data (MPS or LP)
+/// @param solverName Name of the solver to use
 /// @param nbThreads Number of threads to use
 GridEvaluator::GridEvaluator(Logger logger,
                              std::shared_ptr<Output::JsonWriter> writer,
                              std::filesystem::path path_to_mps,
                              GridDefinition& gridDefinition,
                              ProblemsFormat data_format,
+                             std::string solverName,
                              int nbThreads):
     gridDefinition(gridDefinition),
     problemsFormat(data_format),
+    solverName(solverName),
     nbThreads(nbThreads)
 {
     this->logger = std::move(logger);
@@ -215,7 +217,7 @@ SubproblemWorkerPtr GridEvaluator::AddSubproblem(const std::string& pbName)
 {
     auto subPbWorker = std::make_shared<SubproblemWorker>(GetSubproblemPath(pbName),
                                                           1,
-                                                          "XPRESS",
+                                                          solverName,
                                                           2,
                                                           solver_log_manager,
                                                           logger,

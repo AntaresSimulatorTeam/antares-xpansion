@@ -105,6 +105,7 @@ int main(int argc, char** argv)
                                        path_to_data,
                                        grid,
                                        ProblemsFormat::MPS_FILE,
+                                       "XPRESS",
                                        num_threads);
         res[grid.gridID] = evaluator.ComputeRewards();
     }

@@ -23,6 +23,7 @@ public:
                   std::filesystem::path path_to_mps,
                   GridDefinition& grid_definition,
                   ProblemsFormat data_format,
+                  std::string solverName,
                   int nbThreads = 1);
     std::map<Output::PointWeekScenarioKey, double> ComputeRewards();
 
@@ -56,6 +57,7 @@ protected:
 protected:
     std::filesystem::path mpsPath;  ///< Path to the xpansion folder
     GridDefinition& gridDefinition; ///< Grid definition
+    std::string solverName;         ///< Solver name
 
     int nbScenarios = 0; ///< Number of scenarios
 

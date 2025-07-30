@@ -2,10 +2,10 @@
 #include <iostream>
 
 #include "antares-xpansion/bellman_values/BellmanValues.h"
+#include "antares-xpansion/bellman_values/BellmanValuesExeOptions.h"
 #include "antares-xpansion/bellman_values/ReservoirManagement.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/grid_evaluator/GridEvaluator.h"
-#include "antares-xpansion/lpnamer/main/ProblemGenerationExeOptions.h"
 #include "antares-xpansion/lpnamer/main/ProblemGenerationForWaterValueCalculation.h"
 #include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
 #include "malloc.h"
@@ -78,41 +78,48 @@ int main(int argc, char** argv)
 {
     try
     {
-        auto options_parser = ProblemGenerationExeOptions();
-        options_parser.Parse(argc, argv);
-        auto path_to_data = options_parser.StudyPath();
+        auto optionsParser = BellmanValuesExeOptions();
+        optionsParser.Parse(argc, argv);
+        auto studyPath = optionsParser.StudyPath();
+        auto solverName = optionsParser.SolverName();
+        int nbThreads = optionsParser.NbThreads();
 
-        auto gridCollection = std::make_shared<GridCollection>(path_to_data / "grid.csv");
+        auto gridCollection = std::make_shared<GridCollection>(studyPath / "grid.csv");
 
-        Reservoir reservoir(path_to_data, "area");
-        ReservoirManagement reservoir_management(reservoir, true);
+        Reservoir reservoir(studyPath, "area");
+        ReservoirManagement reservoirManagement(reservoir, true);
 
-        ConfigurationManager configuration_manager(options_parser);
-        auto report_path = path_to_data / "report.txt";
-        auto logger_factory = FileAndStdoutLoggerFactory(report_path, false);
-        Logger logger = logger_factory.get_logger();
+        ConfigurationManager::ConfigDirectories directories{
+            study_dir: studyPath,
+            simulation_dir: ConfigurationManager::generateOutputName(studyPath),
+        };
+
+        auto loggerFactory = FileAndStdoutLoggerFactory(directories.simulation_dir / "log.txt",
+                                                        false);
+        Logger logger = loggerFactory.get_logger();
         auto writer = std::make_shared<Output::JsonWriter>(std::make_shared<Clock>(),
-                                                           path_to_data / "output.json");
+                                                           studyPath / "output.json");
 
         std::cout << "Generating problems" << std::endl;
-        ProblemGenerationForWaterValueCalculation pbg(configuration_manager.Directories());
+        ProblemGenerationForWaterValueCalculation pbg(directories);
         std::cout << "Problems generated" << std::endl;
 
         Output::VariationDeNiveauxDeStockData variationDeNiveauxDeStockData;
         for (auto& grid: gridCollection->gridDefinitions)
         {
-            auto mps_path = pbg.updateProblems(grid);
+            auto mpsPath = pbg.updateProblems(grid);
 
             auto evaluator = GridEvaluator(logger,
                                            writer,
-                                           mps_path,
+                                           mpsPath,
                                            grid,
                                            ProblemsFormat::MPS_FILE,
-                                           8);
+                                           solverName,
+                                           nbThreads);
 
-            auto bellmanValues = BellmanValues(evaluator, reservoir_management).compute();
+            auto bellmanValues = BellmanValues(evaluator, reservoirManagement).compute();
             std::string fileName = std::to_string(grid.gridID) + "_bellman_values.csv";
-            saveBellmanValues(path_to_data / fileName, bellmanValues, true);
+            saveBellmanValues(directories.simulation_dir / fileName, bellmanValues, true);
         }
 
         return 0;

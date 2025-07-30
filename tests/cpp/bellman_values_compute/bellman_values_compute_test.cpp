@@ -95,7 +95,13 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCase)
     ProblemGenerationForWaterValueCalculation pbg(config_dirs);
     auto mps_path = pbg.updateProblems(grid);
 
-    auto evaluator = GridEvaluator(logger, writer, mps_path, grid, ProblemsFormat::MPS_FILE, 8);
+    auto evaluator = GridEvaluator(logger,
+                                   writer,
+                                   mps_path,
+                                   grid,
+                                   ProblemsFormat::MPS_FILE,
+                                   "XPRESS",
+                                   8);
     auto res = BellmanValues(evaluator, reservoir_management).compute();
 
     for (int week = 1; week < res.size(); week++)

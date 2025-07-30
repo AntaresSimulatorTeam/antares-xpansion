@@ -20,7 +20,7 @@ public:
     explicit ConfigurationManager(ProblemGenerationOptions& options);
     auto Directories() -> ConfigDirectories;
     auto Mode() -> SimulationInputMode;
-    std::filesystem::path generateOutputName(const std::filesystem::path& study);
+    static std::filesystem::path generateOutputName(const std::filesystem::path& study);
     const ProblemGenerationOptions& options_;
 
 private:
