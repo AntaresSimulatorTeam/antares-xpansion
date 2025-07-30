@@ -10,11 +10,11 @@
 # Problem Generation Exe
 # ---------------------------------------------------------------------------
 
-add_executable (full_grid_evaluation_exe
+add_executable (bellman_values_exe
 	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
 )
 
-target_link_libraries (full_grid_evaluation_exe
+target_link_libraries (bellman_values_exe
 		PRIVATE
 		${PROJECT_NAME}::lp_namer_input_reader
 		${PROJECT_NAME}::lp_namer_problem_modifier
@@ -26,4 +26,4 @@ target_link_libraries (full_grid_evaluation_exe
 		
 )
 
-install(TARGETS full_grid_evaluation_exe DESTINATION bin)
+install(TARGETS bellman_values_exe DESTINATION bin)
