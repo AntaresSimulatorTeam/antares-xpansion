@@ -14,5 +14,13 @@ BellmanValuesExeOptions::BellmanValuesExeOptions():
       "Solver to use (optional, default is xpress). Possible values are: xpress, cbc, clp")(
       "threads",
       po::value<int>(&nbThreads_)->default_value(1),
-      "Number of threads to use (optional, default is 1)");
+      "Number of threads to use (optional, default is 1)")(
+      "startWeek",
+      po::value<int>(&startWeek_)->default_value(1),
+      "Start week (optional, default is 1)")("endWeek",
+                                             po::value<int>(&endWeek_)->default_value(52),
+                                             "End week (optional, default is 52)")(
+      "nbLevels",
+      po::value<int>(&nbLevels_)->default_value(10),
+      "Number of levels (optional, default is 10)");
 }

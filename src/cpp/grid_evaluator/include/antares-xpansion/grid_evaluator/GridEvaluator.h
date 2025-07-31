@@ -25,7 +25,7 @@ public:
                   ProblemsFormat data_format,
                   std::string solverName,
                   int nbThreads = 1);
-    std::map<Output::PointWeekScenarioKey, double> ComputeRewards();
+    virtual std::map<Output::PointWeekScenarioKey, double> ComputeRewards();
 
 private:
     Output::ConcurrentInsertionMap<Output::PointWeekScenarioKey, double>
@@ -59,7 +59,7 @@ protected:
     GridDefinition& gridDefinition; ///< Grid definition
     std::string solverName;         ///< Solver name
 
-    int nbScenarios = 0; ///< Number of scenarios
+    int nbScenarios = 1; ///< Number of scenarios
 
     ProblemsFormat problemsFormat; ///< Format of the problems
     int nbThreads;                 ///< Number of threads to use

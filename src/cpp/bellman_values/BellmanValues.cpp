@@ -84,11 +84,11 @@ auto linspace(double start, double end, int num)
 
 /// @brief Compute the Bellman values
 /// @return The bellman values for each week
-std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWeek)
+std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWeek, int nbLevels)
 {
     auto variationDeNiveauxDeStockData = gridEvaluator.ComputeRewards();
 
-    auto X = linspace(0.0, reservoirManagement.reservoir.capacity, 11);
+    auto X = linspace(0.0, reservoirManagement.reservoir.capacity, nbLevels);
     std::map<ScenarioAndWeek, std::vector<double>> V;
     std::map<ScenarioAndWeek, std::vector<double>> rewards;
 

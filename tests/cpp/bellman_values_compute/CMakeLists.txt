@@ -18,4 +18,4 @@ target_include_directories(bellman_values_compute_test
         )
 
 add_test(NAME bellman_values_compute COMMAND bellman_values_compute_test WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})
-set_property(TEST bellman_values_compute PROPERTY LABELS unit)
+set_property(TEST bellman_values_compute PROPERTY LABELS bellman_values)

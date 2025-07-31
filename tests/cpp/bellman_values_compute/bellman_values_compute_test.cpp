@@ -72,7 +72,74 @@ protected:
     }
 
     std::filesystem::path original_dir;
+
+    struct GridEvaluatorMock: public GridEvaluator
+    {
+        GridEvaluatorMock():
+            GridEvaluator(nullptr,
+                          nullptr,
+                          "mockPath",
+                          gridDef,
+                          ProblemsFormat::MPS_FILE,
+                          "mockSolver",
+                          0)
+        {
+        }
+
+        std::map<Output::PointWeekScenarioKey, double> ComputeRewards() override
+        {
+            return {
+              {Output::PointWeekScenarioKey({{"HydroPower", -100}}, 1, 1), 20.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", -100}}, 2, 1), 20.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", -100}}, 3, 1), 20.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", -50}}, 1, 1), 40.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", -50}}, 2, 1), 40.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", -50}}, 3, 1), 40.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", 0}}, 1, 1), 60.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", 0}}, 2, 1), 60.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", 0}}, 3, 1), 60.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", 50}}, 1, 1), 80.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", 50}}, 2, 1), 80.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", 50}}, 3, 1), 80.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", 100}}, 1, 1), 100.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", 100}}, 2, 1), 100.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", 100}}, 3, 1), 100.0},
+            };
+        }
+
+    private:
+        GridDefinition gridDef = {.gridID = 0,
+                                  .gridElements = {{.values = {
+                                                      {{1, 1}, {-100, -50, 0, 50, 100}},
+                                                      {{1, 2}, {-100, -50, 0, 50, 100}},
+                                                      {{1, 3}, {-100, -50, 0, 50, 100}},
+                                                    }}}};
+    } evaluatorMock;
+
+    Reservoir createTestReservoir()
+    {
+        return Reservoir("TestArea",
+                         500.0,
+                         1.0,
+                         {100.0, 100.0, 100.0},            // max_generating
+                         {100.0, 100.0, 100.0},            // max_pumping
+                         {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}} // inflow
+        );
+    }
 };
+
+TEST_F(BellmanValuesComputeTest, unitTest)
+{
+    Reservoir reservoir = createTestReservoir();
+    ReservoirManagement reservoirManagement(reservoir, false);
+    auto bellmanValues = BellmanValues(evaluatorMock, reservoirManagement).compute(1, 3, 6);
+
+    std::vector<std::vector<double>> expected = {{60, 60, 60, 100, 140, 180},
+                                                 {40, 40, 40, 40, 80, 120},
+                                                 {20, 20, 20, 20, 20, 60}};
+
+    EXPECT_EQ(bellmanValues, expected);
+}
 
 TEST_F(BellmanValuesComputeTest, OneNodeBaseCase)
 {
@@ -102,7 +169,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCase)
                                    ProblemsFormat::MPS_FILE,
                                    "XPRESS",
                                    8);
-    auto res = BellmanValues(evaluator, reservoir_management).compute();
+    auto res = BellmanValues(evaluator, reservoir_management).compute(1, 52, 11);
 
     for (int week = 1; week < res.size(); week++)
     {

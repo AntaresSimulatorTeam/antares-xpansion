@@ -106,8 +106,8 @@ typedef std::vector<GridPointData> GridPointsData;
 struct PointWeekScenarioKey
 {
     Point rhsValues;
-    int scenario;
     int week;
+    int scenario;
 
     bool operator<(const PointWeekScenarioKey& other) const
     {

@@ -10,6 +10,9 @@ private:
     std::filesystem::path studyPath_;
     std::string solverName_;
     int nbThreads_;
+    int startWeek_;
+    int endWeek_;
+    int nbLevels_;
 
 public:
     BellmanValuesExeOptions();
@@ -29,5 +32,20 @@ public:
     int NbThreads() const
     {
         return nbThreads_;
+    }
+
+    int StartWeek() const
+    {
+        return startWeek_;
+    }
+
+    int EndWeek() const
+    {
+        return endWeek_;
+    }
+
+    int NbLevels() const
+    {
+        return nbLevels_;
     }
 };

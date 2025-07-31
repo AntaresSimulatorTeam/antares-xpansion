@@ -389,7 +389,7 @@ void GridEvaluator::ProcessSubproblem(const std::string& subPbName, GridDefiniti
         double cost = SolveSubproblem(subPbWorker);
 
         variationDeNiveauxDeStockData
-          .insert({subPbCombo, GetPbInfo(subPbName).scenario, GetPbInfo(subPbName).week}, cost);
+          .insert({subPbCombo, GetPbInfo(subPbName).week, GetPbInfo(subPbName).scenario}, cost);
         std::cout << "Cost: " << cost << std::endl;
     }
 }

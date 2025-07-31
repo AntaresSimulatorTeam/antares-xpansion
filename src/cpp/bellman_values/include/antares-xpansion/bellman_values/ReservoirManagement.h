@@ -34,6 +34,24 @@ private:
     void loadHydroIni(const std::filesystem::path& path_to_input);
     std::vector<double> loadInflow(const std::filesystem::path& path_to_input,
                                    const std::string& areaName);
+
+    // Private test-only constructor
+    Reservoir(const std::string& areaName,
+              double capacity,
+              double efficiency,
+              std::vector<double> max_generating,
+              std::vector<double> max_pumping,
+              std::vector<std::vector<double>> inflow):
+        area(areaName),
+        capacity(capacity),
+        efficiency(efficiency),
+        max_generating(std::move(max_generating)),
+        max_pumping(std::move(max_pumping)),
+        inflow(std::move(inflow))
+    {
+    }
+
+    friend class BellmanValuesComputeTest;
 };
 
 class ReservoirManagement

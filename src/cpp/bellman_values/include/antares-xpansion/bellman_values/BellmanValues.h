@@ -11,7 +11,9 @@ class BellmanValues
 public:
     BellmanValues(GridEvaluator& gridEvaluator, const ReservoirManagement& reservoirManagement);
 
-    std::vector<std::vector<double>> compute(int startWeek = 1, int endWeek = 52);
+    std::vector<std::vector<double>> compute(int startWeek = 1,
+                                             int endWeek = 52,
+                                             int nbLevels = 10);
 
 private:
     double solveWeeklyProblemWithReward(int week,
