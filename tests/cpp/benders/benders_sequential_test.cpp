@@ -107,6 +107,11 @@ public:
     _data.x_in = x_in;
   }
 
+  void set_invest_bounds(Point min_invest, Point max_invest) {
+    _data.min_invest = min_invest;
+    _data.max_invest = max_invest;
+  }
+
   void set_ub(double ub) { parametrized_ub = ub; }
   void set_it(int it) { parametrized_it = it; }
 };
@@ -224,7 +229,7 @@ TEST_F(BendersSequentialTest, MasterNotRelaxedWhenSepSetToOne) {
     master_formulation, max_iter, relaxed_gap, sep_param);
 
   benders.set_data(true, 0);
-
+  
   benders.launch();
   std::vector<char> nb_units_col_types = get_nb_units_col_types(benders);
 
@@ -337,6 +342,8 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhithoutImprovement) {
 
   Point x_out = {{"x1", 1}, {"x2", 2}};
   Point x_in = {{"x1", 3}, {"x2", 6}};
+  Point min_invest = {{"x1", 0}, {"x2", 0}};
+  Point max_invest = {{"x1", 10}, {"x2", 10}};
 
   BendersSequentialDouble benders = init_benders_sequential(
     master_formulation, max_iter, relaxed_gap, sep_param);
@@ -346,6 +353,7 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhithoutImprovement) {
   benders.set_it(current_it);
   benders.set_bestx(x_out, x_in);
   benders.set_ub(current_ub);
+  benders.set_invest_bounds(min_invest, max_invest);
 
   Point expec_x_cut;
   for (const auto &[coord, val]: x_out) {
@@ -382,6 +390,9 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhenImprovement) {
   Point x_out = {{"x1", 1}, {"x2", 2}};
   Point x_in = {{"x1", 3}, {"x2", 6}};
 
+  Point min_invest = {{"x1", 0}, {"x2", 0}};
+  Point max_invest = {{"x1", 10}, {"x2", 10}};
+
   BendersSequentialDouble benders = init_benders_sequential(
     master_formulation, max_iter, relaxed_gap, sep_param);
 
@@ -390,6 +401,7 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhenImprovement) {
   benders.set_it(current_it);
   benders.set_bestx(x_out, x_in);
   benders.set_ub(current_ub);
+  benders.set_invest_bounds(min_invest, max_invest);
 
   Point expec_x_cut;
   for (const auto &[coord, val]: x_out) {
