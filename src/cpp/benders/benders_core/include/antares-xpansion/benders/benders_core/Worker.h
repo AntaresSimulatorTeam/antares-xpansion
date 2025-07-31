@@ -19,11 +19,11 @@ class Worker
 {
 public:
     Worker(VariableMap variable_map, Logger logger, double cut_coefficient_tolerance);
-    virtual void init(const std::string& solver_name,
-                      int log_level,
-                      const SolverLogManager& solver_log_manager,
-                      ProblemsFormat format,
-                      IBendersProblemProvider* benders_problem_provider);
+    void init(const std::string& solver_name,
+              int log_level,
+              const SolverLogManager& solver_log_manager,
+              ProblemsFormat format,
+              IBendersProblemProvider* benders_problem_provider);
     virtual ~Worker() = default;
 
     void get_value(double& lb) const;

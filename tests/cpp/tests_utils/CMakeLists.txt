@@ -1,7 +1,7 @@
 
 add_library(tests_utils STATIC 
 						RandomDirGenerator.h RandomDirGenerator.cpp
-						LogPrefixManip.h LogPrefixManip.cpp NOOPSolver.h
+						LogPrefixManip.h LogPrefixManip.cpp NOOPSolver.h EmptyLogManager.h
 						 )
 target_include_directories (helpers
 	PUBLIC

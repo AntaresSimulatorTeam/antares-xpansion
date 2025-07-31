@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "NOOPSolver.h"
+#include "EmptyLogManager.h"
 #include "antares-xpansion/benders/benders_core/WorkerMaster.h"
 #include "antares-xpansion/benders/logger/Master.h"
 
@@ -51,21 +52,6 @@ public:
     {
         return "";
     }
-};
-
-class EmptyLogManager: public SolverLogManager
-{
-public:
-    SolverLogManager& operator=(const SolverLogManager& other) override
-    {
-        return *this;
-    }
-
-    void init() override
-    {
-    }
-
-    ~EmptyLogManager() = default;
 };
 
 class WorkerMasterTest: public ::testing::Test

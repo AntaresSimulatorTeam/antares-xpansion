@@ -30,7 +30,7 @@ public:
         init();
     }
 
-    virtual SolverLogManager& operator=(const SolverLogManager& other)
+    SolverLogManager& operator=(const SolverLogManager& other)
     {
         if (this == &other)
         {
@@ -41,7 +41,7 @@ public:
         return *this;
     }
 
-    virtual void init()
+    void init()
     {
 #ifdef __linux__
         if (log_file_path.empty()
@@ -61,7 +61,7 @@ public:
         }
     }
 
-    ~SolverLogManager()
+    virtual ~SolverLogManager()
     {
         if (log_file_ptr)
         {

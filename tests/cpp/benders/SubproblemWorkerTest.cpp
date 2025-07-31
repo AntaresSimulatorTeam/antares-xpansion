@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 
+#include "EmptyLogManager.h"
 #include "NOOPSolver.h"
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
 #include "antares-xpansion/benders/logger/Master.h"
@@ -56,21 +57,6 @@ public:
     {
         return "";
     }
-};
-
-class EmptyLogManager: public SolverLogManager
-{
-public:
-    SolverLogManager& operator=(const SolverLogManager& other) override
-    {
-        return *this;
-    }
-
-    void init() override
-    {
-    }
-
-    ~EmptyLogManager() = default;
 };
 
 class SubproblemWorkerTest: public ::testing::Test

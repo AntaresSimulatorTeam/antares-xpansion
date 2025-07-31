@@ -198,6 +198,6 @@ void Worker::roundIfWithinTolerance(std::vector<double>& values, int first, int 
     std::transform(values.begin() + first,
                    values.begin() + last,
                    values.begin() + first,
-                   [this](double value) -> double
+                   [this](double value)
                    { return std::abs(value) < cut_coefficient_tolerance_ ? 0 : value; });
 }

@@ -80,7 +80,7 @@ void WorkerMaster::restoreFeasibility(std::vector<double>& solution)
             solution[var_id] = std::abs(value - rounded) < _master_solution_tolerance ? rounded
                                                                                       : value;
         }
-    };
+    }
 }
 
 /*!
