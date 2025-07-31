@@ -15,6 +15,7 @@ var searchData=
   ['worker_12',['Worker',['../classWorker.html',1,'']]],
   ['workermaster_13',['WorkerMaster',['../classWorkerMaster.html',1,'']]],
   ['workermasterdata_14',['WorkerMasterData',['../classWorkerMasterData.html',1,'']]],
-  ['writermockstatus_15',['WriterMockStatus',['../classWriterMockStatus.html',1,'']]],
-  ['writernoopstub_16',['WriterNOOPStub',['../classXpansion_1_1Test_1_1WriterNOOPStub.html',1,'Xpansion::Test']]]
+  ['workermastertest_15',['WorkerMasterTest',['../classWorkerMasterTest.html',1,'']]],
+  ['writermockstatus_16',['WriterMockStatus',['../classWriterMockStatus.html',1,'']]],
+  ['writernoopstub_17',['WriterNOOPStub',['../classXpansion_1_1Test_1_1WriterNOOPStub.html',1,'Xpansion::Test']]]
 ];

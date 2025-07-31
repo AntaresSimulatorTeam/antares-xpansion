@@ -28,5 +28,5 @@ var searchData=
   ['solverxpress_25',['SolverXpress',['../classSolverXpress.html#a3fa04264091ce029e091b1c3eac8c560',1,'SolverXpress::SolverXpress()'],['../classSolverXpress.html#aa2c353455282b7595fac4d3ff31adb85',1,'SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy)']]],
   ['studyupdater_26',['StudyUpdater',['../classStudyUpdater.html#ac386a6ced87a6a4315ed2c46f574601e',1,'StudyUpdater']]],
   ['subproblemweight_27',['SubproblemWeight',['../classBendersBase.html#ab979fd9e6fd791c6b01d244da33ba849',1,'BendersBase']]],
-  ['subproblemworker_28',['SubproblemWorker',['../classSubproblemWorker.html#a4310e1d3b5519bf9ae215c7ee2a6f6a8',1,'SubproblemWorker']]]
+  ['subproblemworker_28',['SubproblemWorker',['../classSubproblemWorker.html#a4353df6111363aa803afcfa82c21bd2d',1,'SubproblemWorker']]]
 ];

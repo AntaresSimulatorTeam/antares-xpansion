@@ -230,6 +230,12 @@ $(function(){initNavTree('SimulationOptions_8hxx_source.html',''); initResizable
 <div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span> </div>
 <div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span><span class="comment">// cache problems</span></div>
 <div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>BENDERS_OPTIONS_MACRO(CACHE_PROBLEMS, <span class="keywordtype">bool</span>, false, asBool())</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span> </div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span><span class="comment">// Master solution tolerance</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>BENDERS_OPTIONS_MACRO(MASTER_SOLUTION_TOLERANCE, <span class="keywordtype">double</span>, 1e-4, asDouble())</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span><span class="comment">// Cut coefficient tolerance</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>BENDERS_OPTIONS_MACRO(CUT_COEFFICIENT_TOLERANCE, <span class="keywordtype">double</span>, 5e-3, asDouble())</div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

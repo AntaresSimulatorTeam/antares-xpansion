@@ -161,8 +161,6 @@ Classes</h2></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classantares__xpansion_1_1input__checker_1_1ExpertLogsValueError.html">ExpertLogsValueError</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classantares__xpansion_1_1input__checker_1_1GapValueError.html">GapValueError</a></td></tr>
-<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classantares__xpansion_1_1input__checker_1_1IllegalCharsInCandidateName.html">IllegalCharsInCandidateName</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classantares__xpansion_1_1input__checker_1_1LogLevelValueError.html">LogLevelValueError</a></td></tr>
@@ -179,6 +177,8 @@ Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classantares__xpansion_1_1input__checker_1_1NotHandledValue.html">NotHandledValue</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classantares__xpansion_1_1input__checker_1_1OptionTypeError.html">OptionTypeError</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classantares__xpansion_1_1input__checker_1_1PositiveFloatValueError.html">PositiveFloatValueError</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classantares__xpansion_1_1input__checker_1_1ProfileFileNegativeValue.html">ProfileFileNegativeValue</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -292,7 +292,7 @@ list&#160;</td><td class="memItemRight" valign="bottom"><b>INFINITY_LIST</b> = [
 <tr class="separator:a4c368716432d2e28265f21759faab73e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><pre class="fragment">    module to perform checks on antares xpansion input data
+<div class="textblock"><pre class="fragment">module to perform checks on antares xpansion input data
 </pre> </div><h2 class="groupheader">Function Documentation</h2>
 <a id="a16ac28238886dd434aa43f348eaf4708" name="a16ac28238886dd434aa43f348eaf4708"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a16ac28238886dd434aa43f348eaf4708">&#9670;&#160;</a></span>_check_candidate_link()</h2>
@@ -566,7 +566,9 @@ Exits if the candidates files has the wrong format.
 <div class="line"><span class="lineno">   12</span>    <span class="stringliteral">&quot;log_level&quot;</span>: (type_int, [<span class="stringliteral">&quot;0&quot;</span>, <span class="stringliteral">&quot;1&quot;</span>, <span class="stringliteral">&quot;2&quot;</span>, <span class="stringliteral">&quot;3&quot;</span>]),</div>
 <div class="line"><span class="lineno">   13</span>    <span class="stringliteral">&quot;separation_parameter&quot;</span>: (type_float, <span class="keywordtype">None</span>),</div>
 <div class="line"><span class="lineno">   14</span>    <span class="stringliteral">&quot;batch_size&quot;</span>: (type_int, <span class="keywordtype">None</span>),</div>
-<div class="line"><span class="lineno">   15</span>}</div>
+<div class="line"><span class="lineno">   15</span>    <span class="stringliteral">&quot;master_solution_tolerance&quot;</span>: (type_float, <span class="keywordtype">None</span>),</div>
+<div class="line"><span class="lineno">   16</span>    <span class="stringliteral">&quot;cut_coefficient_tolerance&quot;</span>: (type_float, <span class="keywordtype">None</span>),</div>
+<div class="line"><span class="lineno">   17</span>}</div>
 </div><!-- fragment -->
 </div>
 </div>

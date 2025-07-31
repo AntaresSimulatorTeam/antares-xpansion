@@ -152,11 +152,12 @@ Inheritance diagram for BendersBase:</div>
  <div class="center">
   <img src="classBendersBase.png" usemap="#BendersBase_map" alt=""/>
   <map id="BendersBase_map" name="BendersBase_map">
-<area href="classBendersMpi.html" title="Class use run the benders algorithm in parallel." alt="BendersMpi" shape="rect" coords="106,56,308,80"/>
-<area href="classBendersSequential.html" title="Class use run the benders algorithm in sequential." alt="BendersSequential" shape="rect" coords="424,56,626,80"/>
-<area href="classBendersByBatch.html" alt="BendersByBatch" shape="rect" coords="0,112,202,136"/>
-<area href="classOuterloop_1_1BendersMpiOuterLoop.html" alt="Outerloop::BendersMpiOuterLoop" shape="rect" coords="212,112,414,136"/>
-<area href="classBendersSequentialDouble.html" alt="BendersSequentialDouble" shape="rect" coords="424,112,626,136"/>
+<area href="classBendersBaseDouble.html" alt="BendersBaseDouble" shape="rect" coords="0,56,202,80"/>
+<area href="classBendersMpi.html" title="Class use run the benders algorithm in parallel." alt="BendersMpi" shape="rect" coords="212,56,414,80"/>
+<area href="classBendersSequential.html" title="Class use run the benders algorithm in sequential." alt="BendersSequential" shape="rect" coords="530,56,732,80"/>
+<area href="classBendersByBatch.html" alt="BendersByBatch" shape="rect" coords="106,112,308,136"/>
+<area href="classOuterloop_1_1BendersMpiOuterLoop.html" alt="Outerloop::BendersMpiOuterLoop" shape="rect" coords="318,112,520,136"/>
+<area href="classBendersSequentialDouble.html" alt="BendersSequentialDouble" shape="rect" coords="530,112,732,136"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -327,6 +328,8 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>SwitchToIntegerMaster
 <tr class="memitem:a929626f8aa88bfa9412ec4f891a91c37" id="r_a929626f8aa88bfa9412ec4f891a91c37"><td class="memItemLeft" align="right" valign="top"><a id="a929626f8aa88bfa9412ec4f891a91c37" name="a929626f8aa88bfa9412ec4f891a91c37"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>ComputeXCut</b> ()</td></tr>
 <tr class="separator:a929626f8aa88bfa9412ec4f891a91c37"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afa9edac4513a89c829bdd69271bf3b50" id="r_afa9edac4513a89c829bdd69271bf3b50"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#afa9edac4513a89c829bdd69271bf3b50">roundXCut</a> ()</td></tr>
+<tr class="separator:afa9edac4513a89c829bdd69271bf3b50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0e9027da3bd7f377a3e74b0124bbe02d" id="r_a0e9027da3bd7f377a3e74b0124bbe02d"><td class="memItemLeft" align="right" valign="top"><a id="a0e9027da3bd7f377a3e74b0124bbe02d" name="a0e9027da3bd7f377a3e74b0124bbe02d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>ComputeInvestCost</b> ()</td></tr>
 <tr class="separator:a0e9027da3bd7f377a3e74b0124bbe02d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -631,10 +634,9 @@ SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subprobl
 </div><div class="memdoc">
 
 <p>Add cuts in master problem. </p>
-<p>Add cuts in master problem according to the selected option</p>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
-    <tr><td class="paramname">all_package</td><td>: storage of every subproblem information </td></tr>
+    <tr><td class="paramname">subproblem_data_map</td><td>: storage of every subproblem information </td></tr>
   </table>
   </dd>
 </dl>
@@ -732,7 +734,7 @@ SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subprobl
 <p>Solve and get optimal variables of the Master <a class="el" href="classProblem.html" title="Decorator to the SolverAbstract class.">Problem</a>. </p>
 <p>Method to solve and get optimal variables of the Master <a class="el" href="classProblem.html" title="Decorator to the SolverAbstract class.">Problem</a> and update upper and lower bound </p>
 
-<p>Reimplemented in <a class="el" href="classBendersSequentialDouble.html#a731f23e8a9e2700f022f60ac04d6cbea">BendersSequentialDouble</a>.</p>
+<p>Reimplemented in <a class="el" href="classBendersBaseDouble.html#adc0585a9c777648790b12941f417f4a0">BendersBaseDouble</a>, and <a class="el" href="classBendersSequentialDouble.html#a731f23e8a9e2700f022f60ac04d6cbea">BendersSequentialDouble</a>.</p>
 
 </div>
 </div>
@@ -795,7 +797,7 @@ SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subprobl
 
 <p>Initialize set of data used in the loop. </p>
 
-<p>Reimplemented in <a class="el" href="classBendersSequentialDouble.html#a33c0199bf9a762b001db1f631ca9444f">BendersSequentialDouble</a>.</p>
+<p>Reimplemented in <a class="el" href="classBendersBaseDouble.html#abec4d97a2176e8747fdf4c6cbb94a8cd">BendersBaseDouble</a>, and <a class="el" href="classBendersSequentialDouble.html#a33c0199bf9a762b001db1f631ca9444f">BendersSequentialDouble</a>.</p>
 
 </div>
 </div>
@@ -823,6 +825,37 @@ SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subprobl
 </div><div class="memdoc">
 
 <p>Implemented in <a class="el" href="classBendersMpi.html#a217d3af6fbe78082f30fa9ef75cf1dfb">BendersMpi</a>.</p>
+
+</div>
+</div>
+<a id="afa9edac4513a89c829bdd69271bf3b50" name="afa9edac4513a89c829bdd69271bf3b50"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa9edac4513a89c829bdd69271bf3b50">&#9670;&#160;</a></span>roundXCut()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BendersBase::roundXCut </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">\brief  _data.x_in is within the bounds thanks to restoreFeasibility called in
+</pre><p> WorkerMaster::get(...). This function helps to avoid x_cut getting inifinitely close to a bound due to the way it is updated using x_in:</p><ul>
+<li>Suppose x_in = x_out = 1 in the first iteration</li>
+<li>Suppose x_out always 0 in the following iterations</li>
+<li>Then x_cut will be always divided by 2 (if separation_parameter = 0.5) each time, becoming inifinitely small. At some point we want to round it to the bound to avoid numerical issues. We reuse the setting MASTER_SOLUTION_TOLERANCE </li>
+</ul>
 
 </div>
 </div>
@@ -1056,7 +1089,7 @@ SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subprobl
 <p>Update trace of the Benders for the current iteration. </p>
 <p>Fonction to store the current Benders data in the trace </p>
 
-<p>Reimplemented in <a class="el" href="classBendersSequentialDouble.html#a01aa233cda314c1882c9c5ef216d1ea3">BendersSequentialDouble</a>.</p>
+<p>Reimplemented in <a class="el" href="classBendersBaseDouble.html#a992f815592dc2075d934450f1f9e963f">BendersBaseDouble</a>, and <a class="el" href="classBendersSequentialDouble.html#a01aa233cda314c1882c9c5ef216d1ea3">BendersSequentialDouble</a>.</p>
 
 </div>
 </div>

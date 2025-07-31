@@ -140,6 +140,7 @@ $(function(){initNavTree('classWorker.html',''); initResizable(true); });
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classWorker-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">Worker Class Reference</div></div>
 </div><!--header-->
@@ -162,12 +163,12 @@ Inheritance diagram for Worker:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a99e2515abc23ec6bb1d84b19ca6a8e9f" id="r_a99e2515abc23ec6bb1d84b19ca6a8e9f"><td class="memItemLeft" align="right" valign="top"><a id="a99e2515abc23ec6bb1d84b19ca6a8e9f" name="a99e2515abc23ec6bb1d84b19ca6a8e9f"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>Worker</b> (VariableMap variable_map, std::filesystem::path path_to_mps, Logger logger)</td></tr>
-<tr class="separator:a99e2515abc23ec6bb1d84b19ca6a8e9f"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a878688e2dbece0cb4a51c3a14ddb026c" id="r_a878688e2dbece0cb4a51c3a14ddb026c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a878688e2dbece0cb4a51c3a14ddb026c">init</a> (const std::string &amp;solver_name, int log_level, const <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;solver_log_manager, ProblemsFormat format)</td></tr>
-<tr class="memdesc:a878688e2dbece0cb4a51c3a14ddb026c"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization of a problem.  <br /></td></tr>
-<tr class="separator:a878688e2dbece0cb4a51c3a14ddb026c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7a03e30eb809fe6d6c756223c8b90f27" id="r_a7a03e30eb809fe6d6c756223c8b90f27"><td class="memItemLeft" align="right" valign="top"><a id="a7a03e30eb809fe6d6c756223c8b90f27" name="a7a03e30eb809fe6d6c756223c8b90f27"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>Worker</b> (VariableMap variable_map, Logger logger, double cut_coefficient_tolerance)</td></tr>
+<tr class="separator:a7a03e30eb809fe6d6c756223c8b90f27"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3cb29b6fca63283d104fe424cd2adbde" id="r_a3cb29b6fca63283d104fe424cd2adbde"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3cb29b6fca63283d104fe424cd2adbde">init</a> (const std::string &amp;solver_name, int log_level, const <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;solver_log_manager, ProblemsFormat format, <a class="el" href="classIBendersProblemProvider.html">IBendersProblemProvider</a> *benders_problem_provider)</td></tr>
+<tr class="memdesc:a3cb29b6fca63283d104fe424cd2adbde"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialization of a problem.  <br /></td></tr>
+<tr class="separator:a3cb29b6fca63283d104fe424cd2adbde"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad144d280cf5f7bc86c80728f41f356fc" id="r_ad144d280cf5f7bc86c80728f41f356fc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad144d280cf5f7bc86c80728f41f356fc">get_value</a> (double &amp;lb) const</td></tr>
 <tr class="memdesc:ad144d280cf5f7bc86c80728f41f356fc"><td class="mdescLeft">&#160;</td><td class="mdescRight">Return the optimal value of a problem.  <br /></td></tr>
 <tr class="separator:ad144d280cf5f7bc86c80728f41f356fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -208,9 +209,9 @@ int&#160;</td><td class="memItemRight" valign="bottom"><b>Getncols</b> () const<
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:a98b805a5ec99f8cda8b6b02a396f8c0c" id="r_a98b805a5ec99f8cda8b6b02a396f8c0c"><td class="memItemLeft" align="right" valign="top"><a id="a98b805a5ec99f8cda8b6b02a396f8c0c" name="a98b805a5ec99f8cda8b6b02a396f8c0c"></a>
-std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_path_to_mps</b></td></tr>
-<tr class="separator:a98b805a5ec99f8cda8b6b02a396f8c0c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:afd9c1b4f9bb71e1beb613eccad330219" id="r_afd9c1b4f9bb71e1beb613eccad330219"><td class="memItemLeft" align="right" valign="top"><a id="afd9c1b4f9bb71e1beb613eccad330219" name="afd9c1b4f9bb71e1beb613eccad330219"></a>
+std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_base_filename</b></td></tr>
+<tr class="separator:afd9c1b4f9bb71e1beb613eccad330219"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a1a9104c18381ba2210d0220dc18310a3" id="r_a1a9104c18381ba2210d0220dc18310a3"><td class="memItemLeft" align="right" valign="top">VariableMap&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a1a9104c18381ba2210d0220dc18310a3">_name_to_id</a></td></tr>
 <tr class="separator:a1a9104c18381ba2210d0220dc18310a3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:abdb60808816e1a3409a63fe0c2dd98b5" id="r_abdb60808816e1a3409a63fe0c2dd98b5"><td class="memItemLeft" align="right" valign="top">Int2Str&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#abdb60808816e1a3409a63fe0c2dd98b5">_id_to_name</a></td></tr>
@@ -223,10 +224,16 @@ bool&#160;</td><td class="memItemRight" valign="bottom"><b>_is_master</b> = fals
 <tr class="memitem:a4283154ad0c0e9066b62187960931a70" id="r_a4283154ad0c0e9066b62187960931a70"><td class="memItemLeft" align="right" valign="top"><a id="a4283154ad0c0e9066b62187960931a70" name="a4283154ad0c0e9066b62187960931a70"></a>
 Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></tr>
 <tr class="separator:a4283154ad0c0e9066b62187960931a70"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a40b195699c27356f60b365142aa55f06" id="r_a40b195699c27356f60b365142aa55f06"><td class="memItemLeft" align="right" valign="top"><a id="a40b195699c27356f60b365142aa55f06" name="a40b195699c27356f60b365142aa55f06"></a>
+void&#160;</td><td class="memItemRight" valign="bottom"><b>roundIfWithinTolerance</b> (std::vector&lt; double &gt; &amp;values, int first, int last) const</td></tr>
+<tr class="separator:a40b195699c27356f60b365142aa55f06"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Mother-class <a class="el" href="classWorker.html" title="Mother-class Worker.">Worker</a>. </p>
-<p>This class opens and sets a problem from a mps and a mapping variable map </p>
+<p>This class opens and sets a problem using a BendersProblemProvider and a mapping variable map </p>
 </div><h2 class="groupheader">Member Function Documentation</h2>
 <a id="a5ba237e3fdef7d8cc8249fcc5e2c6283" name="a5ba237e3fdef7d8cc8249fcc5e2c6283"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a5ba237e3fdef7d8cc8249fcc5e2c6283">&#9670;&#160;</a></span>get_splex_num_of_ite_last()</h2>
@@ -303,8 +310,8 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
 
 </div>
 </div>
-<a id="a878688e2dbece0cb4a51c3a14ddb026c" name="a878688e2dbece0cb4a51c3a14ddb026c"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a878688e2dbece0cb4a51c3a14ddb026c">&#9670;&#160;</a></span>init()</h2>
+<a id="a3cb29b6fca63283d104fe424cd2adbde" name="a3cb29b6fca63283d104fe424cd2adbde"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a3cb29b6fca63283d104fe424cd2adbde">&#9670;&#160;</a></span>init()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -327,7 +334,12 @@ Logger&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></t
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">ProblemsFormat</td>          <td class="paramname"><span class="paramname"><em>format</em></span>&#160;)</td>
+          <td class="paramtype">ProblemsFormat</td>          <td class="paramname"><span class="paramname"><em>format</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classIBendersProblemProvider.html">IBendersProblemProvider</a> *</td>          <td class="paramname"><span class="paramname"><em>benders_problem_provider</em></span>&#160;)</td>
         </tr>
       </table>
 </div><div class="memdoc">

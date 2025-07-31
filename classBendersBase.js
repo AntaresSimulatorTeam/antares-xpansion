@@ -8,6 +8,7 @@ var classBendersBase =
     [ "GetSubproblemCut", "classBendersBase.html#a14511a50f100e5076dfe0f7e8ea08070", null ],
     [ "GetSubproblemPath", "classBendersBase.html#a037b186f9ac884cc1224f91c13b6ff3d", null ],
     [ "init_data", "classBendersBase.html#a62a819640d2a7530fce9418547f45d65", null ],
+    [ "roundXCut", "classBendersBase.html#afa9edac4513a89c829bdd69271bf3b50", null ],
     [ "set_input_map", "classBendersBase.html#a762f7724ccf0b5bed0176744f578d8c2", null ],
     [ "SetSubproblemsVariablesIndices", "classBendersBase.html#a5845635a9719841fc3abdb70312dd389", null ],
     [ "ShouldRelaxationStop", "classBendersBase.html#a805ed56ad6729dd00f5d16dc705af264", null ],

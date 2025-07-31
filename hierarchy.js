@@ -37,6 +37,7 @@ var hierarchy =
     [ "BatchCollection", "classBatchCollection.html", null ],
     [ "BendersApp", "classBendersApp.html", null ],
     [ "BendersBase", "classBendersBase.html", [
+      [ "BendersBaseDouble", "classBendersBaseDouble.html", null ],
       [ "BendersMpi", "classBendersMpi.html", [
         [ "BendersByBatch", "classBendersByBatch.html", null ],
         [ "Outerloop::BendersMpiOuterLoop", "classOuterloop_1_1BendersMpiOuterLoop.html", null ]
@@ -134,7 +135,6 @@ var hierarchy =
       [ "antares_xpansion.input_checker.EmptyCandidateLink", "classantares__xpansion_1_1input__checker_1_1EmptyCandidateLink.html", null ],
       [ "antares_xpansion.input_checker.EmptyCandidateName", "classantares__xpansion_1_1input__checker_1_1EmptyCandidateName.html", null ],
       [ "antares_xpansion.input_checker.ExpertLogsValueError", "classantares__xpansion_1_1input__checker_1_1ExpertLogsValueError.html", null ],
-      [ "antares_xpansion.input_checker.GapValueError", "classantares__xpansion_1_1input__checker_1_1GapValueError.html", null ],
       [ "antares_xpansion.input_checker.IllegalCharsInCandidateName", "classantares__xpansion_1_1input__checker_1_1IllegalCharsInCandidateName.html", null ],
       [ "antares_xpansion.input_checker.LogLevelValueError", "classantares__xpansion_1_1input__checker_1_1LogLevelValueError.html", null ],
       [ "antares_xpansion.input_checker.MaxIterValueError", "classantares__xpansion_1_1input__checker_1_1MaxIterValueError.html", null ],
@@ -143,6 +143,7 @@ var hierarchy =
       [ "antares_xpansion.input_checker.NotHandledOption", "classantares__xpansion_1_1input__checker_1_1NotHandledOption.html", null ],
       [ "antares_xpansion.input_checker.NotHandledValue", "classantares__xpansion_1_1input__checker_1_1NotHandledValue.html", null ],
       [ "antares_xpansion.input_checker.OptionTypeError", "classantares__xpansion_1_1input__checker_1_1OptionTypeError.html", null ],
+      [ "antares_xpansion.input_checker.PositiveFloatValueError", "classantares__xpansion_1_1input__checker_1_1PositiveFloatValueError.html", null ],
       [ "antares_xpansion.input_checker.ProfileFileNegativeValue", "classantares__xpansion_1_1input__checker_1_1ProfileFileNegativeValue.html", null ],
       [ "antares_xpansion.input_checker.ProfileFileNotExists", "classantares__xpansion_1_1input__checker_1_1ProfileFileNotExists.html", null ],
       [ "antares_xpansion.input_checker.ProfileFileValueError", "classantares__xpansion_1_1input__checker_1_1ProfileFileValueError.html", null ],
@@ -259,6 +260,11 @@ var hierarchy =
     [ "Catch::Generators::GeneratorWrapper< U >", "classCatch_1_1Generators_1_1GeneratorWrapper.html", null ],
     [ "HeadersManager", "structHeadersManager.html", [
       [ "HeadersManagerExternalLoop", "structHeadersManagerExternalLoop.html", null ]
+    ] ],
+    [ "IBendersProblemProvider", "classIBendersProblemProvider.html", [
+      [ "BendersProblemFromFile", "classBendersProblemFromFile.html", null ],
+      [ "NOOPBendersProblemProvider", "classNOOPBendersProblemProvider.html", null ],
+      [ "NOOPBendersProblemProvider", "classNOOPBendersProblemProvider.html", null ]
     ] ],
     [ "Catch::IContext", "structCatch_1_1IContext.html", [
       [ "Catch::IMutableContext", "structCatch_1_1IMutableContext.html", null ]
@@ -558,7 +564,12 @@ var hierarchy =
     [ "SinglePbData", "structSinglePbData.html", null ],
     [ "Output::SolutionData", "structOutput_1_1SolutionData.html", null ],
     [ "SolverAbstract", "classSolverAbstract.html", [
-      [ "NOOPSolver", "classNOOPSolver.html", null ],
+      [ "NOOPSolver", "classNOOPSolver.html", [
+        [ "NOOPSolverForWorker", "classNOOPSolverForWorker.html", [
+          [ "NOOPSolverForSubproblemWorker", "classNOOPSolverForSubproblemWorker.html", null ],
+          [ "NOOPSolverForWorkerMaster", "classNOOPSolverForWorkerMaster.html", null ]
+        ] ]
+      ] ],
       [ "Problem", "classProblem.html", null ],
       [ "SolverCbc", "classSolverCbc.html", null ],
       [ "SolverClp", "classSolverClp.html", null ],
@@ -569,7 +580,9 @@ var hierarchy =
     [ "SolverFactory", "classSolverFactory.html", null ],
     [ "SolverIO", "classSolverIO.html", null ],
     [ "SolverLoader", "classSolverLoader.html", null ],
-    [ "SolverLogManager", "classSolverLogManager.html", null ],
+    [ "SolverLogManager", "classSolverLogManager.html", [
+      [ "EmptyLogManager", "classEmptyLogManager.html", null ]
+    ] ],
     [ "antares_xpansion.benders_driver.SolversExe", "classantares__xpansion_1_1benders__driver_1_1SolversExe.html", null ],
     [ "Catch::SourceLineInfo", "structCatch_1_1SourceLineInfo.html", null ],
     [ "antares_xpansion.split_link_profile.SplitLinkProfile", "classantares__xpansion_1_1split__link__profile_1_1SplitLinkProfile.html", null ],
@@ -626,6 +639,7 @@ var hierarchy =
       [ "ArchiveUpdaterTest", "classArchiveUpdaterTest.html", null ],
       [ "ArchiveWriterTest", "classArchiveWriterTest.html", null ],
       [ "BatchCollectionTest", "classBatchCollectionTest.html", null ],
+      [ "BendersBaseTest", "classBendersBaseTest.html", null ],
       [ "BendersSequentialTest", "classBendersSequentialTest.html", [
         [ "BendersSequentialTestBySolver", "classBendersSequentialTestBySolver.html", null ],
         [ "BendersSequentialTestSolverAndFormat", "classBendersSequentialTestSolverAndFormat.html", null ]
@@ -667,12 +681,14 @@ var hierarchy =
       [ "SensitivityUserLoggerTest", "classSensitivityUserLoggerTest.html", null ],
       [ "SensitivityWriterTest", "classSensitivityWriterTest.html", null ],
       [ "StudyUpdateTest", "classStudyUpdateTest.html", null ],
+      [ "SubproblemWorkerTest", "classSubproblemWorkerTest.html", null ],
       [ "UpdateCapacitiesTest", "classUpdateCapacitiesTest.html", null ],
       [ "UserLoggerTest", "classUserLoggerTest.html", null ],
       [ "VariableFileReaderTest", "classVariableFileReaderTest.html", null ],
       [ "VariablesGroupTest", "classVariablesGroupTest.html", null ],
       [ "WeightsFileReaderTest", "classWeightsFileReaderTest.html", null ],
-      [ "WeightsFileWriterTest", "classWeightsFileWriterTest.html", null ]
+      [ "WeightsFileWriterTest", "classWeightsFileWriterTest.html", null ],
+      [ "WorkerMasterTest", "classWorkerMasterTest.html", null ]
     ] ],
     [ "tests.python.test_antares_driver.TestAntaresDriver", "classtests_1_1python_1_1test__antares__driver_1_1TestAntaresDriver.html", null ],
     [ "tests.python.test_benders_driver.TestBendersDriver", "classtests_1_1python_1_1test__benders__driver_1_1TestBendersDriver.html", null ],

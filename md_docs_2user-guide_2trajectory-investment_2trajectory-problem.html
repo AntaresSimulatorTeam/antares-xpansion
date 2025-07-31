@@ -140,8 +140,8 @@ $(function(){initNavTree('md_docs_2user-guide_2trajectory-investment_2trajectory
   <div class="headertitle"><div class="title">Trajectory investment problem</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md251"></a></p>
-<h1><a class="anchor" id="autotoc_md252"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md256"></a></p>
+<h1><a class="anchor" id="autotoc_md257"></a>
 General description</h1>
 <p>Recall the annual investment problem in Xpansion :</p>
 <p>$$ \min_{x \in \mathcal{X}} \quad C^T x + \text{ANTARES}(x) $$ over a set of investment variables specified by the user, where :</p>
@@ -164,7 +164,7 @@ General description</h1>
 <li>$P(n)$ is the probability of realisation of node $n$ : $P(n) = P_{\text{parent}(n)}(n) \times P(\text{parent}(n))$.</li>
 <li>$P(root) = 1$.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md253"></a>
+<h1><a class="anchor" id="autotoc_md258"></a>
 On the $dx^{+/-}$ variables</h1>
 <p><b>Note</b> : In our model, $x_{i,n}$ is the capacity available during the period represented by $n$, and this means the decisions $dx_{i,n}^{+/-}$ represent the variation of capacity during the period between $\text{parent}(n)$ and $n$ (i.e. the capacity being built or decommisionned during the period represented by $\text{parent}(n)$, with effective entry into service at the beginning of $n$).</p>
 <p>We can impose the decisions to be the same in all children of a given node (see <a href="./merge-master.md#trajectory-constraints">trajectory constraints</a>) if we want the investment decision of a given period to be independant of what scenario will materialize in the next period when the new capacities enter into service.</p>
