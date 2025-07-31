@@ -15,12 +15,15 @@ BellmanValuesExeOptions::BellmanValuesExeOptions():
       "threads",
       po::value<int>(&nbThreads_)->default_value(1),
       "Number of threads to use (optional, default is 1)")(
-      "startWeek",
+      "start-week",
       po::value<int>(&startWeek_)->default_value(1),
-      "Start week (optional, default is 1)")("endWeek",
+      "Start week (optional, default is 1)")("end-week",
                                              po::value<int>(&endWeek_)->default_value(52),
                                              "End week (optional, default is 52)")(
-      "nbLevels",
+      "nb-levels",
       po::value<int>(&nbLevels_)->default_value(10),
-      "Number of levels (optional, default is 10)");
+      "Number of levels (optional, default is 10)")(
+      "antares-format",
+      po::value<bool>(&antaresFormat_)->default_value(false),
+      "Output in Antares format (optional, default is false)");
 }

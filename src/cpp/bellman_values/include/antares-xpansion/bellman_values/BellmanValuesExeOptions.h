@@ -13,6 +13,7 @@ private:
     int startWeek_;
     int endWeek_;
     int nbLevels_;
+    bool antaresFormat_;
 
 public:
     BellmanValuesExeOptions();
@@ -47,5 +48,10 @@ public:
     int NbLevels() const
     {
         return nbLevels_;
+    }
+
+    bool AntaresFormat() const
+    {
+        return antaresFormat_;
     }
 };

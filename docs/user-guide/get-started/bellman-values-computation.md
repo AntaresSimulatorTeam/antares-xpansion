@@ -34,7 +34,7 @@ with the following columns:
 
 2. Run `bellman-values.exe` and choose the path to the Antares study with the `--study` parameter :
     ```
-    bellman_values.exe -i data_test/one_node_base
+    bellman_values_exe --study data_test/one_node_base
     ```
 
 ### Command line parameters
@@ -42,6 +42,10 @@ with the following columns:
 #### `-h, --help`
 
 Show a help message and exit.
+
+#### `--study <path>`
+
+Path to the Antares study.
 
 #### `--solver {xpress,cbc,clp}`
 
@@ -52,6 +56,30 @@ Default value: `xpress`.
 Default value: `1`.
 
 Number of threads that will be used to solve the problems from the grid.
+
+#### `--start-week <number>`
+
+Default value: `1`.
+
+Starting week of the Bellman values computation.
+
+#### `--end-week <number>`
+
+Default value: `52`.
+
+Ending week of the Bellman values computation.
+
+#### `--nb-levels <number>`
+
+Default value: `10`.
+
+Number of levels of the stock.
+
+#### `--antares-format <bool>`
+
+Default value: `false`.
+
+If true, the output will be in the Antares format (values will be interpolated to get 101 levels of stock).
 
 ## Workflow
 

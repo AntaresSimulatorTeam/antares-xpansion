@@ -86,6 +86,7 @@ int main(int argc, char** argv)
         int startWeek = optionsParser.StartWeek();
         int endWeek = optionsParser.EndWeek();
         int nbLevels = optionsParser.NbLevels();
+        bool antaresFormat = optionsParser.AntaresFormat();
 
         auto gridCollection = std::make_shared<GridCollection>(studyPath / "grid.csv");
 
@@ -123,7 +124,7 @@ int main(int argc, char** argv)
             auto bellmanValues = BellmanValues(evaluator, reservoirManagement)
                                    .compute(startWeek, endWeek, nbLevels);
             std::string fileName = std::to_string(grid.gridID) + "_bellman_values.csv";
-            saveBellmanValues(directories.simulation_dir / fileName, bellmanValues, true);
+            saveBellmanValues(directories.simulation_dir / fileName, bellmanValues, antaresFormat);
         }
 
         return 0;
