@@ -526,6 +526,15 @@ void SolverClp::chg_rhs(int id_row, double val)
     const double* rowLower = _clp.getRowLower();
     const double* rowUpper = _clp.getRowUpper();
 
+    constexpr double EPS = 1e-8; // Tolerance for floating point comparison
+
+    if (std::abs(rowLower[id_row] - rowUpper[id_row]) < EPS)
+    {
+        _clp.setRowLower(id_row, val);
+        _clp.setRowUpper(id_row, val);
+        return;
+    }
+
     if (rowLower[id_row] <= -COIN_DBL_MAX)
     {
         if (rowUpper[id_row] >= COIN_DBL_MAX)
