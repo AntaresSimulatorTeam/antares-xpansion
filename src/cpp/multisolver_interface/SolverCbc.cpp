@@ -658,9 +658,10 @@ void SolverCbc::chg_rhs(int id_row, double val)
     const double* rowLower = _clp_inner_solver.getRowLower();
     const double* rowUpper = _clp_inner_solver.getRowUpper();
 
-    constexpr double EPS = 1e-8; // Tolerance for floating point comparison
+    char row_type;
+    get_row_type(&row_type, id_row, id_row);
 
-    if (std::abs(rowLower[id_row] - rowUpper[id_row]) < EPS)
+    if (row_type == 'E')
     {
         _clp_inner_solver.setRowLower(id_row, val);
         _clp_inner_solver.setRowUpper(id_row, val);
