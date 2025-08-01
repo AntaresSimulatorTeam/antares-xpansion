@@ -11,7 +11,7 @@ BellmanValuesExeOptions::BellmanValuesExeOptions():
                                          "Path to archive (required)")(
       "solver",
       po::value<std::string>(&solverName_)->default_value("xpress"),
-      "Solver to use (optional, default is xpress). Possible values are: xpress, cbc, clp")(
+      "Solver to use (optional, default is xpress). Possible values are: xpress, coin")(
       "threads",
       po::value<int>(&nbThreads_)->default_value(1),
       "Number of threads to use (optional, default is 1)")(

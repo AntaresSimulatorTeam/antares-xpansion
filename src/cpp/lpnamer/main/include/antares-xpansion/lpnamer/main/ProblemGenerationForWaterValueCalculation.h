@@ -26,7 +26,8 @@ class ProblemGenerationForWaterValueCalculation
 {
 public:
     explicit ProblemGenerationForWaterValueCalculation(
-      ConfigurationManager::ConfigDirectories directories);
+      ConfigurationManager::ConfigDirectories directories,
+      std::string solverName = "xpress");
     virtual ~ProblemGenerationForWaterValueCalculation() = default;
     std::filesystem::path updateProblems(const GridDefinition& gridDefinition);
 

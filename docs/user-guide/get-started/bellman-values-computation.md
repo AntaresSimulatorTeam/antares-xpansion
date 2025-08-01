@@ -47,7 +47,7 @@ Show a help message and exit.
 
 Path to the Antares study.
 
-#### `--solver {xpress,cbc,clp}`
+#### `--solver {xpress, coin, clp, cbc}`
 
 Default value: `xpress`.
 

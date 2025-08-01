@@ -33,11 +33,12 @@ static void CreateDirectories(const std::filesystem::path& output_path)
 /// @param problems The problems to be modified
 /// @param gridDefinition The grid definition
 ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalculation(
-  ConfigurationManager::ConfigDirectories directories):
+  ConfigurationManager::ConfigDirectories directories,
+  std::string solverName):
     directories(directories)
 {
     Antares::Solver::Optimization::OptimizationOptions optOptions;
-    optOptions.linearSolver = "coin";
+    optOptions.linearSolver = solverName;
 
     auto [results, error] = Antares::API::PerformSimulation(directories.study_dir,
                                                             directories.simulation_dir,

@@ -226,7 +226,9 @@ SubproblemWorkerPtr GridEvaluator::AddSubproblem(const std::string& pbName)
 }
 
 /// @brief Get the list of subproblems names to be used in the gridDefinition
-std::vector<std::string> GridEvaluator::InitSubProblems(const GridDefinition& gridDefinition)
+std::vector<std::string> GridEvaluator::InitSubProblems(const GridDefinition& gridDefinition,
+                                                        int startWeek,
+                                                        int endWeek)
 {
     // Add all subproblems mps files to the subproblem map if they are used in the grid.csv file
     std::string extension = problemsFormat == ProblemsFormat::MPS_FILE ? ".mps" : ".svf";
@@ -237,8 +239,11 @@ std::vector<std::string> GridEvaluator::InitSubProblems(const GridDefinition& gr
             && gridDefinition.isSubproblemUsed(entry.path().stem().string()))
         {
             std::string subPbName = entry.path().stem().string();
-            subPbNames.push_back(subPbName);
-            nbScenarios = std::max(nbScenarios, GetPbInfo(subPbName).scenario);
+            if (GetPbInfo(subPbName).week >= startWeek && GetPbInfo(subPbName).week <= endWeek)
+            {
+                subPbNames.push_back(subPbName);
+                nbScenarios = std::max(nbScenarios, GetPbInfo(subPbName).scenario);
+            }
         }
     }
     return subPbNames;
@@ -434,14 +439,15 @@ double GridEvaluator::SolveSubproblem(SubproblemWorkerPtr subPbWorker)
 
 /// @brief Launch the Stock level variation computation
 /// @return The stock level variation results
-std::map<Output::PointWeekScenarioKey, double> GridEvaluator::ComputeRewards()
+std::map<Output::PointWeekScenarioKey, double> GridEvaluator::ComputeRewards(int startWeek,
+                                                                             int endWeek)
 {
     std::cout << "Launching Stock level variation" << std::endl;
 
     // Time the Run time
     Timer run_timer;
 
-    auto subPbNames = InitSubProblems(gridDefinition);
+    auto subPbNames = InitSubProblems(gridDefinition, startWeek, endWeek);
     Run(subPbNames, gridDefinition);
 
     auto run_time = run_timer.elapsed();

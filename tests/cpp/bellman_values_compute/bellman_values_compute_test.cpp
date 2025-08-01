@@ -86,7 +86,8 @@ protected:
         {
         }
 
-        std::map<Output::PointWeekScenarioKey, double> ComputeRewards() override
+        std::map<Output::PointWeekScenarioKey, double> ComputeRewards(int startWeek,
+                                                                      int endWeek) override
         {
             return {
               {Output::PointWeekScenarioKey({{"HydroPower", -100}}, 1, 1), 20.0},

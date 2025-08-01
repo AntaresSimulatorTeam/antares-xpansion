@@ -105,7 +105,7 @@ int main(int argc, char** argv)
                                                            studyPath / "output.json");
 
         std::cout << "Generating problems" << std::endl;
-        ProblemGenerationForWaterValueCalculation pbg(directories);
+        ProblemGenerationForWaterValueCalculation pbg(directories, solverName);
         std::cout << "Problems generated" << std::endl;
 
         Output::VariationDeNiveauxDeStockData variationDeNiveauxDeStockData;
