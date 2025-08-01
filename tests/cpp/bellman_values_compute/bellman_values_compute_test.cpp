@@ -168,7 +168,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCase)
                                    mps_path,
                                    grid,
                                    ProblemsFormat::MPS_FILE,
-                                   "XPRESS",
+                                   "xpress",
                                    8);
     auto res = BellmanValues(evaluator, reservoir_management).compute(1, 52, 11);
 
