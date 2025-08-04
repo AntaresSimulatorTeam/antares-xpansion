@@ -1,5 +1,6 @@
 import csv
 import fileinput
+import glob
 import io
 import json
 import math
@@ -13,6 +14,74 @@ from pathlib import Path
 import numpy as np
 from behave import *
 from utils_functions import get_mpi_command, get_conf, read_outputs, remove_outputs, find_in_simulator_log
+
+
+def analyze_mps_file(mps_file_path):
+    """Analyze an MPS file to count rows, columns, and elements"""
+    rows = 0
+    cols = 0
+    elements = 0
+
+    with open(mps_file_path, 'r') as f:
+        in_rows = False
+        in_columns = False
+        col_names = set()
+
+        for line in f:
+            line = line.strip()
+            if not line:
+                continue
+
+            if line.startswith('ROWS'):
+                in_rows = True
+                in_columns = False
+                continue
+            elif line.startswith('COLUMNS'):
+                in_rows = False
+                in_columns = True
+                continue
+            elif line.startswith('RHS') or line.startswith('BOUNDS') or line.startswith('ENDATA'):
+                in_rows = False
+                in_columns = False
+                continue
+
+            if in_rows and not line.startswith('*'):
+                rows += 1
+            elif in_columns and not line.startswith('*'):
+                parts = line.split()
+                if len(parts) >= 1:
+                    col_names.add(parts[0])
+                    elements += (len(parts) - 1) // 2  # Each pair after column name is a constraint
+
+        cols = len(col_names)
+
+    return rows, cols, elements
+
+
+def get_subproblem_statistics(lp_path):
+    """Get statistics for all subproblems in the lp directory"""
+    mps_files = glob.glob(str(lp_path / "**/*.mps"), recursive=True)
+
+    if not mps_files:
+        return 0, 0, 0
+
+    total_rows = 0
+    total_cols = 0
+    total_elements = 0
+
+    for mps_file in mps_files:
+        if "master" not in mps_file.lower():  # Skip master problem files
+            rows, cols, elements = analyze_mps_file(mps_file)
+            total_rows += rows
+            total_cols += cols
+            total_elements += elements
+
+    # Return average per subproblem
+    num_subproblems = len([f for f in mps_files if "master" not in f.lower()])
+    if num_subproblems > 0:
+        return total_rows // num_subproblems, total_cols // num_subproblems, total_elements // num_subproblems
+    else:
+        return 0, 0, 0
 
 
 @given('the study path is "{string}"')
@@ -44,15 +113,26 @@ def build_outer_loop_command(context, n: int, option_file: str = "options.json")
     return command
 
 
-def build_launch_command(study_dir: Path, method: str, nproc: int, in_memory: bool, allow_run_as_root: bool = False):
+def build_launch_command(study_dir: Path, step: str = None, nproc: int = 2, in_memory: bool = False,
+                         method: str = None, allow_run_as_root: bool = False):
     command = [
         sys.executable,
-        "../../src/python/launch.py", "--installDir", str(get_conf('DEFAULT_INSTALL_DIR')), "--dataDir",
-        str(study_dir), "--method",
-        method, "-n", str(nproc), "--oversubscribe"]
+        "../../src/python/launch.py",
+        "--installDir", str(get_conf('DEFAULT_INSTALL_DIR')),
+        "--dataDir", str(study_dir),
+        "-n", str(nproc),
+        "--oversubscribe"
+    ]
+
+    # Only add --method if method is provided and not None
+    if method is not None:
+        command.extend(["--method", method])
+
+    if step is not None:
+        command.extend(["--step", step])
+
     if in_memory:
         command.append("--memory")
-        print(command)
     if allow_run_as_root:
         command.append("--allow-run-as-root")
     return command
@@ -69,7 +149,7 @@ def read_json_file(output_path):
 def run_outer_loop(context, n, option_file: str = "options.json"):
     context.allow_run_as_root = get_conf("allow_run_as_root")
     command = build_outer_loop_command(context, n, option_file)
-    print(f"Running command: {command}")
+    print(f"Running command: {' '.join(command)}")
     old_cwd = os.getcwd()
 
     lp_path = Path(context.tmp_study) / "lp" if (Path(context.tmp_study) / "lp").exists() else Path(
@@ -107,9 +187,9 @@ def run_antares_xpansion(context, method, memory=None, n: int = 1):
 
 
 def run_command(study_path, memory, method, n_mpi, allow_run_as_root=False):
-    command = build_launch_command(study_path, method, nproc=n_mpi, in_memory=memory,
+    command = build_launch_command(study_path, method=method, nproc=n_mpi, in_memory=memory,
                                    allow_run_as_root=allow_run_as_root)
-    print(f"Running command: {command}")
+    print(f"Running command: {' '.join(command)}")
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = process.communicate()
     print(f"Process finished with code: {process.returncode}")
@@ -251,3 +331,95 @@ def check_benders_solver(context, string):
     solver_in_benders = context.options_data["SOLVER_NAME"]
     print(f"Solver in benders: {solver_in_benders}\n")
     assert solver_in_benders.upper() == string.upper()
+
+
+def run_xpansion_step(context, step, memory_mode, nproc=1):
+    """Common function to run an Antares-Xpansion step with error handling"""
+    context.allow_run_as_root = get_conf("allow_run_as_root")
+
+    # Parse memory mode
+    in_memory = "memory" in memory_mode.lower()
+
+    command = build_launch_command(
+        context.tmp_study,
+        step=step,
+        nproc=nproc,
+        in_memory=in_memory,
+        allow_run_as_root=context.allow_run_as_root
+    )
+
+    print(f"Running {step} {memory_mode}: {' '.join(command)}")
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out, err = process.communicate()
+    context.return_code = process.returncode
+
+    if context.return_code != 0:
+        print(f"{step} failed:")
+        print(out.decode('utf-8'))
+        print(err.decode('utf-8'))
+        return False
+
+    return True
+
+
+@when(u'I run step {step} {memory_mode} followed by step presolve')
+def step_problem_generation_and_presolve(context, step, memory_mode):
+    # Run the first step (usually problem_generation)
+    if not run_xpansion_step(context, step, memory_mode, nproc=1):
+        return
+
+    # Run presolve step
+    if not run_xpansion_step(context, "presolve", "on_disk", nproc=1):
+        return
+
+
+@when(u'I run step {step} {memory_mode}')
+def step_problem_generation_memory(context, step, memory_mode):
+    run_xpansion_step(context, step, memory_mode, nproc=1)
+
+
+@then(u'the return status is 0')
+def check_return_status(context):
+    assert context.return_code == 0, f"Expected return code 0, got {context.return_code}"
+
+
+@then(u'the generated subproblems have between {min} and {max} rows')
+def check_subproblems_rows(context, min, max):
+    lp_path = context.tmp_study / "lp"
+    rows, _, _ = get_subproblem_statistics(lp_path)
+    assert int(min) <= rows <= int(max), f"Expected rows between {min}-{max}, got {rows}"
+
+
+@then(u'the generated subproblems have between {min} and {max} cols')
+def check_subproblems_cols(context, min, max):
+    lp_path = context.tmp_study / "lp"
+    _, cols, _ = get_subproblem_statistics(lp_path)
+    assert int(min) <= cols <= int(max), f"Expected cols between {min}-{max}, got {cols}"
+
+
+@then(u'the generated subproblems have between {min} and {max} elements')
+def check_subproblems_elements(context, min, max):
+    lp_path = context.tmp_study / "lp"
+    _, _, elements = get_subproblem_statistics(lp_path)
+    assert int(min) <= elements <= int(max), f"Expected elements between {min}-{max}, got {elements}"
+
+
+@then(u'the generated subproblems have {n} rows')
+def check_subproblems_exact_row(context, n):
+    lp_path = context.tmp_study / "lp"
+    rows, _, _ = get_subproblem_statistics(lp_path)
+    assert rows == int(n), f"Expected exactly {n} rows, got {rows}"
+
+
+@then(u'the generated subproblems have {n} cols')
+def check_subproblems_exact_cols(context, n):
+    lp_path = context.tmp_study / "lp"
+    _, cols, _ = get_subproblem_statistics(lp_path)
+    assert cols == int(n), f"Expected exactly {n} cols, got {cols}"
+
+
+@then(u'the generated subproblems have {n} elements')
+def check_subproblems_exact_elements(context, n):
+    lp_path = context.tmp_study / "lp"
+    _, _, elements = get_subproblem_statistics(lp_path)
+    assert elements == int(n), f"Expected exactly {n} elements, got {elements}"
