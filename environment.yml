@@ -3,6 +3,8 @@ channels:
   - defaults
   - https://repo.anaconda.com/pkgs/main
   - https://repo.anaconda.com/pkgs/r
+  - https://repo.anaconda.com/pkgs/main/linux-64/
+  - https://repo.anaconda.com/pkgs/main/win-64/
 dependencies:
   - python=3.10
   - pip
