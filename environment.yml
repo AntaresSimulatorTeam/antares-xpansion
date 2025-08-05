@@ -1,7 +1,4 @@
 name: antares-xpansion
-channels:
-  - defaults
-  - https://repo.anaconda.com/pkgs/main
 dependencies:
   - wheel
   - pyinstaller==4.5.1
