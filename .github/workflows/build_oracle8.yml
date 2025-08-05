@@ -81,6 +81,9 @@ jobs:
           bash /tmp/miniconda.sh -b -p /root/miniconda3
           echo "/root/miniconda3/bin" >> $GITHUB_PATH
           echo "/root/miniconda3/condabin" >> $GITHUB_PATH
+
+      - name: Create conda environment
+        run: |
           conda init bash
           conda config --set auto_activate_base false
           conda create --name antares-xpansion --file=environment.yml --yes
