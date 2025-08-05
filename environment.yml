@@ -1,9 +1,10 @@
 name: antares-xpansion
 dependencies:
+  - python=3.10
   - wheel
   - pyyaml
   - dataclasses
-  - psutil==5.8.0
+  - psutil=5.8.0
   - pytest
   - numpy
   - pytest-cov
