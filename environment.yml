@@ -1,11 +1,8 @@
 name: antares-xpansion
 dependencies:
   - python=3.10
-  - wheel
-  - pyyaml
-  - dataclasses
-  - psutil=5.8.0
-  - pytest
-  - numpy
-  - pytest-cov
-  - behave
+  - pip
+  - pip:
+      - -r requirements-tests.txt
+  - fico-xpress::xpress=9.2.12
+  - fico-xpress::xpresslibs=9.2.12
