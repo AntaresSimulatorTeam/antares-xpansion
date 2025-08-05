@@ -5,7 +5,13 @@ channels:
   - https://repo.anaconda.com/pkgs/main/linux-64/
   - https://repo.anaconda.com/pkgs/main/win-64/
 dependencies:
-  - python=3.11
-  - pip
-  - pip:
-      - -r requirements-tests.txt
+  - python=3.10
+  - wheel
+  - pyinstaller==4.5.1
+  - pyyaml
+  - dataclasses
+  - psutil==5.8.0
+  - pytest
+  - numpy
+  - pytest-cov
+  - behave
