@@ -2,8 +2,6 @@ name: antares-xpansion
 channels:
   - defaults
   - https://repo.anaconda.com/pkgs/main
-  - https://repo.anaconda.com/pkgs/main/linux-64/
-  - https://repo.anaconda.com/pkgs/main/win-64/
 dependencies:
   - wheel
   - pyinstaller==4.5.1
