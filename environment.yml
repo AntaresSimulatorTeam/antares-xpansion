@@ -1,7 +1,6 @@
 name: antares-xpansion
 dependencies:
   - wheel
-  - pyinstaller==4.5.1
   - pyyaml
   - dataclasses
   - psutil==5.8.0
