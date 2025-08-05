@@ -78,12 +78,9 @@ jobs:
           python-version: 3.9
           auto-update-conda: false
           activate-environment: xpansion-tests
+          environment-file: environment.yml
           use-only-tar-bz2: true
           channel-priority: strict
-
-      - name: Install Python dependencies
-        run: |
-          pip install -r requirements-tests.txt
 
       - name: Set-up Xpress with pip for Oracle 8
         shell: bash
