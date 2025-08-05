@@ -78,7 +78,7 @@ jobs:
         uses: conda-incubator/setup-miniconda@v3.2.0
         with:
           channels: "https://repo.anaconda.com/pkgs/main/linux-64/"
-          conda-remove-defaults: "https://repo.anaconda.com/pkgs/main,https://repo.anaconda.com/pkgs/r"
+          conda-remove-defaults: "true"
           auto-update-conda: false
           activate-environment: xpansion-tests
           python-version: "3.10"
