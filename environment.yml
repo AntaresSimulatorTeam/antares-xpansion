@@ -1,4 +1,4 @@
-name: antares-xpansion
+name: xpansion
 channels:
   - defaults
   - https://repo.anaconda.com/pkgs/main

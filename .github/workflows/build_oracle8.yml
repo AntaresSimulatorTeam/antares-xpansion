@@ -86,8 +86,8 @@ jobs:
         run: |
           conda init bash
           conda config --set auto_activate_base false
-          conda create --name antares-xpansion --file=environment.yml --yes
-          conda activate antares-xpansion
+          conda create --name xpansion --file=environment.yml --yes
+          conda activate xpansion
 
       - name: Info conda
         run: |
