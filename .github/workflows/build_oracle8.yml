@@ -80,7 +80,7 @@ jobs:
           activate-environment: xpansion-tests
           environment-file: environment.yml
           use-only-tar-bz2: true
-          channel-priority: strict
+          channel-priority: flexible
 
       - name: Set-up Xpress with pip for Oracle 8
         shell: bash
