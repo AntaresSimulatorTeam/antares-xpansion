@@ -84,7 +84,7 @@ RUN  source /opt/rh/devtoolset-11/enable && \
      ccache -s
 # tests
 RUN \
-              conda activate antares-xpansion
+              conda activate antares-xpansion && \
               SITE_PACKAGE=/root/miniconda3/lib/python3.10/site-packages && \
               XPRESS_DIR=/root/miniconda3 && \
               export XPRESSDIR=$XPRESS_DIR && \
