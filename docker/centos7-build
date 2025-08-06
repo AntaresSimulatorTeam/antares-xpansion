@@ -101,7 +101,9 @@ RUN \
 RUN cd _build && \
     cmake --install .
 
-RUN   XPANSION_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."antares_xpansion_version"' ) && \
+RUN   \
+    conda activate antares-xpansion && \
+    XPANSION_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."antares_xpansion_version"' ) && \
       LSB_RELEASE_ID_SHORT=$(lsb_release --short --id) && \
       LSB_RELEASE_VERSION_SHORT=$(lsb_release --short --release) && \
        cd _install && \
@@ -118,7 +120,9 @@ RUN   XPANSION_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | 
       mkdir -p archive/single && \
       mv $ARCHIVE_NAME archive/single
 
-RUN  XPANSION_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."antares_xpansion_version"' ) && \
+RUN  \
+    conda activate antares-xpansion && \
+    XPANSION_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."antares_xpansion_version"' ) && \
      cd _build && \
      export FILE_NAME="antaresXpansion-$XPANSION_VERSION-CentOS-7.9.2009" && \
      cpack -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME && \
