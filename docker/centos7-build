@@ -83,7 +83,7 @@ RUN  source /opt/rh/devtoolset-11/enable && \
      ccache -s
 # tests
 RUN export PATH=/root/miniconda3/condabin:$PATH && \
-              SITE_PACKAGE=/root/miniconda3/lib/python3.8/site-packages && \
+              SITE_PACKAGE=/root/miniconda3/lib/python3.10/site-packages && \
               XPRESS_DIR=/root/miniconda3 && \
               export XPRESSDIR=$XPRESS_DIR && \
               export XPAUTH_PATH=$SITE_PACKAGE/xpress/license/community-xpauth.xpr && \
