@@ -21,7 +21,9 @@ RUN cd /workspace && \
     git submodule update --init vcpkg && ./vcpkg/bootstrap-vcpkg.sh -disableMetrics && \
     export VCPKG_ROOT=/workspace/antares-xpansion/vcpkg
 
-RUN ORTOOLS_TAG=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."or-tools-rte"' ) && \
+RUN \
+    yum install -y jq
+    ORTOOLS_TAG=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."or-tools-rte"' ) && \
     echo "ORTOOLS_TAG=$ORTOOLS_TAG" && \
     URL_ORTOOLS=https://github.com/rte-france/or-tools-rte/releases/download/v$ORTOOLS_TAG/ortools_cxx_centos7_static_sirius.zip && \
     mkdir -p ortools && cd ortools && \
