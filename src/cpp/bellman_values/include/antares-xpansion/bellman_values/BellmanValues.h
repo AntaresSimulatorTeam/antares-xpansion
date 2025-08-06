@@ -15,6 +15,8 @@ public:
                                              int endWeek = 52,
                                              int nbLevels = 10);
 
+    const std::vector<double>& getLevels();
+
 private:
     double solveWeeklyProblemWithReward(int week,
                                         int scenario,
@@ -27,4 +29,5 @@ private:
 protected:
     GridEvaluator& gridEvaluator;                   ///< Grid evaluator
     const ReservoirManagement& reservoirManagement; ///< Reservoir management
+    std::vector<double> levels;                     ///< Levels of the reservoir
 };

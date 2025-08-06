@@ -10,6 +10,11 @@ BellmanValues::BellmanValues(GridEvaluator& gridEvaluator,
 {
 }
 
+const std::vector<double>& BellmanValues::getLevels()
+{
+    return levels;
+}
+
 template<typename XContainer, typename YContainer>
 double interpolate(const XContainer& X, const YContainer& Y, double x_query)
 {
@@ -88,7 +93,7 @@ std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWe
 {
     auto variationDeNiveauxDeStockData = gridEvaluator.ComputeRewards(startWeek, endWeek);
 
-    auto X = linspace(0.0, reservoirManagement.reservoir.capacity, nbLevels);
+    levels = linspace(0.0, reservoirManagement.reservoir.capacity, nbLevels);
     std::map<ScenarioAndWeek, std::vector<double>> V;
     std::map<ScenarioAndWeek, std::vector<double>> rewards;
 
@@ -101,7 +106,7 @@ std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWe
     {
         for (int scenario = 1; scenario <= gridEvaluator.nbScenarios; ++scenario)
         {
-            V[{scenario, week}] = std::vector<double>(X.size(), 0.0);
+            V[{scenario, week}] = std::vector<double>(levels.size(), 0.0);
         }
     }
 
@@ -109,22 +114,22 @@ std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWe
     {
         for (int scenario = 1; scenario <= gridEvaluator.nbScenarios; ++scenario)
         {
-            auto V_fut = [&X, &V, &week, &scenario]()
+            auto V_fut = [this, &V, &week, &scenario]()
             {
                 auto& V_vec = V[{scenario, week + 1}];
-                return [&X, &V_vec, &week, &scenario](double x)
-                { return interpolate(X, V_vec, x); };
+                return [this, &V_vec, &week, &scenario](double x)
+                { return interpolate(this->levels, V_vec, x); };
             };
 
             std::set<double> breaking_points = {
               *gridEvaluator.gridDefinition.gridElements[0].values[{scenario, week}].begin(),
               *gridEvaluator.gridDefinition.gridElements[0].values[{scenario, week}].rbegin()};
-            for (size_t i = 0; i < X.size(); ++i)
+            for (size_t i = 0; i < levels.size(); ++i)
             {
                 double Vu = solveWeeklyProblemWithReward(week,
                                                          scenario,
-                                                         X[i],
-                                                         X,
+                                                         levels[i],
+                                                         levels,
                                                          rewards[{scenario, week}],
                                                          V_fut(),
                                                          breaking_points);
@@ -132,7 +137,7 @@ std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWe
             }
         }
 
-        for (int i = 0; i < X.size(); ++i)
+        for (int i = 0; i < levels.size(); ++i)
         {
             double sum = 0.0;
             for (int scenario = 1; scenario <= gridEvaluator.nbScenarios; ++scenario)

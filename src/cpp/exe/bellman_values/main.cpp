@@ -48,9 +48,21 @@ std::vector<double> interpolateVector(const std::vector<double>& originalValues,
     return result;
 }
 
-void saveBellmanValues(const std::filesystem::path& path,
-                       const std::vector<std::vector<double>>& bellmanValues,
-                       bool usingAntaresFormat = false)
+std::vector<std::vector<double>> interpolateWeekVector(
+  const std::vector<std::vector<double>>& originalValues,
+  int targetSize)
+{
+    std::vector<std::vector<double>> interpolatedValues;
+    for (const auto& weekValues: originalValues)
+    {
+        interpolatedValues.push_back(interpolateVector(weekValues, targetSize));
+    }
+    return interpolatedValues;
+}
+
+void saveValues(const std::filesystem::path& path,
+                const std::vector<std::vector<double>>& values,
+                bool usingAntaresFormat = false)
 {
     std::ofstream file(path);
     if (!file)
@@ -59,19 +71,71 @@ void saveBellmanValues(const std::filesystem::path& path,
         return;
     }
 
-    for (const auto& weekValues: bellmanValues)
+    if (usingAntaresFormat)
+    {
+        file << '\n';
+    }
+    for (const auto& weekValues: values)
     {
         std::vector<double> values = weekValues;
         if (usingAntaresFormat)
         {
             values = interpolateVector(weekValues, 101);
+            for (size_t i = 0; i < 7; i++)
+            {
+                for (const auto& value: values)
+                {
+                    file << value << " ";
+                }
+                if (i != 6)
+                {
+                    file << '\n';
+                }
+            }
         }
-        for (const auto& value: values)
+        else
         {
-            file << value << " ";
+            for (const auto& value: values)
+            {
+                file << value << " ";
+            }
         }
         file << '\n';
     }
+}
+
+std::vector<std::vector<double>> computeWaterValues(
+  const std::vector<std::vector<double>>& bellmanValues,
+  const std::vector<double>& levels)
+{
+    if (bellmanValues.empty())
+    {
+        return {};
+    }
+
+    size_t numLevels = levels.size();
+    size_t numWeeks = bellmanValues.size();
+
+    for (const auto& weekVals: bellmanValues)
+    {
+        if (weekVals.size() != numLevels)
+        {
+            throw std::invalid_argument("Inconsistent level size in bellmanValues");
+        }
+    }
+
+    std::vector<std::vector<double>> derivatives(numWeeks, std::vector<double>(numLevels - 1));
+
+    for (size_t week = 0; week < numWeeks; ++week)
+    {
+        const auto& values = bellmanValues[week];
+        for (size_t i = 0; i < numLevels; ++i)
+        {
+            derivatives[week][i] = (values[i + 1] - values[i]) / (levels[i + 1] - levels[i]);
+        }
+    }
+
+    return derivatives;
 }
 
 int main(int argc, char** argv)
@@ -120,11 +184,17 @@ int main(int argc, char** argv)
                                            ProblemsFormat::MPS_FILE,
                                            solverName,
                                            nbThreads);
-
-            auto bellmanValues = BellmanValues(evaluator, reservoirManagement)
-                                   .compute(startWeek, endWeek, nbLevels);
-            std::string fileName = std::to_string(grid.gridID) + "_bellman_values.csv";
-            saveBellmanValues(directories.simulation_dir / fileName, bellmanValues, antaresFormat);
+            auto bellmanValuesEvaluator = BellmanValues(evaluator, reservoirManagement);
+            auto bellmanValues = bellmanValuesEvaluator.compute(startWeek, endWeek, nbLevels);
+            auto levels = bellmanValuesEvaluator.getLevels();
+            if (antaresFormat)
+            {
+                bellmanValues = interpolateWeekVector(bellmanValues, 101);
+                levels = interpolateVector(levels, 101);
+            }
+            auto waterValues = computeWaterValues(bellmanValues, levels);
+            std::string fileName = std::to_string(grid.gridID) + "_water_values.csv";
+            saveValues(directories.simulation_dir / fileName, waterValues, antaresFormat);
         }
 
         return 0;
