@@ -40,9 +40,10 @@ RUN ANTARES_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | jq 
 WORKDIR /workspace/antares-xpansion
 
 RUN \
-    export PATH=/root/miniconda3/condabin:$PATH && \
+    export PATH=/root/miniconda3/condabin:$PATH
+    conda init bash
+RUN \
     conda env create -f environment.yml && \
-    conda init bash && \
     conda activate antares-xpansion
 
 RUN conda info
