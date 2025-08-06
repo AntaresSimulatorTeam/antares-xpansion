@@ -1,6 +1,5 @@
 FROM antaresrte/xpansion-centos7:1.1.2
-
-
+ADD ../environment.yml
 
 CMD ["/bin/bash"]
 
@@ -23,9 +22,6 @@ RUN cd /workspace && \
     git submodule update --init vcpkg && ./vcpkg/bootstrap-vcpkg.sh -disableMetrics && \
     export VCPKG_ROOT=/workspace/antares-xpansion/vcpkg
 
-
-
-
 RUN ORTOOLS_TAG=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."or-tools-rte"' ) && \
     echo "ORTOOLS_TAG=$ORTOOLS_TAG" && \
     URL_ORTOOLS=https://github.com/rte-france/or-tools-rte/releases/download/v$ORTOOLS_TAG/ortools_cxx_centos7_static_sirius.zip && \
@@ -44,9 +40,13 @@ RUN ANTARES_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | jq 
 
 WORKDIR /workspace/antares-xpansion
 
-RUN pip3 install --upgrade pip && \
-    pip3 install wheel && \
-    pip3 install -r requirements-tests.txt
+RUN \
+    export PATH=/root/miniconda3/condabin:$PATH && \
+    conda env create -f environment.yml && \
+    conda init bash && \
+    conda activate antares-xpansion
+
+RUN conda info
 
 # Accept build arguments for ccache
 ARG CCACHE_DIR
@@ -63,7 +63,6 @@ ENV PATH="/usr/lib/ccache:$PATH"
 
 RUN  source /opt/rh/devtoolset-11/enable && \
      source /opt/rh/rh-git227/enable && \
-     export PATH=/root/miniconda3/condabin:$PATH && \
      export VCPKG_BINARY_SOURCES="clear;files,/workspace/vcpkg_cache,readwrite" && \
      cmake -B _build -S . \
       -DBUILD_TESTING=ON \
@@ -83,7 +82,7 @@ RUN  source /opt/rh/devtoolset-11/enable && \
      cmake --build _build --config Release -j${NPROC} &&\
      ccache -s
 # tests
-RUN export PATH=/root/miniconda3/condabin:$PATH && \
+RUN \
               SITE_PACKAGE=/root/miniconda3/lib/python3.10/site-packages && \
               XPRESS_DIR=/root/miniconda3 && \
               export XPRESSDIR=$XPRESS_DIR && \
