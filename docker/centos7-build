@@ -63,6 +63,7 @@ ENV PATH="/usr/lib/ccache:$PATH"
 
 RUN  source /opt/rh/devtoolset-11/enable && \
      source /opt/rh/rh-git227/enable && \
+     export PATH=/root/miniconda3/condabin:$PATH && \
      export VCPKG_BINARY_SOURCES="clear;files,/workspace/vcpkg_cache,readwrite" && \
      cmake -B _build -S . \
       -DBUILD_TESTING=ON \
