@@ -15,7 +15,7 @@ runs:
   using: "composite"
   steps:
     - id: create
-      shell: bash
+      shell: bash -el {0}
       # pyinstall --exclude-module _bootlocale to avoid python 3.10 issue
       # https://stackoverflow.com/questions/68459087/pyinstaller-with-python-3-10-0b4-importerror-no-module-named-bootlocale
       # https://github.com/pyinstaller/pyinstaller/issues/5693
