@@ -86,14 +86,6 @@ jobs:
           use-only-tar-bz2: true
           channel-priority: strict
 
-      - run: |
-          conda info
-          python --version
-          ls /github/home/miniconda3/condabin
-          ls /github/home/miniconda3/envs/xpansion-tests/
-          ls /github/home/miniconda3/envs/xpansion-tests/lib/
-          ls /github/home/miniconda3/envs/xpansion-tests/lib/python3.10/site-packages
-
       - name: Set-up Xpress with pip for Oracle 8
         shell: bash
         run: |

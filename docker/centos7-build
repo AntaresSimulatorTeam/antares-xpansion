@@ -89,8 +89,8 @@ RUN  source /opt/rh/devtoolset-11/enable && \
 # tests
 RUN \
               conda activate antares-xpansion && \
-              SITE_PACKAGE=/root/miniconda3/lib/python3.10/site-packages && \
-              XPRESS_DIR=/root/miniconda3 && \
+              SITE_PACKAGE=/root/miniconda3/envs/antares-xpansion/lib/python3.10/site-packages && \
+              XPRESS_DIR=/root/miniconda3/envs/antares-xpansion/ && \
               export XPRESSDIR=$XPRESS_DIR && \
               export XPAUTH_PATH=$SITE_PACKAGE/xpress/license/community-xpauth.xpr && \
               echo "Create symbolic link for XPRESS library file because it is missing in the Python installation" && \
