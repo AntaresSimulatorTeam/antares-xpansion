@@ -1,5 +1,4 @@
 FROM antaresrte/xpansion-centos7:1.1.2
-ADD ../environment.yml
 
 CMD ["/bin/bash"]
 
