@@ -29,8 +29,7 @@ RUN \
     ./configure --enable-optimizations && \
     make altinstall -j$(nproc)
 RUN \
-    ln -sf /usr/local/bin/python3.10 /usr/bin/python3 && \
-    yum install -y install python3-pip  jq &&  python3 -m pip install --upgrade pip
+    ln -sf /usr/local/bin/python3.10 /usr/bin/python3
 
 
 # The default python version (3.6) is too old to download xpress with pip
@@ -40,14 +39,6 @@ RUN \
     wget https://repo.anaconda.com/miniconda/${MINICONDA_VERSION} && \
     bash ${MINICONDA_VERSION} -b && \
     rm -f ${MINICONDA_VERSION}.sh
-
-RUN \
-    export PATH=/root/miniconda3/condabin:$PATH && \
-    conda install -c fico-xpress "xpress==9.2.12"
-
-# Install CMake
-RUN pip3 install cmake==3.28.4
-
 
 #create user
 RUN useradd user
