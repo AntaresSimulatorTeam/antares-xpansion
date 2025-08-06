@@ -47,7 +47,7 @@ RUN \
 RUN \
     conda env create -f environment.yml && \
     conda activate antares-xpansion && \
-    conda install cmake
+    conda install -y cmake
 
 RUN conda info
 
@@ -83,6 +83,7 @@ ARG NPROC=2
 RUN  source /opt/rh/devtoolset-11/enable && \
      source /opt/rh/rh-git227/enable && \
      export VCPKG_BINARY_SOURCES="clear;files,/workspace/vcpkg_cache,readwrite" && \
+     conda activate antares-xpansion && \
      cmake --build _build --config Release -j${NPROC} &&\
      ccache -s
 # tests
@@ -102,6 +103,7 @@ RUN \
               ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
 # Install
 RUN cd _build && \
+    conda activate antares-xpansion && \
     cmake --install .
 
 RUN   \
