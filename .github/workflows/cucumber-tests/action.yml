@@ -14,13 +14,9 @@ inputs:
     required: true
 runs:
   using: "composite"
-  defaults:
-    run:
-      shell: bash -el {0}
   steps:
-
     - name: Run tests
-      shell: bash
+      shell: bash -el {0}
       run: |
         export PATH="${{ inputs.mpi_path }}:$PATH"
         cd tests/end_to_end
