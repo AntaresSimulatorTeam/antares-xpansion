@@ -32,7 +32,7 @@ RUN \
     export PATH=/root/miniconda3/condabin:$PATH && \
     conda init bash && \
     conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main && \
-    conda tos accept --override-channels --channelhttps://repo.anaconda.com/pkgs/r
+    conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
 
 #create user
 RUN useradd user
