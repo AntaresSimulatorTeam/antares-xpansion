@@ -72,8 +72,7 @@ RUN set -e && \
     conda env create -f environment.yml && \
     conda activate antares-xpansion && \
     conda install -y cmake && \
-    echo "conda activate antares-xpansion" >> /etc/bashrc && \
-    conda clean -ay
+    echo "conda activate antares-xpansion" >> /etc/bashrc
 
 # Définition du répertoire de travail
 WORKDIR $WORKSPACE/antares-xpansion
@@ -81,9 +80,6 @@ WORKDIR $WORKSPACE/antares-xpansion
 # Vérification de l'installation
 RUN conda info --envs && \
     echo "Build environment ready!"
-
-# Commande par défaut
-CMD ["/bin/bash"]
 
 # Copy ccache directory into the container
 COPY ${CCACHE_DIR:-/dev/null} /workspace/.ccache
