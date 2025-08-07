@@ -42,12 +42,10 @@ RUN ANTARES_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | jq 
 WORKDIR /workspace/antares-xpansion
 
 RUN \
-    export PATH=/root/miniconda3/condabin:$PATH && \
-    conda init bash
-RUN \
     conda env create -f environment.yml && \
     conda activate antares-xpansion && \
-    conda install -y cmake
+    conda install -y cmake && \
+    echo "conda activate antares-xpansion" >> /etc/bashrc
 
 RUN conda info
 
@@ -66,7 +64,6 @@ ENV PATH="/usr/lib/ccache:$PATH"
 
 RUN  source /opt/rh/devtoolset-11/enable && \
      source /opt/rh/rh-git227/enable && \
-     conda activate antares-xpansion && \
      export VCPKG_BINARY_SOURCES="clear;files,/workspace/vcpkg_cache,readwrite" && \
      cmake -B _build -S . \
       -DBUILD_TESTING=ON \
@@ -83,12 +80,10 @@ ARG NPROC=2
 RUN  source /opt/rh/devtoolset-11/enable && \
      source /opt/rh/rh-git227/enable && \
      export VCPKG_BINARY_SOURCES="clear;files,/workspace/vcpkg_cache,readwrite" && \
-     conda activate antares-xpansion && \
      cmake --build _build --config Release -j${NPROC} &&\
      ccache -s
 # tests
 RUN \
-              conda activate antares-xpansion && \
               SITE_PACKAGE=/root/miniconda3/envs/antares-xpansion/lib/python3.10/site-packages && \
               XPRESS_DIR=/root/miniconda3/envs/antares-xpansion/ && \
               export XPRESSDIR=$XPRESS_DIR && \
@@ -103,11 +98,9 @@ RUN \
 
 # Install
 RUN cd _build && \
-    conda activate antares-xpansion && \
     cmake --install .
 
 RUN   \
-    conda activate antares-xpansion && \
     XPANSION_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."antares_xpansion_version"' ) && \
       LSB_RELEASE_ID_SHORT=$(lsb_release --short --id) && \
       LSB_RELEASE_VERSION_SHORT=$(lsb_release --short --release) && \
@@ -126,7 +119,6 @@ RUN   \
       mv $ARCHIVE_NAME archive/single
 
 RUN  \
-    conda activate antares-xpansion && \
     XPANSION_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."antares_xpansion_version"' ) && \
      cd _build && \
      export FILE_NAME="antaresXpansion-$XPANSION_VERSION-CentOS-7.9.2009" && \

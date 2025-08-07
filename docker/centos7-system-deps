@@ -18,27 +18,19 @@ RUN \
   yum install -y wget rh-git227-git epel-release redhat-lsb-core centos-release-scl scl-utils &&\
   yum install -y devtoolset-11-gcc* environment-modules rpm-build zlib-devel ccache
 
-#Python 3.10
 RUN \
-    yum install -y openssl-devel bzip2-devel libffi-devel && \
-    wget https://www.python.org/ftp/python/3.10.17/Python-3.10.17.tgz && \
-    tar -xzf Python-3.10.17.tgz && \
-    cd Python-3.10.17 && \
-    source /opt/rh/devtoolset-11/enable && \
-    source /opt/rh/rh-git227/enable && \
-    ./configure --enable-optimizations && \
-    make altinstall -j$(nproc)
-RUN \
-    ln -sf /usr/local/bin/python3.10 /usr/bin/python3
+    yum install -y openssl-devel bzip2-devel libffi-devel
 
 
 # The default python version (3.6) is too old to download xpress with pip
 # This version of miniconda embeds python3.10
-ENV MINICONDA_VERSION=Miniconda3-py310_25.3.1-1-Linux-x86_64.sh
+ENV MINICONDA_VERSION=Miniconda3-py313_25.5.1-1-Linux-x86_64.sh
 RUN \
     wget https://repo.anaconda.com/miniconda/${MINICONDA_VERSION} && \
     bash ${MINICONDA_VERSION} -b && \
-    rm -f ${MINICONDA_VERSION}.sh
+    rm -f ${MINICONDA_VERSION}.sh && \
+    export PATH=/root/miniconda3/condabin:$PATH && \
+    conda init bash
 
 #create user
 RUN useradd user
