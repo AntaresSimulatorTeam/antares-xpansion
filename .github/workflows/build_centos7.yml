@@ -95,9 +95,11 @@ jobs:
           -t antaresxpansion:centos7  \
           --build-arg="BRANCH=${{ github.ref_name }}" \
           --build-arg="NPROC=$(nproc)" \
-          --build-arg="VCPKG_CACHE_DIR=./vcpkg_cache" \
-          --build-arg CCACHE_DIR=./.ccache \
+          --build-arg="VCPKG_CACHE_DIR=/mnt/vcpkg_cache" \
+          --build-arg CCACHE_DIR=/mnt/.ccache \
           --build-arg CCACHE_KEY=centos7-on-${{ runner.os }} \
+          -v ${{ github.workspace }}/.ccache:/mnt/.ccache \
+            -v ${{ github.workspace }}/vcpkg_cache:/mnt/vcpkg_cache \
           -f ${{ env.DOCKERFILE }} . 
 
       - name: create a container without starting it && retrieve archive dir
