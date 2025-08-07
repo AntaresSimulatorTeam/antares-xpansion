@@ -97,6 +97,8 @@ ENV PATH="/usr/lib/ccache:$PATH"
 
 RUN  \
     source /opt/rh/devtoolset-11/enable && \
+    source ~/.bashrc && \
+    conda activate antares-xpansion && \
      export VCPKG_BINARY_SOURCES="clear;files,/workspace/vcpkg_cache,readwrite" && \
      cmake -B _build -S . \
       -DBUILD_TESTING=ON \
@@ -111,8 +113,10 @@ RUN  \
 
 RUN  \
     source /opt/rh/devtoolset-11/enable && \
+    source ~/.bashrc && \
+    conda activate antares-xpansion && \
      export VCPKG_BINARY_SOURCES="clear;files,/workspace/vcpkg_cache,readwrite" && \
-     cmake --build _build --config Release -j${NPROC} &&\
+     cmake --build _build --config Release -j${JOBS:-4} && \
      ccache -s
 # tests
 RUN \
