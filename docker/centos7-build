@@ -95,6 +95,15 @@ ENV CCACHE_BASEDIR=/workspace
 ENV CCACHE_COMPRESS=1
 ENV PATH="/usr/lib/ccache:$PATH"
 
+SHELL ["/bin/bash", "-c"]
+
+RUN \
+    conda info && \
+    conda list && \
+    conda activate antares-xpansion && \
+    conda infi && \
+    conda list
+
 RUN  \
     source /opt/rh/devtoolset-11/enable && \
     source ~/.bashrc && \
@@ -120,17 +129,17 @@ RUN  \
      ccache -s
 # tests
 RUN \
-              SITE_PACKAGE=/root/miniconda3/envs/antares-xpansion/lib/python3.10/site-packages && \
-              XPRESS_DIR=/root/miniconda3/envs/antares-xpansion/ && \
-              export XPRESSDIR=$XPRESS_DIR && \
-              export XPAUTH_PATH=$SITE_PACKAGE/xpress/license/community-xpauth.xpr && \
-              echo "Create symbolic link for XPRESS library file because it is missing in the Python installation" && \
-              ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so && \
-              export PATH="/workspace/antares-xpansion/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH" && \
-              pushd tests/end_to_end && \
-              behave --tags ~@flaky  cucumber/features --no-capture --no-capture-stderr --format pretty && \
-              popd && \
-              cd _build
+      SITE_PACKAGE=/root/miniconda3/envs/antares-xpansion/lib/python3.10/site-packages && \
+      XPRESS_DIR=/root/miniconda3/envs/antares-xpansion/ && \
+      export XPRESSDIR=$XPRESS_DIR && \
+      export XPAUTH_PATH=$SITE_PACKAGE/xpress/license/community-xpauth.xpr && \
+      echo "Create symbolic link for XPRESS library file because it is missing in the Python installation" && \
+      ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so && \
+      export PATH="/workspace/antares-xpansion/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH" && \
+      pushd tests/end_to_end && \
+      behave --tags ~@flaky  cucumber/features --no-capture --no-capture-stderr --format pretty && \
+      popd && \
+      cd _build
 
 # Install
 RUN cd _build && \
