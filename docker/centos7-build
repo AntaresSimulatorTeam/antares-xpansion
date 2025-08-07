@@ -82,7 +82,9 @@ WORKDIR $WORKSPACE/antares-xpansion
 
 # Vérification de l'installation
 RUN conda info --envs && \
-    echo "Build environment ready!"
+    echo "Build environment ready!" && \
+    conda info && \
+    conda list
 
 # Copy ccache directory into the container
 COPY ${CCACHE_DIR:-/dev/null} /workspace/.ccache
