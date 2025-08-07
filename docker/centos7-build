@@ -62,6 +62,10 @@ RUN set -e && \
     tar -xzf "antares-${ANTARES_VERSION}-CentOS-7.9.2009.tar.gz" -C deps --strip-components=1 && \
     rm -f "antares-${ANTARES_VERSION}-CentOS-7.9.2009.tar.gz"
 
+RUN \
+    echo "source /opt/rh/devtoolset-11/enable" >> /etc/bashrc && \
+    echo "source /opt/rh/rh-git227/enable" >> /etc/bashrc
+
 # Configuration de l'environnement Conda
 RUN set -e && \
     conda init bash && \
@@ -85,8 +89,7 @@ ENV CCACHE_BASEDIR=/workspace
 ENV CCACHE_COMPRESS=1
 ENV PATH="/usr/lib/ccache:$PATH"
 
-RUN  source /opt/rh/devtoolset-11/enable && \
-     source /opt/rh/rh-git227/enable && \
+RUN  \
      export VCPKG_BINARY_SOURCES="clear;files,/workspace/vcpkg_cache,readwrite" && \
      cmake -B _build -S . \
       -DBUILD_TESTING=ON \
@@ -99,8 +102,7 @@ RUN  source /opt/rh/devtoolset-11/enable && \
       -DVCPKG_TARGET_TRIPLET=x64-linux-release \
       -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
-RUN  source /opt/rh/devtoolset-11/enable && \
-     source /opt/rh/rh-git227/enable && \
+RUN  \
      export VCPKG_BINARY_SOURCES="clear;files,/workspace/vcpkg_cache,readwrite" && \
      cmake --build _build --config Release -j${NPROC} &&\
      ccache -s
