@@ -30,7 +30,9 @@ RUN \
     bash ${MINICONDA_VERSION} -b && \
     rm -f ${MINICONDA_VERSION}.sh && \
     export PATH=/root/miniconda3/condabin:$PATH && \
-    conda init bash
+    conda init bash && \
+    conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main && \
+    conda tos accept --override-channels --channelhttps://repo.anaconda.com/pkgs/r
 
 #create user
 RUN useradd user
