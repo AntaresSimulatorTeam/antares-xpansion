@@ -94,16 +94,9 @@ void fill_rhs_from_bounds(const double* rowLower,
         {
             if (rowUpper[i] < COIN_DBL_MAX)
             {
-                if (rowLower[i] == rowUpper[i])
-                {
-                    rhs[i - first] = rowLower[i];
-                }
-                else
-                {
-                    auto error = LOGLOCATION + "ERROR : Row " + std::to_string(i)
-                                 + " has two different RHS, both right and left.";
-                    throw GenericSolverException(error);
-                }
+                auto error = LOGLOCATION + "ERROR : Row " + std::to_string(i)
+                             + " has two different RHS, both right and left.";
+                throw GenericSolverException(error);
             }
             else
             {
