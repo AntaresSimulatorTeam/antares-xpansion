@@ -102,7 +102,6 @@ RUN \
 
 RUN  \
     source /opt/rh/devtoolset-11/enable && \
-    source ~/.bashrc && \
     conda activate antares-xpansion && \
      export VCPKG_BINARY_SOURCES="clear;files,/workspace/vcpkg_cache,readwrite" && \
      cmake -B _build -S . \
@@ -118,7 +117,6 @@ RUN  \
 
 RUN  \
     source /opt/rh/devtoolset-11/enable && \
-    source ~/.bashrc && \
     conda activate antares-xpansion && \
      export VCPKG_BINARY_SOURCES="clear;files,/workspace/vcpkg_cache,readwrite" && \
      cmake --build _build --config Release -j${JOBS:-4} && \
