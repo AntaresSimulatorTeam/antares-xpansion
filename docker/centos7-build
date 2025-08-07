@@ -28,7 +28,7 @@ COPY ${VCPKG_CACHE_DIR:-/dev/null} $WORKSPACE/
 
 # Installation des dépendances système et clonage du repository
 RUN set -e && \
-    yum install -y jq && \
+    yum install -y jq make && \
     yum clean all && \
     rm -rf /var/cache/yum && \
     cd $WORKSPACE && \
