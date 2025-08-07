@@ -108,31 +108,40 @@ protected:
             };
         }
 
-    private:
-        GridDefinition gridDef = {.gridID = 0,
-                                  .gridElements = {{.values = {
-                                                      {{1, 1}, {-100, -50, 0, 50, 100}},
-                                                      {{1, 2}, {-100, -50, 0, 50, 100}},
-                                                      {{1, 3}, {-100, -50, 0, 50, 100}},
-                                                    }}}};
-    } evaluatorMock;
-
-    Reservoir createTestReservoir()
-    {
-        return Reservoir("TestArea",
-                         500.0,
-                         1.0,
-                         {100.0, 100.0, 100.0},            // max_generating
-                         {100.0, 100.0, 100.0},            // max_pumping
-                         {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}} // inflow
+        Reservoir reservoirMock = Reservoir("TestArea",
+                                            500.0,
+                                            1.0,
+                                            {100.0, 100.0, 100.0},            // max_generating
+                                            {100.0, 100.0, 100.0},            // max_pumping
+                                            {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}} // inflow
         );
-    }
+
+    private:
+        std::map<std::string, Reservoir> reservoirs{{"area", reservoirMock}};
+        std::vector<std::vector<double>> values = {
+          {-100, -50, 0, 50, 100},
+          {-100, -50, 0, 50, 100},
+          {-100, -50, 0, 50, 100},
+        };
+
+        GridDefinition gridDef = {.gridID = 0,
+                                  .reservoirs = reservoirs,
+                                  .gridElements = {{
+                                    .name = "cst",
+                                    .area = "area",
+                                    .rhsValues = values,
+                                  }},
+                                  .weekAreaConstraints = {
+                                    {1, {{"area", {{"cst", values[0]}}}}},
+                                    {2, {{"area", {{"cst", values[1]}}}}},
+                                    {3, {{"area", {{"cst", values[2]}}}}},
+                                  }};
+    } evaluatorMock;
 };
 
 TEST_F(BellmanValuesComputeTest, unitTest)
 {
-    Reservoir reservoir = createTestReservoir();
-    ReservoirManagement reservoirManagement(reservoir, false);
+    ReservoirManagement reservoirManagement(evaluatorMock.reservoirMock, false);
     auto bellmanValues = BellmanValues(evaluatorMock, reservoirManagement).compute(1, 3, 6);
 
     std::vector<std::vector<double>> expected = {{60, 60, 60, 100, 140, 180},

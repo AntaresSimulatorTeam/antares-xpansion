@@ -110,6 +110,7 @@ std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWe
         }
     }
 
+    auto gridDef = gridEvaluator.gridDefinition;
     for (int week = endWeek; week >= startWeek; --week)
     {
         for (int scenario = 1; scenario <= gridEvaluator.nbScenarios; ++scenario)
@@ -120,10 +121,10 @@ std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWe
                 return [this, &V_vec, &week, &scenario](double x)
                 { return interpolate(this->levels, V_vec, x); };
             };
-
-            std::set<double> breaking_points = {
-              *gridEvaluator.gridDefinition.gridElements[0].values[{scenario, week}].begin(),
-              *gridEvaluator.gridDefinition.gridElements[0].values[{scenario, week}].rbegin()};
+            auto valuesVect = gridDef.weekAreaConstraints.at(week)
+                                .at(gridDef.gridElements[0].area)
+                                .at(gridDef.gridElements[0].name);
+            std::set<double> breaking_points = {*valuesVect.begin(), *valuesVect.rbegin()};
             for (size_t i = 0; i < levels.size(); ++i)
             {
                 double Vu = solveWeeklyProblemWithReward(week,
@@ -187,10 +188,9 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
             && (reservoirManagement.overflow || u <= reservoir.max_generating[week - 1]))
         {
             u = std::min(u, reservoir.max_generating[week - 1]);
-            double G = interpolate(
-              gridEvaluator.gridDefinition.gridElements[0].values[{scenario, week}],
-              rewards,
-              u);
+            double G = interpolate(gridEvaluator.gridDefinition.gridElements[0].rhsValues[week - 1],
+                                   rewards,
+                                   u);
             if (G + V_fut(value_fut) < Vu)
             {
                 Vu = G + V_fut(value_fut);
@@ -198,15 +198,14 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
         }
     }
 
-    for (double u: gridEvaluator.gridDefinition.gridElements[0].values[{scenario, week}])
+    for (double u: gridEvaluator.gridDefinition.gridElements[0].rhsValues[week - 1])
     {
         double state_fut = level - u + reservoir.inflow[week - 1][scenario - 1];
         if (0 <= state_fut && state_fut <= reservoir.capacity)
         {
-            double G = interpolate(
-              gridEvaluator.gridDefinition.gridElements[0].values[{scenario, week}],
-              rewards,
-              u);
+            double G = interpolate(gridEvaluator.gridDefinition.gridElements[0].rhsValues[week - 1],
+                                   rewards,
+                                   u);
             if (G + V_fut(state_fut) < Vu)
             {
                 Vu = G + V_fut(state_fut);

@@ -149,6 +149,15 @@ void cleanProblemForBellmanCalculations(std::shared_ptr<Problem> problem,
                 idx = problem->get_row_index("AreaHydroLevel::area<" + gridElement.area + ">::hour<"
                                              + std::to_string(hour) + ">");
                 problem->del_rows(idx, idx);
+
+                // Reset HydroProd as it might have been modified by heuristic
+                idx = problem->get_col_index("HydProd::area<" + gridElement.area + ">::hour<"
+                                             + std::to_string(hour) + ">");
+                problem->chg_bounds(
+                  {idx},
+                  {'U'},
+                  {gridDefinition.reservoirs.at(gridElement.area).max_generating[week - 1]
+                   / Reservoir::hours_in_week});
             }
         }
     }

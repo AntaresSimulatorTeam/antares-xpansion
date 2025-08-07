@@ -2,7 +2,6 @@
 
 #include <functional>
 
-#include "antares-xpansion/bellman_values/ReservoirManagement.h"
 #include "antares-xpansion/grid_evaluator/GridEvaluator.h"
 
 /// @brief Class to compute Bellman values

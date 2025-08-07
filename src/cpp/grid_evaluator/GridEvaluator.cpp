@@ -73,16 +73,16 @@ ConstraintCombos GridEvaluator::GenerateConstraintProduct(const ConstraintMap& c
 ///          of constraint values using GenerateConstraintProduct, and merges them with
 ///          area-specific names into a complete list of subproblem-level combinations.
 /// @param subPbName Name of the subproblem (used to prefix constraint names).
-/// @param areas Map from area names to their constraint maps.
+/// @param areasConstraints Map from area names to their constraint maps.
 /// @return A vector of maps, where each map is a full combination of all constraints
 ///         (with area-prefixed keys) for the subproblem.
 ConstraintCombos GridEvaluator::GenerateSubPbCombos(const std::string& subPbName,
-                                                    const AreaConstraintMaps& areas)
+                                                    const AreaConstraintMaps& areasConstraints)
 {
     ConstraintCombos subPbCombos;
     ConstraintCombos currentCombos = {{}};
 
-    for (const auto& [areaName, constraints]: areas)
+    for (const auto& [areaName, constraints]: areasConstraints)
     {
         ConstraintCombos newCombos;
         ConstraintCombos localCombos = GenerateConstraintProduct(constraints);
@@ -249,60 +249,6 @@ std::vector<std::string> GridEvaluator::InitSubProblems(const GridDefinition& gr
     return subPbNames;
 }
 
-/// @brief Generate the RHS grid values for each subproblem
-///        The RHS grid values are generated for each area and each constraint
-/// @param subPbName The name of the subproblem
-/// @param gridDefinition The grid definition used to generate the RHS grid values
-/// @param subPbWorker The subproblem worker
-/// @return The RHS grid values for each subproblem
-AreaConstraintMaps GridEvaluator::GenerateRHSGridValues(std::string subPbName,
-                                                        GridDefinition& gridDefinition,
-                                                        SubproblemWorkerPtr subPbWorker)
-{
-    AreaConstraintMaps gridValues;
-    // Compute the grid values using the min and max values of the constraints
-    auto computeValues = [&](GridElement& gridElement)
-    {
-        constexpr double epsilon = 0;
-        // constexpr double epsilon = 1e-2;
-
-        if (gridElement.min == 0.0)
-        {
-            gridElement.min += epsilon;
-        }
-        if (gridElement.max == 1.0)
-        {
-            gridElement.max -= epsilon;
-        }
-
-        double min_cst = -subPbWorker->get_rhs_value_from_name(
-                           GetConstraintName(subPbName, gridElement.area, gridElement.min_cst))
-                         * gridElement.min_efficiency;
-        double max_cst = subPbWorker->get_rhs_value_from_name(
-          GetConstraintName(subPbName, gridElement.area, gridElement.max_cst));
-
-        int steps = static_cast<int>((gridElement.max - gridElement.min) / gridElement.step);
-
-        for (int i = 0; i <= steps; ++i)
-        {
-            double normalized = gridElement.min + i * gridElement.step;
-            double value = min_cst + (max_cst - min_cst) * normalized;
-            gridElement.values[GetPbInfo(subPbName)].insert(value);
-        }
-
-        return gridElement.values[GetPbInfo(subPbName)];
-    };
-
-    for (auto& gridElement: gridDefinition.gridElements)
-    {
-        if (gridElement.problemName == subPbName || gridElement.problemName == "all")
-        {
-            gridValues[gridElement.area][gridElement.name] = computeValues(gridElement);
-        }
-    }
-    return gridValues;
-}
-
 /// @brief Get the problem info from the problem name
 /// @param pbName The problem name
 /// @return The scenario and week of the problem
@@ -359,14 +305,14 @@ void GridEvaluator::ProcessSubproblem(const std::string& subPbName, GridDefiniti
     std::cout << "Loading time: "
               << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms"
               << std::endl;
-    auto subPbAreaConstraints = GenerateRHSGridValues(subPbName, gridDefinition, subPbWorker);
 
     std::cout << "Processing subproblem : scenario " << GetPbInfo(subPbName).scenario << " week "
               << GetPbInfo(subPbName).week << std::endl;
 
     std::vector<int> dims;
 
-    for (const auto& [_, constraints]: subPbAreaConstraints)
+    for (const auto& [area, constraints]:
+         gridDefinition.weekAreaConstraints.at(GetPbInfo(subPbName).week))
     {
         std::transform(constraints.begin(),
                        constraints.end(),
@@ -374,7 +320,9 @@ void GridEvaluator::ProcessSubproblem(const std::string& subPbName, GridDefiniti
                        [](const auto& constraints) { return constraints.second.size(); });
     }
 
-    ConstraintCombos subPbCombos = GenerateSubPbCombos(subPbName, subPbAreaConstraints);
+    ConstraintCombos subPbCombos = GenerateSubPbCombos(subPbName,
+                                                       gridDefinition.weekAreaConstraints.at(
+                                                         GetPbInfo(subPbName).week));
     subPbCombos = reorderZigzagND(dims, subPbCombos);
 
     int size = subPbCombos.size();

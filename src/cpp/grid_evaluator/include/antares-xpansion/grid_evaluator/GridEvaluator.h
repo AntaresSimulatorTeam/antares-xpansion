@@ -7,10 +7,6 @@
 #include "antares-xpansion/grid_evaluator/GridCollection.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
-/// @brief key constraint name, value vector of rhs values
-using ConstraintMap = std::map<std::string, std::set<double>>;
-/// @brief key area name, value constraint map
-using AreaConstraintMaps = std::map<std::string, ConstraintMap>;
 /// @brief vector of maps (key constraint name, value rhs value)
 using ConstraintCombos = std::vector<std::map<std::string, double>>;
 
@@ -41,9 +37,6 @@ protected:
     void ProcessGridParallel(const std::vector<std::string>& subPbNames,
                              GridDefinition& grid_definition,
                              int nbThreads);
-    AreaConstraintMaps GenerateRHSGridValues(std::string subPbName,
-                                             GridDefinition& grid_definition,
-                                             SubproblemWorkerPtr subPbWorker);
     void SetConstraintsRHSValues(const std::map<std::string, double>& rhsValues,
                                  SubproblemWorkerPtr subPbWorker);
     std::filesystem::path GetSubproblemPath(const std::string& subPbName) const;

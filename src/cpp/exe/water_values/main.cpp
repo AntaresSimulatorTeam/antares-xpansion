@@ -3,9 +3,7 @@
 
 #include "antares-xpansion/bellman_values/BellmanValues.h"
 #include "antares-xpansion/bellman_values/BellmanValuesExeOptions.h"
-#include "antares-xpansion/bellman_values/ReservoirManagement.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
-#include "antares-xpansion/grid_evaluator/GridEvaluator.h"
 #include "antares-xpansion/lpnamer/main/ProblemGenerationForWaterValueCalculation.h"
 #include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
 #include "malloc.h"
