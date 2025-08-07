@@ -152,8 +152,7 @@ int main(int argc, char** argv)
 
         auto gridCollection = std::make_shared<GridCollection>(studyPath / "grid.csv");
 
-        Reservoir reservoir(studyPath, "area");
-        ReservoirManagement reservoirManagement(reservoir, true);
+        ReservoirManagement reservoirManagement(gridCollection->reservoirs.begin()->second, true);
 
         ConfigurationManager::ConfigDirectories directories{
           .study_dir = studyPath,
