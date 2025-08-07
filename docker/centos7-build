@@ -68,7 +68,7 @@ RUN \
 
 # Configuration de l'environnement Conda
 RUN set -e && \
-    conda init bash && \
+    source /opt/rh/devtoolset-11/enable && \
     cd $WORKSPACE/antares-xpansion && \
     conda env create -f environment.yml && \
     conda activate antares-xpansion && \
