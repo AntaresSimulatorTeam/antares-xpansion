@@ -17,9 +17,6 @@ ENV WORKSPACE=/workspace
 ENV VCPKG_ROOT=/workspace/antares-xpansion/vcpkg
 ENV PATH="/root/miniconda3/condabin:$PATH"
 
-# Configuration du shell
-SHELL ["/bin/bash", "--login", "-c"]
-
 # Création de la structure de répertoires
 RUN mkdir -p $WORKSPACE/vcpkg_cache
 
