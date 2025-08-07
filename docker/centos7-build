@@ -101,7 +101,7 @@ RUN \
     conda info && \
     conda list && \
     conda activate antares-xpansion && \
-    conda infi && \
+    conda info && \
     conda list
 
 RUN  \
