@@ -104,7 +104,7 @@ RUN  \
       -DBUILD_TESTING=ON \
       -DCMAKE_C_COMPILER_LAUNCHER=ccache \
       -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-      -DCMAKE_PREFIX_PATH="/deps;/ortools/install" \
+      -DCMAKE_PREFIX_PATH="$WORKSPACE/deps;$WORKSPACE/ortools/install" \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_INSTALL_PREFIX=_install \
       -DALLOW_RUN_AS_ROOT=ON \
