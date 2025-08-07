@@ -70,6 +70,7 @@ RUN \
 RUN set -e && \
     source /opt/rh/devtoolset-11/enable && \
     cd $WORKSPACE/antares-xpansion && \
+    conda init bash && \
     conda env create -f environment.yml && \
     conda activate antares-xpansion && \
     conda install -y cmake && \
