@@ -29,7 +29,7 @@ RUN \
     wget https://repo.anaconda.com/miniconda/${MINICONDA_VERSION} && \
     bash ${MINICONDA_VERSION} -b && \
     rm -f ${MINICONDA_VERSION}.sh && \
-    echo "export PATH=/root/miniconda3/condabin:$PATH" >> /etc/bashrc && \
+    echo "export PATH=/root/miniconda3/condabin:$PATH" >> /etc/bashrc
 
 RUN \
     conda init bash
