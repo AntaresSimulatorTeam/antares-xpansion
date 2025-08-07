@@ -74,7 +74,9 @@ RUN set -e && \
     . ~/.bashrc && \
     conda env create -f environment.yml && \
     conda activate antares-xpansion && \
+    conda info && \
     conda install -y cmake && \
+    conda list && \
     echo "conda activate antares-xpansion" >> /etc/bashrc
 
 # Définition du répertoire de travail
