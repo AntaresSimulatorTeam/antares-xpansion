@@ -15,27 +15,72 @@
  *  \param subproblems_count : number of subproblems
  */
 WorkerMaster::WorkerMaster(const VariableMap& variable_map,
-                           const std::filesystem::path& path_to_mps,
                            const std::string& solver_name,
                            const int log_level,
                            int subproblems_count,
                            SolverLogManager& solver_log_manager,
                            const bool mps_has_alpha,
                            Logger logger,
-                           ProblemsFormat format):
-    Worker(variable_map, path_to_mps, std::move(logger)),
+                           ProblemsFormat format,
+                           IBendersProblemProvider* benders_problem_provider,
+                           double master_solution_tolerance,
+                           double cut_coefficient_tolerance):
+    Worker(variable_map, std::move(logger), cut_coefficient_tolerance),
     subproblems_count{subproblems_count},
-    _mps_has_alpha{mps_has_alpha}
+    _mps_has_alpha{mps_has_alpha},
+    _master_solution_tolerance{master_solution_tolerance}
 {
     _is_master = true;
 
-    init(solver_name, log_level, solver_log_manager, format);
+    init(solver_name, log_level, solver_log_manager, format, benders_problem_provider);
     if (!_mps_has_alpha)
     {
         _set_upper_bounds();
     }
     _set_alpha_var();
     _set_nb_units_var_ids();
+}
+
+/*!
+ *  \brief Restores feasibility of the solution returned by master in case it is not due to the
+ * numerical tolerance of the solver. We do not have direct access of the feasibility tolerance of
+ * the solver, hence we use a user-defined tolerance (default to 1e-4) which may be greater than the
+ * default one of the solver (generally 1e-6). This is ok as we anyway want to round solutions that
+ * will be sent to the subproblems back to the bounds if we are close to it.
+ *
+ *  \param solution : solution vector of the master problem as returned by the solver
+ */
+void WorkerMaster::restoreFeasibility(std::vector<double>& solution)
+{
+    int nb_candidates = _id_to_name.size();
+
+    std::vector<char> col_type(nb_candidates);
+    std::vector<double> lb(nb_candidates);
+    std::vector<double> ub(nb_candidates);
+    // Assumes that candidates are the first variables of the master
+    solver_getcolinfo(*_solver, col_type, lb, ub, 0, nb_candidates - 1);
+    for (const auto& kvp: _id_to_name)
+    {
+        int var_id = kvp.first;
+        double value = solution[var_id];
+        // Case variable slighly above ub
+        if (value > ub[var_id] && value < ub[var_id] + _master_solution_tolerance)
+        {
+            solution[var_id] = ub[var_id];
+        }
+        // Case variable slighly lower than lb
+        else if (value < lb[var_id] && value > lb[var_id] - _master_solution_tolerance)
+        {
+            solution[var_id] = lb[var_id];
+        }
+        // Case integer variable
+        else if (col_type[var_id] == 'B' || col_type[var_id] == 'I')
+        {
+            int rounded = std::round(value);
+            solution[var_id] = std::abs(value - rounded) < _master_solution_tolerance ? rounded
+                                                                                      : value;
+        }
+    }
 }
 
 /*!
@@ -54,25 +99,26 @@ void WorkerMaster::get(Point& x_out,
                        DblVector& single_subpb_costs_under_approx)
 {
     x_out.clear();
-    std::vector<double> ptr(_solver->get_ncols());
+    std::vector<double> solution(_solver->get_ncols());
 
     if (_solver->get_n_integer_vars() > 0)
     {
-        _solver->get_mip_sol(ptr.data());
+        _solver->get_mip_sol(solution.data());
     }
     else
     {
-        _solver->get_lp_sol(ptr.data(), nullptr, nullptr);
+        _solver->get_lp_sol(solution.data(), nullptr, nullptr);
     }
-    assert(id_single_subpb_costs_under_approx_.back() + 1 == ptr.size());
+    assert(_id_single_subpb_costs_under_approx.back() + 1 == solution.size());
+    restoreFeasibility(solution);
     for (const auto& kvp: _id_to_name)
     {
-        x_out[kvp.second] = ptr[kvp.first];
+        x_out[kvp.second] = solution[kvp.first];
     }
-    overall_subpb_cost_under_approx = ptr[_id_alpha];
-    for (int i(0); i < id_single_subpb_costs_under_approx_.size(); ++i)
+    overall_subpb_cost_under_approx = solution[_id_alpha];
+    for (int i(0); i < _id_single_subpb_costs_under_approx.size(); ++i)
     {
-        single_subpb_costs_under_approx[i] = ptr[id_single_subpb_costs_under_approx_[i]];
+        single_subpb_costs_under_approx[i] = solution[_id_single_subpb_costs_under_approx[i]];
     }
 }
 
@@ -223,7 +269,7 @@ void WorkerMaster::define_matval_mclind_for_index(const int i,
             ++mclindCnt_l;
         }
     }
-    mclind.back() = id_single_subpb_costs_under_approx_[i];
+    mclind.back() = _id_single_subpb_costs_under_approx[i];
     matval.back() = -1;
 }
 
@@ -237,21 +283,27 @@ void WorkerMaster::define_matval_mclind_for_index(const int i,
  */
 // TODO : Refactor this with add_cut and define_matval_mclind(_for_index)
 void WorkerMaster::addSubproblemCut(int i,
-                                    const Point& s,
+                                    const Point& subgradient,
                                     const Point& x_cut,
                                     const double& rhs) const
 {
-    // cut is -theta_i + s.x <= -subproblem_cost + s.x_cut (in the solver)
-    // i.e. theta_i >= subproblem_cost + s.(x - x_cut) (human form)
-    int ncoeffs(1 + (int)s.size());
+    // cut is -theta_i + subgradient.x <= -subproblem_cost + subgradient.x_cut (in the solver)
+    // i.e. theta_i >= subproblem_cost + subgradient.(x - x_cut) (human form)
+    int ncoeffs(1 + (int)subgradient.size());
     std::vector<char> rowtype(1, 'L');
     std::vector<double> rowrhs(1, 0);
     std::vector<double> matval(ncoeffs, 1);
     std::vector<int> mstart = {0, ncoeffs};
     std::vector<int> mclind(ncoeffs);
 
-    DefineRhsWithMasterVariable(s, x_cut, rhs, rowrhs);
-    define_matval_mclind_for_index(i, s, matval, mclind);
+    DefineRhsWithMasterVariable(subgradient, x_cut, rhs, rowrhs);
+    define_matval_mclind_for_index(i, subgradient, matval, mclind);
+
+    // Round numerically small rhs to zero to get clean cuts and avoid numerical artifacts
+    // Cuts coefficients (obtained from subgradient) have already been rounded in
+    // SubproblemWorker::get_subgradient as it is best to round it as soon as possible (because
+    // subgradient information is also used as is to compute cut values : cf. compute_cut_val())
+    roundIfWithinTolerance(rowrhs, 0, rowrhs.size());
 
     solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
@@ -280,7 +332,7 @@ void WorkerMaster::_set_alpha_var()
     const auto it(_name_to_id.find(alpha_str));
     if (it == _name_to_id.end())
     {
-        id_single_subpb_costs_under_approx_.resize(subproblems_count, -1);
+        _id_single_subpb_costs_under_approx.resize(subproblems_count, -1);
 
         if (_mps_has_alpha)
         {
@@ -289,7 +341,7 @@ void WorkerMaster::_set_alpha_var()
             {
                 std::stringstream buffer;
                 buffer << "alpha_" << i;
-                id_single_subpb_costs_under_approx_[i] = _solver->get_col_index(buffer.str());
+                _id_single_subpb_costs_under_approx[i] = _solver->get_col_index(buffer.str());
             }
         }
         else
@@ -314,7 +366,7 @@ void WorkerMaster::_set_alpha_var()
             {
                 std::stringstream buffer;
                 buffer << "alpha_" << i;
-                id_single_subpb_costs_under_approx_[i] = _solver->get_ncols();
+                _id_single_subpb_costs_under_approx[i] = _solver->get_ncols();
                 solver_addcols(
                   *_solver,
                   DblVector(1, 0.0),
@@ -337,7 +389,7 @@ void WorkerMaster::_set_alpha_var()
             matval[0] = 1;
             for (int i(0); i < subproblems_count; ++i)
             {
-                mclind[i + 1] = id_single_subpb_costs_under_approx_[i];
+                mclind[i + 1] = _id_single_subpb_costs_under_approx[i];
                 matval[i + 1] = -1;
             }
 

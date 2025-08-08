@@ -115,6 +115,8 @@ class XpansionDriver:
 
         elif self.config_loader.step() == "problem_generation":
             if self.config_loader.memory():
+                # In this case, there has been no antares step beforehand, so we need to update the generaldata settings here 
+                self.update_study_settings(memory_mode=True)
                 self.launch_problem_generation_step_memory()
             else:
                 self.launch_problem_generation_step()

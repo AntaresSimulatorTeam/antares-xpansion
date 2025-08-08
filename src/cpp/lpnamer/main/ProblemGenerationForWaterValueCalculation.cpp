@@ -38,7 +38,14 @@ ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalcula
     directories(directories)
 {
     Antares::Solver::Optimization::OptimizationOptions optOptions;
-    optOptions.linearSolver = solverName;
+    optOptions.firstOptimOptions.solverName = solverName;
+    optOptions.secondOptimOptions.solverName = solverName;
+
+    if (solverName == SolverConfig("xpress"))
+    {
+        optOptions.firstOptimOptions.solverParameters = "PRESOLVE 1";
+        optOptions.secondOptimOptions.solverParameters = "PRESOLVE 1";
+    }
 
     auto [results, error] = Antares::API::PerformSimulation(directories.study_dir,
                                                             directories.simulation_dir,

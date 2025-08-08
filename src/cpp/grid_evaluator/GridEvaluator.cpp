@@ -7,6 +7,7 @@
 #include <tbb/parallel_for_each.h>
 #include <utility>
 
+#include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
 #include "antares-xpansion/helpers/Timer.h"
 
 std::atomic<int> totalSimplexIter = 0;     ///< Total number of simplex iterations
@@ -215,13 +216,16 @@ std::string GridEvaluator::GetConstraintName(const std::string& subPbName,
 /// @return The subproblem worker
 SubproblemWorkerPtr GridEvaluator::AddSubproblem(const std::string& pbName)
 {
-    auto subPbWorker = std::make_shared<SubproblemWorker>(GetSubproblemPath(pbName),
-                                                          1,
+    std::shared_ptr<IBendersProblemProvider>
+      benders_problem_provider = std::make_shared<BendersProblemFromFile>(
+        GetSubproblemPath(pbName));
+    auto subPbWorker = std::make_shared<SubproblemWorker>(1,
                                                           solverName,
                                                           2,
                                                           solver_log_manager,
                                                           logger,
-                                                          problemsFormat);
+                                                          problemsFormat,
+                                                          benders_problem_provider.get());
     return subPbWorker;
 }
 

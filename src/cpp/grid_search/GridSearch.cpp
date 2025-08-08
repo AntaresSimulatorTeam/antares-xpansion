@@ -4,6 +4,7 @@
 #include <regex>
 #include <utility>
 
+#include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
 #include "antares-xpansion/benders/benders_core/WorkerMaster.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/LoggerUtils.h"
@@ -111,14 +112,18 @@ std::filesystem::path GridSearch::GetMasterProblemPath() const
 
 void GridSearch::AddSubproblem(const std::pair<std::string, VariableMap>& kvp)
 {
+    std::shared_ptr<IBendersProblemProvider>
+      benders_problem_provider = std::make_shared<BendersProblemFromFile>(
+        GetSubproblemPath(kvp.first));
+
     subproblem_map[kvp.first] = std::make_shared<SubproblemWorker>(kvp.second,
-                                                                   GetSubproblemPath(kvp.first),
                                                                    weights[kvp.first],
                                                                    "COIN",
                                                                    0,
                                                                    solver_log_manager_,
                                                                    _logger,
-                                                                   ProblemsFormat::SAVED_FILE);
+                                                                   ProblemsFormat::SAVED_FILE,
+                                                                   benders_problem_provider.get());
     subproblems.push_back(kvp.first);
 }
 

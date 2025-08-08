@@ -13,16 +13,17 @@
  *
  */
 SubproblemWorker::SubproblemWorker(const VariableMap& variable_map,
-                                   const std::filesystem::path& path_to_mps,
                                    double slave_weight,
                                    const std::string& solver_name,
                                    int log_level,
                                    const SolverLogManager& solver_log_manager,
                                    Logger logger,
-                                   ProblemsFormat format):
-    Worker(variable_map, path_to_mps, std::move(logger))
+                                   ProblemsFormat format,
+                                   IBendersProblemProvider* benders_problem_provider,
+                                   double cut_coefficient_tolerance):
+    Worker(variable_map, std::move(logger), cut_coefficient_tolerance)
 {
-    init(solver_name, log_level, solver_log_manager, format);
+    init(solver_name, log_level, solver_log_manager, format, benders_problem_provider);
 
     int mps_ncols(_solver->get_ncols());
     DblVector obj_func_coeffs(mps_ncols);
@@ -39,16 +40,43 @@ SubproblemWorker::SubproblemWorker(const VariableMap& variable_map,
     _solver->chg_obj(sequence, obj_func_coeffs);
 }
 
-SubproblemWorker::SubproblemWorker(const std::filesystem::path& path_to_mps,
+SubproblemWorker::SubproblemWorker(const VariableMap& variable_map,
                                    const double& slave_weight,
                                    const std::string& solver_name,
                                    const int log_level,
                                    SolverLogManager& solver_log_manager,
                                    Logger logger,
-                                   ProblemsFormat format):
-    Worker(path_to_mps, std::move(logger))
+                                   ProblemsFormat format,
+                                   IBendersProblemProvider* benders_problem_provider):
+    Worker(variable_map, std::move(logger))
 {
-    init(solver_name, log_level, solver_log_manager, format);
+    init(solver_name, log_level, solver_log_manager, format, benders_problem_provider);
+
+    int mps_ncols(_solver->get_ncols());
+    DblVector obj_func_coeffs(mps_ncols);
+    IntVector sequence(mps_ncols);
+    for (int i = 0; i < mps_ncols; ++i)
+    {
+        sequence[i] = i;
+    }
+    solver_get_obj_func_coeffs(*_solver, obj_func_coeffs, 0, mps_ncols - 1);
+    for (auto& c: obj_func_coeffs)
+    {
+        c *= slave_weight;
+    }
+    _solver->chg_obj(sequence, obj_func_coeffs);
+}
+
+SubproblemWorker::SubproblemWorker(const double& slave_weight,
+                                   const std::string& solver_name,
+                                   const int log_level,
+                                   SolverLogManager& solver_log_manager,
+                                   Logger logger,
+                                   ProblemsFormat format,
+                                   IBendersProblemProvider* benders_problem_provider):
+    Worker(std::move(logger))
+{
+    init(solver_name, log_level, solver_log_manager, format, benders_problem_provider);
 
     int mps_ncols(_solver->get_ncols());
     DblVector obj_func_coeffs(mps_ncols);
@@ -117,14 +145,23 @@ double SubproblemWorker::get_rhs_value_from_name(const std::string& constraint_n
  *
  *  \param s : Empty point which receives the solution
  */
-void SubproblemWorker::get_subgradient(Point& s) const
+void SubproblemWorker::get_subgradient(Point& subgradient) const
 {
-    s.clear();
+    subgradient.clear();
     std::vector<double> ptr(_solver->get_ncols());
     solver_getlpreducedcost(_solver, ptr);
+
+    // If subgradients are numerically small, round to zero so that cuts generated later on are
+    // clean
+    // We only round the values for the candidates. relies on the assumption that they have
+    // successive ids in the problem
+    roundIfWithinTolerance(ptr,
+                           _id_to_name.begin()->first,
+                           _id_to_name.begin()->first + _id_to_name.size());
+
     for (const auto& kvp: _id_to_name)
     {
-        s[kvp.second] = +ptr[kvp.first];
+        subgradient[kvp.second] = +ptr[kvp.first];
     }
 }
 

@@ -61,7 +61,7 @@ public:
         }
     }
 
-    ~SolverLogManager()
+    virtual ~SolverLogManager()
     {
         if (log_file_ptr)
         {
