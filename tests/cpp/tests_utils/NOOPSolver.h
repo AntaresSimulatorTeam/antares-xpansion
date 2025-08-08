@@ -98,3 +98,29 @@ class NOOPSolver : public SolverAbstract {
 };
 
 #endif  // ANTARESXPANSION_TESTS_CPP_LP_NAMER_NOOPSOLVER_H_
+
+
+class NOOPSolverForWorker: public NOOPSolver
+{
+public:
+
+    void get_col_type(char* coltype, int begin, int end) const override
+    {
+        std::copy_n(col_types.begin(), end - begin + 1, coltype);
+    }
+
+    void get_lb(double* lb, int begin, int end) const override
+    {
+        std::copy_n(lbs.begin(), end - begin + 1, lb);
+    }
+
+    void get_ub(double* ub, int begin, int end) const override
+    {
+        std::copy_n(ubs.begin(), end - begin + 1, ub);
+    }
+
+protected:
+    std::vector<char> col_types;
+    std::vector<double> lbs;
+    std::vector<double> ubs;
+};

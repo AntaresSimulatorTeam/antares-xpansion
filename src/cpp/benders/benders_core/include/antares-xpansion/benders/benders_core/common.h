@@ -200,6 +200,8 @@ struct BendersBaseOptions: public SolverBaseOptions
     double RELAXED_GAP = 0;
     double TIME_LIMIT = 0;
     double SEPARATION_PARAM = 1;
+    double MASTER_SOLUTION_TOLERANCE = 1e-4;
+    double CUT_COEFFICIENT_TOLERANCE = 5e-3;
 
     bool RESUME = false;
     bool AGGREGATION = false;

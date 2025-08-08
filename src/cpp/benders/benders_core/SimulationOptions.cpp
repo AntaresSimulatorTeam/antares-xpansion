@@ -212,6 +212,9 @@ BendersBaseOptions SimulationOptions::get_benders_options() const
 
     result.BATCH_SIZE = BATCH_SIZE;
 
+    result.MASTER_SOLUTION_TOLERANCE = MASTER_SOLUTION_TOLERANCE;
+    result.CUT_COEFFICIENT_TOLERANCE = CUT_COEFFICIENT_TOLERANCE;
+
     result.EXTERNAL_LOOP_OPTIONS = GetExternalLoopOptions();
 
     return result;
