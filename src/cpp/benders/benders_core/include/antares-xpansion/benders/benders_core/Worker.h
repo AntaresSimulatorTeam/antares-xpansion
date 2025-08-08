@@ -19,7 +19,8 @@ class Worker
 {
 public:
     Worker(VariableMap variable_map, Logger logger, double cut_coefficient_tolerance);
-    Worker(std::filesystem::path path_to_mps, Logger logger);
+    Worker(VariableMap variable_map, Logger logger); // for GridSearch
+    Worker(Logger logger);                           // for GridEvaluator
     void init(const std::string& solver_name,
               int log_level,
               const SolverLogManager& solver_log_manager,

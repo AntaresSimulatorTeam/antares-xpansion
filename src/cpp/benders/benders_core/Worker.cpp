@@ -188,8 +188,13 @@ Worker::Worker(VariableMap variable_map, Logger logger, double cut_coefficient_t
 {
 }
 
-Worker::Worker(std::filesystem::path path_to_mps, Logger logger):
-    _path_to_mps{std::move(path_to_mps)},
+Worker::Worker(VariableMap variable_map, Logger logger):
+    _name_to_id{std::move(variable_map)},
+    logger_{std::move(logger)}
+{
+}
+
+Worker::Worker(Logger logger):
     logger_{std::move(logger)}
 {
 }

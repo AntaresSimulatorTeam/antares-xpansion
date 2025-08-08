@@ -25,13 +25,23 @@ public:
                      ProblemsFormat format,
                      IBendersProblemProvider* benders_problem_provider,
                      double cut_coefficient_tolerance);
-    SubproblemWorker(const std::filesystem::path& path_to_mps,
+    // for GridSearch
+    SubproblemWorker(const VariableMap& variable_map,
                      const double& slave_weight,
                      const std::string& solver_name,
                      const int log_level,
                      SolverLogManager& solver_log_manager,
                      Logger logger,
-                     ProblemsFormat format);
+                     ProblemsFormat format,
+                     IBendersProblemProvider* benders_problem_provider);
+    // for GridEvaluator
+    SubproblemWorker(const double& slave_weight,
+                     const std::string& solver_name,
+                     const int log_level,
+                     SolverLogManager& solver_log_manager,
+                     Logger logger,
+                     ProblemsFormat format,
+                     IBendersProblemProvider* benders_problem_provider);
     virtual ~SubproblemWorker() = default;
     std::vector<double> get_solution() const;
 
