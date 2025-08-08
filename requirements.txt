@@ -1,5 +1,5 @@
 wheel
-pyinstaller
+pyinstaller==4.6
 pyyaml
 dataclasses
 psutil==5.8.0
