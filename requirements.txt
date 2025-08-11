@@ -1,5 +1,4 @@
 wheel
-pyinstaller==4.6
+pyinstaller==6.15.0
 pyyaml
-dataclasses
-psutil==5.8.0
+psutil
