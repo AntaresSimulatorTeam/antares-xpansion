@@ -139,7 +139,7 @@ protected:
     } evaluatorMock;
 };
 
-TEST_F(BellmanValuesComputeTest, unitTest)
+TEST_F(BellmanValuesComputeTest, unitTestNoPenalties)
 {
     ReservoirManagement
       reservoirManagement(evaluatorMock.reservoirMock, 0, 0, 0, true, std::nullopt, false);
