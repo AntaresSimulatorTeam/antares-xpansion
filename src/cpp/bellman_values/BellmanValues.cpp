@@ -3,6 +3,8 @@
 
 #include <ranges>
 
+#include "antares-xpansion/grid_evaluator/Interpolator.h"
+
 BellmanValues::BellmanValues(GridEvaluator& gridEvaluator,
                              const ReservoirManagement& reservoirManagement):
     gridEvaluator(gridEvaluator),
@@ -13,59 +15,6 @@ BellmanValues::BellmanValues(GridEvaluator& gridEvaluator,
 const std::vector<double>& BellmanValues::getLevels()
 {
     return levels;
-}
-
-template<typename XContainer, typename YContainer>
-double interpolate(const XContainer& X, const YContainer& Y, double x_query)
-{
-    if (X.size() != Y.size() || X.empty())
-    {
-        throw std::invalid_argument("X and Y must have the same size and not be empty");
-    }
-
-    auto x_begin = X.begin();
-    auto x_end = X.end();
-
-    // Clamp below range
-    if (x_query <= *x_begin)
-    {
-        return *Y.begin();
-    }
-
-    // Clamp above range
-    auto last = std::prev(x_end);
-    if (x_query >= *last)
-    {
-        return *std::prev(Y.end());
-    }
-
-    // Find first element >= x_query
-    auto it_upper = std::lower_bound(x_begin, x_end, x_query);
-
-    if (it_upper != x_end && *it_upper == x_query)
-    {
-        // Exact match
-        auto y_it = Y.begin();
-        std::advance(y_it, std::distance(x_begin, it_upper));
-        return *y_it;
-    }
-
-    // Otherwise interpolate between previous and it_upper
-    auto it_lower = std::prev(it_upper);
-
-    double x0 = *it_lower;
-    double x1 = *it_upper;
-
-    auto y_it_lower = Y.begin();
-    std::advance(y_it_lower, std::distance(x_begin, it_lower));
-
-    auto y_it_upper = Y.begin();
-    std::advance(y_it_upper, std::distance(x_begin, it_upper));
-
-    double y0 = *y_it_lower;
-    double y1 = *y_it_upper;
-
-    return y0 + (y1 - y0) * (x_query - x0) / (x1 - x0);
 }
 
 auto linspace(double start, double end, int num)
@@ -119,7 +68,7 @@ std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWe
             {
                 auto& V_vec = V[{scenario, week + 1}];
                 return [this, &V_vec, &week, &scenario](double x)
-                { return interpolate(this->levels, V_vec, x); };
+                { return Interpolator::linearInterpolation(this->levels, V_vec)(x); };
             };
             auto valuesVect = gridDef.weekAreaConstraints.at(week)
                                 .at(gridDef.gridElements[0].area)
@@ -180,6 +129,9 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
 {
     double Vu = std::numeric_limits<double>::max();
     const Reservoir reservoir = reservoirManagement.reservoir;
+    auto rewardFn = Interpolator::linearInterpolation(
+      gridEvaluator.gridDefinition.gridElements[0].rhsValues[week - 1],
+      rewards);
 
     for (double value_fut: X)
     {
@@ -188,9 +140,7 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
             && (reservoirManagement.overflow || u <= reservoir.max_generating[week - 1]))
         {
             u = std::min(u, reservoir.max_generating[week - 1]);
-            double G = interpolate(gridEvaluator.gridDefinition.gridElements[0].rhsValues[week - 1],
-                                   rewards,
-                                   u);
+            double G = rewardFn(u);
             if (G + V_fut(value_fut) < Vu)
             {
                 Vu = G + V_fut(value_fut);
@@ -203,9 +153,7 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
         double state_fut = level - u + reservoir.inflow[week - 1][scenario - 1];
         if (0 <= state_fut && state_fut <= reservoir.capacity)
         {
-            double G = interpolate(gridEvaluator.gridDefinition.gridElements[0].rhsValues[week - 1],
-                                   rewards,
-                                   u);
+            double G = rewardFn(u);
             if (G + V_fut(state_fut) < Vu)
             {
                 Vu = G + V_fut(state_fut);

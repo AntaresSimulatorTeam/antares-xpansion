@@ -11,13 +11,15 @@
 #include <unordered_map>
 #include <vector>
 
+#include "antares-xpansion/grid_evaluator/Interpolator.h"
+
 Reservoir::Reservoir(const std::filesystem::path& path_to_input, const std::string& areaName):
     area(areaName),
     capacity(0.0),
     efficiency(0.0)
 {
     loadHydroIni(path_to_input / "input/hydro/hydro.ini");
-    // readRuleCurves(path_to_input);
+    readRuleCurves(path_to_input);
     readInflow(path_to_input);
     readMaxPower(path_to_input);
 }
@@ -99,51 +101,51 @@ void Reservoir::loadHydroIni(const std::filesystem::path& ini_path)
     }
 }
 
-// void Reservoir::readRuleCurves(const std::filesystem::path& dir_study)
-// {
-//     auto path = dir_study / ("input/hydro/common/capacity/reservoir_" + area + ".txt");
-//     std::ifstream file(path);
-//     if (!file)
-//     {
-//         throw std::runtime_error("Could not open rule curve file");
-//     }
+void Reservoir::readRuleCurves(const std::filesystem::path& dir_study)
+{
+    auto path = dir_study / ("input/hydro/common/capacity/reservoir_" + area + ".txt");
+    std::ifstream file(path);
+    if (!file)
+    {
+        throw std::runtime_error("Could not open rule curve file");
+    }
 
-//     std::vector<std::vector<double>> rule_curves;
-//     std::string line;
-//     while (std::getline(file, line))
-//     {
-//         std::istringstream iss(line);
-//         std::vector<double> row;
-//         double val;
-//         while (iss >> val)
-//         {
-//             row.push_back(val);
-//         }
-//         if (row.size() >= 3)
-//         {
-//             rule_curves.push_back({row[0] * capacity, row[2] * capacity});
-//         }
-//     }
+    std::vector<std::vector<double>> rule_curves;
+    std::string line;
+    while (std::getline(file, line))
+    {
+        std::istringstream iss(line);
+        std::vector<double> row;
+        double val;
+        while (iss >> val)
+        {
+            row.push_back(val);
+        }
+        if (row.size() >= 3)
+        {
+            rule_curves.push_back({row[0] * capacity, row[2] * capacity});
+        }
+    }
 
-//     if (rule_curves.empty())
-//     {
-//         throw std::runtime_error("Empty rule curve file");
-//     }
+    if (rule_curves.empty())
+    {
+        throw std::runtime_error("Empty rule curve file");
+    }
 
-//     if (rule_curves[0][0] != rule_curves[0][1])
-//     {
-//         throw std::runtime_error(
-//           "Initial level is not correctly defined by bottom and upper rule curves");
-//     }
+    if (rule_curves[0][0] != rule_curves[0][1])
+    {
+        throw std::runtime_error(
+          "Initial level is not correctly defined by bottom and upper rule curves");
+    }
 
-//     initial_level = rule_curves[0][0];
+    initial_level = rule_curves[0][0];
 
-//     for (size_t i = 7; i < rule_curves.size(); i += 7)
-//     {
-//         bottom_rule_curve.push_back(rule_curves[i][0]);
-//         upper_rule_curve.push_back(rule_curves[i][1]);
-//     }
-// }
+    for (size_t i = 7; i < rule_curves.size(); i += 7)
+    {
+        bottom_rule_curve.push_back(rule_curves[i][0]);
+        upper_rule_curve.push_back(rule_curves[i][1]);
+    }
+}
 
 void Reservoir::readInflow(const std::filesystem::path& dir_study)
 {
@@ -254,8 +256,44 @@ void Reservoir::readMaxPower(const std::filesystem::path& dir_study)
     }
 }
 
-ReservoirManagement::ReservoirManagement(const Reservoir& reservoir, bool overflow):
+ReservoirManagement::ReservoirManagement(const Reservoir& reservoir,
+                                         double penalty_bottom_rule_curve,
+                                         double penalty_upper_rule_curve,
+                                         double penalty_final_level,
+                                         bool force_final_level,
+                                         std::optional<double> final_level,
+                                         bool overflow):
     reservoir(reservoir),
+    penalty_bottom_rule_curve(penalty_bottom_rule_curve),
+    penalty_upper_rule_curve(penalty_upper_rule_curve),
+    penalty_final_level(penalty_final_level),
+    force_final_level(force_final_level),
+    final_level(final_level ? final_level.value() : reservoir.initial_level),
     overflow(overflow)
 {
+}
+
+std::function<double(double)> ReservoirManagement::get_penalty(int week, int len_week)
+{
+    if (week == len_week - 1 && final_level > 0.0)
+    {
+        std::vector<double> x = {0.0, final_level, reservoir.capacity};
+        std::vector<double> y = {-penalty_final_level * final_level,
+                                 0.0,
+                                 -penalty_final_level * (reservoir.capacity - final_level)};
+        return Interpolator::linearInterpolation(x, y);
+    }
+    else
+    {
+        std::vector<double> x = {0.0,
+                                 reservoir.bottom_rule_curve[week],
+                                 reservoir.upper_rule_curve[week],
+                                 reservoir.capacity};
+        std::vector<double> y = {-penalty_bottom_rule_curve * reservoir.bottom_rule_curve[week],
+                                 0.0,
+                                 0.0,
+                                 -penalty_upper_rule_curve
+                                   * (reservoir.capacity - reservoir.upper_rule_curve[week])};
+        return Interpolator::linearInterpolation(x, y);
+    }
 }

@@ -141,7 +141,8 @@ protected:
 
 TEST_F(BellmanValuesComputeTest, unitTest)
 {
-    ReservoirManagement reservoirManagement(evaluatorMock.reservoirMock, false);
+    ReservoirManagement
+      reservoirManagement(evaluatorMock.reservoirMock, 0, 0, 0, true, std::nullopt, false);
     auto bellmanValues = BellmanValues(evaluatorMock, reservoirManagement).compute(1, 3, 6);
 
     std::vector<std::vector<double>> expected = {{60, 60, 60, 100, 140, 180},
@@ -151,7 +152,7 @@ TEST_F(BellmanValuesComputeTest, unitTest)
     EXPECT_EQ(bellmanValues, expected);
 }
 
-TEST_F(BellmanValuesComputeTest, OneNodeBaseCase)
+TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
 {
     copyData();
     auto expected_costs = getOutputCosts();
@@ -159,7 +160,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCase)
     auto grid_collection = GridCollection(tmpDir / "grid.csv");
     auto grid = grid_collection.gridDefinitions[0];
     Reservoir reservoir(tmpDir, "area");
-    ReservoirManagement reservoir_management(reservoir, true);
+    ReservoirManagement reservoir_management(reservoir, 0, 0, 0, true, std::nullopt, false);
 
     auto options_parser = ProblemGenerationExeOptions();
     auto config_manager = ConfigurationManager(options_parser);

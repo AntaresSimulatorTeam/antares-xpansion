@@ -1,13 +1,12 @@
 #pragma once
 
 #include <filesystem>
+#include <functional>
+#include <optional>
 #include <string>
 #include <unordered_map>
 #include <variant>
 #include <vector>
-
-using IniMap = std::unordered_map<std::string,
-                                  std::unordered_map<std::string, std::variant<double, bool>>>;
 
 class Reservoir
 {
@@ -23,12 +22,15 @@ public:
     std::string area;
     double capacity;
     double efficiency;
+    double initial_level;
     std::vector<double> max_generating;
     std::vector<double> max_pumping;
     std::vector<std::vector<double>> inflow;
+    std::vector<double> bottom_rule_curve;
+    std::vector<double> upper_rule_curve;
 
 private:
-    // void readRuleCurves(const std::filesystem::path& inputPath);
+    void readRuleCurves(const std::filesystem::path& inputPath);
     void readInflow(const std::filesystem::path& inputPath);
     void readMaxPower(const std::filesystem::path& inputPath);
     void loadHydroIni(const std::filesystem::path& inputPath);
@@ -57,8 +59,21 @@ private:
 class ReservoirManagement
 {
 public:
-    ReservoirManagement(const Reservoir& reservoir, bool overflow);
+    ReservoirManagement(const Reservoir& reservoir,
+                        double penalty_bottom_rule_curve = 0,
+                        double penalty_upper_rule_curve = 0,
+                        double penalty_final_level = 0,
+                        bool force_final_level = true,
+                        std::optional<double> final_level = std::nullopt,
+                        bool overflow = true);
+
+    std::function<double(double)> get_penalty(int week, int len_week);
 
     Reservoir reservoir;
+    double penalty_bottom_rule_curve;
+    double penalty_upper_rule_curve;
+    double penalty_final_level;
+    bool force_final_level;
+    double final_level;
     bool overflow;
 };

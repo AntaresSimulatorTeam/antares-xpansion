@@ -15,6 +15,7 @@ target_sources(grid_evaluator_lib PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/grid_evaluator/GridEvaluator.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/grid_evaluator/GridCollection.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/grid_evaluator/ReservoirManagement.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/grid_evaluator/Interpolator.h
 )
 
 target_link_libraries(grid_evaluator_lib
