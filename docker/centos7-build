@@ -145,7 +145,8 @@ RUN   \
       LSB_RELEASE_VERSION_SHORT=$(lsb_release --short --release) && \
        cd _install && \
       rm -f ./antares-xpansion-launcher* && \
-      pyinstaller ../antares-xpansion-launcher.spec && \
+      cp ../antares-xpansion-launcher.spec . && \
+      pyinstaller antares-xpansion-launcher.spec && \
       mv ./dist/antares-xpansion-launcher* . && \
       rm -rf bin && \
       rm -rf build && \
