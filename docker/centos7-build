@@ -133,7 +133,8 @@ RUN \
       pushd tests/end_to_end && \
       behave --tags ~@flaky  cucumber/features --no-capture --no-capture-stderr --format pretty && \
       popd && \
-      cd _build
+      cd _build && \
+      ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
 
 # Install
 RUN cd _build && \
