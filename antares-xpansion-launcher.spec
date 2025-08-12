@@ -14,6 +14,9 @@ a = Analysis(
     noarchive=False,
     optimize=0,
 )
+
+#Custom code. We need to remove openmpi related libraries.
+#Open MPI libraries must be provided by the running machine to avoid incompatibility issues
 excludes = ['libmpi.so.40', 'libopen-rte.so.40', 'libopen-pal.so.40']
 a.binaries = TOC([x for x in a.binaries if x[0] not in excludes])
 
