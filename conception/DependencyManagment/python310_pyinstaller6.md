@@ -2,18 +2,18 @@
 
 ## 1. Dependency Name
 
-Python
-Pyinstaller
+* Python
+* Pyinstaller
 
 ## 2. Previous Version
 
-3.8
-4.6
+* 3.8
+* 4.6
 
 ## 3. New Version
 
-3.10  <!-- Minimum working version -->
-6.15  <!-- Latest and working version -->
+* 3.10  <!-- Minimum working version -->
+* 6.15  <!-- Latest and working version -->
 
 ## 4. Date of Upgrade
 
