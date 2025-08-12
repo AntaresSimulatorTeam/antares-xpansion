@@ -53,7 +53,6 @@ jobs:
       TGZ_NAME: ${{ steps.get-archives.outputs.TGZ_NAME }}
       SINGLE_FILE_NAME: ${{ steps.get-archives.outputs.SINGLE_FILE_NAME }}
     steps:
-
       - uses: actions/checkout@master
         with:
           fetch-depth: 0
@@ -61,7 +60,6 @@ jobs:
             docker
             src/vcpkg.json
           ref: ${{ env.REF }}
-
 
       - name: create vcpkg cache dir
         run: |

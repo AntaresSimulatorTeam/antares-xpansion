@@ -45,6 +45,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
+        #Bash --login required for conda
         shell: bash -el {0}
     container: 'oraclelinux:8'
     needs: [ versions ]
