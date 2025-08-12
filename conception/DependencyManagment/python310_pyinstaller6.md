@@ -12,8 +12,8 @@
 
 ## 3. New Version
 
-* 3.10  <!-- Minimum working version -->
-* 6.15  <!-- Latest and working version -->
+* python@3.10  <!-- Minimum working version -->
+* pyinstaller@6.15  <!-- Latest and working version -->
 
 ## 4. Date of Upgrade
 
