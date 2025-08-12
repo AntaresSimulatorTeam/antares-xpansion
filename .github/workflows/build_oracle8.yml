@@ -62,7 +62,7 @@ jobs:
         run: |
           dnf install -y epel-release git wget rpm-build redhat-lsb-core
           #openssl for pip
-          dnf install bzip2-devel openssl-devel
+          dnf install -y bzip2-devel openssl-devel
           dnf install -y unzip gcc-toolset-11-toolchain python3-devel zlib-devel
           #make gcc &co available system wide and "action wide"
           source /opt/rh/gcc-toolset-11/enable

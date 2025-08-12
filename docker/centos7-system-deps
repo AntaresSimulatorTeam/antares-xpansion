@@ -4,7 +4,7 @@ LABEL maintainer="AntaresSimulatorTeam"
 LABEL description="Build environment for Antares Xpansion C++/Python"
 LABEL version="1.1.3"
 
-ARG MINICONDA_VERSION=Miniconda3-py313_25.5.1-1-Linux-x86_64.sh
+ARG MINICONDA_VERSION=Miniconda3-py310_25.5.1-1-Linux-x86_64.sh
 ENV MINICONDA_VERSION=${MINICONDA_VERSION}
 
 # Install requirements : install epel
@@ -25,7 +25,7 @@ RUN     sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo &&
 
 
 # The default python version (3.6) is too old to download xpress with pip
-# This version of miniconda embeds python3.10
+# This version of miniconda embeds python 3.10
 RUN \
     wget https://repo.anaconda.com/miniconda/${MINICONDA_VERSION} && \
     bash ${MINICONDA_VERSION} -b && \
