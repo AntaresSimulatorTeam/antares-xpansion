@@ -7,8 +7,8 @@
 
 ## 2. Previous Version
 
-* 3.8
-* 4.6
+* python@3.8
+* pyinstaller@4.6
 
 ## 3. New Version
 
