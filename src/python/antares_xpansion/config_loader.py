@@ -17,8 +17,8 @@ from antares_xpansion.launcher_options_default_value import LauncherOptionsDefau
 from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
 from antares_xpansion.logger import step_logger
 from antares_xpansion.optimisation_keys import OptimisationKeys
-from antares_xpansion.xpansionConfig import XpansionConfig, XpansionConfigConstants
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
+from antares_xpansion.xpansionConfig import XpansionConfig, XpansionConfigConstants
 
 
 class NTCColumnConstraintError(Exception):
@@ -78,7 +78,9 @@ class XpansionSettingsReader:
         with open(self._get_settings_ini_filepath(), "r") as file_l:
             options = dict(
                 {
-                    line.strip().split("=")[0].strip(): line.strip()
+                    line.strip()
+                    .split("=")[0]
+                    .strip(): line.strip()
                     .split("=")[1]
                     .strip()
                     for line in file_l.readlines()
@@ -274,7 +276,7 @@ class XpansionSettingsReader:
 
     def get_master_formulation(self):
         """
-        return master formulation read from the settings file
+        returns master formulation read from the settings file
         """
         return self.options.get(
             "master", self._config_defaults.settings_default["master"]
@@ -282,7 +284,7 @@ class XpansionSettingsReader:
 
     def get_separation(self):
         """
-        return the separation parameter read from the settings file
+        returns the separation parameter read from the settings file
         """
         separation_parameter_str = self.options.get(
             "separation_parameter",
@@ -293,7 +295,7 @@ class XpansionSettingsReader:
 
     def get_batch_size(self):
         """
-        return the batch_size read from the settings file
+        returns the batch_size read from the settings file
         """
         batch_size_str = self.options.get(
             "batch_size",
@@ -321,6 +323,28 @@ class XpansionSettingsReader:
             "log_level", self._config_defaults.settings_default["log_level"]
         )
         return int(log_level_str)
+
+    def get_master_solution_tolerance(self):
+        """
+        returns the master_solution_tolerance read from the settings file
+        """
+        master_solution_tolerance_str = self.options.get(
+            "master_solution_tolerance",
+            self._config_defaults.settings_default["master_solution_tolerance"],
+        )
+
+        return float(master_solution_tolerance_str)
+
+    def get_cut_coefficient_tolerance(self):
+        """
+        returns the cut_coefficient_tolerance read from the settings file
+        """
+        cut_coefficient_tolerance_str = self.options.get(
+            "cut_coefficient_tolerance",
+            self._config_defaults.settings_default["cut_coefficient_tolerance"],
+        )
+
+        return float(cut_coefficient_tolerance_str)
 
 
 class ConfigLoader(XpansionSettingsReader):
@@ -544,6 +568,12 @@ class ConfigLoader(XpansionSettingsReader):
             self._config.LAST_MASTER_BASIS
         )
         options_values[OptimisationKeys.batch_size_key()] = self.get_batch_size()
+        options_values[OptimisationKeys.master_solution_tolerance_key()] = (
+            self.get_master_solution_tolerance()
+        )
+        options_values[OptimisationKeys.cut_coefficient_tolerance_key()] = (
+            self.get_cut_coefficient_tolerance()
+        )
         options_values[OptimisationKeys.do_outer_loop_key()] = (
             self._config.method == "adequacy_criterion"
         )

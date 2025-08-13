@@ -538,6 +538,16 @@ void SolverClp::chg_rhs(int id_row, double val)
     const double* rowLower = _clp.getRowLower();
     const double* rowUpper = _clp.getRowUpper();
 
+    char row_type;
+    get_row_type(&row_type, id_row, id_row);
+
+    if (row_type == 'E')
+    {
+        _clp.setRowLower(id_row, val);
+        _clp.setRowUpper(id_row, val);
+        return;
+    }
+
     if (rowLower[id_row] <= -COIN_DBL_MAX)
     {
         if (rowUpper[id_row] >= COIN_DBL_MAX)

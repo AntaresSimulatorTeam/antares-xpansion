@@ -104,6 +104,8 @@ class XpansionConfigConstants:
             "log_level": "0",
             "separation_parameter": "0.5",
             "batch_size": "0",
+            "master_solution_tolerance": "1e-4",
+            "cut_coefficient_tolerance": "5e-3",
             "problems_format": "SAVED",
         }
 
@@ -127,6 +129,8 @@ class XpansionConfigConstants:
             OptimisationKeys.separation_key(): self.separation_default_value(),
             OptimisationKeys.batch_size_key(): self.batch_size_default_value(),
             OptimisationKeys.cache_problems_keys(): self.cache_problems_default_value(),
+            OptimisationKeys.master_solution_tolerance_key(): self.master_solution_tolerance_default_value(),
+            OptimisationKeys.cut_coefficient_tolerance_key(): self.cut_coefficient_tolerance_default_value(),
             OptimisationKeys.keep_full_key(): self.keep_full_default_value(),
             OptimisationKeys.full_dir_key() : self.full_dir_default_value(),
         }
@@ -188,6 +192,12 @@ class XpansionConfigConstants:
 
     def cache_problems_default_value(self):
         return False
+
+    def master_solution_tolerance_default_value(self):
+        return "1e-4"
+
+    def cut_coefficient_tolerance_default_value(self):
+        return "5e-3"
 
     def keep_full_default_value(self):
         return False

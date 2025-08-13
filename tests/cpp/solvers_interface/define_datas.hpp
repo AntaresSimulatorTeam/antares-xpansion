@@ -56,7 +56,8 @@ enum INSTANCES {
   NET_SP1,
   NET_SP2,
   SLACKS,
-  REDUCED
+  REDUCED,
+  EQUALITY
 };
 
 typedef std::vector<InstanceData> AllDatas;

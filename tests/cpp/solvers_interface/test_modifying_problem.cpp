@@ -222,7 +222,7 @@ TEST_CASE("Modification: change right-hand side", "[modif][chg-rhs]") {
 
   SolverFactory factory;
 
-  auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB);
+  auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB, EQUALITY);
   SECTION("Loop on instances") {
     for (auto const& solver_name : factory.get_solvers_list()) {
       std::filesystem::path instance = datas[inst]._path;

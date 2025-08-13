@@ -120,6 +120,14 @@ class OptimisationKeys:
         return "CACHE_PROBLEMS"
 
     @staticmethod
+    def master_solution_tolerance_key():
+        return "MASTER_SOLUTION_TOLERANCE"
+
+    @staticmethod
+    def cut_coefficient_tolerance_key():
+        return "CUT_COEFFICIENT_TOLERANCE"
+
+    @staticmethod
     def keep_full_key():
         return "KEEP_FULL"
 

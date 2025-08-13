@@ -1,8 +1,14 @@
 import pytest
 from antares_xpansion.input_checker import *
-from antares_xpansion.input_checker import _check_candidate_option_type, \
-    _check_candidate_name, _check_candidate_link, _check_setting_option_value, _check_profile_file, \
-    _check_setting_option_type, _check_attribute_profile_values
+from antares_xpansion.input_checker import (
+    _check_attribute_profile_values,
+    _check_candidate_link,
+    _check_candidate_name,
+    _check_candidate_option_type,
+    _check_profile_file,
+    _check_setting_option_type,
+    _check_setting_option_value,
+)
 from antares_xpansion.split_link_profile import SplitLinkProfile
 
 from src.python.antares_xpansion.profile_link_checker import ProfileLinkChecker
@@ -25,7 +31,7 @@ class TestCheckProfileFile:
     def test_invalid_profile(self, tmp_path):
         profile_file = TestCheckProfileFile.get_empty_file(tmp_path)
 
-        line = 'Word'
+        line = "Word"
         profile_file.write_text(line)
         with pytest.raises(ProfileFileValueError):
             _check_profile_file(profile_file)
@@ -34,7 +40,7 @@ class TestCheckProfileFile:
         profile_file = TestCheckProfileFile.get_empty_file(tmp_path)
         line = "1 2 3\n"
 
-        with open(profile_file, 'a+') as file:
+        with open(profile_file, "a+") as file:
             file.writelines([line for k in range(8760)])
         try:
             _check_profile_file(profile_file)
@@ -143,10 +149,12 @@ class TestCheckCandidatesFile:
 
         ini_file = tmp_path / "a.ini"
         ini_file.touch()
-        capa_dir = tmp_path / 'capa'
+        capa_dir = tmp_path / "capa"
         capa_dir.mkdir()
-        ini_file.write_text(f"""[5] \n
-                           {option} = {value}""")
+        ini_file.write_text(
+            f"""[5] \n
+                           {option} = {value}"""
+        )
 
         with pytest.raises(CandidateFileWrongTypeValue):
             check_candidates_file(ini_file, capa_dir)
@@ -157,7 +165,8 @@ class TestCheckCandidatesFile:
 
         ini_file = tmp_path / "a.ini"
         ini_file.touch()
-        ini_file.write_text(f"""[5] \n
+        ini_file.write_text(
+            f"""[5] \n
                             name = alpha \n
                             link = a - b \n
                            {option} = {value}\n
@@ -166,8 +175,9 @@ class TestCheckCandidatesFile:
                             name = alpha \n
                             link = a - b \n
                            {option} = {value}\n
-                           unit-size = 400\n""")
-        capa_dir = tmp_path / 'capa'
+                           unit-size = 400\n"""
+        )
+        capa_dir = tmp_path / "capa"
         capa_dir.mkdir()
 
         with pytest.raises(CandidateNameDuplicatedError):
@@ -176,13 +186,15 @@ class TestCheckCandidatesFile:
     def test_non_null_max_units_and_max_investment_simultaneaously(self, tmp_path):
         ini_file = tmp_path / "a.ini"
         ini_file.touch()
-        ini_file.write_text(f"""[5] \n
+        ini_file.write_text(
+            f"""[5] \n
                             name = alpha \n
                             link = a - b \n
                            max-units = 13\n
                            unit-size = 400\n
-                           max-investment = 985""")
-        capa_dir = tmp_path / 'capa'
+                           max-investment = 985"""
+        )
+        capa_dir = tmp_path / "capa"
         capa_dir.mkdir()
 
         with pytest.raises(MaxUnitsAndMaxInvestmentNonNullSimultaneously):
@@ -191,13 +203,15 @@ class TestCheckCandidatesFile:
     def test_null_max_units_and_max_investment_simultaneaously(self, tmp_path):
         ini_file = tmp_path / "a.ini"
         ini_file.touch()
-        ini_file.write_text(f"""[5] \n
+        ini_file.write_text(
+            f"""[5] \n
                             name = alpha \n
                             link = a - b \n
                            max-units = 0\n
                            unit-size = 0\n
-                           max-investment = 0""")
-        capa_dir = tmp_path / 'capa'
+                           max-investment = 0"""
+        )
+        capa_dir = tmp_path / "capa"
         capa_dir.mkdir()
 
         with pytest.raises(MaxUnitsAndMaxInvestmentAreNullSimultaneously):
@@ -207,12 +221,14 @@ class TestCheckCandidatesFile:
         ini_file = tmp_path / "a.ini"
 
         ini_file.touch()
-        ini_file.write_text(f"""[5] \n
+        ini_file.write_text(
+            f"""[5] \n
                             name = alpha \n
                             link = a - b \n
                            max-units = 1\n
                            unit-size = 23\n
-                           link-profile = file.ini""")
+                           link-profile = file.ini"""
+        )
 
         with pytest.raises(SplitLinkProfile.LinkProfileFileNotFound):
             check_candidates_file(ini_file, capacity_dir_path=tmp_path)
@@ -227,15 +243,15 @@ class TestCheckCandidatesFile:
                            max-units = 1
                            unit-size = 23
                            direct-link-profile = direct-file.ini
-                           indirect-link-profile = direct-file.ini""")
-        capa_dir = tmp_path / 'capa'
+                           indirect-link-profile = direct-file.ini"""
+        )
+        capa_dir = tmp_path / "capa"
         capa_dir.mkdir()
         profile_file = capa_dir / "direct-file.ini"
         profile_file.touch()
-        with open(profile_file, 'w') as f:
+        with open(profile_file, "w") as f:
             f.writelines(["0\n" for k in range(8760)])
-        profile = ProfileLinkChecker(
-            ini_file, capa_dir)
+        profile = ProfileLinkChecker(ini_file, capa_dir)
         assert _check_attribute_profile_values(profile.config, capa_dir) == False
 
 
@@ -246,8 +262,7 @@ class TestCheckSettingOptionType:
             _check_setting_option_type("unknown option", "value")
 
     def test_str_options(self):
-        assert _check_setting_option_type(
-            "uc_type", "expansion_accurate") == True
+        assert _check_setting_option_type("uc_type", "expansion_accurate") == True
         assert _check_setting_option_type("uc_type", 123) == False
         assert _check_setting_option_type("master", "a string") == True
 
@@ -258,17 +273,21 @@ class TestCheckSettingOptionType:
         assert _check_setting_option_type("timelimit", "inf") == False
         assert _check_setting_option_type("timelimit", "+Inf") == True
         assert _check_setting_option_type("timelimit", 12.2) == False
+        assert _check_setting_option_type("batch_size", 0.5) == False
+        assert _check_setting_option_type("batch_size", 4) == True
 
     def test_double_options(self):
-        assert _check_setting_option_type("relative_gap", 1.) == True
-        assert _check_setting_option_type("relative_gap", -1.) == True
+        assert _check_setting_option_type("relative_gap", 1.0) == True
+        assert _check_setting_option_type("relative_gap", -1.0) == True
         assert _check_setting_option_type("relative_gap", "str") == False
+        assert _check_setting_option_type("master_solution_tolerance", 4.5) == True
+        assert _check_setting_option_type("cut_coefficient_tolerance", 0.3) == True
 
 
 class TestCheckSettingOptionValue:
 
     def test_optimality_gap_negative_int(self):
-        with pytest.raises(GapValueError):
+        with pytest.raises(PositiveFloatValueError):
             _check_setting_option_value("optimality_gap", -123)
 
     def test_optimality_gap_str_value(self):
@@ -276,7 +295,7 @@ class TestCheckSettingOptionValue:
             _check_setting_option_value("optimality_gap", "defe")
 
     def test_optimality_gap_negative_float(self):
-        with pytest.raises(GapValueError):
+        with pytest.raises(PositiveFloatValueError):
             _check_setting_option_value("optimality_gap", -1.2)
 
     def test_float_max_iteration(self):
@@ -298,9 +317,14 @@ class TestCheckSettingOptionValue:
     def test_separation_parameter_illegal_value(self):
         with pytest.raises(SeparationParameterValueError):
             _check_setting_option_value("separation_parameter", -1)
+    
+    def test_master_solution_tolerance_negative_float(self):
+        with pytest.raises(PositiveFloatValueError):
+            _check_setting_option_value("master_solution_tolerance", -0.39)
 
-    def test_separation_parameter_legal_value(self):
-        assert _check_setting_option_value("separation_parameter", 0.39) == True
+    def test_cut_coefficient_tolerance_negative_float(self):
+        with pytest.raises(PositiveFloatValueError):
+            _check_setting_option_value("cut_coefficient_tolerance", -0.39)
 
     def test_is_bool_true_values(self):
         assert is_bool("true")
