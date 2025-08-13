@@ -152,7 +152,11 @@ int main(int argc, char** argv)
 
         auto gridCollection = std::make_shared<GridCollection>(studyPath / "grid.csv");
 
-        ReservoirManagement reservoirManagement(gridCollection->reservoirs.begin()->second, true);
+        ReservoirManagement reservoirManagement(gridCollection->reservoirs.begin()->second,
+                                                3000,
+                                                3000,
+                                                3000,
+                                                false);
 
         ConfigurationManager::ConfigDirectories directories{
           .study_dir = studyPath,
@@ -166,7 +170,7 @@ int main(int argc, char** argv)
                                                            studyPath / "output.json");
 
         std::cout << "Generating problems" << std::endl;
-        ProblemGenerationForWaterValueCalculation pbg(directories, solverName);
+        ProblemGenerationForWaterValueCalculation pbg(directories, reservoirManagement, solverName);
         std::cout << "Problems generated" << std::endl;
 
         Output::VariationDeNiveauxDeStockData variationDeNiveauxDeStockData;

@@ -111,9 +111,12 @@ protected:
         Reservoir reservoirMock = Reservoir("TestArea",
                                             500.0,
                                             1.0,
-                                            {100.0, 100.0, 100.0},            // max_generating
-                                            {100.0, 100.0, 100.0},            // max_pumping
-                                            {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}} // inflow
+                                            0,
+                                            {100.0, 100.0, 100.0},             // max_generating
+                                            {100.0, 100.0, 100.0},             // max_pumping
+                                            {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}, // inflow
+                                            {0, 0, 0},                         // bottom rule curve
+                                            {0, 0, 0}                          // top rule curve
         );
 
     private:
@@ -142,7 +145,7 @@ protected:
 TEST_F(BellmanValuesComputeTest, unitTestNoPenalties)
 {
     ReservoirManagement
-      reservoirManagement(evaluatorMock.reservoirMock, 0, 0, 0, true, std::nullopt, false);
+      reservoirManagement(evaluatorMock.reservoirMock, 0, 0, 0, false, std::nullopt, false);
     auto bellmanValues = BellmanValues(evaluatorMock, reservoirManagement).compute(1, 3, 6);
 
     std::vector<std::vector<double>> expected = {{60, 60, 60, 100, 140, 180},
@@ -170,7 +173,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
       .simulation_dir = config_manager.generateOutputName(tmpDir),
     };
 
-    ProblemGenerationForWaterValueCalculation pbg(config_dirs);
+    ProblemGenerationForWaterValueCalculation pbg(config_dirs, reservoir_management);
     auto mps_path = pbg.updateProblems(grid);
 
     auto evaluator = GridEvaluator(logger,

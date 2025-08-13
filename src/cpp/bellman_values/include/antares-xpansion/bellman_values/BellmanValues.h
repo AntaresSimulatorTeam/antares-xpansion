@@ -18,6 +18,7 @@ public:
 
 private:
     double solveWeeklyProblemWithReward(int week,
+                                        int endWeek,
                                         int scenario,
                                         double level,
                                         const std::vector<double>& X,

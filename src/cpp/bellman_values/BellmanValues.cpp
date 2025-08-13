@@ -77,6 +77,7 @@ std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWe
             for (size_t i = 0; i < levels.size(); ++i)
             {
                 double Vu = solveWeeklyProblemWithReward(week,
+                                                         endWeek,
                                                          scenario,
                                                          levels[i],
                                                          levels,
@@ -112,6 +113,7 @@ std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWe
 
 /// @brief Solve the weekly problem
 /// @param week
+/// @param endWeek the last week of the problem
 /// @param scenario
 /// @param level the level of the reservoir
 /// @param X the discretization of the reservoir level
@@ -120,6 +122,7 @@ std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWe
 /// @param breaking_points
 /// @return The Bellvalue for a given week and scenario and level of the reservoir
 double BellmanValues::solveWeeklyProblemWithReward(int week,
+                                                   int endWeek,
                                                    int scenario,
                                                    double level,
                                                    const std::vector<double>& X,
@@ -132,6 +135,7 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
     auto rewardFn = Interpolator::linearInterpolation(
       gridEvaluator.gridDefinition.gridElements[0].rhsValues[week - 1],
       rewards);
+    auto penaltyFn = reservoirManagement.get_penalty(week, endWeek);
 
     for (double value_fut: X)
     {
@@ -141,9 +145,10 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
         {
             u = std::min(u, reservoir.max_generating[week - 1]);
             double G = rewardFn(u);
-            if (G + V_fut(value_fut) < Vu)
+            double penalty = penaltyFn(value_fut);
+            if (G + V_fut(value_fut) + penalty < Vu)
             {
-                Vu = G + V_fut(value_fut);
+                Vu = G + V_fut(value_fut) + penalty;
             }
         }
     }
@@ -154,9 +159,54 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
         if (0 <= state_fut && state_fut <= reservoir.capacity)
         {
             double G = rewardFn(u);
-            if (G + V_fut(state_fut) < Vu)
+            double penalty = penaltyFn(state_fut);
+            if (G + V_fut(state_fut) + penalty < Vu)
             {
-                Vu = G + V_fut(state_fut);
+                Vu = G + V_fut(state_fut) + penalty;
+            }
+        }
+    }
+
+    if (week == endWeek - 1 && reservoirManagement.force_final_level)
+    {
+        double uFinal = level + reservoir.inflow[week - 1][scenario - 1]
+                        - reservoirManagement.final_level;
+        if (-reservoir.max_pumping[week - 1] * reservoir.efficiency <= uFinal
+            && uFinal <= reservoir.max_generating[week - 1])
+        {
+            double state_fut = level - uFinal + reservoir.inflow[week - 1][scenario - 1];
+            double penalty = penaltyFn(state_fut);
+            if (rewardFn(uFinal) + V_fut(state_fut) + penalty < Vu)
+            {
+                Vu = rewardFn(uFinal) + V_fut(state_fut) + penalty;
+            }
+        }
+    }
+    else
+    {
+        double uMin = level + reservoir.inflow[week - 1][scenario - 1]
+                      - reservoir.upper_rule_curve[week - 1];
+        if (-reservoir.max_pumping[week - 1] * reservoir.efficiency <= uMin
+            && uMin <= reservoir.max_generating[week - 1])
+        {
+            double state_fut = level - uMin + reservoir.inflow[week - 1][scenario - 1];
+            double penalty = penaltyFn(state_fut);
+            if (rewardFn(uMin) + V_fut(state_fut) + penalty < Vu)
+            {
+                Vu = rewardFn(uMin) + V_fut(state_fut) + penalty;
+            }
+        }
+
+        double uMax = level + reservoir.inflow[week - 1][scenario - 1]
+                      - reservoir.bottom_rule_curve[week - 1];
+        if (-reservoir.max_pumping[week - 1] * reservoir.efficiency <= uMax
+            && uMax <= reservoir.max_generating[week - 1])
+        {
+            double state_fut = level - uMax + reservoir.inflow[week - 1][scenario - 1];
+            double penalty = penaltyFn(state_fut);
+            if (rewardFn(uMax) + V_fut(state_fut) + penalty < Vu)
+            {
+                Vu = rewardFn(uMax) + V_fut(state_fut) + penalty;
             }
         }
     }

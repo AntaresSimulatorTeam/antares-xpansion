@@ -8,6 +8,7 @@
 #include <antares/api/solver.h>
 
 #include "antares-xpansion/benders/output/OutputWriter.h"
+#include "antares-xpansion/helpers/solver_utils.h"
 #include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
 #include "malloc.h"
 
@@ -34,8 +35,14 @@ static void CreateDirectories(const std::filesystem::path& output_path)
 /// @param gridDefinition The grid definition
 ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalculation(
   ConfigurationManager::ConfigDirectories directories,
-  std::string solverName):
-    directories(directories)
+  const ReservoirManagement& reservoirManagement,
+  std::string solverName,
+  int startWeek,
+  int endWeek):
+    directories(directories),
+    reservoirManagement(reservoirManagement),
+    startWeek(startWeek),
+    endWeek(endWeek)
 {
     Antares::Solver::Optimization::OptimizationOptions optOptions;
     optOptions.firstOptimOptions.solverName = solverName;
@@ -67,7 +74,10 @@ ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalcula
     for (const auto& [pbId, _]: results.weeklyProblems)
     {
         auto solver_log_manager = SolverLogManager(directories.simulation_dir / "solver.log");
-        auto problem = adapter.provideProblem("CBC", solver_log_manager, pbId);
+        auto problem = adapter.provideProblem(solverName == SolverConfig("xpress") ? "xpress"
+                                                                                   : "CBC",
+                                              solver_log_manager,
+                                              pbId);
         problems[pbId] = problem;
     }
 }
@@ -114,15 +124,15 @@ ProblemGenerationForWaterValueCalculation::CleanProblemsForBellmanCalculations(
                   [&](auto& pb)
                   {
                       auto pbId = pb.first;
-                      auto problem = std::make_shared<Problem>(pb.second->clone());
-                      std::string pbName = "problem-" + std::to_string(pbId.year) + "-"
-                                           + std::to_string(pbId.week) + "--optim-nb-1";
-                      cleanProblemForBellmanCalculations(problem,
-                                                         pbName,
-                                                         gridDefinition,
-                                                         pbId.week);
+                      if (startWeek <= pbId.week && pbId.week <= endWeek)
+                      {
+                          auto problem = std::make_shared<Problem>(pb.second->clone());
+                          std::string pbName = "problem-" + std::to_string(pbId.year) + "-"
+                                               + std::to_string(pbId.week) + "--optim-nb-1";
+                          cleanProblemForBellmanCalculations(problem, pbName, gridDefinition, pbId);
 
-                      problem->write_prob_mps(outputMpsPath / (pbName + ".mps"));
+                          problem->write_prob_mps(outputMpsPath / (pbName + ".mps"));
+                      }
                   });
 
     return outputMpsPath;
@@ -132,16 +142,17 @@ ProblemGenerationForWaterValueCalculation::CleanProblemsForBellmanCalculations(
 /// @param problem The problem to clean
 /// @param gridDefinition The grid definition
 /// @param week The week to clean
-void cleanProblemForBellmanCalculations(std::shared_ptr<Problem> problem,
-                                        std::string& pbName,
-                                        const GridDefinition& gridDefinition,
-                                        int week)
+void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculations(
+  std::shared_ptr<Problem> problem,
+  std::string& pbName,
+  const GridDefinition& gridDefinition,
+  Antares::Solver::WeeklyProblemId pbID)
 {
     for (const auto& gridElement: gridDefinition.gridElements)
     {
         if (gridElement.problemName == "all" || gridElement.problemName == pbName)
         {
-            for (int hour = (week - 1) * 168; hour < week * 168; ++hour)
+            for (int hour = (pbID.week - 1) * 168; hour < pbID.week * 168; ++hour)
             {
                 // Delete variables HydroLevel and Overflow
                 int idx = problem->get_col_index("HydroLevel::area<" + gridElement.area + ">::hour<"
@@ -163,9 +174,136 @@ void cleanProblemForBellmanCalculations(std::shared_ptr<Problem> problem,
                 problem->chg_bounds(
                   {idx},
                   {'U'},
-                  {gridDefinition.reservoirs.at(gridElement.area).max_generating[week - 1]
+                  {gridDefinition.reservoirs.at(gridElement.area).max_generating[pbID.week - 1]
                    / Reservoir::hours_in_week});
             }
+            addReservoirConstraints(problem, pbID);
+        }
+    }
+}
+
+void ProblemGenerationForWaterValueCalculation::addReservoirConstraints(
+  std::shared_ptr<Problem> problem,
+  Antares::Solver::WeeklyProblemId pbId)
+{
+    // ===== 1. Add variables =====
+    std::vector<std::string> var_names;
+    std::vector<double> bdl;
+    std::vector<double> bdu;
+
+    // x_s
+    var_names.push_back("x_s");
+    bdl.push_back(0.0);
+    bdu.push_back(reservoirManagement.reservoir.capacity);
+
+    // x_s_1
+    var_names.push_back("x_s_1");
+    bdl.push_back(0.0);
+    bdu.push_back(reservoirManagement.reservoir.capacity);
+
+    // U
+    var_names.push_back("u");
+    double lbU = -reservoirManagement.reservoir.max_pumping[pbId.week - 1]
+                 * reservoirManagement.reservoir.efficiency;
+    double ubU = reservoirManagement.reservoir.max_generating[pbId.week - 1];
+    bdl.push_back(lbU);
+    bdu.push_back(ubU);
+
+    // y
+    var_names.push_back("y");
+    bdl.push_back(0.0);
+    bdu.push_back(INFINITY);
+
+    int nColsBeforeAdd = problem->get_ncols();
+    // Add all variables at once
+    {
+        int nbVarToAdd = var_names.size();
+        std::vector<int> mstart(nbVarToAdd, 0);
+        std::vector<double> objs(nbVarToAdd, 0);
+        std::vector<char> types(nbVarToAdd, 'C');
+
+        solver_addcols(*problem, objs, mstart, {}, {}, bdl, bdu, types, var_names);
+    }
+
+    // // Column indices
+    int col_x_s = nColsBeforeAdd;
+    int col_x_s_1 = nColsBeforeAdd + 1;
+    int col_U = nColsBeforeAdd + 2;
+    int col_y = nColsBeforeAdd + 3;
+
+    // ===== 2. Reservoir conservation constraint =====
+    // x_s_1 - x_s + U <=/== inflow
+    {
+        std::vector<int> mclind = {col_x_s_1, col_x_s, col_U};
+        std::vector<double> coeffs = {1.0, -1.0, 1.0};
+
+        double inflow = reservoirManagement.reservoir.inflow[pbId.week - 1][pbId.year - 1];
+        char qrtype = reservoirManagement.overflow ? 'L' : 'E';
+
+        std::string cname = "ReservoirConservation::area<" + reservoirManagement.reservoir.area
+                            + ">::week<" + std::to_string(pbId.week) + ">";
+
+        solver_addrows(*problem, {qrtype}, {inflow}, {}, {0, 3}, mclind, coeffs, {cname});
+    }
+
+    // ===== 3. Penalty constraints =====
+    if (pbId.week != endWeek - 1 || !reservoirManagement.final_level)
+    {
+        // y >= -penalty_bottom * (x_s_1 - bottom_rule_curve)
+        {
+            double rhs = reservoirManagement.penalty_bottom_rule_curve
+                         * reservoirManagement.reservoir.bottom_rule_curve[pbId.week - 1];
+            std::vector<int> mclind = {col_y, col_x_s_1};
+            std::vector<double> coeffs = {1.0, reservoirManagement.penalty_bottom_rule_curve};
+            char qrtype = 'G';
+            std::string cname = "PenaltyForViolatingBottomRuleCurve::area<"
+                                + reservoirManagement.reservoir.area + ">::week<"
+                                + std::to_string(pbId.week) + ">";
+
+            solver_addrows(*problem, {qrtype}, {rhs}, {}, {0, 2}, mclind, coeffs, {cname});
+        }
+
+        // y >= penalty_upper * (x_s_1 - upper_rule_curve)
+        {
+            double rhs = -reservoirManagement.penalty_upper_rule_curve
+                         * reservoirManagement.reservoir.upper_rule_curve[pbId.week - 1];
+            std::vector<int> mclind = {col_y, col_x_s_1};
+            std::vector<double> coeffs = {1.0, -reservoirManagement.penalty_upper_rule_curve};
+            char qrtype = 'G';
+            std::string cname = "PenaltyForViolatingUpperRuleCurve::area<"
+                                + reservoirManagement.reservoir.area + ">::week<"
+                                + std::to_string(pbId.week) + ">";
+
+            solver_addrows(*problem, {qrtype}, {rhs}, {}, {0, 2}, mclind, coeffs, {cname});
+        }
+    }
+    else
+    {
+        // Final level case
+        // y >= penalty_final_level * (x_s_1 - final_level)
+        {
+            double rhs = reservoirManagement.penalty_final_level * reservoirManagement.final_level;
+            std::vector<int> mclind = {col_y, col_x_s_1};
+            std::vector<double> coeffs = {1.0, reservoirManagement.penalty_final_level};
+            char qrtype = 'G';
+            std::string cname = "PenaltyForViolatingBottomRuleCurve::area<"
+                                + reservoirManagement.reservoir.area + ">::week<"
+                                + std::to_string(pbId.week) + ">";
+
+            solver_addrows(*problem, {qrtype}, {rhs}, {}, {0, 2}, mclind, coeffs, {cname});
+        }
+
+        // y >= penalty_final_level * (final_level - x_s_1)
+        {
+            double rhs = -reservoirManagement.penalty_final_level * reservoirManagement.final_level;
+            std::vector<int> mclind = {col_y, col_x_s_1};
+            std::vector<double> coeffs = {1.0, -reservoirManagement.penalty_final_level};
+            char qrtype = 'G';
+            std::string cname = "PenaltyForViolatingUpperRuleCurve::area<"
+                                + reservoirManagement.reservoir.area + ">::week<"
+                                + std::to_string(pbId.week) + ">";
+
+            solver_addrows(*problem, {qrtype}, {rhs}, {}, {0, 2}, mclind, coeffs, {cname});
         }
     }
 }

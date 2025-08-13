@@ -34,22 +34,26 @@ private:
     void readInflow(const std::filesystem::path& inputPath);
     void readMaxPower(const std::filesystem::path& inputPath);
     void loadHydroIni(const std::filesystem::path& inputPath);
-    std::vector<double> loadInflow(const std::filesystem::path& inputPath,
-                                   const std::string& areaName);
 
     // Private test-only constructor
     Reservoir(const std::string& areaName,
               double capacity,
               double efficiency,
+              double initial_level,
               std::vector<double> max_generating,
               std::vector<double> max_pumping,
-              std::vector<std::vector<double>> inflow):
+              std::vector<std::vector<double>> inflow,
+              std::vector<double> bottom_rule_curve,
+              std::vector<double> upper_rule_curve):
         area(areaName),
         capacity(capacity),
         efficiency(efficiency),
+        initial_level(initial_level),
         max_generating(std::move(max_generating)),
         max_pumping(std::move(max_pumping)),
-        inflow(std::move(inflow))
+        inflow(std::move(inflow)),
+        bottom_rule_curve(std::move(bottom_rule_curve)),
+        upper_rule_curve(std::move(upper_rule_curve))
     {
     }
 
@@ -67,7 +71,7 @@ public:
                         std::optional<double> final_level = std::nullopt,
                         bool overflow = true);
 
-    std::function<double(double)> get_penalty(int week, int len_week);
+    std::function<double(double)> get_penalty(int week, int len_week) const;
 
     Reservoir reservoir;
     double penalty_bottom_rule_curve;

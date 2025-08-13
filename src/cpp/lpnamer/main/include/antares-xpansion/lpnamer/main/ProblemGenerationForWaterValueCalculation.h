@@ -27,7 +27,10 @@ class ProblemGenerationForWaterValueCalculation
 public:
     explicit ProblemGenerationForWaterValueCalculation(
       ConfigurationManager::ConfigDirectories directories,
-      std::string solverName = "xpress");
+      const ReservoirManagement& reservoirManagement,
+      std::string solverName = "xpress",
+      int startWeek = 1,
+      int endWeek = 52);
     virtual ~ProblemGenerationForWaterValueCalculation() = default;
     std::filesystem::path updateProblems(const GridDefinition& gridDefinition);
 
@@ -37,6 +40,17 @@ private:
       const std::filesystem::path& log_file_path,
       const GridDefinition& gridDefinition);
 
+    void cleanProblemForBellmanCalculations(std::shared_ptr<Problem> problem,
+                                            std::string& pbName,
+                                            const GridDefinition& gridDefinition,
+                                            Antares::Solver::WeeklyProblemId pbId);
+
+    void addReservoirConstraints(std::shared_ptr<Problem> problem,
+                                 Antares::Solver::WeeklyProblemId pbId);
+
     ConfigurationManager::ConfigDirectories directories;
     std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> problems;
+    const ReservoirManagement& reservoirManagement;
+    int startWeek;
+    int endWeek;
 };

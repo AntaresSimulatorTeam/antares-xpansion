@@ -273,9 +273,9 @@ ReservoirManagement::ReservoirManagement(const Reservoir& reservoir,
 {
 }
 
-std::function<double(double)> ReservoirManagement::get_penalty(int week, int len_week)
+std::function<double(double)> ReservoirManagement::get_penalty(int week, int len_week) const
 {
-    if (week == len_week - 1 && final_level > 0.0)
+    if (week == len_week && force_final_level)
     {
         std::vector<double> x = {0.0, final_level, reservoir.capacity};
         std::vector<double> y = {-penalty_final_level * final_level,
@@ -286,14 +286,14 @@ std::function<double(double)> ReservoirManagement::get_penalty(int week, int len
     else
     {
         std::vector<double> x = {0.0,
-                                 reservoir.bottom_rule_curve[week],
-                                 reservoir.upper_rule_curve[week],
+                                 reservoir.bottom_rule_curve[week - 1],
+                                 reservoir.upper_rule_curve[week - 1],
                                  reservoir.capacity};
-        std::vector<double> y = {-penalty_bottom_rule_curve * reservoir.bottom_rule_curve[week],
+        std::vector<double> y = {penalty_bottom_rule_curve * reservoir.bottom_rule_curve[week - 1],
                                  0.0,
                                  0.0,
-                                 -penalty_upper_rule_curve
-                                   * (reservoir.capacity - reservoir.upper_rule_curve[week])};
+                                 penalty_upper_rule_curve
+                                   * (reservoir.capacity - reservoir.upper_rule_curve[week - 1])};
         return Interpolator::linearInterpolation(x, y);
     }
 }
