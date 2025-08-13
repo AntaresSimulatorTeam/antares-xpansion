@@ -73,7 +73,6 @@ std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWe
             auto valuesVect = gridDef.weekAreaConstraints.at(week)
                                 .at(gridDef.gridElements[0].area)
                                 .at(gridDef.gridElements[0].name);
-            std::set<double> breaking_points = {*valuesVect.begin(), *valuesVect.rbegin()};
             for (size_t i = 0; i < levels.size(); ++i)
             {
                 double Vu = solveWeeklyProblemWithReward(week,
@@ -82,8 +81,7 @@ std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWe
                                                          levels[i],
                                                          levels,
                                                          rewards[{scenario, week}],
-                                                         V_fut(),
-                                                         breaking_points);
+                                                         V_fut());
                 V[{scenario, week}][i] += Vu;
             }
         }
@@ -127,8 +125,7 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
                                                    double level,
                                                    const std::vector<double>& X,
                                                    const std::vector<double>& rewards,
-                                                   const std::function<double(double)>& V_fut,
-                                                   std::set<double>& breaking_points)
+                                                   const std::function<double(double)>& V_fut)
 {
     double Vu = std::numeric_limits<double>::max();
     const Reservoir reservoir = reservoirManagement.reservoir;
@@ -167,7 +164,7 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
         }
     }
 
-    if (week == endWeek - 1 && reservoirManagement.force_final_level)
+    if (week == endWeek && reservoirManagement.force_final_level)
     {
         double uFinal = level + reservoir.inflow[week - 1][scenario - 1]
                         - reservoirManagement.final_level;
@@ -185,7 +182,7 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
     else
     {
         double uMin = level + reservoir.inflow[week - 1][scenario - 1]
-                      - reservoir.upper_rule_curve[week - 1];
+                      - reservoir.bottom_rule_curve[week - 1];
         if (-reservoir.max_pumping[week - 1] * reservoir.efficiency <= uMin
             && uMin <= reservoir.max_generating[week - 1])
         {
@@ -198,7 +195,7 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
         }
 
         double uMax = level + reservoir.inflow[week - 1][scenario - 1]
-                      - reservoir.bottom_rule_curve[week - 1];
+                      - reservoir.upper_rule_curve[week - 1];
         if (-reservoir.max_pumping[week - 1] * reservoir.efficiency <= uMax
             && uMax <= reservoir.max_generating[week - 1])
         {

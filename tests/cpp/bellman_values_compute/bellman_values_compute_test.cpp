@@ -49,11 +49,12 @@ protected:
                                 | std::filesystem::copy_options::update_existing);
     }
 
-    std::map<ScenarioAndWeek, std::vector<double>> getOutputCosts()
+    std::map<ScenarioAndWeek, std::vector<double>> getOutputCosts(bool penalties)
     {
         std::map<ScenarioAndWeek, std::vector<double>> costs;
-
-        std::ifstream file(tmpDir / "result_bellman_values.csv");
+        std::string fileName = penalties ? "result_bellman_values_penalties.csv"
+                                         : "result_bellman_values_no_penalties.csv";
+        std::ifstream file(tmpDir / fileName);
         std::string line;
         while (std::getline(file, line))
         {
@@ -158,12 +159,64 @@ TEST_F(BellmanValuesComputeTest, unitTestNoPenalties)
 TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
 {
     copyData();
-    auto expected_costs = getOutputCosts();
+    auto expected_costs = getOutputCosts(false);
 
     auto grid_collection = GridCollection(tmpDir / "grid.csv");
     auto grid = grid_collection.gridDefinitions[0];
-    Reservoir reservoir(tmpDir, "area");
-    ReservoirManagement reservoir_management(reservoir, 0, 0, 0, true, std::nullopt, false);
+    ReservoirManagement reservoir_management(grid_collection.reservoirs.begin()->second,
+                                             0,
+                                             0,
+                                             0,
+                                             true,
+                                             std::nullopt,
+                                             false);
+
+    auto options_parser = ProblemGenerationExeOptions();
+    auto config_manager = ConfigurationManager(options_parser);
+
+    ConfigurationManager::ConfigDirectories config_dirs{
+      .study_dir = tmpDir,
+      .simulation_dir = config_manager.generateOutputName(tmpDir),
+    };
+
+    ProblemGenerationForWaterValueCalculation pbg(config_dirs, reservoir_management);
+    auto mps_path = pbg.updateProblems(grid);
+
+    auto evaluator = GridEvaluator(logger,
+                                   writer,
+                                   mps_path,
+                                   grid,
+                                   ProblemsFormat::MPS_FILE,
+                                   "xpress",
+                                   8);
+    auto res = BellmanValues(evaluator, reservoir_management).compute(1, 52, 11);
+
+    for (int week = 1; week < res.size(); week++)
+    {
+        for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
+        {
+            double cost = res[week - 1][level_index];
+            double expected_cost = expected_costs[{1, week}][0];
+            EXPECT_NEAR_REL(cost, expected_cost, 1e-6);
+            expected_costs[{1, week}].erase(expected_costs[{1, week}].begin());
+        }
+    }
+}
+
+TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
+{
+    copyData();
+    auto expected_costs = getOutputCosts(true);
+
+    auto grid_collection = GridCollection(tmpDir / "grid.csv");
+    auto grid = grid_collection.gridDefinitions[0];
+    ReservoirManagement reservoir_management(grid_collection.reservoirs.begin()->second,
+                                             3000,
+                                             3000,
+                                             3000,
+                                             false,
+                                             std::nullopt,
+                                             true);
 
     auto options_parser = ProblemGenerationExeOptions();
     auto config_manager = ConfigurationManager(options_parser);

@@ -23,8 +23,7 @@ private:
                                         double level,
                                         const std::vector<double>& X,
                                         const std::vector<double>& rewards,
-                                        const std::function<double(double)>& V_fut,
-                                        std::set<double>& breaking_points);
+                                        const std::function<double(double)>& V_fut);
 
 protected:
     GridEvaluator& gridEvaluator;                   ///< Grid evaluator
