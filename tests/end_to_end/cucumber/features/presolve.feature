@@ -32,11 +32,11 @@ Feature: Validate presolve step feature
     And the generated subproblems have between 1600 and 1800 cols
     And the generated subproblems have between 4800 and 4800 elements
 
-  @short @no-presolve
+  @short @no-presolve @xpansion-test
   Scenario: "No presolve on xpansion-test-one-link-two-candidates"
     Given the study path is "data_test/examples/xpansion-test-one-link-two-candidates"
     And solver is "Xpress"
-    When I run step problem_generation in memory
+    When I run step problem_generation in-memory mps
     Then the return status is 0
     And the generated subproblems have 1008 rows
     And the generated subproblems have 1850 cols

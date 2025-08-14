@@ -42,7 +42,7 @@ def build_outer_loop_command(context, n: int, option_file: str = "options.json")
 
 
 def build_launch_command(study_dir: Path, step: str = None, nproc: int = 2, in_memory: bool = False,
-                         method: str = None, allow_run_as_root: bool = False):
+                         method: str = None, allow_run_as_root: bool = False, problem_format: str = None):
     command = [
         sys.executable,
         "../../src/python/launch.py",
@@ -55,18 +55,18 @@ def build_launch_command(study_dir: Path, step: str = None, nproc: int = 2, in_m
     # Only add --method if method is provided and not None
     if method is not None:
         command.extend(["--method", method])
-
     if step is not None:
         command.extend(["--step", step])
-
     if in_memory:
         command.append("--memory")
     if allow_run_as_root:
         command.append("--allow-run-as-root")
+    if problem_format is not None:
+        command.extend(["--problem-format", problem_format])
     return command
 
 
-def run_xpansion_step(context, step, memory_mode, nproc=1):
+def run_xpansion_step(context, step, memory_mode, pb_format=None, nproc=1):
     """Common function to run an Antares-Xpansion step with error handling"""
     context.allow_run_as_root = get_conf("allow_run_as_root")
 
@@ -78,10 +78,11 @@ def run_xpansion_step(context, step, memory_mode, nproc=1):
         step=step,
         nproc=nproc,
         in_memory=in_memory,
-        allow_run_as_root=context.allow_run_as_root
+        allow_run_as_root=context.allow_run_as_root,
+        problem_format=pb_format
     )
 
-    print(f"Running {step} {memory_mode}: {' '.join(command)}")
+    print(f"Running {step} {memory_mode} {pb_format}: {' '.join(command)}")
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     out, err = process.communicate()
     context.return_code = process.returncode
@@ -148,6 +149,8 @@ def step_problem_generation_and_presolve(context, step, memory_mode):
         return
 
 
+@when(u'I run step {step}')
 @when(u'I run step {step} {memory_mode}')
-def step_problem_generation_memory(context, step, memory_mode):
-    run_xpansion_step(context, step, memory_mode, nproc=1)
+@when(u'I run step {step} {memory_mode} {pb_format}')
+def step_problem_generation_memory(context, step, memory_mode=None, pb_format=None):
+    run_xpansion_step(context, step, memory_mode, pb_format, nproc=1)
