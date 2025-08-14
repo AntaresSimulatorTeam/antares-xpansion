@@ -32,7 +32,7 @@ Feature: Validate presolve step feature
     And the generated subproblems have between 1600 and 1800 cols
     And the generated subproblems have between 4800 and 4800 elements
 
-  @short @no-presolve @xpansion-test
+  @short @no-presolve
   Scenario: "No presolve on xpansion-test-one-link-two-candidates"
     Given the study path is "data_test/examples/xpansion-test-one-link-two-candidates"
     And solver is "Xpress"
