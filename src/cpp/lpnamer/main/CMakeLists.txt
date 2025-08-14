@@ -35,6 +35,7 @@ target_link_libraries(problem_generation_main
         ${PROJECT_NAME}::lp_namer_helper
         ${PROJECT_NAME}::lp_namer_input_reader
         Antares::antares-solver-simulation
+        ${PROJECT_NAME}::core
 )
 
 target_include_directories(problem_generation_main

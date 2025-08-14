@@ -1,4 +1,4 @@
-#include "antares-xpansion/benders/benders_core/ProblemFormatStream.h"
+#include "antares-xpansion/core/ProblemFormatStream.h"
 
 auto fmt::formatter<ProblemsFormat>::format(ProblemsFormat problems_format,
                                             format_context& ctx) const -> format_context::iterator
