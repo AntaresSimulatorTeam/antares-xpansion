@@ -6,9 +6,9 @@
 
 #include <boost/algorithm/string/trim.hpp>
 
-#include "antares-xpansion/benders/benders_core/ProblemFormat.h"
-#include "antares-xpansion/benders/benders_core/ProblemFormatStream.h"
 #include "antares-xpansion/benders/output/OutputWriter.h"
+#include "antares-xpansion/core/ProblemFormat.h"
+#include "antares-xpansion/core/ProblemFormatStream.h"
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 

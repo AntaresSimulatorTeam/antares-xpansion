@@ -3,7 +3,7 @@
 #include <fmt/format.h>
 #include <ostream>
 
-#include "ProblemFormat.h"
+#include "antares-xpansion/core/ProblemFormat.h"
 
 inline std::ostream& operator<<(std::ostream& stream, const ProblemsFormat& rhs)
 {

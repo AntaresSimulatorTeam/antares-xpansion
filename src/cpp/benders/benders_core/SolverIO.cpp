@@ -1,6 +1,6 @@
 
-#include <antares-xpansion/benders/benders_core/ProblemFormatStream.h>
 #include <antares-xpansion/benders/benders_core/SolverIO.h>
+#include <antares-xpansion/core/ProblemFormatStream.h>
 #include <fmt/format.h>
 
 void SolverIO::write(SolverAbstract* solver, const std::filesystem::path& path) const

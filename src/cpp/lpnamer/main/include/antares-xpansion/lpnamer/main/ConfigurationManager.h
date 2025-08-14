@@ -1,4 +1,5 @@
 #pragma once
+#include <antares-xpansion/core/ProblemFormat.h>
 #include <filesystem>
 #include <optional>
 
@@ -25,4 +26,5 @@ public:
 
 private:
     std::optional<SimulationInputMode> input_mode_;
+    ProblemsFormat format_;
 };

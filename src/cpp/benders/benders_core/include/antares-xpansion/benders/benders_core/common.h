@@ -22,7 +22,7 @@
 #include <tuple>
 #include <vector>
 
-#include "ProblemFormat.h"
+#include "antares-xpansion/core/ProblemFormat.h"
 
 enum class MasterFormulation
 {
