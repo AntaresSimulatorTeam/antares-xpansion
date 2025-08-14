@@ -25,7 +25,12 @@ ProblemGenerationExeOptions::ProblemGenerationExeOptions():
       po::value<std::filesystem::path>(&weights_file_)->default_value(""),
       "user weights file")("unnamed-problems,n",
                            po::bool_switch(&unnamed_problems_),
-                           "use this option if unnamed problems are provided");
+                           "use this option if unnamed problems are provided")(
+      "format",
+      po::value<std::string>(&format_)->default_value("SAVED"),
+      "output format (MPS or SAVED)")
+
+      ;
 }
 
 void ProblemGenerationExeOptions::Parse(unsigned int argc, const char* const* argv)
