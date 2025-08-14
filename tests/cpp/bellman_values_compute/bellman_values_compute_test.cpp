@@ -23,6 +23,7 @@ public:
     std::shared_ptr<Output::JsonWriter> writer;
     std::filesystem::path tmpDir;
     const std::filesystem::path data_test_dir = "data_test";
+    const std::string solverName = "xpress";
 
 protected:
     void SetUp() override
@@ -179,7 +180,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
       .simulation_dir = config_manager.generateOutputName(tmpDir),
     };
 
-    ProblemGenerationForWaterValueCalculation pbg(config_dirs, reservoir_management);
+    ProblemGenerationForWaterValueCalculation pbg(config_dirs, reservoir_management, solverName);
     auto mps_path = pbg.updateProblems(grid);
 
     auto evaluator = GridEvaluator(logger,
@@ -187,7 +188,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
                                    mps_path,
                                    grid,
                                    ProblemsFormat::MPS_FILE,
-                                   "xpress",
+                                   solverName,
                                    8);
     auto res = BellmanValues(evaluator, reservoir_management).compute(1, 52, 11);
 
@@ -214,9 +215,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
                                              3000,
                                              3000,
                                              3000,
-                                             false,
-                                             std::nullopt,
-                                             true);
+                                             false);
 
     auto options_parser = ProblemGenerationExeOptions();
     auto config_manager = ConfigurationManager(options_parser);
@@ -226,7 +225,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
       .simulation_dir = config_manager.generateOutputName(tmpDir),
     };
 
-    ProblemGenerationForWaterValueCalculation pbg(config_dirs, reservoir_management);
+    ProblemGenerationForWaterValueCalculation pbg(config_dirs, reservoir_management, solverName);
     auto mps_path = pbg.updateProblems(grid);
 
     auto evaluator = GridEvaluator(logger,
@@ -234,7 +233,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
                                    mps_path,
                                    grid,
                                    ProblemsFormat::MPS_FILE,
-                                   "xpress",
+                                   solverName,
                                    8);
     auto res = BellmanValues(evaluator, reservoir_management).compute(1, 52, 11);
 
