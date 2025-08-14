@@ -29,7 +29,7 @@ ProblemGenerationExeOptions::ProblemGenerationExeOptions():
       "user weights file")("unnamed-problems,n",
                            po::bool_switch(&unnamed_problems_),
                            "use this option if unnamed problems are provided")(
-      "format",
+      "problem-format",
       po::value<ProblemsFormat>(&format_)->default_value(ProblemsFormat::SAVED_FILE),
       "output format (MPS or SAVED)")
 

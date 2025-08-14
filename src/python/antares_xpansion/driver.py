@@ -47,6 +47,7 @@ class XpansionDriver:
             lp_namer_exe_path=self.config_loader.lp_namer_exe(),
             active_years=self.config_loader.active_years,
             memory=self.config_loader.memory(),
+            problem_format=self.config_loader.problem_format(),
         )
         self.problem_generator_driver = ProblemGeneratorDriver(data)
 

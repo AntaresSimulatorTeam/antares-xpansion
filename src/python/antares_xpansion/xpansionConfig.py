@@ -45,6 +45,7 @@ class InputParameters:
     allow_run_as_root: bool
     memory: bool
     cache_problems: bool
+    problem_format: str
 
 
 class XpansionConfigConstants:
@@ -209,7 +210,7 @@ class XpansionConfig(XpansionConfigConstants):
     # pylint: disable=too-few-public-methods
 
     def __init__(
-        self, input_parameters: InputParameters, config_parameters: ConfigParameters
+            self, input_parameters: InputParameters, config_parameters: ConfigParameters
     ):
         self.input_parameters = input_parameters
         self.config_parameters = config_parameters
@@ -246,6 +247,7 @@ class XpansionConfig(XpansionConfigConstants):
         self.allow_run_as_root = self.input_parameters.allow_run_as_root
         self.cache_problems = self.input_parameters.cache_problems
         self.memory = self.input_parameters.memory
+        self.problem_format = self.input_parameters.problem_format
 
     def _get_install_dir(self, install_dir):
         if install_dir is None:
@@ -263,7 +265,7 @@ class XpansionConfig(XpansionConfigConstants):
     def _initialize_install_dir_with_default_value(self):
         if getattr(sys, "frozen", False):
             install_dir_inside_package = (
-                Path(os.path.abspath(__file__)).parent.parent / "bin"
+                    Path(os.path.abspath(__file__)).parent.parent / "bin"
             )
             install_dir_next_to_package = Path(sys.executable).parent / "bin"
             if Path.is_dir(install_dir_inside_package):
