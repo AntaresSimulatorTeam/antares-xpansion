@@ -2,18 +2,33 @@ import csv
 import glob
 import io
 import math
+import os
 
 import numpy as np
+import xpress as xp
 from behave import *
-from utils_functions import find_in_simulator_log
+from utils_functions import find_in_simulator_log, output_path
+
+# Cache global pour les statistiques des sous-problèmes
+_subproblem_stats_cache = {}
 
 
 def get_subproblem_statistics(lp_path):
-    """Get statistics for all subproblems in the lp directory"""
+    """Get statistics for all subproblems in the lp directory with caching"""
+    # Créer une clé de cache basée sur le chemin et la date de modification du répertoire
+    cache_key = _create_cache_key(lp_path)
+
+    # Vérifier si les résultats sont déjà en cache
+    if cache_key in _subproblem_stats_cache:
+        return _subproblem_stats_cache[cache_key]
+
+    # Calculer les statistiques si pas en cache
     mps_files = glob.glob(str(lp_path / "**/*.mps"), recursive=True)
 
     if not mps_files:
-        return 0, 0, 0
+        result = (0, 0, 0)
+        _subproblem_stats_cache[cache_key] = result
+        return result
 
     total_rows = 0
     total_cols = 0
@@ -29,9 +44,36 @@ def get_subproblem_statistics(lp_path):
     # Return average per subproblem
     num_subproblems = len([f for f in mps_files if "master" not in f.lower()])
     if num_subproblems > 0:
-        return total_rows // num_subproblems, total_cols // num_subproblems, total_elements // num_subproblems
+        result = (total_rows // num_subproblems, total_cols // num_subproblems, total_elements // num_subproblems)
     else:
-        return 0, 0, 0
+        result = (0, 0, 0)
+
+    # Stocker en cache
+    _subproblem_stats_cache[cache_key] = result
+    return result
+
+
+def _create_cache_key(lp_path):
+    """Create a cache key based on path and modification times of MPS files"""
+    try:
+        # Obtenir tous les fichiers MPS
+        mps_files = glob.glob(str(lp_path / "**/*.mps"), recursive=True)
+
+        if not mps_files:
+            return str(lp_path)
+
+        # Utiliser le chemin et la somme des dates de modification
+        mtime_sum = sum(os.path.getmtime(f) for f in mps_files)
+        return f"{lp_path}_{len(mps_files)}_{mtime_sum}"
+    except (OSError, IOError):
+        # En cas d'erreur, utiliser juste le chemin
+        return str(lp_path)
+
+
+def clear_subproblem_stats_cache():
+    """Clear the subproblem statistics cache"""
+    global _subproblem_stats_cache
+    _subproblem_stats_cache.clear()
 
 
 def analyze_mps_file(mps_file_path):
@@ -40,39 +82,11 @@ def analyze_mps_file(mps_file_path):
     cols = 0
     elements = 0
 
-    with open(mps_file_path, 'r') as f:
-        in_rows = False
-        in_columns = False
-        col_names = set()
-
-        for line in f:
-            line = line.strip()
-            if not line:
-                continue
-
-            if line.startswith('ROWS'):
-                in_rows = True
-                in_columns = False
-                continue
-            elif line.startswith('COLUMNS'):
-                in_rows = False
-                in_columns = True
-                continue
-            elif line.startswith('RHS') or line.startswith('BOUNDS') or line.startswith('ENDATA'):
-                in_rows = False
-                in_columns = False
-                continue
-
-            if in_rows and not line.startswith('*'):
-                rows += 1
-            elif in_columns and not line.startswith('*'):
-                parts = line.split()
-                if len(parts) >= 1:
-                    col_names.add(parts[0])
-                    elements += (len(parts) - 1) // 2  # Each pair after column name is a constraint
-
-        cols = len(col_names)
-
+    if mps_file_path.endswith('.mps'):
+        pb = xp.problem(mps_file_path)
+        pb.read(mps_file_path)
+        x = pb.getAttrib()
+        rows, cols, elements = pb.getAttrib('rows', 'cols', 'elems').values()
     return rows, cols, elements
 
 
@@ -168,21 +182,21 @@ def check_subproblems_elements(context, min, max):
 
 @then(u'the generated subproblems have {n} rows')
 def check_subproblems_exact_row(context, n):
-    lp_path = context.tmp_study / "lp"
+    lp_path = output_path(context.tmp_study / "output") / "lp"
     rows, _, _ = get_subproblem_statistics(lp_path)
     assert rows == int(n), f"Expected exactly {n} rows, got {rows}"
 
 
 @then(u'the generated subproblems have {n} cols')
 def check_subproblems_exact_cols(context, n):
-    lp_path = context.tmp_study / "lp"
+    lp_path = output_path(context.tmp_study / "output") / "lp"
     _, cols, _ = get_subproblem_statistics(lp_path)
     assert cols == int(n), f"Expected exactly {n} cols, got {cols}"
 
 
 @then(u'the generated subproblems have {n} elements')
 def check_subproblems_exact_elements(context, n):
-    lp_path = context.tmp_study / "lp"
+    lp_path = output_path(context.tmp_study / "output") / "lp"
     _, _, elements = get_subproblem_statistics(lp_path)
     assert elements == int(n), f"Expected exactly {n} elements, got {elements}"
 

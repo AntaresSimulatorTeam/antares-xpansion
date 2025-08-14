@@ -46,12 +46,13 @@ def remove_outputs(study_path):
         shutil.rmtree(output_path)
     os.makedirs(output_path)
 
+
 def get_filepath(output_dir, folder, filename):
     op = []
     assert Path(output_dir).exists()
     for path in Path(output_dir).iterdir():
         assert Path(path / folder).exists()
-        for jsonpath in Path(path / folder).rglob( filename):
+        for jsonpath in Path(path / folder).rglob(filename):
             op.append(jsonpath)
         assert len(op) == 1
     return op[0]
@@ -61,6 +62,7 @@ def read_file(output_path):
     with open(output_path, 'r') as file:
         outputs = file.readlines()
     return outputs
+
 
 class FilesToRead:
     out_json: Path
@@ -75,6 +77,7 @@ class Outputs:
     lold: str
     positive_unsupplied_energy: str
 
+
 def find_in_simulator_log(output_dir, regex) -> bool:
     reg = re.compile(f".*{regex}.*", re.IGNORECASE)
     for path in Path(output_dir).iterdir():
@@ -84,6 +87,7 @@ def find_in_simulator_log(output_dir, regex) -> bool:
                     if re.search(reg, line):
                         return True
     return False
+
 
 def get_out_data(output_dir, files_to_read: FilesToRead) -> Outputs:
     for path in Path(output_dir).iterdir():
@@ -99,6 +103,17 @@ def get_out_data(output_dir, files_to_read: FilesToRead) -> Outputs:
                         files_to_read.positive_unsupplied_energy.as_posix()).decode(
                         'utf-8')
                 return out
+    return None
+
+
+def output_path(output_dir: Path, use_archive: bool = True) -> Path | None:
+    """
+    Returns the output path for the simulation results.
+    If use_archive is True, it returns the path to the zip file containing the results.
+    Otherwise, it returns the path to the output directory.
+    """
+    for path in Path(output_dir).iterdir():
+        return path
     return None
 
 
