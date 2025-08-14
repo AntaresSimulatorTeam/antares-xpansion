@@ -7,6 +7,8 @@
 #include "antares-xpansion/lpnamer/problem_modifier/AdditionalConstraints.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h"
 
+class FileWriter;
+
 class MasterGeneration
 {
 public:
@@ -27,7 +29,8 @@ public:
                               const std::string& master_formulation,
                               const std::string& solver_name,
                               std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger,
-                              SolverLogManager& solver_log_manager);
+                              SolverLogManager& solver_log_manager,
+                              FileWriter& file_writer);
 
 private: /*methods*/
     void add_candidates(const std::vector<ActiveLink>& links);
@@ -43,5 +46,6 @@ private: /*members*/
     std::vector<Candidate> candidates;
     std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
     const std::string solver_name_;
+    FileWriter& writer_;
 };
 #endif //__MASTER_GENERATION__

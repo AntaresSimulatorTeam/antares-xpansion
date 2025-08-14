@@ -24,9 +24,11 @@ MasterGeneration::MasterGeneration(
   const std::string& master_formulation,
   const std::string& solver_name,
   std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger,
-  SolverLogManager& solver_log_manager):
+  SolverLogManager& solver_log_manager,
+  FileWriter& file_writer):
     logger_(std::move(logger)),
-    solver_name_(solver_name)
+    solver_name_(solver_name),
+    writer_(file_writer)
 {
     add_candidates(links);
     write_master_mps(rootPath,
@@ -61,7 +63,7 @@ void MasterGeneration::write_master_mps(const std::filesystem::path& rootPath,
     treatAdditionalConstraints(master_l, additionalConstraints_p, logger_);
     Problem master_problem(master_l);
     master_problem._name = "master";
-    master_problem.save_prob(rootPath / "lp" / "master");
+    writer_.Write_problem(&master_problem, rootPath / "lp" / "master");
 }
 
 std::filesystem::path FileNameForStructureFile(const std::string& problemName,

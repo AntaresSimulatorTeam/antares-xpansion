@@ -23,8 +23,7 @@ void FileWriter::Write_problem(Problem* in_prblm, const std::filesystem::path& o
     }
 }
 
-FileWriter::FileWriter(std::filesystem::path lp_dir, ProblemsFormat format):
-    lp_dir_(std::move(lp_dir)),
+FileWriter::FileWriter(ProblemsFormat format):
     format_(format)
 {
 }
