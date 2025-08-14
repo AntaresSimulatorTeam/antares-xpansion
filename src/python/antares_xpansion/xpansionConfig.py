@@ -47,6 +47,7 @@ class InputParameters:
     memory: bool
     run_presolve: bool
     cache_problems: bool
+    problem_format: str
 
 
 class XpansionConfigConstants:
@@ -132,7 +133,7 @@ class XpansionConfigConstants:
             OptimisationKeys.master_solution_tolerance_key(): self.master_solution_tolerance_default_value(),
             OptimisationKeys.cut_coefficient_tolerance_key(): self.cut_coefficient_tolerance_default_value(),
             OptimisationKeys.keep_full_key(): self.keep_full_default_value(),
-            OptimisationKeys.full_dir_key() : self.full_dir_default_value(),
+            OptimisationKeys.full_dir_key(): self.full_dir_default_value(),
         }
 
     def bound_alpha_default_value(self):
@@ -220,7 +221,7 @@ class XpansionConfig(XpansionConfigConstants):
     # pylint: disable=too-few-public-methods
 
     def __init__(
-        self, input_parameters: InputParameters, config_parameters: ConfigParameters
+            self, input_parameters: InputParameters, config_parameters: ConfigParameters
     ):
         self.input_parameters = input_parameters
         self.config_parameters = config_parameters
@@ -258,6 +259,7 @@ class XpansionConfig(XpansionConfigConstants):
         self.cache_problems = self.input_parameters.cache_problems
         self.run_presolve = self.input_parameters.run_presolve
         self.memory = self.input_parameters.memory
+        self.problem_format = self.input_parameters.problem_format
 
     def _get_install_dir(self, install_dir):
         if install_dir is None:
@@ -275,7 +277,7 @@ class XpansionConfig(XpansionConfigConstants):
     def _initialize_install_dir_with_default_value(self):
         if getattr(sys, "frozen", False):
             install_dir_inside_package = (
-                Path(os.path.abspath(__file__)).parent.parent / "bin"
+                    Path(os.path.abspath(__file__)).parent.parent / "bin"
             )
             install_dir_next_to_package = Path(sys.executable).parent / "bin"
             if Path.is_dir(install_dir_inside_package):

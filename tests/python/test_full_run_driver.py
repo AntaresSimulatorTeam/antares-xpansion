@@ -15,7 +15,7 @@ class TestFullRunDriver:
 
         self.pb_gen_data = ProblemGeneratorData(keep_mps=False, additional_constraints="str", user_weights_file_path="",
                                                 weight_file_name_for_lp="", lp_namer_exe_path=Path("lp.exe"),
-                                                active_years=[1, 2], memory=False)
+                                                active_years=[1, 2], memory=False, problem_format="saved")
 
         self.benders_driver_options_file = "options_file.json"
 
@@ -44,9 +44,10 @@ class TestFullRunDriver:
                                         problem_generation, benders_driver)
         benders_method = "benders"
         full_run_driver.prepare_drivers(output_path, is_relaxed, benders_method, json_file_path,
-                                        benders_keep_mps=benders_keep_mps, benders_oversubscribe=benders_oversubscribe, benders_allow_run_as_root=benders_allow_run_as_root)
+                                        benders_keep_mps=benders_keep_mps, benders_oversubscribe=benders_oversubscribe,
+                                        benders_allow_run_as_root=benders_allow_run_as_root)
         xpansion_output_dir = output_path.parent / \
-            (output_path.stem+"-Xpansion")
+                              (output_path.stem + "-Xpansion")
         expected_command = [self.full_run_exe, "--benders_options", self.benders_driver_options_file,
                             "-s", str(json_file_path), "-a", str(output_path), "-f", "integer", "-e",
                             self.pb_gen_data.additional_constraints, "--solver", benders_method]
@@ -81,10 +82,12 @@ class TestFullRunDriver:
         benders_method = "benders"
         full_run_driver.prepare_drivers(output_path, is_relaxed, benders_method,
                                         json_file_path,
-                                        benders_keep_mps, benders_n_mpi, benders_oversubscribe, benders_allow_run_as_root)
+                                        benders_keep_mps, benders_n_mpi, benders_oversubscribe,
+                                        benders_allow_run_as_root)
         xpansion_output_dir = output_path.parent / \
-            (output_path.stem+"-Xpansion")
-        expected_command = [benders_driver.MPI_LAUNCHER, "-n", str(benders_n_mpi), self.full_run_exe, "--benders_options", self.benders_driver_options_file,
+                              (output_path.stem + "-Xpansion")
+        expected_command = [benders_driver.MPI_LAUNCHER, "-n", str(benders_n_mpi), self.full_run_exe,
+                            "--benders_options", self.benders_driver_options_file,
                             "-s", str(json_file_path), "-a", str(output_path), "-f", "integer", "-e",
                             self.pb_gen_data.additional_constraints, "--solver", benders_method]
 

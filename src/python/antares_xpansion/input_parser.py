@@ -95,6 +95,11 @@ class InputParser:
                                  default=False,
                                  action='store_true',
                                  help="Cache problems on disque during benders")
+        self.parser.add_argument("--problem-format",
+                                 dest=LauncherOptionsKeys.problem_format_key(),
+                                 choices=["mps", "saved"],
+                                 help='Problem format to use ("mps" or "saved")',
+                                 default=LauncherOptionsDefaultValues.DEFAULT_PROBLEM_FORMAT())
 
     def parse_args(self, args: List[str] = None) -> InputParameters:
         params = self.parser.parse_args(args)
@@ -116,6 +121,7 @@ class InputParser:
             memory=params.memory,
             run_presolve=params.run_presolve,
             cache_problems=params.cache_problems,
+            problem_format=params.problem_format
         )
         return my_parameters
 
@@ -148,3 +154,6 @@ class InputParser:
 
         if params.allow_run_as_root == LauncherOptionsDefaultValues.DEFAULT_VALUE():
             params.allow_run_as_root = LauncherOptionsDefaultValues.DEFAULT_ALLOW_RUN_AS_ROOT()
+
+        if params.problem_format == LauncherOptionsDefaultValues.DEFAULT_VALUE():
+            params.problem_format = LauncherOptionsDefaultValues.DEFAULT_PROBLEM_FORMAT()

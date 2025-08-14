@@ -207,18 +207,30 @@ TEST_F(ProblemGenerationExeOptionsTest, FormatDefaultValue)
 
 TEST_F(ProblemGenerationExeOptionsTest, FormatMPSValue)
 {
-    parseOptions("--output", "something", "--format", "MPS");
+    parseOptions("--output", "something", "--problem-format", "MPS");
     ASSERT_EQ(problem_generation_options_parser_.Format(), ProblemsFormat::MPS_FILE);
 }
 
-TEST_F(ProblemGenerationExeOptionsTest, FormatCompressedValue)
+TEST_F(ProblemGenerationExeOptionsTest, FormatmpsValue)
 {
-    parseOptions("--output", "something", "--format", "SAVED");
+    parseOptions("--output", "something", "--problem-format", "mps");
+    ASSERT_EQ(problem_generation_options_parser_.Format(), ProblemsFormat::MPS_FILE);
+}
+
+TEST_F(ProblemGenerationExeOptionsTest, FormatsavedValue)
+{
+    parseOptions("--output", "something", "--problem-format", "saved");
+    ASSERT_EQ(problem_generation_options_parser_.Format(), ProblemsFormat::SAVED_FILE);
+}
+
+TEST_F(ProblemGenerationExeOptionsTest, FormatSavedValue)
+{
+    parseOptions("--output", "something", "--problem-format", "SAVED");
     ASSERT_EQ(problem_generation_options_parser_.Format(), ProblemsFormat::SAVED_FILE);
 }
 
 TEST_F(ProblemGenerationExeOptionsTest, FormatWrongValue)
 {
-    ASSERT_THROW(parseOptions("--output", "something", "--format", "WRONG"),
+    ASSERT_THROW(parseOptions("--output", "something", "--problem-format", "WRONG"),
                  po::invalid_option_value);
 }

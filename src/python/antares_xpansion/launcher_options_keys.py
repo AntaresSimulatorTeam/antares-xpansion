@@ -50,3 +50,7 @@ class LauncherOptionsKeys:
     @staticmethod
     def cache_problems_key():
         return "cache_problems"
+
+    @staticmethod
+    def problem_format_key():
+        return "problem_format"

@@ -11,11 +11,13 @@ enum class ProblemsFormat
 
 inline ProblemsFormat problemsFormatFromString(const std::string& str)
 {
-    if (str == "MPS")
+    auto lower_str = str;
+    std::transform(str.begin(), str.end(), lower_str.begin(), ::tolower);
+    if (lower_str == "mps")
     {
         return ProblemsFormat::MPS_FILE;
     }
-    else if (str == "SAVED")
+    else if (lower_str == "saved")
     {
         return ProblemsFormat::SAVED_FILE;
     }

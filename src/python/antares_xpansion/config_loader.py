@@ -17,8 +17,8 @@ from antares_xpansion.launcher_options_default_value import LauncherOptionsDefau
 from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
 from antares_xpansion.logger import step_logger
 from antares_xpansion.optimisation_keys import OptimisationKeys
-from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 from antares_xpansion.xpansionConfig import XpansionConfig, XpansionConfigConstants
+from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 
 
 class NTCColumnConstraintError(Exception):
@@ -575,7 +575,7 @@ class ConfigLoader(XpansionSettingsReader):
             self.get_cut_coefficient_tolerance()
         )
         options_values[OptimisationKeys.do_outer_loop_key()] = (
-            self._config.method == "adequacy_criterion"
+                self._config.method == "adequacy_criterion"
         )
         options_values[OptimisationKeys.outer_loop_option_file_key()] = (
             self._config.OUTER_LOOP_FILE
@@ -616,7 +616,7 @@ class ConfigLoader(XpansionSettingsReader):
             self._xpansion_simulation_name = self._last_study
             if self.is_zip(self._last_study):
                 self._xpansion_simulation_name = (
-                    self._last_study.parent / self._last_study.stem
+                        self._last_study.parent / self._last_study.stem
                 )
                 with zipfile.ZipFile(self._last_study, "r") as output_zip:
                     output_zip.extractall(self._xpansion_simulation_name)
@@ -635,13 +635,13 @@ class ConfigLoader(XpansionSettingsReader):
                 else:
                     self._xpansion_simulation_name = self._last_study
                     self._last_study = self._last_study.parent / (
-                        self._last_study.stem[: -len(xpansion_dir_suffix)] + ".zip"
+                            self._last_study.stem[: -len(xpansion_dir_suffix)] + ".zip"
                     )
         elif self.step() == "full" and self.memory():
             self._xpansion_simulation_name = self._last_study
         else:
             self._xpansion_simulation_name = self._last_study.parent / (
-                self._last_study.stem + "-Xpansion"
+                    self._last_study.stem + "-Xpansion"
             )
 
     def is_zip(self, study):
@@ -662,7 +662,7 @@ class ConfigLoader(XpansionSettingsReader):
     def is_antares_study_output(self, study: Path):
         _, ext = os.path.splitext(study)
         if (
-            self.memory() and "-Xpansion" not in study.name
+                self.memory() and "-Xpansion" not in study.name
         ):  # memory mode we work with files essentially
             return os.path.isdir(study)
         else:
@@ -715,6 +715,9 @@ class ConfigLoader(XpansionSettingsReader):
 
     def keep_mps(self) -> bool:
         return self._config.keep_mps
+
+    def problem_format(self) -> str:
+        return self._config.problem_format
 
     def antares_exe(self):
         return self.exe_path(self._config.ANTARES)
