@@ -316,7 +316,8 @@ void ProblemGeneration::RunProblemGeneration(
             xpansion_problems.at(i)->_name = mpsList.at(i)._problem_filename;
             problems_and_data.emplace_back(xpansion_problems.at(i), mpsList.at(i));
         }
-        auto mps_file_writer = std::make_shared<FileWriter>(lpDir_);
+        auto mps_file_writer = std::make_shared<FileWriter>(lpDir_,
+                                                            configuration_manager_.Format());
         std::for_each(
           std::execution::par,
           problems_and_data.begin(),
@@ -368,7 +369,8 @@ void ProblemGeneration::RunProblemGeneration(
     }
     else // API
     {
-        auto mps_file_writer = std::make_shared<FileWriter>(lpDir_);
+        auto mps_file_writer = std::make_shared<FileWriter>(lpDir_,
+                                                            configuration_manager_.Format());
 
         // vector of pair for parallelization
         // ref to WeeklyDataFromAntares to avoid copies

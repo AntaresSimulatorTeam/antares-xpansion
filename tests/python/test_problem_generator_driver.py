@@ -102,7 +102,8 @@ class TestProblemGeneratorDriver:
                                              weight_file_name_for_lp="",
                                              lp_namer_exe_path=lp_namer_file,
                                              active_years=[],
-                                             memory=False)
+                                             memory=False,
+                                             problem_format="saved")
         self._create_empty_area_file(tmp_path)
         self._create_empty_interco_file(tmp_path)
         output_zipped = get_zipped_output(tmp_path)
