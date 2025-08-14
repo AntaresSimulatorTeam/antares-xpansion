@@ -7,9 +7,10 @@
 ConfigurationManager::ConfigurationManager(ProblemGenerationOptions& options):
     options_{options}
 {
+    format_ = options_.Format();
 }
 
-auto ConfigurationManager::Directories() -> ConfigDirectories
+auto ConfigurationManager::Directories() const -> ConfigDirectories
 {
     Mode();
     std::filesystem::path xpansion_output_dir;
@@ -53,7 +54,7 @@ auto ConfigurationManager::Directories() -> ConfigDirectories
             .archive_path = archive_path};
 }
 
-auto ConfigurationManager::Mode() -> SimulationInputMode
+auto ConfigurationManager::Mode() const -> SimulationInputMode
 {
     if (input_mode_)
     {
@@ -103,7 +104,8 @@ std::string getCurrentTimestamp()
 }
 } // namespace
 
-std::filesystem::path ConfigurationManager::generateOutputName(const std::filesystem::path& study)
+std::filesystem::path ConfigurationManager::generateOutputName(
+  const std::filesystem::path& study) const
 {
     return study / "output" / getCurrentTimestamp();
 }

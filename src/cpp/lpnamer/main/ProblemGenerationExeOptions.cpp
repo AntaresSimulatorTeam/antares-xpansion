@@ -1,5 +1,8 @@
 #include "antares-xpansion/lpnamer/main/ProblemGenerationExeOptions.h"
 
+#include "antares-xpansion/core/ProblemFormat.h"
+#include "antares-xpansion/core/ProblemFormatStream.h"
+
 namespace po = boost::program_options;
 using namespace std::string_literals;
 
@@ -27,7 +30,7 @@ ProblemGenerationExeOptions::ProblemGenerationExeOptions():
                            po::bool_switch(&unnamed_problems_),
                            "use this option if unnamed problems are provided")(
       "format",
-      po::value<std::string>(&format_)->default_value("SAVED"),
+      po::value<ProblemsFormat>(&format_)->default_value(ProblemsFormat::SAVED_FILE),
       "output format (MPS or SAVED)")
 
       ;

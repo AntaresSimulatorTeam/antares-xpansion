@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "ProblemGenerationOptions.h"
+#include "antares-xpansion/core/ProblemFormat.h"
 #include "antares-xpansion/helpers/OptionsParser.h"
 
 class ProblemGenerationExeOptions: public OptionsParser, public ProblemGenerationOptions
@@ -16,7 +17,7 @@ class ProblemGenerationExeOptions: public OptionsParser, public ProblemGeneratio
     std::vector<int> active_years_;
     bool unnamed_problems_ = false;
     std::filesystem::path study_path_;
-    std::string format_;
+    ProblemsFormat format_;
 
 public:
     ProblemGenerationExeOptions();
@@ -58,7 +59,7 @@ public:
         return unnamed_problems_;
     }
 
-    [[nodiscard]] std::string Format() const
+    [[nodiscard]] ProblemsFormat Format() const
     {
         return format_;
     }

@@ -56,6 +56,8 @@ private:
     std::optional<SimulationInputMode> mode_;
     virtual void performAntaresSimulation(const std::filesystem::path& output);
     SolverConfig solver_config_{"Coin"};
+
+protected:
     ConfigurationManager configuration_manager_;
     ConfigurationManager::ConfigDirectories directories_;
 };
