@@ -79,6 +79,11 @@ auto ConfigurationManager::Mode() const -> SimulationInputMode
                                                       LOGLOCATION);
 }
 
+auto ConfigurationManager::Format() const -> ProblemsFormat
+{
+    return format_;
+}
+
 namespace
 {
 std::string getCurrentTimestamp()
