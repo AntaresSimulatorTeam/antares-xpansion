@@ -92,21 +92,21 @@ protected:
                                                                       int endWeek) override
         {
             return {
-              {Output::PointWeekScenarioKey({{"HydroPower", -100}}, 1, 1), 20.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", -100}}, 2, 1), 20.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", -100}}, 3, 1), 20.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", -50}}, 1, 1), 40.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", -50}}, 2, 1), 40.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", -50}}, 3, 1), 40.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", -100}}, 1, 1), 100.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", -100}}, 2, 1), 100.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", -100}}, 3, 1), 100.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", -50}}, 1, 1), 80.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", -50}}, 2, 1), 80.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", -50}}, 3, 1), 80.0},
               {Output::PointWeekScenarioKey({{"HydroPower", 0}}, 1, 1), 60.0},
               {Output::PointWeekScenarioKey({{"HydroPower", 0}}, 2, 1), 60.0},
               {Output::PointWeekScenarioKey({{"HydroPower", 0}}, 3, 1), 60.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", 50}}, 1, 1), 80.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", 50}}, 2, 1), 80.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", 50}}, 3, 1), 80.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", 100}}, 1, 1), 100.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", 100}}, 2, 1), 100.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", 100}}, 3, 1), 100.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", 50}}, 1, 1), 40.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", 50}}, 2, 1), 40.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", 50}}, 3, 1), 40.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", 100}}, 1, 1), 20.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", 100}}, 2, 1), 20.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", 100}}, 3, 1), 20.0},
             };
         }
 
@@ -117,8 +117,8 @@ protected:
                                             {100.0, 100.0, 100.0},             // max_generating
                                             {100.0, 100.0, 100.0},             // max_pumping
                                             {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}, // inflow
-                                            {0, 0, 0},                         // bottom rule curve
-                                            {0, 0, 0}                          // top rule curve
+                                            {100, 100, 100},                   // bottom rule curve
+                                            {400, 400, 400}                    // top rule curve
         );
 
     private:
@@ -150,9 +150,22 @@ TEST_F(BellmanValuesComputeTest, unitTestNoPenalties)
       reservoirManagement(evaluatorMock.reservoirMock, 0, 0, 0, false, std::nullopt, false);
     auto bellmanValues = BellmanValues(evaluatorMock, reservoirManagement).compute(1, 3, 6);
 
-    std::vector<std::vector<double>> expected = {{60, 60, 60, 100, 140, 180},
-                                                 {40, 40, 40, 40, 80, 120},
-                                                 {20, 20, 20, 20, 20, 60}};
+    std::vector<std::vector<double>> expected = {{180, 140, 100, 60, 60, 60},
+                                                 {120, 80, 40, 40, 40, 40},
+                                                 {60, 20, 20, 20, 20, 20}};
+
+    EXPECT_EQ(bellmanValues, expected);
+}
+
+TEST_F(BellmanValuesComputeTest, unitTestPenalties)
+{
+    ReservoirManagement
+      reservoirManagement(evaluatorMock.reservoirMock, 10, 10, 0, false, std::nullopt, false);
+    auto bellmanValues = BellmanValues(evaluatorMock, reservoirManagement).compute(1, 3, 6);
+
+    std::vector<std::vector<double>> expected = {{220, 180, 140, 100, 60, 60},
+                                                 {160, 120, 80, 40, 40, 40},
+                                                 {100, 60, 20, 20, 20, 20}};
 
     EXPECT_EQ(bellmanValues, expected);
 }
