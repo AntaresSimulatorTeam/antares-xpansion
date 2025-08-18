@@ -82,11 +82,10 @@ def analyze_mps_file(mps_file_path):
     cols = 0
     elements = 0
 
-    if mps_file_path.endswith('.mps'):
-        pb = xp.problem(mps_file_path)
-        pb.read(mps_file_path)
-        x = pb.getAttrib()
-        rows, cols, elements = pb.getAttrib('rows', 'cols', 'elems').values()
+    pb = xp.problem(mps_file_path)
+    pb.read(mps_file_path)
+    rows, cols, elements = pb.getAttrib('rows', 'cols', 'elems').values()
+
     return rows, cols, elements
 
 
@@ -161,21 +160,21 @@ def check_return_status(context):
 
 @then(u'the generated subproblems have between {min} and {max} rows')
 def check_subproblems_rows(context, min, max):
-    lp_path = context.tmp_study / "lp"
+    lp_path = output_path(context.tmp_study / "output") / "lp"
     rows, _, _ = get_subproblem_statistics(lp_path)
     assert int(min) <= rows <= int(max), f"Expected rows between {min}-{max}, got {rows}"
 
 
 @then(u'the generated subproblems have between {min} and {max} cols')
 def check_subproblems_cols(context, min, max):
-    lp_path = context.tmp_study / "lp"
+    lp_path = output_path(context.tmp_study / "output") / "lp"
     _, cols, _ = get_subproblem_statistics(lp_path)
     assert int(min) <= cols <= int(max), f"Expected cols between {min}-{max}, got {cols}"
 
 
 @then(u'the generated subproblems have between {min} and {max} elements')
 def check_subproblems_elements(context, min, max):
-    lp_path = context.tmp_study / "lp"
+    lp_path = output_path(context.tmp_study / "output") / "lp"
     _, _, elements = get_subproblem_statistics(lp_path)
     assert int(min) <= elements <= int(max), f"Expected elements between {min}-{max}, got {elements}"
 

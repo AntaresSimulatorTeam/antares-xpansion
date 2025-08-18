@@ -141,11 +141,11 @@ def run_antares_xpansion(context, method, memory=None, n: int = 1):
 @when(u'I run step {step} {memory_mode} followed by step presolve')
 def step_problem_generation_and_presolve(context, step, memory_mode):
     # Run the first step (usually problem_generation)
-    if not run_xpansion_step(context, step, memory_mode, nproc=1):
+    if not run_xpansion_step(context, step, memory_mode, pb_format='mps', nproc=1):
         return
 
     # Run presolve step
-    if not run_xpansion_step(context, "presolve", "on_disk", nproc=1):
+    if not run_xpansion_step(context, "presolve", "on_disk", pb_format='mps', nproc=1):
         return
 
 
