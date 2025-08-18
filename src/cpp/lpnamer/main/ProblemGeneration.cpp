@@ -433,7 +433,8 @@ void ProblemGeneration::RunProblemGeneration(
                                        solver_config_.Name(),
                                        logger,
                                        solver_log_manager,
-                                       file_writer);
+                                       file_writer,
+                                       configuration_manager_.Format());
     (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Problem Generation ran in: " << format_time_str(problem_generation_timer.elapsed())
       << std::endl;
