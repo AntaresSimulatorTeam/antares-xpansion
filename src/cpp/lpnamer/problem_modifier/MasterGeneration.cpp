@@ -84,6 +84,7 @@ std::filesystem::path FileNameForStructureFile(const std::string& problemName,
     {
         return fileName.replace_extension(".mps");
     }
+    return fileName;
 }
 
 void MasterGeneration::write_structure_file(const std::filesystem::path& rootPath,
