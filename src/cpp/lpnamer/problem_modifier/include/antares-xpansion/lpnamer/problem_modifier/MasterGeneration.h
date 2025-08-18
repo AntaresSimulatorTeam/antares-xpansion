@@ -30,7 +30,8 @@ public:
                               const std::string& solver_name,
                               std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger,
                               SolverLogManager& solver_log_manager,
-                              FileWriter& file_writer);
+                              FileWriter& file_writer,
+                              ProblemsFormat format = ProblemsFormat::SAVED_FILE);
 
 private: /*methods*/
     void add_candidates(const std::vector<ActiveLink>& links);
@@ -47,5 +48,6 @@ private: /*members*/
     std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger_;
     const std::string solver_name_;
     FileWriter& writer_;
+    ProblemsFormat format_{ProblemsFormat::SAVED_FILE};
 };
 #endif //__MASTER_GENERATION__

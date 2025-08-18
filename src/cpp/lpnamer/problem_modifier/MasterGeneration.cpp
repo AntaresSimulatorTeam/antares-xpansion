@@ -2,8 +2,10 @@
 
 #include <algorithm>
 #include <filesystem>
+#include <fmt/format.h>
 #include <utility>
 
+#include "antares-xpansion/core/ProblemFormatStream.h"
 #include "antares-xpansion/lpnamer/problem_modifier/FileWriter.h"
 #include "antares-xpansion/lpnamer/problem_modifier/LauncherHelpers.h"
 #include "antares-xpansion/lpnamer/problem_modifier/MasterProblemBuilder.h"
@@ -25,10 +27,12 @@ MasterGeneration::MasterGeneration(
   const std::string& solver_name,
   std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger,
   SolverLogManager& solver_log_manager,
-  FileWriter& file_writer):
+  FileWriter& file_writer,
+  ProblemsFormat format):
     logger_(std::move(logger)),
     solver_name_(solver_name),
-    writer_(file_writer)
+    writer_(file_writer),
+    format_(format)
 {
     add_candidates(links);
     write_master_mps(rootPath,
@@ -67,13 +71,20 @@ void MasterGeneration::write_master_mps(const std::filesystem::path& rootPath,
 }
 
 std::filesystem::path FileNameForStructureFile(const std::string& problemName,
-                                               std::string solverName)
+                                               std::string solverName,
+                                               ProblemsFormat format)
 {
     if (problemName == "master")
     {
         return {"master"};
     }
-    return SolverConfig(std::move(solverName)).FileName(problemName);
+    // Force mps file extension for MPS format
+    auto fileName = SolverConfig(std::move(solverName)).FileName(problemName);
+    if (format == ProblemsFormat::MPS_FILE)
+    {
+        return fileName.replace_extension(".mps");
+    }
+    return fileName;
 }
 
 void MasterGeneration::write_structure_file(const std::filesystem::path& rootPath,
@@ -97,8 +108,8 @@ void MasterGeneration::write_structure_file(const std::filesystem::path& rootPat
     {
         for (const auto& [candidate_name, colId]: candidates_name_and_colId)
         {
-            coupling_file << std::setw(50)
-                          << FileNameForStructureFile(mps_file_path, solver_name_).string();
+            coupling_file << std::setw(
+              50) << FileNameForStructureFile(mps_file_path, solver_name_, format_).string();
             coupling_file << std::setw(50) << candidate_name;
             coupling_file << std::setw(10) << colId;
             coupling_file << std::endl;
