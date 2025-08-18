@@ -1,43 +1,42 @@
 FROM centos:7
 
+LABEL maintainer="AntaresSimulatorTeam"
+LABEL description="Build environment for Antares Xpansion C++/Python"
+LABEL version="1.1.3"
+
+ARG MINICONDA_VERSION=Miniconda3-py310_25.5.1-1-Linux-x86_64.sh
+ENV MINICONDA_VERSION=${MINICONDA_VERSION}
+
 # Install requirements : install epel
 
 RUN     sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo &&\
         sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo &&\
         sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo &&\
-        yum update -y
-
-#not a typo, centos-release-scl is needed to install devtoolset-10 but introduce deprecated mirror
-RUN yum install -y epel-release centos-release-scl
-
-RUN           sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo &&\
-              sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo &&\
-              sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo
-
-RUN \
-  yum install -y wget rh-git227-git epel-release redhat-lsb-core centos-release-scl scl-utils &&\
-  yum install -y devtoolset-11-gcc* environment-modules rpm-build zlib-devel ccache &&\
-  yum install -y install python3-pip  jq &&  python3 -m pip install --upgrade pip
+        yum update -y && \
+#not a typo, centos-release-scl is needed to install devtoolset-10 but introduce deprecated mirror && \
+         yum install -y epel-release centos-release-scl && \
+         sed -i s/mirror.centos.org/vault.centos.org/g /etc/yum.repos.d/*.repo &&\
+         sed -i s/^#.*baseurl=http/baseurl=http/g /etc/yum.repos.d/*.repo &&\
+         sed -i s/^mirrorlist=http/#mirrorlist=http/g /etc/yum.repos.d/*.repo && \
+        yum install -y wget rh-git227-git redhat-lsb-core centos-release-scl scl-utils \
+             devtoolset-11-gcc* environment-modules rpm-build zlib-devel ccache \
+             openssl-devel bzip2-devel libffi-devel && \
+        yum clean all && rm -rf /var/cache/yum
 
 
 # The default python version (3.6) is too old to download xpress with pip
-# This version of miniconda embeds python3.8
+# This version of miniconda embeds python 3.10
 RUN \
-    wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.5.1-0-Linux-x86_64.sh
+    wget https://repo.anaconda.com/miniconda/${MINICONDA_VERSION} && \
+    bash ${MINICONDA_VERSION} -b && \
+    rm -f ${MINICONDA_VERSION}
+
+ENV PATH="/root/miniconda3/condabin:$PATH"
 
 RUN \
-    bash Miniconda3-py38_23.5.1-0-Linux-x86_64.sh -b
-
-RUN \
-    rm -f Miniconda3-py38_23.5.1-0-Linux-x86_64.sh
-
-RUN export PATH=/root/miniconda3/condabin:$PATH && \
-    conda install -c fico-xpress "xpress==9.2.12"
-
-
-# Install CMake
-RUN pip3 install cmake==3.28.4
-
+    conda init bash && \
+    conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/main && \
+    conda tos accept --override-channels --channel https://repo.anaconda.com/pkgs/r
 
 #create user
 RUN useradd user

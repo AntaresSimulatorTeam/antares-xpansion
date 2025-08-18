@@ -11,7 +11,7 @@ on:
       - issue-*
       - release/*
       - doc/*
-      - dependabot/*
+      - dependabot/**
   release:
     types: [ created ]
 
@@ -44,7 +44,7 @@ jobs:
           workdir: docker
           dockerfile: centos7-system-deps
           cache: false
-          tags: 1.1.2
+          tags: 1.1.3
 
   build:
     runs-on: ubuntu-latest
@@ -53,7 +53,6 @@ jobs:
       TGZ_NAME: ${{ steps.get-archives.outputs.TGZ_NAME }}
       SINGLE_FILE_NAME: ${{ steps.get-archives.outputs.SINGLE_FILE_NAME }}
     steps:
-
       - uses: actions/checkout@master
         with:
           fetch-depth: 0
@@ -61,7 +60,6 @@ jobs:
             docker
             src/vcpkg.json
           ref: ${{ env.REF }}
-
 
       - name: create vcpkg cache dir
         run: |
@@ -187,12 +185,12 @@ jobs:
     needs: [ build, build_running_image ]
     steps:
       - name: Download build assets
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ${{needs.build.outputs.TGZ_NAME}}
 
       - name: Download image
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: centos
           path: /tmp
@@ -234,12 +232,12 @@ jobs:
     needs: [ build, build_running_image ]
     steps:
       - name: Download build assets
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
 
       - name: Download image
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: centos
           path: /tmp
@@ -282,19 +280,19 @@ jobs:
     if: github.event_name == 'release' && github.event.action == 'created'
     steps:
       - name: Download userguide
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: user-guide
           path: docs/
 
       - name: Download build assets
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ${{needs.build.outputs.TGZ_NAME}}
           path: _build/
 
       - name: Download build assets single file
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
           path: .

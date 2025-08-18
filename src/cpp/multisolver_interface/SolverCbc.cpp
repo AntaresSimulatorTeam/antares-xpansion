@@ -658,6 +658,16 @@ void SolverCbc::chg_rhs(int id_row, double val)
     const double* rowLower = _clp_inner_solver.getRowLower();
     const double* rowUpper = _clp_inner_solver.getRowUpper();
 
+    char row_type;
+    get_row_type(&row_type, id_row, id_row);
+
+    if (row_type == 'E')
+    {
+        _clp_inner_solver.setRowLower(id_row, val);
+        _clp_inner_solver.setRowUpper(id_row, val);
+        return;
+    }
+
     if (rowLower[id_row] <= -COIN_DBL_MAX)
     {
         if (rowUpper[id_row] >= COIN_DBL_MAX)

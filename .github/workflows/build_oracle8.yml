@@ -11,7 +11,7 @@ on:
       - issue-*
       - release/*
       - doc/*
-      - dependabot/*
+      - dependabot/**
   release:
     types: [ created ]
 
@@ -43,6 +43,10 @@ jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        #Bash --login required for conda
+        shell: bash -el {0}
     container: 'oraclelinux:8'
     needs: [ versions ]
     env:
@@ -57,6 +61,8 @@ jobs:
       - name: Install System
         run: |
           dnf install -y epel-release git wget rpm-build redhat-lsb-core
+          #openssl for pip
+          dnf install -y bzip2-devel openssl-devel
           dnf install -y unzip gcc-toolset-11-toolchain python3-devel zlib-devel
           #make gcc &co available system wide and "action wide"
           source /opt/rh/gcc-toolset-11/enable
@@ -72,29 +78,21 @@ jobs:
         with:
           submodules: true
 
-      - name: Set up Python
-        run: |
-          dnf update -y
-          dnf install -y python3 python3-pip
-          pip3 install wheel #Too late to install in requirements.txt
-          pip3 install -r requirements-tests.txt
-
-      # the default python version (3.6) is too old to download xpress with pip
-      # this version of miniconda embeds python3.8
-      - name: Set up conda
-        run: |
-          wget https://repo.anaconda.com/miniconda/Miniconda3-py38_23.5.1-0-Linux-x86_64.sh
-          bash Miniconda3-py38_23.5.1-0-Linux-x86_64.sh -b -p /root/miniconda3
-          rm -f Miniconda3-py38_23.5.1-0-Linux-x86_64.sh
+      - name: Setup Python environment using conda
+        uses: conda-incubator/setup-miniconda@v3.2.0
+        with:
+          auto-update-conda: false
+          activate-environment: xpansion-tests
+          environment-file: environment.yml
+          use-only-tar-bz2: true
+          channel-priority: strict
 
       - name: Set-up Xpress with pip for Oracle 8
         shell: bash
         run: |
-          export PATH=/root/miniconda3/condabin:$PATH
-          conda install -c fico-xpress "xpress==9.2.12" "xpresslibs==9.2.12"
-          conda info --all
-          SITE_PACKAGE=/root/miniconda3/lib/python3.8/site-packages
-          XPRESS_DIR=/root/miniconda3
+          export PATH=/github/home/miniconda3/condabin:$PATH
+          SITE_PACKAGE=/github/home/miniconda3/envs/xpansion-tests/lib/python3.10/site-packages
+          XPRESS_DIR=/github/home/miniconda3/envs/xpansion-tests
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
           echo "XPAUTH_PATH=$SITE_PACKAGE/xpress/license/community-xpauth.xpr" >> $GITHUB_ENV
           echo "Create symbolic link for XPRESS library file because it is missing in the Python installation"
@@ -242,13 +240,13 @@ jobs:
     steps:
 
       - name: Download Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ${{env.ZIP_NAME}}
           path: .
 
       - name: Download Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ${{env.SINGLEFILE_NAME}}
           path: .
