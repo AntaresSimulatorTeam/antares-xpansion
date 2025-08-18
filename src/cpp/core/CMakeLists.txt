@@ -13,7 +13,7 @@ find_package(fmt REQUIRED)
 # ===========================================================================
 
 add_library(core)
-add_library(${PROJECT_NAME}::core ALIAS core)
+add_library(antaresXpansion::core ALIAS core)
 target_sources(core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/ProblemFormatStream.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/core/ProblemFormat.h
@@ -26,12 +26,6 @@ target_include_directories(core PUBLIC
 
 target_link_libraries(core PUBLIC
         fmt::fmt
-)
-
-# Install targets
-install(TARGETS core
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
 )
 
 install(DIRECTORY include/antares-xpansion
