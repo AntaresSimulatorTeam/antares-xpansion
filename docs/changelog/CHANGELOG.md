@@ -11,7 +11,7 @@ v1.5.0 (07/2025)
 * New parameter `cut_coefficient_tolerance` in `settings.ini` to define the tolerance in cuts coefficients and rhs, more
   details [here](../user-guide/get-started/settings-definition.md#cut_coefficient_tolerance)
 * Simulator step:
-    * Update Antares Simulator to 9.2.2
+    * Update Antares Simulator to [9.3.0](https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/tag/v9.3.0)
     * use the configured solver for first AND second optim
     * use basis for second optimization
     * XPRESS: add presolve parameter (PRESOLVE 1) for first and second optimizations
