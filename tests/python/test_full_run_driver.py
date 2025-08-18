@@ -51,6 +51,7 @@ class TestFullRunDriver:
         expected_command = [self.full_run_exe, "--benders_options", self.benders_driver_options_file,
                             "-s", str(json_file_path), "-a", str(output_path), "-f", "integer", "-e",
                             self.pb_gen_data.additional_constraints, "--solver", benders_method]
+        expected_command.extend(["--problem-format", "saved"])
 
         command = full_run_driver.full_command()
         assert len(expected_command) == len(command)
@@ -90,6 +91,7 @@ class TestFullRunDriver:
                             "--benders_options", self.benders_driver_options_file,
                             "-s", str(json_file_path), "-a", str(output_path), "-f", "integer", "-e",
                             self.pb_gen_data.additional_constraints, "--solver", benders_method]
+        expected_command.extend(["--problem-format", "saved"])
 
         command = full_run_driver.full_command()
 
