@@ -11,7 +11,8 @@ class Presolve
 {
 public:
     // Initialise un solver; lève std::runtime_error si indisponible
-    SolverAbstract::Ptr init_solver(const PresolveOptions& options, const Logger& logger);
+    std::shared_ptr<SolverAbstract> init_solver(const PresolveOptions& options,
+                                                std::shared_ptr<ILogger>& logger);
 
     // Construit le mapping entre indices candidats (full) et indices réduits après presolve.
     // Pré-condition: solver déjà en état presolve_only.
@@ -20,7 +21,7 @@ public:
       const SolverAbstract& solver,
       std::span<const int> candidate_ids) const;
 
-    void reduce_problems(SolverAbstract::Ptr& solver,
+    void reduce_problems(std::shared_ptr<SolverAbstract> solver,
                          const PresolveOptions& options,
                          const Logger& logger);
 

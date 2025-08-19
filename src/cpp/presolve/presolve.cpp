@@ -86,7 +86,8 @@ void update_reduced_couplings_for_file(CouplingMap& reduced_couplings,
 
 } // namespace
 
-SolverAbstract::Ptr Presolve::init_solver(const PresolveOptions& options, const Logger& logger)
+SolverAbstract::Ptr Presolve::init_solver(const PresolveOptions& options,
+                                          std::shared_ptr<ILogger>& logger)
 {
     SolverConfig config(options.SOLVER_NAME);
     if (!(config == "Xpress"))
@@ -192,7 +193,7 @@ void Presolve::safe_move_file(const std::filesystem::path& from, const std::file
     }
 }
 
-void Presolve::reduce_problems(SolverAbstract::Ptr& solver,
+void Presolve::reduce_problems(std::shared_ptr<SolverAbstract> solver,
                                const PresolveOptions& options,
                                const Logger& logger)
 {
@@ -266,7 +267,7 @@ void Presolve::reduce_problems(SolverAbstract::Ptr& solver,
             A solution is to build a copy of the solver which is not in presolved state.
             */
             SolverFactory factory(logger);
-            solver = factory.copy_solver(solver); // neutraliser état presolved
+            solver = factory.copy_solver(*solver); // neutraliser état presolved
         }
 
         solver_io.write(solver.get(), subproblem_path); // écrire problème réduit
