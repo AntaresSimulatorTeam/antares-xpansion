@@ -9,8 +9,6 @@
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
 #include "antares-xpansion/multisolver_interface/SolverXpress.h"
 
-const std::string PRESOLVE_CONTEXT{"Presolve"};
-
 int main(int argc, char** argv)
 {
     try
@@ -19,14 +17,18 @@ int main(int argc, char** argv)
         PresolveOptions options{SimulationOptions(argv[1]).get_presolve_options()};
         Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
 
-        logger->display_message("Starting presolve", LogUtils::LOGLEVEL::INFO, PRESOLVE_CONTEXT);
+        logger->display_message("Starting presolve",
+                                LogUtils::LOGLEVEL::INFO,
+                                std::string(Presolve::PRESOLVE_CONTEXT));
 
         Presolve presolve;
         SolverAbstract::Ptr solver_ptr = presolve.init_solver(options, logger);
 
         presolve.reduce_problems(solver_ptr, options, logger);
 
-        logger->display_message("Presolve finished", LogUtils::LOGLEVEL::INFO, PRESOLVE_CONTEXT);
+        logger->display_message("Presolve finished",
+                                LogUtils::LOGLEVEL::INFO,
+                                std::string(Presolve::PRESOLVE_CONTEXT));
         return 0;
     }
     catch (const std::exception& ex)

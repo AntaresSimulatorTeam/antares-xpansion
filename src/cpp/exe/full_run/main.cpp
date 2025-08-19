@@ -1,4 +1,6 @@
 #include <antares-xpansion/benders/factories/BendersApp.h>
+#include <antares-xpansion/benders/logger/User.h>
+#include <antares-xpansion/presolve/presolve.h>
 #include <exception>
 #include <iostream>
 
@@ -10,6 +12,25 @@
 #include "antares-xpansion/lpnamer/main/ProblemGeneration.h"
 #include "antares-xpansion/study-updater/StudyUpdateRunner.h"
 namespace po = boost::program_options;
+
+void presolve(const std::filesystem::path& options_file)
+{
+    PresolveOptions options{SimulationOptions(options_file).get_presolve_options()};
+    Logger logger = std::make_shared<xpansion::logger::User>(std::cout);
+
+    logger->display_message("Starting presolve",
+                            LogUtils::LOGLEVEL::INFO,
+                            std::string(Presolve::PRESOLVE_CONTEXT));
+
+    Presolve presolve;
+    SolverAbstract::Ptr solver_ptr = presolve.init_solver(options, logger);
+
+    presolve.reduce_problems(solver_ptr, options, logger);
+
+    logger->display_message("Presolve finished",
+                            LogUtils::LOGLEVEL::INFO,
+                            std::string(Presolve::PRESOLVE_CONTEXT));
+}
 
 int main(int argc, char** argv)
 {
@@ -41,6 +62,10 @@ int main(int argc, char** argv)
     world.barrier();
 
     const auto options_file = options_parser.BendersOptionsFile();
+    if (options_parser.presolve())
+    {
+        presolve(options_file);
+    }
 
     auto solver = options_parser.Solver();
     if (solver == "benders")

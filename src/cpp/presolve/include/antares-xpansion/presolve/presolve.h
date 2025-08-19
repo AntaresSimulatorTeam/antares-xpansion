@@ -10,6 +10,7 @@ struct PresolveOptions;
 class Presolve
 {
 public:
+    static constexpr std::string_view PRESOLVE_CONTEXT{"Presolve"};
     // Initialise un solver; lève std::runtime_error si indisponible
     std::shared_ptr<SolverAbstract> init_solver(const PresolveOptions& options,
                                                 std::shared_ptr<ILogger>& logger);

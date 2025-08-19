@@ -29,6 +29,7 @@ target_link_libraries(full_run
         PRIVATE
         ${PROJECT_NAME}::full_run_lib
         ${PROJECT_NAME}::problem_generation_main
+        ${PROJECT_NAME}::presolve
         ${PROJECT_NAME}::benders_sequential_core
         ${PROJECT_NAME}::xpansion_study_updater_lib
         antaresXpansion::helpers

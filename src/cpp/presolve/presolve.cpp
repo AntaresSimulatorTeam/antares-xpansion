@@ -12,7 +12,6 @@
 
 namespace
 {
-constexpr std::string_view PRESOLVE_CONTEXT{"Presolve"};
 
 bool is_debug(LogUtils::LOGLEVEL lvl)
 {

@@ -28,3 +28,8 @@ std::string FullRunOptionsParser::Solver() const
 {
     return solver_;
 }
+
+bool FullRunOptionsParser::presolve() const
+{
+    return presolve_;
+}
