@@ -30,7 +30,7 @@ class PresolveDriver:
     class PresolveOptionsFileError(Exception):
         pass
 
-    def __init__(self, data: PresolveData, options_file: Path) -> None:
+    def __init__(self, data: PresolveData, options_file: Path, run_presolve: bool = True) -> None:
         self.exec_path: Path = data.exe_path
         self.keep_full_mps: bool = data.keep_full_mps
         self.logger = step_logger(__name__, __class__.__name__)
@@ -38,6 +38,7 @@ class PresolveDriver:
         if options_file == Path():
             raise PresolveDriver.PresolveOptionsFileError("Invalid options file!")
         self.options_file = options_file
+        self.run_presolve = run_presolve
 
     def launch(self, simulation_output_path: Path):
         """

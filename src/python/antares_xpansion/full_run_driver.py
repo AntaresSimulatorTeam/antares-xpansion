@@ -93,6 +93,8 @@ class FullRunDriver:
         bare_solver_command.extend(
             self.problem_generation_driver.lp_namer_options())
 
+        if self.presolve_driver.run_presolve:
+            bare_solver_command.append("--presolve")
         if self.benders_driver.solver in [self.benders_driver.benders,
                                           self.benders_driver.outer_loop] and self.benders_driver.n_mpi > 1:
             mpi_command = self.benders_driver.get_mpi_run_command_root()

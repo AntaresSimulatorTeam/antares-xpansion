@@ -67,6 +67,7 @@ class XpansionDriver:
                 self.config_loader.keep_mps()
             ),
             Path(self.config_loader.options_file_name()),
+            self.config_loader.run_presolve()
         )
 
         self.benders_driver = BendersDriver(
@@ -85,14 +86,6 @@ class XpansionDriver:
 
         self.sensitivity_driver = SensitivityDriver(
             self.config_loader.sensitivity_exe()
-        )
-
-        self.presolve_driver = PresolveDriver(
-            PresolveData(
-                Path(self.config_loader.presolve_exe()),
-                self.config_loader.keep_mps()
-            ),
-            Path(self.config_loader.options_file_name()),
         )
 
         self.full_run_driver = FullRunDriver(
