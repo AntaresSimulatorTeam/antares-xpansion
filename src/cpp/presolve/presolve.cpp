@@ -44,8 +44,8 @@ void presolve_subproblem(SolverAbstract& solver,
     solver.presolve_only();
 }
 
-void safe_replace_file_atomic(const std::filesystem::path& final_path,
-                              const CouplingMap& reduced_couplings)
+void replace_structure_file(const std::filesystem::path& final_path,
+                            const CouplingMap& reduced_couplings)
 {
     // écriture vers fichier temporaire puis renommage atomique
     auto tmp = final_path;
@@ -137,6 +137,11 @@ std::unordered_map<int, int> Presolve::get_candidates_presolve_map(
         throw std::invalid_argument("candidate_ids must be sorted ascending");
     }
 
+    // Considering that candidates are added as the last columns of the
+    // the problem, it can be more efficient to search backwards from colmap.
+    // Note from Xpress API page: it is possible that the presolver will introduce
+    // new rows or columns. For any added row or column the corresponding entry
+    // returned will be -1
     for (int reduced_idx = static_cast<int>(colmap.size()); reduced_idx-- > 0;)
     {
         const int full_idx = colmap[reduced_idx];
@@ -222,7 +227,7 @@ void Presolve::reduce_problems(SolverAbstract::Ptr& solver,
 
     for (const auto& [filename, var_map]: full_couplings)
     {
-        if (filename == options.MASTER_NAME)
+        if (filename == options.MASTER_NAME) [[unlikely]]
         {
             continue; // master intact
         }
@@ -251,6 +256,15 @@ void Presolve::reduce_problems(SolverAbstract::Ptr& solver,
 
         if (options.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE)
         {
+            /*
+            When we force presolve_only, we interrupt the problem leaving it in a
+            'presolved' state to be restored. Since .svf files are restored as they are,
+            this 'presolved' state would pass to Benders.
+            According to XPRESS API, it prevents any modification to the
+            underlying matrix, blocking us to chg_obj in Benders for instance.
+
+            A solution is to build a copy of the solver which is not in presolved state.
+            */
             SolverFactory factory(logger);
             solver = factory.copy_solver(solver); // neutraliser état presolved
         }
@@ -259,7 +273,7 @@ void Presolve::reduce_problems(SolverAbstract::Ptr& solver,
     }
 
     // écriture atomique du fichier structure réduit
-    safe_replace_file_atomic(structure_path, reduced_couplings);
+    replace_structure_file(structure_path, reduced_couplings);
     logger->display_message("Reduced " + options.STRUCTURE_FILE + " written",
                             LogUtils::LOGLEVEL::INFO,
                             std::string(PRESOLVE_CONTEXT));
