@@ -10,13 +10,14 @@
 # Presolve Exe
 # ---------------------------------------------------------------------------
 
-add_executable (presolve
-	${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
+add_executable(presolve_exe
+        ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp
 )
-target_link_libraries (presolve 
-	PUBLIC
-		${PROJECT_NAME}::factories
+target_link_libraries(presolve_exe
+        PUBLIC
+        ${PROJECT_NAME}::factories
+        ${PROJECT_NAME}::presolve
 )
 
 
-install(TARGETS presolve DESTINATION bin)
+install(TARGETS presolve_exe DESTINATION bin)
