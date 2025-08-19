@@ -195,7 +195,7 @@ void Presolve::safe_move_file(const std::filesystem::path& from, const std::file
 
 void Presolve::reduce_problems(std::shared_ptr<SolverAbstract> solver,
                                const PresolveOptions& options,
-                               const Logger& logger)
+                               std::shared_ptr<ILogger> logger)
 {
     const auto input_root_dir = std::filesystem::path(options.INPUTROOT);
     const auto structure_path = input_root_dir / options.STRUCTURE_FILE;

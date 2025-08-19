@@ -23,7 +23,7 @@ public:
 
     void reduce_problems(std::shared_ptr<SolverAbstract> solver,
                          const PresolveOptions& options,
-                         const Logger& logger);
+                         std::shared_ptr<ILogger> logger);
 
 private:
     static void safe_create_directory(const std::filesystem::path& dir);
