@@ -41,6 +41,7 @@ class SolverFactory
 {
 private:
     std::vector<std::string> _available_solvers;
+    bool _is_xpress_available = false; // remplacé ancien isXpress_available_
 
 public:
     /**
@@ -98,7 +99,10 @@ public:
      */
     const std::vector<std::string>& get_solvers_list() const;
 
-    bool isXpress_available_ = false;
+    bool is_xpress_available() const noexcept
+    {
+        return _is_xpress_available;
+    }
 
     std::shared_ptr<ILoggerXpansion> logger_;
 };

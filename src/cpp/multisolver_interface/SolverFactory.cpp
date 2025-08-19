@@ -1,4 +1,3 @@
-
 #include <utility>
 
 #include "antares-xpansion/multisolver_interface/environment.h"
@@ -71,10 +70,10 @@ SolverFactory::SolverFactory(std::shared_ptr<ILoggerXpansion> logger):
     _available_solvers(SolverLoader::GetAvailableSolvers(logger)),
     logger_(std::move(logger))
 {
-    isXpress_available_ = std::find(available_solvers.cbegin(),
-                                    available_solvers.cend(),
-                                    XPRESS_STR)
-                          != available_solvers.cend();
+    _is_xpress_available = std::find(available_solvers.cbegin(),
+                                     available_solvers.cend(),
+                                     XPRESS_STR)
+                           != available_solvers.cend();
 }
 
 SolverAbstract::Ptr SolverFactory::create_solver(const std::string& solver_name,
@@ -136,7 +135,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(const SolverConfig& solver_conf
     {
         throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
     }
-    else if (isXpress_available_ && solver_config == XPRESS_STR)
+    else if (_is_xpress_available && solver_config == XPRESS_STR)
     {
         ret = std::make_shared<SolverXpress>();
     }
@@ -166,7 +165,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(const SolverConfig& solver_conf
     {
         throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
     }
-    else if (isXpress_available_ && solver_config == XPRESS_STR)
+    else if (_is_xpress_available && solver_config == XPRESS_STR)
     {
         ret = std::make_shared<SolverXpress>();
     }
@@ -196,7 +195,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(const SolverConfig& solver_conf
         throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
     }
     SolverAbstract::Ptr ret;
-    if (isXpress_available_ && solver_config == XPRESS_STR)
+    if (_is_xpress_available && solver_config == XPRESS_STR)
     {
         ret = std::make_shared<SolverXpress>(log_manager);
     }
@@ -244,7 +243,7 @@ SolverAbstract::Ptr SolverFactory::copy_solver(
     {
         throw InvalidSolverNameException(solver_name, LOGLOCATION);
     }
-    if (isXpress_available_ && solver_name == XPRESS_STR)
+    if (_is_xpress_available && solver_name == XPRESS_STR)
     {
         return std::make_shared<SolverXpress>(to_copy);
     }
