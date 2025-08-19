@@ -27,10 +27,15 @@ SolverCbc::SolverCbc()
 }
 
 SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy):
+    SolverCbc(*toCopy.get())
+{
+}
+
+SolverCbc::SolverCbc(const SolverAbstract& toCopy):
     SolverCbc()
 {
     // Try to cast the solver in fictif to a SolverCbc
-    if (const auto c = dynamic_cast<const SolverCbc*>(toCopy.get()))
+    if (const auto c = dynamic_cast<const SolverCbc*>(&toCopy))
     {
         _clp_inner_solver = OsiClpSolverInterface(c->_clp_inner_solver);
 
@@ -45,7 +50,7 @@ SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy):
     else
     {
         _NumberOfProblems -= 1;
-        throw InvalidSolverForCopyException(toCopy->get_solver_name(), name_, LOGLOCATION);
+        throw InvalidSolverForCopyException(toCopy.get_solver_name(), name_, LOGLOCATION);
     }
 }
 
