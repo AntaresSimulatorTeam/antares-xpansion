@@ -39,6 +39,7 @@ int main(int argc, char** argv)
         }
     }
     world.barrier();
+
     const auto options_file = options_parser.BendersOptionsFile();
 
     auto solver = options_parser.Solver();

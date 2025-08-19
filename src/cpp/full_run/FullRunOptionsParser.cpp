@@ -14,6 +14,9 @@ FullRunOptionsParser::FullRunOptionsParser():
       "path to json solution file")("solver",
                                     po::value<std::string>(&solver_)->default_value("benders"),
                                     "solver (benders, outer_loop, "); // Add mergeMps?
+    AddOptions()("presolve",
+                 po::value<bool>(&presolve_)->default_value(true),
+                 "use presolve (default: true)");
 }
 
 void FullRunOptionsParser::Parse(unsigned int argc, const char* const* argv)
