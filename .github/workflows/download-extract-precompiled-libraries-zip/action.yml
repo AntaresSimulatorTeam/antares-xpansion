@@ -28,7 +28,7 @@ runs:
     - id: download-extract
       shell: bash
       run: |
-           curl -Ls https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{inputs.antares-version}}/rte-antares-${{inputs.antares-version}}-installer-64bits.zip
+           curl -OLs https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${{inputs.antares-version}}/rte-antares-${{inputs.antares-version}}-installer-64bits.zip
            unzip rte-antares-${{inputs.antares-version}}-installer-64bits.zip
            rm -rf rte-antares-${{inputs.antares-version}}-installer-64bits.zip
 
@@ -44,6 +44,6 @@ runs:
     - name: download-extract sirius
       shell: bash
       run: |
-        curl -Ls https://github.com/rte-france/sirius-solver/releases/download/antares-integration-v1.5/windows-latest_sirius-solver.zip
+        curl -OLs https://github.com/rte-france/sirius-solver/releases/download/antares-integration-v1.5/windows-latest_sirius-solver.zip
         unzip windows-latest_sirius-solver.zip
         rm -rf windows-latest_sirius-solver.zip
