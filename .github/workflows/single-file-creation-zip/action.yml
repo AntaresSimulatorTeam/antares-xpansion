@@ -31,8 +31,10 @@ runs:
     - id: archive-windows
       shell: pwsh
       run: |
-        cd _install
         $ARCHIVE_NAME = "antaresXpansion-${{ inputs.antares-xpansion-version }}-windows-single-file.zip"
-        Compress-Archive -Path * -DestinationPath $ARCHIVE_NAME
-        Add-Content -Path $env:GITHUB_OUTPUT -Value "archive-path=_install/$ARCHIVE_NAME"
+        $ARCHIVE_PATH = Join-Path $env:GITHUB_WORKSPACE "_install\$ARCHIVE_NAME"
+        Set-Location "$env:GITHUB_WORKSPACE/_install"
+        Compress-Archive -Path * -DestinationPath $ARCHIVE_PATH
+        # Write outputs
+        Add-Content -Path $env:GITHUB_OUTPUT -Value "archive-path=$ARCHIVE_PATH"
         Add-Content -Path $env:GITHUB_OUTPUT -Value "archive-name=$ARCHIVE_NAME"
