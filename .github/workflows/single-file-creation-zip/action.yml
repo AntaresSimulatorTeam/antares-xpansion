@@ -14,25 +14,25 @@ outputs:
     value: ${{ steps.create.outputs.archive-name }}
 runs:
   using: "composite"
-steps:
-  - id: create
-    shell: bash
-    run: |
-      cd _install
-      rm -f ./antares-xpansion-launcher*
-      pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher \
+  steps:
+    - id: create
+      shell: bash
+      run: |
+        cd _install
+        rm -f ./antares-xpansion-launcher*
+        pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher \
         --add-data "../src/python/config.yaml;." \
         --add-data "./bin/;bin" \
         --exclude-module _bootlocale
-      mv ./dist/antares-xpansion-launcher* .
-      rm -rf bin build dist
-      rm *.spec
+        mv ./dist/antares-xpansion-launcher* .
+        rm -rf bin build dist
+        rm *.spec
 
-  - id: archive-windows
-    shell: pwsh
-    run: |
-      cd _install
-      $ARCHIVE_NAME = "antaresXpansion-${{ inputs.antares-xpansion-version }}-windows-single-file.zip"
-      Compress-Archive -Path * -DestinationPath $ARCHIVE_NAME
-      Add-Content -Path $env:GITHUB_OUTPUT -Value "archive-path=_install/$ARCHIVE_NAME"
-      Add-Content -Path $env:GITHUB_OUTPUT -Value "archive-name=$ARCHIVE_NAME"
+        - id: archive-windows
+          shell: pwsh
+          run: |
+            cd _install
+            $ARCHIVE_NAME = "antaresXpansion-${{ inputs.antares-xpansion-version }}-windows-single-file.zip"
+            Compress-Archive -Path * -DestinationPath $ARCHIVE_NAME
+            Add-Content -Path $env:GITHUB_OUTPUT -Value "archive-path=_install/$ARCHIVE_NAME"
+            Add-Content -Path $env:GITHUB_OUTPUT -Value "archive-name=$ARCHIVE_NAME"
