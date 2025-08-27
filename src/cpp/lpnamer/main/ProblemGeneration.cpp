@@ -426,14 +426,13 @@ void ProblemGeneration::RunProblemGeneration(
         reader->Delete();
     }
     FileWriter file_writer(configuration_manager_.Format());
-    auto&& candidates = MasterGeneration(xpansion_output_dir,
-                                         solver_config_.Name(),
-                                         logger,
-                                         solver_log_manager,
-                                         file_writer,
-                                         configuration_manager_.Format())(links,
-                                                                          master_formulation,
-                                                                          additionalConstraints);
+    MasterGeneration environment(xpansion_output_dir,
+                                 solver_config_.Name(),
+                                 logger,
+                                 solver_log_manager,
+                                 file_writer,
+                                 configuration_manager_.Format());
+    auto&& candidates = environment.generate(links, master_formulation, additionalConstraints);
     StructureGeneration(xpansion_output_dir,
                         solver_config_.Name(),
                         configuration_manager_.Format())(candidates, couplings);

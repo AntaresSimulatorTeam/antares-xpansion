@@ -31,9 +31,9 @@ public:
                               SolverLogManager& solver_log_manager,
                               FileWriter& file_writer,
                               ProblemsFormat format = ProblemsFormat::SAVED_FILE);
-    std::vector<Candidate> operator()(const std::vector<ActiveLink>& links,
-                                      const std::string& master_formulation,
-                                      const AdditionalConstraints& additionalConstraints_p) const;
+    std::vector<Candidate> generate(const std::vector<ActiveLink>& links,
+                                    const std::string& master_formulation,
+                                    const AdditionalConstraints& additionalConstraints_p) const;
 
 private: /*methods*/
     std::vector<Candidate> build_candidates(const std::vector<ActiveLink>& links) const;

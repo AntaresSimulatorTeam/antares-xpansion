@@ -27,7 +27,7 @@ MasterGeneration::MasterGeneration(
 {
 }
 
-std::vector<Candidate> MasterGeneration::operator()(
+std::vector<Candidate> MasterGeneration::generate(
   const std::vector<ActiveLink>& links,
   const std::string& master_formulation,
   const AdditionalConstraints& additionalConstraints_p) const

@@ -91,11 +91,8 @@ TEST_P(TestForSolverAndExpectation, master_file_is_generated)
     auto&& [solver_name, expectation] = GetParam();
     SKIP_UNAVAILABLE_SOLVER(solver_name)
     AddCandidate("dummy_candidate");
-    MasterGeneration(temp_test_dir,
-                     solver_name,
-                     nullptr,
-                     solver_log_manager_,
-                     writer)(active_links_, "master_formulation", additionalConstraints_);
+    auto _ = MasterGeneration(temp_test_dir, solver_name, nullptr, solver_log_manager_, writer)
+               .generate(active_links_, "master_formulation", additionalConstraints_);
     auto master_file = temp_test_dir / "lp" / "master";
     master_file.replace_extension(expectation);
     ASSERT_TRUE(std::filesystem::exists(master_file));
@@ -111,9 +108,8 @@ TEST_P(TestForSolverAndMode, structure_file_is_written)
                                          solver_name,
                                          nullptr,
                                          solver_log_manager_,
-                                         writer)(active_links_,
-                                                 "master_formulation",
-                                                 additionalConstraints_);
+                                         writer)
+                          .generate(active_links_, "master_formulation", additionalConstraints_);
     StructureGeneration(temp_test_dir, solver_name, ProblemsFormat::SAVED_FILE)(candidates,
                                                                                 couplings_);
     ASSERT_TRUE(std::filesystem::exists(temp_test_dir / "lp" / "structure.txt"));
@@ -129,9 +125,8 @@ TEST_P(TestForSolverAndMode, structure_file_contains_master_name)
                                          solver_name,
                                          nullptr,
                                          solver_log_manager_,
-                                         writer)(active_links_,
-                                                 "master_formulation",
-                                                 additionalConstraints_);
+                                         writer)
+                          .generate(active_links_, "master_formulation", additionalConstraints_);
     StructureGeneration(temp_test_dir, solver_name, ProblemsFormat::SAVED_FILE)(candidates,
                                                                                 couplings_);
     std::ifstream structure_file(temp_test_dir / "lp" / "structure.txt");
@@ -160,9 +155,8 @@ TEST_P(TestForSolverAndExpectation, structure_file_contains_master_name_without_
                                          solver_name,
                                          nullptr,
                                          solver_log_manager_,
-                                         writer)(active_links_,
-                                                 "master_formulation",
-                                                 additionalConstraints_);
+                                         writer)
+                          .generate(active_links_, "master_formulation", additionalConstraints_);
     StructureGeneration(temp_test_dir, solver_name, ProblemsFormat::SAVED_FILE)(candidates,
                                                                                 couplings_);
     std::ifstream structure_file(temp_test_dir / "lp" / "structure.txt");
@@ -210,9 +204,8 @@ TEST_P(TestForSolverAndExpectation, structure_file_contains_problem_name_with_ex
                                          solver_name,
                                          nullptr,
                                          solver_log_manager_,
-                                         writer)(active_links_,
-                                                 "master_formulation",
-                                                 additionalConstraints_);
+                                         writer)
+                          .generate(active_links_, "master_formulation", additionalConstraints_);
     StructureGeneration(temp_test_dir, solver_name, ProblemsFormat::SAVED_FILE)(candidates,
                                                                                 couplings_);
     std::ifstream structure_file(temp_test_dir / "lp" / "structure.txt");
