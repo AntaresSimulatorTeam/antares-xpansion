@@ -26,6 +26,7 @@ target_include_directories(core PUBLIC
 
 target_link_libraries(core PUBLIC
         fmt::fmt
+        antaresXpansion::xpansion_interfaces
 )
 
 install(DIRECTORY include/antares-xpansion
