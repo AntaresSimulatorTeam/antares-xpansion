@@ -30,8 +30,8 @@ ProblemGenerationExeOptions::ProblemGenerationExeOptions():
                            po::bool_switch(&unnamed_problems_),
                            "use this option if unnamed problems are provided")(
       "problem-format",
-      po::value<ProblemsFormat>(&format_)->default_value(ProblemsFormat::SAVED_FILE),
-      "output format (MPS or SAVED)")
+      po::value<ProblemsFormat>(&format_)->default_value(ProblemsFormat::OPTIMIZED),
+      "output format (MPS or OPTIMIZED)")
 
       ;
 }

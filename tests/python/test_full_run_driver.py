@@ -15,7 +15,7 @@ class TestFullRunDriver:
 
         self.pb_gen_data = ProblemGeneratorData(keep_mps=False, additional_constraints="str", user_weights_file_path="",
                                                 weight_file_name_for_lp="", lp_namer_exe_path=Path("lp.exe"),
-                                                active_years=[1, 2], memory=False, problem_format="saved")
+                                                active_years=[1, 2], memory=False, problem_format="OPTIMIZED")
 
         self.benders_driver_options_file = "options_file.json"
 
@@ -51,7 +51,7 @@ class TestFullRunDriver:
         expected_command = [self.full_run_exe, "--benders_options", self.benders_driver_options_file,
                             "-s", str(json_file_path), "-a", str(output_path), "-f", "integer", "-e",
                             self.pb_gen_data.additional_constraints, "--solver", benders_method]
-        expected_command.extend(["--problem-format", "saved"])
+        expected_command.extend(["--problem-format", "OPTIMIZED"])
 
         command = full_run_driver.full_command()
         assert len(expected_command) == len(command)
@@ -91,7 +91,7 @@ class TestFullRunDriver:
                             "--benders_options", self.benders_driver_options_file,
                             "-s", str(json_file_path), "-a", str(output_path), "-f", "integer", "-e",
                             self.pb_gen_data.additional_constraints, "--solver", benders_method]
-        expected_command.extend(["--problem-format", "saved"])
+        expected_command.extend(["--problem-format", "OPTIMIZED"])
 
         command = full_run_driver.full_command()
 

@@ -202,7 +202,7 @@ TEST_F(ProblemGenerationExeOptionsTest, study)
 TEST_F(ProblemGenerationExeOptionsTest, FormatDefaultValue)
 {
     parseOptions("--output", "something");
-    ASSERT_EQ(problem_generation_options_parser_.Format(), ProblemsFormat::SAVED_FILE);
+    ASSERT_EQ(problem_generation_options_parser_.Format(), ProblemsFormat::OPTIMIZED);
 }
 
 TEST_F(ProblemGenerationExeOptionsTest, FormatMPSValue)
@@ -219,14 +219,14 @@ TEST_F(ProblemGenerationExeOptionsTest, FormatmpsValue)
 
 TEST_F(ProblemGenerationExeOptionsTest, FormatsavedValue)
 {
-    parseOptions("--output", "something", "--problem-format", "saved");
-    ASSERT_EQ(problem_generation_options_parser_.Format(), ProblemsFormat::SAVED_FILE);
+    parseOptions("--output", "something", "--problem-format", "OPTIMIZED");
+    ASSERT_EQ(problem_generation_options_parser_.Format(), ProblemsFormat::OPTIMIZED);
 }
 
 TEST_F(ProblemGenerationExeOptionsTest, FormatSavedValue)
 {
-    parseOptions("--output", "something", "--problem-format", "SAVED");
-    ASSERT_EQ(problem_generation_options_parser_.Format(), ProblemsFormat::SAVED_FILE);
+    parseOptions("--output", "something", "--problem-format", "OPTIMIZED");
+    ASSERT_EQ(problem_generation_options_parser_.Format(), ProblemsFormat::OPTIMIZED);
 }
 
 TEST_F(ProblemGenerationExeOptionsTest, FormatWrongValue)

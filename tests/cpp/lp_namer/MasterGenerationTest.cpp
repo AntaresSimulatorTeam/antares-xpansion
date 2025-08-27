@@ -59,7 +59,7 @@ protected:
     Couplings couplings_;
     SolverLogManager solver_log_manager_;
     std::vector<ActiveLink> active_links_;
-    FileWriter writer{ProblemsFormat::SAVED_FILE};
+    FileWriter writer{ProblemsFormat::OPTIMIZED};
 };
 
 using SolverName = std::string;

@@ -27,5 +27,5 @@ public:
 
 private:
     mutable std::optional<SimulationInputMode> input_mode_;
-    ProblemsFormat format_{ProblemsFormat::SAVED_FILE};
+    ProblemsFormat format_{ProblemsFormat::OPTIMIZED};
 };

@@ -41,4 +41,4 @@ class LauncherOptionsDefaultValues():
 
     @staticmethod
     def DEFAULT_PROBLEM_FORMAT():
-        return "saved"
+        return "OPTIMIZED"
