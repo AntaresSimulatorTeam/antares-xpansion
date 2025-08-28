@@ -232,5 +232,5 @@ TEST_F(ProblemGenerationExeOptionsTest, FormatSavedValue)
 TEST_F(ProblemGenerationExeOptionsTest, FormatWrongValue)
 {
     ASSERT_THROW(parseOptions("--output", "something", "--problem-format", "WRONG"),
-                 po::invalid_option_value);
+                 std::runtime_error);
 }
