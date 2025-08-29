@@ -180,6 +180,7 @@ jobs:
           antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
 
       - name: Display created single file archive
+        shell: bash
         run: |
           echo "Single file archive name: ${{ steps.create-single-file.outputs.archive-name }}"
           echo "Single file archive path: ${{ steps.create-single-file.outputs.archive-path }}"
