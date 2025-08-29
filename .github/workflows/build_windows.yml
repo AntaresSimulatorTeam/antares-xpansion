@@ -160,7 +160,11 @@ jobs:
         run: |
           cd _build
           cpack -G ZIP
-          export ZIP_NAME=$(ls *.zip)
+          ZIP_NAME=$(ls *.zip)
+          if [ -z "$ZIP_NAME" ]; then
+          echo "No ZIP file was created by cpack"
+          exit 1
+          fi
           echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
 
       - name: Upload installer
