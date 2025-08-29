@@ -179,6 +179,13 @@ jobs:
         with:
           antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
 
+      - name: Display created single file archive
+        run: |
+          echo "Single file archive name: ${{ steps.create-single-file.outputs.archive-name }}"
+          echo "Single file archive path: ${{ steps.create-single-file.outputs.archive-path }}"
+          ls -lh ${{ steps.create-single-file.outputs.archive-path }}
+          file ${{ steps.create-single-file.outputs.archive-path }}
+
       - name: Upload single file
         uses: actions/upload-artifact@v4
         with:
