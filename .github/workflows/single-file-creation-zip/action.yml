@@ -36,5 +36,5 @@ runs:
         Set-Location "$env:GITHUB_WORKSPACE/_install"
         Compress-Archive -Path * -DestinationPath $ARCHIVE_PATH
         # Write outputs
-        "archive-path=$ARCHIVE_PATH" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
-        "archive-name=$ARCHIVE_NAME" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+        echo "archive-path=$ARCHIVE_PATH" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+        echo "archive-name=$ARCHIVE_NAME" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
