@@ -316,7 +316,7 @@ void ProblemGeneration::RunProblemGeneration(
             xpansion_problems.at(i)->_name = mpsList.at(i)._problem_filename;
             problems_and_data.emplace_back(xpansion_problems.at(i), mpsList.at(i));
         }
-        auto mps_file_writer = std::make_shared<FileWriter>(lpDir_);
+        auto mps_file_writer = std::make_shared<FileWriter>(configuration_manager_.Format());
         std::for_each(
           std::execution::par,
           problems_and_data.begin(),
@@ -368,7 +368,7 @@ void ProblemGeneration::RunProblemGeneration(
     }
     else // API
     {
-        auto mps_file_writer = std::make_shared<FileWriter>(lpDir_);
+        auto mps_file_writer = std::make_shared<FileWriter>(configuration_manager_.Format());
 
         // vector of pair for parallelization
         // ref to WeeklyDataFromAntares to avoid copies
@@ -424,6 +424,7 @@ void ProblemGeneration::RunProblemGeneration(
         reader->Close();
         reader->Delete();
     }
+    FileWriter file_writer(configuration_manager_.Format());
     MasterGeneration master_generation(xpansion_output_dir,
                                        links,
                                        additionalConstraints,
@@ -431,7 +432,9 @@ void ProblemGeneration::RunProblemGeneration(
                                        master_formulation,
                                        solver_config_.Name(),
                                        logger,
-                                       solver_log_manager);
+                                       solver_log_manager,
+                                       file_writer,
+                                       configuration_manager_.Format());
     (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Problem Generation ran in: " << format_time_str(problem_generation_timer.elapsed())
       << std::endl;

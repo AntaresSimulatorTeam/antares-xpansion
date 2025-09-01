@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <json/json.h>
 
-#include "antares-xpansion/benders/benders_core/ProblemFormatStream.h"
+#include "antares-xpansion/core/ProblemFormatStream.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 Json::Value SimulationOptions::get_value_from_json(const std::filesystem::path& file_name)

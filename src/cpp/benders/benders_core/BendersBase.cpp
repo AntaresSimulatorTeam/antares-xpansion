@@ -9,7 +9,6 @@
 #include "antares-xpansion/benders/benders_core/LastIterationPrinter.h"
 #include "antares-xpansion/benders/benders_core/LastIterationReader.h"
 #include "antares-xpansion/benders/benders_core/LastIterationWriter.h"
-#include "antares-xpansion/benders/benders_core/ProblemFormatStream.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
@@ -896,7 +895,7 @@ double BendersBase::SubproblemWeight(int subproblem_count, const std::string& na
  */
 std::filesystem::path BendersBase::get_master_path() const
 {
-    if (_options.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE && _options.SOLVER_NAME == "XPRESS")
+    if (_options.PROBLEMS_FORMAT == ProblemsFormat::OPTIMIZED && _options.SOLVER_NAME == "XPRESS")
     {
         return std::filesystem::path(_options.INPUTROOT) / (_options.MASTER_NAME + SAVE_SUFFIX);
     }

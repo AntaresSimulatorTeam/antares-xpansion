@@ -1,9 +1,11 @@
 #pragma once
 
 #include <fmt/format.h>
+#include <istream>
 #include <ostream>
+#include <string>
 
-#include "ProblemFormat.h"
+#include "antares-xpansion/core/ProblemFormat.h"
 
 inline std::ostream& operator<<(std::ostream& stream, const ProblemsFormat& rhs)
 {
@@ -12,11 +14,30 @@ inline std::ostream& operator<<(std::ostream& stream, const ProblemsFormat& rhs)
     case ProblemsFormat::MPS_FILE:
         stream << "MPS";
         break;
-    case ProblemsFormat::SAVED_FILE:
-        stream << "SAVED";
+    case ProblemsFormat::OPTIMIZED:
+        stream << "OPTIMIZED";
         break;
     default:
         stream << "Unknown";
+    }
+    return stream;
+}
+
+inline std::istream& operator>>(std::istream& stream, ProblemsFormat& rhs)
+{
+    std::string str;
+    stream >> str;
+    if (stream)
+    {
+        try
+        {
+            rhs = problemsFormatFromString(str);
+        }
+        catch (const std::runtime_error&)
+        {
+            stream.setstate(std::ios::failbit);
+            throw;
+        }
     }
     return stream;
 }

@@ -44,7 +44,7 @@ The execution of Antares-Xpansion consists of several steps that can be run sepa
 | `problem_generation` | Generate the full Antares-Xpansion problem using the user input and the output of the Antares-Simulator run.                                        |
 | `benders`            | Solve the investment optimization problem of Antares-Xpansion, using the [Benders decomposition](../optimization-principles/investment-problem.md). |
 | `study_update`       | Update the Antares study with the solution returned by the [Benders decomposition](../optimization-principles/investment-problem.md) algorithm.     |
-| `full`               | Launch all steps in order: `antares` \> `problem_generation` \> `benders` \> `study_update`                                                         |
+| `full`               | Launch all steps in order: `antares` > `problem_generation` > `benders` > `study_update`                                                            |
 | `sensitivity`        | Launch sensitivity analysis, see [Sensitivity analysis](sensitivity-analysis.md).                                                                   |
 | `resume`             | resume benders step of a study in accordance with `--simulationName`, by default `last` study is resumed.                                           |
 
@@ -72,6 +72,19 @@ Sets the optimization method used by Antares-Xpansion.
 | `benders`            | Launch the classical Benders decomposition or the Benders by batch algorithm depending on `batch_size`.                                                
 | `mergeMPS`           | Launch a frontal resolution of the investment problem (i.e. without decomposition). This is much more time-consuming than using Benders decomposition. |
 | `adequacy_criterion` | Launch Antares-Xpansion with reliability constraints, see [Adequacy criterion](adequacy-criterion.md).                                                 |
+
+#### `--problem-format {MPS, q}`
+
+Default value: `OPTIMIZED`.
+
+Selects the storage format of the generated mathematical problems (master + subproblems):
+
+- `OPTIMIZED` (default) : use underlying solver to write problems in an optimized format to reduce disk space usage and
+  I/O time.
+  The underlying format depends on the solver used.
+    - _XPRESS_ : `svf` format: compressed binary format.
+    - _COIN_ : unsupported. Falls back to `MPS`.
+- `MPS` : write the problems in MPS format, which is a standard format for mathematical programming problems.
 
 #### `-n, --np`
 
@@ -160,7 +173,7 @@ Time master solve pure = 27.202
 			             peak = 1300.00 invested MW -- possible interval [0.00; 2000.00] MW
 			               pv = 1000.00 invested MW -- possible interval [0.00; 1000.00] MW
 			         semibase =  200.00 invested MW -- possible interval [0.00; 2000.00] MW
-			transmission_line =    0.00 invested MW -- possible interval [0.00; 3200.00] MW
+				transmission_line =    0.00 invested MW -- possible interval [0.00; 3200.00] MW
 	Solving subproblems...
 	Subproblems solved in 0.165742 s
 		Solution =
@@ -180,7 +193,7 @@ Time master solve pure = 30.593
 			             peak = 1400.00 invested MW -- possible interval [0.00; 2000.00] MW
 			               pv = 1000.00 invested MW -- possible interval [0.00; 1000.00] MW
 			         semibase =  200.00 invested MW -- possible interval [0.00; 2000.00] MW
-			transmission_line =    0.00 invested MW -- possible interval [0.00; 3200.00] MW
+				transmission_line =    0.00 invested MW -- possible interval [0.00; 3200.00] MW
 	Solving subproblems...
 	Subproblems solved in 0.168702 s
 		Solution =
@@ -212,4 +225,3 @@ unique index and name per candidate.
 In case of a problem, put an issue on Github:
 
 <https://github.com/AntaresSimulatorTeam/antares-xpansion/>
-

@@ -487,7 +487,7 @@ TEST_P(BendersSequentialTestBySolver, CreateMasterProblemProperlyWhenRestore) {
 
   BendersSequentialDouble benders =
       init_benders_sequential(MasterFormulation::RELAXED, 100, 1e-4, 1e-6,
-                              GetParam(), ProblemsFormat::SAVED_FILE);
+                              GetParam(), ProblemsFormat::OPTIMIZED);
   benders.InitializeProblems();
 
   // Assert that the master problem has been created properly
