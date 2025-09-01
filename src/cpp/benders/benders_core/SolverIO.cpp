@@ -10,7 +10,7 @@ void SolverIO::write(SolverAbstract* solver, const std::filesystem::path& path) 
     case ProblemsFormat::MPS_FILE:
         solver->write_prob_mps(path);
         break;
-    case ProblemsFormat::SAVED_FILE:
+    case ProblemsFormat::OPTIMIZED:
         solver->save_prob(path);
         break;
     default:
@@ -27,7 +27,7 @@ void SolverIO::read(SolverAbstract* solver, const std::filesystem::path& path) c
     case ProblemsFormat::MPS_FILE:
         solver->read_prob_mps(path);
         break;
-    case ProblemsFormat::SAVED_FILE:
+    case ProblemsFormat::OPTIMIZED:
         solver->restore_prob(path);
         break;
     default:

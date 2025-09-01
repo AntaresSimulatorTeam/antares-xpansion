@@ -15,7 +15,7 @@ void FileWriter::Write_problem(Problem* in_prblm, const std::filesystem::path& o
     case ProblemsFormat::MPS_FILE:
         in_prblm->write_prob_mps(output_file);
         break;
-    case ProblemsFormat::SAVED_FILE:
+    case ProblemsFormat::OPTIMIZED:
         in_prblm->save_prob(output_file);
         break;
     default:

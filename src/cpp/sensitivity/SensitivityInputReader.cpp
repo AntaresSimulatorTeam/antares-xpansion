@@ -78,7 +78,7 @@ std::shared_ptr<SolverAbstract> SensitivityInputReader::get_last_master() const
     case ProblemsFormat::MPS_FILE:
         last_master->read_prob_mps(_last_master_path);
         break;
-    case ProblemsFormat::SAVED_FILE:
+    case ProblemsFormat::OPTIMIZED:
         last_master->restore_prob(_last_master_path);
         break;
     default:

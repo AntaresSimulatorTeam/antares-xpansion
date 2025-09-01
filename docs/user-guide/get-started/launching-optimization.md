@@ -73,14 +73,17 @@ Sets the optimization method used by Antares-Xpansion.
 | `mergeMPS`           | Launch a frontal resolution of the investment problem (i.e. without decomposition). This is much more time-consuming than using Benders decomposition. |
 | `adequacy_criterion` | Launch Antares-Xpansion with reliability constraints, see [Adequacy criterion](adequacy-criterion.md).                                                 |
 
-#### `--problem-format {MPS, SAVED}`
+#### `--problem-format {MPS, q}`
 
-Default value: `SAVED`.
+Default value: `OPTIMIZED`.
 
 Selects the storage format of the generated mathematical problems (master + subproblems):
 
-- `SAVED` (default) : use underlying solver to save problems in a compact format to reduce disk space usage.
-  Not all solvers support this format, and it may fall back to mps format.
+- `OPTIMIZED` (default) : use underlying solver to write problems in an optimized format to reduce disk space usage and
+  I/O time.
+  The underlying format depends on the solver used.
+    - _XPRESS_ : `svf` format: compressed binary format.
+    - _COIN_ : unsupported. Falls back to `MPS`.
 - `MPS` : write the problems in MPS format, which is a standard format for mathematical programming problems.
 
 #### `-n, --np`

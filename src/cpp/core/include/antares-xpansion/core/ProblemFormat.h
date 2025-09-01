@@ -4,26 +4,24 @@
 #include <stdexcept>
 #include <string>
 
+#include "antares-xpansion/xpansion_interfaces/StringManip.h"
+
 enum class ProblemsFormat
 {
     MPS_FILE,
-    SAVED_FILE
+    OPTIMIZED
 };
 
 inline ProblemsFormat problemsFormatFromString(const std::string& str)
 {
-    auto lower_str = str;
-    std::transform(str.begin(), str.end(), lower_str.begin(), ::tolower);
+    auto lower_str = StringManip::StringUtils::ToLowercase(str);
     if (lower_str == "mps")
     {
         return ProblemsFormat::MPS_FILE;
     }
-    else if (lower_str == "saved")
+    if (lower_str == "optimized")
     {
-        return ProblemsFormat::SAVED_FILE;
+        return ProblemsFormat::OPTIMIZED;
     }
-    else
-    {
-        throw std::runtime_error("Unknown ProblemsFormat: " + str);
-    }
+    throw std::runtime_error("Unknown ProblemsFormat: " + str);
 }
