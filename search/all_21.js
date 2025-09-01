@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['v_20version_20tt_0',['&lt;tt&gt;-v, --version&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md176',1,'']]],
+  ['v_20version_20tt_0',['&lt;tt&gt;-v, --version&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md177',1,'']]],
   ['v0_201_200_2003_202021_1',['v0.1.0 (03/2021)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md70',1,'']]],
   ['v0_202_200_2004_202021_2',['v0.2.0 (04/2021)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md67',1,'']]],
   ['v0_203_200_2005_202021_3',['v0.3.0 (05/2021)',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md64',1,'']]],
@@ -31,8 +31,8 @@ var searchData=
   ['variablefilereadnameconfiguration_28',['VariableFileReadNameConfiguration',['../structVariableFileReadNameConfiguration.html',1,'']]],
   ['variablenamecomposition_29',['VariableNameComposition',['../structVariableNameComposition.html',1,'']]],
   ['variablepositions_30',['VariablePositions',['../structMergeMasterTrajectoryMPS_1_1VariablePositions.html',1,'MergeMasterTrajectoryMPS']]],
-  ['variables_31',['variables',['../md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md223',1,'Investment variables'],['../md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html#autotoc_md258',1,'On the $dx^{+/-}$ variables']]],
-  ['variables_20and_20costs_32',['Variables and costs',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md227',1,'']]],
+  ['variables_31',['variables',['../md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md224',1,'Investment variables'],['../md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html#autotoc_md259',1,'On the $dx^{+/-}$ variables']]],
+  ['variables_20and_20costs_32',['Variables and costs',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md228',1,'']]],
   ['variables_20txt_20tt_20file_20for_20each_20tt_20mps_20tt_20file_33',['&lt;tt&gt;variables.txt&lt;/tt&gt; file for each &lt;tt&gt;.mps&lt;/tt&gt; file',['../md_docs_2developer-guide_2xpansion__steps_21-antares-solver-problem.html#autotoc_md119',1,'']]],
   ['variablesgroup_34',['VariablesGroup',['../classBenders_1_1Criterion_1_1VariablesGroup.html',1,'Benders::Criterion']]],
   ['variablesgroup_2ecpp_35',['VariablesGroup.cpp',['../VariablesGroup_8cpp.html',1,'']]],
@@ -47,7 +47,7 @@ var searchData=
   ['version_20cmake_20version_44',['@ref &quot;cmake-version&quot; &quot;CMake version&quot;',['../md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html#autotoc_md79',1,'']]],
   ['version_20git_20version_45',['@ref &quot;git-version&quot; &quot;Git version&quot;',['../md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html#autotoc_md81',1,'']]],
   ['version_20python_20version_46',['@ref &quot;python-version&quot; &quot;Python version&quot;',['../md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html#autotoc_md80',1,'']]],
-  ['version_20tt_47',['version tt',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md177',1,'&lt;tt&gt;--antares-version&lt;/tt&gt;'],['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md176',1,'&lt;tt&gt;-v, --version&lt;/tt&gt;']]],
+  ['version_20tt_47',['version tt',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md178',1,'&lt;tt&gt;--antares-version&lt;/tt&gt;'],['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md177',1,'&lt;tt&gt;-v, --version&lt;/tt&gt;']]],
   ['versions_48',['Versions',['../md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html#autotoc_md89',1,'']]],
   ['versions_20in_20ubuntu_20are_20known_20to_20have_20mpi_20related_20issues_20please_20use_20the_20other_20ones_49',['⚠️ Single-file versions in Ubuntu are known to have MPI-related issues. Please use the other ones.',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md24',1,'']]],
   ['void_5ftype_50',['void_type',['../structCatch_1_1detail_1_1void__type.html',1,'Catch::detail']]],

@@ -1,5 +1,10 @@
 var NAVTREEINDEX8 =
 {
+"structCatch_1_1pluralise.html":[33,0,3,44],
+"structCatch_1_1true__given.html":[33,0,3,93],
+"structCatch__global__namespace__dummy.html":[33,0,81],
+"structColumnToChange.html":[33,0,87],
+"structConfigurationManager_1_1ConfigDirectories.html":[33,0,88,0],
 "structCriteriaCurrentIterationData.html":[33,0,91],
 "structCurrentIterationData.html":[33,0,92],
 "structEmptyLogger.html":[33,0,94],

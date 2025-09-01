@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['each_20annual_20study_0',['Input files from each annual study',['../md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md245',1,'']]],
+  ['each_20annual_20study_0',['Input files from each annual study',['../md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md246',1,'']]],
   ['each_20tt_20mps_20tt_20file_1',['&lt;tt&gt;variables.txt&lt;/tt&gt; file for each &lt;tt&gt;.mps&lt;/tt&gt; file',['../md_docs_2developer-guide_2xpansion__steps_21-antares-solver-problem.html#autotoc_md119',1,'']]],
   ['em_2',['Modifications for &lt;em&gt;satellite problems&lt;/em&gt;',['../md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md128',1,'']]],
   ['em_20satellite_20problems_20em_3',['Modifications for &lt;em&gt;satellite problems&lt;/em&gt;',['../md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md128',1,'']]],
@@ -13,7 +13,7 @@ var searchData=
   ['environnement_20settings_10',['Environnement settings',['../md_docs_2developer-guide_2install__from__sources_23-Build.html#autotoc_md92',1,'']]],
   ['equalsmatcher_11',['EqualsMatcher',['../structCatch_1_1Matchers_1_1StdString_1_1EqualsMatcher.html',1,'Catch::Matchers::StdString::EqualsMatcher'],['../structCatch_1_1Matchers_1_1Vector_1_1EqualsMatcher.html',1,'Catch::Matchers::Vector::EqualsMatcher&lt; T, AllocComp, AllocMatch &gt;']]],
   ['error_12',['Error',['../classantares__xpansion_1_1antares__driver_1_1AntaresDriver_1_1Error.html',1,'antares_xpansion::antares_driver::AntaresDriver']]],
-  ['errors_13',['Errors',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md183',1,'']]],
+  ['errors_13',['Errors',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md184',1,'']]],
   ['errorwithareafile_14',['ErrorWithAreaFile',['../classLpFilesExtractor_1_1ErrorWithAreaFile.html',1,'LpFilesExtractor']]],
   ['errorwithintercosfile_15',['ErrorWithIntercosFile',['../classLpFilesExtractor_1_1ErrorWithIntercosFile.html',1,'LpFilesExtractor']]],
   ['example_16',['Basic example',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md158',1,'']]],
@@ -21,7 +21,7 @@ var searchData=
   ['exceptionmessagematcher_18',['ExceptionMessageMatcher',['../classCatch_1_1Matchers_1_1Exception_1_1ExceptionMessageMatcher.html',1,'Catch::Matchers::Exception']]],
   ['exceptiontranslatorregistrar_19',['ExceptionTranslatorRegistrar',['../classCatch_1_1ExceptionTranslatorRegistrar.html',1,'Catch']]],
   ['exe_5fpath_20',['exe_path',['../classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a497a4f9701fda8abcd718e34f2cd7339',1,'antares_xpansion::config_loader::ConfigLoader']]],
-  ['executable_21',[' Usage of the master merger executable',['../md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md241',1,'']]],
+  ['executable_21',[' Usage of the master merger executable',['../md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md242',1,'']]],
   ['executables_22',['Antares-Xpansion package executables',['../md_docs_2developer-guide_2xpansion__steps_20-overview.html#autotoc_md114',1,'']]],
   ['expertlogsvalueerror_23',['ExpertLogsValueError',['../classantares__xpansion_1_1input__checker_1_1ExpertLogsValueError.html',1,'antares_xpansion::input_checker']]],
   ['export_5fproblem_24',['export_problem',['../classAbstractMergeMPS.html#a44c25e6a5c9514ceff04b6fe9abb7730',1,'AbstractMergeMPS']]],

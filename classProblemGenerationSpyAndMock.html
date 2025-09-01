@@ -139,7 +139,6 @@ $(function(){initNavTree('classProblemGenerationSpyAndMock.html',''); initResiza
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
-<a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classProblemGenerationSpyAndMock-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">ProblemGenerationSpyAndMock Class Reference</div></div>
 </div><!--header-->
@@ -161,6 +160,9 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa384fb4caee6533b8eca0e97015253c1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aac835bd104ce442f89bf52f58db69170" id="r_aac835bd104ce442f89bf52f58db69170"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aac835bd104ce442f89bf52f58db69170">RunProblemGeneration</a> (const std::filesystem::path &amp;xpansion_output_dir, const std::string &amp;master_formulation, const std::string &amp;additionalConstraintFilename_l, const std::filesystem::path &amp;archive_path, std::shared_ptr&lt; <a class="el" href="classProblemGenerationLog_1_1ProblemGenerationLogger.html">ProblemGenerationLog::ProblemGenerationLogger</a> &gt; logger, const std::filesystem::path &amp;log_file_path, const std::filesystem::path &amp;weights_file, bool unnamed_problems) override</td></tr>
 <tr class="separator:aac835bd104ce442f89bf52f58db69170"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa41179f79057f938c9157cda7880ef04" id="r_aa41179f79057f938c9157cda7880ef04"><td class="memItemLeft" align="right" valign="top"><a id="aa41179f79057f938c9157cda7880ef04" name="aa41179f79057f938c9157cda7880ef04"></a>
+const <a class="el" href="classConfigurationManager.html">ConfigurationManager</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>configurationManager</b> () const</td></tr>
+<tr class="separator:aa41179f79057f938c9157cda7880ef04"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="inherit_header pub_methods_classProblemGeneration"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_methods_classProblemGeneration')"><img src="closed.png" alt="-"/>&#160;Public Member Functions inherited from <a class="el" href="classProblemGeneration.html">ProblemGeneration</a></td></tr>
 <tr class="memitem:a6ceaddadad29a224f7e82cdd4c7bcc30 inherit pub_methods_classProblemGeneration" id="r_a6ceaddadad29a224f7e82cdd4c7bcc30"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>ProblemGeneration</b> (<a class="el" href="classProblemGenerationOptions.html">ProblemGenerationOptions</a> &amp;options)</td></tr>
@@ -169,33 +171,19 @@ Public Member Functions</h2></td></tr>
 std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>updateProblems</b> ()</td></tr>
 <tr class="separator:a8e1932ba99ac0d4bb6909830e1d79e00 inherit pub_methods_classProblemGeneration"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
-Public Attributes</h2></td></tr>
-<tr class="memitem:af6f987fb5a132b5a3dc9126e982e741b" id="r_af6f987fb5a132b5a3dc9126e982e741b"><td class="memItemLeft" align="right" valign="top"><a id="af6f987fb5a132b5a3dc9126e982e741b" name="af6f987fb5a132b5a3dc9126e982e741b"></a>
-std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>xpansion_output_dir_</b></td></tr>
-<tr class="separator:af6f987fb5a132b5a3dc9126e982e741b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6979ff998ca27daac33d7f4940ab8b62" id="r_a6979ff998ca27daac33d7f4940ab8b62"><td class="memItemLeft" align="right" valign="top"><a id="a6979ff998ca27daac33d7f4940ab8b62" name="a6979ff998ca27daac33d7f4940ab8b62"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>master_formulation_</b></td></tr>
-<tr class="separator:a6979ff998ca27daac33d7f4940ab8b62"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a48514ec1c5e1e4f4292dde5ab5ec1bec" id="r_a48514ec1c5e1e4f4292dde5ab5ec1bec"><td class="memItemLeft" align="right" valign="top"><a id="a48514ec1c5e1e4f4292dde5ab5ec1bec" name="a48514ec1c5e1e4f4292dde5ab5ec1bec"></a>
-std::string&#160;</td><td class="memItemRight" valign="bottom"><b>additionalConstraintFilename_l_</b></td></tr>
-<tr class="separator:a48514ec1c5e1e4f4292dde5ab5ec1bec"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7fa014d3fb38c98c41d56973baa12e8b" id="r_a7fa014d3fb38c98c41d56973baa12e8b"><td class="memItemLeft" align="right" valign="top"><a id="a7fa014d3fb38c98c41d56973baa12e8b" name="a7fa014d3fb38c98c41d56973baa12e8b"></a>
-std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>archive_path_</b></td></tr>
-<tr class="separator:a7fa014d3fb38c98c41d56973baa12e8b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abef47ecb47b64ef64cfd74bab6cc08e9" id="r_abef47ecb47b64ef64cfd74bab6cc08e9"><td class="memItemLeft" align="right" valign="top"><a id="abef47ecb47b64ef64cfd74bab6cc08e9" name="abef47ecb47b64ef64cfd74bab6cc08e9"></a>
-std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>log_file_path_</b></td></tr>
-<tr class="separator:abef47ecb47b64ef64cfd74bab6cc08e9"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5f019cfffc2b6d996c7cedd64bcf22d3" id="r_a5f019cfffc2b6d996c7cedd64bcf22d3"><td class="memItemLeft" align="right" valign="top"><a id="a5f019cfffc2b6d996c7cedd64bcf22d3" name="a5f019cfffc2b6d996c7cedd64bcf22d3"></a>
-std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>weights_file_</b></td></tr>
-<tr class="separator:a5f019cfffc2b6d996c7cedd64bcf22d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab00da935b8720e8b91ac6e63532be16b" id="r_ab00da935b8720e8b91ac6e63532be16b"><td class="memItemLeft" align="right" valign="top"><a id="ab00da935b8720e8b91ac6e63532be16b" name="ab00da935b8720e8b91ac6e63532be16b"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>unnamed_problems_</b> = false</td></tr>
-<tr class="separator:ab00da935b8720e8b91ac6e63532be16b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="inherited" name="inherited"></a>
+Additional Inherited Members</h2></td></tr>
 <tr class="inherit_header pub_attribs_classProblemGeneration"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pub_attribs_classProblemGeneration')"><img src="closed.png" alt="-"/>&#160;Public Attributes inherited from <a class="el" href="classProblemGeneration.html">ProblemGeneration</a></td></tr>
 <tr class="memitem:a808a80fb13842f8d94c270c0f1b9bde9 inherit pub_attribs_classProblemGeneration" id="r_a808a80fb13842f8d94c270c0f1b9bde9"><td class="memItemLeft" align="right" valign="top">
 const <a class="el" href="classProblemGenerationOptions.html">ProblemGenerationOptions</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>options_</b></td></tr>
 <tr class="separator:a808a80fb13842f8d94c270c0f1b9bde9 inherit pub_attribs_classProblemGeneration"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="inherit_header pro_attribs_classProblemGeneration"><td colspan="2" onclick="javascript:dynsection.toggleInherit('pro_attribs_classProblemGeneration')"><img src="closed.png" alt="-"/>&#160;Protected Attributes inherited from <a class="el" href="classProblemGeneration.html">ProblemGeneration</a></td></tr>
+<tr class="memitem:aa7879c1871c3e8a76e2a31a3920c5f9d inherit pro_attribs_classProblemGeneration" id="r_aa7879c1871c3e8a76e2a31a3920c5f9d"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="classConfigurationManager.html">ConfigurationManager</a>&#160;</td><td class="memItemRight" valign="bottom"><b>configuration_manager_</b></td></tr>
+<tr class="separator:aa7879c1871c3e8a76e2a31a3920c5f9d inherit pro_attribs_classProblemGeneration"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5874d8f64b89b5c849d667529d9f2c0e inherit pro_attribs_classProblemGeneration" id="r_a5874d8f64b89b5c849d667529d9f2c0e"><td class="memItemLeft" align="right" valign="top">
+<a class="el" href="structConfigurationManager_1_1ConfigDirectories.html">ConfigurationManager::ConfigDirectories</a>&#160;</td><td class="memItemRight" valign="bottom"><b>directories_</b></td></tr>
+<tr class="separator:a5874d8f64b89b5c849d667529d9f2c0e inherit pro_attribs_classProblemGeneration"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="aac835bd104ce442f89bf52f58db69170" name="aac835bd104ce442f89bf52f58db69170"></a>

@@ -1,6 +1,7 @@
 var dir_dfdbda394c3f7a3aa55229f33a559c41 =
 [
     [ "benders", "dir_ae16667f9fc0e5d86966b2c65475a56a.html", "dir_ae16667f9fc0e5d86966b2c65475a56a" ],
+    [ "core", "dir_f66444a5a09ecfc2fd30d78607e90727.html", "dir_f66444a5a09ecfc2fd30d78607e90727" ],
     [ "full_run", "dir_2acec90c25056ac8f42c57f736d40799.html", "dir_2acec90c25056ac8f42c57f736d40799" ],
     [ "helpers", "dir_0cbcfa77aed57b1f3ff31965a407af25.html", "dir_0cbcfa77aed57b1f3ff31965a407af25" ],
     [ "lpnamer", "dir_e82b02a6724f3381c006d85ad5b9fc3b.html", "dir_e82b02a6724f3381c006d85ad5b9fc3b" ],
