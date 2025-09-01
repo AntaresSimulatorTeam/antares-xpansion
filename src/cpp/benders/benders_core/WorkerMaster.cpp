@@ -346,7 +346,7 @@ void WorkerMaster::_set_alpha_var()
         }
         else
         {
-            double lb(-1e10); /*!< Lower Bound */
+            double lb(-1e20); /*!< Lower Bound */
             double ub(+1e20); /*!< Upper Bound*/
             double obj(+1);
             _id_alpha = _solver->get_ncols(); /* Set the number of columns in _id_alpha */
