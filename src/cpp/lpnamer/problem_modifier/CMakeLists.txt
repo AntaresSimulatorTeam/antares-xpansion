@@ -12,17 +12,18 @@ target_sources(lp_namer_problem_modifier PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/AntaresProblemToXpansionProblemTranslator.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/FileProblemProviderAdapter.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/FileProblemsProviderAdapter.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/FileWriter.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/LauncherHelpers.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/LinkProblemsGenerator.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/LinkdataRecord.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/MPSFileProblemProviderAdapter.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/FileWriter.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/MasterGeneration.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/MasterProblemBuilder.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ProblemModifier.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesFileAdapter.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesFromProblemAdapter.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ProblemVariablesZipAdapter.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/StructureGeneration.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/WeightFileProcessor.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/XpansionProblemsFromAntaresProvider.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ZipProblemProviderAdapter.cpp
@@ -31,6 +32,7 @@ target_sources(lp_namer_problem_modifier PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/AntaresProblemToXpansionProblemTranslator.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/FileProblemProviderAdapter.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/FileProblemsProviderAdapter.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/FileWriter.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/IProblemProviderPort.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/IProblemVariablesProviderPort.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/IProblemWriter.h
@@ -39,13 +41,13 @@ target_sources(lp_namer_problem_modifier PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/LinkProblemsGenerator.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/LinkdataRecord.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/MPSFileProblemProviderAdapter.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/FileWriter.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/MasterGeneration.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/MasterProblemBuilder.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/ProblemModifier.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/ProblemVariablesFileAdapter.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/ProblemVariablesFromProblemAdapter.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/ProblemVariablesZipAdapter.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/StructureGeneration.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/WeightFileProcessor.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/ZipProblemProviderAdapter.h

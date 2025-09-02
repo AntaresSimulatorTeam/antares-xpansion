@@ -1,4 +1,5 @@
 #include <antares-xpansion/lpnamer/problem_modifier/FileWriter.h>
+#include <antares-xpansion/lpnamer/problem_modifier/StructureGeneration.h>
 #include <gtest/gtest.h>
 
 #include "antares-xpansion/lpnamer/problem_modifier/MasterGeneration.h"
@@ -90,15 +91,8 @@ TEST_P(TestForSolverAndExpectation, master_file_is_generated)
     auto&& [solver_name, expectation] = GetParam();
     SKIP_UNAVAILABLE_SOLVER(solver_name)
     AddCandidate("dummy_candidate");
-    MasterGeneration master_generation(temp_test_dir,
-                                       active_links_,
-                                       additionalConstraints_,
-                                       couplings_,
-                                       "master_formulation",
-                                       solver_name,
-                                       nullptr,
-                                       solver_log_manager_,
-                                       writer);
+    auto _ = MasterGeneration(temp_test_dir, solver_name, nullptr, solver_log_manager_, writer)
+               .generate(active_links_, "master_formulation", additionalConstraints_);
     auto master_file = temp_test_dir / "lp" / "master";
     master_file.replace_extension(expectation);
     ASSERT_TRUE(std::filesystem::exists(master_file));
@@ -110,15 +104,14 @@ TEST_P(TestForSolverAndMode, structure_file_is_written)
     auto&& solver_name = GetParam();
     SKIP_UNAVAILABLE_SOLVER(solver_name)
     AddCandidate("dummy_candidate");
-    MasterGeneration master_generation(temp_test_dir,
-                                       active_links_,
-                                       additionalConstraints_,
-                                       couplings_,
-                                       "master_formulation",
-                                       solver_name,
-                                       nullptr,
-                                       solver_log_manager_,
-                                       writer);
+    auto&& candidates = MasterGeneration(temp_test_dir,
+                                         solver_name,
+                                         nullptr,
+                                         solver_log_manager_,
+                                         writer)
+                          .generate(active_links_, "master_formulation", additionalConstraints_);
+    StructureGeneration(temp_test_dir, solver_name, ProblemsFormat::OPTIMIZED)(candidates,
+                                                                                couplings_);
     ASSERT_TRUE(std::filesystem::exists(temp_test_dir / "lp" / "structure.txt"));
 }
 
@@ -128,15 +121,14 @@ TEST_P(TestForSolverAndMode, structure_file_contains_master_name)
     auto&& solver_name = GetParam();
     AddCandidate("dummy_candidate");
     SKIP_UNAVAILABLE_SOLVER(solver_name)
-    MasterGeneration master_generation(temp_test_dir,
-                                       active_links_,
-                                       additionalConstraints_,
-                                       couplings_,
-                                       "master_formulation",
-                                       solver_name,
-                                       nullptr,
-                                       solver_log_manager_,
-                                       writer);
+    auto&& candidates = MasterGeneration(temp_test_dir,
+                                         solver_name,
+                                         nullptr,
+                                         solver_log_manager_,
+                                         writer)
+                          .generate(active_links_, "master_formulation", additionalConstraints_);
+    StructureGeneration(temp_test_dir, solver_name, ProblemsFormat::OPTIMIZED)(candidates,
+                                                                                couplings_);
     std::ifstream structure_file(temp_test_dir / "lp" / "structure.txt");
     std::string line;
     bool found = false;
@@ -159,15 +151,14 @@ TEST_P(TestForSolverAndExpectation, structure_file_contains_master_name_without_
     AddCandidate("dummy_candidate");
     auto&& [solver_name, expectation] = GetParam();
     SKIP_UNAVAILABLE_SOLVER(solver_name)
-    MasterGeneration master_generation(temp_test_dir,
-                                       active_links_,
-                                       additionalConstraints_,
-                                       couplings_,
-                                       "master_formulation",
-                                       solver_name,
-                                       nullptr,
-                                       solver_log_manager_,
-                                       writer);
+    auto&& candidates = MasterGeneration(temp_test_dir,
+                                         solver_name,
+                                         nullptr,
+                                         solver_log_manager_,
+                                         writer)
+                          .generate(active_links_, "master_formulation", additionalConstraints_);
+    StructureGeneration(temp_test_dir, solver_name, ProblemsFormat::OPTIMIZED)(candidates,
+                                                                                couplings_);
     std::ifstream structure_file(temp_test_dir / "lp" / "structure.txt");
     std::string line;
     bool found = false;
@@ -209,15 +200,14 @@ TEST_P(TestForSolverAndExpectation, structure_file_contains_problem_name_with_ex
 
     AddCandidate("dummy_candidate");
     couplings_.insert({{"dummy_candidate", "dummy_problem." + expectation}, 0});
-    MasterGeneration master_generation(temp_test_dir,
-                                       active_links_,
-                                       additionalConstraints_,
-                                       couplings_,
-                                       "master_formulation",
-                                       solver_name,
-                                       nullptr,
-                                       solver_log_manager_,
-                                       writer);
+    auto&& candidates = MasterGeneration(temp_test_dir,
+                                         solver_name,
+                                         nullptr,
+                                         solver_log_manager_,
+                                         writer)
+                          .generate(active_links_, "master_formulation", additionalConstraints_);
+    StructureGeneration(temp_test_dir, solver_name, ProblemsFormat::OPTIMIZED)(candidates,
+                                                                                couplings_);
     std::ifstream structure_file(temp_test_dir / "lp" / "structure.txt");
     std::string line;
     bool found = false;

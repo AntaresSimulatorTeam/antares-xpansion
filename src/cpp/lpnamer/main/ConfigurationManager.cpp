@@ -5,9 +5,10 @@
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 ConfigurationManager::ConfigurationManager(ProblemGenerationOptions& options):
-options_{options},
-format_{options_.Format()}
+    options_{options},
+    format_{options_.Format()}
 {
+    format_ = options_.Format();
 }
 
 auto ConfigurationManager::Directories() const -> ConfigDirectories
