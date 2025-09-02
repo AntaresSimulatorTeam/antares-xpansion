@@ -9,8 +9,8 @@ auto fmt::formatter<ProblemsFormat>::format(ProblemsFormat problems_format,
     case ProblemsFormat::MPS_FILE:
         result = "MPS";
         break;
-    case ProblemsFormat::SAVED_FILE:
-        result = "SAVED";
+    case ProblemsFormat::OPTIMIZED:
+        result = "OPTIMIZED";
         break;
     default:
         result = "Unknown";

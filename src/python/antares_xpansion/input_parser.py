@@ -97,8 +97,8 @@ class InputParser:
                                  help="Cache problems on disque during benders")
         self.parser.add_argument("--problem-format",
                                  dest=LauncherOptionsKeys.problem_format_key(),
-                                 choices=["mps", "saved"],
-                                 help='Problem format to use ("mps" or "saved")',
+                                 choices=["mps", "OPTIMIZED"],
+                                 help='Problem format to use ("mps" or "OPTIMIZED")',
                                  default=LauncherOptionsDefaultValues.DEFAULT_PROBLEM_FORMAT())
 
     def parse_args(self, args: List[str] = None) -> InputParameters:

@@ -1,5 +1,6 @@
 #include "antares-xpansion/lpnamer/main/ProblemGeneration.h"
 
+#include <antares-xpansion/lpnamer/problem_modifier/StructureGeneration.h>
 #include <execution>
 #include <iostream>
 #include <tbb/tbb.h>
@@ -425,16 +426,16 @@ void ProblemGeneration::RunProblemGeneration(
         reader->Delete();
     }
     FileWriter file_writer(configuration_manager_.Format());
-    MasterGeneration master_generation(xpansion_output_dir,
-                                       links,
-                                       additionalConstraints,
-                                       couplings,
-                                       master_formulation,
-                                       solver_config_.Name(),
-                                       logger,
-                                       solver_log_manager,
-                                       file_writer,
-                                       configuration_manager_.Format());
+    MasterGeneration environment(xpansion_output_dir,
+                                 solver_config_.Name(),
+                                 logger,
+                                 solver_log_manager,
+                                 file_writer,
+                                 configuration_manager_.Format());
+    auto&& candidates = environment.generate(links, master_formulation, additionalConstraints);
+    StructureGeneration(xpansion_output_dir,
+                        solver_config_.Name(),
+                        configuration_manager_.Format())(candidates, couplings);
     (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Problem Generation ran in: " << format_time_str(problem_generation_timer.elapsed())
       << std::endl;

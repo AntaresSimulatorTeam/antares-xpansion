@@ -107,7 +107,7 @@ class XpansionConfigConstants:
             "batch_size": "0",
             "master_solution_tolerance": "1e-4",
             "cut_coefficient_tolerance": "5e-3",
-            "problems_format": "SAVED",
+            "problems_format": "OPTIMIZED",
         }
 
     def _set_default_options(self):
@@ -152,7 +152,7 @@ class XpansionConfigConstants:
         return "master"
 
     def problems_format_default_value(self):
-        return "SAVED"
+        return "OPTIMIZED"
 
     # TODO Why not returning an int here?
     def slave_weight_value_default_value(self):

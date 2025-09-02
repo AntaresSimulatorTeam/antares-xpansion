@@ -14,8 +14,8 @@ inline std::ostream& operator<<(std::ostream& stream, const ProblemsFormat& rhs)
     case ProblemsFormat::MPS_FILE:
         stream << "MPS";
         break;
-    case ProblemsFormat::SAVED_FILE:
-        stream << "SAVED";
+    case ProblemsFormat::OPTIMIZED:
+        stream << "OPTIMIZED";
         break;
     default:
         stream << "Unknown";
@@ -36,6 +36,7 @@ inline std::istream& operator>>(std::istream& stream, ProblemsFormat& rhs)
         catch (const std::runtime_error&)
         {
             stream.setstate(std::ios::failbit);
+            throw;
         }
     }
     return stream;

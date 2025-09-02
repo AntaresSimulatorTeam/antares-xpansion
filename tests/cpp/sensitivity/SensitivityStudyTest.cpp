@@ -127,7 +127,7 @@ protected:
             solvers_name.push_back(xpress_name);
         }
 
-        for (auto solver_name: solvers_name)
+        for (const auto& solver_name: solvers_name)
         {
             init_solver(solver_name, mps_path);
             input_data.last_master = math_problem;
