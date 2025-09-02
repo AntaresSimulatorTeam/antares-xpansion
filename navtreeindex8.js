@@ -1,5 +1,7 @@
 var NAVTREEINDEX8 =
 {
+"structCatch_1_1is__callable__tester.html":[33,0,3,30],
+"structCatch_1_1is__range.html":[33,0,3,31],
 "structCatch_1_1pluralise.html":[33,0,3,44],
 "structCatch_1_1true__given.html":[33,0,3,93],
 "structCatch__global__namespace__dummy.html":[33,0,81],
@@ -66,12 +68,12 @@ var NAVTREEINDEX8 =
 "structSinglePbData.html":[33,0,244],
 "structSolverBaseOptions.html":[33,0,246],
 "structSolverData.html":[33,0,250],
-"structVariableFileLine.html":[33,0,271],
-"structVariableFileReadNameConfiguration.html":[33,0,274],
-"structVariableNameComposition.html":[33,0,275],
-"structVersion.html":[33,0,277],
+"structVariableFileLine.html":[33,0,272],
+"structVariableFileReadNameConfiguration.html":[33,0,275],
+"structVariableNameComposition.html":[33,0,276],
+"structVersion.html":[33,0,278],
 "structfmt_1_1formatter_3_01ProblemsFormat_01_4.html":[33,0,10,0],
-"structto.html":[33,0,268],
+"structto.html":[33,0,269],
 "":[31,0,4],
 "":[31,0,4,0],
 "":[31,0,4,0,0]

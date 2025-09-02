@@ -738,6 +738,7 @@ var annotated_dup =
     [ "SolverLogManager", "classSolverLogManager.html", null ],
     [ "SolverXpress", "classSolverXpress.html", "classSolverXpress" ],
     [ "StandardLp", "classStandardLp.html", null ],
+    [ "StructureGeneration", "classStructureGeneration.html", null ],
     [ "StudyUpdateLinkCapacitiesStrategy", "classStudyUpdateLinkCapacitiesStrategy.html", null ],
     [ "StudyUpdateLinkParameterStrategy", "classStudyUpdateLinkParameterStrategy.html", "classStudyUpdateLinkParameterStrategy" ],
     [ "StudyUpdater", "classStudyUpdater.html", "classStudyUpdater" ],

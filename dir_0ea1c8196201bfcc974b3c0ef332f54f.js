@@ -19,6 +19,7 @@ var dir_0ea1c8196201bfcc974b3c0ef332f54f =
     [ "ProblemVariablesFileAdapter.h", "ProblemVariablesFileAdapter_8h_source.html", null ],
     [ "ProblemVariablesFromProblemAdapter.h", "ProblemVariablesFromProblemAdapter_8h_source.html", null ],
     [ "ProblemVariablesZipAdapter.h", "ProblemVariablesZipAdapter_8h_source.html", null ],
+    [ "StructureGeneration.h", "StructureGeneration_8h_source.html", null ],
     [ "WeightFileProcessor.h", "WeightFileProcessor_8h_source.html", null ],
     [ "XpansionProblemsFromAntaresProvider.h", "XpansionProblemsFromAntaresProvider_8h_source.html", null ],
     [ "ZipProblemProviderAdapter.h", "ZipProblemProviderAdapter_8h_source.html", null ],

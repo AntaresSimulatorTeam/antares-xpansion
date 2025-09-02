@@ -619,6 +619,7 @@ var hierarchy =
     [ "Catch::StringMaker< wchar_t const * >", "structCatch_1_1StringMaker_3_01wchar__t_01const_01_5_01_4.html", null ],
     [ "Catch::StringRef", "classCatch_1_1StringRef.html", null ],
     [ "StringManip::StringUtils", "classStringManip_1_1StringUtils.html", null ],
+    [ "StructureGeneration", "classStructureGeneration.html", null ],
     [ "antares_xpansion.study_locker.StudyLocker", "classantares__xpansion_1_1study__locker_1_1StudyLocker.html", null ],
     [ "antares_xpansion.study_output_cleaner.StudyOutputCleaner", "classantares__xpansion_1_1study__output__cleaner_1_1StudyOutputCleaner.html", null ],
     [ "StudyUpdater", "classStudyUpdater.html", null ],

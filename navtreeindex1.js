@@ -1,5 +1,6 @@
 var NAVTREEINDEX1 =
 {
+"classBendersProblemFromFile.html":[33,0,70],
 "classBendersSequential.html":[33,0,72],
 "classBendersSequential.html#a2d1b29260a6ab2204f7ef276204951d7":[33,0,72,1],
 "classBendersSequential.html#a40aa11a91d67d2fb70a47350fa3230dc":[33,0,72,3],
@@ -248,6 +249,5 @@ var NAVTREEINDEX1 =
 "classNOOPSolver.html#af6b5f77cdb55e81596bbc18d93f6e840":[33,0,188,14],
 "classNOOPSolver.html#af77c9492c35ba96a159a45d53c90b797":[33,0,188,19],
 "classNOOPSolver.html#af8afd7437082c5bc2aa69b5c35e9e971":[33,0,188,35],
-"classNOOPSolver.html#afb75420deaaa64a1edbabeddb2096f1b":[33,0,188,2],
-"classNOOPSolverForSubproblemWorker.html":[33,0,189]
+"classNOOPSolver.html#afb75420deaaa64a1edbabeddb2096f1b":[33,0,188,2]
 };

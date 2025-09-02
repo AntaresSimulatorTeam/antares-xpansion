@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: Member List</title>
+<title>Antares Xpansion: src/cpp/lpnamer/problem_modifier/include/antares-xpansion/lpnamer/problem_modifier/StructureGeneration.h Source File</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -111,7 +111,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('classMasterGeneration.html',''); initResizable(true); });
+$(function(){initNavTree('StructureGeneration_8h_source.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -137,19 +137,37 @@ $(function(){initNavTree('classMasterGeneration.html',''); initResizable(true); 
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">MasterGeneration Member List</div></div>
+  <div class="headertitle"><div class="title">StructureGeneration.h</div></div>
 </div><!--header-->
 <div class="contents">
-
-<p>This is the complete list of members for <a class="el" href="classMasterGeneration.html">MasterGeneration</a>, including all inherited members.</p>
-<table class="directory">
-  <tr bgcolor="#f0f0f0" class="even"><td class="entry"><b>generate</b>(const std::vector&lt; ActiveLink &gt; &amp;links, const std::string &amp;master_formulation, const AdditionalConstraints &amp;additionalConstraints_p) const (defined in <a class="el" href="classMasterGeneration.html">MasterGeneration</a>)</td><td class="entry"><a class="el" href="classMasterGeneration.html">MasterGeneration</a></td><td class="entry"></td></tr>
-  <tr bgcolor="#f0f0f0" class="odd"><td class="entry"><b>MasterGeneration</b>(std::filesystem::path ouput_path, std::string solver_name, std::shared_ptr&lt; ProblemGenerationLog::ProblemGenerationLogger &gt; logger, SolverLogManager &amp;solver_log_manager, FileWriter &amp;file_writer, ProblemsFormat format=ProblemsFormat::OPTIMIZED) (defined in <a class="el" href="classMasterGeneration.html">MasterGeneration</a>)</td><td class="entry"><a class="el" href="classMasterGeneration.html">MasterGeneration</a></td><td class="entry"><span class="mlabel">explicit</span></td></tr>
-</table></div><!-- contents -->
+<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &quot;LinkProblemsGenerator.h&quot;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span> </div>
+<div class="foldopen" id="foldopen00004" data-start="{" data-end="};">
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno"><a class="line" href="classStructureGeneration.html">    4</a></span><span class="keyword">class </span><a class="code hl_class" href="classStructureGeneration.html">StructureGeneration</a></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span>{</div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span>    <a class="code hl_class" href="classStructureGeneration.html">StructureGeneration</a>(std::filesystem::path output_path,</div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span>                        std::string solver_name,</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span>                        ProblemsFormat format = ProblemsFormat::OPTIMIZED);</div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span>    <span class="keywordtype">void</span> operator()(<span class="keyword">const</span> std::vector&lt;Candidate&gt;&amp; candidates, <span class="keyword">const</span> Couplings&amp; couplings) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span> </div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="keyword">private</span>:</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>    <span class="keywordtype">void</span> write_structure_file(<span class="keyword">const</span> std::vector&lt;Candidate&gt;&amp; candidates,</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span>                              <span class="keyword">const</span> Couplings&amp; couplings) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span>    std::string solver_name_;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    ProblemsFormat format_;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>    std::filesystem::path output_path_;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>};</div>
+</div>
+<div class="ttc" id="aclassStructureGeneration_html"><div class="ttname"><a href="classStructureGeneration.html">StructureGeneration</a></div><div class="ttdef"><b>Definition</b> StructureGeneration.h:5</div></div>
+</div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
+    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_dfdbda394c3f7a3aa55229f33a559c41.html">cpp</a></li><li class="navelem"><a class="el" href="dir_e82b02a6724f3381c006d85ad5b9fc3b.html">lpnamer</a></li><li class="navelem"><a class="el" href="dir_e6f25a82ee20e4e8e60623c7da1f363f.html">problem_modifier</a></li><li class="navelem"><a class="el" href="dir_7428275c358f803a111cea397ed62bd7.html">include</a></li><li class="navelem"><a class="el" href="dir_5b6a104ba380976b60b70aaacaab9966.html">antares-xpansion</a></li><li class="navelem"><a class="el" href="dir_4f6847cc287769681663d5672b5e31ce.html">lpnamer</a></li><li class="navelem"><a class="el" href="dir_0ea1c8196201bfcc974b3c0ef332f54f.html">problem_modifier</a></li><li class="navelem"><b>StructureGeneration.h</b></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
   </ul>
 </div>

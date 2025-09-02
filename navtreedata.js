@@ -383,14 +383,14 @@ var NAVTREE =
 var NAVTREEINDEX =
 [
 "ActiveLinks_8h_source.html",
-"classBendersSequential.html",
-"classNOOPSolverForSubproblemWorker.html#a31db74ce96c186ff9751feecc86d54ee",
-"classSolverCbc.html#a21eca2a1adf0d46c08294fa5e5564871",
-"classWriterMockStatus.html",
-"classantares__xpansion_1_1split__link__profile_1_1SplitLinkProfile_1_1ProfileFileValueError.html",
-"dir_cb4958ed94c8eabb59510d82c41f5351.html",
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md165",
-"structCatch_1_1pluralise.html"
+"classBendersProblemFromFile.html",
+"classNOOPSolverForSubproblemWorker.html",
+"classSolverCbc.html#a21a7dfd94c6bd1ac0e32a35a866d98fb",
+"classWorkerMasterData.html#ab607ad86ef5badf22f0ed51e097aad77",
+"classantares__xpansion_1_1split__link__profile_1_1SplitLinkProfile_1_1LinkProfileFileNotFound.html",
+"dir_c9c60946a81f10d8287f9fce9cf37b31.html",
+"md_docs_2user-guide_2get-started_2installation.html#autotoc_md163",
+"structCatch_1_1is__callable__tester.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
