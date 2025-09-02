@@ -254,7 +254,7 @@ void Presolve::reduce_problems(std::shared_ptr<SolverAbstract> solver,
         const auto full2reduced = get_candidates_presolve_map(*solver, candidate_indices);
         update_reduced_couplings_for_file(reduced_couplings, filename, var_map, full2reduced);
 
-        if (options.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE)
+        if (options.PROBLEMS_FORMAT == ProblemsFormat::OPTIMIZED)
         {
             /*
             When we force presolve_only, we interrupt the problem leaving it in a
