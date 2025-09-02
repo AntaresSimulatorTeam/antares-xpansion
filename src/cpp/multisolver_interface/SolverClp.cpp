@@ -372,6 +372,16 @@ void SolverClp::del_rows(int first, int last)
     _clp.deleteRows(last - first + 1, mindex.data());
 }
 
+void SolverClp::del_cols(int first, int last)
+{
+    std::vector<int> mindex(last - first + 1);
+    for (int i = 0; i < last - first + 1; i++)
+    {
+        mindex[i] = first + i;
+    }
+    _clp.deleteColumns(last - first + 1, mindex.data());
+}
+
 void SolverClp::add_rows(int newrows,
                          int newnz,
                          const char* qrtype,
@@ -515,6 +525,16 @@ void SolverClp::chg_rhs(int id_row, double val)
 {
     const double* rowLower = _clp.getRowLower();
     const double* rowUpper = _clp.getRowUpper();
+
+    char row_type;
+    get_row_type(&row_type, id_row, id_row);
+
+    if (row_type == 'E')
+    {
+        _clp.setRowLower(id_row, val);
+        _clp.setRowUpper(id_row, val);
+        return;
+    }
 
     if (rowLower[id_row] <= -COIN_DBL_MAX)
     {

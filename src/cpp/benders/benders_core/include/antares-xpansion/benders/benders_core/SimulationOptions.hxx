@@ -82,6 +82,15 @@ BENDERS_OPTIONS_MACRO(DO_OUTER_LOOP, bool, false, asBool())
 
 // Outer Loop Options file
 BENDERS_OPTIONS_MACRO(OUTER_LOOP_OPTION_FILE, std::string, "adequacy_criterion.yml", asString())
+
 // area file
 BENDERS_OPTIONS_MACRO(AREA_FILE, std::string, "area.txt", asString())
+
+// cache problems
 BENDERS_OPTIONS_MACRO(CACHE_PROBLEMS, bool, false, asBool())
+
+// Master solution tolerance
+BENDERS_OPTIONS_MACRO(MASTER_SOLUTION_TOLERANCE, double, 1e-4, asDouble())
+
+// Cut coefficient tolerance
+BENDERS_OPTIONS_MACRO(CUT_COEFFICIENT_TOLERANCE, double, 5e-3, asDouble())

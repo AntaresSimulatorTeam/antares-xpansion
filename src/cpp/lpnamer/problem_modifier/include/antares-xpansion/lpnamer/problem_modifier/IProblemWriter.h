@@ -4,6 +4,7 @@
 
 #pragma once
 
+#include "antares-xpansion/core/ProblemFormat.h"
 #include "antares-xpansion/lpnamer/model/Problem.h"
 
 class IProblemWriter

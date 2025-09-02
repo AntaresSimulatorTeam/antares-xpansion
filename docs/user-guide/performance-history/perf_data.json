@@ -45,9 +45,9 @@
                 {
                     "version": 1.4,
                     "batch_size": 96,
-                    "antares": 313,
-                    "problem_generation": 347,
-                    "benders": 1061
+                    "antares": 587,
+                    "problem_generation": 141,
+                    "benders": 1038
                 }
             ]
         },
@@ -96,9 +96,9 @@
                 {
                     "version": 1.4,
                     "batch_size": 96,
-                    "antares": 390,
-                    "problem_generation": 344,
-                    "benders": 961
+                    "antares": 728,
+                    "problem_generation": 142,
+                    "benders": 959
                 }
             ]
         },
@@ -147,9 +147,9 @@
                 {
                     "version": 1.4,
                     "batch_size": 96,
-                    "antares": 333,
-                    "problem_generation": 362,
-                    "benders": 972
+                    "antares": 604,
+                    "problem_generation": 145,
+                    "benders": 987
                 }
             ]
         },
@@ -198,9 +198,9 @@
                 {
                     "version": 1.4,
                     "batch_size": 96,
-                    "antares": 283,
-                    "problem_generation": 393,
-                    "benders": 544
+                    "antares": 529,
+                    "problem_generation": 80,
+                    "benders": 590
                 }
             ]
         }

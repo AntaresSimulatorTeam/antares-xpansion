@@ -139,6 +139,7 @@ public:
 
 public:
     void del_rows(int first, int last) override;
+    void del_cols(int first, int last) override;
     void add_rows(int newrows,
                   int newnz,
                   const char* qrtype,

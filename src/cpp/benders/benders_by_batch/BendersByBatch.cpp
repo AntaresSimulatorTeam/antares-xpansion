@@ -154,9 +154,12 @@ void BendersByBatch::SeparationLoop()
         ResetSimplexIterationsBounds();
 
         _logger->log_at_initialization(_data.it + GetNumIterationsBeforeRestart());
-        ComputeXCut();
-        _logger->log_iteration_candidates(bendersDataToLogData(_data));
+        if (Rank() == rank_0)
+        {
+            ComputeXCut();
+        }
         BroadcastXCut();
+        _logger->log_iteration_candidates(bendersDataToLogData(_data));
         UpdateRemainingEpsilon();
         _data.number_of_subproblem_solved = 0;
         SolveBatches();
@@ -190,6 +193,7 @@ void BendersByBatch::ComputeXCut()
                                 + (1 - Options().SEPARATION_PARAM) * _data.x_in[name];
         }
     }
+    roundXCut();
 }
 
 void BendersByBatch::UpdateRemainingEpsilon()

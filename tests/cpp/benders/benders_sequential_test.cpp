@@ -107,6 +107,11 @@ public:
     _data.x_in = x_in;
   }
 
+  void set_invest_bounds(Point min_invest, Point max_invest) {
+    _data.min_invest = min_invest;
+    _data.max_invest = max_invest;
+  }
+
   void set_ub(double ub) { parametrized_ub = ub; }
   void set_it(int it) { parametrized_it = it; }
 };
@@ -147,28 +152,27 @@ protected:
                           std::filesystem::copy_options::update_existing);
   }
 
-  BaseOptions init_base_options(const std::string &solver = "COIN") const {
-    BaseOptions base_options;
+  SolverBaseOptions init_base_options(const std::string &solver = "COIN") const {
+    SolverBaseOptions solver_options;
 
-    base_options.LOG_LEVEL = 0;
-    base_options.SLAVE_WEIGHT_VALUE = 1;
-    base_options.OUTPUTROOT = "my_output";
-    base_options.SLAVE_WEIGHT = "CONSTANT";
-    base_options.MASTER_NAME = "mip_toy_prob";
-    base_options.STRUCTURE_FILE = "my_structure.txt";
-    base_options.INPUTROOT = tmpDir.string();
-    base_options.SOLVER_NAME = solver;
-    base_options.weights = {};
-    base_options.RESUME = false;
+    solver_options.LOG_LEVEL = 0;
+    solver_options.SLAVE_WEIGHT_VALUE = 1;
+    solver_options.OUTPUTROOT = "my_output";
+    solver_options.SLAVE_WEIGHT = "CONSTANT";
+    solver_options.MASTER_NAME = "mip_toy_prob";
+    solver_options.STRUCTURE_FILE = "my_structure.txt";
+    solver_options.INPUTROOT = tmpDir.string();
+    solver_options.SOLVER_NAME = solver;
+    solver_options.weights = {};
 
-    return base_options;
+    return solver_options;
   }
 
   BendersBaseOptions init_benders_options(
     MasterFormulation master_formulation, int max_iter, double relaxed_gap,
     double sep_param, const std::string &solver = "COIN") const {
-    BaseOptions base_options(init_base_options(solver));
-    BendersBaseOptions options(base_options);
+    SolverBaseOptions solver_options(init_base_options(solver));
+    BendersBaseOptions options(solver_options);
 
     options.MAX_ITERATIONS = max_iter;
     options.ABSOLUTE_GAP = 1e-4;
@@ -179,6 +183,7 @@ protected:
 
     options.MASTER_FORMULATION = master_formulation;
 
+    options.RESUME = false;
     options.AGGREGATION = false;
     options.TRACE = false;
     options.BOUND_ALPHA = true;
@@ -224,7 +229,7 @@ TEST_F(BendersSequentialTest, MasterNotRelaxedWhenSepSetToOne) {
     master_formulation, max_iter, relaxed_gap, sep_param);
 
   benders.set_data(true, 0);
-
+  
   benders.launch();
   std::vector<char> nb_units_col_types = get_nb_units_col_types(benders);
 
@@ -337,6 +342,8 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhithoutImprovement) {
 
   Point x_out = {{"x1", 1}, {"x2", 2}};
   Point x_in = {{"x1", 3}, {"x2", 6}};
+  Point min_invest = {{"x1", 0}, {"x2", 0}};
+  Point max_invest = {{"x1", 10}, {"x2", 10}};
 
   BendersSequentialDouble benders = init_benders_sequential(
     master_formulation, max_iter, relaxed_gap, sep_param);
@@ -346,6 +353,7 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhithoutImprovement) {
   benders.set_it(current_it);
   benders.set_bestx(x_out, x_in);
   benders.set_ub(current_ub);
+  benders.set_invest_bounds(min_invest, max_invest);
 
   Point expec_x_cut;
   for (const auto &[coord, val]: x_out) {
@@ -382,6 +390,9 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhenImprovement) {
   Point x_out = {{"x1", 1}, {"x2", 2}};
   Point x_in = {{"x1", 3}, {"x2", 6}};
 
+  Point min_invest = {{"x1", 0}, {"x2", 0}};
+  Point max_invest = {{"x1", 10}, {"x2", 10}};
+
   BendersSequentialDouble benders = init_benders_sequential(
     master_formulation, max_iter, relaxed_gap, sep_param);
 
@@ -390,6 +401,7 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhenImprovement) {
   benders.set_it(current_it);
   benders.set_bestx(x_out, x_in);
   benders.set_ub(current_ub);
+  benders.set_invest_bounds(min_invest, max_invest);
 
   Point expec_x_cut;
   for (const auto &[coord, val]: x_out) {
@@ -475,7 +487,7 @@ TEST_P(BendersSequentialTestBySolver, CreateMasterProblemProperlyWhenRestore) {
 
   BendersSequentialDouble benders =
       init_benders_sequential(MasterFormulation::RELAXED, 100, 1e-4, 1e-6,
-                              GetParam(), ProblemsFormat::SAVED_FILE);
+                              GetParam(), ProblemsFormat::OPTIMIZED);
   benders.InitializeProblems();
 
   // Assert that the master problem has been created properly

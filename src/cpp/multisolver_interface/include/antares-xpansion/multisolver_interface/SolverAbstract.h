@@ -61,7 +61,7 @@ public:
         }
     }
 
-    ~SolverLogManager()
+    virtual ~SolverLogManager()
     {
         if (log_file_ptr)
         {
@@ -226,7 +226,9 @@ public:
     /**
      * @brief constructor of SolverAbstract class : does nothing
      */
-    SolverAbstract(){};
+    SolverAbstract()
+    {
+    }
 
     /**
      * @brief Copy constructor, copy the problem "toCopy" in memory and name it
@@ -236,12 +238,16 @@ public:
      * @param toCopy : Pointer to an AbstractSolver object, containing a solver
      * object to copy
      */
-    SolverAbstract(const std::string& name, const SolverAbstract::Ptr toCopy){};
+    SolverAbstract(const std::string& name, const SolverAbstract::Ptr toCopy)
+    {
+    }
 
     /**
      * @brief destructor of SolverAbstract class : does nothing
      */
-    virtual ~SolverAbstract(){};
+    virtual ~SolverAbstract()
+    {
+    }
 
     /**
      * @brief Returns number of instances of solver currently in memory
@@ -585,6 +591,14 @@ public:
      * @param last   : last row index to delete
      */
     virtual void del_rows(int first, int last) = 0;
+
+    /**
+     * @brief Deletes col at index first and last
+     *
+     * @param first  : first col index to delete
+     * @param last   : last col index to delete
+     */
+    virtual void del_cols(int first, int last) = 0;
 
     /**
     * @brief Adds rows to the problem

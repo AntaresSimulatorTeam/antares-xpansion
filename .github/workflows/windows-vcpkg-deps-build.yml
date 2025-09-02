@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - ci/*
-      - dependabot/*
+      - dependabot/**
   schedule:
     - cron: '00 00 * * 0' # Sunday, midnight
 jobs:
@@ -23,7 +23,7 @@ jobs:
       VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: true
 
@@ -53,8 +53,7 @@ jobs:
       - name: Pre-requisites
         shell: cmd
         run: |
-          choco install wget zip unzip --no-progress
-          wget -nv https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
+          curl -OLs https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
           msmpisetup.exe -unattend
 
       - name: Read antares-xpansion version

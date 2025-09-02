@@ -34,12 +34,58 @@ TEST_CASE("Modification: deleting rows", "[modif][del-rows]") {
                        &n_returned, 0, n_cstr - 1);
 
       REQUIRE(solver->get_nrows() == datas[inst]._nrows - 1);
-      REQUIRE(n_returned == datas[inst]._matval_delete.size());
-      REQUIRE(matval == datas[inst]._matval_delete);
-      REQUIRE(mind == datas[inst]._mind_delete);
-      REQUIRE(mstart == datas[inst]._mstart_delete);
+      REQUIRE(n_returned == datas[inst]._matval_delete_row.size());
+      REQUIRE(matval == datas[inst]._matval_delete_row);
+      REQUIRE(mind == datas[inst]._mind_delete_row);
+      REQUIRE(mstart == datas[inst]._mstart_delete_row);
     }
   }
+}
+
+TEST_CASE("Modification: deleting cols", "[modif][del-cols]")
+{
+    AllDatas datas;
+    fill_datas(datas);
+
+    SolverFactory factory;
+
+    auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB);
+    SECTION("Loop on instances")
+    {
+        for (const auto& solver_name: factory.get_solvers_list())
+        {
+            std::filesystem::path instance = datas[inst]._path;
+
+            //========================================================================================
+            // solver declaration
+            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
+            solver->read_prob_mps(instance);
+
+            //========================================================================================
+            // Deleting a col and checking new variables matrix
+            solver->del_cols(0, 0);
+
+            int n_elems = solver->get_nelems();
+            int n_cstr = solver->get_nrows();
+            std::vector<double> matval(n_elems);
+            std::vector<int> mstart(n_cstr + 1);
+            std::vector<int> mind(n_elems);
+            int n_returned(0);
+            solver->get_rows(mstart.data(),
+                             mind.data(),
+                             matval.data(),
+                             n_elems,
+                             &n_returned,
+                             0,
+                             n_cstr - 1);
+
+            REQUIRE(solver->get_ncols() == datas[inst]._ncols - 1);
+            REQUIRE(n_returned == datas[inst]._matval_delete_col.size());
+            REQUIRE(matval == datas[inst]._matval_delete_col);
+            REQUIRE(mind == datas[inst]._mind_delete_col);
+            REQUIRE(mstart == datas[inst]._mstart_delete_col);
+        }
+    }
 }
 
 TEST_CASE("Modification: add rows", "[modif][add-rows]") {
@@ -176,7 +222,7 @@ TEST_CASE("Modification: change right-hand side", "[modif][chg-rhs]") {
 
   SolverFactory factory;
 
-  auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB);
+  auto inst = GENERATE(MIP_TOY, MULTIKP, UNBD_PRB, INFEAS_PRB, EQUALITY);
   SECTION("Loop on instances") {
     for (auto const& solver_name : factory.get_solvers_list()) {
       std::filesystem::path instance = datas[inst]._path;

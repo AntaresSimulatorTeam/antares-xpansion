@@ -20,6 +20,9 @@ refer to the [developer guide](../../developer-guide/install_from_sources/0-INST
 
 ## Installation instruction
 
+To properly run antares Xpansion on unix system you need mpi 4.x installed on your system. One way is to install openmpi
+4.x
+
 Once you have downloaded the archive, extract the files in the folder of your choice. You are now ready to use
 Antares-Xpansion.
 

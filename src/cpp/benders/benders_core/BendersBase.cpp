@@ -5,10 +5,10 @@
 #include <numeric>
 #include <utility>
 
+#include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
 #include "antares-xpansion/benders/benders_core/LastIterationPrinter.h"
 #include "antares-xpansion/benders/benders_core/LastIterationReader.h"
 #include "antares-xpansion/benders/benders_core/LastIterationWriter.h"
-#include "antares-xpansion/benders/benders_core/ProblemFormatStream.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
@@ -396,6 +396,7 @@ void BendersBase::ComputeXCut()
                                 + (1 - _options.SEPARATION_PARAM) * _data.x_in[name];
         }
     }
+    roundXCut();
 }
 
 void BendersBase::ComputeInvestCost()
@@ -517,14 +518,18 @@ std::shared_ptr<SubproblemWorker> BendersBase::BuildProblem(
 std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
   const std::pair<std::string, VariableMap>& kvp) const
 {
+    std::shared_ptr<IBendersProblemProvider>
+      benders_problem_provider = std::make_shared<BendersProblemFromFile>(
+        GetSubproblemPath(kvp.first));
     return std::make_shared<SubproblemWorker>(kvp.second,
-                                              GetSubproblemPath(kvp.first),
                                               SubproblemWeight(_data.nsubproblem, kvp.first),
                                               Options().SOLVER_NAME,
                                               Options().LOG_LEVEL,
                                               solver_log_manager_,
                                               _logger,
-                                              _options.PROBLEMS_FORMAT);
+                                              _options.PROBLEMS_FORMAT,
+                                              benders_problem_provider.get(),
+                                              _options.CUT_COEFFICIENT_TOLERANCE);
 }
 
 void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
@@ -626,8 +631,8 @@ void compute_cut_val(const Point& var_name_subgradient, const Point& x_cut, Poin
  *  Method to add aggregated cut from subproblems to Master Problem and store
  * it in a map linking each subproblem to its set of non-aggregated cut
  *
- *  \param all_package : vector storing all cuts information for each
- * subproblem problem
+ *  \param subproblem_data_map : map storing all cuts information for each
+ * subproblem
  */
 void BendersBase::compute_cut_aggregate(const SubProblemDataMap& subproblem_data_map)
 {
@@ -649,9 +654,7 @@ void BendersBase::compute_cut_aggregate(const SubProblemDataMap& subproblem_data
 /*!
  *  \brief Add cuts in master problem
  *
- *	Add cuts in master problem according to the selected option
- *
- *  \param all_package : storage of every subproblem information
+ *  \param subproblem_data_map : storage of every subproblem information
  */
 void BendersBase::BuildCutFull(const SubProblemDataMap& subproblem_data_map)
 {
@@ -892,7 +895,7 @@ double BendersBase::SubproblemWeight(int subproblem_count, const std::string& na
  */
 std::filesystem::path BendersBase::get_master_path() const
 {
-    if (_options.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE && _options.SOLVER_NAME == "XPRESS")
+    if (_options.PROBLEMS_FORMAT == ProblemsFormat::OPTIMIZED && _options.SOLVER_NAME == "XPRESS")
     {
         return std::filesystem::path(_options.INPUTROOT) / (_options.MASTER_NAME + SAVE_SUFFIX);
     }
@@ -972,15 +975,19 @@ WorkerMasterPtr BendersBase::get_master() const
 
 void BendersBase::AddSubproblem(const std::pair<std::string, VariableMap>& kvp)
 {
+    std::shared_ptr<IBendersProblemProvider>
+      benders_problem_provider = std::make_shared<BendersProblemFromFile>(
+        GetSubproblemPath(kvp.first));
     subproblem_map[kvp.first] = std::make_shared<SubproblemWorker>(
       kvp.second,
-      GetSubproblemPath(kvp.first),
       SubproblemWeight(_data.nsubproblem, kvp.first),
       _options.SOLVER_NAME,
       _options.LOG_LEVEL,
       solver_log_manager_,
       _logger,
-      _options.PROBLEMS_FORMAT);
+      _options.PROBLEMS_FORMAT,
+      benders_problem_provider.get(),
+      _options.CUT_COEFFICIENT_TOLERANCE);
 }
 
 void BendersBase::free_subproblems()
@@ -1323,4 +1330,33 @@ void BendersBase::setCriterionComputationInputs(
   const Benders::Criterion::CriterionInputData& criterion_input_data)
 {
     criterion_computation_ = Benders::Criterion::CriterionComputation(criterion_input_data);
+}
+
+/*!
+ *  \brief  _data.x_in is within the bounds thanks to restoreFeasibility called in
+WorkerMaster::get(...). This function helps to avoid x_cut getting inifinitely close to a bound due
+to the way it is updated using x_in:
+    - Suppose x_in = x_out = 1 in the first iteration
+    - Suppose x_out always 0 in the following iterations
+    - Then x_cut will be always divided by 2 (if separation_parameter = 0.5) each time, becoming
+inifinitely small. At some point we want to round it to the bound to avoid numerical issues. We
+reuse the setting MASTER_SOLUTION_TOLERANCE
+ */
+void BendersBase::roundXCut()
+{
+    for (auto& kvp: _data.x_cut)
+    {
+        double value = kvp.second;
+        double lb = _data.min_invest.at(kvp.first);
+        double ub = _data.max_invest.at(kvp.first);
+
+        if (std::abs(value - lb) < _options.MASTER_SOLUTION_TOLERANCE)
+        {
+            kvp.second = lb;
+        }
+        else if (std::abs(value - ub) < _options.MASTER_SOLUTION_TOLERANCE)
+        {
+            kvp.second = ub;
+        }
+    }
 }

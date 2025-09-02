@@ -1,6 +1,6 @@
-
 #include "antares-xpansion/lpnamer/main/ProblemGeneration.h"
 
+#include <antares-xpansion/lpnamer/problem_modifier/StructureGeneration.h>
 #include <execution>
 #include <iostream>
 #include <tbb/tbb.h>
@@ -83,7 +83,20 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& ou
 {
     Antares::Solver::Optimization::OptimizationOptions optOptions;
 
-    optOptions.linearSolver = solverXpansionToSimulator(solver_config_);
+    auto solver_name = solverXpansionToSimulator(solver_config_);
+    optOptions.firstOptimOptions.solverName = solver_name;
+    optOptions.firstOptimOptions.solverUsesBasis = true;
+    optOptions.firstOptimOptions.solverExportsBasis = true;
+
+    optOptions.secondOptimOptions.solverName = solver_name;
+    optOptions.secondOptimOptions.solverUsesBasis = true;
+    optOptions.secondOptimOptions.solverExportsBasis = false;
+
+    if (solver_name == SolverConfig("xpress"))
+    {
+        optOptions.firstOptimOptions.solverParameters = "PRESOLVE 1";
+        optOptions.secondOptimOptions.solverParameters = "PRESOLVE 1";
+    }
     auto results = Antares::API::PerformSimulation(options_.StudyPath(), output, optOptions);
 
     /**
@@ -304,7 +317,7 @@ void ProblemGeneration::RunProblemGeneration(
             xpansion_problems.at(i)->_name = mpsList.at(i)._problem_filename;
             problems_and_data.emplace_back(xpansion_problems.at(i), mpsList.at(i));
         }
-        auto mps_file_writer = std::make_shared<FileWriter>(lpDir_);
+        auto mps_file_writer = std::make_shared<FileWriter>(configuration_manager_.Format());
         std::for_each(
           std::execution::par,
           problems_and_data.begin(),
@@ -356,7 +369,7 @@ void ProblemGeneration::RunProblemGeneration(
     }
     else // API
     {
-        auto mps_file_writer = std::make_shared<FileWriter>(lpDir_);
+        auto mps_file_writer = std::make_shared<FileWriter>(configuration_manager_.Format());
 
         // vector of pair for parallelization
         // ref to WeeklyDataFromAntares to avoid copies
@@ -412,14 +425,17 @@ void ProblemGeneration::RunProblemGeneration(
         reader->Close();
         reader->Delete();
     }
-    MasterGeneration master_generation(xpansion_output_dir,
-                                       links,
-                                       additionalConstraints,
-                                       couplings,
-                                       master_formulation,
-                                       solver_config_.Name(),
-                                       logger,
-                                       solver_log_manager);
+    FileWriter file_writer(configuration_manager_.Format());
+    MasterGeneration environment(xpansion_output_dir,
+                                 solver_config_.Name(),
+                                 logger,
+                                 solver_log_manager,
+                                 file_writer,
+                                 configuration_manager_.Format());
+    auto&& candidates = environment.generate(links, master_formulation, additionalConstraints);
+    StructureGeneration(xpansion_output_dir,
+                        solver_config_.Name(),
+                        configuration_manager_.Format())(candidates, couplings);
     (*logger)(LogUtils::LOGLEVEL::INFO)
       << "Problem Generation ran in: " << format_time_str(problem_generation_timer.elapsed())
       << std::endl;
