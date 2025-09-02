@@ -6,7 +6,7 @@ class StructureGeneration
 public:
     StructureGeneration(std::filesystem::path output_path,
                         std::string solver_name,
-                        ProblemsFormat format = ProblemsFormat::SAVED_FILE);
+                        ProblemsFormat format = ProblemsFormat::OPTIMIZED);
 
     void operator()(const std::vector<Candidate>& candidates, const Couplings& couplings) const;
 
