@@ -67,7 +67,7 @@ public:
                         double penalty_bottom_rule_curve = 0,
                         double penalty_upper_rule_curve = 0,
                         double penalty_final_level = 0,
-                        bool force_final_level = true,
+                        bool force_final_level = false,
                         std::optional<double> final_level = std::nullopt,
                         bool overflow = true);
 

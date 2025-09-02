@@ -140,7 +140,7 @@ void Reservoir::readRuleCurves(const std::filesystem::path& dir_study)
 
     initial_level = rule_curves[0][0];
 
-    for (size_t i = 7; i < rule_curves.size(); i += 7)
+    for (size_t i = 0; i < rule_curves.size(); i += 7)
     {
         bottom_rule_curve.push_back(rule_curves[i][0]);
         upper_rule_curve.push_back(rule_curves[i][1]);

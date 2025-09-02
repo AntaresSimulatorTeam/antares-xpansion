@@ -146,26 +146,26 @@ protected:
 
 TEST_F(BellmanValuesComputeTest, unitTestNoPenalties)
 {
-    ReservoirManagement
-      reservoirManagement(evaluatorMock.reservoirMock, 0, 0, 0, false, std::nullopt, false);
+    ReservoirManagement reservoirManagement(evaluatorMock.reservoirMock, 0, 0, 0);
     auto bellmanValues = BellmanValues(evaluatorMock, reservoirManagement).compute(1, 3, 6);
 
     std::vector<std::vector<double>> expected = {{180, 140, 100, 60, 60, 60},
                                                  {120, 80, 40, 40, 40, 40},
-                                                 {60, 20, 20, 20, 20, 20}};
+                                                 {60, 20, 20, 20, 20, 20},
+                                                 {0, 0, 0, 0, 0, 0}};
 
     EXPECT_EQ(bellmanValues, expected);
 }
 
 TEST_F(BellmanValuesComputeTest, unitTestPenalties)
 {
-    ReservoirManagement
-      reservoirManagement(evaluatorMock.reservoirMock, 10, 10, 0, false, std::nullopt, false);
+    ReservoirManagement reservoirManagement(evaluatorMock.reservoirMock, 10, 10, 0);
     auto bellmanValues = BellmanValues(evaluatorMock, reservoirManagement).compute(1, 3, 6);
 
-    std::vector<std::vector<double>> expected = {{220, 180, 140, 100, 60, 60},
-                                                 {160, 120, 80, 40, 40, 40},
-                                                 {100, 60, 20, 20, 20, 20}};
+    std::vector<std::vector<double>> expected = {{1220, 180, 140, 100, 60, 1060},
+                                                 {1160, 120, 80, 40, 40, 1040},
+                                                 {1100, 60, 20, 20, 20, 1020},
+                                                 {1000, 0, 0, 0, 0, 1000}};
 
     EXPECT_EQ(bellmanValues, expected);
 }
@@ -177,13 +177,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
 
     auto grid_collection = GridCollection(tmpDir / "grid.csv");
     auto grid = grid_collection.gridDefinitions[0];
-    ReservoirManagement reservoir_management(grid_collection.reservoirs.begin()->second,
-                                             0,
-                                             0,
-                                             0,
-                                             true,
-                                             std::nullopt,
-                                             false);
+    ReservoirManagement reservoir_management(grid_collection.reservoirs.begin()->second, 0, 0, 0);
 
     auto options_parser = ProblemGenerationExeOptions();
     auto config_manager = ConfigurationManager(options_parser);
@@ -227,8 +221,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
     ReservoirManagement reservoir_management(grid_collection.reservoirs.begin()->second,
                                              3000,
                                              3000,
-                                             3000,
-                                             false);
+                                             3000);
 
     auto options_parser = ProblemGenerationExeOptions();
     auto config_manager = ConfigurationManager(options_parser);
