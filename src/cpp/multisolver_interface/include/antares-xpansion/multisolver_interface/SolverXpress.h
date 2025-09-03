@@ -51,8 +51,7 @@ public:
     SolverXpress(const SolverXpress& other) = delete;
     SolverXpress& operator=(const SolverXpress& other) = delete;
 
-    ~SolverXpress();
-    int get_number_of_instances() override;
+    ~SolverXpress() override;
 
     std::string get_solver_name() const override
     {

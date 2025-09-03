@@ -14,14 +14,6 @@
  */
 class SolverCbc: public SolverAbstract
 {
-    /*************************************************************************************************
-    ----------------------------------------    ATTRIBUTES
-    ---------------------------------------
-    *************************************************************************************************/
-    static int _NumberOfProblems; /*!< Counter of the total number of Cplex
-                                     problems declared to set or end the
-                                     environment */
-
 public:
     const std::string name_ = "CBC";
     OsiClpSolverInterface _clp_inner_solver;
@@ -54,7 +46,6 @@ public:
     SolverCbc(const SolverCbc& other) = delete;
     SolverCbc& operator=(const SolverCbc& other) = delete;
     ~SolverCbc();
-    int get_number_of_instances() override;
 
     std::string get_solver_name() const override
     {

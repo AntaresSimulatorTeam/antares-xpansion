@@ -40,11 +40,6 @@ public:
     unsigned int mc_year = 0;
     unsigned int week = 0;
 
-    int get_number_of_instances() override
-    {
-        return solver_abstract_->get_number_of_instances();
-    }
-
     [[nodiscard]] std::string get_solver_name() const override
     {
         return solver_abstract_->get_solver_name();

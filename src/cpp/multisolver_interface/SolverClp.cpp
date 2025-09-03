@@ -7,7 +7,6 @@ using namespace std::literals;
 -----------------------------------    Constructor/Desctructor
 --------------------------------
 *************************************************************************************************/
-int SolverClp::_NumberOfProblems = 0;
 
 SolverClp::SolverClp(const SolverLogManager& log_manager):
     SolverClp()
@@ -21,7 +20,6 @@ SolverClp::SolverClp(const SolverLogManager& log_manager):
 
 SolverClp::SolverClp()
 {
-    _NumberOfProblems += 1;
     set_output_log_level(0);
 }
 
@@ -45,20 +43,13 @@ SolverClp::SolverClp(const SolverAbstract& toCopy):
     }
     else
     {
-        _NumberOfProblems -= 1;
         throw InvalidSolverForCopyException(toCopy.get_solver_name(), name_, LOGLOCATION);
     }
 }
 
 SolverClp::~SolverClp()
 {
-    _NumberOfProblems -= 1;
-    free();
-}
-
-int SolverClp::get_number_of_instances()
-{
-    return _NumberOfProblems;
+    SolverClp::free();
 }
 
 /*************************************************************************************************
