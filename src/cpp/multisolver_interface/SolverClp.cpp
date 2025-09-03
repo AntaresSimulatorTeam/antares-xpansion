@@ -26,7 +26,7 @@ SolverClp::SolverClp()
 }
 
 SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy):
-    SolverClp(*toCopy.get())
+    SolverClp(*toCopy)
 {
 }
 

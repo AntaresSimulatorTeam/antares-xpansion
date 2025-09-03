@@ -27,7 +27,7 @@ SolverCbc::SolverCbc()
 }
 
 SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy):
-    SolverCbc(*toCopy.get())
+    SolverCbc(*toCopy)
 {
 }
 
