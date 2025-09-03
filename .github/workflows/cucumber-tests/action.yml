@@ -8,7 +8,7 @@ inputs:
   tags:
     description: 'Tags to run (default skips tests marked @flaky or @xpress)'
     required: false
-    default: '~@flaky ~@no-ci'
+    default: '"not @flaky and not @noci"'
   mpi_path:
     description: "Mpi install directory"
     required: true

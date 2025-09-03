@@ -1,7 +1,7 @@
 # These tests may fail after any change in the presolve settings or a solver upgrade (if it implies changes in the way presolve is done). In this case, checks must be done manually to define the new expected results.
 Feature: Validate presolve step feature
 
-  @short @presolve @no-ci
+  @short @presolve @noci
   Scenario: "Presolve on additionnal-constraint"
     Given the study path is "data_test/examples/additionnal-constraints"
     And solver is "Xpress"
@@ -12,7 +12,7 @@ Feature: Validate presolve step feature
     And the generated subproblems have between 11000 and 12000 elements
 
     # The no-presolve tests are used to clearly show the difference between the sizes of the problem that are generated with and without presolve. Moreover, problems generated without presolve have deterministic size.
-  @short @no-presolve @no-ci
+  @short @no-presolve @noci
   Scenario: "No presolve on additionnal-constraint"
     Given the study path is "data_test/examples/additionnal-constraints"
     And solver is "Xpress"
