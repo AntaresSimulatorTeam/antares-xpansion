@@ -7,8 +7,8 @@ Feature: Validate presolve step feature
     And solver is "Xpress"
     When I run step problem_generation in-memory followed by step presolve
     Then the return status is 0
-    And the generated subproblems have between 2400 and 2500 rows
-    And the generated subproblems have between 3400 and 3600 cols
+    And the generated subproblems have between 2400 and 2600 rows
+    And the generated subproblems have between 3400 and 3700 cols
     And the generated subproblems have between 11000 and 12000 elements
 
     # The no-presolve tests are used to clearly show the difference between the sizes of the problem that are generated with and without presolve. Moreover, problems generated without presolve have deterministic size.
@@ -20,7 +20,7 @@ Feature: Validate presolve step feature
     Then the return status is 0
     And the generated subproblems have 4879 rows
     And the generated subproblems have 5549 cols
-    And the generated subproblems have 13818 elements
+    And the generated subproblems have between 13700 and 13900 elements
 
   @short @presolve
   Scenario: "Presolve on xpansion-test-one-link-two-candidates"

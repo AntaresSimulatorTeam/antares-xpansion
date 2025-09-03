@@ -13,7 +13,18 @@ from utils_functions import find_in_simulator_log, output_path
 _subproblem_stats_cache = {}
 
 
-def get_subproblem_statistics(lp_path):
+class SubProblemStats:
+    def __init__(self, name: str, rows=0, cols=0, elements=0):
+        self.name = name
+        self.rows = rows
+        self.cols = cols
+        self.elements = elements
+
+    def __repr__(self):
+        return f"SubProblemStats(name={self.name}, rows={self.rows}, cols={self.cols}, elements={self.elements})"
+
+
+def get_subproblem_statistics(lp_path) -> list:
     """Get statistics for all subproblems in the lp directory with caching"""
     # Créer une clé de cache basée sur le chemin et la date de modification du répertoire
     cache_key = _create_cache_key(lp_path)
@@ -26,27 +37,15 @@ def get_subproblem_statistics(lp_path):
     mps_files = glob.glob(str(lp_path / "**/*.mps"), recursive=True)
 
     if not mps_files:
-        result = (0, 0, 0)
+        result = []
         _subproblem_stats_cache[cache_key] = result
-        return result
+        return []
 
-    total_rows = 0
-    total_cols = 0
-    total_elements = 0
+    result = []
 
     for mps_file in mps_files:
         if "master" not in mps_file.lower():  # Skip master problem files
-            rows, cols, elements = analyze_mps_file(mps_file)
-            total_rows += rows
-            total_cols += cols
-            total_elements += elements
-
-    # Return average per subproblem
-    num_subproblems = len([f for f in mps_files if "master" not in f.lower()])
-    if num_subproblems > 0:
-        result = (total_rows // num_subproblems, total_cols // num_subproblems, total_elements // num_subproblems)
-    else:
-        result = (0, 0, 0)
+            result.append(analyze_mps_file(mps_file))
 
     # Stocker en cache
     _subproblem_stats_cache[cache_key] = result
@@ -86,7 +85,7 @@ def analyze_mps_file(mps_file_path):
     pb.read(mps_file_path)
     rows, cols, elements = pb.getAttrib('rows', 'cols', 'elems').values()
 
-    return rows, cols, elements
+    return SubProblemStats(mps_file_path, rows, cols, elements)
 
 
 def assert_dict_allclose(actual, expected, rtol=1e-06, atol=0):
@@ -161,43 +160,80 @@ def check_return_status(context):
 @then(u'the generated subproblems have between {min} and {max} rows')
 def check_subproblems_rows(context, min, max):
     lp_path = output_path(context.tmp_study / "output") / "lp"
-    rows, _, _ = get_subproblem_statistics(lp_path)
-    assert int(min) <= rows <= int(max), f"Expected rows between {min}-{max}, got {rows}"
+    stats = get_subproblem_statistics(lp_path)
+    errors = []
+    for pbStats in stats:
+        rows = pbStats.rows
+        if not (int(min) <= rows <= int(max)):
+            errors.append(f"{pbStats.name}: {rows} rows (expected between {min} and {max})")
+    if errors:
+        error_message = "\n".join(errors)
+        assert False, f"Some subproblems do not meet the row criteria:\n{error_message}"
 
 
-@then(u'the generated subproblems have between {min} and {max} cols')
 def check_subproblems_cols(context, min, max):
     lp_path = output_path(context.tmp_study / "output") / "lp"
-    _, cols, _ = get_subproblem_statistics(lp_path)
-    assert int(min) <= cols <= int(max), f"Expected cols between {min}-{max}, got {cols}"
+    stats = get_subproblem_statistics(lp_path)
+    errors = []
+    for pbStats in stats:
+        cols = pbStats.cols
+        if not (int(min) <= cols <= int(max)):
+            errors.append(f"{pbStats.name}: {cols} columns (expected between {min} and {max})")
+    if errors:
+        error_message = "\n".join(errors)
+        assert False, f"Some subproblems do not meet the column criteria:\n{error_message}"
 
 
-@then(u'the generated subproblems have between {min} and {max} elements')
 def check_subproblems_elements(context, min, max):
     lp_path = output_path(context.tmp_study / "output") / "lp"
-    _, _, elements = get_subproblem_statistics(lp_path)
-    assert int(min) <= elements <= int(max), f"Expected elements between {min}-{max}, got {elements}"
+    stats = get_subproblem_statistics(lp_path)
+    errors = []
+    for pbStats in stats:
+        elements = pbStats.elements
+        if not (int(min) <= elements <= int(max)):
+            errors.append(f"{pbStats.name}: {elements} elements (expected between {min} and {max})")
+    if errors:
+        error_message = "\n".join(errors)
+        assert False, f"Some subproblems do not meet the element criteria:\n{error_message}"
 
 
 @then(u'the generated subproblems have {n} rows')
 def check_subproblems_exact_row(context, n):
     lp_path = output_path(context.tmp_study / "output") / "lp"
-    rows, _, _ = get_subproblem_statistics(lp_path)
-    assert rows == int(n), f"Expected exactly {n} rows, got {rows}"
+    stats = get_subproblem_statistics(lp_path)
+    errors = []
+    for pbStats in stats:
+        if pbStats.rows != int(n):
+            errors.append(f"{pbStats.name}: {pbStats.rows} rows (expected exactly {n})")
+    if errors:
+        error_message = "\n".join(errors)
+        assert False, f"Some subproblems do not have exactly {n} rows:\n{error_message}"
 
 
 @then(u'the generated subproblems have {n} cols')
 def check_subproblems_exact_cols(context, n):
     lp_path = output_path(context.tmp_study / "output") / "lp"
-    _, cols, _ = get_subproblem_statistics(lp_path)
-    assert cols == int(n), f"Expected exactly {n} cols, got {cols}"
+    stats = get_subproblem_statistics(lp_path)
+    errors = []
+    for pbStats in stats:
+        if pbStats.cols != int(n):
+            errors.append(f"{pbStats.name}: {pbStats.cols} cols (expected exactly {n})")
+    if errors:
+        error_message = "\n".join(errors)
+        assert False, f"Some subproblems do not have exactly {n} cols:\n{error_message}"
 
 
 @then(u'the generated subproblems have {n} elements')
 def check_subproblems_exact_elements(context, n):
     lp_path = output_path(context.tmp_study / "output") / "lp"
-    _, _, elements = get_subproblem_statistics(lp_path)
-    assert elements == int(n), f"Expected exactly {n} elements, got {elements}"
+    stats = get_subproblem_statistics(lp_path)
+    errors = []
+    for pbStats in stats:
+        if pbStats.elements != int(n):
+            errors.append(f"{pbStats.name}: {pbStats.elements} elements (expected exactly {n})")
+    if errors:
+        error_message = "\n".join(errors)
+        assert False, f"Some subproblems do not have exactly {n} elements:\n{error_message}"
 
 
 @then("the simulation takes less than {seconds:d} seconds")
