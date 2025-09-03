@@ -106,7 +106,7 @@ def get_out_data(output_dir, files_to_read: FilesToRead) -> Outputs:
     return None
 
 
-def output_path(output_dir: Path, use_archive: bool = True) -> Path | None:
+def output_path(output_dir: Path, use_archive: bool = True) -> Path:
     """
     Returns the output path for the simulation results.
     If use_archive is True, it returns the path to the zip file containing the results.
