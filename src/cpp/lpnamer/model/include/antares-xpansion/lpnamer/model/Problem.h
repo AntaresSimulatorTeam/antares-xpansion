@@ -18,13 +18,13 @@ class Problem: public SolverAbstract
 public:
     Problem() = delete;
 
-    explicit Problem(SolverAbstract::Ptr solver_abstract):
+    explicit Problem(std::shared_ptr<SolverAbstract> solver_abstract):
         solver_abstract_(std::move(solver_abstract))
     {
     }
 
 private:
-    const SolverAbstract::Ptr solver_abstract_;
+    const std::shared_ptr<SolverAbstract> solver_abstract_;
 
 public:
     [[nodiscard]] unsigned int McYear() const

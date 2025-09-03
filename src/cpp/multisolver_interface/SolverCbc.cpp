@@ -252,7 +252,7 @@ void SolverCbc::set_basis(std::span<int> rstatus, std::span<int> cstatus)
     _cbc.solver()->setBasisStatus(rstatus.data(), cstatus.data());
 }
 
-void SolverCbc::copy_prob(const SolverAbstract::Ptr fictif_solv)
+void SolverCbc::copy_prob(std::shared_ptr<SolverAbstract> fictif_solv)
 {
     auto error = LOGLOCATION + "Copy CBC problem : TO DO WHEN NEEDED";
     throw NotImplementedFeatureSolverException(error);

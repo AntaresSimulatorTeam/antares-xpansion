@@ -45,7 +45,7 @@ SolverXpress::SolverXpress()
     _xprs = NULL;
 }
 
-SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy):
+SolverXpress::SolverXpress(std::shared_ptr<SolverAbstract> toCopy):
     SolverXpress(static_cast<const std::shared_ptr<const SolverAbstract>>(toCopy))
 {
 }
@@ -237,7 +237,7 @@ void SolverXpress::set_basis(std::span<int> rstatus, std::span<int> cstatus)
     zero_status_check(status, "set basis", LOGLOCATION);
 }
 
-void SolverXpress::copy_prob(const SolverAbstract::Ptr fictif_solv)
+void SolverXpress::copy_prob(std::shared_ptr<SolverAbstract> fictif_solv)
 {
     auto error = LOGLOCATION + "Copy XPRESS problem : TO DO WHEN NEEDED";
     throw NotImplementedFeatureSolverException(error);

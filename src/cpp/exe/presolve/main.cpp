@@ -22,7 +22,7 @@ int main(int argc, char** argv)
                                 std::string(Presolve::PRESOLVE_CONTEXT));
 
         Presolve presolve;
-        SolverAbstract::Ptr solver_ptr = presolve.init_solver(options, logger);
+        std::shared_ptr<SolverAbstract> solver_ptr = presolve.init_solver(options, logger);
 
         presolve.reduce_problems(solver_ptr, options, logger);
 

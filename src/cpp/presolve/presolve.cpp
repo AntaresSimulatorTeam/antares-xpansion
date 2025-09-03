@@ -85,8 +85,8 @@ void update_reduced_couplings_for_file(CouplingMap& reduced_couplings,
 
 } // namespace
 
-SolverAbstract::Ptr Presolve::init_solver(const PresolveOptions& options,
-                                          std::shared_ptr<ILogger>& logger)
+std::shared_ptr<SolverAbstract> Presolve::init_solver(const PresolveOptions& options,
+                                                      std::shared_ptr<ILogger>& logger)
 {
     SolverConfig config(options.SOLVER_NAME);
     if (!(config == "Xpress"))

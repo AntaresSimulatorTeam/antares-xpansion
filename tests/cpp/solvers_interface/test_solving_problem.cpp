@@ -20,7 +20,7 @@ TEST_CASE("A LP problem is solved", "[solve-lp]")
 
             //========================================================================================
             // Solver declaration and read problem
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
+            std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
             solver->read_prob_mps(instance);
 
             //========================================================================================
@@ -76,7 +76,7 @@ TEST_CASE("A LP problem is solved and we can get the LP value", "[solve-lp][get-
             auto instance = datas[inst]._path;
             //========================================================================================
             // Solver declaration
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
+            std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
             solver->read_prob_mps(instance);
 
             //========================================================================================
@@ -141,7 +141,7 @@ TEST_CASE("A LP problem is solved and we can get the LP solution", "[solve-lp][g
             std::filesystem::path instance = datas[inst]._path;
             //========================================================================================
             // Solver declaration and read problem
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
+            std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
             solver->read_prob_mps(instance);
 
             //========================================================================================
@@ -237,7 +237,7 @@ TEST_CASE("A problem is solved and we can get the optimal solution", "[solve-mip
                 std::filesystem::path instance = datas[inst]._path;
                 //========================================================================================
                 // Solver declaration
-                SolverAbstract::Ptr solver = factory.create_solver(solver_name);
+                std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
                 solver->read_prob_mps(instance);
 
                 //========================================================================================

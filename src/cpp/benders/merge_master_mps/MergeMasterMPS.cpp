@@ -311,8 +311,9 @@ void MergeMasterTrajectoryMPS::build_problem()
         logger_->display_message("Reading problem " + (lp_folder / nodal_lp.master).string(),
                                  LogUtils::LOGLEVEL::INFO,
                                  TRAJECTORY_LOGGER_CONTEXT);
-        SolverAbstract::Ptr solver_local = get_local_solver(options_.INPUTROOT / nodal_lp.lp_folder,
-                                                            master_file);
+        std::shared_ptr<SolverAbstract> solver_local = get_local_solver(options_.INPUTROOT
+                                                                          / nodal_lp.lp_folder,
+                                                                        master_file);
         solver_local->set_output_log_level(options_.LOG_LEVEL);
 
         StandardLp lpData(*solver_local);
