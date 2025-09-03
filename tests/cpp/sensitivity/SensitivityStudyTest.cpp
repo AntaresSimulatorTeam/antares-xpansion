@@ -20,7 +20,7 @@ public:
 
     std::vector<std::string> candidate_names;
 
-    SolverAbstract::Ptr math_problem;
+    std::shared_ptr<SolverAbstract> math_problem;
 
     std::shared_ptr<SensitivityILogger> logger;
     std::shared_ptr<SensitivityWriter> writer;

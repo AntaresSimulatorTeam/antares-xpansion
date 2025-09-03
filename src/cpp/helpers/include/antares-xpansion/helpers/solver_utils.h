@@ -119,7 +119,7 @@ void solver_addrows(SolverAbstract& solver_p,
  * @param x_p : will be filled with the variables values of the retrieved
  * solution
  */
-void solver_getlpsolution(const SolverAbstract::Ptr solver_p, std::vector<double>& x_p);
+void solver_getlpsolution(std::shared_ptr<SolverAbstract> solver_p, std::vector<double>& x_p);
 
 /**
  * @brief returns the dual values of a solved problem
@@ -127,7 +127,7 @@ void solver_getlpsolution(const SolverAbstract::Ptr solver_p, std::vector<double
  * @param solver_p  : solver containing the solved model.
  * @param dual_p : will be filled with the dual values of the retrieved solution
  */
-void solver_getlpdual(const SolverAbstract::Ptr solver_p, std::vector<double>& dual_p);
+void solver_getlpdual(std::shared_ptr<SolverAbstract> solver_p, std::vector<double>& dual_p);
 
 /**
  * @brief Returns the reduced costs of a solved problem
@@ -135,7 +135,7 @@ void solver_getlpdual(const SolverAbstract::Ptr solver_p, std::vector<double>& d
  * @param solver_p  : solver containing the solved model.
  * @param dj_p : will be filled with the reduced costs
  */
-void solver_getlpreducedcost(const SolverAbstract::Ptr solver_p, std::vector<double>& dj_p);
+void solver_getlpreducedcost(std::shared_ptr<SolverAbstract> solver_p, std::vector<double>& dj_p);
 
 /**
  * @brief Returns the row types for the rows in a given range.
@@ -182,7 +182,7 @@ void solver_getrhs(const SolverAbstract& solver_p,
  * @param first_p : First row in the range.
  * @param last_p : Last row in the range
  */
-void solver_getrhsrange(const SolverAbstract::Ptr solver_p,
+void solver_getrhsrange(std::shared_ptr<SolverAbstract> solver_p,
                         std::vector<double>& range_p,
                         int first_p,
                         int last_p);
@@ -220,7 +220,8 @@ void solver_getcolinfo(const SolverAbstract& solver_p,
  * constraint and supresses its terms i.e. replaces the indexed rows with  -inf
  * <= 0 <= +inf
  */
-void solver_deactivaterows(SolverAbstract::Ptr solver_p, const std::vector<int>& mindex);
+void solver_deactivaterows(std::shared_ptr<SolverAbstract> solver_p,
+                           const std::vector<int>& mindex);
 
 /**
  * @brief Returns the current basis
@@ -243,7 +244,7 @@ variable has no lower bound;
  *      3 : variable is super-basic.
 May be NULL if not required.
  */
-void solver_getbasis(SolverAbstract::Ptr solver_p,
+void solver_getbasis(std::shared_ptr<SolverAbstract> solver_p,
                      std::vector<int>& rstatus_p,
                      std::vector<int>& cstatus_p);
 
@@ -263,7 +264,7 @@ void solver_getbasis(SolverAbstract::Ptr solver_p,
  * @note if the same bound is changed twice the bound at the end of the vector
  * will be used and no warning will be issued
  */
-void solver_chgbounds(SolverAbstract::Ptr solver_p,
+void solver_chgbounds(std::shared_ptr<SolverAbstract> solver_p,
                       const std::vector<int>& mindex_p,
                       const std::vector<char>& qbtype_p,
                       const std::vector<double>& bnd_p);

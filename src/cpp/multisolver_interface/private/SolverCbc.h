@@ -47,7 +47,7 @@ public:
      * @param toCopy : Pointer to an AbstractSolver object, containing a CBC
      * solver to copy
      */
-    explicit SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy);
+    explicit SolverCbc(std::shared_ptr<const SolverAbstract> toCopy);
     explicit SolverCbc(const SolverAbstract& toCopy);
 
     /*SolverCbc ctor accept only std::shared_ptr*/
@@ -97,7 +97,7 @@ public:
     void read_basis(const std::filesystem::path& filename) override;
     void set_basis(std::span<int> rstatus, std::span<int> cstatus) override;
 
-    void copy_prob(const SolverAbstract::Ptr fictif_solv) override;
+    void copy_prob(std::shared_ptr<SolverAbstract> fictif_solv) override;
 
     /*************************************************************************************************
     -----------------------    Get general informations about problem
@@ -162,7 +162,7 @@ public:
     void add_name(int type, const char* cnames, int indice) override;
     void add_names(int type, const std::vector<std::string>& cnames, int first, int end) override;
     void chg_obj(const std::vector<int>& mindex, const std::vector<double>& obj) override;
-    void chg_obj_direction(const bool minimize) override;
+    void chg_obj_direction(bool minimize) override;
     void chg_bounds(const std::vector<int>& mindex,
                     const std::vector<char>& qbtype,
                     const std::vector<double>& bnd) override;

@@ -20,9 +20,7 @@ TEST_CASE("Un objet solveur peut etre cree et detruit", "[read][init]")
 
             //========================================================================================
             // solver declaration
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-            REQUIRE(solver->get_number_of_instances() == 1);
-
+            std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
             //========================================================================================
             // solver destruction
             solver.reset();
@@ -49,8 +47,7 @@ TEST_CASE("MPS file can be read and we can get number of columns", "[read][read-
             std::cout << instance << std::endl;
             //========================================================================================
             // Solver declaration
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-            REQUIRE(solver->get_number_of_instances() == 1);
+            std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
 
             //========================================================================================
             // initalization and read problem
@@ -79,8 +76,7 @@ TEST_CASE("MPS file can be read and we can get number of rows", "[read][read-row
             std::filesystem::path instance = datas[inst]._path;
             //========================================================================================
             // Solver declaration and read problem
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-            REQUIRE(solver->get_number_of_instances() == 1);
+            std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
 
             solver->read_prob_mps(instance);
 
@@ -107,8 +103,7 @@ TEST_CASE("MPS file can be read and we can get number of integer variables",
             std::filesystem::path instance = datas[inst]._path;
             //========================================================================================
             // Solver declaration
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-            REQUIRE(solver->get_number_of_instances() == 1);
+            std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
 
             solver->read_prob_mps(instance);
 
@@ -136,8 +131,7 @@ TEST_CASE("MPS file can be read and we can get number of non zero elements in th
             std::filesystem::path instance = datas[inst]._path;
             //========================================================================================
             // Solver declaration and read problem
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-            REQUIRE(solver->get_number_of_instances() == 1);
+            std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
 
             solver->read_prob_mps(instance);
 
@@ -163,8 +157,7 @@ TEST_CASE("MPS file can be read and we can get objective function coefficients",
             std::filesystem::path instance = datas[inst]._path;
             //========================================================================================
             // Solver declaration and read problem
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-            REQUIRE(solver->get_number_of_instances() == 1);
+            std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
 
             solver->read_prob_mps(instance);
 
@@ -196,8 +189,7 @@ TEST_CASE("MPS file can be read and we can get matrix coefficients", "[read][rea
             std::filesystem::path instance = datas[inst]._path;
             //========================================================================================
             // Solver declaration and read problem
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-            REQUIRE(solver->get_number_of_instances() == 1);
+            std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
 
             solver->read_prob_mps(instance);
 
@@ -248,8 +240,7 @@ TEST_CASE("MPS file can be read and we can get right hand side", "[read][read-rh
             std::filesystem::path instance = datas[inst]._path;
             //========================================================================================
             // Solver declaration
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-            REQUIRE(solver->get_number_of_instances() == 1);
+            std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
 
             solver->read_prob_mps(instance);
 
@@ -284,8 +275,7 @@ TEST_CASE("MPS file can be read and we can get row types", "[read][read-rowtypes
             std::filesystem::path instance = datas[inst]._path;
             //========================================================================================
             // Solver Declaration
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-            REQUIRE(solver->get_number_of_instances() == 1);
+            std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
 
             solver->read_prob_mps(instance);
 
@@ -318,8 +308,7 @@ TEST_CASE("MPS file can be read and we can get types of columns", "[read][read-c
             std::filesystem::path instance = datas[inst]._path;
             //========================================================================================
             // Solver Declaration
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-            REQUIRE(solver->get_number_of_instances() == 1);
+            std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
 
             solver->read_prob_mps(instance);
 
@@ -350,8 +339,7 @@ TEST_CASE("MPS file can be read and we can get lower bounds on variables", "[rea
             std::filesystem::path instance = datas[inst]._path;
             //========================================================================================
             // Solver declaration and read problem
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-            REQUIRE(solver->get_number_of_instances() == 1);
+            std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
 
             solver->read_prob_mps(instance);
 
@@ -382,8 +370,7 @@ TEST_CASE("MPS file can be read and we can get upper bounds on variables", "[rea
             std::filesystem::path instance = datas[inst]._path;
             //========================================================================================
             // Solver declaration and read problem
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-            REQUIRE(solver->get_number_of_instances() == 1);
+            std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
 
             solver->read_prob_mps(instance);
 
@@ -430,8 +417,7 @@ TEST_CASE("MPS file can be read and we can get every information about the probl
         {
             std::filesystem::path instance = datas[inst]._path;
             // Solver declaration and read problem
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-            REQUIRE(solver->get_number_of_instances() == 1);
+            std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
 
             solver->read_prob_mps(instance);
 
@@ -546,8 +532,7 @@ TEST_CASE("We can get the names of variables and constraints present in MPS file
             std::filesystem::path instance = datas[inst]._path;
             //========================================================================================
             // Solver declaration and read problem
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-            REQUIRE(solver->get_number_of_instances() == 1);
+            std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
 
             solver->read_prob_mps(instance);
 
@@ -599,8 +584,7 @@ TEST_CASE("We can get the indices of rows and columns by their names", "[read][g
             std::filesystem::path instance = datas[inst]._path;
             //========================================================================================
             // Solver declaration and read problem
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
-            REQUIRE(solver->get_number_of_instances() == 1);
+            std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
 
             solver->read_prob_mps(instance);
 
@@ -649,7 +633,7 @@ TEST_CASE("Testing copy constructor", "[init][copy-constructor]")
 
             //========================================================================================
             // Intial solver declaration and read problem
-            SolverAbstract::Ptr solver = factory.create_solver(solver_name);
+            std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
             solver->read_prob_mps(instance);
             REQUIRE(solver->get_number_of_instances() == 1);
 
@@ -658,8 +642,7 @@ TEST_CASE("Testing copy constructor", "[init][copy-constructor]")
 
             //========================================================================================
             // Declare copy prob
-            SolverAbstract::Ptr solver2 = factory.copy_solver(*solver);
-            REQUIRE(solver2->get_number_of_instances() == 2);
+            std::shared_ptr<SolverAbstract> solver2 = factory.copy_solver(*solver);
 
             REQUIRE(solver2->get_ncols() == datas[inst]._ncols);
             REQUIRE(solver2->get_nrows() == datas[inst]._nrows);

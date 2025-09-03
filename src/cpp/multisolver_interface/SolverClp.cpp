@@ -146,7 +146,7 @@ void SolverClp::set_basis(std::span<int> rstatus, std::span<int> cstatus)
     }
 }
 
-void SolverClp::copy_prob(const SolverAbstract::Ptr fictif_solv)
+void SolverClp::copy_prob(std::shared_ptr<SolverAbstract> fictif_solv)
 {
     auto error = LOGLOCATION + "Copy Clp problem : TO DO WHEN NEEDED";
     throw NotImplementedFeatureSolverException(error);
