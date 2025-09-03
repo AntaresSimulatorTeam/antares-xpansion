@@ -171,6 +171,7 @@ def check_subproblems_rows(context, min, max):
         assert False, f"Some subproblems do not meet the row criteria:\n{error_message}"
 
 
+@then(u'the generated subproblems have between {min} and {max} cols')
 def check_subproblems_cols(context, min, max):
     lp_path = output_path(context.tmp_study / "output") / "lp"
     stats = get_subproblem_statistics(lp_path)
@@ -184,6 +185,7 @@ def check_subproblems_cols(context, min, max):
         assert False, f"Some subproblems do not meet the column criteria:\n{error_message}"
 
 
+@then(u'the generated subproblems have between {min} and {max} elements')
 def check_subproblems_elements(context, min, max):
     lp_path = output_path(context.tmp_study / "output") / "lp"
     stats = get_subproblem_statistics(lp_path)
