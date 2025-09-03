@@ -15,7 +15,7 @@ class NOOPSolver : public SolverAbstract {
   void write_prob_lp(const std::filesystem::path &filename) override {}
   void read_prob_mps(const std::filesystem::path &filename) override {}
   void read_prob_lp(const std::filesystem::path &filename) override {}
-  void copy_prob(Ptr fictif_solv) override {}
+  void copy_prob(std::shared_ptr<SolverAbstract> fictif_solv) override {}
   int get_ncols() const override { return 0; }
   int get_nrows() const override { return 0; }
   int get_nelems() const override { return 0; }
