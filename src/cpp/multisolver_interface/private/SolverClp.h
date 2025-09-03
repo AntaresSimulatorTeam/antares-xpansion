@@ -24,6 +24,9 @@ class SolverClp: public SolverAbstract
     ----------------------------------------    ATTRIBUTES
     ---------------------------------------
     *************************************************************************************************/
+    static int _NumberOfProblems; /*!< Counter of the total number of
+                                     problems declared to set or end the
+                                     environment */
 
 public:
     ClpSimplex _clp;
@@ -56,6 +59,7 @@ public:
     SolverClp& operator=(const SolverClp& other) = delete;
 
     ~SolverClp() override;
+    int get_number_of_instances() override;
 
     std::string get_solver_name() const override
     {

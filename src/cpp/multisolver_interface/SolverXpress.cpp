@@ -107,6 +107,11 @@ SolverXpress::~SolverXpress()
     }
 }
 
+int SolverXpress::get_number_of_instances()
+{
+    return _NumberOfProblems;
+}
+
 /*************************************************************************************************
 -----------------------------------    Output stream management
 ------------------------------

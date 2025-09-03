@@ -249,6 +249,11 @@ public:
     }
 
     /**
+     * @brief Returns number of instances of solver currently in memory
+     */
+    virtual int get_number_of_instances() = 0;
+
+    /**
      * @brief Returns the solver used
      */
     virtual std::string get_solver_name() const = 0;
