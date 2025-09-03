@@ -61,12 +61,12 @@ public:
      */
     std::shared_ptr<SolverAbstract> create_solver(const std::string& solver_name) const;
     std::shared_ptr<SolverAbstract> create_solver(const std::string& solver_name,
-                                      const SolverLogManager& log_manager) const;
+                                                  const SolverLogManager& log_manager) const;
     std::shared_ptr<SolverAbstract> create_solver(const std::string& solver_name,
-                                      SOLVER_TYPE solver_type) const;
+                                                  SOLVER_TYPE solver_type) const;
     std::shared_ptr<SolverAbstract> create_solver(const std::string& solver_name,
-                                      SOLVER_TYPE solver_type,
-                                      const SolverLogManager& log_manager) const;
+                                                  SOLVER_TYPE solver_type,
+                                                  const SolverLogManager& log_manager) const;
 
     /**
      * @brief Creates and returns to an object solver from the wanted
@@ -78,12 +78,12 @@ public:
      */
     std::shared_ptr<SolverAbstract> create_solver(const SolverConfig& solver_config) const;
     std::shared_ptr<SolverAbstract> create_solver(const SolverConfig& solver_config,
-                                      SOLVER_TYPE solver_type) const;
+                                                  SOLVER_TYPE solver_type) const;
     std::shared_ptr<SolverAbstract> create_solver(const SolverConfig& solver_config,
-                                      const SolverLogManager& log_manager) const;
+                                                  const SolverLogManager& log_manager) const;
     std::shared_ptr<SolverAbstract> create_solver(const SolverConfig& solver_config,
-                                      SOLVER_TYPE solver_type,
-                                      const SolverLogManager& log_manager) const;
+                                                  SOLVER_TYPE solver_type,
+                                                  const SolverLogManager& log_manager) const;
 
     /**
      * @brief Copy constructor : Creates and returns to an object solver from the

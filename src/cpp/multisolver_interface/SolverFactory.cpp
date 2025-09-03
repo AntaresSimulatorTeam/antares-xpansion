@@ -130,7 +130,8 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
     }
 }
 
-std::shared_ptr<SolverAbstract> SolverFactory::create_solver(const SolverConfig& solver_config) const
+std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
+  const SolverConfig& solver_config) const
 {
     std::shared_ptr<SolverAbstract> ret;
     if (solver_config.Name().empty())
@@ -160,7 +161,7 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(const SolverConfig&
 }
 
 std::shared_ptr<SolverAbstract> SolverFactory::create_solver(const SolverConfig& solver_config,
-                                                 const SOLVER_TYPE solver_type) const
+                                                             const SOLVER_TYPE solver_type) const
 {
     std::shared_ptr<SolverAbstract> ret;
     if (solver_config.Name().empty())
@@ -189,8 +190,9 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(const SolverConfig&
     return ret;
 }
 
-std::shared_ptr<SolverAbstract> SolverFactory::create_solver(const SolverConfig& solver_config,
-                                                 const SolverLogManager& log_manager) const
+std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
+  const SolverConfig& solver_config,
+  const SolverLogManager& log_manager) const
 {
     if (solver_config.Name().empty())
     {
@@ -219,9 +221,10 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(const SolverConfig&
     return ret;
 }
 
-std::shared_ptr<SolverAbstract> SolverFactory::create_solver(const SolverConfig& solver_config,
-                                                 const SOLVER_TYPE solver_type,
-                                                 const SolverLogManager& log_manager) const
+std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
+  const SolverConfig& solver_config,
+  const SOLVER_TYPE solver_type,
+  const SolverLogManager& log_manager) const
 {
 #ifdef COIN_OR
     if (solver_config == COIN_STR && solver_type == SOLVER_TYPE::CONTINUOUS)
