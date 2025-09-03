@@ -74,7 +74,7 @@ Sets the optimization method used by Antares-Xpansion.
 | `mergeMPS`           | Launch a frontal resolution of the investment problem (i.e. without decomposition). This is much more time-consuming than using Benders decomposition. |
 | `adequacy_criterion` | Launch Antares-Xpansion with reliability constraints, see [Adequacy criterion](adequacy-criterion.md).                                                 |
 
-#### `--problem-format {MPS, q}`
+#### `--problem-format {MPS, OPTIMIZED}`
 
 Default value: `OPTIMIZED`.
 
