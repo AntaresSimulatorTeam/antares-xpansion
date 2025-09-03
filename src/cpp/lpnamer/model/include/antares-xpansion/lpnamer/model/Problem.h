@@ -77,7 +77,7 @@ public:
         solver_abstract_->read_prob_lp(filename);
     }
 
-    void copy_prob(Ptr fictif_solv) override
+    void copy_prob(std::shared_ptr<SolverAbstract> fictif_solv) override
     {
         solver_abstract_->copy_prob(fictif_solv);
     }
