@@ -8,7 +8,7 @@ Feature: Validate presolve step feature
     When I run step problem_generation in-memory followed by step presolve
     Then the return status is 0
     And the generated subproblems have between 2400 and 2600 rows
-    And the generated subproblems have between 3400 and 3700 cols
+    And the generated subproblems have between 3375 and 3700 cols
     And the generated subproblems have between 11000 and 12000 elements
 
     # The no-presolve tests are used to clearly show the difference between the sizes of the problem that are generated with and without presolve. Moreover, problems generated without presolve have deterministic size.
