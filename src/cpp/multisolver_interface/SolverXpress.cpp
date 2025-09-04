@@ -13,7 +13,7 @@ using namespace std::literals;
 -----------------------------------    Constructor/Desctructor
 --------------------------------
 *************************************************************************************************/
-int SolverXpress::_NumberOfProblems = 0;
+ThreadSafeCounter SolverXpress::_NumberOfProblems;
 std::mutex SolverXpress::license_guard;
 const std::map<int, std::string> TYPETONAME = {{1, "rows"}, {2, "columns"}};
 
@@ -32,7 +32,7 @@ SolverXpress::SolverXpress()
 {
     std::lock_guard<std::mutex> guard(license_guard);
     int status = 0;
-    if (_NumberOfProblems == 0)
+    if (*_NumberOfProblems == 0)
     {
         LoadXpress::XpressLoader xpress_loader;
         xpress_loader.initXpressEnv();
@@ -88,7 +88,7 @@ SolverXpress::~SolverXpress()
         _NumberOfProblems -= 1;
         SolverXpress::free();
 
-        if (_NumberOfProblems == 0)
+        if (*_NumberOfProblems == 0)
         {
             int status = XPRSfree();
             if (status)
@@ -109,7 +109,7 @@ SolverXpress::~SolverXpress()
 
 int SolverXpress::get_number_of_instances()
 {
-    return _NumberOfProblems;
+    return *_NumberOfProblems;
 }
 
 /*************************************************************************************************

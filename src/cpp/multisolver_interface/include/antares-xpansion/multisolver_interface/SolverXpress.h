@@ -16,7 +16,7 @@ class SolverXpress: public SolverAbstract
     ----------------------------------------    ATTRIBUTES
     ---------------------------------------
     *************************************************************************************************/
-    static int _NumberOfProblems; /*!< Counter of the total number of Cplex problems
+    static ThreadSafeCounter _NumberOfProblems; /*!< Counter of the total number of Cplex problems
                                   declared to set or end the environment */
     static std::mutex license_guard;
 

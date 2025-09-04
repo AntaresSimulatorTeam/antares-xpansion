@@ -18,7 +18,7 @@ class SolverCbc: public SolverAbstract
     ----------------------------------------    ATTRIBUTES
     ---------------------------------------
     *************************************************************************************************/
-    static int _NumberOfProblems; /*!< Counter of the total number of Cplex
+    static ThreadSafeCounter _NumberOfProblems; /*!< Counter of the total number of Cplex
                                      problems declared to set or end the
                                      environment */
 

@@ -6,6 +6,8 @@
 #include <iostream>
 #include <list>
 #include <memory>
+#include <mutex>
+#include <shared_mutex>
 #include <span>
 #include <sstream>
 #include <stdexcept>
@@ -191,6 +193,63 @@ enum SOLVER_STATUS
     UNBOUNDED,
     INForUNBOUND,
     UNKNOWN,
+};
+
+class ThreadSafeCounter
+{
+public:
+    int get() const noexcept
+    {
+        std::shared_lock lock(mutex_);
+        return value_;
+    }
+
+    int operator*() const noexcept
+    {
+        return get();
+    }
+
+    int operator++() noexcept
+    {
+        std::unique_lock lock(mutex_);
+        return ++value_;
+    }
+
+    int operator++(int) noexcept
+    {
+        std::unique_lock lock(mutex_);
+        return value_++;
+    }
+
+    int operator--() noexcept
+    {
+        std::unique_lock lock(mutex_);
+        return --value_;
+    }
+
+    int operator--(int) noexcept
+    {
+        std::unique_lock lock(mutex_);
+        return value_--;
+    }
+
+    int operator+=(int v) noexcept
+    {
+        std::unique_lock lock(mutex_);
+        value_ += v;
+        return value_;
+    }
+
+    int operator-=(int v) noexcept
+    {
+        std::unique_lock lock(mutex_);
+        value_ -= v;
+        return value_;
+    }
+
+private:
+    int value_ = 0;
+    mutable std::shared_mutex mutex_;
 };
 
 /*!
