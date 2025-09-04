@@ -97,8 +97,6 @@ public:
     void read_basis(const std::filesystem::path& filename) override;
     void set_basis(std::span<int> rstatus, std::span<int> cstatus) override;
 
-    void copy_prob(std::shared_ptr<SolverAbstract> fictif_solv) override;
-
     /*************************************************************************************************
     -----------------------    Get general informations about problem
     ----------------------------
@@ -172,7 +170,7 @@ public:
     void chg_obj_direction(bool minimize) override;
     void chg_bounds(const std::vector<int>& mindex,
                     const std::vector<char>& qbtype,
-                    const std::vector<double>& bnd);
+                    const std::vector<double>& bnd) override;
     void chg_col_type(const std::vector<int>& mindex, const std::vector<char>& qctype) override;
     void chg_rhs(int id_row, double val) override;
     void chg_coef(int id_row, int id_col, double val) override;

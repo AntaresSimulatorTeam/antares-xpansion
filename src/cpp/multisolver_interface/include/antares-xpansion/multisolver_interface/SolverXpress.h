@@ -90,7 +90,6 @@ public:
     void read_basis(const std::filesystem::path& filename) override;
     void set_basis(std::span<int> rstatus, std::span<int> cstatus) override;
 
-    void copy_prob(std::shared_ptr<SolverAbstract> fictif_solv) override;
     /**
      * @brief Create a new XPRSprob object by copying the matrix, objective, bounds, column
      * types, and names from the current problem. Does not use ranged rows or collen, but sets

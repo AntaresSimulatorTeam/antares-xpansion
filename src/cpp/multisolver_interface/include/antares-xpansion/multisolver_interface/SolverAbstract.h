@@ -394,13 +394,6 @@ public:
 
     virtual void set_basis(std::span<int> rstatus, std::span<int> cstatus) = 0;
 
-    /**
-     * @brief copy an existing problem
-     *
-     * @param prb_to_copy : Ptr to the
-     */
-    virtual void copy_prob(std::shared_ptr<SolverAbstract> fictif_solv) = 0;
-
     /*************************************************************************************************
     -----------------------    Get general informations about problem
     ----------------------------
