@@ -1,110 +1,154 @@
-FROM antaresrte/xpansion-centos7:1.1.2
+FROM antaresrte/xpansion-centos7:1.1.3
 
+# Métadonnées
+LABEL maintainer="AntaresSimulatorTeam"
+LABEL description="Antares Xpansion build environment with dependencies"
+LABEL version="1.1.3"
 
-
-CMD ["/bin/bash"]
-
-RUN mkdir /workspace
-
-RUN echo "source /opt/rh/devtoolset-11/enable" >> /etc/bashrc
-SHELL ["/bin/bash", "--login", "-c"]
-
-
-RUN mkdir -p /workspace/vcpkg_cache
-ARG VCPKG_CACHE_DIR
-COPY $VCPKG_CACHE_DIR /workspace/
-
-
+# Arguments de build avec valeurs par défaut
 ARG BRANCH=develop
-RUN cd /workspace && \
-    source /opt/rh/rh-git227/enable && \
-    git clone https://github.com/AntaresSimulatorTeam/antares-xpansion.git --depth=1 --single-branch --branch $BRANCH && \
-    cd antares-xpansion && \
-    git submodule update --init vcpkg && ./vcpkg/bootstrap-vcpkg.sh -disableMetrics && \
-    export VCPKG_ROOT=/workspace/antares-xpansion/vcpkg
-
-
-
-
-RUN ORTOOLS_TAG=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."or-tools-rte"' ) && \
-    echo "ORTOOLS_TAG=$ORTOOLS_TAG" && \
-    URL_ORTOOLS=https://github.com/rte-france/or-tools-rte/releases/download/v$ORTOOLS_TAG/ortools_cxx_centos7_static_sirius.zip && \
-    mkdir -p ortools && cd ortools && \
-            wget -q -O ortools.zip $URL_ORTOOLS && \
-            unzip -q ortools.zip && \
-            rm ortools.zip
-
-RUN ANTARES_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."antares_version"' ) && \
-    echo "ANTARES_VERSION=$ANTARES_VERSION" && \
-    mkdir -p deps && \
-    URL_ANTARES=https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v$ANTARES_VERSION/antares-${ANTARES_VERSION}-CentOS-7.9.2009.tar.gz && \
-    wget $URL_ANTARES && \
-    tar -xvf antares-${ANTARES_VERSION}-CentOS-7.9.2009.tar.gz -C deps --strip-components=1 &&\
-    rm -rf antares-${ANTARES_VERSION}-CentOS-7.9.2009.tar.gz
-
-WORKDIR /workspace/antares-xpansion
-
-RUN pip3 install --upgrade pip && \
-    pip3 install wheel && \
-    pip3 install -r requirements-tests.txt
-
-# Accept build arguments for ccache
+ARG VCPKG_CACHE_DIR
+ARG JOBS=4
 ARG CCACHE_DIR
 ARG CCACHE_KEY
 
+# Variables d'environnement
+ENV WORKSPACE=/workspace
+ENV VCPKG_ROOT=/workspace/antares-xpansion/vcpkg
+ENV PATH="/root/miniconda3/condabin:$PATH"
+
+# Création de la structure de répertoires
+RUN mkdir -p $WORKSPACE/vcpkg_cache
+
+# Activation des outils de développement
+RUN echo "source /opt/rh/devtoolset-11/enable" >> /etc/bashrc
+
+# Copie du cache vcpkg si disponible
+COPY ${VCPKG_CACHE_DIR:-/dev/null} $WORKSPACE/
+
+# Installation des dépendances système et clonage du repository
+RUN set -e && \
+    yum install -y jq make && \
+    yum clean all && \
+    rm -rf /var/cache/yum && \
+    cd $WORKSPACE && \
+    source /opt/rh/rh-git227/enable && \
+    git clone https://github.com/AntaresSimulatorTeam/antares-xpansion.git \
+        --depth=1 --single-branch --branch $BRANCH && \
+    cd antares-xpansion && \
+    git submodule update --init vcpkg && \
+    ./vcpkg/bootstrap-vcpkg.sh -disableMetrics
+
+# Installation d'OR-Tools
+RUN set -e && \
+    cd $WORKSPACE && \
+    ORTOOLS_TAG=$(jq -r '."or-tools-rte"' /workspace/antares-xpansion/antares-version.json) && \
+    echo "Installing OR-Tools version: $ORTOOLS_TAG" && \
+    URL_ORTOOLS="https://github.com/rte-france/or-tools-rte/releases/download/v${ORTOOLS_TAG}/ortools_cxx_centos7_static_sirius.zip" && \
+    mkdir -p ortools && \
+    cd ortools && \
+    wget -q -O ortools.zip "$URL_ORTOOLS" && \
+    unzip -q ortools.zip && \
+    rm -f ortools.zip
+
+# Installation d'Antares Simulator
+RUN set -e && \
+    cd $WORKSPACE && \
+    ANTARES_VERSION=$(jq -r '."antares_version"' /workspace/antares-xpansion/antares-version.json) && \
+    echo "Installing Antares Simulator version: $ANTARES_VERSION" && \
+    mkdir -p deps && \
+    URL_ANTARES="https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/download/v${ANTARES_VERSION}/antares-${ANTARES_VERSION}-CentOS-7.9.2009.tar.gz" && \
+    wget -q "$URL_ANTARES" && \
+    tar -xzf "antares-${ANTARES_VERSION}-CentOS-7.9.2009.tar.gz" -C deps --strip-components=1 && \
+    rm -f "antares-${ANTARES_VERSION}-CentOS-7.9.2009.tar.gz"
+
+RUN \
+    echo "source /opt/rh/devtoolset-11/enable" >> /etc/bashrc && \
+    echo "source /opt/rh/rh-git227/enable" >> /etc/bashrc
+
+SHELL ["/bin/bash", "--login", "-c"]
+
+# Configuration de l'environnement Conda
+RUN set -e && \
+    source /opt/rh/devtoolset-11/enable && \
+    cd $WORKSPACE/antares-xpansion && \
+    ls -l && \
+    conda init bash && \
+    conda env create -f environment.yml && \
+    echo "conda activate antares-xpansion" >> /etc/bashrc && \
+    echo "conda activate antares-xpansion" >> ~/.bashrc && \
+    /bin/bash -c "source ~/.bashrc && conda activate antares-xpansion && conda install -y cmake" && \
+    conda clean -ay
+
+# Définition du répertoire de travail
+WORKDIR $WORKSPACE/antares-xpansion
+
+# Configuration de l'environnement par défaut pour les commandes suivantes
+ENV CONDA_DEFAULT_ENV=antares-xpansion
+ENV PATH="/root/miniconda3/envs/antares-xpansion/bin:$PATH"
+
 # Copy ccache directory into the container
 COPY ${CCACHE_DIR:-/dev/null} /workspace/.ccache
-
-# Configure ccache environment variables
 ENV CCACHE_DIR=/workspace/.ccache
 ENV CCACHE_BASEDIR=/workspace
 ENV CCACHE_COMPRESS=1
 ENV PATH="/usr/lib/ccache:$PATH"
 
-RUN  source /opt/rh/devtoolset-11/enable && \
-     source /opt/rh/rh-git227/enable && \
+RUN \
+    conda info && \
+    conda list && \
+    conda activate antares-xpansion && \
+    conda info && \
+    conda list
+
+RUN  \
+    source /opt/rh/devtoolset-11/enable && \
+    conda activate antares-xpansion && \
      export VCPKG_BINARY_SOURCES="clear;files,/workspace/vcpkg_cache,readwrite" && \
      cmake -B _build -S . \
       -DBUILD_TESTING=ON \
       -DCMAKE_C_COMPILER_LAUNCHER=ccache \
       -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
-      -DCMAKE_PREFIX_PATH="/deps;/ortools/install" \
+      -DCMAKE_PREFIX_PATH="$WORKSPACE/deps;$WORKSPACE/ortools/install" \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_INSTALL_PREFIX=_install \
       -DALLOW_RUN_AS_ROOT=ON \
       -DVCPKG_TARGET_TRIPLET=x64-linux-release \
       -DCMAKE_TOOLCHAIN_FILE=vcpkg/scripts/buildsystems/vcpkg.cmake
 
-ARG NPROC=2
-RUN  source /opt/rh/devtoolset-11/enable && \
-     source /opt/rh/rh-git227/enable && \
+RUN  \
+    source /opt/rh/devtoolset-11/enable && \
+    conda activate antares-xpansion && \
      export VCPKG_BINARY_SOURCES="clear;files,/workspace/vcpkg_cache,readwrite" && \
-     cmake --build _build --config Release -j${NPROC} &&\
+     cmake --build _build --config Release -j${JOBS:-4} && \
      ccache -s
 # tests
-RUN export PATH=/root/miniconda3/condabin:$PATH && \
-              SITE_PACKAGE=/root/miniconda3/lib/python3.8/site-packages && \
-              XPRESS_DIR=/root/miniconda3 && \
-              export XPRESSDIR=$XPRESS_DIR && \
-              export XPAUTH_PATH=$SITE_PACKAGE/xpress/license/community-xpauth.xpr && \
-              echo "Create symbolic link for XPRESS library file because it is missing in the Python installation" && \
-              ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so && \
-              export PATH="/workspace/antares-xpansion/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH" && \
-              pushd tests/end_to_end && \
-              behave --tags ~@flaky  cucumber/features --no-capture --no-capture-stderr --format pretty && \
-              popd && \
-              cd _build && \
-              ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
+RUN \
+      SITE_PACKAGE=/root/miniconda3/envs/antares-xpansion/lib/python3.10/site-packages && \
+      XPRESS_DIR=/root/miniconda3/envs/antares-xpansion/ && \
+      export XPRESSDIR=$XPRESS_DIR && \
+      export XPAUTH_PATH=$SITE_PACKAGE/xpress/license/community-xpauth.xpr && \
+      echo "Create symbolic link for XPRESS library file because it is missing in the Python installation" && \
+      ln -s $XPRESS_DIR/lib/libxprs.so.42 $XPRESS_DIR/lib/libxprs.so && \
+      export PATH="/workspace/antares-xpansion/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH" && \
+      pushd tests/end_to_end && \
+      behave --tags ~@flaky  cucumber/features --no-capture --no-capture-stderr --format pretty && \
+      popd && \
+      cd _build && \
+      ctest -C Release --output-on-failure -L "unit|benders|lpnamer|medium"
+
 # Install
 RUN cd _build && \
     cmake --install .
 
-RUN   XPANSION_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."antares_xpansion_version"' ) && \
+RUN   \
+    XPANSION_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."antares_xpansion_version"' ) && \
       LSB_RELEASE_ID_SHORT=$(lsb_release --short --id) && \
       LSB_RELEASE_VERSION_SHORT=$(lsb_release --short --release) && \
        cd _install && \
       rm -f ./antares-xpansion-launcher* && \
-      pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml:." --add-data "./bin/:bin" && \
+      cp ../antares-xpansion-launcher.spec . && \
+      pyinstaller antares-xpansion-launcher.spec && \
       mv ./dist/antares-xpansion-launcher* . && \
       rm -rf bin && \
       rm -rf build && \
@@ -116,12 +160,11 @@ RUN   XPANSION_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | 
       mkdir -p archive/single && \
       mv $ARCHIVE_NAME archive/single
 
-RUN  XPANSION_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."antares_xpansion_version"' ) && \
+RUN  \
+    XPANSION_VERSION=$(cat /workspace/antares-xpansion/antares-version.json | jq -r '."antares_xpansion_version"' ) && \
      cd _build && \
      export FILE_NAME="antaresXpansion-$XPANSION_VERSION-CentOS-7.9.2009" && \
      cpack -G TGZ -D CPACK_PACKAGE_FILE_NAME=$FILE_NAME && \
      cd .. && \
      mkdir -p archive/multiple && \
      mv _build/${FILE_NAME}.tar.gz archive/multiple
-
-
