@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "NOOPSolver.h"
 #include "EmptyLogManager.h"
+#include "NOOPSolver.h"
 #include "antares-xpansion/benders/benders_core/WorkerMaster.h"
 #include "antares-xpansion/benders/logger/Master.h"
 
@@ -48,7 +48,7 @@ public:
     {
     }
 
-    std::filesystem::path provide_file_path() const
+    std::filesystem::path provide_file_path() const override
     {
         return "";
     }
