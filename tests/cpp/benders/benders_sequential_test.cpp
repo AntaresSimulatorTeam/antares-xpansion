@@ -180,11 +180,11 @@ protected:
         std::filesystem::current_path(original_dir);
     }
 
-    void copyMasterMps()
+    void copyMasterMps(const std::string& mps_name = "mip_toy_prob.mps")
     {
         tmpDir = CreateRandomSubDir(std::filesystem::temp_directory_path());
 
-        std::filesystem::copy(mps_dir / "mip_toy_prob.mps",
+        std::filesystem::copy(mps_dir / mps_name,
                               tmpDir,
                               std::filesystem::copy_options::update_existing);
     }
@@ -201,7 +201,8 @@ protected:
                                 | std::filesystem::copy_options::update_existing);
     }
 
-    SolverBaseOptions init_base_options(const std::string& solver = "COIN") const
+    SolverBaseOptions init_base_options(const std::string& solver,
+                                        const std::string& master_name) const
     {
         SolverBaseOptions solver_options;
 
@@ -209,7 +210,7 @@ protected:
         solver_options.SLAVE_WEIGHT_VALUE = 1;
         solver_options.OUTPUTROOT = "my_output";
         solver_options.SLAVE_WEIGHT = "CONSTANT";
-        solver_options.MASTER_NAME = "mip_toy_prob";
+        solver_options.MASTER_NAME = master_name;
         solver_options.STRUCTURE_FILE = "my_structure.txt";
         solver_options.INPUTROOT = tmpDir.string();
         solver_options.SOLVER_NAME = solver;
@@ -222,9 +223,10 @@ protected:
                                             int max_iter,
                                             double relaxed_gap,
                                             double sep_param,
-                                            const std::string& solver = "COIN") const
+                                            const std::string& solver,
+                                            const std::string& master_name) const
     {
-        SolverBaseOptions solver_options(init_base_options(solver));
+        SolverBaseOptions solver_options(init_base_options(solver, master_name));
         BendersBaseOptions options(solver_options);
 
         options.MAX_ITERATIONS = max_iter;
@@ -254,13 +256,15 @@ protected:
       double relaxed_gap,
       double sep_param,
       const std::string& solver = "COIN",
+      const std::string& master_name = "mip_toy_prob",
       ProblemsFormat format = ProblemsFormat::MPS_FILE)
     {
         BendersBaseOptions options = init_benders_options(master_formulation,
                                                           max_iter,
                                                           relaxed_gap,
                                                           sep_param,
-                                                          solver);
+                                                          solver,
+                                                          master_name);
         options.PROBLEMS_FORMAT = format;
         return BendersSequentialDouble(options, logger, writer, mathLoggerDriver);
     }
@@ -505,6 +509,37 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhenImprovement)
     EXPECT_EQ(benders.get_data().best_it, current_it + 1);
 }
 
+TEST_F(BendersSequentialTest, IntegersAndBinariesAreRelaxedAfterDeactivation)
+{
+    copyMasterMps("mip_toy_prob_binary.mps");
+    BendersSequentialDouble benders = init_benders_sequential(MasterFormulation::INTEGER,
+                                                              100,
+                                                              1e-4,
+                                                              0.5,
+                                                              "COIN",
+                                                              "mip_toy_prob_binary");
+
+    // Build only the problems to access the master without running the whole algorithm
+    benders.InitializeProblems();
+
+    // Before deactivation: the tracked ids are integer or binary columns
+    std::vector<char> types_before = get_nb_units_col_types(benders);
+    ASSERT_GT(types_before.size(), 0u);
+    for (char t: types_before)
+    {
+        EXPECT_TRUE(t == 'I' || t == 'B');
+    }
+
+    // Deactivate integrity constraints and ensure these variables become continuous
+    benders.DeactivateIntegrityConstraints();
+    std::vector<char> types_after = get_nb_units_col_types(benders);
+    ASSERT_EQ(types_after.size(), types_before.size());
+    for (char t: types_after)
+    {
+        EXPECT_EQ(t, 'C');
+    }
+}
+
 auto solvers()
 {
     std::vector<std::string> solvers_name;
@@ -581,6 +616,7 @@ TEST_P(BendersSequentialTestBySolver, CreateMasterProblemProperlyWhenRestore)
                                                               1e-4,
                                                               1e-6,
                                                               GetParam(),
+                                                              "mip_toy_prob",
                                                               ProblemsFormat::OPTIMIZED);
     benders.InitializeProblems();
 
