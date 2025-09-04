@@ -24,7 +24,7 @@ class SolverClp: public SolverAbstract
     ----------------------------------------    ATTRIBUTES
     ---------------------------------------
     *************************************************************************************************/
-    static int _NumberOfProblems; /*!< Counter of the total number of
+    static ThreadSafeCounter _NumberOfProblems; /*!< Counter of the total number of
                                      problems declared to set or end the
                                      environment */
 

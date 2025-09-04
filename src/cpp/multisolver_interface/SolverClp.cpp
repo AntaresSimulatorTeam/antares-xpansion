@@ -7,7 +7,7 @@ using namespace std::literals;
 -----------------------------------    Constructor/Desctructor
 --------------------------------
 *************************************************************************************************/
-int SolverClp::_NumberOfProblems = 0;
+ThreadSafeCounter SolverClp::_NumberOfProblems;
 
 SolverClp::SolverClp(const SolverLogManager& log_manager):
     SolverClp()
@@ -53,7 +53,7 @@ SolverClp::~SolverClp()
 
 int SolverClp::get_number_of_instances()
 {
-    return _NumberOfProblems;
+    return *_NumberOfProblems;
 }
 
 /*************************************************************************************************
