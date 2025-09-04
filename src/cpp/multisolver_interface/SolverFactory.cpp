@@ -200,7 +200,7 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
         throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
     }
     std::shared_ptr<SolverAbstract> ret;
-    if (_is_xpress_available && solver_config == XPRESS_STR)
+    if (isXpress_available_ && solver_config == XPRESS_STR)
     {
         ret = std::make_shared<SolverXpress>(log_manager);
     }

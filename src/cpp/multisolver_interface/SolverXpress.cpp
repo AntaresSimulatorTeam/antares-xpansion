@@ -67,8 +67,7 @@ SolverXpress::SolverXpress(const SolverAbstract& toCopy):
     // Try to cast the solver in fictif to a SolverXpress
     if (const auto* xpSolv = dynamic_cast<const SolverXpress*>(&toCopy))
     {
-        // status = XPRScopyprob(_xprs, xpSolv->_xprs, "");
-        _xprs = xpSolv->clone_matrix_to_new_prob();
+        status = XPRScopyprob(_xprs, xpSolv->_xprs, "");
         _log_file = toCopy._log_file;
         if (_log_file != "")
         {
