@@ -7,7 +7,7 @@ using namespace std::literals;
 -----------------------------------    Constructor/Desctructor
 --------------------------------
 *************************************************************************************************/
-int SolverCbc::_NumberOfProblems = 0;
+ThreadSafeCounter SolverCbc::_NumberOfProblems;
 
 SolverCbc::SolverCbc(const SolverLogManager& log_manager):
     SolverCbc()
@@ -62,7 +62,7 @@ SolverCbc::~SolverCbc()
 
 int SolverCbc::get_number_of_instances()
 {
-    return _NumberOfProblems;
+    return *_NumberOfProblems;
 }
 
 void SolverCbc::defineCbcModelFromInnerSolver()
