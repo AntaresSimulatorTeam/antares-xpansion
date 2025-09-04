@@ -13,9 +13,17 @@ using namespace std::literals;
 -----------------------------------    Constructor/Desctructor
 --------------------------------
 *************************************************************************************************/
-ThreadSafeCounter SolverXpress::_NumberOfProblems;
 std::mutex SolverXpress::license_guard;
 const std::map<int, std::string> TYPETONAME = {{1, "rows"}, {2, "columns"}};
+
+namespace
+{
+static ThreadSafeCounter& number_of_problems_counter()
+{
+    static ThreadSafeCounter counter;
+    return counter;
+}
+} // namespace
 
 SolverXpress::SolverXpress(const SolverLogManager& log_manager):
     SolverXpress()
@@ -32,7 +40,7 @@ SolverXpress::SolverXpress()
 {
     std::lock_guard<std::mutex> guard(license_guard);
     int status = 0;
-    if (*_NumberOfProblems == 0)
+    if (*number_of_problems_counter() == 0)
     {
         LoadXpress::XpressLoader xpress_loader;
         xpress_loader.initXpressEnv();
@@ -40,7 +48,7 @@ SolverXpress::SolverXpress()
         zero_status_check(status, "initialize XPRESS environment", LOGLOCATION);
     }
 
-    _NumberOfProblems += 1;
+    number_of_problems_counter() += 1;
 
     _xprs = NULL;
 }
@@ -65,7 +73,7 @@ SolverXpress::SolverXpress(const SolverAbstract& toCopy):
     }
     else
     {
-        _NumberOfProblems -= 1;
+        number_of_problems_counter() -= 1;
         SolverXpress::free();
         throw InvalidSolverForCopyException(toCopy.get_solver_name(), name_, LOGLOCATION);
     }
@@ -75,10 +83,10 @@ SolverXpress::~SolverXpress()
 {
     { // Scope guard
         std::lock_guard<std::mutex> guard(license_guard);
-        _NumberOfProblems -= 1;
+        number_of_problems_counter() -= 1;
         SolverXpress::free();
 
-        if (*_NumberOfProblems == 0)
+        if (*number_of_problems_counter() == 0)
         {
             int status = XPRSfree();
             if (status)
@@ -99,7 +107,7 @@ SolverXpress::~SolverXpress()
 
 int SolverXpress::get_number_of_instances()
 {
-    return *_NumberOfProblems;
+    return *number_of_problems_counter();
 }
 
 /*************************************************************************************************

@@ -3,11 +3,19 @@
 #include "COIN_common_functions.h"
 using namespace std::literals;
 
+namespace
+{
+static ThreadSafeCounter& number_of_problems_counter()
+{
+    static ThreadSafeCounter counter;
+    return counter;
+}
+} // namespace
+
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor
 --------------------------------
 *************************************************************************************************/
-ThreadSafeCounter SolverClp::_NumberOfProblems;
 
 SolverClp::SolverClp(const SolverLogManager& log_manager):
     SolverClp()
@@ -21,7 +29,7 @@ SolverClp::SolverClp(const SolverLogManager& log_manager):
 
 SolverClp::SolverClp()
 {
-    _NumberOfProblems += 1;
+    number_of_problems_counter() += 1;
     set_output_log_level(0);
 }
 
@@ -40,20 +48,20 @@ SolverClp::SolverClp(const SolverAbstract& toCopy):
     }
     else
     {
-        _NumberOfProblems -= 1;
+        number_of_problems_counter() -= 1;
         throw InvalidSolverForCopyException(toCopy.get_solver_name(), name_, LOGLOCATION);
     }
 }
 
 SolverClp::~SolverClp()
 {
-    _NumberOfProblems -= 1;
+    number_of_problems_counter() -= 1;
     SolverClp::free();
 }
 
 int SolverClp::get_number_of_instances()
 {
-    return *_NumberOfProblems;
+    return *number_of_problems_counter();
 }
 
 /*************************************************************************************************
