@@ -303,6 +303,23 @@ void BendersBase::ResetDataPostRelaxation()
     _options.SEPARATION_PARAM = 1;
 }
 
+void BendersBase::HandleInitialMasterRelaxation()
+{
+    if (_options.MASTER_FORMULATION == MasterFormulation::RELAXED)
+    {
+        DeactivateIntegrityConstraints();
+    }
+    else if (is_initial_relaxation_requested())
+    {
+        // Case of integer master with separation parameter < 1, needs to register that we are in
+        // initial relaxation state to be able to fallback to integer master at the end of the
+        // algorithm
+        _logger->LogAtInitialRelaxation();
+        DeactivateIntegrityConstraints();
+        SetDataPreRelaxation();
+    }
+}
+
 /*!
  *  \brief Check if every subproblem has been solved to optimality
  *

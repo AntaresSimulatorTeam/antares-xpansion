@@ -120,6 +120,11 @@ public:
         BendersBase::ResetDataPostRelaxation();
     }
 
+    void HandleInitialMasterRelaxation() override
+    {
+        BendersBase::HandleInitialMasterRelaxation();
+    }
+
     void set_data(bool stop, int nsubproblem)
     {
         parametrized_stop = stop;
@@ -446,7 +451,7 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhithoutImprovement)
 
     benders.launch();
 
-    EXPECT_EQ(benders._deactivateIntConstraintCall, false);
+    EXPECT_EQ(benders._deactivateIntConstraintCall, true);
     EXPECT_EQ(benders._setDataPreRelaxationCall, false);
     EXPECT_EQ(benders._reactivateIntConstraintCall, false);
     EXPECT_EQ(benders._setDataPostRelaxationCall, false);
@@ -497,7 +502,7 @@ TEST_F(BendersSequentialTest, CheckInOutDataWhenImprovement)
 
     benders.launch();
 
-    EXPECT_EQ(benders._deactivateIntConstraintCall, false);
+    EXPECT_EQ(benders._deactivateIntConstraintCall, true);
     EXPECT_EQ(benders._setDataPreRelaxationCall, false);
     EXPECT_EQ(benders._reactivateIntConstraintCall, false);
     EXPECT_EQ(benders._setDataPostRelaxationCall, false);
@@ -531,7 +536,38 @@ TEST_F(BendersSequentialTest, IntegersAndBinariesAreRelaxedAfterDeactivation)
     }
 
     // Deactivate integrity constraints and ensure these variables become continuous
-    benders.DeactivateIntegrityConstraints();
+    benders.HandleInitialMasterRelaxation();
+    std::vector<char> types_after = get_nb_units_col_types(benders);
+    ASSERT_EQ(types_after.size(), types_before.size());
+    for (char t: types_after)
+    {
+        EXPECT_EQ(t, 'C');
+    }
+}
+
+TEST_F(BendersSequentialTest, BinariesAreCorrectlyRelaxedWhenMasterFormulationIsRelaxed)
+{
+    copyMasterMps("mip_toy_prob_binary.mps");
+    BendersSequentialDouble benders = init_benders_sequential(MasterFormulation::RELAXED,
+                                                              100,
+                                                              1e-4,
+                                                              0.5,
+                                                              "COIN",
+                                                              "mip_toy_prob_binary");
+
+    // Build only the problems to access the master without running the whole algorithm
+    benders.InitializeProblems();
+
+    // Before deactivation: the tracked ids are integer or binary columns
+    std::vector<char> types_before = get_nb_units_col_types(benders);
+    ASSERT_GT(types_before.size(), 0u);
+    for (char t: types_before)
+    {
+        EXPECT_TRUE(t == 'I' || t == 'B');
+    }
+
+    // Deactivate integrity constraints and ensure these variables become continuous
+    benders.HandleInitialMasterRelaxation();
     std::vector<char> types_after = get_nb_units_col_types(benders);
     ASSERT_EQ(types_after.size(), types_before.size());
     for (char t: types_after)

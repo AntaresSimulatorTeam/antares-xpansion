@@ -439,12 +439,7 @@ void BendersMpi::PreRunInitialization()
 
     if (_world.rank() == rank_0)
     {
-        if (is_initial_relaxation_requested())
-        {
-            _logger->LogAtInitialRelaxation();
-            DeactivateIntegrityConstraints();
-            SetDataPreRelaxation();
-        }
+        HandleInitialMasterRelaxation();
     }
 
     _world.barrier();
