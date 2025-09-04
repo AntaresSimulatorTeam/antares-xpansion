@@ -91,7 +91,6 @@ public:
      * @param to_copy : solver to copy
      */
     std::shared_ptr<SolverAbstract> copy_solver(const SolverAbstract& to_copy) const;
-    std::shared_ptr<SolverAbstract> copy_solver(SolverAbstract& to_copy) const;
 
     /**
      * @brief Returns a reference to the list of available solvers

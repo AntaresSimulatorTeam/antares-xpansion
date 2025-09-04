@@ -242,12 +242,6 @@ void SolverXpress::set_basis(std::span<int> rstatus, std::span<int> cstatus)
     zero_status_check(status, "set basis", LOGLOCATION);
 }
 
-void SolverXpress::copy_prob(std::shared_ptr<SolverAbstract> fictif_solv)
-{
-    auto error = LOGLOCATION + "Copy XPRESS problem : TO DO WHEN NEEDED";
-    throw NotImplementedFeatureSolverException(error);
-}
-
 /*************************************************************************************************
 -----------------------    Get general informations about problem
 ----------------------------

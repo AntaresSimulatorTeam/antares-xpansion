@@ -243,7 +243,7 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
 std::shared_ptr<SolverAbstract> SolverFactory::copy_solver(const SolverAbstract& to_copy) const
 {
     std::string solver_name = to_copy.get_solver_name();
-    std::transform(solver_name.begin(), solver_name.end(), solver_name.begin(), ::toupper);
+    std::ranges::transform(solver_name, solver_name.begin(), ::toupper);
     if (solver_name.empty())
     {
         throw InvalidSolverNameException(solver_name, LOGLOCATION);
@@ -266,11 +266,6 @@ std::shared_ptr<SolverAbstract> SolverFactory::copy_solver(const SolverAbstract&
     {
         throw InvalidSolverNameException(solver_name, LOGLOCATION);
     }
-}
-
-std::shared_ptr<SolverAbstract> SolverFactory::copy_solver(SolverAbstract& to_copy) const
-{
-    return copy_solver(static_cast<const SolverAbstract&>(to_copy));
 }
 
 const std::vector<std::string>& SolverFactory::get_solvers_list() const
