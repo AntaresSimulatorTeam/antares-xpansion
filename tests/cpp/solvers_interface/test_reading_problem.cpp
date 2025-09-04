@@ -645,6 +645,7 @@ TEST_CASE("Testing copy constructor", "[init][copy-constructor]")
     {
         for (const auto& solver_name: factory.get_solvers_list())
         {
+            std::cout << "Solver tested : " << solver_name << std::endl;
             std::filesystem::path instance = datas[inst]._path;
 
             //========================================================================================
