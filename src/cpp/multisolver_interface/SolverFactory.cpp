@@ -190,6 +190,14 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(const SolverConfig&
     return ret;
 }
 
+template<class SolverT>
+std::shared_ptr<SolverAbstract> create(const SolverLogManager& log_manager)
+{
+    auto ret = std::make_shared<SolverT>(log_manager);
+    ret->init();
+    return ret;
+}
+
 std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
   const SolverConfig& solver_config,
   const SolverLogManager& log_manager) const
@@ -198,27 +206,22 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
     {
         throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
     }
-    std::shared_ptr<SolverAbstract> ret;
     if (_is_xpress_available && solver_config == XPRESS_STR)
     {
-        ret = std::make_shared<SolverXpress>(log_manager);
+        return create<SolverXpress>(log_manager);
     }
 #ifdef COIN_OR
-    else if (solver_config == CLP_STR)
+    if (solver_config == CLP_STR)
     {
-        ret = std::make_shared<SolverClp>(log_manager);
+        return create<SolverClp>(log_manager);
     }
-    else if (solver_config == CBC_STR)
+    if (solver_config == CBC_STR)
     {
-        ret = std::make_shared<SolverCbc>(log_manager);
+        return create<SolverCbc>(log_manager);
     }
 #endif
-    else
-    {
-        throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
-    }
-    ret->init();
-    return ret;
+
+    throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
 }
 
 std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
