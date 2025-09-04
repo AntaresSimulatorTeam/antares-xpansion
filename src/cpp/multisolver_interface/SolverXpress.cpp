@@ -18,9 +18,9 @@ const std::map<int, std::string> TYPETONAME = {{1, "rows"}, {2, "columns"}};
 
 namespace
 {
-static ThreadSafeCounter& number_of_problems_counter()
+std::atomic<int>& number_of_problems_counter()
 {
-    static ThreadSafeCounter counter;
+    static std::atomic<int> counter;
     return counter;
 }
 } // namespace
@@ -40,7 +40,7 @@ SolverXpress::SolverXpress()
 {
     std::lock_guard<std::mutex> guard(license_guard);
     int status = 0;
-    if (*number_of_problems_counter() == 0)
+    if (number_of_problems_counter() == 0)
     {
         LoadXpress::XpressLoader xpress_loader;
         xpress_loader.initXpressEnv();
@@ -96,7 +96,7 @@ SolverXpress::~SolverXpress()
         number_of_problems_counter() -= 1;
         SolverXpress::free();
 
-        if (*number_of_problems_counter() == 0)
+        if (number_of_problems_counter() == 0)
         {
             int status = XPRSfree();
             if (status)
@@ -117,7 +117,7 @@ SolverXpress::~SolverXpress()
 
 int SolverXpress::get_number_of_instances()
 {
-    return *number_of_problems_counter();
+    return number_of_problems_counter();
 }
 
 /*************************************************************************************************
