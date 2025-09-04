@@ -140,8 +140,8 @@ $(function(){initNavTree('md_docs_2developer-guide_2install__from__sources_21-De
   <div class="headertitle"><div class="title">Development requirements</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md77"></a></p>
-<h1><a class="anchor" id="autotoc_md78"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md78"></a></p>
+<h1><a class="anchor" id="autotoc_md79"></a>
 C++ version</h1>
 <p>The compilation of Antares-Xpansion requires C++20.</p>
 <p><em>mpicxx</em> is used to build some executable with MPI support. <em>mpicxx</em> relly on <code>/usr/bin/c++</code> on linux to compile the code. Please be sure that <code>/usr/bin/c++</code> is a C++20 compiler or link to one. If it is not the case you will get error linking to tbb : <code>fatal error: tbb/blocked_range.h</code></p>
@@ -166,7 +166,7 @@ scl enable devtoolset-10 bash
 </pre><p> === "Ubuntu" </p><pre class="fragment">```
 sudo apt install build-essential gcc10 g++10
 ```
-</pre> <h1><a class="anchor" id="autotoc_md79"></a>
+</pre> <h1><a class="anchor" id="autotoc_md80"></a>
 CMake version</h1>
 <p>CMake 3.x must be used.</p>
 <p>=== "Windows" </p><pre class="fragment">You can download latest Windows version directly from [CMake website](https://cmake.org/download/).
@@ -179,7 +179,7 @@ sudo yum install cmake3
 sudo apt install cmake
 ```
 </pre><p> Or </p><div class="fragment"><div class="line">python -m pip install cmake</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md80"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md81"></a>
 Python version</h1>
 <p>Python 3.x must be used.</p>
 <p>=== "Windows" </p><pre class="fragment">You can download latest Windows version directly from [Python website](https://www.python.org/downloads/windows/).
@@ -190,7 +190,7 @@ sudo yum install python3 python3-pip
 sudo apt-get install python3 python3-pip
 ```
 </pre><p>Required python modules can be installed with: </p><div class="fragment"><div class="line">pip install -r requirements-tests.txt</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md81"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md82"></a>
 Git version</h1>
 <p>Git version must be above 2.15 for external dependencies build because <code>--ignore-whitespace</code> is not used by default and we have an issue with OR-Tools compilation of ZLib and application of patch on Windows (see <a href="https://github.com/google/or-tools/issues/1193">https://github.com/google/or-tools/issues/1193</a>).</p>
 <p>=== "Windows" </p><pre class="fragment">You can download latest Windows version directly from [Git website](https://gitforwindows.org/).

@@ -1,5 +1,6 @@
 var NAVTREEINDEX8 =
 {
+"structCatch_1_1is__callable_3_01Fun_07Args_8_8_8_08_4.html":[33,0,3,29],
 "structCatch_1_1is__callable__tester.html":[33,0,3,30],
 "structCatch_1_1is__range.html":[33,0,3,31],
 "structCatch_1_1pluralise.html":[33,0,3,44],
