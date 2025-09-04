@@ -2,12 +2,6 @@ name: Build Userguide pdf
 
 on:
   push:
-    branches:
-      - main
-      - develop
-      - doc
-      - test
-      - dependabot/**
   release:
     types: [ created ]
 
