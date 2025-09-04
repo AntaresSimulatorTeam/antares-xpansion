@@ -3,11 +3,19 @@
 #include "COIN_common_functions.h"
 using namespace std::literals;
 
+namespace
+{
+static ThreadSafeCounter& number_of_problems_counter()
+{
+    static ThreadSafeCounter counter;
+    return counter;
+}
+} // namespace
+
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor
 --------------------------------
 *************************************************************************************************/
-ThreadSafeCounter SolverCbc::_NumberOfProblems;
 
 SolverCbc::SolverCbc(const SolverLogManager& log_manager):
     SolverCbc()
@@ -22,7 +30,7 @@ SolverCbc::SolverCbc(const SolverLogManager& log_manager):
 
 SolverCbc::SolverCbc()
 {
-    _NumberOfProblems += 1;
+    number_of_problems_counter() += 1;
     set_output_log_level(0);
 }
 
@@ -49,20 +57,20 @@ SolverCbc::SolverCbc(const SolverAbstract& toCopy):
     }
     else
     {
-        _NumberOfProblems -= 1;
+        number_of_problems_counter() -= 1;
         throw InvalidSolverForCopyException(toCopy.get_solver_name(), name_, LOGLOCATION);
     }
 }
 
 SolverCbc::~SolverCbc()
 {
-    _NumberOfProblems -= 1;
+    number_of_problems_counter() -= 1;
     free();
 }
 
 int SolverCbc::get_number_of_instances()
 {
-    return *_NumberOfProblems;
+    return *number_of_problems_counter();
 }
 
 void SolverCbc::defineCbcModelFromInnerSolver()
