@@ -102,11 +102,11 @@ public:
     {
     }
 
-    void get_lb(double* lb, int fisrt, int last) const override
+    void get_lb(double* lb, int first, int last) const override
     {
     }
 
-    void get_ub(double* ub, int fisrt, int last) const override
+    void get_ub(double* ub, int first, int last) const override
     {
     }
 
