@@ -14,14 +14,6 @@
  */
 class SolverCbc: public SolverAbstract
 {
-    /*************************************************************************************************
-    ----------------------------------------    ATTRIBUTES
-    ---------------------------------------
-    *************************************************************************************************/
-    static ThreadSafeCounter _NumberOfProblems; /*!< Counter of the total number of Cplex
-                                     problems declared to set or end the
-                                     environment */
-
 public:
     const std::string name_ = "CBC";
     OsiClpSolverInterface _clp_inner_solver;
