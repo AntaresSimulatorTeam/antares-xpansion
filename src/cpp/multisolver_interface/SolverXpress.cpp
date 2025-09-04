@@ -58,7 +58,8 @@ SolverXpress::SolverXpress(std::shared_ptr<SolverAbstract> toCopy):
 {
 }
 
-SolverXpress::SolverXpress(const SolverAbstract& toCopy)
+SolverXpress::SolverXpress(const SolverAbstract& toCopy):
+    SolverXpress()
 {
     SolverXpress::init();
     int status = 0;
