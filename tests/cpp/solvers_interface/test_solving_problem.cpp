@@ -1,7 +1,7 @@
+#include <catch2/catch_all.hpp>
 #include <iostream>
 
 #include "antares-xpansion/multisolver_interface/Solver.h"
-#include "catch2.hpp"
 #include "define_datas.hpp"
 
 TEST_CASE("A LP problem is solved", "[solve-lp]")
@@ -57,7 +57,7 @@ TEST_CASE("A LP problem is solved", "[solve-lp]")
                 FAIL();
             }
             solver->free();
-      REQUIRE(solver->get_number_of_instances() == 1);
+            REQUIRE(solver->get_number_of_instances() == 1);
         }
     }
 }
@@ -119,11 +119,11 @@ TEST_CASE("A LP problem is solved and we can get the LP value", "[solve-lp][get-
             if (solver->SOLVER_STRING_STATUS[slv_status] == "OPTIMAL")
             {
                 double lp_val = solver->get_lp_value();
-                REQUIRE(Approx(lp_val) == datas[inst]._optval);
+                REQUIRE(Catch::Approx(lp_val) == datas[inst]._optval);
             }
 
             solver->free();
-      REQUIRE(solver->get_number_of_instances() == 1);
+            REQUIRE(solver->get_number_of_instances() == 1);
         }
     }
 }
@@ -182,7 +182,7 @@ TEST_CASE("A LP problem is solved and we can get the LP solution", "[solve-lp][g
             if (solver->SOLVER_STRING_STATUS[slv_status] == "OPTIMAL")
             {
                 double lp_val = solver->get_lp_value();
-                REQUIRE(Approx(lp_val) == datas[inst]._optval);
+                REQUIRE(Catch::Approx(lp_val) == datas[inst]._optval);
 
                 std::vector<double> primals(solver->get_ncols());
                 std::vector<double> duals(solver->get_nrows());
@@ -196,7 +196,7 @@ TEST_CASE("A LP problem is solved and we can get the LP solution", "[solve-lp][g
                 {
                     solve_val = primals[i];
                     expected_val = datas[inst]._primals[i];
-                    REQUIRE(Approx(solve_val) == expected_val);
+                    REQUIRE(Catch::Approx(solve_val) == expected_val);
                 }
 
                 /* Testing duals*/
@@ -204,7 +204,7 @@ TEST_CASE("A LP problem is solved and we can get the LP solution", "[solve-lp][g
                 {
                     solve_val = duals[i];
                     expected_val = datas[inst]._duals[i];
-                    REQUIRE(Approx(solve_val) == expected_val);
+                    REQUIRE(Catch::Approx(solve_val) == expected_val);
                 }
 
                 /* Testing reduced costs*/
@@ -212,12 +212,12 @@ TEST_CASE("A LP problem is solved and we can get the LP solution", "[solve-lp][g
                 {
                     solve_val = reduced[i];
                     expected_val = datas[inst]._reduced_costs[i];
-                    REQUIRE(Approx(solve_val) == expected_val);
+                    REQUIRE(Catch::Approx(solve_val) == expected_val);
                 }
             }
 
             solver->free();
-      REQUIRE(solver->get_number_of_instances() == 1);
+            REQUIRE(solver->get_number_of_instances() == 1);
         }
     }
 }
@@ -292,12 +292,12 @@ TEST_CASE("A problem is solved and we can get the optimal solution", "[solve-mip
                     {
                         solve_val = primals[i];
                         expected_val = datas[inst]._primals[i];
-                        REQUIRE(Approx(solve_val) == expected_val);
+                        REQUIRE(Catch::Approx(solve_val) == expected_val);
                     }
                 }
 
                 solver->free();
-        REQUIRE(solver->get_number_of_instances() == 1);
+                REQUIRE(solver->get_number_of_instances() == 1);
             }
         }
     }

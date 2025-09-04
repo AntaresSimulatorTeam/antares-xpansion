@@ -1,7 +1,7 @@
+#include <catch2/catch_all.hpp>
 #include <iostream>
 
 #include "antares-xpansion/multisolver_interface/Solver.h"
-#include "catch2.hpp"
 #include "define_datas.hpp"
 
 TEST_CASE("Un objet solveur peut etre cree et detruit", "[read][init]")
@@ -21,7 +21,7 @@ TEST_CASE("Un objet solveur peut etre cree et detruit", "[read][init]")
             //========================================================================================
             // solver declaration
             std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
-                        REQUIRE(solver->get_number_of_instances() == 1);
+            REQUIRE(solver->get_number_of_instances() == 1);
 
             //========================================================================================
             // solver destruction

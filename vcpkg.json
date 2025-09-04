@@ -38,7 +38,8 @@
       ]
     },
     "tbb",
-    "fmt"
+    "fmt",
+    "catch2"
   ],
   "overrides": [
     {
