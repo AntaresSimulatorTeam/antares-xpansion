@@ -21,7 +21,7 @@ TEST_CASE("Un objet solveur peut etre cree et detruit", "[read][init]")
             //========================================================================================
             // solver declaration
             std::shared_ptr<SolverAbstract> solver = factory.create_solver(solver_name);
-            REQUIRE(solver->get_number_of_instances() == 1);
+                        REQUIRE(solver->get_number_of_instances() == 1);
 
             //========================================================================================
             // solver destruction
@@ -645,7 +645,6 @@ TEST_CASE("Testing copy constructor", "[init][copy-constructor]")
     {
         for (const auto& solver_name: factory.get_solvers_list())
         {
-            std::cout << "Solver tested : " << solver_name << std::endl;
             std::filesystem::path instance = datas[inst]._path;
 
             //========================================================================================

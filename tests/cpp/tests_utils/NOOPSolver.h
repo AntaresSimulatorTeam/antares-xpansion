@@ -98,25 +98,15 @@ public:
     {
     }
 
-    void get_cols(int* mstart,
-                  int* mrwind,
-                  double* dmatval,
-                  int size,
-                  int* nels,
-                  int first,
-                  int last) const override
-    {
-    }
-
     void get_col_type(char* coltype, int first, int last) const override
     {
     }
 
-    void get_lb(double* lb, int fisrt, int last) const override
+    void get_lb(double* lb, int first, int last) const override
     {
     }
 
-    void get_ub(double* ub, int fisrt, int last) const override
+    void get_ub(double* ub, int first, int last) const override
     {
     }
 
@@ -300,7 +290,6 @@ public:
     void restore_prob(const std::filesystem::path& filename) override
     {
     }
-
     void get_presolve_map(int* rowmap, int* colmap) const override
     {
     }

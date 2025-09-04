@@ -57,7 +57,7 @@ TEST_CASE("A LP problem is solved", "[solve-lp]")
                 FAIL();
             }
             solver->free();
-            REQUIRE(solver->get_number_of_instances() == 1);
+      REQUIRE(solver->get_number_of_instances() == 1);
         }
     }
 }
@@ -123,7 +123,7 @@ TEST_CASE("A LP problem is solved and we can get the LP value", "[solve-lp][get-
             }
 
             solver->free();
-            REQUIRE(solver->get_number_of_instances() == 1);
+      REQUIRE(solver->get_number_of_instances() == 1);
         }
     }
 }
@@ -217,7 +217,7 @@ TEST_CASE("A LP problem is solved and we can get the LP solution", "[solve-lp][g
             }
 
             solver->free();
-            REQUIRE(solver->get_number_of_instances() == 1);
+      REQUIRE(solver->get_number_of_instances() == 1);
         }
     }
 }
@@ -297,7 +297,7 @@ TEST_CASE("A problem is solved and we can get the optimal solution", "[solve-mip
                 }
 
                 solver->free();
-                REQUIRE(solver->get_number_of_instances() == 1);
+        REQUIRE(solver->get_number_of_instances() == 1);
             }
         }
     }
