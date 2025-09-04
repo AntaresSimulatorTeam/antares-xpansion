@@ -5,9 +5,9 @@ using namespace std::literals;
 
 namespace
 {
-static ThreadSafeCounter& number_of_problems_counter()
+std::atomic<int>& number_of_problems_counter()
 {
-    static ThreadSafeCounter counter;
+    static std::atomic<int> counter;
     return counter;
 }
 } // namespace
@@ -65,7 +65,7 @@ SolverCbc::~SolverCbc()
 
 int SolverCbc::get_number_of_instances()
 {
-    return *number_of_problems_counter();
+    return number_of_problems_counter();
 }
 
 void SolverCbc::defineCbcModelFromInnerSolver()
