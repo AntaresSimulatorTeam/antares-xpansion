@@ -19,7 +19,7 @@ class SolverXpress: public SolverAbstract
     static std::mutex license_guard;
 
 public:
-    XPRSprob _xprs; /*!< Problem in XPRESS */
+    XPRSprob _xprs = nullptr; /*!< Problem in XPRESS */
     const std::string name_ = "XPRESS";
 
     /*************************************************************************************************
