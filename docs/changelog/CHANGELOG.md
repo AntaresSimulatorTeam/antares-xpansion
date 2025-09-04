@@ -1,6 +1,13 @@
 Antares-Xpansion changelog
 =================
 
+v1.4.1 (09/2025)
+--------------------------------------------------------
+
+### Bug Fixes
+
+* Fix documentation readthedocs not building properly
+
 v1.4.0 (07/2025)
 --------------------------------------------------------
 
