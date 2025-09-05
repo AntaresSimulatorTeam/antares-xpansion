@@ -15,8 +15,7 @@ SensitivityProblemModifier::SensitivityProblemModifier(
 {
 }
 
-void change_objective(const std::shared_ptr<SolverAbstract>& solver_model,
-                      const std::vector<double>& obj)
+void change_objective(std::shared_ptr<SolverAbstract> solver_model, const std::vector<double>& obj)
 {
     std::vector<int> colind(solver_model->get_ncols());
 

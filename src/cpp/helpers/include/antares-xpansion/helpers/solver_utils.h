@@ -119,7 +119,7 @@ void solver_addrows(SolverAbstract& solver_p,
  * @param x_p : will be filled with the variables values of the retrieved
  * solution
  */
-void solver_getlpsolution(const std::shared_ptr<SolverAbstract> solver_p, std::vector<double>& x_p);
+void solver_getlpsolution(std::shared_ptr<SolverAbstract> solver_p, std::vector<double>& x_p);
 
 /**
  * @brief returns the dual values of a solved problem
@@ -127,7 +127,7 @@ void solver_getlpsolution(const std::shared_ptr<SolverAbstract> solver_p, std::v
  * @param solver_p  : solver containing the solved model.
  * @param dual_p : will be filled with the dual values of the retrieved solution
  */
-void solver_getlpdual(const std::shared_ptr<SolverAbstract> solver_p, std::vector<double>& dual_p);
+void solver_getlpdual(std::shared_ptr<SolverAbstract> solver_p, std::vector<double>& dual_p);
 
 /**
  * @brief Returns the reduced costs of a solved problem
@@ -135,8 +135,7 @@ void solver_getlpdual(const std::shared_ptr<SolverAbstract> solver_p, std::vecto
  * @param solver_p  : solver containing the solved model.
  * @param dj_p : will be filled with the reduced costs
  */
-void solver_getlpreducedcost(const std::shared_ptr<SolverAbstract> solver_p,
-                             std::vector<double>& dj_p);
+void solver_getlpreducedcost(std::shared_ptr<SolverAbstract> solver_p, std::vector<double>& dj_p);
 
 /**
  * @brief Returns the row types for the rows in a given range.
@@ -183,7 +182,7 @@ void solver_getrhs(const SolverAbstract& solver_p,
  * @param first_p : First row in the range.
  * @param last_p : Last row in the range
  */
-void solver_getrhsrange(const std::shared_ptr<SolverAbstract> solver_p,
+void solver_getrhsrange(std::shared_ptr<SolverAbstract> solver_p,
                         std::vector<double>& range_p,
                         int first_p,
                         int last_p);

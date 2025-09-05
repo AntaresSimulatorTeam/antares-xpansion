@@ -97,18 +97,17 @@ void solver_addrows(SolverAbstract& solver_p,
                       names);
 }
 
-void solver_getlpsolution(const std::shared_ptr<SolverAbstract> solver_p, std::vector<double>& x_p)
+void solver_getlpsolution(std::shared_ptr<SolverAbstract> solver_p, std::vector<double>& x_p)
 {
     solver_p->get_lp_sol(x_p.data(), NULL, NULL);
 }
 
-void solver_getlpdual(const std::shared_ptr<SolverAbstract> solver_p, std::vector<double>& dual_p)
+void solver_getlpdual(std::shared_ptr<SolverAbstract> solver_p, std::vector<double>& dual_p)
 {
     solver_p->get_lp_sol(NULL, dual_p.data(), NULL);
 }
 
-void solver_getlpreducedcost(const std::shared_ptr<SolverAbstract> solver_p,
-                             std::vector<double>& dj_p)
+void solver_getlpreducedcost(std::shared_ptr<SolverAbstract> solver_p, std::vector<double>& dj_p)
 {
     solver_p->get_lp_sol(NULL, NULL, dj_p.data());
 }
@@ -135,7 +134,7 @@ void solver_getrhs(const SolverAbstract& solver_p,
     }
 }
 
-void solver_getrhsrange(const std::shared_ptr<SolverAbstract> solver_p,
+void solver_getrhsrange(std::shared_ptr<SolverAbstract> solver_p,
                         std::vector<double>& range_p,
                         int first_p,
                         int last_p)
