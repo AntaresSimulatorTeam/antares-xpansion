@@ -68,6 +68,8 @@ SolverXpress::SolverXpress(std::shared_ptr<SolverAbstract> toCopy):
 SolverXpress::SolverXpress(const SolverAbstract& toCopy):
     SolverXpress()
 {
+    XpressLoader loader;
+    loader.XpressIsCorrectlyInstalled();
     SolverXpress::init();
     int status = 0;
 
