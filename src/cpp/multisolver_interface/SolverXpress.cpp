@@ -60,11 +60,6 @@ SolverXpress::SolverXpress()
     _xprs = nullptr;
 }
 
-SolverXpress::SolverXpress(std::shared_ptr<SolverAbstract> toCopy):
-    SolverXpress(static_cast<const std::shared_ptr<const SolverAbstract>>(toCopy))
-{
-}
-
 SolverXpress::SolverXpress(const SolverXpress& toCopy):
     SolverXpress()
 {
@@ -81,11 +76,6 @@ SolverXpress::SolverXpress(const SolverXpress& toCopy):
         add_stream(_log_stream);
     }
     zero_status_check(status, "create problem", LOGLOCATION);
-}
-
-SolverXpress::SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy):
-    SolverXpress(*toCopy.get())
-{
 }
 
 SolverXpress::~SolverXpress()
