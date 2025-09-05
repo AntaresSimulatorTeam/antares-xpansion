@@ -1,5 +1,6 @@
 #include "SolverXpress.h"
 
+#include <atomic>
 #include <cassert>
 #include <cstring>
 #include <map>

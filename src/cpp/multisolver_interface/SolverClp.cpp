@@ -1,5 +1,7 @@
 #include "SolverClp.h"
 
+#include <atomic>
+
 #include "COIN_common_functions.h"
 using namespace std::literals;
 
