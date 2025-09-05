@@ -25,11 +25,6 @@ SolverClp::SolverClp()
     set_output_log_level(0);
 }
 
-SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy):
-    SolverClp(*toCopy.get())
-{
-}
-
 SolverClp::SolverClp(const SolverAbstract& toCopy):
     SolverClp()
 {
@@ -53,7 +48,7 @@ SolverClp::SolverClp(const SolverAbstract& toCopy):
 SolverClp::~SolverClp()
 {
     _NumberOfProblems -= 1;
-    free();
+    SolverClp::free();
 }
 
 int SolverClp::get_number_of_instances()

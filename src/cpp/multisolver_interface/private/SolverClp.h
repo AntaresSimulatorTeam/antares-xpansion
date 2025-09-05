@@ -44,14 +44,6 @@ public:
     SolverClp();
     explicit SolverClp(const SolverLogManager& log_manager);
 
-    /**
-     * @brief Copy constructor of CLP, copy the problem toCopy in memory and name
-     * it "name"
-     *
-     * @param toCopy : Pointer to an AbstractSolver object, containing a CLP
-     * solver to copy
-     */
-    explicit SolverClp(const std::shared_ptr<const SolverAbstract> toCopy);
     explicit SolverClp(const SolverAbstract& toCopy);
 
     /*SolverClp ctor accept only std::shared_ptr*/

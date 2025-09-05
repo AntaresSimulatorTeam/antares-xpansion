@@ -45,11 +45,6 @@ SolverXpress::SolverXpress()
     _xprs = NULL;
 }
 
-SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy):
-    SolverXpress(static_cast<const std::shared_ptr<const SolverAbstract>>(toCopy))
-{
-}
-
 SolverXpress::SolverXpress(const SolverAbstract& toCopy):
     SolverXpress()
 {
@@ -74,11 +69,6 @@ SolverXpress::SolverXpress(const SolverAbstract& toCopy):
         SolverXpress::free();
         throw InvalidSolverForCopyException(toCopy.get_solver_name(), name_, LOGLOCATION);
     }
-}
-
-SolverXpress::SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy):
-    SolverXpress(*toCopy.get())
-{
 }
 
 SolverXpress::~SolverXpress()

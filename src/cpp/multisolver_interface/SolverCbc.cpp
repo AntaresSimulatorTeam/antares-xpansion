@@ -26,11 +26,6 @@ SolverCbc::SolverCbc()
     set_output_log_level(0);
 }
 
-SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy):
-    SolverCbc(*toCopy.get())
-{
-}
-
 SolverCbc::SolverCbc(const SolverAbstract& toCopy):
     SolverCbc()
 {
@@ -57,7 +52,7 @@ SolverCbc::SolverCbc(const SolverAbstract& toCopy):
 SolverCbc::~SolverCbc()
 {
     _NumberOfProblems -= 1;
-    free();
+    SolverCbc::free();
 }
 
 int SolverCbc::get_number_of_instances()
