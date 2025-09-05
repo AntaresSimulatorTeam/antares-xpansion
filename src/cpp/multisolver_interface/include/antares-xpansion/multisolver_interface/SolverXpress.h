@@ -6,6 +6,15 @@
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
 
+class XpressManager
+{
+    std::mutex license_guard;
+
+public:
+    XpressManager();
+    ~XpressManager();
+};
+
 /*!
  * \class class SolverXpress
  * \brief Daughter class of AsbtractSolver implementing solver XPRESS FICO
@@ -16,7 +25,6 @@ class SolverXpress: public SolverAbstract
     ----------------------------------------    ATTRIBUTES
     ---------------------------------------
     *************************************************************************************************/
-    static std::mutex license_guard;
 
 public:
     XPRSprob _xprs = nullptr; /*!< Problem in XPRESS */
@@ -32,7 +40,7 @@ public:
      * @brief Default constructor of a XPRESS solver
      */
     SolverXpress();
-    SolverXpress(const SolverLogManager& log_manager);
+    explicit SolverXpress(const SolverLogManager& log_manager);
 
     /**
      * @brief Copy constructor of XPRESS, copy the problem toCopy in memory and
@@ -49,7 +57,7 @@ public:
     SolverXpress(const SolverXpress& other) = delete;
     SolverXpress& operator=(const SolverXpress& other) = delete;
 
-    ~SolverXpress();
+    ~SolverXpress() override;
     int get_number_of_instances() override;
 
     std::string get_solver_name() const override

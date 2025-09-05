@@ -13,7 +13,6 @@ using namespace std::literals;
 -----------------------------------    Constructor/Desctructor
 --------------------------------
 *************************************************************************************************/
-std::mutex SolverXpress::license_guard;
 const std::map<int, std::string> TYPETONAME = {{1, "rows"}, {2, "columns"}};
 
 namespace
@@ -36,21 +35,29 @@ SolverXpress::SolverXpress(const SolverLogManager& log_manager):
     }
 }
 
-SolverXpress::SolverXpress()
+XpressManager::XpressManager()
 {
     std::lock_guard<std::mutex> guard(license_guard);
-    int status = 0;
-    if (*number_of_problems_counter() == 0)
+    LoadXpress::XpressLoader xpress_loader;
+    xpress_loader.initXpressEnv();
+    int status = XPRSinit(nullptr);
+    SolverAbstract::zero_status_check(status, "initialize XPRESS environment", LOGLOCATION);
+}
+
+XpressManager::~XpressManager()
+{
+    std::lock_guard<std::mutex> guard(license_guard);
+
+    if (int status = XPRSfree())
     {
-        LoadXpress::XpressLoader xpress_loader;
-        xpress_loader.initXpressEnv();
-        status = XPRSinit(NULL);
-        zero_status_check(status, "initialize XPRESS environment", LOGLOCATION);
+        std::cerr << "Failed to free XPRESS environment with status: " << status << " "
+                  << LOGLOCATION << std::endl;
     }
+}
 
-    number_of_problems_counter() += 1;
-
-    _xprs = NULL;
+SolverXpress::SolverXpress()
+{
+    _xprs = nullptr;
 }
 
 SolverXpress::SolverXpress(std::shared_ptr<SolverAbstract> toCopy):
@@ -92,24 +99,8 @@ SolverXpress::SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy):
 
 SolverXpress::~SolverXpress()
 {
-    { // Scope guard
-        std::lock_guard<std::mutex> guard(license_guard);
-        number_of_problems_counter() -= 1;
-        SolverXpress::free();
+    SolverXpress::free();
 
-        if (*number_of_problems_counter() == 0)
-        {
-            int status = XPRSfree();
-            if (status)
-            {
-                for (auto& stream: get_stream())
-                {
-                    *stream << "Failed to free XPRESS environment with status: " << status
-                            << LOGLOCATION;
-                }
-            }
-        }
-    }
     if (_log_stream.is_open())
     {
         _log_stream.close();
