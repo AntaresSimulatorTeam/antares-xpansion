@@ -22,7 +22,7 @@ private:
                                         int scenario,
                                         double level,
                                         const std::vector<double>& X,
-                                        const std::vector<double>& rewards,
+                                        const std::vector<double>& costs,
                                         const std::function<double(double)>& V_fut);
 
 protected:

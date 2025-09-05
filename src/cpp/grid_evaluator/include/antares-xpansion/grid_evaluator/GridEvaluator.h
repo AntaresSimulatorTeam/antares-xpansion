@@ -21,8 +21,8 @@ public:
                   ProblemsFormat data_format,
                   std::string solverName,
                   int nbThreads = 1);
-    virtual std::map<Output::PointWeekScenarioKey, double> ComputeRewards(int startWeek = 1,
-                                                                          int endWeek = 52);
+    virtual std::map<Output::PointWeekScenarioKey, double> ComputeCosts(int startWeek = 1,
+                                                                        int endWeek = 52);
 
 private:
     Output::ConcurrentInsertionMap<Output::PointWeekScenarioKey, double>

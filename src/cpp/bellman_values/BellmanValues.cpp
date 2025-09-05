@@ -40,15 +40,15 @@ auto linspace(double start, double end, int num)
 /// @return The bellman values for each week
 std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWeek, int nbLevels)
 {
-    auto variationDeNiveauxDeStockData = gridEvaluator.ComputeRewards(startWeek, endWeek);
+    auto variationDeNiveauxDeStockData = gridEvaluator.ComputeCosts(startWeek, endWeek);
 
     levels = linspace(0.0, reservoirManagement.reservoir.capacity, nbLevels);
     std::map<ScenarioAndWeek, std::vector<double>> V;
-    std::map<ScenarioAndWeek, std::vector<double>> rewards;
+    std::map<ScenarioAndWeek, std::vector<double>> costs;
 
-    for (const auto& [key, reward]: variationDeNiveauxDeStockData)
+    for (const auto& [key, cost]: variationDeNiveauxDeStockData)
     {
-        rewards[{key.scenario, key.week}].push_back(reward);
+        costs[{key.scenario, key.week}].push_back(cost);
     }
 
     for (int scenario = 1; scenario <= gridEvaluator.nbScenarios; ++scenario)
@@ -87,7 +87,7 @@ std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWe
                                                          scenario,
                                                          levels[i],
                                                          levels,
-                                                         rewards[{scenario, week}],
+                                                         costs[{scenario, week}],
                                                          V_fut());
                 V[{scenario, week}][i] += Vu;
             }
@@ -122,8 +122,8 @@ std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWe
 /// @param scenario
 /// @param level the level of the reservoir
 /// @param X the discretization of the reservoir level
-/// @param rewards the rewards for each scenario and week
-/// @param V_fut the reward function for the next week
+/// @param costs the costs for each scenario and week
+/// @param V_fut the cost function for the next week
 /// @param breaking_points
 /// @return The Bellvalue for a given week and scenario and level of the reservoir
 double BellmanValues::solveWeeklyProblemWithReward(int week,
@@ -131,14 +131,14 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
                                                    int scenario,
                                                    double level,
                                                    const std::vector<double>& X,
-                                                   const std::vector<double>& rewards,
+                                                   const std::vector<double>& costs,
                                                    const std::function<double(double)>& V_fut)
 {
     double Vu = std::numeric_limits<double>::max();
     const Reservoir reservoir = reservoirManagement.reservoir;
-    auto rewardFn = Interpolator::linearInterpolation(
+    auto costFn = Interpolator::linearInterpolation(
       gridEvaluator.gridDefinition.gridElements[0].rhsValues[week - 1],
-      rewards);
+      costs);
     auto penalty = reservoirManagement.get_penalty(week, endWeek)(level);
 
     for (double value_fut: X)
@@ -148,7 +148,7 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
             && (reservoirManagement.overflow || u <= reservoir.max_generating[week - 1]))
         {
             u = std::min(u, reservoir.max_generating[week - 1]);
-            double G = rewardFn(u);
+            double G = costFn(u);
             if (G + V_fut(value_fut) + penalty < Vu)
             {
                 Vu = G + V_fut(value_fut) + penalty;
@@ -161,7 +161,7 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
         double state_fut = level - u + reservoir.inflow[week - 1][scenario - 1];
         if (0 <= state_fut && state_fut <= reservoir.capacity)
         {
-            double G = rewardFn(u);
+            double G = costFn(u);
             if (G + V_fut(state_fut) + penalty < Vu)
             {
                 Vu = G + V_fut(state_fut) + penalty;
@@ -177,9 +177,9 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
             && uFinal <= reservoir.max_generating[week - 1])
         {
             double state_fut = level - uFinal + reservoir.inflow[week - 1][scenario - 1];
-            if (rewardFn(uFinal) + V_fut(state_fut) + penalty < Vu)
+            if (costFn(uFinal) + V_fut(state_fut) + penalty < Vu)
             {
-                Vu = rewardFn(uFinal) + V_fut(state_fut) + penalty;
+                Vu = costFn(uFinal) + V_fut(state_fut) + penalty;
             }
         }
     }
@@ -191,9 +191,9 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
             && uMin <= reservoir.max_generating[week - 1])
         {
             double state_fut = level - uMin + reservoir.inflow[week - 1][scenario - 1];
-            if (rewardFn(uMin) + V_fut(state_fut) + penalty < Vu)
+            if (costFn(uMin) + V_fut(state_fut) + penalty < Vu)
             {
-                Vu = rewardFn(uMin) + V_fut(state_fut) + penalty;
+                Vu = costFn(uMin) + V_fut(state_fut) + penalty;
             }
         }
 
@@ -203,9 +203,9 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
             && uMax <= reservoir.max_generating[week - 1])
         {
             double state_fut = level - uMax + reservoir.inflow[week - 1][scenario - 1];
-            if (rewardFn(uMax) + V_fut(state_fut) + penalty < Vu)
+            if (costFn(uMax) + V_fut(state_fut) + penalty < Vu)
             {
-                Vu = rewardFn(uMax) + V_fut(state_fut) + penalty;
+                Vu = costFn(uMax) + V_fut(state_fut) + penalty;
             }
         }
     }

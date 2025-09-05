@@ -107,7 +107,7 @@ int main(int argc, char** argv)
                                        ProblemsFormat::MPS_FILE,
                                        "XPRESS",
                                        num_threads);
-        res[grid.gridID] = evaluator.ComputeRewards();
+        res[grid.gridID] = evaluator.ComputeCosts();
     }
 
     writer->write_VariationDeNiveauxDeStock(res);

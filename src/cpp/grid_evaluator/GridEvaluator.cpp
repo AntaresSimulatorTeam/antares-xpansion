@@ -391,8 +391,8 @@ double GridEvaluator::SolveSubproblem(SubproblemWorkerPtr subPbWorker)
 
 /// @brief Launch the Stock level variation computation
 /// @return The stock level variation results
-std::map<Output::PointWeekScenarioKey, double> GridEvaluator::ComputeRewards(int startWeek,
-                                                                             int endWeek)
+std::map<Output::PointWeekScenarioKey, double> GridEvaluator::ComputeCosts(int startWeek,
+                                                                           int endWeek)
 {
     std::cout << "Launching Stock level variation" << std::endl;
 
