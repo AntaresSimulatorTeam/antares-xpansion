@@ -20,7 +20,7 @@ namespace
 {
 std::atomic<int>& number_of_problems_counter()
 {
-    static std::atomic<int> counter;
+    static std::atomic<int> counter{0};
     return counter;
 }
 } // namespace
