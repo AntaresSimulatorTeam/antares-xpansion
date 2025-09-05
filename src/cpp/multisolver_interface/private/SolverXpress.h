@@ -8,7 +8,7 @@
 
 class XpressManager
 {
-    std::mutex license_guard;
+    static std::mutex license_guard;
 
 public:
     XpressManager();
