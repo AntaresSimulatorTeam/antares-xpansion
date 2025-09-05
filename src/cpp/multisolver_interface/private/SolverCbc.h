@@ -32,18 +32,7 @@ public:
     SolverCbc();
     explicit SolverCbc(const SolverLogManager& log_manager);
 
-    /**
-     * @brief Copy constructor of solver, copy the problem toCopy in memory and
-     * name it "name"
-     *
-     * @param toCopy : Pointer to an AbstractSolver object, containing a CBC
-     * solver to copy
-     */
-    explicit SolverCbc(std::shared_ptr<const SolverAbstract> toCopy);
-    explicit SolverCbc(const SolverAbstract& toCopy);
-
-    /*SolverCbc ctor accept only std::shared_ptr*/
-    SolverCbc(const SolverCbc& other) = delete;
+    SolverCbc(const SolverCbc& other);
     SolverCbc& operator=(const SolverCbc& other) = delete;
     ~SolverCbc();
     int get_number_of_instances() override;

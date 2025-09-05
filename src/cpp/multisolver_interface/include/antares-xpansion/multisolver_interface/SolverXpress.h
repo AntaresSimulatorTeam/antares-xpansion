@@ -42,19 +42,8 @@ public:
     SolverXpress();
     explicit SolverXpress(const SolverLogManager& log_manager);
 
-    /**
-     * @brief Copy constructor of XPRESS, copy the problem toCopy in memory and
-     * name it "name"
-     *
-     * @param toCopy : Pointer to an AbstractSolver object, containing an XPRESS
-     * solver to copy
-     */
-    explicit SolverXpress(std::shared_ptr<SolverAbstract> toCopy);
-    explicit SolverXpress(const SolverAbstract& toCopy);
-    explicit SolverXpress(std::shared_ptr<const SolverAbstract> toCopy);
+    explicit SolverXpress(const SolverXpress& other);
 
-    /*SolverXpress ctor accept only std::shared_ptr*/
-    SolverXpress(const SolverXpress& other) = delete;
     SolverXpress& operator=(const SolverXpress& other) = delete;
 
     ~SolverXpress() override;
