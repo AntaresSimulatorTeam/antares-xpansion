@@ -47,7 +47,7 @@ XpressManager::XpressManager()
 XpressManager::~XpressManager()
 {
     std::lock_guard<std::mutex> guard(license_guard);
-
+    std::cout << "Freeing XPRESS environment" << std::endl;
     if (int status = XPRSfree())
     {
         std::cerr << "Failed to free XPRESS environment with status: " << status << " "
