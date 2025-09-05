@@ -65,6 +65,8 @@ SolverXpress::SolverXpress()
 SolverXpress::SolverXpress(const SolverAbstract& toCopy):
     SolverXpress()
 {
+    XpressLoader loader;
+    loader.XpressIsCorrectlyInstalled();
     SolverXpress::init();
     int status = 0;
 
