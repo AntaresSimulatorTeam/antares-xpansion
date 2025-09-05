@@ -26,11 +26,11 @@ SolverCbc::SolverCbc()
     set_output_log_level(0);
 }
 
-SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy):
+SolverCbc::SolverCbc(const SolverAbstract& toCopy):
     SolverCbc()
 {
     // Try to cast the solver in fictif to a SolverCbc
-    if (const auto c = dynamic_cast<const SolverCbc*>(toCopy.get()))
+    if (const auto c = dynamic_cast<const SolverCbc*>(&toCopy))
     {
         _clp_inner_solver = OsiClpSolverInterface(c->_clp_inner_solver);
 
@@ -45,14 +45,14 @@ SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy):
     else
     {
         _NumberOfProblems -= 1;
-        throw InvalidSolverForCopyException(toCopy->get_solver_name(), name_, LOGLOCATION);
+        throw InvalidSolverForCopyException(toCopy.get_solver_name(), name_, LOGLOCATION);
     }
 }
 
 SolverCbc::~SolverCbc()
 {
     _NumberOfProblems -= 1;
-    free();
+    SolverCbc::free();
 }
 
 int SolverCbc::get_number_of_instances()
@@ -254,12 +254,6 @@ void SolverCbc::read_basis(const std::filesystem::path& filename)
 void SolverCbc::set_basis(std::span<int> rstatus, std::span<int> cstatus)
 {
     _cbc.solver()->setBasisStatus(rstatus.data(), cstatus.data());
-}
-
-void SolverCbc::copy_prob(const SolverAbstract::Ptr fictif_solv)
-{
-    auto error = LOGLOCATION + "Copy CBC problem : TO DO WHEN NEEDED";
-    throw NotImplementedFeatureSolverException(error);
 }
 
 /*************************************************************************************************

@@ -45,22 +45,17 @@ SolverXpress::SolverXpress()
     _xprs = NULL;
 }
 
-SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy):
-    SolverXpress(static_cast<const std::shared_ptr<const SolverAbstract>>(toCopy))
-{
-}
-
-SolverXpress::SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy):
+SolverXpress::SolverXpress(const SolverAbstract& toCopy):
     SolverXpress()
 {
     SolverXpress::init();
     int status = 0;
 
     // Try to cast the solver in fictif to a SolverXpress
-    if (const SolverXpress* xpSolv = dynamic_cast<const SolverXpress*>(toCopy.get()))
+    if (const auto* xpSolv = dynamic_cast<const SolverXpress*>(&toCopy))
     {
         status = XPRScopyprob(_xprs, xpSolv->_xprs, "");
-        _log_file = toCopy->_log_file;
+        _log_file = toCopy._log_file;
         if (_log_file != "")
         {
             _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
@@ -72,7 +67,7 @@ SolverXpress::SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy):
     {
         _NumberOfProblems -= 1;
         SolverXpress::free();
-        throw InvalidSolverForCopyException(toCopy->get_solver_name(), name_, LOGLOCATION);
+        throw InvalidSolverForCopyException(toCopy.get_solver_name(), name_, LOGLOCATION);
     }
 }
 
@@ -235,12 +230,6 @@ void SolverXpress::set_basis(std::span<int> rstatus, std::span<int> cstatus)
 {
     int status = XPRSloadbasis(_xprs, rstatus.data(), cstatus.data());
     zero_status_check(status, "set basis", LOGLOCATION);
-}
-
-void SolverXpress::copy_prob(const SolverAbstract::Ptr fictif_solv)
-{
-    auto error = LOGLOCATION + "Copy XPRESS problem : TO DO WHEN NEEDED";
-    throw NotImplementedFeatureSolverException(error);
 }
 
 /*************************************************************************************************

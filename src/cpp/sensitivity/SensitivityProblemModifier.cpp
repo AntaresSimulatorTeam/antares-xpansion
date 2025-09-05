@@ -29,7 +29,7 @@ void change_objective(const SolverAbstract::Ptr& solver_model, const std::vector
 SolverAbstract::Ptr SensitivityProblemModifier::changeProblem(unsigned int nb_candidates) const
 {
     SolverFactory factory;
-    SolverAbstract::Ptr sensitivity_model = factory.copy_solver(last_master);
+    SolverAbstract::Ptr sensitivity_model = factory.copy_solver(*last_master);
     std::vector<double> obj = get_cost_vector(*last_master, nb_candidates);
 
     add_near_optimal_cost_constraint(*(sensitivity_model.get()));

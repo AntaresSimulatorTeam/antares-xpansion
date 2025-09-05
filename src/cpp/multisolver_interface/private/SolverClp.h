@@ -44,14 +44,7 @@ public:
     SolverClp();
     explicit SolverClp(const SolverLogManager& log_manager);
 
-    /**
-     * @brief Copy constructor of CLP, copy the problem toCopy in memory and name
-     * it "name"
-     *
-     * @param toCopy : Pointer to an AbstractSolver object, containing a CLP
-     * solver to copy
-     */
-    explicit SolverClp(const std::shared_ptr<const SolverAbstract> toCopy);
+    explicit SolverClp(const SolverAbstract& toCopy);
 
     /*SolverClp ctor accept only std::shared_ptr*/
     SolverClp(const SolverClp& other) = delete;
@@ -95,8 +88,6 @@ public:
     void restore_prob(const std::filesystem::path& filename) override;
     void read_basis(const std::filesystem::path& filename) override;
     void set_basis(std::span<int> rstatus, std::span<int> cstatus) override;
-
-    void copy_prob(const SolverAbstract::Ptr fictif_solv) override;
 
     /*************************************************************************************************
     -----------------------    Get general informations about problem
