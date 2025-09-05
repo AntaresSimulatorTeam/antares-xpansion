@@ -223,30 +223,9 @@ public:
 
 public:
     /**
-     * @brief constructor of SolverAbstract class : does nothing
-     */
-    SolverAbstract()
-    {
-    }
-
-    /**
-     * @brief Copy constructor, copy the problem "toCopy" in memory and name it
-     * "name" if possible
-     *
-     * @param name 	: Name to give to new problem
-     * @param toCopy : Pointer to an AbstractSolver object, containing a solver
-     * object to copy
-     */
-    SolverAbstract(const std::string& name, const std::shared_ptr<SolverAbstract> toCopy)
-    {
-    }
-
-    /**
      * @brief destructor of SolverAbstract class : does nothing
      */
-    virtual ~SolverAbstract()
-    {
-    }
+    virtual ~SolverAbstract() = default;
 
     /**
      * @brief Returns number of instances of solver currently in memory
