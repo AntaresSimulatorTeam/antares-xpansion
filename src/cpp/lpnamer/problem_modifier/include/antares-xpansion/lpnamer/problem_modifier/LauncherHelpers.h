@@ -14,7 +14,7 @@
  * \param additionalConstraints_p the additional constraints to add
  */
 void treatAdditionalConstraints(
-  SolverAbstract::Ptr master_p,
+  std::shared_ptr<SolverAbstract> master_p,
   const AdditionalConstraints& additionalConstraints_p,
   std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
 
@@ -28,7 +28,7 @@ char getConstraintSenseSymbol(
  * \param master_p solver to which the constraint will be added
  * \param additionalConstraint_p the additional constraint to add
  */
-void addAdditionalConstraint(SolverAbstract::Ptr master_p,
+void addAdditionalConstraint(std::shared_ptr<SolverAbstract> master_p,
                              const AdditionalConstraint& additionalConstraint_p,
                              std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
 
@@ -44,7 +44,7 @@ void addAdditionalConstraint(SolverAbstract::Ptr master_p,
  *          adds the linking constraint link_BinVar_CorrespondingVar :
  * CorrespondingVar  <= UB(CorrespondingVar) * BinVar
  */
-void addBinaryVariables(SolverAbstract::Ptr master_p,
+void addBinaryVariables(std::shared_ptr<SolverAbstract> master_p,
                         const std::map<std::string, std::string>& variablesToBinarise_p,
                         std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger);
 

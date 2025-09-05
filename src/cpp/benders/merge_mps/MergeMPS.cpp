@@ -38,13 +38,14 @@ AbstractMergeMPS::AbstractMergeMPS(MergeMPSOptions options,
  *
  * \param filename : MPS file name
  */
-SolverAbstract::Ptr AbstractMergeMPS::get_local_solver(const std::filesystem::path& root_dir,
-                                                       const std::string& filename) const
+std::shared_ptr<SolverAbstract> AbstractMergeMPS::get_local_solver(
+  const std::filesystem::path& root_dir,
+  const std::string& filename) const
 {
     /**
      * Limitation: on windows may not support master problem with full path as name
      */
-    SolverAbstract::Ptr ptr_solver = factory_.create_solver(options_.SOLVER_NAME);
+    std::shared_ptr<SolverAbstract> ptr_solver = factory_.create_solver(options_.SOLVER_NAME);
     ptr_solver->set_output_log_level(options_.LOG_LEVEL);
 
     solver_io_.read(ptr_solver.get(), root_dir / filename);
@@ -223,7 +224,7 @@ void MergeMasterSubproblemMPS::build_problem()
     int current_prob_id{0};
     for (const auto& [filename, var_map]: local_structure)
     {
-        SolverAbstract::Ptr ptr_solver = get_local_solver(root_dir, filename);
+        std::shared_ptr<SolverAbstract> ptr_solver = get_local_solver(root_dir, filename);
 
         // Change the weight of coeff in the objective function
         const double weight = get_problem_obj_weight(nb_sub_problems, filename);

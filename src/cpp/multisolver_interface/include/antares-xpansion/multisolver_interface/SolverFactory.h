@@ -58,14 +58,14 @@ public:
      * @param solver_type : Type of the solver {INTEGER, CONTINUOUS}
      * @param log_manager : A logger
      */
-    SolverAbstract::Ptr create_solver(const std::string& solver_name) const;
-    SolverAbstract::Ptr create_solver(const std::string& solver_name,
-                                      const SolverLogManager& log_manager) const;
-    SolverAbstract::Ptr create_solver(const std::string& solver_name,
-                                      SOLVER_TYPE solver_type) const;
-    SolverAbstract::Ptr create_solver(const std::string& solver_name,
-                                      SOLVER_TYPE solver_type,
-                                      const SolverLogManager& log_manager) const;
+    std::shared_ptr<SolverAbstract> create_solver(const std::string& solver_name) const;
+    std::shared_ptr<SolverAbstract> create_solver(const std::string& solver_name,
+                                                  const SolverLogManager& log_manager) const;
+    std::shared_ptr<SolverAbstract> create_solver(const std::string& solver_name,
+                                                  SOLVER_TYPE solver_type) const;
+    std::shared_ptr<SolverAbstract> create_solver(const std::string& solver_name,
+                                                  SOLVER_TYPE solver_type,
+                                                  const SolverLogManager& log_manager) const;
 
     /**
      * @brief Creates and returns to an object solver from the wanted
@@ -75,14 +75,14 @@ public:
      * @param solver_type : Type of the solver {INTEGER, CONTINUOUS}
      * @param log_manager : A logger
      */
-    SolverAbstract::Ptr create_solver(const SolverConfig& solver_config) const;
-    SolverAbstract::Ptr create_solver(const SolverConfig& solver_config,
-                                      SOLVER_TYPE solver_type) const;
-    SolverAbstract::Ptr create_solver(const SolverConfig& solver_config,
-                                      const SolverLogManager& log_manager) const;
-    SolverAbstract::Ptr create_solver(const SolverConfig& solver_config,
-                                      SOLVER_TYPE solver_type,
-                                      const SolverLogManager& log_manager) const;
+    std::shared_ptr<SolverAbstract> create_solver(const SolverConfig& solver_config) const;
+    std::shared_ptr<SolverAbstract> create_solver(const SolverConfig& solver_config,
+                                                  SOLVER_TYPE solver_type) const;
+    std::shared_ptr<SolverAbstract> create_solver(const SolverConfig& solver_config,
+                                                  const SolverLogManager& log_manager) const;
+    std::shared_ptr<SolverAbstract> create_solver(const SolverConfig& solver_config,
+                                                  SOLVER_TYPE solver_type,
+                                                  const SolverLogManager& log_manager) const;
 
     /**
      * @brief Copy constructor : Creates and returns to an object solver from the
@@ -90,7 +90,7 @@ public:
      *
      * @param to_copy : solver to copy
      */
-    SolverAbstract::Ptr copy_solver(const SolverAbstract& to_copy) const;
+    std::shared_ptr<SolverAbstract> copy_solver(const SolverAbstract& to_copy) const;
 
     /**
      * @brief Returns a reference to the list of available solvers
