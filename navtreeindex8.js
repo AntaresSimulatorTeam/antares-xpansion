@@ -1,14 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"structCatch_1_1is__callable_3_01Fun_07Args_8_8_8_08_4.html":[33,0,3,29],
-"structCatch_1_1is__callable__tester.html":[33,0,3,30],
-"structCatch_1_1is__range.html":[33,0,3,31],
-"structCatch_1_1pluralise.html":[33,0,3,44],
-"structCatch_1_1true__given.html":[33,0,3,93],
-"structCatch__global__namespace__dummy.html":[33,0,81],
-"structColumnToChange.html":[33,0,87],
-"structConfigurationManager_1_1ConfigDirectories.html":[33,0,88,0],
-"structCriteriaCurrentIterationData.html":[33,0,91],
 "structCurrentIterationData.html":[33,0,92],
 "structEmptyLogger.html":[33,0,94],
 "structEmptyLogger.html#a69cb84c65248af6f19ec4518a44c02ae":[33,0,94,0],

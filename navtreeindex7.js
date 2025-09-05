@@ -1,14 +1,5 @@
 var NAVTREEINDEX7 =
 {
-"md_docs_2user-guide_2get-started_2installation.html#autotoc_md163":[17,0],
-"md_docs_2user-guide_2get-started_2installation.html#autotoc_md164":[17,1],
-"md_docs_2user-guide_2get-started_2launching-optimization.html":[18],
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md166":[18,0],
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md167":[18,0,0],
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md168":[18,0,1],
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md169":[18,0,1,0],
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md170":[18,0,1,1],
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md171":[18,0,1,2],
 "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md172":[18,0,1,3],
 "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md173":[18,0,1,4],
 "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md174":[18,0,1,5],
@@ -249,5 +240,14 @@ var NAVTREEINDEX7 =
 "structCatch_1_1detail_1_1is__range__impl.html":[33,0,3,1,0],
 "structCatch_1_1detail_1_1is__range__impl_3_01T_00_01typename_01void__type_3_01decltype_07begin_0efe009a05f00a00c1e4e06989d122a22.html":[33,0,3,1,1],
 "structCatch_1_1detail_1_1void__type.html":[33,0,3,1,2],
-"structCatch_1_1is__callable.html":[33,0,3,28]
+"structCatch_1_1is__callable.html":[33,0,3,28],
+"structCatch_1_1is__callable_3_01Fun_07Args_8_8_8_08_4.html":[33,0,3,29],
+"structCatch_1_1is__callable__tester.html":[33,0,3,30],
+"structCatch_1_1is__range.html":[33,0,3,31],
+"structCatch_1_1pluralise.html":[33,0,3,44],
+"structCatch_1_1true__given.html":[33,0,3,93],
+"structCatch__global__namespace__dummy.html":[33,0,81],
+"structColumnToChange.html":[33,0,87],
+"structConfigurationManager_1_1ConfigDirectories.html":[33,0,88,0],
+"structCriteriaCurrentIterationData.html":[33,0,91]
 };

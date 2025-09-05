@@ -232,9 +232,6 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>set_fp</b> (FILE *fp)
 <tr class="memitem:a8e73d7e8a397a6b69b9a4e451cbde220" id="r_a8e73d7e8a397a6b69b9a4e451cbde220"><td class="memItemLeft" align="right" valign="top"><a id="a8e73d7e8a397a6b69b9a4e451cbde220" name="a8e73d7e8a397a6b69b9a4e451cbde220"></a>
 virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>set_basis</b> (std::span&lt; int &gt; rstatus, std::span&lt; int &gt; cstatus)=0</td></tr>
 <tr class="separator:a8e73d7e8a397a6b69b9a4e451cbde220"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7c3811bcde70723fc245a9409873cc55" id="r_a7c3811bcde70723fc245a9409873cc55"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7c3811bcde70723fc245a9409873cc55">copy_prob</a> (<a class="el" href="#aa8908e36c1d938344751665a8fa63076">Ptr</a> fictif_solv)=0</td></tr>
-<tr class="memdesc:a7c3811bcde70723fc245a9409873cc55"><td class="mdescLeft">&#160;</td><td class="mdescRight">copy an existing problem  <br /></td></tr>
-<tr class="separator:a7c3811bcde70723fc245a9409873cc55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9495ddf5adfb5e6313fa6ec0452570cd" id="r_a9495ddf5adfb5e6313fa6ec0452570cd"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9495ddf5adfb5e6313fa6ec0452570cd">get_ncols</a> () const =0</td></tr>
 <tr class="memdesc:a9495ddf5adfb5e6313fa6ec0452570cd"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of columns of the problem  <br /></td></tr>
 <tr class="separator:a9495ddf5adfb5e6313fa6ec0452570cd"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -1020,41 +1017,6 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 </dl>
 
 <p>Implemented in <a class="el" href="classNOOPSolver.html#a5f8d90f146d65b8c4f4e1a3bf62fab5b">NOOPSolver</a>, <a class="el" href="classProblem.html#a13f183f9af6db636f61e0e919ad8f834">Problem</a>, <a class="el" href="classSolverCbc.html#a91961aef6dbf88d420c029eed8a948ab">SolverCbc</a>, <a class="el" href="classSolverClp.html#aa059147184d5df7e754b5ba829034961">SolverClp</a>, and <a class="el" href="classSolverXpress.html#a9e3d875088b872c4b8153c2067b8fed4">SolverXpress</a>.</p>
-
-</div>
-</div>
-<a id="a7c3811bcde70723fc245a9409873cc55" name="a7c3811bcde70723fc245a9409873cc55"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a7c3811bcde70723fc245a9409873cc55">&#9670;&#160;</a></span>copy_prob()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">virtual void SolverAbstract::copy_prob </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="#aa8908e36c1d938344751665a8fa63076">Ptr</a></td>          <td class="paramname"><span class="paramname"><em>fictif_solv</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>copy an existing problem </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">prb_to_copy</td><td>: Ptr to the </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Implemented in <a class="el" href="classNOOPSolver.html#ae1755428c2f8bc38d8c90c335082d6cd">NOOPSolver</a>, <a class="el" href="classProblem.html#a995719eb062c198744fcf9637ae165f3">Problem</a>, <a class="el" href="classSolverCbc.html#a448ab7379bbf8589512d1d73e9defad9">SolverCbc</a>, <a class="el" href="classSolverClp.html#ab4cfabf222f35f9e566d4c74e5021acb">SolverClp</a>, and <a class="el" href="classSolverXpress.html#a900f8ba728b3cae5c413e6af48b8469a">SolverXpress</a>.</p>
 
 </div>
 </div>

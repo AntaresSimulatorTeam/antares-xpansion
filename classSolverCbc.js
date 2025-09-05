@@ -1,7 +1,6 @@
 var classSolverCbc =
 [
     [ "SolverCbc", "classSolverCbc.html#a6aa4a44407cb816965a0ac21ff8e101e", null ],
-    [ "SolverCbc", "classSolverCbc.html#a21a7dfd94c6bd1ac0e32a35a866d98fb", null ],
     [ "add_cols", "classSolverCbc.html#a588f24beee5d4d19e68c6a757723a165", null ],
     [ "add_name", "classSolverCbc.html#a0990733602db4b38284455ef0aa0349a", null ],
     [ "add_rows", "classSolverCbc.html#abd6277ebc56de430f38c8851866ca1bd", null ],
@@ -13,7 +12,6 @@ var classSolverCbc =
     [ "chg_obj_direction", "classSolverCbc.html#a6410f959451f8e0e3ad82b67736e4927", null ],
     [ "chg_rhs", "classSolverCbc.html#a8fa0d0e8fab67cd8f07930d8337549a4", null ],
     [ "chg_row_name", "classSolverCbc.html#a91961aef6dbf88d420c029eed8a948ab", null ],
-    [ "copy_prob", "classSolverCbc.html#a448ab7379bbf8589512d1d73e9defad9", null ],
     [ "del_cols", "classSolverCbc.html#a10378e3dc1f70ce69258507f76b5da45", null ],
     [ "del_rows", "classSolverCbc.html#a2c14ea49c71844eafcc50aa69e38b444", null ],
     [ "free", "classSolverCbc.html#acb2ab7b80624c4ed0f9c3a122407236a", null ],

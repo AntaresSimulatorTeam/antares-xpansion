@@ -163,12 +163,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ae0305296901a4ded6cc491685e22a77e" id="r_ae0305296901a4ded6cc491685e22a77e"><td class="memItemLeft" align="right" valign="top"><a id="ae0305296901a4ded6cc491685e22a77e" name="ae0305296901a4ded6cc491685e22a77e"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SolverXpress</b> (const <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;log_manager)</td></tr>
 <tr class="separator:ae0305296901a4ded6cc491685e22a77e"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa2c353455282b7595fac4d3ff31adb85" id="r_aa2c353455282b7595fac4d3ff31adb85"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa2c353455282b7595fac4d3ff31adb85">SolverXpress</a> (const <a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> toCopy)</td></tr>
-<tr class="memdesc:aa2c353455282b7595fac4d3ff31adb85"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor of XPRESS, copy the problem toCopy in memory and name it "name".  <br /></td></tr>
-<tr class="separator:aa2c353455282b7595fac4d3ff31adb85"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:abc4a4caf0c386a15f82734b4a3afb6bf" id="r_abc4a4caf0c386a15f82734b4a3afb6bf"><td class="memItemLeft" align="right" valign="top"><a id="abc4a4caf0c386a15f82734b4a3afb6bf" name="abc4a4caf0c386a15f82734b4a3afb6bf"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SolverXpress</b> (const std::shared_ptr&lt; const <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt; toCopy)</td></tr>
-<tr class="separator:abc4a4caf0c386a15f82734b4a3afb6bf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab1fd29e44cf48a0725d14503bea3a92f" id="r_ab1fd29e44cf48a0725d14503bea3a92f"><td class="memItemLeft" align="right" valign="top"><a id="ab1fd29e44cf48a0725d14503bea3a92f" name="ab1fd29e44cf48a0725d14503bea3a92f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SolverXpress</b> (const <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &amp;toCopy)</td></tr>
+<tr class="separator:ab1fd29e44cf48a0725d14503bea3a92f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2f8326cca8f2a97c9ef2b3611b6c7aa7" id="r_a2f8326cca8f2a97c9ef2b3611b6c7aa7"><td class="memItemLeft" align="right" valign="top"><a id="a2f8326cca8f2a97c9ef2b3611b6c7aa7" name="a2f8326cca8f2a97c9ef2b3611b6c7aa7"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SolverXpress</b> (const <a class="el" href="classSolverXpress.html">SolverXpress</a> &amp;other)=delete</td></tr>
 <tr class="separator:a2f8326cca8f2a97c9ef2b3611b6c7aa7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -213,9 +210,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a94cf7d098019f59255712f50310f27ec"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0805fe88bd7cf1b80ae00126820899f4" id="r_a0805fe88bd7cf1b80ae00126820899f4"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0805fe88bd7cf1b80ae00126820899f4">set_basis</a> (std::span&lt; int &gt; rstatus, std::span&lt; int &gt; cstatus) override</td></tr>
 <tr class="separator:a0805fe88bd7cf1b80ae00126820899f4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a900f8ba728b3cae5c413e6af48b8469a" id="r_a900f8ba728b3cae5c413e6af48b8469a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a900f8ba728b3cae5c413e6af48b8469a">copy_prob</a> (const <a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> fictif_solv) override</td></tr>
-<tr class="memdesc:a900f8ba728b3cae5c413e6af48b8469a"><td class="mdescLeft">&#160;</td><td class="mdescRight">copy an existing problem  <br /></td></tr>
-<tr class="separator:a900f8ba728b3cae5c413e6af48b8469a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a60e26e2a342599a079f66001918a8db7" id="r_a60e26e2a342599a079f66001918a8db7"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a60e26e2a342599a079f66001918a8db7">get_ncols</a> () const override</td></tr>
 <tr class="memdesc:a60e26e2a342599a079f66001918a8db7"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of columns of the problem  <br /></td></tr>
 <tr class="separator:a60e26e2a342599a079f66001918a8db7"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -415,40 +409,6 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:aa8908e36c1d938344751665a8fa63076 inherit pub_types_classSolverAbstract" id="r_aa8908e36c1d938344751665a8fa63076"><td class="memItemLeft" align="right" valign="top">typedef std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">Ptr</a></td></tr>
 <tr class="separator:aa8908e36c1d938344751665a8fa63076 inherit pub_types_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="aa2c353455282b7595fac4d3ff31adb85" name="aa2c353455282b7595fac4d3ff31adb85"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa2c353455282b7595fac4d3ff31adb85">&#9670;&#160;</a></span>SolverXpress()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SolverXpress::SolverXpress </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a></td>          <td class="paramname"><span class="paramname"><em>toCopy</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Copy constructor of XPRESS, copy the problem toCopy in memory and name it "name". </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">toCopy</td><td>: Pointer to an AbstractSolver object, containing an XPRESS solver to copy </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a6853d16704d40630fe13d25b480a1069" name="a6853d16704d40630fe13d25b480a1069"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a6853d16704d40630fe13d25b480a1069">&#9670;&#160;</a></span>add_cols()</h2>
@@ -1027,41 +987,6 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 
 <p>Implements <a class="el" href="classSolverAbstract.html#ad992af8d12855a30f1d0c45daf988753">SolverAbstract</a>.</p>
-
-</div>
-</div>
-<a id="a900f8ba728b3cae5c413e6af48b8469a" name="a900f8ba728b3cae5c413e6af48b8469a"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a900f8ba728b3cae5c413e6af48b8469a">&#9670;&#160;</a></span>copy_prob()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SolverXpress::copy_prob </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a></td>          <td class="paramname"><span class="paramname"><em>fictif_solv</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>copy an existing problem </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">prb_to_copy</td><td>: Ptr to the </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Implements <a class="el" href="classSolverAbstract.html#a7c3811bcde70723fc245a9409873cc55">SolverAbstract</a>.</p>
 
 </div>
 </div>

@@ -1,14 +1,5 @@
 var NAVTREEINDEX6 =
 {
-"dir_c9c60946a81f10d8287f9fce9cf37b31.html":[34,0,0,0,0,3],
-"dir_cb044fc867eacaf6ed3dab28204c440c.html":[34,0,0,0,0,8,0,0,0],
-"dir_cb4958ed94c8eabb59510d82c41f5351.html":[34,0,0,0,7],
-"dir_cd3467a04bd2b05363dd8c8f17b6249f.html":[34,0,0,0,4,1,0],
-"dir_cebede7e7519f5e1d3851e4cba388323.html":[34,0,0,0,6,1],
-"dir_cf3c68b66a79946d9c5243d97cb7715f.html":[34,0,0,0,7,0],
-"dir_d11149565431690e8c7d6493af59f182.html":[34,0,0,0,0,4,0,0],
-"dir_ded7b7728c06f7964a722285a88ef42e.html":[34,0,0,0,3,0,0],
-"dir_def971f6a63400034a12512efccd3104.html":[34,0,0,0,0,4,0,0,0,0],
 "dir_df4013546a3c74d96d311a0534ef60d6.html":[34,0,0,0,9,0],
 "dir_dfdbda394c3f7a3aa55229f33a559c41.html":[34,0,0,0],
 "dir_e4edea59c9a77dadfad8d381c7bf69e1.html":[34,0,0,0,8,0],
@@ -249,5 +240,14 @@ var NAVTREEINDEX6 =
 "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md159":[16,3,0],
 "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md160":[16,3,1],
 "md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md161":[16,3,2],
-"md_docs_2user-guide_2get-started_2installation.html":[17]
+"md_docs_2user-guide_2get-started_2installation.html":[17],
+"md_docs_2user-guide_2get-started_2installation.html#autotoc_md163":[17,0],
+"md_docs_2user-guide_2get-started_2installation.html#autotoc_md164":[17,1],
+"md_docs_2user-guide_2get-started_2launching-optimization.html":[18],
+"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md166":[18,0],
+"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md167":[18,0,0],
+"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md168":[18,0,1],
+"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md169":[18,0,1,0],
+"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md170":[18,0,1,1],
+"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md171":[18,0,1,2]
 };

@@ -1,7 +1,6 @@
 var classSolverXpress =
 [
     [ "SolverXpress", "classSolverXpress.html#a3fa04264091ce029e091b1c3eac8c560", null ],
-    [ "SolverXpress", "classSolverXpress.html#aa2c353455282b7595fac4d3ff31adb85", null ],
     [ "add_cols", "classSolverXpress.html#a6853d16704d40630fe13d25b480a1069", null ],
     [ "add_name", "classSolverXpress.html#a3d66403a0b9cad3c4988c5f943fcfc57", null ],
     [ "add_rows", "classSolverXpress.html#a91269b74f5f1c6c19234165f614a2898", null ],
@@ -13,7 +12,6 @@ var classSolverXpress =
     [ "chg_obj_direction", "classSolverXpress.html#a07bf0db4f570f71740af10c1943c5027", null ],
     [ "chg_rhs", "classSolverXpress.html#aea4b1d26fe9cadc968305c6c2fe3b442", null ],
     [ "chg_row_name", "classSolverXpress.html#a9e3d875088b872c4b8153c2067b8fed4", null ],
-    [ "copy_prob", "classSolverXpress.html#a900f8ba728b3cae5c413e6af48b8469a", null ],
     [ "del_cols", "classSolverXpress.html#a1303ed4ad4f9737e75958358c9da2346", null ],
     [ "del_rows", "classSolverXpress.html#a6d7e555228a8b6404a00a89754e35ab1", null ],
     [ "free", "classSolverXpress.html#af84b47270bfca3e50736d0d7bf369762", null ],

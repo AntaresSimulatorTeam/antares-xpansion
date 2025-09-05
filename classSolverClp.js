@@ -1,7 +1,6 @@
 var classSolverClp =
 [
     [ "SolverClp", "classSolverClp.html#a2187e8b150f471557445330c9942424d", null ],
-    [ "SolverClp", "classSolverClp.html#a6ede61a1e2d075a806fa269a75849d6b", null ],
     [ "add_cols", "classSolverClp.html#a548d003be047e30c6172a147ca4622a6", null ],
     [ "add_name", "classSolverClp.html#a8c52ca73a3482eee8e402dd9d95c1134", null ],
     [ "add_rows", "classSolverClp.html#afb509e7e7ee57c0b2d24f38c7bfd4ce3", null ],
@@ -13,7 +12,6 @@ var classSolverClp =
     [ "chg_obj_direction", "classSolverClp.html#a91a5818bc9518d33f00ef61c6e2b4231", null ],
     [ "chg_rhs", "classSolverClp.html#af29c592ff80e778ee906f10a40648192", null ],
     [ "chg_row_name", "classSolverClp.html#aa059147184d5df7e754b5ba829034961", null ],
-    [ "copy_prob", "classSolverClp.html#ab4cfabf222f35f9e566d4c74e5021acb", null ],
     [ "del_cols", "classSolverClp.html#a06e608de752dcbb8be37b644edb7b3e9", null ],
     [ "del_rows", "classSolverClp.html#ac1b9d4bdce8d5e9880f1f46efde0417b", null ],
     [ "free", "classSolverClp.html#a339cf2f8007d60e0ad2318d135f05f2d", null ],

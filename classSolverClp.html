@@ -163,9 +163,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:a81be2252284cab5fa2f43e63cfd9c8c4" id="r_a81be2252284cab5fa2f43e63cfd9c8c4"><td class="memItemLeft" align="right" valign="top"><a id="a81be2252284cab5fa2f43e63cfd9c8c4" name="a81be2252284cab5fa2f43e63cfd9c8c4"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SolverClp</b> (const <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;log_manager)</td></tr>
 <tr class="separator:a81be2252284cab5fa2f43e63cfd9c8c4"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a6ede61a1e2d075a806fa269a75849d6b" id="r_a6ede61a1e2d075a806fa269a75849d6b"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a6ede61a1e2d075a806fa269a75849d6b">SolverClp</a> (const std::shared_ptr&lt; const <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt; toCopy)</td></tr>
-<tr class="memdesc:a6ede61a1e2d075a806fa269a75849d6b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor of CLP, copy the problem toCopy in memory and name it "name".  <br /></td></tr>
-<tr class="separator:a6ede61a1e2d075a806fa269a75849d6b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8e2b7bdbc8ddb1dad9e0839c4edf3a89" id="r_a8e2b7bdbc8ddb1dad9e0839c4edf3a89"><td class="memItemLeft" align="right" valign="top"><a id="a8e2b7bdbc8ddb1dad9e0839c4edf3a89" name="a8e2b7bdbc8ddb1dad9e0839c4edf3a89"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>SolverClp</b> (const <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &amp;toCopy)</td></tr>
+<tr class="separator:a8e2b7bdbc8ddb1dad9e0839c4edf3a89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a4ffd9da1b4b2d88b86b02415f606caed" id="r_a4ffd9da1b4b2d88b86b02415f606caed"><td class="memItemLeft" align="right" valign="top"><a id="a4ffd9da1b4b2d88b86b02415f606caed" name="a4ffd9da1b4b2d88b86b02415f606caed"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>SolverClp</b> (const <a class="el" href="classSolverClp.html">SolverClp</a> &amp;other)=delete</td></tr>
 <tr class="separator:a4ffd9da1b4b2d88b86b02415f606caed"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -208,9 +208,6 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a61acc5b14a98254ae9dacfc46b4508fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae3a0bc500b8d2fa76d2dcbdf02584ef5" id="r_ae3a0bc500b8d2fa76d2dcbdf02584ef5"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae3a0bc500b8d2fa76d2dcbdf02584ef5">set_basis</a> (std::span&lt; int &gt; rstatus, std::span&lt; int &gt; cstatus) override</td></tr>
 <tr class="separator:ae3a0bc500b8d2fa76d2dcbdf02584ef5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:ab4cfabf222f35f9e566d4c74e5021acb" id="r_ab4cfabf222f35f9e566d4c74e5021acb"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4cfabf222f35f9e566d4c74e5021acb">copy_prob</a> (const <a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> fictif_solv) override</td></tr>
-<tr class="memdesc:ab4cfabf222f35f9e566d4c74e5021acb"><td class="mdescLeft">&#160;</td><td class="mdescRight">copy an existing problem  <br /></td></tr>
-<tr class="separator:ab4cfabf222f35f9e566d4c74e5021acb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a7b72909992e649880becf1c110964453" id="r_a7b72909992e649880becf1c110964453"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7b72909992e649880becf1c110964453">get_ncols</a> () const override</td></tr>
 <tr class="memdesc:a7b72909992e649880becf1c110964453"><td class="mdescLeft">&#160;</td><td class="mdescRight">returns number of columns of the problem  <br /></td></tr>
 <tr class="separator:a7b72909992e649880becf1c110964453"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -408,40 +405,6 @@ Additional Inherited Members</h2></td></tr>
 <tr class="memitem:aa8908e36c1d938344751665a8fa63076 inherit pub_types_classSolverAbstract" id="r_aa8908e36c1d938344751665a8fa63076"><td class="memItemLeft" align="right" valign="top">typedef std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">Ptr</a></td></tr>
 <tr class="separator:aa8908e36c1d938344751665a8fa63076 inherit pub_types_classSolverAbstract"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a6ede61a1e2d075a806fa269a75849d6b" name="a6ede61a1e2d075a806fa269a75849d6b"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a6ede61a1e2d075a806fa269a75849d6b">&#9670;&#160;</a></span>SolverClp()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SolverClp::SolverClp </td>
-          <td>(</td>
-          <td class="paramtype">const std::shared_ptr&lt; const <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;</td>          <td class="paramname"><span class="paramname"><em>toCopy</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">explicit</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Copy constructor of CLP, copy the problem toCopy in memory and name it "name". </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">toCopy</td><td>: Pointer to an AbstractSolver object, containing a CLP solver to copy </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a548d003be047e30c6172a147ca4622a6" name="a548d003be047e30c6172a147ca4622a6"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a548d003be047e30c6172a147ca4622a6">&#9670;&#160;</a></span>add_cols()</h2>
@@ -1020,41 +983,6 @@ Additional Inherited Members</h2></td></tr>
 </dl>
 
 <p>Implements <a class="el" href="classSolverAbstract.html#ad992af8d12855a30f1d0c45daf988753">SolverAbstract</a>.</p>
-
-</div>
-</div>
-<a id="ab4cfabf222f35f9e566d4c74e5021acb" name="ab4cfabf222f35f9e566d4c74e5021acb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#ab4cfabf222f35f9e566d4c74e5021acb">&#9670;&#160;</a></span>copy_prob()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">void SolverClp::copy_prob </td>
-          <td>(</td>
-          <td class="paramtype">const <a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a></td>          <td class="paramname"><span class="paramname"><em>fictif_solv</em></span></td><td>)</td>
-          <td></td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>copy an existing problem </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">prb_to_copy</td><td>: Ptr to the </td></tr>
-  </table>
-  </dd>
-</dl>
-
-<p>Implements <a class="el" href="classSolverAbstract.html#a7c3811bcde70723fc245a9409873cc55">SolverAbstract</a>.</p>
 
 </div>
 </div>
