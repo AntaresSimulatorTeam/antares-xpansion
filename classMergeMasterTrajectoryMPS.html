@@ -218,9 +218,9 @@ Additional Inherited Members</h2></td></tr>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>export_problem</b> (const std::string &amp;filename=&quot;log_merged&quot;, bool export_lp=false) const</td></tr>
 <tr class="memdesc:a44c25e6a5c9514ceff04b6fe9abb7730 inherit pro_methods_classAbstractMergeMPS"><td class="mdescLeft">&#160;</td><td class="mdescRight">Export problem into INPUTROOT/filename and optionally writes the lp variant We do it this way because we cannot read a master problem not at the input root. <br /></td></tr>
 <tr class="separator:a44c25e6a5c9514ceff04b6fe9abb7730 inherit pro_methods_classAbstractMergeMPS"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a669f986e197c96005eb4e0386d2c4c7b inherit pro_methods_classAbstractMergeMPS" id="r_a669f986e197c96005eb4e0386d2c4c7b"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a>&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractMergeMPS.html#a669f986e197c96005eb4e0386d2c4c7b">get_local_solver</a> (const std::filesystem::path &amp;root_dir, const std::string &amp;filename) const</td></tr>
-<tr class="memdesc:a669f986e197c96005eb4e0386d2c4c7b inherit pro_methods_classAbstractMergeMPS"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a local solver from a MPS file.  <br /></td></tr>
-<tr class="separator:a669f986e197c96005eb4e0386d2c4c7b inherit pro_methods_classAbstractMergeMPS"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae03dd783d990725048950ed7c08e49f9 inherit pro_methods_classAbstractMergeMPS" id="r_ae03dd783d990725048950ed7c08e49f9"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractMergeMPS.html#ae03dd783d990725048950ed7c08e49f9">get_local_solver</a> (const std::filesystem::path &amp;root_dir, const std::string &amp;filename) const</td></tr>
+<tr class="memdesc:ae03dd783d990725048950ed7c08e49f9 inherit pro_methods_classAbstractMergeMPS"><td class="mdescLeft">&#160;</td><td class="mdescRight">Creates a local solver from a MPS file.  <br /></td></tr>
+<tr class="separator:ae03dd783d990725048950ed7c08e49f9 inherit pro_methods_classAbstractMergeMPS"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3564177205bdc0a9231ce4fef65c31aa inherit pro_methods_classAbstractMergeMPS" id="r_a3564177205bdc0a9231ce4fef65c31aa"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classAbstractMergeMPS.html#a3564177205bdc0a9231ce4fef65c31aa">multiply_obj_by_weight_factor</a> (<a class="el" href="classSolverAbstract.html">SolverAbstract</a> &amp;local_solver, double weight) const</td></tr>
 <tr class="memdesc:a3564177205bdc0a9231ce4fef65c31aa inherit pro_methods_classAbstractMergeMPS"><td class="mdescLeft">&#160;</td><td class="mdescRight">Weights local solver's objective function by a given value.  <br /></td></tr>
 <tr class="separator:a3564177205bdc0a9231ce4fef65c31aa inherit pro_methods_classAbstractMergeMPS"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -243,9 +243,9 @@ const <a class="el" href="classSolverFactory.html">SolverFactory</a>&#160;</td><
 <tr class="memitem:a8c77d4323090d871cde203808abec821 inherit pro_attribs_classAbstractMergeMPS" id="r_a8c77d4323090d871cde203808abec821"><td class="memItemLeft" align="right" valign="top">
 <a class="el" href="classSolverIO.html">SolverIO</a>&#160;</td><td class="memItemRight" valign="bottom"><b>solver_io_</b></td></tr>
 <tr class="separator:a8c77d4323090d871cde203808abec821 inherit pro_attribs_classAbstractMergeMPS"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a663bb196ee538c276db64342e9b4536d inherit pro_attribs_classAbstractMergeMPS" id="r_a663bb196ee538c276db64342e9b4536d"><td class="memItemLeft" align="right" valign="top">
-<a class="el" href="classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a>&#160;</td><td class="memItemRight" valign="bottom"><b>ptr_merged_solver_</b></td></tr>
-<tr class="separator:a663bb196ee538c276db64342e9b4536d inherit pro_attribs_classAbstractMergeMPS"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4051b5d6f3087fdc9c4fb0826175f6b inherit pro_attribs_classAbstractMergeMPS" id="r_af4051b5d6f3087fdc9c4fb0826175f6b"><td class="memItemLeft" align="right" valign="top">
+std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>ptr_merged_solver_</b></td></tr>
+<tr class="separator:af4051b5d6f3087fdc9c4fb0826175f6b inherit pro_attribs_classAbstractMergeMPS"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a2dafa25b612ee7ae1859c96151164167" name="a2dafa25b612ee7ae1859c96151164167"></a>

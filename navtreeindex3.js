@@ -1,8 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"classSolverCbc.html#a2c14ea49c71844eafcc50aa69e38b444":[33,0,247,13],
-"classSolverCbc.html#a33e87572a8da001d4f728d0772fff27a":[33,0,247,23],
-"classSolverCbc.html#a37c19e7a8d7df5fa0ee9550fb106713b":[33,0,247,6],
 "classSolverCbc.html#a3a643cf8d929694ae061ea37980c7843":[33,0,247,17],
 "classSolverCbc.html#a4d9abe0eb04423e798b1047df8c72655":[33,0,247,49],
 "classSolverCbc.html#a588f24beee5d4d19e68c6a757723a165":[33,0,247,1],
@@ -106,10 +103,10 @@ var NAVTREEINDEX3 =
 "classSolverClp.html#afb509e7e7ee57c0b2d24f38c7bfd4ce3":[33,0,248,3],
 "classSolverConfig.html":[33,0,249],
 "classSolverFactory.html":[33,0,251],
-"classSolverFactory.html#a68874a808a9e5799ba78afbe50b9c4c4":[33,0,251,3],
-"classSolverFactory.html#a8d05098058915e84b739a25b00416648":[33,0,251,2],
-"classSolverFactory.html#aaab6c36d72f1f3861f660230c85527d4":[33,0,251,1],
+"classSolverFactory.html#a08ab3e4f99a617e3c155fd63fb8da165":[33,0,251,1],
+"classSolverFactory.html#a97e25ebe7f69c4a1a2749145869b38e6":[33,0,251,3],
 "classSolverFactory.html#ac8930930124cbb91e178cfabaa1cfc5b":[33,0,251,4],
+"classSolverFactory.html#acd204f241923e841792cf69427c848e8":[33,0,251,2],
 "classSolverFactory.html#ad70db765e0de8baa6de02b29295dfce7":[33,0,251,0],
 "classSolverIO.html":[33,0,252],
 "classSolverLoader.html":[33,0,253],
@@ -249,5 +246,8 @@ var NAVTREEINDEX3 =
 "classXpansion_1_1Test_1_1InMemoryWriter.html#a0711ca27e8c1fd83a4dbcd5376be9150":[33,0,27,0,0,1],
 "classXpansion_1_1Test_1_1InMemoryWriter.html#a987683a87c23bd35e208516d609720d9":[33,0,27,0,0,0],
 "classXpansion_1_1Test_1_1InMemoryWriter.html#ae59cbc1a5daf5f24d68bbe19a52dcb7a":[33,0,27,0,0,2],
-"classXpansion_1_1Test_1_1LoggerNOOPStub.html":[33,0,27,0,1]
+"classXpansion_1_1Test_1_1LoggerNOOPStub.html":[33,0,27,0,1],
+"classXpansion_1_1Test_1_1LoggerNOOPStub.html#a78551de804e829cf89a6d4a84590170c":[33,0,27,0,1,0],
+"classXpansion_1_1Test_1_1WriterNOOPStub.html":[33,0,27,0,2],
+"classXpansion_1_1Test_1_1WriterNOOPStub.html#a46fd1d525db02b1601910b5ffff0fc43":[33,0,27,0,2,1]
 };

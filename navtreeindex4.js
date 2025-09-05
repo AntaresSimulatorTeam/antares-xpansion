@@ -1,8 +1,5 @@
 var NAVTREEINDEX4 =
 {
-"classXpansion_1_1Test_1_1LoggerNOOPStub.html#a78551de804e829cf89a6d4a84590170c":[33,0,27,0,1,0],
-"classXpansion_1_1Test_1_1WriterNOOPStub.html":[33,0,27,0,2],
-"classXpansion_1_1Test_1_1WriterNOOPStub.html#a46fd1d525db02b1601910b5ffff0fc43":[33,0,27,0,2,1],
 "classXpansion_1_1Test_1_1WriterNOOPStub.html#a7733bf61cde2491466c930fbf883c671":[33,0,27,0,2,2],
 "classXpansion_1_1Test_1_1WriterNOOPStub.html#ac4086ef438c82b1a8bd895ae79c92260":[33,0,27,0,2,0],
 "classYAML_1_1convert_3_01CriterionSingleInputData_01_4.html":[33,0,29,0],
@@ -249,5 +246,8 @@ var NAVTREEINDEX4 =
 "classantares__xpansion_1_1study__locker_1_1StudyLocker.html":[33,0,0,21,0],
 "classantares__xpansion_1_1study__locker_1_1StudyLocker_1_1CorruptedLockerFile.html":[33,0,0,21,0,0],
 "classantares__xpansion_1_1study__locker_1_1StudyLocker_1_1Locked.html":[33,0,0,21,0,1],
-"classantares__xpansion_1_1study__locker_1_1StudyLocker_1_1NotAValidDirectory.html":[33,0,0,21,0,2]
+"classantares__xpansion_1_1study__locker_1_1StudyLocker_1_1NotAValidDirectory.html":[33,0,0,21,0,2],
+"classantares__xpansion_1_1study__output__cleaner_1_1StudyOutputCleaner.html":[33,0,0,22,0],
+"classantares__xpansion_1_1study__updater__driver_1_1StudyUpdaterDriver.html":[31,0,0,7,0],
+"classantares__xpansion_1_1study__updater__driver_1_1StudyUpdaterDriver.html":[33,0,0,23,0]
 };

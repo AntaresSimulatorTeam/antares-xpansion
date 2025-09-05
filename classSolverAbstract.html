@@ -138,7 +138,6 @@ $(function(){initNavTree('classSolverAbstract.html',''); initResizable(true); })
 
 <div class="header">
   <div class="summary">
-<a href="#pub-types">Public Types</a> &#124;
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classSolverAbstract-members.html">List of all members</a>  </div>
@@ -162,24 +161,12 @@ Inheritance diagram for SolverAbstract:</div>
   </map>
 </div></div>
 <table class="memberdecls">
-<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-types" name="pub-types"></a>
-Public Types</h2></td></tr>
-<tr class="memitem:aa8908e36c1d938344751665a8fa63076" id="r_aa8908e36c1d938344751665a8fa63076"><td class="memItemLeft" align="right" valign="top">typedef std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa8908e36c1d938344751665a8fa63076">Ptr</a></td></tr>
-<tr class="separator:aa8908e36c1d938344751665a8fa63076"><td class="memSeparator" colspan="2">&#160;</td></tr>
-</table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a765549330512481765387972db04ee43" id="r_a765549330512481765387972db04ee43"><td class="memItemLeft" align="right" valign="top"><a id="a765549330512481765387972db04ee43" name="a765549330512481765387972db04ee43"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>SolverAbstract</b> ()</td></tr>
-<tr class="memdesc:a765549330512481765387972db04ee43"><td class="mdescLeft">&#160;</td><td class="mdescRight">constructor of <a class="el" href="classSolverAbstract.html">SolverAbstract</a> class : does nothing <br /></td></tr>
-<tr class="separator:a765549330512481765387972db04ee43"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a365b9e1c1813590b5b3f1be5103041c7" id="r_a365b9e1c1813590b5b3f1be5103041c7"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a365b9e1c1813590b5b3f1be5103041c7">SolverAbstract</a> (const std::string &amp;name, const <a class="el" href="#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a> toCopy)</td></tr>
-<tr class="memdesc:a365b9e1c1813590b5b3f1be5103041c7"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor, copy the problem "toCopy" in memory and name it "name" if possible.  <br /></td></tr>
-<tr class="separator:a365b9e1c1813590b5b3f1be5103041c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a779bb6533ebb23c5887433d9fe295498" id="r_a779bb6533ebb23c5887433d9fe295498"><td class="memItemLeft" align="right" valign="top"><a id="a779bb6533ebb23c5887433d9fe295498" name="a779bb6533ebb23c5887433d9fe295498"></a>
-virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~SolverAbstract</b> ()</td></tr>
-<tr class="memdesc:a779bb6533ebb23c5887433d9fe295498"><td class="mdescLeft">&#160;</td><td class="mdescRight">destructor of <a class="el" href="classSolverAbstract.html">SolverAbstract</a> class : does nothing <br /></td></tr>
-<tr class="separator:a779bb6533ebb23c5887433d9fe295498"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a2f6afcda1364d448231c91a0c608fd52" id="r_a2f6afcda1364d448231c91a0c608fd52"><td class="memItemLeft" align="right" valign="top"><a id="a2f6afcda1364d448231c91a0c608fd52" name="a2f6afcda1364d448231c91a0c608fd52"></a>
+virtual&#160;</td><td class="memItemRight" valign="bottom"><b>~SolverAbstract</b> ()=default</td></tr>
+<tr class="memdesc:a2f6afcda1364d448231c91a0c608fd52"><td class="mdescLeft">&#160;</td><td class="mdescRight">destructor of <a class="el" href="classSolverAbstract.html">SolverAbstract</a> class : does nothing <br /></td></tr>
+<tr class="separator:a2f6afcda1364d448231c91a0c608fd52"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5cd160c6f4f107b94cae63834056bcaf" id="r_a5cd160c6f4f107b94cae63834056bcaf"><td class="memItemLeft" align="right" valign="top">virtual int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5cd160c6f4f107b94cae63834056bcaf">get_number_of_instances</a> ()=0</td></tr>
 <tr class="memdesc:a5cd160c6f4f107b94cae63834056bcaf"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns number of instances of solver currently in memory.  <br /></td></tr>
 <tr class="separator:a5cd160c6f4f107b94cae63834056bcaf"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -392,61 +379,6 @@ FILE *&#160;</td><td class="memItemRight" valign="bottom"><b>_fp</b> = nullptr</
 std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log_file</b> = &quot;&quot;</td></tr>
 <tr class="separator:a4c8ac674eab2b1add320c98eafd310fb"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
-<h2 class="groupheader">Member Typedef Documentation</h2>
-<a id="aa8908e36c1d938344751665a8fa63076" name="aa8908e36c1d938344751665a8fa63076"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aa8908e36c1d938344751665a8fa63076">&#9670;&#160;</a></span>Ptr</h2>
-
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">std::shared_ptr&lt;<a class="el" href="classSolverAbstract.html">SolverAbstract</a>&gt; <a class="el" href="#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a></td>
-        </tr>
-      </table>
-</div><div class="memdoc">
-<p>Ptr to the solver </p>
-
-</div>
-</div>
-<h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
-<a id="a365b9e1c1813590b5b3f1be5103041c7" name="a365b9e1c1813590b5b3f1be5103041c7"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a365b9e1c1813590b5b3f1be5103041c7">&#9670;&#160;</a></span>SolverAbstract()</h2>
-
-<div class="memitem">
-<div class="memproto">
-<table class="mlabels">
-  <tr>
-  <td class="mlabels-left">
-      <table class="memname">
-        <tr>
-          <td class="memname">SolverAbstract::SolverAbstract </td>
-          <td>(</td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
-          <td class="paramtype">const <a class="el" href="#aa8908e36c1d938344751665a8fa63076">SolverAbstract::Ptr</a></td>          <td class="paramname"><span class="paramname"><em>toCopy</em></span>&#160;)</td>
-        </tr>
-      </table>
-  </td>
-  <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
-  </tr>
-</table>
-</div><div class="memdoc">
-
-<p>Copy constructor, copy the problem "toCopy" in memory and name it "name" if possible. </p>
-<dl class="params"><dt>Parameters</dt><dd>
-  <table class="params">
-    <tr><td class="paramname">name</td><td>: Name to give to new problem </td></tr>
-    <tr><td class="paramname">toCopy</td><td>: Pointer to an AbstractSolver object, containing a solver object to copy </td></tr>
-  </table>
-  </dd>
-</dl>
-
-</div>
-</div>
 <h2 class="groupheader">Member Function Documentation</h2>
 <a id="a9da85a4911037a41b9dfdbe3dd52b5b3" name="a9da85a4911037a41b9dfdbe3dd52b5b3"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a9da85a4911037a41b9dfdbe3dd52b5b3">&#9670;&#160;</a></span>add_cols()</h2>

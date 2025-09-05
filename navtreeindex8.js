@@ -1,9 +1,5 @@
 var NAVTREEINDEX8 =
 {
-"structCurrentIterationData.html":[33,0,92],
-"structEmptyLogger.html":[33,0,94],
-"structEmptyLogger.html#a69cb84c65248af6f19ec4518a44c02ae":[33,0,94,0],
-"structExternalLoopOptions.html":[33,0,96],
 "structFileBuffer.html":[33,0,98],
 "structHeadersManager.html":[33,0,113],
 "structHeadersManagerExternalLoop.html":[33,0,114],

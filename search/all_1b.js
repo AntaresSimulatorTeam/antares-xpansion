@@ -75,8 +75,7 @@ var searchData=
   ['profilesvalueerror_72',['ProfilesValueError',['../classantares__xpansion_1_1candidates__reader_1_1ProfilesValueError.html',1,'antares_xpansion::candidates_reader']]],
   ['pshiftmax_5f_73',['pShiftMax_',['../structLinkdataRecord_1_1FileColumns.html#a8d83f0f99914a833dfb34896ab69be36',1,'LinkdataRecord::FileColumns']]],
   ['pshiftmin_5f_74',['pShiftMin_',['../structLinkdataRecord_1_1FileColumns.html#a087c9dfcfef544c84f61925adcc1a7d4',1,'LinkdataRecord::FileColumns']]],
-  ['ptr_75',['Ptr',['../classSolverAbstract.html#aa8908e36c1d938344751665a8fa63076',1,'SolverAbstract']]],
-  ['python_20orchestrator_20tt_20get_5fnames_20tt_76',['Python orchestrator &lt;tt&gt;get_names&lt;/tt&gt;',['../md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md124',1,'']]],
-  ['python_20version_77',['@ref &quot;python-version&quot; &quot;Python version&quot;',['../md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html#autotoc_md81',1,'']]],
-  ['python_20version_20python_20version_78',['@ref &quot;python-version&quot; &quot;Python version&quot;',['../md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html#autotoc_md81',1,'']]]
+  ['python_20orchestrator_20tt_20get_5fnames_20tt_75',['Python orchestrator &lt;tt&gt;get_names&lt;/tt&gt;',['../md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html#autotoc_md124',1,'']]],
+  ['python_20version_76',['@ref &quot;python-version&quot; &quot;Python version&quot;',['../md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html#autotoc_md81',1,'']]],
+  ['python_20version_20python_20version_77',['@ref &quot;python-version&quot; &quot;Python version&quot;',['../md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html#autotoc_md81',1,'']]]
 ];

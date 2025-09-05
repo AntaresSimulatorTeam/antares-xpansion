@@ -1,9 +1,5 @@
 var NAVTREEINDEX7 =
 {
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md172":[18,0,1,3],
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md173":[18,0,1,4],
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md174":[18,0,1,5],
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md175":[18,0,1,6],
 "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md176":[18,0,1,7],
 "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md177":[18,0,1,8],
 "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md178":[18,0,1,9],
@@ -249,5 +245,9 @@ var NAVTREEINDEX7 =
 "structCatch__global__namespace__dummy.html":[33,0,81],
 "structColumnToChange.html":[33,0,87],
 "structConfigurationManager_1_1ConfigDirectories.html":[33,0,88,0],
-"structCriteriaCurrentIterationData.html":[33,0,91]
+"structCriteriaCurrentIterationData.html":[33,0,91],
+"structCurrentIterationData.html":[33,0,92],
+"structEmptyLogger.html":[33,0,94],
+"structEmptyLogger.html#a69cb84c65248af6f19ec4518a44c02ae":[33,0,94,0],
+"structExternalLoopOptions.html":[33,0,96]
 };

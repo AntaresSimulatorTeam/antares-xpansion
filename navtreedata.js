@@ -371,8 +371,7 @@ var NAVTREE =
       [ "Class Members", "functions.html", [
         [ "All", "functions.html", "functions_dup" ],
         [ "Functions", "functions_func.html", "functions_func" ],
-        [ "Variables", "functions_vars.html", null ],
-        [ "Typedefs", "functions_type.html", null ]
+        [ "Variables", "functions_vars.html", null ]
       ] ]
     ] ],
     [ "Files", "files.html", [
@@ -386,12 +385,12 @@ var NAVTREEINDEX =
 "ActiveLinks_8h_source.html",
 "classBendersProblemFromFile.html",
 "classNOOPSolverForSubproblemWorker.html#a31db74ce96c186ff9751feecc86d54ee",
-"classSolverCbc.html#a2c14ea49c71844eafcc50aa69e38b444",
-"classXpansion_1_1Test_1_1LoggerNOOPStub.html#a78551de804e829cf89a6d4a84590170c",
-"classantares__xpansion_1_1study__output__cleaner_1_1StudyOutputCleaner.html",
-"dir_df4013546a3c74d96d311a0534ef60d6.html",
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md172",
-"structCurrentIterationData.html"
+"classSolverCbc.html#a3a643cf8d929694ae061ea37980c7843",
+"classXpansion_1_1Test_1_1WriterNOOPStub.html#a7733bf61cde2491466c930fbf883c671",
+"classantares__xpansion_1_1study__updater__driver_1_1StudyUpdaterDriver.html#a17d46b8736a36003f73ea979c6934fd1",
+"dir_e5ed410f60e5e601daa7152b55e544b1.html",
+"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md176",
+"structFileBuffer.html"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';
