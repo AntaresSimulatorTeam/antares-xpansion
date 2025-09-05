@@ -97,8 +97,6 @@ public:
     void read_basis(const std::filesystem::path& filename) override;
     void set_basis(std::span<int> rstatus, std::span<int> cstatus) override;
 
-    void copy_prob(const SolverAbstract::Ptr fictif_solv) override;
-
     /*************************************************************************************************
     -----------------------    Get general informations about problem
     ----------------------------

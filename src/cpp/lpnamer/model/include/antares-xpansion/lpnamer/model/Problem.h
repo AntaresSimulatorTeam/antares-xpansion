@@ -77,11 +77,6 @@ public:
         solver_abstract_->read_prob_lp(filename);
     }
 
-    void copy_prob(Ptr fictif_solv) override
-    {
-        solver_abstract_->copy_prob(fictif_solv);
-    }
-
     [[nodiscard]] int get_ncols() const override
     {
         return solver_abstract_->get_ncols();
