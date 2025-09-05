@@ -240,9 +240,11 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
     return create_solver(solver_config, log_manager);
 }
 
+std::shared_ptr<SolverAbstract> SolverFactory::copy_solver(const SolverAbstract& to_copy) const
 template<class SolverT>
 std::shared_ptr<SolverT> copy(const SolverAbstract& to_copy)
 {
+    std::string solver_name = to_copy.get_solver_name();
     auto ref = dynamic_cast<const SolverT*>(&to_copy);
     return std::make_shared<SolverT>(*ref);
 }
