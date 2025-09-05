@@ -55,7 +55,7 @@ SolverCbc::SolverCbc(const SolverAbstract& toCopy):
     else
     {
         number_of_problems_counter() -= 1;
-        throw InvalidSolverForCopyException(toCopy->get_solver_name(), name_, LOGLOCATION);
+        throw InvalidSolverForCopyException(toCopy.get_solver_name(), name_, LOGLOCATION);
     }
 }
 
