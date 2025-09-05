@@ -263,11 +263,6 @@ SolverAbstract::Ptr SolverFactory::copy_solver(const SolverAbstract& to_copy) co
     }
 }
 
-SolverAbstract::Ptr SolverFactory::copy_solver(SolverAbstract& to_copy) const
-{
-    return copy_solver(static_cast<const SolverAbstract&>(to_copy));
-}
-
 const std::vector<std::string>& SolverFactory::get_solvers_list() const
 {
     return _available_solvers;

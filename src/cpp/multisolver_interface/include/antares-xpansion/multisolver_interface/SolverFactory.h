@@ -91,7 +91,6 @@ public:
      * @param to_copy : solver to copy
      */
     SolverAbstract::Ptr copy_solver(const SolverAbstract& to_copy) const;
-    SolverAbstract::Ptr copy_solver(SolverAbstract& to_copy) const;
 
     /**
      * @brief Returns a reference to the list of available solvers
