@@ -25,23 +25,14 @@ SolverClp::SolverClp()
     set_output_log_level(0);
 }
 
-SolverClp::SolverClp(const SolverAbstract& toCopy):
+SolverClp::SolverClp(const SolverClp& toCopy):
     SolverClp()
 {
-    // Try to cast the solver in fictif to a SolverClp
-    if (const auto c = dynamic_cast<const SolverClp*>(&toCopy))
+    _clp = ClpSimplex(toCopy._clp);
+    _fp = toCopy._fp;
+    if (_fp)
     {
-        _clp = ClpSimplex(c->_clp);
-        _fp = c->_fp;
-        if (_fp)
-        {
-            _clp.messageHandler()->setFilePointer(c->_fp);
-        }
-    }
-    else
-    {
-        _NumberOfProblems -= 1;
-        throw InvalidSolverForCopyException(toCopy.get_solver_name(), name_, LOGLOCATION);
+        _clp.messageHandler()->setFilePointer(toCopy._fp);
     }
 }
 

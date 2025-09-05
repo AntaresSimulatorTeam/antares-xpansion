@@ -44,10 +44,7 @@ public:
     SolverClp();
     explicit SolverClp(const SolverLogManager& log_manager);
 
-    explicit SolverClp(const SolverAbstract& toCopy);
-
-    /*SolverClp ctor accept only std::shared_ptr*/
-    SolverClp(const SolverClp& other) = delete;
+    SolverClp(const SolverClp& copy);
     SolverClp& operator=(const SolverClp& other) = delete;
 
     ~SolverClp() override;

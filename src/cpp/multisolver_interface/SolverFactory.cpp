@@ -240,6 +240,13 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
     return create_solver(solver_config, log_manager);
 }
 
+template<class SolverT>
+std::shared_ptr<SolverT> copy(const SolverAbstract& to_copy)
+{
+    auto ref = dynamic_cast<const SolverT*>(&to_copy);
+    return std::make_shared<SolverT>(*ref);
+}
+
 std::shared_ptr<SolverAbstract> SolverFactory::copy_solver(const SolverAbstract& to_copy) const
 {
     std::string solver_name = to_copy.get_solver_name();
@@ -250,16 +257,16 @@ std::shared_ptr<SolverAbstract> SolverFactory::copy_solver(const SolverAbstract&
     }
     if (isXpress_available_ && solver_name == XPRESS_STR)
     {
-        return std::make_shared<SolverXpress>(to_copy);
+        return copy<SolverXpress>(to_copy);
     }
 #ifdef COIN_OR
     else if (solver_name == CLP_STR)
     {
-        return std::make_shared<SolverClp>(to_copy);
+        return copy<SolverClp>(to_copy);
     }
     else if (solver_name == CBC_STR)
     {
-        return std::make_shared<SolverCbc>(to_copy);
+        return copy<SolverCbc>(to_copy);
     }
 #endif
     else

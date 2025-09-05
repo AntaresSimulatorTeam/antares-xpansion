@@ -45,30 +45,20 @@ SolverXpress::SolverXpress()
     _xprs = NULL;
 }
 
-SolverXpress::SolverXpress(const SolverAbstract& toCopy):
+SolverXpress::SolverXpress(const SolverXpress& toCopy):
     SolverXpress()
 {
     SolverXpress::init();
     int status = 0;
 
-    // Try to cast the solver in fictif to a SolverXpress
-    if (const auto* xpSolv = dynamic_cast<const SolverXpress*>(&toCopy))
+    status = XPRScopyprob(_xprs, toCopy._xprs, "");
+    _log_file = toCopy._log_file;
+    if (_log_file != "")
     {
-        status = XPRScopyprob(_xprs, xpSolv->_xprs, "");
-        _log_file = toCopy._log_file;
-        if (_log_file != "")
-        {
-            _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
-            add_stream(_log_stream);
-        }
-        zero_status_check(status, "create problem", LOGLOCATION);
+        _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
+        add_stream(_log_stream);
     }
-    else
-    {
-        _NumberOfProblems -= 1;
-        SolverXpress::free();
-        throw InvalidSolverForCopyException(toCopy.get_solver_name(), name_, LOGLOCATION);
-    }
+    zero_status_check(status, "create problem", LOGLOCATION);
 }
 
 SolverXpress::~SolverXpress()

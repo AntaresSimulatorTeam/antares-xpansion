@@ -36,10 +36,8 @@ public:
     SolverXpress();
     SolverXpress(const SolverLogManager& log_manager);
 
-    explicit SolverXpress(const SolverAbstract& toCopy);
+    explicit SolverXpress(const SolverXpress& other);
 
-    /*SolverXpress ctor accept only std::shared_ptr*/
-    SolverXpress(const SolverXpress& other) = delete;
     SolverXpress& operator=(const SolverXpress& other) = delete;
 
     ~SolverXpress();
