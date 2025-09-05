@@ -212,8 +212,7 @@ public:
     *************************************************************************************************/
 
 public:
-    std::string _name;                           /*!< Name of the problem */
-    typedef std::shared_ptr<SolverAbstract> Ptr; /*!< Ptr to the solver */
+    std::string _name; /*!< Name of the problem */
     std::list<std::ostream*>
       _streams; /*!< List of streams to print the output (default std::cout) */
 
@@ -238,7 +237,7 @@ public:
      * @param toCopy : Pointer to an AbstractSolver object, containing a solver
      * object to copy
      */
-    SolverAbstract(const std::string& name, const SolverAbstract::Ptr toCopy)
+    SolverAbstract(const std::string& name, const std::shared_ptr<SolverAbstract> toCopy)
     {
     }
 

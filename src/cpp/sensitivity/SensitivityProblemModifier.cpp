@@ -15,7 +15,8 @@ SensitivityProblemModifier::SensitivityProblemModifier(
 {
 }
 
-void change_objective(const SolverAbstract::Ptr& solver_model, const std::vector<double>& obj)
+void change_objective(const std::shared_ptr<SolverAbstract>& solver_model,
+                      const std::vector<double>& obj)
 {
     std::vector<int> colind(solver_model->get_ncols());
 
@@ -26,10 +27,11 @@ void change_objective(const SolverAbstract::Ptr& solver_model, const std::vector
     solver_model->chg_obj(colind, obj);
 }
 
-SolverAbstract::Ptr SensitivityProblemModifier::changeProblem(unsigned int nb_candidates) const
+std::shared_ptr<SolverAbstract> SensitivityProblemModifier::changeProblem(
+  unsigned int nb_candidates) const
 {
     SolverFactory factory;
-    SolverAbstract::Ptr sensitivity_model = factory.copy_solver(*last_master);
+    std::shared_ptr<SolverAbstract> sensitivity_model = factory.copy_solver(*last_master);
     std::vector<double> obj = get_cost_vector(*last_master, nb_candidates);
 
     add_near_optimal_cost_constraint(*(sensitivity_model.get()));

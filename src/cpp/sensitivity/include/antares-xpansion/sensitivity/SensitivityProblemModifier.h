@@ -12,7 +12,7 @@ public:
                                         std::shared_ptr<const SolverAbstract> last_master);
     ~SensitivityProblemModifier() = default;
 
-    SolverAbstract::Ptr changeProblem(unsigned int nb_candidates) const;
+    std::shared_ptr<SolverAbstract> changeProblem(unsigned int nb_candidates) const;
 
 private:
     const double _epsilon;

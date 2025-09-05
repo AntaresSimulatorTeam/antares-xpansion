@@ -97,17 +97,18 @@ void solver_addrows(SolverAbstract& solver_p,
                       names);
 }
 
-void solver_getlpsolution(const SolverAbstract::Ptr solver_p, std::vector<double>& x_p)
+void solver_getlpsolution(const std::shared_ptr<SolverAbstract> solver_p, std::vector<double>& x_p)
 {
     solver_p->get_lp_sol(x_p.data(), NULL, NULL);
 }
 
-void solver_getlpdual(const SolverAbstract::Ptr solver_p, std::vector<double>& dual_p)
+void solver_getlpdual(const std::shared_ptr<SolverAbstract> solver_p, std::vector<double>& dual_p)
 {
     solver_p->get_lp_sol(NULL, dual_p.data(), NULL);
 }
 
-void solver_getlpreducedcost(const SolverAbstract::Ptr solver_p, std::vector<double>& dj_p)
+void solver_getlpreducedcost(const std::shared_ptr<SolverAbstract> solver_p,
+                             std::vector<double>& dj_p)
 {
     solver_p->get_lp_sol(NULL, NULL, dj_p.data());
 }
@@ -134,7 +135,7 @@ void solver_getrhs(const SolverAbstract& solver_p,
     }
 }
 
-void solver_getrhsrange(const SolverAbstract::Ptr solver_p,
+void solver_getrhsrange(const std::shared_ptr<SolverAbstract> solver_p,
                         std::vector<double>& range_p,
                         int first_p,
                         int last_p)
@@ -157,7 +158,7 @@ void solver_getcolinfo(const SolverAbstract& solver_p,
     solver_p.get_col_type(coltype_p.data(), first_p, last_p);
 }
 
-void solver_deactivaterows(SolverAbstract::Ptr solver_p, const std::vector<int>& mindex)
+void solver_deactivaterows(std::shared_ptr<SolverAbstract> solver_p, const std::vector<int>& mindex)
 {
     for (const auto& index: mindex)
     {
@@ -166,14 +167,14 @@ void solver_deactivaterows(SolverAbstract::Ptr solver_p, const std::vector<int>&
 }
 
 //@WARN Codes returned depend on the solver used.
-void solver_getbasis(SolverAbstract::Ptr solver_p,
+void solver_getbasis(std::shared_ptr<SolverAbstract> solver_p,
                      std::vector<int>& rstatus_p,
                      std::vector<int>& cstatus_p)
 {
     solver_p->get_basis(rstatus_p.data(), cstatus_p.data());
 }
 
-void solver_chgbounds(SolverAbstract::Ptr solver_p,
+void solver_chgbounds(std::shared_ptr<SolverAbstract> solver_p,
                       const std::vector<int>& mindex_p,
                       const std::vector<char>& qbtype_p,
                       const std::vector<double>& bnd_p)
