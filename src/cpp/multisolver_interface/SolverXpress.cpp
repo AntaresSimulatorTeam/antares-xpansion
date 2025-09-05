@@ -148,7 +148,6 @@ void SolverXpress::init()
 
 void SolverXpress::free()
 {
-    std::cout << "Freeing XPRESS problem" << std::endl;
     int status = XPRSdestroyprob(_xprs);
     _xprs = NULL;
     if (status)
