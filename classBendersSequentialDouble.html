@@ -157,9 +157,9 @@ Inheritance diagram for BendersSequentialDouble:</div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a48e70c89a05fe27533960e9541d4f568" id="r_a48e70c89a05fe27533960e9541d4f568"><td class="memItemLeft" align="right" valign="top"><a id="a48e70c89a05fe27533960e9541d4f568" name="a48e70c89a05fe27533960e9541d4f568"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>BendersSequentialDouble</b> (<a class="el" href="structBendersBaseOptions.html">BendersBaseOptions</a> const &amp;options, Logger &amp;logger, std::shared_ptr&lt; <a class="el" href="classOutput_1_1OutputWriter.html">Output::OutputWriter</a> &gt; writer, std::shared_ptr&lt; <a class="el" href="classMathLoggerDriver.html">MathLoggerDriver</a> &gt; mathLoggerDriver)</td></tr>
-<tr class="separator:a48e70c89a05fe27533960e9541d4f568"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a25b7262471bacd7f2a8bafb7130051f3" id="r_a25b7262471bacd7f2a8bafb7130051f3"><td class="memItemLeft" align="right" valign="top"><a id="a25b7262471bacd7f2a8bafb7130051f3" name="a25b7262471bacd7f2a8bafb7130051f3"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>BendersSequentialDouble</b> (const <a class="el" href="structBendersBaseOptions.html">BendersBaseOptions</a> &amp;options, Logger &amp;logger, std::shared_ptr&lt; <a class="el" href="classOutput_1_1OutputWriter.html">Output::OutputWriter</a> &gt; writer, std::shared_ptr&lt; <a class="el" href="classMathLoggerDriver.html">MathLoggerDriver</a> &gt; mathLoggerDriver)</td></tr>
+<tr class="separator:a25b7262471bacd7f2a8bafb7130051f3"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33c0199bf9a762b001db1f631ca9444f" id="r_a33c0199bf9a762b001db1f631ca9444f"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a33c0199bf9a762b001db1f631ca9444f">init_data</a> () override</td></tr>
 <tr class="memdesc:a33c0199bf9a762b001db1f631ca9444f"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initialize set of data used in the loop.  <br /></td></tr>
 <tr class="separator:a33c0199bf9a762b001db1f631ca9444f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -201,6 +201,8 @@ SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>problems
 <tr class="separator:a77f93f9de2e9a4cb357596d89331cb9e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3b4f54feb1990a4abaf1976ad674eafc" id="r_a3b4f54feb1990a4abaf1976ad674eafc"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a3b4f54feb1990a4abaf1976ad674eafc">ResetDataPostRelaxation</a> () override</td></tr>
 <tr class="separator:a3b4f54feb1990a4abaf1976ad674eafc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aafe4c5200e47b4d61a8e0fd210258d1a" id="r_aafe4c5200e47b4d61a8e0fd210258d1a"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aafe4c5200e47b4d61a8e0fd210258d1a">HandleInitialMasterRelaxation</a> () override</td></tr>
+<tr class="separator:aafe4c5200e47b4d61a8e0fd210258d1a"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af895927abdd398ebaecb1505d6c2096d" id="r_af895927abdd398ebaecb1505d6c2096d"><td class="memItemLeft" align="right" valign="top"><a id="af895927abdd398ebaecb1505d6c2096d" name="af895927abdd398ebaecb1505d6c2096d"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>set_data</b> (bool stop, int nsubproblem)</td></tr>
 <tr class="separator:af895927abdd398ebaecb1505d6c2096d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -854,6 +856,33 @@ SubproblemsMapPtr&#160;</td><td class="memItemRight" valign="bottom"><b>subprobl
 <p>Method to solve and get optimal variables of the Master <a class="el" href="classProblem.html" title="Decorator to the SolverAbstract class.">Problem</a> and update upper and lower bound </p>
 
 <p>Reimplemented from <a class="el" href="classBendersBase.html#a070ef7fbeaf5df77a2d8890d1a95c2e7">BendersBase</a>.</p>
+
+</div>
+</div>
+<a id="aafe4c5200e47b4d61a8e0fd210258d1a" name="aafe4c5200e47b4d61a8e0fd210258d1a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aafe4c5200e47b4d61a8e0fd210258d1a">&#9670;&#160;</a></span>HandleInitialMasterRelaxation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">void BendersSequentialDouble::HandleInitialMasterRelaxation </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">override</span><span class="mlabel">virtual</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+
+<p>Reimplemented from <a class="el" href="classBendersBase.html">BendersBase</a>.</p>
 
 </div>
 </div>
