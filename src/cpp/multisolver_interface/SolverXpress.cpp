@@ -36,9 +36,15 @@ SolverXpress::SolverXpress(const SolverLogManager& log_manager):
     }
 }
 
+std::mutex& XpressManager::instance_guard()
+{
+    static std::mutex license_guard;
+    return license_guard;
+}
+
 XpressManager::XpressManager()
 {
-    std::lock_guard<std::mutex> guard(license_guard);
+    std::lock_guard<std::mutex> guard(instance_guard());
     LoadXpress::XpressLoader xpress_loader;
     xpress_loader.initXpressEnv();
     int status = XPRSinit(nullptr);
@@ -47,7 +53,7 @@ XpressManager::XpressManager()
 
 XpressManager::~XpressManager()
 {
-    std::lock_guard<std::mutex> guard(license_guard);
+    std::lock_guard<std::mutex> guard(instance_guard());
 
     if (int status = XPRSfree())
     {
@@ -58,7 +64,7 @@ XpressManager::~XpressManager()
 
 SolverXpress::SolverXpress()
 {
-    _NumberOfProblems += 1;
+    number_of_problems_counter() += 1;
     _xprs = nullptr;
 }
 
@@ -92,7 +98,7 @@ SolverXpress::SolverXpress(const SolverAbstract& toCopy):
 
 SolverXpress::~SolverXpress()
 {
-    _NumberOfProblems -= 1;
+    number_of_problems_counter() -= 1;
     SolverXpress::free();
 
     if (_log_stream.is_open())

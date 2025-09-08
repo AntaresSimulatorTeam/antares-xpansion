@@ -8,7 +8,7 @@
 
 class XpressManager
 {
-    static std::mutex license_guard;
+    std::mutex& instance_guard();
 
 public:
     XpressManager();
@@ -21,13 +21,6 @@ public:
  */
 class SolverXpress: public SolverAbstract
 {
-    /*************************************************************************************************
-    ----------------------------------------    ATTRIBUTES
-    ---------------------------------------
-    *************************************************************************************************/
-    static int _NumberOfProblems; /*!< Counter of the total number of Cplex problems
-                                  declared to set or end the environment */
-
 public:
     XPRSprob _xprs; /*!< Problem in XPRESS */
     const std::string name_ = "XPRESS";
