@@ -8,8 +8,6 @@
 
 class XpressManager
 {
-    std::mutex& instance_guard();
-
 public:
     XpressManager();
     ~XpressManager();

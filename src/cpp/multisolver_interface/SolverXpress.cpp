@@ -36,19 +36,25 @@ SolverXpress::SolverXpress(const SolverLogManager& log_manager):
     }
 }
 
-std::mutex& XpressManager::instance_guard()
+namespace
+{
+std::mutex& instance_guard()
 {
     static std::mutex license_guard;
     return license_guard;
 }
+} // namespace
 
 XpressManager::XpressManager()
 {
     std::lock_guard<std::mutex> guard(instance_guard());
     LoadXpress::XpressLoader xpress_loader;
     xpress_loader.initXpressEnv();
-    int status = XPRSinit(nullptr);
-    SolverAbstract::zero_status_check(status, "initialize XPRESS environment", LOGLOCATION);
+    if (xpress_loader.XpressIsCorrectlyInstalled())
+    {
+        int status = XPRSinit(nullptr);
+        SolverAbstract::zero_status_check(status, "initialize XPRESS environment", LOGLOCATION);
+    }
 }
 
 XpressManager::~XpressManager()
