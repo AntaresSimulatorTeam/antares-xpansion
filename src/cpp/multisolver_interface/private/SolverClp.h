@@ -20,14 +20,6 @@ enum CLP_STATUS
  */
 class SolverClp: public SolverAbstract
 {
-    /*************************************************************************************************
-    ----------------------------------------    ATTRIBUTES
-    ---------------------------------------
-    *************************************************************************************************/
-    static int _NumberOfProblems; /*!< Counter of the total number of
-                                     problems declared to set or end the
-                                     environment */
-
 public:
     ClpSimplex _clp;
     const std::string name_ = "CLP";

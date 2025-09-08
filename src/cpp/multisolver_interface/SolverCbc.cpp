@@ -1,13 +1,23 @@
 #include "SolverCbc.h"
 
+#include <atomic>
+
 #include "COIN_common_functions.h"
 using namespace std::literals;
+
+namespace
+{
+std::atomic<int>& number_of_problems_counter()
+{
+    static std::atomic<int> counter{0};
+    return counter;
+}
+} // namespace
 
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor
 --------------------------------
 *************************************************************************************************/
-int SolverCbc::_NumberOfProblems = 0;
 
 SolverCbc::SolverCbc(const SolverLogManager& log_manager):
     SolverCbc()
@@ -22,7 +32,7 @@ SolverCbc::SolverCbc(const SolverLogManager& log_manager):
 
 SolverCbc::SolverCbc()
 {
-    _NumberOfProblems += 1;
+    number_of_problems_counter() += 1;
     set_output_log_level(0);
 }
 
@@ -44,20 +54,20 @@ SolverCbc::SolverCbc(const SolverAbstract& toCopy):
     }
     else
     {
-        _NumberOfProblems -= 1;
+        number_of_problems_counter() -= 1;
         throw InvalidSolverForCopyException(toCopy.get_solver_name(), name_, LOGLOCATION);
     }
 }
 
 SolverCbc::~SolverCbc()
 {
-    _NumberOfProblems -= 1;
-    SolverCbc::free();
+    number_of_problems_counter() -= 1;
+    free();
 }
 
 int SolverCbc::get_number_of_instances()
 {
-    return _NumberOfProblems;
+    return number_of_problems_counter();
 }
 
 void SolverCbc::defineCbcModelFromInnerSolver()
