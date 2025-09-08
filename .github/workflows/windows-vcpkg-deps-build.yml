@@ -21,6 +21,7 @@ jobs:
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
       VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
+      PYTHON_VERSION: "3.10"
 
     steps:
       - uses: actions/checkout@v5
