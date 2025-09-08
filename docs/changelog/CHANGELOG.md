@@ -8,10 +8,6 @@ v1.4.1 (09/2025)
 
 * Fix documentation readthedocs not building properly
 
-### For developers
-
-* Update CentOS 7 image to use python 3.10 through miniconda
-
 v1.4.0 (07/2025)
 --------------------------------------------------------
 
