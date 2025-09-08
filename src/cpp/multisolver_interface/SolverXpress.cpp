@@ -48,9 +48,8 @@ std::mutex& instance_guard()
 XpressManager::XpressManager()
 {
     std::lock_guard<std::mutex> guard(instance_guard());
-    LoadXpress::XpressLoader xpress_loader;
-    xpress_loader.initXpressEnv();
-    if (xpress_loader.XpressIsCorrectlyInstalled())
+    _loader.initXpressEnv();
+    if (_loader.XpressIsCorrectlyInstalled())
     {
         int status = XPRSinit(nullptr);
         SolverAbstract::zero_status_check(status, "initialize XPRESS environment", LOGLOCATION);
@@ -61,10 +60,13 @@ XpressManager::~XpressManager()
 {
     std::lock_guard<std::mutex> guard(instance_guard());
 
-    if (int status = XPRSfree())
+    if (_loader.XpressIsCorrectlyInstalled())
     {
-        std::cerr << "Failed to free XPRESS environment with status: " << status << " "
-                  << LOGLOCATION << std::endl;
+        if (int status = XPRSfree())
+        {
+            std::cerr << "Failed to free XPRESS environment with status: " << status << " "
+                      << LOGLOCATION << std::endl;
+        }
     }
 }
 

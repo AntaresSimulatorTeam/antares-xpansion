@@ -8,6 +8,8 @@
 
 class XpressManager
 {
+    LoadXpress::XpressLoader _loader;
+
 public:
     XpressManager();
     ~XpressManager();

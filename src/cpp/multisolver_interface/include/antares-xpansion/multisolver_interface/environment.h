@@ -47,7 +47,7 @@ public:
      * \brief return true is Xpress is correctly installed (libs and licence
      * found)
      */
-    bool XpressIsCorrectlyInstalled(bool verbose = false, bool do_init = true);
+    bool XpressIsCorrectlyInstalled(bool verbose = false);
 
 private:
     // clang-format off
