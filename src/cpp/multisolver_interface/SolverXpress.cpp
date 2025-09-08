@@ -1,5 +1,6 @@
 #include "SolverXpress.h"
 
+#include <atomic>
 #include <cassert>
 #include <cstring>
 #include <map>
@@ -13,9 +14,17 @@ using namespace std::literals;
 -----------------------------------    Constructor/Desctructor
 --------------------------------
 *************************************************************************************************/
-int SolverXpress::_NumberOfProblems = 0;
 std::mutex SolverXpress::license_guard;
 const std::map<int, std::string> TYPETONAME = {{1, "rows"}, {2, "columns"}};
+
+namespace
+{
+std::atomic<int>& number_of_problems_counter()
+{
+    static std::atomic<int> counter{0};
+    return counter;
+}
+} // namespace
 
 SolverXpress::SolverXpress(const SolverLogManager& log_manager):
     SolverXpress()
@@ -32,7 +41,7 @@ SolverXpress::SolverXpress()
 {
     std::lock_guard<std::mutex> guard(license_guard);
     int status = 0;
-    if (_NumberOfProblems == 0)
+    if (number_of_problems_counter() == 0)
     {
         LoadXpress::XpressLoader xpress_loader;
         xpress_loader.initXpressEnv();
@@ -40,7 +49,7 @@ SolverXpress::SolverXpress()
         zero_status_check(status, "initialize XPRESS environment", LOGLOCATION);
     }
 
-    _NumberOfProblems += 1;
+    number_of_problems_counter() += 1;
 
     _xprs = NULL;
 }
@@ -65,10 +74,10 @@ SolverXpress::~SolverXpress()
 {
     { // Scope guard
         std::lock_guard<std::mutex> guard(license_guard);
-        _NumberOfProblems -= 1;
+        number_of_problems_counter() -= 1;
         SolverXpress::free();
 
-        if (_NumberOfProblems == 0)
+        if (number_of_problems_counter() == 0)
         {
             int status = XPRSfree();
             if (status)
@@ -89,7 +98,7 @@ SolverXpress::~SolverXpress()
 
 int SolverXpress::get_number_of_instances()
 {
-    return _NumberOfProblems;
+    return number_of_problems_counter();
 }
 
 /*************************************************************************************************
