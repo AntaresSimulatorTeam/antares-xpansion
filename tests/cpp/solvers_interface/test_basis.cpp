@@ -1,5 +1,7 @@
+#include <catch2/catch_test_macros.hpp>
+#include <catch2/generators/catch_generators.hpp>
+
 #include "antares-xpansion/multisolver_interface/Solver.h"
-#include "catch2.hpp"
 #include "define_datas.hpp"
 
 void assert_basis_equality(std::shared_ptr<SolverAbstract> expec_solver,

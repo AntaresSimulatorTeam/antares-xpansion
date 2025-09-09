@@ -2,7 +2,6 @@
 #include <iostream>
 
 #include "antares-xpansion/multisolver_interface/Solver.h"
-#include "catch2.hpp"
 #include "define_datas.hpp"
 
 TEST_CASE("A LP problem is solved", "[solve-lp]")
