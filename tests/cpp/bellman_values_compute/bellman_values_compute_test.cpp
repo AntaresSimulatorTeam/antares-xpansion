@@ -50,11 +50,9 @@ protected:
                                 | std::filesystem::copy_options::update_existing);
     }
 
-    std::map<ScenarioAndWeek, std::vector<double>> getOutputCosts(bool penalties)
+    std::map<ScenarioAndWeek, std::vector<double>> getOutputCosts(std::string fileName)
     {
         std::map<ScenarioAndWeek, std::vector<double>> costs;
-        std::string fileName = penalties ? "result_bellman_values_penalties.csv"
-                                         : "result_bellman_values_no_penalties.csv";
         std::ifstream file(tmpDir / fileName);
         std::string line;
         while (std::getline(file, line))
@@ -170,10 +168,23 @@ TEST_F(BellmanValuesComputeTest, unitTestPenalties)
     EXPECT_EQ(bellmanValues, expected);
 }
 
+TEST_F(BellmanValuesComputeTest, unitTestPenaltiesWithFinalLevel)
+{
+    ReservoirManagement reservoirManagement(evaluatorMock.reservoirMock, 10, 10, 30, true, 400);
+    auto bellmanValues = BellmanValues(evaluatorMock, reservoirManagement).compute(1, 3, 6);
+
+    std::vector<std::vector<double>> expected = {{4300, 300, 260, 220, 180, 1140},
+                                                 {7200, 3200, 200, 160, 120, 1080},
+                                                 {10100, 6100, 3100, 100, 60, 1020},
+                                                 {12000, 9000, 6000, 3000, 0, 3000}};
+
+    EXPECT_EQ(bellmanValues, expected);
+}
+
 TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
 {
     copyData();
-    auto expected_costs = getOutputCosts(false);
+    auto expected_costs = getOutputCosts("result_bellman_values_no_penalties.csv");
 
     auto grid_collection = GridCollection(tmpDir / "grid.csv");
     auto grid = grid_collection.gridDefinitions[0];
@@ -214,7 +225,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
 TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
 {
     copyData();
-    auto expected_costs = getOutputCosts(true);
+    auto expected_costs = getOutputCosts("result_bellman_values_penalties.csv");
 
     auto grid_collection = GridCollection(tmpDir / "grid.csv");
     auto grid = grid_collection.gridDefinitions[0];
@@ -222,6 +233,51 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
                                              3000,
                                              3000,
                                              3000);
+
+    auto options_parser = ProblemGenerationExeOptions();
+    auto config_manager = ConfigurationManager(options_parser);
+
+    ConfigurationManager::ConfigDirectories config_dirs{
+      .study_dir = tmpDir,
+      .simulation_dir = config_manager.generateOutputName(tmpDir),
+    };
+
+    ProblemGenerationForWaterValueCalculation pbg(config_dirs, reservoir_management, solverName);
+    auto mps_path = pbg.updateProblems(grid);
+
+    auto evaluator = GridEvaluator(logger,
+                                   writer,
+                                   mps_path,
+                                   grid,
+                                   ProblemsFormat::MPS_FILE,
+                                   solverName,
+                                   8);
+    auto res = BellmanValues(evaluator, reservoir_management).compute(1, 52, 11);
+
+    for (int week = 1; week < res.size(); week++)
+    {
+        for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
+        {
+            double cost = res[week - 1][level_index];
+            double expected_cost = expected_costs[{1, week}][0];
+            EXPECT_NEAR_REL(cost, expected_cost, 1e-6);
+            expected_costs[{1, week}].erase(expected_costs[{1, week}].begin());
+        }
+    }
+}
+
+TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenaltiesWithFinalLevel)
+{
+    copyData();
+    auto expected_costs = getOutputCosts("result_bellman_values_penalties_final_level.csv");
+
+    auto grid_collection = GridCollection(tmpDir / "grid.csv");
+    auto grid = grid_collection.gridDefinitions[0];
+    ReservoirManagement reservoir_management(grid_collection.reservoirs.begin()->second,
+                                             3000,
+                                             3000,
+                                             3000,
+                                             true);
 
     auto options_parser = ProblemGenerationExeOptions();
     auto config_manager = ConfigurationManager(options_parser);
