@@ -10,6 +10,11 @@
 class NOOPSolver: public SolverAbstract
 {
 public:
+    SolverAbstract* clone() const override
+    {
+        return new NOOPSolver(*this);
+    }
+
     int get_number_of_instances() override
     {
         return 0;

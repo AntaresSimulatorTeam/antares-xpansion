@@ -242,30 +242,7 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
 
 std::shared_ptr<SolverAbstract> SolverFactory::copy_solver(const SolverAbstract& to_copy) const
 {
-    std::string solver_name = to_copy.get_solver_name();
-    std::transform(solver_name.begin(), solver_name.end(), solver_name.begin(), ::toupper);
-    if (solver_name.empty())
-    {
-        throw InvalidSolverNameException(solver_name, LOGLOCATION);
-    }
-    if (isXpress_available_ && solver_name == XPRESS_STR)
-    {
-        return std::make_shared<SolverXpress>(to_copy);
-    }
-#ifdef COIN_OR
-    else if (solver_name == CLP_STR)
-    {
-        return std::make_shared<SolverClp>(to_copy);
-    }
-    else if (solver_name == CBC_STR)
-    {
-        return std::make_shared<SolverCbc>(to_copy);
-    }
-#endif
-    else
-    {
-        throw InvalidSolverNameException(solver_name, LOGLOCATION);
-    }
+    return std::shared_ptr<SolverAbstract>(to_copy.clone());
 }
 
 const std::vector<std::string>& SolverFactory::get_solvers_list() const
