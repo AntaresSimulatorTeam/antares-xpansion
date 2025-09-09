@@ -1,13 +1,15 @@
 #include "SolverClp.h"
 
+#include <atomic>
+
 #include "COIN_common_functions.h"
 using namespace std::literals;
 
 namespace
 {
-static ThreadSafeCounter& number_of_problems_counter()
+std::atomic<int>& number_of_problems_counter()
 {
-    static ThreadSafeCounter counter;
+    static std::atomic<int> counter{0};
     return counter;
 }
 } // namespace
@@ -27,6 +29,11 @@ SolverClp::SolverClp(const SolverLogManager& log_manager):
     }
 }
 
+SolverClp* SolverClp::clone() const
+{
+    return new SolverClp(*this);
+}
+
 SolverClp::SolverClp()
 {
     number_of_problems_counter() += 1;
@@ -40,7 +47,7 @@ SolverClp::SolverClp(const SolverClp& toCopy):
     _fp = toCopy._fp;
     if (_fp)
     {
-        _clp.messageHandler()->setFilePointer(toCopy._fp);
+        _clp.messageHandler()->setFilePointer(_fp);
     }
 }
 
@@ -52,7 +59,7 @@ SolverClp::~SolverClp()
 
 int SolverClp::get_number_of_instances()
 {
-    return *number_of_problems_counter();
+    return number_of_problems_counter();
 }
 
 /*************************************************************************************************

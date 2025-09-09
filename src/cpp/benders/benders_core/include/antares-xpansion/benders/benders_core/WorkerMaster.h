@@ -43,13 +43,13 @@ public:
     virtual void DeactivateIntegrityConstraints() const;
     virtual void ActivateIntegrityConstraints() const;
 
-    [[nodiscard]] virtual std::vector<int> get_id_nb_units() const
+    [[nodiscard]] virtual std::vector<int> get_id_int_vars() const
     {
-        return _id_nb_units;
+        return _id_int_vars;
     }
 
 private:
-    std::vector<int> _id_nb_units;
+    std::vector<int> _id_int_vars;
     std::vector<int> _id_single_subpb_costs_under_approx;
     int _id_alpha = 0;
     int subproblems_count;

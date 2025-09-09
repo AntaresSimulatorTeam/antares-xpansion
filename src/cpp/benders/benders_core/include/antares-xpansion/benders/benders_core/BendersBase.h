@@ -159,6 +159,7 @@ protected:
     bool ShouldBendersStop();
     bool is_initial_relaxation_requested() const;
     bool SwitchToIntegerMaster(bool is_relaxed) const;
+    virtual void HandleInitialMasterRelaxation();
     virtual void UpdateTrace();
     virtual void ComputeXCut();
     void roundXCut();

@@ -37,7 +37,7 @@ jobs:
           key: ${{ matrix.os }}-${{ matrix.xprs.value }}
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         id: python-setup
         with:
           cache: 'pip'

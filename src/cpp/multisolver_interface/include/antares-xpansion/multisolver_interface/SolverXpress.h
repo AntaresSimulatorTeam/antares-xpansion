@@ -42,6 +42,7 @@ public:
     SolverXpress();
     explicit SolverXpress(const SolverLogManager& log_manager);
 
+    [[nodiscard]] SolverXpress* clone() const override;
     explicit SolverXpress(const SolverXpress& other);
 
     SolverXpress& operator=(const SolverXpress& other) = delete;

@@ -191,14 +191,6 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(const SolverConfig&
     return ret;
 }
 
-template<class SolverT>
-std::shared_ptr<SolverAbstract> create(const SolverLogManager& log_manager)
-{
-    auto ret = std::make_shared<SolverT>(log_manager);
-    ret->init();
-    return ret;
-}
-
 std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
   const SolverConfig& solver_config,
   const SolverLogManager& log_manager) const
@@ -207,7 +199,8 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
     {
         throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
     }
-    if (_is_xpress_available && solver_config == XPRESS_STR)
+    std::shared_ptr<SolverAbstract> ret;
+    if (isXpress_available_ && solver_config == XPRESS_STR)
     {
         return create<SolverXpress>(log_manager);
     }
@@ -243,39 +236,9 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
     return create_solver(solver_config, log_manager);
 }
 
-template<class SolverT>
-std::shared_ptr<SolverT> copy(const SolverAbstract& to_copy)
-{
-    auto ref = dynamic_cast<const SolverT*>(&to_copy);
-    return std::make_shared<SolverT>(*ref);
-}
-
 std::shared_ptr<SolverAbstract> SolverFactory::copy_solver(const SolverAbstract& to_copy) const
 {
-    std::string solver_name = to_copy.get_solver_name();
-    std::ranges::transform(solver_name, solver_name.begin(), ::toupper);
-    if (solver_name.empty())
-    {
-        throw InvalidSolverNameException(solver_name, LOGLOCATION);
-    }
-    if (_is_xpress_available && solver_name == XPRESS_STR)
-    {
-        return copy<SolverXpress>(to_copy);
-    }
-#ifdef COIN_OR
-    else if (solver_name == CLP_STR)
-    {
-        return copy<SolverClp>(to_copy);
-    }
-    else if (solver_name == CBC_STR)
-    {
-        return copy<SolverCbc>(to_copy);
-    }
-#endif
-    else
-    {
-        throw InvalidSolverNameException(solver_name, LOGLOCATION);
-    }
+    return std::shared_ptr<SolverAbstract>(to_copy.clone());
 }
 
 const std::vector<std::string>& SolverFactory::get_solvers_list() const

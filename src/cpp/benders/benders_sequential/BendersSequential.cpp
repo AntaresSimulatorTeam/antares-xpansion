@@ -99,12 +99,7 @@ void BendersSequential::Run()
         OpenCsvFile();
     }
 
-    if (is_initial_relaxation_requested())
-    {
-        _logger->LogAtInitialRelaxation();
-        DeactivateIntegrityConstraints();
-        SetDataPreRelaxation();
-    }
+    HandleInitialMasterRelaxation();
 
     while (!_data.stop)
     {

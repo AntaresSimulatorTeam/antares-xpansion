@@ -1,13 +1,15 @@
 #include "SolverCbc.h"
 
+#include <atomic>
+
 #include "COIN_common_functions.h"
 using namespace std::literals;
 
 namespace
 {
-static ThreadSafeCounter& number_of_problems_counter()
+std::atomic<int>& number_of_problems_counter()
 {
-    static ThreadSafeCounter counter;
+    static std::atomic<int> counter{0};
     return counter;
 }
 } // namespace
@@ -26,6 +28,11 @@ SolverCbc::SolverCbc(const SolverLogManager& log_manager):
         _clp_inner_solver.messageHandler()->setFilePointer(_fp);
         _cbc.messageHandler()->setFilePointer(_fp);
     }
+}
+
+SolverCbc* SolverCbc::clone() const
+{
+    return new SolverCbc(*this);
 }
 
 SolverCbc::SolverCbc()
@@ -56,7 +63,7 @@ SolverCbc::~SolverCbc()
 
 int SolverCbc::get_number_of_instances()
 {
-    return *number_of_problems_counter();
+    return number_of_problems_counter();
 }
 
 void SolverCbc::defineCbcModelFromInnerSolver()

@@ -1,5 +1,6 @@
 #include "antares-xpansion/multisolver_interface/SolverXpress.h"
 
+#include <atomic>
 #include <cassert>
 #include <cstring>
 #include <map>
@@ -17,9 +18,9 @@ const std::map<int, std::string> TYPETONAME = {{1, "rows"}, {2, "columns"}};
 
 namespace
 {
-static ThreadSafeCounter& number_of_problems_counter()
+std::atomic<int>& number_of_problems_counter()
 {
-    static ThreadSafeCounter counter;
+    static std::atomic<int> counter{0};
     return counter;
 }
 } // namespace
@@ -33,6 +34,11 @@ SolverXpress::SolverXpress(const SolverLogManager& log_manager):
         _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
         add_stream(_log_stream);
     }
+}
+
+SolverXpress* SolverXpress::clone() const
+{
+    return new SolverXpress(*this);
 }
 
 XpressManager::XpressManager()
@@ -90,7 +96,7 @@ SolverXpress::~SolverXpress()
 
 int SolverXpress::get_number_of_instances()
 {
-    return *number_of_problems_counter();
+    return number_of_problems_counter();
 }
 
 /*************************************************************************************************

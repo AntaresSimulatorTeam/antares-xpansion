@@ -86,8 +86,7 @@ protected:
     {
     }
 
-    SolverData init_solver_data_from_solver_model(
-      const std::shared_ptr<SolverAbstract>& solver_model)
+    SolverData init_solver_data_from_solver_model(std::shared_ptr<SolverAbstract> solver_model)
     {
         SolverData solver_data;
         solver_data.solver_model = solver_model;

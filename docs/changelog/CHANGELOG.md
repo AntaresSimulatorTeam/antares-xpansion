@@ -1,15 +1,26 @@
 Antares-Xpansion changelog
 =================
-v1.5.0 (TBD)
+v1.5.0 (07/2025)
 --------------------------------------------------------
 
 ## Features
 
-* New parameter `master_solution_tolerance` in `settings.ini` to define the tolerance in master solution sent to the subproblems, more
+* New parameter `master_solution_tolerance` in `settings.ini` to define the tolerance in master solution sent to the
+  subproblems, more
   details [here](../user-guide/get-started/settings-definition.md#master_solution_tolerance)
 * New parameter `cut_coefficient_tolerance` in `settings.ini` to define the tolerance in cuts coefficients and rhs, more
   details [here](../user-guide/get-started/settings-definition.md#cut_coefficient_tolerance)
-  
+* Simulator step:
+    * Update Antares Simulator to [9.3.0](https://github.com/AntaresSimulatorTeam/Antares_Simulator/releases/tag/v9.3.0)
+    * use the configured solver for first AND second optim
+    * use basis for second optimization
+    * XPRESS: add presolve parameter (PRESOLVE 1) for first and second optimizations
+
+## Bug fixes
+
+* Fix numerical issues with cuts coefficients and rhs in the Benders
+  algorithm [#986](https://github.com/AntaresSimulatorTeam/antares-xpansion/pull/986)
+* General_data.ini is now properly edited when using the step problem_generation in memory mode.
 
 v1.4.0 (07/2025)
 --------------------------------------------------------

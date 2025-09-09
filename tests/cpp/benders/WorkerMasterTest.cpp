@@ -24,6 +24,11 @@ public:
         ubs = upper_bounds;
     }
 
+    SolverAbstract* clone() const override
+    {
+        return nullptr;
+    }
+
     int get_ncols() const override
     {
         return solution.size();

@@ -32,6 +32,7 @@ public:
     SolverCbc();
     explicit SolverCbc(const SolverLogManager& log_manager);
 
+    [[nodiscard]] SolverCbc* clone() const override;
     SolverCbc(const SolverCbc& other);
     SolverCbc& operator=(const SolverCbc& other) = delete;
     ~SolverCbc();
