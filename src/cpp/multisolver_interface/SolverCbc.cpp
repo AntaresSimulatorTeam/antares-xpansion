@@ -30,6 +30,11 @@ SolverCbc::SolverCbc(const SolverLogManager& log_manager):
     }
 }
 
+SolverCbc* SolverCbc::clone() const
+{
+    return new SolverCbc(*this);
+}
+
 SolverCbc::SolverCbc()
 {
     number_of_problems_counter() += 1;

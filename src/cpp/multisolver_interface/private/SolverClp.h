@@ -36,6 +36,7 @@ public:
     SolverClp();
     explicit SolverClp(const SolverLogManager& log_manager);
 
+    [[nodiscard]] SolverClp* clone() const override;
     SolverClp(const SolverClp& copy);
     SolverClp& operator=(const SolverClp& other) = delete;
 

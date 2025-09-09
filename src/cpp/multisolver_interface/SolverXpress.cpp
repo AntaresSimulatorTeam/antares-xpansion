@@ -37,6 +37,11 @@ SolverXpress::SolverXpress(const SolverLogManager& log_manager):
     }
 }
 
+SolverXpress* SolverXpress::clone() const
+{
+    return new SolverXpress(*this);
+}
+
 SolverXpress::SolverXpress()
 {
     std::lock_guard<std::mutex> guard(license_guard);

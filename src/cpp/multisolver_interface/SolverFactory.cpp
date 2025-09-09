@@ -8,6 +8,8 @@
 #include "SolverCbc.h"
 #include "SolverClp.h"
 #endif
+#include <variant>
+
 #include "antares-xpansion/multisolver_interface/SolverConfig.h"
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
@@ -249,30 +251,7 @@ std::shared_ptr<SolverT> copy(const SolverAbstract& to_copy)
 
 std::shared_ptr<SolverAbstract> SolverFactory::copy_solver(const SolverAbstract& to_copy) const
 {
-    std::string solver_name = to_copy.get_solver_name();
-    std::ranges::transform(solver_name, solver_name.begin(), ::toupper);
-    if (solver_name.empty())
-    {
-        throw InvalidSolverNameException(solver_name, LOGLOCATION);
-    }
-    if (isXpress_available_ && solver_name == XPRESS_STR)
-    {
-        return copy<SolverXpress>(to_copy);
-    }
-#ifdef COIN_OR
-    else if (solver_name == CLP_STR)
-    {
-        return copy<SolverClp>(to_copy);
-    }
-    else if (solver_name == CBC_STR)
-    {
-        return copy<SolverCbc>(to_copy);
-    }
-#endif
-    else
-    {
-        throw InvalidSolverNameException(solver_name, LOGLOCATION);
-    }
+    return std::shared_ptr<SolverAbstract>(to_copy.clone());
 }
 
 const std::vector<std::string>& SolverFactory::get_solvers_list() const

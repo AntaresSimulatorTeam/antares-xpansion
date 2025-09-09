@@ -29,6 +29,11 @@ SolverClp::SolverClp(const SolverLogManager& log_manager):
     }
 }
 
+SolverClp* SolverClp::clone() const
+{
+    return new SolverClp(*this);
+}
+
 SolverClp::SolverClp()
 {
     number_of_problems_counter() += 1;

@@ -32,13 +32,14 @@ public:
      * @brief Default constructor of a XPRESS solver
      */
     SolverXpress();
-    SolverXpress(const SolverLogManager& log_manager);
+    explicit SolverXpress(const SolverLogManager& log_manager);
 
+    [[nodiscard]] SolverXpress* clone() const override;
     explicit SolverXpress(const SolverXpress& other);
 
     SolverXpress& operator=(const SolverXpress& other) = delete;
 
-    ~SolverXpress();
+    ~SolverXpress() override;
     int get_number_of_instances() override;
 
     std::string get_solver_name() const override
