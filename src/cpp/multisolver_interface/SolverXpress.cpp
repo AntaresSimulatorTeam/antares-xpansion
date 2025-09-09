@@ -47,8 +47,7 @@ std::mutex& instance_guard()
 
 XpressManager::XpressManager()
 {
-    std::lock_guard<std::mutex> guard(instance_guard());
-    _loader.initXpressEnv();
+    std::lock_guard guard(instance_guard());
     if (_loader.XpressIsCorrectlyInstalled())
     {
         int status = XPRSinit(nullptr);
