@@ -112,7 +112,7 @@ std::vector<std::vector<double>> computeWaterValues(
     }
 
     size_t numLevels = levels.size();
-    size_t numWeeks = bellmanValues.size();
+    size_t numWeeks = bellmanValues.size() - 1;
 
     for (const auto& weekVals: bellmanValues)
     {
@@ -129,7 +129,8 @@ std::vector<std::vector<double>> computeWaterValues(
         const auto& values = bellmanValues[week];
         for (size_t i = 0; i < numLevels; ++i)
         {
-            derivatives[week][i] = (values[i + 1] - values[i]) / (levels[i + 1] - levels[i]);
+            // Take the opposite of the derivative to have positive water values
+            derivatives[week][i] = -(values[i + 1] - values[i]) / (levels[i + 1] - levels[i]);
         }
     }
 
@@ -153,10 +154,10 @@ int main(int argc, char** argv)
         auto gridCollection = std::make_shared<GridCollection>(studyPath / "grid.csv");
 
         ReservoirManagement reservoirManagement(gridCollection->reservoirs.begin()->second,
-                                                3000,
-                                                3000,
-                                                3000,
-                                                false);
+                                                0,
+                                                0,
+                                                2000,
+                                                true);
 
         ConfigurationManager::ConfigDirectories directories{
           .study_dir = studyPath,
