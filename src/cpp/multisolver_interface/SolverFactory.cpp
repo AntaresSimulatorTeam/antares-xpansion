@@ -8,8 +8,6 @@
 #include "SolverCbc.h"
 #include "SolverClp.h"
 #endif
-#include <variant>
-
 #include "antares-xpansion/multisolver_interface/SolverConfig.h"
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
