@@ -112,6 +112,13 @@ protected:
     template<typename T, typename Op>
     void Reduce(const T& in_value, T& out_value, Op op, int root) const
     {
+        std::cout << "[DEBUG][Reduce] type: " << typeid(T).name() << ", rank: " << _world.rank()
+                  << ", root: " << root << std::endl;
+        // Pour les vecteurs, afficher la taille
+        if constexpr (std::is_same_v<T, std::vector<double>>)
+        {
+            std::cout << "[DEBUG][Reduce] vector size: " << in_value.size() << std::endl;
+        }
         mpi::reduce(_world, in_value, out_value, op, root);
     }
 

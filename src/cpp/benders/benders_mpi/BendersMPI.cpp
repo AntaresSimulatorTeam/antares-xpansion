@@ -1,5 +1,3 @@
-
-
 #include "antares-xpansion/benders/benders_mpi/BendersMPI.h"
 
 #include <utility>
@@ -208,6 +206,9 @@ void BendersMpi::GatherCuts(const SubProblemDataMap& subproblem_data_map, const 
     mpi::gather(_world, subproblem_data_map, gathered_subproblem_map, rank_0);
     _data.subproblems_walltime = walltime.elapsed();
     double cumulative_subproblems_timer_per_iter(0);
+    std::cout << "[DEBUG][Reduce-call] _data.subproblems_cputime=" << _data.subproblems_cputime
+              << ", cumulative_subproblems_timer_per_iter=" << cumulative_subproblems_timer_per_iter
+              << ", rank=" << _world.rank() << ", root=" << rank_0 << std::endl;
     Reduce(_data.subproblems_cputime,
            cumulative_subproblems_timer_per_iter,
            std::plus<double>(),
@@ -276,10 +277,20 @@ void BendersMpi::ComputeSubproblemsContributionToCriteria(
                            subproblem_data.patterns_values);
     }
 
+    std::cout << "[DEBUG][Reduce-call] criteria_per_sub_problem_per_pattern.size="
+              << criteria_per_sub_problem_per_pattern.size()
+              << ", _data.criteria_current_iteration_data.criteria.size="
+              << _data.criteria_current_iteration_data.criteria.size() << ", rank=" << _world.rank()
+              << ", root=" << rank_0 << std::endl;
     Reduce(criteria_per_sub_problem_per_pattern,
            _data.criteria_current_iteration_data.criteria,
            std::plus<double>(),
            rank_0);
+    std::cout << "[DEBUG][Reduce-call] patterns_values_per_sub_problem_per_pattern.size="
+              << patterns_values_per_sub_problem_per_pattern.size()
+              << ", _data.criteria_current_iteration_data.patterns_values.size="
+              << _data.criteria_current_iteration_data.patterns_values.size()
+              << ", rank=" << _world.rank() << ", root=" << rank_0 << std::endl;
     Reduce(patterns_values_per_sub_problem_per_pattern,
            _data.criteria_current_iteration_data.patterns_values,
            std::plus<double>(),

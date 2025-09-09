@@ -232,10 +232,19 @@ void BendersByBatch::SolveBatches()
         BuildCut(batch_sub_problems,
                  &batch_subproblems_costs_contribution_in_gap_per_proc,
                  external_loop_criterion_current_batch);
+        std::cout << "[DEBUG][Reduce-call] batch_subproblems_costs_contribution_in_gap_per_proc="
+                  << batch_subproblems_costs_contribution_in_gap_per_proc
+                  << ", batch_subproblems_costs_contribution_in_gap="
+                  << batch_subproblems_costs_contribution_in_gap << ", rank=" << Rank()
+                  << ", root=" << rank_0 << std::endl;
         Reduce(batch_subproblems_costs_contribution_in_gap_per_proc,
                batch_subproblems_costs_contribution_in_gap,
                std::plus<double>(),
                rank_0);
+        std::cout << "[DEBUG][Reduce-call] _data.subproblems_cputime=" << _data.subproblems_cputime
+                  << ", cumulative_subproblems_timer_per_iter_="
+                  << cumulative_subproblems_timer_per_iter_ << ", rank=" << Rank()
+                  << ", root=" << rank_0 << std::endl;
         Reduce(_data.subproblems_cputime,
                cumulative_subproblems_timer_per_iter_,
                std::plus<double>(),
