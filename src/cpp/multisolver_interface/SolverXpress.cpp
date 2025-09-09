@@ -58,7 +58,7 @@ XpressManager::XpressManager()
 
 XpressManager::~XpressManager()
 {
-    std::lock_guard<std::mutex> guard(instance_guard());
+    std::lock_guard guard(instance_guard());
 
     if (_loader.XpressIsCorrectlyInstalled())
     {
