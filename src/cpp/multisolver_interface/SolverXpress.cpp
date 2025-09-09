@@ -63,6 +63,7 @@ XpressManager::~XpressManager()
 
 SolverXpress::SolverXpress()
 {
+    ++number_of_problems_counter();
     _xprs = nullptr;
 }
 
@@ -87,7 +88,7 @@ SolverXpress::SolverXpress(const SolverXpress& toCopy):
 SolverXpress::~SolverXpress()
 {
     SolverXpress::free();
-
+    --number_of_problems_counter();
     if (_log_stream.is_open())
     {
         _log_stream.close();
