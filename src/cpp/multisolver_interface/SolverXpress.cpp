@@ -74,7 +74,7 @@ SolverXpress::SolverXpress(const SolverXpress& toCopy):
     SolverXpress::init();
     int status = 0;
 
-    status = XPRScopyprob(_xprs, toCopy._xprs, "");
+    _xprs = toCopy.clone_matrix_to_new_prob();
     _log_file = toCopy._log_file;
     if (_log_file != "")
     {
