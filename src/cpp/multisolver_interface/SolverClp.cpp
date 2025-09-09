@@ -42,7 +42,7 @@ SolverClp::SolverClp(const SolverClp& toCopy):
     _fp = toCopy._fp;
     if (_fp)
     {
-        _clp.messageHandler()->setFilePointer(toCopy._fp);
+        _clp.messageHandler()->setFilePointer(_fp);
     }
 }
 
