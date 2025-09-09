@@ -597,11 +597,25 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
 // to p)
 void BendersBase::SetSubproblemsVariablesIndices()
 {
+    std::cout << "[DEBUG][SetSubproblemsVariablesIndices] subproblem_map.size="
+              << subproblem_map.size() << std::endl;
     if (!subproblem_map.empty())
     {
         auto subproblem = subproblem_map.begin();
-
-        criterion_computation_.SearchVariables(subproblem->second->_solver->get_col_names());
+        auto col_names = subproblem->second->_solver->get_col_names();
+        std::cout << "[DEBUG][SetSubproblemsVariablesIndices] get_col_names size="
+                  << col_names.size() << std::endl;
+        for (size_t i = 0; i < col_names.size(); ++i)
+        {
+            std::cout << col_names[i] << " ";
+        }
+        std::cout << std::endl;
+        criterion_computation_.SearchVariables(col_names);
+    }
+    else
+    {
+        std::cout << "[DEBUG][SetSubproblemsVariablesIndices] subproblem_map is empty!"
+                  << std::endl;
     }
 }
 

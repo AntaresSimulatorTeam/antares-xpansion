@@ -1,5 +1,7 @@
 #include "antares-xpansion/benders/benders_core/CriterionComputation.h"
 
+#include <iostream>
+
 namespace Benders::Criterion
 {
 
@@ -47,6 +49,17 @@ const CriterionInputData& CriterionComputation::getCriterionInputData() const
 
 std::vector<std::vector<int>>& CriterionComputation::getVarIndices()
 {
+    std::cout << "[DEBUG][getVarIndices] var_indices_ size=" << var_indices_.size() << std::endl;
+    for (size_t i = 0; i < var_indices_.size(); ++i)
+    {
+        std::cout << "[DEBUG][getVarIndices] var_indices_[" << i
+                  << "] size=" << var_indices_[i].size() << ", values=";
+        for (size_t j = 0; j < var_indices_[i].size(); ++j)
+        {
+            std::cout << var_indices_[i][j] << " ";
+        }
+        std::cout << std::endl;
+    }
     return var_indices_;
 }
 

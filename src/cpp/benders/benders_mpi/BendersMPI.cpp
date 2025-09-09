@@ -265,10 +265,18 @@ void BendersMpi::ComputeSubproblemsContributionToCriteria(
   const SubProblemDataMap& subproblem_data_map)
 {
     const auto vars_size = criterion_computation_.getVarIndices().size();
+    std::cout << "[DEBUG][criteria] vars_size=" << vars_size << ", rank=" << _world.rank()
+              << std::endl;
     std::vector<double> criteria_per_sub_problem_per_pattern(vars_size, {});
     _data.criteria_current_iteration_data.criteria.resize(vars_size, 0.);
+    std::cout << "[DEBUG][criteria] after resize, size="
+              << _data.criteria_current_iteration_data.criteria.size() << ", rank=" << _world.rank()
+              << std::endl;
     std::vector<double> patterns_values_per_sub_problem_per_pattern(vars_size, {});
     _data.criteria_current_iteration_data.patterns_values.resize(vars_size, 0.);
+    std::cout << "[DEBUG][patterns_values] after resize, size="
+              << _data.criteria_current_iteration_data.patterns_values.size()
+              << ", rank=" << _world.rank() << std::endl;
 
     for (const auto& [subproblem_name, subproblem_data]: subproblem_data_map)
     {
