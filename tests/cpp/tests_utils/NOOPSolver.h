@@ -135,7 +135,7 @@ public:
         return 0;
     }
 
-    std::vector<std::string> get_row_names(int first, int last) override
+    std::vector<std::string> get_row_names(int first, int last) const override
     {
         return std::vector<std::string>();
     }
@@ -145,7 +145,7 @@ public:
         return std::vector<std::string>();
     }
 
-    std::vector<std::string> get_col_names(int first, int last) override
+    std::vector<std::string> get_col_names(int first, int last) const override
     {
         return std::vector<std::string>();
     }

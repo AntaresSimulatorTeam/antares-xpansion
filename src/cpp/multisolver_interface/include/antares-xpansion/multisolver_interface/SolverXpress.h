@@ -128,9 +128,9 @@ public:
 
     int get_row_index(const std::string& name) override;
     int get_col_index(const std::string& name) override;
-    std::vector<std::string> get_row_names(int first, int last) override;
+    std::vector<std::string> get_row_names(int first, int last) const override;
     std::vector<std::string> get_row_names() override;
-    std::vector<std::string> get_col_names(int first, int last) override;
+    std::vector<std::string> get_col_names(int first, int last) const override;
     std::vector<std::string> get_col_names() override;
 
     /*************************************************************************************************

@@ -335,7 +335,7 @@ int SolverClp::get_col_index(const std::string& name)
     }
 }
 
-std::vector<std::string> SolverClp::get_row_names(int first, int last)
+std::vector<std::string> SolverClp::get_row_names(int first, int last) const
 {
     std::vector<std::string> names;
     names.reserve(1 + last - first);
@@ -352,7 +352,7 @@ std::vector<std::string> SolverClp::get_row_names()
     return *_clp.rowNames();
 }
 
-std::vector<std::string> SolverClp::get_col_names(int first, int last)
+std::vector<std::string> SolverClp::get_col_names(int first, int last) const
 {
     std::vector<std::string> names;
     names.reserve(1 + last - first);

@@ -608,7 +608,7 @@ public:
      * @param last  : last index from which name has be returned
      * @return names : vector of names
      */
-    virtual std::vector<std::string> get_row_names(int first, int last) = 0;
+    virtual std::vector<std::string> get_row_names(int first, int last) const = 0;
 
     /**
      * @brief Returns the names of rows
@@ -624,7 +624,7 @@ public:
      * @param last  : last index from which name has be returned
      * @return names : vector of names
      */
-    virtual std::vector<std::string> get_col_names(int first, int last) = 0;
+    virtual std::vector<std::string> get_col_names(int first, int last) const = 0;
 
     /**
      * @brief Returns the names of columns

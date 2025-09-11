@@ -179,7 +179,7 @@ public:
         return solver_abstract_->get_col_index(name);
     }
 
-    std::vector<std::string> get_row_names(int first, int last) override
+    std::vector<std::string> get_row_names(int first, int last) const override
     {
         return solver_abstract_->get_row_names(first, last);
     }
@@ -189,7 +189,7 @@ public:
         return solver_abstract_->get_row_names();
     }
 
-    std::vector<std::string> get_col_names(int first, int last) override
+    std::vector<std::string> get_col_names(int first, int last) const override
     {
         return solver_abstract_->get_col_names(first, last);
     }

@@ -449,13 +449,14 @@ int SolverCbc::get_col_index(const std::string& name)
     }
 }
 
-std::vector<std::string> SolverCbc::get_row_names(int first, int last)
+std::vector<std::string> SolverCbc::get_row_names(int first, int last) const
 {
     int size = 1 + last - first;
     std::vector<std::string> names;
     names.reserve(size);
 
-    std::vector<std::string> solver_row_names = _clp_inner_solver.getRowNames();
+    std::vector<std::string>
+      solver_row_names = const_cast<OsiClpSolverInterface&>(_clp_inner_solver).getRowNames();
     if (solver_row_names.size() < size)
     {
         throw InvalidRowSizeException(size, solver_row_names.size(), LOGLOCATION);
@@ -473,13 +474,14 @@ std::vector<std::string> SolverCbc::get_row_names()
     return _clp_inner_solver.getRowNames();
 }
 
-std::vector<std::string> SolverCbc::get_col_names(int first, int last)
+std::vector<std::string> SolverCbc::get_col_names(int first, int last) const
 {
     int size = 1 + last - first;
     std::vector<std::string> names;
     names.reserve(size);
 
-    std::vector<std::string> solver_col_names = _clp_inner_solver.getColNames();
+    std::vector<std::string>
+      solver_col_names = const_cast<OsiClpSolverInterface&>(_clp_inner_solver).getColNames();
     if (solver_col_names.size() < size)
     {
         throw InvalidColSizeException(size, solver_col_names.size(), LOGLOCATION);

@@ -133,29 +133,32 @@ void SolverXpress::init()
                         "empty",
                         0,
                         0,
-                        NULL,
-                        NULL,
-                        NULL,
-                        NULL,
-                        NULL,
-                        NULL,
-                        NULL,
-                        NULL,
-                        NULL,
-                        NULL);
+                        nullptr,
+                        nullptr,
+                        nullptr,
+                        nullptr,
+                        nullptr,
+                        nullptr,
+                        nullptr,
+                        nullptr,
+                        nullptr,
+                        nullptr);
     zero_status_check(status, "generate empty prob in XPRS interface init method", LOGLOCATION);
 }
 
 void SolverXpress::free()
 {
-    int status = XPRSdestroyprob(_xprs);
-    _xprs = NULL;
-    if (status)
+    if (_xprs)
     {
-        for (auto& stream: get_stream())
+        int status = XPRSdestroyprob(_xprs);
+        _xprs = nullptr;
+        if (status)
         {
-            *stream << "Failed to destroy XPRESS problem with status: " << status << " "
-                    << LOGLOCATION;
+            for (auto& stream: get_stream())
+            {
+                *stream << "Failed to destroy XPRESS problem with status: " << status << " "
+                        << LOGLOCATION;
+            }
         }
     }
 }
@@ -397,7 +400,7 @@ std::vector<std::string> SolverXpress::get_names(int type, int n_elements)
     return res;
 }
 
-std::vector<std::string> SolverXpress::get_row_names(int first, int last)
+std::vector<std::string> SolverXpress::get_row_names(int first, int last) const
 {
     std::vector<std::string> names;
     names.reserve(1 + last - first);
@@ -418,7 +421,7 @@ std::vector<std::string> SolverXpress::get_row_names()
     return get_names(1, get_nrows());
 }
 
-std::vector<std::string> SolverXpress::get_col_names(int first, int last)
+std::vector<std::string> SolverXpress::get_col_names(int first, int last) const
 {
     std::vector<std::string> names;
     names.reserve(1 + last - first);
@@ -713,13 +716,13 @@ int SolverXpress::get_splex_num_of_ite_last() const
 
 void SolverXpress::get_lp_sol(double* primals, double* duals, double* reduced_costs) const
 {
-    int status = XPRSgetlpsol(_xprs, primals, NULL, duals, reduced_costs);
+    int status = XPRSgetlpsol(_xprs, primals, nullptr, duals, reduced_costs);
     zero_status_check(status, "get LP sol", LOGLOCATION);
 }
 
 void SolverXpress::get_mip_sol(double* primals)
 {
-    int status = XPRSgetmipsol(_xprs, primals, NULL);
+    int status = XPRSgetmipsol(_xprs, primals, nullptr);
     zero_status_check(status, "get MIP sol", LOGLOCATION);
 }
 
@@ -815,8 +818,8 @@ void SolverXpress::restore_prob(const std::filesystem::path& filename)
 
 void XPRS_CC optimizermsg(XPRSprob prob, void* strPtr, const char* sMsg, int nLen, int nMsglvl)
 {
-    std::list<std::ostream*>* ptr = NULL;
-    if (strPtr != NULL)
+    std::list<std::ostream*>* ptr = nullptr;
+    if (strPtr != nullptr)
     {
         ptr = (std::list<std::ostream*>*)strPtr;
     }
@@ -827,7 +830,7 @@ void XPRS_CC optimizermsg(XPRSprob prob, void* strPtr, const char* sMsg, int nLe
     case 3: /* warning */
     case 2: /* dialogue */
     case 1: /* information */
-        if (ptr != NULL)
+        if (ptr != nullptr)
         {
             for (const auto& stream: *ptr)
             {
@@ -837,7 +840,7 @@ void XPRS_CC optimizermsg(XPRSprob prob, void* strPtr, const char* sMsg, int nLe
         break;
         /* Exit and flush buffers */
     default:
-        fflush(NULL);
+        fflush(nullptr);
         break;
     }
 }
@@ -869,6 +872,7 @@ void errormsg(XPRSprob& _xprs, const char* sSubName, int nLineNo, int nErrCode)
 
 XPRSprob SolverXpress::clone_matrix_to_new_prob() const
 {
+    std::cout << "Cloning XPRESS problem matrix..." << std::endl;
     int ncols = get_ncols();
     int nrows = get_nrows();
     int nelems = get_nelems();
@@ -895,9 +899,8 @@ XPRSprob SolverXpress::clone_matrix_to_new_prob() const
     get_col_type(coltype.data(), 0, ncols - 1);
 
     // Get names (non-const interface)
-    auto* nonconst_this = const_cast<SolverXpress*>(this);
-    std::vector<std::string> row_names = nonconst_this->get_row_names(0, nrows - 1);
-    std::vector<std::string> col_names = nonconst_this->get_col_names(0, ncols - 1);
+    std::vector<std::string> row_names = get_row_names(0, nrows - 1);
+    std::vector<std::string> col_names = get_col_names(0, ncols - 1);
 
     // Create new problem
     XPRSprob new_prob = nullptr;
@@ -920,12 +923,6 @@ XPRSprob SolverXpress::clone_matrix_to_new_prob() const
                         dmatval.data(),
                         lb.data(),
                         ub.data());
-    // char errmsg[512];
-    // XPRSgetlasterror(new_prob, errmsg);
-    // printf("Function did not execute correctly: %s\n", errmsg);
-    // zero_status_check(status,
-    //                   "load matrix into new XPRESS problem (clone_matrix_to_new_prob)",
-    //                   LOGLOCATION);
 
     // Set column types
     std::vector<int> col_indices(ncols);
