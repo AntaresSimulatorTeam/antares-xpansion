@@ -21,6 +21,7 @@ v1.5.0 (07/2025)
 * Fix numerical issues with cuts coefficients and rhs in the Benders
   algorithm [#986](https://github.com/AntaresSimulatorTeam/antares-xpansion/pull/986)
 * General_data.ini is now properly edited when using the step problem_generation in memory mode.
+* Fix an issue when using "Cache" mode with MPI.
 
 v1.4.0 (07/2025)
 --------------------------------------------------------
