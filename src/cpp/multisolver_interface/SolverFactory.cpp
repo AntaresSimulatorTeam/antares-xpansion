@@ -244,7 +244,7 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
     return create_solver(solver_config, log_manager);
 }
 
-std::shared_ptr<SolverAbstract> SolverFactory::copy_solver(const SolverAbstract& to_copy) const
+std::shared_ptr<SolverAbstract> SolverFactory::copy_solver(const SolverAbstract& to_copy)
 {
     return std::shared_ptr<SolverAbstract>(to_copy.clone());
 }

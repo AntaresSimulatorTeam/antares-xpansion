@@ -38,7 +38,7 @@ public:
     explicit SolverXpress(const SolverLogManager& log_manager);
 
     [[nodiscard]] SolverXpress* clone() const override;
-    explicit SolverXpress(const SolverXpress& other);
+    SolverXpress(const SolverXpress& other);
 
     SolverXpress& operator=(const SolverXpress& other) = delete;
 
@@ -87,7 +87,13 @@ public:
      * col_types and names.
      * @return XPRSprob: new XPRSprob object
      */
-    XPRSprob clone_matrix_to_new_prob() const;
+    void clone_matrix_to_new_prob(XPRSprob&) const;
+
+    /**
+     * @brief Clone the matrix and all XPRESS data from another SolverXpress instance
+     * @param source The source SolverXpress to clone from
+     */
+    void clone_matrix_to_new_prob(const SolverXpress& source);
 
 private:
     void read_prob(const char* prob_name, const char* flags);
@@ -198,8 +204,8 @@ public:
     slack, surplus or artifficial variable associated with each row. The status
     will be one of: 0 slack, surplus or artifficial is non-basic at lower bound;
                         1 slack, surplus or artifficial is basic;
-                        2 slack or surplus is non-basic at upper bound.
-                        3 slack or surplus is super-basic.
+                        2 slack or surplus is non-basic at upper bound; 3 slack or surplus
+    is super-basic.
                         May be NULL if not required.
     * @param cstatus    : Integer array of length COLS to hold the basis status of
     the columns in the constraint matrix. The status will be one of: 0 variable is
