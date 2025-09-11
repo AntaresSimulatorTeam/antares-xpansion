@@ -195,7 +195,7 @@ void BendersBase::update_best_ub()
         _data.x_in = _data.x_cut;
         _data.best_ub = _data.ub;
         _data.best_it = _data.it;
-        FillWorkerMasterData(relevantIterationData_.best);
+        relevantIterationData_.best = FillWorkerMasterData();
         _data.criteria_current_iteration_data.max_criterion_best_it
           = _data.criteria_current_iteration_data.max_criterion;
         _data.criteria_current_iteration_data.max_criterion_area_best_it
@@ -249,8 +249,9 @@ bool BendersBase::ShouldBendersStop()
            && !_data.is_in_initial_relaxation;
 }
 
-void BendersBase::FillWorkerMasterData(WorkerMasterData& worker_master_data)
+WorkerMasterData BendersBase::FillWorkerMasterData() const
 {
+    WorkerMasterData worker_master_data;
     worker_master_data._lb = _data.lb;
     worker_master_data._ub = _data.ub;
     worker_master_data._best_ub = _data.best_ub;
@@ -264,6 +265,7 @@ void BendersBase::FillWorkerMasterData(WorkerMasterData& worker_master_data)
     worker_master_data._invest_cost = _data.invest_cost;
     worker_master_data._operational_cost = _data.subproblem_cost;
     worker_master_data._valid = true;
+    return worker_master_data;
 }
 
 /*!
@@ -273,7 +275,7 @@ void BendersBase::FillWorkerMasterData(WorkerMasterData& worker_master_data)
  */
 void BendersBase::UpdateTrace()
 {
-    FillWorkerMasterData(relevantIterationData_.last);
+    relevantIterationData_.last = FillWorkerMasterData();
     // TODO Outer loop --> de-comment for general case
     // workerMasterDataVect_.push_back(relevantIterationData_.last);
 }
@@ -570,6 +572,10 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
                             std::lock_guard guard(m);
                             subproblem_data_map[name] = subproblem_data;
                             basiss_[name] = std::make_pair(rstatus, cstatus);
+                            std::call_once(
+                              variable_indice_once_flag,
+                              [&](const auto& worker_) { SetSubproblemVariablesIndices(worker_); },
+                              *worker);
                         });
       },
       shouldParallelize());
@@ -592,6 +598,19 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 }
 
+void BendersBase::SetSubproblemVariablesIndices(const SubproblemWorker& subproblem)
+{
+    auto&& col_names = subproblem._solver->get_col_names();
+    std::cout << "[DEBUG][SetSubproblemsVariablesIndices] get_col_names size=" << col_names.size()
+              << std::endl;
+    for (const auto& col_name: col_names)
+    {
+        std::cout << col_name << " ";
+    }
+    std::cout << std::endl;
+    criterion_computation_.SearchVariables(col_names);
+}
+
 // Search for variables in sub problems that satisfy patterns
 // var_indices is a vector(for each patterns p) of vector (var indices related
 // to p)
@@ -602,15 +621,7 @@ void BendersBase::SetSubproblemsVariablesIndices()
     if (!subproblem_map.empty())
     {
         auto subproblem = subproblem_map.begin();
-        auto col_names = subproblem->second->_solver->get_col_names();
-        std::cout << "[DEBUG][SetSubproblemsVariablesIndices] get_col_names size="
-                  << col_names.size() << std::endl;
-        for (size_t i = 0; i < col_names.size(); ++i)
-        {
-            std::cout << col_names[i] << " ";
-        }
-        std::cout << std::endl;
-        criterion_computation_.SearchVariables(col_names);
+        SetSubproblemVariablesIndices(*subproblem->second);
     }
     else
     {

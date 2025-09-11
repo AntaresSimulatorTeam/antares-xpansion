@@ -26,10 +26,14 @@ void BendersByBatch::InitializeProblems()
     BroadCast(batch_collection_, rank_0);
     // Dispatch subproblems to process
     auto problem_count = 0;
+    std::cout << "[DEBUG][InitializeProblems] batch_collection_.size="
+              << batch_collection_.BatchCollections().size() << std::endl;
     for (const auto& batch: batch_collection_.BatchCollections())
     {
         for (const auto& problem_name: batch.sub_problem_names)
         {
+            std::cout << "[DEBUG][InitializeProblems] sub_problem_names.size="
+                      << batch.sub_problem_names.size() << std::endl;
             // In case there are more subproblems than process
             if (auto process_to_feed = problem_count % WorldSize(); process_to_feed == Rank())
             { // Assign  [problemNumber % WorldSize] to processID
