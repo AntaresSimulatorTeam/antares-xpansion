@@ -272,7 +272,7 @@ public:
 
 public:
     std::string _name; /*!< Name of the problem */
-    std::list<std::ostream*>
+    mutable std::list<std::ostream*>
       _streams; /*!< List of streams to print the output (default std::cout) */
 
     /*************************************************************************************************
@@ -305,10 +305,7 @@ public:
     /**
      * @brief returns the list of streams used by the solver instance
      */
-    std::list<std::ostream*>& get_stream()
-    {
-        return _streams;
-    }
+    std::list<std::ostream*>& get_stream() const;
 
     FILE* _fp = nullptr;
     std::filesystem::path _log_file = "";

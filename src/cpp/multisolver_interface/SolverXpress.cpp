@@ -5,6 +5,7 @@
 #include <cstring>
 #include <map>
 #include <numeric>
+#include <set>
 
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
@@ -527,6 +528,17 @@ void SolverXpress::add_names(int type, const std::vector<std::string>& cnames, i
     zero_status_check(status, "add names", LOGLOCATION);
 }
 
+int add_names(XPRSprob prob, int type, const std::vector<std::string>& cnames, int first, int end)
+{
+    std::vector<char> names_charp;
+    for (auto name: cnames)
+    {
+        name += '\0';
+        names_charp.insert(names_charp.end(), name.begin(), name.end());
+    }
+    return XPRSaddnames(prob, type, names_charp.data(), first, end);
+}
+
 void SolverXpress::chg_obj(const std::vector<int>& mindex, const std::vector<double>& obj)
 {
     assert(obj.size() == mindex.size());
@@ -923,7 +935,7 @@ XPRSprob SolverXpress::clone_matrix_to_new_prob() const
                         dmatval.data(),
                         lb.data(),
                         ub.data());
-
+    zero_status_check(status, "XPRSloadlp (clone_matrix_to_new_prob)", LOGLOCATION);
     // Set column types
     std::vector<int> col_indices(ncols);
     std::iota(col_indices.begin(), col_indices.end(), 0);
@@ -935,26 +947,22 @@ XPRSprob SolverXpress::clone_matrix_to_new_prob() const
     // Set row and column names
     if (!row_names.empty())
     {
-        std::vector<char> row_names_char;
-        for (const auto& name: row_names)
+        if (row_names.size() != static_cast<size_t>(nrows))
         {
-            row_names_char.insert(row_names_char.end(), name.begin(), name.end());
-            row_names_char.push_back('\0');
+            throw std::runtime_error("Nombre de noms de lignes incohérent");
         }
-        status = XPRSaddnames(new_prob, 1, row_names_char.data(), 0, nrows - 1);
+        status = ::add_names(new_prob, 1, row_names, 0, nrows - 1);
         zero_status_check(status,
                           "set row names in new XPRESS problem (clone_matrix_to_new_prob)",
                           LOGLOCATION);
     }
     if (!col_names.empty())
     {
-        std::vector<char> col_names_char;
-        for (const auto& name: col_names)
+        if (col_names.size() != static_cast<size_t>(ncols))
         {
-            col_names_char.insert(col_names_char.end(), name.begin(), name.end());
-            col_names_char.push_back('\0');
+            throw std::runtime_error("Nombre de noms de colonnes incohérent");
         }
-        status = XPRSaddnames(new_prob, 2, col_names_char.data(), 0, ncols - 1);
+        status = ::add_names(new_prob, 2, col_names, 0, ncols - 1);
         zero_status_check(status,
                           "set column names in new XPRESS problem (clone_matrix_to_new_prob)",
                           LOGLOCATION);
