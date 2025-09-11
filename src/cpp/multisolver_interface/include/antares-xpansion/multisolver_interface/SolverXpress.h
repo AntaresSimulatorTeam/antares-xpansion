@@ -8,7 +8,7 @@
 
 class XpressManager
 {
-    std::mutex license_guard;
+    LoadXpress::XpressLoader _loader;
 
 public:
     XpressManager();
@@ -21,11 +21,6 @@ public:
  */
 class SolverXpress: public SolverAbstract
 {
-    /*************************************************************************************************
-    ----------------------------------------    ATTRIBUTES
-    ---------------------------------------
-    *************************************************************************************************/
-
 public:
     XPRSprob _xprs = nullptr; /*!< Problem in XPRESS */
     const std::string name_ = "XPRESS";

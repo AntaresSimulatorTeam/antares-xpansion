@@ -41,29 +41,42 @@ SolverXpress* SolverXpress::clone() const
     return new SolverXpress(*this);
 }
 
+namespace
+{
+std::mutex& instance_guard()
+{
+    static std::mutex license_guard;
+    return license_guard;
+}
+} // namespace
+
 XpressManager::XpressManager()
 {
-    std::lock_guard<std::mutex> guard(license_guard);
-    LoadXpress::XpressLoader xpress_loader;
-    xpress_loader.initXpressEnv();
-    int status = XPRSinit(nullptr);
-    SolverAbstract::zero_status_check(status, "initialize XPRESS environment", LOGLOCATION);
+    std::lock_guard guard(instance_guard());
+    if (_loader.XpressIsCorrectlyInstalled())
+    {
+        int status = XPRSinit(nullptr);
+        SolverAbstract::zero_status_check(status, "initialize XPRESS environment", LOGLOCATION);
+    }
 }
 
 XpressManager::~XpressManager()
 {
-    std::lock_guard<std::mutex> guard(license_guard);
-    std::cout << "Freeing XPRESS environment" << std::endl;
-    if (int status = XPRSfree())
+    std::lock_guard guard(instance_guard());
+
+    if (_loader.XpressIsCorrectlyInstalled())
     {
-        std::cerr << "Failed to free XPRESS environment with status: " << status << " "
-                  << LOGLOCATION << std::endl;
+        if (int status = XPRSfree())
+        {
+            std::cerr << "Failed to free XPRESS environment with status: " << status << " "
+                      << LOGLOCATION << std::endl;
+        }
     }
 }
 
 SolverXpress::SolverXpress()
 {
-    ++number_of_problems_counter();
+    number_of_problems_counter() += 1;
     _xprs = nullptr;
 }
 
@@ -87,8 +100,9 @@ SolverXpress::SolverXpress(const SolverXpress& toCopy):
 
 SolverXpress::~SolverXpress()
 {
+    number_of_problems_counter() -= 1;
     SolverXpress::free();
-    --number_of_problems_counter();
+
     if (_log_stream.is_open())
     {
         _log_stream.close();
