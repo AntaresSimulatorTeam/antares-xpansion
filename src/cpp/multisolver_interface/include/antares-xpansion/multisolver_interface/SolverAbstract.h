@@ -226,7 +226,7 @@ public:
      * @brief destructor of SolverAbstract class : does nothing
      */
     virtual ~SolverAbstract() = default;
-
+    virtual SolverAbstract* clone() const = 0;
     /**
      * @brief Returns number of instances of solver currently in memory
      */

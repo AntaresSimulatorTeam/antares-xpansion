@@ -32,10 +32,8 @@ public:
     SolverCbc();
     explicit SolverCbc(const SolverLogManager& log_manager);
 
-    explicit SolverCbc(const SolverAbstract& toCopy);
-
-    /*SolverCbc ctor accept only std::shared_ptr*/
-    SolverCbc(const SolverCbc& other) = delete;
+    [[nodiscard]] SolverCbc* clone() const override;
+    SolverCbc(const SolverCbc& other);
     SolverCbc& operator=(const SolverCbc& other) = delete;
     ~SolverCbc();
     int get_number_of_instances() override;

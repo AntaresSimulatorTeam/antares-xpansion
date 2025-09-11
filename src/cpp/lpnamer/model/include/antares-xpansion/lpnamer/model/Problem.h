@@ -18,6 +18,11 @@ class Problem: public SolverAbstract
 public:
     Problem() = delete;
 
+    [[nodiscard]] Problem* clone() const override
+    {
+        return new Problem(*this);
+    }
+
     explicit Problem(std::shared_ptr<SolverAbstract> solver_abstract):
         solver_abstract_(std::move(solver_abstract))
     {

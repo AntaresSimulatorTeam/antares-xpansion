@@ -37,10 +37,9 @@ public:
     SolverXpress();
     explicit SolverXpress(const SolverLogManager& log_manager);
 
-    explicit SolverXpress(const SolverAbstract& toCopy);
+    [[nodiscard]] SolverXpress* clone() const override;
+    explicit SolverXpress(const SolverXpress& other);
 
-    /*SolverXpress ctor accept only std::shared_ptr*/
-    SolverXpress(const SolverXpress& other) = delete;
     SolverXpress& operator=(const SolverXpress& other) = delete;
 
     ~SolverXpress() override;
