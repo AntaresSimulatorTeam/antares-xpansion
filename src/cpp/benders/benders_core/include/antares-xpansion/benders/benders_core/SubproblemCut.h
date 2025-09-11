@@ -27,6 +27,7 @@ struct SubProblemData
         ar & subproblem_cost;
         ar & var_name_and_subgradient;
         ar & criteria;
+        ar & patterns_values;
         ar & single_subpb_costs_under_approx;
         ar & subproblem_timer;
         ar & simplex_iter;
