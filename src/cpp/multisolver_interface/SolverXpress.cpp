@@ -41,7 +41,7 @@ SolverXpress* SolverXpress::clone() const
     return new SolverXpress(*this);
 }
 
-SolverXpress::SolverXpress()
+namespace
 {
 std::mutex& instance_guard()
 {
