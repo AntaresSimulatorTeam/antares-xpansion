@@ -14,14 +14,6 @@
  */
 class SolverCbc: public SolverAbstract
 {
-    /*************************************************************************************************
-    ----------------------------------------    ATTRIBUTES
-    ---------------------------------------
-    *************************************************************************************************/
-    static int _NumberOfProblems; /*!< Counter of the total number of Cplex
-                                     problems declared to set or end the
-                                     environment */
-
 public:
     const std::string name_ = "CBC";
     OsiClpSolverInterface _clp_inner_solver;
@@ -40,17 +32,8 @@ public:
     SolverCbc();
     explicit SolverCbc(const SolverLogManager& log_manager);
 
-    /**
-     * @brief Copy constructor of solver, copy the problem toCopy in memory and
-     * name it "name"
-     *
-     * @param toCopy : Pointer to an AbstractSolver object, containing a CBC
-     * solver to copy
-     */
-    explicit SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy);
-
-    /*SolverCbc ctor accept only std::shared_ptr*/
-    SolverCbc(const SolverCbc& other) = delete;
+    [[nodiscard]] SolverCbc* clone() const override;
+    SolverCbc(const SolverCbc& other);
     SolverCbc& operator=(const SolverCbc& other) = delete;
     ~SolverCbc();
     int get_number_of_instances() override;
@@ -95,8 +78,6 @@ public:
     void restore_prob(const std::filesystem::path& filename) override;
     void read_basis(const std::filesystem::path& filename) override;
     void set_basis(std::span<int> rstatus, std::span<int> cstatus) override;
-
-    void copy_prob(const SolverAbstract::Ptr fictif_solv) override;
 
     /*************************************************************************************************
     -----------------------    Get general informations about problem

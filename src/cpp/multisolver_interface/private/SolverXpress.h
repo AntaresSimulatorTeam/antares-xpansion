@@ -16,8 +16,6 @@ class SolverXpress: public SolverAbstract
     ----------------------------------------    ATTRIBUTES
     ---------------------------------------
     *************************************************************************************************/
-    static int _NumberOfProblems; /*!< Counter of the total number of Cplex problems
-                                  declared to set or end the environment */
     static std::mutex license_guard;
 
 public:
@@ -34,23 +32,14 @@ public:
      * @brief Default constructor of a XPRESS solver
      */
     SolverXpress();
-    SolverXpress(const SolverLogManager& log_manager);
+    explicit SolverXpress(const SolverLogManager& log_manager);
 
-    /**
-     * @brief Copy constructor of XPRESS, copy the problem toCopy in memory and
-     * name it "name"
-     *
-     * @param toCopy : Pointer to an AbstractSolver object, containing an XPRESS
-     * solver to copy
-     */
-    explicit SolverXpress(const SolverAbstract::Ptr toCopy);
-    explicit SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy);
+    [[nodiscard]] SolverXpress* clone() const override;
+    explicit SolverXpress(const SolverXpress& other);
 
-    /*SolverXpress ctor accept only std::shared_ptr*/
-    SolverXpress(const SolverXpress& other) = delete;
     SolverXpress& operator=(const SolverXpress& other) = delete;
 
-    ~SolverXpress();
+    ~SolverXpress() override;
     int get_number_of_instances() override;
 
     std::string get_solver_name() const override
@@ -88,8 +77,6 @@ public:
     void restore_prob(const std::filesystem::path& filename) override;
     void read_basis(const std::filesystem::path& filename) override;
     void set_basis(std::span<int> rstatus, std::span<int> cstatus) override;
-
-    void copy_prob(const SolverAbstract::Ptr fictif_solv) override;
 
 private:
     void read_prob(const char* prob_name, const char* flags);

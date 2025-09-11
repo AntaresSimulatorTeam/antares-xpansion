@@ -1,13 +1,23 @@
 #include "SolverClp.h"
 
+#include <atomic>
+
 #include "COIN_common_functions.h"
 using namespace std::literals;
+
+namespace
+{
+std::atomic<int>& number_of_problems_counter()
+{
+    static std::atomic<int> counter{0};
+    return counter;
+}
+} // namespace
 
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor
 --------------------------------
 *************************************************************************************************/
-int SolverClp::_NumberOfProblems = 0;
 
 SolverClp::SolverClp(const SolverLogManager& log_manager):
     SolverClp()
@@ -19,41 +29,37 @@ SolverClp::SolverClp(const SolverLogManager& log_manager):
     }
 }
 
+SolverClp* SolverClp::clone() const
+{
+    return new SolverClp(*this);
+}
+
 SolverClp::SolverClp()
 {
-    _NumberOfProblems += 1;
+    number_of_problems_counter() += 1;
     set_output_log_level(0);
 }
 
-SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy):
+SolverClp::SolverClp(const SolverClp& toCopy):
     SolverClp()
 {
-    // Try to cast the solver in fictif to a SolverClp
-    if (const auto c = dynamic_cast<const SolverClp*>(toCopy.get()))
+    _clp = ClpSimplex(toCopy._clp);
+    _fp = toCopy._fp;
+    if (_fp)
     {
-        _clp = ClpSimplex(c->_clp);
-        _fp = c->_fp;
-        if (_fp)
-        {
-            _clp.messageHandler()->setFilePointer(c->_fp);
-        }
-    }
-    else
-    {
-        _NumberOfProblems -= 1;
-        throw InvalidSolverForCopyException(toCopy->get_solver_name(), name_, LOGLOCATION);
+        _clp.messageHandler()->setFilePointer(_fp);
     }
 }
 
 SolverClp::~SolverClp()
 {
-    _NumberOfProblems -= 1;
-    free();
+    number_of_problems_counter() -= 1;
+    SolverClp::free();
 }
 
 int SolverClp::get_number_of_instances()
 {
-    return _NumberOfProblems;
+    return number_of_problems_counter();
 }
 
 /*************************************************************************************************
@@ -139,12 +145,6 @@ void SolverClp::set_basis(std::span<int> rstatus, std::span<int> cstatus)
     {
         _clp.setColumnStatus(i, static_cast<ClpSimplex::Status>(cstatus[i]));
     }
-}
-
-void SolverClp::copy_prob(const SolverAbstract::Ptr fictif_solv)
-{
-    auto error = LOGLOCATION + "Copy Clp problem : TO DO WHEN NEEDED";
-    throw NotImplementedFeatureSolverException(error);
 }
 
 /*************************************************************************************************

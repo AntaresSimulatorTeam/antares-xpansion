@@ -1,13 +1,23 @@
 #include "SolverCbc.h"
 
+#include <atomic>
+
 #include "COIN_common_functions.h"
 using namespace std::literals;
+
+namespace
+{
+std::atomic<int>& number_of_problems_counter()
+{
+    static std::atomic<int> counter{0};
+    return counter;
+}
+} // namespace
 
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor
 --------------------------------
 *************************************************************************************************/
-int SolverCbc::_NumberOfProblems = 0;
 
 SolverCbc::SolverCbc(const SolverLogManager& log_manager):
     SolverCbc()
@@ -20,44 +30,40 @@ SolverCbc::SolverCbc(const SolverLogManager& log_manager):
     }
 }
 
+SolverCbc* SolverCbc::clone() const
+{
+    return new SolverCbc(*this);
+}
+
 SolverCbc::SolverCbc()
 {
-    _NumberOfProblems += 1;
+    number_of_problems_counter() += 1;
     set_output_log_level(0);
 }
 
-SolverCbc::SolverCbc(const std::shared_ptr<const SolverAbstract> toCopy):
+SolverCbc::SolverCbc(const SolverCbc& toCopy):
     SolverCbc()
 {
-    // Try to cast the solver in fictif to a SolverCbc
-    if (const auto c = dynamic_cast<const SolverCbc*>(toCopy.get()))
-    {
-        _clp_inner_solver = OsiClpSolverInterface(c->_clp_inner_solver);
+    _clp_inner_solver = OsiClpSolverInterface(toCopy._clp_inner_solver);
 
-        defineCbcModelFromInnerSolver();
-        _fp = c->_fp;
-        if (_fp)
-        {
-            _clp_inner_solver.messageHandler()->setFilePointer(_fp);
-            _cbc.messageHandler()->setFilePointer(_fp);
-        }
-    }
-    else
+    defineCbcModelFromInnerSolver();
+    _fp = toCopy._fp;
+    if (_fp)
     {
-        _NumberOfProblems -= 1;
-        throw InvalidSolverForCopyException(toCopy->get_solver_name(), name_, LOGLOCATION);
+        _clp_inner_solver.messageHandler()->setFilePointer(_fp);
+        _cbc.messageHandler()->setFilePointer(_fp);
     }
 }
 
 SolverCbc::~SolverCbc()
 {
-    _NumberOfProblems -= 1;
+    number_of_problems_counter() -= 1;
     free();
 }
 
 int SolverCbc::get_number_of_instances()
 {
-    return _NumberOfProblems;
+    return number_of_problems_counter();
 }
 
 void SolverCbc::defineCbcModelFromInnerSolver()
@@ -254,12 +260,6 @@ void SolverCbc::read_basis(const std::filesystem::path& filename)
 void SolverCbc::set_basis(std::span<int> rstatus, std::span<int> cstatus)
 {
     _cbc.solver()->setBasisStatus(rstatus.data(), cstatus.data());
-}
-
-void SolverCbc::copy_prob(const SolverAbstract::Ptr fictif_solv)
-{
-    auto error = LOGLOCATION + "Copy CBC problem : TO DO WHEN NEEDED";
-    throw NotImplementedFeatureSolverException(error);
 }
 
 /*************************************************************************************************

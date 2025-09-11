@@ -18,13 +18,18 @@ class Problem: public SolverAbstract
 public:
     Problem() = delete;
 
-    explicit Problem(SolverAbstract::Ptr solver_abstract):
+    [[nodiscard]] Problem* clone() const override
+    {
+        return new Problem(*this);
+    }
+
+    explicit Problem(std::shared_ptr<SolverAbstract> solver_abstract):
         solver_abstract_(std::move(solver_abstract))
     {
     }
 
 private:
-    const SolverAbstract::Ptr solver_abstract_;
+    const std::shared_ptr<SolverAbstract> solver_abstract_;
 
 public:
     [[nodiscard]] unsigned int McYear() const
@@ -75,11 +80,6 @@ public:
     void read_prob_lp(const std::filesystem::path& filename) override
     {
         solver_abstract_->read_prob_lp(filename);
-    }
-
-    void copy_prob(Ptr fictif_solv) override
-    {
-        solver_abstract_->copy_prob(fictif_solv);
     }
 
     [[nodiscard]] int get_ncols() const override

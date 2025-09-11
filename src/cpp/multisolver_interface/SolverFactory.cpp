@@ -77,8 +77,8 @@ SolverFactory::SolverFactory(std::shared_ptr<ILoggerXpansion> logger):
                           != available_solvers.cend();
 }
 
-SolverAbstract::Ptr SolverFactory::create_solver(const std::string& solver_name,
-                                                 const SOLVER_TYPE solver_type) const
+std::shared_ptr<SolverAbstract> SolverFactory::create_solver(const std::string& solver_name,
+                                                             const SOLVER_TYPE solver_type) const
 {
     try
     {
@@ -90,9 +90,10 @@ SolverAbstract::Ptr SolverFactory::create_solver(const std::string& solver_name,
     }
 }
 
-SolverAbstract::Ptr SolverFactory::create_solver(const std::string& solver_name,
-                                                 const SOLVER_TYPE solver_type,
-                                                 const SolverLogManager& log_manager) const
+std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
+  const std::string& solver_name,
+  const SOLVER_TYPE solver_type,
+  const SolverLogManager& log_manager) const
 {
     try
     {
@@ -104,7 +105,7 @@ SolverAbstract::Ptr SolverFactory::create_solver(const std::string& solver_name,
     }
 }
 
-SolverAbstract::Ptr SolverFactory::create_solver(const std::string& solver_name) const
+std::shared_ptr<SolverAbstract> SolverFactory::create_solver(const std::string& solver_name) const
 {
     try
     {
@@ -116,8 +117,9 @@ SolverAbstract::Ptr SolverFactory::create_solver(const std::string& solver_name)
     }
 }
 
-SolverAbstract::Ptr SolverFactory::create_solver(const std::string& solver_name,
-                                                 const SolverLogManager& log_manager) const
+std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
+  const std::string& solver_name,
+  const SolverLogManager& log_manager) const
 {
     try
     {
@@ -129,9 +131,10 @@ SolverAbstract::Ptr SolverFactory::create_solver(const std::string& solver_name,
     }
 }
 
-SolverAbstract::Ptr SolverFactory::create_solver(const SolverConfig& solver_config) const
+std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
+  const SolverConfig& solver_config) const
 {
-    SolverAbstract::Ptr ret;
+    std::shared_ptr<SolverAbstract> ret;
     if (solver_config.Name().empty())
     {
         throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
@@ -158,10 +161,10 @@ SolverAbstract::Ptr SolverFactory::create_solver(const SolverConfig& solver_conf
     return ret;
 }
 
-SolverAbstract::Ptr SolverFactory::create_solver(const SolverConfig& solver_config,
-                                                 const SOLVER_TYPE solver_type) const
+std::shared_ptr<SolverAbstract> SolverFactory::create_solver(const SolverConfig& solver_config,
+                                                             const SOLVER_TYPE solver_type) const
 {
-    SolverAbstract::Ptr ret;
+    std::shared_ptr<SolverAbstract> ret;
     if (solver_config.Name().empty())
     {
         throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
@@ -188,14 +191,15 @@ SolverAbstract::Ptr SolverFactory::create_solver(const SolverConfig& solver_conf
     return ret;
 }
 
-SolverAbstract::Ptr SolverFactory::create_solver(const SolverConfig& solver_config,
-                                                 const SolverLogManager& log_manager) const
+std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
+  const SolverConfig& solver_config,
+  const SolverLogManager& log_manager) const
 {
     if (solver_config.Name().empty())
     {
         throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
     }
-    SolverAbstract::Ptr ret;
+    std::shared_ptr<SolverAbstract> ret;
     if (isXpress_available_ && solver_config == XPRESS_STR)
     {
         ret = std::make_shared<SolverXpress>(log_manager);
@@ -218,9 +222,10 @@ SolverAbstract::Ptr SolverFactory::create_solver(const SolverConfig& solver_conf
     return ret;
 }
 
-SolverAbstract::Ptr SolverFactory::create_solver(const SolverConfig& solver_config,
-                                                 const SOLVER_TYPE solver_type,
-                                                 const SolverLogManager& log_manager) const
+std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
+  const SolverConfig& solver_config,
+  const SOLVER_TYPE solver_type,
+  const SolverLogManager& log_manager) const
 {
 #ifdef COIN_OR
     if (solver_config == COIN_STR && solver_type == SOLVER_TYPE::CONTINUOUS)
@@ -235,38 +240,9 @@ SolverAbstract::Ptr SolverFactory::create_solver(const SolverConfig& solver_conf
     return create_solver(solver_config, log_manager);
 }
 
-SolverAbstract::Ptr SolverFactory::copy_solver(
-  const std::shared_ptr<const SolverAbstract>& to_copy) const
+std::shared_ptr<SolverAbstract> SolverFactory::copy_solver(const SolverAbstract& to_copy) const
 {
-    std::string solver_name = to_copy->get_solver_name();
-    std::transform(solver_name.begin(), solver_name.end(), solver_name.begin(), ::toupper);
-    if (solver_name.empty())
-    {
-        throw InvalidSolverNameException(solver_name, LOGLOCATION);
-    }
-    if (isXpress_available_ && solver_name == XPRESS_STR)
-    {
-        return std::make_shared<SolverXpress>(to_copy);
-    }
-#ifdef COIN_OR
-    else if (solver_name == CLP_STR)
-    {
-        return std::make_shared<SolverClp>(to_copy);
-    }
-    else if (solver_name == CBC_STR)
-    {
-        return std::make_shared<SolverCbc>(to_copy);
-    }
-#endif
-    else
-    {
-        throw InvalidSolverNameException(solver_name, LOGLOCATION);
-    }
-}
-
-SolverAbstract::Ptr SolverFactory::copy_solver(SolverAbstract::Ptr to_copy) const
-{
-    return copy_solver(static_cast<const std::shared_ptr<const SolverAbstract>>(to_copy));
+    return std::shared_ptr<SolverAbstract>(to_copy.clone());
 }
 
 const std::vector<std::string>& SolverFactory::get_solvers_list() const

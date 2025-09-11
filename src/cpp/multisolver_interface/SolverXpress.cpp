@@ -1,5 +1,6 @@
 #include "SolverXpress.h"
 
+#include <atomic>
 #include <cassert>
 #include <cstring>
 #include <map>
@@ -13,9 +14,17 @@ using namespace std::literals;
 -----------------------------------    Constructor/Desctructor
 --------------------------------
 *************************************************************************************************/
-int SolverXpress::_NumberOfProblems = 0;
 std::mutex SolverXpress::license_guard;
 const std::map<int, std::string> TYPETONAME = {{1, "rows"}, {2, "columns"}};
+
+namespace
+{
+std::atomic<int>& number_of_problems_counter()
+{
+    static std::atomic<int> counter{0};
+    return counter;
+}
+} // namespace
 
 SolverXpress::SolverXpress(const SolverLogManager& log_manager):
     SolverXpress()
@@ -28,11 +37,16 @@ SolverXpress::SolverXpress(const SolverLogManager& log_manager):
     }
 }
 
+SolverXpress* SolverXpress::clone() const
+{
+    return new SolverXpress(*this);
+}
+
 SolverXpress::SolverXpress()
 {
     std::lock_guard<std::mutex> guard(license_guard);
     int status = 0;
-    if (_NumberOfProblems == 0)
+    if (number_of_problems_counter() == 0)
     {
         LoadXpress::XpressLoader xpress_loader;
         xpress_loader.initXpressEnv();
@@ -40,50 +54,35 @@ SolverXpress::SolverXpress()
         zero_status_check(status, "initialize XPRESS environment", LOGLOCATION);
     }
 
-    _NumberOfProblems += 1;
+    number_of_problems_counter() += 1;
 
     _xprs = NULL;
 }
 
-SolverXpress::SolverXpress(const SolverAbstract::Ptr toCopy):
-    SolverXpress(static_cast<const std::shared_ptr<const SolverAbstract>>(toCopy))
-{
-}
-
-SolverXpress::SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy):
+SolverXpress::SolverXpress(const SolverXpress& toCopy):
     SolverXpress()
 {
     SolverXpress::init();
     int status = 0;
 
-    // Try to cast the solver in fictif to a SolverXpress
-    if (const SolverXpress* xpSolv = dynamic_cast<const SolverXpress*>(toCopy.get()))
+    status = XPRScopyprob(_xprs, toCopy._xprs, "");
+    _log_file = toCopy._log_file;
+    if (_log_file != "")
     {
-        status = XPRScopyprob(_xprs, xpSolv->_xprs, "");
-        _log_file = toCopy->_log_file;
-        if (_log_file != "")
-        {
-            _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
-            add_stream(_log_stream);
-        }
-        zero_status_check(status, "create problem", LOGLOCATION);
+        _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
+        add_stream(_log_stream);
     }
-    else
-    {
-        _NumberOfProblems -= 1;
-        SolverXpress::free();
-        throw InvalidSolverForCopyException(toCopy->get_solver_name(), name_, LOGLOCATION);
-    }
+    zero_status_check(status, "create problem", LOGLOCATION);
 }
 
 SolverXpress::~SolverXpress()
 {
     { // Scope guard
         std::lock_guard<std::mutex> guard(license_guard);
-        _NumberOfProblems -= 1;
+        number_of_problems_counter() -= 1;
         SolverXpress::free();
 
-        if (_NumberOfProblems == 0)
+        if (number_of_problems_counter() == 0)
         {
             int status = XPRSfree();
             if (status)
@@ -104,7 +103,7 @@ SolverXpress::~SolverXpress()
 
 int SolverXpress::get_number_of_instances()
 {
-    return _NumberOfProblems;
+    return number_of_problems_counter();
 }
 
 /*************************************************************************************************
@@ -235,12 +234,6 @@ void SolverXpress::set_basis(std::span<int> rstatus, std::span<int> cstatus)
 {
     int status = XPRSloadbasis(_xprs, rstatus.data(), cstatus.data());
     zero_status_check(status, "set basis", LOGLOCATION);
-}
-
-void SolverXpress::copy_prob(const SolverAbstract::Ptr fictif_solv)
-{
-    auto error = LOGLOCATION + "Copy XPRESS problem : TO DO WHEN NEEDED";
-    throw NotImplementedFeatureSolverException(error);
 }
 
 /*************************************************************************************************

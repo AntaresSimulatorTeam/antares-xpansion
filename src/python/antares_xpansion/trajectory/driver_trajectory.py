@@ -2,11 +2,10 @@
 Class to control the execution of the trajectory investment
 """
 
+import os
+
 from antares_xpansion.logger import step_logger
-from antares_xpansion.trajectory.driver_multiple_problem_gen import (
-    MultipleProblemGenerationData,
-    MultipleProblemGenerationDriver,
-)
+from antares_xpansion.trajectory.driver_input_translation import InputTranslationDriver
 from antares_xpansion.trajectory.driver_merge_master import (
     MergeMasterData,
     MergeMasterDriver,
@@ -15,16 +14,15 @@ from antares_xpansion.trajectory.driver_merge_weights import (
     MergeWeightsData,
     MergeWeightsDriver,
 )
-from antares_xpansion.trajectory.driver_input_translation import InputTranslationDriver
+from antares_xpansion.trajectory.driver_multiple_problem_gen import (
+    MultipleProblemGenerationData,
+    MultipleProblemGenerationDriver,
+)
 from antares_xpansion.trajectory.driver_resolution import (
     TrajectoryResolutionData,
     TrajectoryResolutionDriver,
 )
-
 from antares_xpansion.trajectory.trajectory_config import TrajectoryConfig
-
-import os
-from pathlib import Path
 
 
 class TrajectoryInvestmentDriver:
@@ -42,10 +40,10 @@ class TrajectoryInvestmentDriver:
         )
         # Prepare intermediary file names
         self.master_merger_info_file = (
-            self.intermediary_folder_path / self.config.MASTER_MERGER_INFO_FILE
+                self.intermediary_folder_path / self.config.MASTER_MERGER_INFO_FILE
         )
         self.nodal_lp_info_file = (
-            self.intermediary_folder_path / self.config.NODAL_LP_INFO_FILE
+                self.intermediary_folder_path / self.config.NODAL_LP_INFO_FILE
         )
         self.merged_weights_file = self.config.input_root / self.config.MERGED_WEIGHTS
 
@@ -72,7 +70,7 @@ class TrajectoryInvestmentDriver:
         self.output_folder = self.prepare_folder(self.config.OUTPUT_FOLDER)
         # TODO : hardcoded solver for now
         solver = "XPRESS"
-        problems_format = "SAVED"
+        problems_format = "OPTIMIZED"
         if solver != "XPRESS":
             problems_format = "MPS"
 
