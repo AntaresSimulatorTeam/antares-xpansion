@@ -277,9 +277,9 @@ public:
     * @param action_failed  : action which returned the non zero status code,
                             used to print the error message.
     */
-    void zero_status_check(int status,
-                           const std::string& action_failed,
-                           const std::string& log_location) const
+    static void zero_status_check(int status,
+                                  const std::string& action_failed,
+                                  const std::string& log_location)
     {
         if (status != 0)
         {

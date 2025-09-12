@@ -6,18 +6,21 @@
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
 
+class XpressManager
+{
+    LoadXpress::XpressLoader _loader;
+
+public:
+    XpressManager();
+    ~XpressManager();
+};
+
 /*!
  * \class class SolverXpress
  * \brief Daughter class of AsbtractSolver implementing solver XPRESS FICO
  */
 class SolverXpress: public SolverAbstract
 {
-    /*************************************************************************************************
-    ----------------------------------------    ATTRIBUTES
-    ---------------------------------------
-    *************************************************************************************************/
-    static std::mutex license_guard;
-
 public:
     XPRSprob _xprs; /*!< Problem in XPRESS */
     const std::string name_ = "XPRESS";
