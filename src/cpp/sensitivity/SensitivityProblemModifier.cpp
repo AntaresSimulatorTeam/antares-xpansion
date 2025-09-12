@@ -29,14 +29,8 @@ void change_objective(std::shared_ptr<SolverAbstract> solver_model, const std::v
 std::shared_ptr<SolverAbstract> SensitivityProblemModifier::changeProblem(
   unsigned int nb_candidates) const
 {
-    std::shared_ptr<SolverAbstract> sensitivity_model = nullptr;
-    {
-        // Some xpress operations are not thread safe
-        static std::mutex master_mutex;
-        std::lock_guard lock(master_mutex);
-        sensitivity_model = SolverFactory::copy_solver(*last_master);
-    }
-    std::vector<double> obj = get_cost_vector(*last_master, nb_candidates);
+    auto sensitivity_model = SolverFactory::copy_solver(*last_master);
+    const std::vector<double> obj = get_cost_vector(*last_master, nb_candidates);
 
     add_near_optimal_cost_constraint(*sensitivity_model);
     change_objective(sensitivity_model, obj);
