@@ -82,22 +82,13 @@ public:
     void set_basis(std::span<int> rstatus, std::span<int> cstatus) override;
 
     /**
-     * @brief Create a new XPRSprob object by copying the matrix, objective, bounds, column
-     * types, and names from the current problem. Does not use ranged rows or collen, but sets
-     * col_types and names.
-     * @return XPRSprob: new XPRSprob object
+     * @brief Clone the matrix and all XPRESS data from this SolverXpress instance
      */
-    void clone_matrix_to_new_prob(XPRSprob&) const;
-
-    /**
-     * @brief Clone the matrix and all XPRESS data from another SolverXpress instance
-     * @param source The source SolverXpress to clone from
-     */
-    void clone_matrix_to_new_prob(const SolverXpress& source);
+    XPRSprob clone_matrix_to_new_prob() const;
 
 private:
     void read_prob(const char* prob_name, const char* flags);
-
+    mutable std::mutex mutex_;
     /*************************************************************************************************
     -----------------------    Get general informations about problem
     ----------------------------
@@ -178,7 +169,7 @@ public:
     void chg_row_name(int id_row, const std::string& name) override;
     void chg_col_name(int id_col, const std::string& name) override;
 
-    void mark_indices_to_keep_presolve(int nrows, int ncols, int* rowind, int* colind);
+    void mark_indices_to_keep_presolve(int nrows, int ncols, int* rowind, int* colind) override;
 
     /*************************************************************************************************
     -----------------------------    Methods to solve the problem
@@ -186,7 +177,7 @@ public:
     *************************************************************************************************/
 
 public:
-    void presolve_only();
+    void presolve_only() override;
 
     int solve_lp() override;
     int solve_mip() override;
@@ -220,7 +211,7 @@ public:
     void get_lp_sol(double* primals, double* duals, double* reduced_costs) const override;
     void get_mip_sol(double* primals) override;
 
-    void get_presolve_map(int* rowmap, int* colmap) const;
+    void get_presolve_map(int* rowmap, int* colmap) const override;
 
     /*************************************************************************************************
     ------------------------    Methods to set algorithm or logs levels
@@ -238,7 +229,8 @@ public:
     std::ofstream _log_stream;
 
 private:
-    std::vector<std::string> get_names(int type, int n_elements);
+    std::vector<std::string> get_names(int type, int n_elements) const;
+    std::vector<std::string> get_names(int type, int first, int last) const;
 };
 
 /************************************************************************************\

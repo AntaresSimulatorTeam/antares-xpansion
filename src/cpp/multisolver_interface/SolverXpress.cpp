@@ -86,9 +86,8 @@ SolverXpress::SolverXpress(const SolverXpress& toCopy):
 {
     XpressLoader loader;
     loader.XpressIsCorrectlyInstalled();
-    SolverXpress::init();
 
-    clone_matrix_to_new_prob(toCopy);
+    _xprs = toCopy.clone_matrix_to_new_prob();
     _log_file = toCopy._log_file;
     if (_log_file != "")
     {
@@ -381,7 +380,12 @@ int SolverXpress::get_col_index(const std::string& name)
     return id;
 }
 
-std::vector<std::string> SolverXpress::get_names(int type, int n_elements)
+std::vector<std::string> SolverXpress::get_names(int type, int n_elements) const
+{
+    return get_names(type, 0, n_elements - 1);
+}
+
+std::vector<std::string> SolverXpress::get_names(int type, int first, int last) const
 {
     int xprs_name_length;
     zero_status_check(XPRSgetintattrib(_xprs, XPRS_NAMELENGTH, &xprs_name_length),
@@ -389,9 +393,9 @@ std::vector<std::string> SolverXpress::get_names(int type, int n_elements)
                       LOGLOCATION);
 
     std::string names_in_one_string;
-    names_in_one_string.resize((8 * xprs_name_length + 1) * n_elements);
+    names_in_one_string.resize((8 * xprs_name_length + 1) * (last - first + 1));
 
-    zero_status_check(XPRSgetnames(_xprs, type, names_in_one_string.data(), 0, n_elements - 1),
+    zero_status_check(XPRSgetnames(_xprs, type, names_in_one_string.data(), first, last),
                       "get " + TYPETONAME.at(type) + " names.",
                       LOGLOCATION);
     names_in_one_string = StringManip::trim_in_place(names_in_one_string);
@@ -399,64 +403,33 @@ std::vector<std::string> SolverXpress::get_names(int type, int n_elements)
     return res;
 }
 
+namespace
+{
+enum XPRESS_NAMES_TYPE : int
+{
+    ROW = 1,
+    COLUMN = 2
+};
+} // namespace
+
 std::vector<std::string> SolverXpress::get_row_names(int first, int last) const
 {
-    int name_length = 0;
-    zero_status_check(XPRSgetintattrib(_xprs, XPRS_NAMELENGTH, &name_length),
-                      "get XPRESS name length",
-                      LOGLOCATION);
-    int n_names = last - first + 1;
-    int buf_size = n_names * (8 * name_length + 1);
-    std::vector<char> names_buf(buf_size, 0);
-    zero_status_check(XPRSgetnames(_xprs, 1, names_buf.data(), first, last),
-                      "get row names",
-                      LOGLOCATION);
-    std::vector<std::string> names;
-    names.reserve(n_names);
-    for (int i = 0; i < n_names; ++i)
-    {
-        const char* name_ptr = names_buf.data() + i * (8 * name_length + 1);
-        std::string name(name_ptr, strnlen(name_ptr, 8 * name_length));
-        // Optionally trim trailing spaces
-        name.erase(name.find_last_not_of(' ') + 1);
-        names.push_back(name);
-    }
-    return names;
+    return get_names(XPRESS_NAMES_TYPE::ROW, first, last);
 }
 
 std::vector<std::string> SolverXpress::get_row_names()
 {
-    return get_names(1, get_nrows());
+    return get_names(XPRESS_NAMES_TYPE::ROW, get_nrows());
 }
 
 std::vector<std::string> SolverXpress::get_col_names(int first, int last) const
 {
-    int name_length = 0;
-    zero_status_check(XPRSgetintattrib(_xprs, XPRS_NAMELENGTH, &name_length),
-                      "get XPRESS name length",
-                      LOGLOCATION);
-    int n_names = last - first + 1;
-    int buf_size = n_names * (8 * name_length + 1);
-    std::vector<char> names_buf(buf_size, 0);
-    zero_status_check(XPRSgetnames(_xprs, 2, names_buf.data(), first, last),
-                      "get column names",
-                      LOGLOCATION);
-    std::vector<std::string> names;
-    names.reserve(n_names);
-    for (int i = 0; i < n_names; ++i)
-    {
-        const char* name_ptr = names_buf.data() + i * (8 * name_length + 1);
-        std::string name(name_ptr, strnlen(name_ptr, 8 * name_length));
-        name.erase(name.find_last_not_of(' ') + 1);
-        names.push_back(name);
-    }
-
-    return names;
+    return get_names(XPRESS_NAMES_TYPE::COLUMN, first, last);
 }
 
 std::vector<std::string> SolverXpress::get_col_names()
 {
-    return get_names(2, get_ncols());
+    return get_names(XPRESS_NAMES_TYPE::COLUMN, get_ncols());
 }
 
 /*************************************************************************************************
@@ -532,27 +505,26 @@ void SolverXpress::add_name(int type, const char* cnames, int indice)
     zero_status_check(status, "add names", LOGLOCATION);
 }
 
-void SolverXpress::add_names(int type, const std::vector<std::string>& cnames, int first, int end)
-{
-    std::vector<char> names_charp;
-    for (auto name: cnames)
-    {
-        name += '\0';
-        names_charp.insert(names_charp.end(), name.begin(), name.end());
-    }
-    int status = XPRSaddnames(_xprs, type, names_charp.data(), first, end);
-    zero_status_check(status, "add names", LOGLOCATION);
-}
-
 int add_names(XPRSprob prob, int type, const std::vector<std::string>& cnames, int first, int end)
 {
-    std::vector<char> names_charp;
-    for (auto name: cnames)
+    auto names = std::make_unique<char[]>(
+      /* +1 for final '\0' */ std::accumulate(cnames.begin(),
+                                              cnames.end(),
+                                              1,
+                                              [](int sum, const std::string& s)
+                                              { return sum + s.size() + 1; }));
+    int counter = 0;
+    for (auto& name: cnames)
     {
-        name += '\0';
-        names_charp.insert(names_charp.end(), name.begin(), name.end());
+        std::strcpy(names.get() + counter, name.c_str());
+        counter += static_cast<int>(name.size()) + 1;
     }
-    return XPRSaddnames(prob, type, names_charp.data(), first, end);
+    return XPRSaddnames(prob, type, names.get(), first, end);
+}
+
+void SolverXpress::add_names(int type, const std::vector<std::string>& cnames, int first, int end)
+{
+    ::add_names(_xprs, type, cnames, first, end);
 }
 
 void SolverXpress::chg_obj(const std::vector<int>& mindex, const std::vector<double>& obj)
@@ -898,14 +870,15 @@ void errormsg(XPRSprob& _xprs, const char* sSubName, int nLineNo, int nErrCode)
     exit(nErrCode);
 }
 
-void SolverXpress::clone_matrix_to_new_prob(const SolverXpress& source)
+XPRSprob SolverXpress::clone_matrix_to_new_prob() const
 {
+    std::lock_guard guard(mutex_);
     std::cout << "Cloning XPRESS problem matrix..." << std::endl;
-    int ncols = source.get_ncols();
-    int nrows = source.get_nrows();
-    int nelems = source.get_nelems();
+    int ncols = get_ncols();
+    int nrows = get_nrows();
+    int nelems = get_nelems();
 
-    // Allocate arrays for matrix data
+    // Allocate arrays for matrixÉZA"QAZ data
     std::vector<char> rowtype(nrows);
     std::vector<double> rhs(nrows);
     std::vector<double> objcoef(ncols);
@@ -917,25 +890,26 @@ void SolverXpress::clone_matrix_to_new_prob(const SolverXpress& source)
     std::vector<char> coltype(ncols);
 
     // Fill arrays from the source solver
-    source.get_row_type(rowtype.data(), 0, nrows - 1);
-    source.get_rhs(rhs.data(), 0, nrows - 1);
-    source.get_obj(objcoef.data(), 0, ncols - 1);
+    get_row_type(rowtype.data(), 0, nrows - 1);
+    get_rhs(rhs.data(), 0, nrows - 1);
+    get_obj(objcoef.data(), 0, ncols - 1);
     int nels = 0;
-    source.get_cols(mstart.data(), mrwind.data(), dmatval.data(), nelems, &nels, 0, ncols - 1);
-    source.get_lb(lb.data(), 0, ncols - 1);
-    source.get_ub(ub.data(), 0, ncols - 1);
-    source.get_col_type(coltype.data(), 0, ncols - 1);
+    get_cols(mstart.data(), mrwind.data(), dmatval.data(), nelems, &nels, 0, ncols - 1);
+    get_lb(lb.data(), 0, ncols - 1);
+    get_ub(ub.data(), 0, ncols - 1);
+    get_col_type(coltype.data(), 0, ncols - 1);
 
     // Get names
-    std::vector<std::string> row_names = source.get_row_names(0, nrows - 1);
-    std::vector<std::string> col_names = source.get_col_names(0, ncols - 1);
+    std::vector<std::string> row_names = get_row_names(0, nrows - 1);
+    std::vector<std::string> col_names = get_col_names(0, ncols - 1);
 
     // Create new problem
-    int status = XPRScreateprob(&_xprs);
+    XPRSprob new_prob = nullptr;
+    int status = XPRScreateprob(&new_prob);
     zero_status_check(status, "create XPRESS problem (clone_matrix_to_new_prob)", LOGLOCATION);
 
     // Load the matrix into the new problem
-    status = XPRSloadlp(_xprs,
+    status = XPRSloadlp(new_prob,
                         "cloned_prob", // name
                         ncols,
                         nrows,
@@ -954,7 +928,7 @@ void SolverXpress::clone_matrix_to_new_prob(const SolverXpress& source)
     // Set column types
     std::vector<int> col_indices(ncols);
     std::iota(col_indices.begin(), col_indices.end(), 0);
-    status = XPRSchgcoltype(_xprs, ncols, col_indices.data(), coltype.data());
+    status = XPRSchgcoltype(new_prob, ncols, col_indices.data(), coltype.data());
     zero_status_check(status,
                       "set column types in new XPRESS problem (clone_matrix_to_new_prob)",
                       LOGLOCATION);
@@ -966,7 +940,40 @@ void SolverXpress::clone_matrix_to_new_prob(const SolverXpress& source)
         {
             throw std::runtime_error("Nombre de noms de lignes incohérent");
         }
-        status = ::add_names(_xprs, 1, row_names, 0, nrows - 1);
+        // Print all duplicates and their indexes in row_names
+        std::map<std::string, std::vector<size_t>> name_to_indexes;
+        for (size_t i = 0; i < row_names.size(); ++i)
+        {
+            name_to_indexes[row_names[i]].push_back(i);
+        }
+        bool found_duplicate = false;
+        for (const auto& [name, indexes]: name_to_indexes)
+        {
+            if (indexes.size() > 1)
+            {
+                found_duplicate = true;
+                std::cerr << "Duplicate row name: '" << name << "' at indexes: ";
+                for (size_t idx = 0; idx < indexes.size(); ++idx)
+                {
+                    std::cerr << indexes[idx];
+                    if (idx + 1 < indexes.size())
+                    {
+                        std::cerr << ", ";
+                    }
+                }
+                std::cerr << std::endl;
+            }
+        }
+        // Check for duplicate row names
+        std::set<std::string> row_name_set;
+        for (const auto& name: row_names)
+        {
+            if (!row_name_set.insert(name).second)
+            {
+                throw std::runtime_error("Duplicate row name found: " + name);
+            }
+        }
+        status = ::add_names(new_prob, 1, row_names, 0, nrows - 1);
         zero_status_check(status,
                           "set row names in new XPRESS problem (clone_matrix_to_new_prob)",
                           LOGLOCATION);
@@ -977,9 +984,19 @@ void SolverXpress::clone_matrix_to_new_prob(const SolverXpress& source)
         {
             throw std::runtime_error("Nombre de noms de colonnes incohérent");
         }
-        status = ::add_names(_xprs, 2, col_names, 0, ncols - 1);
+        // Check for duplicate column names
+        std::set<std::string> col_name_set;
+        for (const auto& name: col_names)
+        {
+            if (!col_name_set.insert(name).second)
+            {
+                throw std::runtime_error("Duplicate column name found: " + name);
+            }
+        }
+        status = ::add_names(new_prob, 2, col_names, 0, ncols - 1);
         zero_status_check(status,
                           "set column names in new XPRESS problem (clone_matrix_to_new_prob)",
                           LOGLOCATION);
     }
+    return new_prob;
 }
