@@ -935,70 +935,68 @@ XPRSprob SolverXpress::clone_matrix_to_new_prob() const
                       "set column types in new XPRESS problem (clone_matrix_to_new_prob)",
                       LOGLOCATION);
 
-    // Set row and column names
-    if (!row_names.empty())
+    // Helper lambda to handle names (row or col)
+    auto handle_names = [](XPRSprob prob,
+                           int type,
+                           const std::vector<std::string>& names,
+                           int n_elements,
+                           const char* element_type)
     {
-        if (row_names.size() != static_cast<size_t>(nrows))
+        if (!names.empty())
         {
-            throw std::runtime_error("Nombre de noms de lignes incohérent");
-        }
-        // Print all duplicates and their indexes in row_names
-        std::map<std::string, std::vector<size_t>> name_to_indexes;
-        for (size_t i = 0; i < row_names.size(); ++i)
-        {
-            name_to_indexes[row_names[i]].push_back(i);
-        }
-        bool found_duplicate = false;
-        for (const auto& [name, indexes]: name_to_indexes)
-        {
-            if (indexes.size() > 1)
+            if (names.size() != static_cast<size_t>(n_elements))
             {
-                found_duplicate = true;
-                std::cerr << "Duplicate row name: '" << name << "' at indexes: ";
-                for (size_t idx = 0; idx < indexes.size(); ++idx)
+                throw std::runtime_error(std::string("Nombre de noms de ") + element_type
+                                         + " incohérent");
+            }
+#ifdef NDEBUG
+            // Release mode: skip duplicate checks
+#else
+            // Print all duplicates and their indexes
+            std::map<std::string, std::vector<size_t>> name_to_indexes;
+            for (size_t i = 0; i < names.size(); ++i)
+            {
+                name_to_indexes[names[i]].push_back(i);
+            }
+            for (const auto& [name, indexes]: name_to_indexes)
+            {
+                if (indexes.size() > 1)
                 {
-                    std::cerr << indexes[idx];
-                    if (idx + 1 < indexes.size())
+                    std::cerr << "Duplicate " << element_type << " name: '" << name
+                              << "' at indexes: ";
+                    for (size_t idx = 0; idx < indexes.size(); ++idx)
                     {
-                        std::cerr << ", ";
+                        std::cerr << indexes[idx];
+                        if (idx + 1 < indexes.size())
+                        {
+                            std::cerr << ", ";
+                        }
                     }
+                    std::cerr << std::endl;
                 }
-                std::cerr << std::endl;
             }
-        }
-        // Check for duplicate row names
-        std::set<std::string> row_name_set;
-        for (const auto& name: row_names)
-        {
-            if (!row_name_set.insert(name).second)
+            // Check for duplicate names
+            std::set<std::string> name_set;
+            for (const auto& name: names)
             {
-                throw std::runtime_error("Duplicate row name found: " + name);
+                if (!name_set.insert(name).second)
+                {
+                    throw std::runtime_error(std::string("Duplicate ") + element_type
+                                             + " name found: " + name);
+                }
             }
+#endif
+            int status = ::add_names(prob, type, names, 0, n_elements - 1);
+            zero_status_check(status,
+                              std::string("set ") + element_type
+                                + " names in new XPRESS problem (clone_matrix_to_new_prob)",
+                              LOGLOCATION);
         }
-        status = ::add_names(new_prob, ROW, row_names, 0, nrows - 1);
-        zero_status_check(status,
-                          "set row names in new XPRESS problem (clone_matrix_to_new_prob)",
-                          LOGLOCATION);
-    }
-    if (!col_names.empty())
-    {
-        if (col_names.size() != static_cast<size_t>(ncols))
-        {
-            throw std::runtime_error("Nombre de noms de colonnes incohérent");
-        }
-        // Check for duplicate column names
-        std::set<std::string> col_name_set;
-        for (const auto& name: col_names)
-        {
-            if (!col_name_set.insert(name).second)
-            {
-                throw std::runtime_error("Duplicate column name found: " + name);
-            }
-        }
-        status = ::add_names(new_prob, COLUMN, col_names, 0, ncols - 1);
-        zero_status_check(status,
-                          "set column names in new XPRESS problem (clone_matrix_to_new_prob)",
-                          LOGLOCATION);
-    }
+    };
+
+    // Use the lambda for rows and columns
+    handle_names(new_prob, ROW, row_names, nrows, "row");
+    handle_names(new_prob, COLUMN, col_names, ncols, "column");
+
     return new_prob;
 }
