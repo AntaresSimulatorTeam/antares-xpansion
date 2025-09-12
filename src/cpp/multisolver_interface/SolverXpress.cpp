@@ -505,6 +505,8 @@ void SolverXpress::add_name(int type, const char* cnames, int indice)
     zero_status_check(status, "add names", LOGLOCATION);
 }
 
+namespace
+{
 int add_names(XPRSprob prob, int type, const std::vector<std::string>& cnames, int first, int end)
 {
     auto names = std::make_unique<char[]>(
@@ -521,6 +523,7 @@ int add_names(XPRSprob prob, int type, const std::vector<std::string>& cnames, i
     }
     return XPRSaddnames(prob, type, names.get(), first, end);
 }
+} // namespace
 
 void SolverXpress::add_names(int type, const std::vector<std::string>& cnames, int first, int end)
 {
@@ -872,8 +875,7 @@ void errormsg(XPRSprob& _xprs, const char* sSubName, int nLineNo, int nErrCode)
 
 XPRSprob SolverXpress::clone_matrix_to_new_prob() const
 {
-    std::lock_guard guard(mutex_);
-    std::cout << "Cloning XPRESS problem matrix..." << std::endl;
+    std::lock_guard guard(mutex_); // Ensure thread safety during cloning
     int ncols = get_ncols();
     int nrows = get_nrows();
     int nelems = get_nelems();
@@ -973,7 +975,7 @@ XPRSprob SolverXpress::clone_matrix_to_new_prob() const
                 throw std::runtime_error("Duplicate row name found: " + name);
             }
         }
-        status = ::add_names(new_prob, 1, row_names, 0, nrows - 1);
+        status = ::add_names(new_prob, ROW, row_names, 0, nrows - 1);
         zero_status_check(status,
                           "set row names in new XPRESS problem (clone_matrix_to_new_prob)",
                           LOGLOCATION);
@@ -993,7 +995,7 @@ XPRSprob SolverXpress::clone_matrix_to_new_prob() const
                 throw std::runtime_error("Duplicate column name found: " + name);
             }
         }
-        status = ::add_names(new_prob, 2, col_names, 0, ncols - 1);
+        status = ::add_names(new_prob, COLUMN, col_names, 0, ncols - 1);
         zero_status_check(status,
                           "set column names in new XPRESS problem (clone_matrix_to_new_prob)",
                           LOGLOCATION);
