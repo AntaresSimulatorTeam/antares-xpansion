@@ -18,5 +18,6 @@ var searchData=
   ['xpress_20libraries_15',['Locating Xpress Libraries',['../md_docs_2developer-guide_2install__from__sources_26-Xpress.html#autotoc_md107',1,'']]],
   ['xpress_20solver_20and_20loading_20it_20dynamically_16',['Installing Xpress Solver and Loading it Dynamically',['../md_docs_2developer-guide_2install__from__sources_26-Xpress.html',1,'']]],
   ['xpressiscorrectlyinstalled_17',['XpressIsCorrectlyInstalled',['../classLoadXpress_1_1XpressLoader.html#a3b63466fe650798a2c3498c26220b943',1,'LoadXpress::XpressLoader']]],
-  ['xpressloader_18',['XpressLoader',['../classLoadXpress_1_1XpressLoader.html',1,'LoadXpress::XpressLoader'],['../classLoadXpress_1_1XpressLoader.html#a6756de139955720c1c7bf5ed6d4e6245',1,'LoadXpress::XpressLoader::XpressLoader()']]]
+  ['xpressloader_18',['XpressLoader',['../classLoadXpress_1_1XpressLoader.html',1,'LoadXpress::XpressLoader'],['../classLoadXpress_1_1XpressLoader.html#a6756de139955720c1c7bf5ed6d4e6245',1,'LoadXpress::XpressLoader::XpressLoader()']]],
+  ['xpressmanager_19',['XpressManager',['../classXpressManager.html',1,'']]]
 ];

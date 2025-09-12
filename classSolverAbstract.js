@@ -61,7 +61,6 @@ var classSolverAbstract =
     [ "write_basis", "classSolverAbstract.html#a662f2e2fe8c61d8f61f4cd9e6a45330a", null ],
     [ "write_prob_lp", "classSolverAbstract.html#afc8bb82a34495de9bb4ab186746dfe04", null ],
     [ "write_prob_mps", "classSolverAbstract.html#a6531e6705a781023aa14806bb08c1736", null ],
-    [ "zero_status_check", "classSolverAbstract.html#aff87b9285872f0012d0f2c183bbf395e", null ],
     [ "_name", "classSolverAbstract.html#a52ca317dd7d394001148e348cecff0f2", null ],
     [ "_streams", "classSolverAbstract.html#a53c0792aef472db99977b8adef0b7dce", null ]
 ];

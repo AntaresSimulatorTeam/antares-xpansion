@@ -770,6 +770,7 @@ var annotated_dup =
     [ "WorkerMasterTest", "classWorkerMasterTest.html", null ],
     [ "WriterMockStatus", "classWriterMockStatus.html", null ],
     [ "XpansionProblemsFromAntaresProvider", "classXpansionProblemsFromAntaresProvider.html", null ],
+    [ "XpressManager", "classXpressManager.html", null ],
     [ "YearlyWeightsWriter", "classYearlyWeightsWriter.html", "classYearlyWeightsWriter" ],
     [ "ZipProblemProviderAdapter", "classZipProblemProviderAdapter.html", null ],
     [ "ZipProblemsProviderAdapter", "classZipProblemsProviderAdapter.html", null ]

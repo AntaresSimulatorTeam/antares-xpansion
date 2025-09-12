@@ -139,6 +139,7 @@ $(function(){initNavTree('classSolverAbstract.html',''); initResizable(true); })
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classSolverAbstract-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SolverAbstract Class Reference<span class="mlabels"><span class="mlabel">abstract</span></span></div></div>
@@ -186,9 +187,6 @@ std::list&lt; std::ostream * &gt; &amp;&#160;</td><td class="memItemRight" valig
 <tr class="memitem:a35e301320a0b44a10c84c2bdd03316fe" id="r_a35e301320a0b44a10c84c2bdd03316fe"><td class="memItemLeft" align="right" valign="top"><a id="a35e301320a0b44a10c84c2bdd03316fe" name="a35e301320a0b44a10c84c2bdd03316fe"></a>
 void&#160;</td><td class="memItemRight" valign="bottom"><b>set_fp</b> (FILE *fp)</td></tr>
 <tr class="separator:a35e301320a0b44a10c84c2bdd03316fe"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aff87b9285872f0012d0f2c183bbf395e" id="r_aff87b9285872f0012d0f2c183bbf395e"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aff87b9285872f0012d0f2c183bbf395e">zero_status_check</a> (int status, const std::string &amp;action_failed, const std::string &amp;log_location) const</td></tr>
-<tr class="memdesc:aff87b9285872f0012d0f2c183bbf395e"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a status code is different to 0, throw <a class="el" href="classInvalidStatusException.html">InvalidStatusException</a> if it occurs.  <br /></td></tr>
-<tr class="separator:aff87b9285872f0012d0f2c183bbf395e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a31e69eec019d489b31b2080f890cecb6" id="r_a31e69eec019d489b31b2080f890cecb6"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a31e69eec019d489b31b2080f890cecb6">init</a> ()=0</td></tr>
 <tr class="memdesc:a31e69eec019d489b31b2080f890cecb6"><td class="mdescLeft">&#160;</td><td class="mdescRight">Initializes a problem.  <br /></td></tr>
 <tr class="separator:a31e69eec019d489b31b2080f890cecb6"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -366,6 +364,12 @@ virtual void&#160;</td><td class="memItemRight" valign="bottom"><b>add_names</b>
 <tr class="memitem:a0ab3aa3dbde02a1d26db51a3c19da59b" id="r_a0ab3aa3dbde02a1d26db51a3c19da59b"><td class="memItemLeft" align="right" valign="top"><a id="a0ab3aa3dbde02a1d26db51a3c19da59b" name="a0ab3aa3dbde02a1d26db51a3c19da59b"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>operator==</b> (const <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &amp;) const</td></tr>
 <tr class="separator:a0ab3aa3dbde02a1d26db51a3c19da59b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:ae2d21c2332ee116fa91975c27410d627" id="r_ae2d21c2332ee116fa91975c27410d627"><td class="memItemLeft" align="right" valign="top">static void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae2d21c2332ee116fa91975c27410d627">zero_status_check</a> (int status, const std::string &amp;action_failed, const std::string &amp;log_location)</td></tr>
+<tr class="memdesc:ae2d21c2332ee116fa91975c27410d627"><td class="mdescLeft">&#160;</td><td class="mdescRight">Check if a status code is different to 0, throw <a class="el" href="classInvalidStatusException.html">InvalidStatusException</a> if it occurs.  <br /></td></tr>
+<tr class="separator:ae2d21c2332ee116fa91975c27410d627"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
@@ -2658,8 +2662,8 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
 
 </div>
 </div>
-<a id="aff87b9285872f0012d0f2c183bbf395e" name="aff87b9285872f0012d0f2c183bbf395e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aff87b9285872f0012d0f2c183bbf395e">&#9670;&#160;</a></span>zero_status_check()</h2>
+<a id="ae2d21c2332ee116fa91975c27410d627" name="ae2d21c2332ee116fa91975c27410d627"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ae2d21c2332ee116fa91975c27410d627">&#9670;&#160;</a></span>zero_status_check()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -2668,7 +2672,7 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">void SolverAbstract::zero_status_check </td>
+          <td class="memname">static void SolverAbstract::zero_status_check </td>
           <td>(</td>
           <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>status</em></span>, </td>
         </tr>
@@ -2680,12 +2684,12 @@ std::filesystem::path&#160;</td><td class="memItemRight" valign="bottom"><b>_log
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>log_location</em></span>&#160;) const</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>log_location</em></span>&#160;)</td>
         </tr>
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">inline</span></span>  </td>
+<span class="mlabels"><span class="mlabel">inline</span><span class="mlabel">static</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

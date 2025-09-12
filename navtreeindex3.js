@@ -1,6 +1,5 @@
 var NAVTREEINDEX3 =
 {
-"classSolverCbc.html#a3a643cf8d929694ae061ea37980c7843":[33,0,247,17],
 "classSolverCbc.html#a4d9abe0eb04423e798b1047df8c72655":[33,0,247,49],
 "classSolverCbc.html#a588f24beee5d4d19e68c6a757723a165":[33,0,247,1],
 "classSolverCbc.html#a5a3f2dc1ef8a744ff8ecce8c3053321d":[33,0,247,31],
@@ -249,5 +248,6 @@ var NAVTREEINDEX3 =
 "classXpansion_1_1Test_1_1LoggerNOOPStub.html":[33,0,27,0,1],
 "classXpansion_1_1Test_1_1LoggerNOOPStub.html#a78551de804e829cf89a6d4a84590170c":[33,0,27,0,1,0],
 "classXpansion_1_1Test_1_1WriterNOOPStub.html":[33,0,27,0,2],
-"classXpansion_1_1Test_1_1WriterNOOPStub.html#a46fd1d525db02b1601910b5ffff0fc43":[33,0,27,0,2,1]
+"classXpansion_1_1Test_1_1WriterNOOPStub.html#a46fd1d525db02b1601910b5ffff0fc43":[33,0,27,0,2,1],
+"classXpansion_1_1Test_1_1WriterNOOPStub.html#a7733bf61cde2491466c930fbf883c671":[33,0,27,0,2,2]
 };

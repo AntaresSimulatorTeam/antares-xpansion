@@ -799,6 +799,7 @@ var hierarchy =
     ] ],
     [ "antares_xpansion.xpansion_study_reader.XpansionStudyReader", "classantares__xpansion_1_1xpansion__study__reader_1_1XpansionStudyReader.html", null ],
     [ "LoadXpress::XpressLoader", "classLoadXpress_1_1XpressLoader.html", null ],
+    [ "XpressManager", "classXpressManager.html", null ],
     [ "YearlyWeightsWriter", "classYearlyWeightsWriter.html", null ],
     [ "antares_xpansion.yearly_weight_writer.YearlyWeightWriter", "classantares__xpansion_1_1yearly__weight__writer_1_1YearlyWeightWriter.html", null ],
     [ "BaseModel", null, [
