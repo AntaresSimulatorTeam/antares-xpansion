@@ -873,6 +873,44 @@ void errormsg(XPRSprob& _xprs, const char* sSubName, int nLineNo, int nErrCode)
     exit(nErrCode);
 }
 
+namespace
+{
+void debug_print_duplicates(const std::vector<std::string>& names, const char* element_type)
+{
+    std::map<std::string, std::vector<size_t>> name_to_indexes;
+    for (size_t i = 0; i < names.size(); ++i)
+    {
+        name_to_indexes[names[i]].push_back(i);
+    }
+    for (const auto& [name, indexes]: name_to_indexes)
+    {
+        if (indexes.size() > 1)
+        {
+            std::cerr << "Duplicate " << element_type << " name: '" << name << "' at indexes: ";
+            for (size_t idx = 0; idx < indexes.size(); ++idx)
+            {
+                std::cerr << indexes[idx];
+                if (idx + 1 < indexes.size())
+                {
+                    std::cerr << ", ";
+                }
+            }
+            std::cerr << std::endl;
+        }
+    }
+    // Check for duplicate names
+    std::set<std::string> name_set;
+    for (const auto& name: names)
+    {
+        if (!name_set.insert(name).second)
+        {
+            throw std::runtime_error(std::string("Duplicate ") + element_type
+                                     + " name found: " + name);
+        }
+    }
+}
+} // namespace
+
 XPRSprob SolverXpress::clone_matrix_to_new_prob() const
 {
     std::lock_guard guard(mutex_); // Ensure thread safety during cloning
@@ -953,38 +991,7 @@ XPRSprob SolverXpress::clone_matrix_to_new_prob() const
             // Release mode: skip duplicate checks
 #else
             // Print all duplicates and their indexes
-            std::map<std::string, std::vector<size_t>> name_to_indexes;
-            for (size_t i = 0; i < names.size(); ++i)
-            {
-                name_to_indexes[names[i]].push_back(i);
-            }
-            for (const auto& [name, indexes]: name_to_indexes)
-            {
-                if (indexes.size() > 1)
-                {
-                    std::cerr << "Duplicate " << element_type << " name: '" << name
-                              << "' at indexes: ";
-                    for (size_t idx = 0; idx < indexes.size(); ++idx)
-                    {
-                        std::cerr << indexes[idx];
-                        if (idx + 1 < indexes.size())
-                        {
-                            std::cerr << ", ";
-                        }
-                    }
-                    std::cerr << std::endl;
-                }
-            }
-            // Check for duplicate names
-            std::set<std::string> name_set;
-            for (const auto& name: names)
-            {
-                if (!name_set.insert(name).second)
-                {
-                    throw std::runtime_error(std::string("Duplicate ") + element_type
-                                             + " name found: " + name);
-                }
-            }
+            debug_print_duplicates(names, element_type);
 #endif
             int status = ::add_names(prob, type, names, 0, n_elements - 1);
             zero_status_check(status,
