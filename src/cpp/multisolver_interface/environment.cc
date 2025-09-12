@@ -573,7 +573,7 @@ bool XpressLoader::initXpressEnv(bool verbose, int xpress_oem_license_key)
     }
 }
 
-bool XpressLoader::XpressIsCorrectlyInstalled(bool verbose, bool do_init)
+bool XpressLoader::XpressIsCorrectlyInstalled(bool verbose)
 {
     bool correctlyInstalled = initXpressEnv(verbose);
     return correctlyInstalled;
