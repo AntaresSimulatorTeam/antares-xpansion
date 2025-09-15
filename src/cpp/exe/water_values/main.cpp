@@ -78,7 +78,6 @@ void saveValues(const std::filesystem::path& path,
         std::vector<double> values = weekValues;
         if (usingAntaresFormat)
         {
-            values = interpolateVector(weekValues, 101);
             for (size_t i = 0; i < 7; i++)
             {
                 for (const auto& value: values)
@@ -124,13 +123,13 @@ std::vector<std::vector<double>> computeWaterValues(
 
     std::vector<std::vector<double>> derivatives(numWeeks, std::vector<double>(numLevels - 1));
 
-    for (size_t week = 0; week < numWeeks; ++week)
+    for (size_t week = 1; week <= numWeeks; ++week)
     {
         const auto& values = bellmanValues[week];
         for (size_t i = 0; i < numLevels; ++i)
         {
             // Take the opposite of the derivative to have positive water values
-            derivatives[week][i] = -(values[i + 1] - values[i]) / (levels[i + 1] - levels[i]);
+            derivatives[week - 1][i] = -(values[i + 1] - values[i]) / (levels[i + 1] - levels[i]);
         }
     }
 
