@@ -29,13 +29,20 @@ static std::string replace_hour_in_name(const std::string& name, int week)
     }
     if (std::regex_search(name, match, day_regex))
     {
-        std::string day_value = match[1]; // La valeur capturée (ici "42")
+        std::string day_value = match[1];
         return std::regex_replace(
           name,
           day_regex,
           "day<" + std::to_string((week - 1) * DAYS_IN_A_WEEK + std::stoi(day_value)) + ">");
     }
-    throw std::runtime_error(LOGLOCATION + "No hour<...> pattern found in " + name);
+    if (std::regex_search(name, match, std::regex(R"(week<([[:digit:]]+)*>)")))
+    {
+        std::string week_value = match[1];
+        return std::regex_replace(name,
+                                  std::regex(R"(week<([[:digit:]]+)*>)"),
+                                  "week<" + std::to_string(week - 1) + ">");
+    }
+    throw std::runtime_error(LOGLOCATION + "No [hour|day|week]<...> pattern found in " + name);
 }
 
 /**
