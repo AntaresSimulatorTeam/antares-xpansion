@@ -42,7 +42,7 @@ std::shared_ptr<Problem> AntaresProblemToXpansionProblemTranslator::translateToX
                       {},
                       hebdo.Xmin.data(),
                       hebdo.Xmax.data(),
-                      hebdo.variables);
+                      constant.VariablesMeaning);
 
     std::span signs(hebdo.Direction.data(), hebdo.Direction.size());
     problem->add_rows(constant.ConstraintesCount,
@@ -53,7 +53,7 @@ std::shared_ptr<Problem> AntaresProblemToXpansionProblemTranslator::translateToX
                       reinterpret_cast<const int*>(constant.Mdeb.data()),
                       reinterpret_cast<const int*>(constant.ColumnIndexes.data()),
                       constant.ConstraintsMatrixCoeff.data(),
-                      hebdo.constraints);
+                      constant.ConstraintsMeaning);
     // On peut ajouter la partie qui renomme les variables ici si on stocke les
     // données du type de variables dans ConstantDataFromAntares, i.e. en
     // définissant une autre implémentation de IProblemVariablesProviderPort
