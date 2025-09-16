@@ -11,7 +11,9 @@
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
-// Fonction utilitaire pour remplacer hour<...> par hour<valeur>
+constexpr unsigned int HOURS_IN_A_WEEK = 168;
+constexpr unsigned int DAYS_IN_A_WEEK = 7;
+
 static std::string replace_hour_in_name(const std::string& name, int week)
 {
     static const std::regex hour_regex(R"(hour<([[:digit:]]+)*>)");
@@ -20,20 +22,45 @@ static std::string replace_hour_in_name(const std::string& name, int week)
     if (std::regex_search(name, match, hour_regex))
     {
         std::string hour_value = match[1]; // La valeur capturée (ici "42")
-        return std::regex_replace(name,
-                                  hour_regex,
-                                  "hour<" + std::to_string((week - 1) * 168 + std::stoi(hour_value))
-                                    + ">");
+        return std::regex_replace(
+          name,
+          hour_regex,
+          "hour<" + std::to_string((week - 1) * HOURS_IN_A_WEEK + std::stoi(hour_value)) + ">");
     }
-    else if (std::regex_search(name, match, day_regex))
+    if (std::regex_search(name, match, day_regex))
     {
         std::string day_value = match[1]; // La valeur capturée (ici "42")
-        return std::regex_replace(name,
-                                  day_regex,
-                                  "day<" + std::to_string((week - 1) * 7 + std::stoi(day_value))
-                                    + ">");
+        return std::regex_replace(
+          name,
+          day_regex,
+          "day<" + std::to_string((week - 1) * DAYS_IN_A_WEEK + std::stoi(day_value)) + ">");
     }
     throw std::runtime_error(LOGLOCATION + "No hour<...> pattern found in " + name);
+}
+
+/**
+ * Static variables to store renamed variables and constraints names
+ * If we had an object it would be private members
+ */
+std::unordered_map<int, std::vector<std::string>> variables_names;
+std::unordered_map<int, std::vector<std::string>> constraints_names;
+
+void rename_week_names(unsigned int week,
+                       const std::vector<std::string>& names,
+                       std::unordered_map<int, std::vector<std::string>>& container_names)
+{
+    /* The numbering is the same for every week N of each year. We only need to compute
+     * the renaming once for each week N.
+     */
+    if (container_names.find(week) == container_names.end())
+    {
+        std::vector<std::string> renamed_variables;
+        renamed_variables.reserve(names.size());
+        std::ranges::transform(names,
+                               std::back_inserter(renamed_variables),
+                               [&week](const auto& n) { return replace_hour_in_name(n, week); });
+        container_names.emplace(week, renamed_variables);
+    }
 }
 
 /**
@@ -57,24 +84,14 @@ std::shared_ptr<Problem> AntaresProblemToXpansionProblemTranslator::translateToX
     problem->mc_year = year;
     problem->week = week;
 
-    std::vector<int> tmp(constant.VariablesCount, 0);
-    std::vector<char> coltypes(constant.VariablesCount, 'C');
+    std::vector tmp(constant.VariablesCount, 0);
 
-    // Renommer les variables pour chaque heure de la semaine
-    std::vector<std::string> renamed_variables;
-    renamed_variables.reserve(constant.VariablesMeaning.size());
-    for (size_t i = 0; i < constant.VariablesMeaning.size(); ++i)
-    {
-        renamed_variables.push_back(replace_hour_in_name(constant.VariablesMeaning[i], week));
-    }
-
-    // Renommer les contraintes pour chaque heure de la semaine
-    std::vector<std::string> renamed_constraints;
-    renamed_constraints.reserve(constant.ConstraintsMeaning.size());
-    for (size_t i = 0; i < constant.ConstraintsMeaning.size(); ++i)
-    {
-        renamed_constraints.push_back(replace_hour_in_name(constant.ConstraintsMeaning[i], week));
-    }
+    /** In constant data we have the names of variables and constraints
+     * index from hour 0 to hour 167. We need to rename them to
+     * correspond to the current week.
+     */
+    rename_week_names(week, constant.VariablesMeaning, variables_names);
+    rename_week_names(week, constant.ConstraintsMeaning, constraints_names);
 
     problem->add_cols(constant.VariablesCount,
                       0,
@@ -84,7 +101,7 @@ std::shared_ptr<Problem> AntaresProblemToXpansionProblemTranslator::translateToX
                       {},
                       hebdo.Xmin.data(),
                       hebdo.Xmax.data(),
-                      renamed_variables);
+                      variables_names[week]);
 
     std::span signs(hebdo.Direction.data(), hebdo.Direction.size());
     problem->add_rows(constant.ConstraintesCount,
@@ -95,7 +112,7 @@ std::shared_ptr<Problem> AntaresProblemToXpansionProblemTranslator::translateToX
                       reinterpret_cast<const int*>(constant.Mdeb.data()),
                       reinterpret_cast<const int*>(constant.ColumnIndexes.data()),
                       constant.ConstraintsMatrixCoeff.data(),
-                      renamed_constraints);
+                      constraints_names[week]);
     // On peut ajouter la partie qui renomme les variables ici si on stocke les
     // données du type de variables dans ConstantDataFromAntares, i.e. en
     // définissant une autre implémentation de IProblemVariablesProviderPort
