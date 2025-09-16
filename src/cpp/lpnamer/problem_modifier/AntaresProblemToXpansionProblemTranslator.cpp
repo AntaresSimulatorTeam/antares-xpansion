@@ -11,6 +11,31 @@
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
+// Fonction utilitaire pour remplacer hour<...> par hour<valeur>
+static std::string replace_hour_in_name(const std::string& name, int week)
+{
+    static const std::regex hour_regex(R"(hour<([[:digit:]]+)*>)");
+    static const std::regex day_regex(R"(day<([[:digit:]]+)*>)");
+    std::smatch match;
+    if (std::regex_search(name, match, hour_regex))
+    {
+        std::string hour_value = match[1]; // La valeur capturée (ici "42")
+        return std::regex_replace(name,
+                                  hour_regex,
+                                  "hour<" + std::to_string((week - 1) * 168 + std::stoi(hour_value))
+                                    + ">");
+    }
+    else if (std::regex_search(name, match, day_regex))
+    {
+        std::string day_value = match[1]; // La valeur capturée (ici "42")
+        return std::regex_replace(name,
+                                  day_regex,
+                                  "day<" + std::to_string((week - 1) * 7 + std::stoi(day_value))
+                                    + ">");
+    }
+    throw std::runtime_error(LOGLOCATION + "No hour<...> pattern found in " + name);
+}
+
 /**
  *
  * @Note: In case of performance issue we can accept non-const lps and work on
@@ -40,7 +65,7 @@ std::shared_ptr<Problem> AntaresProblemToXpansionProblemTranslator::translateToX
     renamed_variables.reserve(constant.VariablesMeaning.size());
     for (size_t i = 0; i < constant.VariablesMeaning.size(); ++i)
     {
-        renamed_variables.push_back(replace_hour_in_name(constant.VariablesMeaning[i], i % 168));
+        renamed_variables.push_back(replace_hour_in_name(constant.VariablesMeaning[i], week));
     }
 
     // Renommer les contraintes pour chaque heure de la semaine
@@ -48,8 +73,7 @@ std::shared_ptr<Problem> AntaresProblemToXpansionProblemTranslator::translateToX
     renamed_constraints.reserve(constant.ConstraintsMeaning.size());
     for (size_t i = 0; i < constant.ConstraintsMeaning.size(); ++i)
     {
-        renamed_constraints.push_back(
-          replace_hour_in_name(constant.ConstraintsMeaning[i], i % 168));
+        renamed_constraints.push_back(replace_hour_in_name(constant.ConstraintsMeaning[i], week));
     }
 
     problem->add_cols(constant.VariablesCount,
@@ -107,7 +131,3 @@ std::vector<char> AntaresProblemToXpansionProblemTranslator::convertSignToLEG(
                            });
     return LEG_vector;
 }
-
-// Fonction utilitaire pour remplacer hour<...> par hour<valeur>
-static std::string replace_hour_in_name(const std::string& name, int hour)
-{
