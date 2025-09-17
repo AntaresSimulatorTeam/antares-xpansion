@@ -4,6 +4,7 @@
 #include <iomanip>
 #include <utility>
 
+#include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 
@@ -27,16 +28,19 @@ BendersSequential::BendersSequential(const BendersBaseOptions& options,
 void BendersSequential::InitializeProblems()
 {
     MatchProblemToId();
-
+    std::shared_ptr<IBendersProblemProvider>
+      benders_problem_provider = std::make_shared<BendersProblemFromFile>(get_master_path());
     reset_master<WorkerMaster>(master_variable_map_,
-                               get_master_path(),
                                get_solver_name(),
                                get_log_level(),
                                _data.nsubproblem,
                                solver_log_manager_,
                                IsResumeMode(),
                                _logger,
-                               Options().PROBLEMS_FORMAT);
+                               Options().PROBLEMS_FORMAT,
+                               benders_problem_provider.get(),
+                               Options().MASTER_SOLUTION_TOLERANCE,
+                               Options().CUT_COEFFICIENT_TOLERANCE);
     for (const auto& problem: coupling_map_)
     {
         const auto subProblemFilePath = GetSubproblemPath(problem.first);
@@ -95,12 +99,7 @@ void BendersSequential::Run()
         OpenCsvFile();
     }
 
-    if (is_initial_relaxation_requested())
-    {
-        _logger->LogAtInitialRelaxation();
-        DeactivateIntegrityConstraints();
-        SetDataPreRelaxation();
-    }
+    HandleInitialMasterRelaxation();
 
     while (!_data.stop)
     {

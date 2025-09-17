@@ -2,6 +2,7 @@
 
 #include <execution>
 #include <filesystem>
+#include <mutex>
 #include <regex>
 #include <tbb/tbb.h>
 
@@ -134,6 +135,7 @@ public:
     Logger _logger;
     std::shared_ptr<Output::OutputWriter> _writer;
     std::shared_ptr<MathLoggerDriver> mathLoggerDriver_;
+    std::once_flag variable_indice_once_flag;
     void setCriterionComputationInputs(
       const Benders::Criterion::CriterionInputData& criterion_input_data);
 
@@ -159,8 +161,10 @@ protected:
     bool ShouldBendersStop();
     bool is_initial_relaxation_requested() const;
     bool SwitchToIntegerMaster(bool is_relaxed) const;
+    virtual void HandleInitialMasterRelaxation();
     virtual void UpdateTrace();
     virtual void ComputeXCut();
+    void roundXCut();
     void ComputeInvestCost();
     virtual void compute_ub();
     virtual void get_master_value();
@@ -292,6 +296,7 @@ protected:
     virtual void SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                                  const std::string& name,
                                  const std::shared_ptr<SubproblemWorker>& worker);
+    void SetSubproblemVariablesIndices(const SubproblemWorker& subproblem);
 
     Benders::Criterion::CriterionComputation criterion_computation_;
     /**
@@ -328,7 +333,7 @@ private:
     [[nodiscard]] virtual bool shouldParallelize() const = 0;
     Output::Iteration iteration(const WorkerMasterData& masterDataPtr_l) const;
     LogData FinalLogData() const;
-    void FillWorkerMasterData(WorkerMasterData& workerMasterData);
+    WorkerMasterData FillWorkerMasterData() const;
     bool master_is_empty_ = true;
     int _totalNbProblems = 0;
     WorkerMasterPtr _master;

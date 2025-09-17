@@ -1,13 +1,23 @@
 #include "SolverClp.h"
 
+#include <atomic>
+
 #include "COIN_common_functions.h"
 using namespace std::literals;
+
+namespace
+{
+std::atomic<int>& number_of_problems_counter()
+{
+    static std::atomic<int> counter{0};
+    return counter;
+}
+} // namespace
 
 /*************************************************************************************************
 -----------------------------------    Constructor/Desctructor
 --------------------------------
 *************************************************************************************************/
-int SolverClp::_NumberOfProblems = 0;
 
 SolverClp::SolverClp(const SolverLogManager& log_manager):
     SolverClp()
@@ -19,41 +29,37 @@ SolverClp::SolverClp(const SolverLogManager& log_manager):
     }
 }
 
+SolverClp* SolverClp::clone() const
+{
+    return new SolverClp(*this);
+}
+
 SolverClp::SolverClp()
 {
-    _NumberOfProblems += 1;
+    number_of_problems_counter() += 1;
     set_output_log_level(0);
 }
 
-SolverClp::SolverClp(const std::shared_ptr<const SolverAbstract> toCopy):
+SolverClp::SolverClp(const SolverClp& toCopy):
     SolverClp()
 {
-    // Try to cast the solver in fictif to a SolverClp
-    if (const auto c = dynamic_cast<const SolverClp*>(toCopy.get()))
+    _clp = ClpSimplex(toCopy._clp);
+    _fp = toCopy._fp;
+    if (_fp)
     {
-        _clp = ClpSimplex(c->_clp);
-        _fp = c->_fp;
-        if (_fp)
-        {
-            _clp.messageHandler()->setFilePointer(c->_fp);
-        }
-    }
-    else
-    {
-        _NumberOfProblems -= 1;
-        throw InvalidSolverForCopyException(toCopy->get_solver_name(), name_, LOGLOCATION);
+        _clp.messageHandler()->setFilePointer(_fp);
     }
 }
 
 SolverClp::~SolverClp()
 {
-    _NumberOfProblems -= 1;
-    free();
+    number_of_problems_counter() -= 1;
+    SolverClp::free();
 }
 
 int SolverClp::get_number_of_instances()
 {
-    return _NumberOfProblems;
+    return number_of_problems_counter();
 }
 
 /*************************************************************************************************
@@ -139,12 +145,6 @@ void SolverClp::set_basis(std::span<int> rstatus, std::span<int> cstatus)
     {
         _clp.setColumnStatus(i, static_cast<ClpSimplex::Status>(cstatus[i]));
     }
-}
-
-void SolverClp::copy_prob(const SolverAbstract::Ptr fictif_solv)
-{
-    auto error = LOGLOCATION + "Copy Clp problem : TO DO WHEN NEEDED";
-    throw NotImplementedFeatureSolverException(error);
 }
 
 /*************************************************************************************************
@@ -246,6 +246,18 @@ void SolverClp::get_rhs_range(double* range, int first, int last) const
     throw NotImplementedFeatureSolverException(error);
 }
 
+void SolverClp::get_cols(int* mstart,
+                         int* mrwind,
+                         double* dmatval,
+                         int size,
+                         int* nels,
+                         int first,
+                         int last) const
+{
+    auto error = LOGLOCATION + "ERROR : get_cols not implemented in the CLP interface.";
+    throw NotImplementedFeatureSolverException(error);
+}
+
 void SolverClp::get_col_type(char* coltype, int first, int last) const
 {
     const double* colLower = _clp.getColLower();
@@ -323,7 +335,7 @@ int SolverClp::get_col_index(const std::string& name)
     }
 }
 
-std::vector<std::string> SolverClp::get_row_names(int first, int last)
+std::vector<std::string> SolverClp::get_row_names(int first, int last) const
 {
     std::vector<std::string> names;
     names.reserve(1 + last - first);
@@ -340,7 +352,7 @@ std::vector<std::string> SolverClp::get_row_names()
     return *_clp.rowNames();
 }
 
-std::vector<std::string> SolverClp::get_col_names(int first, int last)
+std::vector<std::string> SolverClp::get_col_names(int first, int last) const
 {
     std::vector<std::string> names;
     names.reserve(1 + last - first);
@@ -525,6 +537,16 @@ void SolverClp::chg_rhs(int id_row, double val)
 {
     const double* rowLower = _clp.getRowLower();
     const double* rowUpper = _clp.getRowUpper();
+
+    char row_type;
+    get_row_type(&row_type, id_row, id_row);
+
+    if (row_type == 'E')
+    {
+        _clp.setRowLower(id_row, val);
+        _clp.setRowUpper(id_row, val);
+        return;
+    }
 
     if (rowLower[id_row] <= -COIN_DBL_MAX)
     {
@@ -767,4 +789,20 @@ void SolverClp::save_prob(const std::filesystem::path& filename)
 void SolverClp::restore_prob(const std::filesystem::path& filename)
 {
     read_prob_mps(filename);
+}
+
+void SolverClp::mark_indices_to_keep_presolve(int, int, int*, int*)
+{
+    throw NotImplementedFeatureSolverException(
+      "mark_indices_to_keep_presolve is not supported for CLP solver");
+}
+
+void SolverClp::presolve_only()
+{
+    throw NotImplementedFeatureSolverException("presolve_only is not supported for CLP solver");
+}
+
+void SolverClp::get_presolve_map(int*, int*) const
+{
+    throw NotImplementedFeatureSolverException("get_presolve_map is not supported for CLP solver");
 }

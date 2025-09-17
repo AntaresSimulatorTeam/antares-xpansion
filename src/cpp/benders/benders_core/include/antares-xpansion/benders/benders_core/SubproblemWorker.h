@@ -17,18 +17,19 @@ class SubproblemWorker: public Worker
 public:
     using Worker::Worker;
     SubproblemWorker(const VariableMap& variable_map,
-                     const std::filesystem::path& path_to_mps,
                      double slave_weight,
                      const std::string& solver_name,
                      int log_level,
                      const SolverLogManager& solver_log_manager,
                      Logger logger,
-                     ProblemsFormat format);
+                     ProblemsFormat format,
+                     IBendersProblemProvider* benders_problem_provider,
+                     double cut_coefficient_tolerance);
     virtual ~SubproblemWorker() = default;
     std::vector<double> get_solution() const;
 
 public:
     void fix_to(const Point& x0) const;
 
-    void get_subgradient(Point& s) const;
+    void get_subgradient(Point& subgradient) const;
 };

@@ -15,7 +15,8 @@ runs:
   using: "composite"
   steps:
     - id: create
-      shell: bash
+      #Bash --login required for conda
+      shell: bash -el {0}
       # pyinstall --exclude-module _bootlocale to avoid python 3.10 issue
       # https://stackoverflow.com/questions/68459087/pyinstaller-with-python-3-10-0b4-importerror-no-module-named-bootlocale
       # https://github.com/pyinstaller/pyinstaller/issues/5693
@@ -24,7 +25,8 @@ runs:
         LSB_RELEASE_VERSION_SHORT=$(lsb_release --short --release)
         cd _install
         rm -f ./antares-xpansion-launcher*
-        pyinstaller -F ../src/python/launch.py -n antares-xpansion-launcher --add-data "../src/python/config.yaml:." --add-data "./bin/:bin" --exclude-module _bootlocale
+        cp ../antares-xpansion-launcher.spec .
+        pyinstaller antares-xpansion-launcher.spec
         mv ./dist/antares-xpansion-launcher* .
         rm -rf bin
         rm -rf build

@@ -1,0 +1,9 @@
+name: antares-xpansion
+dependencies:
+  - python=3.10
+  - setuptools
+  - pip
+  - pip:
+      - -r requirements-tests.txt
+  - fico-xpress::xpress=9.2.12
+  - fico-xpress::xpresslibs=9.2.12

@@ -280,10 +280,10 @@ void MergeMasterTrajectoryMPS::build_problem()
                              TRAJECTORY_LOGGER_CONTEXT);
 
     // Check that the problem format is compatible with the solver
-    if (options_.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE
+    if (options_.PROBLEMS_FORMAT == ProblemsFormat::OPTIMIZED
         && StringManip::StringUtils::ToLowercase(options_.SOLVER_NAME) != "xpress")
     {
-        std::cerr << LOGLOCATION << "Invalid solver used with the saved file format"
+        std::cerr << LOGLOCATION << "Invalid solver used with the optimized file format"
                   << options_.SOLVER_NAME << "\n"
                   << "Can only use Xpress with this option" << std::endl;
         std::exit(1);
@@ -302,7 +302,7 @@ void MergeMasterTrajectoryMPS::build_problem()
 
         // The master file should not contain the extension, add what it should be based on the mode
         std::string master_file;
-        if (options_.PROBLEMS_FORMAT == ProblemsFormat::SAVED_FILE)
+        if (options_.PROBLEMS_FORMAT == ProblemsFormat::OPTIMIZED)
         {
             master_file = nodal_lp.master + SAVE_SUFFIX;
         }
@@ -315,8 +315,9 @@ void MergeMasterTrajectoryMPS::build_problem()
         logger_->display_message("Reading problem " + (lp_folder / nodal_lp.master).string(),
                                  LogUtils::LOGLEVEL::INFO,
                                  TRAJECTORY_LOGGER_CONTEXT);
-        SolverAbstract::Ptr solver_local = get_local_solver(options_.INPUTROOT / nodal_lp.lp_folder,
-                                                            master_file);
+        std::shared_ptr<SolverAbstract> solver_local = get_local_solver(options_.INPUTROOT
+                                                                          / nodal_lp.lp_folder,
+                                                                        master_file);
         solver_local->set_output_log_level(options_.LOG_LEVEL);
 
         StandardLp lpData(*solver_local);

@@ -78,7 +78,9 @@ class XpansionSettingsReader:
         with open(self._get_settings_ini_filepath(), "r") as file_l:
             options = dict(
                 {
-                    line.strip().split("=")[0].strip(): line.strip()
+                    line.strip()
+                    .split("=")[0]
+                    .strip(): line.strip()
                     .split("=")[1]
                     .strip()
                     for line in file_l.readlines()
@@ -274,7 +276,7 @@ class XpansionSettingsReader:
 
     def get_master_formulation(self):
         """
-        return master formulation read from the settings file
+        returns master formulation read from the settings file
         """
         return self.options.get(
             "master", self._config_defaults.settings_default["master"]
@@ -282,7 +284,7 @@ class XpansionSettingsReader:
 
     def get_separation(self):
         """
-        return the separation parameter read from the settings file
+        returns the separation parameter read from the settings file
         """
         separation_parameter_str = self.options.get(
             "separation_parameter",
@@ -293,7 +295,7 @@ class XpansionSettingsReader:
 
     def get_batch_size(self):
         """
-        return the batch_size read from the settings file
+        returns the batch_size read from the settings file
         """
         batch_size_str = self.options.get(
             "batch_size",
@@ -321,6 +323,28 @@ class XpansionSettingsReader:
             "log_level", self._config_defaults.settings_default["log_level"]
         )
         return int(log_level_str)
+
+    def get_master_solution_tolerance(self):
+        """
+        returns the master_solution_tolerance read from the settings file
+        """
+        master_solution_tolerance_str = self.options.get(
+            "master_solution_tolerance",
+            self._config_defaults.settings_default["master_solution_tolerance"],
+        )
+
+        return float(master_solution_tolerance_str)
+
+    def get_cut_coefficient_tolerance(self):
+        """
+        returns the cut_coefficient_tolerance read from the settings file
+        """
+        cut_coefficient_tolerance_str = self.options.get(
+            "cut_coefficient_tolerance",
+            self._config_defaults.settings_default["cut_coefficient_tolerance"],
+        )
+
+        return float(cut_coefficient_tolerance_str)
 
 
 class ConfigLoader(XpansionSettingsReader):
@@ -405,6 +429,9 @@ class ConfigLoader(XpansionSettingsReader):
     def memory(self):
         return self._config.memory
 
+    def run_presolve(self):
+        return self._config.run_presolve
+
     def simulation_lp_path(self):
         return self._simulation_lp_path()
 
@@ -438,10 +465,15 @@ class ConfigLoader(XpansionSettingsReader):
 
         return self._last_study
 
+    def presolve_pre_actions(self):
+        # TODO Overkill but options_default writes values
+        # TODO as strings instead of float, int and etc when it's needed
+        self._set_options_for_benders_solver()
+
     def benders_pre_actions(self):
         self.copy_area_file_to_lpdir()
         self.save_launcher_options()
-        if self._config.step != "resume":  # expansion dir alaready in resume mode
+        if self._config.step != "resume":  # expansion dir already in resume mode
             self.create_expansion_dir()
         self._set_options_for_benders_solver()
 
@@ -536,8 +568,14 @@ class ConfigLoader(XpansionSettingsReader):
             self._config.LAST_MASTER_BASIS
         )
         options_values[OptimisationKeys.batch_size_key()] = self.get_batch_size()
+        options_values[OptimisationKeys.master_solution_tolerance_key()] = (
+            self.get_master_solution_tolerance()
+        )
+        options_values[OptimisationKeys.cut_coefficient_tolerance_key()] = (
+            self.get_cut_coefficient_tolerance()
+        )
         options_values[OptimisationKeys.do_outer_loop_key()] = (
-            self._config.method == "adequacy_criterion"
+                self._config.method == "adequacy_criterion"
         )
         options_values[OptimisationKeys.outer_loop_option_file_key()] = (
             self._config.OUTER_LOOP_FILE
@@ -547,6 +585,7 @@ class ConfigLoader(XpansionSettingsReader):
             shutil.copy(self.outer_loop_options_path(), self._simulation_lp_path())
         options_values[OptimisationKeys.cache_problems_keys()] = self.cache_problems()
 
+        options_values[OptimisationKeys.problems_format_key()] = self.problem_format()
         # generate options file for the solver
         with open(self.options_file_path(), "w") as options_file:
             json.dump(options_values, options_file, indent=4)
@@ -578,11 +617,11 @@ class ConfigLoader(XpansionSettingsReader):
             self._xpansion_simulation_name = self._last_study
             if self.is_zip(self._last_study):
                 self._xpansion_simulation_name = (
-                    self._last_study.parent / self._last_study.stem
+                        self._last_study.parent / self._last_study.stem
                 )
                 with zipfile.ZipFile(self._last_study, "r") as output_zip:
                     output_zip.extractall(self._xpansion_simulation_name)
-        elif self.step() == "benders":
+        elif self.step() in ["presolve", "benders"]:
             if self.is_zip(self._last_study):
                 raise ConfigLoader.NotAnXpansionOutputDir(
                     f"Error! {self._last_study} is not an Xpansion output directory"
@@ -597,13 +636,13 @@ class ConfigLoader(XpansionSettingsReader):
                 else:
                     self._xpansion_simulation_name = self._last_study
                     self._last_study = self._last_study.parent / (
-                        self._last_study.stem[: -len(xpansion_dir_suffix)] + ".zip"
+                            self._last_study.stem[: -len(xpansion_dir_suffix)] + ".zip"
                     )
         elif self.step() == "full" and self.memory():
             self._xpansion_simulation_name = self._last_study
         else:
             self._xpansion_simulation_name = self._last_study.parent / (
-                self._last_study.stem + "-Xpansion"
+                    self._last_study.stem + "-Xpansion"
             )
 
     def is_zip(self, study):
@@ -624,7 +663,7 @@ class ConfigLoader(XpansionSettingsReader):
     def is_antares_study_output(self, study: Path):
         _, ext = os.path.splitext(study)
         if (
-            self.memory() and "-Xpansion" not in study.name
+                self.memory() and "-Xpansion" not in study.name
         ):  # memory mode we work with files essentially
             return os.path.isdir(study)
         else:
@@ -678,6 +717,9 @@ class ConfigLoader(XpansionSettingsReader):
     def keep_mps(self) -> bool:
         return self._config.keep_mps
 
+    def problem_format(self) -> str:
+        return self._config.problem_format
+
     def antares_exe(self):
         return self.exe_path(self._config.ANTARES)
 
@@ -689,6 +731,9 @@ class ConfigLoader(XpansionSettingsReader):
 
     def merge_mps_exe(self):
         return self.exe_path(self._config.MERGE_MPS)
+
+    def presolve_exe(self):
+        return self.exe_path(self._config.PRESOLVE)
 
     def study_update_exe(self):
         return self.exe_path(self._config.STUDY_UPDATER)

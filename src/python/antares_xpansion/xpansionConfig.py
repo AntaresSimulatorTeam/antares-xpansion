@@ -18,6 +18,7 @@ class ConfigParameters:
     MERGE_MPS: str
     BENDERS: str
     LP_NAMER: str
+    PRESOLVE: str
     STUDY_UPDATER: str
     SENSITIVITY_EXE: str
     FULL_RUN: str
@@ -44,7 +45,9 @@ class InputParameters:
     oversubscribe: bool
     allow_run_as_root: bool
     memory: bool
+    run_presolve: bool
     cache_problems: bool
+    problem_format: str
 
 
 class XpansionConfigConstants:
@@ -102,7 +105,9 @@ class XpansionConfigConstants:
             "log_level": "0",
             "separation_parameter": "0.5",
             "batch_size": "0",
-            "problems_format": "SAVED",
+            "master_solution_tolerance": "1e-4",
+            "cut_coefficient_tolerance": "5e-3",
+            "problems_format": "OPTIMIZED",
         }
 
     def _set_default_options(self):
@@ -125,6 +130,10 @@ class XpansionConfigConstants:
             OptimisationKeys.separation_key(): self.separation_default_value(),
             OptimisationKeys.batch_size_key(): self.batch_size_default_value(),
             OptimisationKeys.cache_problems_keys(): self.cache_problems_default_value(),
+            OptimisationKeys.master_solution_tolerance_key(): self.master_solution_tolerance_default_value(),
+            OptimisationKeys.cut_coefficient_tolerance_key(): self.cut_coefficient_tolerance_default_value(),
+            OptimisationKeys.keep_full_key(): self.keep_full_default_value(),
+            OptimisationKeys.full_dir_key(): self.full_dir_default_value(),
         }
 
     def bound_alpha_default_value(self):
@@ -143,8 +152,9 @@ class XpansionConfigConstants:
         return "master"
 
     def problems_format_default_value(self):
-        return "SAVED"
+        return "OPTIMIZED"
 
+    # TODO Why not returning an int here?
     def slave_weight_value_default_value(self):
         return "1"
 
@@ -184,6 +194,18 @@ class XpansionConfigConstants:
     def cache_problems_default_value(self):
         return False
 
+    def master_solution_tolerance_default_value(self):
+        return "1e-4"
+
+    def cut_coefficient_tolerance_default_value(self):
+        return "5e-3"
+
+    def keep_full_default_value(self):
+        return False
+
+    def full_dir_default_value(self):
+        return "full"
+
     def _initialize_default_values(self):
         self._set_constants()
         self._set_default_settings()
@@ -199,7 +221,7 @@ class XpansionConfig(XpansionConfigConstants):
     # pylint: disable=too-few-public-methods
 
     def __init__(
-        self, input_parameters: InputParameters, config_parameters: ConfigParameters
+            self, input_parameters: InputParameters, config_parameters: ConfigParameters
     ):
         self.input_parameters = input_parameters
         self.config_parameters = config_parameters
@@ -235,7 +257,9 @@ class XpansionConfig(XpansionConfigConstants):
         self.oversubscribe = self.input_parameters.oversubscribe
         self.allow_run_as_root = self.input_parameters.allow_run_as_root
         self.cache_problems = self.input_parameters.cache_problems
+        self.run_presolve = self.input_parameters.run_presolve
         self.memory = self.input_parameters.memory
+        self.problem_format = self.input_parameters.problem_format
 
     def _get_install_dir(self, install_dir):
         if install_dir is None:
@@ -253,7 +277,7 @@ class XpansionConfig(XpansionConfigConstants):
     def _initialize_install_dir_with_default_value(self):
         if getattr(sys, "frozen", False):
             install_dir_inside_package = (
-                Path(os.path.abspath(__file__)).parent.parent / "bin"
+                    Path(os.path.abspath(__file__)).parent.parent / "bin"
             )
             install_dir_next_to_package = Path(sys.executable).parent / "bin"
             if Path.is_dir(install_dir_inside_package):
@@ -269,6 +293,7 @@ class XpansionConfig(XpansionConfigConstants):
         self.MERGE_MPS = self.config_parameters.MERGE_MPS
         self.BENDERS = self.config_parameters.BENDERS
         self.LP_NAMER = self.config_parameters.LP_NAMER
+        self.PRESOLVE = self.config_parameters.PRESOLVE
         self.STUDY_UPDATER = self.config_parameters.STUDY_UPDATER
         self.FULL_RUN = self.config_parameters.FULL_RUN
         self.OUTER_LOOP = self.config_parameters.OUTER_LOOP
