@@ -11,7 +11,6 @@
 # ---------------------------------------------------------------------------
 
 add_executable(test_solver
-        ${CMAKE_CURRENT_SOURCE_DIR}/catch2.hpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test_reading_problem.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test_modifying_problem.cpp
@@ -22,12 +21,15 @@ add_executable(test_solver
         ${CMAKE_CURRENT_SOURCE_DIR}/test_basis.cpp
 )
 find_package(fmt REQUIRED)
+find_package(Catch2 REQUIRED)
+
 target_link_libraries(test_solver
         PUBLIC
         antaresXpansion::solvers
         antaresXpansion::xpansion_interfaces
         PRIVATE
         fmt::fmt
+        Catch2::Catch2WithMain
 )
 
 add_test(NAME unit_solver COMMAND test_solver WORKING_DIRECTORY ${PROJECT_SOURCE_DIR})

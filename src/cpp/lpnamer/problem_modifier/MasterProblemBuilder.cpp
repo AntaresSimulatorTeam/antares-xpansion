@@ -102,7 +102,7 @@ int MasterProblemBuilder::getPmaxVarColumnNumberFor(const Candidate& candidate)
 
 void MasterProblemBuilder::addNvarOnEachIntegerCandidate(
   const std::vector<Candidate>& candidatesInteger,
-  SolverAbstract::Ptr& master_l) const
+  std::shared_ptr<SolverAbstract> master_l) const
 {
     auto nbNvar = (int)candidatesInteger.size();
     if (nbNvar > 0)
@@ -125,7 +125,7 @@ void MasterProblemBuilder::addNvarOnEachIntegerCandidate(
 }
 
 void MasterProblemBuilder::addVariablesPmaxOnEachCandidate(const std::vector<Candidate>& candidates,
-                                                           SolverAbstract::Ptr& master_l)
+                                                           std::shared_ptr<SolverAbstract> master_l)
 {
     auto nbCandidates = (int)candidates.size();
 

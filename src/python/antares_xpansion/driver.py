@@ -14,6 +14,7 @@ from antares_xpansion.config_loader import ConfigLoader
 from antares_xpansion.full_run_driver import FullRunDriver
 from antares_xpansion.general_data_processor import GeneralDataProcessor
 from antares_xpansion.logger import step_logger
+from antares_xpansion.presolve_driver import PresolveDriver, PresolveData
 from antares_xpansion.problem_generator_driver import (
     ProblemGeneratorDriver,
     ProblemGeneratorData,
@@ -27,6 +28,15 @@ class XpansionDriver:
     """
     Class to control the execution of the optimization session
     """
+
+    class UnknownStep(Exception):
+        pass
+
+    class AntaresArchiveUpdaterExeError(Exception):
+        pass
+
+    class SolverXpressRequirementError(Exception):
+        pass
 
     def __init__(self, config_loader: ConfigLoader):
         """
@@ -51,6 +61,15 @@ class XpansionDriver:
         )
         self.problem_generator_driver = ProblemGeneratorDriver(data)
 
+        self.presolve_driver = PresolveDriver(
+            PresolveData(
+                Path(self.config_loader.presolve_exe()),
+                self.config_loader.keep_mps()
+            ),
+            Path(self.config_loader.options_file_name()),
+            self.config_loader.run_presolve()
+        )
+
         self.benders_driver = BendersDriver(
             SolversExe(
                 self.config_loader.benders_exe(),
@@ -73,6 +92,7 @@ class XpansionDriver:
             self.config_loader.full_run_exe(),
             self.problem_generator_driver,
             self.benders_driver,
+            self.presolve_driver
         )
         self.settings = "settings"
 
@@ -99,11 +119,17 @@ class XpansionDriver:
                 self.config_loader.oversubscribe(),
                 self.config_loader.allow_run_as_root(),
             )
+            # TODO Add presolve to full run driver
             self.clean_step()
 
         elif self.config_loader.step() == "full" and self.config_loader.memory():
             self.update_study_settings(memory_mode=True)
             self.launch_problem_generation_step_memory()
+            self.config_loader._set_options_for_benders_solver()
+            if str(self.config_loader.options["solver"]).upper() == "XPRESS":
+                self.presolve_driver.launch(
+                    self.config_loader.xpansion_simulation_output()
+                )
             self.launch_benders_step()
             self.study_update_driver.launch(
                 self.config_loader.xpansion_simulation_output(),
@@ -122,6 +148,9 @@ class XpansionDriver:
             else:
                 self.launch_problem_generation_step()
 
+        elif self.config_loader.step() == "presolve":
+            self.launch_presolve_step()
+
         elif self.config_loader.step() == "study_update":
             self.study_update_driver.launch(
                 self.config_loader.xpansion_simulation_output(),
@@ -130,6 +159,8 @@ class XpansionDriver:
             )
 
         elif self.config_loader.step() == "benders":
+            if self.config_loader.run_presolve():
+                self.launch_presolve_step()
             self.launch_benders_step()
 
         elif self.config_loader.step() == "sensitivity":
@@ -209,6 +240,16 @@ class XpansionDriver:
             self.config_loader.data_dir(), self.config_loader.is_relaxed()
         )
 
+    def launch_presolve_step(self):
+        # TODO Problem Generation enforces Xpress differently
+        given_solver = self.config_loader.options["solver"]
+        if given_solver != "Xpress":
+            raise XpansionDriver.SolverXpressRequirementError(
+                f"Invalid given solver {given_solver}. Step only available with Xpress"
+            )
+        self.config_loader.presolve_pre_actions()
+        self.presolve_driver.launch(self.config_loader.xpansion_simulation_output())
+
     def launch_benders_step(self):
         self.config_loader.benders_pre_actions()
         self.benders_driver.launch(
@@ -248,12 +289,6 @@ class XpansionDriver:
 
         resume_study = ResumeStudy(resume_study_data)
         resume_study.launch()
-
-    class UnknownStep(Exception):
-        pass
-
-    class AntaresArchiveUpdaterExeError(Exception):
-        pass
 
     def _revert_general_data_ini(self):
         self.gen_data_proc.revert_backup_data()

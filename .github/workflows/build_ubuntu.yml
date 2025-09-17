@@ -53,7 +53,7 @@ jobs:
           key: ${{ matrix.os }}-${{ matrix.xprs.value }}
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         id: python-setup
         with:
           cache: 'pip'
@@ -135,7 +135,6 @@ jobs:
       - name: Tests with Cucumber
         uses: ./.github/workflows/cucumber-tests
         with:
-          #          feature: "features/outer_loop_tests.feature"
           mpi_path: ${{ github.workspace }}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin
 
       - name: Test

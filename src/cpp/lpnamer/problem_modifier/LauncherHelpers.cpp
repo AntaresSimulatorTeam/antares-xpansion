@@ -10,7 +10,7 @@
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 void treatAdditionalConstraints(
-  SolverAbstract::Ptr master_p,
+  std::shared_ptr<SolverAbstract> master_p,
   const AdditionalConstraints& additionalConstraints_p,
   std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
 {
@@ -50,7 +50,7 @@ char getConstraintSenseSymbol(const AdditionalConstraint& additionalConstraint_p
     return rtype;
 }
 
-void addAdditionalConstraint(SolverAbstract::Ptr master_p,
+void addAdditionalConstraint(std::shared_ptr<SolverAbstract> master_p,
                              const AdditionalConstraint& additionalConstraint_p,
                              std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
 {
@@ -92,7 +92,7 @@ void addAdditionalConstraint(SolverAbstract::Ptr master_p,
                        {});
 }
 
-void addBinaryVariables(SolverAbstract::Ptr master_p,
+void addBinaryVariables(std::shared_ptr<SolverAbstract> master_p,
                         const std::map<std::string, std::string>& variablesToBinarise_p,
                         std::shared_ptr<ProblemGenerationLog::ProblemGenerationLogger> logger)
 {

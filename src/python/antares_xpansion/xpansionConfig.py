@@ -18,6 +18,7 @@ class ConfigParameters:
     MERGE_MPS: str
     BENDERS: str
     LP_NAMER: str
+    PRESOLVE: str
     STUDY_UPDATER: str
     SENSITIVITY_EXE: str
     FULL_RUN: str
@@ -44,6 +45,7 @@ class InputParameters:
     oversubscribe: bool
     allow_run_as_root: bool
     memory: bool
+    run_presolve: bool
     cache_problems: bool
     problem_format: str
 
@@ -130,6 +132,8 @@ class XpansionConfigConstants:
             OptimisationKeys.cache_problems_keys(): self.cache_problems_default_value(),
             OptimisationKeys.master_solution_tolerance_key(): self.master_solution_tolerance_default_value(),
             OptimisationKeys.cut_coefficient_tolerance_key(): self.cut_coefficient_tolerance_default_value(),
+            OptimisationKeys.keep_full_key(): self.keep_full_default_value(),
+            OptimisationKeys.full_dir_key(): self.full_dir_default_value(),
         }
 
     def bound_alpha_default_value(self):
@@ -150,6 +154,7 @@ class XpansionConfigConstants:
     def problems_format_default_value(self):
         return "OPTIMIZED"
 
+    # TODO Why not returning an int here?
     def slave_weight_value_default_value(self):
         return "1"
 
@@ -194,6 +199,12 @@ class XpansionConfigConstants:
 
     def cut_coefficient_tolerance_default_value(self):
         return "5e-3"
+
+    def keep_full_default_value(self):
+        return False
+
+    def full_dir_default_value(self):
+        return "full"
 
     def _initialize_default_values(self):
         self._set_constants()
@@ -246,6 +257,7 @@ class XpansionConfig(XpansionConfigConstants):
         self.oversubscribe = self.input_parameters.oversubscribe
         self.allow_run_as_root = self.input_parameters.allow_run_as_root
         self.cache_problems = self.input_parameters.cache_problems
+        self.run_presolve = self.input_parameters.run_presolve
         self.memory = self.input_parameters.memory
         self.problem_format = self.input_parameters.problem_format
 
@@ -281,6 +293,7 @@ class XpansionConfig(XpansionConfigConstants):
         self.MERGE_MPS = self.config_parameters.MERGE_MPS
         self.BENDERS = self.config_parameters.BENDERS
         self.LP_NAMER = self.config_parameters.LP_NAMER
+        self.PRESOLVE = self.config_parameters.PRESOLVE
         self.STUDY_UPDATER = self.config_parameters.STUDY_UPDATER
         self.FULL_RUN = self.config_parameters.FULL_RUN
         self.OUTER_LOOP = self.config_parameters.OUTER_LOOP

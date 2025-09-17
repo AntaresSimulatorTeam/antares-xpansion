@@ -128,3 +128,8 @@ bool SolverAbstract::operator==(const SolverAbstract& other) const
     is_equal = is_equal && areBoundsEquals(this, &other);
     return is_equal;
 }
+
+std::list<std::ostream*>& SolverAbstract::get_stream() const
+{
+    return _streams;
+}

@@ -42,7 +42,7 @@ jobs:
       - uses: actions/checkout@v5
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.8'
           cache: 'pip'
@@ -62,6 +62,7 @@ jobs:
           cp -r $XPRESS_DIR/lib $XPRESS_DIR/bin
           mkdir -p $SITE_PACKAGE/xpress/bin
           cp $SITE_PACKAGE/xpress/license/community-xpauth.xpr $XPRESS_DIR/bin/xpauth.xpr
+          cp $SITE_PACKAGE/xpress/license/community-xpauth.xpr $XPRESS_DIR/lib/xpauth.xpr
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
           echo "$XPRESS_DIR/bin" >> $GITHUB_PATH
 

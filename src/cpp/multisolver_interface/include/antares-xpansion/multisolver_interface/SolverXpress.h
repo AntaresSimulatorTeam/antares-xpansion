@@ -6,22 +6,23 @@
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
 
+class XpressManager
+{
+    LoadXpress::XpressLoader _loader;
+
+public:
+    XpressManager();
+    ~XpressManager();
+};
+
 /*!
  * \class class SolverXpress
  * \brief Daughter class of AsbtractSolver implementing solver XPRESS FICO
  */
 class SolverXpress: public SolverAbstract
 {
-    /*************************************************************************************************
-    ----------------------------------------    ATTRIBUTES
-    ---------------------------------------
-    *************************************************************************************************/
-    static int _NumberOfProblems; /*!< Counter of the total number of Cplex problems
-                                  declared to set or end the environment */
-    static std::mutex license_guard;
-
 public:
-    XPRSprob _xprs; /*!< Problem in XPRESS */
+    XPRSprob _xprs = nullptr; /*!< Problem in XPRESS */
     const std::string name_ = "XPRESS";
 
     /*************************************************************************************************
@@ -34,23 +35,14 @@ public:
      * @brief Default constructor of a XPRESS solver
      */
     SolverXpress();
-    SolverXpress(const SolverLogManager& log_manager);
+    explicit SolverXpress(const SolverLogManager& log_manager);
 
-    /**
-     * @brief Copy constructor of XPRESS, copy the problem toCopy in memory and
-     * name it "name"
-     *
-     * @param toCopy : Pointer to an AbstractSolver object, containing an XPRESS
-     * solver to copy
-     */
-    explicit SolverXpress(const SolverAbstract::Ptr toCopy);
-    explicit SolverXpress(const std::shared_ptr<const SolverAbstract> toCopy);
+    [[nodiscard]] SolverXpress* clone() const override;
+    SolverXpress(const SolverXpress& other);
 
-    /*SolverXpress ctor accept only std::shared_ptr*/
-    SolverXpress(const SolverXpress& other) = delete;
     SolverXpress& operator=(const SolverXpress& other) = delete;
 
-    ~SolverXpress();
+    ~SolverXpress() override;
     int get_number_of_instances() override;
 
     std::string get_solver_name() const override
@@ -89,11 +81,14 @@ public:
     void read_basis(const std::filesystem::path& filename) override;
     void set_basis(std::span<int> rstatus, std::span<int> cstatus) override;
 
-    void copy_prob(const SolverAbstract::Ptr fictif_solv) override;
+    /**
+     * @brief Clone the matrix and all XPRESS data from this SolverXpress instance
+     */
+    XPRSprob clone_matrix_to_new_prob() const;
 
 private:
     void read_prob(const char* prob_name, const char* flags);
-
+    mutable std::mutex mutex_;
     /*************************************************************************************************
     -----------------------    Get general informations about problem
     ----------------------------
@@ -117,15 +112,22 @@ public:
     void get_row_type(char* qrtype, int first, int last) const override;
     void get_rhs(double* rhs, int first, int last) const override;
     void get_rhs_range(double* range, int first, int last) const override;
+    void get_cols(int* mstart,
+                  int* mrwind,
+                  double* dmatval,
+                  int size,
+                  int* nels,
+                  int first,
+                  int last) const override;
     void get_col_type(char* coltype, int first, int last) const override;
     void get_lb(double* lb, int fisrt, int last) const override;
     void get_ub(double* ub, int fisrt, int last) const override;
 
     int get_row_index(const std::string& name) override;
     int get_col_index(const std::string& name) override;
-    std::vector<std::string> get_row_names(int first, int last) override;
+    std::vector<std::string> get_row_names(int first, int last) const override;
     std::vector<std::string> get_row_names() override;
-    std::vector<std::string> get_col_names(int first, int last) override;
+    std::vector<std::string> get_col_names(int first, int last) const override;
     std::vector<std::string> get_col_names() override;
 
     /*************************************************************************************************
@@ -157,7 +159,7 @@ public:
     void add_name(int type, const char* cnames, int indice) override;
     void add_names(int type, const std::vector<std::string>& cnames, int first, int end) override;
     void chg_obj(const std::vector<int>& mindex, const std::vector<double>& obj) override;
-    void chg_obj_direction(const bool minimize) override;
+    void chg_obj_direction(bool minimize) override;
     void chg_bounds(const std::vector<int>& mindex,
                     const std::vector<char>& qbtype,
                     const std::vector<double>& bnd) override;
@@ -167,12 +169,16 @@ public:
     void chg_row_name(int id_row, const std::string& name) override;
     void chg_col_name(int id_col, const std::string& name) override;
 
+    void mark_indices_to_keep_presolve(int nrows, int ncols, int* rowind, int* colind) override;
+
     /*************************************************************************************************
     -----------------------------    Methods to solve the problem
     ---------------------------------
     *************************************************************************************************/
 
 public:
+    void presolve_only() override;
+
     int solve_lp() override;
     int solve_mip() override;
 
@@ -183,14 +189,14 @@ public:
 
 public:
     /**
-    * @brief Returns the current basis into the user’s data arrays.
+    * @brief Returns the current basis into the user's data arrays.
     *
     * @param rstatus    : Integer array of length ROWS to the basis status of the
     slack, surplus or artifficial variable associated with each row. The status
     will be one of: 0 slack, surplus or artifficial is non-basic at lower bound;
                         1 slack, surplus or artifficial is basic;
-                        2 slack or surplus is non-basic at upper bound.
-                        3 slack or surplus is super-basic.
+                        2 slack or surplus is non-basic at upper bound; 3 slack or surplus
+    is super-basic.
                         May be NULL if not required.
     * @param cstatus    : Integer array of length COLS to hold the basis status of
     the columns in the constraint matrix. The status will be one of: 0 variable is
@@ -204,6 +210,8 @@ public:
     int get_splex_num_of_ite_last() const override;
     void get_lp_sol(double* primals, double* duals, double* reduced_costs) const override;
     void get_mip_sol(double* primals) override;
+
+    void get_presolve_map(int* rowmap, int* colmap) const override;
 
     /*************************************************************************************************
     ------------------------    Methods to set algorithm or logs levels
@@ -221,7 +229,8 @@ public:
     std::ofstream _log_stream;
 
 private:
-    std::vector<std::string> get_names(int type, int n_elements);
+    std::vector<std::string> get_names(int type, int n_elements) const;
+    std::vector<std::string> get_names(int type, int first, int last) const;
 };
 
 /************************************************************************************\
