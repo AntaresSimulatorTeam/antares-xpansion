@@ -66,11 +66,21 @@ std::function<int(XPRSprob prob,
                   int first,
                   int last)>
   XPRSgetrows = nullptr;
+std::function<int(XPRSprob prob,
+                  int start[],
+                  int rowind[],
+                  double rowcoef[],
+                  int maxcoefs,
+                  int* p_ncoefs,
+                  int first,
+                  int last)>
+  XPRSgetcols = nullptr;
 std::function<int(XPRSprob prob, int type, const char* name, int* p_index)> XPRSgetindex = nullptr;
 std::function<int(XPRSprob prob, int type, char names[], int first, int last)>
   XPRSgetnames = nullptr;
 std::function<int(XPRSprob prob, int type, const char names[], int first, int last)>
   XPRSaddnames = nullptr;
+std::function<int(XPRSprob prob, int rowmap[], int colmap[])> XPRSgetpresolvemap = nullptr;
 std::function<int(XPRSprob prob, const char* flags)> XPRSlpoptimize = nullptr;
 std::function<int(XPRSprob prob, const char* flags)> XPRSmipoptimize = nullptr;
 std::function<int(void)> XPRSfree = nullptr;
@@ -177,10 +187,12 @@ bool XpressLoader::LoadXpressFunctions(Solver::DynamicLibrary* xpress_dynamic_li
     xpress_dynamic_library->GetFunction(&XPRSloadbasis, "XPRSloadbasis");
     xpress_dynamic_library->GetFunction(&XPRSloadsecurevecs, "XPRSloadsecurevecs");
     xpress_dynamic_library->GetFunction(&XPRSgetrows, "XPRSgetrows");
+    xpress_dynamic_library->GetFunction(&XPRSgetcols, "XPRSgetcols");
     xpress_dynamic_library->GetFunction(&XPRSgetindex, "XPRSgetindex");
     xpress_dynamic_library->GetFunction(&XPRSgetnames, "XPRSgetnames");
     xpress_dynamic_library->GetFunction(&XPRSaddnames, "XPRSaddnames");
     xpress_dynamic_library->GetFunction(&XPRSlpoptimize, "XPRSlpoptimize");
+    xpress_dynamic_library->GetFunction(&XPRSgetpresolvemap, "XPRSgetpresolvemap");
     xpress_dynamic_library->GetFunction(&XPRSmipoptimize, "XPRSmipoptimize");
     xpress_dynamic_library->GetFunction(&XPRSfree, "XPRSfree");
     xpress_dynamic_library->GetFunction(&XPRSloadlp, "XPRSloadlp");

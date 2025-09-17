@@ -29,6 +29,12 @@ target_link_libraries(core PUBLIC
         antaresXpansion::xpansion_interfaces
 )
 
+# Install targets
+install(TARGETS core
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+)
+
 install(DIRECTORY include/antares-xpansion
         DESTINATION include
 )

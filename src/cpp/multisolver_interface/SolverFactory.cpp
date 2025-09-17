@@ -1,7 +1,5 @@
-
 #include <utility>
 
-#include "SolverXpress.h"
 #include "antares-xpansion/multisolver_interface/environment.h"
 
 #ifdef COIN_OR
@@ -10,6 +8,7 @@
 #endif
 #include "antares-xpansion/multisolver_interface/SolverConfig.h"
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
+#include "antares-xpansion/multisolver_interface/SolverXpress.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 namespace
@@ -72,10 +71,10 @@ SolverFactory::SolverFactory(std::shared_ptr<ILoggerXpansion> logger):
     _available_solvers(SolverLoader::GetAvailableSolvers(logger)),
     logger_(std::move(logger))
 {
-    isXpress_available_ = std::find(available_solvers.cbegin(),
-                                    available_solvers.cend(),
-                                    XPRESS_STR)
-                          != available_solvers.cend();
+    _is_xpress_available = std::find(available_solvers.cbegin(),
+                                     available_solvers.cend(),
+                                     XPRESS_STR)
+                           != available_solvers.cend();
 }
 
 std::shared_ptr<SolverAbstract> SolverFactory::create_solver(const std::string& solver_name,
@@ -140,7 +139,7 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
     {
         throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
     }
-    else if (isXpress_available_ && solver_config == XPRESS_STR)
+    else if (_is_xpress_available && solver_config == XPRESS_STR)
     {
         ret = std::make_shared<SolverXpress>();
     }
@@ -170,7 +169,7 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(const SolverConfig&
     {
         throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
     }
-    else if (isXpress_available_ && solver_config == XPRESS_STR)
+    else if (_is_xpress_available && solver_config == XPRESS_STR)
     {
         ret = std::make_shared<SolverXpress>();
     }
@@ -192,6 +191,14 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(const SolverConfig&
     return ret;
 }
 
+template<class SolverT>
+std::shared_ptr<SolverAbstract> create(const SolverLogManager& log_manager)
+{
+    auto ret = std::make_shared<SolverT>(log_manager);
+    ret->init();
+    return ret;
+}
+
 std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
   const SolverConfig& solver_config,
   const SolverLogManager& log_manager) const
@@ -201,26 +208,22 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
         throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
     }
     std::shared_ptr<SolverAbstract> ret;
-    if (isXpress_available_ && solver_config == XPRESS_STR)
+    if (_is_xpress_available && solver_config == XPRESS_STR)
     {
-        ret = std::make_shared<SolverXpress>(log_manager);
+        return create<SolverXpress>(log_manager);
     }
 #ifdef COIN_OR
-    else if (solver_config == CLP_STR)
+    if (solver_config == CLP_STR)
     {
-        ret = std::make_shared<SolverClp>(log_manager);
+        return create<SolverClp>(log_manager);
     }
-    else if (solver_config == CBC_STR)
+    if (solver_config == CBC_STR)
     {
-        ret = std::make_shared<SolverCbc>(log_manager);
+        return create<SolverCbc>(log_manager);
     }
 #endif
-    else
-    {
-        throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
-    }
-    ret->init();
-    return ret;
+
+    throw InvalidSolverNameException(solver_config.Name(), LOGLOCATION);
 }
 
 std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
@@ -241,7 +244,7 @@ std::shared_ptr<SolverAbstract> SolverFactory::create_solver(
     return create_solver(solver_config, log_manager);
 }
 
-std::shared_ptr<SolverAbstract> SolverFactory::copy_solver(const SolverAbstract& to_copy) const
+std::shared_ptr<SolverAbstract> SolverFactory::copy_solver(const SolverAbstract& to_copy)
 {
     return std::shared_ptr<SolverAbstract>(to_copy.clone());
 }
