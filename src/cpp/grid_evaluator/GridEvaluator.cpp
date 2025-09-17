@@ -246,7 +246,7 @@ std::vector<std::string> GridEvaluator::InitSubProblems(const GridDefinition& gr
             if (GetPbInfo(subPbName).week >= startWeek && GetPbInfo(subPbName).week <= endWeek)
             {
                 subPbNames.push_back(subPbName);
-                nbScenarios = std::max(nbScenarios, GetPbInfo(subPbName).scenario);
+                scenarios.insert(GetPbInfo(subPbName).scenario);
             }
         }
     }

@@ -126,7 +126,7 @@ std::vector<std::vector<double>> computeWaterValues(
     for (size_t week = 1; week <= numWeeks; ++week)
     {
         const auto& values = bellmanValues[week];
-        for (size_t i = 0; i < numLevels; ++i)
+        for (size_t i = 0; i < numLevels - 1; ++i)
         {
             // Take the opposite of the derivative to have positive water values
             derivatives[week - 1][i] = -(values[i + 1] - values[i]) / (levels[i + 1] - levels[i]);

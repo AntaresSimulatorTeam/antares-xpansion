@@ -55,7 +55,7 @@ protected:
     GridDefinition& gridDefinition; ///< Grid definition
     std::string solverName;         ///< Solver name
 
-    int nbScenarios = 1; ///< Number of scenarios
+    std::set<int> scenarios = {};
 
     ProblemsFormat problemsFormat; ///< Format of the problems
     int nbThreads;                 ///< Number of threads to use
