@@ -139,6 +139,7 @@ $(function(){initNavTree('classSolverFactory.html',''); initResizable(true); });
 <div class="header">
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="classSolverFactory-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">SolverFactory Class Reference</div></div>
@@ -175,37 +176,48 @@ std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract
 <tr class="memitem:aea162bd7418f20ff55bc1bad3a1bfbed" id="r_aea162bd7418f20ff55bc1bad3a1bfbed"><td class="memItemLeft" align="right" valign="top"><a id="aea162bd7418f20ff55bc1bad3a1bfbed" name="aea162bd7418f20ff55bc1bad3a1bfbed"></a>
 std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>create_solver</b> (const <a class="el" href="classSolverConfig.html">SolverConfig</a> &amp;solver_config, SOLVER_TYPE solver_type, const <a class="el" href="classSolverLogManager.html">SolverLogManager</a> &amp;log_manager) const</td></tr>
 <tr class="separator:aea162bd7418f20ff55bc1bad3a1bfbed"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a08ab3e4f99a617e3c155fd63fb8da165" id="r_a08ab3e4f99a617e3c155fd63fb8da165"><td class="memItemLeft" align="right" valign="top">std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a08ab3e4f99a617e3c155fd63fb8da165">copy_solver</a> (const <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &amp;to_copy) const</td></tr>
-<tr class="memdesc:a08ab3e4f99a617e3c155fd63fb8da165"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor : Creates and returns to an object solver from the wanted implementation by copying datas from same solver implementation.  <br /></td></tr>
-<tr class="separator:a08ab3e4f99a617e3c155fd63fb8da165"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ac8930930124cbb91e178cfabaa1cfc5b" id="r_ac8930930124cbb91e178cfabaa1cfc5b"><td class="memItemLeft" align="right" valign="top"><a id="ac8930930124cbb91e178cfabaa1cfc5b" name="ac8930930124cbb91e178cfabaa1cfc5b"></a>
 const std::vector&lt; std::string &gt; &amp;&#160;</td><td class="memItemRight" valign="bottom"><b>get_solvers_list</b> () const</td></tr>
 <tr class="memdesc:ac8930930124cbb91e178cfabaa1cfc5b"><td class="mdescLeft">&#160;</td><td class="mdescRight">Returns a reference to the list of available solvers. <br /></td></tr>
 <tr class="separator:ac8930930124cbb91e178cfabaa1cfc5b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a29f18a3d45dbf2e93ec97afd98985e2c" id="r_a29f18a3d45dbf2e93ec97afd98985e2c"><td class="memItemLeft" align="right" valign="top"><a id="a29f18a3d45dbf2e93ec97afd98985e2c" name="a29f18a3d45dbf2e93ec97afd98985e2c"></a>
+bool&#160;</td><td class="memItemRight" valign="bottom"><b>is_xpress_available</b> () const noexcept</td></tr>
+<tr class="separator:a29f18a3d45dbf2e93ec97afd98985e2c"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a011cb273e705acc76c0bf4a513827fb0" id="r_a011cb273e705acc76c0bf4a513827fb0"><td class="memItemLeft" align="right" valign="top">static std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a011cb273e705acc76c0bf4a513827fb0">copy_solver</a> (const <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &amp;to_copy)</td></tr>
+<tr class="memdesc:a011cb273e705acc76c0bf4a513827fb0"><td class="mdescLeft">&#160;</td><td class="mdescRight">Copy constructor : Creates and returns to an object solver from the wanted implementation by copying datas from same solver implementation.  <br /></td></tr>
+<tr class="separator:a011cb273e705acc76c0bf4a513827fb0"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
-<tr class="memitem:ab8710266afbf2df197c27f9d7466121d" id="r_ab8710266afbf2df197c27f9d7466121d"><td class="memItemLeft" align="right" valign="top"><a id="ab8710266afbf2df197c27f9d7466121d" name="ab8710266afbf2df197c27f9d7466121d"></a>
-bool&#160;</td><td class="memItemRight" valign="bottom"><b>isXpress_available_</b> = false</td></tr>
-<tr class="separator:ab8710266afbf2df197c27f9d7466121d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a06d0c22024001e3ae99871865842bffa" id="r_a06d0c22024001e3ae99871865842bffa"><td class="memItemLeft" align="right" valign="top"><a id="a06d0c22024001e3ae99871865842bffa" name="a06d0c22024001e3ae99871865842bffa"></a>
 std::shared_ptr&lt; <a class="el" href="structILoggerXpansion.html">ILoggerXpansion</a> &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>logger_</b></td></tr>
 <tr class="separator:a06d0c22024001e3ae99871865842bffa"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Member Function Documentation</h2>
-<a id="a08ab3e4f99a617e3c155fd63fb8da165" name="a08ab3e4f99a617e3c155fd63fb8da165"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a08ab3e4f99a617e3c155fd63fb8da165">&#9670;&#160;</a></span>copy_solver()</h2>
+<a id="a011cb273e705acc76c0bf4a513827fb0" name="a011cb273e705acc76c0bf4a513827fb0"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a011cb273e705acc76c0bf4a513827fb0">&#9670;&#160;</a></span>copy_solver()</h2>
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt; SolverFactory::copy_solver </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>to_copy</em></span></td><td>)</td>
-          <td> const</td>
+          <td></td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">static</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Copy constructor : Creates and returns to an object solver from the wanted implementation by copying datas from same solver implementation. </p>
@@ -223,6 +235,9 @@ std::shared_ptr&lt; <a class="el" href="structILoggerXpansion.html">ILoggerXpans
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt; SolverFactory::create_solver </td>
@@ -231,6 +246,11 @@ std::shared_ptr&lt; <a class="el" href="structILoggerXpansion.html">ILoggerXpans
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">nodiscard</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Creates and returns to an object solver from the wanted implementation. </p>
@@ -250,6 +270,9 @@ std::shared_ptr&lt; <a class="el" href="structILoggerXpansion.html">ILoggerXpans
 
 <div class="memitem">
 <div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
       <table class="memname">
         <tr>
           <td class="memname">std::shared_ptr&lt; <a class="el" href="classSolverAbstract.html">SolverAbstract</a> &gt; SolverFactory::create_solver </td>
@@ -258,6 +281,11 @@ std::shared_ptr&lt; <a class="el" href="structILoggerXpansion.html">ILoggerXpans
           <td> const</td>
         </tr>
       </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">nodiscard</span></span>  </td>
+  </tr>
+</table>
 </div><div class="memdoc">
 
 <p>Creates and returns to an object solver from the wanted implementation. </p>

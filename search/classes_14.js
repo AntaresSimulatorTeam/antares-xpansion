@@ -10,6 +10,5 @@ var searchData=
   ['variablesgrouptest_7',['VariablesGroupTest',['../classVariablesGroupTest.html',1,'']]],
   ['variablesnotfound_8',['VariablesNotFound',['../classVariableFileReader_1_1VariablesNotFound.html',1,'VariableFileReader']]],
   ['version_9',['Version',['../structVersion.html',1,'']]],
-  ['void_5ftype_10',['void_type',['../structCatch_1_1detail_1_1void__type.html',1,'Catch::detail']]],
-  ['voidwriter_11',['VoidWriter',['../classOutput_1_1VoidWriter.html',1,'Output']]]
+  ['voidwriter_10',['VoidWriter',['../classOutput_1_1VoidWriter.html',1,'Output']]]
 ];

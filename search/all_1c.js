@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['q_20tt_0',['&lt;tt&gt;--problem-format {MPS, q}&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md174',1,'']]],
-  ['quick_20start_1',['Quick start',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md167',1,'']]]
+  ['quick_20start_0',['Quick start',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md167',1,'']]]
 ];

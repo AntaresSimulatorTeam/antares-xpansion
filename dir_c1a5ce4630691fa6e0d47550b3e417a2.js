@@ -5,5 +5,6 @@ var dir_c1a5ce4630691fa6e0d47550b3e417a2 =
     [ "Solver.h", "Solver_8h_source.html", null ],
     [ "SolverAbstract.h", "SolverAbstract_8h_source.html", null ],
     [ "SolverConfig.h", "SolverConfig_8h_source.html", null ],
-    [ "SolverFactory.h", "SolverFactory_8h_source.html", null ]
+    [ "SolverFactory.h", "SolverFactory_8h_source.html", null ],
+    [ "SolverXpress.h", "SolverXpress_8h_source.html", null ]
 ];

@@ -32,6 +32,5 @@ var searchData=
   ['benderssequentialtestbysolver_29',['BendersSequentialTestBySolver',['../classBendersSequentialTestBySolver.html',1,'']]],
   ['benderssequentialtestsolverandformat_30',['BendersSequentialTestSolverAndFormat',['../classBendersSequentialTestSolverAndFormat.html',1,'']]],
   ['benderssolvererror_31',['BendersSolverError',['../classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersSolverError.html',1,'antares_xpansion::benders_driver::BendersDriver']]],
-  ['bendersunsupportedplatform_32',['BendersUnsupportedPlatform',['../classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersUnsupportedPlatform.html',1,'antares_xpansion::benders_driver::BendersDriver']]],
-  ['binaryexpr_33',['BinaryExpr',['../classCatch_1_1BinaryExpr.html',1,'Catch']]]
+  ['bendersunsupportedplatform_32',['BendersUnsupportedPlatform',['../classantares__xpansion_1_1benders__driver_1_1BendersDriver_1_1BendersUnsupportedPlatform.html',1,'antares_xpansion::benders_driver::BendersDriver']]]
 ];

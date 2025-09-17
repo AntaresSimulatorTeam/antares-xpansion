@@ -169,10 +169,14 @@ $(function(){initNavTree('FullRunOptionsParser_8h_source.html',''); initResizabl
 <div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>    std::filesystem::path benders_options_file_;</div>
 <div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>    std::filesystem::path solutionFile_;</div>
 <div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    std::string solver_;</div>
-<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>};</div>
-</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span>    <span class="keywordtype">bool</span> presolve_{<span class="keyword">true</span>};</div>
 <div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
-<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="preprocessor">#endif </span><span class="comment">// ANTARES_XPANSION_SRC_CPP_FULL_RUN_FULLRUNOPTIONSPARSER_H</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="keyword">public</span>:</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    [[nodiscard]] <span class="keywordtype">bool</span> presolve() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span>};</div>
+</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span><span class="preprocessor">#endif </span><span class="comment">// ANTARES_XPANSION_SRC_CPP_FULL_RUN_FULLRUNOPTIONSPARSER_H</span></div>
 <div class="ttc" id="aclassFullRunOptionsParser_html"><div class="ttname"><a href="classFullRunOptionsParser.html">FullRunOptionsParser</a></div><div class="ttdef"><b>Definition</b> FullRunOptionsParser.h:7</div></div>
 <div class="ttc" id="aclassProblemGenerationExeOptions_html"><div class="ttname"><a href="classProblemGenerationExeOptions.html">ProblemGenerationExeOptions</a></div><div class="ttdef"><b>Definition</b> ProblemGenerationExeOptions.h:11</div></div>
 </div><!-- fragment --></div><!-- contents -->

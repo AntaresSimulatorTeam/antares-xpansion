@@ -5,6 +5,7 @@ var namespaceantares__xpansion =
     [ "config_loader", "namespaceantares__xpansion_1_1config__loader.html", "namespaceantares__xpansion_1_1config__loader" ],
     [ "driver", "namespaceantares__xpansion_1_1driver.html", "namespaceantares__xpansion_1_1driver" ],
     [ "input_checker", "namespaceantares__xpansion_1_1input__checker.html", "namespaceantares__xpansion_1_1input__checker" ],
+    [ "presolve_driver", "namespaceantares__xpansion_1_1presolve__driver.html", "namespaceantares__xpansion_1_1presolve__driver" ],
     [ "problem_generator_driver", "namespaceantares__xpansion_1_1problem__generator__driver.html", "namespaceantares__xpansion_1_1problem__generator__driver" ],
     [ "sensitivity_driver", "namespaceantares__xpansion_1_1sensitivity__driver.html", "namespaceantares__xpansion_1_1sensitivity__driver" ],
     [ "study_updater_driver", "namespaceantares__xpansion_1_1study__updater__driver.html", "namespaceantares__xpansion_1_1study__updater__driver" ],

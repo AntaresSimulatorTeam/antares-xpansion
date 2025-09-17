@@ -151,6 +151,8 @@ $(function(){initNavTree('classantares__xpansion_1_1driver_1_1XpansionDriver.htm
 Classes</h2></td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classantares__xpansion_1_1driver_1_1XpansionDriver_1_1AntaresArchiveUpdaterExeError.html">AntaresArchiveUpdaterExeError</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classantares__xpansion_1_1driver_1_1XpansionDriver_1_1SolverXpressRequirementError.html">SolverXpressRequirementError</a></td></tr>
+<tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:"><td class="memItemLeft" align="right" valign="top">class &#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="classantares__xpansion_1_1driver_1_1XpansionDriver_1_1UnknownStep.html">UnknownStep</a></td></tr>
 <tr class="separator:"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table><table class="memberdecls">
@@ -175,6 +177,9 @@ Public Member Functions</h2></td></tr>
 <tr class="memitem:ab521b9c241d360aaa35f4d09deaa005d" id="r_ab521b9c241d360aaa35f4d09deaa005d"><td class="memItemLeft" align="right" valign="top"><a id="ab521b9c241d360aaa35f4d09deaa005d" name="ab521b9c241d360aaa35f4d09deaa005d"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>launch_problem_generation_step_memory</b> (self)</td></tr>
 <tr class="separator:ab521b9c241d360aaa35f4d09deaa005d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a84836f043f04f171421a305109ad3b43" id="r_a84836f043f04f171421a305109ad3b43"><td class="memItemLeft" align="right" valign="top"><a id="a84836f043f04f171421a305109ad3b43" name="a84836f043f04f171421a305109ad3b43"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>launch_presolve_step</b> (self)</td></tr>
+<tr class="separator:a84836f043f04f171421a305109ad3b43"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a30a9d6225f9b113bc425e76bcc288563" id="r_a30a9d6225f9b113bc425e76bcc288563"><td class="memItemLeft" align="right" valign="top"><a id="a30a9d6225f9b113bc425e76bcc288563" name="a30a9d6225f9b113bc425e76bcc288563"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>launch_benders_step</b> (self)</td></tr>
 <tr class="separator:a30a9d6225f9b113bc425e76bcc288563"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -199,6 +204,8 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ab85f533438a1144be5d657495bddffd2" id="r_ab85f533438a1144be5d657495bddffd2"><td class="memItemLeft" align="right" valign="top"><a id="ab85f533438a1144be5d657495bddffd2" name="ab85f533438a1144be5d657495bddffd2"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>problem_generator_driver</b> = <a class="el" href="classantares__xpansion_1_1problem__generator__driver_1_1ProblemGeneratorDriver.html">ProblemGeneratorDriver</a>(data)</td></tr>
 <tr class="separator:ab85f533438a1144be5d657495bddffd2"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a4d1f96a5b1a67dbd615831f1b3a83b5c" id="r_a4d1f96a5b1a67dbd615831f1b3a83b5c"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4d1f96a5b1a67dbd615831f1b3a83b5c">presolve_driver</a></td></tr>
+<tr class="separator:a4d1f96a5b1a67dbd615831f1b3a83b5c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9022a41cffef61d60325befc4b5a7c50" id="r_a9022a41cffef61d60325befc4b5a7c50"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a9022a41cffef61d60325befc4b5a7c50">benders_driver</a></td></tr>
 <tr class="separator:a9022a41cffef61d60325befc4b5a7c50"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d737a37211df9145a758f65329e0bfd" id="r_a8d737a37211df9145a758f65329e0bfd"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8d737a37211df9145a758f65329e0bfd">study_update_driver</a></td></tr>
@@ -317,6 +324,7 @@ the system platform and parses the arguments
 <div class="line">            self.config_loader.full_run_exe(),</div>
 <div class="line">            self.problem_generator_driver,</div>
 <div class="line">            self.benders_driver,</div>
+<div class="line">            self.presolve_driver</div>
 <div class="line">        )</div>
 </div><!-- fragment -->
 </div>
@@ -334,6 +342,28 @@ the system platform and parses the arguments
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=  GeneralDataProcessor(</div>
 <div class="line">            settings_dir, self.config_loader.is_accurate()</div>
+<div class="line">        )</div>
+</div><!-- fragment -->
+</div>
+</div>
+<a id="a4d1f96a5b1a67dbd615831f1b3a83b5c" name="a4d1f96a5b1a67dbd615831f1b3a83b5c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4d1f96a5b1a67dbd615831f1b3a83b5c">&#9670;&#160;</a></span>presolve_driver</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">antares_xpansion.driver.XpansionDriver.presolve_driver</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<b>Initial value:</b><div class="fragment"><div class="line">=  PresolveDriver(</div>
+<div class="line">            PresolveData(</div>
+<div class="line">                Path(self.config_loader.presolve_exe()),</div>
+<div class="line">                self.config_loader.keep_mps()</div>
+<div class="line">            ),</div>
+<div class="line">            Path(self.config_loader.options_file_name()),</div>
+<div class="line">            self.config_loader.run_presolve()</div>
 <div class="line">        )</div>
 </div><!-- fragment -->
 </div>

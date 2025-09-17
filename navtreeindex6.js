@@ -1,5 +1,10 @@
 var NAVTREEINDEX6 =
 {
+"dir_ded7b7728c06f7964a722285a88ef42e.html":[34,0,0,0,3,0,0],
+"dir_def971f6a63400034a12512efccd3104.html":[34,0,0,0,0,4,0,0,0,0],
+"dir_df4013546a3c74d96d311a0534ef60d6.html":[34,0,0,0,10,0],
+"dir_dfdbda394c3f7a3aa55229f33a559c41.html":[34,0,0,0],
+"dir_e4edea59c9a77dadfad8d381c7bf69e1.html":[34,0,0,0,9,0],
 "dir_e5ed410f60e5e601daa7152b55e544b1.html":[34,0,0,0,4,3,0,0],
 "dir_e6845f9c61e772a2d98e7463bc8bde16.html":[34,0,0,0,4,2],
 "dir_e6f25a82ee20e4e8e60623c7da1f363f.html":[34,0,0,0,4,4],
@@ -16,7 +21,7 @@ var NAVTREEINDEX6 =
 "dir_f66444a5a09ecfc2fd30d78607e90727.html":[34,0,0,0,1],
 "dir_f6a8928a2233de68c3c981ea264c7827.html":[34,0,0,0,0,5],
 "dir_f7f355fde164bcc71614372a2a21212b.html":[34,0,0,0,6,0],
-"dir_f9f6b70f75734e75e6e4b3806d757814.html":[34,0,0,0,9],
+"dir_f9f6b70f75734e75e6e4b3806d757814.html":[34,0,0,0,10],
 "dir_faa1d96b2f25a770f3b4b59c3c248f9f.html":[34,0,0,0,4,1],
 "dir_fb5ebc82e27c2ad04bd19e01ab7a84aa.html":[34,0,0,0,0,6,0,0,0,0],
 "dir_fbf86ebd20f6f17731d5583a52a5d286.html":[34,0,1,0,2],
@@ -244,10 +249,5 @@ var NAVTREEINDEX6 =
 "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md167":[18,0,0],
 "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md168":[18,0,1],
 "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md169":[18,0,1,0],
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md170":[18,0,1,1],
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md171":[18,0,1,2],
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md172":[18,0,1,3],
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md173":[18,0,1,4],
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md174":[18,0,1,5],
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md175":[18,0,1,6]
+"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md170":[18,0,1,1]
 };

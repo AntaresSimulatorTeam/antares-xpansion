@@ -140,8 +140,8 @@ $(function(){initNavTree('md_docs_2user-guide_2trajectory-investment_2user-input
   <div class="headertitle"><div class="title">User input file parsing</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md263"></a></p>
-<h1><a class="anchor" id="autotoc_md264"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md265"></a></p>
+<h1><a class="anchor" id="autotoc_md266"></a>
 User input file</h1>
 <p>We give here an example of a user input file corresponding with the illustration given in the problem presentation. <br  />
  <b>user-input.yaml</b> :</p>
@@ -232,7 +232,7 @@ User input file</h1>
 <div class="line">initial_capacities:</div>
 <div class="line">  default: 0</div>
 <div class="line">  semibase: 250</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md265"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md267"></a>
  Input file parser &amp; translator</h1>
 <p>usage : TBA</p>
 <ul>
@@ -247,12 +247,12 @@ User input file</h1>
 <li>Translates the constraints to their mathematical formulation (see the <a href="./merge-master.md#trajectory-constraints">trajectory constraints section</a> of the master merger.)</li>
 <li>Formats and outputs the <code>master_merger_info_file.json</code> used as input in both the <a class="el" href="md_docs_2user-guide_2trajectory-investment_2merge-master.html">merged master problem generator</a> and <a class="el" href="md_docs_2user-guide_2trajectory-investment_2merge-weights.html">merged weights file generator</a>.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md266"></a>
+<h1><a class="anchor" id="autotoc_md268"></a>
 Trajectory constraints translation</h1>
 <p>The trajectory constraints translator implements 3 types of constraints for now. <br  />
  We implement the <code>all</code> keyword for ease of readability. <code>all</code> will be expanded to a list containing all of the nodes or all of the candidates depending on the context. <br  />
 </p>
-<h2><a class="anchor" id="autotoc_md267"></a>
+<h2><a class="anchor" id="autotoc_md269"></a>
 <code>type: max_investment_per_node_per_candidate</code></h2>
 <p>Example : </p><div class="fragment"><div class="line">- name : add_max_1_GW_semibase</div>
 <div class="line">  nodes: [&quot;2030&quot;, &quot;2040&quot;, &quot;2050_A&quot;, &quot;2050_B&quot;]</div>
@@ -270,7 +270,7 @@ Trajectory constraints translation</h1>
 <li>$dx_{2050_B, semibase}^+ \leq 1000$</li>
 </ul>
 <p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \forall c \in \text{candidates}, \quad dx_{n, c}^+ \leq \text{value} $$</p>
-<h2><a class="anchor" id="autotoc_md268"></a>
+<h2><a class="anchor" id="autotoc_md270"></a>
  <code>type: max_cumulative_investment_per_node</code></h2>
 <p>Example : </p><div class="fragment"><div class="line">- name : add_cum_2GW</div>
 <div class="line">  nodes: [&quot;2030&quot;, &quot;2040&quot;]</div>
@@ -284,7 +284,7 @@ Trajectory constraints translation</h1>
 <li>$dx_{2040, semibase}^+ + dx_{2040, peak}^+ \leq 2000$</li>
 </ul>
 <p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \sum_{c \in \text{candidates}} dx_{n, c}^+ \leq \text{value} $$</p>
-<h2><a class="anchor" id="autotoc_md269"></a>
+<h2><a class="anchor" id="autotoc_md271"></a>
 <code>type: max_retirement_per_node_per_candidate</code></h2>
 <p>Example : </p><div class="fragment"><div class="line">- name : forbid_retirement</div>
 <div class="line">  nodes: all</div>

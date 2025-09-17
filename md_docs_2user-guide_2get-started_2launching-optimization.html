@@ -164,7 +164,7 @@ Command line parameters</h2>
 <code>-h, --help</code></h3>
 <p>Show a help message and exit.</p>
 <h3><a class="anchor" id="autotoc_md170"></a>
-<code>--step {full, antares, problem_generation, benders, study_update, sensitivity, resume}</code></h3>
+<code>--step {full, antares, problem_generation, benders, study_update, sensitivity, presolve, resume}</code></h3>
 <p>Default value: <code>full</code>.</p>
 <p>The execution of Antares-Xpansion consists of several steps that can be run separately. The <code>--step</code> parameter allows to select the steps to execute:</p>
 <table class="markdownTable">
@@ -183,6 +183,8 @@ Command line parameters</h2>
 <tr class="markdownTableRowEven">
 <td class="markdownTableBodyLeft"><code>sensitivity</code>   </td><td class="markdownTableBodyNone">Launch sensitivity analysis, see <a class="el" href="md_docs_2user-guide_2get-started_2sensitivity-analysis.html">Sensitivity analysis</a>.    </td></tr>
 <tr class="markdownTableRowOdd">
+<td class="markdownTableBodyLeft"><code>presolve</code>   </td><td class="markdownTableBodyNone">Launch a presolver on the decomposed problem (only available with Xpress solver). See <a href="../optimization-principles/investment-problem.md#calling-the-presolve">Calling the presolve</a>    </td></tr>
+<tr class="markdownTableRowEven">
 <td class="markdownTableBodyLeft"><code>resume</code>   </td><td class="markdownTableBodyNone">resume benders step of a study in accordance with <code>--simulationName</code>, by default <code>last</code> study is resumed.   </td></tr>
 </table>
 <h3><a class="anchor" id="autotoc_md171"></a>
@@ -207,7 +209,7 @@ Command line parameters</h2>
 <td class="markdownTableBodyNone"><code>adequacy_criterion</code>   </td><td class="markdownTableBodyNone">Launch Antares-Xpansion with reliability constraints, see <a class="el" href="md_docs_2user-guide_2get-started_2adequacy-criterion.html">Adequacy criterion</a>.   </td></tr>
 </table>
 <h3><a class="anchor" id="autotoc_md174"></a>
-<code>--problem-format {MPS, q}</code></h3>
+<code>--problem-format {MPS, OPTIMIZED}</code></h3>
 <p>Default value: <code>OPTIMIZED</code>.</p>
 <p>Selects the storage format of the generated mathematical problems (master + subproblems):</p>
 <ul>
@@ -231,17 +233,21 @@ Command line parameters</h2>
 <p>Default value: <code>False</code>.</p>
 <p>If set to <code>True</code>, keeps <code>mps</code> files that encodes the problems solved by the optimizer. This option must be set to <code>True</code> if the user intends to launch the optimization several times on the same study (<code>--step benders</code>) without doing the other steps of Antares-Xpansion.</p>
 <h3><a class="anchor" id="autotoc_md178"></a>
+<code>--presolve</code></h3>
+<p>Default value: <code>False</code>.</p>
+<p>If set to <code>True</code>, runs the <code>presolve</code> step before calling the <code>benders</code> step</p>
+<h3><a class="anchor" id="autotoc_md179"></a>
 <code>-v, --version</code></h3>
 <p>Show the Antares-Xpansion version.</p>
-<h3><a class="anchor" id="autotoc_md179"></a>
+<h3><a class="anchor" id="autotoc_md180"></a>
 <code>--antares-version</code></h3>
 <p>Show the Antares-Simulator version (used in the <code>antares</code> step).</p>
-<h2><a class="anchor" id="autotoc_md180"></a>
+<h2><a class="anchor" id="autotoc_md181"></a>
 <code>--cache_problems</code></h2>
 <p>Enable "cache mode" for benders. Problems are not preloaded but loaded on demand. This is useful when hitting memory limitation during benders at the cost of some processing time.</p>
-<h1><a class="anchor" id="autotoc_md181"></a>
+<h1><a class="anchor" id="autotoc_md182"></a>
 Output of Antares-Xpansion</h1>
-<h2><a class="anchor" id="autotoc_md182"></a>
+<h2><a class="anchor" id="autotoc_md183"></a>
 Results</h2>
 <p>When the Antares-Xpansion algorithm terminates, i.e. when an optimal investment combination has been found, the package produces an archive <code>simulation-name.zip</code> located in the <code>output</code> folder of the Antares study.</p>
 <p>Once you unzip the archive, the files <code>lp/reportbenders.txt</code> and the <code>expansion/out.json</code> log information for each iteration:</p>
@@ -253,14 +259,14 @@ Results</h2>
 <li>The resolution time for the subproblems and the master problem.</li>
 </ol>
 <p>There is also information on the iteration number which has led to the best solution. The file <code>out.json</code> also gives the parameters that are used by the optimization algorithm (some of them are defined by the user in <code>settings.ini</code>).</p>
-<h2><a class="anchor" id="autotoc_md183"></a>
+<h2><a class="anchor" id="autotoc_md184"></a>
 Updates of candidate links</h2>
 <p>At the end of the run, Antares-Xpansion updates the Antares study by replacing the capacities of investment candidate links with their optimal value taking into account the <code>link-profile</code>, the <code>already-installed-capacity</code> and the <code>already-installed-link-profile</code>, see <b>Figure 15</b>.</p>
 <p>The user can therefore immediately launch an Antares simulation using the results of the best iteration.</p>
 <p>!!! Advice It is recommended to relaunch an Antares study with the optimal solution returned by Antares-Xpansion for further analysis. Antares-Xpansion relaxes some constraints (see <code>link-profile</code> and <code>uc_type</code> parameters for example), therefore the total cost may be a bit different.</p>
 <p><img src="../../assets/media/image23.png" alt="" class="inline"/></p>
 <p><b>Figure</b> <b>15</b> – Update of the Antares study.</p>
-<h2><a class="anchor" id="autotoc_md184"></a>
+<h2><a class="anchor" id="autotoc_md185"></a>
 Logs</h2>
 <p>During the simulation, logs are displayed on the console to give information on the current iteration, corresponding to the data written in the <code>reportbenders.txt</code> text file.</p>
 <div class="fragment"><div class="line">ITERATION 6:</div>
@@ -309,7 +315,7 @@ Logs</h2>
 <div class="line">Problem ran in 7.93209 s</div>
 <div class="line">Optimization results available in : C:\\antaresXpansion-x.y.z-win64\examples\SmallTestFiveCandidates\output\20211126-1755eco\lp\.\out.json</div>
 <div class="line">-- Study Update</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md185"></a>
+</div><!-- fragment --><h1><a class="anchor" id="autotoc_md186"></a>
 Errors</h1>
 <p>Xpansion will not work if the initial Antares study is not running. The user must therefore check beforehand that the Antares simulations do not contain any errors.</p>
 <p>Be careful to check the consistency between the names of the links in the <code>candidates.ini</code> file and in the Antares study and to use a unique index and name per candidate.</p>
