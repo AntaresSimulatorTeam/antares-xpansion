@@ -50,6 +50,12 @@ void Reservoir::loadHydroIni(const std::filesystem::path& ini_path)
 
     while (std::getline(file, line))
     {
+        // Remove trailing '\r' if it exists (handles Windows)
+        if (!line.empty() && line.back() == '\r')
+        {
+            line.pop_back();
+        }
+
         // Trim left
         line.erase(0, line.find_first_not_of(" \t"));
         if (line.empty() || line[0] == ';' || line[0] == '#')
