@@ -84,6 +84,7 @@ protected:
                           "mockSolver",
                           0)
         {
+            scenarios = {1};
         }
 
         std::map<Output::PointWeekScenarioKey, double> ComputeCosts(int startWeek,
