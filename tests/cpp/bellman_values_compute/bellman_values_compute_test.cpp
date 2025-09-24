@@ -116,8 +116,8 @@ protected:
                                             {100.0, 100.0, 100.0},             // max_generating
                                             {100.0, 100.0, 100.0},             // max_pumping
                                             {{0, 0, 0}, {0, 0, 0}, {0, 0, 0}}, // inflow
-                                            {100, 100, 100},                   // bottom rule curve
-                                            {400, 400, 400}                    // top rule curve
+                                            {100, 100, 100, 100},              // bottom rule curve
+                                            {400, 400, 400, 400}               // top rule curve
         );
 
     private:
