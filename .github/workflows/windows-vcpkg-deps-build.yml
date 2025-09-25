@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - ci/*
-      - dependabot/*
+      - dependabot/**
   schedule:
     - cron: '00 00 * * 0' # Sunday, midnight
 jobs:
@@ -21,9 +21,10 @@ jobs:
       # Indicates the location of the vcpkg as a Git submodule of the project repository.
       VCPKG_ROOT: ${{ github.workspace }}/vcpkg
       VCPKG_BINARY_SOURCES: "clear;files,${{ github.workspace }}/vcpkg_cache,readwrite"
+      PYTHON_VERSION: "3.10"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: true
 
@@ -31,9 +32,9 @@ jobs:
         run: git config --system core.longpaths true
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
-          python-version: '3.x'
+          python-version: ${{ env.PYTHON_VERSION }}
 
       - name: Install dependencies
         run: |
@@ -44,17 +45,18 @@ jobs:
         shell: bash
         run: |
           python -m pip install --no-cache-dir "xpress==9.2.12"
-          XPRESS_DIR="${{ env.pythonLocation }}\Lib\site-packages\xpresslibs"
-          cp -r $XPRESS_DIR/lib ${{ env.pythonLocation }}/lib/python${{ env.PYTHON_VERSION }}/site-packages/xpress/bin
-          cp ${{ env.pythonLocation }}/lib/python${{ env.PYTHON_VERSION }}/site-packages/xpress/license/community-xpauth.xpr ${{ env.pythonLocation }}/lib/python${{ env.PYTHON_VERSION }}/site-packages/xpress/bin/xpauth.xpr
+          SITE_PACKAGE="${{ env.pythonLocation }}\Lib\site-packages"
+          XPRESS_DIR="$SITE_PACKAGE\xpresslibs"
+          cp -r $XPRESS_DIR/lib $XPRESS_DIR/bin
+          mkdir -p $SITE_PACKAGE/xpress/bin
+          cp $SITE_PACKAGE/xpress/license/community-xpauth.xpr $XPRESS_DIR/bin/xpauth.xpr
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
           echo "$XPRESS_DIR/bin" >> $GITHUB_PATH
 
       - name: Pre-requisites
         shell: cmd
         run: |
-          choco install wget zip unzip --no-progress
-          wget -nv https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
+          curl -OLs https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
           msmpisetup.exe -unattend
 
       - name: Read antares-xpansion version

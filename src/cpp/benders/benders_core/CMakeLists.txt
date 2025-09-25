@@ -19,7 +19,6 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/LastIterationReader.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/LastIterationWriter.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/MasterUpdateBase.cpp
-        ${CMAKE_CURRENT_SOURCE_DIR}/ProblemFormatStream.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SimulationOptions.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/SolverIO.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/StartUp.cpp
@@ -45,8 +44,6 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/LastIterationReader.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/LastIterationWriter.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/MasterUpdate.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/ProblemFormat.h
-        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/ProblemFormatStream.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SimulationOptions.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/SolverIO.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/StartUp.h
@@ -72,6 +69,7 @@ target_link_libraries(benders_core
         antaresXpansion::solvers
         ${JSONCPP_LIB}
         antaresXpansion::outer_loop_lib
+        antaresXpansion::core
         fmt::fmt
 )
 

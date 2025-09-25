@@ -2,6 +2,7 @@ from pathlib import Path
 
 from antares_xpansion.benders_driver import BendersDriver, SolversExe
 from antares_xpansion.full_run_driver import FullRunDriver
+from antares_xpansion.presolve_driver import PresolveDriver, PresolveData
 from antares_xpansion.problem_generator_driver import ProblemGeneratorDriver, ProblemGeneratorData
 
 from test_problem_generator_driver import get_zipped_output
@@ -12,17 +13,15 @@ SUBPROCESS_RUN = "antares_xpansion.full_run_driver.subprocess.run"
 class TestFullRunDriver:
 
     def setup_method(self):
-
         self.pb_gen_data = ProblemGeneratorData(keep_mps=False, additional_constraints="str", user_weights_file_path="",
                                                 weight_file_name_for_lp="", lp_namer_exe_path=Path("lp.exe"),
-                                                active_years=[1, 2], memory=False)
+                                                active_years=[1, 2], memory=False, problem_format="OPTIMIZED")
 
         self.benders_driver_options_file = "options_file.json"
 
         self.full_run_exe = Path("full_run.exe")
 
     def test_sequential_command(self, tmp_path):
-
         output_path = tmp_path / "outputPath"
         self.create_problem_generation_files(output_path)
         output_path = get_zipped_output(output_path)
@@ -40,16 +39,26 @@ class TestFullRunDriver:
         problem_generation.create_lp_dir()
         benders_driver = BendersDriver(
             SolversExe("benders.exe", "", ""), self.benders_driver_options_file)
+        presolveDriver = PresolveDriver(PresolveData(
+            "presolve.exe",
+            False
+        ),
+            self.benders_driver_options_file,
+            False)
         full_run_driver = FullRunDriver(self.full_run_exe,
-                                        problem_generation, benders_driver)
+                                        problem_generation, benders_driver, presolveDriver)
         benders_method = "benders"
         full_run_driver.prepare_drivers(output_path, is_relaxed, benders_method, json_file_path,
-                                        benders_keep_mps=benders_keep_mps, benders_oversubscribe=benders_oversubscribe, benders_allow_run_as_root=benders_allow_run_as_root)
+                                        benders_keep_mps=benders_keep_mps, benders_oversubscribe=benders_oversubscribe,
+                                        benders_allow_run_as_root=benders_allow_run_as_root)
         xpansion_output_dir = output_path.parent / \
-            (output_path.stem+"-Xpansion")
+                              (output_path.stem + "-Xpansion")
         expected_command = [self.full_run_exe, "--benders_options", self.benders_driver_options_file,
+
                             "-s", str(json_file_path), "-a", str(output_path), "-f", "integer", "-e",
                             self.pb_gen_data.additional_constraints, "--solver", benders_method]
+
+        expected_command.extend(["--problem-format", "OPTIMIZED"])
 
         command = full_run_driver.full_command()
         assert len(expected_command) == len(command)
@@ -57,7 +66,6 @@ class TestFullRunDriver:
             assert (item in command)
 
     def test_mpi_command(self, tmp_path):
-
         output_path = tmp_path / "outputPath"
         self.create_problem_generation_files(output_path)
         output_path = get_zipped_output(output_path)
@@ -76,17 +84,26 @@ class TestFullRunDriver:
 
         benders_driver = BendersDriver(
             SolversExe("benders.exe", "", ""), self.benders_driver_options_file)
+        presolveDriver = PresolveDriver(PresolveData(
+            "presolve.exe",
+            False
+        ),
+            self.benders_driver_options_file,
+            False)
         full_run_driver = FullRunDriver(self.full_run_exe,
-                                        problem_generation, benders_driver)
+                                        problem_generation, benders_driver, presolveDriver)
         benders_method = "benders"
         full_run_driver.prepare_drivers(output_path, is_relaxed, benders_method,
                                         json_file_path,
-                                        benders_keep_mps, benders_n_mpi, benders_oversubscribe, benders_allow_run_as_root)
+                                        benders_keep_mps, benders_n_mpi, benders_oversubscribe,
+                                        benders_allow_run_as_root)
         xpansion_output_dir = output_path.parent / \
-            (output_path.stem+"-Xpansion")
-        expected_command = [benders_driver.MPI_LAUNCHER, "-n", str(benders_n_mpi), self.full_run_exe, "--benders_options", self.benders_driver_options_file,
+                              (output_path.stem + "-Xpansion")
+        expected_command = [benders_driver.MPI_LAUNCHER, "-n", str(benders_n_mpi), self.full_run_exe,
+                            "--benders_options", self.benders_driver_options_file,
                             "-s", str(json_file_path), "-a", str(output_path), "-f", "integer", "-e",
                             self.pb_gen_data.additional_constraints, "--solver", benders_method]
+        expected_command.extend(["--problem-format", "OPTIMIZED"])
 
         command = full_run_driver.full_command()
 
@@ -95,7 +112,6 @@ class TestFullRunDriver:
             assert (item in command)
 
     def create_problem_generation_files(self, output_path: Path):
-
         output_path.mkdir()
         lp_path = output_path / "lp"
         lp_path.mkdir()

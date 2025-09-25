@@ -3,7 +3,7 @@
 #include <filesystem>
 #include <json/json.h>
 
-#include "antares-xpansion/benders/benders_core/ProblemFormatStream.h"
+#include "antares-xpansion/core/ProblemFormatStream.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
 Json::Value SimulationOptions::get_value_from_json(const std::filesystem::path& file_name)
@@ -156,6 +156,16 @@ BaseOptions SimulationOptions::get_base_options() const
     result.SOLVER_NAME = SOLVER_NAME;
 
     result.PROBLEMS_FORMAT = PROBLEMS_FORMAT;
+
+    return result;
+}
+
+PresolveOptions SimulationOptions::get_presolve_options() const
+{
+    PresolveOptions result(get_base_options());
+
+    result.KEEP_FULL = KEEP_FULL;
+    result.FULL_DIR = FULL_DIR;
 
     return result;
 }

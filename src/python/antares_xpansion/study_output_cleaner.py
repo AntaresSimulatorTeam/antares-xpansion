@@ -68,3 +68,9 @@ class StudyOutputCleaner:
         remove_files_containing_str_from_dir('area', study_output)
         remove_files_containing_str_from_dir('interco', study_output)
         remove_files_containing_str_from_dir('mps.txt', study_output)
+
+    @staticmethod
+    def clean_presolve_step(study_output: Path):
+        remove_files_containing_str_from_dir(".mps", study_output)
+        remove_files_containing_str_from_dir(".svf", study_output)
+        remove_files_containing_str_from_dir("structure.txt", study_output)

@@ -22,7 +22,7 @@
 #include <tuple>
 #include <vector>
 
-#include "ProblemFormat.h"
+#include "antares-xpansion/core/ProblemFormat.h"
 
 enum class MasterFormulation
 {
@@ -162,6 +162,19 @@ struct BaseOptions
     std::string SOLVER_NAME;
 
     ProblemsFormat PROBLEMS_FORMAT = ProblemsFormat::MPS_FILE;
+};
+
+struct PresolveOptions: public BaseOptions
+{
+    PresolveOptions() = default;
+
+    explicit PresolveOptions(const BaseOptions& other):
+        BaseOptions(other)
+    {
+    }
+
+    bool KEEP_FULL;
+    std::string FULL_DIR;
 };
 
 struct SolverBaseOptions: public BaseOptions

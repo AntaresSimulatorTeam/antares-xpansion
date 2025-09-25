@@ -1,5 +1,8 @@
 #include "antares-xpansion/lpnamer/main/ProblemGenerationExeOptions.h"
 
+#include "antares-xpansion/core/ProblemFormat.h"
+#include "antares-xpansion/core/ProblemFormatStream.h"
+
 namespace po = boost::program_options;
 using namespace std::string_literals;
 
@@ -25,7 +28,12 @@ ProblemGenerationExeOptions::ProblemGenerationExeOptions():
       po::value<std::filesystem::path>(&weights_file_)->default_value(""),
       "user weights file")("unnamed-problems,n",
                            po::bool_switch(&unnamed_problems_),
-                           "use this option if unnamed problems are provided");
+                           "use this option if unnamed problems are provided")(
+      "problem-format",
+      po::value<ProblemsFormat>(&format_)->default_value(ProblemsFormat::OPTIMIZED),
+      "output format (MPS or OPTIMIZED)")
+
+      ;
 }
 
 void ProblemGenerationExeOptions::Parse(unsigned int argc, const char* const* argv)

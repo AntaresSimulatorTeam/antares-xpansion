@@ -17,8 +17,8 @@ from antares_xpansion.launcher_options_default_value import LauncherOptionsDefau
 from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
 from antares_xpansion.logger import step_logger
 from antares_xpansion.optimisation_keys import OptimisationKeys
-from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 from antares_xpansion.xpansionConfig import XpansionConfig, XpansionConfigConstants
+from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 
 
 class NTCColumnConstraintError(Exception):
@@ -429,6 +429,9 @@ class ConfigLoader(XpansionSettingsReader):
     def memory(self):
         return self._config.memory
 
+    def run_presolve(self):
+        return self._config.run_presolve
+
     def simulation_lp_path(self):
         return self._simulation_lp_path()
 
@@ -462,10 +465,15 @@ class ConfigLoader(XpansionSettingsReader):
 
         return self._last_study
 
+    def presolve_pre_actions(self):
+        # TODO Overkill but options_default writes values
+        # TODO as strings instead of float, int and etc when it's needed
+        self._set_options_for_benders_solver()
+
     def benders_pre_actions(self):
         self.copy_area_file_to_lpdir()
         self.save_launcher_options()
-        if self._config.step != "resume":  # expansion dir alaready in resume mode
+        if self._config.step != "resume":  # expansion dir already in resume mode
             self.create_expansion_dir()
         self._set_options_for_benders_solver()
 
@@ -567,7 +575,7 @@ class ConfigLoader(XpansionSettingsReader):
             self.get_cut_coefficient_tolerance()
         )
         options_values[OptimisationKeys.do_outer_loop_key()] = (
-            self._config.method == "adequacy_criterion"
+                self._config.method == "adequacy_criterion"
         )
         options_values[OptimisationKeys.outer_loop_option_file_key()] = (
             self._config.OUTER_LOOP_FILE
@@ -577,6 +585,7 @@ class ConfigLoader(XpansionSettingsReader):
             shutil.copy(self.outer_loop_options_path(), self._simulation_lp_path())
         options_values[OptimisationKeys.cache_problems_keys()] = self.cache_problems()
 
+        options_values[OptimisationKeys.problems_format_key()] = self.problem_format()
         # generate options file for the solver
         with open(self.options_file_path(), "w") as options_file:
             json.dump(options_values, options_file, indent=4)
@@ -608,11 +617,11 @@ class ConfigLoader(XpansionSettingsReader):
             self._xpansion_simulation_name = self._last_study
             if self.is_zip(self._last_study):
                 self._xpansion_simulation_name = (
-                    self._last_study.parent / self._last_study.stem
+                        self._last_study.parent / self._last_study.stem
                 )
                 with zipfile.ZipFile(self._last_study, "r") as output_zip:
                     output_zip.extractall(self._xpansion_simulation_name)
-        elif self.step() == "benders":
+        elif self.step() in ["presolve", "benders"]:
             if self.is_zip(self._last_study):
                 raise ConfigLoader.NotAnXpansionOutputDir(
                     f"Error! {self._last_study} is not an Xpansion output directory"
@@ -627,13 +636,13 @@ class ConfigLoader(XpansionSettingsReader):
                 else:
                     self._xpansion_simulation_name = self._last_study
                     self._last_study = self._last_study.parent / (
-                        self._last_study.stem[: -len(xpansion_dir_suffix)] + ".zip"
+                            self._last_study.stem[: -len(xpansion_dir_suffix)] + ".zip"
                     )
         elif self.step() == "full" and self.memory():
             self._xpansion_simulation_name = self._last_study
         else:
             self._xpansion_simulation_name = self._last_study.parent / (
-                self._last_study.stem + "-Xpansion"
+                    self._last_study.stem + "-Xpansion"
             )
 
     def is_zip(self, study):
@@ -654,7 +663,7 @@ class ConfigLoader(XpansionSettingsReader):
     def is_antares_study_output(self, study: Path):
         _, ext = os.path.splitext(study)
         if (
-            self.memory() and "-Xpansion" not in study.name
+                self.memory() and "-Xpansion" not in study.name
         ):  # memory mode we work with files essentially
             return os.path.isdir(study)
         else:
@@ -708,6 +717,9 @@ class ConfigLoader(XpansionSettingsReader):
     def keep_mps(self) -> bool:
         return self._config.keep_mps
 
+    def problem_format(self) -> str:
+        return self._config.problem_format
+
     def antares_exe(self):
         return self.exe_path(self._config.ANTARES)
 
@@ -719,6 +731,9 @@ class ConfigLoader(XpansionSettingsReader):
 
     def merge_mps_exe(self):
         return self.exe_path(self._config.MERGE_MPS)
+
+    def presolve_exe(self):
+        return self.exe_path(self._config.PRESOLVE)
 
     def study_update_exe(self):
         return self.exe_path(self._config.STUDY_UPDATER)

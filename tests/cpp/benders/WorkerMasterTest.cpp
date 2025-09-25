@@ -5,8 +5,8 @@
 #include <string>
 #include <vector>
 
-#include "NOOPSolver.h"
 #include "EmptyLogManager.h"
+#include "NOOPSolver.h"
 #include "antares-xpansion/benders/benders_core/WorkerMaster.h"
 #include "antares-xpansion/benders/logger/Master.h"
 
@@ -22,6 +22,11 @@ public:
         col_types = types;
         lbs = lower_bounds;
         ubs = upper_bounds;
+    }
+
+    SolverAbstract* clone() const override
+    {
+        return nullptr;
     }
 
     int get_ncols() const override
@@ -48,7 +53,7 @@ public:
     {
     }
 
-    std::filesystem::path provide_file_path() const
+    std::filesystem::path provide_file_path() const override
     {
         return "";
     }

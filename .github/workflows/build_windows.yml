@@ -11,7 +11,7 @@ on:
       - issue-*
       - release/*
       - doc/*
-      - dependabot/*
+      - dependabot/**
   release:
     types: [ created ]
 
@@ -39,10 +39,10 @@ jobs:
       version: ${{ steps.antares-xpansion-version.outputs.result }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: '3.8'
           cache: 'pip'
@@ -62,14 +62,14 @@ jobs:
           cp -r $XPRESS_DIR/lib $XPRESS_DIR/bin
           mkdir -p $SITE_PACKAGE/xpress/bin
           cp $SITE_PACKAGE/xpress/license/community-xpauth.xpr $XPRESS_DIR/bin/xpauth.xpr
+          cp $SITE_PACKAGE/xpress/license/community-xpauth.xpr $XPRESS_DIR/lib/xpauth.xpr
           echo "XPRESSDIR=$XPRESS_DIR" >> $GITHUB_ENV
           echo "$XPRESS_DIR/bin" >> $GITHUB_PATH
 
       - name: Pre-requisites
         shell: cmd
         run: |
-          choco install wget zip unzip --no-progress
-          wget -nv https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
+          curl -OLs https://github.com/microsoft/Microsoft-MPI/releases/download/v10.1.1/msmpisetup.exe
           msmpisetup.exe -unattend
 
       - name: Read antares-solver version
@@ -161,7 +161,11 @@ jobs:
         run: |
           cd _build
           cpack -G ZIP
-          export ZIP_NAME=$(ls *.zip)
+          ZIP_NAME=$(ls *.zip)
+          if [ -z "$ZIP_NAME" ]; then
+          echo "No ZIP file was created by cpack"
+          exit 1
+          fi
           echo "ZIP_NAME=$ZIP_NAME" >> $GITHUB_ENV
 
       - name: Upload installer
@@ -197,7 +201,7 @@ jobs:
       pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
@@ -227,7 +231,7 @@ jobs:
     needs: [ build ]
     steps:
       - name: Download build assets
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ${{needs.build.outputs.zip_name}}
       - name: setup
@@ -253,7 +257,7 @@ jobs:
     needs: [ build ]
     steps:
       - name: Download build assets
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ${{needs.build.outputs.singlefile_name}}
       - name: setup
@@ -277,13 +281,13 @@ jobs:
     steps:
 
       - name: Download Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ${{env.ZIP_NAME}}
           path: .
 
       - name: Download Artifact
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ${{env.SINGLEFILE_NAME}}
           path: .

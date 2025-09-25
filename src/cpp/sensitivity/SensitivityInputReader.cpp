@@ -6,9 +6,9 @@
 
 #include <boost/algorithm/string/trim.hpp>
 
-#include "antares-xpansion/benders/benders_core/ProblemFormat.h"
-#include "antares-xpansion/benders/benders_core/ProblemFormatStream.h"
 #include "antares-xpansion/benders/output/OutputWriter.h"
+#include "antares-xpansion/core/ProblemFormat.h"
+#include "antares-xpansion/core/ProblemFormatStream.h"
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
@@ -78,7 +78,7 @@ std::shared_ptr<SolverAbstract> SensitivityInputReader::get_last_master() const
     case ProblemsFormat::MPS_FILE:
         last_master->read_prob_mps(_last_master_path);
         break;
-    case ProblemsFormat::SAVED_FILE:
+    case ProblemsFormat::OPTIMIZED:
         last_master->restore_prob(_last_master_path);
         break;
     default:

@@ -59,6 +59,7 @@ void SensitivityStudy::run_projection_analysis()
 {
     logger->display_message("Projection analysis in progress");
     std::mutex m;
+    std::mutex logger_mutex;
     std::for_each(std::execution::par_unseq,
                   input_data.projection.begin(),
                   input_data.projection.end(),
@@ -71,12 +72,15 @@ void SensitivityStudy::run_projection_analysis()
                                                        logger,
                                                        SensitivityPbType::PROJECTION);
                           auto [minimizeSolution, maximizeSolution] = projection_analysis.run();
-                          std::lock_guard guard(m);
-                          output_data.push_back(minimizeSolution);
-                          output_data.push_back(maximizeSolution);
+                          {
+                              std::lock_guard guard(m);
+                              output_data.push_back(minimizeSolution);
+                              output_data.push_back(maximizeSolution);
+                          }
                       }
                       else
                       {
+                          std::lock_guard guard(logger_mutex);
                           logger->display_message("Warning: " + candidate_name
                                                   + " ignored as it has not been found in the list "
                                                     "of investment candidates");
