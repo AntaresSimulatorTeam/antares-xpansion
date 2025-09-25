@@ -21,17 +21,14 @@ public:
                   ProblemsFormat data_format,
                   std::string solverName,
                   int nbThreads = 1);
-    virtual std::map<Output::PointWeekScenarioKey, double> ComputeCosts(int startWeek = 1,
-                                                                        int endWeek = 52);
+    virtual std::map<Output::PointWeekScenarioKey, double> ComputeCosts();
 
 private:
     Output::ConcurrentInsertionMap<Output::PointWeekScenarioKey, double>
       variationDeNiveauxDeStockData;
 
 protected:
-    std::vector<std::string> InitSubProblems(const GridDefinition& grid_definition,
-                                             int startWeek,
-                                             int endWeek);
+    std::vector<std::string> InitSubProblems(const GridDefinition& grid_definition);
     void Run(const std::vector<std::string>& subPbNames, GridDefinition& grid_definition);
     void ProcessSubproblem(const std::string& subPbName, GridDefinition& grid_definition);
     void ProcessGridParallel(const std::vector<std::string>& subPbNames,

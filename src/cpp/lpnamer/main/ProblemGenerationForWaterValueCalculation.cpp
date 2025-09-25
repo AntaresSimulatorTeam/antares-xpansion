@@ -37,8 +37,8 @@ ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalcula
   ConfigurationManager::ConfigDirectories directories,
   const ReservoirManagement& reservoirManagement,
   std::string solverName,
-  int startWeek,
-  int endWeek):
+  unsigned int startWeek,
+  unsigned int endWeek):
     directories(directories),
     reservoirManagement(reservoirManagement),
     startWeek(startWeek),
@@ -80,11 +80,17 @@ ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalcula
                                               pbId);
         problems[pbId] = problem;
     }
+
+    if (!problems.empty())
+    {
+        this->startWeek = std::max(startWeek, problems.begin()->first.week);
+        this->endWeek = std::min(endWeek, problems.rbegin()->first.week);
+    }
 }
 
 /// @brief Update the problems for the water value calculation
-/// @return The path to the output mps file
-std::filesystem::path ProblemGenerationForWaterValueCalculation::updateProblems(
+/// @return The path to the output mps file and strat and end weeks
+UpdateProblemsResult ProblemGenerationForWaterValueCalculation::updateProblems(
   const GridDefinition& gridDefinition)
 {
     using namespace std::string_literals;
@@ -100,7 +106,7 @@ std::filesystem::path ProblemGenerationForWaterValueCalculation::updateProblems(
                                                              log_file_path,
                                                              gridDefinition);
 
-    return outputMpsPath;
+    return {outputMpsPath, startWeek, endWeek};
 }
 
 /// @brief Clean the problems for the Bellman Values calculations
@@ -126,6 +132,7 @@ ProblemGenerationForWaterValueCalculation::CleanProblemsForBellmanCalculations(
                       auto pbId = pb.first;
                       if (startWeek <= pbId.week && pbId.week <= endWeek)
                       {
+                          // needed if gridCollection contains multiple gridDefinitions
                           auto problem = std::make_shared<Problem>(pb.second->clone());
                           std::string pbName = "problem-" + std::to_string(pbId.year) + "-"
                                                + std::to_string(pbId.week) + "--optim-nb-1";

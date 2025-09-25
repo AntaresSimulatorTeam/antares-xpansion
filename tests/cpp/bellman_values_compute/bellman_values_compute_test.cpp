@@ -87,8 +87,7 @@ protected:
             scenarios = {1};
         }
 
-        std::map<Output::PointWeekScenarioKey, double> ComputeCosts(int startWeek,
-                                                                    int endWeek) override
+        std::map<Output::PointWeekScenarioKey, double> ComputeCosts() override
         {
             return {
               {Output::PointWeekScenarioKey({{"HydroPower", -100}}, 1, 1), 100.0},
@@ -200,11 +199,11 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
     };
 
     ProblemGenerationForWaterValueCalculation pbg(config_dirs, reservoir_management, solverName);
-    auto mps_path = pbg.updateProblems(grid);
+    auto problems = pbg.updateProblems(grid);
 
     auto evaluator = GridEvaluator(logger,
                                    writer,
-                                   mps_path,
+                                   problems.outputPath,
                                    grid,
                                    ProblemsFormat::MPS_FILE,
                                    solverName,
@@ -244,11 +243,11 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
     };
 
     ProblemGenerationForWaterValueCalculation pbg(config_dirs, reservoir_management, solverName);
-    auto mps_path = pbg.updateProblems(grid);
+    auto problems = pbg.updateProblems(grid);
 
     auto evaluator = GridEvaluator(logger,
                                    writer,
-                                   mps_path,
+                                   problems.outputPath,
                                    grid,
                                    ProblemsFormat::MPS_FILE,
                                    solverName,
@@ -289,11 +288,11 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenaltiesWithFinalLevel)
     };
 
     ProblemGenerationForWaterValueCalculation pbg(config_dirs, reservoir_management, solverName);
-    auto mps_path = pbg.updateProblems(grid);
+    auto problems = pbg.updateProblems(grid);
 
     auto evaluator = GridEvaluator(logger,
                                    writer,
-                                   mps_path,
+                                   problems.outputPath,
                                    grid,
                                    ProblemsFormat::MPS_FILE,
                                    solverName,

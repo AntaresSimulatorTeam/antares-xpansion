@@ -22,6 +22,14 @@
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 #include "antares-xpansion/multisolver_interface/SolverConfig.h"
 
+// temporay before refactoring and using the problems in memory
+struct UpdateProblemsResult
+{
+    std::filesystem::path outputPath;
+    unsigned int startWeek;
+    unsigned int endWeek;
+};
+
 class ProblemGenerationForWaterValueCalculation
 {
 public:
@@ -29,10 +37,10 @@ public:
       ConfigurationManager::ConfigDirectories directories,
       const ReservoirManagement& reservoirManagement,
       std::string solverName = "xpress",
-      int startWeek = 1,
-      int endWeek = 52);
+      unsigned int startWeek = 1,
+      unsigned int endWeek = 52);
     virtual ~ProblemGenerationForWaterValueCalculation() = default;
-    std::filesystem::path updateProblems(const GridDefinition& gridDefinition);
+    UpdateProblemsResult updateProblems(const GridDefinition& gridDefinition);
 
 private:
     std::filesystem::path CleanProblemsForBellmanCalculations(
@@ -51,6 +59,6 @@ private:
     ConfigurationManager::ConfigDirectories directories;
     std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> problems;
     const ReservoirManagement& reservoirManagement;
-    int startWeek;
-    int endWeek;
+    unsigned int startWeek;
+    unsigned int endWeek;
 };

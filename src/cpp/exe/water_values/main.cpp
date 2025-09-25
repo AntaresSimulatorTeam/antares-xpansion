@@ -170,23 +170,29 @@ int main(int argc, char** argv)
                                                            studyPath / "output.json");
 
         std::cout << "Generating problems" << std::endl;
-        ProblemGenerationForWaterValueCalculation pbg(directories, reservoirManagement, solverName);
+        ProblemGenerationForWaterValueCalculation pbg(directories,
+                                                      reservoirManagement,
+                                                      solverName,
+                                                      startWeek,
+                                                      endWeek);
         std::cout << "Problems generated" << std::endl;
 
         Output::VariationDeNiveauxDeStockData variationDeNiveauxDeStockData;
         for (auto& grid: gridCollection->gridDefinitions)
         {
-            auto mpsPath = pbg.updateProblems(grid);
+            auto problems = pbg.updateProblems(grid);
 
             auto evaluator = GridEvaluator(logger,
                                            writer,
-                                           mpsPath,
+                                           problems.outputPath,
                                            grid,
                                            ProblemsFormat::MPS_FILE,
                                            solverName,
                                            nbThreads);
             auto bellmanValuesEvaluator = BellmanValues(evaluator, reservoirManagement);
-            auto bellmanValues = bellmanValuesEvaluator.compute(startWeek, endWeek, nbLevels);
+            auto bellmanValues = bellmanValuesEvaluator.compute(problems.startWeek,
+                                                                problems.endWeek,
+                                                                nbLevels);
             auto levels = bellmanValuesEvaluator.getLevels();
             if (antaresFormat)
             {
