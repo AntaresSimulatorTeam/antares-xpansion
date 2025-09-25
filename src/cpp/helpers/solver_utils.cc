@@ -184,7 +184,7 @@ void solver_chgbounds(std::shared_ptr<SolverAbstract> solver_p,
     solver_p->chg_bounds(mindex_p, qbtype_p, bnd_p);
 }
 
-void solver_chg_rhs(SolverAbstract::Ptr solver_p, int id_row, double val)
+void solver_chg_rhs(std::shared_ptr<SolverAbstract> solver_p, int id_row, double val)
 {
     assert(id_row >= 0);
     assert(id_row < solver_p->get_nrows());

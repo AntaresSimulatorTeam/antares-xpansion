@@ -122,7 +122,7 @@ void GridSearch::AddSubproblem(const std::pair<std::string, VariableMap>& kvp)
                                                                    0,
                                                                    solver_log_manager_,
                                                                    _logger,
-                                                                   ProblemsFormat::SAVED_FILE,
+                                                                   ProblemsFormat::MPS_FILE,
                                                                    benders_problem_provider.get());
     subproblems.push_back(kvp.first);
 }
