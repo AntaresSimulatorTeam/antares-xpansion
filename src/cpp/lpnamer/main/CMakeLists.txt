@@ -38,6 +38,7 @@ target_link_libraries(problem_generation_main
         ${PROJECT_NAME}::lp_namer_input_reader
         ${PROJECT_NAME}::grid_evaluator_lib
         Antares::antares-solver-simulation
+        ${PROJECT_NAME}::core
 )
 
 target_include_directories(problem_generation_main

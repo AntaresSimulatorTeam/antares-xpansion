@@ -20,7 +20,7 @@ public:
 
     std::vector<std::string> candidate_names;
 
-    SolverAbstract::Ptr math_problem;
+    std::shared_ptr<SolverAbstract> math_problem;
 
     std::shared_ptr<SensitivityILogger> logger;
     std::shared_ptr<SensitivityWriter> writer;
@@ -120,14 +120,14 @@ protected:
     void launch_tests(std::string mps_path,
                       std::map<std::string, std::vector<SinglePbData>> expec_output_data_map)
     {
-        std::vector<std::string> solvers_name = {coin_name};
+        std::vector<std::string> solvers_name = {};
         LoadXpress::XpressLoader xpress_loader;
         if (xpress_loader.XpressIsCorrectlyInstalled())
         {
             solvers_name.push_back(xpress_name);
         }
 
-        for (auto solver_name: solvers_name)
+        for (const auto& solver_name: solvers_name)
         {
             init_solver(solver_name, mps_path);
             input_data.last_master = math_problem;

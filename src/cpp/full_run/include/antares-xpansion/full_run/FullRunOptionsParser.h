@@ -26,6 +26,10 @@ private:
     std::filesystem::path benders_options_file_;
     std::filesystem::path solutionFile_;
     std::string solver_;
+    bool presolve_{true};
+
+public:
+    [[nodiscard]] bool presolve() const;
 };
 
 #endif // ANTARES_XPANSION_SRC_CPP_FULL_RUN_FULLRUNOPTIONSPARSER_H

@@ -34,6 +34,7 @@ find_package(fmt REQUIRED)
 target_link_libraries(sensitivity_core
         PUBLIC
         antaresXpansion::logger_lib
+        antaresXpansion::core
         PRIVATE
         fmt::fmt
 )

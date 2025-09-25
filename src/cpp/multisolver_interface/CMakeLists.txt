@@ -33,7 +33,7 @@ list(APPEND XPRESS_LOAD
 # XPRESS
 list(APPEND Solver_sources
         ${CMAKE_CURRENT_LIST_DIR}/SolverXpress.cpp
-        ${CMAKE_CURRENT_LIST_DIR}/private/SolverXpress.h
+        ${CMAKE_CURRENT_LIST_DIR}/include/antares-xpansion/multisolver_interface/SolverXpress.h
 )
 
 #Clp - CBc

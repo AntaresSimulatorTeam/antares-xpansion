@@ -448,9 +448,11 @@ extern std::function<int(XPRSprob prob, const char* filename, const char* flags)
 extern std::function<int(XPRSprob prob, const char* filename, const char* flags)> XPRSreadbasis;
 extern std::function<int(XPRSprob prob, int rstatus[], int cstatus[])> XPRSloadbasis;
 extern std::function<int(XPRSprob prob, int start[], int colind[], double colcoef[], int maxcoefs, int* p_ncoefs, int first, int last)> XPRSgetrows;
+extern std::function<int(XPRSprob prob, int start[], int rowind[], double rowcoef[], int maxcoefs, int* p_ncoefs, int first, int last)> XPRSgetcols;
 extern std::function<int(XPRSprob prob, int type, const char* name, int* p_index)> XPRSgetindex;
 extern std::function<int(XPRSprob prob, int type, char names[], int first, int last)> XPRSgetnames;
 extern std::function<int(XPRSprob prob, int type, const char names[], int first, int last)> XPRSaddnames;
+extern std::function<int(XPRSprob prob, int rowmap[], int colmap[])> XPRSgetpresolvemap;
 extern std::function<int(XPRSprob prob, const char* flags)> XPRSlpoptimize;
 extern std::function<int(XPRSprob prob, const char* flags)> XPRSmipoptimize;
 extern std::function<int(void)> XPRSfree;

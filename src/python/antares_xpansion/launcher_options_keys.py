@@ -44,5 +44,13 @@ class LauncherOptionsKeys:
         return "memory"
 
     @staticmethod
+    def presolve_key():
+        return "run_presolve"
+
+    @staticmethod
     def cache_problems_key():
         return "cache_problems"
+
+    @staticmethod
+    def problem_format_key():
+        return "problem_format"

@@ -22,6 +22,7 @@ class ProblemGeneratorData:
     lp_namer_exe_path: Path
     active_years: List
     memory: bool
+    problem_format: str
 
 
 class ProblemGeneratorDriver:
@@ -63,6 +64,7 @@ class ProblemGeneratorDriver:
         self._lp_path = None
         self.logger = step_logger(__name__, __class__.__name__)
         self.memory = problem_generator_data.memory
+        self.problem_format = problem_generator_data.problem_format
 
     def launch(self, output_path: Path, is_relaxed: bool):
         """
@@ -139,6 +141,10 @@ class ProblemGeneratorDriver:
         if self.additional_constraints != "":
             ret.extend(["-e",
                         self.additional_constraints])
+
+        # Add problem format option
+        if self.problem_format:
+            ret.extend(["--problem-format", self.problem_format])
 
         return ret
 

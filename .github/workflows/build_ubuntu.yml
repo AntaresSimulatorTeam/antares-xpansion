@@ -11,7 +11,7 @@ on:
       - issue-*
       - release/*
       - doc/*
-      - dependabot/*
+      - dependabot/**
   release:
     types: [ created ]
 
@@ -36,7 +36,7 @@ jobs:
       SINGLE_FILE_NAME: ${{ steps.export_output.outputs.SINGLE_FILE_NAME }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           submodules: true
 
@@ -53,7 +53,7 @@ jobs:
           key: ${{ matrix.os }}-${{ matrix.xprs.value }}
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         id: python-setup
         with:
           cache: 'pip'
@@ -135,7 +135,6 @@ jobs:
       - name: Tests with Cucumber
         uses: ./.github/workflows/cucumber-tests
         with:
-          #          feature: "features/outer_loop_tests.feature"
           mpi_path: ${{ github.workspace }}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin
 
       - name: Test
@@ -199,7 +198,7 @@ jobs:
       pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
@@ -226,7 +225,7 @@ jobs:
     needs: [ build ]
     steps:
       - name: Download build assets
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ${{needs.build.outputs.TGZ_NAME}}
       - name: setup
@@ -248,7 +247,7 @@ jobs:
     needs: [ build ]
     steps:
       - name: Download build assets
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
       - name: setup
@@ -270,19 +269,19 @@ jobs:
     if: github.event_name == 'release' && github.event.action == 'created'
     steps:
       - name: Download userguide
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: user-guide
           path: docs/
 
       - name: Download build assets
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ${{needs.build.outputs.TGZ_NAME}}
           path: _build/
 
       - name: Download build assets single file
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v5
         with:
           name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
           path: .

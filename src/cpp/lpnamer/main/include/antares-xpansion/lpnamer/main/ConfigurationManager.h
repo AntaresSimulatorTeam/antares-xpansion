@@ -1,4 +1,5 @@
 #pragma once
+#include <antares-xpansion/core/ProblemFormat.h>
 #include <filesystem>
 #include <optional>
 
@@ -18,11 +19,13 @@ public:
     };
 
     explicit ConfigurationManager(ProblemGenerationOptions& options);
-    auto Directories() -> ConfigDirectories;
-    auto Mode() -> SimulationInputMode;
+    auto Directories() const -> ConfigDirectories;
+    auto Mode() const -> SimulationInputMode;
+    auto Format() const -> ProblemsFormat;
     static std::filesystem::path generateOutputName(const std::filesystem::path& study);
     const ProblemGenerationOptions& options_;
 
 private:
-    std::optional<SimulationInputMode> input_mode_;
+    mutable std::optional<SimulationInputMode> input_mode_;
+    ProblemsFormat format_{ProblemsFormat::OPTIMIZED};
 };

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ProblemFormat.h"
+#include "antares-xpansion/core/ProblemFormat.h"
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 #include "antares-xpansion/multisolver_interface/SolverConfig.h"
 

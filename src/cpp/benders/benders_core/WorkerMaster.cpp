@@ -427,21 +427,21 @@ void WorkerMaster::_set_nb_units_var_ids()
 
     for (int i(0); i < col_types.size(); i++)
     {
-        if (col_types[i] == 'I')
+        if (col_types[i] == 'I' || col_types[i] == 'B')
         {
-            _id_nb_units.push_back(i);
+            _id_int_vars.push_back(i);
         }
     }
 }
 
 void WorkerMaster::DeactivateIntegrityConstraints() const
 {
-    std::vector<char> col_types(_id_nb_units.size(), 'C');
-    _solver->chg_col_type(_id_nb_units, col_types);
+    std::vector<char> col_types(_id_int_vars.size(), 'C');
+    _solver->chg_col_type(_id_int_vars, col_types);
 }
 
 void WorkerMaster::ActivateIntegrityConstraints() const
 {
-    std::vector<char> col_types(_id_nb_units.size(), 'I');
-    _solver->chg_col_type(_id_nb_units, col_types);
+    std::vector<char> col_types(_id_int_vars.size(), 'I');
+    _solver->chg_col_type(_id_int_vars, col_types);
 }

@@ -10,7 +10,7 @@ on:
       - issue-*
       - release/*
       - doc/*
-      - dependabot/*
+      - dependabot/**
 
 jobs:
   sonarcloud:
@@ -27,7 +27,7 @@ jobs:
       PYTHON_VERSION: "3.10"
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
         with:
           fetch-depth: 0
 
@@ -37,7 +37,7 @@ jobs:
           key: ${{ matrix.os }}-${{ matrix.xprs.value }}
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         id: python-setup
         with:
           cache: 'pip'
