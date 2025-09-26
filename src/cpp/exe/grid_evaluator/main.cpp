@@ -11,7 +11,7 @@ std::optional<ProblemsFormat> parseFormat(const std::string& format)
     }
     else if (format == "SAVED")
     {
-        return ProblemsFormat::SAVED_FILE;
+        return ProblemsFormat::MPS_FILE;
     }
     return std::nullopt;
 }

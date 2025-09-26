@@ -275,7 +275,7 @@ void solver_chgbounds(std::shared_ptr<SolverAbstract> solver_p,
  * @param id_row : index of the row to modify
  * @param val : new value of the right hand side
  */
-void solver_chg_rhs(SolverAbstract::Ptr solver_p, int id_row, double val);
+void solver_chg_rhs(std::shared_ptr<SolverAbstract> solver_p, int id_row, double val);
 
 /**
  * @brief Returns the current basis
