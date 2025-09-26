@@ -133,7 +133,7 @@ ProblemGenerationForWaterValueCalculation::CleanProblemsForBellmanCalculations(
                       if (startWeek <= pbId.week && pbId.week <= endWeek)
                       {
                           // needed if gridCollection contains multiple gridDefinitions
-                        //   auto problem = std::make_shared<Problem>(pb.second->clone());
+                          //   auto problem = std::make_shared<Problem>(pb.second->clone());
                           std::shared_ptr<Problem> problem(pb.second->clone());
                           std::string pbName = "problem-" + std::to_string(pbId.year) + "-"
                                                + std::to_string(pbId.week) + "--optim-nb-1";
