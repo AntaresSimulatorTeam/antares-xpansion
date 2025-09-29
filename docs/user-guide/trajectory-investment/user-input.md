@@ -116,7 +116,7 @@ A candidate can either :
 
 - Appear only in later studies, to represent a cluster that might only enter into service later. In this case, when the candidate $i$ first appear in node $n$, the constraint will be : $\text{initial_capacities}_i + dx_{i,n}^+ - dx_{i,n}^- = x_{i,n}$, regardless of wether $n$ is the root node. (Though as noted above, the recommanded modelisation would be to add the candidate in all the nodes and impose its installed capacity to be $0$ during the construction period)
 
-- Disappear in the final studies, to represent a cluster that is assuredly decommisioned at this point.
+- Disappear in the final studies, to represent a cluster that is assuredly decommissioned at this point.
 In this case, when the candidate $i$ disappears at node $n$, the constraint will be : $x_{i, \text{parent}(n)} + dx_{i,n}^+ - dx_{i,n}^- = 0$.
 
 ## Trajectory constraints translation

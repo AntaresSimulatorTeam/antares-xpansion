@@ -20,28 +20,26 @@ Usage of the launcher is :
     - ```merge_weights``` : Merges the weights file generated during the problem generation into a single weights file that accurately weighs each subproblem depending on the node's study data and the node's information in the tree. See : [Generating a merged weights file](./merge-weights.md) for more details.
 
 
-## Optionnal arguments
+## Optional arguments
 
 - ```--memory``` : Tells the program wether to run the problem generation in memory mode. Only useful when ```--step``` is either ```problem_generation``` or ```full```.  
 **NOTE** : As of now, multiple problem generation is only implemented for memory mode, and thus this flag is necessary when running a part of the workflow that includes the problem generation.
 
-- ```--method``` : Similarly to the [annual xpansion context](../get-started/launching-optimization.md), sets the method used for the resolution.  
+- ```--method``` : Similarly to the [annual xpansion context](../get-started/launching-optimization.md#-m-method-benders-mergemps-adequacy_criterion), sets the method used for the resolution.  
 **NOTE** : As of now, only ```benders``` and ```merge_mps``` resolutions are compatible with the trajectory context. The ```outer_loop``` (adequacy_criterion) method still requires adaptations and probably cannot be used as-is.
 
-- ```--np``` : See the eponymous [annual xpansion argument](../get-started/launching-optimization.md).
+- ```--np``` : See the eponymous [annual xpansion argument](../get-started/launching-optimization.md#-n-np).
 
-- ```--problems-format``` : Tells the program under what format the optimization problem files should be written an read. Can be either :
-    - ```mps``` : Problems are written and read under the ```.mps``` file format.
-    - ```saved``` : Problems are writtent and read using the proprietery Xpress file format. Only available with ```--solver xpress```
+- ```--problems-format``` : See the eponymous [annual xpansion argument](../get-started/launching-optimization.md#-problem-format-mps-optimized).
 
 - ```--solver``` : Tells the program which solver to use when manipulating optimization problems in steps ```merge_master``` and ```resolution```
 
-Note that this does not apply to the step ```problem_generation```, where the solver and file format used in instead determined by the ```solver``` entry in ```<study>/user/expansion/setting.ini```.
+Note that this does not apply to the step ```problem_generation```, where the solver and file format used in instead determined by the ```solver``` entry in ```<study>/user/expansion/settings.ini```.
 
 
 ## A note on intermediary files
 
-As of now, most intermediary files will be written using a hardcoded default name in a folder name ```intermediary_files``` situated at : ```<INPUT_ROOT>/intermediary_files```, and the drivers of the different step will only look at those hardcoded locations when looking for those files.  
+As of now, most intermediary files will be written using a hardcoded default name in a folder name ```intermediary_files``` situated at : ```<INPUT_ROOT>/intermediary_files```, and the drivers of the different steps will only look at those hardcoded locations when looking for those files.  
 **TODO** : implement arguments in ```xpansion-trajectory-launcher``` to allow custom names and locations for the intermediary files.
 
 - After ```--step input_translation```, ```master_merger_info.json``` will be found at ```<INPUT_ROOT>/intermediary_files/master_merger_info.json```.

@@ -8,8 +8,8 @@ Thus, if the Monte Carlo years of node $n \in G$ had respective weights $(\omega
 
 Usage is ```<merge_weights_executable> <master_merger_info.json> <nodal_lp_info.json> <path/to/output/weights/file>```
 
-- ```<master_merger_info.json>``` designates the intermediary file outputed by the initial input parser / translator. [See this section](./merge-master.md#master-structure-file) for more details. In this part of the workflow, only each node's ```node_weight``` entry will be of use to us.
-- ```<nodal_lp_info.json>``` designates the intermediary file outputed by the ```MultipleProblemGeneration``` step. [See this section](./multiple-problem-generation.md#output--nodal-lp-info-file) for more details. 
+- ```<master_merger_info.json>``` designates the intermediary file outputted by the initial input parser / translator. [See this section](./merge-master.md#master-structure-file) for more details. In this part of the workflow, only each node's ```node_weight``` entry will be of use to us.
+- ```<nodal_lp_info.json>``` designates the intermediary file outputted by the ```MultipleProblemGeneration``` step. [See this section](./multiple-problem-generation.md#output--nodal-lp-info-file) for more details. 
 
 Note that in the ```<nodal_lp_info.json>``` file, if the ```weights_file``` parameter does not appear or points to a non existant file, the weights of this node are assumed to be uniform.
 
@@ -17,8 +17,8 @@ Note that in the ```<nodal_lp_info.json>``` file, if the ```weights_file``` para
 
 ## Output
 
-The ouput ```weights_merged.txt``` file will be a file with two columns.  
-The first column is the path to the subproblem, and the second the corresponding weight:
+The output ```weights_merged.txt``` file will be a file with two columns.  
+The first column is the path to the subproblem, and the second is the corresponding weight:
 ```
 ./node_2030_study/output/20250526-1505eco/lp/problem-1-1--optim-nb-1.mps 0
 ./node_2030_study/output/20250526-1505eco/lp/problem-1-2--optim-nb-1.mps 0
