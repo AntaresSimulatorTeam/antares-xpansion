@@ -3,6 +3,7 @@ Class to control the execution of the trajectory investment
 """
 
 import os
+from pathlib import Path
 
 from antares_xpansion.logger import step_logger
 from antares_xpansion.trajectory.driver_input_translation import InputTranslationDriver
@@ -44,10 +45,10 @@ class TrajectoryInvestmentDriver:
         )
         # Prepare intermediary file names
         self.master_merger_info_file = (
-                self.intermediary_folder_path / self.config.MASTER_MERGER_INFO_FILE
+            self.intermediary_folder_path / self.config.MASTER_MERGER_INFO_FILE
         )
         self.nodal_lp_info_file = (
-                self.intermediary_folder_path / self.config.NODAL_LP_INFO_FILE
+            self.intermediary_folder_path / self.config.NODAL_LP_INFO_FILE
         )
         self.merged_weights_file = self.config.input_root / self.config.MERGED_WEIGHTS
 
@@ -74,14 +75,14 @@ class TrajectoryInvestmentDriver:
         # We leave the default values for where to write intermediary files
         self.output_folder = self.prepare_folder(self.config.OUTPUT_FOLDER)
         # The problems format and solver are expected as full upper case by the C++ executables
-        #ONE
+        # ONE
         solver = self.config.solver
         problems_format = self.config.problems_format
         # TODO : hardcoded solver for now
-        #TWO
-        solver = "XPRESS"
+        # TWO
+        solver = "Xpress"
         problems_format = "OPTIMIZED"
-        if solver != "XPRESS":
+        if solver != "Xpress":
             problems_format = "MPS"
 
         mm_data = MergeMasterData(
