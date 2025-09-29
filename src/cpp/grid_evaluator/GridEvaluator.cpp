@@ -16,24 +16,19 @@ std::atomic<double> totalPbModifTimer = 0; ///< Total time spent modifying subpr
 
 /// @brief Constructor
 /// @param logger Logger
-/// @param writer JsonWriter
-/// @param path_to_mps Path to the data folder
+/// @param problems map of subproblems to evaluate
 /// @param gridDefinition GridCollection containing the grids to evaluate
-/// @param data_format Format of the data (MPS or LP)
 /// @param solverName Name of the solver to use
 /// @param nbThreads Number of threads to use
-GridEvaluator::GridEvaluator(Logger logger,
-                             std::shared_ptr<Output::JsonWriter> writer,
-                             std::filesystem::path path_to_mps,
-                             GridDefinition& gridDefinition,
-                             ProblemsFormat data_format,
-                             std::string solverName,
-                             int nbThreads):
+GridEvaluator::GridEvaluator(
+  Logger logger,
+  std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> problems,
+  GridDefinition& gridDefinition,
+  std::string solverName,
+  int nbThreads):
     logger(std::move(logger)),
-    writer(std::move(writer)),
-    mpsPath(path_to_mps),
+    problems(problems),
     gridDefinition(gridDefinition),
-    problemsFormat(data_format),
     solverName(solverName),
     nbThreads(nbThreads)
 {
@@ -73,12 +68,13 @@ ConstraintCombos GridEvaluator::GenerateConstraintProduct(const ConstraintMap& c
 /// @details This function iterates over each area in the subproblem, generates local combinations
 ///          of constraint values using GenerateConstraintProduct, and merges them with
 ///          area-specific names into a complete list of subproblem-level combinations.
-/// @param subPbName Name of the subproblem (used to prefix constraint names).
+/// @param problemId Id of the subproblem (used to prefix constraint names).
 /// @param areasConstraints Map from area names to their constraint maps.
 /// @return A vector of maps, where each map is a full combination of all constraints
 ///         (with area-prefixed keys) for the subproblem.
-ConstraintCombos GridEvaluator::GenerateSubPbCombos(const std::string& subPbName,
-                                                    const AreaConstraintMaps& areasConstraints)
+ConstraintCombos GridEvaluator::GenerateSubPbCombos(
+  const Antares::Solver::WeeklyProblemId problemId,
+  const AreaConstraintMaps& areasConstraints)
 {
     ConstraintCombos subPbCombos;
     ConstraintCombos currentCombos = {{}};
@@ -95,7 +91,7 @@ ConstraintCombos GridEvaluator::GenerateSubPbCombos(const std::string& subPbName
                 std::map<std::string, double> merged = combo;
                 for (const auto& [cst, val]: local)
                 {
-                    merged[GetConstraintName(subPbName, areaName, cst)] = val;
+                    merged[GetConstraintName(problemId, areaName, cst)] = val;
                 }
                 newCombos.push_back(merged);
             }
@@ -190,99 +186,45 @@ std::vector<Point> reorderZigzagND(const std::vector<int>& dims, const std::vect
     return reordered;
 }
 
-/// @brief Get the path to the subproblem mps file
-/// @param subPbName The name of the subproblem
-/// @return The path to the subproblem mps file
-std::filesystem::path GridEvaluator::GetSubproblemPath(const std::string& subPbName) const
-{
-    return mpsPath / subPbName;
-}
-
-/// @brief Get the name of the constraint in the mps file
-/// @param subPbName The name of the subproblem
-/// @param area The name of the area
-/// @param constraint The name of the constraint
-/// @return The name of the constraint in the mps file
-std::string GridEvaluator::GetConstraintName(const std::string& subPbName,
-                                             const std::string& area,
-                                             const std::string& constraint) const
-{
-    return fmt::format("{}::area<{}>::week<{}>", constraint, area, GetPbInfo(subPbName).week - 1);
-}
-
-/// @brief Add a subproblem to the subproblem map and initialize it with the mps file
-///        The solver is initialized here
-/// @param pbName The name of the subproblem
-/// @return The subproblem worker
-SubproblemWorkerPtr GridEvaluator::AddSubproblem(const std::string& pbName)
-{
-    std::shared_ptr<IBendersProblemProvider>
-      benders_problem_provider = std::make_shared<BendersProblemFromFile>(
-        GetSubproblemPath(pbName));
-    auto subPbWorker = std::make_shared<SubproblemWorker>(1,
-                                                          solverName,
-                                                          2,
-                                                          solver_log_manager,
-                                                          logger,
-                                                          problemsFormat,
-                                                          benders_problem_provider.get());
-    return subPbWorker;
-}
-
-/// @brief Get the list of subproblems names to be used in the gridDefinition
-std::vector<std::string> GridEvaluator::InitSubProblems(const GridDefinition& gridDefinition)
-{
-    // Add all subproblems mps files to the subproblem map if they are used in the grid.csv file
-    std::string extension = problemsFormat == ProblemsFormat::MPS_FILE ? ".mps" : ".svf";
-    std::vector<std::string> subPbNames;
-    for (const auto& entry: std::filesystem::directory_iterator(mpsPath))
-    {
-        if (entry.path().extension() == extension
-            && gridDefinition.isSubproblemUsed(entry.path().stem().string()))
-        {
-            std::string subPbName = entry.path().stem().string();
-            subPbNames.push_back(subPbName);
-            scenarios.insert(GetPbInfo(subPbName).scenario);
-        }
-    }
-    return subPbNames;
-}
-
-/// @brief Get the problem info from the problem name
-/// @param pbName The problem name
-/// @return The scenario and week of the problem
-ScenarioAndWeek GridEvaluator::GetPbInfo(const std::string& pbName) const
-{
-    std::regex re("problem-(\\d+)-(\\d+)--optim-nb-\\d+");
-    std::smatch match;
-    if (std::regex_search(pbName, match, re))
-    {
-        return {std::stoi(match[1]), std::stoi(match[2])};
-    }
-    else
-    {
-        throw std::runtime_error("Invalid problem name format: " + pbName);
-    }
-}
-
 /// @brief Set the constraints RHS values for a given subproblem
 /// @param rhsValues The RHS values to set
-/// @param subPbWorker The subproblem worker
+/// @param subProblem The subproblem
 void GridEvaluator::SetConstraintsRHSValues(const std::map<std::string, double>& rhsValues,
-                                            SubproblemWorkerPtr subPbWorker)
+                                            std::shared_ptr<Problem> subProblem)
 {
     for (const auto& [constraintName, value]: rhsValues)
     {
-        subPbWorker->fix_rhs_to(constraintName, value);
+        subProblem->fix_rhs_to(constraintName, value);
     }
 }
 
-/// @brief Runs the ProcessSubproblem method in parallel for each subproblem
-/// @param subPbNames The names of the subproblems to process
-/// @param gridDefinition The grid definition to use to generate the grid afterwards
-void GridEvaluator::Run(const std::vector<std::string>& subPbNames, GridDefinition& gridDefinition)
+/// @brief Get the name of the constraint in the mps file
+/// @param id ID of the subproblem
+/// @param area The name of the area
+/// @param constraint The name of the constraint
+/// @return The name of the constraint in the mps file
+std::string GridEvaluator::GetConstraintName(const Antares::Solver::WeeklyProblemId id,
+                                             const std::string& area,
+                                             const std::string& constraint) const
 {
-    ProcessGridParallel(subPbNames, gridDefinition, nbThreads);
+    return fmt::format("{}::area<{}>::week<{}>", constraint, area, id.week - 1);
+}
+
+/// @brief Runs the ProcessSubproblem method in parallel for each subproblem
+void GridEvaluator::Run()
+{
+    // Limiter TBB au nombre de cœurs physiques
+    tbb::global_control limit(tbb::global_control::max_allowed_parallelism, nbThreads);
+
+    tbb::parallel_for_each(problems.begin(),
+                           problems.end(),
+                           [this](auto& kv)
+                           {
+                               auto& [yearWeekId, subPb] = kv;
+                               std::cout << "Processing subproblem : year " << yearWeekId.year
+                                         << " week " << yearWeekId.week << std::endl;
+                               ProcessSubproblem(yearWeekId, subPb);
+                           });
 }
 
 /// @brief Process a single subproblem
@@ -292,26 +234,14 @@ void GridEvaluator::Run(const std::vector<std::string>& subPbNames, GridDefiniti
 ///          `SetConstraintsRHSValues`, solves the subproblem using `SolveSubproblem`, and
 ///          stores the resulting cost in the `variationDeNiveauxDeStockData` map indexed by
 ///          scenario, week, and constraint values.
-/// @param subPbName The name of the subproblem
-/// @param gridDefinition The grid definition to use to generate the grid
-void GridEvaluator::ProcessSubproblem(const std::string& subPbName, GridDefinition& gridDefinition)
+/// @param subProblemId the id of the problem to treat
+/// @param subPronlem the problem to treat
+void GridEvaluator::ProcessSubproblem(const Antares::Solver::WeeklyProblemId subProblemId,
+                                      std::shared_ptr<Problem> subProblem)
 {
-    // Print loading time
-    auto start = std::chrono::high_resolution_clock::now();
-    auto subPbWorker = AddSubproblem(subPbName);
-    std::cout << "Loading subproblem : " << subPbName << std::endl;
-    auto end = std::chrono::high_resolution_clock::now();
-    std::cout << "Loading time: "
-              << std::chrono::duration_cast<std::chrono::milliseconds>(end - start).count() << " ms"
-              << std::endl;
-
-    std::cout << "Processing subproblem : scenario " << GetPbInfo(subPbName).scenario << " week "
-              << GetPbInfo(subPbName).week << std::endl;
-
     std::vector<int> dims;
 
-    for (const auto& [area, constraints]:
-         gridDefinition.weekAreaConstraints.at(GetPbInfo(subPbName).week))
+    for (const auto& [area, constraints]: gridDefinition.weekAreaConstraints.at(subProblemId.week))
     {
         std::transform(constraints.begin(),
                        constraints.end(),
@@ -319,9 +249,9 @@ void GridEvaluator::ProcessSubproblem(const std::string& subPbName, GridDefiniti
                        [](const auto& constraints) { return constraints.second.size(); });
     }
 
-    ConstraintCombos subPbCombos = GenerateSubPbCombos(subPbName,
+    ConstraintCombos subPbCombos = GenerateSubPbCombos(subProblemId,
                                                        gridDefinition.weekAreaConstraints.at(
-                                                         GetPbInfo(subPbName).week));
+                                                         subProblemId.week));
     subPbCombos = reorderZigzagND(dims, subPbCombos);
 
     int size = subPbCombos.size();
@@ -332,50 +262,32 @@ void GridEvaluator::ProcessSubproblem(const std::string& subPbName, GridDefiniti
         std::cout << "Processing gridPoint " << i << "/" << size << std::endl;
         // Each areaCombo is a std::map<std::string, double> with full variable names
         Timer timer;
-        SetConstraintsRHSValues(subPbCombo, subPbWorker);
+        SetConstraintsRHSValues(subPbCombo, subProblem);
         totalPbModifTimer += timer.elapsed();
         for (const auto& [constraintName, value]: subPbCombo)
         {
             std::cout << constraintName << " " << value << std::endl;
         }
-        double cost = SolveSubproblem(subPbWorker);
+        double cost = SolveSubproblem(subProblem);
 
-        variationDeNiveauxDeStockData
-          .insert({subPbCombo, GetPbInfo(subPbName).week, GetPbInfo(subPbName).scenario}, cost);
+        variationDeNiveauxDeStockData.insert({subPbCombo, subProblemId.week, subProblemId.year},
+                                             cost);
         std::cout << "Cost: " << cost << std::endl;
     }
 }
 
-/// @brief Process the subproblems in parallel using TBB over nbThreads
-/// @param subPbNames The list of subproblems names to process
-/// @param gridDefinition The grid definition to use
-/// @param nbThreads The number of threads to use
-void GridEvaluator::ProcessGridParallel(const std::vector<std::string>& subPbNames,
-                                        GridDefinition& gridDefinition,
-                                        int nbThreads)
-{
-    // Limiter TBB au nombre de cœurs physiques
-    tbb::global_control limit(tbb::global_control::max_allowed_parallelism, nbThreads);
-
-    tbb::parallel_for_each(subPbNames.begin(),
-                           subPbNames.end(),
-                           [&gridDefinition, this](const std::string& subPbName)
-                           { ProcessSubproblem(subPbName, gridDefinition); });
-}
-
 /// @brief Solve the subproblem and return the cost
-/// @param subPbWorker The subproblem worker
+/// @param problem The subproblem to solve
 /// @return The cost of the subproblem
-double GridEvaluator::SolveSubproblem(SubproblemWorkerPtr subPbWorker)
+double GridEvaluator::SolveSubproblem(std::shared_ptr<Problem> problem)
 {
     PlainData::SubProblemData subproblem_data;
     Timer subproblem_timer;
-    subPbWorker->solve(subproblem_data.lpstatus, ".", "", writer);
-    subPbWorker->get_value(subproblem_data.subproblem_cost);
+    problem->solve_lp();
+    subproblem_data.subproblem_cost = problem->get_lp_value();
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 
-    int nbSimplexIter;
-    subPbWorker->get_splex_num_of_ite_last(nbSimplexIter);
+    int nbSimplexIter = problem->get_splex_num_of_ite_last();
     std::cout << "nb simplex : " << nbSimplexIter << " / in " << subproblem_data.subproblem_timer
               << " seconds" << std::endl;
     totalSimplexIter += nbSimplexIter;
@@ -393,8 +305,7 @@ std::map<Output::PointWeekScenarioKey, double> GridEvaluator::ComputeCosts()
     // Time the Run time
     Timer run_timer;
 
-    auto subPbNames = InitSubProblems(gridDefinition);
-    Run(subPbNames, gridDefinition);
+    Run();
 
     auto run_time = run_timer.elapsed();
     std::cout << "Stock level variation done in " << run_time << " seconds and " << totalSimplexIter

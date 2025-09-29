@@ -40,13 +40,14 @@ public:
       unsigned int startWeek = 1,
       unsigned int endWeek = 52);
     virtual ~ProblemGenerationForWaterValueCalculation() = default;
-    UpdateProblemsResult updateProblems(const GridDefinition& gridDefinition);
+    std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> updateProblems(
+      const GridDefinition& gridDefinition);
 
 private:
-    std::filesystem::path CleanProblemsForBellmanCalculations(
-      const std::filesystem::path& xpansion_output_dir,
-      const std::filesystem::path& log_file_path,
-      const GridDefinition& gridDefinition);
+    std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
+    CleanProblemsForBellmanCalculations(const std::filesystem::path& xpansion_output_dir,
+                                        const std::filesystem::path& log_file_path,
+                                        const GridDefinition& gridDefinition);
 
     void cleanProblemForBellmanCalculations(std::shared_ptr<Problem> problem,
                                             std::string& pbName,

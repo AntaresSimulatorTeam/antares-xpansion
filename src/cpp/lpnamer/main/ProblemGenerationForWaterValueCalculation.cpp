@@ -90,8 +90,8 @@ ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalcula
 
 /// @brief Update the problems for the water value calculation
 /// @return The path to the output mps file and strat and end weeks
-UpdateProblemsResult ProblemGenerationForWaterValueCalculation::updateProblems(
-  const GridDefinition& gridDefinition)
+std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
+ProblemGenerationForWaterValueCalculation::updateProblems(const GridDefinition& gridDefinition)
 {
     using namespace std::string_literals;
 
@@ -102,24 +102,25 @@ UpdateProblemsResult ProblemGenerationForWaterValueCalculation::updateProblems(
                                                     std::cout,
                                                     "Problem Generation"s);
 
-    auto outputMpsPath = CleanProblemsForBellmanCalculations(directories.simulation_dir,
-                                                             log_file_path,
-                                                             gridDefinition);
+    auto modifiedProblems = CleanProblemsForBellmanCalculations(directories.simulation_dir,
+                                                                log_file_path,
+                                                                gridDefinition);
 
-    return {outputMpsPath, startWeek, endWeek};
+    return modifiedProblems;
 }
 
 /// @brief Clean the problems for the Bellman Values calculations
 /// @param xpansion_output_dir The output directory
 /// @param log_file_path The path to the log file
-/// @return The path to the output mps file
-std::filesystem::path
+/// @return The modified problems
+std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
 ProblemGenerationForWaterValueCalculation::CleanProblemsForBellmanCalculations(
   const std::filesystem::path& xpansion_output_dir,
   const std::filesystem::path& log_file_path,
   const GridDefinition& gridDefinition)
 {
     auto solver_log_manager = SolverLogManager(log_file_path);
+    std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> modifiedProblems;
 
     // Create directory for Bellman problems
     auto outputMpsPath = xpansion_output_dir / ("mps_" + std::to_string(gridDefinition.gridID));
@@ -138,12 +139,13 @@ ProblemGenerationForWaterValueCalculation::CleanProblemsForBellmanCalculations(
                           std::string pbName = "problem-" + std::to_string(pbId.year) + "-"
                                                + std::to_string(pbId.week) + "--optim-nb-1";
                           cleanProblemForBellmanCalculations(problem, pbName, gridDefinition, pbId);
+                          modifiedProblems[pbId] = problem;
 
                           problem->write_prob_mps(outputMpsPath / (pbName + ".mps"));
                       }
                   });
 
-    return outputMpsPath;
+    return modifiedProblems;
 }
 
 /// @brief Clean the problem for the Bellman Values calculations

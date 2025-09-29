@@ -17,19 +17,6 @@ using ConstraintMap = std::map<ConstraintName, std::vector<double>&>;
 /// @brief key area name, value constraint map
 using AreaConstraintMaps = std::map<AreaName, ConstraintMap>;
 
-/// @brief vector of maps (key constraint name, value rhs value)
-
-struct ScenarioAndWeek
-{
-    int scenario;
-    int week;
-
-    bool operator<(const ScenarioAndWeek& other) const
-    {
-        return std::tie(scenario, week) < std::tie(other.scenario, other.week);
-    }
-};
-
 struct GridElement
 {
     std::string problemName;

@@ -3,6 +3,8 @@
 
 #include <ranges>
 
+#include <antares/api/solver.h>
+
 #include "antares-xpansion/grid_evaluator/Interpolator.h"
 
 BellmanValues::BellmanValues(GridEvaluator& gridEvaluator,
@@ -36,24 +38,52 @@ auto linspace(double start, double end, int num)
     return std::vector<double>(result.begin(), result.end());
 }
 
+template<typename T>
+concept WeeklyProblemMap = requires { typename T::key_type; }
+                           && std::same_as<typename T::key_type, Antares::Solver::WeeklyProblemId>;
+
+template<WeeklyProblemMap MapType>
+std::set<unsigned int> getYears(const MapType& container)
+{
+    auto years_view = container | std::views::keys // take only the keys
+                      | std::views::transform([](const auto& id) { return id.year; });
+
+    return std::set<unsigned int>(years_view.begin(), years_view.end());
+}
+
+template<WeeklyProblemMap MapType>
+std::set<unsigned int> getWeeks(const MapType& container)
+{
+    auto weeks_view = container | std::views::keys
+                      | std::views::transform([](const auto& id) { return id.week; });
+
+    return std::set<unsigned int>(weeks_view.begin(), weeks_view.end());
+}
+
 /// @brief Compute the Bellman values
+/// @param nbLevels The levels discretization's number
 /// @return The bellman values for each week
-std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWeek, int nbLevels)
+std::vector<std::vector<double>> BellmanValues::compute(int nbLevels)
 {
     auto variationDeNiveauxDeStockData = gridEvaluator.ComputeCosts();
 
     levels = linspace(0.0, reservoirManagement.reservoir.capacity, nbLevels);
-    std::map<ScenarioAndWeek, std::vector<double>> V;
-    std::map<ScenarioAndWeek, std::vector<double>> costs;
+    std::map<Antares::Solver::WeeklyProblemId, std::vector<double>> V;
+    std::map<Antares::Solver::WeeklyProblemId, std::vector<double>> costs;
 
     for (const auto& [key, cost]: variationDeNiveauxDeStockData)
     {
         costs[{key.scenario - 1, key.week - 1}].push_back(cost);
     }
 
-    for (int scenario: gridEvaluator.scenarios)
+    auto scenarios = getYears(costs);
+    auto weeks = getWeeks(costs);
+    unsigned int startWeek = *weeks.begin();
+    unsigned int endWeek = *weeks.rbegin();
+
+    for (unsigned int scenario: scenarios)
     {
-        for (int week = startWeek - 1; week <= endWeek; ++week)
+        for (unsigned int week = startWeek; week <= endWeek + 1; ++week)
         {
             V[{scenario, week}] = std::vector<double>(levels.size(), 0.0);
         }
@@ -61,14 +91,14 @@ std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWe
         auto penalty_fn = reservoirManagement.get_penalty(endWeek, endWeek);
         for (int i_level = 0; i_level < levels.size(); ++i_level)
         {
-            V[{scenario, endWeek}][i_level] += penalty_fn(levels[i_level]);
+            V[{scenario, endWeek + 1}][i_level] += penalty_fn(levels[i_level]);
         }
     }
 
     auto gridDef = gridEvaluator.gridDefinition;
-    for (int week = endWeek - 1; week >= startWeek - 1; --week)
+    for (unsigned int week = endWeek + 1; week-- > startWeek;)
     {
-        for (int scenario: gridEvaluator.scenarios)
+        for (unsigned int scenario: scenarios)
         {
             auto V_fut = [this, &V, &week, &scenario]()
             {
@@ -76,8 +106,7 @@ std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWe
                 return [this, &V_vec, &week, &scenario](double x)
                 { return Interpolator::linearInterpolation(this->levels, V_vec)(x); };
             };
-            auto valuesVect = gridDef.weekAreaConstraints
-                                .at(week + 1) // 1-indexed
+            auto valuesVect = gridDef.weekAreaConstraints.at(week + 1)
                                 .at(gridDef.gridElements[0].area)
                                 .at(gridDef.gridElements[0].name);
             for (size_t i = 0; i < levels.size(); ++i)
@@ -87,7 +116,7 @@ std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWe
                                                          scenario,
                                                          levels[i],
                                                          levels,
-                                                         costs[{scenario - 1, week}],
+                                                         costs[{scenario, week}],
                                                          V_fut());
                 V[{scenario, week}][i] += Vu;
             }
@@ -96,21 +125,21 @@ std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWe
         for (int i = 0; i < levels.size(); ++i)
         {
             double sum = 0.0;
-            for (int scenario: gridEvaluator.scenarios)
+            for (unsigned int scenario: scenarios)
             {
                 sum += V[{scenario, week}][i];
             }
-            for (int scenario: gridEvaluator.scenarios)
+            for (unsigned int scenario: scenarios)
             {
-                V[{scenario, week}][i] = sum / gridEvaluator.scenarios.size();
+                V[{scenario, week}][i] = sum / scenarios.size();
             }
         }
     }
 
     std::vector<std::vector<double>> V_final;
-    for (int week = startWeek - 1; week <= endWeek; ++week)
+    for (unsigned int week = startWeek; week <= endWeek + 1; ++week)
     {
-        V_final.push_back(V[{*gridEvaluator.scenarios.begin(), week}]);
+        V_final.push_back(V[{*scenarios.begin(), week}]);
     }
 
     return V_final;
@@ -124,7 +153,6 @@ std::vector<std::vector<double>> BellmanValues::compute(int startWeek, int endWe
 /// @param X the discretization of the reservoir level
 /// @param costs the costs for each scenario and week
 /// @param V_fut the cost function for the next week
-/// @param breaking_points
 /// @return The Bellvalue for a given week and scenario and level of the reservoir
 double BellmanValues::solveWeeklyProblemWithReward(int week,
                                                    int endWeek,
@@ -139,11 +167,11 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
     auto costFn = Interpolator::linearInterpolation(
       gridEvaluator.gridDefinition.gridElements[0].rhsValues[week],
       costs);
-    auto penalty = reservoirManagement.get_penalty(week, endWeek)(level);
+    auto penalty = reservoirManagement.get_penalty(week, endWeek + 1)(level);
 
     for (double value_fut: X)
     {
-        double u = -value_fut + level + reservoir.inflow[week][scenario - 1];
+        double u = -value_fut + level + reservoir.inflow[week][scenario];
         if ((-reservoir.max_pumping[week] * reservoir.efficiency <= u)
             && (reservoirManagement.overflow || u <= reservoir.max_generating[week]))
         {
@@ -158,7 +186,7 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
 
     for (double u: gridEvaluator.gridDefinition.gridElements[0].rhsValues[week])
     {
-        double state_fut = level - u + reservoir.inflow[week][scenario - 1];
+        double state_fut = level - u + reservoir.inflow[week][scenario];
         if (0 <= state_fut && state_fut <= reservoir.capacity)
         {
             double G = costFn(u);
@@ -169,14 +197,13 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
         }
     }
 
-    if (week == endWeek - 1 && reservoirManagement.force_final_level)
+    if (week == endWeek && reservoirManagement.force_final_level)
     {
-        double uFinal = level + reservoir.inflow[week][scenario - 1]
-                        - reservoirManagement.final_level;
+        double uFinal = level + reservoir.inflow[week][scenario] - reservoirManagement.final_level;
         if (-reservoir.max_pumping[week] * reservoir.efficiency <= uFinal
             && uFinal <= reservoir.max_generating[week])
         {
-            double state_fut = level - uFinal + reservoir.inflow[week][scenario - 1];
+            double state_fut = level - uFinal + reservoir.inflow[week][scenario];
             if (costFn(uFinal) + V_fut(state_fut) + penalty < Vu)
             {
                 Vu = costFn(uFinal) + V_fut(state_fut) + penalty;
@@ -185,24 +212,22 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
     }
     else
     {
-        double uMin = level + reservoir.inflow[week][scenario - 1]
-                      - reservoir.bottom_rule_curve[week];
+        double uMin = level + reservoir.inflow[week][scenario] - reservoir.bottom_rule_curve[week];
         if (-reservoir.max_pumping[week] * reservoir.efficiency <= uMin
             && uMin <= reservoir.max_generating[week])
         {
-            double state_fut = level - uMin + reservoir.inflow[week][scenario - 1];
+            double state_fut = level - uMin + reservoir.inflow[week][scenario];
             if (costFn(uMin) + V_fut(state_fut) + penalty < Vu)
             {
                 Vu = costFn(uMin) + V_fut(state_fut) + penalty;
             }
         }
 
-        double uMax = level + reservoir.inflow[week][scenario - 1]
-                      - reservoir.upper_rule_curve[week];
+        double uMax = level + reservoir.inflow[week][scenario] - reservoir.upper_rule_curve[week];
         if (-reservoir.max_pumping[week] * reservoir.efficiency <= uMax
             && uMax <= reservoir.max_generating[week])
         {
-            double state_fut = level - uMax + reservoir.inflow[week][scenario - 1];
+            double state_fut = level - uMax + reservoir.inflow[week][scenario];
             if (costFn(uMax) + V_fut(state_fut) + penalty < Vu)
             {
                 Vu = costFn(uMax) + V_fut(state_fut) + penalty;

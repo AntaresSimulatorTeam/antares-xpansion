@@ -20,7 +20,6 @@ class BellmanValuesComputeTest: public ::testing::Test
 public:
     Logger logger;
     std::shared_ptr<MathLoggerDriver> mathLoggerDriver;
-    std::shared_ptr<Output::JsonWriter> writer;
     std::filesystem::path tmpDir;
     const std::filesystem::path data_test_dir = "data_test";
     const std::string solverName = "xpress";
@@ -29,8 +28,6 @@ protected:
     void SetUp() override
     {
         logger = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
-        writer = std::make_shared<Output::JsonWriter>(std::make_shared<Clock>(),
-                                                      std::tmpnam(nullptr));
         original_dir = std::filesystem::current_path();
     }
 
@@ -50,9 +47,10 @@ protected:
                                 | std::filesystem::copy_options::update_existing);
     }
 
-    std::map<ScenarioAndWeek, std::vector<double>> getOutputCosts(std::string fileName)
+    std::map<Antares::Solver::WeeklyProblemId, std::vector<double>> getOutputCosts(
+      std::string fileName)
     {
-        std::map<ScenarioAndWeek, std::vector<double>> costs;
+        std::map<Antares::Solver::WeeklyProblemId, std::vector<double>> costs;
         std::ifstream file(tmpDir / fileName);
         std::string line;
         while (std::getline(file, line))
@@ -60,8 +58,8 @@ protected:
             std::stringstream ss(line);
             std::string token;
             std::vector<std::string> tokens;
-            int week = 1;
-            int scenario = 1;
+            unsigned int week = 1;
+            unsigned int scenario = 1;
             while (std::getline(ss, token, ','))
             {
                 costs[{scenario, week}].push_back(std::stod(token));
@@ -76,15 +74,8 @@ protected:
     struct GridEvaluatorMock: public GridEvaluator
     {
         GridEvaluatorMock():
-            GridEvaluator(nullptr,
-                          nullptr,
-                          "mockPath",
-                          gridDef,
-                          ProblemsFormat::MPS_FILE,
-                          "mockSolver",
-                          0)
+            GridEvaluator(nullptr, {}, gridDef, "mockSolver", 0)
         {
-            scenarios = {1};
         }
 
         std::map<Output::PointWeekScenarioKey, double> ComputeCosts() override
@@ -145,7 +136,7 @@ protected:
 TEST_F(BellmanValuesComputeTest, unitTestNoPenalties)
 {
     ReservoirManagement reservoirManagement(evaluatorMock.reservoirMock, 0, 0, 0);
-    auto bellmanValues = BellmanValues(evaluatorMock, reservoirManagement).compute(1, 3, 6);
+    auto bellmanValues = BellmanValues(evaluatorMock, reservoirManagement).compute(6);
 
     std::vector<std::vector<double>> expected = {{180, 140, 100, 60, 60, 60},
                                                  {120, 80, 40, 40, 40, 40},
@@ -158,7 +149,7 @@ TEST_F(BellmanValuesComputeTest, unitTestNoPenalties)
 TEST_F(BellmanValuesComputeTest, unitTestPenalties)
 {
     ReservoirManagement reservoirManagement(evaluatorMock.reservoirMock, 10, 10, 0);
-    auto bellmanValues = BellmanValues(evaluatorMock, reservoirManagement).compute(1, 3, 6);
+    auto bellmanValues = BellmanValues(evaluatorMock, reservoirManagement).compute(6);
 
     std::vector<std::vector<double>> expected = {{1220, 180, 140, 100, 60, 1060},
                                                  {1160, 120, 80, 40, 40, 1040},
@@ -171,7 +162,7 @@ TEST_F(BellmanValuesComputeTest, unitTestPenalties)
 TEST_F(BellmanValuesComputeTest, unitTestPenaltiesWithFinalLevel)
 {
     ReservoirManagement reservoirManagement(evaluatorMock.reservoirMock, 10, 10, 30, true, 400);
-    auto bellmanValues = BellmanValues(evaluatorMock, reservoirManagement).compute(1, 3, 6);
+    auto bellmanValues = BellmanValues(evaluatorMock, reservoirManagement).compute(6);
 
     std::vector<std::vector<double>> expected = {{4300, 300, 260, 220, 180, 1140},
                                                  {7200, 3200, 200, 160, 120, 1080},
@@ -201,16 +192,10 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
     ProblemGenerationForWaterValueCalculation pbg(config_dirs, reservoir_management, solverName);
     auto problems = pbg.updateProblems(grid);
 
-    auto evaluator = GridEvaluator(logger,
-                                   writer,
-                                   problems.outputPath,
-                                   grid,
-                                   ProblemsFormat::MPS_FILE,
-                                   solverName,
-                                   8);
-    auto res = BellmanValues(evaluator, reservoir_management).compute(1, 52, 11);
+    auto evaluator = GridEvaluator(logger, problems, grid, solverName, 8);
+    auto res = BellmanValues(evaluator, reservoir_management).compute(11);
 
-    for (int week = 1; week < res.size(); week++)
+    for (unsigned int week = 1; week < res.size(); week++)
     {
         for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
         {
@@ -245,16 +230,10 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
     ProblemGenerationForWaterValueCalculation pbg(config_dirs, reservoir_management, solverName);
     auto problems = pbg.updateProblems(grid);
 
-    auto evaluator = GridEvaluator(logger,
-                                   writer,
-                                   problems.outputPath,
-                                   grid,
-                                   ProblemsFormat::MPS_FILE,
-                                   solverName,
-                                   8);
-    auto res = BellmanValues(evaluator, reservoir_management).compute(1, 52, 11);
+    auto evaluator = GridEvaluator(logger, problems, grid, solverName, 8);
+    auto res = BellmanValues(evaluator, reservoir_management).compute(11);
 
-    for (int week = 1; week < res.size(); week++)
+    for (unsigned int week = 1; week < res.size(); week++)
     {
         for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
         {
@@ -290,16 +269,10 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenaltiesWithFinalLevel)
     ProblemGenerationForWaterValueCalculation pbg(config_dirs, reservoir_management, solverName);
     auto problems = pbg.updateProblems(grid);
 
-    auto evaluator = GridEvaluator(logger,
-                                   writer,
-                                   problems.outputPath,
-                                   grid,
-                                   ProblemsFormat::MPS_FILE,
-                                   solverName,
-                                   8);
-    auto res = BellmanValues(evaluator, reservoir_management).compute(1, 52, 11);
+    auto evaluator = GridEvaluator(logger, problems, grid, solverName, 8);
+    auto res = BellmanValues(evaluator, reservoir_management).compute(11);
 
-    for (int week = 1; week < res.size(); week++)
+    for (unsigned int week = 1; week < res.size(); week++)
     {
         for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
         {

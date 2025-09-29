@@ -166,8 +166,6 @@ int main(int argc, char** argv)
         auto loggerFactory = FileAndStdoutLoggerFactory(directories.simulation_dir / "log.txt",
                                                         false);
         Logger logger = loggerFactory.get_logger();
-        auto writer = std::make_shared<Output::JsonWriter>(std::make_shared<Clock>(),
-                                                           studyPath / "output.json");
 
         std::cout << "Generating problems" << std::endl;
         ProblemGenerationForWaterValueCalculation pbg(directories,
@@ -182,17 +180,9 @@ int main(int argc, char** argv)
         {
             auto problems = pbg.updateProblems(grid);
 
-            auto evaluator = GridEvaluator(logger,
-                                           writer,
-                                           problems.outputPath,
-                                           grid,
-                                           ProblemsFormat::MPS_FILE,
-                                           solverName,
-                                           nbThreads);
+            auto evaluator = GridEvaluator(logger, problems, grid, solverName, nbThreads);
             auto bellmanValuesEvaluator = BellmanValues(evaluator, reservoirManagement);
-            auto bellmanValues = bellmanValuesEvaluator.compute(problems.startWeek,
-                                                                problems.endWeek,
-                                                                nbLevels);
+            auto bellmanValues = bellmanValuesEvaluator.compute(nbLevels);
             auto levels = bellmanValuesEvaluator.getLevels();
             if (antaresFormat)
             {
