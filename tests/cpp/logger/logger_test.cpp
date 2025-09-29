@@ -1075,6 +1075,7 @@ TEST(MathLoggerBendersByBatchTest, DataInFileLong)
 
 TEST(MathLoggerBendersByBatchTest, DataInStdOutShort)
 {
+    HEADERSTYPE headers_type = HEADERSTYPE::SHORT;
     std::streamsize width = 25;
 
     CurrentIterationData data;
@@ -1194,6 +1195,7 @@ TEST(MathLoggerBendersBaseTest, DataInFileLong)
 
 TEST(MathLoggerBendersBaseTest, DataInStdOutShort)
 {
+    HEADERSTYPE headers_type = HEADERSTYPE::SHORT;
     std::streamsize width = 25;
 
     CurrentIterationData data;
