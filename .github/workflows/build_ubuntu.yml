@@ -18,6 +18,7 @@ on:
 env:
   GITHUB_TOKEN: ${{ github.token }}
   PYTHON_VERSION: "3.10"
+  VCPKG_FEATURE_FLAGS: dependencygraph
 
 jobs:
   build:
