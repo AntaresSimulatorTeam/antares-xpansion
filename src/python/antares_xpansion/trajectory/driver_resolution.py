@@ -125,10 +125,9 @@ class TrajectoryResolutionDriver:
         # Implement previously non-implemented options with safe guards
         # LAST_ITERATION_JSON_FILE: use output folder default if present
         last_iter_json = self.data.output_folder / config_defaults.LAST_ITERATION_JSON_FILE_NAME
-        if last_iter_json.exists():
-            options_values[OptimisationKeys.last_iteration_json_file_key()] = (
-                last_iter_json.resolve().__str__()
-            )
+        options_values[OptimisationKeys.last_iteration_json_file_key()] = (
+            last_iter_json.resolve().__str__()
+        )
 
         # LAST_MASTER_MPS and LAST_MASTER_BASIS: warm start files if present in input_root
         # Try solver-specific extensions for last master mps/svf
