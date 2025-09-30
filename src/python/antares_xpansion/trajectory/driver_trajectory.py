@@ -45,10 +45,10 @@ class TrajectoryInvestmentDriver:
         )
         # Prepare intermediary file names
         self.master_merger_info_file = (
-            self.intermediary_folder_path / self.config.MASTER_MERGER_INFO_FILE
+                self.intermediary_folder_path / self.config.MASTER_MERGER_INFO_FILE
         )
         self.nodal_lp_info_file = (
-            self.intermediary_folder_path / self.config.NODAL_LP_INFO_FILE
+                self.intermediary_folder_path / self.config.NODAL_LP_INFO_FILE
         )
         self.merged_weights_file = self.config.input_root / self.config.MERGED_WEIGHTS
 
