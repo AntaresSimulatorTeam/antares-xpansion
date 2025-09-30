@@ -38,11 +38,13 @@ ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalcula
   const ReservoirManagement& reservoirManagement,
   std::string solverName,
   unsigned int startWeek,
-  unsigned int endWeek):
+  unsigned int endWeek,
+  bool writePbFiles):
     directories(directories),
     reservoirManagement(reservoirManagement),
     startWeek(startWeek),
-    endWeek(endWeek)
+    endWeek(endWeek),
+    writePbFiles(writePbFiles)
 {
     Antares::Solver::Optimization::OptimizationOptions optOptions;
     optOptions.firstOptimOptions.solverName = solverName;
@@ -89,7 +91,7 @@ ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalcula
 }
 
 /// @brief Update the problems for the water value calculation
-/// @return The path to the output mps file and strat and end weeks
+/// @return The modified problems
 std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
 ProblemGenerationForWaterValueCalculation::updateProblems(const GridDefinition& gridDefinition)
 {
@@ -141,7 +143,10 @@ ProblemGenerationForWaterValueCalculation::CleanProblemsForBellmanCalculations(
                           cleanProblemForBellmanCalculations(problem, pbName, gridDefinition, pbId);
                           modifiedProblems[pbId] = problem;
 
-                          problem->write_prob_mps(outputMpsPath / (pbName + ".mps"));
+                          if (writePbFiles)
+                          {
+                              problem->write_prob_mps(outputMpsPath / (pbName + ".mps"));
+                          }
                       }
                   });
 

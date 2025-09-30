@@ -149,6 +149,7 @@ int main(int argc, char** argv)
         int endWeek = optionsParser.EndWeek();
         int nbLevels = optionsParser.NbLevels();
         bool antaresFormat = optionsParser.AntaresFormat();
+        bool writePbFiles = optionsParser.WritePbFiles();
 
         auto gridCollection = std::make_shared<GridCollection>(studyPath / "grid.csv");
 
@@ -172,7 +173,8 @@ int main(int argc, char** argv)
                                                       reservoirManagement,
                                                       solverName,
                                                       startWeek,
-                                                      endWeek);
+                                                      endWeek,
+                                                      writePbFiles);
         std::cout << "Problems generated" << std::endl;
 
         Output::VariationDeNiveauxDeStockData variationDeNiveauxDeStockData;

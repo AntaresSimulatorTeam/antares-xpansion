@@ -38,7 +38,8 @@ public:
       const ReservoirManagement& reservoirManagement,
       std::string solverName = "xpress",
       unsigned int startWeek = 1,
-      unsigned int endWeek = 52);
+      unsigned int endWeek = 52,
+      bool savePbFiles = false);
     virtual ~ProblemGenerationForWaterValueCalculation() = default;
     std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> updateProblems(
       const GridDefinition& gridDefinition);
@@ -62,4 +63,5 @@ private:
     const ReservoirManagement& reservoirManagement;
     unsigned int startWeek;
     unsigned int endWeek;
+    bool writePbFiles;
 };

@@ -14,6 +14,7 @@ private:
     int endWeek_;
     int nbLevels_;
     bool antaresFormat_;
+    bool writePbFiles_;
 
 public:
     BellmanValuesExeOptions();
@@ -53,5 +54,10 @@ public:
     bool AntaresFormat() const
     {
         return antaresFormat_;
+    }
+
+    bool WritePbFiles() const
+    {
+        return writePbFiles_;
     }
 };

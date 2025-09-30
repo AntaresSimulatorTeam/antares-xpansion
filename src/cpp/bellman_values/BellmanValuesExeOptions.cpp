@@ -25,5 +25,8 @@ BellmanValuesExeOptions::BellmanValuesExeOptions():
       "Number of levels (optional, default is 10)")(
       "antares-format",
       po::value<bool>(&antaresFormat_)->default_value(false),
-      "Output in Antares format (optional, default is false)");
+      "Output in Antares format (optional, default is false)")(
+      "write-pb-files",
+      po::value<bool>(&writePbFiles_)->default_value(false),
+      "Write MPS or SVF files to disk (optional, default is false)");
 }
