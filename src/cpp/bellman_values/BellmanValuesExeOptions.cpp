@@ -26,7 +26,11 @@ BellmanValuesExeOptions::BellmanValuesExeOptions():
       "antares-format",
       po::value<bool>(&antaresFormat_)->default_value(false),
       "Output in Antares format (optional, default is false)")(
-      "write-pb-files",
+      "keepMps",
       po::value<bool>(&writePbFiles_)->default_value(false),
-      "Write MPS or SVF files to disk (optional, default is false)");
+      "Write MPS or SVF files to disk (optional, default is false)")(
+      "problem-format",
+      po::value<std::string>(&problemFormat_)->default_value("OPTIMIZED"),
+      "Format to save problem files to (optional, default is OPTIMIZED). Possible values are: MPS, "
+      "OPTIMIZED");
 }

@@ -81,11 +81,22 @@ Default value: `false`.
 
 If true, the output will be in the Antares format (values will be interpolated to get 101 levels of stock).
 
-#### `--write-pb-files <bool>`
+#### `--keepMps <bool>`
 
 Default value: `false`.
 
-If true, an MPS file for each considered problem will be written to disk (location is `<study>/output/<run>/mps_n`).
+If true, a file (.mps or .svf, see below) for each solved problem will be written to disk (location is `<study>/output/<run>/mps_n`).
+
+#### `--problem-format {mps, optimized}`
+
+Default value: `optimized`.
+
+Selects the storage format of the generated mathematical problems (master + subproblems):
+
+- OPTIMIZED (default) : use underlying solver to write problems in an optimized format to reduce disk space usage and I/O time. The underlying format depends on the solver used.
+  - XPRESS : svf format: compressed binary format.
+  - COIN : unsupported. Falls back to MPS.
+- MPS : write the problems in MPS format, which is a standard format for mathematical programming problems.
 
 ## Workflow
 

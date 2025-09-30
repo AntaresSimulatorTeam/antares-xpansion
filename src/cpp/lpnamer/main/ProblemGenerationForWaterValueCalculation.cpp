@@ -36,15 +36,17 @@ static void CreateDirectories(const std::filesystem::path& output_path)
 ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalculation(
   ConfigurationManager::ConfigDirectories directories,
   const ReservoirManagement& reservoirManagement,
-  std::string solverName,
+  const std::string& solverName,
   unsigned int startWeek,
   unsigned int endWeek,
-  bool writePbFiles):
+  bool writePbFiles,
+  const std::string& problemFormat):
     directories(directories),
     reservoirManagement(reservoirManagement),
     startWeek(startWeek),
     endWeek(endWeek),
-    writePbFiles(writePbFiles)
+    writePbFiles(writePbFiles),
+    problemFormat(problemsFormatFromString(problemFormat))
 {
     Antares::Solver::Optimization::OptimizationOptions optOptions;
     optOptions.firstOptimOptions.solverName = solverName;
@@ -145,7 +147,17 @@ ProblemGenerationForWaterValueCalculation::CleanProblemsForBellmanCalculations(
 
                           if (writePbFiles)
                           {
-                              problem->write_prob_mps(outputMpsPath / (pbName + ".mps"));
+                              switch (problemFormat)
+                              {
+                              case ProblemsFormat::MPS_FILE:
+                                  problem->write_prob_mps(outputMpsPath / (pbName + ".mps"));
+                                  break;
+                              case ProblemsFormat::OPTIMIZED:
+                                  problem->save_prob(outputMpsPath / (pbName + ".svf"));
+                                  break;
+                                  // potential errors are handled by
+                                  // problemsFormatFromString in constructor
+                              }
                           }
                       }
                   });

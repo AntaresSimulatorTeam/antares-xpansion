@@ -150,6 +150,7 @@ int main(int argc, char** argv)
         int nbLevels = optionsParser.NbLevels();
         bool antaresFormat = optionsParser.AntaresFormat();
         bool writePbFiles = optionsParser.WritePbFiles();
+        const std::string problemFormat = optionsParser.ProblemFormat();
 
         auto gridCollection = std::make_shared<GridCollection>(studyPath / "grid.csv");
 
@@ -174,7 +175,8 @@ int main(int argc, char** argv)
                                                       solverName,
                                                       startWeek,
                                                       endWeek,
-                                                      writePbFiles);
+                                                      writePbFiles,
+                                                      problemFormat);
         std::cout << "Problems generated" << std::endl;
 
         Output::VariationDeNiveauxDeStockData variationDeNiveauxDeStockData;

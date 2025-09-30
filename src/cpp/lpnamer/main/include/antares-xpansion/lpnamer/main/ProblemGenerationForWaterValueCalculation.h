@@ -12,6 +12,7 @@
 
 #include "ConfigurationManager.h"
 #include "ProblemGenerationOptions.h"
+#include "antares-xpansion/core/ProblemFormat.h"
 #include "antares-xpansion/grid_evaluator/GridCollection.h"
 #include "antares-xpansion/helpers/ArchiveReader.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
@@ -22,24 +23,17 @@
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 #include "antares-xpansion/multisolver_interface/SolverConfig.h"
 
-// temporay before refactoring and using the problems in memory
-struct UpdateProblemsResult
-{
-    std::filesystem::path outputPath;
-    unsigned int startWeek;
-    unsigned int endWeek;
-};
-
 class ProblemGenerationForWaterValueCalculation
 {
 public:
     explicit ProblemGenerationForWaterValueCalculation(
       ConfigurationManager::ConfigDirectories directories,
       const ReservoirManagement& reservoirManagement,
-      std::string solverName = "xpress",
+      const std::string& solverName = "xpress",
       unsigned int startWeek = 1,
       unsigned int endWeek = 52,
-      bool savePbFiles = false);
+      bool savePbFiles = false,
+      const std::string& problemFormat = "OPTIMIZED");
     virtual ~ProblemGenerationForWaterValueCalculation() = default;
     std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> updateProblems(
       const GridDefinition& gridDefinition);
@@ -64,4 +58,5 @@ private:
     unsigned int startWeek;
     unsigned int endWeek;
     bool writePbFiles;
+    ProblemsFormat problemFormat;
 };

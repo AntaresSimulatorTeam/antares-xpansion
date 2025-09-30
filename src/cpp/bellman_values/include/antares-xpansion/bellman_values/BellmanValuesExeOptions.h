@@ -15,6 +15,7 @@ private:
     int nbLevels_;
     bool antaresFormat_;
     bool writePbFiles_;
+    std::string problemFormat_;
 
 public:
     BellmanValuesExeOptions();
@@ -59,5 +60,10 @@ public:
     bool WritePbFiles() const
     {
         return writePbFiles_;
+    }
+
+    std::string ProblemFormat() const
+    {
+        return problemFormat_;
     }
 };
