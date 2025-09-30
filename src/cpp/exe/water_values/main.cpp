@@ -71,6 +71,11 @@ void saveValues(const std::filesystem::path& path,
 
     if (usingAntaresFormat)
     {
+        // padding with a line of 0 for each level
+        for (int levelIdx = 0; levelIdx < values[0].size(); ++levelIdx)
+        {
+            file << "0\t";
+        }
         file << '\n';
     }
     for (const auto& weekValues: values)
@@ -82,7 +87,7 @@ void saveValues(const std::filesystem::path& path,
             {
                 for (const auto& value: values)
                 {
-                    file << value << " ";
+                    file << value << '\t';
                 }
                 if (i != 6)
                 {
