@@ -1,6 +1,7 @@
 # Water values computation
 
 The inputs for the computation of the water values are:
+
 - a study
 - a grid defined by a grid.csv file at the root of the study
 
@@ -13,6 +14,7 @@ Here is an example of a grid.csv file:
 |0|all|constraint|HydroPower|area|0|1|0.1|
 
 with the following columns:
+
 - `grid_id`: the ID of the grid
 - `problem_name`: the name of the problem (`all` if all the problems are considered)
 - `type`: the type of the constraint (`constraint` or `variable`)
@@ -30,7 +32,8 @@ with the following columns:
     You can launch a command line prompt by typing `cmd` in the path.
 
 2. Run `water-values.exe` and choose the path to the Antares study with the `--study` parameter :
-    ```
+
+    ```cmd
     water_values_exe --study data_test/one_node_base
     ```
 
@@ -77,6 +80,12 @@ Number of levels of the stock.
 Default value: `false`.
 
 If true, the output will be in the Antares format (values will be interpolated to get 101 levels of stock).
+
+#### `--write-pb-files <bool>`
+
+Default value: `false`.
+
+If true, an MPS file for each considered problem will be written to disk (location is `<study>/output/<run>/mps_n`).
 
 ## Workflow
 
