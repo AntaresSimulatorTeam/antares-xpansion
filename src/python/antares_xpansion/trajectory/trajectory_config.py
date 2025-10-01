@@ -1,10 +1,9 @@
+import os
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 
 from antares_xpansion.xpansionConfig import ConfigParameters
-
-import sys
-import os
 
 
 @dataclass
@@ -48,9 +47,9 @@ class TrajectoryConfigDefaults:
 
 class TrajectoryConfig(TrajectoryConfigDefaults):
     def __init__(
-        self,
-        input_parameters: TrajectoryInputParameters,
-        install_parameters: ConfigParameters,
+            self,
+            input_parameters: TrajectoryInputParameters,
+            install_parameters: ConfigParameters,
     ):
         super().__init__()
         # Args inputted by the user
@@ -77,7 +76,7 @@ class TrajectoryConfig(TrajectoryConfigDefaults):
     def _initialize_install_dir_with_default_value(self):
         if getattr(sys, "frozen", False):
             install_dir_inside_package = (
-                Path(os.path.abspath(__file__)).parent.parent / "bin"
+                    Path(os.path.abspath(__file__)).parent.parent / "bin"
             )
             install_dir_next_to_package = Path(sys.executable).parent / "bin"
             if Path.is_dir(install_dir_inside_package):
