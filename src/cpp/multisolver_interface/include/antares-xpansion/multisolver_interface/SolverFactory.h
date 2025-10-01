@@ -41,6 +41,7 @@ class SolverFactory
 {
 private:
     std::vector<std::string> _available_solvers;
+    bool _is_xpress_available = false; // remplacé ancien isXpress_available_
 
 public:
     /**
@@ -58,14 +59,17 @@ public:
      * @param solver_type : Type of the solver {INTEGER, CONTINUOUS}
      * @param log_manager : A logger
      */
-    std::shared_ptr<SolverAbstract> create_solver(const std::string& solver_name) const;
-    std::shared_ptr<SolverAbstract> create_solver(const std::string& solver_name,
-                                                  const SolverLogManager& log_manager) const;
-    std::shared_ptr<SolverAbstract> create_solver(const std::string& solver_name,
-                                                  SOLVER_TYPE solver_type) const;
-    std::shared_ptr<SolverAbstract> create_solver(const std::string& solver_name,
-                                                  SOLVER_TYPE solver_type,
-                                                  const SolverLogManager& log_manager) const;
+    [[nodiscard]] std::shared_ptr<SolverAbstract> create_solver(
+      const std::string& solver_name) const;
+    [[nodiscard]] std::shared_ptr<SolverAbstract> create_solver(
+      const std::string& solver_name,
+      const SolverLogManager& log_manager) const;
+    [[nodiscard]] std::shared_ptr<SolverAbstract> create_solver(const std::string& solver_name,
+                                                                SOLVER_TYPE solver_type) const;
+    [[nodiscard]] std::shared_ptr<SolverAbstract> create_solver(
+      const std::string& solver_name,
+      SOLVER_TYPE solver_type,
+      const SolverLogManager& log_manager) const;
 
     /**
      * @brief Creates and returns to an object solver from the wanted
@@ -75,14 +79,17 @@ public:
      * @param solver_type : Type of the solver {INTEGER, CONTINUOUS}
      * @param log_manager : A logger
      */
-    std::shared_ptr<SolverAbstract> create_solver(const SolverConfig& solver_config) const;
-    std::shared_ptr<SolverAbstract> create_solver(const SolverConfig& solver_config,
-                                                  SOLVER_TYPE solver_type) const;
-    std::shared_ptr<SolverAbstract> create_solver(const SolverConfig& solver_config,
-                                                  const SolverLogManager& log_manager) const;
-    std::shared_ptr<SolverAbstract> create_solver(const SolverConfig& solver_config,
-                                                  SOLVER_TYPE solver_type,
-                                                  const SolverLogManager& log_manager) const;
+    [[nodiscard]] std::shared_ptr<SolverAbstract> create_solver(
+      const SolverConfig& solver_config) const;
+    [[nodiscard]] std::shared_ptr<SolverAbstract> create_solver(const SolverConfig& solver_config,
+                                                                SOLVER_TYPE solver_type) const;
+    [[nodiscard]] std::shared_ptr<SolverAbstract> create_solver(
+      const SolverConfig& solver_config,
+      const SolverLogManager& log_manager) const;
+    [[nodiscard]] std::shared_ptr<SolverAbstract> create_solver(
+      const SolverConfig& solver_config,
+      SOLVER_TYPE solver_type,
+      const SolverLogManager& log_manager) const;
 
     /**
      * @brief Copy constructor : Creates and returns to an object solver from the
@@ -90,14 +97,17 @@ public:
      *
      * @param to_copy : solver to copy
      */
-    std::shared_ptr<SolverAbstract> copy_solver(const SolverAbstract& to_copy) const;
+    static std::shared_ptr<SolverAbstract> copy_solver(const SolverAbstract& to_copy);
 
     /**
      * @brief Returns a reference to the list of available solvers
      */
-    const std::vector<std::string>& get_solvers_list() const;
+    [[nodiscard]] const std::vector<std::string>& get_solvers_list() const;
 
-    bool isXpress_available_ = false;
+    [[nodiscard]] bool is_xpress_available() const noexcept
+    {
+        return _is_xpress_available;
+    }
 
     std::shared_ptr<ILoggerXpansion> logger_;
 };

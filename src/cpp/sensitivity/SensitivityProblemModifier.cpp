@@ -29,11 +29,10 @@ void change_objective(std::shared_ptr<SolverAbstract> solver_model, const std::v
 std::shared_ptr<SolverAbstract> SensitivityProblemModifier::changeProblem(
   unsigned int nb_candidates) const
 {
-    SolverFactory factory;
-    std::shared_ptr<SolverAbstract> sensitivity_model = factory.copy_solver(*last_master);
-    std::vector<double> obj = get_cost_vector(*last_master, nb_candidates);
+    auto sensitivity_model = SolverFactory::copy_solver(*last_master);
+    const std::vector<double> obj = get_cost_vector(*last_master, nb_candidates);
 
-    add_near_optimal_cost_constraint(*(sensitivity_model.get()));
+    add_near_optimal_cost_constraint(*sensitivity_model);
     change_objective(sensitivity_model, obj);
 
     return sensitivity_model;

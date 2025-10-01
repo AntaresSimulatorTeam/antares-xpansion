@@ -17,6 +17,7 @@ class ResumeStudyData:
     benders_options_file: str
     benders_exe: str
     merge_mps_exe: str
+    # TODO Add something to ResumeStudy as well
 
 
 class ResumeStudy:

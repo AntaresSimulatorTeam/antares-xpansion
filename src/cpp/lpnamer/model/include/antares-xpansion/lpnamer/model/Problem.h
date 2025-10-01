@@ -143,6 +143,17 @@ public:
         solver_abstract_->get_rhs_range(range, first, last);
     }
 
+    void get_cols(int* mstart,
+                  int* mrwind,
+                  double* dmatval,
+                  int size,
+                  int* nels,
+                  int first,
+                  int last) const override
+    {
+        solver_abstract_->get_cols(mstart, mrwind, dmatval, size, nels, first, last);
+    }
+
     void get_col_type(char* coltype, int first, int last) const override
     {
         solver_abstract_->get_col_type(coltype, first, last);
@@ -168,7 +179,7 @@ public:
         return solver_abstract_->get_col_index(name);
     }
 
-    std::vector<std::string> get_row_names(int first, int last) override
+    std::vector<std::string> get_row_names(int first, int last) const override
     {
         return solver_abstract_->get_row_names(first, last);
     }
@@ -178,7 +189,7 @@ public:
         return solver_abstract_->get_row_names();
     }
 
-    std::vector<std::string> get_col_names(int first, int last) override
+    std::vector<std::string> get_col_names(int first, int last) const override
     {
         return solver_abstract_->get_col_names(first, last);
     }
@@ -355,6 +366,21 @@ public:
     void set_basis(std::span<int> rstatus, std::span<int> cstatus) override
     {
         solver_abstract_->set_basis(rstatus, cstatus);
+    }
+
+    void get_presolve_map(int* rowmap, int* colmap) const override
+    {
+        solver_abstract_->get_presolve_map(rowmap, colmap);
+    }
+
+    void presolve_only() override
+    {
+        solver_abstract_->presolve_only();
+    }
+
+    void mark_indices_to_keep_presolve(int nrows, int ncols, int* rowind, int* colind) override
+    {
+        solver_abstract_->mark_indices_to_keep_presolve(nrows, ncols, rowind, colind);
     }
 
     void save_prob(const std::filesystem::path& filename) override;

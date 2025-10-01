@@ -360,6 +360,18 @@ void SolverCbc::get_rhs_range(double* range, int first, int last) const
     throw NotImplementedFeatureSolverException(buffer.str());
 }
 
+void SolverCbc::get_cols(int* mstart,
+                         int* mrwind,
+                         double* dmatval,
+                         int size,
+                         int* nels,
+                         int first,
+                         int last) const
+{
+    auto error = LOGLOCATION + "ERROR : get_cols not implemented in the CBC interface.";
+    throw NotImplementedFeatureSolverException(error);
+}
+
 void SolverCbc::get_col_type(char* coltype, int first, int last) const
 {
     const double* colLower = _clp_inner_solver.getColLower();
@@ -437,13 +449,14 @@ int SolverCbc::get_col_index(const std::string& name)
     }
 }
 
-std::vector<std::string> SolverCbc::get_row_names(int first, int last)
+std::vector<std::string> SolverCbc::get_row_names(int first, int last) const
 {
     int size = 1 + last - first;
     std::vector<std::string> names;
     names.reserve(size);
 
-    std::vector<std::string> solver_row_names = _clp_inner_solver.getRowNames();
+    std::vector<std::string>
+      solver_row_names = const_cast<OsiClpSolverInterface&>(_clp_inner_solver).getRowNames();
     if (solver_row_names.size() < size)
     {
         throw InvalidRowSizeException(size, solver_row_names.size(), LOGLOCATION);
@@ -461,13 +474,14 @@ std::vector<std::string> SolverCbc::get_row_names()
     return _clp_inner_solver.getRowNames();
 }
 
-std::vector<std::string> SolverCbc::get_col_names(int first, int last)
+std::vector<std::string> SolverCbc::get_col_names(int first, int last) const
 {
     int size = 1 + last - first;
     std::vector<std::string> names;
     names.reserve(size);
 
-    std::vector<std::string> solver_col_names = _clp_inner_solver.getColNames();
+    std::vector<std::string>
+      solver_col_names = const_cast<OsiClpSolverInterface&>(_clp_inner_solver).getColNames();
     if (solver_col_names.size() < size)
     {
         throw InvalidColSizeException(size, solver_col_names.size(), LOGLOCATION);
@@ -922,4 +936,20 @@ void SolverCbc::save_prob(const std::filesystem::path& filename)
 void SolverCbc::restore_prob(const std::filesystem::path& filename)
 {
     read_prob_mps(filename);
+}
+
+void SolverCbc::mark_indices_to_keep_presolve(int, int, int*, int*)
+{
+    throw NotImplementedFeatureSolverException(
+      "mark_indices_to_keep_presolve is not supported for CBC solver");
+}
+
+void SolverCbc::presolve_only()
+{
+    throw NotImplementedFeatureSolverException("presolve_only is not supported for CBC solver");
+}
+
+void SolverCbc::get_presolve_map(int*, int*) const
+{
+    throw NotImplementedFeatureSolverException("get_presolve_map is not supported for CBC solver");
 }

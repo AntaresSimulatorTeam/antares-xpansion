@@ -16,5 +16,6 @@ add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/antares_archive_updater")
 
 add_subdirectory ("${CMAKE_CURRENT_SOURCE_DIR}/benders")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/outer_loop")
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/presolve")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/multiple_problem_generation")
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/merge-weights-trajectory")
