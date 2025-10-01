@@ -1,7 +1,7 @@
 Feature: Multi-year investment problem
 	# TODO : add even simpler tests where the solution can be understood and computed by hand
 
-	@slow @short @full-launch
+	@slow @short @full-launch @noci
 	Scenario: Solve Simple tree multi-year study
 		Given the study path is "data_test/trajectory/simple_tree"
 		When I run antares-xpansion in trajectory
