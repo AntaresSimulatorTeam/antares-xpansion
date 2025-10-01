@@ -3,6 +3,7 @@
 
 #include "antares-xpansion/bellman_values/BellmanValues.h"
 #include "antares-xpansion/bellman_values/BellmanValuesExeOptions.h"
+#include "antares-xpansion/bellman_values/PenaltiesConfigReader.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
 #include "antares-xpansion/lpnamer/main/ProblemGenerationForWaterValueCalculation.h"
 #include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
@@ -159,11 +160,19 @@ int main(int argc, char** argv)
 
         auto gridCollection = std::make_shared<GridCollection>(studyPath / "grid.csv");
 
+        const std::filesystem::path penaltiesConfigFilePath(studyPath / "penalties.yaml");
+
+        // PenaltiesConfigReader will check whether the file exists and return default values if
+        // needed
+        PenaltiesConfigReader pcr(penaltiesConfigFilePath);
+
         ReservoirManagement reservoirManagement(gridCollection->reservoirs.begin()->second,
-                                                0,
-                                                0,
-                                                2000,
-                                                true);
+                                                pcr.getPenaltyBottomRuleCurve(),
+                                                pcr.getPenaltyUpperRuleCurve(),
+                                                pcr.getPenaltyFinalLevel(),
+                                                pcr.getForceFinalLevel(),
+                                                pcr.getFinalLevel(),
+                                                pcr.getOverflow());
 
         ConfigurationManager::ConfigDirectories directories{
           .study_dir = studyPath,
