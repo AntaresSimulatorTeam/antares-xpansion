@@ -196,7 +196,7 @@ def collect_github_workflow_dependencies() -> List[Dep]:
     return deps
 
 
-def run_vcpkg_depend_info() -> Optional[str]:
+def find_vcpkg_exe() -> Optional[Path]:
     # Prefer local vcpkg if present
     candidates = [
         REPO_ROOT / "vcpkg" / "vcpkg",
@@ -205,16 +205,44 @@ def run_vcpkg_depend_info() -> Optional[str]:
     ]
     for exe in candidates:
         if exe and exe.exists() and os.access(exe, os.X_OK):
-            try:
-                debug(f"Running: {exe} depend-info --format=dot (cwd={REPO_ROOT})")
-                out = subprocess.check_output([str(exe), "depend-info", "--format=dot"], cwd=str(REPO_ROOT),
-                                              stderr=subprocess.STDOUT, timeout=120)
-                return out.decode("utf-8", errors="replace")
-            except subprocess.CalledProcessError as e:
-                debug(f"vcpkg depend-info failed: {e.output.decode(errors='replace')}")
-            except Exception as e:
-                debug(f"vcpkg depend-info error: {e}")
+            return exe
     return None
+
+
+def _filter_vcpkg_tree(text: str) -> str:
+    """Filter out noise lines from vcpkg dependency tree output.
+    Removes any line mentioning vcpkg-cmake or vcpkg-cmake-config.
+    """
+    lines = text.splitlines()
+    filtered = [ln for ln in lines if ("vcpkg-cmake" not in ln and "vcpkg-cmake-config" not in ln)]
+    return "\n".join(filtered)
+
+
+def run_vcpkg_depend_info_for(packages: List[str]) -> Dict[str, str]:
+    """Run `vcpkg depend-info --format=tree <package>` for each given package name.
+    Returns a mapping from package name to its dependency tree text.
+    """
+    exe = find_vcpkg_exe()
+    if not exe:
+        return {}
+    results: Dict[str, str] = {}
+    # Deduplicate and sort for stable output
+    for pkg in sorted({p.strip() for p in packages if p and p.strip()}):
+        try:
+            debug(f"Running: {exe} depend-info --format=tree {pkg} (cwd={REPO_ROOT})")
+            out = subprocess.check_output(
+                [str(exe), "depend-info", "--format=tree", pkg],
+                cwd=str(REPO_ROOT),
+                stderr=subprocess.STDOUT,
+                timeout=120,
+            )
+            raw = out.decode("utf-8", errors="replace")
+            results[pkg] = _filter_vcpkg_tree(raw)
+        except subprocess.CalledProcessError as e:
+            debug(f"vcpkg depend-info failed for {pkg}: {e.output.decode(errors='replace')}")
+        except Exception as e:
+            debug(f"vcpkg depend-info error for {pkg}: {e}")
+    return results
 
 
 def ensure_docs_dir():
@@ -264,12 +292,22 @@ def generate_report():
     cmake_deps = collect_cmake_dependencies()
     gh_deps = collect_github_workflow_dependencies()
 
-    # VCPKG graph
-    dot = run_vcpkg_depend_info()
-    dot_path = None
-    if dot:
-        dot_path = DOCS_DIR / "vcpkg_dependency_graph.dot"
-        dot_path.write_text(dot, encoding="utf-8")
+    # VCPKG dependency trees per package
+    trees = run_vcpkg_depend_info_for([d.name for d in vcpkg_deps if d.name])
+    tree_path = None
+    combined_tree_text = None
+    if trees:
+        # Combine with clear headers
+        lines: List[str] = []
+        for pkg in sorted(trees.keys(), key=lambda s: s.lower()):
+            lines.append(f"===== {pkg} =====")
+            text = (trees.get(pkg) or "").strip()
+            if text:
+                lines.extend(text.splitlines())
+            lines.append("")
+        combined_tree_text = "\n".join(lines).strip() + "\n"
+        tree_path = DOCS_DIR / "vcpkg_dependency_tree.txt"
+        tree_path.write_text(combined_tree_text, encoding="utf-8")
 
     # Prepare markdown
     md_lines: List[str] = []
@@ -311,6 +349,21 @@ def generate_report():
         md_lines.append("No vcpkg overrides detected.")
     md_lines.append("")
 
+    # vcpkg tree subsection under vcpkg deps
+    md_lines.append("### vcpkg dependency tree")
+    md_lines.append("Note: In the trees below, the placeholder '...' indicates a repeated dependency subtree already shown earlier.")
+    if tree_path and combined_tree_text:
+        md_lines.append(
+            f"The per-package dependency trees are embedded below, and also saved at: `{tree_path.relative_to(REPO_ROOT)}`.")
+        md_lines.append("")
+        md_lines.append("```text")
+        md_lines.extend(combined_tree_text.strip().splitlines())
+        md_lines.append("```")
+    else:
+        md_lines.append(
+            "vcpkg was not found or 'vcpkg depend-info' could not be executed. To include the tree, ensure vcpkg is available at ./vcpkg/vcpkg or set $VCPKG_ROOT, then rerun the generator.")
+    md_lines.append("")
+
     md_lines.append("## GitHub workflow dependencies")
     gh_rows = _dedupe_and_rows(gh_deps, include_extra_in_key=True)
     if gh_rows:
@@ -318,13 +371,6 @@ def generate_report():
     else:
         md_lines.append("No GitHub workflows found.")
     md_lines.append("")
-
-    if dot_path:
-        md_lines.append("## vcpkg dependency graph")
-        md_lines.append(f"A DOT file has been generated at: `{dot_path.relative_to(REPO_ROOT)}`.")
-        md_lines.append(
-            "You can render it with Graphviz, e.g.: `dot -Tpng -O docs/dependencies/vcpkg_dependency_graph.dot`.")
-        md_lines.append("")
 
     md_lines.append("---")
     md_lines.append("How to regenerate this report:")
@@ -335,8 +381,8 @@ def generate_report():
     out_path.write_text("\n".join(md_lines), encoding="utf-8")
 
     print(f"Dependency report written to {out_path}")
-    if dot_path:
-        print(f"vcpkg dependency graph written to {dot_path}")
+    if tree_path:
+        print(f"vcpkg dependency tree written to {tree_path}")
 
 
 if __name__ == "__main__":
