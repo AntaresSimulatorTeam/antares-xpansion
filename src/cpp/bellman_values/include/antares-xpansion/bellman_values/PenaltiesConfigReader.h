@@ -17,35 +17,47 @@ public:
     // these getters are still useful to enforce types
     double getPenaltyBottomRuleCurve()
     {
-        return std::get<double>(penalties[penaltyBottomRuleCurveKey].getValue());
+        return getValueFromKey<double>(penaltyBottomRuleCurveKey);
     }
 
     double getPenaltyUpperRuleCurve()
     {
-        return std::get<double>(penalties[penaltyUpperRuleCurveKey].getValue());
+        return getValueFromKey<double>(penaltyUpperRuleCurveKey);
     }
 
     double getPenaltyFinalLevel()
     {
-        return std::get<double>(penalties[penaltyFinalLevelKey].getValue());
+        return getValueFromKey<double>(penaltyFinalLevelKey);
     }
 
     bool getForceFinalLevel()
     {
-        return std::get<bool>(penalties[forceFinalLevelKey].getValue());
+        return getValueFromKey<bool>(forceFinalLevelKey);
     }
 
     std::optional<double> getFinalLevel()
     {
-        return std::get<std::optional<double>>(penalties[finalLevelKey].getValue());
+        return getValueFromKey<std::optional<double>>(finalLevelKey);
     }
 
     bool getOverflow()
     {
-        return std::get<bool>(penalties[overflowKey].getValue());
+        return getValueFromKey<bool>(overflowKey);
     }
 
 private:
+    template<typename T>
+    T getValueFromKey(const std::string& key)
+    {
+        auto it = penalties.find(key);
+        if (it != penalties.end())
+        {
+            return std::get<T>(it->second.getValue());
+        }
+        // for good measure: raise an error if no value found
+        throw std::runtime_error("Value was not found in penalties for key: " + key);
+    }
+
     // so far, choices in the YAML file types are these
     typedef std::variant<bool, double, std::optional<double>> PenaltyValueType;
 
@@ -58,8 +70,8 @@ private:
         bool isOptional;
 
     public:
-        Penalty(const std::string& key = "",
-                const PenaltyValueType& defaultValue = 0.,
+        Penalty(const std::string& key,
+                const PenaltyValueType& defaultValue,
                 bool isOptional = false);
         void updateValue(const YAML::Node& config);
 

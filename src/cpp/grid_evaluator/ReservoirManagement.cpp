@@ -274,7 +274,7 @@ ReservoirManagement::ReservoirManagement(const Reservoir& reservoir,
     penalty_upper_rule_curve(penalty_upper_rule_curve),
     penalty_final_level(penalty_final_level),
     force_final_level(force_final_level),
-    final_level(final_level ? final_level.value() : reservoir.initial_level),
+    final_level(final_level.value_or(reservoir.initial_level)),
     overflow(overflow)
 {
 }

@@ -72,7 +72,7 @@ PenaltiesConfigReader::PenaltiesConfigReader(const std::filesystem::path& pathTo
     penalties.emplace(penaltyUpperRuleCurveKey, Penalty(penaltyUpperRuleCurveKey, 0.0));
     penalties.emplace(penaltyFinalLevelKey, Penalty(penaltyFinalLevelKey, 0.0));
     penalties.emplace(forceFinalLevelKey, Penalty(forceFinalLevelKey, false));
-    penalties.emplace(finalLevelKey, Penalty(finalLevelKey, std::nullopt, true)); // implicit type?
+    penalties.emplace(finalLevelKey, Penalty(finalLevelKey, std::optional<double>{}, true));
     penalties.emplace(overflowKey, Penalty(overflowKey, true));
     if (std::filesystem::exists(pathToYamlConfigFile))
     {
