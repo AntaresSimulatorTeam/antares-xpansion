@@ -180,7 +180,8 @@ def run_trajectory_mode(context):
         '--installDir', str(get_conf('DEFAULT_INSTALL_DIR')),
         '--input-root', str(input_root),
         '--input-file', str(user_input_file),
-        '--step', 'full'
+        '--step', 'full',
+        '--memory'
     ]
 
     # Allow running as root inside some CI when configured
