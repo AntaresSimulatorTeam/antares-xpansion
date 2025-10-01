@@ -9,8 +9,10 @@ The outputs are the water values for all the weeks discretized over 101 level of
 
 ## Input file grid.csv
 
-Here is an example of a grid.csv file:
-|grid_id,problem_name,type,name,area,min,max,step|
+Here is an example of a grid.csv file (must be comma separated, shown here as a table for readability):
+
+|grid_id|problem_name|type|name|area|min|max|step|
+|-|-|-|-|-|-|-|-|
 |0|all|constraint|HydroPower|area|0|1|0.1|
 
 with the following columns:
@@ -23,6 +25,36 @@ with the following columns:
 - `min`: the minimum value of the constraint or variable (from 0 to 1)
 - `max`: the maximum value of the constraint or variable (from 0 to 1)
 - `step`: the step of the discretization of the constraint or variable (from 0 to 1)
+
+### Secondary input file penalties.yaml
+
+Here is an example of a penalties.yaml file, that defines parameters related to the penalties when computing water values:
+
+```yaml
+# All parameters related to penalties when computing water values.
+# Use ~ to fall back on default values (as implemented in C++ code)
+# default values are subject to change
+
+penalty_bottom_rule_curve : 0
+# default: 0
+
+penalty_upper_rule_curve : 0
+# default: 0
+
+penalty_final_level : 2000
+# default: 0
+
+force_final_level : true
+# default: false
+
+final_level : ~
+# default: initial level
+
+overflow : ~
+# default: true
+```
+
+This file is expected to be located at the root of the study. It is optional, however default values are hard-coded in the program.
 
 ## Command line usage
 
