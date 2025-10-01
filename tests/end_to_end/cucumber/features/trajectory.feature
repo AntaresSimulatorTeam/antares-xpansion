@@ -4,7 +4,7 @@ Feature: Multi-year investment problem
 	@slow @short @full-launch
 	Scenario: Solve Simple tree multi-year study
 		Given the study path is "data_test/trajectory/simple_tree"
-		When I run antares-xpansion in trajectory #TODO: Rename this step to be convenient with regards to other "When" steps"
+		When I run antares-xpansion in trajectory
 		Then the simulation succeeds
 		And the expected overall cost is 2355947546.4238625
 		And the expected investment cost is 337038731.96844411
