@@ -5,6 +5,7 @@
 #include "antares-xpansion/lpnamer/problem_modifier/AntaresProblemToXpansionProblemTranslator.h"
 
 #include <algorithm>
+#include <charconv>
 #include <cmath>
 #include <regex>
 
@@ -14,6 +15,49 @@
 constexpr unsigned int HOURS_IN_A_WEEK = 168;
 constexpr unsigned int DAYS_IN_A_WEEK = 7;
 
+static bool try_replace_first_token(const std::string& name,
+                                    std::string_view prefix,
+                                    unsigned int week,
+                                    long long factor,
+                                    bool ignore_value,
+                                    std::string& out)
+{
+    const auto pos = name.find(prefix);
+    if (pos == std::string::npos)
+    {
+        return false;
+    }
+
+    const auto start = pos + prefix.size();
+    const auto end = name.find('>', start);
+    if (end == std::string::npos)
+    {
+        throw std::runtime_error(LOGLOCATION + std::string("Malformed token: missing '>'"));
+    }
+
+    long long original = 0;
+    if (!ignore_value)
+    {
+        const auto digits = name.substr(start, end - start);
+        auto first = digits.data();
+        auto last = digits.data() + digits.size();
+        auto ec = std::from_chars(first, last, original);
+        if (ec.ec != std::errc() || ec.ptr != last)
+        {
+            throw std::runtime_error(LOGLOCATION
+                                     + std::string("Malformed token: non-integer value"));
+        }
+    }
+
+    const long long new_value = ignore_value
+                                  ? static_cast<long long>(week) - 1
+                                  : (static_cast<long long>(week) - 1) * factor + original;
+
+    out = name;
+    out.replace(pos, (end - pos) + 1, std::string(prefix) + std::to_string(new_value) + ">");
+    return true;
+}
+
 static std::string replace_hour_in_name(const std::string& name, unsigned int week)
 {
     if (week == 0)
@@ -21,41 +65,22 @@ static std::string replace_hour_in_name(const std::string& name, unsigned int we
         throw std::invalid_argument(LOGLOCATION + std::string("week must be >= 1"));
     }
 
-    static const std::regex hour_regex(R"(hour<(\d+)>)");
-    static const std::regex day_regex(R"(day<(\d+)>)");
-    static const std::regex week_regex(R"(week<(\d+)>)");
+    std::string out;
+    if (try_replace_first_token(name, "hour<", week, HOURS_IN_A_WEEK, false, out))
+    {
+        return out;
+    }
+    if (try_replace_first_token(name, "day<", week, DAYS_IN_A_WEEK, false, out))
+    {
+        return out;
+    }
+    if (try_replace_first_token(name, "week<", week, 1, true, out))
+    {
+        return out;
+    }
 
-    std::smatch match;
-    if (std::regex_search(name, match, hour_regex))
-    {
-        const long long hour_value = std::stoll(match[1].str());
-        const long long new_hour = static_cast<long long>(week - 1) * HOURS_IN_A_WEEK + hour_value;
-        return std::regex_replace(
-          name,
-          hour_regex,
-          "hour<" + std::to_string(new_hour) + ">",
-          std::regex_constants::format_first_only);
-    }
-    if (std::regex_search(name, match, day_regex))
-    {
-        const long long day_value = std::stoll(match[1].str());
-        const long long new_day = static_cast<long long>(week - 1) * DAYS_IN_A_WEEK + day_value;
-        return std::regex_replace(
-          name,
-          day_regex,
-          "day<" + std::to_string(new_day) + ">",
-          std::regex_constants::format_first_only);
-    }
-    if (std::regex_search(name, match, week_regex))
-    {
-        // If input week token contains a value, we normalize to 0-based week index based on provided week
-        const long long new_week = static_cast<long long>(week) - 1;
-        return std::regex_replace(name,
-                                  week_regex,
-                                  "week<" + std::to_string(new_week) + ">",
-                                  std::regex_constants::format_first_only);
-    }
-    throw std::runtime_error(LOGLOCATION + "No [hour|day|week]<...> pattern found in " + name);
+    throw std::runtime_error(LOGLOCATION + std::string("No [hour|day|week]<...> pattern found in ")
+                             + name);
 }
 
 /**
