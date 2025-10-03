@@ -161,40 +161,50 @@ def collect_cmake_dependencies() -> List[Dep]:
     return list(deps.values())
 
 
-def collect_github_workflow_dependencies() -> List[Dep]:
-    deps: List[Dep] = []
+def collect_github_workflow_dependencies() -> Tuple[List[Dep], List[Dep]]:
+    """
+    Retourne deux listes :
+    - actions externes (actions/..., docker/..., github/..., etc.)
+    - dépendances d'exécution (apt, pip, etc.)
+    """
+    actions: List[Dep] = []
+    exec_deps: List[Dep] = []
     wf_dir = REPO_ROOT / ".github" / "workflows"
     if not wf_dir.exists():
-        return deps
+        return actions, exec_deps
     for yml in sorted(wf_dir.glob("*.yml")) + sorted(wf_dir.glob("*.yaml")):
         content = read_text_safe(yml)
         for line in content.splitlines():
             line_s = line.strip()
             if line_s.startswith("uses:"):
-                # e.g., uses: actions/checkout@v4
                 val = line_s.split(":", 1)[1].strip()
                 m = re.match(r"([A-Za-z0-9_./\-]+)@([A-Za-z0-9_./\-]+)", val)
                 if m:
-                    deps.append(Dep(name=m.group(1), version=m.group(2), source_file=yml))
+                    name = m.group(1)
+                    version = m.group(2)
+                    # Catégorie action externe si nom commence par actions/, docker/, github/, ou contient un '/'
+                    if name.startswith(("actions/", "docker/", "github/")) or "/" in name:
+                        actions.append(Dep(name=name, version=version, source_file=yml))
+                    else:
+                        exec_deps.append(Dep(name=name, version=version, source_file=yml, extra="workflow:uses"))
                 else:
-                    deps.append(Dep(name=val, version=None, source_file=yml))
+                    # Si pas de version, on considère comme exec_dep
+                    exec_deps.append(Dep(name=val, version=None, source_file=yml, extra="workflow:uses"))
             if "pip install" in line_s:
-                # crude extraction: pip install pkg==ver
                 pkgs = re.findall(r"pip install ([^#]+)$", line_s)
                 for p in pkgs:
                     for token in p.split():
                         name, ver = parse_requirements_line(token)
-                        if name and name != "-r":  # Filtrer '-r' qui n'est pas une vraie dépendance
-                            deps.append(Dep(name=name, version=ver, source_file=yml, extra="workflow:pip"))
+                        if name and name != "-r":
+                            exec_deps.append(Dep(name=name, version=ver, source_file=yml, extra="workflow:pip"))
             if re.search(r"apt(-get)?\s+install", line_s):
-                # apt install packages
                 m = re.search(r"install\s+(-y\s+)?(.+)$", line_s)
                 if m:
                     for token in m.group(2).split():
                         if token.startswith("-"):
                             continue
-                        deps.append(Dep(name=token, version=None, source_file=yml, extra="workflow:apt"))
-    return deps
+                        exec_deps.append(Dep(name=token, version=None, source_file=yml, extra="workflow:apt"))
+    return actions, exec_deps
 
 
 def find_vcpkg_exe() -> Optional[Path]:
@@ -321,7 +331,7 @@ def generate_report():
     py_deps = collect_python_requirements()
     vcpkg_deps, vcpkg_overrides = collect_vcpkg_dependencies()
     cmake_deps = collect_cmake_dependencies()
-    gh_deps = collect_github_workflow_dependencies()
+    gh_actions, gh_exec_deps = collect_github_workflow_dependencies()
 
     # VCPKG dependency trees per package
     trees = run_vcpkg_depend_info_for([d.name for d in vcpkg_deps if d.name])
@@ -398,12 +408,22 @@ def generate_report():
     md_lines.append("")
 
     md_lines.append("## GitHub workflow dependencies")
-    # Pour les dépendances GitHub workflow, on ne groupe pas si la version diffère
-    gh_rows = _dedupe_and_rows(gh_deps, include_extra_in_key=True)
-    if gh_rows:
-        md_lines.append(to_markdown_table(gh_rows, "GitHub workflow dependencies", existing_rationales))
+    # Actions externes (actions/..., docker/..., github/...)
+    md_lines.append("### External GitHub Actions")
+    gh_action_rows = _dedupe_and_rows(gh_actions, include_extra_in_key=True)
+    if gh_action_rows:
+        md_lines.append(
+            to_markdown_table(gh_action_rows, "GitHub workflow dependencies (actions)", existing_rationales))
     else:
-        md_lines.append("No GitHub workflows found.")
+        md_lines.append("No external GitHub Actions found.")
+    md_lines.append("")
+    # Dépendances d'exécution (apt, pip, uses non actions/...)
+    md_lines.append("### Execution dependencies (workflow environment)")
+    gh_exec_rows = _dedupe_and_rows(gh_exec_deps, include_extra_in_key=True)
+    if gh_exec_rows:
+        md_lines.append(to_markdown_table(gh_exec_rows, "GitHub workflow dependencies (exec)", existing_rationales))
+    else:
+        md_lines.append("No workflow execution dependencies found.")
     md_lines.append("")
 
     md_lines.append("---")
