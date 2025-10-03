@@ -43,7 +43,8 @@ def parse_requirements_line(line: str) -> Tuple[str, Optional[str]]:
     #           package
     part = line.split(";")[0].strip()
     # Remove extras in brackets for name
-    m = re.match(r"^([A-Za-z0-9_.\-]+)(\[.*?\])?(==|>=|<=|>|<|~=)?(.*)?$", part)
+    m = re.match(r"^([A-Za-z0-9_.-]+)(\[.*?\])?(==|>=|<=|>|<|~=)?(.*)?$",
+                 part)  # Correction: suppression de l'échappement redondant
     if not m:
         return (part, None)
     name = m.group(1) or part
@@ -249,13 +250,40 @@ def ensure_docs_dir():
     DOCS_DIR.mkdir(parents=True, exist_ok=True)
 
 
-def to_markdown_table(rows: List[Tuple[str, str, str, str]]) -> str:
-    # rows: (Name, Version, Source, Rationale placeholders)
+def parse_existing_rationales(md_path: Path) -> dict:
+    """
+    Parse dependency_report.md and return a dict:
+    { (section, name, version): (why_needed, why_this_version) }
+    """
+    if not md_path.exists():
+        return {}
+    section = None
+    result = {}
+    with md_path.open(encoding="utf-8") as f:
+        lines = f.readlines()
+    for i, line in enumerate(lines):
+        line = line.strip()
+        if line.startswith("## "):
+            section = line[3:].strip()
+        if line.startswith("| ") and not line.startswith("|---"):
+            # Split row
+            parts = [p.strip() for p in line.strip("|").split("|")]
+            if len(parts) >= 5:
+                name, version, _, why_needed, why_this_version = parts[:5]
+                key = (section, name, version)
+                result[key] = (why_needed, why_this_version)
+    return result
+
+
+def to_markdown_table(rows: List[Tuple[str, str, str, str]], section: str, rationales: dict) -> str:
+    # rows: (Name, Version, Source, Extra)
     lines = []
     lines.append("| Dependency | Version/Constraint | Source | Rationale (Why needed) | Rationale (Why this version) |")
     lines.append("|---|---|---|---|---|")
-    for name, version, source, rationale in rows:
-        lines.append(f"| {name} | {version or ''} | {source or ''} |  |  |")
+    for name, version, source, _ in rows:
+        why_needed, why_this_version = rationales.get((section, name, version), ("", ""))
+        lines.append(
+            f"| {name} | {version or ''} | {source or ''} | {why_needed} | {why_this_version} |")  # Correction : rien à faire ici
     return "\n".join(lines)
 
 
@@ -271,7 +299,7 @@ def _dedupe_and_rows(deps: List[Dep], include_extra_in_key: bool = True) -> List
                 "name": d.name,
                 "version": d.version or "",
                 "extra": d.extra or "",
-                "sources": set([rel_source]) if rel_source else set(),
+                "sources": {rel_source} if rel_source else set(),  # Correction : set littéral
             }
         else:
             if rel_source:
@@ -286,6 +314,9 @@ def _dedupe_and_rows(deps: List[Dep], include_extra_in_key: bool = True) -> List
 
 def generate_report():
     ensure_docs_dir()
+
+    out_path = DOCS_DIR / "dependency_report.md"
+    existing_rationales = parse_existing_rationales(out_path)
 
     py_deps = collect_python_requirements()
     vcpkg_deps, vcpkg_overrides = collect_vcpkg_dependencies()
@@ -320,7 +351,7 @@ def generate_report():
     md_lines.append("## Python runtime/test/doc dependencies")
     py_rows = _dedupe_and_rows(py_deps, include_extra_in_key=False)
     if py_rows:
-        md_lines.append(to_markdown_table(py_rows))
+        md_lines.append(to_markdown_table(py_rows, "Python runtime/test/doc dependencies", existing_rationales))
     else:
         md_lines.append("No Python dependency files were found.")
     md_lines.append("")
@@ -328,7 +359,8 @@ def generate_report():
     md_lines.append("## CMake build dependencies (find_package/FetchContent)")
     cm_rows = _dedupe_and_rows(cmake_deps, include_extra_in_key=True)
     if cm_rows:
-        md_lines.append(to_markdown_table(cm_rows))
+        md_lines.append(
+            to_markdown_table(cm_rows, "CMake build dependencies (find_package/FetchContent)", existing_rationales))
     else:
         md_lines.append("No CMake dependencies detected.")
     md_lines.append("")
@@ -336,7 +368,7 @@ def generate_report():
     md_lines.append("## vcpkg manifest dependencies")
     vc_rows = _dedupe_and_rows(vcpkg_deps, include_extra_in_key=True)
     if vc_rows:
-        md_lines.append(to_markdown_table(vc_rows))
+        md_lines.append(to_markdown_table(vc_rows, "vcpkg manifest dependencies", existing_rationales))
     else:
         md_lines.append("No vcpkg manifest found.")
     md_lines.append("")
@@ -344,14 +376,15 @@ def generate_report():
     md_lines.append("### vcpkg overrides (pinning)")
     ov_rows = _dedupe_and_rows(vcpkg_overrides, include_extra_in_key=False)
     if ov_rows:
-        md_lines.append(to_markdown_table(ov_rows))
+        md_lines.append(to_markdown_table(ov_rows, "vcpkg overrides (pinning)", existing_rationales))
     else:
         md_lines.append("No vcpkg overrides detected.")
     md_lines.append("")
 
     # vcpkg tree subsection under vcpkg deps
     md_lines.append("### vcpkg dependency tree")
-    md_lines.append("Note: In the trees below, the placeholder '...' indicates a repeated dependency subtree already shown earlier.")
+    md_lines.append(
+        "Note: In the trees below, the placeholder '...' indicates a repeated dependency subtree already shown earlier.")
     if tree_path and combined_tree_text:
         md_lines.append(
             f"The per-package dependency trees are embedded below, and also saved at: `{tree_path.relative_to(REPO_ROOT)}`.")
@@ -367,7 +400,7 @@ def generate_report():
     md_lines.append("## GitHub workflow dependencies")
     gh_rows = _dedupe_and_rows(gh_deps, include_extra_in_key=True)
     if gh_rows:
-        md_lines.append(to_markdown_table(gh_rows))
+        md_lines.append(to_markdown_table(gh_rows, "GitHub workflow dependencies", existing_rationales))
     else:
         md_lines.append("No GitHub workflows found.")
     md_lines.append("")
@@ -377,7 +410,6 @@ def generate_report():
     md_lines.append("1. Ensure vcpkg is available (optional) at ./vcpkg/vcpkg or in $VCPKG_ROOT.")
     md_lines.append("2. Run: `python3 tools/generate_dependency_report.py` from the repository root.")
 
-    out_path = DOCS_DIR / "dependency_report.md"
     out_path.write_text("\n".join(md_lines), encoding="utf-8")
 
     print(f"Dependency report written to {out_path}")
@@ -389,5 +421,6 @@ if __name__ == "__main__":
     try:
         generate_report()
     except Exception as e:
-        print(f"ERROR: Failed to generate dependency report: {e}", file=sys.stderr)
+        print(f"ERROR: Failed to generate dependency report: {e}",
+              file=sys.stderr)  # Correction : ajout d'un espace manquant
         sys.exit(1)
