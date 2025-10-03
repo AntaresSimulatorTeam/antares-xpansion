@@ -165,7 +165,7 @@ def collect_github_workflow_dependencies() -> Tuple[List[Dep], List[Dep]]:
     """
     Retourne deux listes :
     - actions externes (actions/..., docker/..., github/..., etc.)
-    - dépendances d'exécution (apt, pip, etc.)
+    - dépendances d'exécution (apt, pip, etc.), en filtrant les chemins locaux ./.github/actions et ./.github/workflows
     """
     actions: List[Dep] = []
     exec_deps: List[Dep] = []
@@ -186,10 +186,16 @@ def collect_github_workflow_dependencies() -> Tuple[List[Dep], List[Dep]]:
                     if name.startswith(("actions/", "docker/", "github/")) or "/" in name:
                         actions.append(Dep(name=name, version=version, source_file=yml))
                     else:
-                        exec_deps.append(Dep(name=name, version=version, source_file=yml, extra="workflow:uses"))
+                        # Filtrer les chemins locaux ./.github/actions et ./.github/workflows
+                        if not (name.startswith(".github/actions") or name.startswith(
+                                ".github/workflows") or name.startswith("./.github/actions") or name.startswith(
+                                "./.github/workflows")):
+                            exec_deps.append(Dep(name=name, version=version, source_file=yml, extra="workflow:uses"))
                 else:
                     # Si pas de version, on considère comme exec_dep
-                    exec_deps.append(Dep(name=val, version=None, source_file=yml, extra="workflow:uses"))
+                    if not (val.startswith(".github/actions") or val.startswith(".github/workflows") or val.startswith(
+                            "./.github/actions") or val.startswith("./.github/workflows")):
+                        exec_deps.append(Dep(name=val, version=None, source_file=yml, extra="workflow:uses"))
             if "pip install" in line_s:
                 pkgs = re.findall(r"pip install ([^#]+)$", line_s)
                 for p in pkgs:
