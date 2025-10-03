@@ -398,6 +398,7 @@ def generate_report():
     md_lines.append("")
 
     md_lines.append("## GitHub workflow dependencies")
+    # Pour les dépendances GitHub workflow, on ne groupe pas si la version diffère
     gh_rows = _dedupe_and_rows(gh_deps, include_extra_in_key=True)
     if gh_rows:
         md_lines.append(to_markdown_table(gh_rows, "GitHub workflow dependencies", existing_rationales))
