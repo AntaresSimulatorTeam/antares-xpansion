@@ -429,6 +429,9 @@ class ConfigLoader(XpansionSettingsReader):
     def memory(self):
         return self._config.memory
 
+    def run_presolve(self):
+        return self._config.run_presolve
+
     def simulation_lp_path(self):
         return self._simulation_lp_path()
 
@@ -462,10 +465,15 @@ class ConfigLoader(XpansionSettingsReader):
 
         return self._last_study
 
+    def presolve_pre_actions(self):
+        # TODO Overkill but options_default writes values
+        # TODO as strings instead of float, int and etc when it's needed
+        self._set_options_for_benders_solver()
+
     def benders_pre_actions(self):
         self.copy_area_file_to_lpdir()
         self.save_launcher_options()
-        if self._config.step != "resume":  # expansion dir alaready in resume mode
+        if self._config.step != "resume":  # expansion dir already in resume mode
             self.create_expansion_dir()
         self._set_options_for_benders_solver()
 
@@ -613,7 +621,7 @@ class ConfigLoader(XpansionSettingsReader):
                 )
                 with zipfile.ZipFile(self._last_study, "r") as output_zip:
                     output_zip.extractall(self._xpansion_simulation_name)
-        elif self.step() == "benders":
+        elif self.step() in ["presolve", "benders"]:
             if self.is_zip(self._last_study):
                 raise ConfigLoader.NotAnXpansionOutputDir(
                     f"Error! {self._last_study} is not an Xpansion output directory"
@@ -723,6 +731,9 @@ class ConfigLoader(XpansionSettingsReader):
 
     def merge_mps_exe(self):
         return self.exe_path(self._config.MERGE_MPS)
+
+    def presolve_exe(self):
+        return self.exe_path(self._config.PRESOLVE)
 
     def study_update_exe(self):
         return self.exe_path(self._config.STUDY_UPDATER)

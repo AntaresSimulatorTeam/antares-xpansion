@@ -102,15 +102,22 @@ public:
     void get_row_type(char* qrtype, int first, int last) const override;
     void get_rhs(double* rhs, int first, int last) const override;
     void get_rhs_range(double* range, int first, int last) const override;
+    void get_cols(int* mstart,
+                  int* mrwind,
+                  double* dmatval,
+                  int size,
+                  int* nels,
+                  int first,
+                  int last) const override;
     void get_col_type(char* coltype, int first, int last) const override;
     void get_lb(double* lb, int fisrt, int last) const override;
     void get_ub(double* ub, int fisrt, int last) const override;
 
     int get_row_index(const std::string& name) override;
     int get_col_index(const std::string& name) override;
-    std::vector<std::string> get_row_names(int first, int last) override;
+    std::vector<std::string> get_row_names(int first, int last) const override;
     std::vector<std::string> get_row_names() override;
-    std::vector<std::string> get_col_names(int first, int last) override;
+    std::vector<std::string> get_col_names(int first, int last) const override;
     std::vector<std::string> get_col_names() override;
 
     /*************************************************************************************************
@@ -142,10 +149,10 @@ public:
     void add_name(int type, const char* cnames, int indice) override;
     void add_names(int type, const std::vector<std::string>& cnames, int first, int end) override;
     void chg_obj(const std::vector<int>& mindex, const std::vector<double>& obj) override;
-    void chg_obj_direction(const bool minimize) override;
+    void chg_obj_direction(bool minimize) override;
     void chg_bounds(const std::vector<int>& mindex,
                     const std::vector<char>& qbtype,
-                    const std::vector<double>& bnd);
+                    const std::vector<double>& bnd) override;
     void chg_col_type(const std::vector<int>& mindex, const std::vector<char>& qctype) override;
     void chg_rhs(int id_row, double val) override;
     void chg_coef(int id_row, int id_col, double val) override;
@@ -168,7 +175,7 @@ public:
 
 public:
     /**
-    * @brief Returns the current basis into the user’s data arrays.
+    * @brief Returns the current basis into the user's data arrays.
     *
     * @param rstatus    : Integer array of length ROWS to the basis status of the
     slack, surplus or artifficial variable associated with each row. The status
@@ -187,6 +194,7 @@ public:
     int get_splex_num_of_ite_last() const override;
     void get_lp_sol(double* primals, double* duals, double* reduced_costs) const override;
     void get_mip_sol(double* primals) override;
+    void get_presolve_map(int* rowmap, int* colmap) const override;
 
     /*************************************************************************************************
     ------------------------    Methods to set algorithm or logs levels
@@ -199,4 +207,6 @@ public:
     void set_threads(int n_threads) override;
     void set_optimality_gap(double gap) override;
     void set_simplex_iter(int iter) override;
+    void mark_indices_to_keep_presolve(int nrows, int ncols, int* rowind, int* colind) override;
+    void presolve_only() override;
 };

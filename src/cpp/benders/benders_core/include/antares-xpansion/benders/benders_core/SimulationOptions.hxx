@@ -94,3 +94,9 @@ BENDERS_OPTIONS_MACRO(MASTER_SOLUTION_TOLERANCE, double, 1e-4, asDouble())
 
 // Cut coefficient tolerance
 BENDERS_OPTIONS_MACRO(CUT_COEFFICIENT_TOLERANCE, double, 5e-3, asDouble())
+
+// Flag to store full problems after presolve
+BENDERS_OPTIONS_MACRO(KEEP_FULL, bool, false, asBool())
+
+// Full problems directory name
+BENDERS_OPTIONS_MACRO(FULL_DIR, std::string, "full", asString())

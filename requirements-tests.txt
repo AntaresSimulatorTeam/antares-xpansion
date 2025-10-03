@@ -3,3 +3,4 @@ pytest
 numpy
 pytest-cov
 behave
+xpress==9.2.12

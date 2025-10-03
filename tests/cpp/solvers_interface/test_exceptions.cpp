@@ -1,6 +1,7 @@
+#include <catch2/catch_all.hpp>
+
 #include "antares-xpansion/multisolver_interface/Solver.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
-#include "catch2.hpp"
 
 TEST_CASE("InvalidStatusException", "[exceptions][invalid_status]")
 {

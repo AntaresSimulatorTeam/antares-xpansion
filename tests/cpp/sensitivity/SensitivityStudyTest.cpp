@@ -120,7 +120,7 @@ protected:
     void launch_tests(std::string mps_path,
                       std::map<std::string, std::vector<SinglePbData>> expec_output_data_map)
     {
-        std::vector<std::string> solvers_name = {coin_name};
+        std::vector<std::string> solvers_name = {};
         LoadXpress::XpressLoader xpress_loader;
         if (xpress_loader.XpressIsCorrectlyInstalled())
         {
