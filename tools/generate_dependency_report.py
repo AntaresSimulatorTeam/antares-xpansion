@@ -184,7 +184,7 @@ def collect_github_workflow_dependencies() -> List[Dep]:
                 for p in pkgs:
                     for token in p.split():
                         name, ver = parse_requirements_line(token)
-                        if name:
+                        if name and name != "-r":  # Filtrer '-r' qui n'est pas une vraie dépendance
                             deps.append(Dep(name=name, version=ver, source_file=yml, extra="workflow:pip"))
             if re.search(r"apt(-get)?\s+install", line_s):
                 # apt install packages
