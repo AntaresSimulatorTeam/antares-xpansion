@@ -1,28 +1,24 @@
-//
-// Created by marechaljas on 22/11/22.
-//
-
 #include "antares-xpansion/lpnamer/problem_modifier/AntaresProblemToXpansionProblemTranslator.h"
 
 #include <algorithm>
-#include <charconv>
 #include <cmath>
 
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "include/antares-xpansion/lpnamer/problem_modifier/RenameUtils.h"
 
+namespace AntaresProblemToXpansionProblemTranslator
+{
 /**
  *
  * @Note: In case of performance issue we can accept non-const lps and work on
  * references to constant and hebdo parts
  */
-std::shared_ptr<Problem> AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
-  const Antares::Solver::LpsFromAntares& lps,
-  unsigned int year,
-  unsigned int week,
-  const std::string& solver_name,
-  SolverLogManager& solver_log_manager)
+std::shared_ptr<Problem> translateToXpansionProblem(const Antares::Solver::LpsFromAntares& lps,
+                                                    unsigned int year,
+                                                    unsigned int week,
+                                                    const std::string& solver_name,
+                                                    SolverLogManager& solver_log_manager)
 {
     SolverFactory factory;
     auto problem = std::make_shared<Problem>(
@@ -72,8 +68,7 @@ std::shared_ptr<Problem> AntaresProblemToXpansionProblemTranslator::translateToX
     return problem;
 }
 
-std::vector<char> AntaresProblemToXpansionProblemTranslator::convertSignToLEG(
-  std::span<const char> data)
+std::vector<char> convertSignToLEG(std::span<const char> data)
 {
     std::vector<char> LEG_vector;
     // Exclude final '\0' character
@@ -101,3 +96,4 @@ std::vector<char> AntaresProblemToXpansionProblemTranslator::convertSignToLEG(
                            });
     return LEG_vector;
 }
+} // namespace AntaresProblemToXpansionProblemTranslator
