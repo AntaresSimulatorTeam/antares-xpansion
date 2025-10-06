@@ -5,21 +5,31 @@
 #include <unordered_map>
 #include <vector>
 
-// Fonctions utilitaires pour le renommage des variables et contraintes
+// Classe utilitaire pour le renommage des variables et contraintes
+class RenameUtils
+{
+public:
+    static bool try_replace_first_token(const std::string& name,
+                                        std::string_view prefix,
+                                        unsigned int week,
+                                        long long factor,
+                                        bool ignore_value,
+                                        std::string& out);
 
-extern std::unordered_map<int, std::vector<std::string>> variables_names;
-extern std::unordered_map<int, std::vector<std::string>> constraints_names;
-extern std::mutex rename_mutex;
+    static std::string replace_hour_in_name(const std::string& name, unsigned int week);
 
-bool try_replace_first_token(const std::string& name,
-                             std::string_view prefix,
-                             unsigned int week,
-                             long long factor,
-                             bool ignore_value,
-                             std::string& out);
+    static void rename_week_names(
+      unsigned int week,
+      const std::vector<std::string>& names,
+      std::unordered_map<int, std::vector<std::string>>& container_names);
 
-std::string replace_hour_in_name(const std::string& name, unsigned int week);
+    // Accès aux conteneurs de renommage (si besoin)
+    static std::unordered_map<int, std::vector<std::string>>& get_variables_names();
+    static std::unordered_map<int, std::vector<std::string>>& get_constraints_names();
+    static std::mutex& get_rename_mutex();
 
-void rename_week_names(unsigned int week,
-                       const std::vector<std::string>& names,
-                       std::unordered_map<int, std::vector<std::string>>& container_names);
+private:
+    static std::unordered_map<int, std::vector<std::string>> variables_names;
+    static std::unordered_map<int, std::vector<std::string>> constraints_names;
+    static std::mutex rename_mutex;
+};

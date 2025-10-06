@@ -1,7 +1,10 @@
+#include "antares-xpansion/lpnamer/problem_modifier/RenameUtils.h"
+
 #include <algorithm>
 #include <charconv>
 #include <mutex>
 #include <ranges>
+#include <stdexcept>
 #include <string>
 #include <string_view>
 #include <unordered_map>
@@ -12,16 +15,16 @@
 constexpr unsigned int HOURS_IN_A_WEEK = 168;
 constexpr unsigned int DAYS_IN_A_WEEK = 7;
 
-extern std::unordered_map<int, std::vector<std::string>> variables_names;
-extern std::unordered_map<int, std::vector<std::string>> constraints_names;
-extern std::mutex rename_mutex;
+std::unordered_map<int, std::vector<std::string>> RenameUtils::variables_names;
+std::unordered_map<int, std::vector<std::string>> RenameUtils::constraints_names;
+std::mutex RenameUtils::rename_mutex;
 
-static bool try_replace_first_token(const std::string& name,
-                                    std::string_view prefix,
-                                    unsigned int week,
-                                    long long factor,
-                                    bool ignore_value,
-                                    std::string& out)
+bool RenameUtils::try_replace_first_token(const std::string& name,
+                                          std::string_view prefix,
+                                          unsigned int week,
+                                          long long factor,
+                                          bool ignore_value,
+                                          std::string& out)
 {
     const auto pos = name.find(prefix);
     if (pos == std::string::npos)
@@ -59,7 +62,7 @@ static bool try_replace_first_token(const std::string& name,
     return true;
 }
 
-static std::string replace_hour_in_name(const std::string& name, unsigned int week)
+std::string RenameUtils::replace_hour_in_name(const std::string& name, unsigned int week)
 {
     if (week == 0)
     {
@@ -84,13 +87,11 @@ static std::string replace_hour_in_name(const std::string& name, unsigned int we
                              + name);
 }
 
-void rename_week_names(unsigned int week,
-                       const std::vector<std::string>& names,
-                       std::unordered_map<int, std::vector<std::string>>& container_names)
+void RenameUtils::rename_week_names(
+  unsigned int week,
+  const std::vector<std::string>& names,
+  std::unordered_map<int, std::vector<std::string>>& container_names)
 {
-    /* The numbering is the same for every week N of each year. We only need to compute
-     * the renaming once for each week N.
-     */
     if (!container_names.contains(week))
     {
         std::vector<std::string> renamed_variables;
@@ -101,4 +102,19 @@ void rename_week_names(unsigned int week,
         std::lock_guard guard(rename_mutex);
         container_names.emplace(week, renamed_variables);
     }
+}
+
+std::unordered_map<int, std::vector<std::string>>& RenameUtils::get_variables_names()
+{
+    return variables_names;
+}
+
+std::unordered_map<int, std::vector<std::string>>& RenameUtils::get_constraints_names()
+{
+    return constraints_names;
+}
+
+std::mutex& RenameUtils::get_rename_mutex()
+{
+    return rename_mutex;
 }
