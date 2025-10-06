@@ -1,10 +1,29 @@
 Antares-Xpansion changelog
 =================
 
-TBD
+v1.6.0 (10/2025)
 ------------------------------------------------
 
-* Update Antares Simulator to 9.3.1
+### Features
+
+* Update of Antares Simulator to version 9.3.1 (#1094)
+* Added a problem format option
+* Added the "presolve" feature for the solver (ANT-3267) (#1049)
+    * Note: This feature has limitations with problems other than those from Antares Simulator
+* Improved Xpress context management (better persistence)
+
+### Bug fixes
+
+* Fixed MPI cache management
+* Fixed solver object copy
+* Fixed multi-thread protection (use of atomic)
+
+### Refactoring & Maintenance
+
+* Code cleanup (constructors, aliases, solver object management)
+* Refactoring of master generation
+* Update of scripts and CI actions (version bumps, Python 3.10 compatibility, etc.)
+* Minor documentation improvements and fixes
 
 v1.5.0 (07/2025)
 --------------------------------------------------------
