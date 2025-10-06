@@ -5,6 +5,7 @@
   "$comment 2": "sirius-solver by transitivity for Simulator",
   "$comment 3": "antlr4 by transitivity for Simulator",
   "$comment 4": "set coin version to avoid change in results for now",
+  "$comment 5": "boost iostreams by transitivity for Simulator",
   "dependencies": [
     "jsoncpp",
     "gtest",
@@ -25,6 +26,10 @@
     },
     {
       "name": "boost-algorithm",
+      "version>=": "1.81.0"
+    },
+    {
+      "name": "boost-iostreams",
       "version>=": "1.81.0"
     },
     "yaml-cpp",

@@ -5,6 +5,7 @@
 #pragma once
 
 #include <span>
+#include <unordered_map>
 
 #include <antares/solver/lps/LpsFromAntares.h>
 
