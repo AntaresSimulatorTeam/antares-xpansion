@@ -7,7 +7,6 @@
 #include <algorithm>
 #include <charconv>
 #include <cmath>
-#include <regex>
 
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
