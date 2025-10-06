@@ -96,7 +96,7 @@ void rename_week_names(unsigned int week,
     /* The numbering is the same for every week N of each year. We only need to compute
      * the renaming once for each week N.
      */
-    if (container_names.find(week) == container_names.end())
+    if (!container_names.contains(week))
     {
         std::vector<std::string> renamed_variables;
         renamed_variables.reserve(names.size());
