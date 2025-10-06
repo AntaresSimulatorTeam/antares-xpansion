@@ -88,6 +88,7 @@ static std::string replace_hour_in_name(const std::string& name, unsigned int we
  */
 std::unordered_map<int, std::vector<std::string>> variables_names;
 std::unordered_map<int, std::vector<std::string>> constraints_names;
+std::mutex rename_mutex;
 
 void rename_week_names(unsigned int week,
                        const std::vector<std::string>& names,
@@ -103,6 +104,7 @@ void rename_week_names(unsigned int week,
         std::ranges::transform(names,
                                std::back_inserter(renamed_variables),
                                [&week](const auto& n) { return replace_hour_in_name(n, week); });
+        std::lock_guard guard(rename_mutex);
         container_names.emplace(week, renamed_variables);
     }
 }
