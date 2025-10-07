@@ -32,8 +32,32 @@ double parse_double(const std::string& str, const std::string& field_name)
     }
     catch (const std::exception&)
     {
-        throw std::runtime_error("Invalid " + field_name + " value: '" + str + "'");
+        throw std::runtime_error("Invalid " + field_name + " value: '" + str
+                                 + "' (expected a double)");
     }
+}
+
+bool parse_bool(std::string str, const std::string& field_name)
+try
+{
+    std::transform(str.begin(),
+                   str.end(),
+                   str.begin(),
+                   [](unsigned char c) { return std::tolower(c); });
+    if (str == "true")
+    {
+        return true;
+    }
+    if (str == "false")
+    {
+        return false;
+    }
+    throw std::exception("");
+}
+catch (const std::exception&)
+{
+    throw std::runtime_error("Invalid " + field_name + " value: '" + str
+                             + "' (expected true or false)");
 }
 
 void Reservoir::loadHydroIni(const std::filesystem::path& ini_path)
@@ -47,6 +71,9 @@ void Reservoir::loadHydroIni(const std::filesystem::path& ini_path)
     std::string line, current_section;
     bool found_capacity = false;
     bool found_efficiency = false;
+    // computing water values requires that the area uses heuristic and not water
+    bool use_water = true;      // expected: false
+    bool use_heuristic = false; // expected: true
 
     while (std::getline(file, line))
     {
@@ -93,6 +120,14 @@ void Reservoir::loadHydroIni(const std::filesystem::path& ini_path)
                     efficiency = parse_double(value, "efficiency");
                     found_efficiency = true;
                 }
+                else if (current_section == "use water")
+                {
+                    use_water = parse_bool(value, "use water");
+                }
+                else if (current_section == "use heuristic")
+                {
+                    use_heuristic = parse_bool(value, "use heuristic");
+                }
             }
         }
     }
@@ -104,6 +139,13 @@ void Reservoir::loadHydroIni(const std::filesystem::path& ini_path)
     if (!found_efficiency)
     {
         throw std::runtime_error("Missing efficiency for area: " + area);
+    }
+    // computing water values requires that the area uses heuristic and not water
+    if (!use_heuristic || use_water)
+    {
+        throw std::runtime_error("Area " + area
+                                 + " should define [use water] as False and [use heuristic] as "
+                                   "True in hydro.ini to compute water values.");
     }
 }
 
