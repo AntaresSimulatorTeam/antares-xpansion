@@ -1,6 +1,5 @@
 
 #include <chrono>
-#include <format>
 #include <iostream>
 
 #include "antares-xpansion/bellman_values/BellmanValues.h"
@@ -61,17 +60,25 @@ std::vector<std::vector<double>> interpolateWeekVector(
     return interpolatedValues;
 }
 
-std::string formatTime(std::chrono::system_clock::time_point timePoint)
+std::string formatTime(const std::chrono::system_clock::time_point& timePoint)
 {
-    return std::format("{:%T}",
-                       std::chrono::floor<std::chrono::seconds>(
-                         std::chrono::current_zone()->to_local(timePoint)));
+    // the <format> STL seems to not be available on all used compilers yet
+    std::time_t tt = std::chrono::system_clock::to_time_t(timePoint);
+    std::tm tm = *std::localtime(&tt); // Locale time-zone, usually UTC by default.
+    return (std::stringstream() << std::put_time(&tm, "%T")).str();
 }
 
 template<typename T>
 std::string formatDuration(std::chrono::duration<T> duration)
 {
-    return std::format("{:%T}", std::chrono::floor<std::chrono::seconds>(duration));
+    // the <format> STL seems to not be available on all used compilers yet
+    auto h = std::chrono::duration_cast<std::chrono::hours>(duration);
+    duration -= h;
+    auto m = std::chrono::duration_cast<std::chrono::minutes>(duration);
+    duration -= m;
+    auto s = std::chrono::duration_cast<std::chrono::seconds>(duration);
+    return (std::stringstream() << h.count() << "h, " << m.count() << "m, " << s.count() << "s")
+      .str();
 }
 
 void saveValues(const std::filesystem::path& path,
