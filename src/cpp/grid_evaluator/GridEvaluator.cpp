@@ -27,7 +27,7 @@ GridEvaluator::GridEvaluator(
   GridDefinition& gridDefinition,
   std::string solverName,
   int nbThreads):
-    logger(std::move(logger)),
+    logger{std::move(logger)},
     problems(problems),
     gridDefinition(gridDefinition),
     solverName(solverName),

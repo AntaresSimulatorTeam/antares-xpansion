@@ -52,9 +52,9 @@ try
     {
         return false;
     }
-    throw std::exception("");
+    throw 1;
 }
-catch (const std::exception&)
+catch (...)
 {
     throw std::runtime_error("Invalid " + field_name + " value: '" + str
                              + "' (expected true or false)");
