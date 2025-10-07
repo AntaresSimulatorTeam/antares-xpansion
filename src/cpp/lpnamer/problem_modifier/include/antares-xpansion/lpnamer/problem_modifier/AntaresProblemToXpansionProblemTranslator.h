@@ -20,7 +20,7 @@ namespace AntaresProblemToXpansionProblemTranslator
   unsigned int year,
   unsigned int week,
   const std::string& solver_name,
-  SolverLogManager& solver_log_manager,
+  const SolverLogManager& solver_log_manager,
   const RenameUtils& renameUtils);
 std::vector<char> convertSignToLEG(std::span<const char> data);
 } // namespace AntaresProblemToXpansionProblemTranslator

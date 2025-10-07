@@ -18,7 +18,7 @@ std::shared_ptr<Problem> translateToXpansionProblem(const Antares::Solver::LpsFr
                                                     unsigned int year,
                                                     unsigned int week,
                                                     const std::string& solver_name,
-                                                    SolverLogManager& solver_log_manager,
+                                                    const SolverLogManager& solver_log_manager,
                                                     const RenameUtils& renameUtils)
 {
     SolverFactory factory;
