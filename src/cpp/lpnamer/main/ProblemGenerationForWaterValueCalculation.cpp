@@ -36,6 +36,7 @@ static void CreateDirectories(const std::filesystem::path& output_path)
 ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalculation(
   ConfigurationManager::ConfigDirectories directories,
   const ReservoirManagement& reservoirManagement,
+  Logger logger,
   const std::string& solverName,
   unsigned int startWeek,
   unsigned int endWeek,
@@ -43,6 +44,7 @@ ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalcula
   const std::string& problemFormat):
     directories(directories),
     reservoirManagement(reservoirManagement),
+    logger(std::move(logger)),
     startWeek(startWeek),
     endWeek(endWeek),
     writePbFiles(writePbFiles),

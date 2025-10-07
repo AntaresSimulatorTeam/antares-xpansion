@@ -189,7 +189,10 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
       .simulation_dir = config_manager.generateOutputName(tmpDir),
     };
 
-    ProblemGenerationForWaterValueCalculation pbg(config_dirs, reservoir_management, solverName);
+    ProblemGenerationForWaterValueCalculation pbg(config_dirs,
+                                                  reservoir_management,
+                                                  logger,
+                                                  solverName);
     auto problems = pbg.updateProblems(grid);
 
     auto evaluator = GridEvaluator(logger, problems, grid, solverName, 8);
@@ -227,7 +230,10 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
       .simulation_dir = config_manager.generateOutputName(tmpDir),
     };
 
-    ProblemGenerationForWaterValueCalculation pbg(config_dirs, reservoir_management, solverName);
+    ProblemGenerationForWaterValueCalculation pbg(config_dirs,
+                                                  reservoir_management,
+                                                  logger,
+                                                  solverName);
     auto problems = pbg.updateProblems(grid);
 
     auto evaluator = GridEvaluator(logger, problems, grid, solverName, 8);
@@ -266,7 +272,10 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenaltiesWithFinalLevel)
       .simulation_dir = config_manager.generateOutputName(tmpDir),
     };
 
-    ProblemGenerationForWaterValueCalculation pbg(config_dirs, reservoir_management, solverName);
+    ProblemGenerationForWaterValueCalculation pbg(config_dirs,
+                                                  reservoir_management,
+                                                  logger,
+                                                  solverName);
     auto problems = pbg.updateProblems(grid);
 
     auto evaluator = GridEvaluator(logger, problems, grid, solverName, 8);

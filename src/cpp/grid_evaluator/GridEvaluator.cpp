@@ -3,6 +3,7 @@
 
 #include <fmt/core.h>
 #include <regex>
+#include <sstream>
 #include <tbb/global_control.h>
 #include <tbb/parallel_for_each.h>
 #include <utility>
@@ -221,8 +222,13 @@ void GridEvaluator::Run()
                            [this](auto& kv)
                            {
                                auto& [yearWeekId, subPb] = kv;
-                               std::cout << "Processing subproblem : year " << yearWeekId.year
-                                         << " week " << yearWeekId.week << std::endl;
+                               logger->display_message((std::stringstream()
+                                                        << "Processing subproblem : year "
+                                                        << yearWeekId.year << " week "
+                                                        << yearWeekId.week)
+                                                         .str(),
+                                                       LogUtils::LOGLEVEL::INFO,
+                                                       GRID_EVALUATOR_LOGGER_CONTEXT);
                                ProcessSubproblem(yearWeekId, subPb);
                            });
 }
@@ -259,20 +265,27 @@ void GridEvaluator::ProcessSubproblem(const Antares::Solver::WeeklyProblemId sub
     for (const auto& subPbCombo: subPbCombos)
     {
         i++;
-        std::cout << "Processing gridPoint " << i << "/" << size << std::endl;
+        logger->display_message(
+          (std::stringstream() << "Processing gridPoint " << i << "/" << size).str(),
+          LogUtils::LOGLEVEL::DEBUG,
+          GRID_EVALUATOR_LOGGER_CONTEXT);
         // Each areaCombo is a std::map<std::string, double> with full variable names
         Timer timer;
         SetConstraintsRHSValues(subPbCombo, subProblem);
         totalPbModifTimer += timer.elapsed();
         for (const auto& [constraintName, value]: subPbCombo)
         {
-            std::cout << constraintName << " " << value << std::endl;
+            logger->display_message((std::stringstream() << constraintName << " " << value).str(),
+                                    LogUtils::LOGLEVEL::DEBUG,
+                                    GRID_EVALUATOR_LOGGER_CONTEXT);
         }
         double cost = SolveSubproblem(subProblem);
 
         variationDeNiveauxDeStockData.insert({subPbCombo, subProblemId.week, subProblemId.year},
                                              cost);
-        std::cout << "Cost: " << cost << std::endl;
+        logger->display_message((std::stringstream() << "Cost: " << cost).str(),
+                                LogUtils::LOGLEVEL::DEBUG,
+                                GRID_EVALUATOR_LOGGER_CONTEXT);
     }
 }
 
@@ -288,8 +301,11 @@ double GridEvaluator::SolveSubproblem(std::shared_ptr<Problem> problem)
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 
     int nbSimplexIter = problem->get_splex_num_of_ite_last();
-    std::cout << "nb simplex : " << nbSimplexIter << " / in " << subproblem_data.subproblem_timer
-              << " seconds" << std::endl;
+    logger->display_message((std::stringstream() << "nb simplex : " << nbSimplexIter << " / in "
+                                                 << subproblem_data.subproblem_timer << " seconds")
+                              .str(),
+                            LogUtils::LOGLEVEL::DEBUG,
+                            GRID_EVALUATOR_LOGGER_CONTEXT);
     totalSimplexIter += nbSimplexIter;
     totalSubPbTimer += subproblem_data.subproblem_timer;
 
@@ -300,7 +316,9 @@ double GridEvaluator::SolveSubproblem(std::shared_ptr<Problem> problem)
 /// @return The stock level variation results
 std::map<Output::PointWeekScenarioKey, double> GridEvaluator::ComputeCosts()
 {
-    std::cout << "Launching Stock level variation" << std::endl;
+    logger->display_message((std::stringstream() << "Launching Stock level variation").str(),
+                            LogUtils::LOGLEVEL::INFO,
+                            GRID_EVALUATOR_LOGGER_CONTEXT);
 
     // Time the Run time
     Timer run_timer;
@@ -308,10 +326,18 @@ std::map<Output::PointWeekScenarioKey, double> GridEvaluator::ComputeCosts()
     Run();
 
     auto run_time = run_timer.elapsed();
-    std::cout << "Stock level variation done in " << run_time << " seconds and " << totalSimplexIter
-              << " simplex iterations" << std::endl;
-    std::cout << "Time solving subproblems (accumulated by each thread) : " << totalSubPbTimer
-              << " seconds" << std::endl;
+    logger->display_message((std::stringstream()
+                             << "Stock level variation done in " << run_time << " seconds and "
+                             << totalSimplexIter << " simplex iterations")
+                              .str(),
+                            LogUtils::LOGLEVEL::INFO,
+                            GRID_EVALUATOR_LOGGER_CONTEXT);
+    logger->display_message((std::stringstream()
+                             << "Time solving subproblems (accumulated by each thread) : "
+                             << totalSubPbTimer << " seconds")
+                              .str(),
+                            LogUtils::LOGLEVEL::INFO,
+                            GRID_EVALUATOR_LOGGER_CONTEXT);
 
     return variationDeNiveauxDeStockData.get();
 }

@@ -10,6 +10,8 @@
 #include "antares-xpansion/lpnamer/model/Problem.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
+constexpr char GRID_EVALUATOR_LOGGER_CONTEXT[] = "GridEvaluator";
+
 /// @brief vector of maps (key constraint name, value rhs value)
 using ConstraintCombos = std::vector<std::map<std::string, double>>;
 

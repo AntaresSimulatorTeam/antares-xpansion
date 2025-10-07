@@ -29,6 +29,7 @@ public:
     explicit ProblemGenerationForWaterValueCalculation(
       ConfigurationManager::ConfigDirectories directories,
       const ReservoirManagement& reservoirManagement,
+      Logger logger,
       const std::string& solverName = "xpress",
       unsigned int startWeek = 1,
       unsigned int endWeek = 52,
@@ -59,4 +60,5 @@ private:
     unsigned int endWeek;
     bool writePbFiles;
     ProblemsFormat problemFormat;
+    Logger logger;
 };

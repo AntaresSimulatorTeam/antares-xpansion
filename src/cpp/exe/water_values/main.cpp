@@ -1,4 +1,6 @@
 
+#include <chrono>
+#include <format>
 #include <iostream>
 
 #include "antares-xpansion/bellman_values/BellmanValues.h"
@@ -59,14 +61,31 @@ std::vector<std::vector<double>> interpolateWeekVector(
     return interpolatedValues;
 }
 
+std::string formatTime(std::chrono::system_clock::time_point timePoint)
+{
+    return std::format("{:%T}",
+                       std::chrono::floor<std::chrono::seconds>(
+                         std::chrono::current_zone()->to_local(timePoint)));
+}
+
+template<typename T>
+std::string formatDuration(std::chrono::duration<T> duration)
+{
+    return std::format("{:%T}", std::chrono::floor<std::chrono::seconds>(duration));
+}
+
 void saveValues(const std::filesystem::path& path,
                 const std::vector<std::vector<double>>& values,
+                const Logger& logger,
                 bool usingAntaresFormat = false)
 {
     std::ofstream file(path);
     if (!file)
     {
-        std::cerr << "Failed to open file: " << path << std::endl;
+        // std::cerr << "Failed to open file: " << path << std::endl;
+        logger->display_message("Failed to open file: " + path.string(),
+                                LogUtils::LOGLEVEL::ERR,
+                                "Water Values");
         return;
     }
 
@@ -179,24 +198,52 @@ int main(int argc, char** argv)
           .simulation_dir = ConfigurationManager::generateOutputName(studyPath),
         };
 
-        auto loggerFactory = FileAndStdoutLoggerFactory(directories.simulation_dir / "log.txt",
-                                                        false);
+        // at this point, the simulation folder is already needed for logs (normally created when
+        // updating problems)
+        if (!std::filesystem::exists(directories.simulation_dir))
+        {
+            std::filesystem::create_directories(directories.simulation_dir);
+        }
+        std::filesystem::path logPath = directories.simulation_dir / "water_values_log.txt";
+        std::ofstream{logPath}; // creates log file, since the FileLoggerFactory doesn't
+        auto loggerFactory = FileAndStdoutLoggerFactory(logPath, false);
         Logger logger = loggerFactory.get_logger();
 
-        std::cout << "Generating problems" << std::endl;
+        auto startProblemGeneration = std::chrono::system_clock::now();
+        logger->display_message(
+          "Generating problems (starting time: " + formatTime(startProblemGeneration) + ")");
         ProblemGenerationForWaterValueCalculation pbg(directories,
                                                       reservoirManagement,
+                                                      logger,
                                                       solverName,
                                                       startWeek,
                                                       endWeek,
                                                       writePbFiles,
                                                       problemFormat);
-        std::cout << "Problems generated" << std::endl;
+        auto endProblemGeneration = std::chrono::system_clock::now();
+        logger->display_message("Problems generated (end time: " + formatTime(endProblemGeneration)
+                                + ")");
+        std::chrono::duration<double> elapsed_seconds = endProblemGeneration
+                                                        - startProblemGeneration;
+        logger->display_message("Elapsed time for problem generation: "
+                                + formatDuration(elapsed_seconds));
 
         Output::VariationDeNiveauxDeStockData variationDeNiveauxDeStockData;
         for (auto& grid: gridCollection->gridDefinitions)
         {
+            auto startProblemUpdate = std::chrono::system_clock::now();
+            logger->display_message(
+              "Updating problems (starting time: " + formatTime(startProblemUpdate) + ")");
             auto problems = pbg.updateProblems(grid);
+
+            auto endProblemUpdate = std::chrono::system_clock::now();
+            logger->display_message("Updated problems (end time: " + formatTime(endProblemUpdate)
+                                    + ")");
+
+            std::chrono::duration<double> elapsed_update_seconds = endProblemUpdate
+                                                                   - startProblemUpdate;
+            logger->display_message("Elapsed time for problem update: "
+                                    + formatDuration(elapsed_update_seconds));
 
             auto evaluator = GridEvaluator(logger, problems, grid, solverName, nbThreads);
             auto bellmanValuesEvaluator = BellmanValues(evaluator, reservoirManagement);
@@ -209,7 +256,7 @@ int main(int argc, char** argv)
             }
             auto waterValues = computeWaterValues(bellmanValues, levels);
             std::string fileName = std::to_string(grid.gridID) + "_water_values.csv";
-            saveValues(directories.simulation_dir / fileName, waterValues, antaresFormat);
+            saveValues(directories.simulation_dir / fileName, waterValues, logger, antaresFormat);
         }
 
         return 0;
@@ -222,6 +269,7 @@ int main(int argc, char** argv)
     catch (...)
     {
         std::cerr << "Exception of unknown type!" << std::endl;
+        return 1;
     }
 
     return 0;
