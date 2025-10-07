@@ -11,6 +11,8 @@
 
 #include "antares-xpansion/lpnamer/model/Problem.h"
 
+class RenameUtils;
+
 namespace AntaresProblemToXpansionProblemTranslator
 {
 [[nodiscard]] std::shared_ptr<Problem> translateToXpansionProblem(
@@ -18,6 +20,7 @@ namespace AntaresProblemToXpansionProblemTranslator
   unsigned int year,
   unsigned int week,
   const std::string& solver_name,
-  SolverLogManager& solver_log_manager);
+  SolverLogManager& solver_log_manager,
+  const RenameUtils& renameUtils);
 std::vector<char> convertSignToLEG(std::span<const char> data);
 } // namespace AntaresProblemToXpansionProblemTranslator

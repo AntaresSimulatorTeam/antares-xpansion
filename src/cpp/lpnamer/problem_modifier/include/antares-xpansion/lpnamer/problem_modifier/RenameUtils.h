@@ -8,26 +8,26 @@
 class RenameUtils
 {
 public:
-    static bool try_replace_first_token(const std::string& name,
-                                        std::string_view prefix,
-                                        unsigned int week,
-                                        long long factor,
-                                        bool ignore_value,
-                                        std::string& out);
+    bool try_replace_first_token(const std::string& name,
+                                 std::string_view prefix,
+                                 unsigned int week,
+                                 long long factor,
+                                 bool ignore_value,
+                                 std::string& out) const;
 
-    static std::string replace_hour_in_name(const std::string& name, unsigned int week);
+    std::string replace_hour_in_name(const std::string& name, unsigned int week) const;
+    std::pair<std::vector<std::string>&, std::vector<std::string>&> rename_week_names(
+      unsigned int week,
+      const std::vector<std::string>& variables,
+      const std::vector<std::string>& contraintes) const;
 
-    static void rename_week_names(
+    void rename_week_names(
       unsigned int week,
       const std::vector<std::string>& names,
-      std::unordered_map<int, std::vector<std::string>>& container_names);
-
-    static std::unordered_map<int, std::vector<std::string>>& get_variables_names();
-    static std::unordered_map<int, std::vector<std::string>>& get_constraints_names();
-    static std::mutex& get_rename_mutex();
+      std::unordered_map<int, std::vector<std::string>>& container_names) const;
 
 private:
-    static std::unordered_map<int, std::vector<std::string>> variables_names;
-    static std::unordered_map<int, std::vector<std::string>> constraints_names;
-    static std::mutex rename_mutex;
+    mutable std::unordered_map<int, std::vector<std::string>> variables_names;
+    mutable std::unordered_map<int, std::vector<std::string>> constraints_names;
+    mutable std::mutex rename_mutex;
 };

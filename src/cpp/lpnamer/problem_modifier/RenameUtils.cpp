@@ -15,16 +15,12 @@
 constexpr unsigned int HOURS_IN_A_WEEK = 168;
 constexpr unsigned int DAYS_IN_A_WEEK = 7;
 
-std::unordered_map<int, std::vector<std::string>> RenameUtils::variables_names;
-std::unordered_map<int, std::vector<std::string>> RenameUtils::constraints_names;
-std::mutex RenameUtils::rename_mutex;
-
 bool RenameUtils::try_replace_first_token(const std::string& name,
                                           std::string_view prefix,
                                           unsigned int week,
                                           long long factor,
                                           bool ignore_value,
-                                          std::string& out)
+                                          std::string& out) const
 {
     const auto pos = name.find(prefix);
     if (pos == std::string::npos)
@@ -62,7 +58,7 @@ bool RenameUtils::try_replace_first_token(const std::string& name,
     return true;
 }
 
-std::string RenameUtils::replace_hour_in_name(const std::string& name, unsigned int week)
+std::string RenameUtils::replace_hour_in_name(const std::string& name, unsigned int week) const
 {
     if (week == 0)
     {
@@ -87,10 +83,20 @@ std::string RenameUtils::replace_hour_in_name(const std::string& name, unsigned 
                              + name);
 }
 
+std::pair<std::vector<std::string>&, std::vector<std::string>&> RenameUtils::rename_week_names(
+  unsigned int week,
+  const std::vector<std::string>& variables,
+  const std::vector<std::string>& constraints) const
+{
+    rename_week_names(week, variables, variables_names);
+    rename_week_names(week, constraints, constraints_names);
+    return {variables_names.at(week), constraints_names.at(week)};
+}
+
 void RenameUtils::rename_week_names(
   unsigned int week,
   const std::vector<std::string>& names,
-  std::unordered_map<int, std::vector<std::string>>& container_names)
+  std::unordered_map<int, std::vector<std::string>>& container_names) const
 {
     if (!container_names.contains(week))
     {
@@ -98,23 +104,9 @@ void RenameUtils::rename_week_names(
         renamed_variables.reserve(names.size());
         std::ranges::transform(names,
                                std::back_inserter(renamed_variables),
-                               [&week](const auto& n) { return replace_hour_in_name(n, week); });
+                               [this, &week](const auto& n)
+                               { return replace_hour_in_name(n, week); });
         std::lock_guard guard(rename_mutex);
         container_names.emplace(week, renamed_variables);
     }
-}
-
-std::unordered_map<int, std::vector<std::string>>& RenameUtils::get_variables_names()
-{
-    return variables_names;
-}
-
-std::unordered_map<int, std::vector<std::string>>& RenameUtils::get_constraints_names()
-{
-    return constraints_names;
-}
-
-std::mutex& RenameUtils::get_rename_mutex()
-{
-    return rename_mutex;
 }

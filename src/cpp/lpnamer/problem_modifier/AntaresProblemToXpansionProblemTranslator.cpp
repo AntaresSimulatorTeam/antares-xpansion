@@ -18,7 +18,8 @@ std::shared_ptr<Problem> translateToXpansionProblem(const Antares::Solver::LpsFr
                                                     unsigned int year,
                                                     unsigned int week,
                                                     const std::string& solver_name,
-                                                    SolverLogManager& solver_log_manager)
+                                                    SolverLogManager& solver_log_manager,
+                                                    const RenameUtils& renameUtils)
 {
     SolverFactory factory;
     auto problem = std::make_shared<Problem>(
@@ -35,12 +36,10 @@ std::shared_ptr<Problem> translateToXpansionProblem(const Antares::Solver::LpsFr
      * index from hour 0 to hour 167. We need to rename them to
      * correspond to the current week.
      */
-    RenameUtils::rename_week_names(week,
-                                   constant.VariablesMeaning,
-                                   RenameUtils::get_variables_names());
-    RenameUtils::rename_week_names(week,
-                                   constant.ConstraintsMeaning,
-                                   RenameUtils::get_constraints_names());
+    const auto& [variables, constraints] = renameUtils.rename_week_names(
+      week,
+      constant.VariablesMeaning,
+      constant.ConstraintsMeaning);
 
     problem->add_cols(constant.VariablesCount,
                       0,
@@ -50,7 +49,7 @@ std::shared_ptr<Problem> translateToXpansionProblem(const Antares::Solver::LpsFr
                       {},
                       hebdo.Xmin.data(),
                       hebdo.Xmax.data(),
-                      RenameUtils::get_variables_names()[week]);
+                      variables);
 
     std::span signs(hebdo.Direction.data(), hebdo.Direction.size());
     problem->add_rows(constant.ConstraintesCount,
@@ -61,7 +60,7 @@ std::shared_ptr<Problem> translateToXpansionProblem(const Antares::Solver::LpsFr
                       reinterpret_cast<const int*>(constant.Mdeb.data()),
                       reinterpret_cast<const int*>(constant.ColumnIndexes.data()),
                       constant.ConstraintsMatrixCoeff.data(),
-                      RenameUtils::get_constraints_names()[week]);
+                      constraints);
     // On peut ajouter la partie qui renomme les variables ici si on stocke les
     // données du type de variables dans ConstantDataFromAntares, i.e. en
     // définissant une autre implémentation de IProblemVariablesProviderPort
