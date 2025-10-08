@@ -51,10 +51,9 @@ std::shared_ptr<Problem> translateToXpansionProblem(const Antares::Solver::LpsFr
                       hebdo.Xmax.data(),
                       variables);
 
-    std::span signs(hebdo.Direction.data(), hebdo.Direction.size());
     problem->add_rows(constant.ConstraintesCount,
                       constant.CoeffCount,
-                      convertSignToLEG(signs).data(),
+                      convertSignToLEG(hebdo.Direction).data(),
                       hebdo.RHS.data(),
                       nullptr,
                       reinterpret_cast<const int*>(constant.Mdeb.data()),

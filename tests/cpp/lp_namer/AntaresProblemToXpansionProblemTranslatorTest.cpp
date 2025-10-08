@@ -10,8 +10,7 @@ TEST(AntaresProblemToXpansionProblemTranslatorTest, convertSignToLEGSpan)
 {
     std::vector<char> signs = {'<', '=', '>'};
     std::vector<char> expected = {'L', 'E', 'G'};
-    std::vector<char> result = AntaresProblemToXpansionProblemTranslator::convertSignToLEG(
-      std::span<char>(signs.data(), signs.size()));
+    std::vector<char> result = AntaresProblemToXpansionProblemTranslator::convertSignToLEG(signs);
     ASSERT_EQ(result, expected);
 }
 
