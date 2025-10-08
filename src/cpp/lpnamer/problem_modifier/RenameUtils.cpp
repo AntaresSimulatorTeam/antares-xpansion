@@ -20,7 +20,7 @@ bool RenameUtils::try_replace_first_token(const std::string& name,
                                           unsigned int week,
                                           long long factor,
                                           bool ignore_value,
-                                          std::string& out) const
+                                          std::string& out)
 {
     const auto pos = name.find(prefix);
     if (pos == std::string::npos)

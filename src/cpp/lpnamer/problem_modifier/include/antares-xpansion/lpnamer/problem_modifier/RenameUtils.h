@@ -8,12 +8,12 @@
 class RenameUtils
 {
 public:
-    bool try_replace_first_token(const std::string& name,
-                                 std::string_view prefix,
-                                 unsigned int week,
-                                 long long factor,
-                                 bool ignore_value,
-                                 std::string& out) const;
+    static bool try_replace_first_token(const std::string& name,
+                                        std::string_view prefix,
+                                        unsigned int week,
+                                        long long factor,
+                                        bool ignore_value,
+                                        std::string& out);
 
     std::string replace_hour_in_name(const std::string& name, unsigned int week) const;
     std::pair<const std::vector<std::string>&, const std::vector<std::string>&> rename_week_names(
