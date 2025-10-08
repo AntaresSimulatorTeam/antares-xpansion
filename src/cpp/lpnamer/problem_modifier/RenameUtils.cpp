@@ -58,7 +58,7 @@ bool RenameUtils::try_replace_first_token(const std::string& name,
     return true;
 }
 
-std::string RenameUtils::replace_hour_in_name(const std::string& name, unsigned int week) const
+std::string RenameUtils::replace_hour_in_name(const std::string& name, unsigned int week)
 {
     if (week == 0)
     {
