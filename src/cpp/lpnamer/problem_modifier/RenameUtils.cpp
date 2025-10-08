@@ -104,8 +104,7 @@ void RenameUtils::rename_week_names(
         renamed_variables.reserve(names.size());
         std::ranges::transform(names,
                                std::back_inserter(renamed_variables),
-                               [this, &week](const auto& n)
-                               { return replace_hour_in_name(n, week); });
+                               [&week](const auto& n) { return replace_hour_in_name(n, week); });
         std::lock_guard guard(rename_mutex_);
         container_names.emplace(week, renamed_variables);
     }
