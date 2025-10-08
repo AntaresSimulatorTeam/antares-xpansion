@@ -83,14 +83,14 @@ std::string RenameUtils::replace_hour_in_name(const std::string& name, unsigned 
                              + name);
 }
 
-std::pair<std::vector<std::string>&, std::vector<std::string>&> RenameUtils::rename_week_names(
-  unsigned int week,
-  const std::vector<std::string>& variables,
-  const std::vector<std::string>& constraints) const
+std::pair<const std::vector<std::string>&, const std::vector<std::string>&>
+RenameUtils::rename_week_names(unsigned int week,
+                               const std::vector<std::string>& variables,
+                               const std::vector<std::string>& constraints) const
 {
-    rename_week_names(week, variables, variables_names);
-    rename_week_names(week, constraints, constraints_names);
-    return {variables_names.at(week), constraints_names.at(week)};
+    rename_week_names(week, variables, variables_names_);
+    rename_week_names(week, constraints, constraints_names_);
+    return {variables_names_.at(week), constraints_names_.at(week)};
 }
 
 void RenameUtils::rename_week_names(
@@ -106,7 +106,7 @@ void RenameUtils::rename_week_names(
                                std::back_inserter(renamed_variables),
                                [this, &week](const auto& n)
                                { return replace_hour_in_name(n, week); });
-        std::lock_guard guard(rename_mutex);
+        std::lock_guard guard(rename_mutex_);
         container_names.emplace(week, renamed_variables);
     }
 }
