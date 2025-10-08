@@ -6,8 +6,6 @@
 #include "RenameUtils.h"
 #include "antares-xpansion/lpnamer/model/Problem.h"
 
-class RenameUtils;
-
 class XpansionProblemsFromAntaresProvider: public IXpansionProblemsProvider
 {
 public:
