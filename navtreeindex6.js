@@ -1,5 +1,6 @@
 var NAVTREEINDEX6 =
 {
+"dir_d11149565431690e8c7d6493af59f182.html":[34,0,0,0,0,4,0,0],
 "dir_ded7b7728c06f7964a722285a88ef42e.html":[34,0,0,0,3,0,0],
 "dir_def971f6a63400034a12512efccd3104.html":[34,0,0,0,0,4,0,0,0,0],
 "dir_df4013546a3c74d96d311a0534ef60d6.html":[34,0,0,0,10,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX6 =
 "md_docs_2user-guide_2get-started_2launching-optimization.html":[18],
 "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md167":[18,0],
 "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md168":[18,0,0],
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md169":[18,0,1],
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md170":[18,0,1,0]
+"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md169":[18,0,1]
 };

@@ -12,7 +12,6 @@ var hierarchy =
     [ "AntaresArchiveUpdater", "classAntaresArchiveUpdater.html", null ],
     [ "antares_xpansion.antares_driver.AntaresDriver", "classantares__xpansion_1_1antares__driver_1_1AntaresDriver.html", null ],
     [ "AntaresLinkDataReader", "classAntaresLinkDataReader.html", null ],
-    [ "AntaresProblemToXpansionProblemTranslator", "classAntaresProblemToXpansionProblemTranslator.html", null ],
     [ "AntaresVersionProvider", "classAntaresVersionProvider.html", [
       [ "AntaresVersionProviderStub", "classAntaresVersionProviderStub.html", null ]
     ] ],
@@ -396,6 +395,7 @@ var hierarchy =
     [ "antares_xpansion.profile_link_checker.ProfileLinkChecker", "classantares__xpansion_1_1profile__link__checker_1_1ProfileLinkChecker.html", null ],
     [ "RandomBatchShuffler", "classRandomBatchShuffler.html", null ],
     [ "RawPbData", "structRawPbData.html", null ],
+    [ "RenameUtils", "classRenameUtils.html", null ],
     [ "antares_xpansion.resume_study.ResumeStudy", "classantares__xpansion_1_1resume__study_1_1ResumeStudy.html", null ],
     [ "antares_xpansion.resume_study.ResumeStudyData", "classantares__xpansion_1_1resume__study_1_1ResumeStudyData.html", null ],
     [ "std::runtime_error", null, [

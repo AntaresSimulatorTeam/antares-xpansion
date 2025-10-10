@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: src/cpp/lpnamer/problem_modifier/include/antares-xpansion/lpnamer/problem_modifier/AntaresProblemToXpansionProblemTranslator.h Source File</title>
+<title>Antares Xpansion: RenameUtils Class Reference</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -111,7 +111,7 @@ $(function() {
 </div>
 <script type="text/javascript">
 /* @license magnet:?xt=urn:btih:d3d9a9a6595521f9666a5e94cc830dab83b65699&amp;dn=expat.txt MIT */
-$(function(){initNavTree('AntaresProblemToXpansionProblemTranslator_8h_source.html',''); initResizable(true); });
+$(function(){initNavTree('classRenameUtils.html',''); initResizable(true); });
 /* @license-end */
 </script>
 <div id="doc-content">
@@ -137,43 +137,39 @@ $(function(){initNavTree('AntaresProblemToXpansionProblemTranslator_8h_source.ht
 </div>
 
 <div class="header">
-  <div class="headertitle"><div class="title">AntaresProblemToXpansionProblemTranslator.h</div></div>
+  <div class="summary">
+<a href="#pub-methods">Public Member Functions</a> &#124;
+<a href="#pub-static-methods">Static Public Member Functions</a> &#124;
+<a href="classRenameUtils-members.html">List of all members</a>  </div>
+  <div class="headertitle"><div class="title">RenameUtils Class Reference</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="comment">//</span></div>
-<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="comment">// Created by marechaljas on 22/11/22.</span></div>
-<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="comment">//</span></div>
-<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span> </div>
-<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#pragma once</span></div>
-<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span> </div>
-<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;span&gt;</span></div>
-<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;unordered_map&gt;</span></div>
-<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
-<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="preprocessor">#include &lt;antares/solver/lps/LpsFromAntares.h&gt;</span></div>
-<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
-<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;antares-xpansion/lpnamer/model/Problem.h&quot;</span></div>
-<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span> </div>
-<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="keyword">class </span><a class="code hl_class" href="classRenameUtils.html">RenameUtils</a>;</div>
-<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span> </div>
-<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="keyword">namespace </span>AntaresProblemToXpansionProblemTranslator</div>
-<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>{</div>
-<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span>[[nodiscard]] std::shared_ptr&lt;Problem&gt; translateToXpansionProblem(</div>
-<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span>  <span class="keyword">const</span> Antares::Solver::LpsFromAntares&amp; lps,</div>
-<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> year,</div>
-<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span>  <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> week,</div>
-<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>  <span class="keyword">const</span> std::string&amp; solver_name,</div>
-<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>  <span class="keyword">const</span> <a class="code hl_class" href="classSolverLogManager.html">SolverLogManager</a>&amp; solver_log_manager,</div>
-<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>  <span class="keyword">const</span> <a class="code hl_class" href="classRenameUtils.html">RenameUtils</a>&amp; renameUtils);</div>
-<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>std::vector&lt;char&gt; convertSignToLEG(std::span&lt;const char&gt; data);</div>
-<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>} <span class="comment">// namespace AntaresProblemToXpansionProblemTranslator</span></div>
-<div class="ttc" id="aclassRenameUtils_html"><div class="ttname"><a href="classRenameUtils.html">RenameUtils</a></div><div class="ttdef"><b>Definition</b> RenameUtils.h:9</div></div>
-<div class="ttc" id="aclassSolverLogManager_html"><div class="ttname"><a href="classSolverLogManager.html">SolverLogManager</a></div><div class="ttdef"><b>Definition</b> SolverAbstract.h:20</div></div>
-</div><!-- fragment --></div><!-- contents -->
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Public Member Functions</h2></td></tr>
+<tr class="memitem:aae8bcfce11e1bf6d4aaa5e3eda1bf8b8" id="r_aae8bcfce11e1bf6d4aaa5e3eda1bf8b8"><td class="memItemLeft" align="right" valign="top"><a id="aae8bcfce11e1bf6d4aaa5e3eda1bf8b8" name="aae8bcfce11e1bf6d4aaa5e3eda1bf8b8"></a>
+std::pair&lt; const std::vector&lt; std::string &gt; &amp;, const std::vector&lt; std::string &gt; &amp; &gt;&#160;</td><td class="memItemRight" valign="bottom"><b>rename_week_names</b> (unsigned int week, const std::vector&lt; std::string &gt; &amp;variables, const std::vector&lt; std::string &gt; &amp;contraintes) const</td></tr>
+<tr class="separator:aae8bcfce11e1bf6d4aaa5e3eda1bf8b8"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Static Public Member Functions</h2></td></tr>
+<tr class="memitem:a082ef6307e8391f9ff09f92a8275cceb" id="r_a082ef6307e8391f9ff09f92a8275cceb"><td class="memItemLeft" align="right" valign="top"><a id="a082ef6307e8391f9ff09f92a8275cceb" name="a082ef6307e8391f9ff09f92a8275cceb"></a>
+static bool&#160;</td><td class="memItemRight" valign="bottom"><b>try_replace_first_token</b> (const std::string &amp;name, std::string_view prefix, unsigned int week, long long factor, bool ignore_value, std::string &amp;out)</td></tr>
+<tr class="separator:a082ef6307e8391f9ff09f92a8275cceb"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aee0d33143d07e38df894e571e5994faf" id="r_aee0d33143d07e38df894e571e5994faf"><td class="memItemLeft" align="right" valign="top"><a id="aee0d33143d07e38df894e571e5994faf" name="aee0d33143d07e38df894e571e5994faf"></a>
+static std::string&#160;</td><td class="memItemRight" valign="bottom"><b>replace_time_step_in_name</b> (const std::string &amp;name, unsigned int week)</td></tr>
+<tr class="separator:aee0d33143d07e38df894e571e5994faf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table>
+<hr/>The documentation for this class was generated from the following files:<ul>
+<li>src/cpp/lpnamer/problem_modifier/include/antares-xpansion/lpnamer/problem_modifier/<a class="el" href="RenameUtils_8h_source.html">RenameUtils.h</a></li>
+<li>src/cpp/lpnamer/problem_modifier/<b>RenameUtils.cpp</b></li>
+</ul>
+</div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->
 <div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
   <ul>
-    <li class="navelem"><a class="el" href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a class="el" href="dir_dfdbda394c3f7a3aa55229f33a559c41.html">cpp</a></li><li class="navelem"><a class="el" href="dir_e82b02a6724f3381c006d85ad5b9fc3b.html">lpnamer</a></li><li class="navelem"><a class="el" href="dir_e6f25a82ee20e4e8e60623c7da1f363f.html">problem_modifier</a></li><li class="navelem"><a class="el" href="dir_7428275c358f803a111cea397ed62bd7.html">include</a></li><li class="navelem"><a class="el" href="dir_5b6a104ba380976b60b70aaacaab9966.html">antares-xpansion</a></li><li class="navelem"><a class="el" href="dir_4f6847cc287769681663d5672b5e31ce.html">lpnamer</a></li><li class="navelem"><a class="el" href="dir_0ea1c8196201bfcc974b3c0ef332f54f.html">problem_modifier</a></li><li class="navelem"><b>AntaresProblemToXpansionProblemTranslator.h</b></li>
+    <li class="navelem"><a class="el" href="classRenameUtils.html">RenameUtils</a></li>
     <li class="footer">Generated by <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.12.0 </li>
   </ul>
 </div>

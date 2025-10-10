@@ -1,5 +1,6 @@
 var NAVTREEINDEX5 =
 {
+"classantares__xpansion_1_1study__updater__driver_1_1StudyUpdaterDriver.html":[33,0,0,24,0],
 "classantares__xpansion_1_1study__updater__driver_1_1StudyUpdaterDriver.html#a17d46b8736a36003f73ea979c6934fd1":[31,0,0,8,0,3],
 "classantares__xpansion_1_1study__updater__driver_1_1StudyUpdaterDriver.html#a17d46b8736a36003f73ea979c6934fd1":[33,0,0,24,0,3],
 "classantares__xpansion_1_1study__updater__driver_1_1StudyUpdaterDriver_1_1StudyUpdaterJsonFilePath.html":[31,0,0,8,0,0],
@@ -27,7 +28,7 @@ var NAVTREEINDEX5 =
 "classantares__xpansion_1_1yearly__weight__writer_1_1YearlyWeightWriter.html":[33,0,0,27,0],
 "classargs__parser__trajectory_1_1TrajectoryArgsParser.html":[33,0,1,0],
 "classargs__parser__trajectory_1_1TrajectoryLauncherOptionsKeys.html":[33,0,1,1],
-"classclass.html":[33,0,82],
+"classclass.html":[33,0,81],
 "classdriver__input__translation_1_1InputTranslationDriver.html":[33,0,3,0],
 "classdriver__input__translation_1_1InputTranslationDriver.html#aa6a8becca2bbdac89c7ab33c0e0818be":[33,0,3,0,1],
 "classdriver__input__translation_1_1InputTranslationDriver_1_1InvalidRootStudyPathError.html":[33,0,3,0,0],
@@ -248,6 +249,5 @@ var NAVTREEINDEX5 =
 "dir_cb4958ed94c8eabb59510d82c41f5351.html":[34,0,0,0,8],
 "dir_cd3467a04bd2b05363dd8c8f17b6249f.html":[34,0,0,0,4,1,0],
 "dir_cebede7e7519f5e1d3851e4cba388323.html":[34,0,0,0,6,1],
-"dir_cf3c68b66a79946d9c5243d97cb7715f.html":[34,0,0,0,8,0],
-"dir_d11149565431690e8c7d6493af59f182.html":[34,0,0,0,0,4,0,0]
+"dir_cf3c68b66a79946d9c5243d97cb7715f.html":[34,0,0,0,8,0]
 };
