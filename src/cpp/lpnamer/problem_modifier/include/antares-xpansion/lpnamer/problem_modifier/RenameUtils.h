@@ -15,7 +15,7 @@ public:
                                         bool ignore_value,
                                         std::string& out);
 
-    static std::string replace_hour_in_name(const std::string& name, unsigned int week);
+    static std::string replace_time_step_in_name(const std::string& name, unsigned int week);
     std::pair<const std::vector<std::string>&, const std::vector<std::string>&> rename_week_names(
       unsigned int week,
       const std::vector<std::string>& variables,

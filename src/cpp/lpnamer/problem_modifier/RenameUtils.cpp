@@ -58,7 +58,7 @@ bool RenameUtils::try_replace_first_token(const std::string& name,
     return true;
 }
 
-std::string RenameUtils::replace_hour_in_name(const std::string& name, unsigned int week)
+std::string RenameUtils::replace_time_step_in_name(const std::string& name, unsigned int week)
 {
     if (week == 0)
     {
@@ -104,7 +104,8 @@ void RenameUtils::rename_week_names(
         renamed_variables.reserve(names.size());
         std::ranges::transform(names,
                                std::back_inserter(renamed_variables),
-                               [&week](const auto& n) { return replace_hour_in_name(n, week); });
+                               [&week](const auto& n)
+                               { return replace_time_step_in_name(n, week); });
         std::lock_guard guard(rename_mutex_);
         container_names.emplace(week, renamed_variables);
     }

@@ -34,47 +34,60 @@ TEST(RenameWeekNames, HourWeek1)
 {
     std::vector<std::string> vnames = {"vhour<1>"};
     std::vector<std::string> cnames = {"chour<1>"};
-    const auto& [variables, constraints] = RenameUtils().rename_week_names(1, vnames, cnames);
-    ASSERT_EQ(variables.at(1).size(), 1);
-    ASSERT_EQ(constraints.at(1).size(), 1);
-    ASSERT_EQ(variables.at(1), std::string("vhour<1>"));
-    ASSERT_EQ(constraints.at(1), std::string("chour<1>"));
+    RenameUtils rename_utils;
+    const auto& [variables, constraints] = rename_utils.rename_week_names(1, vnames, cnames);
+    ASSERT_EQ(variables.at(0), std::string("vhour<1>"));
+    ASSERT_EQ(constraints.at(0), std::string("chour<1>"));
 }
 
 TEST(RenameWeekNames, HourWeek2)
 {
     std::vector<std::string> vnames = {"hour<1>"};
     std::vector<std::string> cnames; // vide, comme dans HourWeek1
-    const auto& [variables, constraints] = RenameUtils().rename_week_names(2, vnames, cnames);
-    ASSERT_EQ(variables.at(2).size(), 1);
-    ASSERT_EQ(variables.at(2), std::string("hour<169>")); // 168 + 1
+    RenameUtils rename_utils;
+    const auto& [variables, constraints] = rename_utils.rename_week_names(2, vnames, cnames);
+    ASSERT_EQ(variables.at(0), std::string("hour<169>")); // 168 + 1
 }
 
 TEST(RenameWeekNames, DayWeek3)
 {
     std::vector<std::string> vnames = {"day<3>"};
     std::vector<std::string> cnames;
-    const auto& [variables, constraints] = RenameUtils().rename_week_names(3, vnames, cnames);
-    ASSERT_EQ(variables.at(3).size(), 1);
-    ASSERT_EQ(variables.at(3), std::string("day<17>")); // (3-1)*7 + 3 = 17
+    RenameUtils rename_utils;
+    const auto& [variables, constraints] = rename_utils.rename_week_names(3, vnames, cnames);
+    ASSERT_EQ(variables.at(0), std::string("day<17>")); // (3-1)*7 + 3 = 17
 }
 
 TEST(RenameWeekNames, WeekTokenNormalized)
 {
     std::vector<std::string> vnames = {"week<5>"};
     std::vector<std::string> cnames;
-    const auto& [variables, constraints] = RenameUtils().rename_week_names(3, vnames, cnames);
-    ASSERT_EQ(variables.at(3).size(), 1);
-    ASSERT_EQ(variables.at(3), std::string("week<2>")); // week normalisé à l'index 0
+    RenameUtils rename_utils;
+    const auto& [variables, constraints] = rename_utils.rename_week_names(3, vnames, cnames);
+    ASSERT_EQ(variables.at(0), std::string("week<2>")); // week normalisé à l'index 0
 }
 
 TEST(RenameWeekNames, OnlyFirstOccurrenceReplaced)
 {
     std::vector<std::string> vnames = {"hour<1>_hour<2>"};
     std::vector<std::string> cnames;
-    const auto& [variables, constraints] = RenameUtils().rename_week_names(2, vnames, cnames);
-    ASSERT_EQ(variables.at(2).size(), 1);
-    ASSERT_EQ(variables.at(2), std::string("hour<169>_hour<2>"));
+    RenameUtils rename_utils;
+    const auto& [variables, constraints] = rename_utils.rename_week_names(2, vnames, cnames);
+    ASSERT_EQ(variables.at(0), std::string("hour<169>_hour<2>"));
+}
+
+TEST(RenameWeekNames, MultipleNames)
+{
+    std::vector<std::string> vnames = {"hour<1>", "day<1>", "week<1>"};
+    std::vector<std::string> cnames = {"hour<1>", "day<1>", "week<1>"};
+    RenameUtils rename_utils;
+    const auto& [variables, constraints] = rename_utils.rename_week_names(2, vnames, cnames);
+    ASSERT_EQ(variables.at(0), std::string("hour<169>"));
+    ASSERT_EQ(variables.at(1), std::string("day<8>"));
+    ASSERT_EQ(variables.at(2), std::string("week<1>"));
+    ASSERT_EQ(constraints.at(0), std::string("hour<169>"));
+    ASSERT_EQ(constraints.at(1), std::string("day<8>"));
+    ASSERT_EQ(constraints.at(2), std::string("week<1>"));
 }
 
 TEST(RenameWeekNames, NoTokenThrows)
