@@ -18,8 +18,7 @@ TEST(AntaresProblemToXpansionProblemTranslatorTest, convertSignToLEGSpan)
 TEST(AntaresProblemToXpansionProblemTranslatorTest, convertSignToLEGSpanFailWithInvalidChar)
 {
     std::vector<char> signs = {'<', '=', 'a'};
-    ASSERT_THROW(AntaresProblemToXpansionProblemTranslator::convertSignToLEG(
-                   std::span<char>(signs.data(), signs.size())),
+    ASSERT_THROW(AntaresProblemToXpansionProblemTranslator::convertSignToLEG(signs),
                  std::runtime_error);
 }
 
@@ -27,8 +26,7 @@ TEST(AntaresProblemToXpansionProblemTranslatorTest, convertSignToLEGSpanFailWith
 TEST(AntaresProblemToXpansionProblemTranslatorTest, NullCharIsInvalid)
 {
     std::vector<char> signs = {'<', '=', '\0'};
-    ASSERT_THROW(AntaresProblemToXpansionProblemTranslator::convertSignToLEG(
-                   std::span<char>(signs.data(), signs.size())),
+    ASSERT_THROW(AntaresProblemToXpansionProblemTranslator::convertSignToLEG(signs),
                  std::runtime_error);
 }
 
