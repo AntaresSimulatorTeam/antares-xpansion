@@ -52,6 +52,9 @@ target_sources(lp_namer_problem_modifier PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/ZipProblemProviderAdapter.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/ZipProblemsProviderAdapter.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/problem_modifier/RenameUtils.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/RenameUtils.cpp
+
 )
 
 target_include_directories(lp_namer_problem_modifier
