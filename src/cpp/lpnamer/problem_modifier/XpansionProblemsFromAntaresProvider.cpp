@@ -25,7 +25,8 @@ auto XpansionProblemsFromAntaresProvider::provideProblem(
       problem_id.year,
       problem_id.week,
       solver_name,
-      solver_log_manager);
+      solver_log_manager,
+      rename_utils_);
     return problem;
 }
 
