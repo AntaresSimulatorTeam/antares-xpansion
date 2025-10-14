@@ -3,6 +3,7 @@
 #include <antares/solver/lps/LpsFromAntares.h>
 
 #include "IXpansionProblemsProvider.h"
+#include "RenameUtils.h"
 #include "antares-xpansion/lpnamer/model/Problem.h"
 
 class XpansionProblemsFromAntaresProvider: public IXpansionProblemsProvider
@@ -17,4 +18,7 @@ public:
       const std::string& solver_name,
       SolverLogManager& solver_log_manager) const override;
     const Antares::Solver::LpsFromAntares& antares_hebdo_problems;
+
+private:
+    RenameUtils rename_utils_;
 };
