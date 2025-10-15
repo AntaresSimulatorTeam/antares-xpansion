@@ -1,5 +1,8 @@
 var searchData=
 [
-  ['file_20parsing_0',['User input file parsing',['../md_docs_2user-guide_2trajectory-investment_2user-input.html',1,'']]],
-  ['format_20changes_1',['Study format changes',['../md_docs_2changelog_2format__changes.html',1,'']]]
+  ['define_20the_20candidates_0',['Define the candidates',['../md_docs_2user-guide_2get-started_2candidate-definition.html',1,'']]],
+  ['dependencies_20install_1',['Dependencies install',['../md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html',1,'']]],
+  ['development_20requirements_2',['Development requirements',['../md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html',1,'']]],
+  ['documention_20generation_20guidelines_3',['Documention generation guidelines',['../md_docs_2how__to.html',1,'']]],
+  ['dynamically_4',['Installing Xpress Solver and Loading it Dynamically',['../md_docs_2developer-guide_2install__from__sources_26-Xpress.html',1,'']]]
 ];

@@ -346,22 +346,32 @@ var NAVTREE =
     [ "Multiple problem generation", "md_docs_2user-guide_2trajectory-investment_2multiple-problem-generation.html", [
       [ "Usage", "md_docs_2user-guide_2trajectory-investment_2multiple-problem-generation.html#autotoc_md260", null ],
       [ "Study paths / archives file", "md_docs_2user-guide_2trajectory-investment_2multiple-problem-generation.html#autotoc_md261", null ],
-      [ " Weights and/or additional constraints reference file", "md_docs_2user-guide_2trajectory-investment_2multiple-problem-generation.html#autotoc_md262", null ],
+      [ " Weights / additional constraints reference file", "md_docs_2user-guide_2trajectory-investment_2multiple-problem-generation.html#autotoc_md262", null ],
       [ "Output : Nodal Lp Info file", "md_docs_2user-guide_2trajectory-investment_2multiple-problem-generation.html#autotoc_md263", null ]
     ] ],
-    [ "orchestration", "md_docs_2user-guide_2trajectory-investment_2orchestration.html", null ],
+    [ "Launching the workflow : <tt>xpansion trajectory</tt>", "md_docs_2user-guide_2trajectory-investment_2orchestration.html", [
+      [ "Usage", "md_docs_2user-guide_2trajectory-investment_2orchestration.html#autotoc_md265", null ],
+      [ "Mandatory arguments", "md_docs_2user-guide_2trajectory-investment_2orchestration.html#autotoc_md266", null ],
+      [ "Optional arguments", "md_docs_2user-guide_2trajectory-investment_2orchestration.html#autotoc_md267", null ],
+      [ "A note on intermediary files", "md_docs_2user-guide_2trajectory-investment_2orchestration.html#autotoc_md268", null ]
+    ] ],
     [ "Trajectory investment problem", "md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html", [
-      [ "General description", "md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html#autotoc_md265", null ],
-      [ "On the $dx^{+/-}$ variables", "md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html#autotoc_md266", null ]
+      [ "General description", "md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html#autotoc_md270", null ],
+      [ " Switching to a pluriannual vision", "md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html#autotoc_md271", null ],
+      [ "On the $dx^{+/-}$ variables", "md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html#autotoc_md272", null ]
     ] ],
     [ "trajectory-workflow", "md_docs_2user-guide_2trajectory-investment_2trajectory-workflow.html", null ],
     [ "User input file parsing", "md_docs_2user-guide_2trajectory-investment_2user-input.html", [
-      [ "User input file", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md270", null ],
-      [ " Input file parser & translator", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md271", null ],
-      [ "Trajectory constraints translation", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md272", [
-        [ "type: max_investment_per_node_per_candidate", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md273", null ],
-        [ " type: max_cumulative_investment_per_node", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md274", null ],
-        [ "type: max_retirement_per_node_per_candidate", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md275", null ]
+      [ "User input file", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md276", null ],
+      [ " Input file parser & translator", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md277", null ],
+      [ " A note on candidates", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md278", null ],
+      [ "Trajectory constraints translation", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md279", [
+        [ "type: max_investment_per_node_per_candidate", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md280", null ],
+        [ " type: max_cumulative_investment_per_node", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md281", null ],
+        [ "type: max_retirement_per_node_per_candidate", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md282", null ],
+        [ " type: max_cumulative_retirement_per_node", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md283", null ],
+        [ " type: min_investment_per_candidate_per_node", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md284", null ],
+        [ " type: min_retirement_per_candidate_per_node", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md285", null ]
       ] ]
     ] ],
     [ "Namespaces", "namespaces.html", [
@@ -396,8 +406,8 @@ var NAVTREEINDEX =
 "classSolverCbc.html#aab7ba381ec42739bb961fe1460c67b7a",
 "classantares__xpansion_1_1antares__driver_1_1AntaresDriver_1_1AntaresExecutionError.html",
 "classantares__xpansion_1_1study__updater__driver_1_1StudyUpdaterDriver.html",
-"dir_d11149565431690e8c7d6493af59f182.html",
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md170"
+"dir_f3d170f9068915727546749c6263b7bf.html",
+"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md187"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

@@ -11,6 +11,5 @@ var namespaces_dup =
         ] ]
       ] ],
       [ "python", "namespacetests_1_1python.html", null ]
-    ] ],
-    [ "trajectory_driver", "namespacetrajectory__driver.html", "namespacetrajectory__driver" ]
+    ] ]
 ];

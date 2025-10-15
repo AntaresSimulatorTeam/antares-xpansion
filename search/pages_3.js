@@ -1,8 +1,8 @@
 var searchData=
 [
-  ['define_20the_20candidates_0',['Define the candidates',['../md_docs_2user-guide_2get-started_2candidate-definition.html',1,'']]],
-  ['dependencies_20install_1',['Dependencies install',['../md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html',1,'']]],
-  ['development_20requirements_2',['Development requirements',['../md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html',1,'']]],
-  ['documention_20generation_20guidelines_3',['Documention generation guidelines',['../md_docs_2how__to.html',1,'']]],
-  ['dynamically_4',['Installing Xpress Solver and Loading it Dynamically',['../md_docs_2developer-guide_2install__from__sources_26-Xpress.html',1,'']]]
+  ['candidates_0',['Define the candidates',['../md_docs_2user-guide_2get-started_2candidate-definition.html',1,'']]],
+  ['changelog_1',['Antares-Xpansion changelog',['../md_docs_2changelog_2CHANGELOG.html',1,'']]],
+  ['changes_2',['Study format changes',['../md_docs_2changelog_2format__changes.html',1,'']]],
+  ['creation_3',['Installer creation',['../md_docs_2developer-guide_2install__from__sources_25-Installer-creation.html',1,'']]],
+  ['criterion_4',['Adequacy criterion',['../md_docs_2user-guide_2get-started_2adequacy-criterion.html',1,'']]]
 ];

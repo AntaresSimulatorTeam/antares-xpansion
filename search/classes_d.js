@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['nodedata_0',['NodeData',['../classtrajectory__module_1_1TrajectoryModule_1_1NodeData.html',1,'trajectory_module.TrajectoryModule.NodeData'],['../classuser__input__translation_1_1TrajectoryModule_1_1NodeData.html',1,'user_input_translation.TrajectoryModule.NodeData']]],
+  ['nodedata_0',['NodeData',['../classuser__input__translation_1_1NodeData.html',1,'user_input_translation']]],
   ['nodelpdatalocation_1',['NodeLpDataLocation',['../structNodeLpDataLocation.html',1,'']]],
   ['noinvestmentcomputedforthecandidate_2',['NoInvestmentComputedForTheCandidate',['../classStudyUpdateStrategy_1_1NoInvestmentComputedForTheCandidate.html',1,'StudyUpdateStrategy']]],
   ['noopbendersproblemprovider_3',['NOOPBendersProblemProvider',['../classNOOPBendersProblemProvider.html',1,'']]],

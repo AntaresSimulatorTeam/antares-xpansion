@@ -1,15 +1,6 @@
 var searchData=
 [
-  ['in_20antares_20xpansion_0',['The optimal investment problem in Antares-Xpansion',['../md_docs_2user-guide_2optimization-principles_2investment-problem.html',1,'']]],
-  ['index_1',['index',['../md_docs_2index.html',1,'']]],
-  ['input_20file_20parsing_2',['User input file parsing',['../md_docs_2user-guide_2trajectory-investment_2user-input.html',1,'']]],
-  ['install_3',['Dependencies install',['../md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html',1,'']]],
-  ['installation_4',['Installation',['../md_docs_2user-guide_2get-started_2installation.html',1,'']]],
-  ['installer_20creation_5',['Installer creation',['../md_docs_2developer-guide_2install__from__sources_25-Installer-creation.html',1,'']]],
-  ['installing_20xpress_20solver_20and_20loading_20it_20dynamically_6',['Installing Xpress Solver and Loading it Dynamically',['../md_docs_2developer-guide_2install__from__sources_26-Xpress.html',1,'']]],
-  ['introduction_7',['Introduction',['../md_docs_2developer-guide_2install__from__sources_20-INSTALL.html',1,'']]],
-  ['investment_20problem_8',['investment problem',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html',1,'Mathematical aspects of the investment problem'],['../md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html',1,'Trajectory investment problem']]],
-  ['investment_20problem_20generation_9',['Investment problem generation',['../md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html',1,'']]],
-  ['investment_20problem_20in_20antares_20xpansion_10',['The optimal investment problem in Antares-Xpansion',['../md_docs_2user-guide_2optimization-principles_2investment-problem.html',1,'']]],
-  ['it_20dynamically_11',['Installing Xpress Solver and Loading it Dynamically',['../md_docs_2developer-guide_2install__from__sources_26-Xpress.html',1,'']]]
+  ['generation_0',['generation',['../md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html',1,'Investment problem generation'],['../md_docs_2user-guide_2trajectory-investment_2multiple-problem-generation.html',1,'Multiple problem generation']]],
+  ['generation_20guidelines_1',['Documention generation guidelines',['../md_docs_2how__to.html',1,'']]],
+  ['guidelines_2',['Documention generation guidelines',['../md_docs_2how__to.html',1,'']]]
 ];

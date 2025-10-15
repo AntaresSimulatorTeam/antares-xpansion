@@ -212,7 +212,9 @@ Public Attributes</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<pre class="fragment">Creates the folder at &lt;input_root/name&gt; and returns the full path</pre> 
+<pre class="fragment">Creates the folder at './&lt;name&gt;' and returns the full path
+This assumes we are working at the input root.
+</pre> 
 </div>
 </div>
 <h2 class="groupheader">Member Data Documentation</h2>
@@ -228,6 +230,7 @@ Public Attributes</h2></td></tr>
       </table>
 </div><div class="memdoc">
 <b>Initial value:</b><div class="fragment"><div class="line">=  InputTranslationDriver(</div>
+<div class="line">            self.config.input_root,</div>
 <div class="line">            self.config.input_file,</div>
 <div class="line">            self.master_merger_info_file,</div>
 <div class="line">        )</div>

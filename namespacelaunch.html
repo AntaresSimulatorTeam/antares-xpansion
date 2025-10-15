@@ -154,21 +154,24 @@ str&#160;</td><td class="memItemRight" valign="bottom"><b>conf_file</b> = Path(o
 <tr class="memitem:afd78cf3235612912bd3d9265e26891b7" id="r_afd78cf3235612912bd3d9265e26891b7"><td class="memItemLeft" align="right" valign="top"><a id="afd78cf3235612912bd3d9265e26891b7" name="afd78cf3235612912bd3d9265e26891b7"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>configuration_data</b> = config_parser.get_config_parameters()</td></tr>
 <tr class="separator:afd78cf3235612912bd3d9265e26891b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a5e96840cd409506d79b82cd8b2932bae" id="r_a5e96840cd409506d79b82cd8b2932bae"><td class="memItemLeft" align="right" valign="top"><a id="a5e96840cd409506d79b82cd8b2932bae" name="a5e96840cd409506d79b82cd8b2932bae"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>parser</b> = <a class="el" href="classantares__xpansion_1_1input__parser_1_1InputParser.html">InputParser</a>()</td></tr>
-<tr class="separator:a5e96840cd409506d79b82cd8b2932bae"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aa96ac0bf06ef5fbc08fc6a4922bfd390" id="r_aa96ac0bf06ef5fbc08fc6a4922bfd390"><td class="memItemLeft" align="right" valign="top"><a id="aa96ac0bf06ef5fbc08fc6a4922bfd390" name="aa96ac0bf06ef5fbc08fc6a4922bfd390"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>input_parameters</b> = parser.parse_args()</td></tr>
-<tr class="separator:aa96ac0bf06ef5fbc08fc6a4922bfd390"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a87415ceb7f8315dd1e3d8e3b605c8c63" id="r_a87415ceb7f8315dd1e3d8e3b605c8c63"><td class="memItemLeft" align="right" valign="top"><a id="a87415ceb7f8315dd1e3d8e3b605c8c63" name="a87415ceb7f8315dd1e3d8e3b605c8c63"></a>
-dict&#160;</td><td class="memItemRight" valign="bottom"><b>step_info</b> = {&quot;step&quot;: &quot;Pre Antares&quot;}</td></tr>
-<tr class="separator:a87415ceb7f8315dd1e3d8e3b605c8c63"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a8ba684e1f9d83ffae577c55b74a9e09d" id="r_a8ba684e1f9d83ffae577c55b74a9e09d"><td class="memItemLeft" align="right" valign="top"><a id="a8ba684e1f9d83ffae577c55b74a9e09d" name="a8ba684e1f9d83ffae577c55b74a9e09d"></a>
+str&#160;</td><td class="memItemRight" valign="bottom"><b>TRAJECTORY_FLAG</b> = &quot;--trajectory&quot;</td></tr>
+<tr class="separator:a8ba684e1f9d83ffae577c55b74a9e09d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9692452cc86db56f868eaadb44638b24" id="r_a9692452cc86db56f868eaadb44638b24"><td class="memItemLeft" align="right" valign="top"><a id="a9692452cc86db56f868eaadb44638b24" name="a9692452cc86db56f868eaadb44638b24"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>t_parser</b> = TrajectoryArgsParser()</td></tr>
+<tr class="separator:a9692452cc86db56f868eaadb44638b24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ada7f8ef13d9bd9e99a977900689ede1d" id="r_ada7f8ef13d9bd9e99a977900689ede1d"><td class="memItemLeft" align="right" valign="top"><a id="ada7f8ef13d9bd9e99a977900689ede1d" name="ada7f8ef13d9bd9e99a977900689ede1d"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>t_params</b> = t_parser.parse_args()</td></tr>
+<tr class="separator:ada7f8ef13d9bd9e99a977900689ede1d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a9593b959e827a2b3dba0c47f917e5739" id="r_a9593b959e827a2b3dba0c47f917e5739"><td class="memItemLeft" align="right" valign="top"><a id="a9593b959e827a2b3dba0c47f917e5739" name="a9593b959e827a2b3dba0c47f917e5739"></a>
+dict&#160;</td><td class="memItemRight" valign="bottom"><b>step_info</b> = {&quot;step&quot;: &quot;Pre Antares Trajectory&quot;}</td></tr>
+<tr class="separator:a9593b959e827a2b3dba0c47f917e5739"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3f73537f9895a77a11d03c397afab945" id="r_a3f73537f9895a77a11d03c397afab945"><td class="memItemLeft" align="right" valign="top"><a id="a3f73537f9895a77a11d03c397afab945" name="a3f73537f9895a77a11d03c397afab945"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>logger</b> = get_logger(__name__)</td></tr>
 <tr class="separator:a3f73537f9895a77a11d03c397afab945"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:af6673173dd120d27044c01b15cef49c7" id="r_af6673173dd120d27044c01b15cef49c7"><td class="memItemLeft" align="right" valign="top"><a id="af6673173dd120d27044c01b15cef49c7" name="af6673173dd120d27044c01b15cef49c7"></a>
+<tr class="memitem:a8680c29c9734cfe7fbcff58a33cc2cdf" id="r_a8680c29c9734cfe7fbcff58a33cc2cdf"><td class="memItemLeft" align="right" valign="top"><a id="a8680c29c9734cfe7fbcff58a33cc2cdf" name="a8680c29c9734cfe7fbcff58a33cc2cdf"></a>
 dict&#160;</td><td class="memItemRight" valign="bottom"><b>simple_message</b> = {&quot;simple&quot;: True}</td></tr>
-<tr class="separator:af6673173dd120d27044c01b15cef49c7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="separator:a8680c29c9734cfe7fbcff58a33cc2cdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a34fea14cc1a4df3ea8d228e92147e97f" id="r_a34fea14cc1a4df3ea8d228e92147e97f"><td class="memItemLeft" align="right" valign="top"><a id="a34fea14cc1a4df3ea8d228e92147e97f" name="a34fea14cc1a4df3ea8d228e92147e97f"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>extra</b></td></tr>
 <tr class="separator:a34fea14cc1a4df3ea8d228e92147e97f"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -176,8 +179,29 @@ dict&#160;</td><td class="memItemRight" valign="bottom"><b>simple_message</b> = 
 &#160;</td><td class="memItemRight" valign="bottom"><b>start_time</b> = datetime.now()</td></tr>
 <tr class="separator:a81b23cdc408f7e993c32ad9f9e6bd28d"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0d16bae97cbbfdddce3dd591c05f8ac" id="r_ab0d16bae97cbbfdddce3dd591c05f8ac"><td class="memItemLeft" align="right" valign="top"><a id="ab0d16bae97cbbfdddce3dd591c05f8ac" name="ab0d16bae97cbbfdddce3dd591c05f8ac"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>locker</b> = <a class="el" href="classantares__xpansion_1_1study__locker_1_1StudyLocker.html">StudyLocker</a>(Path(input_parameters.data_dir))</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>locker</b> = <a class="el" href="classantares__xpansion_1_1study__locker_1_1StudyLocker.html">StudyLocker</a>(Path(t_params.input_root))</td></tr>
 <tr class="separator:ab0d16bae97cbbfdddce3dd591c05f8ac"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ae298d529dd5990bea24c41b233a17b2b" id="r_ae298d529dd5990bea24c41b233a17b2b"><td class="memItemLeft" align="right" valign="top"><a id="ae298d529dd5990bea24c41b233a17b2b" name="ae298d529dd5990bea24c41b233a17b2b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>t_config</b> = TrajectoryConfig(t_params, configuration_data)</td></tr>
+<tr class="separator:ae298d529dd5990bea24c41b233a17b2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3efe0cb8141521cb515c76602a4ba628" id="r_a3efe0cb8141521cb515c76602a4ba628"><td class="memItemLeft" align="right" valign="top"><a id="a3efe0cb8141521cb515c76602a4ba628" name="a3efe0cb8141521cb515c76602a4ba628"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>t_driver</b> = TrajectoryInvestmentDriver(t_config)</td></tr>
+<tr class="separator:a3efe0cb8141521cb515c76602a4ba628"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a192c01f3ad44a69dc9d30f75d8bf84b7" id="r_a192c01f3ad44a69dc9d30f75d8bf84b7"><td class="memItemLeft" align="right" valign="top"><a id="a192c01f3ad44a69dc9d30f75d8bf84b7" name="a192c01f3ad44a69dc9d30f75d8bf84b7"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>end_time</b> = datetime.now()</td></tr>
+<tr class="separator:a192c01f3ad44a69dc9d30f75d8bf84b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7df42dc7bf7ae879674ab9a717866c2b" id="r_a7df42dc7bf7ae879674ab9a717866c2b"><td class="memItemLeft" align="right" valign="top"><a id="a7df42dc7bf7ae879674ab9a717866c2b" name="a7df42dc7bf7ae879674ab9a717866c2b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>xpansion_total_duration</b> = end_time - start_time</td></tr>
+<tr class="separator:a7df42dc7bf7ae879674ab9a717866c2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a754093af26ee6b11c8a43955649d49e7" id="r_a754093af26ee6b11c8a43955649d49e7"><td class="memItemLeft" align="right" valign="top"><a id="a754093af26ee6b11c8a43955649d49e7" name="a754093af26ee6b11c8a43955649d49e7"></a>
+dict&#160;</td><td class="memItemRight" valign="bottom"><b>end_info</b> = {&quot;step&quot;: &quot;Post Xpansion Trajectory&quot;}</td></tr>
+<tr class="separator:a754093af26ee6b11c8a43955649d49e7"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a5e96840cd409506d79b82cd8b2932bae" id="r_a5e96840cd409506d79b82cd8b2932bae"><td class="memItemLeft" align="right" valign="top"><a id="a5e96840cd409506d79b82cd8b2932bae" name="a5e96840cd409506d79b82cd8b2932bae"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>parser</b> = <a class="el" href="classantares__xpansion_1_1input__parser_1_1InputParser.html">InputParser</a>()</td></tr>
+<tr class="separator:a5e96840cd409506d79b82cd8b2932bae"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:aa96ac0bf06ef5fbc08fc6a4922bfd390" id="r_aa96ac0bf06ef5fbc08fc6a4922bfd390"><td class="memItemLeft" align="right" valign="top"><a id="aa96ac0bf06ef5fbc08fc6a4922bfd390" name="aa96ac0bf06ef5fbc08fc6a4922bfd390"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>input_parameters</b> = parser.parse_args()</td></tr>
+<tr class="separator:aa96ac0bf06ef5fbc08fc6a4922bfd390"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a80fcfd8ef023db99f2472fd8f33d5d71" id="r_a80fcfd8ef023db99f2472fd8f33d5d71"><td class="memItemLeft" align="right" valign="top"><a id="a80fcfd8ef023db99f2472fd8f33d5d71" name="a80fcfd8ef023db99f2472fd8f33d5d71"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>CONFIG</b> = <a class="el" href="classantares__xpansion_1_1xpansionConfig_1_1XpansionConfig.html">XpansionConfig</a>(input_parameters, configuration_data)</td></tr>
 <tr class="separator:a80fcfd8ef023db99f2472fd8f33d5d71"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -187,18 +211,10 @@ dict&#160;</td><td class="memItemRight" valign="bottom"><b>simple_message</b> = 
 <tr class="memitem:ad35eb75bebf673b8e39adef6b6686711" id="r_ad35eb75bebf673b8e39adef6b6686711"><td class="memItemLeft" align="right" valign="top"><a id="ad35eb75bebf673b8e39adef6b6686711" name="ad35eb75bebf673b8e39adef6b6686711"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>DRIVER</b> = <a class="el" href="classantares__xpansion_1_1driver_1_1XpansionDriver.html">XpansionDriver</a>(config_loader)</td></tr>
 <tr class="separator:ad35eb75bebf673b8e39adef6b6686711"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a192c01f3ad44a69dc9d30f75d8bf84b7" id="r_a192c01f3ad44a69dc9d30f75d8bf84b7"><td class="memItemLeft" align="right" valign="top"><a id="a192c01f3ad44a69dc9d30f75d8bf84b7" name="a192c01f3ad44a69dc9d30f75d8bf84b7"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>end_time</b> = datetime.now()</td></tr>
-<tr class="separator:a192c01f3ad44a69dc9d30f75d8bf84b7"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7df42dc7bf7ae879674ab9a717866c2b" id="r_a7df42dc7bf7ae879674ab9a717866c2b"><td class="memItemLeft" align="right" valign="top"><a id="a7df42dc7bf7ae879674ab9a717866c2b" name="a7df42dc7bf7ae879674ab9a717866c2b"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>xpansion_total_duration</b> = end_time - start_time</td></tr>
-<tr class="separator:a7df42dc7bf7ae879674ab9a717866c2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a7159f281ddcff3d4e730db71a739ba89" id="r_a7159f281ddcff3d4e730db71a739ba89"><td class="memItemLeft" align="right" valign="top"><a id="a7159f281ddcff3d4e730db71a739ba89" name="a7159f281ddcff3d4e730db71a739ba89"></a>
-dict&#160;</td><td class="memItemRight" valign="bottom"><b>end_info</b> = {&quot;step&quot;: &quot;Post Xpansion&quot;}</td></tr>
-<tr class="separator:a7159f281ddcff3d4e730db71a739ba89"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">    launches the execution of the antares xpansion c++ module
+    Unified launcher: classic and trajectory modes
 </pre> </div></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

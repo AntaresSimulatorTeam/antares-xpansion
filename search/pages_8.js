@@ -1,7 +1,6 @@
 var searchData=
 [
-  ['master_20problems_20of_20annual_20xpansion_20studies_0',['Merging the master problems of annual Xpansion studies',['../md_docs_2user-guide_2trajectory-investment_2merge-master.html',1,'']]],
-  ['mathematical_20aspects_20of_20the_20investment_20problem_1',['Mathematical aspects of the investment problem',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html',1,'']]],
-  ['merging_20the_20master_20problems_20of_20annual_20xpansion_20studies_2',['Merging the master problems of annual Xpansion studies',['../md_docs_2user-guide_2trajectory-investment_2merge-master.html',1,'']]],
-  ['multiple_20problem_20generation_3',['Multiple problem generation',['../md_docs_2user-guide_2trajectory-investment_2multiple-problem-generation.html',1,'']]]
+  ['launch_20the_20optimization_0',['Launch the optimization',['../md_docs_2user-guide_2get-started_2launching-optimization.html',1,'']]],
+  ['launching_20the_20workflow_20_3a_20tt_20xpansion_20trajectory_20tt_1',['Launching the workflow : &lt;tt&gt;xpansion trajectory&lt;/tt&gt;',['../md_docs_2user-guide_2trajectory-investment_2orchestration.html',1,'']]],
+  ['loading_20it_20dynamically_2',['Installing Xpress Solver and Loading it Dynamically',['../md_docs_2developer-guide_2install__from__sources_26-Xpress.html',1,'']]]
 ];

@@ -20,14 +20,15 @@ var searchData=
   ['updates_20of_20candidate_20links_17',['Updates of candidate links',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md188',1,'']]],
   ['updatestoppingcriterion_18',['UpdateStoppingCriterion',['../classBendersByBatch.html#abc79d5e65838ad7a27b352ecfeb0dfa0',1,'BendersByBatch::UpdateStoppingCriterion()'],['../classBendersBase.html#a12e1da335571d21dc124f5d1b2de41e0',1,'BendersBase::UpdateStoppingCriterion()']]],
   ['updatetrace_19',['UpdateTrace',['../classBendersBase.html#adb953cbbd95d83ed70de4244f975d436',1,'BendersBase::UpdateTrace()'],['../classBendersSequentialDouble.html#a01aa233cda314c1882c9c5ef216d1ea3',1,'BendersSequentialDouble::UpdateTrace()'],['../classBendersBaseDouble.html#a992f815592dc2075d934450f1f9e963f',1,'BendersBaseDouble::UpdateTrace()']]],
-  ['usage_20',['Usage',['../md_docs_2user-guide_2trajectory-investment_2merge-weights.html#autotoc_md257',1,'Usage'],['../md_docs_2user-guide_2trajectory-investment_2multiple-problem-generation.html#autotoc_md260',1,'Usage']]],
+  ['usage_20',['Usage',['../md_docs_2user-guide_2trajectory-investment_2merge-weights.html#autotoc_md257',1,'Usage'],['../md_docs_2user-guide_2trajectory-investment_2multiple-problem-generation.html#autotoc_md260',1,'Usage'],['../md_docs_2user-guide_2trajectory-investment_2orchestration.html#autotoc_md265',1,'Usage']]],
   ['usage_21',['usage',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md170',1,'Command line usage'],['../index.html#autotoc_md7',1,'Command-line usage']]],
   ['use_20the_20other_20ones_22',['⚠️ Single-file versions in Ubuntu are known to have MPI-related issues. Please use the other ones.',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md29',1,'']]],
   ['user_23',['User',['../classxpansion_1_1logger_1_1User.html',1,'xpansion::logger']]],
-  ['user_20input_20file_24',['User input file',['../md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md270',1,'']]],
+  ['user_20input_20file_24',['User input file',['../md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md276',1,'']]],
   ['user_20input_20file_20parsing_25',['User input file parsing',['../md_docs_2user-guide_2trajectory-investment_2user-input.html',1,'']]],
   ['userfile_26',['UserFile',['../classxpansion_1_1logger_1_1UserFile.html',1,'xpansion::logger']]],
-  ['userloggertest_27',['UserLoggerTest',['../classUserLoggerTest.html',1,'']]],
-  ['using_20different_20profiles_20depending_20on_20the_20monte_20carlo_20year_28',['Using different profiles depending on the Monte-Carlo year',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md161',1,'']]],
-  ['using_20pre_20build_20dependency_29',['Using pre-build dependency',['../md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html#autotoc_md93',1,'']]]
+  ['userinputtranslator_27',['UserInputTranslator',['../classuser__input__translation_1_1UserInputTranslator.html',1,'user_input_translation']]],
+  ['userloggertest_28',['UserLoggerTest',['../classUserLoggerTest.html',1,'']]],
+  ['using_20different_20profiles_20depending_20on_20the_20monte_20carlo_20year_29',['Using different profiles depending on the Monte-Carlo year',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md161',1,'']]],
+  ['using_20pre_20build_20dependency_30',['Using pre-build dependency',['../md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html#autotoc_md93',1,'']]]
 ];

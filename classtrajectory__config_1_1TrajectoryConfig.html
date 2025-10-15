@@ -141,6 +141,7 @@ $(function(){initNavTree('classtrajectory__config_1_1TrajectoryConfig.html','');
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
 <a href="#pro-methods">Protected Member Functions</a> &#124;
+<a href="#pro-static-methods">Static Protected Member Functions</a> &#124;
 <a href="classtrajectory__config_1_1TrajectoryConfig-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">trajectory_config.TrajectoryConfig Class Reference</div></div>
 </div><!--header-->
@@ -172,9 +173,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ac964b09303fbba39487cbf3427ceb1e5" id="r_ac964b09303fbba39487cbf3427ceb1e5"><td class="memItemLeft" align="right" valign="top"><a id="ac964b09303fbba39487cbf3427ceb1e5" name="ac964b09303fbba39487cbf3427ceb1e5"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>config_parameters</b> = install_parameters</td></tr>
 <tr class="separator:ac964b09303fbba39487cbf3427ceb1e5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a217f1c6f14c8dd31d656c60f9cbff8b5" id="r_a217f1c6f14c8dd31d656c60f9cbff8b5"><td class="memItemLeft" align="right" valign="top"><a id="a217f1c6f14c8dd31d656c60f9cbff8b5" name="a217f1c6f14c8dd31d656c60f9cbff8b5"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>default_install_dir</b></td></tr>
-<tr class="separator:a217f1c6f14c8dd31d656c60f9cbff8b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af5fb53db5639c825e00d90c1d75b582b" id="r_af5fb53db5639c825e00d90c1d75b582b"><td class="memItemLeft" align="right" valign="top"><a id="af5fb53db5639c825e00d90c1d75b582b" name="af5fb53db5639c825e00d90c1d75b582b"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>install_dir</b></td></tr>
+<tr class="separator:af5fb53db5639c825e00d90c1d75b582b"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ada5678221c886d957c72c19ec84072d3" id="r_ada5678221c886d957c72c19ec84072d3"><td class="memItemLeft" align="right" valign="top"><a id="ada5678221c886d957c72c19ec84072d3" name="ada5678221c886d957c72c19ec84072d3"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>step</b> = self.input_parameters.step</td></tr>
 <tr class="separator:ada5678221c886d957c72c19ec84072d3"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -187,6 +188,12 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:aab3a49593899c7e7510cebd2c3929d59" id="r_aab3a49593899c7e7510cebd2c3929d59"><td class="memItemLeft" align="right" valign="top"><a id="aab3a49593899c7e7510cebd2c3929d59" name="aab3a49593899c7e7510cebd2c3929d59"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>memory</b> = self.input_parameters.memory</td></tr>
 <tr class="separator:aab3a49593899c7e7510cebd2c3929d59"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a60c398f706e863ddd44d3b925307cfdf" id="r_a60c398f706e863ddd44d3b925307cfdf"><td class="memItemLeft" align="right" valign="top"><a id="a60c398f706e863ddd44d3b925307cfdf" name="a60c398f706e863ddd44d3b925307cfdf"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>problems_format</b> = self.input_parameters.problems_format</td></tr>
+<tr class="separator:a60c398f706e863ddd44d3b925307cfdf"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a41dd0e92446f7be95a21d06de7b2aacd" id="r_a41dd0e92446f7be95a21d06de7b2aacd"><td class="memItemLeft" align="right" valign="top"><a id="a41dd0e92446f7be95a21d06de7b2aacd" name="a41dd0e92446f7be95a21d06de7b2aacd"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>solver</b> = self.input_parameters.solver</td></tr>
+<tr class="separator:a41dd0e92446f7be95a21d06de7b2aacd"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a33ad6865a14b1ea2ef631b136fecce51" id="r_a33ad6865a14b1ea2ef631b136fecce51"><td class="memItemLeft" align="right" valign="top"><a id="a33ad6865a14b1ea2ef631b136fecce51" name="a33ad6865a14b1ea2ef631b136fecce51"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>method</b> = self.input_parameters.method</td></tr>
 <tr class="separator:a33ad6865a14b1ea2ef631b136fecce51"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -199,6 +206,9 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:a403ac2fcd016eb4fa55082559245b355" id="r_a403ac2fcd016eb4fa55082559245b355"><td class="memItemLeft" align="right" valign="top"><a id="a403ac2fcd016eb4fa55082559245b355" name="a403ac2fcd016eb4fa55082559245b355"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>allow_run_as_root</b> = self.input_parameters.allow_run_as_root</td></tr>
 <tr class="separator:a403ac2fcd016eb4fa55082559245b355"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a217f1c6f14c8dd31d656c60f9cbff8b5" id="r_a217f1c6f14c8dd31d656c60f9cbff8b5"><td class="memItemLeft" align="right" valign="top"><a id="a217f1c6f14c8dd31d656c60f9cbff8b5" name="a217f1c6f14c8dd31d656c60f9cbff8b5"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>default_install_dir</b> = self.config_parameters.default_install_dir</td></tr>
+<tr class="separator:a217f1c6f14c8dd31d656c60f9cbff8b5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a44fc5ff4a84fbd189763384c2701d37d" id="r_a44fc5ff4a84fbd189763384c2701d37d"><td class="memItemLeft" align="right" valign="top"><a id="a44fc5ff4a84fbd189763384c2701d37d" name="a44fc5ff4a84fbd189763384c2701d37d"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>ANTARES</b> = self.config_parameters.ANTARES</td></tr>
 <tr class="separator:a44fc5ff4a84fbd189763384c2701d37d"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -278,6 +288,12 @@ str&#160;</td><td class="memItemRight" valign="bottom"><b>MERGED_WEIGHTS</b> = &
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
 Protected Member Functions</h2></td></tr>
+<tr class="memitem:a8b719dd8cb1266d8f7092fe8efa68a1f" id="r_a8b719dd8cb1266d8f7092fe8efa68a1f"><td class="memItemLeft" align="right" valign="top"><a id="a8b719dd8cb1266d8f7092fe8efa68a1f" name="a8b719dd8cb1266d8f7092fe8efa68a1f"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>_get_install_dir</b> (self, install_dir)</td></tr>
+<tr class="separator:a8b719dd8cb1266d8f7092fe8efa68a1f"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:abf91963b8db8893c63f3b91104e5ec14" id="r_abf91963b8db8893c63f3b91104e5ec14"><td class="memItemLeft" align="right" valign="top"><a id="abf91963b8db8893c63f3b91104e5ec14" name="abf91963b8db8893c63f3b91104e5ec14"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>_initialize_install_dir_with_default_value</b> (self)</td></tr>
+<tr class="separator:abf91963b8db8893c63f3b91104e5ec14"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a3bfbf942f8758c52e9ecf66d4d91e050" id="r_a3bfbf942f8758c52e9ecf66d4d91e050"><td class="memItemLeft" align="right" valign="top"><a id="a3bfbf942f8758c52e9ecf66d4d91e050" name="a3bfbf942f8758c52e9ecf66d4d91e050"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>_get_input_parameters</b> (self)</td></tr>
 <tr class="separator:a3bfbf942f8758c52e9ecf66d4d91e050"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -288,6 +304,12 @@ Protected Member Functions</h2></td></tr>
 <tr class="memitem:a94756691bf94c49c5e7b567ffcdcf960 inherit pro_methods_classtrajectory__config_1_1TrajectoryConfigDefaults" id="r_a94756691bf94c49c5e7b567ffcdcf960"><td class="memItemLeft" align="right" valign="top">
 &#160;</td><td class="memItemRight" valign="bottom"><b>_set_constants</b> (self)</td></tr>
 <tr class="separator:a94756691bf94c49c5e7b567ffcdcf960 inherit pro_methods_classtrajectory__config_1_1TrajectoryConfigDefaults"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-static-methods" name="pro-static-methods"></a>
+Static Protected Member Functions</h2></td></tr>
+<tr class="memitem:a2229a0c1be06a3317287367e80e15070" id="r_a2229a0c1be06a3317287367e80e15070"><td class="memItemLeft" align="right" valign="top"><a id="a2229a0c1be06a3317287367e80e15070" name="a2229a0c1be06a3317287367e80e15070"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>_initialize_install_dir_with_absolute_path</b> (install_dir)</td></tr>
+<tr class="separator:a2229a0c1be06a3317287367e80e15070"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Constructor &amp; Destructor Documentation</h2>
 <a id="a98a769191227f70f65cc7ff3612c9fcc" name="a98a769191227f70f65cc7ff3612c9fcc"></a>

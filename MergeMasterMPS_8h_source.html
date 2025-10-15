@@ -259,7 +259,7 @@ $(function(){initNavTree('MergeMasterMPS_8h_source.html',''); initResizable(true
 <div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>    <span class="keywordtype">void</span> <a class="code hl_function" href="classMergeMasterTrajectoryMPS.html#a2dafa25b612ee7ae1859c96151164167">launch</a>() <span class="keyword">override</span>;</div>
 <div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span> </div>
 <div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span><span class="keyword">private</span>:</div>
-<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordtype">void</span> read_tree_structure_file();</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>    <span class="keywordtype">void</span> read_master_merge_info_file();</div>
 <div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>    <span class="keywordtype">void</span> read_node_lp_paths();</div>
 <div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
 <div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>    <span class="keywordtype">void</span> check_nodes_have_lp_folder();</div>
@@ -273,19 +273,25 @@ $(function(){initNavTree('MergeMasterMPS_8h_source.html',''); initResizable(true
 <div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>    std::string make_prefix_from_node(<span class="keyword">const</span> std::string&amp; node_name) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>    <span class="keywordtype">double</span> get_candidate_initial_value(<span class="keyword">const</span> std::string&amp; candidate) <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span> </div>
-<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    std::filesystem::path tree_path_;</div>
-<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>    std::filesystem::path lp_reference_file_filepath_;</div>
-<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    TrajectoryTree tree_;                       <span class="comment">// Contains each node&#39;s information</span></div>
-<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>    <a class="code hl_struct" href="structMergeMasterTrajectoryMPS_1_1TrajectoryGlobalData.html">TrajectoryGlobalData</a> trajectory_data_{};    <span class="comment">// Contains the global trajectory data</span></div>
-<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>    CandidatesCouplingMap candidates_coupling_; <span class="comment">// Links the same candidates in different nodes</span></div>
-<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    NodesToLpDataLocationMap nodes_lp_info_;    <span class="comment">// Info on the lp folder &amp; files for each node</span></div>
-<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    CouplingMap structure_;</div>
-<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>};</div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>    <span class="keywordtype">bool</span> variable_is_present_in_node(<span class="keyword">const</span> <a class="code hl_struct" href="structMergeMasterTrajectoryMPS_1_1TrajectoryNode.html">TrajectoryNode</a>&amp; node,</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>                                     <span class="keyword">const</span> std::string&amp; candidate) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    <span class="keywordtype">bool</span> variable_is_present_in_parent(<span class="keyword">const</span> <a class="code hl_struct" href="structMergeMasterTrajectoryMPS_1_1TrajectoryNode.html">TrajectoryNode</a>&amp; node,</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>                                       <span class="keyword">const</span> std::string&amp; candidate) <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span> </div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>    std::filesystem::path tree_path_;</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>    std::filesystem::path lp_reference_file_filepath_;</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>    TrajectoryTree tree_;                       <span class="comment">// Contains each node&#39;s information</span></div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>    <a class="code hl_struct" href="structMergeMasterTrajectoryMPS_1_1TrajectoryGlobalData.html">TrajectoryGlobalData</a> trajectory_data_{};    <span class="comment">// Contains the global trajectory data</span></div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>    CandidatesCouplingMap candidates_coupling_; <span class="comment">// Links the same candidates in different nodes</span></div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    NodesToLpDataLocationMap nodes_lp_info_;    <span class="comment">// Info on the lp folder &amp; files for each node</span></div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>    CouplingMap structure_;</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span>    <span class="keywordtype">double</span> scaling_; <span class="comment">// Scaling factor to divide the costs by.</span></div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span>};</div>
 </div>
 <div class="ttc" id="aclassAbstractMergeMPS_html"><div class="ttname"><a href="classAbstractMergeMPS.html">AbstractMergeMPS</a></div><div class="ttdef"><b>Definition</b> MergeMPS.h:13</div></div>
 <div class="ttc" id="aclassInvalidMasterStructureFileException_html"><div class="ttname"><a href="classInvalidMasterStructureFileException.html">InvalidMasterStructureFileException</a></div><div class="ttdef"><b>Definition</b> MergeMasterMPS.h:11</div></div>
 <div class="ttc" id="aclassMergeMasterTrajectoryMPS_html"><div class="ttname"><a href="classMergeMasterTrajectoryMPS.html">MergeMasterTrajectoryMPS</a></div><div class="ttdef"><b>Definition</b> MergeMasterMPS.h:20</div></div>
-<div class="ttc" id="aclassMergeMasterTrajectoryMPS_html_a2dafa25b612ee7ae1859c96151164167"><div class="ttname"><a href="classMergeMasterTrajectoryMPS.html#a2dafa25b612ee7ae1859c96151164167">MergeMasterTrajectoryMPS::launch</a></div><div class="ttdeci">void launch() override</div><div class="ttdoc">Merge and solve master and subproblems.</div><div class="ttdef"><b>Definition</b> MergeMasterMPS.cpp:659</div></div>
+<div class="ttc" id="aclassMergeMasterTrajectoryMPS_html_a2dafa25b612ee7ae1859c96151164167"><div class="ttname"><a href="classMergeMasterTrajectoryMPS.html#a2dafa25b612ee7ae1859c96151164167">MergeMasterTrajectoryMPS::launch</a></div><div class="ttdeci">void launch() override</div><div class="ttdoc">Merge and solve master and subproblems.</div><div class="ttdef"><b>Definition</b> MergeMasterMPS.cpp:821</div></div>
 <div class="ttc" id="astructMergeMasterTrajectoryMPS_1_1CandidateCosts_html"><div class="ttname"><a href="structMergeMasterTrajectoryMPS_1_1CandidateCosts.html">MergeMasterTrajectoryMPS::CandidateCosts</a></div><div class="ttdef"><b>Definition</b> MergeMasterMPS.h:50</div></div>
 <div class="ttc" id="astructMergeMasterTrajectoryMPS_1_1TrajectoryConstraint_html"><div class="ttname"><a href="structMergeMasterTrajectoryMPS_1_1TrajectoryConstraint.html">MergeMasterTrajectoryMPS::TrajectoryConstraint</a></div><div class="ttdef"><b>Definition</b> MergeMasterMPS.h:65</div></div>
 <div class="ttc" id="astructMergeMasterTrajectoryMPS_1_1TrajectoryGlobalData_html"><div class="ttname"><a href="structMergeMasterTrajectoryMPS_1_1TrajectoryGlobalData.html">MergeMasterTrajectoryMPS::TrajectoryGlobalData</a></div><div class="ttdef"><b>Definition</b> MergeMasterMPS.h:74</div></div>

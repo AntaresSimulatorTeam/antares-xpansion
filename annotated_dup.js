@@ -131,8 +131,9 @@ var annotated_dup =
       ] ]
     ] ],
     [ "args_parser_trajectory", null, [
-      [ "TrajectoryArgsParser", "classargs__parser__trajectory_1_1TrajectoryArgsParser.html", null ],
-      [ "TrajectoryLauncherOptionsKeys", "classargs__parser__trajectory_1_1TrajectoryLauncherOptionsKeys.html", null ]
+      [ "TrajectoryArgsParser", "classargs__parser__trajectory_1_1TrajectoryArgsParser.html", "classargs__parser__trajectory_1_1TrajectoryArgsParser" ],
+      [ "TrajectoryLauncherOptionsKeys", "classargs__parser__trajectory_1_1TrajectoryLauncherOptionsKeys.html", null ],
+      [ "TrajectroyLauncherOptionsDefaultValues", "classargs__parser__trajectory_1_1TrajectroyLauncherOptionsDefaultValues.html", null ]
     ] ],
     [ "Benders", null, [
       [ "Criterion", null, [
@@ -319,29 +320,22 @@ var annotated_dup =
       [ "TrajectoryConfigDefaults", "classtrajectory__config_1_1TrajectoryConfigDefaults.html", null ],
       [ "TrajectoryInputParameters", "classtrajectory__config_1_1TrajectoryInputParameters.html", null ]
     ] ],
-    [ "trajectory_driver", "namespacetrajectory__driver.html", [
-      [ "TrajectoryInvestmentDriver", "classtrajectory__driver_1_1TrajectoryInvestmentDriver.html", null ]
-    ] ],
-    [ "trajectory_keys", null, [
-      [ "TrajectoryInputKeys", "classtrajectory__keys_1_1TrajectoryInputKeys.html", null ],
-      [ "TrajectoryOuputKeys", "classtrajectory__keys_1_1TrajectoryOuputKeys.html", null ]
-    ] ],
-    [ "trajectory_module", null, [
-      [ "ConstraintOperatorEnum", "classtrajectory__module_1_1ConstraintOperatorEnum.html", null ],
-      [ "ConstraintTypeEnum", "classtrajectory__module_1_1ConstraintTypeEnum.html", null ],
-      [ "InvestmentVariableTypeEnum", "classtrajectory__module_1_1InvestmentVariableTypeEnum.html", null ],
-      [ "TrajectoryModule", "classtrajectory__module_1_1TrajectoryModule.html", "classtrajectory__module_1_1TrajectoryModule" ]
-    ] ],
     [ "user_input_keys", null, [
       [ "TrajectoryInputKeys", "classuser__input__keys_1_1TrajectoryInputKeys.html", null ],
       [ "TrajectoryOuputKeys", "classuser__input__keys_1_1TrajectoryOuputKeys.html", null ]
     ] ],
     [ "user_input_translation", null, [
+      [ "CandidateType", "classuser__input__translation_1_1CandidateType.html", null ],
       [ "ConstraintOperatorEnum", "classuser__input__translation_1_1ConstraintOperatorEnum.html", null ],
       [ "ConstraintTypeEnum", "classuser__input__translation_1_1ConstraintTypeEnum.html", null ],
       [ "FormulationEnum", "classuser__input__translation_1_1FormulationEnum.html", null ],
+      [ "GlobalData", "classuser__input__translation_1_1GlobalData.html", null ],
       [ "InvestmentVariableTypeEnum", "classuser__input__translation_1_1InvestmentVariableTypeEnum.html", null ],
-      [ "TrajectoryModule", "classuser__input__translation_1_1TrajectoryModule.html", "classuser__input__translation_1_1TrajectoryModule" ]
+      [ "NodeData", "classuser__input__translation_1_1NodeData.html", null ],
+      [ "TrajectoryConstraint", "classuser__input__translation_1_1TrajectoryConstraint.html", "classuser__input__translation_1_1TrajectoryConstraint" ],
+      [ "TrajectoryInputFile", "classuser__input__translation_1_1TrajectoryInputFile.html", null ],
+      [ "Tree", "classuser__input__translation_1_1Tree.html", null ],
+      [ "UserInputTranslator", "classuser__input__translation_1_1UserInputTranslator.html", "classuser__input__translation_1_1UserInputTranslator" ]
     ] ],
     [ "Xpansion", null, [
       [ "Test", null, [

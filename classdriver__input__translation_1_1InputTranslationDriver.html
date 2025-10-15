@@ -154,11 +154,13 @@ Classes</h2></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-methods" name="pub-methods"></a>
 Public Member Functions</h2></td></tr>
-<tr class="memitem:a95464b95600fbc3d8fffc3cfc106a395" id="r_a95464b95600fbc3d8fffc3cfc106a395"><td class="memItemLeft" align="right" valign="top"><a id="a95464b95600fbc3d8fffc3cfc106a395" name="a95464b95600fbc3d8fffc3cfc106a395"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b> (self, Path input_file, Path output_file)</td></tr>
-<tr class="separator:a95464b95600fbc3d8fffc3cfc106a395"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:adc4e5aed14dac406168467270f3d913e" id="r_adc4e5aed14dac406168467270f3d913e"><td class="memItemLeft" align="right" valign="top"><a id="adc4e5aed14dac406168467270f3d913e" name="adc4e5aed14dac406168467270f3d913e"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>__init__</b> (self, Path input_root, Path input_file, Path output_file)</td></tr>
+<tr class="separator:adc4e5aed14dac406168467270f3d913e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:aa6a8becca2bbdac89c7ab33c0e0818be" id="r_aa6a8becca2bbdac89c7ab33c0e0818be"><td class="memItemLeft" align="right" valign="top">Path&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#aa6a8becca2bbdac89c7ab33c0e0818be">get_root_study</a> (self, Path input_root)</td></tr>
 <tr class="separator:aa6a8becca2bbdac89c7ab33c0e0818be"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a31f3e404a8968adc01790753dceb0f12" id="r_a31f3e404a8968adc01790753dceb0f12"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a31f3e404a8968adc01790753dceb0f12">get_master_formulation</a> (self)</td></tr>
+<tr class="separator:a31f3e404a8968adc01790753dceb0f12"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a8d3e6148129b0ca0a554ab83b2c9f2a2" id="r_a8d3e6148129b0ca0a554ab83b2c9f2a2"><td class="memItemLeft" align="right" valign="top"><a id="a8d3e6148129b0ca0a554ab83b2c9f2a2" name="a8d3e6148129b0ca0a554ab83b2c9f2a2"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>launch</b> (self)</td></tr>
 <tr class="separator:a8d3e6148129b0ca0a554ab83b2c9f2a2"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -166,13 +168,16 @@ Public Member Functions</h2></td></tr>
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
 Public Attributes</h2></td></tr>
 <tr class="memitem:a7d1f70653a14f304d4d58c66f19a496d" id="r_a7d1f70653a14f304d4d58c66f19a496d"><td class="memItemLeft" align="right" valign="top"><a id="a7d1f70653a14f304d4d58c66f19a496d" name="a7d1f70653a14f304d4d58c66f19a496d"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>input_file</b> = input_file</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>input_file</b> = input_root / input_file</td></tr>
 <tr class="separator:a7d1f70653a14f304d4d58c66f19a496d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a0f71ddcac5d25a6dace8de88ab6704a5" id="r_a0f71ddcac5d25a6dace8de88ab6704a5"><td class="memItemLeft" align="right" valign="top"><a id="a0f71ddcac5d25a6dace8de88ab6704a5" name="a0f71ddcac5d25a6dace8de88ab6704a5"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>input_root</b> = input_root</td></tr>
+<tr class="separator:a0f71ddcac5d25a6dace8de88ab6704a5"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad43fe3ff84dabd04e386ca24bfeee91f" id="r_ad43fe3ff84dabd04e386ca24bfeee91f"><td class="memItemLeft" align="right" valign="top"><a id="ad43fe3ff84dabd04e386ca24bfeee91f" name="ad43fe3ff84dabd04e386ca24bfeee91f"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>output_file</b> = output_file</td></tr>
 <tr class="separator:ad43fe3ff84dabd04e386ca24bfeee91f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a634355aa900368d93b1ccc2e2104fe46" id="r_a634355aa900368d93b1ccc2e2104fe46"><td class="memItemLeft" align="right" valign="top"><a id="a634355aa900368d93b1ccc2e2104fe46" name="a634355aa900368d93b1ccc2e2104fe46"></a>
-&#160;</td><td class="memItemRight" valign="bottom"><b>translator</b> = TrajectoryModule(self.input_file)</td></tr>
+&#160;</td><td class="memItemRight" valign="bottom"><b>translator</b> = UserInputTranslator(self.input_file)</td></tr>
 <tr class="separator:a634355aa900368d93b1ccc2e2104fe46"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae0d429d60f623e49362bbe1aa89f633e" id="r_ae0d429d60f623e49362bbe1aa89f633e"><td class="memItemLeft" align="right" valign="top"><a id="ae0d429d60f623e49362bbe1aa89f633e" name="ae0d429d60f623e49362bbe1aa89f633e"></a>
 bool&#160;</td><td class="memItemRight" valign="bottom"><b>input_parsed</b> = False</td></tr>
@@ -188,6 +193,24 @@ Protected Member Functions</h2></td></tr>
 <div class="textblock"><pre class="fragment">Drive the verification and translation of the user input file into
 the ```master_merger_info.json``` intermediary file.
 </pre> </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a31f3e404a8968adc01790753dceb0f12" name="a31f3e404a8968adc01790753dceb0f12"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a31f3e404a8968adc01790753dceb0f12">&#9670;&#160;</a></span>get_master_formulation()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">driver_input_translation.InputTranslationDriver.get_master_formulation </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<pre class="fragment">Returns the formulation parameter entered by the user, has to be either 'integer' or 'relaxed'
+</pre> 
+</div>
+</div>
 <a id="aa6a8becca2bbdac89c7ab33c0e0818be" name="aa6a8becca2bbdac89c7ab33c0e0818be"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aa6a8becca2bbdac89c7ab33c0e0818be">&#9670;&#160;</a></span>get_root_study()</h2>
 

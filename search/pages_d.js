@@ -1,12 +1,11 @@
 var searchData=
 [
-  ['tests_0',['Tests',['../md_docs_2developer-guide_2install__from__sources_24-Tests.html',1,'']]],
-  ['the_20algorithm_1',['Settings of the algorithm',['../md_docs_2user-guide_2get-started_2settings-definition.html',1,'']]],
-  ['the_20candidates_2',['Define the candidates',['../md_docs_2user-guide_2get-started_2candidate-definition.html',1,'']]],
-  ['the_20investment_20problem_3',['Mathematical aspects of the investment problem',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html',1,'']]],
-  ['the_20master_20problems_20of_20annual_20xpansion_20studies_4',['Merging the master problems of annual Xpansion studies',['../md_docs_2user-guide_2trajectory-investment_2merge-master.html',1,'']]],
-  ['the_20optimal_20investment_20problem_20in_20antares_20xpansion_5',['The optimal investment problem in Antares-Xpansion',['../md_docs_2user-guide_2optimization-principles_2investment-problem.html',1,'']]],
-  ['the_20optimization_6',['Launch the optimization',['../md_docs_2user-guide_2get-started_2launching-optimization.html',1,'']]],
-  ['trajectory_20investment_20problem_7',['Trajectory investment problem',['../md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html',1,'']]],
-  ['trajectory_20workflow_8',['trajectory-workflow',['../md_docs_2user-guide_2trajectory-investment_2trajectory-workflow.html',1,'']]]
+  ['sensitivity_20analysis_0',['Sensitivity analysis',['../md_docs_2user-guide_2get-started_2sensitivity-analysis.html',1,'']]],
+  ['set_20up_20an_20antares_20xpansion_20study_1',['Set up an Antares-Xpansion study',['../md_docs_2user-guide_2get-started_2prepare-a-simulation.html',1,'']]],
+  ['settings_20of_20the_20algorithm_2',['Settings of the algorithm',['../md_docs_2user-guide_2get-started_2settings-definition.html',1,'']]],
+  ['simulation_20procedure_3',['Antares-Xpansion simulation procedure',['../md_docs_2developer-guide_2xpansion__steps_20-overview.html',1,'']]],
+  ['solver_20and_20loading_20it_20dynamically_4',['Installing Xpress Solver and Loading it Dynamically',['../md_docs_2developer-guide_2install__from__sources_26-Xpress.html',1,'']]],
+  ['studies_5',['Merging the master problems of annual Xpansion studies',['../md_docs_2user-guide_2trajectory-investment_2merge-master.html',1,'']]],
+  ['study_6',['Set up an Antares-Xpansion study',['../md_docs_2user-guide_2get-started_2prepare-a-simulation.html',1,'']]],
+  ['study_20format_20changes_7',['Study format changes',['../md_docs_2changelog_2format__changes.html',1,'']]]
 ];

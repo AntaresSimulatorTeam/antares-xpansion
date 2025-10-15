@@ -6,5 +6,6 @@ var searchData=
   ['updaterexecutionerror_3',['UpdaterExecutionError',['../classantares__xpansion_1_1study__updater__driver_1_1StudyUpdaterDriver_1_1UpdaterExecutionError.html',1,'antares_xpansion::study_updater_driver::StudyUpdaterDriver']]],
   ['user_4',['User',['../classxpansion_1_1logger_1_1User.html',1,'xpansion::logger']]],
   ['userfile_5',['UserFile',['../classxpansion_1_1logger_1_1UserFile.html',1,'xpansion::logger']]],
-  ['userloggertest_6',['UserLoggerTest',['../classUserLoggerTest.html',1,'']]]
+  ['userinputtranslator_6',['UserInputTranslator',['../classuser__input__translation_1_1UserInputTranslator.html',1,'user_input_translation']]],
+  ['userloggertest_7',['UserLoggerTest',['../classUserLoggerTest.html',1,'']]]
 ];

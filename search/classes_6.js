@@ -6,5 +6,5 @@ var searchData=
   ['generaldatainireadertests_3',['GeneralDataIniReaderTests',['../classGeneralDataIniReaderTests.html',1,'']]],
   ['generaldataprocessor_4',['GeneralDataProcessor',['../classantares__xpansion_1_1general__data__processor_1_1GeneralDataProcessor.html',1,'antares_xpansion::general_data_processor']]],
   ['genericsolverexception_5',['GenericSolverException',['../classGenericSolverException.html',1,'']]],
-  ['globaldata_6',['GlobalData',['../classtrajectory__module_1_1TrajectoryModule_1_1GlobalData.html',1,'trajectory_module.TrajectoryModule.GlobalData'],['../classuser__input__translation_1_1TrajectoryModule_1_1GlobalData.html',1,'user_input_translation.TrajectoryModule.GlobalData']]]
+  ['globaldata_6',['GlobalData',['../classuser__input__translation_1_1GlobalData.html',1,'user_input_translation']]]
 ];

@@ -148,18 +148,19 @@ $(function(){initNavTree('md_docs_2user-guide_2trajectory-investment_2merge-mast
 <ul>
 <li>An option file to give the general parameters</li>
 <li>A master merger info file that links together the different annual master problems.</li>
-<li>A lp info file that tells the programm where to find the <code>lp</code> folders and files of each node.</li>
+<li>A lp info file that tells the program where to find the <code>lp</code> folders and files of each node.</li>
 <li>Access to the <code>structure.txt</code> and <code>master.mps</code> files previously generated using <code>antares-xpansion-launcher -i &lt;study&gt; --step problem_generation</code> (or rather using the <a class="el" href="md_docs_2user-guide_2trajectory-investment_2multiple-problem-generation.html">Multiple Problem Generation</a> step).</li>
 </ul>
 <p>Usage is : </p><div class="fragment"><div class="line">/to/exectubale &lt;options_file&gt;.json &lt;master_merger_info_file&gt;.json</div>
-</div><!-- fragment --><h1><a class="anchor" id="autotoc_md250"></a>
+</div><!-- fragment --><p><b>Note</b> : the C++ executable has to be launched at the <code>--input-root</code>. (The python driver takes care of this, this should not be a concern to most users).</p>
+<h1><a class="anchor" id="autotoc_md250"></a>
  Options file</h1>
 <p>Only few of the <code><a class="el" href="structBaseOptions.html">BaseOptions</a></code> from the <code>&lt;options_file&gt;.json</code> are used. An option file for the master merger can be :</p>
 <div class="fragment"><div class="line">{</div>
 <div class="line">    &quot;OUTPUTROOT&quot;: &quot;&lt;path/to/ouput/folder&gt;&quot;,</div>
 <div class="line">    &quot;INPUTROOT&quot;: &quot;&lt;path/to/input/root&gt;&quot;,</div>
 <div class="line">    &quot;JSON_FILE&quot;: &quot;&lt;path/to/json/ouput/file&gt;&quot;,</div>
-<div class="line">    &quot;SOLVER_NAME&quot;: &quot;Xpress&quot;,</div>
+<div class="line">    &quot;SOLVER_NAME&quot;: &quot;XPRESS&quot;,</div>
 <div class="line">    &quot;PROBLEMS_FORMAT&quot;: &quot;MPS&quot;,</div>
 <div class="line">    &quot;MASTER_NAME&quot; : &quot;name&quot;,</div>
 <div class="line">    &quot;STRUCTURE_FILE&quot; : &quot;&lt;relative/path/to/structure/file&gt;&quot;</div>
@@ -263,13 +264,13 @@ Master merger info file</h1>
 <div class="line">}</div>
 </div><!-- fragment --><p>We give a short description of the data expected in each field :</p>
 <ul>
-<li><code>initial_capacities</code> contains, for each candidate, the capacity installed at before the first investment time point.</li>
+<li><code>initial_capacities</code> contains, for each candidate, the capacity installed before the first investment time point.</li>
 <li><code>constraints</code> contains user-given trajectory constraints on the different investment variables. See the Trajectory constraints section for more details.</li>
 <li><code>tree</code> contains the trajectory tree itself, and the data pertaining to each of its nodes. Each of the nodes contains the following data:<ul>
 <li><code>lp_folder</code> points to a folder containing both the <code>master_file</code> and the <code>structure_file</code> of this annual study.</li>
 <li><code>parent</code> is the name of the node's parent in the tree.</li>
 <li><code>node_weight</code> is the node's weight $w(n)$ in the objective function. Note that in this example, we used a discounting rate of $0$ to get an aggregated weight of $10$ on each investment time point.</li>
-<li><code>candidates_costs</code> contains the coefficients of the corresponding variables in the final objective. Each of those costs already incorporates the probability of the node appearing, the node's represented duration and the discounting.The coefficient was pre-computed when parsing user input data.</li>
+<li><code>candidates_costs</code> contains the coefficients of the corresponding variables in the final objective. Each of those costs already incorporates the probability of the node appearing, the node's represented duration and the discounting rate. The coefficient was pre-computed when parsing user input data.</li>
 </ul>
 </li>
 </ul>
@@ -289,21 +290,18 @@ Master merger info file</h1>
 <div class="line">      &quot;lp_folder&quot; : &quot;./node_2040_study/output/20250526-1505eco/lp/&quot;,</div>
 <div class="line">      &quot;master_file&quot; : &quot;master&quot;,</div>
 <div class="line">      &quot;structure_file&quot; : &quot;structure.txt&quot;,</div>
-<div class="line">      &quot;weights_file&quot; : &quot;weights.txt&quot;</div>
 <div class="line">   },</div>
 <div class="line">   &quot;2050_A&quot; : </div>
 <div class="line">   {</div>
 <div class="line">      &quot;lp_folder&quot; : &quot;./node_2050_A_study/output/20250526-1505eco/lp/&quot;,</div>
 <div class="line">      &quot;master_file&quot; : &quot;master&quot;,</div>
 <div class="line">      &quot;structure_file&quot; : &quot;structure.txt&quot;,</div>
-<div class="line">      &quot;weights_file&quot; : &quot;weights.txt&quot;</div>
 <div class="line">   },</div>
 <div class="line">   &quot;2050_B&quot; : </div>
 <div class="line">   {</div>
 <div class="line">      &quot;lp_folder&quot; : &quot;./node_2050_B_study/output/20250526-1505eco/lp/&quot;,</div>
 <div class="line">      &quot;master_file&quot; : &quot;master&quot;,</div>
 <div class="line">      &quot;structure_file&quot; : &quot;structure.txt&quot;,</div>
-<div class="line">      &quot;weights_file&quot; : &quot;weights.txt&quot;</div>
 <div class="line">   }</div>
 <div class="line">}</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md253"></a>
@@ -311,7 +309,7 @@ Input files from each annual study</h1>
 <p>We give below what the folder given as <code>INPUTROOT</code> in the options file should look like in the present example : </p><div class="fragment"><div class="line">.</div>
 <div class="line">├── intermediary_files</div>
 <div class="line">│   ├── master_merger_info.json</div>
-<div class="line">│   ├── merge_master_options.json</div>
+<div class="line">│   ├── options_merge_master.json</div>
 <div class="line">│   └── nodal_lp_info.json</div>
 <div class="line">├── node_2030_study</div>
 <div class="line">│   ├── Desktop.ini</div>
