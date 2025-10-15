@@ -94,19 +94,19 @@ class XpansionConfigConstants:
         self.settings_default = {
             "uc_type": "expansion_fast",
             "master": "integer",
-            "optimality_gap": "1",
-            "relative_gap": "1e-6",
+            "optimality_gap": 1,
+            "relative_gap": 1e-6,
             "max_iteration": "+infini",
-            "relaxed_optimality_gap": "1e-5",
+            "relaxed_optimality_gap": 1e-5,
             "solver": "Cbc",
             "timelimit": "+infini",
             "additional-constraints": "",
             "yearly-weights": "",
-            "log_level": "0",
-            "separation_parameter": "0.5",
-            "batch_size": "0",
-            "master_solution_tolerance": "1e-4",
-            "cut_coefficient_tolerance": "5e-3",
+            "log_level": 0,
+            "separation_parameter": 0.5,
+            "batch_size": 0,
+            "master_solution_tolerance": 1e-4,
+            "cut_coefficient_tolerance": 5e-3,
             "problems_format": "OPTIMIZED",
         }
 
@@ -171,34 +171,34 @@ class XpansionConfigConstants:
         return False
 
     def relative_gap_default_value(self):
-        return "1e-6"
+        return 1e-6
 
     def absolute_gap_default_value(self):
-        return "1"
+        return 1
 
     def relaxed_gap_default_value(self):
-        return "1e-5"
+        return 1e-5
 
     def max_iterations_default_value(self):
-        return "-1"
+        return -1
 
     def initial_master_relaxation_default_value(self):
         return False
 
     def separation_default_value(self):
-        return "0.5"
+        return 0.5
 
     def batch_size_default_value(self):
-        return "0"
+        return 0
 
     def cache_problems_default_value(self):
         return False
 
     def master_solution_tolerance_default_value(self):
-        return "1e-4"
+        return 1e-4
 
     def cut_coefficient_tolerance_default_value(self):
-        return "5e-3"
+        return 5e-3
 
     def keep_full_default_value(self):
         return False
