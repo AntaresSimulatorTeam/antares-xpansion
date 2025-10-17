@@ -3,8 +3,6 @@
 
 #include <fstream>
 
-#include "GridCollection.h"
-
 bool validateGridElement(double min, double max, double step)
 {
     return (min >= 0.0 && min <= 1.0) && (max >= 0.0 && max <= 1.0) && (max >= min)
@@ -25,7 +23,7 @@ void GridDefinition::addGridElement(const std::string& pbName,
                                     "min ∈ [0,1], max ∈ [0,1] & > min, step ∈ (0,1]");
     }
 
-    def.gridElements.push_back({pbName, type, cstName, areaName, min, max, step});
+    gridElements.push_back({pbName, type, cstName, areaName, min, max, step});
 }
 
 GridCollection::GridCollection(const std::filesystem::path& filePath)
