@@ -1,7 +1,33 @@
 
 #include "antares-xpansion/grid_evaluator/GridCollection.h"
 
+#include <cmath>
 #include <fstream>
+
+#include "GridCollection.h"
+
+bool validateGridElement(double min, double max, double step)
+{
+    return (min >= 0.0 && min <= 1.0) && (max >= 0.0 && max <= 1.0) && (max > min)
+           && (step > 0.0 && step <= 1.0);
+}
+
+void GridDefinition::addGridElement(const std::string& pbName,
+                                    const std::string& type,
+                                    const std::string& cstName,
+                                    const std::string& areaName,
+                                    double min,
+                                    double max,
+                                    double step)
+{
+    if (!validateGridElement(min, max, step))
+    {
+        throw std::invalid_argument("Invalid GridElement: "
+                                    "min ∈ [0,1], max ∈ [0,1] & > min, step ∈ (0,1]");
+    }
+
+    def.gridElements.push_back({pbName, type, cstName, areaName, min, max, step});
+}
 
 GridCollection::GridCollection(const std::filesystem::path& filePath)
 {
@@ -46,8 +72,7 @@ GridCollection::GridCollection(const std::filesystem::path& filePath)
         {
             gridDefinitions.push_back({gridID, reservoirs, {}, {}});
         }
-        gridDefinitions[gridID].gridElements.push_back(
-          {pbName, type, cstName, areaName, min, max, step});
+        gridDefinitions[gridID].addGridElement(pbName, type, cstName, areaName, min, max, step);
 
         if (!reservoirs.contains(areaName))
         {
@@ -89,13 +114,22 @@ void GridDefinition::generateGridValues()
                              * reservoirs.at(gridElement.area).efficiency;
             double max_cst = reservoirs.at(gridElement.area).max_generating[week - 1];
 
-            int steps = static_cast<int>((gridElement.max - gridElement.min) / gridElement.step);
-
-            for (int i = 0; i <= steps; ++i)
+            if (std::fabs(gridElement.max - gridElement.min) < 1e-6) // Float comparison
             {
-                double normalized = gridElement.min + i * gridElement.step;
-                double value = min_cst + (max_cst - min_cst) * normalized;
+                double value = min_cst + (max_cst - min_cst) * gridElement.min;
                 gridElement.rhsValues[week - 1].push_back(value);
+            }
+            else
+            {
+                int steps = static_cast<int>((gridElement.max - gridElement.min)
+                                             / gridElement.step);
+
+                for (int i = 0; i <= steps; ++i)
+                {
+                    double normalized = gridElement.min + i * gridElement.step;
+                    double value = min_cst + (max_cst - min_cst) * normalized;
+                    gridElement.rhsValues[week - 1].push_back(value);
+                }
             }
             weekAreaConstraints[week][gridElement.area].emplace(gridElement.name,
                                                                 gridElement.rhsValues[week - 1]);

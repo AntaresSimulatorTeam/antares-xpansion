@@ -42,6 +42,13 @@ struct GridDefinition
 
     bool isSubproblemUsed(const std::string& subPbName) const;
     void generateGridValues();
+    void addGridElement(const std::string& pbName,
+                        const std::string& type,
+                        const std::string& cstName,
+                        const std::string& areaName,
+                        double min,
+                        double max,
+                        double step);
 };
 
 class GridCollection
