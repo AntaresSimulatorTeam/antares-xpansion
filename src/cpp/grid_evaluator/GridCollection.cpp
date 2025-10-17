@@ -1,15 +1,14 @@
 
 #include "antares-xpansion/grid_evaluator/GridCollection.h"
 
-#include <cmath>
 #include <fstream>
 
 #include "GridCollection.h"
 
 bool validateGridElement(double min, double max, double step)
 {
-    return (min >= 0.0 && min <= 1.0) && (max >= 0.0 && max <= 1.0) && (max > min)
-           && (step > 0.0 && step <= 1.0);
+    return (min >= 0.0 && min <= 1.0) && (max >= 0.0 && max <= 1.0) && (max >= min)
+           && (min == max || (step > 0.0 && step <= 1.0));
 }
 
 void GridDefinition::addGridElement(const std::string& pbName,
@@ -98,6 +97,7 @@ void GridDefinition::generateGridValues()
     {
         // constexpr double epsilon = 1e-6;
         constexpr double epsilon = 0;
+        bool fixedElem = gridElement.min == gridElement.max;
 
         if (gridElement.min == 0.0)
         {
@@ -114,7 +114,7 @@ void GridDefinition::generateGridValues()
                              * reservoirs.at(gridElement.area).efficiency;
             double max_cst = reservoirs.at(gridElement.area).max_generating[week - 1];
 
-            if (std::fabs(gridElement.max - gridElement.min) < 1e-6) // Float comparison
+            if (fixedElem)
             {
                 double value = min_cst + (max_cst - min_cst) * gridElement.min;
                 gridElement.rhsValues[week - 1].push_back(value);
