@@ -131,11 +131,6 @@ class XpansionDriver:
                     self.config_loader.xpansion_simulation_output()
                 )
             self.launch_benders_step()
-            self.study_update_driver.launch(
-                self.config_loader.xpansion_simulation_output(),
-                self.config_loader.json_file_path(),
-                self.config_loader.keep_mps(),
-            )
 
         elif self.config_loader.step() == "antares":
             self.launch_antares_step()
