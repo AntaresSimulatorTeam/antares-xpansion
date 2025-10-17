@@ -126,7 +126,7 @@ class XpansionDriver:
             self.update_study_settings(memory_mode=True)
             self.launch_problem_generation_step_memory()
             self.config_loader._set_options_for_benders_solver()
-            if str(self.config_loader.options["solver"]).upper() == "XPRESS":
+            if self.config_loader.run_presolve():
                 self.presolve_driver.launch(
                     self.config_loader.xpansion_simulation_output()
                 )
