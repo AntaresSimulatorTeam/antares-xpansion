@@ -116,6 +116,7 @@ void saveValues(const std::filesystem::path& path,
                 {
                     file << value << '\t';
                 }
+                file << 0;
                 if (i != 6)
                 {
                     file << '\n';
