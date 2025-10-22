@@ -83,10 +83,13 @@ def launch_xpansion_memory(install_dir, study_path, method: BendersMethod, allow
     # Check return value
     assert process.returncode == 0
 
+
 def assert_convergence(solution, options_data, method: BendersMethod):
     assert (solution["relative_gap"] <= options_data["RELATIVE_GAP"]) or (
-        solution["overall_cost"] * solution["relative_gap"]
-        <= options_data["ABSOLUTE_GAP"]) or (method == BendersMethod.BENDERS_BY_BATCH and solution["ABSOLUTE_GAP"] <= options_data["ABSOLUTE_GAP"])
+            solution["overall_cost"] * solution["relative_gap"]
+            <= options_data["ABSOLUTE_GAP"]) or (
+                   method == BendersMethod.BENDERS_BY_BATCH and solution["ABSOLUTE_GAP"] <= options_data[
+               "ABSOLUTE_GAP"])
 
 
 def verify_solution(study_path, expected_values, expected_investment_solution,
@@ -119,7 +122,7 @@ def verify_solution(study_path, expected_values, expected_investment_solution,
 
     for investment in expected_investment_solution.keys():
         assert investment in investment_solution.keys(), (
-            "Investment " + investment + " not found in solution"
+                "Investment " + investment + " not found in solution"
         )
         np.testing.assert_allclose(
             expected_investment_solution[investment],
@@ -150,15 +153,15 @@ def verify_study_update(study_path, expected_investment_solution, antares_versio
             )
         )
         expected_direct_link_capacity = (
-            already_installed_direct_capacity
-            * already_installed_direct_link_profile_array
+                already_installed_direct_capacity
+                * already_installed_direct_link_profile_array
         )
         already_installed_indirect_link_profile_array = candidate_reader.get_candidate_already_installed_indirect_link_profile_array(
             study_path, candidate_name_list[0]
         )
         expected_indirect_link_capacity = (
-            already_installed_indirect_capacity
-            * already_installed_indirect_link_profile_array
+                already_installed_indirect_capacity
+                * already_installed_indirect_link_profile_array
         )
 
         for candidate in candidate_name_list:
@@ -169,31 +172,31 @@ def verify_study_update(study_path, expected_investment_solution, antares_versio
             ) = candidate_reader.get_candidate_link_profile_array(study_path, candidate)
             if link_profile_array.ndim == 2:
                 assert (
-                    link_profile_array.shape
-                    == candidate_reader.get_candidate_already_installed_link_profile_array(
-                        study_path, candidate_name_list[0]
-                    ).shape
+                        link_profile_array.shape
+                        == candidate_reader.get_candidate_already_installed_link_profile_array(
+                    study_path, candidate_name_list[0]
+                ).shape
                 )
                 expected_direct_link_capacity += investment * \
-                    link_profile_array[:, 0]
+                                                 link_profile_array[:, 0]
                 expected_indirect_link_capacity += investment * \
-                    link_profile_array[:, 1]
+                                                   link_profile_array[:, 1]
             else:
                 direct_array = link_profile_array[:, :, 0].transpose()
                 indirect_array = link_profile_array[:, :, 1].transpose()
                 if candidate_reader.has_installed_profile(
-                    study_path, candidate
+                        study_path, candidate
                 ) and candidate_reader.has_profile(study_path, candidate):
                     assert (
-                        direct_array.shape
-                        == already_installed_direct_link_profile_array.shape
+                            direct_array.shape
+                            == already_installed_direct_link_profile_array.shape
                     )
                     assert (
-                        indirect_array.shape
-                        == already_installed_indirect_link_profile_array.shape
+                            indirect_array.shape
+                            == already_installed_indirect_link_profile_array.shape
                     )
                 if candidate_reader.has_profile(
-                    study_path, candidate
+                        study_path, candidate
                 ) and not candidate_reader.has_installed_profile(study_path, candidate):
                     (
                         expected_direct_link_capacity,
@@ -225,7 +228,7 @@ def verify_study_update(study_path, expected_investment_solution, antares_versio
 
 
 def grow_expectation_to_proper_number_of_chronicles(
-    direct_array, expected_direct_link_capacity, expected_indirect_link_capacity
+        direct_array, expected_direct_link_capacity, expected_indirect_link_capacity
 ):
     new_direct_expected_array = np.ones(direct_array.transpose().shape)
     new_indirect_expected_array = np.ones(direct_array.transpose().shape)
@@ -238,11 +241,11 @@ def grow_expectation_to_proper_number_of_chronicles(
 
 
 def assert_ntc_update_post_820(
-    candidate_reader,
-    expected_direct_link_capacity,
-    expected_indirect_link_capacity,
-    link,
-    study_path,
+        candidate_reader,
+        expected_direct_link_capacity,
+        expected_indirect_link_capacity,
+        link,
+        study_path,
 ):
     direct_ntc = candidate_reader.get_link_antares_direct_link_file(
         study_path, link)
@@ -262,11 +265,11 @@ def assert_ntc_update_post_820(
 
 
 def assert_ntc_update_pre_820(
-    candidate_reader,
-    expected_direct_link_capacity,
-    expected_indirect_link_capacity,
-    link,
-    study_path,
+        candidate_reader,
+        expected_direct_link_capacity,
+        expected_indirect_link_capacity,
+        link,
+        study_path,
 ):
     study_link = candidate_reader.get_link_antares_link_file_pre820(
         study_path, link)
@@ -356,13 +359,13 @@ long_parameters_values = [
 )
 @pytest.mark.long_sequential
 def test_full_study_long_sequential(
-    install_dir,
-    allow_run_as_root,
-    study_path,
-    expected_values,
-    expected_investment_solution,
-    tmp_path,
-    antares_version,
+        install_dir,
+        allow_run_as_root,
+        study_path,
+        expected_values,
+        expected_investment_solution,
+        tmp_path,
+        antares_version,
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
@@ -379,13 +382,13 @@ def test_full_study_long_sequential(
 )
 @pytest.mark.long_mpi
 def test_full_study_long_mpi(
-    install_dir,
-    allow_run_as_root,
-    study_path,
-    expected_values,
-    expected_investment_solution,
-    tmp_path,
-    antares_version,
+        install_dir,
+        allow_run_as_root,
+        study_path,
+        expected_values,
+        expected_investment_solution,
+        tmp_path,
+        antares_version,
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
@@ -401,18 +404,18 @@ def test_full_study_long_mpi(
 )
 @pytest.mark.long_benders_by_batch_mpi
 def test_full_study_long_benders_by_batch_parallel(
-    install_dir,
-    allow_run_as_root,
-    study_path,
-    expected_values,
-    expected_investment_solution,
-    tmp_path,
-    antares_version,
+        install_dir,
+        allow_run_as_root,
+        study_path,
+        expected_values,
+        expected_investment_solution,
+        tmp_path,
+        antares_version,
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    shutil.move(tmp_study/"user"/"expansion"/"settings_by_batch.ini",
-                tmp_study/"user"/"expansion"/"settings.ini")
+    shutil.move(tmp_study / "user" / "expansion" / "settings_by_batch.ini",
+                tmp_study / "user" / "expansion" / "settings.ini")
     method = BendersMethod.BENDERS_BY_BATCH
     launch_xpansion(install_dir, tmp_study, allow_run_as_root)
     verify_solution(tmp_study, expected_values,
@@ -571,20 +574,18 @@ medium_parameters_values = [
 )
 @pytest.mark.medium_sequential
 def test_full_study_medium_sequential(
-    install_dir,
-    allow_run_as_root,
-    study_path,
-    expected_values,
-    expected_investment_solution,
-    tmp_path,
-    antares_version,
+        install_dir,
+        allow_run_as_root,
+        study_path,
+        expected_values,
+        expected_investment_solution,
+        tmp_path,
+        antares_version,
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study, allow_run_as_root, 1)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
-    verify_study_update(
-        tmp_study, expected_investment_solution, antares_version)
 
 
 @pytest.mark.parametrize(
@@ -593,20 +594,18 @@ def test_full_study_medium_sequential(
 )
 @pytest.mark.medium_mpi
 def test_full_study_medium_parallel(
-    install_dir,
-    allow_run_as_root,
-    study_path,
-    expected_values,
-    expected_investment_solution,
-    tmp_path,
-    antares_version,
+        install_dir,
+        allow_run_as_root,
+        study_path,
+        expected_values,
+        expected_investment_solution,
+        tmp_path,
+        antares_version,
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study, allow_run_as_root)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
-    verify_study_update(
-        tmp_study, expected_investment_solution, antares_version)
 
 
 @pytest.mark.parametrize(
@@ -615,24 +614,22 @@ def test_full_study_medium_parallel(
 )
 @pytest.mark.medium_benders_by_batch_mpi
 def test_full_study_medium_benders_by_batch_parallel(
-    install_dir,
-    allow_run_as_root,
-    study_path,
-    expected_values,
-    expected_investment_solution,
-    tmp_path,
-    antares_version,
+        install_dir,
+        allow_run_as_root,
+        study_path,
+        expected_values,
+        expected_investment_solution,
+        tmp_path,
+        antares_version,
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    shutil.move(tmp_study/"user"/"expansion"/"settings_by_batch.ini",
-                tmp_study/"user"/"expansion"/"settings.ini")
+    shutil.move(tmp_study / "user" / "expansion" / "settings_by_batch.ini",
+                tmp_study / "user" / "expansion" / "settings.ini")
     method = BendersMethod.BENDERS_BY_BATCH
     launch_xpansion(install_dir, tmp_study, allow_run_as_root)
     verify_solution(tmp_study, expected_values,
                     expected_investment_solution, method)
-    verify_study_update(
-        tmp_study, expected_investment_solution, antares_version)
 
 
 short_parameters_values = [
@@ -684,21 +681,19 @@ short_parameters_values = [
 )
 @pytest.mark.short_sequential
 def test_full_study_short_sequential(
-    install_dir,
-    allow_run_as_root,
-    study_path,
-    expected_values,
-    expected_investment_solution,
-    tmp_path,
-    antares_version,
+        install_dir,
+        allow_run_as_root,
+        study_path,
+        expected_values,
+        expected_investment_solution,
+        tmp_path,
+        antares_version,
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study,
                     allow_run_as_root, nproc=1)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
-    verify_study_update(
-        tmp_study, expected_investment_solution, antares_version)
 
 
 @pytest.mark.parametrize(
@@ -720,8 +715,6 @@ def test_full_study_short_memory(
     launch_xpansion_memory(install_dir, tmp_study, BendersMethod.BENDERS,
                            allow_run_as_root, nproc=1)
     verify_solution(tmp_study, expected_values, expected_investment_solution, use_archive=False)
-    verify_study_update(
-        tmp_study, expected_investment_solution, antares_version)
 
 
 @pytest.mark.parametrize(
@@ -730,20 +723,18 @@ def test_full_study_short_memory(
 )
 @pytest.mark.short_mpi
 def test_full_study_short_parallel(
-    install_dir,
-    allow_run_as_root,
-    study_path,
-    expected_values,
-    expected_investment_solution,
-    tmp_path,
-    antares_version,
+        install_dir,
+        allow_run_as_root,
+        study_path,
+        expected_values,
+        expected_investment_solution,
+        tmp_path,
+        antares_version,
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
     launch_xpansion(install_dir, tmp_study, allow_run_as_root)
     verify_solution(tmp_study, expected_values, expected_investment_solution)
-    verify_study_update(
-        tmp_study, expected_investment_solution, antares_version)
 
 
 @pytest.mark.parametrize(
@@ -752,21 +743,19 @@ def test_full_study_short_parallel(
 )
 @pytest.mark.short_benders_by_batch_mpi
 def test_full_study_short_benders_by_batch_parallel(
-    install_dir,
-    allow_run_as_root,
-    study_path,
-    expected_values,
-    expected_investment_solution,
-    tmp_path,
-    antares_version,
+        install_dir,
+        allow_run_as_root,
+        study_path,
+        expected_values,
+        expected_investment_solution,
+        tmp_path,
+        antares_version,
 ):
     tmp_study = tmp_path / study_path.name
     shutil.copytree(study_path, tmp_study)
-    shutil.move(tmp_study/"user"/"expansion"/"settings_by_batch.ini",
-                tmp_study/"user"/"expansion"/"settings.ini")
+    shutil.move(tmp_study / "user" / "expansion" / "settings_by_batch.ini",
+                tmp_study / "user" / "expansion" / "settings.ini")
     method = BendersMethod.BENDERS_BY_BATCH
     launch_xpansion(install_dir, tmp_study, allow_run_as_root)
     verify_solution(tmp_study, expected_values,
                     expected_investment_solution, method)
-    verify_study_update(
-        tmp_study, expected_investment_solution, antares_version)

@@ -65,7 +65,12 @@ void MergeWeightsTrajectory::load_input_files()
         nodes_weights_[node_name] = node_weight;
     }
 
+    // Scaling
+    scaling_ = master_merger_info_data[KEY_SCALING].asDouble();
+
     // Lp paths & relevant files data
+    // We expect executable to be ran at the input root.
+    // The paths given in the nodal_lp_folder_file have to be relative to the input root.
     nodes_lp_info_ = LpDataLocationManager::parse_nodal_lp_location_file(nodal_lp_folder_file_);
 
     // Check that every key in nodes_weights appears in the nodes_lp_info
@@ -103,7 +108,7 @@ void MergeWeightsTrajectory::generate_merged_weights_file()
                 auto full_path = lp_info.lp_folder / subproblem;
                 auto merged_weight = (weight / nodal_weights.at(WEIGHT_SUM_KEY))
                                      * nodes_weights_.at(node);
-                merged_subproblem_weights_[full_path.string()] = merged_weight;
+                merged_subproblem_weights_[full_path.string()] = merged_weight / scaling_;
             }
         }
         // Otherwise, use uniform weights for the subproblems
@@ -143,7 +148,7 @@ void MergeWeightsTrajectory::generate_merged_weights_file()
                 }
                 auto full_path = lp_info.lp_folder / subproblem;
                 auto merged_weight = (1 / static_cast<double>(nb_years)) * nodes_weights_[node];
-                merged_subproblem_weights_[full_path.string()] = merged_weight;
+                merged_subproblem_weights_[full_path.string()] = merged_weight / scaling_;
             }
         }
     }

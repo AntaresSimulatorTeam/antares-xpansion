@@ -1,12 +1,13 @@
-from antares_xpansion.xpansionConfig import XpansionConfigConstants
-from antares_xpansion.config_loader import XpansionSettingsReader
-from antares_xpansion.optimisation_keys import OptimisationKeys
-from antares_xpansion.xpansion_study_reader import XpansionStudyReader
-from antares_xpansion.benders_driver import BendersDriver, SolversExe
-
+import json
+import os
 from dataclasses import dataclass
 from pathlib import Path
-import json
+
+from antares_xpansion.benders_driver import BendersDriver, SolversExe
+from antares_xpansion.config_loader import XpansionSettingsReader
+from antares_xpansion.optimisation_keys import OptimisationKeys
+from antares_xpansion.xpansionConfig import XpansionConfigConstants
+from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 
 
 @dataclass
@@ -32,6 +33,7 @@ class TrajectoryResolutionData:
     n_mpi: int
     oversubscribe: bool
     allow_run_as_root: bool
+    master_formulation: str
 
 
 class TrajectoryResolutionDriver:
@@ -77,9 +79,11 @@ class TrajectoryResolutionDriver:
         )
         # Solver is overwritten by the global driver
         # to make sure we use same solver and problem format for all studies
-        options_values[OptimisationKeys.solver_name_key()] = self.data.solver
+        options_values[OptimisationKeys.solver_name_key()] = (
+            XpansionStudyReader.convert_study_solver_to_option_solver(self.data.solver)
+        )
         options_values[OptimisationKeys.problems_format_key()] = (
-            self.data.problems_format
+            self.data.problems_format.upper()
         )
 
         options_values[OptimisationKeys.json_file_key()] = (
@@ -114,34 +118,74 @@ class TrajectoryResolutionDriver:
         # Irrelevant in our case, but we need to set a value.
         options_values[OptimisationKeys.slave_weight_value_key()] = 1.0
 
-        # options_values[OptimisationKeys.last_iteration_json_file_key()] = (
-        #     self.last_iteration_json_file_path()
-        # )
-        # options_values[OptimisationKeys.master_formulation_key()] = (
-        #     root_settings_reader.get_master_formulation()
-        # )
-        # options_values[OptimisationKeys.last_mps_master_name_key()] = (
-        #     self._config.LAST_MASTER_MPS
-        # )
-        # options_values[OptimisationKeys.last_master_basis_key()] = (
-        #     self._config.LAST_MASTER_BASIS
-        # )
-        # options_values[OptimisationKeys.do_outer_loop_key()] = (
-        #     self.config.method == "adequacy_criterion"
-        # )
-        # options_values[OptimisationKeys.outer_loop_option_file_key()] = (
-        #     self.config.OUTER_LOOP_FILE
-        # )
-        # options_values[OptimisationKeys.area_file_key()] = self._config.AREA_FILE
-        # if os.path.exists(self.outer_loop_options_path()):
-        #     shutil.copy(self.outer_loop_options_path(), self._simulation_lp_path())
-        # options_values[OptimisationKeys.cache_problems_keys()] = self.cache_problems()
+        # Master formulation
+        options_values[OptimisationKeys.master_formulation_key()] = (
+            self.data.master_formulation
+        )
+        # Implement previously non-implemented options with safe guards
+        # LAST_ITERATION_JSON_FILE: use output folder default if present
+        last_iter_json = self.data.output_folder / config_defaults.LAST_ITERATION_JSON_FILE_NAME
+        options_values[OptimisationKeys.last_iteration_json_file_key()] = (
+            last_iter_json.resolve().__str__()
+        )
 
+        # LAST_MASTER_MPS and LAST_MASTER_BASIS: warm start files if present in input_root
+        # Try solver-specific extensions for last master mps/svf
+        master_last_base = f"{self.data.master_name}_last_iteration"
+        candidates = [
+            self.data.input_root / f"{master_last_base}.mps",
+            self.data.input_root / f"{master_last_base}.svf",
+            self.data.input_root / config_defaults.LAST_MASTER_MPS,
+        ]
+        last_master_path = next((p for p in candidates if p and p.exists()), None)
+        if last_master_path is not None:
+            options_values[OptimisationKeys.last_mps_master_name_key()] = (
+                last_master_path.resolve().__str__()
+            )
+
+        basis_candidates = [
+            self.data.input_root / f"{self.data.master_name}_last_basis.bss",
+            self.data.input_root / config_defaults.LAST_MASTER_BASIS,
+        ]
+        last_basis_path = next((p for p in basis_candidates if p and p.exists()), None)
+        if last_basis_path is not None:
+            options_values[OptimisationKeys.last_master_basis_key()] = (
+                last_basis_path.resolve().__str__()
+            )
+
+        # DO_OUTER_LOOP and related files
+        do_outer_loop = self.data.method == "adequacy_criterion"
+        options_values[OptimisationKeys.do_outer_loop_key()] = do_outer_loop
+        if do_outer_loop:
+            # Build paths relative to the root study directory
+            root_dir = Path(root_study)
+            outer_loop_file = root_dir / config_defaults.USER / config_defaults.EXPANSION / config_defaults.OUTER_LOOP_DIR / config_defaults.OUTER_LOOP_FILE
+            if outer_loop_file.exists():
+                options_values[OptimisationKeys.outer_loop_option_file_key()] = (
+                    outer_loop_file.resolve().__str__()
+                )
+            area_file = root_dir / config_defaults.USER / config_defaults.EXPANSION / config_defaults.AREA_FILE
+            if area_file.exists():
+                options_values[OptimisationKeys.area_file_key()] = (
+                    area_file.resolve().__str__()
+                )
+
+        # CACHE_PROBLEMS: keep default unless explicitly needed (already in defaults)
+        # Explicitly set to default to make it visible in written JSON
+        options_values[OptimisationKeys.cache_problems_keys()] = (
+            config_defaults.cache_problems_default_value()
+        )
+
+        assert Path(os.getcwd()).resolve() == self.data.input_root.resolve()
         # Write options file for the solver
         with open(self.data.benders_options_file, "w") as options_file:
             json.dump(options_values, options_file, indent=4)
 
     def launch(self):
+        # Run the driver from the input root
+        previous_dir = os.getcwd()
+        os.chdir(self.data.input_root)
+
         self.prepare_resolution_options_file()
         self.benders_driver.set_custom_working_dir(self.data.input_root.resolve())
         # The cleaning step is not adapted to trajecotry mode, do not run it.
@@ -154,3 +198,5 @@ class TrajectoryResolutionDriver:
             oversubscribe=self.data.oversubscribe,
             allow_run_as_root=self.data.allow_run_as_root,
         )
+
+        os.chdir(previous_dir)

@@ -1,7 +1,3 @@
-//
-// Created by marechaljas on 22/11/22.
-//
-
 #include "antares-xpansion/lpnamer/problem_modifier/AntaresProblemToXpansionProblemTranslator.h"
 
 #include <algorithm>
@@ -9,18 +5,21 @@
 
 #include "antares-xpansion/multisolver_interface/SolverFactory.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
+#include "include/antares-xpansion/lpnamer/problem_modifier/RenameUtils.h"
 
+namespace AntaresProblemToXpansionProblemTranslator
+{
 /**
  *
  * @Note: In case of performance issue we can accept non-const lps and work on
  * references to constant and hebdo parts
  */
-std::shared_ptr<Problem> AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
-  const Antares::Solver::LpsFromAntares& lps,
-  unsigned int year,
-  unsigned int week,
-  const std::string& solver_name,
-  SolverLogManager& solver_log_manager)
+std::shared_ptr<Problem> translateToXpansionProblem(const Antares::Solver::LpsFromAntares& lps,
+                                                    unsigned int year,
+                                                    unsigned int week,
+                                                    const std::string& solver_name,
+                                                    const SolverLogManager& solver_log_manager,
+                                                    const RenameUtils& renameUtils)
 {
     SolverFactory factory;
     auto problem = std::make_shared<Problem>(
@@ -31,8 +30,16 @@ std::shared_ptr<Problem> AntaresProblemToXpansionProblemTranslator::translateToX
     problem->mc_year = year;
     problem->week = week;
 
-    std::vector<int> tmp(constant.VariablesCount, 0);
-    std::vector<char> coltypes(constant.VariablesCount, 'C');
+    std::vector tmp(constant.VariablesCount, 0);
+
+    /** In constant data we have the names of variables and constraints
+     * index from hour 0 to hour 167. We need to rename them to
+     * correspond to the current week.
+     */
+    const auto& [variables, constraints] = renameUtils.rename_week_names(
+      week,
+      constant.VariablesMeaning,
+      constant.ConstraintsMeaning);
 
     problem->add_cols(constant.VariablesCount,
                       0,
@@ -42,26 +49,24 @@ std::shared_ptr<Problem> AntaresProblemToXpansionProblemTranslator::translateToX
                       {},
                       hebdo.Xmin.data(),
                       hebdo.Xmax.data(),
-                      hebdo.variables);
+                      variables);
 
-    std::span signs(hebdo.Direction.data(), hebdo.Direction.size());
     problem->add_rows(constant.ConstraintesCount,
                       constant.CoeffCount,
-                      convertSignToLEG(signs).data(),
+                      convertSignToLEG(hebdo.Direction).data(),
                       hebdo.RHS.data(),
                       nullptr,
                       reinterpret_cast<const int*>(constant.Mdeb.data()),
                       reinterpret_cast<const int*>(constant.ColumnIndexes.data()),
                       constant.ConstraintsMatrixCoeff.data(),
-                      hebdo.constraints);
+                      constraints);
     // On peut ajouter la partie qui renomme les variables ici si on stocke les
     // données du type de variables dans ConstantDataFromAntares, i.e. en
     // définissant une autre implémentation de IProblemVariablesProviderPort
     return problem;
 }
 
-std::vector<char> AntaresProblemToXpansionProblemTranslator::convertSignToLEG(
-  std::span<const char> data)
+std::vector<char> convertSignToLEG(std::span<const char> data)
 {
     std::vector<char> LEG_vector;
     // Exclude final '\0' character
@@ -89,3 +94,4 @@ std::vector<char> AntaresProblemToXpansionProblemTranslator::convertSignToLEG(
                            });
     return LEG_vector;
 }
+} // namespace AntaresProblemToXpansionProblemTranslator
