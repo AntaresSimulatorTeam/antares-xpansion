@@ -3,6 +3,7 @@ Class to control the execution of the trajectory investment
 """
 
 import os
+from pathlib import Path
 
 from antares_xpansion.logger import step_logger
 from antares_xpansion.trajectory.driver_input_translation import InputTranslationDriver
@@ -34,6 +35,10 @@ class TrajectoryInvestmentDriver:
         self.config = config
         self.logger = step_logger(__name__, __class__.__name__)
 
+        # Change the working directory to the input root.
+        previous_dir = os.getcwd()
+        os.chdir(self.config.input_root)
+
         # Create the intermediary folder
         self.intermediary_folder_path = self.prepare_folder(
             self.config.INTERMEDIARY_FOLDER
@@ -62,16 +67,22 @@ class TrajectoryInvestmentDriver:
 
         # Input translation driver
         self.input_translation_driver = InputTranslationDriver(
+            self.config.input_root,
             self.config.input_file,
             self.master_merger_info_file,
         )
 
         # We leave the default values for where to write intermediary files
         self.output_folder = self.prepare_folder(self.config.OUTPUT_FOLDER)
+        # The problems format and solver are expected as full upper case by the C++ executables
+        # ONE
+        solver = self.config.solver
+        problems_format = self.config.problems_format
         # TODO : hardcoded solver for now
-        solver = "XPRESS"
+        # TWO
+        solver = "Xpress"
         problems_format = "OPTIMIZED"
-        if solver != "XPRESS":
+        if solver != "Xpress":
             problems_format = "MPS"
 
         mm_data = MergeMasterData(
@@ -92,6 +103,7 @@ class TrajectoryInvestmentDriver:
         mw_data = MergeWeightsData(
             self.config.get_executable_path(self.config.MERGE_WEIGHTS),
             self.master_merger_info_file,
+            self.config.input_root,
             self.nodal_lp_info_file,
             self.merged_weights_file,
         )
@@ -108,7 +120,7 @@ class TrajectoryInvestmentDriver:
             benders_exe=self.config.get_executable_path(self.config.BENDERS),
             frontal_exe=self.config.get_executable_path(self.config.MERGE_MPS),
             outer_loop_exe=self.config.get_executable_path(self.config.OUTER_LOOP),
-            mpi_exe=self.config.get_executable_path(self.config.MPIEXEC),
+            mpi_exe=self.config.get_executable_path(Path(self.config.MPIEXEC).name),
             input_root=self.config.input_root,
             root_study=root_study,
             json_output_file=benders_json_output,
@@ -123,13 +135,21 @@ class TrajectoryInvestmentDriver:
             n_mpi=self.config.n_mpi,
             oversubscribe=self.config.oversubsribe,
             allow_run_as_root=self.config.allow_run_as_root,
+            master_formulation=self.input_translation_driver.get_master_formulation(),
         )
 
         self.resolution_driver = TrajectoryResolutionDriver(res_data)
 
+        # Change back the directory
+        os.chdir(previous_dir)
+
     def prepare_folder(self, name: str):
-        """Creates the folder at <input_root/name> and returns the full path"""
-        folder = self.config.input_root / name
+        """
+        Creates the folder at './<name>' and returns the full path
+        This assumes we are working at the input root.
+        """
+        assert Path(os.getcwd()).resolve() == self.config.input_root.resolve()
+        folder = Path(f"./{name}")
         if not folder.is_dir():
             os.makedirs(folder)
 

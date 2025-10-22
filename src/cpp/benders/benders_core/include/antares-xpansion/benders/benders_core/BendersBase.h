@@ -3,7 +3,6 @@
 #include <execution>
 #include <filesystem>
 #include <mutex>
-#include <regex>
 #include <tbb/tbb.h>
 
 #include "BendersMathLogger.h"

@@ -2,3 +2,4 @@ wheel
 pyinstaller==6.15.0
 pyyaml
 psutil
+pydantic>=1.9.2

@@ -104,7 +104,7 @@ public:
     void launch() override;
 
 private:
-    void read_tree_structure_file();
+    void read_master_merge_info_file();
     void read_node_lp_paths();
 
     void check_nodes_have_lp_folder();
@@ -118,6 +118,11 @@ private:
     std::string make_prefix_from_node(const std::string& node_name) const;
     double get_candidate_initial_value(const std::string& candidate) const;
 
+    bool variable_is_present_in_node(const TrajectoryNode& node,
+                                     const std::string& candidate) const;
+    bool variable_is_present_in_parent(const TrajectoryNode& node,
+                                       const std::string& candidate) const;
+
     std::filesystem::path tree_path_;
     std::filesystem::path lp_reference_file_filepath_;
     TrajectoryTree tree_;                       // Contains each node's information
@@ -125,4 +130,5 @@ private:
     CandidatesCouplingMap candidates_coupling_; // Links the same candidates in different nodes
     NodesToLpDataLocationMap nodes_lp_info_;    // Info on the lp folder & files for each node
     CouplingMap structure_;
+    double scaling_; // Scaling factor to divide the costs by.
 };

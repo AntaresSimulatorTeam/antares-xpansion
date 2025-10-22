@@ -9,13 +9,16 @@ The most simple usage is :
 
 Note that this executable uses options that extend the simple ```ProblemGenerationExeOptions``` parser used in the individual problem generation executable. Thus, every other option of the individual problem generation can be given to the ```MultipleProblemGeneration``` executable and will be duplicated for each individual node's problem generation.
 
+**Note** : the C++ executable has to be launched at the ```--input-root```. (The python driver takes care of this, this should not be a concern to most users).
+
 ## Study paths / archives file
 The study paths file (or archive paths file when called with ```--archive <archive_paths_file>```) tells the executable where to find the relevant input for each node :
 - Study paths when using memory mode (and option ```--study```)
 - Previously generated antares output archives otherwise (with option ```--archive```)
 
 The reference file is a simple text file with two columns :
-The first column contains the node's name, and the second the path to the relevant input (in this case the path to the study).  
+The first column contains the node's name, and the second the path to the relevant input (in this case the path to the study).
+**Note** : the paths have to be given as relatives paths, relative to the ```--input-root```  
 ```
 2030 ./node_2030_study
 2040 ./node_2040_study
@@ -24,12 +27,13 @@ The first column contains the node's name, and the second the path to the releva
 ```
 The full input files & folders layout for this example is diplayed in [this section](./trajectory-workflow.md#file-structure) for more clarity.
 
-## Weights and/or additional constraints reference file
+## Weights / additional constraints reference file
 
 The weights (resp. additional constraints) reference file gives the ```MultipleProblemGeneration``` executable information about the potential custom weights file (resp. additional constraints file) given by the user.
 
 The reference file is a simple text file with two columns :
-The first column contains the node's name, and the second the path to the custom weights file (resp. additional constraints file). 
+The first column contains the node's name, and the second the path to the custom weights file (resp. additional constraints file).
+**Note** : the paths have to be given as relatives paths, relative to the ```--input-root```  
 ```
 2030 ./node_2030_study/user/expansion/weights/weights.txt
 ```
