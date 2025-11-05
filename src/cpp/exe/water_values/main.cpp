@@ -183,22 +183,17 @@ int main(int argc, char** argv)
         bool antaresFormat = optionsParser.AntaresFormat();
         bool writePbFiles = optionsParser.WritePbFiles();
         const std::string problemFormat = optionsParser.ProblemFormat();
+        const bool ignoreOptimalTrajectory = optionsParser.IgnoreOptimalTrajectory();
 
         auto gridCollection = std::make_shared<GridCollection>(studyPath / "grid.csv");
 
+        // Possible update: multistock penalties. For now: all penalties are identical for all
+        // stocks.
         const std::filesystem::path penaltiesConfigFilePath(studyPath / "penalties.yaml");
 
         // PenaltiesConfigReader will check whether the file exists and return default values if
         // needed
         PenaltiesConfigReader pcr(penaltiesConfigFilePath);
-
-        ReservoirManagement reservoirManagement(gridCollection->reservoirs.begin()->second,
-                                                pcr.getPenaltyBottomRuleCurve(),
-                                                pcr.getPenaltyUpperRuleCurve(),
-                                                pcr.getPenaltyFinalLevel(),
-                                                pcr.getForceFinalLevel(),
-                                                pcr.getFinalLevel(),
-                                                pcr.getOverflow());
 
         ConfigurationManager::ConfigDirectories directories{
           .study_dir = studyPath,
@@ -219,14 +214,17 @@ int main(int argc, char** argv)
         auto startProblemGeneration = std::chrono::system_clock::now();
         logger->display_message(
           "Generating problems (starting time: " + formatTime(startProblemGeneration) + ")");
-        ProblemGenerationForWaterValueCalculation pbg(directories,
-                                                      reservoirManagement,
-                                                      logger,
-                                                      solverName,
-                                                      startWeek,
-                                                      endWeek,
-                                                      writePbFiles,
-                                                      problemFormat);
+        ProblemGenerationForWaterValueCalculation pbg(
+          directories,
+          logger,
+          solverName,
+          startWeek,
+          endWeek,
+          writePbFiles,
+          problemFormat,
+          ProblemGenerationForWaterValueCalculation::getComputationModeFromGrid(
+            *gridCollection,
+            ignoreOptimalTrajectory));
         auto endProblemGeneration = std::chrono::system_clock::now();
         logger->display_message("Problems generated (end time: " + formatTime(endProblemGeneration)
                                 + ")");
@@ -236,35 +234,101 @@ int main(int argc, char** argv)
                                 + formatDuration(elapsed_seconds));
 
         Output::VariationDeNiveauxDeStockData variationDeNiveauxDeStockData;
+
+        // modify all reservoirs for the grid collection here with optimal trajectories
+        pbg.initializeOptimalTrajectories(gridCollection);
+
+        // here: loop on all grids
         for (auto& grid: gridCollection->gridDefinitions)
         {
-            auto startProblemUpdate = std::chrono::system_clock::now();
-            logger->display_message(
-              "Updating problems (starting time: " + formatTime(startProblemUpdate) + ")");
-            auto problems = pbg.updateProblems(grid);
+            logger->display_message("## GridDefinition ID: " + std::to_string(grid.gridID) + " ##");
 
-            auto endProblemUpdate = std::chrono::system_clock::now();
-            logger->display_message("Updated problems (end time: " + formatTime(endProblemUpdate)
-                                    + ")");
+            // hypothesis: all gridElements are linked to a reservoir
+            // in the case of multistock, there should only be one reservoir per
+            // gridDefinition in the case of multivariate, there would be more than one
+            // reservoir per gridDefinition
+            grid.setReservoirs(gridCollection->reservoirs);
 
-            std::chrono::duration<double> elapsed_update_seconds = endProblemUpdate
-                                                                   - startProblemUpdate;
-            logger->display_message("Elapsed time for problem update: "
-                                    + formatDuration(elapsed_update_seconds));
-
-            auto evaluator = GridEvaluator(logger, problems, grid, solverName, nbThreads);
-            auto bellmanValuesEvaluator = BellmanValues(evaluator, reservoirManagement);
-            auto bellmanValues = bellmanValuesEvaluator.compute(nbLevels);
-            auto levels = bellmanValuesEvaluator.getLevels();
-            if (antaresFormat)
+            for (auto& gridElement: grid.gridElements)
             {
-                bellmanValues = interpolateWeekVector(bellmanValues, 101);
-                levels = interpolateVector(levels, 101);
+                logger->display_message("### Grid element area: " + gridElement.area + " ###");
+                // multistock here
+                // update the reservoir in ReservoirManagement based on the considered area
+                // initializing with first reservoir in line
+                ReservoirManagement reservoirManagement(grid.reservoirs.at(gridElement.area),
+                                                        pcr.getPenaltyBottomRuleCurve(),
+                                                        pcr.getPenaltyUpperRuleCurve(),
+                                                        pcr.getPenaltyFinalLevel(),
+                                                        pcr.getForceFinalLevel(),
+                                                        pcr.getFinalLevel(),
+                                                        pcr.getOverflow());
+
+                if (reservoirManagement.reservoir.area != gridElement.area)
+                {
+                    reservoirManagement.setReservoir(
+                      gridCollection->reservoirs.at(gridElement.area));
+                    // this is also where we will update penalties if they need to be
+                }
+                auto startProblemUpdate = std::chrono::system_clock::now();
+                logger->display_message(
+                  "Updating problems (starting time: " + formatTime(startProblemUpdate) + ")");
+
+                auto problems = pbg.updateProblems(grid, reservoirManagement, gridElement.area);
+
+                auto endProblemUpdate = std::chrono::system_clock::now();
+                logger->display_message(
+                  "Updated problems (end time: " + formatTime(endProblemUpdate) + ")");
+
+                std::chrono::duration<double> elapsed_update_seconds = endProblemUpdate
+                                                                       - startProblemUpdate;
+                logger->display_message("Elapsed time for problem update: "
+                                        + formatDuration(elapsed_update_seconds));
+
+                logger->display_message("Instantiating GridEvaluator");
+                auto evaluator = GridEvaluator(logger, problems, grid, solverName, nbThreads);
+
+                logger->display_message("Instantiating BellmanValues");
+                auto bellmanValuesEvaluator = BellmanValues(evaluator, reservoirManagement);
+
+                logger->display_message("Computing Bellman values...");
+                auto bellmanValues = bellmanValuesEvaluator.compute(nbLevels);
+                logger->display_message("Computed Bellman values");
+
+                auto levels = bellmanValuesEvaluator.getLevels();
+                if (antaresFormat)
+                {
+                    bellmanValues = interpolateWeekVector(bellmanValues, 101);
+                    levels = interpolateVector(levels, 101);
+                }
+
+                logger->display_message("Computing water values...");
+                auto waterValues = computeWaterValues(bellmanValues, levels);
+                logger->display_message("Computed water values");
+
+                std::string fileName = std::to_string(grid.gridID) + "_" + gridElement.area
+                                       + "_water_values.csv";
+                saveValues(directories.simulation_dir / fileName,
+                           waterValues,
+                           logger,
+                           antaresFormat);
+                logger->display_message("Saved water values to file");
+
+                gridCollection->reservoirs.at(gridElement.area) = reservoirManagement.reservoir;
+
+                if (pbg.getComputationMode()
+                    == ProblemGenerationForWaterValueCalculation::WaterValueComputationMode::
+                      MULTISTOCK)
+                {
+                    logger->display_message("Computing optimal trajectory...");
+
+                    gridCollection->reservoirs.at(gridElement.area).optimal_trajectory
+                      = bellmanValuesEvaluator.computeOptimalTrajectories();
+
+                    logger->display_message("Computed optimal trajectory");
+                }
             }
-            auto waterValues = computeWaterValues(bellmanValues, levels);
-            std::string fileName = std::to_string(grid.gridID) + "_water_values.csv";
-            saveValues(directories.simulation_dir / fileName, waterValues, logger, antaresFormat);
         }
+        logger->display_message("Computing water values: Done!");
 
         return 0;
     }

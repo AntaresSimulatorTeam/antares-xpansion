@@ -26,39 +26,72 @@
 class ProblemGenerationForWaterValueCalculation
 {
 public:
+    static enum class WaterValueComputationMode
+    {
+        MULTIVARIATE,
+        MULTISTOCK,
+        SEQUENTIAL, // like multistock but without optimal trajectories
+    };
     explicit ProblemGenerationForWaterValueCalculation(
       ConfigurationManager::ConfigDirectories directories,
-      const ReservoirManagement& reservoirManagement,
+      // const ReservoirManagement& reservoirManagement,
       Logger logger,
       const std::string& solverName = "xpress",
       unsigned int startWeek = 1,
       unsigned int endWeek = 52,
       bool savePbFiles = false,
-      const std::string& problemFormat = "OPTIMIZED");
+      const std::string& problemFormat = "OPTIMIZED",
+      const WaterValueComputationMode& computationMode = WaterValueComputationMode::MULTIVARIATE);
     virtual ~ProblemGenerationForWaterValueCalculation() = default;
     std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> updateProblems(
-      const GridDefinition& gridDefinition);
+      const GridDefinition& gridDefinition,
+      const ReservoirManagement& reservoirManagement,
+      const std::optional<std::string>& areaName = std::nullopt);
+    void initializeOptimalTrajectories(std::shared_ptr<GridCollection> gridCollection) const;
+    static WaterValueComputationMode getComputationModeFromGrid(
+      const GridCollection& grid,
+      bool ignoreOptimalTrajectory = false);
+
+    WaterValueComputationMode getComputationMode() const
+    {
+        return computationMode;
+    }
 
 private:
     std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
-    CleanProblemsForBellmanCalculations(const std::filesystem::path& xpansion_output_dir,
+    cleanProblemsForBellmanCalculations(const std::filesystem::path& xpansion_output_dir,
                                         const std::filesystem::path& log_file_path,
-                                        const GridDefinition& gridDefinition);
+                                        const GridDefinition& gridDefinition,
+                                        const ReservoirManagement& reservoirManagement,
+                                        const std::optional<std::string>& areaName);
 
     void cleanProblemForBellmanCalculations(std::shared_ptr<Problem> problem,
-                                            std::string& pbName,
                                             const GridDefinition& gridDefinition,
+                                            const ReservoirManagement& reservoirManagement,
+                                            const std::optional<std::string>& areaName,
+                                            std::string& pbName,
                                             Antares::Solver::WeeklyProblemId pbId);
-
+    void cleanReservoirConstraints(std::shared_ptr<Problem> problem,
+                                   const Reservoir& reservoir,
+                                   Antares::Solver::WeeklyProblemId pbId);
+    void updateReservoirWithOptimalTrajectory(std::shared_ptr<Problem> problem,
+                                              const Reservoir& reservoir,
+                                              Antares::Solver::WeeklyProblemId pbId);
     void addReservoirConstraints(std::shared_ptr<Problem> problem,
+                                 const ReservoirManagement& reservoirManagement,
                                  Antares::Solver::WeeklyProblemId pbId);
+
+    void setComputationMode(const WaterValueComputationMode& mode)
+    {
+        computationMode = mode;
+    }
 
     ConfigurationManager::ConfigDirectories directories;
     std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> problems;
-    const ReservoirManagement& reservoirManagement;
     unsigned int startWeek;
     unsigned int endWeek;
     bool writePbFiles;
     ProblemsFormat problemFormat;
+    WaterValueComputationMode computationMode = WaterValueComputationMode::MULTIVARIATE;
     Logger logger;
 };

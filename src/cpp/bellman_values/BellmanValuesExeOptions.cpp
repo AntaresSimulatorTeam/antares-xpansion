@@ -32,5 +32,9 @@ BellmanValuesExeOptions::BellmanValuesExeOptions():
       "problem-format",
       po::value<std::string>(&problemFormat_)->default_value("OPTIMIZED"),
       "Format to save problem files to (optional, default is OPTIMIZED). Possible values are: MPS, "
-      "OPTIMIZED");
+      "OPTIMIZED")("ignore-optimal-trajectory",
+                   po::value<bool>(&ignoreOptimalTrajectory_)->default_value(false),
+                   "Specify whether the optimal trajectory must be ignored in the case of "
+                   "multistock water values (optional, default is false)");
+    ;
 }

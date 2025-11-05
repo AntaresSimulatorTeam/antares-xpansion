@@ -25,9 +25,10 @@ public:
     double initial_level;
     std::vector<double> max_generating;
     std::vector<double> max_pumping;
-    std::vector<std::vector<double>> inflow;
+    std::vector<std::vector<double>> inflow; // week, scenario
     std::vector<double> bottom_rule_curve;
     std::vector<double> upper_rule_curve;
+    std::vector<std::vector<double>> optimal_trajectory; // week, scenario
 
 private:
     void readRuleCurves(const std::filesystem::path& inputPath);
@@ -51,9 +52,10 @@ private:
         initial_level(initial_level),
         max_generating(std::move(max_generating)),
         max_pumping(std::move(max_pumping)),
-        inflow(std::move(inflow)),
+        inflow(inflow),
         bottom_rule_curve(std::move(bottom_rule_curve)),
-        upper_rule_curve(std::move(upper_rule_curve))
+        upper_rule_curve(std::move(upper_rule_curve)),
+        optimal_trajectory(std::move(inflow)) // initializing the optimal trajectory here
     {
     }
 
@@ -63,7 +65,7 @@ private:
 class ReservoirManagement
 {
 public:
-    ReservoirManagement(const Reservoir& reservoir,
+    ReservoirManagement(Reservoir& reservoir,
                         double penalty_bottom_rule_curve = 0,
                         double penalty_upper_rule_curve = 0,
                         double penalty_final_level = 0,
@@ -73,7 +75,12 @@ public:
 
     std::function<double(double)> get_penalty(int week, int len_week) const;
 
-    Reservoir reservoir;
+    void setReservoir(Reservoir& reservoir)
+    {
+        this->reservoir = reservoir;
+    }
+
+    Reservoir& reservoir;
     double penalty_bottom_rule_curve;
     double penalty_upper_rule_curve;
     double penalty_final_level;

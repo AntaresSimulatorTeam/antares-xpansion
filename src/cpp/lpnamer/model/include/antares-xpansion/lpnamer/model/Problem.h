@@ -21,7 +21,11 @@ public:
 
     [[nodiscard]] Problem* clone() const override
     {
-        return new Problem(*this);
+        Problem* problem = new Problem(
+          std::shared_ptr<SolverAbstract>(this->solver_abstract_->clone()));
+        problem->mc_year = mc_year;
+        problem->week = week;
+        return problem;
     }
 
     explicit Problem(std::shared_ptr<SolverAbstract> solver_abstract):

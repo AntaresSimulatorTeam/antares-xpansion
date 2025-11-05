@@ -2,6 +2,7 @@
 #include "antares-xpansion/bellman_values/BellmanValues.h"
 
 #include <ranges>
+#include <tuple>
 
 #include <antares/api/solver.h>
 
@@ -111,13 +112,15 @@ std::vector<std::vector<double>> BellmanValues::compute(int nbLevels)
                                 .at(gridDef.gridElements[0].name);
             for (size_t i = 0; i < levels.size(); ++i)
             {
-                double Vu = solveWeeklyProblemWithReward(week,
-                                                         endWeek,
-                                                         scenario,
-                                                         levels[i],
-                                                         levels,
-                                                         costs[{scenario, week}],
-                                                         V_fut());
+                double Vu;
+                std::tie(Vu, std::ignore, std::ignore) = solveWeeklyProblemWithReward(
+                  week,
+                  endWeek,
+                  scenario,
+                  levels[i],
+                  levels,
+                  costs[{scenario, week}],
+                  V_fut());
                 V[{scenario, week}][i] += Vu;
             }
         }
@@ -142,6 +145,8 @@ std::vector<std::vector<double>> BellmanValues::compute(int nbLevels)
         V_final.push_back(V[{*scenarios.begin(), week}]);
     }
 
+    this->bellmanValues = V; // copy stored in case of multistock
+    this->costs = costs;     // copy stored in case of multistock
     return V_final;
 }
 
@@ -153,16 +158,20 @@ std::vector<std::vector<double>> BellmanValues::compute(int nbLevels)
 /// @param X the discretization of the reservoir level
 /// @param costs the costs for each scenario and week
 /// @param V_fut the cost function for the next week
-/// @return The Bellvalue for a given week and scenario and level of the reservoir
-double BellmanValues::solveWeeklyProblemWithReward(int week,
-                                                   int endWeek,
-                                                   int scenario,
-                                                   double level,
-                                                   const std::vector<double>& X,
-                                                   const std::vector<double>& costs,
-                                                   const std::function<double(double)>& V_fut)
+/// @return a tuple including 1) the Bellman value for a given week and scenario and level of the
+/// reservoir, 2) the final level of stock, 3) the optimal control
+std::tuple<double, double, double> BellmanValues::solveWeeklyProblemWithReward(
+  int week,
+  int endWeek,
+  int scenario,
+  double level,
+  const std::vector<double>& X,
+  const std::vector<double>& costs,
+  const std::function<double(double)>& V_fut)
 {
-    double Vu = std::numeric_limits<double>::max();
+    double Vu = std::numeric_limits<double>::max(); // optimal objective value (Bellman value)
+    double xf = 0.;                                 // final level of stock
+    double control = 0.;                            // optimal control
     const Reservoir reservoir = reservoirManagement.reservoir;
     auto costFn = Interpolator::linearInterpolation(
       gridEvaluator.gridDefinition.gridElements[0].rhsValues[week],
@@ -180,6 +189,8 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
             if (G + V_fut(value_fut) + penalty < Vu)
             {
                 Vu = G + V_fut(value_fut) + penalty;
+                xf = value_fut;
+                control = u;
             }
         }
     }
@@ -193,6 +204,8 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
             if (G + V_fut(state_fut) + penalty < Vu)
             {
                 Vu = G + V_fut(state_fut) + penalty;
+                xf = state_fut;
+                control = u;
             }
         }
     }
@@ -207,6 +220,8 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
             if (costFn(uFinal) + V_fut(state_fut) + penalty < Vu)
             {
                 Vu = costFn(uFinal) + V_fut(state_fut) + penalty;
+                xf = state_fut;
+                control = uFinal;
             }
         }
     }
@@ -220,6 +235,8 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
             if (costFn(uMin) + V_fut(state_fut) + penalty < Vu)
             {
                 Vu = costFn(uMin) + V_fut(state_fut) + penalty;
+                xf = state_fut;
+                control = uMin;
             }
         }
 
@@ -231,9 +248,61 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
             if (costFn(uMax) + V_fut(state_fut) + penalty < Vu)
             {
                 Vu = costFn(uMax) + V_fut(state_fut) + penalty;
+                xf = state_fut;
+                control = uMax;
             }
         }
     }
 
-    return Vu;
+    control = std::min(-(xf - level - reservoir.inflow[week][scenario]),
+                       reservoir.max_generating[week]);
+
+    return std::tie(Vu, xf, control);
+}
+
+std::vector<std::vector<double>> BellmanValues::computeOptimalTrajectories()
+{
+    auto scenarios = getYears(costs);
+    auto weeks = getWeeks(costs);
+    unsigned int startWeek = *weeks.begin();
+    unsigned int endWeek = *weeks.rbegin();
+
+    // initialization
+    std::vector<std::vector<double>> trajectory = reservoirManagement.reservoir.optimal_trajectory;
+
+    // for (unsigned int week = endWeek + 1; week-- > startWeek;)
+    for (unsigned int week = startWeek; week < endWeek + 1; ++week)
+    {
+        std::cout << "Optimal trajectory, week " << week << std::endl;
+        for (unsigned int scenario: scenarios)
+        {
+            std::cout << "Scenario " << scenario << std::endl;
+
+            // future costs now coming from previously computed Bellman values
+            auto V_fut = [this, &week, &scenario]()
+            {
+                auto& V_vec = this->bellmanValues[{scenario, week + 1}];
+                return [this, &V_vec, &week, &scenario](double x)
+                { return Interpolator::linearInterpolation(this->levels, V_vec)(x); };
+            };
+
+            std::cout << "V_fut OK" << std::endl;
+
+            // the considered level is the trajectory of the previous week
+            // or the initial level for the first week
+            double level = week == 0 ? reservoirManagement.reservoir.initial_level
+                                     : trajectory[week - 1][scenario];
+
+            std::tie(std::ignore, trajectory[week][scenario], std::ignore)
+              = solveWeeklyProblemWithReward(week,
+                                             endWeek,
+                                             scenario,
+                                             level, // here: trajectory of the previous week
+                                                    // (first week: initial level)
+                                             levels,
+                                             costs[{scenario, week}],
+                                             V_fut());
+        }
+    }
+    return trajectory;
 }

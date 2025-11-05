@@ -16,6 +16,7 @@ private:
     bool antaresFormat_;
     bool writePbFiles_;
     std::string problemFormat_;
+    bool ignoreOptimalTrajectory_;
 
 public:
     BellmanValuesExeOptions();
@@ -65,5 +66,10 @@ public:
     std::string ProblemFormat() const
     {
         return problemFormat_;
+    }
+
+    bool IgnoreOptimalTrajectory() const
+    {
+        return ignoreOptimalTrajectory_;
     }
 };

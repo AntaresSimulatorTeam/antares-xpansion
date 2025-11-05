@@ -304,7 +304,7 @@ void Reservoir::readMaxPower(const std::filesystem::path& dir_study)
     }
 }
 
-ReservoirManagement::ReservoirManagement(const Reservoir& reservoir,
+ReservoirManagement::ReservoirManagement(Reservoir& reservoir,
                                          double penalty_bottom_rule_curve,
                                          double penalty_upper_rule_curve,
                                          double penalty_final_level,

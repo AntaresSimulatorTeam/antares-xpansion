@@ -2,6 +2,7 @@
 #include "antares-xpansion/grid_evaluator/GridCollection.h"
 
 #include <fstream>
+#include <iostream>
 
 GridCollection::GridCollection(const std::filesystem::path& filePath)
 {
@@ -44,7 +45,7 @@ GridCollection::GridCollection(const std::filesystem::path& filePath)
 
         if (gridID <= gridDefinitions.size())
         {
-            gridDefinitions.push_back({gridID, reservoirs, {}, {}});
+            gridDefinitions.push_back({gridID, {}, {}, {}});
         }
         gridDefinitions[gridID].gridElements.push_back(
           {pbName, type, cstName, areaName, min, max, step});
@@ -53,11 +54,6 @@ GridCollection::GridCollection(const std::filesystem::path& filePath)
         {
             loadReservoirManagement(filePath.parent_path(), areaName);
         }
-    }
-
-    for (auto& gridDefinition: gridDefinitions)
-    {
-        gridDefinition.generateGridValues();
     }
 }
 

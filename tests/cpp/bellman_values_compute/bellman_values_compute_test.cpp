@@ -190,10 +190,10 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
     };
 
     ProblemGenerationForWaterValueCalculation pbg(config_dirs,
-                                                  reservoir_management,
+                                                  //   reservoir_management,
                                                   logger,
                                                   solverName);
-    auto problems = pbg.updateProblems(grid);
+    auto problems = pbg.updateProblems(grid, reservoir_management);
 
     auto evaluator = GridEvaluator(logger, problems, grid, solverName, 8);
     auto res = BellmanValues(evaluator, reservoir_management).compute(11);
@@ -231,10 +231,10 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
     };
 
     ProblemGenerationForWaterValueCalculation pbg(config_dirs,
-                                                  reservoir_management,
+                                                  //   reservoir_management,
                                                   logger,
                                                   solverName);
-    auto problems = pbg.updateProblems(grid);
+    auto problems = pbg.updateProblems(grid, reservoir_management);
 
     auto evaluator = GridEvaluator(logger, problems, grid, solverName, 8);
     auto res = BellmanValues(evaluator, reservoir_management).compute(11);
@@ -273,10 +273,10 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenaltiesWithFinalLevel)
     };
 
     ProblemGenerationForWaterValueCalculation pbg(config_dirs,
-                                                  reservoir_management,
+                                                  //   reservoir_management,
                                                   logger,
                                                   solverName);
-    auto problems = pbg.updateProblems(grid);
+    auto problems = pbg.updateProblems(grid, reservoir_management);
 
     auto evaluator = GridEvaluator(logger, problems, grid, solverName, 8);
     auto res = BellmanValues(evaluator, reservoir_management).compute(11);
