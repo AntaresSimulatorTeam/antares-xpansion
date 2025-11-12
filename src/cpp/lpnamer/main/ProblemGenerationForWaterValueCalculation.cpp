@@ -174,7 +174,7 @@ ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
     // Create directory for Bellman problems
     auto outputMpsPath = xpansion_output_dir / ("mps_" + std::to_string(gridDefinition.gridID));
     std::filesystem::create_directory(outputMpsPath);
-    std::for_each(std::execution::seq,
+    std::for_each(std::execution::par,
                   problems.begin(),
                   problems.end(),
                   [&](auto& pb)
@@ -249,9 +249,6 @@ void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculatio
                 cleanReservoirConstraints(problem,
                                           gridDefinition.reservoirs.at(gridElement.area),
                                           pbID);
-
-                logger->display_message("addReservoirConstraints");
-                addReservoirConstraints(problem, reservoirManagement, pbID);
             }
         }
     }
@@ -346,139 +343,6 @@ void ProblemGenerationForWaterValueCalculation::updateReservoirWithOptimalTrajec
         problem->chg_bounds({idx},
                             {'U'},
                             {reservoir.optimal_trajectory[pbId.week - 1][pbId.year - 1]});
-    }
-}
-
-void ProblemGenerationForWaterValueCalculation::addReservoirConstraints(
-  std::shared_ptr<Problem> problem,
-  const ReservoirManagement& reservoirManagement,
-  Antares::Solver::WeeklyProblemId pbId)
-{
-    logger->display_message("addReservoirConstraints: reservoir "
-                            + reservoirManagement.reservoir.area);
-
-    // ===== 1. Add variables =====
-    std::vector<std::string> var_names;
-    std::vector<double> bdl;
-    std::vector<double> bdu;
-
-    // x_s
-    var_names.push_back("x_s");
-    bdl.push_back(0.0);
-    bdu.push_back(reservoirManagement.reservoir.capacity);
-    logger->display_message("Reservoir capacity: "
-                            + std::to_string(reservoirManagement.reservoir.capacity));
-
-    // x_s_1
-    var_names.push_back("x_s_1");
-    bdl.push_back(0.0);
-    bdu.push_back(reservoirManagement.reservoir.capacity);
-
-    // U
-    var_names.push_back("u");
-    double lbU = -reservoirManagement.reservoir.max_pumping[pbId.week - 1]
-                 * reservoirManagement.reservoir.efficiency;
-    double ubU = reservoirManagement.reservoir.max_generating[pbId.week - 1];
-    bdl.push_back(lbU);
-    bdu.push_back(ubU);
-
-    // y
-    var_names.push_back("y");
-    bdl.push_back(0.0);
-    bdu.push_back(INFINITY);
-
-    int nColsBeforeAdd = problem->get_ncols();
-    // Add all variables at once
-    {
-        logger->display_message("addcols");
-        int nbVarToAdd = var_names.size();
-        std::vector<int> mstart(nbVarToAdd, 0);
-        std::vector<double> objs(nbVarToAdd, 0);
-        std::vector<char> types(nbVarToAdd, 'C');
-
-        solver_addcols(*problem, objs, mstart, {}, {}, bdl, bdu, types, var_names);
-    }
-
-    // // Column indices
-    int col_x_s = nColsBeforeAdd;
-    int col_x_s_1 = nColsBeforeAdd + 1;
-    int col_U = nColsBeforeAdd + 2;
-    int col_y = nColsBeforeAdd + 3;
-
-    // ===== 2. Reservoir conservation constraint =====
-    // x_s_1 - x_s + U <=/== inflow
-    {
-        std::vector<int> mclind = {col_x_s_1, col_x_s, col_U};
-        std::vector<double> coeffs = {1.0, -1.0, 1.0};
-
-        double inflow = reservoirManagement.reservoir.inflow[pbId.week - 1][pbId.year - 1];
-        char qrtype = reservoirManagement.overflow ? 'L' : 'E';
-
-        std::string cname = "ReservoirConservation::area<" + reservoirManagement.reservoir.area
-                            + ">::week<" + std::to_string(pbId.week) + ">";
-
-        solver_addrows(*problem, {qrtype}, {inflow}, {}, {0, 3}, mclind, coeffs, {cname});
-    }
-
-    // ===== 3. Penalty constraints =====
-    if (pbId.week != endWeek - 1 || !reservoirManagement.final_level)
-    {
-        // y >= -penalty_bottom * (x_s_1 - bottom_rule_curve)
-        {
-            double rhs = reservoirManagement.penalty_bottom_rule_curve
-                         * reservoirManagement.reservoir.bottom_rule_curve[pbId.week - 1];
-            std::vector<int> mclind = {col_y, col_x_s_1};
-            std::vector<double> coeffs = {1.0, reservoirManagement.penalty_bottom_rule_curve};
-            char qrtype = 'G';
-            std::string cname = "PenaltyForViolatingBottomRuleCurve::area<"
-                                + reservoirManagement.reservoir.area + ">::week<"
-                                + std::to_string(pbId.week) + ">";
-
-            solver_addrows(*problem, {qrtype}, {rhs}, {}, {0, 2}, mclind, coeffs, {cname});
-        }
-
-        // y >= penalty_upper * (x_s_1 - upper_rule_curve)
-        {
-            double rhs = -reservoirManagement.penalty_upper_rule_curve
-                         * reservoirManagement.reservoir.upper_rule_curve[pbId.week - 1];
-            std::vector<int> mclind = {col_y, col_x_s_1};
-            std::vector<double> coeffs = {1.0, -reservoirManagement.penalty_upper_rule_curve};
-            char qrtype = 'G';
-            std::string cname = "PenaltyForViolatingUpperRuleCurve::area<"
-                                + reservoirManagement.reservoir.area + ">::week<"
-                                + std::to_string(pbId.week) + ">";
-
-            solver_addrows(*problem, {qrtype}, {rhs}, {}, {0, 2}, mclind, coeffs, {cname});
-        }
-    }
-    else
-    {
-        // Final level case
-        // y >= penalty_final_level * (x_s_1 - final_level)
-        {
-            double rhs = reservoirManagement.penalty_final_level * reservoirManagement.final_level;
-            std::vector<int> mclind = {col_y, col_x_s_1};
-            std::vector<double> coeffs = {1.0, reservoirManagement.penalty_final_level};
-            char qrtype = 'G';
-            std::string cname = "PenaltyForViolatingBottomRuleCurve::area<"
-                                + reservoirManagement.reservoir.area + ">::week<"
-                                + std::to_string(pbId.week) + ">";
-
-            solver_addrows(*problem, {qrtype}, {rhs}, {}, {0, 2}, mclind, coeffs, {cname});
-        }
-
-        // y >= penalty_final_level * (final_level - x_s_1)
-        {
-            double rhs = -reservoirManagement.penalty_final_level * reservoirManagement.final_level;
-            std::vector<int> mclind = {col_y, col_x_s_1};
-            std::vector<double> coeffs = {1.0, -reservoirManagement.penalty_final_level};
-            char qrtype = 'G';
-            std::string cname = "PenaltyForViolatingUpperRuleCurve::area<"
-                                + reservoirManagement.reservoir.area + ">::week<"
-                                + std::to_string(pbId.week) + ">";
-
-            solver_addrows(*problem, {qrtype}, {rhs}, {}, {0, 2}, mclind, coeffs, {cname});
-        }
     }
 }
 

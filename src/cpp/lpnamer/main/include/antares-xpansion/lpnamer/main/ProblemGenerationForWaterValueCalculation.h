@@ -77,9 +77,6 @@ private:
     void updateReservoirWithOptimalTrajectory(std::shared_ptr<Problem> problem,
                                               const Reservoir& reservoir,
                                               Antares::Solver::WeeklyProblemId pbId);
-    void addReservoirConstraints(std::shared_ptr<Problem> problem,
-                                 const ReservoirManagement& reservoirManagement,
-                                 Antares::Solver::WeeklyProblemId pbId);
 
     void setComputationMode(const WaterValueComputationMode& mode)
     {
