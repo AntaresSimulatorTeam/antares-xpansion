@@ -171,7 +171,6 @@ std::tuple<double, double, double> BellmanValues::solveWeeklyProblemWithReward(
 {
     double Vu = std::numeric_limits<double>::max(); // optimal objective value (Bellman value)
     double xf = 0.;                                 // final level of stock
-    double control = 0.;                            // optimal control
     const Reservoir reservoir = reservoirManagement.reservoir;
     auto costFn = Interpolator::linearInterpolation(
       gridEvaluator.gridDefinition.gridElements[0].rhsValues[week],
@@ -190,7 +189,6 @@ std::tuple<double, double, double> BellmanValues::solveWeeklyProblemWithReward(
             {
                 Vu = G + V_fut(value_fut) + penalty;
                 xf = value_fut;
-                control = u;
             }
         }
     }
@@ -205,7 +203,6 @@ std::tuple<double, double, double> BellmanValues::solveWeeklyProblemWithReward(
             {
                 Vu = G + V_fut(state_fut) + penalty;
                 xf = state_fut;
-                control = u;
             }
         }
     }
@@ -221,7 +218,6 @@ std::tuple<double, double, double> BellmanValues::solveWeeklyProblemWithReward(
             {
                 Vu = costFn(uFinal) + V_fut(state_fut) + penalty;
                 xf = state_fut;
-                control = uFinal;
             }
         }
     }
@@ -236,7 +232,6 @@ std::tuple<double, double, double> BellmanValues::solveWeeklyProblemWithReward(
             {
                 Vu = costFn(uMin) + V_fut(state_fut) + penalty;
                 xf = state_fut;
-                control = uMin;
             }
         }
 
@@ -249,13 +244,10 @@ std::tuple<double, double, double> BellmanValues::solveWeeklyProblemWithReward(
             {
                 Vu = costFn(uMax) + V_fut(state_fut) + penalty;
                 xf = state_fut;
-                control = uMax;
             }
         }
     }
-
-    control = std::min(-(xf - level - reservoir.inflow[week][scenario]),
-                       reservoir.max_generating[week]);
+    double control = -(xf - level - reservoir.inflow[week][scenario]); // optimal control
 
     return std::tie(Vu, xf, control);
 }
