@@ -3,6 +3,7 @@
 
 #include <execution>
 #include <iostream>
+#include <tbb/parallel_for_each.h>
 #include <utility>
 
 #include <antares/api/solver.h>
@@ -130,38 +131,44 @@ ProblemGenerationForWaterValueCalculation::CleanProblemsForBellmanCalculations(
     // Create directory for Bellman problems
     auto outputMpsPath = xpansion_output_dir / ("mps_" + std::to_string(gridDefinition.gridID));
     std::filesystem::create_directory(outputMpsPath);
-    std::for_each(std::execution::par,
-                  problems.begin(),
-                  problems.end(),
-                  [&](auto& pb)
-                  {
-                      auto pbId = pb.first;
-                      if (startWeek <= pbId.week && pbId.week <= endWeek)
-                      {
-                          // needed if gridCollection contains multiple gridDefinitions
-                          //   auto problem = std::make_shared<Problem>(pb.second->clone());
-                          std::shared_ptr<Problem> problem(pb.second->clone());
-                          std::string pbName = "problem-" + std::to_string(pbId.year) + "-"
-                                               + std::to_string(pbId.week) + "--optim-nb-1";
-                          cleanProblemForBellmanCalculations(problem, pbName, gridDefinition, pbId);
-                          modifiedProblems[pbId] = problem;
+    tbb::parallel_for_each(
+      problems.begin(),
+      problems.end(),
+      [&](auto& pb)
+      {
+          auto pbId = pb.first;
+          if (startWeek <= pbId.week && pbId.week <= endWeek)
+          {
+              // needed if gridCollection contains multiple gridDefinitions
+              auto problem = pb.second;
+              //   std::shared_ptr<Problem> problem(pb.second->clone());
+              auto startProblemGeneration = std::chrono::system_clock::now();
+              std::string pbName = "problem-" + std::to_string(pbId.year) + "-"
+                                   + std::to_string(pbId.week) + "--optim-nb-1";
+              logger->display_message("Generating " + pbName + " (starting time: "
+                                      + ::formatTime(startProblemGeneration) + ")");
+              cleanProblemForBellmanCalculations(problem, pbName, gridDefinition, pbId);
+              startProblemGeneration = std::chrono::system_clock::now();
+              logger->display_message(
+                pbName + " Generated (end time: " + ::formatTime(startProblemGeneration) + ")");
+              modifiedProblems[pbId] = problem;
 
-                          if (writePbFiles)
-                          {
-                              switch (problemFormat)
-                              {
-                              case ProblemsFormat::MPS_FILE:
-                                  problem->write_prob_mps(outputMpsPath / (pbName + ".mps"));
-                                  break;
-                              case ProblemsFormat::OPTIMIZED:
-                                  problem->save_prob(outputMpsPath / (pbName + ".svf"));
-                                  break;
-                                  // potential errors are handled by
-                                  // problemsFormatFromString in constructor
-                              }
-                          }
-                      }
-                  });
+              if (writePbFiles)
+              {
+                  switch (problemFormat)
+                  {
+                  case ProblemsFormat::MPS_FILE:
+                      problem->write_prob_mps(outputMpsPath / (pbName + ".mps"));
+                      break;
+                  case ProblemsFormat::OPTIMIZED:
+                      problem->save_prob(outputMpsPath / (pbName + ".svf"));
+                      break;
+                      // potential errors are handled by
+                      // problemsFormatFromString in constructor
+                  }
+              }
+          }
+      });
 
     return modifiedProblems;
 }
