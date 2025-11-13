@@ -140,17 +140,12 @@ ProblemGenerationForWaterValueCalculation::CleanProblemsForBellmanCalculations(
           if (startWeek <= pbId.week && pbId.week <= endWeek)
           {
               // needed if gridCollection contains multiple gridDefinitions
-              auto problem = pb.second;
-              //   std::shared_ptr<Problem> problem(pb.second->clone());
-              auto startProblemGeneration = std::chrono::system_clock::now();
+              std::shared_ptr<Problem> problem(pb.second->clone());
               std::string pbName = "problem-" + std::to_string(pbId.year) + "-"
                                    + std::to_string(pbId.week) + "--optim-nb-1";
-              logger->display_message("Generating " + pbName + " (starting time: "
-                                      + ::formatTime(startProblemGeneration) + ")");
+              logger->display_message("Generating problem: " + pbName);
               cleanProblemForBellmanCalculations(problem, pbName, gridDefinition, pbId);
-              startProblemGeneration = std::chrono::system_clock::now();
-              logger->display_message(
-                pbName + " Generated (end time: " + ::formatTime(startProblemGeneration) + ")");
+              logger->display_message("Problem: " + pbName + " generated");
               modifiedProblems[pbId] = problem;
 
               if (writePbFiles)
