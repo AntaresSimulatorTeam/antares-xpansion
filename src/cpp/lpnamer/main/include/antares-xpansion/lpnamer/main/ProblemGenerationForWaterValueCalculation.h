@@ -23,6 +23,7 @@
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 #include "antares-xpansion/multisolver_interface/SolverConfig.h"
 
+/// @brief Class to generate and modify problems in memory
 class ProblemGenerationForWaterValueCalculation
 {
 public:
@@ -53,12 +54,15 @@ private:
     void addReservoirConstraints(std::shared_ptr<Problem> problem,
                                  Antares::Solver::WeeklyProblemId pbId);
 
-    ConfigurationManager::ConfigDirectories directories;
-    std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> problems;
-    const ReservoirManagement& reservoirManagement;
-    unsigned int startWeek;
-    unsigned int endWeek;
-    bool writePbFiles;
-    ProblemsFormat problemFormat;
-    Logger logger;
+    ConfigurationManager::ConfigDirectories
+      directories; /// Directories, used for the original problems generation
+    std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
+      problems; /// Problems before any modification
+    const ReservoirManagement&
+      reservoirManagement;        /// Reservoir management used for the problems modifications
+    unsigned int startWeek;       /// Start week of the problems to take into account
+    unsigned int endWeek;         /// End week of the problems to take into account
+    bool writePbFiles;            /// Flag to writePbFiles to memory
+    ProblemsFormat problemFormat; /// Problem format to be saved
+    Logger logger;                /// Logger used
 };

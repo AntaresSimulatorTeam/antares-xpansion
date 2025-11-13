@@ -14,11 +14,18 @@ BellmanValues::BellmanValues(GridEvaluator& gridEvaluator,
 {
 }
 
-const std::vector<double>& BellmanValues::getLevels()
+/// @brief Get the levels of the reservoir.
+/// @return The levels of the reservoir.
+const std::vector<double>& BellmanValues::getLevels() const
 {
     return levels;
 }
 
+/// @brief Generate a linearly spaced vector of doubles.
+/// @param start The starting value of the sequence.
+/// @param end The ending value of the sequence.
+/// @param num The number of values to generate.
+/// @return A vector of doubles with linearly spaced values.
 auto linspace(double start, double end, int num)
 {
     if (num <= 0)
@@ -42,6 +49,9 @@ template<typename T>
 concept WeeklyProblemMap = requires { typename T::key_type; }
                            && std::same_as<typename T::key_type, Antares::Solver::WeeklyProblemId>;
 
+/// @brief Get the years of the weekly problems
+/// @param container The container of weekly problems
+/// @return The set of years
 template<WeeklyProblemMap MapType>
 std::set<unsigned int> getYears(const MapType& container)
 {
@@ -51,6 +61,9 @@ std::set<unsigned int> getYears(const MapType& container)
     return std::set<unsigned int>(years_view.begin(), years_view.end());
 }
 
+/// @brief Get the weeks of the weekly problems
+/// @param container The container of weekly problems
+/// @return The set of weeks
 template<WeeklyProblemMap MapType>
 std::set<unsigned int> getWeeks(const MapType& container)
 {
@@ -95,7 +108,7 @@ std::vector<std::vector<double>> BellmanValues::compute(int nbLevels)
         }
     }
 
-    auto gridDef = gridEvaluator.gridDefinition;
+    const auto& gridDef = gridEvaluator.gridDefinition;
     for (unsigned int week = endWeek + 1; week-- > startWeek;)
     {
         for (unsigned int scenario: scenarios)
@@ -146,9 +159,9 @@ std::vector<std::vector<double>> BellmanValues::compute(int nbLevels)
 }
 
 /// @brief Solve the weekly problem
-/// @param week
+/// @param week the current week
 /// @param endWeek the last week of the problem
-/// @param scenario
+/// @param scenario the current scenario
 /// @param level the level of the reservoir
 /// @param X the discretization of the reservoir level
 /// @param costs the costs for each scenario and week
@@ -163,7 +176,7 @@ double BellmanValues::solveWeeklyProblemWithReward(int week,
                                                    const std::function<double(double)>& V_fut)
 {
     double Vu = std::numeric_limits<double>::max();
-    const Reservoir reservoir = reservoirManagement.reservoir;
+    const Reservoir& reservoir = reservoirManagement.reservoir;
     auto costFn = Interpolator::linearInterpolation(
       gridEvaluator.gridDefinition.gridElements[0].rhsValues[week],
       costs);

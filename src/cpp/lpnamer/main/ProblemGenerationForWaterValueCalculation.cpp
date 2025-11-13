@@ -29,10 +29,7 @@ static void CreateDirectories(const std::filesystem::path& output_path)
     }
 }
 
-/// @brief Constructor
-/// @param options The options for the problem generation
-/// @param problems The problems to be modified
-/// @param gridDefinition The grid definition
+/// @brief Launch the simulation and save the problems satisfying startWeek <= week <= endweek
 ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalculation(
   ConfigurationManager::ConfigDirectories directories,
   const ReservoirManagement& reservoirManagement,
@@ -95,6 +92,7 @@ ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalcula
 }
 
 /// @brief Update the problems for the water value calculation
+/// @param gridDefinition
 /// @return The modified problems
 std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
 ProblemGenerationForWaterValueCalculation::updateProblems(const GridDefinition& gridDefinition)
@@ -118,6 +116,7 @@ ProblemGenerationForWaterValueCalculation::updateProblems(const GridDefinition& 
 /// @brief Clean the problems for the Bellman Values calculations
 /// @param xpansion_output_dir The output directory
 /// @param log_file_path The path to the log file
+/// @param gridDefinition The gridDefinition
 /// @return The modified problems
 std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
 ProblemGenerationForWaterValueCalculation::CleanProblemsForBellmanCalculations(
@@ -169,8 +168,9 @@ ProblemGenerationForWaterValueCalculation::CleanProblemsForBellmanCalculations(
 
 /// @brief Clean the problem for the Bellman Values calculations
 /// @param problem The problem to clean
+/// @param pnName The problem name
 /// @param gridDefinition The grid definition
-/// @param week The week to clean
+/// @param pbID The problem ID (year/week)
 void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculations(
   std::shared_ptr<Problem> problem,
   std::string& pbName,
@@ -211,6 +211,9 @@ void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculatio
     }
 }
 
+/// @brief Add hydro relared constraints for problem
+/// @param problem The problem to modify
+/// @param pbId The problem ID
 void ProblemGenerationForWaterValueCalculation::addReservoirConstraints(
   std::shared_ptr<Problem> problem,
   Antares::Solver::WeeklyProblemId pbId)

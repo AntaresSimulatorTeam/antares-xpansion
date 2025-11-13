@@ -3,12 +3,27 @@
 
 #include <fstream>
 
+/// @brief Checks if a gridElement is valid
+/// - 0.0 <= min <= 1.0 AND 0.0 <= max <= 1.0 AND min <= max
+/// - min == max (only one point) OR 0.0 < step <= 1.0
+/// @param min min relative value of the gridElement
+/// @param max max relative value of the gridElement
+/// @param step step used to go from min to max
+/// @return true if the gridElement is valid, false otherwise
 bool validateGridElement(double min, double max, double step)
 {
-    return (min >= 0.0 && min <= 1.0) && (max >= 0.0 && max <= 1.0) && (max >= min)
+    return (min >= 0.0 && min <= 1.0) && (max >= 0.0 && max <= 1.0) && (min <= max)
            && (min == max || (step > 0.0 && step <= 1.0));
 }
 
+/// @brief Add a gridElement for the current gridCollection
+/// @param pbName ex : "problem-1-1--optim-nb-1", "all"
+/// @param type "constraint" : this field is unused at the moment
+/// @param cstName name of the constraint
+/// @param areaName name of the area
+/// @param min minimum relative value (min ∈ [0,1])
+/// @param max maximum relative value (max ∈ [0,1])
+/// @param step step used to go from min to max
 void GridDefinition::addGridElement(const std::string& pbName,
                                     const std::string& type,
                                     const std::string& cstName,
@@ -26,6 +41,8 @@ void GridDefinition::addGridElement(const std::string& pbName,
     gridElements.push_back({pbName, type, cstName, areaName, min, max, step});
 }
 
+/// @brief Build a GridCollection from a file
+/// @param filePath
 GridCollection::GridCollection(const std::filesystem::path& filePath)
 {
     // Read the grid.csv file
@@ -83,12 +100,16 @@ GridCollection::GridCollection(const std::filesystem::path& filePath)
     }
 }
 
+/// @brief Load a ReservoirManagement from a study path and an area
+/// @param studyPath path of the input file
+/// @param area name of the area
 void GridCollection::loadReservoirManagement(const std::filesystem::path& studyPath,
                                              const std::string& area)
 {
     reservoirs.emplace(area, Reservoir(studyPath, area));
 }
 
+/// @brief Generate Grid values for all gridElements
 void GridDefinition::generateGridValues()
 {
     for (auto& gridElement: gridElements)
@@ -133,17 +154,4 @@ void GridDefinition::generateGridValues()
                                                                 gridElement.rhsValues[week - 1]);
         }
     }
-}
-
-bool GridDefinition::isSubproblemUsed(const std::string& subPbName) const
-{
-    for (const auto& gridElement: gridElements)
-    {
-        if (gridElement.problemName == subPbName || gridElement.problemName == "all")
-        {
-            return true;
-        }
-    }
-
-    return false;
 }

@@ -2,28 +2,34 @@
 #include "antares-xpansion/grid_evaluator/ReservoirManagement.h"
 
 #include <algorithm>
-#include <cassert>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
 #include <sstream>
 #include <string>
-#include <unordered_map>
 #include <vector>
 
 #include "antares-xpansion/grid_evaluator/Interpolator.h"
 
+/// @brief Load a reservoir from path of the study and the name of the area
+/// @param path_to_input path of the study
+/// @param areaName name of the area
 Reservoir::Reservoir(const std::filesystem::path& path_to_input, const std::string& areaName):
     area(areaName),
     capacity(0.0),
     efficiency(0.0)
 {
     loadHydroIni(path_to_input / "input/hydro/hydro.ini");
-    readRuleCurves(path_to_input);
-    readInflow(path_to_input);
-    readMaxPower(path_to_input);
+    loadRuleCurves(path_to_input);
+    loadInflow(path_to_input);
+    loadMaxPower(path_to_input);
 }
 
+/// @brief Parse a double from a string and return it, if the field is invalid it will throw an
+/// exception
+/// @param str string to parse
+/// @param field_name name of the field to parse (used only for debugging purposes)
+/// @return the parsed double value
 double parse_double(const std::string& str, const std::string& field_name)
 {
     try
@@ -37,6 +43,11 @@ double parse_double(const std::string& str, const std::string& field_name)
     }
 }
 
+/// @brief Parse a bool from a string and return it, if the field is invalid it will throw an
+/// exception
+/// @param str string to parse
+/// @param field_name name of the field
+/// @return the parsed bool value
 bool parse_bool(std::string str, const std::string& field_name)
 try
 {
@@ -60,12 +71,14 @@ catch (...)
                              + "' (expected true or false)");
 }
 
+/// @brief Load Hydro from hydro.ini file path
+/// @param ini_path hydro.ini file path to load
 void Reservoir::loadHydroIni(const std::filesystem::path& ini_path)
 {
     std::ifstream file(ini_path);
     if (!file)
     {
-        throw std::runtime_error("Could not open hydro.ini: " + ini_path.string());
+        throw std::runtime_error("Could not open : " + ini_path.string() + " while loading Hydro");
     }
 
     std::string line, current_section;
@@ -149,13 +162,15 @@ void Reservoir::loadHydroIni(const std::filesystem::path& ini_path)
     }
 }
 
-void Reservoir::readRuleCurves(const std::filesystem::path& dir_study)
+/// @brief Load rule curves from study path
+/// @param dir_study study path
+void Reservoir::loadRuleCurves(const std::filesystem::path& dir_study)
 {
     auto path = dir_study / ("input/hydro/common/capacity/reservoir_" + area + ".txt");
     std::ifstream file(path);
     if (!file)
     {
-        throw std::runtime_error("Could not open rule curve file");
+        throw std::runtime_error("Could not open rule curve file loacated at : " + path.string());
     }
 
     std::vector<std::vector<double>> rule_curves;
@@ -195,7 +210,9 @@ void Reservoir::readRuleCurves(const std::filesystem::path& dir_study)
     }
 }
 
-void Reservoir::readInflow(const std::filesystem::path& dir_study)
+/// @brief Load inflow from study path
+/// @param dir_study study path
+void Reservoir::loadInflow(const std::filesystem::path& dir_study)
 {
     auto path = dir_study / ("input/hydro/series/" + area + "/mod.txt");
     std::ifstream file(path);
@@ -244,7 +261,9 @@ void Reservoir::readInflow(const std::filesystem::path& dir_study)
     }
 }
 
-void Reservoir::readMaxPower(const std::filesystem::path& dir_study)
+/// @brief Load max power from study path
+/// @param dir_study study path
+void Reservoir::loadMaxPower(const std::filesystem::path& dir_study)
 {
     auto path = dir_study / ("input/hydro/common/capacity/maxpower_" + area + ".txt");
     std::ifstream file(path);
@@ -321,6 +340,10 @@ ReservoirManagement::ReservoirManagement(const Reservoir& reservoir,
 {
 }
 
+/// @brief Get the penalty function, that can be evaluated by giving a level
+/// @param week week to build the function for
+/// @param len_week number of weeks
+/// @return Return a function that takes a level as argument and return a penalty
 std::function<double(double)> ReservoirManagement::get_penalty(int week, int len_week) const
 {
     if (week == len_week && force_final_level)

@@ -56,8 +56,8 @@ void PenaltiesConfigReader::Penalty::updateValue(const YAML::Node& config)
     }
     catch (const std::exception& e)
     {
-        throw std::runtime_error("Error when parsing YAML penalties file: "
-                                 + std::string(e.what()));
+        std::throw_with_nested(
+          std::runtime_error("Error parsing YAML penalties file for key: " + key));
     }
 }
 
