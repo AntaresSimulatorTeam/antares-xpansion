@@ -1,16 +1,14 @@
-from pathlib import Path
-from dataclasses import dataclass
-
-import yaml
+import os
 import subprocess
 import sys
-import os
+from dataclasses import dataclass
+from pathlib import Path
+from typing import List, Dict
 
+import yaml
+from antares_xpansion.config_loader import XpansionSettingsReader
 from antares_xpansion.trajectory.user_input_keys import TrajectoryInputKeys as InKeys
 from antares_xpansion.xpansionConfig import XpansionConfigConstants
-from antares_xpansion.config_loader import XpansionSettingsReader
-
-from typing import List, Dict
 
 
 @dataclass

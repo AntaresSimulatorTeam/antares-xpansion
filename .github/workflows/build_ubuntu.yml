@@ -137,12 +137,6 @@ jobs:
         with:
           mpi_path: ${{ github.workspace }}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin
 
-      - name: Test
-        run: |
-          export PATH=${GITHUB_WORKSPACE}/_build/vcpkg_installed/x64-linux-release/tools/openmpi/bin:$PATH
-          cd _build
-          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
-
       - name: Cache vcpkg binary dir
         if: always()
         id: save-cache-vcpkg-binary

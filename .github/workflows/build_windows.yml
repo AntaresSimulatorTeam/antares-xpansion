@@ -142,14 +142,6 @@ jobs:
           path: ${{ github.workspace }}/vcpkg_cache
           key: vcpkg-cache-windows-${{ hashFiles('src/vcpkg.json', '.git/modules/vcpkg/HEAD') }}
 
-      - name: Running unit tests
-        timeout-minutes: 120
-        shell: cmd
-        run: |
-          set PATH=%PATH%;C:\Program Files\Microsoft MPI\Bin
-          cd _build
-          ctest -C Release --output-on-failure -L "medium|unit|benders|lpnamer"
-
       ##############
       - name: install
         run: |

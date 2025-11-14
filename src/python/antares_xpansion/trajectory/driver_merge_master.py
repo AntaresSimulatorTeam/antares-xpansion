@@ -1,14 +1,13 @@
+import json
+import os
+import subprocess
+import sys
 from dataclasses import dataclass
 from pathlib import Path
+from typing import List
 
 from antares_xpansion.optimisation_keys import OptimisationKeys
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
-from typing import List
-
-import json
-import subprocess
-import sys
-import os
 
 
 @dataclass

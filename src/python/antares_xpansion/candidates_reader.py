@@ -74,7 +74,7 @@ class CandidatesReader:
         return self.config.getfloat(index, "already-installed-capacity", fallback=0.0)
 
     def get_candidate_already_install_direct_link_profile(
-        self, study_path: Path, candidate: str
+            self, study_path: Path, candidate: str
     ):
         index = self._get_candidate_index(candidate)
         link_profile_path = ""
@@ -89,7 +89,7 @@ class CandidatesReader:
         return link_profile_path
 
     def get_candidate_already_install_indirect_link_profile(
-        self, study_path: Path, candidate: str
+            self, study_path: Path, candidate: str
     ):
         index = self._get_candidate_index(candidate)
         link_profile_path = ""
@@ -134,16 +134,16 @@ class CandidatesReader:
         return study_path / "input" / "links" / area1 / str(area2 + ".txt")
 
     def get_candidate_antares_direct_link_file(
-        self, study_path: Path, candidate: str
+            self, study_path: Path, candidate: str
     ) -> Path:
         area1, area2 = self.get_candidate_areas(candidate)
         return (
-            study_path
-            / "input"
-            / "links"
-            / area1
-            / "capacities"
-            / str(area2 + "_direct.txt")
+                study_path
+                / "input"
+                / "links"
+                / area1
+                / "capacities"
+                / str(area2 + "_direct.txt")
         )
 
     def get_candidate_antares_direct_link_array(self, study_path: Path, candidate: str):
@@ -152,27 +152,27 @@ class CandidatesReader:
         return self._read_or_create_link_profile_array_simple(link_file)
 
     def get_candidate_antares_indirect_link_array(
-        self, study_path: Path, candidate: str
+            self, study_path: Path, candidate: str
     ):
         link_file = self.get_candidate_antares_indirect_link_file(
             study_path, candidate)
         return self._read_or_create_link_profile_array_simple(link_file)
 
     def get_candidate_antares_indirect_link_file(
-        self, study_path: Path, candidate: str
+            self, study_path: Path, candidate: str
     ) -> Path:
         area1, area2 = self.get_candidate_areas(candidate)
         return (
-            study_path
-            / "input"
-            / "links"
-            / area1
-            / "capacities"
-            / str(area2 + "_indirect.txt")
+                study_path
+                / "input"
+                / "links"
+                / area1
+                / "capacities"
+                / str(area2 + "_indirect.txt")
         )
 
     def get_candidate_link_profile(
-        self, study_path: Path, candidate: str
+            self, study_path: Path, candidate: str
     ) -> Tuple[str, str]:
         index = self._get_candidate_index(candidate)
         direct_link_profile_path = ""
@@ -207,7 +207,7 @@ class CandidatesReader:
         if len(nan_indices) > 0:
             msg = f"Value(s) Error detected in file {file} at (row, column):\n"
             for index in nan_indices:
-                msg = msg + f"({index[0]+1}, {index[1]+1})\n"
+                msg = msg + f"({index[0] + 1}, {index[1] + 1})\n"
             raise ProfilesValueError(msg)
 
     @staticmethod
@@ -239,13 +239,13 @@ class CandidatesReader:
             [direct_link_profile, indirect_link_profile]
         ).transpose()
         if not self.get_candidate_direct_link_profile(
-            study_path, candidate
+                study_path, candidate
         ) or not self.get_candidate_indirect_link_profile(study_path, candidate):
             return False, link_profile_array
         return True, link_profile_array
 
     def get_candidate_already_install_link_profile(
-        self, study_path: Path, candidate: str
+            self, study_path: Path, candidate: str
     ):
         index = self._get_candidate_index(candidate)
         link_profile_path = ""
@@ -260,14 +260,14 @@ class CandidatesReader:
         return link_profile_path
 
     def get_candidate_already_installed_link_profile_array(
-        self, study_path: Path, candidate: str
+            self, study_path: Path, candidate: str
     ):
         return self.get_candidate_already_installed_link_profile_array_new(
             study_path, candidate
         )
 
     def get_candidate_already_installed_link_profile_array_new(
-        self, study_path: Path, candidate: str
+            self, study_path: Path, candidate: str
     ):
         direct_link_profile = (
             self.get_candidate_already_installed_direct_link_profile_array(
@@ -290,7 +290,7 @@ class CandidatesReader:
         return link_profile_array
 
     def get_candidate_already_installed_direct_link_profile_array(
-        self, study_path: Path, candidate: str
+            self, study_path: Path, candidate: str
     ):
         link_profile = self.get_candidate_already_install_direct_link_profile(
             study_path, candidate
@@ -298,7 +298,7 @@ class CandidatesReader:
         return self._read_or_create_link_profile_array_simple(link_profile)
 
     def get_candidate_already_installed_indirect_link_profile_array(
-        self, study_path: Path, candidate: str
+            self, study_path: Path, candidate: str
     ):
         link_profile = self.get_candidate_already_install_indirect_link_profile(
             study_path, candidate
@@ -311,7 +311,7 @@ class CandidatesReader:
         return self._read_or_create_link_profile_array_simple(link_profile)
 
     def get_candidate_indirect_link_profile_array(
-        self, study_path: Path, candidate: str
+            self, study_path: Path, candidate: str
     ):
         link_profile = self.get_candidate_indirect_link_profile(
             study_path, candidate)
@@ -331,7 +331,7 @@ class CandidatesReader:
         else:
             suffix = "_indirect."
         updated_link_to = (
-            link_to_name.split(".")[0] + suffix + link_to_name.split(".")[1]
+                link_to_name.split(".")[0] + suffix + link_to_name.split(".")[1]
         )
         new_path = Path(*link_path_until_from) / "capacities" / updated_link_to
         return new_path
