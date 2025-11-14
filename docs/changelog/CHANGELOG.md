@@ -1,6 +1,17 @@
 Antares-Xpansion changelog
 =================
 
+v1.6.1 (11/2025)
+------------------------------------------------
+
+### Bug fixes
+
+* Disable presolve by default when using Xpress to avoid numerical issues in some case (#1104)
+    * It is still possible to enable it via _--presolve_ command line option
+* Disable study update at the end of the optimization.
+    * Study update has been found to take a several hours on some studies
+    * It is still possible to invoke it with step _study_update_
+
 v1.6.0 (10/2025)
 ------------------------------------------------
 
