@@ -1,7 +1,5 @@
 #include "antares-xpansion/lpnamer/main/MultipleProblemGeneration.h"
 
-#include <malloc.h>
-
 namespace po = boost::program_options;
 
 MultipleProblemGenerationExeOptions::MultipleProblemGenerationExeOptions()
@@ -145,9 +143,6 @@ void MultipleProblemGeneration::run_generation()
 {
     for (const auto& [node, input_path]: node_to_input_path_)
     {
-#ifndef _WIN32
-        malloc_trim(0);
-#endif
         auto individual_options = ProblemGenerationExeOptions(options_);
         individual_options.setRelevantPath(input_path);
         // Weights file
