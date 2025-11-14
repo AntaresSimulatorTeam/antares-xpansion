@@ -30,9 +30,9 @@ std::filesystem::path FileNameForStructureFile(const std::string& problemName,
 StructureGeneration::StructureGeneration(std::filesystem::path output_path,
                                          std::string solver_name,
                                          ProblemsFormat format):
-    output_path_(std::move(output_path)),
     solver_name_(std::move(solver_name)),
-    format_(format)
+    format_(format),
+    output_path_(std::move(output_path))
 {
 }
 
@@ -61,11 +61,15 @@ void StructureGeneration::write_structure_file(const std::vector<Candidate>& can
     std::ofstream coupling_file(output_path_ / "lp" / STRUCTURE_FILE);
     for (const auto& [mps_file_path, candidates_name_and_colId]: structure)
     {
+        auto candidate_name_max_length_view = candidates_name_and_colId | std::views::keys
+                                              | std::views::transform([](const auto& name)
+                                                                      { return name.length(); });
+        auto max_length = *std::ranges::max_element(candidate_name_max_length_view) + 1;
         for (const auto& [candidate_name, colId]: candidates_name_and_colId)
         {
             coupling_file << std::setw(
               50) << FileNameForStructureFile(mps_file_path, solver_name_, format_).string();
-            coupling_file << std::setw(50) << candidate_name;
+            coupling_file << std::setw(max_length) << candidate_name;
             coupling_file << std::setw(10) << colId;
             coupling_file << std::endl;
         }
