@@ -4,18 +4,15 @@
 
 Usage of the launcher is :
 
-```antares-xpansion-launcher --trajectory --input-root <path/to/input/root> --input-file <path/to/user/input/file> --step <step> ...```
+```antares-xpansion-launcher --trajectory --step <step> [--input-root <path/to/input/root>] [--input-file <path/to/user/input/file>] ...```
 
 ## Mandatory arguments
 
 - ```--trajectory``` : Tells the program to run in trajectory context.
-- ```--input-root``` : Path to the folder that contains each node's corresponding antaresXpansion study.
-
-- ```--input-file``` : Path to the [user input file](user-input.md#user-input-file).
 
 - ```--step```: Step of the workflow to execute, can be:
     - ```full``` : Executes the full workflow, step by step (in the order described below).
-    - ```input_translation``` : Parses and translates the ```user_input.yaml``` file, and writes the
+    - ```input_translation``` : Parses and translates the ```input-trajectory.yaml``` file, and writes the
       ```master_merger_info.json``` file. See : [User input parsing and translation](./user-input.md) for more details.
     - ```problem_generation``` : Runs the problem generation step on the studies in the tree, and writes the
       ```nodal_lp_info.json``` file. See : [Multiple problem generation](./multiple-problem-generation.md) for more
@@ -27,6 +24,18 @@ Usage of the launcher is :
       See : [Generating a merged weights file](./merge-weights.md) for more details.
 
 ## Optional arguments
+
+### Input location
+
+- ```--input-root``` : Path to the folder that contains each node's corresponding antaresXpansion study.
+  If not specified, defaults to the current directory.
+
+- ```--input-file``` : Path to the [user input file](user-input.md#user-input-file).
+  If not specified, the program will look for a file named ```input-trajectory.yaml``` in the ```--input-root```
+  directory.
+  If this file is not found, an error will be raised.
+
+### Execution options
 
 - ```--memory``` : Tells the program wether to run the problem generation in memory mode. Only useful when ```--step```
   is either ```problem_generation``` or ```full```.  
