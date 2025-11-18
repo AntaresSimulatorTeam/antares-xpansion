@@ -57,9 +57,9 @@ ProblemGenerationForWaterValueCalculation::getComputationModeFromGrid(const Grid
     }
     if (ignoreOptimalTrajectory)
     {
-        return WaterValueComputationMode::SEQUENTIAL;
+        return WaterValueComputationMode::SEQUENTIAL_IGNORE_TRAJECTORY;
     }
-    return WaterValueComputationMode::MULTISTOCK;
+    return WaterValueComputationMode::SEQUENTIAL_UPDATE_TRAJECTORY;
 }
 
 /// @brief Constructor
@@ -174,7 +174,7 @@ ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
     // Create directory for Bellman problems
     auto outputMpsPath = xpansion_output_dir / ("mps_" + std::to_string(gridDefinition.gridID));
     std::filesystem::create_directory(outputMpsPath);
-    std::for_each(std::execution::par,
+    std::for_each(std::execution::seq,
                   problems.begin(),
                   problems.end(),
                   [&](auto& pb)
@@ -208,6 +208,7 @@ ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
                               switch (problemFormat)
                               {
                               case ProblemsFormat::MPS_FILE:
+                                  pb.second->write_prob_mps(outputMpsPath / (pbName + "_ORI.mps"));
                                   problem->write_prob_mps(outputMpsPath / (pbName + ".mps"));
                                   break;
                               case ProblemsFormat::OPTIMIZED:
@@ -264,12 +265,14 @@ void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculatio
                 if (gridDefinition.gridElements[0].problemName == "all"
                     || gridDefinition.gridElements[0].problemName == pbName)
                 {
-                    // if SEQUENTIAL: no update of the optimal trajectory
-                    if (computationMode == WaterValueComputationMode::MULTISTOCK)
+                    // if SEQUENTIAL_IGNORE_TRAJECTORY: no update of the optimal trajectory
+                    if (computationMode == WaterValueComputationMode::SEQUENTIAL_UPDATE_TRAJECTORY)
                     {
                         logger->display_message(
                           "Other gridElement in a multistock context updated with its trajectory: "
                           + reservoir.second.area);
+                        // TODO: bug here, problems are not updated correctly, the incorrect lines
+                        // are being modified
                         cleanReservoirConstraints(problem, reservoir.second, pbID);
                         updateReservoirWithOptimalTrajectory(problem, reservoir.second, pbID);
                     }
@@ -291,10 +294,8 @@ void ProblemGenerationForWaterValueCalculation::cleanReservoirConstraints(
 {
     for (int hour = (pbId.week - 1) * 168; hour < pbId.week * 168; ++hour)
     {
-        // logger->display_message("hour: " + std::to_string(hour));
-
         // Delete variables HydroLevel and Overflow
-        // logger->display_message("Delete variables HydroLevel and Overflow");
+        logger->display_message("Deleting variables HydroLevel and Overflow");
         int idx = problem->get_col_index("HydroLevel::area<" + reservoir.area + ">::hour<"
                                          + std::to_string(hour) + ">");
         problem->del_cols(idx, idx);
@@ -304,21 +305,23 @@ void ProblemGenerationForWaterValueCalculation::cleanReservoirConstraints(
         problem->del_cols(idx, idx);
 
         // Delete constraints AreaHydroLevel
-        // logger->display_message("Delete constraints AreaHydroLevel");
+        logger->display_message("Deleting constraints AreaHydroLevel");
         idx = problem->get_row_index("AreaHydroLevel::area<" + reservoir.area + ">::hour<"
                                      + std::to_string(hour) + ">");
         problem->del_rows(idx, idx);
 
         // Reset HydroProd as it might have been modified by heuristic
-        // logger->display_message("Reset HydroProd as it might have been modified by heuristic");
+        logger->display_message(
+          "Resetting HydroProd as it might have been modified by heuristic: ");
+        logger->display_message("HydProd::area<" + reservoir.area + ">::hour<"
+                                + std::to_string(hour) + ">");
+        logger->display_message(
+          std::to_string(reservoir.max_generating[pbId.week - 1] / Reservoir::hours_in_week));
         idx = problem->get_col_index("HydProd::area<" + reservoir.area + ">::hour<"
                                      + std::to_string(hour) + ">");
-        problem->chg_bounds(
-          {idx},
-          {'U'},
-          //   {gridDefinition.reservoirs.at(gridElement.area).max_generating[pbID.week - 1]
-          //    / Reservoir::hours_in_week});
-          {reservoir.max_generating[pbId.week - 1] / Reservoir::hours_in_week});
+        problem->chg_bounds({idx},
+                            {'U'},
+                            {reservoir.max_generating[pbId.week - 1] / Reservoir::hours_in_week});
     }
 }
 
@@ -327,23 +330,19 @@ void ProblemGenerationForWaterValueCalculation::updateReservoirWithOptimalTrajec
   const Reservoir& reservoir,
   Antares::Solver::WeeklyProblemId pbId)
 {
-    for (int hour = (pbId.week - 1) * 168; hour < pbId.week * 168; ++hour)
-    {
-        // Updating constraint with optimal trajectory
-        // logger->display_message("Updating constraint with optimal trajectory: hour "
-        //                         + std::to_string(hour) + " and week " +
-        //                         std::to_string(pbId.week));
-        int idx = problem->get_row_index("HydroPower::area<" + reservoir.area + ">::week<"
-                                         + std::to_string(pbId.week - 1) + ">");
-        // logger->display_message("optimal trajectory size: "
-        //                         + std::to_string(reservoir.optimal_trajectory.size()));
-        // logger->display_message(
-        //   "optimal trajectory value: "
-        //   + std::to_string(reservoir.optimal_trajectory[pbId.week - 1][pbId.year - 1]));
-        problem->chg_bounds({idx},
-                            {'U'},
-                            {reservoir.optimal_trajectory[pbId.week - 1][pbId.year - 1]});
-    }
+    // Updating constraint with optimal trajectory
+    logger->display_message("Updating constraint with optimal trajectory: week "
+                            + std::to_string(pbId.week));
+
+    logger->display_message("Optimal trajectory size: "
+                            + std::to_string(reservoir.optimal_trajectory.size()));
+    double optimalTrajectoryValue = -reservoir.optimal_trajectory[pbId.week][pbId.year - 1]
+                                    + reservoir.optimal_trajectory[pbId.week - 1][pbId.year - 1]
+                                    + reservoir.inflow[pbId.week][pbId.year - 1];
+    logger->display_message("Optimal trajectory value: " + std::to_string(optimalTrajectoryValue));
+    problem->fix_rhs_to("HydroPower::area<" + reservoir.area + ">::week<"
+                          + std::to_string(pbId.week - 1) + ">",
+                        optimalTrajectoryValue);
 }
 
 void ProblemGenerationForWaterValueCalculation::initializeOptimalTrajectories(
@@ -353,6 +352,10 @@ void ProblemGenerationForWaterValueCalculation::initializeOptimalTrajectories(
     {
         reservoir.second.optimal_trajectory = std::vector<std::vector<double>>(
           reservoir.second.inflow.begin() + startWeek - 1,
-          reservoir.second.inflow.begin() + endWeek);
+          reservoir.second.inflow.begin() + endWeek + 1);
+        logger->display_message(
+          "Reservoir " + reservoir.second.area + " has been initialized with "
+          + std::to_string(reservoir.second.optimal_trajectory.size()) + " by "
+          + std::to_string(reservoir.second.optimal_trajectory[0].size()) + " elements");
     }
 }

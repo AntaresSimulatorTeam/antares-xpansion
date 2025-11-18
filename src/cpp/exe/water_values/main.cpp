@@ -254,7 +254,6 @@ int main(int argc, char** argv)
                 logger->display_message("### Grid element area: " + gridElement.area + " ###");
                 // multistock here
                 // update the reservoir in ReservoirManagement based on the considered area
-                // initializing with first reservoir in line
                 ReservoirManagement reservoirManagement(grid.reservoirs.at(gridElement.area),
                                                         pcr.getPenaltyBottomRuleCurve(),
                                                         pcr.getPenaltyUpperRuleCurve(),
@@ -262,12 +261,12 @@ int main(int argc, char** argv)
                                                         pcr.getForceFinalLevel(),
                                                         pcr.getFinalLevel(),
                                                         pcr.getOverflow());
+                // this is also where we will update penalties if they need to be
 
                 if (reservoirManagement.reservoir.area != gridElement.area)
                 {
                     reservoirManagement.setReservoir(
                       gridCollection->reservoirs.at(gridElement.area));
-                    // this is also where we will update penalties if they need to be
                 }
                 auto startProblemUpdate = std::chrono::system_clock::now();
                 logger->display_message(
@@ -294,6 +293,13 @@ int main(int argc, char** argv)
                 auto bellmanValues = bellmanValuesEvaluator.compute(nbLevels);
                 logger->display_message("Computed Bellman values");
 
+                std::string bellmanValuesFileName = std::to_string(grid.gridID) + "_"
+                                                    + gridElement.area + "_bellman_values.csv";
+                saveValues(directories.simulation_dir / bellmanValuesFileName,
+                           bellmanValues,
+                           logger,
+                           false);
+
                 auto levels = bellmanValuesEvaluator.getLevels();
                 if (antaresFormat)
                 {
@@ -317,7 +323,7 @@ int main(int argc, char** argv)
 
                 if (pbg.getComputationMode()
                     == ProblemGenerationForWaterValueCalculation::WaterValueComputationMode::
-                      MULTISTOCK)
+                      SEQUENTIAL_UPDATE_TRAJECTORY)
                 {
                     logger->display_message("Computing optimal trajectory...");
 
@@ -325,6 +331,14 @@ int main(int argc, char** argv)
                       = bellmanValuesEvaluator.computeOptimalTrajectories();
 
                     logger->display_message("Computed optimal trajectory");
+
+                    std::string optimalTrajectoriesFileName = std::to_string(grid.gridID) + "_"
+                                                              + gridElement.area
+                                                              + "_optimal_trajectory.csv";
+                    saveValues(directories.simulation_dir / optimalTrajectoriesFileName,
+                               gridCollection->reservoirs.at(gridElement.area).optimal_trajectory,
+                               logger,
+                               false);
                 }
             }
         }

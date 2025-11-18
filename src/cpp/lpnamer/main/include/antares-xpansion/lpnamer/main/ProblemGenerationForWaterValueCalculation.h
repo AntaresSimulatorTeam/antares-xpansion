@@ -26,11 +26,11 @@
 class ProblemGenerationForWaterValueCalculation
 {
 public:
-    static enum class WaterValueComputationMode
+    enum class WaterValueComputationMode
     {
         MULTIVARIATE,
-        MULTISTOCK,
-        SEQUENTIAL, // like multistock but without optimal trajectories
+        SEQUENTIAL_UPDATE_TRAJECTORY, // multistock
+        SEQUENTIAL_IGNORE_TRAJECTORY, // like multistock but without optimal trajectories
     };
     explicit ProblemGenerationForWaterValueCalculation(
       ConfigurationManager::ConfigDirectories directories,

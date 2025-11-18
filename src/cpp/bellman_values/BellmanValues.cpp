@@ -260,6 +260,8 @@ std::vector<std::vector<double>> BellmanValues::computeOptimalTrajectories()
     unsigned int endWeek = *weeks.rbegin();
 
     // initialization
+    // std::vector<std::vector<double>> trajectory =
+    // reservoirManagement.reservoir.optimal_trajectory;
     std::vector<std::vector<double>> trajectory = reservoirManagement.reservoir.optimal_trajectory;
 
     // for (unsigned int week = endWeek + 1; week-- > startWeek;)
@@ -282,8 +284,9 @@ std::vector<std::vector<double>> BellmanValues::computeOptimalTrajectories()
 
             // the considered level is the trajectory of the previous week
             // or the initial level for the first week
-            double level = week == 0 ? reservoirManagement.reservoir.initial_level
-                                     : trajectory[week - 1][scenario];
+            double level = week == 0
+                             ? reservoirManagement.reservoir.initial_level
+                             : reservoirManagement.reservoir.optimal_trajectory[week - 1][scenario];
 
             std::tie(std::ignore, trajectory[week][scenario], std::ignore)
               = solveWeeklyProblemWithReward(week,
