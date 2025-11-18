@@ -8,11 +8,13 @@ The underlying C++ code responsible for merging previously generated Xpansion st
 
 - An [option file](#options-file) to give the general parameters
 - A [master merger info file](#master-merger-info-file) that links together the different annual master problems.
-- A [lp info file](#nodal-lp-info-file) that tells the programm where to find the ```lp``` folders and files of each node.
+- A [lp info file](#nodal-lp-info-file) that tells the program where to find the ```lp``` folders and files of each node.
 - [Access](#input-files-from-each-annual-study) to the ```structure.txt``` and ```master.mps``` files previously generated using ```antares-xpansion-launcher -i <study> --step problem_generation``` (or rather using the [Multiple Problem Generation](./multiple-problem-generation.md) step).
 
 Usage is :
 ```path/to/exectubale <options_file>.json <master_merger_info_file>.json```
+
+**Note** : the C++ executable has to be launched at the ```--input-root```. (The python driver takes care of this, this should not be a concern to most users).
 
 
 ## Options file
@@ -23,7 +25,7 @@ Only few of the ```BaseOptions``` from the ```<options_file>.json``` are used. A
     "OUTPUTROOT": "<path/to/ouput/folder>",
     "INPUTROOT": "<path/to/input/root>",
     "JSON_FILE": "<path/to/json/ouput/file>",
-    "SOLVER_NAME": "Xpress",
+    "SOLVER_NAME": "XPRESS",
     "PROBLEMS_FORMAT": "MPS",
     "MASTER_NAME" : "name",
     "STRUCTURE_FILE" : "<relative/path/to/structure/file>"
@@ -134,13 +136,13 @@ The program expects ```<master_merger_info>.json``` to have the following struct
 
 We give a short description of the data expected in each field :
 
-- ```initial_capacities``` contains, for each candidate, the capacity installed at before the first investment time point.
+- ```initial_capacities``` contains, for each candidate, the capacity installed before the first investment time point.
 - ```constraints``` contains user-given trajectory constraints on the different investment variables. See the [Trajectory constraints section](#trajectory-constraints) for more details.
 - ```tree``` contains the trajectory tree itself, and the data pertaining to each of its nodes. Each of the nodes contains the following data:
     - ```lp_folder``` points to a folder containing both the ```master_file``` and the ```structure_file``` of this annual study.
     - ```parent``` is the name of the node's parent in the tree.
     - ```node_weight``` is the node's weight $w(n)$ in the objective function. Note that in  this example, we used a discounting rate of $0$ to get an aggregated weight of $10$ on each investment time point.
-    - ```candidates_costs``` contains the coefficients of the corresponding variables in the final objective. Each of those costs already incorporates the probability of the node appearing, the node's represented duration and the discounting.The coefficient was pre-computed when parsing user input data.
+    - ```candidates_costs``` contains the coefficients of the corresponding variables in the final objective. Each of those costs already incorporates the probability of the node appearing, the node's represented duration and the discounting rate. The coefficient was pre-computed when parsing user input data.
 
 ## Nodal lp info file
 To access the ```lp``` data of each node, the executable expects to be passed the [nodal lp info file](./multiple-problem-generation.md#output--nodal-lp-info-file) that references the location & filenames of the ouput of the ```problem_generation``` step for each node.
@@ -159,21 +161,18 @@ To access the ```lp``` data of each node, the executable expects to be passed th
       "lp_folder" : "./node_2040_study/output/20250526-1505eco/lp/",
       "master_file" : "master",
       "structure_file" : "structure.txt",
-      "weights_file" : "weights.txt"
    },
    "2050_A" : 
    {
       "lp_folder" : "./node_2050_A_study/output/20250526-1505eco/lp/",
       "master_file" : "master",
       "structure_file" : "structure.txt",
-      "weights_file" : "weights.txt"
    },
    "2050_B" : 
    {
       "lp_folder" : "./node_2050_B_study/output/20250526-1505eco/lp/",
       "master_file" : "master",
       "structure_file" : "structure.txt",
-      "weights_file" : "weights.txt"
    }
 }
 ```
@@ -184,7 +183,7 @@ We give below what the folder given as ```INPUTROOT``` in the options file shoul
 .
 ├── intermediary_files
 │   ├── master_merger_info.json
-│   ├── merge_master_options.json
+│   ├── options_merge_master.json
 │   └── nodal_lp_info.json
 ├── node_2030_study
 │   ├── Desktop.ini

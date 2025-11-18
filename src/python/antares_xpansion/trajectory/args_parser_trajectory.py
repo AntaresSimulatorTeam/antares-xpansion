@@ -5,6 +5,8 @@ from antares_xpansion.trajectory.trajectory_config import TrajectoryInputParamet
 from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
 from antares_xpansion.launcher_options_default_value import LauncherOptionsDefaultValues
 
+from typing import List
+
 from pathlib import Path
 import warnings
 
@@ -26,8 +28,29 @@ class TrajectoryLauncherOptionsKeys:
     def memory_key():
         return "memory"
 
+    @staticmethod
+    def problems_format_key():
+        return "problems_format"
+
+    @staticmethod
+    def solver_key():
+        return "solver"
+
+
+class TrajectroyLauncherOptionsDefaultValues:
+    @staticmethod
+    def problems_format_default():
+        return "saved"
+
+    @staticmethod
+    def solver_default():
+        return "Xpress"
+
 
 class TrajectoryArgsParser:
+    class XpansionTrajectoryInvalidArguments(Exception):
+        pass
+
     def __init__(self):
         self.parser = argparse.ArgumentParser()
 
@@ -67,6 +90,33 @@ class TrajectoryArgsParser:
             dest=TrajectoryLauncherOptionsKeys.memory_key(),
             help="Execute the problem generation in memory",
         )
+        self.parser.add_argument(
+            "--installDir",
+            dest=LauncherOptionsKeys.installDir_key(),
+            help="The directory where all binaries are located",
+            default=LauncherOptionsDefaultValues.DEFAULT_VALUE(),
+        )
+        # When manipulating problem files : under which format are they written ?
+        self.parser.add_argument(
+            "--problems-format",
+            dest=TrajectoryLauncherOptionsKeys.problems_format_key(),
+            type=str,
+            choices=["saved", "mps"],
+            help="Format under which problem files should be read and written - 'saved' default only compatible with solver 'xpress'.",
+            default=TrajectroyLauncherOptionsDefaultValues.problems_format_default(),
+        )
+        # What type of solver should we use to perform problem merging and resolution
+        # (does not apply to problem generation, where the solver used is given in 'user/expansion/settings.ini')
+        # Choices are hardcoded but should also be matched with 'AVAILABLE_SOLVERS' later ...
+        self.parser.add_argument(
+            "--solver",
+            dest=TrajectoryLauncherOptionsKeys.solver_key(),
+            type=str,
+            choices=["Xpress", "Cbc", "Coin"],
+            help="Name of the solver used to perform problem merging and resolution - does not apply to problem generation.",
+            default=TrajectroyLauncherOptionsDefaultValues.solver_default(),
+        )
+
         # Args for the resolution
         self.parser.add_argument(
             "-m",
@@ -100,6 +150,13 @@ class TrajectoryArgsParser:
             help="allow-run-as-root option (linux only)",
         )
 
+    def _assert_args_compatibility(self, params):
+        """Checks that the given args are compatible with each other"""
+        if params.problems_format == "saved" and params.solver != "Xpress":
+            raise self.XpansionTrajectoryInvalidArguments(
+                "Argument '--problems-format saved' is only compatible with '--solver Xpress'"
+            )
+
     def _warn_non_relevant_arg(self, step, arg):
         warnings.warn(f"Argument {arg} is not relevant when step is {step}, ignoring")
 
@@ -114,18 +171,22 @@ class TrajectoryArgsParser:
                 self._warn_non_relevant_arg(step, "-n / --np")
             if params.method != LauncherOptionsDefaultValues.DEFAULT_VALUE():
                 self._warn_non_relevant_arg(step, "--method")
-        if step != "problem_generation" and params.memory is not None:
+        if step != "problem_generation" and params.memory:
             self._warn_non_relevant_arg(step, "--memory")
 
-    def parse_args(self, args: list[str] = None) -> TrajectoryInputParameters:
+    def parse_args(self, args: List[str] = None) -> TrajectoryInputParameters:
         params = self.parser.parse_args(args)
+        self._assert_args_compatibility(params)
         self._show_args_warning(params)
         self._fill_default_values(params)
         return TrajectoryInputParameters(
             step=params.step,
-            input_root=Path(params.root),
-            input_file=Path(params.input_file),
+            input_root=Path(params.root).resolve(),
+            input_file=Path(params.input_file).resolve(),
             memory=params.memory,
+            install_dir=params.installDir,
+            problems_format=params.problems_format,
+            solver=params.solver,
             method=params.method,
             n_mpi=params.n_mpi,
             oversubscribe=params.oversubscribe,

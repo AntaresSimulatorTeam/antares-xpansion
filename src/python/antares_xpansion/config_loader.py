@@ -568,12 +568,9 @@ class ConfigLoader(XpansionSettingsReader):
             self._config.LAST_MASTER_BASIS
         )
         options_values[OptimisationKeys.batch_size_key()] = self.get_batch_size()
-        options_values[OptimisationKeys.master_solution_tolerance_key()] = (
-            self.get_master_solution_tolerance()
-        )
-        options_values[OptimisationKeys.cut_coefficient_tolerance_key()] = (
-            self.get_cut_coefficient_tolerance()
-        )
+        options_values[OptimisationKeys.master_solution_tolerance_key()] = self.get_master_solution_tolerance()
+        options_values[OptimisationKeys.cut_coefficient_tolerance_key()] = self.get_cut_coefficient_tolerance()
+
         options_values[OptimisationKeys.do_outer_loop_key()] = (
                 self._config.method == "adequacy_criterion"
         )

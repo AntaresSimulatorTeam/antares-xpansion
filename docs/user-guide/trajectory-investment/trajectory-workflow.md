@@ -23,10 +23,11 @@ The other two steps have to be executed after the first two :
 
 ## File structure
 
-The expected file structure at the ```INPUT_ROOT``` looks like :
+The expected file structure at the ```--input-root``` looks like :
 
 ```
 .
+├── user_input.yaml
 ├── node_2030_study
 │   ├── Desktop.ini
 │   ├── input ...

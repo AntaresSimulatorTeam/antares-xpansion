@@ -45,5 +45,6 @@ namespace LpDataLocationManager
 NodesToLpDataLocationMap parse_nodal_lp_location_file(const std::filesystem::path& file);
 
 void write_nodal_lp_location_file(const NodesToLpDataLocationMap& lp_info_map,
-                                  const std::filesystem::path& file);
+                                  const std::filesystem::path& file,
+                                  const std::filesystem::path& input_root);
 } // namespace LpDataLocationManager
