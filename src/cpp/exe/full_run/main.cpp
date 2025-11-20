@@ -78,22 +78,5 @@ int main(int argc, char** argv)
         auto benders_factory = BendersApp(options_file, world, SOLVER::OUTER_LOOP);
         benders_factory.Run();
     }
-    else
-    {
-        // TODO merge mps?
-    }
-    if (world.rank() == 0)
-    {
-        auto log_file_path = xpansion_output_dir / "lp" / "StudyUpdateLog.txt";
-        auto logger = ProblemGenerationLog::BuildLogger(log_file_path,
-                                                        std::cout,
-                                                        "Full Run - Study Update");
-        auto solutionFile_l = options_parser.SolutionFile();
-        ActiveLinksBuilder linksBuilder = get_link_builders(xpansion_output_dir, logger);
-
-        const std::vector<ActiveLink> links = linksBuilder.getLinks();
-
-        updateStudy(xpansion_output_dir, links, solutionFile_l, logger);
-    }
     return 0;
 }

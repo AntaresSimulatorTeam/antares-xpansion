@@ -19,6 +19,9 @@ constexpr char CONSTRAINT_GEQ[] = ">";
 constexpr char KEY_INITIAL_CAPACITIES[] = "initial_capacities";
 constexpr char KEY_DEFAULT[] = "default";
 
+// Scaling
+constexpr char KEY_SCALING[] = "scaling";
+
 // Constraints
 constexpr char KEY_CONSTRAINTS[] = "constraints";
 constexpr char KEY_COEFFICIENTS[] = "coeffs";

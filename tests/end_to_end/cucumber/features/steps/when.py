@@ -154,3 +154,65 @@ def step_problem_generation_and_presolve(context, step, memory_mode):
 @when(u'I run step {step} {memory_mode} {pb_format}')
 def step_problem_generation_memory(context, step, memory_mode=None, pb_format=None):
     run_xpansion_step(context, step, memory_mode, pb_format, nproc=1)
+
+
+@when('I run antares-xpansion in trajectory')
+def run_trajectory_mode(context):
+    """Run the trajectory investment workflow (full step) and load outputs"""
+    # Ensure tmp study exists and determine input file
+    input_root = Path(context.tmp_study)
+    # Default trajectory user input file name for tests
+    user_input_file = input_root / 'user_input_XpansionTrajectory.yaml'
+
+    if not user_input_file.exists():
+        # Fallback to common names if needed
+        for candidate in ['user_input_XpansionTrajectory.yml', 'trajectory.yaml', 'trajectory.yml']:
+            cand = input_root / candidate
+            if cand.exists():
+                user_input_file = cand
+                break
+
+    # Build trajectory launch command using the unified launcher with --trajectory flag
+    command = [
+        sys.executable,
+        '../../src/python/launch.py',
+        '--trajectory',
+        '--installDir', str(get_conf('DEFAULT_INSTALL_DIR')),
+        '--input-root', str(input_root),
+        '--input-file', str(user_input_file),
+        '--step', 'full',
+        '--memory'
+    ]
+
+    # Allow running as root inside some CI when configured
+    if get_conf('allow_run_as_root'):
+        command.append('--allow-run-as-root')
+
+    print(f"Running trajectory command: {' '.join(command)}")
+    process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out, err = process.communicate()
+    context.return_code = process.returncode
+
+    # In case of failure, expose logs for debugging in test output
+    if context.return_code != 0:
+        print(out.decode('utf-8', errors='ignore'))
+        print(err.decode('utf-8', errors='ignore'))
+        return
+
+    # On success, read output JSON produced by trajectory resolution
+    out_json_path = input_root / 'output' / 'out_benders.json'
+    if out_json_path.exists():
+        context.outputs = read_json_file(out_json_path)
+    else:
+        # If output path differs, try to parse from stdout hint if present
+        try:
+            from .steps import get_results_file_path_from_logs  # noqa: F401
+        except Exception:
+            get_results_file_path_from_logs = None
+        if get_results_file_path_from_logs is not None:
+            try:
+                inferred = Path(get_results_file_path_from_logs(out))
+                if inferred.exists():
+                    context.outputs = read_json_file(inferred)
+            except Exception:
+                pass

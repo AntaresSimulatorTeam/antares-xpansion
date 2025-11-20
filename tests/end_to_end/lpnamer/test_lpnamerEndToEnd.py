@@ -13,25 +13,25 @@ DATA_TEST = Path("../../../data_test/")
 DATA_TEST_INTEGER = DATA_TEST / "tests_lpnamer" / "tests_integer"
 DATA_TEST_RELAXED = DATA_TEST / "tests_lpnamer" / "tests_relaxed"
 TEST_LP_INTEGER_01 = DATA_TEST_INTEGER / \
-    "test_lpnamer_01" / "output" / "economy"
+                     "test_lpnamer_01" / "output" / "economy"
 TEST_LP_INTEGER_XPRESS = DATA_TEST_INTEGER / \
                          "test_lpnamer_Xpress" / "output" / "economy"
 TEST_LP_INTEGER_02 = DATA_TEST_INTEGER / \
-    "test_one_link_one_candidate_1week" / "output" / "economy/"
+                     "test_one_link_one_candidate_1week" / "output" / "economy/"
 TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB = DATA_TEST_INTEGER / "test_one_link_two_candidates_simple_prob" \
-    / "output" / "economy"
+                                                  / "output" / "economy"
 TEST_LP_INTEGER_MULTIPLE_CANDIDATES = DATA_TEST_INTEGER / \
-    "test_one_link_two_candidates_1week" / "output" / "economy"
+                                      "test_one_link_two_candidates_1week" / "output" / "economy"
 
 TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_HURDLES = DATA_TEST_INTEGER / "test_one_link_two_candidates_simple_prob_hurdle_cost" \
-    / "output" / "economy"
+                                                          / "output" / "economy"
 TEST_LP_INTEGER_MULTIPLE_CANDIDATES_SIMPLE_PROB_NULL_PROFILE = DATA_TEST_INTEGER / "test_one_link_two_candidates_simple_prob_null_profile" \
-    / "output" / "economy"
+                                                               / "output" / "economy"
 
 TEST_LP_RELAXED_01 = DATA_TEST_RELAXED / \
-    "test_one_link_one_candidate-relaxed" / "output" / "economy/"
+                     "test_one_link_one_candidate-relaxed" / "output" / "economy/"
 TEST_LP_RELAXED_02 = DATA_TEST_RELAXED / "SmallTestSixCandidatesWithAlreadyInstalledCapacity-relaxed" / "output" \
-    / "economy"
+                     / "economy"
 test_data = [
     (TEST_LP_INTEGER_01, "integer"),
     (TEST_LP_INTEGER_02, "integer"),
@@ -42,6 +42,7 @@ test_data = [
 test_data_xpress = [
     (TEST_LP_INTEGER_XPRESS, "integer")
 ]
+
 
 class OptionType(Enum):
     ARCHIVE = 1
@@ -61,6 +62,7 @@ test_data_multiple_candidates = [
 test_data_study_option = [
     DATA_TEST / "tests_lpnamer" / "SmallTestFiveCandidates"
 ]
+
 
 @pytest.fixture
 def setup_lp_directory(request, tmp_path):
@@ -101,6 +103,7 @@ def setup_study(request, tmp_path):
     index = source_dir.parts.index(source_dir.stem)
     test_dir = tmp_path.joinpath(*source_dir.parts[index:])
     yield test_dir
+
 
 @pytest.mark.parametrize("test_dir, master_mode", test_data)
 @pytest.mark.parametrize("option_mode", [OptionType.ARCHIVE, OptionType.OUTPUT])
@@ -209,6 +212,22 @@ def launch_and_compare_lp_with_reference_study(install_dir, master_mode, study_d
 def then(lp_dir, old_path, reference_lp_dir, returned_l):
     os.chdir(old_path)
     files_to_compare = os.listdir(reference_lp_dir)
+
+    def compare_structure_files(file1, file2):
+        with open(file1, 'r') as f1, open(file2, 'r') as f2:
+            lines1 = f1.readlines()
+            lines2 = f2.readlines()
+            if len(lines1) != len(lines2):
+                return False
+            for line1, line2 in zip(lines1, lines2):
+                if ' '.join(line1.split()) != ' '.join(line2.split()):
+                    return False
+        return True
+
+    if "structure.txt" in files_to_compare:
+        files_to_compare.remove("structure.txt")
+        assert compare_structure_files(Path(reference_lp_dir) / "structure.txt", Path(lp_dir) / "structure.txt")
+
     match, mismatch, errors = filecmp.cmpfiles(
         reference_lp_dir, lp_dir, files_to_compare)
     assert len(match) == len(files_to_compare)

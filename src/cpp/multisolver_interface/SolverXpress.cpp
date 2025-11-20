@@ -807,16 +807,20 @@ void SolverXpress::save_prob(const std::filesystem::path& filename)
     std::filesystem::path filename_to_use{filename};
     filename_to_use.replace_extension(".svf");
     int status = XPRSsaveas(_xprs, filename_to_use.string().c_str());
-    char errmsg[512];
-    XPRSgetlasterror(_xprs, errmsg);
-    std::cerr << errmsg << std::endl;
+    if (status != 0)
+    {
+        char errmsg[512];
+        XPRSgetlasterror(_xprs, errmsg);
+        std::cerr << errmsg << std::endl;
+    }
     zero_status_check(status, "save problem", LOGLOCATION);
 }
 
 void SolverXpress::restore_prob(const std::filesystem::path& filename)
 {
     int status = XPRSrestore(_xprs, filename.string().c_str(), "");
-    zero_status_check(status, "restore problem", LOGLOCATION);
+    std::string message = "restore problem at : " + filename.string();
+    zero_status_check(status, message, LOGLOCATION);
 }
 
 void XPRS_CC optimizermsg(XPRSprob prob, void* strPtr, const char* sMsg, int nLen, int nMsglvl)

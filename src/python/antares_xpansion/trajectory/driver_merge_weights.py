@@ -3,12 +3,14 @@ from pathlib import Path
 
 import subprocess
 import sys
+import os
 
 
 @dataclass
 class MergeWeightsData:
     merge_weights_exe: Path
     master_merger_info_file: Path
+    input_root: Path
     nodal_lp_info_file: Path
     output_file: Path
 
@@ -28,6 +30,7 @@ class MergeWeightsDriver:
     def __init__(self, data: MergeWeightsData):
         self.merge_weights_exe = data.merge_weights_exe
         self.master_merger_info_file = data.master_merger_info_file
+        self.input_root = data.input_root
         self.nodal_lp_info_file = data.nodal_lp_info_file
         self.output_file = data.output_file
 
@@ -44,7 +47,7 @@ class MergeWeightsDriver:
             )
 
     def _get_merge_weights_args(self):
-        args: list[str] = []
+        args: List[str] = []
         # Args are fixed order : <master_merger_info.json> <nodal_lp_info.json> <output_file>
         args.append(self.master_merger_info_file)
         args.append(self.nodal_lp_info_file)
@@ -78,5 +81,11 @@ class MergeWeightsDriver:
             )
 
     def launch(self):
+        # Run the driver from the input root
+        previous_dir = os.getcwd()
+        os.chdir(self.input_root)
+
         self._check_input_file_existence()
         self._launch_weights_merge()
+
+        os.chdir(previous_dir)
