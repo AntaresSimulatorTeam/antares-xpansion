@@ -4,7 +4,7 @@
 
 Usage of the launcher is :
 
-```antares-xpansion-launcher --trajectory --step <step> [--input-root <path/to/input/root>] [--input-file <path/to/user/input/file>] ...```
+```antares-xpansion-launcher --trajectory --step <step> [-i <path/to/input/root>] [--input-file <path/to/user/input/file>] ...```
 
 ## Mandatory arguments
 
@@ -27,11 +27,11 @@ Usage of the launcher is :
 
 ### Input location
 
-- ```--input-root``` : Path to the folder that contains each node's corresponding antaresXpansion study.
+- ```-i, --dataDir``` : Path to the folder that contains each node's corresponding antaresXpansion study.
   If not specified, defaults to the current directory.
 
 - ```--input-file``` : Path to the [user input file](user-input.md#user-input-file).
-  If not specified, the program will look for a file named ```input-trajectory.yaml``` in the ```--input-root```
+  If not specified, the program will look for a file named ```input-trajectory.yaml``` in the ```--dataDir```
   directory.
   If this file is not found, an error will be raised.
 

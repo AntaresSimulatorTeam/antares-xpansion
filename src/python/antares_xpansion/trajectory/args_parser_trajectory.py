@@ -60,9 +60,10 @@ class TrajectoryArgsParser:
     def _initialize_parser(self):
         # Minimal arguments for now
         self.parser.add_argument(
-            "--input-root",
+            "-i",
+            "--dataDir",
             dest=TrajectoryLauncherOptionsKeys.input_root_key(),
-            help="Input root, folder containing all the studies in the tree. Defaults to current directory.",
+            help="Folder containing all the studies in the tree. Defaults to current directory.",
             required=False,
             default=None,
         )

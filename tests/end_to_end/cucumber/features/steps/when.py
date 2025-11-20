@@ -179,13 +179,13 @@ def run_trajectory_mode(context):
                 break
 
     # Build trajectory launch command using the unified launcher with --trajectory flag
-    # Note: --input-root and --input-file are now optional, but we still specify them for clarity in tests
+    # Note: -i (--dataDir) and --input-file are now optional, but we still specify them for clarity in tests
     command = [
         sys.executable,
         '../../src/python/launch.py',
         '--trajectory',
         '--installDir', str(get_conf('DEFAULT_INSTALL_DIR')),
-        '--input-root', str(input_root),
+        '-i', str(input_root),
         '--step', 'full',
         '--memory'
     ]
