@@ -34,7 +34,7 @@ class TrajectoryLauncherOptionsKeys:
         return "solver"
 
 
-class TrajectroyLauncherOptionsDefaultValues:
+class TrajectoryLauncherOptionsDefaultValues:
     @staticmethod
     def problems_format_default():
         return "saved"
@@ -107,7 +107,7 @@ class TrajectoryArgsParser:
             type=str,
             choices=["saved", "mps"],
             help="Format under which problem files should be read and written - 'saved' default only compatible with solver 'xpress'.",
-            default=TrajectroyLauncherOptionsDefaultValues.problems_format_default(),
+            default=TrajectoryLauncherOptionsDefaultValues.problems_format_default(),
         )
         # What type of solver should we use to perform problem merging and resolution
         # (does not apply to problem generation, where the solver used is given in 'user/expansion/settings.ini')
@@ -118,7 +118,7 @@ class TrajectoryArgsParser:
             type=str,
             choices=["Xpress", "Cbc", "Coin"],
             help="Name of the solver used to perform problem merging and resolution - does not apply to problem generation.",
-            default=TrajectroyLauncherOptionsDefaultValues.solver_default(),
+            default=TrajectoryLauncherOptionsDefaultValues.solver_default(),
         )
 
         # Args for the resolution
@@ -192,7 +192,7 @@ class TrajectoryArgsParser:
 
         # Handle input_file: use default name if not specified
         if params.input_file is None:
-            input_file = input_root / TrajectroyLauncherOptionsDefaultValues.default_input_file_name()
+            input_file = input_root / TrajectoryLauncherOptionsDefaultValues.default_input_file_name()
         else:
             input_file = Path(params.input_file).resolve()
 
@@ -200,7 +200,7 @@ class TrajectoryArgsParser:
         if not input_file.exists():
             raise self.XpansionTrajectoryInvalidArguments(
                 f"Input file not found: {input_file}\n"
-                f"Expected file '{TrajectroyLauncherOptionsDefaultValues.default_input_file_name()}' "
+                f"Expected file '{TrajectoryLauncherOptionsDefaultValues.default_input_file_name()}' "
                 f"in input-root directory: {input_root}"
             )
 
