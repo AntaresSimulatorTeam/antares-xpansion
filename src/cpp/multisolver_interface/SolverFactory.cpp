@@ -28,7 +28,7 @@ void GetAvailableSolversInternal(std::shared_ptr<ILoggerXpansion> logger)
 {
     if (available_solvers.empty())
     {
-        static XpressManager xpress_manager;
+        static XpressManager xpress_manager(logger);
         LoadXpress::XpressLoader xpress_loader(std::move(logger));
         if (xpress_loader.XpressIsCorrectlyInstalled(true))
         {
