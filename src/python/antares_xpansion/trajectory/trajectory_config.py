@@ -16,6 +16,7 @@ class TrajectoryInputParameters:
     # Solver and problems format
     problems_format: str
     solver: str
+    cache_problems: bool
     # Relevant for resolution only
     method: str
     n_mpi: int
@@ -102,6 +103,7 @@ class TrajectoryConfig(TrajectoryConfigDefaults):
         # Problems format and solver
         self.problems_format = self.input_parameters.problems_format
         self.solver = self.input_parameters.solver
+        self.cache_problems = self.input_parameters.cache_problems
         # Resolution args
         self.method = self.input_parameters.method
         self.n_mpi = self.input_parameters.n_mpi
