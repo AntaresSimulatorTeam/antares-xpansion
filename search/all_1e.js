@@ -96,7 +96,7 @@ var searchData=
   ['startup_93',['StartUp',['../classBenders_1_1StartUp.html',1,'Benders']]],
   ['step_20full_20antares_20problem_5fgeneration_20benders_20study_5fupdate_20sensitivity_20presolve_20resume_20tt_94',['&lt;tt&gt;--step {full, antares, problem_generation, benders, study_update, sensitivity, presolve, resume}&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md176',1,'']]],
   ['stringutils_95',['StringUtils',['../classStringManip_1_1StringUtils.html',1,'StringManip']]],
-  ['structure_96',[' File structure',['../md_docs_2user-guide_2trajectory-investment_2trajectory-workflow.html#autotoc_md276',1,'']]],
+  ['structure_96',['File structure',['../md_docs_2user-guide_2trajectory-investment_2trajectory-workflow.html#autotoc_md279',1,'']]],
   ['structuregeneration_97',['StructureGeneration',['../classStructureGeneration.html',1,'']]],
   ['studies_98',['Merging the master problems of annual Xpansion studies',['../md_docs_2user-guide_2trajectory-investment_2merge-master.html',1,'']]],
   ['study_99',['study',['../index.html#autotoc_md2',1,'Antares study'],['../md_docs_2index.html#autotoc_md143',1,'Antares study'],['../md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md255',1,'Input files from each annual study'],['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md162',1,'Link between invested capacity and capacity of the Antares study'],['../md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md195',1,'Prepare the Antares study'],['../md_docs_2user-guide_2get-started_2prepare-a-simulation.html',1,'Set up an Antares-Xpansion study']]],

@@ -15,7 +15,7 @@ var searchData=
   ['ref_20git_20version_20git_20version_12',['@ref &quot;git-version&quot; &quot;Git version&quot;',['../md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html#autotoc_md88',1,'']]],
   ['ref_20python_20version_20python_20version_13',['@ref &quot;python-version&quot; &quot;Python version&quot;',['../md_docs_2developer-guide_2install__from__sources_21-Development-requirements.html#autotoc_md87',1,'']]],
   ['refactoring_20maintenance_14',['Refactoring &amp; Maintenance',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md15',1,'']]],
-  ['reference_20file_15',[' Weights / additional constraints reference file',['../md_docs_2user-guide_2trajectory-investment_2multiple-problem-generation.html#autotoc_md264',1,'']]],
+  ['reference_20file_15',['Weights / additional constraints reference file',['../md_docs_2user-guide_2trajectory-investment_2multiple-problem-generation.html#autotoc_md264',1,'']]],
   ['reformulation_20and_20decomposition_20algorithm_16',['Benders reformulation and decomposition algorithm',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md245',1,'']]],
   ['reformulation_20of_20the_20investment_20problem_17',['Benders reformulation of the investment problem',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md246',1,'']]],
   ['related_20issues_20please_20use_20the_20other_20ones_18',['⚠️ Single-file versions in Ubuntu are known to have MPI-related issues. Please use the other ones.',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md31',1,'']]],

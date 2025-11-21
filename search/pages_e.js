@@ -9,8 +9,8 @@ var searchData=
   ['the_20optimization_6',['Launch the optimization',['../md_docs_2user-guide_2get-started_2launching-optimization.html',1,'']]],
   ['the_20workflow_20_3a_20tt_20xpansion_20trajectory_20tt_7',['Launching the workflow : &lt;tt&gt;xpansion trajectory&lt;/tt&gt;',['../md_docs_2user-guide_2trajectory-investment_2orchestration.html',1,'']]],
   ['trajectory_20investment_20problem_8',['Trajectory investment problem',['../md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html',1,'']]],
-  ['trajectory_20tt_9',['Launching the workflow : &lt;tt&gt;xpansion trajectory&lt;/tt&gt;',['../md_docs_2user-guide_2trajectory-investment_2orchestration.html',1,'']]],
-  ['trajectory_20workflow_10',['trajectory-workflow',['../md_docs_2user-guide_2trajectory-investment_2trajectory-workflow.html',1,'']]],
+  ['trajectory_20investment_20workflow_9',['Trajectory investment workflow',['../md_docs_2user-guide_2trajectory-investment_2trajectory-workflow.html',1,'']]],
+  ['trajectory_20tt_10',['Launching the workflow : &lt;tt&gt;xpansion trajectory&lt;/tt&gt;',['../md_docs_2user-guide_2trajectory-investment_2orchestration.html',1,'']]],
   ['tt_11',['Launching the workflow : &lt;tt&gt;xpansion trajectory&lt;/tt&gt;',['../md_docs_2user-guide_2trajectory-investment_2orchestration.html',1,'']]],
   ['tt_20xpansion_20trajectory_20tt_12',['Launching the workflow : &lt;tt&gt;xpansion trajectory&lt;/tt&gt;',['../md_docs_2user-guide_2trajectory-investment_2orchestration.html',1,'']]]
 ];

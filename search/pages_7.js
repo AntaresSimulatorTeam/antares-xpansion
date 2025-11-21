@@ -11,5 +11,6 @@ var searchData=
   ['investment_20problem_8',['investment problem',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html',1,'Mathematical aspects of the investment problem'],['../md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html',1,'Trajectory investment problem']]],
   ['investment_20problem_20generation_9',['Investment problem generation',['../md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html',1,'']]],
   ['investment_20problem_20in_20antares_20xpansion_10',['The optimal investment problem in Antares-Xpansion',['../md_docs_2user-guide_2optimization-principles_2investment-problem.html',1,'']]],
-  ['it_20dynamically_11',['Installing Xpress Solver and Loading it Dynamically',['../md_docs_2developer-guide_2install__from__sources_26-Xpress.html',1,'']]]
+  ['investment_20workflow_11',['Trajectory investment workflow',['../md_docs_2user-guide_2trajectory-investment_2trajectory-workflow.html',1,'']]],
+  ['it_20dynamically_12',['Installing Xpress Solver and Loading it Dynamically',['../md_docs_2developer-guide_2install__from__sources_26-Xpress.html',1,'']]]
 ];

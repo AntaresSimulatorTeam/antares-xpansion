@@ -16,9 +16,10 @@ var searchData=
   ['example_13',['Basic example',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md165',1,'']]],
   ['examples_20of_20candidates_14',['Examples of candidates',['../md_docs_2user-guide_2get-started_2candidate-definition.html#autotoc_md164',1,'']]],
   ['exe_5fpath_15',['exe_path',['../classantares__xpansion_1_1config__loader_1_1ConfigLoader.html#a497a4f9701fda8abcd718e34f2cd7339',1,'antares_xpansion::config_loader::ConfigLoader']]],
-  ['executable_16',[' Usage of the master merger executable',['../md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md251',1,'']]],
+  ['executable_16',['Usage of the master merger executable',['../md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md251',1,'']]],
   ['executables_17',['Antares-Xpansion package executables',['../md_docs_2developer-guide_2xpansion__steps_20-overview.html#autotoc_md121',1,'']]],
-  ['expertlogsvalueerror_18',['ExpertLogsValueError',['../classantares__xpansion_1_1input__checker_1_1ExpertLogsValueError.html',1,'antares_xpansion::input_checker']]],
-  ['export_5fproblem_19',['export_problem',['../classAbstractMergeMPS.html#a44c25e6a5c9514ceff04b6fe9abb7730',1,'AbstractMergeMPS']]],
-  ['externalloopoptions_20',['ExternalLoopOptions',['../structExternalLoopOptions.html',1,'']]]
+  ['execution_20options_18',['Execution options',['../md_docs_2user-guide_2trajectory-investment_2orchestration.html#autotoc_md271',1,'']]],
+  ['expertlogsvalueerror_19',['ExpertLogsValueError',['../classantares__xpansion_1_1input__checker_1_1ExpertLogsValueError.html',1,'antares_xpansion::input_checker']]],
+  ['export_5fproblem_20',['export_problem',['../classAbstractMergeMPS.html#a44c25e6a5c9514ceff04b6fe9abb7730',1,'AbstractMergeMPS']]],
+  ['externalloopoptions_21',['ExternalLoopOptions',['../structExternalLoopOptions.html',1,'']]]
 ];

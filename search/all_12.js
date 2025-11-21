@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['general_20description_0',['General description',['../md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md231',1,'General description'],['../md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html#autotoc_md272',1,'General description']]],
+  ['general_20description_0',['General description',['../md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md231',1,'General description'],['../md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html#autotoc_md274',1,'General description']]],
   ['general_5fdata_1',['general_data',['../classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader.html#aa4c937f9e3b57840f6f3335ded14c7cf',1,'antares_xpansion::config_loader::XpansionSettingsReader']]],
   ['generaldatafileexceptions_2',['GeneralDataFileExceptions',['../classantares__xpansion_1_1general__data__processor_1_1GeneralDataFileExceptions.html',1,'antares_xpansion::general_data_processor']]],
   ['generaldatafilenotfound_3',['GeneralDataFileNotFound',['../classantares__xpansion_1_1general__data__processor_1_1GeneralDataFileExceptions_1_1GeneralDataFileNotFound.html',1,'antares_xpansion::general_data_processor::GeneralDataFileExceptions']]],

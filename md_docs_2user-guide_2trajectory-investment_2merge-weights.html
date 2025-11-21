@@ -153,11 +153,12 @@ Usage</h1>
 <li><code>&lt;nodal_lp_info.json&gt;</code> designates the intermediary file outputted by the <code><a class="el" href="classMultipleProblemGeneration.html">MultipleProblemGeneration</a></code> step. <a href="./multiple-problem-generation.md#output--nodal-lp-info-file">See this section</a> for more details.</li>
 </ul>
 <p>Note that in the <code>&lt;nodal_lp_info.json&gt;</code> file, if the <code>weights_file</code> parameter does not appear or points to a non existant file, the weights of this node are assumed to be uniform.</p>
-<p><b>Note</b> : the C++ executable has to be launched at the <code>--input-root</code>. (The python driver takes care of this, this should not be a concern to most users).</p>
+<p><b>Note</b> : the C++ executable has to be launched at the <code>--dataDir</code>. (The python driver takes care of this, this should not be a concern to most users).</p>
 <h1><a class="anchor" id="autotoc_md260"></a>
- Output</h1>
+Output</h1>
 <p>The output <code>weights_merged.txt</code> file will be a file with two columns. <br  />
- The first column is the path to the subproblem, and the second is the corresponding weight: </p><div class="fragment"><div class="line">./node_2030_study/output/20250526-1505eco/lp/problem-1-1--optim-nb-1.mps 0</div>
+ The first column is the path to the subproblem, and the second is the corresponding weight:</p>
+<div class="fragment"><div class="line">./node_2030_study/output/20250526-1505eco/lp/problem-1-1--optim-nb-1.mps 0</div>
 <div class="line">./node_2030_study/output/20250526-1505eco/lp/problem-1-2--optim-nb-1.mps 0</div>
 <div class="line">./node_2030_study/output/20250526-1505eco/lp/problem-2-1--optim-nb-1.mps 10.0</div>
 <div class="line">./node_2030_study/output/20250526-1505eco/lp/problem-2-2--optim-nb-1.mps 10.0</div>
@@ -174,8 +175,10 @@ Usage</h1>
 <div class="line">./node_2050_B_study/output/20250526-1505eco/lp/problem-2-1--optim-nb-1.mps 1.0</div>
 <div class="line">./node_2050_B_study/output/20250526-1505eco/lp/problem-2-2--optim-nb-1.mps 1.0</div>
 <div class="line">WEIGHT_SUM 1</div>
-</div><!-- fragment --><p> In this example, the studies only have two weeks and two MC years, and the user has set a custom weight of $0$ on <code>2030</code>'s first MC year and $1$ on its only other MC year. <br  />
- <code>WEIGHT_SUM</code> is set to $1$ because those weights are already correctly normalised against the investment part of the objective function. </p>
+</div><!-- fragment --><p>In this example, the studies only have two weeks and two MC years, and the user has set a custom weight of $0$ on </p><div class="fragment"><div class="line">2030</div>
+</div><!-- fragment --><p> 's first MC year and $1$ on its only other MC year. <br  />
+ </p><div class="fragment"><div class="line">_SUM</div>
+</div><!-- fragment --><p> is set to $1$ because those weights are already correctly normalised against the investment part of the objective function. </p>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->

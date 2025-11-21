@@ -132,8 +132,8 @@ var annotated_dup =
     ] ],
     [ "args_parser_trajectory", null, [
       [ "TrajectoryArgsParser", "classargs__parser__trajectory_1_1TrajectoryArgsParser.html", "classargs__parser__trajectory_1_1TrajectoryArgsParser" ],
-      [ "TrajectoryLauncherOptionsKeys", "classargs__parser__trajectory_1_1TrajectoryLauncherOptionsKeys.html", null ],
-      [ "TrajectroyLauncherOptionsDefaultValues", "classargs__parser__trajectory_1_1TrajectroyLauncherOptionsDefaultValues.html", null ]
+      [ "TrajectoryLauncherOptionsDefaultValues", "classargs__parser__trajectory_1_1TrajectoryLauncherOptionsDefaultValues.html", null ],
+      [ "TrajectoryLauncherOptionsKeys", "classargs__parser__trajectory_1_1TrajectoryLauncherOptionsKeys.html", null ]
     ] ],
     [ "Benders", null, [
       [ "Criterion", null, [

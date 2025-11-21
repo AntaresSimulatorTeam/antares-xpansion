@@ -147,26 +147,26 @@ Usage</h1>
 <p>The most simple usage is : <br  />
  </p><div class="fragment"><div class="line">&lt;multiple_problem_gen_executable&gt; --study &lt;study_paths_file&gt; --weights &lt;weights_reference_file&gt; --nodal-file &lt;path/to/nodal-lp-info/output/file&gt;</div>
 </div><!-- fragment --><p>Note that this executable uses options that extend the simple <code><a class="el" href="classProblemGenerationExeOptions.html">ProblemGenerationExeOptions</a></code> parser used in the individual problem generation executable. Thus, every other option of the individual problem generation can be given to the <code><a class="el" href="classMultipleProblemGeneration.html">MultipleProblemGeneration</a></code> executable and will be duplicated for each individual node's problem generation.</p>
-<p><b>Note</b> : the C++ executable has to be launched at the <code>--input-root</code>. (The python driver takes care of this, this should not be a concern to most users).</p>
+<p><b>Note</b> : the C++ executable has to be launched at the <code>--dataDir</code>. (The python driver takes care of this, this should not be a concern to most users).</p>
 <h1><a class="anchor" id="autotoc_md263"></a>
 Study paths / archives file</h1>
-<p>The study paths file (or archive paths file when called with <code>--archive &lt;archive_paths_file&gt;</code>) tells the executable where to find the relevant input for each node :</p><ul>
+<p>The study paths file (or archive paths file when called with <code>--archive &lt;archive_paths_file&gt;</code>) tells the executable where to find the relevant input for each node :</p>
+<ul>
 <li>Study paths when using memory mode (and option <code>--study</code>)</li>
 <li>Previously generated antares output archives otherwise (with option <code>--archive</code>)</li>
 </ul>
-<p>The reference file is a simple text file with two columns : The first column contains the node's name, and the second the path to the relevant input (in this case the path to the study). <b>Note</b> : the paths have to be given as relatives paths, relative to the <code>--input-root</code> <br  />
- </p><div class="fragment"><div class="line">2030 ./node_2030_study</div>
+<p>The reference file is a simple text file with two columns : The first column contains the node's name, and the second the path to the relevant input (in this case the path to the study). <b>Note</b> : the paths have to be given as relatives paths, relative to the <code>--input-root</code></p>
+<div class="fragment"><div class="line">2030 ./node_2030_study</div>
 <div class="line">2040 ./node_2040_study</div>
 <div class="line">2050_A ./node_2050_A_study</div>
 <div class="line">2050_B ./node_2050_B_study</div>
-</div><!-- fragment --><p> The full input files &amp; folders layout for this example is diplayed in <a href="./trajectory-workflow.md#file-structure">this section</a> for more clarity.</p>
+</div><!-- fragment --><p>The full input files &amp; folders layout for this example is diplayed in <a href="./trajectory-workflow.md#file-structure">this section</a> for more clarity.</p>
 <h1><a class="anchor" id="autotoc_md264"></a>
- Weights / additional constraints reference file</h1>
+Weights / additional constraints reference file</h1>
 <p>The weights (resp. additional constraints) reference file gives the <code><a class="el" href="classMultipleProblemGeneration.html">MultipleProblemGeneration</a></code> executable information about the potential custom weights file (resp. additional constraints file) given by the user.</p>
-<p>The reference file is a simple text file with two columns : The first column contains the node's name, and the second the path to the custom weights file (resp. additional constraints file). <b>Note</b> : the paths have to be given as relatives paths, relative to the <code>--input-root</code> <br  />
- </p><div class="fragment"><div class="line">2030 ./node_2030_study/user/expansion/weights/weights.txt</div>
-</div><!-- fragment --><p>If a node does not appear in this file, it will be assumed to have no custom weights file (resp. no additional constraints file). <br  />
-</p>
+<p>The reference file is a simple text file with two columns : The first column contains the node's name, and the second the path to the custom weights file (resp. additional constraints file). <b>Note</b> : the paths have to be given as relatives paths, relative to the <code>--dataDir</code></p>
+<div class="fragment"><div class="line">2030 ./node_2030_study/user/expansion/weights/weights.txt</div>
+</div><!-- fragment --><p>If a node does not appear in this file, it will be assumed to have no custom weights file (resp. no additional constraints file).</p>
 <ul>
 <li><a href="../get-started/settings-definition.md#yearly-weights">See this section</a> for information about each individual node's custom weight file</li>
 <li><a href="../get-started/settings-definition.md#additional-constraints">See this section</a> for information about each individual node's additional constraints.</li>
@@ -180,37 +180,34 @@ Study paths / archives file</h1>
 Output : Nodal Lp Info file</h1>
 <p>We give an example of a corresponding <code>nodal_lp_info.json</code>. This file is written to the path given in the <code>--nodal-file</code> argument when calling the executable.</p>
 <div class="fragment"><div class="line">{</div>
-<div class="line">   &quot;2030&quot; : </div>
-<div class="line">   {</div>
-<div class="line">      &quot;lp_folder&quot; : &quot;./node_2030_study/output/20250526-1505eco/lp/&quot;,</div>
-<div class="line">      &quot;master_file&quot; : &quot;master&quot;,</div>
-<div class="line">      &quot;structure_file&quot; : &quot;structure.txt&quot;,</div>
-<div class="line">      &quot;weights_file&quot; : &quot;weights.txt&quot;</div>
-<div class="line">   },</div>
-<div class="line">   &quot;2040&quot; : </div>
-<div class="line">   {</div>
-<div class="line">      &quot;lp_folder&quot; : &quot;./node_2040_study/output/20250526-1505eco/lp/&quot;,</div>
-<div class="line">      &quot;master_file&quot; : &quot;master&quot;,</div>
-<div class="line">      &quot;structure_file&quot; : &quot;structure.txt&quot;,</div>
-<div class="line">   },</div>
-<div class="line">   &quot;2050_A&quot; : </div>
-<div class="line">   {</div>
-<div class="line">      &quot;lp_folder&quot; : &quot;./node_2050_A_study/output/20250526-1505eco/lp/&quot;,</div>
-<div class="line">      &quot;master_file&quot; : &quot;master&quot;,</div>
-<div class="line">      &quot;structure_file&quot; : &quot;structure.txt&quot;,</div>
-<div class="line">   },</div>
-<div class="line">   &quot;2050_B&quot; : </div>
-<div class="line">   {</div>
-<div class="line">      &quot;lp_folder&quot; : &quot;./node_2050_B_study/output/20250526-1505eco/lp/&quot;,</div>
-<div class="line">      &quot;master_file&quot; : &quot;master&quot;,</div>
-<div class="line">      &quot;structure_file&quot; : &quot;structure.txt&quot;,</div>
-<div class="line">   }</div>
+<div class="line">  &quot;2030&quot;: {</div>
+<div class="line">    &quot;lp_folder&quot;: &quot;./node_2030_study/output/20250526-1505eco/lp/&quot;,</div>
+<div class="line">    &quot;master_file&quot;: &quot;master&quot;,</div>
+<div class="line">    &quot;structure_file&quot;: &quot;structure.txt&quot;,</div>
+<div class="line">    &quot;weights_file&quot;: &quot;weights.txt&quot;</div>
+<div class="line">  },</div>
+<div class="line">  &quot;2040&quot;: {</div>
+<div class="line">    &quot;lp_folder&quot;: &quot;./node_2040_study/output/20250526-1505eco/lp/&quot;,</div>
+<div class="line">    &quot;master_file&quot;: &quot;master&quot;,</div>
+<div class="line">    &quot;structure_file&quot;: &quot;structure.txt&quot;</div>
+<div class="line">  },</div>
+<div class="line">  &quot;2050_A&quot;: {</div>
+<div class="line">    &quot;lp_folder&quot;: &quot;./node_2050_A_study/output/20250526-1505eco/lp/&quot;,</div>
+<div class="line">    &quot;master_file&quot;: &quot;master&quot;,</div>
+<div class="line">    &quot;structure_file&quot;: &quot;structure.txt&quot;</div>
+<div class="line">  },</div>
+<div class="line">  &quot;2050_B&quot;: {</div>
+<div class="line">    &quot;lp_folder&quot;: &quot;./node_2050_B_study/output/20250526-1505eco/lp/&quot;,</div>
+<div class="line">    &quot;master_file&quot;: &quot;master&quot;,</div>
+<div class="line">    &quot;structure_file&quot;: &quot;structure.txt&quot;</div>
+<div class="line">  }</div>
 <div class="line">}</div>
 </div><!-- fragment --><p>This gives the following information :</p>
 <ul>
 <li><code>lp_folder</code> is the path to the folder containing the output of the problem generation.</li>
 <li><code>master_file</code>is the name of the file containing this node's master problem (no file extension, file extension is implicitely deduced from <code>PROBLEMS_FORMAT</code> input option later.)</li>
-<li><code>structure_file</code> is the corresponding structure file (mostly useful if the name is not the default <code>structure.txt</code>).</li>
+<li><code>structure_file</code> is the corresponding structure file (mostly useful if the name is not the default <div class="fragment"><div class="line">.txt</div>
+</div><!-- fragment --> ).</li>
 <li><code>weights_file</code> points to the weights file outputted by the problem generation if it exists (optional). </li>
 </ul>
 </div></div><!-- contents -->

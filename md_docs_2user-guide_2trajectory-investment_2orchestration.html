@@ -144,16 +144,14 @@ $(function(){initNavTree('md_docs_2user-guide_2trajectory-investment_2orchestrat
 <h1><a class="anchor" id="autotoc_md267"></a>
 Usage</h1>
 <p>Usage of the launcher is :</p>
-<div class="fragment"><div class="line">-xpansion-launcher --trajectory --input-root &lt;path/to/input/root&gt; --input-file &lt;path/to/user/input/file&gt; --step &lt;step&gt; ...</div>
+<div class="fragment"><div class="line">-xpansion-launcher --trajectory --step &lt;step&gt; [-i &lt;path/to/input/root&gt;] [--input-file &lt;path/to/user/input/file&gt;] ...</div>
 </div><!-- fragment --><h1><a class="anchor" id="autotoc_md268"></a>
 Mandatory arguments</h1>
 <ul>
 <li><code>--trajectory</code> : Tells the program to run in trajectory context.</li>
-<li><code>--input-root</code> : Path to the folder that contains each node's corresponding antaresXpansion study.</li>
-<li><code>--input-file</code> : Path to the <a href="user-input.md#user-input-file">user input file</a>.</li>
 <li><code>--step</code>: Step of the workflow to execute, can be:<ul>
 <li><code>full</code> : Executes the full workflow, step by step (in the order described below).</li>
-<li><code>input_translation</code> : Parses and translates the <code>user_input.yaml</code> file, and writes the <code>master_merger_info.json</code> file. See : <a class="el" href="md_docs_2user-guide_2trajectory-investment_2user-input.html">User input parsing and translation</a> for more details.</li>
+<li><code>input_translation</code> : Parses and translates the <code>input-trajectory.yaml</code> file, and writes the <code>master_merger_info.json</code> file. See : <a class="el" href="md_docs_2user-guide_2trajectory-investment_2user-input.html">User input parsing and translation</a> for more details.</li>
 <li><code>problem_generation</code> : Runs the problem generation step on the studies in the tree, and writes the <code>nodal_lp_info.json</code> file. See : <a class="el" href="md_docs_2user-guide_2trajectory-investment_2multiple-problem-generation.html">Multiple problem generation</a> for more details.</li>
 <li><code>merge_master</code> : Merges the generated master problem and writes the <code>merged_master.&lt;mps/svf&gt;</code> and <code>merged_structure.txt</code> files. See : <a class="el" href="md_docs_2user-guide_2trajectory-investment_2merge-master.html">Master problem merging</a> for more details.</li>
 <li><code>merge_weights</code> : Merges the weights file generated during the problem generation into a single weights file that accurately weighs each subproblem depending on the node's study data and the node's information in the tree. See : <a class="el" href="md_docs_2user-guide_2trajectory-investment_2merge-weights.html">Generating a merged weights file</a> for more details.</li>
@@ -162,6 +160,14 @@ Mandatory arguments</h1>
 </ul>
 <h1><a class="anchor" id="autotoc_md269"></a>
 Optional arguments</h1>
+<h2><a class="anchor" id="autotoc_md270"></a>
+Input location</h2>
+<ul>
+<li><code>-i, --dataDir</code> : Path to the folder that contains each node's corresponding antaresXpansion study. If not specified, defaults to the current directory.</li>
+<li><code>--input-file</code> : Path to the <a href="user-input.md#user-input-file">user input file</a>. If not specified, the program will look for a file named <code>input-trajectory.yaml</code> in the <code>--dataDir</code> directory. If this file is not found, an error will be raised.</li>
+</ul>
+<h2><a class="anchor" id="autotoc_md271"></a>
+Execution options</h2>
 <ul>
 <li><code>--memory</code> : Tells the program wether to run the problem generation in memory mode. Only useful when <code>--step</code> is either <code>problem_generation</code> or <code>full</code>. <br  />
  <b>NOTE</b> : As of now, multiple problem generation is only implemented for memory mode, and thus this flag is necessary when running a part of the workflow that includes the problem generation.</li>
@@ -173,7 +179,7 @@ Optional arguments</h1>
 </div><!-- fragment --> and <code>resolution</code></li>
 </ul>
 <p>Note that this does not apply to the step <code>problem_generation</code>, where the solver and file format used in instead determined by the <code>solver</code> entry in <code>&lt;study&gt;/user/expansion/settings.ini</code>.</p>
-<h1><a class="anchor" id="autotoc_md270"></a>
+<h1><a class="anchor" id="autotoc_md272"></a>
 A note on intermediary files</h1>
 <p>As of now, most intermediary files will be written using a hardcoded default name in a folder name </p><div class="fragment"><div class="line">_files</div>
 </div><!-- fragment --><p> situated at : <code>&lt;INPUT_ROOT&gt;/intermediary_files</code>, and the drivers of the different steps will only look at those hardcoded locations when looking for those files. <br  />

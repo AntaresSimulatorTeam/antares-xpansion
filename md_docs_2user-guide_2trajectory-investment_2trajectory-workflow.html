@@ -16,7 +16,7 @@
 <meta name="twitter:title" content="Antares Xpansion" />
 <meta name="twitter:description" content="Investment simulations for Antares studies." />
 <!-- END twitter metadata -->
-<title>Antares Xpansion: trajectory-workflow</title>
+<title>Antares Xpansion: Trajectory investment workflow</title>
 <link href="tabs.css" rel="stylesheet" type="text/css"/>
 <link rel="icon" type="image/svg+xml" href="logo.drawio.svg"/>
 <script type="text/javascript" src="jquery.js"></script>
@@ -137,12 +137,12 @@ $(function(){initNavTree('md_docs_2user-guide_2trajectory-investment_2trajectory
 </div>
 
 <div><div class="header">
-  <div class="headertitle"><div class="title">trajectory-workflow</div></div>
+  <div class="headertitle"><div class="title">Trajectory investment workflow</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p># Trajectory investment workflow</p>
-<h2><a class="anchor" id="autotoc_md275"></a>
- Workflow</h2>
+<div class="textblock"><p><a class="anchor" id="autotoc_md277"></a></p>
+<h1><a class="anchor" id="autotoc_md278"></a>
+Workflow</h1>
 <p><img src="../../assets/media/trajectory/TrajectoryWorkflow.png" alt="" class="inline"/></p>
 <p>The complete workflow is composed of the following four "independent" steps : The first two steps are (order of execution does not matter) :</p>
 <ul>
@@ -162,83 +162,83 @@ $(function(){initNavTree('md_docs_2user-guide_2trajectory-investment_2trajectory
 <li><a class="el" href="md_docs_2user-guide_2trajectory-investment_2merge-master.html">Merging the generated master problems</a> : Generates the final merged master problem for this tree.</li>
 <li><a class="el" href="md_docs_2user-guide_2trajectory-investment_2merge-weights.html">Generating the final weights file</a> : Generates a weights file to take into account the properties of each node and its subproblems.</li>
 </ul>
-<h2><a class="anchor" id="autotoc_md276"></a>
- File structure</h2>
-<p>The expected file structure at the <code>--input-root</code> looks like :</p>
+<h1><a class="anchor" id="autotoc_md279"></a>
+File structure</h1>
+<p>The expected file structure at the <code>--dataDir</code> looks like :</p>
 <div class="fragment"><div class="line">.</div>
-<div class="line">├── user_input.yaml</div>
+<div class="line">├── input-trajectory.yaml</div>
 <div class="line">├── node_2030_study</div>
-<div class="line">│   ├── Desktop.ini</div>
-<div class="line">│   ├── input ...</div>
-<div class="line">│   ├── layers ...</div>
-<div class="line">│   ├── logs ...</div>
-<div class="line">│   ├── output ...</div>
-<div class="line">│   ├── settings ...</div>
-<div class="line">│   ├── study.antares</div>
-<div class="line">│   └── user</div>
-<div class="line">│       └── expansion</div>
-<div class="line">│           ├── candidates.ini</div>
-<div class="line">│           ├── capa ...</div>
-<div class="line">│           ├── constraints ...</div>
-<div class="line">│           ├── outer_loop ...</div>
-<div class="line">│           ├── sensitivity ...</div>
-<div class="line">│           ├── settings.ini</div>
-<div class="line">│           └── weights</div>
-<div class="line">│               └── weights.txt</div>
+<div class="line">│        ├── Desktop.ini</div>
+<div class="line">│        ├── input ...</div>
+<div class="line">│        ├── layers ...</div>
+<div class="line">│        ├── logs ...</div>
+<div class="line">│        ├── output ...</div>
+<div class="line">│        ├── settings ...</div>
+<div class="line">│        ├── study.antares</div>
+<div class="line">│        └── user</div>
+<div class="line">│            └── expansion</div>
+<div class="line">│                ├── candidates.ini</div>
+<div class="line">│                ├── capa ...</div>
+<div class="line">│                ├── constraints ...</div>
+<div class="line">│                ├── outer_loop ...</div>
+<div class="line">│                ├── sensitivity ...</div>
+<div class="line">│                ├── settings.ini</div>
+<div class="line">│                └── weights</div>
+<div class="line">│                    └── weights.txt</div>
 <div class="line">├── node_2040_study</div>
-<div class="line">│   ├── Desktop.ini</div>
-<div class="line">│   ├── input ...</div>
-<div class="line">│   ├── layers ...</div>
-<div class="line">│   ├── logs ...</div>
-<div class="line">│   ├── output ...</div>
-<div class="line">│   ├── settings ...</div>
-<div class="line">│   ├── study.antares</div>
-<div class="line">│   └── user</div>
-<div class="line">│       └── expansion</div>
-<div class="line">│           ├── candidates.ini</div>
-<div class="line">│           ├── capa ...</div>
-<div class="line">│           ├── constraints ...</div>
-<div class="line">│           ├── outer_loop ...</div>
-<div class="line">│           ├── sensitivity ...</div>
-<div class="line">│           ├── settings.ini</div>
-<div class="line">│           └── weights</div>
-<div class="line">│               └── weights.txt</div>
+<div class="line">│        ├── Desktop.ini</div>
+<div class="line">│        ├── input ...</div>
+<div class="line">│        ├── layers ...</div>
+<div class="line">│        ├── logs ...</div>
+<div class="line">│        ├── output ...</div>
+<div class="line">│        ├── settings ...</div>
+<div class="line">│        ├── study.antares</div>
+<div class="line">│        └── user</div>
+<div class="line">│            └── expansion</div>
+<div class="line">│                ├── candidates.ini</div>
+<div class="line">│                ├── capa ...</div>
+<div class="line">│                ├── constraints ...</div>
+<div class="line">│                ├── outer_loop ...</div>
+<div class="line">│                ├── sensitivity ...</div>
+<div class="line">│                ├── settings.ini</div>
+<div class="line">│                └── weights</div>
+<div class="line">│                    └── weights.txt</div>
 <div class="line">├── node_2050_A_study</div>
-<div class="line">│   ├── Desktop.ini</div>
-<div class="line">│   ├── input ...</div>
-<div class="line">│   ├── layers ...</div>
-<div class="line">│   ├── logs ...</div>
-<div class="line">│   ├── output ...</div>
-<div class="line">│   ├── settings ...</div>
-<div class="line">│   ├── study.antares</div>
-<div class="line">│   └── user</div>
-<div class="line">│       └── expansion</div>
-<div class="line">│           ├── candidates.ini</div>
-<div class="line">│           ├── capa ...</div>
-<div class="line">│           ├── constraints ...</div>
-<div class="line">│           ├── outer_loop ...</div>
-<div class="line">│           ├── sensitivity ...</div>
-<div class="line">│           ├── settings.ini</div>
-<div class="line">│           └── weights</div>
-<div class="line">│               └── weights.txt</div>
+<div class="line">│        ├── Desktop.ini</div>
+<div class="line">│        ├── input ...</div>
+<div class="line">│        ├── layers ...</div>
+<div class="line">│        ├── logs ...</div>
+<div class="line">│        ├── output ...</div>
+<div class="line">│        ├── settings ...</div>
+<div class="line">│        ├── study.antares</div>
+<div class="line">│        └── user</div>
+<div class="line">│            └── expansion</div>
+<div class="line">│                ├── candidates.ini</div>
+<div class="line">│                ├── capa ...</div>
+<div class="line">│                ├── constraints ...</div>
+<div class="line">│                ├── outer_loop ...</div>
+<div class="line">│                ├── sensitivity ...</div>
+<div class="line">│                ├── settings.ini</div>
+<div class="line">│                └── weights</div>
+<div class="line">│                    └── weights.txt</div>
 <div class="line">└── node_2050_B_study</div>
-<div class="line">    ├── Desktop.ini</div>
-<div class="line">    ├── input ...</div>
-<div class="line">    ├── layers ...</div>
-<div class="line">    ├── logs ...</div>
-<div class="line">    ├── output ...</div>
-<div class="line">    ├── settings ...</div>
-<div class="line">    ├── study.antares</div>
-<div class="line">    └── user</div>
-<div class="line">        └── expansion</div>
-<div class="line">            ├── candidates.ini</div>
-<div class="line">            ├── capa ...</div>
-<div class="line">            ├── constraints ...</div>
-<div class="line">            ├── outer_loop ...</div>
-<div class="line">            ├── sensitivity ...</div>
-<div class="line">            ├── settings.ini</div>
-<div class="line">            └── weights</div>
-<div class="line">                └── weights.txt</div>
+<div class="line">         ├── Desktop.ini</div>
+<div class="line">         ├── input ...</div>
+<div class="line">         ├── layers ...</div>
+<div class="line">         ├── logs ...</div>
+<div class="line">         ├── output ...</div>
+<div class="line">         ├── settings ...</div>
+<div class="line">         ├── study.antares</div>
+<div class="line">         └── user</div>
+<div class="line">             └── expansion</div>
+<div class="line">                 ├── candidates.ini</div>
+<div class="line">                 ├── capa ...</div>
+<div class="line">                 ├── constraints ...</div>
+<div class="line">                 ├── outer_loop ...</div>
+<div class="line">                 ├── sensitivity ...</div>
+<div class="line">                 ├── settings.ini</div>
+<div class="line">                 └── weights</div>
+<div class="line">                     └── weights.txt</div>
 </div><!-- fragment --> </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
