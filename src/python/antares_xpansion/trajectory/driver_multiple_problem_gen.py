@@ -1,16 +1,16 @@
-from pathlib import Path
-from dataclasses import dataclass
-
-import yaml
+import os
 import subprocess
 import sys
-import os
+from dataclasses import dataclass
+from pathlib import Path
+from typing import List, Dict
 
+import yaml
+from antares_xpansion.config_loader import XpansionSettingsReader
+from antares_xpansion.general_data_processor import GeneralDataProcessor
+from antares_xpansion.logger import step_logger
 from antares_xpansion.trajectory.user_input_keys import TrajectoryInputKeys as InKeys
 from antares_xpansion.xpansionConfig import XpansionConfigConstants
-from antares_xpansion.config_loader import XpansionSettingsReader
-
-from typing import List, Dict
 
 
 @dataclass
@@ -45,6 +45,7 @@ class MultipleProblemGenerationDriver:
         pass
 
     def __init__(self, data: MultipleProblemGenerationData):
+        self.logger = step_logger(__name__, __class__.__name__)
         self.exe_path = data.exe_path
         self.input_root = data.input_root
         self.user_input_file = data.user_input_file
@@ -65,6 +66,7 @@ class MultipleProblemGenerationDriver:
         # Only use one mode of formulation : either all relaxed or all integer
         # Get this value from the user file in _read_data_and_prepare_input_files
         self.formulation: str = "relaxed"
+        self.settings = "settings"
 
     def _read_data_and_prepare_input_files(self):
         """
@@ -180,15 +182,58 @@ class MultipleProblemGenerationDriver:
                 % returned_l.returncode
             )
 
+    def _update_study_settings(self, study_path: Path, memory_mode: bool = True):
+        """
+        Update general data settings for a single study
+        Similar to XpansionDriver.update_study_settings
+        """
+        settings_dir = os.path.normpath(
+            os.path.join(study_path, self.settings)
+        )
+        # For trajectory mode, we assume is_accurate=False (Economy mode)
+        # This can be made configurable if needed
+        gen_data_proc = GeneralDataProcessor(settings_dir, is_accurate=False)
+        gen_data_proc.backup_data()
+        gen_data_proc.change_general_data_file_to_configure_antares_execution(
+            memory_mode
+        )
+        # Note: backup is reverted after problem generation in _revert_all_studies_settings()
+
+    def _update_all_studies_settings(self):
+        """
+        Update general data settings for all studies in the trajectory
+        """
+        self.logger.info("Updating study settings for all studies in trajectory")
+        for node, study_path in self.node_to_studies.items():
+            self.logger.info(f"Updating settings for study at node {node}: {study_path}")
+            self._update_study_settings(study_path, memory_mode=self.memory)
+
+    def _revert_all_studies_settings(self):
+        """
+        Revert general data settings for all studies in the trajectory
+        """
+        self.logger.info("Reverting study settings for all studies in trajectory")
+        for node, study_path in self.node_to_studies.items():
+            self.logger.info(f"Reverting settings for study at node {node}: {study_path}")
+            settings_dir = os.path.normpath(
+                os.path.join(study_path, self.settings)
+            )
+            gen_data_proc = GeneralDataProcessor(settings_dir, is_accurate=False)
+            gen_data_proc.revert_backup_data()
+
     def launch(self):
         # Change working directory to input root.
         previous_dir = os.getcwd()
         os.chdir(self.input_root)
         # Run the driver
-        self._read_data_and_prepare_input_files()
-        self._write_input_files()
-        self._launch_executable()
-
-        os.chdir(previous_dir)
+        try:
+            self._read_data_and_prepare_input_files()
+            self._update_all_studies_settings()
+            self._write_input_files()
+            self._launch_executable()
+        finally:
+            # Always revert the study settings, even if an error occurs
+            self._revert_all_studies_settings()
+            os.chdir(previous_dir)
 
         return
