@@ -157,7 +157,7 @@ $$
 \forall n \in \text{nodes}, \quad \forall c \in \text{candidates}, \quad dx_{n, c}^+ \leq \text{value}
 $$
 
-###```type: max_cumulative_investment_per_node```  
+### ```type: max_cumulative_investment_per_node```
 Example :
 
 ```yaml
@@ -205,7 +205,7 @@ $$
 **Note :** as we always have $\forall n \in T, \quad \forall c \in C, \quad dx^{+/-}_{n,c} \geq 0$, regardless of the
 trajectory constraints added by the user, this last example ends up forbidding any kind of retirement, thus its label.
 
-###```type: max_cumulative_retirement_per_node```  
+### ```type: max_cumulative_retirement_per_node```  
 Example :
 
 ```yaml
@@ -226,7 +226,7 @@ $$
 \forall n \in \text{nodes}, \quad \sum_{c \in \text{candidates}} dx_{n, c}^- \leq \text{value}
 $$
 
-###```type: min_investment_per_candidate_per_node```  
+### ```type: min_investment_per_candidate_per_node```  
 Example :
 
 ```yaml
@@ -248,7 +248,7 @@ $$
 \forall n \in \text{nodes}, \quad \forall{c \in \text{candidates}} \quad dx_{n, c}^+ \geq \text{value}
 $$
 
-###```type: min_retirement_per_candidate_per_node```  
+### ```type: min_retirement_per_candidate_per_node```  
 Example :
 
 ```yaml
