@@ -10,13 +10,20 @@ add_library(grid_evaluator_lib STATIC)
 
 target_sources(grid_evaluator_lib PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/GridEvaluator.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/GridCollection.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ReservoirManagement.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/grid_evaluator/GridEvaluator.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/grid_evaluator/GridCollection.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/grid_evaluator/ReservoirManagement.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/grid_evaluator/Interpolator.h
 )
 
 target_link_libraries(grid_evaluator_lib
         PUBLIC
         antaresXpansion::benders_core
         antaresXpansion::output_core
+        Antares::solver_api
+        antaresXpansion::lp_namer_model
 )
 
 target_include_directories(grid_evaluator_lib

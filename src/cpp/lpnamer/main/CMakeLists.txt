@@ -15,10 +15,12 @@ add_library(problem_generation_main)
 target_sources(problem_generation_main PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/ConfigurationManager.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ProblemGeneration.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ProblemGenerationForWaterValueCalculation.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/ProblemGenerationExeOptions.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/Version.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/main/ConfigurationManager.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/main/ProblemGeneration.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/main/ProblemGenerationForWaterValueCalculation.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/lpnamer/main/ProblemGenerationOptions.h
         ${CMAKE_CURRENT_SOURCE_DIR}/private/Version.h
 )
@@ -34,6 +36,7 @@ target_link_libraries(problem_generation_main
         PUBLIC
         ${PROJECT_NAME}::lp_namer_helper
         ${PROJECT_NAME}::lp_namer_input_reader
+        ${PROJECT_NAME}::grid_evaluator_lib
         Antares::antares-solver-simulation
         ${PROJECT_NAME}::core
 )

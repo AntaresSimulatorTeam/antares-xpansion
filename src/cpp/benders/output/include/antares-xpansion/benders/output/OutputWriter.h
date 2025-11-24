@@ -103,13 +103,13 @@ struct GridPointData
 
 typedef std::vector<GridPointData> GridPointsData;
 
-struct VariationDeNiveauxDeStockKey
+struct PointWeekScenarioKey
 {
-    int scenario;
-    int week;
     Point rhsValues;
+    unsigned int week;
+    unsigned int scenario;
 
-    bool operator<(const VariationDeNiveauxDeStockKey& other) const
+    bool operator<(const PointWeekScenarioKey& other) const
     {
         if (scenario != other.scenario)
         {
@@ -122,7 +122,7 @@ struct VariationDeNiveauxDeStockKey
         return rhsValues < other.rhsValues;
     }
 
-    bool operator==(const VariationDeNiveauxDeStockKey& other) const
+    bool operator==(const PointWeekScenarioKey& other) const
     {
         return scenario == other.scenario && week == other.week && rhsValues == other.rhsValues;
     }
@@ -154,9 +154,15 @@ public:
     {
         return map.end();
     }
+
+    auto get() const
+    {
+        return map;
+    }
 };
 
-typedef ConcurrentInsertionMap<VariationDeNiveauxDeStockKey, double> VariationDeNiveauxDeStockData;
+typedef std::map<int /*grid id*/, std::map<PointWeekScenarioKey, double>>
+  VariationDeNiveauxDeStockData;
 
 struct ProblemData
 {

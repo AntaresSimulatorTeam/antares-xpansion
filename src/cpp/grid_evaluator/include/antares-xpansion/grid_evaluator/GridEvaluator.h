@@ -1,73 +1,59 @@
 #pragma once
 
-#include "antares-xpansion/benders/benders_core/BendersMathLogger.h"
-#include "antares-xpansion/benders/benders_core/SubproblemCut.h"
+#include <functional>
+
+#include <antares/solver/lps/LpsFromAntares.h>
+
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
+#include "antares-xpansion/grid_evaluator/GridCollection.h"
+#include "antares-xpansion/lpnamer/model/Problem.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 
-/// @brief key constraint name, value vector of rhs values
-using ConstraintMap = std::map<std::string, std::vector<double>>;
-/// @brief key area name, value constraint map
-using AreaConstraintMaps = std::map<std::string, ConstraintMap>;
+constexpr char GRID_EVALUATOR_LOGGER_CONTEXT[] = "GridEvaluator";
+
 /// @brief vector of maps (key constraint name, value rhs value)
 using ConstraintCombos = std::vector<std::map<std::string, double>>;
-
-struct ScenarioAndWeek
-{
-    int scenario;
-    int week;
-
-    bool operator<(const ScenarioAndWeek& other) const
-    {
-        return std::tie(scenario, week) < std::tie(other.scenario, other.week);
-    }
-};
 
 /// @brief Class to compute Stock levels variation
 class GridEvaluator
 {
 public:
     GridEvaluator(Logger logger,
-                  std::shared_ptr<Output::JsonWriter> writer,
-                  std::filesystem::path path_to_data,
-                  ProblemsFormat data_format);
-    void launch();
-    void setThreads(int nbThreads);
+                  std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> problems,
+                  GridDefinition& grid_definition,
+                  std::string solverName,
+                  int nbThreads = 1);
+    virtual std::map<Output::PointWeekScenarioKey, double> ComputeCosts();
 
-    Output::VariationDeNiveauxDeStockData
-      variationDeNiveauxDeStockData; //!< Data to write in the output file
+private:
+    Output::ConcurrentInsertionMap<Output::PointWeekScenarioKey, double>
+      variationDeNiveauxDeStockData;
 
 protected:
-    void InitSubProblems();
-    bool IsSubproblemUsed(const std::string& subPbName) const;
     void Run();
-    void ProcessSubproblem(const std::string& subPbName);
-    void ProcessSubproblemsParallel(const std::vector<std::string>& subPbNames, int nbThreads);
-    std::map<int, AreaConstraintMaps> GenerateRHSGridValues(std::string subPbName,
-                                                            SubproblemWorkerPtr subPbWorker);
+    void ProcessSubproblem(const Antares::Solver::WeeklyProblemId,
+                           std::shared_ptr<Problem> subProblem);
     void SetConstraintsRHSValues(const std::map<std::string, double>& rhsValues,
-                                 SubproblemWorkerPtr subPbWorker);
-    std::filesystem::path GetSubproblemPath(const std::string& subPbName) const;
-    SubproblemWorkerPtr AddSubproblem(const std::string& subPbName);
-    double SolveSubproblem(SubproblemWorkerPtr subPbWorker);
-    std::string GetConstraintName(const std::string& subPbName,
+                                 std::shared_ptr<Problem> subProblem);
+    double SolveSubproblem(std::shared_ptr<Problem> subProblem);
+    std::string GetConstraintName(const Antares::Solver::WeeklyProblemId id,
                                   const std::string& area,
                                   const std::string& constraint) const;
-    ScenarioAndWeek GetPbInfo(const std::string& pbName) const;
     ConstraintCombos GenerateConstraintProduct(const ConstraintMap& constraints);
-    ConstraintCombos GenerateSubPbCombos(const std::string& subPbName,
+    ConstraintCombos GenerateSubPbCombos(const Antares::Solver::WeeklyProblemId subProblemId,
                                          const AreaConstraintMaps& areas);
-    void WriteOutput();
 
 protected:
-    std::filesystem::path xpansionFolderPath; ///< Path to the xpansion folder
-    std::vector<std::string> subPbNames;      ///< List of subproblems names
+    std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
+      problems;                     ///< map of subproblems
+    GridDefinition& gridDefinition; ///< Grid definition
+    std::string solverName;         ///< Solver name
 
-    ProblemsFormat problemsFormat; ///< Format of the problems
-    int nbThreads = 1;             ///< Number of threads to use
+    int nbThreads; ///< Number of threads to use
 
-    SolverLogManager solver_log_manager_;
-    Logger _logger;
-    std::shared_ptr<Output::JsonWriter> _writer;
+    SolverLogManager solver_log_manager;
+    Logger logger;
+
+    friend class BellmanValues;
 };

@@ -23,5 +23,6 @@ inline ProblemsFormat problemsFormatFromString(const std::string& str)
     {
         return ProblemsFormat::OPTIMIZED;
     }
-    throw std::runtime_error("Unknown ProblemsFormat: " + str);
+    throw std::runtime_error("Unknown ProblemsFormat: " + str
+                             + ". Possible choices are: mps, optimized");
 }

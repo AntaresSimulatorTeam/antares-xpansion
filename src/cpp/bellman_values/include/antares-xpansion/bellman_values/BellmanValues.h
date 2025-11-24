@@ -1,0 +1,30 @@
+#pragma once
+
+#include <functional>
+
+#include "antares-xpansion/grid_evaluator/GridEvaluator.h"
+
+/// @brief Class to compute Bellman values
+class BellmanValues
+{
+public:
+    BellmanValues(GridEvaluator& gridEvaluator, const ReservoirManagement& reservoirManagement);
+
+    std::vector<std::vector<double>> compute(int nbLevels = 10);
+
+    const std::vector<double>& getLevels() const;
+
+private:
+    double solveWeeklyProblemWithReward(int week,
+                                        int endWeek,
+                                        int scenario,
+                                        double level,
+                                        const std::vector<double>& X,
+                                        const std::vector<double>& costs,
+                                        const std::function<double(double)>& V_fut);
+
+protected:
+    GridEvaluator& gridEvaluator;                   ///< Grid evaluator
+    const ReservoirManagement& reservoirManagement; ///< Reservoir management
+    std::vector<double> levels;                     ///< Levels of the reservoir
+};

@@ -110,8 +110,7 @@ std::string getCurrentTimestamp()
 }
 } // namespace
 
-std::filesystem::path ConfigurationManager::generateOutputName(
-  const std::filesystem::path& study) const
+std::filesystem::path ConfigurationManager::generateOutputName(const std::filesystem::path& study)
 {
     return study / "output" / getCurrentTimestamp();
 }
