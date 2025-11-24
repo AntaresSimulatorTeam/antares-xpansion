@@ -137,6 +137,7 @@ class TrajectoryInvestmentDriver:
             oversubscribe=self.config.oversubsribe,
             allow_run_as_root=self.config.allow_run_as_root,
             master_formulation=self.input_translation_driver.get_master_formulation(),
+            user_input_file=self.config.input_file,
         )
 
         self.resolution_driver = TrajectoryResolutionDriver(res_data)

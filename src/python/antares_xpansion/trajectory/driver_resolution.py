@@ -2,10 +2,15 @@ import json
 import os
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Dict
 
+import yaml
 from antares_xpansion.benders_driver import BendersDriver, SolversExe
 from antares_xpansion.config_loader import XpansionSettingsReader
+from antares_xpansion.logger import step_logger
 from antares_xpansion.optimisation_keys import OptimisationKeys
+from antares_xpansion.study_output_cleaner import StudyOutputCleaner
+from antares_xpansion.trajectory.user_input_keys import TrajectoryInputKeys as InKeys
 from antares_xpansion.xpansionConfig import XpansionConfigConstants
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
 
@@ -24,6 +29,7 @@ class TrajectoryResolutionData:
     benders_options_file: Path
     merged_weights_file: Path
     output_folder: Path
+    user_input_file: Path
     # Optimization parameters (arguments)
     master_name: str
     structure_file: str
@@ -44,12 +50,58 @@ class TrajectoryResolutionDriver:
 
     def __init__(self, data: TrajectoryResolutionData):
         self.data = data
+        self.logger = step_logger(__name__, __class__.__name__)
 
         self.benders_driver = BendersDriver(
             SolversExe(data.benders_exe, data.frontal_exe, data.outer_loop_exe),
             data.benders_options_file.resolve(),
             data.mpi_exe,
         )
+
+    def _read_node_to_studies(self) -> Dict[str, Path]:
+        """
+        Read the user input file to get the mapping of node names to study paths
+        """
+        node_to_studies: Dict[str, Path] = {}
+        with open(self.data.user_input_file, encoding="utf-8") as file:
+            user_data = yaml.full_load(file)
+            studies: Dict[str, str] = user_data[InKeys.global_key()][
+                InKeys.studies_key()
+            ]
+            for node, pathstr in studies.items():
+                path = Path(pathstr)
+                # Make path relative to input_root if it's not absolute
+                if not path.is_absolute():
+                    path = self.data.input_root / path
+                node_to_studies[node] = path
+        return node_to_studies
+
+    def _clean_all_nodes_lp_directories(self):
+        """
+        Clean the lp directory of each node/study after resolution
+        Similar to the standard memory workflow
+        """
+        self.logger.info("Cleaning lp directories for all trajectory nodes")
+        node_to_studies = self._read_node_to_studies()
+        for node, study_path in node_to_studies.items():
+            # Find the output directory for this study
+            # The output should be under study_path/output
+            output_dir = study_path / "output"
+            if output_dir.is_dir():
+                # Find the last simulation output
+                # Typically in the format "YYYYMMDD-HHmmSS" or similar
+                # We need to find the most recent one
+                output_subdirs = [d for d in output_dir.iterdir() if d.is_dir()]
+                if output_subdirs:
+                    # Sort by modification time, get the most recent
+                    latest_output = max(output_subdirs, key=lambda d: d.stat().st_mtime)
+                    self.logger.info(f"Cleaning lp directory for node '{node}' at {latest_output}")
+                    # Clean the lp directory in this output
+                    StudyOutputCleaner.clean_benders_step(latest_output)
+                else:
+                    self.logger.warning(f"No output subdirectories found for node '{node}' at {output_dir}")
+            else:
+                self.logger.warning(f"Output directory not found for node '{node}' at {output_dir}")
 
     def prepare_resolution_options_file(self):
         """
@@ -198,5 +250,8 @@ class TrajectoryResolutionDriver:
             oversubscribe=self.data.oversubscribe,
             allow_run_as_root=self.data.allow_run_as_root,
         )
+
+        # Clean the lp directories of all nodes after resolution
+        self._clean_all_nodes_lp_directories()
 
         os.chdir(previous_dir)
