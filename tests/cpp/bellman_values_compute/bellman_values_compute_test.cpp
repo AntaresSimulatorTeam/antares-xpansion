@@ -1,9 +1,10 @@
 #include <algorithm>
 
-#include "LoggerStub.h"
 #include "RandomDirGenerator.h"
 #include "antares-xpansion/bellman_values/BellmanValues.h"
 #include "antares-xpansion/benders/benders_core/BendersMathLogger.h"
+#include "antares-xpansion/benders/logger/Master.h"
+#include "antares-xpansion/benders/logger/User.h"
 #include "antares-xpansion/benders/output/JsonWriter.h"
 #include "antares-xpansion/lpnamer/main/ConfigurationManager.h"
 #include "antares-xpansion/lpnamer/main/ProblemGenerationForWaterValueCalculation.h"
@@ -27,7 +28,12 @@ public:
 protected:
     void SetUp() override
     {
-        logger = std::make_shared<Xpansion::Test::LoggerNOOPStub>();
+        // adding a new logger that actually logs
+        Logger std_out_logger;
+        std_out_logger = std::make_shared<xpansion::logger::User>(std::cerr);
+        auto master_logger = std::make_shared<xpansion::logger::Master>();
+        master_logger->addLogger(std_out_logger);
+        logger = master_logger;
         original_dir = std::filesystem::current_path();
     }
 
@@ -181,18 +187,12 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
     auto grid = grid_collection.gridDefinitions[0];
     ReservoirManagement reservoir_management(grid_collection.reservoirs.begin()->second, 0, 0, 0);
 
-    auto options_parser = ProblemGenerationExeOptions();
-    auto config_manager = ConfigurationManager(options_parser);
-
     ConfigurationManager::ConfigDirectories config_dirs{
       .study_dir = tmpDir,
-      .simulation_dir = config_manager.generateOutputName(tmpDir),
+      .simulation_dir = ConfigurationManager::generateOutputName(tmpDir),
     };
 
-    ProblemGenerationForWaterValueCalculation pbg(config_dirs,
-                                                  //   reservoir_management,
-                                                  logger,
-                                                  solverName);
+    ProblemGenerationForWaterValueCalculation pbg(config_dirs, logger, solverName);
     auto problems = pbg.updateProblems(grid, reservoir_management);
 
     auto evaluator = GridEvaluator(logger, problems, grid, solverName, 8);
@@ -222,18 +222,12 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
                                              3000,
                                              3000);
 
-    auto options_parser = ProblemGenerationExeOptions();
-    auto config_manager = ConfigurationManager(options_parser);
-
     ConfigurationManager::ConfigDirectories config_dirs{
       .study_dir = tmpDir,
-      .simulation_dir = config_manager.generateOutputName(tmpDir),
+      .simulation_dir = ConfigurationManager::generateOutputName(tmpDir),
     };
 
-    ProblemGenerationForWaterValueCalculation pbg(config_dirs,
-                                                  //   reservoir_management,
-                                                  logger,
-                                                  solverName);
+    ProblemGenerationForWaterValueCalculation pbg(config_dirs, logger, solverName);
     auto problems = pbg.updateProblems(grid, reservoir_management);
 
     auto evaluator = GridEvaluator(logger, problems, grid, solverName, 8);
@@ -264,18 +258,12 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenaltiesWithFinalLevel)
                                              3000,
                                              true);
 
-    auto options_parser = ProblemGenerationExeOptions();
-    auto config_manager = ConfigurationManager(options_parser);
-
     ConfigurationManager::ConfigDirectories config_dirs{
       .study_dir = tmpDir,
-      .simulation_dir = config_manager.generateOutputName(tmpDir),
+      .simulation_dir = ConfigurationManager::generateOutputName(tmpDir),
     };
 
-    ProblemGenerationForWaterValueCalculation pbg(config_dirs,
-                                                  //   reservoir_management,
-                                                  logger,
-                                                  solverName);
+    ProblemGenerationForWaterValueCalculation pbg(config_dirs, logger, solverName);
     auto problems = pbg.updateProblems(grid, reservoir_management);
 
     auto evaluator = GridEvaluator(logger, problems, grid, solverName, 8);

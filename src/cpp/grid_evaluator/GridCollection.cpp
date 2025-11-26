@@ -55,6 +55,11 @@ GridCollection::GridCollection(const std::filesystem::path& filePath)
             loadReservoirManagement(filePath.parent_path(), areaName);
         }
     }
+    // it is still required to set default reservoirs and generate grid values
+    for (auto& gridDefinition: gridDefinitions)
+    {
+        gridDefinition.setReservoirs(reservoirs);
+    }
 }
 
 void GridCollection::loadReservoirManagement(const std::filesystem::path& studyPath,

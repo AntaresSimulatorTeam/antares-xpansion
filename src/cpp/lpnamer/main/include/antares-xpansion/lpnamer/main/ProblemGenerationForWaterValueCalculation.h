@@ -46,7 +46,7 @@ public:
     std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> updateProblems(
       const GridDefinition& gridDefinition,
       const ReservoirManagement& reservoirManagement,
-      const std::optional<std::string>& areaName = std::nullopt);
+      const std::string& areaName = "");
     void initializeOptimalTrajectories(std::shared_ptr<GridCollection> gridCollection) const;
     static WaterValueComputationMode getComputationModeFromGrid(
       const GridCollection& grid,
@@ -58,17 +58,24 @@ public:
     }
 
 private:
+    /// @brief Function that cleans all problems to repare them to compute Bellman values
+    /// @param xpansion_output_dir output folder
+    /// @param log_file_path path to the log file
+    /// @param gridDefinition the full grid definition
+    /// @param reservoirManagement an instance of ReservoirManagement holding all reservoirs
+    /// @param areaName The optional name of the area, used only in a multistock context
+    /// @return
     std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
     cleanProblemsForBellmanCalculations(const std::filesystem::path& xpansion_output_dir,
                                         const std::filesystem::path& log_file_path,
                                         const GridDefinition& gridDefinition,
                                         const ReservoirManagement& reservoirManagement,
-                                        const std::optional<std::string>& areaName);
+                                        const std::string& areaName);
 
     void cleanProblemForBellmanCalculations(std::shared_ptr<Problem> problem,
                                             const GridDefinition& gridDefinition,
                                             const ReservoirManagement& reservoirManagement,
-                                            const std::optional<std::string>& areaName,
+                                            const std::string& areaName,
                                             std::string& pbName,
                                             Antares::Solver::WeeklyProblemId pbId);
     void cleanReservoirConstraints(std::shared_ptr<Problem> problem,

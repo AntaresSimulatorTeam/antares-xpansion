@@ -236,7 +236,15 @@ int main(int argc, char** argv)
         Output::VariationDeNiveauxDeStockData variationDeNiveauxDeStockData;
 
         // modify all reservoirs for the grid collection here with optimal trajectories
-        pbg.initializeOptimalTrajectories(gridCollection);
+        if (pbg.getComputationMode()
+              == ProblemGenerationForWaterValueCalculation::WaterValueComputationMode::
+                SEQUENTIAL_UPDATE_TRAJECTORY
+            || pbg.getComputationMode()
+                 == ProblemGenerationForWaterValueCalculation::WaterValueComputationMode::
+                   SEQUENTIAL_IGNORE_TRAJECTORY)
+        {
+            pbg.initializeOptimalTrajectories(gridCollection);
+        }
 
         // here: loop on all grids
         for (auto& grid: gridCollection->gridDefinitions)
