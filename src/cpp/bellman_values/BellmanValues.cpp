@@ -78,15 +78,15 @@ std::set<unsigned int> getWeeks(const MapType& container)
 /// @return The bellman values for each week
 std::vector<std::vector<double>> BellmanValues::compute(int nbLevels)
 {
-    auto variationDeNiveauxDeStockData = gridEvaluator.ComputeCosts();
+    auto variationDeNiveauxDeStockData = gridEvaluator.ComputeCostsAndDuals();
 
     levels = linspace(0.0, reservoirManagement.reservoir.capacity, nbLevels);
     std::map<Antares::Solver::WeeklyProblemId, std::vector<double>> V;
     std::map<Antares::Solver::WeeklyProblemId, std::vector<double>> costs;
 
-    for (const auto& [key, cost]: variationDeNiveauxDeStockData)
+    for (const auto& [key, data]: variationDeNiveauxDeStockData)
     {
-        costs[{key.scenario - 1, key.week - 1}].push_back(cost);
+        costs[{key.scenario - 1, key.week - 1}].push_back(data.cost);
     }
 
     auto scenarios = getYears(costs);
@@ -124,13 +124,13 @@ std::vector<std::vector<double>> BellmanValues::compute(int nbLevels)
                                 .at(gridDef.gridElements[0].name);
             for (size_t i = 0; i < levels.size(); ++i)
             {
-                double Vu = solveWeeklyProblemWithReward(week,
-                                                         endWeek,
-                                                         scenario,
-                                                         levels[i],
-                                                         levels,
-                                                         costs[{scenario, week}],
-                                                         V_fut());
+                double Vu = solveWeeklyProblemWithCost(week,
+                                                       endWeek,
+                                                       scenario,
+                                                       levels[i],
+                                                       levels,
+                                                       costs[{scenario, week}],
+                                                       V_fut());
                 V[{scenario, week}][i] += Vu;
             }
         }
@@ -167,13 +167,13 @@ std::vector<std::vector<double>> BellmanValues::compute(int nbLevels)
 /// @param costs the costs for each scenario and week
 /// @param V_fut the cost function for the next week
 /// @return The Bellvalue for a given week and scenario and level of the reservoir
-double BellmanValues::solveWeeklyProblemWithReward(int week,
-                                                   int endWeek,
-                                                   int scenario,
-                                                   double level,
-                                                   const std::vector<double>& X,
-                                                   const std::vector<double>& costs,
-                                                   const std::function<double(double)>& V_fut)
+double BellmanValues::solveWeeklyProblemWithCost(int week,
+                                                 int endWeek,
+                                                 int scenario,
+                                                 double level,
+                                                 const std::vector<double>& X,
+                                                 const std::vector<double>& costs,
+                                                 const std::function<double(double)>& V_fut)
 {
     double Vu = std::numeric_limits<double>::max();
     const Reservoir& reservoir = reservoirManagement.reservoir;

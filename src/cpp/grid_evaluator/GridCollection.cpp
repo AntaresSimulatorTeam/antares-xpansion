@@ -2,6 +2,7 @@
 #include "antares-xpansion/grid_evaluator/GridCollection.h"
 
 #include <fstream>
+#include <ranges>
 
 /// @brief Checks if a gridElement is valid
 /// - 0.0 <= min <= 1.0 AND 0.0 <= max <= 1.0 AND min <= max
@@ -82,11 +83,12 @@ GridCollection::GridCollection(const std::filesystem::path& filePath)
         double max = std::stod(tokens[6]);
         double step = std::stod(tokens[7]);
 
-        if (gridID <= gridDefinitions.size())
+        if (!gridDefinitions.contains(gridID))
         {
-            gridDefinitions.push_back({gridID, reservoirs, {}, {}});
+            GridDefinition gridDef{gridID, reservoirs, {}, {}};
+            gridDefinitions.emplace(gridID, gridDef);
         }
-        gridDefinitions[gridID].addGridElement(pbName, type, cstName, areaName, min, max, step);
+        gridDefinitions.at(gridID).addGridElement(pbName, type, cstName, areaName, min, max, step);
 
         if (!reservoirs.contains(areaName))
         {
@@ -94,7 +96,7 @@ GridCollection::GridCollection(const std::filesystem::path& filePath)
         }
     }
 
-    for (auto& gridDefinition: gridDefinitions)
+    for (auto& gridDefinition: gridDefinitions | std::views::values)
     {
         gridDefinition.generateGridValues();
     }
