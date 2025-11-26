@@ -161,28 +161,38 @@ def run_trajectory_mode(context):
     """Run the trajectory investment workflow (full step) and load outputs"""
     # Ensure tmp study exists and determine input file
     input_root = Path(context.tmp_study)
-    # Default trajectory user input file name for tests
-    user_input_file = input_root / 'user_input_XpansionTrajectory.yaml'
+    # Default trajectory user input file name
+    user_input_file = input_root / 'input-trajectory.yaml'
 
     if not user_input_file.exists():
-        # Fallback to common names if needed
-        for candidate in ['user_input_XpansionTrajectory.yml', 'trajectory.yaml', 'trajectory.yml']:
+        # Fallback to common names if needed for backward compatibility
+        candidates = [
+            'user_input_XpansionTrajectory.yaml',
+            'user_input_XpansionTrajectory.yml',
+            'trajectory.yaml',
+            'trajectory.yml'
+        ]
+        for candidate in candidates:
             cand = input_root / candidate
             if cand.exists():
                 user_input_file = cand
                 break
 
     # Build trajectory launch command using the unified launcher with --trajectory flag
+    # Note: -i (--dataDir) and --input-file are now optional, but we still specify them for clarity in tests
     command = [
         sys.executable,
         '../../src/python/launch.py',
         '--trajectory',
         '--installDir', str(get_conf('DEFAULT_INSTALL_DIR')),
-        '--input-root', str(input_root),
-        '--input-file', str(user_input_file),
+        '-i', str(input_root),
         '--step', 'full',
         '--memory'
     ]
+
+    # Only add --input-file if it's not the default name to test the automatic discovery
+    if user_input_file.name != 'input-trajectory.yaml':
+        command.extend(['--input-file', str(user_input_file)])
 
     # Allow running as root inside some CI when configured
     if get_conf('allow_run_as_root'):

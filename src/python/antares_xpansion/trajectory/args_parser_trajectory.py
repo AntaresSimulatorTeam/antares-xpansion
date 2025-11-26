@@ -1,14 +1,11 @@
 import argparse
-
-from antares_xpansion.trajectory.trajectory_config import TrajectoryInputParameters
-
-from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
-from antares_xpansion.launcher_options_default_value import LauncherOptionsDefaultValues
-
+import warnings
+from pathlib import Path
 from typing import List
 
-from pathlib import Path
-import warnings
+from antares_xpansion.launcher_options_default_value import LauncherOptionsDefaultValues
+from antares_xpansion.launcher_options_keys import LauncherOptionsKeys
+from antares_xpansion.trajectory.trajectory_config import TrajectoryInputParameters
 
 
 class TrajectoryLauncherOptionsKeys:
@@ -37,7 +34,7 @@ class TrajectoryLauncherOptionsKeys:
         return "solver"
 
 
-class TrajectroyLauncherOptionsDefaultValues:
+class TrajectoryLauncherOptionsDefaultValues:
     @staticmethod
     def problems_format_default():
         return "saved"
@@ -45,6 +42,10 @@ class TrajectroyLauncherOptionsDefaultValues:
     @staticmethod
     def solver_default():
         return "Xpress"
+
+    @staticmethod
+    def default_input_file_name():
+        return "input-trajectory.yaml"
 
 
 class TrajectoryArgsParser:
@@ -59,16 +60,19 @@ class TrajectoryArgsParser:
     def _initialize_parser(self):
         # Minimal arguments for now
         self.parser.add_argument(
-            "--input-root",
+            "-i",
+            "--dataDir",
             dest=TrajectoryLauncherOptionsKeys.input_root_key(),
-            help="Input root, folder containing all the studies in the tree.",
-            required=True,
+            help="Folder containing all the studies in the tree. Defaults to current directory.",
+            required=False,
+            default=None,
         )
         self.parser.add_argument(
             "--input-file",
             dest=TrajectoryLauncherOptionsKeys.input_file_key(),
-            help="User data input file",
-            required=True,
+            help="User data input file. If not specified, looks for 'input-trajectory.yaml' in the input-root folder.",
+            required=False,
+            default=None,
         )
         self.parser.add_argument(
             "--step",
@@ -103,7 +107,7 @@ class TrajectoryArgsParser:
             type=str,
             choices=["saved", "mps"],
             help="Format under which problem files should be read and written - 'saved' default only compatible with solver 'xpress'.",
-            default=TrajectroyLauncherOptionsDefaultValues.problems_format_default(),
+            default=TrajectoryLauncherOptionsDefaultValues.problems_format_default(),
         )
         # What type of solver should we use to perform problem merging and resolution
         # (does not apply to problem generation, where the solver used is given in 'user/expansion/settings.ini')
@@ -114,7 +118,7 @@ class TrajectoryArgsParser:
             type=str,
             choices=["Xpress", "Cbc", "Coin"],
             help="Name of the solver used to perform problem merging and resolution - does not apply to problem generation.",
-            default=TrajectroyLauncherOptionsDefaultValues.solver_default(),
+            default=TrajectoryLauncherOptionsDefaultValues.solver_default(),
         )
 
         # Args for the resolution
@@ -179,10 +183,31 @@ class TrajectoryArgsParser:
         self._assert_args_compatibility(params)
         self._show_args_warning(params)
         self._fill_default_values(params)
+
+        # Handle input_root: use current directory if not specified
+        if params.root is None:
+            input_root = Path.cwd()
+        else:
+            input_root = Path(params.root).resolve()
+
+        # Handle input_file: use default name if not specified
+        if params.input_file is None:
+            input_file = input_root / TrajectoryLauncherOptionsDefaultValues.default_input_file_name()
+        else:
+            input_file = Path(params.input_file).resolve()
+
+        # Validate that the input file exists
+        if not input_file.exists():
+            raise self.XpansionTrajectoryInvalidArguments(
+                f"Input file not found: {input_file}\n"
+                f"Expected file '{TrajectoryLauncherOptionsDefaultValues.default_input_file_name()}' "
+                f"in input-root directory: {input_root}"
+            )
+
         return TrajectoryInputParameters(
             step=params.step,
-            input_root=Path(params.root).resolve(),
-            input_file=Path(params.input_file).resolve(),
+            input_root=input_root,
+            input_file=input_file,
             memory=params.memory,
             install_dir=params.installDir,
             problems_format=params.problems_format,
