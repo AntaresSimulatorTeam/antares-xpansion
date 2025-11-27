@@ -105,7 +105,7 @@ ProblemGenerationForWaterValueCalculation::updateProblems(const GridDefinition& 
     CreateDirectories(directories.simulation_dir);
     auto logger = ProblemGenerationLog::BuildLogger(log_file_path,
                                                     std::cout,
-                                                    "Problem Generation"s);
+                                                    "Problem Modification"s);
 
     auto modifiedProblems = CleanProblemsForBellmanCalculations(directories.simulation_dir,
                                                                 log_file_path,
@@ -143,9 +143,9 @@ ProblemGenerationForWaterValueCalculation::CleanProblemsForBellmanCalculations(
               std::shared_ptr<Problem> problem(pb.second->clone());
               std::string pbName = "problem-" + std::to_string(pbId.year) + "-"
                                    + std::to_string(pbId.week) + "--optim-nb-1";
-              logger->display_message("Generating problem: " + pbName);
+              logger->display_message("Modifying problem: " + pbName);
               cleanProblemForBellmanCalculations(problem, pbName, gridDefinition, pbId);
-              logger->display_message("Problem: " + pbName + " generated");
+              logger->display_message("Problem: " + pbName + " modified");
               modifiedProblems[pbId] = problem;
 
               if (writePbFiles)
@@ -168,6 +168,33 @@ ProblemGenerationForWaterValueCalculation::CleanProblemsForBellmanCalculations(
     return modifiedProblems;
 }
 
+template<typename Func>
+int checked_index(Func getter,             // e.g. lambda calling get_col_index / get_row_index
+                  const std::string& name, // variable or constraint name
+                  const std::string& pbID  // problem ID or descriptor
+)
+{
+    int idx = getter(name);
+    if (idx == -1)
+    {
+        throw std::runtime_error("Index not found for '" + name + "' in problem " + pbID);
+    }
+    return idx;
+}
+
+template<int (Problem::*Getter)(const std::string&)>
+int checked(Problem* p, const std::string& name, const Antares::Solver::WeeklyProblemId& pbid)
+{
+    int idx = (p->*Getter)(name);
+    if (idx == -1)
+    {
+        throw std::runtime_error("Index not found: " + name + " for scenario "
+                                 + std::to_string(pbid.year) + " and year "
+                                 + std::to_string(pbid.week));
+    }
+    return idx;
+}
+
 /// @brief Clean the problem for the Bellman Values calculations
 /// @param problem The problem to clean
 /// @param pnName The problem name
@@ -185,29 +212,44 @@ void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculatio
         {
             for (int hour = (pbID.week - 1) * 168; hour < pbID.week * 168; ++hour)
             {
-                // Delete variables HydroLevel and Overflow
-                int idx = problem->get_col_index("HydroLevel::area<" + gridElement.area + ">::hour<"
-                                                 + std::to_string(hour) + ">");
-                problem->del_cols(idx, idx);
+                // ==== DELETE HydroLevel ====
+                {
+                    std::string name = "HydroLevel::area<" + gridElement.area + ">::hour<"
+                                       + std::to_string(hour) + ">";
+                    int idx = checked<&Problem::get_col_index>(problem.get(), name, pbID);
+                    problem->del_cols(idx, idx);
+                }
 
-                idx = problem->get_col_index("Overflow::area<" + gridElement.area + ">::hour<"
-                                             + std::to_string(hour) + ">");
-                problem->del_cols(idx, idx);
+                // ==== DELETE Overflow ====
+                {
+                    std::string name = "Overflow::area<" + gridElement.area + ">::hour<"
+                                       + std::to_string(hour) + ">";
+                    int idx = checked<&Problem::get_col_index>(problem.get(), name, pbID);
+                    problem->del_cols(idx, idx);
+                }
 
-                // Delete constraints AreaHydroLevel
-                idx = problem->get_row_index("AreaHydroLevel::area<" + gridElement.area + ">::hour<"
-                                             + std::to_string(hour) + ">");
-                problem->del_rows(idx, idx);
+                // ==== DELETE AreaHydroLevel constraint ====
+                {
+                    std::string name = "AreaHydroLevel::area<" + gridElement.area + ">::hour<"
+                                       + std::to_string(hour) + ">";
+                    int idx = checked<&Problem::get_row_index>(problem.get(), name, pbID);
+                    problem->del_rows(idx, idx);
+                }
 
-                // Reset HydroProd as it might have been modified by heuristic
-                idx = problem->get_col_index("HydProd::area<" + gridElement.area + ">::hour<"
-                                             + std::to_string(hour) + ">");
-                problem->chg_bounds(
-                  {idx},
-                  {'U'},
-                  {gridDefinition.reservoirs.at(gridElement.area).max_generating[pbID.week - 1]
-                   / Reservoir::hours_in_week});
+                // ==== RESET HydroProd bounds ====
+                {
+                    std::string name = "HydProd::area<" + gridElement.area + ">::hour<"
+                                       + std::to_string(hour) + ">";
+                    int idx = checked<&Problem::get_col_index>(problem.get(), name, pbID);
+
+                    problem->chg_bounds(
+                      {idx},
+                      {'U'},
+                      {gridDefinition.reservoirs.at(gridElement.area).max_generating[pbID.week - 1]
+                       / Reservoir::hours_in_week});
+                }
             }
+
             addReservoirConstraints(problem, pbID);
         }
     }
