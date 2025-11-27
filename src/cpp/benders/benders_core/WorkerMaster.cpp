@@ -274,6 +274,50 @@ void WorkerMaster::define_matval_mclind_for_index(const int i,
 }
 
 /*!
+ *  \brief Add benders cut to a problem
+ *
+ *  \param group_alpha_i : list of identifier of alphas 
+ *  \param s : optimal slave variables
+ *  \param x_cut : subgradient 
+ *  \param rhs : optimal slave value
+ */
+
+void WorkerMaster::addSubProblemGroupCut(std::vector<int> group_alpha_i, 
+                               const Point& s, 
+                               const Point& x_cut, 
+                               const double& rhs) const 
+{
+    int nCandidates((int) s.size()) ; 
+    int ncoeffs(group_alpha_i.size() + nCandidates ); 
+    std::vector<char> rowtype(1, 'L');
+    std::vector<double> rowrhs(1, 0);
+    std::vector<double> matval(nCandidates, 1);
+    std::vector<int> mstart = {0, ncoeffs};
+    std::vector<int> mclind(nCandidates);
+    size_t mclindCnt_l(0);
+    DefineRhsWithMasterVariable(s, x_cut, rhs, rowrhs);
+
+    for (const auto& kvp: _name_to_id)
+    {
+        if (s.find(kvp.first) != s.end())
+        {
+            
+            mclind[mclindCnt_l] = kvp.second;
+            matval[mclindCnt_l] = s.find(kvp.first)->second;
+            ++mclindCnt_l;
+        }
+    }
+
+    for (auto&& alpha_i : group_alpha_i)
+    {
+        mclind.push_back(_id_single_subpb_costs_under_approx[alpha_i] ) ; 
+        matval.push_back(-1) ; 
+    }
+
+    solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
+}
+
+/*!
  *  \brief Add one benders cut to a problem
  *
  *  \param i : identifier of a subproblem
@@ -364,6 +408,7 @@ void WorkerMaster::_set_alpha_var()
 
             for (int i(0); i < subproblems_count; ++i)
             {
+            
                 std::stringstream buffer;
                 buffer << "alpha_" << i;
                 _id_single_subpb_costs_under_approx[i] = _solver->get_ncols();

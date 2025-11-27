@@ -49,6 +49,9 @@ private:
     void step_2_solve_subproblems_and_build_cuts();
     void step_4_update_best_solution(int rank);
 
+    std::vector<SubProblemDataMap> split_subproblem_data(std::vector<SubProblemDataMap>& gathered_subproblem_map, int n_cuts) ; 
+    std::vector<SubProblemDataMap> split_subproblem_data_with_shuffle(std::vector<SubProblemDataMap>& gathered_subproblem_map, int n_cuts) ; 
+
     void master_build_cuts(std::vector<SubProblemDataMap> gathered_subproblem_map);
     SubProblemDataMap get_subproblem_cut_package();
 

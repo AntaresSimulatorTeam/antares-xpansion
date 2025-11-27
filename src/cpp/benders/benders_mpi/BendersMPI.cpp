@@ -8,6 +8,7 @@
 #include "antares-xpansion/benders/benders_core/CriterionComputation.h"
 #include "antares-xpansion/benders/benders_core/CustomVector.h"
 #include "antares-xpansion/helpers/Timer.h"
+#include <random>
 
 BendersMpi::BendersMpi(const BendersBaseOptions& options,
                        Logger logger,
@@ -113,6 +114,7 @@ void BendersMpi::step_1_solve_master()
     try
     {
         do_solve_master_create_trace_and_update_cuts();
+        
     }
     catch (const std::exception& ex)
     {
@@ -293,6 +295,100 @@ SubProblemDataMap BendersMpi::get_subproblem_cut_package()
     return subproblem_data_map;
 }
 
+
+std::vector<SubProblemDataMap> BendersMpi::split_subproblem_data_with_shuffle(std::vector<SubProblemDataMap>& gathered_subproblem_map, int n_cuts) 
+{
+    std::vector<std::pair<std::string, PlainData::SubProblemData>> allElements;
+    allElements.reserve(10000); 
+
+    for (auto& spMap : gathered_subproblem_map) {
+        for (auto it = spMap.begin(); it != spMap.end(); ) {
+            // Move key/value pair into the flat list
+            allElements.emplace_back(
+                it->first, 
+                std::move(it->second)
+            );
+            it = spMap.erase(it);
+        }
+    }
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+    std::shuffle(allElements.begin(), allElements.end(), gen);
+
+    std::vector<SubProblemDataMap> result(n_cuts);
+
+    if (n_cuts <= 0 || allElements.empty())
+        return result;
+
+    size_t total = allElements.size();
+    size_t target_per_cut = (total + n_cuts - 1) / n_cuts; // ceiling division
+
+    size_t index = 0;
+    for (size_t cut = 0; cut < n_cuts && index < total; ++cut) {
+        size_t take = std::min(target_per_cut, total - index);
+
+        for (size_t k = 0; k < take; ++k) {
+            auto& elem = allElements[index++];
+            result[cut].emplace(
+                std::move(elem.first),
+                std::move(elem.second)
+            );
+        }
+    }
+
+    return result;
+}
+
+std::vector<SubProblemDataMap> BendersMpi::split_subproblem_data(std::vector<SubProblemDataMap>& gathered_subproblem_map, int n_cuts) 
+{
+    std::vector<SubProblemDataMap> result(n_cuts) ; 
+
+    if (_data.nsubproblem == 0 || n_cuts <=0 ) return result ; 
+
+    size_t target_per_cut = (_data.nsubproblem + n_cuts - 1) / n_cuts;
+    
+    size_t current_cut = 0; 
+    size_t count_in_cut = 0; 
+
+    SubProblemDataMap tempMap ; 
+    
+    for (auto& spMap : gathered_subproblem_map) 
+    {
+        for (auto it = spMap.begin(); it!=spMap.end(); ) 
+        {
+            tempMap.insert(std::make_move_iterator(it), std::make_move_iterator(std::next(it))) ; 
+            it = spMap.erase(it) ; 
+
+            count_in_cut++ ; 
+            if (count_in_cut >= target_per_cut && current_cut + 1 < n_cuts) 
+            {
+                result[current_cut].insert(
+                    std::make_move_iterator(tempMap.begin()) , 
+                    std::make_move_iterator(tempMap.end())
+                ) ; 
+
+                tempMap.clear() ; 
+                count_in_cut = 0; 
+                current_cut++ ; 
+
+            }
+
+        }
+    }
+
+    if (!tempMap.empty()) 
+    {
+        result[current_cut].insert(
+            std::make_move_iterator(tempMap.begin()),
+            std::make_move_iterator(tempMap.end())
+        );
+    }
+
+
+    return result ; 
+}
+
 void BendersMpi::master_build_cuts(std::vector<SubProblemDataMap> gathered_subproblem_map)
 {
     SetSubproblemCost(0);
@@ -310,9 +406,22 @@ void BendersMpi::master_build_cuts(std::vector<SubProblemDataMap> gathered_subpr
 
     _data.ub = 0;
 
-    for (const auto& subproblem_data_map: gathered_subproblem_map)
+    if (_world.rank() == rank_0) 
     {
-        BuildCutFull(subproblem_data_map);
+        if (_data.nsubproblem < _options.AGGREGATION) 
+        {   
+            std::string logging_str = "AGGREGATION : " + std::to_string(_options.AGGREGATION) + " is larger than the number of subproblems : " + std::to_string(_data.nsubproblem) +
+                "setting AGGREGATION to " + std::to_string(_data.nsubproblem); 
+            _logger->display_message(logging_str) ; 
+            std::cout<<logging_str<<std::endl ; 
+            _options.AGGREGATION = _data.nsubproblem ; 
+        } 
+        std::vector<SubProblemDataMap> subproblem_per_cut = split_subproblem_data( gathered_subproblem_map, _options.AGGREGATION) ;
+        std::cout<<"subproblem_per_cut size "<<subproblem_per_cut.size()<<std::endl ; 
+        for (const auto& subproblem_data_map: subproblem_per_cut)
+        {
+            BuildCutFull(subproblem_data_map);
+        }
     }
 
     _logger->LogSubproblemsSolvingCumulativeCpuTime(_data.subproblems_cumulative_cputime);
@@ -393,6 +502,7 @@ void BendersMpi::Run()
         _data.stop = false;
     }
     _data.number_of_subproblem_solved = _data.nsubproblem;
+    
     while (!_data.stop)
     {
         ++_data.it;
@@ -401,6 +511,7 @@ void BendersMpi::Run()
         /*Solve Master problem, get optimal value and cost and send it to
          * process*/
         step_1_solve_master();
+        
 
         /*Gather cut from each subproblem in master thread and add them to Master
          * problem*/

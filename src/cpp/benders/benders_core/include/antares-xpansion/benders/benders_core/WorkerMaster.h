@@ -34,6 +34,10 @@ public:
     void add_cut(const Point& s, const Point& x0, const double& rhs) const;
     void add_cut_by_iter(int i, const Point& s, const double& sx0, const double& rhs) const;
     void add_dynamic_cut(const Point& s, const double& sx0, const double& rhs) const;
+    void addSubProblemGroupCut(std::vector<int> group_i, 
+                               const Point& subgradient, 
+                               const Point& x_cut, 
+                               const double& rhs) const ; 
     void addSubproblemCut(int i,
                           const Point& subgradient,
                           const Point& x0,

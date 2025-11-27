@@ -217,7 +217,7 @@ struct BendersBaseOptions: public SolverBaseOptions
     double CUT_COEFFICIENT_TOLERANCE = 5e-3;
 
     bool RESUME = false;
-    bool AGGREGATION = false;
+    int AGGREGATION = 0;
     bool TRACE = false;
     bool BOUND_ALPHA = false;
     bool CACHE_PROBLEMS = false;

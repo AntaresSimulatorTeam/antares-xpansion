@@ -362,6 +362,7 @@ void BendersBase::check_status(const SubProblemDataMap& subproblem_data_map) con
 void BendersBase::get_master_value()
 {
     Timer timer_master;
+
     _data.single_subpb_costs_under_approx.resize(_data.nsubproblem);
     if (_options.BOUND_ALPHA)
     {
@@ -371,6 +372,7 @@ void BendersBase::get_master_value()
                    _options.OUTPUTROOT,
                    _options.LAST_MASTER_MPS + MPS_SUFFIX,
                    _writer);
+
     _master->get(_data.x_out,
                  _data.overall_subpb_cost_under_approx,
                  _data.single_subpb_costs_under_approx); /*Get the optimal variables of the
@@ -379,6 +381,7 @@ void BendersBase::get_master_value()
 
     for (const auto& pairIdName: _master->_id_to_name)
     {
+
         _master->_solver->get_ub(&_data.max_invest[pairIdName.second],
                                  pairIdName.first,
                                  pairIdName.first);
@@ -665,18 +668,19 @@ void compute_cut_val(const Point& var_name_subgradient, const Point& x_cut, Poin
 void BendersBase::compute_cut_aggregate(const SubProblemDataMap& subproblem_data_map)
 {
     Point s;
-    double rhs(0);
-    _data.ub = 0;
+    double rhs(0);    
+    std::vector<int> alpha_ids_per_cut ; 
     for (const auto& [name, subproblem_data]: subproblem_data_map)
     {
+        alpha_ids_per_cut.push_back(_problem_to_id[name]) ;
         _data.ub += subproblem_data.subproblem_cost;
-        rhs += subproblem_data.subproblem_cost;
+        rhs += subproblem_data.subproblem_cost;        
 
         compute_cut_val(subproblem_data.var_name_and_subgradient, _data.x_cut, s);
 
         relevantIterationData_.last._cut_trace[name] = subproblem_data;
     }
-    _master->add_cut(s, _data.x_cut, rhs);
+    _master->addSubProblemGroupCut(alpha_ids_per_cut,s,_data.x_cut,rhs) ; 
 }
 
 /*!
@@ -687,14 +691,7 @@ void BendersBase::compute_cut_aggregate(const SubProblemDataMap& subproblem_data
 void BendersBase::BuildCutFull(const SubProblemDataMap& subproblem_data_map)
 {
     check_status(subproblem_data_map);
-    if (_options.AGGREGATION)
-    {
-        compute_cut_aggregate(subproblem_data_map);
-    }
-    else
-    {
-        compute_cut(subproblem_data_map);
-    }
+    compute_cut_aggregate(subproblem_data_map);
 }
 
 LogData BendersBase::build_log_data_from_data() const
