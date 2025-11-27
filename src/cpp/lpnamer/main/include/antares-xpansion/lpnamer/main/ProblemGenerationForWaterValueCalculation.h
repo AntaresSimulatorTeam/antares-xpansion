@@ -51,9 +51,6 @@ private:
                                             const GridDefinition& gridDefinition,
                                             Antares::Solver::WeeklyProblemId pbId);
 
-    void addReservoirConstraints(std::shared_ptr<Problem> problem,
-                                 Antares::Solver::WeeklyProblemId pbId);
-
     ConfigurationManager::ConfigDirectories
       directories; /// Directories, used for the original problems generation
     std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
