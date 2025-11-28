@@ -1,6 +1,6 @@
 class TrajectoryInputKeys:
     """
-    Keys used in the `user_input_XpansionTrajectory.yaml` file
+    Keys used in the `input-trajectory.yaml` file
     """
 
     # Global data
@@ -15,7 +15,7 @@ class TrajectoryInputKeys:
     @staticmethod
     def discount_rate_key():
         return "discount_rate"
-    
+
     @staticmethod
     def scaling_key():
         return "scaling"
@@ -130,7 +130,7 @@ class TrajectoryOuputKeys:
     Keys used in the `master_merger_info.json` file passed to the C++ executable.
     """
 
-    # Scaling is transfered as is to the workflows
+    #  Scaling is transfered as is to the workflows
     @staticmethod
     def scaling_key():
         return "scaling"

@@ -6,6 +6,7 @@
 #include <map>
 #include <numeric>
 #include <set>
+#include <utility>
 
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
 
@@ -51,10 +52,12 @@ std::mutex& instance_guard()
 }
 } // namespace
 
-XpressManager::XpressManager()
+XpressManager::XpressManager(std::shared_ptr<ILoggerXpansion> logger):
+    logger_(logger),
+    loader_(logger)
 {
     std::lock_guard guard(instance_guard());
-    if (_loader.XpressIsCorrectlyInstalled())
+    if (loader_.XpressIsCorrectlyInstalled())
     {
         int status = XPRSinit(nullptr);
         SolverAbstract::zero_status_check(status, "initialize XPRESS environment", LOGLOCATION);
@@ -65,7 +68,7 @@ XpressManager::~XpressManager()
 {
     std::lock_guard guard(instance_guard());
 
-    if (_loader.XpressIsCorrectlyInstalled())
+    if (loader_.XpressIsCorrectlyInstalled())
     {
         if (int status = XPRSfree())
         {
