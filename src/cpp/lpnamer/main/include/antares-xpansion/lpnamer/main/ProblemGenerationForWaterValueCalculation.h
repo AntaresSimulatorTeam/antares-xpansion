@@ -23,6 +23,7 @@
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 #include "antares-xpansion/multisolver_interface/SolverConfig.h"
 
+/// @brief Class to generate and modify problems in memory
 class ProblemGenerationForWaterValueCalculation
 {
 public:
@@ -34,7 +35,6 @@ public:
     };
     explicit ProblemGenerationForWaterValueCalculation(
       ConfigurationManager::ConfigDirectories directories,
-      // const ReservoirManagement& reservoirManagement,
       Logger logger,
       const std::string& solverName = "xpress",
       unsigned int startWeek = 1,
@@ -90,12 +90,15 @@ private:
         computationMode = mode;
     }
 
-    ConfigurationManager::ConfigDirectories directories;
-    std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> problems;
-    unsigned int startWeek;
-    unsigned int endWeek;
-    bool writePbFiles;
-    ProblemsFormat problemFormat;
-    WaterValueComputationMode computationMode = WaterValueComputationMode::MULTIVARIATE;
-    Logger logger;
+    ConfigurationManager::ConfigDirectories
+      directories; /// Directories, used for the original problems generation
+    std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
+      problems;                   /// Problems before any modification
+    unsigned int startWeek;       /// Start week of the problems to take into account
+    unsigned int endWeek;         /// End week of the problems to take into account
+    bool writePbFiles;            /// Flag to writePbFiles to memory
+    ProblemsFormat problemFormat; /// Problem format to be saved
+    WaterValueComputationMode computationMode = WaterValueComputationMode::
+      MULTIVARIATE; /// Computation mode for water values
+    Logger logger;  /// Logger used
 };

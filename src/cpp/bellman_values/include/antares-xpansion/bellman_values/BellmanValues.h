@@ -12,7 +12,7 @@ public:
 
     std::vector<std::vector<double>> compute(int nbLevels = 10);
 
-    const std::vector<double>& getLevels();
+    const std::vector<double>& getLevels() const;
 
     std::vector<std::vector<double>> computeOptimalTrajectories();
 

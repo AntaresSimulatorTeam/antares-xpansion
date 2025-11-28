@@ -3,6 +3,7 @@
 
 #include <execution>
 #include <iostream>
+#include <tbb/parallel_for_each.h>
 #include <utility>
 
 #include <antares/api/solver.h>
@@ -62,13 +63,9 @@ ProblemGenerationForWaterValueCalculation::getComputationModeFromGrid(const Grid
     return WaterValueComputationMode::SEQUENTIAL_UPDATE_TRAJECTORY;
 }
 
-/// @brief Constructor
-/// @param options The options for the problem generation
-/// @param problems The problems to be modified
-/// @param gridDefinition The grid definition
+/// @brief Launch the simulation and save the problems satisfying startWeek <= week <= endweek
 ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalculation(
   ConfigurationManager::ConfigDirectories directories,
-  //   const ReservoirManagement& reservoirManagement,
   Logger logger,
   const std::string& solverName,
   unsigned int startWeek,
@@ -77,7 +74,6 @@ ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalcula
   const std::string& problemFormat,
   const WaterValueComputationMode& computationMode):
     directories(directories),
-    // reservoirManagement(reservoirManagement),
     logger(std::move(logger)),
     startWeek(startWeek),
     endWeek(endWeek),
@@ -130,6 +126,7 @@ ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalcula
 }
 
 /// @brief Update the problems for the water value calculation
+/// @param gridDefinition
 /// @return The modified problems
 std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
 ProblemGenerationForWaterValueCalculation::updateProblems(
@@ -158,6 +155,7 @@ ProblemGenerationForWaterValueCalculation::updateProblems(
 /// @brief Clean the problems for the Bellman Values calculations
 /// @param xpansion_output_dir The output directory
 /// @param log_file_path The path to the log file
+/// @param gridDefinition The gridDefinition
 /// @return The modified problems
 std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>>
 ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
@@ -173,64 +171,56 @@ ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
     // Create directory for Bellman problems
     auto outputMpsPath = xpansion_output_dir / ("mps_" + std::to_string(gridDefinition.gridID));
     std::filesystem::create_directory(outputMpsPath);
-    std::for_each(std::execution::par,
-                  problems.begin(),
-                  problems.end(),
-                  [&](auto& pb)
+    tbb::parallel_for_each(
+      problems.begin(),
+      problems.end(),
+      [&](auto& pb)
+      {
+          auto pbId = pb.first;
+          if (startWeek <= pbId.week && pbId.week <= endWeek)
+          {
+              // copy of the problem needed if gridCollection contains multiple
+              // gridDefinitions, and for multistock
+              std::shared_ptr<Problem> problem = std::make_shared<Problem>(
+                SolverFactory::copy_solver(*(pb.second)));
+              std::string pbName = "problem-" + std::to_string(pbId.year) + "-"
+                                   + std::to_string(pbId.week) + "--optim-nb-1";
+              logger->display_message("Updating problem: " + pbName);
+              cleanProblemForBellmanCalculations(problem,
+                                                 gridDefinition,
+                                                 reservoirManagement,
+                                                 areaName,
+                                                 pbName,
+                                                 pbId);
+              logger->display_message("Problem: " + pbName + " updated");
+              modifiedProblems[pbId] = problem;
+
+              if (writePbFiles)
+              {
+                  logger->display_message("Writing problem " + pbName + " to disk...");
+                  switch (problemFormat)
                   {
-                      auto pbId = pb.first;
-                      if (startWeek <= pbId.week && pbId.week <= endWeek)
-                      {
-                          // copy of the problem needed if gridCollection contains multiple
-                          // gridDefinitions, and for multistock
-                          std::shared_ptr<Problem> problem = std::make_shared<Problem>(
-                            SolverFactory::copy_solver(*(pb.second)));
-
-                          std::string pbName = "problem-" + std::to_string(pbId.year) + "-"
-                                               + std::to_string(pbId.week) + "--optim-nb-1";
-
-                          logger->display_message("cleanProblemForBellmanCalculations... for area '"
-                                                  + reservoirManagement.reservoir.area
-                                                  + "' for week " + std::to_string(pbId.week)
-                                                  + " of " + std::to_string(endWeek) + " of year "
-                                                  + std::to_string(pbId.year));
-                          cleanProblemForBellmanCalculations(problem,
-                                                             gridDefinition,
-                                                             reservoirManagement,
-                                                             areaName,
-                                                             pbName,
-                                                             pbId);
-                          logger->display_message("cleanProblemForBellmanCalculations OK");
-                          modifiedProblems[pbId] = problem;
-
-                          if (writePbFiles)
-                          {
-                              logger->display_message("Writing problems to disk...");
-                              switch (problemFormat)
-                              {
-                              case ProblemsFormat::MPS_FILE:
-                                  logger->display_message("... as MPS");
-                                  problem->write_prob_mps(outputMpsPath / (pbName + ".mps"));
-                                  break;
-                              case ProblemsFormat::OPTIMIZED:
-                                  logger->display_message("... as SVF");
-                                  problem->save_prob(outputMpsPath / (pbName + ".svf"));
-                                  break;
-                                  // potential errors are handled by
-                                  // problemsFormatFromString in constructor
-                              }
-                          }
-                          logger->display_message("Not writing problem files");
-                      }
-                  });
+                  case ProblemsFormat::MPS_FILE:
+                      problem->write_prob_mps(outputMpsPath / (pbName + ".mps"));
+                      break;
+                  case ProblemsFormat::OPTIMIZED:
+                      problem->save_prob(outputMpsPath / (pbName + ".svf"));
+                      break;
+                      // potential errors are handled by
+                      // problemsFormatFromString in constructor
+                  }
+              }
+          }
+      });
 
     return modifiedProblems;
 }
 
 /// @brief Clean the problem for the Bellman Values calculations
 /// @param problem The problem to clean
+/// @param pnName The problem name
 /// @param gridDefinition The grid definition
-/// @param week The week to clean
+/// @param pbID The problem ID (year/week)
 void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculations(
   std::shared_ptr<Problem> problem,
   const GridDefinition& gridDefinition,

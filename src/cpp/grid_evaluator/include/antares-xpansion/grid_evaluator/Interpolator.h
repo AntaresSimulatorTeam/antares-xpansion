@@ -1,11 +1,17 @@
 #pragma once
 
+#include <algorithm>
+#include <cassert>
 #include <functional>
 #include <vector>
 
 class Interpolator
 {
 public:
+    /// @brief function that lineraly interpolates a double from a list of x and y coordonates
+    /// @param x coordinates
+    /// @param y values
+    /// @return a function taking an double and returning the linear interpolation of this double
     static std::function<double(double)> linearInterpolation(const std::vector<double>& x,
                                                              const std::vector<double>& y)
     {

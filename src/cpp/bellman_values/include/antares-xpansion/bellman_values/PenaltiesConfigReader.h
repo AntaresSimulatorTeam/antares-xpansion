@@ -14,39 +14,39 @@ public:
     PenaltiesConfigReader(const std::filesystem::path& pathToYamlConfigFile = "");
 
     // these getters are still useful to enforce types
-    double getPenaltyBottomRuleCurve()
+    double getPenaltyBottomRuleCurve() const
     {
         return getValueFromKey<double>(penaltyBottomRuleCurveKey);
     }
 
-    double getPenaltyUpperRuleCurve()
+    double getPenaltyUpperRuleCurve() const
     {
         return getValueFromKey<double>(penaltyUpperRuleCurveKey);
     }
 
-    double getPenaltyFinalLevel()
+    double getPenaltyFinalLevel() const
     {
         return getValueFromKey<double>(penaltyFinalLevelKey);
     }
 
-    bool getForceFinalLevel()
+    bool getForceFinalLevel() const
     {
         return getValueFromKey<bool>(forceFinalLevelKey);
     }
 
-    std::optional<double> getFinalLevel()
+    std::optional<double> getFinalLevel() const
     {
         return getValueFromKey<std::optional<double>>(finalLevelKey);
     }
 
-    bool getOverflow()
+    bool getOverflow() const
     {
         return getValueFromKey<bool>(overflowKey);
     }
 
 private:
     template<typename T>
-    T getValueFromKey(const std::string& key)
+    T getValueFromKey(const std::string& key) const
     {
         auto it = penalties.find(key);
         if (it != penalties.end())
@@ -74,7 +74,7 @@ private:
                 bool isOptional = false);
         void updateValue(const YAML::Node& config);
 
-        PenaltyValueType getValue()
+        PenaltyValueType getValue() const
         {
             return value;
         }
