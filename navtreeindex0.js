@@ -88,7 +88,6 @@ var NAVTREEINDEX0 =
 "MergeMPS_8h_source.html":[34,0,0,0,0,7,0,0,0,0,1],
 "MergeMasterMPS_8h_source.html":[34,0,0,0,0,6,0,0,0,0,1],
 "MergeWeightsTrajectory_8h_source.html":[34,0,0,0,5,0,0,0,0],
-"Mode_8h_source.html":[34,0,0,0,4,3,0,0,0,0,5],
 "MpsTxtWriter_8h_source.html":[34,0,0,0,4,1,0,0,0,0,7],
 "MultipleProblemGeneration_8h_source.html":[34,0,0,0,4,2,0,0,0,0,1],
 "NOOPSolver_8h_source.html":[34,0,1,0,3,2],
@@ -107,11 +106,11 @@ var NAVTREEINDEX0 =
 "ProblemModifierCapex_8h_source.html":[34,0,0,0,8,0,0,0,0],
 "ProblemModifierProjection_8h_source.html":[34,0,0,0,8,0,0,0,1],
 "ProblemModifier_8h_source.html":[34,0,0,0,4,4,0,0,0,0,15],
-"ProblemNameParser_8h_source.html":[34,0,0,0,4,3,0,0,0,0,7],
+"ProblemNameParser_8h_source.html":[34,0,0,0,4,3,0,0,0,0,6],
 "ProblemVariablesFileAdapter_8h_source.html":[34,0,0,0,4,4,0,0,0,0,16],
 "ProblemVariablesFromProblemAdapter_8h_source.html":[34,0,0,0,4,4,0,0,0,0,17],
 "ProblemVariablesZipAdapter_8h_source.html":[34,0,0,0,4,4,0,0,0,0,18],
-"Problem_8h_source.html":[34,0,0,0,4,3,0,0,0,0,6],
+"Problem_8h_source.html":[34,0,0,0,4,3,0,0,0,0,5],
 "RandomBatchShuffler_8h_source.html":[34,0,0,0,0,0,0,0,0,0,2],
 "RandomDirGenerator_8h_source.html":[34,0,1,0,3,3],
 "RenameUtils_8h_source.html":[34,0,0,0,4,4,0,0,0,0,19],
@@ -125,7 +124,7 @@ var NAVTREEINDEX0 =
 "SensitivityStudy_8h_source.html":[34,0,0,0,8,0,0,0,9],
 "SensitivityWriter_8h_source.html":[34,0,0,0,8,0,0,0,10],
 "SettingsReader_8h_source.html":[34,0,0,0,4,1,0,0,0,0,8],
-"SimulationInputMode_8h_source.html":[34,0,0,0,4,3,0,0,0,0,8],
+"SimulationInputMode_8h_source.html":[34,0,0,0,4,3,0,0,0,0,7],
 "SimulationOptions_8h_source.html":[34,0,0,0,0,1,0,0,0,0,16],
 "SimulationOptions_8hxx_source.html":[34,0,0,0,0,1,0,0,0,0,17],
 "SolverAbstract_8h_source.html":[34,0,0,0,6,0,0,0,3],
@@ -249,5 +248,6 @@ var NAVTREEINDEX0 =
 "classBendersMpi.html#a217d3af6fbe78082f30fa9ef75cf1dfb":[33,0,64,1],
 "classBendersMpi.html#a497d3f6ee2594fe0e5563635aacf45de":[33,0,64,2],
 "classBendersMpi.html#af435deb52a324bfbf0d953bf78644cf4":[33,0,64,0],
-"classBendersProblemFromFile.html":[33,0,65]
+"classBendersProblemFromFile.html":[33,0,65],
+"classBendersSequential.html":[33,0,67]
 };

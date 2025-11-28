@@ -1,6 +1,5 @@
 var NAVTREEINDEX2 =
 {
-"classOutput_1_1JsonWriter.html#a8c71207bbebec803de50ff62740ecd82":[33,0,13,3,1],
 "classOutput_1_1JsonWriter.html#aee3cc2a6e0300509d23bbbb8de1eae94":[33,0,13,3,3],
 "classOutput_1_1OutputWriter.html":[33,0,13,4],
 "classOutput_1_1OutputWriter.html#a3a0f989f5e057b16bf4ead25ab992f05":[33,0,13,4,2],
@@ -249,5 +248,6 @@ var NAVTREEINDEX2 =
 "classSolverCbc.html#a96ca23915e64d82081f78d1069db00ff":[33,0,244,23],
 "classSolverCbc.html#a9dae09f0eedde8ef50396b32f9a50991":[33,0,244,26],
 "classSolverCbc.html#aa737d3b19b6c04f5b23ffab2f9b66dc4":[33,0,244,28],
-"classSolverCbc.html#aa796dc288cd44d788f1f748645b68897":[33,0,244,48]
+"classSolverCbc.html#aa796dc288cd44d788f1f748645b68897":[33,0,244,48],
+"classSolverCbc.html#aab7ba381ec42739bb961fe1460c67b7a":[33,0,244,16]
 };

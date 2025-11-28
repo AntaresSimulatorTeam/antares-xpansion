@@ -1,6 +1,5 @@
 var NAVTREEINDEX7 =
 {
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md187":[18,0,1,8],
 "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md188":[18,0,1,9],
 "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md189":[18,0,1,10],
 "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md190":[18,0,1,11],
