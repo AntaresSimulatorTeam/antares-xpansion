@@ -47,8 +47,7 @@ private:
       SolverLogManager& solver_log_manager,
       const std::vector<ProblemData>& mpsList,
       std::filesystem::path& lpDir_,
-      std::shared_ptr<ArchiveReader> reader,
-      const Antares::Solver::LpsFromAntares& lps);
+      std::shared_ptr<ArchiveReader> reader);
     virtual void set_solver(std::filesystem::path study_dir,
                             ProblemGenerationLog::ProblemGenerationLogger* logger);
 
