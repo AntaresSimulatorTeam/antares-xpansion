@@ -140,6 +140,7 @@ $(function(){initNavTree('classdriver__resolution_1_1TrajectoryResolutionDriver.
   <div class="summary">
 <a href="#pub-methods">Public Member Functions</a> &#124;
 <a href="#pub-attribs">Public Attributes</a> &#124;
+<a href="#pro-methods">Protected Member Functions</a> &#124;
 <a href="classdriver__resolution_1_1TrajectoryResolutionDriver-members.html">List of all members</a>  </div>
   <div class="headertitle"><div class="title">driver_resolution.TrajectoryResolutionDriver Class Reference</div></div>
 </div><!--header-->
@@ -161,12 +162,75 @@ Public Attributes</h2></td></tr>
 <tr class="memitem:ac06d08318aace47c2914a47feb7945fc" id="r_ac06d08318aace47c2914a47feb7945fc"><td class="memItemLeft" align="right" valign="top"><a id="ac06d08318aace47c2914a47feb7945fc" name="ac06d08318aace47c2914a47feb7945fc"></a>
 &#160;</td><td class="memItemRight" valign="bottom"><b>data</b> = data</td></tr>
 <tr class="separator:ac06d08318aace47c2914a47feb7945fc"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a3140e5cfd683e08f1325ddd162cff144" id="r_a3140e5cfd683e08f1325ddd162cff144"><td class="memItemLeft" align="right" valign="top"><a id="a3140e5cfd683e08f1325ddd162cff144" name="a3140e5cfd683e08f1325ddd162cff144"></a>
+&#160;</td><td class="memItemRight" valign="bottom"><b>logger</b> = step_logger(__name__, __class__.__name__)</td></tr>
+<tr class="separator:a3140e5cfd683e08f1325ddd162cff144"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae9a07a867049199616a9c35921cf547d" id="r_ae9a07a867049199616a9c35921cf547d"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ae9a07a867049199616a9c35921cf547d">benders_driver</a></td></tr>
 <tr class="separator:ae9a07a867049199616a9c35921cf547d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="pro-methods" name="pro-methods"></a>
+Protected Member Functions</h2></td></tr>
+<tr class="memitem:a8bb5af1bcbd89fc5618e4a8736da433d" id="r_a8bb5af1bcbd89fc5618e4a8736da433d"><td class="memItemLeft" align="right" valign="top">Dict[str, Path]&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a8bb5af1bcbd89fc5618e4a8736da433d">_read_node_to_studies</a> (self)</td></tr>
+<tr class="separator:a8bb5af1bcbd89fc5618e4a8736da433d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7fdf9f544e54dc0a7dd8434c2a30f52e" id="r_a7fdf9f544e54dc0a7dd8434c2a30f52e"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a7fdf9f544e54dc0a7dd8434c2a30f52e">_clean_all_nodes_lp_directories</a> (self)</td></tr>
+<tr class="separator:a7fdf9f544e54dc0a7dd8434c2a30f52e"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><pre class="fragment">A wrapper around the BendersDriver class to adapt it to the trajectory workflow
 </pre> </div><h2 class="groupheader">Member Function Documentation</h2>
+<a id="a7fdf9f544e54dc0a7dd8434c2a30f52e" name="a7fdf9f544e54dc0a7dd8434c2a30f52e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7fdf9f544e54dc0a7dd8434c2a30f52e">&#9670;&#160;</a></span>_clean_all_nodes_lp_directories()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname">driver_resolution.TrajectoryResolutionDriver._clean_all_nodes_lp_directories </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">Clean the lp directory of each node/study after resolution
+Similar to the standard memory workflow
+</pre> 
+</div>
+</div>
+<a id="a8bb5af1bcbd89fc5618e4a8736da433d" name="a8bb5af1bcbd89fc5618e4a8736da433d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8bb5af1bcbd89fc5618e4a8736da433d">&#9670;&#160;</a></span>_read_node_to_studies()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"> Dict[str, Path] driver_resolution.TrajectoryResolutionDriver._read_node_to_studies </td>
+          <td>(</td>
+          <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><em>self</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel">protected</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<pre class="fragment">Read the user input file to get the mapping of node names to study paths
+</pre> 
+</div>
+</div>
 <a id="a1b25c911352ddd15806ffaf5b800cf92" name="a1b25c911352ddd15806ffaf5b800cf92"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a1b25c911352ddd15806ffaf5b800cf92">&#9670;&#160;</a></span>prepare_resolution_options_file()</h2>
 

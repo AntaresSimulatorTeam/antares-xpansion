@@ -312,6 +312,9 @@ var annotated_dup =
         ] ],
         [ "test_study_updater", null, [
           [ "TestStudyUpdater", "classtests_1_1python_1_1test__study__updater_1_1TestStudyUpdater.html", null ]
+        ] ],
+        [ "test_trajectory_cleanup", null, [
+          [ "TestTrajectoryCleanup", "classtests_1_1python_1_1test__trajectory__cleanup_1_1TestTrajectoryCleanup.html", "classtests_1_1python_1_1test__trajectory__cleanup_1_1TestTrajectoryCleanup" ]
         ] ]
       ] ]
     ] ],

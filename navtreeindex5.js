@@ -55,7 +55,9 @@ var NAVTREEINDEX5 =
 "classdriver__multiple__problem__gen_1_1MultipleProblemGenerationDriver_1_1MultipleProblemGenerationExecutionError.html":[33,0,6,1,0],
 "classdriver__resolution_1_1TrajectoryResolutionData.html":[33,0,7,0],
 "classdriver__resolution_1_1TrajectoryResolutionDriver.html":[33,0,7,1],
-"classdriver__resolution_1_1TrajectoryResolutionDriver.html#a1b25c911352ddd15806ffaf5b800cf92":[33,0,7,1,0],
+"classdriver__resolution_1_1TrajectoryResolutionDriver.html#a1b25c911352ddd15806ffaf5b800cf92":[33,0,7,1,2],
+"classdriver__resolution_1_1TrajectoryResolutionDriver.html#a7fdf9f544e54dc0a7dd8434c2a30f52e":[33,0,7,1,0],
+"classdriver__resolution_1_1TrajectoryResolutionDriver.html#a8bb5af1bcbd89fc5618e4a8736da433d":[33,0,7,1,1],
 "classdriver__trajectory_1_1TrajectoryInvestmentDriver.html":[31,0,1,0],
 "classdriver__trajectory_1_1TrajectoryInvestmentDriver.html":[33,0,8,0],
 "classdriver__trajectory_1_1TrajectoryInvestmentDriver.html#a247f5bf7e70d90b0e0b465e2eb0ce74d":[31,0,1,0,0],
@@ -93,6 +95,9 @@ var NAVTREEINDEX5 =
 "classtests_1_1python_1_1test__study__locker_1_1TestStudyLocker.html":[33,0,19,1,13,0],
 "classtests_1_1python_1_1test__study__output__cleaner_1_1TestStudyOutputCleaner.html":[33,0,19,1,14,0],
 "classtests_1_1python_1_1test__study__updater_1_1TestStudyUpdater.html":[33,0,19,1,15,0],
+"classtests_1_1python_1_1test__trajectory__cleanup_1_1TestTrajectoryCleanup.html":[33,0,19,1,16,0],
+"classtests_1_1python_1_1test__trajectory__cleanup_1_1TestTrajectoryCleanup.html#a7ebb75bfcd7c2af2acd4fc86fa5ee9ef":[33,0,19,1,16,0,1],
+"classtests_1_1python_1_1test__trajectory__cleanup_1_1TestTrajectoryCleanup.html#ac6c98ecfee9d11f3775bc8b6fa86a4ff":[33,0,19,1,16,0,0],
 "classtrajectory__config_1_1TrajectoryConfig.html":[33,0,20,0],
 "classtrajectory__config_1_1TrajectoryConfigDefaults.html":[33,0,20,1],
 "classtrajectory__config_1_1TrajectoryInputParameters.html":[33,0,20,2],
@@ -244,10 +249,5 @@ var NAVTREEINDEX5 =
 "dir_e5ed410f60e5e601daa7152b55e544b1.html":[34,0,0,0,4,3,0,0],
 "dir_e6845f9c61e772a2d98e7463bc8bde16.html":[34,0,0,0,4,2],
 "dir_e6f25a82ee20e4e8e60623c7da1f363f.html":[34,0,0,0,4,4],
-"dir_e7600390bdff6eced06f90701af8c137.html":[34,0,0,0,1,0],
-"dir_e82b02a6724f3381c006d85ad5b9fc3b.html":[34,0,0,0,4],
-"dir_e87e64b75f1b5d8a4773db9f0667f875.html":[34,0,0,0,4,2,0,0,0,0],
-"dir_ea0d24875cdbf55ec5b606bbfc8cd500.html":[34,0,0,0,3,0,0,0],
-"dir_eba6e5b7631899ed22e0ced64594114e.html":[34,0,0,0,0,9,0,0],
-"dir_eeef308d32a6dba8bb8582864a151547.html":[34,0,0,0,3,0]
+"dir_e7600390bdff6eced06f90701af8c137.html":[34,0,0,0,1,0]
 };

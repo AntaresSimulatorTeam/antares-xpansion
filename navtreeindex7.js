@@ -1,5 +1,10 @@
 var NAVTREEINDEX7 =
 {
+"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md180":[18,0,1,1],
+"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md181":[18,0,1,2],
+"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md182":[18,0,1,3],
+"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md183":[18,0,1,4],
+"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md184":[18,0,1,5],
 "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md185":[18,0,1,6],
 "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md186":[18,0,1,7],
 "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md187":[18,0,1,8],
