@@ -1,5 +1,8 @@
 var NAVTREEINDEX6 =
 {
+"dir_ef613d14ab819d49bbb36b6fc2a6fb6e.html":[34,0,0,0,0,3,0,0],
+"dir_f2f45934d0537a4cd7ee7d5acf1790af.html":[34,0,0,0,2,0,0],
+"dir_f3d170f9068915727546749c6263b7bf.html":[34,0,0,0,0,3,0,0,0],
 "dir_f632cfb2f9433bf506b59b1a5d5e8528.html":[34,0,0,0,0,8],
 "dir_f66444a5a09ecfc2fd30d78607e90727.html":[34,0,0,0,1],
 "dir_f6a8928a2233de68c3c981ea264c7827.html":[34,0,0,0,0,5],
@@ -246,8 +249,5 @@ var NAVTREEINDEX6 =
 "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md181":[18,0,1,2],
 "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md182":[18,0,1,3],
 "md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md183":[18,0,1,4],
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md184":[18,0,1,5],
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md185":[18,0,1,6],
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md186":[18,0,1,7],
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md187":[18,0,1,8]
+"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md184":[18,0,1,5]
 };
