@@ -25,7 +25,7 @@ jobs:
       antares-version: ${{steps.antares-version.outputs.result}}
       antares-xpansion-version: ${{steps.antares-xpansion-version.outputs.result}}
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: Read antares-solver version
         id: antares-version
         uses: ./.github/actions/read-json-value
@@ -74,7 +74,7 @@ jobs:
       - run: |
           dnf install -y cmake
 
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
         with:
           submodules: true
 
@@ -179,7 +179,7 @@ jobs:
           echo "TGZ_NAME=$FILE_NAME.tar.gz" >> $GITHUB_ENV
 
       - name: Upload .tar.gz
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ${{env.TGZ_NAME}}
           path: _build/${{env.TGZ_NAME}}
@@ -191,7 +191,7 @@ jobs:
           antares-xpansion-version: ${{needs.versions.outputs.antares-xpansion-version}}
 
       - name: Upload single file
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: ${{ steps.create-single-file.outputs.archive-name }}
           path: ${{ steps.create-single-file.outputs.archive-path }}
@@ -208,7 +208,7 @@ jobs:
       pdf-name: ${{ steps.create-user-guide.outputs.pdf-name }}
 
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
 
       - name: Read antares-xpansion version
         id: antares-xpansion-version
@@ -225,7 +225,7 @@ jobs:
 
       - name: user guide upload
         id: userguide_upload
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v5
         with:
           name: user-guide
           path: ${{ steps.create-user-guide.outputs.pdf-path }}
@@ -240,13 +240,13 @@ jobs:
     steps:
 
       - name: Download Artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: ${{env.ZIP_NAME}}
           path: .
 
       - name: Download Artifact
-        uses: actions/download-artifact@v5
+        uses: actions/download-artifact@v6
         with:
           name: ${{env.SINGLEFILE_NAME}}
           path: .
