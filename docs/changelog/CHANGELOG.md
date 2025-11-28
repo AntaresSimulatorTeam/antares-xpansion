@@ -1,6 +1,27 @@
 Antares-Xpansion changelog
 =================
 
+v1.7.0 (11/2025)
+------------------------------------------------
+
+### Bug fixes
+
+* fix: Missing Xpress loading log in benders (#1116)
+* Properly handle large candidate names in structure file (#1111)
+
+### CI
+
+* Bump actions/checkout from 5 to 6 (#1118)
+* Bump actions/download-artifact from 5 to 6 (#1108)
+* Bump actions/upload-artifact from 4 to 5 (#1109)
+
+### In development features
+
+* Trajectory
+    * Restore Ram between iteration of lpnamer (#1110)
+    * feat: Export all structure files in trajectory (#1112)
+    * Feat!: Improve trajectory CLI API [ANT-4102] (#1113)
+
 v1.6.1 (11/2025)
 ------------------------------------------------
 
