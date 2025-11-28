@@ -37,7 +37,7 @@ Usage of the launcher is :
 
 - ```--cache_problems``` : If specified, tells the program to cache the generated optimization problems on disk
   during the benders step, instead of keeping them
-  in memory. Prevent out of memory issue for large studies.
+  in memory. Prevents out of memory issue for large studies.
 
 ### Execution options
 
