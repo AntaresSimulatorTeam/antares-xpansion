@@ -30,7 +30,8 @@ target_link_libraries(problem_generation_main
         Boost::boost Boost::program_options
         antaresXpansion::helpers
         antaresXpansion::xpansion_interfaces
-        Antares::solver_api
+        Antares::single_problem_api
+	Antares::file-tree-study-loader # TODO this dependency is not necessary if we replace study by a path to a study
         PUBLIC
         ${PROJECT_NAME}::lp_namer_helper
         ${PROJECT_NAME}::lp_namer_input_reader

@@ -6,7 +6,9 @@
 #include <tbb/tbb.h>
 #include <utility>
 
+#include <antares/api/singleProblemGetter.h>
 #include <antares/api/solver.h>
+#include "antares/file-tree-study-loader/FileTreeStudyLoader.h"
 
 #include "Version.h"
 #include "antares-xpansion/helpers/Timer.h"
@@ -79,48 +81,13 @@ static std::string solverXpansionToSimulator(const SolverConfig& in)
     throw std::invalid_argument("Invalid solver");
 }
 
-void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& output)
+void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& study_dir)
 {
-    Antares::Solver::Optimization::OptimizationOptions optOptions;
-
-    auto solver_name = solverXpansionToSimulator(solver_config_);
-    optOptions.firstOptimOptions.solverName = solver_name;
-    optOptions.firstOptimOptions.solverUsesBasis = true;
-    optOptions.firstOptimOptions.solverExportsBasis = true;
-    optOptions.exportBehavior = Antares::Solver::Optimization::ExportBehavior::Always;
-
-    optOptions.secondOptimOptions.solverName = solver_name;
-    optOptions.secondOptimOptions.solverUsesBasis = true;
-    optOptions.secondOptimOptions.solverExportsBasis = false;
-
-    if (solver_name == SolverConfig("xpress"))
-    {
-        optOptions.firstOptimOptions.solverParameters = "PRESOLVE 1";
-        optOptions.secondOptimOptions.solverParameters = "PRESOLVE 1";
-    }
-    auto results = Antares::API::PerformSimulation(options_.StudyPath(), output, optOptions);
-
-    /**
-     * Antares simulator allocate a lot of memory
-     * Even if there is no memory leak not all freed memory become available.
-     * Allocator or OS may cache some memory to reuse it
-     * With malloc_trim(0) we free all memory that is not used anymore to be reclaimed by the
-     *program It is nescasssry to avoid allocating Xpansion memory on top of the unavailable memory
-     *from simulator
-     **/
-#ifndef _WIN32
-    malloc_trim(0);
-#endif
-
-    // Handle errors
-    if (results.error)
-    {
-        throw LogUtils::XpansionError<std::runtime_error>("Antares simulation failed:\n\t"
-                                                            + results.error->reason,
-                                                          LOGLOCATION);
-    }
-
-    lps_ = std::move(results.antares_problems);
+    Antares::FileTreeStudyLoader loader(study_dir);
+    auto study = loader.load();
+    Antares::Solver::SingleProblemGetter spg(std::move(study));
+    lps_.setConstantData(spg.getConstantData());
+    lps_.addWeeklyData({0, 0}, spg.getWeeklyData({0, 0}));
 }
 
 std::filesystem::path ProblemGeneration::updateProblems()
@@ -140,7 +107,7 @@ std::filesystem::path ProblemGeneration::updateProblems()
 
     if (mode_ == SimulationInputMode::ANTARES_API)
     {
-        performAntaresSimulation(directories_.simulation_dir);
+        performAntaresSimulation(directories_.study_dir);
     }
 
     auto master_formulation = options_.MasterFormulation();
