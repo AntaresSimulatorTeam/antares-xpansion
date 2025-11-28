@@ -29,6 +29,7 @@ class TrajectoryResolutionData:
     structure_file: str
     solver: str
     problems_format: str
+    cache_problems: bool
     method: str
     n_mpi: int
     oversubscribe: bool
@@ -170,10 +171,9 @@ class TrajectoryResolutionDriver:
                     area_file.resolve().__str__()
                 )
 
-        # CACHE_PROBLEMS: keep default unless explicitly needed (already in defaults)
-        # Explicitly set to default to make it visible in written JSON
+        # CACHE_PROBLEMS: use value from command line arguments
         options_values[OptimisationKeys.cache_problems_keys()] = (
-            config_defaults.cache_problems_default_value()
+            self.data.cache_problems
         )
 
         assert Path(os.getcwd()).resolve() == self.data.input_root.resolve()

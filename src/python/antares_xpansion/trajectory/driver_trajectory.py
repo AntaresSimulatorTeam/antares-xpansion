@@ -131,6 +131,7 @@ class TrajectoryInvestmentDriver:
             structure_file=self.config.MERGED_STRUCTURE,
             solver=solver,
             problems_format=problems_format,
+            cache_problems=self.config.cache_problems,
             method=self.config.method,
             n_mpi=self.config.n_mpi,
             oversubscribe=self.config.oversubsribe,
