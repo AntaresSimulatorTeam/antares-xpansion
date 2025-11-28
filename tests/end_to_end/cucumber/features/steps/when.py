@@ -71,7 +71,10 @@ def run_xpansion_step(context, step, memory_mode, pb_format=None, nproc=1):
     context.allow_run_as_root = get_conf("allow_run_as_root")
 
     # Parse memory mode
-    in_memory = "memory" in memory_mode.lower()
+    if memory_mode is not None : 
+        in_memory = "memory" in memory_mode.lower()
+    else : 
+        in_memory = False 
 
     command = build_launch_command(
         context.tmp_study,
@@ -84,7 +87,29 @@ def run_xpansion_step(context, step, memory_mode, pb_format=None, nproc=1):
 
     print(f"Running {step} {memory_mode} {pb_format}: {' '.join(command)}")
     process = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    out, err = process.communicate()
+    out, err = process.communicate() 
+    current_directory = os.getcwd() 
+    repo_root = os.path.abspath(os.path.join(current_directory, "../../../../.."))
+
+    excluded_repos = ["docs",".git","tests",".vscode","conception", 
+                    "vcpkg","src","examples","cmake",".github","data_test", 
+                    "docker"]
+
+    excluded_paths = {os.path.join(repo_root,d) for d in excluded_repos} 
+    print(f"repo_root : {repo_root}")
+
+    repos_2_consider = [os.path.join(repo_root,d) for d in os.listdir(repo_root) 
+                    if (os.path.isdir(os.path.join(repo_root,d)) and 
+                        os.path.join(repo_root,d) not in excluded_paths)]
+
+    for repo_2_consider in repos_2_consider : 
+        print(f"repo to consider {repo_2_consider}")
+        for item in os.listdir(repo_2_consider) : 
+            if item.startswith("benders") : 
+                full_item_path = os.path.join(repo_2_consider,item)
+                if (os.access(full_item_path,os.X_OK) and os.access(full_item_path,os.X_OK)) : 
+                    return full_item_path
+
     context.return_code = process.returncode
 
     if context.return_code != 0:
@@ -137,7 +162,7 @@ def run_antares_xpansion(context, method, memory=None, n: int = 1):
         context.lold = outputs.lold
         context.positive_unsupplied_energy = outputs.positive_unsupplied_energy
 
-
+#here we launch benderq directly
 @when(u'I run step {step} {memory_mode} followed by step presolve')
 def step_problem_generation_and_presolve(context, step, memory_mode):
     # Run the first step (usually problem_generation)
@@ -154,6 +179,7 @@ def step_problem_generation_and_presolve(context, step, memory_mode):
 @when(u'I run step {step} {memory_mode} {pb_format}')
 def step_problem_generation_memory(context, step, memory_mode=None, pb_format=None):
     run_xpansion_step(context, step, memory_mode, pb_format, nproc=1)
+
 
 
 @when('I run antares-xpansion in trajectory')
@@ -216,3 +242,57 @@ def run_trajectory_mode(context):
                     context.outputs = read_json_file(inferred)
             except Exception:
                 pass
+
+
+
+##for testing benders for investment strategies 
+##Added by Hedi Bouchehda 
+def get_benders_exec_path() : 
+    current_directory = os.getcwd() 
+    repo_root = os.path.abspath(os.path.join(current_directory, "../.."))
+
+    excluded_repos = ["docs",".git","tests",".vscode","conception", 
+                    "vcpkg","src","examples","cmake",".github","data_test", 
+                    "docker"]
+
+    excluded_paths = {os.path.join(repo_root,d) for d in excluded_repos} 
+    print(f"repo_root : {repo_root}")
+
+    repos_2_consider = [os.path.join(repo_root,d) for d in os.listdir(repo_root) 
+                    if (os.path.isdir(os.path.join(repo_root,d)) and 
+                        os.path.join(repo_root,d) not in excluded_paths)]
+
+    for repo_2_consider in repos_2_consider : 
+        print(f"repo to consider {repo_2_consider}")
+        for item in os.listdir(repo_2_consider) : 
+            if item.startswith("benders") : 
+                full_item_path = os.path.join(repo_2_consider,item)
+                if (os.access(full_item_path,os.X_OK) and os.access(full_item_path,os.X_OK)) : 
+                    print(f"full_item_path : {full_item_path}")
+                    return full_item_path
+
+def run_benders_simulation(study_path,benders_exec_full_path) : 
+    options_json_path = os.path.join(study_path,"options.json") 
+    cmd = [
+        "mpirun", 
+        "-np","10" , 
+        benders_exec_full_path, 
+        options_json_path
+    ]
+    print(f"benders exec full path : {benders_exec_full_path}") 
+    print(f"options : {options_json_path}")
+    print("running the mpi command .....")
+    result = subprocess.run(cmd, capture_output=True, text=True, cwd=study_path)
+    print("printing the result ")
+    print(result.stdout)
+    print(result.stderr)
+    print("end running the mpi command ..... ")
+
+
+
+@when("I run benders for investment strategy") 
+def run_benders_for_investment_strategy(context) : 
+    benders_exec_full_path = get_benders_exec_path()
+    run_benders_simulation(context.tmp_study,benders_exec_full_path)
+    print(f"benders_exec_full_path : {benders_exec_full_path}")
+

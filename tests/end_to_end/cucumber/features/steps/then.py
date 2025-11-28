@@ -3,6 +3,7 @@ import glob
 import io
 import math
 import os
+import json
 
 import numpy as np
 import xpress as xp
@@ -293,3 +294,22 @@ def check_benders_solver(context, string):
     solver_in_benders = context.options_data["SOLVER_NAME"]
     print(f"Solver in benders: {solver_in_benders}\n")
     assert solver_in_benders.upper() == string.upper()
+
+
+##for testing benders for investment strategies 
+##Added by Hedi Bouchehda 
+def check_study_result(study_path) : 
+    investment_cost_ref = 20.592373390401711 
+    out_json_path = os.path.join(study_path,"results_benders/out.json")
+    print(f"out.json path : {out_json_path}") 
+    with open(out_json_path,"r") as f : 
+        output_file = json.load(f) 
+        investment_cost = output_file["solution"]["overall_cost"]
+        assert investment_cost == investment_cost_ref
+
+
+@then('I check the value of the overall cost')
+def check_study_result_final(context) : 
+    check_study_result(context.study_path)
+
+
