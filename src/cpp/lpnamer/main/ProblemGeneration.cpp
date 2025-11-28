@@ -241,7 +241,9 @@ std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
     case SimulationInputMode::ANTARES_API:
     {
         throw LogUtils::XpansionError<std::runtime_error>(
-          "Please use XpansionProblemsFromAntaresProvider::provideProblem");
+          "ProblemGeneration::getXpansionProblems does not support API mode, please use "
+          "XpansionProblemsFromAntaresProvider::provideProblem",
+          LOGLOCATION);
     }
     default:
         throw LogUtils::XpansionError<std::runtime_error>("Unhandled simulation mode", LOGLOCATION);
