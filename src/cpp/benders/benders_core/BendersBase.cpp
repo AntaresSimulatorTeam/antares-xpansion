@@ -507,10 +507,10 @@ std::pair<std::vector<int>, std::vector<int>> BendersBase::GetProblemBasis(
 {
     int row_number = worker->_solver->get_nrows();
     int col_number = worker->_solver->get_ncols();
-    auto rstatus = std::vector<int>(row_number);
-    auto cstatus = std::vector<int>(col_number);
+    std::vector<int> rstatus(row_number);
+    std::vector<int> cstatus(col_number);
     worker->_solver->get_basis(rstatus.data(), cstatus.data());
-    return {rstatus, cstatus};
+    return {std::move(rstatus), std::move(cstatus)};
 }
 
 /**
