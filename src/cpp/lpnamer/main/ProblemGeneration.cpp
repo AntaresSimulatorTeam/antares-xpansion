@@ -238,14 +238,10 @@ std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
         ZipProblemsProviderAdapter adapter(lpDir_, std::move(reader), problem_names);
         return adapter.provideProblems(solver_config_.Name(), solver_log_manager);
     }
-    case SimulationInputMode::ANTARES_API:
-    {
-        throw LogUtils::XpansionError<std::runtime_error>(
-          "ProblemGeneration::getXpansionProblems does not support API mode, please use "
-          "XpansionProblemsFromAntaresProvider::provideProblem",
-          LOGLOCATION);
-    }
     default:
+        // ProblemGeneration::getXpansionProblems does not support API mode, use
+        // XpansionProblemsFromAntaresProvider::provideProblem
+
         throw LogUtils::XpansionError<std::runtime_error>("Unhandled simulation mode", LOGLOCATION);
     }
 }
