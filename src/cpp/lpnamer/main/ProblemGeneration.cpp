@@ -7,8 +7,6 @@
 #include <utility>
 
 #include <antares/api/singleProblemGetter.h>
-#include <antares/api/solver.h>
-#include "antares/file-tree-study-loader/FileTreeStudyLoader.h"
 
 #include "Version.h"
 #include "antares-xpansion/helpers/Timer.h"
@@ -83,9 +81,7 @@ static std::string solverXpansionToSimulator(const SolverConfig& in)
 
 void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& study_dir)
 {
-    Antares::FileTreeStudyLoader loader(study_dir);
-    auto study = loader.load();
-    Antares::Solver::SingleProblemGetter spg(std::move(study));
+    Antares::Solver::SingleProblemGetter spg(study_dir);
     lps_.setConstantData(spg.getConstantData());
     lps_.addWeeklyData({0, 0}, spg.getWeeklyData({0, 0}));
 }
