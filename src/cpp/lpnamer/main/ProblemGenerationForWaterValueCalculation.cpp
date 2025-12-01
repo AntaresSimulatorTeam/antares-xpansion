@@ -337,7 +337,7 @@ void ProblemGenerationForWaterValueCalculation::updateReservoirWithOptimalTrajec
                             + std::to_string(reservoir.optimal_trajectory.size()));
     double optimalTrajectoryValue = -reservoir.optimal_trajectory[pbId.week][pbId.year - 1]
                                     + reservoir.optimal_trajectory[pbId.week - 1][pbId.year - 1]
-                                    + reservoir.inflow[pbId.week][pbId.year - 1];
+                                    + reservoir.inflow[pbId.week - 1][pbId.year - 1];
     logger->display_message("Optimal trajectory value: " + std::to_string(optimalTrajectoryValue));
     problem->fix_rhs_to("HydroPower::area<" + reservoir.area + ">::week<"
                           + std::to_string(pbId.week - 1) + ">",
@@ -349,11 +349,17 @@ void ProblemGenerationForWaterValueCalculation::initializeOptimalTrajectories(
 {
     for (auto& reservoir: gridCollection->reservoirs)
     {
-        // reservoir.second.inflow holds all possible values, which can be a lot, but they are
-        // necessary at this point
-        reservoir.second.optimal_trajectory = std::vector<std::vector<double>>(
-          reservoir.second.inflow.begin() + startWeek - 1,
-          reservoir.second.inflow.begin() + endWeek + 1);
+        // reservoir.second.inflow holds values for all possible MCYears, which can be a
+        // lot, but they are necessary at this point
+        int nbMCYears = reservoir.second.inflow.size();
+        logger->display_message("Initializing optimal trajectory for reservoir "
+                                + reservoir.second.area);
+        // initialize with initial levels
+        for (int week = startWeek - 1; week <= endWeek; ++week)
+        {
+            reservoir.second.optimal_trajectory.push_back(
+              std::vector<double>(nbMCYears, reservoir.second.initial_level));
+        }
         logger->display_message(
           "Reservoir " + reservoir.second.area + " has been initialized with "
           + std::to_string(reservoir.second.optimal_trajectory.size()) + " by "
