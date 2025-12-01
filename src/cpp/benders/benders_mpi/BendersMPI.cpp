@@ -408,16 +408,14 @@ void BendersMpi::master_build_cuts(std::vector<SubProblemDataMap> gathered_subpr
 
     if (_world.rank() == rank_0) 
     {
-        if (_data.nsubproblem < _options.AGGREGATION) 
+        if (_data.nsubproblem < _options.AGGREGATION || _options.AGGREGATION <= 0 ) 
         {   
             std::string logging_str = "AGGREGATION : " + std::to_string(_options.AGGREGATION) + " is larger than the number of subproblems : " + std::to_string(_data.nsubproblem) +
                 "setting AGGREGATION to " + std::to_string(_data.nsubproblem); 
             _logger->display_message(logging_str) ; 
-            std::cout<<logging_str<<std::endl ; 
             _options.AGGREGATION = _data.nsubproblem ; 
         } 
         std::vector<SubProblemDataMap> subproblem_per_cut = split_subproblem_data( gathered_subproblem_map, _options.AGGREGATION) ;
-        std::cout<<"subproblem_per_cut size "<<subproblem_per_cut.size()<<std::endl ; 
         for (const auto& subproblem_data_map: subproblem_per_cut)
         {
             BuildCutFull(subproblem_data_map);
