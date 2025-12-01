@@ -62,3 +62,6 @@ xwiki_source
 .venv
 vcpkg_installed
 CMakeUserPresets.json
+
+#testing files
+data_test/investment_study/solver_log_proc_*.txt

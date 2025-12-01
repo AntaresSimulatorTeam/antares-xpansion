@@ -629,20 +629,20 @@ void BendersBase::SetSubproblemsVariablesIndices()
  * subproblem problem
  *
  */
-void BendersBase::compute_cut(const SubProblemDataMap& subproblem_data_map)
-{
-    // current_outer_loop_criterion_ = 0.0;
-    for (const auto& [subproblem_name, subproblem_data]: subproblem_data_map)
-    {
-        _data.ub += subproblem_data.subproblem_cost;
+// void BendersBase::compute_cut(const SubProblemDataMap& subproblem_data_map)
+// {
+//     // current_outer_loop_criterion_ = 0.0;
+//     for (const auto& [subproblem_name, subproblem_data]: subproblem_data_map)
+//     {
+//         _data.ub += subproblem_data.subproblem_cost;
 
-        _master->addSubproblemCut(_problem_to_id[subproblem_name],
-                                  subproblem_data.var_name_and_subgradient,
-                                  _data.x_cut,
-                                  subproblem_data.subproblem_cost);
-        relevantIterationData_.last._cut_trace[subproblem_name] = subproblem_data;
-    }
-}
+//         _master->addSubproblemCut(_problem_to_id[subproblem_name],
+//                                   subproblem_data.var_name_and_subgradient,
+//                                   _data.x_cut,
+//                                   subproblem_data.subproblem_cost);
+//         relevantIterationData_.last._cut_trace[subproblem_name] = subproblem_data;
+//     }
+// }
 
 void compute_cut_val(const Point& var_name_subgradient, const Point& x_cut, Point& s)
 {
@@ -669,10 +669,10 @@ void BendersBase::compute_cut_aggregate(const SubProblemDataMap& subproblem_data
 {
     Point s;
     double rhs(0);    
-    std::vector<int> alpha_ids_per_cut ; 
+    std::vector<int> subproblem_ids_per_cut ; 
     for (const auto& [name, subproblem_data]: subproblem_data_map)
     {
-        alpha_ids_per_cut.push_back(_problem_to_id[name]) ;
+        subproblem_ids_per_cut.push_back(_problem_to_id[name]) ;
         _data.ub += subproblem_data.subproblem_cost;
         rhs += subproblem_data.subproblem_cost;        
 
@@ -680,7 +680,7 @@ void BendersBase::compute_cut_aggregate(const SubProblemDataMap& subproblem_data
 
         relevantIterationData_.last._cut_trace[name] = subproblem_data;
     }
-    _master->addSubProblemGroupCut(alpha_ids_per_cut,s,_data.x_cut,rhs) ; 
+    _master->addSubproblemCut(subproblem_ids_per_cut,s,_data.x_cut,rhs) ; 
 }
 
 /*!

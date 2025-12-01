@@ -33,9 +33,10 @@ def run_command(study_path, memory, method, n_mpi, allow_run_as_root=False):
     return process.returncode
 
 
-def build_outer_loop_command(context, n: int, option_file: str = "options.json"):
+def build_exe_command(context, n: int, option_file: str = "options.json",exe_file="OUTER_LOOP"):    
+    benders = str(get_conf("BENDERS"))
     command = get_mpi_command(allow_run_as_root=context.allow_run_as_root, nproc=n)
-    exe_path = Path(get_conf("DEFAULT_INSTALL_DIR")) / get_conf("OUTER_LOOP")
+    exe_path = Path(get_conf("DEFAULT_INSTALL_DIR")) / get_conf(exe_file)
     command.append(str(exe_path))
     command.append(option_file)
     return command
@@ -71,10 +72,7 @@ def run_xpansion_step(context, step, memory_mode, pb_format=None, nproc=1):
     context.allow_run_as_root = get_conf("allow_run_as_root")
 
     # Parse memory mode
-    if memory_mode is not None : 
-        in_memory = "memory" in memory_mode.lower()
-    else : 
-        in_memory = False 
+    in_memory = "memory" in memory_mode.lower()
 
     command = build_launch_command(
         context.tmp_study,
@@ -125,7 +123,7 @@ def run_xpansion_step(context, step, memory_mode, pb_format=None, nproc=1):
 @when('I run outer loop with {n:d} proc(s)')
 def run_outer_loop(context, n, option_file: str = "options.json"):
     context.allow_run_as_root = get_conf("allow_run_as_root")
-    command = build_outer_loop_command(context, n, option_file)
+    command = build_exe_command(context, n, option_file)
     print(f"Running command: {' '.join(command)}")
     old_cwd = os.getcwd()
 
@@ -162,7 +160,6 @@ def run_antares_xpansion(context, method, memory=None, n: int = 1):
         context.lold = outputs.lold
         context.positive_unsupplied_energy = outputs.positive_unsupplied_energy
 
-#here we launch benderq directly
 @when(u'I run step {step} {memory_mode} followed by step presolve')
 def step_problem_generation_and_presolve(context, step, memory_mode):
     # Run the first step (usually problem_generation)
@@ -244,55 +241,14 @@ def run_trajectory_mode(context):
                 pass
 
 
-
-##for testing benders for investment strategies 
-##Added by Hedi Bouchehda 
-def get_benders_exec_path() : 
-    current_directory = os.getcwd() 
-    repo_root = os.path.abspath(os.path.join(current_directory, "../.."))
-
-    excluded_repos = ["docs",".git","tests",".vscode","conception", 
-                    "vcpkg","src","examples","cmake",".github","data_test", 
-                    "docker"]
-
-    excluded_paths = {os.path.join(repo_root,d) for d in excluded_repos} 
-    print(f"repo_root : {repo_root}")
-
-    repos_2_consider = [os.path.join(repo_root,d) for d in os.listdir(repo_root) 
-                    if (os.path.isdir(os.path.join(repo_root,d)) and 
-                        os.path.join(repo_root,d) not in excluded_paths)]
-
-    for repo_2_consider in repos_2_consider : 
-        print(f"repo to consider {repo_2_consider}")
-        for item in os.listdir(repo_2_consider) : 
-            if item.startswith("benders") : 
-                full_item_path = os.path.join(repo_2_consider,item)
-                if (os.access(full_item_path,os.X_OK) and os.access(full_item_path,os.X_OK)) : 
-                    print(f"full_item_path : {full_item_path}")
-                    return full_item_path
-
-def run_benders_simulation(study_path,benders_exec_full_path) : 
-    options_json_path = os.path.join(study_path,"options.json") 
-    cmd = [
-        "mpirun", 
-        "-np","10" , 
-        benders_exec_full_path, 
-        options_json_path
-    ]
-    print(f"benders exec full path : {benders_exec_full_path}") 
-    print(f"options : {options_json_path}")
-    print("running the mpi command .....")
-    result = subprocess.run(cmd, capture_output=True, text=True, cwd=study_path)
+@when("I run benders for investment strategy") 
+def run_benders_for_investment_strategy(context) :  
+    context.allow_run_as_root = get_conf("allow_run_as_root")
+    command = build_exe_command(context=context,n=10, exe_file="BENDERS")
+    result = subprocess.run(command, capture_output=True, text=True, cwd=context.tmp_study)
     print("printing the result ")
     print(result.stdout)
     print(result.stderr)
     print("end running the mpi command ..... ")
 
-
-
-@when("I run benders for investment strategy") 
-def run_benders_for_investment_strategy(context) : 
-    benders_exec_full_path = get_benders_exec_path()
-    run_benders_simulation(context.tmp_study,benders_exec_full_path)
-    print(f"benders_exec_full_path : {benders_exec_full_path}")
 

@@ -1,0 +1,210 @@
+{
+	"best_iteration" : 
+	{
+		"benders_elapsed_time" : 27.413942222999999,
+		"best_it" : 107,
+		"best_ub" : 20.592373390401711,
+		"candidates" : 
+		[
+			{
+				"candidate" : "z[LINE-107-108_0]",
+				"invest" : -0.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-108-203]",
+				"invest" : 1.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-115-116_0]",
+				"invest" : -0.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-116-117_0]",
+				"invest" : 1.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-116-118]",
+				"invest" : -0.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-116-121]",
+				"invest" : -0.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-128-203_0]",
+				"invest" : -0.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-216-218]",
+				"invest" : -0.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-216-219_0]",
+				"invest" : -0.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-217-219]",
+				"invest" : -0.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-316-318]",
+				"invest" : -0.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-330-213]",
+				"invest" : -0.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-330-315]",
+				"invest" : 1.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-330-319]",
+				"invest" : 1.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			}
+		],
+		"cumulative_number_of_subproblem_resolved" : 1070,
+		"invest_cost" : 0.29000000000000004,
+		"it" : 107,
+		"lb" : 19.187881672764803,
+		"master_duration" : 0.30394351400000003,
+		"max_iterations" : -1,
+		"optimality_gap" : 1.4044917176369083,
+		"relative_gap" : 0.068204460506313194,
+		"subproblem_cost" : 20.302373390401712,
+		"subproblem_duration" : 0.069819984000000002,
+		"ub" : 20.592373390401711
+	},
+	"last" : 
+	{
+		"benders_elapsed_time" : 33.628175925999997,
+		"best_it" : 107,
+		"best_ub" : 20.592373390401711,
+		"candidates" : 
+		[
+			{
+				"candidate" : "z[LINE-107-108_0]",
+				"invest" : -0.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-108-203]",
+				"invest" : 1.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-115-116_0]",
+				"invest" : -0.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-116-117_0]",
+				"invest" : 1.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-116-118]",
+				"invest" : -0.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-116-121]",
+				"invest" : -0.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-128-203_0]",
+				"invest" : -0.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-216-218]",
+				"invest" : -0.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-216-219_0]",
+				"invest" : -0.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-217-219]",
+				"invest" : -0.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-316-318]",
+				"invest" : -0.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-330-213]",
+				"invest" : -0.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-330-315]",
+				"invest" : 1.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			},
+			{
+				"candidate" : "z[LINE-330-319]",
+				"invest" : 1.0,
+				"invest_max" : 1.0,
+				"invest_min" : -0.0
+			}
+		],
+		"cumulative_number_of_subproblem_resolved" : 1220,
+		"invest_cost" : 0.29000000000000004,
+		"it" : 122,
+		"lb" : 20.592373493873602,
+		"master_duration" : 0.34444424200000001,
+		"max_iterations" : -1,
+		"optimality_gap" : -1.0347189061121753e-07,
+		"relative_gap" : -5.0247675996127139e-09,
+		"subproblem_cost" : 20.302373390401712,
+		"subproblem_duration" : 0.086409097000000004,
+		"ub" : 20.592373390401711
+	}
+}
