@@ -34,7 +34,6 @@ def run_command(study_path, memory, method, n_mpi, allow_run_as_root=False):
 
 
 def build_exe_command(context, n: int, option_file: str = "options.json",exe_file="OUTER_LOOP"):    
-    benders = str(get_conf("BENDERS"))
     command = get_mpi_command(allow_run_as_root=context.allow_run_as_root, nproc=n)
     exe_path = Path(get_conf("DEFAULT_INSTALL_DIR")) / get_conf(exe_file)
     command.append(str(exe_path))
