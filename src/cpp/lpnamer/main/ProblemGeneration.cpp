@@ -30,7 +30,6 @@
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
 #include "config.h"
-#include "malloc.h"
 
 static const std::string LP_DIRNAME = "lp";
 
