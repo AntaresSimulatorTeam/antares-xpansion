@@ -619,30 +619,7 @@ void BendersBase::SetSubproblemsVariablesIndices()
     }
 }
 
-/*!
- *  \brief Add cut to Master Problem and store the cut in a set
- *
- *  Method to add cut from a subproblem to the Master Problem and store this
- * cut in a map linking each subproblem to its set of cuts.
- *
- *  \param all_package : vector storing all cuts information for each
- * subproblem problem
- *
- */
-// void BendersBase::compute_cut(const SubProblemDataMap& subproblem_data_map)
-// {
-//     // current_outer_loop_criterion_ = 0.0;
-//     for (const auto& [subproblem_name, subproblem_data]: subproblem_data_map)
-//     {
-//         _data.ub += subproblem_data.subproblem_cost;
 
-//         _master->addSubproblemCut(_problem_to_id[subproblem_name],
-//                                   subproblem_data.var_name_and_subgradient,
-//                                   _data.x_cut,
-//                                   subproblem_data.subproblem_cost);
-//         relevantIterationData_.last._cut_trace[subproblem_name] = subproblem_data;
-//     }
-// }
 
 void compute_cut_val(const Point& var_name_subgradient, const Point& x_cut, Point& s)
 {
