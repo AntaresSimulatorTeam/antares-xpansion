@@ -82,7 +82,10 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& st
 {
     Antares::Solver::SingleProblemGetter spg(study_dir);
     lps_.setConstantData(spg.getConstantData());
-    lps_.addWeeklyData({0, 0}, spg.getWeeklyData({0, 0}));
+    for (const auto& problem_id: spg.getProblemIds())
+    {
+        lps_.addWeeklyData(problem_id, spg.getWeeklyData(problem_id));
+    }
 }
 
 std::filesystem::path ProblemGeneration::updateProblems()
