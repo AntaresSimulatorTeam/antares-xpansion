@@ -295,7 +295,7 @@ SubProblemDataMap BendersMpi::get_subproblem_cut_package()
     return subproblem_data_map;
 }
 
-
+#if 0 
 std::vector<SubProblemDataMap> BendersMpi::split_subproblem_data_with_shuffle(std::vector<SubProblemDataMap>& gathered_subproblem_map, int n_cuts) 
 {
     std::vector<std::pair<std::string, PlainData::SubProblemData>> allElements;
@@ -339,7 +339,42 @@ std::vector<SubProblemDataMap> BendersMpi::split_subproblem_data_with_shuffle(st
 
     return result;
 }
+#endif 
 
+
+std::vector<std::vector<std::pair<std::string,int>>>  BendersMpi::split_subproblem_data_pairs(std::vector<SubProblemDataMap>& gathered_subproblem_map, int n_cuts)
+{
+    std::vector<std::vector<std::pair<std::string,int>>>  result(n_cuts) ; 
+
+    if (_data.nsubproblem == 0 || n_cuts <=0 ) return std::vector<std::vector<std::pair<std::string,int>>>() ; 
+
+    size_t target_per_cut = (_data.nsubproblem + n_cuts - 1) / n_cuts;
+    
+    size_t count_in_cut = 0 ; 
+    size_t current_cut = 0 ; 
+
+
+    for (size_t i=0; i<gathered_subproblem_map.size(); i++ ) 
+    {
+        const auto& spMap = gathered_subproblem_map[i] ; 
+        for (const auto& [key, _] : spMap) 
+        {
+            result[current_cut].emplace_back(key,static_cast<int>(i)) ; 
+            count_in_cut ++ ; 
+            if (count_in_cut >= target_per_cut && current_cut +1 < n_cuts) 
+            {
+                count_in_cut = 0 ; 
+                current_cut++ ; 
+            }
+        }
+    }
+
+    return result ; 
+
+}
+
+
+#if 0 
 std::vector<SubProblemDataMap> BendersMpi::split_subproblem_data(std::vector<SubProblemDataMap>& gathered_subproblem_map, int n_cuts) 
 {
     std::vector<SubProblemDataMap> result(n_cuts) ; 
@@ -388,6 +423,7 @@ std::vector<SubProblemDataMap> BendersMpi::split_subproblem_data(std::vector<Sub
 
     return result ; 
 }
+#endif 
 
 void BendersMpi::master_build_cuts(std::vector<SubProblemDataMap> gathered_subproblem_map)
 {
@@ -415,11 +451,14 @@ void BendersMpi::master_build_cuts(std::vector<SubProblemDataMap> gathered_subpr
             _logger->display_message(logging_str) ; 
             _options.AGGREGATION = _data.nsubproblem ; 
         } 
-        std::vector<SubProblemDataMap> subproblem_per_cut = split_subproblem_data( gathered_subproblem_map, _options.AGGREGATION) ;
-        for (const auto& subproblem_data_map: subproblem_per_cut)
-        {
-            BuildCutFull(subproblem_data_map);
-        }
+
+        auto subproblem_per_cut_indices = split_subproblem_data_pairs(gathered_subproblem_map,_options.AGGREGATION) ; 
+        build_all_aggregated_cuts(subproblem_per_cut_indices,gathered_subproblem_map) ; 
+        // std::vector<SubProblemDataMap> subproblem_per_cut = split_subproblem_data( gathered_subproblem_map, _options.AGGREGATION) ;
+        // for (const auto& subproblem_data_map: subproblem_per_cut)
+        // {
+        //     BuildCutFull(subproblem_data_map);
+        // }
     }
 
     _logger->LogSubproblemsSolvingCumulativeCpuTime(_data.subproblems_cumulative_cputime);

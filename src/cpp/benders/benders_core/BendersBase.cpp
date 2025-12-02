@@ -660,6 +660,38 @@ void BendersBase::compute_cut_aggregate(const SubProblemDataMap& subproblem_data
     _master->addSubproblemCut(subproblem_ids_per_cut,s,_data.x_cut,rhs) ; 
 }
 
+
+void BendersBase::build_all_aggregated_cuts(const std::vector<std::vector<std::pair<std::string,int>>>& subproblem_names, const std::vector<SubProblemDataMap>& gathered_subproblem_map)
+{   
+    std::vector<int> subproblem_ids_per_cut ; 
+    for (const auto& subproblem_names_in_cut : subproblem_names) 
+    {
+        Point s; 
+        double rhs(0) ; 
+        std::vector<int> subproblem_ids_per_cut ; 
+
+        for (const auto& subproblem_name_in_cut : subproblem_names_in_cut) 
+        {
+            subproblem_ids_per_cut.push_back(_problem_to_id[subproblem_name_in_cut.first]); 
+
+            auto subproblem_data_pair = gathered_subproblem_map[subproblem_name_in_cut.second].find(subproblem_name_in_cut.first) ; 
+            
+            if (subproblem_data_pair != gathered_subproblem_map[subproblem_name_in_cut.second].end()) 
+            {
+                auto& subproblem_data = subproblem_data_pair->second ; 
+                _data.ub += subproblem_data.subproblem_cost ; 
+                  rhs += subproblem_data.subproblem_cost; 
+                  compute_cut_val(subproblem_data.var_name_and_subgradient, _data.x_cut, s);
+            }
+
+        }
+        
+        _master->addSubproblemCut(subproblem_ids_per_cut,s,_data.x_cut,rhs) ; 
+        
+    }
+}
+
+
 /*!
  *  \brief Add cuts in master problem
  *

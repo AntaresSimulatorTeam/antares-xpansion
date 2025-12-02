@@ -312,7 +312,10 @@ protected:
     // to p)
     void SetSubproblemsVariablesIndices();
 
-private:
+    void build_all_aggregated_cuts(const std::vector<std::vector<std::pair<std::string,int>>>& subproblem_names, const std::vector<SubProblemDataMap>& gathered_subproblem_map) ; 
+
+
+    private:
     void print_master_and_cut(std::ostream& file,
                               int ite,
                               WorkerMasterData& trace,
@@ -326,8 +329,9 @@ private:
     [[nodiscard]] Output::SolutionData BendersSolution() const;
     [[nodiscard]] std::string status_from_criterion() const;
     void compute_cut_aggregate(const SubProblemDataMap& subproblem_data_map);
+
     [[nodiscard]] std::map<std::string, int> get_master_variable_map(
-      const std::map<std::string, std::map<std::string, int>>& input_map) const;
+    const std::map<std::string, std::map<std::string, int>>& input_map) const;
     [[nodiscard]] virtual bool shouldParallelize() const = 0;
     Output::Iteration iteration(const WorkerMasterData& masterDataPtr_l) const;
     LogData FinalLogData() const;
