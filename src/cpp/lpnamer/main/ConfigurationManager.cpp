@@ -113,5 +113,17 @@ std::string getCurrentTimestamp()
 std::filesystem::path ConfigurationManager::generateOutputName(
   const std::filesystem::path& study) const
 {
+    auto name = study / "output" / getCurrentTimestamp();
+    if (std::filesystem::exists(name))
+    {
+        int counter = 1;
+        std::filesystem::path new_name;
+        do
+        {
+            new_name = study / "output" / (getCurrentTimestamp() + "_" + std::to_string(counter));
+            counter++;
+        } while (std::filesystem::exists(new_name));
+        return new_name;
+    }
     return study / "output" / getCurrentTimestamp();
 }
