@@ -61,13 +61,36 @@ if TRAJECTORY_FLAG in sys.argv:
 
     t_config = TrajectoryConfig(t_params, configuration_data)
     t_driver = TrajectoryInvestmentDriver(t_config)
-    t_driver.launch()
+    try:
+        t_driver.launch()
 
-    end_time = datetime.now()
-    xpansion_total_duration = end_time - start_time
-    end_info = {"step": "Post Xpansion Trajectory"}
-    logger.info(f"Xpansion (trajectory) duration : {xpansion_total_duration}", extra=end_info)
-    logger.info("Xpansion (trajectory) Finished.", extra=end_info)
+        end_time = datetime.now()
+        xpansion_total_duration = end_time - start_time
+        end_info = {"step": "Post Xpansion Trajectory"}
+        logger.info(f"Xpansion (trajectory) duration : {xpansion_total_duration}", extra=end_info)
+        logger.info("Xpansion (trajectory) Finished.", extra=end_info)
+    except Exception as e:
+        # Handle user-facing validation exceptions from trajectory input translator without stacktrace
+        try:
+            from antares_xpansion.trajectory.user_input_translation import UserInputTranslator
+
+            user_exc_types = (
+                UserInputTranslator.InvalidCandidates,
+                UserInputTranslator.InvalidTreeStructure,
+                UserInputTranslator.InvalidTrajectoryConstraint,
+            )
+        except Exception:
+            user_exc_types = ()
+
+        if isinstance(e, user_exc_types):
+            print(f"Error: {e}", file=sys.stderr)
+            locker.unlock()
+            sys.exit(1)
+        else:
+            # Unexpected exception: re-raise to show full stacktrace for debugging
+            locker.unlock()
+            raise
+
     locker.unlock()
 else:
     # Classic mode
