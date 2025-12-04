@@ -104,7 +104,7 @@ def run_xpansion_step(context, step, memory_mode, pb_format=None, nproc=1):
     return True
 
 
-def process_command(context, n, option_file: str, command_builder) -> tuple[str, str]:
+def process_command(context, n, option_file: str, command_builder):
     context.allow_run_as_root = get_conf("allow_run_as_root")
     command = command_builder(context, n, option_file)
     print(f"Running command: {' '.join(command)}")
