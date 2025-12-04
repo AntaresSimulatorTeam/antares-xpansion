@@ -52,13 +52,15 @@ WorkerMaster::WorkerMaster(const VariableMap& variable_map,
  */
 void WorkerMaster::restoreFeasibility(std::vector<double>& solution)
 {
-    // _id_alpha is equal to the number of variable already present in the problem before alpha vars are added
+    // _id_alpha is equal to the number of variable already present in the problem before alpha vars
+    // are added
     std::vector<char> col_type(_id_alpha);
     std::vector<double> lb(_id_alpha);
     std::vector<double> ub(_id_alpha);
 
     solver_getcolinfo(*_solver, col_type, lb, ub, 0, _id_alpha - 1);
-    for (const auto var_id: _id_to_name | std::views::keys) {
+    for (const auto var_id: _id_to_name | std::views::keys)
+    {
         double value = solution[var_id];
         // Case variable slightly above ub
         if (value > ub[var_id] && value < ub[var_id] + _master_solution_tolerance)
