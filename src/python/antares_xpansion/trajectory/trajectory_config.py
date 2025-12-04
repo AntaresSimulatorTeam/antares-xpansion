@@ -92,7 +92,16 @@ class TrajectoryConfig(TrajectoryConfigDefaults):
         print(
             f"Executable {exe_name} should be found in dir : {Path(self.install_dir).resolve().__str__()}"
         )
-        return (Path(self.install_dir) / exe_name).resolve()
+        fullpath = (Path(self.install_dir) / exe_name).resolve()
+        if not fullpath.is_file():
+            newpath = fullpath.with_suffix('exe')
+            if newpath.is_file():
+                return newpath
+            else:
+                raise FileNotFoundError(
+                    f"Executable {exe_name} not found in install dir {self.install_dir}"
+                )
+        return fullpath
 
     def _get_input_parameters(self):
         self.step = self.input_parameters.step
