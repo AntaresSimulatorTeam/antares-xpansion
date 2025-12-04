@@ -454,11 +454,6 @@ void BendersMpi::master_build_cuts(std::vector<SubProblemDataMap> gathered_subpr
 
         auto subproblem_per_cut_indices = split_subproblem_data_pairs(gathered_subproblem_map,_options.AGGREGATION) ; 
         build_all_aggregated_cuts(subproblem_per_cut_indices,gathered_subproblem_map) ; 
-        // std::vector<SubProblemDataMap> subproblem_per_cut = split_subproblem_data( gathered_subproblem_map, _options.AGGREGATION) ;
-        // for (const auto& subproblem_data_map: subproblem_per_cut)
-        // {
-        //     BuildCutFull(subproblem_data_map);
-        // }
     }
 
     _logger->LogSubproblemsSolvingCumulativeCpuTime(_data.subproblems_cumulative_cputime);

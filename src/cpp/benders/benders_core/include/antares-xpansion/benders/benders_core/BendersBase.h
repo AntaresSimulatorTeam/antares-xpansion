@@ -329,7 +329,7 @@ protected:
     [[nodiscard]] Output::SolutionData BendersSolution() const;
     [[nodiscard]] std::string status_from_criterion() const;
     void compute_cut_aggregate(const SubProblemDataMap& subproblem_data_map);
-
+    void compute_cut(const SubProblemDataMap& subproblem_data_map) ;
     [[nodiscard]] std::map<std::string, int> get_master_variable_map(
     const std::map<std::string, std::map<std::string, int>>& input_map) const;
     [[nodiscard]] virtual bool shouldParallelize() const = 0;
