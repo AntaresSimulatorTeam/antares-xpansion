@@ -1,4 +1,4 @@
-Feature: Benders Criterion files
+Feature: Benders tests
 
   # this study has been generated with Antares Simulator Modeler, it has 3 vars, 2 candidates, the first var is not in the subproblem
   @fast @short @Benders
