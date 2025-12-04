@@ -52,23 +52,20 @@ WorkerMaster::WorkerMaster(const VariableMap& variable_map,
  */
 void WorkerMaster::restoreFeasibility(std::vector<double>& solution)
 {
-    int nb_candidates = _id_to_name.size();
+    // _id_alpha is equal to the number of variable already present in the problem before alpha vars are added
+    std::vector<char> col_type(_id_alpha);
+    std::vector<double> lb(_id_alpha);
+    std::vector<double> ub(_id_alpha);
 
-    std::vector<char> col_type(nb_candidates);
-    std::vector<double> lb(nb_candidates);
-    std::vector<double> ub(nb_candidates);
-    // Assumes that candidates are the first variables of the master
-    solver_getcolinfo(*_solver, col_type, lb, ub, 0, nb_candidates - 1);
-    for (const auto& kvp: _id_to_name)
-    {
-        int var_id = kvp.first;
+    solver_getcolinfo(*_solver, col_type, lb, ub, 0, _id_alpha - 1);
+    for (const auto var_id: _id_to_name | std::views::keys) {
         double value = solution[var_id];
-        // Case variable slighly above ub
+        // Case variable slightly above ub
         if (value > ub[var_id] && value < ub[var_id] + _master_solution_tolerance)
         {
             solution[var_id] = ub[var_id];
         }
-        // Case variable slighly lower than lb
+        // Case variable slightly lower than lb
         else if (value < lb[var_id] && value > lb[var_id] - _master_solution_tolerance)
         {
             solution[var_id] = lb[var_id];

@@ -41,6 +41,14 @@ def build_outer_loop_command(context, n: int, option_file: str = "options.json")
     return command
 
 
+def build_benders_command(context, n: int, option_file: str = "options.json"):
+    command = get_mpi_command(allow_run_as_root=context.allow_run_as_root, nproc=n)
+    exe_path = Path(get_conf("DEFAULT_INSTALL_DIR")) / get_conf("BENDERS")
+    command.append(str(exe_path))
+    command.append(option_file)
+    return command
+
+
 def build_launch_command(study_dir: Path, step: str = None, nproc: int = 2, in_memory: bool = False,
                          method: str = None, allow_run_as_root: bool = False, problem_format: str = None):
     command = [
@@ -96,11 +104,9 @@ def run_xpansion_step(context, step, memory_mode, pb_format=None, nproc=1):
     return True
 
 
-@when('I run outer loop with {n:d} proc(s) and "{option_file}" as option file')
-@when('I run outer loop with {n:d} proc(s)')
-def run_outer_loop(context, n, option_file: str = "options.json"):
+def process_command(context, n, option_file: str, command_builder) -> tuple[str, str]:
     context.allow_run_as_root = get_conf("allow_run_as_root")
-    command = build_outer_loop_command(context, n, option_file)
+    command = command_builder(context, n, option_file)
     print(f"Running command: {' '.join(command)}")
     old_cwd = os.getcwd()
 
@@ -114,9 +120,23 @@ def run_outer_loop(context, n, option_file: str = "options.json"):
     options = read_json_file(option_file)
     output_file_path = options["JSON_FILE"]
     context.outputs = read_json_file(output_file_path)
+    return old_cwd, options
+
+
+@when('I run outer loop with {n:d} proc(s) and "{option_file}" as option file')
+@when('I run outer loop with {n:d} proc(s)')
+def run_outer_loop(context, n, option_file: str = "options.json"):
+    old_cwd, options = process_command(context, n, option_file, build_outer_loop_command)
     context.loss_of_load_file = (Path(options["OUTPUTROOT"]) / "LOLD.txt").absolute()
     context.positive_unsupplied_energy_file = (Path(options["OUTPUTROOT"]) / "PositiveUnsuppliedEnergy.txt").absolute()
 
+    os.chdir(old_cwd)
+
+
+@when('I run benders with {n:d} proc(s) and "{option_file}" as option file')
+@when('I run benders with {n:d} proc(s)')
+def run_benders(context, n, option_file: str = "options.json"):
+    old_cwd, _ = process_command(context, n, option_file, build_benders_command)
     os.chdir(old_cwd)
 
 
