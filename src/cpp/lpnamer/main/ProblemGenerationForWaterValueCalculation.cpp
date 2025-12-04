@@ -46,7 +46,7 @@ ProblemGenerationForWaterValueCalculation::getComputationModeFromGrid(const Grid
         return WaterValueComputationMode::MULTIVARIATE;
     }
 
-    for (auto& gridDefinition: grid.gridDefinitions)
+    for (auto& gridDefinition: grid.gridDefinitions | std::views::values)
     {
         if (gridDefinition.gridElements.size() > 1)
         {
@@ -185,14 +185,14 @@ ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
                 SolverFactory::copy_solver(*(pb.second)));
               std::string pbName = "problem-" + std::to_string(pbId.year) + "-"
                                    + std::to_string(pbId.week) + "--optim-nb-1";
-              logger->display_message("Updating problem: " + pbName);
+              logger->display_message("Modifying problem: " + pbName);
               cleanProblemForBellmanCalculations(problem,
                                                  gridDefinition,
                                                  reservoirManagement,
                                                  areaName,
                                                  pbName,
                                                  pbId);
-              logger->display_message("Problem: " + pbName + " updated");
+              logger->display_message("Problem: " + pbName + " modified");
               modifiedProblems[pbId] = problem;
 
               if (writePbFiles)
@@ -214,6 +214,19 @@ ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
       });
 
     return modifiedProblems;
+}
+
+template<int (Problem::*Getter)(const std::string&)>
+int checked(Problem* p, const std::string& name, const Antares::Solver::WeeklyProblemId& pbid)
+{
+    int idx = (p->*Getter)(name);
+    if (idx == -1)
+    {
+        throw std::runtime_error("Index not found: " + name + " for scenario "
+                                 + std::to_string(pbid.year) + " and year "
+                                 + std::to_string(pbid.week));
+    }
+    return idx;
 }
 
 /// @brief Clean the problem for the Bellman Values calculations
@@ -292,66 +305,78 @@ void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculatio
 void ProblemGenerationForWaterValueCalculation::cleanReservoirConstraints(
   std::shared_ptr<Problem> problem,
   const Reservoir& reservoir,
-  Antares::Solver::WeeklyProblemId pbId)
+  Antares::Solver::WeeklyProblemId pbID)
 {
-    for (int hour = (pbId.week - 1) * 168; hour < pbId.week * 168; ++hour)
+    for (int hour = (pbID.week - 1) * 168; hour < pbID.week * 168; ++hour)
     {
-        // Delete variables HydroLevel and Overflow
-        logger->display_message("Deleting variables HydroLevel and Overflow");
-        int idx = problem->get_col_index("HydroLevel::area<" + reservoir.area + ">::hour<"
-                                         + std::to_string(hour) + ">");
-        problem->del_cols(idx, idx);
+        // ==== DELETE HydroLevel ====
+        {
+            std::string name = "HydroLevel::area<" + reservoir.area + ">::hour<"
+                               + std::to_string(hour) + ">";
+            int idx = problem->get_col_index(name);
+            // int idx = checked<&Problem::get_col_index>(problem.get(), name, pbID);
+            problem->del_cols(idx, idx);
+        }
 
-        idx = problem->get_col_index("Overflow::area<" + reservoir.area + ">::hour<"
-                                     + std::to_string(hour) + ">");
-        problem->del_cols(idx, idx);
+        // ==== DELETE Overflow ====
+        {
+            std::string name = "Overflow::area<" + reservoir.area + ">::hour<"
+                               + std::to_string(hour) + ">";
+            int idx = checked<&Problem::get_col_index>(problem.get(), name, pbID);
+            problem->del_cols(idx, idx);
+        }
 
-        // Delete constraints AreaHydroLevel
-        logger->display_message("Deleting constraints AreaHydroLevel");
-        idx = problem->get_row_index("AreaHydroLevel::area<" + reservoir.area + ">::hour<"
-                                     + std::to_string(hour) + ">");
-        problem->del_rows(idx, idx);
+        // ==== DELETE AreaHydroLevel constraint ====
+        {
+            std::string name = "AreaHydroLevel::area<" + reservoir.area + ">::hour<"
+                               + std::to_string(hour) + ">";
+            int idx = checked<&Problem::get_row_index>(problem.get(), name, pbID);
+            problem->del_rows(idx, idx);
+        }
 
-        // Reset HydroProd as it might have been modified by heuristic
-        logger->display_message(
-          "Resetting HydroProd as it might have been modified by heuristic: ");
+        // ==== RESET HydroProd bounds ====
+        {
+            std::string name = "HydProd::area<" + reservoir.area + ">::hour<" + std::to_string(hour)
+                               + ">";
+            int idx = checked<&Problem::get_col_index>(problem.get(), name, pbID);
 
-        idx = problem->get_col_index("HydProd::area<" + reservoir.area + ">::hour<"
-                                     + std::to_string(hour) + ">");
-        problem->chg_bounds({idx},
-                            {'U'},
-                            {reservoir.max_generating[pbId.week - 1] / Reservoir::hours_in_week});
+            problem->chg_bounds({idx},
+                                {'U'},
+                                {reservoir.max_generating[pbID.week - 1]
+                                 / Reservoir::hours_in_week});
+        }
     }
 }
 
 void ProblemGenerationForWaterValueCalculation::updateReservoirWithOptimalTrajectory(
   std::shared_ptr<Problem> problem,
   const Reservoir& reservoir,
-  Antares::Solver::WeeklyProblemId pbId)
+  Antares::Solver::WeeklyProblemId pbID)
 {
     // Updating constraint with optimal trajectory
     logger->display_message("Updating constraint with optimal trajectory: week "
-                            + std::to_string(pbId.week));
+                            + std::to_string(pbID.week));
 
     logger->display_message("Optimal trajectory size: "
                             + std::to_string(reservoir.optimal_trajectory.size()));
-    double optimalTrajectoryValue = -reservoir.optimal_trajectory[pbId.week][pbId.year - 1]
-                                    + reservoir.optimal_trajectory[pbId.week - 1][pbId.year - 1]
-                                    + reservoir.inflow[pbId.week - 1][pbId.year - 1];
+    double optimalTrajectoryValue = -reservoir.optimal_trajectory[pbID.week][pbID.year - 1]
+                                    + reservoir.optimal_trajectory[pbID.week - 1][pbID.year - 1]
+                                    + reservoir.inflow[pbID.week - 1][pbID.year - 1];
     logger->display_message("Optimal trajectory value: " + std::to_string(optimalTrajectoryValue));
     problem->fix_rhs_to("HydroPower::area<" + reservoir.area + ">::week<"
-                          + std::to_string(pbId.week - 1) + ">",
+                          + std::to_string(pbID.week - 1) + ">",
                         optimalTrajectoryValue);
 }
 
 void ProblemGenerationForWaterValueCalculation::initializeOptimalTrajectories(
   std::shared_ptr<GridCollection> gridCollection) const
 {
+    // TODO: this calculation needs to be verified
     for (auto& reservoir: gridCollection->reservoirs)
     {
         // reservoir.second.inflow holds values for all possible MCYears, which can be a
         // lot, but they are necessary at this point
-        int nbMCYears = reservoir.second.inflow.size();
+        int nbMCYears = reservoir.second.inflow[0].size();
         logger->display_message("Initializing optimal trajectory for reservoir "
                                 + reservoir.second.area);
         // initialize with initial levels

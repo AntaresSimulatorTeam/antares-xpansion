@@ -79,15 +79,15 @@ std::set<unsigned int> getWeeks(const MapType& container)
 /// @return The bellman values for each week
 std::vector<std::vector<double>> BellmanValues::compute(int nbLevels)
 {
-    auto variationDeNiveauxDeStockData = gridEvaluator.ComputeCosts();
+    auto variationDeNiveauxDeStockData = gridEvaluator.ComputeCostsAndDuals();
 
     levels = linspace(0.0, reservoirManagement.reservoir.capacity, nbLevels);
     std::map<Antares::Solver::WeeklyProblemId, std::vector<double>> V;
     std::map<Antares::Solver::WeeklyProblemId, std::vector<double>> costs;
 
-    for (const auto& [key, cost]: variationDeNiveauxDeStockData)
+    for (const auto& [key, data]: variationDeNiveauxDeStockData)
     {
-        costs[{key.scenario - 1, key.week - 1}].push_back(cost);
+        costs[{key.scenario - 1, key.week - 1}].push_back(data.cost);
     }
 
     auto scenarios = getYears(costs);
@@ -126,7 +126,7 @@ std::vector<std::vector<double>> BellmanValues::compute(int nbLevels)
             for (size_t i = 0; i < levels.size(); ++i)
             {
                 double Vu;
-                std::tie(Vu, std::ignore, std::ignore) = solveWeeklyProblemWithReward(
+                std::tie(Vu, std::ignore, std::ignore) = solveWeeklyProblemWithCost(
                   week,
                   endWeek,
                   scenario,
@@ -173,7 +173,7 @@ std::vector<std::vector<double>> BellmanValues::compute(int nbLevels)
 /// @param V_fut the cost function for the next week
 /// @return a tuple including 1) the Bellman value for a given week and scenario and level of the
 /// reservoir, 2) the final level of stock, 3) the optimal control
-std::tuple<double, double, double> BellmanValues::solveWeeklyProblemWithReward(
+std::tuple<double, double, double> BellmanValues::solveWeeklyProblemWithCost(
   int week,
   int endWeek,
   int scenario,
@@ -273,8 +273,6 @@ std::vector<std::vector<double>> BellmanValues::computeOptimalTrajectories()
     unsigned int endWeek = *weeks.rbegin();
 
     // initialization
-    // std::vector<std::vector<double>> trajectory =
-    // reservoirManagement.reservoir.optimal_trajectory;
     std::vector<std::vector<double>> trajectory = reservoirManagement.reservoir.optimal_trajectory;
 
     // for (unsigned int week = endWeek + 1; week-- > startWeek;)
@@ -302,14 +300,14 @@ std::vector<std::vector<double>> BellmanValues::computeOptimalTrajectories()
                              : reservoirManagement.reservoir.optimal_trajectory[week - 1][scenario];
 
             std::tie(std::ignore, trajectory[week][scenario], std::ignore)
-              = solveWeeklyProblemWithReward(week,
-                                             endWeek,
-                                             scenario,
-                                             level, // here: trajectory of the previous week
-                                                    // (first week: initial level)
-                                             levels,
-                                             costs[{scenario, week}],
-                                             V_fut());
+              = solveWeeklyProblemWithCost(week,
+                                           endWeek,
+                                           scenario,
+                                           level, // here: trajectory of the previous week
+                                                  // (first week: initial level)
+                                           levels,
+                                           costs[{scenario, week}],
+                                           V_fut());
         }
     }
     return trajectory;

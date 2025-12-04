@@ -17,7 +17,7 @@ public:
     std::vector<std::vector<double>> computeOptimalTrajectories();
 
 private:
-    std::tuple<double, double, double> solveWeeklyProblemWithReward(
+    std::tuple<double, double, double> solveWeeklyProblemWithCost(
       int week,
       int endWeek,
       int scenario,

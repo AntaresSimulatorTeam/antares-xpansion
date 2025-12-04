@@ -68,6 +68,6 @@ class GridCollection
 public:
     GridCollection(const std::filesystem::path& filePath);
 
-    std::vector<GridDefinition> gridDefinitions;
+    std::map<int, GridDefinition> gridDefinitions;
     std::map<AreaName, Reservoir> reservoirs;
 };

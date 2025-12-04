@@ -2,7 +2,7 @@
 #include "antares-xpansion/grid_evaluator/GridCollection.h"
 
 #include <fstream>
-#include <iostream>
+#include <ranges>
 
 /// @brief Checks if a gridElement is valid
 /// - 0.0 <= min <= 1.0 AND 0.0 <= max <= 1.0 AND min <= max
@@ -83,19 +83,20 @@ GridCollection::GridCollection(const std::filesystem::path& filePath)
         double max = std::stod(tokens[6]);
         double step = std::stod(tokens[7]);
 
-        if (gridID <= gridDefinitions.size())
+        if (!gridDefinitions.contains(gridID))
         {
-            gridDefinitions.push_back({gridID, {}, {}, {}});
+            GridDefinition gridDef{gridID, {}, {}, {}};
+            gridDefinitions.emplace(gridID, gridDef);
         }
-        gridDefinitions[gridID].addGridElement(pbName, type, cstName, areaName, min, max, step);
+        gridDefinitions.at(gridID).addGridElement(pbName, type, cstName, areaName, min, max, step);
 
         if (!reservoirs.contains(areaName))
         {
             loadReservoirManagement(filePath.parent_path(), areaName);
         }
     }
-    // it is still required to set default reservoirs and generate grid values
-    for (auto& gridDefinition: gridDefinitions)
+    // it is still required to set default reservoirs, which will generate grid values
+    for (auto& gridDefinition: gridDefinitions | std::views::values)
     {
         gridDefinition.setReservoirs(reservoirs);
     }
@@ -113,6 +114,7 @@ void GridCollection::loadReservoirManagement(const std::filesystem::path& studyP
 /// @brief Generate Grid values for all gridElements
 void GridDefinition::generateGridValues()
 {
+    weekAreaConstraints = {{}};
     for (auto& gridElement: gridElements)
     {
         // constexpr double epsilon = 1e-6;
@@ -130,6 +132,7 @@ void GridDefinition::generateGridValues()
 
         for (size_t week = 1; week <= Reservoir::weeks_in_year; week++)
         {
+            gridElement.rhsValues[week - 1] = {};
             double min_cst = -reservoirs.at(gridElement.area).max_pumping[week - 1]
                              * reservoirs.at(gridElement.area).efficiency;
             double max_cst = reservoirs.at(gridElement.area).max_generating[week - 1];

@@ -15,6 +15,12 @@ constexpr char GRID_EVALUATOR_LOGGER_CONTEXT[] = "GridEvaluator";
 /// @brief vector of maps (key constraint name, value rhs value)
 using ConstraintCombos = std::vector<std::map<std::string, double>>;
 
+struct GridPointResult
+{
+    double cost;
+    std::map<AreaName, double> dual{};
+};
+
 /// @brief Class to compute Stock levels variation
 class GridEvaluator
 {
@@ -24,11 +30,11 @@ public:
                   GridDefinition& grid_definition,
                   std::string solverName,
                   int nbThreads = 1);
-    virtual std::map<Output::PointWeekScenarioKey, double> ComputeCosts();
+    virtual std::map<Output::PointWeekScenarioKey, GridPointResult> ComputeCostsAndDuals();
 
 private:
-    Output::ConcurrentInsertionMap<Output::PointWeekScenarioKey, double>
-      variationDeNiveauxDeStockData;
+    Output::ConcurrentInsertionMap<Output::PointWeekScenarioKey, GridPointResult>
+      variationDeNiveauxDeStockResults;
 
 protected:
     void Run();
@@ -36,7 +42,7 @@ protected:
                            std::shared_ptr<Problem> subProblem);
     void SetConstraintsRHSValues(const std::map<std::string, double>& rhsValues,
                                  std::shared_ptr<Problem> subProblem);
-    double SolveSubproblem(std::shared_ptr<Problem> subProblem);
+    GridPointResult SolveSubproblem(std::shared_ptr<Problem> subProblem, Point subPbCombo);
     std::string GetConstraintName(const Antares::Solver::WeeklyProblemId id,
                                   const std::string& area,
                                   const std::string& constraint) const;

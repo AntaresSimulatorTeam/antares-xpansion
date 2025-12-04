@@ -248,13 +248,13 @@ int main(int argc, char** argv)
         }
 
         // here: loop on all grids
-        for (auto& grid: gridCollection->gridDefinitions)
+        for (auto& grid: gridCollection->gridDefinitions | std::views::values)
         {
             logger->display_message("## GridDefinition ID: " + std::to_string(grid.gridID) + " ##");
 
-            // hypothesis: all gridElements are linked to a reservoir
-            // in the case of multistock, there should only be one reservoir per
-            // gridDefinition in the case of multivariate, there would be more than one
+            // hypothesis: all gridElements are linked to a reservoir.
+            // In the case of multistock, there should only be one reservoir per
+            // gridDefinition; in the case of multivariate, there would be more than one
             // reservoir per gridDefinition
             grid.setReservoirs(gridCollection->reservoirs);
 

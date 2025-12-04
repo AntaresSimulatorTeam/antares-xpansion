@@ -238,7 +238,7 @@ void GridEvaluator::Run()
 /// constraint
 ///          values using `GenerateSubPbCombos`, applies them to the model via
 ///          `SetConstraintsRHSValues`, solves the subproblem using `SolveSubproblem`, and
-///          stores the resulting cost in the `variationDeNiveauxDeStockData` map indexed by
+///          stores the resulting cost in the `variationDeNiveauxDeStockResults` map indexed by
 ///          scenario, week, and constraint values.
 /// @param subProblemId the id of the problem to treat
 /// @param subPronlem the problem to treat
@@ -279,11 +279,11 @@ void GridEvaluator::ProcessSubproblem(const Antares::Solver::WeeklyProblemId sub
                                     LogUtils::LOGLEVEL::DEBUG,
                                     GRID_EVALUATOR_LOGGER_CONTEXT);
         }
-        double cost = SolveSubproblem(subProblem);
+        GridPointResult res = SolveSubproblem(subProblem, subPbCombo);
 
-        variationDeNiveauxDeStockData.insert({subPbCombo, subProblemId.week, subProblemId.year},
-                                             cost);
-        logger->display_message((std::stringstream() << "Cost: " << cost).str(),
+        variationDeNiveauxDeStockResults.insert({subPbCombo, subProblemId.week, subProblemId.year},
+                                                res);
+        logger->display_message((std::stringstream() << "Cost: " << res.cost).str(),
                                 LogUtils::LOGLEVEL::DEBUG,
                                 GRID_EVALUATOR_LOGGER_CONTEXT);
     }
@@ -291,14 +291,27 @@ void GridEvaluator::ProcessSubproblem(const Antares::Solver::WeeklyProblemId sub
 
 /// @brief Solve the subproblem and return the cost
 /// @param problem The subproblem to solve
-/// @return The cost of the subproblem
-double GridEvaluator::SolveSubproblem(std::shared_ptr<Problem> problem)
+/// @return The data of the solved subproblem : cost and dualValues
+GridPointResult GridEvaluator::SolveSubproblem(std::shared_ptr<Problem> problem, Point subPbCombo)
 {
     PlainData::SubProblemData subproblem_data;
+    GridPointResult gridPointRes;
     Timer subproblem_timer;
     problem->solve_lp();
-    subproblem_data.subproblem_cost = problem->get_lp_value();
+
+    std::vector<double> dualValues(problem->get_ncols());
+    problem->get_lp_sol(NULL, dualValues.data(), NULL);
+
+    gridPointRes.cost = problem->get_lp_value();
+    subproblem_data.subproblem_cost = gridPointRes.cost;
+
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
+
+    for (const auto& [constraintName, value]: subPbCombo)
+    {
+        gridPointRes.dual.emplace(constraintName,
+                                  dualValues[problem->get_row_index(constraintName)]);
+    }
 
     int nbSimplexIter = problem->get_splex_num_of_ite_last();
     logger->display_message((std::stringstream() << "nb simplex : " << nbSimplexIter << " / in "
@@ -309,12 +322,12 @@ double GridEvaluator::SolveSubproblem(std::shared_ptr<Problem> problem)
     totalSimplexIter += nbSimplexIter;
     totalSubPbTimer += subproblem_data.subproblem_timer;
 
-    return subproblem_data.subproblem_cost;
+    return gridPointRes;
 }
 
 /// @brief Launch the Stock level variation computation
 /// @return The stock level variation results
-std::map<Output::PointWeekScenarioKey, double> GridEvaluator::ComputeCosts()
+std::map<Output::PointWeekScenarioKey, GridPointResult> GridEvaluator::ComputeCostsAndDuals()
 {
     logger->display_message((std::stringstream() << "Launching Stock level variation").str(),
                             LogUtils::LOGLEVEL::INFO,
@@ -339,7 +352,7 @@ std::map<Output::PointWeekScenarioKey, double> GridEvaluator::ComputeCosts()
                             LogUtils::LOGLEVEL::INFO,
                             GRID_EVALUATOR_LOGGER_CONTEXT);
 
-    return variationDeNiveauxDeStockData.get();
+    return variationDeNiveauxDeStockResults.get();
 }
 
 /// @brief Get the index of the value in the set
