@@ -30,6 +30,8 @@ public:
     std::vector<double> upper_rule_curve;  // highest level accepted without penalties for each week
     std::vector<std::vector<double>> optimal_trajectory; // week, scenario
 
+    void initializeOptimalTrajectory(int startWeek, int endWeek);
+
 private:
     void loadRuleCurves(const std::filesystem::path& inputPath);
     void loadInflow(const std::filesystem::path& inputPath);

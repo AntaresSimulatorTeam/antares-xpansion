@@ -371,23 +371,13 @@ void ProblemGenerationForWaterValueCalculation::updateReservoirWithOptimalTrajec
 void ProblemGenerationForWaterValueCalculation::initializeOptimalTrajectories(
   std::shared_ptr<GridCollection> gridCollection) const
 {
-    // TODO: this calculation needs to be verified
-    for (auto& reservoir: gridCollection->reservoirs)
+    for (auto& reservoir: gridCollection->reservoirs | std::views::values)
     {
-        // reservoir.second.inflow holds values for all possible MCYears, which can be a
-        // lot, but they are necessary at this point
-        int nbMCYears = reservoir.second.inflow[0].size();
-        logger->display_message("Initializing optimal trajectory for reservoir "
-                                + reservoir.second.area);
-        // initialize with initial levels
-        for (int week = startWeek - 1; week <= endWeek; ++week)
-        {
-            reservoir.second.optimal_trajectory.push_back(
-              std::vector<double>(nbMCYears, reservoir.second.initial_level));
-        }
-        logger->display_message(
-          "Reservoir " + reservoir.second.area + " has been initialized with "
-          + std::to_string(reservoir.second.optimal_trajectory.size()) + " by "
-          + std::to_string(reservoir.second.optimal_trajectory[0].size()) + " elements");
+        logger->display_message("Initializing optimal trajectory for reservoir " + reservoir.area);
+        reservoir.initializeOptimalTrajectory(startWeek, endWeek);
+        logger->display_message("Reservoir " + reservoir.area + " has been initialized with "
+                                + std::to_string(reservoir.optimal_trajectory.size()) + " by "
+                                + std::to_string(reservoir.optimal_trajectory[0].size())
+                                + " elements");
     }
 }

@@ -368,3 +368,15 @@ std::function<double(double)> ReservoirManagement::get_penalty(int week, int len
         return Interpolator::linearInterpolation(x, y);
     }
 }
+
+void Reservoir::initializeOptimalTrajectory(int startWeek, int endWeek)
+{
+    int nbWeeks = endWeek - startWeek + 2; // nb of week + 1
+    // inflow holds values for all possible MCYears, which can be a
+    // lot, but they are necessary at this point
+    int nbMCYears = inflow[0].size();
+    // initialize with initial levels
+    std::vector<std::vector<double>> initTraj(nbWeeks,
+                                              std::vector<double>(nbMCYears, initial_level));
+    optimal_trajectory = std::move(initTraj);
+}
