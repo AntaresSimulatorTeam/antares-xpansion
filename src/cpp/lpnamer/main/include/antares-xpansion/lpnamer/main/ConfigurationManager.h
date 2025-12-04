@@ -28,4 +28,5 @@ public:
 private:
     mutable std::optional<SimulationInputMode> input_mode_;
     ProblemsFormat format_{ProblemsFormat::OPTIMIZED};
+    mutable std::optional<ConfigDirectories> directories_;
 };
