@@ -491,11 +491,11 @@ class UserInputTranslator:
                 if missing:
                     parts.append(f"missing in study: {missing}")
                 if extra:
-                    parts.append(f"present in study but not in YAML: {extra}")
+                    parts.append(f"present in study but not in {self.input_file}: {extra}")
                 parts_str = "; ".join(parts)
                 raise UserInputTranslator.InvalidCandidates(
-                    f"Candidate mismatch for node '{node_name}' in study '{study_path}' ({candidates_ini}): {parts_str}. "
-                    f"Study contains: {sorted(list(study_candidates))}; YAML declares: {sorted(list(node_candidates))}"
+                    f"Candidate mismatch for node '{node_name}' in study '{study_path}' ({candidates_ini}): {parts_str}.\n\t"
+                    f"Study contains: {sorted(list(study_candidates))}; {self.input_file} declares: {sorted(list(node_candidates))}"
                 )
         return
 
