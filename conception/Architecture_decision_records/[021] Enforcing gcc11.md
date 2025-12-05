@@ -45,7 +45,7 @@ We enforce a minimum GCC version of 11 across the Antares Xpansion project:
 
 ### Limitations
 
-- It would be good to identify clangs versions that are compatible with oneTBB as well, but this is not
+- It would be good to identify clang versions that are compatible with oneTBB as well, but this is not
   currently enforced.
 
 ## Technical Details
