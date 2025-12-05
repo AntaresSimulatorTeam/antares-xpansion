@@ -61,27 +61,16 @@ bool islower(std::string_view str)
 }
 } // namespace
 
-static std::string solverXpansionToSimulator(const SolverConfig& in)
-{
-    // in could be Cbc or CBC depending on whether it is defined or not in the
-    // settings file
-    // Use lowerCase in any case to be robust to these subtleties
-    assert(islower(in.Name()));
-    if (in.Name() == "xpress")
-    {
-        return "xpress";
-    }
-    if (in.Name() == "cbc" || in.Name() == "coin")
-    {
-        return "coin";
-    }
-    throw std::invalid_argument("Invalid solver");
-}
-
-void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& study_dir)
+void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& study_dir,
+                                                 const std::filesystem::path& output_dir)
 {
     Antares::Solver::SingleProblemGetter spg(study_dir);
     lps_.setConstantData(spg.getConstantData());
+
+    // For now we need NTC timeseries and "structure" files (areas & link descriptions)
+    spg.writeNTCTimeSeries(output_dir);
+    spg.writeStudyDescriptionFiles(output_dir);
+
     for (const auto& problem_id: spg.getProblemIds())
     {
         lps_.addWeeklyData(problem_id, spg.getWeeklyData(problem_id));
@@ -105,7 +94,7 @@ std::filesystem::path ProblemGeneration::updateProblems()
 
     if (mode_ == SimulationInputMode::ANTARES_API)
     {
-        performAntaresSimulation(directories_.study_dir);
+        performAntaresSimulation(directories_.study_dir, directories_.simulation_dir);
     }
 
     auto master_formulation = options_.MasterFormulation();
