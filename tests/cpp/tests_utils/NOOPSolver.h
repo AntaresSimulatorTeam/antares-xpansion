@@ -5,8 +5,6 @@
 #ifndef ANTARESXPANSION_TESTS_CPP_LP_NAMER_NOOPSOLVER_H_
 #define ANTARESXPANSION_TESTS_CPP_LP_NAMER_NOOPSOLVER_H_
 
-#include <algorithm>
-
 #include "antares-xpansion/multisolver_interface/SolverAbstract.h"
 
 class NOOPSolver: public SolverAbstract
@@ -106,12 +104,12 @@ public:
     }
 
     void get_cols(int* mstart,
-                  int* mrwind,
-                  double* dmatval,
-                  int size,
-                  int* nels,
-                  int first,
-                  int last) const override
+                      int* mrwind,
+                      double* dmatval,
+                      int size,
+                      int* nels,
+                      int first,
+                      int last) const override
     {
     }
 
