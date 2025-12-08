@@ -115,9 +115,9 @@ int main(int argc, char** argv)
         bool writePbFiles = optionsParser.WritePbFiles();
         const std::string problemFormat = optionsParser.ProblemFormat();
 
-        auto gridCollection = std::make_shared<GridCollection>(studyPath / "grid.csv");
+        auto gridCollection = std::make_shared<GridCollection>(studyPath / "user/grid.csv");
 
-        const std::filesystem::path penaltiesConfigFilePath(studyPath / "penalties.yaml");
+        const std::filesystem::path penaltiesConfigFilePath(studyPath / "user/penalties.yaml");
 
         // PenaltiesConfigReader will check whether the file exists and return default values if
         // needed
