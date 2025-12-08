@@ -53,7 +53,7 @@ const LogData best_iteration_data = {15e5,
                                      999,
                                      898,
                                      25,
-                                     {}};
+                                     0};
 const LogData last_iteration_data = {1e5,
                                      255e6,
                                      200e6,
@@ -72,7 +72,7 @@ const LogData last_iteration_data = {1e5,
                                      9999,
                                      898,
                                      23,
-                                     {}};
+                                     0};
 
 class LastIterationReaderTest: public ::testing::Test
 {
