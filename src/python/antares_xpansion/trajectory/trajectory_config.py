@@ -92,6 +92,7 @@ class TrajectoryConfig(TrajectoryConfigDefaults):
         print(
             f"Executable {exe_name} should be found in dir : {Path(self.install_dir).resolve().__str__()}"
         )
+        return (Path(self.install_dir) / exe_name).resolve()
         fullpath = (Path(self.install_dir) / exe_name).resolve()
         if not fullpath.is_file():
             newpath = fullpath.with_suffix('exe')
