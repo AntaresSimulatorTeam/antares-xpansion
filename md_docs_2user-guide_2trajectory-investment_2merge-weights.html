@@ -149,8 +149,8 @@ Why we need custom weights</h1>
 Usage</h1>
 <p>Usage is <code>&lt;merge_weights_executable&gt; &lt;master_merger_info.json&gt; &lt;nodal_lp_info.json&gt; &lt;path/to/output/weights/file&gt;</code></p>
 <ul>
-<li><code>&lt;master_merger_info.json&gt;</code> designates the intermediary file outputted by the initial input parser / translator. <a href="./merge-master.md#master-structure-file">See this section</a> for more details. In this part of the workflow, only each node's <code>node_weight</code> entry will be of use to us.</li>
-<li><code>&lt;nodal_lp_info.json&gt;</code> designates the intermediary file outputted by the <code><a class="el" href="classMultipleProblemGeneration.html">MultipleProblemGeneration</a></code> step. <a href="./multiple-problem-generation.md#output--nodal-lp-info-file">See this section</a> for more details.</li>
+<li><code>&lt;master_merger_info.json&gt;</code> designates the intermediary file outputted by the initial input parser / translator. <a href="./merge-master.md#master-merger-info-file">See this section</a> for more details. In this part of the workflow, only each node's <code>node_weight</code> entry will be of use to us.</li>
+<li><code>&lt;nodal_lp_info.json&gt;</code> designates the intermediary file outputted by the <code><a class="el" href="classMultipleProblemGeneration.html">MultipleProblemGeneration</a></code> step. <a href="./multiple-problem-generation.md#output-nodal-lp-info-file">See this section</a> for more details.</li>
 </ul>
 <p>Note that in the <code>&lt;nodal_lp_info.json&gt;</code> file, if the <code>weights_file</code> parameter does not appear or points to a non existant file, the weights of this node are assumed to be uniform.</p>
 <p><b>Note</b> : the C++ executable has to be launched at the <code>--dataDir</code>. (The python driver takes care of this, this should not be a concern to most users).</p>
