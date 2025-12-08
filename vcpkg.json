@@ -49,7 +49,7 @@
   "overrides": [
     {
       "name": "tbb",
-      "version-string": "2020_U3"
+      "version-string": "2022.2.0"
     },
     {
       "name": "coin-or-cbc",
@@ -69,7 +69,7 @@
     },
     {
       "name": "coinutils",
-      "version": "2.11.6"
+      "version": "2.11.12"
     }
   ]
 }
