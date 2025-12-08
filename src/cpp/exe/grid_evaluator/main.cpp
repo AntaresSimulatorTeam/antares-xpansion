@@ -71,10 +71,10 @@ void saveCostsAndDuals(const std::filesystem::path& path,
 
     // Header
     file << "scenario,week,";
-    std::vector<std::string> areaNames;
-    areaNames.reserve(grid.gridElements.size());
-    std::ranges::transform(grid.gridElements, std::back_inserter(areaNames), &GridElement::area);
-    std::ranges::sort(areaNames);
+    std::set<std::string> areaNames;
+    std::ranges::transform(grid.gridElements,
+                           std::inserter(areaNames, areaNames.end()),
+                           &GridElement::area);
 
     write_joined(file,
                  areaNames
