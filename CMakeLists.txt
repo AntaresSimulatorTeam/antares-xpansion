@@ -2,13 +2,13 @@
 # CMake configuration
 # ===========================================================================
 
-CMAKE_MINIMUM_REQUIRED(VERSION 3.5)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 
 # ===========================================================================
 # Project configuration
 # ===========================================================================
 
-PROJECT(antaresXpansion VERSION 1.7.0)
+PROJECT(antaresXpansion VERSION 1.7.0 LANGUAGES CXX C)
 set(ANTARES_XPANSION_RC 0)
 
 # ===========================================================================
