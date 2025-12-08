@@ -687,6 +687,15 @@ void MergeMasterTrajectoryMPS::set_objective_from_data()
                 keys += ", " + node;
             }
 
+            if (node.candidates_costs.find(candidate) == node.candidates_costs.end())
+            {
+                terminate(LOGLOCATION,
+                          fmt::format("Missing cost data for candidate '{}' in node '{}'.\n"
+                                      "Check that the candidate exists in the node's cost data "
+                                      "(candidate to types in trajectory input file).\n",
+                                      candidate,
+                                      node_name));
+            }
             const auto& costs = node.candidates_costs.at(candidate);
             const auto& positions = positions_per_node.at(node.name);
 

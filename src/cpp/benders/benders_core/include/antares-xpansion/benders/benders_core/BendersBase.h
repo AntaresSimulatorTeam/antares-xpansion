@@ -155,6 +155,8 @@ protected:
     std::vector<std::vector<double>> criteria_vector_for_each_iteration_;
     bool is_bilevel_check_all_ = false;
 
+    std::vector<SubProblemNamesInCut>  split_subproblem_data_pairs(std::vector<SubProblemDataMap>& gathered_subproblem_map, int n_cuts); 
+
     virtual void Run() = 0;
     void update_best_ub();
     bool ShouldBendersStop();
@@ -312,7 +314,7 @@ protected:
     // to p)
     void SetSubproblemsVariablesIndices();
 
-    void build_all_aggregated_cuts(const std::vector<std::vector<std::pair<std::string,int>>>& subproblem_names, const std::vector<SubProblemDataMap>& gathered_subproblem_map) ; 
+    void build_all_aggregated_cuts(const std::vector<SubProblemNamesInCut>& subproblem_names, const std::vector<SubProblemDataMap>& gathered_subproblem_map) ; 
 
 
     private:

@@ -21,7 +21,7 @@ class BendersMpi: public BendersBase
 public:
     ~BendersMpi() override = default;
     BendersMpi(const BendersBaseOptions& options,
-               Logger logger,
+               std::shared_ptr<ILogger> logger,
                std::shared_ptr<Output::OutputWriter> writer,
                mpi::environment& env,
                mpi::communicator& world,
@@ -49,13 +49,8 @@ private:
     void step_2_solve_subproblems_and_build_cuts();
     void step_4_update_best_solution(int rank);
 
-    std::vector<std::vector<std::pair<std::string,int>>>  split_subproblem_data_pairs(std::vector<SubProblemDataMap>& gathered_subproblem_map, int n_cuts); 
     
-    #if 0 
-    //to delete if split_subproblem_data_pairs if validated
-    std::vector<SubProblemDataMap> split_subproblem_data(std::vector<SubProblemDataMap>& gathered_subproblem_map, int n_cuts) ; 
-    std::vector<SubProblemDataMap> split_subproblem_data_with_shuffle(std::vector<SubProblemDataMap>& gathered_subproblem_map, int n_cuts) ; 
-    #endif 
+
 
     void master_build_cuts(std::vector<SubProblemDataMap> gathered_subproblem_map);
     SubProblemDataMap get_subproblem_cut_package();

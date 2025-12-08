@@ -3,7 +3,7 @@ Feature: AGGREGATION in options.json file set the number cuts to add to the mast
     @short @full-launch @xpress
     Scenario: master problem with 14 candidates and 10 subproblems
         Given the study path is "data_test/investment_study"
-        When I run benders for investment strategy
+        When I run benders with 6 proc(s)'
         Then I check the value of the overall cost
 
 

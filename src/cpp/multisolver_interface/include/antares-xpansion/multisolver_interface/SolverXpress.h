@@ -8,10 +8,11 @@
 
 class XpressManager
 {
-    LoadXpress::XpressLoader _loader;
+    LoadXpress::XpressLoader loader_;
+    std::shared_ptr<ILoggerXpansion> logger_;
 
 public:
-    XpressManager();
+    explicit XpressManager(std::shared_ptr<ILoggerXpansion> logger);
     ~XpressManager();
 };
 

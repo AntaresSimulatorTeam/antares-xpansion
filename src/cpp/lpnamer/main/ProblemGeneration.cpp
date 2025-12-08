@@ -87,6 +87,7 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& ou
     optOptions.firstOptimOptions.solverName = solver_name;
     optOptions.firstOptimOptions.solverUsesBasis = true;
     optOptions.firstOptimOptions.solverExportsBasis = true;
+    optOptions.exportBehavior = Antares::Solver::Optimization::ExportBehavior::Always;
 
     optOptions.secondOptimOptions.solverName = solver_name;
     optOptions.secondOptimOptions.solverUsesBasis = true;
@@ -218,8 +219,7 @@ std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
   SolverLogManager& solver_log_manager,
   const std::vector<ProblemData>& mpsList,
   std::filesystem::path& lpDir_,
-  std::shared_ptr<ArchiveReader> reader,
-  const Antares::Solver::LpsFromAntares& lps = {})
+  std::shared_ptr<ArchiveReader> reader)
 {
     std::vector<std::string> problem_names;
     std::transform(mpsList.begin(),
@@ -238,12 +238,10 @@ std::vector<std::shared_ptr<Problem>> ProblemGeneration::getXpansionProblems(
         ZipProblemsProviderAdapter adapter(lpDir_, std::move(reader), problem_names);
         return adapter.provideProblems(solver_config_.Name(), solver_log_manager);
     }
-    case SimulationInputMode::ANTARES_API:
-    {
-        XpansionProblemsFromAntaresProvider adapter(lps);
-        return adapter.provideProblems(solver_config_.Name(), solver_log_manager);
-    }
     default:
+        // ProblemGeneration::getXpansionProblems does not support API mode, use
+        // XpansionProblemsFromAntaresProvider::provideProblem
+
         throw LogUtils::XpansionError<std::runtime_error>("Unhandled simulation mode", LOGLOCATION);
     }
 }
@@ -303,12 +301,8 @@ void ProblemGeneration::RunProblemGeneration(
     if (mode_ == SimulationInputMode::FILE or mode_ == SimulationInputMode::ARCHIVE)
     {
         (*logger)(LogUtils::LOGLEVEL::INFO) << "Collecting problems...";
-        std::vector<std::shared_ptr<Problem>> xpansion_problems = getXpansionProblems(
-          solver_log_manager,
-          mpsList,
-          lpDir_,
-          reader,
-          lps_);
+        std::vector<std::shared_ptr<Problem>>
+          xpansion_problems = getXpansionProblems(solver_log_manager, mpsList, lpDir_, reader);
         (*logger)(LogUtils::LOGLEVEL::INFO) << " Done.\n";
 
         std::vector<std::pair<std::shared_ptr<Problem>, ProblemData>> problems_and_data;

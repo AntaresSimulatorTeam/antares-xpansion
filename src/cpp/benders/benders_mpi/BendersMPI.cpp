@@ -8,10 +8,9 @@
 #include "antares-xpansion/benders/benders_core/CriterionComputation.h"
 #include "antares-xpansion/benders/benders_core/CustomVector.h"
 #include "antares-xpansion/helpers/Timer.h"
-#include <random>
 
 BendersMpi::BendersMpi(const BendersBaseOptions& options,
-                       Logger logger,
+                       std::shared_ptr<ILogger> logger,
                        std::shared_ptr<Output::OutputWriter> writer,
                        mpi::environment& env,
                        mpi::communicator& world,
@@ -295,135 +294,7 @@ SubProblemDataMap BendersMpi::get_subproblem_cut_package()
     return subproblem_data_map;
 }
 
-#if 0 
-std::vector<SubProblemDataMap> BendersMpi::split_subproblem_data_with_shuffle(std::vector<SubProblemDataMap>& gathered_subproblem_map, int n_cuts) 
-{
-    std::vector<std::pair<std::string, PlainData::SubProblemData>> allElements;
-    allElements.reserve(10000); 
 
-    for (auto& spMap : gathered_subproblem_map) {
-        for (auto it = spMap.begin(); it != spMap.end(); ) {
-            // Move key/value pair into the flat list
-            allElements.emplace_back(
-                it->first, 
-                std::move(it->second)
-            );
-            it = spMap.erase(it);
-        }
-    }
-
-    std::random_device rd;
-    std::mt19937 gen(rd());
-    std::shuffle(allElements.begin(), allElements.end(), gen);
-
-    std::vector<SubProblemDataMap> result(n_cuts);
-
-    if (n_cuts <= 0 || allElements.empty())
-        return result;
-
-    size_t total = allElements.size();
-    size_t target_per_cut = (total + n_cuts - 1) / n_cuts; // ceiling division
-
-    size_t index = 0;
-    for (size_t cut = 0; cut < n_cuts && index < total; ++cut) {
-        size_t take = std::min(target_per_cut, total - index);
-
-        for (size_t k = 0; k < take; ++k) {
-            auto& elem = allElements[index++];
-            result[cut].emplace(
-                std::move(elem.first),
-                std::move(elem.second)
-            );
-        }
-    }
-
-    return result;
-}
-#endif 
-
-
-std::vector<std::vector<std::pair<std::string,int>>>  BendersMpi::split_subproblem_data_pairs(std::vector<SubProblemDataMap>& gathered_subproblem_map, int n_cuts)
-{
-    std::vector<std::vector<std::pair<std::string,int>>>  result(n_cuts) ; 
-
-    if (_data.nsubproblem == 0 || n_cuts <=0 ) return std::vector<std::vector<std::pair<std::string,int>>>() ; 
-
-    size_t target_per_cut = (_data.nsubproblem + n_cuts - 1) / n_cuts;
-    
-    size_t count_in_cut = 0 ; 
-    size_t current_cut = 0 ; 
-
-
-    for (size_t i=0; i<gathered_subproblem_map.size(); i++ ) 
-    {
-        const auto& spMap = gathered_subproblem_map[i] ; 
-        for (const auto& [key, _] : spMap) 
-        {
-            result[current_cut].emplace_back(key,static_cast<int>(i)) ; 
-            count_in_cut ++ ; 
-            if (count_in_cut >= target_per_cut && current_cut +1 < n_cuts) 
-            {
-                count_in_cut = 0 ; 
-                current_cut++ ; 
-            }
-        }
-    }
-
-    return result ; 
-
-}
-
-
-#if 0 
-std::vector<SubProblemDataMap> BendersMpi::split_subproblem_data(std::vector<SubProblemDataMap>& gathered_subproblem_map, int n_cuts) 
-{
-    std::vector<SubProblemDataMap> result(n_cuts) ; 
-
-    if (_data.nsubproblem == 0 || n_cuts <=0 ) return result ; 
-
-    size_t target_per_cut = (_data.nsubproblem + n_cuts - 1) / n_cuts;
-    
-    size_t current_cut = 0; 
-    size_t count_in_cut = 0; 
-
-    SubProblemDataMap tempMap ; 
-    
-    for (auto& spMap : gathered_subproblem_map) 
-    {
-        for (auto it = spMap.begin(); it!=spMap.end(); ) 
-        {
-            tempMap.insert(std::make_move_iterator(it), std::make_move_iterator(std::next(it))) ; 
-            it = spMap.erase(it) ; 
-
-            count_in_cut++ ; 
-            if (count_in_cut >= target_per_cut && current_cut + 1 < n_cuts) 
-            {
-                result[current_cut].insert(
-                    std::make_move_iterator(tempMap.begin()) , 
-                    std::make_move_iterator(tempMap.end())
-                ) ; 
-
-                tempMap.clear() ; 
-                count_in_cut = 0; 
-                current_cut++ ; 
-
-            }
-
-        }
-    }
-
-    if (!tempMap.empty()) 
-    {
-        result[current_cut].insert(
-            std::make_move_iterator(tempMap.begin()),
-            std::make_move_iterator(tempMap.end())
-        );
-    }
-
-
-    return result ; 
-}
-#endif 
 
 void BendersMpi::master_build_cuts(std::vector<SubProblemDataMap> gathered_subproblem_map)
 {

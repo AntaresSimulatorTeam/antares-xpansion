@@ -52,23 +52,22 @@ WorkerMaster::WorkerMaster(const VariableMap& variable_map,
  */
 void WorkerMaster::restoreFeasibility(std::vector<double>& solution)
 {
-    int nb_candidates = _id_to_name.size();
+    // _id_alpha is equal to the number of variable already present in the problem before alpha vars
+    // are added
+    std::vector<char> col_type(_id_alpha);
+    std::vector<double> lb(_id_alpha);
+    std::vector<double> ub(_id_alpha);
 
-    std::vector<char> col_type(nb_candidates);
-    std::vector<double> lb(nb_candidates);
-    std::vector<double> ub(nb_candidates);
-    // Assumes that candidates are the first variables of the master
-    solver_getcolinfo(*_solver, col_type, lb, ub, 0, nb_candidates - 1);
-    for (const auto& kvp: _id_to_name)
+    solver_getcolinfo(*_solver, col_type, lb, ub, 0, _id_alpha - 1);
+    for (const auto var_id: _id_to_name | std::views::keys)
     {
-        int var_id = kvp.first;
         double value = solution[var_id];
-        // Case variable slighly above ub
+        // Case variable slightly above ub
         if (value > ub[var_id] && value < ub[var_id] + _master_solution_tolerance)
         {
             solution[var_id] = ub[var_id];
         }
-        // Case variable slighly lower than lb
+        // Case variable slightly lower than lb
         else if (value < lb[var_id] && value > lb[var_id] - _master_solution_tolerance)
         {
             solution[var_id] = lb[var_id];
@@ -249,17 +248,20 @@ void WorkerMaster::add_cut_by_iter(const int i,
     std::vector<int> mclind(ncoeffs);
 
     define_rhs_from_sx0(sx0, rhs, rowrhs);
-    define_matval_mclind_for_index(i, s, matval, mclind);
+    std::vector<int> subproblem_ids = {i} ; 
+    define_matval_mclind_for_index(subproblem_ids, s, matval, mclind) ; 
+    // define_matval_mclind_for_index_1(i, s, matval, mclind);
+
 
     solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }
 
-void WorkerMaster::define_matval_mclind_for_index(const int i,
+void WorkerMaster::define_matval_mclind_for_index_1(int i,
                                                   const Point& s,
                                                   std::vector<double>& matval,
                                                   std::vector<int>& mclind) const
 {
-    size_t mclindCnt_l(0);
+        size_t mclindCnt_l(0);
     for (const auto& kvp: _name_to_id)
     {
         if (s.find(kvp.first) != s.end())
@@ -271,6 +273,30 @@ void WorkerMaster::define_matval_mclind_for_index(const int i,
     }
     mclind.back() = _id_single_subpb_costs_under_approx[i];
     matval.back() = -1;
+}
+
+void WorkerMaster::define_matval_mclind_for_index(std::vector<int> subproblem_ids,
+                                                  const Point& s,
+                                                  std::vector<double>& matval,
+                                                  std::vector<int>& mclind) const
+{
+    size_t mclindCnt_l(0);
+    for (const auto& [name,id]: _name_to_id)
+    {
+        if (s.find(name) != s.end())
+        {
+            
+            mclind[mclindCnt_l] = id;
+            matval[mclindCnt_l] = s.find(name)->second;
+            ++mclindCnt_l;
+        }
+    }
+
+    for (auto&& alpha_i : subproblem_ids)
+    {
+        mclind.push_back(_id_single_subpb_costs_under_approx[alpha_i] ) ; 
+        matval.push_back(-1) ; 
+    }
 }
 
 /*!
@@ -289,15 +315,17 @@ void WorkerMaster::addSubproblemCut(int i,
 {
     // cut is -theta_i + subgradient.x <= -subproblem_cost + subgradient.x_cut (in the solver)
     // i.e. theta_i >= subproblem_cost + subgradient.(x - x_cut) (human form)
+    int nCandidates((int) subgradient.size()) ; 
     int ncoeffs(1 + (int)subgradient.size());
     std::vector<char> rowtype(1, 'L');
     std::vector<double> rowrhs(1, 0);
-    std::vector<double> matval(ncoeffs, 1);
+    std::vector<double> matval(nCandidates, 1);
     std::vector<int> mstart = {0, ncoeffs};
-    std::vector<int> mclind(ncoeffs);
+    std::vector<int> mclind(nCandidates);
 
     DefineRhsWithMasterVariable(subgradient, x_cut, rhs, rowrhs);
-    define_matval_mclind_for_index(i, subgradient, matval, mclind);
+    std::vector<int> subproblem_ids = {i} ; 
+    define_matval_mclind_for_index(subproblem_ids, subgradient, matval, mclind);
 
     // Round numerically small rhs to zero to get clean cuts and avoid numerical artifacts
     // Cuts coefficients (obtained from subgradient) have already been rounded in
@@ -332,25 +360,12 @@ void WorkerMaster::addGroupSubproblemCut(std::vector<int> subproblem_ids,
     std::vector<double> matval(nCandidates, 1);
     std::vector<int> mstart = {0, ncoeffs};
     std::vector<int> mclind(nCandidates);
-    size_t mclindCnt_l(0);
+    // size_t mclindCnt_l(0);
     DefineRhsWithMasterVariable(s, x_cut, rhs, rowrhs);
 
-    for (const auto& kvp: _name_to_id)
-    {
-        if (s.find(kvp.first) != s.end())
-        {
-            
-            mclind[mclindCnt_l] = kvp.second;
-            matval[mclindCnt_l] = s.find(kvp.first)->second;
-            ++mclindCnt_l;
-        }
-    }
+    define_matval_mclind_for_index(subproblem_ids, s, matval, mclind);
 
-    for (auto&& alpha_i : subproblem_ids)
-    {
-        mclind.push_back(_id_single_subpb_costs_under_approx[alpha_i] ) ; 
-        matval.push_back(-1) ; 
-    }
+    roundIfWithinTolerance(rowrhs, 0, rowrhs.size());
 
     solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
 }

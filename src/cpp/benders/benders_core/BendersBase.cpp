@@ -511,10 +511,10 @@ std::pair<std::vector<int>, std::vector<int>> BendersBase::GetProblemBasis(
 {
     int row_number = worker->_solver->get_nrows();
     int col_number = worker->_solver->get_ncols();
-    auto rstatus = std::vector<int>(row_number);
-    auto cstatus = std::vector<int>(col_number);
+    std::vector<int> rstatus(row_number);
+    std::vector<int> cstatus(col_number);
     worker->_solver->get_basis(rstatus.data(), cstatus.data());
-    return {rstatus, cstatus};
+    return {std::move(rstatus), std::move(cstatus)};
 }
 
 /**
@@ -660,29 +660,30 @@ void BendersBase::compute_cut_aggregate(const SubProblemDataMap& subproblem_data
 }
 
 
-void BendersBase::build_all_aggregated_cuts(const std::vector<std::vector<std::pair<std::string,int>>>& subproblem_names, const std::vector<SubProblemDataMap>& gathered_subproblem_map)
+void BendersBase::build_all_aggregated_cuts(const std::vector<SubProblemNamesInCut>& subproblem_names, const std::vector<SubProblemDataMap>& gathered_subproblem_map)
 {   
     std::vector<int> subproblem_ids_per_cut ; 
     for (const auto& subproblem_names_in_cut : subproblem_names) 
     {
         Point s; 
-        double rhs(0) ; 
+        double rhs{0} ; 
         std::vector<int> subproblem_ids_per_cut ; 
 
-        for (const auto& subproblem_name_in_cut : subproblem_names_in_cut) 
+        for (const auto& [sub_problem_name, position_in_gathered] : subproblem_names_in_cut) 
         {
-            subproblem_ids_per_cut.push_back(_problem_to_id[subproblem_name_in_cut.first]); 
+            subproblem_ids_per_cut.push_back(_problem_to_id[sub_problem_name]); 
 
-            auto subproblem_data_pair = gathered_subproblem_map[subproblem_name_in_cut.second].find(subproblem_name_in_cut.first) ; 
+            auto subproblem_data_pair = gathered_subproblem_map[position_in_gathered].find(sub_problem_name) ; 
             
-            if (subproblem_data_pair != gathered_subproblem_map[subproblem_name_in_cut.second].end()) 
+            if (subproblem_data_pair != gathered_subproblem_map[position_in_gathered].end()) 
             {
                 auto& subproblem_data = subproblem_data_pair->second ; 
                 _data.ub += subproblem_data.subproblem_cost ; 
-                  rhs += subproblem_data.subproblem_cost; 
-                  compute_cut_val(subproblem_data.var_name_and_subgradient, _data.x_cut, s);
-            }
+                rhs += subproblem_data.subproblem_cost; 
+                compute_cut_val(subproblem_data.var_name_and_subgradient, _data.x_cut, s);
+                relevantIterationData_.last._cut_trace[sub_problem_name] = subproblem_data;
 
+            }
         }
         
         _master->addGroupSubproblemCut(subproblem_ids_per_cut,s,_data.x_cut,rhs) ; 
@@ -712,8 +713,41 @@ void BendersBase::compute_cut(const SubProblemDataMap& subproblem_data_map)
                                   subproblem_data.var_name_and_subgradient,
                                   _data.x_cut,
                                   subproblem_data.subproblem_cost);
+        
         relevantIterationData_.last._cut_trace[subproblem_name] = subproblem_data;
     }
+}
+
+
+std::vector<SubProblemNamesInCut>  BendersBase::split_subproblem_data_pairs(std::vector<SubProblemDataMap>& gathered_subproblem_map, int n_cuts)
+{
+    std::vector<SubProblemNamesInCut>  result(n_cuts) ; 
+
+    if (_data.nsubproblem == 0 || n_cuts <=0 ) return std::vector<std::vector<std::pair<std::string,int>>>() ; 
+
+    size_t target_per_cut = (_data.nsubproblem + n_cuts - 1) / n_cuts;
+    
+    size_t subpb_count_in_cut = 0 ; 
+    size_t current_cut = 0 ; 
+
+
+    for (size_t i=0; i<gathered_subproblem_map.size(); i++ ) 
+    {
+        const auto& spMap = gathered_subproblem_map[i] ; 
+        for (const auto& [subproblem_name, _] : spMap) 
+        {
+            result[current_cut].emplace_back(subproblem_name,static_cast<int>(i)) ; 
+            subpb_count_in_cut ++ ; 
+            if (subpb_count_in_cut >= target_per_cut && current_cut +1 < n_cuts) 
+            {
+                subpb_count_in_cut = 0 ; 
+                current_cut++ ; 
+            }
+        }
+    }
+
+    return result ; 
+
 }
 
 
