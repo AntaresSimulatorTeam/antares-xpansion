@@ -42,14 +42,15 @@
         "zlib"
       ]
     },
-    {
-      "name": "tbb",
-      "version>=": "2022.2.0"
-    },
+    "tbb",
     "fmt",
     "catch2"
   ],
   "overrides": [
+    {
+      "name": "tbb",
+      "version-string": "2022.2.0"
+    },
     {
       "name": "coin-or-cbc",
       "version": "2.10.7"
