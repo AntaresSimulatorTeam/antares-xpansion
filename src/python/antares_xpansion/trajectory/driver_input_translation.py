@@ -1,7 +1,8 @@
-from antares_xpansion.trajectory.user_input_translation import UserInputTranslator
-
-from pathlib import Path
 import os
+import sys
+from pathlib import Path
+
+from antares_xpansion.trajectory.user_input_translation import UserInputTranslator
 
 
 class InputTranslationDriver:
@@ -57,9 +58,24 @@ class InputTranslationDriver:
         os.chdir(self.input_root)
 
         # Launch the parsing and writing of the intermediary file
-        self._parse_input()
-        self.translator.run_all_verification()
-        self.translator.print()
-        self.translator.write_merger_json(self.output_file)
+        try:
+            self._parse_input()
+            self.translator.run_all_verification()
+            self.translator.print()
+            self.translator.write_merger_json(self.output_file)
+        except (
+                UserInputTranslator.InvalidCandidates,
+                UserInputTranslator.InvalidTreeStructure,
+                UserInputTranslator.InvalidTrajectoryConstraint,
+        ) as e:
+            # Print a clean error message for user-facing validation errors and exit
+            print(f"Error: {e}", file=sys.stderr)
+            os.chdir(previous_dir)
+            sys.exit(1)
+
+        except Exception:
+            # For unexpected exceptions, re-raise to keep full stacktrace for debugging
+            os.chdir(previous_dir)
+            raise
 
         os.chdir(previous_dir)
