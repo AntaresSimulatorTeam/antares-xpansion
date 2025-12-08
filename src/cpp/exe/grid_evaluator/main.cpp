@@ -67,6 +67,8 @@ void saveCostsAndDuals(const std::filesystem::path& path,
         return;
     }
 
+    file << std::setprecision(std::numeric_limits<double>::max_digits10);
+
     // Header
     file << "scenario,week,";
     std::vector<std::string> areaNames;
