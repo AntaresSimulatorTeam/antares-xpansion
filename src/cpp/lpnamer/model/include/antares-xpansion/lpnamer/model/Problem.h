@@ -23,8 +23,8 @@ public:
     {
         Problem* problem = new Problem(
           std::shared_ptr<SolverAbstract>(this->solver_abstract_->clone()));
-        problem->mc_year = mc_year;
-        problem->week = week;
+        problem->mc_year = this->mc_year;
+        problem->week = this->week;
         return problem;
     }
 
