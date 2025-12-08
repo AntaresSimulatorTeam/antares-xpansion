@@ -15,13 +15,13 @@ public:
     const std::vector<double>& getLevels() const;
 
 private:
-    double solveWeeklyProblemWithReward(int week,
-                                        int endWeek,
-                                        int scenario,
-                                        double level,
-                                        const std::vector<double>& X,
-                                        const std::vector<double>& costs,
-                                        const std::function<double(double)>& V_fut);
+    double solveWeeklyProblemWithCost(int week,
+                                      int endWeek,
+                                      int scenario,
+                                      double level,
+                                      const std::vector<double>& X,
+                                      const std::vector<double>& costs,
+                                      const std::function<double(double)>& V_fut);
 
 protected:
     GridEvaluator& gridEvaluator;                   ///< Grid evaluator

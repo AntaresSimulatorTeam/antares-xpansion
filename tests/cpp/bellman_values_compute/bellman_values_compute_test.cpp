@@ -78,24 +78,24 @@ protected:
         {
         }
 
-        std::map<Output::PointWeekScenarioKey, double> ComputeCosts() override
+        std::map<Output::PointWeekScenarioKey, GridPointResult> ComputeCostsAndDuals() override
         {
             return {
-              {Output::PointWeekScenarioKey({{"HydroPower", -100}}, 1, 1), 100.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", -100}}, 2, 1), 100.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", -100}}, 3, 1), 100.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", -50}}, 1, 1), 80.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", -50}}, 2, 1), 80.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", -50}}, 3, 1), 80.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", 0}}, 1, 1), 60.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", 0}}, 2, 1), 60.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", 0}}, 3, 1), 60.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", 50}}, 1, 1), 40.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", 50}}, 2, 1), 40.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", 50}}, 3, 1), 40.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", 100}}, 1, 1), 20.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", 100}}, 2, 1), 20.0},
-              {Output::PointWeekScenarioKey({{"HydroPower", 100}}, 3, 1), 20.0},
+              {Output::PointWeekScenarioKey({{"HydroPower", -100}}, 1, 1), {100.0}},
+              {Output::PointWeekScenarioKey({{"HydroPower", -100}}, 2, 1), {100.0}},
+              {Output::PointWeekScenarioKey({{"HydroPower", -100}}, 3, 1), {100.0}},
+              {Output::PointWeekScenarioKey({{"HydroPower", -50}}, 1, 1), {80.0}},
+              {Output::PointWeekScenarioKey({{"HydroPower", -50}}, 2, 1), {80.0}},
+              {Output::PointWeekScenarioKey({{"HydroPower", -50}}, 3, 1), {80.0}},
+              {Output::PointWeekScenarioKey({{"HydroPower", 0}}, 1, 1), {60.0}},
+              {Output::PointWeekScenarioKey({{"HydroPower", 0}}, 2, 1), {60.0}},
+              {Output::PointWeekScenarioKey({{"HydroPower", 0}}, 3, 1), {60.0}},
+              {Output::PointWeekScenarioKey({{"HydroPower", 50}}, 1, 1), {40.0}},
+              {Output::PointWeekScenarioKey({{"HydroPower", 50}}, 2, 1), {40.0}},
+              {Output::PointWeekScenarioKey({{"HydroPower", 50}}, 3, 1), {40.0}},
+              {Output::PointWeekScenarioKey({{"HydroPower", 100}}, 1, 1), {20.0}},
+              {Output::PointWeekScenarioKey({{"HydroPower", 100}}, 2, 1), {20.0}},
+              {Output::PointWeekScenarioKey({{"HydroPower", 100}}, 3, 1), {20.0}},
             };
         }
 
@@ -178,7 +178,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
     auto expected_costs = getOutputCosts("result_bellman_values_no_penalties.csv");
 
     auto grid_collection = GridCollection(tmpDir / "grid.csv");
-    auto grid = grid_collection.gridDefinitions[0];
+    auto grid = grid_collection.gridDefinitions.at(0);
     ReservoirManagement reservoir_management(grid_collection.reservoirs.begin()->second, 0, 0, 0);
 
     auto options_parser = ProblemGenerationExeOptions();
@@ -216,7 +216,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
     auto expected_costs = getOutputCosts("result_bellman_values_penalties.csv");
 
     auto grid_collection = GridCollection(tmpDir / "grid.csv");
-    auto grid = grid_collection.gridDefinitions[0];
+    auto grid = grid_collection.gridDefinitions.at(0);
     ReservoirManagement reservoir_management(grid_collection.reservoirs.begin()->second,
                                              3000,
                                              3000,
@@ -257,7 +257,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenaltiesWithFinalLevel)
     auto expected_costs = getOutputCosts("result_bellman_values_penalties_final_level.csv");
 
     auto grid_collection = GridCollection(tmpDir / "grid.csv");
-    auto grid = grid_collection.gridDefinitions[0];
+    auto grid = grid_collection.gridDefinitions.at(0);
     ReservoirManagement reservoir_management(grid_collection.reservoirs.begin()->second,
                                              3000,
                                              3000,

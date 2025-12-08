@@ -1,64 +1,15 @@
 
 #include <chrono>
 #include <iostream>
+#include <ranges>
 
-#include "antares-xpansion/bellman_values/BellmanValues.h"
 #include "antares-xpansion/bellman_values/BellmanValuesExeOptions.h"
 #include "antares-xpansion/bellman_values/PenaltiesConfigReader.h"
 #include "antares-xpansion/benders/factories/LoggerFactories.h"
+#include "antares-xpansion/grid_evaluator/GridEvaluator.h"
 #include "antares-xpansion/lpnamer/main/ProblemGenerationForWaterValueCalculation.h"
 #include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
 #include "malloc.h"
-
-std::vector<double> interpolateVector(const std::vector<double>& originalValues, int targetSize)
-{
-    std::vector<double> result(targetSize);
-    int originalSize = static_cast<int>(originalValues.size());
-
-    if (originalSize == 0 || targetSize == 0)
-    {
-        return result;
-    }
-
-    // Cas particulier : un seul point
-    if (originalSize == 1)
-    {
-        std::fill(result.begin(), result.end(), originalValues[0]);
-        return result;
-    }
-
-    for (int i = 0; i < targetSize; ++i)
-    {
-        // Position correspondante dans le vecteur d'origine
-        double positionInOriginal = static_cast<double>(i) * (originalSize - 1) / (targetSize - 1);
-
-        // Indices entourant cette position
-        int lowerIndex = static_cast<int>(std::floor(positionInOriginal));
-        int upperIndex = std::min(lowerIndex + 1, originalSize - 1);
-
-        double fraction = positionInOriginal - lowerIndex;
-
-        // Interpolation linéaire
-        double interpolated = (1.0 - fraction) * originalValues[lowerIndex]
-                              + fraction * originalValues[upperIndex];
-
-        result[i] = interpolated;
-    }
-
-    return result;
-}
-
-std::vector<std::vector<double>> interpolateWeekVector(
-  const std::vector<std::vector<double>>& originalValues,
-  int targetSize)
-{
-    std::vector<std::vector<double>> interpolatedValues;
-    for (const auto& weekValues: originalValues)
-    {
-        interpolatedValues.push_back(interpolateVector(weekValues, targetSize));
-    }
-    return interpolatedValues;
-}
 
 std::string formatTime(const std::chrono::system_clock::time_point& timePoint)
 {
@@ -81,92 +32,71 @@ std::string formatDuration(std::chrono::duration<T> duration)
       .str();
 }
 
-void saveValues(const std::filesystem::path& path,
-                const std::vector<std::vector<double>>& values,
-                const Logger& logger,
-                bool usingAntaresFormat = false)
+// C++ 23 : use std::views::join_with
+template<std::ranges::input_range R>
+void write_joined(std::ostream& os, R&& r, std::string_view sep)
+{
+    auto it = std::begin(r);
+    auto end = std::end(r);
+
+    if (it == end)
+    {
+        return;
+    }
+
+    os << *it;
+    ++it;
+
+    for (; it != end; ++it)
+    {
+        os << sep << *it;
+    }
+}
+
+void saveCostsAndDuals(const std::filesystem::path& path,
+                       const GridDefinition grid,
+                       const std::map<Output::PointWeekScenarioKey, GridPointResult>& values,
+                       const Logger& logger)
 {
     std::ofstream file(path);
     if (!file)
     {
-        // std::cerr << "Failed to open file: " << path << std::endl;
         logger->display_message("Failed to open file: " + path.string(),
                                 LogUtils::LOGLEVEL::ERR,
                                 "Water Values");
         return;
     }
 
-    if (usingAntaresFormat)
+    file << std::setprecision(std::numeric_limits<double>::max_digits10);
+
+    // Header
+    file << "scenario,week,";
+    std::set<std::string> areaNames;
+    std::ranges::transform(grid.gridElements,
+                           std::inserter(areaNames, areaNames.end()),
+                           &GridElement::area);
+
+    write_joined(file,
+                 areaNames
+                   | std::views::transform([](const std::string& name)
+                                           { return name + "_RHSValue"; }),
+                 ",");
+    file << ",cost,";
+    write_joined(file,
+                 areaNames
+                   | std::views::transform([](const std::string& name)
+                                           { return name + "_dualValue"; }),
+                 ",");
+    file << '\n';
+
+    for (const auto& [pointScenarioWeek, gridPointRes]: values)
     {
-        // padding with a line of 0 for each level
-        for (int levelIdx = 0; levelIdx < values[0].size(); ++levelIdx)
-        {
-            file << "0\t";
-        }
+        file << pointScenarioWeek.scenario << "," << pointScenarioWeek.week << ",";
+        write_joined(file, pointScenarioWeek.rhsValues | std::views::values, ",");
+        file << "," << gridPointRes.cost << ",";
+        write_joined(file, gridPointRes.dual | std::views::values, ",");
         file << '\n';
     }
-    for (const auto& weekValues: values)
-    {
-        std::vector<double> values = weekValues;
-        if (usingAntaresFormat)
-        {
-            for (size_t i = 0; i < 7; i++)
-            {
-                for (const auto& value: values)
-                {
-                    file << value << '\t';
-                }
-                file << 0;
-                if (i != 6)
-                {
-                    file << '\n';
-                }
-            }
-        }
-        else
-        {
-            for (const auto& value: values)
-            {
-                file << value << " ";
-            }
-        }
-        file << '\n';
-    }
-}
-
-std::vector<std::vector<double>> computeWaterValues(
-  const std::vector<std::vector<double>>& bellmanValues,
-  const std::vector<double>& levels)
-{
-    if (bellmanValues.empty())
-    {
-        return {};
-    }
-
-    size_t numLevels = levels.size();
-    size_t numWeeks = bellmanValues.size() - 1;
-
-    for (const auto& weekVals: bellmanValues)
-    {
-        if (weekVals.size() != numLevels)
-        {
-            throw std::invalid_argument("Inconsistent level size in bellmanValues");
-        }
-    }
-
-    std::vector<std::vector<double>> derivatives(numWeeks, std::vector<double>(numLevels - 1));
-
-    for (size_t week = 1; week <= numWeeks; ++week)
-    {
-        const auto& values = bellmanValues[week];
-        for (size_t i = 0; i < numLevels - 1; ++i)
-        {
-            // Take the opposite of the derivative to have positive water values
-            derivatives[week - 1][i] = -(values[i + 1] - values[i]) / (levels[i + 1] - levels[i]);
-        }
-    }
-
-    return derivatives;
 }
 
 int main(int argc, char** argv)
@@ -236,7 +166,6 @@ int main(int argc, char** argv)
         logger->display_message("Elapsed time for problem generation: "
                                 + formatDuration(elapsed_seconds));
 
-        Output::VariationDeNiveauxDeStockData variationDeNiveauxDeStockData;
         for (auto& grid: gridCollection->gridDefinitions | std::views::values)
         {
             auto startProblemUpdate = std::chrono::system_clock::now();
@@ -253,18 +182,10 @@ int main(int argc, char** argv)
             logger->display_message("Elapsed time for problem update: "
                                     + formatDuration(elapsed_update_seconds));
 
-            auto evaluator = GridEvaluator(logger, problems, grid, solverName, nbThreads);
-            auto bellmanValuesEvaluator = BellmanValues(evaluator, reservoirManagement);
-            auto bellmanValues = bellmanValuesEvaluator.compute(nbLevels);
-            auto levels = bellmanValuesEvaluator.getLevels();
-            if (antaresFormat)
-            {
-                bellmanValues = interpolateWeekVector(bellmanValues, 101);
-                levels = interpolateVector(levels, 101);
-            }
-            auto waterValues = computeWaterValues(bellmanValues, levels);
-            std::string fileName = std::to_string(grid.gridID) + "_water_values.csv";
-            saveValues(directories.simulation_dir / fileName, waterValues, logger, antaresFormat);
+            auto res = GridEvaluator(logger, problems, grid, solverName, nbThreads)
+                         .ComputeCostsAndDuals();
+            std::string fileName = "gridPointsValues_" + std::to_string(grid.gridID) + ".csv";
+            saveCostsAndDuals(directories.simulation_dir / fileName, grid, res, logger);
         }
 
         return 0;
