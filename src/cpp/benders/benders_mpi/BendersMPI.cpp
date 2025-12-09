@@ -10,7 +10,7 @@
 #include "antares-xpansion/helpers/Timer.h"
 
 BendersMpi::BendersMpi(const BendersBaseOptions& options,
-                       Logger logger,
+                       std::shared_ptr<ILogger> logger,
                        std::shared_ptr<Output::OutputWriter> writer,
                        mpi::communicator& world,
                        std::shared_ptr<MathLoggerDriver> mathLoggerDriver):

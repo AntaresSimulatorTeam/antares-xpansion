@@ -18,7 +18,7 @@ class UserFile: public ILogger
 {
 public:
     explicit UserFile(const std::filesystem::path& filename);
-    ~UserFile();
+    ~UserFile() override;
 
     void display_message(const std::string& str) override;
     void display_message(const std::string& str,
