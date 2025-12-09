@@ -117,7 +117,7 @@ void GridDefinition::generateGridValues()
     weekAreaConstraints.clear();
     for (auto& gridElement: gridElements)
     {
-        gridElement.rhsValues.clear();
+        // gridElement.rhsValues.clear();
         // constexpr double epsilon = 1e-6;
         constexpr double epsilon = 0;
         bool fixedElem = gridElement.min == gridElement.max;
@@ -133,6 +133,7 @@ void GridDefinition::generateGridValues()
 
         for (size_t week = 1; week <= Reservoir::weeks_in_year; week++)
         {
+            gridElement.rhsValues[week - 1].clear();
             double min_cst = -reservoirs.at(gridElement.area).max_pumping[week - 1]
                              * reservoirs.at(gridElement.area).efficiency;
             double max_cst = reservoirs.at(gridElement.area).max_generating[week - 1];
