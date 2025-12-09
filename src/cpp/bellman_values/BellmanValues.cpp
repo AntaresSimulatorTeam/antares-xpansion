@@ -278,11 +278,9 @@ std::vector<std::vector<double>> BellmanValues::computeOptimalTrajectories()
     // for (unsigned int week = endWeek + 1; week-- > startWeek;)
     for (unsigned int week = startWeek; week <= endWeek; ++week)
     {
-        std::cout << "Optimal trajectory, week " << week << std::endl;
+        std::cout << "Computing optimal trajectory, week " << week << std::endl;
         for (unsigned int scenario: scenarios)
         {
-            std::cout << "Scenario " << scenario << std::endl;
-
             // future costs now coming from previously computed Bellman values
             auto V_fut = [this, &week, &scenario]()
             {
@@ -290,8 +288,6 @@ std::vector<std::vector<double>> BellmanValues::computeOptimalTrajectories()
                 return [this, &V_vec, &week, &scenario](double x)
                 { return Interpolator::linearInterpolation(this->levels, V_vec)(x); };
             };
-
-            std::cout << "V_fut OK" << std::endl;
 
             // the considered level is the trajectory of the previous week
             // week 0 is always the initial level

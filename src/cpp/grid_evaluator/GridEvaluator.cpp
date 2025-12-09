@@ -265,27 +265,28 @@ void GridEvaluator::ProcessSubproblem(const Antares::Solver::WeeklyProblemId sub
     for (const auto& subPbCombo: subPbCombos)
     {
         i++;
-        logger->display_message(
-          (std::stringstream() << "Processing gridPoint " << i << "/" << size).str(),
-          LogUtils::LOGLEVEL::DEBUG,
-          GRID_EVALUATOR_LOGGER_CONTEXT);
+        // logger->display_message(
+        //   (std::stringstream() << "Processing gridPoint " << i << "/" << size).str(),
+        //   LogUtils::LOGLEVEL::DEBUG,
+        //   GRID_EVALUATOR_LOGGER_CONTEXT);
         // Each areaCombo is a std::map<std::string, double> with full variable names
         Timer timer;
         SetConstraintsRHSValues(subPbCombo, subProblem);
         totalPbModifTimer += timer.elapsed();
-        for (const auto& [constraintName, value]: subPbCombo)
-        {
-            logger->display_message((std::stringstream() << constraintName << " " << value).str(),
-                                    LogUtils::LOGLEVEL::DEBUG,
-                                    GRID_EVALUATOR_LOGGER_CONTEXT);
-        }
+        // for (const auto& [constraintName, value]: subPbCombo)
+        // {
+        //     logger->display_message((std::stringstream() << constraintName << " " <<
+        //     value).str(),
+        //                             LogUtils::LOGLEVEL::DEBUG,
+        //                             GRID_EVALUATOR_LOGGER_CONTEXT);
+        // }
         GridPointResult res = SolveSubproblem(subProblem, subPbCombo);
 
         variationDeNiveauxDeStockResults.insert({subPbCombo, subProblemId.week, subProblemId.year},
                                                 res);
-        logger->display_message((std::stringstream() << "Cost: " << res.cost).str(),
-                                LogUtils::LOGLEVEL::DEBUG,
-                                GRID_EVALUATOR_LOGGER_CONTEXT);
+        // logger->display_message((std::stringstream() << "Cost: " << res.cost).str(),
+        //                         LogUtils::LOGLEVEL::DEBUG,
+        //                         GRID_EVALUATOR_LOGGER_CONTEXT);
     }
 }
 
@@ -314,11 +315,12 @@ GridPointResult GridEvaluator::SolveSubproblem(std::shared_ptr<Problem> problem,
     }
 
     int nbSimplexIter = problem->get_splex_num_of_ite_last();
-    logger->display_message((std::stringstream() << "nb simplex : " << nbSimplexIter << " / in "
-                                                 << subproblem_data.subproblem_timer << " seconds")
-                              .str(),
-                            LogUtils::LOGLEVEL::DEBUG,
-                            GRID_EVALUATOR_LOGGER_CONTEXT);
+    // logger->display_message((std::stringstream() << "nb simplex : " << nbSimplexIter << " / in "
+    //                                              << subproblem_data.subproblem_timer << "
+    //                                              seconds")
+    //                           .str(),
+    //                         LogUtils::LOGLEVEL::DEBUG,
+    //                         GRID_EVALUATOR_LOGGER_CONTEXT);
     totalSimplexIter += nbSimplexIter;
     totalSubPbTimer += subproblem_data.subproblem_timer;
 
