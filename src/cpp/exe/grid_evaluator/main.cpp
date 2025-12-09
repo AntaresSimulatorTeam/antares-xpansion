@@ -126,8 +126,7 @@ int main(int argc, char** argv)
                                                 pcr.getPenaltyUpperRuleCurve(),
                                                 pcr.getPenaltyFinalLevel(),
                                                 pcr.getForceFinalLevel(),
-                                                pcr.getFinalLevel(),
-                                                pcr.getOverflow());
+                                                pcr.getFinalLevel());
 
         ConfigurationManager::ConfigDirectories directories{
           .study_dir = studyPath,

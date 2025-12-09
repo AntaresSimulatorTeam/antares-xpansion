@@ -39,11 +39,6 @@ public:
         return getValueFromKey<std::optional<double>>(finalLevelKey);
     }
 
-    bool getOverflow() const
-    {
-        return getValueFromKey<bool>(overflowKey);
-    }
-
 private:
     template<typename T>
     T getValueFromKey(const std::string& key) const
@@ -86,7 +81,6 @@ private:
     inline static const std::string penaltyFinalLevelKey = "penalty_final_level";
     inline static const std::string forceFinalLevelKey = "force_final_level";
     inline static const std::string finalLevelKey = "final_level";
-    inline static const std::string overflowKey = "overflow";
 
     std::map<std::string, Penalty> penalties;
 

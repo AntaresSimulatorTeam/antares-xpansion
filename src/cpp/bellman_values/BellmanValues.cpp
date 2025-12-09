@@ -194,9 +194,9 @@ std::tuple<double, double, double> BellmanValues::solveWeeklyProblemWithCost(
     {
         double u = -value_fut + level + reservoir.inflow[week][scenario];
         if ((-reservoir.max_pumping[week] * reservoir.efficiency <= u)
-            && (reservoirManagement.overflow || u <= reservoir.max_generating[week]))
+            && (u <= reservoir.max_generating[week] + reservoir.inflow[week][scenario]))
         {
-            u = std::min(u, reservoir.max_generating[week]);
+            u = std::min(u, reservoir.max_generating[week] + reservoir.inflow[week][scenario]);
             double G = costFn(u);
             if (G + V_fut(value_fut) + penalty < Vu)
             {
@@ -224,7 +224,7 @@ std::tuple<double, double, double> BellmanValues::solveWeeklyProblemWithCost(
     {
         double uFinal = level + reservoir.inflow[week][scenario] - reservoirManagement.final_level;
         if (-reservoir.max_pumping[week] * reservoir.efficiency <= uFinal
-            && uFinal <= reservoir.max_generating[week])
+            && uFinal <= reservoir.max_generating[week] + reservoir.inflow[week][scenario])
         {
             double state_fut = level - uFinal + reservoir.inflow[week][scenario];
             if (costFn(uFinal) + V_fut(state_fut) + penalty < Vu)
@@ -238,7 +238,7 @@ std::tuple<double, double, double> BellmanValues::solveWeeklyProblemWithCost(
     {
         double uMin = level + reservoir.inflow[week][scenario] - reservoir.bottom_rule_curve[week];
         if (-reservoir.max_pumping[week] * reservoir.efficiency <= uMin
-            && uMin <= reservoir.max_generating[week])
+            && uMin <= reservoir.max_generating[week] + reservoir.inflow[week][scenario])
         {
             double state_fut = level - uMin + reservoir.inflow[week][scenario];
             if (costFn(uMin) + V_fut(state_fut) + penalty < Vu)
@@ -250,7 +250,7 @@ std::tuple<double, double, double> BellmanValues::solveWeeklyProblemWithCost(
 
         double uMax = level + reservoir.inflow[week][scenario] - reservoir.upper_rule_curve[week];
         if (-reservoir.max_pumping[week] * reservoir.efficiency <= uMax
-            && uMax <= reservoir.max_generating[week])
+            && uMax <= reservoir.max_generating[week] + reservoir.inflow[week][scenario])
         {
             double state_fut = level - uMax + reservoir.inflow[week][scenario];
             if (costFn(uMax) + V_fut(state_fut) + penalty < Vu)
