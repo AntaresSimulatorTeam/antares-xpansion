@@ -8,4 +8,6 @@ public:
     static CouplingMap BuildInput(const std::filesystem::path& structure_path,
                                   ILoggerXpansion* logger,
                                   const std::string& context = "Benders");
+
+    static SubProblemConstraintMap BuildSubProblemConstaintMap(const CouplingMap& coupling_map) ; 
 };

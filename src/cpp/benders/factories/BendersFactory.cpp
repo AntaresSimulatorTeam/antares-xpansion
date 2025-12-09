@@ -101,7 +101,8 @@ std::set<std::string> BendersFactory::ReadAreaFile()
 }
 
 auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
-                                      const CouplingMap& coupling_map) -> BendersEnvironment
+                                      const CouplingMap& coupling_map, 
+                                      const SubProblemConstraintMap& subproblem_constraints_map) -> BendersEnvironment
 {
     std::unique_ptr<BendersBase> benders;
     switch (method_)
@@ -134,6 +135,8 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
     }
 
     benders->set_input_map(coupling_map);
+    benders->set_subproblem_constraint_map(subproblem_constraints_map) ; 
+
     auto criterion_input_holder = ProcessCriterionInput();
     benders->setCriterionComputationInputs(
       std::visit([](auto&& the_variant)
@@ -159,9 +162,18 @@ auto BendersFactory::PrepareForExecution(bool outer_loop) -> std::optional<Bende
     BendersBaseOptions benders_options(options_.get_benders_options());
     benders_options.EXTERNAL_LOOP_OPTIONS.DO_OUTER_LOOP = outer_loop;
 
+    std::cout<<"get in PrepareForExecution"<<std::endl; 
+    std::cout<<"printing structure file "<<benders_options.STRUCTURE_FILE<<std::endl ; 
+
     const auto coupling_map = CouplingMapGenerator::BuildInput(benders_options.STRUCTURE_FILE,
                                                                logger_.get(),
                                                                "Benders");
+    const auto subproblem_constaint_map = CouplingMapGenerator::BuildSubProblemConstaintMap(coupling_map) ; 
+
+    for (auto&& [subproblem, constraint] : subproblem_constaint_map) 
+    {
+        std::cout<<"subproblem "<<subproblem<<" constraints "<<constraint<<std::endl ; 
+    }
 
     method_ = DeduceBendersMethod(coupling_map.size(), options_.BATCH_SIZE, outer_loop);
     context_ = bendersmethod_to_string(method_);
@@ -175,7 +187,7 @@ auto BendersFactory::PrepareForExecution(bool outer_loop) -> std::optional<Bende
         }
     }
 
-    auto environment = ConfigureBenders(benders_options, coupling_map);
+    auto environment = ConfigureBenders(benders_options, coupling_map,subproblem_constaint_map);
     ConfigureSolverLog(environment.benders.get());
     return std::optional<BendersEnvironment>(std::move(environment));
 }

@@ -54,6 +54,7 @@ public:
     // void Clean();
     LogData GetBestIterationData() const;
     void set_input_map(const CouplingMap& coupling_map);
+    void set_subproblem_constraint_map(const SubProblemConstraintMap& subproblem_constraint_map) ; 
     int MasterRowIndex(const std::string& row_name) const;
     void MasterChangeRhs(int id_row, double val) const;
     // for test
@@ -142,11 +143,13 @@ protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
     WorkerMasterDataVect workerMasterDataVect_;
+    constraintsPerLine constraints_map_ ; 
     // BendersCuts best_iteration_cuts_;
     // BendersCuts current_iteration_cuts_;
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
     BendersRelevantIterationsData relevantIterationData_ = {WorkerMasterData(), WorkerMasterData()};
+    SubProblemConstraintMap subproblem_constraint_map_ ; 
     bool init_data_ = true;
     bool init_problems_ = true;
     bool free_problems_ = true;
@@ -155,6 +158,7 @@ protected:
     std::vector<std::vector<double>> criteria_vector_for_each_iteration_;
     bool is_bilevel_check_all_ = false;
 
+    void read_constraints_csv() ; 
     virtual void Run() = 0;
     void update_best_ub();
     bool ShouldBendersStop();
@@ -182,6 +186,7 @@ protected:
     virtual void ActivateIntegrityConstraints() const;
     virtual void SetDataPreRelaxation();
     virtual void ResetDataPostRelaxation();
+    [[nodiscard]] std::filesystem::path GetSubProblemConstraintsPath(const std::string& subproblem_name)  ; 
     [[nodiscard]] std::filesystem::path GetSubproblemPath(const std::string& subproblem_name) const;
     [[nodiscard]] double SubproblemWeight(int subproblem_count, const std::string& name) const;
     [[nodiscard]] std::filesystem::path get_master_path() const;

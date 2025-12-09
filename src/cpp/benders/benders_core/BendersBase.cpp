@@ -4,6 +4,7 @@
 #include <mutex>
 #include <numeric>
 #include <utility>
+#include <boost/tokenizer.hpp>
 
 #include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
 #include "antares-xpansion/benders/benders_core/LastIterationPrinter.h"
@@ -687,6 +688,7 @@ void BendersBase::compute_cut_aggregate(const SubProblemDataMap& subproblem_data
 void BendersBase::BuildCutFull(const SubProblemDataMap& subproblem_data_map)
 {
     check_status(subproblem_data_map);
+
     if (_options.AGGREGATION)
     {
         compute_cut_aggregate(subproblem_data_map);
@@ -720,6 +722,35 @@ LogData BendersBase::FinalLogData() const
 
     return result;
 }
+
+void BendersBase::read_constraints_csv() 
+{
+    if (!_options.MICRO_ITERATION) 
+        return ; 
+    else 
+    {
+        std::string csv_name = "constraints_dictionnary.csv" ; 
+        auto csv_path = std::filesystem::path(_options.INPUTROOT) / csv_name ; 
+        std::cout<<"priniting csv file path "<<csv_path<<std::endl ; 
+        std::ifstream file(csv_path) ; 
+
+        std::string line;
+        typedef boost::tokenizer<boost::escaped_list_separator<char>> Tokenizer;
+
+        while (std::getline(file,line)) 
+        {
+            Tokenizer tok(line) ; 
+            std::vector<std::string> tokens(tok.begin(), tok.end());
+            std::string key = tokens[0] ; 
+            std::vector<std::string> values ; 
+            if (tokens.size() > 1 ) 
+                values.assign(tokens.begin()+1,tokens.end()) ; 
+            
+            constraints_map_[key] = values ; 
+        }
+    }
+}
+
 
 void BendersBase::post_run_actions() const
 {
@@ -886,6 +917,11 @@ std::string BendersBase::status_from_criterion() const
     }
 }
 
+std::filesystem::path BendersBase::GetSubProblemConstraintsPath(const std::string& constraints_name) 
+{
+    return std::filesystem::path(_options.INPUTROOT) / constraints_name;
+}
+
 /*!
  *  \brief Get path to subproblem mps file from options
  */
@@ -963,6 +999,18 @@ void BendersBase::set_solver_log_file(const std::filesystem::path& log_file)
     solver_log_manager_ = SolverLogManager(log_file);
 }
 
+void BendersBase::set_subproblem_constraint_map(const SubProblemConstraintMap& subproblem_constraint_map) 
+{
+    subproblem_constraint_map_ = subproblem_constraint_map ; 
+    std::cout<<"from set_subproblem_constraint_map **** "<<std::endl ; 
+    for (auto&& [subproblem, constraints]: subproblem_constraint_map_) 
+    {
+        std::cout<<"subproblem "<<subproblem<<" constraints "<<constraints<<std::endl ;
+        std::cout<<"contraints relative path "<<GetSubProblemConstraintsPath(constraints)<<std::endl  ; 
+    }
+}
+
+
 /*!
  *  \brief set the input
  *
@@ -1003,6 +1051,7 @@ WorkerMasterPtr BendersBase::get_master() const
 
 void BendersBase::AddSubproblem(const std::pair<std::string, VariableMap>& kvp)
 {
+    std::cout<<"printing sub problem path "<<GetSubproblemPath(kvp.first)<<std::endl ; 
     std::shared_ptr<IBendersProblemProvider>
       benders_problem_provider = std::make_shared<BendersProblemFromFile>(
         GetSubproblemPath(kvp.first));

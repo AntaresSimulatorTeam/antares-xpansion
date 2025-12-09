@@ -32,6 +32,7 @@ void BendersMpi::InitializeProblems()
 {
     MatchProblemToId();
     BuildMasterProblem();
+    read_constraints_csv() ; 
     if (_options.CACHE_PROBLEMS)
     {
         int current_problem_id = 0;
@@ -61,6 +62,7 @@ void BendersMpi::InitializeProblems()
             { // Assign  [problemNumber % processCount] to processID
 
                 const auto subProblemFilePath = GetSubproblemPath(problem.first);
+                std::cout<<"adding sub problem !!!!"<<std::endl ; 
                 AddSubproblem(problem);
                 AddSubproblemName(problem.first);
             }

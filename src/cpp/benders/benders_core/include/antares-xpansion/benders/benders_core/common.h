@@ -53,6 +53,7 @@ using CharVector = std::vector<char>;
 using DblVector = std::vector<double>;
 using StrVector = std::vector<std::string>;
 using CouplingMap = std::map<std::string, VariableMap>;
+using SubProblemConstraintMap = std::map<std::string, std::string> ; 
 
 using SlaveCutId = std::map<std::string, IntVector>;
 using ActiveCut = std::tuple<int, std::string, int, bool>;
@@ -60,6 +61,8 @@ using ActiveCutStorage = std::vector<ActiveCut>;
 
 using mps_coupling = std::pair<std::string, std::string>;
 using mps_coupling_list = std::list<mps_coupling>;
+
+using constraintsPerLine = std::map<std::string,std::vector<std::string>> ; 
 
 struct Predicate
 {
@@ -221,6 +224,7 @@ struct BendersBaseOptions: public SolverBaseOptions
     bool TRACE = false;
     bool BOUND_ALPHA = false;
     bool CACHE_PROBLEMS = false;
+    bool MICRO_ITERATION = false ; 
 
     MasterFormulation MASTER_FORMULATION;
 

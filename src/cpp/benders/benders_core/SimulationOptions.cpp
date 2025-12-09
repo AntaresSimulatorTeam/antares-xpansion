@@ -195,6 +195,7 @@ BendersBaseOptions SimulationOptions::get_benders_options() const
 
     result.RESUME = RESUME;
     result.AGGREGATION = AGGREGATION;
+    result.MICRO_ITERATION = MICRO_ITERATION; 
     result.TRACE = TRACE;
     result.BOUND_ALPHA = BOUND_ALPHA;
     result.CACHE_PROBLEMS = CACHE_PROBLEMS;

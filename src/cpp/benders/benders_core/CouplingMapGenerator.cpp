@@ -25,6 +25,7 @@ CouplingMap CouplingMapGenerator::BuildInput(const std::filesystem::path& struct
                                              ILoggerXpansion* logger,
                                              const std::string& context)
 {
+    std::cout<<"entered in BuildInput "<<std::endl ; 
     CouplingMap coupling_map;
     std::ifstream summary(structure_path, std::ios::in);
     if (!summary)
@@ -54,3 +55,21 @@ CouplingMap CouplingMapGenerator::BuildInput(const std::filesystem::path& struct
     summary.close();
     return coupling_map;
 }
+
+SubProblemConstraintMap CouplingMapGenerator::BuildSubProblemConstaintMap(const CouplingMap& coupling_map) 
+{
+    SubProblemConstraintMap result ; 
+    for (auto&& [subProblemName,_] : coupling_map) 
+    {
+        size_t underscore_pos = subProblemName.find('_') ; 
+        size_t dot_pos =  subProblemName.find('.') ; 
+
+        std::string subproblem_num = subProblemName.substr(underscore_pos + 1, dot_pos - underscore_pos - 1);
+        std::string constraint_str = "constraints/constraints_" + subproblem_num + ".mps" ; 
+
+        result[subProblemName] = constraint_str ; 
+
+    }
+    return result ; 
+}
+
