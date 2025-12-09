@@ -29,7 +29,6 @@ private:
     // for multistock cases, we need to store the costs and bellman values
     std::map<Antares::Solver::WeeklyProblemId, std::vector<double>> costs;
     std::map<Antares::Solver::WeeklyProblemId, std::vector<double>> bellmanValues;
-    //  std::vector<std::vector<double>> bellmanValues;
 
 protected:
     GridEvaluator& gridEvaluator;                   ///< Grid evaluator
