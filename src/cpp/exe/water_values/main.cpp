@@ -295,7 +295,7 @@ int main(int argc, char** argv)
                 auto evaluator = GridEvaluator(logger, problems, grid, solverName, nbThreads);
 
                 logger->display_message("Instantiating BellmanValues");
-                auto bellmanValuesEvaluator = BellmanValues(evaluator, reservoirManagement);
+                auto bellmanValuesEvaluator = BellmanValues(evaluator, reservoirManagement, logger);
 
                 logger->display_message("Computing Bellman values...");
                 auto bellmanValues = bellmanValuesEvaluator.compute(nbLevels);

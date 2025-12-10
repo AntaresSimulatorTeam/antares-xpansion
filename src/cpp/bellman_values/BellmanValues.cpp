@@ -9,9 +9,11 @@
 #include "antares-xpansion/grid_evaluator/Interpolator.h"
 
 BellmanValues::BellmanValues(GridEvaluator& gridEvaluator,
-                             const ReservoirManagement& reservoirManagement):
+                             const ReservoirManagement& reservoirManagement,
+                             Logger logger):
     gridEvaluator(gridEvaluator),
-    reservoirManagement(reservoirManagement)
+    reservoirManagement(reservoirManagement),
+    logger{std::move(logger)}
 {
 }
 
@@ -126,7 +128,8 @@ std::vector<std::vector<double>> BellmanValues::compute(int nbLevels)
             for (size_t i = 0; i < levels.size(); ++i)
             {
                 double Vu;
-                std::tie(Vu, std::ignore, std::ignore) = solveWeeklyProblemWithCost(
+                double control;
+                std::tie(Vu, std::ignore, control) = solveWeeklyProblemWithCost(
                   week,
                   endWeek,
                   scenario,
@@ -196,7 +199,7 @@ std::tuple<double, double, double> BellmanValues::solveWeeklyProblemWithCost(
         if ((-reservoir.max_pumping[week] * reservoir.efficiency <= u)
             && (u <= reservoir.max_generating[week] + reservoir.inflow[week][scenario]))
         {
-            u = std::min(u, reservoir.max_generating[week] + reservoir.inflow[week][scenario]);
+            u = std::min(u, reservoir.max_generating[week]);
             double G = costFn(u);
             if (G + V_fut(value_fut) + penalty < Vu)
             {

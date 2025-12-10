@@ -142,7 +142,7 @@ protected:
 TEST_F(BellmanValuesComputeTest, unitTestNoPenalties)
 {
     ReservoirManagement reservoirManagement(evaluatorMock.reservoirMock, 0, 0, 0);
-    auto bellmanValues = BellmanValues(evaluatorMock, reservoirManagement).compute(6);
+    auto bellmanValues = BellmanValues(evaluatorMock, reservoirManagement, logger).compute(6);
 
     std::vector<std::vector<double>> expected = {{180, 140, 100, 60, 60, 60},
                                                  {120, 80, 40, 40, 40, 40},
@@ -155,7 +155,7 @@ TEST_F(BellmanValuesComputeTest, unitTestNoPenalties)
 TEST_F(BellmanValuesComputeTest, unitTestPenalties)
 {
     ReservoirManagement reservoirManagement(evaluatorMock.reservoirMock, 10, 10, 0);
-    auto bellmanValues = BellmanValues(evaluatorMock, reservoirManagement).compute(6);
+    auto bellmanValues = BellmanValues(evaluatorMock, reservoirManagement, logger).compute(6);
 
     std::vector<std::vector<double>> expected = {{1220, 180, 140, 100, 60, 1060},
                                                  {1160, 120, 80, 40, 40, 1040},
@@ -168,7 +168,7 @@ TEST_F(BellmanValuesComputeTest, unitTestPenalties)
 TEST_F(BellmanValuesComputeTest, unitTestPenaltiesWithFinalLevel)
 {
     ReservoirManagement reservoirManagement(evaluatorMock.reservoirMock, 10, 10, 30, true, 400);
-    auto bellmanValues = BellmanValues(evaluatorMock, reservoirManagement).compute(6);
+    auto bellmanValues = BellmanValues(evaluatorMock, reservoirManagement, logger).compute(6);
 
     std::vector<std::vector<double>> expected = {{4300, 300, 260, 220, 180, 1140},
                                                  {7200, 3200, 200, 160, 120, 1080},
@@ -196,7 +196,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
     auto problems = pbg.updateProblems(grid, reservoir_management);
 
     auto evaluator = GridEvaluator(logger, problems, grid, solverName, 8);
-    auto res = BellmanValues(evaluator, reservoir_management).compute(11);
+    auto res = BellmanValues(evaluator, reservoir_management, logger).compute(11);
 
     for (unsigned int week = 1; week < res.size(); week++)
     {
@@ -231,7 +231,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
     auto problems = pbg.updateProblems(grid, reservoir_management);
 
     auto evaluator = GridEvaluator(logger, problems, grid, solverName, 8);
-    auto res = BellmanValues(evaluator, reservoir_management).compute(11);
+    auto res = BellmanValues(evaluator, reservoir_management, logger).compute(11);
 
     for (unsigned int week = 1; week < res.size(); week++)
     {
@@ -267,7 +267,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenaltiesWithFinalLevel)
     auto problems = pbg.updateProblems(grid, reservoir_management);
 
     auto evaluator = GridEvaluator(logger, problems, grid, solverName, 8);
-    auto res = BellmanValues(evaluator, reservoir_management).compute(11);
+    auto res = BellmanValues(evaluator, reservoir_management, logger).compute(11);
 
     for (unsigned int week = 1; week < res.size(); week++)
     {

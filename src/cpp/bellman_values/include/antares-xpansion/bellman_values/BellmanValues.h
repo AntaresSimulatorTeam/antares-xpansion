@@ -8,7 +8,9 @@
 class BellmanValues
 {
 public:
-    BellmanValues(GridEvaluator& gridEvaluator, const ReservoirManagement& reservoirManagement);
+    BellmanValues(GridEvaluator& gridEvaluator,
+                  const ReservoirManagement& reservoirManagement,
+                  Logger logger);
 
     std::vector<std::vector<double>> compute(int nbLevels = 10);
 
@@ -31,6 +33,8 @@ private:
     std::map<Antares::Solver::WeeklyProblemId, std::vector<double>> bellmanValues;
 
 protected:
+    Logger logger;
+
     GridEvaluator& gridEvaluator;                   ///< Grid evaluator
     const ReservoirManagement& reservoirManagement; ///< Reservoir management
     std::vector<double> levels;                     ///< Levels of the reservoir
