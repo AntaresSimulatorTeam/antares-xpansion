@@ -58,6 +58,16 @@ public:
     }
 
 private:
+    struct AffectedColsAndRows /// Collect indices to delete and bounds to change
+    {
+        std::unordered_map<std::string, int> colNameToIndex;
+        std::unordered_map<std::string, int> rowNameToIndex;
+        std::vector<int> colsToDelete;
+        std::vector<int> rowsToDelete;
+        std::vector<int> hydroProdCols;
+        std::vector<double> hydroProdBounds;
+    };
+
     /// @brief Function that cleans all problems to repare them to compute Bellman values
     /// @param xpansion_output_dir output folder
     /// @param log_file_path path to the log file
@@ -80,7 +90,8 @@ private:
                                             Antares::Solver::WeeklyProblemId pbId);
     void cleanReservoirConstraints(std::shared_ptr<Problem> problem,
                                    const Reservoir& reservoir,
-                                   Antares::Solver::WeeklyProblemId pbId);
+                                   Antares::Solver::WeeklyProblemId pbId,
+                                   AffectedColsAndRows& affectedColsAndRows);
     void updateReservoirWithOptimalTrajectory(std::shared_ptr<Problem> problem,
                                               const Reservoir& reservoir,
                                               Antares::Solver::WeeklyProblemId pbId);

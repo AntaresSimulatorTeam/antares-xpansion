@@ -183,7 +183,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
     copyData();
     auto expected_costs = getOutputCosts("result_bellman_values_no_penalties.csv");
 
-    auto grid_collection = GridCollection(tmpDir / "grid.csv");
+    auto grid_collection = GridCollection(tmpDir / "user/grid.csv");
     auto grid = grid_collection.gridDefinitions.at(0);
     ReservoirManagement reservoir_management(grid_collection.reservoirs.begin()->second, 0, 0, 0);
 
@@ -215,7 +215,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
     copyData();
     auto expected_costs = getOutputCosts("result_bellman_values_penalties.csv");
 
-    auto grid_collection = GridCollection(tmpDir / "grid.csv");
+    auto grid_collection = GridCollection(tmpDir / "user/grid.csv");
     auto grid = grid_collection.gridDefinitions.at(0);
     ReservoirManagement reservoir_management(grid_collection.reservoirs.begin()->second,
                                              3000,
@@ -250,7 +250,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenaltiesWithFinalLevel)
     copyData();
     auto expected_costs = getOutputCosts("result_bellman_values_penalties_final_level.csv");
 
-    auto grid_collection = GridCollection(tmpDir / "grid.csv");
+    auto grid_collection = GridCollection(tmpDir / "user/grid.csv");
     auto grid = grid_collection.gridDefinitions.at(0);
     ReservoirManagement reservoir_management(grid_collection.reservoirs.begin()->second,
                                              3000,

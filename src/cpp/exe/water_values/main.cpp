@@ -186,11 +186,11 @@ int main(int argc, char** argv)
         const std::string problemFormat = optionsParser.ProblemFormat();
         const bool ignoreOptimalTrajectory = optionsParser.IgnoreOptimalTrajectory();
 
-        auto gridCollection = std::make_shared<GridCollection>(studyPath / "grid.csv");
+        auto gridCollection = std::make_shared<GridCollection>(studyPath / "user/grid.csv");
 
         // Possible update: multistock penalties. For now: all penalties are identical for all
         // stocks.
-        const std::filesystem::path penaltiesConfigFilePath(studyPath / "penalties.yaml");
+        const std::filesystem::path penaltiesConfigFilePath(studyPath / "user/penalties.yaml");
 
         // PenaltiesConfigReader will check whether the file exists and return default values if
         // needed

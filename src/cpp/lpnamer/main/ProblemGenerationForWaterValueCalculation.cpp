@@ -215,22 +215,29 @@ ProblemGenerationForWaterValueCalculation::cleanProblemsForBellmanCalculations(
     return modifiedProblems;
 }
 
-template<int (Problem::*Getter)(const std::string&)>
-int checked(Problem* p, const std::string& name, const Antares::Solver::WeeklyProblemId& pbid)
+int checkedMapLookup(const std::unordered_map<std::string, int>& nameToIndex,
+                     const std::string& name,
+                     const Antares::Solver::WeeklyProblemId& pbID)
 {
-    int idx = (p->*Getter)(name);
-    if (idx == -1)
+    auto it = nameToIndex.find(name);
+    if (it == nameToIndex.end())
     {
         throw std::runtime_error("Index not found: " + name + " for scenario "
-                                 + std::to_string(pbid.year) + " and year "
-                                 + std::to_string(pbid.week));
+                                 + std::to_string(pbID.year) + " and week "
+                                 + std::to_string(pbID.week));
     }
-    return idx;
+    return it->second;
+}
+
+inline std::string trimTrailingSpaces(const std::string& str)
+{
+    size_t end = str.find_last_not_of(' ');
+    return (end == std::string::npos) ? "" : str.substr(0, end + 1);
 }
 
 /// @brief Clean the problem for the Bellman Values calculations
 /// @param problem The problem to clean
-/// @param pnName The problem name
+/// @param pbName The problem name
 /// @param gridDefinition The grid definition
 /// @param pbID The problem ID (year/week)
 void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculations(
@@ -241,6 +248,30 @@ void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculatio
   std::string& pbName,
   Antares::Solver::WeeklyProblemId pbID)
 {
+    // Build index maps once
+    int ncols = problem->get_ncols();
+    int nrows = problem->get_nrows();
+
+    std::vector<std::string> colNames = problem->get_col_names(0, ncols - 1);
+    std::vector<std::string> rowNames = problem->get_row_names(0, nrows - 1);
+
+    // Collect indices to delete and bounds to change
+    AffectedColsAndRows affectedColsAndRows;
+
+    for (int i = 0; i < ncols; ++i)
+    {
+        affectedColsAndRows.colNameToIndex[trimTrailingSpaces(colNames[i])] = i;
+    }
+
+    for (int i = 0; i < nrows; ++i)
+    {
+        affectedColsAndRows.rowNameToIndex[trimTrailingSpaces(rowNames[i])] = i;
+    }
+
+    int weekStart = (pbID.week - 1) * 168;
+
+    int weekEnd = pbID.week * 168;
+
     for (const auto& gridElement: gridDefinition.gridElements)
     {
         logger->display_message("gridElement: " + gridElement.area);
@@ -255,7 +286,10 @@ void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculatio
             {
                 logger->display_message("cleanReservoirConstraints in multivariate mode");
                 logger->display_message("reservoir: " + reservoirManagement.reservoir.area);
-                cleanReservoirConstraints(problem, reservoirManagement.reservoir, pbID);
+                cleanReservoirConstraints(problem,
+                                          reservoirManagement.reservoir,
+                                          pbID,
+                                          affectedColsAndRows);
             }
             // targetting a specific stock in a multistock use case (with or without trajectory)
             else if (areaName == gridElement.area)
@@ -263,7 +297,8 @@ void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculatio
                 logger->display_message("cleanReservoirConstraints in multistock mode");
                 cleanReservoirConstraints(problem,
                                           gridDefinition.reservoirs.at(gridElement.area),
-                                          pbID);
+                                          pbID,
+                                          affectedColsAndRows);
             }
         }
     }
@@ -288,7 +323,10 @@ void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculatio
                         //   "Other gridElement in a multistock context updated with its trajectory:
                         //   "
                         //   + reservoir.second.area);
-                        cleanReservoirConstraints(problem, reservoir.second, pbID);
+                        cleanReservoirConstraints(problem,
+                                                  reservoir.second,
+                                                  pbID,
+                                                  affectedColsAndRows);
                         updateReservoirWithOptimalTrajectory(problem, reservoir.second, pbID);
                     }
                     else
@@ -300,50 +338,68 @@ void ProblemGenerationForWaterValueCalculation::cleanProblemForBellmanCalculatio
             }
         }
     }
+    // Sort in descending order to preserve indices during deletion
+    std::sort(affectedColsAndRows.colsToDelete.rbegin(), affectedColsAndRows.colsToDelete.rend());
+    std::sort(affectedColsAndRows.rowsToDelete.rbegin(), affectedColsAndRows.rowsToDelete.rend());
+
+    // Batch change bounds (must be done before deletions to preserve indices)
+    if (!affectedColsAndRows.hydroProdCols.empty())
+    {
+        problem->chg_bounds(affectedColsAndRows.hydroProdCols,
+                            std::vector<char>(affectedColsAndRows.hydroProdCols.size(), 'U'),
+                            affectedColsAndRows.hydroProdBounds);
+    }
+
+    for (int idx: affectedColsAndRows.colsToDelete)
+    {
+        problem->del_cols(idx, idx);
+    }
+
+    for (int idx: affectedColsAndRows.rowsToDelete)
+    {
+        problem->del_rows(idx, idx);
+    }
 }
 
 void ProblemGenerationForWaterValueCalculation::cleanReservoirConstraints(
   std::shared_ptr<Problem> problem,
   const Reservoir& reservoir,
-  Antares::Solver::WeeklyProblemId pbID)
+  Antares::Solver::WeeklyProblemId pbID,
+  AffectedColsAndRows& affectedColsAndRows)
 {
+    double maxGen = reservoir.max_generating[pbID.week - 1] / Reservoir::hours_in_week;
+    const std::string& area = reservoir.area;
     for (int hour = (pbID.week - 1) * 168; hour < pbID.week * 168; ++hour)
     {
-        // ==== DELETE HydroLevel ====
+        std::string hourStr = std::to_string(hour);
+        // ==== DELETE HydroLevel ===
         {
             std::string name = "HydroLevel::area<" + reservoir.area + ">::hour<"
                                + std::to_string(hour) + ">";
-            int idx = problem->get_col_index(name);
-            // int idx = checked<&Problem::get_col_index>(problem.get(), name, pbID);
-            problem->del_cols(idx, idx);
+            int idx = checkedMapLookup(affectedColsAndRows.colNameToIndex, name, pbID);
+            affectedColsAndRows.colsToDelete.push_back(idx);
         }
 
         // ==== DELETE Overflow ====
         {
-            std::string name = "Overflow::area<" + reservoir.area + ">::hour<"
-                               + std::to_string(hour) + ">";
-            int idx = checked<&Problem::get_col_index>(problem.get(), name, pbID);
-            problem->del_cols(idx, idx);
+            std::string name = "Overflow::area<" + area + ">::hour<" + hourStr + ">";
+            int idx = checkedMapLookup(affectedColsAndRows.colNameToIndex, name, pbID);
+            affectedColsAndRows.colsToDelete.push_back(idx);
         }
 
         // ==== DELETE AreaHydroLevel constraint ====
         {
-            std::string name = "AreaHydroLevel::area<" + reservoir.area + ">::hour<"
-                               + std::to_string(hour) + ">";
-            int idx = checked<&Problem::get_row_index>(problem.get(), name, pbID);
-            problem->del_rows(idx, idx);
+            std::string name = "AreaHydroLevel::area<" + area + ">::hour<" + hourStr + ">";
+            int idx = checkedMapLookup(affectedColsAndRows.rowNameToIndex, name, pbID);
+            affectedColsAndRows.rowsToDelete.push_back(idx);
         }
 
         // ==== RESET HydroProd bounds ====
         {
-            std::string name = "HydProd::area<" + reservoir.area + ">::hour<" + std::to_string(hour)
-                               + ">";
-            int idx = checked<&Problem::get_col_index>(problem.get(), name, pbID);
-
-            problem->chg_bounds({idx},
-                                {'U'},
-                                {reservoir.max_generating[pbID.week - 1]
-                                 / Reservoir::hours_in_week});
+            std::string name = "HydProd::area<" + area + ">::hour<" + hourStr + ">";
+            int idx = checkedMapLookup(affectedColsAndRows.colNameToIndex, name, pbID);
+            affectedColsAndRows.hydroProdCols.push_back(idx);
+            affectedColsAndRows.hydroProdBounds.push_back(maxGen);
         }
     }
 }

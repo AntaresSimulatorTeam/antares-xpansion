@@ -67,12 +67,14 @@ void saveCostsAndDuals(const std::filesystem::path& path,
         return;
     }
 
+    file << std::setprecision(std::numeric_limits<double>::max_digits10);
+
     // Header
     file << "scenario,week,";
-    std::vector<std::string> areaNames;
-    areaNames.reserve(grid.gridElements.size());
-    std::ranges::transform(grid.gridElements, std::back_inserter(areaNames), &GridElement::area);
-    std::ranges::sort(areaNames);
+    std::set<std::string> areaNames;
+    std::ranges::transform(grid.gridElements,
+                           std::inserter(areaNames, areaNames.end()),
+                           &GridElement::area);
 
     write_joined(file,
                  areaNames
@@ -113,9 +115,9 @@ int main(int argc, char** argv)
         bool writePbFiles = optionsParser.WritePbFiles();
         const std::string problemFormat = optionsParser.ProblemFormat();
 
-        auto gridCollection = std::make_shared<GridCollection>(studyPath / "grid.csv");
+        auto gridCollection = std::make_shared<GridCollection>(studyPath / "user/grid.csv");
 
-        const std::filesystem::path penaltiesConfigFilePath(studyPath / "penalties.yaml");
+        const std::filesystem::path penaltiesConfigFilePath(studyPath / "user/penalties.yaml");
 
         // PenaltiesConfigReader will check whether the file exists and return default values if
         // needed
