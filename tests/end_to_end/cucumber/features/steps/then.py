@@ -251,6 +251,7 @@ def simu_success(context):
 
 @then("the expected overall cost is {value:g}")
 def check_overall_cost(context, value):
+    print(f"printing the value {value}")
     np.testing.assert_allclose(value, context.outputs["solution"]["overall_cost"], rtol=1e-6, atol=0)
 
 
@@ -296,20 +297,5 @@ def check_benders_solver(context, string):
     assert solver_in_benders.upper() == string.upper()
 
 
-##for testing benders for investment strategies 
-##Added by Hedi Bouchehda 
-def check_study_result(study_path) : 
-    investment_cost_ref = 20.592373390401711 
-    out_json_path = os.path.join(study_path,"results_benders/out.json")
-    print(f"out.json path : {out_json_path}") 
-    with open(out_json_path,"r") as f : 
-        output_file = json.load(f) 
-        investment_cost = output_file["solution"]["overall_cost"]
-        assert investment_cost == investment_cost_ref
-
-
-@then('I check the value of the overall cost')
-def check_study_result_final(context) : 
-    check_study_result(context.study_path)
 
 

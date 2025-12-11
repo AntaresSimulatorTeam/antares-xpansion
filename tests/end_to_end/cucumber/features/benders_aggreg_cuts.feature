@@ -4,7 +4,8 @@ Feature: AGGREGATION in options.json file set the number cuts to add to the mast
     Scenario: master problem with 14 candidates and 10 subproblems
         Given the study path is "data_test/investment_study"
         When I run benders with 6 proc(s)
-        Then I check the value of the overall cost
+        Then the simulation succeeds
+        AND the expected overall cost is 20.592373390401711 
     
 
 

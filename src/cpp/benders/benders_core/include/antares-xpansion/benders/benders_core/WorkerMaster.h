@@ -78,10 +78,7 @@ private:
                                         const Point& s,
                                         std::vector<double>& matval,
                                         std::vector<int>& mclind) const;
-    void define_matval_mclind_for_index_1(int subproblem_ids,
-                                                  const Point& s,
-                                                  std::vector<double>& matval,
-                                                  std::vector<int>& mclind) const ; 
+
     void _set_upper_bounds() const;
     void _set_alpha_var();
     void _set_nb_units_var_ids();

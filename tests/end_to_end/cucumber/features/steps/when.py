@@ -140,6 +140,7 @@ def run_benders(context, n, option_file: str = "options.json"):
     os.chdir(old_cwd)
 
 
+
 @when('I run antares-xpansion with the {method} method and {n:d} proc(s)')
 @when('I run antares-xpansion in {memory} with the {method} method and {n:d} proc(s)')
 def run_antares_xpansion(context, method, memory=None, n: int = 1):

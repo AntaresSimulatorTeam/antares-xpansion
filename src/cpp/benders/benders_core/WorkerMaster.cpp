@@ -250,29 +250,9 @@ void WorkerMaster::add_cut_by_iter(const int i,
     define_rhs_from_sx0(sx0, rhs, rowrhs);
     std::vector<int> subproblem_ids = {i} ; 
     define_matval_mclind_for_index(subproblem_ids, s, matval, mclind) ; 
-    // define_matval_mclind_for_index_1(i, s, matval, mclind);
 
 
     solver_addrows(*_solver, rowtype, rowrhs, {}, mstart, mclind, matval);
-}
-
-void WorkerMaster::define_matval_mclind_for_index_1(int i,
-                                                  const Point& s,
-                                                  std::vector<double>& matval,
-                                                  std::vector<int>& mclind) const
-{
-        size_t mclindCnt_l(0);
-    for (const auto& kvp: _name_to_id)
-    {
-        if (s.find(kvp.first) != s.end())
-        {
-            mclind[mclindCnt_l] = kvp.second;
-            matval[mclindCnt_l] = s.find(kvp.first)->second;
-            ++mclindCnt_l;
-        }
-    }
-    mclind.back() = _id_single_subpb_costs_under_approx[i];
-    matval.back() = -1;
 }
 
 void WorkerMaster::define_matval_mclind_for_index(std::vector<int> subproblem_ids,
