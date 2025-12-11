@@ -15,6 +15,7 @@
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "antares-xpansion/benders/benders_core/ConstraintReader.h"
+#include "antares-xpansion/benders/benders_core/JuliaCodeHandler.h"
 #include "common.h"
 
 /**
@@ -141,6 +142,7 @@ public:
       const Benders::Criterion::CriterionInputData& criterion_input_data);
 
 protected:
+    JuliaCodeHandler julia_code_handler_ ; 
     bool exception_raised_ = false;
     CurrentIterationData _data;
     WorkerMasterDataVect workerMasterDataVect_;

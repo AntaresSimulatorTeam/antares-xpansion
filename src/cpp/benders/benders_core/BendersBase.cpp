@@ -588,6 +588,7 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                                   const std::string& name,
                                   const std::shared_ptr<SubproblemWorker>& worker)
 {
+    std::cout<<"solving subproblem name "<<name<<std::endl ;
     Timer subproblem_timer;
     worker->fix_to(_data.x_cut);
     worker->solve(subproblem_data.lpstatus,
