@@ -30,6 +30,8 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/CriterionInputDataReader.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/VariablesGroup.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/CouplingMapGenerator.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/ConstraintReader.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/JuliaCodeHandler.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersBase.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersMathLogger.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/BendersProblemFromFile.h
@@ -52,7 +54,9 @@ target_sources(benders_core PRIVATE
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/Worker.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/WorkerMaster.h
         ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/common.h
-)
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/ConstraintReader.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/include/antares-xpansion/benders/benders_core/JuliaCodeHandler.h
+        )
 
 add_library(antaresXpansion::benders_core ALIAS benders_core)
 

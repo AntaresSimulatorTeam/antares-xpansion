@@ -13,6 +13,8 @@
 #include "antares-xpansion/helpers/solver_utils.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
+
+
 BendersBase::BendersBase(BendersBaseOptions options,
                          Logger logger,
                          std::shared_ptr<Output::OutputWriter> writer,
@@ -746,7 +748,7 @@ void BendersBase::read_constraints_csv()
             if (tokens.size() > 1 ) 
                 values.assign(tokens.begin()+1,tokens.end()) ; 
             
-            constraints_map_[key] = values ; 
+            constraints_csv_map_[key] = values ; 
         }
     }
 }
@@ -999,14 +1001,26 @@ void BendersBase::set_solver_log_file(const std::filesystem::path& log_file)
     solver_log_manager_ = SolverLogManager(log_file);
 }
 
-void BendersBase::set_subproblem_constraint_map(const SubProblemConstraintMap& subproblem_constraint_map) 
+void BendersBase::set_subproblem_constraint_map(const SubProblemConstraintMap& subproblem_constraint_map, 
+                                                const CouplingMap& constraint_coupling_map) 
 {
     subproblem_constraint_map_ = subproblem_constraint_map ; 
+    constraint_coupling_map_ = constraint_coupling_map ; 
     std::cout<<"from set_subproblem_constraint_map **** "<<std::endl ; 
     for (auto&& [subproblem, constraints]: subproblem_constraint_map_) 
     {
         std::cout<<"subproblem "<<subproblem<<" constraints "<<constraints<<std::endl ;
         std::cout<<"contraints relative path "<<GetSubProblemConstraintsPath(constraints)<<std::endl  ; 
+    }
+    std::cout<<"***************************"<<std::endl ; 
+    for (auto&& [constraint, variable_map] : constraint_coupling_map_) 
+    {
+        std::cout<<"constraint name "<<constraint<<std::endl ; 
+        for (auto&& [variable,num]: variable_map) 
+        {
+            std::cout<<"variable "<<variable<<" num "<<num<<std::endl;
+        }
+        std::cout<<"\n\n"<<std::endl ; 
     }
 }
 
@@ -1049,9 +1063,30 @@ WorkerMasterPtr BendersBase::get_master() const
     return _master;
 }
 
+//create the ConstraintReader object and add it to constraints_map
+void BendersBase::AddSubproblemConstraints(const std::string& constraint_name) 
+{
+    auto constraint_file_path = std::filesystem::path(_options.INPUTROOT) / constraint_name  ; 
+    std::cout<<"constraint_file_path "<<constraint_file_path<<std::endl ; 
+    constraint_map[constraint_name] = std::make_shared<ConstraintReader>(
+        constraint_file_path ,  
+        _options.SOLVER_NAME , 
+        solver_log_manager_, 
+        _logger, 
+         _options.LOG_LEVEL
+    ) ; 
+}
+
+
 void BendersBase::AddSubproblem(const std::pair<std::string, VariableMap>& kvp)
 {
+
     std::cout<<"printing sub problem path "<<GetSubproblemPath(kvp.first)<<std::endl ; 
+    for (auto& [name,pos] : kvp.second) 
+    {
+        std::cout<<"name "<<name<<" pos "<<pos<<std::endl;
+    }
+    std::cout<<"subproblem name : "<<kvp.first<<std::endl ; 
     std::shared_ptr<IBendersProblemProvider>
       benders_problem_provider = std::make_shared<BendersProblemFromFile>(
         GetSubproblemPath(kvp.first));

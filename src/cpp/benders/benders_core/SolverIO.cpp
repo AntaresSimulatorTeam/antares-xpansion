@@ -25,6 +25,7 @@ void SolverIO::read(SolverAbstract* solver, const std::filesystem::path& path) c
     switch (format_)
     {
     case ProblemsFormat::MPS_FILE:
+        std::cout<<"getting through read from SolverIO"<<std::endl ; 
         solver->read_prob_mps(path);
         break;
     case ProblemsFormat::OPTIMIZED:

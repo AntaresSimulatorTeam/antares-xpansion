@@ -14,6 +14,7 @@
 #include "WorkerMaster.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
+#include "antares-xpansion/benders/benders_core/ConstraintReader.h"
 #include "common.h"
 
 /**
@@ -54,7 +55,7 @@ public:
     // void Clean();
     LogData GetBestIterationData() const;
     void set_input_map(const CouplingMap& coupling_map);
-    void set_subproblem_constraint_map(const SubProblemConstraintMap& subproblem_constraint_map) ; 
+    void set_subproblem_constraint_map(const SubProblemConstraintMap& subproblem_constraint_map,const CouplingMap& constraint_coupling_map) ; 
     int MasterRowIndex(const std::string& row_name) const;
     void MasterChangeRhs(int id_row, double val) const;
     // for test
@@ -143,13 +144,14 @@ protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
     WorkerMasterDataVect workerMasterDataVect_;
-    constraintsPerLine constraints_map_ ; 
+    constraintsPerLine constraints_csv_map_ ; 
     // BendersCuts best_iteration_cuts_;
     // BendersCuts current_iteration_cuts_;
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
     BendersRelevantIterationsData relevantIterationData_ = {WorkerMasterData(), WorkerMasterData()};
     SubProblemConstraintMap subproblem_constraint_map_ ; 
+    CouplingMap constraint_coupling_map_ ;  
     bool init_data_ = true;
     bool init_problems_ = true;
     bool free_problems_ = true;
@@ -203,6 +205,7 @@ protected:
     void free_master();
     void free_subproblems();
     void AddSubproblem(const std::pair<std::string, VariableMap>& kvp);
+    void AddSubproblemConstraints(const std::string& constraint_name) ; 
     [[nodiscard]] virtual WorkerMasterPtr get_master() const;
     void MatchProblemToId();
     void AddSubproblemName(const std::string& name);
@@ -295,6 +298,7 @@ protected:
     void ResetSimplexIterationsBounds();
 
     SubproblemsMapPtr subproblem_map;
+    ConstraintReaderPtrMap constraint_map;
     SolverLogManager solver_log_manager_;
 
     virtual void SolveSubproblem(PlainData::SubProblemData& subproblem_data,
