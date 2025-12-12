@@ -67,6 +67,18 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& st
     {
         lps_.addWeeklyData(problem_id, spg.getWeeklyData(problem_id));
     }
+
+    /**
+     * Antares simulator allocate a lot of memory
+     * Even if there is no memory leak not all freed memory become available.
+     * Allocator or OS may cache some memory to reuse it
+     * With malloc_trim(0) we free all memory that is not used anymore to be reclaimed by the
+     *program It is nescasssry to avoid allocating Xpansion memory on top of the unavailable memory
+     *from simulator
+     **/
+#ifndef _WIN32
+    malloc_trim(0);
+#endif
 }
 
 std::filesystem::path ProblemGeneration::updateProblems()
