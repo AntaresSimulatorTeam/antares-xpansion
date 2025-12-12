@@ -177,7 +177,12 @@ int main(int argc, char** argv)
             logger->display_message("Elapsed time for problem update: "
                                     + formatDuration(elapsed_update_seconds));
 
-            auto res = GridEvaluator(logger, problems, grid, solverName, nbThreads)
+            auto res = GridEvaluator(logger,
+                                     problems,
+                                     grid,
+                                     solverName,
+                                     directories.simulation_dir,
+                                     nbThreads)
                          .ComputeCostsAndDuals();
             std::string fileName = "gridPointsValues_" + std::to_string(grid.gridID) + ".csv";
             saveCostsAndDuals(directories.simulation_dir / fileName, grid, res, logger);

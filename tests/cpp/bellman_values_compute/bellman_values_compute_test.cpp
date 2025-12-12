@@ -80,7 +80,7 @@ protected:
     struct GridEvaluatorMock: public GridEvaluator
     {
         GridEvaluatorMock():
-            GridEvaluator(nullptr, {}, gridDef, "mockSolver", 0)
+            GridEvaluator(nullptr, {}, gridDef, "mockSolver", "", 0)
         {
         }
 
@@ -195,7 +195,12 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
     ProblemGenerationForWaterValueCalculation pbg(config_dirs, logger, solverName);
     auto problems = pbg.updateProblems(grid, reservoir_management);
 
-    auto evaluator = GridEvaluator(logger, problems, grid, solverName, 8);
+    auto evaluator = GridEvaluator(logger,
+                                   problems,
+                                   grid,
+                                   solverName,
+                                   config_dirs.simulation_dir,
+                                   8);
     auto res = BellmanValues(evaluator, reservoir_management, logger).compute(11);
 
     for (unsigned int week = 1; week < res.size(); week++)
@@ -230,7 +235,12 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
     ProblemGenerationForWaterValueCalculation pbg(config_dirs, logger, solverName);
     auto problems = pbg.updateProblems(grid, reservoir_management);
 
-    auto evaluator = GridEvaluator(logger, problems, grid, solverName, 8);
+    auto evaluator = GridEvaluator(logger,
+                                   problems,
+                                   grid,
+                                   solverName,
+                                   config_dirs.simulation_dir,
+                                   8);
     auto res = BellmanValues(evaluator, reservoir_management, logger).compute(11);
 
     for (unsigned int week = 1; week < res.size(); week++)
@@ -266,7 +276,12 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenaltiesWithFinalLevel)
     ProblemGenerationForWaterValueCalculation pbg(config_dirs, logger, solverName);
     auto problems = pbg.updateProblems(grid, reservoir_management);
 
-    auto evaluator = GridEvaluator(logger, problems, grid, solverName, 8);
+    auto evaluator = GridEvaluator(logger,
+                                   problems,
+                                   grid,
+                                   solverName,
+                                   config_dirs.simulation_dir,
+                                   8);
     auto res = BellmanValues(evaluator, reservoir_management, logger).compute(11);
 
     for (unsigned int week = 1; week < res.size(); week++)

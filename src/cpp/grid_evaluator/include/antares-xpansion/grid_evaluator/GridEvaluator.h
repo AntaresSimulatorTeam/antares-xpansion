@@ -29,6 +29,7 @@ public:
                   std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> problems,
                   GridDefinition& grid_definition,
                   std::string solverName,
+                  std::filesystem::path studyDir,
                   int nbThreads = 1);
     virtual std::map<Output::PointWeekScenarioKey, GridPointResult> ComputeCostsAndDuals();
 
@@ -59,6 +60,7 @@ protected:
     int nbThreads; ///< Number of threads to use
 
     SolverLogManager solver_log_manager;
+    std::filesystem::path studyDir; // the path to the study dir, in order to write files there
     Logger logger;
 
     friend class BellmanValues;

@@ -292,7 +292,12 @@ int main(int argc, char** argv)
                                         + formatDuration(elapsed_update_seconds));
 
                 logger->display_message("Instantiating GridEvaluator");
-                auto evaluator = GridEvaluator(logger, problems, grid, solverName, nbThreads);
+                auto evaluator = GridEvaluator(logger,
+                                               problems,
+                                               grid,
+                                               solverName,
+                                               directories.simulation_dir,
+                                               nbThreads);
 
                 logger->display_message("Instantiating BellmanValues");
                 auto bellmanValuesEvaluator = BellmanValues(evaluator, reservoirManagement, logger);

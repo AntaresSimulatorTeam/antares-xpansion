@@ -26,11 +26,13 @@ GridEvaluator::GridEvaluator(
   std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> problems,
   GridDefinition& gridDefinition,
   std::string solverName,
+  std::filesystem::path studyDir,
   int nbThreads):
     logger{std::move(logger)},
     problems(problems),
     gridDefinition(gridDefinition),
     solverName(solverName),
+    studyDir(studyDir),
     nbThreads(nbThreads)
 {
 }
@@ -298,7 +300,17 @@ GridPointResult GridEvaluator::SolveSubproblem(std::shared_ptr<Problem> problem,
     PlainData::SubProblemData subproblem_data;
     GridPointResult gridPointRes;
     Timer subproblem_timer;
-    problem->solve_lp();
+    int status = problem->solve_lp();
+    if (status != 0)
+    {
+        logger->display_message("ERROR: status for this problem was not 0. MPS file saved to disk "
+                                "in output folder for analysis.");
+        std::filesystem::path problemFileName("illformed_problem_year_"
+                                              + std::to_string(problem->mc_year) + "_week_"
+                                              + std::to_string(problem->week) + ".mps");
+        problem->write_prob_mps(studyDir / problemFileName);
+        logger->display_message("File saved at: " + studyDir.string());
+    }
 
     std::vector<double> dualValues(problem->get_ncols());
     problem->get_lp_sol(NULL, dualValues.data(), NULL);
