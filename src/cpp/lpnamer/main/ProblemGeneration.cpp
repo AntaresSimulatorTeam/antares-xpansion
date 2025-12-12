@@ -53,14 +53,6 @@ ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options):
     mode_ = configuration_manager_.Mode();
 }
 
-namespace
-{
-bool islower(std::string_view str)
-{
-    return std::ranges::all_of(str, [](char c) { return std::islower(c); });
-}
-} // namespace
-
 void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& study_dir,
                                                  const std::filesystem::path& output_dir)
 {
