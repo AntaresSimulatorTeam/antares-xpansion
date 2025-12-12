@@ -21,7 +21,8 @@ std::vector<std::string> JuliaCodeHandler::get_constraints(const std::filesystem
 
     while (std::getline(constraints_to_add_file_path,row)) 
     {
-        boost::tokenizer<> tok(row) ; 
+        boost::char_separator<char> sep("\n"); 
+        boost::tokenizer<boost::char_separator<char>> tok(row,sep) ; 
         for (const auto& r : tok) 
         {
             constraints_to_add.push_back(r) ; 

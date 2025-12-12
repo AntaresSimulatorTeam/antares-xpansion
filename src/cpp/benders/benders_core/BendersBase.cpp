@@ -461,7 +461,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
         int num_iteration(0) ; 
 
         bool end_micro_iteration(false) ; 
-        int num_micro_iteration(0) ; 
+        int num_micro_iteration(1) ; 
         int max_micro_iterations(2) ; 
         if (_options.MICRO_ITERATION)
         {
@@ -470,20 +470,32 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
             {
                 
                 GetSubproblemCutFast(subproblem_data_map);
-                num_micro_iteration++; 
-                std::string constraints_to_add_file_name = "micro_iteration_" + std::to_string(num_micro_iteration) + "_contraints.csv" ; 
-                auto constraints_to_add_file_path = std::filesystem::path(_options.INPUTROOT) / constraints_to_add_file_name ;  
-                auto constraints_keys = julia_code_handler_.get_constraints(constraints_to_add_file_path) ; 
-
-                for (auto&& key : constraints_keys) 
+                for (const auto& [sub_name,_] : subproblem_data_map) 
                 {
-                    std::cout<<" constraint key "<<key ; 
+                    std::cout<<"sub_name "<<sub_name<<std::endl ; 
+                    size_t start = sub_name.find('_');
+                    size_t end = sub_name.find('.', start);
+
+                    if (start != std::string::npos && end != std::string::npos && end > start) 
+                    {
+                        std::string num_pb = sub_name.substr(start + 1, end - start - 1); 
+                        std::cout<<"num_pb "<<num_pb<<std::endl ; 
+                        std::string constraints_to_add_file_name = "micro_iteration_" + std::to_string(num_micro_iteration) + "_constraints_sub_" + num_pb +  ".csv" ; 
+                        auto constraints_to_add_file_path = std::filesystem::path(_options.INPUTROOT) / constraints_to_add_file_name ;  
+                        auto constraints_keys = julia_code_handler_.get_constraints(constraints_to_add_file_path) ; 
+                        
+                        num_micro_iteration++; 
+                        for (auto&& key : constraints_keys) 
+                        {
+                            auto constraints_to_add_ids_vec = constraints_csv_map_[key] ; 
+                            std::cout<<"key "<<key<<std::endl ; 
+                            std::cout<<" constraints_to_add_ids_vec size "<<constraints_to_add_ids_vec.size()<<std::endl ;                 
+                        }
+                        std::cout<<"**********"<<std::endl ; 
+                    }
                 }
-                std::cout<<std::endl ; 
+
             }
-            
-
-
             
 
         }
@@ -1043,18 +1055,7 @@ void BendersBase::set_subproblem_constraint_map(const SubProblemConstraintMap& s
     std::cout<<"from set_subproblem_constraint_map **** "<<std::endl ; 
     for (auto&& [subproblem, constraints]: subproblem_constraint_map_) 
     {
-        std::cout<<"subproblem "<<subproblem<<" constraints "<<constraints<<std::endl ;
-        std::cout<<"contraints relative path "<<GetSubProblemConstraintsPath(constraints)<<std::endl  ; 
-    }
-    std::cout<<"***************************"<<std::endl ; 
-    for (auto&& [constraint, variable_map] : constraint_coupling_map_) 
-    {
-        std::cout<<"constraint name "<<constraint<<std::endl ; 
-        for (auto&& [variable,num]: variable_map) 
-        {
-            std::cout<<"variable "<<variable<<" num "<<num<<std::endl;
-        }
-        std::cout<<"\n\n"<<std::endl ; 
+        added_constraints[subproblem] = std::vector<std::string>() ; 
     }
 }
 

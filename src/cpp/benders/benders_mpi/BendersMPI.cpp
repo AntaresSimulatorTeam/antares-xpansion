@@ -30,10 +30,6 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
 
 void BendersMpi::InitializeProblems()
 {
-    std::cout<<"initialize problems *********************"<<std::endl ; 
-    std::string micro_iteration_filename = "constraints_to_add_ex.csv" ; 
-    std::filesystem::path micro_iteration_data =  std::filesystem::path(_options.OUTPUTROOT) / micro_iteration_filename ; 
-    julia_code_handler_.read_csv_micro_iterations(micro_iteration_data) ; 
     MatchProblemToId();
     BuildMasterProblem();
     read_constraints_csv() ; 
