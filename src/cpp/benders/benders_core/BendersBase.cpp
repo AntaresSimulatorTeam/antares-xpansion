@@ -452,11 +452,43 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
 {
     if (Options().CACHE_PROBLEMS)
     {
+        std::cout<<"GetSubproblemCutCache *******"<<std::endl ; 
         GetSubproblemCutCache(subproblem_data_map);
     }
     else
     {
-        GetSubproblemCutFast(subproblem_data_map);
+        std::cout<<"GetSubproblemCutFast *******"<<std::endl ; 
+        int num_iteration(0) ; 
+
+        bool end_micro_iteration(false) ; 
+        int num_micro_iteration(0) ; 
+        int max_micro_iterations(2) ; 
+        if (_options.MICRO_ITERATION)
+        {
+            std::cout<<"we are in the case of micro iteration !!!!!!"<<std::endl ; 
+            while (!end_micro_iteration && num_micro_iteration<=max_micro_iterations ) 
+            {
+                
+                GetSubproblemCutFast(subproblem_data_map);
+                num_micro_iteration++; 
+                std::string constraints_to_add_file_name = "micro_iteration_" + std::to_string(num_micro_iteration) + "_contraints.csv" ; 
+                auto constraints_to_add_file_path = std::filesystem::path(_options.INPUTROOT) / constraints_to_add_file_name ;  
+                auto constraints_keys = julia_code_handler_.get_constraints(constraints_to_add_file_path) ; 
+
+                for (auto&& key : constraints_keys) 
+                {
+                    std::cout<<" constraint key "<<key ; 
+                }
+                std::cout<<std::endl ; 
+            }
+            
+
+
+            
+
+        }
+        else 
+            GetSubproblemCutFast(subproblem_data_map);
     }
 }
 
@@ -468,6 +500,7 @@ void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
     nameAndWorkers.reserve(subproblem_map.size());
     for (const auto& [name, worker]: subproblem_map)
     {
+        std::cout<<"printing name of the worker "<<name<<std::endl ; 
         nameAndWorkers.emplace_back(name, worker);
     }
     std::mutex m;
