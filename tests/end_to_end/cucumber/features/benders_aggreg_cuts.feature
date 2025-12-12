@@ -2,10 +2,10 @@ Feature: AGGREGATION in options.json file set the number cuts to add to the mast
 
     @short @full-launch @xpress
     Scenario: master problem with 14 candidates and 10 subproblems
-        Given the study path is "data_test/investment_study"
-        When I run benders with 6 proc(s)
+        Given the study path is "data_test/test_benders_cut_aggregation"
+        When I run benders with 1 proc(s)
         Then the simulation succeeds
-        AND the expected overall cost is 20.592373390401711 
+        AND the expected overall cost is 20.592373390401711
     
 
 
