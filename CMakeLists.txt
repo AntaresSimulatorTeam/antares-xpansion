@@ -67,6 +67,13 @@ set(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR})
 
 set(CMAKE_CXX_STANDARD 20)
 
+# Vérification minimale de la version de GCC : si le compilateur est GNU et sa version est < 11.0, échouer avec le message demandé
+if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    if (CMAKE_CXX_COMPILER_VERSION VERSION_LESS "11.0")
+        message(FATAL_ERROR "Xpansion requires GCC >= 11, your version is ${CMAKE_CXX_COMPILER_VERSION}. GCC >= 11 is required for compatibility with Intel TBB oneAPI")
+    endif ()
+endif ()
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if (MSVC)
