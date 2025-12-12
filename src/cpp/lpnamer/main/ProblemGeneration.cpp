@@ -30,7 +30,9 @@
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
 #include "config.h"
-
+#ifndef _WIN32
+#include "malloc.h"
+#endif
 static const std::string LP_DIRNAME = "lp";
 
 void CreateDirectories(const std::filesystem::path& output_path)
