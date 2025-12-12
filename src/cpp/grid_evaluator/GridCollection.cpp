@@ -92,7 +92,7 @@ GridCollection::GridCollection(const std::filesystem::path& filePath)
 
         if (!reservoirs.contains(areaName))
         {
-            loadReservoirManagement(filePath.parent_path().parent_path(), areaName);
+            loadReservoirManagement(filePath.parent_path().parent_path().parent_path(), areaName);
         }
     }
     // it is still required to set default reservoirs, which will generate grid values
