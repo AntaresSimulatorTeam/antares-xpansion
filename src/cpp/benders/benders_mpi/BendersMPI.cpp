@@ -65,7 +65,8 @@ void BendersMpi::InitializeProblems()
                 std::cout<<"adding sub problem !!!!"<<std::endl ; 
                 AddSubproblem(problem);
                 AddSubproblemName(problem.first);
-                AddSubproblemConstraints(subproblem_constraint_map_[problem.first]) ; 
+                if (_options.MICRO_ITERATION)
+                    AddSubproblemConstraints(subproblem_constraint_map_[problem.first]) ; 
             }
             current_problem_id++;
         }
@@ -386,6 +387,8 @@ void BendersMpi::free()
  */
 void BendersMpi::Run()
 {
+    if (_options.MICRO_ITERATION)
+        std::cout<<"micro iteration is true !!!!!"<<std::endl ; 
     if (init_data_)
     {
         PreRunInitialization();

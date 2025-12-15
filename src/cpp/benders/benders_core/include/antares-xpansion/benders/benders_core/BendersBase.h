@@ -302,7 +302,7 @@ protected:
     SubproblemsMapPtr subproblem_map;
     ConstraintReaderPtrMap constraint_map;
     SolverLogManager solver_log_manager_;
-    AddedConstraints added_constraints ; 
+    AddedConstraints added_constraints_ ; 
 
     virtual void SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                                  const std::string& name,
