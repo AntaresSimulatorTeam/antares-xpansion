@@ -225,7 +225,7 @@ jobs:
     needs: [ build ]
     steps:
       - name: Download build assets
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: ${{needs.build.outputs.TGZ_NAME}}
       - name: setup
@@ -247,7 +247,7 @@ jobs:
     needs: [ build ]
     steps:
       - name: Download build assets
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
       - name: setup
@@ -269,19 +269,19 @@ jobs:
     if: github.event_name == 'release' && github.event.action == 'created'
     steps:
       - name: Download userguide
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: user-guide
           path: docs/
 
       - name: Download build assets
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: ${{needs.build.outputs.TGZ_NAME}}
           path: _build/
 
       - name: Download build assets single file
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: ${{needs.build.outputs.SINGLE_FILE_NAME}}
           path: .

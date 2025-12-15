@@ -231,7 +231,7 @@ jobs:
     needs: [ build ]
     steps:
       - name: Download build assets
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: ${{needs.build.outputs.zip_name}}
       - name: setup
@@ -257,7 +257,7 @@ jobs:
     needs: [ build ]
     steps:
       - name: Download build assets
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: ${{needs.build.outputs.singlefile_name}}
       - name: setup
@@ -281,13 +281,13 @@ jobs:
     steps:
 
       - name: Download Artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: ${{env.ZIP_NAME}}
           path: .
 
       - name: Download Artifact
-        uses: actions/download-artifact@v6
+        uses: actions/download-artifact@v7
         with:
           name: ${{env.SINGLEFILE_NAME}}
           path: .
