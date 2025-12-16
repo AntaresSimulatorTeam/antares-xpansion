@@ -69,8 +69,7 @@ void SimulationOptions::write_default() const
 void SimulationOptions::read(const std::filesystem::path& file_name)
 {
     const auto options_values = get_value_from_json(file_name);
-    
-    
+
     for (const auto& var_name: options_values.getMemberNames())
     {
 #define BENDERS_OPTIONS_MACRO(var__, type__, default__, deserialization_method__) \

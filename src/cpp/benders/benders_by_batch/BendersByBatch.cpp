@@ -300,7 +300,6 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
     {
         BuildCutFull(subproblem_map);
     }
-
 }
 
 /*!

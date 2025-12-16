@@ -155,7 +155,9 @@ protected:
     std::vector<std::vector<double>> criteria_vector_for_each_iteration_;
     bool is_bilevel_check_all_ = false;
 
-    std::vector<SubProblemNamesInCut>  split_subproblem_data_pairs(std::vector<SubProblemDataMap>& gathered_subproblem_map, int n_cuts); 
+    std::vector<SubProblemNamesInCut> split_subproblem_data_pairs(
+      std::vector<SubProblemDataMap>& gathered_subproblem_map,
+      int n_cuts);
 
     virtual void Run() = 0;
     void update_best_ub();
@@ -314,10 +316,10 @@ protected:
     // to p)
     void SetSubproblemsVariablesIndices();
 
-    void build_all_aggregated_cuts(const std::vector<SubProblemNamesInCut>& subproblem_names, const std::vector<SubProblemDataMap>& gathered_subproblem_map) ; 
+    void build_all_aggregated_cuts(const std::vector<SubProblemNamesInCut>& subproblem_names,
+                                   const std::vector<SubProblemDataMap>& gathered_subproblem_map);
 
-
-    private:
+private:
     void print_master_and_cut(std::ostream& file,
                               int ite,
                               WorkerMasterData& trace,
@@ -331,9 +333,9 @@ protected:
     [[nodiscard]] Output::SolutionData BendersSolution() const;
     [[nodiscard]] std::string status_from_criterion() const;
     void compute_cut_aggregate(const SubProblemDataMap& subproblem_data_map);
-    void compute_cut(const SubProblemDataMap& subproblem_data_map) ;
+    void compute_cut(const SubProblemDataMap& subproblem_data_map);
     [[nodiscard]] std::map<std::string, int> get_master_variable_map(
-    const std::map<std::string, std::map<std::string, int>>& input_map) const;
+      const std::map<std::string, std::map<std::string, int>>& input_map) const;
     [[nodiscard]] virtual bool shouldParallelize() const = 0;
     Output::Iteration iteration(const WorkerMasterData& masterDataPtr_l) const;
     LogData FinalLogData() const;
