@@ -62,6 +62,7 @@ void BendersMpi::InitializeProblems()
             { // Assign  [problemNumber % processCount] to processID
 
                 const auto subProblemFilePath = GetSubproblemPath(problem.first);
+                std::cout<<"subProblemFilePath "<<subProblemFilePath<<std::endl ; 
                 std::cout<<"adding sub problem !!!!"<<std::endl ; 
                 AddSubproblem(problem);
                 AddSubproblemName(problem.first);
@@ -174,6 +175,7 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts()
 {
     int success = 1;
     SubProblemDataMap subproblem_data_map;
+    std::cout<<"from benders mpi "<<subproblem_data_map.size()<<std::endl ; 
     Timer walltime;
     Timer subproblems_timer_per_proc;
     try

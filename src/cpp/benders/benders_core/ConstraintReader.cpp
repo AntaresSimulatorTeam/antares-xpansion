@@ -27,3 +27,59 @@ ConstraintReader::ConstraintReader(const std::filesystem::path constraint_file_p
 
 
 }
+
+
+int ConstraintReader::get_row_index(const std::string& name ) 
+{
+    int row_pos(-1) ; 
+    if (solver_) 
+    {
+        row_pos = solver_->get_row_index(name) ; 
+    }
+    return row_pos ; 
+}
+
+constraintRow ConstraintReader::get_row(const std::string& name) 
+{
+    constraintRow result ; 
+    result.range_p = {} ; 
+    result.row_names = {name} ; 
+    int constraint_pos = get_row_index(name) ; 
+    if (solver_) 
+    {
+        int ncols = solver_->get_ncols() ; 
+        result.mstart.resize(ncols,0) ; 
+        result.mclind.resize(ncols,0) ; 
+        result.dmatval.resize(ncols,0) ; 
+        std::vector<int> nels ; 
+        nels.resize(ncols,0) ; 
+
+        solver_->get_rows(result.mstart.data(), 
+                          result.mclind.data(), 
+                          result.dmatval.data(), 
+                          ncols, 
+                         nels.data(), 
+                         constraint_pos,
+                         constraint_pos) ; 
+
+        result.mstart.resize(2) ;
+        result.mclind.resize(result.mstart[1]) ; 
+        result.dmatval.resize(result.mstart[1]) ;   
+
+        double rhs ; 
+        solver_->get_rhs(&rhs,constraint_pos,constraint_pos) ; 
+        result.rhs = {rhs} ; 
+
+        const int MAX_LEN = 10;          
+        char buffer[MAX_LEN];  
+        solver_->get_row_type(buffer,constraint_pos,constraint_pos) ; 
+        int len = 0;
+        while (len < MAX_LEN && buffer[len] >= 'A' && buffer[len] <= 'Z') {
+            ++len;
+        }
+        std::string qrtype(buffer, len);
+        result.qrtype_p = {qrtype[0]} ; 
+
+    }
+    return result ; 
+}

@@ -15,7 +15,9 @@ std::vector<std::string> JuliaCodeHandler::get_constraints(const std::filesystem
     std::ifstream constraints_to_add_file_path(micro_iteration_data);  
 
     if (!constraints_to_add_file_path.is_open()) 
-        std::cerr<<"file to open : "<<micro_iteration_data<<std::endl ; 
+        std::cerr<<"failed to open : "<<micro_iteration_data<<std::endl ; 
+    else 
+        std::cout<<"successfully opened "<<micro_iteration_data<<std::endl ; 
 
     std::string row ;  
 
