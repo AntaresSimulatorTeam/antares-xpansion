@@ -74,6 +74,9 @@ if (CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
     endif ()
 endif ()
 
+# https://github.com/microsoft/vcpkg/issues/31617
+add_compile_definitions(TBB_USE_ASSERT)
+
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 if (MSVC)
@@ -216,8 +219,7 @@ find_package(TBB COMPONENTS tbb)
 install(FILES
         $<TARGET_FILE:TBB::tbb>
         DESTINATION bin)
-# https://github.com/microsoft/vcpkg/issues/31617
-add_compile_definitions(TBB_USE_ASSERT)
+
 find_package(ZLIB REQUIRED) #Required for CoinUtils
 
 set(GFLAGS_USE_TARGET_NAMESPACE TRUE)
