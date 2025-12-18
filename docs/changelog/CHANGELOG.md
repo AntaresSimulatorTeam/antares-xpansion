@@ -16,7 +16,7 @@ v1.7.1 (12/2025)
 
 * Fix Windows exe path (#1132)
 * Fix a bug in case master only variables are added before coupling variables in master problem (#1136)
-* Explciit error for candidate discrepancy (#1133)
+* Explicit error for candidate discrepancy (#1133)
 
 v1.7.0 (11/2025)
 ------------------------------------------------
