@@ -1,5 +1,5 @@
 #include "antares-xpansion/benders/benders_core/WorkerMaster.h"
-
+#include <boost/tokenizer.hpp>
 #include "antares-xpansion/helpers/solver_utils.h"
 
 /*!
@@ -39,6 +39,23 @@ WorkerMaster::WorkerMaster(const VariableMap& variable_map,
     }
     _set_alpha_var();
     _set_nb_units_var_ids();
+
+    std::ifstream investment_dict_path ("./investment_dictionnary.csv") ; 
+   
+    if (investment_dict_path.is_open()) 
+    {
+        std::string row ; 
+        typedef boost::tokenizer<boost::escaped_list_separator<char>> Tokenizer;
+
+        while (std::getline(investment_dict_path,row)) 
+        {
+            Tokenizer tok(row) ; 
+            std::vector<std::string> tokens(tok.begin(), tok.end());
+            binary_variables_ids_map_[tokens[1]] = tokens[0] ;
+        }
+    }
+
+    std::cout<<"binary_variables_ids_map_ size "<<binary_variables_ids_map_.size()<<std::endl ; 
 }
 
 /*!
@@ -444,3 +461,18 @@ void WorkerMaster::ActivateIntegrityConstraints() const
     std::vector<char> col_types(_id_int_vars.size(), 'I');
     _solver->chg_col_type(_id_int_vars, col_types);
 }
+
+
+void WorkerMaster::write_main_variable_csv(std::filesystem::path& main_variables_csv_path, const Point& x_out) 
+{
+    std::ofstream csv_file(main_variables_csv_path) ; 
+    if (csv_file.is_open()) 
+    {
+        for (const auto& [id,value] : x_out) 
+        {
+            csv_file<<binary_variables_ids_map_[id]<<","<<value<<"\n"; 
+        }
+    }
+    csv_file.close() ; 
+}
+

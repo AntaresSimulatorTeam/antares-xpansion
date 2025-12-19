@@ -67,7 +67,7 @@ void BendersMpi::InitializeProblems()
                 AddSubproblem(problem);
                 AddSubproblemName(problem.first);
                 if (_options.MICRO_ITERATION)
-                    AddSubproblemConstraints(subproblem_constraint_map_[problem.first]) ; 
+                    AddSubproblemConstraints(subproblem_constraint_map_[problem.first],problem.first) ; 
             }
             current_problem_id++;
         }

@@ -77,6 +77,8 @@ private:
     void _set_nb_units_var_ids();
     void restoreFeasibility(std::vector<double>& solution);
 
+    std::map<std::string,std::string> binary_variables_ids_map_ ; 
+
 public:
     // Used only for testing purposes
     void set_id_alpha(double id_alpha)
@@ -89,4 +91,6 @@ public:
     {
         _id_single_subpb_costs_under_approx = id_single_subpb_costs_under_approx;
     }
+    
+    void write_main_variable_csv(std::filesystem::path& main_variables_csv_path, const Point& x_out) ; 
 };

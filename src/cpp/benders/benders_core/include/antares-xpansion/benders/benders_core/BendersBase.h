@@ -207,7 +207,7 @@ protected:
     void free_master();
     void free_subproblems();
     void AddSubproblem(const std::pair<std::string, VariableMap>& kvp);
-    void AddSubproblemConstraints(const std::string& constraint_name) ; 
+    void AddSubproblemConstraints(const std::string& constraint_name, const std::string& sub_name) ; 
     [[nodiscard]] virtual WorkerMasterPtr get_master() const;
     void MatchProblemToId();
     void AddSubproblemName(const std::string& name);

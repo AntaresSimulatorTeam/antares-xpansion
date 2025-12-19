@@ -4,6 +4,8 @@
 
 #include "antares-xpansion/helpers/solver_utils.h"
 
+#include <fstream>
+
 /*!
  *  \brief Constructor of a Worker Slave
  *
@@ -109,3 +111,60 @@ std::vector<double> SubproblemWorker::get_solution() const
     }
     return solution;
 }
+
+
+int SubproblemWorker::get_variable_index(const std::string& variable_name) 
+{
+    int variable_index(-1) ; 
+
+    if (_solver)     
+     variable_index = _solver->get_col_index(variable_name) ; 
+
+    return variable_index; 
+}
+
+
+void SubproblemWorker::write_subproblem_variable_csv(std::filesystem::path variables_values_csv, std::map<std::string,double>& variables_id_value_map) 
+{
+    std::ofstream csv_file(variables_values_csv) ; 
+    if (csv_file.is_open()) 
+    {
+        for (const auto& [id,value] : variables_id_value_map) 
+        {
+            csv_file<<id<<","<<value<<"\n"; 
+        }
+    }
+    csv_file.close() ; 
+}
+
+
+
+void SubproblemWorker::get_variables_values_in_csv(std::filesystem::path variables_values_csv,const std::map<std::string,std::pair<std::string,int>>& variable_indices) 
+{
+    std::map<std::string,double> to_write_in_csv ; 
+    std::vector<double> solution(_solver->get_ncols());
+
+    if (_solver->get_n_integer_vars() > 0)
+    {
+        _solver->get_mip_sol(solution.data());
+    }
+    else
+    {
+        _solver->get_lp_sol(solution.data(), NULL, NULL);
+    }
+
+    for (const auto& [id,variable_pair] : variable_indices) 
+    {
+        to_write_in_csv[id] = solution[variable_pair.second] ; 
+    }
+
+    write_subproblem_variable_csv(variables_values_csv,to_write_in_csv) ; 
+
+    std::cout<<"!!!!!! to_write_in_csv size "<<to_write_in_csv.size()<<std::endl ; 
+
+}
+
+
+
+
+

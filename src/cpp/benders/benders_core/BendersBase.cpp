@@ -380,6 +380,9 @@ void BendersBase::get_master_value()
                                                             Master Problem*/
     _master->get_value(_data.lb); /*Get the optimal value of the Master Problem*/
 
+    std::filesystem::path master_iter_csv_path = "./master_csv/master_iter_" + std::to_string(_data.it) + ".csv" ; 
+    _master->write_main_variable_csv(master_iter_csv_path,_data.x_out) ; 
+
     for (const auto& pairIdName: _master->_id_to_name)
     {
         _master->_solver->get_ub(&_data.max_invest[pairIdName.second],
@@ -458,6 +461,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
     else
     {
         // int num_iteration(0) ; 
+
         bool end_micro_iteration(false) ; 
         int num_micro_iteration(1) ; 
         int max_micro_iterations(2) ; 
@@ -480,7 +484,9 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
                         auto constraints_keys = julia_code_handler_.get_constraints(constraints_to_add_file_path) ; 
                         
                         auto constraint_name =  subproblem_constraint_map_[sub_name] ; 
-                        std::cout<<"sub name "<<sub_name<<" number of iteration "<<num_micro_iteration<<std::endl ; 
+                        
+                        std::filesystem::path variables_file_path = "./subproblem_variable_values/" + constraints_to_add_file_name ; 
+                        constraint_map[constraint_name]->get_variables_values_in_csv(variables_file_path) ; 
                         #if 1
                         for (auto&& key : constraints_keys) 
                         {
@@ -495,7 +501,6 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
                                     auto subproblem_worker = subproblem_map[sub_name] ; 
                                     if (subproblem_worker) 
                                     {
-                                        std::cout<<"adding row to subproblem "<<sub_name<<std::endl  ;
                                         subproblem_worker->AddRows(constraint_row.qrtype_p,constraint_row.rhs,constraint_row.range_p, constraint_row.mstart, constraint_row.mclind,constraint_row.dmatval,constraint_row.row_names) ; 
 
                                     }
@@ -1114,16 +1119,20 @@ WorkerMasterPtr BendersBase::get_master() const
 }
 
 //create the ConstraintReader object and add it to constraints_map
-void BendersBase::AddSubproblemConstraints(const std::string& constraint_name) 
+void BendersBase::AddSubproblemConstraints(const std::string& constraint_name,const std::string& sub_name) 
 {
     auto constraint_file_path = std::filesystem::path(_options.INPUTROOT) / constraint_name  ; 
+    auto varibales_file_path = std::filesystem::path(_options.INPUTROOT) / "variables_dictionnary.csv" ; 
+    
     
     constraint_map[constraint_name] = std::make_shared<ConstraintReader>(
         constraint_file_path ,  
         _options.SOLVER_NAME , 
         solver_log_manager_, 
         _logger, 
-         _options.LOG_LEVEL
+         _options.LOG_LEVEL,
+         varibales_file_path, 
+         subproblem_map[sub_name] 
     ) ; 
 }
 

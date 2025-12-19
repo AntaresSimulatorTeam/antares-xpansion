@@ -32,4 +32,10 @@ public:
     void fix_to(const Point& x0) const;
 
     void get_subgradient(Point& subgradient) const;
+
+    int get_variable_index(const std::string& variable_name) ; 
+
+    void get_variables_values_in_csv(std::filesystem::path variables_values_csv,const std::map<std::string,std::pair<std::string,int>>& variable_indices) ; 
+    
+    void write_subproblem_variable_csv(std::filesystem::path variables_values_csv, std::map<std::string,double>& variables_id_value_map) ; 
 };

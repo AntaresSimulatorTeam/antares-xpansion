@@ -1,15 +1,19 @@
 #include "antares-xpansion/benders/benders_core/ConstraintReader.h"
+#include <boost/tokenizer.hpp>
 
 ConstraintReader::ConstraintReader(const std::filesystem::path constraint_file_path, 
                      const std::string& solver_name, 
                      const SolverLogManager& solver_log_manager, 
                     Logger& logger,
-                    int log_level) : 
+                    int log_level,
+                    const std::filesystem::path variables_names_path,
+                    const std::shared_ptr<SubproblemWorker>& subproblem_worker) : 
     logger_(logger)
 
 {
 
     SolverFactory solver_factory(logger_) ;
+    subproblem_worker_ = subproblem_worker ; 
     solver_ = solver_factory.create_solver(solver_name,SOLVER_TYPE::CONTINUOUS,solver_log_manager) ; 
     if (solver_)
     {
@@ -20,10 +24,26 @@ ConstraintReader::ConstraintReader(const std::filesystem::path constraint_file_p
         benders_problem_provider_->provide_problem(solver_IO_,solver_) ;
         int n_rows = solver_->get_nrows() ; 
         std::cout<<"number of rows in constraint problem "<<n_rows<<std::endl ;  
-
     }
 
+    std::ifstream variables_file(variables_names_path) ; 
+    if (variables_file.is_open()) 
+    {
+        std::string line;
+        typedef boost::tokenizer<boost::escaped_list_separator<char>> Tokenizer;
 
+        while (std::getline(variables_file,line))
+        {
+            Tokenizer tok(line) ; 
+            std::vector<std::string> tokens(tok.begin(), tok.end()) ; 
+            int variable_index = subproblem_worker->get_variable_index(tokens[1]) ; 
+            std::cout<<"variable_index "<<variable_index<<std::endl ; 
+            variables_names_map_[tokens[0]] = std::make_pair(tokens[1],variable_index) ;  
+            
+        }
+    }
+    else 
+        std::cerr<<"variables file is not opened"<<std::endl ; 
 
 
 }
@@ -83,3 +103,13 @@ constraintRow ConstraintReader::get_row(const std::string& name)
     }
     return result ; 
 }
+
+
+void ConstraintReader::get_variables_values_in_csv(std::filesystem::path variables_values_csv)
+{
+    std::cout<<"entered in get_variables_values_in_csv "<<std::endl ;  
+    subproblem_worker_->get_variables_values_in_csv(variables_values_csv,variables_names_map_) ; 
+}
+
+
+
