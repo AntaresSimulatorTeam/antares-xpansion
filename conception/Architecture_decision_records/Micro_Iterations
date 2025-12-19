@@ -1,0 +1,11 @@
+## Problematic 
+
+When modelling the electric grid, we consider the case of N lines and all the N-1 cases, which will lead to subproblems of a big size which can take a lot of time to solve.
+However in Benders decomposition, we need to solve all the considered subproblem at each master iteration. This is a Bottleneck of performance for our benders implementation that leads to a time consuming algorithm 
+
+## Overview 
+
+Here's wher micro-iteration approach can enhance the overall perfomance.
+Indeed, we intially only consider the case of the grid with N lines that will drastically reduce the size of subs optimization problems and therefore the solving time. The N-1 cases can be taken into account through a set of constraints (equalities and inequalities) that we check on the solution of the subproblem.
+If Any of these constraints is violated, we inject them in the corresponding optimization problem, we solve it again and reproduce the same process until we no longer have any violated constraint.
+
