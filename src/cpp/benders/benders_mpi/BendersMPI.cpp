@@ -323,7 +323,7 @@ void BendersMpi::master_build_cuts(std::vector<SubProblemDataMap> gathered_subpr
             _options.AGGREGATION = _data.nsubproblem ; 
         } 
 
-        auto subproblem_per_cut_indices = split_subproblem_data_pairs(gathered_subproblem_map,_options.AGGREGATION) ; 
+        auto subproblem_per_cut_indices = split_subproblem_data_pairs(gathered_subproblem_map,_options.AGGREGATION,_data.nsubproblem) ; 
         build_all_aggregated_cuts(subproblem_per_cut_indices,gathered_subproblem_map) ; 
     }
 

@@ -155,7 +155,7 @@ protected:
     std::vector<std::vector<double>> criteria_vector_for_each_iteration_;
     bool is_bilevel_check_all_ = false;
 
-    std::vector<SubProblemNamesInCut>  split_subproblem_data_pairs(std::vector<SubProblemDataMap>& gathered_subproblem_map, int n_cuts); 
+    std::vector<SubProblemNamesInCut>  split_subproblem_data_pairs(std::vector<SubProblemDataMap>& gathered_subproblem_map, int n_cuts, int n_subs_to_consider); 
 
     virtual void Run() = 0;
     void update_best_ub();

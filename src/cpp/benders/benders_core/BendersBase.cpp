@@ -719,13 +719,13 @@ void BendersBase::compute_cut(const SubProblemDataMap& subproblem_data_map)
 }
 
 
-std::vector<SubProblemNamesInCut>  BendersBase::split_subproblem_data_pairs(std::vector<SubProblemDataMap>& gathered_subproblem_map, int n_cuts)
+std::vector<SubProblemNamesInCut>  BendersBase::split_subproblem_data_pairs(std::vector<SubProblemDataMap>& gathered_subproblem_map, int n_cuts, int n_subs_to_consider)
 {
     std::vector<SubProblemNamesInCut>  result(n_cuts) ; 
 
-    if (_data.nsubproblem == 0 || n_cuts <=0 ) return std::vector<std::vector<std::pair<std::string,int>>>() ; 
+    if (n_subs_to_consider == 0 || n_cuts <=0 ) return std::vector<std::vector<std::pair<std::string,int>>>() ; 
 
-    size_t target_per_cut = (_data.nsubproblem + n_cuts - 1) / n_cuts;
+    size_t target_per_cut = (n_subs_to_consider + n_cuts - 1) / n_cuts;
     
     size_t subpb_count_in_cut = 0 ; 
     size_t current_cut = 0 ; 

@@ -271,8 +271,16 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
                               double* batch_subproblems_costs_contribution_in_gap_per_proc,
                               std::vector<double>& external_loop_criterion_current_batch)
 {
+    std::cout<<"entered in BuildCut "<<std::endl ;
     SubProblemDataMap subproblem_data_map;
     Timer subproblems_timer_per_proc;
+    int batch_sub_problem_size = batch_sub_problems.size() ; 
+    
+    std::cout<<"rank "<<Rank()<<" batch_sub_problem_size "<<batch_sub_problem_size<<std::endl ; 
+    // for (auto batch_sub_problem : batch_sub_problems) 
+    // {
+    //     std::cout<<"sub in batch : "<<batch_sub_problem<<std::endl ; 
+    // }
     GetSubproblemCut(subproblem_data_map,
                      batch_sub_problems,
                      batch_subproblems_costs_contribution_in_gap_per_proc);
@@ -296,10 +304,44 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
             BoundSimplexIterations(subproblem_data.simplex_iter);
         }
     }
-    for (const auto& subproblem_map: gathered_subproblem_map)
+
+    std::cout<<"proc rank "<<Rank()<<" gathered subproblem map "<<gathered_subproblem_map.size()<<std::endl ; 
+    if (Rank() == 0) 
     {
-        BuildCutFull(subproblem_map);
+
+        if (_options.AGGREGATION > batch_sub_problem_size || _options.AGGREGATION <= 0) 
+        {
+            _options.AGGREGATION = batch_sub_problem_size ; 
+        }
+
+        std::cout<<"aggregation "<<_options.AGGREGATION<<" number of subs in batch "<<batch_sub_problem_size<<std::endl ; 
+        #if 0
+        for (const auto& subproblem_map: gathered_subproblem_map)
+        {
+            // std::cout<<"gathered slot "<<std::endl ; 
+            // for (const auto& [name,_] :subproblem_map )
+            // {
+            //     std::cout<<"subproblem name "<<name<<std::endl ;
+            // }
+            BuildCutFull(subproblem_map);
+        }
+        #endif 
+
+        #if 1 
+        std::cout<<"***********************************"<<std::endl ; 
+        auto subproblem_per_cut_indices = split_subproblem_data_pairs(gathered_subproblem_map,_options.AGGREGATION,batch_sub_problem_size) ; 
+        for (int i=0;  i<subproblem_per_cut_indices.size(); i++) 
+        {
+            std::cout<<"cut number "<<i<<std::endl ; 
+            for (auto& sub : subproblem_per_cut_indices[i]) 
+            {
+                std::cout<<"sub name "<<sub.first<<std::endl ; 
+            }
+        }
+        build_all_aggregated_cuts(subproblem_per_cut_indices,gathered_subproblem_map) ; 
+        #endif 
     }
+    
 
 }
 
