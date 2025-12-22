@@ -97,8 +97,8 @@ def run_xpansion_step(context, step, memory_mode, pb_format=None, nproc=1):
 
     if context.return_code != 0:
         print(f"{step} failed:")
-        print(out.decode('utf-8'))
-        print(err.decode('utf-8'))
+        print(out.decode("utf-8", errors="replace"))
+        print(err.decode("utf-8", errors="replace"))
         return False
 
     return True
