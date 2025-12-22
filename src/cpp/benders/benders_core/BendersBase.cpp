@@ -714,39 +714,55 @@ void BendersBase::compute_cut(const SubProblemDataMap& subproblem_data_map)
     }
 }
 
-std::vector<SubProblemNamesInCut> BendersBase::split_subproblem_data_pairs(
-  std::vector<SubProblemDataMap>& gathered_subproblem_map,
-  int n_cuts)
+std::vector<SubProblemNamesInCut>  BendersBase::split_subproblem_data_pairs(std::vector<SubProblemDataMap>& gathered_subproblem_map, int n_cuts)
 {
-    std::vector<SubProblemNamesInCut> result(n_cuts);
-
-    if (_data.nsubproblem == 0 || n_cuts <= 0)
+    struct Entry
     {
-        return std::vector<std::vector<std::pair<std::string, int>>>();
-    }
+        const std::string* name = nullptr;
+        int vecPos = -1;
+    };
+    
+    std::vector<Entry> ordered(_data.nsubproblem ); 
 
-    size_t target_per_cut = (_data.nsubproblem + n_cuts - 1) / n_cuts;
-
-    size_t subpb_count_in_cut = 0;
-    size_t current_cut = 0;
-
-    for (size_t i = 0; i < gathered_subproblem_map.size(); i++)
+    for (int vecPos = 0; vecPos < static_cast<int>(gathered_subproblem_map.size()); ++vecPos)
     {
-        const auto& spMap = gathered_subproblem_map[i];
-        for (const auto& [subproblem_name, _]: spMap)
+        for (const auto& [name, _] : gathered_subproblem_map[vecPos])
         {
-            result[current_cut].emplace_back(subproblem_name, static_cast<int>(i));
-            subpb_count_in_cut++;
-            if (subpb_count_in_cut >= target_per_cut && current_cut + 1 < n_cuts)
-            {
-                subpb_count_in_cut = 0;
-                current_cut++;
-            }
+            auto it = _problem_to_id.find(name);
+            if (it == _problem_to_id.end())
+                continue;
+
+            ordered[it->second] = { &name, vecPos };
         }
     }
 
-    return result;
-}
+    std::vector<SubProblemNamesInCut> cuts;
+    cuts.reserve(n_cuts);
+
+    SubProblemNamesInCut cut;
+    cut.reserve((_data.nsubproblem  + n_cuts - 1) / n_cuts);
+
+    for (const auto& e : ordered)
+    {
+       if (!e.name)
+            continue;
+
+        cut.emplace_back(*e.name, e.vecPos);
+
+        if (cut.size() == static_cast<size_t>((_data.nsubproblem  + n_cuts - 1) / n_cuts))
+        {
+            cuts.emplace_back(std::move(cut));
+            cut.clear();
+            cut.reserve((_data.nsubproblem  + n_cuts - 1) / n_cuts);
+        }
+    }
+    if (!cut.empty())
+        cuts.emplace_back(std::move(cut));
+    return cuts;
+}   
+
+
+
 
 /*!
  *  \brief Add cuts in master problem
