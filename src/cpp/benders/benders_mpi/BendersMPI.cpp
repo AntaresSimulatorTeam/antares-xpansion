@@ -316,9 +316,22 @@ void BendersMpi::master_build_cuts(std::vector<SubProblemDataMap> gathered_subpr
 
     _data.ub = 0;
 
-    for (const auto& subproblem_data_map: gathered_subproblem_map)
+    if (_world.rank() == rank_0)
     {
-        BuildCutFull(subproblem_data_map);
+        if (_data.nsubproblem < _options.AGGREGATION || _options.AGGREGATION <= 0)
+        {
+            std::string logging_str = "AGGREGATION : " + std::to_string(_options.AGGREGATION)
+                                      + " is larger than the number of subproblems : "
+                                      + std::to_string(_data.nsubproblem)
+                                      + "setting AGGREGATION to "
+                                      + std::to_string(_data.nsubproblem);
+            _logger->display_message(logging_str);
+            _options.AGGREGATION = _data.nsubproblem;
+        }
+
+        auto subproblem_per_cut_indices = split_subproblem_data_pairs(gathered_subproblem_map,
+                                                                      _options.AGGREGATION);
+        build_all_aggregated_cuts(subproblem_per_cut_indices, gathered_subproblem_map);
     }
 
     _logger->LogSubproblemsSolvingCumulativeCpuTime(_data.subproblems_cumulative_cputime);
@@ -401,6 +414,7 @@ void BendersMpi::Run()
         _data.stop = false;
     }
     _data.number_of_subproblem_solved = _data.nsubproblem;
+
     while (!_data.stop)
     {
         ++_data.it;

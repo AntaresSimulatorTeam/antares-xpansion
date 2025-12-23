@@ -158,7 +158,7 @@ We give a short description of the data expected in each field :
 
 ## Nodal lp info file
 To access the ```lp``` data of each node, the executable expects to be passed
-the [nodal lp info file](./multiple-problem-generation.md#output--nodal-lp-info-file) that references the location &
+the [nodal lp info file](./multiple-problem-generation.md#output-nodal-lp-info-file) that references the location &
 filenames of the ouput of the ```problem_generation``` step for each node.
 
 ```json
