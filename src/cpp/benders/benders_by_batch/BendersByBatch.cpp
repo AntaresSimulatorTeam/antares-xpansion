@@ -235,8 +235,6 @@ void BendersByBatch::SolveBatches()
                batch_subproblems_costs_contribution_in_gap,
                std::plus<double>(),
                rank_0);
-        std::cout << "Total gap contribution: " << batch_subproblems_costs_contribution_in_gap
-                  << std::endl;
         Reduce(_data.subproblems_cputime,
                cumulative_subproblems_timer_per_iter_,
                std::plus<double>(),
@@ -246,7 +244,6 @@ void BendersByBatch::SolveBatches()
             _data.number_of_subproblem_solved += batch_sub_problems.size();
             _data.cumulative_number_of_subproblem_solved += batch_sub_problems.size();
             remaining_epsilon_ -= batch_subproblems_costs_contribution_in_gap;
-            std::cout << remaining_epsilon_ << std::endl;
             // TODO
             // AddVectors<double>(_data.outer_loop_current_iteration_data.outer_loop_criterion,
             //                    external_loop_criterion_current_batch);
@@ -295,8 +292,6 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
     {
         for (auto&& [sub_problem_name, subproblem_data]: subproblem_map)
         {
-            std::cout << "In gathered " << sub_problem_name << ": "
-                      << subproblem_data.contribution_in_gap << std::endl;
             SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
             BoundSimplexIterations(subproblem_data.simplex_iter);
         }
@@ -313,52 +308,23 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
             _logger->display_message(logging_str);
             _options.AGGREGATION = _data.nsubproblem;
         }
-        for (const auto& subproblem_map: gathered_subproblem_map)
-        {
-            for (auto&& [sub_problem_name, subproblem_data]: subproblem_map)
-            {
-                std::cout << "In gathered " << sub_problem_name << ": "
-                          << subproblem_data.contribution_in_gap << std::endl;
-            }
-        }
 
         auto subproblem_per_cut_indices = split_subproblem_data_pairs(gathered_subproblem_map,
                                                                       _options.AGGREGATION);
         std::vector<double> contribution_in_gap_per_cut(_options.AGGREGATION);
-
-        for (auto& subproblem_map: gathered_subproblem_map)
-        {
-            for (auto&& [sub_problem_name, subproblem_data]: subproblem_map)
-            {
-                std::cout << "In gathered " << sub_problem_name << ": "
-                          << subproblem_data.contribution_in_gap << " "
-                          << subproblem_map[sub_problem_name].contribution_in_gap << std::endl;
-            }
-        }
 
         int cut_id = 0;
         for (const auto& cut: subproblem_per_cut_indices)
         {
             for (auto [subproblem_name, position_in_gathered]: cut)
             {
-                std::cout << subproblem_name << " contribution in gap: "
-                          << gathered_subproblem_map[position_in_gathered][subproblem_name]
-                               .contribution_in_gap
-                          << std::endl;
                 contribution_in_gap_per_cut[cut_id] += gathered_subproblem_map
                                                          [position_in_gathered][subproblem_name]
                                                            .contribution_in_gap;
-                std::cout << subproblem_name << ": " << contribution_in_gap_per_cut[cut_id] << ", ";
             }
-            std::cout << std::endl
-                      << "Before max cut " << cut_id << ": " << contribution_in_gap_per_cut[cut_id];
             contribution_in_gap_per_cut[cut_id] = std::max(0.0,
                                                            contribution_in_gap_per_cut[cut_id]);
-            std::cout << " -> Cut " << cut_id << " contrib: " << contribution_in_gap_per_cut[cut_id]
-                      << ", ";
-            cut_id++;
         }
-        std::cout << std::endl;
         *batch_subproblems_costs_contribution_in_gap_per_proc = std::accumulate(
           contribution_in_gap_per_cut.begin(),
           contribution_in_gap_per_cut.end(),
@@ -410,9 +376,6 @@ void BendersByBatch::GetSubproblemCut(SubProblemDataMap& subproblem_data_map,
             //   += (std::max)(subproblem_data.subproblem_cost - subpb_cost_under_approx, 0.0);
             subproblem_data.contribution_in_gap = subproblem_data.subproblem_cost
                                                   - subpb_cost_under_approx;
-            std::cout << name << " cost: " << subproblem_data.subproblem_cost
-                      << ", under approx: " << subpb_cost_under_approx
-                      << ", gap contrib: " << subproblem_data.contribution_in_gap << std::endl;
             double cut_value_at_x_cut = subproblem_data.subproblem_cost;
             for (const auto& [candidate_name, x_cut_candidate_value]: _data.x_cut)
             {
@@ -428,8 +391,6 @@ void BendersByBatch::GetSubproblemCut(SubProblemDataMap& subproblem_data_map,
             worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
             subproblem_data.subproblem_timer = subproblem_timer.elapsed();
             subproblem_data_map[name] = subproblem_data;
-            std::cout << "In map " << name << ": " << subproblem_data_map[name].contribution_in_gap
-                      << std::endl;
         }
     }
 }

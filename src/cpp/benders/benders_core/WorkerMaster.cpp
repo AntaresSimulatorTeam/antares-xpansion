@@ -328,10 +328,6 @@ void WorkerMaster::addGroupSubproblemCut(std::vector<int> subproblem_ids,
                                          const Point& x_cut,
                                          const double& rhs) const
 {
-    for (auto subnameincut: subproblem_ids) {
-        std::cout << subnameincut << " ";
-    }
-    std::cout << std::endl;
     int nCandidates((int)s.size());
     int ncoeffs(subproblem_ids.size() + nCandidates);
     std::vector<char> rowtype(1, 'L');
