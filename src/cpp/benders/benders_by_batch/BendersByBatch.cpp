@@ -225,16 +225,11 @@ void BendersByBatch::SolveBatches()
         const auto& batch = batch_collection_.GetBatchFromId(current_batch_id_);
         current_batch_id_++;
         const auto& batch_sub_problems = batch.sub_problem_names;
-        double batch_subproblems_costs_contribution_in_gap_per_proc = 0;
-        double batch_subproblems_costs_contribution_in_gap = 0;
+        double batch_contribution_in_gap = 0;
         std::vector<double> external_loop_criterion_current_batch = {};
         BuildCut(batch_sub_problems,
-                 &batch_subproblems_costs_contribution_in_gap_per_proc,
+                 &batch_contribution_in_gap,
                  external_loop_criterion_current_batch);
-        Reduce(batch_subproblems_costs_contribution_in_gap_per_proc,
-               batch_subproblems_costs_contribution_in_gap,
-               std::plus<double>(),
-               rank_0);
         Reduce(_data.subproblems_cputime,
                cumulative_subproblems_timer_per_iter_,
                std::plus<double>(),
@@ -243,7 +238,7 @@ void BendersByBatch::SolveBatches()
         {
             _data.number_of_subproblem_solved += batch_sub_problems.size();
             _data.cumulative_number_of_subproblem_solved += batch_sub_problems.size();
-            remaining_epsilon_ -= batch_subproblems_costs_contribution_in_gap;
+            remaining_epsilon_ -= batch_contribution_in_gap;
             // TODO
             // AddVectors<double>(_data.outer_loop_current_iteration_data.outer_loop_criterion,
             //                    external_loop_criterion_current_batch);
@@ -267,15 +262,13 @@ void BendersByBatch::SolveBatches()
  * and add them to the Master problem
  */
 void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems,
-                              double* batch_subproblems_costs_contribution_in_gap_per_proc,
+                              double* batch_contribution_in_gap,
                               std::vector<double>& external_loop_criterion_current_batch)
 {
-    *batch_subproblems_costs_contribution_in_gap_per_proc = 0;
+    // *batch_contribution_in_gap = 0;
     SubProblemDataMap subproblem_data_map;
     Timer subproblems_timer_per_proc;
-    GetSubproblemCut(subproblem_data_map,
-                     batch_sub_problems,
-                     batch_subproblems_costs_contribution_in_gap_per_proc);
+    GetSubproblemCut(subproblem_data_map, batch_sub_problems, batch_contribution_in_gap);
 
     _data.subproblems_cputime = subproblems_timer_per_proc.elapsed();
     std::vector<SubProblemDataMap> gathered_subproblem_map;
@@ -306,30 +299,32 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
                                       + "setting AGGREGATION to "
                                       + std::to_string(_data.nsubproblem);
             _logger->display_message(logging_str);
-            _options.AGGREGATION = _data.nsubproblem;
+            _options.AGGREGATION = std::max(_data.nsubproblem,
+                                            static_cast<int>(batch_sub_problems.size()));
         }
 
-        auto subproblem_per_cut_indices = split_subproblem_data_pairs(gathered_subproblem_map,
-                                                                      _options.AGGREGATION);
-        std::vector<double> contribution_in_gap_per_cut(_options.AGGREGATION);
+        auto subproblems_per_cut = split_subproblem_data_pairs(gathered_subproblem_map,
+                                                               _options.AGGREGATION);
 
-        int cut_id = 0;
-        for (const auto& cut: subproblem_per_cut_indices)
+        *batch_contribution_in_gap = 0.0;
+        for (const auto& names_and_positions_in_gathered: subproblems_per_cut)
         {
-            for (auto [subproblem_name, position_in_gathered]: cut)
-            {
-                contribution_in_gap_per_cut[cut_id] += gathered_subproblem_map
-                                                         [position_in_gathered][subproblem_name]
-                                                           .contribution_in_gap;
-            }
-            contribution_in_gap_per_cut[cut_id] = std::max(0.0,
-                                                           contribution_in_gap_per_cut[cut_id]);
+            // Performs max(0, sum_{s sub_pb in cut}(phi_s(x) - theta_s))
+            // where phi_s(x) - theta_s has already been computed within each proc and is equal to
+            // contribution_in_gap
+            double sum = std::accumulate(
+              names_and_positions_in_gathered.begin(),
+              names_and_positions_in_gathered.end(),
+              0.0,
+              [&](double acc, const auto& name_and_position)
+              {
+                  const auto& subproblem_name = name_and_position.first;
+                  size_t pos = name_and_position.second;
+                  return acc + gathered_subproblem_map[pos].at(subproblem_name).contribution_in_gap;
+              });
+            *batch_contribution_in_gap += std::max(0.0, sum);
         }
-        *batch_subproblems_costs_contribution_in_gap_per_proc = std::accumulate(
-          contribution_in_gap_per_cut.begin(),
-          contribution_in_gap_per_cut.end(),
-          0.0);
-        build_all_aggregated_cuts(subproblem_per_cut_indices, gathered_subproblem_map);
+        build_all_aggregated_cuts(subproblems_per_cut, gathered_subproblem_map);
     }
 }
 
