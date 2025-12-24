@@ -265,10 +265,9 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
                               double* batch_contribution_in_gap,
                               std::vector<double>& external_loop_criterion_current_batch)
 {
-    // *batch_contribution_in_gap = 0;
     SubProblemDataMap subproblem_data_map;
     Timer subproblems_timer_per_proc;
-    GetSubproblemCut(subproblem_data_map, batch_sub_problems, batch_contribution_in_gap);
+    GetSubproblemCut(subproblem_data_map, batch_sub_problems);
 
     _data.subproblems_cputime = subproblems_timer_per_proc.elapsed();
     std::vector<SubProblemDataMap> gathered_subproblem_map;
@@ -337,10 +336,8 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
  *  \param subproblem_data_map : map storing for each subproblem its cut
  */
 void BendersByBatch::GetSubproblemCut(SubProblemDataMap& subproblem_data_map,
-                                      const std::vector<std::string>& batch_sub_problems,
-                                      double* batch_subproblems_costs_contribution_in_gap_per_proc)
+                                      const std::vector<std::string>& batch_sub_problems)
 {
-    // *batch_subproblems_costs_contribution_in_gap_per_proc = 0;
     const auto& sub_pblm_map = GetSubProblemMap();
 
     for (const auto& [name, worker]: sub_pblm_map)

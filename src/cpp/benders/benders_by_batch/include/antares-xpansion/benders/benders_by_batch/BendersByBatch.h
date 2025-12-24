@@ -30,8 +30,7 @@ protected:
 
 private:
     void GetSubproblemCut(SubProblemDataMap& subproblem_cut_package,
-                          const std::vector<std::string>& batch_sub_problems,
-                          double* batch_subproblems_costs_contribution_in_gap_per_proc);
+                          const std::vector<std::string>& batch_sub_problems);
     BatchCollection batch_collection_;
     void MasterLoop();
     void SolveBatches();

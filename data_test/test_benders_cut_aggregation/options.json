@@ -1,6 +1,6 @@
 {
     "MAX_ITERATIONS": -1,
-    "ABSOLUTE_GAP": 1e-03,
+    "ABSOLUTE_GAP": 1e-06,
     "RELATIVE_GAP": 1e-06,
     "RELAXED_GAP": 0.001,
     "AGGREGATION": 3,

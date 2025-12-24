@@ -27,7 +27,7 @@ Feature: AGGREGATION in options.json file sets the number cuts to add to the mas
     @medium @full-launch
 	Scenario: Benders MPI with multiple procs
 		Given the study path is "data_test/test_benders_cut_aggregation"
-		When I run benders with 2 proc(s)
+		When I run benders with 5 proc(s)
 		Then the simulation succeeds
 		And the expected overall cost is 20.592373390401711
 		And the expected investment cost is 0.29
