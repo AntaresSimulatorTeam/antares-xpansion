@@ -3,7 +3,7 @@
     "ABSOLUTE_GAP": 1e-06,
     "RELATIVE_GAP": 1e-06,
     "RELAXED_GAP": 0.001,
-    "AGGREGATION": 3,
+    "AGGREGATION": 2,
     "OUTPUTROOT": ".",
     "TRACE": true,
     "SLAVE_WEIGHT": "CONSTANT",

@@ -303,6 +303,8 @@ void BendersMpi::master_build_cuts(std::vector<SubProblemDataMap> gathered_subpr
 
     if (_world.rank() == rank_0)
     {
+        // TODO: In Benders MPI the subproblem split can be done once as it is the same at each
+        // iteration
         auto subproblem_per_cut_indices = split_subproblem_data_pairs(gathered_subproblem_map,
                                                                       _data.nsubproblem);
         build_all_aggregated_cuts(subproblem_per_cut_indices, gathered_subproblem_map);

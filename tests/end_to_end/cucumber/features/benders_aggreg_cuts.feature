@@ -51,7 +51,7 @@ Feature: AGGREGATION in options.json file sets the number cuts to add to the mas
     @medium @full-launch
 	Scenario: Benders by batch single proc
 		Given the study path is "data_test/test_benders_cut_aggregation"
-        And the batch size is 2
+        And the batch size is 5
 		When I run benders with 1 proc(s)
 		Then the simulation succeeds
 		And the expected overall cost is 20.592373390401711
