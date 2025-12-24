@@ -172,6 +172,7 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts()
     SubProblemDataMap subproblem_data_map;
     Timer walltime;
     Timer subproblems_timer_per_proc;
+    _logger->display_message("\tSolving subproblems...");
     try
     {
         subproblem_data_map = get_subproblem_cut_package();
@@ -296,17 +297,7 @@ SubProblemDataMap BendersMpi::get_subproblem_cut_package()
 void BendersMpi::master_build_cuts(std::vector<SubProblemDataMap> gathered_subproblem_map)
 {
     SetSubproblemCost(0);
-
-    for (const auto& subproblem_data_map: gathered_subproblem_map)
-    {
-        for (auto&& [sub_problem_name, subproblem_data]: subproblem_data_map)
-        {
-            SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
-            BoundSimplexIterations(subproblem_data.simplex_iter);
-        }
-    }
-
-    _logger->display_message("\tSolving subproblems...");
+    SetSubproblemDataCostAndSimplexIter(gathered_subproblem_map);
 
     _data.ub = 0;
 
@@ -330,6 +321,19 @@ void BendersMpi::master_build_cuts(std::vector<SubProblemDataMap> gathered_subpr
 
     _logger->LogSubproblemsSolvingCumulativeCpuTime(_data.subproblems_cumulative_cputime);
     _logger->LogSubproblemsSolvingWalltime(_data.subproblems_walltime);
+}
+
+void BendersMpi::SetSubproblemDataCostAndSimplexIter(
+  std::vector<SubProblemDataMap>& gathered_subproblem_map)
+{
+    for (const auto& subproblem_data_map: gathered_subproblem_map)
+    {
+        for (auto&& [sub_problem_name, subproblem_data]: subproblem_data_map)
+        {
+            SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
+            BoundSimplexIterations(subproblem_data.simplex_iter);
+        }
+    }
 }
 
 /*!

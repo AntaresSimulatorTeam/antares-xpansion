@@ -280,14 +280,7 @@ void BendersByBatch::BuildCut(const std::vector<std::string>& batch_sub_problems
     //   external_loop_criterion_current_batch =
     //       ComputeSubproblemsContributionToOuterLoopCriterion(subproblem_data_map);
     // }
-    for (const auto& subproblem_map: gathered_subproblem_map)
-    {
-        for (auto&& [sub_problem_name, subproblem_data]: subproblem_map)
-        {
-            SetSubproblemCost(GetSubproblemCost() + subproblem_data.subproblem_cost);
-            BoundSimplexIterations(subproblem_data.simplex_iter);
-        }
-    }
+    SetSubproblemDataCostAndSimplexIter(gathered_subproblem_map);
     if (_world.rank() == rank_0)
     {
         if (_data.nsubproblem < _options.AGGREGATION || _options.AGGREGATION <= 0)
@@ -364,8 +357,6 @@ void BendersByBatch::GetSubproblemCut(SubProblemDataMap& subproblem_data_map,
             worker->get_subgradient(subproblem_data.var_name_and_subgradient); // dual pi_s
             auto subpb_cost_under_approx = GetAlpha_i()[ProblemToId(name)];
             // Tbb includes min max define of windows std::numeric_limits<int>::max();
-            // *batch_subproblems_costs_contribution_in_gap_per_proc
-            //   += (std::max)(subproblem_data.subproblem_cost - subpb_cost_under_approx, 0.0);
             subproblem_data.contribution_in_gap = subproblem_data.subproblem_cost
                                                   - subpb_cost_under_approx;
             double cut_value_at_x_cut = subproblem_data.subproblem_cost;
