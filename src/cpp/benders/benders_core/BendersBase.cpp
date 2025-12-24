@@ -754,7 +754,8 @@ int BendersBase::SetAggregation(int max_aggregation) const
     if (max_aggregation < _options.AGGREGATION || _options.AGGREGATION <= 0)
     {
         std::string logging_str = "AGGREGATION : " + std::to_string(_options.AGGREGATION)
-                                  + " is larger than the number of subproblems solved at this iteration : "
+                                  + " is larger than the number of subproblems solved at this "
+                                    "iteration : "
                                   + std::to_string(max_aggregation) + "setting AGGREGATION to "
                                   + std::to_string(max_aggregation);
         _logger->display_message(logging_str);
