@@ -62,12 +62,9 @@ using ActiveCutStorage = std::vector<ActiveCut>;
 using mps_coupling = std::pair<std::string, std::string>;
 using mps_coupling_list = std::list<mps_coupling>;
 
-<<<<<<< HEAD
 using constraintsPerLine = std::map<std::string,std::vector<std::string>> ; 
 using AddedConstraints = std::map<std::string,std::vector<std::string>> ; 
-=======
 using SubProblemNamesInCut = std::vector<std::pair<std::string, int>>;
->>>>>>> origin/develop
 
 struct Predicate
 {
