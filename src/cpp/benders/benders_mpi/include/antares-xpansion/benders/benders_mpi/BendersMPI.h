@@ -41,9 +41,9 @@ protected:
     void Run() override;
     void InitializeProblems() override;
     void BroadcastXCut();
-    void master_build_cuts(std::vector<SubProblemDataMap> gathered_subproblem_map);
+    void master_build_cuts(const std::vector<SubProblemDataMap>& gathered_subproblem_map);
     void SetSubproblemDataCostAndSimplexIter(
-      std::vector<SubProblemDataMap>& gathered_subproblem_map);
+      const std::vector<SubProblemDataMap>& gathered_subproblem_map);
 
     mpi::communicator& _world;
 

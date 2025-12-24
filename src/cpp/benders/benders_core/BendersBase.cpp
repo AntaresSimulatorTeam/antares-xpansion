@@ -715,8 +715,8 @@ void BendersBase::compute_cut(const SubProblemDataMap& subproblem_data_map)
 }
 
 std::vector<SubProblemNamesInCut> BendersBase::split_subproblem_data_pairs(
-  std::vector<SubProblemDataMap>& gathered_subproblem_map,
-  int max_aggregation)
+  const std::vector<SubProblemDataMap>& gathered_subproblem_map,
+  int max_aggregation) const
 {
     int n_cuts = SetAggregation(max_aggregation);
     std::vector<SubProblemNamesInCut> result(n_cuts);

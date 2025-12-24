@@ -294,7 +294,7 @@ SubProblemDataMap BendersMpi::get_subproblem_cut_package()
     return subproblem_data_map;
 }
 
-void BendersMpi::master_build_cuts(std::vector<SubProblemDataMap> gathered_subproblem_map)
+void BendersMpi::master_build_cuts(const std::vector<SubProblemDataMap>& gathered_subproblem_map)
 {
     SetSubproblemCost(0);
     SetSubproblemDataCostAndSimplexIter(gathered_subproblem_map);
@@ -315,7 +315,7 @@ void BendersMpi::master_build_cuts(std::vector<SubProblemDataMap> gathered_subpr
 }
 
 void BendersMpi::SetSubproblemDataCostAndSimplexIter(
-  std::vector<SubProblemDataMap>& gathered_subproblem_map)
+  const std::vector<SubProblemDataMap>& gathered_subproblem_map)
 {
     for (const auto& subproblem_data_map: gathered_subproblem_map)
     {

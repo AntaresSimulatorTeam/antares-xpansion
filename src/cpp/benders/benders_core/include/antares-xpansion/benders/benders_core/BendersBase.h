@@ -156,8 +156,8 @@ protected:
     bool is_bilevel_check_all_ = false;
 
     std::vector<SubProblemNamesInCut> split_subproblem_data_pairs(
-      std::vector<SubProblemDataMap>& gathered_subproblem_map,
-      int n_cuts);
+      const std::vector<SubProblemDataMap>& gathered_subproblem_map,
+      int n_cuts) const;
 
     virtual void Run() = 0;
     void update_best_ub();

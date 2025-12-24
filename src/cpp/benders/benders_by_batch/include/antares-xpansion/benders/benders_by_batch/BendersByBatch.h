@@ -32,8 +32,8 @@ private:
     void GetSubproblemCut(SubProblemDataMap& subproblem_cut_package,
                           const std::vector<std::string>& batch_sub_problems);
     double ComputeBatchContributionInGap(
-      std::vector<SubProblemDataMap>& gathered_subproblem_map,
-      std::vector<SubProblemNamesInCut>& subproblems_per_cut) const;
+      const std::vector<SubProblemDataMap>& gathered_subproblem_map,
+      const std::vector<SubProblemNamesInCut>& subproblems_per_cut) const;
     BatchCollection batch_collection_;
     void MasterLoop();
     void SolveBatches();
