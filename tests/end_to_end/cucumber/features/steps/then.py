@@ -246,11 +246,13 @@ def check_simu_time(context, seconds):
 
 @then("the simulation succeeds")
 def simu_success(context):
+    print(context.return_code)
     assert context.return_code == 0
 
 
 @then("the expected overall cost is {value:g}")
 def check_overall_cost(context, value):
+    print(context.outputs["solution"]["overall_cost"])
     np.testing.assert_allclose(value, context.outputs["solution"]["overall_cost"], rtol=1e-6, atol=0)
 
 
