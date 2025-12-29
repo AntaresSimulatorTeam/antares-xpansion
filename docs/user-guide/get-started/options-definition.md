@@ -18,7 +18,7 @@ This design allows for a clear separation between the solver logic and its confi
 |TRACE | `true` | Checking if trace should be build or not  |
 |SLAVE_WEIGHT | `CONSTANT` | Weights for subproblem   |
 |SLAVE_WEIGHT_VALUE | `1` | If SLAVE_WEIGHT is CONSTANT, set here the divisor required  |
-|MASTER | `master` | Name of the master problem file, if different from 'master'  |
+|MASTER_NAME | `master` | Name of the master problem file, if different from 'master'  |
 |STRUCTURE_FILE | `structure.txt` | Number of slaves to use to solve the problem    |
 |INPUTROOT | `.` | Path to the folder where input files are stored  |
 |CSV_NAME | `benders_output_trace` | Name of the csv output file |
@@ -34,4 +34,15 @@ This design allows for a clear separation between the solver logic and its confi
 |LAST_MASTER_MPS | `master_last_iteration` | Name of the master MPS file of the last iteration |
 |LAST_MASTER_BASIS | `master_last_basis` | Name of the file to write the basis of the master at the last iteration|
 |DO_OUTER_LOOP | `false` |  Whether to perform outer loop  |
+|OUTPUTROOT | `.` |  Path to the folder where output files should be printed  |
+|OUTER_LOOP_OPTION_FILE | `adequacy_criterion.yml` |  Outer Loop Options file  |
+|AREA_FILE | `area.txt` |  area file |
+|CACHE_PROBLEMS | `false` |  cache problems |
+|PROBLEMS_FORMAT | `MPS_FILE` |  Format of the problems |
+|MASTER_SOLUTION_TOLERANCE | `1e-4` |  Format of the problems |
+|CUT_COEFFICIENT_TOLERANCE | `5e-3` |  Cut coefficient tolerance |
+|KEEP_FULL | `false` |  Flag to store full problems after presolve |
+|FULL_DIR | `full` |  Full problems directory name|
+|RESUME | `false` |  Resume last benders |
+
 
