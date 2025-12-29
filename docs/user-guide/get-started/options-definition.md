@@ -25,8 +25,8 @@ This design allows for a clear separation between the solver logic and its confi
 |BOUND_ALPHA | `true` | True if alpha needs to be bounded by best upper bound, false otherwise |
 |SEPARATION_PARAM | `0.5` | In-out separation parameter |
 |BATCH_SIZE | `0` | Size of batch in benders by batch algorithm|
-|JSON_FILE | `.` | Json file in output/expansion/ |
-|LAST_ITERATION_JSON_FILE | `.` | Last iteration json file in output/expansion/|
+|JSON_FILE | `.` | Path of the JSON output file (absolute or relative to `INPUTROOT`) |
+|LAST_ITERATION_JSON_FILE | `.` | Path of the last iteration JSON file (absolute or relative to `INPUTROOT`)|
 |MASTER_FORMULATION | `integer` | Formulation of the master problem |
 |SOLVER_NAME | `COIN` | Name of solver to use |
 |TIME_LIMIT | `1e12` | Simulation time limit |
