@@ -1,7 +1,7 @@
-# Settings for launching benders exec 
+# Settings for launching Benders exec 
 
 
-It is possible to launch the Benders solver directly as a standalone application. The solver is provided as an executable named benders, which can be invoked from the command line without requiring any additional wrapper or interface.
+It is possible to launch the Benders solver directly as a standalone application. The solver is provided as an executable named Benders, which can be invoked from the command line without requiring any additional wrapper or interface.
 
 The execution of the solver is configured through an input file named `options.json`, which must be supplied at runtime. This JSON configuration file defines all the parameters required to control the behavior of the solver. It typically includes the solver’s operational settings, algorithmic options, and problem-specific configurations. By adjusting the attributes in this file, users can fine-tune aspects such as decomposition settings, convergence criteria, logging behavior, performance-related options, and input/output paths.
 
@@ -9,7 +9,7 @@ This design allows for a clear separation between the solver logic and its confi
 
 | Name | Default value | Description |
 | -----| -------------| -------------|
-|MAX_ITERATIONS | `-1` | The maximum number of benders iteration |
+|MAX_ITERATIONS | `-1` | The maximum number of Benders iteration |
 |RELATIVE_GAP | `1e-6` | Tolerance on relative gap  |
 |ABSOLUTE_GAP | `1` | Tolerance on absolute gap  |
 |RELAXED_GAP | `1e-5` | Level of precision with master relaxation   |
@@ -24,7 +24,7 @@ This design allows for a clear separation between the solver logic and its confi
 |CSV_NAME | `benders_output_trace` | Name of the csv output file |
 |BOUND_ALPHA | `true` | True if alpha needs to be bounded by best upper bound, false otherwise |
 |SEPARATION_PARAM | `0.5` | In-out separation parameter |
-|BATCH_SIZE | `0` | Size of batch in benders by batch algorithm|
+|BATCH_SIZE | `0` | Size of batch in Benders by batch algorithm|
 |JSON_FILE | `.` | Path of the JSON output file (absolute or relative to `INPUTROOT`) |
 |LAST_ITERATION_JSON_FILE | `.` | Path of the last iteration JSON file (absolute or relative to `INPUTROOT`)|
 |MASTER_FORMULATION | `integer` | Formulation of the master problem |
@@ -36,13 +36,13 @@ This design allows for a clear separation between the solver logic and its confi
 |DO_OUTER_LOOP | `false` |  Whether to perform outer loop  |
 |OUTPUTROOT | `.` |  Path to the folder where output files should be printed  |
 |OUTER_LOOP_OPTION_FILE | `adequacy_criterion.yml` |  Outer Loop Options file  |
-|AREA_FILE | `area.txt` |  area file |
-|CACHE_PROBLEMS | `false` |  cache problems |
+|AREA_FILE | `area.txt` |  Area file used to get areas on which external criteria (LOLD, PositiveUnsuppliedEnergy) are computed |
+|CACHE_PROBLEMS | `false` |  Whether to use subproblems in disk cache rather than loading all problems in memory (allows to reduce RAM usage at the expense of a slight CPU time performance reduction)  |
 |PROBLEMS_FORMAT | `MPS_FILE` |  Format of the problems |
-|MASTER_SOLUTION_TOLERANCE | `1e-4` |  Format of the problems |
-|CUT_COEFFICIENT_TOLERANCE | `5e-3` |  Cut coefficient tolerance |
+|MASTER_SOLUTION_TOLERANCE | `1e-4` |  Tolerance for rounding the solution variables of the master problem (to avoid subproblems infeasibilities) |
+|CUT_COEFFICIENT_TOLERANCE | `5e-3` |  Cofficient under which cuts coefficients and right-hand sides are considered to be zero |
 |KEEP_FULL | `false` |  Flag to store full problems after presolve |
 |FULL_DIR | `full` |  Full problems directory name|
-|RESUME | `false` |  Resume last benders |
+|RESUME | `false` |  Resume last Benders |
 
 
