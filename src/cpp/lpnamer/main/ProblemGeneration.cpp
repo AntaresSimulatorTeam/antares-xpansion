@@ -65,9 +65,14 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& st
     spg.writeNTCTimeSeries(output_dir);
     spg.writeStudyDescriptionFiles(output_dir);
 
+    // TODO move this loop to Antares_Simulator,
+    // then expose something like getProblems(lps_);
     for (const auto& problem_id: spg.getProblemIds())
     {
-        lps_.addWeeklyData(problem_id, spg.getWeeklyData(problem_id));
+        // By convention, year indices start at 1 for indexing
+        // Input week index already starts at 1 in `problem_id`, so no need to change it
+        Antares::Solver::WeeklyProblemId fixed{problem_id.year + 1, problem_id.week};
+        lps_.addWeeklyData(fixed, spg.getWeeklyData(problem_id));
     }
 
     /**
