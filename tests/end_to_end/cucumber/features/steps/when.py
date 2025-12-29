@@ -140,6 +140,7 @@ def run_benders(context, n, option_file: str = "options.json"):
     os.chdir(old_cwd)
 
 
+
 @when('I run antares-xpansion with the {method} method and {n:d} proc(s)')
 @when('I run antares-xpansion in {memory} with the {method} method and {n:d} proc(s)')
 def run_antares_xpansion(context, method, memory=None, n: int = 1):
@@ -209,6 +210,8 @@ def run_trajectory_mode(context):
         '--step', 'full',
         '--memory'
     ]
+
+
 
     # Only add --input-file if it's not the default name to test the automatic discovery
     if user_input_file.name != 'input-trajectory.yaml':

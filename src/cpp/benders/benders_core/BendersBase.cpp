@@ -362,6 +362,7 @@ void BendersBase::check_status(const SubProblemDataMap& subproblem_data_map) con
 void BendersBase::get_master_value()
 {
     Timer timer_master;
+
     _data.single_subpb_costs_under_approx.resize(_data.nsubproblem);
     if (_options.BOUND_ALPHA)
     {
@@ -371,6 +372,7 @@ void BendersBase::get_master_value()
                    _options.OUTPUTROOT,
                    _options.LAST_MASTER_MPS + MPS_SUFFIX,
                    _writer);
+
     _master->get(_data.x_out,
                  _data.overall_subpb_cost_under_approx,
                  _data.single_subpb_costs_under_approx); /*Get the optimal variables of the
@@ -467,6 +469,7 @@ void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
     {
         nameAndWorkers.emplace_back(name, worker);
     }
+
     std::mutex m;
     selectPolicy(
       [this, &nameAndWorkers, &m, &subproblem_data_map](auto& policy)
@@ -616,31 +619,6 @@ void BendersBase::SetSubproblemsVariablesIndices()
     }
 }
 
-/*!
- *  \brief Add cut to Master Problem and store the cut in a set
- *
- *  Method to add cut from a subproblem to the Master Problem and store this
- * cut in a map linking each subproblem to its set of cuts.
- *
- *  \param all_package : vector storing all cuts information for each
- * subproblem problem
- *
- */
-void BendersBase::compute_cut(const SubProblemDataMap& subproblem_data_map)
-{
-    // current_outer_loop_criterion_ = 0.0;
-    for (const auto& [subproblem_name, subproblem_data]: subproblem_data_map)
-    {
-        _data.ub += subproblem_data.subproblem_cost;
-
-        _master->addSubproblemCut(_problem_to_id[subproblem_name],
-                                  subproblem_data.var_name_and_subgradient,
-                                  _data.x_cut,
-                                  subproblem_data.subproblem_cost);
-        relevantIterationData_.last._cut_trace[subproblem_name] = subproblem_data;
-    }
-}
-
 void compute_cut_val(const Point& var_name_subgradient, const Point& x_cut, Point& s)
 {
     for (const auto& [cand_name, cand_value]: x_cut)
@@ -666,7 +644,6 @@ void BendersBase::compute_cut_aggregate(const SubProblemDataMap& subproblem_data
 {
     Point s;
     double rhs(0);
-    _data.ub = 0;
     for (const auto& [name, subproblem_data]: subproblem_data_map)
     {
         _data.ub += subproblem_data.subproblem_cost;
@@ -677,6 +654,98 @@ void BendersBase::compute_cut_aggregate(const SubProblemDataMap& subproblem_data
         relevantIterationData_.last._cut_trace[name] = subproblem_data;
     }
     _master->add_cut(s, _data.x_cut, rhs);
+}
+
+void BendersBase::build_all_aggregated_cuts(
+  const std::vector<SubProblemNamesInCut>& subproblem_names,
+  const std::vector<SubProblemDataMap>& gathered_subproblem_map)
+{
+    std::vector<int> subproblem_ids_per_cut;
+    for (const auto& subproblem_names_in_cut: subproblem_names)
+    {
+        Point s;
+        double rhs{0};
+        std::vector<int> subproblem_ids_per_cut;
+
+        for (const auto& [sub_problem_name, position_in_gathered]: subproblem_names_in_cut)
+        {
+            subproblem_ids_per_cut.push_back(_problem_to_id[sub_problem_name]);
+
+            auto subproblem_data_pair = gathered_subproblem_map[position_in_gathered].find(
+              sub_problem_name);
+
+            if (subproblem_data_pair != gathered_subproblem_map[position_in_gathered].end())
+            {
+                auto& subproblem_data = subproblem_data_pair->second;
+                _data.ub += subproblem_data.subproblem_cost;
+                rhs += subproblem_data.subproblem_cost;
+                compute_cut_val(subproblem_data.var_name_and_subgradient, _data.x_cut, s);
+                relevantIterationData_.last._cut_trace[sub_problem_name] = subproblem_data;
+            }
+        }
+
+        _master->addGroupSubproblemCut(subproblem_ids_per_cut, s, _data.x_cut, rhs);
+    }
+}
+
+/*!
+ *  \brief Add cut to Master Problem and store the cut in a set
+ *
+ *  Method to add cut from a subproblem to the Master Problem and store this
+ * cut in a map linking each subproblem to its set of cuts.
+ *
+ *  \param all_package : vector storing all cuts information for each
+ * subproblem problem
+ *
+ */
+void BendersBase::compute_cut(const SubProblemDataMap& subproblem_data_map)
+{
+    // current_outer_loop_criterion_ = 0.0;
+    for (const auto& [subproblem_name, subproblem_data]: subproblem_data_map)
+    {
+        _data.ub += subproblem_data.subproblem_cost;
+
+        _master->addSubproblemCut(_problem_to_id[subproblem_name],
+                                  subproblem_data.var_name_and_subgradient,
+                                  _data.x_cut,
+                                  subproblem_data.subproblem_cost);
+
+        relevantIterationData_.last._cut_trace[subproblem_name] = subproblem_data;
+    }
+}
+
+std::vector<SubProblemNamesInCut> BendersBase::split_subproblem_data_pairs(
+  std::vector<SubProblemDataMap>& gathered_subproblem_map,
+  int n_cuts)
+{
+    std::vector<SubProblemNamesInCut> result(n_cuts);
+
+    if (_data.nsubproblem == 0 || n_cuts <= 0)
+    {
+        return std::vector<std::vector<std::pair<std::string, int>>>();
+    }
+
+    size_t target_per_cut = (_data.nsubproblem + n_cuts - 1) / n_cuts;
+
+    size_t subpb_count_in_cut = 0;
+    size_t current_cut = 0;
+
+    for (size_t i = 0; i < gathered_subproblem_map.size(); i++)
+    {
+        const auto& spMap = gathered_subproblem_map[i];
+        for (const auto& [subproblem_name, _]: spMap)
+        {
+            result[current_cut].emplace_back(subproblem_name, static_cast<int>(i));
+            subpb_count_in_cut++;
+            if (subpb_count_in_cut >= target_per_cut && current_cut + 1 < n_cuts)
+            {
+                subpb_count_in_cut = 0;
+                current_cut++;
+            }
+        }
+    }
+
+    return result;
 }
 
 /*!
