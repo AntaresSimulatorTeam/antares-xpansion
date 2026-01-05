@@ -240,7 +240,7 @@ var NAVTREEINDEX0 =
 "classBendersBaseDouble.html#adc0585a9c777648790b12941f417f4a0":[33,0,58,0],
 "classBendersBaseTest.html":[33,0,60],
 "classBendersByBatch.html":[33,0,61],
-"classBendersByBatch.html#a3a055a28f871d97cba325ece39c9c41c":[33,0,61,0],
+"classBendersByBatch.html#a4fa18d6f639840ef8be340c5cbafb7f3":[33,0,61,0],
 "classBendersByBatch.html#ab115c01019bc161456706e7d5778ff42":[33,0,61,1],
 "classBendersByBatch.html#abc79d5e65838ad7a27b352ecfeb0dfa0":[33,0,61,2],
 "classBendersFactory.html":[33,0,62],
