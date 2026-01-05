@@ -195,7 +195,7 @@ void BendersBase::update_best_ub()
         _data.x_in = _data.x_cut;
         _data.best_ub = _data.ub;
         _data.best_it = _data.it;
-        relevantIterationData_.best = FillWorkerMasterData();
+        FillWorkerMasterData(relevantIterationData_.best);
         _data.criteria_current_iteration_data.max_criterion_best_it
           = _data.criteria_current_iteration_data.max_criterion;
         _data.criteria_current_iteration_data.max_criterion_area_best_it
@@ -249,23 +249,21 @@ bool BendersBase::ShouldBendersStop()
            && !_data.is_in_initial_relaxation;
 }
 
-WorkerMasterData BendersBase::FillWorkerMasterData() const
+void BendersBase::FillWorkerMasterData(WorkerMasterData& data) const
 {
-    WorkerMasterData worker_master_data;
-    worker_master_data._lb = _data.lb;
-    worker_master_data._ub = _data.ub;
-    worker_master_data._best_ub = _data.best_ub;
-    worker_master_data._x_in = std::make_shared<Point>(_data.x_in);
-    worker_master_data._x_out = std::make_shared<Point>(_data.x_out);
-    worker_master_data._x_cut = std::make_shared<Point>(_data.x_cut);
-    worker_master_data._max_invest = std::make_shared<Point>(_data.max_invest);
-    worker_master_data._min_invest = std::make_shared<Point>(_data.min_invest);
-    worker_master_data._master_duration = _data.timer_master;
-    worker_master_data._subproblem_duration = _data.subproblems_walltime;
-    worker_master_data._invest_cost = _data.invest_cost;
-    worker_master_data._operational_cost = _data.subproblem_cost;
-    worker_master_data._valid = true;
-    return worker_master_data;
+    data._lb = _data.lb;
+    data._ub = _data.ub;
+    data._best_ub = _data.best_ub;
+    data._x_in = std::make_shared<Point>(_data.x_in);
+    data._x_out = std::make_shared<Point>(_data.x_out);
+    data._x_cut = std::make_shared<Point>(_data.x_cut);
+    data._max_invest = std::make_shared<Point>(_data.max_invest);
+    data._min_invest = std::make_shared<Point>(_data.min_invest);
+    data._master_duration = _data.timer_master;
+    data._subproblem_duration = _data.subproblems_walltime;
+    data._invest_cost = _data.invest_cost;
+    data._operational_cost = _data.subproblem_cost;
+    data._valid = true;
 }
 
 /*!
@@ -275,7 +273,7 @@ WorkerMasterData BendersBase::FillWorkerMasterData() const
  */
 void BendersBase::UpdateTrace()
 {
-    relevantIterationData_.last = FillWorkerMasterData();
+    FillWorkerMasterData(relevantIterationData_.last);
     // TODO Outer loop --> de-comment for general case
     // workerMasterDataVect_.push_back(relevantIterationData_.last);
 }
