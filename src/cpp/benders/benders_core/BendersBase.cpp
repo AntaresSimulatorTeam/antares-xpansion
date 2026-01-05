@@ -266,7 +266,8 @@ WorkerMasterData BendersBase::FillWorkerMasterData() const
     worker_master_data._operational_cost = _data.subproblem_cost;
     worker_master_data._valid = true;
     worker_master_data._cut_trace = relevantIterationData_.last._cut_trace;
-    // TODO: Avoid copies of relevantIterationData_.last to worker_master_data, which is put again in relevantIterationData_.last in the call of UpdateTrace()
+    // TODO: Avoid copies of relevantIterationData_.last to worker_master_data, which is put again
+    // in relevantIterationData_.last in the call of UpdateTrace()
     return worker_master_data;
 }
 
