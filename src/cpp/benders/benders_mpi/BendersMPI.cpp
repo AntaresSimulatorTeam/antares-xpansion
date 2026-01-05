@@ -172,6 +172,7 @@ void BendersMpi::step_2_solve_subproblems_and_build_cuts()
     SubProblemDataMap subproblem_data_map;
     Timer walltime;
     Timer subproblems_timer_per_proc;
+    _logger->display_message("\tSolving subproblems...");
     try
     {
         subproblem_data_map = get_subproblem_cut_package();
@@ -293,10 +294,29 @@ SubProblemDataMap BendersMpi::get_subproblem_cut_package()
     return subproblem_data_map;
 }
 
-void BendersMpi::master_build_cuts(std::vector<SubProblemDataMap> gathered_subproblem_map)
+void BendersMpi::master_build_cuts(const std::vector<SubProblemDataMap>& gathered_subproblem_map)
 {
     SetSubproblemCost(0);
+    SetSubproblemDataCostAndSimplexIter(gathered_subproblem_map);
 
+    _data.ub = 0;
+
+    if (_world.rank() == rank_0)
+    {
+        // TODO: In Benders MPI the subproblem split can be done once as it is the same at each
+        // iteration
+        auto subproblem_per_cut_indices = split_subproblem_data_pairs(gathered_subproblem_map,
+                                                                      _data.nsubproblem);
+        build_all_aggregated_cuts(subproblem_per_cut_indices, gathered_subproblem_map);
+    }
+
+    _logger->LogSubproblemsSolvingCumulativeCpuTime(_data.subproblems_cumulative_cputime);
+    _logger->LogSubproblemsSolvingWalltime(_data.subproblems_walltime);
+}
+
+void BendersMpi::SetSubproblemDataCostAndSimplexIter(
+  const std::vector<SubProblemDataMap>& gathered_subproblem_map)
+{
     for (const auto& subproblem_data_map: gathered_subproblem_map)
     {
         for (auto&& [sub_problem_name, subproblem_data]: subproblem_data_map)
@@ -305,31 +325,6 @@ void BendersMpi::master_build_cuts(std::vector<SubProblemDataMap> gathered_subpr
             BoundSimplexIterations(subproblem_data.simplex_iter);
         }
     }
-
-    _logger->display_message("\tSolving subproblems...");
-
-    _data.ub = 0;
-
-    if (_world.rank() == rank_0)
-    {
-        if (_data.nsubproblem < _options.AGGREGATION || _options.AGGREGATION <= 0)
-        {
-            std::string logging_str = "AGGREGATION : " + std::to_string(_options.AGGREGATION)
-                                      + " is larger than the number of subproblems : "
-                                      + std::to_string(_data.nsubproblem)
-                                      + "setting AGGREGATION to "
-                                      + std::to_string(_data.nsubproblem);
-            _logger->display_message(logging_str);
-            _options.AGGREGATION = _data.nsubproblem;
-        }
-
-        auto subproblem_per_cut_indices = split_subproblem_data_pairs(gathered_subproblem_map,
-                                                                      _options.AGGREGATION);
-        build_all_aggregated_cuts(subproblem_per_cut_indices, gathered_subproblem_map);
-    }
-
-    _logger->LogSubproblemsSolvingCumulativeCpuTime(_data.subproblems_cumulative_cputime);
-    _logger->LogSubproblemsSolvingWalltime(_data.subproblems_walltime);
 }
 
 /*!
