@@ -97,8 +97,8 @@ def run_xpansion_step(context, step, memory_mode, pb_format=None, nproc=1):
 
     if context.return_code != 0:
         print(f"{step} failed:")
-        print(out.decode('utf-8'))
-        print(err.decode('utf-8'))
+        print(out.decode("utf-8", errors="replace"))
+        print(err.decode("utf-8", errors="replace"))
         return False
 
     return True
@@ -138,6 +138,7 @@ def run_outer_loop(context, n, option_file: str = "options.json"):
 def run_benders(context, n, option_file: str = "options.json"):
     old_cwd, _ = process_command(context, n, option_file, build_benders_command)
     os.chdir(old_cwd)
+
 
 
 @when('I run antares-xpansion with the {method} method and {n:d} proc(s)')
@@ -209,6 +210,8 @@ def run_trajectory_mode(context):
         '--step', 'full',
         '--memory'
     ]
+
+
 
     # Only add --input-file if it's not the default name to test the automatic discovery
     if user_input_file.name != 'input-trajectory.yaml':

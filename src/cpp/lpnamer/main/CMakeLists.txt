@@ -30,7 +30,7 @@ target_link_libraries(problem_generation_main
         Boost::boost Boost::program_options
         antaresXpansion::helpers
         antaresXpansion::xpansion_interfaces
-        Antares::solver_api
+        Antares::single_problem_api
         PUBLIC
         ${PROJECT_NAME}::lp_namer_helper
         ${PROJECT_NAME}::lp_namer_input_reader
