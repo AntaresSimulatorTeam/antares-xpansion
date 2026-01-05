@@ -8,7 +8,7 @@ CMAKE_MINIMUM_REQUIRED(VERSION 3.10)
 # Project configuration
 # ===========================================================================
 
-PROJECT(antaresXpansion VERSION 1.7.1 LANGUAGES CXX C)
+PROJECT(antaresXpansion VERSION 1.8.0 LANGUAGES CXX C)
 set(ANTARES_XPANSION_RC 0)
 
 # ===========================================================================
@@ -288,58 +288,58 @@ get_filename_component(ANTARES_SOLVER_DIR ${ANTARES_SOLVER_PATH} DIRECTORY)
 get_filename_component(ANTARES_SOLVER_APP ${ANTARES_SOLVER_PATH} NAME)
 
 # Copy antares-solver to build directory
-if(EXISTS ${ANTARES_SOLVER_PATH})
+if (EXISTS ${ANTARES_SOLVER_PATH})
     file(COPY ${ANTARES_SOLVER_PATH}
-         DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
-         USE_SOURCE_PERMISSIONS)
-else()
+            DESTINATION ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
+            USE_SOURCE_PERMISSIONS)
+else ()
     message(WARNING "ANTARES_SOLVER_PATH does not exist: ${ANTARES_SOLVER_PATH}")
-endif()
+endif ()
 
 # Create target for copying shared libraries
 add_custom_target(copy_shared_libs ALL
-    COMMAND ${CMAKE_COMMAND} -E make_directory ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
-    COMMENT "Copying shared libraries to build directory..."
+        COMMAND ${CMAKE_COMMAND} -E make_directory ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
+        COMMENT "Copying shared libraries to build directory..."
 )
 
-if(WIN32)
+if (WIN32)
     file(GLOB WIN_DLLS "${ANTARES_SOLVER_DIR}/*.dll")
-    if(WIN_DLLS)
-        foreach(dll_file ${WIN_DLLS})
+    if (WIN_DLLS)
+        foreach (dll_file ${WIN_DLLS})
             add_custom_command(TARGET copy_shared_libs POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                    COMMAND ${CMAKE_COMMAND} -E copy_if_different
                     ${dll_file}
                     ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
             )
-        endforeach()
-    endif()
-else()
+        endforeach ()
+    endif ()
+else ()
     file(GLOB SO_FILES
-        "${ANTARES_SOLVER_DIR}/*.so*"
-        "${ANTARES_SOLVER_DIR}/../lib/*.so*"
-        "${ANTARES_SOLVER_DIR}/../bin/*.so*"
+            "${ANTARES_SOLVER_DIR}/*.so*"
+            "${ANTARES_SOLVER_DIR}/../lib/*.so*"
+            "${ANTARES_SOLVER_DIR}/../bin/*.so*"
     )
-    if(SO_FILES)
-        foreach(so_file ${SO_FILES})
+    if (SO_FILES)
+        foreach (so_file ${SO_FILES})
             add_custom_command(TARGET copy_shared_libs POST_BUILD
-                COMMAND ${CMAKE_COMMAND} -E copy_if_different
+                    COMMAND ${CMAKE_COMMAND} -E copy_if_different
                     ${so_file}
                     ${CURRENT_RUNTIME_OUTPUT_DIRECTORY}
             )
-        endforeach()
-    endif()
-endif()
+        endforeach ()
+    endif ()
+endif ()
 
 # Install shared libraries
 file(GLOB_RECURSE ANTARES_SOLVER_SO_LIBS "${ANTARES_SOLVER_DIR}/*.so*")
-if(ANTARES_SOLVER_SO_LIBS)
+if (ANTARES_SOLVER_SO_LIBS)
     install(FILES ${ANTARES_SOLVER_SO_LIBS} DESTINATION bin)
-endif()
+endif ()
 
 file(GLOB_RECURSE ANTARES_SOLVER_DLL_LIBS "${ANTARES_SOLVER_DIR}/*.dll")
-if(ANTARES_SOLVER_DLL_LIBS)
+if (ANTARES_SOLVER_DLL_LIBS)
     install(FILES ${ANTARES_SOLVER_DLL_LIBS} DESTINATION bin)
-endif()
+endif ()
 
 add_subdirectory("${PROJECT_SOURCE_DIR}/src")
 
