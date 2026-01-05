@@ -49,7 +49,8 @@ public:
     }
 
 private:
-    void performAntaresSimulation(const std::filesystem::path&) override
+    void performAntaresSimulation(const std::filesystem::path&,
+                                  const std::filesystem::path&) override
     {
     }
 

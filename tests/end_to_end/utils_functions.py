@@ -83,7 +83,11 @@ def find_in_simulator_log(output_dir, regex) -> bool:
     for path in Path(output_dir).iterdir():
         if path.suffix == ".zip":
             with zipfile.ZipFile(path, "r") as archive:
-                for line in archive.read(Path("simulation.log").as_posix()).decode('utf-8').splitlines():
+                for line in (
+                    archive.read(Path("simulation.log").as_posix())
+                    .decode("utf-8", errors="replace")
+                    .splitlines()
+                ):
                     if re.search(reg, line):
                         return True
     return False

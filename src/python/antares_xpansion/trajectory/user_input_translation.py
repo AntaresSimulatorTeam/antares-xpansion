@@ -78,7 +78,7 @@ class Tree(BaseModel):
     children: List["Tree"] = Field([], alias=InKeys.children_key())
 
     def print(self, prefix=""):
-        print(prefix + f"├─{self.probability_from_parent}─{self.node_name}")
+        print(prefix + f"|--{self.probability_from_parent}-{self.node_name}")
         prefix_length = 4 + len(self.node_name) // 2
         for child in self.children:
             child.print(prefix + "|" + prefix_length * " ")
