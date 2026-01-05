@@ -19,8 +19,8 @@ BENDERS_OPTIONS_MACRO(SEPARATION_PARAM, double, 0.5, asDouble())
 // Formulation of the master problem
 BENDERS_OPTIONS_MACRO(MASTER_FORMULATION, std::string, "integer", asString())
 
-// True if cuts need to be aggregated, false otherwise
-BENDERS_OPTIONS_MACRO(AGGREGATION, bool, false, asBool())
+// Integer between 0 and +inf
+BENDERS_OPTIONS_MACRO(AGGREGATION, int, 0, asInt())
 
 // Path to the folder where output files should be printed
 BENDERS_OPTIONS_MACRO(OUTPUTROOT, std::string, ".", asString())

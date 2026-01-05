@@ -13,6 +13,10 @@ ConfigurationManager::ConfigurationManager(ProblemGenerationOptions& options):
 
 auto ConfigurationManager::Directories() const -> ConfigDirectories
 {
+    if (directories_)
+    {
+        return *directories_;
+    }
     Mode();
     std::filesystem::path xpansion_output_dir;
     std::filesystem::path simulation_dir_;
@@ -49,10 +53,11 @@ auto ConfigurationManager::Directories() const -> ConfigDirectories
     {
         xpansion_output_dir = simulation_dir_;
     }
-    return {.xpansion_output_dir = xpansion_output_dir,
-            .study_dir = study_dir,
-            .simulation_dir = simulation_dir_,
-            .archive_path = archive_path};
+    directories_ = ConfigDirectories{.xpansion_output_dir = xpansion_output_dir,
+                                     .study_dir = study_dir,
+                                     .simulation_dir = simulation_dir_,
+                                     .archive_path = archive_path};
+    return *directories_;
 }
 
 auto ConfigurationManager::Mode() const -> SimulationInputMode
@@ -113,5 +118,17 @@ std::string getCurrentTimestamp()
 std::filesystem::path ConfigurationManager::generateOutputName(
   const std::filesystem::path& study) const
 {
-    return study / "output" / getCurrentTimestamp();
+    auto name = study / "output" / getCurrentTimestamp();
+    if (std::filesystem::exists(name))
+    {
+        int counter = 1;
+        std::filesystem::path new_name;
+        do
+        {
+            new_name = name.concat("_" + std::to_string(counter));
+            counter++;
+        } while (std::filesystem::exists(new_name));
+        return new_name;
+    }
+    return name;
 }

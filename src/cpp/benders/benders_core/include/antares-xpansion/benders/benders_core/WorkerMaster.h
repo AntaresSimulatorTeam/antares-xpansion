@@ -36,8 +36,14 @@ public:
     void add_dynamic_cut(const Point& s, const double& sx0, const double& rhs) const;
     void addSubproblemCut(int i,
                           const Point& subgradient,
-                          const Point& x0,
+                          const Point& x_cut,
                           const double& rhs) const;
+
+    void addGroupSubproblemCut(std::vector<int> subproblem_ids,
+                               const Point& subgradient,
+                               const Point& x_cut,
+                               const double& rhs) const;
+
     void fix_alpha(const double& bestUB) const;
 
     virtual void DeactivateIntegrityConstraints() const;
@@ -68,10 +74,11 @@ private:
                              const double& rhs,
                              std::vector<double>& rowrhs) const;
 
-    void define_matval_mclind_for_index(int i,
+    void define_matval_mclind_for_index(std::vector<int> subproblem_ids,
                                         const Point& s,
                                         std::vector<double>& matval,
                                         std::vector<int>& mclind) const;
+
     void _set_upper_bounds() const;
     void _set_alpha_var();
     void _set_nb_units_var_ids();

@@ -3,14 +3,14 @@ import json
 from enum import Enum
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Set, Union, Tuple
-from typing_extensions import Literal
 
 import yaml
-from pydantic import BaseModel, Field, NonNegativeFloat, NonNegativeInt, PositiveInt
-from pydantic import parse_obj_as
-
+from antares_xpansion.candidates_reader import CandidatesReader, IniFileNotFound
 from antares_xpansion.trajectory.user_input_keys import TrajectoryInputKeys as InKeys
 from antares_xpansion.trajectory.user_input_keys import TrajectoryOuputKeys as OutKeys
+from pydantic import BaseModel, Field, NonNegativeFloat, NonNegativeInt, PositiveInt
+from pydantic import parse_obj_as
+from typing_extensions import Literal
 
 
 # Enums
@@ -78,7 +78,7 @@ class Tree(BaseModel):
     children: List["Tree"] = Field([], alias=InKeys.children_key())
 
     def print(self, prefix=""):
-        print(prefix + f"├─{self.probability_from_parent}─{self.node_name}")
+        print(prefix + f"|--{self.probability_from_parent}-{self.node_name}")
         prefix_length = 4 + len(self.node_name) // 2
         for child in self.children:
             child.print(prefix + "|" + prefix_length * " ")
@@ -97,12 +97,12 @@ class TrajectoryConstraint(BaseModel):
 
     @staticmethod
     def build_variable_reference(
-        node: str, candidate: str, variable_type: InvestmentVariableTypeEnum
+            node: str, candidate: str, variable_type: InvestmentVariableTypeEnum
     ):
         return f"{node}::{candidate}::{variable_type.value}"
 
     def to_individual_max_investment(
-        self, candidate_appear_in_nodes: Dict[str, Set[str]]
+            self, candidate_appear_in_nodes: Dict[str, Set[str]]
     ) -> List[Dict[str, Any]]:
         assert self.cons_type == ConstraintTypeEnum.MAX_INDIVIDUAL_INVESTMENT
         output: List[Dict[str, Any]] = []
@@ -125,7 +125,7 @@ class TrajectoryConstraint(BaseModel):
         return output
 
     def to_individual_max_retirement(
-        self, candidate_appear_in_nodes: Dict[str, Set[str]]
+            self, candidate_appear_in_nodes: Dict[str, Set[str]]
     ) -> List[Dict[str, Any]]:
         assert self.cons_type == ConstraintTypeEnum.MAX_INDIVIDUAL_RETIREMENT
         output: List[Dict[str, Any]] = []
@@ -148,7 +148,7 @@ class TrajectoryConstraint(BaseModel):
         return output
 
     def to_cumulative_max_investment(
-        self, candidate_appear_in_nodes: Dict[str, Set[str]]
+            self, candidate_appear_in_nodes: Dict[str, Set[str]]
     ) -> List[Dict[str, Any]]:
         assert self.cons_type == ConstraintTypeEnum.MAX_CUMULATIVE_INVESTMENT
         output: List[Dict[str, Any]] = []
@@ -171,7 +171,7 @@ class TrajectoryConstraint(BaseModel):
         return output
 
     def to_cumulative_max_retirement(
-        self, candidate_appear_in_nodes: Dict[str, Set[str]]
+            self, candidate_appear_in_nodes: Dict[str, Set[str]]
     ) -> List[Dict[str, Any]]:
         assert self.cons_type == ConstraintTypeEnum.MAX_CUMULATIVE_RETIREMENT
         output: List[Dict[str, Any]] = []
@@ -194,7 +194,7 @@ class TrajectoryConstraint(BaseModel):
         return output
 
     def to_individual_min_investment(
-        self, candidate_appear_in_nodes: Dict[str, Set[str]]
+            self, candidate_appear_in_nodes: Dict[str, Set[str]]
     ) -> List[Dict[str, Any]]:
         assert self.cons_type == ConstraintTypeEnum.MIN_INDIVIDUAL_INVESTMENT
         output: List[Dict[str, Any]] = []
@@ -216,7 +216,7 @@ class TrajectoryConstraint(BaseModel):
         return output
 
     def to_individual_min_retirement(
-        self, candidate_appear_in_nodes: Dict[str, Set[str]]
+            self, candidate_appear_in_nodes: Dict[str, Set[str]]
     ) -> List[Dict[str, Any]]:
         assert self.cons_type == ConstraintTypeEnum.MIN_INDIVIDUAL_RETIREMENT
         output: List[Dict[str, Any]] = []
@@ -238,7 +238,7 @@ class TrajectoryConstraint(BaseModel):
         return output
 
     def to_merger_json(
-        self, candidate_appear_in_nodes: Dict[str, Set[str]]
+            self, candidate_appear_in_nodes: Dict[str, Set[str]]
     ) -> List[Dict[str, Any]]:
         """
         Converts an constraint in input format to a list of mathematical formulations for the C++ merger
@@ -280,26 +280,26 @@ class NodeData(BaseModel):
 
     def compute_investment_discounting(self, global_data: GlobalData):
         return (1 + global_data.discount_rate) ** (
-            global_data.first_investment_date - self.investment_date
+                global_data.first_investment_date - self.investment_date
         )
 
     def compute_retirement_discounting(self, global_data: GlobalData):
         return (1 + global_data.discount_rate) ** (
-            global_data.first_investment_date - self.investment_date
+                global_data.first_investment_date - self.investment_date
         )
 
     def compute_operational_discounting(self, global_data: GlobalData):
         factor = 0.0
         for year in range(self.investment_date, self.investment_date + self.duration):
             factor += (1 + global_data.discount_rate) ** (
-                global_data.first_investment_date - year
+                    global_data.first_investment_date - year
             )
         return factor
 
     def to_merger_json(
-        self,
-        global_data: GlobalData,
-        candidates_types: Dict[str, CandidateType],
+            self,
+            global_data: GlobalData,
+            candidates_types: Dict[str, CandidateType],
     ):
         output: Dict[str, Any] = {}
         output[OutKeys.parent_key()] = self.parent
@@ -312,13 +312,13 @@ class NodeData(BaseModel):
             costs_data = candidates_types[type_name]
             candidate_costs: Dict[str, float] = {}
             candidate_costs[OutKeys.investment_cost_key()] = (
-                weight_ic * costs_data.investment_cost * self.full_probability
+                    weight_ic * costs_data.investment_cost * self.full_probability
             )
             candidate_costs[OutKeys.retirement_cost_key()] = (
-                weight_rc * costs_data.retirement_cost * self.full_probability
+                    weight_rc * costs_data.retirement_cost * self.full_probability
             )
             candidate_costs[OutKeys.oandm_cost_key()] = (
-                weight_omc * costs_data.oam_cost * self.full_probability
+                    weight_omc * costs_data.oam_cost * self.full_probability
             )
             candidates_costs[candidate] = candidate_costs
         output[OutKeys.candidate_costs()] = candidates_costs
@@ -452,7 +452,52 @@ class UserInputTranslator:
 
     def verify_nodes_candidates_match_with_study(self):
         # TBA : verify that the candidates that appear in the yaml input file are present in the studies
-        pass
+        assert self.global_data is not None
+        # For each node declared in the trajectory, check that the corresponding study
+        # contains a candidates.ini listing the candidates used in the YAML.
+        for node_name in self.all_nodes:
+            # Get the study path declared in the global 'studies' mapping
+            study_path = self.global_data.studies.get(node_name)
+            if not study_path:
+                raise UserInputTranslator.InvalidTreeStructure(
+                    f"No study path provided for node '{node_name}' in the global '{InKeys.studies_key()}' mapping"
+                )
+
+            # The candidates.ini is expected under user/expansion/candidates.ini in the study
+            candidates_ini = Path(study_path) / "user" / "expansion" / "candidates.ini"
+            if not candidates_ini.is_file():
+                raise UserInputTranslator.InvalidTreeStructure(
+                    f"Study for node '{node_name}' should contain file '{candidates_ini}', but it was not found"
+                )
+
+            # Load candidates from the study using CandidatesReader
+            try:
+                reader = CandidatesReader(candidates_ini)
+            except IniFileNotFound:
+                raise UserInputTranslator.InvalidTreeStructure(
+                    f"Unable to read candidates file '{candidates_ini}' for node '{node_name}'"
+                )
+
+            study_candidates = set(reader.get_candidates_list())
+
+            # Candidates declared in the node data
+            node_candidates = set(self.nodes[node_name].candidate_to_type.keys())
+
+            # Compute missing candidates (declared in YAML but not present in study)
+            missing = sorted(list(node_candidates - study_candidates))
+            extra = sorted(list(study_candidates - node_candidates))
+            if missing or extra:
+                parts = []
+                if missing:
+                    parts.append(f"missing in study: {missing}")
+                if extra:
+                    parts.append(f"present in study but not in {self.input_file}: {extra}")
+                parts_str = "; ".join(parts)
+                raise UserInputTranslator.InvalidCandidates(
+                    f"Candidate mismatch for node '{node_name}' in study '{study_path}' ({candidates_ini}): {parts_str}.\n\t"
+                    f"Study contains: {sorted(list(study_candidates))}; {self.input_file} declares: {sorted(list(node_candidates))}"
+                )
+        return
 
     def verify_candidates_span_continuous_subtree(self):
         """
@@ -460,10 +505,10 @@ class UserInputTranslator:
         """
 
         def aux_candidate_only_appear(
-            subtree: Tree,
-            candidate: str,
-            is_in_parent: bool,
-            has_already_disappeared: bool,
+                subtree: Tree,
+                candidate: str,
+                is_in_parent: bool,
+                has_already_disappeared: bool,
         ):
             node = subtree.node_name
             is_present = node in self.candidate_appears_in_nodes[candidate]
@@ -521,9 +566,9 @@ class UserInputTranslator:
         """After parsing the nodes and tree, compute the node's duration
         from the next investment date / end of horizon date"""
         assert (
-            self.tree is not None
-            and self.nodes is not None
-            and self.global_data is not None
+                self.tree is not None
+                and self.nodes is not None
+                and self.global_data is not None
         )
 
         def aux_compute_node_represented_duration(subtree: Tree):
@@ -617,14 +662,14 @@ class UserInputTranslator:
             )
 
             dxplus_cost = (
-                disc_dxplus
-                * costs_data.investment_cost
-                * current_node_data.full_probability
+                    disc_dxplus
+                    * costs_data.investment_cost
+                    * current_node_data.full_probability
             )
             dxminus_cost = (
-                disc_dxminus
-                * costs_data.retirement_cost
-                * current_node_data.full_probability
+                    disc_dxminus
+                    * costs_data.retirement_cost
+                    * current_node_data.full_probability
             )
 
             master_merger_info[OutKeys.tree_key()][node][OutKeys.candidate_costs()][

@@ -6,7 +6,7 @@
 #include <tbb/tbb.h>
 #include <utility>
 
-#include <antares/api/solver.h>
+#include <antares/api/singleProblemGetter.h>
 
 #include "Version.h"
 #include "antares-xpansion/helpers/Timer.h"
@@ -30,8 +30,9 @@
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 #include "antares-xpansion/xpansion_interfaces/StringManip.h"
 #include "config.h"
+#ifndef _WIN32
 #include "malloc.h"
-
+#endif
 static const std::string LP_DIRNAME = "lp";
 
 void CreateDirectories(const std::filesystem::path& output_path)
@@ -54,51 +55,25 @@ ProblemGeneration::ProblemGeneration(ProblemGenerationOptions& options):
     mode_ = configuration_manager_.Mode();
 }
 
-namespace
+void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& study_dir,
+                                                 const std::filesystem::path& output_dir)
 {
-bool islower(std::string_view str)
-{
-    return std::ranges::all_of(str, [](char c) { return std::islower(c); });
-}
-} // namespace
+    Antares::Solver::SingleProblemGetter spg(study_dir);
+    lps_.setConstantData(spg.getConstantData());
 
-static std::string solverXpansionToSimulator(const SolverConfig& in)
-{
-    // in could be Cbc or CBC depending on whether it is defined or not in the
-    // settings file
-    // Use lowerCase in any case to be robust to these subtleties
-    assert(islower(in.Name()));
-    if (in.Name() == "xpress")
+    // For now we need NTC timeseries and "structure" files (areas & link descriptions)
+    spg.writeNTCTimeSeries(output_dir);
+    spg.writeStudyDescriptionFiles(output_dir);
+
+    // TODO move this loop to Antares_Simulator,
+    // then expose something like getProblems(lps_);
+    for (const auto& problem_id: spg.getProblemIds())
     {
-        return "xpress";
+        // By convention, year indices start at 1 for indexing
+        // Input week index already starts at 1 in `problem_id`, so no need to change it
+        Antares::Solver::WeeklyProblemId fixed{problem_id.year + 1, problem_id.week};
+        lps_.addWeeklyData(fixed, spg.getWeeklyData(problem_id));
     }
-    if (in.Name() == "cbc" || in.Name() == "coin")
-    {
-        return "coin";
-    }
-    throw std::invalid_argument("Invalid solver");
-}
-
-void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& output)
-{
-    Antares::Solver::Optimization::OptimizationOptions optOptions;
-
-    auto solver_name = solverXpansionToSimulator(solver_config_);
-    optOptions.firstOptimOptions.solverName = solver_name;
-    optOptions.firstOptimOptions.solverUsesBasis = true;
-    optOptions.firstOptimOptions.solverExportsBasis = true;
-    optOptions.exportBehavior = Antares::Solver::Optimization::ExportBehavior::Always;
-
-    optOptions.secondOptimOptions.solverName = solver_name;
-    optOptions.secondOptimOptions.solverUsesBasis = true;
-    optOptions.secondOptimOptions.solverExportsBasis = false;
-
-    if (solver_name == SolverConfig("xpress"))
-    {
-        optOptions.firstOptimOptions.solverParameters = "PRESOLVE 1";
-        optOptions.secondOptimOptions.solverParameters = "PRESOLVE 1";
-    }
-    auto results = Antares::API::PerformSimulation(options_.StudyPath(), output, optOptions);
 
     /**
      * Antares simulator allocate a lot of memory
@@ -111,16 +86,6 @@ void ProblemGeneration::performAntaresSimulation(const std::filesystem::path& ou
 #ifndef _WIN32
     malloc_trim(0);
 #endif
-
-    // Handle errors
-    if (results.error)
-    {
-        throw LogUtils::XpansionError<std::runtime_error>("Antares simulation failed:\n\t"
-                                                            + results.error->reason,
-                                                          LOGLOCATION);
-    }
-
-    lps_ = std::move(results.antares_problems);
 }
 
 std::filesystem::path ProblemGeneration::updateProblems()
@@ -140,7 +105,7 @@ std::filesystem::path ProblemGeneration::updateProblems()
 
     if (mode_ == SimulationInputMode::ANTARES_API)
     {
-        performAntaresSimulation(directories_.simulation_dir);
+        performAntaresSimulation(directories_.study_dir, directories_.simulation_dir);
     }
 
     auto master_formulation = options_.MasterFormulation();

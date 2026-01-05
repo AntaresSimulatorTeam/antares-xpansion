@@ -3,6 +3,7 @@ import glob
 import io
 import math
 import os
+import json
 
 import numpy as np
 import xpress as xp
@@ -245,11 +246,13 @@ def check_simu_time(context, seconds):
 
 @then("the simulation succeeds")
 def simu_success(context):
+    print(context.return_code)
     assert context.return_code == 0
 
 
 @then("the expected overall cost is {value:g}")
 def check_overall_cost(context, value):
+    print(context.outputs["solution"]["overall_cost"])
     np.testing.assert_allclose(value, context.outputs["solution"]["overall_cost"], rtol=1e-6, atol=0)
 
 
@@ -293,3 +296,7 @@ def check_benders_solver(context, string):
     solver_in_benders = context.options_data["SOLVER_NAME"]
     print(f"Solver in benders: {solver_in_benders}\n")
     assert solver_in_benders.upper() == string.upper()
+
+
+
+
