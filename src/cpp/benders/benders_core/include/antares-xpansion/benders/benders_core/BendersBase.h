@@ -340,7 +340,7 @@ private:
     [[nodiscard]] virtual bool shouldParallelize() const = 0;
     Output::Iteration iteration(const WorkerMasterData& masterDataPtr_l) const;
     LogData FinalLogData() const;
-    WorkerMasterData FillWorkerMasterData() const;
+    void FillWorkerMasterData(WorkerMasterData& data) const;
     bool master_is_empty_ = true;
     int _totalNbProblems = 0;
     WorkerMasterPtr _master;
