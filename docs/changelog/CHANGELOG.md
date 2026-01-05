@@ -1,5 +1,25 @@
 Antares-Xpansion changelog
 =================
+v1.8.0 (01/2026)
+------------------------------------------------
+
+### Features
+
+* Update Antares to v9.3.4 (#1127)
+* Don't perform Antares Simulation, only generate problems (#1127)
+
+### Bug fixes
+
+* Fix Benders by batch criterion computation when aggregating cuts (#1154)
+* Fix CutTrace inadvertently overriden (#1160)
+
+### CI
+
+* Bump actions/download-artifact from 6 to 7 (#1142)
+* Bump actions/upload-artifact from 5 to 6 (#1143)
+* Bump actions/cache from 4 to 5 (#1141)
+* Bump SonarSource/sonarqube-scan-action from 6 to 7 (#1140)
+
 v1.7.1 (12/2025)
 ------------------------------------------------
 
@@ -10,7 +30,6 @@ v1.7.1 (12/2025)
 * Proper Benders cleanup after trajectory (#1120)
 * Update performance graph in docs (#1134)
 * Update Antares to v9.3.3 (#1148)
-
 
 ### Bug fixes
 
