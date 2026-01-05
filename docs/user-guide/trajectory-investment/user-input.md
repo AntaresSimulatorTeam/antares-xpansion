@@ -110,6 +110,11 @@ initial_capacities:
 - Formats and outputs the ```master_merger_info_file.json``` used as input in both
   the [merged master problem generator](./merge-master.md) and [merged weights file generator](./merge-weights.md).
 
+!!! Note
+    - The master formulation of each individual study (integer or relaxed) is overriden by the `formulation` given in the `input-trajectory.yaml` so that the same master formulation is applied at each node of the tree.
+    - For each node, the list of candidates present in `candidate_to_type` must exactly match the candidates of the `candidates.ini` file of the corresponding study.
+    - The candidate costs are given in euros in the `candidates_types` section, for each candidate type and each case (investment, operation_maintenance and retirement). These costs override the costs given in the `candidates.ini` file of each individual studies: in the trajectory case, we need to explicitly split investment costs, fixed operation/maintenance costs and retirement costs, which is not possible in `candidates.ini`.
+
 ## A note on candidates
 
 We recommand that each candidate is defined in all of the studies and adding the necessary constraints to restrict the

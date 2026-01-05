@@ -501,7 +501,7 @@ class UserInputTranslator:
 
     def verify_candidates_span_continuous_subtree(self):
         """
-        A candidate must appear in a continuous bit of the trajecotry tree : can only appear and eventually disappear once.
+        A candidate must appear in a continuous bit of the trajectory tree : can only appear and eventually disappear once.
         """
 
         def aux_candidate_only_appear(
