@@ -383,7 +383,9 @@ void BendersBase::get_master_value()
     _master->get_value(_data.lb); /*Get the optimal value of the Master Problem*/
 
     std::filesystem::path master_iter_csv_path = "./master_csv/master_iter_" + std::to_string(_data.it) + ".csv" ; 
+    //here we provide the z to csv
     _master->write_main_variable_csv(master_iter_csv_path,_data.x_out) ; 
+    
 
     for (const auto& pairIdName: _master->_id_to_name)
     {
