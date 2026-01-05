@@ -756,7 +756,7 @@ std::vector<SubProblemNamesInCut> BendersBase::split_subproblem_data_pairs(
 void BendersBase::BuildCutFull(const SubProblemDataMap& subproblem_data_map)
 {
     check_status(subproblem_data_map);
-    if (_options.AGGREGATION)
+    if (_options.NB_CUTS_PER_ITER)
     {
         compute_cut_aggregate(subproblem_data_map);
     }

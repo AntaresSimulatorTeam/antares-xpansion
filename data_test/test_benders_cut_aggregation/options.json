@@ -3,7 +3,7 @@
     "ABSOLUTE_GAP": 1e-03,
     "RELATIVE_GAP": 1e-06,
     "RELAXED_GAP": 0.001,
-    "AGGREGATION": 3,
+    "NB_CUTS_PER_ITER": 3,
     "OUTPUTROOT": ".",
     "TRACE": true,
     "SLAVE_WEIGHT": "CONSTANT",

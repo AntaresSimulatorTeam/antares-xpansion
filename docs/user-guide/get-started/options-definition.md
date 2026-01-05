@@ -13,7 +13,7 @@ This design allows for a clear separation between the solver logic and its confi
 |RELATIVE_GAP | `1e-6` | Tolerance on relative gap  | `double` > 0|
 |ABSOLUTE_GAP | `1` | Tolerance on absolute gap  |`double` > 0 |
 |RELAXED_GAP | `1e-5` | Level of precision with master relaxation   |`double` > 0|
-|AGGREGATION | `1` | Number of added cuts at each master iteration   | `unsigned integer` |
+|NB_CUTS_PER_ITER | `1` | Number of added cuts at each master iteration   | `unsigned integer` |
 |OUTPUT | `.` | Folder where output files should be printed   | `string` | 
 |TRACE | `true` | Checking if trace should be build or not  |`boolean` |
 |SLAVE_WEIGHT | `CONSTANT` | Weights for subproblem   |`UNIFORM` , `CONSTANT` or  txt file linking|
@@ -30,7 +30,7 @@ This design allows for a clear separation between the solver logic and its confi
 |MASTER_FORMULATION | `integer` | Formulation of the master problem | `integer` or `relaxed`|
 |SOLVER_NAME | `COIN` | Name of solver to use | `XPRESS`, `COIN`|
 |TIME_LIMIT | `1e12` | Simulation time limit | `double` > 0|
-|LOG_LEVEL | `0` | The degree of detail of the output, from 0 to 2 |from `0`, `1`, `2` |
+|LOG_LEVEL | `0` | The degree of detail of the output |from `0`, `1`, `2` |
 |LAST_MASTER_MPS | `master_last_iteration` | Name of the master MPS file of the last iteration | `string`|
 |LAST_MASTER_BASIS | `master_last_basis` | Name of the file to write the basis of the master at the last iteration| `string`|
 |DO_OUTER_LOOP | `false` |  Whether to perform outer loop  |`boolean`|
