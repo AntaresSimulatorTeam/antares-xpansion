@@ -27,6 +27,7 @@ class BendersApp
     static constexpr const char* const LOLD_FILE = "LOLD.txt";
 
     [[nodiscard]] int RunExternalLoop();
+    void LoadPlugin();
     [[nodiscard]] int RunBenders();
     [[nodiscard]] std::shared_ptr<MathLoggerDriver> BuildMathLogger(bool benders_log_console) const;
     void StartMessage();

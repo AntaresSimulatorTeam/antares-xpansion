@@ -2,6 +2,7 @@
 #include "antares-xpansion/benders/factories/BendersApp.h"
 
 #include <antares-xpansion/benders/factories/BendersFactory.h>
+#include <dlfcn.h>
 #include <filesystem>
 #include <fmt/format.h>
 
@@ -75,6 +76,68 @@ void BendersApp::AddCriterionOutputs()
                                  &CriteriaCurrentIterationData::patterns_values);
 }
 
+// Returns the absolute path of the executable
+// https://gist.github.com/Jacob-Tate/7b326a086cf3f9d46e32315841101109
+// Thanks to Jacob Tate
+std::filesystem::path abs_exe_path()
+{
+#if defined(_MSC_VER)
+    wchar_t path[FILENAME_MAX] = {0};
+    GetModuleFileNameW(nullptr, path, FILENAME_MAX);
+    return std::filesystem::path(path);
+#else
+    char path[FILENAME_MAX];
+    ssize_t count = readlink("/proc/self/exe", path, FILENAME_MAX);
+    return std::filesystem::path(std::string(path, (count > 0) ? count : 0));
+#endif
+}
+
+std::filesystem::path abs_exe_directory()
+{
+#if defined(_MSC_VER)
+    wchar_t path[FILENAME_MAX] = {0};
+    GetModuleFileNameW(nullptr, path, FILENAME_MAX);
+    return std::filesystem::path(path).parent_path().string();
+#else
+    char path[FILENAME_MAX];
+    ssize_t count = readlink("/proc/self/exe", path, FILENAME_MAX);
+    return std::filesystem::path(std::string(path, (count > 0) ? count : 0)).parent_path().string();
+#endif
+}
+
+void BendersApp::LoadPlugin()
+{
+    // Assume plugin.so is in the same directory as the executable
+    // Need to know where the current executable is located
+    if (auto handle = dlopen((abs_exe_directory() / "plugin.so").c_str(), RTLD_NOW))
+    {
+        std::ostringstream msg;
+        msg << "Message: Plugin loaded: " << dlerror() << std::endl;
+        benders_loggers_.display_message(msg.str());
+        // Load functions
+        // Functions should be declared as extern "C" in the plugin code to avoid name mangling
+        if (auto callback = dlsym(handle, "onIterationEnd"))
+        {
+            std::ostringstream msg;
+            msg << "Message: Callback OK: " << dlerror() << std::endl;
+            benders_loggers_.display_message(msg.str());
+            benders_->onIterationEndCallback_ = reinterpret_cast<void (*)()>(callback);
+        }
+        else
+        {
+            std::ostringstream msg;
+            msg << "Warning: Could not load symbol onIterationEnd: " << dlerror() << std::endl;
+            benders_loggers_.display_message(msg.str());
+        }
+    }
+    else
+    {
+        std::ostringstream msg;
+        msg << "Warning: Could not load plugin.so: " << dlerror() << std::endl;
+        benders_loggers_.display_message(msg.str());
+    }
+}
+
 int BendersApp::RunBenders()
 {
     try
@@ -107,11 +170,13 @@ int BendersApp::RunBenders()
             if (benders_)
             {
                 StartMessage();
+                LoadPlugin();
                 benders_->launch();
                 EndMessage(benders_->execution_time());
             }
         }
     }
+
     catch (std::exception& e)
     {
         std::ostringstream msg;
@@ -119,6 +184,7 @@ int BendersApp::RunBenders()
         benders_loggers_.display_message(msg.str());
         mpi::environment::abort(1);
     }
+
     catch (...)
     {
         std::ostringstream msg;
@@ -126,6 +192,7 @@ int BendersApp::RunBenders()
         benders_loggers_.display_message(msg.str());
         mpi::environment::abort(1);
     }
+
     return 0;
 }
 

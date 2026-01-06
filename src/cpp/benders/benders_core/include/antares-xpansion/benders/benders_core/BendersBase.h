@@ -354,6 +354,9 @@ private:
     Timer benders_timer;
     Output::SolutionData outer_loop_solution_data_;
     std::unordered_map<std::string, std::pair<std::vector<int>, std::vector<int>>> basiss_;
+
+public:
+    std::function<void()> onIterationEndCallback_;
 };
 
 using pBendersBase = std::shared_ptr<BendersBase>;
