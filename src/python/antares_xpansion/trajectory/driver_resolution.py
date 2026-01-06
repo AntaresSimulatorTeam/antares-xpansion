@@ -11,8 +11,8 @@ from antares_xpansion.logger import step_logger
 from antares_xpansion.optimisation_keys import OptimisationKeys
 from antares_xpansion.study_output_cleaner import StudyOutputCleaner
 from antares_xpansion.trajectory.user_input_keys import TrajectoryInputKeys as InKeys
-from antares_xpansion.xpansionConfig import XpansionConfigConstants
 from antares_xpansion.xpansion_study_reader import XpansionStudyReader
+from antares_xpansion.xpansionConfig import XpansionConfigConstants
 
 
 @dataclass
@@ -105,7 +105,7 @@ class TrajectoryResolutionDriver:
 
     def prepare_resolution_options_file(self):
         """
-        Settings from the setting.ini file of the root study are used
+        Settings from the settings.ini file of the root study are used
         Most settings are commented out, not needed in the current simple version
         """
         root_study = self.data.root_study
