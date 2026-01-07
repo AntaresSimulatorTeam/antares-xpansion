@@ -168,6 +168,9 @@ class TrajectoryResolutionDriver:
         options_values[OptimisationKeys.time_limit_key()] = (
             root_settings_reader.timelimit()
         )
+        options_values[OptimisationKeys.cut_coefficient_tolerance_key()] = (
+            root_settings_reader.get_cut_coefficient_tolerance()
+        )
         # Irrelevant in our case, but we need to set a value.
         options_values[OptimisationKeys.slave_weight_value_key()] = 1.0
 
