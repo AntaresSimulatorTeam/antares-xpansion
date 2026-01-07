@@ -119,6 +119,7 @@ var NAVTREEINDEX7 =
 "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md295":[30,3,3],
 "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md296":[30,3,4],
 "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md297":[30,3,5],
+"md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md298":[30,4],
 "namespaceantares__xpansion.html":[31,0,0],
 "namespaceantares__xpansion_1_1antares__driver.html":[31,0,0,0],
 "namespaceantares__xpansion_1_1benders__driver.html":[31,0,0,1],

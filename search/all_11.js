@@ -54,11 +54,12 @@ var searchData=
   ['formulationenum_51',['FormulationEnum',['../classuser__input__translation_1_1FormulationEnum.html',1,'user_input_translation']]],
   ['free_52',['free',['../classWorker.html#adeac476bf7217e37b14803110958e927',1,'Worker::free()'],['../classBendersMpi.html#af435deb52a324bfbf0d953bf78644cf4',1,'BendersMpi::free()'],['../classBendersSequential.html#a9a2950ee9e6a03e5361c5a452dd61240',1,'BendersSequential::free()'],['../classProblem.html#acf2a0c3fb337ca9fe6931a96f8a902f5',1,'Problem::free()'],['../classSolverAbstract.html#a26d9c6d9a6b8f542049d0195f6a775a6',1,'SolverAbstract::free()'],['../classSolverXpress.html#af84b47270bfca3e50736d0d7bf369762',1,'SolverXpress::free()'],['../classSolverCbc.html#acb2ab7b80624c4ed0f9c3a122407236a',1,'SolverCbc::free()'],['../classSolverClp.html#a339cf2f8007d60e0ad2318d135f05f2d',1,'SolverClp::free()'],['../classBendersSequentialDouble.html#a0218c119f2551224ded759b7e9c65548',1,'BendersSequentialDouble::free()'],['../classNOOPSolver.html#af6b5f77cdb55e81596bbc18d93f6e840',1,'NOOPSolver::free()']]],
   ['from_20each_20annual_20study_53',['Input files from each annual study',['../md_docs_2user-guide_2trajectory-investment_2merge-master.html#autotoc_md262',1,'']]],
-  ['full_20antares_20problem_5fgeneration_20benders_20study_5fupdate_20sensitivity_20presolve_20resume_20tt_54',['&lt;tt&gt;--step {full, antares, problem_generation, benders, study_update, sensitivity, presolve, resume}&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md183',1,'']]],
-  ['fullrundriver_55',['FullRunDriver',['../classantares__xpansion_1_1full__run__driver_1_1FullRunDriver.html',1,'antares_xpansion::full_run_driver']]],
-  ['fullrunexecutionerror_56',['FullRunExecutionError',['../classantares__xpansion_1_1full__run__driver_1_1FullRunDriver_1_1FullRunExecutionError.html',1,'antares_xpansion::full_run_driver::FullRunDriver']]],
-  ['fullrunoptionsparser_57',['FullRunOptionsParser',['../classFullRunOptionsParser.html',1,'']]],
-  ['fullrunoptionsparsertest_58',['FullRunOptionsParserTest',['../classFullRunOptionsParserTest.html',1,'']]],
-  ['fullrunoptionsparsertestfullpath_59',['FullRunOptionsParserTestFullPath',['../classFullRunOptionsParserTestFullPath.html',1,'']]],
-  ['fullrunoptionsparsertestparameterizedmethod_5foutput_60',['FullRunOptionsParserTestParameterizedMethod_output',['../classFullRunOptionsParserTestParameterizedMethod__output.html',1,'']]]
+  ['from_20tt_20input_20trajectory_20yaml_20tt_54',['Input data of local study or input data from &lt;tt&gt;input-trajectory.yaml&lt;/tt&gt; ?',['../md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md298',1,'']]],
+  ['full_20antares_20problem_5fgeneration_20benders_20study_5fupdate_20sensitivity_20presolve_20resume_20tt_55',['&lt;tt&gt;--step {full, antares, problem_generation, benders, study_update, sensitivity, presolve, resume}&lt;/tt&gt;',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md183',1,'']]],
+  ['fullrundriver_56',['FullRunDriver',['../classantares__xpansion_1_1full__run__driver_1_1FullRunDriver.html',1,'antares_xpansion::full_run_driver']]],
+  ['fullrunexecutionerror_57',['FullRunExecutionError',['../classantares__xpansion_1_1full__run__driver_1_1FullRunDriver_1_1FullRunExecutionError.html',1,'antares_xpansion::full_run_driver::FullRunDriver']]],
+  ['fullrunoptionsparser_58',['FullRunOptionsParser',['../classFullRunOptionsParser.html',1,'']]],
+  ['fullrunoptionsparsertest_59',['FullRunOptionsParserTest',['../classFullRunOptionsParserTest.html',1,'']]],
+  ['fullrunoptionsparsertestfullpath_60',['FullRunOptionsParserTestFullPath',['../classFullRunOptionsParserTestFullPath.html',1,'']]],
+  ['fullrunoptionsparsertestparameterizedmethod_5foutput_61',['FullRunOptionsParserTestParameterizedMethod_output',['../classFullRunOptionsParserTestParameterizedMethod__output.html',1,'']]]
 ];

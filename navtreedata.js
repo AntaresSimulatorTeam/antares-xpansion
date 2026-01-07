@@ -390,7 +390,8 @@ var NAVTREE =
         [ "type: max_cumulative_retirement_per_node", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md295", null ],
         [ "type: min_investment_per_candidate_per_node", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md296", null ],
         [ "type: min_retirement_per_candidate_per_node", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md297", null ]
-      ] ]
+      ] ],
+      [ "Input data of local study or input data from input-trajectory.yaml ?", "md_docs_2user-guide_2trajectory-investment_2user-input.html#autotoc_md298", null ]
     ] ],
     [ "Namespaces", "namespaces.html", [
       [ "Namespace List", "namespaces.html", "namespaces_dup" ],

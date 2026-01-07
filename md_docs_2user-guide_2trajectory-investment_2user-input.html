@@ -348,7 +348,20 @@ Trajectory constraints translation</h1>
 <li>$dx_{2030, peak}^- \geq 1000$,</li>
 <li>$dx_{2040, peak}^- \geq 1000$</li>
 </ul>
-<p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \forall{c \in \text{candidates}} \quad dx_{n, c}^- \geq \text{value} $$ </p>
+<p>More generally, this type of input constraint entry translates to : $$ \forall n \in \text{nodes}, \quad \forall{c \in \text{candidates}} \quad dx_{n, c}^- \geq \text{value} $$</p>
+<h1><a class="anchor" id="autotoc_md298"></a>
+Input data of local study or input data from <code>input-trajectory.yaml</code> ?</h1>
+<p>Each yearly study defines some input data from either <code>candidates.ini</code> and <code>settings.ini</code>. Some of this data are overriden by <code>input-trajectory.yaml</code> whereas some are reused:</p>
+<ul>
+<li><b>Master formulation</b>: The parameter of each individual study (integer or relaxed given in <code>settings.ini</code>) is overriden by the <code>formulation</code> given in the <code>input-trajectory.yaml</code> so that the same master formulation is applied at each node of the tree.</li>
+<li><b>Investment costs</b>: In each individual study, investment costs are given in <code>candidates.ini</code>. However, in the trajectory case we need to explicitly split investment costs, fixed operation/maintenance costs and retirement costs. Therefore <b>candidate costs given in <code>input-trajectory.yaml</code> override the local study ones</b>. The candidate costs are given in <b>euros</b> in the <code>candidates_types</code> section, for each candidate type and each case (investment, operation_maintenance and retirement). !!! Note For each node, the list of candidates present in <code>candidate_to_type</code> must exactly match the candidates of the <code>candidates.ini</code> file of the corresponding study.</li>
+<li><b>Investment bounds</b>: For each candidate, three variables are used to define the capacity, namely $x_{i,n}$ (overall capacity), $dx_{i,n}^+$ and $dx_{i,n}^-$, respectively added and removed capacity for candidate $i$ at node $n$. Bounds on the overall capacity $x_{i,n}$ come from each individual <code>candidates.ini</code> file (section <code>max-investment</code> or <code>max-units</code> combined with <code>unit-size</code>), whereas bounds on $dx$ variables come from the <code>constraints</code> section in <code>input-trajectory.yaml</code>.</li>
+<li><b>Solver parameters</b>:<ul>
+<li>The solver to use for resolution is given in the command line, see <a href="../trajectory-investment/orchestration.md#execution-options">Execution options</a>.</li>
+<li>The following solver parameters are set from the <code>settings.ini</code> of the root study: absolute gap, relative gap, relaxed gap, separation parameter, max iterations, log level, batch size and time limit, cut coefficient tolerance, master solution tolerance. </li>
+</ul>
+</li>
+</ul>
 </div></div><!-- contents -->
 </div><!-- PageDoc -->
 </div><!-- doc-content -->
