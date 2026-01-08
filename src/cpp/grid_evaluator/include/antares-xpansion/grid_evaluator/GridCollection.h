@@ -59,6 +59,17 @@ struct GridDefinition
                         double min,
                         double max,
                         double step);
+
+private:
+    std::optional<int> parseWeekFromProblem(const std::string& problemName) const;
+    double interpolate(double min, double max, double normalized) const;
+    std::vector<double> generateRhsValues(const GridElement& gridElement,
+                                          double minConstraint,
+                                          double maxConstraint) const;
+    void processWeek(GridElement& gridElement, size_t week);
+    void processAllWeeks(GridElement& gridElement);
+    void processGridElementWeeks(GridElement& gridElement);
+    void adjustBoundaryValues(GridElement& gridElement);
 };
 
 class GridCollection

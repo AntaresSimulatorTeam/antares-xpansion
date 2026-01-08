@@ -3,6 +3,7 @@
 
 #include <fstream>
 #include <ranges>
+#include <regex>
 
 /// @brief Checks if a gridElement is valid
 /// - 0.0 <= min <= 1.0 AND 0.0 <= max <= 1.0 AND min <= max
@@ -117,46 +118,93 @@ void GridDefinition::generateGridValues()
     // weekAreaConstraints.clear();
     for (auto& gridElement: gridElements)
     {
-        // gridElement.rhsValues.clear();
-        // constexpr double epsilon = 1e-6;
-        constexpr double epsilon = 0;
-        bool fixedElem = gridElement.min == gridElement.max;
+        adjustBoundaryValues(gridElement);
+        processGridElementWeeks(gridElement);
+    }
+}
 
-        if (gridElement.min == 0.0)
+std::optional<int> GridDefinition::parseWeekFromProblem(const std::string& problemName) const
+{
+    std::regex pattern(R"(problem-(\d+)-(\d+)(?:--.*)?)");
+    std::smatch matches;
+    if (std::regex_match(problemName, matches, pattern))
+    {
+        return std::stoi(matches[2]); // Return week
+    }
+    return std::nullopt;
+}
+
+double GridDefinition::interpolate(double min, double max, double normalized) const
+{
+    return min + (max - min) * normalized;
+}
+
+std::vector<double> GridDefinition::generateRhsValues(const GridElement& gridElement,
+                                                      double minConstraint,
+                                                      double maxConstraint) const
+{
+    std::vector<double> values;
+    bool isFixedValue = gridElement.min == gridElement.max;
+
+    if (isFixedValue)
+    {
+        values.push_back(interpolate(minConstraint, maxConstraint, gridElement.min));
+    }
+    else
+    {
+        int steps = static_cast<int>((gridElement.max - gridElement.min) / gridElement.step);
+        for (int i = 0; i <= steps; ++i)
         {
-            gridElement.min += epsilon;
+            double normalizedValue = gridElement.min + i * gridElement.step;
+            values.push_back(interpolate(minConstraint, maxConstraint, normalizedValue));
         }
-        if (gridElement.max == 1.0)
-        {
-            gridElement.max -= epsilon;
-        }
+    }
 
-        for (size_t week = 1; week <= Reservoir::weeks_in_year; week++)
-        {
-            gridElement.rhsValues[week - 1].clear();
-            double min_cst = -reservoirs.at(gridElement.area).max_pumping[week - 1]
-                             * reservoirs.at(gridElement.area).efficiency;
-            double max_cst = reservoirs.at(gridElement.area).max_generating[week - 1];
+    return values;
+}
 
-            if (fixedElem)
-            {
-                double value = min_cst + (max_cst - min_cst) * gridElement.min;
-                gridElement.rhsValues[week - 1].push_back(value);
-            }
-            else
-            {
-                int steps = static_cast<int>((gridElement.max - gridElement.min)
-                                             / gridElement.step);
+void GridDefinition::processWeek(GridElement& gridElement, size_t week)
+{
+    const auto& reservoir = reservoirs.at(gridElement.area);
+    double minConstraint = -reservoir.max_pumping[week - 1] * reservoir.efficiency;
+    double maxConstraint = reservoir.max_generating[week - 1];
 
-                for (int i = 0; i <= steps; ++i)
-                {
-                    double normalized = gridElement.min + i * gridElement.step;
-                    double value = min_cst + (max_cst - min_cst) * normalized;
-                    gridElement.rhsValues[week - 1].push_back(value);
-                }
-            }
-            weekAreaConstraints[week][gridElement.area].emplace(gridElement.name,
-                                                                gridElement.rhsValues[week - 1]);
-        }
+    gridElement.rhsValues[week - 1] = generateRhsValues(gridElement, minConstraint, maxConstraint);
+
+    weekAreaConstraints[week][gridElement.area].emplace(gridElement.name,
+                                                        gridElement.rhsValues[week - 1]);
+}
+
+void GridDefinition::processAllWeeks(GridElement& gridElement)
+{
+    for (size_t week = 1; week <= Reservoir::weeks_in_year; week++)
+    {
+        processWeek(gridElement, week);
+    }
+}
+
+void GridDefinition::processGridElementWeeks(GridElement& gridElement)
+{
+    if (gridElement.problemName == "all")
+    {
+        processAllWeeks(gridElement);
+    }
+    else if (auto week = parseWeekFromProblem(gridElement.problemName))
+    {
+        processWeek(gridElement, *week);
+    }
+}
+
+void GridDefinition::adjustBoundaryValues(GridElement& gridElement)
+{
+    constexpr double epsilon = 0;
+
+    if (gridElement.min == 0.0)
+    {
+        gridElement.min += epsilon;
+    }
+    if (gridElement.max == 1.0)
+    {
+        gridElement.max -= epsilon;
     }
 }
