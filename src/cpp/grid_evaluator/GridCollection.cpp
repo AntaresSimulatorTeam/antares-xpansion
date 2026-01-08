@@ -114,7 +114,7 @@ void GridCollection::loadReservoirManagement(const std::filesystem::path& studyP
 /// @brief Generate Grid values for all gridElements
 void GridDefinition::generateGridValues()
 {
-    weekAreaConstraints.clear();
+    // weekAreaConstraints.clear();
     for (auto& gridElement: gridElements)
     {
         // gridElement.rhsValues.clear();

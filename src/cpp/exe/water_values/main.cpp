@@ -1,4 +1,5 @@
 
+#include <cerrno>
 #include <chrono>
 #include <iostream>
 
@@ -91,6 +92,9 @@ void saveValues(const std::filesystem::path& path,
     {
         // std::cerr << "Failed to open file: " << path << std::endl;
         logger->display_message("Failed to open file: " + path.string(),
+                                LogUtils::LOGLEVEL::ERR,
+                                "Water Values");
+        logger->display_message("Error opening file:" + std::string(std::strerror(errno)),
                                 LogUtils::LOGLEVEL::ERR,
                                 "Water Values");
         return;
