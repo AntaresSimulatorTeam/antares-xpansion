@@ -94,7 +94,7 @@ void saveValues(const std::filesystem::path& path,
         logger->display_message("Failed to open file: " + path.string(),
                                 LogUtils::LOGLEVEL::ERR,
                                 "Water Values");
-        logger->display_message("Error opening file:" + std::string(std::strerror(errno)),
+        logger->display_message("Error opening file: " + std::string(std::strerror(errno)),
                                 LogUtils::LOGLEVEL::ERR,
                                 "Water Values");
         return;
