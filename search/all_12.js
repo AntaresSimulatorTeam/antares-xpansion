@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['general_20description_0',['General description',['../md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md238',1,'General description'],['../md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html#autotoc_md281',1,'General description']]],
+  ['general_20description_0',['General description',['../md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md239',1,'General description'],['../md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html#autotoc_md282',1,'General description']]],
   ['general_5fdata_1',['general_data',['../classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader.html#aa4c937f9e3b57840f6f3335ded14c7cf',1,'antares_xpansion::config_loader::XpansionSettingsReader']]],
   ['generaldatafileexceptions_2',['GeneralDataFileExceptions',['../classantares__xpansion_1_1general__data__processor_1_1GeneralDataFileExceptions.html',1,'antares_xpansion::general_data_processor']]],
   ['generaldatafilenotfound_3',['GeneralDataFileNotFound',['../classantares__xpansion_1_1general__data__processor_1_1GeneralDataFileExceptions_1_1GeneralDataFileNotFound.html',1,'antares_xpansion::general_data_processor::GeneralDataFileExceptions']]],
@@ -8,7 +8,7 @@ var searchData=
   ['generaldatainireadertests_5',['GeneralDataIniReaderTests',['../classGeneralDataIniReaderTests.html',1,'']]],
   ['generaldataprocessor_6',['GeneralDataProcessor',['../classantares__xpansion_1_1general__data__processor_1_1GeneralDataProcessor.html',1,'antares_xpansion::general_data_processor']]],
   ['generation_7',['generation',['../md_docs_2developer-guide_2xpansion__steps_22-problem-modification.html',1,'Investment problem generation'],['../md_docs_2user-guide_2trajectory-investment_2multiple-problem-generation.html',1,'Multiple problem generation'],['../md_docs_2how__to.html#autotoc_md148',1,'PDF generation']]],
-  ['generation_20capacity_8',['generation capacity',['../md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md205',1,'Investment in renewable generation capacity'],['../md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md204',1,'Investment in thermal generation capacity']]],
+  ['generation_20capacity_8',['generation capacity',['../md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md206',1,'Investment in renewable generation capacity'],['../md_docs_2user-guide_2get-started_2prepare-a-simulation.html#autotoc_md205',1,'Investment in thermal generation capacity']]],
   ['generation_20guidelines_9',['Documention generation guidelines',['../md_docs_2how__to.html',1,'']]],
   ['generation_3a_20tt_20problem_5fgeneration_20tt_10',['2- Investment problem generation: &lt;tt&gt;problem_generation&lt;/tt&gt;',['../md_docs_2developer-guide_2xpansion__steps_20-overview.html#autotoc_md125',1,'']]],
   ['genericsolverexception_11',['GenericSolverException',['../classGenericSolverException.html',1,'']]],

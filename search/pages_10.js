@@ -1,6 +1,5 @@
 var searchData=
 [
-  ['weights_0',['Weights',['../md_docs_2user-guide_2trajectory-investment_2merge-weights.html',1,'']]],
-  ['workflow_1',['Trajectory investment workflow',['../md_docs_2user-guide_2trajectory-investment_2trajectory-workflow.html',1,'']]],
-  ['workflow_20_3a_20tt_20xpansion_20trajectory_20tt_2',['Launching the workflow : &lt;tt&gt;xpansion trajectory&lt;/tt&gt;',['../md_docs_2user-guide_2trajectory-investment_2orchestration.html',1,'']]]
+  ['up_20an_20antares_20xpansion_20study_0',['Set up an Antares-Xpansion study',['../md_docs_2user-guide_2get-started_2prepare-a-simulation.html',1,'']]],
+  ['user_20input_20file_20parsing_1',['User input file parsing',['../md_docs_2user-guide_2trajectory-investment_2user-input.html',1,'']]]
 ];

@@ -140,8 +140,8 @@ $(function(){initNavTree('md_docs_2user-guide_2trajectory-investment_2trajectory
   <div class="headertitle"><div class="title">Trajectory investment problem</div></div>
 </div><!--header-->
 <div class="contents">
-<div class="textblock"><p><a class="anchor" id="autotoc_md280"></a></p>
-<h1><a class="anchor" id="autotoc_md281"></a>
+<div class="textblock"><p><a class="anchor" id="autotoc_md281"></a></p>
+<h1><a class="anchor" id="autotoc_md282"></a>
 General description</h1>
 <p>Recall the annual investment problem in Xpansion :</p>
 <p>$$ \min_{x \in \mathcal{X}} \quad C^T x + \text{ANTARES}(x) $$ over a set of investment variables specified by the user, where :</p>
@@ -150,7 +150,7 @@ General description</h1>
 <li>$C$ contains the fixed cost annuities of those candidates</li>
 <li>$\text{ANTARES}(x)$ is the operating cost of the system for a given investment level.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md282"></a>
+<h1><a class="anchor" id="autotoc_md283"></a>
  Switching to a pluriannual vision</h1>
 <p>We want to switch to a pluriannual vision and optimise the investments over several possible trajectories described on a diverging tree of scenarios</p>
 <p><img src="../../assets/media/trajectory/trajectory.png" alt="Trajectory tree" class="inline"/></p>
@@ -166,7 +166,7 @@ General description</h1>
 <li>$P(n)$ is the probability of realisation of node $n$ : $P(n) = P_{\text{parent}(n)}(n) \times P(\text{parent}(n))$.</li>
 <li>$P(root) = 1$.</li>
 </ul>
-<h1><a class="anchor" id="autotoc_md283"></a>
+<h1><a class="anchor" id="autotoc_md284"></a>
 On the $dx^{+/-}$ variables</h1>
 <p><b>Note</b> : In our model, $x_{i,n}$ is the capacity available during the period represented by $n$, and this means the decisions $dx_{i,n}^{+/-}$ represent the variation of capacity during the period between $\text{parent}(n)$ and $n$ (i.e. the capacity being built or decommisionned during the period represented by $\text{parent}(n)$, with effective entry into service at the beginning of $n$).</p>
 <p>We can impose the decisions to be the same in all children of a given node (see <a href="./merge-master.md#trajectory-constraints">trajectory constraints</a>) if we want the investment decision of a given period to be independent of what scenario will materialize in the next period when the new capacities enter into service.</p>

@@ -35,8 +35,8 @@ var searchData=
   ['variablefilereadnameconfiguration_32',['VariableFileReadNameConfiguration',['../structVariableFileReadNameConfiguration.html',1,'']]],
   ['variablenamecomposition_33',['VariableNameComposition',['../structVariableNameComposition.html',1,'']]],
   ['variablepositions_34',['VariablePositions',['../structMergeMasterTrajectoryMPS_1_1VariablePositions.html',1,'MergeMasterTrajectoryMPS']]],
-  ['variables_35',['variables',['../md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md239',1,'Investment variables'],['../md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html#autotoc_md283',1,'On the $dx^{+/-}$ variables']]],
-  ['variables_20and_20costs_36',['Variables and costs',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md244',1,'']]],
+  ['variables_35',['variables',['../md_docs_2user-guide_2optimization-principles_2investment-problem.html#autotoc_md240',1,'Investment variables'],['../md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html#autotoc_md284',1,'On the $dx^{+/-}$ variables']]],
+  ['variables_20and_20costs_36',['Variables and costs',['../md_docs_2user-guide_2optimization-principles_2problem-formalization.html#autotoc_md245',1,'']]],
   ['variables_20txt_20tt_20file_20for_20each_20tt_20mps_20tt_20file_37',['&lt;tt&gt;variables.txt&lt;/tt&gt; file for each &lt;tt&gt;.mps&lt;/tt&gt; file',['../md_docs_2developer-guide_2xpansion__steps_21-antares-solver-problem.html#autotoc_md133',1,'']]],
   ['variablesgroup_38',['VariablesGroup',['../classBenders_1_1Criterion_1_1VariablesGroup.html',1,'Benders::Criterion']]],
   ['variablesgroup_2ecpp_39',['VariablesGroup.cpp',['../VariablesGroup_8cpp.html',1,'']]],
@@ -54,6 +54,6 @@ var searchData=
   ['version_20tt_51',['version tt',['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md193',1,'&lt;tt&gt;--antares-version&lt;/tt&gt;'],['../md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md192',1,'&lt;tt&gt;-v, --version&lt;/tt&gt;']]],
   ['versions_52',['Versions',['../md_docs_2developer-guide_2install__from__sources_22-Dependencies-install.html#autotoc_md103',1,'']]],
   ['versions_20in_20ubuntu_20are_20known_20to_20have_20mpi_20related_20issues_20please_20use_20the_20other_20ones_53',['⚠️ Single-file versions in Ubuntu are known to have MPI-related issues. Please use the other ones.',['../md_docs_2changelog_2CHANGELOG.html#autotoc_md38',1,'']]],
-  ['vision_54',[' Switching to a pluriannual vision',['../md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html#autotoc_md282',1,'']]],
+  ['vision_54',[' Switching to a pluriannual vision',['../md_docs_2user-guide_2trajectory-investment_2trajectory-problem.html#autotoc_md283',1,'']]],
   ['voidwriter_55',['VoidWriter',['../classOutput_1_1VoidWriter.html',1,'Output::VoidWriter'],['../classOutput_1_1VoidWriter.html#a3aebfa9d16828185951c57390b00ca0a',1,'Output::VoidWriter::VoidWriter()']]]
 ];
