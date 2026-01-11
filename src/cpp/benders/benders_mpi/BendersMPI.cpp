@@ -391,6 +391,8 @@ void BendersMpi::free()
  */
 void BendersMpi::Run()
 {
+    if (benders_plugin_) 
+        benders_plugin_->OnBendersStart() ; 
     if (init_data_)
     {
         PreRunInitialization();
@@ -401,7 +403,10 @@ void BendersMpi::Run()
         _data.stop = false;
     }
     _data.number_of_subproblem_solved = _data.nsubproblem;
-
+    // if (benders_plugin_) 
+    // {
+    //     std::cout<<"benders plugin set correctly "<<std::endl ; 
+    // }
     while (!_data.stop)
     {
         ++_data.it;
@@ -409,6 +414,9 @@ void BendersMpi::Run()
 
         /*Solve Master problem, get optimal value and cost and send it to
          * process*/
+        if (benders_plugin_) 
+            benders_plugin_->OnBendersMasterIterationStart() ; 
+
         step_1_solve_master();
 
         /*Gather cut from each subproblem in master thread and add them to Master
@@ -432,7 +440,9 @@ void BendersMpi::Run()
             mathLoggerDriver_->Print(_data);
             SaveCurrentBendersData();
         }
-        onIterationEndCallback_();
+        
+        if (benders_plugin_) 
+            benders_plugin_->OnBendersMasterIterationEnd() ; 
     }
     if (_world.rank() == rank_0)
     {
@@ -441,6 +451,8 @@ void BendersMpi::Run()
         write_basis();
     }
     _world.barrier();
+    if (benders_plugin_) 
+        benders_plugin_->OnBendersStart() ; 
 }
 
 void BendersMpi::PreRunInitialization()

@@ -14,6 +14,7 @@
 #include "WorkerMaster.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
+#include "antares-xpansion/benders/plugins/BendersPlugin.h"
 #include "common.h"
 
 /**
@@ -58,6 +59,8 @@ public:
     void MasterChangeRhs(int id_row, double val) const;
     // for test
     void MasterGetRhs(double& rhs, int id_row) const;
+    
+    void SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin) ; 
 
     const VariableMap& MasterVariables() const
     {
@@ -151,7 +154,8 @@ protected:
     bool init_problems_ = true;
     bool free_problems_ = true;
     BendersBaseOptions _options;
-
+    
+    std::shared_ptr<BendersPlugin> benders_plugin_ ; 
     std::vector<std::vector<double>> criteria_vector_for_each_iteration_;
     bool is_bilevel_check_all_ = false;
 

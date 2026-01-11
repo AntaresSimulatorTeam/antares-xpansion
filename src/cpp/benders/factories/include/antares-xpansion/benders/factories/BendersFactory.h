@@ -2,6 +2,8 @@
 #include <antares-xpansion/benders/benders_core/BendersMethod.h>
 #include <antares-xpansion/benders/benders_core/CriterionInputDataReader.h>
 #include <antares-xpansion/benders/benders_core/common.h>
+#include <antares-xpansion/benders/factories/BendersPluginFactory.h>
+#include <antares-xpansion/benders/plugins/BendersPlugin.h>
 #include <memory>
 #include <optional>
 #include <variant>
@@ -56,6 +58,7 @@ private:
     std::set<std::string> ReadAreaFile();
     void ConfigureSolverLog(BendersBase* benders);
 
+    std::shared_ptr<BendersPluginFactory> benders_plugin_factory_ ; 
     const SimulationOptions& options_;
     std::shared_ptr<ILogger> logger_;
     std::shared_ptr<Output::OutputWriter> writer_;

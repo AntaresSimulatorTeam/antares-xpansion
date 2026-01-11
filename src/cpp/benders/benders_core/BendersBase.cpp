@@ -22,6 +22,7 @@ BendersBase::BendersBase(BendersBaseOptions options,
     _options(std::move(options)),
     _csv_file_path(std::filesystem::path(_options.OUTPUTROOT) / (_options.CSV_NAME + ".csv"))
 {
+    benders_plugin_ = nullptr ;
 }
 
 /*!
@@ -102,6 +103,12 @@ void BendersBase::PrintCurrentIterationCsv()
                              relevantIterationData_.last,
                              x_cut);
     }
+}
+
+void BendersBase::SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin) 
+{
+    // std::cout<<"setting plugin on benders "<<std::end ; 
+    benders_plugin_ = benders_plugin ; 
 }
 
 /*!

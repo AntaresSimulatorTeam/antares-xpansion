@@ -28,6 +28,7 @@ BendersFactory::BendersFactory(const SimulationOptions& options,
     world_{world},
     benders_loggers_{benders_loggers}
 {
+    benders_plugin_factory_ = std::make_shared<BendersPluginFactory>() ; 
 }
 
 BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size, bool outer_loop)
@@ -131,6 +132,10 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
                                                    *world_,
                                                    math_log_driver_);
         break;
+
+        std::shared_ptr<BendersPlugin> benders_plugin(benders_plugin_factory_->CreatePlugin()) ; 
+        benders->SetPlugin(benders_plugin) ; 
+
     }
 
     benders->set_input_map(coupling_map);
