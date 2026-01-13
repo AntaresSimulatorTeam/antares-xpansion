@@ -91,11 +91,13 @@ SolverXpress::SolverXpress(const SolverXpress& toCopy):
     loader.XpressIsCorrectlyInstalled();
 
     _xprs = toCopy.clone_matrix_to_new_prob();
+    set_threads(1); // by default, but can be set from the outside
     _log_file = toCopy._log_file;
     if (_log_file != "")
     {
         _log_stream.open(_log_file, std::ofstream::out | std::ofstream::app);
         add_stream(_log_stream);
+        set_output_log_level(0); // to connect the log file and solver
     }
 }
 
@@ -145,6 +147,7 @@ void SolverXpress::init()
                         nullptr,
                         nullptr);
     zero_status_check(status, "generate empty prob in XPRS interface init method", LOGLOCATION);
+    set_threads(1); // by default, but can be set from the outside
 }
 
 void SolverXpress::free()

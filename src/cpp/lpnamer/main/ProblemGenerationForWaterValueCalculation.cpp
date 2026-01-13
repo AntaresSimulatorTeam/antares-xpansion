@@ -75,9 +75,9 @@ ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalcula
     }
 
     XpansionProblemsFromAntaresProvider adapter(results);
+    auto solver_log_manager = SolverLogManager(directories.simulation_dir / "solver.log");
     for (const auto& [pbId, _]: results.weeklyProblems)
     {
-        auto solver_log_manager = SolverLogManager(directories.simulation_dir / "solver.log");
         auto problem = adapter.provideProblem(solverName == SolverConfig("xpress") ? "xpress"
                                                                                    : "CBC",
                                               solver_log_manager,
