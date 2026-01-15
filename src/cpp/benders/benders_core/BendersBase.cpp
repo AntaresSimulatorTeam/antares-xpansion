@@ -894,23 +894,27 @@ void BendersBase::read_constraints_csv()
         return ; 
     else 
     {
+        std::cout<<"reading constraints from csv "<<std::endl  ;
         std::string csv_name = "constraints_dictionnary.csv" ; 
         auto csv_path = std::filesystem::path(_options.INPUTROOT) / csv_name ; 
         std::ifstream file(csv_path) ; 
-
-        std::string line;
-        typedef boost::tokenizer<boost::escaped_list_separator<char>> Tokenizer;
-
-        while (std::getline(file,line)) 
+        if (file.is_open()) 
         {
-            Tokenizer tok(line) ; 
-            std::vector<std::string> tokens(tok.begin(), tok.end());
-            std::string key = tokens[0] ; 
-            std::vector<std::string> values ; 
-            if (tokens.size() > 1 ) 
+            std::cout<<"constraint csv file opened correctly "<<std::endl ; 
+            std::string line;
+            typedef boost::tokenizer<boost::escaped_list_separator<char>> Tokenizer;
+            
+            while (std::getline(file,line)) 
+            {
+                Tokenizer tok(line) ; 
+                std::vector<std::string> tokens(tok.begin(), tok.end());
+                std::string key = tokens[0] ; 
+                std::vector<std::string> values ; 
+                if (tokens.size() > 1 ) 
                 values.assign(tokens.begin()+1,tokens.end()) ; 
-
-            constraints_csv_map_[key] = values ; 
+                
+                constraints_csv_map_[key] = values ; 
+            }
         }
     }
 }
@@ -929,6 +933,8 @@ void BendersBase::set_subproblem_constraint_map(const SubProblemConstraintMap& s
 //create the ConstraintReader object and add it to constraints_map
 void BendersBase::AddSubproblemConstraints(const std::string& constraint_name,const std::string& sub_name) 
 {
+    
+    std::cout<<"creating AddSubproblemConstraints !!"<<std::endl ; 
     auto constraint_file_path = std::filesystem::path(_options.INPUTROOT) / constraint_name  ; 
     auto varibales_file_path = std::filesystem::path(_options.INPUTROOT) / "variables_dictionnary.csv" ; 
 

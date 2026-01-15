@@ -30,8 +30,10 @@ BendersMpi::BendersMpi(const BendersBaseOptions& options,
 
 void BendersMpi::InitializeProblems()
 {
+    std::cout<<"entered in InitializeProblems "<<std::endl ; 
     MatchProblemToId();
     BuildMasterProblem();
+    read_constraints_csv() ; 
     if (_options.CACHE_PROBLEMS)
     {
         int current_problem_id = 0;
@@ -61,8 +63,12 @@ void BendersMpi::InitializeProblems()
             { // Assign  [problemNumber % processCount] to processID
 
                 const auto subProblemFilePath = GetSubproblemPath(problem.first);
+                std::cout<<"subProblemFilePath "<<subProblemFilePath<<std::endl ; 
+                std::cout<<"adding sub problem !!!!"<<std::endl ; 
                 AddSubproblem(problem);
                 AddSubproblemName(problem.first);
+                if (_options.MICRO_ITERATIONS)
+                    AddSubproblemConstraints(subproblem_constraint_map_[problem.first],problem.first) ; 
             }
             current_problem_id++;
         }
@@ -391,6 +397,8 @@ void BendersMpi::free()
  */
 void BendersMpi::Run()
 {
+    if (_options.MICRO_ITERATIONS)
+        std::cout<<"micro iteration is true !!!!!"<<std::endl ; 
     if (init_data_)
     {
         PreRunInitialization();

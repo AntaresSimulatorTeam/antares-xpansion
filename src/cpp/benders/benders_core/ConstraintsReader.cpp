@@ -37,7 +37,6 @@ ConstraintsReader::ConstraintsReader(const std::filesystem::path constraint_file
             Tokenizer tok(line) ; 
             std::vector<std::string> tokens(tok.begin(), tok.end()) ; 
             int variable_index = subproblem_worker->get_variable_index(tokens[1]) ; 
-            std::cout<<"variable_index "<<variable_index<<std::endl ; 
             variables_names_map_[tokens[0]] = std::make_pair(tokens[1],variable_index) ;  
 
         }
