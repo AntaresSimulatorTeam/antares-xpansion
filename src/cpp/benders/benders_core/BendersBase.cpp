@@ -420,7 +420,11 @@ void BendersBase::ComputeXCut()
 
 void BendersBase::ComputeInvestCost()
 {
-    // The master cost is calculated as the sum of the investment cost and the overall subproblem cost under approximation. Calculating the investment cost this way is more robust than using x_cut, as it ensures that all master variables are accounted for.
+    // The master cost is calculated as the sum of the investment cost and the overall subproblem
+    // cost under approximation. Calculating the investment cost this way is more robust than
+    // computing c*x_cut, as it ensures that all master variables are accounted for. Indeed, x_cut
+    // contains only the variables that couple the master and the subproblems, and does not include
+    // master-only variables (which may have an associated cost).
     _data.invest_cost = _data.lb - _data.overall_subpb_cost_under_approx;
 }
 
@@ -1415,7 +1419,11 @@ bool BendersBase::isExceptionRaised() const
  */
 void BendersBase::UpdateOverallCosts()
 {
-    // The master cost is calculated as the sum of the investment cost and the overall subproblem cost under approximation. Calculating the investment cost this way is more robust than using x_cut, as it ensures that all master variables are accounted for.
+    // The master cost is calculated as the sum of the investment cost and the overall subproblem
+    // cost under approximation. Calculating the investment cost this way is more robust than
+    // computing c*x_cut, as it ensures that all master variables are accounted for. Indeed, x_cut
+    // contains only the variables that couple the master and the subproblems, and does not include
+    // master-only variables (which may have an associated cost).
     _data.invest_cost = _data.lb - _data.overall_subpb_cost_under_approx;
     relevantIterationData_.best._invest_cost = _data.invest_cost;
 }
