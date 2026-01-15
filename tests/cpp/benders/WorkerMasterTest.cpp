@@ -92,6 +92,7 @@ protected:
         master->_id_to_name = {{0, "var1"}, {1, "var2"}, {2, "var3"}};
         master->set_id_alpha(3);
         master->set_id_single_subpb_costs_under_approx({4});
+        master->_id_non_subpb_vars = {};
         return master;
     }
 };
