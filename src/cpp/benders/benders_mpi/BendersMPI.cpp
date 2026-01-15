@@ -400,7 +400,8 @@ void BendersMpi::free()
  */
 void BendersMpi::Run()
 {
-    benders_plugin_->OnBendersStart() ; 
+    if (benders_plugin_)
+        benders_plugin_->OnBendersStart() ; 
 
     if (init_data_)
     {
@@ -421,8 +422,9 @@ void BendersMpi::Run()
         /*Solve Master problem, get optimal value and cost and send it to
         * process*/
        step_1_solve_master();
-       benders_plugin_->OnBendersMasterIterationStart(_data.x_out) ; 
-       std::cout<<"after step_1_solve_master"<<std::endl ; 
+
+       if (benders_plugin_)
+            benders_plugin_->OnBendersMasterIterationStart(_data.x_out) ; 
 
 
         /*Gather cut from each subproblem in master thread and add them to Master

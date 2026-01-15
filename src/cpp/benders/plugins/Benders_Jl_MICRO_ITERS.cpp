@@ -8,7 +8,7 @@
 Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(std::filesystem::path jl_lib_path) 
 {
     std::cout<<"Benders_Jl_MICRO_ITERS constuctor !!!!!"<<std::endl ; 
-    std::ifstream investment_dict_path ("/home/bouchehdahed/studies/0-9_2000/investment_dictionary.csv") ; 
+    std::ifstream investment_dict_path ("./investment_dictionary.csv") ; 
 
     if (investment_dict_path.is_open()) 
     {

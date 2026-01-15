@@ -136,27 +136,34 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
                                                    math_log_driver_);
         break;
     }
-    
-    int n_subs = coupling_map.size() ; 
-    char** subs_ids = (char**) malloc(n_subs*sizeof(char*)) ; 
-    int sub_pos = 0 ; 
-    for (auto& [sub_name, sub_variables_map] : coupling_map) 
-    {
-        char* c = new char[sub_name.size() + 1];
-        std::strcpy(c, sub_name.c_str());
-        subs_ids[sub_pos] = c ; 
-        sub_pos++ ; 
-    }
 
-    std::shared_ptr<BendersPlugin> benders_plugin(benders_plugin_factory_->CreatePlugin(subs_ids,sub_pos)) ; 
-    if (benders_plugin) 
+    if (options_.MICRO_ITERATIONS)
     {
-        std::cout<<"********* benders plugin not null "<<std::endl ; 
-    }
-    benders->SetPlugin(benders_plugin) ;
 
+        
+        int n_subs = coupling_map.size() ; 
+        char** subs_ids = (char**) malloc(n_subs*sizeof(char*)) ; 
+        int sub_pos = 0 ; 
+        for (auto& [sub_name, sub_variables_map] : coupling_map) 
+        {
+            char* c = new char[sub_name.size() + 1];
+            std::strcpy(c, sub_name.c_str());
+            subs_ids[sub_pos] = c ; 
+            sub_pos++ ; 
+        }
+        
+        std::shared_ptr<BendersPlugin> benders_plugin(benders_plugin_factory_->CreatePlugin(subs_ids,sub_pos)) ; 
+        if (benders_plugin) 
+        {
+            std::cout<<"********* benders plugin not null "<<std::endl ; 
+        }
+        benders->SetPlugin(benders_plugin) ;
+        benders->set_subproblem_constraint_map(subproblem_constraints_map,constraint_coupling_map) ;
+
+    }
+        
     benders->set_input_map(coupling_map);
-    benders->set_subproblem_constraint_map(subproblem_constraints_map,constraint_coupling_map) ;
+
     auto criterion_input_holder = ProcessCriterionInput();
     benders->setCriterionComputationInputs(
       std::visit([](auto&& the_variant)
@@ -187,11 +194,14 @@ auto BendersFactory::PrepareForExecution(bool outer_loop) -> std::optional<Bende
                                                                "Benders");
     
 
-
     SubProblemConstraintMap subproblem_constraint_map ; 
     CouplingMap constraints_coupling_map ; 
+    if (options_.MICRO_ITERATIONS)
+    {
+        CouplingMapGenerator::BuildSubProblemConstaintMap(coupling_map,subproblem_constraint_map,constraints_coupling_map) ; 
 
-    CouplingMapGenerator::BuildSubProblemConstaintMap(coupling_map,subproblem_constraint_map,constraints_coupling_map) ; 
+    }
+    
     
     method_ = DeduceBendersMethod(coupling_map.size(), options_.BATCH_SIZE, outer_loop);
     context_ = bendersmethod_to_string(method_);
