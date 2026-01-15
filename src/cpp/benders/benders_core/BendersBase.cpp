@@ -420,12 +420,15 @@ void BendersBase::ComputeXCut()
 
 void BendersBase::ComputeInvestCost()
 {
-    // The master cost is calculated as the sum of the investment cost and the overall subproblem
-    // cost under approximation. Calculating the investment cost this way is more robust than
-    // computing c*x_cut, as it ensures that all master variables are accounted for. Indeed, x_cut
-    // contains only the variables that couple the master and the subproblems, and does not include
-    // master-only variables (which may have an associated cost).
-    _data.invest_cost = _data.lb - _data.overall_subpb_cost_under_approx;
+    _data.invest_cost = 0;
+
+    std::vector<double> obj(MasterObjectiveFunctionCoeffs());
+
+    for (const auto& [col_name, value]: _data.x_cut)
+    {
+        int col_id = _master->_name_to_id[col_name];
+        _data.invest_cost += obj[col_id] * _data.x_cut[col_name];
+    }
 }
 
 void BendersBase::compute_ub()
@@ -1419,12 +1422,14 @@ bool BendersBase::isExceptionRaised() const
  */
 void BendersBase::UpdateOverallCosts()
 {
-    // The master cost is calculated as the sum of the investment cost and the overall subproblem
-    // cost under approximation. Calculating the investment cost this way is more robust than
-    // computing c*x_cut, as it ensures that all master variables are accounted for. Indeed, x_cut
-    // contains only the variables that couple the master and the subproblems, and does not include
-    // master-only variables (which may have an associated cost).
-    _data.invest_cost = _data.lb - _data.overall_subpb_cost_under_approx;
+    auto obj = MasterObjectiveFunctionCoeffs();
+
+    _data.invest_cost = 0;
+    for (const auto& [var_name, var_id]: MasterVariables())
+    {
+        _data.invest_cost += obj[var_id] * _data.x_cut.at(var_name);
+    }
+
     relevantIterationData_.best._invest_cost = _data.invest_cost;
 }
 
