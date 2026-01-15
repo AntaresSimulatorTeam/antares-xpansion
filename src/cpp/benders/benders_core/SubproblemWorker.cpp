@@ -109,3 +109,14 @@ std::vector<double> SubproblemWorker::get_solution() const
     }
     return solution;
 }
+
+int SubproblemWorker::get_variable_index(const std::string& variable_name) 
+{
+    int variable_index(-1) ; 
+
+    if (_solver)     
+     variable_index = _solver->get_col_index(variable_name) ; 
+
+    return variable_index; 
+}
+

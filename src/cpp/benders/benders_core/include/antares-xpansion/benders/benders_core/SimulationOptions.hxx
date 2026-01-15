@@ -22,6 +22,9 @@ BENDERS_OPTIONS_MACRO(MASTER_FORMULATION, std::string, "integer", asString())
 // Integer between 0 and +inf
 BENDERS_OPTIONS_MACRO(AGGREGATION, int, 0, asInt())
 
+//MICRO ITERATIONS activated or not 
+BENDERS_OPTIONS_MACRO(MICRO_ITERATIONS,bool, false,asBool())
+
 // Path to the folder where output files should be printed
 BENDERS_OPTIONS_MACRO(OUTPUTROOT, std::string, ".", asString())
 

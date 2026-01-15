@@ -101,7 +101,9 @@ std::set<std::string> BendersFactory::ReadAreaFile()
 }
 
 auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
-                                      const CouplingMap& coupling_map) -> BendersEnvironment
+                       const CouplingMap& coupling_map,
+                       const SubProblemConstraintMap& subproblem_constraints_map,
+                       const CouplingMap& constraint_coupling_map) -> BendersEnvironment
 {
     std::unique_ptr<BendersBase> benders;
     switch (method_)
@@ -134,6 +136,7 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
     }
 
     benders->set_input_map(coupling_map);
+    benders->set_subproblem_constraint_map(subproblem_constraints_map,constraint_coupling_map) ;
     auto criterion_input_holder = ProcessCriterionInput();
     benders->setCriterionComputationInputs(
       std::visit([](auto&& the_variant)
@@ -162,7 +165,14 @@ auto BendersFactory::PrepareForExecution(bool outer_loop) -> std::optional<Bende
     const auto coupling_map = CouplingMapGenerator::BuildInput(benders_options.STRUCTURE_FILE,
                                                                logger_.get(),
                                                                "Benders");
+    
 
+
+    SubProblemConstraintMap subproblem_constraint_map ; 
+    CouplingMap constraints_coupling_map ; 
+
+    CouplingMapGenerator::BuildSubProblemConstaintMap(coupling_map,subproblem_constraint_map,constraints_coupling_map) ; 
+    
     method_ = DeduceBendersMethod(coupling_map.size(), options_.BATCH_SIZE, outer_loop);
     context_ = bendersmethod_to_string(method_);
 
@@ -175,7 +185,7 @@ auto BendersFactory::PrepareForExecution(bool outer_loop) -> std::optional<Bende
         }
     }
 
-    auto environment = ConfigureBenders(benders_options, coupling_map);
+    auto environment = ConfigureBenders(benders_options, coupling_map,subproblem_constraint_map,constraints_coupling_map);
     ConfigureSolverLog(environment.benders.get());
     return std::optional<BendersEnvironment>(std::move(environment));
 }

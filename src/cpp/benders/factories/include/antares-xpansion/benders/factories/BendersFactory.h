@@ -48,7 +48,10 @@ public:
 
 private:
     auto ConfigureBenders(const BendersBaseOptions& benders_options,
-                          const CouplingMap& coupling_map) -> BendersEnvironment;
+                          const CouplingMap& coupling_map,
+                          const SubProblemConstraintMap& subproblem_constraints_map,
+                          const CouplingMap& constraint_coupling_map) -> BendersEnvironment;
+                          
     [[nodiscard]] std::variant<Benders::Criterion::CriterionInputData,
                                Benders::Criterion::OuterLoopCriterionInputData>
     ProcessCriterionInput();

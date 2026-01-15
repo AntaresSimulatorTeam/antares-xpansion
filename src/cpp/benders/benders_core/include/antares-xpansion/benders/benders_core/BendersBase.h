@@ -14,6 +14,7 @@
 #include "WorkerMaster.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
+#include "antares-xpansion/benders/benders_core/ConstraintsReader.h"
 #include "common.h"
 
 /**
@@ -56,6 +57,11 @@ public:
     void set_input_map(const CouplingMap& coupling_map);
     int MasterRowIndex(const std::string& row_name) const;
     void MasterChangeRhs(int id_row, double val) const;
+    void AddSubproblemConstraints(const std::string& constraint_name,const std::string& sub_name) ;
+    void set_subproblem_constraint_map(const SubProblemConstraintMap& subproblem_constraint_map, 
+                                                    const CouplingMap& constraint_coupling_map) ; 
+    void read_constraints_csv() ; 
+
     // for test
     void MasterGetRhs(double& rhs, int id_row) const;
 
@@ -145,7 +151,10 @@ protected:
     // BendersCuts best_iteration_cuts_;
     // BendersCuts current_iteration_cuts_;
     VariableMap master_variable_map_;
+    constraintsPerLine constraints_csv_map_ ; 
     CouplingMap coupling_map_;
+    SubProblemConstraintMap subproblem_constraint_map_ ;
+    CouplingMap constraint_coupling_map_ ;  
     BendersRelevantIterationsData relevantIterationData_ = {WorkerMasterData(), WorkerMasterData()};
     bool init_data_ = true;
     bool init_problems_ = true;
@@ -292,6 +301,9 @@ protected:
 
     void BoundSimplexIterations(int subproblem_iteration);
     void ResetSimplexIterationsBounds();
+
+    ConstraintsReaderPtrMap constraint_map;
+    AddedConstraints added_constraints_ ; 
 
     SubproblemsMapPtr subproblem_map;
     SolverLogManager solver_log_manager_;

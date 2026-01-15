@@ -54,3 +54,24 @@ CouplingMap CouplingMapGenerator::BuildInput(const std::filesystem::path& struct
     summary.close();
     return coupling_map;
 }
+
+
+void CouplingMapGenerator::BuildSubProblemConstaintMap(const CouplingMap& coupling_map,
+                                                   SubProblemConstraintMap& subproblem_constraint_map, 
+                                                   CouplingMap& constraints_coupling_map) 
+{
+    for (auto&& [subProblemName,variable_map] : coupling_map) 
+    {
+        size_t underscore_pos = subProblemName.find('_') ; 
+        size_t dot_pos =  subProblemName.find('.') ; 
+
+        std::string subproblem_num = subProblemName.substr(underscore_pos + 1, dot_pos - underscore_pos - 1);
+        if (subproblem_num != "master") 
+        {
+            std::string constraint_str = "constraints/constraints_" + subproblem_num + ".mps" ; 
+            subproblem_constraint_map[subProblemName] = constraint_str ; 
+            constraints_coupling_map[constraint_str] = variable_map ; 
+        }
+
+    }
+}
