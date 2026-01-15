@@ -377,7 +377,7 @@ void BendersBase::get_master_value()
                  _data.single_subpb_costs_under_approx,
                  _data.non_subpb_vars_out); /*Get the optimal variables of the
                                                             Master Problem*/
-    _master->get_value(_data.lb); /*Get the optimal value of the Master Problem*/
+    _master->get_value(_data.lb);           /*Get the optimal value of the Master Problem*/
 
     for (const auto& pairIdName: _master->_id_to_name)
     {
