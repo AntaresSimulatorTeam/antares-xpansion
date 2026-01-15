@@ -13,7 +13,7 @@ class BendersPluginFactory
     public : 
 
         BendersPluginFactory( ) ;
-        BendersPlugin* CreatePlugin() ;
+        BendersPlugin* CreatePlugin(char** subs_ids, int n_subs) ;
 
     private :
 

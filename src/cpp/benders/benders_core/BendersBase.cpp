@@ -934,10 +934,7 @@ void BendersBase::set_subproblem_constraint_map(const SubProblemConstraintMap& s
 {
     subproblem_constraint_map_ = subproblem_constraint_map ; 
     constraint_coupling_map_ = constraint_coupling_map ; 
-    // for (auto&& [subproblem, constraints]: subproblem_constraint_map_) 
-    // {
-    //     added_constraints_[subproblem] = std::vector<std::string>() ; 
-    // }
+
 }
 
 //create the ConstraintReader object and add it to constraints_map

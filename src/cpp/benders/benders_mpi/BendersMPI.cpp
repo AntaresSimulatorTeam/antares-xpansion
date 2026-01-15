@@ -416,12 +416,14 @@ void BendersMpi::Run()
     while (!_data.stop)
     {
         ++_data.it;
-        benders_plugin_->OnBendersMasterIterationStart() ; 
         ResetSimplexIterationsBounds();
-
+        
         /*Solve Master problem, get optimal value and cost and send it to
-         * process*/
-        step_1_solve_master();
+        * process*/
+       step_1_solve_master();
+       benders_plugin_->OnBendersMasterIterationStart(_data.x_out) ; 
+       std::cout<<"after step_1_solve_master"<<std::endl ; 
+
 
         /*Gather cut from each subproblem in master thread and add them to Master
          * problem*/

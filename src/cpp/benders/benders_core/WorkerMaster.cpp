@@ -1,7 +1,6 @@
 #include "antares-xpansion/benders/benders_core/WorkerMaster.h"
 
 #include "antares-xpansion/helpers/solver_utils.h"
-#include <boost/tokenizer.hpp>
 
 /*!
  *  \brief Constructor of a Master Problem
@@ -41,20 +40,7 @@ WorkerMaster::WorkerMaster(const VariableMap& variable_map,
     _set_alpha_var();
     _set_nb_units_var_ids();
 
-    std::ifstream investment_dict_path ("./investment_dictionnary.csv") ; 
 
-    if (investment_dict_path.is_open()) 
-    {
-        std::string row ; 
-        typedef boost::tokenizer<boost::escaped_list_separator<char>> Tokenizer;
-
-        while (std::getline(investment_dict_path,row)) 
-        {
-            Tokenizer tok(row) ; 
-            std::vector<std::string> tokens(tok.begin(), tok.end());
-            binary_variables_ids_map_[tokens[1]] = tokens[0] ;
-        }
-    }
 }
 
 /*!

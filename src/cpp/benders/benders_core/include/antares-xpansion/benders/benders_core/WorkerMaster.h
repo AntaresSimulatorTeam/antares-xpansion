@@ -84,8 +84,6 @@ private:
     void _set_nb_units_var_ids();
     void restoreFeasibility(std::vector<double>& solution);
 
-    std::map<std::string,std::string> binary_variables_ids_map_ ; 
-
 public:
     // Used only for testing purposes
     void set_id_alpha(double id_alpha)

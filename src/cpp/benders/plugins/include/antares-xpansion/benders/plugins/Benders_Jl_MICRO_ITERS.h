@@ -1,15 +1,56 @@
 #pragma once 
 #include "antares-xpansion/benders/plugins/BendersPlugin.h"
+#include <filesystem>
+#include <dlfcn.h>
+#include <map>
+
+
+struct SubProblemIds 
+{
+    char** subProblems_ids ; 
+    int n_subproblems ; 
+} ; 
+
+
+struct CandidateLineMasterIterationResult 
+{
+    char* candidate_line_id ; 
+    int is_invested ; 
+}; 
+
+
+struct MasterBendersInput
+{
+    CandidateLineMasterIterationResult* candidates_res; 
+    int size; 
+} ; 
+
+using init_julia_FUNC = void (*) (int, char*); 
+using shut_down_julia_FUNC = void(*)(int) ; 
+using jl_load_variables_FUNC = void(*) (SubProblemIds) ; 
+using jl_compute_factors_for_microiterations_FUNC = void(*)(MasterBendersInput) ; 
+using jl_test_FUNC = void(*)() ; 
+
+
 
 class Benders_Jl_MICRO_ITERS : public BendersPlugin 
 {
     public : 
-        Benders_Jl_MICRO_ITERS() ; 
+        Benders_Jl_MICRO_ITERS(std::filesystem::path jl_lib_path) ; 
         virtual ~Benders_Jl_MICRO_ITERS()  ;
         virtual void OnBendersStart()  ; 
         virtual void OnBendersEnd()  ;  
-        virtual void OnBendersMasterIterationStart()  ;  
+        virtual void OnBendersMasterIterationStart(std::map<std::string,double>& benders_invested_master_result)  ;  
         virtual void OnBendersMasterIterationEnd()  ;  
         virtual void OnBendersMicroIterationStart()  ; 
         virtual void OnBendersMicroIterationEnd()  ; 
+
+        void SetSubProblemIDs(char** subs_ids, int n_subs) ; 
+
+    private : 
+        void* handle_ ; 
+        SubProblemIds sub_pb_ids_ ; 
+        std::map<std::string,std::string> binary_variables_ids_map_ ; 
+
+    
 } ; 

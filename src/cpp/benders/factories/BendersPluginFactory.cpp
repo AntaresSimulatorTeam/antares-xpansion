@@ -1,6 +1,8 @@
 
 #include "antares-xpansion/benders/factories/BendersPluginFactory.h"
 #include "antares-xpansion/benders/plugins/Benders_Jl_MICRO_ITERS.h"
+#include <filesystem>
+#include "antares-xpansion/benders/benders_core/common.h"
 
 
 BendersPluginFactory::BendersPluginFactory() 
@@ -11,30 +13,15 @@ BendersPluginFactory::BendersPluginFactory()
 }
 
 
-BendersPlugin* BendersPluginFactory::CreatePlugin() 
+BendersPlugin* BendersPluginFactory::CreatePlugin(char** subs_ids, int n_subs) 
 {
-    BendersPlugin* plugin = new Benders_Jl_MICRO_ITERS() ; 
-   #if 0
-    void* handle = dlopen(library_path_.c_str(),RTLD_LAZY)  ; 
 
-   if (!handle) 
-   {
-       std::cout<<"cannot find the library file"<<std::endl;  
-       dlclose(handle) ; 
-       return nullptr ; 
-   }
+    std::filesystem::path jl_lib_path = "./libmylib/lib/libmylib.so"; 
+    Benders_Jl_MICRO_ITERS* plugin_jl_microè_iters = new Benders_Jl_MICRO_ITERS(jl_lib_path) ; 
+    plugin_jl_microè_iters->SetSubProblemIDs(subs_ids,n_subs) ; 
+    
+    BendersPlugin* plugin = (BendersPlugin*) plugin_jl_microè_iters ; 
 
-   auto createPlugin = (CreatePluginFunc) dlsym(handle,"CreatePlugin") ; 
-   if (!createPlugin) 
-   {
-        std::cout<<"can't find CreatePlugin in the external library"<<std::endl ; 
-        dlclose(handle) ; 
-        return nullptr ; 
-   }
-
-    BendersPlugin* plugin = createPlugin() ; 
-    dlclose(handle) ; 
-#endif 
-   return plugin; 
+   return  plugin; 
 
 }
