@@ -69,6 +69,7 @@ protected:
     Point x_out;
     double overall_cost{0.0};
     DblVector single_costs{0.0};
+    DblVector non_subpb_vars{0.0};
 
     std::shared_ptr<WorkerMaster> init_worker_master(double master_solution_tolerance,
                                                      double cut_coefficient_tolerance) const
@@ -108,7 +109,7 @@ TEST_F(WorkerMasterTest, GetHandlesUpperBoundViolation)
     auto master = init_worker_master(master_solution_tolerance, cut_coefficient_tolerance);
     std::dynamic_pointer_cast<NOOPSolverForWorkerMaster>(master->_solver)
       ->setSolverBehavior(solution, col_types, lbs, ubs);
-    master->get(x_out, overall_cost, single_costs);
+    master->get(x_out, overall_cost, single_costs, non_subpb_vars);
 
     EXPECT_DOUBLE_EQ(
       x_out["var1"],
@@ -131,7 +132,7 @@ TEST_F(WorkerMasterTest, GetHandlesLowerBoundViolation)
     auto master = init_worker_master(master_solution_tolerance, cut_coefficient_tolerance);
     std::dynamic_pointer_cast<NOOPSolverForWorkerMaster>(master->_solver)
       ->setSolverBehavior(solution, col_types, lbs, ubs);
-    master->get(x_out, overall_cost, single_costs);
+    master->get(x_out, overall_cost, single_costs,non_subpb_vars);
 
     EXPECT_DOUBLE_EQ(x_out["var1"], 1.0);    // Should remain unchanged
     EXPECT_DOUBLE_EQ(x_out["var2"], 0.0);    // Should be restored to LB
@@ -152,7 +153,7 @@ TEST_F(WorkerMasterTest, GetHandlesIntegerVariables)
     auto master = init_worker_master(master_solution_tolerance, cut_coefficient_tolerance);
     std::dynamic_pointer_cast<NOOPSolverForWorkerMaster>(master->_solver)
       ->setSolverBehavior(solution, col_types, lbs, ubs);
-    master->get(x_out, overall_cost, single_costs);
+    master->get(x_out, overall_cost, single_costs, non_subpb_vars);
 
     EXPECT_DOUBLE_EQ(x_out["var1"], 1.0); // Continuous - should remain unchanged
     EXPECT_DOUBLE_EQ(x_out["var2"],
