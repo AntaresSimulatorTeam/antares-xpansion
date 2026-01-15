@@ -197,7 +197,8 @@ void BendersByBatch::ComputeXCut()
         for (int i(0); i < _data.non_subpb_vars_out.size(); ++i)
         {
             _data.non_subpb_vars_cut[i] = Options().SEPARATION_PARAM * _data.non_subpb_vars_out[i]
-                                + (1 - Options().SEPARATION_PARAM) * _data.non_subpb_vars_in[i];
+                                          + (1 - Options().SEPARATION_PARAM)
+                                              * _data.non_subpb_vars_in[i];
         }
     }
     roundXCut();

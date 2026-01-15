@@ -484,14 +484,17 @@ void WorkerMaster::_set_non_subproblems_var_ids()
     for (int i(0); i < ncols; i++)
     {
         bool unlisted_id = true;
-        for (const auto& kvp: _name_to_id) {
-            if (kvp.second == i) {
+        for (const auto& kvp: _name_to_id)
+        {
+            if (kvp.second == i)
+            {
                 unlisted_id = false;
             }
         }
         for (int j(0); j < _id_single_subpb_costs_under_approx.size(); ++j)
         {
-            if (_id_single_subpb_costs_under_approx[i] == i) {
+            if (_id_single_subpb_costs_under_approx[i] == i)
+            {
                 unlisted_id = false;
             }
         }
