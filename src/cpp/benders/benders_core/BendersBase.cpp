@@ -919,6 +919,16 @@ void BendersBase::read_constraints_csv()
     }
 }
 
+
+void BendersBase::SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin) 
+{
+    // std::cout<<"setting plugin on benders "<<std::end ; 
+    benders_plugin_ = benders_plugin ; 
+
+    if (benders_plugin_) 
+        std::cout<<"plugin is set correctly on benders base"<<std::endl ; 
+}
+
 void BendersBase::set_subproblem_constraint_map(const SubProblemConstraintMap& subproblem_constraint_map, 
                                                 const CouplingMap& constraint_coupling_map) 
 {
@@ -935,6 +945,7 @@ void BendersBase::AddSubproblemConstraints(const std::string& constraint_name,co
 {
     
     std::cout<<"creating AddSubproblemConstraints !!"<<std::endl ; 
+    std::cout<<"constraint names "<<constraint_name<<std::endl ; 
     auto constraint_file_path = std::filesystem::path(_options.INPUTROOT) / constraint_name  ; 
     auto varibales_file_path = std::filesystem::path(_options.INPUTROOT) / "variables_dictionnary.csv" ; 
 

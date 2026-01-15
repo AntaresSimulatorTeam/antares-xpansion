@@ -68,7 +68,10 @@ void BendersMpi::InitializeProblems()
                 AddSubproblem(problem);
                 AddSubproblemName(problem.first);
                 if (_options.MICRO_ITERATIONS)
+                {
+                    std::cout<<"***** adding constraints object !!!!!! "<<std::endl ; 
                     AddSubproblemConstraints(subproblem_constraint_map_[problem.first],problem.first) ; 
+                }
             }
             current_problem_id++;
         }
@@ -397,8 +400,8 @@ void BendersMpi::free()
  */
 void BendersMpi::Run()
 {
-    if (_options.MICRO_ITERATIONS)
-        std::cout<<"micro iteration is true !!!!!"<<std::endl ; 
+    benders_plugin_->OnBendersStart() ; 
+
     if (init_data_)
     {
         PreRunInitialization();
@@ -413,6 +416,7 @@ void BendersMpi::Run()
     while (!_data.stop)
     {
         ++_data.it;
+        benders_plugin_->OnBendersMasterIterationStart() ; 
         ResetSimplexIterationsBounds();
 
         /*Solve Master problem, get optimal value and cost and send it to
@@ -423,7 +427,11 @@ void BendersMpi::Run()
          * problem*/
         if (!exception_raised_)
         {
+            if (benders_plugin_)
+                benders_plugin_->OnBendersMicroIterationStart() ; 
             step_2_solve_subproblems_and_build_cuts();
+            if (benders_plugin_)
+                benders_plugin_->OnBendersMicroIterationEnd() ; 
         }
 
         if (!exception_raised_)
@@ -440,6 +448,10 @@ void BendersMpi::Run()
             mathLoggerDriver_->Print(_data);
             SaveCurrentBendersData();
         }
+    
+        if (benders_plugin_)
+            benders_plugin_->OnBendersMasterIterationEnd() ; 
+
     }
     if (_world.rank() == rank_0)
     {
@@ -448,6 +460,8 @@ void BendersMpi::Run()
         write_basis();
     }
     _world.barrier();
+    if (benders_plugin_)
+        benders_plugin_->OnBendersMicroIterationEnd() ; 
 }
 
 void BendersMpi::PreRunInitialization()

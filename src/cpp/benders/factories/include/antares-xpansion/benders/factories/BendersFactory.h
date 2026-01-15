@@ -1,6 +1,8 @@
 #pragma once
 #include <antares-xpansion/benders/benders_core/BendersMethod.h>
 #include <antares-xpansion/benders/benders_core/CriterionInputDataReader.h>
+#include <antares-xpansion/benders/factories/BendersPluginFactory.h>
+#include <antares-xpansion/benders/plugins/BendersPlugin.h>
 #include <antares-xpansion/benders/benders_core/common.h>
 #include <memory>
 #include <optional>
@@ -51,7 +53,7 @@ private:
                           const CouplingMap& coupling_map,
                           const SubProblemConstraintMap& subproblem_constraints_map,
                           const CouplingMap& constraint_coupling_map) -> BendersEnvironment;
-                          
+
     [[nodiscard]] std::variant<Benders::Criterion::CriterionInputData,
                                Benders::Criterion::OuterLoopCriterionInputData>
     ProcessCriterionInput();
@@ -65,6 +67,7 @@ private:
     std::shared_ptr<MathLoggerDriver> math_log_driver_;
     boost::mpi::environment* env_ = nullptr;
     boost::mpi::communicator* world_ = nullptr;
+    std::shared_ptr<BendersPluginFactory> benders_plugin_factory_ ; 
     int rank = 0;
     BENDERSMETHOD method_;
     BendersLoggerBase& benders_loggers_;

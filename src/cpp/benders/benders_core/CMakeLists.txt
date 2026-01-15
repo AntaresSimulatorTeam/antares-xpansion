@@ -72,6 +72,7 @@ target_link_libraries(benders_core
         ${JSONCPP_LIB}
         antaresXpansion::outer_loop_lib
         antaresXpansion::core
+        antaresXpansion::plugins
         fmt::fmt
 )
 

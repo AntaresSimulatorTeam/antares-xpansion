@@ -15,6 +15,7 @@
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/xpansion_interfaces/ILogger.h"
 #include "antares-xpansion/benders/benders_core/ConstraintsReader.h"
+#include <antares-xpansion/benders/plugins/BendersPlugin.h>
 #include "common.h"
 
 /**
@@ -45,7 +46,7 @@ public:
                 std::shared_ptr<MathLoggerDriver> mathLoggerDriver);
     virtual void launch() = 0;
     void set_solver_log_file(const std::filesystem::path& log_file);
-
+    void SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin) ; 
     double execution_time() const;
     virtual std::string BendersName() const = 0;
     // TODO rename to be consistent with data that it hold
@@ -148,6 +149,7 @@ protected:
     bool exception_raised_ = false;
     CurrentIterationData _data;
     WorkerMasterDataVect workerMasterDataVect_;
+    std::shared_ptr<BendersPlugin> benders_plugin_ ;
     // BendersCuts best_iteration_cuts_;
     // BendersCuts current_iteration_cuts_;
     VariableMap master_variable_map_;
