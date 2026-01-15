@@ -17,10 +17,10 @@ BendersPlugin* BendersPluginFactory::CreatePlugin(char** subs_ids, int n_subs)
 {
 
     std::filesystem::path jl_lib_path = "./libmylib/lib/libmylib.so"; 
-    Benders_Jl_MICRO_ITERS* plugin_jl_microè_iters = new Benders_Jl_MICRO_ITERS(jl_lib_path) ; 
-    plugin_jl_microè_iters->SetSubProblemIDs(subs_ids,n_subs) ; 
+    Benders_Jl_MICRO_ITERS* plugin_jl_micro_iters = new Benders_Jl_MICRO_ITERS(jl_lib_path) ; 
+    plugin_jl_micro_iters->SetSubProblemIDs(subs_ids,n_subs) ; 
     
-    BendersPlugin* plugin = (BendersPlugin*) plugin_jl_microè_iters ; 
+    BendersPlugin* plugin = (BendersPlugin*) plugin_jl_micro_iters ; 
 
    return  plugin; 
 
