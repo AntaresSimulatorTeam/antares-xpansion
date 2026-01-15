@@ -69,7 +69,7 @@ protected:
     Point x_out;
     double overall_cost{0.0};
     DblVector single_costs{0.0};
-    DblVector non_subpb_vars{0.0};
+    DblVector non_subpb_vars{};
 
     std::shared_ptr<WorkerMaster> init_worker_master(double master_solution_tolerance,
                                                      double cut_coefficient_tolerance) const

@@ -362,6 +362,7 @@ void BendersBase::get_master_value()
     Timer timer_master;
 
     _data.single_subpb_costs_under_approx.resize(_data.nsubproblem);
+    _data.non_subpb_vars_out.resize(_master->_id_non_subpb_vars.size());
     if (_options.BOUND_ALPHA)
     {
         _master->fix_alpha(_data.best_ub);
