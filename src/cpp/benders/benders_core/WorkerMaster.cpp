@@ -39,6 +39,7 @@ WorkerMaster::WorkerMaster(const VariableMap& variable_map,
     }
     _set_alpha_var();
     _set_nb_units_var_ids();
+    _set_non_subproblems_var_ids();
 }
 
 /*!
@@ -95,7 +96,8 @@ void WorkerMaster::restoreFeasibility(std::vector<double>& solution)
  */
 void WorkerMaster::get(Point& x_out,
                        double& overall_subpb_cost_under_approx,
-                       DblVector& single_subpb_costs_under_approx)
+                       DblVector& single_subpb_costs_under_approx,
+                       DblVector& non_subpb_vars_out)
 {
     x_out.clear();
     std::vector<double> solution(_solver->get_ncols());
@@ -118,6 +120,10 @@ void WorkerMaster::get(Point& x_out,
     for (int i(0); i < _id_single_subpb_costs_under_approx.size(); ++i)
     {
         single_subpb_costs_under_approx[i] = solution[_id_single_subpb_costs_under_approx[i]];
+    }
+    for (int i(0); i < _id_non_subpb_vars.size(); ++i)
+    {
+        non_subpb_vars_out[i] = solution[_id_non_subpb_vars[i]];
     }
 }
 
@@ -467,6 +473,31 @@ void WorkerMaster::_set_nb_units_var_ids()
         if (col_types[i] == 'I' || col_types[i] == 'B')
         {
             _id_int_vars.push_back(i);
+        }
+    }
+}
+
+void WorkerMaster::_set_non_subproblems_var_ids()
+{
+    int ncols = _solver->get_ncols();
+
+    for (int i(0); i < ncols; i++)
+    {
+        bool unlisted_id = true;
+        for (const auto& kvp: _name_to_id) {
+            if (kvp.second == i) {
+                unlisted_id = false;
+            }
+        }
+        for (int j(0); j < _id_single_subpb_costs_under_approx.size(); ++j)
+        {
+            if (_id_single_subpb_costs_under_approx[i] == i) {
+                unlisted_id = false;
+            }
+        }
+        if (i != _id_alpha && unlisted_id)
+        {
+            _id_non_subpb_vars.push_back(i);
         }
     }
 }

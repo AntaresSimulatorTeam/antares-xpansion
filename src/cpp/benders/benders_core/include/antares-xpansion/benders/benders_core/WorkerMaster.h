@@ -24,10 +24,12 @@ public:
                  double master_solution_tolerance,
                  double cut_coefficient_tolerance);
     ~WorkerMaster() override = default;
+    std::vector<int> _id_non_subpb_vars;
 
     void get(Point& x0,
              double& overall_subpb_cost_under_approx,
-             DblVector& single_subpb_costs_under_approx);
+             DblVector& single_subpb_costs_under_approx,
+             DblVector& non_subpb_vars_out);
     void get_dual_values(std::vector<double>& dual) const;
     [[nodiscard]] int get_number_constraint() const;
 
@@ -82,6 +84,7 @@ private:
     void _set_upper_bounds() const;
     void _set_alpha_var();
     void _set_nb_units_var_ids();
+    void _set_non_subproblems_var_ids();
     void restoreFeasibility(std::vector<double>& solution);
 
 public:

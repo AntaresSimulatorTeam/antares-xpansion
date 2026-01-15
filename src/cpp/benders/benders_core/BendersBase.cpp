@@ -373,7 +373,8 @@ void BendersBase::get_master_value()
 
     _master->get(_data.x_out,
                  _data.overall_subpb_cost_under_approx,
-                 _data.single_subpb_costs_under_approx); /*Get the optimal variables of the
+                 _data.single_subpb_costs_under_approx,
+                 _data.non_subpb_vars_out); /*Get the optimal variables of the
                                                             Master Problem*/
     _master->get_value(_data.lb); /*Get the optimal value of the Master Problem*/
 
@@ -406,6 +407,8 @@ void BendersBase::ComputeXCut()
     {
         _data.x_in = _data.x_out;
         _data.x_cut = _data.x_out;
+        _data.non_subpb_vars_in = _data.non_subpb_vars_out;
+        _data.non_subpb_vars_cut = _data.non_subpb_vars_out;
     }
     else
     {
@@ -413,6 +416,11 @@ void BendersBase::ComputeXCut()
         {
             _data.x_cut[name] = _options.SEPARATION_PARAM * _data.x_out[name]
                                 + (1 - _options.SEPARATION_PARAM) * _data.x_in[name];
+        }
+        for (int i(0); i < _data.non_subpb_vars_out.size(); ++i)
+        {
+            _data.non_subpb_vars_cut[i] = Options().SEPARATION_PARAM * _data.non_subpb_vars_out[i]
+                                + (1 - Options().SEPARATION_PARAM) * _data.non_subpb_vars_in[i];
         }
     }
     roundXCut();
@@ -428,6 +436,11 @@ void BendersBase::ComputeInvestCost()
     {
         int col_id = _master->_name_to_id[col_name];
         _data.invest_cost += obj[col_id] * _data.x_cut[col_name];
+    }
+    for (int i(0); i < _data.non_subpb_vars_cut.size(); ++i)
+    {
+        int col_id = _master->_id_non_subpb_vars[i];
+        _data.invest_cost += obj[col_id] * _data.non_subpb_vars_cut[i];
     }
 }
 
@@ -1423,11 +1436,15 @@ bool BendersBase::isExceptionRaised() const
 void BendersBase::UpdateOverallCosts()
 {
     auto obj = MasterObjectiveFunctionCoeffs();
-
     _data.invest_cost = 0;
     for (const auto& [var_name, var_id]: MasterVariables())
     {
         _data.invest_cost += obj[var_id] * _data.x_cut.at(var_name);
+    }
+    for (int i(0); i < _data.non_subpb_vars_cut.size(); ++i)
+    {
+        int col_id = _master->_id_non_subpb_vars[i];
+        _data.invest_cost += obj[col_id] * _data.non_subpb_vars_cut[i];
     }
 
     relevantIterationData_.best._invest_cost = _data.invest_cost;

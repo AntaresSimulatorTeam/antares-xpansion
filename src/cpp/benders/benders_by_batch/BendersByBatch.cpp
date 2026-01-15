@@ -182,14 +182,22 @@ void BendersByBatch::ComputeXCut()
     {
         _data.x_in = _data.x_out;
         _data.x_cut = _data.x_out;
+        _data.non_subpb_vars_in = _data.non_subpb_vars_out;
+        _data.non_subpb_vars_cut = _data.non_subpb_vars_out;
     }
     else
     {
         _data.x_in = _data.x_cut;
+        _data.non_subpb_vars_in = _data.non_subpb_vars_out;
         for (const auto& [name, value]: _data.x_out)
         {
             _data.x_cut[name] = Options().SEPARATION_PARAM * _data.x_out[name]
                                 + (1 - Options().SEPARATION_PARAM) * _data.x_in[name];
+        }
+        for (int i(0); i < _data.non_subpb_vars_out.size(); ++i)
+        {
+            _data.non_subpb_vars_cut[i] = Options().SEPARATION_PARAM * _data.non_subpb_vars_out[i]
+                                + (1 - Options().SEPARATION_PARAM) * _data.non_subpb_vars_in[i];
         }
     }
     roundXCut();

@@ -37,6 +37,9 @@ struct CurrentIterationData
     bool stop = false;
     double overall_subpb_cost_under_approx = 0;
     std::vector<double> single_subpb_costs_under_approx;
+    std::vector<double> non_subpb_vars_out;
+    std::vector<double> non_subpb_vars_in;
+    std::vector<double> non_subpb_vars_cut;
     double subproblem_cost;
     double invest_cost;
     int best_it = 0;
