@@ -59,6 +59,12 @@ void Benders_Jl_MICRO_ITERS::OnBendersStart()
         jl_test_FUNC jl_test = (jl_test_FUNC) dlsym(handle_,"jl_test") ; 
         jl_test() ; 
 
+        int size_subs = sub_pb_ids_.n_subproblems ; 
+        for (int i=0; i<size_subs; i++) 
+        {
+            std::cout<<sub_pb_ids_.subProblems_ids[i]<<std::endl ; 
+        }
+
         jl_load_variables_FUNC jl_load_variables = (jl_load_variables_FUNC) dlsym(handle_,"jl_load_variables") ; 
         jl_load_variables(sub_pb_ids_) ; 
     }
@@ -108,7 +114,22 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd()
 
 void Benders_Jl_MICRO_ITERS::SetSubProblemIDs(const char** subs_ids, int n_subs) 
 {
-    sub_pb_ids_ = SubProblemIds{subs_ids,n_subs} ; 
+
+    sub_ids_storage_.clear();
+    sub_ids_storage_.reserve(n_subs);
+    
+    for (int i = 0; i < n_subs; i++) {
+        sub_ids_storage_.push_back(subs_ids[i]);
+    }
+    
+
+    sub_ids_ptrs_.resize(n_subs);
+    for (int i = 0; i < n_subs; i++) {
+        sub_ids_ptrs_[i] = sub_ids_storage_[i].c_str();
+    }
+    
+    sub_pb_ids_ = SubProblemIds{sub_ids_ptrs_.data(), n_subs};
+
 }
 
 
