@@ -2,6 +2,7 @@
 #include "iostream"
 #include <fstream>
 #include <boost/tokenizer.hpp>
+#include <cassert>
 
 
 
@@ -14,7 +15,6 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const std::filesystem::path& inpu
 
     if (investment_dict_path.is_open()) 
     {
-        std::cout<<"investment_dictionnary.csv is opened correctly !!!"<<std::endl ; 
         std::string row ; 
         typedef boost::tokenizer<boost::escaped_list_separator<char>> Tokenizer;
 
@@ -25,21 +25,19 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const std::filesystem::path& inpu
             binary_variables_ids_map_[tokens[1]] = tokens[0] ;
         }
     }
+    assert(investment_dict_path.is_open()) ; 
     
     // assert(investment_dict_path.is_open(),"in")
 
     // std::filesystem::path julia_library_path ="/home/bouchehdahed/studies/0-9_2000//libmylib/lib/libmylib.so" ; 
-    handle_ = dlopen("/home/bouchehdahed/studies/0-9_2000//libmylib/lib/libmylib.so",RTLD_NOW) ; 
+    std::filesystem::path libmylib_path = input_root_ / "libmylib/lib/libmylib.so" ; 
+    handle_ = dlopen(libmylib_path.c_str(),RTLD_NOW) ; 
     if (handle_) 
     {
-        std::cout<<"handle_ is opened correclty for Benders_Jl_MICRO_ITERS !!!"<<std::endl ; 
         init_julia_FUNC init_julia = (init_julia_FUNC) dlsym(handle_,"init_julia") ; 
         init_julia(0,NULL) ;
     }
-    else 
-    {
-        std::cout<<"********************************* can t open handle _"<<std::endl;
-    }
+    assert(handle_) ; 
 }
 
 Benders_Jl_MICRO_ITERS::~Benders_Jl_MICRO_ITERS()
@@ -79,8 +77,9 @@ void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationStart(std::map<std::string,
     int cadidate_pos = 0 ; 
     for (auto& [line,value] :  benders_invested_master_result) 
     {
-        char* id_in_csv = new char[binary_variables_ids_map_[line].size() + 1];
-        std::strcpy(id_in_csv, binary_variables_ids_map_[line].c_str());
+        std::cout<<"binary map value key "<<line<<" equivalent "<<binary_variables_ids_map_[line]<<std::endl ; 
+        auto id_in_csv = binary_variables_ids_map_[line].c_str() ;
+        std::cout<<"id_in_csv : "<<id_in_csv<<" value : "<<value<<std::endl ; 
         candidates_iter_res[cadidate_pos] = CandidateLineMasterIterationResult{id_in_csv,value} ; 
         cadidate_pos++;
     }
@@ -88,10 +87,7 @@ void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationStart(std::map<std::string,
     MasterBendersInput master_benders_input = MasterBendersInput{candidates_iter_res,benders_invested_master_result.size()} ; 
     
     jl_compute_factors_for_microiterations_FUNC compute_factors = (jl_compute_factors_for_microiterations_FUNC) dlsym(handle_,"jl_compute_factors_for_microiterations") ; 
-    std::cout<<"before compute_factors"<<std::endl ; 
-    compute_factors(master_benders_input) ;
-    std::cout<<"after compute_factors"<<std::endl ; 
- 
+    compute_factors(master_benders_input) ; 
 }
 
 void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationEnd() 

@@ -8,8 +8,6 @@
 BendersPluginFactory::BendersPluginFactory(const std::filesystem::path& input_root) 
 
 {
-    std::cout<<"BendersPluginFactory Constructor"<<std::endl ; 
-
     library_path_ = input_root / "libmylib/lib/libmylib.so" ; 
     input_root_ = input_root ; 
 }
@@ -18,7 +16,7 @@ BendersPluginFactory::BendersPluginFactory(const std::filesystem::path& input_ro
 BendersPlugin* BendersPluginFactory::CreatePlugin(char** subs_ids, int n_subs) 
 {
 
-    Benders_Jl_MICRO_ITERS* plugin_jl_micro_iters = new Benders_Jl_MICRO_ITERS(library_path_) ; 
+    Benders_Jl_MICRO_ITERS* plugin_jl_micro_iters = new Benders_Jl_MICRO_ITERS(input_root_) ; 
     plugin_jl_micro_iters->SetSubProblemIDs(subs_ids,n_subs) ; 
     
     BendersPlugin* plugin = (BendersPlugin*) plugin_jl_micro_iters ; 

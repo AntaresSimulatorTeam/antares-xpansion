@@ -14,7 +14,7 @@ struct SubProblemIds
 
 struct CandidateLineMasterIterationResult 
 {
-    char* candidate_line_id ; 
+    const char* candidate_line_id ; 
     int is_invested ; 
 }; 
 

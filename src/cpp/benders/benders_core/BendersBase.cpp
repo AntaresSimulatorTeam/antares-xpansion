@@ -894,13 +894,11 @@ void BendersBase::read_constraints_csv()
         return ; 
     else 
     {
-        std::cout<<"reading constraints from csv "<<std::endl  ;
         std::string csv_name = "constraints_dictionnary.csv" ; 
         auto csv_path = std::filesystem::path(_options.INPUTROOT) / csv_name ; 
         std::ifstream file(csv_path) ; 
         if (file.is_open()) 
         {
-            std::cout<<"constraint csv file opened correctly "<<std::endl ; 
             std::string line;
             typedef boost::tokenizer<boost::escaped_list_separator<char>> Tokenizer;
             
@@ -922,7 +920,6 @@ void BendersBase::read_constraints_csv()
 
 void BendersBase::SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin) 
 {
-    // std::cout<<"setting plugin on benders "<<std::end ; 
     benders_plugin_ = benders_plugin ; 
 
     if (benders_plugin_) 
@@ -941,8 +938,6 @@ void BendersBase::set_subproblem_constraint_map(const SubProblemConstraintMap& s
 void BendersBase::AddSubproblemConstraints(const std::string& constraint_name,const std::string& sub_name) 
 {
     
-    std::cout<<"creating AddSubproblemConstraints !!"<<std::endl ; 
-    std::cout<<"constraint names "<<constraint_name<<std::endl ; 
     auto constraint_file_path = std::filesystem::path(_options.INPUTROOT) / constraint_name  ; 
     auto varibales_file_path = std::filesystem::path(_options.INPUTROOT) / "variables_dictionnary.csv" ; 
 
