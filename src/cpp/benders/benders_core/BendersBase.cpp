@@ -600,8 +600,8 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                   _options.LAST_MASTER_MPS + MPS_SUFFIX,
                   _writer);
 
-    if (benders_plugin_)
-        benders_plugin_->OnBendersMicroIterationEnd() ; 
+    // if (benders_plugin_)
+    //     benders_plugin_->OnBendersMicroIterationEnd(worker) ; 
 
     std::cout<<"finished solving subproblem "<<name<<std::endl ; 
 
@@ -609,16 +609,6 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
 
     worker->get_subgradient(subproblem_data.var_name_and_subgradient);
 
-    std::cout<<"size of subgradient "<<subproblem_data.var_name_and_subgradient.size()<<std::endl ; 
-    int i = 0 ; 
-    for (auto& [name,value] : subproblem_data.var_name_and_subgradient) 
-    {
-        if (i<15)
-        {
-            std::cout<<"name "<<name<<"  value  "<<value<<std::endl ; 
-            i++ ; 
-        }
-    }
     worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 }
@@ -962,7 +952,7 @@ void BendersBase::AddSubproblemConstraints(const std::string& constraint_name,co
 {
     
     auto constraint_file_path = std::filesystem::path(_options.INPUTROOT) / constraint_name  ; 
-    auto varibales_file_path = std::filesystem::path(_options.INPUTROOT) / "variables_dictionnary.csv" ; 
+    auto varibales_file_path = std::filesystem::path(_options.INPUTROOT) / "variables_dictionary.csv" ; 
 
 
     constraint_map[constraint_name] = std::make_shared<ConstraintsReader>(

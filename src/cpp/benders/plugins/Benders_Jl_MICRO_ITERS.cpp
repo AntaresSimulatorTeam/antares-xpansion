@@ -1,8 +1,10 @@
 #include "antares-xpansion/benders/plugins/Benders_Jl_MICRO_ITERS.h"
+
 #include "iostream"
 #include <fstream>
 #include <boost/tokenizer.hpp>
 #include <cassert>
+
 
 
 
@@ -122,7 +124,7 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationStart()
     std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersMicroIterationStart"<<std::endl; 
 }
 
-void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd() 
+void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(ConstraintsReader constraint_reader) 
 {
     std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersMicroIterationEnd"<<std::endl ; 
 }

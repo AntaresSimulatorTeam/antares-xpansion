@@ -66,7 +66,6 @@ void BendersMpi::InitializeProblems()
                 AddSubproblemName(problem.first);
                 if (_options.MICRO_ITERATIONS)
                 {
-                    std::cout<<"***** adding constraints object !!!!!! "<<std::endl ; 
                     AddSubproblemConstraints(subproblem_constraint_map_[problem.first],problem.first) ; 
                 }
             }
@@ -459,8 +458,7 @@ void BendersMpi::Run()
         write_basis();
     }
     _world.barrier();
-    if (benders_plugin_)
-        benders_plugin_->OnBendersMicroIterationEnd() ; 
+     
 }
 
 void BendersMpi::PreRunInitialization()

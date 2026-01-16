@@ -26,9 +26,13 @@ ConstraintsReader::ConstraintsReader(const std::filesystem::path constraint_file
         std::cout<<"number of rows in constraint problem "<<n_rows<<std::endl ;  
     }
 
+
+    std::cout<<"pint variable dict path : "<<variables_names_path<<std::endl ; 
     std::ifstream variables_file(variables_names_path) ; 
     if (variables_file.is_open()) 
     {
+
+        std::cout<<"from constraint reader read variables correctly !!!"<<std::endl ;
         std::string line;
         typedef boost::tokenizer<boost::escaped_list_separator<char>> Tokenizer;
 
@@ -46,6 +50,12 @@ ConstraintsReader::ConstraintsReader(const std::filesystem::path constraint_file
 
 
 }
+
+std::shared_ptr<SubproblemWorker> ConstraintsReader::get_subproblem_worker() 
+{
+    return subproblem_worker_ ; 
+}
+
 
 
 int ConstraintsReader::get_row_index(const std::string& name ) 

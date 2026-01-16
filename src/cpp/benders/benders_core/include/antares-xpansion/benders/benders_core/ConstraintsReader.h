@@ -1,12 +1,10 @@
+#pragma once 
+
 #include "IBendersProblemProvider.h"
 #include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
 #include <antares-xpansion/benders/benders_core/SolverIO.h>
 #include <utility>
-
-class ConstraintsReader ; 
-typedef std::shared_ptr<ConstraintsReader> ConstraintsReaderPtr ; 
-typedef std::map<std::string,ConstraintsReaderPtr> ConstraintsReaderPtrMap ; 
 
 
 struct constraintRow 
@@ -37,6 +35,7 @@ class ConstraintsReader
     std::vector<std::pair<std::string,double>> get_variables_values() ; 
 
     constraintRow get_row(const std::string& name) ;
+    std::shared_ptr<SubproblemWorker> get_subproblem_worker() ; 
 
     void get_variables_values_in_csv(std::filesystem::path variables_values_csv) ; 
 
@@ -48,3 +47,7 @@ class ConstraintsReader
     std::shared_ptr<SubproblemWorker> subproblem_worker_ ; 
     SolverIO solver_IO_ ; 
 } ; 
+
+
+typedef std::shared_ptr<ConstraintsReader> ConstraintsReaderPtr ; 
+typedef std::map<std::string,ConstraintsReaderPtr> ConstraintsReaderPtrMap ; 
