@@ -188,7 +188,7 @@ void BendersByBatch::ComputeXCut()
     else
     {
         _data.x_in = _data.x_cut;
-        _data.non_subpb_vars_in = _data.non_subpb_vars_out;
+        _data.non_subpb_vars_in = _data.non_subpb_vars_cut;
         for (const auto& [name, value]: _data.x_out)
         {
             _data.x_cut[name] = Options().SEPARATION_PARAM * _data.x_out[name]

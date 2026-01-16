@@ -193,6 +193,7 @@ void BendersBase::update_best_ub()
     if (_data.ub < _data.best_ub)
     {
         _data.x_in = _data.x_cut;
+        _data.non_subpb_vars_in = _data.non_subpb_vars_cut;
         _data.best_ub = _data.ub;
         _data.best_it = _data.it;
         FillWorkerMasterData(relevantIterationData_.best);
