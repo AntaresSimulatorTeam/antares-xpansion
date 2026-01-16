@@ -493,7 +493,7 @@ void WorkerMaster::_set_non_subproblems_var_ids()
         }
         for (int j(0); j < _id_single_subpb_costs_under_approx.size(); ++j)
         {
-            if (_id_single_subpb_costs_under_approx[i] == i)
+            if (_id_single_subpb_costs_under_approx[j] == i)
             {
                 unlisted_id = false;
             }
