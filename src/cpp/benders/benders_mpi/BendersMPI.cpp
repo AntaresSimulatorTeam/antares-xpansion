@@ -428,11 +428,9 @@ void BendersMpi::Run()
          * problem*/
         if (!exception_raised_)
         {
-            if (benders_plugin_)
-                benders_plugin_->OnBendersMicroIterationStart() ; 
+            
             step_2_solve_subproblems_and_build_cuts();
-            if (benders_plugin_)
-                benders_plugin_->OnBendersMicroIterationEnd() ; 
+        
         }
 
         if (!exception_raised_)

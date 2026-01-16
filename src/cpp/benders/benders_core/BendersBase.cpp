@@ -592,10 +592,19 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
 {
     Timer subproblem_timer;
     worker->fix_to(_data.x_cut);
+    if (benders_plugin_)
+        benders_plugin_->OnBendersMicroIterationStart() ; 
+    
     worker->solve(subproblem_data.lpstatus,
                   _options.OUTPUTROOT,
                   _options.LAST_MASTER_MPS + MPS_SUFFIX,
                   _writer);
+
+    if (benders_plugin_)
+        benders_plugin_->OnBendersMicroIterationEnd() ; 
+
+    std::cout<<"finished solving subproblem "<<name<<std::endl ; 
+
     worker->get_value(subproblem_data.subproblem_cost);
 
     worker->get_subgradient(subproblem_data.var_name_and_subgradient);
