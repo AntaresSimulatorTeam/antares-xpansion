@@ -244,7 +244,7 @@ protected:
         options.MASTER_FORMULATION = master_formulation;
 
         options.RESUME = false;
-        options.AGGREGATION = false;
+        options.NB_CUTS_PER_ITER = false;
         options.TRACE = false;
         options.BOUND_ALPHA = true;
 
