@@ -32,6 +32,6 @@ public:
     void fix_to(const Point& x0) const;
     int get_variable_index(const std::string& variable_name) ; 
 
-
+    
     void get_subgradient(Point& subgradient) const;
 };

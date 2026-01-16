@@ -26,9 +26,25 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const std::filesystem::path& inpu
         }
     }
     assert(investment_dict_path.is_open()) ; 
-    
-    // assert(investment_dict_path.is_open(),"in")
 
+    std::filesystem::path variables_dictionary_path = input_root / "variables_dictionary.csv" ; 
+    std::ifstream variables_dict(variables_dictionary_path.c_str()) ; 
+
+    if (variables_dict.is_open()) 
+    {
+        std::string row ; 
+        typedef boost::tokenizer<boost::escaped_list_separator<char>> Tokenizer;
+
+        while (std::getline(variables_dict,row)) 
+        {
+            Tokenizer tok(row) ; 
+            std::vector<std::string> tokens(tok.begin(), tok.end());
+            variables_to_follow_[tokens[1]] = tokens[0] ;
+        }
+    }
+    
+    assert(variables_dict.is_open()) ; 
+    
     // std::filesystem::path julia_library_path ="/home/bouchehdahed/studies/0-9_2000//libmylib/lib/libmylib.so" ; 
     std::filesystem::path libmylib_path = input_root_ / "libmylib/lib/libmylib.so" ; 
     handle_ = dlopen(libmylib_path.c_str(),RTLD_NOW) ; 
