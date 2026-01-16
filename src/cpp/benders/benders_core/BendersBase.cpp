@@ -608,6 +608,17 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     worker->get_value(subproblem_data.subproblem_cost);
 
     worker->get_subgradient(subproblem_data.var_name_and_subgradient);
+
+    std::cout<<"size of subgradient "<<subproblem_data.var_name_and_subgradient.size()<<std::endl ; 
+    int i = 0 ; 
+    for (auto& [name,value] : subproblem_data.var_name_and_subgradient) 
+    {
+        if (i<15)
+        {
+            std::cout<<"name "<<name<<"  value  "<<value<<std::endl ; 
+            i++ ; 
+        }
+    }
     worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
 }

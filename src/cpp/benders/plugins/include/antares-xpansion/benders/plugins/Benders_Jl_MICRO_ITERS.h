@@ -53,6 +53,7 @@ class Benders_Jl_MICRO_ITERS : public BendersPlugin
         std::filesystem::path input_root_ ; 
         SubProblemIds sub_pb_ids_ ; 
         std::map<std::string,std::string> binary_variables_ids_map_ ; 
+        std::map<std::string,std::string> variables_to_follow_ ; 
         std::vector<std::string> sub_ids_storage_;  
         std::vector<const char*> sub_ids_ptrs_;  
     
