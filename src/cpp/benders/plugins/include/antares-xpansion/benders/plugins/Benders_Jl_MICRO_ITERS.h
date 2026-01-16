@@ -36,7 +36,7 @@ using jl_test_FUNC = void(*)() ;
 class Benders_Jl_MICRO_ITERS : public BendersPlugin 
 {
     public : 
-        Benders_Jl_MICRO_ITERS(std::filesystem::path jl_lib_path) ; 
+        Benders_Jl_MICRO_ITERS(const std::filesystem::path& input_root) ; 
         virtual ~Benders_Jl_MICRO_ITERS()  ;
         virtual void OnBendersStart()  ; 
         virtual void OnBendersEnd()  ;  
@@ -49,6 +49,7 @@ class Benders_Jl_MICRO_ITERS : public BendersPlugin
 
     private : 
         void* handle_ ; 
+        std::filesystem::path input_root_ ; 
         SubProblemIds sub_pb_ids_ ; 
         std::map<std::string,std::string> binary_variables_ids_map_ ; 
 

@@ -5,10 +5,12 @@
 
 
 
-Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(std::filesystem::path jl_lib_path) 
+Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const std::filesystem::path& input_root) 
 {
     std::cout<<"Benders_Jl_MICRO_ITERS constuctor !!!!!"<<std::endl ; 
-    std::ifstream investment_dict_path ("./investment_dictionary.csv") ; 
+    input_root_ = input_root ; 
+    std::filesystem::path investment_dictionary_path = input_root / "investment_dictionary.csv" ;
+    std::ifstream investment_dict_path (investment_dictionary_path.c_str()) ; 
 
     if (investment_dict_path.is_open()) 
     {
@@ -23,13 +25,20 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(std::filesystem::path jl_lib_path
             binary_variables_ids_map_[tokens[1]] = tokens[0] ;
         }
     }
+    
+    // assert(investment_dict_path.is_open(),"in")
 
-    handle_ = dlopen(jl_lib_path.c_str(),RTLD_NOW) ; 
+    // std::filesystem::path julia_library_path ="/home/bouchehdahed/studies/0-9_2000//libmylib/lib/libmylib.so" ; 
+    handle_ = dlopen("/home/bouchehdahed/studies/0-9_2000//libmylib/lib/libmylib.so",RTLD_NOW) ; 
     if (handle_) 
     {
         std::cout<<"handle_ is opened correclty for Benders_Jl_MICRO_ITERS !!!"<<std::endl ; 
         init_julia_FUNC init_julia = (init_julia_FUNC) dlsym(handle_,"init_julia") ; 
         init_julia(0,NULL) ;
+    }
+    else 
+    {
+        std::cout<<"********************************* can t open handle _"<<std::endl;
     }
 }
 
@@ -79,7 +88,10 @@ void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationStart(std::map<std::string,
     MasterBendersInput master_benders_input = MasterBendersInput{candidates_iter_res,benders_invested_master_result.size()} ; 
     
     jl_compute_factors_for_microiterations_FUNC compute_factors = (jl_compute_factors_for_microiterations_FUNC) dlsym(handle_,"jl_compute_factors_for_microiterations") ; 
-    compute_factors(master_benders_input) ; 
+    std::cout<<"before compute_factors"<<std::endl ; 
+    compute_factors(master_benders_input) ;
+    std::cout<<"after compute_factors"<<std::endl ; 
+ 
 }
 
 void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationEnd() 
