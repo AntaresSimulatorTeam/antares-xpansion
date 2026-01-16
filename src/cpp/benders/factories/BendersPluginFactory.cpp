@@ -13,7 +13,7 @@ BendersPluginFactory::BendersPluginFactory(const std::filesystem::path& input_ro
 }
 
 
-BendersPlugin* BendersPluginFactory::CreatePlugin(char** subs_ids, int n_subs) 
+BendersPlugin* BendersPluginFactory::CreatePlugin(const char** subs_ids, int n_subs) 
 {
 
     Benders_Jl_MICRO_ITERS* plugin_jl_micro_iters = new Benders_Jl_MICRO_ITERS(input_root_) ; 

@@ -7,7 +7,7 @@
 
 struct SubProblemIds 
 {
-    char** subProblems_ids ; 
+    const char** subProblems_ids ; 
     int n_subproblems ; 
 } ; 
 
@@ -45,7 +45,7 @@ class Benders_Jl_MICRO_ITERS : public BendersPlugin
         virtual void OnBendersMicroIterationStart()  ; 
         virtual void OnBendersMicroIterationEnd()  ; 
 
-        void SetSubProblemIDs(char** subs_ids, int n_subs) ; 
+        void SetSubProblemIDs(const char** subs_ids, int n_subs) ; 
 
     private : 
         void* handle_ ; 

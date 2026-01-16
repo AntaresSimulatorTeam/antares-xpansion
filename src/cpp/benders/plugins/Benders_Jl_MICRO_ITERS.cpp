@@ -106,7 +106,7 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd()
 }
 
 
-void Benders_Jl_MICRO_ITERS::SetSubProblemIDs(char** subs_ids, int n_subs) 
+void Benders_Jl_MICRO_ITERS::SetSubProblemIDs(const char** subs_ids, int n_subs) 
 {
     sub_pb_ids_ = SubProblemIds{subs_ids,n_subs} ; 
 }

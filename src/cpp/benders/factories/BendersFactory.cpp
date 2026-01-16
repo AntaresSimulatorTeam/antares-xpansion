@@ -142,13 +142,14 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
 
         
         int n_subs = coupling_map.size() ; 
-        char** subs_ids = (char**) malloc(n_subs*sizeof(char*)) ; 
+        const char** subs_ids = (const char**) malloc(n_subs*sizeof(const char*)) ; 
         int sub_pos = 0 ; 
         for (auto& [sub_name, sub_variables_map] : coupling_map) 
         {
-            char* c = new char[sub_name.size() + 1];
-            std::strcpy(c, sub_name.c_str());
-            subs_ids[sub_pos] = c ; 
+            subs_ids[sub_pos] = sub_name.c_str() ; 
+            // char* c = new char[sub_name.size() + 1];
+            // std::strcpy(c, sub_name.c_str());
+            // subs_ids[sub_pos] = c ; 
             sub_pos++ ; 
         }
         sub_pos-- ; 

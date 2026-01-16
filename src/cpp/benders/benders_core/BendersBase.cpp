@@ -460,6 +460,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
 
 void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
 {
+    std::cout<<"entered in GetSubproblemCutFast !!!"<<std::endl ; 
     // With gcc9 there was no parallelisation when iterating on the map directly
     // so with project it in a vector
     std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
@@ -555,6 +556,8 @@ std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
 
 void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
 {
+
+    std::cout<<"got through GetSubproblemCutCache !!! "<<std::endl ; 
     auto&& nameAndVariableMap = mapAsVectorOfPair(coupling_map_);
     std::mutex m;
     selectPolicy(

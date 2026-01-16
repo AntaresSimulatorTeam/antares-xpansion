@@ -13,7 +13,7 @@ class BendersPluginFactory
     public : 
 
         BendersPluginFactory(const std::filesystem::path& input_root) ;
-        BendersPlugin* CreatePlugin(char** subs_ids, int n_subs) ;
+        BendersPlugin* CreatePlugin(const char** subs_ids, int n_subs) ;
 
     private :
 
