@@ -5,19 +5,20 @@
 #include "antares-xpansion/benders/benders_core/common.h"
 
 
-BendersPluginFactory::BendersPluginFactory() 
+BendersPluginFactory::BendersPluginFactory(const std::filesystem::path& input_root) 
 
 {
     std::cout<<"BendersPluginFactory Constructor"<<std::endl ; 
-    library_path_ = "" ; 
+
+    library_path_ = input_root / "libmylib/lib/libmylib.so" ; 
+    input_root_ = input_root ; 
 }
 
 
 BendersPlugin* BendersPluginFactory::CreatePlugin(char** subs_ids, int n_subs) 
 {
 
-    std::filesystem::path jl_lib_path = "./libmylib/lib/libmylib.so"; 
-    Benders_Jl_MICRO_ITERS* plugin_jl_micro_iters = new Benders_Jl_MICRO_ITERS(jl_lib_path) ; 
+    Benders_Jl_MICRO_ITERS* plugin_jl_micro_iters = new Benders_Jl_MICRO_ITERS(library_path_) ; 
     plugin_jl_micro_iters->SetSubProblemIDs(subs_ids,n_subs) ; 
     
     BendersPlugin* plugin = (BendersPlugin*) plugin_jl_micro_iters ; 
