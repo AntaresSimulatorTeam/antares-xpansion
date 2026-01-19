@@ -501,7 +501,8 @@ void WorkerMaster::_set_master_only_var_ids()
         }
     }
 
-    assert(_id_master_only_vars.size() + subproblems_count + 1 + _name_to_id.size() == (size_t)ncols && "Master variables indices are inconsistent with ncols.");
+    assert(_id_master_only_vars.size() + subproblems_count + 1 + _name_to_id.size() == (size_t)ncols
+           && "Master variables indices are inconsistent with ncols.");
 }
 
 void WorkerMaster::DeactivateIntegrityConstraints() const

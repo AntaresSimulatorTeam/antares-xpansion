@@ -196,9 +196,10 @@ void BendersByBatch::ComputeXCut()
         }
         for (int i(0); i < _data.master_only_vars_out.size(); ++i)
         {
-            _data.master_only_vars_cut[i] = Options().SEPARATION_PARAM * _data.master_only_vars_out[i]
-                                          + (1 - Options().SEPARATION_PARAM)
-                                              * _data.master_only_vars_in[i];
+            _data.master_only_vars_cut[i] = Options().SEPARATION_PARAM
+                                              * _data.master_only_vars_out[i]
+                                            + (1 - Options().SEPARATION_PARAM)
+                                                * _data.master_only_vars_in[i];
         }
     }
     roundXCut();

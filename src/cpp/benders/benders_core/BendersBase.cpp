@@ -378,7 +378,7 @@ void BendersBase::get_master_value()
                  _data.single_subpb_costs_under_approx,
                  _data.master_only_vars_out); /*Get the optimal variables of the
                                                             Master Problem*/
-    _master->get_value(_data.lb);           /*Get the optimal value of the Master Problem*/
+    _master->get_value(_data.lb);             /*Get the optimal value of the Master Problem*/
 
     for (const auto& pairIdName: _master->_id_to_name)
     {
@@ -421,9 +421,10 @@ void BendersBase::ComputeXCut()
         }
         for (int i(0); i < _data.master_only_vars_out.size(); ++i)
         {
-            _data.master_only_vars_cut[i] = Options().SEPARATION_PARAM * _data.master_only_vars_out[i]
-                                          + (1 - Options().SEPARATION_PARAM)
-                                              * _data.master_only_vars_in[i];
+            _data.master_only_vars_cut[i] = Options().SEPARATION_PARAM
+                                              * _data.master_only_vars_out[i]
+                                            + (1 - Options().SEPARATION_PARAM)
+                                                * _data.master_only_vars_in[i];
         }
     }
     roundXCut();
