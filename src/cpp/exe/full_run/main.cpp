@@ -34,14 +34,14 @@ void presolve(const std::filesystem::path& options_file)
 
 int main(int argc, char** argv)
 {
-    mpi::environment env(argc, argv);
-    mpi::communicator world;
-    auto options_parser = FullRunOptionsParser();
-    std::filesystem::path xpansion_output_dir;
-    options_parser.Parse(argc, argv);
-    if (world.rank() == 0)
+    try
     {
-        try
+        mpi::environment env(argc, argv);
+        mpi::communicator world;
+        auto options_parser = FullRunOptionsParser();
+        std::filesystem::path xpansion_output_dir;
+        options_parser.Parse(argc, argv);
+        if (world.rank() == 0)
         {
             ProblemGeneration pbg(options_parser);
             xpansion_output_dir = pbg.updateProblems();
@@ -49,34 +49,35 @@ int main(int argc, char** argv)
                                        xpansion_output_dir / "lp" / "area.txt",
                                        std::filesystem::copy_options::overwrite_existing);
         }
-        catch (std::exception& e)
-        {
-            std::cerr << "error: " << e.what() << std::endl;
-            return 1;
-        }
-        catch (...)
-        {
-            std::cerr << "Exception of unknown type!" << std::endl;
-        }
-    }
-    world.barrier();
+        world.barrier();
 
-    const auto options_file = options_parser.BendersOptionsFile();
-    if (options_parser.presolve())
-    {
-        presolve(options_file);
-    }
+        const auto options_file = options_parser.BendersOptionsFile();
+        if (options_parser.presolve())
+        {
+            presolve(options_file);
+        }
 
-    auto solver = options_parser.Solver();
-    if (solver == "benders")
-    {
-        auto benders_factory = BendersApp(options_file, env, world, SOLVER::BENDERS);
-        benders_factory.Run();
+        auto solver = options_parser.Solver();
+        if (solver == "benders")
+        {
+            auto benders_factory = BendersApp(options_file, env, world, SOLVER::BENDERS);
+            benders_factory.Run();
+        }
+        if (solver == "adequacy_criterion")
+        {
+            auto benders_factory = BendersApp(options_file, env, world, SOLVER::OUTER_LOOP);
+            benders_factory.Run();
+        }
+        return 0;
     }
-    if (solver == "adequacy_criterion")
+    catch (std::exception& e)
     {
-        auto benders_factory = BendersApp(options_file, env, world, SOLVER::OUTER_LOOP);
-        benders_factory.Run();
+        std::cerr << "error: " << e.what() << std::endl;
+        return 1;
     }
-    return 0;
+    catch (...)
+    {
+        std::cerr << "Exception of unknown type!" << std::endl;
+        return 1;
+    }
 }
