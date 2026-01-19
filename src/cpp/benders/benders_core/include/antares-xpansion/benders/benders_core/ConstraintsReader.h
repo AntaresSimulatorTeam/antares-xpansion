@@ -36,8 +36,12 @@ class ConstraintsReader
 
     constraintRow get_row(const std::string& name) ;
     std::shared_ptr<SubproblemWorker> get_subproblem_worker() ; 
-
+    
+    
     void get_variables_values_in_csv(std::filesystem::path variables_values_csv) ; 
+
+    std::vector<double> get_sub_solution() ; 
+    int get_variable_index_in_solution(std::string variable_name) ; 
 
     private : 
     Logger logger_ ; 

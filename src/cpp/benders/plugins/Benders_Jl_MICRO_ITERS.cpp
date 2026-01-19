@@ -41,7 +41,7 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const std::filesystem::path& inpu
         {
             Tokenizer tok(row) ; 
             std::vector<std::string> tokens(tok.begin(), tok.end());
-            variables_to_follow_[tokens[1]] = tokens[0] ;
+            variables_to_follow_[tokens[0]] = tokens[1] ;
         }
     }
     
@@ -124,9 +124,10 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationStart()
     std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersMicroIterationStart"<<std::endl; 
 }
 
-void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(ConstraintsReader constraint_reader) 
+void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::shared_ptr<ConstraintsReader> constraint_reader) 
 {
     std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersMicroIterationEnd"<<std::endl ; 
+    auto sub_solution = constraint_reader->get_sub_solution() ; 
 }
 
 

@@ -119,4 +119,3 @@ int SubproblemWorker::get_variable_index(const std::string& variable_name)
 
     return variable_index; 
 }
-

@@ -113,5 +113,21 @@ constraintRow ConstraintsReader::get_row(const std::string& name)
     return result ; 
 }
 
+std::vector<double> ConstraintsReader::get_sub_solution() 
+{
+    return subproblem_worker_->get_solution() ; 
+}
+
+int ConstraintsReader::get_variable_index_in_solution(std::string variable_name) 
+{
+    int variable_index(-1) ; 
+    variable_index = subproblem_worker_->get_variable_index(variable_name) ; 
+    return variable_index ; 
+}
+
+
+
+
+
 
 
