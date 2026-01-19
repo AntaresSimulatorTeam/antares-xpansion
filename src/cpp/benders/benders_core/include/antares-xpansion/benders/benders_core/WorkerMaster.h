@@ -86,8 +86,10 @@ private:
     void _set_upper_bounds() const;
     void _set_alpha_var();
     void _set_nb_units_var_ids();
-    void _set_master_only_var_ids();
     void restoreFeasibility(std::vector<double>& solution);
+
+protected:
+    void _set_master_only_var_ids();
 
 public:
     // Used only for testing purposes

@@ -97,6 +97,16 @@ protected:
     }
 };
 
+class WorkerMasterMock : public WorkerMaster {
+public:
+    using WorkerMaster::WorkerMaster; 
+
+    void call_set_master_only_var_ids() {
+        _set_master_only_var_ids();
+    }
+
+};
+
 TEST_F(WorkerMasterTest, GetHandlesUpperBoundViolation)
 {
     // Solution vector includes values for candidate variables, alpha, and single subproblem costs
@@ -164,4 +174,45 @@ TEST_F(WorkerMasterTest, GetHandlesIntegerVariables)
     EXPECT_DOUBLE_EQ(x_out["var3"], 3.0);    // Integer within tolerance - should round to 3
     EXPECT_DOUBLE_EQ(overall_cost, 100.0);   // Alpha value
     EXPECT_DOUBLE_EQ(single_costs[0], 50.0); // Single subproblem cost
+}
+
+TEST_F(WorkerMasterTest, SetMasterOnlyVarIdsLogic)
+{
+    EmptyLogManager solver_log_manager;
+    auto problem_provider = std::make_shared<NOOPBendersProblemProvider>();
+
+    auto master = std::make_shared<WorkerMasterMock>(
+        VariableMap{},
+        "COIN",
+        0,
+        2, // subproblems_count
+        solver_log_manager,
+        false,
+        std::make_shared<xpansion::logger::Master>(),
+        ProblemsFormat::MPS_FILE,
+        problem_provider.get(),
+        0.1,
+        0.1
+    );
+
+    struct FakeSolver : public NOOPSolverForWorkerMaster {
+        int get_ncols() const override { return 6; }
+    };
+    master->_solver = std::make_shared<FakeSolver>();
+
+    master->_name_to_id = {{"var0", 0}, {"var1", 1}, {"var2", 2}};
+    master->_id_master_only_vars.clear();
+
+    master->call_set_master_only_var_ids();
+
+    std::vector<int> expected_empty{};
+    EXPECT_EQ(master->_id_master_only_vars, expected_empty);
+
+    master->_name_to_id = {{"var0", 0}, {"var1", 1}}; 
+    master->_id_master_only_vars.clear();
+
+    master->call_set_master_only_var_ids();
+
+    std::vector<int> expected{2};
+    EXPECT_EQ(master->_id_master_only_vars, expected);
 }
