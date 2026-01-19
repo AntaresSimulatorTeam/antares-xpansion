@@ -170,7 +170,6 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::shared_ptr<Constrai
     ConstraintsToAdd constraints_to_add =  jl_return_constraints_for_micro_iteration(sub_name.c_str(), N_flows) ; 
     std::vector<std::string> constraints_to_add_vec = get_constraints_to_add(constraints_to_add) ; 
 
-    
 
 }
 
