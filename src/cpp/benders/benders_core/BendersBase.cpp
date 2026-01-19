@@ -749,7 +749,7 @@ std::vector<SubProblemNamesInCut> BendersBase::split_subproblem_data_pairs(
 
 int BendersBase::SetAggregation(int max_aggregation) const
 {
-    if (max_aggregation < _options.NB_CUTS_PER_ITER )
+    if (max_aggregation < _options.NB_CUTS_PER_ITER)
     {
         std::string logging_str = "NB_CUTS_PER_ITER : " + std::to_string(_options.NB_CUTS_PER_ITER)
                                   + " is larger than the number of subproblems solved at this "
@@ -759,9 +759,10 @@ int BendersBase::SetAggregation(int max_aggregation) const
         _logger->display_message(logging_str);
         return max_aggregation;
     }
-    else if ( _options.NB_CUTS_PER_ITER <= 0)
+    else if (_options.NB_CUTS_PER_ITER <= 0)
     {
-        std::string logging_str = "NB_CUTS_PER_ITER is <= 0. By default it will be equal to : " + std::to_string(max_aggregation) ; 
+        std::string logging_str = "NB_CUTS_PER_ITER is <= 0. By default it will be equal to : "
+                                  + std::to_string(max_aggregation);
         _logger->display_message(logging_str);
         return max_aggregation;
     }
