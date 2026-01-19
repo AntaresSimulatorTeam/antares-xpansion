@@ -149,7 +149,7 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationStart()
     std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersMicroIterationStart"<<std::endl; 
 }
 
-void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::shared_ptr<ConstraintsReader> constraint_reader, std::string sub_name) 
+void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::shared_ptr<ConstraintsReader> constraint_reader, std::string sub_name, bool & added_rows) 
 {
     std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersMicroIterationEnd"<<std::endl ; 
     
@@ -169,6 +169,20 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::shared_ptr<Constrai
     FlowNList N_flows = FlowNList{flows_to_follow.data(),flows_to_follow.size()} ; 
     ConstraintsToAdd constraints_to_add =  jl_return_constraints_for_micro_iteration(sub_name.c_str(), N_flows) ; 
     std::vector<std::string> constraints_to_add_vec = get_constraints_to_add(constraints_to_add) ; 
+    std::cout<<"size of constraints_to_add_vec "<<constraints_to_add_vec.size()<<std::endl ; 
+    int i(0) ; 
+    for (auto& constraint_to_add : constraints_to_add_vec) 
+    {
+   
+            std::cout<<"constraint_to_add "<<constraint_to_add<<std::endl; 
+            ++i ; 
+            constraint_reader->add_rows(constraint_to_add) ; 
+
+    }
+
+    added_rows = constraints_to_add_vec.size() ; 
+
+    std::cout<<"number of added rows "<<i<<std::endl; 
 
 
 }

@@ -67,7 +67,7 @@ class Benders_Jl_MICRO_ITERS : public BendersPlugin
         virtual void OnBendersMasterIterationStart(std::map<std::string,double>& benders_invested_master_result)  ;  
         virtual void OnBendersMasterIterationEnd()  ;  
         virtual void OnBendersMicroIterationStart()  ; 
-        virtual void OnBendersMicroIterationEnd(std::shared_ptr<ConstraintsReader> constraint_reader ,std::string sub_name) ; 
+        virtual void OnBendersMicroIterationEnd(std::shared_ptr<ConstraintsReader> constraint_reader ,std::string sub_name, bool& added_rows) ; 
 
         void SetSubProblemIDs(const char** subs_ids, int n_subs) ; 
 

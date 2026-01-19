@@ -77,27 +77,33 @@ constraintRow ConstraintsReader::get_row(const std::string& name)
     if (solver_) 
     {
         int ncols = solver_->get_ncols() ; 
-        result.mstart.resize(ncols,0) ; 
-        result.mclind.resize(ncols,0) ; 
-        result.dmatval.resize(ncols,0) ; 
-        std::vector<int> nels ; 
-        nels.resize(ncols,0) ; 
+        result.mstart.resize(2) ; 
+        result.mclind.resize(ncols) ; 
+        result.dmatval.resize(ncols) ; 
+
+        int nels(0) ; 
 
         solver_->get_rows(result.mstart.data(), 
                           result.mclind.data(), 
                           result.dmatval.data(), 
                           ncols, 
-                         nels.data(), 
+                         &nels, 
                          constraint_pos,
                          constraint_pos) ; 
 
-        result.mstart.resize(2) ;
-        result.mclind.resize(result.mstart[1]) ; 
-        result.dmatval.resize(result.mstart[1]) ;   
 
-        double rhs ; 
+
+        result.mclind.resize(nels) ; 
+        result.dmatval.resize(nels) ;   
+        result.mstart.resize(1) ;
+
+        double rhs(0.) ; 
         solver_->get_rhs(&rhs,constraint_pos,constraint_pos) ; 
         result.rhs = {rhs} ; 
+
+        double range_p(0.) ; 
+        solver_->get_rhs_range(&range_p,constraint_pos,constraint_pos) ; 
+        result.range_p = {range_p} ; 
 
         const int MAX_LEN = 10;          
         char buffer[MAX_LEN];  
@@ -124,6 +130,21 @@ int ConstraintsReader::get_variable_index_in_solution(std::string variable_name)
     variable_index = subproblem_worker_->get_variable_index(variable_name) ; 
     return variable_index ; 
 }
+
+void ConstraintsReader::add_rows_to_subproblems(constraintRow& new_row)
+{
+    std::cout<<"adding row  to subproblem !! "<<std::endl ; 
+    std::cout<<"qrtype_p size "<<new_row.qrtype_p.size()<<" new_row.rhs "<<new_row.rhs.size()<<
+    " new_row.range_p size "<<new_row.range_p.size()<<"  new_row.mstart size "<<new_row.mstart.size()<<std::endl ; 
+    subproblem_worker_->AddRows(new_row.qrtype_p, new_row.rhs, new_row.range_p, new_row.mstart, new_row.mclind, new_row.dmatval, new_row.row_names) ; 
+}
+
+
+void ConstraintsReader::add_rows(std::string& row_name) 
+{
+    auto constraint_row = get_row(row_name) ; 
+    add_rows_to_subproblems(constraint_row) ; 
+} 
 
 
 

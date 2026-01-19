@@ -584,6 +584,7 @@ void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
                         });
       },
       shouldParallelize());
+      std::cout<<"end of GetSubproblemCutCache"<<std::endl ; 
 }
 
 void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
@@ -594,15 +595,35 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     worker->fix_to(_data.x_cut);
     if (benders_plugin_)
         benders_plugin_->OnBendersMicroIterationStart() ; 
-    
-    worker->solve(subproblem_data.lpstatus,
-                  _options.OUTPUTROOT,
-                  _options.LAST_MASTER_MPS + MPS_SUFFIX,
-                  _writer);
 
-
-    if (benders_plugin_)
-        benders_plugin_->OnBendersMicroIterationEnd(constraint_map[subproblem_constraint_map_[name]],name) ; 
+    if (_options.MICRO_ITERATIONS) 
+    {    
+        bool added_rows = true ; 
+        while (added_rows)
+        {
+            std::cout<<"restart solving ....."<<std::endl ; 
+            worker->solve(subproblem_data.lpstatus,
+                _options.OUTPUTROOT,
+                _options.LAST_MASTER_MPS + MPS_SUFFIX,
+                _writer);
+                
+                if (benders_plugin_)
+                    benders_plugin_->OnBendersMicroIterationEnd(constraint_map[subproblem_constraint_map_[name]],name,added_rows) ; 
+        }
+    }
+    else 
+    {
+        worker->solve(subproblem_data.lpstatus,
+            _options.OUTPUTROOT,
+            _options.LAST_MASTER_MPS + MPS_SUFFIX,
+            _writer);
+    }
+            
+            // std::cout<<"second solve ......."<<std::endl; 
+    //     worker->solve(subproblem_data.lpstatus,
+    //               _options.OUTPUTROOT,
+    //               _options.LAST_MASTER_MPS + MPS_SUFFIX,
+    //               _writer);
     
     // std::cout<<"name from SolveSubproblem "<<name<<std::endl ; 
     // std::cout<<"equivalent constraint id "<<subproblem_constraint_map_[name]<<std::endl ; 
@@ -613,6 +634,7 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
 
     // std::cout<<"finished solving subproblem "<<name<<std::endl ; 
     // std::cout<<"*********** \n\n"<<std::endl ; 
+    std::cout<<"got after micro iteration end "<<std::endl ;
 
     worker->get_value(subproblem_data.subproblem_cost);
 
@@ -620,6 +642,7 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
 
     worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
+
 }
 
 void BendersBase::SetSubproblemVariablesIndices(const SubproblemWorker& subproblem)

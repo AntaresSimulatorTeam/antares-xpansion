@@ -16,5 +16,5 @@ class BendersPlugin
         virtual void OnBendersMasterIterationStart(std::map<std::string,double>& ) = 0 ;  
         virtual void OnBendersMasterIterationEnd() = 0 ;  
         virtual void OnBendersMicroIterationStart() = 0 ; 
-        virtual void OnBendersMicroIterationEnd(std::shared_ptr<ConstraintsReader> constraint_reader, std::string sub_name) = 0 ; 
+        virtual void OnBendersMicroIterationEnd(std::shared_ptr<ConstraintsReader> constraint_reader, std::string sub_name,bool& added_rows) = 0 ; 
 };
