@@ -481,28 +481,27 @@ void WorkerMaster::_set_master_only_var_ids()
 {
     int ncols = _solver->get_ncols();
 
-    for (int i(0); i < ncols; i++)
+    // Build a set of indices to exclude containing candidate variables that are in subproblems.
+    std::unordered_set<int> excluded_ids;
+    for (const auto& kvp: _name_to_id)
     {
-        bool unlisted_id = true;
-        for (const auto& kvp: _name_to_id)
-        {
-            if (kvp.second == i)
-            {
-                unlisted_id = false;
-            }
-        }
-        for (int j(0); j < _id_single_subpb_costs_under_approx.size(); ++j)
-        {
-            if (_id_single_subpb_costs_under_approx[j] == i)
-            {
-                unlisted_id = false;
-            }
-        }
-        if (i != _id_alpha && unlisted_id)
+        excluded_ids.insert(kvp.second);
+    }
+
+    _id_master_only_vars.clear();
+    // The last columns of the master problem correspond to the single_subpb_costs_under_approx
+    // variables and the alpha variable. Therefore, we build the list of master only variables by
+    // adding to _id_master_only_vars all indices from 0 to ncols - subproblems_count - 2 excluding
+    // these tail variables and candidates variables whose indices are in excluded_ids.
+    for (int i = 0; i < ncols - subproblems_count - 1; ++i)
+    {
+        if (excluded_ids.count(i) == 0)
         {
             _id_master_only_vars.push_back(i);
         }
     }
+
+    assert(_id_master_only_vars.size() + subproblems_count + 1 + _name_to_id.size() == (size_t)ncols && "Master variables indices are inconsistent with ncols.");
 }
 
 void WorkerMaster::DeactivateIntegrityConstraints() const

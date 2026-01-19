@@ -2,6 +2,7 @@
 
 #include "SubproblemWorker.h"
 #include "Worker.h"
+#include <unordered_set>
 /*!
  * \class SubproblemWorker
  * \brief Class daughter of Worker Class, build and manage a master problem
