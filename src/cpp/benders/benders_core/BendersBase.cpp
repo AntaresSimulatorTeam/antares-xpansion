@@ -11,7 +11,7 @@
 #include "antares-xpansion/benders/benders_core/LastIterationWriter.h"
 #include "antares-xpansion/helpers/solver_utils.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
-#include <boost/tokenizer.hpp>
+
 
 BendersBase::BendersBase(BendersBaseOptions options,
                          Logger logger,
@@ -600,10 +600,19 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                   _options.LAST_MASTER_MPS + MPS_SUFFIX,
                   _writer);
 
-    // if (benders_plugin_)
-    //     benders_plugin_->OnBendersMicroIterationEnd(worker) ; 
 
-    std::cout<<"finished solving subproblem "<<name<<std::endl ; 
+    if (benders_plugin_)
+        benders_plugin_->OnBendersMicroIterationEnd(constraint_map[subproblem_constraint_map_[name]],name) ; 
+    
+    // std::cout<<"name from SolveSubproblem "<<name<<std::endl ; 
+    // std::cout<<"equivalent constraint id "<<subproblem_constraint_map_[name]<<std::endl ; 
+    // for (auto& [key,_] : constraint_map)
+    // {
+    //     std::cout<<"key "<<key<<std::endl ;         
+    // }
+
+    // std::cout<<"finished solving subproblem "<<name<<std::endl ; 
+    // std::cout<<"*********** \n\n"<<std::endl ; 
 
     worker->get_value(subproblem_data.subproblem_cost);
 
@@ -901,34 +910,34 @@ Output::Iteration BendersBase::iteration(const WorkerMasterData& masterDataPtr_l
 }
 
 
-void BendersBase::read_constraints_csv() 
-{
-    if (!_options.MICRO_ITERATIONS) 
-        return ; 
-    else 
-    {
-        std::string csv_name = "constraints_dictionnary.csv" ; 
-        auto csv_path = std::filesystem::path(_options.INPUTROOT) / csv_name ; 
-        std::ifstream file(csv_path) ; 
-        if (file.is_open()) 
-        {
-            std::string line;
-            typedef boost::tokenizer<boost::escaped_list_separator<char>> Tokenizer;
+// void BendersBase::read_constraints_csv() 
+// {
+//     if (!_options.MICRO_ITERATIONS) 
+//         return ; 
+//     else 
+//     {
+//         std::string csv_name = "constraints_dictionnary.csv" ; 
+//         auto csv_path = std::filesystem::path(_options.INPUTROOT) / csv_name ; 
+//         std::ifstream file(csv_path) ; 
+//         if (file.is_open()) 
+//         {
+//             std::string line;
+//             typedef boost::tokenizer<boost::escaped_list_separator<char>> Tokenizer;
             
-            while (std::getline(file,line)) 
-            {
-                Tokenizer tok(line) ; 
-                std::vector<std::string> tokens(tok.begin(), tok.end());
-                std::string key = tokens[0] ; 
-                std::vector<std::string> values ; 
-                if (tokens.size() > 1 ) 
-                values.assign(tokens.begin()+1,tokens.end()) ; 
+//             while (std::getline(file,line)) 
+//             {
+//                 Tokenizer tok(line) ; 
+//                 std::vector<std::string> tokens(tok.begin(), tok.end());
+//                 std::string key = tokens[0] ; 
+//                 std::vector<std::string> values ; 
+//                 if (tokens.size() > 1 ) 
+//                 values.assign(tokens.begin()+1,tokens.end()) ; 
                 
-                constraints_csv_map_[key] = values ; 
-            }
-        }
-    }
-}
+//                 constraints_csv_map_[key] = values ; 
+//             }
+//         }
+//     }
+// }
 
 
 void BendersBase::SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin) 

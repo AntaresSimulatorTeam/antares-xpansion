@@ -63,7 +63,6 @@ using mps_coupling = std::pair<std::string, std::string>;
 using mps_coupling_list = std::list<mps_coupling>;
 
 using SubProblemNamesInCut = std::vector<std::pair<std::string, int>>;
-using constraintsPerLine = std::map<std::string,std::vector<std::string>> ; 
 using AddedConstraints = std::map<std::string,std::vector<std::string>> ;
 struct Predicate
 {

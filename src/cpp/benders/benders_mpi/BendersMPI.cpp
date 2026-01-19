@@ -32,7 +32,6 @@ void BendersMpi::InitializeProblems()
 {
     MatchProblemToId();
     BuildMasterProblem();
-    read_constraints_csv() ; 
     if (_options.CACHE_PROBLEMS)
     {
         int current_problem_id = 0;

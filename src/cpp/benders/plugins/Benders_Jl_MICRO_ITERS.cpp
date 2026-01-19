@@ -12,6 +12,31 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const std::filesystem::path& inpu
 {
     std::cout<<"Benders_Jl_MICRO_ITERS constuctor !!!!!"<<std::endl ; 
     input_root_ = input_root ; 
+ 
+    std::filesystem::path constraints_csv_path = input_root / "constraints_dictionary.csv" ; 
+    std::ifstream  constraints_csv_stream(constraints_csv_path.c_str()) ; 
+
+    if (constraints_csv_stream.is_open()) 
+    {
+        std::string line;
+        typedef boost::tokenizer<boost::escaped_list_separator<char>> Tokenizer;
+            
+        while (std::getline(constraints_csv_stream,line)) 
+        {
+            Tokenizer tok(line) ; 
+            std::vector<std::string> tokens(tok.begin(), tok.end());
+            std::string key = tokens[0] ;
+            std::vector<std::string> values ; 
+            if (tokens.size() > 1 ) 
+                values.assign(tokens.begin()+1,tokens.end()) ; 
+                
+            constraints_csv_map_[key] = values ; 
+        }
+    }
+
+
+    std::cout<<"size of constraints_csv_map_ "<<constraints_csv_map_.size()<<std::endl ; 
+ 
     std::filesystem::path investment_dictionary_path = input_root / "investment_dictionary.csv" ;
     std::ifstream investment_dict_path (investment_dictionary_path.c_str()) ; 
 
@@ -124,10 +149,29 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationStart()
     std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersMicroIterationStart"<<std::endl; 
 }
 
-void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::shared_ptr<ConstraintsReader> constraint_reader) 
+void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::shared_ptr<ConstraintsReader> constraint_reader, std::string sub_name) 
 {
     std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersMicroIterationEnd"<<std::endl ; 
+    
+    jl_return_constraints_for_micro_iteration_FUNC jl_return_constraints_for_micro_iteration = (jl_return_constraints_for_micro_iteration_FUNC) dlsym(handle_,"jl_return_constraints_for_micro_iteration") ; 
     auto sub_solution = constraint_reader->get_sub_solution() ; 
+    std::vector<FlowN> flows_to_follow ; 
+    flows_to_follow.reserve(variables_to_follow_.size()) ; 
+
+    for (auto& [line,line_id] : variables_to_follow_) 
+    {
+        
+        int variable_index = constraint_reader->get_variable_index_in_solution(line_id) ; 
+        auto value = sub_solution[variable_index] ; 
+        flows_to_follow.push_back(FlowN{line.c_str(),value}) ; 
+    }
+
+    FlowNList N_flows = FlowNList{flows_to_follow.data(),flows_to_follow.size()} ; 
+    ConstraintsToAdd constraints_to_add =  jl_return_constraints_for_micro_iteration(sub_name.c_str(), N_flows) ; 
+    std::vector<std::string> constraints_to_add_vec = get_constraints_to_add(constraints_to_add) ; 
+
+    
+
 }
 
 
@@ -151,5 +195,17 @@ void Benders_Jl_MICRO_ITERS::SetSubProblemIDs(const char** subs_ids, int n_subs)
 
 }
 
+
+std::vector<std::string> Benders_Jl_MICRO_ITERS::get_constraints_to_add(ConstraintsToAdd& constraints_to_add_obj) 
+{
+    std::vector<std::string> constraints_to_add ; 
+    for (int i=0; i<constraints_to_add_obj.size; i++) 
+    {
+        std::string constraint_key(constraints_to_add_obj.constraints[i]) ; 
+        std::cout<<"number of constraints to add "<<constraints_csv_map_[constraint_key].size()<<std::endl ; 
+        constraints_to_add.insert(constraints_to_add.end(),constraints_csv_map_[constraint_key].begin(),constraints_csv_map_[constraint_key].end() ) ; 
+    }
+    return constraints_to_add ; 
+}
 
 

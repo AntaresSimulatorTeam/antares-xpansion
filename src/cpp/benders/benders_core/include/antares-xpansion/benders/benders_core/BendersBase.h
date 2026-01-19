@@ -61,7 +61,6 @@ public:
     void AddSubproblemConstraints(const std::string& constraint_name,const std::string& sub_name) ;
     void set_subproblem_constraint_map(const SubProblemConstraintMap& subproblem_constraint_map, 
                                                     const CouplingMap& constraint_coupling_map) ; 
-    void read_constraints_csv() ; 
 
     // for test
     void MasterGetRhs(double& rhs, int id_row) const;
@@ -153,7 +152,6 @@ protected:
     // BendersCuts best_iteration_cuts_;
     // BendersCuts current_iteration_cuts_;
     VariableMap master_variable_map_;
-    constraintsPerLine constraints_csv_map_ ; 
     CouplingMap coupling_map_;
     SubProblemConstraintMap subproblem_constraint_map_ ;
     CouplingMap constraint_coupling_map_ ;  

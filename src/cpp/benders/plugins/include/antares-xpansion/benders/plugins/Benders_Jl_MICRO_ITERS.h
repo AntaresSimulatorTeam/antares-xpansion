@@ -26,12 +26,35 @@ struct MasterBendersInput
     int size; 
 } ; 
 
+struct FlowN
+{
+    const char* line_id ; 
+    double value ; 
+} ; 
+
+struct FlowNList 
+{
+    FlowN* flows ; 
+    int size ; 
+} ; 
+
+
+struct ConstraintsToAdd 
+{
+    const char ** constraints; 
+    int size ;  
+} ; 
+
+
+using constraintsPerLine = std::map<std::string,std::vector<std::string>> ; 
+
+
 using init_julia_FUNC = void (*) (int, char*); 
 using shut_down_julia_FUNC = void(*)(int) ; 
 using jl_load_variables_FUNC = void(*) (SubProblemIds) ; 
 using jl_compute_factors_for_microiterations_FUNC = void(*)(MasterBendersInput) ; 
 using jl_test_FUNC = void(*)() ; 
-
+using jl_return_constraints_for_micro_iteration_FUNC = ConstraintsToAdd (*) (const char*, FlowNList) ; 
 
 
 class Benders_Jl_MICRO_ITERS : public BendersPlugin 
@@ -44,16 +67,19 @@ class Benders_Jl_MICRO_ITERS : public BendersPlugin
         virtual void OnBendersMasterIterationStart(std::map<std::string,double>& benders_invested_master_result)  ;  
         virtual void OnBendersMasterIterationEnd()  ;  
         virtual void OnBendersMicroIterationStart()  ; 
-        virtual void OnBendersMicroIterationEnd(std::shared_ptr<ConstraintsReader> constraint_reader) ; 
+        virtual void OnBendersMicroIterationEnd(std::shared_ptr<ConstraintsReader> constraint_reader ,std::string sub_name) ; 
 
         void SetSubProblemIDs(const char** subs_ids, int n_subs) ; 
 
     private : 
+
+        std::vector<std::string> get_constraints_to_add(ConstraintsToAdd&) ; 
         void* handle_ ; 
         std::filesystem::path input_root_ ; 
         SubProblemIds sub_pb_ids_ ; 
         std::map<std::string,std::string> binary_variables_ids_map_ ; 
         std::map<std::string,std::string> variables_to_follow_ ; 
+        constraintsPerLine constraints_csv_map_ ; 
         std::vector<std::string> sub_ids_storage_;  
         std::vector<const char*> sub_ids_ptrs_;  
     
