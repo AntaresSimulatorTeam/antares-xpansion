@@ -133,9 +133,9 @@ int ConstraintsReader::get_variable_index_in_solution(std::string variable_name)
 
 void ConstraintsReader::add_rows_to_subproblems(constraintRow& new_row)
 {
-    std::cout<<"adding row  to subproblem !! "<<std::endl ; 
-    std::cout<<"qrtype_p size "<<new_row.qrtype_p.size()<<" new_row.rhs "<<new_row.rhs.size()<<
-    " new_row.range_p size "<<new_row.range_p.size()<<"  new_row.mstart size "<<new_row.mstart.size()<<std::endl ; 
+    // std::cout<<"adding row  to subproblem !! "<<std::endl ; 
+    // std::cout<<"qrtype_p size "<<new_row.qrtype_p.size()<<" new_row.rhs "<<new_row.rhs.size()<<
+    // " new_row.range_p size "<<new_row.range_p.size()<<"  new_row.mstart size "<<new_row.mstart.size()<<std::endl ; 
     subproblem_worker_->AddRows(new_row.qrtype_p, new_row.rhs, new_row.range_p, new_row.mstart, new_row.mclind, new_row.dmatval, new_row.row_names) ; 
 }
 

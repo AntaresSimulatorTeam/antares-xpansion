@@ -460,7 +460,7 @@ void BendersBase::GetSubproblemCut(SubProblemDataMap& subproblem_data_map)
 
 void BendersBase::GetSubproblemCutFast(SubProblemDataMap& subproblem_data_map)
 {
-    std::cout<<"entered in GetSubproblemCutFast !!!"<<std::endl ; 
+    // std::cout<<"entered in GetSubproblemCutFast !!!"<<std::endl ; 
     // With gcc9 there was no parallelisation when iterating on the map directly
     // so with project it in a vector
     std::vector<std::pair<std::string, SubproblemWorkerPtr>> nameAndWorkers;
@@ -557,7 +557,7 @@ std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
 void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
 {
 
-    std::cout<<"got through GetSubproblemCutCache !!! "<<std::endl ; 
+    // std::cout<<"got through GetSubproblemCutCache !!! "<<std::endl ; 
     auto&& nameAndVariableMap = mapAsVectorOfPair(coupling_map_);
     std::mutex m;
     selectPolicy(
@@ -598,10 +598,12 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
 
     if (_options.MICRO_ITERATIONS) 
     {    
+        std::cout<<".*.3*.*.*.*  start solving "<<name<<" with micro iterations"<<std::endl ; 
         bool added_rows = true ; 
+        int num_micro_iter(0) ; 
         while (added_rows)
         {
-            std::cout<<"restart solving ....."<<std::endl ; 
+            // std::cout<<"restart solving ....."<<std::endl ; 
             worker->solve(subproblem_data.lpstatus,
                 _options.OUTPUTROOT,
                 _options.LAST_MASTER_MPS + MPS_SUFFIX,
@@ -609,7 +611,12 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                 
                 if (benders_plugin_)
                     benders_plugin_->OnBendersMicroIterationEnd(constraint_map[subproblem_constraint_map_[name]],name,added_rows) ; 
+            num_micro_iter++ ; 
         }
+
+
+        std::cout<<"number of micro iterations "<<num_micro_iter<<std::endl ; 
+        
     }
     else 
     {
@@ -634,7 +641,7 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
 
     // std::cout<<"finished solving subproblem "<<name<<std::endl ; 
     // std::cout<<"*********** \n\n"<<std::endl ; 
-    std::cout<<"got after micro iteration end "<<std::endl ;
+    // std::cout<<"got after micro iteration end "<<std::endl ;
 
     worker->get_value(subproblem_data.subproblem_cost);
 

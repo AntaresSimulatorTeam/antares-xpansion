@@ -73,7 +73,8 @@ class Benders_Jl_MICRO_ITERS : public BendersPlugin
 
     private : 
 
-        std::vector<std::string> get_constraints_to_add(ConstraintsToAdd&) ; 
+        std::vector<std::string> get_constraints_to_add(ConstraintsToAdd&, std::string) ; 
+        bool check_if_constraint_key_is_added(const char* key, std::string sub_name) ;
         void* handle_ ; 
         std::filesystem::path input_root_ ; 
         SubProblemIds sub_pb_ids_ ; 
@@ -82,5 +83,6 @@ class Benders_Jl_MICRO_ITERS : public BendersPlugin
         constraintsPerLine constraints_csv_map_ ; 
         std::vector<std::string> sub_ids_storage_;  
         std::vector<const char*> sub_ids_ptrs_;  
+        std::map<std::string,std::vector<std::string>> added_constraints_per_sub_ ; 
     
 } ; 
