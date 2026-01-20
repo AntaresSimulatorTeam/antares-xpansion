@@ -186,22 +186,21 @@ $(function(){initNavTree('BendersByBatch_8h_source.html',''); initResizable(true
 <div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>    <span class="keywordtype">double</span> Gap() <span class="keyword">const</span>;</div>
 <div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    <span class="keywordtype">size_t</span> number_of_batch_;</div>
 <div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span>    <span class="keywordtype">unsigned</span> current_batch_id_;</div>
-<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordtype">int</span> number_of_sub_problem_resolved_;</div>
-<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordtype">double</span> remaining_epsilon_;</div>
-<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordtype">double</span> cumulative_subproblems_timer_per_iter_;</div>
-<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordtype">bool</span> misprice_;</div>
-<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordtype">int</span> first_unsolved_batch_;</div>
-<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>    <span class="keywordtype">int</span> batch_counter_;</div>
-<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>};</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>    <span class="keywordtype">double</span> remaining_epsilon_;</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    <span class="keywordtype">double</span> cumulative_subproblems_timer_per_iter_;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordtype">bool</span> misprice_;</div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    <span class="keywordtype">int</span> first_unsolved_batch_;</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    <span class="keywordtype">int</span> batch_counter_;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>};</div>
 </div>
-<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span> </div>
-<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span><span class="preprocessor">#endif </span><span class="comment">// SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_</span></div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span> </div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span><span class="preprocessor">#endif </span><span class="comment">// SRC_CPP_BENDERS_BENDERS_BY_BATCH_INCLUDE_BENDERSBYBATCH_H_</span></div>
 <div class="ttc" id="aclassBatchCollection_html"><div class="ttname"><a href="classBatchCollection.html">BatchCollection</a></div><div class="ttdef"><b>Definition</b> BatchCollection.h:25</div></div>
 <div class="ttc" id="aclassBendersByBatch_html"><div class="ttname"><a href="classBendersByBatch.html">BendersByBatch</a></div><div class="ttdef"><b>Definition</b> BendersByBatch.h:8</div></div>
 <div class="ttc" id="aclassBendersByBatch_html_a4fa18d6f639840ef8be340c5cbafb7f3"><div class="ttname"><a href="classBendersByBatch.html#a4fa18d6f639840ef8be340c5cbafb7f3">BendersByBatch::BuildCut</a></div><div class="ttdeci">void BuildCut(const std::vector&lt; std::string &gt; &amp;batch_sub_problems, double *batch_contribution_in_gap, std::vector&lt; double &gt; &amp;external_loop_criterion_current_batch)</div><div class="ttdoc">Build subproblem cut Method to build subproblem cuts and add them to the Master problem.</div><div class="ttdef"><b>Definition</b> BendersByBatch.cpp:264</div></div>
 <div class="ttc" id="aclassBendersByBatch_html_ab115c01019bc161456706e7d5778ff42"><div class="ttname"><a href="classBendersByBatch.html#ab115c01019bc161456706e7d5778ff42">BendersByBatch::ShouldRelaxationStop</a></div><div class="ttdeci">bool ShouldRelaxationStop() const override</div><div class="ttdoc">Check if initial relaxation should stop.</div><div class="ttdef"><b>Definition</b> BendersByBatch.cpp:431</div></div>
 <div class="ttc" id="aclassBendersByBatch_html_abc79d5e65838ad7a27b352ecfeb0dfa0"><div class="ttname"><a href="classBendersByBatch.html#abc79d5e65838ad7a27b352ecfeb0dfa0">BendersByBatch::UpdateStoppingCriterion</a></div><div class="ttdeci">void UpdateStoppingCriterion() override</div><div class="ttdoc">Update stopping criterion.</div><div class="ttdef"><b>Definition</b> BendersByBatch.cpp:405</div></div>
-<div class="ttc" id="aclassBendersMpi_html"><div class="ttname"><a href="classBendersMpi.html">BendersMpi</a></div><div class="ttdoc">Class use run the benders algorithm in parallel.</div><div class="ttdef"><b>Definition</b> BendersMPI.h:20</div></div>
+<div class="ttc" id="aclassBendersMpi_html"><div class="ttname"><a href="classBendersMpi.html">BendersMpi</a></div><div class="ttdoc">Class use run the benders algorithm in parallel.</div><div class="ttdef"><b>Definition</b> BendersMPI.h:16</div></div>
 </div><!-- fragment --></div><!-- contents -->
 </div><!-- doc-content -->
 <!-- start footer part -->

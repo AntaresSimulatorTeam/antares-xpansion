@@ -165,6 +165,7 @@ var NAVTREEINDEX7 =
 "structBatch.html":[34,0,53],
 "structBendersBaseOptions.html":[34,0,59],
 "structBendersFactory_1_1BendersEnvironment.html":[34,0,62,0],
+"structBendersFactory_1_1Dependencies.html":[34,0,62,1],
 "structBendersLoggerBase.html":[34,0,63],
 "structBendersLoggerBase.html#a2107f7c283403f51b5c48d73fa969fa1":[34,0,63,0],
 "structBendersRelevantIterationsData.html":[34,0,66],

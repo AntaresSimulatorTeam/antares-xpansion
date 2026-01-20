@@ -173,14 +173,14 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:a80aab68d65d4ea91c5151d8b3d575209"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a5835586b3ebfb17f26fcd16bd6c840ea" id="r_a5835586b3ebfb17f26fcd16bd6c840ea"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a5835586b3ebfb17f26fcd16bd6c840ea">display_message</a> (const std::string &amp;str, LogUtils::LOGLEVEL level, const std::string &amp;context) override</td></tr>
 <tr class="separator:a5835586b3ebfb17f26fcd16bd6c840ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a656f7fb4cf6183481c08b084f4cd9f24" id="r_a656f7fb4cf6183481c08b084f4cd9f24"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a656f7fb4cf6183481c08b084f4cd9f24">Print</a> (const <a class="el" href="structCurrentIterationData.html">CurrentIterationData</a> &amp;data)=0</td></tr>
-<tr class="separator:a656f7fb4cf6183481c08b084f4cd9f24"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ab4a1e98216c7a0f0a157b487d2d34222" id="r_ab4a1e98216c7a0f0a157b487d2d34222"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ab4a1e98216c7a0f0a157b487d2d34222">Print</a> (const <a class="el" href="structCurrentIterationData.html">CurrentIterationData</a> &amp;data) override=0</td></tr>
+<tr class="separator:ab4a1e98216c7a0f0a157b487d2d34222"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a0c21608673e9ae52403db676b42d0b0f" id="r_a0c21608673e9ae52403db676b42d0b0f"><td class="memItemLeft" align="right" valign="top">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a0c21608673e9ae52403db676b42d0b0f">Headers</a> () const override</td></tr>
 <tr class="separator:a0c21608673e9ae52403db676b42d0b0f"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad385161767b7f4a5e1e995402efcd3f5" id="r_ad385161767b7f4a5e1e995402efcd3f5"><td class="memItemLeft" align="right" valign="top"><a class="el" href="classLogDestination.html">LogDestination</a> &amp;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#ad385161767b7f4a5e1e995402efcd3f5">LogsDestination</a> () override</td></tr>
 <tr class="separator:ad385161767b7f4a5e1e995402efcd3f5"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a4d87cf36f81fe6e97ff4faa92ae3a14e" id="r_a4d87cf36f81fe6e97ff4faa92ae3a14e"><td class="memItemLeft" align="right" valign="top">virtual void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a4d87cf36f81fe6e97ff4faa92ae3a14e">setHeadersList</a> ()=0</td></tr>
-<tr class="separator:a4d87cf36f81fe6e97ff4faa92ae3a14e"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a318ed8162b58fd39d5f41d4107573f1c" id="r_a318ed8162b58fd39d5f41d4107573f1c"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="#a318ed8162b58fd39d5f41d4107573f1c">setHeadersList</a> () override=0</td></tr>
+<tr class="separator:a318ed8162b58fd39d5f41d4107573f1c"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:af96e2728e590f5c7e4bf7569f24ebbca" id="r_af96e2728e590f5c7e4bf7569f24ebbca"><td class="memItemLeft" align="right" valign="top"><a id="af96e2728e590f5c7e4bf7569f24ebbca" name="af96e2728e590f5c7e4bf7569f24ebbca"></a>
 HEADERSTYPE&#160;</td><td class="memItemRight" valign="bottom"><b>HeadersType</b> () const</td></tr>
 <tr class="separator:af96e2728e590f5c7e4bf7569f24ebbca"><td class="memSeparator" colspan="2">&#160;</td></tr>
@@ -330,8 +330,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setHeadersList</b> (c
 
 </div>
 </div>
-<a id="a656f7fb4cf6183481c08b084f4cd9f24" name="a656f7fb4cf6183481c08b084f4cd9f24"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a656f7fb4cf6183481c08b084f4cd9f24">&#9670;&#160;</a></span>Print()</h2>
+<a id="ab4a1e98216c7a0f0a157b487d2d34222" name="ab4a1e98216c7a0f0a157b487d2d34222"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab4a1e98216c7a0f0a157b487d2d34222">&#9670;&#160;</a></span>Print()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -340,7 +340,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setHeadersList</b> (c
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void MathLogger::Print </td>
+          <td class="memname">void MathLogger::Print </td>
           <td>(</td>
           <td class="paramtype">const <a class="el" href="structCurrentIterationData.html">CurrentIterationData</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>data</em></span></td><td>)</td>
           <td></td>
@@ -348,7 +348,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setHeadersList</b> (c
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">
@@ -357,8 +357,8 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setHeadersList</b> (c
 
 </div>
 </div>
-<a id="a4d87cf36f81fe6e97ff4faa92ae3a14e" name="a4d87cf36f81fe6e97ff4faa92ae3a14e"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a4d87cf36f81fe6e97ff4faa92ae3a14e">&#9670;&#160;</a></span>setHeadersList()</h2>
+<a id="a318ed8162b58fd39d5f41d4107573f1c" name="a318ed8162b58fd39d5f41d4107573f1c"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a318ed8162b58fd39d5f41d4107573f1c">&#9670;&#160;</a></span>setHeadersList()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -367,7 +367,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setHeadersList</b> (c
   <td class="mlabels-left">
       <table class="memname">
         <tr>
-          <td class="memname">virtual void MathLogger::setHeadersList </td>
+          <td class="memname">void MathLogger::setHeadersList </td>
           <td>(</td>
           <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
           <td></td>
@@ -375,7 +375,7 @@ void&#160;</td><td class="memItemRight" valign="bottom"><b>setHeadersList</b> (c
       </table>
   </td>
   <td class="mlabels-right">
-<span class="mlabels"><span class="mlabel">pure virtual</span></span>  </td>
+<span class="mlabels"><span class="mlabel">override</span><span class="mlabel">pure virtual</span></span>  </td>
   </tr>
 </table>
 </div><div class="memdoc">

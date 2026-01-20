@@ -66,7 +66,7 @@ var NAVTREEINDEX1 =
 "classGenericSolverException.html":[34,0,106],
 "classIBendersProblemProvider.html":[34,0,109],
 "classILogger.html":[34,0,110],
-"classILogger.html#a1326996d4147821e1dad10103a0dc2e8":[34,0,110,0],
+"classILogger.html#a319fd8917fa66d8e6244897e74e206fe":[34,0,110,0],
 "classINIReader.html":[34,0,114],
 "classIProblemProviderPort.html":[34,0,129],
 "classIProblemVariablesProviderPort.html":[34,0,130],
@@ -244,10 +244,10 @@ var NAVTREEINDEX1 =
 "classOuterloop_1_1OuterLoopBenders.html":[34,0,12,7],
 "classOuterloop_1_1OuterLoopBiLevel.html":[34,0,12,8],
 "classOutput_1_1JsonWriter.html":[34,0,13,3],
-"classOutput_1_1JsonWriter.html#a0300065a09bc11d6dd32f6cbc03be9a2":[34,0,13,3,4],
 "classOutput_1_1JsonWriter.html#a20b400af3d5131c3cb2c07410bcaeb21":[34,0,13,3,5],
+"classOutput_1_1JsonWriter.html#a447a3dde12aae9451b1ceff853879bbc":[34,0,13,3,4],
 "classOutput_1_1JsonWriter.html#a4dacd7f08c2264f7aaf8b436ee9b8975":[34,0,13,3,6],
-"classOutput_1_1JsonWriter.html#a6ad7bb14475e566bc2584dcc4911095d":[34,0,13,3,2],
 "classOutput_1_1JsonWriter.html#a7a049c5ecc69ad9c580407aa9756dce9":[34,0,13,3,0],
-"classOutput_1_1JsonWriter.html#a8c71207bbebec803de50ff62740ecd82":[34,0,13,3,1]
+"classOutput_1_1JsonWriter.html#a8c71207bbebec803de50ff62740ecd82":[34,0,13,3,1],
+"classOutput_1_1JsonWriter.html#a910b614f811793779d5e72c82edddbc9":[34,0,13,3,3]
 };
