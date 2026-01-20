@@ -47,7 +47,8 @@ const LogData best_iteration_data = {15e5,
                                      5876,
                                      999,
                                      898,
-                                     23};
+                                     23,
+                                     0};
 const LogData last_iteration_data = {1e5,
                                      255e6,
                                      200e6,
@@ -65,7 +66,8 @@ const LogData last_iteration_data = {1e5,
                                      5876,
                                      9999,
                                      898,
-                                     25};
+                                     25,
+                                     0};
 
 class FileLoggerTest: public ::testing::Test
 {
@@ -602,14 +604,14 @@ public:
         _durationTotal = 0.0;
     }
 
-    void display_message(const std::string& str)
+    void display_message(const std::string& str) override
     {
         _displaymessage = str;
     }
 
     void display_message(const std::string& str,
                          LogUtils::LOGLEVEL level,
-                         const std::string& context)
+                         const std::string& context) override
     {
         _displaymessage = str;
     }
@@ -634,17 +636,17 @@ public:
         _iterationStartCall = true;
     }
 
-    void log_master_solving_duration(double durationInSeconds)
+    void log_master_solving_duration(double durationInSeconds) override
     {
         _durationMaster = durationInSeconds;
     }
 
-    void LogSubproblemsSolvingWalltime(double durationInSeconds)
+    void LogSubproblemsSolvingWalltime(double durationInSeconds) override
     {
         _durationSubproblem = durationInSeconds;
     }
 
-    void LogSubproblemsSolvingCumulativeCpuTime(double durationInSeconds)
+    void LogSubproblemsSolvingCumulativeCpuTime(double durationInSeconds) override
     {
         //
     }
@@ -659,7 +661,7 @@ public:
         _endingCall = true;
     }
 
-    void log_total_duration(double durationInSeconds)
+    void log_total_duration(double durationInSeconds) override
     {
         _durationTotal = durationInSeconds;
     }
@@ -693,17 +695,17 @@ public:
         //
     }
 
-    void LogAtInitialRelaxation()
+    void LogAtInitialRelaxation() override
     {
         _initialRelaxationCall = true;
     }
 
-    void LogAtSwitchToInteger()
+    void LogAtSwitchToInteger() override
     {
         _switchToIntegerCall = true;
     }
 
-    void cumulative_number_of_sub_problem_solved(int number)
+    void cumulative_number_of_sub_problem_solved(int number) override
     {
         _cumulativeNumberOfSubProblemResolved = true;
     }
@@ -1089,7 +1091,6 @@ TEST(MathLoggerBendersByBatchTest, DataInStdOutShort)
     data.timer_master = 10;
     data.subproblems_walltime = 16;
     data.subproblems_cumulative_cputime = 160;
-    auto time_not_solving = data.iteration_time - data.timer_master - data.subproblems_walltime;
 
     std::ostringstream expected_msg;
     expected_msg << DELIMITER;
@@ -1210,7 +1211,6 @@ TEST(MathLoggerBendersBaseTest, DataInStdOutShort)
     data.timer_master = 10;
     data.subproblems_walltime = 16;
     data.subproblems_cumulative_cputime = 160;
-    auto time_not_solving = data.iteration_time - data.timer_master - data.subproblems_walltime;
 
     std::ostringstream expected_msg;
     expected_msg << DELIMITER;

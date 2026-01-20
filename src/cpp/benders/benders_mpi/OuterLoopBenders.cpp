@@ -9,11 +9,11 @@ OuterLoopBenders::OuterLoopBenders(
   std::shared_ptr<ICutsManager> cuts_manager,
   pBendersBase benders,
   mpi::communicator& world):
-    outer_loop_biLevel_(outer_loop_data),
     master_updater_(std::move(master_updater)),
     cuts_manager_(std::move(cuts_manager)),
     benders_(std::move(benders)),
-    world_(world)
+    world_(world),
+    outer_loop_biLevel_(outer_loop_data)
 {
     loggers_.AddLogger(benders_->_logger);
     loggers_.AddLogger(benders_->mathLoggerDriver_);

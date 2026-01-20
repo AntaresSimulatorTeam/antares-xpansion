@@ -53,20 +53,20 @@ public:
      */
     void updateEndTime() override;
 
-    virtual void update_solution(const SolutionData& solution_data);
+    void update_solution(const SolutionData& solution_data) override;
 
     /*!
      *  \brief write the json data into a file
      */
-    virtual void dump();
+    void dump() override;
 
     /*!
      * \brief initialize outputs
      * \param options : set of options used for the optimization
      */
-    void initialize();
+    void initialize() override;
 
-    void end_writing(const IterationsData& iterations_data);
+    void end_writing(const IterationsData& iterations_data) override;
 
     void write_iteration(const Iteration& iteration_data, const size_t iteration_num) override;
     void write_solver_name(const std::string& solver_name) override;

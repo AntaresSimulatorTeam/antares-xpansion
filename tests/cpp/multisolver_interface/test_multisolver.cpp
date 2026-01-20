@@ -21,7 +21,7 @@ struct ILoggerMock final: public ILoggerXpansion
     {
     }
 
-    virtual ~ILoggerMock() = default;
+    ~ILoggerMock() override = default;
 };
 
 TEST(SolverLoader, GetAvailableSolvers)
