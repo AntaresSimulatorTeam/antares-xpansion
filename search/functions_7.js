@@ -1,7 +1,7 @@
 var searchData=
 [
   ['general_5fdata_0',['general_data',['../classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader.html#aa4c937f9e3b57840f6f3335ded14c7cf',1,'antares_xpansion::config_loader::XpansionSettingsReader']]],
-  ['get_1',['get',['../classWorkerMaster.html#accfd98c6107377016c56d00a242c5ec5',1,'WorkerMaster']]],
+  ['get_1',['get',['../classWorkerMaster.html#ae8f3621f598c5b3e8bdcb6e4679c1fb1',1,'WorkerMaster']]],
   ['get_5fabsolute_5foptimality_5fgap_2',['get_absolute_optimality_gap',['../classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader.html#ae6560070aadcc46f2d47a8e0a346d794',1,'antares_xpansion::config_loader::XpansionSettingsReader']]],
   ['get_5fbasis_3',['get_basis',['../classProblem.html#a23a581969905f7727611d2f7dd537af8',1,'Problem::get_basis()'],['../classSolverAbstract.html#a9d75be3d99380299e2a0955b4849b2a0',1,'SolverAbstract::get_basis()'],['../classSolverXpress.html#a517b84459c391dcbe6f94fcf81d97bee',1,'SolverXpress::get_basis()'],['../classSolverCbc.html#a74563ffa68ebdced260332162f64abf3',1,'SolverCbc::get_basis()'],['../classSolverClp.html#ae7d919246d42f87ce23898af3b051868',1,'SolverClp::get_basis()'],['../classNOOPSolver.html#abb2e5b5f3009476f4bc6bb988fae6f6c',1,'NOOPSolver::get_basis()']]],
   ['get_5fbatch_5fsize_4',['get_batch_size',['../classantares__xpansion_1_1config__loader_1_1XpansionSettingsReader.html#aa6de557ff989085a1077f320fcc9245d',1,'antares_xpansion::config_loader::XpansionSettingsReader']]],

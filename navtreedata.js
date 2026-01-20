@@ -424,10 +424,10 @@ var NAVTREEINDEX =
 "classBendersSequential.html#a2d1b29260a6ab2204f7ef276204951d7",
 "classOutput_1_1JsonWriter.html#aee46241d17a325ddc5fcfdeaa132a8c9",
 "classSolverCbc.html#aad90c1c8f2f777232fb385b3985d44cb",
-"classantares__xpansion_1_1antares__driver_1_1AntaresDriver_1_1AntaresExecutionError.html",
-"classantares__xpansion_1_1study__updater__driver_1_1StudyUpdaterDriver.html",
-"dir_e7600390bdff6eced06f90701af8c137.html",
-"md_docs_2user-guide_2get-started_2launching-optimization.html#autotoc_md179"
+"classantares__xpansion_1_1antares__driver_1_1AntaresDriver.html#a8440bc0602ca38c565287c80dcfbf0f2",
+"classantares__xpansion_1_1study__output__cleaner_1_1StudyOutputCleaner.html",
+"dir_e6845f9c61e772a2d98e7463bc8bde16.html",
+"md_docs_2user-guide_2get-started_2installation.html#autotoc_md177"
 ];
 
 var SYNCONMSG = 'click to disable panel synchronisation';

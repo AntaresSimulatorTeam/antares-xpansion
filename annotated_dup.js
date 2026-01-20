@@ -617,6 +617,7 @@ var annotated_dup =
     [ "Worker", "classWorker.html", "classWorker" ],
     [ "WorkerMaster", "classWorkerMaster.html", "classWorkerMaster" ],
     [ "WorkerMasterData", "classWorkerMasterData.html", "classWorkerMasterData" ],
+    [ "WorkerMasterMock", "classWorkerMasterMock.html", "classWorkerMasterMock" ],
     [ "WorkerMasterTest", "classWorkerMasterTest.html", null ],
     [ "WriterMockStatus", "classWriterMockStatus.html", null ],
     [ "XpansionProblemsFromAntaresProvider", "classXpansionProblemsFromAntaresProvider.html", null ],
