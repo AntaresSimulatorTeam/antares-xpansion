@@ -61,7 +61,7 @@ void ProblemGenerationExeOptions::checkMandatoryOptions(const std::string& log_l
     auto count = std::ranges::count_if(args, notEmpty);
     if (count > 1)
     {
-        auto msg = "Only one of --output, --archive, --study parameters are accepted"s;
+        auto msg = "Only one of --output, --archive, --study parameters is accepted"s;
         throw ProblemGenerationOptions::ConflictingParameters(msg, log_location);
     }
     if (count == 0)
