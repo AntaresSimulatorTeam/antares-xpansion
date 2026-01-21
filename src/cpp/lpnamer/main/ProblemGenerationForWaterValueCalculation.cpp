@@ -383,13 +383,6 @@ void ProblemGenerationForWaterValueCalculation::cleanReservoirConstraints(
             affectedColsAndRows.colsToDelete.push_back(idx);
         }
 
-        // ==== DELETE Overflow ====
-        {
-            std::string name = "Overflow::area<" + area + ">::hour<" + hourStr + ">";
-            int idx = checkedMapLookup(affectedColsAndRows.colNameToIndex, name, pbID);
-            affectedColsAndRows.colsToDelete.push_back(idx);
-        }
-
         // ==== DELETE AreaHydroLevel constraint ====
         {
             std::string name = "AreaHydroLevel::area<" + area + ">::hour<" + hourStr + ">";
