@@ -9,7 +9,7 @@ public:
     explicit ProblemModifierCapex(double epsilon,
                                   double best_ub,
                                   const std::shared_ptr<const SolverAbstract>& last_master);
-    ~ProblemModifierCapex() = default;
+    ~ProblemModifierCapex() override = default;
 
 private:
     std::vector<double> get_cost_vector(const SolverAbstract& solver_model,

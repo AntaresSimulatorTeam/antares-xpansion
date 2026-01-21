@@ -12,12 +12,10 @@
 BendersMpi::BendersMpi(const BendersBaseOptions& options,
                        std::shared_ptr<ILogger> logger,
                        std::shared_ptr<Output::OutputWriter> writer,
-                       mpi::environment& env,
                        mpi::communicator& world,
                        std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
     BendersBase(options, std::move(logger), std::move(writer), std::move(mathLoggerDriver)),
-    _world(world),
-    _env(env)
+    _world(world)
 {
 }
 
