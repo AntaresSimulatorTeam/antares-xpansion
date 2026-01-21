@@ -53,7 +53,7 @@ using CharVector = std::vector<char>;
 using DblVector = std::vector<double>;
 using StrVector = std::vector<std::string>;
 using CouplingMap = std::map<std::string, VariableMap>;
-using SubProblemConstraintMap = std::map<std::string, std::string> ; 
+using SubProblemConstraintMap = std::map<std::string, std::string>;
 
 using SlaveCutId = std::map<std::string, IntVector>;
 using ActiveCut = std::tuple<int, std::string, int, bool>;
@@ -63,7 +63,8 @@ using mps_coupling = std::pair<std::string, std::string>;
 using mps_coupling_list = std::list<mps_coupling>;
 
 using SubProblemNamesInCut = std::vector<std::pair<std::string, int>>;
-using AddedConstraints = std::map<std::string,std::vector<std::string>> ;
+using AddedConstraints = std::map<std::string, std::vector<std::string>>;
+
 struct Predicate
 {
     bool operator()(const PointPtr& lhs, const PointPtr& rhs) const

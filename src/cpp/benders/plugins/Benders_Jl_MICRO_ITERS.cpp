@@ -1,290 +1,308 @@
 #include "antares-xpansion/benders/plugins/Benders_Jl_MICRO_ITERS.h"
-#include "iostream"
-#include <fstream>
-#include <boost/tokenizer.hpp>
+
 #include <cassert>
-#include <string_view>
+#include <fstream>
 #include <sstream>
+#include <string_view>
 
+#include <boost/tokenizer.hpp>
 
+#include "iostream"
 
-
-
-Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const std::filesystem::path& input_root,const CouplingMap& coupling_map) 
+Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const std::filesystem::path& input_root,
+                                               const CouplingMap& coupling_map)
 {
-    coupling_map_ = coupling_map ; 
-    CouplingMapGenerator::BuildSubProblemConstaintMap(coupling_map_,subproblem_constraint_map_,constraints_coupling_map_) ; 
+    coupling_map_ = coupling_map;
+    CouplingMapGenerator::BuildSubProblemConstaintMap(coupling_map_,
+                                                      subproblem_constraint_map_,
+                                                      constraints_coupling_map_);
 
+    input_root_ = input_root;
 
-    input_root_ = input_root ; 
+    std::filesystem::path mirco_iterations_options_path = input_root_
+                                                          / "micro_iterations_config.txt";
+    std::ifstream micro_iterations_options_stream(mirco_iterations_options_path.c_str());
 
-    std::filesystem::path mirco_iterations_options_path = input_root_ / "micro_iterations_config.txt" ; 
-    std::ifstream micro_iterations_options_stream(mirco_iterations_options_path.c_str()) ; 
-
-    if (micro_iterations_options_stream.is_open()) 
+    if (micro_iterations_options_stream.is_open())
     {
-        std::string line ; 
-        while (std::getline(micro_iterations_options_stream,line)) 
+        std::string line;
+        while (std::getline(micro_iterations_options_stream, line))
         {
-            std::istringstream iss(line) ; 
-            std::string key, value ; 
+            std::istringstream iss(line);
+            std::string key, value;
 
-            if (std::getline(iss,key,'=')&& std::getline(iss,value)) 
+            if (std::getline(iss, key, '=') && std::getline(iss, value))
             {
-                micro_iterations_config_[key] = value ; 
+                micro_iterations_config_[key] = value;
             }
         }
-
     }
-    else 
-    {   
-        std::cerr<<"failed to open micro iteration options file "<<std::endl ; 
+    else
+    {
+        std::cerr << "failed to open micro iteration options file " << std::endl;
     }
- 
-    std::filesystem::path constraints_csv_path = input_root / "constraints_dictionary.csv" ; 
-    std::ifstream  constraints_csv_stream(constraints_csv_path.c_str()) ; 
 
-    if (constraints_csv_stream.is_open()) 
+    std::filesystem::path constraints_csv_path = input_root / "constraints_dictionary.csv";
+    std::ifstream constraints_csv_stream(constraints_csv_path.c_str());
+
+    if (constraints_csv_stream.is_open())
     {
         std::string line;
         typedef boost::tokenizer<boost::escaped_list_separator<char>> Tokenizer;
-            
-        while (std::getline(constraints_csv_stream,line)) 
+
+        while (std::getline(constraints_csv_stream, line))
         {
-            Tokenizer tok(line) ; 
+            Tokenizer tok(line);
             std::vector<std::string> tokens(tok.begin(), tok.end());
-            std::string key = tokens[0] ;
-            std::vector<std::string> values ; 
-            if (tokens.size() > 1 ) 
-                values.assign(tokens.begin()+1,tokens.end()) ; 
-                
-            constraints_csv_map_[key] = values ; 
+            std::string key = tokens[0];
+            std::vector<std::string> values;
+            if (tokens.size() > 1)
+            {
+                values.assign(tokens.begin() + 1, tokens.end());
+            }
+
+            constraints_csv_map_[key] = values;
         }
     }
 
+    // std::cout<<"size of constraints_csv_map_ "<<constraints_csv_map_.size()<<std::endl ;
 
-    // std::cout<<"size of constraints_csv_map_ "<<constraints_csv_map_.size()<<std::endl ; 
- 
-    std::filesystem::path investment_dictionary_path = input_root / "investment_dictionary.csv" ;
-    std::ifstream investment_dict_path (investment_dictionary_path.c_str()) ; 
+    std::filesystem::path investment_dictionary_path = input_root / "investment_dictionary.csv";
+    std::ifstream investment_dict_path(investment_dictionary_path.c_str());
 
-    if (investment_dict_path.is_open()) 
+    if (investment_dict_path.is_open())
     {
-        std::string row ; 
+        std::string row;
         typedef boost::tokenizer<boost::escaped_list_separator<char>> Tokenizer;
 
-        while (std::getline(investment_dict_path,row)) 
+        while (std::getline(investment_dict_path, row))
         {
-            Tokenizer tok(row) ; 
+            Tokenizer tok(row);
             std::vector<std::string> tokens(tok.begin(), tok.end());
-            binary_variables_ids_map_[tokens[1]] = tokens[0] ;
+            binary_variables_ids_map_[tokens[1]] = tokens[0];
         }
     }
-    assert(investment_dict_path.is_open()) ; 
+    assert(investment_dict_path.is_open());
 
-    variables_dictionary_path_ = input_root / "variables_dictionary.csv" ; 
-    std::ifstream variables_dict(variables_dictionary_path_.c_str()) ; 
+    variables_dictionary_path_ = input_root / "variables_dictionary.csv";
+    std::ifstream variables_dict(variables_dictionary_path_.c_str());
 
-    if (variables_dict.is_open()) 
+    if (variables_dict.is_open())
     {
-        std::string row ; 
+        std::string row;
         typedef boost::tokenizer<boost::escaped_list_separator<char>> Tokenizer;
 
-        while (std::getline(variables_dict,row)) 
+        while (std::getline(variables_dict, row))
         {
-            Tokenizer tok(row) ; 
+            Tokenizer tok(row);
             std::vector<std::string> tokens(tok.begin(), tok.end());
-            variables_to_follow_[tokens[0]] = tokens[1] ;
+            variables_to_follow_[tokens[0]] = tokens[1];
         }
     }
-    
-    assert(variables_dict.is_open()) ; 
-    
-    // std::filesystem::path julia_library_path ="/home/bouchehdahed/studies/0-9_2000//libmylib/lib/libmylib.so" ; 
-    std::filesystem::path libmylib_path = micro_iterations_config_["jl_library_path"] ; 
-    handle_ = dlopen(libmylib_path.c_str(),RTLD_NOW) ; 
-    if (handle_) 
+
+    assert(variables_dict.is_open());
+
+    // std::filesystem::path julia_library_path
+    // ="/home/bouchehdahed/studies/0-9_2000//libmylib/lib/libmylib.so" ;
+    std::filesystem::path libmylib_path = micro_iterations_config_["jl_library_path"];
+    handle_ = dlopen(libmylib_path.c_str(), RTLD_NOW);
+    if (handle_)
     {
-        init_julia_FUNC init_julia = (init_julia_FUNC) dlsym(handle_,"init_julia") ; 
-        init_julia(0,NULL) ;
+        init_julia_FUNC init_julia = (init_julia_FUNC)dlsym(handle_, "init_julia");
+        init_julia(0, NULL);
 
-        jl_test_FUNC jl_test = (jl_test_FUNC) dlsym(handle_,"jl_test") ; 
-        jl_test() ; 
-        
-        jl_set_data_path_FUNC jl_set_data_path = (jl_set_data_path_FUNC) dlsym(handle_,"jl_set_data_path") ; 
-        jl_set_data_path(micro_iterations_config_["jl_data_path"].c_str()) ; 
-        
+        jl_test_FUNC jl_test = (jl_test_FUNC)dlsym(handle_, "jl_test");
+        jl_test();
 
+        jl_set_data_path_FUNC jl_set_data_path = (jl_set_data_path_FUNC)dlsym(handle_,
+                                                                              "jl_set_data_path");
+        jl_set_data_path(micro_iterations_config_["jl_data_path"].c_str());
     }
-    assert(handle_) ; 
+    assert(handle_);
 }
 
 Benders_Jl_MICRO_ITERS::~Benders_Jl_MICRO_ITERS()
 {
     if (handle_)
     {
-        shut_down_julia_FUNC shut_down_julia = (shut_down_julia_FUNC) dlsym(handle_,"shutdown_julia") ; 
-        shut_down_julia(0) ; 
-        dlclose(handle_) ; 
+        shut_down_julia_FUNC shut_down_julia = (shut_down_julia_FUNC)dlsym(handle_,
+                                                                           "shutdown_julia");
+        shut_down_julia(0);
+        dlclose(handle_);
     }
 }
 
-void Benders_Jl_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map,const Logger& logger,const BendersBaseOptions& options,const SolverLogManager& solver_log_manager) 
+void Benders_Jl_MICRO_ITERS::OnBendersStart(const SubproblemsMapPtr& subproblem_map,
+                                            const Logger& logger,
+                                            const BendersBaseOptions& options,
+                                            const SolverLogManager& solver_log_manager)
 {
+    _logger = logger;
 
-    _logger = logger ; 
+    BuildConstraintsReaderMap(subproblem_map, options, solver_log_manager);
 
-    BuildConstraintsReaderMap(subproblem_map,options,solver_log_manager) ; 
-
-    if (handle_) 
+    if (handle_)
     {
-        int size_subs = sub_pb_ids_.n_subproblems ; 
-        for (int i=0; i<size_subs; i++) 
+        int size_subs = sub_pb_ids_.n_subproblems;
+        for (int i = 0; i < size_subs; i++)
         {
-            std::string sub_key(sub_pb_ids_.subProblems_ids[i]) ; 
-            added_constraints_per_sub_[sub_key] = std::vector<std::string>() ; 
+            std::string sub_key(sub_pb_ids_.subProblems_ids[i]);
+            added_constraints_per_sub_[sub_key] = std::vector<std::string>();
         }
 
-        jl_load_variables_FUNC jl_load_variables = (jl_load_variables_FUNC) dlsym(handle_,"jl_load_variables") ; 
-        jl_load_variables(sub_pb_ids_) ; 
+        jl_load_variables_FUNC jl_load_variables = (jl_load_variables_FUNC)
+          dlsym(handle_, "jl_load_variables");
+        jl_load_variables(sub_pb_ids_);
     }
 }
 
 void Benders_Jl_MICRO_ITERS::OnBendersEnd()
 {
-    // std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersEnd"<<std::endl ; 
+    // std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersEnd"<<std::endl ;
 }
 
-
-void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationStart(std::map<std::string,double>& benders_invested_master_result) 
+void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationStart(
+  std::map<std::string, double>& benders_invested_master_result)
 {
-    for (auto& [sub,_] : added_constraints_per_sub_ )
+    for (auto& [sub, _]: added_constraints_per_sub_)
     {
-        added_constraints_per_sub_[sub] = std::vector<std::string>() ;  
+        added_constraints_per_sub_[sub] = std::vector<std::string>();
     }
-    
-    // std::cout<<"from Benders_Jl_MICRO_ITERSOnBendersMasterIterationStart"<<std::endl ;  
-    CandidateLineMasterIterationResult* candidates_iter_res = new CandidateLineMasterIterationResult[ benders_invested_master_result.size() ] ; 
-    int cadidate_pos = 0 ; 
-    for (auto& [line,value] :  benders_invested_master_result) 
+
+    // std::cout<<"from Benders_Jl_MICRO_ITERSOnBendersMasterIterationStart"<<std::endl ;
+    CandidateLineMasterIterationResult* candidates_iter_res = new CandidateLineMasterIterationResult
+      [benders_invested_master_result.size()];
+    int cadidate_pos = 0;
+    for (auto& [line, value]: benders_invested_master_result)
     {
-        auto id_in_csv = binary_variables_ids_map_[line].c_str() ;
-        candidates_iter_res[cadidate_pos] = CandidateLineMasterIterationResult{id_in_csv,value} ; 
+        auto id_in_csv = binary_variables_ids_map_[line].c_str();
+        candidates_iter_res[cadidate_pos] = CandidateLineMasterIterationResult{id_in_csv, value};
         cadidate_pos++;
     }
-    
-    MasterBendersInput master_benders_input = MasterBendersInput{candidates_iter_res,benders_invested_master_result.size()} ; 
-    
-    jl_compute_factors_for_microiterations_FUNC compute_factors = (jl_compute_factors_for_microiterations_FUNC) dlsym(handle_,"jl_compute_factors_for_microiterations") ; 
-    compute_factors(master_benders_input) ; 
+
+    MasterBendersInput master_benders_input = MasterBendersInput{
+      candidates_iter_res,
+      benders_invested_master_result.size()};
+
+    jl_compute_factors_for_microiterations_FUNC compute_factors
+      = (jl_compute_factors_for_microiterations_FUNC)
+        dlsym(handle_, "jl_compute_factors_for_microiterations");
+    compute_factors(master_benders_input);
 }
 
-void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationEnd() 
+void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationEnd()
 {
-    // std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersMasterIterationEnd"<<std::endl ; 
+    // std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersMasterIterationEnd"<<std::endl ;
 }
 
-void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationStart() 
+void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationStart()
 {
-    // std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersMicroIterationStart"<<std::endl; 
+    // std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersMicroIterationStart"<<std::endl;
 }
 
-void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name, bool & added_rows) 
+void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name, bool& added_rows)
 {
-    // std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersMicroIterationEnd"<<std::endl ; 
-    std::string constraint_reader_name = subproblem_constraint_map_[sub_name] ; 
-    auto constraint_reader = constraints_map_[constraint_reader_name] ; 
+    // std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersMicroIterationEnd"<<std::endl ;
+    std::string constraint_reader_name = subproblem_constraint_map_[sub_name];
+    auto constraint_reader = constraints_map_[constraint_reader_name];
 
-    jl_return_constraints_for_micro_iteration_FUNC jl_return_constraints_for_micro_iteration = (jl_return_constraints_for_micro_iteration_FUNC) dlsym(handle_,"jl_return_constraints_for_micro_iteration") ; 
-    auto sub_solution = constraint_reader->get_sub_solution() ; 
-    std::vector<FlowN> flows_to_follow ; 
-    flows_to_follow.reserve(variables_to_follow_.size()) ; 
+    jl_return_constraints_for_micro_iteration_FUNC jl_return_constraints_for_micro_iteration
+      = (jl_return_constraints_for_micro_iteration_FUNC)
+        dlsym(handle_, "jl_return_constraints_for_micro_iteration");
+    auto sub_solution = constraint_reader->get_sub_solution();
+    std::vector<FlowN> flows_to_follow;
+    flows_to_follow.reserve(variables_to_follow_.size());
 
-    for (auto& [line,line_id] : variables_to_follow_) 
+    for (auto& [line, line_id]: variables_to_follow_)
     {
-        
-        int variable_index = constraint_reader->get_variable_index_in_solution(line_id) ; 
-        auto value = sub_solution[variable_index] ; 
-        flows_to_follow.push_back(FlowN{line.c_str(),value}) ; 
+        int variable_index = constraint_reader->get_variable_index_in_solution(line_id);
+        auto value = sub_solution[variable_index];
+        flows_to_follow.push_back(FlowN{line.c_str(), value});
     }
 
-    FlowNList N_flows = FlowNList{flows_to_follow.data(),flows_to_follow.size()} ; 
-    ConstraintsToAdd constraints_to_add =  jl_return_constraints_for_micro_iteration(sub_name.c_str(), N_flows) ; 
-    std::vector<std::string> constraints_to_add_vec = get_constraints_to_add(constraints_to_add,sub_name) ; 
+    FlowNList N_flows = FlowNList{flows_to_follow.data(), flows_to_follow.size()};
+    ConstraintsToAdd constraints_to_add = jl_return_constraints_for_micro_iteration(
+      sub_name.c_str(),
+      N_flows);
+    std::vector<std::string> constraints_to_add_vec = get_constraints_to_add(constraints_to_add,
+                                                                             sub_name);
 
-  
-    for (auto& constraint_to_add : constraints_to_add_vec) 
+    for (auto& constraint_to_add: constraints_to_add_vec)
     {
-            constraint_reader->add_rows(constraint_to_add) ; 
+        constraint_reader->add_rows(constraint_to_add);
     }
 
-    added_rows = constraints_to_add_vec.size() ; 
-
+    added_rows = constraints_to_add_vec.size();
 }
 
-
-void Benders_Jl_MICRO_ITERS::SetSubProblemIDs(const char** subs_ids, int n_subs) 
+void Benders_Jl_MICRO_ITERS::SetSubProblemIDs(const char** subs_ids, int n_subs)
 {
-
     sub_ids_storage_.clear();
     sub_ids_storage_.reserve(n_subs);
-    for (int i = 0; i < n_subs; i++) {
+    for (int i = 0; i < n_subs; i++)
+    {
         sub_ids_storage_.push_back(subs_ids[i]);
     }
 
     sub_ids_ptrs_.resize(n_subs);
-    for (int i = 0; i < n_subs; i++) {
+    for (int i = 0; i < n_subs; i++)
+    {
         sub_ids_ptrs_[i] = sub_ids_storage_[i].c_str();
     }
-    
+
     sub_pb_ids_ = SubProblemIds{sub_ids_ptrs_.data(), n_subs};
 }
 
-
-std::vector<std::string> Benders_Jl_MICRO_ITERS::get_constraints_to_add(ConstraintsToAdd& constraints_to_add_obj, std::string sub_name) 
+std::vector<std::string> Benders_Jl_MICRO_ITERS::get_constraints_to_add(
+  ConstraintsToAdd& constraints_to_add_obj,
+  std::string sub_name)
 {
-    std::vector<std::string> constraints_to_add ; 
+    std::vector<std::string> constraints_to_add;
 
-    for (int i=0; i<constraints_to_add_obj.size; i++) 
+    for (int i = 0; i < constraints_to_add_obj.size; i++)
     {
-        if (!check_if_constraint_key_is_added(constraints_to_add_obj.constraints[i],sub_name)) 
+        if (!check_if_constraint_key_is_added(constraints_to_add_obj.constraints[i], sub_name))
         {
-            std::string constraint_key(constraints_to_add_obj.constraints[i]) ; 
-            
-            constraints_to_add.insert(constraints_to_add.end(),constraints_csv_map_[constraint_key].begin(),constraints_csv_map_[constraint_key].end() ) ; 
+            std::string constraint_key(constraints_to_add_obj.constraints[i]);
+
+            constraints_to_add.insert(constraints_to_add.end(),
+                                      constraints_csv_map_[constraint_key].begin(),
+                                      constraints_csv_map_[constraint_key].end());
         }
     }
-    return constraints_to_add ; 
+    return constraints_to_add;
 }
 
-
-
-bool Benders_Jl_MICRO_ITERS::check_if_constraint_key_is_added(const char* key, std::string sub_name) 
+bool Benders_Jl_MICRO_ITERS::check_if_constraint_key_is_added(const char* key, std::string sub_name)
 {
-
-    std::string key_str(key) ; 
-    bool found = (std::find(added_constraints_per_sub_[sub_name].begin(), added_constraints_per_sub_[sub_name].end(),key_str) != added_constraints_per_sub_[sub_name].end()) ; 
-    if (!found) 
-        added_constraints_per_sub_[sub_name].push_back(key_str) ; 
-    return found ;
-}
-
-void Benders_Jl_MICRO_ITERS::BuildConstraintsReaderMap(const SubproblemsMapPtr& subproblem_map,const BendersBaseOptions& options,const SolverLogManager& solver_log_manager) 
-{
-    for (auto& [sub,sub_worker] : subproblem_map) 
+    std::string key_str(key);
+    bool found = (std::find(added_constraints_per_sub_[sub_name].begin(),
+                            added_constraints_per_sub_[sub_name].end(),
+                            key_str)
+                  != added_constraints_per_sub_[sub_name].end());
+    if (!found)
     {
-        std::string constraints_file_name = subproblem_constraint_map_[sub] ; 
-        auto constraints_file_path = std::filesystem::path(options.INPUTROOT) / constraints_file_name ; 
-        constraints_map_[constraints_file_name] = std::make_shared<ConstraintsReader>(
-            constraints_file_path, 
-            options.SOLVER_NAME, 
-            solver_log_manager, 
-            _logger, 
-            options.LOG_LEVEL,
-            variables_dictionary_path_,  
-            sub_worker
-        ) ;
+        added_constraints_per_sub_[sub_name].push_back(key_str);
     }
-
+    return found;
 }
 
+void Benders_Jl_MICRO_ITERS::BuildConstraintsReaderMap(const SubproblemsMapPtr& subproblem_map,
+                                                       const BendersBaseOptions& options,
+                                                       const SolverLogManager& solver_log_manager)
+{
+    for (auto& [sub, sub_worker]: subproblem_map)
+    {
+        std::string constraints_file_name = subproblem_constraint_map_[sub];
+        auto constraints_file_path = std::filesystem::path(options.INPUTROOT)
+                                     / constraints_file_name;
+        constraints_map_[constraints_file_name] = std::make_shared<ConstraintsReader>(
+          constraints_file_path,
+          options.SOLVER_NAME,
+          solver_log_manager,
+          _logger,
+          options.LOG_LEVEL,
+          variables_dictionary_path_,
+          sub_worker);
+    }
+}

@@ -11,5 +11,5 @@ public:
 
     static void BuildSubProblemConstaintMap(const CouplingMap& coupling_map,
                                             SubProblemConstraintMap& subproblem_constraint_map,
-                                            CouplingMap& constraints_coupling_map) ; 
+                                            CouplingMap& constraints_coupling_map);
 };

@@ -12,7 +12,6 @@
 #include "antares-xpansion/helpers/solver_utils.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
 
-
 BendersBase::BendersBase(BendersBaseOptions options,
                          Logger logger,
                          std::shared_ptr<Output::OutputWriter> writer,
@@ -572,7 +571,6 @@ std::shared_ptr<SubproblemWorker> BendersBase::makeSubproblemWorker(
 
 void BendersBase::GetSubproblemCutCache(SubProblemDataMap& subproblem_data_map)
 {
-
     auto&& nameAndVariableMap = mapAsVectorOfPair(coupling_map_);
     std::mutex m;
     selectPolicy(
@@ -608,35 +606,35 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
     Timer subproblem_timer;
     worker->fix_to(_data.x_cut);
     if (benders_plugin_)
-        benders_plugin_->OnBendersMicroIterationStart() ; 
+    {
+        benders_plugin_->OnBendersMicroIterationStart();
+    }
 
-    if (_options.MICRO_ITERATIONS) 
-    {    
-        bool added_rows = true ; 
-        int num_micro_iter(0) ; 
+    if (_options.MICRO_ITERATIONS)
+    {
+        bool added_rows = true;
+        int num_micro_iter(0);
         while (added_rows)
         {
             worker->solve(subproblem_data.lpstatus,
-                _options.OUTPUTROOT,
-                _options.LAST_MASTER_MPS + MPS_SUFFIX,
-                _writer);
-                
-                if (benders_plugin_)
-                    benders_plugin_->OnBendersMicroIterationEnd(name,added_rows) ; 
-            num_micro_iter++ ; 
+                          _options.OUTPUTROOT,
+                          _options.LAST_MASTER_MPS + MPS_SUFFIX,
+                          _writer);
+
+            if (benders_plugin_)
+            {
+                benders_plugin_->OnBendersMicroIterationEnd(name, added_rows);
+            }
+            num_micro_iter++;
         }
-
-
-        
     }
-    else 
+    else
     {
         worker->solve(subproblem_data.lpstatus,
-            _options.OUTPUTROOT,
-            _options.LAST_MASTER_MPS + MPS_SUFFIX,
-            _writer);
+                      _options.OUTPUTROOT,
+                      _options.LAST_MASTER_MPS + MPS_SUFFIX,
+                      _writer);
     }
-            
 
     worker->get_value(subproblem_data.subproblem_cost);
 
@@ -644,7 +642,6 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
 
     worker->get_splex_num_of_ite_last(subproblem_data.simplex_iter);
     subproblem_data.subproblem_timer = subproblem_timer.elapsed();
-
 }
 
 void BendersBase::SetSubproblemVariablesIndices(const SubproblemWorker& subproblem)
@@ -934,43 +931,39 @@ Output::Iteration BendersBase::iteration(const WorkerMasterData& masterDataPtr_l
     return iteration;
 }
 
-
-// void BendersBase::read_constraints_csv() 
+// void BendersBase::read_constraints_csv()
 // {
-//     if (!_options.MICRO_ITERATIONS) 
-//         return ; 
-//     else 
+//     if (!_options.MICRO_ITERATIONS)
+//         return ;
+//     else
 //     {
-//         std::string csv_name = "constraints_dictionnary.csv" ; 
-//         auto csv_path = std::filesystem::path(_options.INPUTROOT) / csv_name ; 
-//         std::ifstream file(csv_path) ; 
-//         if (file.is_open()) 
+//         std::string csv_name = "constraints_dictionnary.csv" ;
+//         auto csv_path = std::filesystem::path(_options.INPUTROOT) / csv_name ;
+//         std::ifstream file(csv_path) ;
+//         if (file.is_open())
 //         {
 //             std::string line;
 //             typedef boost::tokenizer<boost::escaped_list_separator<char>> Tokenizer;
-            
-//             while (std::getline(file,line)) 
+
+//             while (std::getline(file,line))
 //             {
-//                 Tokenizer tok(line) ; 
+//                 Tokenizer tok(line) ;
 //                 std::vector<std::string> tokens(tok.begin(), tok.end());
-//                 std::string key = tokens[0] ; 
-//                 std::vector<std::string> values ; 
-//                 if (tokens.size() > 1 ) 
-//                 values.assign(tokens.begin()+1,tokens.end()) ; 
-                
-//                 constraints_csv_map_[key] = values ; 
+//                 std::string key = tokens[0] ;
+//                 std::vector<std::string> values ;
+//                 if (tokens.size() > 1 )
+//                 values.assign(tokens.begin()+1,tokens.end()) ;
+
+//                 constraints_csv_map_[key] = values ;
 //             }
 //         }
 //     }
 // }
 
-
-void BendersBase::SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin) 
+void BendersBase::SetPlugin(std::shared_ptr<BendersPlugin> benders_plugin)
 {
-    benders_plugin_ = benders_plugin ; 
+    benders_plugin_ = benders_plugin;
 }
-
-
 
 Output::SolutionData BendersBase::solution() const
 {

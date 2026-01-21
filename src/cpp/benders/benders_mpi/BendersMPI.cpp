@@ -61,7 +61,6 @@ void BendersMpi::InitializeProblems()
                 const auto subProblemFilePath = GetSubproblemPath(problem.first);
                 AddSubproblem(problem);
                 AddSubproblemName(problem.first);
-
             }
             current_problem_id++;
         }
@@ -390,8 +389,6 @@ void BendersMpi::free()
  */
 void BendersMpi::Run()
 {
-
-
     if (init_data_)
     {
         PreRunInitialization();
@@ -407,22 +404,21 @@ void BendersMpi::Run()
     {
         ++_data.it;
         ResetSimplexIterationsBounds();
-        
+
         /*Solve Master problem, get optimal value and cost and send it to
-        * process*/
-       step_1_solve_master();
+         * process*/
+        step_1_solve_master();
 
-       if (benders_plugin_)
-            benders_plugin_->OnBendersMasterIterationStart(_data.x_out) ; 
-
+        if (benders_plugin_)
+        {
+            benders_plugin_->OnBendersMasterIterationStart(_data.x_out);
+        }
 
         /*Gather cut from each subproblem in master thread and add them to Master
          * problem*/
         if (!exception_raised_)
         {
-            
             step_2_solve_subproblems_and_build_cuts();
-        
         }
 
         if (!exception_raised_)
@@ -439,10 +435,11 @@ void BendersMpi::Run()
             mathLoggerDriver_->Print(_data);
             SaveCurrentBendersData();
         }
-    
-        if (benders_plugin_)
-            benders_plugin_->OnBendersMasterIterationEnd() ; 
 
+        if (benders_plugin_)
+        {
+            benders_plugin_->OnBendersMasterIterationEnd();
+        }
     }
     if (_world.rank() == rank_0)
     {
@@ -451,7 +448,6 @@ void BendersMpi::Run()
         write_basis();
     }
     _world.barrier();
-     
 }
 
 void BendersMpi::PreRunInitialization()
@@ -486,7 +482,9 @@ void BendersMpi::launch()
     _world.barrier();
 
     if (benders_plugin_)
-        benders_plugin_->OnBendersStart(subproblem_map,_logger,_options, solver_log_manager_) ; 
+    {
+        benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_);
+    }
 
     Run();
     _world.barrier();

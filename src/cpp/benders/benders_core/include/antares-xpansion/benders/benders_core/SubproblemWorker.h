@@ -27,11 +27,10 @@ public:
                      double cut_coefficient_tolerance);
     virtual ~SubproblemWorker() = default;
     std::vector<double> get_solution() const;
-    int get_variable_index(const std::string& variable_name) ; 
+    int get_variable_index(const std::string& variable_name);
 
 public:
     void fix_to(const Point& x0) const;
 
-    
     void get_subgradient(Point& subgradient) const;
 };

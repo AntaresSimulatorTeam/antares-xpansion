@@ -19,8 +19,8 @@ BendersFactory::BendersFactory(const SimulationOptions& options,
     rank{world->rank()},
     dependencies_{dependencies}
 {
-    std::filesystem::path input_root(options_.INPUTROOT) ; 
-    benders_plugin_factory_ = std::make_shared<BendersPluginFactory>(input_root) ; 
+    std::filesystem::path input_root(options_.INPUTROOT);
+    benders_plugin_factory_ = std::make_shared<BendersPluginFactory>(input_root);
 }
 
 BENDERSMETHOD DeduceBendersMethod(size_t coupling_map_size, size_t batch_size, bool outer_loop)
@@ -96,7 +96,7 @@ std::set<std::string> BendersFactory::ReadAreaFile()
 }
 
 auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
-                       const CouplingMap& coupling_map) -> BendersEnvironment
+                                      const CouplingMap& coupling_map) -> BendersEnvironment
 {
     std::unique_ptr<BendersBase> benders;
     switch (method_)
@@ -125,11 +125,11 @@ auto BendersFactory::ConfigureBenders(const BendersBaseOptions& benders_options,
         break;
     }
 
-    std::shared_ptr<BendersPlugin> benders_plugin(benders_plugin_factory_->CreatePlugin(coupling_map,options_.MICRO_ITERATIONS)) ; 
+    std::shared_ptr<BendersPlugin> benders_plugin(
+      benders_plugin_factory_->CreatePlugin(coupling_map, options_.MICRO_ITERATIONS));
 
-    benders->SetPlugin(benders_plugin) ;
+    benders->SetPlugin(benders_plugin);
 
-        
     benders->set_input_map(coupling_map);
 
     auto criterion_input_holder = ProcessCriterionInput();
@@ -160,8 +160,7 @@ auto BendersFactory::PrepareForExecution(bool outer_loop) -> std::optional<Bende
     const auto coupling_map = CouplingMapGenerator::BuildInput(benders_options.STRUCTURE_FILE,
                                                                dependencies_.logger.get(),
                                                                "Benders");
-    
-    
+
     method_ = DeduceBendersMethod(coupling_map.size(), options_.BATCH_SIZE, outer_loop);
     context_ = bendersmethod_to_string(method_);
 

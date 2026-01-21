@@ -1,27 +1,22 @@
 #pragma once
 
-
-#include <filesystem>
-#include <memory>
-#include "antares-xpansion/benders/plugins/BendersPlugin.h"
-#include "antares-xpansion/benders/benders_core/common.h"
 #include <dlfcn.h>
+#include <filesystem>
 #include <iostream>
+#include <memory>
 
+#include "antares-xpansion/benders/benders_core/common.h"
+#include "antares-xpansion/benders/plugins/BendersPlugin.h"
 
-class BendersPluginFactory 
+class BendersPluginFactory
 {
-    public : 
+public:
+    BendersPluginFactory(const std::filesystem::path& input_root);
+    BendersPlugin* CreatePlugin(const CouplingMap& coupling_map, bool micro_iter);
 
-        BendersPluginFactory(const std::filesystem::path& input_root) ;
-        BendersPlugin* CreatePlugin(const CouplingMap& coupling_map,bool micro_iter) ;
-
-    private :
-
-        std::filesystem::path library_path_ ; 
-        std::filesystem::path input_root_ ; 
-
-
+private:
+    std::filesystem::path library_path_;
+    std::filesystem::path input_root_;
 };
 
-typedef BendersPlugin* (*CreatePluginFunc)() ; 
+typedef BendersPlugin* (*CreatePluginFunc)();
