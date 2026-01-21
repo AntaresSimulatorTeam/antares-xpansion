@@ -1,10 +1,8 @@
 #include "antares-xpansion/lpnamer/problem_modifier/RenameUtils.h"
 
-#include <algorithm>
 #include <charconv>
 #include <mutex>
 #include <optional>
-#include <ranges>
 #include <stdexcept>
 #include <string>
 #include <string_view>
@@ -120,8 +118,9 @@ bool RenameUtils::rename_week_names(
             {
                 if (logger)
                 {
-                    (*logger)(LogUtils::LOGLEVEL::ERR) << "Failed to rename variable/constraint '"
-                                                       << n << "' for week " << week << std::endl;
+                    (*logger)(LogUtils::LOGLEVEL::ERR, true)
+                      << "Failed to rename variable/constraint '" << n << "' for week " << week
+                      << std::endl;
                 }
                 return false;
             }
