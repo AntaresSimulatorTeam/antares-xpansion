@@ -69,7 +69,7 @@ std::optional<std::string> RenameUtils::replace_time_step_in_name(const std::str
     }
 
     std::string out;
-    if (try_replace_first_token(name, "hour<~", week, HOURS_IN_A_WEEK, false, out))
+    if (try_replace_first_token(name, "hour<", week, HOURS_IN_A_WEEK, false, out))
     {
         return out;
     }
