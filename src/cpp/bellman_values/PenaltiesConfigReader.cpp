@@ -76,6 +76,7 @@ PenaltiesConfigReader::PenaltiesConfigReader(const std::filesystem::path& pathTo
                       Penalty(finalLevelKey,
                               std::optional<double>{}, // will default to initial level if empty
                               true));
+    penalties.emplace(cvarKey, Penalty(cvarKey, 1.0)); // default: take all scenarios into account
     if (std::filesystem::exists(pathToYamlConfigFile))
     {
         // read values

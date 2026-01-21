@@ -328,13 +328,15 @@ ReservoirManagement::ReservoirManagement(Reservoir& reservoir,
                                          double penalty_upper_rule_curve,
                                          double penalty_final_level,
                                          bool force_final_level,
-                                         std::optional<double> final_level):
+                                         std::optional<double> final_level,
+                                         double cvar):
     reservoir(reservoir),
     penalty_bottom_rule_curve(penalty_bottom_rule_curve),
     penalty_upper_rule_curve(penalty_upper_rule_curve),
     penalty_final_level(penalty_final_level),
     force_final_level(force_final_level),
-    final_level(final_level.value_or(reservoir.initial_level))
+    final_level(final_level.value_or(reservoir.initial_level)),
+    cvar(cvar)
 {
 }
 

@@ -1,6 +1,8 @@
 
 #include "antares-xpansion/bellman_values/BellmanValues.h"
 
+#include <limits>
+#include <numeric>
 #include <ranges>
 #include <tuple>
 
@@ -143,14 +145,60 @@ std::vector<std::vector<double>> BellmanValues::compute(int nbLevels)
 
         for (int i = 0; i < levels.size(); ++i)
         {
-            double sum = 0.0;
-            for (unsigned int scenario: scenarios)
+            if (reservoirManagement.cvar == 1.0)
             {
-                sum += V[{scenario, week}][i];
+                // no sorting of scenarios by cost necessary (default case)
+                double sum = 0.0;
+                for (unsigned int scenario: scenarios)
+                {
+                    sum += V[{scenario, week}][i];
+                }
+                double average = sum / scenarios.size();
+                for (unsigned int scenario: scenarios)
+                {
+                    V[{scenario, week}][i] = average;
+                }
             }
-            for (unsigned int scenario: scenarios)
+            else if (reservoirManagement.cvar == 0.0)
             {
-                V[{scenario, week}][i] = sum / scenarios.size();
+                // only the most expensive scenario is taken into account
+                double max = std::numeric_limits<double>::min();
+                for (unsigned int scenario: scenarios)
+                {
+                    max = std::max(V[{scenario, week}][i], max);
+                }
+                for (unsigned int scenario: scenarios)
+                {
+                    V[{scenario, week}][i] = max;
+                }
+            }
+            else
+            {
+                // CVaR has been requested, scenarios must be sorted by cost, then only the most
+                // 1/CVaR expensive scenarios will be taken into account.
+                // given the data structure, copying data is simpler, and takes only a small amount
+                // of time in tested cases
+                std::vector<double> values;
+                values.reserve(scenarios.size());
+                for (unsigned int scenario: scenarios)
+                {
+                    values.push_back(V[{scenario, week}][i]);
+                }
+                // pivot, with rounding to nearest index
+                auto pivot = values.end()
+                             - static_cast<int>(values.size() * reservoirManagement.cvar + 1);
+                // sort highest values to the right of the pivot
+                std::nth_element(values.begin(), pivot, values.end());
+                // sum
+                double sum = std::accumulate(pivot, values.end(), 0.0);
+                // number of elements for averaging
+                int nb_elem = std::distance(pivot, values.end());
+                double average = sum / nb_elem;
+
+                for (unsigned int scenario: scenarios)
+                {
+                    V[{scenario, week}][i] = average;
+                }
             }
         }
     }

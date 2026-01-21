@@ -73,7 +73,8 @@ public:
                         double penalty_upper_rule_curve = 0,
                         double penalty_final_level = 0,
                         bool force_final_level = false,
-                        std::optional<double> final_level = std::nullopt);
+                        std::optional<double> final_level = std::nullopt,
+                        double cvar = 1.0);
 
     std::function<double(double)> get_penalty(int week, int len_week) const;
 
@@ -89,4 +90,7 @@ public:
     bool force_final_level;           // true -> final level is forced to final_level
     double final_level; // value of the final level to reached if forces. If not given, default
                         // value is reservoir.inital_level
+    double cvar; // proportion of scenarios to take into account, sorted by cost. 1.0 -> take all
+                 // scenarios into account, 0.5 -> take only the 50% most expensive scenarios into
+                 // account, 0.0 -> take only the most expensive scenario into account.
 };

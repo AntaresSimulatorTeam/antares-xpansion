@@ -272,7 +272,8 @@ int main(int argc, char** argv)
                                                         pcr.getPenaltyUpperRuleCurve(),
                                                         pcr.getPenaltyFinalLevel(),
                                                         pcr.getForceFinalLevel(),
-                                                        pcr.getFinalLevel());
+                                                        pcr.getFinalLevel(),
+                                                        pcr.getCvar());
                 // this is also where we will update penalties if they need to be
 
                 if (reservoirManagement.reservoir.area != gridElement.area)
