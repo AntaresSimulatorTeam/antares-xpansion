@@ -50,8 +50,9 @@ force_final_level : true
 final_level : ~
 # default: initial level
 
-overflow : ~
-# default: true
+cvar : 0.8
+# default: 1.0 (all scenarios taken into account for Bellman values)
+# will be restricted to [0.0 ; 1.0]
 ```
 
 This file is expected to be located at the root of the study. It is optional, however default values are hard-coded in the program.
