@@ -7,9 +7,7 @@
 
 class ArchiveWriter: public ArchiveIO
 {
-private:
     void* pmz_zip_writer_instance_ = nullptr;
-    void* pzip_handle_ = nullptr;
     void Create() override;
     mz_zip_file fileInfo_ = {};
 

@@ -13,14 +13,34 @@ BendersPluginFactory::BendersPluginFactory(const std::filesystem::path& input_ro
 }
 
 
-BendersPlugin* BendersPluginFactory::CreatePlugin(const char** subs_ids, int n_subs) 
+BendersPlugin* BendersPluginFactory::CreatePlugin(const CouplingMap& coupling_map,bool micro_iter) 
 {
+    if (micro_iter) 
+    {
 
-    Benders_Jl_MICRO_ITERS* plugin_jl_micro_iters = new Benders_Jl_MICRO_ITERS(input_root_) ; 
-    plugin_jl_micro_iters->SetSubProblemIDs(subs_ids,n_subs) ; 
-    
-    BendersPlugin* plugin = (BendersPlugin*) plugin_jl_micro_iters ; 
+        std::cout<<"from createPlugin "<<std::endl ; 
+        int n_subs = coupling_map.size() ; 
+        const char** subs_ids = (const char**) malloc(n_subs*sizeof(const char*)) ; 
+        int sub_pos = 0 ; 
+        for (auto& [sub_name, sub_variables_map] : coupling_map) 
+        {
+            if (sub_name != "master")
+            {
+                std::cout<<"sub_name "<<sub_name<<std::endl ; 
+                subs_ids[sub_pos] = sub_name.c_str() ; 
+                sub_pos++ ; 
+                
+            }
+        }
+        
+        
+        Benders_Jl_MICRO_ITERS* plugin_jl_micro_iters = new Benders_Jl_MICRO_ITERS(input_root_,coupling_map) ; 
+        plugin_jl_micro_iters->SetSubProblemIDs(subs_ids,sub_pos) ; 
+        
+        BendersPlugin* plugin = (BendersPlugin*) plugin_jl_micro_iters ; 
+        
+        return  plugin; 
+    }
 
-   return  plugin; 
-
+    return nullptr ; 
 }

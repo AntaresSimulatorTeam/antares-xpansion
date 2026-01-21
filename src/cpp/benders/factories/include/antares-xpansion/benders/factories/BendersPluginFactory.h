@@ -4,6 +4,7 @@
 #include <filesystem>
 #include <memory>
 #include "antares-xpansion/benders/plugins/BendersPlugin.h"
+#include "antares-xpansion/benders/benders_core/common.h"
 #include <dlfcn.h>
 #include <iostream>
 
@@ -13,7 +14,7 @@ class BendersPluginFactory
     public : 
 
         BendersPluginFactory(const std::filesystem::path& input_root) ;
-        BendersPlugin* CreatePlugin(const char** subs_ids, int n_subs) ;
+        BendersPlugin* CreatePlugin(const CouplingMap& coupling_map,bool micro_iter) ;
 
     private :
 

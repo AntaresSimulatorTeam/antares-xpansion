@@ -58,9 +58,8 @@ public:
     void set_input_map(const CouplingMap& coupling_map);
     int MasterRowIndex(const std::string& row_name) const;
     void MasterChangeRhs(int id_row, double val) const;
-    void AddSubproblemConstraints(const std::string& constraint_name,const std::string& sub_name) ;
-    void set_subproblem_constraint_map(const SubProblemConstraintMap& subproblem_constraint_map, 
-                                                    const CouplingMap& constraint_coupling_map) ; 
+    // void set_subproblem_constraint_map(const SubProblemConstraintMap& subproblem_constraint_map, 
+    //                                                 const CouplingMap& constraint_coupling_map) ; 
 
     // for test
     void MasterGetRhs(double& rhs, int id_row) const;
@@ -153,8 +152,6 @@ protected:
     // BendersCuts current_iteration_cuts_;
     VariableMap master_variable_map_;
     CouplingMap coupling_map_;
-    SubProblemConstraintMap subproblem_constraint_map_ ;
-    CouplingMap constraint_coupling_map_ ;  
     BendersRelevantIterationsData relevantIterationData_ = {WorkerMasterData(), WorkerMasterData()};
     bool init_data_ = true;
     bool init_problems_ = true;

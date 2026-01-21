@@ -12,12 +12,10 @@
 BendersMpi::BendersMpi(const BendersBaseOptions& options,
                        std::shared_ptr<ILogger> logger,
                        std::shared_ptr<Output::OutputWriter> writer,
-                       mpi::environment& env,
                        mpi::communicator& world,
                        std::shared_ptr<MathLoggerDriver> mathLoggerDriver):
     BendersBase(options, std::move(logger), std::move(writer), std::move(mathLoggerDriver)),
-    _world(world),
-    _env(env)
+    _world(world)
 {
 }
 
@@ -63,10 +61,7 @@ void BendersMpi::InitializeProblems()
                 const auto subProblemFilePath = GetSubproblemPath(problem.first);
                 AddSubproblem(problem);
                 AddSubproblemName(problem.first);
-                if (_options.MICRO_ITERATIONS)
-                {
-                    AddSubproblemConstraints(subproblem_constraint_map_[problem.first],problem.first) ; 
-                }
+
             }
             current_problem_id++;
         }
@@ -395,8 +390,7 @@ void BendersMpi::free()
  */
 void BendersMpi::Run()
 {
-    if (benders_plugin_)
-        benders_plugin_->OnBendersStart() ; 
+
 
     if (init_data_)
     {
@@ -490,6 +484,9 @@ void BendersMpi::launch()
         InitializeProblems();
     }
     _world.barrier();
+
+    if (benders_plugin_)
+        benders_plugin_->OnBendersStart(subproblem_map,_logger,_options, solver_log_manager_) ; 
 
     Run();
     _world.barrier();
