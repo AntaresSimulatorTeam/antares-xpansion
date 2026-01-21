@@ -734,51 +734,56 @@ std::vector<SubProblemNamesInCut> BendersBase::split_subproblem_data_pairs(
   int max_aggregation) const
 {
     int n_cuts = SetAggregation(max_aggregation);
+
     struct Entry
     {
         const std::string* name = nullptr;
         int vecPos = -1;
     };
 
-    std::vector<Entry> ordered(_data.nsubproblem ); 
+    std::vector<Entry> ordered(_data.nsubproblem);
 
     for (int vecPos = 0; vecPos < static_cast<int>(gathered_subproblem_map.size()); ++vecPos)
     {
-        for (const auto& [name, _] : gathered_subproblem_map[vecPos])
+        for (const auto& [name, _]: gathered_subproblem_map[vecPos])
         {
             auto it = _problem_to_id.find(name);
             if (it == _problem_to_id.end())
+            {
                 continue;
+            }
 
-            ordered[it->second] = { &name, vecPos };
-        }    
+            ordered[it->second] = {&name, vecPos};
+        }
     }
 
     std::vector<SubProblemNamesInCut> cuts;
     cuts.reserve(n_cuts);
 
     SubProblemNamesInCut cut;
-    cut.reserve((_data.nsubproblem  + n_cuts - 1) / n_cuts);
+    cut.reserve((_data.nsubproblem + n_cuts - 1) / n_cuts);
 
-    for (const auto& e : ordered)
+    for (const auto& e: ordered)
     {
         if (!e.name)
+        {
             continue;
+        }
 
         cut.emplace_back(*e.name, e.vecPos);
-        if (cut.size() == static_cast<size_t>((_data.nsubproblem  + n_cuts - 1) / n_cuts)) 
+        if (cut.size() == static_cast<size_t>((_data.nsubproblem + n_cuts - 1) / n_cuts))
         {
             cuts.emplace_back(std::move(cut));
             cut.clear();
-            cut.reserve((_data.nsubproblem  + n_cuts - 1) / n_cuts);
+            cut.reserve((_data.nsubproblem + n_cuts - 1) / n_cuts);
         }
-
     }
 
     if (!cut.empty())
+    {
         cuts.emplace_back(std::move(cut));
+    }
     return cuts;
-
 }
 
 int BendersBase::SetAggregation(int max_aggregation) const
