@@ -4,20 +4,23 @@
 #include <fstream>
 #include <sstream>
 #include <string_view>
-
 #include <boost/tokenizer.hpp>
+#include <chrono>
 
 #include "iostream"
 
 Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const std::filesystem::path& input_root,
+                                               const std::filesystem::path& output_root,
                                                const CouplingMap& coupling_map)
 {
     coupling_map_ = coupling_map;
+
     CouplingMapGenerator::BuildSubProblemConstaintMap(coupling_map_,
                                                       subproblem_constraint_map_,
                                                       constraints_coupling_map_);
 
     input_root_ = input_root;
+    output_root_ = output_root ; 
 
     std::filesystem::path mirco_iterations_options_path = input_root_
                                                           / "micro_iterations_config.txt";
@@ -108,8 +111,16 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const std::filesystem::path& inpu
     handle_ = dlopen(libmylib_path.c_str(), RTLD_NOW);
     if (handle_)
     {
+        auto t1 = std::chrono::high_resolution_clock::now() ; 
+
         init_julia_FUNC init_julia = (init_julia_FUNC)dlsym(handle_, "init_julia");
         init_julia(0, NULL);
+
+        auto t2 = std::chrono::high_resolution_clock::now() ; 
+
+        auto elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() ;  
+
+        // std::cout<<"elpased time for init julia "<<std::endl ; 
 
         jl_test_FUNC jl_test = (jl_test_FUNC)dlsym(handle_, "jl_test");
         jl_test();
@@ -119,6 +130,8 @@ Benders_Jl_MICRO_ITERS::Benders_Jl_MICRO_ITERS(const std::filesystem::path& inpu
         jl_set_data_path(micro_iterations_config_["jl_data_path"].c_str());
     }
     assert(handle_);
+
+    micro_iterations_logger = std::make_shared<MicroIterationsLog>(output_root_,subproblem_constraint_map_) ; 
 }
 
 Benders_Jl_MICRO_ITERS::~Benders_Jl_MICRO_ITERS()
@@ -162,7 +175,8 @@ void Benders_Jl_MICRO_ITERS::OnBendersEnd()
 }
 
 void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationStart(
-  std::map<std::string, double>& benders_invested_master_result)
+  std::map<std::string, double>& benders_invested_master_result,
+    int& num_iter)
 {
     for (auto& [sub, _]: added_constraints_per_sub_)
     {
@@ -183,16 +197,24 @@ void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationStart(
     MasterBendersInput master_benders_input = MasterBendersInput{
       candidates_iter_res,
       benders_invested_master_result.size()};
-
+    
     jl_compute_factors_for_microiterations_FUNC compute_factors
       = (jl_compute_factors_for_microiterations_FUNC)
         dlsym(handle_, "jl_compute_factors_for_microiterations");
-    compute_factors(master_benders_input);
+
+
+    auto t1 = std::chrono::high_resolution_clock::now() ; 
+    const char* jl_log_msg = compute_factors(master_benders_input,num_iter);
+    auto t2 = std::chrono::high_resolution_clock::now() ; 
+    auto elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() ;  
+    micro_iterations_logger->AddMasterIterationLog(benders_invested_master_result, num_iter, std::to_string(elapsed_microseconds)) ; 
 }
 
 void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationEnd()
 {
     // std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersMasterIterationEnd"<<std::endl ;
+    micro_iterations_logger->RefreshLogger() ; 
+
 }
 
 void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationStart()
@@ -200,7 +222,7 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationStart()
     // std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersMicroIterationStart"<<std::endl;
 }
 
-void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name, bool& added_rows)
+void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name, bool& added_rows, std::string solving_time)
 {
     // std::cout<<"from Benders_Jl_MICRO_ITERS OnBendersMicroIterationEnd"<<std::endl ;
     std::string constraint_reader_name = subproblem_constraint_map_[sub_name];
@@ -221,9 +243,20 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name, bo
     }
 
     FlowNList N_flows = FlowNList{flows_to_follow.data(), flows_to_follow.size()};
+    auto t1 = std::chrono::high_resolution_clock::now() ; 
+
     ConstraintsToAdd constraints_to_add = jl_return_constraints_for_micro_iteration(
       sub_name.c_str(),
       N_flows);
+
+    //for logger 
+    std::vector<std::string> constraints_keys_vec ;
+    for (int i=0; i<constraints_to_add.size; i++) 
+    {
+        std::string str(constraints_to_add.constraints[i]) ; 
+        constraints_keys_vec.push_back(std::move(str)); 
+    }
+    
     std::vector<std::string> constraints_to_add_vec = get_constraints_to_add(constraints_to_add,
                                                                              sub_name);
 
@@ -231,6 +264,12 @@ void Benders_Jl_MICRO_ITERS::OnBendersMicroIterationEnd(std::string sub_name, bo
     {
         constraint_reader->add_rows(constraint_to_add);
     }
+
+    auto t2 = std::chrono::high_resolution_clock::now() ;  
+
+    auto elapsed_microseconds = std::chrono::duration_cast<std::chrono::microseconds>(t2 - t1).count() ;  
+
+    micro_iterations_logger->AddMicroIterionLog(sub_name,solving_time,std::to_string(elapsed_microseconds),constraints_keys_vec) ; 
 
     added_rows = constraints_to_add_vec.size();
 }

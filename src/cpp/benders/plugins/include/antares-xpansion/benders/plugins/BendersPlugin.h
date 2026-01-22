@@ -18,8 +18,8 @@ public:
                                 const SolverLogManager& solver_log_manager)
       = 0;
     virtual void OnBendersEnd() = 0;
-    virtual void OnBendersMasterIterationStart(std::map<std::string, double>&) = 0;
+    virtual void OnBendersMasterIterationStart(std::map<std::string, double>&,int&) = 0;
     virtual void OnBendersMasterIterationEnd() = 0;
     virtual void OnBendersMicroIterationStart() = 0;
-    virtual void OnBendersMicroIterationEnd(std::string sub_name, bool& added_rows) = 0;
+    virtual void OnBendersMicroIterationEnd(std::string sub_name, bool& added_rows,std::string solve_time) = 0;
 };

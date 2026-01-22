@@ -11,12 +11,13 @@
 class BendersPluginFactory
 {
 public:
-    BendersPluginFactory(const std::filesystem::path& input_root);
+    BendersPluginFactory(const std::filesystem::path& input_root, const std::filesystem::path& output_root);
     BendersPlugin* CreatePlugin(const CouplingMap& coupling_map, bool micro_iter);
 
 private:
     std::filesystem::path library_path_;
     std::filesystem::path input_root_;
+    std::filesystem::path output_root_;
 };
 
 typedef BendersPlugin* (*CreatePluginFunc)();
