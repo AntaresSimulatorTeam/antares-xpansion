@@ -20,12 +20,15 @@ add_executable(test_solver
         ${CMAKE_CURRENT_SOURCE_DIR}/define_datas.cpp
         ${CMAKE_CURRENT_SOURCE_DIR}/test_basis.cpp
 )
-
+find_package(fmt REQUIRED)
 find_package(Catch2 REQUIRED)
+
 target_link_libraries(test_solver
         PUBLIC
         antaresXpansion::solvers
         antaresXpansion::xpansion_interfaces
+        PRIVATE
+        fmt::fmt
         Catch2::Catch2WithMain
 )
 

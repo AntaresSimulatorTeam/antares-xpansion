@@ -11,7 +11,6 @@
 #include "Version.h"
 #include "antares-xpansion/helpers/Timer.h"
 #include "antares-xpansion/lpnamer/helper/ProblemGenerationLogger.h"
-#include "antares-xpansion/lpnamer/input_reader/GeneralDataReader.h"
 #include "antares-xpansion/lpnamer/input_reader/LpFilesExtractor.h"
 #include "antares-xpansion/lpnamer/input_reader/SettingsReader.h"
 #include "antares-xpansion/lpnamer/model/ActiveLinks.h"
@@ -28,7 +27,6 @@
 #include "antares-xpansion/lpnamer/problem_modifier/XpansionProblemsFromAntaresProvider.h"
 #include "antares-xpansion/lpnamer/problem_modifier/ZipProblemsProviderAdapter.h"
 #include "antares-xpansion/xpansion_interfaces/LogUtils.h"
-#include "antares-xpansion/xpansion_interfaces/StringManip.h"
 #include "config.h"
 #ifndef _WIN32
 #include "malloc.h"
@@ -349,10 +347,16 @@ void ProblemGeneration::RunProblemGeneration(
           [&](const auto& weeklyDataByYearWeek)
           {
               auto&& [year_week, data] = weeklyDataByYearWeek;
-              XpansionProblemsFromAntaresProvider adapter(lps_);
+              XpansionProblemsFromAntaresProvider adapter(lps_, logger.get());
               auto problem = adapter.provideProblem(solver_config_.Name(),
                                                     solver_log_manager,
                                                     year_week);
+              if (!problem)
+              {
+                  (*logger)(LogUtils::LOGLEVEL::ERR)
+                    << "No problem for year " << year_week.year << ", week " << year_week.week;
+                  return;
+              }
               {
                   std::lock_guard guard(mutex);
                   lps_.weeklyProblems.erase(year_week); // Clear data to save memory
@@ -360,10 +364,10 @@ void ProblemGeneration::RunProblemGeneration(
                   // Need to be done before treat because it will update problem name with the full
                   // path
               }
-              std::shared_ptr<IProblemVariablesProviderPort>
-                variables_provider = std::make_shared<ProblemVariablesFromProblemAdapter>(problem,
-                                                                                          links,
-                                                                                          logger);
+              auto variables_provider = std::make_shared<ProblemVariablesFromProblemAdapter>(
+                problem,
+                links,
+                logger);
 
               linkProblemsGenerator.treat(problem->_name,
                                           couplings,

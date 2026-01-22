@@ -128,7 +128,6 @@ TEST_P(MasterUpdateBaseTest, ConstraintIsAddedBendersMPI)
     benders = std::make_shared<BendersMpi>(bendersoptions,
                                            logger,
                                            writer,
-                                           *penv,
                                            *pworld,
                                            math_log_driver);
     benders->set_input_map(coupling_map);

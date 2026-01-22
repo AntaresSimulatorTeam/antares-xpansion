@@ -9,7 +9,6 @@
 
 class BendersApp
 {
-    boost::mpi::environment* penv_ = nullptr;
     boost::mpi::communicator* pworld_ = nullptr;
     SOLVER solver_ = SOLVER::BENDERS;
     SimulationOptions options_;
@@ -37,7 +36,6 @@ class BendersApp
 
 public:
     explicit BendersApp(const std::filesystem::path& options_file,
-                        boost::mpi::environment& env,
                         boost::mpi::communicator& world,
                         const SOLVER& solver);
     int Run();
