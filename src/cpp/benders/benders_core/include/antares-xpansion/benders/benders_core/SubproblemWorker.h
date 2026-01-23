@@ -28,6 +28,7 @@ public:
     virtual ~SubproblemWorker() = default;
     std::vector<double> get_solution() const;
     int get_variable_index(const std::string& variable_name);
+    void delete_row(const std::string& added_row) ; 
 
 public:
     void fix_to(const Point& x0) const;

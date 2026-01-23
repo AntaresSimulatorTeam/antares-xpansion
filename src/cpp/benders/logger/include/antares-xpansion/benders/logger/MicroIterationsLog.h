@@ -35,9 +35,10 @@ class MicroIterationsLog
                                     std::string adding_rows_time, 
                                     std::vector<std::string> added_constraints_keys ) ;  
         void RefreshLogger() ; 
+        void Dump() ; 
     private : 
         std::filesystem::path root_path ; 
-        std::vector<MasterIterationLog> master_iterations_logs ; 
+        std::vector<MasterIterationLog> master_iterations_logs_ ; 
         std::vector<MicroIterationsPerSub> micro_iterations_per_benders_iter ; 
         std::map<std::string,std::string> sub_constraints_map_ ; 
         MicroIterationsPerSub micro_iter_per_sub_per_benders_iter_ ; 

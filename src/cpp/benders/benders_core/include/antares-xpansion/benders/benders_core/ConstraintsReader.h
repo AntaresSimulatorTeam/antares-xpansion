@@ -29,21 +29,22 @@ public:
                       const std::filesystem::path variables_names_path,
                       const std::shared_ptr<SubproblemWorker>& subproblem_worker);
 
-    int get_row_index(const std::string& name);
 
-    std::vector<std::pair<std::string, double>> get_variables_values();
 
-    constraintRow get_row(const std::string& name);
-    std::shared_ptr<SubproblemWorker> get_subproblem_worker();
-    void add_rows_to_subproblems(constraintRow&);
     void add_rows(std::string&);
-
-    void get_variables_values_in_csv(std::filesystem::path variables_values_csv);
-
     std::vector<double> get_sub_solution();
     int get_variable_index_in_solution(std::string variable_id);
+    void delete_added_rows(std::vector<std::string>&) ; 
+    
+    private:
+    
+    void add_rows_to_subproblems(constraintRow&);
+    int get_row_index(const std::string& name);
+    constraintRow get_row(const std::string& name);
+    std::shared_ptr<SubproblemWorker> get_subproblem_worker();
+    void get_variables_values_in_csv(std::filesystem::path variables_values_csv);
 
-private:
+
     Logger logger_;
     std::shared_ptr<SolverAbstract> solver_;
     std::shared_ptr<BendersProblemFromFile> benders_problem_provider_;

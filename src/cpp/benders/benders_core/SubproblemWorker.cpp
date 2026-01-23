@@ -114,10 +114,17 @@ int SubproblemWorker::get_variable_index(const std::string& variable_name)
 {
     int variable_index(-1);
 
-    if (_solver)
-    {
-        variable_index = _solver->get_col_index(variable_name);
-    }
+    variable_index = _solver->get_col_index(variable_name);
 
     return variable_index;
 }
+
+void SubproblemWorker::delete_row(const std::string& added_row) 
+{
+    int row_index = _solver->get_row_index(added_row) ; 
+    _solver->del_rows(row_index,row_index) ; 
+
+}
+
+
+

@@ -1,5 +1,8 @@
 #include "antares-xpansion/benders/benders_core/ConstraintsReader.h"
 
+#include "antares-xpansion/benders/plugins/Benders_Jl_MICRO_ITERS.h"
+
+
 #include <boost/tokenizer.hpp>
 
 ConstraintsReader::ConstraintsReader(const std::filesystem::path constraint_file_path,
@@ -25,14 +28,11 @@ ConstraintsReader::ConstraintsReader(const std::filesystem::path constraint_file
         solver_IO_.configure(solver_name, ProblemsFormat::MPS_FILE);
         benders_problem_provider_->provide_problem(solver_IO_, solver_);
         int n_rows = solver_->get_nrows();
-        std::cout << "number of rows in constraint problem " << n_rows << std::endl;
     }
 
-    std::cout << "pint variable dict path : " << variables_names_path << std::endl;
     std::ifstream variables_file(variables_names_path);
     if (variables_file.is_open())
     {
-        std::cout << "from constraint reader read variables correctly !!!" << std::endl;
         std::string line;
         typedef boost::tokenizer<boost::escaped_list_separator<char>> Tokenizer;
 
@@ -146,3 +146,16 @@ void ConstraintsReader::add_rows(std::string& row_name)
     auto constraint_row = get_row(row_name);
     add_rows_to_subproblems(constraint_row);
 }
+
+
+void ConstraintsReader::delete_added_rows(std::vector<std::string>& added_rows)
+{
+    for (auto& added_row : added_rows) 
+    {
+        subproblem_worker_->delete_row(added_row) ; 
+    }
+} 
+
+
+
+

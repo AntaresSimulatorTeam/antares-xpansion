@@ -495,6 +495,11 @@ void BendersMpi::launch()
     Run();
     _world.barrier();
 
+    if (benders_plugin_)
+    {
+        benders_plugin_->OnBendersEnd();
+    }
+
     post_run_actions();
 
     if (free_problems_)

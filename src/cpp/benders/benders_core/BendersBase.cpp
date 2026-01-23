@@ -617,7 +617,6 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
         int num_micro_iter(0);
         while (added_rows)
         {
-            std::cout<<"start solving "<<name<<std::endl ; 
             auto t1 = std::chrono::high_resolution_clock::now() ; 
             worker->solve(subproblem_data.lpstatus,
                           _options.OUTPUTROOT,
@@ -631,8 +630,6 @@ void BendersBase::SolveSubproblem(PlainData::SubProblemData& subproblem_data,
                 benders_plugin_->OnBendersMicroIterationEnd(name, added_rows,std::to_string(elapsed_microseconds));
             }
             num_micro_iter++;
-            std::cout<<"micro iteration num "<<std::endl ; 
-
         }
     }
     else

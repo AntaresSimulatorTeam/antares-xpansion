@@ -81,12 +81,13 @@ public:
     void SetSubProblemIDs(const char** subs_ids, int n_subs);
 
 private:
-    std::vector<std::string> get_constraints_to_add(ConstraintsToAdd&, std::string);
+     std::vector<std::string> get_constraints_to_add(ConstraintsToAdd&, std::string);
 
     void BuildConstraintsReaderMap(const SubproblemsMapPtr& subproblem_map,
                                    const BendersBaseOptions& options,
                                    const SolverLogManager& solver_log_manager);
     bool check_if_constraint_key_is_added(const char* key, std::string sub_name);
+    void delete_added_rows() ; 
     void* handle_;
     std::filesystem::path input_root_;
     std::filesystem::path output_root_ ; 
@@ -105,4 +106,5 @@ private:
     ConstraintsReaderPtrMap constraints_map_;
     Logger _logger;
     std::shared_ptr<MicroIterationsLog> micro_iterations_logger ; 
+    bool warm_start_; 
 };
