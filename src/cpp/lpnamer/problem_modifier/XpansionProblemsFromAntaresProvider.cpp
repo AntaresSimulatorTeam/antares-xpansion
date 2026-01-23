@@ -10,15 +10,17 @@
 #include "antares-xpansion/lpnamer/problem_modifier/AntaresProblemToXpansionProblemTranslator.h"
 
 XpansionProblemsFromAntaresProvider::XpansionProblemsFromAntaresProvider(
-  const Antares::Solver::LpsFromAntares& lps):
-    antares_hebdo_problems{lps}
+  const Antares::Solver::LpsFromAntares& lps,
+  ProblemGenerationLog::ProblemGenerationLogger* logger):
+    antares_hebdo_problems{lps},
+    logger_{logger}
 {
 }
 
-auto XpansionProblemsFromAntaresProvider::provideProblem(
+std::shared_ptr<Problem> XpansionProblemsFromAntaresProvider::provideProblem(
   const std::string& solver_name,
   SolverLogManager& solver_log_manager,
-  const Antares::Solver::WeeklyProblemId& problem_id) const -> std::shared_ptr<Problem>
+  const Antares::Solver::WeeklyProblemId& problem_id) const
 {
     auto problem = AntaresProblemToXpansionProblemTranslator::translateToXpansionProblem(
       antares_hebdo_problems,
@@ -26,7 +28,8 @@ auto XpansionProblemsFromAntaresProvider::provideProblem(
       problem_id.week,
       solver_name,
       solver_log_manager,
-      rename_utils_);
+      rename_utils_,
+      logger_);
     return problem;
 }
 
