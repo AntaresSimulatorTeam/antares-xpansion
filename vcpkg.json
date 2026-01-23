@@ -1,6 +1,6 @@
 {
   "name": "antares-xpansion",
-  "version-string": "1.6.2",
+  "version-string": "1.7.2",
   "$comment 1": "libuuid by transitivity for Simulator-> yuni",
   "$comment 2": "sirius-solver by transitivity for Simulator",
   "$comment 3": "antlr4 by transitivity for Simulator",
@@ -49,7 +49,7 @@
   "overrides": [
     {
       "name": "tbb",
-      "version-string": "2020_U3"
+      "version-string": "2022.2.0"
     },
     {
       "name": "coin-or-cbc",
@@ -69,7 +69,7 @@
     },
     {
       "name": "coinutils",
-      "version": "2.11.6"
+      "version": "2.11.12"
     }
   ]
 }

@@ -14,10 +14,10 @@ as : $(\omega^{merged}_{i,n} = w(n) \times \omega_{i,n})_{\forall n \in G, \fora
 Usage is ```<merge_weights_executable> <master_merger_info.json> <nodal_lp_info.json> <path/to/output/weights/file>```
 
 - ```<master_merger_info.json>``` designates the intermediary file outputted by the initial input parser /
-  translator. [See this section](./merge-master.md#master-structure-file) for more details. In this part of the
+  translator. [See this section](./merge-master.md#master-merger-info-file) for more details. In this part of the
   workflow, only each node's ```node_weight``` entry will be of use to us.
 - ```<nodal_lp_info.json>``` designates the intermediary file outputted by the ```MultipleProblemGeneration```
-  step. [See this section](./multiple-problem-generation.md#output--nodal-lp-info-file) for more details.
+  step. [See this section](./multiple-problem-generation.md#output-nodal-lp-info-file) for more details.
 
 Note that in the ```<nodal_lp_info.json>``` file, if the ```weights_file``` parameter does not appear or points to a non
 existant file, the weights of this node are assumed to be uniform.

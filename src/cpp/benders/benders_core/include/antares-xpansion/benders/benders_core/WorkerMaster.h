@@ -1,5 +1,7 @@
 #pragma once
 
+#include <unordered_set>
+
 #include "SubproblemWorker.h"
 #include "Worker.h"
 /*!
@@ -24,10 +26,12 @@ public:
                  double master_solution_tolerance,
                  double cut_coefficient_tolerance);
     ~WorkerMaster() override = default;
+    std::vector<int> _id_master_only_vars;
 
     void get(Point& x0,
              double& overall_subpb_cost_under_approx,
-             DblVector& single_subpb_costs_under_approx);
+             DblVector& single_subpb_costs_under_approx,
+             DblVector& master_only_vars_out);
     void get_dual_values(std::vector<double>& dual) const;
     [[nodiscard]] int get_number_constraint() const;
 
@@ -36,8 +40,14 @@ public:
     void add_dynamic_cut(const Point& s, const double& sx0, const double& rhs) const;
     void addSubproblemCut(int i,
                           const Point& subgradient,
-                          const Point& x0,
+                          const Point& x_cut,
                           const double& rhs) const;
+
+    void addGroupSubproblemCut(std::vector<int> subproblem_ids,
+                               const Point& subgradient,
+                               const Point& x_cut,
+                               const double& rhs) const;
+
     void fix_alpha(const double& bestUB) const;
 
     virtual void DeactivateIntegrityConstraints() const;
@@ -68,14 +78,18 @@ private:
                              const double& rhs,
                              std::vector<double>& rowrhs) const;
 
-    void define_matval_mclind_for_index(int i,
+    void define_matval_mclind_for_index(std::vector<int> subproblem_ids,
                                         const Point& s,
                                         std::vector<double>& matval,
                                         std::vector<int>& mclind) const;
+
     void _set_upper_bounds() const;
     void _set_alpha_var();
     void _set_nb_units_var_ids();
     void restoreFeasibility(std::vector<double>& solution);
+
+protected:
+    void _set_master_only_var_ids();
 
 public:
     // Used only for testing purposes
