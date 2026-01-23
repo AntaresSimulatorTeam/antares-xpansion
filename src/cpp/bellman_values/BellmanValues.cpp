@@ -186,7 +186,7 @@ std::vector<std::vector<double>> BellmanValues::compute(int nbLevels)
                 }
                 // pivot, with rounding to nearest index
                 auto pivot = values.end()
-                             - static_cast<int>(values.size() * reservoirManagement.cvar + 1);
+                             - static_cast<int>((values.size() - 1) * reservoirManagement.cvar + 1);
                 // sort highest values to the right of the pivot
                 std::nth_element(values.begin(), pivot, values.end());
                 // sum
