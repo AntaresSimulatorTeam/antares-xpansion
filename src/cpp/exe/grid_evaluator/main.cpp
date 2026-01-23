@@ -114,6 +114,7 @@ int main(int argc, char** argv)
         bool antaresFormat = optionsParser.AntaresFormat();
         bool writePbFiles = optionsParser.WritePbFiles();
         const std::string problemFormat = optionsParser.ProblemFormat();
+        const bool ignoreOptimalTrajectory = optionsParser.IgnoreOptimalTrajectory();
 
         auto gridCollection = std::make_shared<GridCollection>(studyPath
                                                                / "user/water_values/grid.csv");
@@ -151,8 +152,17 @@ int main(int argc, char** argv)
         auto startProblemGeneration = std::chrono::system_clock::now();
         logger->display_message(
           "Generating problems (starting time: " + formatTime(startProblemGeneration) + ")");
-        ProblemGenerationForWaterValueCalculation
-          pbg(directories, logger, solverName, startWeek, endWeek, writePbFiles, problemFormat);
+        ProblemGenerationForWaterValueCalculation pbg(
+          directories,
+          logger,
+          solverName,
+          ProblemGenerationForWaterValueCalculation::getComputationModeFromGrid(
+            *gridCollection,
+            ignoreOptimalTrajectory), // not used
+          startWeek,
+          endWeek,
+          writePbFiles,
+          problemFormat);
         auto endProblemGeneration = std::chrono::system_clock::now();
         logger->display_message("Problems generated (end time: " + formatTime(endProblemGeneration)
                                 + ")");

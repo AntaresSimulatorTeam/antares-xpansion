@@ -1,0 +1,4 @@
+grid_id,problem_name,type,name,area,min,max,step
+0,all,constraint,HydroPower,area3,0,1,0.1
+1,all,constraint,HydroPower,area1,0,1,0.1
+2,all,constraint,HydroPower,area2,0,1,0.1

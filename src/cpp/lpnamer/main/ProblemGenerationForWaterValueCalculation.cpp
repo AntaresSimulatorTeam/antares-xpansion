@@ -68,18 +68,18 @@ ProblemGenerationForWaterValueCalculation::ProblemGenerationForWaterValueCalcula
   ConfigurationManager::ConfigDirectories directories,
   Logger logger,
   const std::string& solverName,
+  const WaterValueComputationMode& computationMode,
   unsigned int startWeek,
   unsigned int endWeek,
   bool writePbFiles,
-  const std::string& problemFormat,
-  const WaterValueComputationMode& computationMode):
+  const std::string& problemFormat):
     directories(directories),
     logger(std::move(logger)),
+    computationMode(computationMode),
     startWeek(startWeek),
     endWeek(endWeek),
     writePbFiles(writePbFiles),
-    problemFormat(problemsFormatFromString(problemFormat)),
-    computationMode(computationMode)
+    problemFormat(problemsFormatFromString(problemFormat))
 {
     Antares::Solver::Optimization::OptimizationOptions optOptions;
     optOptions.firstOptimOptions.solverName = solverName;

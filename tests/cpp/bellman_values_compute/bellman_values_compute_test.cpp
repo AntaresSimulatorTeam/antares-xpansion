@@ -26,6 +26,36 @@ public:
     const std::string solverName = "xpress";
 
 protected:
+    // this function must only be used to create reference files for end-to-end tests
+    // its use must be justified
+    void saveReferenceValues(const std::filesystem::path& path,
+                             const std::vector<std::vector<double>>& values,
+                             const Logger& logger,
+                             bool usingAntaresFormat = false)
+    {
+        // values would have nLevels columns and nWeeks rows
+        // the reference file expects a transposed table
+        std::vector<std::vector<double>> newValues(values[0].size(), std::vector<double>());
+        for (int iWeeks = 0; iWeeks < values.size(); ++iWeeks)
+        {
+            for (int iLevel = 0; iLevel < values[iWeeks].size(); ++iLevel)
+            {
+                newValues[iLevel].push_back(values[iWeeks][iLevel]);
+            }
+        }
+        std::ofstream file(path);
+        file << std::fixed;
+        for (const auto& levelValues: newValues)
+        {
+            std::vector<double> values = levelValues;
+            for (const auto& value: values)
+            {
+                file << value << ",";
+            }
+            file << '\n';
+        }
+    }
+
     void SetUp() override
     {
         // adding a new logger that actually logs
@@ -42,7 +72,7 @@ protected:
         std::filesystem::current_path(original_dir);
     }
 
-    void copyData()
+    void copyDataOneNodeBase()
     {
         std::filesystem::path data_dir = data_test_dir / "one_node_base";
         tmpDir = CreateRandomSubDir(std::filesystem::temp_directory_path());
@@ -53,22 +83,61 @@ protected:
                                 | std::filesystem::copy_options::update_existing);
     }
 
+    void copyDataThreeNodes()
+    {
+        std::filesystem::path data_dir = data_test_dir / "watervalues_3nodes_2mcy";
+        tmpDir = CreateRandomSubDir(std::filesystem::temp_directory_path());
+
+        std::filesystem::copy(data_dir,
+                              tmpDir,
+                              std::filesystem::copy_options::recursive
+                                | std::filesystem::copy_options::update_existing);
+    }
+
     std::map<Antares::Solver::WeeklyProblemId, std::vector<double>> getOutputCosts(
-      std::string fileName)
+      std::string fileName,
+      bool isTransposed = false)
     {
         std::map<Antares::Solver::WeeklyProblemId, std::vector<double>> costs;
         std::ifstream file(tmpDir / fileName);
-        std::string line;
-        while (std::getline(file, line))
+        EXPECT_TRUE(file);
+        if (!file)
         {
-            std::stringstream ss(line);
-            std::string token;
-            std::vector<std::string> tokens;
+            throw std::runtime_error("Reference file does not exist at "
+                                     + (tmpDir / fileName).string());
+        }
+        std::string line;
+        if (!isTransposed)
+        {
+            // default mode
+            unsigned int scenario = 1;
+            while (std::getline(file, line))
+            {
+                std::stringstream ss(line);
+                std::string token;
+                std::vector<std::string> tokens;
+                unsigned int week = 1;
+                while (std::getline(ss, token, ','))
+                {
+                    costs[{scenario, week}].push_back(std::stod(token));
+                    week++;
+                }
+            }
+        }
+        else
+        {
+            // multistock data is transposed (levels VS week)
             unsigned int week = 1;
             unsigned int scenario = 1;
-            while (std::getline(ss, token, ','))
+            while (std::getline(file, line))
             {
-                costs[{scenario, week}].push_back(std::stod(token));
+                std::stringstream ss(line);
+                std::string token;
+                std::vector<std::string> tokens;
+                while (std::getline(ss, token, ','))
+                {
+                    costs[{scenario, week}].push_back(std::stod(token));
+                }
                 week++;
             }
         }
@@ -180,7 +249,7 @@ TEST_F(BellmanValuesComputeTest, unitTestPenaltiesWithFinalLevel)
 
 TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
 {
-    copyData();
+    copyDataOneNodeBase();
     auto expected_costs = getOutputCosts("result_bellman_values_no_penalties.csv");
 
     auto grid_collection = GridCollection(tmpDir / "user/water_values/grid.csv");
@@ -217,7 +286,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCaseNoPenalties)
 
 TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
 {
-    copyData();
+    copyDataOneNodeBase();
     auto expected_costs = getOutputCosts("result_bellman_values_penalties.csv");
 
     auto grid_collection = GridCollection(tmpDir / "user/water_values/grid.csv");
@@ -257,7 +326,7 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenalties)
 
 TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenaltiesWithFinalLevel)
 {
-    copyData();
+    copyDataOneNodeBase();
     auto expected_costs = getOutputCosts("result_bellman_values_penalties_final_level.csv");
 
     auto grid_collection = GridCollection(tmpDir / "user/water_values/grid.csv");
@@ -292,6 +361,259 @@ TEST_F(BellmanValuesComputeTest, OneNodeBaseCasePenaltiesWithFinalLevel)
             double expected_cost = expected_costs[{1, week}][0];
             EXPECT_NEAR_REL(cost, expected_cost, 1e-6);
             expected_costs[{1, week}].erase(expected_costs[{1, week}].begin());
+        }
+    }
+}
+
+TEST_F(BellmanValuesComputeTest, ThreeNodesCaseNoPenalties)
+{
+    copyDataThreeNodes();
+
+    auto grid_collection = std::make_shared<GridCollection>(
+      GridCollection(tmpDir / "user/water_values/grid.csv"));
+
+    ConfigurationManager::ConfigDirectories config_dirs{
+      .study_dir = tmpDir,
+      .simulation_dir = ConfigurationManager::generateOutputName(tmpDir),
+    };
+
+    ProblemGenerationForWaterValueCalculation pbg(
+      config_dirs,
+      logger,
+      solverName,
+      ProblemGenerationForWaterValueCalculation::WaterValueComputationMode::
+        SEQUENTIAL_UPDATE_TRAJECTORY);
+
+    pbg.initializeOptimalTrajectories(grid_collection);
+
+    // loop similar to water_values_exe, but not technically necessary here
+    for (auto& grid: grid_collection->gridDefinitions | std::views::values)
+    {
+        grid.setReservoirs(grid_collection->reservoirs);
+
+        for (auto& gridElement: grid.gridElements)
+        {
+            const std::string referenceFileName = std::to_string(grid.gridID) + "_"
+                                                  + gridElement.area
+                                                  + "_bellman_values_no_penalties.csv";
+            logger->display_message(
+              (std::stringstream() << "Parsing reference file at " << tmpDir / referenceFileName)
+                .str());
+            auto expected_costs = getOutputCosts(referenceFileName);
+            logger->display_message("Parsing done");
+
+            ReservoirManagement reservoir_management(grid.reservoirs.at(gridElement.area), 0, 0, 0);
+
+            if (reservoir_management.reservoir.area != gridElement.area)
+            {
+                reservoir_management.setReservoir(grid_collection->reservoirs.at(gridElement.area));
+            }
+
+            logger->display_message("Updating problems...");
+            auto problems = pbg.updateProblems(grid, reservoir_management);
+            logger->display_message("Updated.");
+
+            auto evaluator = GridEvaluator(logger,
+                                           problems,
+                                           grid,
+                                           solverName,
+                                           config_dirs.simulation_dir,
+                                           8);
+
+            auto bellmanValues = BellmanValues(evaluator, reservoir_management, logger);
+            logger->display_message("Computing Bellman values...");
+            auto res = bellmanValues.compute(11);
+            logger->display_message("Computed Bellman values");
+
+            for (unsigned int week = 1; week < res.size(); week++)
+            {
+                logger->display_message("comparing week " + std::to_string(week));
+                for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
+                {
+                    double cost = res[week - 1][level_index];
+                    double expected_cost = expected_costs[{1, week}][0];
+                    EXPECT_NEAR_REL(cost, expected_cost, 1e-6);
+                    expected_costs[{1, week}].erase(expected_costs[{1, week}].begin());
+                }
+            }
+            logger->display_message("Swapping main reservoir");
+            grid_collection->reservoirs.at(gridElement.area) = reservoir_management.reservoir;
+
+            logger->display_message("Computing optimal trajectories...");
+            grid_collection->reservoirs.at(gridElement.area).optimal_trajectory
+              = bellmanValues.computeOptimalTrajectories();
+            logger->display_message("Computing done");
+        }
+    }
+}
+
+TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenalties)
+{
+    copyDataThreeNodes();
+
+    auto grid_collection = std::make_shared<GridCollection>(
+      GridCollection(tmpDir / "user/water_values/grid.csv"));
+
+    ConfigurationManager::ConfigDirectories config_dirs{
+      .study_dir = tmpDir,
+      .simulation_dir = ConfigurationManager::generateOutputName(tmpDir),
+    };
+
+    ProblemGenerationForWaterValueCalculation pbg(
+      config_dirs,
+      logger,
+      solverName,
+      ProblemGenerationForWaterValueCalculation::WaterValueComputationMode::
+        SEQUENTIAL_UPDATE_TRAJECTORY);
+
+    pbg.initializeOptimalTrajectories(grid_collection);
+
+    // loop similar to water_values_exe, but not technically necessary here
+    for (auto& grid: grid_collection->gridDefinitions | std::views::values)
+    {
+        grid.setReservoirs(grid_collection->reservoirs);
+
+        for (auto& gridElement: grid.gridElements)
+        {
+            const std::string referenceFileName = std::to_string(grid.gridID) + "_"
+                                                  + gridElement.area
+                                                  + "_bellman_values_penalties.csv";
+            logger->display_message(
+              (std::stringstream() << "Parsing reference file at " << tmpDir / referenceFileName)
+                .str());
+            auto expected_costs = getOutputCosts(referenceFileName);
+            logger->display_message("Parsing done");
+
+            ReservoirManagement reservoir_management(grid.reservoirs.at(gridElement.area),
+                                                     3000,
+                                                     3000,
+                                                     3000);
+
+            if (reservoir_management.reservoir.area != gridElement.area)
+            {
+                reservoir_management.setReservoir(grid_collection->reservoirs.at(gridElement.area));
+            }
+
+            logger->display_message("Updating problems...");
+            auto problems = pbg.updateProblems(grid, reservoir_management);
+            logger->display_message("Updated.");
+
+            auto evaluator = GridEvaluator(logger,
+                                           problems,
+                                           grid,
+                                           solverName,
+                                           config_dirs.simulation_dir,
+                                           8);
+
+            auto bellmanValues = BellmanValues(evaluator, reservoir_management, logger);
+            logger->display_message("Computing Bellman values...");
+            auto res = bellmanValues.compute(11);
+            logger->display_message("Computed Bellman values");
+
+            for (unsigned int week = 1; week < res.size(); week++)
+            {
+                logger->display_message("comparing week " + std::to_string(week));
+                for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
+                {
+                    double cost = res[week - 1][level_index];
+                    double expected_cost = expected_costs[{1, week}][0];
+                    EXPECT_NEAR_REL(cost, expected_cost, 1e-6);
+                    expected_costs[{1, week}].erase(expected_costs[{1, week}].begin());
+                }
+            }
+            logger->display_message("Swapping main reservoir");
+            grid_collection->reservoirs.at(gridElement.area) = reservoir_management.reservoir;
+
+            logger->display_message("Computing optimal trajectories...");
+            grid_collection->reservoirs.at(gridElement.area).optimal_trajectory
+              = bellmanValues.computeOptimalTrajectories();
+            logger->display_message("Computing done");
+        }
+    }
+}
+
+TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenaltiesFinalLevel)
+{
+    copyDataThreeNodes();
+
+    auto grid_collection = std::make_shared<GridCollection>(
+      GridCollection(tmpDir / "user/water_values/grid.csv"));
+
+    ConfigurationManager::ConfigDirectories config_dirs{
+      .study_dir = tmpDir,
+      .simulation_dir = ConfigurationManager::generateOutputName(tmpDir),
+    };
+
+    ProblemGenerationForWaterValueCalculation pbg(
+      config_dirs,
+      logger,
+      solverName,
+      ProblemGenerationForWaterValueCalculation::WaterValueComputationMode::
+        SEQUENTIAL_UPDATE_TRAJECTORY);
+
+    pbg.initializeOptimalTrajectories(grid_collection);
+
+    // loop similar to water_values_exe, but not technically necessary here
+    for (auto& grid: grid_collection->gridDefinitions | std::views::values)
+    {
+        grid.setReservoirs(grid_collection->reservoirs);
+
+        for (auto& gridElement: grid.gridElements)
+        {
+            const std::string referenceFileName = std::to_string(grid.gridID) + "_"
+                                                  + gridElement.area
+                                                  + "_bellman_values_penalties_final_level.csv";
+            logger->display_message(
+              (std::stringstream() << "Parsing reference file at " << tmpDir / referenceFileName)
+                .str());
+            auto expected_costs = getOutputCosts(referenceFileName);
+            logger->display_message("Parsing done");
+
+            ReservoirManagement reservoir_management(grid.reservoirs.at(gridElement.area),
+                                                     3000,
+                                                     3000,
+                                                     3000,
+                                                     true);
+
+            if (reservoir_management.reservoir.area != gridElement.area)
+            {
+                reservoir_management.setReservoir(grid_collection->reservoirs.at(gridElement.area));
+            }
+
+            logger->display_message("Updating problems...");
+            auto problems = pbg.updateProblems(grid, reservoir_management);
+            logger->display_message("Updated.");
+
+            auto evaluator = GridEvaluator(logger,
+                                           problems,
+                                           grid,
+                                           solverName,
+                                           config_dirs.simulation_dir,
+                                           8);
+
+            auto bellmanValues = BellmanValues(evaluator, reservoir_management, logger);
+            logger->display_message("Computing Bellman values...");
+            auto res = bellmanValues.compute(11);
+            logger->display_message("Computed Bellman values");
+
+            for (unsigned int week = 1; week < res.size(); week++)
+            {
+                logger->display_message("comparing week " + std::to_string(week));
+                for (int level_index = 0; level_index < res[week - 1].size(); level_index++)
+                {
+                    double cost = res[week - 1][level_index];
+                    double expected_cost = expected_costs[{1, week}][0];
+                    EXPECT_NEAR_REL(cost, expected_cost, 1e-6);
+                    expected_costs[{1, week}].erase(expected_costs[{1, week}].begin());
+                }
+            }
+            logger->display_message("Swapping main reservoir");
+            grid_collection->reservoirs.at(gridElement.area) = reservoir_management.reservoir;
+
+            logger->display_message("Computing optimal trajectories...");
+            grid_collection->reservoirs.at(gridElement.area).optimal_trajectory
+              = bellmanValues.computeOptimalTrajectories();
+            logger->display_message("Computing done");
         }
     }
 }

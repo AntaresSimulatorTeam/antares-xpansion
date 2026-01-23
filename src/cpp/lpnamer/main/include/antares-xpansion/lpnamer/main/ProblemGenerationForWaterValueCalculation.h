@@ -37,11 +37,11 @@ public:
       ConfigurationManager::ConfigDirectories directories,
       Logger logger,
       const std::string& solverName = "xpress",
+      const WaterValueComputationMode& computationMode = WaterValueComputationMode::MULTIVARIATE,
       unsigned int startWeek = 1,
       unsigned int endWeek = 52,
       bool savePbFiles = false,
-      const std::string& problemFormat = "OPTIMIZED",
-      const WaterValueComputationMode& computationMode = WaterValueComputationMode::MULTIVARIATE);
+      const std::string& problemFormat = "OPTIMIZED");
     virtual ~ProblemGenerationForWaterValueCalculation() = default;
     std::map<Antares::Solver::WeeklyProblemId, std::shared_ptr<Problem>> updateProblems(
       const GridDefinition& gridDefinition,

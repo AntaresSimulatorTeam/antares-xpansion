@@ -223,13 +223,13 @@ int main(int argc, char** argv)
           directories,
           logger,
           solverName,
+          ProblemGenerationForWaterValueCalculation::getComputationModeFromGrid(
+            *gridCollection,
+            ignoreOptimalTrajectory),
           startWeek,
           endWeek,
           writePbFiles,
-          problemFormat,
-          ProblemGenerationForWaterValueCalculation::getComputationModeFromGrid(
-            *gridCollection,
-            ignoreOptimalTrajectory));
+          problemFormat);
         auto endProblemGeneration = std::chrono::system_clock::now();
         logger->display_message("Problems generated (end time: " + formatTime(endProblemGeneration)
                                 + ")");
