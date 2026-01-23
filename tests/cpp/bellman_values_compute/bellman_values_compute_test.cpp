@@ -24,6 +24,9 @@ public:
     std::filesystem::path tmpDir;
     const std::filesystem::path data_test_dir = "data_test";
     const std::string solverName = "xpress";
+    const std::string solverNameMultistock = "coin"; // the multistock study has too many rows and
+                                                     // columns for a non-commercial license of
+                                                     // Xpress
 
 protected:
     // this function must only be used to create reference files for end-to-end tests
@@ -380,7 +383,7 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseNoPenalties)
     ProblemGenerationForWaterValueCalculation pbg(
       config_dirs,
       logger,
-      solverName,
+      solverNameMultistock,
       ProblemGenerationForWaterValueCalculation::WaterValueComputationMode::
         SEQUENTIAL_UPDATE_TRAJECTORY);
 
@@ -416,7 +419,7 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseNoPenalties)
             auto evaluator = GridEvaluator(logger,
                                            problems,
                                            grid,
-                                           solverName,
+                                           solverNameMultistock,
                                            config_dirs.simulation_dir,
                                            8);
 
@@ -462,7 +465,7 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenalties)
     ProblemGenerationForWaterValueCalculation pbg(
       config_dirs,
       logger,
-      solverName,
+      solverNameMultistock,
       ProblemGenerationForWaterValueCalculation::WaterValueComputationMode::
         SEQUENTIAL_UPDATE_TRAJECTORY);
 
@@ -501,7 +504,7 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenalties)
             auto evaluator = GridEvaluator(logger,
                                            problems,
                                            grid,
-                                           solverName,
+                                           solverNameMultistock,
                                            config_dirs.simulation_dir,
                                            8);
 
@@ -547,7 +550,7 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenaltiesFinalLevel)
     ProblemGenerationForWaterValueCalculation pbg(
       config_dirs,
       logger,
-      solverName,
+      solverNameMultistock,
       ProblemGenerationForWaterValueCalculation::WaterValueComputationMode::
         SEQUENTIAL_UPDATE_TRAJECTORY);
 
@@ -587,7 +590,7 @@ TEST_F(BellmanValuesComputeTest, ThreeNodesCaseWithPenaltiesFinalLevel)
             auto evaluator = GridEvaluator(logger,
                                            problems,
                                            grid,
-                                           solverName,
+                                           solverNameMultistock,
                                            config_dirs.simulation_dir,
                                            8);
 
