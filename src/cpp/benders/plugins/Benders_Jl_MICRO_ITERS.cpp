@@ -1,4 +1,3 @@
-// Copyright (C) 2026 Hedi Bouchehda.
 /*
     Implementation of Benders_Jl_MICRO_ITERS
 */
@@ -200,7 +199,7 @@ void Benders_Jl_MICRO_ITERS::OnBendersEnd()
 }
 
 void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationStart(
-  std::map<std::string, double>& benders_invested_master_result,
+  std::map<std::string, double>& master_out,
     int& num_iter)
 {
     for (auto& [sub, _]: added_constraints_per_sub_)
@@ -208,10 +207,9 @@ void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationStart(
         added_constraints_per_sub_[sub] = std::vector<std::string>();
     }
 
-    // std::cout<<"from Benders_Jl_MICRO_ITERSOnBendersMasterIterationStart"<<std::endl ;
     std::vector<CandidateLineMasterIterationResult> candidates_iter_res ; 
-    candidates_iter_res.reserve(benders_invested_master_result.size()) ;
-    for (auto& [line, value]: benders_invested_master_result)
+    candidates_iter_res.reserve(master_out.size()) ;
+    for (auto& [line, value]: master_out)
     {
         auto id_in_csv = binary_variables_ids_map_[line].c_str();
         candidates_iter_res.push_back(CandidateLineMasterIterationResult{id_in_csv, value});
@@ -219,7 +217,7 @@ void Benders_Jl_MICRO_ITERS::OnBendersMasterIterationStart(
 
     MasterBendersInput master_benders_input = MasterBendersInput{
       candidates_iter_res.data(),
-      benders_invested_master_result.size()};
+      master_out.size()};
     
     jl_compute_factors_for_microiterations_FUNC compute_factors
       = (jl_compute_factors_for_microiterations_FUNC)

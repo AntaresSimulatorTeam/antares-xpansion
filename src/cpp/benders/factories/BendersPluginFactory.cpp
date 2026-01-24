@@ -9,13 +9,9 @@
 BendersPluginFactory::BendersPluginFactory(const SimulationOptions& options) : options_(options)  
 
 {
-
-    input_root_ = options_.INPUTROOT;
-    output_root_ = options_.OUTPUTROOT; 
-    library_path_ = input_root_ / "libmylib/lib/libmylib.so";
 }
 
-BendersPlugin* BendersPluginFactory::CreatePlugin(const CouplingMap& coupling_map, bool micro_iter)
+std::shared_ptr<BendersPlugin> BendersPluginFactory::CreatePlugin(const CouplingMap& coupling_map, bool micro_iter)
 {
     if (micro_iter)
     {
@@ -32,11 +28,11 @@ BendersPlugin* BendersPluginFactory::CreatePlugin(const CouplingMap& coupling_ma
             }
         }
 
-        Benders_Jl_MICRO_ITERS* plugin_jl_micro_iters = new Benders_Jl_MICRO_ITERS(options_,
+        std::shared_ptr<Benders_Jl_MICRO_ITERS>  plugin_jl_micro_iters = std::make_shared<Benders_Jl_MICRO_ITERS> (options_,
                                                                                    coupling_map);
         plugin_jl_micro_iters->SetSubProblemIDs(subs_ids.data(), subs_ids.size());
 
-        BendersPlugin* plugin = (BendersPlugin*)plugin_jl_micro_iters;
+        std::shared_ptr<BendersPlugin> plugin = plugin_jl_micro_iters;
 
         return plugin;
     }

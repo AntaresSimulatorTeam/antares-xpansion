@@ -400,18 +400,15 @@ void BendersMpi::Run()
     }
     _data.number_of_subproblem_solved = _data.nsubproblem;
 
-    std::cout<<"before iterations ...."<<std::endl ; 
 
     while (!_data.stop)
     {
         ++_data.it;
         ResetSimplexIterationsBounds();
 
-        std::cout<<"ended resetting the simplex "<<std::endl ; 
 
         /*Solve Master problem, get optimal value and cost and send it to
          * process*/
-        std::cout<<"start solving master "<<std::endl ; 
         step_1_solve_master();
 
         if (benders_plugin_)
@@ -490,7 +487,6 @@ void BendersMpi::launch()
     {
         benders_plugin_->OnBendersStart(subproblem_map, _logger, _options, solver_log_manager_);
     }
-    std::cout<<"ended benders start  "<<std::endl ; 
 
     Run();
     _world.barrier();

@@ -1,4 +1,3 @@
-// Copyright (C) 2026 Hedi Bouchehda.
 //This header file will contain all the necessary objects to handle micro iterations workflow loggin
 
 #pragma once

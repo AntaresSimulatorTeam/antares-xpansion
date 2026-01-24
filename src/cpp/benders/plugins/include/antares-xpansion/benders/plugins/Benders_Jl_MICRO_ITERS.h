@@ -1,4 +1,3 @@
-// Copyright (C) 2026 Hedi Bouchehda.
 /*
 This header file contains the necessary classes and structure to implement the benders plugin mechanism for the micro iteration.
 As some of necessary code components for micro iterations is written in Julia, this code will be compiled into a dynamic library,
@@ -189,7 +188,7 @@ public:
         Implementation of master iteration start call back  
     */
     virtual void OnBendersMasterIterationStart(
-      std::map<std::string, double>& benders_invested_master_result, int& num_iter);
+      std::map<std::string, double>& master_out, int& num_iter);
     
     /*
         Implementation of master iteration end call back     

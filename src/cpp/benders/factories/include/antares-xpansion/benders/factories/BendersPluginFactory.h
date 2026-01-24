@@ -9,17 +9,31 @@
 #include "antares-xpansion/benders/plugins/BendersPlugin.h"
 #include "antares-xpansion/benders/benders_core/SimulationOptions.h"
 
+/*
+    Factory to create the plugin needed in benders callbacks.
+    Called in BendersFactory
+*/
 class BendersPluginFactory
 {
 public:
+    
+    /*
+        Constructor
+        @inputs : 
+            - options : study simulation 
+    */
     BendersPluginFactory(const SimulationOptions& options);
-    BendersPlugin* CreatePlugin(const CouplingMap& coupling_map, bool micro_iter);
+
+    /*
+        This method will be called to instantiate the benders plugin 
+        @inputs : 
+            - coupling_map : coupling map 
+            - micro_iter : boolean to check if Micro iterations is needed to build the right plugin
+    */
+    std::shared_ptr<BendersPlugin> CreatePlugin(const CouplingMap& coupling_map, bool micro_iter);
 
 private:
     const SimulationOptions& options_ ; 
-    std::filesystem::path library_path_;
-    std::filesystem::path input_root_;
-    std::filesystem::path output_root_;
 };
 
 typedef BendersPlugin* (*CreatePluginFunc)();
