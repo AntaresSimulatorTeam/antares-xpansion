@@ -15,17 +15,14 @@ std::shared_ptr<BendersPlugin> BendersPluginFactory::CreatePlugin(const Coupling
 {
     if (micro_iter)
     {
-        std::cout << "from createPlugin " << std::endl;
         int n_subs = coupling_map.size();
         std::vector<const char*> subs_ids ; 
         subs_ids.reserve(n_subs) ; 
         for (auto& [sub_name, sub_variables_map]: coupling_map)
         {
             if (sub_name != "master")
-            {
-                std::cout << "sub_name " << sub_name << std::endl;
                 subs_ids.push_back(sub_name.c_str());
-            }
+            
         }
 
         std::shared_ptr<Benders_Jl_MICRO_ITERS>  plugin_jl_micro_iters = std::make_shared<Benders_Jl_MICRO_ITERS> (options_,

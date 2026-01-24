@@ -40,7 +40,6 @@ void MicroIterationsLog::AddMicroIterionLog(std::string sub_name, std::string so
 
 void MicroIterationsLog::UpdateLastMasterIteration(std::map<std::string,std::string > && removing_rows_per_sub_time) 
 {
-    std::cout<<"got into UpdateLastMasterIteration "<<std::endl ;
     master_iterations_logs_[master_iterations_logs_.size()-1].removing_rows_per_sub_time = removing_rows_per_sub_time ;
 } 
 

@@ -385,7 +385,6 @@ void Benders_Jl_MICRO_ITERS::BuildConstraintsReaderMap(const SubproblemsMapPtr& 
           solver_log_manager,
           _logger,
           options.LOG_LEVEL,
-          variables_dictionary_path_,
           sub_worker);
     }
 }

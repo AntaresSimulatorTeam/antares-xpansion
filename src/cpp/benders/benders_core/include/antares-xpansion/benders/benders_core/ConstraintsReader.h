@@ -7,6 +7,10 @@
 #include "antares-xpansion/benders/benders_core/BendersProblemFromFile.h"
 #include "antares-xpansion/benders/benders_core/SubproblemWorker.h"
 
+
+/*
+    The structure contains the necesary vector to fetch for a row of an mps file
+*/
 struct constraintRow
 {
     std::vector<int> mstart;
@@ -18,15 +22,30 @@ struct constraintRow
     std::vector<std::string> row_names;
 };
 
+/*
+    This class is a sort of wrapper around solverAbstract. 
+    It allows reading the mps constraints files and provides 
+    the necessary methods in our use case
+*/
 class ConstraintsReader
 {
 public:
+
+    /*
+        Constructor 
+        @inputs : 
+            - constraint_file_path : path to the mps constraint file
+            - solver_name : solver name 
+            - solver_log_manager : solver log manager 
+            - logger : benders logger 
+            - log_levl : logging level 
+            - subproblem_worker : worker associated to the subproblem
+    */
     ConstraintsReader(const std::filesystem::path constraint_file_path,
                       const std::string& solver_name,
                       const SolverLogManager& solver_log_manager,
                       Logger& logger,
                       int log_level,
-                      const std::filesystem::path variables_names_path,
                       const std::shared_ptr<SubproblemWorker>& subproblem_worker);
 
 
@@ -48,7 +67,6 @@ public:
     Logger logger_;
     std::shared_ptr<SolverAbstract> solver_;
     std::shared_ptr<BendersProblemFromFile> benders_problem_provider_;
-    std::map<std::string, std::pair<std::string, int>> variables_names_map_;
     std::shared_ptr<SubproblemWorker> subproblem_worker_;
     SolverIO solver_IO_;
 };
